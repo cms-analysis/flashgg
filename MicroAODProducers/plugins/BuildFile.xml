@@ -1,0 +1,8 @@
+<library   name="FlashggProducerPlugins" file="*.cc">
+<use   name="DataFormats/Candidate"/>
+<use   name="DataFormats/PatCandidates"/>
+<use   name="CommonTools/CandUtils"/>
+<use   name="DataFormats/VertexReco"/>
+<use   name="flashgg/MicroAODFormats"/>
+<flags   EDM_PLUGIN="1"/>
+</library>
