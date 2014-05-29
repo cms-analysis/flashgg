@@ -12,10 +12,11 @@ git remote add upstream https://github.com/cms-analysis/flashgg
 # see https://help.github.com/articles/fork-a-repo for more about this 
 ```
 
-4. scram b
+Now build, a very basic workflow test, and an extremely primitive FWLite script:
 
-5. cd flashgg/MicroAODProducers/test
-
-6. cmsRun simple_Producer_test.py
-
-7. root -b -q scan_test_output.C
+```
+scram b
+cd flashgg/MicroAODProducers/test
+cmsRun simple_Producer_test.py
+root -b -q scan_test_output.C
+```
