@@ -20,7 +20,7 @@ namespace flashgg {
     VertexSelectorBase(const VertexSelectorBase& ) = delete;
     VertexSelectorBase& operator=(const VertexSelectorBase&) = delete;
 
-    virtual edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&) = 0;
+    virtual edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&) const = 0;
     
     const std::string& name() const { return _selectorName; }
 
