@@ -53,12 +53,6 @@ namespace flashgg {
       Ptr<flashgg::Photon> pp1 = photonPointers[i];
       for (unsigned int j = i+1 ; j < photonPointers.size() ; j++) {
 	Ptr<flashgg::Photon> pp2 = photonPointers[j];
-	/*
-	for (unsigned int k = 0 ; k < pvPointers.size() ; k++) {
-	  Ptr<reco::Vertex> pvx = pvPointers[k];
-	  diPhotonColl->push_back(DiPhotonCandidate(pp1,pp2,pvx));
-	}
-	*/
 	Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers);
 	diPhotonColl->push_back(DiPhotonCandidate(pp1,pp2,pvx));                                                                                                                 
       }
