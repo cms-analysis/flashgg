@@ -24,7 +24,7 @@ namespace flashgg {
     void produce( Event &, const EventSetup & ) override;
     EDGetTokenT<View<reco::Vertex> > vertexToken_;
     EDGetTokenT<View<flashgg::Photon> > photonToken_;
-    VertexSelectorBase* vertexSelector_;
+    unique_ptr<VertexSelectorBase> vertexSelector_;
   };
 
   DiPhotonProducer::DiPhotonProducer(const ParameterSet & iConfig) :
@@ -32,7 +32,7 @@ namespace flashgg {
     photonToken_(consumes<View<flashgg::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("flashggPhotons"))))
   {
     const std::string& VertexSelectorName = iConfig.getParameter<std::string>("VertexSelectorName");
-    vertexSelector_ = FlashggVertexSelectorFactory::get()->create(VertexSelectorName,iConfig);
+    vertexSelector_.reset(FlashggVertexSelectorFactory::get()->create(VertexSelectorName,iConfig));
 
     produces<vector<flashgg::DiPhotonCandidate> >();
   }
