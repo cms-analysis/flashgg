@@ -9,6 +9,7 @@
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
+#include "flashgg/MicroAODAlgos/interface/VertexSelectorBase.h"
 
 using namespace edm;
 using namespace std;
@@ -23,12 +24,16 @@ namespace flashgg {
     void produce( Event &, const EventSetup & ) override;
     EDGetTokenT<View<reco::Vertex> > vertexToken_;
     EDGetTokenT<View<flashgg::Photon> > photonToken_;
+    VertexSelectorBase* vertexSelector_;
   };
 
   DiPhotonProducer::DiPhotonProducer(const ParameterSet & iConfig) :
     vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
     photonToken_(consumes<View<flashgg::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("flashggPhotons"))))
   {
+    const std::string& VertexSelectorName = iConfig.getParameter<std::string>("VertexSelectorName");
+    vertexSelector_ = FlashggVertexSelectorFactory::get()->create(VertexSelectorName,iConfig);
+
     produces<vector<flashgg::DiPhotonCandidate> >();
   }
 
@@ -48,10 +53,8 @@ namespace flashgg {
       Ptr<flashgg::Photon> pp1 = photonPointers[i];
       for (unsigned int j = i+1 ; j < photonPointers.size() ; j++) {
 	Ptr<flashgg::Photon> pp2 = photonPointers[j];
-	for (unsigned int k = 0 ; k < pvPointers.size() ; k++) {
-	  Ptr<reco::Vertex> pvx = pvPointers[k];
-	  diPhotonColl->push_back(DiPhotonCandidate(pp1,pp2,pvx));
-	}
+	Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers);
+	diPhotonColl->push_back(DiPhotonCandidate(pp1,pp2,pvx));                                                                                                                 
       }
     }
     
