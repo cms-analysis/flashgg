@@ -4,5 +4,6 @@
 <use   name="CommonTools/CandUtils"/>
 <use   name="DataFormats/VertexReco"/>
 <use   name="flashgg/MicroAODFormats"/>
+<use   name="flashgg/MicroAODAlgos"/>
 <flags   EDM_PLUGIN="1"/>
 </library>
