@@ -6,6 +6,8 @@
  <class name="flashgg::DiPhotonCandidate"/>
  <class name="std::vector<flashgg::DiPhotonCandidate>"/>
  <class name="edm::Wrapper<std::vector<flashgg::DiPhotonCandidate> >"/>
+ <class name="flashgg::Jet"/>
+ <class name="std::vector<flashgg::Jet>"/>
 </lcgdict>
 
 
