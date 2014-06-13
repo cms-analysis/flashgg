@@ -6,7 +6,10 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 
-process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:/afs/cern.ch/work/g/gpetrucc/micro/70x/CMSSW_7_0_4/src/miniProd/WH_ZH_HToGG_M-125_13TeV_pythia6_PAT.root"))
+process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring(
+"file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_0.root",
+"file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_1.root"
+))
 
 process.flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                         PhotonTag=cms.untracked.InputTag('slimmedPhotons')
