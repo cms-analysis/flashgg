@@ -13,8 +13,8 @@ namespace flashgg {
     ~Photon();
     void setTestVariable(unsigned int i) { testVariable_ = i; }
     unsigned int const getTestVariable() const {return testVariable_;};
-    void setShowerShapeVariable(std::string showerShapeVariableName, float showerShapeValue);
-    float getShowerShapeVariable(std::string showerShapeVariableName);
+    //    void setShowerShapeVariable(std::string showerShapeVariableName, float showerShapeValue);
+    //float getShowerShapeVariable(std::string showerShapeVariableName);
   private:
     unsigned int testVariable_;
     float e2nd_;

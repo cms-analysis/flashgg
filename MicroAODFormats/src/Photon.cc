@@ -21,7 +21,7 @@ Photon::Photon(const pat::Photon& aPhoton ) : pat::Photon(aPhoton) {
 }
 
 Photon::~Photon() {}
-
+/*
 void Photon::setShowerShapeVariable(std::string showerShapeVariableName, float value){
   if(showerShapeVariableName=="e2nd")
     e2nd_=value;
@@ -69,3 +69,4 @@ float Photon::getShowerShapeVariable(std::string showerShapeVariableName){
     return(-9999);
 }
 
+*/
