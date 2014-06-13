@@ -44,12 +44,9 @@ namespace flashgg {
   PhotonProducer::PhotonProducer(const ParameterSet & iConfig) :
     photonToken_(consumes<View<pat::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("slimmedPhotons"))))
   {
-    //ecalHitEBColl_ = edm::InputTag("ecalRecHit","EcalRecHitsEB");
-    //ecalHitEEColl_ = edm::InputTag("ecalRecHit","EcalRecHitsEE");
-
-    //ecalHitEBColl_ = iConfig.getParameter<edm::InputTag>("EcalHitEBColl");
-    //ecalHitEEColl_ = iConfig.getParameter<edm::InputTag>("EcalHitEEColl");
-    // ecalHitESColl_ = iConfig.getParameter<edm::InputTag>("EcalHitESColl");
+    ecalHitEBColl_ = iConfig.getParameter<edm::InputTag>("EcalHitEBColl");
+    ecalHitEEColl_ = iConfig.getParameter<edm::InputTag>("EcalHitEEColl");
+    ecalHitESColl_ = iConfig.getParameter<edm::InputTag>("EcalHitESColl");
     
     produces<vector<flashgg::Photon> >();
   }
