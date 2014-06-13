@@ -12,6 +12,7 @@
 #include "RecoEcal/EgammaCoreTools/interface/EcalClusterTools.h"
 #include "RecoEgamma/EgammaTools/interface/EcalClusterLocal.h"
 #include "DataFormats/GeometryVector/interface/GlobalPoint.h"
+#include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
 
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/PatCandidates/interface/Photon.h"
@@ -31,23 +32,29 @@ namespace flashgg {
   private:
     void produce( Event &, const EventSetup & ) override;
     EDGetTokenT<View<pat::Photon> > photonToken_;
-    edm::InputTag ecalHitEBColl;
-    edm::InputTag ecalHitEEColl;
-    edm::InputTag ecalHitESColl;
+    
+    edm::InputTag ecalHitEBColl_;
+    edm::InputTag ecalHitEEColl_;
+    edm::InputTag ecalHitESColl_;
+    
+    
   };
 
 
   PhotonProducer::PhotonProducer(const ParameterSet & iConfig) :
     photonToken_(consumes<View<pat::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("slimmedPhotons"))))
   {
-    ecalHitEBColl = iConfig.getParameter<edm::InputTag>("EcalHitEBColl");
-    ecalHitEEColl = iConfig.getParameter<edm::InputTag>("EcalHitEEColl");
-    ecalHitESColl = iConfig.getParameter<edm::InputTag>("EcalHitESColl");
+    //ecalHitEBColl_ = edm::InputTag("ecalRecHit","EcalRecHitsEB");
+    //ecalHitEEColl_ = edm::InputTag("ecalRecHit","EcalRecHitsEE");
+
+    //ecalHitEBColl_ = iConfig.getParameter<edm::InputTag>("EcalHitEBColl");
+    //ecalHitEEColl_ = iConfig.getParameter<edm::InputTag>("EcalHitEEColl");
+    // ecalHitESColl_ = iConfig.getParameter<edm::InputTag>("EcalHitESColl");
     
     produces<vector<flashgg::Photon> >();
   }
 
-  void PhotonProducer::produce( Event & evt, const EventSetup & ) {
+  void PhotonProducer::produce( Event & evt, const EventSetup & iSetup) {
     
     Handle<View<pat::Photon> > photons;
     evt.getByToken(photonToken_,photons);
@@ -63,7 +70,8 @@ namespace flashgg {
       fg.setTestVariable(i); // The index of the photon is as good an example of distinctive test data as any
       /*************new shower shape variables added here*********************/
       
-      EcalClusterLazyTools lazyTool(Event, EventSetup, ecalHitEBColl, ecalHitEEColl);  
+      EcalClusterLazyTools lazyTool(evt, iSetup, ecalHitEBColl_, ecalHitEEColl_);        
+      
       DetId id= pp->superCluster()->seed()->hitsAndFractions()[0].first;
       const reco::CaloClusterPtr  seed_clu = pp->superCluster()->seed();
       std::vector<float> viCov;
@@ -73,14 +81,14 @@ namespace flashgg {
 
       //fg.setShowerShapeVariable("sipip",viCov[2]);
       //fg.setShowerShapeVariable("sieip",viCov[1];
-      //fg.setShowerShapeVariable("zernike20",slazyTool.zernike20(*seed_clu);
-      //fg.setShowerShapeVariable("zernike42",slazyTool.zernike42(*seed_clu);
+      //fg.setShowerShapeVariable("zernike20",lazyTool.zernike20(*seed_clu);
+      //fg.setShowerShapeVariable("zernike42",lazyTool.zernike42(*seed_clu);
       fg.setShowerShapeVariable("e2nd",lazyTool.e2nd(*seed_clu));
       fg.setShowerShapeVariable("e2x5right",lazyTool.e2x5Right(*seed_clu));
       fg.setShowerShapeVariable("e2x5left",lazyTool.e2x5Left(*seed_clu));
       fg.setShowerShapeVariable("e2x5top",lazyTool.e2x5Top(*seed_clu));
       fg.setShowerShapeVariable("e2x5bottom",lazyTool.e2x5Bottom(*seed_clu));
-      fg.setShowerShapeVariable("e2x5max",lazyTool.e2x5max(*seed_clu));
+      fg.setShowerShapeVariable("e2x5max",lazyTool.e2x5Max(*seed_clu));
       fg.setShowerShapeVariable("eright",lazyTool.e2x5Right(*seed_clu));
       fg.setShowerShapeVariable("eleft",lazyTool.e2x5Left(*seed_clu));
       fg.setShowerShapeVariable("etop",lazyTool.e2x5Top(*seed_clu));
