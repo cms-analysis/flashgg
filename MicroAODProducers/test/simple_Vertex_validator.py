@@ -28,7 +28,7 @@ process.GlobalTag = GlobalTag(process.GlobalTag, 'PLS170_V7AN1::All', '')
 
 ####### EVENT NUMBER 
 #event number
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 
 ####### INPUT SOURCE
 # Input source (from AOD->miniAOD)
@@ -91,9 +91,43 @@ process.flashggVertexValidationTreeMaker = cms.EDAnalyzer('FlashggVertexValidati
                                                           VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                                           GenParticleTag=cms.untracked.InputTag('prunedGenParticles'),
                                                           VertexCandidateMapTagDz=cms.InputTag('flashggVertexMapUnique'),
-                                                          VertexCandidateMapTagAOD = cms.InputTag('flashggVertexMapValidator')
+                                                          VertexCandidateMapTagAOD = cms.InputTag('flashggVertexMapValidator'),
+                                                          JetTagDz = cms.InputTag("flashggJets"),
+                                                          JetTagRecoBasedMap = cms.InputTag("flashggJetsUsingRecoBasedVertexMap"),
+                                                          JetTagReco = cms.InputTag("flashggJetsUsingRecoJets")
                                                           )
                  
+# This requires you to have done: git cms-merge-topic -u sethzenz:pileupjetid-for-flashgg                                                                                          
+process.load("RecoJets.JetProducers.PileupJetIDParams_cfi")
+
+process.flashggJets = cms.EDProducer('FlashggJetProducer',
+                                     DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+#                                     VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                     JetTag=cms.untracked.InputTag('slimmedJets'),
+                                     VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
+                                     PileupJetIdParameters=cms.PSet(process.full_5x_chs) # from PileupJetIDParams_cfi                                                                
+                                     )
+
+process.flashggJetsUsingRecoBasedVertexMap = cms.EDProducer('FlashggJetProducer',
+                                                           DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+#                                                           VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                                           JetTag=cms.untracked.InputTag('slimmedJets'),
+                                                           VertexCandidateMapTag = cms.InputTag("flashggVertexMapValidator"),
+                                                           PileupJetIdParameters=cms.PSet(process.full_5x_chs) # from PileupJetIDParams_cfi
+                                                           )
+
+process.flashggJetsUsingRecoJets = cms.EDProducer('FlashggJetProducerFromReco',
+                                                 DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                                 VertexTag=cms.untracked.InputTag('offlinePrimaryVertices'),
+                                                 JetTag=cms.untracked.InputTag('ak4PFJetsCHS'),
+#                                                 VertexCandidateMapTag = cms.InputTag("flashggVertexMapValidator"), # won't be used
+                                                 PileupJetIdParameters=cms.PSet(process.full_5x_chs), # from PileupJetIDParams_cfi
+#                                                 UseAODOnlyPileupJetIdMethod=cms.untracked.bool(True)
+                                                 )
+                                                 
+
+
+
 ####### OUTPUT								 
 #Output definition (AOD->miniAOD)
 #process.MINIAODSIMoutput = cms.OutputModule("PoolOutputModule",
@@ -116,8 +150,12 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
                                outputCommands = cms.untracked.vstring("drop *",
                                                                       "keep *_flashgg*_*_*",
                                                                       "drop *_flashggVertexMap*_*_*",
-                                                                      "keep *_offlineSlimmedPrimaryVertices_*_*")
+                                                                      "keep *_offlineSlimmedPrimaryVertices_*_*",
+                                                                      "keep *_reducedEgamma_reduced*Clusters_*",
+                                                                      "keep *_reducedEgamma_*PhotonCores_*"
+                                                                      )
 )
+
 
 
 
@@ -144,6 +182,9 @@ process.p = cms.Path(process.flashggVertexMapValidator*
                      process.flashggPhotons*
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
+                     process.flashggJets*
+                     process.flashggJetsUsingRecoBasedVertexMap*
+                     process.flashggJetsUsingRecoJets*
                      process.flashggVertexValidationTreeMaker
                     )
 
