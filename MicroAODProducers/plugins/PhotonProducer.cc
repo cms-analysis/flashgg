@@ -5,15 +5,8 @@
 #include "DataFormats/Common/interface/Handle.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
-
 #include "DataFormats/EgammaReco/interface/SuperClusterFwd.h"
-
 #include "RecoEcal/EgammaCoreTools/interface/EcalClusterLazyTools.h"
-#include "RecoEcal/EgammaCoreTools/interface/EcalClusterTools.h"
-#include "RecoEgamma/EgammaTools/interface/EcalClusterLocal.h"
-#include "DataFormats/GeometryVector/interface/GlobalPoint.h"
-#include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
-
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "flashgg/MicroAODFormats/interface/Photon.h"
@@ -32,24 +25,18 @@ namespace flashgg {
   private:
     void produce( Event &, const EventSetup & ) override;
     EDGetTokenT<View<pat::Photon> > photonToken_;
-    
     edm::InputTag ecalHitEBColl_;
     edm::InputTag ecalHitEEColl_;
     edm::InputTag ecalHitESColl_;
-    
-    
   };
 
 
   PhotonProducer::PhotonProducer(const ParameterSet & iConfig) :
     photonToken_(consumes<View<pat::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("slimmedPhotons"))))
   {
-    //ecalHitEBColl_ = edm::InputTag("ecalRecHit","EcalRecHitsEB");
-    //ecalHitEEColl_ = edm::InputTag("ecalRecHit","EcalRecHitsEE");
-
-    //ecalHitEBColl_ = iConfig.getParameter<edm::InputTag>("EcalHitEBColl");
-    //ecalHitEEColl_ = iConfig.getParameter<edm::InputTag>("EcalHitEEColl");
-    // ecalHitESColl_ = iConfig.getParameter<edm::InputTag>("EcalHitESColl");
+    ecalHitEBColl_ = iConfig.getParameter<edm::InputTag>("reducedBarrelRecHitCollection");
+    ecalHitEEColl_ = iConfig.getParameter<edm::InputTag>("reducedEndcapRecHitCollection");
+    ecalHitESColl_ = iConfig.getParameter<edm::InputTag>("reducedPreshowerRecHitCollection");
     
     produces<vector<flashgg::Photon> >();
   }
@@ -72,30 +59,26 @@ namespace flashgg {
       
       EcalClusterLazyTools lazyTool(evt, iSetup, ecalHitEBColl_, ecalHitEEColl_);        
       
-      DetId id= pp->superCluster()->seed()->hitsAndFractions()[0].first;
       const reco::CaloClusterPtr  seed_clu = pp->superCluster()->seed();
       std::vector<float> viCov;
       viCov = lazyTool.localCovariances(*seed_clu);
-      std::vector<float> cov;
-      cov = lazyTool.covariances(*pp->superCluster());
+      
+      fg.addUserFloat("sipip",viCov[2]);
+      fg.addUserFloat("sieip",viCov[1]);
+      fg.addUserFloat("zernike20",lazyTool.zernike20(*seed_clu));
+      fg.addUserFloat("zernike42",lazyTool.zernike42(*seed_clu));
+      fg.addUserFloat("e2nd",lazyTool.e2nd(*seed_clu));
+      fg.addUserFloat("e2x5right",lazyTool.e2x5Right(*seed_clu));
+      fg.addUserFloat("e2x5left",lazyTool.e2x5Left(*seed_clu));
+      fg.addUserFloat("e2x5top",lazyTool.e2x5Top(*seed_clu));
+      fg.addUserFloat("e2x5bottom",lazyTool.e2x5Bottom(*seed_clu));
+      fg.addUserFloat("e2x5max",lazyTool.e2x5Max(*seed_clu));
+      fg.addUserFloat("eright",lazyTool.e2x5Right(*seed_clu));
+      fg.addUserFloat("eleft",lazyTool.e2x5Left(*seed_clu));
+      fg.addUserFloat("etop",lazyTool.e2x5Top(*seed_clu));
+      fg.addUserFloat("ebottom",lazyTool.e2x5Bottom(*seed_clu));
+      fg.addUserFloat("e1x3",lazyTool.e1x3(*seed_clu));
 
-      //fg.setShowerShapeVariable("sipip",viCov[2]);
-      //fg.setShowerShapeVariable("sieip",viCov[1];
-      //fg.setShowerShapeVariable("zernike20",lazyTool.zernike20(*seed_clu);
-      //fg.setShowerShapeVariable("zernike42",lazyTool.zernike42(*seed_clu);
-      fg.setShowerShapeVariable("e2nd",lazyTool.e2nd(*seed_clu));
-      fg.setShowerShapeVariable("e2x5right",lazyTool.e2x5Right(*seed_clu));
-      fg.setShowerShapeVariable("e2x5left",lazyTool.e2x5Left(*seed_clu));
-      fg.setShowerShapeVariable("e2x5top",lazyTool.e2x5Top(*seed_clu));
-      fg.setShowerShapeVariable("e2x5bottom",lazyTool.e2x5Bottom(*seed_clu));
-      fg.setShowerShapeVariable("e2x5max",lazyTool.e2x5Max(*seed_clu));
-      fg.setShowerShapeVariable("eright",lazyTool.e2x5Right(*seed_clu));
-      fg.setShowerShapeVariable("eleft",lazyTool.e2x5Left(*seed_clu));
-      fg.setShowerShapeVariable("etop",lazyTool.e2x5Top(*seed_clu));
-      fg.setShowerShapeVariable("ebottom",lazyTool.e2x5Bottom(*seed_clu));
-      //fg.setShowerShapeVariable("e1x3",lazyTool.e1x3(*seed_clu));
-      
-      
       photonColl->push_back(fg);
     }
     
