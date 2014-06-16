@@ -64,21 +64,21 @@ namespace flashgg {
       std::vector<float> viCov;
       viCov = lazyTool.localCovariances(*seed_clu);
       
-      fg.addUserFloat("sipip",viCov[2]);
-      fg.addUserFloat("sieip",viCov[1]);
-      fg.addUserFloat("zernike20",lazyTool.zernike20(*seed_clu));
-      fg.addUserFloat("zernike42",lazyTool.zernike42(*seed_clu));
-      fg.addUserFloat("e2nd",lazyTool.e2nd(*seed_clu));
-      fg.addUserFloat("e2x5right",lazyTool.e2x5Right(*seed_clu));
-      fg.addUserFloat("e2x5left",lazyTool.e2x5Left(*seed_clu));
-      fg.addUserFloat("e2x5top",lazyTool.e2x5Top(*seed_clu));
-      fg.addUserFloat("e2x5bottom",lazyTool.e2x5Bottom(*seed_clu));
-      fg.addUserFloat("e2x5max",lazyTool.e2x5Max(*seed_clu));
-      fg.addUserFloat("eright",lazyTool.e2x5Right(*seed_clu));
-      fg.addUserFloat("eleft",lazyTool.e2x5Left(*seed_clu));
-      fg.addUserFloat("etop",lazyTool.e2x5Top(*seed_clu));
-      fg.addUserFloat("ebottom",lazyTool.e2x5Bottom(*seed_clu));
-      fg.addUserFloat("e1x3",lazyTool.e1x3(*seed_clu));
+      fg.setSipip(viCov[2]);
+      fg.setSieip(viCov[1]);
+      fg.setZernike20(lazyTool.zernike20(*seed_clu));
+      fg.setZernike42(lazyTool.zernike42(*seed_clu));
+      fg.setE2nd(lazyTool.e2nd(*seed_clu));
+      fg.setE2x5right(lazyTool.e2x5Right(*seed_clu));
+      fg.setE2x5left(lazyTool.e2x5Left(*seed_clu));
+      fg.setE2x5top(lazyTool.e2x5Top(*seed_clu));
+      fg.setE2x5bottom(lazyTool.e2x5Bottom(*seed_clu));
+      fg.setE2x5max(lazyTool.e2x5Max(*seed_clu));
+      fg.setEright(lazyTool.e2x5Right(*seed_clu));
+      fg.setEleft(lazyTool.e2x5Left(*seed_clu));
+      fg.setEtop(lazyTool.e2x5Top(*seed_clu));
+      fg.setEbottom(lazyTool.e2x5Bottom(*seed_clu));
+      fg.setE1x3(lazyTool.e1x3(*seed_clu));
 
       photonColl->push_back(fg);
     }
