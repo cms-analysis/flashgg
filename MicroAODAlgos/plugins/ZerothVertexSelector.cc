@@ -20,6 +20,27 @@ namespace flashgg {
   };
 
   edm::Ptr<reco::Vertex> ZerothVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs) const {
+	std::cout<<v_id<<std::endl;
+      float sumpt2=0;
+      float ptbal=0;
+      float sum_norm_pt=0;
+      float ptasym=0;
+
+      DiPhotonCandidate diphoton=DiPhotonCandidate(g1,g2,vtxs[v_id]);
+      
+      for(reco::Vertex::trackRef_iterator track = vtxs[v_id].tracks_begin();track != vtxs[v_id].tracks_end(); ++track) { //summing over the tracks associated to the vertex
+	std::cout<<(*track)->px()<<std::endl;
+	sumpt2=sumpt2
+	  +(*track)->pt()->Mag2();
+	ptbal=ptbal
+	  -(*track)->pt()->Dot(diphoton->pt()/(diphoton->pt().Mag()));
+	sum_norm_pt=sum_norm_pt
+	  +(*track)->pt()->Mag();
+      }
+      ptasym=sum_norm_pt-diphoton->pt()->Mag()/(sum_norm_pt+diphoton->pt()->Mag());
+
+      std::cout<<"The three quantities for vtx "<<v_id<<" are "<<" sumpt2:"<<sumpt2<<" ptbal:"<<ptbal<<" ptasym:"<<ptasym<<std::endl;
+
     return vtxs[_whichVertex];
   }
 
