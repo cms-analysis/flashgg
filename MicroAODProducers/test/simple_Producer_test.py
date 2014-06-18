@@ -3,13 +3,33 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("FLASHggTEST")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
+#process.load("Geometry.CaloEventSetup.CaloTopology_cfi")
+#process.load("Geometry.CMSCommonData.cmsIdealGeometryXML_cfi")
+#process.load("Geometry.CaloEventSetup.CaloGeometry_cfi")
+#process.load("CalibCalorimetry.EcalLaserCorrection.ecalLaserCorrectionService_cfi")
+#process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
+
+
+process.load("Configuration.StandardSequences.GeometryDB_cff")
+process.load("Configuration.StandardSequences.MagneticField_cff")
+process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
+process.GlobalTag.globaltag = 'POSTLS170_V5::All'
+#process.GlobalTag.toGet = cms.VPSet(
+#    cms.PSet(record = cms.string("EcalIntercalibConstantsRcd"),
+#             tag = cms.string("EcalIntercalibConstants_Bon_V20101105"),
+#             connect = cms.untracked.string("frontier://FrontierProd/CMS_COND_31X_ECAL")
+#             )
+#    )
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 
-process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:/afs/cern.ch/work/g/gpetrucc/micro/70x/CMSSW_7_0_4/src/miniProd/WH_ZH_HToGG_M-125_13TeV_pythia6_PAT.root"))
+process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_3.root"))
 
 process.flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
-                                        PhotonTag=cms.untracked.InputTag('slimmedPhotons')
+                                        PhotonTag=cms.untracked.InputTag('slimmedPhotons'),
+                                        reducedBarrelRecHitCollection=cms.InputTag('reducedEgamma','reducedEBRecHits'),
+                                        reducedEndcapRecHitCollection=cms.InputTag('reducedEgamma','reducedEERecHits'),
+                                        reducedPreshowerRecHitCollection=cms.InputTag('reducedEgamma','reducedESRecHits')
                                         )
 process.flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                           PhotonTag=cms.untracked.InputTag('flashggPhotons'),
