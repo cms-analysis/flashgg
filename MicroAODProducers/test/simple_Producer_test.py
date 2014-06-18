@@ -14,7 +14,8 @@ process.flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
 process.flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                           PhotonTag=cms.untracked.InputTag('flashggPhotons'),
                                           VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
-                                          VertexSelectorName=cms.string("FlashggZerothVertexSelector")
+#                                         VertexSelectorName=cms.string("FlashggZerothVertexSelector"),
+                                          VertexSelectorName=cms.string("FlashggLegacyVertexSelector")
                                           )
 
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFile.root'),
