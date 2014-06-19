@@ -47,7 +47,6 @@ namespace flashgg {
     Handle<View<pat::Photon> > photons;
     evt.getByToken(photonToken_,photons);
     
-      
     const PtrVector<pat::Photon>& photonPointers = photons->ptrVector();
     
     auto_ptr<vector<flashgg::Photon> > photonColl(new vector<flashgg::Photon>);
@@ -55,8 +54,6 @@ namespace flashgg {
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
       Ptr<pat::Photon> pp = photonPointers[i];
       flashgg::Photon fg = flashgg::Photon(*pp);
-      fg.setTestVariable(i); // The index of the photon is as good an example of distinctive test data as any
-      /*************new shower shape variables added here*********************/
       
       EcalClusterLazyTools lazyTool(evt, iSetup, ecalHitEBColl_, ecalHitEEColl_);        
       

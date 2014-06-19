@@ -11,8 +11,6 @@ namespace flashgg {
     Photon();
     Photon(const pat::Photon &);
     ~Photon();
-    void setTestVariable(unsigned int i) { testVariable_ = i; }
-    unsigned int const getTestVariable() const {return testVariable_;};
     
     void  setSipip(float val) {sipip=val;};
     void  setSieip(float val) {sieip=val;};
