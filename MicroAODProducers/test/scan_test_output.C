@@ -21,7 +21,7 @@
   TTree *Events = f.Get("Events");
   Events->Print();
   Events->SetScanField(0);
-  Events->Scan("flashggDiPhotonCandidates_flashggDiPhotons__FLASHggTEST.obj.pt_:flashggPhotons_flashggPhotons__FLASHggTEST.obj.pt_:flashggPhotons_flashggPhotons__FLASHggTEST.obj.testVariable_");
+  Events->Scan("flashggDiPhotonCandidates_flashggDiPhotons__FLASHggTEST.obj.pt_:flashggPhotons_flashggPhotons__FLASHggTEST.obj.pt_:flashggPhotons_flashggPhotons__FLASHggTEST.obj.e1x3");
 
 #include "DataFormats/FWLite/interface/Handle.h"
   
