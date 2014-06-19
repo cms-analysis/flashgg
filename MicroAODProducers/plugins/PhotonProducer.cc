@@ -26,6 +26,7 @@ namespace flashgg {
   private:
     void produce( Event &, const EventSetup & ) override;
     EDGetTokenT<View<pat::Photon> > photonToken_;
+    EDGetTokenT<View<pat::PackedCandidate> > pfcandidateToken_;
     unique_ptr<PhotonPreselectorBase> photonPreselector_;
     edm::InputTag ecalHitEBColl_;
     edm::InputTag ecalHitEEColl_;
@@ -34,7 +35,8 @@ namespace flashgg {
 
 
   PhotonProducer::PhotonProducer(const ParameterSet & iConfig) :
-    photonToken_(consumes<View<pat::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("slimmedPhotons"))))
+    photonToken_(consumes<View<pat::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("slimmedPhotons")))),
+    pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates"))))
   {
     const std::string& PhotonPreselectorName = iConfig.getParameter<std::string>("PhotonPreselectorName");
     photonPreselector_.reset(FlashggPhotonPreselectorFactory::get()->create(PhotonPreselectorName, iConfig));
@@ -51,9 +53,12 @@ namespace flashgg {
     
     Handle<View<pat::Photon> > photons;
     evt.getByToken(photonToken_,photons);
+    Handle<View<pat::PackedCandidate> > pfcandidates;
+    evt.getByToken(pfcandidateToken_,pfcandidates);
     
       
     const PtrVector<pat::Photon>& photonPointers = photons->ptrVector();
+    const PtrVector<pat::PackedCandidate>& pfcandidatePointers = pfcandidates->ptrVector();
     
     auto_ptr<vector<flashgg::Photon> > photonColl(new vector<flashgg::Photon>);
 
@@ -62,7 +67,7 @@ namespace flashgg {
       flashgg::Photon fg = flashgg::Photon(*pp);
       fg.setTestVariable(i); // The index of the photon is as good an example of distinctive test data as any
       // Apply photon preselection on pat::Photon
-      if( ! photonPreselector_->ispreselected( pp ) )
+      if( ! photonPreselector_->ispreselected( pp, pfcandidatePointers ) )
           continue;
 
       /*************new shower shape variables added here*********************/

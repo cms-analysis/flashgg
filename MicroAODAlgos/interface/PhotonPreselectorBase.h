@@ -19,7 +19,7 @@ namespace flashgg {
     PhotonPreselectorBase(const PhotonPreselectorBase& ) = delete;
     PhotonPreselectorBase& operator=(const PhotonPreselectorBase&) = delete;
 
-    virtual bool ispreselected(const edm::Ptr<pat::Photon>&) const = 0;
+    virtual bool ispreselected(const edm::Ptr<pat::Photon>&, const edm::PtrVector<pat::PackedCandidate>&) const = 0;
     
     const std::string& name() const { return _selectorName; }
 

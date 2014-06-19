@@ -10,11 +10,11 @@ namespace flashgg {
     NoPhotonPreselector(const edm::ParameterSet& conf) :
       PhotonPreselectorBase(conf) {}
 
-    bool ispreselected(const edm::Ptr<pat::Photon>&) const override;
+    bool ispreselected(const edm::Ptr<pat::Photon>&, const edm::PtrVector<pat::PackedCandidate>&) const override;
 
   };
 
-  bool NoPhotonPreselector::ispreselected(const edm::Ptr<pat::Photon>& g) const {
+  bool NoPhotonPreselector::ispreselected(const edm::Ptr<pat::Photon>& g, const edm::PtrVector<pat::PackedCandidate>& pfcandidatePointers) const {
     return true;
   }
 
