@@ -8,6 +8,7 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "flashgg/MicroAODFormats/interface/Photon.h"
+#include "flashgg/MicroAODAlgos/interface/PhotonPreselectorBase.h"
 
 
 
@@ -23,12 +24,16 @@ namespace flashgg {
   private:
     void produce( Event &, const EventSetup & ) override;
     EDGetTokenT<View<pat::Photon> > photonToken_;
+    unique_ptr<PhotonPreselectorBase> photonPreselector_;
   };
 
 
   PhotonProducer::PhotonProducer(const ParameterSet & iConfig) :
     photonToken_(consumes<View<pat::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("slimmedPhotons"))))
   {
+    const std::string& PhotonPreselectorName = iConfig.getParameter<std::string>("PhotonPreselectorName");
+    photonPreselector_.reset(FlashggPhotonPreselectorFactory::get()->create(PhotonPreselectorName, iConfig));
+
     produces<vector<flashgg::Photon> >();
   }
 
@@ -44,7 +49,9 @@ namespace flashgg {
       Ptr<pat::Photon> pp = photonPointers[i];
       flashgg::Photon fg = flashgg::Photon(*pp);
       fg.setTestVariable(i); // The index of the photon is as good an example of distinctive test data as any
-      photonColl->push_back(fg);
+      // Apply photon preselection on pat::Photon
+      if( photonPreselector_->ispreselected( pp ) )
+          photonColl->push_back(fg);
     }
     
     evt.put(photonColl);

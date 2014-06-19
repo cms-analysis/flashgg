@@ -4,7 +4,7 @@ process = cms.Process("FLASHggTEST")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) )
 
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring(
 "file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_0.root",
@@ -12,7 +12,8 @@ process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring(
 ))
 
 process.flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
-                                        PhotonTag=cms.untracked.InputTag('slimmedPhotons')
+                                        PhotonTag=cms.untracked.InputTag('slimmedPhotons'),
+                                        PhotonPreselectorName=cms.string("FlashggRun1LegacyPhotonPreselector")
                                         )
 process.flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                           PhotonTag=cms.untracked.InputTag('flashggPhotons'),
