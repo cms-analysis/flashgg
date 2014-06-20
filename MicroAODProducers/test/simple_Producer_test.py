@@ -27,6 +27,9 @@ process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:/
 
 process.flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                         PhotonTag=cms.untracked.InputTag('slimmedPhotons'),
+                                        PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'), # Needed to compute ChargedPFIso for Run1 Legacy preselection
+#                                        PhotonPreselectorName=cms.string("FlashggNoPhotonPreselector"),
+                                        PhotonPreselectorName=cms.string("FlashggRun1LegacyPhotonPreselector"),
                                         reducedBarrelRecHitCollection=cms.InputTag('reducedEgamma','reducedEBRecHits'),
                                         reducedEndcapRecHitCollection=cms.InputTag('reducedEgamma','reducedEERecHits'),
                                         reducedPreshowerRecHitCollection=cms.InputTag('reducedEgamma','reducedESRecHits')
