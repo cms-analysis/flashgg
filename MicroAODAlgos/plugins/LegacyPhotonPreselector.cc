@@ -5,16 +5,16 @@
 
 namespace flashgg {
   
-  class Run1LegacyPhotonPreselector : public PhotonPreselectorBase {
+  class LegacyPhotonPreselector : public PhotonPreselectorBase {
   public:
-    Run1LegacyPhotonPreselector(const edm::ParameterSet& conf) :
+    LegacyPhotonPreselector(const edm::ParameterSet& conf) :
       PhotonPreselectorBase(conf) {}
 
     bool ispreselected(const edm::Ptr<pat::Photon>&, const edm::PtrVector<pat::PackedCandidate>&) const override;
 
   };
 
-  bool Run1LegacyPhotonPreselector::ispreselected(const edm::Ptr<pat::Photon>& g, const edm::PtrVector<pat::PackedCandidate>& pfcandidatePointers) const {
+  bool LegacyPhotonPreselector::ispreselected(const edm::Ptr<pat::Photon>& g, const edm::PtrVector<pat::PackedCandidate>& pfcandidatePointers) const {
     // photon preselection is mickmicking as much as possible
     // what is documented in AN 2013/253 v8 page 41 table 18,
     // but with pat::Photons instead of reco objects
@@ -49,5 +49,5 @@ namespace flashgg {
 }
 
 DEFINE_EDM_PLUGIN(FlashggPhotonPreselectorFactory,
-		  flashgg::Run1LegacyPhotonPreselector,
-		  "FlashggRun1LegacyPhotonPreselector");
+		  flashgg::LegacyPhotonPreselector,
+		  "FlashggLegacyPhotonPreselector");
