@@ -25,6 +25,12 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_3.root"))
 
+process.flashggVertexAssociations = cms.EDProducer('FlashggDzVertexAssociationProducer',
+                                                   PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
+                                                   VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                                   MaxAllowedDz=cms.double(1.) # in cm
+                                                   )
+
 process.flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                         PhotonTag=cms.untracked.InputTag('slimmedPhotons'),
                                         PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'), # Needed to compute ChargedPFIso for Run1 Legacy preselection
@@ -45,6 +51,6 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
                                outputCommands = cms.untracked.vstring("drop *","keep *_flashgg*_*_*","keep *_offlineSlimmedPrimaryVertices_*_*")
 )
 
-process.p = cms.Path(process.flashggPhotons*process.flashggDiPhotons)
+process.p = cms.Path(process.flashggVertexAssociations*process.flashggPhotons*process.flashggDiPhotons)
 
 process.e = cms.EndPath(process.out)
