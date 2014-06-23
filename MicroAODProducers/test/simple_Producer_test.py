@@ -21,15 +21,12 @@ process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 #             )
 #    )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_3.root"))
 
 process.flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                         PhotonTag=cms.untracked.InputTag('slimmedPhotons'),
-                                        PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'), # Needed to compute ChargedPFIso for Run1 Legacy preselection
-#                                        PhotonPreselectorName=cms.string("FlashggNoPhotonPreselector"),
-                                        PhotonPreselectorName=cms.string("FlashggLegacyPhotonPreselector"),
                                         reducedBarrelRecHitCollection=cms.InputTag('reducedEgamma','reducedEBRecHits'),
                                         reducedEndcapRecHitCollection=cms.InputTag('reducedEgamma','reducedEERecHits'),
                                         reducedPreshowerRecHitCollection=cms.InputTag('reducedEgamma','reducedESRecHits')

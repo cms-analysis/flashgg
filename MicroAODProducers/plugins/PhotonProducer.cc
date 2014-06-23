@@ -10,7 +10,6 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "flashgg/MicroAODFormats/interface/Photon.h"
-#include "flashgg/MicroAODAlgos/interface/PhotonPreselectorBase.h"
 
 
 
@@ -26,8 +25,6 @@ namespace flashgg {
   private:
     void produce( Event &, const EventSetup & ) override;
     EDGetTokenT<View<pat::Photon> > photonToken_;
-    EDGetTokenT<View<pat::PackedCandidate> > pfcandidateToken_;
-    unique_ptr<PhotonPreselectorBase> photonPreselector_;
     edm::InputTag ecalHitEBColl_;
     edm::InputTag ecalHitEEColl_;
     edm::InputTag ecalHitESColl_;
@@ -35,11 +32,8 @@ namespace flashgg {
 
 
   PhotonProducer::PhotonProducer(const ParameterSet & iConfig) :
-    photonToken_(consumes<View<pat::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("slimmedPhotons")))),
-    pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates"))))
+    photonToken_(consumes<View<pat::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("slimmedPhotons"))))
   {
-    const std::string& PhotonPreselectorName = iConfig.getParameter<std::string>("PhotonPreselectorName");
-    photonPreselector_.reset(FlashggPhotonPreselectorFactory::get()->create(PhotonPreselectorName, iConfig));
 
     ecalHitEBColl_ = iConfig.getParameter<edm::InputTag>("reducedBarrelRecHitCollection");
     ecalHitEEColl_ = iConfig.getParameter<edm::InputTag>("reducedEndcapRecHitCollection");
@@ -53,20 +47,14 @@ namespace flashgg {
     
     Handle<View<pat::Photon> > photons;
     evt.getByToken(photonToken_,photons);
-    Handle<View<pat::PackedCandidate> > pfcandidates;
-    evt.getByToken(pfcandidateToken_,pfcandidates);
     
     const PtrVector<pat::Photon>& photonPointers = photons->ptrVector();
-    const PtrVector<pat::PackedCandidate>& pfcandidatePointers = pfcandidates->ptrVector();
     
     auto_ptr<vector<flashgg::Photon> > photonColl(new vector<flashgg::Photon>);
 
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
       Ptr<pat::Photon> pp = photonPointers[i];
       flashgg::Photon fg = flashgg::Photon(*pp);
-      // Apply photon preselection on pat::Photon
-      if( ! photonPreselector_->ispreselected( pp, pfcandidatePointers ) )
-          continue;
       
       EcalClusterLazyTools lazyTool(evt, iSetup, ecalHitEBColl_, ecalHitEEColl_);        
       
