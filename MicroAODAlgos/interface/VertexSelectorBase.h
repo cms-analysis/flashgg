@@ -6,6 +6,8 @@
 #include "flashgg/MicroAODFormats/interface/Photon.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/Common/interface/PtrVector.h"
+#include "DataFormats/PatCandidates/interface/PackedCandidate.h"
+#include "DataFormats/Common/interface/AssociationMap.h"
 
 // Shamelessly patterned on https://github.com/cms-sw/cmssw/blob/CMSSW_7_2_X/RecoParticleFlow/PFProducer/interface/BlockElementLinkerBase.h
 
@@ -20,7 +22,8 @@ namespace flashgg {
     VertexSelectorBase(const VertexSelectorBase& ) = delete;
     VertexSelectorBase& operator=(const VertexSelectorBase&) = delete;
 
-    virtual edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&) const = 0;
+    virtual edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&,
+					  const edm::AssociationMap<edm::OneToMany<reco::VertexCollection, pat::PackedCandidateCollection> >&) const = 0;
     
     const std::string& name() const { return _selectorName; }
 

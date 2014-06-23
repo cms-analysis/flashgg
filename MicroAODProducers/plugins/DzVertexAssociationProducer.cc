@@ -48,28 +48,24 @@ namespace flashgg {
     std::auto_ptr<edm::AssociationMap<edm::OneToMany<reco::VertexCollection, pat::PackedCandidateCollection> > >
       assoc (new edm::AssociationMap<edm::OneToMany<reco::VertexCollection, pat::PackedCandidateCollection> >);
 
-    // I do not really understand what this does - Seth
-    // Get a reference before to put in the event
-    //    edm::RefProd<pat::PackedCandidateCollection> candRefProd = evt.getRefBeforePut<pat::PackedCandidateCollection>();
-
     for (unsigned int i = 0 ; i < pfRefs.size() ; i++) {
+      Ref<pat::PackedCandidateCollection> cand = pfRefs[i].castTo<edm::Ref<pat::PackedCandidateCollection> >();
+      if (cand->charge() == 0) continue; // skip neutrals
       double closestDz = maxAllowedDz_;
       unsigned int closestDzIndex = -1;
-      Ref<pat::PackedCandidateCollection> cand = pfRefs[i].castTo<edm::Ref<pat::PackedCandidateCollection> >();
       for (unsigned int j = 0 ; j < pvRefs.size() ; j++) {
 	Ref<reco::VertexCollection> vtx = pvRefs[j].castTo<edm::Ref<reco::VertexCollection> >();
-	double dz = cand->dz(vtx->position());
-	cout << " Vtx Pf i j Dz " << i << " " << j << " " << dz << endl;
+	double dz = fabs(cand->dz(vtx->position()));
+	//	cout << " index_Pf index_Vtx j Dz " << i << " " << j << " " << dz << endl;
 	if (dz < closestDz) {
 	  closestDz = dz;
 	  closestDzIndex = j;
-	  cout << "  New closest Dz " << dz << endl;
+	  //	  cout << "  New closest Dz " << dz << endl;
 	}
       }
       if (closestDz < maxAllowedDz_) {
-	cout << " Final insert i j Dz " << i << " " << closestDzIndex << " " << closestDz << endl;
+	//	cout << " Final insert index_Pf index_Vtx Dz " << i << " " << closestDzIndex << " " << closestDz << endl;
         Ref<reco::VertexCollection> vtx = pvRefs[closestDzIndex].castTo<edm::Ref<reco::VertexCollection> >();
-	//	assoc->insert(vtx,Ref<pat::PackedCandidateCollection>(candRefProd,i));
 	assoc->insert(vtx,cand);
       }
     }

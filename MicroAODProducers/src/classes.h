@@ -4,6 +4,7 @@
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 
 namespace  { struct dictionary {
-  edm::AssociationMap<edm::OneToMany<std::vector<reco::Vertex>,std::vector<pat::PackedCandidate>,unsigned int> > dummy0;
-  edm::Wrapper<edm::AssociationMap<edm::OneToMany<std::vector<reco::Vertex>,std::vector<pat::PackedCandidate>,unsigned int> > > dummy1;
+  edm::helpers::KeyVal<edm::RefProd<std::vector<reco::Vertex> >, edm::RefProd<std::vector<pat::PackedCandidate> > > dummy0;
+  edm::AssociationMap<edm::OneToMany<std::vector<reco::Vertex>,std::vector<pat::PackedCandidate>,unsigned int> > dummy1;
+  edm::Wrapper<edm::AssociationMap<edm::OneToMany<std::vector<reco::Vertex>,std::vector<pat::PackedCandidate>,unsigned int> > > dummy2;
 };}

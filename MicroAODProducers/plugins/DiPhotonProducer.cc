@@ -10,6 +10,8 @@
 #include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "flashgg/MicroAODAlgos/interface/VertexSelectorBase.h"
+#include "DataFormats/PatCandidates/interface/PackedCandidate.h"
+#include "DataFormats/Common/interface/AssociationMap.h"
 
 using namespace edm;
 using namespace std;
@@ -24,12 +26,14 @@ namespace flashgg {
     void produce( Event &, const EventSetup & ) override;
     EDGetTokenT<View<reco::Vertex> > vertexToken_;
     EDGetTokenT<View<flashgg::Photon> > photonToken_;
+    EDGetTokenT< AssociationMap<OneToMany<reco::VertexCollection,pat::PackedCandidateCollection> > > vertexAssociationToken_;
     unique_ptr<VertexSelectorBase> vertexSelector_;
   };
 
   DiPhotonProducer::DiPhotonProducer(const ParameterSet & iConfig) :
     vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
-    photonToken_(consumes<View<flashgg::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("flashggPhotons"))))
+    photonToken_(consumes<View<flashgg::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("flashggPhotons")))),
+    vertexAssociationToken_(consumes<AssociationMap<OneToMany<reco::VertexCollection,pat::PackedCandidateCollection> > >(iConfig.getParameter<InputTag>("VertexAssociationMapTag")))
   {
     const std::string& VertexSelectorName = iConfig.getParameter<std::string>("VertexSelectorName");
     vertexSelector_.reset(FlashggVertexSelectorFactory::get()->create(VertexSelectorName,iConfig));
@@ -46,6 +50,9 @@ namespace flashgg {
     Handle<View<flashgg::Photon> > photons;
     evt.getByToken(photonToken_,photons);
     const PtrVector<flashgg::Photon>& photonPointers = photons->ptrVector();
+
+    Handle<AssociationMap<OneToMany<reco::VertexCollection,pat::PackedCandidateCollection> > > vertexAssociationMap;
+    evt.getByToken(vertexAssociationToken_,vertexAssociationMap);
     
     auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
     
@@ -53,7 +60,7 @@ namespace flashgg {
       Ptr<flashgg::Photon> pp1 = photonPointers[i];
       for (unsigned int j = i+1 ; j < photonPointers.size() ; j++) {
 	Ptr<flashgg::Photon> pp2 = photonPointers[j];
-	Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers);
+	Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexAssociationMap);
 	diPhotonColl->push_back(DiPhotonCandidate(pp1,pp2,pvx));                                                                                                                 
       }
     }

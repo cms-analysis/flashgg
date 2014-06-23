@@ -9,18 +9,25 @@ namespace flashgg {
   class LegacyVertexSelector : public VertexSelectorBase {
   public:
     LegacyVertexSelector(const edm::ParameterSet& conf) :
-      VertexSelectorBase(conf),
-      _whichVertex(conf.getUntrackedParameter<unsigned int>("whichVertex",0)) {}
+      VertexSelectorBase(conf) {}
 
-    edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&) const override;
+    edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&,
+                                  const edm::AssociationMap<edm::OneToMany<reco::VertexCollection, pat::PackedCandidateCollection> > &) const override;
 
   private:
     unsigned int _whichVertex; 
   };
 
-  edm::Ptr<reco::Vertex> LegacyVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs) const {
+  edm::Ptr<reco::Vertex> LegacyVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs,
+                                                      const edm::AssociationMap<edm::OneToMany<reco::VertexCollection, pat::PackedCandidateCollection> > & vertexAssociationMap
+                                                      ) const {
     std::cout<<"Running the LegacyVertexSelector"<<std::endl;
-    return vtxs[_whichVertex];
+
+    // Now we have a very technical problem. We want to do something like this...
+    //    pat::PackedCandidateCollection candidates = vertexAssociationMap[vtxs[0]];
+    // but vertexAssociationMap wants a edm::Ref<std::vector<reco::Vertex> > and we have a edm::PtrVector<reco::Vertex>
+
+    return vtxs[0];
   }
 
 }
