@@ -13,7 +13,7 @@ git remote add upstream https://github.com/cms-analysis/flashgg
 # see https://help.github.com/articles/fork-a-repo for more about this 
 ```
 
-4. Now build, a very basic workflow test, and an extremely primitive FWLite script:
+Now build, a very basic workflow test, and an extremely primitive FWLite script:
 
 ```
 cd $CMSSW_BASE/src
@@ -23,10 +23,10 @@ cmsRun simple_Producer_test.py
 root -b -q scan_test_output.C
 ```
 
-For the impatient user: Just execute 
+For the impatient user: Fork https://github.com/cms-analysis/flashg and then execute
 
 ```
 source ~carrillo/public/for_All/flashgg_me.sh
 ```
 
-after you have forked cms-analysis/flashgg in /afs/cern.ch/user/c/carrillo/public/for_All/flashgg_me.sh
+
