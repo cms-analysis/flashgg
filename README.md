@@ -23,7 +23,7 @@ cmsRun simple_Producer_test.py
 root -b -q scan_test_output.C
 ```
 
-For the impatient user: Fork https://github.com/cms-analysis/flashg and then execute
+For the impatient user: Fork https://github.com/cms-analysis/flashgg and then execute
 
 ```
 source ~carrillo/public/for_All/flashgg_me.sh
