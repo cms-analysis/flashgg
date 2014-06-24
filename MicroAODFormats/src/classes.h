@@ -12,4 +12,5 @@ namespace  { struct dictionary {
   edm::Ptr<reco::Vertex> dummy4;
   std::vector<flashgg::Jet> dummy5;
   edm::Wrapper<std::vector<flashgg::Jet> > dummy6;
+  std::map<edm::Ptr<reco::Vertex>,float> dummy7;
 };}

@@ -1,5 +1,4 @@
 #include "flashgg/MicroAODFormats/interface/Photon.h"
-#include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
 
 using namespace flashgg;
 
@@ -16,7 +15,7 @@ float Photon::computeChargedPFIso(const edm::PtrVector<pat::PackedCandidate>& pf
                                           this->superCluster()->z() - vtx->z());
   for(unsigned int i = 0 ; i < pfcandidatePointers.size() ; i++)
   {
-    if( pfcandidatePointers[i]->pdgId() != reco::PFCandidate::h ) continue; // only consider charged hadrons
+    if( fabs(pfcandidatePointers[i]->pdgId()) != 211 ) continue; // only consider charged hadrons
     if( pfcandidatePointers[i]->pt() < ptMin ) continue;
     if( deltaR( pfcandidatePointers[i]->p4(), photon_directionWrtVtx ) >= dRmax ) continue;
     if( deltaR( pfcandidatePointers[i]->p4(), photon_directionWrtVtx ) <= dRveto) continue;
@@ -28,7 +27,7 @@ float Photon::computeChargedPFIso(const edm::PtrVector<pat::PackedCandidate>& pf
         - (pfcandidatePointers[i]->pseudoTrack().vx() - vtx->x()) * pfcandidatePointers[i]->py()
         + (pfcandidatePointers[i]->pseudoTrack().vy() - vtx->y()) * pfcandidatePointers[i]->px()
         ) / pfcandidatePointers[i]->pt();
-    if( dxy > dxyMax) continue;
+    if( fabs(dxy) > dxyMax) continue;
     ChargedPFIso += pfcandidatePointers[i]->pt();
   }
   return ChargedPFIso;

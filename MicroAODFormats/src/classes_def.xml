@@ -8,6 +8,7 @@
  <class name="edm::Wrapper<std::vector<flashgg::DiPhotonCandidate> >"/>
  <class name="flashgg::Jet"/>
  <class name="std::vector<flashgg::Jet>"/>
+ <class name="std::map<edm::Ptr<reco::Vertex>,float>"/>
 </lcgdict>
 
 
