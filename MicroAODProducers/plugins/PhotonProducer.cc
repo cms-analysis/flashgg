@@ -25,6 +25,8 @@ namespace flashgg {
   private:
     void produce( Event &, const EventSetup & ) override;
     EDGetTokenT<View<pat::Photon> > photonToken_;
+    EDGetTokenT<View<reco::Vertex> > vertexToken_;
+    EDGetTokenT<View<pat::PackedCandidate> > pfcandidateToken_;
     edm::InputTag ecalHitEBColl_;
     edm::InputTag ecalHitEEColl_;
     edm::InputTag ecalHitESColl_;
@@ -32,7 +34,9 @@ namespace flashgg {
 
 
   PhotonProducer::PhotonProducer(const ParameterSet & iConfig) :
-    photonToken_(consumes<View<pat::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("slimmedPhotons"))))
+    photonToken_(consumes<View<pat::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("slimmedPhotons")))),
+    vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
+    pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates"))))
   {
 
     ecalHitEBColl_ = iConfig.getParameter<edm::InputTag>("reducedBarrelRecHitCollection");
@@ -47,8 +51,15 @@ namespace flashgg {
     
     Handle<View<pat::Photon> > photons;
     evt.getByToken(photonToken_,photons);
-    
     const PtrVector<pat::Photon>& photonPointers = photons->ptrVector();
+    
+    Handle<View<reco::Vertex> > vertices;
+    evt.getByToken(vertexToken_,vertices);
+    const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
+    
+    Handle<View<pat::PackedCandidate> > pfcandidates;
+    evt.getByToken(pfcandidateToken_,pfcandidates);
+    const PtrVector<pat::PackedCandidate>& pfcandidatePointers = pfcandidates->ptrVector();
     
     auto_ptr<vector<flashgg::Photon> > photonColl(new vector<flashgg::Photon>);
 
@@ -77,6 +88,7 @@ namespace flashgg {
       fg.setEtop(lazyTool.e2x5Top(*seed_clu));
       fg.setEbottom(lazyTool.e2x5Bottom(*seed_clu));
       fg.setE1x3(lazyTool.e1x3(*seed_clu));
+      fg.setChargedPFIso02(pfcandidatePointers, vertexPointers);
 
       photonColl->push_back(fg);
     }

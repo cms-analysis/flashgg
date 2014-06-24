@@ -27,6 +27,8 @@ process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:/
 
 process.flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                         PhotonTag=cms.untracked.InputTag('slimmedPhotons'),
+                                        VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                        PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
                                         reducedBarrelRecHitCollection=cms.InputTag('reducedEgamma','reducedEBRecHits'),
                                         reducedEndcapRecHitCollection=cms.InputTag('reducedEgamma','reducedEERecHits'),
                                         reducedPreshowerRecHitCollection=cms.InputTag('reducedEgamma','reducedESRecHits')

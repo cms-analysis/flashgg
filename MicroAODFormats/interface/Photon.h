@@ -27,7 +27,6 @@ namespace flashgg {
     void  setEtop(float val) {etop=val;};
     void  setEbottom(float val) {ebottom=val;};
     void  setE1x3(float val) {e1x3= val;};
-    void  setChargedPFIso02(const edm::PtrVector<pat::PackedCandidate>&, const edm::Ptr<reco::Vertex>&);
     void  setChargedPFIso02(const edm::PtrVector<pat::PackedCandidate>&, const edm::PtrVector<reco::Vertex>&);
 
     float const getSipip() const {return sipip;};
@@ -66,6 +65,8 @@ namespace flashgg {
     float e1x3;
     std::map<edm::Ptr<reco::Vertex>, float> ChargedPFIso02_; // change to unordered_map later.  getting c++11 errors in 7_0_4
 
+    void  setChargedPFIso02(const edm::PtrVector<pat::PackedCandidate>&, const edm::Ptr<reco::Vertex>&, const edm::Ptr<reco::Vertex>&);
+    float computeChargedPFIso(const edm::PtrVector<pat::PackedCandidate>& pfcandidatePointers, const edm::Ptr<reco::Vertex>& pvxt, const edm::Ptr<reco::Vertex>& vtx, float dRmax, float dRvetoBarrel, float dRvetoEndcap, float ptMin, float dzMax, float dxyMax);
 
     };
 }
