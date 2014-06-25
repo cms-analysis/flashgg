@@ -54,8 +54,10 @@ namespace flashgg {
       for (unsigned int j = i+1 ; j < photonPointers.size() ; j++) {
         Ptr<flashgg::Photon> pp2 = photonPointers[j];
         Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers);
+        // FIXME
+        // Once the vertex is chosen, recompute photon 4-momenta accordingly
         std::cout << "pp1->getChargedPFIso02(pvx)= " << pp1->getChargedPFIso02(pvx) << std::endl;
-        diPhotonColl->push_back(DiPhotonCandidate(pp1,pp2,pvx));                                                                                                                 
+        diPhotonColl->push_back(DiPhotonCandidate(pp1, pp2, pvx));                                                                                                                 
       }
     }
     

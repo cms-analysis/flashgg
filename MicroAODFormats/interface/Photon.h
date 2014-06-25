@@ -2,6 +2,7 @@
 #define FLASHgg_Photon_h
 
 #include "DataFormats/PatCandidates/interface/Photon.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
 
 namespace flashgg {
 
@@ -66,7 +67,7 @@ namespace flashgg {
     std::map<edm::Ptr<reco::Vertex>, float> ChargedPFIso02_; // change to unordered_map later.  getting c++11 errors in 7_0_4
 
     void  setChargedPFIso02(const edm::PtrVector<pat::PackedCandidate>&, const edm::Ptr<reco::Vertex>&, const edm::Ptr<reco::Vertex>&);
-    float computeChargedPFIso(const edm::PtrVector<pat::PackedCandidate>& pfcandidatePointers, const edm::Ptr<reco::Vertex>& pvxt, const edm::Ptr<reco::Vertex>& vtx, float dRmax, float dRvetoBarrel, float dRvetoEndcap, float ptMin, float dzMax, float dxyMax);
+    float computeChargedPFIso(const edm::PtrVector<pat::PackedCandidate>& pfcandidatePointers, const edm::Ptr<reco::Vertex>& pvtx, const edm::Ptr<reco::Vertex>& vtx, float dRmax, float dRvetoBarrel, float dRvetoEndcap, float ptMin, float dzMax, float dxyMax);
 
     };
 }

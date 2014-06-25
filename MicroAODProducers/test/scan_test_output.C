@@ -19,9 +19,9 @@
 
   TFile f("myOutputFile.root");
   TTree *Events = f.Get("Events");
-  Events->Print();
+//  Events->Print();
   Events->SetScanField(0);
-  Events->Scan("flashggDiPhotonCandidates_flashggDiPhotons__FLASHggTEST.obj.pt_:flashggPhotons_flashggPhotons__FLASHggTEST.obj.pt_:flashggPhotons_flashggPhotons__FLASHggTEST.obj.e1x3");
+  Events->Scan("flashggDiPhotonCandidates_flashggDiPhotons__FLASHggMicroAOD.obj.pt_:flashggPhotons_flashggPhotons__FLASHggMicroAOD.obj.pt_:flashggPhotons_flashggPhotons__FLASHggMicroAOD.obj.e1x3:recoCandidatesOwned_flashggPreselectedDiPhotons__FLASHggMicroAOD.obj.pt_");
 
 #include "DataFormats/FWLite/interface/Handle.h"
   
@@ -30,8 +30,10 @@
   int n = 0;
 
   for( ev.toBegin(); ! ev.atEnd(); ++ev) {
-    fwlite::Handle<std::vector<flashgg::DiPhotonCandidate> > objs;
-    objs.getByLabel(ev,"flashggDiPhotons");
+//    fwlite::Handle<std::vector<flashgg::DiPhotonCandidate> > objs;
+//    objs.getByLabel(ev,"flashggDiPhotons");
+    fwlite::Handle<edm::OwnVector<reco::Candidate,edm::ClonePolicy<reco::Candidate> > > objs;
+    objs.getByLabel(ev,"flashggPreselectedDiPhotons");
     // now can access data
     cout << "We have " << objs.ptr().size() << " diPhotons in event " << n++ << endl;
 
