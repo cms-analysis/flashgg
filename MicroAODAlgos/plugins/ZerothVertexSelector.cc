@@ -13,7 +13,7 @@ namespace flashgg {
       _whichVertex(conf.getUntrackedParameter<unsigned int>("whichVertex",0)) {}
 
     edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&,
-				  const edm::AssociationMap<edm::OneToMany<reco::VertexCollection, pat::PackedCandidateCollection> > &) const override;
+				  const VertexCandidateMap& ) const override;
 
   private:
     unsigned int _whichVertex; // set this variable to something non-zero to make this stupid selector both stupider and poorly-named
