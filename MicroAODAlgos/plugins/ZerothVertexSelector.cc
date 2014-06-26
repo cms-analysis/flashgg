@@ -21,8 +21,7 @@ namespace flashgg {
   };
 
   edm::Ptr<reco::Vertex> ZerothVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs,
-						      const edm::AssociationMap<edm::OneToMany<reco::VertexCollection, pat::PackedCandidateCollection> > & vertexAssociationMap
-						      ) const {
+						      const VertexCandidateMap& vertexCandidateMap) const {
     return vtxs[_whichVertex];
   }
 

@@ -19,13 +19,8 @@ namespace flashgg {
   };
 
   edm::Ptr<reco::Vertex> LegacyVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs,
-                                                      const edm::AssociationMap<edm::OneToMany<reco::VertexCollection, pat::PackedCandidateCollection> > & vertexAssociationMap
-                                                      ) const {
+						      const VertexCandidateMap& vertexCandidateMap) const {
     std::cout<<"Running the LegacyVertexSelector"<<std::endl;
-
-    // Now we have a very technical problem. We want to do something like this...
-    //    pat::PackedCandidateCollection candidates = vertexAssociationMap[vtxs[0]];
-    // but vertexAssociationMap wants a edm::Ref<std::vector<reco::Vertex> > and we have a edm::PtrVector<reco::Vertex>
 
     return vtxs[0];
   }

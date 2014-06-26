@@ -25,7 +25,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_3.root"))
 
-process.flashggVertexAssociations = cms.EDProducer('FlashggDzVertexAssociationProducer',
+process.flashggVertexMap = cms.EDProducer('FlashggDzVertexMapProducer',
                                                    PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
                                                    VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                                    MaxAllowedDz=cms.double(1.) # in cm
@@ -44,13 +44,14 @@ process.flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                           PhotonTag=cms.untracked.InputTag('flashggPhotons'),
                                           VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
 #                                         VertexSelectorName=cms.string("FlashggZerothVertexSelector"),
-                                          VertexSelectorName=cms.string("FlashggLegacyVertexSelector")
+                                          VertexSelectorName=cms.string("FlashggLegacyVertexSelector"),
+                                          VertexCandidateMapTag=cms.InputTag("flashggVertexMap")
                                           )
 
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFile.root'),
                                outputCommands = cms.untracked.vstring("drop *","keep *_flashgg*_*_*","keep *_offlineSlimmedPrimaryVertices_*_*")
 )
 
-process.p = cms.Path(process.flashggVertexAssociations*process.flashggPhotons*process.flashggDiPhotons)
+process.p = cms.Path(process.flashggVertexMap*process.flashggPhotons*process.flashggDiPhotons)
 
 process.e = cms.EndPath(process.out)
