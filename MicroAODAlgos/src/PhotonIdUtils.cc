@@ -8,48 +8,50 @@ using namespace flashgg;
 PhotonIdUtils::PhotonIdUtils() {};
 PhotonIdUtils::~PhotonIdUtils() {};
 
-float PhotonIdUtils::pfIsoChgWrtVtx( const flashgg::Photon &photon, 
-				  reco::VertexRef vtx,  
-				  edm::Handle<reco::PFCandidateCollection> pfHandle,
-				  float coneSize, float coneVeto, 
-				  float dzMax, float dxyMax ) 
+float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<pat::Photon>& photon, 
+				     edm::Ptr<reco::Vertex> vtx,  
+				     const edm::PtrVector<pat::PackedCandidate>& pfcandidates,
+				     float coneSize, float coneVeto, 
+				     float dzMax, float dxyMax ) 
 {
 
   float isovalue = -9;
 
-  math::XYZVector SCdirection( photon.superCluster()->x() - vtx->x(),
-			       photon.superCluster()->y() - vtx->y(),
-			       photon.superCluster()->z() - vtx->z() 
+  math::XYZVector SCdirection( photon->superCluster()->x() - vtx->x(),
+			       photon->superCluster()->y() - vtx->y(),
+			       photon->superCluster()->z() - vtx->z() 
 			       );
 
   //edm::Handle<reco::PFCandidateCollection> pfHandle;
 
-  const reco::PFCandidateCollection* forIsolation = pfHandle.product();
-  
-  for( size_t ipf = 0; ipf < forIsolation->size(); ipf++ ) { 
+  //const reco::PFCandidateCollection* forIsolation = pfHandle.product();
+  //const edm::PtrVector<pat::PackedCandidate>& forIsolation  = pfHandle->ptrVector();  
+
+
+  for( size_t ipf = 0; ipf < pfcandidates.size(); ipf++ ) { 
       
-    if( (*forIsolation)[ipf].particleId() != reco::PFCandidate::h ) continue;  // to do: write function that computes the isolation for any type
-    float dxyTkToVtx = (*forIsolation)[ipf].trackRef()->dxy(vtx->position());
-    float dzTkToVtx  = (*forIsolation)[ipf].trackRef()->dz(vtx->position());
-    float dRTkToVtx  = deltaR( (*forIsolation)[ipf].momentum().Eta(), (*forIsolation)[ipf].momentum().Phi(),
+    //if( forIsolation[ipf]->particleId() != pat::PackedCandidate::h ) continue;  // to do: write function that computes the isolation for any type
+    float dxyTkToVtx = pfcandidates[ipf]->dxy(vtx->position());
+    float dzTkToVtx  = pfcandidates[ipf]->dz(vtx->position());
+    float dRTkToVtx  = deltaR( pfcandidates[ipf]->momentum().Eta(), pfcandidates[ipf]->momentum().Phi(),
 			       SCdirection.Eta(), SCdirection.Phi() );
 
     if( dxyTkToVtx > dxyMax ) continue;
     if( dzTkToVtx  > dzMax  ) continue;
     if( dRTkToVtx > coneSize || dRTkToVtx < coneVeto ) continue;
 
-    isovalue += (*forIsolation)[ipf].pt();
+    isovalue += pfcandidates[ipf]->pt();
   }
 
   return isovalue;
 }
 
 
-vector<float> PhotonIdUtils::pfIsoChgWrtAllVtx( const flashgg::Photon &photon, 
-					     edm::Handle<reco::Vertex> vtxHandle,
-					     edm::Handle<reco::PFCandidateCollection> pfHandle, 
-					     float coneSize, float coneVeto, 
-					     float dzMax, float dxyMax )
+vector<float> PhotonIdUtils::pfIsoChgWrtAllVtx( const edm::Ptr<pat::Photon>& photon, 
+						edm::Handle<reco::Vertex> vtxHandle,
+						const edm::PtrVector<pat::PackedCandidate>& pfcandidates, 
+					     	float coneSize, float coneVeto, 
+						float dzMax, float dxyMax )
 {
   vector<float> isovalues;
 

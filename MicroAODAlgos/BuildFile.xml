@@ -1,6 +1,7 @@
 <use name="DataFormats/VertexReco"/>
 <use name="DataFormats/PatCandidates"/>
 <use name="FWCore/PluginManager"/>
+<use name="DataFormats/Common"/>
 <export>
   <lib   name="1"/>
 </export>
