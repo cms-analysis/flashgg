@@ -1,2 +1,6 @@
 # Editors temp files
 *.swp
+*~
+*.root
+*.txt
+*.pyc
