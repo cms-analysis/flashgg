@@ -11,7 +11,7 @@
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "flashgg/MicroAODFormats/interface/Photon.h"
 #include "flashgg/MicroAODAlgos/interface/PhotonPreselectorBase.h"
-
+#include "flashgg/MicroAODAlgos/interface/PhotonIdUtils.h"
 
 
 using namespace std;
