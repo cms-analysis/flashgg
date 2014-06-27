@@ -28,6 +28,7 @@ float PhotonIdUtils::pfIsoChgWrtVtx( const flashgg::Photon &photon,
   
   for( size_t ipf = 0; ipf < forIsolation->size(); ipf++ ) { 
       
+    if( (*forIsolation)[ipf].particleId() != reco::PFCandidate::h ) continue;  // to do: write function that computes the isolation for any type
     float dxyTkToVtx = (*forIsolation)[ipf].trackRef()->dxy(vtx->position());
     float dzTkToVtx  = (*forIsolation)[ipf].trackRef()->dz(vtx->position());
     float dRTkToVtx  = deltaR( (*forIsolation)[ipf].momentum().Eta(), (*forIsolation)[ipf].momentum().Phi(),
