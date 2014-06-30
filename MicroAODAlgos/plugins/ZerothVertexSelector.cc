@@ -20,6 +20,7 @@ namespace flashgg {
   };
 
   edm::Ptr<reco::Vertex> ZerothVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs) const {
+
     return vtxs[_whichVertex];
   }
 

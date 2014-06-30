@@ -6,6 +6,7 @@
 
 namespace  { struct dictionary {
   std::vector<flashgg::Photon> dummy0;
+  edm::Ptr<flashgg::Photon> dummy7;
   edm::Wrapper<std::vector<flashgg::Photon> > dummy1;
   std::vector<flashgg::DiPhotonCandidate> dummy2;
   edm::Wrapper<std::vector<flashgg::DiPhotonCandidate> > dummy3;

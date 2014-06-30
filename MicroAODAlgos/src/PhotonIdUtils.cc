@@ -8,14 +8,14 @@ using namespace flashgg;
 PhotonIdUtils::PhotonIdUtils() {};
 PhotonIdUtils::~PhotonIdUtils() {};
 
-float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<pat::Photon>& photon, 
+float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<flashgg::Photon>& photon, 
 				     edm::Ptr<reco::Vertex> vtx,  
 				     const edm::PtrVector<pat::PackedCandidate>& pfcandidates,
 				     float coneSize, float coneVeto, 
 				     float dzMax, float dxyMax ) 
 {
 
-  float isovalue = -9;
+  float isovalue = 0;
 
   math::XYZVector SCdirection( photon->superCluster()->x() - vtx->x(),
 			       photon->superCluster()->y() - vtx->y(),
@@ -26,7 +26,6 @@ float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<pat::Photon>& photon,
 
   //const reco::PFCandidateCollection* forIsolation = pfHandle.product();
   //const edm::PtrVector<pat::PackedCandidate>& forIsolation  = pfHandle->ptrVector();  
-
 
   for( size_t ipf = 0; ipf < pfcandidates.size(); ipf++ ) { 
       
@@ -40,6 +39,7 @@ float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<pat::Photon>& photon,
     if( dzTkToVtx  > dzMax  ) continue;
     if( dRTkToVtx > coneSize || dRTkToVtx < coneVeto ) continue;
 
+
     isovalue += pfcandidates[ipf]->pt();
   }
 
@@ -47,7 +47,7 @@ float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<pat::Photon>& photon,
 }
 
 
-vector<float> PhotonIdUtils::pfIsoChgWrtAllVtx( const edm::Ptr<pat::Photon>& photon, 
+vector<float> PhotonIdUtils::pfIsoChgWrtAllVtx( const edm::Ptr<flashgg::Photon>& photon, 
 						edm::Handle<reco::Vertex> vtxHandle,
 						const edm::PtrVector<pat::PackedCandidate>& pfcandidates, 
 					     	float coneSize, float coneVeto, 

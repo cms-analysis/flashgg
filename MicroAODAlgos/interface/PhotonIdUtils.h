@@ -26,8 +26,8 @@ namespace flashgg {
     ~PhotonIdUtils();
 
     void               initialize( );
-    float              pfIsoChgWrtVtx( const edm::Ptr<pat::Photon>&, edm::Ptr<reco::Vertex>, const edm::PtrVector<pat::PackedCandidate>&, float, float, float, float );
-    std::vector<float> pfIsoChgWrtAllVtx( const edm::Ptr<pat::Photon>&, edm::Handle<reco::Vertex>, const edm::PtrVector<pat::PackedCandidate>&, float, float, float, float );
+    float              pfIsoChgWrtVtx( const edm::Ptr<flashgg::Photon>&, edm::Ptr<reco::Vertex>, const edm::PtrVector<pat::PackedCandidate>&, float, float, float, float );
+    std::vector<float> pfIsoChgWrtAllVtx( const edm::Ptr<flashgg::Photon>&, edm::Handle<reco::Vertex>, const edm::PtrVector<pat::PackedCandidate>&, float, float, float, float );
 
   private: 
     

@@ -1,6 +1,7 @@
 <lcgdict>
  <class name="edm::Ptr<reco::Vertex>"/> 
  <class name="flashgg::Photon"/>
+ <class name="edm::Ptr<flashgg::Photon>"/>
  <class name="std::vector<flashgg::Photon>"/>
  <class name="edm::Wrapper<std::vector<flashgg::Photon> >"/>
  <class name="flashgg::DiPhotonCandidate"/>

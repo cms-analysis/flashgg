@@ -2,6 +2,7 @@
 <use name="DataFormats/PatCandidates"/>
 <use name="FWCore/PluginManager"/>
 <use name="DataFormats/Common"/>
+<use name="flashgg/MicroAODFormats"/>
 <export>
   <lib   name="1"/>
 </export>
