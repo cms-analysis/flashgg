@@ -24,13 +24,14 @@ namespace flashgg {
     EDGetTokenT<View<reco::Vertex> > vertexToken_;
     EDGetTokenT<View<pat::PackedCandidate> > pfcandidateToken_;
     double maxAllowedDz_;
+    bool useEachTrackOnce_;
   };
 
   DzVertexMapProducer::DzVertexMapProducer(const ParameterSet & iConfig) :
     vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
     pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates")))),
-    maxAllowedDz_(iConfig.getParameter<double>("MaxAllowedDz")) // in cm
-   
+    maxAllowedDz_(iConfig.getParameter<double>("MaxAllowedDz")), // in cm
+    useEachTrackOnce_(iConfig.getUntrackedParameter<bool>("UseEachTrackOnce",true))
   {
     produces<VertexCandidateMap>();
   }
@@ -47,31 +48,52 @@ namespace flashgg {
 
     std::auto_ptr<VertexCandidateMap> assoc(new VertexCandidateMap);
 
-    for (unsigned int i = 0 ; i < pfPtrs.size() ; i++) {
-      Ptr<pat::PackedCandidate> cand = pfPtrs[i];
-      if (cand->charge() == 0) continue; // skip neutrals
-      double closestDz = maxAllowedDz_;
-      unsigned int closestDzIndex = -1;
-      for (unsigned int j = 0 ; j < pvPtrs.size() ; j++) {
-	Ptr<reco::Vertex> vtx = pvPtrs[j];
-	double dz = fabs(cand->dz(vtx->position()));
-	//	cout << " index_Pf index_Vtx j Dz " << i << " " << j << " " << dz << endl;
-	if (dz < closestDz) {
-	  closestDz = dz;
-	  closestDzIndex = j;
-	  //	  cout << "  New closest Dz " << dz << endl;
+    if (useEachTrackOnce_) {
+      // Associate a track to the closest vertex only, and only if dz < maxAllowedDz_
+      for (unsigned int i = 0 ; i < pfPtrs.size() ; i++) {
+	Ptr<pat::PackedCandidate> cand = pfPtrs[i];
+	if (cand->charge() == 0) continue; // skip neutrals
+	double closestDz = maxAllowedDz_;
+	unsigned int closestDzIndex = -1;
+	for (unsigned int j = 0 ; j < pvPtrs.size() ; j++) {
+	  Ptr<reco::Vertex> vtx = pvPtrs[j];
+	  double dz = fabs(cand->dz(vtx->position()));
+	  //	cout << " index_Pf index_Vtx j Dz " << i << " " << j << " " << dz << endl;
+	  if (dz < closestDz) {
+	    closestDz = dz;
+	    closestDzIndex = j;
+	    //	  cout << "  New closest Dz " << dz << endl;
+	  }
+	}
+	if (closestDz < maxAllowedDz_) {
+	  //	cout << " Final insert index_Pf index_Vtx Dz " << i << " " << closestDzIndex << " " << closestDz << endl;
+	  Ptr<reco::Vertex> vtx =pvPtrs[closestDzIndex];
+	  if (assoc->count(vtx)) {
+	    assoc->at(vtx).push_back(cand);
+	  } else {
+	    assoc->insert(std::make_pair(vtx,edm::PtrVector<pat::PackedCandidate>()));
+	  }
 	}
       }
-      if (closestDz < maxAllowedDz_) {
-	//	cout << " Final insert index_Pf index_Vtx Dz " << i << " " << closestDzIndex << " " << closestDz << endl;
-	Ptr<reco::Vertex> vtx =pvPtrs[closestDzIndex];
-	if (assoc->count(vtx)) {
-	  assoc->at(vtx).push_back(cand);
-	} else {
-	  assoc->insert(std::make_pair(vtx,edm::PtrVector<pat::PackedCandidate>()));
+    } else /* i.e. if !useEachTrackOnce_ */  {
+      // Allow a track to be associated to multiple vertices if it's close to each of them
+      for (unsigned int i = 0 ; i < pfPtrs.size() ; i++) {
+	Ptr<pat::PackedCandidate> cand = pfPtrs[i];
+	if (cand->charge() == 0) continue; // skip neutrals
+	for (unsigned int j = 0 ; j < pvPtrs.size() ; j++) {
+	  Ptr<reco::Vertex> vtx = pvPtrs[j];
+	  double dz = fabs(cand->dz(vtx->position()));
+	  if (dz < maxAllowedDz_) {
+	    if (assoc->count(vtx)) {
+	      assoc->at(vtx).push_back(cand);
+	    } else {
+	      assoc->insert(std::make_pair(vtx,edm::PtrVector<pat::PackedCandidate>()));
+	    }
+	  }
 	}
       }
-    }
+    } // end of !useEachTrackOnce_
+
     evt.put(assoc);
   }
 }
