@@ -22,14 +22,10 @@ float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<flashgg::Photon>& photon,
 			       photon->superCluster()->z() - vtx->z() 
 			       );
 
-  //edm::Handle<reco::PFCandidateCollection> pfHandle;
-
-  //const reco::PFCandidateCollection* forIsolation = pfHandle.product();
-  //const edm::PtrVector<pat::PackedCandidate>& forIsolation  = pfHandle->ptrVector();  
-
+  
   for( size_t ipf = 0; ipf < pfcandidates.size(); ipf++ ) { 
       
-    //if( forIsolation[ipf]->particleId() != pat::PackedCandidate::h ) continue;  // to do: write function that computes the isolation for any type
+    //if( forIsolation[ipf]->particleId() != pat::PackedCandidate::h ) continue; 
     float dxyTkToVtx = pfcandidates[ipf]->dxy(vtx->position());
     float dzTkToVtx  = pfcandidates[ipf]->dz(vtx->position());
     float dRTkToVtx  = deltaR( pfcandidates[ipf]->momentum().Eta(), pfcandidates[ipf]->momentum().Phi(),
@@ -48,14 +44,32 @@ float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<flashgg::Photon>& photon,
 
 
 vector<float> PhotonIdUtils::pfIsoChgWrtAllVtx( const edm::Ptr<flashgg::Photon>& photon, 
-						edm::Handle<reco::Vertex> vtxHandle,
+						const edm::PtrVector<reco::Vertex>& vertices,
 						const edm::PtrVector<pat::PackedCandidate>& pfcandidates, 
 					     	float coneSize, float coneVeto, 
 						float dzMax, float dxyMax )
 {
   vector<float> isovalues;
 
-  
+  for( unsigned int iv = 0; iv < vertices.size(); iv++ ) {
+    
+    float iso = pfIsoChgWrtVtx( photon, vertices[iv], pfcandidates, coneSize, coneVeto, dzMax, dxyMax );
+    isovalues.push_back(iso);
+  }
 
   return isovalues;
+}
+
+
+float PhotonIdUtils::pfIsoGamma(
+
+				)
+{
+
+
+
+
+
+
+
 }
