@@ -25,10 +25,12 @@ float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<flashgg::Photon>& photon,
   
   for( size_t ipf = 0; ipf < pfcandidates.size(); ipf++ ) { 
       
-    if( fabs(pfcandidates[ipf]->pdgId()) != 211 ) continue;     // equivalent to particleType::h
-    float dxyTkToVtx = pfcandidates[ipf]->dxy(vtx->position());
-    float dzTkToVtx  = pfcandidates[ipf]->dz(vtx->position());
-    float dRTkToVtx  = deltaR( pfcandidates[ipf]->momentum().Eta(), pfcandidates[ipf]->momentum().Phi(),
+    edm::Ptr<pat::PackedCandidate> pfcand = pfcandidates[ipf];
+
+    if( fabs(pfcand->pdgId()) != 211 ) continue;     // equivalent to particleType::h
+    float dxyTkToVtx = pfcand->dxy(vtx->position());
+    float dzTkToVtx  = pfcand->dz(vtx->position());
+    float dRTkToVtx  = deltaR( pfcand->momentum().Eta(), pfcand->momentum().Phi(),
 			       SCdirection.Eta(), SCdirection.Phi() );
 
     /*
@@ -43,7 +45,7 @@ float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<flashgg::Photon>& photon,
     if( dzTkToVtx  > dzMax  ) continue;
     if( dRTkToVtx > coneSize || dRTkToVtx < coneVeto ) continue;
 
-    isovalue += pfcandidates[ipf]->pt();
+    isovalue += pfcand->pt();
   }
 
   return isovalue;
