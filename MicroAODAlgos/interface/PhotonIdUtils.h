@@ -5,6 +5,7 @@
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/Common/interface/Ptr.h"
 #include "DataFormats/Common/interface/PtrVector.h"
+#include "DataFormats/Common/interface/RefToPtr.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidateFwd.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
@@ -28,7 +29,7 @@ namespace flashgg {
     void               initialize( );
     float              pfIsoChgWrtVtx( const edm::Ptr<flashgg::Photon>&, edm::Ptr<reco::Vertex>, const edm::PtrVector<pat::PackedCandidate>&, float, float, float, float );
     std::vector<float> pfIsoChgWrtAllVtx( const edm::Ptr<flashgg::Photon>&, const edm::PtrVector<reco::Vertex>&, const edm::PtrVector<pat::PackedCandidate>&, float, float, float, float );
-    //float              pfIsoGamma( const edm::Ptr<flashgg::Photon>&, const edm::PtrVector<pat::PackedCandidate>&, float,  );
+    float              pfIsoGamma( const edm::Ptr<flashgg::Photon>&, const edm::PtrVector<pat::PackedCandidate>&, float, float, float, float, float, float, float );
 
   private: 
     
