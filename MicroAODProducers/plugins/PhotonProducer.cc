@@ -25,12 +25,17 @@ namespace flashgg {
     PhotonProducer( const ParameterSet & );
   private:
     void produce( Event &, const EventSetup & ) override;
+    
     EDGetTokenT<View<pat::Photon> > photonToken_;
     EDGetTokenT<View<pat::PackedCandidate> > pfcandidateToken_;
+    //EDGetTokenT<View<reco::Vertex> > vertexToken_;   // CF
     unique_ptr<PhotonPreselectorBase> photonPreselector_;
+
     edm::InputTag ecalHitEBColl_;
     edm::InputTag ecalHitEEColl_;
     edm::InputTag ecalHitESColl_;
+
+    PhotonIdUtils phoTools_;
   };
 
 
@@ -45,7 +50,8 @@ namespace flashgg {
     ecalHitEEColl_ = iConfig.getParameter<edm::InputTag>("reducedEndcapRecHitCollection");
     ecalHitESColl_ = iConfig.getParameter<edm::InputTag>("reducedPreshowerRecHitCollection");
 
-    
+    phoTools_.setupMVA( );
+
     produces<vector<flashgg::Photon> >();
   }
 
@@ -55,16 +61,21 @@ namespace flashgg {
     evt.getByToken(photonToken_,photons);
     Handle<View<pat::PackedCandidate> > pfcandidates;
     evt.getByToken(pfcandidateToken_,pfcandidates);
+    /* Handle<View<reco::Vertex> > vertices; // CF
+       evt.getByToken(vertexToken_,vertices);*/
+
     
     const PtrVector<pat::Photon>& photonPointers = photons->ptrVector();
     const PtrVector<pat::PackedCandidate>& pfcandidatePointers = pfcandidates->ptrVector();
+    //const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
     
     auto_ptr<vector<flashgg::Photon> > photonColl(new vector<flashgg::Photon>);
 
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
+
       Ptr<pat::Photon> pp = photonPointers[i];
       flashgg::Photon fg = flashgg::Photon(*pp);
-      // Apply photon preselection on pat::Photon
+     
       if( ! photonPreselector_->ispreselected( pp, pfcandidatePointers ) )
           continue;
       
@@ -89,6 +100,7 @@ namespace flashgg {
       fg.setEtop(lazyTool.e2x5Top(*seed_clu));
       fg.setEbottom(lazyTool.e2x5Bottom(*seed_clu));
       fg.setE1x3(lazyTool.e1x3(*seed_clu));
+      fg.setS4(lazyTool.e2x2(*seed_clu)/pp->e5x5());
 
       photonColl->push_back(fg);
     }
@@ -96,6 +108,8 @@ namespace flashgg {
     evt.put(photonColl);
   }
 }
+
+
 
 typedef flashgg::PhotonProducer FlashggPhotonProducer;
 DEFINE_FWK_MODULE(FlashggPhotonProducer);

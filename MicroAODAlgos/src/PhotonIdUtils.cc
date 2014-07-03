@@ -6,7 +6,10 @@ using namespace std;
 using namespace flashgg;
 
 PhotonIdUtils::PhotonIdUtils() {};
-PhotonIdUtils::~PhotonIdUtils() {};
+PhotonIdUtils::~PhotonIdUtils() {
+  delete phoIdMva_2012_EB_;
+  delete phoIdMva_2012_EE_;
+};
 
 float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<flashgg::Photon>& photon, 
 				     edm::Ptr<reco::Vertex> vtx,  
@@ -84,14 +87,14 @@ float PhotonIdUtils::pfIsoGamma( const edm::Ptr<flashgg::Photon>& photon,
 
   float isovalue = 0;
   
-  float maxdR = 99;
+  float dRVeto = 99;
   float maxetaStrip = 99;
 
   if( photon->isEB() ) {
-    maxdR        = dRVetoBarrel;
+    dRVeto        = dRVetoBarrel;
     maxetaStrip  = etaStripBarrel;
   } else if( photon->isEE() ){
-    maxdR        = dRVetoEndcap;
+    dRVeto        = dRVetoEndcap;
     maxetaStrip  = etaStripEndcap; 
   }   
 
@@ -124,12 +127,112 @@ float PhotonIdUtils::pfIsoGamma( const edm::Ptr<flashgg::Photon>& photon,
     float dEta = fabs( SCdirectionWrtCandVtx.Eta() - pfcand->momentum().Eta() );
     float dR   = deltaR( SCdirectionWrtCandVtx.Eta(), SCdirectionWrtCandVtx.Phi(), pfcand->momentum().Eta(), pfcand->momentum().Phi() ); 
 
-    if( dEta > maxetaStrip ) continue;
-    if( dR > maxdR )         continue;
+    if( dEta < maxetaStrip )        continue;
+    if( dR < dRVeto || dR > dRMax ) continue;
       
     isovalue += pfcand->pt();
   }
 
   return isovalue;
+
+}
+
+
+// *****************************************************************************************************************
+//                    PHOTON MVA CALCULATION
+// *****************************************************************************************************************
+
+/* to do:
+- configurable input file
+- decide what to do with EE and EB
+- decide how to deal with the vertex-dependent MVA: the best approach would be to update the flashgg::photon directly with the proper vertex...
+*/
+
+void PhotonIdUtils::setupMVA(  )
+{
+
+  string mvaDiscriDir = "inputs/mvaDiscriminants/";
+
+  // **** bdt 2012 EB ****
+ 
+  string mvamethod = "BDT";
+  
+  phoIdMva_2012_EB_ = new TMVA::Reader("!Color:Silent");
+ 
+  phoIdMva_2012_EB_->AddVariable( "ph.scrawe", &phoIdMva_SCRawE_);
+  phoIdMva_2012_EB_->AddVariable( "ph.r9",                &phoIdMva_R9_ );
+  phoIdMva_2012_EB_->AddVariable( "ph.sigietaieta",       &phoIdMva_covIEtaIEta_ );
+  phoIdMva_2012_EB_->AddVariable( "ph.scetawidth",        &phoIdMva_EtaWidth_);
+  phoIdMva_2012_EB_->AddVariable( "ph.scphiwidth",        &phoIdMva_PhiWidth_);
+  phoIdMva_2012_EB_->AddVariable( "ph.idmva_CoviEtaiPhi", &phoIdMva_covIEtaIPhi_);
+  phoIdMva_2012_EB_->AddVariable( "ph.idmva_s4ratio",     &phoIdMva_S4_);
+  phoIdMva_2012_EB_->AddVariable( "ph.idmva_GammaIso",    &phoIdMva_pfPhoIso03_ );
+  phoIdMva_2012_EB_->AddVariable( "ph.idmva_ChargedIso_selvtx",   &phoIdMva_pfChIso03_ );
+  phoIdMva_2012_EB_->AddVariable( "ph.idmva_ChargedIso_worstvtx", &phoIdMva_pfChIso03worst_ );
+  phoIdMva_2012_EB_->AddVariable( "ph.sceta",             &phoIdMva_ScEta_ );
+  phoIdMva_2012_EB_->AddVariable( "rho",                  &phoIdMva_rho_);
+  phoIdMva_2012_EB_->BookMVA(mvamethod.c_str(), mvaDiscriDir + "2013FinalPaper_PhotonID_Barrel_BDT_TrainRangePT15_8TeV.weights.xml");
+
+
+  // **** bdt 2012 EE ****
+
+  phoIdMva_2012_EE_ = new TMVA::Reader("!Color:Silent");
+  
+  phoIdMva_2012_EE_->AddVariable( "ph.r9",                &phoIdMva_R9_ );
+  phoIdMva_2012_EE_->AddVariable( "ph.sigietaieta",       &phoIdMva_covIEtaIEta_ );
+  phoIdMva_2012_EE_->AddVariable( "ph.scetawidth",        &phoIdMva_EtaWidth_);
+  phoIdMva_2012_EE_->AddVariable( "ph.scphiwidth",        &phoIdMva_PhiWidth_);
+  phoIdMva_2012_EE_->AddVariable( "ph.idmva_CoviEtaiPhi", &phoIdMva_covIEtaIPhi_);
+  phoIdMva_2012_EE_->AddVariable( "ph.idmva_s4ratio",     &phoIdMva_S4_); 
+  phoIdMva_2012_EE_->AddVariable( "ph.idmva_GammaIso",    &phoIdMva_pfPhoIso03_ );
+  phoIdMva_2012_EE_->AddVariable( "ph.idmva_ChargedIso_selvtx",   &phoIdMva_pfChIso03_ );
+  phoIdMva_2012_EE_->AddVariable( "ph.idmva_ChargedIso_worstvtx", &phoIdMva_pfChIso03worst_ );
+  phoIdMva_2012_EE_->AddVariable( "ph.sceta",             &phoIdMva_ScEta_ );                          
+  phoIdMva_2012_EE_->AddVariable( "rho",                  &phoIdMva_rho_);
+  phoIdMva_2012_EE_->AddVariable( "ph.idmva_PsEffWidthSigmaRR",   &phoIdMva_ESEffSigmaRR_ );
+  phoIdMva_2012_EE_->BookMVA(mvamethod.c_str(), "2013FinalPaper_PhotonID_Endcap_BDT_TrainRangePT15_8TeV.weights.xml");
+  
+}
+
+
+float PhotonIdUtils::computeMVAWrtVtx( const edm::Ptr<flashgg::Photon>& photon,
+				       const edm::Ptr<reco::Vertex>& vtx )
+{
+
+  phoIdMva_SCRawE_         = photon->superCluster()->rawEnergy();
+  phoIdMva_R9_             = photon->r9();
+  phoIdMva_covIEtaIEta_    = photon->sigmaIetaIeta();
+  phoIdMva_EtaWidth_       = photon->superCluster()->etaWidth();
+  phoIdMva_PhiWidth_       = photon->superCluster()->phiWidth();
+  phoIdMva_covIEtaIPhi_    = photon->getSieip();                        
+  phoIdMva_pfPhoIso03_     = photon->getpfPhoIso03();
+  phoIdMva_pfChIso03_      = photon->getpfChIso03();
+  phoIdMva_pfChIso03worst_ = photon->getpfChIso03worst();
+  phoIdMva_ScEta_          = photon->superCluster()->eta();
+  phoIdMva_rho_            = photon->r9(); // THIS SHOULD BECOME RHO AT SOME POINT
+  phoIdMva_ESEffSigmaRR_   = photon->r9(); // THIS SHOULD BECOME ESEFFSIGMARR AT SOME POINT
+
+ 
+  if( photon->isEB() )      phoIdMva = phoIdMva_2012_EB_;
+  else if( photon->isEE() ) phoIdMva = phoIdMva_2012_EE_;
+  
+  float mvavalue = phoIdMva->EvaluateMVA("BDT");
+  return mvavalue;
+}
+
+std::vector<float> PhotonIdUtils::computeMVAWrtAllVtx(  const edm::Ptr<flashgg::Photon>& photon, 
+							const edm::PtrVector<reco::Vertex>& vertices
+							)
+{
+  
+  std::vector<float> mvavalues;
+
+  /*for( int i=0) {
+
+    float mva = 0;
+    mvavalues.push_back(mva);
+    }*/
+
+  return mvavalues;
 
 }
