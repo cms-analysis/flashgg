@@ -15,7 +15,8 @@
     AutoLibraryLoader::enable();
     gSystem->Load("libDataFormatsFWLite.so");
     gSystem->Load("libDataFormatsPatCandidates.so");
-  }
+    gSystem->Load("libflashggMicroAODFormats.so"); 
+}
 
   TFile f("myOutputFile.root");
   TTree *Events = f.Get("Events");
@@ -24,7 +25,10 @@
   Events->Scan("flashggDiPhotonCandidates_flashggDiPhotons__FLASHggTEST.obj.pt_:flashggPhotons_flashggPhotons__FLASHggTEST.obj.pt_:flashggPhotons_flashggPhotons__FLASHggTEST.obj.e1x3");
 
 #include "DataFormats/FWLite/interface/Handle.h"
-  
+#if !defined(__CINT__) && !defined(__MAKECINT__)
+#include "flashgg/MicroAODFormats/interface/DiphotonCandidate.h"  
+#include "flashgg/MicroAODFormats/interface/Photon.h"  
+#endif
   fwlite::Event ev(&f);
 
   int n = 0;
@@ -33,7 +37,13 @@
     fwlite::Handle<std::vector<flashgg::DiPhotonCandidate> > objs;
     objs.getByLabel(ev,"flashggDiPhotons");
     // now can access data
-    cout << "We have " << objs.ptr().size() << " diPhotons in event " << n++ << endl;
+    std::vector<flashgg::DiPhotonCandidate> const & dipho = *objs; 
+    std::vector<flashgg::DiPhotonCandidate>::const_iterator iter;  
+//    std::cout << dipho.end()->pt() << std::endl; 
+    for (iter = dipho.begin(); iter != dipho.end();iter++){
+       std::cout << "DiPhoton with pt" << iter->pt() << std::endl;
+}
+//    cout << "We have " << objs.ptr().size() << " diPhotons in event " << n++ << endl;
 
     // Actually we can't access very much data
     // FWLite doesn't really know about flashgg objects, so the code below doesn't really work.
