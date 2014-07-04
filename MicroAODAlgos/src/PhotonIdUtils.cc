@@ -11,14 +11,24 @@ PhotonIdUtils::~PhotonIdUtils() {
   delete phoIdMva_2012_EE_;
 };
 
-float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<flashgg::Photon>& photon, 
-				     edm::Ptr<reco::Vertex> vtx,  
-				     const edm::PtrVector<pat::PackedCandidate>& pfcandidates,
-				     float coneSize, float coneVeto, 
-				     float dzMax, float dxyMax ) 
-{
+// *****************************************************************************************************************
+//                    PHOTON isolation 
+// *****************************************************************************************************************
 
+float PhotonIdUtils::pfIsoChgWrtVtx( edm::Ptr<pat::Photon>& photon, 
+				     const edm::Ptr<reco::Vertex> vtx,  
+				     const edm::PtrVector<pat::PackedCandidate>& pfcandidates,
+				     float coneSize, float coneVetoBarrel, float coneVetoEndcap, 
+				     float dzMax, float dxyMax,
+				     float ptMin 
+				     ) 
+{
   float isovalue = 0;
+
+  float coneVeto = 0;
+  if( photon->isEB() )      coneVeto = coneVetoBarrel;
+  else if( photon->isEE() ) coneVeto = coneVetoEndcap;
+    
 
   math::XYZVector SCdirection( photon->superCluster()->x() - vtx->x(),
 			       photon->superCluster()->y() - vtx->y(),
@@ -31,18 +41,12 @@ float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<flashgg::Photon>& photon,
     edm::Ptr<pat::PackedCandidate> pfcand = pfcandidates[ipf];
 
     if( fabs(pfcand->pdgId()) != 211 ) continue;     // equivalent to particleType::h
+    if( pfcand->pt() < ptMin )         continue;    
+
     float dxyTkToVtx = pfcand->dxy(vtx->position());
     float dzTkToVtx  = pfcand->dz(vtx->position());
     float dRTkToVtx  = deltaR( pfcand->momentum().Eta(), pfcand->momentum().Phi(),
 			       SCdirection.Eta(), SCdirection.Phi() );
-
-    /*
-    std::cout << "through pseudoTrack->vz() " <<  pfcandidates[ipf]->pseudoTrack().vz() << 
-      " direct vz() " <<  pfcandidates[ipf]->vz() << 
-      " direct dz() " << pfcandidates[ipf]->dz(vtx->position()) << 
-      " pv " << vtx->z() << 
-      std::endl;
-    */
 
     if( dxyTkToVtx > dxyMax ) continue;
     if( dzTkToVtx  > dzMax  ) continue;
@@ -55,25 +59,26 @@ float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<flashgg::Photon>& photon,
 }
 
 
-vector<float> PhotonIdUtils::pfIsoChgWrtAllVtx( const edm::Ptr<flashgg::Photon>& photon, 
-						const edm::PtrVector<reco::Vertex>& vertices,
-						const edm::PtrVector<pat::PackedCandidate>& pfcandidates, 
-					     	float coneSize, float coneVeto, 
-						float dzMax, float dxyMax )
+std::map<edm::Ptr<reco::Vertex>,float> PhotonIdUtils::pfIsoChgWrtAllVtx( edm::Ptr<pat::Photon>& photon, 
+									 const edm::PtrVector<reco::Vertex>& vertices,
+									 const edm::PtrVector<pat::PackedCandidate>& pfcandidates, 
+									 float coneSize, float coneVetoBarrel, float coneVetoEndcap, 
+									 float dzMax, float dxyMax,
+									 float ptMin )
 {
-  vector<float> isovalues;
+  std::map<edm::Ptr<reco::Vertex>,float> isomap;
 
   for( unsigned int iv = 0; iv < vertices.size(); iv++ ) {
     
-    float iso = pfIsoChgWrtVtx( photon, vertices[iv], pfcandidates, coneSize, coneVeto, dzMax, dxyMax );
-    isovalues.push_back(iso);
+    float iso = pfIsoChgWrtVtx( photon, vertices[iv], pfcandidates, coneSize, coneVetoBarrel, coneVetoEndcap, dzMax, dxyMax, ptMin );
+    isomap.insert( std::make_pair(vertices[iv],iso) );
   }
 
-  return isovalues;
+  return isomap;
 }
 
 
-float PhotonIdUtils::pfIsoGamma( const edm::Ptr<flashgg::Photon>& photon, 
+float PhotonIdUtils::pfIsoGamma( edm::Ptr<pat::Photon>& photon, 
 				 const edm::PtrVector<pat::PackedCandidate>& pfcandidates,
 				 float dRMax,
 				 float dRVetoBarrel,
@@ -134,7 +139,6 @@ float PhotonIdUtils::pfIsoGamma( const edm::Ptr<flashgg::Photon>& photon,
   }
 
   return isovalue;
-
 }
 
 
@@ -145,7 +149,6 @@ float PhotonIdUtils::pfIsoGamma( const edm::Ptr<flashgg::Photon>& photon,
 /* to do:
 - configurable input file
 - decide what to do with EE and EB
-- decide how to deal with the vertex-dependent MVA: the best approach would be to update the flashgg::photon directly with the proper vertex...
 */
 
 void PhotonIdUtils::setupMVA(  )
@@ -167,8 +170,8 @@ void PhotonIdUtils::setupMVA(  )
   phoIdMva_2012_EB_->AddVariable( "ph.idmva_CoviEtaiPhi", &phoIdMva_covIEtaIPhi_);
   phoIdMva_2012_EB_->AddVariable( "ph.idmva_s4ratio",     &phoIdMva_S4_);
   phoIdMva_2012_EB_->AddVariable( "ph.idmva_GammaIso",    &phoIdMva_pfPhoIso03_ );
-  phoIdMva_2012_EB_->AddVariable( "ph.idmva_ChargedIso_selvtx",   &phoIdMva_pfChIso03_ );
-  phoIdMva_2012_EB_->AddVariable( "ph.idmva_ChargedIso_worstvtx", &phoIdMva_pfChIso03worst_ );
+  phoIdMva_2012_EB_->AddVariable( "ph.idmva_ChargedIso_selvtx",   &phoIdMva_pfChgIso03_ );
+  phoIdMva_2012_EB_->AddVariable( "ph.idmva_ChargedIso_worstvtx", &phoIdMva_pfChgIso03worst_ );
   phoIdMva_2012_EB_->AddVariable( "ph.sceta",             &phoIdMva_ScEta_ );
   phoIdMva_2012_EB_->AddVariable( "rho",                  &phoIdMva_rho_);
   phoIdMva_2012_EB_->BookMVA(mvamethod.c_str(), mvaDiscriDir + "2013FinalPaper_PhotonID_Barrel_BDT_TrainRangePT15_8TeV.weights.xml");
@@ -185,8 +188,8 @@ void PhotonIdUtils::setupMVA(  )
   phoIdMva_2012_EE_->AddVariable( "ph.idmva_CoviEtaiPhi", &phoIdMva_covIEtaIPhi_);
   phoIdMva_2012_EE_->AddVariable( "ph.idmva_s4ratio",     &phoIdMva_S4_); 
   phoIdMva_2012_EE_->AddVariable( "ph.idmva_GammaIso",    &phoIdMva_pfPhoIso03_ );
-  phoIdMva_2012_EE_->AddVariable( "ph.idmva_ChargedIso_selvtx",   &phoIdMva_pfChIso03_ );
-  phoIdMva_2012_EE_->AddVariable( "ph.idmva_ChargedIso_worstvtx", &phoIdMva_pfChIso03worst_ );
+  phoIdMva_2012_EE_->AddVariable( "ph.idmva_ChargedIso_selvtx",   &phoIdMva_pfChgIso03_ );
+  phoIdMva_2012_EE_->AddVariable( "ph.idmva_ChargedIso_worstvtx", &phoIdMva_pfChgIso03worst_ );
   phoIdMva_2012_EE_->AddVariable( "ph.sceta",             &phoIdMva_ScEta_ );                          
   phoIdMva_2012_EE_->AddVariable( "rho",                  &phoIdMva_rho_);
   phoIdMva_2012_EE_->AddVariable( "ph.idmva_PsEffWidthSigmaRR",   &phoIdMva_ESEffSigmaRR_ );
@@ -195,44 +198,44 @@ void PhotonIdUtils::setupMVA(  )
 }
 
 
-float PhotonIdUtils::computeMVAWrtVtx( const edm::Ptr<flashgg::Photon>& photon,
-				       const edm::Ptr<reco::Vertex>& vtx )
+float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
+				      flashgg::Photon& photon,
+				      const edm::Ptr<reco::Vertex>& vtx )
 {
 
-  phoIdMva_SCRawE_         = photon->superCluster()->rawEnergy();
-  phoIdMva_R9_             = photon->r9();
-  phoIdMva_covIEtaIEta_    = photon->sigmaIetaIeta();
-  phoIdMva_EtaWidth_       = photon->superCluster()->etaWidth();
-  phoIdMva_PhiWidth_       = photon->superCluster()->phiWidth();
-  phoIdMva_covIEtaIPhi_    = photon->getSieip();                        
-  phoIdMva_pfPhoIso03_     = photon->getpfPhoIso03();
-  phoIdMva_pfChIso03_      = photon->getpfChIso03();
-  phoIdMva_pfChIso03worst_ = photon->getpfChIso03worst();
-  phoIdMva_ScEta_          = photon->superCluster()->eta();
-  phoIdMva_rho_            = photon->r9(); // THIS SHOULD BECOME RHO AT SOME POINT
-  phoIdMva_ESEffSigmaRR_   = photon->r9(); // THIS SHOULD BECOME ESEFFSIGMARR AT SOME POINT
+  phoIdMva_SCRawE_         = photon.superCluster()->rawEnergy();
+  phoIdMva_R9_             = photon.r9();
+  phoIdMva_covIEtaIEta_    = photon.sigmaIetaIeta();
+  phoIdMva_EtaWidth_       = photon.superCluster()->etaWidth();
+  phoIdMva_PhiWidth_       = photon.superCluster()->phiWidth();
+  phoIdMva_covIEtaIPhi_    = photon.getSieip();                        
+  phoIdMva_pfPhoIso03_     = photon.getpfPhoIso03();
+  phoIdMva_pfChgIso03_     = photon.getpfChgIso03WrtVtx(vtx);
+  phoIdMva_pfChgIso03worst_ = 0;
+  phoIdMva_ScEta_          = photon.superCluster()->eta();
+  phoIdMva_rho_            = photon.r9(); // THIS SHOULD BECOME RHO AT SOME POINT
+  phoIdMva_ESEffSigmaRR_   = photon.r9(); // THIS SHOULD BECOME ESEFFSIGMARR AT SOME POINT
 
  
-  if( photon->isEB() )      phoIdMva = phoIdMva_2012_EB_;
-  else if( photon->isEE() ) phoIdMva = phoIdMva_2012_EE_;
+  if( photon.isEB() )      phoIdMva = phoIdMva_2012_EB_;
+  else if( photon.isEE() ) phoIdMva = phoIdMva_2012_EE_;
   
   float mvavalue = phoIdMva->EvaluateMVA("BDT");
   return mvavalue;
 }
 
-std::vector<float> PhotonIdUtils::computeMVAWrtAllVtx(  const edm::Ptr<flashgg::Photon>& photon, 
-							const edm::PtrVector<reco::Vertex>& vertices
-							)
-{
+std::map<edm::Ptr<reco::Vertex>,float> PhotonIdUtils::computeMVAWrtAllVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
+									  flashgg::Photon& photon,
+									  const edm::PtrVector<reco::Vertex>& vertices)
   
-  std::vector<float> mvavalues;
+{  
+  std::map<edm::Ptr<reco::Vertex>,float> mvamap;
 
-  /*for( int i=0) {
+  for( unsigned int iv = 0; iv < vertices.size(); iv++ ) {
+    edm::Ptr<reco::Vertex> vertex = vertices[iv];
+    float mvapervtx = computeMVAWrtVtx( photon, vertex);
+    mvamap.insert( std::make_pair(vertex, mvapervtx) );
+  }
 
-    float mva = 0;
-    mvavalues.push_back(mva);
-    }*/
-
-  return mvavalues;
-
+  return mvamap;
 }

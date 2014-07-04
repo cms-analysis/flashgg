@@ -28,7 +28,7 @@ namespace flashgg {
     
     EDGetTokenT<View<pat::Photon> > photonToken_;
     EDGetTokenT<View<pat::PackedCandidate> > pfcandidateToken_;
-    //EDGetTokenT<View<reco::Vertex> > vertexToken_;   // CF
+    EDGetTokenT<View<reco::Vertex> > vertexToken_;   // CF
     unique_ptr<PhotonPreselectorBase> photonPreselector_;
 
     edm::InputTag ecalHitEBColl_;
@@ -61,13 +61,13 @@ namespace flashgg {
     evt.getByToken(photonToken_,photons);
     Handle<View<pat::PackedCandidate> > pfcandidates;
     evt.getByToken(pfcandidateToken_,pfcandidates);
-    /* Handle<View<reco::Vertex> > vertices; // CF
-       evt.getByToken(vertexToken_,vertices);*/
+    Handle<View<reco::Vertex> > vertices; 
+    evt.getByToken(vertexToken_,vertices);
 
     
     const PtrVector<pat::Photon>& photonPointers = photons->ptrVector();
     const PtrVector<pat::PackedCandidate>& pfcandidatePointers = pfcandidates->ptrVector();
-    //const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
+    const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
     
     auto_ptr<vector<flashgg::Photon> > photonColl(new vector<flashgg::Photon>);
 
@@ -101,6 +101,12 @@ namespace flashgg {
       fg.setEbottom(lazyTool.e2x5Bottom(*seed_clu));
       fg.setE1x3(lazyTool.e1x3(*seed_clu));
       fg.setS4(lazyTool.e2x2(*seed_clu)/pp->e5x5());
+
+      std::map<edm::Ptr<reco::Vertex>,float> isomap = phoTools_.pfIsoChgWrtAllVtx(pp, vertexPointers, pfcandidatePointers, 0.3, 0.02, 0.02, 0.0, 0.2, 0.1);
+      fg.setpfChgIso03(isomap);
+      
+      std::map<edm::Ptr<reco::Vertex>,float> mvamap = phoTools_.computeMVAWrtAllVtx(fg, vertexPointers);
+      fg.setPhoIdMvaD(mvamap);
 
       photonColl->push_back(fg);
     }

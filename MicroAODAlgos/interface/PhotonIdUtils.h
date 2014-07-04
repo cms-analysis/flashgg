@@ -30,22 +30,21 @@ namespace flashgg {
 
     void               initialize( );
 
-    float              pfIsoChgWrtVtx( const edm::Ptr<flashgg::Photon>&, 
-				       edm::Ptr<reco::Vertex>,
+    float              pfIsoChgWrtVtx( edm::Ptr<pat::Photon>&, 
+				       const edm::Ptr<reco::Vertex>,
 				       const edm::PtrVector<pat::PackedCandidate>&, 
-				       float, float, float, float );
-    std::vector<float> pfIsoChgWrtAllVtx( const edm::Ptr<flashgg::Photon>&, 
-					  const edm::PtrVector<reco::Vertex>&,
-					  const edm::PtrVector<pat::PackedCandidate>&, 
-					  float, float, float, float );
-    float              pfIsoGamma( const edm::Ptr<flashgg::Photon>&, 
+				       float, float, float, float, float, float );
+    std::map<edm::Ptr<reco::Vertex>,float> pfIsoChgWrtAllVtx( edm::Ptr<pat::Photon>&, 
+							      const edm::PtrVector<reco::Vertex>&,
+							      const edm::PtrVector<pat::PackedCandidate>&, 
+							      float, float, float, float, float, float );
+    float              pfIsoGamma( edm::Ptr<pat::Photon>&, 
 				   const edm::PtrVector<pat::PackedCandidate>&, 
 				   float, float, float, float, float, float, float );
 
     void               setupMVA( );
-    float              computeMVAWrtVtx( const edm::Ptr<flashgg::Photon>&, const edm::Ptr<reco::Vertex>& );
-    std::vector<float> computeMVAWrtAllVtx(  const edm::Ptr<flashgg::Photon>&, const edm::PtrVector<reco::Vertex>& );
-
+    float              computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>&*/ flashgg::Photon&, const edm::Ptr<reco::Vertex>& );
+    std::map<edm::Ptr<reco::Vertex>,float> computeMVAWrtAllVtx( /*edm::Ptr<flashgg::Photon>&*/ flashgg::Photon&, const edm::PtrVector<reco::Vertex>& );
     
     TMVA::Reader *phoIdMva;
 
@@ -64,8 +63,8 @@ namespace flashgg {
     float phoIdMva_covIEtaIPhi_;                                                                                                                            
     float phoIdMva_S4_;                     
     float phoIdMva_pfPhoIso03_;             
-    float phoIdMva_pfChIso03_;              
-    float phoIdMva_pfChIso03worst_;         
+    float phoIdMva_pfChgIso03_;              
+    float phoIdMva_pfChgIso03worst_;         
     float phoIdMva_ScEta_;                  
     float phoIdMva_rho_;                    
     float phoIdMva_ESEffSigmaRR_;           
