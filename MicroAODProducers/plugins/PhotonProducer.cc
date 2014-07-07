@@ -34,6 +34,7 @@ namespace flashgg {
     edm::InputTag ecalHitEBColl_;
     edm::InputTag ecalHitEEColl_;
     edm::InputTag ecalHitESColl_;
+    edm::InputTag rhoFixedGrid_;
 
     PhotonIdUtils phoTools_;
   };
@@ -50,6 +51,7 @@ namespace flashgg {
     ecalHitEBColl_ = iConfig.getParameter<edm::InputTag>("reducedBarrelRecHitCollection");
     ecalHitEEColl_ = iConfig.getParameter<edm::InputTag>("reducedEndcapRecHitCollection");
     ecalHitESColl_ = iConfig.getParameter<edm::InputTag>("reducedPreshowerRecHitCollection");
+    rhoFixedGrid_  = iConfig.getParameter<edm::InputTag>("rhoFixedGridCollection");
 
     phoTools_.setupMVA( );
 
@@ -64,12 +66,15 @@ namespace flashgg {
     evt.getByToken(pfcandidateToken_,pfcandidates);
     Handle<View<reco::Vertex> > vertices; 
     evt.getByToken(vertexToken_,vertices);
+    Handle<double> rhoHandle;        // the old way for now...move to getbytoken?
+    evt.getByLabel(rhoFixedGrid_, rhoHandle );
 
     
     const PtrVector<pat::Photon>& photonPointers = photons->ptrVector();
     const PtrVector<pat::PackedCandidate>& pfcandidatePointers = pfcandidates->ptrVector();
     const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
-    
+    const double rhoFixedGrd = *(rhoHandle.product());
+
     auto_ptr<vector<flashgg::Photon> > photonColl(new vector<flashgg::Photon>);
 
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
@@ -106,7 +111,7 @@ namespace flashgg {
       std::map<edm::Ptr<reco::Vertex>,float> isomap = phoTools_.pfIsoChgWrtAllVtx(pp, vertexPointers, pfcandidatePointers, 0.3, 0.02, 0.02, 0.0, 0.2, 0.1);
       fg.setpfChgIso03(isomap);
       
-      std::map<edm::Ptr<reco::Vertex>,float> mvamap = phoTools_.computeMVAWrtAllVtx(fg, vertexPointers);
+      std::map<edm::Ptr<reco::Vertex>,float> mvamap = phoTools_.computeMVAWrtAllVtx(fg, vertexPointers,rhoFixedGrd);
       fg.setPhoIdMvaD(mvamap);
 
       photonColl->push_back(fg);

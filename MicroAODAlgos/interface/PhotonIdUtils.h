@@ -43,8 +43,8 @@ namespace flashgg {
 				   float, float, float, float, float, float, float );
 
     void               setupMVA( );
-    float              computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>&*/ flashgg::Photon&, const edm::Ptr<reco::Vertex>& );
-    std::map<edm::Ptr<reco::Vertex>,float> computeMVAWrtAllVtx( /*edm::Ptr<flashgg::Photon>&*/ flashgg::Photon&, const edm::PtrVector<reco::Vertex>& );
+    float              computeMVAWrtVtx( flashgg::Photon&, const edm::Ptr<reco::Vertex>&, const double );
+    std::map<edm::Ptr<reco::Vertex>,float> computeMVAWrtAllVtx( flashgg::Photon&, const edm::PtrVector<reco::Vertex>&, const double );
     
     TMVA::Reader *phoIdMva;
 

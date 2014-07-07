@@ -201,7 +201,8 @@ void PhotonIdUtils::setupMVA(  )
 
 float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
 				      flashgg::Photon& photon,
-				      const edm::Ptr<reco::Vertex>& vtx )
+				      const edm::Ptr<reco::Vertex>& vtx,
+				      const double rho )
 {
 
   phoIdMva_SCRawE_         = photon.superCluster()->rawEnergy();
@@ -215,7 +216,7 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
   phoIdMva_pfChgIso03_     = photon.getpfChgIso03WrtVtx(vtx);
   phoIdMva_pfChgIso03worst_ = 0;
   phoIdMva_ScEta_          = photon.superCluster()->eta();
-  phoIdMva_rho_            = photon.r9(); // THIS SHOULD BECOME RHO AT SOME POINT
+  phoIdMva_rho_            = rho; // we don't want to add the event-based rho as flashgg::photon member
   phoIdMva_ESEffSigmaRR_   = photon.r9(); // THIS SHOULD BECOME ESEFFSIGMARR AT SOME POINT
 
  
@@ -228,14 +229,15 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
 
 std::map<edm::Ptr<reco::Vertex>,float> PhotonIdUtils::computeMVAWrtAllVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
 									  flashgg::Photon& photon,
-									  const edm::PtrVector<reco::Vertex>& vertices)
+									  const edm::PtrVector<reco::Vertex>& vertices,
+									  const double rho )
   
 {  
   std::map<edm::Ptr<reco::Vertex>,float> mvamap;
 
   for( unsigned int iv = 0; iv < vertices.size(); iv++ ) {
     edm::Ptr<reco::Vertex> vertex = vertices[iv];
-    float mvapervtx = computeMVAWrtVtx( photon, vertex);
+    float mvapervtx = computeMVAWrtVtx( photon, vertex, rho);
     mvamap.insert( std::make_pair(vertex, mvapervtx) );
   }
 
