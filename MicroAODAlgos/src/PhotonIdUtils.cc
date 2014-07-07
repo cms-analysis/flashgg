@@ -15,9 +15,8 @@ PhotonIdUtils::~PhotonIdUtils() {
 
 float PhotonIdUtils::pfIsoChgWrtVtx( edm::Ptr<pat::Photon>& photon, 
 				     const edm::Ptr<reco::Vertex> vtx,  
-				     const edm::PtrVector<pat::PackedCandidate>& pfcandidates,
+				     const flashgg::VertexCandidateMap vtxcandmap,
 				     float coneSize, float coneVetoBarrel, float coneVetoEndcap, 
-				     float dzMax, float dxyMax,
 				     float ptMin 
 				     ) 
 {
@@ -33,42 +32,40 @@ float PhotonIdUtils::pfIsoChgWrtVtx( edm::Ptr<pat::Photon>& photon,
 			       photon->superCluster()->z() - vtx->z() 
 			       );
 
-  
-  for( size_t ipf = 0; ipf < pfcandidates.size(); ipf++ ) { 
+  if( vtxcandmap.count(vtx) ) {  
+
+    edm::PtrVector<pat::PackedCandidate> pfcandidates = vtxcandmap.at(vtx);
+        
+    for( size_t ipf = 0; ipf < pfcandidates.size(); ipf++ ) { 
       
-    edm::Ptr<pat::PackedCandidate> pfcand = pfcandidates[ipf];
-
-    if( fabs(pfcand->pdgId()) != 211 ) continue;     // equivalent to particleType::h
-    if( pfcand->pt() < ptMin )         continue;    
-
-    float dxyTkToVtx = pfcand->dxy(vtx->position());
-    float dzTkToVtx  = pfcand->dz(vtx->position());
-    float dRTkToVtx  = deltaR( pfcand->momentum().Eta(), pfcand->momentum().Phi(),
-			       SCdirection.Eta(), SCdirection.Phi() );
-
-    if( dxyTkToVtx > dxyMax ) continue;
-    if( dzTkToVtx  > dzMax  ) continue;
-    if( dRTkToVtx > coneSize || dRTkToVtx < coneVeto ) continue;
-
-    isovalue += pfcand->pt();
+      edm::Ptr<pat::PackedCandidate> pfcand = pfcandidates[ipf];
+      
+      //if( fabs(pfcand->pdgId()) != 211 ) continue;    
+      if( pfcand->pt() < ptMin )         continue;    
+      float dRTkToVtx  = deltaR( pfcand->momentum().Eta(), pfcand->momentum().Phi(),
+				 SCdirection.Eta(), SCdirection.Phi() );
+      if( dRTkToVtx > coneSize || dRTkToVtx < coneVeto ) continue;
+      
+      isovalue += pfcand->pt();
+    }
+    return isovalue;  
   }
+  else return -1;   // return -1 if the vertex is not found in the map
 
-  return isovalue;
 }
 
 
 std::map<edm::Ptr<reco::Vertex>,float> PhotonIdUtils::pfIsoChgWrtAllVtx( edm::Ptr<pat::Photon>& photon, 
 									 const edm::PtrVector<reco::Vertex>& vertices,
-									 const edm::PtrVector<pat::PackedCandidate>& pfcandidates, 
+									 const flashgg::VertexCandidateMap vtxcandmap,
 									 float coneSize, float coneVetoBarrel, float coneVetoEndcap, 
-									 float dzMax, float dxyMax,
 									 float ptMin )
 {
   std::map<edm::Ptr<reco::Vertex>,float> isomap;
 
   for( unsigned int iv = 0; iv < vertices.size(); iv++ ) {
     
-    float iso = pfIsoChgWrtVtx( photon, vertices[iv], pfcandidates, coneSize, coneVetoBarrel, coneVetoEndcap, dzMax, dxyMax, ptMin );
+    float iso = pfIsoChgWrtVtx( photon, vertices[iv], vtxcandmap, coneSize, coneVetoBarrel, coneVetoEndcap, ptMin );
     isomap.insert( std::make_pair(vertices[iv],iso) );
   }
 

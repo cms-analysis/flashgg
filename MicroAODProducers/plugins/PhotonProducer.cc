@@ -11,8 +11,8 @@
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "flashgg/MicroAODFormats/interface/Photon.h"
 #include "flashgg/MicroAODAlgos/interface/PhotonPreselectorBase.h"
+#include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 #include "flashgg/MicroAODAlgos/interface/PhotonIdUtils.h"
-
 
 using namespace std;
 using namespace edm;
@@ -28,7 +28,8 @@ namespace flashgg {
     
     EDGetTokenT<View<pat::Photon> > photonToken_;
     EDGetTokenT<View<pat::PackedCandidate> > pfcandidateToken_;
-    EDGetTokenT<View<reco::Vertex> > vertexToken_;   // CF
+    EDGetTokenT<View<reco::Vertex> > vertexToken_;   
+    EDGetTokenT<flashgg::VertexCandidateMap> vertexCandidateMapToken_;
     unique_ptr<PhotonPreselectorBase> photonPreselector_;
 
     edm::InputTag ecalHitEBColl_;
@@ -43,7 +44,8 @@ namespace flashgg {
   PhotonProducer::PhotonProducer(const ParameterSet & iConfig) :
     photonToken_(consumes<View<pat::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("slimmedPhotons")))),
     pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates")))),
-    vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices"))))
+    vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
+    vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag")))
   {
     const std::string& PhotonPreselectorName = iConfig.getParameter<std::string>("PhotonPreselectorName");
     photonPreselector_.reset(FlashggPhotonPreselectorFactory::get()->create(PhotonPreselectorName, iConfig));
@@ -66,6 +68,8 @@ namespace flashgg {
     evt.getByToken(pfcandidateToken_,pfcandidates);
     Handle<View<reco::Vertex> > vertices; 
     evt.getByToken(vertexToken_,vertices);
+    Handle<VertexCandidateMap> vertexCandidateMap;
+    evt.getByToken(vertexCandidateMapToken_,vertexCandidateMap);
     Handle<double> rhoHandle;        // the old way for now...move to getbytoken?
     evt.getByLabel(rhoFixedGrid_, rhoHandle );
 
@@ -73,7 +77,9 @@ namespace flashgg {
     const PtrVector<pat::Photon>& photonPointers = photons->ptrVector();
     const PtrVector<pat::PackedCandidate>& pfcandidatePointers = pfcandidates->ptrVector();
     const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
+    const flashgg::VertexCandidateMap vtxToCandMap = *(vertexCandidateMap.product());    
     const double rhoFixedGrd = *(rhoHandle.product());
+
 
     auto_ptr<vector<flashgg::Photon> > photonColl(new vector<flashgg::Photon>);
 
@@ -108,7 +114,7 @@ namespace flashgg {
       fg.setE1x3(lazyTool.e1x3(*seed_clu));
       fg.setS4(lazyTool.e2x2(*seed_clu)/pp->e5x5());
 
-      std::map<edm::Ptr<reco::Vertex>,float> isomap = phoTools_.pfIsoChgWrtAllVtx(pp, vertexPointers, pfcandidatePointers, 0.3, 0.02, 0.02, 0.0, 0.2, 0.1);
+      std::map<edm::Ptr<reco::Vertex>,float> isomap = phoTools_.pfIsoChgWrtAllVtx(pp, vertexPointers, vtxToCandMap, 0.3, 0.02, 0.02, 0.1);
       fg.setpfChgIso03(isomap);
       
       std::map<edm::Ptr<reco::Vertex>,float> mvamap = phoTools_.computeMVAWrtAllVtx(fg, vertexPointers,rhoFixedGrd);

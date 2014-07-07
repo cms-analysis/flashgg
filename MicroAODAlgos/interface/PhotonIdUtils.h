@@ -14,6 +14,7 @@
 #include "DataFormats/TrackReco/interface/TrackFwd.h"
 
 #include "flashgg/MicroAODFormats/interface/Photon.h"
+#include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 
 #include <TMVA/Reader.h>
 
@@ -25,19 +26,18 @@ namespace flashgg {
   public:
     
     PhotonIdUtils();
-    // add a non-default constructor? 
     ~PhotonIdUtils();
 
     void               initialize( );
 
     float              pfIsoChgWrtVtx( edm::Ptr<pat::Photon>&, 
 				       const edm::Ptr<reco::Vertex>,
-				       const edm::PtrVector<pat::PackedCandidate>&, 
-				       float, float, float, float, float, float );
+				       const flashgg::VertexCandidateMap,
+				       float, float, float, float );
     std::map<edm::Ptr<reco::Vertex>,float> pfIsoChgWrtAllVtx( edm::Ptr<pat::Photon>&, 
 							      const edm::PtrVector<reco::Vertex>&,
-							      const edm::PtrVector<pat::PackedCandidate>&, 
-							      float, float, float, float, float, float );
+							      const flashgg::VertexCandidateMap, 
+							      float, float, float, float );
     float              pfIsoGamma( edm::Ptr<pat::Photon>&, 
 				   const edm::PtrVector<pat::PackedCandidate>&, 
 				   float, float, float, float, float, float, float );
@@ -51,8 +51,7 @@ namespace flashgg {
 
   private: 
     
-    //edm::Handle<reco::Vertex>  vtxHandle;
-    
+        
     // photon MVA variables: move to more sophisticated object?
 
     float phoIdMva_SCRawE_;                  
