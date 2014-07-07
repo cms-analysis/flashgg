@@ -15,4 +15,5 @@ namespace  { struct dictionary {
   edm::PtrVector<pat::PackedCandidate> dummy7;
   std::map<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> > dummy8;
   edm::Wrapper<std::map<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> > > dummy9;
+  std::map<edm::Ptr<reco::Vertex>,float> dummy10;
 };}

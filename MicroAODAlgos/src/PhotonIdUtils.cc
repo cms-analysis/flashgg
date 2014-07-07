@@ -7,8 +7,6 @@ using namespace flashgg;
 
 PhotonIdUtils::PhotonIdUtils() {};
 PhotonIdUtils::~PhotonIdUtils() {
-  delete phoIdMva_2012_EB_;
-  delete phoIdMva_2012_EE_;
 };
 
 // *****************************************************************************************************************
@@ -154,7 +152,9 @@ float PhotonIdUtils::pfIsoGamma( edm::Ptr<pat::Photon>& photon,
 void PhotonIdUtils::setupMVA(  )
 {
 
-  string mvaDiscriDir = "inputs/mvaDiscriminants/";
+  string mvaDiscriDir = "/afs/cern.ch/work/f/favaro/private/miniAODforHgg/CMSSW_7_0_4/src/flashGGAnalyzers/flashggCommissioning/python/inputs/mvaDiscriminants/";
+
+  std::cout << "directory = " << mvaDiscriDir << std::endl;
 
   // **** bdt 2012 EB ****
  
@@ -181,6 +181,7 @@ void PhotonIdUtils::setupMVA(  )
 
   phoIdMva_2012_EE_ = new TMVA::Reader("!Color:Silent");
   
+  phoIdMva_2012_EE_->AddVariable( "ph.scrawe", &phoIdMva_SCRawE_);
   phoIdMva_2012_EE_->AddVariable( "ph.r9",                &phoIdMva_R9_ );
   phoIdMva_2012_EE_->AddVariable( "ph.sigietaieta",       &phoIdMva_covIEtaIEta_ );
   phoIdMva_2012_EE_->AddVariable( "ph.scetawidth",        &phoIdMva_EtaWidth_);
@@ -193,7 +194,7 @@ void PhotonIdUtils::setupMVA(  )
   phoIdMva_2012_EE_->AddVariable( "ph.sceta",             &phoIdMva_ScEta_ );                          
   phoIdMva_2012_EE_->AddVariable( "rho",                  &phoIdMva_rho_);
   phoIdMva_2012_EE_->AddVariable( "ph.idmva_PsEffWidthSigmaRR",   &phoIdMva_ESEffSigmaRR_ );
-  phoIdMva_2012_EE_->BookMVA(mvamethod.c_str(), "2013FinalPaper_PhotonID_Endcap_BDT_TrainRangePT15_8TeV.weights.xml");
+  phoIdMva_2012_EE_->BookMVA(mvamethod.c_str(), mvaDiscriDir + "2013FinalPaper_PhotonID_Endcap_BDT_TrainRangePT15_8TeV.weights.xml");
   
 }
 
@@ -205,6 +206,7 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
 
   phoIdMva_SCRawE_         = photon.superCluster()->rawEnergy();
   phoIdMva_R9_             = photon.r9();
+  phoIdMva_S4_             = photon.getS4();
   phoIdMva_covIEtaIEta_    = photon.sigmaIetaIeta();
   phoIdMva_EtaWidth_       = photon.superCluster()->etaWidth();
   phoIdMva_PhiWidth_       = photon.superCluster()->phiWidth();
