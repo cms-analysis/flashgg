@@ -25,6 +25,21 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_3.root"))
 
+# Each track associated only to the closest vertex (or none if dZ >= MaxAllowedDz for all vertices)
+process.flashggVertexMapUnique = cms.EDProducer('FlashggDzVertexMapProducer',
+                                                PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
+                                                VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                                MaxAllowedDz=cms.double(0.2) # in cm
+                                                )
+
+# Tracks will show up as associated to every vertex for which dZ < MaxAllowedDz
+process.flashggVertexMapNonUnique = cms.EDProducer('FlashggDzVertexMapProducer',
+                                                   PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
+                                                   VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                                   MaxAllowedDz=cms.double(0.2), # in cm
+                                                   UseEachTrackOnce=cms.untracked.bool(False)
+                                                   )
+
 process.flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                         PhotonTag=cms.untracked.InputTag('slimmedPhotons'),
                                         PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'), # Needed to compute ChargedPFIso for Run1 Legacy preselection
@@ -34,17 +49,20 @@ process.flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                         reducedEndcapRecHitCollection=cms.InputTag('reducedEgamma','reducedEERecHits'),
                                         reducedPreshowerRecHitCollection=cms.InputTag('reducedEgamma','reducedESRecHits')
                                         )
+
 process.flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                           PhotonTag=cms.untracked.InputTag('flashggPhotons'),
                                           VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
 #                                         VertexSelectorName=cms.string("FlashggZerothVertexSelector"),
-                                          VertexSelectorName=cms.string("FlashggLegacyVertexSelector")
+                                          VertexSelectorName=cms.string("FlashggLegacyVertexSelector"),
+                                          VertexCandidateMapTag=cms.InputTag("flashggVertexMapUnique")  
+#                                          VertexCandidateMapTag=cms.InputTag("flashggVertexMapNonUnique")
                                           )
 
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFile.root'),
                                outputCommands = cms.untracked.vstring("drop *","keep *_flashgg*_*_*","keep *_offlineSlimmedPrimaryVertices_*_*")
 )
 
-process.p = cms.Path(process.flashggPhotons*process.flashggDiPhotons)
+process.p = cms.Path(process.flashggVertexMapUnique*process.flashggVertexMapNonUnique*process.flashggPhotons*process.flashggDiPhotons)
 
 process.e = cms.EndPath(process.out)

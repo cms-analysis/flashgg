@@ -1,7 +1,6 @@
 <lcgdict>
  <class name="edm::Ptr<reco::Vertex>"/> 
  <class name="flashgg::Photon"/>
- <class name="edm::Ptr<flashgg::Photon>"/>
  <class name="std::vector<flashgg::Photon>"/>
  <class name="edm::Wrapper<std::vector<flashgg::Photon> >"/>
  <class name="flashgg::DiPhotonCandidate"/>
@@ -9,6 +8,9 @@
  <class name="edm::Wrapper<std::vector<flashgg::DiPhotonCandidate> >"/>
  <class name="flashgg::Jet"/>
  <class name="std::vector<flashgg::Jet>"/>
+ <class name="edm::PtrVector<pat::PackedCandidate>"/>
+ <class name="std::map<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> >"/>
+ <class name="edm::Wrapper<std::map<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> > >"/>
 </lcgdict>
 
 
