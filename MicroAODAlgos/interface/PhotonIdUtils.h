@@ -42,7 +42,7 @@ namespace flashgg {
 				   const edm::PtrVector<pat::PackedCandidate>&, 
 				   float, float, float, float, float, float, float );
 
-    void               setupMVA( );
+    void               setupMVA( std::string&, std::string& );
     float              computeMVAWrtVtx( flashgg::Photon&, const edm::Ptr<reco::Vertex>&, const double );
     std::map<edm::Ptr<reco::Vertex>,float> computeMVAWrtAllVtx( flashgg::Photon&, const edm::PtrVector<reco::Vertex>&, const double );
     

@@ -146,13 +146,13 @@ float PhotonIdUtils::pfIsoGamma( edm::Ptr<pat::Photon>& photon,
 - decide what to do with EE and EB
 */
 
-void PhotonIdUtils::setupMVA(  )
+void PhotonIdUtils::setupMVA( string& xmlfilenameEB, string& xmlfilenameEE )
 {
 
-  string mvaDiscriDir = "/afs/cern.ch/work/f/favaro/private/miniAODforHgg/CMSSW_7_0_4/src/flashGGAnalyzers/flashggCommissioning/python/inputs/mvaDiscriminants/";
+  //string mvaDiscriDir = "/afs/cern.ch/work/f/favaro/private/miniAODforHgg/CMSSW_7_0_4/src/flashGGAnalyzers/flashggCommissioning/python/inputs/mvaDiscriminants/";
 
-  std::cout << "directory = " << mvaDiscriDir << std::endl;
-
+  cout << " photonId MVA weights for EB set from file: " << xmlfilenameEB << endl;
+  cout << " photonId MVA weights for EE set from file: " << xmlfilenameEE << endl;
   // **** bdt 2012 EB ****
  
   string mvamethod = "BDT";
@@ -171,8 +171,8 @@ void PhotonIdUtils::setupMVA(  )
   phoIdMva_2012_EB_->AddVariable( "ph.idmva_ChargedIso_worstvtx", &phoIdMva_pfChgIso03worst_ );
   phoIdMva_2012_EB_->AddVariable( "ph.sceta",             &phoIdMva_ScEta_ );
   phoIdMva_2012_EB_->AddVariable( "rho",                  &phoIdMva_rho_);
-  phoIdMva_2012_EB_->BookMVA(mvamethod.c_str(), mvaDiscriDir + "2013FinalPaper_PhotonID_Barrel_BDT_TrainRangePT15_8TeV.weights.xml");
-
+  //phoIdMva_2012_EB_->BookMVA(mvamethod.c_str(), mvaDiscriDir + "2013FinalPaper_PhotonID_Barrel_BDT_TrainRangePT15_8TeV.weights.xml");
+  phoIdMva_2012_EB_->BookMVA( mvamethod.c_str(), xmlfilenameEB );
 
   // **** bdt 2012 EE ****
 
@@ -191,8 +191,8 @@ void PhotonIdUtils::setupMVA(  )
   phoIdMva_2012_EE_->AddVariable( "ph.sceta",             &phoIdMva_ScEta_ );                          
   phoIdMva_2012_EE_->AddVariable( "rho",                  &phoIdMva_rho_);
   phoIdMva_2012_EE_->AddVariable( "ph.idmva_PsEffWidthSigmaRR",   &phoIdMva_ESEffSigmaRR_ );
-  phoIdMva_2012_EE_->BookMVA(mvamethod.c_str(), mvaDiscriDir + "2013FinalPaper_PhotonID_Endcap_BDT_TrainRangePT15_8TeV.weights.xml");
-  
+  //phoIdMva_2012_EE_->BookMVA(mvamethod.c_str(), mvaDiscriDir + "2013FinalPaper_PhotonID_Endcap_BDT_TrainRangePT15_8TeV.weights.xml");
+  phoIdMva_2012_EE_->BookMVA( mvamethod.c_str(), xmlfilenameEE );
 }
 
 

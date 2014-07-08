@@ -38,6 +38,8 @@ namespace flashgg {
     edm::InputTag rhoFixedGrid_;
 
     PhotonIdUtils phoTools_;
+    string phoIdMVAweightfileEB_, phoIdMVAweightfileEE_;
+
   };
 
 
@@ -55,7 +57,9 @@ namespace flashgg {
     ecalHitESColl_ = iConfig.getParameter<edm::InputTag>("reducedPreshowerRecHitCollection");
     rhoFixedGrid_  = iConfig.getParameter<edm::InputTag>("rhoFixedGridCollection");
 
-    phoTools_.setupMVA( );
+    phoIdMVAweightfileEB_ = iConfig.getParameter<std::string>("photonIdMVAweightfile_EB");
+    phoIdMVAweightfileEE_ = iConfig.getParameter<std::string>("photonIdMVAweightfile_EE");
+    phoTools_.setupMVA( phoIdMVAweightfileEB_, phoIdMVAweightfileEE_ );
 
     produces<vector<flashgg::Photon> >();
   }
