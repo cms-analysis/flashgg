@@ -23,12 +23,13 @@
   Events->Print();
   Events->SetScanField(0);
   Events->Scan("flashggDiPhotonCandidates_flashggDiPhotons__FLASHggTEST.obj.pt_:flashggPhotons_flashggPhotons__FLASHggTEST.obj.pt_:flashggPhotons_flashggPhotons__FLASHggTEST.obj.e1x3");
-
+#include "DataFormats/FWLite/interface/Event.h"
 #include "DataFormats/FWLite/interface/Handle.h"
 #if !defined(__CINT__) && !defined(__MAKECINT__)
 #include "flashgg/MicroAODFormats/interface/DiphotonCandidate.h"  
 #include "flashgg/MicroAODFormats/interface/Photon.h"  
 #endif
+
   fwlite::Event ev(&f);
 
   int n = 0;
@@ -38,11 +39,16 @@
     objs.getByLabel(ev,"flashggDiPhotons");
     // now can access data
     std::vector<flashgg::DiPhotonCandidate> const & dipho = *objs; 
-    std::vector<flashgg::DiPhotonCandidate>::const_iterator iter;  
+//    std::vector<flashgg::DiPhotonCandidate>::const_iterator iter;  
 //    std::cout << dipho.end()->pt() << std::endl; 
-    for (iter = dipho.begin(); iter != dipho.end();iter++){
-       std::cout << "DiPhoton with pt" << iter->pt() << std::endl;
+    for (int i=0; i < objs.ptr()->size();i++ ){
+    std::vector<flashgg::DiPhotonCandidate> const & dipho = *objs;
+    std::cout << dipho[i].pt() << std::endl;
 }
+
+//    for (iter = dipho.begin(); iter != dipho.end();iter++){
+//       std::cout << "DiPhoton with pt" << iter->pt() << std::endl;
+//}
 //    cout << "We have " << objs.ptr().size() << " diPhotons in event " << n++ << endl;
 
     // Actually we can't access very much data
@@ -55,3 +61,4 @@
   }
 
 }
+
