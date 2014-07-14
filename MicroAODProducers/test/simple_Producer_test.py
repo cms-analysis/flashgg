@@ -21,7 +21,7 @@ process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 #             )
 #    )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_3.root"))
 
