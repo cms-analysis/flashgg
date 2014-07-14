@@ -1,10 +1,10 @@
 flashgg
 =======
-1. Set up MiniAOD with CMSSW_7_0_4 as described here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/MiniAOD#Recipe  (it takes a while, about 20min. In future releases these packages will be already included in the CMSSW release)
+1. Create a CMSSW_7_0_6 project.
 
 2. Fork flashgg repository on the web here: https://github.com/cms-analysis/flashgg
 
-3. In CMSSW_7_0_4/src, do commands something like: 
+3. In CMSSW_7_0_6/src, do commands something like: 
 
 ```
 git clone git@github.com:yourusername/flashgg.git flashgg
@@ -22,3 +22,11 @@ cd flashgg/MicroAODProducers/test
 cmsRun simple_Producer_test.py
 root -b -q scan_test_output.C
 ```
+
+For the impatient user: Fork https://github.com/cms-analysis/flashgg and then execute
+
+```
+source ~carrillo/public/for_All/flashgg_me.sh
+```
+
+

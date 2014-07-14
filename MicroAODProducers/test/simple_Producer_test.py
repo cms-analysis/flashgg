@@ -21,9 +21,24 @@ process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 #             )
 #    )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_3.root"))
+
+# Each track associated only to the closest vertex (or none if dZ >= MaxAllowedDz for all vertices)
+process.flashggVertexMapUnique = cms.EDProducer('FlashggDzVertexMapProducer',
+                                                PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
+                                                VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                                MaxAllowedDz=cms.double(0.2) # in cm
+                                                )
+
+# Tracks will show up as associated to every vertex for which dZ < MaxAllowedDz
+process.flashggVertexMapNonUnique = cms.EDProducer('FlashggDzVertexMapProducer',
+                                                   PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
+                                                   VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                                   MaxAllowedDz=cms.double(0.2), # in cm
+                                                   UseEachTrackOnce=cms.untracked.bool(False)
+                                                   )
 
 process.flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                         PhotonTag=cms.untracked.InputTag('slimmedPhotons'),
@@ -33,11 +48,14 @@ process.flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                         reducedEndcapRecHitCollection=cms.InputTag('reducedEgamma','reducedEERecHits'),
                                         reducedPreshowerRecHitCollection=cms.InputTag('reducedEgamma','reducedESRecHits')
                                         )
+
 process.flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                           PhotonTag=cms.untracked.InputTag('flashggPhotons'),
                                           VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
 #                                         VertexSelectorName=cms.string("FlashggZerothVertexSelector"),
-                                          VertexSelectorName=cms.string("FlashggLegacyVertexSelector")
+                                          VertexSelectorName=cms.string("FlashggLegacyVertexSelector"),
+                                          VertexCandidateMapTag=cms.InputTag("flashggVertexMapUnique")  
+#                                          VertexCandidateMapTag=cms.InputTag("flashggVertexMapNonUnique")
                                           )
 
 # single photon preselection is mickmicking as much as possible
@@ -74,22 +92,16 @@ process.flashggPreselectedDiPhotons = cms.EDFilter("CandViewSelector",
                                                                      ) \
                                                                     ")
                                                   )
-#                                                                            && (leadingPhoton.getChargedPFIso02(getVertex) < 4.0) \
-# For some reason the cut parser outputs an exception
-# ----- Begin Fatal Exception 25-Jun-2014 16:04:12 CEST-----------------------
-# An exception of category 'Configuration' occurred while
-#    [0] Constructing the EventProcessor
-#    [1] Constructing module: class=CandViewSelector label='flashggPreselectedDiPhotons'
-# Exception Message:
-# Cut parser error:Missing close parenthesis. (char 942)
-# ----- End Fatal Exception -------------------------------------------------
-                                                   
+# Charged PF iso is still left to implement && (leadingPhoton.getChargedPFIso02(getVertex) < 4.0) \
+                                                  
 
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFile.root'),
                                outputCommands = cms.untracked.vstring("drop *","keep *_flashgg*_*_*","keep *_offlineSlimmedPrimaryVertices_*_*")
 )
 
-process.p = cms.Path( process.flashggPhotons
+process.p = cms.Path( process.flashggVertexMapUnique
+                     *process.flashggVertexMapNonUnique
+                     *process.flashggPhotons
                      *process.flashggDiPhotons
                      *process.flashggPreselectedDiPhotons
                     )

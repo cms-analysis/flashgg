@@ -10,6 +10,8 @@
 #include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "flashgg/MicroAODAlgos/interface/VertexSelectorBase.h"
+#include "DataFormats/PatCandidates/interface/PackedCandidate.h"
+#include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 
 using namespace edm;
 using namespace std;
@@ -24,12 +26,14 @@ namespace flashgg {
     void produce( Event &, const EventSetup & ) override;
     EDGetTokenT<View<reco::Vertex> > vertexToken_;
     EDGetTokenT<View<flashgg::Photon> > photonToken_;
+    EDGetTokenT< VertexCandidateMap > vertexCandidateMapToken_;
     unique_ptr<VertexSelectorBase> vertexSelector_;
   };
 
   DiPhotonProducer::DiPhotonProducer(const ParameterSet & iConfig) :
     vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
-    photonToken_(consumes<View<flashgg::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("flashggPhotons"))))
+    photonToken_(consumes<View<flashgg::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("flashggPhotons")))),
+    vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag")))
   {
     const std::string& VertexSelectorName = iConfig.getParameter<std::string>("VertexSelectorName");
     vertexSelector_.reset(FlashggVertexSelectorFactory::get()->create(VertexSelectorName,iConfig));
@@ -46,18 +50,20 @@ namespace flashgg {
     Handle<View<flashgg::Photon> > photons;
     evt.getByToken(photonToken_,photons);
     const PtrVector<flashgg::Photon>& photonPointers = photons->ptrVector();
+
+    Handle<VertexCandidateMap> vertexCandidateMap;
+    evt.getByToken(vertexCandidateMapToken_,vertexCandidateMap);
     
     auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
     
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
       Ptr<flashgg::Photon> pp1 = photonPointers[i];
       for (unsigned int j = i+1 ; j < photonPointers.size() ; j++) {
-        Ptr<flashgg::Photon> pp2 = photonPointers[j];
-        Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers);
         // FIXME
         // Once the vertex is chosen, recompute photon 4-momenta accordingly
-        std::cout << "pp1->getChargedPFIso02(pvx)= " << pp1->getChargedPFIso02(pvx) << std::endl;
-        diPhotonColl->push_back(DiPhotonCandidate(pp1, pp2, pvx));                                                                                                                 
+    	Ptr<flashgg::Photon> pp2 = photonPointers[j];
+	    Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap);
+    	diPhotonColl->push_back(DiPhotonCandidate(pp1,pp2,pvx));                                                                                                                 
       }
     }
     
