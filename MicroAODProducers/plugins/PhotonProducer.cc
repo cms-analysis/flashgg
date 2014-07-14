@@ -63,8 +63,6 @@ namespace flashgg {
       
       fg.setSipip(viCov[2]);
       fg.setSieip(viCov[1]);
-      fg.setZernike20(lazyTool.zernike20(*seed_clu));
-      fg.setZernike42(lazyTool.zernike42(*seed_clu));
       fg.setE2nd(lazyTool.e2nd(*seed_clu));
       fg.setE2x5right(lazyTool.e2x5Right(*seed_clu));
       fg.setE2x5left(lazyTool.e2x5Left(*seed_clu));
