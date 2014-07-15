@@ -60,7 +60,10 @@ process.flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                           )
 
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFile.root'),
-                               outputCommands = cms.untracked.vstring("drop *","keep *_flashgg*_*_*","keep *_offlineSlimmedPrimaryVertices_*_*")
+                               outputCommands = cms.untracked.vstring("drop *",
+                                                                      "keep *_flashgg*_*_*",
+                                                                      "drop *_flashggVertexMap*_*_*",
+                                                                      "keep *_offlineSlimmedPrimaryVertices_*_*")
 )
 
 process.p = cms.Path(process.flashggVertexMapUnique*process.flashggVertexMapNonUnique*process.flashggPhotons*process.flashggDiPhotons)
