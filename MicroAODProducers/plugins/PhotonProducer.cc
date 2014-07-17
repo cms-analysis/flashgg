@@ -98,6 +98,8 @@ namespace flashgg {
       EcalClusterLazyTools lazyTool(evt, iSetup, ecalHitEBColl_, ecalHitEEColl_);        
       
       const reco::CaloClusterPtr  seed_clu = pp->superCluster()->seed();
+      const reco::SuperClusterRef super_clu= pp->superCluster();
+
       std::vector<float> viCov;
       viCov = lazyTool.localCovariances(*seed_clu);
       
@@ -117,6 +119,7 @@ namespace flashgg {
       fg.setEbottom(lazyTool.e2x5Bottom(*seed_clu));
       fg.setE1x3(lazyTool.e1x3(*seed_clu));
       fg.setS4(lazyTool.e2x2(*seed_clu)/pp->e5x5());
+      fg.setESEffSigmaRR(lazyTool.eseffsirir(*super_clu));
 
       std::map<edm::Ptr<reco::Vertex>,float> isomap = phoTools_.pfIsoChgWrtAllVtx(pp, vertexPointers, vtxToCandMap, 0.3, 0.02, 0.02, 0.1);
       fg.setpfChgIso03(isomap);

@@ -49,7 +49,7 @@ namespace flashgg {
     float const getEbottom() const {return ebottom;};
     float const getE1x3() const {return e1x3;};
     float const getS4() const {return S4_;};   
-    float const getpfPhoIso03() const {return pfPhoIso03_;};   // why 0.3? do we want to keep this value? DISCUSS!
+    float const getpfPhoIso03() const {return pfPhoIso03_;};   
     std::map<edm::Ptr<reco::Vertex>,float> const getpfChgIso03() const {return pfChgIso03_;}; 
     float const getpfChgIso03WrtVtx( const edm::Ptr<reco::Vertex>& vtx ) const {return pfChgIso03_.at(vtx);};
     float const getESEffSigmaRR() const {return ESEffSigmaRR_;};
