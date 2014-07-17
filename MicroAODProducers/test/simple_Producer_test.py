@@ -1,4 +1,5 @@
 import FWCore.ParameterSet.Config as cms
+import FWCore.Utilities.FileUtils as FileUtils
 
 process = cms.Process("FLASHggTEST")
 
@@ -21,7 +22,6 @@ process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 #             )
 #    )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_3.root"))
 
