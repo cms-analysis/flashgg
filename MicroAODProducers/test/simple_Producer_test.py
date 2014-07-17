@@ -22,6 +22,7 @@ process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 #             )
 #    )
 
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_3.root"))
 
@@ -43,8 +44,8 @@ process.flashggVertexMapNonUnique = cms.EDProducer('FlashggDzVertexMapProducer',
 process.flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                         PhotonTag=cms.untracked.InputTag('slimmedPhotons'),
                                         PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'), # Needed to compute ChargedPFIso for Run1 Legacy preselection
-#                                        PhotonPreselectorName=cms.string("FlashggNoPhotonPreselector"),
-                                        PhotonPreselectorName=cms.string("FlashggLegacyPhotonPreselector"),
+                                        PhotonPreselectorName=cms.string("FlashggNoPhotonPreselector"),
+#                                        PhotonPreselectorName=cms.string("FlashggLegacyPhotonPreselector"),
                                         reducedBarrelRecHitCollection=cms.InputTag('reducedEgamma','reducedEBRecHits'),
                                         reducedEndcapRecHitCollection=cms.InputTag('reducedEgamma','reducedEERecHits'),
                                         reducedPreshowerRecHitCollection=cms.InputTag('reducedEgamma','reducedESRecHits')
@@ -60,9 +61,15 @@ process.flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                           )
 
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFile.root'),
-                               outputCommands = cms.untracked.vstring("drop *","keep *_flashgg*_*_*","keep *_offlineSlimmedPrimaryVertices_*_*")
+                               outputCommands = cms.untracked.vstring("drop *",
+                                                                      "keep *_flashgg*_*_*",
+                                                                      "drop *_flashggVertexMap*_*_*",
+                                                                      "keep *_offlineSlimmedPrimaryVertices_*_*")
 )
 
-process.p = cms.Path(process.flashggVertexMapUnique*process.flashggVertexMapNonUnique*process.flashggPhotons*process.flashggDiPhotons)
+process.p = cms.Path(process.flashggVertexMapUnique*
+                     process.flashggVertexMapNonUnique*
+                     process.flashggPhotons*
+                     process.flashggDiPhotons)
 
 process.e = cms.EndPath(process.out)
