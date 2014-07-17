@@ -3,7 +3,7 @@
 #include "flashgg/MicroAODFormats/interface/Jet.h"
 #include "DataFormats/Common/interface/Wrapper.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
-
+#include <vector>
 namespace  { struct dictionary {
   std::vector<flashgg::Photon> dummy0;
   edm::Wrapper<std::vector<flashgg::Photon> > dummy1;
