@@ -1,6 +1,7 @@
 <library   name="FlashggProducerPlugins" file="*.cc">
-<use name="Geometry/CaloTopology"/>
-<use name="RecoEcal/EgammaCoreTools"/>
+<use   name="Geometry/CaloTopology"/>
+<use   name="FWCore/PluginManager"/>
+<use   name="RecoEcal/EgammaCoreTools"/>
 <use   name="DataFormats/Candidate"/>
 <use   name="DataFormats/PatCandidates"/>
 <use   name="CommonTools/CandUtils"/>
@@ -8,5 +9,6 @@
 <use   name="flashgg/MicroAODFormats"/>
 <use   name="flashgg/MicroAODAlgos"/>
 <use   name="RecoJets/JetProducers"/>
+<use   name="roottmva"/>
 <flags   EDM_PLUGIN="1"/>
 </library>

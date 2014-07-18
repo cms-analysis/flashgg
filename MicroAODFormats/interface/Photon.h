@@ -25,6 +25,11 @@ namespace flashgg {
     void  setEtop(float val) {etop=val;};
     void  setEbottom(float val) {ebottom=val;};
     void  setE1x3(float val) {e1x3= val;};
+    void  setS4(float val) {S4_=val;};  
+    void  setpfPhoIso03(float val) {pfPhoIso03_=val;};   
+    void  setpfChgIso03( std::map<edm::Ptr<reco::Vertex>,float> valmap ) {  pfChgIso03_ = valmap; };  // concept: pass the pre-computed map when calling this in the producer
+    void  setESEffSigmaRR(float val) {ESEffSigmaRR_=val;};  
+    void  setPhoIdMvaD( std::map<edm::Ptr<reco::Vertex>,float> valmap ) {  phoIdMvaD_ = valmap; };   // concept: pass the pre-computed map when calling this in the producer
 
     float const getSipip() const {return sipip;};
     float const getSieip() const {return sieip;};
@@ -39,6 +44,12 @@ namespace flashgg {
     float const getEtop() const {return etop;};
     float const getEbottom() const {return ebottom;};
     float const getE1x3() const {return e1x3;};
+    float const getS4() const {return S4_;};   
+    float const getpfPhoIso03() const {return pfPhoIso03_;};   
+    std::map<edm::Ptr<reco::Vertex>,float> const getpfChgIso03() const {return pfChgIso03_;}; 
+    float const getpfChgIso03WrtVtx( const edm::Ptr<reco::Vertex>& vtx ) const {return pfChgIso03_.at(vtx);};
+    float const getESEffSigmaRR() const {return ESEffSigmaRR_;};
+    std::map<edm::Ptr<reco::Vertex>,float> const getPhoIdMvaD() const {return phoIdMvaD_;};    
 
   private:
     unsigned int testVariable_;
@@ -57,9 +68,12 @@ namespace flashgg {
     float etop;
     float ebottom;
     float e1x3;
-
-
-    };
+    float S4_;   
+    float pfPhoIso03_;
+    float ESEffSigmaRR_;
+    std::map<edm::Ptr<reco::Vertex>,float> pfChgIso03_; 
+    std::map<edm::Ptr<reco::Vertex>,float> phoIdMvaD_;
+  };
 }
 
 #endif

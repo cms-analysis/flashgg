@@ -6,3 +6,4 @@ Photon::Photon() {}
 Photon::Photon(const pat::Photon& aPhoton ) : pat::Photon(aPhoton) {}
 Photon::~Photon() {}
 
+
