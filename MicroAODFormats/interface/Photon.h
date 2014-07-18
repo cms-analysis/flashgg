@@ -14,8 +14,6 @@ namespace flashgg {
     
     void  setSipip(float val) {sipip=val;};
     void  setSieip(float val) {sieip=val;};
-    void  setZernike20(float val) {zernike20=val;};
-    void  setZernike42(float val) {zernike42=val;};
     void  setE2nd(float val) {e2nd=val;};
     void  setE2x5right(float val) {e2x5right=val;};
     void  setE2x5left(float val) {e2x5left=val;};
@@ -35,8 +33,6 @@ namespace flashgg {
 
     float const getSipip() const {return sipip;};
     float const getSieip() const {return sieip;};
-    float const getZernike20() const {return zernike20;};
-    float const getZernike42() const {return zernike42;};
     float const getE2nd() const {return e2nd;};
     float const getE2x5right() const {return e2x5right;};
     float const getE2x5left() const {return e2x5left;};
