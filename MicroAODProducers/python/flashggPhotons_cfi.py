@@ -10,6 +10,6 @@ flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                 reducedPreshowerRecHitCollection = cms.InputTag('reducedEgamma','reducedESRecHits'),
                                 VertexCandidateMapTag = cms.InputTag("flashggVertexMapNonUnique"),
                                 rhoFixedGridCollection = cms.InputTag('fixedGridRhoAll'),
-                                photonIdMVAweightfile_EB = cms.string("/afs/cern.ch/work/f/favaro/private/miniAODforHgg/CMSSW_7_0_4/src/flashgg/flashggCommissioning/python/inputs/mvaDiscriminants/2013FinalPaper_PhotonID_Barrel_BDT_TrainRangePT15_8TeV.weights.xml"),
-                                photonIdMVAweightfile_EE = cms.string("/afs/cern.ch/work/f/favaro/private/miniAODforHgg/CMSSW_7_0_4/src/flashgg/flashggCommissioning/python/inputs/mvaDiscriminants/2013FinalPaper_PhotonID_Endcap_BDT_TrainRangePT15_8TeV.weights.xml")
+                                photonIdMVAweightfile_EB = cms.string("../data/2013FinalPaper_PhotonID_Barrel_BDT_TrainRangePT15_8TeV.weights.xml"),
+                                photonIdMVAweightfile_EE = cms.string("../data/2013FinalPaper_PhotonID_Endcap_BDT_TrainRangePT15_8TeV.weights.xml")
                                 )
