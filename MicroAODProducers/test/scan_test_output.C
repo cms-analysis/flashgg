@@ -21,7 +21,7 @@
   
   TFile f("myOutputFile.root");
   TTree *Events = f.Get("Events");
-  Events->Print();
+//  Events->Print();
   Events->SetScanField(0);
   Events->Scan("flashggDiPhotonCandidates_flashggDiPhotons__FLASHggTEST.obj.pt_:flashggPhotons_flashggPhotons__FLASHggTEST.obj.zernike42:flashggPhotons_flashggPhotons__FLASHggTEST.obj.hcalTowersBehindClusters[0]");
 

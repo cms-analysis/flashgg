@@ -59,9 +59,11 @@ namespace flashgg {
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
       Ptr<flashgg::Photon> pp1 = photonPointers[i];
       for (unsigned int j = i+1 ; j < photonPointers.size() ; j++) {
-	Ptr<flashgg::Photon> pp2 = photonPointers[j];
-	Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap);
-	diPhotonColl->push_back(DiPhotonCandidate(pp1,pp2,pvx));                                                                                                                 
+        // FIXME
+        // Once the vertex is chosen, recompute photon 4-momenta accordingly
+    	Ptr<flashgg::Photon> pp2 = photonPointers[j];
+	    Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap);
+    	diPhotonColl->push_back(DiPhotonCandidate(pp1,pp2,pvx));                                                                                                                 
       }
     }
     
