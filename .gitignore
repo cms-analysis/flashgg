@@ -1,6 +1,14 @@
 # Editors temp files
 *.swp
 *~
-*.root
-*.txt
+
+# SCRAM business
+__init__.py
 *.pyc
+
+# ROOT-related files
+*.root
+
+# Other temp files
+*.txt
+
