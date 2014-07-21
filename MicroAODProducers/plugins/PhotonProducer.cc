@@ -28,7 +28,6 @@ namespace flashgg {
     EDGetTokenT<View<pat::PackedCandidate> > pfcandidateToken_;
     EDGetTokenT<View<reco::Vertex> > vertexToken_;   
     EDGetTokenT<flashgg::VertexCandidateMap> vertexCandidateMapToken_;
-    unique_ptr<PhotonPreselectorBase> photonPreselector_;
 
     edm::InputTag ecalHitEBColl_;
     edm::InputTag ecalHitEEColl_;
