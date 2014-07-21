@@ -20,6 +20,7 @@ namespace flashgg {
                                // Also it would cause crashes if there was only 1 vertex in the collection
   };
 
+  
   edm::Ptr<reco::Vertex> ZerothVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs,
 						      const VertexCandidateMap& vertexCandidateMap) const {
     return vtxs[_whichVertex];
