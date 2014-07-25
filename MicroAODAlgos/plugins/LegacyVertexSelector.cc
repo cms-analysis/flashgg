@@ -3,19 +3,26 @@
 #include "flashgg/MicroAODFormats/interface/Photon.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/Common/interface/PtrVector.h"
+#include "DataFormats/EgammaCandidates/interface/Photon.h"
+#include "DataFormats/EgammaCandidates/interface/Conversion.h"
 #include "TVector3.h"
 #include "TVector2.h"
 
 namespace flashgg {
   
   class LegacyVertexSelector : public VertexSelectorBase {
-  public:
+  
+
+ public:
     LegacyVertexSelector(const edm::ParameterSet& conf) :
       VertexSelectorBase(conf) {}
 
     edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&,
                                   const VertexCandidateMap& vertexCandidateMap) const override;
-   
+//    edm::Ptr<reco::Vertex> EstZconv(const)
+
+
+ 
   private:
     unsigned int _whichVertex;
      };
@@ -39,8 +46,15 @@ namespace flashgg {
     //if (verbose) {
        diPho.SetXYZ(g1->px()+g2->px(),g1->py()+g2->py(),g1->pz()+g2->pz());
        diPhoPlane = diPho.XYvector();
-        
-      for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
+       
+       for (unsigned int i=0; i< g1->conversions().size();i++){
+
+       std::cout << "blah" << "   " << g1->conversions().at(i)->refittedPairMomentum() << std::endl;        
+
+        }
+
+        for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
+
 	edm::Ptr<reco::Vertex> vtx = vtxs[i];
 	std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
 	for (unsigned int j = 0 ; j < vertexCandidateMap.at(vtx).size() ; j++) {
@@ -55,10 +69,10 @@ namespace flashgg {
 	}
          ptasym = (sumpt - diPhoPlane.Mod())/(sumpt+diPhoPlane.Mod());
 
-         std::cout << "sumpt2" << "  " << sumpt2  << std::endl;
-         std::cout << "ptbal" << "  " << ptbal   << std::endl;
-         std::cout << "ptasym" << "  " << ptasym  << std::endl;
-
+         //std::cout << "sumpt2" << "  " << sumpt2  << std::endl;
+         //std::cout << "ptbal" << "  " << ptbal   << std::endl;
+         //std::cout << "ptasym" << "  " << ptasym  << std::endl;
+         //Zconv =  
 
       }
     //}

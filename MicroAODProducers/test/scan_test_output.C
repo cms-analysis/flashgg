@@ -46,6 +46,7 @@
     objs_pho.getByLabel(ev,"flashggPhotons");
     objs_dipho.getByLabel(ev,"flashggDiPhotons");
     objs_vertex.getByLabel(ev,"offlineSlimmedPrimaryVertices"); 
+//    objs_packcand.getByLabel(ev,"")
     std::cout  << "------------------------------------------------------------------------" << std::endl;   
     // now can access data
     for (int i=0; i< objs_pho->size() ;i++ ){

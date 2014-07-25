@@ -9,6 +9,7 @@
 <use   name="flashgg/MicroAODFormats"/>
 <use   name="flashgg/MicroAODAlgos"/>
 <use   name="RecoJets/JetProducers"/>
+<use   name="DataFormats/EgammaCandidates"/>
 <use   name="roottmva"/>
 <flags   EDM_PLUGIN="1"/>
 </library>
