@@ -12,6 +12,7 @@
 #include "flashgg/MicroAODAlgos/interface/VertexSelectorBase.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
+#include "DataFormats/EgammaCandidates/interface/Conversion.h"
 
 using namespace edm;
 using namespace std;
@@ -28,12 +29,15 @@ namespace flashgg {
     EDGetTokenT<View<flashgg::Photon> > photonToken_;
     EDGetTokenT< VertexCandidateMap > vertexCandidateMapToken_;
     unique_ptr<VertexSelectorBase> vertexSelector_;
+    EDGetTokenT<View<reco::Conversion> > conversionToken_;  
   };
 
   DiPhotonProducer::DiPhotonProducer(const ParameterSet & iConfig) :
     vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
     photonToken_(consumes<View<flashgg::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("flashggPhotons")))),
-    vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag")))
+    vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
+    conversionToken_(consumes<View<reco::Conversion> >(iConfig.getUntrackedParameter<InputTag>("ConversionTag",InputTag("reducedConversions"))))
+
   {
     const std::string& VertexSelectorName = iConfig.getParameter<std::string>("VertexSelectorName");
     vertexSelector_.reset(FlashggVertexSelectorFactory::get()->create(VertexSelectorName,iConfig));
