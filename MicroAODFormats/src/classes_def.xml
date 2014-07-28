@@ -10,8 +10,11 @@
  <class name="std::vector<flashgg::Jet>"/>
  <class name="edm::PtrVector<pat::PackedCandidate>"/>
  <class name="std::map<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> >"/>
+ <class name="std::pair<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> >"/>
  <class name="std::map<edm::Ptr<reco::Vertex>,float>"/>
+ <class name="std::pair<edm::Ptr<reco::Vertex>,float>"/>
  <class name="edm::Wrapper<std::map<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> > >"/>
+ <class name="edm::Wrapper<std::pair<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> > >"/>
 </lcgdict>
 
 
