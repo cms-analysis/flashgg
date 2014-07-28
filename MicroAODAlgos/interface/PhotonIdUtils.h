@@ -38,6 +38,9 @@ namespace flashgg {
 							      const edm::PtrVector<reco::Vertex>&,
 							      const flashgg::VertexCandidateMap, 
 							      float, float, float, float );
+
+    float              pfIsoChgWrtWorstVtx( std::map<edm::Ptr<reco::Vertex>,float>&);
+
     float              pfIsoGamma( edm::Ptr<pat::Photon>&, 
 				   const edm::PtrVector<pat::PackedCandidate>&, 
 				   float, float, float, float, float, float, float );
