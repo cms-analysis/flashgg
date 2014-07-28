@@ -221,10 +221,10 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
   phoIdMva_covIEtaIPhi_     = photon.getSieip();                        
   phoIdMva_pfPhoIso03_      = photon.getpfPhoIso03();
   phoIdMva_pfChgIso03_      = photon.getpfChgIso03WrtVtx(vtx);
-  phoIdMva_pfChgIso03worst_ =  photon.getpfChgIsoWrtWorstVtx03();;
+  phoIdMva_pfChgIso03worst_ = photon.getpfChgIsoWrtWorstVtx03();
   phoIdMva_ScEta_           = photon.superCluster()->eta();
   phoIdMva_rho_             = rho; // we don't want to add the event-based rho as flashgg::photon member
-  phoIdMva_ESEffSigmaRR_    = photon.getESEffSigmaRR();  // THIS SHOULD BECOME ESEFFSIGMARR AT SOME POINT
+  phoIdMva_ESEffSigmaRR_    = photon.getESEffSigmaRR();  
 
  
   if( photon.isEB() )      phoIdMva = phoIdMva_2012_EB_;
