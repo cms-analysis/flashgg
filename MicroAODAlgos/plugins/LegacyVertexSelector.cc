@@ -20,7 +20,7 @@ namespace flashgg {
 
   edm::Ptr<reco::Vertex> LegacyVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs,
 						      const VertexCandidateMap& vertexCandidateMap) const {
-    std::cout<<"Running the LegacyVertexSelector"<<std::endl;
+    //    std::cout<<"Running the LegacyVertexSelector"<<std::endl;
 
     // Just an example for how to read the vertex-candidate association -- doesn't do anything (yet)
     bool verbose = false;
