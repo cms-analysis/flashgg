@@ -7,7 +7,7 @@
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
 #include "TVector3.h"
 #include "TVector2.h"
-
+#include "TMath.h"
 namespace flashgg {
   
   class LegacyVertexSelector : public VertexSelectorBase {
@@ -48,11 +48,12 @@ namespace flashgg {
        diPhoPlane = diPho.XYvector();
       
        for (unsigned int i=0; i<convs.size();i++){
+      
+      
        edm::Ptr<reco::Conversion> conv = convs[i]; 
-
-       std::cout << "conversion_info" << "   " << conv->EoverP() << std::endl;        
-
-        }
+       
+       std::cout << "conversion_info" << "   " << conv->dPhiTracksAtEcal() << std::endl;        
+       }
 
         for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
 
