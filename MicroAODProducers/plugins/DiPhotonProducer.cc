@@ -69,7 +69,7 @@ namespace flashgg {
       Ptr<flashgg::Photon> pp1 = photonPointers[i];
       for (unsigned int j = i+1 ; j < photonPointers.size() ; j++) {
 	Ptr<flashgg::Photon> pp2 = photonPointers[j];
-	Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers);
+	Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,*conversionPointers);
 	diPhotonColl->push_back(DiPhotonCandidate(pp1,pp2,pvx));                                                                                                                 
       }
     }
@@ -80,3 +80,4 @@ namespace flashgg {
 
 typedef flashgg::DiPhotonProducer FlashggDiPhotonProducer;
 DEFINE_FWK_MODULE(FlashggDiPhotonProducer);
+@
