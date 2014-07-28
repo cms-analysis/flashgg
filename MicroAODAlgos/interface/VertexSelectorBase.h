@@ -8,7 +8,7 @@
 #include "DataFormats/Common/interface/PtrVector.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
-
+#include "DataFormats/EgammaCandidates/interface/Conversion.h"
 // Shamelessly patterned on https://github.com/cms-sw/cmssw/blob/CMSSW_7_2_X/RecoParticleFlow/PFProducer/interface/BlockElementLinkerBase.h
 
 namespace flashgg {
@@ -23,7 +23,7 @@ namespace flashgg {
     VertexSelectorBase& operator=(const VertexSelectorBase&) = delete;
 
     virtual edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&,
-					  const VertexCandidateMap&) const = 0;
+					  const VertexCandidateMap&,const edm::PtrVector<reco::Conversion>&) const = 0;
     
     const std::string& name() const { return _selectorName; }
 

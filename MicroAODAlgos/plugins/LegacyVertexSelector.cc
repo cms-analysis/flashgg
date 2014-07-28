@@ -18,7 +18,7 @@ namespace flashgg {
       VertexSelectorBase(conf) {}
 
     edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&,
-                                  const VertexCandidateMap& vertexCandidateMap) const override;
+                                  const VertexCandidateMap& vertexCandidateMap,const edm::PtrVector<reco::Conversion>&) const override;
 //    edm::Ptr<reco::Vertex> EstZconv(const)
 
 
@@ -38,7 +38,7 @@ namespace flashgg {
     double ptasym = 0;
 
   edm::Ptr<reco::Vertex> LegacyVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs,
-						      const VertexCandidateMap& vertexCandidateMap) const {
+						      const VertexCandidateMap& vertexCandidateMap,const edm::PtrVector<reco::Conversion>& convs) const {
     std::cout<<"Running the LegacyVertexSelector"<<std::endl;
 
     // Just an example for how to read the vertex-candidate association -- doesn't do anything (yet)
@@ -46,10 +46,11 @@ namespace flashgg {
     //if (verbose) {
        diPho.SetXYZ(g1->px()+g2->px(),g1->py()+g2->py(),g1->pz()+g2->pz());
        diPhoPlane = diPho.XYvector();
-       
-       for (unsigned int i=0; i< g1->conversions().size();i++){
+      
+       for (unsigned int i=0; i<convs.size();i++){
+       edm::Ptr<reco::Conversion> conv = convs[i]; 
 
-       std::cout << "blah" << "   " << g1->conversions().at(i)->refittedPairMomentum() << std::endl;        
+       std::cout << "conversion_info" << "   " << conv->EoverP() << std::endl;        
 
         }
 
