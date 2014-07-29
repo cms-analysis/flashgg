@@ -68,11 +68,10 @@ namespace flashgg {
 	if (closestDz < maxAllowedDz_) {
 	  //	cout << " Final insert index_Pf index_Vtx Dz " << i << " " << closestDzIndex << " " << closestDz << endl;
 	  Ptr<reco::Vertex> vtx =pvPtrs[closestDzIndex];
-	  if (assoc->count(vtx)) {
-	    assoc->at(vtx).push_back(cand);
-	  } else {
+	  if (!assoc->count(vtx)) {
 	    assoc->insert(std::make_pair(vtx,edm::PtrVector<pat::PackedCandidate>()));
 	  }
+	  assoc->at(vtx).push_back(cand);
 	}
       }
     } else /* i.e. if !useEachTrackOnce_ */  {
@@ -84,11 +83,10 @@ namespace flashgg {
 	  Ptr<reco::Vertex> vtx = pvPtrs[j];
 	  double dz = fabs(cand->dz(vtx->position()));
 	  if (dz < maxAllowedDz_) {
-	    if (assoc->count(vtx)) {
-	      assoc->at(vtx).push_back(cand);
-	    } else {
+	    if (!assoc->count(vtx)) {
 	      assoc->insert(std::make_pair(vtx,edm::PtrVector<pat::PackedCandidate>()));
 	    }
+	    assoc->at(vtx).push_back(cand);
 	  }
 	}
       }
