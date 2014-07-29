@@ -8,6 +8,8 @@
 #include "TVector3.h"
 #include "TVector2.h"
 #include "TMath.h"
+#include <cmath>
+
 namespace flashgg {
   
   class LegacyVertexSelector : public VertexSelectorBase {
@@ -32,10 +34,12 @@ namespace flashgg {
     TVector3 tk;
     TVector2 tkPlane;
     TVector2 diPhoPlane;
+    TVector3 VtxtoSC; 
     double sumpt = 0;
     double sumpt2 = 0;  
     double ptbal = 0; 
     double ptasym = 0;
+    float dR = 0;
 
   edm::Ptr<reco::Vertex> LegacyVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs,
 						      const VertexCandidateMap& vertexCandidateMap,const edm::PtrVector<reco::Conversion>& convs) const {
@@ -47,18 +51,24 @@ namespace flashgg {
        diPho.SetXYZ(g1->px()+g2->px(),g1->py()+g2->py(),g1->pz()+g2->pz());
        diPhoPlane = diPho.XYvector();
       
-       for (unsigned int i=0; i<convs.size();i++){
-      
-      
-       edm::Ptr<reco::Conversion> conv = convs[i]; 
+      //map
+      for (unsigned int i=0; i<convs.size();i++){
+        edm::Ptr<reco::Conversion> conv = convs[i]; 
        
-       std::cout << "conversion_info" << "   " << conv->dPhiTracksAtEcal() << std::endl;        
-       }
-
+         if (g1->hasConversionTracks() & !g2->hasConversionTracks()){      
+               if(conv->isConverted() == 1){
+                   VtxtoSC.SetXYZ(g1->superCluster()->position().x() - conv->conversionVertex().x(), g1->superCluster()->position().y() - conv->conversionVertex().y(), g1->superCluster()->position().z() - conv->conversionVertex().z());
+                   dR = sqrt( pow((conv->refittedPairMomentum().eta()-VtxtoSC.Eta()),2) + pow((conv->refittedPairMomentum().phi()-VtxtoSC.Phi()),2)); 
+                
+               
+       std::cout << "dR" << "   " << "=" << "   " << dR << std::endl;
+                              }
+                           }
+                       }
         for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
 
 	edm::Ptr<reco::Vertex> vtx = vtxs[i];
-	std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
+//	std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
 	for (unsigned int j = 0 ; j < vertexCandidateMap.at(vtx).size() ; j++) {
 	    edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMap.at(vtx)[j];
             tk.SetXYZ(cand->px(),cand->py(),cand->pz());  
