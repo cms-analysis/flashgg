@@ -19,8 +19,13 @@ namespace flashgg {
       VertexSelectorBase(conf) {}
 
     edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&,
+<<<<<<< HEAD
                                   const VertexCandidateMap& vertexCandidateMap,const edm::PtrVector<reco::Conversion>&) const override;
 //    edm::Ptr<reco::Vertex> EstZconv(const)
+=======
+                                  const VertexCandidateMap& vertexCandidateMap,
+				  const edm::PtrVector<reco::Conversion>&) const override;
+>>>>>>> 87b65e7e506dd4c9ac1fe55a10b356eb3eb4c79b
 
 
  
@@ -29,6 +34,7 @@ namespace flashgg {
      };
    
 
+<<<<<<< HEAD
     TVector3 diPho;  
     TVector3 tk;
     TVector2 tkPlane;
@@ -102,8 +108,9 @@ namespace flashgg {
 
 
 
-        for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
 
+     
+      for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
 	edm::Ptr<reco::Vertex> vtx = vtxs[i];
 //	std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
 	for (unsigned int j = 0 ; j < vertexCandidateMap.at(vtx).size() ; j++) {

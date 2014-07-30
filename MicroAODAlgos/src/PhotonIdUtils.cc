@@ -73,6 +73,22 @@ std::map<edm::Ptr<reco::Vertex>,float> PhotonIdUtils::pfIsoChgWrtAllVtx( edm::Pt
 }
 
 
+
+float PhotonIdUtils::pfIsoChgWrtWorstVtx( std::map<edm::Ptr<reco::Vertex>,float>& vtxIsoMap )
+{
+  float MaxValueMap = -1000;  
+  float itValue = 0;
+  
+  for (std::map<edm::Ptr<reco::Vertex>,float>::iterator it=vtxIsoMap.begin(); it!=vtxIsoMap.end(); ++it) {
+    itValue = it->second;
+    if (itValue > MaxValueMap) MaxValueMap = itValue;
+  }
+
+  return MaxValueMap;
+}
+
+
+
 float PhotonIdUtils::pfIsoGamma( edm::Ptr<pat::Photon>& photon, 
 				 const edm::PtrVector<pat::PackedCandidate>& pfcandidates,
 				 float dRMax,
@@ -100,24 +116,22 @@ float PhotonIdUtils::pfIsoGamma( edm::Ptr<pat::Photon>& photon,
 
   for( size_t ipf = 0; ipf < pfcandidates.size(); ipf++ ) { 
 
-    int nass = 0;
     edm::Ptr<pat::PackedCandidate> pfcand = pfcandidates[ipf]; 
-
+    
     if( pfcand->pdgId() != 22 ) continue;
     if( photon->isEB() ) if( fabs(pfcand->pt()) < minEnergyBarrel )     continue;  
     if( photon->isEE() ) if( fabs(pfcand->energy()) < minEnergyEndcap ) continue;
-
+    
     edm::RefVector<pat::PackedCandidateCollection> associated =  photon->associatedPackedPFCandidates();
-    if( associated.size() > 0 ) {
-
-      for( unsigned int ipc = 0; ipc < associated.size(); ipc++ ) {
-
-	edm::Ptr<pat::PackedCandidate> associatedPtr = edm::refToPtr( associated[ipc] );
-	if( associatedPtr == pfcand ) nass++;
-      }  
+    
+    int nass = 0;
+    for( unsigned int ipc = 0; ipc < associated.size(); ipc++ ) {
+      edm::Ptr<pat::PackedCandidate> associatedPtr = edm::refToPtr( associated[ipc] );
+      if( associatedPtr == pfcand )  nass++;
     }
+    
     if( nass > 0 ) continue;
-   
+
     math::XYZPoint  pfcandvtx = pfcand->vertex();
     math::XYZVector SCdirectionWrtCandVtx( photon->superCluster()->x() - pfcandvtx.x(),
 					   photon->superCluster()->y() - pfcandvtx.y(),
@@ -126,7 +140,7 @@ float PhotonIdUtils::pfIsoGamma( edm::Ptr<pat::Photon>& photon,
 
     float dEta = fabs( SCdirectionWrtCandVtx.Eta() - pfcand->momentum().Eta() );
     float dR   = deltaR( SCdirectionWrtCandVtx.Eta(), SCdirectionWrtCandVtx.Phi(), pfcand->momentum().Eta(), pfcand->momentum().Phi() ); 
-
+    
     if( dEta < maxetaStrip )        continue;
     if( dR < dRVeto || dR > dRMax ) continue;
       
@@ -149,8 +163,6 @@ float PhotonIdUtils::pfIsoGamma( edm::Ptr<pat::Photon>& photon,
 void PhotonIdUtils::setupMVA( string& xmlfilenameEB, string& xmlfilenameEE )
 {
 
-  //string mvaDiscriDir = "/afs/cern.ch/work/f/favaro/private/miniAODforHgg/CMSSW_7_0_4/src/flashGGAnalyzers/flashggCommissioning/python/inputs/mvaDiscriminants/";
-
   cout << " photonId MVA weights for EB set from file: " << xmlfilenameEB << endl;
   cout << " photonId MVA weights for EE set from file: " << xmlfilenameEE << endl;
   // **** bdt 2012 EB ****
@@ -171,7 +183,6 @@ void PhotonIdUtils::setupMVA( string& xmlfilenameEB, string& xmlfilenameEE )
   phoIdMva_2012_EB_->AddVariable( "ph.idmva_ChargedIso_worstvtx", &phoIdMva_pfChgIso03worst_ );
   phoIdMva_2012_EB_->AddVariable( "ph.sceta",             &phoIdMva_ScEta_ );
   phoIdMva_2012_EB_->AddVariable( "rho",                  &phoIdMva_rho_);
-  //phoIdMva_2012_EB_->BookMVA(mvamethod.c_str(), mvaDiscriDir + "2013FinalPaper_PhotonID_Barrel_BDT_TrainRangePT15_8TeV.weights.xml");
   phoIdMva_2012_EB_->BookMVA( mvamethod.c_str(), xmlfilenameEB );
 
   // **** bdt 2012 EE ****
@@ -191,7 +202,6 @@ void PhotonIdUtils::setupMVA( string& xmlfilenameEB, string& xmlfilenameEE )
   phoIdMva_2012_EE_->AddVariable( "ph.sceta",             &phoIdMva_ScEta_ );                          
   phoIdMva_2012_EE_->AddVariable( "rho",                  &phoIdMva_rho_);
   phoIdMva_2012_EE_->AddVariable( "ph.idmva_PsEffWidthSigmaRR",   &phoIdMva_ESEffSigmaRR_ );
-  //phoIdMva_2012_EE_->BookMVA(mvamethod.c_str(), mvaDiscriDir + "2013FinalPaper_PhotonID_Endcap_BDT_TrainRangePT15_8TeV.weights.xml");
   phoIdMva_2012_EE_->BookMVA( mvamethod.c_str(), xmlfilenameEE );
 }
 
@@ -202,19 +212,19 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
 				      const double rho )
 {
 
-  phoIdMva_SCRawE_         = photon.superCluster()->rawEnergy();
-  phoIdMva_R9_             = photon.r9();
-  phoIdMva_S4_             = photon.getS4();
-  phoIdMva_covIEtaIEta_    = photon.sigmaIetaIeta();
-  phoIdMva_EtaWidth_       = photon.superCluster()->etaWidth();
-  phoIdMva_PhiWidth_       = photon.superCluster()->phiWidth();
-  phoIdMva_covIEtaIPhi_    = photon.getSieip();                        
-  phoIdMva_pfPhoIso03_     = photon.getpfPhoIso03();
-  phoIdMva_pfChgIso03_     = photon.getpfChgIso03WrtVtx(vtx);
-  phoIdMva_pfChgIso03worst_ = 0;
-  phoIdMva_ScEta_          = photon.superCluster()->eta();
-  phoIdMva_rho_            = rho; // we don't want to add the event-based rho as flashgg::photon member
-  phoIdMva_ESEffSigmaRR_   = photon.r9(); // THIS SHOULD BECOME ESEFFSIGMARR AT SOME POINT
+  phoIdMva_SCRawE_          = photon.superCluster()->rawEnergy();
+  phoIdMva_R9_              = photon.r9();
+  phoIdMva_S4_              = photon.getS4();
+  phoIdMva_covIEtaIEta_     = photon.sigmaIetaIeta();
+  phoIdMva_EtaWidth_        = photon.superCluster()->etaWidth();
+  phoIdMva_PhiWidth_        = photon.superCluster()->phiWidth();
+  phoIdMva_covIEtaIPhi_     = photon.getSieip();                        
+  phoIdMva_pfPhoIso03_      = photon.getpfPhoIso03();
+  phoIdMva_pfChgIso03_      = photon.getpfChgIso03WrtVtx(vtx);
+  phoIdMva_pfChgIso03worst_ = photon.getpfChgIsoWrtWorstVtx03();
+  phoIdMva_ScEta_           = photon.superCluster()->eta();
+  phoIdMva_rho_             = rho; // we don't want to add the event-based rho as flashgg::photon member
+  phoIdMva_ESEffSigmaRR_    = photon.getESEffSigmaRR();  
 
  
   if( photon.isEB() )      phoIdMva = phoIdMva_2012_EB_;

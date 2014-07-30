@@ -29,7 +29,7 @@ namespace flashgg {
     EDGetTokenT<View<flashgg::Photon> > photonToken_;
     EDGetTokenT< VertexCandidateMap > vertexCandidateMapToken_;
     unique_ptr<VertexSelectorBase> vertexSelector_;
-    EDGetTokenT<View<reco::Conversion> > conversionToken_;  
+    EDGetTokenT<View<reco::Conversion> > conversionToken_;
   };
 
   DiPhotonProducer::DiPhotonProducer(const ParameterSet & iConfig) :
@@ -55,22 +55,26 @@ namespace flashgg {
     evt.getByToken(photonToken_,photons);
     const PtrVector<flashgg::Photon>& photonPointers = photons->ptrVector();
 
-    Handle<View<reco::Conversion> > conversions; 
-    evt.getByToken(conversionToken_,conversions);
-    const PtrVector<reco::Conversion>& conversionPointers = conversions->ptrVector();
-
-
     Handle<VertexCandidateMap> vertexCandidateMap;
     evt.getByToken(vertexCandidateMapToken_,vertexCandidateMap);
     
-    auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
+    Handle<View<reco::Conversion> > conversions; 
+    evt.getByToken(conversionToken_,conversions);
+    const PtrVector<reco::Conversion>& conversionPointers = conversions->ptrVector();
     
+    auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
+
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
       Ptr<flashgg::Photon> pp1 = photonPointers[i];
       for (unsigned int j = i+1 ; j < photonPointers.size() ; j++) {
 	Ptr<flashgg::Photon> pp2 = photonPointers[j];
 	Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers);
 	diPhotonColl->push_back(DiPhotonCandidate(pp1,pp2,pvx));                                                                                                                 
+        // FIXME
+        // Once the vertex is chosen, recompute photon 4-momenta accordingly
+    	Ptr<flashgg::Photon> pp2 = photonPointers[j];
+	Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers);
+    	diPhotonColl->push_back(DiPhotonCandidate(pp1,pp2,pvx));                                                                                                                 
       }
     }
     

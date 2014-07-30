@@ -10,7 +10,6 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "flashgg/MicroAODFormats/interface/Photon.h"
-#include "flashgg/MicroAODAlgos/interface/PhotonPreselectorBase.h"
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 #include "flashgg/MicroAODAlgos/interface/PhotonIdUtils.h"
 
@@ -30,7 +29,6 @@ namespace flashgg {
     EDGetTokenT<View<pat::PackedCandidate> > pfcandidateToken_;
     EDGetTokenT<View<reco::Vertex> > vertexToken_;   
     EDGetTokenT<flashgg::VertexCandidateMap> vertexCandidateMapToken_;
-    unique_ptr<PhotonPreselectorBase> photonPreselector_;
 
     edm::InputTag ecalHitEBColl_;
     edm::InputTag ecalHitEEColl_;
@@ -49,8 +47,6 @@ namespace flashgg {
     vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
     vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag")))
   {
-    const std::string& PhotonPreselectorName = iConfig.getParameter<std::string>("PhotonPreselectorName");
-    photonPreselector_.reset(FlashggPhotonPreselectorFactory::get()->create(PhotonPreselectorName, iConfig));
 
     ecalHitEBColl_ = iConfig.getParameter<edm::InputTag>("reducedBarrelRecHitCollection");
     ecalHitEEColl_ = iConfig.getParameter<edm::InputTag>("reducedEndcapRecHitCollection");
@@ -92,10 +88,7 @@ namespace flashgg {
       Ptr<pat::Photon> pp = photonPointers[i];
       flashgg::Photon fg = flashgg::Photon(*pp);
      
-      if( ! photonPreselector_->ispreselected( pp, pfcandidatePointers ) )
-          continue;
-      
-      EcalClusterLazyTools lazyTool(evt, iSetup, ecalHitEBColl_, ecalHitEEColl_);        
+      EcalClusterLazyTools lazyTool(evt, iSetup, ecalHitEBColl_, ecalHitEEColl_,ecalHitESColl_);        
       
       const reco::CaloClusterPtr  seed_clu = pp->superCluster()->seed();
       const reco::SuperClusterRef super_clu= pp->superCluster();
@@ -121,7 +114,14 @@ namespace flashgg {
 
       std::map<edm::Ptr<reco::Vertex>,float> isomap = phoTools_.pfIsoChgWrtAllVtx(pp, vertexPointers, vtxToCandMap, 0.3, 0.02, 0.02, 0.1);
       fg.setpfChgIso03(isomap);
-      
+     
+      std::map<edm::Ptr<reco::Vertex>,float>& ref_isomap = isomap;
+      float pfChgIsoWrtWorstVtx03 =  phoTools_.pfIsoChgWrtWorstVtx(ref_isomap);
+      fg.setpfChgIsoWrtWorstVtx03(pfChgIsoWrtWorstVtx03);
+
+      float pfPhoIso03 = phoTools_.pfIsoGamma(pp, pfcandidatePointers, 0.3, 0.0, 0.070, 0.015, 0.0, 0.0, 0.0);
+      fg.setpfPhoIso03(pfPhoIso03);
+
       std::map<edm::Ptr<reco::Vertex>,float> mvamap = phoTools_.computeMVAWrtAllVtx(fg, vertexPointers,rhoFixedGrd);
       fg.setPhoIdMvaD(mvamap);
 
