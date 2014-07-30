@@ -8,7 +8,6 @@
 #include "TVector3.h"
 #include "TVector2.h"
 #include "TMath.h"
-#include <cmath>
 
 namespace flashgg {
   
@@ -34,14 +33,18 @@ namespace flashgg {
     TVector3 tk;
     TVector2 tkPlane;
     TVector2 diPhoPlane;
-    TVector3 VtxtoSC; 
+    TVector3 VtxtoSC;
+    TVector3 VtxtoSCPho1;
+    TVector3 VtxtoSCPho2;
+    TVector3 RefPairMo;
     double sumpt = 0;
     double sumpt2 = 0;  
     double ptbal = 0; 
     double ptasym = 0;
-    float dR = 0;
-
-  edm::Ptr<reco::Vertex> LegacyVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs,
+    double dR = 0;
+    double dRPho1 = 0;
+    double dRPho2 = 0;
+    edm::Ptr<reco::Vertex> LegacyVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs,
 						      const VertexCandidateMap& vertexCandidateMap,const edm::PtrVector<reco::Conversion>& convs) const {
     std::cout<<"Running the LegacyVertexSelector"<<std::endl;
 
@@ -51,20 +54,54 @@ namespace flashgg {
        diPho.SetXYZ(g1->px()+g2->px(),g1->py()+g2->py(),g1->pz()+g2->pz());
        diPhoPlane = diPho.XYvector();
       
-      //map
+      //Geometrical matching of conversion with corresponding photon, dR < ?
       for (unsigned int i=0; i<convs.size();i++){
         edm::Ptr<reco::Conversion> conv = convs[i]; 
        
-         if (g1->hasConversionTracks() & !g2->hasConversionTracks()){      
+         if (g1->hasConversionTracks() && !g2->hasConversionTracks()){      
                if(conv->isConverted() == 1){
                    VtxtoSC.SetXYZ(g1->superCluster()->position().x() - conv->conversionVertex().x(), g1->superCluster()->position().y() - conv->conversionVertex().y(), g1->superCluster()->position().z() - conv->conversionVertex().z());
-                   dR = sqrt( pow((conv->refittedPairMomentum().eta()-VtxtoSC.Eta()),2) + pow((conv->refittedPairMomentum().phi()-VtxtoSC.Phi()),2)); 
-                
-               
-       std::cout << "dR" << "   " << "=" << "   " << dR << std::endl;
+                     RefPairMo.SetXYZ(conv->refittedPairMomentum().x(),conv->refittedPairMomentum().y(),conv->refittedPairMomentum().z());
+                     dR = VtxtoSC.DeltaR(RefPairMo); 
+                  
+                      std::cout << "g1 conv track?" << "  " << g1->hasConversionTracks() << "  " << "g2 conv track?" << g2->hasConversionTracks() << std::endl;                       
+                      std::cout << "dR" << "  " << "=" << "  " << dR << std::endl;   
+                               } 
                               }
+                 else if(!g1->hasConversionTracks() && g2->hasConversionTracks()){
+                         if(conv->isConverted() == 1){
+                   VtxtoSC.SetXYZ(g2->superCluster()->position().x() - conv->conversionVertex().x(), g2->superCluster()->position().y() - conv->conversionVertex().y(), g2->superCluster()->position().z() - conv->conversionVertex().z());
+                     RefPairMo.SetXYZ(conv->refittedPairMomentum().x(),conv->refittedPairMomentum().y(),conv->refittedPairMomentum().z());
+                     dR = VtxtoSC.DeltaR(RefPairMo);               
+                           
+
+                      std::cout << "g1 conv track?" << "  " << g1->hasConversionTracks() << "  " << "g2 conv track?" << g2->hasConversionTracks() << std::endl;                       
+                      std::cout << "dR2" << "  " << "=" << "  " << dR << std::endl;   
+                            }
                            }
-                       }
+                       
+                 else if(g1->hasConversionTracks() && g2->hasConversionTracks()){
+                         if(conv->isConverted() == 1){
+                      RefPairMo.SetXYZ(conv->refittedPairMomentum().x(),conv->refittedPairMomentum().y(),conv->refittedPairMomentum().z());
+      		       
+                   VtxtoSCPho1.SetXYZ(g1->superCluster()->position().x() - conv->conversionVertex().x(), g1->superCluster()->position().y() - conv->conversionVertex().y(), g1->superCluster()->position().z() - conv->conversionVertex().z());
+                     dRPho1 = VtxtoSCPho1.DeltaR(RefPairMo);               
+                   VtxtoSCPho2.SetXYZ(g2->superCluster()->position().x() - conv->conversionVertex().x(), g2->superCluster()->position().y() - conv->conversionVertex().y(), g2->superCluster()->position().z() - conv->conversionVertex().z());
+                     dRPho2 = VtxtoSCPho2.DeltaR(RefPairMo);               
+      
+
+                      std::cout << "g1 conv track?" << "  " << g1->hasConversionTracks() << "  " << "g2 conv track?" << g2->hasConversionTracks() << std::endl;                       
+                      std::cout << "dRPho1" << "  " << "=" << "  " << dRPho1 << std::endl;   
+
+                      std::cout << "dRPho2" << "  " << "=" << "  " << dRPho2 << std::endl;   
+                               
+                                          }
+                                   }
+
+                            }
+
+
+
         for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
 
 	edm::Ptr<reco::Vertex> vtx = vtxs[i];
