@@ -19,13 +19,8 @@ namespace flashgg {
       VertexSelectorBase(conf) {}
 
     edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&,
-<<<<<<< HEAD
                                   const VertexCandidateMap& vertexCandidateMap,const edm::PtrVector<reco::Conversion>&) const override;
 //    edm::Ptr<reco::Vertex> EstZconv(const)
-=======
-                                  const VertexCandidateMap& vertexCandidateMap,
-				  const edm::PtrVector<reco::Conversion>&) const override;
->>>>>>> 87b65e7e506dd4c9ac1fe55a10b356eb3eb4c79b
 
 
  
@@ -34,7 +29,6 @@ namespace flashgg {
      };
    
 
-<<<<<<< HEAD
     TVector3 diPho;  
     TVector3 tk;
     TVector2 tkPlane;
@@ -73,7 +67,7 @@ namespace flashgg {
                       std::cout << "g1 conv track?" << "  " << g1->hasConversionTracks() << "  " << "g2 conv track?" << g2->hasConversionTracks() << std::endl;                       
                       std::cout << "dR" << "  " << "=" << "  " << dR << std::endl;   
                                } 
-                              }
+                           }
                  else if(!g1->hasConversionTracks() && g2->hasConversionTracks()){
                          if(conv->isConverted() == 1){
                    VtxtoSC.SetXYZ(g2->superCluster()->position().x() - conv->conversionVertex().x(), g2->superCluster()->position().y() - conv->conversionVertex().y(), g2->superCluster()->position().z() - conv->conversionVertex().z());
@@ -83,7 +77,7 @@ namespace flashgg {
 
                       std::cout << "g1 conv track?" << "  " << g1->hasConversionTracks() << "  " << "g2 conv track?" << g2->hasConversionTracks() << std::endl;                       
                       std::cout << "dR2" << "  " << "=" << "  " << dR << std::endl;   
-                            }
+                               }
                            }
                        
                  else if(g1->hasConversionTracks() && g2->hasConversionTracks()){
@@ -102,9 +96,9 @@ namespace flashgg {
                       std::cout << "dRPho2" << "  " << "=" << "  " << dRPho2 << std::endl;   
                                
                                           }
-                                   }
+                                     }
 
-                            }
+                              }
 
 
 
