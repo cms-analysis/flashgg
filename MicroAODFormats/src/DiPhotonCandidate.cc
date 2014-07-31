@@ -22,16 +22,16 @@ DiPhotonCandidate::DiPhotonCandidate(edm::Ptr<flashgg::Photon> photon1,edm::Ptr<
 
 const flashgg::Photon * DiPhotonCandidate::leadingPhoton() const {
   if (daughter(0)->pt() > daughter(1)->pt()) {
-    return (const flashgg::Photon*) daughter(0);
+    return dynamic_cast<const flashgg::Photon*> (daughter(0));
   } else {
-    return (const flashgg::Photon*) daughter(1);
+    return dynamic_cast<const flashgg::Photon*> (daughter(1));
   }
 }
 
 const flashgg::Photon * DiPhotonCandidate::subLeadingPhoton() const {
   if (daughter(0)->pt() > daughter(1)->pt()) {
-    return (const flashgg::Photon*) daughter(1);
+    return dynamic_cast<const flashgg::Photon*> (daughter(1));
   } else {
-    return (const flashgg::Photon*) daughter(0);
+    return dynamic_cast<const flashgg::Photon*> (daughter(0));
   }
 }

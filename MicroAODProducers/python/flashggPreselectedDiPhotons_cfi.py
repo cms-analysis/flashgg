@@ -11,6 +11,7 @@ flashggPreselectedDiPhotons = cms.EDFilter("CandViewSelector",
                                     || (leadingPhoton.isEE && leadingPhoton.hadronicOverEm < 0.075 && leadingPhoton.sigmaIetaIeta < 0.034)) \
                                     && (leadingPhoton.hcalTowerSumEtConeDR03 - 0.005 * leadingPhoton.pt < 4.0) \
                                     && (leadingPhoton.trkSumPtHollowConeDR03 - 0.002 * leadingPhoton.pt < 4.0) \
+                                    && (leadingPhoton.getpfPhoIso03 < 4.0) \
                                     )) \
                                || (leadingPhoton.r9 > 0.9 \
                                     && ( ((leadingPhoton.isEB && leadingPhoton.hadronicOverEm < 0.082 && leadingPhoton.sigmaIetaIeta < 0.014) \
