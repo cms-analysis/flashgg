@@ -11,6 +11,7 @@ namespace flashgg {
     Photon();
     Photon(const pat::Photon &);
     ~Photon();
+    virtual Photon * clone() const { return new Photon(*this); }
     
     void  setSipip(float val) {sipip=val;};
     void  setSieip(float val) {sieip=val;};
