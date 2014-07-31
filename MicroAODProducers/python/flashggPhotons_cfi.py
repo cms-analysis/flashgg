@@ -1,4 +1,5 @@
 import FWCore.ParameterSet.Config as cms
+import os
 
 flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                 PhotonTag = cms.untracked.InputTag('slimmedPhotons'),
@@ -7,6 +8,6 @@ flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                 reducedPreshowerRecHitCollection = cms.InputTag('reducedEgamma','reducedESRecHits'),
                                 VertexCandidateMapTag = cms.InputTag("flashggVertexMapNonUnique"),
                                 rhoFixedGridCollection = cms.InputTag('fixedGridRhoAll'),
-                                photonIdMVAweightfile_EB = cms.string("../data/2013FinalPaper_PhotonID_Barrel_BDT_TrainRangePT15_8TeV.weights.xml"),
-                                photonIdMVAweightfile_EE = cms.string("../data/2013FinalPaper_PhotonID_Endcap_BDT_TrainRangePT15_8TeV.weights.xml")
+                                photonIdMVAweightfile_EB = cms.string( ("%s/%s") % ( os.getenv('CMSSW_BASE', '.') , "src/flashgg/MicroAODProducers/data/2013FinalPaper_PhotonID_Barrel_BDT_TrainRangePT15_8TeV.weights.xml") ),
+                                photonIdMVAweightfile_EE = cms.string( ("%s/%s") % ( os.getenv('CMSSW_BASE', '.') , "src/flashgg/MicroAODProducers/data/2013FinalPaper_PhotonID_Endcap_BDT_TrainRangePT15_8TeV.weights.xml") )
                                 )
