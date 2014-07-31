@@ -3,9 +3,11 @@
 #include "flashgg/MicroAODFormats/interface/Jet.h"
 #include "DataFormats/Common/interface/Wrapper.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
+#include "DataFormats/Common/interface/Ptr.h"
 #include <vector>
 namespace  { struct dictionary {
   flashgg::Photon                                                   fgg_pho;
+  edm::Ptr<flashgg::Photon>                                     ptr_fgg_pho;
   edm::Wrapper<flashgg::Photon>                                 wrp_fgg_pho;
   std::vector<flashgg::Photon>                                  vec_fgg_pho;
   edm::Wrapper<std::vector<flashgg::Photon> >               wrp_vec_fgg_pho;
