@@ -67,11 +67,17 @@ namespace flashgg {
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
       Ptr<flashgg::Photon> pp1 = photonPointers[i];
       for (unsigned int j = i+1 ; j < photonPointers.size() ; j++) {
-        // FIXME
-        // Once the vertex is chosen, recompute photon 4-momenta accordingly
     	Ptr<flashgg::Photon> pp2 = photonPointers[j];
-	Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers);
-    	diPhotonColl->push_back(DiPhotonCandidate(pp1,pp2,pvx));                                                                                                                 
+        Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers);
+        // A number of things need to be done once the vertex is chosen
+        flashgg::Photon *photon1 = pp1->clone();
+        flashgg::Photon *photon2 = pp2->clone();
+        // FIXME - recompute photon 4-momenta accordingly (yet to be done)
+        // - compute isolations with respect to chosen vertex needed for preselection
+        photon1->setpfChgIsoWrtChosenVtx02( photon1->getpfChgIso02WrtVtx( pvx ) );
+        photon2->setpfChgIsoWrtChosenVtx02( photon2->getpfChgIso02WrtVtx( pvx ) );
+        // store the diphoton into the collection
+    	diPhotonColl->push_back(DiPhotonCandidate(*photon1,*photon2,pvx));
       }
     }
     
