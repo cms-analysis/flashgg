@@ -231,7 +231,7 @@ namespace flashgg {
 	//	std:: cout << "matched tracks : " << trkCounter  << std:: endl;
 		std:: cout << "matched tracks : " << matchCounter  << std:: endl;
 
-		if (trkCounter > trackNumber) { std::cout << " [ISSUE] " << std::endl;}
+//		if (trkCounter > trackNumber) { std::cout << " [ISSUE] " << std::endl;}
 		evt.put(assoc);
 	}
 }
