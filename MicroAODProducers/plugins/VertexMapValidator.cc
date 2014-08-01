@@ -186,7 +186,7 @@ namespace flashgg {
                                 if (doTextDebug_) std::cout << "  Track : " << trkCounter << " eta "<< etaAOD << " , phi " << phiAOD << " , pt " << ptAOD << std::endl;
 
 				if (useMiniAODTrackVertexAssociation_) { // Seth's adaptation to use pf2pc
-				  if((*pf2pc)[*trackAOD].isNonnull() && (*pf2pc)[*trackAOD]->numberOfHits() > 0) {
+				  if((*pf2pc)[*trackAOD].isNonnull() && (*pf2pc)[*trackAOD]->charge() > 0) {
 				    
 				    edm::Ptr<pat::PackedCandidate> pfPtr = edm::refToPtr<pat::PackedCandidateCollection>((*pf2pc)[*trackAOD]);
 				  
