@@ -163,9 +163,9 @@ namespace flashgg {
 		std::multimap<Ptr<reco::Vertex>, Ptr<pat::PackedCandidate>> myMap;
 
 		// eta-,phi-,ptLim represent the minimum proximity for each criterion for the tracks to be considered the same.	
-		double etaLim = 0.001 ;
-		double phiLim = 0.001 ;
-		double ptLim = 0.001 ;
+		double etaLim = 0.01 ;
+		double phiLim = 0.01 ;
+		double ptLim = 0.01 ;
 		double matchCounter=0;
 
 		for (unsigned int i =0; i< pvPtrsAOD.size() ; i++)
@@ -186,7 +186,7 @@ namespace flashgg {
                                 if (doTextDebug_) std::cout << "  Track : " << trkCounter << " eta "<< etaAOD << " , phi " << phiAOD << " , pt " << ptAOD << std::endl;
 
 				if (useMiniAODTrackVertexAssociation_) { // Seth's adaptation to use pf2pc
-				  if((*pf2pc)[*trackAOD].isNonnull() && (*pf2pc)[*trackAOD]->charge() > 0) {
+				  if((*pf2pc)[*trackAOD].isNonnull() && (*pf2pc)[*trackAOD]->charge() != 0) {
 				    
 				    edm::Ptr<pat::PackedCandidate> pfPtr = edm::refToPtr<pat::PackedCandidateCollection>((*pf2pc)[*trackAOD]);
 				  
