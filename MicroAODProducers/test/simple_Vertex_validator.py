@@ -77,7 +77,8 @@ process.flashggVertexMapValidator = cms.EDProducer('FlashggVertexMapValidator',
                                                 PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
                                                 VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                                 VertexTagAOD=cms.untracked.InputTag('offlinePrimaryVertices'),
-                                                UseMiniAODTrackVertexAssociation=cms.untracked.bool(False)
+                                                UseMiniAODTrackVertexAssociation=cms.untracked.bool(True),
+                                                DoTextDebug=cms.untracked.bool(True)   
                                                 )
 
 process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
