@@ -15,7 +15,8 @@ using namespace std;
 
 namespace flashgg {
 
-	class DzVertexMapValidator : public EDProducer {
+	class DzVertexMapValidator : public EDProducer 
+	{
 
 		public:
 			DzVertexMapValidator( const ParameterSet & );
@@ -38,7 +39,8 @@ namespace flashgg {
 		produces<VertexCandidateMap>();
 	}
 
-	void DzVertexMapValidator::produce( Event & evt , const EventSetup & ) {
+	void DzVertexMapValidator::produce( Event & evt , const EventSetup & ) 
+	{
 
 		// Primary Vertices from original AOD  (can access tracks using tracks_begin() etc)
 		Handle<View<reco::Vertex> > primaryVerticesAOD;
@@ -58,18 +60,21 @@ namespace flashgg {
 
 		// Track number is used to know how many valid AOD tracks exist 
 		int trackNumber =0;
+		int trackNumber2 =0;
 		for ( unsigned int i=0 ; i < pvPtrsAOD.size() ;i++)
 		{
 			//	int nTracks    = pvPtrsAOD[i]->nTracks()   ;
 			//	int tracksSize = pvPtrsAOD[i]->tracksSize();
 			//	std:: cout <<  nTracks   << std::endl;
 			//	std:: cout <<  tracksSize<< std::endl;
+			trackNumber2 = trackNumber2 + pvPtrsAOD[i]->nTracks();
 			trackNumber = trackNumber + pvPtrsAOD[i]->tracksSize();
 		}
 
 		// Track number is used to know how many valid miniAOD tracks exist 
 		int trackNumberMiniAOD =0;
-		for (unsigned int i = 0 ; i < pfPtrs.size() ; i++) {
+		for (unsigned int i = 0 ; i < pfPtrs.size() ; i++) 
+		{
 			Ptr<pat::PackedCandidate> cand = pfPtrs[i];
 			if (cand->charge() == 0) continue; // skip neutrals
 			trackNumberMiniAOD++;
@@ -80,6 +85,7 @@ namespace flashgg {
 
 		// print ifno for debugging
 		std::cout << "AOD vtxs:  "<<  pvPtrsAOD.size() << ", miniAOD vtxs: " << pvPtrs.size() << ", AOD tracks: " << trackNumber <<", miniAOD tracks: " << trackNumberMiniAOD <<  std::endl;
+	//	std::cout << "AOD vtxs:  "<<  pvPtrsAOD.size() << ", miniAOD vtxs: " << pvPtrs.size() << ", AOD tracks: " << trackNumber2 <<", miniAOD tracks: " << trackNumberMiniAOD <<  std::endl;
 
 
 		// ***************************************************************************
@@ -142,9 +148,10 @@ namespace flashgg {
 		std::multimap<Ptr<reco::Vertex>, Ptr<pat::PackedCandidate>> myMap;
 
 		// eta-,phi-,ptLim represent the minimum proximity for each criterion for the tracks to be considered the same.	
-		double etaLim = 0.3 ;
-		double phiLim = 0.3 ;
-		double ptLim = 3 ;
+		double etaLim = 0.001 ;
+		double phiLim = 0.001 ;
+		double ptLim = 0.001 ;
+		double matchCounter=0;
 
 		for (unsigned int i =0; i< pvPtrsAOD.size() ; i++)
 		{
@@ -172,14 +179,11 @@ namespace flashgg {
 					{
 						//set index if there is a match
 						trkMap[trkCounter]=j;
-						//		std::cout << " Track : " << trkCounter << " MATCH to " << trkMap[i] << std::endl;
-						//	std::cout << etaAOD << " | " << etaMiniAOD << " - " << phiAOD << " | " <<phiMiniAOD << " - " << ptAOD << " | " << ptMiniAOD << std::endl;
+						matchCounter++;
+								//std::cout << " Track : " << trkCounter << " MATCH to " << j << std::endl;
+							//std::cout << etaAOD << " | " << etaMiniAOD << " - " << phiAOD << " | " <<phiMiniAOD << " - " << ptAOD << " | " << ptMiniAOD << std::endl;
 
 
-						//cout for debugging
-						//std::cout << "AOD PV index: " << i << " , miniAOD PV index: " << pvMap[i] << std::endl;
-						//std::cout << " ("<< xAOD <<", "<<yAOD<<", "<<zAOD<<")"<< std::endl;
-						//std::cout << " ("<< xMiniAOD <<", "<<yMiniAOD<<", "<<zMiniAOD<<")"<< std::endl;
 						//break loop if there is a match
 						myMap.insert(std::pair<Ptr<reco::Vertex>,Ptr<pat::PackedCandidate>>(pvPtrsAOD[i],pfPtrs[j]));
 						break;
@@ -208,6 +212,7 @@ namespace flashgg {
 			// get range by feeding it the AOD vertex.
 			range = myMap.equal_range(pvPtrsAOD[index]);
 			trkCounter = trkCounter + myMap.count(pvPtrsAOD[index]);
+	//		{std::cout << myMap.count(pvPtrsAOD[index]) << "	" << pvPtrsAOD[index]->tracksSize() <<std::endl;}
 
 			PtrVector<pat::PackedCandidate> finalTracks;
 			int tempCounter =0;
@@ -218,14 +223,17 @@ namespace flashgg {
 				finalTracks.push_back(fillLoop->second);
 			}
 			// finally, fill the assoc with the pair < vertex, track > for each corresponding track;
-	assoc->insert (std::make_pair(vtx,finalTracks));
-	//assoc->insert (std::pair<<Ptr<reco::Vertex>,PtrVector<pat::PackedCandidate>>(vtx,finalTracks));
+			assoc->insert (std::make_pair(vtx,finalTracks));
+			//assoc->insert (std::pair<<Ptr<reco::Vertex>,PtrVector<pat::PackedCandidate>>(vtx,finalTracks));
 		}
-	
 
-	std:: cout << "matched tracks : " << trkCounter << std::endl << std:: endl;
-	evt.put(assoc);
-}
+
+	//	std:: cout << "matched tracks : " << trkCounter  << std:: endl;
+		std:: cout << "matched tracks : " << matchCounter  << std:: endl;
+
+		if (trkCounter > trackNumber) { std::cout << " [ISSUE] " << std::endl;}
+		evt.put(assoc);
+	}
 }
 
 typedef flashgg::DzVertexMapValidator FlashggDzVertexMapValidator;
