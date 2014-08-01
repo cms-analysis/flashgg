@@ -73,11 +73,11 @@ process.flashggVertexMapNonUnique = cms.EDProducer('FlashggDzVertexMapProducer',
                                                    UseEachTrackOnce=cms.untracked.bool(False)
                                                    )
 ### NEW to help validate, first sprout of vertex association based on AOD
-process.flashggVertexMapValidator = cms.EDProducer('FlashggDzVertexMapValidator',
+process.flashggVertexMapValidator = cms.EDProducer('FlashggVertexMapValidator',
                                                 PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
                                                 VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                                 VertexTagAOD=cms.untracked.InputTag('offlinePrimaryVertices'),
-                                                MaxAllowedDz=cms.double(0.2) # in cm
+                                                UseMiniAODTrackVertexAssociation=cms.untracked.bool(False)
                                                 )
 
 process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")

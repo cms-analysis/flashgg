@@ -16,11 +16,11 @@ using namespace std;
 
 namespace flashgg {
 
-	class DzVertexMapValidator : public EDProducer 
+	class VertexMapValidator : public EDProducer 
 	{
 
 		public:
-			DzVertexMapValidator( const ParameterSet & );
+			VertexMapValidator( const ParameterSet & );
 		private:
 			void produce( Event &, const EventSetup & ) override;
 			EDGetTokenT<View<reco::Vertex> > vertexToken_;
@@ -32,19 +32,19 @@ namespace flashgg {
 	  //			bool useEachTrackOnce_;
 	};
 
-	DzVertexMapValidator::DzVertexMapValidator(const ParameterSet & iConfig) :
+	VertexMapValidator::VertexMapValidator(const ParameterSet & iConfig) :
 		vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
 		vertexTokenAOD_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTagAOD", InputTag("offlinePrimaryVertices")))),
 		pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates")))),
-		map_(consumes<edm::Association<pat::PackedCandidateCollection> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates"))))
+		map_(consumes<edm::Association<pat::PackedCandidateCollection> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates")))),
 		//		maxAllowedDz_(iConfig.getParameter<double>("MaxAllowedDz")), // in cm
 		//		useEachTrackOnce_(iConfig.getUntrackedParameter<bool>("UseEachTrackOnce",true))
-
+		useMiniAODTrackVertexAssociation_(iConfig.getUntrackedParameter<bool>("UseMiniAODTrackVertexAssociation",true))
 	{
 		produces<VertexCandidateMap>();
 	}
 
-	void DzVertexMapValidator::produce( Event & evt , const EventSetup & ) 
+	void VertexMapValidator::produce( Event & evt , const EventSetup & ) 
 	{
 
 		// Primary Vertices from original AOD  (can access tracks using tracks_begin() etc)
@@ -266,5 +266,5 @@ namespace flashgg {
 	}
 }
 
-typedef flashgg::DzVertexMapValidator FlashggDzVertexMapValidator;
-DEFINE_FWK_MODULE(FlashggDzVertexMapValidator);
+typedef flashgg::VertexMapValidator FlashggVertexMapValidator;
+DEFINE_FWK_MODULE(FlashggVertexMapValidator);
