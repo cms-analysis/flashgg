@@ -9,6 +9,7 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
+#include "DataFormats/Common/interface/RefToPtr.h"
 
 using namespace edm;
 using namespace std;
@@ -25,16 +26,20 @@ namespace flashgg {
 			EDGetTokenT<View<reco::Vertex> > vertexToken_;
 			EDGetTokenT<View<reco::Vertex> > vertexTokenAOD_;
 			EDGetTokenT<View<pat::PackedCandidate> > pfcandidateToken_;
-			double maxAllowedDz_;
-			bool useEachTrackOnce_;
+	                edm::EDGetTokenT<edm::Association<pat::PackedCandidateCollection> > map_;
+                        bool useMiniAODTrackVertexAssociation_;
+	  //			double maxAllowedDz_;
+	  //			bool useEachTrackOnce_;
 	};
 
 	DzVertexMapValidator::DzVertexMapValidator(const ParameterSet & iConfig) :
 		vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
 		vertexTokenAOD_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTagAOD", InputTag("offlinePrimaryVertices")))),
 		pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates")))),
-		maxAllowedDz_(iConfig.getParameter<double>("MaxAllowedDz")), // in cm
-		useEachTrackOnce_(iConfig.getUntrackedParameter<bool>("UseEachTrackOnce",true))
+		map_(consumes<edm::Association<pat::PackedCandidateCollection> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates"))))
+		//		maxAllowedDz_(iConfig.getParameter<double>("MaxAllowedDz")), // in cm
+		//		useEachTrackOnce_(iConfig.getUntrackedParameter<bool>("UseEachTrackOnce",true))
+
 	{
 		produces<VertexCandidateMap>();
 	}
@@ -57,6 +62,11 @@ namespace flashgg {
 		evt.getByToken(pfcandidateToken_,pfCandidates);
 		const PtrVector<pat::PackedCandidate>& pfPtrs = pfCandidates->ptrVector();
 
+		// Association between tracks and PackedCandidates
+		// Treatment from https://github.com/cms-sw/cmssw/blob/743bde9939bbc4f34c2b4fd022cfb980314f912a/PhysicsTools/PatAlgos/plugins/PATSecondaryVertexSlimmer.cc
+		// Comes from same producer as packed candidates themselves, so map_ is actually the same as pfcandidateToken_
+		edm::Handle<edm::Association<pat::PackedCandidateCollection> > pf2pc;
+		evt.getByToken(map_,pf2pc);
 
 		// Track number is used to know how many valid AOD tracks exist 
 		int trackNumber =0;
@@ -168,8 +178,27 @@ namespace flashgg {
 				trkCounter++;
 				trkMap[trkCounter]= -1;
 
-				for (unsigned int j=0; j< pfPtrs.size(); j++)
-				{
+				if (useMiniAODTrackVertexAssociation_) { // Seth's adaptation to use pf2pc
+				  if((*pf2pc)[*trackAOD].isNonnull() && (*pf2pc)[*trackAOD]->numberOfHits() > 0) {
+				    
+				    edm::Ptr<pat::PackedCandidate> pfPtr = edm::refToPtr<pat::PackedCandidateCollection>((*pf2pc)[*trackAOD]);
+				    // These aren't needed, so comment out to avoid warnings about unused variables
+				    //				    double  etaMiniAOD = (*pf2pc)[*trackAOD]->eta();
+				    //				    double  phiMiniAOD = (*pf2pc)[*trackAOD]->phi();
+				    //				    double  ptMiniAOD = (*pf2pc)[*trackAOD]->pt();
+				  
+				    //				    trkMap[trkCounter] = j; // Doesn't do anything in this case - is it needed later?
+
+				    myMap.insert(std::pair<Ptr<reco::Vertex>,Ptr<pat::PackedCandidate>>(pvPtrsAOD[i],pfPtr));
+				    matchCounter++;
+
+				  } else {
+				    std::cout << "Track : " << trkCounter << " NO MATCH "<< std::endl;
+				  }
+
+				} else { // Louie's original version
+				  for (unsigned int j=0; j< pfPtrs.size(); j++)
+				    {
 					double	etaMiniAOD = pfPtrs[j]->eta();
 					double	phiMiniAOD = pfPtrs[j]->phi();
 					double	ptMiniAOD = pfPtrs[j]->pt();
@@ -188,8 +217,9 @@ namespace flashgg {
 						myMap.insert(std::pair<Ptr<reco::Vertex>,Ptr<pat::PackedCandidate>>(pvPtrsAOD[i],pfPtrs[j]));
 						break;
 					}
-				}
+				    }
 				if ( trkMap[trkCounter]==-1) {std::cout << "Track : " << trkCounter << " NO MATCH "<< std::endl;} 
+				  }
 			}
 		}
 
