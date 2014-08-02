@@ -15,11 +15,12 @@ namespace flashgg {
   public:
     LegacyVertexSelector(const edm::ParameterSet& conf) :
       VertexSelectorBase(conf) {}
-
     edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&,
                                   const VertexCandidateMap& vertexCandidateMap,
 				  const edm::PtrVector<reco::Conversion>&) const override;
 
+    edm::Ptr<reco::Conversion> MatchedConversion(const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Conversion>&) const;
+    
   private:
     unsigned int _whichVertex; 
   };
@@ -39,10 +40,64 @@ namespace flashgg {
   double dRPho1 = 0;
   double dRPho2 = 0;
   
+
+  edm::Ptr<reco::Conversion> LegacyVertexSelector::MatchedConversion(const edm::Ptr<flashgg::Photon>& g,const edm::PtrVector<reco::Conversion>& conversionsVector) const {
+    
+    double mindR = 999;
+    
+    assert(g->hasConversionTracks()); //The photon has to have conversion tracks!
+    assert(conversionsVector.size()>0); //The photon has to have conversion tracks!
+
+    int selected_conversion_index = 0;
+    
+    bool vertex_found=false;
+
+    if(g->hasConversionTracks()){
+      for (unsigned int i=0; i<conversionsVector.size();i++){
+	edm::Ptr<reco::Conversion> conv = conversionsVector[i];
+	if(!conv->isConverted()) continue;
+	if(conv->refittedPair4Momentum().pt()<10.) continue;
+	if(TMath::Prob(conv->conversionVertex().chi2(),conv->conversionVertex().ndof()) < 1e-6 ) continue;
+	
+	VtxtoSC.SetXYZ(g->superCluster()->position().x() - conv->conversionVertex().x(), 
+		       g->superCluster()->position().y() - conv->conversionVertex().y(), 
+		       g->superCluster()->position().z() - conv->conversionVertex().z());
+	RefPairMo.SetXYZ(conv->refittedPairMomentum().x(),conv->refittedPairMomentum().y(),conv->refittedPairMomentum().z());
+	dR = VtxtoSC.DeltaR(RefPairMo); 
+	if(dR<mindR){
+	  vertex_found=true;
+	  mindR=dR;
+	  selected_conversion_index=i;
+	}
+      }
+    }  
+    
+    if(vertex_found){
+      std::cout<<"selected index "<<selected_conversion_index<<" size of converted vertices vector "<<conversionsVector.size()<<std::endl;
+      return conversionsVector[selected_conversion_index];
+    }else{
+      std::cout<<"WARNING VERTEX NOT FOUND RETURNING 0 ELEMENT size vertex "<<std::endl;
+      return conversionsVector[0];
+    }
+      
+  }
+  
   edm::Ptr<reco::Vertex> LegacyVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs,
 						      const VertexCandidateMap& vertexCandidateMap,
 						      const edm::PtrVector<reco::Conversion>& conversionsVector) const {
-    bool verbose = true;
+    
+    if(conversionsVector.size()>0){
+      if(g1->hasConversionTracks()){
+	edm::Ptr<reco::Conversion> MatchedConversionLeadPhoton = MatchedConversion(g1,conversionsVector);
+	std::cout<<MatchedConversionLeadPhoton->conversionVertex().z()<<std::endl;
+      }
+      if(g2->hasConversionTracks()){
+	edm::Ptr<reco::Conversion> MatchedConversionTrailPhoton = MatchedConversion(g2,conversionsVector);
+	std::cout<<MatchedConversionTrailPhoton->conversionVertex().z()<<std::endl;
+      }
+    }
+
+    bool verbose = false;
     if (verbose) {
       
       diPho.SetXYZ(g1->px()+g2->px(),g1->py()+g2->py(),g1->pz()+g2->pz());
