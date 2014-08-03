@@ -84,6 +84,14 @@ process.flashggVertexMapValidator = cms.EDProducer('FlashggVertexMapValidator',
 process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
+
+### TO MAKE A QUICK TREE COMPARING THE VERTEX MAPS
+process.TFileService = cms.Service("TFileService",fileName = cms.string("VertexValidationTree.root"))
+process.flashggVertexValidationTreeMaker = cms.EDAnalyzer('FlashggVertexValidationTreeMaker',
+                                                          VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                                          VertexCandidateMapTagDz=cms.InputTag('flashggVertexMapUnique'),
+                                                          VertexCandidateMapTagAOD = cms.InputTag('flashggVertexMapValidator')
+                                                          )
                  
 ####### OUTPUT								 
 #Output definition (AOD->miniAOD)
@@ -134,7 +142,8 @@ process.p = cms.Path(process.flashggVertexMapValidator*
                      process.flashggVertexMapNonUnique*
                      process.flashggPhotons*
                      process.flashggDiPhotons*
-                     process.flashggPreselectedDiPhotons
+                     process.flashggPreselectedDiPhotons*
+                     process.flashggVertexValidationTreeMaker
                     )
 
 # endpaths from AOD->miniAOD
