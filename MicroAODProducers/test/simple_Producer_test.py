@@ -31,6 +31,7 @@ process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring(
         "file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_17.root",
         "file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_18.root",
         "file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_19.root"
+        "file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_20.root"
         ))
 
 # Each track associated only to the closest vertex (or none if dZ >= MaxAllowedDz for all vertices)

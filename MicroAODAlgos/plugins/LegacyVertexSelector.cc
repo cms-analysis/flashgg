@@ -19,7 +19,9 @@ namespace flashgg {
                                   const VertexCandidateMap& vertexCandidateMap,
 				  const edm::PtrVector<reco::Conversion>&) const override;
 
-    edm::Ptr<reco::Conversion> MatchedConversion(const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Conversion>&) const;
+    //  edm::Ptr<reco::Conversion> MatchedConversion(const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Conversion>&) const;
+    double vtxZFromConvOnly   (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&) const;
+    int IndexMatchedConversion(const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Conversion>&) const;
     
   private:
     unsigned int _whichVertex; 
@@ -40,18 +42,28 @@ namespace flashgg {
   double dRPho1 = 0;
   double dRPho2 = 0;
   
+  double LegacyVertexSelector::vtxZFromConvOnly(const edm::Ptr<flashgg::Photon>& g,const edm::Ptr<reco:: Conversion> & conversion) const{
+    TVector3 beamSpot; //To be replaced by g->beamSpot()!!!!
+    beamSpot.SetXYZ(0,0,0);
+    //std::cout<<(conversion->conversionVertex().XYvector()-beamSpot.XYvector()).dot(conversion->refittedPair4Momentum().XYvector())<<std::endl;
+    //    double r=sqrt(conversion->refittedPairMomentum().x()*conversion->refittedPairMomentum().x()+conversion->refittedPairMomentum().x()*conversion->refittedPairMomentum().y()*conversion->refittedPairMomentum().x()*conversion->refittedPairMomentum().y());
 
-  edm::Ptr<reco::Conversion> LegacyVertexSelector::MatchedConversion(const edm::Ptr<flashgg::Photon>& g,const edm::PtrVector<reco::Conversion>& conversionsVector) const {
-    
+    double r=sqrt(conversion->refittedPairMomentum().perp2());
+    double dz = (conversion->conversionVertex().z()-beamSpot.z()) 
+      - 
+      ((conversion->conversionVertex().x()-beamSpot.x())*conversion->refittedPair4Momentum().x()+(conversion->conversionVertex().y()-beamSpot.y())*conversion->refittedPair4Momentum().y())/r * conversion->refittedPair4Momentum().z()/r;
+    return dz + beamSpot.z();
+  }
+  
+  //edm::Ptr<reco::Conversion> LegacyVertexSelector::MatchedConversion(const edm::Ptr<flashgg::Photon>& g,const edm::PtrVector<reco::Conversion>& conversionsVector) const {
+  int LegacyVertexSelector::IndexMatchedConversion(const edm::Ptr<flashgg::Photon>& g,const edm::PtrVector<reco::Conversion>& conversionsVector) const{
     double mindR = 999;
     
     assert(g->hasConversionTracks()); //The photon has to have conversion tracks!
     assert(conversionsVector.size()>0); //The photon has to have conversion tracks!
 
-    int selected_conversion_index = 0;
+    int selected_conversion_index = -1;
     
-    bool vertex_found=false;
-
     if(g->hasConversionTracks()){
       for (unsigned int i=0; i<conversionsVector.size();i++){
 	edm::Ptr<reco::Conversion> conv = conversionsVector[i];
@@ -65,37 +77,42 @@ namespace flashgg {
 	RefPairMo.SetXYZ(conv->refittedPairMomentum().x(),conv->refittedPairMomentum().y(),conv->refittedPairMomentum().z());
 	dR = VtxtoSC.DeltaR(RefPairMo); 
 	if(dR<mindR){
-	  vertex_found=true;
 	  mindR=dR;
 	  selected_conversion_index=i;
 	}
       }
     }  
-    
-    if(vertex_found){
-      std::cout<<"selected index "<<selected_conversion_index<<" size of converted vertices vector "<<conversionsVector.size()<<std::endl;
-      return conversionsVector[selected_conversion_index];
-    }else{
-      std::cout<<"WARNING VERTEX NOT FOUND RETURNING 0 ELEMENT size vertex "<<std::endl;
-      return conversionsVector[0];
-    }
-      
+    //std::cout<<"selected index "<<selected_conversion_index<<" size of converted vertices vector "<<conversionsVector.size()<<std::endl;
+    return selected_conversion_index;
   }
   
   edm::Ptr<reco::Vertex> LegacyVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs,
 						      const VertexCandidateMap& vertexCandidateMap,
 						      const edm::PtrVector<reco::Conversion>& conversionsVector) const {
-    
     if(conversionsVector.size()>0){
       if(g1->hasConversionTracks()){
-	edm::Ptr<reco::Conversion> MatchedConversionLeadPhoton = MatchedConversion(g1,conversionsVector);
-	std::cout<<MatchedConversionLeadPhoton->conversionVertex().z()<<std::endl;
+	int IndexMatchedConversionLeadPhoton = IndexMatchedConversion(g1,conversionsVector);
+	if(IndexMatchedConversionLeadPhoton!=-1){
+	  std::cout<<"dz Lead Photon"<<vtxZFromConvOnly(g1,conversionsVector[IndexMatchedConversionLeadPhoton])<<std::endl;
+	}
       }
       if(g2->hasConversionTracks()){
-	edm::Ptr<reco::Conversion> MatchedConversionTrailPhoton = MatchedConversion(g2,conversionsVector);
-	std::cout<<MatchedConversionTrailPhoton->conversionVertex().z()<<std::endl;
+	int IndexMatchedConversionTrailPhoton = IndexMatchedConversion(g2,conversionsVector);
+	if(IndexMatchedConversionTrailPhoton!=-1){
+	  std::cout<<"dz Lead Photon"<<vtxZFromConvOnly(g2,conversionsVector[IndexMatchedConversionTrailPhoton])<<std::endl;
+	}
       }
     }
+
+    //    int indexselected_vertex=-1;
+    //for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
+    //  edm::Ptr<reco::Vertex> vtx = vtxs[i];
+    //  std::cout<<"dZ vertex = "vtxs[i]
+    //}
+
+
+    
+    //------------------------------------------
 
     bool verbose = false;
     if (verbose) {
@@ -155,27 +172,26 @@ namespace flashgg {
 	  }
 	}
       }
-      /*
-	for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
-	edm::Ptr<reco::Vertex> vtx = vtxs[i];
-	std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
-	for (unsigned int j = 0 ; j < vertexCandidateMap.at(vtx).size() ; j++) {
-	  edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMap.at(vtx)[j];
-	  std::cout << " Candidate " << j << " in vertex " << i << " has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
-	  tk.SetXYZ(cand->px(),cand->py(),cand->pz());  
-	  tkPlane = tk.XYvector();
-	  sumpt += tkPlane.Mod(); 
-	  sumpt2 += tkPlane.Mod2();
-	  ptbal -= tkPlane * diPhoXY.Unit(); 
-	}
-	ptasym = (sumpt - diPhoXY.Mod())/(sumpt+diPhoXY.Mod());
-	}
-      */
     }
 
+    for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
+      edm::Ptr<reco::Vertex> vtx = vtxs[i];
+      std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
+      for (unsigned int j = 0 ; j < vertexCandidateMap.at(vtx).size() ; j++) {
+	edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMap.at(vtx)[j];
+	std::cout << " Candidate " << j << " in vertex " << i << " has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
+	tk.SetXYZ(cand->px(),cand->py(),cand->pz());  
+	tkPlane = tk.XYvector();
+	sumpt += tkPlane.Mod(); 
+	sumpt2 += tkPlane.Mod2();
+	ptbal -= tkPlane * diPhoXY.Unit(); 
+      }
+      ptasym = (sumpt - diPhoXY.Mod())/(sumpt+diPhoXY.Mod());
+    }
+    
     return vtxs[0];
-  }
-
+  }  
+  
 }
 
 DEFINE_EDM_PLUGIN(FlashggVertexSelectorFactory,
