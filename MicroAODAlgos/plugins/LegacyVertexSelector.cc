@@ -174,13 +174,15 @@ namespace flashgg {
       }
     }
 
-    for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
-      edm::Ptr<reco::Vertex> vtx = vtxs[i];
-      std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
-      for (unsigned int j = 0 ; j < vertexCandidateMap.at(vtx).size() ; j++) {
-	edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMap.at(vtx)[j];
-	std::cout << " Candidate " << j << " in vertex " << i << " has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
-	tk.SetXYZ(cand->px(),cand->py(),cand->pz());  
+    std::cout<< "Vertices in this event: "<<vtxs.size()<< std::endl;
+    for (unsigned int index_vertex = 0 ; index_vertex < vtxs.size() ; index_vertex++) {
+      edm::Ptr<reco::Vertex> vtx = vtxs[index_vertex];
+      if(vertexCandidateMap.count(vtx)==0)continue;
+      std::cout<< "\t On vertex " << index_vertex << " with " << vertexCandidateMap.at(vtx).size() <<" Tracks"<< std::endl;
+      for (unsigned int index_track = 0 ; index_track < vertexCandidateMap.at(vtx).size() ; index_track++) {
+	edm::Ptr<pat::PackedCandidate> track = vertexCandidateMap.at(vtx)[index_track];
+	std::cout <<"\t \t track # "<<index_track<<"has dz (w.r.t that vertex) of="<< track->dz(vtx->position())<< std::endl;
+	tk.SetXYZ(track->px(),track->py(),track->pz());  
 	tkPlane = tk.XYvector();
 	sumpt += tkPlane.Mod(); 
 	sumpt2 += tkPlane.Mod2();
