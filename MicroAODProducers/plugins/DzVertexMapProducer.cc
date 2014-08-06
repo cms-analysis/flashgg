@@ -10,6 +10,7 @@
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 
+#include <fstream>
 using namespace edm;
 using namespace std;
 
@@ -38,6 +39,8 @@ namespace flashgg {
 
   void DzVertexMapProducer::produce( Event & evt, const EventSetup & ) {
     
+		std::ofstream out;
+		out.open("out.txt" , std::ofstream::app);
     Handle<View<reco::Vertex> > primaryVertices;
     evt.getByToken(vertexToken_,primaryVertices);
     const PtrVector<reco::Vertex>& pvPtrs = primaryVertices->ptrVector();
@@ -47,6 +50,9 @@ namespace flashgg {
     const PtrVector<pat::PackedCandidate>& pfPtrs = pfCandidates->ptrVector();
 
     std::auto_ptr<VertexCandidateMap> assoc(new VertexCandidateMap);
+
+		int oneCounter =0;
+		int manyCounter =0;
 
     if (useEachTrackOnce_) {
       // Associate a track to the closest vertex only, and only if dz < maxAllowedDz_
@@ -94,6 +100,8 @@ namespace flashgg {
     } // end of !useEachTrackOnce_
 
     evt.put(assoc);
+		std::cout << "ONE tracks : " << oneCounter << ", MANY tracks : " << manyCounter << std::endl;
+		out << oneCounter + manyCounter  << "	";
   }
 }
 
