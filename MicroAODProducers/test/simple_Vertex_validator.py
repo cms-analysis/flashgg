@@ -77,6 +77,7 @@ process.flashggVertexMapValidator = cms.EDProducer('FlashggDzVertexMapValidator'
                                                 PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
                                                 VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                                 VertexTagAOD=cms.untracked.InputTag('offlinePrimaryVertices'),
+                                                lostTrackTag=cms.untracked.InputTag('lostTracks'),
                                                 MaxAllowedDz=cms.double(0.2) # in cm
                                                 )
 
