@@ -100,7 +100,6 @@ namespace flashgg {
 
 		// print ifno for debugging
 		std::cout << "AOD vtxs:  "<<  pvPtrsAOD.size() << ", miniAOD vtxs: " << pvPtrs.size() << ", AOD tracks: " << trackNumber <<", miniAOD tracks: " << trackNumberMiniAOD <<  std::endl;
-		std::cout << "Lost :" << lostTrks.size() << std::endl;
 
 
 		// ***************************************************************************
@@ -247,7 +246,7 @@ namespace flashgg {
 // *** create map between miniAOD vertices and Packed Candidate Tracks via AOD info ***
 // ************************************************************************************
 
-double matchCounter=0;
+matchCounter=0;
 
 // loop over miniAOD PVs
 for (unsigned int i = 0 ; i < pvPtrs.size() ; i++) 
@@ -284,7 +283,7 @@ std:: cout << "matched tracks : " << matchCounter  << std:: endl;
 //		if (trkCounter > trackNumber) { std::cout << " [ISSUE] " << std::endl;}
 evt.put(assoc);
 
-out << trackNumber << "	" << trackNumberMiniAOD << "	" << matchCounter << std::endl;
+cout << trackNumber << "	" << trackNumberMiniAOD << "	" << matchCounter << std::endl;
 }
 }
 
