@@ -9,37 +9,46 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
+#include "DataFormats/Common/interface/RefToPtr.h"
+#include "DataFormats/Math/interface/deltaR.h"
+
 
 using namespace edm;
 using namespace std;
 
 namespace flashgg {
 
-	class DzVertexMapValidator : public EDProducer 
+	class VertexMapValidator : public EDProducer 
 	{
 
 		public:
-			DzVertexMapValidator( const ParameterSet & );
+			VertexMapValidator( const ParameterSet & );
 		private:
 			void produce( Event &, const EventSetup & ) override;
 			EDGetTokenT<View<reco::Vertex> > vertexToken_;
 			EDGetTokenT<View<reco::Vertex> > vertexTokenAOD_;
 			EDGetTokenT<View<pat::PackedCandidate> > pfcandidateToken_;
-			double maxAllowedDz_;
-			bool useEachTrackOnce_;
+	                edm::EDGetTokenT<edm::Association<pat::PackedCandidateCollection> > map_;
+                        bool useMiniAODTrackVertexAssociation_;
+	                bool doTextDebug_; // Not compatible with actually outputting results!
+	  //			double maxAllowedDz_;
+	  //			bool useEachTrackOnce_;
 	};
 
-	DzVertexMapValidator::DzVertexMapValidator(const ParameterSet & iConfig) :
+	VertexMapValidator::VertexMapValidator(const ParameterSet & iConfig) :
 		vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
 		vertexTokenAOD_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTagAOD", InputTag("offlinePrimaryVertices")))),
 		pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates")))),
-		maxAllowedDz_(iConfig.getParameter<double>("MaxAllowedDz")), // in cm
-		useEachTrackOnce_(iConfig.getUntrackedParameter<bool>("UseEachTrackOnce",true))
+		map_(consumes<edm::Association<pat::PackedCandidateCollection> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates")))),
+		//		maxAllowedDz_(iConfig.getParameter<double>("MaxAllowedDz")), // in cm
+		//		useEachTrackOnce_(iConfig.getUntrackedParameter<bool>("UseEachTrackOnce",true))
+		useMiniAODTrackVertexAssociation_(iConfig.getUntrackedParameter<bool>("UseMiniAODTrackVertexAssociation",true)),
+                doTextDebug_(iConfig.getUntrackedParameter<bool>("DoTextDebug",false))
 	{
 		produces<VertexCandidateMap>();
 	}
 
-	void DzVertexMapValidator::produce( Event & evt , const EventSetup & ) 
+	void VertexMapValidator::produce( Event & evt , const EventSetup & ) 
 	{
 
 		// Primary Vertices from original AOD  (can access tracks using tracks_begin() etc)
@@ -57,6 +66,11 @@ namespace flashgg {
 		evt.getByToken(pfcandidateToken_,pfCandidates);
 		const PtrVector<pat::PackedCandidate>& pfPtrs = pfCandidates->ptrVector();
 
+		// Association between tracks and PackedCandidates
+		// Treatment from https://github.com/cms-sw/cmssw/blob/743bde9939bbc4f34c2b4fd022cfb980314f912a/PhysicsTools/PatAlgos/plugins/PATSecondaryVertexSlimmer.cc
+		// Comes from same producer as packed candidates themselves, so map_ is actually the same as pfcandidateToken_
+		edm::Handle<edm::Association<pat::PackedCandidateCollection> > pf2pc;
+		evt.getByToken(map_,pf2pc);
 
 		// Track number is used to know how many valid AOD tracks exist 
 		int trackNumber =0;
@@ -77,6 +91,7 @@ namespace flashgg {
 		{
 			Ptr<pat::PackedCandidate> cand = pfPtrs[i];
 			if (cand->charge() == 0) continue; // skip neutrals
+			//			if (abs(cand->pdgId()) != 211) continue; // skip neutrals
 			trackNumberMiniAOD++;
 		}
 
@@ -148,13 +163,14 @@ namespace flashgg {
 		std::multimap<Ptr<reco::Vertex>, Ptr<pat::PackedCandidate>> myMap;
 
 		// eta-,phi-,ptLim represent the minimum proximity for each criterion for the tracks to be considered the same.	
-		double etaLim = 0.001 ;
-		double phiLim = 0.001 ;
-		double ptLim = 0.001 ;
+		double etaLim = 0.01 ;
+		double phiLim = 0.01 ;
+		double ptLim = 0.01 ;
 		double matchCounter=0;
 
 		for (unsigned int i =0; i< pvPtrsAOD.size() ; i++)
 		{
+		  if (doTextDebug_) std::cout << "Vertex " << i << std::endl;
 			for(auto trackAOD=pvPtrsAOD[i]->tracks_begin(); trackAOD != pvPtrsAOD[i]->tracks_end(); trackAOD++)		
 			{
 
@@ -163,33 +179,61 @@ namespace flashgg {
 				double ptAOD = (**trackAOD).pt();
 
 
-				//	std::cout << "eta "<< etaAOD << " , phi " << phiAOD << " , pt " << ptAOD << std::endl;
 				// If no match is found, the index of correcsponding entry is -1
 				trkCounter++;
 				trkMap[trkCounter]= -1;
 
-				for (unsigned int j=0; j< pfPtrs.size(); j++)
-				{
+                                if (doTextDebug_) std::cout << "  Track : " << trkCounter << " eta "<< etaAOD << " , phi " << phiAOD << " , pt " << ptAOD << std::endl;
+
+				if (useMiniAODTrackVertexAssociation_) { // Seth's adaptation to use pf2pc
+				  if((*pf2pc)[*trackAOD].isNonnull() && (*pf2pc)[*trackAOD]->charge() != 0) {
+				    
+				    edm::Ptr<pat::PackedCandidate> pfPtr = edm::refToPtr<pat::PackedCandidateCollection>((*pf2pc)[*trackAOD]);
+				  
+				    //				    trkMap[trkCounter] = j; // Doesn't do anything in this case - is it needed later?
+
+				    if (doTextDebug_) {
+				      double  etaMiniAOD = (*pf2pc)[*trackAOD]->eta();                                                               
+				      double  phiMiniAOD = (*pf2pc)[*trackAOD]->phi();                                                               
+				      double  ptMiniAOD = (*pf2pc)[*trackAOD]->pt();                                                                 
+				      std::cout << "    Track : " << trkCounter << " pf2pc MATCH eta "<< etaMiniAOD << " , phi " << phiMiniAOD << " , pt " << ptMiniAOD << std::endl;
+				    }
+
+				    myMap.insert(std::pair<Ptr<reco::Vertex>,Ptr<pat::PackedCandidate>>(pvPtrsAOD[i],pfPtr));
+				    matchCounter++;
+
+				  } else {
+				    std::cout << "    Track : " << trkCounter << " NO pf2pc MATCH "<< std::endl;
+				  }
+				}
+				if (!useMiniAODTrackVertexAssociation_ || doTextDebug_) {
+				  // Louie's original version
+				  for (unsigned int j=0; j< pfPtrs.size(); j++)
+				    {
 					double	etaMiniAOD = pfPtrs[j]->eta();
 					double	phiMiniAOD = pfPtrs[j]->phi();
 					double	ptMiniAOD = pfPtrs[j]->pt();
 
 					// require x,y, and z to simulatenously be within the limits for a match
-					if( fabs(etaAOD-etaMiniAOD) < etaLim && fabs(phiAOD-phiMiniAOD) < phiLim && fabs(ptAOD-ptMiniAOD) < ptLim )
+					if( pfPtrs[j]->charge() != 0 && // abs(pfPtrs[j]->pdgId()) == 211 && 
+					    fabs(etaAOD-etaMiniAOD) < etaLim && reco::deltaPhi(**trackAOD,*pfPtrs[j]) < phiLim && fabs(ptAOD-ptMiniAOD) < ptLim )
 					{
 						//set index if there is a match
 						trkMap[trkCounter]=j;
 						matchCounter++;
-								//std::cout << " Track : " << trkCounter << " MATCH to " << j << std::endl;
-							//std::cout << etaAOD << " | " << etaMiniAOD << " - " << phiAOD << " | " <<phiMiniAOD << " - " << ptAOD << " | " << ptMiniAOD << std::endl;
-
-
-						//break loop if there is a match
-						myMap.insert(std::pair<Ptr<reco::Vertex>,Ptr<pat::PackedCandidate>>(pvPtrsAOD[i],pfPtrs[j]));
-						break;
+						if (doTextDebug_) {
+						  std::cout << "    Track : " << trkCounter << " eta/phi/pt MATCH to " << j << " :";
+						  std::cout << "      " << etaMiniAOD << " , " << phiMiniAOD << " , " << ptMiniAOD << std::endl;
+						} else {
+						  //break loop if there is a match, unless we're doing text debugging
+						  // Then don't store any output at all!
+						  myMap.insert(std::pair<Ptr<reco::Vertex>,Ptr<pat::PackedCandidate>>(pvPtrsAOD[i],pfPtrs[j]));
+						  break;
+						}
 					}
-				}
-				if ( trkMap[trkCounter]==-1) {std::cout << "Track : " << trkCounter << " NO MATCH "<< std::endl;} 
+				    }
+				if ( trkMap[trkCounter]==-1) {std::cout << "    Track : " << trkCounter << " NO eta/phi/pt MATCH "<< std::endl;} 
+				  }
 			}
 		}
 
@@ -236,5 +280,5 @@ namespace flashgg {
 	}
 }
 
-typedef flashgg::DzVertexMapValidator FlashggDzVertexMapValidator;
-DEFINE_FWK_MODULE(FlashggDzVertexMapValidator);
+typedef flashgg::VertexMapValidator FlashggVertexMapValidator;
+DEFINE_FWK_MODULE(FlashggVertexMapValidator);

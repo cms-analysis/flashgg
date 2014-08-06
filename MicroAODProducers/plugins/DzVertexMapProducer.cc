@@ -52,6 +52,7 @@ namespace flashgg {
       // Associate a track to the closest vertex only, and only if dz < maxAllowedDz_
       for (unsigned int i = 0 ; i < pfPtrs.size() ; i++) {
 	Ptr<pat::PackedCandidate> cand = pfPtrs[i];
+	//	if (abs(cand->pdgId() != 211) continue; // skip neutrals
 	if (cand->charge() == 0) continue; // skip neutrals
 	double closestDz = maxAllowedDz_;
 	unsigned int closestDzIndex = -1;
