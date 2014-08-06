@@ -10,7 +10,6 @@
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 
-#include <fstream>
 using namespace edm;
 using namespace std;
 
@@ -48,7 +47,6 @@ namespace flashgg {
     const PtrVector<pat::PackedCandidate>& pfPtrs = pfCandidates->ptrVector();
 
     std::auto_ptr<VertexCandidateMap> assoc(new VertexCandidateMap);
-
 
     if (useEachTrackOnce_) {
       // Associate a track to the closest vertex only, and only if dz < maxAllowedDz_
