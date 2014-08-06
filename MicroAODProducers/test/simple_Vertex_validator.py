@@ -28,7 +28,7 @@ process.GlobalTag = GlobalTag(process.GlobalTag, 'PLS170_V7AN1::All', '')
 
 ####### EVENT NUMBER 
 #event number
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 
 ####### INPUT SOURCE
 # Input source (from AOD->miniAOD)
@@ -89,6 +89,8 @@ process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
 process.TFileService = cms.Service("TFileService",fileName = cms.string("VertexValidationTree.root"))
 process.flashggVertexValidationTreeMaker = cms.EDAnalyzer('FlashggVertexValidationTreeMaker',
                                                           VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                                          GenParticleTag=cms.untracked.InputTag('prunedGenParticles'),
+                                                          PackedGenParticleTag=cms.untracked.InputTag('packedGenParticles'),
                                                           VertexCandidateMapTagDz=cms.InputTag('flashggVertexMapUnique'),
                                                           VertexCandidateMapTagAOD = cms.InputTag('flashggVertexMapValidator')
                                                           )

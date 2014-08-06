@@ -17,6 +17,7 @@
 #include "DataFormats/Common/interface/PtrVector.h"
 
 #include "DataFormats/VertexReco/interface/Vertex.h"
+#include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 
 #include "flashgg/MicroAODAlgos/interface/VertexSelectorBase.h"
 #include "flashgg/MicroAODFormats/interface/Photon.h"
@@ -74,6 +75,8 @@ class VertexValidationTreeMaker : public edm::EDAnalyzer {
       void initEventStructure();
 
   EDGetTokenT<View<reco::Vertex> > vertexToken_;
+  EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
+  EDGetTokenT<View<pat::PackedGenParticle> > packedGenParticleToken_;
   EDGetTokenT< VertexCandidateMap > vertexCandidateMapTokenDz_;
   EDGetTokenT< VertexCandidateMap > vertexCandidateMapTokenAOD_;
 
@@ -111,6 +114,8 @@ class VertexValidationTreeMaker : public edm::EDAnalyzer {
 //
 VertexValidationTreeMaker::VertexValidationTreeMaker(const edm::ParameterSet& iConfig):
   vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
+  genParticleToken_(consumes<View<reco::GenParticle> >(iConfig.getUntrackedParameter<InputTag> ("GenParticleTag", InputTag("prunedGenParticles")))),
+  packedGenParticleToken_(consumes<View<pat::PackedGenParticle> >(iConfig.getUntrackedParameter<InputTag> ("PackedGenParticleTag", InputTag("packedGenParticles")))),
   vertexCandidateMapTokenDz_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTagDz"))),
   vertexCandidateMapTokenAOD_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTagAOD")))
 {
@@ -143,12 +148,28 @@ VertexValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSet
   Handle<View<reco::Vertex> > primaryVertices;
   iEvent.getByToken(vertexToken_,primaryVertices);
   const PtrVector<reco::Vertex>& vtxs = primaryVertices->ptrVector();
+  
+	Handle<View<reco::GenParticle> > genParticles;
+  iEvent.getByToken(genParticleToken_,genParticles);
+  const PtrVector<reco::GenParticle>& gens = genParticles->ptrVector();
 
+	Handle<View<pat::PackedGenParticle> > packedGenParticles;
+  iEvent.getByToken(packedGenParticleToken_,packedGenParticles);
+  const PtrVector<pat::PackedGenParticle>& packedGens = packedGenParticles->ptrVector();
 
   // cout << "size = " << pvPointers.size() << " " << pfCandPointers.size() << endl;
   
   // ********************************************************************************
-
+	std::cout << " Number of genParticles : " <<  gens.size() << std::endl;
+	for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++)
+	{
+	std::cout << "genParticle " << genLoop << " has vertex at z= " << gens[genLoop]->vz() << std::endl;
+	}
+	std::cout << " Number of PackedGenParticles : " <<  packedGens.size() << std::endl;
+	for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++)
+	{
+	std::cout << "genParticle " << genLoop << " has vertex at z= " << packedGens[genLoop]->vz() << std::endl;
+	}
   for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
 
     initEventStructure();
@@ -169,12 +190,12 @@ VertexValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSet
     vInfo.sumptsq_Dz = 0.;
     for (unsigned int j = 0 ; j < vertexCandidateMapDz->at(vtx).size() ; j++) {
       edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMapDz->at(vtx)[j];
-      std::cout << " Candidate " << j << " in vertex " << i << " (Dz Map) has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
+      //std::cout << " Candidate " << j << " in vertex " << i << " (Dz Map) has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
       vInfo.sumptsq_Dz += (cand->pt()*cand->pt());
     }
     for (unsigned int j = 0 ; j < vertexCandidateMapAOD->at(vtx).size() ; j++) {
       edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMapAOD->at(vtx)[j];
-      std::cout << " Candidate " << j << " in vertex " << i << " (AOD Map) has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
+      //std::cout << " Candidate " << j << " in vertex " << i << " (AOD Map) has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
       vInfo.sumptsq_AOD += (cand->pt()*cand->pt());
     }
     vertexTree->Fill();
