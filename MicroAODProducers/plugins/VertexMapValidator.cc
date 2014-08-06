@@ -112,9 +112,9 @@ namespace flashgg {
 		int pvMap[pvPtrs.size()]; 
 
 		// x-,y-,zLim represent the minimum proximity for each coordiante for the PVs to be considered the same.	
-		double xLim = 0.1 ;
-		double yLim = 0.1 ;
-		double zLim = 0.1 ;
+		double xLim = 0.01 ;
+		double yLim = 0.01 ;
+		double zLim = 0.01 ;
 
 		for (unsigned int i=0; i< pvPtrs.size() ; i++)
 		{
