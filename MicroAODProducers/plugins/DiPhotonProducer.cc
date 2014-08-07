@@ -68,12 +68,14 @@ namespace flashgg {
     const PtrVector<reco::Conversion>& conversionPointers = conversions->ptrVector();
 
     math::XYZPoint vertexPoint;
-    
+
     Handle<reco::BeamSpot> recoBeamSpotHandle;
     evt.getByToken(beamSpotToken_,recoBeamSpotHandle);
     if (recoBeamSpotHandle.isValid()){
       vertexPoint = recoBeamSpotHandle->position();
     }
+
+    std::cout<<"recoBeamSpotHandle->position().z() = "<<vertexPoint.z()<<std::endl;
     
     auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
 

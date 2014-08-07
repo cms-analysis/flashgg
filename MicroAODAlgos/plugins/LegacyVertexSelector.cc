@@ -86,7 +86,7 @@ namespace flashgg {
 						      const edm::PtrVector<reco::Conversion>& conversionsVector,
 						      const math::XYZPoint & beamSpot) const {
 
-    std::cout<<"beamSpot.x() ="<<beamSpot.x()<<std::endl;
+    std::cout<<"beamSpot.z() ="<<beamSpot.z()<<std::endl;
     
     if(conversionsVector.size()>0){
       if(g1->hasConversionTracks()){
