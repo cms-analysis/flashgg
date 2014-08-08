@@ -89,6 +89,7 @@ process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
 process.TFileService = cms.Service("TFileService",fileName = cms.string("VertexValidationTree.root"))
 process.flashggVertexValidationTreeMaker = cms.EDAnalyzer('FlashggVertexValidationTreeMaker',
                                                           VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                                          GenParticleTag=cms.untracked.InputTag('prunedGenParticles'),
                                                           VertexCandidateMapTagDz=cms.InputTag('flashggVertexMapUnique'),
                                                           VertexCandidateMapTagAOD = cms.InputTag('flashggVertexMapValidator')
                                                           )
