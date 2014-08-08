@@ -31,7 +31,7 @@ namespace flashgg {
     void  setpfChgIsoWrtWorstVtx03(float val) {pfChgIsoWrtWorstVtx03_=val;};
     void  setESEffSigmaRR(float val) {ESEffSigmaRR_=val;};  
     void  setPhoIdMvaD( std::map<edm::Ptr<reco::Vertex>,float> valmap ) {  phoIdMvaD_ = valmap; };   // concept: pass the pre-computed map when calling this in the producer
-
+   
     float const getSipip() const {return sipip;};
     float const getSieip() const {return sieip;};
     float const getE2nd() const {return e2nd;};
@@ -51,6 +51,7 @@ namespace flashgg {
     float const getpfChgIso03WrtVtx( const edm::Ptr<reco::Vertex>& vtx ) const {return pfChgIso03_.at(vtx);};
     float const getpfChgIsoWrtWorstVtx03() const {return pfChgIsoWrtWorstVtx03_;};
     float const getESEffSigmaRR() const {return ESEffSigmaRR_;};
+    
     std::map<edm::Ptr<reco::Vertex>,float> const getPhoIdMvaD() const {return phoIdMvaD_;};
     float const getPhoIdMvaDWrtVtx( const edm::Ptr<reco::Vertex>& vtx ) const {return phoIdMvaD_.at(vtx);};       
 
@@ -77,7 +78,7 @@ namespace flashgg {
     float ESEffSigmaRR_;
     std::map<edm::Ptr<reco::Vertex>,float> pfChgIso03_; 
     std::map<edm::Ptr<reco::Vertex>,float> phoIdMvaD_;
-  };
+     };
 }
 
 #endif
