@@ -17,10 +17,10 @@ namespace flashgg {
       VertexSelectorBase(conf) {}
     edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&,
                                   const VertexCandidateMap& vertexCandidateMap,
-				  const edm::PtrVector<reco::Conversion>&) const override;
-
-    //  edm::Ptr<reco::Conversion> MatchedConversion(const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Conversion>&) const;
-    double vtxZFromConvOnly   (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&) const;
+				  const edm::PtrVector<reco::Conversion>&,
+				  const math::XYZPoint&) const override;
+    
+    double vtxZFromConvOnly   (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
     int IndexMatchedConversion(const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Conversion>&) const;
     
   private:
@@ -53,11 +53,7 @@ namespace flashgg {
   double dRPho2 = 0;
   double dRexclude = 0.05;
   
-  double LegacyVertexSelector::vtxZFromConvOnly(const edm::Ptr<flashgg::Photon>& g,const edm::Ptr<reco:: Conversion> & conversion) const{
-    TVector3 beamSpot; //To be replaced by g->beamSpot()!!!!
-    beamSpot.SetXYZ(0,0,0);
-    //std::cout<<(conversion->conversionVertex().XYvector()-beamSpot.XYvector()).dot(conversion->refittedPair4Momentum().XYvector())<<std::endl;
-    //    double r=sqrt(conversion->refittedPairMomentum().x()*conversion->refittedPairMomentum().x()+conversion->refittedPairMomentum().x()*conversion->refittedPairMomentum().y()*conversion->refittedPairMomentum().x()*conversion->refittedPairMomentum().y());
+  double LegacyVertexSelector::vtxZFromConvOnly(const edm::Ptr<flashgg::Photon>& g,const edm::Ptr<reco:: Conversion> & conversion,const math::XYZPoint & beamSpot) const{
 
     double r=sqrt(conversion->refittedPairMomentum().perp2());
     double dz = (conversion->conversionVertex().z()-beamSpot.z()) 
@@ -66,7 +62,6 @@ namespace flashgg {
     return dz + beamSpot.z();
   }
   
-  //edm::Ptr<reco::Conversion> LegacyVertexSelector::MatchedConversion(const edm::Ptr<flashgg::Photon>& g,const edm::PtrVector<reco::Conversion>& conversionsVector) const {
   int LegacyVertexSelector::IndexMatchedConversion(const edm::Ptr<flashgg::Photon>& g,const edm::PtrVector<reco::Conversion>& conversionsVector) const{
     double mindR = 999;
     
@@ -99,18 +94,30 @@ namespace flashgg {
   
   edm::Ptr<reco::Vertex> LegacyVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs,
 						      const VertexCandidateMap& vertexCandidateMap,
-						      const edm::PtrVector<reco::Conversion>& conversionsVector) const {
+						      const edm::PtrVector<reco::Conversion>& conversionsVector,
+						      const math::XYZPoint & beamSpot) const {
+
+    std::cout<<"beamSpot.z() ="<<beamSpot.z()<<std::endl;
+    
     if(conversionsVector.size()>0){
       if(g1->hasConversionTracks()){
 	int IndexMatchedConversionLeadPhoton = IndexMatchedConversion(g1,conversionsVector);
 	if(IndexMatchedConversionLeadPhoton!=-1){
+<<<<<<< HEAD
 	  //std::cout<<"dz Lead Photon"<<vtxZFromConvOnly(g1,conversionsVector[IndexMatchedConversionLeadPhoton])<<std::endl;
+=======
+	  std::cout<<"dz Lead Photon"<<vtxZFromConvOnly(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
+>>>>>>> 943f927e416417a6af9458f629bc0e7954edf68d
 	}
       }
       if(g2->hasConversionTracks()){
 	int IndexMatchedConversionTrailPhoton = IndexMatchedConversion(g2,conversionsVector);
 	if(IndexMatchedConversionTrailPhoton!=-1){
+<<<<<<< HEAD
 	  //std::cout<<"dz Lead Photon"<<vtxZFromConvOnly(g2,conversionsVector[IndexMatchedConversionTrailPhoton])<<std::endl;
+=======
+	  std::cout<<"dz Lead Photon"<<vtxZFromConvOnly(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
+>>>>>>> 943f927e416417a6af9458f629bc0e7954edf68d
 	}
       }
     }

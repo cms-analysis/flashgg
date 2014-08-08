@@ -11,14 +11,13 @@ process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
-process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring(
-        "file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_3.root"
-        ))
+process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_3.root"))
 
 # Each track associated only to the closest vertex (or none if dZ >= MaxAllowedDz for all vertices)
 process.flashggVertexMapUnique = cms.EDProducer('FlashggDzVertexMapProducer',
                                                 PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
                                                 VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                                BeamSpotTag=cms.untracked.InputTag('offlineBeamSpot'),
                                                 MaxAllowedDz=cms.double(0.2) # in cm
                                                 )
 
