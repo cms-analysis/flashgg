@@ -25,6 +25,12 @@ namespace flashgg {
     double vtxZFromConvOnly         (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
     double vtxZFromConvSuperCluster (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
     double vtxZFromConv             (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
+    double vtxdZFromConv            () const;
+
+    void getZFromConvPair(const float&,const float&,
+			  const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,
+			  const edm::Ptr<reco:: Conversion> &,const edm::Ptr<reco:: Conversion> &,
+			  const math::XYZPoint & beamSpot) const;
 
     
     int IndexMatchedConversion(const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Conversion>&) const;
@@ -92,9 +98,7 @@ namespace flashgg {
     // method 2 is supercluster only
 
     int method=0;
-
     double ReturnValue = 0;
-
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
 
     //Mixed Method Conversion Vertex
@@ -129,6 +133,44 @@ namespace flashgg {
     return ReturnValue;
 
   }
+
+  double LegacyVertexSelector::vtxdZFromConv () const{
+    return 0.01;
+  }
+
+  void LegacyVertexSelector::getZFromConvPair(const float& zconv,const float& sconv,
+					      const edm::Ptr<flashgg::Photon>& p1,
+					      const edm::Ptr<flashgg::Photon>& p2,
+					      const edm::Ptr<reco:: Conversion> & conversionLead,
+					      const edm::Ptr<reco:: Conversion> & conversionTrail,
+					      const math::XYZPoint & beamSpot) const{
+    
+    if ( conversionLead->isConverted()  && !conversionTrail->isConverted() ){
+      //setNConv(1);
+      zconv  = vtxZFromConv(p1,conversionLead,conversionTrail,beamSpot);
+      szconv = vtxdZFromConv();
+    }
+    if (p2.isAConversion() && !p1.isAConversion()){
+      //setNConv(1);
+      zconv  = vtxZFromConv (p2);
+      szconv = vtxdZFromConv(p2);
+    }
+    
+    if (p1.isAConversion() && p2.isAConversion()){
+      //setNConv(2);
+      float z1  = vtxZFromConv (p1);
+      float sz1 = vtxdZFromConv(p1);
+      
+      float z2  = vtxZFromConv (p2);
+      float sz2 = vtxdZFromConv(p2);
+      
+      zconv  = (z1/sz1/sz1 + z2/sz2/sz2)/(1./sz1/sz1 + 1./sz2/sz2 );  // weighted average
+      szconv = sqrt( 1./(1./sz1/sz1 + 1./sz2/sz2)) ;
+    }
+  }
+
+
+
 
   int LegacyVertexSelector::IndexMatchedConversion(const edm::Ptr<flashgg::Photon>& g,const edm::PtrVector<reco::Conversion>& conversionsVector) const{
     double mindR = 999;
@@ -291,11 +333,6 @@ namespace flashgg {
       //std::cout << "sumpt2_in  " << sumpt2_in << std::endl;
       //std::cout << " Candidate " << j << " in vertex " << i << " has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
       ptasym = (sumpt - diPhoXY.Mod())/(sumpt+diPhoXY.Mod());
-
-      double sigmaz=0.01; //FIXME
-
-      double pull_conv_lead   = fabs(vtx->position().z()- vtxZFromConv(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot))/sigmaz;
-      double pull_conv_trail  = fabs(vtx->position().z()- vtxZFromConv(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot))/sigmaz;
 
       std::cout<<"converted_case_MVA_variables sumpt "<<sumpt<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal
 	       <<" pull_conv_lead "<<pull_conv_lead<<" pull_conv_trail "<<pull_conv_trail
