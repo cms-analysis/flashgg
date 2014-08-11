@@ -21,6 +21,7 @@ namespace flashgg {
 				  const math::XYZPoint&) const override;
     
     double vtxZFromConvOnly   (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
+    double vtxZFromConvSuperCluster (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
     int IndexMatchedConversion(const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Conversion>&) const;
     
   private:
@@ -50,6 +51,31 @@ namespace flashgg {
       ((conversion->conversionVertex().x()-beamSpot.x())*conversion->refittedPair4Momentum().x()+(conversion->conversionVertex().y()-beamSpot.y())*conversion->refittedPair4Momentum().y())/r * conversion->refittedPair4Momentum().z()/r;
     return dz + beamSpot.z();
   }
+
+  double LegacyVertexSelector::vtxZFromConvSuperCluster (const edm::Ptr<flashgg::Photon>& pho,const edm::Ptr<reco:: Conversion> & conversion,const math::XYZPoint & beamSpot) const{
+
+    // get the z from conversion plus SuperCluster
+    double deltaX1 =  pho.caloPosition().X()- pho.conversionVertex().X();
+    double deltaY1 =  pho.caloPosition().Y()- pho.conversionVertex().Y();
+    double deltaZ1 =  pho.caloPosition().Z()- pho.conversionVertex().Z();
+    double R1 = sqrt(deltaX1*deltaX1+deltaY1*deltaY1);
+    double tantheta = R1/deltaZ1;
+  
+    double deltaX2 = pho.conversionVertex().X()-pho.beamSpot().X();
+    double deltaY2 = pho.conversionVertex().Y()-pho.beamSpot().Y();
+    double R2 = sqrt(deltaX2*deltaX2+deltaY2*deltaY2);
+    double deltaZ2 = R2/tantheta;
+    double higgsZ =  pho.caloPosition().Z()-deltaZ1-deltaZ2;
+    return higgsZ;
+    
+    //
+    double r=sqrt(conversion->refittedPairMomentum().perp2());
+    double dz = (conversion->conversionVertex().z()-beamSpot.z()) 
+      - 
+      ((conversion->conversionVertex().x()-beamSpot.x())*conversion->refittedPair4Momentum().x()+(conversion->conversionVertex().y()-beamSpot.y())*conversion->refittedPair4Momentum().y())/r * conversion->refittedPair4Momentum().z()/r;
+    return dz + beamSpot.z();
+  }
+
   
   int LegacyVertexSelector::IndexMatchedConversion(const edm::Ptr<flashgg::Photon>& g,const edm::PtrVector<reco::Conversion>& conversionsVector) const{
     double mindR = 999;
