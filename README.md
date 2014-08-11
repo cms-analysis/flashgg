@@ -1,10 +1,10 @@
 flashgg
 =======
-1. Create a CMSSW_7_0_6 project.
+1. Create a CMSSW_7_0_7_patch1 project.
 
 2. Fork flashgg repository on the web here: https://github.com/cms-analysis/flashgg
 
-3. In CMSSW_7_0_6/src, do commands something like: 
+3. In CMSSW_7_0_7_patch1/src, do commands something like: 
 
 ```
 git clone git@github.com:yourusername/flashgg.git flashgg
