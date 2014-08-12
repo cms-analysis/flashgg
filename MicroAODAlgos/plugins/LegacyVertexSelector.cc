@@ -27,10 +27,17 @@ namespace flashgg {
     double vtxZFromConv             (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
     double vtxdZFromConv            (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&) const;
 
-    void getZFromConvPair(float&,float&,
-			  const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,
-			  const edm::Ptr<reco:: Conversion> &,const edm::Ptr<reco:: Conversion> &,
-			  const math::XYZPoint & beamSpot) const;
+    double getZFromConvPair(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,
+			    const int ,const int,
+			    const edm::PtrVector<reco::Conversion>&,
+			    const math::XYZPoint & beamSpot) const;
+
+    
+    double getsZFromConvPair(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,
+			     const int ,const int,
+			     const edm::PtrVector<reco::Conversion>&,
+			     const math::XYZPoint & beamSpot) const;
+
 
     
     int IndexMatchedConversion(const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Conversion>&) const;
@@ -64,6 +71,9 @@ namespace flashgg {
   double dRPho1 = 0;
   double dRPho2 = 0;
   double dRexclude = 0.05;
+  double zconv=0;
+  double szconv=0;
+  
  
   double sigma1Pix=0.011;
   double sigma1Tib=0.492;
@@ -89,9 +99,6 @@ namespace flashgg {
   double singlelegsigma2PixFwd=0.276;
   double singlelegsigma2Tid=0.497;
   double singlelegsigma2Tec=1.046;
-
-
-
 
  
   double LegacyVertexSelector::vtxZFromConvOnly(const edm::Ptr<flashgg::Photon>& pho,const edm::Ptr<reco:: Conversion> & conversion,const math::XYZPoint & beamSpot) const{
@@ -164,115 +171,136 @@ namespace flashgg {
   }
 
   double LegacyVertexSelector::vtxdZFromConv (const edm::Ptr<flashgg::Photon>& pho, const edm::Ptr<reco::Conversion> & conversion) const{
-  // method 0 is combined (default)
-  // method 1 is conversion only
-  // method 2 is supercluster only
-  // attribute the error depending on the tracker region
-  double dz=-99999;
-  int method=0;
-  double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
+    // method 0 is combined (default)
+    // method 1 is conversion only
+    // method 2 is supercluster only
+    // attribute the error depending on the tracker region
+    double dz=-99999;
+    int method=0;
+    double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
 
-  if (conversion->nTracks()==2) {
-          if ( pho->eta()<1.5 ) { // barrel
-                  if ( perp <=15 ) {
-                          if (method==0) dz=sigma1Pix;
-                          if (method==1) dz=sigma1Pix;
-                          if (method==2) dz=sigma2Pix;
-                  } else if ( perp > 15 && perp <=60 ) {
-                          if (method==0) dz=sigma2Tib;
-                          if (method==1) dz=sigma1Tib;
-                          if (method==2) dz=sigma2Tib;
-                  } else {
-                          if (method==0) dz=sigma2Tob;
-                          if (method==1) dz=sigma1Tob;
-                          if (method==2) dz=sigma2Tob;
-                  }
-
-          } else { // endcap
-
-                  if ( fabs(conversion->conversionVertex().z() ) <=50 ) {
-                          if (method==0) dz=sigma1PixFwd;
-                          if (method==1) dz=sigma1PixFwd;
-                          if (method==2) dz=sigma2PixFwd;
-                  } else if ( fabs(conversion->conversionVertex().z() ) > 50 && fabs(conversion->conversionVertex().z()) <= 100 ) {
-                          if (method==0) dz=sigma1Tid;
-                          if (method==1) dz=sigma1Tid;
-                          if (method==2) dz=sigma2Tid;
-                  } else {
-                          if (method==0) dz=sigma2Tec;
-                          if (method==1) dz=sigma1Tec;
-                          if (method==2) dz=sigma2Tec;
-                  }
-          }
-  } else if (conversion->nTracks()==1) {
-          if ( pho->eta() <1.5 ) { // barrel
-                  if ( perp <=15 ) {
-                          if (method==0) dz=singlelegsigma1Pix;
-                          if (method==1) dz=singlelegsigma1Pix;
-                          if (method==2) dz=singlelegsigma2Pix;
-                  } else if ( perp > 15 && perp <=60 ) {
-                          if (method==0) dz=singlelegsigma2Tib;
-                          if (method==1) dz=singlelegsigma1Tib;
-                          if (method==2) dz=singlelegsigma2Tib;
-                  } else {
-                          if (method==0) dz=singlelegsigma2Tob;
-                          if (method==1) dz=singlelegsigma1Tob;
-                          if (method==2) dz=singlelegsigma2Tob;
-                  }
-
-          } else { // endcap
-
-                  if ( fabs(conversion->conversionVertex().z() ) <=50 ) {
-                          if (method==0) dz=singlelegsigma1PixFwd;
-                          if (method==1) dz=singlelegsigma1PixFwd;
-                          if (method==2) dz=singlelegsigma2PixFwd;
-                  } else if ( fabs(conversion->conversionVertex().z() ) > 50 && fabs(conversion->conversionVertex().z()) <= 100 ) {
-                          if (method==0) dz=singlelegsigma1Tid;
-                          if (method==1) dz=singlelegsigma1Tid;
-                          if (method==2) dz=singlelegsigma2Tid;
-                  } else {
-                          if (method==0) dz=singlelegsigma2Tec;
-                          if (method==1) dz=singlelegsigma1Tec;
-                          if (method==2) dz=singlelegsigma2Tec;
-                  }
-          }
-  }
+    if (conversion->nTracks()==2) {
+      if ( pho->eta()<1.5 ) { // barrel
+	if ( perp <=15 ) {
+	  if (method==0) dz=sigma1Pix;
+	  if (method==1) dz=sigma1Pix;
+	  if (method==2) dz=sigma2Pix;
+	} else if ( perp > 15 && perp <=60 ) {
+	  if (method==0) dz=sigma2Tib;
+	  if (method==1) dz=sigma1Tib;
+	  if (method==2) dz=sigma2Tib;
+	} else {
+	  if (method==0) dz=sigma2Tob;
+	  if (method==1) dz=sigma1Tob;
+	  if (method==2) dz=sigma2Tob;
+	}
+	
+      } else { // endcap
+	
+	if ( fabs(conversion->conversionVertex().z() ) <=50 ) {
+	  if (method==0) dz=sigma1PixFwd;
+	  if (method==1) dz=sigma1PixFwd;
+	  if (method==2) dz=sigma2PixFwd;
+	} else if ( fabs(conversion->conversionVertex().z() ) > 50 && fabs(conversion->conversionVertex().z()) <= 100 ) {
+	  if (method==0) dz=sigma1Tid;
+	  if (method==1) dz=sigma1Tid;
+	  if (method==2) dz=sigma2Tid;
+	} else {
+	  if (method==0) dz=sigma2Tec;
+	  if (method==1) dz=sigma1Tec;
+	  if (method==2) dz=sigma2Tec;
+	}
+      }
+    } else if (conversion->nTracks()==1) {
+      if ( pho->eta() <1.5 ) { // barrel
+	if ( perp <=15 ) {
+	  if (method==0) dz=singlelegsigma1Pix;
+	  if (method==1) dz=singlelegsigma1Pix;
+	  if (method==2) dz=singlelegsigma2Pix;
+	} else if ( perp > 15 && perp <=60 ) {
+	  if (method==0) dz=singlelegsigma2Tib;
+	  if (method==1) dz=singlelegsigma1Tib;
+	  if (method==2) dz=singlelegsigma2Tib;
+	} else {
+	  if (method==0) dz=singlelegsigma2Tob;
+	  if (method==1) dz=singlelegsigma1Tob;
+	  if (method==2) dz=singlelegsigma2Tob;
+	}
+	
+      } else { // endcap
+	
+	if ( fabs(conversion->conversionVertex().z() ) <=50 ) {
+	  if (method==0) dz=singlelegsigma1PixFwd;
+	  if (method==1) dz=singlelegsigma1PixFwd;
+	  if (method==2) dz=singlelegsigma2PixFwd;
+	} else if ( fabs(conversion->conversionVertex().z() ) > 50 && fabs(conversion->conversionVertex().z()) <= 100 ) {
+	  if (method==0) dz=singlelegsigma1Tid;
+	  if (method==1) dz=singlelegsigma1Tid;
+	  if (method==2) dz=singlelegsigma2Tid;
+	} else {
+	  if (method==0) dz=singlelegsigma2Tec;
+	  if (method==1) dz=singlelegsigma1Tec;
+	  if (method==2) dz=singlelegsigma2Tec;
+	}
+      }
+    }
     return dz;
   }
+  
+  double LegacyVertexSelector::getZFromConvPair(const edm::Ptr<flashgg::Photon>& p1,
+						const edm::Ptr<flashgg::Photon>& p2,
+						const int index_conversionLead,
+						const int index_conversionTrail,
+						const edm::PtrVector<reco::Conversion>& conversionsVector,
+						const math::XYZPoint & beamSpot) const{
+    
+    double zconv=0;
 
-  double zconv=0;
-  double szconv=0;
-  void LegacyVertexSelector::getZFromConvPair(float& zconv,float& szconv,
-					      const edm::Ptr<flashgg::Photon>& p1,
-					      const edm::Ptr<flashgg::Photon>& p2,
-					      const edm::Ptr<reco:: Conversion> & conversionLead,
-					      const edm::Ptr<reco:: Conversion> & conversionTrail,
-					      const math::XYZPoint & beamSpot) const{
-    
-    if ( conversionLead->isConverted()  && !conversionTrail->isConverted() ){ //Warning could be also the method g->hasConversionTracks()?
-      //setNConv(1);
-      zconv  = vtxZFromConv(p1,conversionLead,beamSpot);
-      szconv = vtxdZFromConv(p1,conversionLead);
+    if ( index_conversionLead!=-1  && index_conversionTrail==-1 ){ //Warning could be also the method g->hasConversionTracks() OR vtx->isConverted?
+      zconv  = vtxZFromConv(p1,conversionsVector[index_conversionLead],beamSpot);
     }
-    if (conversionTrail->isConverted() && !conversionLead->isConverted()){
-      //setNConv(1);
-      zconv  = vtxZFromConv (p2,conversionTrail,beamSpot);
-      szconv = vtxdZFromConv(p2,conversionTrail);
+    if ( index_conversionTrail==-1 && index_conversionTrail!=-1 ){
+      zconv  = vtxZFromConv (p2,conversionsVector[index_conversionTrail],beamSpot);
     }
     
-    if (conversionLead->isConverted() && conversionTrail->isConverted()){
-      //setNConv(2);
-      float z1  = vtxZFromConv (p1,conversionLead,beamSpot);
-      float sz1 = vtxdZFromConv(p1,conversionLead);
+    if (index_conversionLead!=-1 && index_conversionTrail!=-1){
+      float z1  = vtxZFromConv (p1,conversionsVector[index_conversionLead],beamSpot);
+      float sz1 = vtxdZFromConv(p1,conversionsVector[index_conversionLead]);
       
-      float z2  = vtxZFromConv (p2,conversionTrail,beamSpot);
-      float sz2 = vtxdZFromConv(p2,conversionTrail);
+      float z2  = vtxZFromConv (p2,conversionsVector[index_conversionTrail],beamSpot);
+      float sz2 = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]);
       
       zconv  = (z1/sz1/sz1 + z2/sz2/sz2)/(1./sz1/sz1 + 1./sz2/sz2 );  // weighted average
+    }
+    return zconv;
+  }
+
+
+  double LegacyVertexSelector::getsZFromConvPair(const edm::Ptr<flashgg::Photon>& p1,
+						 const edm::Ptr<flashgg::Photon>& p2,
+						 int index_conversionLead,
+						 int index_conversionTrail,
+						 const edm::PtrVector<reco::Conversion>& conversionsVector,
+						 const math::XYZPoint & beamSpot) const{
+    
+    double szconv=0;
+    
+    if ( index_conversionLead!=-1  && index_conversionTrail==-1 ){ //Warning could be also the method g->hasConversionTracks()?
+      szconv = vtxdZFromConv(p1,conversionsVector[index_conversionLead]);
+    }
+    if ( index_conversionTrail==-1 && index_conversionTrail!=-1 ){
+      szconv = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]);
+    }
+    
+    if (index_conversionLead!=-1 && index_conversionTrail!=-1){
+      float sz1 = vtxdZFromConv(p1,conversionsVector[index_conversionLead]);
+      float sz2 = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]);
+      
       szconv = sqrt( 1./(1./sz1/sz1 + 1./sz2/sz2)) ;
     }
+    return szconv;
   }
-  
+ 
 
   int LegacyVertexSelector::IndexMatchedConversion(const edm::Ptr<flashgg::Photon>& g,const edm::PtrVector<reco::Conversion>& conversionsVector) const{
     double mindR = 999;
@@ -280,7 +308,7 @@ namespace flashgg {
     assert(g->hasConversionTracks()); //The photon has to have conversion tracks!
     assert(conversionsVector.size()>0); //The photon has to have conversion tracks!
 
-    int selected_conversion_index = -1;
+    int selected_conversion_index = -1; //returned value if no match was found
     
     if(g->hasConversionTracks()){
       for (unsigned int i=0; i<conversionsVector.size();i++){
@@ -301,7 +329,7 @@ namespace flashgg {
       }
     }  
     //std::cout<<"selected index "<<selected_conversion_index<<" size of converted vertices vector "<<conversionsVector.size()<<std::endl;
-    return selected_conversion_index;
+    return selected_conversion_index; //-1 if no match was found
   }
   
   edm::Ptr<reco::Vertex> LegacyVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs,
@@ -344,66 +372,6 @@ namespace flashgg {
     
     //------------------------------------------
 
-    bool verbose = false;
-    if (verbose) {
-      
-      diPho.SetXYZ(g1->px()+g2->px(),g1->py()+g2->py(),g1->pz()+g2->pz());
-      diPhoXY = diPho.XYvector();
-      
-      for (unsigned int i=0; i<conversionsVector.size();i++){
-	edm::Ptr<reco::Conversion> conv = conversionsVector[i];
-	std::cout << "conversion x,y" << "   " << conv->conversionVertex().x() <<" "<< conv->conversionVertex().y() <<std::endl;
-
-	if (g1->hasConversionTracks() && !g2->hasConversionTracks()){      
-	  if(conv->isConverted() == 1){
-	    VtxtoSC.SetXYZ(g1->superCluster()->position().x() - conv->conversionVertex().x(), 
-			   g1->superCluster()->position().y() - conv->conversionVertex().y(), 
-			   g1->superCluster()->position().z() - conv->conversionVertex().z());
-	    
-	    RefPairMo.SetXYZ(conv->refittedPairMomentum().x(),conv->refittedPairMomentum().y(),conv->refittedPairMomentum().z());
-	    dR = VtxtoSC.DeltaR(RefPairMo); 
-            
-	    std::cout << "g1 conv track? "<< g1->hasConversionTracks() << "  " << "g2 conv track?" << g2->hasConversionTracks() << "g1,g2->pt " <<g1->pt()<<" "<<g2->pt()<<std::endl;                       
-	    std::cout << "dR1 " << dR << std::endl;   
-	  } 
-	}else if(!g1->hasConversionTracks() && g2->hasConversionTracks()){
-	  if(conv->isConverted() == 1){
-	    VtxtoSC.SetXYZ(g2->superCluster()->position().x() - conv->conversionVertex().x(), 
-			   g2->superCluster()->position().y() - conv->conversionVertex().y(), 
-			   g2->superCluster()->position().z() - conv->conversionVertex().z());
-
-	    RefPairMo.SetXYZ(conv->refittedPairMomentum().x(),conv->refittedPairMomentum().y(),conv->refittedPairMomentum().z());
-	    dR = VtxtoSC.DeltaR(RefPairMo);               
-            
-	    
-	    std::cout << "g2 conv track?" << "  " << g1->hasConversionTracks() << "  " << "g2 conv track?" << g2->hasConversionTracks() << "g1,g2->pt " <<g1->pt()<<" "<<g2->pt()<<std::endl;                       
-	    std::cout << "dR2 " << dR << std::endl;   
-	  }
-	}else if(g1->hasConversionTracks() && g2->hasConversionTracks()){
-	  if(conv->isConverted() == 1){
-	    RefPairMo.SetXYZ(conv->refittedPairMomentum().x(),
-			     conv->refittedPairMomentum().y(),
-			     conv->refittedPairMomentum().z());
-	    
-	    VtxtoSCPho1.SetXYZ(g1->superCluster()->position().x() - conv->conversionVertex().x(), 
-			       g1->superCluster()->position().y() - conv->conversionVertex().y(), 
-			       g1->superCluster()->position().z() - conv->conversionVertex().z());
-	    dRPho1 = VtxtoSCPho1.DeltaR(RefPairMo);               
-	    VtxtoSCPho2.SetXYZ(g2->superCluster()->position().x() - conv->conversionVertex().x(), 
-			       g2->superCluster()->position().y() - conv->conversionVertex().y(), 
-			       g2->superCluster()->position().z() - conv->conversionVertex().z());
-	    
-	    dRPho2 = VtxtoSCPho2.DeltaR(RefPairMo);               
-	    
-	    std::cout << "g1 conv track?" << "  " << g1->hasConversionTracks() << "  " << "g2 conv track?" << g2->hasConversionTracks() << "g1,g2->pt " <<g1->pt()<<" "<<g2->pt()<<std::endl;
-	    std::cout << "dRPho1 "<< dRPho1 << std::endl;   
-	    std::cout << "dRPho2 "<< dRPho2 << std::endl;   
-            
-	  }
-        }
-      }	
-    }
- 
     for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
       edm::Ptr<reco::Vertex> vtx = vtxs[i];
       //std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
@@ -419,6 +387,8 @@ namespace flashgg {
       if(vertexCandidateMap.count(vtx) == 0) continue;
       for (unsigned int j = 0 ; j < vertexCandidateMap.at(vtx).size() ; j++) {
         edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMap.at(vtx)[j];
+	diPho.SetXYZ(g1->px()+g2->px(),g1->py()+g2->py(),g1->pz()+g2->pz());
+	diPhoXY = diPho.XYvector();
         tk.SetXYZ(cand->px(),cand->py(),cand->pz());  
         tkPlane = tk.XYvector();
         sumpt += tkPlane.Mod();
@@ -437,9 +407,21 @@ namespace flashgg {
       //std::cout << "sumpt2_in  " << sumpt2_in << std::endl;
       //std::cout << " Candidate " << j << " in vertex " << i << " has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
       ptasym = (sumpt - diPhoXY.Mod())/(sumpt+diPhoXY.Mod());
+      
+      
+      zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot);
+      szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot);
+      
+      std::cout<<"zconv+/-szconv: "<<zconv<<"+/-"<<szconv<<std::endl;
 
-      std::cout<<"converted_case_MVA_variables sumpt "<<sumpt<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<std::endl;
-    } 
+      if(zconv==0 && szconv==0.0){
+	std::cout<<"plot_mva: "<<"unconverted_case_MVA_variables sumpt "<<sumpt<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<std::endl;
+      }else{
+	double pull_conv = fabs(vtx->position().z()-zconv)/szconv;
+	std::cout<<"plot_mva: "<<"converted_case_MVA_variables sumpt "<<sumpt<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<" pull_conv "<<pull_conv<<std::endl;
+      }
+      
+    }
     
     return vtxs[0];
   }  
