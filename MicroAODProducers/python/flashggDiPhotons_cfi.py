@@ -5,5 +5,5 @@ flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                   VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                   VertexSelectorName=cms.string("FlashggLegacyVertexSelector"),
                                   VertexCandidateMapTag=cms.InputTag("flashggVertexMapUnique"),
-				  ConversionTag=cms.untracked.InputTag("reducedEgamma","reducedConversions")
+                                  ConversionTag=cms.untracked.InputTag("reducedEgamma","reducedConversions")             
                                   )

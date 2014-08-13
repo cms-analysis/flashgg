@@ -18,6 +18,7 @@ process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store
 process.flashggVertexMapUnique = cms.EDProducer('FlashggDzVertexMapProducer',
                                                 PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
                                                 VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                                BeamSpotTag=cms.untracked.InputTag('offlineBeamSpot'),
                                                 MaxAllowedDz=cms.double(0.2) # in cm
                                                 )
 

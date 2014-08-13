@@ -13,6 +13,9 @@
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
+#include "DataFormats/BeamSpot/interface/BeamSpot.h"
+
+
 
 using namespace edm;
 using namespace std;
@@ -30,13 +33,15 @@ namespace flashgg {
     EDGetTokenT< VertexCandidateMap > vertexCandidateMapToken_;
     unique_ptr<VertexSelectorBase> vertexSelector_;
     EDGetTokenT<View<reco::Conversion> > conversionToken_;
+    EDGetTokenT<View<reco::BeamSpot> > beamSpotToken_;
   };
 
   DiPhotonProducer::DiPhotonProducer(const ParameterSet & iConfig) :
     vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
     photonToken_(consumes<View<flashgg::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("flashggPhotons")))),
     vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
-    conversionToken_(consumes<View<reco::Conversion> >(iConfig.getUntrackedParameter<InputTag>("ConversionTag",InputTag("reducedConversions"))))
+    conversionToken_(consumes<View<reco::Conversion> >(iConfig.getUntrackedParameter<InputTag>("ConversionTag",InputTag("reducedConversions")))),
+    beamSpotToken_(consumes<View<reco::BeamSpot> >(iConfig.getUntrackedParameter<InputTag>("BeamSpotTag",InputTag("offlineBeamSpot"))))
 
   {
     const std::string& VertexSelectorName = iConfig.getParameter<std::string>("VertexSelectorName");
@@ -61,6 +66,16 @@ namespace flashgg {
     Handle<View<reco::Conversion> > conversions; 
     evt.getByToken(conversionToken_,conversions);
     const PtrVector<reco::Conversion>& conversionPointers = conversions->ptrVector();
+
+    math::XYZPoint vertexPoint;
+
+    Handle<reco::BeamSpot> recoBeamSpotHandle;
+    evt.getByToken(beamSpotToken_,recoBeamSpotHandle);
+    if (recoBeamSpotHandle.isValid()){
+      vertexPoint = recoBeamSpotHandle->position();
+    }
+
+    std::cout<<"recoBeamSpotHandle->position().z() = "<<vertexPoint.z()<<std::endl;
     
     auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
 
@@ -68,8 +83,8 @@ namespace flashgg {
       Ptr<flashgg::Photon> pp1 = photonPointers[i];
       for (unsigned int j = i+1 ; j < photonPointers.size() ; j++) {
     	Ptr<flashgg::Photon> pp2 = photonPointers[j];
-        Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers);
-        // A number of things need to be done once the vertex is chosen
+	Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers,vertexPoint);
+    	diPhotonColl->push_back(DiPhotonCandidate(pp1,pp2,pvx));                                                                                                                 
         flashgg::Photon *photon1 = pp1->clone();
         flashgg::Photon *photon2 = pp2->clone();
         // FIXME - recompute photon 4-momenta accordingly (yet to be done)
