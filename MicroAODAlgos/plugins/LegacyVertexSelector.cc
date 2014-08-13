@@ -415,10 +415,10 @@ namespace flashgg {
       std::cout<<"zconv+/-szconv: "<<zconv<<"+/-"<<szconv<<std::endl;
 
       if(zconv==0 && szconv==0.0){
-	std::cout<<"plot_mva: "<<"unconverted_case_MVA_variables sumpt "<<sumpt<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<std::endl;
+	std::cout<<"plot_mva: "<<"unconverted_case_MVA_variables sumpt "<<sumpt<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<" ptasym "<<ptasym<<std::endl;
       }else{
 	double pull_conv = fabs(vtx->position().z()-zconv)/szconv;
-	std::cout<<"plot_mva: "<<"converted_case_MVA_variables sumpt "<<sumpt<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<" pull_conv "<<pull_conv<<std::endl;
+	std::cout<<"plot_mva: "<<"converted_case_MVA_variables sumpt "<<sumpt<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<" ptasym "<<ptasym<<" pull_conv "<<pull_conv<<std::endl;
       }
       
     }
