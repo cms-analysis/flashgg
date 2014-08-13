@@ -12,6 +12,7 @@ namespace flashgg {
   public:
     DiPhotonCandidate();
     DiPhotonCandidate(edm::Ptr<flashgg::Photon>,edm::Ptr<flashgg::Photon>,edm::Ptr<reco::Vertex>);
+    DiPhotonCandidate(flashgg::Photon,flashgg::Photon,edm::Ptr<reco::Vertex>);
     ~DiPhotonCandidate();
 
     const edm::Ptr<reco::Vertex> getVertex() const { return vertex_; }
