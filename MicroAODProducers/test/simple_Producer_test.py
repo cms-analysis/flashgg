@@ -14,6 +14,7 @@ process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:/afs/cern.ch/work/s/sethzenz/public/Hgg_miniAOD_run0/miniAOD_3.root"))
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT.root"))
+#process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT_big.root"))
 
 # Each track associated only to the closest vertex (or none if dZ >= MaxAllowedDz for all vertices)
 process.flashggVertexMapUnique = cms.EDProducer('FlashggDzVertexMapProducer',
@@ -39,7 +40,10 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
                                outputCommands = cms.untracked.vstring("drop *",
                                                                       "keep *_flashgg*_*_*",
                                                                       "drop *_flashggVertexMap*_*_*",
-                                                                      "keep *_offlineSlimmedPrimaryVertices_*_*")
+                                                                      "keep *_offlineSlimmedPrimaryVertices_*_*",
+                                                                      "keep *_reducedEgamma_reduced*Clusters_*",
+                                                                      "keep *_reducedEgamma_*PhotonCores_*"
+                                                                     )
 )
 
 process.p = cms.Path(process.flashggVertexMapUnique*
