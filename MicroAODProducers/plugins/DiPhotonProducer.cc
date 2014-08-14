@@ -25,7 +25,7 @@ namespace flashgg {
   class DiPhotonProducer : public EDProducer {
     
   public:
-    DiPhotonProducer( const ParameterSet & );
+    DiPhotonProducer( const ParameterSet & ); 
   private:
     void produce( Event &, const EventSetup & ) override;
     EDGetTokenT<View<reco::Vertex> > vertexToken_;
@@ -34,6 +34,8 @@ namespace flashgg {
     unique_ptr<VertexSelectorBase> vertexSelector_;
     EDGetTokenT<View<reco::Conversion> > conversionToken_;
     EDGetTokenT<View<reco::BeamSpot> > beamSpotToken_;
+    double dRexclude;
+    std::map<std::string,double> param;
   };
 
   DiPhotonProducer::DiPhotonProducer(const ParameterSet & iConfig) :
@@ -41,13 +43,16 @@ namespace flashgg {
     photonToken_(consumes<View<flashgg::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("flashggPhotons")))),
     vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
     conversionToken_(consumes<View<reco::Conversion> >(iConfig.getUntrackedParameter<InputTag>("ConversionTag",InputTag("reducedConversions")))),
-    beamSpotToken_(consumes<View<reco::BeamSpot> >(iConfig.getUntrackedParameter<InputTag>("BeamSpotTag",InputTag("offlineBeamSpot"))))
-
-  {
+    beamSpotToken_(consumes<View<reco::BeamSpot> >(iConfig.getUntrackedParameter<InputTag>("BeamSpotTag",InputTag("offlineBeamSpot")))){
+    
     const std::string& VertexSelectorName = iConfig.getParameter<std::string>("VertexSelectorName");
     vertexSelector_.reset(FlashggVertexSelectorFactory::get()->create(VertexSelectorName,iConfig));
-
     produces<vector<flashgg::DiPhotonCandidate> >();
+
+    dRexclude=iConfig.getUntrackedParameter<double>("dRexclude",0.05);
+
+    param["dRexclude"] = dRexclude;
+
   }
 
   void DiPhotonProducer::produce( Event & evt, const EventSetup & ) {
@@ -66,24 +71,21 @@ namespace flashgg {
     Handle<View<reco::Conversion> > conversions; 
     evt.getByToken(conversionToken_,conversions);
     const PtrVector<reco::Conversion>& conversionPointers = conversions->ptrVector();
-
-    math::XYZPoint vertexPoint;
-
+   
     Handle<reco::BeamSpot> recoBeamSpotHandle;
     evt.getByToken(beamSpotToken_,recoBeamSpotHandle);
+    math::XYZPoint vertexPoint;
     if (recoBeamSpotHandle.isValid()){
       vertexPoint = recoBeamSpotHandle->position();
     }
 
-    std::cout<<"recoBeamSpotHandle->position().z() = "<<vertexPoint.z()<<std::endl;
-    
     auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
 
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
       Ptr<flashgg::Photon> pp1 = photonPointers[i];
       for (unsigned int j = i+1 ; j < photonPointers.size() ; j++) {
     	Ptr<flashgg::Photon> pp2 = photonPointers[j];
-	Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers,vertexPoint);
+	Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers,vertexPoint,param);
     	diPhotonColl->push_back(DiPhotonCandidate(pp1,pp2,pvx));                                                                                                                 
         flashgg::Photon *photon1 = pp1->clone();
         flashgg::Photon *photon2 = pp2->clone();
