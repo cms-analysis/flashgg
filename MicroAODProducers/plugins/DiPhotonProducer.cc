@@ -34,7 +34,32 @@ namespace flashgg {
     unique_ptr<VertexSelectorBase> vertexSelector_;
     EDGetTokenT<View<reco::Conversion> > conversionToken_;
     EDGetTokenT<View<reco::BeamSpot> > beamSpotToken_;
+
     double dRexclude;
+    double sigma1Pix;
+    double sigma1Tib;
+    double sigma1Tob;
+    double sigma1PixFwd;
+    double sigma1Tid;
+    double sigma1Tec;
+    double sigma2Pix;
+    double sigma2Tib;
+    double sigma2Tob;
+    double sigma2PixFwd;
+    double sigma2Tid;
+    double sigma2Tec;
+    double singlelegsigma1Pix;
+    double singlelegsigma1Tib;
+    double singlelegsigma1Tob;
+    double singlelegsigma1PixFwd;
+    double singlelegsigma1Tid;
+    double singlelegsigma1Tec;
+    double singlelegsigma2Pix;
+    double singlelegsigma2Tib;
+    double singlelegsigma2Tob;
+    double singlelegsigma2PixFwd;
+    double singlelegsigma2Tid;
+    double singlelegsigma2Tec;    
     std::map<std::string,double> param;
   };
 
@@ -49,9 +74,34 @@ namespace flashgg {
     vertexSelector_.reset(FlashggVertexSelectorFactory::get()->create(VertexSelectorName,iConfig));
     produces<vector<flashgg::DiPhotonCandidate> >();
 
-    dRexclude=iConfig.getUntrackedParameter<double>("dRexclude",0.05);
+    //R around photons
+    dRexclude=iConfig.getUntrackedParameter<double>("dRexclude"); param["dRexclude"] = dRexclude;
 
-    param["dRexclude"] = dRexclude;
+    //sigmas
+    sigma1Pix             =iConfig.getUntrackedParameter<double>("sigma1Pix");   param["sigma1Pix"] = sigma1Pix;
+    sigma1Tib		  =iConfig.getUntrackedParameter<double>("sigma1Tib"); param["sigma1Tib"] = sigma1Tib;
+    sigma1Tob		  =iConfig.getUntrackedParameter<double>("sigma1Tob"); param["sigma1Tob"] = sigma1Tob;
+    sigma1PixFwd          =iConfig.getUntrackedParameter<double>("sigma1PixFwd");   param["sigma1PixFwd"] = sigma1PixFwd;
+    sigma1Tid		  =iConfig.getUntrackedParameter<double>("sigma1Tid"); param["sigma1Tid"] = sigma1Tid;
+    sigma1Tec		  =iConfig.getUntrackedParameter<double>("sigma1Tec"); param["sigma1Tec"] = sigma1Tec;
+    sigma2Pix		  =iConfig.getUntrackedParameter<double>("sigma2Pix"); param["sigma2Pix"] = sigma2Pix;
+    sigma2Tib		  =iConfig.getUntrackedParameter<double>("sigma2Tib"); param["sigma2Tib"] = sigma2Tib;
+    sigma2Tob		  =iConfig.getUntrackedParameter<double>("sigma2Tob"); param["sigma2Tob"] = sigma2Tob;
+    sigma2PixFwd	  =iConfig.getUntrackedParameter<double>("sigma2PixFwd");         param["sigma2PixFwd"] = sigma2PixFwd;
+    sigma2Tid		  =iConfig.getUntrackedParameter<double>("sigma2Tid"); param["sigma2Tid"] = sigma2Tid;
+    sigma2Tec		  =iConfig.getUntrackedParameter<double>("sigma2Tec"); param["sigma2Tec"] = sigma2Tec;
+    singlelegsigma1Pix	  =iConfig.getUntrackedParameter<double>("singlelegsigma1Pix"); param["singlelegsigma1Pix"] = singlelegsigma1Pix;
+    singlelegsigma1Tib	  =iConfig.getUntrackedParameter<double>("singlelegsigma1Tib"); param["singlelegsigma1Tib"] = singlelegsigma1Tib;
+    singlelegsigma1Tob	  =iConfig.getUntrackedParameter<double>("singlelegsigma1Tob"); param["singlelegsigma1Tob"] = singlelegsigma1Tob;
+    singlelegsigma1PixFwd =iConfig.getUntrackedParameter<double>("singlelegsigma1PixFwd");   param["singlelegsigma1PixFwd"] = singlelegsigma1PixFwd;
+    singlelegsigma1Tid	  =iConfig.getUntrackedParameter<double>("singlelegsigma1Tid"); param["singlelegsigma1Tid"] = singlelegsigma1Tid;
+    singlelegsigma1Tec	  =iConfig.getUntrackedParameter<double>("singlelegsigma1Tec"); param["singlelegsigma1Tec"] = singlelegsigma1Tec;
+    singlelegsigma2Pix	  =iConfig.getUntrackedParameter<double>("singlelegsigma2Pix"); param["singlelegsigma2Pix"] = singlelegsigma2Pix;
+    singlelegsigma2Tib	  =iConfig.getUntrackedParameter<double>("singlelegsigma2Tib"); param["singlelegsigma2Tib"] = singlelegsigma2Tib;
+    singlelegsigma2Tob	  =iConfig.getUntrackedParameter<double>("singlelegsigma2Tob"); param["singlelegsigma2Tob"] = singlelegsigma2Tob;
+    singlelegsigma2PixFwd =iConfig.getUntrackedParameter<double>("singlelegsigma2PixFwd");   param["singlelegsigma2PixFwd"] = singlelegsigma2PixFwd; 
+    singlelegsigma2Tid    =iConfig.getUntrackedParameter<double>("singlelegsigma2Tid");   param["singlelegsigma2Tid"] = singlelegsigma2Tid;
+    singlelegsigma2Tec    =iConfig.getUntrackedParameter<double>("singlelegsigma2Tec");   param["singlelegsigma2Tec"] = singlelegsigma2Tec;
 
   }
 

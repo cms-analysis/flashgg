@@ -27,20 +27,19 @@ namespace flashgg {
     double vtxZFromConvOnly         (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
     double vtxZFromConvSuperCluster (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
     double vtxZFromConv             (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
-    double vtxdZFromConv            (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&) const;
+    double vtxdZFromConv            (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const std::map<std::string,double>&) const;
 
     double getZFromConvPair(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,
 			    const int ,const int,
 			    const edm::PtrVector<reco::Conversion>&,
-			    const math::XYZPoint & beamSpot) const;
-
+			    const math::XYZPoint &,
+			    const std::map<std::string,double>&) const;
+   
     
     double getsZFromConvPair(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,
 			     const int ,const int,
 			     const edm::PtrVector<reco::Conversion>&,
-			     const math::XYZPoint & beamSpot) const;
-
-
+			     const std::map<std::string,double>&) const;
     
     int IndexMatchedConversion(const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Conversion>&) const;
     
@@ -75,34 +74,6 @@ namespace flashgg {
   double zconv=0;
   double szconv=0;
 
-    double sigma1Pix=0.011;
-    double sigma1Tib=0.492;
-    double sigma1Tob=4.398;
-    double sigma1PixFwd=0.054;
-    double sigma1Tid=0.320;
-    double sigma1Tec=1.092;
-    double sigma2Pix=0.022;
-    double sigma2Tib=0.297;
-    double sigma2Tob=1.728;
-    double sigma2PixFwd=0.150;
-    double sigma2Tid=0.393;
-    double sigma2Tec=1.008;
-    double singlelegsigma1Pix=0.009;
-    double singlelegsigma1Tib=1.163;
-    double singlelegsigma1Tob=2.130;
-    double singlelegsigma1PixFwd=0.071;
-    double singlelegsigma1Tid=0.384;
-    double singlelegsigma1Tec=1.923;
-    double singlelegsigma2Pix=0.054;
-    double singlelegsigma2Tib=0.597;
-    double singlelegsigma2Tob=0.480;
-    double singlelegsigma2PixFwd=0.276;
-    double singlelegsigma2Tid=0.497;
-    double singlelegsigma2Tec=1.046;
-	  
-
-
-  
   double LegacyVertexSelector::vtxZFromConvOnly(const edm::Ptr<flashgg::Photon>& pho,const edm::Ptr<reco:: Conversion> & conversion,const math::XYZPoint & beamSpot) const{
 
     double r=sqrt(conversion->refittedPairMomentum().perp2());
@@ -172,7 +143,7 @@ namespace flashgg {
 
   }
 
-  double LegacyVertexSelector::vtxdZFromConv (const edm::Ptr<flashgg::Photon>& pho, const edm::Ptr<reco::Conversion> & conversion) const{
+  double LegacyVertexSelector::vtxdZFromConv (const edm::Ptr<flashgg::Photon>& pho, const edm::Ptr<reco::Conversion> & conversion,const std::map<std::string,double> & param) const{
     // method 0 is combined (default)
     // method 1 is conversion only
     // method 2 is supercluster only
@@ -184,65 +155,65 @@ namespace flashgg {
     if (conversion->nTracks()==2) {
       if ( pho->eta()<1.5 ) { // barrel
 	if ( perp <=15 ) {
-	  if (method==0) dz=sigma1Pix;
-	  if (method==1) dz=sigma1Pix;
-	  if (method==2) dz=sigma2Pix;
+	  if (method==0) dz=param.at("sigma1Pix");
+	  if (method==1) dz=param.at("sigma1Pix");
+	  if (method==2) dz=param.at("sigma2Pix");
 	} else if ( perp > 15 && perp <=60 ) {
-	  if (method==0) dz=sigma2Tib;
-	  if (method==1) dz=sigma1Tib;
-	  if (method==2) dz=sigma2Tib;
+	  if (method==0) dz=param.at("sigma2Tib");
+	  if (method==1) dz=param.at("sigma1Tib");
+	  if (method==2) dz=param.at("sigma2Tib");
 	} else {
-	  if (method==0) dz=sigma2Tob;
-	  if (method==1) dz=sigma1Tob;
-	  if (method==2) dz=sigma2Tob;
+	  if (method==0) dz=param.at("sigma2Tob");
+	  if (method==1) dz=param.at("sigma1Tob");
+	  if (method==2) dz=param.at("sigma2Tob");
 	}
 	
       } else { // endcap
 	
 	if ( fabs(conversion->conversionVertex().z() ) <=50 ) {
-	  if (method==0) dz=sigma1PixFwd;
-	  if (method==1) dz=sigma1PixFwd;
-	  if (method==2) dz=sigma2PixFwd;
+	  if (method==0) dz=param.at("sigma1PixFwd");
+	  if (method==1) dz=param.at("sigma1PixFwd");
+	  if (method==2) dz=param.at("sigma2PixFwd");
 	} else if ( fabs(conversion->conversionVertex().z() ) > 50 && fabs(conversion->conversionVertex().z()) <= 100 ) {
-	  if (method==0) dz=sigma1Tid;
-	  if (method==1) dz=sigma1Tid;
-	  if (method==2) dz=sigma2Tid;
+	  if (method==0) dz=param.at("sigma1Tid");
+	  if (method==1) dz=param.at("sigma1Tid");
+	  if (method==2) dz=param.at("sigma2Tid");
 	} else {
-	  if (method==0) dz=sigma2Tec;
-	  if (method==1) dz=sigma1Tec;
-	  if (method==2) dz=sigma2Tec;
+	  if (method==0) dz=param.at("sigma2Tec");
+	  if (method==1) dz=param.at("sigma1Tec");
+	  if (method==2) dz=param.at("sigma2Tec");
 	}
       }
     } else if (conversion->nTracks()==1) {
       if ( pho->eta() <1.5 ) { // barrel
 	if ( perp <=15 ) {
-	  if (method==0) dz=singlelegsigma1Pix;
-	  if (method==1) dz=singlelegsigma1Pix;
-	  if (method==2) dz=singlelegsigma2Pix;
+	  if (method==0) dz=param.at("singlelegsigma1Pix");
+	  if (method==1) dz=param.at("singlelegsigma1Pix");
+	  if (method==2) dz=param.at("singlelegsigma2Pix");
 	} else if ( perp > 15 && perp <=60 ) {
-	  if (method==0) dz=singlelegsigma2Tib;
-	  if (method==1) dz=singlelegsigma1Tib;
-	  if (method==2) dz=singlelegsigma2Tib;
+	  if (method==0) dz=param.at("singlelegsigma2Tib");
+	  if (method==1) dz=param.at("singlelegsigma1Tib");
+	  if (method==2) dz=param.at("singlelegsigma2Tib");
 	} else {
-	  if (method==0) dz=singlelegsigma2Tob;
-	  if (method==1) dz=singlelegsigma1Tob;
-	  if (method==2) dz=singlelegsigma2Tob;
+	  if (method==0) dz=param.at("singlelegsigma2Tob");
+	  if (method==1) dz=param.at("singlelegsigma1Tob");
+	  if (method==2) dz=param.at("singlelegsigma2Tob");
 	}
 	
       } else { // endcap
 	
 	if ( fabs(conversion->conversionVertex().z() ) <=50 ) {
-	  if (method==0) dz=singlelegsigma1PixFwd;
-	  if (method==1) dz=singlelegsigma1PixFwd;
-	  if (method==2) dz=singlelegsigma2PixFwd;
+	  if (method==0) dz=param.at("singlelegsigma1PixFwd");
+	  if (method==1) dz=param.at("singlelegsigma1PixFwd");
+	  if (method==2) dz=param.at("singlelegsigma2PixFwd");
 	} else if ( fabs(conversion->conversionVertex().z() ) > 50 && fabs(conversion->conversionVertex().z()) <= 100 ) {
-	  if (method==0) dz=singlelegsigma1Tid;
-	  if (method==1) dz=singlelegsigma1Tid;
-	  if (method==2) dz=singlelegsigma2Tid;
+	  if (method==0) dz=param.at("singlelegsigma1Tid");
+	  if (method==1) dz=param.at("singlelegsigma1Tid");
+	  if (method==2) dz=param.at("singlelegsigma2Tid");
 	} else {
-	  if (method==0) dz=singlelegsigma2Tec;
-	  if (method==1) dz=singlelegsigma1Tec;
-	  if (method==2) dz=singlelegsigma2Tec;
+	  if (method==0) dz=param.at("singlelegsigma2Tec");
+	  if (method==1) dz=param.at("singlelegsigma1Tec");
+	  if (method==2) dz=param.at("singlelegsigma2Tec");
 	}
       }
     }
@@ -254,7 +225,8 @@ namespace flashgg {
 						const int index_conversionLead,
 						const int index_conversionTrail,
 						const edm::PtrVector<reco::Conversion>& conversionsVector,
-						const math::XYZPoint & beamSpot) const{
+						const math::XYZPoint & beamSpot,
+						const std::map<std::string,double>& param) const{
     
     double zconv=0;
 
@@ -267,36 +239,36 @@ namespace flashgg {
     
     if (index_conversionLead!=-1 && index_conversionTrail!=-1){
       float z1  = vtxZFromConv (p1,conversionsVector[index_conversionLead],beamSpot);
-      float sz1 = vtxdZFromConv(p1,conversionsVector[index_conversionLead]);
+      float sz1 = vtxdZFromConv(p1,conversionsVector[index_conversionLead],param);
       
       float z2  = vtxZFromConv (p2,conversionsVector[index_conversionTrail],beamSpot);
-      float sz2 = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]);
+      float sz2 = vtxdZFromConv(p2,conversionsVector[index_conversionTrail],param);
       
       zconv  = (z1/sz1/sz1 + z2/sz2/sz2)/(1./sz1/sz1 + 1./sz2/sz2 );  // weighted average
     }
     return zconv;
   }
 
-
+  
   double LegacyVertexSelector::getsZFromConvPair(const edm::Ptr<flashgg::Photon>& p1,
 						 const edm::Ptr<flashgg::Photon>& p2,
 						 int index_conversionLead,
 						 int index_conversionTrail,
 						 const edm::PtrVector<reco::Conversion>& conversionsVector,
-						 const math::XYZPoint & beamSpot) const{
+						 const std::map<std::string,double> & param) const{
     
     double szconv=0;
     
     if ( index_conversionLead!=-1  && index_conversionTrail==-1 ){ //Warning could be also the method g->hasConversionTracks()?
-      szconv = vtxdZFromConv(p1,conversionsVector[index_conversionLead]);
+      szconv = vtxdZFromConv(p1,conversionsVector[index_conversionLead],param);
     }
     if ( index_conversionTrail==-1 && index_conversionTrail!=-1 ){
-      szconv = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]);
+      szconv = vtxdZFromConv(p2,conversionsVector[index_conversionTrail],param);
     }
     
     if (index_conversionLead!=-1 && index_conversionTrail!=-1){
-      float sz1 = vtxdZFromConv(p1,conversionsVector[index_conversionLead]);
-      float sz2 = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]);
+      float sz1 = vtxdZFromConv(p1,conversionsVector[index_conversionLead],param);
+      float sz2 = vtxdZFromConv(p2,conversionsVector[index_conversionTrail],param);
       
       szconv = sqrt( 1./(1./sz1/sz1 + 1./sz2/sz2)) ;
     }
@@ -351,7 +323,7 @@ namespace flashgg {
 	  std::cout<<"dz Lead Photon from vtxZFromConvOnly         "<<vtxZFromConvOnly(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
 	  std::cout<<"dz Lead Photon from vtxZFromConvSuperCluster "<<vtxZFromConvSuperCluster(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
 	  std::cout<<"dz Lead Photon from vtxZFromConv             "<<vtxZFromConv(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
-          std::cout<<"szconv Lead Photon from vtxdZFromConv             "<<vtxdZFromConv(g1,conversionsVector[IndexMatchedConversionLeadPhoton])<<std::endl;
+          std::cout<<"szconv Lead Photon from vtxdZFromConv             "<<vtxdZFromConv(g1,conversionsVector[IndexMatchedConversionLeadPhoton],param)<<std::endl;
 	}
       }
       if(g2->hasConversionTracks()){
@@ -360,7 +332,7 @@ namespace flashgg {
 	  std::cout<<"dz Trail Photon from vtxZFromConvOnly         "<<vtxZFromConvOnly(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
 	  std::cout<<"dz Trail Photon from vtxZFromConvSuperCluster "<<vtxZFromConvSuperCluster(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
 	  std::cout<<"dz Trail Photon from vtxZFromConv             "<<vtxZFromConv(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
-          std::cout<<"szconv Trail Photon from vtxdZFromConv             "<<vtxdZFromConv(g2,conversionsVector[IndexMatchedConversionTrailPhoton])<<std::endl;
+          std::cout<<"szconv Trail Photon from vtxdZFromConv             "<<vtxdZFromConv(g2,conversionsVector[IndexMatchedConversionTrailPhoton],param)<<std::endl;
 	}
       }
     }
@@ -399,10 +371,6 @@ namespace flashgg {
         double dr2 = tk.DeltaR(p24.Vect());
         //std::cout << "dr1  " << dr1 << std::endl;
 	
-	std::cout<<param.size()<<std::endl;
-	std::cout<<param.at("dRexclude")<<std::endl;
-	
-
         if(dr1 < param.at("dRexclude") || dr2 < param.at("dRexclude")){
           sumpt2_in += tkPlane.Mod2();
           continue;
@@ -417,8 +385,8 @@ namespace flashgg {
       ptasym = (sumpt - diPhoXY.Mod())/(sumpt+diPhoXY.Mod());
       
       
-      zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot);
-      szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot);
+      zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot,param);
+      szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,param);
       
       std::cout<<"zconv+/-szconv: "<<zconv<<"+/-"<<szconv<<std::endl;
 
