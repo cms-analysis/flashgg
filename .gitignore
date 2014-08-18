@@ -11,4 +11,4 @@ __init__.py
 
 # Other temp files
 *.txt
-
+*.log
