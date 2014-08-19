@@ -77,13 +77,13 @@ namespace flashgg {
 	Ptr<reco::Vertex> vtx = diPhoton->getVertex();
 
 	const reco::VertexCollection & vertexes = *(primaryVertices.product());
-	cout << "Right before calling computeIdVariables method" << endl;
+	//	cout << "Right before calling computeIdVariables method" << endl;
 	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(/* the jet*/ pjet.get(),                                                                       
 									    /* JEC computed automatically for PAT jets if this is set to 0. */ 0.,
 									    /* primary vertex of interest */ vtx.get(),
 									    /* primary vertices */ vertexes,
 									    /* calculateMVA */ true);
-	cout << "Right after calling computeIdVariables method" << endl;
+	//	cout << "Right after calling computeIdVariables method" << endl;
 	fjet.setPuJetId(vtx,lPUJetId.mva());
       }
       jetColl->push_back(fjet);
