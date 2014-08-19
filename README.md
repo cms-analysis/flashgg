@@ -9,6 +9,7 @@ flashgg
  cd CMSSW_7_0_7_patch1/src
  cmsenv
  ```
+
 2. Get extra files for Pileup Jet Identification (must be done *before* getting flashgg):
  ```
  git cms-addpkg RecoJets/JetProducers
