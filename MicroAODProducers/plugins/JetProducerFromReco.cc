@@ -19,29 +19,29 @@ using namespace edm;
 
 namespace flashgg {
 
-  class JetProducer : public EDProducer {
+  class JetProducerFromReco : public EDProducer {
 
   public:
-    JetProducer( const ParameterSet & );
+    JetProducerFromReco( const ParameterSet & );
   private:
     void produce( Event &, const EventSetup & ) override;
-    EDGetTokenT<View<pat::Jet> > jetToken_;
+    EDGetTokenT<View<reco::Jet> > jetToken_;
     EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
     //    EDGetTokenT<View<reco::Vertex> >  vertexToken_;
-    //    EDGetTokenT<reco::VertexCollection> vertexToken_;
-    EDGetTokenT< VertexCandidateMap > vertexCandidateMapToken_;
+    EDGetTokenT<reco::VertexCollection> vertexToken_;
+    //    EDGetTokenT< VertexCandidateMap > vertexCandidateMapToken_;
     unique_ptr<PileupJetIdAlgo>  pileupJetIdAlgo_;
     ParameterSet pileupJetIdParameters_;
     //    bool useAODOnlyPileupJetIdMethod_;
   };
 
 
-  JetProducer::JetProducer(const ParameterSet & iConfig) :
-    jetToken_(consumes<View<pat::Jet> >(iConfig.getUntrackedParameter<InputTag> ("JetTag", InputTag("slimmedJets")))),
+  JetProducerFromReco::JetProducerFromReco(const ParameterSet & iConfig) :
+    jetToken_(consumes<View<reco::Jet> >(iConfig.getUntrackedParameter<InputTag> ("JetTag", InputTag("slimmedJets")))),
     diPhotonToken_(consumes<View<DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag>("DiPhotonTag",InputTag("flashggDiPhotons")))),
     //    vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
-    //    vertexToken_(consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
-    vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
+    vertexToken_(consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
+    //    vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
     pileupJetIdParameters_(iConfig.getParameter<ParameterSet>("PileupJetIdParameters"))
     //    useAODOnlyPileupJetIdMethod_(iConfig.getUntrackedParameter<bool>("UseAODOnlyPileupJetIdMethod",false))
     
@@ -51,36 +51,39 @@ namespace flashgg {
     produces<vector<flashgg::Jet> >();
   }
 
-  void JetProducer::produce( Event & evt, const EventSetup & ) {
+  void JetProducerFromReco::produce( Event & evt, const EventSetup & ) {
     
     // input jets
-    Handle<View<pat::Jet> > jets;
+    Handle<View<reco::Jet> > jets;
     evt.getByToken(jetToken_,jets);
-    const PtrVector<pat::Jet>& jetPointers = jets->ptrVector();
+    const PtrVector<reco::Jet>& jetPointers = jets->ptrVector();
 
     // input DiPhoton candidates
     Handle<View<DiPhotonCandidate> > diPhotons;
     evt.getByToken(diPhotonToken_,diPhotons);
     const PtrVector<DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
-    Handle<VertexCandidateMap> vertexCandidateMap;
-    //    Handle<View<reco::Vertex> > primaryVertices;
-    //    Handle<reco::VertexCollection> primaryVertices;
-    evt.getByToken(vertexCandidateMapToken_,vertexCandidateMap);
+    Handle<reco::VertexCollection> primaryVertices;
+    evt.getByToken(vertexToken_,primaryVertices);
 
     // output jets
     auto_ptr<vector<flashgg::Jet> > jetColl(new vector<flashgg::Jet>);
 
     for (unsigned int i = 0 ; i < jetPointers.size() ; i++) {
-      Ptr<pat::Jet> pjet = jetPointers[i];
+      Ptr<reco::Jet> pjet = jetPointers[i];
       flashgg::Jet fjet = flashgg::Jet(*pjet);
       for (unsigned int j = 0 ; j < diPhotonPointers.size() ; j++) {
 	Ptr<DiPhotonCandidate> diPhoton = diPhotonPointers[j];
 	Ptr<reco::Vertex> vtx = diPhoton->getVertex();
 
-	// Method written just for MiniAOD --> MicroAOD
-	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),vtx,*vertexCandidateMap,true);
-
+	const reco::VertexCollection & vertexes = *(primaryVertices.product());
+	//	cout << "Right before calling computeIdVariables method" << endl;
+	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(/* the jet*/ pjet.get(),                                                                       
+									    /* JEC computed automatically for PAT jets if this is set to 0. */ 0.,
+									    /* primary vertex of interest */ vtx.get(),
+									    /* primary vertices */ vertexes,
+									    /* calculateMVA */ true);
+	//	cout << "Right after calling computeIdVariables method" << endl;
 	fjet.setPuJetId(vtx,lPUJetId.mva());
       }
       jetColl->push_back(fjet);
@@ -90,5 +93,5 @@ namespace flashgg {
   }
 }
 
-typedef flashgg::JetProducer FlashggJetProducer;
-DEFINE_FWK_MODULE(FlashggJetProducer);
+typedef flashgg::JetProducerFromReco FlashggJetProducerFromReco;
+DEFINE_FWK_MODULE(FlashggJetProducerFromReco);

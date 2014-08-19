@@ -26,6 +26,8 @@
 #include "flashgg/MicroAODAlgos/interface/PhotonIdUtils.h"
 
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
+#include "flashgg/MicroAODFormats/interface/Jet.h"
+
 #include "TTree.h"
 
 // **********************************************************************
@@ -48,6 +50,15 @@ struct vertexInfo {
   int ntrk_Dz;
   float sumptsq_AOD;
   float sumptsq_Dz;
+};
+
+// per jet tree
+struct jetInfo {
+  float pt;
+  float eta;
+  float pujetid_dz;
+  float pujetid_jrbm;
+  float pujetid_jr;
 };
 
 // **********************************************************************
@@ -80,12 +91,17 @@ class VertexValidationTreeMaker : public edm::EDAnalyzer {
   EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
 	EDGetTokenT< VertexCandidateMap > vertexCandidateMapTokenDz_;
   EDGetTokenT< VertexCandidateMap > vertexCandidateMapTokenAOD_;
+  EDGetTokenT<View<flashgg::Jet> > jetTokenDz_;
+  EDGetTokenT<View<flashgg::Jet> > jetTokenRecoBasedMap_;
+  EDGetTokenT<View<flashgg::Jet> > jetTokenReco_;
 
   
   TTree* vertexTree;
   TTree* eventTree;
+  TTree *jetTree;
   vertexInfo vInfo;
   eventInfo eInfo;
+  jetInfo jInfo;
   
 
   //      edm::EDGetTokenT<edm::View<flashgg::Photon> >            photonToken_;
@@ -119,7 +135,10 @@ VertexValidationTreeMaker::VertexValidationTreeMaker(const edm::ParameterSet& iC
   vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
   genParticleToken_(consumes<View<reco::GenParticle> >(iConfig.getUntrackedParameter<InputTag> ("GenParticleTag", InputTag("prunedGenParticles")))),
   vertexCandidateMapTokenDz_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTagDz"))),
-  vertexCandidateMapTokenAOD_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTagAOD")))
+  vertexCandidateMapTokenAOD_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTagAOD"))),
+  jetTokenDz_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagDz"))),
+  jetTokenRecoBasedMap_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagRecoBasedMap"))),
+  jetTokenReco_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagReco")))
 {
  
 }
@@ -149,14 +168,83 @@ VertexValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSet
   iEvent.getByToken(vertexToken_,primaryVertices);
   const PtrVector<reco::Vertex>& vtxs = primaryVertices->ptrVector();
   
-	Handle<View<reco::GenParticle> > genParticles;
+  Handle<View<reco::GenParticle> > genParticles;
   iEvent.getByToken(genParticleToken_,genParticles);
   const PtrVector<reco::GenParticle>& gens = genParticles->ptrVector();
+
+  Handle<View<flashgg::Jet> > jetsDz;
+  iEvent.getByToken(jetTokenDz_,jetsDz);
+  const PtrVector<flashgg::Jet>& jetPointersDz = jetsDz->ptrVector();
+
+  Handle<View<flashgg::Jet> > jetsRecoBasedMap;
+  iEvent.getByToken(jetTokenRecoBasedMap_,jetsRecoBasedMap);
+  const PtrVector<flashgg::Jet>& jetPointersRecoBasedMap = jetsRecoBasedMap->ptrVector();
+
+  Handle<View<flashgg::Jet> > jetsReco;
+  iEvent.getByToken(jetTokenReco_,jetsReco);
+  const PtrVector<flashgg::Jet>& jetPointersReco = jetsReco->ptrVector();
+
+
 
   // cout << "size = " << pvPointers.size() << " " << pfCandPointers.size() << endl;
   
 	// ********************************************************************************
 	initEventStructure();
+
+	std::cout << " SCZ jetPointersDz.size() = " << jetPointersDz.size() << std::endl;
+	std::cout <<" SCZ jetPointersRecoBasedMap.size() = " << jetPointersRecoBasedMap.size() << std::endl;
+	std::cout <<" SCZ jetPointersReco.size() = " << jetPointersReco.size() << std::endl;
+	std::cout << " SCZ vtxs.size() = " << vtxs.size() << std::endl;
+
+	for (unsigned int jdz = 0 ; jdz < jetPointersDz.size() ; jdz++) {
+	  //	  std::cout << "jdz=" << jdz << std::endl;
+	  //	  std::cout << "jdzpt=" <<jetPointersDz[jdz]->pt() << std::endl;
+	  if (jetPointersDz[jdz]->pt() > 20.) {
+	    std::cout << " scz JetDz " << jdz << " Pt=" << jetPointersDz[jdz]->pt() 
+		      << " Eta=" << jetPointersDz[jdz]->eta() 
+		      << " pujetid=" << jetPointersDz[jdz]->getPuJetId(vtxs[0]) << std::endl;
+	  }
+	  jInfo.pt = jetPointersDz[jdz]->pt();
+	  jInfo.eta = jetPointersDz[jdz]->eta();
+	  jInfo.pujetid_dz = jetPointersDz[jdz]->getPuJetId(vtxs[0]);
+	  jInfo.pujetid_jr = -99.;
+          jInfo.pujetid_jrbm = -99.;
+	  for (unsigned int jrbm = 0 ; jrbm < jetPointersRecoBasedMap.size() ; jrbm++) {
+	    std::cout << "jrbm=" << jrbm << std::endl;
+	    if (fabs(jetPointersDz[jdz]->pt() - jetPointersRecoBasedMap[jrbm]->pt()) < 5.0 &&
+		fabs(jetPointersDz[jdz]->eta() -jetPointersRecoBasedMap[jrbm]->eta()) < 0.1) {
+	      jInfo.pujetid_jrbm = jetPointersRecoBasedMap[jrbm]->getPuJetId(vtxs[0]);
+	      break;
+	    }
+	  }
+          for (unsigned int jr = 0 ; jr < jetPointersReco.size() ; jr++) {
+	    std::cout << "jr=" << jr << std::endl;
+            if (fabs(jetPointersDz[jdz]->pt() - jetPointersReco[jr]->pt()) < 5.0 &&
+                fabs(jetPointersDz[jdz]->eta() -jetPointersReco[jr]->eta()) < 0.1) {
+	      jInfo.pujetid_jr = jetPointersReco[jr]->getPuJetId(vtxs[0]);
+	      break;
+            }
+          }
+	  jetTree->Fill();
+	}
+
+	for (unsigned int jrbm = 0 ; jrbm < jetPointersRecoBasedMap.size() ; jrbm++) {
+          if (jetPointersRecoBasedMap[jrbm]->pt() > 20.) {
+	    std::cout << " scz JetRecoBasedMap " << jrbm << " Pt=" << jetPointersRecoBasedMap[jrbm]->pt() 
+		      << " Eta=" << jetPointersRecoBasedMap[jrbm]->eta()
+		      << " pujetid=" << jetPointersRecoBasedMap[jrbm]->getPuJetId(vtxs[0]) << std::endl;
+          }
+        }
+
+	for (unsigned int jr = 0 ; jr < jetPointersReco.size() ; jr++) {
+          if (jetPointersReco[jr]->pt() > 20.) {
+	    std::cout << " scz JetReco " << jr << " Pt=" << jetPointersReco[jr]->pt() 
+                      << " Eta=" << jetPointersReco[jr]->eta()
+		      << " pujetid=" << jetPointersReco[jr]->getPuJetId(vtxs[0]) << std::endl;
+          }
+        }
+
+
 
 //	std::cout << " Number of genParticles : " <<  gens.size() << std::endl;
 	for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++)
@@ -221,6 +309,8 @@ VertexValidationTreeMaker::beginJob()
 	vertexTree->Branch("vertexBranch",&vInfo.ntrk_AOD,"ntrk_AOD/I:ntrk_Dz/I:sumptsq_AOD/F:sumptsq_Dz/F");
 	eventTree = fs_->make<TTree>("eventTree","per-event tree");
 	eventTree->Branch("eventBranch",&eInfo.genVertexZ,"gen_vertex_z/F:zeroth_vertex_z/F:higgs_pt/F");
+	jetTree = fs_->make<TTree>("jetTree","per-jet tree");
+	jetTree->Branch("jetBranch",&jInfo.pt,"pt/F:eta/F:pujetid_dz/F:pujetid_jrbm/F:pujetid_jr/F");
 }
 
 	void 

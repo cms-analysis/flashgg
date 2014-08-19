@@ -75,7 +75,7 @@ namespace flashgg {
       vertexPoint = recoBeamSpotHandle->position();
     }
 
-    std::cout<<"recoBeamSpotHandle->position().z() = "<<vertexPoint.z()<<std::endl;
+    //    std::cout<<"recoBeamSpotHandle->position().z() = "<<vertexPoint.z()<<std::endl;
     
     auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
 
