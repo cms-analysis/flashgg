@@ -21,7 +21,8 @@ namespace flashgg {
 				 const VertexCandidateMap& vertexCandidateMap,
 				 const edm::PtrVector<reco::Conversion>&,
 				 const math::XYZPoint&,
-				 const std::map<std::string,double>&
+				 const std::map<std::string,double>&,
+                                 const edm::PtrVector<reco::GenParticle>&
 				 ) const override;
 
     double vtxZFromConvOnly         (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
@@ -73,6 +74,7 @@ namespace flashgg {
   double dRPho2 = 0;
   double zconv=0;
   double szconv=0;
+  double dz_gen = 0;  
 
   double LegacyVertexSelector::vtxZFromConvOnly(const edm::Ptr<flashgg::Photon>& pho,const edm::Ptr<reco:: Conversion> & conversion,const math::XYZPoint & beamSpot) const{
 
@@ -310,7 +312,8 @@ namespace flashgg {
 						      const VertexCandidateMap& vertexCandidateMap,
 						      const edm::PtrVector<reco::Conversion>& conversionsVector,
 						      const math::XYZPoint & beamSpot,
-						      const std::map<std::string,double> & param) const {
+						      const std::map<std::string,double> & param,
+                                                      const edm::PtrVector<reco::GenParticle>& gens) const {
 
     int IndexMatchedConversionLeadPhoton=-1;
     int IndexMatchedConversionTrailPhoton=-1;
@@ -346,9 +349,14 @@ namespace flashgg {
 
     
     //------------------------------------------
-
+    for (unsigned int gen_index = 0; gen_index < gens.size() ; gen_index++) {
+        if(gens[gen_index]->pdgId() != 25)continue;
+//          std::cout << gens[gen_index]->pdgId()<<std::endl; 
     for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
       edm::Ptr<reco::Vertex> vtx = vtxs[i];
+         dz_gen = gens[gen_index]->vz()-vtx->position().z();
+        if(fabs(dz_gen)>1.)continue;
+//         std::cout << "dz_gen" << dz_gen << std::endl;
       //std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
       //Photon1Dir is the direction between the vertex and the supercluster
       Photon1Dir.SetXYZ(g1->superCluster()->position().x() - vtx->position().x(),g1->superCluster()->position().y() - vtx->position().y(),g1->superCluster()->position().z() - vtx->position().z()); 
@@ -359,6 +367,15 @@ namespace flashgg {
       //the photon 4 momentum wrt a given vertex is built
       p14.SetPxPyPzE(Photon1Dir_uv.x(),Photon1Dir_uv.y(),Photon1Dir_uv.z(),g1->superCluster()->rawEnergy()); 
       p24.SetPxPyPzE(Photon2Dir_uv.x(),Photon2Dir_uv.y(),Photon2Dir_uv.z(),g2->superCluster()->rawEnergy()); 
+      sumpt = 0;
+      sumpt2_in = 0;
+      sumpt2_out = 0;
+      ptbal = 0;
+      ptasym = 0;
+      TVector2 sum_tk;
+      TVector3 diPho; 
+      TVector2 diPhoXY;
+      TVector2 tkPlane;
       if(vertexCandidateMap.count(vtx) == 0) continue;
       for (unsigned int j = 0 ; j < vertexCandidateMap.at(vtx).size() ; j++) {
         edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMap.at(vtx)[j];
@@ -367,6 +384,7 @@ namespace flashgg {
         tk.SetXYZ(cand->px(),cand->py(),cand->pz());  
         tkPlane = tk.XYvector();
         sumpt += tkPlane.Mod();
+        sum_tk += tkPlane;
         double dr1 = tk.DeltaR(p14.Vect());
         double dr2 = tk.DeltaR(p24.Vect());
         //std::cout << "dr1  " << dr1 << std::endl;
@@ -382,7 +400,7 @@ namespace flashgg {
       //std::cout << "sumpt2_out " << sumpt2_out << std::endl; 
       //std::cout << "sumpt2_in  " << sumpt2_in << std::endl;
       //std::cout << " Candidate " << j << " in vertex " << i << " has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
-      ptasym = (sumpt - diPhoXY.Mod())/(sumpt+diPhoXY.Mod());
+      ptasym = (sum_tk.Mod() - diPhoXY.Mod())/(sum_tk.Mod() + diPhoXY.Mod());
       
       
       zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot,param);
@@ -398,7 +416,7 @@ namespace flashgg {
       }
       
     }
-    
+   } 
     return vtxs[0];
   }  
   

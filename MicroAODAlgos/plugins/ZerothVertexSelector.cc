@@ -18,7 +18,8 @@ namespace flashgg {
 				  const VertexCandidateMap&,
 				  const edm::PtrVector<reco::Conversion>&,
 				  const math::XYZPoint&,
-				  const Parameters_Selector_Type&
+				  const Parameters_Selector_Type&,
+                                  const edm::PtrVector<reco::GenParticle>&
 				  ) const override;
 
 
@@ -34,7 +35,8 @@ namespace flashgg {
 						      const VertexCandidateMap& vertexCandidateMap,
 						      const edm::PtrVector<reco::Conversion>& convs,
 						      const math::XYZPoint& beamSpot,
-						      const Parameters_Selector_Type& param
+						      const Parameters_Selector_Type& param,
+                                                      const edm::PtrVector<reco::GenParticle>& gens
 						      ) const {
     return vtxs[_whichVertex];
   }
