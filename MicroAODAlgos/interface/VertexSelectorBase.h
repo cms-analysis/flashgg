@@ -9,7 +9,6 @@
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
-#include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 // Shamelessly patterned on https://github.com/cms-sw/cmssw/blob/CMSSW_7_2_X/RecoParticleFlow/PFProducer/interface/BlockElementLinkerBase.h
 
 namespace flashgg {
@@ -29,8 +28,7 @@ namespace flashgg {
 					  const VertexCandidateMap&,
 					  const edm::PtrVector<reco::Conversion>&,
 					  const math::XYZPoint&,
-					  const Parameters_Selector_Type&,
-                                          const edm::PtrVector<reco::GenParticle>&
+					  const Parameters_Selector_Type&
 					  ) const = 0;
     
     const std::string& name() const { return _selectorName; }

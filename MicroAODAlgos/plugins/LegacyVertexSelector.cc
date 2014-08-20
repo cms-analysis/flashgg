@@ -21,8 +21,7 @@ namespace flashgg {
 				 const VertexCandidateMap& vertexCandidateMap,
 				 const edm::PtrVector<reco::Conversion>&,
 				 const math::XYZPoint&,
-				 const std::map<std::string,double>&,
-                                 const edm::PtrVector<reco::GenParticle>&
+				 const std::map<std::string,double>&
 				 ) const override;
 
     double vtxZFromConvOnly         (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
@@ -74,7 +73,6 @@ namespace flashgg {
   double dRPho2 = 0;
   double zconv=0;
   double szconv=0;
-  double dz_gen = 0;  
 
   double LegacyVertexSelector::vtxZFromConvOnly(const edm::Ptr<flashgg::Photon>& pho,const edm::Ptr<reco:: Conversion> & conversion,const math::XYZPoint & beamSpot) const{
 
@@ -312,8 +310,7 @@ namespace flashgg {
 						      const VertexCandidateMap& vertexCandidateMap,
 						      const edm::PtrVector<reco::Conversion>& conversionsVector,
 						      const math::XYZPoint & beamSpot,
-						      const std::map<std::string,double> & param,
-                                                      const edm::PtrVector<reco::GenParticle>& gens) const {
+						      const std::map<std::string,double> & param) const {
 
     int IndexMatchedConversionLeadPhoton=-1;
     int IndexMatchedConversionTrailPhoton=-1;
@@ -349,14 +346,8 @@ namespace flashgg {
 
     
     //------------------------------------------
-    for (unsigned int gen_index = 0; gen_index < gens.size() ; gen_index++) {
-        if(gens[gen_index]->pdgId() != 25)continue;
-//          std::cout << gens[gen_index]->pdgId()<<std::endl; 
     for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
       edm::Ptr<reco::Vertex> vtx = vtxs[i];
-         dz_gen = gens[gen_index]->vz()-vtx->position().z();
-        if(fabs(dz_gen)>1.)continue;
-//         std::cout << "dz_gen" << dz_gen << std::endl;
       //std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
       //Photon1Dir is the direction between the vertex and the supercluster
       Photon1Dir.SetXYZ(g1->superCluster()->position().x() - vtx->position().x(),g1->superCluster()->position().y() - vtx->position().y(),g1->superCluster()->position().z() - vtx->position().z()); 
@@ -409,9 +400,7 @@ namespace flashgg {
 	double pull_conv = fabs(vtx->position().z()-zconv)/szconv;
 	std::cout<<"plot_mva: "<<"converted_case_MVA_variables sumpt "<<sumpt<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<" ptasym "<<ptasym<<" pull_conv "<<pull_conv<<std::endl;
       }
-      
-    }
-   } 
+     } 
     return vtxs[0];
   }  
   

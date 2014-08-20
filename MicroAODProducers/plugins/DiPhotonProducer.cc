@@ -14,7 +14,6 @@
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
-#include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 
 
 using namespace edm;
@@ -34,7 +33,6 @@ namespace flashgg {
     unique_ptr<VertexSelectorBase> vertexSelector_;
     EDGetTokenT<View<reco::Conversion> > conversionToken_;
     EDGetTokenT<View<reco::BeamSpot> > beamSpotToken_;
-    EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
 
     double dRexclude;
     double sigma1Pix;
@@ -69,8 +67,7 @@ namespace flashgg {
     photonToken_(consumes<View<flashgg::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("flashggPhotons")))),
     vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
     conversionToken_(consumes<View<reco::Conversion> >(iConfig.getUntrackedParameter<InputTag>("ConversionTag",InputTag("reducedConversions")))),
-    beamSpotToken_(consumes<View<reco::BeamSpot> >(iConfig.getUntrackedParameter<InputTag>("BeamSpotTag",InputTag("offlineBeamSpot")))),
-    genParticleToken_(consumes<View<reco::GenParticle> > (iConfig.getUntrackedParameter<InputTag>("GenParticleTag",InputTag("prunedGenParticles")))){
+    beamSpotToken_(consumes<View<reco::BeamSpot> >(iConfig.getUntrackedParameter<InputTag>("BeamSpotTag",InputTag("offlineBeamSpot")))){
     
     const std::string& VertexSelectorName = iConfig.getParameter<std::string>("VertexSelectorName");
     vertexSelector_.reset(FlashggVertexSelectorFactory::get()->create(VertexSelectorName,iConfig));
@@ -131,10 +128,6 @@ namespace flashgg {
       vertexPoint = recoBeamSpotHandle->position();
     }
 
-    Handle<View<reco::GenParticle> > genParticles;
-    evt.getByToken(genParticleToken_,genParticles);
-    const PtrVector<reco::GenParticle>& gens = genParticles->ptrVector();
-
     
     auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
 
@@ -142,7 +135,7 @@ namespace flashgg {
       Ptr<flashgg::Photon> pp1 = photonPointers[i];
       for (unsigned int j = i+1 ; j < photonPointers.size() ; j++) {
     	Ptr<flashgg::Photon> pp2 = photonPointers[j];
-	Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers,vertexPoint,param,gens);
+	Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers,vertexPoint,param);
     	diPhotonColl->push_back(DiPhotonCandidate(pp1,pp2,pvx));                                                                                                                 
         flashgg::Photon *photon1 = pp1->clone();
         flashgg::Photon *photon2 = pp2->clone();
