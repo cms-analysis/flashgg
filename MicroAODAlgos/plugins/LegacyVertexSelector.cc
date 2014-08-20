@@ -373,16 +373,13 @@ namespace flashgg {
       ptbal = 0;
       ptasym = 0;
       TVector2 sum_tk;
-      TVector3 diPho; 
-      TVector2 diPhoXY;
       TVector2 tkPlane;
       if(vertexCandidateMap.count(vtx) == 0) continue;
       for (unsigned int j = 0 ; j < vertexCandidateMap.at(vtx).size() ; j++) {
         edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMap.at(vtx)[j];
-	diPho.SetXYZ(g1->px()+g2->px(),g1->py()+g2->py(),g1->pz()+g2->pz());
-	diPhoXY = diPho.XYvector();
-        tk.SetXYZ(cand->px(),cand->py(),cand->pz());  
+        tk.SetXYZ(cand->px(),cand->py(),cand->pz()); 
         tkPlane = tk.XYvector();
+        //std::cout << "tkPlane magnitude   " <<tkPlane.Mod() <<std::endl;
         sumpt += tkPlane.Mod();
         sum_tk += tkPlane;
         double dr1 = tk.DeltaR(p14.Vect());
@@ -395,14 +392,12 @@ namespace flashgg {
         }
 	//skip if ouside cone
 	sumpt2_out+=tkPlane.Mod2();
-        ptbal -= tkPlane * diPhoXY.Unit();
+        ptbal -= tkPlane * (p14+p24).Vect().XYvector().Unit();
       }
       //std::cout << "sumpt2_out " << sumpt2_out << std::endl; 
       //std::cout << "sumpt2_in  " << sumpt2_in << std::endl;
       //std::cout << " Candidate " << j << " in vertex " << i << " has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
-      ptasym = (sum_tk.Mod() - diPhoXY.Mod())/(sum_tk.Mod() + diPhoXY.Mod());
-      
-      
+      ptasym = (sum_tk.Mod() - (p14+p24).Vect().XYvector().Mod())/(sum_tk.Mod() + (p14+p24).Vect().XYvector().Mod());
       zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot,param);
       szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,param);
       
