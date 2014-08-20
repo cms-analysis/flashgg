@@ -94,7 +94,7 @@ process.flashggVertexValidationTreeMaker = cms.EDAnalyzer('FlashggVertexValidati
                                                           VertexCandidateMapTagAOD = cms.InputTag('flashggVertexMapValidator'),
                                                           JetTagDz = cms.InputTag("flashggJets"),
                                                           JetTagRecoBasedMap = cms.InputTag("flashggJetsUsingRecoBasedVertexMap"),
-                                                          JetTagReco = cms.InputTag("flashggJetsUsingRecoJets")
+#                                                          JetTagReco = cms.InputTag("flashggJetsUsingRecoJets")
                                                           )
                  
 # This requires you to have done: git cms-merge-topic -u sethzenz:pileupjetid-for-flashgg                                                                                          
@@ -115,18 +115,6 @@ process.flashggJetsUsingRecoBasedVertexMap = cms.EDProducer('FlashggJetProducer'
                                                            VertexCandidateMapTag = cms.InputTag("flashggVertexMapValidator"),
                                                            PileupJetIdParameters=cms.PSet(process.full_5x_chs) # from PileupJetIDParams_cfi
                                                            )
-
-process.flashggJetsUsingRecoJets = cms.EDProducer('FlashggJetProducerFromReco',
-                                                 DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
-                                                 VertexTag=cms.untracked.InputTag('offlinePrimaryVertices'),
-                                                 JetTag=cms.untracked.InputTag('ak4PFJetsCHS'),
-#                                                 VertexCandidateMapTag = cms.InputTag("flashggVertexMapValidator"), # won't be used
-                                                 PileupJetIdParameters=cms.PSet(process.full_5x_chs), # from PileupJetIDParams_cfi
-#                                                 UseAODOnlyPileupJetIdMethod=cms.untracked.bool(True)
-                                                 )
-                                                 
-
-
 
 ####### OUTPUT								 
 #Output definition (AOD->miniAOD)
@@ -184,7 +172,6 @@ process.p = cms.Path(process.flashggVertexMapValidator*
                      process.flashggPreselectedDiPhotons*
                      process.flashggJets*
                      process.flashggJetsUsingRecoBasedVertexMap*
-                     process.flashggJetsUsingRecoJets*
                      process.flashggVertexValidationTreeMaker
                     )
 

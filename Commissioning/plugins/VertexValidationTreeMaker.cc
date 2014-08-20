@@ -137,8 +137,8 @@ VertexValidationTreeMaker::VertexValidationTreeMaker(const edm::ParameterSet& iC
   vertexCandidateMapTokenDz_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTagDz"))),
   vertexCandidateMapTokenAOD_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTagAOD"))),
   jetTokenDz_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagDz"))),
-  jetTokenRecoBasedMap_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagRecoBasedMap"))),
-  jetTokenReco_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagReco")))
+  jetTokenRecoBasedMap_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagRecoBasedMap")))
+  //  jetTokenReco_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagReco")))
 {
  
 }
@@ -180,9 +180,9 @@ VertexValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSet
   iEvent.getByToken(jetTokenRecoBasedMap_,jetsRecoBasedMap);
   const PtrVector<flashgg::Jet>& jetPointersRecoBasedMap = jetsRecoBasedMap->ptrVector();
 
-  Handle<View<flashgg::Jet> > jetsReco;
-  iEvent.getByToken(jetTokenReco_,jetsReco);
-  const PtrVector<flashgg::Jet>& jetPointersReco = jetsReco->ptrVector();
+  //  Handle<View<flashgg::Jet> > jetsReco;
+  //  iEvent.getByToken(jetTokenReco_,jetsReco);
+  //  const PtrVector<flashgg::Jet>& jetPointersReco = jetsReco->ptrVector();
 
 
 
@@ -193,7 +193,7 @@ VertexValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSet
 
 	std::cout << " SCZ jetPointersDz.size() = " << jetPointersDz.size() << std::endl;
 	std::cout <<" SCZ jetPointersRecoBasedMap.size() = " << jetPointersRecoBasedMap.size() << std::endl;
-	std::cout <<" SCZ jetPointersReco.size() = " << jetPointersReco.size() << std::endl;
+	//	std::cout <<" SCZ jetPointersReco.size() = " << jetPointersReco.size() << std::endl;
 	std::cout << " SCZ vtxs.size() = " << vtxs.size() << std::endl;
 
 	for (unsigned int jdz = 0 ; jdz < jetPointersDz.size() ; jdz++) {
@@ -207,27 +207,29 @@ VertexValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSet
 	  jInfo.pt = jetPointersDz[jdz]->pt();
 	  jInfo.eta = jetPointersDz[jdz]->eta();
 	  jInfo.pujetid_dz = jetPointersDz[jdz]->getPuJetId(vtxs[0]);
-	  jInfo.pujetid_jr = -99.;
+	  jInfo.pujetid_jr = jetPointersDz[jdz]->userFloat("pileupJetId:fullDiscriminant");
           jInfo.pujetid_jrbm = -99.;
 	  for (unsigned int jrbm = 0 ; jrbm < jetPointersRecoBasedMap.size() ; jrbm++) {
 	    std::cout << "jrbm=" << jrbm << std::endl;
-	    if (fabs(jetPointersDz[jdz]->pt() - jetPointersRecoBasedMap[jrbm]->pt()) < 5.0 &&
-		fabs(jetPointersDz[jdz]->eta() -jetPointersRecoBasedMap[jrbm]->eta()) < 0.1) {
+	    if (fabs(jetPointersDz[jdz]->pt() - jetPointersRecoBasedMap[jrbm]->pt()) < 0.1 &&
+		fabs(jetPointersDz[jdz]->eta() -jetPointersRecoBasedMap[jrbm]->eta()) < 0.01) {
 	      jInfo.pujetid_jrbm = jetPointersRecoBasedMap[jrbm]->getPuJetId(vtxs[0]);
 	      break;
 	    }
 	  }
-          for (unsigned int jr = 0 ; jr < jetPointersReco.size() ; jr++) {
-	    std::cout << "jr=" << jr << std::endl;
-            if (fabs(jetPointersDz[jdz]->pt() - jetPointersReco[jr]->pt()) < 5.0 &&
-                fabs(jetPointersDz[jdz]->eta() -jetPointersReco[jr]->eta()) < 0.1) {
-	      jInfo.pujetid_jr = jetPointersReco[jr]->getPuJetId(vtxs[0]);
-	      break;
-            }
-          }
+	  
+	  //          for (unsigned int jr = 0 ; jr < jetPointersReco.size() ; jr++) {
+	  //	    std::cout << "jr=" << jr << std::endl;
+	  //            if (fabs(jetPointersDz[jdz]->pt() - jetPointersReco[jr]->pt()) < 5.0 &&
+	  //                fabs(jetPointersDz[jdz]->eta() -jetPointersReco[jr]->eta()) < 0.1) {
+	  //	      jInfo.pujetid_jr = jetPointersReco[jr]->getPuJetId(vtxs[0]);
+	  //	      break;
+	  //            }
+	  //          }
 	  jetTree->Fill();
 	}
 
+/*
 	for (unsigned int jrbm = 0 ; jrbm < jetPointersRecoBasedMap.size() ; jrbm++) {
           if (jetPointersRecoBasedMap[jrbm]->pt() > 20.) {
 	    std::cout << " scz JetRecoBasedMap " << jrbm << " Pt=" << jetPointersRecoBasedMap[jrbm]->pt() 
@@ -243,7 +245,7 @@ VertexValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSet
 		      << " pujetid=" << jetPointersReco[jr]->getPuJetId(vtxs[0]) << std::endl;
           }
         }
-
+*/
 
 
 //	std::cout << " Number of genParticles : " <<  gens.size() << std::endl;
