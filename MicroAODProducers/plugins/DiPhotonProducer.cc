@@ -135,6 +135,7 @@ namespace flashgg {
     evt.getByToken(genParticleToken_,genParticles);
     const PtrVector<reco::GenParticle>& gens = genParticles->ptrVector();
 
+    
     auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
 
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
