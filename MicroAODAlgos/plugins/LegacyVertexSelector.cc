@@ -346,7 +346,6 @@ namespace flashgg {
 
     
     //------------------------------------------
-
     for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
       edm::Ptr<reco::Vertex> vtx = vtxs[i];
       //std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
@@ -359,14 +358,21 @@ namespace flashgg {
       //the photon 4 momentum wrt a given vertex is built
       p14.SetPxPyPzE(Photon1Dir_uv.x(),Photon1Dir_uv.y(),Photon1Dir_uv.z(),g1->superCluster()->rawEnergy()); 
       p24.SetPxPyPzE(Photon2Dir_uv.x(),Photon2Dir_uv.y(),Photon2Dir_uv.z(),g2->superCluster()->rawEnergy()); 
+      sumpt = 0;
+      sumpt2_in = 0;
+      sumpt2_out = 0;
+      ptbal = 0;
+      ptasym = 0;
+      TVector2 sum_tk;
+      TVector2 tkPlane;
       if(vertexCandidateMap.count(vtx) == 0) continue;
       for (unsigned int j = 0 ; j < vertexCandidateMap.at(vtx).size() ; j++) {
         edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMap.at(vtx)[j];
-	diPho.SetXYZ(g1->px()+g2->px(),g1->py()+g2->py(),g1->pz()+g2->pz());
-	diPhoXY = diPho.XYvector();
-        tk.SetXYZ(cand->px(),cand->py(),cand->pz());  
+        tk.SetXYZ(cand->px(),cand->py(),cand->pz()); 
         tkPlane = tk.XYvector();
+        //std::cout << "tkPlane magnitude   " <<tkPlane.Mod() <<std::endl;
         sumpt += tkPlane.Mod();
+        sum_tk += tkPlane;
         double dr1 = tk.DeltaR(p14.Vect());
         double dr2 = tk.DeltaR(p24.Vect());
         //std::cout << "dr1  " << dr1 << std::endl;
@@ -377,14 +383,12 @@ namespace flashgg {
         }
 	//skip if ouside cone
 	sumpt2_out+=tkPlane.Mod2();
-        ptbal -= tkPlane * diPhoXY.Unit();
+        ptbal -= tkPlane * (p14+p24).Vect().XYvector().Unit();
       }
       //std::cout << "sumpt2_out " << sumpt2_out << std::endl; 
       //std::cout << "sumpt2_in  " << sumpt2_in << std::endl;
       //std::cout << " Candidate " << j << " in vertex " << i << " has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
-      ptasym = (sumpt - diPhoXY.Mod())/(sumpt+diPhoXY.Mod());
-      
-      
+      ptasym = (sum_tk.Mod() - (p14+p24).Vect().XYvector().Mod())/(sum_tk.Mod() + (p14+p24).Vect().XYvector().Mod());
       zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot,param);
       szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,param);
       
@@ -396,9 +400,7 @@ namespace flashgg {
 	double pull_conv = fabs(vtx->position().z()-zconv)/szconv;
 	std::cout<<"plot_mva: "<<"converted_case_MVA_variables sumpt "<<sumpt<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<" ptasym "<<ptasym<<" pull_conv "<<pull_conv<<std::endl;
       }
-      
-    }
-    
+     } 
     return vtxs[0];
   }  
   

@@ -11,7 +11,10 @@ Jet::Jet(const pat::Jet& aJet ) : pat::Jet(aJet) {
 Jet::~Jet() {}
 
 float Jet::getPuJetId(const edm::Ptr<reco::Vertex> vtx) const {
-  return PuJetId_.at(vtx);
+  if (PuJetId_.count(vtx)) {
+    return PuJetId_.at(vtx);
+  }
+  return -1.9;
 }
 
 float Jet::getPuJetId(const edm::Ptr<DiPhotonCandidate> dipho) const {

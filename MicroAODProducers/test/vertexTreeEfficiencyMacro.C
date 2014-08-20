@@ -15,7 +15,7 @@
 	eventTree->SetBranchAddress("eventBranch", &eInfo.genVertexZ); 
 
 	TH1F *ptnum = new TH1F("ptnum","ptnum",100,0,250); //define histos for numerator and denominator
-  :wq
+
 	TH1F *ptden = new TH1F("ptden","ptden",100,0,250);
 
 	for( Long64_t loop = 0 ; loop< eventTree->GetEntries(); loop++)
@@ -30,7 +30,8 @@
 	}
 
 	TGraphAsymmErrors *graph= new TGraphAsymmErrors(ptnum,ptden);
-	graph->Draw(); 
+	graph->Draw("AP"); 
+	c1->SaveAs("vertexEfficiency0.png");
 
 	std:: cout << "Statistics: " << eventTree->GetEntries() << " events." << std::endl;
 }

@@ -16,7 +16,6 @@
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 
 
-
 using namespace edm;
 using namespace std;
 
@@ -129,6 +128,7 @@ namespace flashgg {
       vertexPoint = recoBeamSpotHandle->position();
     }
 
+    
     auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
 
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
