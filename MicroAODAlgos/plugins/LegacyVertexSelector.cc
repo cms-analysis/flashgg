@@ -319,20 +319,24 @@ namespace flashgg {
       if(g1->hasConversionTracks()){
 	IndexMatchedConversionLeadPhoton = IndexMatchedConversion(g1,conversionsVector);
 	if(IndexMatchedConversionLeadPhoton!=-1){
-	  /*std::cout<<"dz Lead Photon from vtxZFromConvOnly         "<<vtxZFromConvOnly(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
-	  std::cout<<"dz Lead Photon from vtxZFromConvSuperCluster "<<vtxZFromConvSuperCluster(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
-	  std::cout<<"dz Lead Photon from vtxZFromConv             "<<vtxZFromConv(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
-          std::cout<<"szconv Lead Photon from vtxdZFromConv             "<<vtxdZFromConv(g1,conversionsVector[IndexMatchedConversionLeadPhoton],param)<<std::endl;*/
+	  /*
+	    std::cout<<"dz Lead Photon from vtxZFromConvOnly         "<<vtxZFromConvOnly(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
+	    std::cout<<"dz Lead Photon from vtxZFromConvSuperCluster "<<vtxZFromConvSuperCluster(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
+	    std::cout<<"dz Lead Photon from vtxZFromConv             "<<vtxZFromConv(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
+	    std::cout<<"szconv Lead Photon from vtxdZFromConv             "<<vtxdZFromConv(g1,conversionsVector[IndexMatchedConversionLeadPhoton],param)<<std::endl;
+	  */
 	  
 	}
       }
       if(g2->hasConversionTracks()){
 	IndexMatchedConversionTrailPhoton = IndexMatchedConversion(g2,conversionsVector);
 	if(IndexMatchedConversionTrailPhoton!=-1){
-	  /*std::cout<<"dz Trail Photon from vtxZFromConvOnly         "<<vtxZFromConvOnly(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
-	  std::cout<<"dz Trail Photon from vtxZFromConvSuperCluster "<<vtxZFromConvSuperCluster(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
-	  std::cout<<"dz Trail Photon from vtxZFromConv             "<<vtxZFromConv(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
-          std::cout<<"szconv Trail Photon from vtxdZFromConv             "<<vtxdZFromConv(g2,conversionsVector[IndexMatchedConversionTrailPhoton],param)<<std::endl;*/
+	  /*
+	    std::cout<<"dz Trail Photon from vtxZFromConvOnly         "<<vtxZFromConvOnly(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
+	    std::cout<<"dz Trail Photon from vtxZFromConvSuperCluster "<<vtxZFromConvSuperCluster(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
+	    std::cout<<"dz Trail Photon from vtxZFromConv             "<<vtxZFromConv(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
+	    std::cout<<"szconv Trail Photon from vtxdZFromConv             "<<vtxdZFromConv(g2,conversionsVector[IndexMatchedConversionTrailPhoton],param)<<std::endl;
+	  */
 	}
       }
     }
