@@ -149,7 +149,7 @@ namespace flashgg {
     // method 2 is supercluster only
     // attribute the error depending on the tracker region
     double dz=-99999;
-    int method=0;
+    int method=0;//to be assigned dynamically
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
 
     if (conversion->nTracks()==2) {
@@ -315,35 +315,30 @@ namespace flashgg {
     int IndexMatchedConversionLeadPhoton=-1;
     int IndexMatchedConversionTrailPhoton=-1;
 
-    
     if(conversionsVector.size()>0){
       if(g1->hasConversionTracks()){
 	IndexMatchedConversionLeadPhoton = IndexMatchedConversion(g1,conversionsVector);
 	if(IndexMatchedConversionLeadPhoton!=-1){
-	  std::cout<<"dz Lead Photon from vtxZFromConvOnly         "<<vtxZFromConvOnly(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
+	  /*std::cout<<"dz Lead Photon from vtxZFromConvOnly         "<<vtxZFromConvOnly(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
 	  std::cout<<"dz Lead Photon from vtxZFromConvSuperCluster "<<vtxZFromConvSuperCluster(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
 	  std::cout<<"dz Lead Photon from vtxZFromConv             "<<vtxZFromConv(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
-          std::cout<<"szconv Lead Photon from vtxdZFromConv             "<<vtxdZFromConv(g1,conversionsVector[IndexMatchedConversionLeadPhoton],param)<<std::endl;
+          std::cout<<"szconv Lead Photon from vtxdZFromConv             "<<vtxdZFromConv(g1,conversionsVector[IndexMatchedConversionLeadPhoton],param)<<std::endl;*/
+	  
 	}
       }
       if(g2->hasConversionTracks()){
 	IndexMatchedConversionTrailPhoton = IndexMatchedConversion(g2,conversionsVector);
 	if(IndexMatchedConversionTrailPhoton!=-1){
-	  std::cout<<"dz Trail Photon from vtxZFromConvOnly         "<<vtxZFromConvOnly(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
+	  /*std::cout<<"dz Trail Photon from vtxZFromConvOnly         "<<vtxZFromConvOnly(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
 	  std::cout<<"dz Trail Photon from vtxZFromConvSuperCluster "<<vtxZFromConvSuperCluster(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
 	  std::cout<<"dz Trail Photon from vtxZFromConv             "<<vtxZFromConv(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
-          std::cout<<"szconv Trail Photon from vtxdZFromConv             "<<vtxdZFromConv(g2,conversionsVector[IndexMatchedConversionTrailPhoton],param)<<std::endl;
+          std::cout<<"szconv Trail Photon from vtxdZFromConv             "<<vtxdZFromConv(g2,conversionsVector[IndexMatchedConversionTrailPhoton],param)<<std::endl;*/
 	}
       }
     }
+  
 
-    //    int indexselected_vertex=-1;
-    //for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
-    //  edm::Ptr<reco::Vertex> vtx = vtxs[i];
-    //  std::cout<<"dZ vertex = "vtxs[i]
-    //}
-
-
+  
     
     //------------------------------------------
     for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
@@ -392,7 +387,7 @@ namespace flashgg {
       zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot,param);
       szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,param);
       
-      std::cout<<"zconv+/-szconv: "<<zconv<<"+/-"<<szconv<<std::endl;
+      //std::cout<<"zconv+/-szconv: "<<zconv<<"+/-"<<szconv<<std::endl;
 
       if(zconv==0 && szconv==0.0){
 	std::cout<<"plot_mva: "<<"unconverted_case_MVA_variables sumpt "<<sumpt<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<" ptasym "<<ptasym<<std::endl;
