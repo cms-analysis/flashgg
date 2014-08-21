@@ -339,12 +339,12 @@ namespace flashgg {
 	}
       }
     }
-  
-
-  
     
     //------------------------------------------
-    for (unsigned int vertex_index = 0 ; vertex_index < vtxs.size() ; vertex_index++) {
+    
+    unsigned int vertex_index,track_index;
+
+    for (vertex_index = 0 ; vertex_index < vtxs.size() ; vertex_index++) {
       edm::Ptr<reco::Vertex> vtx = vtxs[vertex_index];
       //std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
       //Photon1Dir is the direction between the vertex and the supercluster
@@ -356,46 +356,44 @@ namespace flashgg {
       //the photon 4 momentum wrt a given vertex is built
       p14.SetPxPyPzE(Photon1Dir_uv.x(),Photon1Dir_uv.y(),Photon1Dir_uv.z(),g1->superCluster()->rawEnergy()); 
       p24.SetPxPyPzE(Photon2Dir_uv.x(),Photon2Dir_uv.y(),Photon2Dir_uv.z(),g2->superCluster()->rawEnergy()); 
+      
       sumpt2_in = 0;
       sumpt2_out = 0;
       ptbal = 0;
       ptasym = 0;
-      TVector2 sum_tk;
-      TVector2 tkXY;
+      sumpt.Set(0.,0.);
+
       if(vertexCandidateMap.count(vtx) == 0) continue;
-      for (unsigned int track_index = 0 ; track_index < vertexCandidateMap.at(vtx).size() ; track_index++) {
+      for(track_index = 0 ; track_index < vertexCandidateMap.at(vtx).size() ; track_index++) {
         edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMap.at(vtx)[track_index];
         tk.SetXYZ(cand->px(),cand->py(),cand->pz()); 
         tkXY = tk.XYvector();
-        //std::cout << "tkXY magnitude   " <<tkXY.Mod() <<std::endl;
         sumpt += tkXY;
-        sum_tk += tkXY;
         dr1 = tk.DeltaR(p14.Vect());
         dr2 = tk.DeltaR(p24.Vect());
-        //std::cout << "dr1  " << dr1 << std::endl;
-	
-        if(dr1 < param.at("dRexclude") || dr2 < param.at("dRexclude")){
-          sumpt2_in += tkXY.Mod2();
+	if(dr1 < param.at("dRexclude") || dr2 < param.at("dRexclude")){
+          sumpt2_in+=tkXY.Mod2();
           continue;
         }
-	//skip if ouside cone
 	sumpt2_out+=tkXY.Mod2();
-        ptbal -= tkXY * (p14+p24).Vect().XYvector().Unit();
+        ptbal-=tkXY*(p14+p24).Vect().XYvector().Unit();
       }
 
-      ptasym = (sum_tk.Mod() - (p14+p24).Vect().XYvector().Mod())/(sum_tk.Mod() + (p14+p24).Vect().XYvector().Mod());
+      ptasym = (sumpt.Mod() - (p14+p24).Vect().XYvector().Mod())/(sumpt.Mod() + (p14+p24).Vect().XYvector().Mod());
       zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot,param);
       szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,param);
       
       //std::cout<<"zconv+/-szconv: "<<zconv<<"+/-"<<szconv<<std::endl;
 
       if(zconv==0 && szconv==0.0){
-	std::cout<<"plot_unconverted_case_MVA sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<" ptasym "<<ptasym<<std::endl;
+	std::cout<<"vertex:"<<vertex_index<<std::endl;
+	std::cout<<"plot_unconverted_case_MVA |sumpt| "<<sumpt.Mod()<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<" ptasym "<<ptasym<<" pull_conv 0 0"<<std::endl;
       }else{
 	double pull_conv = fabs(vtx->position().z()-zconv)/szconv;
-	std::cout<<"plot_converted_case_MVA sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<" ptasym "<<ptasym<<" pull_conv "<<pull_conv<<std::endl;
+	std::cout<<"vertex:"<<vertex_index<<std::endl;
+	std::cout<<"plot_converted_case_MVA   |sumpt| "<<sumpt.Mod()<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<" ptasym "<<ptasym<<" pull_conv "<<pull_conv<<" 0"<<std::endl;
       }
-     } 
+    } 
     return vtxs[0];
   }  
   
