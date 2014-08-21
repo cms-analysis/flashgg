@@ -48,22 +48,21 @@ namespace flashgg {
   };
   TVector3 diPho;  
   TVector3 tk;
-  TVector2 tkPlane;
-  TVector2 diPhoXY;
+  TVector2 tkXY;
+  TVector2 sumpt;
   TVector3 VtxtoSC;
   TVector3 VtxtoSCPho1;
   TVector3 VtxtoSCPho2;
   TVector3 RefPairMo;
   TVector3 Photon1Dir;
   TVector3 Photon1Dir_uv;
-  TLorentzVector p14;
   TVector3 Photon2Dir;
   TVector3 Photon2Dir_uv;
+  TLorentzVector p14;
   TLorentzVector p24;
   
   double dr1 = 0;
   double dr2 = 0;
-  double sumpt = 0;
   double sumpt2_out = 0; 
   double sumpt2_in = 0; 
   double ptbal = 0; 
@@ -149,7 +148,7 @@ namespace flashgg {
     // method 2 is supercluster only
     // attribute the error depending on the tracker region
     double dz=-99999;
-    int method=0;
+    int method=0;//to be assigned dynamically
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
 
     if (conversion->nTracks()==2) {
@@ -315,39 +314,38 @@ namespace flashgg {
     int IndexMatchedConversionLeadPhoton=-1;
     int IndexMatchedConversionTrailPhoton=-1;
 
-    
     if(conversionsVector.size()>0){
       if(g1->hasConversionTracks()){
 	IndexMatchedConversionLeadPhoton = IndexMatchedConversion(g1,conversionsVector);
 	if(IndexMatchedConversionLeadPhoton!=-1){
-	  std::cout<<"dz Lead Photon from vtxZFromConvOnly         "<<vtxZFromConvOnly(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
-	  std::cout<<"dz Lead Photon from vtxZFromConvSuperCluster "<<vtxZFromConvSuperCluster(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
-	  std::cout<<"dz Lead Photon from vtxZFromConv             "<<vtxZFromConv(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
-          std::cout<<"szconv Lead Photon from vtxdZFromConv             "<<vtxdZFromConv(g1,conversionsVector[IndexMatchedConversionLeadPhoton],param)<<std::endl;
+	  /*
+	    std::cout<<"dz Lead Photon from vtxZFromConvOnly         "<<vtxZFromConvOnly(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
+	    std::cout<<"dz Lead Photon from vtxZFromConvSuperCluster "<<vtxZFromConvSuperCluster(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
+	    std::cout<<"dz Lead Photon from vtxZFromConv             "<<vtxZFromConv(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
+	    std::cout<<"szconv Lead Photon from vtxdZFromConv             "<<vtxdZFromConv(g1,conversionsVector[IndexMatchedConversionLeadPhoton],param)<<std::endl;
+	  */
+	  
 	}
       }
       if(g2->hasConversionTracks()){
 	IndexMatchedConversionTrailPhoton = IndexMatchedConversion(g2,conversionsVector);
 	if(IndexMatchedConversionTrailPhoton!=-1){
-	  std::cout<<"dz Trail Photon from vtxZFromConvOnly         "<<vtxZFromConvOnly(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
-	  std::cout<<"dz Trail Photon from vtxZFromConvSuperCluster "<<vtxZFromConvSuperCluster(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
-	  std::cout<<"dz Trail Photon from vtxZFromConv             "<<vtxZFromConv(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
-          std::cout<<"szconv Trail Photon from vtxdZFromConv             "<<vtxdZFromConv(g2,conversionsVector[IndexMatchedConversionTrailPhoton],param)<<std::endl;
+	  /*
+	    std::cout<<"dz Trail Photon from vtxZFromConvOnly         "<<vtxZFromConvOnly(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
+	    std::cout<<"dz Trail Photon from vtxZFromConvSuperCluster "<<vtxZFromConvSuperCluster(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
+	    std::cout<<"dz Trail Photon from vtxZFromConv             "<<vtxZFromConv(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
+	    std::cout<<"szconv Trail Photon from vtxdZFromConv             "<<vtxdZFromConv(g2,conversionsVector[IndexMatchedConversionTrailPhoton],param)<<std::endl;
+	  */
 	}
       }
     }
-
-    //    int indexselected_vertex=-1;
-    //for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
-    //  edm::Ptr<reco::Vertex> vtx = vtxs[i];
-    //  std::cout<<"dZ vertex = "vtxs[i]
-    //}
-
-
     
     //------------------------------------------
-    for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
-      edm::Ptr<reco::Vertex> vtx = vtxs[i];
+    
+    unsigned int vertex_index,track_index;
+
+    for (vertex_index = 0 ; vertex_index < vtxs.size() ; vertex_index++) {
+      edm::Ptr<reco::Vertex> vtx = vtxs[vertex_index];
       //std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
       //Photon1Dir is the direction between the vertex and the supercluster
       Photon1Dir.SetXYZ(g1->superCluster()->position().x() - vtx->position().x(),g1->superCluster()->position().y() - vtx->position().y(),g1->superCluster()->position().z() - vtx->position().z()); 
@@ -358,49 +356,44 @@ namespace flashgg {
       //the photon 4 momentum wrt a given vertex is built
       p14.SetPxPyPzE(Photon1Dir_uv.x(),Photon1Dir_uv.y(),Photon1Dir_uv.z(),g1->superCluster()->rawEnergy()); 
       p24.SetPxPyPzE(Photon2Dir_uv.x(),Photon2Dir_uv.y(),Photon2Dir_uv.z(),g2->superCluster()->rawEnergy()); 
-      sumpt = 0;
+      
       sumpt2_in = 0;
       sumpt2_out = 0;
       ptbal = 0;
       ptasym = 0;
-      TVector2 sum_tk;
-      TVector2 tkPlane;
+      sumpt.Set(0.,0.);
+
       if(vertexCandidateMap.count(vtx) == 0) continue;
-      for (unsigned int j = 0 ; j < vertexCandidateMap.at(vtx).size() ; j++) {
-        edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMap.at(vtx)[j];
+      for(track_index = 0 ; track_index < vertexCandidateMap.at(vtx).size() ; track_index++) {
+        edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMap.at(vtx)[track_index];
         tk.SetXYZ(cand->px(),cand->py(),cand->pz()); 
-        tkPlane = tk.XYvector();
-        //std::cout << "tkPlane magnitude   " <<tkPlane.Mod() <<std::endl;
-        sumpt += tkPlane.Mod();
-        sum_tk += tkPlane;
-        double dr1 = tk.DeltaR(p14.Vect());
-        double dr2 = tk.DeltaR(p24.Vect());
-        //std::cout << "dr1  " << dr1 << std::endl;
-	
-        if(dr1 < param.at("dRexclude") || dr2 < param.at("dRexclude")){
-          sumpt2_in += tkPlane.Mod2();
+        tkXY = tk.XYvector();
+        sumpt += tkXY;
+        dr1 = tk.DeltaR(p14.Vect());
+        dr2 = tk.DeltaR(p24.Vect());
+	if(dr1 < param.at("dRexclude") || dr2 < param.at("dRexclude")){
+          sumpt2_in+=tkXY.Mod2();
           continue;
         }
-	//skip if ouside cone
-	sumpt2_out+=tkPlane.Mod2();
-        ptbal -= tkPlane * (p14+p24).Vect().XYvector().Unit();
+	sumpt2_out+=tkXY.Mod2();
+        ptbal-=tkXY*(p14+p24).Vect().XYvector().Unit();
       }
-      //std::cout << "sumpt2_out " << sumpt2_out << std::endl; 
-      //std::cout << "sumpt2_in  " << sumpt2_in << std::endl;
-      //std::cout << " Candidate " << j << " in vertex " << i << " has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
-      ptasym = (sum_tk.Mod() - (p14+p24).Vect().XYvector().Mod())/(sum_tk.Mod() + (p14+p24).Vect().XYvector().Mod());
+
+      ptasym = (sumpt.Mod() - (p14+p24).Vect().XYvector().Mod())/(sumpt.Mod() + (p14+p24).Vect().XYvector().Mod());
       zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot,param);
       szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,param);
       
-      std::cout<<"zconv+/-szconv: "<<zconv<<"+/-"<<szconv<<std::endl;
+      //std::cout<<"zconv+/-szconv: "<<zconv<<"+/-"<<szconv<<std::endl;
 
       if(zconv==0 && szconv==0.0){
-	std::cout<<"plot_mva: "<<"unconverted_case_MVA_variables sumpt "<<sumpt<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<" ptasym "<<ptasym<<std::endl;
+	std::cout<<"vertex:"<<vertex_index<<std::endl;
+	std::cout<<"plot_unconverted_case_MVA |sumpt| "<<sumpt.Mod()<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<" ptasym "<<ptasym<<" pull_conv 0 0"<<std::endl;
       }else{
 	double pull_conv = fabs(vtx->position().z()-zconv)/szconv;
-	std::cout<<"plot_mva: "<<"converted_case_MVA_variables sumpt "<<sumpt<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<" ptasym "<<ptasym<<" pull_conv "<<pull_conv<<std::endl;
+	std::cout<<"vertex:"<<vertex_index<<std::endl;
+	std::cout<<"plot_converted_case_MVA   |sumpt| "<<sumpt.Mod()<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<" ptasym "<<ptasym<<" pull_conv "<<pull_conv<<" 0"<<std::endl;
       }
-     } 
+    } 
     return vtxs[0];
   }  
   
