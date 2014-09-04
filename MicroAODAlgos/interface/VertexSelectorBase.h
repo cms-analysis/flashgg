@@ -22,11 +22,14 @@ namespace flashgg {
     VertexSelectorBase(const VertexSelectorBase& ) = delete;
     VertexSelectorBase& operator=(const VertexSelectorBase&) = delete;
 
+    typedef std::map<std::string,double> Parameters_Selector_Type;
     virtual edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,
 					  const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&,
 					  const VertexCandidateMap&,
 					  const edm::PtrVector<reco::Conversion>&,
-					  const math::XYZPoint&) const = 0;
+					  const math::XYZPoint&,
+					  const Parameters_Selector_Type&
+					  ) const = 0;
     
     const std::string& name() const { return _selectorName; }
 
