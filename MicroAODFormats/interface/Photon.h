@@ -2,6 +2,7 @@
 #define FLASHgg_Photon_h
 
 #include "DataFormats/PatCandidates/interface/Photon.h"
+////#include "DataFormats/Candidate/interface/Candidate.h"
 
 namespace flashgg {
 

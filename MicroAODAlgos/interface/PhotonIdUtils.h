@@ -17,6 +17,7 @@
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 
 #include <TMVA/Reader.h>
+#include "TLorentzVector.h"
 
 
 namespace flashgg {
@@ -47,6 +48,9 @@ namespace flashgg {
 
     void               setupMVA( std::string&, std::string& );
     float              computeMVAWrtVtx( flashgg::Photon&, const edm::Ptr<reco::Vertex>&, const double );
+
+    static flashgg::Photon     pho4MomCorrection(edm::Ptr<flashgg::Photon>&, edm::Ptr<reco::Vertex>);
+
     std::map<edm::Ptr<reco::Vertex>,float> computeMVAWrtAllVtx( flashgg::Photon&, const edm::PtrVector<reco::Vertex>&, const double );
     
     TMVA::Reader *phoIdMva;

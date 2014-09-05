@@ -7,13 +7,16 @@
 
 
 namespace flashgg {
-
+  
   class DiPhotonCandidate : public reco::CompositeCandidate {
   public:
     DiPhotonCandidate();
     DiPhotonCandidate(edm::Ptr<flashgg::Photon>,edm::Ptr<flashgg::Photon>,edm::Ptr<reco::Vertex>);
     DiPhotonCandidate(flashgg::Photon,flashgg::Photon,edm::Ptr<reco::Vertex>);
     ~DiPhotonCandidate();
+    
+    int DiPhoCand_Correct4Momentum(flashgg::DiPhotonCandidate*,edm::Ptr<reco::Vertex>); 
+    
 
     const edm::Ptr<reco::Vertex> getVertex() const { return vertex_; }
     const flashgg::Photon* leadingPhoton() const;
