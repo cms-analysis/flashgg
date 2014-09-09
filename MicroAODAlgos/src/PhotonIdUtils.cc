@@ -161,7 +161,7 @@ float PhotonIdUtils::pfIsoGamma( edm::Ptr<pat::Photon>& photon,
 - decide what to do with EE and EB
 */
 
-void PhotonIdUtils::setupMVA( string& xmlfilenameEB, string& xmlfilenameEE )
+void PhotonIdUtils::setupMVA( const std::string& xmlfilenameEB, const std::string& xmlfilenameEE )
 {
 
   cout << " photonId MVA weights for EB set from file: " << xmlfilenameEB << endl;
