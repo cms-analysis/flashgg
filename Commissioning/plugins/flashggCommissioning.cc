@@ -69,6 +69,12 @@ struct photonInfo {
   float sigmaEtaEta;
   float maxEnergyXtal;
   
+  float energyInitial;
+  float energyRegression;
+  float sigmaEOverE;
+  float energyTrue;
+
+
 
 };
 
@@ -103,6 +109,8 @@ class flashggCommissioning : public edm::EDAnalyzer {
       edm::EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> > diphotonToken_;
       edm::EDGetTokenT<edm::View<reco::Vertex> >               vertexToken_; 
       edm::EDGetTokenT<edm::View<pat::PackedCandidate> >       pfcandidateToken_;
+      edm::EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
+
 
       TTree* photonTree; 
       photonInfo phoInfo;
@@ -132,7 +140,8 @@ flashggCommissioning::flashggCommissioning(const edm::ParameterSet& iConfig):
   photonToken_(consumes<View<flashgg::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("flashggPhotons")))),
   diphotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
   vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
-  pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates"))))
+  pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates")))),
+  genParticleToken_(consumes<View<reco::GenParticle> >(iConfig.getUntrackedParameter<InputTag> ("GenParticleTag", InputTag("prunedGenParticles"))))
 {
  
 }
@@ -172,6 +181,10 @@ flashggCommissioning::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   iEvent.getByToken(pfcandidateToken_,pfcandidates);
   //const PtrVector<pat::PackedCandidate>& pfCandPointers = pfcandidates->ptrVector();
 
+  Handle<View<reco::GenParticle> > genParticles;
+  iEvent.getByToken(genParticleToken_,genParticles);
+  const PtrVector<reco::GenParticle>& gens = genParticles->ptrVector();
+
   // cout << "size = " << pvPointers.size() << " " << pfCandPointers.size() << endl;
   
   // ********************************************************************************
@@ -194,6 +207,20 @@ flashggCommissioning::analyze(const edm::Event& iEvent, const edm::EventSetup& i
     phoInfo.sigmaIetaIeta = phoPtr->sigmaIetaIeta();
     phoInfo.sigmaEtaEta   = phoPtr->sigmaEtaEta();
     phoInfo.maxEnergyXtal = phoPtr->maxEnergyXtal();
+
+    phoInfo.energyInitial = phoPtr->getEnergyAtStep("initial");
+    phoInfo.energyRegression = phoPtr->getEnergyAtStep("regression");
+    phoInfo.sigmaEOverE = phoPtr->getSigEOverE();
+
+    for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++)
+      {
+
+	if(  gens[genLoop]->pdgId() == 22 && gens[genLoop]->status() == 1 &&
+	     (deltaR(gens[genLoop]->eta(),gens[genLoop]->phi(),phoPtr->eta(),phoPtr->phi()) < 0.1) ) {
+	  phoInfo.energyTrue = gens[genLoop]->energy();
+	  break;
+	}
+      }
 
 
     // cout << " isolation = " << phou.pfIsoChgWrtVtx( phoPtr, pvPointers[0], pfCandPointers, 0.3, 0.01, 0.1, 0.01 ) << endl;
@@ -222,7 +249,7 @@ void
 flashggCommissioning::beginJob()
 {
   photonTree = fs_->make<TTree>("photonTree","per-photon tree");
-  photonTree->Branch("photonBranch",&phoInfo.pt,"phoPt/F:phoEta/F:phoPhi/F:phoE/F:phoE1x5/F:phoE2x5/F:phoE3x3/F:phoE5x5/F:phoSigmaIEtaIEta/F:phoSigmaEtaEta/F:phoEmax/F");
+  photonTree->Branch("photonBranch",&phoInfo.pt,"phoPt/F:phoEta/F:phoPhi/F:phoE/F:phoE1x5/F:phoE2x5/F:phoE3x3/F:phoE5x5/F:phoSigmaIEtaIEta/F:phoSigmaEtaEta/F:phoEmax/F:energyInitial/F:energyRegression/F:sigmaEOverE/F:energyTrue/F");
 }
 
 void 
@@ -246,6 +273,10 @@ flashggCommissioning::initEventStructure()
   phoInfo.sigmaEtaEta = -999;
   phoInfo.maxEnergyXtal = -999;
 
+  phoInfo.energyInitial = -999;
+  phoInfo.energyRegression = -999;
+  phoInfo.sigmaEOverE = -999;
+  phoInfo.energyTrue = -999;
 }
 
 

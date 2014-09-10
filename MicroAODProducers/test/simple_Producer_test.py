@@ -53,13 +53,25 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
                                                                       "keep *_reducedEgamma_reduced*Clusters_*",
                                                                       "keep *_reducedEgamma_*PhotonCores_*"
                                                                      )
+                               )
+
+process.commissioning = cms.EDAnalyzer('flashggCommissioning',
+                                       PhotonTag=cms.untracked.InputTag('flashggPhotons'),
+                                       DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+                                       VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
 )
+
+process.TFileService = cms.Service("TFileService",
+                                   fileName = cms.string("tree.root")
+)
+
 process.p = cms.Path(process.flashggVertexMapUnique*
                      process.flashggVertexMapNonUnique*
                      process.flashggPhotons*
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
-                     process.flashggJets
+                     process.flashggJets*
+                     process.commissioning
                     )
 
 process.e = cms.EndPath(process.out)
