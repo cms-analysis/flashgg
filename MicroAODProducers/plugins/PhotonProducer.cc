@@ -12,6 +12,7 @@
 #include "flashgg/MicroAODFormats/interface/Photon.h"
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 #include "flashgg/MicroAODAlgos/interface/PhotonIdUtils.h"
+#include "HiggsAnalysis/GBRLikelihoodEGTools/interface/EGEnergyCorrectorSemiParm.h"
 
 using namespace std;
 using namespace edm;
@@ -37,6 +38,9 @@ namespace flashgg {
 
     PhotonIdUtils phoTools_;
     string phoIdMVAweightfileEB_, phoIdMVAweightfileEE_;
+    string regressionWeightFile_;
+
+    EGEnergyCorrectorSemiParm corV8_;      
 
   };
 
@@ -57,10 +61,16 @@ namespace flashgg {
     phoIdMVAweightfileEE_ = iConfig.getParameter<std::string>("photonIdMVAweightfile_EE");
     phoTools_.setupMVA( phoIdMVAweightfileEB_, phoIdMVAweightfileEE_ );
 
+    regressionWeightFile_ = iConfig.getParameter<std::string>("regressionWeightFile");
+
     produces<vector<flashgg::Photon> >();
   }
 
   void PhotonProducer::produce( Event & evt, const EventSetup & iSetup) {
+
+    if (!corV8_.IsInitialized()) {
+      corV8_.Initialize(regressionWeightFile_,8);
+    }    
     
     Handle<View<pat::Photon> > photons;
     evt.getByToken(photonToken_,photons);
@@ -80,15 +90,25 @@ namespace flashgg {
     const flashgg::VertexCandidateMap vtxToCandMap = *(vertexCandidateMap.product());    
     const double rhoFixedGrd = *(rhoHandle.product());
 
-
     auto_ptr<vector<flashgg::Photon> > photonColl(new vector<flashgg::Photon>);
+
+    // this is hacky and dangerous
+    const reco::VertexCollection* orig_collection = static_cast<const reco::VertexCollection*>(vertices->product());
 
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
 
       Ptr<pat::Photon> pp = photonPointers[i];
       flashgg::Photon fg = flashgg::Photon(*pp);
-     
+
       EcalClusterLazyTools lazyTool(evt, iSetup, ecalHitEBColl_, ecalHitEEColl_,ecalHitESColl_);        
+
+      double ecor, sigeovere, mean, sigma, alpha1, n1, alpha2, n2, pdfval;
+
+      corV8_.CorrectedEnergyWithErrorV8(*pp, *orig_collection, *rhoHandle, lazyTool, iSetup,ecor, sigeovere, mean, sigma, alpha1, n1, alpha2, n2, pdfval);
+      //      printf("V8:  sceta = %5f, default = %5f, corrected = %5f, sigmaE/E = %5f, alpha1 = %5f, n1 = %5f, alpha2 = %5f, n2 = %5f, pdfval = %5f, meancb = %5f, sigmacb = %5f\n", pp->superCluster()->eta(), pp->energy(),ecor,sigeovere,alpha1,n1,alpha2,n2,pdfval,mean,sigma);
+      
+      fg.updateEnergy("regression",ecor);
+      fg.setSigEOverE(sigeovere);
       
       const reco::CaloClusterPtr  seed_clu = pp->superCluster()->seed();
       const reco::SuperClusterRef super_clu= pp->superCluster();

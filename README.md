@@ -16,17 +16,27 @@ flashgg
  git cms-merge-topic -u sethzenz:pileupjetid-for-flashgg
  ```
 
-3. Fork flashgg repository on the web here: https://github.com/cms-analysis/flashgg
-
-4. In CMSSW_7_0_7_patch1/src, do commands something like: 
+3. Get extra code to run legacy regression:
  ```
+ mkdir HiggsAnalysis
+ cd HiggsAnalysis
+ git clone -b modified-hggpaperV6-for-flashgg https://github.com/sethzenz/GBRLikelihoodEGTools
+ git clone -b hggpaperV8 https://github.com/bendavid/GBRLikelihood 
+ # DON'T WORRY ABOUT DETATCHED HEAD
+ ```
+
+4. Fork flashgg repository on the web here: https://github.com/cms-analysis/flashgg
+
+5. In CMSSW_7_0_7_patch1/src, do commands something like: 
+ ```
+ cd $CMSSW_BASE/src
  git clone git@github.com:yourusername/flashgg.git flashgg
  cd flashgg
  git remote add upstream https://github.com/cms-analysis/flashgg
  # see https://help.github.com/articles/fork-a-repo for more about this 
  ```
 
-5. Now build, a very basic workflow test, and an extremely primitive FWLite script:
+6. Now build, a very basic workflow test, and an extremely primitive FWLite script:
  ```
  cd $CMSSW_BASE/src
  scram b
