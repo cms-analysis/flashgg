@@ -29,6 +29,7 @@ flashgg
 
 5. In CMSSW_7_0_7_patch1/src, do commands something like: 
  ```
+ cd $CMSSW_BASE/src
  git clone git@github.com:yourusername/flashgg.git flashgg
  cd flashgg
  git remote add upstream https://github.com/cms-analysis/flashgg
