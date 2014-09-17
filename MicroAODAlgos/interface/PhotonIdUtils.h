@@ -17,7 +17,6 @@
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 
 #include <TMVA/Reader.h>
-#include "TLorentzVector.h"
 
 
 namespace flashgg {

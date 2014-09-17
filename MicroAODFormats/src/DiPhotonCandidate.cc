@@ -1,7 +1,6 @@
 #include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/MicroAODFormats/interface/Photon.h"
 #include "CommonTools/CandUtils/interface/AddFourMomenta.h"
-#include <iostream>
 
 using namespace flashgg;
 
@@ -47,11 +46,4 @@ const flashgg::Photon * DiPhotonCandidate::subLeadingPhoton() const {
   } else {
     return dynamic_cast<const flashgg::Photon*> (daughter(0));
   }
-}
-
-
-int DiPhotonCandidate::DiPhoCand_Correct4Momentum(flashgg::DiPhotonCandidate *dipho,edm::Ptr<reco::Vertex> vertex) {
-  //  float lead_pt = dipho->leadingPhoton()->pt();
-  //  float sublead_pt = dipho->subLeadingPhoton()->pt();
-  return 0;
 }
