@@ -9,6 +9,7 @@
 #include "TVector2.h"
 #include "TMath.h"
 #include "TLorentzVector.h"
+#include "TMVA/Reader.h"
 namespace flashgg {
   
  class LegacyVertexSelector : public VertexSelectorBase {
@@ -60,7 +61,7 @@ namespace flashgg {
   TVector3 Photon2Dir_uv;
   TLorentzVector p14;
   TLorentzVector p24;
-  
+  TMVA::Reader * VertexIdMva_; 
   double dr1 = 0;
   double dr2 = 0;
   double sumpt2_out = 0; 
@@ -148,7 +149,7 @@ namespace flashgg {
     // method 2 is supercluster only
     // attribute the error depending on the tracker region
     double dz=-99999;
-    int method=0;//to be assigned dynamically
+    int method=0;//to be assigned dynamically? FIXME!
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
 
     if (conversion->nTracks()==2) {
@@ -226,28 +227,23 @@ namespace flashgg {
 						const edm::PtrVector<reco::Conversion>& conversionsVector,
 						const math::XYZPoint & beamSpot,
 						const std::map<std::string,double>& param) const{
-    
     double zconv=0;
-
-    if ( index_conversionLead!=-1  && index_conversionTrail==-1 ){ //Warning could be also the method g->hasConversionTracks() OR vtx->isConverted?
-      zconv  = vtxZFromConv(p1,conversionsVector[index_conversionLead],beamSpot);
+    if(index_conversionLead!=-1  && index_conversionTrail==-1){ //Warning could be also the method g->hasConversionTracks() OR vtx->isConverted?
+      zconv=vtxZFromConv(p1,conversionsVector[index_conversionLead],beamSpot);
     }
-    if ( index_conversionTrail==-1 && index_conversionTrail!=-1 ){
-      zconv  = vtxZFromConv (p2,conversionsVector[index_conversionTrail],beamSpot);
+    if(index_conversionTrail==-1 && index_conversionTrail!=-1){
+      zconv=vtxZFromConv (p2,conversionsVector[index_conversionTrail],beamSpot);
     }
     
     if (index_conversionLead!=-1 && index_conversionTrail!=-1){
       float z1  = vtxZFromConv (p1,conversionsVector[index_conversionLead],beamSpot);
       float sz1 = vtxdZFromConv(p1,conversionsVector[index_conversionLead],param);
-      
       float z2  = vtxZFromConv (p2,conversionsVector[index_conversionTrail],beamSpot);
       float sz2 = vtxdZFromConv(p2,conversionsVector[index_conversionTrail],param);
-      
       zconv  = (z1/sz1/sz1 + z2/sz2/sz2)/(1./sz1/sz1 + 1./sz2/sz2 );  // weighted average
     }
     return zconv;
   }
-
   
   double LegacyVertexSelector::getsZFromConvPair(const edm::Ptr<flashgg::Photon>& p1,
 						 const edm::Ptr<flashgg::Photon>& p2,
@@ -255,9 +251,7 @@ namespace flashgg {
 						 int index_conversionTrail,
 						 const edm::PtrVector<reco::Conversion>& conversionsVector,
 						 const std::map<std::string,double> & param) const{
-    
     double szconv=0;
-    
     if ( index_conversionLead!=-1  && index_conversionTrail==-1 ){ //Warning could be also the method g->hasConversionTracks()?
       szconv = vtxdZFromConv(p1,conversionsVector[index_conversionLead],param);
     }
@@ -268,7 +262,6 @@ namespace flashgg {
     if (index_conversionLead!=-1 && index_conversionTrail!=-1){
       float sz1 = vtxdZFromConv(p1,conversionsVector[index_conversionLead],param);
       float sz2 = vtxdZFromConv(p2,conversionsVector[index_conversionTrail],param);
-      
       szconv = sqrt( 1./(1./sz1/sz1 + 1./sz2/sz2)) ;
     }
     return szconv;
@@ -301,7 +294,6 @@ namespace flashgg {
 	}
       }
     }  
-    //std::cout<<"selected index "<<selected_conversion_index<<" size of converted vertices vector "<<conversionsVector.size()<<std::endl;
     return selected_conversion_index; //-1 if no match was found
   }
   
@@ -314,46 +306,31 @@ namespace flashgg {
     int IndexMatchedConversionLeadPhoton=-1;
     int IndexMatchedConversionTrailPhoton=-1;
 
-    if(conversionsVector.size()>0){
-      if(g1->hasConversionTracks()){
-	IndexMatchedConversionLeadPhoton = IndexMatchedConversion(g1,conversionsVector);
-	if(IndexMatchedConversionLeadPhoton!=-1){
-	  /*
-	    std::cout<<"dz Lead Photon from vtxZFromConvOnly         "<<vtxZFromConvOnly(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
-	    std::cout<<"dz Lead Photon from vtxZFromConvSuperCluster "<<vtxZFromConvSuperCluster(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
-	    std::cout<<"dz Lead Photon from vtxZFromConv             "<<vtxZFromConv(g1,conversionsVector[IndexMatchedConversionLeadPhoton],beamSpot)<<std::endl;
-	    std::cout<<"szconv Lead Photon from vtxdZFromConv             "<<vtxdZFromConv(g1,conversionsVector[IndexMatchedConversionLeadPhoton],param)<<std::endl;
-	  */
-	  
-	}
-      }
-      if(g2->hasConversionTracks()){
-	IndexMatchedConversionTrailPhoton = IndexMatchedConversion(g2,conversionsVector);
-	if(IndexMatchedConversionTrailPhoton!=-1){
-	  /*
-	    std::cout<<"dz Trail Photon from vtxZFromConvOnly         "<<vtxZFromConvOnly(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
-	    std::cout<<"dz Trail Photon from vtxZFromConvSuperCluster "<<vtxZFromConvSuperCluster(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
-	    std::cout<<"dz Trail Photon from vtxZFromConv             "<<vtxZFromConv(g2,conversionsVector[IndexMatchedConversionTrailPhoton],beamSpot)<<std::endl;
-	    std::cout<<"szconv Trail Photon from vtxdZFromConv             "<<vtxdZFromConv(g2,conversionsVector[IndexMatchedConversionTrailPhoton],param)<<std::endl;
-	  */
-	}
-      }
-    }
-    
-    //------------------------------------------
-    
     unsigned int vertex_index,track_index;
 
+    unsigned int selected_vertex_index=0;
+    float max_mva_value=-999;
+
+    float logsumpt2_;
+    float ptbal_; 
+    float ptasym_; 
+    float nConv_;
+    float pull_conv_; 
+
+    VertexIdMva_ = new TMVA::Reader("!Color:Silent");
+    VertexIdMva_->AddVariable("ptbal",&ptbal_);
+    VertexIdMva_->AddVariable("ptasym",&ptasym_);
+    VertexIdMva_->AddVariable("logsumpt2",&logsumpt2_);
+    VertexIdMva_->AddVariable("limPullToConv",&pull_conv_);
+    VertexIdMva_->AddVariable("nConv",&nConv_); 
+    VertexIdMva_->BookMVA("BDT","/afs/cern.ch/user/c/carrillo/public/for_All/flashgg/TMVAClassification_BDTCat_conversions_tmva_407.weights.xml"); 
+	  
     for (vertex_index = 0 ; vertex_index < vtxs.size() ; vertex_index++) {
       edm::Ptr<reco::Vertex> vtx = vtxs[vertex_index];
-      //std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
-      //Photon1Dir is the direction between the vertex and the supercluster
       Photon1Dir.SetXYZ(g1->superCluster()->position().x() - vtx->position().x(),g1->superCluster()->position().y() - vtx->position().y(),g1->superCluster()->position().z() - vtx->position().z()); 
       Photon2Dir.SetXYZ(g2->superCluster()->position().x() - vtx->position().x(),g2->superCluster()->position().y() - vtx->position().y(),g2->superCluster()->position().z() - vtx->position().z()); 
-      //The unit vector is then multipled by the enrgy to have the correct relation p4.p4 = 0 for photons	
       Photon1Dir_uv = Photon1Dir.Unit()*g1->superCluster()->rawEnergy();
       Photon2Dir_uv = Photon2Dir.Unit()*g2->superCluster()->rawEnergy();
-      //the photon 4 momentum wrt a given vertex is built
       p14.SetPxPyPzE(Photon1Dir_uv.x(),Photon1Dir_uv.y(),Photon1Dir_uv.z(),g1->superCluster()->rawEnergy()); 
       p24.SetPxPyPzE(Photon2Dir_uv.x(),Photon2Dir_uv.y(),Photon2Dir_uv.z(),g2->superCluster()->rawEnergy()); 
       
@@ -382,19 +359,37 @@ namespace flashgg {
       ptasym = (sumpt.Mod() - (p14+p24).Vect().XYvector().Mod())/(sumpt.Mod() + (p14+p24).Vect().XYvector().Mod());
       zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot,param);
       szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,param);
-      
-      //std::cout<<"zconv+/-szconv: "<<zconv<<"+/-"<<szconv<<std::endl;
-
+      float nConv = conversionsVector.size();      
+      float pull_conv = 0;
       if(zconv==0 && szconv==0.0){
-	std::cout<<"vertex:"<<vertex_index<<std::endl;
-	std::cout<<"plot_unconverted_case_MVA |sumpt| "<<sumpt.Mod()<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<" ptasym "<<ptasym<<" pull_conv 0 0"<<std::endl;
+	//FIXME WHAT TO DO WHEN WE DON'T HAVE PULL_CONV CASE? 
       }else{
-	double pull_conv = fabs(vtx->position().z()-zconv)/szconv;
-	std::cout<<"vertex:"<<vertex_index<<std::endl;
-	std::cout<<"plot_converted_case_MVA   |sumpt| "<<sumpt.Mod()<<" sumpt2_out "<<sumpt2_out<<" ptbal "<<ptbal<<" ptasym "<<ptasym<<" pull_conv "<<pull_conv<<" 0"<<std::endl;
+	pull_conv = fabs(vtx->position().z()-zconv)/szconv;
+      }
+
+      std::map<edm::Ptr<reco::Vertex>,std::vector<float>> vertex_variable_map;
+      std::vector<float> vertex_variable_vector;
+
+      float logsumpt2=log(sumpt2_in+sumpt2_out);
+      vertex_variable_vector.push_back(ptbal);
+      vertex_variable_vector.push_back(ptasym);
+      vertex_variable_vector.push_back(logsumpt2);
+      vertex_variable_vector.push_back(pull_conv);
+      vertex_variable_vector.push_back(nConv);
+      vertex_variable_map.insert(std::make_pair(vtx,vertex_variable_vector));
+      ptbal_=ptbal;
+      ptasym_=ptasym;
+      logsumpt2_=logsumpt2;
+      pull_conv_=pull_conv;
+      nConv_=nConv;
+      float mva_value = VertexIdMva_->EvaluateMVA("BDT"); 
+      if(mva_value>max_mva_value){
+	max_mva_value=mva_value;
+	selected_vertex_index=vertex_index;
       }
     } 
-    return vtxs[0];
+    //std::cout<<"\t selected vertex_index:"<<selected_vertex_index<<" with max_mva_value:"<<max_mva_value<<std::endl;
+    return vtxs[selected_vertex_index];
   }  
   
 }

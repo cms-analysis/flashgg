@@ -45,8 +45,12 @@ flashgg
  root -b -q scan_test_output.C
  ```
 
-For the impatient user: Fork https://github.com/cms-analysis/flashgg and then execute
+For the impatient user (SLC6 right SCRAM_ARCH) just:
 ```
-# Might need updating for additional jet steps
+source ~carrillo/public/for_All/flashgg_master_test.sh
+```
+
+For the developer: Fork https://github.com/cms-analysis/flashgg and then execute
+```
 source ~carrillo/public/for_All/flashgg_me.sh
 ```
