@@ -7,7 +7,6 @@
 
 
 namespace flashgg {
-
   class DiPhotonCandidate : public reco::CompositeCandidate {
   public:
     DiPhotonCandidate();
