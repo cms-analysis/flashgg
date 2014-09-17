@@ -94,6 +94,7 @@ process.flashggVertexValidationTreeMaker = cms.EDAnalyzer('FlashggVertexValidati
                                                           VertexCandidateMapTagAOD = cms.InputTag('flashggVertexMapValidator'),
                                                           JetTagDz = cms.InputTag("flashggJets"),
                                                           JetTagRecoBasedMap = cms.InputTag("flashggJetsUsingRecoBasedVertexMap"),
+																													DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons')
 #                                                          JetTagReco = cms.InputTag("flashggJetsUsingRecoJets")
                                                           )
                  

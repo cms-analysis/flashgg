@@ -18,8 +18,17 @@
 
 	TH1F *ptden = new TH1F("ptden","ptden",100,0,250);
 
+	int counter =0;
+
 	for( Long64_t loop = 0 ; loop< eventTree->GetEntries(); loop++)
 	{
+	std::cout << eInfo.zerothVertexZ << std::endl;
+		if(fabs(eInfo.zerothVertexZ) >9998)
+	
+	{counter++;
+	continue;}
+
+
 		eventTree->GetEntry(loop);
 		ptden->Fill(eInfo.higgsPt);
 
@@ -34,4 +43,5 @@
 	c1->SaveAs("vertexEfficiency0.png");
 
 	std:: cout << "Statistics: " << eventTree->GetEntries() << " events." << std::endl;
+	std:: cout << "skipped " << counter << " events." << std::endl;
 }
