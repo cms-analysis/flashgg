@@ -10,10 +10,10 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 200 ) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( -1 ) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
-process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT.root"))
+process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/DoubleElectron-Run2012D-15Apr2014-v1_PAT_big.root"))
 
 process.flashggVertexMapUnique = cms.EDProducer('FlashggDzVertexMapProducer',
                                                 PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
@@ -46,37 +46,17 @@ process.flashggJets = cms.EDProducer('FlashggJetProducer',
                                      )
 
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFile.root'),
-                               outputCommands = cms.untracked.vstring("drop *",
-                                                                      "keep *_flashgg*_*_*",
+                               outputCommands = cms.untracked.vstring("keep *",
                                                                       "drop *_flashggVertexMap*_*_*",
-                                                                      "keep *_offlineSlimmedPrimaryVertices_*_*",
-                                                                      "keep *_reducedEgamma_reduced*Clusters_*",
-                                                                      "keep *_reducedEgamma_*PhotonCores_*",
-                                                                      "keep *_slimmedElectrons_*_*",
-                                                                      "keep *_slimmedMuons_*_*",
-                                                                      "keep *_slimmedMETs_*_*",
-                                                                      "keep *_slimmedTaus_*_*",
-                                                                      "keep *_fixedGridRhoAll_*_*"
                                                                      )
                                )
-
-process.commissioning = cms.EDAnalyzer('flashggCommissioning',
-                                       PhotonTag=cms.untracked.InputTag('flashggPhotons'),
-                                       DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
-                                       VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
-)
-
-process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("tree.root")
-)
 
 process.p = cms.Path(process.flashggVertexMapUnique*
                      process.flashggVertexMapNonUnique*
                      process.flashggPhotons*
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
-                     process.flashggJets*
-                     process.commissioning
+                     process.flashggJets
                     )
 
 process.e = cms.EndPath(process.out)
