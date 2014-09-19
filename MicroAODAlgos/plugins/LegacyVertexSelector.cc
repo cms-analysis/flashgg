@@ -26,6 +26,8 @@ namespace flashgg {
                                  const float &
 				 ) override;
 
+   void writeInfoFromLastSelectionTo(flashgg::DiPhotonCandidate&) override;
+
     double vtxZFromConvOnly         (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
     double vtxZFromConvSuperCluster (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
     double vtxZFromConv             (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
@@ -538,9 +540,14 @@ namespace flashgg {
 
     
     return vtxs[selected_vertex_index];
-  }  
-  
-}
+  }
+
+  void LegacyVertexSelector::writeInfoFromLastSelectionTo(flashgg::DiPhotonCandidate& dipho) {
+    std::cout << " Need to fill in some stuff here in LegacyVertexSelector::writeInfoFromLastSelectionTo" << std::endl;
+  } 
+
+} // namespace flashgg
+
 
 DEFINE_EDM_PLUGIN(FlashggVertexSelectorFactory,
 		  flashgg::LegacyVertexSelector,

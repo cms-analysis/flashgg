@@ -138,7 +138,9 @@ namespace flashgg {
       Ptr<flashgg::Photon> pp1 = photonPointers[i];
       for (unsigned int j = i+1 ; j < photonPointers.size() ; j++) {
         Ptr<flashgg::Photon> pp2 = photonPointers[j];
+
         Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers,vertexPoint,param,beamsig);
+
         // A number of things need to be done once the vertex is chosen
         // recomputing photon 4-momenta accordingly
         flashgg::Photon photon1_corr = PhotonIdUtils::pho4MomCorrection(pp1, pvx);
@@ -146,9 +148,13 @@ namespace flashgg {
         // - compute isolations with respect to chosen vertex needed for preselection
         photon1_corr.setpfChgIsoWrtChosenVtx02( photon1_corr.getpfChgIso02WrtVtx( pvx ) );
         photon2_corr.setpfChgIsoWrtChosenVtx02( photon2_corr.getpfChgIso02WrtVtx( pvx ) );
+	DiPhotonCandidate dipho(photon1_corr,photon2_corr,pvx);
+
+	// Obviously the last selection has to be for this diphoton or this is wrong
+	vertexSelector_->writeInfoFromLastSelectionTo(dipho);
 
         // store the diphoton into the collection
-        diPhotonColl->push_back(DiPhotonCandidate(photon1_corr,photon2_corr,pvx)); 
+        diPhotonColl->push_back(dipho);
       }
     }
     evt.put(diPhotonColl);

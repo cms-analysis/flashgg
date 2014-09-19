@@ -22,13 +22,13 @@ namespace flashgg {
                                   const float&
 				  ) override;
 
+    void writeInfoFromLastSelectionTo(flashgg::DiPhotonCandidate&) override;
 
   private:
     unsigned int _whichVertex; // set this variable to something non-zero to make this stupid selector both stupider and poorly-named
                                // Also it would cause crashes if there was only 1 vertex in the collection
   };
 
-  
   edm::Ptr<reco::Vertex> ZerothVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,
 						      const edm::Ptr<flashgg::Photon>& g2,
 						      const edm::PtrVector<reco::Vertex>& vtxs,
@@ -39,6 +39,10 @@ namespace flashgg {
                                                       const float& beamsig 
 						      ) {
     return vtxs[_whichVertex];
+  }
+
+  void ZerothVertexSelector::writeInfoFromLastSelectionTo(flashgg::DiPhotonCandidate& dipho) {
+    // No need to store anything if we're just taking the zeroth vertex
   }
 
 }

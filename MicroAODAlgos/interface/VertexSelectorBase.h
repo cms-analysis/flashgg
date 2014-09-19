@@ -4,6 +4,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "flashgg/MicroAODFormats/interface/Photon.h"
+#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/Common/interface/PtrVector.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
@@ -32,7 +33,9 @@ namespace flashgg {
                                           const float&
 					  )  = 0;
     
-    const std::string& name() const { return _selectorName; }
+    const std::string& name() const { return _selectorName; };
+
+    virtual void writeInfoFromLastSelectionTo(flashgg::DiPhotonCandidate&) = 0;
 
   private:
     const std::string _selectorName;
