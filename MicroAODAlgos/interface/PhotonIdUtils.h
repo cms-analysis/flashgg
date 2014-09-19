@@ -45,7 +45,7 @@ namespace flashgg {
 				   const edm::PtrVector<pat::PackedCandidate>&, 
 				   float, float, float, float, float, float, float );
 
-    void               setupMVA( std::string&, std::string& );
+    void               setupMVA( const std::string&, const std::string& );
     float              computeMVAWrtVtx( flashgg::Photon&, const edm::Ptr<reco::Vertex>&, const double );
 
     static flashgg::Photon     pho4MomCorrection(edm::Ptr<flashgg::Photon>&, edm::Ptr<reco::Vertex>);

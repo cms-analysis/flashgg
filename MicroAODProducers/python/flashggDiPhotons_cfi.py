@@ -6,14 +6,15 @@ flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                   VertexSelectorName=cms.string("FlashggLegacyVertexSelector"),
                                   VertexCandidateMapTag=cms.InputTag("flashggVertexMapUnique"),
                                   ConversionTag=cms.untracked.InputTag("reducedEgamma","reducedConversions"),             
-         			  ##Parameters for Legacy Vertex Selector                                                
-                                  dRexclude=cms.untracked.double(0.05),		
+                                  ##Parameters for Legacy Vertex Selector                                                
+                                  vertexIdMVAweightfile = cms.FileInPath("flashgg/MicroAODProducers/data/2013FinalPaper_VertexID_BDTCat_conversions.weights.xml"),
+                                  dRexclude=cms.untracked.double(0.05),
                                   sigma1Pix=cms.untracked.double(0.011),                     
                                   sigma1Tib=cms.untracked.double(0.492),                     
                                   sigma1Tob=cms.untracked.double(4.398),                     
                                   sigma1PixFwd=cms.untracked.double(0.054),                  
                                   sigma1Tid=cms.untracked.double(0.320),                     
-	                          sigma1Tec=cms.untracked.double(1.092),            
+                                  sigma1Tec=cms.untracked.double(1.092),            
                                   sigma2Pix=cms.untracked.double(0.022),                     
                                   sigma2Tib=cms.untracked.double(0.297),                     
                                   sigma2Tob=cms.untracked.double(1.728),                     
@@ -30,6 +31,6 @@ flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                   singlelegsigma2Tib=cms.untracked.double(0.597),            
                                   singlelegsigma2Tob=cms.untracked.double(0.480),        
                                   singlelegsigma2PixFwd=cms.untracked.double(0.276),
-				  singlelegsigma2Tid=cms.untracked.double(0.497),
-				  singlelegsigma2Tec=cms.untracked.double(1.046)
+                                  singlelegsigma2Tid=cms.untracked.double(0.497),
+                                  singlelegsigma2Tec=cms.untracked.double(1.046)
                                   )

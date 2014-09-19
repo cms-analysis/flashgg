@@ -6,6 +6,10 @@
 __init__.py
 *.pyc
 
+# CRAB3 stuff
+crab_*
+crabConfig_*
+
 # ROOT-related files
 *.root
 

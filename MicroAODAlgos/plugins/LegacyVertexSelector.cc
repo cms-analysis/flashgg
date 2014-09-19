@@ -16,8 +16,7 @@ namespace flashgg {
   
     
  public:
-   LegacyVertexSelector(const edm::ParameterSet& conf) :
-     VertexSelectorBase(conf) {}
+   LegacyVertexSelector(const edm::ParameterSet& );
    edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&,
 				 const VertexCandidateMap& vertexCandidateMap,
 				 const edm::PtrVector<reco::Conversion>&,
@@ -46,7 +45,15 @@ namespace flashgg {
     
   private:
     unsigned int _whichVertex; 
+    edm::FileInPath vertexIdMVAweightfile_;
   };
+
+  LegacyVertexSelector::LegacyVertexSelector(const edm::ParameterSet& iConfig) :
+    VertexSelectorBase(iConfig) 
+  {
+    vertexIdMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vertexIdMVAweightfile");
+  }
+
   TVector3 diPho;  
   TVector3 tk;
   TVector2 tkXY;
@@ -323,7 +330,7 @@ namespace flashgg {
     VertexIdMva_->AddVariable("logsumpt2",&logsumpt2_);
     VertexIdMva_->AddVariable("limPullToConv",&pull_conv_);
     VertexIdMva_->AddVariable("nConv",&nConv_); 
-    VertexIdMva_->BookMVA("BDT","/afs/cern.ch/user/c/carrillo/public/for_All/flashgg/TMVAClassification_BDTCat_conversions_tmva_407.weights.xml"); 
+    VertexIdMva_->BookMVA("BDT", vertexIdMVAweightfile_.fullPath()); 
 	  
     for (vertex_index = 0 ; vertex_index < vtxs.size() ; vertex_index++) {
       edm::Ptr<reco::Vertex> vtx = vtxs[vertex_index];
@@ -348,7 +355,7 @@ namespace flashgg {
         sumpt += tkXY;
         dr1 = tk.DeltaR(p14.Vect());
         dr2 = tk.DeltaR(p24.Vect());
-	if(dr1 < param.at("dRexclude") || dr2 < param.at("dRexclude")){
+    	if(dr1 < param.at("dRexclude") || dr2 < param.at("dRexclude")){
           sumpt2_in+=tkXY.Mod2();
           continue;
         }
