@@ -29,7 +29,7 @@ namespace flashgg {
 					  const edm::PtrVector<reco::Conversion>&,
 					  const math::XYZPoint&,
 					  const Parameters_Selector_Type&
-					  ) const = 0;
+					  )  = 0;
     
     const std::string& name() const { return _selectorName; }
 

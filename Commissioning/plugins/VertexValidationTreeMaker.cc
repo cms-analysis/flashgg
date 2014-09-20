@@ -44,6 +44,7 @@ struct eventInfo {
  // float ntrk_tot_Dz;
 float genVertexZ;
 float zerothVertexZ;
+float diphotonVertexZ;
 float higgsPt;
 };
 
@@ -99,6 +100,7 @@ class VertexValidationTreeMaker : public edm::EDAnalyzer {
   EDGetTokenT<View<flashgg::Jet> > jetTokenDz_;
   EDGetTokenT<View<flashgg::Jet> > jetTokenRecoBasedMap_;
   EDGetTokenT<View<flashgg::Jet> > jetTokenReco_;
+  EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> >  diPhotonToken_; // LDC work-in-progress adding this!
 
   
   TTree* vertexTree;
@@ -143,6 +145,7 @@ VertexValidationTreeMaker::VertexValidationTreeMaker(const edm::ParameterSet& iC
   vertexCandidateMapTokenAOD_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTagAOD"))),
   jetTokenDz_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagDz"))),
   jetTokenRecoBasedMap_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagRecoBasedMap"))),
+  diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
   photonToken_(consumes<View<flashgg::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("flashggPhotons"))))
   //  jetTokenReco_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagReco")))
 {
@@ -185,6 +188,10 @@ VertexValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSet
   Handle<View<flashgg::Jet> > jetsRecoBasedMap;
   iEvent.getByToken(jetTokenRecoBasedMap_,jetsRecoBasedMap);
   const PtrVector<flashgg::Jet>& jetPointersRecoBasedMap = jetsRecoBasedMap->ptrVector();
+
+  Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
+  iEvent.getByToken(diPhotonToken_,diPhotons);
+  const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
   Handle<View<flashgg::Photon> > photons;
   iEvent.getByToken(photonToken_,photons);
@@ -282,44 +289,63 @@ VertexValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSet
 	}
 
 
+std::cout << "DiPhoton Candidates " << diPhotonPointers.size() << std::endl;
 
-	for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
+//eInfo.diphotonVertexZ = vtx->position().z(); 
+eInfo.diphotonVertexZ = -9999; 
+float higgsMassDifference =9999;
 
+ for (unsigned int diphotonlooper =0; diphotonlooper < diPhotonPointers.size() ; diphotonlooper++)
+   {
+     //std::cout << diPhotonPointers[diphotonlooper]->mass() << std::endl;
+     
+     if  (fabs(diPhotonPointers[diphotonlooper]->mass() - 125) < higgsMassDifference)
+       {
+	 eInfo.diphotonVertexZ = diPhotonPointers[diphotonlooper]->getVertex()->z();
+	 higgsMassDifference = fabs(diPhotonPointers[diphotonlooper]->mass() - 125); 
+       }
+     std::cout << "closest mass diff " << higgsMassDifference << " vertex dz" << eInfo.diphotonVertexZ << std::endl;
 
-		edm::Ptr<reco::Vertex> vtx = vtxs[i];
+   }
 
-		if(i==0)
-		{
-eInfo.zerothVertexZ = vtx->position().z(); 
-		}
-		//		std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
-		if (! vertexCandidateMapDz->count(vtx) ) {
-			std::cout << " Missing vertex from vertexCandidateMapDz - skipping" << std::endl;
-			continue;
-		}
-		if (! vertexCandidateMapAOD->count(vtx) ) {
-			std::cout << " Missing vertex from vertexCandidateMapAOD - skipping" << std::endl;
-			continue;
-		}
-		vInfo.ntrk_AOD = vertexCandidateMapAOD->at(vtx).size() ;
-		vInfo.ntrk_Dz = vertexCandidateMapDz->at(vtx).size() ;
-		vInfo.sumptsq_AOD = 0.;
-		vInfo.sumptsq_Dz = 0.;
-		for (unsigned int j = 0 ; j < vertexCandidateMapDz->at(vtx).size() ; j++) {
-			edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMapDz->at(vtx)[j];
-			//std::cout << " Candidate " << j << " in vertex " << i << " (Dz Map) has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
-			vInfo.sumptsq_Dz += (cand->pt()*cand->pt());
-		}
-		for (unsigned int j = 0 ; j < vertexCandidateMapAOD->at(vtx).size() ; j++) {
-			edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMapAOD->at(vtx)[j];
-			//std::cout << " Candidate " << j << " in vertex " << i << " (AOD Map) has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
-			vInfo.sumptsq_AOD += (cand->pt()*cand->pt());
-		}
-		vertexTree->Fill();
-	}
-
-eventTree->Fill();
-
+ for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
+   
+   
+   edm::Ptr<reco::Vertex> vtx = vtxs[i];
+   
+   
+   if(i==0)
+     {
+       eInfo.zerothVertexZ = vtx->position().z(); 
+     }
+   //		std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
+   if (! vertexCandidateMapDz->count(vtx) ) {
+     std::cout << " Missing vertex from vertexCandidateMapDz - skipping" << std::endl;
+     continue;
+   }
+   if (! vertexCandidateMapAOD->count(vtx) ) {
+     std::cout << " Missing vertex from vertexCandidateMapAOD - skipping" << std::endl;
+     continue;
+   }
+   vInfo.ntrk_AOD = vertexCandidateMapAOD->at(vtx).size() ;
+   vInfo.ntrk_Dz = vertexCandidateMapDz->at(vtx).size() ;
+   vInfo.sumptsq_AOD = 0.;
+   vInfo.sumptsq_Dz = 0.;
+   for (unsigned int j = 0 ; j < vertexCandidateMapDz->at(vtx).size() ; j++) {
+     edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMapDz->at(vtx)[j];
+     //std::cout << " Candidate " << j << " in vertex " << i << " (Dz Map) has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
+     vInfo.sumptsq_Dz += (cand->pt()*cand->pt());
+   }
+   for (unsigned int j = 0 ; j < vertexCandidateMapAOD->at(vtx).size() ; j++) {
+     edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMapAOD->at(vtx)[j];
+     //std::cout << " Candidate " << j << " in vertex " << i << " (AOD Map) has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
+     vInfo.sumptsq_AOD += (cand->pt()*cand->pt());
+   }
+   vertexTree->Fill();
+ }
+ 
+ eventTree->Fill();
+ 
 }
 
 
@@ -329,7 +355,7 @@ VertexValidationTreeMaker::beginJob()
 	vertexTree = fs_->make<TTree>("vertexTree","per-vertex tree");
 	vertexTree->Branch("vertexBranch",&vInfo.ntrk_AOD,"ntrk_AOD/I:ntrk_Dz/I:sumptsq_AOD/F:sumptsq_Dz/F");
 	eventTree = fs_->make<TTree>("eventTree","per-event tree");
-	eventTree->Branch("eventBranch",&eInfo.genVertexZ,"gen_vertex_z/F:zeroth_vertex_z/F:higgs_pt/F");
+	eventTree->Branch("eventBranch",&eInfo.genVertexZ,"gen_vertex_z/F:zeroth_vertex_z/F:diphotonVertexZ/F:higgs_pt/F");
 	jetTree = fs_->make<TTree>("jetTree","per-jet tree");
 	jetTree->Branch("jetBranch",&jInfo.pt,"pt/F:eta/F:pujetid_dz/F:pujetid_jrbm/F:pujetid_jr/F:overlap_photon_pt/F:n_overlap_photon/I");
 }
@@ -349,6 +375,7 @@ VertexValidationTreeMaker::initEventStructure()
 
 	eInfo.genVertexZ =-999.;
 	eInfo.zerothVertexZ =-999.;
+	eInfo.diphotonVertexZ =-999.;
 	eInfo.higgsPt = -999.;
 }
 
