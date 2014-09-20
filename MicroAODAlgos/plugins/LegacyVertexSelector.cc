@@ -22,7 +22,7 @@ namespace flashgg {
 				 const edm::PtrVector<reco::Conversion>&,
 				 const math::XYZPoint&,
 				 const std::map<std::string,double>&
-				 ) const override;
+				 ) override;
 
     double vtxZFromConvOnly         (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
     double vtxZFromConvSuperCluster (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
@@ -42,16 +42,44 @@ namespace flashgg {
 			     const std::map<std::string,double>&) const;
     
     int IndexMatchedConversion(const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Conversion>&) const;
+
+   void Initialize();
     
   private:
-    unsigned int _whichVertex; 
+
     edm::FileInPath vertexIdMVAweightfile_;
+
+ protected: 
+   TMVA::Reader * VertexIdMva_;
+   bool initialized_;
+   float logsumpt2_;
+   float ptbal_;
+   float ptasym_;
+   float nConv_;
+   float pull_conv_;
+
   };
 
   LegacyVertexSelector::LegacyVertexSelector(const edm::ParameterSet& iConfig) :
     VertexSelectorBase(iConfig) 
   {
     vertexIdMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vertexIdMVAweightfile");
+    initialized_ = false;
+  }
+
+  void LegacyVertexSelector::Initialize() 
+  {
+    VertexIdMva_ = new TMVA::Reader("!Color:Silent");
+    VertexIdMva_->AddVariable("ptbal",&ptbal_);
+    VertexIdMva_->AddVariable("ptasym",&ptasym_);
+    VertexIdMva_->AddVariable("logsumpt2",&logsumpt2_);
+    VertexIdMva_->AddVariable("limPullToConv",&pull_conv_);
+    VertexIdMva_->AddVariable("nConv",&nConv_);
+    VertexIdMva_->BookMVA("BDT", vertexIdMVAweightfile_.fullPath());
+
+    std::cout << " Booked MVA for LegacyVertexSelector from " << vertexIdMVAweightfile_.fullPath() << std::endl;
+
+    initialized_ = true;
   }
 
   TVector3 diPho;  
@@ -68,7 +96,6 @@ namespace flashgg {
   TVector3 Photon2Dir_uv;
   TLorentzVector p14;
   TLorentzVector p24;
-  TMVA::Reader * VertexIdMva_; 
   double dr1 = 0;
   double dr2 = 0;
   double sumpt2_out = 0; 
@@ -308,7 +335,7 @@ namespace flashgg {
 						      const VertexCandidateMap& vertexCandidateMap,
 						      const edm::PtrVector<reco::Conversion>& conversionsVector,
 						      const math::XYZPoint & beamSpot,
-						      const std::map<std::string,double> & param) const {
+						      const std::map<std::string,double> & param) {
 
     int IndexMatchedConversionLeadPhoton=-1;
     int IndexMatchedConversionTrailPhoton=-1;
@@ -318,19 +345,9 @@ namespace flashgg {
     unsigned int selected_vertex_index=0;
     float max_mva_value=-999;
 
-    float logsumpt2_;
-    float ptbal_; 
-    float ptasym_; 
-    float nConv_;
-    float pull_conv_; 
-
-    VertexIdMva_ = new TMVA::Reader("!Color:Silent");
-    VertexIdMva_->AddVariable("ptbal",&ptbal_);
-    VertexIdMva_->AddVariable("ptasym",&ptasym_);
-    VertexIdMva_->AddVariable("logsumpt2",&logsumpt2_);
-    VertexIdMva_->AddVariable("limPullToConv",&pull_conv_);
-    VertexIdMva_->AddVariable("nConv",&nConv_); 
-    VertexIdMva_->BookMVA("BDT", vertexIdMVAweightfile_.fullPath()); 
+    if (!initialized_) {
+      Initialize();
+    }
 	  
     for (vertex_index = 0 ; vertex_index < vtxs.size() ; vertex_index++) {
       edm::Ptr<reco::Vertex> vtx = vtxs[vertex_index];
