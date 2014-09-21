@@ -20,7 +20,7 @@ namespace flashgg {
 				  const math::XYZPoint&,
 				  const Parameters_Selector_Type&,
                                   const float&
-				  ) const override;
+				  ) override;
 
 
   private:
@@ -37,7 +37,7 @@ namespace flashgg {
 						      const math::XYZPoint& beamSpot,
 						      const Parameters_Selector_Type& param,
                                                       const float& beamsig 
-						      ) const {
+						      ) {
     return vtxs[_whichVertex];
   }
 

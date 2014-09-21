@@ -30,7 +30,7 @@ namespace flashgg {
 					  const math::XYZPoint&,
 					  const Parameters_Selector_Type&,
                                           const float&
-					  ) const = 0;
+					  )  = 0;
     
     const std::string& name() const { return _selectorName; }
 

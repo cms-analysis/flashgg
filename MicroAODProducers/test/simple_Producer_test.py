@@ -51,27 +51,32 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
                                                                       "drop *_flashggVertexMap*_*_*",
                                                                       "keep *_offlineSlimmedPrimaryVertices_*_*",
                                                                       "keep *_reducedEgamma_reduced*Clusters_*",
-                                                                      "keep *_reducedEgamma_*PhotonCores_*"
+                                                                      "keep *_reducedEgamma_*PhotonCores_*",
+                                                                      "keep *_slimmedElectrons_*_*",
+                                                                      "keep *_slimmedMuons_*_*",
+                                                                      "keep *_slimmedMETs_*_*",
+                                                                      "keep *_slimmedTaus_*_*",
+                                                                      "keep *_fixedGridRhoAll_*_*"
                                                                      )
                                )
 
-process.commissioning = cms.EDAnalyzer('flashggCommissioning',
-                                       PhotonTag=cms.untracked.InputTag('flashggPhotons'),
-                                       DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
-                                       VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
-)
+#process.commissioning = cms.EDAnalyzer('flashggCommissioning',
+#                                       PhotonTag=cms.untracked.InputTag('flashggPhotons'),
+#                                       DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+#                                       VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
+#)
 
-process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("tree.root")
-)
+#process.TFileService = cms.Service("TFileService",
+#                                   fileName = cms.string("tree.root")
+#)
 
 process.p = cms.Path(process.flashggVertexMapUnique*
                      process.flashggVertexMapNonUnique*
                      process.flashggPhotons*
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
-                     process.flashggJets*
-                     process.commissioning
+                     process.flashggJets#*
+#                     process.commissioning
                     )
 
 process.e = cms.EndPath(process.out)

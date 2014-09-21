@@ -37,8 +37,8 @@ namespace flashgg {
     edm::InputTag rhoFixedGrid_;
 
     PhotonIdUtils phoTools_;
-    string phoIdMVAweightfileEB_, phoIdMVAweightfileEE_;
-    string regressionWeightFile_;
+    edm::FileInPath phoIdMVAweightfileEB_, phoIdMVAweightfileEE_;
+    edm::FileInPath regressionWeightFile_;
 
     EGEnergyCorrectorSemiParm corV8_;      
 
@@ -57,11 +57,11 @@ namespace flashgg {
     ecalHitESColl_ = iConfig.getParameter<edm::InputTag>("reducedPreshowerRecHitCollection");
     rhoFixedGrid_  = iConfig.getParameter<edm::InputTag>("rhoFixedGridCollection");
 
-    phoIdMVAweightfileEB_ = iConfig.getParameter<std::string>("photonIdMVAweightfile_EB");
-    phoIdMVAweightfileEE_ = iConfig.getParameter<std::string>("photonIdMVAweightfile_EE");
-    phoTools_.setupMVA( phoIdMVAweightfileEB_, phoIdMVAweightfileEE_ );
+    phoIdMVAweightfileEB_ = iConfig.getParameter<edm::FileInPath>("photonIdMVAweightfile_EB");
+    phoIdMVAweightfileEE_ = iConfig.getParameter<edm::FileInPath>("photonIdMVAweightfile_EE");
+    phoTools_.setupMVA( phoIdMVAweightfileEB_.fullPath(), phoIdMVAweightfileEE_.fullPath() );
 
-    regressionWeightFile_ = iConfig.getParameter<std::string>("regressionWeightFile");
+    regressionWeightFile_ = iConfig.getParameter<edm::FileInPath>("regressionWeightFile");
 
     produces<vector<flashgg::Photon> >();
   }
@@ -69,7 +69,7 @@ namespace flashgg {
   void PhotonProducer::produce( Event & evt, const EventSetup & iSetup) {
 
     if (!corV8_.IsInitialized()) {
-      corV8_.Initialize(regressionWeightFile_,8);
+      corV8_.Initialize(regressionWeightFile_.fullPath(),8);
     }    
     
     Handle<View<pat::Photon> > photons;
