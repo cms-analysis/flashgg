@@ -69,7 +69,7 @@ namespace flashgg {
     vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
     conversionToken_(consumes<View<reco::Conversion> >(iConfig.getUntrackedParameter<InputTag>("ConversionTag",InputTag("reducedConversions")))),
     beamSpotToken_(consumes<View<reco::BeamSpot> >(iConfig.getUntrackedParameter<InputTag>("BeamSpotTag",InputTag("offlineBeamSpot")))){
-    
+
     const std::string& VertexSelectorName = iConfig.getParameter<std::string>("VertexSelectorName");
     vertexSelector_.reset(FlashggVertexSelectorFactory::get()->create(VertexSelectorName,iConfig));
     produces<vector<flashgg::DiPhotonCandidate> >();
@@ -125,8 +125,10 @@ namespace flashgg {
     Handle<reco::BeamSpot> recoBeamSpotHandle;
     evt.getByToken(beamSpotToken_,recoBeamSpotHandle);
     math::XYZPoint vertexPoint;
+    float beamsig;
     if (recoBeamSpotHandle.isValid()){
       vertexPoint = recoBeamSpotHandle->position();
+      beamsig = recoBeamSpotHandle->sigmaZ();
     }
 
     
@@ -136,7 +138,7 @@ namespace flashgg {
       Ptr<flashgg::Photon> pp1 = photonPointers[i];
       for (unsigned int j = i+1 ; j < photonPointers.size() ; j++) {
         Ptr<flashgg::Photon> pp2 = photonPointers[j];
-        Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers,vertexPoint,param);
+        Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers,vertexPoint,param,beamsig);
         // A number of things need to be done once the vertex is chosen
         // recomputing photon 4-momenta accordingly
         flashgg::Photon photon1_corr = PhotonIdUtils::pho4MomCorrection(pp1, pvx);

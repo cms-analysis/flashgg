@@ -28,7 +28,8 @@ namespace flashgg {
 					  const VertexCandidateMap&,
 					  const edm::PtrVector<reco::Conversion>&,
 					  const math::XYZPoint&,
-					  const Parameters_Selector_Type&
+					  const Parameters_Selector_Type&,
+                                          const float&
 					  )  = 0;
     
     const std::string& name() const { return _selectorName; }
