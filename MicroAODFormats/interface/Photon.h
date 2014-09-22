@@ -37,7 +37,7 @@ namespace flashgg {
     void setEnergyAtStep(std::string key,float val);
     void updateEnergy(std::string key,float val);
     void setSigEOverE(float val) { sigEOverE_ = val; };
-   
+
     float const getSipip() const {return sipip;};
     float const getSieip() const {return sieip;};
     float const getE2nd() const {return e2nd;};

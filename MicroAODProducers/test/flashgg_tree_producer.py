@@ -11,7 +11,7 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 20 ) )
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT.root"))
 
@@ -44,6 +44,7 @@ process.flashggTreeMaker = cms.EDAnalyzer('FlashggFlashggTreeMaker',
                                                           JetTagDz = cms.InputTag("flashggJets"),
 																													DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
 																													rhoFixedGridCollection = cms.InputTag('fixedGridRhoAll'),
+                                          diphotonMVAweightfile = cms.FileInPath("flashgg/MicroAODProducers/data/HggBambu_SMDipho_Oct29_rwgtptallsigevenbkg7TeV_BDTG.weights.xml"),
 #                                                          JetTagReco = cms.InputTag("flashggJetsUsingRecoJets")
                                                           )
                                                  
@@ -65,8 +66,11 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
                                                                       "keep *_offlineSlimmedPrimaryVertices_*_*",
                                                                       "keep *_reducedEgamma_reduced*Clusters_*",
                                                                       "keep *_reducedEgamma_*PhotonCores_*",
-																																			"keep *_slimmedMETs_*_*",
-																																			"keep *_fixedGridRhoAll_*_*"
+                                                                      "keep *_slimmedElectrons_*_*",
+                                                                      "keep *_slimmedMuons_*_*",
+                                                                      "keep *_slimmedMETs_*_*",
+                                                                      "keep *_slimmedTaus_*_*",
+                                                                      "keep *_fixedGridRhoAll_*_*"
                                                                      )
                                )
 
