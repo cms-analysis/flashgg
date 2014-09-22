@@ -14,7 +14,6 @@ flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                   ##Parameters for Legacy Vertex Selector                                                
                                   vertexIdMVAweightfile = cms.FileInPath("flashgg/MicroAODProducers/data/2013FinalPaper_VertexID_BDTCat_conversions.weights.xml"),
                                   vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAODProducers/data/TMVAClassification_BDTvtxprob2012.weights.xml"),
-                                  diphotonMVAweightfile = cms.FileInPath("flashgg/MicroAODProducers/data/HggBambu_SMDipho_Oct29_rwgtptallsigevenbkg7TeV_BDTG.weights.xml"),
                                   dRexclude=cms.untracked.double(0.05),
                                   sigma1Pix=cms.untracked.double(0.011),                     
                                   sigma1Tib=cms.untracked.double(0.492),                     

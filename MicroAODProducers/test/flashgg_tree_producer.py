@@ -44,6 +44,7 @@ process.flashggTreeMaker = cms.EDAnalyzer('FlashggFlashggTreeMaker',
                                                           JetTagDz = cms.InputTag("flashggJets"),
 																													DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
 																													rhoFixedGridCollection = cms.InputTag('fixedGridRhoAll'),
+                                          diphotonMVAweightfile = cms.FileInPath("flashgg/MicroAODProducers/data/HggBambu_SMDipho_Oct29_rwgtptallsigevenbkg7TeV_BDTG.weights.xml"),
 #                                                          JetTagReco = cms.InputTag("flashggJetsUsingRecoJets")
                                                           )
                                                  
@@ -65,8 +66,11 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
                                                                       "keep *_offlineSlimmedPrimaryVertices_*_*",
                                                                       "keep *_reducedEgamma_reduced*Clusters_*",
                                                                       "keep *_reducedEgamma_*PhotonCores_*",
-																																			"keep *_slimmedMETs_*_*",
-																																			"keep *_fixedGridRhoAll_*_*"
+                                                                      "keep *_slimmedElectrons_*_*",
+                                                                      "keep *_slimmedMuons_*_*",
+                                                                      "keep *_slimmedMETs_*_*",
+                                                                      "keep *_slimmedTaus_*_*",
+                                                                      "keep *_fixedGridRhoAll_*_*"
                                                                      )
                                )
 

@@ -38,35 +38,6 @@ namespace flashgg {
     void updateEnergy(std::string key,float val);
     void setSigEOverE(float val) { sigEOverE_ = val; };
 
-    /*
-    dipho.setLogSumPt2(logsumpt2_);
-    dipho.setPtBal(ptbal_);
-    dipho.setPtAsym(ptasym_);
-    dipho.setNConv(nConv_);
-    dipho.setPullConv(pull_conv_);
-
-    dipho.setNVert(nVert_);
-    dipho.setMVA0(MVA0_);
-    dipho.setMVA1(MVA1_);
-    dipho.setMVA2(MVA2_);
-    dipho.setDZ1(dZ1_);
-    dipho.setDZ2(dZ2_);
-
-    dipho.setVtxProbMVA(vtxprobmva_);
-    */
-
-    void setLogSumPt2(flot val) { logsumpt2_ = val; }
-    void setPtBal(float val) { ptbal_ = val; }
-    void setPtAsym(float val) { ptasym_ = val; }
-    void setNConv(float val) { nConv_ = val; }
-    void setPullConv(float val) { pull_conv_ = val; }
-    void setNVert(float val);
-    void setMVA0(float val);
-    void setMVA1(float val);
-    void setMVA2(float val);
-    void
-
-   
     float const getSipip() const {return sipip;};
     float const getSieip() const {return sieip;};
     float const getE2nd() const {return e2nd;};

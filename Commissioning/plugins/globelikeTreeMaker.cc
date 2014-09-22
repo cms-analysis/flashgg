@@ -30,8 +30,9 @@
 
 #include "DataFormats/Math/interface/deltaR.h"
 
-
+#include "TMath.h"
 #include "TTree.h"
+#include "TVector3.h"
 
 using namespace std;
 using namespace edm;
@@ -69,6 +70,10 @@ class FlashggTreeMaker : public edm::EDAnalyzer {
 		edm::InputTag rhoFixedGrid_;
 
 		TTree *flashggTree;
+
+  TMVA::Reader * DiphotonMva_;                                                                                                                                                      
+  bool DiphotonMva_initialized;
+  edm::FileInPath diphotonMVAweightfile_;
 
 		Int_t run;
 		Int_t lumis;
@@ -183,6 +188,7 @@ class FlashggTreeMaker : public edm::EDAnalyzer {
 
 
 		edm::EDGetTokenT<edm::View<flashgg::Photon> >            photonToken_; // SCZ work-in-progress adding this!
+  edm::EDGetTokenT<edm::View<reco::BeamSpot> > beamSpotToken_;
 		//  edm::EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> > diphotonToken_;
 		//      edm::EDGetTokenT<edm::View<reco::Vertex> >               vertexToken_; 
 		//      edm::EDGetTokenT<edm::View<pat::PackedCandidate> >       pfcandidateToken_;
@@ -217,10 +223,13 @@ FlashggTreeMaker::FlashggTreeMaker(const edm::ParameterSet& iConfig):
 	jetTokenDz_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagDz"))),
 	// jetTokenRecoBasedMap_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagRecoBasedMap"))),
 	diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
-	photonToken_(consumes<View<flashgg::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("flashggPhotons"))))
+	photonToken_(consumes<View<flashgg::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("flashggPhotons")))),
+	beamSpotToken_(consumes<View<reco::BeamSpot> >(iConfig.getUntrackedParameter<InputTag>("BeamSpotTag",InputTag("offlineBeamSpot"))))
 	//  jetTokenReco_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagReco")))
 {
 	rhoFixedGrid_ = iConfig.getParameter<edm::InputTag>("rhoFixedGridCollection");
+	diphotonMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("diphotonMVAweightfile");
+	DiphotonMva_initialized = false;
 }
 
 FlashggTreeMaker::~FlashggTreeMaker()
@@ -409,14 +418,99 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 		effSigma2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->getESEffSigmaRR();
 		scraw2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->superCluster()->rawEnergy();
 
-
 		//-----> Cos of photon delta phi
 		cosphi = cos(diPhotonPointers[candIndex]->leadingPhoton()->phi()- diPhotonPointers[candIndex]->subLeadingPhoton()->phi());
 		vtx_x= diPhotonPointers[candIndex]->getVertex()->x();
 		vtx_y= diPhotonPointers[candIndex]->getVertex()->y();
 		vtx_z= diPhotonPointers[candIndex]->getVertex()->z();
 
+		// Diphoton calculations
+		// Moved from LegacyVertexSelector (M. Olmedo) to here by SZ
 
+		edm::Ptr<reco::Vertex> vtx = diPhotonPointers[candIndex]->getVertex();
+		const flashgg::Photon* g1 = diPhotonPointers[candIndex]->leadingPhoton();
+		const flashgg::Photon* g2 = diPhotonPointers[candIndex]->subLeadingPhoton();
+		TVector3 Photon1Dir, Photon2Dir;
+		Photon1Dir.SetXYZ(g1->superCluster()->position().x() - vtx->position().x(),
+				  g1->superCluster()->position().y() - vtx->position().y(),
+				  g1->superCluster()->position().z() - vtx->position().z());
+		Photon2Dir.SetXYZ(g2->superCluster()->position().x() - vtx->position().x(),
+				  g2->superCluster()->position().y() - vtx->position().y(),
+				  g2->superCluster()->position().z() - vtx->position().z());
+		//		Photon1Dir_uv = Photon1Dir.Unit()*g1->superCluster()->rawEnergy();
+		//		Photon2Dir_uv = Photon2Dir.Unit()*g2->superCluster()->rawEnergy();
+		//		p14.SetPxPyPzE(Photon1Dir_uv.x(),Photon1Dir_uv.y(),Photon1Dir_uv.z(),g1->superCluster()->rawEnergy());
+		//		p24.SetPxPyPzE(Photon2Dir_uv.x(),Photon2Dir_uv.y(),Photon2Dir_uv.z(),g2->superCluster()->rawEnergy());
+
+		Handle<reco::BeamSpot> recoBeamSpotHandle;
+		iEvent.getByToken(beamSpotToken_,recoBeamSpotHandle);
+		float beamsig;
+		if (recoBeamSpotHandle.isValid()){
+		  beamsig = recoBeamSpotHandle->sigmaZ();
+		} else {
+		  beamsig = -9999; // I hope this never happens!"
+		}
+		
+		float r1 = TMath::Sqrt(Photon1Dir.X()*Photon1Dir.X()+Photon1Dir.Y()*Photon1Dir.Y()+Photon1Dir.Z()*Photon1Dir.Z());
+		float r2 = TMath::Sqrt(Photon2Dir.X()*Photon2Dir.X()+Photon2Dir.Y()*Photon2Dir.Y()+Photon2Dir.Z()*Photon2Dir.Z());
+		float cos_term = TMath::Cos(g1->phi()-g2->phi());
+		float sech1 = 1.0/TMath::CosH(g1->eta());
+		float sech2 = 1.0/TMath::CosH(g2->eta());
+		float tanh1 = 1.0/TMath::TanH(g1->phi());
+		float tanh2 = 1.0/TMath::TanH(g2->phi());
+		float numerator1 = sech1*(sech1*tanh2-tanh1*sech2*cos_term);
+		float numerator2 = sech2*(sech2*tanh1-tanh2*sech1*cos_term);
+		float denominator = 1. - tanh1*tanh2 - sech1*sech2*cos_term;
+		float angleResolution = ((-1.*beamsig*TMath::Sqrt(.2))/denominator)*(numerator1/r1 + numerator2/r2);
+		float alpha_sig = 0.5*angleResolution;
+		float SigmaM = TMath::Sqrt(g1->getSigEOverE()*g1->getSigEOverE() + g2->getSigEOverE()*g2->getSigEOverE());
+		float MassResolutionWrongVtx = TMath::Sqrt((SigmaM*SigmaM)+(alpha_sig*alpha_sig));
+
+		float leadptom_       = g1->pt()/(diPhotonPointers[candIndex]->mass());
+		float subleadptom_    = g2->pt()/(diPhotonPointers[candIndex]->mass());
+		float subleadmva_     = g2->getPhoIdMvaDWrtVtx(vtx);
+		float leadmva_        = g1->getPhoIdMvaDWrtVtx(vtx);
+		float leadeta_        = g2->eta();
+		float subleadeta_     = g1->eta();
+		float sigmarv_        = .5*sqrt((g1->getSigEOverE())*(g1->getSigEOverE()) + (g2->getSigEOverE())*(g2->getSigEOverE()));
+		float sigmawv_        = MassResolutionWrongVtx;
+		float CosPhi_         = TMath::Cos(g1->phi()-g2->phi());
+		float vtxprob_        =  1.-.49*(1+diPhotonPointers[candIndex]->getVtxProbMVA());
+
+		if (!DiphotonMva_initialized) {
+		  DiphotonMva_initialized = true;
+		  DiphotonMva_ = new TMVA::Reader("!Color:Silent");
+		  DiphotonMva_->AddVariable("masserrsmeared/mass",&sigmarv_);
+		  DiphotonMva_->AddVariable("masserrsmearedwrongvtx/mass",&sigmawv_);
+		  DiphotonMva_->AddVariable("vtxprob",&vtxprob_);
+		  DiphotonMva_->AddVariable("ph1.pt/mass",&leadptom_);
+		  DiphotonMva_->AddVariable("ph2.pt/mass",&subleadptom_);
+		  DiphotonMva_->AddVariable("ph1.eta",&leadeta_);
+		  DiphotonMva_->AddVariable("ph2.eta",&subleadeta_);
+		  DiphotonMva_->AddVariable("TMath::Cos(ph1.phi-ph2.phi)",&CosPhi_);
+		  DiphotonMva_->AddVariable("ph1.idmva",&leadmva_);
+		  DiphotonMva_->AddVariable("ph2.idmva",&subleadmva_);
+		  DiphotonMva_->BookMVA("BDT",diphotonMVAweightfile_.fullPath());
+		}
+
+		float diphomva_ = DiphotonMva_->EvaluateMVA("BDT");
+
+		// Storing these to the variables used in the tree
+		sigmaMrvoM = sigmarv_; // To confirm
+		sigmaMwvoM = sigmawv_; // To confirm
+		vtxprob = vtxprob_;
+		ptbal = diPhotonPointers[candIndex]->getPtBal();
+		ptasym = diPhotonPointers[candIndex]->getPtAsym();
+		logspt2 = diPhotonPointers[candIndex]->getLogSumPt2();
+		p2conv = diPhotonPointers[candIndex]->getPullConv(); // To confirm
+		nconv = diPhotonPointers[candIndex]->getNConv(); 
+		vtxmva = diPhotonPointers[candIndex]->getVtxProbMVA();
+		// vtxdz = ???
+		dipho_mva = diphomva_;
+		
+
+		//		std::cout << "higgsCandidatePResent in globelikeTreeMaker" << std::endl;
+		flashggTree->Fill(); 
 	}
 	else
 	{

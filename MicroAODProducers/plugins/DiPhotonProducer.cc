@@ -35,6 +35,7 @@ namespace flashgg {
     EDGetTokenT<View<reco::Conversion> > conversionToken_;
     EDGetTokenT<View<reco::BeamSpot> > beamSpotToken_;
 
+    /*
     double dRexclude;
     double sigma1Pix;
     double sigma1Tib;
@@ -61,6 +62,7 @@ namespace flashgg {
     double singlelegsigma2Tid;
     double singlelegsigma2Tec;    
     std::map<std::string,double> param;
+    */
   };
 
   DiPhotonProducer::DiPhotonProducer(const ParameterSet & iConfig) :
@@ -74,6 +76,7 @@ namespace flashgg {
     vertexSelector_.reset(FlashggVertexSelectorFactory::get()->create(VertexSelectorName,iConfig));
     produces<vector<flashgg::DiPhotonCandidate> >();
 
+    /*
     //R around photons
     dRexclude=iConfig.getUntrackedParameter<double>("dRexclude"); param["dRexclude"] = dRexclude;
 
@@ -102,6 +105,7 @@ namespace flashgg {
     singlelegsigma2PixFwd =iConfig.getUntrackedParameter<double>("singlelegsigma2PixFwd");   param["singlelegsigma2PixFwd"] = singlelegsigma2PixFwd; 
     singlelegsigma2Tid    =iConfig.getUntrackedParameter<double>("singlelegsigma2Tid");   param["singlelegsigma2Tid"] = singlelegsigma2Tid;
     singlelegsigma2Tec    =iConfig.getUntrackedParameter<double>("singlelegsigma2Tec");   param["singlelegsigma2Tec"] = singlelegsigma2Tec;
+    */
 
   }
 
@@ -125,10 +129,10 @@ namespace flashgg {
     Handle<reco::BeamSpot> recoBeamSpotHandle;
     evt.getByToken(beamSpotToken_,recoBeamSpotHandle);
     math::XYZPoint vertexPoint;
-    float beamsig;
+    //    float beamsig;
     if (recoBeamSpotHandle.isValid()){
       vertexPoint = recoBeamSpotHandle->position();
-      beamsig = recoBeamSpotHandle->sigmaZ();
+      //      beamsig = recoBeamSpotHandle->sigmaZ();
     }
 
     
@@ -139,7 +143,7 @@ namespace flashgg {
       for (unsigned int j = i+1 ; j < photonPointers.size() ; j++) {
         Ptr<flashgg::Photon> pp2 = photonPointers[j];
 
-        Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers,vertexPoint,param,beamsig);
+        Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers,vertexPoint); //,param,beamsig);
 
         // A number of things need to be done once the vertex is chosen
         // recomputing photon 4-momenta accordingly

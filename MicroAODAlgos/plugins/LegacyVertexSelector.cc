@@ -22,9 +22,9 @@ namespace flashgg {
    edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&,
 				 const VertexCandidateMap& vertexCandidateMap,
 				 const edm::PtrVector<reco::Conversion>&,
-				 const math::XYZPoint&,
-				 const std::map<std::string,double>&,
-                                 const float &
+				 const math::XYZPoint&
+				 //				 const std::map<std::string,double>&,
+				 //                                 const float &
 				 ) override;
 
    void writeInfoFromLastSelectionTo(flashgg::DiPhotonCandidate&) override;
@@ -32,19 +32,19 @@ namespace flashgg {
     double vtxZFromConvOnly         (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
     double vtxZFromConvSuperCluster (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
     double vtxZFromConv             (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
-    double vtxdZFromConv            (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const std::map<std::string,double>&) const;
+    double vtxdZFromConv            (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&) const;
 
     double getZFromConvPair(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,
 			    const int ,const int,
 			    const edm::PtrVector<reco::Conversion>&,
-			    const math::XYZPoint &,
-			    const std::map<std::string,double>&) const;
+			    const math::XYZPoint &) const;  
+   //			    const std::map<std::string,double>&) const;
    
     
     double getsZFromConvPair(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,
 			     const int ,const int,
-			     const edm::PtrVector<reco::Conversion>&,
-			     const std::map<std::string,double>&) const;
+			     const edm::PtrVector<reco::Conversion>&) const;
+    //			     const std::map<std::string,double>&) const;
     
     int IndexMatchedConversion(const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Conversion>&) const;
 
@@ -54,7 +54,33 @@ namespace flashgg {
 
    edm::FileInPath vertexIdMVAweightfile_;
    edm::FileInPath vertexProbMVAweightfile_;
-   edm::FileInPath diphotonMVAweightfile_;
+   //   edm::FileInPath diphotonMVAweightfile_;
+
+   double dRexclude;                                                                                                                                                                
+   double sigma1Pix;                                                                                                                                                                
+   double sigma1Tib;                                                                                                                                                                
+   double sigma1Tob;                                                                                                                                                                
+   double sigma1PixFwd;                                                                                                                                                             
+   double sigma1Tid;                                                                                                                                                                
+   double sigma1Tec;                                                                                                                                                                
+   double sigma2Pix;                                                                                                                                                                
+   double sigma2Tib;                                                                                                                                                                
+   double sigma2Tob;                                                                                                                                                                
+   double sigma2PixFwd;                                                                                                                                                             
+   double sigma2Tid;                                                                                                                                                                
+   double sigma2Tec;                                                                                                                                                                
+   double singlelegsigma1Pix;                                                                                                                                                       
+   double singlelegsigma1Tib;                                                                                                                                                       
+   double singlelegsigma1Tob;                                                                                                                                                       
+   double singlelegsigma1PixFwd;                                                                                                                                                    
+   double singlelegsigma1Tid;                                                                                                                                                       
+   double singlelegsigma1Tec;                                                                                                                                                       
+   double singlelegsigma2Pix;                                                                                                                                                       
+   double singlelegsigma2Tib;                                                                                                                                                       
+   double singlelegsigma2Tob;                                                                                                                                                       
+   double singlelegsigma2PixFwd;                                                                                                                                                    
+   double singlelegsigma2Tid;                                                                                                                                                       
+   double singlelegsigma2Tec;                                                                                                                                                       
 
  protected: 
    TMVA::Reader * VertexIdMva_;
@@ -98,7 +124,34 @@ namespace flashgg {
   {
     vertexIdMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vertexIdMVAweightfile");
     vertexProbMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vertexProbMVAweightfile");
-    diphotonMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("diphotonMVAweightfile");
+    //    diphotonMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("diphotonMVAweightfile");
+
+    sigma1Pix             =iConfig.getUntrackedParameter<double>("sigma1Pix");
+    sigma1Tib             =iConfig.getUntrackedParameter<double>("sigma1Tib");
+    sigma1Tob             =iConfig.getUntrackedParameter<double>("sigma1Tob");
+    sigma1PixFwd          =iConfig.getUntrackedParameter<double>("sigma1PixFwd");
+    sigma1Tid             =iConfig.getUntrackedParameter<double>("sigma1Tid");
+    sigma1Tec             =iConfig.getUntrackedParameter<double>("sigma1Tec");
+    sigma2Pix             =iConfig.getUntrackedParameter<double>("sigma2Pix");
+    sigma2Tib             =iConfig.getUntrackedParameter<double>("sigma2Tib");
+    sigma2Tob             =iConfig.getUntrackedParameter<double>("sigma2Tob");
+    sigma2PixFwd          =iConfig.getUntrackedParameter<double>("sigma2PixFwd");
+    sigma2Tid             =iConfig.getUntrackedParameter<double>("sigma2Tid");
+    sigma2Tec             =iConfig.getUntrackedParameter<double>("sigma2Tec");
+    singlelegsigma1Pix    =iConfig.getUntrackedParameter<double>("singlelegsigma1Pix");
+    singlelegsigma1Tib    =iConfig.getUntrackedParameter<double>("singlelegsigma1Tib");
+    singlelegsigma1Tob    =iConfig.getUntrackedParameter<double>("singlelegsigma1Tob");
+    singlelegsigma1PixFwd =iConfig.getUntrackedParameter<double>("singlelegsigma1PixFwd");
+    singlelegsigma1Tid    =iConfig.getUntrackedParameter<double>("singlelegsigma1Tid");
+    singlelegsigma1Tec    =iConfig.getUntrackedParameter<double>("singlelegsigma1Tec");
+    singlelegsigma2Pix    =iConfig.getUntrackedParameter<double>("singlelegsigma2Pix");
+    singlelegsigma2Tib    =iConfig.getUntrackedParameter<double>("singlelegsigma2Tib");
+    singlelegsigma2Tob    =iConfig.getUntrackedParameter<double>("singlelegsigma2Tob");
+    singlelegsigma2PixFwd =iConfig.getUntrackedParameter<double>("singlelegsigma2PixFwd");
+    singlelegsigma2Tid    =iConfig.getUntrackedParameter<double>("singlelegsigma2Tid");
+    singlelegsigma2Tec    =iConfig.getUntrackedParameter<double>("singlelegsigma2Tec");
+
+
     initialized_ = false;
   }
 
@@ -144,7 +197,7 @@ namespace flashgg {
   LegacyVertexSelector::~LegacyVertexSelector() {
     delete VertexIdMva_;
     delete VertexProbMva_;
-    delete DiphotonMva_;
+    //    delete DiphotonMva_;
   }
 
   TVector3 diPho;  
@@ -247,7 +300,7 @@ namespace flashgg {
 
   }
 
-  double LegacyVertexSelector::vtxdZFromConv (const edm::Ptr<flashgg::Photon>& pho, const edm::Ptr<reco::Conversion> & conversion,const std::map<std::string,double> & param) const{
+  double LegacyVertexSelector::vtxdZFromConv (const edm::Ptr<flashgg::Photon>& pho, const edm::Ptr<reco::Conversion> & conversion) const{
     // method 0 is combined (default)
     // method 1 is conversion only
     // method 2 is supercluster only
@@ -259,65 +312,65 @@ namespace flashgg {
     if (conversion->nTracks()==2) {
       if ( pho->eta()<1.5 ) { // barrel
 	if ( perp <=15 ) {
-	  if (method==0) dz=param.at("sigma1Pix");
-	  if (method==1) dz=param.at("sigma1Pix");
-	  if (method==2) dz=param.at("sigma2Pix");
+	  if (method==0) dz=sigma1Pix;
+	  if (method==1) dz=sigma1Pix;
+	  if (method==2) dz=sigma2Pix;
 	} else if ( perp > 15 && perp <=60 ) {
-	  if (method==0) dz=param.at("sigma2Tib");
-	  if (method==1) dz=param.at("sigma1Tib");
-	  if (method==2) dz=param.at("sigma2Tib");
+	  if (method==0) dz=sigma2Tib;
+	  if (method==1) dz=sigma1Tib;
+	  if (method==2) dz=sigma2Tib;
 	} else {
-	  if (method==0) dz=param.at("sigma2Tob");
-	  if (method==1) dz=param.at("sigma1Tob");
-	  if (method==2) dz=param.at("sigma2Tob");
+	  if (method==0) dz=sigma2Tob;
+	  if (method==1) dz=sigma1Tob;
+	  if (method==2) dz=sigma2Tob;
 	}
 	
       } else { // endcap
 	
 	if ( fabs(conversion->conversionVertex().z() ) <=50 ) {
-	  if (method==0) dz=param.at("sigma1PixFwd");
-	  if (method==1) dz=param.at("sigma1PixFwd");
-	  if (method==2) dz=param.at("sigma2PixFwd");
+	  if (method==0) dz=sigma1PixFwd;
+	  if (method==1) dz=sigma1PixFwd;
+	  if (method==2) dz=sigma2PixFwd;
 	} else if ( fabs(conversion->conversionVertex().z() ) > 50 && fabs(conversion->conversionVertex().z()) <= 100 ) {
-	  if (method==0) dz=param.at("sigma1Tid");
-	  if (method==1) dz=param.at("sigma1Tid");
-	  if (method==2) dz=param.at("sigma2Tid");
+	  if (method==0) dz=sigma1Tid;
+	  if (method==1) dz=sigma1Tid;
+	  if (method==2) dz=sigma2Tid;
 	} else {
-	  if (method==0) dz=param.at("sigma2Tec");
-	  if (method==1) dz=param.at("sigma1Tec");
-	  if (method==2) dz=param.at("sigma2Tec");
+	  if (method==0) dz=sigma2Tec;
+	  if (method==1) dz=sigma1Tec;
+	  if (method==2) dz=sigma2Tec;
 	}
       }
     } else if (conversion->nTracks()==1) {
       if ( pho->eta() <1.5 ) { // barrel
 	if ( perp <=15 ) {
-	  if (method==0) dz=param.at("singlelegsigma1Pix");
-	  if (method==1) dz=param.at("singlelegsigma1Pix");
-	  if (method==2) dz=param.at("singlelegsigma2Pix");
+	  if (method==0) dz=singlelegsigma1Pix;
+	  if (method==1) dz=singlelegsigma1Pix;
+	  if (method==2) dz=singlelegsigma2Pix;
 	} else if ( perp > 15 && perp <=60 ) {
-	  if (method==0) dz=param.at("singlelegsigma2Tib");
-	  if (method==1) dz=param.at("singlelegsigma1Tib");
-	  if (method==2) dz=param.at("singlelegsigma2Tib");
+	  if (method==0) dz=singlelegsigma2Tib;
+	  if (method==1) dz=singlelegsigma1Tib;
+	  if (method==2) dz=singlelegsigma2Tib;
 	} else {
-	  if (method==0) dz=param.at("singlelegsigma2Tob");
-	  if (method==1) dz=param.at("singlelegsigma1Tob");
-	  if (method==2) dz=param.at("singlelegsigma2Tob");
+	  if (method==0) dz=singlelegsigma2Tob;
+	  if (method==1) dz=singlelegsigma1Tob;
+	  if (method==2) dz=singlelegsigma2Tob;
 	}
 	
       } else { // endcap
 	
 	if ( fabs(conversion->conversionVertex().z() ) <=50 ) {
-	  if (method==0) dz=param.at("singlelegsigma1PixFwd");
-	  if (method==1) dz=param.at("singlelegsigma1PixFwd");
-	  if (method==2) dz=param.at("singlelegsigma2PixFwd");
+	  if (method==0) dz=singlelegsigma1PixFwd;
+	  if (method==1) dz=singlelegsigma1PixFwd;
+	  if (method==2) dz=singlelegsigma2PixFwd;
 	} else if ( fabs(conversion->conversionVertex().z() ) > 50 && fabs(conversion->conversionVertex().z()) <= 100 ) {
-	  if (method==0) dz=param.at("singlelegsigma1Tid");
-	  if (method==1) dz=param.at("singlelegsigma1Tid");
-	  if (method==2) dz=param.at("singlelegsigma2Tid");
+	  if (method==0) dz=singlelegsigma1Tid;
+	  if (method==1) dz=singlelegsigma1Tid;
+	  if (method==2) dz=singlelegsigma2Tid;
 	} else {
-	  if (method==0) dz=param.at("singlelegsigma2Tec");
-	  if (method==1) dz=param.at("singlelegsigma1Tec");
-	  if (method==2) dz=param.at("singlelegsigma2Tec");
+	  if (method==0) dz=singlelegsigma2Tec;
+	  if (method==1) dz=singlelegsigma1Tec;
+	  if (method==2) dz=singlelegsigma2Tec;
 	}
       }
     }
@@ -329,8 +382,8 @@ namespace flashgg {
 						const int index_conversionLead,
 						const int index_conversionTrail,
 						const edm::PtrVector<reco::Conversion>& conversionsVector,
-						const math::XYZPoint & beamSpot,
-						const std::map<std::string,double>& param) const{
+						const math::XYZPoint & beamSpot) const {
+						//						const std::map<std::string,double>& param) const{
     double zconv=0;
     if(index_conversionLead!=-1  && index_conversionTrail==-1){ //Warning could be also the method g->hasConversionTracks() OR vtx->isConverted?
       zconv=vtxZFromConv(p1,conversionsVector[index_conversionLead],beamSpot);
@@ -341,9 +394,9 @@ namespace flashgg {
     
     if (index_conversionLead!=-1 && index_conversionTrail!=-1){
       float z1  = vtxZFromConv (p1,conversionsVector[index_conversionLead],beamSpot);
-      float sz1 = vtxdZFromConv(p1,conversionsVector[index_conversionLead],param);
+      float sz1 = vtxdZFromConv(p1,conversionsVector[index_conversionLead]); //,param);
       float z2  = vtxZFromConv (p2,conversionsVector[index_conversionTrail],beamSpot);
-      float sz2 = vtxdZFromConv(p2,conversionsVector[index_conversionTrail],param);
+      float sz2 = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]); //,param);
       zconv  = (z1/sz1/sz1 + z2/sz2/sz2)/(1./sz1/sz1 + 1./sz2/sz2 );  // weighted average
     }
     return zconv;
@@ -353,19 +406,19 @@ namespace flashgg {
 						 const edm::Ptr<flashgg::Photon>& p2,
 						 int index_conversionLead,
 						 int index_conversionTrail,
-						 const edm::PtrVector<reco::Conversion>& conversionsVector,
-						 const std::map<std::string,double> & param) const{
+						 const edm::PtrVector<reco::Conversion>& conversionsVector) const {
+    //						 const std::map<std::string,double> & param) const{
     double szconv=0;
     if ( index_conversionLead!=-1  && index_conversionTrail==-1 ){ //Warning could be also the method g->hasConversionTracks()?
-      szconv = vtxdZFromConv(p1,conversionsVector[index_conversionLead],param);
+      szconv = vtxdZFromConv(p1,conversionsVector[index_conversionLead]); // ,param);
     }
     if ( index_conversionTrail==-1 && index_conversionTrail!=-1 ){
-      szconv = vtxdZFromConv(p2,conversionsVector[index_conversionTrail],param);
+      szconv = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]); // ,param);
     }
     
     if (index_conversionLead!=-1 && index_conversionTrail!=-1){
-      float sz1 = vtxdZFromConv(p1,conversionsVector[index_conversionLead],param);
-      float sz2 = vtxdZFromConv(p2,conversionsVector[index_conversionTrail],param);
+      float sz1 = vtxdZFromConv(p1,conversionsVector[index_conversionLead]); // ,param);
+      float sz2 = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]); // ,param);
       szconv = sqrt( 1./(1./sz1/sz1 + 1./sz2/sz2)) ;
     }
     return szconv;
@@ -404,9 +457,9 @@ namespace flashgg {
   edm::Ptr<reco::Vertex> LegacyVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs,
 						      const VertexCandidateMap& vertexCandidateMap,
 						      const edm::PtrVector<reco::Conversion>& conversionsVector,
-						      const math::XYZPoint & beamSpot,
-						      const std::map<std::string,double> & param,
-                                                      const float & beamsig 
+						      const math::XYZPoint & beamSpot
+						      //						      const std::map<std::string,double> & param,
+						      //                                                      const float & beamsig 
                                                        ) {
 
     int IndexMatchedConversionLeadPhoton=-1;
@@ -455,7 +508,7 @@ namespace flashgg {
         sumpt += tkXY;
         dr1 = tk.DeltaR(p14.Vect());
         dr2 = tk.DeltaR(p24.Vect());
-    	if(dr1 < param.at("dRexclude") || dr2 < param.at("dRexclude")){
+    	if(dr1 < dRexclude || dr2 < dRexclude){
           sumpt2_in+=tkXY.Mod2();
           continue;
         }
@@ -465,41 +518,28 @@ namespace flashgg {
 
      //resolution variables for diphoton mva//
      //
-
+      /*
       float r1 = TMath::Sqrt(Photon1Dir.X()*Photon1Dir.X()+Photon1Dir.Y()*Photon1Dir.Y()+Photon1Dir.Z()*Photon1Dir.Z()); 
-   
       float r2 = TMath::Sqrt(Photon2Dir.X()*Photon2Dir.X()+Photon2Dir.Y()*Photon2Dir.Y()+Photon2Dir.Z()*Photon2Dir.Z());
-
       float cos_term = TMath::Cos(g1->phi()-g2->phi()); 
-    
       float sech1 = 1.0/TMath::CosH(g1->eta());  
-
       float sech2 = 1.0/TMath::CosH(g2->eta());  
-
       float tanh1 = 1.0/TMath::TanH(g1->phi());
-    
       float tanh2 = 1.0/TMath::TanH(g2->phi());
-
       float numerator1 = sech1*(sech1*tanh2-tanh1*sech2*cos_term);
-
       float numerator2 = sech2*(sech2*tanh1-tanh2*sech1*cos_term);
-
       float denominator = 1. - tanh1*tanh2 - sech1*sech2*cos_term;
-
       float angleResolution = ((-1.*beamsig*TMath::Sqrt(.2))/denominator)*(numerator1/r1 + numerator2/r2);
-
       float alpha_sig = 0.5*angleResolution; 
-
       float SigmaM = TMath::Sqrt(g1->getSigEOverE()*g1->getSigEOverE() + g2->getSigEOverE()*g2->getSigEOverE());   
-
       float MassResolutionWrongVtx = TMath::Sqrt((SigmaM*SigmaM)+(alpha_sig*alpha_sig));
-
       mass_reswrongvtx_vector.push_back(MassResolutionWrongVtx);
+      */
    
 
       ptasym = (sumpt.Mod() - (p14+p24).Vect().XYvector().Mod())/(sumpt.Mod() + (p14+p24).Vect().XYvector().Mod());
-      zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot,param);
-      szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,param);
+      zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot); //,param);
+      szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector); // ,param);
       float nConv = conversionsVector.size();      
       float pull_conv = 0;
       if(zconv==0 && szconv==0.0){
@@ -546,18 +586,18 @@ namespace flashgg {
     vtxprobmva_ = VertexProbMva_->EvaluateMVA("BDT");  
     //std::cout<<"\t selected vertex_index:"<<selected_vertex_index<<" with max_mva_value:"<<max_mva_value<<std::endl;
     
-    leadptom_       = g1->pt()/(diphoton_objects_vector.at(selected_vertex_index).M());
-    subleadptom_    = g2->pt()/(diphoton_objects_vector.at(selected_vertex_index).M());
-    subleadmva_     = g2->getPhoIdMvaDWrtVtx(vtxs[selected_vertex_index]);
-    leadmva_        = g1->getPhoIdMvaDWrtVtx(vtxs[selected_vertex_index]);
-    leadeta_        = g2->eta();
-    subleadeta_     = g1->eta();
-    sigmarv_        = .5*sqrt((g1->getSigEOverE())*(g1->getSigEOverE()) + (g2->getSigEOverE())*(g2->getSigEOverE()));  
-    sigmawv_        = mass_reswrongvtx_vector.at(selected_vertex_index); 
-    CosPhi_         = TMath::Cos(g1->phi()-g2->phi());
-    vtxprob_        =  1.-.49*(1+vtxprobmva); 
+    //    leadptom_       = g1->pt()/(diphoton_objects_vector.at(selected_vertex_index).M());
+    //    subleadptom_    = g2->pt()/(diphoton_objects_vector.at(selected_vertex_index).M());
+    //    subleadmva_     = g2->getPhoIdMvaDWrtVtx(vtxs[selected_vertex_index]);
+    //    leadmva_        = g1->getPhoIdMvaDWrtVtx(vtxs[selected_vertex_index]);
+    //    leadeta_        = g2->eta();
+    //    subleadeta_     = g1->eta();
+    //    sigmarv_        = .5*sqrt((g1->getSigEOverE())*(g1->getSigEOverE()) + (g2->getSigEOverE())*(g2->getSigEOverE()));  
+    //    sigmawv_        = mass_reswrongvtx_vector.at(selected_vertex_index); 
+//    CosPhi_         = TMath::Cos(g1->phi()-g2->phi());
+    //    vtxprob_        =  1.-.49*(1+vtxprobmva); 
    
-    diphomva_ = DiphotonMva_->EvaluateMVA("BDT");
+    //    diphomva_ = DiphotonMva_->EvaluateMVA("BDT");
     
     return vtxs[selected_vertex_index];
   }

@@ -28,9 +28,9 @@ namespace flashgg {
 					  const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&,
 					  const VertexCandidateMap&,
 					  const edm::PtrVector<reco::Conversion>&,
-					  const math::XYZPoint&,
-					  const Parameters_Selector_Type&,
-                                          const float&
+					  const math::XYZPoint&
+					  //					  const Parameters_Selector_Type&,
+					  //                                          const float&
 					  )  = 0;
     
     const std::string& name() const { return _selectorName; };
