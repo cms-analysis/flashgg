@@ -4,30 +4,31 @@ from subprocess import call, Popen, PIPE
 
 # Arguments
 # FIXME: Use argparse argument parsing instead, for the day CRAB3 librairies will stop downgrading the python version with respect to CMSSW :|
-flashggVersion = "pre-alpha-00"
+flashggVersion = "alphaV0"
+parameterSet = "simple_Producer_test.py"
 checkIfOnT2 = 1
-checkNFiles = 0
+checkNFiles = 1
 createCrabConfig = 1
 unitsPerJob = 10
 
 # Prepare the list of samples to run over with default crab parameters
 samples = []
 ##### SM Higgs samples
-#samples.append("/GluGluToHToGG_M-125_13TeV-powheg-pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v2/MINIAODSIM")
-#samples.append("/TTbarH_HToGG_M-125_13TeV_pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
+samples.append("/GluGluToHToGG_M-125_13TeV-powheg-pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v2/MINIAODSIM")
+samples.append("/TTbarH_HToGG_M-125_13TeV_pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
 samples.append("/VBF_HToGG_M-125_13TeV-powheg-pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
-#samples.append("/WH_ZH_HToGG_M-125_13TeV_pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v2/MINIAODSIM")
-#samples.append("/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
+samples.append("/WH_ZH_HToGG_M-125_13TeV_pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v2/MINIAODSIM")
+samples.append("/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
 
 ##### SM diHiggs samples
-#samples.append("/GluGluToHHTo2B2G_M-125_13TeV-madgraph-pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
+samples.append("/GluGluToHHTo2B2G_M-125_13TeV-madgraph-pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
 
 ##### Diphoton backgrounds
-#samples.append("/GJet_Pt20to40_doubleEMEnriched_TuneZ2star_13TeV-pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
-#samples.append("/GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v2/MINIAODSIM")
+samples.append("/GJet_Pt20to40_doubleEMEnriched_TuneZ2star_13TeV-pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
+samples.append("/GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v2/MINIAODSIM")
 
 ##### DY data and MC for validation
-#samples.append("/DYJetsToLL_M-50_13TeV-madgraph-pythia8-tauola_v2/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
+samples.append("/DYJetsToLL_M-50_13TeV-madgraph-pythia8-tauola_v2/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
 #samples.append("/DoubleElectron/CMSSW_7_0_6_patch1-GR_70_V2_AN1_RelVal_zEl2012D-v1/MINIAOD")
 
 if checkIfOnT2:
@@ -60,7 +61,7 @@ if createCrabConfig:
             jobname = "_".join([flashggVersion, PrimaryDataset, str(itry).zfill(2)])
         # Actually create the config file: copy the template and replace things where appropriate
         crabConfigFile = "crabConfig_" + jobname + ".py"
-        replacements = {"JOBNAME":jobname, "PSET":"simple_Producer_test.py", "DATASET":sample, "UNITSPERJOB":str(unitsPerJob), "FLASHGG_VERSION":flashggVersion}
+        replacements = {"JOBNAME":jobname, "PSET":parameterSet, "DATASET":sample, "UNITSPERJOB":str(unitsPerJob), "FLASHGG_VERSION":flashggVersion}
         infile = open("crabConfig_TEMPLATE.py")
         outfile = open(crabConfigFile, 'w')
         for line in infile:
