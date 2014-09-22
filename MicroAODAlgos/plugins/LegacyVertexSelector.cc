@@ -23,8 +23,6 @@ namespace flashgg {
 				 const VertexCandidateMap& vertexCandidateMap,
 				 const edm::PtrVector<reco::Conversion>&,
 				 const math::XYZPoint&
-				 //				 const std::map<std::string,double>&,
-				 //                                 const float &
 				 ) override;
 
    void writeInfoFromLastSelectionTo(flashgg::DiPhotonCandidate&) override;
@@ -38,13 +36,10 @@ namespace flashgg {
 			    const int ,const int,
 			    const edm::PtrVector<reco::Conversion>&,
 			    const math::XYZPoint &) const;  
-   //			    const std::map<std::string,double>&) const;
    
-    
     double getsZFromConvPair(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,
 			     const int ,const int,
 			     const edm::PtrVector<reco::Conversion>&) const;
-    //			     const std::map<std::string,double>&) const;
     
     int IndexMatchedConversion(const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Conversion>&) const;
 
@@ -54,7 +49,6 @@ namespace flashgg {
 
    edm::FileInPath vertexIdMVAweightfile_;
    edm::FileInPath vertexProbMVAweightfile_;
-   //   edm::FileInPath diphotonMVAweightfile_;
 
    double dRexclude;                                                                                                                                                                
    double sigma1Pix;                                                                                                                                                                
@@ -102,21 +96,6 @@ namespace flashgg {
 
    float vtxprobmva_;
 
-   /*
-   TMVA::Reader * DiphotonMva_;
-   float sigmarv_;
-   float sigmawv_;
-   float vtxprob_; 
-   float leadptom_;
-   float subleadptom_;
-   float leadeta_;
-   float subleadeta_;
-   float CosPhi_;
-   float leadmva_;
-   float subleadmva_;
-
-   float diphomva_;
-   */
   };
 
   LegacyVertexSelector::LegacyVertexSelector(const edm::ParameterSet& iConfig) :
@@ -124,7 +103,6 @@ namespace flashgg {
   {
     vertexIdMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vertexIdMVAweightfile");
     vertexProbMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vertexProbMVAweightfile");
-    //    diphotonMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("diphotonMVAweightfile");
 
     sigma1Pix             =iConfig.getUntrackedParameter<double>("sigma1Pix");
     sigma1Tib             =iConfig.getUntrackedParameter<double>("sigma1Tib");
@@ -176,28 +154,12 @@ namespace flashgg {
     VertexProbMva_->AddVariable("nConv",&nConv_); 
     VertexProbMva_->BookMVA("BDT",vertexProbMVAweightfile_.fullPath());
 
-    /*
-    DiphotonMva_ = new TMVA::Reader("!Color:Silent");
-    DiphotonMva_->AddVariable("masserrsmeared/mass",&sigmarv_);
-    DiphotonMva_->AddVariable("masserrsmearedwrongvtx/mass",&sigmawv_);
-    DiphotonMva_->AddVariable("vtxprob",&vtxprob_);
-    DiphotonMva_->AddVariable("ph1.pt/mass",&leadptom_);
-    DiphotonMva_->AddVariable("ph2.pt/mass",&subleadptom_);
-    DiphotonMva_->AddVariable("ph1.eta",&leadeta_);
-    DiphotonMva_->AddVariable("ph2.eta",&subleadeta_);
-    DiphotonMva_->AddVariable("TMath::Cos(ph1.phi-ph2.phi)",&CosPhi_);
-    DiphotonMva_->AddVariable("ph1.idmva",&leadmva_);
-    DiphotonMva_->AddVariable("ph2.idmva",&subleadmva_);
-    DiphotonMva_->BookMVA("BDT",diphotonMVAweightfile_.fullPath());
-    */
-
     initialized_ = true;
   }
 
   LegacyVertexSelector::~LegacyVertexSelector() {
     delete VertexIdMva_;
     delete VertexProbMva_;
-    //    delete DiphotonMva_;
   }
 
   TVector3 diPho;  
@@ -383,7 +345,6 @@ namespace flashgg {
 						const int index_conversionTrail,
 						const edm::PtrVector<reco::Conversion>& conversionsVector,
 						const math::XYZPoint & beamSpot) const {
-						//						const std::map<std::string,double>& param) const{
     double zconv=0;
     if(index_conversionLead!=-1  && index_conversionTrail==-1){ //Warning could be also the method g->hasConversionTracks() OR vtx->isConverted?
       zconv=vtxZFromConv(p1,conversionsVector[index_conversionLead],beamSpot);
@@ -407,18 +368,17 @@ namespace flashgg {
 						 int index_conversionLead,
 						 int index_conversionTrail,
 						 const edm::PtrVector<reco::Conversion>& conversionsVector) const {
-    //						 const std::map<std::string,double> & param) const{
     double szconv=0;
     if ( index_conversionLead!=-1  && index_conversionTrail==-1 ){ //Warning could be also the method g->hasConversionTracks()?
-      szconv = vtxdZFromConv(p1,conversionsVector[index_conversionLead]); // ,param);
+      szconv = vtxdZFromConv(p1,conversionsVector[index_conversionLead]); 
     }
     if ( index_conversionTrail==-1 && index_conversionTrail!=-1 ){
-      szconv = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]); // ,param);
+      szconv = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]);
     }
     
     if (index_conversionLead!=-1 && index_conversionTrail!=-1){
-      float sz1 = vtxdZFromConv(p1,conversionsVector[index_conversionLead]); // ,param);
-      float sz2 = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]); // ,param);
+      float sz1 = vtxdZFromConv(p1,conversionsVector[index_conversionLead]);
+      float sz2 = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]);
       szconv = sqrt( 1./(1./sz1/sz1 + 1./sz2/sz2)) ;
     }
     return szconv;
@@ -516,27 +476,6 @@ namespace flashgg {
         ptbal-=tkXY*(p14+p24).Vect().XYvector().Unit();
       }
 
-     //resolution variables for diphoton mva//
-     //
-      /*
-      float r1 = TMath::Sqrt(Photon1Dir.X()*Photon1Dir.X()+Photon1Dir.Y()*Photon1Dir.Y()+Photon1Dir.Z()*Photon1Dir.Z()); 
-      float r2 = TMath::Sqrt(Photon2Dir.X()*Photon2Dir.X()+Photon2Dir.Y()*Photon2Dir.Y()+Photon2Dir.Z()*Photon2Dir.Z());
-      float cos_term = TMath::Cos(g1->phi()-g2->phi()); 
-      float sech1 = 1.0/TMath::CosH(g1->eta());  
-      float sech2 = 1.0/TMath::CosH(g2->eta());  
-      float tanh1 = 1.0/TMath::TanH(g1->phi());
-      float tanh2 = 1.0/TMath::TanH(g2->phi());
-      float numerator1 = sech1*(sech1*tanh2-tanh1*sech2*cos_term);
-      float numerator2 = sech2*(sech2*tanh1-tanh2*sech1*cos_term);
-      float denominator = 1. - tanh1*tanh2 - sech1*sech2*cos_term;
-      float angleResolution = ((-1.*beamsig*TMath::Sqrt(.2))/denominator)*(numerator1/r1 + numerator2/r2);
-      float alpha_sig = 0.5*angleResolution; 
-      float SigmaM = TMath::Sqrt(g1->getSigEOverE()*g1->getSigEOverE() + g2->getSigEOverE()*g2->getSigEOverE());   
-      float MassResolutionWrongVtx = TMath::Sqrt((SigmaM*SigmaM)+(alpha_sig*alpha_sig));
-      mass_reswrongvtx_vector.push_back(MassResolutionWrongVtx);
-      */
-   
-
       ptasym = (sumpt.Mod() - (p14+p24).Vect().XYvector().Mod())/(sumpt.Mod() + (p14+p24).Vect().XYvector().Mod());
       zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot); //,param);
       szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector); // ,param);
@@ -545,13 +484,12 @@ namespace flashgg {
       if(zconv==0 && szconv==0.0){
 	//FIXME WHAT TO DO WHEN WE DON'T HAVE PULL_CONV CASE? 
 	// Shouldn't matter what we put in...?  TODO: test this...
-	pull_conv = 999.;
       }else{
 	pull_conv = fabs(vtx->position().z()-zconv)/szconv;
       }
 
-      // Truncate at 10. TODO : confirm...
-      if (pull_conv > 10.) pull_conv = 10.;
+      // Truncate at 10. TODO : confirm... Turn off for the meantime
+      //      if (pull_conv > 10.) pull_conv = 10.;
       
       logsumpt2_=log(sumpt2_in+sumpt2_out);
       ptbal_=ptbal;
@@ -584,44 +522,11 @@ namespace flashgg {
     dZ2_      = vtxs[selected_vertex_index]->position().z() - vtxs[third_selected_vertex_index]->position().z();  
 
     vtxprobmva_ = VertexProbMva_->EvaluateMVA("BDT");  
-    //std::cout<<"\t selected vertex_index:"<<selected_vertex_index<<" with max_mva_value:"<<max_mva_value<<std::endl;
-    
-    //    leadptom_       = g1->pt()/(diphoton_objects_vector.at(selected_vertex_index).M());
-    //    subleadptom_    = g2->pt()/(diphoton_objects_vector.at(selected_vertex_index).M());
-    //    subleadmva_     = g2->getPhoIdMvaDWrtVtx(vtxs[selected_vertex_index]);
-    //    leadmva_        = g1->getPhoIdMvaDWrtVtx(vtxs[selected_vertex_index]);
-    //    leadeta_        = g2->eta();
-    //    subleadeta_     = g1->eta();
-    //    sigmarv_        = .5*sqrt((g1->getSigEOverE())*(g1->getSigEOverE()) + (g2->getSigEOverE())*(g2->getSigEOverE()));  
-    //    sigmawv_        = mass_reswrongvtx_vector.at(selected_vertex_index); 
-//    CosPhi_         = TMath::Cos(g1->phi()-g2->phi());
-    //    vtxprob_        =  1.-.49*(1+vtxprobmva); 
-   
-    //    diphomva_ = DiphotonMva_->EvaluateMVA("BDT");
     
     return vtxs[selected_vertex_index];
   }
 
   void LegacyVertexSelector::writeInfoFromLastSelectionTo(flashgg::DiPhotonCandidate& dipho) {
-    /*
-   float logsumpt2_;
-   float ptbal_;
-   float ptasym_;
-   float nConv_;
-   float pull_conv_;
-    */
-
-    /*                                                                                                                                                                              
-   TMVA::Reader * VertexProbMva_;
-   float dipho_pt_;
-   float nVert_;
-   float MVA0_;
-   float MVA1_;
-   float dZ1_;
-   float MVA2_;
-   float dZ2_;
-    */
-
 
     dipho.setLogSumPt2(logsumpt2_);
     dipho.setPtBal(ptbal_);

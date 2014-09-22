@@ -11,7 +11,7 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 20 ) )
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT.root"))
 
