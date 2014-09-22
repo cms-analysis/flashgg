@@ -1,13 +1,20 @@
 import FWCore.ParameterSet.Config as cms
 
+#-rw-r--r--. 1 sethzenz zh 1.1M Sep 22 09:36 TMVAClassification_BDTvtxprob2012.weights.xml
+#-rw-r--r--. 1 sethzenz zh 4.2M Sep 22 09:36 HggBambu_SMDipho_Oct29_rwgtptallsigevenbkg7TeV_BDTG.weights.xml
+
+
 flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                   PhotonTag=cms.untracked.InputTag('flashggPhotons'),
                                   VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                   VertexSelectorName=cms.string("FlashggLegacyVertexSelector"),
                                   VertexCandidateMapTag=cms.InputTag("flashggVertexMapUnique"),
                                   ConversionTag=cms.untracked.InputTag("reducedEgamma","reducedConversions"),             
+
                                   ##Parameters for Legacy Vertex Selector                                                
                                   vertexIdMVAweightfile = cms.FileInPath("flashgg/MicroAODProducers/data/2013FinalPaper_VertexID_BDTCat_conversions.weights.xml"),
+                                  vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAODProducers/data/TMVAClassification_BDTvtxprob2012.weights.xml"),
+                                  diphotonMVAweightfile = cms.FileInPath("flashgg/MicroAODProducers/data/HggBambu_SMDipho_Oct29_rwgtptallsigevenbkg7TeV_BDTG.weights.xml"),
                                   dRexclude=cms.untracked.double(0.05),
                                   sigma1Pix=cms.untracked.double(0.011),                     
                                   sigma1Tib=cms.untracked.double(0.492),                     

@@ -18,6 +18,7 @@ namespace flashgg {
     
  public:
    LegacyVertexSelector(const edm::ParameterSet& );
+   ~LegacyVertexSelector();
    edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Vertex>&,
 				 const VertexCandidateMap& vertexCandidateMap,
 				 const edm::PtrVector<reco::Conversion>&,
@@ -51,7 +52,9 @@ namespace flashgg {
     
   private:
 
-    edm::FileInPath vertexIdMVAweightfile_;
+   edm::FileInPath vertexIdMVAweightfile_;
+   edm::FileInPath vertexProbMVAweightfile_;
+   edm::FileInPath diphotonMVAweightfile_;
 
  protected: 
    TMVA::Reader * VertexIdMva_;
@@ -71,6 +74,9 @@ namespace flashgg {
    float MVA2_;
    float dZ2_;
 
+   float vtxprobmva_;
+
+   /*
    TMVA::Reader * DiphotonMva_;
    float sigmarv_;
    float sigmawv_;
@@ -83,12 +89,16 @@ namespace flashgg {
    float leadmva_;
    float subleadmva_;
 
+   float diphomva_;
+   */
   };
 
   LegacyVertexSelector::LegacyVertexSelector(const edm::ParameterSet& iConfig) :
     VertexSelectorBase(iConfig) 
   {
     vertexIdMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vertexIdMVAweightfile");
+    vertexProbMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vertexProbMVAweightfile");
+    diphotonMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("diphotonMVAweightfile");
     initialized_ = false;
   }
 
@@ -102,8 +112,6 @@ namespace flashgg {
     VertexIdMva_->AddVariable("nConv",&nConv_);
     VertexIdMva_->BookMVA("BDT", vertexIdMVAweightfile_.fullPath());
 
-    std::cout << " Booked MVA for LegacyVertexSelector from " << vertexIdMVAweightfile_.fullPath() << std::endl;
-
     VertexProbMva_ = new TMVA::Reader("!Color:Silent");
     VertexProbMva_->AddVariable("diphoPt0",&dipho_pt_); 
     VertexProbMva_->AddVariable("nVert",&nVert_); 
@@ -113,8 +121,9 @@ namespace flashgg {
     VertexProbMva_->AddVariable("MVA2",&MVA2_); 
     VertexProbMva_->AddVariable("dZ2",&dZ2_); 
     VertexProbMva_->AddVariable("nConv",&nConv_); 
-    VertexProbMva_->BookMVA("BDT","/afs/cern.ch/work/m/molmedon/public/Forflash/TMVAClassification_BDTvtxprob2012.weights.xml");
+    VertexProbMva_->BookMVA("BDT",vertexProbMVAweightfile_.fullPath());
 
+    /*
     DiphotonMva_ = new TMVA::Reader("!Color:Silent");
     DiphotonMva_->AddVariable("masserrsmeared/mass",&sigmarv_);
     DiphotonMva_->AddVariable("masserrsmearedwrongvtx/mass",&sigmawv_);
@@ -126,9 +135,16 @@ namespace flashgg {
     DiphotonMva_->AddVariable("TMath::Cos(ph1.phi-ph2.phi)",&CosPhi_);
     DiphotonMva_->AddVariable("ph1.idmva",&leadmva_);
     DiphotonMva_->AddVariable("ph2.idmva",&subleadmva_);
-    DiphotonMva_->BookMVA("BDT","/afs/cern.ch/work/m/molmedon/public/Forflash/HggBambu_SMDipho_Oct29_rwgtptallsigevenbkg7TeV_BDTG.weights.xml");
+    DiphotonMva_->BookMVA("BDT",diphotonMVAweightfile_.fullPath());
+    */
 
     initialized_ = true;
+  }
+
+  LegacyVertexSelector::~LegacyVertexSelector() {
+    delete VertexIdMva_;
+    delete VertexProbMva_;
+    delete DiphotonMva_;
   }
 
   TVector3 diPho;  
@@ -488,15 +504,21 @@ namespace flashgg {
       float pull_conv = 0;
       if(zconv==0 && szconv==0.0){
 	//FIXME WHAT TO DO WHEN WE DON'T HAVE PULL_CONV CASE? 
+	// Shouldn't matter what we put in...?  TODO: test this...
+	pull_conv = 999.;
       }else{
 	pull_conv = fabs(vtx->position().z()-zconv)/szconv;
       }
 
+      // Truncate at 10. TODO : confirm...
+      if (pull_conv > 10.) pull_conv = 10.;
+      
       logsumpt2_=log(sumpt2_in+sumpt2_out);
       ptbal_=ptbal;
       pull_conv_=pull_conv;
       nConv_=nConv;
       float mva_value = VertexIdMva_->EvaluateMVA("BDT"); 
+
       if(mva_value>max_mva_value){
 	max_mva_value=mva_value;
 	selected_vertex_index=vertex_index;
@@ -513,7 +535,7 @@ namespace flashgg {
       }   
     }
   
-    dipho_pt_ = g1->pt()+g2->pt();
+    dipho_pt_ = (g1->p4()+g2->p4()).pt();
     nVert_    = vtxs.size();
     MVA0_     = max_mva_value;
     MVA1_     = second_max_mva_value;
@@ -521,7 +543,7 @@ namespace flashgg {
     MVA2_     = third_max_mva_value;
     dZ2_      = vtxs[selected_vertex_index]->position().z() - vtxs[third_selected_vertex_index]->position().z();  
 
-    float vtxprobmva = VertexProbMva_->EvaluateMVA("BDT");  
+    vtxprobmva_ = VertexProbMva_->EvaluateMVA("BDT");  
     //std::cout<<"\t selected vertex_index:"<<selected_vertex_index<<" with max_mva_value:"<<max_mva_value<<std::endl;
     
     leadptom_       = g1->pt()/(diphoton_objects_vector.at(selected_vertex_index).M());
@@ -535,15 +557,47 @@ namespace flashgg {
     CosPhi_         = TMath::Cos(g1->phi()-g2->phi());
     vtxprob_        =  1.-.49*(1+vtxprobmva); 
    
-    float diphotonmva = DiphotonMva_->EvaluateMVA("BDT");
-    std::cout << diphotonmva << std::endl;
-
+    diphomva_ = DiphotonMva_->EvaluateMVA("BDT");
     
     return vtxs[selected_vertex_index];
   }
 
   void LegacyVertexSelector::writeInfoFromLastSelectionTo(flashgg::DiPhotonCandidate& dipho) {
-    std::cout << " Need to fill in some stuff here in LegacyVertexSelector::writeInfoFromLastSelectionTo" << std::endl;
+    /*
+   float logsumpt2_;
+   float ptbal_;
+   float ptasym_;
+   float nConv_;
+   float pull_conv_;
+    */
+
+    /*                                                                                                                                                                              
+   TMVA::Reader * VertexProbMva_;
+   float dipho_pt_;
+   float nVert_;
+   float MVA0_;
+   float MVA1_;
+   float dZ1_;
+   float MVA2_;
+   float dZ2_;
+    */
+
+
+    dipho.setLogSumPt2(logsumpt2_);
+    dipho.setPtBal(ptbal_);
+    dipho.setPtAsym(ptasym_);
+    dipho.setNConv(nConv_);
+    dipho.setPullConv(pull_conv_);
+
+    dipho.setNVert(nVert_);
+    dipho.setMVA0(MVA0_);
+    dipho.setMVA1(MVA1_);
+    dipho.setMVA2(MVA2_);
+    dipho.setDZ1(dZ1_);
+    dipho.setDZ2(dZ2_);
+
+    dipho.setVtxProbMVA(vtxprobmva_);
+
   } 
 
 } // namespace flashgg
