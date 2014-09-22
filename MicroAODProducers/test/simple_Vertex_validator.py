@@ -28,13 +28,15 @@ process.GlobalTag = GlobalTag(process.GlobalTag, 'PLS170_V7AN1::All', '')
 
 ####### EVENT NUMBER 
 #event number
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 ####### INPUT SOURCE
 # Input source (from AOD->miniAOD)
 process.source = cms.Source("PoolSource",
     secondaryFileNames = cms.untracked.vstring(),
-    fileNames = cms.untracked.vstring('/store/relval/CMSSW_7_0_0/RelValH130GGgluonfusion_13/GEN-SIM-RECO/PU50ns_POSTLS170_V4-v2/00000/96DE1CEE-CA98-E311-8F71-02163E00E5B1.root')
+    fileNames = cms.untracked.vstring(	
+		'/store/relval/CMSSW_7_0_0/RelValH130GGgluonfusion_13/GEN-SIM-RECO/PU50ns_POSTLS170_V4-v2/00000/E698F634-CD98-E311-B38F-02163E00EA9F.root',
+		)
 )
 
 process.options = cms.untracked.PSet(

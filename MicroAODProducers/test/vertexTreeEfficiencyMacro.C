@@ -49,9 +49,9 @@
 	graphLeg->SetMarkerColor(kRed); 
 	graphLeg->SetLineColor(kRed);
 	graph0->Draw("AP"); 
-        graphLeg->Draw("P");
+  graphLeg->Draw("P");
 
-	c1->SaveAs("vertexEfficiency0.png");
+	c1->SaveAs("vertexEfficiency0.pdf");
 
 	std:: cout << "Statistics: " << eventTree->GetEntries() << " events." << std::endl;
 	std:: cout << "skipped " << counter << " events." << std::endl;
