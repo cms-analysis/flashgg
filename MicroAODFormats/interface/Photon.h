@@ -13,27 +13,27 @@ namespace flashgg {
     ~Photon();
     virtual Photon * clone() const { return new Photon(*this); }
     
-    void  setSipip(float val) {sipip=val;};
-    void  setSieip(float val) {sieip=val;};
-    void  setE2nd(float val) {e2nd=val;};
-    void  setE2x5right(float val) {e2x5right=val;};
-    void  setE2x5left(float val) {e2x5left=val;};
-    void  setE2x5top(float val) {e2x5top=val;};
-    void  setE2x5bottom(float val) {e2x5bottom=val;};
-    void  setE2x5max(float val) {e2x5max=val;};
-    void  setEright(float val) {eright=val;};
-    void  setEleft(float val) {eleft=val;};
-    void  setEtop(float val) {etop=val;};
-    void  setEbottom(float val) {ebottom=val;};
-    void  setE1x3(float val) {e1x3= val;};
-    void  setS4(float val) {S4_=val;};  
-    void  setpfPhoIso03(float val) {pfPhoIso03_=val;};   
-    void  setpfChgIso03( std::map<edm::Ptr<reco::Vertex>,float> valmap ) {  pfChgIso03_ = valmap; };  // concept: pass the pre-computed map when calling this in the producer
-    void  setpfChgIso02( std::map<edm::Ptr<reco::Vertex>,float> valmap ) {  pfChgIso02_ = valmap; };  // concept: pass the pre-computed map when calling this in the producer
-    void  setpfChgIsoWrtWorstVtx03(float val) {pfChgIsoWrtWorstVtx03_=val;};
-    void  setpfChgIsoWrtChosenVtx02(float val) {pfChgIsoWrtChosenVtx02_=val;};
-    void  setESEffSigmaRR(float val) {ESEffSigmaRR_=val;};  
-    void  setPhoIdMvaD( std::map<edm::Ptr<reco::Vertex>,float> valmap ) {  phoIdMvaD_ = valmap; };   // concept: pass the pre-computed map when calling this in the producer
+    void setSipip(float val) {sipip=val;};
+    void setSieip(float val) {sieip=val;};
+    void setE2nd(float val) {e2nd=val;};
+    void setE2x5right(float val) {e2x5right=val;};
+    void setE2x5left(float val) {e2x5left=val;};
+    void setE2x5top(float val) {e2x5top=val;};
+    void setE2x5bottom(float val) {e2x5bottom=val;};
+    void setE2x5max(float val) {e2x5max=val;};
+    void setEright(float val) {eright=val;};
+    void setEleft(float val) {eleft=val;};
+    void setEtop(float val) {etop=val;};
+    void setEbottom(float val) {ebottom=val;};
+    void setE1x3(float val) {e1x3= val;};
+    void setS4(float val) {S4_=val;};  
+    void setpfPhoIso03(float val) {pfPhoIso03_=val;};   
+    void setpfChgIso03( std::map<edm::Ptr<reco::Vertex>,float> valmap ) {  pfChgIso03_ = valmap; };  // concept: pass the pre-computed map when calling this in the producer
+    void setpfChgIso02( std::map<edm::Ptr<reco::Vertex>,float> valmap ) {  pfChgIso02_ = valmap; };  // concept: pass the pre-computed map when calling this in the producer
+    void setpfChgIsoWrtWorstVtx03(float val) {pfChgIsoWrtWorstVtx03_=val;};
+    void setpfChgIsoWrtChosenVtx02(float val) {pfChgIsoWrtChosenVtx02_=val;};
+    void setESEffSigmaRR(float val) {ESEffSigmaRR_=val;};  
+    void setPhoIdMvaD( std::map<edm::Ptr<reco::Vertex>,float> valmap ) {  phoIdMvaD_ = valmap; };   // concept: pass the pre-computed map when calling this in the producer
     void setEnergyAtStep(std::string key,float val);
     void updateEnergy(std::string key,float val);
     void setSigEOverE(float val) { sigEOverE_ = val; };
@@ -69,7 +69,6 @@ namespace flashgg {
     float const getPhoIdMvaDWrtVtx( const edm::Ptr<reco::Vertex>& vtx ) const {return phoIdMvaD_.at(vtx);};       
 
   private:
-    unsigned int testVariable_;
     float sipip;
     float sieip;
     float zernike20; 

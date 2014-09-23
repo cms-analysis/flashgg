@@ -2,7 +2,32 @@
 
 using namespace flashgg;
 
-Photon::Photon() {}
+Photon::Photon() {
+  sipip = 0.;
+  sieip = 0.;
+  zernike20 = 0.;
+  zernike42 = 0.;
+  e2nd = 0.;
+  e2x5right = 0.;
+  e2x5left = 0.;
+  e2x5top = 0.;
+  e2x5bottom = 0.;
+  e2x5max = 0.;
+  eright = 0.;
+  eleft = 0.;
+  etop = 0.;
+  ebottom = 0.;
+  e1x3 = 0.;
+  S4_ = 0.;
+  pfPhoIso03_ = 0.;
+  pfChgIsoWrtWorstVtx03_ = 0.;
+  pfChgIsoWrtChosenVtx02_ = 0.;
+  ESEffSigmaRR_ = 0.;
+  sigEOverE_ = 0.;
+  pfChgIso03_.clear();
+  pfChgIso02_.clear();
+  phoIdMvaD_.clear();
+}
 Photon::Photon(const pat::Photon& aPhoton ) : pat::Photon(aPhoton) {}
 Photon::~Photon() {}
 

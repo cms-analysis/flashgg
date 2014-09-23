@@ -3,6 +3,7 @@
 using namespace flashgg;
 
 Jet::Jet() : pat::Jet() {
+  PuJetId_.clear();
 }
 
 Jet::Jet(const pat::Jet& aJet ) : pat::Jet(aJet) {

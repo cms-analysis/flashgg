@@ -14,13 +14,13 @@ namespace flashgg {
       _whichVertex(conf.getUntrackedParameter<unsigned int>("whichVertex",0)) {}
 
     edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,
-				  const edm::PtrVector<reco::Vertex>&,
-				  const VertexCandidateMap&,
-				  const edm::PtrVector<reco::Conversion>&,
-				  const math::XYZPoint&
-				  //				  const Parameters_Selector_Type&,
-				  //                                  const float&
-				  ) override;
+      const edm::PtrVector<reco::Vertex>&,
+      const VertexCandidateMap&,
+      const edm::PtrVector<reco::Conversion>&,
+      const math::XYZPoint&
+      //  const Parameters_Selector_Type&,
+      //  const float&
+      ) override;
 
     void writeInfoFromLastSelectionTo(flashgg::DiPhotonCandidate&) override;
 
@@ -48,5 +48,5 @@ namespace flashgg {
 }
 
 DEFINE_EDM_PLUGIN(FlashggVertexSelectorFactory,
-		  flashgg::ZerothVertexSelector,
-		  "FlashggZerothVertexSelector");
+                  flashgg::ZerothVertexSelector,
+                  "FlashggZerothVertexSelector");

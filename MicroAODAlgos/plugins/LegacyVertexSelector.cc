@@ -25,7 +25,7 @@ namespace flashgg {
 				 const math::XYZPoint&
 				 ) override;
 
-   void writeInfoFromLastSelectionTo(flashgg::DiPhotonCandidate&) override;
+    void writeInfoFromLastSelectionTo(flashgg::DiPhotonCandidate&) override;
 
     double vtxZFromConvOnly         (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
     double vtxZFromConvSuperCluster (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
@@ -43,38 +43,38 @@ namespace flashgg {
     
     int IndexMatchedConversion(const edm::Ptr<flashgg::Photon>&,const edm::PtrVector<reco::Conversion>&) const;
 
-   void Initialize();
+    void Initialize();
     
   private:
 
    edm::FileInPath vertexIdMVAweightfile_;
    edm::FileInPath vertexProbMVAweightfile_;
 
-   double dRexclude;                                                                                                                                                                
-   double sigma1Pix;                                                                                                                                                                
-   double sigma1Tib;                                                                                                                                                                
-   double sigma1Tob;                                                                                                                                                                
-   double sigma1PixFwd;                                                                                                                                                             
-   double sigma1Tid;                                                                                                                                                                
-   double sigma1Tec;                                                                                                                                                                
-   double sigma2Pix;                                                                                                                                                                
-   double sigma2Tib;                                                                                                                                                                
-   double sigma2Tob;                                                                                                                                                                
-   double sigma2PixFwd;                                                                                                                                                             
-   double sigma2Tid;                                                                                                                                                                
-   double sigma2Tec;                                                                                                                                                                
-   double singlelegsigma1Pix;                                                                                                                                                       
-   double singlelegsigma1Tib;                                                                                                                                                       
-   double singlelegsigma1Tob;                                                                                                                                                       
-   double singlelegsigma1PixFwd;                                                                                                                                                    
-   double singlelegsigma1Tid;                                                                                                                                                       
-   double singlelegsigma1Tec;                                                                                                                                                       
-   double singlelegsigma2Pix;                                                                                                                                                       
-   double singlelegsigma2Tib;                                                                                                                                                       
-   double singlelegsigma2Tob;                                                                                                                                                       
-   double singlelegsigma2PixFwd;                                                                                                                                                    
-   double singlelegsigma2Tid;                                                                                                                                                       
-   double singlelegsigma2Tec;                                                                                                                                                       
+   double dRexclude;
+   double sigma1Pix;
+   double sigma1Tib;
+   double sigma1Tob;
+   double sigma1PixFwd;
+   double sigma1Tid;
+   double sigma1Tec;
+   double sigma2Pix;
+   double sigma2Tib;
+   double sigma2Tob;
+   double sigma2PixFwd;
+   double sigma2Tid;
+   double sigma2Tec;
+   double singlelegsigma1Pix;
+   double singlelegsigma1Tib;
+   double singlelegsigma1Tob;
+   double singlelegsigma1PixFwd;
+   double singlelegsigma1Tid;
+   double singlelegsigma1Tec;
+   double singlelegsigma2Pix;
+   double singlelegsigma2Tib;
+   double singlelegsigma2Tob;
+   double singlelegsigma2PixFwd;
+   double singlelegsigma2Tid;
+   double singlelegsigma2Tec;
 
  protected: 
    TMVA::Reader * VertexIdMva_;
@@ -162,36 +162,6 @@ namespace flashgg {
     delete VertexProbMva_;
   }
 
-  TVector3 diPho;  
-  TVector3 tk;
-  TVector2 tkXY;
-  TVector2 sumpt;
-  TVector3 VtxtoSC;
-  TVector3 VtxtoSCPho1;
-  TVector3 VtxtoSCPho2;
-  TVector3 RefPairMo;
-  TVector3 Photon1Dir;
-  TVector3 Photon1Dir_uv;
-  TVector3 Photon2Dir;
-  TVector3 Photon2Dir_uv;
-  TLorentzVector p14;
-  TLorentzVector p24;
-  TMVA::Reader * VertexProbMva_;
-  TMVA::Reader * DiphotonMva_; 
-  double dr1 = 0;
-  double dr2 = 0;
-  double sumpt2_out = 0; 
-  double sumpt2_in = 0; 
-  double ptbal = 0; 
-  double ptasym = 0;
-  double dR = 0;
-  double dRPho1 = 0;
-  double dRPho2 = 0;
-  double zconv=0;
-  double szconv=0;
-
-  TLorentzVector diphoton_objects;
-  std::vector<TLorentzVector> diphoton_objects_vector;
 
   double LegacyVertexSelector::vtxZFromConvOnly(const edm::Ptr<flashgg::Photon>& pho,const edm::Ptr<reco:: Conversion> & conversion,const math::XYZPoint & beamSpot) const{
 
@@ -395,20 +365,23 @@ namespace flashgg {
     
     if(g->hasConversionTracks()){
       for (unsigned int i=0; i<conversionsVector.size();i++){
-	edm::Ptr<reco::Conversion> conv = conversionsVector[i];
-	if(!conv->isConverted()) continue;
-	if(conv->refittedPair4Momentum().pt()<10.) continue;
-	if(TMath::Prob(conv->conversionVertex().chi2(),conv->conversionVertex().ndof()) < 1e-6 ) continue;
-	
-	VtxtoSC.SetXYZ(g->superCluster()->position().x() - conv->conversionVertex().x(), 
-		       g->superCluster()->position().y() - conv->conversionVertex().y(), 
-		       g->superCluster()->position().z() - conv->conversionVertex().z());
-	RefPairMo.SetXYZ(conv->refittedPairMomentum().x(),conv->refittedPairMomentum().y(),conv->refittedPairMomentum().z());
-	dR = VtxtoSC.DeltaR(RefPairMo); 
-	if(dR<mindR){
-	  mindR=dR;
-	  selected_conversion_index=i;
-	}
+        edm::Ptr<reco::Conversion> conv = conversionsVector[i];
+        if(!conv->isConverted()) continue;
+        if(conv->refittedPair4Momentum().pt()<10.) continue;
+        if(TMath::Prob(conv->conversionVertex().chi2(),conv->conversionVertex().ndof()) < 1e-6 ) continue;
+        
+        TVector3 VtxtoSC;
+        VtxtoSC.SetXYZ(g->superCluster()->position().x() - conv->conversionVertex().x(), 
+                       g->superCluster()->position().y() - conv->conversionVertex().y(), 
+                       g->superCluster()->position().z() - conv->conversionVertex().z());
+        TVector3 RefPairMo;
+        RefPairMo.SetXYZ(conv->refittedPairMomentum().x(),conv->refittedPairMomentum().y(),conv->refittedPairMomentum().z());
+        double dR = 0;
+        dR = VtxtoSC.DeltaR(RefPairMo); 
+        if(dR<mindR){
+          mindR=dR;
+          selected_conversion_index=i;
+        }
       }
     }  
     return selected_conversion_index; //-1 if no match was found
@@ -436,13 +409,21 @@ namespace flashgg {
 
     std::vector<TLorentzVector> diphoton_objects_vector;
     std::vector<float> mass_reswrongvtx_vector;
+    diphoton_objects_vector.clear();
+    mass_reswrongvtx_vector.clear();
  
     if (!initialized_) {
       Initialize();
     }
-	  
+  
     for (vertex_index = 0 ; vertex_index < vtxs.size() ; vertex_index++) {
       edm::Ptr<reco::Vertex> vtx = vtxs[vertex_index];
+      TVector3 Photon1Dir;
+      TVector3 Photon1Dir_uv;
+      TVector3 Photon2Dir;
+      TVector3 Photon2Dir_uv;
+      TLorentzVector p14;
+      TLorentzVector p24;
       Photon1Dir.SetXYZ(g1->superCluster()->position().x() - vtx->position().x(),g1->superCluster()->position().y() - vtx->position().y(),g1->superCluster()->position().z() - vtx->position().z()); 
       Photon2Dir.SetXYZ(g2->superCluster()->position().x() - vtx->position().x(),g2->superCluster()->position().y() - vtx->position().y(),g2->superCluster()->position().z() - vtx->position().z()); 
       Photon1Dir_uv = Photon1Dir.Unit()*g1->superCluster()->rawEnergy();
@@ -450,43 +431,52 @@ namespace flashgg {
       p14.SetPxPyPzE(Photon1Dir_uv.x(),Photon1Dir_uv.y(),Photon1Dir_uv.z(),g1->superCluster()->rawEnergy()); 
       p24.SetPxPyPzE(Photon2Dir_uv.x(),Photon2Dir_uv.y(),Photon2Dir_uv.z(),g2->superCluster()->rawEnergy()); 
      
+      TLorentzVector diphoton_objects;
       diphoton_objects = p14+p24;
  
       diphoton_objects_vector.push_back(diphoton_objects);  
 
-      sumpt2_in = 0;
-      sumpt2_out = 0;
-      ptbal = 0;
-      ptasym = 0;
+      TVector2 sumpt;
+      double sumpt2_out = 0; 
+      double sumpt2_in = 0; 
+      double ptbal = 0; 
+      double ptasym = 0;
+
       sumpt.Set(0.,0.);
       
       if(vertexCandidateMap.count(vtx) == 0) continue;
       for(track_index = 0 ; track_index < vertexCandidateMap.at(vtx).size() ; track_index++) {
         edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMap.at(vtx)[track_index];
+        TVector3 tk;
+        TVector2 tkXY;
+        double dr1 = 0;
+        double dr2 = 0;
         tk.SetXYZ(cand->px(),cand->py(),cand->pz()); 
         tkXY = tk.XYvector();
         sumpt += tkXY;
         dr1 = tk.DeltaR(p14.Vect());
         dr2 = tk.DeltaR(p24.Vect());
-    	if(dr1 < dRexclude || dr2 < dRexclude){
+        if(dr1 < dRexclude || dr2 < dRexclude){
           sumpt2_in+=tkXY.Mod2();
           continue;
         }
-	sumpt2_out+=tkXY.Mod2();
+        sumpt2_out+=tkXY.Mod2();
         ptbal-=tkXY*(p14+p24).Vect().XYvector().Unit();
       }
 
       ptasym = (sumpt.Mod() - (p14+p24).Vect().XYvector().Mod())/(sumpt.Mod() + (p14+p24).Vect().XYvector().Mod());
       ptasym_ = ptasym;
+      double zconv=0;
+      double szconv=0;
       zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot); //,param);
       szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector); // ,param);
       float nConv = conversionsVector.size();      
       float pull_conv = 0;
       if(zconv==0 && szconv==0.0){
-	//FIXME WHAT TO DO WHEN WE DON'T HAVE PULL_CONV CASE? 
-	// Shouldn't matter what we put in...?  TODO: test this...
+      //FIXME WHAT TO DO WHEN WE DON'T HAVE PULL_CONV CASE? 
+      // Shouldn't matter what we put in...?  TODO: test this...
       }else{
-	pull_conv = fabs(vtx->position().z()-zconv)/szconv;
+        pull_conv = fabs(vtx->position().z()-zconv)/szconv;
       }
 
       // Truncate at 10. TODO : confirm... Turn off for the meantime
@@ -499,8 +489,8 @@ namespace flashgg {
       float mva_value = VertexIdMva_->EvaluateMVA("BDT"); 
 
       if(mva_value>max_mva_value){
-	max_mva_value=mva_value;
-	selected_vertex_index=vertex_index;
+        max_mva_value=mva_value;
+        selected_vertex_index=vertex_index;
       }
       
       if(mva_value<max_mva_value && mva_value>second_max_mva_value){
@@ -510,7 +500,7 @@ namespace flashgg {
       }
       if(mva_value<second_max_mva_value && mva_value>third_max_mva_value){
         third_max_mva_value=mva_value;
-	third_selected_vertex_index=vertex_index;
+        third_selected_vertex_index=vertex_index;
       }   
     }
   
@@ -550,5 +540,5 @@ namespace flashgg {
 
 
 DEFINE_EDM_PLUGIN(FlashggVertexSelectorFactory,
-		  flashgg::LegacyVertexSelector,
-		  "FlashggLegacyVertexSelector");
+                  flashgg::LegacyVertexSelector,
+                  "FlashggLegacyVertexSelector");
