@@ -144,7 +144,14 @@ namespace flashgg {
         Ptr<flashgg::Photon> pp2 = photonPointers[j];
 
         Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers,vertexPoint); //,param,beamsig);
-
+        // Finding and storing the vertex index to check if it corresponds to the primary vertex.
+        // This could be moved within the vertexSelector, but would need rewriting some interface
+        int ivtx = 0;
+        for(unsigned int k = 0; k < pvPointers.size() ; k++)
+            if( pvx == pvPointers[k] ){
+                ivtx = k;
+                break;
+            }
         // A number of things need to be done once the vertex is chosen
         // recomputing photon 4-momenta accordingly
         flashgg::Photon photon1_corr = PhotonIdUtils::pho4MomCorrection(pp1, pvx);
@@ -152,10 +159,11 @@ namespace flashgg {
         // - compute isolations with respect to chosen vertex needed for preselection
         photon1_corr.setpfChgIsoWrtChosenVtx02( photon1_corr.getpfChgIso02WrtVtx( pvx ) );
         photon2_corr.setpfChgIsoWrtChosenVtx02( photon2_corr.getpfChgIso02WrtVtx( pvx ) );
-	DiPhotonCandidate dipho(photon1_corr,photon2_corr,pvx);
+        DiPhotonCandidate dipho(photon1_corr,photon2_corr,pvx);
+        dipho.setVertex_index(ivtx);
 
-	// Obviously the last selection has to be for this diphoton or this is wrong
-	vertexSelector_->writeInfoFromLastSelectionTo(dipho);
+        // Obviously the last selection has to be for this diphoton or this is wrong
+        vertexSelector_->writeInfoFromLastSelectionTo(dipho);
 
         // store the diphoton into the collection
         diPhotonColl->push_back(dipho);
