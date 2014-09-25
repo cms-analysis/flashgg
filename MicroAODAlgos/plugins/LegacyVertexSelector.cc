@@ -104,30 +104,31 @@ namespace flashgg {
     vertexIdMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vertexIdMVAweightfile");
     vertexProbMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vertexProbMVAweightfile");
 
-    sigma1Pix             =iConfig.getUntrackedParameter<double>("sigma1Pix");
-    sigma1Tib             =iConfig.getUntrackedParameter<double>("sigma1Tib");
-    sigma1Tob             =iConfig.getUntrackedParameter<double>("sigma1Tob");
-    sigma1PixFwd          =iConfig.getUntrackedParameter<double>("sigma1PixFwd");
-    sigma1Tid             =iConfig.getUntrackedParameter<double>("sigma1Tid");
-    sigma1Tec             =iConfig.getUntrackedParameter<double>("sigma1Tec");
-    sigma2Pix             =iConfig.getUntrackedParameter<double>("sigma2Pix");
-    sigma2Tib             =iConfig.getUntrackedParameter<double>("sigma2Tib");
-    sigma2Tob             =iConfig.getUntrackedParameter<double>("sigma2Tob");
-    sigma2PixFwd          =iConfig.getUntrackedParameter<double>("sigma2PixFwd");
-    sigma2Tid             =iConfig.getUntrackedParameter<double>("sigma2Tid");
-    sigma2Tec             =iConfig.getUntrackedParameter<double>("sigma2Tec");
-    singlelegsigma1Pix    =iConfig.getUntrackedParameter<double>("singlelegsigma1Pix");
-    singlelegsigma1Tib    =iConfig.getUntrackedParameter<double>("singlelegsigma1Tib");
-    singlelegsigma1Tob    =iConfig.getUntrackedParameter<double>("singlelegsigma1Tob");
-    singlelegsigma1PixFwd =iConfig.getUntrackedParameter<double>("singlelegsigma1PixFwd");
-    singlelegsigma1Tid    =iConfig.getUntrackedParameter<double>("singlelegsigma1Tid");
-    singlelegsigma1Tec    =iConfig.getUntrackedParameter<double>("singlelegsigma1Tec");
-    singlelegsigma2Pix    =iConfig.getUntrackedParameter<double>("singlelegsigma2Pix");
-    singlelegsigma2Tib    =iConfig.getUntrackedParameter<double>("singlelegsigma2Tib");
-    singlelegsigma2Tob    =iConfig.getUntrackedParameter<double>("singlelegsigma2Tob");
-    singlelegsigma2PixFwd =iConfig.getUntrackedParameter<double>("singlelegsigma2PixFwd");
-    singlelegsigma2Tid    =iConfig.getUntrackedParameter<double>("singlelegsigma2Tid");
-    singlelegsigma2Tec    =iConfig.getUntrackedParameter<double>("singlelegsigma2Tec");
+    dRexclude             =iConfig.getUntrackedParameter<double>("dRexclude", 0.05);
+    sigma1Pix             =iConfig.getUntrackedParameter<double>("sigma1Pix", 0.011);
+    sigma1Tib             =iConfig.getUntrackedParameter<double>("sigma1Tib", 0.492);
+    sigma1Tob             =iConfig.getUntrackedParameter<double>("sigma1Tob", 4.398);
+    sigma1PixFwd          =iConfig.getUntrackedParameter<double>("sigma1PixFwd", 0.054);
+    sigma1Tid             =iConfig.getUntrackedParameter<double>("sigma1Tid", 0.320);
+    sigma1Tec             =iConfig.getUntrackedParameter<double>("sigma1Tec", 1.092);
+    sigma2Pix             =iConfig.getUntrackedParameter<double>("sigma2Pix", 0.022);
+    sigma2Tib             =iConfig.getUntrackedParameter<double>("sigma2Tib", 0.297);
+    sigma2Tob             =iConfig.getUntrackedParameter<double>("sigma2Tob", 1.728);
+    sigma2PixFwd          =iConfig.getUntrackedParameter<double>("sigma2PixFwd", 0.150);
+    sigma2Tid             =iConfig.getUntrackedParameter<double>("sigma2Tid", 0.393);
+    sigma2Tec             =iConfig.getUntrackedParameter<double>("sigma2Tec", 1.008);
+    singlelegsigma1Pix    =iConfig.getUntrackedParameter<double>("singlelegsigma1Pix", 0.009);
+    singlelegsigma1Tib    =iConfig.getUntrackedParameter<double>("singlelegsigma1Tib", 1.163);
+    singlelegsigma1Tob    =iConfig.getUntrackedParameter<double>("singlelegsigma1Tob", 2.130);
+    singlelegsigma1PixFwd =iConfig.getUntrackedParameter<double>("singlelegsigma1PixFwd", 0.071);
+    singlelegsigma1Tid    =iConfig.getUntrackedParameter<double>("singlelegsigma1Tid", 0.384);
+    singlelegsigma1Tec    =iConfig.getUntrackedParameter<double>("singlelegsigma1Tec", 1.923);
+    singlelegsigma2Pix    =iConfig.getUntrackedParameter<double>("singlelegsigma2Pix", 0.054);
+    singlelegsigma2Tib    =iConfig.getUntrackedParameter<double>("singlelegsigma2Tib", 0.597);
+    singlelegsigma2Tob    =iConfig.getUntrackedParameter<double>("singlelegsigma2Tob", 0.480);
+    singlelegsigma2PixFwd =iConfig.getUntrackedParameter<double>("singlelegsigma2PixFwd", 0.276);
+    singlelegsigma2Tid    =iConfig.getUntrackedParameter<double>("singlelegsigma2Tid", 0.497);
+    singlelegsigma2Tec    =iConfig.getUntrackedParameter<double>("singlelegsigma2Tec", 1.046);
 
 
     initialized_ = false;
@@ -397,6 +398,13 @@ namespace flashgg {
 
     int IndexMatchedConversionLeadPhoton=-1;
     int IndexMatchedConversionTrailPhoton=-1;
+
+    if(conversionsVector.size()>0){
+      if(g1->hasConversionTracks())
+        IndexMatchedConversionLeadPhoton = IndexMatchedConversion(g1,conversionsVector);
+      if(g2->hasConversionTracks())
+        IndexMatchedConversionTrailPhoton = IndexMatchedConversion(g2,conversionsVector);
+    }
 
     unsigned int vertex_index,track_index;
 

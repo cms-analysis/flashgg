@@ -80,7 +80,7 @@ namespace flashgg {
 
     
     auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
-    cout << "evt.id().event()= " << evt.id().event() << "\tevt.isRealData()= " << evt.isRealData() << "\tphotonPointers.size()= " << photonPointers.size() << "\tpvPointers.size()= " << pvPointers.size() << endl;
+//    cout << "evt.id().event()= " << evt.id().event() << "\tevt.isRealData()= " << evt.isRealData() << "\tphotonPointers.size()= " << photonPointers.size() << "\tpvPointers.size()= " << pvPointers.size() << endl;
 
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
       Ptr<flashgg::Photon> pp1 = photonPointers[i];
