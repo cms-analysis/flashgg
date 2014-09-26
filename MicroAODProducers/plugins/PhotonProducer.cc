@@ -114,6 +114,7 @@ namespace flashgg {
       const reco::SuperClusterRef super_clu= pp->superCluster();
 
       std::vector<float> viCov;
+      viCov.clear();
       viCov = lazyTool.localCovariances(*seed_clu);
       
       fg.setSipip(viCov[2]);
@@ -153,6 +154,8 @@ namespace flashgg {
     }
     
     evt.put(photonColl);
+
+    orig_collection = 0;
   }
 }
 

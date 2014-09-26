@@ -8,6 +8,12 @@ using namespace flashgg;
 
 PhotonIdUtils::PhotonIdUtils() {};
 PhotonIdUtils::~PhotonIdUtils() {
+    delete phoIdMva;
+    delete phoIdMva_2012_EB_;
+    delete phoIdMva_2012_EE_;
+    phoIdMva = 0;
+    phoIdMva_2012_EB_ = 0;
+    phoIdMva_2012_EE_ = 0;
 };
 
 // *****************************************************************************************************************
@@ -63,6 +69,7 @@ std::map<edm::Ptr<reco::Vertex>,float> PhotonIdUtils::pfIsoChgWrtAllVtx( edm::Pt
 									 float ptMin )
 {
   std::map<edm::Ptr<reco::Vertex>,float> isomap;
+  isomap.clear();
 
   for( unsigned int iv = 0; iv < vertices.size(); iv++ ) {
     
@@ -242,6 +249,7 @@ std::map<edm::Ptr<reco::Vertex>,float> PhotonIdUtils::computeMVAWrtAllVtx( /*edm
   
 {  
   std::map<edm::Ptr<reco::Vertex>,float> mvamap;
+  mvamap.clear();
 
   for( unsigned int iv = 0; iv < vertices.size(); iv++ ) {
     edm::Ptr<reco::Vertex> vertex = vertices[iv];

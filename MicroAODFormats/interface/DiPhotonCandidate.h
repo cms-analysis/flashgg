@@ -30,6 +30,7 @@ namespace flashgg {
     void setDZ1(float val) { dZ1_ = val; }
     void setDZ2(float val) { dZ2_ = val; }
     void setVtxProbMVA(float val) { vtxprobmva_ = val; }
+    void setVertex_index(int val) { vertex_index_ = val; }
 
     float getLogSumPt2() const { return logsumpt2_; }
     float getPtBal() const { return ptbal_; }
@@ -43,10 +44,12 @@ namespace flashgg {
     float getDZ1() const { return dZ1_; }
     float getDZ2() const { return dZ2_; }
     float getVtxProbMVA() const { return vtxprobmva_; }
+    int vertex_index() const { return vertex_index_; }
 
 
   private:
     edm::Ptr<reco::Vertex> vertex_;
+    int vertex_index_;
 
     float logsumpt2_;
     float ptbal_;

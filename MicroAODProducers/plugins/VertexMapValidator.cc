@@ -161,6 +161,7 @@ namespace flashgg {
 
 		// myMap will be used to store association from AOD vertices to miniAOD packed candidate tracks
 		std::multimap<Ptr<reco::Vertex>, Ptr<pat::PackedCandidate>> myMap;
+        myMap.clear();
 
 		// eta-,phi-,ptLim represent the minimum proximity for each criterion for the tracks to be considered the same.	
 		double etaLim = 0.01 ;
