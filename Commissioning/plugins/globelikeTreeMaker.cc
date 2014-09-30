@@ -70,7 +70,6 @@ class FlashggTreeMaker : public edm::EDAnalyzer {
 		EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> >  diPhotonToken_; //
 		EDGetTokenT<edm::View<pat::MET> >  METToken_; // LDC work-in-progress adding this!
 		EDGetTokenT<edm::View<PileupSummaryInfo> >  PileUpToken_; // LDC work-in-progress adding this!
-
 		edm::InputTag rhoFixedGrid_;
 
 		TTree *flashggTree;
@@ -329,12 +328,10 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 	lumis = iEvent.eventAuxiliary().luminosityBlock(); 
 
 	//------>itype ?? need to determine how bets to implement this FIXME.
-
 	itype = -1 ;// placeholder. Need to be able to access this one the fly based on the input file or config.
 	// itype <0, Signal MC
 	// itype =0, data
 	// itype >0, background MC
-
 	//----> nvtx, numver of primary vertices
 	nvtx = vtxs.size();
 
@@ -509,8 +506,8 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
 		// ---------> Gen match?
 		//
-			genmatch1= 0;
-			genmatch2= 0;
+		genmatch1= 0;
+		genmatch2= 0;
 		if(itype!=0){
 
 
