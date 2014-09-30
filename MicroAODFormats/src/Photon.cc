@@ -19,7 +19,9 @@ Photon::Photon() {
   ebottom = 0.;
   e1x3 = 0.;
   S4_ = 0.;
+  pfPhoIso04_ = 0.;
   pfPhoIso03_ = 0.;
+  pfChgIsoWrtWorstVtx04_ = 0.;
   pfChgIsoWrtWorstVtx03_ = 0.;
   pfChgIsoWrtChosenVtx02_ = 0.;
   ESEffSigmaRR_ = 0.;

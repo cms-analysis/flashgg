@@ -133,10 +133,15 @@ namespace flashgg {
       fg.setS4(lazyTool.e2x2(*seed_clu)/pp->e5x5());
       fg.setESEffSigmaRR(lazyTool.eseffsirir(*super_clu));
 
+      std::map<edm::Ptr<reco::Vertex>,float> isomap04 = phoTools_.pfIsoChgWrtAllVtx(pp, vertexPointers, vtxToCandMap, 0.4, 0.02, 0.02, 0.1);
       std::map<edm::Ptr<reco::Vertex>,float> isomap03 = phoTools_.pfIsoChgWrtAllVtx(pp, vertexPointers, vtxToCandMap, 0.3, 0.02, 0.02, 0.1);
+      fg.setpfChgIso04(isomap04);
       fg.setpfChgIso03(isomap03);
+      std::map<edm::Ptr<reco::Vertex>,float>& ref_isomap04 = isomap04;
       std::map<edm::Ptr<reco::Vertex>,float>& ref_isomap03 = isomap03;
+      float pfChgIsoWrtWorstVtx04 =  phoTools_.pfIsoChgWrtWorstVtx(ref_isomap04);
       float pfChgIsoWrtWorstVtx03 =  phoTools_.pfIsoChgWrtWorstVtx(ref_isomap03);
+      fg.setpfChgIsoWrtWorstVtx04(pfChgIsoWrtWorstVtx04);
       fg.setpfChgIsoWrtWorstVtx03(pfChgIsoWrtWorstVtx03);
 
       // This map is needed for the photon preselection
@@ -144,7 +149,9 @@ namespace flashgg {
       fg.setpfChgIso02(isomap02);
       fg.setpfChgIsoWrtChosenVtx02( 0. ); // just to initalize things properly, will be setup for real in the diphoton producer once the vertex is chosen
 
+      float pfPhoIso04 = phoTools_.pfIsoGamma(pp, pfcandidatePointers, 0.4, 0.0, 0.070, 0.015, 0.0, 0.0, 0.0);
       float pfPhoIso03 = phoTools_.pfIsoGamma(pp, pfcandidatePointers, 0.3, 0.0, 0.070, 0.015, 0.0, 0.0, 0.0);
+      fg.setpfPhoIso04(pfPhoIso04);
       fg.setpfPhoIso03(pfPhoIso03);
 
       std::map<edm::Ptr<reco::Vertex>,float> mvamap = phoTools_.computeMVAWrtAllVtx(fg, vertexPointers,rhoFixedGrd);

@@ -70,14 +70,14 @@ class FlashggTreeMaker : public edm::EDAnalyzer {
 		EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> >  diPhotonToken_; //
 		EDGetTokenT<edm::View<pat::MET> >  METToken_; // LDC work-in-progress adding this!
 		EDGetTokenT<edm::View<PileupSummaryInfo> >  PileUpToken_; // LDC work-in-progress adding this!
-	
+
 		edm::InputTag rhoFixedGrid_;
 
 		TTree *flashggTree;
 
-  TMVA::Reader * DiphotonMva_;                                                                                                                                                      
-  bool DiphotonMva_initialized;
-  edm::FileInPath diphotonMVAweightfile_;
+		TMVA::Reader * DiphotonMva_;                                                                                                                                                      
+		bool DiphotonMva_initialized;
+		edm::FileInPath diphotonMVAweightfile_;
 
 		Int_t run;
 		Int_t lumis;
@@ -192,7 +192,7 @@ class FlashggTreeMaker : public edm::EDAnalyzer {
 
 
 		edm::EDGetTokenT<edm::View<flashgg::Photon> >            photonToken_; // SCZ work-in-progress adding this!
-  edm::EDGetTokenT<edm::View<reco::BeamSpot> > beamSpotToken_;
+		edm::EDGetTokenT<edm::View<reco::BeamSpot> > beamSpotToken_;
 		//  edm::EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> > diphotonToken_;
 		//      edm::EDGetTokenT<edm::View<reco::Vertex> >               vertexToken_; 
 		//      edm::EDGetTokenT<edm::View<pat::PackedCandidate> >       pfcandidateToken_;
@@ -266,12 +266,11 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 	Handle<View<reco::GenParticle> > genParticles;
 	iEvent.getByToken(genParticleToken_,genParticles);
 	const PtrVector<reco::GenParticle>& gens = genParticles->ptrVector();
-	float a = gens.size();
 
 	Handle<View<flashgg::Jet> > jetsDz;
 	iEvent.getByToken(jetTokenDz_,jetsDz);
 	const PtrVector<flashgg::Jet>& jetPointersDz = jetsDz->ptrVector();
-	a = jetPointersDz.size();
+	float a = jetPointersDz.size(); // to stop error messages about unused vars
 
 	//Handle<View<flashgg::Jet> > jetsRecoBasedMap;
 	//iEvent.getByToken(jetTokenRecoBasedMap_,jetsRecoBasedMap);
@@ -285,20 +284,20 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 	Handle<View<pat::MET> > METs;
 	iEvent.getByToken(METToken_,METs);
 	const PtrVector<pat::MET>& METPointers = METs->ptrVector();
-	
+
 	Handle<View< PileupSummaryInfo> > PileupInfos;
 	iEvent.getByToken(PileUpToken_,PileupInfos);
-const PtrVector<PileupSummaryInfo>& PileupInfoPointers = PileupInfos->ptrVector();
-	
+	const PtrVector<PileupSummaryInfo>& PileupInfoPointers = PileupInfos->ptrVector();
+
 	Handle<View<flashgg::Photon> > photons;
 	iEvent.getByToken(photonToken_,photons);
 	const PtrVector<flashgg::Photon>& photonPointers = photons->ptrVector();
-	a = photonPointers.size();
+	a = photonPointers.size(); //stop errors from unsued vars
 
 	Handle<double> rhoHandle; // the old way for now...move to getbytoken?
 	iEvent.getByLabel(rhoFixedGrid_, rhoHandle );
 
-	a=a+1;
+	a=a+1; //stop errors from unused vars
 
 
 	//---------> njetsxx = number of jets with et > xx
@@ -330,12 +329,12 @@ const PtrVector<PileupSummaryInfo>& PileupInfoPointers = PileupInfos->ptrVector(
 	lumis = iEvent.eventAuxiliary().luminosityBlock(); 
 
 	//------>itype ?? need to determine how bets to implement this FIXME.
-	
+
 	itype = -1 ;// placeholder. Need to be able to access this one the fly based on the input file or config.
 	// itype <0, Signal MC
 	// itype =0, data
 	// itype >0, background MC
-	
+
 	//----> nvtx, numver of primary vertices
 	nvtx = vtxs.size();
 
@@ -346,301 +345,371 @@ const PtrVector<PileupSummaryInfo>& PileupInfoPointers = PileupInfos->ptrVector(
 	//------> weights and PU , leaving empty for now.. FIXME
 
 
-	if (itype !=0 )
-	{
+	if (itype !=0 ){
 		xsec_weight = 0;
 		full_weight = 0;
 		pu_weight = -1;
 		pu_n = 0;
+		gv_x = -9999.;
+		gv_y = -9999.;
+		gv_z = -9999.;
 
 		for( unsigned int PVI = 0; PVI < PileupInfoPointers.size(); ++PVI) {	
-				Int_t pu_bunchcrossing = PileupInfoPointers[PVI]->getBunchCrossing();
-				if (pu_bunchcrossing ==0) {
-					pu_n = PileupInfoPointers[PVI]->getPU_NumInteractions();
+			Int_t pu_bunchcrossing = PileupInfoPointers[PVI]->getBunchCrossing();
+			if (pu_bunchcrossing ==0) {
+				pu_n = PileupInfoPointers[PVI]->getPU_NumInteractions();
+			}
+		}
+
+		for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++){
+			if( gens[genLoop]->pdgId() == 25) { //might need to be changed for background MC samples...
+				gv_x = gens[genLoop]->vx();
+				gv_y = gens[genLoop]->vy();
+				gv_z = gens[genLoop]->vz();
+			}
+
+			break;
+		}
+	}
+
+
+
+	else{
+		xsec_weight = -1;
+		full_weight = -1;
+		pu_weight = -1;
+		pu_n = -1;
+		gv_x = -9999.;
+		gv_y = -9999.;
+		gv_z = -9999.;
+	}
+
+
+	//------> higgs diphoton candidate properties
+	// We have a problem here, because until we are sure that there is consistently one higgs diphoton candiate, we 
+	// will either need to select one of the multiple diphoton pairs. The following does that, by choosing the one closets to 125GeV..	
+	float higgsMassDifference =9999.; 
+	float higgsMass =125. ;
+	Int_t higgsCandPresent = 0; //Is 0 is there are no candidates in event, set to 1 if there is at least one candidate pair.
+	Int_t candIndex = 9999; //This int will store the index of the best higgs diphoton candidate...
+
+	for (unsigned int diphotonlooper =0; diphotonlooper < diPhotonPointers.size() ; diphotonlooper++){
+		if  (fabs(diPhotonPointers[diphotonlooper]->mass() - higgsMass) < higgsMassDifference){
+			higgsMassDifference = fabs(diPhotonPointers[diphotonlooper]->mass() - higgsMass);
+			candIndex = diphotonlooper;
+			higgsCandPresent=1;
+		}
+	}
+
+	if(higgsCandPresent){
+		mass = diPhotonPointers[candIndex]->mass();
+		dipho_pt = diPhotonPointers[candIndex]->pt();
+	}
+	else{
+		mass = 0;
+		dipho_pt = 0;
+	}
+
+
+
+	//------->full_cat FIXME leaving blank for now, need to implement if/when events are categoriesed. Discuss event interpretatrion.
+	full_cat =0;
+
+	//------>MET info
+	if (METPointers.size() != 1) { std::cout << "WARNING - #MET is not 1" << std::endl;}
+	MET = METPointers[0]->pt();
+	MET_phi = METPointers[0]->phi();
+
+
+	//-------> individual photon properties
+	if(higgsCandPresent){
+		//PHOTON1
+		et1 = diPhotonPointers[candIndex]->leadingPhoton()->et();
+		eta1 = diPhotonPointers[candIndex]->leadingPhoton()->eta();
+		r91 = diPhotonPointers[candIndex]->leadingPhoton()->r9();
+		sieie1 = diPhotonPointers[candIndex]->leadingPhoton()->sigmaIetaIeta();
+		hoe1 = diPhotonPointers[candIndex]->leadingPhoton()->hadronicOverEm();
+		sigmaEoE1 = diPhotonPointers[candIndex]->leadingPhoton()->getSigEOverE();
+		ptoM1 = diPhotonPointers[candIndex]->leadingPhoton()->pt()/mass;
+		//---> Isolation variables, unsure if correct methods used...
+		//Mthods from reco::photon
+		//chiso1 = diPhotonPointers[candIndex]->leadingPhoton()->chargedHadronIso();
+		//chisow1 = diPhotonPointers[candIndex]->leadingPhoton()->chargedHadronIsoWrongVtx();
+		//phoiso1 = diPhotonPointers[candIndex]->leadingPhoton()->photonIso();
+		//phoiso041 = diPhotonPointers[candIndex]->leadingPhoton()->photonIso(); //how does this differ??? FIXME
+		//Methods from flashgg::photon
+		chiso1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfChgIso03WrtVtx(diPhotonPointers[candIndex]->getVertex());
+		chisow1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfChgIsoWrtWorstVtx04();//no flashgg method for come radius 04... ok to use 0.3?
+		phoiso1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfPhoIso03();
+		phoiso041 = diPhotonPointers[candIndex]->leadingPhoton()->getpfPhoIso04(); //unsure of default radius?
+		ecaliso03_1 = diPhotonPointers[candIndex]->leadingPhoton()->ecalRecHitSumEtConeDR03();
+		hcaliso03_1 = diPhotonPointers[candIndex]->leadingPhoton()->hcalTowerSumEtConeDR03();
+		trkiso03_1 = diPhotonPointers[candIndex]->leadingPhoton()->trkSumPtHollowConeDR03();
+		pfchiso2_1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfChgIso02WrtVtx(diPhotonPointers[candIndex]->getVertex());
+		isorv1 = (chiso1 + phoiso1 + 2.5 - rho*0.09)*(50./et1); //used in cic analysis, might not be useful for us but we have what we need in hand so adding anyway.
+		isowv1 = ( phoiso1 + chisow1 + 2.5 - rho*0.23)*(50./et1);
+
+
+		isEB1 = diPhotonPointers[candIndex]->leadingPhoton()->isEB();
+		sieip1 = diPhotonPointers[candIndex]->leadingPhoton()->getSieip();
+		etawidth1 = diPhotonPointers[candIndex]->leadingPhoton()->superCluster()->etaWidth();
+		phiwidth1 = diPhotonPointers[candIndex]->leadingPhoton()->superCluster()->phiWidth();
+		regrerr1 = sigmaEoE1 * diPhotonPointers[candIndex]->leadingPhoton()->energy();
+		idmva1 = diPhotonPointers[candIndex]->leadingPhoton()->getPhoIdMvaDWrtVtx(diPhotonPointers[candIndex]->getVertex());
+		s4ratio1 =  diPhotonPointers[candIndex]->leadingPhoton()->getS4();
+		effSigma1 =  diPhotonPointers[candIndex]->leadingPhoton()->getESEffSigmaRR();
+		scraw1 =  diPhotonPointers[candIndex]->leadingPhoton()->superCluster()->rawEnergy();
+
+		//PHOTON 2
+		et2 = diPhotonPointers[candIndex]->subLeadingPhoton()->et();
+		eta2 = diPhotonPointers[candIndex]->subLeadingPhoton()->eta();
+		r92 = diPhotonPointers[candIndex]->subLeadingPhoton()->r9();
+		sieie2 = diPhotonPointers[candIndex]->subLeadingPhoton()->sigmaIetaIeta();
+		hoe2 = diPhotonPointers[candIndex]->subLeadingPhoton()->hadronicOverEm();
+		sigmaEoE2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getSigEOverE();
+		ptoM2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pt()/mass;
+		isEB2 = diPhotonPointers[candIndex]->subLeadingPhoton()->isEB();
+		//---> Isolation variables, unsure if correct methods used...
+		//Mthods from reco::photon
+		//chiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->chargedHadronIso();
+		//chisow2 = diPhotonPointers[candIndex]->subLeadingPhoton()->chargedHadronIsoWrongVtx();
+		//phoiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->photonIso();
+		//phoiso042 = diPhotonPointers[candIndex]->subLeadingPhoton()->photonIso(); //how does this differ??? FIXME
+		//Methods from flashgg::photon
+		chiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfChgIso03WrtVtx(diPhotonPointers[candIndex]->getVertex());
+		chisow2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfChgIsoWrtWorstVtx04();//no flashgg method for come radius 04... ok to use 0.3?
+		phoiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfPhoIso03();
+
+
+		phoiso042 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfPhoIso04(); //unsure of default radius?
+		ecaliso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->ecalRecHitSumEtConeDR03();
+		hcaliso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->hcalTowerSumEtConeDR03();
+		trkiso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->trkSumPtHollowConeDR03();
+		pfchiso2_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfChgIso02WrtVtx(diPhotonPointers[candIndex]->getVertex());
+		isorv2 = (chiso2 + phoiso2 + 2.5 - rho*0.09)*(50./et2);
+		isowv2 = ( phoiso2 + chisow2 + 2.5 - rho*0.23)*(50./et2);
+
+		sieip2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getSieip();
+		etawidth2 = diPhotonPointers[candIndex]->subLeadingPhoton()->superCluster()->etaWidth();
+		phiwidth2 = diPhotonPointers[candIndex]->subLeadingPhoton()->superCluster()->phiWidth();
+		regrerr2 = sigmaEoE1 * diPhotonPointers[candIndex]->subLeadingPhoton()->energy();
+		idmva2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getPhoIdMvaDWrtVtx(diPhotonPointers[candIndex]->getVertex());
+		s4ratio2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->getS4();
+		effSigma2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->getESEffSigmaRR();
+		scraw2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->superCluster()->rawEnergy();
+
+		//-----> Cos of photon delta phi
+		cosphi = cos(diPhotonPointers[candIndex]->leadingPhoton()->phi()- diPhotonPointers[candIndex]->subLeadingPhoton()->phi());
+
+		//-------> vtx info
+		vtx_x= diPhotonPointers[candIndex]->getVertex()->x();
+		vtx_y= diPhotonPointers[candIndex]->getVertex()->y();
+		vtx_z= diPhotonPointers[candIndex]->getVertex()->z();
+
+
+		// ---------> Gen match?
+		//
+			genmatch1= 0;
+			genmatch2= 0;
+		if(itype!=0){
+
+
+			for(unsigned int ip=0;ip<gens.size();++ip) {
+				if( gens[ip]->status() != 1 || gens[ip]->pdgId() != 22 ) {
+					continue;
+				}
+				if( diPhotonPointers[candIndex]->leadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->leadingPhoton()->eta()) > 3. ) { continue; }
+				if( gens[ip]->motherRef(0)->pdgId() <= 25 ) {
+					float deta =  diPhotonPointers[candIndex]->leadingPhoton()->eta() - gens[ip]->eta();
+					float dphi =  diPhotonPointers[candIndex]->leadingPhoton()->phi() - gens[ip]->phi();
+					float dr = sqrt(deta*deta + dphi*dphi);
+					float pt_change = (diPhotonPointers[candIndex]->leadingPhoton()->et() - gens[ip]->et())/gens[ip]->et();
+					if (dr<0.3 && fabs(pt_change) < 0.5) {
+						genmatch1 = true;
+						break;
+					}
 				}
 			}
 
-		}
 
-		else
-
-		{
-			xsec_weight = -1;
-			full_weight = -1;
-			pu_weight = -1;
-			pu_n = -1;
-		}
-
-
-		//------> higgs diphoton candidate properties
-		// We have a problem here, because until we are sure that there is consistently one higgs diphoton candiate, we 
-		// will either need to select one of the multiple diphoton pairs. The following does that, by choosing the one closets to 125GeV...
-		float higgsMassDifference =9999.; 
-		float higgsMass =125. ;
-		Int_t higgsCandPresent = 0; //Is 0 is there are no candidates in event, set to 1 if there is at least one candidate pair.
-		Int_t candIndex = 9999; //This int will store the index of the best higgs diphoton candidate...
-
-		for (unsigned int diphotonlooper =0; diphotonlooper < diPhotonPointers.size() ; diphotonlooper++)
-		{
-			if  (fabs(diPhotonPointers[diphotonlooper]->mass() - higgsMass) < higgsMassDifference)
-			{
-				higgsMassDifference = fabs(diPhotonPointers[diphotonlooper]->mass() - higgsMass);
-				candIndex = diphotonlooper;
-				higgsCandPresent=1;
+			for(unsigned int ip=0;ip<gens.size();++ip) {
+				if( gens[ip]->status() != 1 || gens[ip]->pdgId() != 22 ) {
+					continue;
+				}
+				if( diPhotonPointers[candIndex]->subLeadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->subLeadingPhoton()->eta()) > 3. ) { continue; }
+				if( gens[ip]->motherRef(0)->pdgId() <= 25 ) {
+					float deta =  diPhotonPointers[candIndex]->subLeadingPhoton()->eta() - gens[ip]->eta();
+					float dphi =  diPhotonPointers[candIndex]->subLeadingPhoton()->phi() - gens[ip]->phi();
+					float dr = sqrt(deta*deta + dphi*dphi);
+					float pt_change = (diPhotonPointers[candIndex]->subLeadingPhoton()->et() - gens[ip]->et())/gens[ip]->et();
+					if (dr<0.3 && fabs(pt_change) < 0.5) {
+						genmatch1 = true;
+						break;
+					}
+				}
 			}
 		}
+		// Diphoton calculations
+		// Moved from LegacyVertexSelector (M. Olmedo) to here by SZ
 
-		if(higgsCandPresent)
-		{
-			mass = diPhotonPointers[candIndex]->mass();
-			dipho_pt = diPhotonPointers[candIndex]->pt();
-		}
-		else
-		{
-			mass = 0;
-			dipho_pt = 0;
-		}
+		edm::Ptr<reco::Vertex> vtx = diPhotonPointers[candIndex]->getVertex();
+		const flashgg::Photon* g1 = diPhotonPointers[candIndex]->leadingPhoton();
+		const flashgg::Photon* g2 = diPhotonPointers[candIndex]->subLeadingPhoton();
+		TVector3 Photon1Dir, Photon2Dir;
+		Photon1Dir.SetXYZ(g1->superCluster()->position().x() - vtx->position().x(),
+				g1->superCluster()->position().y() - vtx->position().y(),
+				g1->superCluster()->position().z() - vtx->position().z());
+		Photon2Dir.SetXYZ(g2->superCluster()->position().x() - vtx->position().x(),
+				g2->superCluster()->position().y() - vtx->position().y(),
+				g2->superCluster()->position().z() - vtx->position().z());
+		//		Photon1Dir_uv = Photon1Dir.Unit()*g1->superCluster()->rawEnergy();
+		//		Photon2Dir_uv = Photon2Dir.Unit()*g2->superCluster()->rawEnergy();
+		//		p14.SetPxPyPzE(Photon1Dir_uv.x(),Photon1Dir_uv.y(),Photon1Dir_uv.z(),g1->superCluster()->rawEnergy());
+		//		p24.SetPxPyPzE(Photon2Dir_uv.x(),Photon2Dir_uv.y(),Photon2Dir_uv.z(),g2->superCluster()->rawEnergy());
 
-
-
-		//------->full_cat FIXME leaving blank for now, need to implement if/when events are categoriesed. Discuss event interpretatrion.
-		full_cat =0;
-
-		//------>MET info
-		if (METPointers.size() != 1) { std::cout << "WARNING - #MET is not 1" << std::endl;}
-		MET = METPointers[0]->pt();
-		MET_phi = METPointers[0]->phi();
-
-
-		//-------> individual photon properties
-		if(higgsCandPresent)
-		{
-			//PHOTON1
-			et1 = diPhotonPointers[candIndex]->leadingPhoton()->et();
-			eta1 = diPhotonPointers[candIndex]->leadingPhoton()->eta();
-			r91 = diPhotonPointers[candIndex]->leadingPhoton()->r9();
-			sieie1 = diPhotonPointers[candIndex]->leadingPhoton()->sigmaIetaIeta();
-			hoe1 = diPhotonPointers[candIndex]->leadingPhoton()->hadronicOverEm();
-			sigmaEoE1 = diPhotonPointers[candIndex]->leadingPhoton()->getSigEOverE();
-			ptoM1 = diPhotonPointers[candIndex]->leadingPhoton()->pt()/mass;
-			//---> Isolation variables, unsure if correct methods used...
-			//Mthods from reco::photon
-			//chiso1 = diPhotonPointers[candIndex]->leadingPhoton()->chargedHadronIso();
-			//chisow1 = diPhotonPointers[candIndex]->leadingPhoton()->chargedHadronIsoWrongVtx();
-			//phoiso1 = diPhotonPointers[candIndex]->leadingPhoton()->photonIso();
-			//phoiso041 = diPhotonPointers[candIndex]->leadingPhoton()->photonIso(); //how does this differ??? FIXME
-			//Methods from flashgg::photon
-			chiso1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfChgIso03WrtVtx(diPhotonPointers[candIndex]->getVertex());
-			chisow1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfChgIsoWrtWorstVtx03();//no flashgg method for come radius 04... ok to use 0.3?
-			phoiso1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfPhoIso03();
-			phoiso041 = diPhotonPointers[candIndex]->leadingPhoton()->photonIso(); //unsure of default radius?
-			ecaliso03_1 = diPhotonPointers[candIndex]->leadingPhoton()->ecalRecHitSumEtConeDR03();
-			hcaliso03_1 = diPhotonPointers[candIndex]->leadingPhoton()->hcalTowerSumEtConeDR03();
-			trkiso03_1 = diPhotonPointers[candIndex]->leadingPhoton()->trkSumPtHollowConeDR03();
-			pfchiso2_1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfChgIso02WrtVtx(diPhotonPointers[candIndex]->getVertex());
-			isorv1 = (chiso1 + phoiso1 + 2.5 - rho*0.09)*(50./et1); //used in cic analysis, might not be useful for us but we have what we need in hand so adding anyway.
-			isowv1 = ( phoiso1 + chisow1 + 2.5 - rho*0.23)*(50./et1);
-
-
-			isEB1 = diPhotonPointers[candIndex]->leadingPhoton()->isEB();
-			sieip1 = diPhotonPointers[candIndex]->leadingPhoton()->getSieip();
-			etawidth1 = diPhotonPointers[candIndex]->leadingPhoton()->superCluster()->etaWidth();
-			phiwidth1 = diPhotonPointers[candIndex]->leadingPhoton()->superCluster()->phiWidth();
-			regrerr1 = sigmaEoE1 * diPhotonPointers[candIndex]->leadingPhoton()->energy();
-			idmva1 = diPhotonPointers[candIndex]->leadingPhoton()->getPhoIdMvaDWrtVtx(diPhotonPointers[candIndex]->getVertex());
-			s4ratio1 =  diPhotonPointers[candIndex]->leadingPhoton()->getS4();
-			effSigma1 =  diPhotonPointers[candIndex]->leadingPhoton()->getESEffSigmaRR();
-			scraw1 =  diPhotonPointers[candIndex]->leadingPhoton()->superCluster()->rawEnergy();
-
-			//PHOTON 2
-			et2 = diPhotonPointers[candIndex]->subLeadingPhoton()->et();
-			eta2 = diPhotonPointers[candIndex]->subLeadingPhoton()->eta();
-			r92 = diPhotonPointers[candIndex]->subLeadingPhoton()->r9();
-			sieie2 = diPhotonPointers[candIndex]->subLeadingPhoton()->sigmaIetaIeta();
-			hoe2 = diPhotonPointers[candIndex]->subLeadingPhoton()->hadronicOverEm();
-			sigmaEoE2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getSigEOverE();
-			ptoM2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pt()/mass;
-			isEB2 = diPhotonPointers[candIndex]->subLeadingPhoton()->isEB();
-			//---> Isolation variables, unsure if correct methods used...
-			//Mthods from reco::photon
-			//chiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->chargedHadronIso();
-			//chisow2 = diPhotonPointers[candIndex]->subLeadingPhoton()->chargedHadronIsoWrongVtx();
-			//phoiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->photonIso();
-			//phoiso042 = diPhotonPointers[candIndex]->subLeadingPhoton()->photonIso(); //how does this differ??? FIXME
-			//Methods from flashgg::photon
-			chiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfChgIso03WrtVtx(diPhotonPointers[candIndex]->getVertex());
-			chisow2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfChgIsoWrtWorstVtx03();//no flashgg method for come radius 04... ok to use 0.3?
-			phoiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfPhoIso03();
-			
-			std:: cout << diPhotonPointers[candIndex]->subLeadingPhoton()->chargedHadronIso() << "	" << chiso2 << std::endl;
-
-			phoiso042 = diPhotonPointers[candIndex]->subLeadingPhoton()->photonIso(); //unsure of default radius?
-			ecaliso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->ecalRecHitSumEtConeDR03();
-			hcaliso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->hcalTowerSumEtConeDR03();
-			trkiso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->trkSumPtHollowConeDR03();
-			pfchiso2_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfChgIso02WrtVtx(diPhotonPointers[candIndex]->getVertex());
-			isorv2 = (chiso2 + phoiso2 + 2.5 - rho*0.09)*(50./et2);
-			isowv2 = ( phoiso2 + chisow2 + 2.5 - rho*0.23)*(50./et2);
-		
-			sieip2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getSieip();
-			etawidth2 = diPhotonPointers[candIndex]->subLeadingPhoton()->superCluster()->etaWidth();
-			phiwidth2 = diPhotonPointers[candIndex]->subLeadingPhoton()->superCluster()->phiWidth();
-			regrerr2 = sigmaEoE1 * diPhotonPointers[candIndex]->subLeadingPhoton()->energy();
-			idmva2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getPhoIdMvaDWrtVtx(diPhotonPointers[candIndex]->getVertex());
-			s4ratio2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->getS4();
-			effSigma2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->getESEffSigmaRR();
-			scraw2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->superCluster()->rawEnergy();
-
-			//-----> Cos of photon delta phi
-			cosphi = cos(diPhotonPointers[candIndex]->leadingPhoton()->phi()- diPhotonPointers[candIndex]->subLeadingPhoton()->phi());
-
-			//-------> vtx info
-			vtx_x= diPhotonPointers[candIndex]->getVertex()->x();
-			vtx_y= diPhotonPointers[candIndex]->getVertex()->y();
-			vtx_z= diPhotonPointers[candIndex]->getVertex()->z();
-
-			// Diphoton calculations
-			// Moved from LegacyVertexSelector (M. Olmedo) to here by SZ
-
-			edm::Ptr<reco::Vertex> vtx = diPhotonPointers[candIndex]->getVertex();
-			const flashgg::Photon* g1 = diPhotonPointers[candIndex]->leadingPhoton();
-			const flashgg::Photon* g2 = diPhotonPointers[candIndex]->subLeadingPhoton();
-			TVector3 Photon1Dir, Photon2Dir;
-			Photon1Dir.SetXYZ(g1->superCluster()->position().x() - vtx->position().x(),
-					g1->superCluster()->position().y() - vtx->position().y(),
-					g1->superCluster()->position().z() - vtx->position().z());
-			Photon2Dir.SetXYZ(g2->superCluster()->position().x() - vtx->position().x(),
-					g2->superCluster()->position().y() - vtx->position().y(),
-					g2->superCluster()->position().z() - vtx->position().z());
-			//		Photon1Dir_uv = Photon1Dir.Unit()*g1->superCluster()->rawEnergy();
-			//		Photon2Dir_uv = Photon2Dir.Unit()*g2->superCluster()->rawEnergy();
-			//		p14.SetPxPyPzE(Photon1Dir_uv.x(),Photon1Dir_uv.y(),Photon1Dir_uv.z(),g1->superCluster()->rawEnergy());
-			//		p24.SetPxPyPzE(Photon2Dir_uv.x(),Photon2Dir_uv.y(),Photon2Dir_uv.z(),g2->superCluster()->rawEnergy());
-
-			Handle<reco::BeamSpot> recoBeamSpotHandle;
-			iEvent.getByToken(beamSpotToken_,recoBeamSpotHandle);
-			float beamsig;
-			if (recoBeamSpotHandle.isValid()){
-				beamsig = recoBeamSpotHandle->sigmaZ();
-			} else {
-				beamsig = -9999; // I hope this never happens!"
-			}
-
-			float r1 = TMath::Sqrt(Photon1Dir.X()*Photon1Dir.X()+Photon1Dir.Y()*Photon1Dir.Y()+Photon1Dir.Z()*Photon1Dir.Z());
-			float r2 = TMath::Sqrt(Photon2Dir.X()*Photon2Dir.X()+Photon2Dir.Y()*Photon2Dir.Y()+Photon2Dir.Z()*Photon2Dir.Z());
-			float cos_term = TMath::Cos(g1->phi()-g2->phi());
-			float sech1 = 1.0/TMath::CosH(g1->eta());
-			float sech2 = 1.0/TMath::CosH(g2->eta());
-			float tanh1 = 1.0/TMath::TanH(g1->phi());
-			float tanh2 = 1.0/TMath::TanH(g2->phi());
-			float numerator1 = sech1*(sech1*tanh2-tanh1*sech2*cos_term);
-			float numerator2 = sech2*(sech2*tanh1-tanh2*sech1*cos_term);
-			float denominator = 1. - tanh1*tanh2 - sech1*sech2*cos_term;
-			float angleResolution = ((-1.*beamsig*TMath::Sqrt(.2))/denominator)*(numerator1/r1 + numerator2/r2);
-			float alpha_sig = 0.5*angleResolution;
-			float SigmaM = TMath::Sqrt(g1->getSigEOverE()*g1->getSigEOverE() + g2->getSigEOverE()*g2->getSigEOverE());
-			float MassResolutionWrongVtx = TMath::Sqrt((SigmaM*SigmaM)+(alpha_sig*alpha_sig));
-
-			float leadptom_       = g1->pt()/(diPhotonPointers[candIndex]->mass());
-			float subleadptom_    = g2->pt()/(diPhotonPointers[candIndex]->mass());
-			float subleadmva_     = g2->getPhoIdMvaDWrtVtx(vtx);
-			float leadmva_        = g1->getPhoIdMvaDWrtVtx(vtx);
-			float leadeta_        = g2->eta();
-			float subleadeta_     = g1->eta();
-			float sigmarv_        = .5*sqrt((g1->getSigEOverE())*(g1->getSigEOverE()) + (g2->getSigEOverE())*(g2->getSigEOverE()));
-			float sigmawv_        = MassResolutionWrongVtx;
-			float CosPhi_         = TMath::Cos(g1->phi()-g2->phi());
-			float vtxprob_        =  1.-.49*(1+diPhotonPointers[candIndex]->getVtxProbMVA());
-
-			if (!DiphotonMva_initialized) {
-				DiphotonMva_initialized = true;
-				DiphotonMva_ = new TMVA::Reader("!Color:Silent");
-				DiphotonMva_->AddVariable("masserrsmeared/mass",&sigmarv_);
-				DiphotonMva_->AddVariable("masserrsmearedwrongvtx/mass",&sigmawv_);
-				DiphotonMva_->AddVariable("vtxprob",&vtxprob_);
-				DiphotonMva_->AddVariable("ph1.pt/mass",&leadptom_);
-				DiphotonMva_->AddVariable("ph2.pt/mass",&subleadptom_);
-				DiphotonMva_->AddVariable("ph1.eta",&leadeta_);
-				DiphotonMva_->AddVariable("ph2.eta",&subleadeta_);
-				DiphotonMva_->AddVariable("TMath::Cos(ph1.phi-ph2.phi)",&CosPhi_);
-				DiphotonMva_->AddVariable("ph1.idmva",&leadmva_);
-				DiphotonMva_->AddVariable("ph2.idmva",&subleadmva_);
-				DiphotonMva_->BookMVA("BDT",diphotonMVAweightfile_.fullPath());
-			}
-
-			float diphomva_ = DiphotonMva_->EvaluateMVA("BDT");
-
-			// Storing these to the variables used in the tree
-			sigmaMrvoM = sigmarv_; 
-			sigmaMwvoM = sigmawv_; 
-			vtxprob = vtxprob_;
-			ptbal = diPhotonPointers[candIndex]->getPtBal();
-			ptasym = diPhotonPointers[candIndex]->getPtAsym();
-			logspt2 = diPhotonPointers[candIndex]->getLogSumPt2();
-			p2conv = diPhotonPointers[candIndex]->getPullConv(); 
-			nconv = diPhotonPointers[candIndex]->getNConv(); 
-			vtxmva = diPhotonPointers[candIndex]->getVtxProbMVA();
-			vtxdz = diPhotonPointers[candIndex]->getDZ1(); 
-			dipho_mva = diphomva_;
-
-
-			//		std::cout << "higgsCandidatePResent in globelikeTreeMaker" << std::endl;
-		}
-		else
-		{
-
-			et1 =  0;
-			eta1 = 0;
-			r91 =  0;
-			sieie1 =0; 
-			hoe1 =0;
-			sigmaEoE1 =0; 
-			ptoM1 =0;
-			isEB1 =0;
-			chiso1 =0;
-			chisow1 =0; 
-			phoiso1 = 0;
-			phoiso041 =0; 
-			ecaliso03_1 =0;
-			hcaliso03_1 =0;
-			trkiso03_1 = 0;
-			pfchiso2_1 = 0;
-			sieip1 = 0;
-			etawidth1 =0; 
-			phiwidth1 = 0;
-			regrerr1 = 0;
-			idmva1 = 0;
-			s4ratio1 =0;  
-			effSigma1 =0;  
-			scraw1 =  0;
-
-			et2 =  0;
-			eta2 = 0;
-			r92 =0;
-			sieie2 =0; 
-			hoe2 =0;
-			sigmaEoE2 =0; 
-			ptoM2 =0;
-			isEB2 =0;
-			chiso2 =0;
-			chisow2 =0; 
-			phoiso2 = 0;
-			phoiso042 =0; 
-			ecaliso03_2 =0;
-			hcaliso03_2 =0;
-			trkiso03_2 = 0;
-			pfchiso2_2 = 0;
-			sieip2 = 0;
-			etawidth2 =0; 
-			phiwidth2 = 0;
-			regrerr2 = 0;
-			idmva2 = 0;
-			s4ratio2 =0;  
-			effSigma2 =0;  
-			scraw2 =  0;
+		Handle<reco::BeamSpot> recoBeamSpotHandle;
+		iEvent.getByToken(beamSpotToken_,recoBeamSpotHandle);
+		float beamsig;
+		if (recoBeamSpotHandle.isValid()){
+			beamsig = recoBeamSpotHandle->sigmaZ();
+		} else {
+			beamsig = -9999; // I hope this never happens!"
 		}
 
-		flashggTree->Fill(); 
+		float r1 = TMath::Sqrt(Photon1Dir.X()*Photon1Dir.X()+Photon1Dir.Y()*Photon1Dir.Y()+Photon1Dir.Z()*Photon1Dir.Z());
+		float r2 = TMath::Sqrt(Photon2Dir.X()*Photon2Dir.X()+Photon2Dir.Y()*Photon2Dir.Y()+Photon2Dir.Z()*Photon2Dir.Z());
+		float cos_term = TMath::Cos(g1->phi()-g2->phi());
+		float sech1 = 1.0/TMath::CosH(g1->eta());
+		float sech2 = 1.0/TMath::CosH(g2->eta());
+		float tanh1 = 1.0/TMath::TanH(g1->phi());
+		float tanh2 = 1.0/TMath::TanH(g2->phi());
+		float numerator1 = sech1*(sech1*tanh2-tanh1*sech2*cos_term);
+		float numerator2 = sech2*(sech2*tanh1-tanh2*sech1*cos_term);
+		float denominator = 1. - tanh1*tanh2 - sech1*sech2*cos_term;
+		float angleResolution = ((-1.*beamsig*TMath::Sqrt(.2))/denominator)*(numerator1/r1 + numerator2/r2);
+		float alpha_sig = 0.5*angleResolution;
+		float SigmaM = TMath::Sqrt(g1->getSigEOverE()*g1->getSigEOverE() + g2->getSigEOverE()*g2->getSigEOverE());
+		float MassResolutionWrongVtx = TMath::Sqrt((SigmaM*SigmaM)+(alpha_sig*alpha_sig));
+
+		float leadptom_       = g1->pt()/(diPhotonPointers[candIndex]->mass());
+		float subleadptom_    = g2->pt()/(diPhotonPointers[candIndex]->mass());
+		float subleadmva_     = g2->getPhoIdMvaDWrtVtx(vtx);
+		float leadmva_        = g1->getPhoIdMvaDWrtVtx(vtx);
+		float leadeta_        = g2->eta();
+		float subleadeta_     = g1->eta();
+		float sigmarv_        = .5*sqrt((g1->getSigEOverE())*(g1->getSigEOverE()) + (g2->getSigEOverE())*(g2->getSigEOverE()));
+		float sigmawv_        = MassResolutionWrongVtx;
+		float CosPhi_         = TMath::Cos(g1->phi()-g2->phi());
+		float vtxprob_        =  1.-.49*(1+diPhotonPointers[candIndex]->getVtxProbMVA());
+
+		if (!DiphotonMva_initialized) {
+			DiphotonMva_initialized = true;
+			DiphotonMva_ = new TMVA::Reader("!Color:Silent");
+			DiphotonMva_->AddVariable("masserrsmeared/mass",&sigmarv_);
+			DiphotonMva_->AddVariable("masserrsmearedwrongvtx/mass",&sigmawv_);
+			DiphotonMva_->AddVariable("vtxprob",&vtxprob_);
+			DiphotonMva_->AddVariable("ph1.pt/mass",&leadptom_);
+			DiphotonMva_->AddVariable("ph2.pt/mass",&subleadptom_);
+			DiphotonMva_->AddVariable("ph1.eta",&leadeta_);
+			DiphotonMva_->AddVariable("ph2.eta",&subleadeta_);
+			DiphotonMva_->AddVariable("TMath::Cos(ph1.phi-ph2.phi)",&CosPhi_);
+			DiphotonMva_->AddVariable("ph1.idmva",&leadmva_);
+			DiphotonMva_->AddVariable("ph2.idmva",&subleadmva_);
+			DiphotonMva_->BookMVA("BDT",diphotonMVAweightfile_.fullPath());
+		}
+
+		float diphomva_ = DiphotonMva_->EvaluateMVA("BDT");
+
+		// Storing these to the variables used in the tree
+		sigmaMrvoM = sigmarv_; 
+		sigmaMwvoM = sigmawv_; 
+		vtxprob = vtxprob_;
+		ptbal = diPhotonPointers[candIndex]->getPtBal();
+		ptasym = diPhotonPointers[candIndex]->getPtAsym();
+		logspt2 = diPhotonPointers[candIndex]->getLogSumPt2();
+		p2conv = diPhotonPointers[candIndex]->getPullConv(); 
+		nconv = diPhotonPointers[candIndex]->getNConv(); 
+		vtxmva = diPhotonPointers[candIndex]->getVtxProbMVA();
+		vtxdz = diPhotonPointers[candIndex]->getDZ1(); 
+		dipho_mva = diphomva_;
+
+
+		//		std::cout << "higgsCandidatePResent in globelikeTreeMaker" << std::endl;
+	}
+	else{
+
+		et1 =  -999.;
+		eta1 = -999.;
+		r91 =  -999.;
+		sieie1 =-999.; 
+		hoe1 =-999.;
+		sigmaEoE1 =-999.; 
+		ptoM1 =-999.;
+		isEB1 =-999.;
+		chiso1 =-999.;
+		chisow1 =-999.; 
+		phoiso1 = -999.;
+		phoiso041 =-999.; 
+		ecaliso03_1 =-999.;
+		hcaliso03_1 =-999.;
+		trkiso03_1 = -999.;
+		pfchiso2_1 = -999.;
+		isorv1 = -999.;
+		isowv1 = -999.;
+		sieip1 = -999.;
+		etawidth1 =-999.; 
+		phiwidth1 = -999.;
+		regrerr1 = -999.;
+		idmva1 = -999.;
+		s4ratio1 =-999.;  
+		effSigma1 =-999.;  
+		scraw1 =  -999.;
+		et2 =  -999.;
+		eta2 = -999.;
+		r92 =-999.;
+		sieie2 =-999.; 
+		hoe2 =-999.;
+		sigmaEoE2 =-999.; 
+		ptoM2 =-999.;
+		isEB2 =-999.;
+		isorv2 = -999.;
+		isowv2 = -999.;
+		chiso2 =-999.;
+		chisow2 =-999.; 
+		phoiso2 = -999.;
+		phoiso042 =-999.; 
+		ecaliso03_2 =-999.;
+		hcaliso03_2 =-999.;
+		trkiso03_2 = -999.;
+		pfchiso2_2 = -999.;
+		sieip2 = -999.;
+		etawidth2 =-999.; 
+		phiwidth2 = -999.;
+		regrerr2 = -999.;
+		idmva2 = -999.;
+		s4ratio2 =-999.;  
+		effSigma2 =-999.;  
+		scraw2 =  -999.;
+		cosphi = -999.;
+		vtx_x = -999.;
+		vtx_y = -999.;
+		vtx_z =-999.;
+		genmatch1 = -999.;
+		genmatch2 = -999.;
+		sigmaMrvoM = -999.;
+		sigmaMwvoM = -999.;
+		vtxprob =-999.;
+		ptbal =-999.;
+		ptasym = -999.;
+		logspt2 = -999.;
+		p2conv =-999. ;
+		nconv =-999. ;
+		vtxmva =-999.;
+		vtxdz =-999.;
+		dipho_mva =-999.;
+	}
+
+	flashggTree->Fill(); 
 }
 	void 
 FlashggTreeMaker::beginJob()
