@@ -10,7 +10,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 200 ) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 100 ) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 # Uncomment the following if you notice you have a memory leak
@@ -37,12 +37,25 @@ process.flashggVertexMapNonUnique = cms.EDProducer('FlashggDzVertexMapProducer',
                                                    UseEachTrackOnce=cms.untracked.bool(False)
                                                    )
 
+
+
+
+process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
                                                  
 # This requires you to have done: git cms-merge-topic -u sethzenz:pileupjetid-for-flashgg
 process.load("RecoJets.JetProducers.PileupJetIDParams_cfi")
+
+process.prunedGenParticles = cms.EDProducer(
+    "GenParticlePruner",
+    src = cms.InputTag("genParticles"),
+    select = cms.vstring(
+    "drop  *  ", # this is the default
+    "keep++ pdgId = 25",
+    )
+)
 
 process.flashggJets = cms.EDProducer('FlashggJetProducer',
                                      DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
