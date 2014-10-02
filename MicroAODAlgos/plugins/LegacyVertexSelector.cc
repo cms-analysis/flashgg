@@ -246,7 +246,7 @@ namespace flashgg {
     double dz=-99999;
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
     if (conversion->nTracks()==2) {
-      if ( fabs(pho->superCluster()->eta()<1.5) ) { // barrel
+      if ( fabs(pho->superCluster()->eta())<1.5 ) { // barrel
 	if ( perp <=15 ) {
 	  dz=sigma1Pix;
 	} else if ( perp > 15 && perp <=60 ) {
