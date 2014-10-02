@@ -52,6 +52,13 @@ process.flashggJets = cms.EDProducer('FlashggJetProducer',
                                      PileupJetIdParameters=cms.PSet(process.full_53x) # from PileupJetIDParams_cfi
                                      )
 
+process.flashggDiPhotonMVA = cms.EDProducer('FlashggDiPhotonMVAProducer',
+                                            DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                            BeamSpotTag=cms.untracked.InputTag('offlineBeamSpot'),
+                                            diphotonMVAweightfile = cms.FileInPath("flashgg/TagProducers/data/HggBambu_SMDipho_Oct29_rwgtptallsigevenbkg7TeV_BDTG.weights.xml")
+                                            )                                            
+
+
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFile.root'),
                                outputCommands = cms.untracked.vstring("drop *",
                                                                       "keep *_flashgg*_*_*",
@@ -82,8 +89,8 @@ process.p = cms.Path(process.flashggVertexMapUnique*
                      process.flashggPhotons*
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
-                     process.flashggJets#*
-#                     process.commissioning
+                     process.flashggDiPhotonMVA*
+                     process.flashggJets
                     )
 
 process.e = cms.EndPath(process.out)

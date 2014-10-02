@@ -1,0 +1,9 @@
+<lcgdict>
+ <class name="flashgg::DiPhotonMVAResult"/>
+ <class name="std::pair<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult>"/>
+ <class name="std::map<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult>"/>
+ <class name="edm::Wrapper<std::pair<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult> >"/>
+ <class name="edm::Wrapper<std::map<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult> >"/>
+</lcgdict>
+
+
