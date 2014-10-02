@@ -15,7 +15,7 @@
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
-
+#include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 
 using namespace edm;
 using namespace std;
@@ -33,8 +33,7 @@ namespace flashgg {
     EDGetTokenT< VertexCandidateMap > vertexCandidateMapToken_;
     unique_ptr<VertexSelectorBase> vertexSelector_;
     EDGetTokenT<View<reco::Conversion> > conversionToken_;
-    EDGetTokenT<reco::BeamSpot > beamSpotToken_;
-
+    EDGetTokenT<View<reco::BeamSpot> > beamSpotToken_;
   };
 
   DiPhotonProducer::DiPhotonProducer(const ParameterSet & iConfig) :
@@ -71,13 +70,14 @@ namespace flashgg {
     Handle<reco::BeamSpot> recoBeamSpotHandle;
     evt.getByToken(beamSpotToken_,recoBeamSpotHandle);
     math::XYZPoint vertexPoint;
-    if (recoBeamSpotHandle.isValid())
-      vertexPoint = recoBeamSpotHandle->position();    
-    //    else
-      //      cout<<" WARNING BEAM SPOT NOT VALID! This should not happen "<<endl;
-    
-    
-    auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
+    //    float beamsig;
+    if (recoBeamSpotHandle.isValid()){
+      vertexPoint = recoBeamSpotHandle->position();
+      //      beamsig = recoBeamSpotHandle->sigmaZ();
+    }
+
+
+      auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
 //    cout << "evt.id().event()= " << evt.id().event() << "\tevt.isRealData()= " << evt.isRealData() << "\tphotonPointers.size()= " << photonPointers.size() << "\tpvPointers.size()= " << pvPointers.size() << endl;
 
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {

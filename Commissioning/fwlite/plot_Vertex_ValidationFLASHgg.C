@@ -39,14 +39,16 @@
   TH1F * histo_sumpt2 = new TH1F("sumpt2 in","sumpt2",100,0.,15.);
   TH1F * histo_ptbal = new TH1F("ptbal normalized","ptbal normalized",100,-200.,350.);
   TH1F * histo_ptasym = new TH1F("ptasym normalized","ptasym normalized",100,-1,1);
-  TH1F * histo_pull_conv = new TH1F("pull conv","pull conv",100,0.,11.);
-  TH1F * histo_vtxprobmva = new TH1F("vtxprobmva","vtxprobmva",20,-1.,1.);
-  
-  TH1F * histo_gen_matched_sumpt2 = new TH1F("sumpt2","sumpt2",100,0.,15.);
+  TH1F * histo_pull_conv = new TH1F("pull conv","pull conv",100,-300.,3500.);
+  TH1F * histo_vtxprobmva = new TH1F("vtxprobmva","vtxprobmva",20,-1.,1.); 
+  TH1F * histo_vtxeff_hpt = new TH1F("vtxeff vs higgs pt","vtxeff vs higgs pt",100.,0,250.);
+ 
+  TH1F * histo_gen_matched_sumpt2 = new TH1F("sumpt2","sumpt2",100,-5.,15.);
   TH1F * histo_gen_matched_ptbal = new TH1F("ptbal normalized","ptbal  normalized",100,-200.,350.);
   TH1F * histo_gen_matched_ptasym = new TH1F("ptasym normalized","ptasym normalized",100,-1.,1.);
-  TH1F * histo_gen_matched_pull_conv = new TH1F("pull conv","pull conv",100,0.,11.);
+  TH1F * histo_gen_matched_pull_conv = new TH1F("pull conv","pull conv",100,-300.,3500.);
   TH1F * histo_gen_matched_vtxprobmva = new TH1F("vtxprobmva","vtxprobmva",20,-1.,1.);
+  TH1F * histo_gen_matched_vtxeff_hpt = new TH1F("vtxeff vs higgs pt","vtxeff vs higgs pt",100.,0,250.);
 
   fwlite::Event ev(&f);
 
@@ -59,7 +61,7 @@
     objs_pho.getByLabel(ev,"flashggPhotons");
     objs_dipho.getByLabel(ev,"flashggDiPhotons");
     objs_vertex.getByLabel(ev,"offlineSlimmedPrimaryVertices"); 
-    objs_genpart.getByLabel(ev,"prunedGenParticles"); 
+    objs_genpart.getByLabel(ev,"flashggPrunedGenParticles"); 
     
     std::vector<reco::GenParticle> const & genpart = *objs_genpart;
     
@@ -71,23 +73,26 @@
     std::vector<flashgg::DiPhotonCandidate> const & dipho = *objs_dipho;
     for (int i=0; i < objs_dipho.ptr()->size();i++ ){
       bool gen_matched = (fabs(dipho[i].getVertex()->position().z()-z_higgs)<1.);//we consider gen-matched when less than 1cm
-    
-      histo_vtxprobmva->Fill(dipho[i].getVtxProbMVA());
+
+      histo_vtxeff_hpt->Fill(dipho[i].mass());
+      histo_vtxprobmva->Fill(dipho[i].getVtxProbMVA()); 
       if(gen_matched){
 	histo_gen_matched_sumpt2->Fill(dipho[i].getLogSumPt2());
 	histo_gen_matched_ptbal->Fill(dipho[i].getPtBal());
 	histo_gen_matched_ptasym->Fill(dipho[i].getPtAsym());
-	if(dipho[i].getNConv()!=0){
-	  histo_gen_matched_pull_conv->Fill(dipho[i].getPullConv());
-	}
-	histo_gen_matched_vtxprobmva->Fill(dipho[i].getVtxProbMVA());
+        histo_gen_matched_vtxeff_hpt->Fill(dipho[i].mass()); 
+        if(dipho[i].getNConv()!=0){
+	histo_gen_matched_pull_conv->Fill(dipho[i].getPullConv());
+        }
+        histo_gen_matched_vtxprobmva->Fill(dipho[i].getVtxProbMVA());
       }else{
 	histo_sumpt2->Fill(dipho[i].getLogSumPt2());
 	histo_ptbal->Fill(dipho[i].getPtBal());
 	histo_ptasym->Fill(dipho[i].getPtAsym());
-	if(dipho[i].getNConv()!=0){
-	  histo_pull_conv->Fill(dipho[i].getPullConv());
-	}
+        if(dipho[i].getNConv()!=0){ 
+	histo_pull_conv->Fill(dipho[i].getPullConv());
+        }
+>>>>>>> fix sync:MicroAODProducers/test/plot_Vertex_ValidationFLASHgg.C
       }
     }
   }
@@ -112,7 +117,7 @@
   histo_ptasym->SetLineWidth(3);
   histo_pull_conv->SetLineWidth(3);
   
-  TLegend *leg = new TLegend(0.55,0.88,0.98,0.70);
+  TLegend *leg = new TLegend(0.55,0.88,0.98,0.7);
   leg->AddEntry(histo_gen_matched_sumpt2,"higgs vertex match (dz<1.cm)","lp");
   leg->AddEntry(histo_sumpt2,"the rest of vertices","lp");
   leg->SetFillColor(0);
@@ -161,7 +166,7 @@
   histo_ptbal->Delete();
   histo_ptasym->Delete();
   histo_pull_conv->Delete();
-  
+ 
   TCanvas * Ca1 = new TCanvas("Ca1","Canvas",1200,800); 
   TGraphAsymmErrors * efficiency =new TGraphAsymmErrors(histo_gen_matched_vtxprobmva,histo_vtxprobmva);
   efficiency->SetTitle("Vertex Assignment probability < 1.cm w.r.t GEN higgs vs vertex probability MVA");
@@ -177,7 +182,21 @@
   efficiency->Draw("AP");
   line->Draw("same");
   Ca1->SaveAs("vtxprobmva.png");
-  
+
+  TCanvas * Ca2 = new TCanvas("Ca2","Canvas",1200,800); 
+  TGraphAsymmErrors * efficiency0 =new TGraphAsymmErrors(histo_gen_matched_vtxeff_hpt,histo_vtxeff_hpt);
+  efficiency0->SetTitle("Vertex Assignment efficiency");
+  efficiency0->GetXaxis()->SetTitle("higgs pt");
+  efficiency0->GetYaxis()->SetTitle("#epsilon");
+  efficiency0->SetMarkerColor(kRed);
+  efficiency0->SetMarkerStyle(23);
+  efficiency0->SetMarkerSize(2);
+  efficiency0->GetXaxis()->SetRangeUser(0,250.);
+  efficiency0->GetYaxis()->SetRangeUser(0.,1.);
+  efficiency0->Draw("AP");
+  Ca2->SaveAs("vtxeff_higgs_pt.png");
+
+ 
   exit(0);
 
 }
