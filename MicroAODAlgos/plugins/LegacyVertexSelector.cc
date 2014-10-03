@@ -85,6 +85,10 @@ namespace flashgg {
    float nConv_;
    float pull_conv_;
 
+   float logsumpt2selected_;
+   float ptbalselected_;
+   float ptasymselected_;
+
    TMVA::Reader * VertexProbMva_; 
    float dipho_pt_;
    float nVert_;
@@ -93,7 +97,6 @@ namespace flashgg {
    float dZ1_;
    float MVA2_;
    float dZ2_;
-
    float vtxprobmva_;
 
   };
@@ -497,8 +500,11 @@ namespace flashgg {
       float mva_value = VertexIdMva_->EvaluateMVA("BDT"); 
 
       if(mva_value>max_mva_value){
-        max_mva_value=mva_value;
+	max_mva_value=mva_value;
         selected_vertex_index=vertex_index;
+	logsumpt2selected_=logsumpt2_;
+	ptbalselected_=ptbal_;
+	ptasymselected_=ptasym_;
       }
       
       if(mva_value<max_mva_value && mva_value>second_max_mva_value){
@@ -527,12 +533,12 @@ namespace flashgg {
 
   void LegacyVertexSelector::writeInfoFromLastSelectionTo(flashgg::DiPhotonCandidate& dipho) {
 
-    dipho.setLogSumPt2(logsumpt2_);
-    dipho.setPtBal(ptbal_);
-    dipho.setPtAsym(ptasym_);
+    dipho.setLogSumPt2(logsumpt2selected_);
+    dipho.setPtBal(ptbalselected_);
+    dipho.setPtAsym(ptasymselected_);
+
     dipho.setNConv(nConv_);
     dipho.setPullConv(pull_conv_);
-
     dipho.setNVert(nVert_);
     dipho.setMVA0(MVA0_);
     dipho.setMVA1(MVA1_);
