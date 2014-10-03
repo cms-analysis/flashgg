@@ -1,0 +1,164 @@
+{
+  // Set up FW Lite for automatic loading of CMS libraries
+  // and data formats.   As you may have other user-defined setup
+  // in your rootlogon.C, the CMS setup is executed only if the CMS
+  // environment is set up.
+  //
+  TString cmsswbase = getenv("CMSSW_BASE");
+  if (cmsswbase.Length() > 0) {
+    //
+    // The CMSSW environment is defined (this is true even for FW Lite)
+    // so set up the rest.
+    //
+    cout << "Loading FW Lite setup." << endl;
+    gSystem->Load("libFWCoreFWLite.so");
+    AutoLibraryLoader::enable();
+    gSystem->Load("libDataFormatsFWLite.so");
+    gSystem->Load("libDataFormatsPatCandidates.so");
+    gSystem->Load("libflashggMicroAODFormats.so"); 
+    
+  }
+  
+  TFile f("myOutputFilex-1.root");
+  TTree *Events = f.Get("Events");
+  //Events->Print();
+  Events->SetScanField(0);
+  //Events->Scan("flashggDiPhotonCandidates_flashggDiPhotons__FLASHggTEST.obj.pt_:flashggPhotons_flashggPhotons__FLASHggTEST.obj.zernike42:flashggPhotons_flashggPhotons__FLASHggTEST.obj.hcalTowersBehindClusters[0]");
+
+  
+#include "DataFormats/FWLite/interface/Event.h"
+#include "DataFormats/FWLite/interface/Handle.h"
+#if !defined(__CINT__) && !defined(__MAKECINT__)
+#include "flashgg/MicroAODFormats/interface/DiphotonCandidate.h"  
+#include "flashgg/MicroAODFormats/interface/Photon.h"  
+#include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
+#endif
+  
+  TH1F * histo_sumpt2 = new TH1F("sumpt2 in","sumpt2",100,-5.,15.);
+  TH1F * histo_ptbal = new TH1F("ptbal normalized","ptbal normalized",100,-200.,350.);
+  TH1F * histo_ptasym = new TH1F("ptasym normalized","ptasym normalized",100,-1,1);
+  TH1F * histo_pull_conv = new TH1F("pull conv","pull conv",100,-300.,3500.);
+  
+  TH1F * histo_gen_matched_sumpt2 = new TH1F("sumpt2","sumpt2",100,-5.,15.);
+  TH1F * histo_gen_matched_ptbal = new TH1F("ptbal normalized","ptbal  normalized",100,-200.,350.);
+  TH1F * histo_gen_matched_ptasym = new TH1F("ptasym normalized","ptasym normalized",100,-1.,1.);
+  TH1F * histo_gen_matched_pull_conv = new TH1F("pull conv","pull conv",100,-300.,3500.);
+
+  fwlite::Event ev(&f);
+
+  int count=0;
+
+  for( ev.toBegin(); ! ev.atEnd(); ++ev) {
+    if(count==1000) break;
+    count++;
+    fwlite::Handle<std::vector<flashgg::Photon> > objs_pho;
+    fwlite::Handle<std::vector<flashgg::DiPhotonCandidate> > objs_dipho;
+    fwlite::Handle<std::vector<reco::Vertex> > objs_vertex;
+    fwlite::Handle<std::vector<reco::GenParticle> > objs_genpart;
+    
+    objs_pho.getByLabel(ev,"flashggPhotons");
+    objs_dipho.getByLabel(ev,"flashggDiPhotons");
+    objs_vertex.getByLabel(ev,"offlineSlimmedPrimaryVertices"); 
+    objs_genpart.getByLabel(ev,"prunedGenParticles"); 
+    
+    std::vector<reco::GenParticle> const & genpart = *objs_genpart;
+    
+    float z_higgs=0;
+    for (int i=0; i < objs_genpart.ptr()->size();i++ ){
+      if(genpart[i].pdgId() == 25) z_higgs = genpart[i].vz();
+    }
+    
+    std::vector<flashgg::DiPhotonCandidate> const & dipho = *objs_dipho;
+    for (int i=0; i < objs_dipho.ptr()->size();i++ ){
+      //cout<<"dipho.vertex.z="<<dipho[i].getVertex()->position().z()<<" higgs.z="<<z_higgs<<endl;
+      bool gen_matched = (fabs(dipho[i].getVertex()->position().z()-z_higgs)<1.);//we consider gen-matched when less than 1cm
+      //cout<<dipho[i].getLogSumPt2()<<endl;
+      if(gen_matched){
+	histo_gen_matched_sumpt2->Fill(dipho[i].getLogSumPt2());
+	histo_gen_matched_ptbal->Fill(dipho[i].getPtBal());
+	histo_gen_matched_ptasym->Fill(dipho[i].getPtAsym());
+	histo_gen_matched_pull_conv->Fill(dipho[i].getPullConv());
+      }else{
+	histo_sumpt2->Fill(dipho[i].getLogSumPt2());
+	histo_ptbal->Fill(dipho[i].getPtBal());
+	histo_ptasym->Fill(dipho[i].getPtAsym());
+	histo_pull_conv->Fill(dipho[i].getPullConv());
+      }
+    }
+  }
+  
+  histo_gen_matched_sumpt2->SetLineColor(kBlue);
+  histo_gen_matched_ptbal->SetLineColor(kBlue);
+  histo_gen_matched_ptasym->SetLineColor(kBlue);
+  histo_gen_matched_pull_conv->SetLineColor(kBlue);
+  
+  histo_sumpt2->SetLineColor(kBlack);
+  histo_ptbal->SetLineColor(kBlack);
+  histo_ptasym->SetLineColor(kBlack);
+  histo_pull_conv->SetLineColor(kBlack);
+
+  histo_gen_matched_sumpt2->SetLineWidth(3);
+  histo_gen_matched_ptbal->SetLineWidth(3);
+  histo_gen_matched_ptasym->SetLineWidth(3);
+  histo_gen_matched_pull_conv->SetLineWidth(3);
+  
+  histo_sumpt2->SetLineWidth(3);
+  histo_ptbal->SetLineWidth(3);
+  histo_ptasym->SetLineWidth(3);
+  histo_pull_conv->SetLineWidth(3);
+  
+  TLegend *leg = new TLegend(0.45,0.93,0.89,0.7);
+  leg->AddEntry(histo_gen_matched_sumpt2,"higgs vertex match (dz<1.cm)","lp");
+  leg->AddEntry(histo_sumpt2,"the rest of vertices","lp");
+  leg->SetFillColor(0);
+  
+  TCanvas * Ca0 = new TCanvas("Ca0","Canvas",1200,800);  Ca0->Divide(2,2); 
+  
+  Ca0_1->cd();  
+  histo_sumpt2->GetXaxis()->SetTitle("log sumpt2"); 
+  histo_gen_matched_sumpt2->GetXaxis()->SetTitle("log sumpt2"); 
+  histo_sumpt2->Draw(); 
+  histo_gen_matched_sumpt2->Draw("same"); 
+  leg->Draw("same");
+  Ca0_1->SetLogy();
+  
+  Ca0_2->cd(); 
+  histo_ptbal->GetXaxis()->SetTitle("GeV"); 
+  histo_gen_matched_ptbal->GetXaxis()->SetTitle("GeV");
+  histo_ptbal->DrawNormalized();  
+  histo_gen_matched_ptbal->DrawNormalized("same"); 
+  leg->Draw("same");
+  Ca0_2->SetLogy();
+  
+  Ca0_3->cd(); 
+  histo_ptasym->GetXaxis()->SetTitle("ptasym");
+  histo_gen_matched_ptasym->GetXaxis()->SetTitle("ptasym");
+  histo_ptasym->DrawNormalized(); 
+  histo_gen_matched_ptasym->DrawNormalized("same");
+  leg->Draw("same");
+  //Ca0_3->SetLogy();
+  
+  Ca0_4->cd(); 
+  histo_pull_conv->Draw(); 
+  histo_gen_matched_pull_conv->Draw("same");
+  leg->Draw("same");
+  histo_pull_conv->GetXaxis()->SetTitle("pull_conv");
+  histo_gen_matched_pull_conv->GetXaxis()->SetTitle("pull_conv");  
+  Ca0_4->SetLogy();
+
+  Ca0->SaveAs("mva_plots.png");
+  
+  histo_gen_matched_sumpt2->Delete();
+  histo_gen_matched_ptbal->Delete();
+  histo_gen_matched_ptasym->Delete();
+  histo_gen_matched_pull_conv->Delete();
+  histo_sumpt2->Delete();
+  histo_ptbal->Delete();
+  histo_ptasym->Delete();
+  histo_pull_conv->Delete();
+  
+  exit(0);
+  
+}
+
+

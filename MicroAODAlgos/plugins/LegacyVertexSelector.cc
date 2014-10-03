@@ -246,7 +246,7 @@ namespace flashgg {
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
 
     if (conversion->nTracks()==2) {
-      if ( pho->eta()<1.5 ) { // barrel
+      if ( fabs(pho->eta()<1.5) ) { // barrel
 	if ( perp <=15 ) {
 	  if (method==0) dz=sigma1Pix;
 	  if (method==1) dz=sigma1Pix;
@@ -278,7 +278,7 @@ namespace flashgg {
 	}
       }
     } else if (conversion->nTracks()==1) {
-      if ( pho->eta() <1.5 ) { // barrel
+      if ( fabs(pho->eta()) <1.5 ) { // barrel
 	if ( perp <=15 ) {
 	  if (method==0) dz=singlelegsigma1Pix;
 	  if (method==1) dz=singlelegsigma1Pix;
