@@ -29,8 +29,19 @@ namespace flashgg {
     edm::EDGetTokenT<edm::View<reco::BeamSpot> > beamSpotToken_;
 
     TMVA::Reader * DiphotonMva_;
-    bool DiphotonMva_initialized;
+    //    bool DiphotonMva_initialized;
     edm::FileInPath diphotonMVAweightfile_;
+
+    float sigmarv_;
+    float sigmawv_;
+    float vtxprob_;
+    float leadptom_;
+    float subleadptom_;
+    float leadeta_;
+    float subleadeta_;
+    float CosPhi_;
+    float leadmva_;
+    float subleadmva_;
 
   };
 
@@ -41,11 +52,35 @@ namespace flashgg {
     std::cout << " In constructor " << std::endl;
 
     diphotonMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("diphotonMVAweightfile");
-    DiphotonMva_initialized = false;
 
-    std::cout << " In constructor after getting filename for  MVA" << std::endl;
+    sigmarv_ = 0.;
+    sigmawv_ = 0.;
+    vtxprob_ = 0.;
+    leadptom_ = 0.;
+    subleadptom_ = 0.;
+    leadeta_ = 0.;
+    subleadeta_ = 0.;
+    CosPhi_ = 0.;
+    leadmva_ = 0.;
+    subleadmva_ = 0.;
 
-    produces<DiPhotonMVAResultMap>();
+    DiphotonMva_ = new TMVA::Reader("!Color:Silent");
+    DiphotonMva_->AddVariable("masserrsmeared/mass",&sigmarv_);
+    DiphotonMva_->AddVariable("masserrsmearedwrongvtx/mass",&sigmawv_);
+    DiphotonMva_->AddVariable("vtxprob",&vtxprob_);
+    DiphotonMva_->AddVariable("ph1.pt/mass",&leadptom_);
+    DiphotonMva_->AddVariable("ph2.pt/mass",&subleadptom_);
+    DiphotonMva_->AddVariable("ph1.eta",&leadeta_);
+    DiphotonMva_->AddVariable("ph2.eta",&subleadeta_);
+    DiphotonMva_->AddVariable("TMath::Cos(ph1.phi-ph2.phi)",&CosPhi_);
+    DiphotonMva_->AddVariable("ph1.idmva",&leadmva_);
+    DiphotonMva_->AddVariable("ph2.idmva",&subleadmva_);
+    DiphotonMva_->BookMVA("BDT",diphotonMVAweightfile_.fullPath());
+
+    std::cout << " In constructor after getting filename for  MVA and booking it" << std::endl;
+
+    //    produces<DiPhotonMVAResultMap>();
+    produces<vector<DiPhotonMVAResult> >(); // one per diphoton, always in same order, vector is more efficient than map
 
     std::cout << " In constructor after produces " << std::endl;
   }
@@ -69,7 +104,8 @@ namespace flashgg {
 
     std::cout << " Got beamsig " << beamsig << std::endl;
 
-    std::auto_ptr<DiPhotonMVAResultMap> assoc(new DiPhotonMVAResultMap);
+    //    std::auto_ptr<DiPhotonMVAResultMap> assoc(new DiPhotonMVAResultMap);
+    std::auto_ptr<vector<DiPhotonMVAResult> > results(new vector<DiPhotonMVAResult>); // one per diphoton, always in same order, vector is more efficient than map
 
     for (unsigned int candIndex =0; candIndex < diPhotonPointers.size() ; candIndex++) {
       flashgg::DiPhotonMVAResult mvares;
@@ -93,41 +129,41 @@ namespace flashgg {
       float SigmaM = TMath::Sqrt(g1->getSigEOverE()*g1->getSigEOverE() + g2->getSigEOverE()*g2->getSigEOverE());
       float MassResolutionWrongVtx = TMath::Sqrt((SigmaM*SigmaM)+(alpha_sig*alpha_sig));
 
-      mvares.leadptom       = g1->pt()/(diPhotonPointers[candIndex]->mass());
-      mvares.subleadptom    = g2->pt()/(diPhotonPointers[candIndex]->mass());
-      mvares.subleadmva     = g2->getPhoIdMvaDWrtVtx(vtx);
-      mvares.leadmva        = g1->getPhoIdMvaDWrtVtx(vtx);
-      mvares.leadeta        = g2->eta();
-      mvares.subleadeta     = g1->eta();
-      mvares.sigmarv        = .5*sqrt((g1->getSigEOverE())*(g1->getSigEOverE()) + (g2->getSigEOverE())*(g2->getSigEOverE()));
-      mvares.sigmawv        = MassResolutionWrongVtx;
-      mvares.CosPhi         = TMath::Cos(g1->phi()-g2->phi());
-      mvares.vtxprob        =  1.-.49*(1+diPhotonPointers[candIndex]->getVtxProbMVA());
-      
-
-      if (!DiphotonMva_initialized) {
-	DiphotonMva_initialized = true;
-	DiphotonMva_ = new TMVA::Reader("!Color:Silent");
-	DiphotonMva_->AddVariable("masserrsmeared/mass",&mvares.sigmarv);
-	DiphotonMva_->AddVariable("masserrsmearedwrongvtx/mass",&mvares.sigmawv);
-	DiphotonMva_->AddVariable("vtxprob",&mvares.vtxprob);
-	DiphotonMva_->AddVariable("ph1.pt/mass",&mvares.leadptom);
-	DiphotonMva_->AddVariable("ph2.pt/mass",&mvares.subleadptom);
-	DiphotonMva_->AddVariable("ph1.eta",&mvares.leadeta);
-	DiphotonMva_->AddVariable("ph2.eta",&mvares.subleadeta);
-	DiphotonMva_->AddVariable("TMath::Cos(ph1.phi-ph2.phi)",&mvares.CosPhi);
-	DiphotonMva_->AddVariable("ph1.idmva",&mvares.leadmva);
-	DiphotonMva_->AddVariable("ph2.idmva",&mvares.subleadmva);
-	DiphotonMva_->BookMVA("BDT",diphotonMVAweightfile_.fullPath());
-      }
+      leadptom_       = g1->pt()/(diPhotonPointers[candIndex]->mass());
+      subleadptom_    = g2->pt()/(diPhotonPointers[candIndex]->mass());
+      subleadmva_     = g2->getPhoIdMvaDWrtVtx(vtx);
+      leadmva_        = g1->getPhoIdMvaDWrtVtx(vtx);
+      leadeta_        = g2->eta();
+      subleadeta_     = g1->eta();
+      sigmarv_        = .5*sqrt((g1->getSigEOverE())*(g1->getSigEOverE()) + (g2->getSigEOverE())*(g2->getSigEOverE()));
+      sigmawv_        = MassResolutionWrongVtx;
+      CosPhi_         = TMath::Cos(g1->phi()-g2->phi());
+      vtxprob_        =  1.-.49*(1+diPhotonPointers[candIndex]->getVtxProbMVA());
 
       mvares.result = DiphotonMva_->EvaluateMVA("BDT");
 
+      mvares.leadptom = leadptom_;
+      mvares.subleadptom =subleadptom_;
+      mvares.leadmva = leadmva_;
+      mvares.subleadmva =subleadmva_;
+      mvares.leadeta = leadeta_;
+      mvares.subleadeta =subleadeta_;
+      mvares.sigmarv = sigmarv_;
+      mvares.sigmawv = sigmawv_;
+      mvares.CosPhi = CosPhi_;
+      mvares.vtxprob = vtxprob_;
+
       std::cout << " Got result " << mvares.result << std::endl;
 
-      assoc->insert(std::make_pair(diPhotonPointers[candIndex],mvares));
+      //      assoc->insert(std::make_pair(diPhotonPointers[candIndex],mvares));
+      results->push_back(mvares);
+      std::cout << "Result in result array" << std::endl;
     }
-    evt.put(assoc);
+    evt.put(results);
+    std::cout<< "Results in events" << std::endl;
+    //    std::auto_ptr<float> fake_assoc(new float(0.));
+    //    std::auto_ptr<flashgg::DiPhotonMVAResult> fake_assoc(new flashgg::DiPhotonMVAResult);
+    //    evt.put(fake_assoc);
   }
 }
 

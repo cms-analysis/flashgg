@@ -6,9 +6,11 @@
 
 namespace flashgg {
 
-  // Yes, it's a struct. Why not, right?
-  // We'll make it a class if it ever actually needs any member functions or interfaces
-  struct DiPhotonMVAResult {
+  class DiPhotonMVAResult {
+
+  public:
+    DiPhotonMVAResult();
+    //    DiPhotonMVAResult(const DiPhotonMVAResult&) = default;  // C++11 only? Should happen automagically anyway
 
     // Input variables
     float leadptom;

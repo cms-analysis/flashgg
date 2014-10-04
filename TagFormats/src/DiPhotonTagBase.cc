@@ -8,15 +8,15 @@ DiPhotonTagBase::DiPhotonTagBase(){}
 
 DiPhotonTagBase::~DiPhotonTagBase(){}
 
-DiPhotonTagBase::DiPhotonTagBase(edm::Ptr<flashgg::DiPhotonCandidate> diPho,edm::Ptr<flashgg::DiPhotonMVAResult> mvaRes) {
+DiPhotonTagBase::DiPhotonTagBase(edm::Ptr<flashgg::DiPhotonCandidate> diPho,edm::Ptr<DiPhotonMVAResult> mvaRes) {
   addDaughter(*diPho);
   AddFourMomenta addP4;
   addP4.set(*this);
-  mva_result_ = mvaRes;
+  mva_result_ = *mvaRes; // copies 
 }
-const flashgg::DiPhotonCandidate* DiPhotonTagBase::diPhoton() const {
+const DiPhotonCandidate* DiPhotonTagBase::diPhoton() const {
   return dynamic_cast<const flashgg::DiPhotonCandidate*> (daughter(0));
 }
-const edm::Ptr<flashgg::DiPhotonMVAResult> DiPhotonTagBase::diPhotonMVA() const {
+const DiPhotonMVAResult DiPhotonTagBase::diPhotonMVA() const {
   return mva_result_;
 }

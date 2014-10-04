@@ -10,11 +10,11 @@ namespace flashgg {
   public:
     DiPhotonTagBase();
     ~DiPhotonTagBase();
-    DiPhotonTagBase(edm::Ptr<flashgg::DiPhotonCandidate>,edm::Ptr<flashgg::DiPhotonMVAResult>);
-    const flashgg::DiPhotonCandidate* diPhoton() const;
-    const edm::Ptr<flashgg::DiPhotonMVAResult> diPhotonMVA() const;
+    DiPhotonTagBase(edm::Ptr<DiPhotonCandidate>,edm::Ptr<DiPhotonMVAResult>);
+    const DiPhotonCandidate* diPhoton() const;
+    const DiPhotonMVAResult diPhotonMVA() const;
   private:
-    edm::Ptr<flashgg::DiPhotonMVAResult> mva_result_;
+    DiPhotonMVAResult mva_result_;
   };
 
 }
