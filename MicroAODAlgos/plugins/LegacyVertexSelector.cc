@@ -217,7 +217,7 @@ namespace flashgg {
     double ReturnValue = 0;
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
 
-      if(fabs(pho->superCluster()->eta()<1.5)) { 
+      if(fabs(pho->superCluster()->eta())<1.5) { 
 	if (perp<=15.0) {
 	  //Pixel Barrel
 	  ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
