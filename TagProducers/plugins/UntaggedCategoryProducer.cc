@@ -39,8 +39,6 @@ namespace flashgg {
     mvaResultToken_(consumes<View<flashgg::DiPhotonMVAResult> >(iConfig.getUntrackedParameter<InputTag> ("MVAResultTag", InputTag("flashggDiPhotonMVAResults"))))
 
   {
-    std::cout << " In UntaggedCategoryProducer constructor " << std::endl;
-
     vector<double> default_boundaries;
     default_boundaries.push_back(0.07);
     default_boundaries.push_back(0.31);
@@ -49,29 +47,23 @@ namespace flashgg {
     default_boundaries.push_back(0.98);
 
     // getUntrackedParameter<vector<float> > has no library, so we use double transiently
-    iConfig.getUntrackedParameter<vector<double > >("Boundaries",default_boundaries);
+    boundaries = iConfig.getUntrackedParameter<vector<double > >("Boundaries",default_boundaries);
 
     assert(is_sorted(boundaries.begin(),boundaries.end())); // we are counting on ascending order - update this to give an error message or exception
 
     produces<vector<DiPhotonUntaggedCategory> >();
-
-    std::cout << " In UntaggedCategoryProducer constructor after produces " << std::endl;
   }
   
   int UntaggedCategoryProducer::chooseCategory(float mvavalue) {
     // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
-    // At the moment we return a category number even if below the lowest value, this can be changed if we want
-    // So there are a total of boundaries.size() categories, of which the largest could be thrown out entirely
     int n;
-    for (n = boundaries.size() ; n > 0 ; n--) {
-      if ((double)mvavalue > boundaries[n-1]) break;
+    for (n = 0 ; n < (int)boundaries.size() ; n++) {
+      if ((double)mvavalue > boundaries[boundaries.size()-n-1]) return n;
     }
-    return n;
+    return -1; // Does not pass, object will not be produced
   }
 
   void UntaggedCategoryProducer::produce( Event & evt, const EventSetup & ) {
-
-    std::cout << " In UntaggedCategoryProducer produce " << std::endl;
 
     Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
     evt.getByToken(diPhotonToken_,diPhotons);
@@ -93,10 +85,13 @@ namespace flashgg {
 
       int catnum = chooseCategory(mvares->result);
       tag_obj.setCategoryNumber(catnum);
-
+      
+      // Leave in debugging statement temporarily while tag framework is being developed
       std::cout << "MVA is "<< mvares->result << " and category is " << tag_obj.getCategoryNumber() << std::endl;
 
-      tags->push_back(tag_obj);
+      if (tag_obj.getCategoryNumber() >= 0) {
+	tags->push_back(tag_obj);
+      }
     }
     evt.put(tags);
 

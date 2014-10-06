@@ -47,14 +47,15 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
                                                                      )
                                )
 
+
+
 process.p = cms.Path(process.flashggVertexMapUnique*
                      process.flashggVertexMapNonUnique*
                      process.flashggPhotons*
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
-                     process.flashggDiPhotonMVA*
-                     process.flashggJets*
-                     process.flashggUntaggedCategory
+                     (process.flashggDiPhotonMVA+process.flashggJets)* # These two could run in parallel, so use +
+                     (process.flashggUntaggedCategory) # Tag producers, once written, can run in parallel, so they go in here with +
                     )
 
 process.e = cms.EndPath(process.out)

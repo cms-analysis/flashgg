@@ -26,11 +26,10 @@ namespace flashgg {
     void produce( Event &, const EventSetup & ) override;
 
     EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
-    edm::EDGetTokenT<edm::View<reco::BeamSpot> > beamSpotToken_;
+    EDGetTokenT<edm::View<reco::BeamSpot> > beamSpotToken_;
 
-    TMVA::Reader * DiphotonMva_;
-    //    bool DiphotonMva_initialized;
-    edm::FileInPath diphotonMVAweightfile_;
+    unique_ptr<TMVA::Reader>DiphotonMva_;
+    FileInPath diphotonMVAweightfile_;
 
     float sigmarv_;
     float sigmawv_;
@@ -49,8 +48,6 @@ namespace flashgg {
     diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
     beamSpotToken_(consumes<View<reco::BeamSpot> >(iConfig.getUntrackedParameter<InputTag>("BeamSpotTag",InputTag("offlineBeamSpot"))))
   {
-    std::cout << " In constructor " << std::endl;
-
     diphotonMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("diphotonMVAweightfile");
 
     sigmarv_ = 0.;
@@ -64,7 +61,7 @@ namespace flashgg {
     leadmva_ = 0.;
     subleadmva_ = 0.;
 
-    DiphotonMva_ = new TMVA::Reader("!Color:Silent");
+    DiphotonMva_.reset(new TMVA::Reader("!Color:Silent"));
     DiphotonMva_->AddVariable("masserrsmeared/mass",&sigmarv_);
     DiphotonMva_->AddVariable("masserrsmearedwrongvtx/mass",&sigmawv_);
     DiphotonMva_->AddVariable("vtxprob",&vtxprob_);
@@ -77,18 +74,10 @@ namespace flashgg {
     DiphotonMva_->AddVariable("ph2.idmva",&subleadmva_);
     DiphotonMva_->BookMVA("BDT",diphotonMVAweightfile_.fullPath());
 
-    std::cout << " In constructor after getting filename for  MVA and booking it" << std::endl;
-
-    //    produces<DiPhotonMVAResultMap>();
     produces<vector<DiPhotonMVAResult> >(); // one per diphoton, always in same order, vector is more efficient than map
-
-    std::cout << " In constructor after produces " << std::endl;
   }
   
   void DiPhotonMVAProducer::produce( Event & evt, const EventSetup & ) {
-
-    std::cout << " In produce " << std::endl;
-
     Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
     evt.getByToken(diPhotonToken_,diPhotons);
     const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
@@ -99,10 +88,9 @@ namespace flashgg {
     if (recoBeamSpotHandle.isValid()){
       beamsig = recoBeamSpotHandle->sigmaZ();
     } else {
-      beamsig = -9999; // I hope this never happens!
+      beamsig = -9999; // I hope this never happens! But it seems to in our default test, what's going wrong??
     }
-
-    std::cout << " Got beamsig " << beamsig << std::endl;
+    std::cout << "beamsig is " << beamsig << std::endl;
 
     //    std::auto_ptr<DiPhotonMVAResultMap> assoc(new DiPhotonMVAResultMap);
     std::auto_ptr<vector<DiPhotonMVAResult> > results(new vector<DiPhotonMVAResult>); // one per diphoton, always in same order, vector is more efficient than map
@@ -153,17 +141,9 @@ namespace flashgg {
       mvares.CosPhi = CosPhi_;
       mvares.vtxprob = vtxprob_;
 
-      std::cout << " Got result " << mvares.result << std::endl;
-
-      //      assoc->insert(std::make_pair(diPhotonPointers[candIndex],mvares));
       results->push_back(mvares);
-      std::cout << "Result in result array" << std::endl;
     }
     evt.put(results);
-    std::cout<< "Results in events" << std::endl;
-    //    std::auto_ptr<float> fake_assoc(new float(0.));
-    //    std::auto_ptr<flashgg::DiPhotonMVAResult> fake_assoc(new flashgg::DiPhotonMVAResult);
-    //    evt.put(fake_assoc);
   }
 }
 
