@@ -42,12 +42,16 @@ namespace flashgg {
     float leadmva_;
     float subleadmva_;
 
+    double vertex_prob_slope_;
+
   };
 
   DiPhotonMVAProducer::DiPhotonMVAProducer(const ParameterSet & iConfig) :
     diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
     beamSpotToken_(consumes<View<reco::BeamSpot> >(iConfig.getUntrackedParameter<InputTag>("BeamSpotTag",InputTag("offlineBeamSpot"))))
   {
+    vertex_prob_slope_ = iConfig.getParameter<double>("VertexProbSlope"); // 0.49 in legacy, 0.40 in first-pass flashgg fit
+
     diphotonMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("diphotonMVAweightfile");
 
     sigmarv_ = 0.;
@@ -126,7 +130,7 @@ namespace flashgg {
       sigmarv_        = .5*sqrt((g1->getSigEOverE())*(g1->getSigEOverE()) + (g2->getSigEOverE())*(g2->getSigEOverE()));
       sigmawv_        = MassResolutionWrongVtx;
       CosPhi_         = TMath::Cos(g1->phi()-g2->phi());
-      vtxprob_        =  1.-.49*(1+diPhotonPointers[candIndex]->getVtxProbMVA());
+      vtxprob_        =  1.-vertex_prob_slope_*(1+diPhotonPointers[candIndex]->getVtxProbMVA());
 
       mvares.result = DiphotonMva_->EvaluateMVA("BDT");
 
