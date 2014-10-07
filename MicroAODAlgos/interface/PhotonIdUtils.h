@@ -52,7 +52,7 @@ namespace flashgg {
 
     std::map<edm::Ptr<reco::Vertex>,float> computeMVAWrtAllVtx( flashgg::Photon&, const edm::PtrVector<reco::Vertex>&, const double );
     
-    TMVA::Reader *phoIdMva;
+    std::shared_ptr<TMVA::Reader> phoIdMva;
 
 
   private: 
@@ -74,8 +74,8 @@ namespace flashgg {
     float phoIdMva_rho_;                    
     float phoIdMva_ESEffSigmaRR_;           
 
-    TMVA::Reader *phoIdMva_2012_EB_;
-    TMVA::Reader *phoIdMva_2012_EE_;
+    std::shared_ptr<TMVA::Reader> phoIdMva_2012_EB_;
+    std::shared_ptr<TMVA::Reader> phoIdMva_2012_EE_;
 
   };
 

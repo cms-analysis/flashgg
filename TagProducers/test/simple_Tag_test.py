@@ -28,6 +28,10 @@ process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggJets_cfi")
 
+#Tag stuff
+process.load("flashgg/TagProducers/flashggDiPhotonMVA_cfi")
+process.load("flashgg/TagProducers/flashggTags_cfi")
+
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFile.root'),
                                outputCommands = cms.untracked.vstring("drop *",
                                                                       "keep *_flashgg*_*_*",
@@ -43,22 +47,15 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
                                                                      )
                                )
 
-#process.commissioning = cms.EDAnalyzer('flashggCommissioning',
-#                                       PhotonTag=cms.untracked.InputTag('flashggPhotons'),
-#                                       DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
-#                                       VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
-#)
 
-#process.TFileService = cms.Service("TFileService",
-#                                   fileName = cms.string("tree.root")
-#)
 
 process.p = cms.Path(process.flashggVertexMapUnique*
                      process.flashggVertexMapNonUnique*
                      process.flashggPhotons*
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
-                     process.flashggJets
+                     (process.flashggDiPhotonMVA+process.flashggJets)* # These two could run in parallel, so use +
+                     (process.flashggUntaggedCategory) # Tag producers, once written, can run in parallel, so they go in here with +
                     )
 
 process.e = cms.EndPath(process.out)
