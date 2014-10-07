@@ -4,5 +4,4 @@
 <use   name="flashgg/TagFormats"/>
 <use   name="roottmva"/>
 <flags   EDM_PLUGIN="1"/>
-<flags   CXXFLAGS="-g"/>
 </library>
