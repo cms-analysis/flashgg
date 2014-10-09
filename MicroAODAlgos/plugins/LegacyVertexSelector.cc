@@ -246,7 +246,7 @@ namespace flashgg {
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
 
     if (conversion->nTracks()==2) {
-      if ( fabs(pho->eta()<1.5) ) { // barrel
+      if ( fabs(pho->superCluster()->eta()<1.5) ) { // barrel
 	if ( perp <=15 ) {
 	  if (method==0) dz=sigma1Pix;
 	  if (method==1) dz=sigma1Pix;
@@ -278,7 +278,7 @@ namespace flashgg {
 	}
       }
     } else if (conversion->nTracks()==1) {
-      if ( fabs(pho->eta()) <1.5 ) { // barrel
+      if ( fabs(pho->superCluster()->eta()<1.5) ) { // barrel
 	if ( perp <=15 ) {
 	  if (method==0) dz=singlelegsigma1Pix;
 	  if (method==1) dz=singlelegsigma1Pix;
@@ -418,11 +418,6 @@ namespace flashgg {
     float second_max_mva_value=-999;
     float third_max_mva_value=-999;
 
-    std::vector<TLorentzVector> diphoton_objects_vector;
-    std::vector<float> mass_reswrongvtx_vector;
-    diphoton_objects_vector.clear();
-    mass_reswrongvtx_vector.clear();
- 
     if (!initialized_) {
       Initialize();
     }
@@ -442,11 +437,6 @@ namespace flashgg {
       p14.SetPxPyPzE(Photon1Dir_uv.x(),Photon1Dir_uv.y(),Photon1Dir_uv.z(),g1->superCluster()->rawEnergy()); 
       p24.SetPxPyPzE(Photon2Dir_uv.x(),Photon2Dir_uv.y(),Photon2Dir_uv.z(),g2->superCluster()->rawEnergy()); 
      
-      TLorentzVector diphoton_objects;
-      diphoton_objects = p14+p24;
- 
-      diphoton_objects_vector.push_back(diphoton_objects);  
-
       TVector2 sumpt;
       double sumpt2_out = 0; 
       double sumpt2_in = 0; 

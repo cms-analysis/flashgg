@@ -19,7 +19,7 @@
     
   }
   
-  TFile f("myOutputFilex-1.root");
+  TFile f("myOutputFile.root");
   TTree *Events = f.Get("Events");
   //Events->Print();
   Events->SetScanField(0);
@@ -38,11 +38,13 @@
   TH1F * histo_ptbal = new TH1F("ptbal normalized","ptbal normalized",100,-200.,350.);
   TH1F * histo_ptasym = new TH1F("ptasym normalized","ptasym normalized",100,-1,1);
   TH1F * histo_pull_conv = new TH1F("pull conv","pull conv",100,-300.,3500.);
+  TH1F * histo_vtxprobmva = new TH1F("vtxprobmva","vtxprobmva",20,-1.,1.);
   
   TH1F * histo_gen_matched_sumpt2 = new TH1F("sumpt2","sumpt2",100,-5.,15.);
   TH1F * histo_gen_matched_ptbal = new TH1F("ptbal normalized","ptbal  normalized",100,-200.,350.);
   TH1F * histo_gen_matched_ptasym = new TH1F("ptasym normalized","ptasym normalized",100,-1.,1.);
   TH1F * histo_gen_matched_pull_conv = new TH1F("pull conv","pull conv",100,-300.,3500.);
+  TH1F * histo_gen_matched_vtxprobmva = new TH1F("vtxprobmva","vtxprobmva",20,-1.,1.);
 
   fwlite::Event ev(&f);
 
@@ -73,11 +75,15 @@
       //cout<<"dipho.vertex.z="<<dipho[i].getVertex()->position().z()<<" higgs.z="<<z_higgs<<endl;
       bool gen_matched = (fabs(dipho[i].getVertex()->position().z()-z_higgs)<1.);//we consider gen-matched when less than 1cm
       //cout<<dipho[i].getLogSumPt2()<<endl;
+      
+      histo_vtxprobmva->Fill(dipho[i].getVtxProbMVA());
+	
       if(gen_matched){
 	histo_gen_matched_sumpt2->Fill(dipho[i].getLogSumPt2());
 	histo_gen_matched_ptbal->Fill(dipho[i].getPtBal());
 	histo_gen_matched_ptasym->Fill(dipho[i].getPtAsym());
 	histo_gen_matched_pull_conv->Fill(dipho[i].getPullConv());
+	histo_gen_matched_vtxprobmva->Fill(dipho[i].getVtxProbMVA());
       }else{
 	histo_sumpt2->Fill(dipho[i].getLogSumPt2());
 	histo_ptbal->Fill(dipho[i].getPtBal());
@@ -86,7 +92,7 @@
       }
     }
   }
-  
+
   histo_gen_matched_sumpt2->SetLineColor(kBlue);
   histo_gen_matched_ptbal->SetLineColor(kBlue);
   histo_gen_matched_ptasym->SetLineColor(kBlue);
@@ -157,8 +163,24 @@
   histo_ptasym->Delete();
   histo_pull_conv->Delete();
   
-  exit(0);
+  TCanvas * Ca1 = new TCanvas("Ca1","Canvas",1200,800); 
+  TGraphAsymmErrors * efficiency =new TGraphAsymmErrors(histo_gen_matched_vtxprobmva,histo_vtxprobmva);
+  efficiency->SetTitle("Vertex Assignment probability < 1.cm w.r.t GEN higgs vs vertex probability MVA");
+  efficiency->GetXaxis()->SetTitle("MVA_{prob}");
+  efficiency->GetYaxis()->SetTitle("#epsilon");
+  efficiency->SetMarkerColor(kRed);
+  efficiency->SetMarkerStyle(23);
+  efficiency->SetMarkerSize(2);
+  efficiency->GetXaxis()->SetRangeUser(-1.,1.);
+  efficiency->GetYaxis()->SetRangeUser(0.,1.);
+  TF1 * line=new TF1("line","[1]*x+[0]",-1,1);
+  efficiency->Fit("line");
+  efficiency->Draw("AP");
+  line->Draw("same");
+  Ca1->SaveAs("vtxprobmva.png");
   
+  exit(0);
+
 }
 
 
