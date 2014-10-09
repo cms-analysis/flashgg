@@ -19,7 +19,7 @@
     
   }
   
-  TFile f("myOutputFile.root");
+  TFile f("../../MicroAODProducers/test/myOutputFile.root");
   TTree *Events = f.Get("Events");
   //Events->Print();
   Events->SetScanField(0);
@@ -34,13 +34,13 @@
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 #endif
   
-  TH1F * histo_sumpt2 = new TH1F("sumpt2 in","sumpt2",100,-5.,15.);
+  TH1F * histo_sumpt2 = new TH1F("sumpt2 in","sumpt2",100,0.,15.);
   TH1F * histo_ptbal = new TH1F("ptbal normalized","ptbal normalized",100,-200.,350.);
   TH1F * histo_ptasym = new TH1F("ptasym normalized","ptasym normalized",100,-1,1);
   TH1F * histo_pull_conv = new TH1F("pull conv","pull conv",100,-300.,3500.);
   TH1F * histo_vtxprobmva = new TH1F("vtxprobmva","vtxprobmva",20,-1.,1.);
   
-  TH1F * histo_gen_matched_sumpt2 = new TH1F("sumpt2","sumpt2",100,-5.,15.);
+  TH1F * histo_gen_matched_sumpt2 = new TH1F("sumpt2","sumpt2",100,0.,15.);
   TH1F * histo_gen_matched_ptbal = new TH1F("ptbal normalized","ptbal  normalized",100,-200.,350.);
   TH1F * histo_gen_matched_ptasym = new TH1F("ptasym normalized","ptasym normalized",100,-1.,1.);
   TH1F * histo_gen_matched_pull_conv = new TH1F("pull conv","pull conv",100,-300.,3500.);
@@ -113,7 +113,7 @@
   histo_ptasym->SetLineWidth(3);
   histo_pull_conv->SetLineWidth(3);
   
-  TLegend *leg = new TLegend(0.45,0.93,0.89,0.7);
+  TLegend *leg = new TLegend(0.55,0.88,0.98,0.70);
   leg->AddEntry(histo_gen_matched_sumpt2,"higgs vertex match (dz<1.cm)","lp");
   leg->AddEntry(histo_sumpt2,"the rest of vertices","lp");
   leg->SetFillColor(0);
