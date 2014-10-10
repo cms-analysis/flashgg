@@ -34,16 +34,18 @@
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 #endif
   
+  gStyle->SetOptStat(0);
+  
   TH1F * histo_sumpt2 = new TH1F("sumpt2 in","sumpt2",100,0.,15.);
   TH1F * histo_ptbal = new TH1F("ptbal normalized","ptbal normalized",100,-200.,350.);
   TH1F * histo_ptasym = new TH1F("ptasym normalized","ptasym normalized",100,-1,1);
-  TH1F * histo_pull_conv = new TH1F("pull conv","pull conv",100,-300.,3500.);
+  TH1F * histo_pull_conv = new TH1F("pull conv","pull conv",100,0.,11.);
   TH1F * histo_vtxprobmva = new TH1F("vtxprobmva","vtxprobmva",20,-1.,1.);
   
   TH1F * histo_gen_matched_sumpt2 = new TH1F("sumpt2","sumpt2",100,0.,15.);
   TH1F * histo_gen_matched_ptbal = new TH1F("ptbal normalized","ptbal  normalized",100,-200.,350.);
   TH1F * histo_gen_matched_ptasym = new TH1F("ptasym normalized","ptasym normalized",100,-1.,1.);
-  TH1F * histo_gen_matched_pull_conv = new TH1F("pull conv","pull conv",100,-300.,3500.);
+  TH1F * histo_gen_matched_pull_conv = new TH1F("pull conv","pull conv",100,0.,11.);
   TH1F * histo_gen_matched_vtxprobmva = new TH1F("vtxprobmva","vtxprobmva",20,-1.,1.);
 
   fwlite::Event ev(&f);
@@ -72,23 +74,24 @@
     
     std::vector<flashgg::DiPhotonCandidate> const & dipho = *objs_dipho;
     for (int i=0; i < objs_dipho.ptr()->size();i++ ){
-      //cout<<"dipho.vertex.z="<<dipho[i].getVertex()->position().z()<<" higgs.z="<<z_higgs<<endl;
       bool gen_matched = (fabs(dipho[i].getVertex()->position().z()-z_higgs)<1.);//we consider gen-matched when less than 1cm
-      //cout<<dipho[i].getLogSumPt2()<<endl;
-      
+    
       histo_vtxprobmva->Fill(dipho[i].getVtxProbMVA());
-	
       if(gen_matched){
 	histo_gen_matched_sumpt2->Fill(dipho[i].getLogSumPt2());
 	histo_gen_matched_ptbal->Fill(dipho[i].getPtBal());
 	histo_gen_matched_ptasym->Fill(dipho[i].getPtAsym());
-	histo_gen_matched_pull_conv->Fill(dipho[i].getPullConv());
+	if(dipho[i].getNConv()!=0){
+	  histo_gen_matched_pull_conv->Fill(dipho[i].getPullConv());
+	}
 	histo_gen_matched_vtxprobmva->Fill(dipho[i].getVtxProbMVA());
       }else{
 	histo_sumpt2->Fill(dipho[i].getLogSumPt2());
 	histo_ptbal->Fill(dipho[i].getPtBal());
 	histo_ptasym->Fill(dipho[i].getPtAsym());
-	histo_pull_conv->Fill(dipho[i].getPullConv());
+	if(dipho[i].getNConv()!=0){
+	  histo_pull_conv->Fill(dipho[i].getPullConv());
+	}
       }
     }
   }
@@ -139,14 +142,14 @@
   Ca0_3->cd(); 
   histo_ptasym->GetXaxis()->SetTitle("ptasym");
   histo_gen_matched_ptasym->GetXaxis()->SetTitle("ptasym");
-  histo_ptasym->DrawNormalized(); 
-  histo_gen_matched_ptasym->DrawNormalized("same");
+  histo_gen_matched_ptasym->DrawNormalized("");
+  histo_ptasym->DrawNormalized("same"); 
   leg->Draw("same");
   //Ca0_3->SetLogy();
   
   Ca0_4->cd(); 
-  histo_pull_conv->Draw(); 
-  histo_gen_matched_pull_conv->Draw("same");
+  histo_gen_matched_pull_conv->Draw();
+  histo_pull_conv->Draw("same"); 
   leg->Draw("same");
   histo_pull_conv->GetXaxis()->SetTitle("pull_conv");
   histo_gen_matched_pull_conv->GetXaxis()->SetTitle("pull_conv");  

@@ -168,16 +168,14 @@ namespace flashgg {
 
 
   double LegacyVertexSelector::vtxZFromConvOnly(const edm::Ptr<flashgg::Photon>& pho,const edm::Ptr<reco:: Conversion> & conversion,const math::XYZPoint & beamSpot) const{
-
     double r=sqrt(conversion->refittedPairMomentum().perp2());
     double dz = (conversion->conversionVertex().z()-beamSpot.z()) 
       - 
       ((conversion->conversionVertex().x()-beamSpot.x())*conversion->refittedPair4Momentum().x()+(conversion->conversionVertex().y()-beamSpot.y())*conversion->refittedPair4Momentum().y())/r * conversion->refittedPair4Momentum().z()/r;
     return dz + beamSpot.z();
   }
-
+  
   double LegacyVertexSelector::vtxZFromConvSuperCluster (const edm::Ptr<flashgg::Photon>& pho,const edm::Ptr<reco:: Conversion> & conversion,const math::XYZPoint & beamSpot) const{
-
     // get the z from conversion plus SuperCluster
     double deltaX1 =  pho->caloPosition().x()- conversion->conversionVertex().x();
     double deltaY1 =  pho->caloPosition().y()- conversion->conversionVertex().y();
@@ -467,21 +465,25 @@ namespace flashgg {
 
       ptasym = (sumpt.Mod() - (p14+p24).Vect().XYvector().Mod())/(sumpt.Mod() + (p14+p24).Vect().XYvector().Mod());
       ptasym_ = ptasym;
-      double zconv=0;
-      double szconv=0;
-      zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot); //,param);
-      szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector); // ,param);
-      float nConv = conversionsVector.size();      
-      float pull_conv = 0;
-      if(zconv==0 && szconv==0.0){
-      //FIXME WHAT TO DO WHEN WE DON'T HAVE PULL_CONV CASE? 
-      // Shouldn't matter what we put in...?  TODO: test this...
-      }else{
-        pull_conv = fabs(vtx->position().z()-zconv)/szconv;
+      
+      float nConv = 0;
+      if (IndexMatchedConversionLeadPhoton != -1) ++nConv;
+      if (IndexMatchedConversionTrailPhoton != -1) ++nConv;
+      float zconv=0;
+      float szconv=0;
+      float pull_conv = 999;
+      
+      if (nConv !=0){
+	zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot);
+	szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector);
+	if(szconv != 0){
+	  pull_conv = fabs(vtx->position().z()-zconv)/szconv;
+	}else{
+	  pull_conv = 10.;
+	}
       }
-
-      // Truncate at 10. TODO : confirm... Turn off for the meantime
-      //      if (pull_conv > 10.) pull_conv = 10.;
+      
+      if(pull_conv>10.)pull_conv = 10.;  
       
       logsumpt2_=log(sumpt2_in+sumpt2_out);
       ptbal_=ptbal;
