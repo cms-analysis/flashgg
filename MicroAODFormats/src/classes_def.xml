@@ -7,6 +7,10 @@
  <class name="flashgg::DiPhotonCandidate"/>
  <class name="std::vector<flashgg::DiPhotonCandidate>"/>
  <class name="edm::Wrapper<std::vector<flashgg::DiPhotonCandidate> >"/>
+ <class name="edm::Ptr<flashgg::DiPhotonCandidate>"/>
+ <class name="edm::Wrapper<edm::Ptr<flashgg::DiPhotonCandidate> >"/>
+ <class name="std::vector<edm::Ptr<flashgg::DiPhotonCandidate> >"/>
+ <class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::DiPhotonCandidate> > >"/>
  <class name="flashgg::Jet"/>
  <class name="std::vector<flashgg::Jet>"/>
  <class name="edm::PtrVector<pat::PackedCandidate>"/>

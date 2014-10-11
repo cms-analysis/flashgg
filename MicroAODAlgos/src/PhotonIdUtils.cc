@@ -8,12 +8,17 @@ using namespace flashgg;
 
 PhotonIdUtils::PhotonIdUtils() {};
 PhotonIdUtils::~PhotonIdUtils() {
-    delete phoIdMva;
-    delete phoIdMva_2012_EB_;
-    delete phoIdMva_2012_EE_;
-    phoIdMva = 0;
-    phoIdMva_2012_EB_ = 0;
-    phoIdMva_2012_EE_ = 0;
+  // These delete commands caused an unpredictable segfault,
+  // because phoIdMva was pointing to the same place as either phoIdMva_2012_EB_ or phoIdMva_2012_EE_.
+  // So something got deleted twice, which is not allowed and can cause memory issues.
+  // Replaced with shared_ptr that do not have this problem: 
+  // they keep count internally and delete their memory automagically when they go out of scope.
+  //    delete phoIdMva;
+  //    delete phoIdMva_2012_EB_;
+  //    delete phoIdMva_2012_EE_;
+  //    phoIdMva = 0;
+  //    phoIdMva_2012_EB_ = 0;
+  //    phoIdMva_2012_EE_ = 0;
 };
 
 // *****************************************************************************************************************
@@ -177,7 +182,7 @@ void PhotonIdUtils::setupMVA( const std::string& xmlfilenameEB, const std::strin
  
   string mvamethod = "BDT";
   
-  phoIdMva_2012_EB_ = new TMVA::Reader("!Color:Silent");
+  phoIdMva_2012_EB_ = std::make_shared<TMVA::Reader>("!Color:Silent");
  
   phoIdMva_2012_EB_->AddVariable( "ph.scrawe", &phoIdMva_SCRawE_);
   phoIdMva_2012_EB_->AddVariable( "ph.r9",                &phoIdMva_R9_ );
@@ -195,7 +200,7 @@ void PhotonIdUtils::setupMVA( const std::string& xmlfilenameEB, const std::strin
 
   // **** bdt 2012 EE ****
 
-  phoIdMva_2012_EE_ = new TMVA::Reader("!Color:Silent");
+  phoIdMva_2012_EE_ = std::make_shared<TMVA::Reader>("!Color:Silent");
   
   phoIdMva_2012_EE_->AddVariable( "ph.scrawe", &phoIdMva_SCRawE_);
   phoIdMva_2012_EE_->AddVariable( "ph.r9",                &phoIdMva_R9_ );

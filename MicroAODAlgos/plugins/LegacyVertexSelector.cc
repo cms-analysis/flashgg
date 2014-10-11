@@ -467,21 +467,27 @@ namespace flashgg {
 
       ptasym = (sumpt.Mod() - (p14+p24).Vect().XYvector().Mod())/(sumpt.Mod() + (p14+p24).Vect().XYvector().Mod());
       ptasym_ = ptasym;
+
+      float nConv = 0;
+      if(IndexMatchedConversionLeadPhoton != -1) ++nConv;
+      if(IndexMatchedConversionTrailPhoton != -1) ++nConv;
+
+      float pull_conv = -999;
+     
+      if(nConv !=0){
       double zconv=0;
       double szconv=0;
       zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot); //,param);
       szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector); // ,param);
-      float nConv = conversionsVector.size();      
+      //float nConv = conversionsVector.size();      
       float pull_conv = 0;
-      if(zconv==0 && szconv==0.0){
-      //FIXME WHAT TO DO WHEN WE DON'T HAVE PULL_CONV CASE? 
-      // Shouldn't matter what we put in...?  TODO: test this...
-      }else{
-        pull_conv = fabs(vtx->position().z()-zconv)/szconv;
-      }
+      if(szconv!=0){ pull_conv = fabs(vtx->position().z()-zconv)/szconv;
+      }else {pull_conv = 10.;
+       }
+      if(pull_conv > 10.){ pull_conv = 10.;
+     }
+ }
 
-      // Truncate at 10. TODO : confirm... Turn off for the meantime
-      //      if (pull_conv > 10.) pull_conv = 10.;
       
       logsumpt2_=log(sumpt2_in+sumpt2_out);
       ptbal_=ptbal;
