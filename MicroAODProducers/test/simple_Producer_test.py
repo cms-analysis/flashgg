@@ -10,7 +10,11 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 
+<<<<<<< HEAD
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( -1 ) )
+=======
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 100 ) )
+>>>>>>> origin/master
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 # Uncomment the following if you notice you have a memory leak
@@ -22,7 +26,29 @@ process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT.root"))
 
+<<<<<<< HEAD
 process.load("flashgg/MicroAODProducers/flashggVertexMaps_cfi")
+=======
+process.flashggVertexMapUnique = cms.EDProducer('FlashggDzVertexMapProducer',
+                                                PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
+                                                VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                                BeamSpotTag=cms.untracked.InputTag('offlineBeamSpot'),
+                                                MaxAllowedDz=cms.double(0.2) # in cm
+                                                )
+
+# Tracks will show up as associated to every vertex for which dZ < MaxAllowedDz
+process.flashggVertexMapNonUnique = cms.EDProducer('FlashggDzVertexMapProducer',
+                                                   PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
+                                                   VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                                   MaxAllowedDz=cms.double(0.2), # in cm
+                                                   UseEachTrackOnce=cms.untracked.bool(False)
+                                                   )
+
+
+
+
+process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
+>>>>>>> origin/master
 process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
@@ -38,6 +64,25 @@ process.prunedGenParticles = cms.EDProducer(
     )
 )
 
+<<<<<<< HEAD
+=======
+process.prunedGenParticles = cms.EDProducer(
+    "GenParticlePruner",
+    src = cms.InputTag("genParticles"),
+    select = cms.vstring(
+    "drop  *  ", # this is the default
+    "keep++ pdgId = 25",
+    )
+)
+
+process.flashggJets = cms.EDProducer('FlashggJetProducer',
+                                     DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                     VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                     JetTag=cms.untracked.InputTag('slimmedJets'),
+                                     VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
+                                     PileupJetIdParameters=cms.PSet(process.full_53x) # from PileupJetIDParams_cfi
+                                     )
+>>>>>>> origin/master
 
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFilex-1.root'),
                                outputCommands = cms.untracked.vstring("drop *",
@@ -70,13 +115,7 @@ process.p = cms.Path(process.flashggVertexMapUnique*
                      process.flashggPhotons*
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
-<<<<<<< HEAD
-                     process.flashggJets*
-                     process.prunedGenParticles
-#                    process.commissioning
-=======
                      process.flashggJets
->>>>>>> 94ce06b8d3dde9cc4ac42955bcdcd91a1df5b97d
                     )
 
 process.e = cms.EndPath(process.out)

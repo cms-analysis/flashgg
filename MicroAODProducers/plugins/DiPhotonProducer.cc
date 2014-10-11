@@ -15,7 +15,7 @@
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
-
+#include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 
 using namespace edm;
 using namespace std;
@@ -34,7 +34,6 @@ namespace flashgg {
     unique_ptr<VertexSelectorBase> vertexSelector_;
     EDGetTokenT<View<reco::Conversion> > conversionToken_;
     EDGetTokenT<View<reco::BeamSpot> > beamSpotToken_;
-
 
   };
 
@@ -78,8 +77,8 @@ namespace flashgg {
       //      beamsig = recoBeamSpotHandle->sigmaZ();
     }
 
-    
-    auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
+
+      auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
 //    cout << "evt.id().event()= " << evt.id().event() << "\tevt.isRealData()= " << evt.isRealData() << "\tphotonPointers.size()= " << photonPointers.size() << "\tpvPointers.size()= " << pvPointers.size() << endl;
 
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
