@@ -30,24 +30,11 @@ process.flashggVertexMapUnique = cms.EDProducer('FlashggDzVertexMapProducer',
                                                 MaxAllowedDz=cms.double(0.2) # in cm
                                                 )
 
-# Tracks will show up as associated to every vertex for which dZ < MaxAllowedDz
-process.flashggVertexMapNonUnique = cms.EDProducer('FlashggDzVertexMapProducer',
-                                                   PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
-                                                   VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
-                                                   MaxAllowedDz=cms.double(0.2), # in cm
-                                                   UseEachTrackOnce=cms.untracked.bool(False)
-                                                   )
-
-
-
-
-process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
+process.load("flashgg/MicroAODProducers/flashggVertexMaps_cfi")
 process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
-                                                 
-# This requires you to have done: git cms-merge-topic -u sethzenz:pileupjetid-for-flashgg
-process.load("RecoJets.JetProducers.PileupJetIDParams_cfi")
+process.load("flashgg/MicroAODProducers/flashggJets_cfi")
 
 process.prunedGenParticles = cms.EDProducer(
     "GenParticlePruner",
