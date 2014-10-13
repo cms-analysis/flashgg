@@ -26,7 +26,7 @@ namespace flashgg {
     void produce( Event &, const EventSetup & ) override;
 
     EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
-    EDGetTokenT<edm::View<reco::BeamSpot> > beamSpotToken_;
+    EDGetTokenT<reco::BeamSpot > beamSpotToken_;
 
     unique_ptr<TMVA::Reader>DiphotonMva_;
     FileInPath diphotonMVAweightfile_;
@@ -48,7 +48,7 @@ namespace flashgg {
 
   DiPhotonMVAProducer::DiPhotonMVAProducer(const ParameterSet & iConfig) :
     diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
-    beamSpotToken_(consumes<View<reco::BeamSpot> >(iConfig.getUntrackedParameter<InputTag>("BeamSpotTag",InputTag("offlineBeamSpot"))))
+    beamSpotToken_(consumes<reco::BeamSpot >(iConfig.getUntrackedParameter<InputTag>("BeamSpotTag",InputTag("offlineBeamSpot"))))
   {
     vertex_prob_slope_ = iConfig.getParameter<double>("VertexProbSlope"); // 0.49 in legacy, 0.40 in first-pass flashgg fit
 
