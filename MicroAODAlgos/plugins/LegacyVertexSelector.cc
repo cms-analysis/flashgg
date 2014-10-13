@@ -244,7 +244,7 @@ namespace flashgg {
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
 
     if (conversion->nTracks()==2) {
-      if ( fabs(pho->superCluster()->eta()<1.5) ) { // barrel
+      if ( fabs(pho->superCluster()->eta())<1.5 ) { // barrel
 	if ( perp <=15 ) {
 	  if (method==0) dz=sigma1Pix;
 	  if (method==1) dz=sigma1Pix;
@@ -276,7 +276,7 @@ namespace flashgg {
 	}
       }
     } else if (conversion->nTracks()==1) {
-      if ( fabs(pho->superCluster()->eta()<1.5) ) { // barrel
+      if ( fabs(pho->superCluster()->eta())<1.5 ) { // barrel
 	if ( perp <=15 ) {
 	  if (method==0) dz=singlelegsigma1Pix;
 	  if (method==1) dz=singlelegsigma1Pix;
@@ -321,7 +321,7 @@ namespace flashgg {
     if(index_conversionLead!=-1  && index_conversionTrail==-1){ //Warning could be also the method g->hasConversionTracks() OR vtx->isConverted?
       zconv=vtxZFromConv(p1,conversionsVector[index_conversionLead],beamSpot);
     }
-    if(index_conversionTrail==-1 && index_conversionTrail!=-1){
+    if(index_conversionLead==-1 && index_conversionTrail!=-1){
       zconv=vtxZFromConv (p2,conversionsVector[index_conversionTrail],beamSpot);
     }
     
@@ -344,7 +344,7 @@ namespace flashgg {
     if ( index_conversionLead!=-1  && index_conversionTrail==-1 ){ //Warning could be also the method g->hasConversionTracks()?
       szconv = vtxdZFromConv(p1,conversionsVector[index_conversionLead]); 
     }
-    if ( index_conversionTrail==-1 && index_conversionTrail!=-1 ){
+    if ( index_conversionLead==-1 && index_conversionTrail!=-1 ){
       szconv = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]);
     }
     
