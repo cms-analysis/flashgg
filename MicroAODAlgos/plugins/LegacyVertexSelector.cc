@@ -85,6 +85,10 @@ namespace flashgg {
    float nConv_;
    float pull_conv_;
 
+   float logsumpt2selected_;
+   float ptbalselected_;
+   float ptasymselected_;
+
    TMVA::Reader * VertexProbMva_; 
    float dipho_pt_;
    float nVert_;
@@ -93,7 +97,6 @@ namespace flashgg {
    float dZ1_;
    float MVA2_;
    float dZ2_;
-
    float vtxprobmva_;
 
   };
@@ -165,16 +168,14 @@ namespace flashgg {
 
 
   double LegacyVertexSelector::vtxZFromConvOnly(const edm::Ptr<flashgg::Photon>& pho,const edm::Ptr<reco:: Conversion> & conversion,const math::XYZPoint & beamSpot) const{
-
     double r=sqrt(conversion->refittedPairMomentum().perp2());
     double dz = (conversion->conversionVertex().z()-beamSpot.z()) 
       - 
       ((conversion->conversionVertex().x()-beamSpot.x())*conversion->refittedPair4Momentum().x()+(conversion->conversionVertex().y()-beamSpot.y())*conversion->refittedPair4Momentum().y())/r * conversion->refittedPair4Momentum().z()/r;
     return dz + beamSpot.z();
   }
-
+  
   double LegacyVertexSelector::vtxZFromConvSuperCluster (const edm::Ptr<flashgg::Photon>& pho,const edm::Ptr<reco:: Conversion> & conversion,const math::XYZPoint & beamSpot) const{
-
     // get the z from conversion plus SuperCluster
     double deltaX1 =  pho->caloPosition().x()- conversion->conversionVertex().x();
     double deltaY1 =  pho->caloPosition().y()- conversion->conversionVertex().y();
@@ -243,7 +244,7 @@ namespace flashgg {
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
 
     if (conversion->nTracks()==2) {
-      if ( pho->eta()<1.5 ) { // barrel
+      if ( fabs(pho->superCluster()->eta())<1.5 ) { // barrel
 	if ( perp <=15 ) {
 	  if (method==0) dz=sigma1Pix;
 	  if (method==1) dz=sigma1Pix;
@@ -275,7 +276,7 @@ namespace flashgg {
 	}
       }
     } else if (conversion->nTracks()==1) {
-      if ( pho->eta() <1.5 ) { // barrel
+      if ( fabs(pho->superCluster()->eta())<1.5 ) { // barrel
 	if ( perp <=15 ) {
 	  if (method==0) dz=singlelegsigma1Pix;
 	  if (method==1) dz=singlelegsigma1Pix;
@@ -320,7 +321,7 @@ namespace flashgg {
     if(index_conversionLead!=-1  && index_conversionTrail==-1){ //Warning could be also the method g->hasConversionTracks() OR vtx->isConverted?
       zconv=vtxZFromConv(p1,conversionsVector[index_conversionLead],beamSpot);
     }
-    if(index_conversionTrail==-1 && index_conversionTrail!=-1){
+    if(index_conversionLead==-1 && index_conversionTrail!=-1){
       zconv=vtxZFromConv (p2,conversionsVector[index_conversionTrail],beamSpot);
     }
     
@@ -343,7 +344,7 @@ namespace flashgg {
     if ( index_conversionLead!=-1  && index_conversionTrail==-1 ){ //Warning could be also the method g->hasConversionTracks()?
       szconv = vtxdZFromConv(p1,conversionsVector[index_conversionLead]); 
     }
-    if ( index_conversionTrail==-1 && index_conversionTrail!=-1 ){
+    if ( index_conversionLead==-1 && index_conversionTrail!=-1 ){
       szconv = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]);
     }
     
@@ -415,11 +416,6 @@ namespace flashgg {
     float second_max_mva_value=-999;
     float third_max_mva_value=-999;
 
-    std::vector<TLorentzVector> diphoton_objects_vector;
-    std::vector<float> mass_reswrongvtx_vector;
-    diphoton_objects_vector.clear();
-    mass_reswrongvtx_vector.clear();
- 
     if (!initialized_) {
       Initialize();
     }
@@ -439,11 +435,6 @@ namespace flashgg {
       p14.SetPxPyPzE(Photon1Dir_uv.x(),Photon1Dir_uv.y(),Photon1Dir_uv.z(),g1->superCluster()->rawEnergy()); 
       p24.SetPxPyPzE(Photon2Dir_uv.x(),Photon2Dir_uv.y(),Photon2Dir_uv.z(),g2->superCluster()->rawEnergy()); 
      
-      TLorentzVector diphoton_objects;
-      diphoton_objects = p14+p24;
- 
-      diphoton_objects_vector.push_back(diphoton_objects);  
-
       TVector2 sumpt;
       double sumpt2_out = 0; 
       double sumpt2_in = 0; 
@@ -474,21 +465,25 @@ namespace flashgg {
 
       ptasym = (sumpt.Mod() - (p14+p24).Vect().XYvector().Mod())/(sumpt.Mod() + (p14+p24).Vect().XYvector().Mod());
       ptasym_ = ptasym;
-      double zconv=0;
-      double szconv=0;
-      zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot); //,param);
-      szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector); // ,param);
-      float nConv = conversionsVector.size();      
-      float pull_conv = 0;
-      if(zconv==0 && szconv==0.0){
-      //FIXME WHAT TO DO WHEN WE DON'T HAVE PULL_CONV CASE? 
-      // Shouldn't matter what we put in...?  TODO: test this...
-      }else{
-        pull_conv = fabs(vtx->position().z()-zconv)/szconv;
+      
+      float nConv = 0;
+      if (IndexMatchedConversionLeadPhoton != -1) ++nConv;
+      if (IndexMatchedConversionTrailPhoton != -1) ++nConv;
+      float zconv=0;
+      float szconv=0;
+      float pull_conv = 999;
+      
+      if (nConv !=0){
+	zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot);
+	szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector);
+	if(szconv != 0){
+	  pull_conv = fabs(vtx->position().z()-zconv)/szconv;
+	}else{
+	  pull_conv = 10.;
+	}
       }
-
-      // Truncate at 10. TODO : confirm... Turn off for the meantime
-      //      if (pull_conv > 10.) pull_conv = 10.;
+      
+      if(pull_conv>10.)pull_conv = 10.;  
       
       logsumpt2_=log(sumpt2_in+sumpt2_out);
       ptbal_=ptbal;
@@ -497,8 +492,11 @@ namespace flashgg {
       float mva_value = VertexIdMva_->EvaluateMVA("BDT"); 
 
       if(mva_value>max_mva_value){
-        max_mva_value=mva_value;
+	max_mva_value=mva_value;
         selected_vertex_index=vertex_index;
+	logsumpt2selected_=logsumpt2_;
+	ptbalselected_=ptbal_;
+	ptasymselected_=ptasym_;
       }
       
       if(mva_value<max_mva_value && mva_value>second_max_mva_value){
@@ -527,12 +525,12 @@ namespace flashgg {
 
   void LegacyVertexSelector::writeInfoFromLastSelectionTo(flashgg::DiPhotonCandidate& dipho) {
 
-    dipho.setLogSumPt2(logsumpt2_);
-    dipho.setPtBal(ptbal_);
-    dipho.setPtAsym(ptasym_);
+    dipho.setLogSumPt2(logsumpt2selected_);
+    dipho.setPtBal(ptbalselected_);
+    dipho.setPtAsym(ptasymselected_);
+
     dipho.setNConv(nConv_);
     dipho.setPullConv(pull_conv_);
-
     dipho.setNVert(nVert_);
     dipho.setMVA0(MVA0_);
     dipho.setMVA1(MVA1_);

@@ -10,7 +10,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 200 ) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( -1 ) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 # Uncomment the following if you notice you have a memory leak
@@ -28,6 +28,17 @@ process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggJets_cfi")
 
+process.prunedGenParticles = cms.EDProducer(
+    "GenParticlePruner",
+    src = cms.InputTag("prunedGenParticles"),
+    select = cms.vstring(
+    "drop  *  ", # this is the default
+    "keep++ pdgId = 25"#
+#   "drop pdgId = {Z0} & status = 2"
+    )
+)
+
+
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFile.root'),
                                outputCommands = cms.untracked.vstring("drop *",
                                                                       "keep *_flashgg*_*_*",
@@ -39,26 +50,30 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
                                                                       "keep *_slimmedMuons_*_*",
                                                                       "keep *_slimmedMETs_*_*",
                                                                       "keep *_slimmedTaus_*_*",
-                                                                      "keep *_fixedGridRhoAll_*_*"
+                                                                      "keep *_fixedGridRhoAll_*_*",
+								      "keep *_prunedGenParticles_*_FLASHggMicroAOD"
                                                                      )
                                )
 
-#process.commissioning = cms.EDAnalyzer('flashggCommissioning',
-#                                       PhotonTag=cms.untracked.InputTag('flashggPhotons'),
-#                                       DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
-#                                       VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
-#)
+process.commissioning = cms.EDAnalyzer('flashggCommissioning',
+                                       PhotonTag=cms.untracked.InputTag('flashggPhotons'),
+                                       DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+                                       VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
+)
 
-#process.TFileService = cms.Service("TFileService",
-#                                   fileName = cms.string("tree.root")
-#)
+process.TFileService = cms.Service("TFileService",
+                                   fileName = cms.string("tree.root")
+)
 
 process.p = cms.Path(process.flashggVertexMapUnique*
                      process.flashggVertexMapNonUnique*
                      process.flashggPhotons*
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
-                     process.flashggJets
+                     process.flashggJets*
+                     process.prunedGenParticles*
+                     process.flashggJets*
+                     process.commissioning
                     )
 
 process.e = cms.EndPath(process.out)
