@@ -11,5 +11,5 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep *_slimmedMETs_*_*",
                                                      "keep *_slimmedTaus_*_*",
                                                      "keep *_fixedGridRhoAll_*_*",
-                                                     "keep *_flashggPrunedGenParticles_*_FLASHggMicroAOD"
+                                                     "keep *_offlineBeamSpot_*_*"
                                                      )
