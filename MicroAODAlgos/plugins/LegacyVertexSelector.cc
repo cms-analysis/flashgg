@@ -193,118 +193,72 @@ namespace flashgg {
   
 
   double LegacyVertexSelector::vtxZFromConv (const edm::Ptr<flashgg::Photon>& pho,const edm::Ptr<reco::Conversion> & conversion,const math::XYZPoint & beamSpot) const{
-    // method 0 is combined (default)
-    // method 1 is conversion only
-    // method 2 is supercluster only
-
-    int method=0;
     double ReturnValue = 0;
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
-
-    //Mixed Method Conversion Vertex
-    if (method==0) {
-      if(pho->eta()<1.5) { //FIXME!!!!!
-	if (perp<=15.0) {
-	  //Pixel Barrel
-	  ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
-	} else if  (perp>15 && perp<=60.0) {
+    if(fabs(pho->superCluster()->eta())<1.5) { 
+      if(perp<=15.0){
+	//Pixel Barrel
+	ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
+      }else if(perp>15 && perp<=60.0) {
 	  //Tracker Inner Barrel
-	  ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
-	} else {
-	  //Tracker Outer Barrel
-	  ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
-	}
-      } else {
-	if (fabs(conversion->conversionVertex().z())<=50.0) {
-	  //Pixel Forward
-	  ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
-	}  else if (fabs(conversion->conversionVertex().z())>50.0 && fabs(conversion->conversionVertex().z())<=100.0) {
+	ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
+      }else{
+	//Tracker Outer Barrel
+	ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
+      }
+    }else{
+      if(fabs(conversion->conversionVertex().z())<=50.0){
+	//Pixel Forward
+	ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
+      }else if(fabs(conversion->conversionVertex().z())>50.0 && fabs(conversion->conversionVertex().z())<=100.0){
 	  //Tracker Inner Disk
-	  ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
-	}  else {
-	  //Track EndCap
-	  ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
-	}
+	ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
+      }else{
+	//Track EndCap
+	ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
       }
     }
-    if (method==1) ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
-    if (method==2) ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
-
     return ReturnValue;
-
   }
-
+  
   double LegacyVertexSelector::vtxdZFromConv (const edm::Ptr<flashgg::Photon>& pho, const edm::Ptr<reco::Conversion> & conversion) const{
-    // method 0 is combined (default)
-    // method 1 is conversion only
-    // method 2 is supercluster only
-    // attribute the error depending on the tracker region
     double dz=-99999;
-    int method=0;//to be assigned dynamically? FIXME!
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
-
     if (conversion->nTracks()==2) {
       if ( fabs(pho->superCluster()->eta())<1.5 ) { // barrel
 	if ( perp <=15 ) {
-	  if (method==0) dz=sigma1Pix;
-	  if (method==1) dz=sigma1Pix;
-	  if (method==2) dz=sigma2Pix;
+	  dz=sigma1Pix;
 	} else if ( perp > 15 && perp <=60 ) {
-	  if (method==0) dz=sigma2Tib;
-	  if (method==1) dz=sigma1Tib;
-	  if (method==2) dz=sigma2Tib;
+	  dz=sigma2Tib;
 	} else {
-	  if (method==0) dz=sigma2Tob;
-	  if (method==1) dz=sigma1Tob;
-	  if (method==2) dz=sigma2Tob;
+	  dz=sigma2Tob;
 	}
-	
       } else { // endcap
-	
 	if ( fabs(conversion->conversionVertex().z() ) <=50 ) {
-	  if (method==0) dz=sigma1PixFwd;
-	  if (method==1) dz=sigma1PixFwd;
-	  if (method==2) dz=sigma2PixFwd;
+	  dz=sigma1PixFwd;
 	} else if ( fabs(conversion->conversionVertex().z() ) > 50 && fabs(conversion->conversionVertex().z()) <= 100 ) {
-	  if (method==0) dz=sigma1Tid;
-	  if (method==1) dz=sigma1Tid;
-	  if (method==2) dz=sigma2Tid;
+	  dz=sigma1Tid;
 	} else {
-	  if (method==0) dz=sigma2Tec;
-	  if (method==1) dz=sigma1Tec;
-	  if (method==2) dz=sigma2Tec;
+	  dz=sigma2Tec;
 	}
       }
     } else if (conversion->nTracks()==1) {
       if ( fabs(pho->superCluster()->eta())<1.5 ) { // barrel
 	if ( perp <=15 ) {
-	  if (method==0) dz=singlelegsigma1Pix;
-	  if (method==1) dz=singlelegsigma1Pix;
-	  if (method==2) dz=singlelegsigma2Pix;
+	  dz=singlelegsigma1Pix;
 	} else if ( perp > 15 && perp <=60 ) {
-	  if (method==0) dz=singlelegsigma2Tib;
-	  if (method==1) dz=singlelegsigma1Tib;
-	  if (method==2) dz=singlelegsigma2Tib;
+	  dz=singlelegsigma2Tib;
 	} else {
-	  if (method==0) dz=singlelegsigma2Tob;
-	  if (method==1) dz=singlelegsigma1Tob;
-	  if (method==2) dz=singlelegsigma2Tob;
+	  dz=singlelegsigma2Tob;
 	}
 	
       } else { // endcap
-	
 	if ( fabs(conversion->conversionVertex().z() ) <=50 ) {
-	  if (method==0) dz=singlelegsigma1PixFwd;
-	  if (method==1) dz=singlelegsigma1PixFwd;
-	  if (method==2) dz=singlelegsigma2PixFwd;
+	  dz=singlelegsigma1PixFwd;
 	} else if ( fabs(conversion->conversionVertex().z() ) > 50 && fabs(conversion->conversionVertex().z()) <= 100 ) {
-	  if (method==0) dz=singlelegsigma1Tid;
-	  if (method==1) dz=singlelegsigma1Tid;
-	  if (method==2) dz=singlelegsigma2Tid;
+	  dz=singlelegsigma1Tid;
 	} else {
-	  if (method==0) dz=singlelegsigma2Tec;
-	  if (method==1) dz=singlelegsigma1Tec;
-	  if (method==2) dz=singlelegsigma2Tec;
+	  dz=singlelegsigma2Tec;
 	}
       }
     }
@@ -318,7 +272,7 @@ namespace flashgg {
 						const edm::PtrVector<reco::Conversion>& conversionsVector,
 						const math::XYZPoint & beamSpot) const {
     double zconv=0;
-    if(index_conversionLead!=-1  && index_conversionTrail==-1){ //Warning could be also the method g->hasConversionTracks() OR vtx->isConverted?
+    if(index_conversionLead!=-1  && index_conversionTrail==-1){ 
       zconv=vtxZFromConv(p1,conversionsVector[index_conversionLead],beamSpot);
     }
     if(index_conversionLead==-1 && index_conversionTrail!=-1){
@@ -341,7 +295,7 @@ namespace flashgg {
 						 int index_conversionTrail,
 						 const edm::PtrVector<reco::Conversion>& conversionsVector) const {
     double szconv=0;
-    if ( index_conversionLead!=-1  && index_conversionTrail==-1 ){ //Warning could be also the method g->hasConversionTracks()?
+    if ( index_conversionLead!=-1  && index_conversionTrail==-1 ){
       szconv = vtxdZFromConv(p1,conversionsVector[index_conversionLead]); 
     }
     if ( index_conversionLead==-1 && index_conversionTrail!=-1 ){
@@ -360,9 +314,8 @@ namespace flashgg {
   int LegacyVertexSelector::IndexMatchedConversion(const edm::Ptr<flashgg::Photon>& g,const edm::PtrVector<reco::Conversion>& conversionsVector) const{
     double mindR = 999;
     
-    assert(g->hasConversionTracks()); //The photon has to have conversion tracks!
+    assert(g->hasConversionTracks());   //The photon has to have conversion tracks!
     assert(conversionsVector.size()>0); //The photon has to have conversion tracks!
-
     int selected_conversion_index = -1; //returned value if no match was found
     
     if(g->hasConversionTracks()){

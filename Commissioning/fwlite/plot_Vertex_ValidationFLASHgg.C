@@ -50,11 +50,7 @@
 
   fwlite::Event ev(&f);
 
-  int count=0;
-
   for( ev.toBegin(); ! ev.atEnd(); ++ev) {
-    if(count==1000) break;
-    count++;
     fwlite::Handle<std::vector<flashgg::Photon> > objs_pho;
     fwlite::Handle<std::vector<flashgg::DiPhotonCandidate> > objs_dipho;
     fwlite::Handle<std::vector<reco::Vertex> > objs_vertex;
