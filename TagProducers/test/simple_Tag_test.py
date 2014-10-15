@@ -10,7 +10,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 200 ) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 100 ) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 # Uncomment the following if you notice you have a memory leak
@@ -27,26 +27,18 @@ process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggJets_cfi")
+process.load("flashgg/MicroAODProducers/flashggPrunedGenParticles_cfi")
 
 #Tag stuff
 process.load("flashgg/TagProducers/flashggDiPhotonMVA_cfi")
 process.load("flashgg/TagProducers/flashggTags_cfi")
 
-process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFile.root'),
-                               outputCommands = cms.untracked.vstring("drop *",
-                                                                      "keep *_flashgg*_*_*",
-                                                                      "drop *_flashggVertexMap*_*_*",
-                                                                      "keep *_offlineSlimmedPrimaryVertices_*_*",
-                                                                      "keep *_reducedEgamma_reduced*Clusters_*",
-                                                                      "keep *_reducedEgamma_*PhotonCores_*",
-                                                                      "keep *_slimmedElectrons_*_*",
-                                                                      "keep *_slimmedMuons_*_*",
-                                                                      "keep *_slimmedMETs_*_*",
-                                                                      "keep *_slimmedTaus_*_*",
-                                                                      "keep *_fixedGridRhoAll_*_*"
-                                                                     )
-                               )
 
+from flashgg.MicroAODProducers.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand
+
+process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFile.root'),
+                               outputCommands = microAODDefaultOutputCommand
+                               )
 
 
 process.p = cms.Path(process.flashggVertexMapUnique*
@@ -54,6 +46,7 @@ process.p = cms.Path(process.flashggVertexMapUnique*
                      process.flashggPhotons*
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
+                     process.flashggPrunedGenParticles*
                      (process.flashggDiPhotonMVA+process.flashggJets)* # These two could run in parallel, so use +
                      (process.flashggUntaggedCategory) # Tag producers, once written, can run in parallel, so they go in here with +
                     )
