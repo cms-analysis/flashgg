@@ -14,6 +14,7 @@ DiPhotonTagBase::DiPhotonTagBase(edm::Ptr<flashgg::DiPhotonCandidate> diPho,edm:
   addP4.set(*this);
   mva_result_ = *mvaRes; // copies 
 }
+
 const DiPhotonCandidate* DiPhotonTagBase::diPhoton() const {
   return dynamic_cast<const flashgg::DiPhotonCandidate*> (daughter(0));
 }

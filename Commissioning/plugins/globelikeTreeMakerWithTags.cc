@@ -32,6 +32,9 @@
 
 #include "DataFormats/Math/interface/deltaR.h"
 
+#include "flashgg/TagFormats/interface/VBFTag.h"
+#include "flashgg/TagFormats/interface/DiPhotonUntaggedCategory.h"
+
 #include "TMath.h"
 #include "TTree.h"
 #include "TVector3.h"
@@ -43,10 +46,10 @@ using namespace flashgg;
 
 // **********************************************************************
 
-class FlashggTreeMaker : public edm::EDAnalyzer {
+class FlashggTreeMakerWithTags : public edm::EDAnalyzer {
 	public:
-		explicit FlashggTreeMaker(const edm::ParameterSet&);
-		~FlashggTreeMaker();
+		explicit FlashggTreeMakerWithTags(const edm::ParameterSet&);
+		~FlashggTreeMakerWithTags();
 
 		static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
@@ -72,18 +75,18 @@ class FlashggTreeMaker : public edm::EDAnalyzer {
 		EDGetTokenT<edm::View<PileupSummaryInfo> >  PileUpToken_; // LDC work-in-progress adding this!
 		edm::InputTag rhoFixedGrid_;
 
-		TTree *flashggTree;
+		TTree *flashggTreeWithTags;
 
 		TMVA::Reader * DiphotonMva_; 
 		TMVA::Reader * VbfMva_; 
 		TMVA::Reader * VbfDiphotonMva_; 
 
-		bool DiphotonMva_initialized;
-		bool VbfMva_initialized;
-		bool VbfDiphotonMva_initialized;
-		edm::FileInPath diphotonMVAweightfile_;
-		edm::FileInPath vbfMVAweightfile_;
-		edm::FileInPath vbfDiphotonMVAweightfile_;
+//		bool DiphotonMva_initialized;
+//		bool VbfMva_initialized;
+//		bool VbfDiphotonMva_initialized;
+	//	edm::FileInPath diphotonMVAweightfile_;
+	//	edm::FileInPath vbfMVAweightfile_;
+	//	edm::FileInPath vbfDiphotonMVAweightfile_;
 
 		Int_t run;
 		Int_t lumis;
@@ -193,9 +196,14 @@ class FlashggTreeMaker : public edm::EDAnalyzer {
 		Float_t vtxdz;
 		Float_t dipho_mva;
 		Float_t dipho_mva_cat;
+		
+		//Tag Categories
+		Int_t flash_Untagged_Category;
+		Int_t flash_VBFTag_Category;
 
 		edm::EDGetTokenT<edm::View<flashgg::Photon> >            photonToken_; // SCZ work-in-progress adding this!
-		edm::EDGetTokenT<edm::View<reco::BeamSpot> > beamSpotToken_;
+		edm::EDGetTokenT<edm::View<flashgg::DiPhotonUntaggedCategory> > DiPhotonUntaggedToken_;
+		edm::EDGetTokenT<edm::View<flashgg::VBFTag> > VBFTagToken_;
 		//  edm::EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> > diphotonToken_;
 		//      edm::EDGetTokenT<edm::View<reco::Vertex> >               vertexToken_; 
 		//      edm::EDGetTokenT<edm::View<pat::PackedCandidate> >       pfcandidateToken_;
@@ -222,7 +230,7 @@ class FlashggTreeMaker : public edm::EDAnalyzer {
 //
 // constructors and destructor
 //
-FlashggTreeMaker::FlashggTreeMaker(const edm::ParameterSet& iConfig):
+FlashggTreeMakerWithTags::FlashggTreeMakerWithTags(const edm::ParameterSet& iConfig):
 	vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
 	genParticleToken_(consumes<View<reco::GenParticle> >(iConfig.getUntrackedParameter<InputTag> ("GenParticleTag", InputTag("prunedGenParticles")))),
 	vertexCandidateMapTokenDz_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTagDz"))),
@@ -232,26 +240,23 @@ FlashggTreeMaker::FlashggTreeMaker(const edm::ParameterSet& iConfig):
 	diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
 	METToken_(consumes<View<pat::MET> >(iConfig.getUntrackedParameter<InputTag> ("METTag", InputTag("slimmedMETs")))),
 	PileUpToken_(consumes<View<PileupSummaryInfo> >(iConfig.getUntrackedParameter<InputTag> ("PileUpTag", InputTag("addPileupInfo")))),
-	photonToken_(consumes<View<flashgg::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("flashggPhotons")))),
-	beamSpotToken_(consumes<View<reco::BeamSpot> >(iConfig.getUntrackedParameter<InputTag>("BeamSpotTag",InputTag("offlineBeamSpot"))))
+  DiPhotonUntaggedToken_(consumes<View<flashgg::DiPhotonUntaggedCategory> >(iConfig.getUntrackedParameter<InputTag> ("UntaggedTag", InputTag("flashggUntaggedCategory")))),
+  VBFTagToken_(consumes<View<flashgg::VBFTag> >(iConfig.getUntrackedParameter<InputTag> ("VBFTag", InputTag("flashggVBFTag"))))
 	//  jetTokenReco_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagReco")))
 {
 	rhoFixedGrid_ = iConfig.getParameter<edm::InputTag>("rhoFixedGridCollection");
-	diphotonMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("diphotonMVAweightfile");
-	DiphotonMva_initialized = false;
-	vbfMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vbfMVAweightfile");
-	VbfMva_initialized = false;
-	vbfDiphotonMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vbfDiphotonMVAweightfile");
-	VbfDiphotonMva_initialized = false;
+//	DiphotonMva_initialized = false;
+//	VbfMva_initialized = false;
+//	VbfDiphotonMva_initialized = false;
 }
 
-FlashggTreeMaker::~FlashggTreeMaker()
+FlashggTreeMakerWithTags::~FlashggTreeMakerWithTags()
 {
 
 }
 
 void
-FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
+FlashggTreeMakerWithTags::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
 	// ********************************************************************************
 
@@ -292,15 +297,17 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 	iEvent.getByToken(PileUpToken_,PileupInfos);
 	const PtrVector<PileupSummaryInfo>& PileupInfoPointers = PileupInfos->ptrVector();
 
-	Handle<View<flashgg::Photon> > photons;
-	iEvent.getByToken(photonToken_,photons);
-	const PtrVector<flashgg::Photon>& photonPointers = photons->ptrVector();
-	float a = photonPointers.size(); //stop errors from unsued vars
-
 	Handle<double> rhoHandle; // the old way for now...move to getbytoken?
 	iEvent.getByLabel(rhoFixedGrid_, rhoHandle );
 
-	a=a+1; //stop errors from unused vars
+	Handle<View<flashgg::DiPhotonUntaggedCategory> > UntaggedCategory;
+	iEvent.getByToken(DiPhotonUntaggedToken_,UntaggedCategory);
+	const PtrVector<flashgg::DiPhotonUntaggedCategory>& UntaggedCategoryPointers = UntaggedCategory->ptrVector();
+
+	Handle<View<flashgg::VBFTag> > VBFTag;
+	iEvent.getByToken(VBFTagToken_,VBFTag);
+	const PtrVector<flashgg::VBFTag>& VBFTagPointers = VBFTag->ptrVector();
+	
 
 	//---------> njetsxx = number of jets with et > xx
 	njets10 = 0.;
@@ -424,7 +431,7 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 		//PHOTON1
 		et1 = diPhotonPointers[candIndex]->leadingPhoton()->et();
 		eta1 = diPhotonPointers[candIndex]->leadingPhoton()->eta();
-		float phi1 = diPhotonPointers[candIndex]->leadingPhoton()->phi();
+	//	float phi1 = diPhotonPointers[candIndex]->leadingPhoton()->phi();
 		r91 = diPhotonPointers[candIndex]->leadingPhoton()->r9();
 		sieie1 = diPhotonPointers[candIndex]->leadingPhoton()->sigmaIetaIeta();
 		hoe1 = diPhotonPointers[candIndex]->leadingPhoton()->hadronicOverEm();
@@ -462,7 +469,7 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 		//PHOTON 2
 		et2 = diPhotonPointers[candIndex]->subLeadingPhoton()->et();
 		eta2 = diPhotonPointers[candIndex]->subLeadingPhoton()->eta();
-		float phi2 = diPhotonPointers[candIndex]->subLeadingPhoton()->phi();
+	//	float phi2 = diPhotonPointers[candIndex]->subLeadingPhoton()->phi();
 		r92 = diPhotonPointers[candIndex]->subLeadingPhoton()->r9();
 		sieie2 = diPhotonPointers[candIndex]->subLeadingPhoton()->sigmaIetaIeta();
 		hoe2 = diPhotonPointers[candIndex]->subLeadingPhoton()->hadronicOverEm();
@@ -567,7 +574,7 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 		//		p14.SetPxPyPzE(Photon1Dir_uv.x(),Photon1Dir_uv.y(),Photon1Dir_uv.z(),g1->superCluster()->rawEnergy());
 		//		p24.SetPxPyPzE(Photon2Dir_uv.x(),Photon2Dir_uv.y(),Photon2Dir_uv.z(),g2->superCluster()->rawEnergy());
 
-		Handle<reco::BeamSpot> recoBeamSpotHandle;
+		/*Handle<reco::BeamSpot> recoBeamSpotHandle;
 		iEvent.getByToken(beamSpotToken_,recoBeamSpotHandle);
 		float beamsig;
 		if (recoBeamSpotHandle.isValid()){
@@ -631,12 +638,42 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 		nconv = diPhotonPointers[candIndex]->getNConv(); 
 		vtxmva = diPhotonPointers[candIndex]->getVtxProbMVA();
 		vtxdz = diPhotonPointers[candIndex]->getDZ1(); 
-		dipho_mva = diphomva_;
+		dipho_mva = diphomva_;*/
+
+		for (unsigned int untaggedLooper =0; untaggedLooper < UntaggedCategoryPointers.size(); untaggedLooper++)
+		{
+		if (UntaggedCategoryPointers[untaggedLooper]->getDiPhotonIndex() != candIndex) continue;
+		
+		sigmaMrvoM = UntaggedCategoryPointers[untaggedLooper]->getSigmaMwvoM();// Not sure if these variables are being filled properly... 
+		sigmaMwvoM = UntaggedCategoryPointers[untaggedLooper]->getSigmaMrvoM(); 
+		vtxprob = UntaggedCategoryPointers[untaggedLooper]->   getVtxProb()   ;
+		dipho_mva = UntaggedCategoryPointers[untaggedLooper]-> getDiphoMva()  ;
+		flash_Untagged_Category =  UntaggedCategoryPointers[untaggedLooper]->getCategoryNumber();
+		dipho_mva_cat =(float) flash_Untagged_Category;
+
+		std::cout << "DiPho Debug"<< std::endl;
+		std::cout << sigmaMrvoM << std::endl;
+		std::cout << sigmaMwvoM <<std::endl;
+		std::cout << vtxprob <<std::endl;
+		std::cout << dipho_mva <<std::endl;
+		std::cout 	<< flash_Untagged_Category <<std::endl; //for debug
+		std::cout << dipho_mva_cat <<std::endl;
+	break;
+	}
+
+		ptbal = diPhotonPointers[candIndex]->getPtBal();
+		ptasym = diPhotonPointers[candIndex]->getPtAsym();
+		logspt2 = diPhotonPointers[candIndex]->getLogSumPt2();
+		p2conv = diPhotonPointers[candIndex]->getPullConv(); 
+		nconv = diPhotonPointers[candIndex]->getNConv(); 
+		vtxmva = diPhotonPointers[candIndex]->getVtxProbMVA();
+		vtxdz = diPhotonPointers[candIndex]->getDZ1(); 
+
 
 
 		// VBF MVA and dijetDipho MVA. Will probably be moved elsewhere evetually...
 
-		// First find dijet by looking for highest-pt jets...
+	/*	// First find dijet by looking for highest-pt jets...
 		std::pair <int,int> dijet_indices(-1,-1);
 		std::pair <float, float> dijet_pts(-1.,-1.);
 
@@ -693,12 +730,31 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 		auto sublJet_p4 =  dijet.second->p4();
 
 		auto diphoton_p4 =leadPho_p4 + sublPho_p4;
-		auto dijet_p4 = leadJet_p4 + sublJet_p4;
+		auto dijet_p4 = leadJet_p4 + sublJet_p4;*/
 
-		dijet_Zep = fabs(diphoton_p4.Eta() - 0.5*(leadJet_p4.Eta() + sublJet_p4.Eta()));
-		dijet_dPhi = fabs( dijet_p4.Phi() - diphoton_p4.Phi());
-		dijet_Mjj = dijet_p4.M();
-		float dipho_PToM = diphoton_p4.Pt() / diphoton_p4.M();
+		for (unsigned int vbfLooper =0; vbfLooper < VBFTagPointers.size(); vbfLooper++)
+		{
+				
+		if (VBFTagPointers[vbfLooper]->getDiPhotonIndex()  != candIndex) continue;
+
+		dijet_leadEta = VBFTagPointers[vbfLooper]->  dijet_leadEta_; //not sure if tehse vars are beign filled properly 
+		dijet_subleadEta =VBFTagPointers[vbfLooper]->dijet_subleadEta_; 
+		dijet_LeadJPt =VBFTagPointers[vbfLooper]->   dijet_LeadJPt_; 
+		dijet_SubJPt = VBFTagPointers[vbfLooper]->   dijet_SubJPt_; 
+		dijet_Zep = VBFTagPointers[vbfLooper]->      dijet_Zep_; 
+		dijet_Mjj = VBFTagPointers[vbfLooper]->      dijet_Mjj_; 
+		dijet_MVA = VBFTagPointers[vbfLooper]->      dijet_MVA_;
+		bdt_combined =VBFTagPointers[vbfLooper]->    bdt_combined_;     
+		flash_VBFTag_Category = VBFTagPointers[vbfLooper]->getCategoryNumber();
+		
+
+		std::cout << "VBFDebug"<< std::endl;
+		std::cout <<dijet_leadEta << "	" << dijet_MVA << std::endl;
+		std::cout <<dijet_SubJPt << "	" << bdt_combined << std::endl;
+		break;
+		}
+
+	/*	float dipho_PToM = diphoton_p4.Pt() / diphoton_p4.M();
 
 
 
@@ -753,6 +809,9 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
 		}
 		bdt_combined = VbfDiphotonMva_->EvaluateMVA("BDT");
+*/
+
+
 
 
 		//		std::cout << "higgsCandidatePResent in globelikeTreeMaker" << std::endl;
@@ -830,127 +889,129 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 			dipho_mva =-999.;
 		}
 
-		flashggTree->Fill(); 
+		flashggTreeWithTags->Fill(); 
 	}
 	void 
-		FlashggTreeMaker::beginJob()
+		FlashggTreeMakerWithTags::beginJob()
 		{
-			flashggTree = fs_->make<TTree>("flashggTree","flashgg tree");
-			flashggTree->Branch("njets10", &njets10, "njets10/F");
-			flashggTree->Branch("njets15", &njets15, "njets15/F");
-			flashggTree->Branch("njets20", &njets20, "njets20/F");
-			flashggTree->Branch("dRphojet1", &dRphojet1, "dRphojet1/F");
-			flashggTree->Branch("dRphojet2", &dRphojet2, "dRphojet2/F");
-			flashggTree->Branch("run", &run, "runNumber/I");
-			flashggTree->Branch("lumis", &lumis, "lumiSection/I");
-			flashggTree->Branch("event", &run, "eventNumber/I");
-			flashggTree->Branch("nvtx", &nvtx, "nvtx/F");
-			flashggTree->Branch("rho", &rho, "rho/F");
-			flashggTree->Branch("xsec_weight", &xsec_weight, "xsec_weight/F");
-			flashggTree->Branch("full_weight", &full_weight, "full_weight/F");
-			flashggTree->Branch("pu_weight", &pu_weight, "pu_weight/F");
-			flashggTree->Branch("pu_n", &pu_n, "pu_n/F");
-			flashggTree->Branch("mass", &mass, "mass/F");
-			flashggTree->Branch("dipho_pt", &dipho_pt, "dipho_pt/F");
-			flashggTree->Branch("full_cat", &full_cat, "full_cat/F");
-			flashggTree->Branch("et1", &et1, "et1/F");
-			flashggTree->Branch("et2", &et2, "et2/F");
-			flashggTree->Branch("eta1", &eta1, "eta1/F");
-			flashggTree->Branch("eta2", &eta2, "eta2/F");
-			flashggTree->Branch("r91", &r91, "r91/F");
-			flashggTree->Branch("r92", &r92, "r92/F");
-			flashggTree->Branch("sieie1", &sieie1, "sieie1/F");
-			flashggTree->Branch("sieie2", &sieie2, "sieie2/F");
-			flashggTree->Branch("hoe1", &hoe1, "hoe1/F");
-			flashggTree->Branch("hoe2", &hoe2, "hoe2/F");
-			flashggTree->Branch("sigmaEoE1", &sigmaEoE1, "sigmaEoE1/F");
-			flashggTree->Branch("sigmaEoE2", &sigmaEoE2, "sigmaEoE2/F");
-			flashggTree->Branch("ptoM1", &ptoM1, "ptoM1/F");
-			flashggTree->Branch("ptoM2", &ptoM2, "ptoM2/F");
-			flashggTree->Branch("isEB1", &isEB1, "isEB1/F");
-			flashggTree->Branch("isEB2", &isEB2, "isEB2/F");
-			flashggTree->Branch("chiso1", &chiso1, "chiso1/F");
-			flashggTree->Branch("chiso2", &chiso2, "chiso2/F");
-			flashggTree->Branch("chisow1", &chisow1, "chisow1/F");
-			flashggTree->Branch("chisow2", &chisow2, "chisow2/F");
-			flashggTree->Branch("phoiso1", &phoiso1, "phoiso1/F");
-			flashggTree->Branch("phoiso2", &phoiso2, "phoiso2/F");
-			flashggTree->Branch("phoiso041", &phoiso041, "phoiso041/F");
-			flashggTree->Branch("phoiso042", &phoiso042, "phoiso042/F");
-			flashggTree->Branch("ecaliso03_1", &ecaliso03_1, "ecaliso03_1/F");
-			flashggTree->Branch("ecaliso03_2", &ecaliso03_2, "ecaliso03_2/F");
-			flashggTree->Branch("hcaliso03_1", &hcaliso03_1, "hcaliso03_1/F");
-			flashggTree->Branch("hcaliso03_2", &hcaliso03_2, "hcaliso03_2/F");
-			flashggTree->Branch("trkiso03_1", &trkiso03_1, "trkiso03_1/F");
-			flashggTree->Branch("trkiso03_2", &trkiso03_2, "trkiso03_2/F");
-			flashggTree->Branch("pfchiso2_1", &pfchiso2_1, "pfchiso2_1/F");
-			flashggTree->Branch("pfchiso2_2", &pfchiso2_2, "pfchiso2_2/F");
-			flashggTree->Branch("sieip1", &sieip1, "sieip1/F");
-			flashggTree->Branch("sieip2", &sieip2, "sieip2/F");
-			flashggTree->Branch("etawidth1", &etawidth1, "etawidth1/F");
-			flashggTree->Branch("phiwidth1", &phiwidth1, "phiwidth1/F");
-			flashggTree->Branch("etawidth2", &etawidth2, "etawidth2/F");
-			flashggTree->Branch("phiwidth2", &phiwidth2, "phiwidth2/F");
-			flashggTree->Branch("regrerr1", &regrerr1, "regrerr1/F");
-			flashggTree->Branch("regrerr2", &regrerr2, "regrerr2/F");
-			flashggTree->Branch("cosphi", &cosphi, "cosphi/F");
-			flashggTree->Branch("genmatch1", &genmatch1, "genmatch1/F");
-			flashggTree->Branch("genmatch2", &genmatch2, "genmatch2/F");
-			flashggTree->Branch("idmva1", &idmva1, "idmva1/F");
-			flashggTree->Branch("idmva2", &idmva2, "idmva2/F");
-			flashggTree->Branch("vbfcat", &vbfcat, "vbfcat/F");
-			flashggTree->Branch("MET", &MET, "MET/F");
-			flashggTree->Branch("MET_phi", &MET_phi, "MET_phi/F");
-			flashggTree->Branch("isorv1", &isorv1, "isorv1/F");
-			flashggTree->Branch("isowv1", &isowv1, "isowv1/F");
-			flashggTree->Branch("isorv2", &isorv2, "isorv2/F");
-			flashggTree->Branch("isowv2", &isowv2, "isowv2/F");
-			flashggTree->Branch("s4ratio1", &s4ratio1, "s4ratio1/F");
-			flashggTree->Branch("s4ratio2", &s4ratio2, "s4ratio2/F");
-			flashggTree->Branch("effSigma1", &effSigma1, "effSigma1/F");
-			flashggTree->Branch("effSigma2", &effSigma2, "effSigma2/F");
-			flashggTree->Branch("scraw1", &scraw1, "scraw1/F");
-			flashggTree->Branch("scraw2", &scraw2, "scraw2/F");
-			flashggTree->Branch("vtx_x", &vtx_x, "vtx_x/F");
-			flashggTree->Branch("vtx_y", &vtx_y, "vtx_y/F");
-			flashggTree->Branch("vtx_z", &vtx_z, "vtx_z/F");
-			flashggTree->Branch("gv_x", &gv_x, "gv_x/F");
-			flashggTree->Branch("gv_y", &gv_y, "gv_y/F");
-			flashggTree->Branch("gv_z", &gv_z, "gv_z/F");
-			flashggTree->Branch("dijet_leadEta", &dijet_leadEta, "dijet_leadEta/F");
-			flashggTree->Branch("dijet_subleadEta", &dijet_subleadEta, "dijet_subleadEta/F");
-			flashggTree->Branch("dijet_LeadJPt", &dijet_LeadJPt, "dijet_LeadJPt/F");
-			flashggTree->Branch("dijet_SubJPt", &dijet_SubJPt, "dijet_SubJPt/F");
-			flashggTree->Branch("dijet_dEta", &dijet_dEta, "dijet_dEta/F");
-			flashggTree->Branch("dijet_Zep", &dijet_Zep, "dijet_Zep/F");
-			flashggTree->Branch("dijet_dPhi", &dijet_dPhi, "dijet_dPhi/F");
-			flashggTree->Branch("dijet_Mjj", &dijet_Mjj, "dijet_Mjj/F");
-			flashggTree->Branch("dijet_MVA", &dijet_MVA, "dijet_MVA/F");
-			flashggTree->Branch("bdt_combined", &bdt_combined, "bdt_combined/F");
-			flashggTree->Branch("issyst", &issyst, "issyst/F");
-			flashggTree->Branch("name1", &name1, "name1/F");
-			flashggTree->Branch("sigmaMrvoM", &sigmaMrvoM, "sigmaMrvoM/F");
-			flashggTree->Branch("sigmaMwvoM", &sigmaMwvoM, "sigmaMwvoM/F");
-			flashggTree->Branch("vtxprob", &vtxprob, "vtxprob/F");
-			flashggTree->Branch("ptbal", &ptbal, "ptbal/F");
-			flashggTree->Branch("ptasym", &ptasym, "ptasym/F");
-			flashggTree->Branch("logspt2", &logspt2, "logspt2/F");
-			flashggTree->Branch("p2conv", &p2conv, "p2conv/F");
-			flashggTree->Branch("nconv", &nconv, "nconv/F");
-			flashggTree->Branch("vtxmva", &vtxmva, "vtxmva/F");
-			flashggTree->Branch("vtxdz", &vtxdz, "vtxdz/F");
-			flashggTree->Branch("dipho_mva", &dipho_mva, "dipho_mva/F");
-			flashggTree->Branch("dipho_mva_cat", &dipho_mva_cat, "dipho_mva_cat/F");
+			flashggTreeWithTags = fs_->make<TTree>("flashggTreeWithTags","flashgg tree with Tags");
+			flashggTreeWithTags->Branch("njets10", &njets10, "njets10/F");
+			flashggTreeWithTags->Branch("njets15", &njets15, "njets15/F");
+			flashggTreeWithTags->Branch("njets20", &njets20, "njets20/F");
+			flashggTreeWithTags->Branch("dRphojet1", &dRphojet1, "dRphojet1/F");
+			flashggTreeWithTags->Branch("dRphojet2", &dRphojet2, "dRphojet2/F");
+			flashggTreeWithTags->Branch("run", &run, "runNumber/I");
+			flashggTreeWithTags->Branch("lumis", &lumis, "lumiSection/I");
+			flashggTreeWithTags->Branch("event", &run, "eventNumber/I");
+			flashggTreeWithTags->Branch("nvtx", &nvtx, "nvtx/F");
+			flashggTreeWithTags->Branch("rho", &rho, "rho/F");
+			flashggTreeWithTags->Branch("xsec_weight", &xsec_weight, "xsec_weight/F");
+			flashggTreeWithTags->Branch("full_weight", &full_weight, "full_weight/F");
+			flashggTreeWithTags->Branch("pu_weight", &pu_weight, "pu_weight/F");
+			flashggTreeWithTags->Branch("pu_n", &pu_n, "pu_n/F");
+			flashggTreeWithTags->Branch("mass", &mass, "mass/F");
+			flashggTreeWithTags->Branch("dipho_pt", &dipho_pt, "dipho_pt/F");
+			flashggTreeWithTags->Branch("full_cat", &full_cat, "full_cat/F");
+			flashggTreeWithTags->Branch("et1", &et1, "et1/F");
+			flashggTreeWithTags->Branch("et2", &et2, "et2/F");
+			flashggTreeWithTags->Branch("eta1", &eta1, "eta1/F");
+			flashggTreeWithTags->Branch("eta2", &eta2, "eta2/F");
+			flashggTreeWithTags->Branch("r91", &r91, "r91/F");
+			flashggTreeWithTags->Branch("r92", &r92, "r92/F");
+			flashggTreeWithTags->Branch("sieie1", &sieie1, "sieie1/F");
+			flashggTreeWithTags->Branch("sieie2", &sieie2, "sieie2/F");
+			flashggTreeWithTags->Branch("hoe1", &hoe1, "hoe1/F");
+			flashggTreeWithTags->Branch("hoe2", &hoe2, "hoe2/F");
+			flashggTreeWithTags->Branch("sigmaEoE1", &sigmaEoE1, "sigmaEoE1/F");
+			flashggTreeWithTags->Branch("sigmaEoE2", &sigmaEoE2, "sigmaEoE2/F");
+			flashggTreeWithTags->Branch("ptoM1", &ptoM1, "ptoM1/F");
+			flashggTreeWithTags->Branch("ptoM2", &ptoM2, "ptoM2/F");
+			flashggTreeWithTags->Branch("isEB1", &isEB1, "isEB1/F");
+			flashggTreeWithTags->Branch("isEB2", &isEB2, "isEB2/F");
+			flashggTreeWithTags->Branch("chiso1", &chiso1, "chiso1/F");
+			flashggTreeWithTags->Branch("chiso2", &chiso2, "chiso2/F");
+			flashggTreeWithTags->Branch("chisow1", &chisow1, "chisow1/F");
+			flashggTreeWithTags->Branch("chisow2", &chisow2, "chisow2/F");
+			flashggTreeWithTags->Branch("phoiso1", &phoiso1, "phoiso1/F");
+			flashggTreeWithTags->Branch("phoiso2", &phoiso2, "phoiso2/F");
+			flashggTreeWithTags->Branch("phoiso041", &phoiso041, "phoiso041/F");
+			flashggTreeWithTags->Branch("phoiso042", &phoiso042, "phoiso042/F");
+			flashggTreeWithTags->Branch("ecaliso03_1", &ecaliso03_1, "ecaliso03_1/F");
+			flashggTreeWithTags->Branch("ecaliso03_2", &ecaliso03_2, "ecaliso03_2/F");
+			flashggTreeWithTags->Branch("hcaliso03_1", &hcaliso03_1, "hcaliso03_1/F");
+			flashggTreeWithTags->Branch("hcaliso03_2", &hcaliso03_2, "hcaliso03_2/F");
+			flashggTreeWithTags->Branch("trkiso03_1", &trkiso03_1, "trkiso03_1/F");
+			flashggTreeWithTags->Branch("trkiso03_2", &trkiso03_2, "trkiso03_2/F");
+			flashggTreeWithTags->Branch("pfchiso2_1", &pfchiso2_1, "pfchiso2_1/F");
+			flashggTreeWithTags->Branch("pfchiso2_2", &pfchiso2_2, "pfchiso2_2/F");
+			flashggTreeWithTags->Branch("sieip1", &sieip1, "sieip1/F");
+			flashggTreeWithTags->Branch("sieip2", &sieip2, "sieip2/F");
+			flashggTreeWithTags->Branch("etawidth1", &etawidth1, "etawidth1/F");
+			flashggTreeWithTags->Branch("phiwidth1", &phiwidth1, "phiwidth1/F");
+			flashggTreeWithTags->Branch("etawidth2", &etawidth2, "etawidth2/F");
+			flashggTreeWithTags->Branch("phiwidth2", &phiwidth2, "phiwidth2/F");
+			flashggTreeWithTags->Branch("regrerr1", &regrerr1, "regrerr1/F");
+			flashggTreeWithTags->Branch("regrerr2", &regrerr2, "regrerr2/F");
+			flashggTreeWithTags->Branch("cosphi", &cosphi, "cosphi/F");
+			flashggTreeWithTags->Branch("genmatch1", &genmatch1, "genmatch1/F");
+			flashggTreeWithTags->Branch("genmatch2", &genmatch2, "genmatch2/F");
+			flashggTreeWithTags->Branch("idmva1", &idmva1, "idmva1/F");
+			flashggTreeWithTags->Branch("idmva2", &idmva2, "idmva2/F");
+			flashggTreeWithTags->Branch("vbfcat", &vbfcat, "vbfcat/F");
+			flashggTreeWithTags->Branch("MET", &MET, "MET/F");
+			flashggTreeWithTags->Branch("MET_phi", &MET_phi, "MET_phi/F");
+			flashggTreeWithTags->Branch("isorv1", &isorv1, "isorv1/F");
+			flashggTreeWithTags->Branch("isowv1", &isowv1, "isowv1/F");
+			flashggTreeWithTags->Branch("isorv2", &isorv2, "isorv2/F");
+			flashggTreeWithTags->Branch("isowv2", &isowv2, "isowv2/F");
+			flashggTreeWithTags->Branch("s4ratio1", &s4ratio1, "s4ratio1/F");
+			flashggTreeWithTags->Branch("s4ratio2", &s4ratio2, "s4ratio2/F");
+			flashggTreeWithTags->Branch("effSigma1", &effSigma1, "effSigma1/F");
+			flashggTreeWithTags->Branch("effSigma2", &effSigma2, "effSigma2/F");
+			flashggTreeWithTags->Branch("scraw1", &scraw1, "scraw1/F");
+			flashggTreeWithTags->Branch("scraw2", &scraw2, "scraw2/F");
+			flashggTreeWithTags->Branch("vtx_x", &vtx_x, "vtx_x/F");
+			flashggTreeWithTags->Branch("vtx_y", &vtx_y, "vtx_y/F");
+			flashggTreeWithTags->Branch("vtx_z", &vtx_z, "vtx_z/F");
+			flashggTreeWithTags->Branch("gv_x", &gv_x, "gv_x/F");
+			flashggTreeWithTags->Branch("gv_y", &gv_y, "gv_y/F");
+			flashggTreeWithTags->Branch("gv_z", &gv_z, "gv_z/F");
+			flashggTreeWithTags->Branch("dijet_leadEta", &dijet_leadEta, "dijet_leadEta/F");
+			flashggTreeWithTags->Branch("dijet_subleadEta", &dijet_subleadEta, "dijet_subleadEta/F");
+			flashggTreeWithTags->Branch("dijet_LeadJPt", &dijet_LeadJPt, "dijet_LeadJPt/F");
+			flashggTreeWithTags->Branch("dijet_SubJPt", &dijet_SubJPt, "dijet_SubJPt/F");
+			flashggTreeWithTags->Branch("dijet_dEta", &dijet_dEta, "dijet_dEta/F");
+			flashggTreeWithTags->Branch("dijet_Zep", &dijet_Zep, "dijet_Zep/F");
+			flashggTreeWithTags->Branch("dijet_dPhi", &dijet_dPhi, "dijet_dPhi/F");
+			flashggTreeWithTags->Branch("dijet_Mjj", &dijet_Mjj, "dijet_Mjj/F");
+			flashggTreeWithTags->Branch("dijet_MVA", &dijet_MVA, "dijet_MVA/F");
+			flashggTreeWithTags->Branch("bdt_combined", &bdt_combined, "bdt_combined/F");
+			flashggTreeWithTags->Branch("issyst", &issyst, "issyst/F");
+			flashggTreeWithTags->Branch("name1", &name1, "name1/F");
+			flashggTreeWithTags->Branch("sigmaMrvoM", &sigmaMrvoM, "sigmaMrvoM/F");
+			flashggTreeWithTags->Branch("sigmaMwvoM", &sigmaMwvoM, "sigmaMwvoM/F");
+			flashggTreeWithTags->Branch("vtxprob", &vtxprob, "vtxprob/F");
+			flashggTreeWithTags->Branch("ptbal", &ptbal, "ptbal/F");
+			flashggTreeWithTags->Branch("ptasym", &ptasym, "ptasym/F");
+			flashggTreeWithTags->Branch("logspt2", &logspt2, "logspt2/F");
+			flashggTreeWithTags->Branch("p2conv", &p2conv, "p2conv/F");
+			flashggTreeWithTags->Branch("nconv", &nconv, "nconv/F");
+			flashggTreeWithTags->Branch("vtxmva", &vtxmva, "vtxmva/F");
+			flashggTreeWithTags->Branch("vtxdz", &vtxdz, "vtxdz/F");
+			flashggTreeWithTags->Branch("dipho_mva", &dipho_mva, "dipho_mva/F");
+			flashggTreeWithTags->Branch("dipho_mva_cat", &dipho_mva_cat, "dipho_mva_cat/F");
+			flashggTreeWithTags->Branch("flash_Untagged_Category", &flash_Untagged_Category, "flash_Untagged_Category/I");
+			flashggTreeWithTags->Branch("flash_VBFTag_Category", &flash_VBFTag_Category, "flash_VBFTag_Category/I");
 		}
 
 	void 
-		FlashggTreeMaker::endJob() 
+		FlashggTreeMakerWithTags::endJob() 
 		{
 		}
 
 
 	void
-		FlashggTreeMaker::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+		FlashggTreeMakerWithTags::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
 			//The following says we do not know what parameters are allowed so do no validation
 			// Please change this to state exactly what you do use, even if it is no parameters
 			edm::ParameterSetDescription desc;
@@ -958,5 +1019,5 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 			descriptions.addDefault(desc);
 		}
 
-	typedef FlashggTreeMaker FlashggFlashggTreeMaker;
-	DEFINE_FWK_MODULE(FlashggFlashggTreeMaker);
+	typedef FlashggTreeMakerWithTags FlashggFlashggTreeMakerWithTags;
+	DEFINE_FWK_MODULE(FlashggFlashggTreeMakerWithTags);

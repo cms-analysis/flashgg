@@ -10,6 +10,7 @@
 <use name="CommonTools/CandUtils"/>
 <use name="DataFormats/VertexReco"/>
 <use name="flashgg/MicroAODFormats"/>
+<use name="flashgg/TagFormats"/>
 <use name="flashgg/MicroAODAlgos"/>
 <use name="RecoJets/JetProducers"/>
 <flags EDM_PLUGIN="1"/>

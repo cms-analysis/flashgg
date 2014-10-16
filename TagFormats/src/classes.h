@@ -1,5 +1,8 @@
 #include "flashgg/TagFormats/interface/DiPhotonMVAResult.h"
+#include "flashgg/TagFormats/interface/VBFMVAResult.h"
+#include "flashgg/TagFormats/interface/VBFDiPhoDiJetMVAResult.h"
 #include "flashgg/TagFormats/interface/DiPhotonUntaggedCategory.h"
+#include "flashgg/TagFormats/interface/VBFTag.h"
 #include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
 #include "DataFormats/Common/interface/Wrapper.h"
 #include "DataFormats/Common/interface/Ptr.h"
@@ -15,10 +18,24 @@ namespace  { struct dictionary {
   //  edm::Wrapper<std::map<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult> > wrp_map_res;
   std::vector<flashgg::DiPhotonMVAResult> vec_res;
   edm::Wrapper<std::vector<flashgg::DiPhotonMVAResult> > wrp_vec_res;
+	
+	flashgg::VBFMVAResult vbf_res;
+	std::vector<flashgg::VBFMVAResult> vec_vbf_res;
+	edm::Wrapper<std::vector<flashgg::VBFMVAResult> > wrp_vec_vbf_res;
+	
+	flashgg::VBFDiPhoDiJetMVAResult vbfDiPhoDiJet_res;
+	std::vector<flashgg::VBFDiPhoDiJetMVAResult> vec_vbfDiPhoDiJet_res;
+	edm::Wrapper<std::vector<flashgg::VBFDiPhoDiJetMVAResult> > wrp_vec_vbfDiPhoDiJet_res;
+
   flashgg::DiPhotonTagBase tagbase;
   std::vector<flashgg::DiPhotonTagBase> vec_tagbase;
   edm::Wrapper<std::vector<flashgg::DiPhotonTagBase> > wrp_vec_tagbase;
+
   flashgg::DiPhotonUntaggedCategory untaggedcat;
   std::vector<flashgg::DiPhotonUntaggedCategory> vec_untaggedcat;
   edm::Wrapper<std::vector<flashgg::DiPhotonUntaggedCategory> > wrp_vec_untaggedcat;
+	
+  flashgg::VBFTag vbf_cat;
+	std::vector<flashgg::VBFTag> vec_vbf_cat;
+	edm::Wrapper<std::vector<flashgg::VBFTag> > wrp_vec_vbf_cat;
 };}
