@@ -77,17 +77,6 @@ class FlashggTreeMakerWithTags : public edm::EDAnalyzer {
 
 		TTree *flashggTreeWithTags;
 
-		TMVA::Reader * DiphotonMva_; 
-		TMVA::Reader * VbfMva_; 
-		TMVA::Reader * VbfDiphotonMva_; 
-
-//		bool DiphotonMva_initialized;
-//		bool VbfMva_initialized;
-//		bool VbfDiphotonMva_initialized;
-	//	edm::FileInPath diphotonMVAweightfile_;
-	//	edm::FileInPath vbfMVAweightfile_;
-	//	edm::FileInPath vbfDiphotonMVAweightfile_;
-
 		Int_t run;
 		Int_t lumis;
 		Int_t event;
@@ -280,11 +269,6 @@ FlashggTreeMakerWithTags::analyze(const edm::Event& iEvent, const edm::EventSetu
 	iEvent.getByToken(jetTokenDz_,jetsDz);
 	const PtrVector<flashgg::Jet>& jetPointersDz = jetsDz->ptrVector();
 
-	//Handle<View<flashgg::Jet> > jetsRecoBasedMap;
-	//iEvent.getByToken(jetTokenRecoBasedMap_,jetsRecoBasedMap);
-	// const PtrVector<flashgg::Jet>& jetPointersRecoBasedMap = jetsRecoBasedMap->ptrVector();
-	//a = jetPointersRecoBasedMap.size();
-	//
 	Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
 	iEvent.getByToken(diPhotonToken_,diPhotons);
 	const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
@@ -556,108 +540,27 @@ FlashggTreeMakerWithTags::analyze(const edm::Event& iEvent, const edm::EventSetu
 				}
 			}
 		}
-		// Diphoton calculations
-		// Moved from LegacyVertexSelector (M. Olmedo) to here by SZ
-
-		edm::Ptr<reco::Vertex> vtx = diPhotonPointers[candIndex]->getVertex();
-		const flashgg::Photon* g1 = diPhotonPointers[candIndex]->leadingPhoton();
-		const flashgg::Photon* g2 = diPhotonPointers[candIndex]->subLeadingPhoton();
-		TVector3 Photon1Dir, Photon2Dir;
-		Photon1Dir.SetXYZ(g1->superCluster()->position().x() - vtx->position().x(),
-				g1->superCluster()->position().y() - vtx->position().y(),
-				g1->superCluster()->position().z() - vtx->position().z());
-		Photon2Dir.SetXYZ(g2->superCluster()->position().x() - vtx->position().x(),
-				g2->superCluster()->position().y() - vtx->position().y(),
-				g2->superCluster()->position().z() - vtx->position().z());
-		//		Photon1Dir_uv = Photon1Dir.Unit()*g1->superCluster()->rawEnergy();
-		//		Photon2Dir_uv = Photon2Dir.Unit()*g2->superCluster()->rawEnergy();
-		//		p14.SetPxPyPzE(Photon1Dir_uv.x(),Photon1Dir_uv.y(),Photon1Dir_uv.z(),g1->superCluster()->rawEnergy());
-		//		p24.SetPxPyPzE(Photon2Dir_uv.x(),Photon2Dir_uv.y(),Photon2Dir_uv.z(),g2->superCluster()->rawEnergy());
-
-		/*Handle<reco::BeamSpot> recoBeamSpotHandle;
-		iEvent.getByToken(beamSpotToken_,recoBeamSpotHandle);
-		float beamsig;
-		if (recoBeamSpotHandle.isValid()){
-			beamsig = recoBeamSpotHandle->sigmaZ();
-		} else {
-			beamsig = -9999; // I hope this never happens!"
-		}
-
-		float r1 = TMath::Sqrt(Photon1Dir.X()*Photon1Dir.X()+Photon1Dir.Y()*Photon1Dir.Y()+Photon1Dir.Z()*Photon1Dir.Z());
-		float r2 = TMath::Sqrt(Photon2Dir.X()*Photon2Dir.X()+Photon2Dir.Y()*Photon2Dir.Y()+Photon2Dir.Z()*Photon2Dir.Z());
-		float cos_term = TMath::Cos(g1->phi()-g2->phi());
-		float sech1 = 1.0/TMath::CosH(g1->eta());
-		float sech2 = 1.0/TMath::CosH(g2->eta());
-		float tanh1 = 1.0/TMath::TanH(g1->phi());
-		float tanh2 = 1.0/TMath::TanH(g2->phi());
-		float numerator1 = sech1*(sech1*tanh2-tanh1*sech2*cos_term);
-		float numerator2 = sech2*(sech2*tanh1-tanh2*sech1*cos_term);
-		float denominator = 1. - tanh1*tanh2 - sech1*sech2*cos_term;
-		float angleResolution = ((-1.*beamsig*TMath::Sqrt(.2))/denominator)*(numerator1/r1 + numerator2/r2);
-		float alpha_sig = 0.5*angleResolution;
-		float SigmaM = TMath::Sqrt(g1->getSigEOverE()*g1->getSigEOverE() + g2->getSigEOverE()*g2->getSigEOverE());
-		float MassResolutionWrongVtx = TMath::Sqrt((SigmaM*SigmaM)+(alpha_sig*alpha_sig));
-
-		float leadptom_       = g1->pt()/(diPhotonPointers[candIndex]->mass());
-		float subleadptom_    = g2->pt()/(diPhotonPointers[candIndex]->mass());
-		float subleadmva_     = g2->getPhoIdMvaDWrtVtx(vtx);
-		float leadmva_        = g1->getPhoIdMvaDWrtVtx(vtx);
-		float leadeta_        = g2->eta();
-		float subleadeta_     = g1->eta();
-		float sigmarv_        = .5*sqrt((g1->getSigEOverE())*(g1->getSigEOverE()) + (g2->getSigEOverE())*(g2->getSigEOverE()));
-		float sigmawv_        = MassResolutionWrongVtx;
-		float CosPhi_         = TMath::Cos(g1->phi()-g2->phi());
-		float vtxprob_        =  1.-.49*(1+diPhotonPointers[candIndex]->getVtxProbMVA());
-
-		if (!DiphotonMva_initialized) {
-			DiphotonMva_initialized = true;
-			DiphotonMva_ = new TMVA::Reader("!Color:Silent");
-			DiphotonMva_->AddVariable("masserrsmeared/mass",&sigmarv_);
-			DiphotonMva_->AddVariable("masserrsmearedwrongvtx/mass",&sigmawv_);
-			DiphotonMva_->AddVariable("vtxprob",&vtxprob_);
-			DiphotonMva_->AddVariable("ph1.pt/mass",&leadptom_);
-			DiphotonMva_->AddVariable("ph2.pt/mass",&subleadptom_);
-			DiphotonMva_->AddVariable("ph1.eta",&leadeta_);
-			DiphotonMva_->AddVariable("ph2.eta",&subleadeta_);
-			DiphotonMva_->AddVariable("TMath::Cos(ph1.phi-ph2.phi)",&CosPhi_);
-			DiphotonMva_->AddVariable("ph1.idmva",&leadmva_);
-			DiphotonMva_->AddVariable("ph2.idmva",&subleadmva_);
-			DiphotonMva_->BookMVA("BDT",diphotonMVAweightfile_.fullPath());
-		}
-		float diphomva_ = DiphotonMva_->EvaluateMVA("BDT");
 
 
-		// Storing these to the variables used in the tree
-		sigmaMrvoM = sigmarv_; 
-		sigmaMwvoM = sigmawv_; 
-		vtxprob = vtxprob_;
-		ptbal = diPhotonPointers[candIndex]->getPtBal();
-		ptasym = diPhotonPointers[candIndex]->getPtAsym();
-		logspt2 = diPhotonPointers[candIndex]->getLogSumPt2();
-		p2conv = diPhotonPointers[candIndex]->getPullConv(); 
-		nconv = diPhotonPointers[candIndex]->getNConv(); 
-		vtxmva = diPhotonPointers[candIndex]->getVtxProbMVA();
-		vtxdz = diPhotonPointers[candIndex]->getDZ1(); 
-		dipho_mva = diphomva_;*/
-
+		 flash_Untagged_Category= -1; // so that there is at least some value to fill even if not part of category
 		for (unsigned int untaggedLooper =0; untaggedLooper < UntaggedCategoryPointers.size(); untaggedLooper++)
 		{
 		if (UntaggedCategoryPointers[untaggedLooper]->getDiPhotonIndex() != candIndex) continue;
 		
-		sigmaMrvoM = UntaggedCategoryPointers[untaggedLooper]->getSigmaMwvoM();// Not sure if these variables are being filled properly... 
-		sigmaMwvoM = UntaggedCategoryPointers[untaggedLooper]->getSigmaMrvoM(); 
-		vtxprob = UntaggedCategoryPointers[untaggedLooper]->   getVtxProb()   ;
-		dipho_mva = UntaggedCategoryPointers[untaggedLooper]-> getDiphoMva()  ;
+		sigmaMrvoM = UntaggedCategoryPointers[untaggedLooper]->diPhotonMVA().sigmarv;// Not sure if these variables are being filled properly... 
+		sigmaMwvoM = UntaggedCategoryPointers[untaggedLooper]->diPhotonMVA().sigmawv; 
+		vtxprob = UntaggedCategoryPointers[untaggedLooper]->diPhotonMVA().vtxprob ;
+		dipho_mva = UntaggedCategoryPointers[untaggedLooper]-> diPhotonMVA().getMVAValue()  ;
 		flash_Untagged_Category =  UntaggedCategoryPointers[untaggedLooper]->getCategoryNumber();
 		dipho_mva_cat =(float) flash_Untagged_Category;
 
-		std::cout << "DiPho Debug"<< std::endl;
+/*		std::cout << "DiPho Debug"<< std::endl;
 		std::cout << sigmaMrvoM << std::endl;
 		std::cout << sigmaMwvoM <<std::endl;
 		std::cout << vtxprob <<std::endl;
 		std::cout << dipho_mva <<std::endl;
 		std::cout 	<< flash_Untagged_Category <<std::endl; //for debug
-		std::cout << dipho_mva_cat <<std::endl;
+		std::cout << dipho_mva_cat <<std::endl;*/
 	break;
 	}
 
@@ -671,150 +574,34 @@ FlashggTreeMakerWithTags::analyze(const edm::Event& iEvent, const edm::EventSetu
 
 
 
-		// VBF MVA and dijetDipho MVA. Will probably be moved elsewhere evetually...
 
-	/*	// First find dijet by looking for highest-pt jets...
-		std::pair <int,int> dijet_indices(-1,-1);
-		std::pair <float, float> dijet_pts(-1.,-1.);
-
-		float dr2pho = 0.5;
-
-		for (UInt_t jetLoop =0; jetLoop < jetPointersDz.size() ; jetLoop++){
-
-			Ptr<flashgg::Jet> jet  = jetPointersDz[jetLoop];
-
-			// Need to implement jet PU veto.FIXME
-			// within eta 4.7?
-			if (fabs(jet->eta()) > 4.7) continue;
-			// close to lead photon?
-			float dPhi = jet->phi() - phi1;
-			float dEta = jet->eta() - eta1;
-			if (sqrt(dPhi*dPhi +dEta*dEta) < dr2pho) continue;
-			// close to sublead photon?
-			dPhi = jet->phi() - phi2;
-			dEta = jet->eta() - eta2;
-			if (sqrt(dPhi*dPhi +dEta*dEta) < dr2pho) continue;
-
-
-			if (jet->pt() > dijet_pts.first) {
-				// if pt of this jet is higher than the one currently in lead position
-				// then shift back lead jet into sublead position...
-				dijet_indices.second = dijet_indices.first;
-				dijet_pts.second = dijet_pts.first;
-				// .. and put the new jet as the lead jet.
-				dijet_indices.first = jetLoop;
-				dijet_pts.first = jet->pt();
-			}
-			else if ( jet->pt() > dijet_pts.second) {
-				// if the jet's pt isn't as high as the lead jet's but i higher than the sublead jet's
-				// The replace the sublead jet by this new jet.
-				dijet_indices.second = jetLoop;
-				dijet_pts.second = jet->pt();
-			}
-			// if the jet's pt is neither higher than the lead jet or sublead jet, then forget it!
-		}
-
-		std::pair < Ptr<flashgg::Jet>, Ptr<flashgg::Jet> > dijet;
-		// fill dijet pair with lead jet as first, sublead as second.
-		dijet.first =  jetPointersDz[dijet_indices.first];
-		dijet.second =  jetPointersDz[dijet_indices.second];
-
-		dijet_leadEta = dijet.first->eta();
-		dijet_subleadEta = dijet.second->eta();
-		dijet_LeadJPt = dijet.first->pt();
-		dijet_SubJPt = dijet.second->pt();
-
-		auto leadPho_p4 = diPhotonPointers[candIndex]->leadingPhoton()->p4();
-		auto sublPho_p4 =  diPhotonPointers[candIndex]->subLeadingPhoton()->p4();
-		auto leadJet_p4 =  dijet.first->p4();
-		auto sublJet_p4 =  dijet.second->p4();
-
-		auto diphoton_p4 =leadPho_p4 + sublPho_p4;
-		auto dijet_p4 = leadJet_p4 + sublJet_p4;*/
+		flash_VBFTag_Category =-1;// so that there is at least some value to fill even if untagged
 
 		for (unsigned int vbfLooper =0; vbfLooper < VBFTagPointers.size(); vbfLooper++)
 		{
-				
+	//	std::cout << std::endl<< "candIndex " << candIndex << "	vbfLoop " << vbfLooper << " diPhoIndex " << 	VBFTagPointers[vbfLooper]->getDiPhotonIndex() << std::endl ; 
 		if (VBFTagPointers[vbfLooper]->getDiPhotonIndex()  != candIndex) continue;
 
-		dijet_leadEta = VBFTagPointers[vbfLooper]->  dijet_leadEta_; //not sure if tehse vars are beign filled properly 
-		dijet_subleadEta =VBFTagPointers[vbfLooper]->dijet_subleadEta_; 
-		dijet_LeadJPt =VBFTagPointers[vbfLooper]->   dijet_LeadJPt_; 
-		dijet_SubJPt = VBFTagPointers[vbfLooper]->   dijet_SubJPt_; 
-		dijet_Zep = VBFTagPointers[vbfLooper]->      dijet_Zep_; 
-		dijet_Mjj = VBFTagPointers[vbfLooper]->      dijet_Mjj_; 
-		dijet_MVA = VBFTagPointers[vbfLooper]->      dijet_MVA_;
-		bdt_combined =VBFTagPointers[vbfLooper]->    bdt_combined_;     
+		dijet_leadEta = VBFTagPointers[vbfLooper]->VBFMVA().dijet_leadEta; 
+		dijet_subleadEta =VBFTagPointers[vbfLooper]->VBFMVA().dijet_subleadEta; 
+		dijet_LeadJPt =VBFTagPointers[vbfLooper]->VBFMVA().   dijet_LeadJPt; 
+		dijet_SubJPt = VBFTagPointers[vbfLooper]->VBFMVA().   dijet_SubJPt; 
+		dijet_Zep = VBFTagPointers[vbfLooper]->VBFMVA().      dijet_Zep; 
+		dijet_Mjj = VBFTagPointers[vbfLooper]->VBFMVA().      dijet_Mjj; 
+		dijet_MVA = VBFTagPointers[vbfLooper]->VBFMVA().      VBFMVAValue();
+		bdt_combined =VBFTagPointers[vbfLooper]->VBFDiPhoDiJetMVA().VBFDiPhoDiJetMVAValue();     
 		flash_VBFTag_Category = VBFTagPointers[vbfLooper]->getCategoryNumber();
 		
 
-		std::cout << "VBFDebug"<< std::endl;
-		std::cout <<dijet_leadEta << "	" << dijet_MVA << std::endl;
-		std::cout <<dijet_SubJPt << "	" << bdt_combined << std::endl;
+	//	std::cout<< std::endl << "VBFDebug"<< std::endl;
+	//	std::cout << dijet_leadEta <<std::endl;
+	if (flash_VBFTag_Category >2 )
+		std::cout << "VBF cat " << flash_VBFTag_Category  <<std::endl;
+	//	std::cout << bdt_combined << std::endl;
+	//	std::cout << "Jets test " <<  VBFTagPointers[vbfLooper]->leadingJet().pt() << "	"<<   VBFTagPointers[vbfLooper]->subLeadingJet().eta() << std::endl; 
 		break;
 		}
 
-	/*	float dipho_PToM = diphoton_p4.Pt() / diphoton_p4.M();
-
-
-
-		if(!VbfMva_initialized) {
-			VbfMva_initialized =true;
-			VbfMva_ = new TMVA::Reader("!Color:Silent");
-			VbfMva_->AddVariable("dijet_leadEta", &dijet_leadEta);
-			VbfMva_->AddVariable("dijet_subleadEta", &dijet_subleadEta);
-			VbfMva_->AddVariable("dijet_LeadJPt", &dijet_LeadJPt);
-			VbfMva_->AddVariable("dijet_SubJPt", &dijet_SubJPt);
-			VbfMva_->AddVariable("dijet_Zep", &dijet_Zep);
-
-			// The below is from the globe code... unsure how to implement for 13TeV use...
-			// For the time being, I am adding,dijet_dPhi
-
-			// if (!combinedmvaVbfSelection) {
-			//tmvaVbfReader_->AddVariable("dijet_dPhi", &myVBFdPhi);
-			//} else {
-			//	if(l.sqrtS==7){
-			//		tmvaVbfReader_->AddVariable("min(dijet_dPhi,2.9416)", &myVBFdPhiTrunc);
-			//	} else if(l.sqrtS==8){
-			//		tmvaVbfReader_->AddVariable("min(dijet_dPhi,2.916)", &myVBFdPhiTrunc);
-			//	} else {
-			//		std::cout<<"sqrtS is not 7 or 8 but is "<<l.sqrtS<<std::endl;
-			//	}}
-			
-
-			float dijet_dPhi_trunc = std::min(dijet_dPhi, (float) 2.916);
-
-			VbfMva_->AddVariable("min(dijet_dPhi,2.916)", &dijet_dPhi_trunc);
-			VbfMva_->AddVariable("dijet_Mjj", &dijet_Mjj);
-			VbfMva_->AddVariable("dipho_pt/mass", &dipho_PToM);
-			VbfMva_->BookMVA("BDT",vbfMVAweightfile_.fullPath());
-		
-		std::cout << vbfMVAweightfile_.fullPath() << std::endl;
-		}
-
-		float vbfmva_ = VbfMva_->EvaluateMVA("BDT");
-		dijet_MVA = vbfmva_	;
-
-		//vbfDiphoMVA implementation... need to check this!!!
-		if(!VbfDiphotonMva_initialized) {
-		VbfDiphotonMva_initialized = true;
-		VbfDiphotonMva_ = new TMVA::Reader("!Color:Silent");
-		VbfDiphotonMva_->AddVariable("dipho_mva", &dipho_mva);
-		VbfDiphotonMva_->AddVariable("bdt_dijet_maxdPhi", &dijet_MVA); //need to check this, not sure if right
-		// see here for globe implementation https://github.com/h2gglobe/h2gglobe/blob/4c70805e7dbf4109aafb5d62044abe43478e474a/PhotonAnalysis/src/PhotonAnalysis.cc#L959
-		VbfDiphotonMva_->AddVariable("dipho_pt/mass", &dipho_PToM);
-		VbfDiphotonMva_->BookMVA("BDT",vbfDiphotonMVAweightfile_.fullPath());
-
-		std::cout << vbfDiphotonMVAweightfile_.fullPath() << std:: endl;
-
-		}
-		bdt_combined = VbfDiphotonMva_->EvaluateMVA("BDT");
-*/
-
-
-
-
-		//		std::cout << "higgsCandidatePResent in globelikeTreeMaker" << std::endl;
 		}
 		else{
 
@@ -887,6 +674,7 @@ FlashggTreeMakerWithTags::analyze(const edm::Event& iEvent, const edm::EventSetu
 			vtxmva =-999.;
 			vtxdz =-999.;
 			dipho_mva =-999.;
+
 		}
 
 		flashggTreeWithTags->Fill(); 

@@ -11,7 +11,7 @@ namespace flashgg {
 
   public:
     VBFDiPhoDiJetMVAResult();
-    VBFDiPhoDiJetMVAResult(VBFMVAResult);
+ //    VBFDiPhoDiJetMVAResult(VBFMVAResult);
     //    VBFDiPhoDiJetMVAResult(const VBFDiPhoDiJetMVAResult&) = default;  // C++11 only? Should happen automagically anyway
 
     // Input variables
