@@ -51,14 +51,14 @@ namespace flashgg {
 
 		vbfMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vbfMVAweightfile");
 
-		dijet_leadEta_ = 0.; 
-		dijet_subleadEta_ = 0.;
-		dijet_LeadJPt_ = 0.;
-		dijet_SubJPt_ = 0.;
-		dijet_Zep_ = 0.;
-		dijet_dPhi_trunc_ = 0.; 
-		dijet_Mjj_ = 0.;
-		dipho_PToM_ = 0.;
+		dijet_leadEta_ = -999.; 
+		dijet_subleadEta_ = -999.;
+		dijet_LeadJPt_ = -999.;
+		dijet_SubJPt_ = -999.;
+		dijet_Zep_ = -999.;
+		dijet_dPhi_trunc_ = -999.; 
+		dijet_Mjj_ = -999.;
+		dipho_PToM_ = -999.;
 
 
 		VbfMva_.reset( new TMVA::Reader("!Color:Silent"));
@@ -104,6 +104,15 @@ namespace flashgg {
 		
 
 		for (unsigned int candIndex =0; candIndex < diPhotonPointers.size() ; candIndex++){
+
+		dijet_leadEta_ = -999.; 
+		dijet_subleadEta_ = -999.;
+		dijet_LeadJPt_ = -999.;
+		dijet_SubJPt_ = -999.;
+		dijet_Zep_ = -999.;
+		dijet_dPhi_trunc_ = -999.; 
+		dijet_Mjj_ = -999.;
+		dipho_PToM_ = -999.;
 
 			flashgg::VBFMVAResult mvares;
 
@@ -155,7 +164,7 @@ namespace flashgg {
 				if (dijet_indices.first != -1 && dijet_indices.second != -1) {hasValidVBFDijet =1;}
 				
 			}
-		std::cout << "has valid VBF Dijet ? "<< hasValidVBFDijet<< std::endl;
+		std::cout << "[VBF] has valid VBF Dijet ? "<< hasValidVBFDijet<< std::endl;
 		if(hasValidVBFDijet)
 		{
 			std::pair < Ptr<flashgg::Jet>, Ptr<flashgg::Jet> > dijet;
@@ -189,6 +198,7 @@ namespace flashgg {
 		//	std::cout<<"jet indices: " <<  dijet_indices.first << "	" << dijet_indices.second << std::endl;
 			mvares.leadJet = *jetPointersDz[dijet_indices.first];
 			mvares.subleadJet = *jetPointersDz[dijet_indices.second];
+
 			
 			//debug stuff
 			//std::cout << mvares.leadJet.eta() << std::endl;

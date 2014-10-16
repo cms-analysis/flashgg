@@ -84,21 +84,16 @@ namespace flashgg {
       DiPhotonUntaggedCategory tag_obj(dipho,mvares);
 			tag_obj.diPhotonIndex = candIndex;
 	//		tag_obj.setDiPhoMVAResult(mvares);
-			tag_obj.setSigmaMwvoM( (float) mvares->sigmawv);
-			tag_obj.setSigmaMrvoM( mvares->sigmarv);
-			tag_obj.setVtxProb(   mvares->vtxprob);
-			tag_obj.setDiphoMva(  mvares->getMVAValue());
+	//		tag_obj.setSigmaMwvoM( (float) mvares->sigmawv);
+	//		tag_obj.setSigmaMrvoM( mvares->sigmarv);
+	//		tag_obj.setVtxProb(   mvares->vtxprob);
+	//		tag_obj.setDiphoMva(  mvares->getMVAValue());
 			
-		std::cout << "[TEST] " << tag_obj.getSigmaMwvoM() <<std::endl;
-		std::cout << "[TEST] " << tag_obj.getSigmaMrvoM() <<std::endl;
-		std::cout << "[TEST] " << tag_obj.getVtxProb()   <<std::endl;
-		std::cout << "[TEST] " << tag_obj.getDiphoMva()   <<std::endl;
-
       int catnum = chooseCategory(mvares->result);
       tag_obj.setCategoryNumber(catnum);
       
       // Leave in debugging statement temporarily while tag framework is being developed
-      std::cout << "MVA is "<< mvares->result << " and category is " << tag_obj.getCategoryNumber() << std::endl;
+      std::cout << "[UNTAGGED] MVA is "<< mvares->result << " and category is " << tag_obj.getCategoryNumber() << std::endl;
 
       if (tag_obj.getCategoryNumber() >= 0) {
 	tags->push_back(tag_obj);

@@ -101,7 +101,9 @@ namespace flashgg {
 			mvares.dipho_mva =   dipho_mva_ ;
 			mvares.dipho_PToM =   dipho_PToM_ ;
 
-			mvares.vbfMvaResult = (VBFMVAResult) vbf_mvares;
+			std::cout << "dijet MVA " << dijet_mva_ << std::endl;
+
+			mvares.vbfMvaResult =  (VBFMVAResult)vbf_mvares;
 
 			vbfDiPhoDiJet_results->push_back(mvares);
 		}
