@@ -6,15 +6,24 @@
  <class name="std::map<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult>"/>
  <class name="edm::Wrapper<std::pair<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult> >"/>
  <class name="edm::Wrapper<std::map<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult> >"/>
--->
+ -->
  <class name="std::vector<flashgg::DiPhotonMVAResult>"/>
  <class name="edm::Wrapper<std::vector<flashgg::DiPhotonMVAResult> >"/>
+ <class name="flashgg::VBFMVAResult"/>
+ <class name="std::vector<flashgg::VBFMVAResult>"/>
+ <class name="edm::Wrapper<std::vector<flashgg::VBFMVAResult> >"/>
+ <class name="flashgg::VBFDiPhoDiJetMVAResult"/>
+ <class name="std::vector<flashgg::VBFDiPhoDiJetMVAResult>"/>
+ <class name="edm::Wrapper<std::vector<flashgg::VBFDiPhoDiJetMVAResult> >"/>
  <class name="flashgg::DiPhotonTagBase"/>
  <class name="std::vector<flashgg::DiPhotonTagBase>"/>
  <class name="edm::Wrapper<std::vector<flashgg::DiPhotonTagBase> >"/>
  <class name="flashgg::DiPhotonUntaggedCategory"/>
  <class name="std::vector<flashgg::DiPhotonUntaggedCategory>"/>
  <class name="edm::Wrapper<std::vector<flashgg::DiPhotonUntaggedCategory> >"/>
-</lcgdict>
+ <class name="flashgg::VBFTag"/>
+ <class name="std::vector<flashgg::VBFTag>"/>
+ <class name="edm::Wrapper<std::vector<flashgg::VBFTag> >"/>
+ </lcgdict>
 
 

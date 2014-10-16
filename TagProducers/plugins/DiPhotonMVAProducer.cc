@@ -144,6 +144,7 @@ namespace flashgg {
       mvares.sigmawv = sigmawv_;
       mvares.CosPhi = CosPhi_;
       mvares.vtxprob = vtxprob_;
+			std::cout << "[INFO] sigmarv " << mvares.sigmarv << std::endl;
 
       results->push_back(mvares);
     }
