@@ -45,12 +45,10 @@ process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string("tree.root")
 )
 
-process.p = cms.Path(process.flashggVertexMapUnique*
-                     process.flashggVertexMapNonUnique*
+process.p = cms.Path((process.flashggVertexMapUnique+process.flashggVertexMapNonUnique+process.flashggPrunedGenParticles)*
                      process.flashggPhotons*
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
-                     process.flashggPrunedGenParticles*
                      process.flashggJets*
                      process.commissioning
                     )
