@@ -31,6 +31,8 @@ process.load("flashgg/MicroAODProducers/flashggPrunedGenParticles_cfi")
 
 #Tag stuff
 process.load("flashgg/TagProducers/flashggDiPhotonMVA_cfi")
+process.load("flashgg/TagProducers/flashggVBFMVA_cfi")
+process.load("flashgg/TagProducers/flashggVBFDiPhoDiJetMVA_cfi")
 process.load("flashgg/TagProducers/flashggTags_cfi")
 
 
@@ -41,14 +43,14 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
                                )
 
 
-process.p = cms.Path(process.flashggVertexMapUnique*
-                     process.flashggVertexMapNonUnique*
+process.p = cms.Path((process.flashggVertexMapUnique+process.flashggVertexMapNonUnique+process.flashggPrunedGenParticles)*
                      process.flashggPhotons*
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
-                     process.flashggPrunedGenParticles*
-                     (process.flashggDiPhotonMVA+process.flashggJets)* # These two could run in parallel, so use +
-                     (process.flashggUntaggedCategory) # Tag producers, once written, can run in parallel, so they go in here with +
+                     (process.flashggDiPhotonMVA+process.flashggJets)*
+                     (process.flashggVBFMVA)* # Needs to happen after Jets
+                     (process.flashggVBFDiPhoDiJetMVA)* # Needs to happen after VBF MVA and DiPho MVA
+                     (process.flashggUntaggedCategory+process.flashggVBFTag) # Tag producers, once written, can run in parallel, so they go in here with +
                     )
 
 process.e = cms.EndPath(process.out)
