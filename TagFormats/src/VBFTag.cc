@@ -9,9 +9,9 @@ VBFTag::VBFTag(){}
 //VBFTag::VBFTag() : DiPhotonTagBase::DiPhotonTagBase() {}
 //VBFTag::~VBFTag(){}
 
-VBFTag::VBFTag(const VBFTag& x) : DiPhotonTagBase::DiPhotonTagBase(x) {
-  category_number_ = x.category_number_;  
-}
+//VBFTag::VBFTag(const VBFTag& x) : DiPhotonTagBase::DiPhotonTagBase(x) {
+ // category_number_ = x.category_number_; 
+//}
 
 VBFTag::VBFTag(edm::Ptr<DiPhotonCandidate> diPho,edm::Ptr<VBFDiPhoDiJetMVAResult> vbfDiPhoDiJet_mvaRes) {
   addDaughter(*diPho);

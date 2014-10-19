@@ -85,20 +85,11 @@ namespace flashgg {
 
     for (unsigned int candIndex =0; candIndex < diPhotonPointers.size() ; candIndex++) {
       edm::Ptr<flashgg::VBFDiPhoDiJetMVAResult> mvares = vbfDiPhoDiJetMvaResultPointers[candIndex];
-      edm::Ptr<flashgg::VBFMVAResult> vbf_mvares = vbfMvaResultPointers[candIndex];
+    //  edm::Ptr<flashgg::VBFMVAResult> vbf_mvares = vbfMvaResultPointers[candIndex];
       edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[candIndex];
 
 			VBFTag tag_obj(dipho,mvares);
-			tag_obj.diPhotonIndex= candIndex;
-			tag_obj.dijet_leadEta_=vbf_mvares-> dijet_leadEta ; 
-			tag_obj.dijet_subleadEta_= vbf_mvares-> dijet_subleadEta;
-			tag_obj.dijet_LeadJPt_=vbf_mvares-> dijet_LeadJPt ;
-			tag_obj.dijet_SubJPt_=vbf_mvares-> dijet_SubJPt;   
-			tag_obj.dijet_Zep_= vbf_mvares->dijet_Zep;         
-			tag_obj.dijet_Mjj_=vbf_mvares->dijet_Mjj;  
-			tag_obj.dijet_MVA_=vbf_mvares->VBFMVAValue();      
-			tag_obj.bdt_combined_=mvares->vbfDiPhoDiJetMvaResult;
-
+			tag_obj.diPhotonIndex = candIndex;
 
 			int catnum = chooseCategory(mvares->vbfDiPhoDiJetMvaResult);
 			tag_obj.setCategoryNumber(catnum);
