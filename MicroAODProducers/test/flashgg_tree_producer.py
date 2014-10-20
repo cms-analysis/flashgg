@@ -46,7 +46,9 @@ process.flashggTreeMaker = cms.EDAnalyzer('FlashggFlashggTreeMaker',
 																													METTag = cms.untracked.InputTag('slimmedMETs'),
 																													PileUpTag = cms.untracked.InputTag('addPileupInfo'),
 																													rhoFixedGridCollection = cms.InputTag('fixedGridRhoAll'),
-                                          diphotonMVAweightfile = cms.FileInPath("flashgg/TagProducers/data/HggBambu_SMDipho_Oct29_rwgtptallsigevenbkg7TeV_BDTG.weights.xml"),
+                                     									     diphotonMVAweightfile = cms.FileInPath("flashgg/MicroAODProducers/data/HggBambu_SMDipho_Oct29_rwgtptallsigevenbkg7TeV_BDTG.weights.xml"),
+                                     									     vbfMVAweightfile = cms.FileInPath("flashgg/MicroAODProducers/data/TMVA_dijet_sherpa_scalewt50_2evenb_powheg200_maxdPhi_oct9_Gradient.weights.xml"),
+                                     									     vbfDiphotonMVAweightfile = cms.FileInPath("flashgg/MicroAODProducers/data/TMVA_vbf_dijet_dipho_evenbkg_scaledwt50_maxdPhi_Gradient.weights.xml"),
 #                                                          JetTagReco = cms.InputTag("flashggJetsUsingRecoJets")
                                                           )
                                                  

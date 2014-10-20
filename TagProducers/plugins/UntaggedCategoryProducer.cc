@@ -36,7 +36,7 @@ namespace flashgg {
 
   UntaggedCategoryProducer::UntaggedCategoryProducer(const ParameterSet & iConfig) :
     diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
-    mvaResultToken_(consumes<View<flashgg::DiPhotonMVAResult> >(iConfig.getUntrackedParameter<InputTag> ("MVAResultTag", InputTag("flashggDiPhotonMVAResults"))))
+    mvaResultToken_(consumes<View<flashgg::DiPhotonMVAResult> >(iConfig.getUntrackedParameter<InputTag> ("MVAResultTag", InputTag("flashggDiPhotonMVA"))))
 
   {
     vector<double> default_boundaries;
@@ -82,12 +82,18 @@ namespace flashgg {
       edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[candIndex];
 
       DiPhotonUntaggedCategory tag_obj(dipho,mvares);
-
+			tag_obj.diPhotonIndex = candIndex;
+	//		tag_obj.setDiPhoMVAResult(mvares);
+	//		tag_obj.setSigmaMwvoM( (float) mvares->sigmawv);
+	//		tag_obj.setSigmaMrvoM( mvares->sigmarv);
+	//		tag_obj.setVtxProb(   mvares->vtxprob);
+	//		tag_obj.setDiphoMva(  mvares->getMVAValue());
+			
       int catnum = chooseCategory(mvares->result);
       tag_obj.setCategoryNumber(catnum);
       
       // Leave in debugging statement temporarily while tag framework is being developed
-      std::cout << "MVA is "<< mvares->result << " and category is " << tag_obj.getCategoryNumber() << std::endl;
+      std::cout << "[UNTAGGED] MVA is "<< mvares->result << " and category is " << tag_obj.getCategoryNumber() << std::endl;
 
       if (tag_obj.getCategoryNumber() >= 0) {
 	tags->push_back(tag_obj);
