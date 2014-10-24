@@ -27,15 +27,22 @@ namespace  { struct dictionary {
 	std::vector<flashgg::VBFDiPhoDiJetMVAResult> vec_vbfDiPhoDiJet_res;
 	edm::Wrapper<std::vector<flashgg::VBFDiPhoDiJetMVAResult> > wrp_vec_vbfDiPhoDiJet_res;
 
-  flashgg::DiPhotonTagBase tagbase;
-  std::vector<flashgg::DiPhotonTagBase> vec_tagbase;
-  edm::Wrapper<std::vector<flashgg::DiPhotonTagBase> > wrp_vec_tagbase;
+	flashgg::DiPhotonTagBase tagbase;
+	std::vector<flashgg::DiPhotonTagBase> vec_tagbase;
+	edm::Wrapper<std::vector<flashgg::DiPhotonTagBase> > wrp_vec_tagbase;
 
-  flashgg::DiPhotonUntaggedCategory untaggedcat;
-  std::vector<flashgg::DiPhotonUntaggedCategory> vec_untaggedcat;
-  edm::Wrapper<std::vector<flashgg::DiPhotonUntaggedCategory> > wrp_vec_untaggedcat;
-	
-  flashgg::VBFTag vbf_cat;
+	flashgg::DiPhotonUntaggedCategory untaggedcat;
+	std::vector<flashgg::DiPhotonUntaggedCategory> vec_untaggedcat;
+	edm::Wrapper<std::vector<flashgg::DiPhotonUntaggedCategory> > wrp_vec_untaggedcat;
+
+	flashgg::VBFTag vbf_cat;
 	std::vector<flashgg::VBFTag> vec_vbf_cat;
 	edm::Wrapper<std::vector<flashgg::VBFTag> > wrp_vec_vbf_cat;
+
+	std::vector<std::vector<flashgg::DiPhotonTagBase> >  vec_tags;
+	edm::Wrapper<std::vector<std::vector<flashgg::DiPhotonTagBase> > > wrp_vec_tags;
+	
+	std::vector<std::vector<flashgg::DiPhotonUntaggedCategory> >  un_vec_tags;
+	edm::Wrapper<std::vector<std::vector<flashgg::DiPhotonUntaggedCategory> > > wrp_un_vec_tags;
+
 };}

@@ -24,6 +24,10 @@
  <class name="flashgg::VBFTag"/>
  <class name="std::vector<flashgg::VBFTag>"/>
  <class name="edm::Wrapper<std::vector<flashgg::VBFTag> >"/>
+ <class name="std::vector<std::vector<flashgg::DiPhotonTagBase> >"/>
+ <class name="edm::Wrapper<std::vector<std::vector<flashgg::DiPhotonTagBase> > >"/>
+ <class name="std::vector<std::vector<flashgg::DiPhotonUntaggedCategory> >"/>
+ <class name="edm::Wrapper<std::vector<std::vector<flashgg::DiPhotonUntaggedCategory> > >"/>
  </lcgdict>
 
 
