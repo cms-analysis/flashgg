@@ -147,3 +147,4 @@ namespace flashgg {
 
 typedef flashgg::ElectronProducer FlashggElectronProducer;
 DEFINE_FWK_MODULE(FlashggElectronProducer);
+
