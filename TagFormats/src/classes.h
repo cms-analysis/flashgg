@@ -6,6 +6,9 @@
 #include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
 #include "DataFormats/Common/interface/Wrapper.h"
 #include "DataFormats/Common/interface/Ptr.h"
+#include "flashgg/TagFormats/interface/TTHleptonicTag.h"
+#include "DataFormats/PatCandidates/interface/Electron.h"
+#include "DataFormats/PatCandidates/interface/Muon.h"
 #include <map>
 #include <vector>
 
@@ -38,4 +41,10 @@ namespace  { struct dictionary {
   flashgg::VBFTag vbf_cat;
 	std::vector<flashgg::VBFTag> vec_vbf_cat;
 	edm::Wrapper<std::vector<flashgg::VBFTag> > wrp_vec_vbf_cat;
+
+  flashgg::TTHleptonicTag tthl;
+  	std::vector<flashgg::TTHleptonicTag> vec_tthl;
+  	edm::Wrapper<std::vector<flashgg::TTHleptonicTag> > wrp_vec_tthl;
+  	edm::Ptr<pat::Electron> ptr_elec;
+  	edm::Ptr<pat::Muon> ptr_muon;
 };}

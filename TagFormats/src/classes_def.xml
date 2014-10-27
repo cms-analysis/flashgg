@@ -24,6 +24,9 @@
  <class name="flashgg::VBFTag"/>
  <class name="std::vector<flashgg::VBFTag>"/>
  <class name="edm::Wrapper<std::vector<flashgg::VBFTag> >"/>
+ <class name="flashgg::TTHleptonicTag"/>
+ <class name="std::vector<flashgg::TTHleptonicTag>"/>
+ <class name="edm::Wrapper<std::vector<flashgg::TTHleptonicTag> >"/>
+ <class name="edm::Ptr<pat::Electron>"/>
+ <class name="edm::Ptr<pat::Muon>"/> 
  </lcgdict>
-
-
