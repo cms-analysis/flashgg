@@ -22,10 +22,8 @@ config.Data.unitsPerJob = UNITSPERJOB
 config.Data.publication = True
 config.Data.publishDbsUrl = 'phys03'
 config.Data.publishDataName = 'FLASHGG_VERSION'
-#config.Data.outlfn = "/store/group/phys_higgs/cmshgg/flashgg"
-config.Data.outlfn = "/store/user/obondu/flashgg"
+config.Data.outlfn = "/store/group/phys_higgs/cmshgg/flashgg"
 
 config.section_("Site")
-#config.Site.storageSite = "T2_CH_CERN"
-config.Site.storageSite = "T2_FR_CCIN2P3"
+config.Site.storageSite = "T2_CH_CERN"
 #config.Site.blacklist = ["T2_CH_CERN"]
