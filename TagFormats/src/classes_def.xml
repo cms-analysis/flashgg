@@ -29,4 +29,7 @@
  <class name="edm::Wrapper<std::vector<flashgg::TTHleptonicTag> >"/>
  <class name="edm::Ptr<pat::Electron>"/>
  <class name="edm::Ptr<pat::Muon>"/> 
+ <class name="flashgg::TTHhadronicTag"/>
+ <class name="std::vector<flashgg::TTHhadronicTag>"/>
+ <class name="edm::Wrapper<std::vector<flashgg::TTHhadronicTag> >"/>
  </lcgdict>

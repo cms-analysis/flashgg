@@ -10,7 +10,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 #process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 # Uncomment the following if you notice you have a memory leak
@@ -50,7 +50,8 @@ process.p = cms.Path((process.flashggVertexMapUnique+process.flashggVertexMapNon
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
                      (process.flashggDiPhotonMVA+process.flashggJets)*
-		     (process.flashggTTHleptonicTag)
+		     #(process.flashggTTHleptonicTag)*
+		     (process.flashggTTHhadronicTag)
                      #(process.flashggVBFMVA)* # Needs to happen after Jets
                      #(process.flashggVBFDiPhoDiJetMVA)* # Needs to happen after VBF MVA and DiPho MVA
                      #(process.flashggUntaggedCategory+process.flashggVBFTag) # Tag producers, once written, can run in parallel, so they go in here with +
