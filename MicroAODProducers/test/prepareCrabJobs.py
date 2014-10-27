@@ -4,20 +4,20 @@ from subprocess import call, Popen, PIPE
 
 # Arguments
 # FIXME: Use argparse argument parsing instead, for the day CRAB3 librairies will stop downgrading the python version with respect to CMSSW :|
-flashggVersion = "alphaV0"
+flashggVersion = "flashgg-MicroAOD-alphaV2"
 parameterSet = "simple_Producer_test.py"
-checkIfOnT2 = 1
-checkNFiles = 1
+checkIfOnT2 = 0
+checkNFiles = 0
 createCrabConfig = 1
-unitsPerJob = 10
+unitsPerJob = 1
 
 # Prepare the list of samples to run over with default crab parameters
 samples = []
 ##### SM Higgs samples
 samples.append("/GluGluToHToGG_M-125_13TeV-powheg-pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v2/MINIAODSIM")
-samples.append("/TTbarH_HToGG_M-125_13TeV_pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
 samples.append("/VBF_HToGG_M-125_13TeV-powheg-pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
 samples.append("/WH_ZH_HToGG_M-125_13TeV_pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v2/MINIAODSIM")
+samples.append("/TTbarH_HToGG_M-125_13TeV_pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
 samples.append("/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
 
 ##### SM diHiggs samples
@@ -52,7 +52,6 @@ if createCrabConfig:
     print "Create the crab config files with the default CMSSW python config file"
     for sample in samples:
         PrimaryDataset, ProcessedDataset, DataTier = filter(None, sample.split("/"))
-        print "Preparing crab for processing ", PrimaryDataset
         # Increment flashgg- processing index if job has been launched before (ie if crab dir already exists)
         itry = 0
         jobname = "_".join([flashggVersion, PrimaryDataset, str(itry).zfill(2)])
@@ -61,7 +60,13 @@ if createCrabConfig:
             jobname = "_".join([flashggVersion, PrimaryDataset, str(itry).zfill(2)])
         # Actually create the config file: copy the template and replace things where appropriate
         crabConfigFile = "crabConfig_" + jobname + ".py"
-        replacements = {"JOBNAME":jobname, "PSET":parameterSet, "DATASET":sample, "UNITSPERJOB":str(unitsPerJob), "FLASHGG_VERSION":flashggVersion}
+        print "Preparing crab for processing ", PrimaryDataset, " -> ", crabConfigFile
+        replacements = {"JOBNAME":jobname,
+                        "PSET":parameterSet,
+                        "DATASET":sample,
+                        "UNITSPERJOB":str(unitsPerJob),
+                        "FLASHGG_VERSION":"_".join([flashggVersion, str(itry).zfill(2)])
+                       }
         infile = open("crabConfig_TEMPLATE.py")
         outfile = open(crabConfigFile, 'w')
         for line in infile:
