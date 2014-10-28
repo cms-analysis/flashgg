@@ -285,7 +285,7 @@ flashgg::Photon PhotonIdUtils::pho4MomCorrection(edm::Ptr<flashgg::Photon>& phot
   math::XYZVector direction = sc_Pos - vtx_Pos;
   math::XYZVector p = (direction.Unit()) * (photon->energy());
   math::XYZTLorentzVector corrected_p4(p.x(),p.y(),p.z(),photon->energy());
-  flashgg::Photon *p4CorrPho = photon->clone();
-  p4CorrPho->setP4(corrected_p4);
-  return *p4CorrPho;
+  flashgg::Photon p4CorrPho = *photon;
+  p4CorrPho.setP4(corrected_p4);
+  return p4CorrPho;
 }
