@@ -20,7 +20,7 @@ DiPhotonCandidate::DiPhotonCandidate(edm::Ptr<flashgg::Photon> photon1,edm::Ptr<
   addP4.set(*this);
 }
 
-DiPhotonCandidate::DiPhotonCandidate(flashgg::Photon photon1,flashgg::Photon photon2, edm::Ptr<reco::Vertex> vertex) {
+DiPhotonCandidate::DiPhotonCandidate(const flashgg::Photon & photon1,const flashgg::Photon & photon2, edm::Ptr<reco::Vertex> vertex) {
   addDaughter(photon1);
   addDaughter(photon2);
   vertex_ = vertex;

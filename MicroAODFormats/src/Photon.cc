@@ -33,6 +33,8 @@ Photon::Photon() {
 Photon::Photon(const pat::Photon& aPhoton ) : pat::Photon(aPhoton) {}
 Photon::~Photon() {}
 
+Photon* Photon::clone() const { return new Photon(*this); }
+
 // Very simple functions now, but we want to be smarter about them later
 void Photon::setEnergyAtStep(std::string key, float val) {
   addUserFloat(key,val);
