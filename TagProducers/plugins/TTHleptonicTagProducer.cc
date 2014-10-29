@@ -161,8 +161,6 @@ namespace flashgg {
 
 				TTHleptonicTag tthltags_obj(dipho);
 
-std::cout << "TTHleptonicTag tthltags_obj(dipho);"<< std::endl;
-
 				if(dipho->leadingPhoton()->pt() < (dipho->mass())*leadPhoOverMassThreshold_) continue;
 
 				if(dipho->subLeadingPhoton()->pt() < (dipho->mass())*subleadPhoOverMassThreshold_) continue;
@@ -174,16 +172,10 @@ std::cout << "TTHleptonicTag tthltags_obj(dipho);"<< std::endl;
 				if(mvares->result < MVAThreshold_) continue;
 		
 				photonSelection = true;
-
-std::cout << "before muons selection "<< std::endl;
 			
 				PtrVector<pat::Muon> goodMuons = selectMuons(muonPointers,dipho, leptonEtaThreshold_ ,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
 
-std::cout << "after muons selection "<< std::endl;
-
 				if (!goodMuons) continue;
-
-std::cout << "good muons "<< std::endl;
 
 			for(unsigned int muonIndex = 0; muonIndex < goodMuons.size(); muonIndex++)
 			{
