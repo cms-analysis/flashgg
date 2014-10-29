@@ -21,10 +21,6 @@
 #include "TrackingTools/IPTools/interface/IPTools.h"
 
 using namespace std;
-using namespace edm;
-
-namespace flashgg {
-
 	class ElectronProducer : public edm::EDProducer {
 		public:
 			ElectronProducer(const edm::ParameterSet&);
