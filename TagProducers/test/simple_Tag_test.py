@@ -23,6 +23,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 #/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT_big.root
 # /store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT.root
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT.root"))
+# process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/Spring14miniaod/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/9CEA8583-FC28-E411-9D2E-D8D385AE8466.root"))
 
 process.load("flashgg/MicroAODProducers/flashggVertexMaps_cfi")
 process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
@@ -41,7 +42,7 @@ process.load("flashgg/TagProducers/flashggTags_cfi")
 from flashgg.MicroAODProducers.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand
 
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFile.root'),
-                               outputCommands = microAODDefaultOutputCommand
+                               outputCommands = microAODDefaultOutputCommand			       
                                )
 
 
@@ -50,8 +51,8 @@ process.p = cms.Path((process.flashggVertexMapUnique+process.flashggVertexMapNon
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
                      (process.flashggDiPhotonMVA+process.flashggJets)*
-		     #(process.flashggTTHleptonicTag)*
-		     (process.flashggTTHhadronicTag)
+		     (process.flashggTTHleptonicTag)
+		     #(process.flashggTTHhadronicTag+process.flashggTTHleptonicTag)
                      #(process.flashggVBFMVA)* # Needs to happen after Jets
                      #(process.flashggVBFDiPhoDiJetMVA)* # Needs to happen after VBF MVA and DiPho MVA
                      #(process.flashggUntaggedCategory+process.flashggVBFTag) # Tag producers, once written, can run in parallel, so they go in here with +
