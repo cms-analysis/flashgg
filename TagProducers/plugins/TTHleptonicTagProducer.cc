@@ -15,7 +15,7 @@
 #include "DataFormats/PatCandidates/interface/Muon.h"
 
 #include "DataFormats/TrackReco/interface/HitPattern.h"
-#include "leptonSelection.h"
+#include "flashgg/TagAlgos/interface/leptonSelection.h"
 
 #include "DataFormats/Math/interface/deltaR.h"
 
@@ -60,6 +60,7 @@ namespace flashgg {
 			double muPFIsoSumRelThreshold_;
 			double deltaRMuonJetcountThreshold_;
 			double PuIDCutoffThreshold_;
+			double PhoMVAThreshold_;
 
 
 	};
@@ -92,6 +93,7 @@ namespace flashgg {
 			double default_muPFIsoSumRelThreshold_ = 0.2;
 			double default_deltaRMuonJetcountThreshold_ = 2.;
 			double default_PuIDCutoffThreshold_ = 0.8;
+			double default_PhoMVAThreshold_ = -0.2;
 
  		leptonPtThreshold_ = iConfig.getUntrackedParameter<double>("leptonPtThreshold",default_leptonPtThreshold_);
 		leptonEtaThreshold_ = iConfig.getUntrackedParameter<double>("leptonEtaThreshold",default_leptonEtaThreshold_);
@@ -111,6 +113,7 @@ namespace flashgg {
 		muPFIsoSumRelThreshold_ = iConfig.getUntrackedParameter<double>("muPFIsoSumRelThreshold",default_muPFIsoSumRelThreshold_); 
 		deltaRMuonJetcountThreshold_=iConfig.getUntrackedParameter<double>("deltaRMuonJetcountThreshold",default_deltaRMuonJetcountThreshold_);
 		PuIDCutoffThreshold_ = iConfig.getUntrackedParameter<double>("PuIDCutoffThreshold",default_PuIDCutoffThreshold_);
+		PhoMVAThreshold_ = iConfig.getUntrackedParameter<double>("PhoMVAThreshold",default_PhoMVAThreshold_);
 
 		produces<vector<TTHleptonicTag> >(); 
 	}
@@ -140,55 +143,54 @@ namespace flashgg {
 
  		assert(diPhotonPointers.size() == mvaResultPointers.size());
 
-		int count = 0;
+		bool tagged = false;
 		bool photonSelection = false;
-		
+		double idmva1 = 0.;
+		double idmva2 = 0.;
+
 			for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoIndex++ )
 			{
-//continue - if statement is true, omit everything after it, going to the beginning of the loop.
-				edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[diphoIndex];
+				
 
+				PtrVector<pat::Muon> tagMuons;
+				PtrVector<Jet> tagJets;
+				PtrVector<Jet> tagBJets;
+
+				edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[diphoIndex];
 				edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[diphoIndex];
- 
- std::cout << "dipho->leadingPhoton()->pt() is "<<dipho->leadingPhoton()->pt()<< std::endl;
- std::cout << "(dipho->mass())*leadPhoOverMassThreshold_ is "<<(dipho->mass())*leadPhoOverMassThreshold_<< std::endl;
+
+				TTHleptonicTag tthltags_obj(dipho);
+
+std::cout << "TTHleptonicTag tthltags_obj(dipho);"<< std::endl;
 
 				if(dipho->leadingPhoton()->pt() < (dipho->mass())*leadPhoOverMassThreshold_) continue;
 
- std::cout << "dipho->subLeadingPhoton()->pt() is "<<dipho->subLeadingPhoton()->pt()<< std::endl;
- std::cout << "(dipho->mass())*subleadPhoOverMassThreshold_ is "<<(dipho->mass())*subleadPhoOverMassThreshold_<< std::endl;
-
 				if(dipho->subLeadingPhoton()->pt() < (dipho->mass())*subleadPhoOverMassThreshold_) continue;
 
-				
-std::cout << "mvares->result is "<<mvares->result<< std::endl;
-				if(mvares->result < MVAThreshold_) continue;
+				idmva1 = dipho->leadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
+				idmva2 = dipho->subLeadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
+				if(idmva1 <= PhoMVAThreshold_|| idmva2 <= PhoMVAThreshold_) continue;
 
+				if(mvares->result < MVAThreshold_) continue;
 		
 				photonSelection = true;
+
+std::cout << "before muons selection "<< std::endl;
 			
 				PtrVector<pat::Muon> goodMuons = selectMuons(muonPointers,dipho, leptonEtaThreshold_ ,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
 
+std::cout << "after muons selection "<< std::endl;
+
 				if (!goodMuons) continue;
 
-				cout << "goodMuons.size() is "<<goodMuons.size()<< endl;
-
+std::cout << "good muons "<< std::endl;
 
 			for(unsigned int muonIndex = 0; muonIndex < goodMuons.size(); muonIndex++)
 			{
 
-					cout << "inside muon loop " << endl;
-
 					Ptr<pat::Muon> muon = goodMuons[muonIndex];
-					cout << "muon->pt() is "<< muon->pt() << endl;
 
-
-					int jetcount = 0; 
-					int njets_btagloose = 0;
-					int njets_btagmedium = 0;
-					int bjetcount = 0;
 					int deltaRMuonJetcount = 0;
-					bool muonSelection = false;
 					double bDiscriminatorValue = -999.;
 					
 
@@ -212,11 +214,10 @@ std::cout << "mvares->result is "<<mvares->result<< std::endl;
 					
 					if(deltaRMuonJetcount<deltaRMuonJetcountThreshold_) continue;
 
-					muonSelection =true;
-
-					jetcount++; 
+					tagJets.push_back(thejet);
 	
 					bDiscriminatorValue = thejet->bDiscriminator(bTag_.c_str());
+/*
 
 					if(bDiscriminatorValue>bDiscriminator_[0]) 
 					{
@@ -226,37 +227,37 @@ std::cout << "mvares->result is "<<mvares->result<< std::endl;
 							bjetcount++;
 						}
 					}
+*/
 					if(bDiscriminatorValue>bDiscriminator_[1]) 
 					{
-						njets_btagmedium++;
-						bjetcount++;
+						tagBJets.push_back(thejet);
 					}
 
-std::cout << "njets_btagloose is "<< njets_btagloose << std::endl;
-std::cout << "njets_btagmedium is "<< njets_btagmedium << std::endl;
-
-std::cout << "[TTHleptonic] MVA is "<< mvares->result << " and bjetcount is " << bjetcount << "and jetcount is "<< jetcount << std::endl;
 				//end of jets loop 
 				}
 
-					TTHleptonicTag tthltags_obj(muon);
-
-					if(njets_btagmedium >= bjetsNumberThreshold_ && jetcount >= jetsNumberThreshold_ && photonSelection && muonSelection){
-						tthltags->push_back(tthltags_obj);
-						count++;
-
-std::cout << "[TTHleptonic] tagged count: "<<count<< std::endl;
-					}
+			tagMuons.push_back(muon);
 			//end of muons loop
 			}
-//diPho loop end
-}
-//after all loops
-std::cout << "after all loops "<< std::endl;
-		evt.put(tthltags);
- std::cout << "All [TTHleptonic] tagged count: "<<count<< std::endl;
 
-	}
+			if(tagBJets.size() >= bjetsNumberThreshold_ && tagJets.size() >= jetsNumberThreshold_ && photonSelection && tagMuons.size()>0)
+			{
+
+				tthltags_obj.setJets(tagJets);
+				tthltags_obj.setBJets(tagBJets);
+				tthltags_obj.setMuons(tagMuons);
+
+				tthltags->push_back(tthltags_obj);
+				tagged = true;
+			}
+
+			//diPho loop end
+			}
+			evt.put(tthltags);
+
+std::cout << "event is tagged : "<< tagged << std::endl;
+
+}
 
 }
 typedef flashgg::TTHleptonicTagProducer FlashggTTHleptonicTagProducer;
