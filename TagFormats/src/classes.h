@@ -48,6 +48,8 @@ namespace  { struct dictionary {
   	edm::Wrapper<std::vector<flashgg::TTHleptonicTag> > wrp_vec_tthl;
   	edm::Ptr<pat::Electron> ptr_elec;
   	edm::Ptr<pat::Muon> ptr_muon;
+	edm::PtrVector<pat::Muon> vec_ptr_muon;
+	edm::PtrVector<flashgg::Jet> vec_ptr_jet;
 
   flashgg::TTHhadronicTag tthh;
   	std::vector<flashgg::TTHhadronicTag> vec_tthh;

@@ -34,7 +34,8 @@ flashggTTHleptonicTag = cms.EDProducer("FlashggTTHleptonicTagProducer",
 					bTag = cms.untracked.string("combinedSecondaryVertexBJetTags"),
 					muPFIsoSumRelThreshold = cms.untracked.double(0.2),
 					deltaRMuonJetcountThreshold = cms.untracked.double(2.),
-					PuIDCutoffThreshold = cms.untracked.double(0.8)
+					PuIDCutoffThreshold = cms.untracked.double(0.8),
+					PhoMVAThreshold = cms.untracked.double(-0.2)
 				    )
 flashggTTHhadronicTag = cms.EDProducer("FlashggTTHhadronicTagProducer",
 					DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),

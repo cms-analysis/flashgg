@@ -9,9 +9,8 @@ TTHleptonicTag::~TTHleptonicTag()
 {}
 
 
-TTHleptonicTag::TTHleptonicTag(edm::Ptr<pat::Muon> theMuon){
+TTHleptonicTag::TTHleptonicTag(edm::Ptr<DiPhotonCandidate> diPho){
 
-theMuon_ = theMuon;
+theDiPhotonCandidate_ = diPho;
 
 }
-

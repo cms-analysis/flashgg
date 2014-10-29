@@ -26,9 +26,11 @@ namespace  { struct dictionary {
   flashgg::Jet                                                      fgg_jet;
   edm::Wrapper<flashgg::Jet>                                    wrp_fgg_jet;
   std::vector<flashgg::Jet>                                     vec_fgg_jet;
-  edm::Ptr<flashgg::Jet>                                        ptr_fgg_jet; 
+  edm::Ptr<flashgg::Jet>                                        ptr_fgg_jet;
+  edm::PtrVector<flashgg::Jet>                                     ptr_vec_fgg_jet;
   edm::Ptr<pat::Muon>                                        ptr_fgg_muon;
   std::vector<pat::Muon>                                        vec_fgg_muon;
+  edm::PtrVector<pat::Muon>                                     ptr_vec_fgg_muon;
   edm::Wrapper<std::vector<flashgg::Jet> >                  wrp_vec_fgg_jet;
   edm::PtrVector<pat::PackedCandidate>                          ptr_vec_pac;
   std::map<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> >    map_ptr_vtx_ptr_vec_pac;

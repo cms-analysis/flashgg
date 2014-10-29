@@ -32,6 +32,7 @@
 
 	fwlite::Event ev(&f);
 	int eventsCount = 0;
+	int lep_eventsCount = 0;
 
 std::cout << "before loop " << std::endl;
 
@@ -39,19 +40,19 @@ std::cout << "before loop " << std::endl;
 {
 		fwlite::Handle<std::vector<flashgg::Photon> > objs_pho;
 		fwlite::Handle<std::vector<flashgg::DiPhotonCandidate> > objs_dipho;
-		//fwlite::Handle<std::vector<flashgg::TTHleptonicTag> > objs_tthltag;
-		fwlite::Handle<std::vector<flashgg::TTHhadronicTag> > objs_tthhtag;
+		fwlite::Handle<std::vector<flashgg::TTHleptonicTag> > objs_tthltag;
+		//fwlite::Handle<std::vector<flashgg::TTHhadronicTag> > objs_tthhtag;
 
 		objs_pho.getByLabel(ev,"flashggPhotons");
 		objs_dipho.getByLabel(ev,"flashggDiPhotons");
-		//objs_tthltag.getByLabel(ev,"flashggTTHleptonicTag");
-		objs_tthhtag.getByLabel(ev,"flashggTTHhadronicTag");
+		objs_tthltag.getByLabel(ev,"flashggTTHleptonicTag");
+		//objs_tthhtag.getByLabel(ev,"flashggTTHhadronicTag");
 
-		//std::vector<flashgg::TTHleptonicTag> const & tthltag = *objs_tthltag;
-		std::vector<flashgg::TTHhadronicTag> const & tthhtag = *objs_tthhtag;
+		std::vector<flashgg::TTHleptonicTag> const & tthltag = *objs_tthltag;
+		//std::vector<flashgg::TTHhadronicTag> const & tthhtag = *objs_tthhtag;
 
 
-
+/*
 	if (objs_tthhtag.ptr()->size() != 0)
 	{
 		eventsCount++;
@@ -67,8 +68,28 @@ std::cout << "before loop " << std::endl;
 
 		}
 	}
+*/
 
+
+	if (objs_tthltag.ptr()->size() != 0)
+	{
+		lep_eventsCount++;
+
+		std::cout << "objs_tthltag.ptr()->size() = " << objs_tthltag.ptr()->size() << std::endl;
+
+
+
+		for(int i = 0; i< objs_tthltag.ptr()->size(); i++)
+		{
+
+			std::cout<< "Muons :" << tthltag[i]->getMuons().size() << std::endl;
+			std::cout<< "Jets :"  << tthltag[i]->getJets().size() << std::endl;
+			std::cout<< "BJets :"  << tthltag[i]->getBJets().size() << std::endl;
+
+		}
+	}
 } 
-std::cout << "Events with TTHhadronicTag = " << eventsCount << std::endl;
+//std::cout << "Events with TTHhadronicTag = " << eventsCount << std::endl;
+std::cout << "Events with TTHleptonicTag = " << lep_eventsCount << std::endl;
 }
 
