@@ -11,7 +11,7 @@ namespace flashgg {
   public:
     DiPhotonCandidate();
     DiPhotonCandidate(edm::Ptr<flashgg::Photon>,edm::Ptr<flashgg::Photon>,edm::Ptr<reco::Vertex>);
-    DiPhotonCandidate(flashgg::Photon,flashgg::Photon,edm::Ptr<reco::Vertex>);
+    DiPhotonCandidate(const flashgg::Photon&, const flashgg::Photon &,edm::Ptr<reco::Vertex>);
     ~DiPhotonCandidate();
 
     const edm::Ptr<reco::Vertex> getVertex() const { return vertex_; }
@@ -31,7 +31,7 @@ namespace flashgg {
     void setDZ2(float val) { dZ2_ = val; }
     void setVtxProbMVA(float val) { vtxprobmva_ = val; }
     void setVertex_index(int val) { vertex_index_ = val; }
-
+    
     float getLogSumPt2() const { return logsumpt2_; }
     float getPtBal() const { return ptbal_; }
     float getPtAsym() const { return ptasym_; }
