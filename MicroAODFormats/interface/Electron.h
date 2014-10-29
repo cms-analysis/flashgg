@@ -10,8 +10,13 @@ namespace flashgg {
 
 		public:
 			Electron();
-			Electron(const pat::Electron &);
+			Electron(const pat::Electron );
 			~Electron();
+
+			float nontrigmva;
+
+			float getNonTrigMVA() const {return nontrigmva;}
+
 	};
 }	
 
