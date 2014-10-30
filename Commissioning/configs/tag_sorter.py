@@ -31,14 +31,27 @@ process.load("flashgg/TagProducers/flashggTags_cfi")
 process.flashggTagSorter = cms.EDProducer('FlashggTagSorter',
 																													DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
 																													TagVectorTag = cms.untracked.VInputTag(
+																														cms.untracked.InputTag('flashggVBFTag'),
 																														cms.untracked.InputTag('flashggUntaggedCategory'),
-																													#	cms.untracked.InputTag('flashggVBFTag'),
 																														),
                                                           )
 
 
 process.TFileService = cms.Service("TFileService",fileName = cms.string("flashggTreeWithTags.root"))
-process.flashggTreeMakerWithTags = cms.EDAnalyzer('FlashggFlashggTreeMakerWithTags',
+#process.flashggTreeMakerWithTags = cms.EDAnalyzer('FlashggFlashggTreeMakerWithTags',
+#                                                          VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+#                                                          GenParticleTag=cms.untracked.InputTag('prunedGenParticles'),
+#                                                          VertexCandidateMapTagDz=cms.InputTag('flashggVertexMapUnique'),
+#                                                          VertexCandidateMapTagAOD = cms.InputTag('flashggVertexMapValidator'),
+#                                                          JetTagDz = cms.InputTag("flashggJets"),
+#																													DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+#																													METTag = cms.untracked.InputTag('slimmedMETs'),
+#																													PileUpTag = cms.untracked.InputTag('addPileupInfo'),
+#																													UntaggedTag = cms.untracked.InputTag('flashggUntaggedCategory'),
+#																													VBFTag = cms.untracked.InputTag('flashggVBFTag'),
+#																													rhoFixedGridCollection = cms.InputTag('fixedGridRhoAll'),
+#                                                          )
+process.flashggTreeMakerWithTagSorter = cms.EDAnalyzer('FlashggFlashggTreeMakerWithTagSorter',
                                                           VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                                           GenParticleTag=cms.untracked.InputTag('prunedGenParticles'),
                                                           VertexCandidateMapTagDz=cms.InputTag('flashggVertexMapUnique'),
@@ -47,8 +60,7 @@ process.flashggTreeMakerWithTags = cms.EDAnalyzer('FlashggFlashggTreeMakerWithTa
 																													DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
 																													METTag = cms.untracked.InputTag('slimmedMETs'),
 																													PileUpTag = cms.untracked.InputTag('addPileupInfo'),
-																													UntaggedTag = cms.untracked.InputTag('flashggUntaggedCategory'),
-																													VBFTag = cms.untracked.InputTag('flashggVBFTag'),
+																													TagSorter = cms.untracked.InputTag('flashggTagSorter'),
 																													rhoFixedGridCollection = cms.InputTag('fixedGridRhoAll'),
                                                           )
                                                  
@@ -92,7 +104,7 @@ process.p = cms.Path(process.flashggVertexMapUnique*
                      (process.flashggVBFDiPhoDiJetMVA)* # Needs to happen after VBF MVA and DiPho MVA
                      (process.flashggVBFTag)* # Tag producers, once written, can run in parallel, so they go in here with +
 										 process.flashggTagSorter
-							#			 process.flashggTreeMakerWithTags
+										 #process.flashggTreeMakerWithTagSorter
                      #process.commissioning*
                     )
 
