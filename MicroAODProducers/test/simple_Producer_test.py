@@ -35,6 +35,7 @@ process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggJets_cfi")
 process.load("flashgg/MicroAODProducers/flashggPrunedGenParticles_cfi")
+process.load("flashgg/MicroAODProducers/flashggElectrons_cfi")
 
 from flashgg.MicroAODProducers.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand
 
@@ -57,6 +58,7 @@ process.p = cms.Path((process.flashggVertexMapUnique+process.flashggVertexMapNon
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
                      process.flashggJets*
+		     process.flashggElectrons*	
                      process.commissioning
                     )
 

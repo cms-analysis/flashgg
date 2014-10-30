@@ -8,7 +8,7 @@ Electron::Electron() : pat::Electron()
 Electron::~Electron()
 {}
 
-Electron::Electron(const pat::Electron anelectron ) : pat::Electron(anelectron)
+Electron::Electron(const pat::Electron& anelectron ) : pat::Electron(anelectron)
 {}
 
 

@@ -7,13 +7,9 @@
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "FWCore/Framework/interface/Event.h"
-
 #include "FWCore/Framework/interface/MakerMacros.h"
-
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "EgammaAnalysis/ElectronTools/interface/EGammaMvaEleEstimator.h"
-//#include "DataFormats/EgammaCandidates/interface/GsfElectron.h"
-//#include "DataFormats/EgammaCandidates/interface/GsfElectronFwd.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "flashgg/MicroAODFormats/interface/Electron.h"
 #include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
@@ -26,119 +22,130 @@
 //
 
 using namespace std;
-//using namespace reco;
-class ElectronProducer : public edm::EDProducer {
-	public:
-		ElectronProducer(const edm::ParameterSet&);
-		~ElectronProducer();
+using namespace edm;
+namespace flashgg {
 
-	private:
-		void produce(edm::Event&, const edm::EventSetup&);
+	class ElectronProducer : public edm::EDProducer {
+		public:
+			ElectronProducer(const edm::ParameterSet&);
+			~ElectronProducer();
 
-		// ----------member data ---------------------------
-		bool verbose_;
-		edm::EDGetTokenT<pat::Electron> electronToken_;
-		edm::EDGetTokenT<flashgg::DiPhotonCandidate> diPhotonToken_;
-		float _Rho;
-		edm::EDGetTokenT<float> eventrhoToken_;
-		string method_;
-		vector<string> mvaWeightFiles_;
+		private:
+			void produce(edm::Event&, const edm::EventSetup&);
 
+			// ----------member data ---------------------------
+			bool verbose_;
+			edm::EDGetTokenT<View<pat::Electron> > electronToken_;
+			edm::EDGetTokenT<View<reco::Vertex> > vertexToken_;
+			float _Rho;
+			edm::InputTag rhoFixedGrid_;
 
-		EGammaMvaEleEstimator* mvaID_;
-
-};
-
-//
-// constants, enums and typedefs
-//
-
-//
-// static data member definitions
-//
-
-//
-// constructors and destructor
-//
-ElectronProducer::ElectronProducer(const edm::ParameterSet& iConfig) {
-	verbose_ = iConfig.getUntrackedParameter<bool>("verbose", false);
-	electronToken_ = consumes<pat::Electron>(iConfig.getParameter<edm::InputTag>("electronTag"));
-	diPhotonToken_ = consumes<flashgg::DiPhotonCandidate>(iConfig.getParameter<edm::InputTag>("diphoTag"));
-	method_ = iConfig.getParameter<string>("method");
-	std::vector<string> fpMvaWeightFiles = iConfig.getParameter<std::vector<std::string> >("mvaWeightFile");
-	eventrhoToken_ = consumes<float>(iConfig.getParameter<edm::InputTag>("Rho"));
-
-	produces<edm::ValueMap<float> >();
-
-	mvaID_ = new EGammaMvaEleEstimator();
-
-	EGammaMvaEleEstimator::MVAType type_;
+			string method_;
+			vector<string> mvaWeightFiles_;
 
 
-	type_ = EGammaMvaEleEstimator::kNonTrig;
+			EGammaMvaEleEstimator* mvaID_;
+
+	};
+
+	//
+	// constants, enums and typedefs
+	//
+
+	//
+	// static data member definitions
+	//
+
+	//
+	// constructors and destructor
+	//
+	ElectronProducer::ElectronProducer(const ParameterSet& iConfig): 
+		electronToken_(consumes<View<pat::Electron> >(iConfig.getUntrackedParameter<InputTag>("electronTag",InputTag("slimmedElectrons")))),
+		vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag>("vertexTag",InputTag("offlineSlimmedPrimaryVertices"))))
+
+	{		
+		verbose_ = iConfig.getUntrackedParameter<bool>("verbose", false);
+		method_ = iConfig.getParameter<string>("method");
+		std::vector<string> fpMvaWeightFiles = iConfig.getParameter<std::vector<std::string> >("mvaWeightFile");
+		//	eventrhoToken_ = consumes<float>(iConfig.getParameter<edm::InputTag>("Rho"));
+		rhoFixedGrid_  = iConfig.getParameter<edm::InputTag>("rhoFixedGridCollection");
 
 
-	bool manualCat_ = true;
+		produces<edm::ValueMap<float> >();
 
-	string path_mvaWeightFileEleID;
-	for(unsigned ifile=0 ; ifile < fpMvaWeightFiles.size() ; ++ifile) {
-		path_mvaWeightFileEleID = edm::FileInPath ( fpMvaWeightFiles[ifile].c_str() ).fullPath();
-		mvaWeightFiles_.push_back(path_mvaWeightFileEleID);
+		mvaID_ = new EGammaMvaEleEstimator();
+
+		EGammaMvaEleEstimator::MVAType type_;
+
+
+		type_ = EGammaMvaEleEstimator::kNonTrig;
+
+
+		bool manualCat_ = true;
+
+		string path_mvaWeightFileEleID;
+		for(unsigned ifile=0 ; ifile < fpMvaWeightFiles.size() ; ++ifile) {
+			path_mvaWeightFileEleID = edm::FileInPath ( fpMvaWeightFiles[ifile].c_str() ).fullPath();
+			mvaWeightFiles_.push_back(path_mvaWeightFileEleID);
+		}
+
+		mvaID_->initialize(method_, type_, manualCat_, mvaWeightFiles_);
+
 	}
 
-	mvaID_->initialize(method_, type_, manualCat_, mvaWeightFiles_);
 
-}
+	ElectronProducer::~ElectronProducer()
+	{
 
-
-ElectronProducer::~ElectronProducer()
-{
-
-	// do anything here that needs to be done at desctruction time
-	// (e.g. close files, deallocate resources etc.)
-	produces<vector<flashgg::Electron> >();	
-}
+		// do anything here that needs to be done at desctruction time
+		// (e.g. close files, deallocate resources etc.)
+		produces<vector<flashgg::Electron> >();	
+	}
 
 
-//
-// member functions
-//
+	//
+	// member functions
+	//
 
-// ------------ method called on each new Event  ------------
-void ElectronProducer::produce(edm::Event& evt, const edm::EventSetup& Setup) {
-	using namespace edm;
+	// ------------ method called on each new Event  ------------
+	void ElectronProducer::produce(Event& evt, const EventSetup& ) {
+		using namespace edm;
 
-	Handle<pat::Electron>  pelectrons;
-	evt.getByToken(electronToken_,pelectrons);
-	const pat::Electron electronCandidates = (*pelectrons.product());
+		Handle<View<pat::Electron> >  pelectrons;
+		evt.getByToken(electronToken_,pelectrons);
+		const PtrVector<pat::Electron> pelectronPointers = pelectrons->ptrVector();
 
-	Handle<View<flashgg::DiPhotonCandidate> > diphotons;
-	evt.getByToken(diPhotonToken_,diphotons);
-	const PtrVector<flashgg::DiPhotonCandidate> diphoPointers = diphotons->ptrVector();
+		Handle<View<reco::Vertex> >  vtxs;
+		evt.getByToken(vertexToken_,vtxs);
+		const PtrVector<reco::Vertex> vertexPointers = vtxs->ptrVector();
 
-	_Rho=0;
-	edm::Handle<float> rhoPtr;
-	//const edm::InputTag eventrhoToken_("kt6PFJets", "rho");
-	evt.getByToken(eventrhoToken_,rhoPtr);
-	_Rho=*rhoPtr;
 
-	auto_ptr<vector<flashgg::Electron> > elecColl(new vector<flashgg::Electron>);
+		_Rho=0;
+		Handle<double> rhoHandle;        // the old way for now...move to getbytoken?
+		evt.getByLabel(rhoFixedGrid_, rhoHandle );
 
-	for(unsigned int diphoIndex =0; diphoIndex < diphoPointers.size(); diphoIndex++ ){	
+		//		edm::Handle<float> rhoPtr;
+		//const edm::InputTag eventrhoToken_("kt6PFJets", "rho");
+		//		evt.getByToken(eventrhoToken_,rhoPtr);
+		//		_Rho=*rhoPtr;
 
-		for ( pat::Electron::const_iterator egIter = electronCandidates.begin(); egIter != electronCandidates.end(); egIter++ ) {
-			flashgg::Electron felec = flashgg::Electron(*egIter);
+		auto_ptr<vector<flashgg::Electron> > elecColl(new vector<flashgg::Electron>);
+
+
+		for ( unsigned int elecIndex =0; elecIndex < pelectronPointers.size(); elecIndex++ ) {
+			flashgg::Electron felec = flashgg::Electron(*pelectronPointers[elecIndex]);
 			double nontrigmva_ = -999999;
 
-			nontrigmva_ = mvaID_->mvaValue( *egIter, diphoPointers[diphoIndex]->getVertex() , _Rho, verbose_);
+			nontrigmva_ = mvaID_->mvaValue( *pelectronPointers[elecIndex], *vertexPointers[0], _Rho, verbose_);
+
+			felec.nontrigmva = nontrigmva_;			
+
 			elecColl->push_back(felec);
 
 		}
+		evt.put(elecColl);
 	}
-	evt.put(out);
-
 }
-
 //define this as a plug-in
 typedef flashgg::ElectronProducer FlashggElectronProducer;
 DEFINE_FWK_MODULE(FlashggElectronProducer);

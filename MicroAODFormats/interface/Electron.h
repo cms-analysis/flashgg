@@ -10,7 +10,7 @@ namespace flashgg {
 
 		public:
 			Electron();
-			Electron(const pat::Electron );
+			Electron(const pat::Electron& );
 			~Electron();
 
 			float nontrigmva;
