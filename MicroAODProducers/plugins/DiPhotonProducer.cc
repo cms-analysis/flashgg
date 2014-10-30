@@ -33,8 +33,7 @@ namespace flashgg {
     EDGetTokenT< VertexCandidateMap > vertexCandidateMapToken_;
     unique_ptr<VertexSelectorBase> vertexSelector_;
     EDGetTokenT<View<reco::Conversion> > conversionToken_;
-    EDGetTokenT<View<reco::BeamSpot> > beamSpotToken_;
-
+    EDGetTokenT<reco::BeamSpot > beamSpotToken_;
 
   };
 
@@ -43,7 +42,7 @@ namespace flashgg {
     photonToken_(consumes<View<flashgg::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("flashggPhotons")))),
     vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
     conversionToken_(consumes<View<reco::Conversion> >(iConfig.getUntrackedParameter<InputTag>("ConversionTag",InputTag("reducedConversions")))),
-    beamSpotToken_(consumes<View<reco::BeamSpot> >(iConfig.getUntrackedParameter<InputTag>("BeamSpotTag",InputTag("offlineBeamSpot")))){
+    beamSpotToken_(consumes<reco::BeamSpot >(iConfig.getUntrackedParameter<InputTag>("BeamSpotTag",InputTag("offlineBeamSpot")))){
 
     const std::string& VertexSelectorName = iConfig.getParameter<std::string>("VertexSelectorName");
     vertexSelector_.reset(FlashggVertexSelectorFactory::get()->create(VertexSelectorName,iConfig));
@@ -72,12 +71,11 @@ namespace flashgg {
     Handle<reco::BeamSpot> recoBeamSpotHandle;
     evt.getByToken(beamSpotToken_,recoBeamSpotHandle);
     math::XYZPoint vertexPoint;
-    //    float beamsig;
-    if (recoBeamSpotHandle.isValid()){
-      vertexPoint = recoBeamSpotHandle->position();
-      //      beamsig = recoBeamSpotHandle->sigmaZ();
-    }
-
+    if (recoBeamSpotHandle.isValid())
+      vertexPoint = recoBeamSpotHandle->position();    
+    else
+      cout<<" WARNING BEAM SPOT NOT VALID! This should not happen "<<endl;
+    
     
     auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
 //    cout << "evt.id().event()= " << evt.id().event() << "\tevt.isRealData()= " << evt.isRealData() << "\tphotonPointers.size()= " << photonPointers.size() << "\tpvPointers.size()= " << pvPointers.size() << endl;
