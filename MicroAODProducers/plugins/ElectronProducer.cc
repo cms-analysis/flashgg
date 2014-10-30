@@ -1,3 +1,4 @@
+
 // system include files
 #include <memory>
 
@@ -17,9 +18,6 @@
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "TrackingTools/Records/interface/TransientTrackRecord.h"
 #include "TrackingTools/IPTools/interface/IPTools.h"
-//
-// class declaration
-//
 
 using namespace std;
 using namespace edm;
@@ -33,7 +31,6 @@ namespace flashgg {
 		private:
 			void produce(edm::Event&, const edm::EventSetup&);
 
-			// ----------member data ---------------------------
 			bool verbose_;
 			edm::EDGetTokenT<View<pat::Electron> > electronToken_;
 			edm::EDGetTokenT<View<reco::Vertex> > vertexToken_;
@@ -43,26 +40,14 @@ namespace flashgg {
 			string method_;
 			vector<string> mvaWeightFiles_;
 
-
+			double nontrigmva_;
 			EGammaMvaEleEstimator* mvaID_;
 
 	};
 
-	//
-	// constants, enums and typedefs
-	//
-
-	//
-	// static data member definitions
-	//
-
-	//
-	// constructors and destructor
-	//
 	ElectronProducer::ElectronProducer(const ParameterSet& iConfig): 
 		electronToken_(consumes<View<pat::Electron> >(iConfig.getUntrackedParameter<InputTag>("electronTag",InputTag("slimmedElectrons")))),
 		vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag>("vertexTag",InputTag("offlineSlimmedPrimaryVertices"))))
-
 	{		
 		verbose_ = iConfig.getUntrackedParameter<bool>("verbose", false);
 		method_ = iConfig.getParameter<string>("method");
@@ -77,9 +62,7 @@ namespace flashgg {
 
 		EGammaMvaEleEstimator::MVAType type_;
 
-
 		type_ = EGammaMvaEleEstimator::kNonTrig;
-
 
 		bool manualCat_ = true;
 
@@ -90,26 +73,18 @@ namespace flashgg {
 		}
 
 		mvaID_->initialize(method_, type_, manualCat_, mvaWeightFiles_);
-
+		produces<vector<flashgg::Electron> >();	
+		nontrigmva_ = 0;
 	}
 
 
 	ElectronProducer::~ElectronProducer()
 	{
 
-		// do anything here that needs to be done at desctruction time
-		// (e.g. close files, deallocate resources etc.)
-		produces<vector<flashgg::Electron> >();	
 	}
 
-
-	//
-	// member functions
-	//
-
-	// ------------ method called on each new Event  ------------
 	void ElectronProducer::produce(Event& evt, const EventSetup& ) {
-		using namespace edm;
+		//using namespace edm;
 
 		Handle<View<pat::Electron> >  pelectrons;
 		evt.getByToken(electronToken_,pelectrons);
@@ -119,18 +94,11 @@ namespace flashgg {
 		evt.getByToken(vertexToken_,vtxs);
 		const PtrVector<reco::Vertex> vertexPointers = vtxs->ptrVector();
 
-
 		_Rho=0;
-		Handle<double> rhoHandle;        // the old way for now...move to getbytoken?
+		Handle<double> rhoHandle;
 		evt.getByLabel(rhoFixedGrid_, rhoHandle );
 
-		//		edm::Handle<float> rhoPtr;
-		//const edm::InputTag eventrhoToken_("kt6PFJets", "rho");
-		//		evt.getByToken(eventrhoToken_,rhoPtr);
-		//		_Rho=*rhoPtr;
-
-		auto_ptr<vector<flashgg::Electron> > elecColl(new vector<flashgg::Electron>);
-
+		std::auto_ptr<vector<flashgg::Electron> > elecColl(new vector<flashgg::Electron>);
 
 		for ( unsigned int elecIndex =0; elecIndex < pelectronPointers.size(); elecIndex++ ) {
 			flashgg::Electron felec = flashgg::Electron(*pelectronPointers[elecIndex]);
@@ -141,11 +109,10 @@ namespace flashgg {
 			felec.nontrigmva = nontrigmva_;			
 
 			elecColl->push_back(felec);
-
 		}
 		evt.put(elecColl);
 	}
 }
-//define this as a plug-in
+
 typedef flashgg::ElectronProducer FlashggElectronProducer;
 DEFINE_FWK_MODULE(FlashggElectronProducer);
