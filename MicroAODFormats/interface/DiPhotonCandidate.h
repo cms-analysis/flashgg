@@ -44,6 +44,9 @@ namespace flashgg {
     float getDZ1() const { return dZ1_; }
     float getDZ2() const { return dZ2_; }
     float getVtxProbMVA() const { return vtxprobmva_; }
+		float getSumPt() const {
+		return (this->leadingPhoton()->pt() + this->subLeadingPhoton()->pt()); 
+		}
     int vertex_index() const { return vertex_index_; }
 
 
