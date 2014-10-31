@@ -93,7 +93,7 @@ namespace flashgg {
       tag_obj.setCategoryNumber(catnum);
       
       // Leave in debugging statement temporarily while tag framework is being developed
-      std::cout << "[UNTAGGED] MVA is "<< mvares->result << " and category is " << tag_obj.getCategoryNumber() << std::endl;
+     // std::cout << "[UNTAGGED] MVA is "<< mvares->result << " and category is " << tag_obj.getCategoryNumber() << std::endl;
 
       if (tag_obj.getCategoryNumber() >= 0) {
 	tags->push_back(tag_obj);

@@ -69,15 +69,14 @@ class FlashggTreeMakerWithTagSorter : public edm::EDAnalyzer {
 		EDGetTokenT< VertexCandidateMap > vertexCandidateMapTokenDz_;
 		EDGetTokenT< VertexCandidateMap > vertexCandidateMapTokenAOD_;
 		EDGetTokenT<View<flashgg::Jet> > jetTokenDz_;
-		// EDGetTokenT<View<flashgg::Jet> > jetTokenRecoBasedMap_;
-		//EDGetTokenT<View<flashgg::Jet> > jetTokenReco_;
-		EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> >  diPhotonToken_; //
-		EDGetTokenT<edm::View<pat::MET> >  METToken_; // LDC work-in-progress adding this!
-		EDGetTokenT<edm::View<PileupSummaryInfo> >  PileUpToken_; // LDC work-in-progress adding this!
+		EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> >  diPhotonToken_; 
+		EDGetTokenT<edm::View<pat::MET> >  METToken_; 
+		EDGetTokenT<edm::View<PileupSummaryInfo> >  PileUpToken_;
 		edm::InputTag rhoFixedGrid_;
 
 		TTree *flashggTreeWithTagSorter;
-
+		
+		// Variables to fill
 		Int_t run;
 		Int_t lumis;
 		Int_t event;
@@ -186,25 +185,13 @@ class FlashggTreeMakerWithTagSorter : public edm::EDAnalyzer {
 		Float_t vtxdz;
 		Float_t dipho_mva;
 		Float_t dipho_mva_cat;
-		
+
 		//Tag Categories
 		Int_t flash_Untagged_Category;
 		Int_t flash_VBFTag_Category;
 
 		edm::EDGetTokenT<edm::View<flashgg::Photon> >            photonToken_; // SCZ work-in-progress adding this!
-		//edm::EDGetTokenT<edm::View<flashgg::DiPhotonUntaggedCategory> > DiPhotonUntaggedToken_;
-		//edm::EDGetTokenT<edm::View<flashgg::VBFTag> > VBFTagToken_;
-		edm::EDGetTokenT<edm::View<edm::Ptr<flashgg::DiPhotonTagBase> > > TagSorterToken_;
-		//  edm::EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> > diphotonToken_;
-		//      edm::EDGetTokenT<edm::View<reco::Vertex> >               vertexToken_; 
-		//      edm::EDGetTokenT<edm::View<pat::PackedCandidate> >       pfcandidateToken_;
-
-		//      TTree* photonTree; 
-		//      photonInfo phoInfo;
-		// add all variables as private members
-
-		//      flashgg::PhotonIdUtils phou;
-
+		edm::EDGetTokenT<edm::Ptr<flashgg::DiPhotonTagBase> > TagSorterToken_;
 };
 
 // ******************************************************************************************
@@ -227,19 +214,12 @@ FlashggTreeMakerWithTagSorter::FlashggTreeMakerWithTagSorter(const edm::Paramete
 	vertexCandidateMapTokenDz_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTagDz"))),
 	vertexCandidateMapTokenAOD_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTagAOD"))),
 	jetTokenDz_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagDz"))),
-	// jetTokenRecoBasedMap_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagRecoBasedMap"))),
 	diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
 	METToken_(consumes<View<pat::MET> >(iConfig.getUntrackedParameter<InputTag> ("METTag", InputTag("slimmedMETs")))),
 	PileUpToken_(consumes<View<PileupSummaryInfo> >(iConfig.getUntrackedParameter<InputTag> ("PileUpTag", InputTag("addPileupInfo")))),
-  //DiPhotonUntaggedToken_(consumes<View<flashgg::DiPhotonUntaggedCategory> >(iConfig.getUntrackedParameter<InputTag> ("UntaggedTag", InputTag("flashggUntaggedCategory")))),
-  //VBFTagToken_(consumes<View<flashgg::VBFTag> >(iConfig.getUntrackedParameter<InputTag> ("VBFTag", InputTag("flashggVBFTag"))))
-  TagSorterToken_(consumes<View<edm::Ptr<flashgg::DiPhotonTagBase> > >(iConfig.getUntrackedParameter<InputTag> ("TagSorter", InputTag("flashggTagSorter"))))
-	//  jetTokenReco_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagReco")))
+	TagSorterToken_(consumes<edm::Ptr<flashgg::DiPhotonTagBase> >(iConfig.getUntrackedParameter<InputTag> ("TagSorter", InputTag("flashggTagSorter"))))
 {
 	rhoFixedGrid_ = iConfig.getParameter<edm::InputTag>("rhoFixedGridCollection");
-//	DiphotonMva_initialized = false;
-//	VbfMva_initialized = false;
-//	VbfDiphotonMva_initialized = false;
 }
 
 FlashggTreeMakerWithTagSorter::~FlashggTreeMakerWithTagSorter()
@@ -251,7 +231,6 @@ void
 FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
 	// ********************************************************************************
-std::cout << "[LOUIE DEBUG A] " << std::endl;
 	// access edm objects
 
 	Handle<VertexCandidateMap> vertexCandidateMapDz;
@@ -286,24 +265,10 @@ std::cout << "[LOUIE DEBUG A] " << std::endl;
 
 	Handle<double> rhoHandle; // the old way for now...move to getbytoken?
 	iEvent.getByLabel(rhoFixedGrid_, rhoHandle );
-
-//	Handle<View<flashgg::DiPhotonUntaggedCategory> > UntaggedCategory;
-
-	//iEvent.getByToken(DiPhotonUntaggedToken_,UntaggedCategory);
-//	const PtrVector<flashgg::DiPhotonUntaggedCategory>& UntaggedCategoryPointers = UntaggedCategory->ptrVector();
-
-//	Handle<View<flashgg::VBFTag> > VBFTag;
-//	iEvent.getByToken(VBFTagToken_,VBFTag);
-//	const PtrVector<flashgg::VBFTag>& VBFTagPointers = VBFTag->ptrVector();
 	
-std::cout << "[LOUIE DEBUG B] " << std::endl;
-	//Handle<View<edm::Ptr<flashgg::DiPhotonTagBase> > > TagSorter;
+	//Slightly unusal way of accessing selected Tag from TagSorter, since a pointer is saved rather than a vector.
 	Handle<edm::Ptr<flashgg::DiPhotonTagBase> > TagSorter;
-std::cout << "[LOUIE DEBUG C] " << std::endl;
 	iEvent.getByToken(TagSorterToken_,TagSorter);
-std::cout << "[LOUIE DEBUG D] " << std::endl;
-//	const Ptr<edm::Ptr<flashgg::DiPhotonTagBase> > *TagSorter = TagSorter_;
-std::cout << "[LOUIE DEBUG E] " << std::endl;
 
 	//---------> njetsxx = number of jets with et > xx
 	njets10 = 0.;
@@ -427,7 +392,7 @@ std::cout << "[LOUIE DEBUG E] " << std::endl;
 		//PHOTON1
 		et1 = diPhotonPointers[candIndex]->leadingPhoton()->et();
 		eta1 = diPhotonPointers[candIndex]->leadingPhoton()->eta();
-	//	float phi1 = diPhotonPointers[candIndex]->leadingPhoton()->phi();
+		//	float phi1 = diPhotonPointers[candIndex]->leadingPhoton()->phi();
 		r91 = diPhotonPointers[candIndex]->leadingPhoton()->r9();
 		sieie1 = diPhotonPointers[candIndex]->leadingPhoton()->sigmaIetaIeta();
 		hoe1 = diPhotonPointers[candIndex]->leadingPhoton()->hadronicOverEm();
@@ -465,7 +430,7 @@ std::cout << "[LOUIE DEBUG E] " << std::endl;
 		//PHOTON 2
 		et2 = diPhotonPointers[candIndex]->subLeadingPhoton()->et();
 		eta2 = diPhotonPointers[candIndex]->subLeadingPhoton()->eta();
-	//	float phi2 = diPhotonPointers[candIndex]->subLeadingPhoton()->phi();
+		//	float phi2 = diPhotonPointers[candIndex]->subLeadingPhoton()->phi();
 		r92 = diPhotonPointers[candIndex]->subLeadingPhoton()->r9();
 		sieie2 = diPhotonPointers[candIndex]->subLeadingPhoton()->sigmaIetaIeta();
 		hoe2 = diPhotonPointers[candIndex]->subLeadingPhoton()->hadronicOverEm();
@@ -554,287 +519,236 @@ std::cout << "[LOUIE DEBUG E] " << std::endl;
 		}
 
 
-		 flash_Untagged_Category= -1; // so that there is at least some value to fill even if not part of category
+		flash_Untagged_Category= -1; // so that there is at least some value to fill even if not part of category
 		flash_VBFTag_Category =-1;// so that there is at least some value to fill even if untagged
-	/*	for (unsigned int untaggedLooper =0; untaggedLooper < UntaggedCategoryPointers.size(); untaggedLooper++)
+		if (TagSorter->get() ) //make sure TagSorter is not a null pointer
 		{
-		if (UntaggedCategoryPointers[untaggedLooper]->getDiPhotonIndex() != candIndex) continue;
-		
-		sigmaMrvoM = UntaggedCategoryPointers[untaggedLooper]->diPhotonMVA().sigmarv;// Not sure if these variables are being filled properly... 
-		sigmaMwvoM = UntaggedCategoryPointers[untaggedLooper]->diPhotonMVA().sigmawv; 
-		vtxprob = UntaggedCategoryPointers[untaggedLooper]->diPhotonMVA().vtxprob ;
-		dipho_mva = UntaggedCategoryPointers[untaggedLooper]-> diPhotonMVA().getMVAValue()  ;
-		flash_Untagged_Category =  UntaggedCategoryPointers[untaggedLooper]->getCategoryNumber();
-		dipho_mva_cat =(float) flash_Untagged_Category;
 
-	//	std::cout << "DiPho Debug"<< std::endl;
-	//	std::cout << sigmaMrvoM << std::endl;
-	//	std::cout << sigmaMwvoM <<std::endl;
-	//	std::cout << vtxprob <<std::endl;
-	//	std::cout << dipho_mva <<std::endl;
-	//	std::cout 	<< flash_Untagged_Category <<std::endl; //for debug
-	//	std::cout << dipho_mva_cat <<std::endl;
-	break;
-	}
+			const	DiPhotonUntaggedCategory *untagged = dynamic_cast<const DiPhotonUntaggedCategory*>(TagSorter->get());
 
-		ptbal = diPhotonPointers[candIndex]->getPtBal();
-		ptasym = diPhotonPointers[candIndex]->getPtAsym();
-		logspt2 = diPhotonPointers[candIndex]->getLogSumPt2();
-		p2conv = diPhotonPointers[candIndex]->getPullConv(); 
-		nconv = diPhotonPointers[candIndex]->getNConv(); 
-		vtxmva = diPhotonPointers[candIndex]->getVtxProbMVA();
-		vtxdz = diPhotonPointers[candIndex]->getDZ1(); */
+			//if(untagged == NULL) std::cout << "NOT UNTAGGED" <<std::endl;
+			if(untagged != NULL) {
+				std::cout << "[UNTAGGED] category " << untagged->getCategoryNumber() << std::endl;
+			}
 
-	/*	for (unsigned int vbfLooper =0; vbfLooper < VBFTagPointers.size(); vbfLooper++)
-		{
-	//	std::cout << std::endl<< "candIndex " << candIndex << "	vbfLoop " << vbfLooper << " diPhoIndex " << 	VBFTagPointers[vbfLooper]->getDiPhotonIndex() << std::endl ; 
-		if (VBFTagPointers[vbfLooper]->getDiPhotonIndex()  != candIndex) continue;
+			const	VBFTag *vbftag = dynamic_cast<const VBFTag*>(TagSorter->get());
+			//	if(vbftag == NULL) std::cout << "NOT VBF" <<std::endl;
+			if(vbftag != NULL) {
+				std::cout << "[VBF] Category " << vbftag->getCategoryNumber() <<std::endl;
+				//	std::cout << "VBF lead Jet eta" <<vbftag->leadingJet().eta() <<std::endl; //debug variables to see if correct info is being saved...
+				//	std::cout << "VBF sublead Jet phi" <<vbftag->leadingJet().phi() <<std::endl;
+			}
 
-		dijet_leadEta = VBFTagPointers[vbfLooper]->VBFMVA().dijet_leadEta; 
-		dijet_subleadEta =VBFTagPointers[vbfLooper]->VBFMVA().dijet_subleadEta; 
-		dijet_LeadJPt =VBFTagPointers[vbfLooper]->VBFMVA().   dijet_LeadJPt; 
-		dijet_SubJPt = VBFTagPointers[vbfLooper]->VBFMVA().   dijet_SubJPt; 
-		dijet_Zep = VBFTagPointers[vbfLooper]->VBFMVA().      dijet_Zep; 
-		dijet_Mjj = VBFTagPointers[vbfLooper]->VBFMVA().      dijet_Mjj; 
-		dijet_MVA = VBFTagPointers[vbfLooper]->VBFMVA().      VBFMVAValue();
-		bdt_combined =VBFTagPointers[vbfLooper]->VBFDiPhoDiJetMVA().VBFDiPhoDiJetMVAValue();     
-		flash_VBFTag_Category = VBFTagPointers[vbfLooper]->getCategoryNumber();
-		
+			// IMPORTANT: All future Tags must be added in the way of untagged and vbftag.	
 
-	//	std::cout<< std::endl << "VBFDebug"<< std::endl;
-	//	std::cout << dijet_leadEta <<std::endl;
-	//	std::cout << bdt_combined << std::endl;
-	//	std::cout << "Jets test " <<  VBFTagPointers[vbfLooper]->leadingJet().pt() << "	"<<   VBFTagPointers[vbfLooper]->subLeadingJet().eta() << std::endl; 
-		break;
-		}*/
-		
-std::cout << "[LOUIE DEBUG F] " << std::endl;
-//		if ( TagSorterPointers.size() >0)
-		{
-			std::cout << " [TEST] Dipho Index " << (*TagSorter)->getDiPhotonIndex() << std::endl;
-			
-	//		std::cout << " [TEST] Dipho Index " << TagSorterPointers[0].diPhotonMVA().getMVAValue() << std::endl;
 
-std::cout << "[LOUIE DEBUG G] " << std::endl;
-			const	DiPhotonUntaggedCategory *test = dynamic_cast<const DiPhotonUntaggedCategory*>(TagSorter->get());
-
-		//	std::cout << test->getCategoryNumber() << std::endl;
-
-			
-std::cout << "[LOUIE DEBUG H] " << std::endl;
-			if(test == NULL) std::cout << "NOT UNTAGGED" <<std::endl;
-			if(test != NULL) std::cout << "UNTAGGED" <<std::endl;
-			
-			const	VBFTag *test2 = dynamic_cast<const VBFTag*>(TagSorter->get());
-			if(test2 == NULL) std::cout << "NOT VBF" <<std::endl;
-			if(test2 != NULL) std::cout << "VBF" <<std::endl;
-		
+		} else { //case where TagSorter->get() is a null pointer
+			std::cout << "[NO TAG]" <<std::endl;
 		}
+}
+else{
 
-		}
-		else{
+	et1 =  -999.;
+	eta1 = -999.;
+	r91 =  -999.;
+	sieie1 =-999.; 
+	hoe1 =-999.;
+	sigmaEoE1 =-999.; 
+	ptoM1 =-999.;
+	isEB1 =-999.;
+	chiso1 =-999.;
+	chisow1 =-999.; 
+	phoiso1 = -999.;
+	phoiso041 =-999.; 
+	ecaliso03_1 =-999.;
+	hcaliso03_1 =-999.;
+	trkiso03_1 = -999.;
+	pfchiso2_1 = -999.;
+	isorv1 = -999.;
+	isowv1 = -999.;
+	sieip1 = -999.;
+	etawidth1 =-999.; 
+	phiwidth1 = -999.;
+	regrerr1 = -999.;
+	idmva1 = -999.;
+	s4ratio1 =-999.;  
+	effSigma1 =-999.;  
+	scraw1 =  -999.;
+	et2 =  -999.;
+	eta2 = -999.;
+	r92 =-999.;
+	sieie2 =-999.; 
+	hoe2 =-999.;
+	sigmaEoE2 =-999.; 
+	ptoM2 =-999.;
+	isEB2 =-999.;
+	isorv2 = -999.;
+	isowv2 = -999.;
+	chiso2 =-999.;
+	chisow2 =-999.; 
+	phoiso2 = -999.;
+	phoiso042 =-999.; 
+	ecaliso03_2 =-999.;
+	hcaliso03_2 =-999.;
+	trkiso03_2 = -999.;
+	pfchiso2_2 = -999.;
+	sieip2 = -999.;
+	etawidth2 =-999.; 
+	phiwidth2 = -999.;
+	regrerr2 = -999.;
+	idmva2 = -999.;
+	s4ratio2 =-999.;  
+	effSigma2 =-999.;  
+	scraw2 =  -999.;
+	cosphi = -999.;
+	vtx_x = -999.;
+	vtx_y = -999.;
+	vtx_z =-999.;
+	genmatch1 = -999.;
+	genmatch2 = -999.;
+	sigmaMrvoM = -999.;
+	sigmaMwvoM = -999.;
+	vtxprob =-999.;
+	ptbal =-999.;
+	ptasym = -999.;
+	logspt2 = -999.;
+	p2conv =-999. ;
+	nconv =-999. ;
+	vtxmva =-999.;
+	vtxdz =-999.;
+	dipho_mva =-999.;
 
-			et1 =  -999.;
-			eta1 = -999.;
-			r91 =  -999.;
-			sieie1 =-999.; 
-			hoe1 =-999.;
-			sigmaEoE1 =-999.; 
-			ptoM1 =-999.;
-			isEB1 =-999.;
-			chiso1 =-999.;
-			chisow1 =-999.; 
-			phoiso1 = -999.;
-			phoiso041 =-999.; 
-			ecaliso03_1 =-999.;
-			hcaliso03_1 =-999.;
-			trkiso03_1 = -999.;
-			pfchiso2_1 = -999.;
-			isorv1 = -999.;
-			isowv1 = -999.;
-			sieip1 = -999.;
-			etawidth1 =-999.; 
-			phiwidth1 = -999.;
-			regrerr1 = -999.;
-			idmva1 = -999.;
-			s4ratio1 =-999.;  
-			effSigma1 =-999.;  
-			scraw1 =  -999.;
-			et2 =  -999.;
-			eta2 = -999.;
-			r92 =-999.;
-			sieie2 =-999.; 
-			hoe2 =-999.;
-			sigmaEoE2 =-999.; 
-			ptoM2 =-999.;
-			isEB2 =-999.;
-			isorv2 = -999.;
-			isowv2 = -999.;
-			chiso2 =-999.;
-			chisow2 =-999.; 
-			phoiso2 = -999.;
-			phoiso042 =-999.; 
-			ecaliso03_2 =-999.;
-			hcaliso03_2 =-999.;
-			trkiso03_2 = -999.;
-			pfchiso2_2 = -999.;
-			sieip2 = -999.;
-			etawidth2 =-999.; 
-			phiwidth2 = -999.;
-			regrerr2 = -999.;
-			idmva2 = -999.;
-			s4ratio2 =-999.;  
-			effSigma2 =-999.;  
-			scraw2 =  -999.;
-			cosphi = -999.;
-			vtx_x = -999.;
-			vtx_y = -999.;
-			vtx_z =-999.;
-			genmatch1 = -999.;
-			genmatch2 = -999.;
-			sigmaMrvoM = -999.;
-			sigmaMwvoM = -999.;
-			vtxprob =-999.;
-			ptbal =-999.;
-			ptasym = -999.;
-			logspt2 = -999.;
-			p2conv =-999. ;
-			nconv =-999. ;
-			vtxmva =-999.;
-			vtxdz =-999.;
-			dipho_mva =-999.;
+}
 
-		}
-
-		flashggTreeWithTagSorter->Fill(); 
-	}
+flashggTreeWithTagSorter->Fill(); 
+}
 	void 
-		FlashggTreeMakerWithTagSorter::beginJob()
-		{
-			flashggTreeWithTagSorter = fs_->make<TTree>("flashggTreeWithTagSorter","flashgg tree with Tags");
-			flashggTreeWithTagSorter->Branch("njets10", &njets10, "njets10/F");
-			flashggTreeWithTagSorter->Branch("njets15", &njets15, "njets15/F");
-			flashggTreeWithTagSorter->Branch("njets20", &njets20, "njets20/F");
-			flashggTreeWithTagSorter->Branch("dRphojet1", &dRphojet1, "dRphojet1/F");
-			flashggTreeWithTagSorter->Branch("dRphojet2", &dRphojet2, "dRphojet2/F");
-			flashggTreeWithTagSorter->Branch("run", &run, "runNumber/I");
-			flashggTreeWithTagSorter->Branch("lumis", &lumis, "lumiSection/I");
-			flashggTreeWithTagSorter->Branch("event", &run, "eventNumber/I");
-			flashggTreeWithTagSorter->Branch("nvtx", &nvtx, "nvtx/F");
-			flashggTreeWithTagSorter->Branch("rho", &rho, "rho/F");
-			flashggTreeWithTagSorter->Branch("xsec_weight", &xsec_weight, "xsec_weight/F");
-			flashggTreeWithTagSorter->Branch("full_weight", &full_weight, "full_weight/F");
-			flashggTreeWithTagSorter->Branch("pu_weight", &pu_weight, "pu_weight/F");
-			flashggTreeWithTagSorter->Branch("pu_n", &pu_n, "pu_n/F");
-			flashggTreeWithTagSorter->Branch("mass", &mass, "mass/F");
-			flashggTreeWithTagSorter->Branch("dipho_pt", &dipho_pt, "dipho_pt/F");
-			flashggTreeWithTagSorter->Branch("full_cat", &full_cat, "full_cat/F");
-			flashggTreeWithTagSorter->Branch("et1", &et1, "et1/F");
-			flashggTreeWithTagSorter->Branch("et2", &et2, "et2/F");
-			flashggTreeWithTagSorter->Branch("eta1", &eta1, "eta1/F");
-			flashggTreeWithTagSorter->Branch("eta2", &eta2, "eta2/F");
-			flashggTreeWithTagSorter->Branch("r91", &r91, "r91/F");
-			flashggTreeWithTagSorter->Branch("r92", &r92, "r92/F");
-			flashggTreeWithTagSorter->Branch("sieie1", &sieie1, "sieie1/F");
-			flashggTreeWithTagSorter->Branch("sieie2", &sieie2, "sieie2/F");
-			flashggTreeWithTagSorter->Branch("hoe1", &hoe1, "hoe1/F");
-			flashggTreeWithTagSorter->Branch("hoe2", &hoe2, "hoe2/F");
-			flashggTreeWithTagSorter->Branch("sigmaEoE1", &sigmaEoE1, "sigmaEoE1/F");
-			flashggTreeWithTagSorter->Branch("sigmaEoE2", &sigmaEoE2, "sigmaEoE2/F");
-			flashggTreeWithTagSorter->Branch("ptoM1", &ptoM1, "ptoM1/F");
-			flashggTreeWithTagSorter->Branch("ptoM2", &ptoM2, "ptoM2/F");
-			flashggTreeWithTagSorter->Branch("isEB1", &isEB1, "isEB1/F");
-			flashggTreeWithTagSorter->Branch("isEB2", &isEB2, "isEB2/F");
-			flashggTreeWithTagSorter->Branch("chiso1", &chiso1, "chiso1/F");
-			flashggTreeWithTagSorter->Branch("chiso2", &chiso2, "chiso2/F");
-			flashggTreeWithTagSorter->Branch("chisow1", &chisow1, "chisow1/F");
-			flashggTreeWithTagSorter->Branch("chisow2", &chisow2, "chisow2/F");
-			flashggTreeWithTagSorter->Branch("phoiso1", &phoiso1, "phoiso1/F");
-			flashggTreeWithTagSorter->Branch("phoiso2", &phoiso2, "phoiso2/F");
-			flashggTreeWithTagSorter->Branch("phoiso041", &phoiso041, "phoiso041/F");
-			flashggTreeWithTagSorter->Branch("phoiso042", &phoiso042, "phoiso042/F");
-			flashggTreeWithTagSorter->Branch("ecaliso03_1", &ecaliso03_1, "ecaliso03_1/F");
-			flashggTreeWithTagSorter->Branch("ecaliso03_2", &ecaliso03_2, "ecaliso03_2/F");
-			flashggTreeWithTagSorter->Branch("hcaliso03_1", &hcaliso03_1, "hcaliso03_1/F");
-			flashggTreeWithTagSorter->Branch("hcaliso03_2", &hcaliso03_2, "hcaliso03_2/F");
-			flashggTreeWithTagSorter->Branch("trkiso03_1", &trkiso03_1, "trkiso03_1/F");
-			flashggTreeWithTagSorter->Branch("trkiso03_2", &trkiso03_2, "trkiso03_2/F");
-			flashggTreeWithTagSorter->Branch("pfchiso2_1", &pfchiso2_1, "pfchiso2_1/F");
-			flashggTreeWithTagSorter->Branch("pfchiso2_2", &pfchiso2_2, "pfchiso2_2/F");
-			flashggTreeWithTagSorter->Branch("sieip1", &sieip1, "sieip1/F");
-			flashggTreeWithTagSorter->Branch("sieip2", &sieip2, "sieip2/F");
-			flashggTreeWithTagSorter->Branch("etawidth1", &etawidth1, "etawidth1/F");
-			flashggTreeWithTagSorter->Branch("phiwidth1", &phiwidth1, "phiwidth1/F");
-			flashggTreeWithTagSorter->Branch("etawidth2", &etawidth2, "etawidth2/F");
-			flashggTreeWithTagSorter->Branch("phiwidth2", &phiwidth2, "phiwidth2/F");
-			flashggTreeWithTagSorter->Branch("regrerr1", &regrerr1, "regrerr1/F");
-			flashggTreeWithTagSorter->Branch("regrerr2", &regrerr2, "regrerr2/F");
-			flashggTreeWithTagSorter->Branch("cosphi", &cosphi, "cosphi/F");
-			flashggTreeWithTagSorter->Branch("genmatch1", &genmatch1, "genmatch1/F");
-			flashggTreeWithTagSorter->Branch("genmatch2", &genmatch2, "genmatch2/F");
-			flashggTreeWithTagSorter->Branch("idmva1", &idmva1, "idmva1/F");
-			flashggTreeWithTagSorter->Branch("idmva2", &idmva2, "idmva2/F");
-			flashggTreeWithTagSorter->Branch("vbfcat", &vbfcat, "vbfcat/F");
-			flashggTreeWithTagSorter->Branch("MET", &MET, "MET/F");
-			flashggTreeWithTagSorter->Branch("MET_phi", &MET_phi, "MET_phi/F");
-			flashggTreeWithTagSorter->Branch("isorv1", &isorv1, "isorv1/F");
-			flashggTreeWithTagSorter->Branch("isowv1", &isowv1, "isowv1/F");
-			flashggTreeWithTagSorter->Branch("isorv2", &isorv2, "isorv2/F");
-			flashggTreeWithTagSorter->Branch("isowv2", &isowv2, "isowv2/F");
-			flashggTreeWithTagSorter->Branch("s4ratio1", &s4ratio1, "s4ratio1/F");
-			flashggTreeWithTagSorter->Branch("s4ratio2", &s4ratio2, "s4ratio2/F");
-			flashggTreeWithTagSorter->Branch("effSigma1", &effSigma1, "effSigma1/F");
-			flashggTreeWithTagSorter->Branch("effSigma2", &effSigma2, "effSigma2/F");
-			flashggTreeWithTagSorter->Branch("scraw1", &scraw1, "scraw1/F");
-			flashggTreeWithTagSorter->Branch("scraw2", &scraw2, "scraw2/F");
-			flashggTreeWithTagSorter->Branch("vtx_x", &vtx_x, "vtx_x/F");
-			flashggTreeWithTagSorter->Branch("vtx_y", &vtx_y, "vtx_y/F");
-			flashggTreeWithTagSorter->Branch("vtx_z", &vtx_z, "vtx_z/F");
-			flashggTreeWithTagSorter->Branch("gv_x", &gv_x, "gv_x/F");
-			flashggTreeWithTagSorter->Branch("gv_y", &gv_y, "gv_y/F");
-			flashggTreeWithTagSorter->Branch("gv_z", &gv_z, "gv_z/F");
-			flashggTreeWithTagSorter->Branch("dijet_leadEta", &dijet_leadEta, "dijet_leadEta/F");
-			flashggTreeWithTagSorter->Branch("dijet_subleadEta", &dijet_subleadEta, "dijet_subleadEta/F");
-			flashggTreeWithTagSorter->Branch("dijet_LeadJPt", &dijet_LeadJPt, "dijet_LeadJPt/F");
-			flashggTreeWithTagSorter->Branch("dijet_SubJPt", &dijet_SubJPt, "dijet_SubJPt/F");
-			flashggTreeWithTagSorter->Branch("dijet_dEta", &dijet_dEta, "dijet_dEta/F");
-			flashggTreeWithTagSorter->Branch("dijet_Zep", &dijet_Zep, "dijet_Zep/F");
-			flashggTreeWithTagSorter->Branch("dijet_dPhi", &dijet_dPhi, "dijet_dPhi/F");
-			flashggTreeWithTagSorter->Branch("dijet_Mjj", &dijet_Mjj, "dijet_Mjj/F");
-			flashggTreeWithTagSorter->Branch("dijet_MVA", &dijet_MVA, "dijet_MVA/F");
-			flashggTreeWithTagSorter->Branch("bdt_combined", &bdt_combined, "bdt_combined/F");
-			flashggTreeWithTagSorter->Branch("issyst", &issyst, "issyst/F");
-			flashggTreeWithTagSorter->Branch("name1", &name1, "name1/F");
-			flashggTreeWithTagSorter->Branch("sigmaMrvoM", &sigmaMrvoM, "sigmaMrvoM/F");
-			flashggTreeWithTagSorter->Branch("sigmaMwvoM", &sigmaMwvoM, "sigmaMwvoM/F");
-			flashggTreeWithTagSorter->Branch("vtxprob", &vtxprob, "vtxprob/F");
-			flashggTreeWithTagSorter->Branch("ptbal", &ptbal, "ptbal/F");
-			flashggTreeWithTagSorter->Branch("ptasym", &ptasym, "ptasym/F");
-			flashggTreeWithTagSorter->Branch("logspt2", &logspt2, "logspt2/F");
-			flashggTreeWithTagSorter->Branch("p2conv", &p2conv, "p2conv/F");
-			flashggTreeWithTagSorter->Branch("nconv", &nconv, "nconv/F");
-			flashggTreeWithTagSorter->Branch("vtxmva", &vtxmva, "vtxmva/F");
-			flashggTreeWithTagSorter->Branch("vtxdz", &vtxdz, "vtxdz/F");
-			flashggTreeWithTagSorter->Branch("dipho_mva", &dipho_mva, "dipho_mva/F");
-			flashggTreeWithTagSorter->Branch("dipho_mva_cat", &dipho_mva_cat, "dipho_mva_cat/F");
-			flashggTreeWithTagSorter->Branch("flash_Untagged_Category", &flash_Untagged_Category, "flash_Untagged_Category/I");
-			flashggTreeWithTagSorter->Branch("flash_VBFTag_Category", &flash_VBFTag_Category, "flash_VBFTag_Category/I");
-		}
+FlashggTreeMakerWithTagSorter::beginJob()
+{
+	flashggTreeWithTagSorter = fs_->make<TTree>("flashggTreeWithTagSorter","flashgg tree with Tags");
+	flashggTreeWithTagSorter->Branch("njets10", &njets10, "njets10/F");
+	flashggTreeWithTagSorter->Branch("njets15", &njets15, "njets15/F");
+	flashggTreeWithTagSorter->Branch("njets20", &njets20, "njets20/F");
+	flashggTreeWithTagSorter->Branch("dRphojet1", &dRphojet1, "dRphojet1/F");
+	flashggTreeWithTagSorter->Branch("dRphojet2", &dRphojet2, "dRphojet2/F");
+	flashggTreeWithTagSorter->Branch("run", &run, "runNumber/I");
+	flashggTreeWithTagSorter->Branch("lumis", &lumis, "lumiSection/I");
+	flashggTreeWithTagSorter->Branch("event", &run, "eventNumber/I");
+	flashggTreeWithTagSorter->Branch("nvtx", &nvtx, "nvtx/F");
+	flashggTreeWithTagSorter->Branch("rho", &rho, "rho/F");
+	flashggTreeWithTagSorter->Branch("xsec_weight", &xsec_weight, "xsec_weight/F");
+	flashggTreeWithTagSorter->Branch("full_weight", &full_weight, "full_weight/F");
+	flashggTreeWithTagSorter->Branch("pu_weight", &pu_weight, "pu_weight/F");
+	flashggTreeWithTagSorter->Branch("pu_n", &pu_n, "pu_n/F");
+	flashggTreeWithTagSorter->Branch("mass", &mass, "mass/F");
+	flashggTreeWithTagSorter->Branch("dipho_pt", &dipho_pt, "dipho_pt/F");
+	flashggTreeWithTagSorter->Branch("full_cat", &full_cat, "full_cat/F");
+	flashggTreeWithTagSorter->Branch("et1", &et1, "et1/F");
+	flashggTreeWithTagSorter->Branch("et2", &et2, "et2/F");
+	flashggTreeWithTagSorter->Branch("eta1", &eta1, "eta1/F");
+	flashggTreeWithTagSorter->Branch("eta2", &eta2, "eta2/F");
+	flashggTreeWithTagSorter->Branch("r91", &r91, "r91/F");
+	flashggTreeWithTagSorter->Branch("r92", &r92, "r92/F");
+	flashggTreeWithTagSorter->Branch("sieie1", &sieie1, "sieie1/F");
+	flashggTreeWithTagSorter->Branch("sieie2", &sieie2, "sieie2/F");
+	flashggTreeWithTagSorter->Branch("hoe1", &hoe1, "hoe1/F");
+	flashggTreeWithTagSorter->Branch("hoe2", &hoe2, "hoe2/F");
+	flashggTreeWithTagSorter->Branch("sigmaEoE1", &sigmaEoE1, "sigmaEoE1/F");
+	flashggTreeWithTagSorter->Branch("sigmaEoE2", &sigmaEoE2, "sigmaEoE2/F");
+	flashggTreeWithTagSorter->Branch("ptoM1", &ptoM1, "ptoM1/F");
+	flashggTreeWithTagSorter->Branch("ptoM2", &ptoM2, "ptoM2/F");
+	flashggTreeWithTagSorter->Branch("isEB1", &isEB1, "isEB1/F");
+	flashggTreeWithTagSorter->Branch("isEB2", &isEB2, "isEB2/F");
+	flashggTreeWithTagSorter->Branch("chiso1", &chiso1, "chiso1/F");
+	flashggTreeWithTagSorter->Branch("chiso2", &chiso2, "chiso2/F");
+	flashggTreeWithTagSorter->Branch("chisow1", &chisow1, "chisow1/F");
+	flashggTreeWithTagSorter->Branch("chisow2", &chisow2, "chisow2/F");
+	flashggTreeWithTagSorter->Branch("phoiso1", &phoiso1, "phoiso1/F");
+	flashggTreeWithTagSorter->Branch("phoiso2", &phoiso2, "phoiso2/F");
+	flashggTreeWithTagSorter->Branch("phoiso041", &phoiso041, "phoiso041/F");
+	flashggTreeWithTagSorter->Branch("phoiso042", &phoiso042, "phoiso042/F");
+	flashggTreeWithTagSorter->Branch("ecaliso03_1", &ecaliso03_1, "ecaliso03_1/F");
+	flashggTreeWithTagSorter->Branch("ecaliso03_2", &ecaliso03_2, "ecaliso03_2/F");
+	flashggTreeWithTagSorter->Branch("hcaliso03_1", &hcaliso03_1, "hcaliso03_1/F");
+	flashggTreeWithTagSorter->Branch("hcaliso03_2", &hcaliso03_2, "hcaliso03_2/F");
+	flashggTreeWithTagSorter->Branch("trkiso03_1", &trkiso03_1, "trkiso03_1/F");
+	flashggTreeWithTagSorter->Branch("trkiso03_2", &trkiso03_2, "trkiso03_2/F");
+	flashggTreeWithTagSorter->Branch("pfchiso2_1", &pfchiso2_1, "pfchiso2_1/F");
+	flashggTreeWithTagSorter->Branch("pfchiso2_2", &pfchiso2_2, "pfchiso2_2/F");
+	flashggTreeWithTagSorter->Branch("sieip1", &sieip1, "sieip1/F");
+	flashggTreeWithTagSorter->Branch("sieip2", &sieip2, "sieip2/F");
+	flashggTreeWithTagSorter->Branch("etawidth1", &etawidth1, "etawidth1/F");
+	flashggTreeWithTagSorter->Branch("phiwidth1", &phiwidth1, "phiwidth1/F");
+	flashggTreeWithTagSorter->Branch("etawidth2", &etawidth2, "etawidth2/F");
+	flashggTreeWithTagSorter->Branch("phiwidth2", &phiwidth2, "phiwidth2/F");
+	flashggTreeWithTagSorter->Branch("regrerr1", &regrerr1, "regrerr1/F");
+	flashggTreeWithTagSorter->Branch("regrerr2", &regrerr2, "regrerr2/F");
+	flashggTreeWithTagSorter->Branch("cosphi", &cosphi, "cosphi/F");
+	flashggTreeWithTagSorter->Branch("genmatch1", &genmatch1, "genmatch1/F");
+	flashggTreeWithTagSorter->Branch("genmatch2", &genmatch2, "genmatch2/F");
+	flashggTreeWithTagSorter->Branch("idmva1", &idmva1, "idmva1/F");
+	flashggTreeWithTagSorter->Branch("idmva2", &idmva2, "idmva2/F");
+	flashggTreeWithTagSorter->Branch("vbfcat", &vbfcat, "vbfcat/F");
+	flashggTreeWithTagSorter->Branch("MET", &MET, "MET/F");
+	flashggTreeWithTagSorter->Branch("MET_phi", &MET_phi, "MET_phi/F");
+	flashggTreeWithTagSorter->Branch("isorv1", &isorv1, "isorv1/F");
+	flashggTreeWithTagSorter->Branch("isowv1", &isowv1, "isowv1/F");
+	flashggTreeWithTagSorter->Branch("isorv2", &isorv2, "isorv2/F");
+	flashggTreeWithTagSorter->Branch("isowv2", &isowv2, "isowv2/F");
+	flashggTreeWithTagSorter->Branch("s4ratio1", &s4ratio1, "s4ratio1/F");
+	flashggTreeWithTagSorter->Branch("s4ratio2", &s4ratio2, "s4ratio2/F");
+	flashggTreeWithTagSorter->Branch("effSigma1", &effSigma1, "effSigma1/F");
+	flashggTreeWithTagSorter->Branch("effSigma2", &effSigma2, "effSigma2/F");
+	flashggTreeWithTagSorter->Branch("scraw1", &scraw1, "scraw1/F");
+	flashggTreeWithTagSorter->Branch("scraw2", &scraw2, "scraw2/F");
+	flashggTreeWithTagSorter->Branch("vtx_x", &vtx_x, "vtx_x/F");
+	flashggTreeWithTagSorter->Branch("vtx_y", &vtx_y, "vtx_y/F");
+	flashggTreeWithTagSorter->Branch("vtx_z", &vtx_z, "vtx_z/F");
+	flashggTreeWithTagSorter->Branch("gv_x", &gv_x, "gv_x/F");
+	flashggTreeWithTagSorter->Branch("gv_y", &gv_y, "gv_y/F");
+	flashggTreeWithTagSorter->Branch("gv_z", &gv_z, "gv_z/F");
+	flashggTreeWithTagSorter->Branch("dijet_leadEta", &dijet_leadEta, "dijet_leadEta/F");
+	flashggTreeWithTagSorter->Branch("dijet_subleadEta", &dijet_subleadEta, "dijet_subleadEta/F");
+	flashggTreeWithTagSorter->Branch("dijet_LeadJPt", &dijet_LeadJPt, "dijet_LeadJPt/F");
+	flashggTreeWithTagSorter->Branch("dijet_SubJPt", &dijet_SubJPt, "dijet_SubJPt/F");
+	flashggTreeWithTagSorter->Branch("dijet_dEta", &dijet_dEta, "dijet_dEta/F");
+	flashggTreeWithTagSorter->Branch("dijet_Zep", &dijet_Zep, "dijet_Zep/F");
+	flashggTreeWithTagSorter->Branch("dijet_dPhi", &dijet_dPhi, "dijet_dPhi/F");
+	flashggTreeWithTagSorter->Branch("dijet_Mjj", &dijet_Mjj, "dijet_Mjj/F");
+	flashggTreeWithTagSorter->Branch("dijet_MVA", &dijet_MVA, "dijet_MVA/F");
+	flashggTreeWithTagSorter->Branch("bdt_combined", &bdt_combined, "bdt_combined/F");
+	flashggTreeWithTagSorter->Branch("issyst", &issyst, "issyst/F");
+	flashggTreeWithTagSorter->Branch("name1", &name1, "name1/F");
+	flashggTreeWithTagSorter->Branch("sigmaMrvoM", &sigmaMrvoM, "sigmaMrvoM/F");
+	flashggTreeWithTagSorter->Branch("sigmaMwvoM", &sigmaMwvoM, "sigmaMwvoM/F");
+	flashggTreeWithTagSorter->Branch("vtxprob", &vtxprob, "vtxprob/F");
+	flashggTreeWithTagSorter->Branch("ptbal", &ptbal, "ptbal/F");
+	flashggTreeWithTagSorter->Branch("ptasym", &ptasym, "ptasym/F");
+	flashggTreeWithTagSorter->Branch("logspt2", &logspt2, "logspt2/F");
+	flashggTreeWithTagSorter->Branch("p2conv", &p2conv, "p2conv/F");
+	flashggTreeWithTagSorter->Branch("nconv", &nconv, "nconv/F");
+	flashggTreeWithTagSorter->Branch("vtxmva", &vtxmva, "vtxmva/F");
+	flashggTreeWithTagSorter->Branch("vtxdz", &vtxdz, "vtxdz/F");
+	flashggTreeWithTagSorter->Branch("dipho_mva", &dipho_mva, "dipho_mva/F");
+	flashggTreeWithTagSorter->Branch("dipho_mva_cat", &dipho_mva_cat, "dipho_mva_cat/F");
+	flashggTreeWithTagSorter->Branch("flash_Untagged_Category", &flash_Untagged_Category, "flash_Untagged_Category/I");
+	flashggTreeWithTagSorter->Branch("flash_VBFTag_Category", &flash_VBFTag_Category, "flash_VBFTag_Category/I");
+}
 
 	void 
-		FlashggTreeMakerWithTagSorter::endJob() 
-		{
-		}
+FlashggTreeMakerWithTagSorter::endJob() 
+{
+}
 
 
-	void
-		FlashggTreeMakerWithTagSorter::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
-			//The following says we do not know what parameters are allowed so do no validation
-			// Please change this to state exactly what you do use, even if it is no parameters
-			edm::ParameterSetDescription desc;
-			desc.setUnknown();
-			descriptions.addDefault(desc);
-		}
+void
+FlashggTreeMakerWithTagSorter::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+	//The following says we do not know what parameters are allowed so do no validation
+	// Please change this to state exactly what you do use, even if it is no parameters
+	edm::ParameterSetDescription desc;
+	desc.setUnknown();
+	descriptions.addDefault(desc);
+}
 
-	typedef FlashggTreeMakerWithTagSorter FlashggFlashggTreeMakerWithTagSorter;
-	DEFINE_FWK_MODULE(FlashggFlashggTreeMakerWithTagSorter);
+typedef FlashggTreeMakerWithTagSorter FlashggFlashggTreeMakerWithTagSorter;
+DEFINE_FWK_MODULE(FlashggFlashggTreeMakerWithTagSorter);

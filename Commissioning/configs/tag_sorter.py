@@ -34,6 +34,9 @@ process.flashggTagSorter = cms.EDProducer('FlashggTagSorter',
 																														cms.untracked.InputTag('flashggVBFTag'),
 																														cms.untracked.InputTag('flashggUntaggedCategory'),
 																														),
+																													massCutUpper=cms.untracked.double(180),
+																													massCutLower=cms.untracked.double(100)
+																													
                                                           )
 
 
@@ -103,8 +106,8 @@ process.p = cms.Path(process.flashggVertexMapUnique*
 										 (process.flashggVBFMVA)* # Needs to happen after Jets
                      (process.flashggVBFDiPhoDiJetMVA)* # Needs to happen after VBF MVA and DiPho MVA
                      (process.flashggVBFTag)* # Tag producers, once written, can run in parallel, so they go in here with +
-										 process.flashggTagSorter
-										 #process.flashggTreeMakerWithTagSorter
+										 process.flashggTagSorter*
+										 process.flashggTreeMakerWithTagSorter
                      #process.commissioning*
                     )
 

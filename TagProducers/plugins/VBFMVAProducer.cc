@@ -164,7 +164,7 @@ namespace flashgg {
 				if (dijet_indices.first != -1 && dijet_indices.second != -1) {hasValidVBFDijet =1;}
 				
 			}
-		std::cout << "[VBF] has valid VBF Dijet ? "<< hasValidVBFDijet<< std::endl;
+		//std::cout << "[VBF] has valid VBF Dijet ? "<< hasValidVBFDijet<< std::endl;
 		if(hasValidVBFDijet)
 		{
 			std::pair < Ptr<flashgg::Jet>, Ptr<flashgg::Jet> > dijet;

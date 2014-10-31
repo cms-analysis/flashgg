@@ -31,77 +31,80 @@ namespace flashgg {
 			void produce( Event &, const EventSetup & ) override;
 
 			EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
-			EDGetTokenT<edm::View<flashgg::DiPhotonTagBase> > TagVectorToken_; //
-			//typedef std::vector<edm::InputTag> VInputTag;
-		std::vector<edm::EDGetTokenT<View<flashgg::DiPhotonTagBase> > > TagList_;	
+			std::vector<edm::EDGetTokenT<View<flashgg::DiPhotonTagBase> > > TagList_;	
 
-
+			double massCutUpper;//configurable in python
+			double massCutLower;
 	};
 
 	TagSorter::TagSorter(const ParameterSet & iConfig) :
 		diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons"))))
-		//		jetTokenDz_(consumes<View<flashgg::Jet> >(iConfig.getUntrackedParameter<InputTag>("JetTag", InputTag("flashggJets"))))
 	{
+
+		massCutUpper=iConfig.getUntrackedParameter<double>("massCutUpper", 180.); //default values are set to 100 -> 180, but can be chnaged in python config.
+		massCutLower=iConfig.getUntrackedParameter<double>("massCutLower", 100.);
 
 		typedef std::vector<edm::InputTag> VInputTag;
 		VInputTag tags  = iConfig.getUntrackedParameter<VInputTag>("TagVectorTag");
-		for (unsigned int i=0; i<tags.size(); ++i)
-		{
+
+		for (unsigned int i=0; i<tags.size(); ++i){
+		// loop through priority-ordered list of available tags to fill vector of Tag Vectors.
 			TagList_.push_back(consumes<View<flashgg::DiPhotonTagBase> >(tags[i]));
 		}
 
-	produces<edm::Ptr<flashgg::DiPhotonTagBase> >();
+		produces<edm::Ptr<flashgg::DiPhotonTagBase> >();
 
 	} 
 
 	void TagSorter::produce( Event & evt, const EventSetup & ) {
 
-		std::cout << "LOUIE C "<< std::endl;
-		//	std::cout << "louie 2" <<std::endl;
 		Handle<View<flashgg::DiPhotonCandidate> > diPhotons; 
 		evt.getByToken(diPhotonToken_,diPhotons); 
 		const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
-		if (diPhotonPointers.size() > 0) ;
 
 		auto_ptr<edm::Ptr<flashgg::DiPhotonTagBase> > SelectedTag (new edm::Ptr<flashgg::DiPhotonTagBase>); 
 
-for( unsigned int il=0 ; il< TagList_.size() ; il++)
-		{
-			Handle<View<flashgg::DiPhotonTagBase> > TagVectorEntry;
-			evt.getByToken(TagList_[il],TagVectorEntry);
-			const PtrVector<flashgg::DiPhotonTagBase>& TagPointers =  TagVectorEntry->ptrVector();
-			
-			if( TagPointers.size() >0) { 
-			
-			*SelectedTag.get() = TagPointers[0];	
-				std::cout << "Priority " << il << " Tag Found!"  <<std::endl;
-		//	DiPhotonTagBase *louie = TagPointers[0];	
-		//	VBFTag test = dynamic_cast<VBFTag*>(louie);
-	//		VBFTag *test = dynamic_cast<VBFTag>(TagPointers[0].get());
-if(il==0){//	const	VBFTag *test = dynamic_cast<const VBFTag*>(TagPointers[0].get());	
-	
-//			std::cout<< "leading jet pt " << test->leadingJet().pt() << std::endl;
-//			std::cout << "test " << test->VBFMVA().dijet_leadEta <<std::endl;
+		for( unsigned int TagListLoop=0 ; TagListLoop< TagList_.size() ; TagListLoop++){
+			// Loop through the available Tags in the order they are specified in the python config
 
-	//			SelectedTag->push_back(*test);	
-			}
-//if(il==1){	const	DiPhotonUntaggedCategory *test = dynamic_cast<const DiPhotonUntaggedCategory*>(TagPointers[0].get());	
-	
-		//	std::cout<< "leading jet pt " << test->leadingJet().pt() << std::endl;
-		//	std::cout << "test " << test->VBFMVA().dijet_leadEta <<std::endl;;
-		//		SelectedTag->push_back(*test);	
-	//		}
-				//std::cout<< "subling jet pt " << test->subLeadingJet().pt() << std::endl;
-				break;
+			Handle<View<flashgg::DiPhotonTagBase> > TagVectorEntry;
+			evt.getByToken(TagList_[TagListLoop],TagVectorEntry);
+			const PtrVector<flashgg::DiPhotonTagBase>& TagPointers =  TagVectorEntry->ptrVector();
+			// get Tags by requesting them as a DiPhotonTagBase, from which they inherit.
+
+			if( TagPointers.size() >0) { 
+				// Looking from highest priority to lowest, check if the tag has any entries.
+
+				float maxSumPt =0.; //this will be used to find highest sumPt candidate tag.
+				int chosenIndex = -1 ; //this will become the index of the highest sumPt candidate.
+
+				for (unsigned int  TagPointerLoop = 0; TagPointerLoop < TagPointers.size() ; TagPointerLoop++)	{
+					// If the tag does have entries, loop over them.
+					int diPhotonIndex =TagPointers[TagPointerLoop]->getDiPhotonIndex();
+					float mass = diPhotonPointers[diPhotonIndex]->mass();
+
+					if((mass < massCutLower) || (mass > massCutUpper )) {continue ;}
+					// ignore candidate tags with diphoton outside of the allowed mass range.
+
+					if( diPhotonPointers[diPhotonIndex]->getSumPt() > maxSumPt ){
+						// identify and pick the valid candidate with highest sumPt
+						maxSumPt = diPhotonPointers[diPhotonIndex]->getSumPt() ; 
+						chosenIndex = TagPointerLoop;
+					}
+				}
+
+				if (chosenIndex != -1 ) {
+					// chosenIndex should only be -1 if all candidates have sumPT exactly zero, in which case we are not interested and continue the loop
+					*SelectedTag.get() = TagPointers[0];	
+					//debug message:
+					//std::cout << "[DEBUG] Priority " << TagListLoop << " Tag Found! Tag entry "<< chosenIndex  << " with sumPt " << maxSumPt <<std::endl;
+					break;
+				}
 			} else {
-				std::cout << "No Priority " << il << " Tag ..., looking for Priority " << (il+1) << " Tag.. " << std::endl;
+				//debug message
+				//std::cout << "[DEBUG] No Priority " << TagListLoop << " Tag ..., looking for Priority " << (TagListLoop+1) << " Tag.. " << std::endl;
 			}
 		}
-
-
-
-
-
 		evt.put(SelectedTag);
 	}
 }
