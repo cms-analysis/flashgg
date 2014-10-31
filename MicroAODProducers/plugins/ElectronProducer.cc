@@ -1,4 +1,3 @@
-
 // system include files
 #include <memory>
 
@@ -55,9 +54,6 @@ namespace flashgg {
 		//	eventrhoToken_ = consumes<float>(iConfig.getParameter<edm::InputTag>("Rho"));
 		rhoFixedGrid_  = iConfig.getParameter<edm::InputTag>("rhoFixedGridCollection");
 
-
-		produces<edm::ValueMap<float> >();
-
 		mvaID_ = new EGammaMvaEleEstimator();
 
 		EGammaMvaEleEstimator::MVAType type_;
@@ -100,15 +96,47 @@ namespace flashgg {
 
 		std::auto_ptr<vector<flashgg::Electron> > elecColl(new vector<flashgg::Electron>);
 
+
 		for ( unsigned int elecIndex =0; elecIndex < pelectronPointers.size(); elecIndex++ ) {
-			flashgg::Electron felec = flashgg::Electron(*pelectronPointers[elecIndex]);
+			Ptr<pat::Electron> pelec = pelectronPointers[elecIndex];
+			flashgg::Electron felec = flashgg::Electron(*pelec);
 			double nontrigmva_ = -999999;
+			double Aeff = 0;		
 
-			nontrigmva_ = mvaID_->mvaValue( *pelectronPointers[elecIndex], *vertexPointers[0], _Rho, verbose_);
+			float pelec_eta = fabs(pelec->superCluster()->eta());
+			float pelec_pt = pelec->pt();			
 
-			felec.nontrigmva = nontrigmva_;			
+			nontrigmva_ = mvaID_->mvaValue( *pelec, *vertexPointers[0], _Rho, verbose_);
+			felec.nontrigmva = nontrigmva_;		
 
-			elecColl->push_back(felec);
+			if(nontrigmva_ < 0.9)	{
+
+				elecColl->push_back(felec);
+			}
+			if(pelec_eta>2.5 || (pelec_eta>1.442 && pelec_eta<1.566)){
+				elecColl->push_back(felec);
+			}
+			if(pelec_eta<1.0)                   	Aeff=0.135;
+			if(pelec_eta>=1.0 && pelec_eta<1.479) 	Aeff=0.168;
+			if(pelec_eta>=1.479 && pelec_eta<2.0) 	Aeff=0.068;
+			if(pelec_eta>=2.0 && pelec_eta<2.2)   	Aeff=0.116;
+			if(pelec_eta>=2.2 && pelec_eta<2.3)   	Aeff=0.162;
+			if(pelec_eta>=2.3 && pelec_eta<2.4)   	Aeff=0.241;
+			if(pelec_eta>=2.4)                  	Aeff=0.23;
+
+			float	pelec_iso = pelec->chargedHadronIso()+std::max(pelec->neutralHadronIso()+pelec->photonIso()-_Rho*Aeff,0.);
+			if (pelec_iso/pelec_pt>0.15){
+				elecColl->push_back(felec);
+			}
+			//if{} //d0
+			//if{} //dz 	
+			
+			if(pelec->gsfTrack()->trackerExpectedHitsInner().numberOfHits()>1){
+				elecColl->push_back(felec);
+			}
+			//if{}//conv
+
+
 		}
 		evt.put(elecColl);
 	}
