@@ -69,7 +69,6 @@ class FlashggTreeMakerWithTagSorter : public edm::EDAnalyzer {
 		EDGetTokenT< VertexCandidateMap > vertexCandidateMapTokenDz_;
 		EDGetTokenT< VertexCandidateMap > vertexCandidateMapTokenAOD_;
 		EDGetTokenT<View<flashgg::Jet> > jetTokenDz_;
-<<<<<<< HEAD
 		EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> >  diPhotonToken_; 
 		EDGetTokenT<edm::View<pat::MET> >  METToken_; 
 		EDGetTokenT<edm::View<PileupSummaryInfo> >  PileUpToken_;
@@ -78,17 +77,6 @@ class FlashggTreeMakerWithTagSorter : public edm::EDAnalyzer {
 		TTree *flashggTreeWithTagSorter;
 		
 		// Variables to fill
-=======
-		// EDGetTokenT<View<flashgg::Jet> > jetTokenRecoBasedMap_;
-		//EDGetTokenT<View<flashgg::Jet> > jetTokenReco_;
-		EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> >  diPhotonToken_; //
-		EDGetTokenT<edm::View<pat::MET> >  METToken_; // LDC work-in-progress adding this!
-		EDGetTokenT<edm::View<PileupSummaryInfo> >  PileUpToken_; // LDC work-in-progress adding this!
-		edm::InputTag rhoFixedGrid_;
-
-		TTree *flashggTreeWithTagSorter;
-
->>>>>>> ab48e63ab0c902b76f2699cd1c4dfcbb3a8af8ad
 		Int_t run;
 		Int_t lumis;
 		Int_t event;
@@ -197,33 +185,12 @@ class FlashggTreeMakerWithTagSorter : public edm::EDAnalyzer {
 		Float_t vtxdz;
 		Float_t dipho_mva;
 		Float_t dipho_mva_cat;
-<<<<<<< HEAD
-
-=======
-		
->>>>>>> ab48e63ab0c902b76f2699cd1c4dfcbb3a8af8ad
 		//Tag Categories
 		Int_t flash_Untagged_Category;
 		Int_t flash_VBFTag_Category;
 
 		edm::EDGetTokenT<edm::View<flashgg::Photon> >            photonToken_; // SCZ work-in-progress adding this!
-<<<<<<< HEAD
 		edm::EDGetTokenT<edm::Ptr<flashgg::DiPhotonTagBase> > TagSorterToken_;
-=======
-		//edm::EDGetTokenT<edm::View<flashgg::DiPhotonUntaggedCategory> > DiPhotonUntaggedToken_;
-		//edm::EDGetTokenT<edm::View<flashgg::VBFTag> > VBFTagToken_;
-		edm::EDGetTokenT<edm::View<edm::Ptr<flashgg::DiPhotonTagBase> > > TagSorterToken_;
-		//  edm::EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> > diphotonToken_;
-		//      edm::EDGetTokenT<edm::View<reco::Vertex> >               vertexToken_; 
-		//      edm::EDGetTokenT<edm::View<pat::PackedCandidate> >       pfcandidateToken_;
-
-		//      TTree* photonTree; 
-		//      photonInfo phoInfo;
-		// add all variables as private members
-
-		//      flashgg::PhotonIdUtils phou;
-
->>>>>>> ab48e63ab0c902b76f2699cd1c4dfcbb3a8af8ad
 };
 
 // ******************************************************************************************
@@ -246,28 +213,12 @@ FlashggTreeMakerWithTagSorter::FlashggTreeMakerWithTagSorter(const edm::Paramete
 	vertexCandidateMapTokenDz_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTagDz"))),
 	vertexCandidateMapTokenAOD_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTagAOD"))),
 	jetTokenDz_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagDz"))),
-<<<<<<< HEAD
 	diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
 	METToken_(consumes<View<pat::MET> >(iConfig.getUntrackedParameter<InputTag> ("METTag", InputTag("slimmedMETs")))),
 	PileUpToken_(consumes<View<PileupSummaryInfo> >(iConfig.getUntrackedParameter<InputTag> ("PileUpTag", InputTag("addPileupInfo")))),
 	TagSorterToken_(consumes<edm::Ptr<flashgg::DiPhotonTagBase> >(iConfig.getUntrackedParameter<InputTag> ("TagSorter", InputTag("flashggTagSorter"))))
 {
 	rhoFixedGrid_ = iConfig.getParameter<edm::InputTag>("rhoFixedGridCollection");
-=======
-	// jetTokenRecoBasedMap_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagRecoBasedMap"))),
-	diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
-	METToken_(consumes<View<pat::MET> >(iConfig.getUntrackedParameter<InputTag> ("METTag", InputTag("slimmedMETs")))),
-	PileUpToken_(consumes<View<PileupSummaryInfo> >(iConfig.getUntrackedParameter<InputTag> ("PileUpTag", InputTag("addPileupInfo")))),
-  //DiPhotonUntaggedToken_(consumes<View<flashgg::DiPhotonUntaggedCategory> >(iConfig.getUntrackedParameter<InputTag> ("UntaggedTag", InputTag("flashggUntaggedCategory")))),
-  //VBFTagToken_(consumes<View<flashgg::VBFTag> >(iConfig.getUntrackedParameter<InputTag> ("VBFTag", InputTag("flashggVBFTag"))))
-  TagSorterToken_(consumes<View<edm::Ptr<flashgg::DiPhotonTagBase> > >(iConfig.getUntrackedParameter<InputTag> ("TagSorter", InputTag("flashggTagSorter"))))
-	//  jetTokenReco_(consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagReco")))
-{
-	rhoFixedGrid_ = iConfig.getParameter<edm::InputTag>("rhoFixedGridCollection");
-//	DiphotonMva_initialized = false;
-//	VbfMva_initialized = false;
-//	VbfDiphotonMva_initialized = false;
->>>>>>> ab48e63ab0c902b76f2699cd1c4dfcbb3a8af8ad
 }
 
 FlashggTreeMakerWithTagSorter::~FlashggTreeMakerWithTagSorter()
@@ -279,10 +230,6 @@ void
 FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
 	// ********************************************************************************
-<<<<<<< HEAD
-=======
-std::cout << "[LOUIE DEBUG A] " << std::endl;
->>>>>>> ab48e63ab0c902b76f2699cd1c4dfcbb3a8af8ad
 	// access edm objects
 
 	Handle<VertexCandidateMap> vertexCandidateMapDz;
@@ -317,31 +264,10 @@ std::cout << "[LOUIE DEBUG A] " << std::endl;
 
 	Handle<double> rhoHandle; // the old way for now...move to getbytoken?
 	iEvent.getByLabel(rhoFixedGrid_, rhoHandle );
-<<<<<<< HEAD
 	
 	//Slightly unusal way of accessing selected Tag from TagSorter, since a pointer is saved rather than a vector.
 	Handle<edm::Ptr<flashgg::DiPhotonTagBase> > TagSorter;
 	iEvent.getByToken(TagSorterToken_,TagSorter);
-=======
-
-//	Handle<View<flashgg::DiPhotonUntaggedCategory> > UntaggedCategory;
-
-	//iEvent.getByToken(DiPhotonUntaggedToken_,UntaggedCategory);
-//	const PtrVector<flashgg::DiPhotonUntaggedCategory>& UntaggedCategoryPointers = UntaggedCategory->ptrVector();
-
-//	Handle<View<flashgg::VBFTag> > VBFTag;
-//	iEvent.getByToken(VBFTagToken_,VBFTag);
-//	const PtrVector<flashgg::VBFTag>& VBFTagPointers = VBFTag->ptrVector();
-	
-std::cout << "[LOUIE DEBUG B] " << std::endl;
-	//Handle<View<edm::Ptr<flashgg::DiPhotonTagBase> > > TagSorter;
-	Handle<edm::Ptr<flashgg::DiPhotonTagBase> > TagSorter;
-std::cout << "[LOUIE DEBUG C] " << std::endl;
-	iEvent.getByToken(TagSorterToken_,TagSorter);
-std::cout << "[LOUIE DEBUG D] " << std::endl;
-//	const Ptr<edm::Ptr<flashgg::DiPhotonTagBase> > *TagSorter = TagSorter_;
-std::cout << "[LOUIE DEBUG E] " << std::endl;
->>>>>>> ab48e63ab0c902b76f2699cd1c4dfcbb3a8af8ad
 
 	//---------> njetsxx = number of jets with et > xx
 	njets10 = 0.;
@@ -465,11 +391,7 @@ std::cout << "[LOUIE DEBUG E] " << std::endl;
 		//PHOTON1
 		et1 = diPhotonPointers[candIndex]->leadingPhoton()->et();
 		eta1 = diPhotonPointers[candIndex]->leadingPhoton()->eta();
-<<<<<<< HEAD
 		//	float phi1 = diPhotonPointers[candIndex]->leadingPhoton()->phi();
-=======
-	//	float phi1 = diPhotonPointers[candIndex]->leadingPhoton()->phi();
->>>>>>> ab48e63ab0c902b76f2699cd1c4dfcbb3a8af8ad
 		r91 = diPhotonPointers[candIndex]->leadingPhoton()->r9();
 		sieie1 = diPhotonPointers[candIndex]->leadingPhoton()->sigmaIetaIeta();
 		hoe1 = diPhotonPointers[candIndex]->leadingPhoton()->hadronicOverEm();
@@ -507,11 +429,7 @@ std::cout << "[LOUIE DEBUG E] " << std::endl;
 		//PHOTON 2
 		et2 = diPhotonPointers[candIndex]->subLeadingPhoton()->et();
 		eta2 = diPhotonPointers[candIndex]->subLeadingPhoton()->eta();
-<<<<<<< HEAD
 		//	float phi2 = diPhotonPointers[candIndex]->subLeadingPhoton()->phi();
-=======
-	//	float phi2 = diPhotonPointers[candIndex]->subLeadingPhoton()->phi();
->>>>>>> ab48e63ab0c902b76f2699cd1c4dfcbb3a8af8ad
 		r92 = diPhotonPointers[candIndex]->subLeadingPhoton()->r9();
 		sieie2 = diPhotonPointers[candIndex]->subLeadingPhoton()->sigmaIetaIeta();
 		hoe2 = diPhotonPointers[candIndex]->subLeadingPhoton()->hadronicOverEm();
