@@ -75,7 +75,7 @@ class FlashggTreeMakerWithTagSorter : public edm::EDAnalyzer {
 		edm::InputTag rhoFixedGrid_;
 
 		TTree *flashggTreeWithTagSorter;
-		
+
 		// Variables to fill
 		Int_t run;
 		Int_t lumis;
@@ -264,82 +264,91 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 
 	Handle<double> rhoHandle; // the old way for now...move to getbytoken?
 	iEvent.getByLabel(rhoFixedGrid_, rhoHandle );
-	
+
 	//Slightly unusal way of accessing selected Tag from TagSorter, since a pointer is saved rather than a vector.
 	Handle<edm::Ptr<flashgg::DiPhotonTagBase> > TagSorter;
 	iEvent.getByToken(TagSorterToken_,TagSorter);
 
-	//---------> njetsxx = number of jets with et > xx
-	njets10 = 0.;
-	njets15 = 0.;
-	njets20 = 0.;
-	for (UInt_t jetLoop =0; jetLoop < jetPointersDz.size() ; jetLoop++){
+	flash_Untagged_Category= -1; // so that there is at least some value to fill even if not part of category
+	flash_VBFTag_Category =-1;// so that there is at least some value to fill even if untagged
+	//	int hasTag =0;
 
-		Float_t et = jetPointersDz[jetLoop]->et();
+	//-----------> Determine if there is a Tag, and select it! This givens diPhoton candIndex
 
-		if( et > 10.){
-			njets10 = njets10 + 1.;
+	int candIndex = -1; // now given as the index of the diPhoton par selected by the tag.
+	if (TagSorter->get() ) //make sure TagSorter is not a null pointer
+	{
+
+		candIndex = (TagSorter->get())->getDiPhotonIndex(); //should exist regardless of tag type.
+
+		const	DiPhotonUntaggedCategory *untagged = dynamic_cast<const DiPhotonUntaggedCategory*>(TagSorter->get());
+
+		//if(untagged == NULL) std::cout << "NOT UNTAGGED" <<std::endl;
+		if(untagged != NULL) {
+			std::cout << "[UNTAGGED] category " << untagged->getCategoryNumber() << std::endl;
+			flash_Untagged_Category= untagged->getCategoryNumber() ;
+			//	hasTag=1;
 		}
-		if( et > 15.){
-			njets15 = njets15 + 1.;
+
+		const	VBFTag *vbftag = dynamic_cast<const VBFTag*>(TagSorter->get());
+		//	if(vbftag == NULL) std::cout << "NOT VBF" <<std::endl;
+		if(vbftag != NULL) {
+			std::cout << "[VBF] Category " << vbftag->getCategoryNumber() <<std::endl;
+			flash_VBFTag_Category =vbftag->getCategoryNumber() ;
+			//	hasTag=1;
+			//	std::cout << "VBF lead Jet eta" <<vbftag->leadingJet().eta() <<std::endl; //debug variables to see if correct info is being saved...
+			//	std::cout << "VBF sublead Jet phi" <<vbftag->leadingJet().phi() <<std::endl;
 		}
-		if( et > 20.){
-			njets20 = njets20 + 1.;
-		}
-	}
 
-	//------>dRphojet ?? need to clarify meaning of var
-	//Need ti implement event categorisation first, ie is it VBF
+		// IMPORTANT: All future Tags must be added in the way of untagged and vbftag.	
 
 
-	//------->event info
-	run = iEvent.eventAuxiliary().run(); 
-	event = iEvent.eventAuxiliary().event(); 
-	lumis = iEvent.eventAuxiliary().luminosityBlock(); 
 
-	//------>itype ?? need to determine how bets to implement this FIXME.
-	itype = -1 ;// placeholder. Need to be able to access this one the fly based on the input file or config.
-	// itype <0, Signal MC
-	// itype =0, data
-	// itype >0, background MC
-	//----> nvtx, numver of primary vertices
-	nvtx = vtxs.size();
-
-	//-----> rho = energy density
-
-	rho = *(rhoHandle.product());
-
-	//------> weights and PU , leaving empty for now.. FIXME
+		//--------------> Tag selected, now fill tree with relevant properties!
 
 
-	if (itype !=0 ){
-		xsec_weight = 0;
-		full_weight = 0;
-		pu_weight = -1;
-		pu_n = 0;
-		gv_x = -9999.;
-		gv_y = -9999.;
-		gv_z = -9999.;
 
-		for( unsigned int PVI = 0; PVI < PileupInfoPointers.size(); ++PVI) {	
-			Int_t pu_bunchcrossing = PileupInfoPointers[PVI]->getBunchCrossing();
-			if (pu_bunchcrossing ==0) {
-				pu_n = PileupInfoPointers[PVI]->getPU_NumInteractions();
+		//---------> njetsxx = number of jets with et > xx
+		njets10 = 0.;
+		njets15 = 0.;
+		njets20 = 0.;
+
+		for (UInt_t jetLoop =0; jetLoop < jetPointersDz.size() ; jetLoop++){
+
+			Float_t et = jetPointersDz[jetLoop]->et();
+
+			if( et > 10.){
+				njets10 = njets10 + 1.;
+			}
+			if( et > 15.){
+				njets15 = njets15 + 1.;
+			}
+			if( et > 20.){
+				njets20 = njets20 + 1.;
 			}
 		}
 
-		for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++){
-			if( gens[genLoop]->pdgId() == 25) { //might need to be changed for background MC samples...
-				gv_x = gens[genLoop]->vx();
-				gv_y = gens[genLoop]->vy();
-				gv_z = gens[genLoop]->vz();
-			}
 
-			break;
-		}
-	}
+		//------->event info
+		run = iEvent.eventAuxiliary().run(); 
+		event = iEvent.eventAuxiliary().event(); 
+		lumis = iEvent.eventAuxiliary().luminosityBlock(); 
 
-	else{
+		//------>itype ?? need to determine how bets to implement this FIXME.
+		itype = -1 ;// placeholder. Need to be able to access this one the fly based on the input file or config.
+		// itype <0, Signal MC
+		// itype =0, data
+		// itype >0, background MC
+
+		//----> nvtx, numver of primary vertices
+		nvtx = vtxs.size();
+
+		//-----> rho = energy density
+		rho = *(rhoHandle.product());
+
+		//------> weights and PU and gen vertex and match information 
+		genmatch1= 0;
+		genmatch2= 0;
 		xsec_weight = -1;
 		full_weight = -1;
 		pu_weight = -1;
@@ -347,63 +356,111 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		gv_x = -9999.;
 		gv_y = -9999.;
 		gv_z = -9999.;
-	}
 
+		if (itype !=0 ){
+			xsec_weight = 0; //probably can be deleted as initialised above... 
+			full_weight = 0;
+			pu_weight = -1;
+			pu_n = 0;
 
-	//------> higgs diphoton candidate properties
-	// We have a problem here, because until we are sure that there is consistently one higgs diphoton candiate, we 
-	// will either need to select one of the multiple diphoton pairs. The following does that, by choosing the one closets to 125GeV..	
-	float higgsMassDifference =9999.; 
-	float higgsMass =125. ;
-	Int_t higgsCandPresent = 0; //Is 0 is there are no candidates in event, set to 1 if there is at least one candidate pair.
-	Int_t candIndex = 9999; //This int will store the index of the best higgs diphoton candidate...
+			// pileup info
+			for( unsigned int PVI = 0; PVI < PileupInfoPointers.size(); ++PVI) {	
+				Int_t pu_bunchcrossing = PileupInfoPointers[PVI]->getBunchCrossing();
+				if (pu_bunchcrossing ==0) {
+					pu_n = PileupInfoPointers[PVI]->getPU_NumInteractions();
+				}
+			}
+			// gen vertex location
+			for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++){
+				if( gens[genLoop]->pdgId() == 25) { //might need to be changed for background MC samples...
+					gv_x = gens[genLoop]->vx();
+					gv_y = gens[genLoop]->vy();
+					gv_z = gens[genLoop]->vz();
+				}
 
-	for (unsigned int diphotonlooper =0; diphotonlooper < diPhotonPointers.size() ; diphotonlooper++){
-		if  (fabs(diPhotonPointers[diphotonlooper]->mass() - higgsMass) < higgsMassDifference){
-			higgsMassDifference = fabs(diPhotonPointers[diphotonlooper]->mass() - higgsMass);
-			candIndex = diphotonlooper;
-			higgsCandPresent=1;
+				break;
+			}
+
+			// gen match leading pho 
+			for(unsigned int ip=0;ip<gens.size();++ip) {
+				if( gens[ip]->status() != 1 || gens[ip]->pdgId() != 22 ) {
+					continue;
+				}
+				if( diPhotonPointers[candIndex]->leadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->leadingPhoton()->eta()) > 3. ) { continue; }
+				if( gens[ip]->motherRef(0)->pdgId() <= 25 ) {
+					float deta =  diPhotonPointers[candIndex]->leadingPhoton()->eta() - gens[ip]->eta();
+					float dphi =  diPhotonPointers[candIndex]->leadingPhoton()->phi() - gens[ip]->phi();
+					float dr = sqrt(deta*deta + dphi*dphi);
+					float pt_change = (diPhotonPointers[candIndex]->leadingPhoton()->et() - gens[ip]->et())/gens[ip]->et();
+					if (dr<0.3 && fabs(pt_change) < 0.5) {
+						genmatch1 = true;
+						break;
+					}
+				}
+			}
+
+			// gen match subleading pho
+			for(unsigned int ip=0;ip<gens.size();++ip) {
+				if( gens[ip]->status() != 1 || gens[ip]->pdgId() != 22 ) {
+					continue;
+				}
+				if( diPhotonPointers[candIndex]->subLeadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->subLeadingPhoton()->eta()) > 3. ) { continue; }
+				if( gens[ip]->motherRef(0)->pdgId() <= 25 ) {
+					float deta =  diPhotonPointers[candIndex]->subLeadingPhoton()->eta() - gens[ip]->eta();
+					float dphi =  diPhotonPointers[candIndex]->subLeadingPhoton()->phi() - gens[ip]->phi();
+					float dr = sqrt(deta*deta + dphi*dphi);
+					float pt_change = (diPhotonPointers[candIndex]->subLeadingPhoton()->et() - gens[ip]->et())/gens[ip]->et();
+					if (dr<0.3 && fabs(pt_change) < 0.5) {
+						genmatch1 = true;
+						break;
+					}
+				}
+			}
 		}
-	}
 
-	if(higgsCandPresent){
+		/* NB: This entire section has been superseded by the TagSorter, which now selects the best diPhoton.
+			 Will remove in next iteration.
+
+		//------> higgs diphoton candidate properties
+		// We have a problem here, because until we are sure that there is consistently one higgs diphoton candiate, we 
+		// will either need to select one of the multiple diphoton pairs. The following does that, by choosing the one closets to 125GeV..	
+		float higgsMassDifference =9999.; 
+		float higgsMass =125. ;
+		Int_t higgsCandPresent = 0; //Is 0 is there are no candidates in event, set to 1 if there is at least one candidate pair.
+		Int_t candIndex = 9999; //This int will store the index of the best higgs diphoton candidate...
+
+		for (unsigned int diphotonlooper =0; diphotonlooper < diPhotonPointers.size() ; diphotonlooper++){
+		if  (fabs(diPhotonPointers[diphotonlooper]->mass() - higgsMass) < higgsMassDifference){
+		higgsMassDifference = fabs(diPhotonPointers[diphotonlooper]->mass() - higgsMass);
+		candIndex = diphotonlooper;
+		higgsCandPresent=1;
+		}
+		}
+		*/
+
 		mass = diPhotonPointers[candIndex]->mass();
 		dipho_pt = diPhotonPointers[candIndex]->pt();
-	}
-	else{
-		mass = 0;
-		dipho_pt = 0;
-	}
+
+		//------->full_cat FIXME leaving blank for now, need to implement if/when events are categoriesed. Discuss event interpretatrion.
+		full_cat =0;
+
+		//------>MET info
+		if (METPointers.size() != 1) { std::cout << "WARNING - #MET is not 1" << std::endl;}
+		MET = METPointers[0]->pt();
+		MET_phi = METPointers[0]->phi();
 
 
-
-	//------->full_cat FIXME leaving blank for now, need to implement if/when events are categoriesed. Discuss event interpretatrion.
-	full_cat =0;
-
-	//------>MET info
-	if (METPointers.size() != 1) { std::cout << "WARNING - #MET is not 1" << std::endl;}
-	MET = METPointers[0]->pt();
-	MET_phi = METPointers[0]->phi();
-
-
-	//-------> individual photon properties
-	if(higgsCandPresent){
+		//-------> individual photon properties
 		//PHOTON1
 		et1 = diPhotonPointers[candIndex]->leadingPhoton()->et();
 		eta1 = diPhotonPointers[candIndex]->leadingPhoton()->eta();
-		//	float phi1 = diPhotonPointers[candIndex]->leadingPhoton()->phi();
+		float phi1 = diPhotonPointers[candIndex]->leadingPhoton()->phi();
 		r91 = diPhotonPointers[candIndex]->leadingPhoton()->r9();
 		sieie1 = diPhotonPointers[candIndex]->leadingPhoton()->sigmaIetaIeta();
 		hoe1 = diPhotonPointers[candIndex]->leadingPhoton()->hadronicOverEm();
 		sigmaEoE1 = diPhotonPointers[candIndex]->leadingPhoton()->getSigEOverE();
 		ptoM1 = diPhotonPointers[candIndex]->leadingPhoton()->pt()/mass;
 		//---> Isolation variables, unsure if correct methods used...
-		//Mthods from reco::photon
-		//chiso1 = diPhotonPointers[candIndex]->leadingPhoton()->chargedHadronIso();
-		//chisow1 = diPhotonPointers[candIndex]->leadingPhoton()->chargedHadronIsoWrongVtx();
-		//phoiso1 = diPhotonPointers[candIndex]->leadingPhoton()->photonIso();
-		//phoiso041 = diPhotonPointers[candIndex]->leadingPhoton()->photonIso(); //how does this differ??? FIXME
-		//Methods from flashgg::photon
 		chiso1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfChgIso03WrtVtx(diPhotonPointers[candIndex]->getVertex());
 		chisow1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfChgIsoWrtWorstVtx04();//no flashgg method for come radius 04... ok to use 0.3?
 		phoiso1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfPhoIso03();
@@ -414,7 +471,6 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		pfchiso2_1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfChgIso02WrtVtx(diPhotonPointers[candIndex]->getVertex());
 		isorv1 = (chiso1 + phoiso1 + 2.5 - rho*0.09)*(50./et1); //used in cic analysis, might not be useful for us but we have what we need in hand so adding anyway.
 		isowv1 = ( phoiso1 + chisow1 + 2.5 - rho*0.23)*(50./et1);
-
 
 		isEB1 = diPhotonPointers[candIndex]->leadingPhoton()->isEB();
 		sieip1 = diPhotonPointers[candIndex]->leadingPhoton()->getSieip();
@@ -429,7 +485,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		//PHOTON 2
 		et2 = diPhotonPointers[candIndex]->subLeadingPhoton()->et();
 		eta2 = diPhotonPointers[candIndex]->subLeadingPhoton()->eta();
-		//	float phi2 = diPhotonPointers[candIndex]->subLeadingPhoton()->phi();
+		float phi2 = diPhotonPointers[candIndex]->subLeadingPhoton()->phi();
 		r92 = diPhotonPointers[candIndex]->subLeadingPhoton()->r9();
 		sieie2 = diPhotonPointers[candIndex]->subLeadingPhoton()->sigmaIetaIeta();
 		hoe2 = diPhotonPointers[candIndex]->subLeadingPhoton()->hadronicOverEm();
@@ -437,18 +493,13 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		ptoM2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pt()/mass;
 		isEB2 = diPhotonPointers[candIndex]->subLeadingPhoton()->isEB();
 		//---> Isolation variables, unsure if correct methods used...
-		//Mthods from reco::photon
-		//chiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->chargedHadronIso();
-		//chisow2 = diPhotonPointers[candIndex]->subLeadingPhoton()->chargedHadronIsoWrongVtx();
-		//phoiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->photonIso();
-		//phoiso042 = diPhotonPointers[candIndex]->subLeadingPhoton()->photonIso(); //how does this differ??? FIXME
 		//Methods from flashgg::photon
 		chiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfChgIso03WrtVtx(diPhotonPointers[candIndex]->getVertex());
 		chisow2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfChgIsoWrtWorstVtx04();//no flashgg method for come radius 04... ok to use 0.3?
 		phoiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfPhoIso03();
 
 
-		phoiso042 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfPhoIso04(); //unsure of default radius?
+		phoiso042 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfPhoIso04(); 
 		ecaliso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->ecalRecHitSumEtConeDR03();
 		hcaliso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->hcalTowerSumEtConeDR03();
 		trkiso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->trkSumPtHollowConeDR03();
@@ -473,153 +524,69 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		vtx_y= diPhotonPointers[candIndex]->getVertex()->y();
 		vtx_z= diPhotonPointers[candIndex]->getVertex()->z();
 
+		//------>VBF information
+		dRphojet1 = -1;
+		dRphojet2 = -1;
+		vbfcat=-1;
+		dijet_leadEta = -1;
+		dijet_subleadEta= -1;
+		dijet_LeadJPt = -1;
+		dijet_SubJPt= -1;
+		dijet_dEta= -1;
+		dijet_Zep= -1;
+		dijet_dPhi= -1;
+		dijet_Mjj= -1;
+		dijet_MVA= -1;
+		bdt_combined =-1;
+		if(vbftag != NULL) {
+			float dEtaLeadPho = vbftag->leadingJet().eta() - eta1; 
+			float dPhiLeadPho = vbftag->leadingJet().phi() - phi1; 
+			float dEtaSublPho = vbftag->leadingJet().eta() - eta2; 
+			float dPhiSublPho = vbftag->leadingJet().phi() - phi2;
+			float dRLeadPho = sqrt(dEtaLeadPho*dEtaLeadPho + dPhiLeadPho*dPhiLeadPho);
+			float dRSublPho = sqrt(dEtaSublPho*dEtaSublPho + dPhiSublPho*dPhiSublPho);
+			dRphojet1 = min(dRSublPho, dRLeadPho); //distance of jet 1 to closest photon
+			dEtaLeadPho = vbftag->leadingJet().eta() - eta1; 
+			dPhiLeadPho = vbftag->leadingJet().phi() - phi1; 
+			dEtaSublPho = vbftag->leadingJet().eta() - eta2; 
+			dPhiSublPho = vbftag->leadingJet().phi() - phi2;
+			dRLeadPho = sqrt(dEtaLeadPho*dEtaLeadPho + dPhiLeadPho*dPhiLeadPho);
+			dRSublPho = sqrt(dEtaSublPho*dEtaSublPho + dPhiSublPho*dPhiSublPho);
+			dRphojet2 =  min(dRSublPho, dRLeadPho); //distance of jet 2 to closest photon
 
-		// ---------> Gen match?
-		//
-		genmatch1= 0;
-		genmatch2= 0;
-		if(itype!=0){
-
-
-			for(unsigned int ip=0;ip<gens.size();++ip) {
-				if( gens[ip]->status() != 1 || gens[ip]->pdgId() != 22 ) {
-					continue;
-				}
-				if( diPhotonPointers[candIndex]->leadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->leadingPhoton()->eta()) > 3. ) { continue; }
-				if( gens[ip]->motherRef(0)->pdgId() <= 25 ) {
-					float deta =  diPhotonPointers[candIndex]->leadingPhoton()->eta() - gens[ip]->eta();
-					float dphi =  diPhotonPointers[candIndex]->leadingPhoton()->phi() - gens[ip]->phi();
-					float dr = sqrt(deta*deta + dphi*dphi);
-					float pt_change = (diPhotonPointers[candIndex]->leadingPhoton()->et() - gens[ip]->et())/gens[ip]->et();
-					if (dr<0.3 && fabs(pt_change) < 0.5) {
-						genmatch1 = true;
-						break;
-					}
-				}
-			}
-
-
-			for(unsigned int ip=0;ip<gens.size();++ip) {
-				if( gens[ip]->status() != 1 || gens[ip]->pdgId() != 22 ) {
-					continue;
-				}
-				if( diPhotonPointers[candIndex]->subLeadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->subLeadingPhoton()->eta()) > 3. ) { continue; }
-				if( gens[ip]->motherRef(0)->pdgId() <= 25 ) {
-					float deta =  diPhotonPointers[candIndex]->subLeadingPhoton()->eta() - gens[ip]->eta();
-					float dphi =  diPhotonPointers[candIndex]->subLeadingPhoton()->phi() - gens[ip]->phi();
-					float dr = sqrt(deta*deta + dphi*dphi);
-					float pt_change = (diPhotonPointers[candIndex]->subLeadingPhoton()->et() - gens[ip]->et())/gens[ip]->et();
-					if (dr<0.3 && fabs(pt_change) < 0.5) {
-						genmatch1 = true;
-						break;
-					}
-				}
-			}
+			vbfcat = flash_VBFTag_Category;
+			dijet_leadEta = vbftag->VBFMVA().dijet_leadEta; 
+			dijet_subleadEta = vbftag->VBFMVA().dijet_subleadEta ;
+			dijet_LeadJPt = vbftag->VBFMVA().dijet_LeadJPt ;
+			dijet_SubJPt= vbftag->VBFMVA().dijet_SubJPt ;
+			dijet_dEta= fabs(vbftag->leadingJet().eta() - vbftag->subLeadingJet().eta()) ;
+			dijet_dPhi= fabs(vbftag->leadingJet().phi() - vbftag->subLeadingJet().phi()) ;
+			dijet_Zep= vbftag->VBFMVA().dijet_Zep ;
+			dijet_Mjj= vbftag->VBFMVA().dijet_Mjj ;
+			dijet_MVA= vbftag->VBFMVA().VBFMVAValue() ;
+			bdt_combined= vbftag->VBFDiPhoDiJetMVA().vbfDiPhoDiJetMvaResult;
 		}
 
 
-		flash_Untagged_Category= -1; // so that there is at least some value to fill even if not part of category
-		flash_VBFTag_Category =-1;// so that there is at least some value to fill even if untagged
-		if (TagSorter->get() ) //make sure TagSorter is not a null pointer
-		{
+		sigmaMrvoM = (TagSorter->get())->diPhotonMVA().sigmarv;
+		sigmaMwvoM =(TagSorter->get())->diPhotonMVA().sigmawv;
+		vtxprob =(TagSorter->get())->diPhotonMVA().vtxprob;
+		ptbal = diPhotonPointers[candIndex]->getPtBal();
+		ptasym = diPhotonPointers[candIndex]->getPtAsym();
+		logspt2 = diPhotonPointers[candIndex]->getLogSumPt2();
+		p2conv = diPhotonPointers[candIndex]->getPullConv(); 
+		nconv = diPhotonPointers[candIndex]->getNConv(); 
+		vtxmva = diPhotonPointers[candIndex]->getVtxProbMVA();
+		vtxdz = diPhotonPointers[candIndex]->getDZ1(); 
+		dipho_mva = (TagSorter->get())->diPhotonMVA().getMVAValue();
 
-			const	DiPhotonUntaggedCategory *untagged = dynamic_cast<const DiPhotonUntaggedCategory*>(TagSorter->get());
-
-			//if(untagged == NULL) std::cout << "NOT UNTAGGED" <<std::endl;
-			if(untagged != NULL) {
-				std::cout << "[UNTAGGED] category " << untagged->getCategoryNumber() << std::endl;
-			}
-
-			const	VBFTag *vbftag = dynamic_cast<const VBFTag*>(TagSorter->get());
-			//	if(vbftag == NULL) std::cout << "NOT VBF" <<std::endl;
-			if(vbftag != NULL) {
-				std::cout << "[VBF] Category " << vbftag->getCategoryNumber() <<std::endl;
-				//	std::cout << "VBF lead Jet eta" <<vbftag->leadingJet().eta() <<std::endl; //debug variables to see if correct info is being saved...
-				//	std::cout << "VBF sublead Jet phi" <<vbftag->leadingJet().phi() <<std::endl;
-			}
-
-			// IMPORTANT: All future Tags must be added in the way of untagged and vbftag.	
+		dipho_mva_cat = flash_Untagged_Category;		
 
 
-		} else { //case where TagSorter->get() is a null pointer
-			std::cout << "[NO TAG]" <<std::endl;
-		}
-}
-else{
-
-	et1 =  -999.;
-	eta1 = -999.;
-	r91 =  -999.;
-	sieie1 =-999.; 
-	hoe1 =-999.;
-	sigmaEoE1 =-999.; 
-	ptoM1 =-999.;
-	isEB1 =-999.;
-	chiso1 =-999.;
-	chisow1 =-999.; 
-	phoiso1 = -999.;
-	phoiso041 =-999.; 
-	ecaliso03_1 =-999.;
-	hcaliso03_1 =-999.;
-	trkiso03_1 = -999.;
-	pfchiso2_1 = -999.;
-	isorv1 = -999.;
-	isowv1 = -999.;
-	sieip1 = -999.;
-	etawidth1 =-999.; 
-	phiwidth1 = -999.;
-	regrerr1 = -999.;
-	idmva1 = -999.;
-	s4ratio1 =-999.;  
-	effSigma1 =-999.;  
-	scraw1 =  -999.;
-	et2 =  -999.;
-	eta2 = -999.;
-	r92 =-999.;
-	sieie2 =-999.; 
-	hoe2 =-999.;
-	sigmaEoE2 =-999.; 
-	ptoM2 =-999.;
-	isEB2 =-999.;
-	isorv2 = -999.;
-	isowv2 = -999.;
-	chiso2 =-999.;
-	chisow2 =-999.; 
-	phoiso2 = -999.;
-	phoiso042 =-999.; 
-	ecaliso03_2 =-999.;
-	hcaliso03_2 =-999.;
-	trkiso03_2 = -999.;
-	pfchiso2_2 = -999.;
-	sieip2 = -999.;
-	etawidth2 =-999.; 
-	phiwidth2 = -999.;
-	regrerr2 = -999.;
-	idmva2 = -999.;
-	s4ratio2 =-999.;  
-	effSigma2 =-999.;  
-	scraw2 =  -999.;
-	cosphi = -999.;
-	vtx_x = -999.;
-	vtx_y = -999.;
-	vtx_z =-999.;
-	genmatch1 = -999.;
-	genmatch2 = -999.;
-	sigmaMrvoM = -999.;
-	sigmaMwvoM = -999.;
-	vtxprob =-999.;
-	ptbal =-999.;
-	ptasym = -999.;
-	logspt2 = -999.;
-	p2conv =-999. ;
-	nconv =-999. ;
-	vtxmva =-999.;
-	vtxdz =-999.;
-	dipho_mva =-999.;
-
-}
-
-flashggTreeWithTagSorter->Fill(); 
+		flashggTreeWithTagSorter->Fill(); 
+	} else { //case where TagSorter->get() is a null pointer
+		std::cout << "[NO TAG]" <<std::endl;
+	}
 }
 	void 
 FlashggTreeMakerWithTagSorter::beginJob()
