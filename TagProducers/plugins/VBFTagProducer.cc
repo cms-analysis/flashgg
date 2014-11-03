@@ -31,6 +31,7 @@ namespace flashgg {
     EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
     EDGetTokenT<View<VBFDiPhoDiJetMVAResult> > vbfDiPhoDiJetMvaResultToken_;
     EDGetTokenT<View<VBFMVAResult> > vbfMvaResultToken_;
+    EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
 
     vector<double> boundaries;
 
@@ -39,7 +40,8 @@ namespace flashgg {
   VBFTagProducer::VBFTagProducer(const ParameterSet & iConfig) :
     diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
     vbfDiPhoDiJetMvaResultToken_(consumes<View<flashgg::VBFDiPhoDiJetMVAResult> >(iConfig.getUntrackedParameter<InputTag> ("VBFDiPhoDiJetMVAResultTag", InputTag("flashggVBFDiPhoDiJetMVA")))),
-    vbfMvaResultToken_(consumes<View<flashgg::VBFMVAResult> >(iConfig.getUntrackedParameter<InputTag> ("VBFMVAResultTag", InputTag("flashggVBFMVA"))))
+    //    vbfMvaResultToken_(consumes<View<flashgg::VBFMVAResult> >(iConfig.getUntrackedParameter<InputTag> ("VBFMVAResultTag", InputTag("flashggVBFMVA")))),
+    mvaResultToken_(consumes<View<flashgg::DiPhotonMVAResult> >(iConfig.getUntrackedParameter<InputTag> ("MVAResultTag", InputTag("flashggDiPhotonMVA"))))
 
   {
     vector<double> default_boundaries;
@@ -70,40 +72,47 @@ namespace flashgg {
     evt.getByToken(diPhotonToken_,diPhotons);
     const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
+    Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
+    evt.getByToken(mvaResultToken_,mvaResults);
+    const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
+
     Handle<View<flashgg::VBFDiPhoDiJetMVAResult> > vbfDiPhoDiJetMvaResults;
     evt.getByToken(vbfDiPhoDiJetMvaResultToken_,vbfDiPhoDiJetMvaResults);
     const PtrVector<flashgg::VBFDiPhoDiJetMVAResult>& vbfDiPhoDiJetMvaResultPointers = vbfDiPhoDiJetMvaResults->ptrVector();
     
-		Handle<View<flashgg::VBFMVAResult> > vbfMvaResults;
-    evt.getByToken(vbfMvaResultToken_,vbfMvaResults);
-    const PtrVector<flashgg::VBFMVAResult>& vbfMvaResultPointers = vbfMvaResults->ptrVector();
+    //		Handle<View<flashgg::VBFMVAResult> > vbfMvaResults;
+    //    evt.getByToken(vbfMvaResultToken_,vbfMvaResults);
+    //    const PtrVector<flashgg::VBFMVAResult>& vbfMvaResultPointers = vbfMvaResults->ptrVector();
+
 
     std::auto_ptr<vector<VBFTag> > tags(new vector<VBFTag>); 
 
     assert(diPhotonPointers.size() == vbfDiPhoDiJetMvaResultPointers.size()); // We are relying on corresponding sets - update this to give an error/exception
-    assert(diPhotonPointers.size() == vbfMvaResultPointers.size()); // We are relying on corresponding sets - update this to give an error/exception
+    //    assert(diPhotonPointers.size() == vbfMvaResultPointers.size()); // We are relying on corresponding sets - update this to give an error/exception
+    assert(diPhotonPointers.size() == mvaResultPointers.size()); // We are relying on corresponding sets - update this to give an error/exception                                  
 
     for (unsigned int candIndex =0; candIndex < diPhotonPointers.size() ; candIndex++) {
-      edm::Ptr<flashgg::VBFDiPhoDiJetMVAResult> mvares = vbfDiPhoDiJetMvaResultPointers[candIndex];
-    //  edm::Ptr<flashgg::VBFMVAResult> vbf_mvares = vbfMvaResultPointers[candIndex];
+      edm::Ptr<flashgg::VBFDiPhoDiJetMVAResult> vbfdipho_mvares = vbfDiPhoDiJetMvaResultPointers[candIndex];
+      //      edm::Ptr<flashgg::VBFMVAResult> vbf_mvares = vbfMvaResultPointers[candIndex];
+      edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[candIndex];
+     
       edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[candIndex];
 
-			VBFTag tag_obj(dipho,mvares);
-			tag_obj.diPhotonIndex = candIndex;
+      VBFTag tag_obj(dipho,mvares,vbfdipho_mvares);
+      tag_obj.diPhotonIndex = candIndex;
+      
+      int catnum = chooseCategory(vbfdipho_mvares->vbfDiPhoDiJetMvaResult);
+      tag_obj.setCategoryNumber(catnum);
+      
+      // Leave in debugging statement temporarily while tag framework is being developed
+      //std::cout << "[VBF] MVA is "<< mvares->vbfDiPhoDiJetMvaResult << " and VBF category is " << tag_obj.getCategoryNumber() << std::endl;
 
-			int catnum = chooseCategory(mvares->vbfDiPhoDiJetMvaResult);
-			tag_obj.setCategoryNumber(catnum);
-
-			// Leave in debugging statement temporarily while tag framework is being developed
-			//std::cout << "[VBF] MVA is "<< mvares->vbfDiPhoDiJetMvaResult << " and VBF category is " << tag_obj.getCategoryNumber() << std::endl;
-
-			if (tag_obj.getCategoryNumber() >= 0) {
-				tags->push_back(tag_obj);
-			}
-		}
-		evt.put(tags);
-
-	}
+      if (tag_obj.getCategoryNumber() >= 0) {
+	tags->push_back(tag_obj);
+      }
+    }
+    evt.put(tags);
+  }
 }
 
 typedef flashgg::VBFTagProducer FlashggVBFTagProducer;
