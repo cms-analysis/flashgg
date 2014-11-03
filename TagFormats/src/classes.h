@@ -50,4 +50,4 @@ namespace  { struct dictionary {
   	edm::Ptr<pat::Muon> ptr_muon;
 	edm::PtrVector<pat::Muon> vec_ptr_muon;
 	edm::PtrVector<flashgg::Jet> vec_ptr_jet;
-
+};}
