@@ -8,10 +8,8 @@ namespace flashgg {
     //    ~DiPhotonUntaggedCategory();
   //  DiPhotonUntaggedCategory(const DiPhotonUntaggedCategory&);
     DiPhotonUntaggedCategory(edm::Ptr<DiPhotonCandidate> dipho,edm::Ptr<DiPhotonMVAResult> mvares);
-    DiPhotonUntaggedCategory(edm::Ptr<DiPhotonCandidate>,edm::Ptr<DiPhotonMVAResult>, int);
-    void setCategoryNumber(int n) { category_number_ = n; }
-    int getCategoryNumber() const { return category_number_; }
-   
+    //    DiPhotonUntaggedCategory(edm::Ptr<DiPhotonCandidate>,edm::Ptr<DiPhotonMVAResult>, int);
+
 	/* void setVtxProb(float n) { vtxprob_ = n; }
     float getVtxProb() const { return vtxprob_; }
     void setSigmaMrvoM(float n) { sigmaMrvoM_ = n; }
@@ -25,7 +23,7 @@ namespace flashgg {
 	//	void setDiPhoMVAResult(edm::Ptr<DiPhotonMVAResult> x) {dipho_mva_res_ = *x; sigmaMrvoM_ = x->sigmarv;}
 	//	DiPhotonMVAResult dipho_mva_res_;
 	private:
-		int category_number_;
+    //		int category_number_;
 //		float vtxprob_; 
 //		float dipho_mva_; 
 //		float sigmaMrvoM_;
