@@ -6,8 +6,7 @@ using namespace flashgg;
 
 VBFTag::VBFTag(){}
 
-//VBFTag::VBFTag() : DiPhotonTagBase::DiPhotonTagBase() {}
-//VBFTag::~VBFTag(){}
+VBFTag::~VBFTag(){}
 
 //VBFTag::VBFTag(const VBFTag& x) : DiPhotonTagBase::DiPhotonTagBase(x) {
  // category_number_ = x.category_number_; 
@@ -15,10 +14,12 @@ VBFTag::VBFTag(){}
 
 VBFTag::VBFTag(edm::Ptr<DiPhotonCandidate> dipho,edm::Ptr<DiPhotonMVAResult> mvares,edm::Ptr<VBFDiPhoDiJetMVAResult> vbfDiPhoDiJet_mvaRes) :
   DiPhotonTagBase::DiPhotonTagBase(dipho,mvares) {
+  /*
   std::cout << " In VBFTag::VBFTag, and my numberOfDaughters() is " << numberOfDaughters() << std::endl;
   const flashgg::DiPhotonCandidate* test = dynamic_cast<const flashgg::DiPhotonCandidate*> (daughter(0));
   std::cout << " test = " << test << std::endl;
   if (test != NULL) std::cout << " test->getSumPt() = " << test->getSumPt() << std::endl;
+  */
   vbfDiPhoDiJet_mva_result_ = *vbfDiPhoDiJet_mvaRes; // copies 
 }
 

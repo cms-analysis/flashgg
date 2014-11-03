@@ -5,7 +5,7 @@ namespace flashgg {
   class DiPhotonUntaggedCategory: public DiPhotonTagBase {
   public:
     DiPhotonUntaggedCategory();
-    //    ~DiPhotonUntaggedCategory();
+    ~DiPhotonUntaggedCategory();
   //  DiPhotonUntaggedCategory(const DiPhotonUntaggedCategory&);
     DiPhotonUntaggedCategory(edm::Ptr<DiPhotonCandidate> dipho,edm::Ptr<DiPhotonMVAResult> mvares);
     //    DiPhotonUntaggedCategory(edm::Ptr<DiPhotonCandidate>,edm::Ptr<DiPhotonMVAResult>, int);

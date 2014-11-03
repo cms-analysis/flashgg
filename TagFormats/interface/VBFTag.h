@@ -11,7 +11,7 @@ namespace flashgg {
   class VBFTag: public DiPhotonTagBase {
   public:
     VBFTag();
-   // ~VBFTag();
+    ~VBFTag();
     
 		
   //  VBFTag(const VBFTag&);

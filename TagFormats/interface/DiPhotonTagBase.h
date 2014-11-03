@@ -6,10 +6,10 @@
 
 namespace flashgg {
 
-  class DiPhotonTagBase : public reco::CompositeCandidate {
+  class DiPhotonTagBase {
   public:
     DiPhotonTagBase();
-    ~DiPhotonTagBase();
+    virtual ~DiPhotonTagBase() {}
     DiPhotonTagBase(edm::Ptr<DiPhotonCandidate>,edm::Ptr<DiPhotonMVAResult>);
     const DiPhotonCandidate* diPhoton() const;
     const DiPhotonMVAResult diPhotonMVA() const;
@@ -25,6 +25,7 @@ namespace flashgg {
   private:
     DiPhotonMVAResult mva_result_;
     int category_number_;
+    edm::Ptr<DiPhotonCandidate> dipho_;
   };
 
 }

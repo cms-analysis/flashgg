@@ -109,12 +109,13 @@ namespace flashgg {
 			    //					*SelectedTag.get() = TagPointers[0];	
 			    SelectedTag.reset(new edm::Ptr<flashgg::DiPhotonTagBase>(TagPointers[chosenIndex]));
 			    //debug message:
-			    //std::cout << "[DEBUG] Priority " << TagListLoop << " Tag Found! Tag entry "<< chosenIndex  << " with sumPt " << maxSumPt <<std::endl;
+			    std::cout << "[DEBUG] Priority " << TagListLoop << " Tag Found! Tag entry "<< chosenIndex  << " with sumPt " 
+				      << TagPointers[chosenIndex]->getSumPt() << std::endl;
 			    break;
 			  }
 			} else {
 			  //debug message
-			  //std::cout << "[DEBUG] No Priority " << TagListLoop << " Tag ..., looking for Priority " << (TagListLoop+1) << " Tag.. " << std::endl;
+			  std::cout << "[DEBUG] No Priority " << TagListLoop << " Tag ..., looking for Priority " << (TagListLoop+1) << " Tag.. " << std::endl;
 			}
 		}
 		evt.put(SelectedTag);

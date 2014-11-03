@@ -4,11 +4,16 @@
 
 using namespace flashgg;
 
-DiPhotonTagBase::DiPhotonTagBase(){}
-
-DiPhotonTagBase::~DiPhotonTagBase(){}
+DiPhotonTagBase::DiPhotonTagBase(){
+  category_number_ = -1;
+}
 
 DiPhotonTagBase::DiPhotonTagBase(edm::Ptr<flashgg::DiPhotonCandidate> diPho,edm::Ptr<DiPhotonMVAResult> mvaRes) {
+  mva_result_ = *mvaRes;
+  category_number_ = -1;
+  dipho_ = diPho;
+
+  /*
   addDaughter(*diPho);
   AddFourMomenta addP4;
   addP4.set(*this);
@@ -18,14 +23,23 @@ DiPhotonTagBase::DiPhotonTagBase(edm::Ptr<flashgg::DiPhotonCandidate> diPho,edm:
   const flashgg::DiPhotonCandidate* test = dynamic_cast<const flashgg::DiPhotonCandidate*> (daughter(0));
   std::cout << " test = " << test << std::endl;
   if (test != NULL) std::cout << " test->getSumPt() = " << test->getSumPt() << std::endl;
+  std::cout << " daughter(0)->pt() " << daughter(0)->pt() << std::endl;
+  const flashgg::DiPhotonCandidate* test2 = dynamic_cast<const flashgg::DiPhotonCandidate*> (daughter(0));
+  std::cout << " test2 = " << test2 << std::endl;
+  if (test2 != NULL) std::cout << " test2->getSumPt() = " << test2->getSumPt() << std::endl;
+  */
+
 }
 
 const DiPhotonCandidate* DiPhotonTagBase::diPhoton() const {
+  return dipho_.get();
+  /*
   std::cout << " In DiPhotonTagBase::diPhoton, and my numberOfDaughters() is " << numberOfDaughters() << std::endl;
   const flashgg::DiPhotonCandidate* test = dynamic_cast<const flashgg::DiPhotonCandidate*> (daughter(0));
   std::cout << " test = " << test << std::endl;
   if (test != NULL) std::cout << " test->getSumPt() = " << test->getSumPt() << std::endl;
   return dynamic_cast<const flashgg::DiPhotonCandidate*> (daughter(0));
+  */
 }
 const DiPhotonMVAResult DiPhotonTagBase::diPhotonMVA() const {
   return mva_result_;
