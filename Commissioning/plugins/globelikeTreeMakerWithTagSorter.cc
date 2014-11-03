@@ -268,6 +268,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 	//Slightly unusal way of accessing selected Tag from TagSorter, since a pointer is saved rather than a vector.
 	Handle<edm::Ptr<flashgg::DiPhotonTagBase> > TagSorter;
 	iEvent.getByToken(TagSorterToken_,TagSorter);
+	std::cout << " TagSorter->get() = " << TagSorter->get() << std::endl;
 
 	flash_Untagged_Category= -1; // so that there is at least some value to fill even if not part of category
 	flash_VBFTag_Category =-1;// so that there is at least some value to fill even if untagged
