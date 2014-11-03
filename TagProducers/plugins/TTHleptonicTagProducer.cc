@@ -122,8 +122,6 @@ namespace flashgg {
 
 {
 
- 		std::cout << "[NEW EVENT] "<< std::endl;
-
 		Handle<View<flashgg::Jet> > theJets;
 		evt.getByToken(thejetToken_,theJets);
 		const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
@@ -159,7 +157,7 @@ namespace flashgg {
 				edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[diphoIndex];
 				edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[diphoIndex];
 
-				TTHleptonicTag tthltags_obj(dipho);
+				TTHleptonicTag tthltags_obj(dipho,mvares);
 
 				if(dipho->leadingPhoton()->pt() < (dipho->mass())*leadPhoOverMassThreshold_) continue;
 
@@ -209,17 +207,7 @@ namespace flashgg {
 					tagJets.push_back(thejet);
 	
 					bDiscriminatorValue = thejet->bDiscriminator(bTag_.c_str());
-/*
 
-					if(bDiscriminatorValue>bDiscriminator_[0]) 
-					{
-						njets_btagloose++;
-						if (bDiscriminatorValue<=bDiscriminator_[1])
-						{
-							bjetcount++;
-						}
-					}
-*/
 					if(bDiscriminatorValue>bDiscriminator_[1]) 
 					{
 						tagBJets.push_back(thejet);

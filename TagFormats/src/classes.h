@@ -7,7 +7,6 @@
 #include "DataFormats/Common/interface/Wrapper.h"
 #include "DataFormats/Common/interface/Ptr.h"
 #include "flashgg/TagFormats/interface/TTHleptonicTag.h"
-#include "flashgg/TagFormats/interface/TTHhadronicTag.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include <map>

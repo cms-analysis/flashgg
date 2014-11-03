@@ -9,8 +9,5 @@ TTHleptonicTag::~TTHleptonicTag()
 {}
 
 
-TTHleptonicTag::TTHleptonicTag(edm::Ptr<DiPhotonCandidate> diPho){
+TTHleptonicTag::TTHleptonicTag(edm::Ptr<DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvares) : DiPhotonTagBase::DiPhotonTagBase(diPho,mvares) {}
 
-theDiPhotonCandidate_ = diPho;
-
-}
