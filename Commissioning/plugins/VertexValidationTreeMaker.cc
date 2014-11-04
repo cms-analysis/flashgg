@@ -240,7 +240,7 @@ VertexValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSet
 	    if (deltaR(jetPointersDz[jdz]->eta(),jetPointersDz[jdz]->phi(),photonPointers[np]->eta(),photonPointers[np]->phi()) < 0.4) {
 	      jInfo.overlap_photon_pt = photonPointers[np]->pt();
 	      jInfo.n_overlap_photon++;
-	      std::cout << " SCZ DEBUG photon pt=" << photonPointers[np]->pt() << " eta=" << photonPointers[np]->eta() << " phi=" << photonPointers[np]->phi() << std::endl;
+	      //	      std::cout << " SCZ DEBUG photon pt=" << photonPointers[np]->pt() << " eta=" << photonPointers[np]->eta() << " phi=" << photonPointers[np]->phi() << std::endl;
 	    }
 	  }
 	  
@@ -289,7 +289,7 @@ VertexValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSet
 	}
 
 
-std::cout << "DiPhoton Candidates " << diPhotonPointers.size() << std::endl;
+	//std::cout << "DiPhoton Candidates " << diPhotonPointers.size() << std::endl;
 
 //eInfo.diphotonVertexZ = vtx->position().z(); 
 eInfo.diphotonVertexZ = -9999; 
@@ -304,7 +304,7 @@ float higgsMassDifference =9999;
 	 eInfo.diphotonVertexZ = diPhotonPointers[diphotonlooper]->getVertex()->z();
 	 higgsMassDifference = fabs(diPhotonPointers[diphotonlooper]->mass() - 125); 
        }
-     std::cout << "closest mass diff " << higgsMassDifference << " vertex dz" << eInfo.diphotonVertexZ << std::endl;
+     //     std::cout << "closest mass diff " << higgsMassDifference << " vertex dz" << eInfo.diphotonVertexZ << std::endl;
 
    }
 
@@ -320,11 +320,11 @@ float higgsMassDifference =9999;
      }
    //		std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
    if (! vertexCandidateMapDz->count(vtx) ) {
-     std::cout << " Missing vertex from vertexCandidateMapDz - skipping" << std::endl;
+     //     std::cout << " Missing vertex from vertexCandidateMapDz - skipping" << std::endl;
      continue;
    }
    if (! vertexCandidateMapAOD->count(vtx) ) {
-     std::cout << " Missing vertex from vertexCandidateMapAOD - skipping" << std::endl;
+     //     std::cout << " Missing vertex from vertexCandidateMapAOD - skipping" << std::endl;
      continue;
    }
    vInfo.ntrk_AOD = vertexCandidateMapAOD->at(vtx).size() ;
