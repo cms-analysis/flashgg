@@ -73,8 +73,8 @@ namespace flashgg {
     math::XYZPoint vertexPoint;
     if (recoBeamSpotHandle.isValid())
       vertexPoint = recoBeamSpotHandle->position();    
-    else
-      cout<<" WARNING BEAM SPOT NOT VALID! This should not happen "<<endl;
+    //    else
+      //      cout<<" WARNING BEAM SPOT NOT VALID! This should not happen "<<endl;
     
     
     auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);

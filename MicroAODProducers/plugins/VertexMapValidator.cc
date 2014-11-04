@@ -99,7 +99,7 @@ namespace flashgg {
 		std::auto_ptr<VertexCandidateMap> assoc(new VertexCandidateMap);
 
 		// print ifno for debugging
-		std::cout << "AOD vtxs:  "<<  pvPtrsAOD.size() << ", miniAOD vtxs: " << pvPtrs.size() << ", AOD tracks: " << trackNumber <<", miniAOD tracks: " << trackNumberMiniAOD <<  std::endl;
+		//		std::cout << "AOD vtxs:  "<<  pvPtrsAOD.size() << ", miniAOD vtxs: " << pvPtrs.size() << ", AOD tracks: " << trackNumber <<", miniAOD tracks: " << trackNumberMiniAOD <<  std::endl;
 
 
 		// ***************************************************************************
@@ -136,7 +136,7 @@ namespace flashgg {
 					//set index if there is a match
 					pvMap[i]=j;
 
-					if (pvMap[i]==-1){ std::cout << "no match" << std::endl;}
+					//					if (pvMap[i]==-1){ std::cout << "no match" << std::endl;}
 					//cout for debugging
 					//		std::cout << "miniAOD PV index: " << i << " , AOD PV index: " << pvMap[i] << std::endl;
 					//std::cout << " ("<< xAOD <<", "<<yAOD<<", "<<zAOD<<")"<< std::endl;
@@ -171,7 +171,7 @@ namespace flashgg {
 
 		for (unsigned int i =0; i< pvPtrsAOD.size() ; i++)
 		{
-			if (doTextDebug_) std::cout << "Vertex " << i << std::endl;
+		  //			if (doTextDebug_) std::cout << "Vertex " << i << std::endl;
 			for(auto trackAOD=pvPtrsAOD[i]->tracks_begin(); trackAOD != pvPtrsAOD[i]->tracks_end(); trackAOD++)		
 			{
 				double etaAOD = (**trackAOD).eta();
@@ -183,7 +183,7 @@ namespace flashgg {
 				trkCounter++;
 				trkMap[trkCounter]= -1;
 
-				if (doTextDebug_) std::cout << "  Track : " << trkCounter << " eta "<< etaAOD << " , phi " << phiAOD << " , pt " << ptAOD << std::endl;
+				//				if (doTextDebug_) std::cout << "  Track : " << trkCounter << " eta "<< etaAOD << " , phi " << phiAOD << " , pt " << ptAOD << std::endl;
 
 				if (useMiniAODTrackVertexAssociation_) { // Seth's adaptation to use pf2pc
 					if((*pf2pc)[*trackAOD].isNonnull() && (*pf2pc)[*trackAOD]->charge() != 0) {
@@ -196,14 +196,14 @@ namespace flashgg {
 							double  etaMiniAOD = (*pf2pc)[*trackAOD]->eta();                                                               
 							double  phiMiniAOD = (*pf2pc)[*trackAOD]->phi();                                                               
 							double  ptMiniAOD = (*pf2pc)[*trackAOD]->pt();                                                                 
-							std::cout << "    Track : " << trkCounter << " pf2pc MATCH eta "<< etaMiniAOD << " , phi " << phiMiniAOD << " , pt " << ptMiniAOD << std::endl;
+							//							std::cout << "    Track : " << trkCounter << " pf2pc MATCH eta "<< etaMiniAOD << " , phi " << phiMiniAOD << " , pt " << ptMiniAOD << std::endl;
 						}
 
 						myMap.insert(std::pair<Ptr<reco::Vertex>,Ptr<pat::PackedCandidate>>(pvPtrsAOD[i],pfPtr));
 						matchCounter++;
 
 					} else {
-						std::cout << "    Track : " << trkCounter << " NO pf2pc MATCH "<< std::endl;
+					  //						std::cout << "    Track : " << trkCounter << " NO pf2pc MATCH "<< std::endl;
 					}
 				}
 				if (!useMiniAODTrackVertexAssociation_ || doTextDebug_) {
@@ -222,8 +222,8 @@ namespace flashgg {
 							trkMap[trkCounter]=j;
 							matchCounter++;
 							if (doTextDebug_) {
-								std::cout << "    Track : " << trkCounter << " eta/phi/pt MATCH to " << j << " :";
-								std::cout << "      " << etaMiniAOD << " , " << phiMiniAOD << " , " << ptMiniAOD << std::endl;
+							  //								std::cout << "    Track : " << trkCounter << " eta/phi/pt MATCH to " << j << " :";
+							  //								std::cout << "      " << etaMiniAOD << " , " << phiMiniAOD << " , " << ptMiniAOD << std::endl;
 							} else {
 								//break loop if there is a match, unless we're doing text debugging
 								// Then don't store any output at all!
@@ -232,7 +232,7 @@ namespace flashgg {
 							}
 						}
 					}
-					if ( trkMap[trkCounter]==-1) {std::cout << "    Track : " << trkCounter << " NO eta/phi/pt MATCH "<< std::endl;} 
+					//					if ( trkMap[trkCounter]==-1) {std::cout << "    Track : " << trkCounter << " NO eta/phi/pt MATCH "<< std::endl;} 
 				}
 			}
 }
@@ -271,12 +271,12 @@ namespace flashgg {
 		}
 
 
-		std:: cout << "matched tracks : " << matchCounter  << std:: endl;
+		//		std:: cout << "matched tracks : " << matchCounter  << std:: endl;
 
 		//		if (trkCounter > trackNumber) { std::cout << " [ISSUE] " << std::endl;}
 		evt.put(assoc);
 
-		cout << trackNumber << "	" << trackNumberMiniAOD << "	" << matchCounter << std::endl;
+		//		cout << trackNumber << "	" << trackNumberMiniAOD << "	" << matchCounter << std::endl;
 	}
 }
 
