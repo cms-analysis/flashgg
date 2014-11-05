@@ -37,5 +37,6 @@ namespace  { struct dictionary {
   edm::Ptr<flashgg::Electron> 					  ptr_fgg_ele;
   edm::Wrapper<flashgg::Electron>				  wrp_fgg_ele;
   std::vector<flashgg::Electron>				  vec_fgg_ele;
-  edm::Wrapper<std::vector<flashgg::Electron> >               wrp_vec_fgg_ele;						
+  edm::Wrapper<std::vector<flashgg::Electron> >               wrp_vec_fgg_ele;					\
+  std::vector<reco::Conversion>					  vec_rec_con;		
 };}

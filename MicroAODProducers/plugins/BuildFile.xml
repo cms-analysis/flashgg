@@ -11,6 +11,7 @@
 <use   name="RecoJets/JetProducers"/>
 <use   name="EgammaAnalysis/ElectronTools"/>
 <use   name="DataFormats/EgammaCandidates"/>
+<use   name="RecoEgamma/EgammaTools"/>
 <use   name="roottmva"/>
 <use   name="HiggsAnalysis/GBRLikelihoodEGTools"/>
 <flags   EDM_PLUGIN="1"/>

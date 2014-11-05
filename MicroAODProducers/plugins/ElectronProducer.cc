@@ -1,6 +1,5 @@
 // system include files
 #include <memory>
-
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDProducer.h"
@@ -10,22 +9,25 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "EgammaAnalysis/ElectronTools/interface/EGammaMvaEleEstimator.h"
+#include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "flashgg/MicroAODFormats/interface/Electron.h"
 #include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
-#include "DataFormats/VertexReco/interface/Vertex.h"
-#include "DataFormats/VertexReco/interface/VertexFwd.h"
+#include "DataFormats/EgammaCandidates/interface/Conversion.h"
+#include "DataFormats/BeamSpot/interface/BeamSpot.h"
+#include "DataFormats/VertexReco/interface/Vertex.h" 
+#include "DataFormats/EgammaCandidates/interface/GsfElectron.h"
 #include "TrackingTools/Records/interface/TransientTrackRecord.h"
 #include "TrackingTools/IPTools/interface/IPTools.h"
 
 using namespace std;
 using namespace edm;
+
 namespace flashgg {
 
 	class ElectronProducer : public edm::EDProducer {
 		public:
 			ElectronProducer(const edm::ParameterSet&);
-			~ElectronProducer();
 
 		private:
 			void produce(edm::Event&, const edm::EventSetup&);
@@ -33,6 +35,9 @@ namespace flashgg {
 			bool verbose_;
 			edm::EDGetTokenT<View<pat::Electron> > electronToken_;
 			edm::EDGetTokenT<View<reco::Vertex> > vertexToken_;
+			edm::EDGetTokenT<reco::ConversionCollection> convToken_;
+			edm::EDGetTokenT<reco::BeamSpot> beamSpotToken_;
+
 			float _Rho;
 			edm::InputTag rhoFixedGrid_;
 
@@ -46,7 +51,10 @@ namespace flashgg {
 
 	ElectronProducer::ElectronProducer(const ParameterSet& iConfig): 
 		electronToken_(consumes<View<pat::Electron> >(iConfig.getUntrackedParameter<InputTag>("electronTag",InputTag("slimmedElectrons")))),
-		vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag>("vertexTag",InputTag("offlineSlimmedPrimaryVertices"))))
+		vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag>("vertexTag",InputTag("offlineSlimmedPrimaryVertices")))),
+		convToken_(consumes<reco::ConversionCollection>(iConfig.getUntrackedParameter<InputTag>("convTag",InputTag("reducedEgamma","reducedConversions")))),
+		beamSpotToken_(consumes<reco::BeamSpot >(iConfig.getUntrackedParameter<InputTag>("BeamSpotTag",InputTag("offlineBeamSpot"))))
+
 	{		
 		verbose_ = iConfig.getUntrackedParameter<bool>("verbose", false);
 		method_ = iConfig.getParameter<string>("method");
@@ -73,12 +81,6 @@ namespace flashgg {
 		nontrigmva_ = 0;
 	}
 
-
-	ElectronProducer::~ElectronProducer()
-	{
-
-	}
-
 	void ElectronProducer::produce(Event& evt, const EventSetup& ) {
 		//using namespace edm;
 
@@ -86,13 +88,24 @@ namespace flashgg {
 		evt.getByToken(electronToken_,pelectrons);
 		const PtrVector<pat::Electron> pelectronPointers = pelectrons->ptrVector();
 
+		_Rho=0;
+		Handle<double> rhoHandle;
+		evt.getByLabel(rhoFixedGrid_, rhoHandle );
+
 		Handle<View<reco::Vertex> >  vtxs;
 		evt.getByToken(vertexToken_,vtxs);
 		const PtrVector<reco::Vertex> vertexPointers = vtxs->ptrVector();
 
-		_Rho=0;
-		Handle<double> rhoHandle;
-		evt.getByLabel(rhoFixedGrid_, rhoHandle );
+		Handle<reco::ConversionCollection> convs;
+		evt.getByToken(convToken_,convs);
+//		const PtrVector<reco::Conversion> convPointers = convs->ptrVector();
+
+		Handle<reco::BeamSpot> recoBeamSpotHandle;
+		evt.getByToken(beamSpotToken_,recoBeamSpotHandle);
+		math::XYZPoint vertexPoint;
+		if (recoBeamSpotHandle.isValid())
+			vertexPoint = recoBeamSpotHandle->position();    
+
 
 		std::auto_ptr<vector<flashgg::Electron> > elecColl(new vector<flashgg::Electron>);
 
@@ -101,7 +114,7 @@ namespace flashgg {
 			Ptr<pat::Electron> pelec = pelectronPointers[elecIndex];
 			flashgg::Electron felec = flashgg::Electron(*pelec);
 			double nontrigmva_ = -999999;
-			double Aeff = 0;		
+			double Aeff = 0;	
 
 			float pelec_eta = fabs(pelec->superCluster()->eta());
 			float pelec_pt = pelec->pt();			
@@ -130,13 +143,13 @@ namespace flashgg {
 			}
 			//if{} //d0
 			//if{} //dz 	
-			
+
 			if(pelec->gsfTrack()->trackerExpectedHitsInner().numberOfHits()>1){
 				elecColl->push_back(felec);
 			}
-			//if{}//conv
-
-
+			if(!ConversionTools::hasMatchedConversion(*pelec,convs,vertexPoint)){
+				elecColl->push_back(felec);
+			}
 		}
 		evt.put(elecColl);
 	}
