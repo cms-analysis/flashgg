@@ -102,7 +102,7 @@ class SamplesManager(object):
         """
         pass
 
-    def checkFile(self,fileName)
+    def checkFile(self,fileName):
         """
         Check if file is valid.
         @fileName: file name
