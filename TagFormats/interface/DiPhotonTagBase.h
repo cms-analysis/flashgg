@@ -15,6 +15,7 @@ namespace flashgg {
     const DiPhotonMVAResult diPhotonMVA() const;
 		int diPhotonIndex;
 		int getDiPhotonIndex() const {return diPhotonIndex;}
+		float getSumPt() const { return this->diPhoton()->getSumPt() ;}
 
   private:
     DiPhotonMVAResult mva_result_;

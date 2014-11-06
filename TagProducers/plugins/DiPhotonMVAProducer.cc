@@ -94,7 +94,6 @@ namespace flashgg {
     } else {
       beamsig = -9999; // I hope this never happens! But it seems to in our default test, what's going wrong??
     }
-    std::cout << "beamsig is " << beamsig << std::endl;
 
     //    std::auto_ptr<DiPhotonMVAResultMap> assoc(new DiPhotonMVAResultMap);
     std::auto_ptr<vector<DiPhotonMVAResult> > results(new vector<DiPhotonMVAResult>); // one per diphoton, always in same order, vector is more efficient than map

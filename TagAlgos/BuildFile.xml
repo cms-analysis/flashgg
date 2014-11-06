@@ -1,0 +1,9 @@
+<use   name="DataFormats/Candidate"/>
+<use   name="DataFormats/PatCandidates"/>
+<use   name="DataFormats/Common"/>
+<use   name="flashgg/MicroAODFormats"/>
+<use name="DataFormats/VertexReco"/>
+<use name="rootrflx"/>
+<export>
+  <lib   name="1"/>
+</export>
