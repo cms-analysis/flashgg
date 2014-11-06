@@ -98,7 +98,7 @@ namespace flashgg {
 
 		Handle<reco::ConversionCollection> convs;
 		evt.getByToken(convToken_,convs);
-//		const PtrVector<reco::Conversion> convPointers = convs->ptrVector();
+		//		const PtrVector<reco::Conversion> convPointers = convs->ptrVector();
 
 		Handle<reco::BeamSpot> recoBeamSpotHandle;
 		evt.getByToken(beamSpotToken_,recoBeamSpotHandle);
@@ -122,13 +122,8 @@ namespace flashgg {
 			nontrigmva_ = mvaID_->mvaValue( *pelec, *vertexPointers[0], _Rho, verbose_);
 			felec.nontrigmva = nontrigmva_;		
 
-			if(nontrigmva_ < 0.9)	{
-
-				elecColl->push_back(felec);
-			}
-			if(pelec_eta>2.5 || (pelec_eta>1.442 && pelec_eta<1.566)){
-				elecColl->push_back(felec);
-			}
+			if(nontrigmva_ < 0.9)continue;	
+			if(pelec_eta>2.5 || (pelec_eta>1.442 && pelec_eta<1.566))continue;
 			if(pelec_eta<1.0)                   	Aeff=0.135;
 			if(pelec_eta>=1.0 && pelec_eta<1.479) 	Aeff=0.168;
 			if(pelec_eta>=1.479 && pelec_eta<2.0) 	Aeff=0.068;
@@ -138,15 +133,10 @@ namespace flashgg {
 			if(pelec_eta>=2.4)                  	Aeff=0.23;
 
 			float	pelec_iso = pelec->chargedHadronIso()+std::max(pelec->neutralHadronIso()+pelec->photonIso()-_Rho*Aeff,0.);
-			if (pelec_iso/pelec_pt>0.15){
-				elecColl->push_back(felec);
-			}
+			if (pelec_iso/pelec_pt>0.15)continue;
 			//if{} //d0
 			//if{} //dz 	
-
-			if(pelec->gsfTrack()->trackerExpectedHitsInner().numberOfHits()>1){
-				elecColl->push_back(felec);
-			}
+			if(pelec->gsfTrack()->trackerExpectedHitsInner().numberOfHits()>1)continue;
 			if(!ConversionTools::hasMatchedConversion(*pelec,convs,vertexPoint)){
 				elecColl->push_back(felec);
 			}
