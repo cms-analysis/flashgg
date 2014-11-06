@@ -10,7 +10,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 100 ) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 2000 ) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 # Uncomment the following if you notice you have a memory leak
@@ -20,7 +20,14 @@ process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 #                                        monitorPssAndPrivate = cms.untracked.bool(True)
 #                                       )
 
-process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT.root"))
+process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT_big.root"))
+
+process.flashggVertexMapUnique = cms.EDProducer('FlashggDzVertexMapProducer',
+                                                PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
+                                                VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                                BeamSpotTag=cms.untracked.InputTag('offlineBeamSpot'),
+                                                MaxAllowedDz=cms.double(0.2) # in cm
+                                                )
 
 process.load("flashgg/MicroAODProducers/flashggVertexMaps_cfi")
 process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
@@ -28,6 +35,7 @@ process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggJets_cfi")
 process.load("flashgg/MicroAODProducers/flashggPrunedGenParticles_cfi")
+process.load("flashgg/MicroAODProducers/flashggElectrons_cfi")
 
 from flashgg.MicroAODProducers.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand
 
@@ -50,6 +58,7 @@ process.p = cms.Path((process.flashggVertexMapUnique+process.flashggVertexMapNon
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
                      process.flashggJets*
+		     process.flashggElectrons*	
                      process.commissioning
                     )
 

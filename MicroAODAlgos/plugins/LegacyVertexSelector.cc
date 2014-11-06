@@ -195,6 +195,7 @@ namespace flashgg {
   double LegacyVertexSelector::vtxZFromConv (const edm::Ptr<flashgg::Photon>& pho,const edm::Ptr<reco::Conversion> & conversion,const math::XYZPoint & beamSpot) const{
     double ReturnValue = 0;
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
+
     if(fabs(pho->superCluster()->eta())<1.5) { 
       if(perp<=15.0){
 	//Pixel Barrel
@@ -348,7 +349,9 @@ namespace flashgg {
 						      const math::XYZPoint & beamSpot
 						      //						      const std::map<std::string,double> & param,
 						      //                                                      const float & beamsig 
-                                                       ) {
+                                                      ) {
+
+
 
     int IndexMatchedConversionLeadPhoton=-1;
     int IndexMatchedConversionTrailPhoton=-1;
@@ -375,6 +378,7 @@ namespace flashgg {
   
     for (vertex_index = 0 ; vertex_index < vtxs.size() ; vertex_index++) {
       edm::Ptr<reco::Vertex> vtx = vtxs[vertex_index];
+      //if(vertex_index != closest_vertex_index)continue;   
       TVector3 Photon1Dir;
       TVector3 Photon1Dir_uv;
       TVector3 Photon2Dir;

@@ -15,7 +15,7 @@
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
-
+#include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 
 using namespace edm;
 using namespace std;

@@ -59,7 +59,7 @@
     objs_pho.getByLabel(ev,"flashggPhotons");
     objs_dipho.getByLabel(ev,"flashggDiPhotons");
     objs_vertex.getByLabel(ev,"offlineSlimmedPrimaryVertices"); 
-    objs_genpart.getByLabel(ev,"prunedGenParticles"); 
+    objs_genpart.getByLabel(ev,"flashggPrunedGenParticles"); 
     
     std::vector<reco::GenParticle> const & genpart = *objs_genpart;
     
