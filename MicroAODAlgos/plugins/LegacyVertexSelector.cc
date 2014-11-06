@@ -195,9 +195,8 @@ namespace flashgg {
   double LegacyVertexSelector::vtxZFromConv (const edm::Ptr<flashgg::Photon>& pho,const edm::Ptr<reco::Conversion> & conversion,const math::XYZPoint & beamSpot) const{
     double ReturnValue = 0;
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
-    //Mixed Method Conversion Vertex
-    if (method==0) {
-      if(fabs(pho->superCluster()->eta()<1.5)) { //FIXME!!!!!
+
+      if(fabs(pho->superCluster()->eta()<1.5)) { 
 	if (perp<=15.0) {
 	  //Pixel Barrel
 	  ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
@@ -221,7 +220,6 @@ namespace flashgg {
       }
     }
     return ReturnValue;
-  }
   
   double LegacyVertexSelector::vtxdZFromConv (const edm::Ptr<flashgg::Photon>& pho, const edm::Ptr<reco::Conversion> & conversion) const{
     double dz=-99999;

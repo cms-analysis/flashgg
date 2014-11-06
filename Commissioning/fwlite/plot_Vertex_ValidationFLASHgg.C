@@ -92,7 +92,6 @@
         if(dipho[i].getNConv()!=0){ 
 	histo_pull_conv->Fill(dipho[i].getPullConv());
         }
->>>>>>> fix sync:MicroAODProducers/test/plot_Vertex_ValidationFLASHgg.C
       }
     }
   }
