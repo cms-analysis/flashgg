@@ -17,13 +17,13 @@ config.JobType.psetName = "PSET"
 config.section_("Data")
 config.Data.inputDataset = "DATASET"
 config.Data.dbsUrl = 'global'
-config.Data.splitting = "FileBased"
+config.Data.splitting = "SPLITTING"
 config.Data.unitsPerJob = UNITSPERJOB
 config.Data.publication = True
 config.Data.publishDbsUrl = 'phys03'
-config.Data.publishDataName = 'FLASHGG_VERSION'
-config.Data.outlfn = "/store/group/phys_higgs/cmshgg/flashgg"
+config.Data.publishDataName = 'FLASHGG_VERSION-PROCESSED_DATASET'
+config.Data.outlfn = "OUTLFN"
 
 config.section_("Site")
-config.Site.storageSite = "T2_CH_CERN"
+config.Site.storageSite = "OUTSITE"
 #config.Site.blacklist = ["T2_CH_CERN"]

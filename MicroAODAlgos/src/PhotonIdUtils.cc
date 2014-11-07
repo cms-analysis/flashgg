@@ -6,7 +6,7 @@
 using namespace std;
 using namespace flashgg;
 
-PhotonIdUtils::PhotonIdUtils() {};
+PhotonIdUtils::PhotonIdUtils() : removeOverlappingCandidates_(true) {};
 PhotonIdUtils::~PhotonIdUtils() {
   // These delete commands caused an unpredictable segfault,
   // because phoIdMva was pointing to the same place as either phoIdMva_2012_EB_ or phoIdMva_2012_EE_.
@@ -25,11 +25,24 @@ PhotonIdUtils::~PhotonIdUtils() {
 //                    PHOTON isolation 
 // *****************************************************************************************************************
 
+bool PhotonIdUtils::vetoPackedCand(const pat::Photon& photon, const edm::Ptr<pat::PackedCandidate> & pfcand)
+{
+    edm::RefVector<pat::PackedCandidateCollection> associated =  photon.associatedPackedPFCandidates();
+    
+    int nass = 0;
+    for( unsigned int ipc = 0; ipc < associated.size(); ipc++ ) {
+      edm::Ptr<pat::PackedCandidate> associatedPtr = edm::refToPtr( associated[ipc] );
+      if( associatedPtr == pfcand )  { nass++; break; }
+    }
+    
+    return (nass > 0);
+}
+
 float PhotonIdUtils::pfIsoChgWrtVtx( edm::Ptr<pat::Photon>& photon, 
 				     const edm::Ptr<reco::Vertex> vtx,  
 				     const flashgg::VertexCandidateMap vtxcandmap,
 				     float coneSize, float coneVetoBarrel, float coneVetoEndcap, 
-				     float ptMin 
+				     float ptMin
 				     ) 
 {
   float isovalue = 0;
@@ -47,12 +60,13 @@ float PhotonIdUtils::pfIsoChgWrtVtx( edm::Ptr<pat::Photon>& photon,
   if( vtxcandmap.count(vtx) ) {  
 
     edm::PtrVector<pat::PackedCandidate> pfcandidates = vtxcandmap.at(vtx);
-        
+    
     for( size_t ipf = 0; ipf < pfcandidates.size(); ipf++ ) { 
-      
+	    
       edm::Ptr<pat::PackedCandidate> pfcand = pfcandidates[ipf];
       
-      //if( fabs(pfcand->pdgId()) != 211 ) continue;    
+      if( removeOverlappingCandidates_ && vetoPackedCand(*photon,pfcand) ) { continue; }
+      
       if( pfcand->pt() < ptMin )         continue;    
       float dRTkToVtx  = deltaR( pfcand->momentum().Eta(), pfcand->momentum().Phi(),
 				 SCdirection.Eta(), SCdirection.Phi() );
@@ -102,18 +116,22 @@ float PhotonIdUtils::pfIsoChgWrtWorstVtx( std::map<edm::Ptr<reco::Vertex>,float>
 
 
 
-float PhotonIdUtils::pfIsoGamma( edm::Ptr<pat::Photon>& photon, 
-				 const edm::PtrVector<pat::PackedCandidate>& pfcandidates,
-				 float dRMax,
-				 float dRVetoBarrel,
-				 float dRVetoEndcap,
-				 float etaStripBarrel,
-				 float etaStripEndcap, 
-				 float minEnergyBarrel, 
-				 float minEnergyEndcap
-				)
+float PhotonIdUtils::pfCaloIso( edm::Ptr<pat::Photon>& photon, 
+				const edm::PtrVector<pat::PackedCandidate>& pfcandidates,
+				float dRMax,
+				float dRVetoBarrel,
+				float dRVetoEndcap,
+				float etaStripBarrel,
+				float etaStripEndcap, 
+				float minEnergyBarrel, 
+				float minEnergyEndcap,
+				reco::PFCandidate::ParticleType type
+	)
 {
-
+  // just used to translate particle types to pdgId. Sure: it's very hugly...
+  static reco::PFCandidate helper;
+  int pdgId = helper.translateTypeToPdgId(type);
+  
   float isovalue = 0;
   
   float dRVeto = 99;
@@ -131,19 +149,11 @@ float PhotonIdUtils::pfIsoGamma( edm::Ptr<pat::Photon>& photon,
 
     edm::Ptr<pat::PackedCandidate> pfcand = pfcandidates[ipf]; 
     
-    if( pfcand->pdgId() != 22 ) continue;
+    if( pfcand->pdgId() != pdgId ) continue;
     if( photon->isEB() ) if( fabs(pfcand->pt()) < minEnergyBarrel )     continue;  
     if( photon->isEE() ) if( fabs(pfcand->energy()) < minEnergyEndcap ) continue;
     
-    edm::RefVector<pat::PackedCandidateCollection> associated =  photon->associatedPackedPFCandidates();
-    
-    int nass = 0;
-    for( unsigned int ipc = 0; ipc < associated.size(); ipc++ ) {
-      edm::Ptr<pat::PackedCandidate> associatedPtr = edm::refToPtr( associated[ipc] );
-      if( associatedPtr == pfcand )  nass++;
-    }
-    
-    if( nass > 0 ) continue;
+    if( removeOverlappingCandidates_ && vetoPackedCand(*photon,pfcand) ) { continue; }
 
     math::XYZPoint  pfcandvtx = pfcand->vertex();
     math::XYZVector SCdirectionWrtCandVtx( photon->superCluster()->x() - pfcandvtx.x(),
@@ -162,7 +172,6 @@ float PhotonIdUtils::pfIsoGamma( edm::Ptr<pat::Photon>& photon,
 
   return isovalue;
 }
-
 
 // *****************************************************************************************************************
 //                    PHOTON MVA CALCULATION
