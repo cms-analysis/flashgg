@@ -41,25 +41,30 @@ namespace flashgg {
 
     float              pfIsoChgWrtWorstVtx( std::map<edm::Ptr<reco::Vertex>,float>&);
 
-    float              pfIsoGamma( edm::Ptr<pat::Photon>&, 
+    float              pfCaloIso( edm::Ptr<pat::Photon>&, 
 				   const edm::PtrVector<pat::PackedCandidate>&, 
-				   float, float, float, float, float, float, float );
-
+				  float, float, float, float, float, float, float, reco::PFCandidate::ParticleType);
+    
+    
     void               setupMVA( const std::string&, const std::string& );
     float              computeMVAWrtVtx( flashgg::Photon&, const edm::Ptr<reco::Vertex>&, const double );
 
     static flashgg::Photon     pho4MomCorrection(edm::Ptr<flashgg::Photon>&, edm::Ptr<reco::Vertex>);
 
+    static bool vetoPackedCand(const pat::Photon& photon, const edm::Ptr<pat::PackedCandidate> & pfcand);
+
     std::map<edm::Ptr<reco::Vertex>,float> computeMVAWrtAllVtx( flashgg::Photon&, const edm::PtrVector<reco::Vertex>&, const double );
     
     std::shared_ptr<TMVA::Reader> phoIdMva;
 
+    void removeOverlappingCandidates(bool x) { removeOverlappingCandidates_ = x; };
 
   private: 
     
-        
+    bool removeOverlappingCandidates_;
+    
     // photon MVA variables: move to more sophisticated object?
-
+    
     float phoIdMva_SCRawE_;                  
     float phoIdMva_R9_;                      
     float phoIdMva_covIEtaIEta_;             
