@@ -19,20 +19,20 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 #                                        monitorPssAndPrivate = cms.untracked.bool(True)
 #                                       )
 
-#process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT.root"))
+process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT.root"))
 
-readFiles = cms.untracked.vstring()
-secFiles = cms.untracked.vstring() 
-process.source = cms.Source ("PoolSource",fileNames = readFiles, secondaryFileNames = secFiles)
-readFiles.extend( [
-       '/store/mc/Spring14miniaod/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/049C0F9C-E61E-E411-9388-D8D385AE8466.root',
-       '/store/mc/Spring14miniaod/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/2A906032-1729-E411-9AC8-D8D385AE888A.root',
-       '/store/mc/Spring14miniaod/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/628A7A57-1F1E-E411-B5D4-D8D385AF8ADC.root',
-       '/store/mc/Spring14miniaod/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/849507D8-201E-E411-B897-D8D385AF8ADC.root',
-       '/store/mc/Spring14miniaod/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/9CEA8583-FC28-E411-9D2E-D8D385AE8466.root' ] );
-
-secFiles.extend( [
-               ] )
+#readFiles = cms.untracked.vstring()
+#secFiles = cms.untracked.vstring() 
+#process.source = cms.Source ("PoolSource",fileNames = readFiles, secondaryFileNames = secFiles)
+#readFiles.extend( [
+#       '/store/mc/Spring14miniaod/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/049C0F9C-E61E-E411-9388-D8D385AE8466.root',
+#       '/store/mc/Spring14miniaod/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/2A906032-1729-E411-9AC8-D8D385AE888A.root',
+#       '/store/mc/Spring14miniaod/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/628A7A57-1F1E-E411-B5D4-D8D385AF8ADC.root',
+#       '/store/mc/Spring14miniaod/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/849507D8-201E-E411-B897-D8D385AF8ADC.root',
+#       '/store/mc/Spring14miniaod/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/9CEA8583-FC28-E411-9D2E-D8D385AE8466.root' ] );
+#
+#secFiles.extend( [
+#               ] )
 
 process.load("flashgg/MicroAODProducers/flashggVertexMaps_cfi")
 process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
