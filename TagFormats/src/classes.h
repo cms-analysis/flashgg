@@ -59,4 +59,7 @@ namespace  { struct dictionary {
 
 	std::vector<edm::Ptr<flashgg::Jet> > vect_ptr_jet;
 	
+	edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> > ownvec_tagbase;
+	edm::Wrapper<edm::OwnVector<flashgg::DiPhotonTagBase,edm::ClonePolicy<flashgg::DiPhotonTagBase> > > wrp_ownvec_tagbase;
+
 };}
