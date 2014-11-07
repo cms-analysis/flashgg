@@ -55,8 +55,8 @@ namespace flashgg {
 			TagList_.push_back(consumes<View<flashgg::DiPhotonTagBase> >(tags[i]));
 		}
 
-		produces<edm::Ptr<flashgg::DiPhotonTagBase> >();
-
+		//		produces<edm::Ptr<flashgg::DiPhotonTagBase> >();
+		produces<edm::OwnVector<flashgg::DiPhotonTagBase> >();
 	} 
 
 	void TagSorter::produce( Event & evt, const EventSetup & ) {
@@ -65,59 +65,45 @@ namespace flashgg {
 	  //		evt.getByToken(diPhotonToken_,diPhotons); 
 	  //		const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
-	  auto_ptr<edm::Ptr<flashgg::DiPhotonTagBase> > SelectedTag (new edm::Ptr<flashgg::DiPhotonTagBase>); 
+		auto_ptr<edm::OwnVector<flashgg::DiPhotonTagBase> > SelectedTag (new edm::OwnVector<flashgg::DiPhotonTagBase>); 
 
 		for( unsigned int TagListLoop=0 ; TagListLoop< TagList_.size() ; TagListLoop++){
-			// Loop through the available Tags in the order they are specified in the python config
+		  // Loop through the available Tags in the order they are specified in the python config
 
 			Handle<View<flashgg::DiPhotonTagBase> > TagVectorEntry;
 			evt.getByToken(TagList_[TagListLoop],TagVectorEntry);
 			const PtrVector<flashgg::DiPhotonTagBase>& TagPointers =  TagVectorEntry->ptrVector();
 			// get Tags by requesting them as a DiPhotonTagBase, from which they inherit.
 
-			auto_ptr<edm::Ptr<flashgg::DiPhotonTagBase> > SelectedTag (new edm::Ptr<flashgg::DiPhotonTagBase>);
+			int chosenIndex = -1 ; //this will become the index of the highest priority candidate (operator<)
 
-			if( TagPointers.size() >0) { 
-			  // Looking from highest priority to lowest, check if the tag has any entries.
+			// Looking from highest priority to lowest, check if the tag has any entries.
+			for (unsigned int  TagPointerLoop = 0; TagPointerLoop < TagPointers.size() ; TagPointerLoop++)        {
 
-			  //			  float maxSumPt =0.; //this will be used to find highest sumPt candidate tag.
-			  int chosenIndex = -1 ; //this will become the index of the highest sumPt candidate.
-			  
-			  for (unsigned int  TagPointerLoop = 0; TagPointerLoop < TagPointers.size() ; TagPointerLoop++)	{
-			    
-			    // If the tag does have entries, loop over them.
-			    //			    int diPhotonIndex =TagPointers[TagPointerLoop]->getDiPhotonIndex();
-			    //			    float mass = diPhotonPointers[diPhotonIndex]->mass();
-			    float mass =  TagPointers[TagPointerLoop]->diPhoton()->mass();
-			    
-			    if((mass < massCutLower) || (mass > massCutUpper )) {continue ;}
-			    // ignore candidate tags with diphoton outside of the allowed mass range.
-			    
-			    if (chosenIndex == -1 || (TagPointers[TagPointerLoop].get() > TagPointers[chosenIndex].get()))
-			      chosenIndex = TagPointerLoop;
-			    }
+				float mass = TagPointers[TagPointerLoop]->diPhoton()->mass();
 
-			    /*
-			    if( diPhotonPointers[diPhotonIndex]->getSumPt() > maxSumPt ){
-			      // identify and pick the valid candidate with highest sumPt
-			      maxSumPt = diPhotonPointers[diPhotonIndex]->getSumPt() ; 
-			      chosenIndex = TagPointerLoop;
-			    }
-			    */
-			  if (chosenIndex != -1 ) {
-			    // chosenIndex should only be -1 if all candidates have sumPT exactly zero, in which case we are not interested and continue the loop
-			    //					*SelectedTag.get() = TagPointers[0];	
-			    SelectedTag.reset(new edm::Ptr<flashgg::DiPhotonTagBase>(TagPointers[chosenIndex]));
-			    //debug message:
-			    std::cout << "[DEBUG] Priority " << TagListLoop << " Tag Found! Tag entry "<< chosenIndex  << " with sumPt " 
-				      << TagPointers[chosenIndex]->getSumPt() << std::endl;
-			    break;
-			  }
+			    	// ignore candidate tags with diphoton outside of the allowed mass range.			    
+				if((mass < massCutLower) || (mass > massCutUpper )) {continue ;}
+			
+				// All the real work is done inside DiPhotonTagBase::operator< 
+				if (chosenIndex == -1 || (TagPointers[chosenIndex].get() < TagPointers[TagPointerLoop].get()));
+				  chosenIndex = TagPointerLoop;
+			}
+		
+			if (chosenIndex != -1 ) {
+		  
+		 		SelectedTag->push_back(*TagPointers[chosenIndex]);
+				//debug message:
+				std::cout << "[DEBUG] Priority " << TagListLoop << " Tag Found! Tag entry "<< chosenIndex  << " with sumPt " 
+					  << TagPointers[chosenIndex]->getSumPt() << std::endl;
+				break;
 			} else {
 			  //debug message
 			  std::cout << "[DEBUG] No Priority " << TagListLoop << " Tag ..., looking for Priority " << (TagListLoop+1) << " Tag.. " << std::endl;
 			}
 		}
+		
+		assert (SelectedTag->size() == 1 || SelectedTag->size() == 0);
 		evt.put(SelectedTag);
 	}
 }

@@ -82,7 +82,7 @@ namespace flashgg {
       edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[candIndex];
 
       DiPhotonUntaggedCategory tag_obj(dipho,mvares);
-			tag_obj.diPhotonIndex = candIndex;
+      tag_obj.setDiPhotonIndex(candIndex);
 	//		tag_obj.setDiPhoMVAResult(mvares);
 	//		tag_obj.setSigmaMwvoM( (float) mvares->sigmawv);
 	//		tag_obj.setSigmaMrvoM( mvares->sigmarv);

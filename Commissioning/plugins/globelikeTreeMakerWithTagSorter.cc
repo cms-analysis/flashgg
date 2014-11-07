@@ -190,7 +190,7 @@ class FlashggTreeMakerWithTagSorter : public edm::EDAnalyzer {
 		Int_t flash_VBFTag_Category;
 
 		edm::EDGetTokenT<edm::View<flashgg::Photon> >            photonToken_; // SCZ work-in-progress adding this!
-		edm::EDGetTokenT<edm::Ptr<flashgg::DiPhotonTagBase> > TagSorterToken_;
+		edm::EDGetTokenT<edm::OwnVector<flashgg::DiPhotonTagBase> > TagSorterToken_;
 };
 
 // ******************************************************************************************
@@ -216,7 +216,7 @@ FlashggTreeMakerWithTagSorter::FlashggTreeMakerWithTagSorter(const edm::Paramete
 	diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
 	METToken_(consumes<View<pat::MET> >(iConfig.getUntrackedParameter<InputTag> ("METTag", InputTag("slimmedMETs")))),
 	PileUpToken_(consumes<View<PileupSummaryInfo> >(iConfig.getUntrackedParameter<InputTag> ("PileUpTag", InputTag("addPileupInfo")))),
-	TagSorterToken_(consumes<edm::Ptr<flashgg::DiPhotonTagBase> >(iConfig.getUntrackedParameter<InputTag> ("TagSorter", InputTag("flashggTagSorter"))))
+	TagSorterToken_(consumes<edm::OwnVector<flashgg::DiPhotonTagBase> >(iConfig.getUntrackedParameter<InputTag> ("TagSorter", InputTag("flashggTagSorter"))))
 {
 	rhoFixedGrid_ = iConfig.getParameter<edm::InputTag>("rhoFixedGridCollection");
 }
@@ -266,9 +266,9 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 	iEvent.getByLabel(rhoFixedGrid_, rhoHandle );
 
 	//Slightly unusal way of accessing selected Tag from TagSorter, since a pointer is saved rather than a vector.
-	Handle<edm::Ptr<flashgg::DiPhotonTagBase> > TagSorter;
+	Handle<edm::OwnVector<flashgg::DiPhotonTagBase> > TagSorter;
 	iEvent.getByToken(TagSorterToken_,TagSorter);
-	std::cout << " TagSorter->get() = " << TagSorter->get() << std::endl;
+	//	std::cout << " TagSorter->get() = " << TagSorter->get() << std::endl;
 
 	flash_Untagged_Category= -1; // so that there is at least some value to fill even if not part of category
 	flash_VBFTag_Category =-1;// so that there is at least some value to fill even if untagged
@@ -277,12 +277,14 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 	//-----------> Determine if there is a Tag, and select it! This givens diPhoton candIndex
 
 	int candIndex = -1; // now given as the index of the diPhoton par selected by the tag.
-	if (TagSorter->get() ) //make sure TagSorter is not a null pointer
+	if (TagSorter.product()->size() > 0 ) //make sure TagSorter is not a null pointer
 	{
 
-		candIndex = (TagSorter->get())->getDiPhotonIndex(); //should exist regardless of tag type.
+		const flashgg::DiPhotonTagBase chosenTag* = (*(TagSorter.product()))[0];
 
-		const	DiPhotonUntaggedCategory *untagged = dynamic_cast<const DiPhotonUntaggedCategory*>(TagSorter->get());
+		candIndex = (chosenTag->getDiPhotonIndex()); //should exist regardless of tag type.
+
+		const	DiPhotonUntaggedCategory *untagged = dynamic_cast<const DiPhotonUntaggedCategory*>(chosenTag);
 
 		//if(untagged == NULL) std::cout << "NOT UNTAGGED" <<std::endl;
 		if(untagged != NULL) {
@@ -291,7 +293,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 			//	hasTag=1;
 		}
 
-		const	VBFTag *vbftag = dynamic_cast<const VBFTag*>(TagSorter->get());
+		const	VBFTag *vbftag = dynamic_cast<const VBFTag*>(chosenTag);
 		//	if(vbftag == NULL) std::cout << "NOT VBF" <<std::endl;
 		if(vbftag != NULL) {
 			std::cout << "[VBF] Category " << vbftag->getCategoryNumber() <<std::endl;
@@ -569,9 +571,9 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		}
 
 
-		sigmaMrvoM = (TagSorter->get())->diPhotonMVA().sigmarv;
-		sigmaMwvoM =(TagSorter->get())->diPhotonMVA().sigmawv;
-		vtxprob =(TagSorter->get())->diPhotonMVA().vtxprob;
+		sigmaMrvoM = chosenTag->diPhotonMVA().sigmarv;
+		sigmaMwvoM =chosenTag->diPhotonMVA().sigmawv;
+		vtxprob =chosenTag->diPhotonMVA().vtxprob;
 		ptbal = diPhotonPointers[candIndex]->getPtBal();
 		ptasym = diPhotonPointers[candIndex]->getPtAsym();
 		logspt2 = diPhotonPointers[candIndex]->getLogSumPt2();
@@ -579,13 +581,13 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		nconv = diPhotonPointers[candIndex]->getNConv(); 
 		vtxmva = diPhotonPointers[candIndex]->getVtxProbMVA();
 		vtxdz = diPhotonPointers[candIndex]->getDZ1(); 
-		dipho_mva = (TagSorter->get())->diPhotonMVA().getMVAValue();
+		dipho_mva = chosenTag->diPhotonMVA().getMVAValue();
 
 		dipho_mva_cat = flash_Untagged_Category;		
 
 
 		flashggTreeWithTagSorter->Fill(); 
-	} else { //case where TagSorter->get() is a null pointer
+	} else { //case where TagSorter[0] doesn't exist
 		std::cout << "[NO TAG]" <<std::endl;
 	}
 }

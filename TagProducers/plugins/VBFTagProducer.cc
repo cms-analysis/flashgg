@@ -99,7 +99,7 @@ namespace flashgg {
       edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[candIndex];
 
       VBFTag tag_obj(dipho,mvares,vbfdipho_mvares);
-      tag_obj.diPhotonIndex = candIndex;
+      tag_obj.setDiPhotonIndex(candIndex);
       
       int catnum = chooseCategory(vbfdipho_mvares->vbfDiPhoDiJetMvaResult);
       tag_obj.setCategoryNumber(catnum);
