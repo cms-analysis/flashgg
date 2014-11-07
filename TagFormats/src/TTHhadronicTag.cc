@@ -9,9 +9,13 @@ TTHhadronicTag::TTHhadronicTag() : DiPhotonTagBase::DiPhotonTagBase()
 TTHhadronicTag::~TTHhadronicTag() 
 {}
 
-TTHhadronicTag::TTHhadronicTag(edm::Ptr<flashgg::Jet> theBjet){
+TTHhadronicTag::TTHhadronicTag(std::vector<edm::Ptr<flashgg::Jet> > theJetVec , std::vector<edm::Ptr<flashgg::Jet> > theBJetVec ){ 
 
-theBjet_ = theBjet;
- 
+theJetVec_ = theJetVec;
+
+theBJetVec_ = theBJetVec;
+
 }
+
+
 

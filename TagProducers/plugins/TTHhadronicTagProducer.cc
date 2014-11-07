@@ -71,12 +71,13 @@ namespace flashgg {
 
 		for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoIndex++ ){
 
-			//			std::vector<unsigned int> bjetIndex;
 			int jetcount = 0; 
 			bool photonselection = 0;	
 			int njets_btagloose = 0;
 			int njets_btagmedium = 0;
-			unsigned int bjet_index = -1;		
+
+			std::vector<edm::Ptr<flashgg::Jet> > JetVect;
+			std::vector<edm::Ptr<flashgg::Jet> > BJetVect;	
 
 			edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[diphoIndex];
 			edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[diphoIndex]; 
@@ -106,6 +107,7 @@ namespace flashgg {
 				if(thejet->pt() < 30.) continue;
 
 				jetcount++;
+				JetVect.push_back(thejet);
 
 				bDiscriminatorValue = thejet->bDiscriminator("combinedSecondaryVertexBJetTags");
 
@@ -113,8 +115,8 @@ namespace flashgg {
 				if(bDiscriminatorValue>0.679){ 
 
 					njets_btagmedium++;
-					//					bjetIndex.push_back(jetIndex);
-					bjet_index = jetIndex;
+					JetVect.pop_back();
+					BJetVect.push_back(thejet);
 				}
 			}
 
@@ -122,11 +124,11 @@ namespace flashgg {
 
 			njets_btagmedium_ = njets_btagmedium;
 
-			std::cout << jetcount << njets_btagmedium << photonselection << std::endl;
+//			std::cout << jetcount << njets_btagmedium << photonselection << std::endl;
 
 			if(njets_btagmedium > 0 && jetcount >= 5 && photonselection){
 
-				TTHhadronicTag tthhtags_obj(jetPointers[bjet_index]);
+				TTHhadronicTag tthhtags_obj(JetVect,BJetVect);
 
 				tthhtags_obj.btagloose = njets_btagloose_;
 

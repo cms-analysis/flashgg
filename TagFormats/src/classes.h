@@ -55,4 +55,11 @@ namespace  { struct dictionary {
   	edm::Ptr<pat::Muon> ptr_muon;
 	edm::PtrVector<pat::Muon> vec_ptr_muon;
 	edm::PtrVector<flashgg::Jet> vec_ptr_jet;
+
+	flashgg::TTHhadronicTag tthh;
+	std::vector<flashgg::TTHhadronicTag> vec_tthh;
+	edm::Wrapper<std::vector<flashgg::TTHhadronicTag> > wrp_vec_tthh;
+
+	std::vector<edm::Ptr<flashgg::Jet> > vect_ptr_jet;
+	
 };}

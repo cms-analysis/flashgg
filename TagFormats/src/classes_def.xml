@@ -21,12 +21,18 @@
 <class name="flashgg::DiPhotonUntaggedCategory"/>
 <class name="std::vector<flashgg::DiPhotonUntaggedCategory>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DiPhotonUntaggedCategory> >"/>
-<class name="flashgg::TTHhadronicTag"/>
-<class name="std::vector<flashgg::TTHhadronicTag>"/>
-<class name="edm::Wrapper<std::vector<flashgg::TTHhadronicTag> >"/>
 <class name="flashgg::VBFTag"/>
 <class name="std::vector<flashgg::VBFTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::VBFTag> >"/>
+<class name="flashgg::TTHleptonicTag"/>
+<class name="std::vector<flashgg::TTHleptonicTag>"/>
+<class name="edm::Wrapper<std::vector<flashgg::TTHleptonicTag> >"/>
+<class name="edm::Ptr<pat::Electron>"/>
+<class name="edm::Ptr<pat::Muon>"/> 
+<class name="edm::PtrVector<pat::Muon>"/>
+<class name="edm::PtrVector<flashgg::Jet>"/>
+<class name="flashgg::TTHhadronicTag"/>
+<class name="std::vector<flashgg::TTHhadronicTag>"/>
+<class name="edm::Wrapper<std::vector<flashgg::TTHhadronicTag> >"/>
+<class name="std::vector<edm::Ptr<flashgg::Jet> >"/>
 </lcgdict>
-
-

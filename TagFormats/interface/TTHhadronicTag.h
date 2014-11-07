@@ -11,13 +11,11 @@ namespace flashgg {
 	class TTHhadronicTag: public DiPhotonTagBase {
 		public:
 			TTHhadronicTag();
-			//TTHhadronicTag(edm::Ptr<flashgg::Jet>);
-			TTHhadronicTag(edm::Ptr<flashgg::Jet>);
-			//const flashgg::Jet* BJet1() const;
-			//const flashgg::Jet* BJet2() const;		 
+			TTHhadronicTag(std::vector<edm::Ptr<flashgg::Jet> >,std::vector<edm::Ptr<flashgg::Jet> >);
 			~TTHhadronicTag();
 
-			const edm::Ptr<flashgg::Jet> getBjet() const {return theBjet_; }
+			const std::vector<edm::Ptr<flashgg::Jet> > getJetVector() const {return theJetVec_;}
+			const std::vector<edm::Ptr<flashgg::Jet> > getBJetVector() const {return theBJetVec_; }
 			float getNBLoose() const {return btagloose;}
 			float getNBMedium() const {return btagmedium;}
 
@@ -25,8 +23,8 @@ namespace flashgg {
 			float btagmedium;
 
 		private:
-		
-                       	edm::Ptr<flashgg::Jet> theBjet_;
+			std::vector<edm::Ptr<flashgg::Jet> > theJetVec_;
+			std::vector<edm::Ptr<flashgg::Jet> > theBJetVec_;
 	};
 } 
 
