@@ -33,7 +33,7 @@ namespace flashgg {
     EDGetTokenT< VertexCandidateMap > vertexCandidateMapToken_;
     unique_ptr<VertexSelectorBase> vertexSelector_;
     EDGetTokenT<View<reco::Conversion> > conversionToken_;
-    EDGetTokenT<View<reco::BeamSpot> > beamSpotToken_;
+    EDGetTokenT<reco::BeamSpot>  beamSpotToken_;
   };
 
   DiPhotonProducer::DiPhotonProducer(const ParameterSet & iConfig) :
