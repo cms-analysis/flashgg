@@ -220,7 +220,7 @@ namespace flashgg {
       }
     }
     return ReturnValue;
-  
+ } 
   double LegacyVertexSelector::vtxdZFromConv (const edm::Ptr<flashgg::Photon>& pho, const edm::Ptr<reco::Conversion> & conversion) const{
     double dz=-99999;
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
