@@ -90,7 +90,7 @@
     std::cout << "pt dipho" <<   "   " << dipho[i].pt() << std::endl;
 //    std::cout << "eta dipho" <<  "   " << dipho[i].eta() << std::endl;
     std::cout << "phi dipho" <<  "   " << dipho[i].phi() << std::endl;
-    std::cout << "ptasym dipho" <<  "   " << dipho[i].ptasym() << std::endl;
+    std::cout << "ptasym dipho" <<  "   " << dipho[i].getPtAsym() << std::endl;
        }
 
     for (int i=0; i < objs_vertex.ptr()->size();i++ ){

@@ -4,6 +4,9 @@
 #include "flashgg/TagFormats/interface/DiPhotonUntaggedCategory.h"
 #include "flashgg/TagFormats/interface/VBFTag.h"
 #include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/TagFormats/interface/TTHhadronicTag.h"
+#include "DataFormats/PatCandidates/interface/Electron.h"
+#include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/Common/interface/Wrapper.h"
 #include "DataFormats/Common/interface/Ptr.h"
 #include "flashgg/TagFormats/interface/TTHleptonicTag.h"
@@ -49,4 +52,11 @@ namespace  { struct dictionary {
   	edm::Ptr<pat::Muon> ptr_muon;
 	edm::PtrVector<pat::Muon> vec_ptr_muon;
 	edm::PtrVector<flashgg::Jet> vec_ptr_jet;
+
+	flashgg::TTHhadronicTag tthh;
+	std::vector<flashgg::TTHhadronicTag> vec_tthh;
+	edm::Wrapper<std::vector<flashgg::TTHhadronicTag> > wrp_vec_tthh;
+
+	std::vector<edm::Ptr<flashgg::Jet> > vect_ptr_jet;
+	
 };}
