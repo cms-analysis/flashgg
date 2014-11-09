@@ -195,11 +195,12 @@ namespace flashgg {
   double LegacyVertexSelector::vtxZFromConv (const edm::Ptr<flashgg::Photon>& pho,const edm::Ptr<reco::Conversion> & conversion,const math::XYZPoint & beamSpot) const{
     double ReturnValue = 0;
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
-    if(fabs(pho->superCluster()->eta())<1.5) { 
-      if(perp<=15.0){
-	//Pixel Barrel
-	ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
-      }else if(perp>15 && perp<=60.0) {
+
+      if(fabs(pho->superCluster()->eta()<1.5)) { 
+	if (perp<=15.0) {
+	  //Pixel Barrel
+	  ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
+	} else if  (perp>15 && perp<=60.0) {
 	  //Tracker Inner Barrel
 	ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
       }else{
@@ -219,13 +220,12 @@ namespace flashgg {
       }
     }
     return ReturnValue;
-  }
-  
+ } 
   double LegacyVertexSelector::vtxdZFromConv (const edm::Ptr<flashgg::Photon>& pho, const edm::Ptr<reco::Conversion> & conversion) const{
     double dz=-99999;
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
     if (conversion->nTracks()==2) {
-      if ( fabs(pho->superCluster()->eta())<1.5 ) { // barrel
+      if ( fabs(pho->superCluster()->eta()<1.5) ) { // barrel
 	if ( perp <=15 ) {
 	  dz=sigma1Pix;
 	} else if ( perp > 15 && perp <=60 ) {
@@ -243,7 +243,7 @@ namespace flashgg {
 	}
       }
     } else if (conversion->nTracks()==1) {
-      if ( fabs(pho->superCluster()->eta())<1.5 ) { // barrel
+      if ( fabs(pho->superCluster()->eta()) <1.5 ) { // barrel
 	if ( perp <=15 ) {
 	  dz=singlelegsigma1Pix;
 	} else if ( perp > 15 && perp <=60 ) {
@@ -348,7 +348,9 @@ namespace flashgg {
 						      const math::XYZPoint & beamSpot
 						      //						      const std::map<std::string,double> & param,
 						      //                                                      const float & beamsig 
-                                                       ) {
+                                                      ) {
+
+
 
     int IndexMatchedConversionLeadPhoton=-1;
     int IndexMatchedConversionTrailPhoton=-1;
@@ -375,6 +377,7 @@ namespace flashgg {
   
     for (vertex_index = 0 ; vertex_index < vtxs.size() ; vertex_index++) {
       edm::Ptr<reco::Vertex> vtx = vtxs[vertex_index];
+      //if(vertex_index != closest_vertex_index)continue;   
       TVector3 Photon1Dir;
       TVector3 Photon1Dir_uv;
       TVector3 Photon2Dir;
