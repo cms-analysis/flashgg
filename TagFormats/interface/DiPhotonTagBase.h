@@ -12,7 +12,7 @@ namespace flashgg {
     virtual ~DiPhotonTagBase() {};
     DiPhotonTagBase(edm::Ptr<DiPhotonCandidate>,DiPhotonMVAResult);
     DiPhotonTagBase(edm::Ptr<DiPhotonCandidate>,edm::Ptr<DiPhotonMVAResult>);
-    const DiPhotonCandidate* diPhoton() const { return dipho_.get(); }
+    const edm::Ptr<DiPhotonCandidate> diPhoton() const { return dipho_; }
     const DiPhotonMVAResult diPhotonMVA() const { return mva_result_; }
     int getDiPhotonIndex() const {return diPhotonIndex_;}
     void setDiPhotonIndex(int i) { diPhotonIndex_ = i; }

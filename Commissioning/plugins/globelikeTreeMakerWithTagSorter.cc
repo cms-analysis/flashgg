@@ -280,7 +280,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 	if (TagSorter.product()->size() > 0 ) //make sure TagSorter is not a null pointer
 	{
 
-		const flashgg::DiPhotonTagBase chosenTag* = (*(TagSorter.product()))[0];
+		const flashgg::DiPhotonTagBase* chosenTag = &*(TagSorter.product()->begin());
 
 		candIndex = (chosenTag->getDiPhotonIndex()); //should exist regardless of tag type.
 
@@ -294,7 +294,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		}
 
 		const	VBFTag *vbftag = dynamic_cast<const VBFTag*>(chosenTag);
-		//	if(vbftag == NULL) std::cout << "NOT VBF" <<std::endl;
+		//if(vbftag == NULL) std::cout << "NOT VBF" <<std::endl;
 		if(vbftag != NULL) {
 			std::cout << "[VBF] Category " << vbftag->getCategoryNumber() <<std::endl;
 			flash_VBFTag_Category =vbftag->getCategoryNumber() ;
@@ -305,6 +305,9 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 
 		// IMPORTANT: All future Tags must be added in the way of untagged and vbftag.	
 
+		if (untagged == NULL && vbftag == NULL) {
+		  std::cout << "[FAILED TO CONVERT TAG] with SumPt " << chosenTag->getSumPt() << std::endl;
+		}
 
 
 		//--------------> Tag selected, now fill tree with relevant properties!
