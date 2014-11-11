@@ -34,5 +34,8 @@ namespace flashgg {
 
 PtrVector<pat::Muon> selectMuons(const PtrVector<pat::Muon>& muonPointers,Ptr<flashgg::DiPhotonCandidate> dipho, double muonEtaThreshold, double muonPtThreshold, double muPFIsoSumRelThreshold, double dRPhoLeadMuonThreshold, double dRPhoSubLeadMuonThreshold);
 
+PtrVector<flashgg::Electron> selectElectrons(const PtrVector<flashgg::Electrons>& ElectronPointers, double dRPhoLeadElectronThreshold, double dRPhoSubLeadElectronThreshold);
+
 }
+
 #endif
