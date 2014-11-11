@@ -9,7 +9,6 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
-
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 #process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
@@ -31,7 +30,7 @@ process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store
 #       '/store/mc/Spring14miniaod/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/628A7A57-1F1E-E411-B5D4-D8D385AF8ADC.root',
 #       '/store/mc/Spring14miniaod/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/849507D8-201E-E411-B897-D8D385AF8ADC.root',
 #       '/store/mc/Spring14miniaod/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/9CEA8583-FC28-E411-9D2E-D8D385AE8466.root' ] );
-
+#
 #secFiles.extend( [
 #               ] )
 
@@ -66,7 +65,7 @@ process.p = cms.Path((process.flashggVertexMapUnique+process.flashggVertexMapNon
                      (process.flashggVBFDiPhoDiJetMVA)* # Needs to happen after VBF MVA and DiPho MVA
                      
                      # Tag producers, once written, can run in parallel, so they go in here with +
-                     (process.flashggUntaggedCategory+process.flashggVBFTag+process.flashggTTHleptonicTag)
+                     (process.flashggUntaggedCategory+process.flashggVBFTag+process.flashggTTHleptonicTag+process.flashggTTHhadronicTag)
                     )
 
 process.e = cms.EndPath(process.out)
