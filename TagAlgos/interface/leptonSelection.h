@@ -15,6 +15,7 @@
 #include "flashgg/TagFormats/interface/TTHleptonicTag.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
+#include "flashgg/MicroAODFormats/interface/Electron.h"
 
 #include "DataFormats/TrackReco/interface/HitPattern.h"
 #include "DataFormats/Math/interface/deltaR.h"
@@ -34,7 +35,7 @@ namespace flashgg {
 
 PtrVector<pat::Muon> selectMuons(const PtrVector<pat::Muon>& muonPointers,Ptr<flashgg::DiPhotonCandidate> dipho, double muonEtaThreshold, double muonPtThreshold, double muPFIsoSumRelThreshold, double dRPhoLeadMuonThreshold, double dRPhoSubLeadMuonThreshold);
 
-PtrVector<flashgg::Electron> selectElectrons(const PtrVector<flashgg::Electrons>& ElectronPointers, double dRPhoLeadElectronThreshold, double dRPhoSubLeadElectronThreshold);
+PtrVector<flashgg::Electron> selectElectrons(const PtrVector<flashgg::Electron>& ElectronPointers, Ptr<flashgg::DiPhotonCandidate> dipho, PtrVector<flashgg::Photon>& pPointers,math::XYZPoint & beamSpot);
 
 }
 
