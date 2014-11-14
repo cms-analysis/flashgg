@@ -2,7 +2,6 @@
 <use   name="FWCore/Framework"/>
 <use   name="FWCore/PluginManager"/>
 <use   name="flashgg/TagFormats"/>
-<use name="flashgg/TagAlgos"/>
 <use   name="roottmva"/>
 <flags   EDM_PLUGIN="1"/>
 </library>

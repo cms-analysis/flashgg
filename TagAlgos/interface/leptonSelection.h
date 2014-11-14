@@ -13,13 +13,10 @@
 #include "flashgg/MicroAODFormats/interface/Jet.h"
 #include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/TagFormats/interface/TTHleptonicTag.h"
-#include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
-#include "flashgg/MicroAODFormats/interface/Electron.h"
 
 #include "DataFormats/TrackReco/interface/HitPattern.h"
 #include "DataFormats/Math/interface/deltaR.h"
-#include "DataFormats/EgammaCandidates/interface/GsfElectron.h" 
 
 #include <vector>
 #include <algorithm>
@@ -34,8 +31,6 @@ using namespace edm;
 namespace flashgg {
 
 PtrVector<pat::Muon> selectMuons(const PtrVector<pat::Muon>& muonPointers,Ptr<flashgg::DiPhotonCandidate> dipho, double muonEtaThreshold, double muonPtThreshold, double muPFIsoSumRelThreshold, double dRPhoLeadMuonThreshold, double dRPhoSubLeadMuonThreshold);
-
-PtrVector<flashgg::Electron> selectElectrons(const PtrVector<flashgg::Electron>& ElectronPointers, Ptr<flashgg::DiPhotonCandidate> dipho, PtrVector<flashgg::Photon>& pPointers,math::XYZPoint & beamSpot);
 
 }
 
