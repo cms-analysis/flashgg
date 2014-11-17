@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 # single photon preselection is mickmicking as much as possible
 # what is documented in AN 2013/253 v8 page 41 table 18,
-flashggPreselectedDiPhotons = cms.EDFilter("CandViewSelector",
+flashggPreselectedDiPhotons = cms.EDFilter("DiPhotonCandidateSelector",
            src = cms.InputTag("flashggDiPhotons"),
            cut = cms.string("""
                              ( 
