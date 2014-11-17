@@ -50,6 +50,10 @@ namespace flashgg {
 			double MVAThreshold_;
 			double deltaRLepPhoThreshold_;
 			double deltaRJetLepThreshold_;
+
+			double deltaRJetLeadPhoThreshold_;
+			double deltaRJetSubLeadPhoThreshold_;
+
 			double jetsNumberThreshold_;
 			double bjetsNumberThreshold_;
 			double jetPtThreshold_;
@@ -85,6 +89,9 @@ namespace flashgg {
 			double default_jetPtThreshold_ = 30.;
 			double default_jetEtaThreshold_ = 2.4;
 
+			double default_deltaRJetLeadPhoThreshold_ = 0.5;
+			double default_deltaRJetSubLeadPhoThreshold_ = 0.5;
+
 			vector<double> default_bDiscriminator_;
     			default_bDiscriminator_.push_back(0.244);
     			default_bDiscriminator_.push_back(0.679);
@@ -106,6 +113,9 @@ namespace flashgg {
 		bjetsNumberThreshold_ = iConfig.getUntrackedParameter<double>("bjetsNumberThreshold",default_bjetsNumberThreshold_);
 		jetPtThreshold_ = iConfig.getUntrackedParameter<double>("jetPtThreshold",default_jetPtThreshold_);
 		jetEtaThreshold_ = iConfig.getUntrackedParameter<double>("jetEtaThreshold",default_jetEtaThreshold_);
+
+		deltaRJetLeadPhoThreshold_ = iConfig.getUntrackedParameter<double>("deltaRJetLeadPhoThreshold",default_deltaRJetLeadPhoThreshold_);
+		deltaRJetSubLeadPhoThreshold_ = iConfig.getUntrackedParameter<double>("deltaRJetSubLeadPhoThreshold",default_deltaRJetSubLeadPhoThreshold_);
 
  		bDiscriminator_ = iConfig.getUntrackedParameter<vector<double > >("bDiscriminator",default_bDiscriminator_);
 		bTag_ = iConfig.getUntrackedParameter<string>("bTag",default_bTag_);
@@ -202,7 +212,7 @@ namespace flashgg {
 					float dRPhoLeadJet =deltaR(thejet->eta(),thejet->phi(),dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi()) ;
 					float dRPhoSubLeadJet = deltaR(thejet->eta(),thejet->phi(),dipho->subLeadingPhoton()->superCluster()->eta(), dipho->subLeadingPhoton()->superCluster()->phi());	
 
-					if(dRPhoLeadJet < 0.5 || dRPhoSubLeadJet < 0.5) continue;
+					if(dRPhoLeadJet < deltaRJetLeadPhoThreshold_ || dRPhoSubLeadJet < deltaRJetSubLeadPhoThreshold_) continue;
 
 					float dRJetMuon =deltaR(thejet->eta(),thejet->phi(), muon->eta(),muon->phi()) ;
 
