@@ -193,7 +193,7 @@ DiphotonPreselectionValidationTreeMaker::analyze(const edm::Event& iEvent, const
     diphoInfo.pho1_hoe = diphoPtr->leadingPhoton()->hadronicOverEm();
     diphoInfo.pho1_sieie = diphoPtr->leadingPhoton()->sigmaIetaIeta();
     diphoInfo.pho1_full5x5_r9 = diphoPtr->leadingPhoton()->full5x5_r9();
-    diphoInfo.pho1_full5x5_hoe = diphoPtr->leadingPhoton()->full5x5_hadronicOverEm();
+    diphoInfo.pho1_full5x5_hoe = diphoPtr->leadingPhoton()->hadronicOverEm();
     diphoInfo.pho1_full5x5_sieie = diphoPtr->leadingPhoton()->full5x5_sigmaIetaIeta();
     diphoInfo.pho1_hcalTowerSumEtConeDR03 = diphoPtr->leadingPhoton()->hcalTowerSumEtConeDR03();
     diphoInfo.pho1_trkSumPtHollowConeDR03 = diphoPtr->leadingPhoton()->trkSumPtHollowConeDR03();
@@ -209,7 +209,7 @@ DiphotonPreselectionValidationTreeMaker::analyze(const edm::Event& iEvent, const
     diphoInfo.pho2_hoe = diphoPtr->subLeadingPhoton()->hadronicOverEm();
     diphoInfo.pho2_sieie = diphoPtr->subLeadingPhoton()->sigmaIetaIeta();
     diphoInfo.pho2_full5x5_r9 = diphoPtr->subLeadingPhoton()->full5x5_r9();
-    diphoInfo.pho2_full5x5_hoe = diphoPtr->subLeadingPhoton()->full5x5_hadronicOverEm();
+    diphoInfo.pho2_full5x5_hoe = diphoPtr->subLeadingPhoton()->hadronicOverEm();
     diphoInfo.pho2_full5x5_sieie = diphoPtr->subLeadingPhoton()->full5x5_sigmaIetaIeta();
     diphoInfo.pho2_hcalTowerSumEtConeDR03 = diphoPtr->subLeadingPhoton()->hcalTowerSumEtConeDR03();
     diphoInfo.pho2_trkSumPtHollowConeDR03 = diphoPtr->subLeadingPhoton()->trkSumPtHollowConeDR03();

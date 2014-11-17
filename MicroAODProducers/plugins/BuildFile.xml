@@ -1,3 +1,4 @@
+
 <library   name="FlashggProducerPlugins" file="*.cc">
 <use   name="Geometry/CaloTopology"/>
 <use   name="FWCore/PluginManager"/>

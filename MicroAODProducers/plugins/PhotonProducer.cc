@@ -42,9 +42,9 @@ namespace flashgg {
     EDGetTokenT<View<reco::Vertex> > vertexToken_;   
     EDGetTokenT<flashgg::VertexCandidateMap> vertexCandidateMapToken_;
 
-    edm::InputTag ecalHitEBColl_;
-    edm::InputTag ecalHitEEColl_;
-    edm::InputTag ecalHitESColl_;
+    edm::EDGetTokenT<EcalRecHitCollection> ecalHitEBToken_;
+    edm::EDGetTokenT<EcalRecHitCollection> ecalHitEEToken_;
+    edm::EDGetTokenT<EcalRecHitCollection> ecalHitESToken_;
     edm::InputTag rhoFixedGrid_;
 
     PhotonIdUtils phoTools_;
@@ -61,12 +61,12 @@ namespace flashgg {
     photonToken_(consumes<View<pat::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("slimmedPhotons")))),
     pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates")))),
     vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
-    vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag")))
+    vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
+    ecalHitEBToken_(consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("reducedBarrelRecHitCollection"))),
+    ecalHitEEToken_(consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("reducedEndcapRecHitCollection"))),
+    ecalHitESToken_(consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("reducedPreshowerRecHitCollection")))
   {
 
-    ecalHitEBColl_ = iConfig.getParameter<edm::InputTag>("reducedBarrelRecHitCollection");
-    ecalHitEEColl_ = iConfig.getParameter<edm::InputTag>("reducedEndcapRecHitCollection");
-    ecalHitESColl_ = iConfig.getParameter<edm::InputTag>("reducedPreshowerRecHitCollection");
     rhoFixedGrid_  = iConfig.getParameter<edm::InputTag>("rhoFixedGridCollection");
 
     phoIdMVAweightfileEB_ = iConfig.getParameter<edm::FileInPath>("photonIdMVAweightfile_EB");
@@ -117,7 +117,7 @@ namespace flashgg {
 
     auto_ptr<vector<flashgg::Photon> > photonColl(new vector<flashgg::Photon>);
     
-    // this is hacky and dangerous
+    //// // this is hacky and dangerous
     const reco::VertexCollection* orig_collection = static_cast<const reco::VertexCollection*>(vertices->product());
 
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
@@ -126,10 +126,10 @@ namespace flashgg {
       flashgg::Photon fg = flashgg::Photon(*pp);
       
 
-      EcalClusterLazyTools lazyTool(evt, iSetup, ecalHitEBColl_, ecalHitEEColl_,ecalHitESColl_);        
+      EcalClusterLazyTools lazyTool(evt, iSetup, ecalHitEBToken_, ecalHitEEToken_);        
 
       double ecor, sigeovere, mean, sigma, alpha1, n1, alpha2, n2, pdfval;
-
+      
       corV8_.CorrectedEnergyWithErrorV8(*pp, *orig_collection, *rhoHandle, lazyTool, iSetup,ecor, sigeovere, mean, sigma, alpha1, n1, alpha2, n2, pdfval);
       //      printf("V8:  sceta = %5f, default = %5f, corrected = %5f, sigmaE/E = %5f, alpha1 = %5f, n1 = %5f, alpha2 = %5f, n2 = %5f, pdfval = %5f, meancb = %5f, sigmacb = %5f\n", pp->superCluster()->eta(), pp->energy(),ecor,sigeovere,alpha1,n1,alpha2,n2,pdfval,mean,sigma);
       
