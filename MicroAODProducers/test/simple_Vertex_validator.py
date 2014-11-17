@@ -28,7 +28,7 @@ process.GlobalTag = GlobalTag(process.GlobalTag, 'PLS170_V7AN1::All', '')
 
 ####### EVENT NUMBER 
 #event number
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 
 ####### INPUT SOURCE
 # Input source (from AOD->miniAOD)

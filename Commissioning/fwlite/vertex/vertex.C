@@ -19,7 +19,8 @@
     
   }
   
-  TFile f("../../MicroAODProducers/test/myOutputFile.root");
+  //  TFile f("../../MicroAODProducers/test/myOutputFile.root");
+  TFile f("/tmp/carrillo/myOutputFileBig.root");
   TTree *Events = f.Get("Events");
   //Events->Print();
   Events->SetScanField(0);
@@ -41,18 +42,32 @@
   TH1F * histo_ptasym = new TH1F("ptasym normalized","ptasym normalized",100,-1,1);
   TH1F * histo_pull_conv = new TH1F("pull conv","pull conv",100,-300.,3500.);
   TH1F * histo_vtxprobmva = new TH1F("vtxprobmva","vtxprobmva",20,-1.,1.); 
-  TH1F * histo_vtxeff_hpt = new TH1F("vtxeff vs higgs pt","vtxeff vs higgs pt",100.,0,250.);
+  TH1F * histo_vtxeff_hpt = new TH1F("vtxeff vs higgs pt","vtxeff vs higgs pt",100,0,250.);
+
+  TH1F * histo_nconv = new TH1F("nconv","nconv",3,-0.5,2.5);
+
+  TH1F * histo_ndiphotons = new TH1F("ndiphotons","ndiphotons",31,-0.5,30.5);
  
   TH1F * histo_gen_matched_sumpt2 = new TH1F("sumpt2","sumpt2",100,-5.,15.);
   TH1F * histo_gen_matched_ptbal = new TH1F("ptbal normalized","ptbal  normalized",100,-200.,350.);
   TH1F * histo_gen_matched_ptasym = new TH1F("ptasym normalized","ptasym normalized",100,-1.,1.);
   TH1F * histo_gen_matched_pull_conv = new TH1F("pull conv","pull conv",100,-300.,3500.);
   TH1F * histo_gen_matched_vtxprobmva = new TH1F("vtxprobmva","vtxprobmva",20,-1.,1.);
-  TH1F * histo_gen_matched_vtxeff_hpt = new TH1F("vtxeff vs higgs pt","vtxeff vs higgs pt",100.,0,250.);
+  TH1F * histo_gen_matched_vtxeff_hpt = new TH1F("vtxeff vs higgs pt","vtxeff vs higgs pt",100,0.,250.);
+  
+  TH1F * histo_residuals_z_nconv[3];
+  histo_residuals_z_nconv[0] = new TH1F("residuals z, 0 conv","residuals z, 0 conv",100,-50.,50.);
+  histo_residuals_z_nconv[1] = new TH1F("residuals z, 1 conv","residuals z, 1 conv",100,-50.,50.);
+  histo_residuals_z_nconv[2] = new TH1F("residuals z, 2 conv","residuals z, 2 conv",100,-50.,50.);
 
   fwlite::Event ev(&f);
+  
+  int event_count=0;
 
   for( ev.toBegin(); ! ev.atEnd(); ++ev) {
+    event_count++;
+    if(event_count>1000) break;
+    cout<<event_count<<endl;
     fwlite::Handle<std::vector<flashgg::Photon> > objs_pho;
     fwlite::Handle<std::vector<flashgg::DiPhotonCandidate> > objs_dipho;
     fwlite::Handle<std::vector<reco::Vertex> > objs_vertex;
@@ -66,12 +81,16 @@
     std::vector<reco::GenParticle> const & genpart = *objs_genpart;
     
     float z_higgs=0;
-    for (int i=0; i < objs_genpart.ptr()->size();i++ ){
-      if(genpart[i].pdgId() == 25) z_higgs = genpart[i].vz();
+    for (int k=0; k < objs_genpart.ptr()->size();k++ ){
+      if(genpart[k].pdgId() == 25) z_higgs = genpart[k].vz();
     }
     
     std::vector<flashgg::DiPhotonCandidate> const & dipho = *objs_dipho;
+    
+    histo_ndiphotons->Fill(int(objs_dipho.ptr()->size()));
     for (int i=0; i < objs_dipho.ptr()->size();i++ ){
+      histo_nconv->Fill(dipho[i].getNConv());
+      histo_residuals_z_nconv[dipho[i].getNConv()]->Fill(dipho[i].getVertex()->position().z()-z_higgs);
       bool gen_matched = (fabs(dipho[i].getVertex()->position().z()-z_higgs)<1.);//we consider gen-matched when less than 1cm
 
       histo_vtxeff_hpt->Fill(dipho[i].mass());
@@ -82,7 +101,7 @@
 	histo_gen_matched_ptasym->Fill(dipho[i].getPtAsym());
         histo_gen_matched_vtxeff_hpt->Fill(dipho[i].mass()); 
         if(dipho[i].getNConv()!=0){
-	histo_gen_matched_pull_conv->Fill(dipho[i].getPullConv());
+	  histo_gen_matched_pull_conv->Fill(dipho[i].getPullConv());
         }
         histo_gen_matched_vtxprobmva->Fill(dipho[i].getVtxProbMVA());
       }else{
@@ -90,7 +109,7 @@
 	histo_ptbal->Fill(dipho[i].getPtBal());
 	histo_ptasym->Fill(dipho[i].getPtAsym());
         if(dipho[i].getNConv()!=0){ 
-	histo_pull_conv->Fill(dipho[i].getPullConv());
+	  histo_pull_conv->Fill(dipho[i].getPullConv());
         }
       }
     }
@@ -105,6 +124,8 @@
   histo_ptbal->SetLineColor(kBlack);
   histo_ptasym->SetLineColor(kBlack);
   histo_pull_conv->SetLineColor(kBlack);
+
+  for(j=0;j<=2;j++) histo_residuals_z_nconv[j]->SetLineWidth(3);
 
   histo_gen_matched_sumpt2->SetLineWidth(3);
   histo_gen_matched_ptbal->SetLineWidth(3);
@@ -156,16 +177,31 @@
   Ca0_4->SetLogy();
 
   Ca0->SaveAs("mva_plots.png");
+
+  TCanvas * Ca20 = new TCanvas("Ca20","Canvas",1200,800);  Ca20->Divide(2,2); 
   
-  histo_gen_matched_sumpt2->Delete();
-  histo_gen_matched_ptbal->Delete();
-  histo_gen_matched_ptasym->Delete();
-  histo_gen_matched_pull_conv->Delete();
-  histo_sumpt2->Delete();
-  histo_ptbal->Delete();
-  histo_ptasym->Delete();
-  histo_pull_conv->Delete();
- 
+  Ca20->cd(1);  
+  histo_residuals_z_nconv[0]->SetTitle("0 conv."); 
+  histo_residuals_z_nconv[0]->GetXaxis()->SetTitle("0 conv. #Delta z (cm)");  
+  histo_residuals_z_nconv[0]->Draw(); 
+
+  Ca20->cd(2);  
+  histo_residuals_z_nconv[1]->SetTitle("1 conv."); 
+  histo_residuals_z_nconv[1]->GetXaxis()->SetTitle("1 conv. #Delta z (cm)");  
+  histo_residuals_z_nconv[1]->Draw(); 
+  
+  Ca20->cd(3);  
+  histo_residuals_z_nconv[2]->SetTitle("2 conv."); 
+  histo_residuals_z_nconv[2]->GetXaxis()->SetTitle("2 conv. #Delta z (cm)");  
+  histo_residuals_z_nconv[2]->Draw(); 
+
+  Ca20->cd(4);  
+  histo_nconv->SetTitle("n conv."); 
+  histo_nconv->GetXaxis()->SetTitle("n conv");  
+  histo_nconv->Draw(); 
+
+  Ca20->SaveAs("residuals.png");
+
   TCanvas * Ca1 = new TCanvas("Ca1","Canvas",1200,800); 
   TGraphAsymmErrors * efficiency =new TGraphAsymmErrors(histo_gen_matched_vtxprobmva,histo_vtxprobmva);
   efficiency->SetTitle("Vertex Assignment probability < 1.cm w.r.t GEN higgs vs vertex probability MVA");
@@ -194,6 +230,12 @@
   efficiency0->GetYaxis()->SetRangeUser(0.,1.);
   efficiency0->Draw("AP");
   Ca2->SaveAs("vtxeff_higgs_pt.png");
+
+  TCanvas * Ca3 = new TCanvas("Ca2","Canvas",1200,800); 
+  histo_ndiphotons->SetTitle("n diphotons");
+  histo_ndiphotons->GetXaxis()->SetTitle("n diphotons");
+  histo_ndiphotons->SetMarkerColor(kRed);
+  Ca3->SaveAs("ndiphotons.png");
 
  
   exit(0);
