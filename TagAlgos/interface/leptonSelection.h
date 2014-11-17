@@ -14,6 +14,9 @@
 #include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/TagFormats/interface/TTHleptonicTag.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
+#include "DataFormats/PatCandidates/interface/Electron.h"
+#include "flashgg/MicroAODFormats/interface/Electron.h"
+#include "DataFormats/BeamSpot/interface/BeamSpot.h"
 
 #include "DataFormats/TrackReco/interface/HitPattern.h"
 #include "DataFormats/Math/interface/deltaR.h"
@@ -30,7 +33,11 @@ using namespace edm;
 
 namespace flashgg {
 
-PtrVector<pat::Muon> selectMuons(const PtrVector<pat::Muon>& muonPointers,Ptr<flashgg::DiPhotonCandidate> dipho, double muonEtaThreshold, double muonPtThreshold, double muPFIsoSumRelThreshold, double dRPhoLeadMuonThreshold, double dRPhoSubLeadMuonThreshold);
+	PtrVector<pat::Muon> selectMuons(const PtrVector<pat::Muon>& muonPointers,Ptr<flashgg::DiPhotonCandidate> dipho, double muonEtaThreshold, double muonPtThreshold, double muPFIsoSumRelThreshold, double dRPhoLeadMuonThreshold, double dRPhoSubLeadMuonThreshold);
+
+	PtrVector<Electron> selectElectrons(const PtrVector<flashgg::Electron>& ElectronPointers, Ptr<flashgg::DiPhotonCandidate> dipho, const PtrVector<reco::Vertex>& vertexPointers,double ElectronPtThreshold ,double DeltaRTrkElec ,double TransverseImpactParam,double LongitudinalImpactParam);
+
+Ptr<reco::Vertex> ChooseElectronVertex(Ptr<flashgg::Electron> & elec,const PtrVector<reco::Vertex> & vertexPopinters);
 
 }
 

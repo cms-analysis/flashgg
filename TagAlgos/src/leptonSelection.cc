@@ -43,6 +43,61 @@ namespace flashgg {
 		return goodMuons;
 	}
 
+	PtrVector<Electron> selectElectrons(const PtrVector<flashgg::Electron>& ElectronPointers, Ptr<flashgg::DiPhotonCandidate> dipho, const PtrVector<reco::Vertex>& vertexPointers ,double ElectronPtThreshold,double DeltaRTrkElec, double TransverseImpactParam, double LongitudinalImapctParam){
 
+		PtrVector<flashgg::Electron> goodElectrons;
 
+		TLorentzVector phoLead_p4;
+
+		TLorentzVector phoSublead_p4;
+
+		phoLead_p4.SetXYZT(dipho->leadingPhoton()->px(),dipho->leadingPhoton()->py(),dipho->leadingPhoton()->pz(),dipho->leadingPhoton()->energy()); 
+
+		phoSublead_p4.SetXYZT(dipho->subLeadingPhoton()->px(),dipho->subLeadingPhoton()->py(),dipho->subLeadingPhoton()->pz(),dipho->subLeadingPhoton()->energy()); 
+
+		for(unsigned int ElectronIndex=0; ElectronIndex < ElectronPointers.size(); ElectronIndex++ ){
+
+			Ptr<flashgg::Electron> Electron = ElectronPointers[ElectronIndex];
+
+		        Ptr<reco::Vertex> Electron_vtx = ChooseElectronVertex(Electron,vertexPointers);
+
+			if(Electron->pt()<ElectronPtThreshold)continue;
+
+			float dxy = Electron->gsfTrack()->dxy(Electron_vtx->position());							  
+			float dz = Electron->gsfTrack()->dz(Electron_vtx->position()); 
+			if(dxy>TransverseImpactParam)continue;
+			if(dz>LongitudinalImapctParam)continue;
+
+			if(!(&(*dipho->leadingPhoton()->superCluster())==&(*Electron->superCluster())) || !(&(*dipho->leadingPhoton()->superCluster())==&(*Electron->superCluster())) ){	
+				float TrkElecSCDeltaR = sqrt(Electron->deltaEtaSuperClusterTrackAtVtx()*Electron->deltaEtaSuperClusterTrackAtVtx()+Electron->deltaPhiSuperClusterTrackAtVtx()*Electron->deltaPhiSuperClusterTrackAtVtx());
+
+				if(TrkElecSCDeltaR < DeltaRTrkElec){
+
+					goodElectrons.push_back( Electron );
+				}
+
+			}
+
+		}
+
+		return goodElectrons;
+	}
+
+	
+	Ptr<reco::Vertex>  ChooseElectronVertex(Ptr<flashgg::Electron> & elec,const PtrVector<reco::Vertex> & vertices){
+
+		double vtx_dz = 1000000;
+		unsigned int min_dz_vtx = -1;
+		for(unsigned int vtxi=0; vtxi<vertices.size();vtxi++){
+
+			Ptr<reco::Vertex> vtx = vertices[vtxi];	
+			
+			if(vtx_dz > elec->gsfTrack()->dz(vtx->position())){
+
+				vtx_dz=elec->gsfTrack()->dz(vtx->position());
+				min_dz_vtx = vtxi;
+			}
+		}
+		return vertices[min_dz_vtx]; 
+	}
 }

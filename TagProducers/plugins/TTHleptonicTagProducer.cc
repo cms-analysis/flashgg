@@ -15,11 +15,10 @@
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "flashgg/MicroAODFormats/interface/Photon.h"
-#include "DataFormats/BeamSpot/interface/BeamSpot.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
 
 #include "DataFormats/TrackReco/interface/HitPattern.h"
 #include "flashgg/TagAlgos/interface/leptonSelection.h"
-#include "flashgg/TagAlgos/interface/electronSelection.h"
 
 #include "DataFormats/Math/interface/deltaR.h"
 
@@ -48,7 +47,7 @@ namespace flashgg {
 			EDGetTokenT<View<pat::Muon> > muonToken_;
 			EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
 			EDGetTokenT<View<Photon> > photonToken_;
-			EDGetTokenT<reco::BeamSpot>  beamSpotToken_;
+		        EDGetTokenT<View<reco::Vertex> > vertexToken_;	
 
 			//Thresholds
 			double leptonPtThreshold_;
@@ -70,7 +69,10 @@ namespace flashgg {
 			double deltaRElectronJetcountThreshold_;
 			double PuIDCutoffThreshold_;
 			double PhoMVAThreshold_;
-
+			double ElectronPtThreshold_;
+			double DeltaRTrkElec_;
+			double TransverseImpactParam_;
+			double LongitudinalImpactParam_;
 
 	};
 
@@ -80,8 +82,7 @@ namespace flashgg {
 		electronToken_(consumes<View<flashgg::Electron> >(iConfig.getUntrackedParameter<InputTag> ("TTHElecTag", InputTag("flashggElectrons")))),
 		muonToken_(consumes<View<pat::Muon> >(iConfig.getUntrackedParameter<InputTag>("TTHMuonTag",InputTag("slimmedMuons")))),
 		mvaResultToken_(consumes<View<flashgg::DiPhotonMVAResult> >(iConfig.getUntrackedParameter<InputTag> ("MVAResultTag", InputTag("flashggDiPhotonMVA")))),
-		photonToken_(consumes<View<flashgg::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("flashggPhoton")))),
-		beamSpotToken_(consumes<reco::BeamSpot >(iConfig.getUntrackedParameter<InputTag>("BeamSpotTag",InputTag("offlineBeamSpot"))))
+		vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag",InputTag("offlinePrimaryVertices"))))	
 	{
 
 		double default_leptonPtThreshold_ = 20.;
@@ -105,6 +106,11 @@ namespace flashgg {
 		double default_deltaRMuonJetcountThreshold_ = 2.;
 		double default_PuIDCutoffThreshold_ = 0.8;
 		double default_PhoMVAThreshold_ = -0.2;
+		double default_ElectronPtThreshold_ = 20.;
+		double default_DeltaRTrkElec_ = 1.;
+		double default_TransverseImpactParam_ = 0.02;
+		double default_LongitudinalImpactParam_ = 0.2;
+		
 
 		leptonPtThreshold_ = iConfig.getUntrackedParameter<double>("leptonPtThreshold",default_leptonPtThreshold_);
 		leptonEtaThreshold_ = iConfig.getUntrackedParameter<double>("leptonEtaThreshold",default_leptonEtaThreshold_);
@@ -126,6 +132,10 @@ namespace flashgg {
 		deltaRElectronJetcountThreshold_=iConfig.getUntrackedParameter<double>("deltaRMuonJetcountThreshold",default_deltaRMuonJetcountThreshold_);
 		PuIDCutoffThreshold_ = iConfig.getUntrackedParameter<double>("PuIDCutoffThreshold",default_PuIDCutoffThreshold_);
 		PhoMVAThreshold_ = iConfig.getUntrackedParameter<double>("PhoMVAThreshold",default_PhoMVAThreshold_);
+		ElectronPtThreshold_ = iConfig.getUntrackedParameter<double>("ElectronPtThreshold",default_ElectronPtThreshold_);
+		DeltaRTrkElec_ = iConfig.getUntrackedParameter<double>("DeltaRTrkElec",default_DeltaRTrkElec_);
+		TransverseImpactParam_ = iConfig.getUntrackedParameter<double>("TransverseImpactParam",default_TransverseImpactParam_);
+		LongitudinalImpactParam_ = iConfig.getUntrackedParameter<double>("LongitudinalImpactParam",default_LongitudinalImpactParam_);
 
 		produces<vector<TTHleptonicTag> >(); 
 	}
@@ -155,14 +165,10 @@ namespace flashgg {
 		const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
 		std::auto_ptr<vector<TTHleptonicTag> > tthltags(new vector<TTHleptonicTag>);
 
-		Handle<View<flashgg::Photon> > thePhotons;
-		evt.getByToken(photonToken_,thePhotons);
-		const PtrVector<flashgg::Photon>& photonPointers = thePhotons->ptrVector();
+		Handle<View<reco::Vertex> > vertices;
+		evt.getByToken(vertexToken_,vertices);
+		const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
 
-		Handle<reco::BeamSpot> recoBeamSpotHandle;
-		evt.getByToken(beamSpotToken_,recoBeamSpotHandle);
-		math::XYZPoint beamSpot;
-		beamSpot = recoBeamSpotHandle->position();
 
 		assert(diPhotonPointers.size() == mvaResultPointers.size());
 
@@ -197,9 +203,9 @@ namespace flashgg {
 
 			photonSelection = true;
 
-			PtrVector<pat::Muon> goodMuons = selectMuons(muonPointers,dipho, leptonEtaThreshold_ ,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
+			PtrVector<pat::Muon> goodMuons = selectMuons(muonPointers,dipho,leptonEtaThreshold_ ,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
 
-			PtrVector<Electron> goodElectrons = selectElectrons(electronPointers,dipho,photonPointers,beamSpot);
+			PtrVector<Electron> goodElectrons = selectElectrons(electronPointers,dipho,vertexPointers,ElectronPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_);
 
 			if (!goodMuons || !goodElectrons) continue;
 
@@ -257,7 +263,20 @@ namespace flashgg {
 				TLorentzVector leadp;
 				leadp.SetXYZT(dipho->leadingPhoton()->px(),dipho->leadingPhoton()->py(),dipho->leadingPhoton()->pz(),dipho->leadingPhoton()->energy());	
 				TLorentzVector subleadp;
-				subleadp.SetXYZT(dipho->subLeadingPhoton()->px(),dipho->subLeadingPhoton()->py(),dipho->subLeadingPhoton()->pz(),dipho->subLeadingPhoton()->energy());	
+				subleadp.SetXYZT(dipho->subLeadingPhoton()->px(),dipho->subLeadingPhoton()->py(),dipho->subLeadingPhoton()->pz(),dipho->subLeadingPhoton()->energy());
+				float phi = Electron->superCluster()->phi();	
+				float theta = (2*atan(exp(-Electron->superCluster()->eta())));
+				float energy = Electron->ecalEnergy();
+				float px = energy*sin(theta)*cos(phi);
+				float py = energy*sin(theta)*sin(phi);
+				float pz = energy*cos(theta);
+
+				TLorentzVector elec_superClusterVect;
+
+				elec_superClusterVect.SetXYZT(px,py,pz,energy);
+
+				if( leadp.DeltaR(elec_superClusterVect)< 1.)continue;
+				if( subleadp.DeltaR(elec_superClusterVect)< 1.)continue;
 				if( leadp.DeltaR(elec_p4) <= 1. )continue;
 				if( subleadp.DeltaR(elec_p4) <= 1. )continue;
 				TLorentzVector eleleadp = elec_p4+leadp;
