@@ -120,7 +120,7 @@ namespace flashgg {
 
 	void TTHleptonicTagProducer::produce( Event & evt, const EventSetup & )
 
-{
+	{
 
 		Handle<View<flashgg::Jet> > theJets;
 		evt.getByToken(thejetToken_,theJets);
@@ -141,10 +141,12 @@ namespace flashgg {
 
  		assert(diPhotonPointers.size() == mvaResultPointers.size());
 
-		bool tagged = false;
 		bool photonSelection = false;
 		double idmva1 = 0.;
 		double idmva2 = 0.;
+
+		vector<int> numMuonJetsdR;
+		bool muonJets = false;
 
 			for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoIndex++ )
 			{
@@ -175,6 +177,9 @@ namespace flashgg {
 
 				if (!goodMuons) continue;
 
+				numMuonJetsdR.clear();
+				muonJets = false;
+
 			for(unsigned int muonIndex = 0; muonIndex < goodMuons.size(); muonIndex++)
 			{
 
@@ -190,19 +195,19 @@ namespace flashgg {
 					
 					if (thejet->getPuJetId(dipho) <  PuIDCutoffThreshold_) continue;
 
-					//https://github.com/h2gglobe/h2gglobe/blob/master/PhotonAnalysis/src/PhotonAnalysis.cc#L5367
 					if(fabs(thejet->eta()) > jetEtaThreshold_) continue; 
 
-					//https://github.com/h2gglobe/h2gglobe/blob/master/PhotonAnalysis/src/PhotonAnalysis.cc#L5371
 					if(thejet->pt() < jetPtThreshold_) continue;
+
+					float dRPhoLeadJet =deltaR(thejet->eta(),thejet->phi(),dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi()) ;
+					float dRPhoSubLeadJet = deltaR(thejet->eta(),thejet->phi(),dipho->subLeadingPhoton()->superCluster()->eta(), dipho->subLeadingPhoton()->superCluster()->phi());	
+
+					if(dRPhoLeadJet < 0.5 || dRPhoSubLeadJet < 0.5) continue;
 
 					float dRJetMuon =deltaR(thejet->eta(),thejet->phi(), muon->eta(),muon->phi()) ;
 
-					//https://github.com/njets_btagmediumh2gglobe/h2gglobe/blob/master/PhotonAnalysis/src/PhotonAnalysis.cc#L5370
 					if(dRJetMuon < deltaRJetLepThreshold_) continue; 
 					deltaRMuonJetcount++;
-					
-					if(deltaRMuonJetcount<deltaRMuonJetcountThreshold_) continue;
 
 					tagJets.push_back(thejet);
 	
@@ -216,11 +221,18 @@ namespace flashgg {
 				//end of jets loop 
 				}
 
+			numMuonJetsdR.push_back(deltaRMuonJetcount);
 			tagMuons.push_back(muon);
 			//end of muons loop
 			}
 
-			if(tagBJets.size() >= bjetsNumberThreshold_ && tagJets.size() >= jetsNumberThreshold_ && photonSelection && tagMuons.size()>0)
+			for (unsigned num = 0; num<numMuonJetsdR.size(); num++ ) 
+			{
+				int check = numMuonJetsdR.at(num);
+				if (check >= deltaRMuonJetcountThreshold_) {muonJets = true;}
+			}
+
+			if(tagBJets.size() >= bjetsNumberThreshold_ && tagJets.size() >= jetsNumberThreshold_ && photonSelection && tagMuons.size()>0 && muonJets)
 			{
 
 				tthltags_obj.setJets(tagJets);
@@ -228,16 +240,12 @@ namespace flashgg {
 				tthltags_obj.setMuons(tagMuons);
 
 				tthltags->push_back(tthltags_obj);
-				tagged = true;
 			}
 
 			//diPho loop end
 			}
 			evt.put(tthltags);
-
-std::cout << "event is tagged : "<< tagged << std::endl;
-
-}
+	}
 
 }
 typedef flashgg::TTHleptonicTagProducer FlashggTTHleptonicTagProducer;
