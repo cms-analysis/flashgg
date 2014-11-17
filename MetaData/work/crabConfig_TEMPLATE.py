@@ -21,7 +21,7 @@ config.Data.splitting = "SPLITTING"
 config.Data.unitsPerJob = UNITSPERJOB
 config.Data.publication = True
 config.Data.publishDbsUrl = 'phys03'
-config.Data.publishDataName = 'FLASHGG_VERSION-PROCESSED_DATASET'
+config.Data.publishDataName = 'FLASHGG_VERSION-PROCESSED_DSET'
 config.Data.outlfn = "OUTLFN"
 
 config.section_("Site")
