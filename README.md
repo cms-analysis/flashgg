@@ -1,19 +1,20 @@
 flashgg
 =======
 
-1. Create a CMSSW_7_0_7_patch1 project:
+1. Create a CMSSW_7_2_1_patch5 (or later) project:
  ```
  # make sure you are on lxplus6 or otherwise using an SLC6 machine
  # make sure SCRAM_ARCH is slc6_amd64_gcc481 (should be default)
- cmsrel CMSSW_7_0_7_patch1
- cd CMSSW_7_0_7_patch1/src
+ cmsrel CMSSW_7_2_1_patch5 
+ # or later
+ cd CMSSW_7_2_1_patch5/src
  cmsenv
  ```
 
 2. Get extra files for Pileup Jet Identification (must be done *before* getting flashgg):
  ```
  git cms-addpkg RecoJets/JetProducers
- git cms-merge-topic -u sethzenz:pileupjetid-for-flashgg
+ git cms-merge-topic -u musella:pileupjetid-for-flashgg-72x
  ```
 
 3. Get extra code to run legacy regression:
@@ -27,7 +28,7 @@ flashgg
 
 4. Fork flashgg repository on the web here: https://github.com/cms-analysis/flashgg
 
-5. In CMSSW_7_0_7_patch1/src, do commands something like: 
+5. In CMSSW_7_1_2_patch5/src, do commands something like: 
  ```
  cd $CMSSW_BASE/src
  git clone git@github.com:yourusername/flashgg.git flashgg
