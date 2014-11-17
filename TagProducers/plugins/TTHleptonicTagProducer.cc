@@ -47,7 +47,7 @@ namespace flashgg {
 			EDGetTokenT<View<pat::Muon> > muonToken_;
 			EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
 			EDGetTokenT<View<Photon> > photonToken_;
-		        EDGetTokenT<View<reco::Vertex> > vertexToken_;	
+			EDGetTokenT<View<reco::Vertex> > vertexToken_;	
 
 			//Thresholds
 			double leptonPtThreshold_;
@@ -110,7 +110,7 @@ namespace flashgg {
 		double default_DeltaRTrkElec_ = 1.;
 		double default_TransverseImpactParam_ = 0.02;
 		double default_LongitudinalImpactParam_ = 0.2;
-		
+
 
 		leptonPtThreshold_ = iConfig.getUntrackedParameter<double>("leptonPtThreshold",default_leptonPtThreshold_);
 		leptonEtaThreshold_ = iConfig.getUntrackedParameter<double>("leptonEtaThreshold",default_leptonEtaThreshold_);
@@ -205,7 +205,7 @@ namespace flashgg {
 
 			PtrVector<pat::Muon> goodMuons = selectMuons(muonPointers,dipho,leptonEtaThreshold_ ,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
 
-			PtrVector<Electron> goodElectrons = selectElectrons(electronPointers,dipho,vertexPointers,ElectronPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_);
+			PtrVector<Electron> goodElectrons = selectElectrons(electronPointers,vertexPointers,ElectronPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_);
 
 			if (!goodMuons || !goodElectrons) continue;
 
@@ -277,6 +277,17 @@ namespace flashgg {
 
 				if( leadp.DeltaR(elec_superClusterVect)< 1.)continue;
 				if( subleadp.DeltaR(elec_superClusterVect)< 1.)continue;
+				if(!(&(*dipho->leadingPhoton()->superCluster())==&(*Electron->superCluster())) || !(&(*dipho->leadingPhoton()->superCluster())==&(*Electron->superCluster())) ){	
+					float TrkElecSCDeltaR = sqrt(Electron->deltaEtaSuperClusterTrackAtVtx()*Electron->deltaEtaSuperClusterTrackAtVtx()+Electron->deltaPhiSuperClusterTrackAtVtx()*Electron->deltaPhiSuperClusterTrackAtVtx());
+
+					if(TrkElecSCDeltaR < DeltaRTrkElec_)continue;
+				}
+				if(!(&(*dipho->subLeadingPhoton()->superCluster())==&(*Electron->superCluster())) || !(&(*dipho->subLeadingPhoton()->superCluster())==&(*Electron->superCluster())) ){	
+					float TrkElecSCDeltaR = sqrt(Electron->deltaEtaSuperClusterTrackAtVtx()*Electron->deltaEtaSuperClusterTrackAtVtx()+Electron->deltaPhiSuperClusterTrackAtVtx()*Electron->deltaPhiSuperClusterTrackAtVtx());
+
+					if(TrkElecSCDeltaR < DeltaRTrkElec_)continue;
+				}
+
 				if( leadp.DeltaR(elec_p4) <= 1. )continue;
 				if( subleadp.DeltaR(elec_p4) <= 1. )continue;
 				TLorentzVector eleleadp = elec_p4+leadp;
