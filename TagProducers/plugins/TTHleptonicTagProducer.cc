@@ -368,8 +368,7 @@ namespace flashgg {
 				tthltags_obj.setBJets(tagBJets);
 				tthltags_obj.setMuons(tagMuons);
 				tthltags_obj.setElectrons(tagElectrons);	
-
-
+				tthltags_obj.setDiPhotonIndex(diphoIndex);
 				tthltags->push_back(tthltags_obj);
 			}
 

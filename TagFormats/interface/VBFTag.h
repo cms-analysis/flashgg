@@ -12,15 +12,12 @@ namespace flashgg {
   public:
     VBFTag();
     ~VBFTag();
-    
-		
-  //  VBFTag(const VBFTag&);
+
     VBFTag(edm::Ptr<DiPhotonCandidate>,edm::Ptr<DiPhotonMVAResult>,edm::Ptr<VBFDiPhoDiJetMVAResult>);
-  //  VBFTag(edm::Ptr<DiPhotonCandidate>,edm::Ptr<VBFDiPhoDiJetMVAResult>, int);// FIXME
     VBFTag(edm::Ptr<DiPhotonCandidate>,DiPhotonMVAResult,VBFDiPhoDiJetMVAResult);
     VBFTag* clone() const;
-		const VBFDiPhoDiJetMVAResult VBFDiPhoDiJetMVA() const;
-		const VBFMVAResult VBFMVA() const ;
+    const VBFDiPhoDiJetMVAResult VBFDiPhoDiJetMVA() const;
+    const VBFMVAResult VBFMVA() const ;
 		const Jet leadingJet() const; //needs to be validated
 		const Jet subLeadingJet() const; //needs to be validated
 
