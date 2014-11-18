@@ -45,4 +45,6 @@
 <class name="flashgg::VHtightTag"/>
 <class name="std::vector<flashgg::VHtightTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::VHtightTag> >"/>
+<class name="edm::Ptr<flashgg::DiPhotonTagBase>"/>
+<class name="edm::Wrapper<edm::Ptr<flashgg::DiPhotonTagBase> >"/>
 </lcgdict>
