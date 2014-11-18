@@ -35,6 +35,9 @@
 #include "flashgg/TagFormats/interface/VBFTag.h"
 #include "flashgg/TagFormats/interface/DiPhotonUntaggedCategory.h"
 #include "flashgg/TagFormats/interface/DiPhotonTagBase.h"
+#include "flashgg/TagFormats/interface/TTHhadronicTag.h"
+#include "flashgg/TagFormats/interface/TTHleptonicTag.h"
+
 
 #include "TMath.h"
 #include "TTree.h"
@@ -189,6 +192,7 @@ class FlashggTreeMakerWithTagSorter : public edm::EDAnalyzer {
 		Int_t flash_Untagged_Category;
 		Int_t flash_VBFTag_Category;
 
+
 		edm::EDGetTokenT<edm::View<flashgg::Photon> >            photonToken_; // SCZ work-in-progress adding this!
 		edm::EDGetTokenT<edm::OwnVector<flashgg::DiPhotonTagBase> > TagSorterToken_;
 };
@@ -303,11 +307,26 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 			//	std::cout << "VBF sublead Jet phi" <<vbftag->leadingJet().phi() <<std::endl;
 		}
 
+                const   TTHhadronicTag *tthhadronictag = dynamic_cast<const TTHhadronicTag*>(chosenTag);
+                //if(tthhadronictag == NULL) std::cout << "NOT TTHhadronic" <<std::endl;                                                                                                             
+                if(tthhadronictag != NULL) {
+		  std::cout << "[TTHhadronic] Category " << tthhadronictag->getCategoryNumber() <<std::endl;
+                }
+
+                const   TTHleptonicTag *tthleptonictag = dynamic_cast<const TTHleptonicTag*>(chosenTag);
+		//if(tthleptonictag == NULL) std::cout << "NOT TTHleptonic" <<std::endl;                                                                                            
+
+                if(tthleptonictag != NULL) {
+		  std::cout << "[TTHleptonic] Category " << tthleptonictag->getCategoryNumber() <<std::endl;
+		}
+
 		// IMPORTANT: All future Tags must be added in the way of untagged and vbftag.	
 
-		if (untagged == NULL && vbftag == NULL) {
+		if (untagged == NULL && vbftag == NULL /* && tthhadronictag == NULL && tthleptonictag == NULL */ ) {
 		  std::cout << "[FAILED TO CONVERT TAG] with SumPt " << chosenTag->getSumPt() << std::endl;
 		}
+
+		std::cout << "GOT THROUGH NEW CODE?" << std::endl;
 
 
 		//--------------> Tag selected, now fill tree with relevant properties!
@@ -334,11 +353,14 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 			}
 		}
 
+		std::cout << "GOT THROUGH JETS" << std::endl;
 
 		//------->event info
 		run = iEvent.eventAuxiliary().run(); 
 		event = iEvent.eventAuxiliary().event(); 
 		lumis = iEvent.eventAuxiliary().luminosityBlock(); 
+
+		std::cout << "GOT THROUGH EVENT INFO" << std::endl;
 
 		//------>itype ?? need to determine how bets to implement this FIXME.
 		itype = -1 ;// placeholder. Need to be able to access this one the fly based on the input file or config.
@@ -351,6 +373,9 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 
 		//-----> rho = energy density
 		rho = *(rhoHandle.product());
+
+		std::cout << "GOT THROUGH RHO" << std::endl;
+
 
 		//------> weights and PU and gen vertex and match information 
 		genmatch1= 0;
@@ -376,6 +401,9 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 					pu_n = PileupInfoPointers[PVI]->getPU_NumInteractions();
 				}
 			}
+
+			std::cout << "GOT THROUGH PU" << std::endl;
+
 			// gen vertex location
 			for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++){
 				if( gens[genLoop]->pdgId() == 25) { //might need to be changed for background MC samples...
@@ -387,13 +415,31 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 				break;
 			}
 
+			std::cout << "GOT THROUGH GEN VTX" << std::endl;
+
 			// gen match leading pho 
 			for(unsigned int ip=0;ip<gens.size();++ip) {
+			  //			  std::cout << "GMLP " << gens[ip]->status() << " "  << gens[ip]->pdgId() << " " << gens[ip]->mother(0) << std::endl;
 				if( gens[ip]->status() != 1 || gens[ip]->pdgId() != 22 ) {
 					continue;
 				}
+				//				std:: cout << gens[ip]->status() << " " << gens[ip]->pdgId() << " " << gens[ip]->numberOfMothers() << std::endl;
+				std::cout << "candIndex=" << candIndex << std::endl;
+				if (candIndex < 0 || candIndex > 10) continue;
+				//				std::cout << " diPhotonPointers[candIndex]->et() = " << diPhotonPointers[candIndex]->et() << std::endl;
+				//				std::cout << " diPhotonPointers[candIndex]->leadingPhoton()->et() = " <<diPhotonPointers[candIndex]->leadingPhoton()->et() << std::endl;
+				//				std::cout << " diPhotonPointers[candIndex]->leadingPhoton()->eta() = " <<diPhotonPointers[candIndex]->leadingPhoton()->eta() << std::endl;
 				if( diPhotonPointers[candIndex]->leadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->leadingPhoton()->eta()) > 3. ) { continue; }
-				if( gens[ip]->motherRef(0)->pdgId() <= 25 ) {
+				//				std::cout << "gens[ip]->numberOfMothers()=" << gens[ip]->numberOfMothers() << std::endl;
+				//				if ( gens[ip]->motherRef(0).isNull() ) { std::cout << " OH SHIT A BRICK " << std::endl; continue; }
+				//				std::cout << " gens[ip]->motherRef(0).isNull()=" << gens[ip]->motherRef(0).isNull() << std::endl;
+				//				std::cout << " gens[ip]->motherRef(0)->pdgId()=" << gens[ip]->motherRef(0)->pdgId() << std::endl;
+				//				std::cout << gens[ip]->numberOfMothers() << std::endl;
+				//				std::cout << gens[ip]->motherRef(0)->pdgId() << std::endl;
+				//				if( gens[ip]->numberOfMothers() > 0 && gens[ip]->motherRef(0)->pdgId() <= 25 ) {
+				std::cout << gens[ip]->mother(0) << " " << (gens[ip]->mother(0) == NULL) << std::endl;
+				if (gens[ip]->mother(0) != NULL && gens[ip]->mother(0)->pdgId() <= 25) {
+				  std::cout << "PASSED gens[ip]->motherRef(0)->pdgId() <= 25 " << std::endl;
 					float deta =  diPhotonPointers[candIndex]->leadingPhoton()->eta() - gens[ip]->eta();
 					float dphi =  diPhotonPointers[candIndex]->leadingPhoton()->phi() - gens[ip]->phi();
 					float dr = sqrt(deta*deta + dphi*dphi);
@@ -404,14 +450,18 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 					}
 				}
 			}
+			std::cout << "GOT THROUGH GEN MATCH LEADING PHO" << std::endl;
 
 			// gen match subleading pho
 			for(unsigned int ip=0;ip<gens.size();++ip) {
+			  //			  std::cout << "GMSLP " << gens[ip]->status() << " "  << gens[ip]->pdgId() << " " << gens[ip]->mother(0) << std::endl;
 				if( gens[ip]->status() != 1 || gens[ip]->pdgId() != 22 ) {
 					continue;
 				}
 				if( diPhotonPointers[candIndex]->subLeadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->subLeadingPhoton()->eta()) > 3. ) { continue; }
-				if( gens[ip]->motherRef(0)->pdgId() <= 25 ) {
+				//				if( gens[ip]->numberOfMothers() > 0 && gens[ip]->motherRef(0)->pdgId() <= 25 ) {
+				//				std::cout << gens[ip]->mother(0) << " " << (gens[ip]->mother(0) == NULL) << std::endl;
+				if ( gens[ip]->mother(0) != NULL && gens[ip]->mother(0)->pdgId() <= 25) {
 					float deta =  diPhotonPointers[candIndex]->subLeadingPhoton()->eta() - gens[ip]->eta();
 					float dphi =  diPhotonPointers[candIndex]->subLeadingPhoton()->phi() - gens[ip]->phi();
 					float dr = sqrt(deta*deta + dphi*dphi);
@@ -422,6 +472,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 					}
 				}
 			}
+			std::cout << "GOT THROUGH GEN MATCH SUBLEADING PHO" << std::endl;
 		}
 
 		/* NB: This entire section has been superseded by the TagSorter, which now selects the best diPhoton.
@@ -522,6 +573,8 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		effSigma2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->getESEffSigmaRR();
 		scraw2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->superCluster()->rawEnergy();
 
+		std::cout << "GOT THROUGH FILLING PHOTON STUFF" << std::endl;
+
 		//-----> Cos of photon delta phi
 		cosphi = cos(diPhotonPointers[candIndex]->leadingPhoton()->phi()- diPhotonPointers[candIndex]->subLeadingPhoton()->phi());
 
@@ -572,6 +625,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 			dijet_MVA= vbftag->VBFMVA().VBFMVAValue() ;
 			bdt_combined= vbftag->VBFDiPhoDiJetMVA().vbfDiPhoDiJetMvaResult;
 		}
+		std::cout << "GOT THROUGH/PAST FILLING VBF" << std::endl;
 
 
 		sigmaMrvoM = chosenTag->diPhotonMVA().sigmarv;
@@ -588,11 +642,16 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 
 		dipho_mva_cat = flash_Untagged_Category;		
 
+		std::cout << "GOT THROUGH MVA STUFF, ABOUT TO FILL TREE" << std::endl;
+
 
 		flashggTreeWithTagSorter->Fill(); 
 	} else { //case where TagSorter[0] doesn't exist
 		std::cout << "[NO TAG]" <<std::endl;
 	}
+
+	std::cout << "GOT TO THE END???" << std::endl;
+
 }
 	void 
 FlashggTreeMakerWithTagSorter::beginJob()
