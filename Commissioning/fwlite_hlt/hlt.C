@@ -4,6 +4,9 @@
   // in your rootlogon.C, the CMS setup is executed only if the CMS
   // environment is set up.
   //
+
+  using namespace std;
+
   TString cmsswbase = getenv("CMSSW_BASE");
   if (cmsswbase.Length() > 0) {
     //
@@ -116,30 +119,30 @@
   
   fwlite::Event ev(&f);
 
-  int count=0;
+  unsigned int count=0;
 
   for( ev.toBegin(); ! ev.atEnd(); ++ev) {
-    if(count==3000) break;		
     count++;
     cout<<count<<endl;
-    fwlite::Handle<std::vector<flashgg::Photon> > objs_pho;
-    fwlite::Handle<std::vector<flashgg::DiPhotonCandidate> > objs_dipho;
-    fwlite::Handle<std::vector<reco::Vertex> > objs_vertex;
-    fwlite::Handle<std::vector<reco::GenParticle> > objs_genpart;
+
+    fwlite::Handle<vector<flashgg::Photon> > objs_pho;
+    fwlite::Handle<vector<flashgg::DiPhotonCandidate> > objs_dipho;
+    fwlite::Handle<vector<reco::Vertex> > objs_vertex;
+    fwlite::Handle<vector<reco::GenParticle> > objs_genpart;
     
     objs_pho.getByLabel(ev,"flashggPhotons");
     objs_dipho.getByLabel(ev,"flashggDiPhotons");
     objs_vertex.getByLabel(ev,"offlineSlimmedPrimaryVertices"); 
     objs_genpart.getByLabel(ev,"flashggPrunedGenParticles"); 
     
-    std::vector<reco::GenParticle> const & genpart = *objs_genpart;
+    vector<reco::GenParticle> const & genpart = *objs_genpart;
     
     float z_higgs=0;
     for (int i=0; i < objs_genpart.ptr()->size();i++ ){
       if(genpart[i].pdgId() == 25) z_higgs = genpart[i].vz();
     }
     
-    std::vector<flashgg::DiPhotonCandidate> const & dipho = *objs_dipho;
+    vector<flashgg::DiPhotonCandidate> const & dipho = *objs_dipho;
     for (int i=0; i < objs_dipho.ptr()->size();i++ ){
       bool gen_matched = (fabs(dipho[i].getVertex()->position().z()-z_higgs)<1.);//we consider gen-matched when less than 1cm
       if(gen_matched){
@@ -191,7 +194,7 @@
   }
 
   //endjob
-  std::cout<<"beginning endJob"<<std::endl;
+  cout<<"beginning endJob"<<endl;
   theFileOut->cd();
   cutflow->Write();
   for(cut_index=0;cut_index<9  ;cut_index++){ //Loop over the different histograms                                                                    
