@@ -6,25 +6,13 @@ using namespace flashgg;
 
 VBFTag::VBFTag(){}
 
-//VBFTag::VBFTag() : DiPhotonTagBase::DiPhotonTagBase() {}
-//VBFTag::~VBFTag(){}
+VBFTag::~VBFTag(){}
 
-//VBFTag::VBFTag(const VBFTag& x) : DiPhotonTagBase::DiPhotonTagBase(x) {
- // category_number_ = x.category_number_; 
-//}
+VBFTag::VBFTag(edm::Ptr<flashgg::DiPhotonCandidate> diPho,edm::Ptr<DiPhotonMVAResult> mvaRes,edm::Ptr<VBFDiPhoDiJetMVAResult> vbfDiPhoDiJet_mvaRes) : 
+  VBFTag::VBFTag(diPho,*mvaRes,*vbfDiPhoDiJet_mvaRes) {}
 
-VBFTag::VBFTag(edm::Ptr<DiPhotonCandidate> diPho,edm::Ptr<VBFDiPhoDiJetMVAResult> vbfDiPhoDiJet_mvaRes) {
-  addDaughter(*diPho);
-  AddFourMomenta addP4;
-  addP4.set(*this);
-  vbfDiPhoDiJet_mva_result_ = *vbfDiPhoDiJet_mvaRes; // copies 
-}
-
-//VBFTag::VBFTag(edm::Ptr<DiPhotonCandidate> dipho,edm::Ptr<DiPhotonMVAResult> mvares) :  DiPhotonTagBase::DiPhotonTagBase(dipho,mvares) {}
-
-//VBFTag::VBFTag(edm::Ptr<DiPhotonCandidate> dipho,edm::Ptr<DiPhotonMVAResult> mvares, int catnum) :  DiPhotonTagBase::DiPhotonTagBase(dipho,mvares) {category_number_ = catnum;}
-
-
+VBFTag::VBFTag(edm::Ptr<DiPhotonCandidate> dipho,DiPhotonMVAResult mvares,VBFDiPhoDiJetMVAResult vbfDiPhoDiJet_mvaRes) :
+  DiPhotonTagBase::DiPhotonTagBase(dipho,mvares) {}
 
 const VBFDiPhoDiJetMVAResult VBFTag::VBFDiPhoDiJetMVA() const {
   return vbfDiPhoDiJet_mva_result_;
@@ -33,11 +21,18 @@ const VBFMVAResult VBFTag::VBFMVA() const {
   return vbfDiPhoDiJet_mva_result_.vbfMvaResult;
 	}
 
-		const Jet VBFTag::leadingJet() const{
-return vbfDiPhoDiJet_mva_result_.vbfMvaResult.leadJet;
+const Jet VBFTag::leadingJet() const{
+	return vbfDiPhoDiJet_mva_result_.vbfMvaResult.leadJet;
 }
 		const Jet VBFTag::subLeadingJet() const{
 return vbfDiPhoDiJet_mva_result_.vbfMvaResult.subleadJet;
+}
+
+VBFTag* VBFTag::clone () const {
+  VBFTag* result = new VBFTag(diPhoton(),diPhotonMVA(),vbfDiPhoDiJet_mva_result_);
+  result->setCategoryNumber(getCategoryNumber());
+  result->setDiPhotonIndex(getDiPhotonIndex());
+  return result;
 }
 
 

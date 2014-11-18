@@ -40,6 +40,7 @@ process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggJets_cfi")
 process.load("flashgg/MicroAODProducers/flashggPrunedGenParticles_cfi")
+process.load("flashgg/MicroAODProducers/flashggElectrons_cfi")
 
 #Tag stuff
 process.load("flashgg/TagProducers/flashggDiPhotonMVA_cfi")
@@ -59,7 +60,7 @@ process.p = cms.Path((process.flashggVertexMapUnique+process.flashggVertexMapNon
                      process.flashggPhotons*
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
-                     (process.flashggDiPhotonMVA+process.flashggJets)*
+                     (process.flashggDiPhotonMVA+process.flashggJets+process.flashggElectrons)*
                      
                      (process.flashggVBFMVA)* # Needs to happen after Jets
                      (process.flashggVBFDiPhoDiJetMVA)* # Needs to happen after VBF MVA and DiPho MVA

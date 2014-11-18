@@ -11,18 +11,21 @@ namespace flashgg {
 	class TTHhadronicTag: public DiPhotonTagBase {
 		public:
 			TTHhadronicTag();
-			TTHhadronicTag(std::vector<edm::Ptr<flashgg::Jet> >,std::vector<edm::Ptr<flashgg::Jet> >);
+			TTHhadronicTag(edm::Ptr<DiPhotonCandidate>,edm::Ptr<DiPhotonMVAResult>,std::vector<edm::Ptr<flashgg::Jet> >,std::vector<edm::Ptr<flashgg::Jet> >);
+			TTHhadronicTag(edm::Ptr<DiPhotonCandidate>,DiPhotonMVAResult,std::vector<edm::Ptr<flashgg::Jet> >,std::vector<edm::Ptr<flashgg::Jet> >);
+			TTHhadronicTag* clone() const;
 			~TTHhadronicTag();
 
 			const std::vector<edm::Ptr<flashgg::Jet> > getJetVector() const {return theJetVec_;}
 			const std::vector<edm::Ptr<flashgg::Jet> > getBJetVector() const {return theBJetVec_; }
-			float getNBLoose() const {return btagloose;}
-			float getNBMedium() const {return btagmedium;}
-
-			float btagloose;
-			float btagmedium;
+			int getNBLoose() const {return Nbtagloose_;}
+			int getNBMedium() const {return Nbtagmedium_;}
+			void setNBLoose(int nb) { Nbtagloose_ = nb; }
+			void setNBMedium(int nb) { Nbtagmedium_ = nb; }
 
 		private:
+			int Nbtagloose_;
+			int Nbtagmedium_;
 			std::vector<edm::Ptr<flashgg::Jet> > theJetVec_;
 			std::vector<edm::Ptr<flashgg::Jet> > theBJetVec_;
 	};
