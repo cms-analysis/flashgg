@@ -22,14 +22,7 @@ process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
                                         monitorPssAndPrivate = cms.untracked.bool(True)
                                        )
 
-process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT_big.root"))
-
-process.flashggVertexMapUnique = cms.EDProducer('FlashggDzVertexMapProducer',
-                                                PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
-                                                VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
-                                                BeamSpotTag=cms.untracked.InputTag('offlineBeamSpot'),
-                                                MaxAllowedDz=cms.double(0.2) # in cm
-                                                )
+process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT.root"))
 
 process.load("flashgg/MicroAODProducers/flashggVertexMaps_cfi")
 process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
@@ -43,20 +36,8 @@ process.eventCount = cms.EDProducer("EventCountProducer")
 
 from flashgg.MicroAODProducers.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand
 
-process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFileBig.root'),
-                               outputCommands = cms.untracked.vstring("drop *",
-                                                                      "keep *_flashgg*_*_*",
-                                                                      "drop *_flashggVertexMap*_*_*",
-                                                                      "keep *_offlineSlimmedPrimaryVertices_*_*",
-                                                                      "keep *_reducedEgamma_reduced*Clusters_*",
-                                                                      "keep *_reducedEgamma_*PhotonCores_*",
-                                                                      "keep *_slimmedElectrons_*_*",
-                                                                      "keep *_slimmedMuons_*_*",
-                                                                      "keep *_slimmedMETs_*_*",
-                                                                      "keep *_slimmedTaus_*_*",
-                                                                      "keep *_fixedGridRhoAll_*_*",
-								      "keep *_prunedGenParticles_*_FLASHggMicroAOD"
-                                                                     )
+process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFile.root'),
+                               outputCommands = microAODDefaultOutputCommand
                                )
 
 process.out.outputCommands.append("keep *_eventCount_*_*")
@@ -71,13 +52,15 @@ process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string("tree.root")
 )
 
-process.p = cms.Path((process.flashggVertexMapUnique+process.flashggVertexMapNonUnique+process.flashggPrunedGenParticles)*
-                     process.flashggPhotons*
-                     process.flashggDiPhotons*
-                     process.flashggPreselectedDiPhotons*
-                     process.flashggJets*
-		     process.flashggElectrons*	
-                     process.commissioning
-                    )
+process.p = cms.Path(process.eventCount+
+                     ((process.flashggVertexMapUnique+process.flashggVertexMapNonUnique+process.flashggPrunedGenParticles)*
+                      process.flashggPhotons*
+                      process.flashggDiPhotons*
+                      process.flashggPreselectedDiPhotons*
+                      process.flashggJets*
+                      process.flashggElectrons*
+                      process.commissioning
+                      )
+                     )
 
 process.e = cms.EndPath(process.out)
