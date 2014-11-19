@@ -317,7 +317,10 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		//if(tthleptonictag == NULL) std::cout << "NOT TTHleptonic" <<std::endl;                                                                                            
 
                 if(tthleptonictag != NULL) {
-		  std::cout << "[TTHleptonic] Category " << tthleptonictag->getCategoryNumber() <<std::endl;
+		  std::cout << "[TTHleptonic] Category " << tthleptonictag->getCategoryNumber() 
+			    << " nelectrons=" << tthleptonictag->getElectrons().size() 
+			    << " nmuons=" << tthleptonictag->getMuons().size() 
+			    << std::endl;
 		}
 
 		// IMPORTANT: All future Tags must be added in the way of untagged and vbftag.	

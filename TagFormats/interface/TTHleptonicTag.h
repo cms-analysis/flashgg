@@ -33,7 +33,7 @@ namespace flashgg {
 			edm::PtrVector<Electron> Electrons_;
 			edm::PtrVector<Jet> Jets_;
 			edm::PtrVector<Jet> BJets_;
-  	}
+  	};
 } 
 
 #endif 
