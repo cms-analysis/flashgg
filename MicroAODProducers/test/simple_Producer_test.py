@@ -10,7 +10,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( -1 ) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 3000 ) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to work: disable all warnings for now
 # process.MessageLogger.suppressWarning.extend(['SimpleMemoryCheck','MemoryCheck']) # this would have been better...
