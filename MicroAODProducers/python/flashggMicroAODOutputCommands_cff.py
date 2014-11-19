@@ -11,5 +11,7 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep *_slimmedMETs_*_*",
                                                      "keep *_slimmedTaus_*_*",
                                                      "keep *_fixedGridRhoAll_*_*",
-                                                     "keep *_offlineBeamSpot_*_*"
+                                                     "keep *_offlineBeamSpot_*_*",
+                                                     "keep *_TriggerResults_*_*",
+                                                     
                                                      )

@@ -88,7 +88,7 @@ parser = OptionParser(option_list=[
                     default=False,
                     help="prepare configuration for pilot job. default: %default"),
         make_option("--load",  # special option to load whole configuaration from JSON
-                    action="callback",callback=Load(),dest="__opt__",
+                    action="callback",callback=Load(),dest="__opts__",
                     type="string",
                     help="load JSON file with configuration",metavar="CONFIG.json"
                     ),
@@ -213,7 +213,7 @@ if options.createCrabConfig:
                         "DATASET"         : sample,
                         "UNITSPERJOB"     : str(options.unitsPerJob),
                         "FLASHGG_VERSION" : "%s-%s-v%d" % (options.campaign,flashggVersion, itry),
-                        "PROCESSED_DATASET" : label,
+                        "PROCESSED_DSET"  : label,
                         "SPLITTING"       : "FileBased",
                         "OUTLFN"          : "%s/%s/%s" % (options.outputPath,options.campaign,flashggVersion),
                         "OUTSITE"         : options.outputSite

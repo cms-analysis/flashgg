@@ -26,6 +26,7 @@
  <class name="edm::Wrapper<std::vector<flashgg::Jet> >"/>
  <class name="flashgg::Electron"/>
  <class name="edm::Ptr<flashgg::Electron>"/>
+ <class name="edm::PtrVector<flashgg::Electron>"/>
  <class name="std::vector<flashgg::Electron>"/>
  <class name="edm::Wrapper<std::vector<flashgg::Electron> >"/>
 </lcgdict>
