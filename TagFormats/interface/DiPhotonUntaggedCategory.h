@@ -5,31 +5,16 @@ namespace flashgg {
   class DiPhotonUntaggedCategory: public DiPhotonTagBase {
   public:
     DiPhotonUntaggedCategory();
-    //    ~DiPhotonUntaggedCategory();
-  //  DiPhotonUntaggedCategory(const DiPhotonUntaggedCategory&);
-    DiPhotonUntaggedCategory(edm::Ptr<DiPhotonCandidate> dipho,edm::Ptr<DiPhotonMVAResult> mvares);
-    DiPhotonUntaggedCategory(edm::Ptr<DiPhotonCandidate>,edm::Ptr<DiPhotonMVAResult>, int);
-    void setCategoryNumber(int n) { category_number_ = n; }
-    int getCategoryNumber() const { return category_number_; }
-   
-	/* void setVtxProb(float n) { vtxprob_ = n; }
-    float getVtxProb() const { return vtxprob_; }
-    void setSigmaMrvoM(float n) { sigmaMrvoM_ = n; }
-    float getSigmaMrvoM() const { return sigmaMrvoM_; }
-    void setSigmaMwvoM(float n) { sigmaMwvoM_ = n; }
-    float getSigmaMwvoM() const { return sigmaMwvoM_; }
-    void setDiphoMva(float n) { dipho_mva_ = n; }
-    float getDiphoMva() const { return dipho_mva_; }*/
+    ~DiPhotonUntaggedCategory();
 
-	//	DiPhotonMVAResult getDiPhoMVAResult() const {return dipho_mva_res_;}// doesn't work for some reason
-	//	void setDiPhoMVAResult(edm::Ptr<DiPhotonMVAResult> x) {dipho_mva_res_ = *x; sigmaMrvoM_ = x->sigmarv;}
-	//	DiPhotonMVAResult dipho_mva_res_;
+    DiPhotonUntaggedCategory(edm::Ptr<DiPhotonCandidate>,DiPhotonMVAResult);
+    DiPhotonUntaggedCategory(edm::Ptr<DiPhotonCandidate>,edm::Ptr<DiPhotonMVAResult>);
+    virtual DiPhotonUntaggedCategory* clone() const;
+
+
 	private:
-		int category_number_;
-//		float vtxprob_; 
-//		float dipho_mva_; 
-//		float sigmaMrvoM_;
-//		float sigmaMwvoM_;
+
+
 
 	};
 }

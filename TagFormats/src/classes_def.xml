@@ -35,4 +35,7 @@
 <class name="std::vector<flashgg::TTHhadronicTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TTHhadronicTag> >"/>
 <class name="std::vector<edm::Ptr<flashgg::Jet> >"/>
+<class name="edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> >" />
+<class name="edm::Wrapper<edm::OwnVector<flashgg::DiPhotonTagBase,                                                                                                                
+                                               edm::ClonePolicy<flashgg::DiPhotonTagBase> > >" />
 </lcgdict>

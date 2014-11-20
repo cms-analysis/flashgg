@@ -33,9 +33,6 @@ namespace flashgg {
 			EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
 			EDGetTokenT<View<Jet> > thejetToken_;
 			EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
-
-			float njets_btagloose_;
-			float njets_btagmedium_;
 	};
 
 	TTHhadronicTagProducer::TTHhadronicTagProducer(const ParameterSet & iConfig) :
@@ -47,8 +44,6 @@ namespace flashgg {
 
 	{
 		produces<vector<TTHhadronicTag> >();
-		njets_btagloose_ = 0.;
-		njets_btagmedium_ = 0.;  
 	}
 
 	void TTHhadronicTagProducer::produce( Event & evt, const EventSetup & ){
@@ -72,7 +67,6 @@ namespace flashgg {
 		for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoIndex++ ){
 
 			int jetcount = 0; 
-			bool photonselection = 0;	
 			int njets_btagloose = 0;
 			int njets_btagmedium = 0;
 
@@ -84,8 +78,6 @@ namespace flashgg {
 
 			if(dipho->leadingPhoton()->pt() < (60*(dipho->mass()))/120. && dipho->subLeadingPhoton()->pt() < 25. && dipho->subLeadingPhoton()->pt() < 33.) continue;	
 			if(mvares->getMVAValue() < .2)continue;
-
-			photonselection = true;
 
 			for (unsigned int jetIndex =0; jetIndex < jetPointers.size() ; jetIndex++){
 				edm::Ptr<flashgg::Jet> thejet = jetPointers[jetIndex];
@@ -120,20 +112,12 @@ namespace flashgg {
 				}
 			}
 
-			njets_btagloose_ = njets_btagloose;
+			if(njets_btagmedium > 0 && jetcount >= 5) {
 
-			njets_btagmedium_ = njets_btagmedium;
-
-//			std::cout << jetcount << njets_btagmedium << photonselection << std::endl;
-
-			if(njets_btagmedium > 0 && jetcount >= 5 && photonselection){
-
-				TTHhadronicTag tthhtags_obj(JetVect,BJetVect);
-
-				tthhtags_obj.btagloose = njets_btagloose_;
-
-				tthhtags_obj.btagmedium = njets_btagmedium_;
-
+				TTHhadronicTag tthhtags_obj(dipho,mvares,JetVect,BJetVect);
+				tthhtags_obj.setNBLoose(njets_btagloose);
+				tthhtags_obj.setNBMedium(njets_btagmedium);
+				tthhtags_obj.setDiPhotonIndex(diphoIndex);
 				tthhtags->push_back(tthhtags_obj);
 
 			}

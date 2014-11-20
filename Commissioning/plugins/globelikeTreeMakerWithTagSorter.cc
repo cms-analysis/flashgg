@@ -35,6 +35,9 @@
 #include "flashgg/TagFormats/interface/VBFTag.h"
 #include "flashgg/TagFormats/interface/DiPhotonUntaggedCategory.h"
 #include "flashgg/TagFormats/interface/DiPhotonTagBase.h"
+#include "flashgg/TagFormats/interface/TTHhadronicTag.h"
+#include "flashgg/TagFormats/interface/TTHleptonicTag.h"
+
 
 #include "TMath.h"
 #include "TTree.h"
@@ -189,8 +192,9 @@ class FlashggTreeMakerWithTagSorter : public edm::EDAnalyzer {
 		Int_t flash_Untagged_Category;
 		Int_t flash_VBFTag_Category;
 
+
 		edm::EDGetTokenT<edm::View<flashgg::Photon> >            photonToken_; // SCZ work-in-progress adding this!
-		edm::EDGetTokenT<edm::Ptr<flashgg::DiPhotonTagBase> > TagSorterToken_;
+		edm::EDGetTokenT<edm::OwnVector<flashgg::DiPhotonTagBase> > TagSorterToken_;
 };
 
 // ******************************************************************************************
@@ -216,7 +220,7 @@ FlashggTreeMakerWithTagSorter::FlashggTreeMakerWithTagSorter(const edm::Paramete
 	diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
 	METToken_(consumes<View<pat::MET> >(iConfig.getUntrackedParameter<InputTag> ("METTag", InputTag("slimmedMETs")))),
 	PileUpToken_(consumes<View<PileupSummaryInfo> >(iConfig.getUntrackedParameter<InputTag> ("PileUpTag", InputTag("addPileupInfo")))),
-	TagSorterToken_(consumes<edm::Ptr<flashgg::DiPhotonTagBase> >(iConfig.getUntrackedParameter<InputTag> ("TagSorter", InputTag("flashggTagSorter"))))
+	TagSorterToken_(consumes<edm::OwnVector<flashgg::DiPhotonTagBase> >(iConfig.getUntrackedParameter<InputTag> ("TagSorter", InputTag("flashggTagSorter"))))
 {
 	rhoFixedGrid_ = iConfig.getParameter<edm::InputTag>("rhoFixedGridCollection");
 }
@@ -266,8 +270,9 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 	iEvent.getByLabel(rhoFixedGrid_, rhoHandle );
 
 	//Slightly unusal way of accessing selected Tag from TagSorter, since a pointer is saved rather than a vector.
-	Handle<edm::Ptr<flashgg::DiPhotonTagBase> > TagSorter;
+	Handle<edm::OwnVector<flashgg::DiPhotonTagBase> > TagSorter;
 	iEvent.getByToken(TagSorterToken_,TagSorter);
+	//	std::cout << " TagSorter->get() = " << TagSorter->get() << std::endl;
 
 	flash_Untagged_Category= -1; // so that there is at least some value to fill even if not part of category
 	flash_VBFTag_Category =-1;// so that there is at least some value to fill even if untagged
@@ -276,12 +281,14 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 	//-----------> Determine if there is a Tag, and select it! This givens diPhoton candIndex
 
 	int candIndex = -1; // now given as the index of the diPhoton par selected by the tag.
-	if (TagSorter->get() ) //make sure TagSorter is not a null pointer
+	if (TagSorter.product()->size() > 0 ) //make sure TagSorter is not a null pointer
 	{
 
-		candIndex = (TagSorter->get())->getDiPhotonIndex(); //should exist regardless of tag type.
+		const flashgg::DiPhotonTagBase* chosenTag = &*(TagSorter.product()->begin());
 
-		const	DiPhotonUntaggedCategory *untagged = dynamic_cast<const DiPhotonUntaggedCategory*>(TagSorter->get());
+		candIndex = (chosenTag->getDiPhotonIndex()); //should exist regardless of tag type.
+
+		const	DiPhotonUntaggedCategory *untagged = dynamic_cast<const DiPhotonUntaggedCategory*>(chosenTag);
 
 		//if(untagged == NULL) std::cout << "NOT UNTAGGED" <<std::endl;
 		if(untagged != NULL) {
@@ -290,8 +297,8 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 			//	hasTag=1;
 		}
 
-		const	VBFTag *vbftag = dynamic_cast<const VBFTag*>(TagSorter->get());
-		//	if(vbftag == NULL) std::cout << "NOT VBF" <<std::endl;
+		const	VBFTag *vbftag = dynamic_cast<const VBFTag*>(chosenTag);
+		//if(vbftag == NULL) std::cout << "NOT VBF" <<std::endl;
 		if(vbftag != NULL) {
 			std::cout << "[VBF] Category " << vbftag->getCategoryNumber() <<std::endl;
 			flash_VBFTag_Category =vbftag->getCategoryNumber() ;
@@ -300,8 +307,27 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 			//	std::cout << "VBF sublead Jet phi" <<vbftag->leadingJet().phi() <<std::endl;
 		}
 
+                const   TTHhadronicTag *tthhadronictag = dynamic_cast<const TTHhadronicTag*>(chosenTag);
+                //if(tthhadronictag == NULL) std::cout << "NOT TTHhadronic" <<std::endl;                                                                                                             
+                if(tthhadronictag != NULL) {
+		  std::cout << "[TTHhadronic] Category " << tthhadronictag->getCategoryNumber() <<std::endl;
+                }
+
+                const   TTHleptonicTag *tthleptonictag = dynamic_cast<const TTHleptonicTag*>(chosenTag);
+		//if(tthleptonictag == NULL) std::cout << "NOT TTHleptonic" <<std::endl;                                                                                            
+
+                if(tthleptonictag != NULL) {
+		  std::cout << "[TTHleptonic] Category " << tthleptonictag->getCategoryNumber() 
+			    << " nelectrons=" << tthleptonictag->getElectrons().size() 
+			    << " nmuons=" << tthleptonictag->getMuons().size() 
+			    << std::endl;
+		}
+
 		// IMPORTANT: All future Tags must be added in the way of untagged and vbftag.	
 
+		if (untagged == NULL && vbftag == NULL && tthhadronictag == NULL && tthleptonictag == NULL ) {
+		  std::cout << "[FAILED TO CONVERT TAG] with SumPt " << chosenTag->getSumPt() << std::endl;
+		}
 
 
 		//--------------> Tag selected, now fill tree with relevant properties!
@@ -346,6 +372,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		//-----> rho = energy density
 		rho = *(rhoHandle.product());
 
+
 		//------> weights and PU and gen vertex and match information 
 		genmatch1= 0;
 		genmatch2= 0;
@@ -370,6 +397,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 					pu_n = PileupInfoPointers[PVI]->getPU_NumInteractions();
 				}
 			}
+
 			// gen vertex location
 			for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++){
 				if( gens[genLoop]->pdgId() == 25) { //might need to be changed for background MC samples...
@@ -381,13 +409,15 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 				break;
 			}
 
+
 			// gen match leading pho 
 			for(unsigned int ip=0;ip<gens.size();++ip) {
+			  //			  std::cout << "GMLP " << gens[ip]->status() << " "  << gens[ip]->pdgId() << " " << gens[ip]->mother(0) << std::endl;
 				if( gens[ip]->status() != 1 || gens[ip]->pdgId() != 22 ) {
 					continue;
 				}
 				if( diPhotonPointers[candIndex]->leadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->leadingPhoton()->eta()) > 3. ) { continue; }
-				if( gens[ip]->motherRef(0)->pdgId() <= 25 ) {
+				if (gens[ip]->mother(0) != NULL && gens[ip]->mother(0)->pdgId() <= 25) {
 					float deta =  diPhotonPointers[candIndex]->leadingPhoton()->eta() - gens[ip]->eta();
 					float dphi =  diPhotonPointers[candIndex]->leadingPhoton()->phi() - gens[ip]->phi();
 					float dr = sqrt(deta*deta + dphi*dphi);
@@ -401,11 +431,12 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 
 			// gen match subleading pho
 			for(unsigned int ip=0;ip<gens.size();++ip) {
+			  //			  std::cout << "GMSLP " << gens[ip]->status() << " "  << gens[ip]->pdgId() << " " << gens[ip]->mother(0) << std::endl;
 				if( gens[ip]->status() != 1 || gens[ip]->pdgId() != 22 ) {
 					continue;
 				}
 				if( diPhotonPointers[candIndex]->subLeadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->subLeadingPhoton()->eta()) > 3. ) { continue; }
-				if( gens[ip]->motherRef(0)->pdgId() <= 25 ) {
+				if ( gens[ip]->mother(0) != NULL && gens[ip]->mother(0)->pdgId() <= 25) {
 					float deta =  diPhotonPointers[candIndex]->subLeadingPhoton()->eta() - gens[ip]->eta();
 					float dphi =  diPhotonPointers[candIndex]->subLeadingPhoton()->phi() - gens[ip]->phi();
 					float dr = sqrt(deta*deta + dphi*dphi);
@@ -567,10 +598,9 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 			bdt_combined= vbftag->VBFDiPhoDiJetMVA().vbfDiPhoDiJetMvaResult;
 		}
 
-
-		sigmaMrvoM = (TagSorter->get())->diPhotonMVA().sigmarv;
-		sigmaMwvoM =(TagSorter->get())->diPhotonMVA().sigmawv;
-		vtxprob =(TagSorter->get())->diPhotonMVA().vtxprob;
+		sigmaMrvoM = chosenTag->diPhotonMVA().sigmarv;
+		sigmaMwvoM =chosenTag->diPhotonMVA().sigmawv;
+		vtxprob =chosenTag->diPhotonMVA().vtxprob;
 		ptbal = diPhotonPointers[candIndex]->getPtBal();
 		ptasym = diPhotonPointers[candIndex]->getPtAsym();
 		logspt2 = diPhotonPointers[candIndex]->getLogSumPt2();
@@ -578,15 +608,15 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		nconv = diPhotonPointers[candIndex]->getNConv(); 
 		vtxmva = diPhotonPointers[candIndex]->getVtxProbMVA();
 		vtxdz = diPhotonPointers[candIndex]->getDZ1(); 
-		dipho_mva = (TagSorter->get())->diPhotonMVA().getMVAValue();
+		dipho_mva = chosenTag->diPhotonMVA().getMVAValue();
 
 		dipho_mva_cat = flash_Untagged_Category;		
 
-
 		flashggTreeWithTagSorter->Fill(); 
-	} else { //case where TagSorter->get() is a null pointer
+	} else { //case where TagSorter[0] doesn't exist
 		std::cout << "[NO TAG]" <<std::endl;
 	}
+
 }
 	void 
 FlashggTreeMakerWithTagSorter::beginJob()
