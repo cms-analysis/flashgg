@@ -22,7 +22,9 @@
     
   }
   
-  TFile f("/afs/cern.ch/user/c/carrillo/flashgg/CMSSW_7_0_7_patch1/src/flashgg/MicroAODProducers/test/myOutputFile.root");
+  //  TFile f("/afs/cern.ch/user/c/carrillo/flashgg/CMSSW_7_0_7_patch1/src/flashgg/MicroAODProducers/test/myOutputFile.root");
+  //  TFile f("/afs/cern.ch/user/c/carrillo/my_production_microAOD_hlt/output.root");
+  TFile f("/afs/cern.ch/user/c/carrillo/eoscarrillo/low_mass_hlt/output125.root");
   //TFile f("/tmp/carrillo/myOutputFileBig.root");
   TTree *Events = f.Get("Events");
   //Events->Print();
@@ -36,7 +38,9 @@
 #include "flashgg/MicroAODFormats/interface/DiphotonCandidate.h"  
 #include "flashgg/MicroAODFormats/interface/Photon.h"  
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+#include "DataFormats/Candidate/interface/Candidate.h"
 #endif
   
   gStyle->SetOptStat(0);
@@ -122,102 +126,100 @@
 
   unsigned int count=0;
 
-  for( ev.toBegin(); ! ev.atEnd() && count<=100000; ++ev) {
+  for( ev.toBegin(); ! ev.atEnd(); ++ev) {
     count++;
     cout<<count<<endl;
    
-    fwlite::Handle<vector<flashgg::Photon> > objs_pho;
-    fwlite::Handle<vector<flashgg::DiPhotonCandidate> > objs_dipho;
-    fwlite::Handle<vector<reco::Vertex> > objs_vertex;
     fwlite::Handle<vector<reco::GenParticle> > objs_genpart;   
     fwlite::Handle<edm::TriggerResults> hTriggerResults;
     
-    hTriggerResults.getByLabel(ev,"TriggerResults","","HLT");
+    hTriggerResults.getByLabel(ev,"TriggerResults","","TEST");
     edm::TriggerNames const&  triggerNames = ev.triggerNames(*hTriggerResults);
     vector<std::string> const& names = triggerNames.triggerNames();
     if(count==1){
       for (unsigned index = 0; index < triggerNames.size(); ++index) {
 	cout << index << " " << triggerNames.triggerName(index) << " "<< hTriggerResults->accept(index)<<endl;
       }
-      std::cout << "size = " << triggerNames.size() << std::endl;
+      cout << "size = " << triggerNames.size() << endl;
     }
-    objs_pho.getByLabel(ev,"flashggPhotons");
-    objs_dipho.getByLabel(ev,"flashggDiPhotons");
-    objs_vertex.getByLabel(ev,"offlineSlimmedPrimaryVertices"); 
-    objs_genpart.getByLabel(ev,"flashggPrunedGenParticles"); 
+
+    //vector<reco::GenParticle>      "genParticles"             ""        "SIM"          recoGenParticles_genParticles__SIM
+
+    objs_genpart.getByLabel(ev,"genParticles"); 
     
     vector<reco::GenParticle> const & genpart = *objs_genpart;
     
     float z_higgs=0;
+    int iHiggs=0;
+    int lead_pho=0;
+    int subLead_pho=0;
     for (int i=0; i < objs_genpart.ptr()->size();i++ ){
-      if(genpart[i].pdgId() == 25) z_higgs = genpart[i].vz();
+      if(genpart[i].pdgId() == 22){
+	iHiggs=i;
+	z_higgs = genpart[i].vz();
+	if(genpart[i].mother()->pdgId()==25){
+	  cout<<"found higgs mother"<<endl;
+
+	  cout<<"iPhoton:"<<i<<" photon pt:"<<genpart[i].pt()<<" mother:"<<genpart[i].mother()->pdgId()<<endl;
+	  if(lead_pho==0&&subLead_pho==0)lead_pho=i;
+	  else{
+	    if(lead_pho!=0&&subLead_pho==0)subLead_pho=i;
+	  }
+	}
+      }
     }
     
-    int sel_i=1000;
-    vector<flashgg::DiPhotonCandidate> const & dipho = *objs_dipho;
-    float min_z=999;
-    for (int k=0; k < objs_dipho.ptr()->size();k++ ){
-      if(fabs(dipho[k].getVertex()->position().z()-z_higgs)<min_z) sel_i=k;
-    }
-    
-    if(sel_i==1000){
-      cout<<"No Diphoton reconstructed in this event"<<endl;
-      continue;
-    }
+    cout<<"lead_pho="<<lead_pho<<" subLead_pho="<<subLead_pho<<endl;
+
+    float mass=genpart[lead_pho].mother()->mass();
+    float phi=genpart[lead_pho].mother()->phi();
+    float p=genpart[lead_pho].mother()->p();
+    float pt=genpart[lead_pho].mother()->pt();
+    float eta=genpart[lead_pho].mother()->eta();
 
     bool preselection=
-      !((fabs(dipho[sel_i].leadingPhoton()->eta())>1.4442&&fabs(dipho[sel_i].leadingPhoton()->eta())<1.5660)
-	||(fabs(dipho[sel_i].subLeadingPhoton()->eta())>1.4442&&fabs(dipho[sel_i].subLeadingPhoton()->eta())<1.5660))
-      &&dipho[sel_i].leadingPhoton()->pt()>dipho[sel_i].mass()/3
-      &&dipho[sel_i].subLeadingPhoton()->pt()>dipho[sel_i].mass()/4;
+      !((fabs(genpart[lead_pho].eta())>1.4442&&fabs(genpart[lead_pho].eta())<1.5660)
+	||(fabs(genpart[subLead_pho].eta())>1.4442&&fabs(genpart[subLead_pho].eta())<1.5660))
+      &&fabs(genpart[lead_pho].eta())<2.5&&fabs(genpart[subLead_pho].eta())<2.5
+      &&genpart[lead_pho].pt()>mass/3
+      &&genpart[subLead_pho].pt()>mass/4;
     
-    bool hlt = (hTriggerResults->accept(210)||hTriggerResults->accept(210));
+    bool hlt = (hTriggerResults->accept(1)||hTriggerResults->accept(3));
 
-    cut[0]=true; //all minitree level plots for reference, no cuts
-    cut[1]=preselection&&(dipho[sel_i].leadingPhoton()->isEB()&&dipho[sel_i].leadingPhoton()->isEB()
-			  &&dipho[sel_i].leadingPhoton()->r9()>0.94&&dipho[sel_i].subLeadingPhoton()->r9()>0.94);
+    cut[0]=true; //all minitree level plots for reference, no cuts                                                                                                        
+    cut[1]=preselection;
     cut[2]=cut[1]&&hlt;
-    cut[3]=preselection&&(dipho[sel_i].leadingPhoton()->isEB()&&dipho[sel_i].leadingPhoton()->isEB()&&
-			  (dipho[sel_i].leadingPhoton()->r9()<0.94||dipho[sel_i].subLeadingPhoton()->r9()<0.94));
-    cut[4]=cut[3]&&hlt;
-    cut[5]=preselection&&(dipho[sel_i].leadingPhoton()->isEE()||dipho[sel_i].leadingPhoton()->isEE()&&
-			  (dipho[sel_i].leadingPhoton()->r9()>0.94&&dipho[sel_i].subLeadingPhoton()->r9()>0.94));
-    cut[6]=cut[5]&&hlt;
-    cut[7]=preselection&&(dipho[sel_i].leadingPhoton()->isEE()||dipho[sel_i].leadingPhoton()->isEE()&&
-			  (dipho[sel_i].leadingPhoton()->r9()<0.94||dipho[sel_i].subLeadingPhoton()->r9()<.94));
-    cut[8]=cut[7]&&hlt;
     
+    cut[3]=preselection&&(fabs(genpart[lead_pho].eta())<1.5&&fabs(genpart[subLead_pho].eta())<1.5);
+    cut[4]=cut[3]&&hlt;
+
+    cut[5]=preselection&&(fabs(genpart[lead_pho].eta())<1.5||fabs(genpart[subLead_pho].eta())<1.5);
+    cut[6]=cut[5]&&hlt;
+
+    cut[7]=preselection&&(fabs(genpart[lead_pho].eta())>1.5&&fabs(genpart[subLead_pho].eta())>1.5);
+    cut[8]=cut[7]&&hlt;
+
     for(cut_index=0;cut_index<9  ;cut_index++){ //Loop over the different histograms                                                               
       if(cut[cut_index]){ //all hitograms below will be filled up if the boolean is true.                                                             
 	cutflow->Fill(cut_index);
-	phi1phi2[cut_index]->Fill(dipho[sel_i].leadingPhoton()->phi(),dipho[sel_i].subLeadingPhoton()->phi());
-	eta1eta2[cut_index]->Fill(dipho[sel_i].leadingPhoton()->eta(),dipho[sel_i].subLeadingPhoton()->eta());
-	pt1pt2[cut_index]->Fill(dipho[sel_i].leadingPhoton()->pt(),dipho[sel_i].subLeadingPhoton()->pt());
-	pt1pt2Norm[cut_index]->Fill(dipho[sel_i].leadingPhoton()->pt()/dipho[sel_i].mass(),dipho[sel_i].subLeadingPhoton()->pt()/dipho[sel_i].mass());
-	pt1pt2Zoom[cut_index]->Fill(dipho[sel_i].leadingPhoton()->pt()/dipho[sel_i].mass(),dipho[sel_i].subLeadingPhoton()->pt()/dipho[sel_i].mass());
-	wide_pt1pt2[cut_index]->Fill(dipho[sel_i].leadingPhoton()->pt(),dipho[sel_i].subLeadingPhoton()->pt());
-	higgsEta[cut_index]->Fill(dipho[sel_i].eta());
-	higgsPhi[cut_index]->Fill(dipho[sel_i].phi());
-	higgsP[cut_index]->Fill(dipho[sel_i].p());                                                                      
-	higgsPt[cut_index]->Fill(dipho[sel_i].pt());
-	ptLead[cut_index]->Fill(dipho[sel_i].leadingPhoton()->pt());
-	ptTrail[cut_index]->Fill(dipho[sel_i].subLeadingPhoton()->pt());
-	ptLeadNorm[cut_index]->Fill(dipho[sel_i].leadingPhoton()->pt()/dipho[sel_i].mass());
-	ptTrailNorm[cut_index]->Fill(dipho[sel_i].subLeadingPhoton()->pt()/dipho[sel_i].mass());
-	massHiggshisto[cut_index]->Fill(dipho[sel_i].mass());
-	massDiphotonhisto[cut_index]->Fill(dipho[sel_i].mass());
+
+	phi1phi2[cut_index]->Fill(genpart[lead_pho].phi(),genpart[subLead_pho].phi());
+        eta1eta2[cut_index]->Fill(genpart[lead_pho].eta(),genpart[subLead_pho].eta());
+        pt1pt2[cut_index]->Fill(genpart[lead_pho].pt(),genpart[subLead_pho].pt());
+        pt1pt2Norm[cut_index]->Fill(genpart[lead_pho].pt()/mass,genpart[subLead_pho].pt()/mass);
+        pt1pt2Zoom[cut_index]->Fill(genpart[lead_pho].pt()/mass,genpart[subLead_pho].pt()/mass);
+        wide_pt1pt2[cut_index]->Fill(genpart[lead_pho].pt(),genpart[subLead_pho].pt());
+        higgsEta[cut_index]->Fill(eta);
+        higgsPhi[cut_index]->Fill(phi);
+        higgsP[cut_index]->Fill(p);
+        higgsPt[cut_index]->Fill(pt);
+        ptLead[cut_index]->Fill(genpart[lead_pho].pt());
+        ptTrail[cut_index]->Fill(genpart[subLead_pho].pt());
+        ptLeadNorm[cut_index]->Fill(genpart[lead_pho].pt()/mass);
+        ptTrailNorm[cut_index]->Fill(genpart[subLead_pho].pt()/mass);
+        massHiggshisto[cut_index]->Fill(mass);
+        massDiphotonhisto[cut_index]->Fill(mass);
 	
-	diphoton_LeadR9[cut_index]->Fill(dipho[sel_i].leadingPhoton()->r9());
-	diphoton_SubLeadR9[cut_index]->Fill(dipho[sel_i].subLeadingPhoton()->r9());
-	
-	//diphoton_LeadTrkIso03[cut_index]->Fill(dipho[sel_i].leadingPhoton()->TrkIso03);
-	//diphotonsubLeadTrkIso03[cut_index]->Fill(dipho[sel_i].subLeadingPhoton()->SubLeadTrkIso03);
-	
-	//diphoton_LeadHcalIso03[cut_index]->Fill(dipho[sel_i].leadingPhoton()->HcalIso03);
-	//diphotonsubLeadHcalIso03[cut_index]->Fill(dipho[sel_i].subLeadingPhoton()->HcalIso03);
-	
-	//diphoton_Leadpfiso02[cut_index]->Fill(dipho[sel_i].leadingPhoton()->pfiso02);
-	//diphotonsubLeadpfiso02[cut_index]->Fill(dipho[sel_i].subLeadingPhoton()->pfiso02);
       }
     }
   }
