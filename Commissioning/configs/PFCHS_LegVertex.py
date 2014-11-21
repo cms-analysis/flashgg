@@ -117,11 +117,7 @@ process.flashggTagSorter = cms.EDProducer('FlashggTagSorter',
 
 		)
 
-<<<<<<< HEAD
 process.TFileService = cms.Service("TFileService",fileName = cms.string("regular_tree.root"))
-=======
-process.TFileService = cms.Service("TFileService",fileName = cms.string("flashggTreeWithTags.root"))
->>>>>>>  debugging seg fault in CHSLegacyVertexCanProducer.cc
 
 process.flashggTreeMakerWithTagSorter = cms.EDAnalyzer('FlashggFlashggTreeMakerWithTagSorter',
 		VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
