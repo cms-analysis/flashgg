@@ -31,6 +31,7 @@ namespace flashgg {
     EDGetTokenT< VertexCandidateMap > vertexCandidateMapToken_;
     unique_ptr<PileupJetIdAlgo>  pileupJetIdAlgo_;
     ParameterSet pileupJetIdParameters_;
+		 bool usePuppi;
     //    bool useAODOnlyPileupJetIdMethod_;
     double minJetPt_; // GeV
   };
@@ -43,6 +44,7 @@ namespace flashgg {
     vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
     pileupJetIdParameters_(iConfig.getParameter<ParameterSet>("PileupJetIdParameters")),
     minJetPt_(iConfig.getUntrackedParameter<double>("MinJetPt",0.))
+		usePuppi(iConfig.getUntrackedParameter<bool>("UsePuppi",false))
   {
     pileupJetIdAlgo_.reset(new PileupJetIdAlgo(pileupJetIdParameters_));
 
@@ -88,6 +90,12 @@ namespace flashgg {
       if (pvPointers.size() > 0 && !fjet.hasPuJetId(pvPointers[0])) {
 	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),pvPointers[0],*vertexCandidateMap,true);
 	fjet.setPuJetId(pvPointers[0],lPUJetId);
+	// Method written just for MiniAOD --> MicroAOD
+
+	if(!usePuppi){
+  PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),vtx,*vertexCandidateMap,true);
+	fjet.setPuJetId(vtx,lPUJetId);
+	}
       }
       jetColl->push_back(fjet);
     }
