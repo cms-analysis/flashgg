@@ -6,10 +6,11 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 
 # Input source
 process.source = cms.Source("PoolSource",
-			fileNames=cms.untracked.vstring("file:/afs/cern.ch/work/l/lcorpe/private/FLASHgg/CMSSW_7_0_7_patch1/src/flashgg/CE926731-9607-E411-B0BA-001E67248A1B.root")
+			#fileNames=cms.untracked.vstring("file:/afs/cern.ch/work/l/lcorpe/private/FLASHgg/CMSSW_7_0_7_patch1/src/flashgg/CE926731-9607-E411-B0BA-001E67248A1B.root")
+			fileNames=cms.untracked.vstring("/store/mc/Spring14miniaod/VBF_HToGG_M-125_13TeV-powheg-pythia6/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/CE926731-9607-E411-B0BA-001E67248A1B.root")
 		)
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(13000) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 )
 
 process.load("flashgg/MicroAODProducers/flashggVertexMaps_cfi")
@@ -116,7 +117,7 @@ process.flashggTagSorter = cms.EDProducer('FlashggTagSorter',
 
 		)
 
-process.TFileService = cms.Service("TFileService",fileName = cms.string("flashggTreeWithTags.root"))
+process.TFileService = cms.Service("TFileService",fileName = cms.string("regular_tree.root"))
 
 process.flashggTreeMakerWithTagSorter = cms.EDAnalyzer('FlashggFlashggTreeMakerWithTagSorter',
 		VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),

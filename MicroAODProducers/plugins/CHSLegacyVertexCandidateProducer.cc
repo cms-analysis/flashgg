@@ -40,8 +40,8 @@ namespace flashgg {
 		pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates")))),
 		vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag")))
 	{
- produces<vector<pat::PackedCandidate> >();
-}
+		produces<vector<pat::PackedCandidate> >();
+	}
 
 
 	void CHSLegacyVertexCandidateProducer::produce( Event & evt , const EventSetup & ) 
@@ -71,42 +71,36 @@ namespace flashgg {
 		edm::Ptr<reco::Vertex> flashVertex;
 		if (diPhotonPointers.size()==0){
 			std::cout << "[WARNING] No Diphotons in event. Using 0th Vtx for CHS PU subtraction."<< std::cout ; //replace with Error Logger at some stage, cout is not thread safe.
-			std::cout << "[DEBUG] 0 diphotons" << std::endl;
 			flashVertex = pvPtrs[0];
 		}
 		if (diPhotonPointers.size() ==1){
 			flashVertex = diPhotonPointers[0]->getVertex();
-			std::cout << "[DEBUG] 1 diphoton" << std::endl;
 		}
-		if (diPhotonPointers.size() >1){//hopefully very rare
+		if (diPhotonPointers.size() >1) { //hopefully very rare
 			flashVertex = diPhotonPointers[0]->getVertex();
-			
-			std::cout << "[DEBUG] >1 diphoton" << std::endl;
-			for (unsigned int diPhoLoop = 0; diPhoLoop< diPhotonPointers.size() ; diPhoLoop++){
-				//if( diPhotonPointers[diPhoLoop]->getVertex()->position() != flashVertex->position()){
-				if( diPhotonPointers[diPhoLoop]->getVertex() != flashVertex){ // we only have a problem if the mutliple diphotons haev different vertices...
-					std::cout <<"[WARNING] Multiple Diphotons in event, with different PVs. Using 0th Diphoton Vtx for CHS PU subtraction.";//replace with Error Logger at some stage, cout is not thread safe.
-					break;
-				}
+		}
+
+		for (unsigned int diPhoLoop = 0; diPhoLoop< diPhotonPointers.size() ; diPhoLoop++){
+			//if( diPhotonPointers[diPhoLoop]->getVertex()->position() != flashVertex->position()){
+			if( diPhotonPointers[diPhoLoop]->getVertex() != flashVertex){ // we only have a problem if the mutliple diphotons haev different vertices...
+				std::cout <<"[WARNING] Multiple Diphotons in event, with different PVs. Using 0th Diphoton Vtx for CHS PU subtraction."<< std::endl;//replace with Error Logger at some stage, cout is not thread safe.
+				break;
 			}
 		}
+		
 
 		std::auto_ptr<vector<pat::PackedCandidate> > result(new vector<pat::PackedCandidate>());
 
 
-		for(unsigned int pfCandLoop =0 ; pfCandLoop < pfPtrs.size() ; pfCandLoop++)
-		{
+		for(unsigned int pfCandLoop =0 ; pfCandLoop < pfPtrs.size() ; pfCandLoop++){
 
-			std::cout << "[DEBUG] Candidate " << pfCandLoop << " ... "  ;
 			if(pfPtrs[pfCandLoop]->charge() ==0){ //keep all neutral objects. 
-				std::cout << "is neutral: push back... "<< std::endl;
 				assert(!(pfPtrs[pfCandLoop].isNull()));
 				result->push_back(*((pfPtrs[pfCandLoop])->clone()));
-				Ptr<pat::PackedCandidate> a;
-				result->push_back(*a);
+				//	Ptr<pat::PackedCandidate> a;
+				//	result->push_back(*a);
 				continue;
 			}
-			std::cout << "is charged ..  ";
 			//other wise, if it is charged, want to check if track comes from flashggVertex
 			for (std::map<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> >::const_iterator vi = vtxmap->begin() ; vi != vtxmap->end() ; vi++) {
 				const edm::Ptr<reco::Vertex> currentVertex = (vi->first);
@@ -119,17 +113,16 @@ namespace flashgg {
 					//	if (flashVertex->position() == currentVertex->position())
 					if (flashVertex == currentVertex)
 
-			std::cout << "RIGHT vertex.. push back  "<< std::endl;
-			result->push_back(*((pfPtrs[pfCandLoop])->clone()));
+					result->push_back(*((pfPtrs[pfCandLoop])->clone()));
 				} else {
 
-			std::cout << " WRONG vertex  "<< std::endl;
 				}
 			}
 
-			evt.put(result);	
-
 		}
+		evt.put(result);	
+
+
 	}
 }
 typedef flashgg::CHSLegacyVertexCandidateProducer FlashggCHSLegacyVertexCandidateProducer;
