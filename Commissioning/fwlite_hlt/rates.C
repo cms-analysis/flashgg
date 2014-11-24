@@ -59,6 +59,7 @@
   TString name;
 
   allpaths = new TH1F ("allpaths","allpaths",N,0,N);
+  allpaths2D = new TH2F ("allpaths2D","allpaths2D",N,0,N,N,0,N);
 
   fwlite::Event ev(&f);
 
@@ -83,23 +84,31 @@
 	
 	if(index==0){
 	  allpaths->GetXaxis()->SetBinLabel(index+1,"all_events");
+	  allpaths2D->GetXaxis()->SetBinLabel(index+1,"all_events");
+	  allpaths2D->GetYaxis()->SetBinLabel(index+1,"all_events");
 	}else{
 	  allpaths->GetXaxis()->SetBinLabel(index+1,triggerNames.triggerName(index).c_str());
+	  allpaths2D->GetXaxis()->SetBinLabel(index+1,triggerNames.triggerName(index).c_str());
+	  allpaths2D->GetYaxis()->SetBinLabel(index+1,triggerNames.triggerName(index).c_str());
 	}
       }
       cout << "size = " << triggerNames.size() << endl;
     }
 
     allpaths->Fill(0);
-    for(unsigned int l=1;l<triggerNames.size();l++){
+    unsigned l,n;
+    for(l=1;l<triggerNames.size();l++){
       if(hTriggerResults->accept(l)){
 	allpaths->Fill(l);
+	for(n=1;n<triggerNames.size();n++){
+	  if(hTriggerResults->accept(n)) allpaths2D->Fill(l,n);	
+	}
       }
     }
 
     unsigned studied_bit=8;
     bool othersOR=false;
-    int pho_bits[1]={1,2};
+    int pho_bits[2]={1,2};
     
     for(l=0;l<2;l++){
       othersOR=othersOR||hTriggerResults->accept(pho_bits[l]);
@@ -142,6 +151,7 @@
   
   allpaths->SetFillColor(kRed);
   allpaths->Write();
+  allpaths2D->Write();
   
   theFileOut->Close();
   exit(0);

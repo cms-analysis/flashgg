@@ -833,7 +833,7 @@ void make_up(){
     Draw1D("diphoton_SubLeadR9","diphoton_SubLeadR9",theFile,cut1,cut2);
   }
   
-  Ca0->SetLogy();
+  //Ca0->SetLogy();
 
   cut1=0;
   cut2=1;

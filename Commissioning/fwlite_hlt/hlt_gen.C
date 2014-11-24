@@ -24,7 +24,7 @@
   
   //  TFile f("/afs/cern.ch/user/c/carrillo/flashgg/CMSSW_7_0_7_patch1/src/flashgg/MicroAODProducers/test/myOutputFile.root");
   //TFile f("/afs/cern.ch/user/c/carrillo/eoscarrillo/low_mass_hlt/output125.root");
-  TFile f("/afs/cern.ch/user/c/carrillo/eoscarrillo/low_mass_hlt/V8/outputfilelist125GeV.root");
+  TFile f("/afs/cern.ch/user/c/carrillo/eoscarrillo/low_mass_hlt/V6/outputfilelist125GeV.root");
 
   TTree *Events = f.Get("Events");
   //Events->Print();
@@ -134,7 +134,7 @@
     fwlite::Handle<edm::TriggerResults> hTriggerResults;
     
     //hTriggerResults.getByLabel(ev,"TriggerResults","","FLASHggMicroAOD");
-    hTriggerResults.getByLabel(ev,"TriggerResults","","TEST");
+    hTriggerResults.getByLabel(ev,"TriggerResults","","HLTV9");
     edm::TriggerNames const&  triggerNames = ev.triggerNames(*hTriggerResults);
     vector<std::string> const& names = triggerNames.triggerNames();
     if(count==1){
@@ -186,19 +186,20 @@
       &&genpart[lead_pho].pt()>mass/3
       &&genpart[subLead_pho].pt()>mass/4;
     
+    float eta_barrel=1.4442;
     bool hlt = (hTriggerResults->accept(1)||hTriggerResults->accept(3));
 
     cut[0]=true; //all minitree level plots for reference, no cuts                                                                                                        
     cut[1]=preselection;
     cut[2]=cut[1]&&hlt;
     
-    cut[3]=preselection&&(fabs(genpart[lead_pho].eta())<1.5&&fabs(genpart[subLead_pho].eta())<1.5);
+    cut[3]=preselection&&(fabs(genpart[lead_pho].eta())<eta_barrel&&fabs(genpart[subLead_pho].eta())<eta_barrel);
     cut[4]=cut[3]&&hlt;
 
-    cut[5]=preselection&&(fabs(genpart[lead_pho].eta())<1.5||fabs(genpart[subLead_pho].eta())<1.5);
+    cut[5]=preselection&&(fabs(genpart[lead_pho].eta())<eta_barrel||fabs(genpart[subLead_pho].eta())<eta_barrel);
     cut[6]=cut[5]&&hlt;
 
-    cut[7]=preselection&&(fabs(genpart[lead_pho].eta())>1.5&&fabs(genpart[subLead_pho].eta())>1.5);
+    cut[7]=preselection&&(fabs(genpart[lead_pho].eta())>eta_barrel&&fabs(genpart[subLead_pho].eta())>eta_barrel);
     cut[8]=cut[7]&&hlt;
 
     for(cut_index=0;cut_index<9  ;cut_index++){ //Loop over the different histograms                                                               

@@ -22,7 +22,8 @@
     
   }
   
-  TFile f("/afs/cern.ch/user/c/carrillo/eoscarrillo/low_mass_hlt/V8/outputfilelist125GeVgenparticles.root");
+  //TFile f("/afs/cern.ch/user/c/carrillo/eoscarrillo/low_mass_hlt/V8/outputfilelist125GeVgenparticles.root");
+  TFile f("/afs/cern.ch/user/c/carrillo/eoscarrillo/low_mass_hlt/V6/outputfilelist125GeV.root");
   //TFile f("/tmp/carrillo/myOutputFileBig.root");
   TTree *Events = f.Get("Events");
   //Events->Print();
@@ -132,7 +133,7 @@
     fwlite::Handle<vector<reco::GenParticle> > objs_genpart;   
     fwlite::Handle<edm::TriggerResults> hTriggerResults;
     
-    hTriggerResults.getByLabel(ev,"TriggerResults","","HLTV8");
+    hTriggerResults.getByLabel(ev,"TriggerResults","","HLTV9");
     edm::TriggerNames const&  triggerNames = ev.triggerNames(*hTriggerResults);
     vector<std::string> const& names = triggerNames.triggerNames();
     if(count==1){
@@ -144,7 +145,8 @@
     objs_pho.getByLabel(ev,"flashggPhotons");
     objs_dipho.getByLabel(ev,"flashggDiPhotons");
     objs_vertex.getByLabel(ev,"offlineSlimmedPrimaryVertices"); 
-    objs_genpart.getByLabel(ev,"flashggPrunedGenParticles"); 
+    //objs_genpart.getByLabel(ev,"flashggPrunedGenParticles"); 
+    objs_genpart.getByLabel(ev,"genParticles"); 
     
     vector<reco::GenParticle> const & genpart = *objs_genpart;
     
