@@ -43,14 +43,14 @@
   TH1F * histo_sumpt2 = new TH1F("sumpt2 in","sumpt2",100,0.,15.);
   TH1F * histo_ptbal = new TH1F("ptbal normalized","ptbal normalized",100,-200.,350.);
   TH1F * histo_ptasym = new TH1F("ptasym normalized","ptasym normalized",100,-1,1);
-  TH1F * histo_pull_conv = new TH1F("pull conv","pull conv",100,-300.,3500.);
+  TH1F * histo_pull_conv = new TH1F("pull conv","pull conv",100,0.,100.);
   TH1F * histo_vtxprobmva = new TH1F("vtxprobmva","vtxprobmva",20,-1.,1.); 
   TH1F * histo_vtxeff_hpt = new TH1F("vtxeff vs higgs pt","vtxeff vs higgs pt",100,0,250.);
 
   TH1F * histo_gen_matched_sumpt2 = new TH1F("genmatch_sumpt2","sumpt2",100,-5.,15.);
   TH1F * histo_gen_matched_ptbal = new TH1F("genmatch_ptbal_normalized","ptbal normalized",100,-200.,350.);
   TH1F * histo_gen_matched_ptasym = new TH1F("genmatch_ptasym_normalized","ptasym normalized",100,-1.,1.);
-  TH1F * histo_gen_matched_pull_conv = new TH1F("genmatch_pullconv","pull conv",100,-300.,3500.);
+  TH1F * histo_gen_matched_pull_conv = new TH1F("genmatch_pullconv","pull conv",100,0.,100.);
   TH1F * histo_gen_matched_vtxprobmva = new TH1F("genmatch_vtxprobmva","vtxprobmva",20,-1.,1.);
   TH1F * histo_gen_matched_vtxeff_hpt = new TH1F("genmatch_vtxeffVsHiggsPt","vtxeff vs higgs pt",100,0.,250.);
   
@@ -126,6 +126,26 @@
 	  histo_gen_matched_pull_conv->Fill(dipho[i].getPullConv());
         }
         histo_gen_matched_vtxprobmva->Fill(dipho[i].getVtxProbMVA());
+
+	/*
+	  if(fabs(pho->superCluster()->eta()<1.5)) {
+	  if (perp<=15.0) {
+	  //Pixel Barrel
+	  } else if  (perp>15 && perp<=60.0) {
+	  //Tracker Inner Barrel
+	  }else{
+	  //Tracker Outer Barrel
+	  }
+	  }else{
+	  if(fabs(conversion->conversionVertex().z())<=50.0){
+	  //Pixel Forward
+	  }else if(fabs(conversion->conversionVertex().z())>50.0 && fabs(conversion->conversionVertex().z())<=100.0){
+	  //Tracker Inner Disk
+	  }else{
+	  //Track EndCap
+	  }
+	*/
+
       }else{
 	histo_sumpt2->Fill(dipho[i].getLogSumPt2());
 	histo_ptbal->Fill(dipho[i].getPtBal());
@@ -138,6 +158,9 @@
     dipho.clear();
     genpart.clear();
   }
+
+  theFileOut = new TFile("output_vertex.root", "RECREATE");
+  theFileOut->cd();
 
   histo_gen_matched_sumpt2->SetLineColor(kBlue);
   histo_gen_matched_ptbal->SetLineColor(kBlue);
@@ -224,7 +247,8 @@
   histo_nconv->SetTitle("n conv."); 
   histo_nconv->GetXaxis()->SetTitle("n conv");  
   histo_nconv->Draw(); 
-
+  
+  Ca20->SetLogy();
   Ca20->SaveAs("residuals.png");
 
   TCanvas * Ca1 = new TCanvas("Ca1","Canvas",1200,800); 
@@ -261,8 +285,8 @@
   histo_ndiphotons->GetXaxis()->SetTitle("n diphotons");
   histo_ndiphotons->SetMarkerColor(kRed);
   Ca3->SaveAs("ndiphotons.png");
-
- 
+  
+  theFileOut->Close();
   exit(0);
 
 }

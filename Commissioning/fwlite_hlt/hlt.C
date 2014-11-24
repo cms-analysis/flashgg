@@ -22,7 +22,7 @@
     
   }
   
-  TFile f("/afs/cern.ch/user/c/carrillo/flashgg/CMSSW_7_0_7_patch1/src/flashgg/MicroAODProducers/test/myOutputFile.root");
+  TFile f("/afs/cern.ch/user/c/carrillo/eoscarrillo/low_mass_hlt/V8/outputfilelist125GeVgenparticles.root");
   //TFile f("/tmp/carrillo/myOutputFileBig.root");
   TTree *Events = f.Get("Events");
   //Events->Print();
@@ -132,7 +132,7 @@
     fwlite::Handle<vector<reco::GenParticle> > objs_genpart;   
     fwlite::Handle<edm::TriggerResults> hTriggerResults;
     
-    hTriggerResults.getByLabel(ev,"TriggerResults","","HLT");
+    hTriggerResults.getByLabel(ev,"TriggerResults","","HLTV8");
     edm::TriggerNames const&  triggerNames = ev.triggerNames(*hTriggerResults);
     vector<std::string> const& names = triggerNames.triggerNames();
     if(count==1){

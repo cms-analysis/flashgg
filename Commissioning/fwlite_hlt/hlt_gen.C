@@ -23,9 +23,9 @@
   }
   
   //  TFile f("/afs/cern.ch/user/c/carrillo/flashgg/CMSSW_7_0_7_patch1/src/flashgg/MicroAODProducers/test/myOutputFile.root");
-  //  TFile f("/afs/cern.ch/user/c/carrillo/my_production_microAOD_hlt/output.root");
-  TFile f("/afs/cern.ch/user/c/carrillo/eoscarrillo/low_mass_hlt/output125.root");
-  //TFile f("/tmp/carrillo/myOutputFileBig.root");
+  //TFile f("/afs/cern.ch/user/c/carrillo/eoscarrillo/low_mass_hlt/output125.root");
+  TFile f("/afs/cern.ch/user/c/carrillo/eoscarrillo/low_mass_hlt/V8/outputfilelist125GeV.root");
+
   TTree *Events = f.Get("Events");
   //Events->Print();
   Events->SetScanField(0);
@@ -133,6 +133,7 @@
     fwlite::Handle<vector<reco::GenParticle> > objs_genpart;   
     fwlite::Handle<edm::TriggerResults> hTriggerResults;
     
+    //hTriggerResults.getByLabel(ev,"TriggerResults","","FLASHggMicroAOD");
     hTriggerResults.getByLabel(ev,"TriggerResults","","TEST");
     edm::TriggerNames const&  triggerNames = ev.triggerNames(*hTriggerResults);
     vector<std::string> const& names = triggerNames.triggerNames();
@@ -145,8 +146,9 @@
 
     //vector<reco::GenParticle>      "genParticles"             ""        "SIM"          recoGenParticles_genParticles__SIM
 
-    objs_genpart.getByLabel(ev,"genParticles"); 
-    
+    //objs_genpart.getByLabel(ev,"flashggPrunedGenParticles"); 
+    objs_genpart.getByLabel(ev,"genParticles");
+
     vector<reco::GenParticle> const & genpart = *objs_genpart;
     
     float z_higgs=0;
