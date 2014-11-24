@@ -13,7 +13,7 @@
 #include "flashgg/MicroAODFormats/interface/Photon.h"
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 #include "flashgg/MicroAODAlgos/interface/PhotonIdUtils.h"
-#include "HiggsAnalysis/GBRLikelihoodEGTools/interface/EGEnergyCorrectorSemiParm.h"
+// #include "HiggsAnalysis/GBRLikelihoodEGTools/interface/EGEnergyCorrectorSemiParm.h"
 
 using namespace std;
 using namespace edm;
@@ -51,7 +51,7 @@ namespace flashgg {
     edm::FileInPath phoIdMVAweightfileEB_, phoIdMVAweightfileEE_;
     edm::FileInPath regressionWeightFile_;
 
-    EGEnergyCorrectorSemiParm corV8_;      
+    /// EGEnergyCorrectorSemiParm corV8_;      
     bool doOverlapRemovalForIsolation_, useVtx0ForNeutralIso_;
     std::vector<CaloIsoParams> extraCaloIsolations_;
   };
@@ -91,9 +91,9 @@ namespace flashgg {
 
   void PhotonProducer::produce( Event & evt, const EventSetup & iSetup) {
 
-    if (!corV8_.IsInitialized()) {
-      corV8_.Initialize(regressionWeightFile_.fullPath(),8);
-    }    
+    /// if (!corV8_.IsInitialized()) {
+    ///   corV8_.Initialize(regressionWeightFile_.fullPath(),8);
+    /// }    
     
     Handle<View<pat::Photon> > photons;
     evt.getByToken(photonToken_,photons);
@@ -118,7 +118,7 @@ namespace flashgg {
     auto_ptr<vector<flashgg::Photon> > photonColl(new vector<flashgg::Photon>);
     
     //// // this is hacky and dangerous
-    const reco::VertexCollection* orig_collection = static_cast<const reco::VertexCollection*>(vertices->product());
+    //// const reco::VertexCollection* orig_collection = static_cast<const reco::VertexCollection*>(vertices->product());
 
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
 
@@ -128,13 +128,13 @@ namespace flashgg {
 
       EcalClusterLazyTools lazyTool(evt, iSetup, ecalHitEBToken_, ecalHitEEToken_);        
 
-      double ecor, sigeovere, mean, sigma, alpha1, n1, alpha2, n2, pdfval;
-      
-      corV8_.CorrectedEnergyWithErrorV8(*pp, *orig_collection, *rhoHandle, lazyTool, iSetup,ecor, sigeovere, mean, sigma, alpha1, n1, alpha2, n2, pdfval);
-      //      printf("V8:  sceta = %5f, default = %5f, corrected = %5f, sigmaE/E = %5f, alpha1 = %5f, n1 = %5f, alpha2 = %5f, n2 = %5f, pdfval = %5f, meancb = %5f, sigmacb = %5f\n", pp->superCluster()->eta(), pp->energy(),ecor,sigeovere,alpha1,n1,alpha2,n2,pdfval,mean,sigma);
-      
-      fg.updateEnergy("regression",ecor);
-      fg.setSigEOverE(sigeovere);
+      /// double ecor, sigeovere, mean, sigma, alpha1, n1, alpha2, n2, pdfval;
+      /// 
+      /// corV8_.CorrectedEnergyWithErrorV8(*pp, *orig_collection, *rhoHandle, lazyTool, iSetup,ecor, sigeovere, mean, sigma, alpha1, n1, alpha2, n2, pdfval);
+      /// //      printf("V8:  sceta = %5f, default = %5f, corrected = %5f, sigmaE/E = %5f, alpha1 = %5f, n1 = %5f, alpha2 = %5f, n2 = %5f, pdfval = %5f, meancb = %5f, sigmacb = %5f\n", pp->superCluster()->eta(), pp->energy(),ecor,sigeovere,alpha1,n1,alpha2,n2,pdfval,mean,sigma);
+      /// 
+      /// fg.updateEnergy("regression",ecor);
+      /// fg.setSigEOverE(sigeovere);
       
       const reco::CaloClusterPtr  seed_clu = pp->superCluster()->seed();
       const reco::SuperClusterRef super_clu= pp->superCluster();
@@ -209,7 +209,7 @@ namespace flashgg {
     
     evt.put(photonColl);
 
-    orig_collection = 0;
+    /// orig_collection = 0;
   }
 }
 
