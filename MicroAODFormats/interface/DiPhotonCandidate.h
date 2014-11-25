@@ -57,7 +57,7 @@ namespace flashgg {
 		}
     int vertex_index() const { return vertex_index_; }
 
-    float getnVtxInfoSize() const { return (vlogsumpt2_.size()) ;}
+    unsigned int getnVtxInfoSize() const { return (vlogsumpt2_.size()) ;}
     float getLogSumPt2(unsigned int iVtx) const { return (iVtx<vlogsumpt2_.size())?vlogsumpt2_.at(iVtx):-9999. ;} 
     float getPtBal(unsigned int iVtx) const  { return iVtx<vptbal_.size()?vptbal_.at(iVtx):-9999. ;}
     float getPtAsym(unsigned int iVtx) const  { return iVtx<vptasym_.size()?vptasym_.at(iVtx):-9999. ; } 

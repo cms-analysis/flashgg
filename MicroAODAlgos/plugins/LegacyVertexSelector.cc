@@ -115,7 +115,7 @@ namespace flashgg {
     vertexIdMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vertexIdMVAweightfile");
     vertexProbMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vertexProbMVAweightfile");
 
-    nVtxSaveInfo          =iConfig.getUntrackedParameter<int>("nVtxSaveInfo", 3); 
+    nVtxSaveInfo          =iConfig.getUntrackedParameter<unsigned int>("nVtxSaveInfo", 3); 
     dRexclude             =iConfig.getUntrackedParameter<double>("dRexclude", 0.05);
     sigma1Pix             =iConfig.getUntrackedParameter<double>("sigma1Pix", 0.011);
     sigma1Tib             =iConfig.getUntrackedParameter<double>("sigma1Tib", 0.492);
