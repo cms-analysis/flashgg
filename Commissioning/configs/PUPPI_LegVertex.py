@@ -81,7 +81,7 @@ process.puppi = cms.EDProducer("PuppiProducer",
 				MinNeutralPtSlope   = cms.untracked.double(0.005),
 				puppiAlgos = puppiForward
 				),
-			cms.PSet( 
+			cms.PSet( nyway
 				etaMin = cms.untracked.double(3.0),
 				etaMax = cms.untracked.double(10.0),
 				ptMin  = cms.untracked.double(0.0),
@@ -192,12 +192,17 @@ process.flashggTreeMakerWithTagSorter = cms.EDAnalyzer('FlashggFlashggTreeMakerW
 		VertexCandidateMapTagDz=cms.InputTag('flashggVertexMapUnique'),
 		VertexCandidateMapTagAOD = cms.InputTag('flashggVertexMapValidator'),
 		JetTagDz = cms.InputTag("flashggJets"),
+		JetTagDzPFCHS0 = cms.InputTag("flashggJetsPFCHS0"),
+		JetTagDzPFCHSLeg = cms.InputTag("flashggJetsPFCHSLeg"),
+		JetTagDzPUPPI0 = cms.InputTag("flashggJetsPUPPI0"),
+		JetTagDzPUPPILeg = cms.InputTag("flashggJetsPUPPILeg"),
 		DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
 		METTag = cms.untracked.InputTag('slimmedMETs'),
 		PileUpTag = cms.untracked.InputTag('addPileupInfo'),
 		TagSorter = cms.untracked.InputTag('flashggTagSorter'),
 		rhoFixedGridCollection = cms.InputTag('fixedGridRhoAll'),
 		)
+
 
 
 

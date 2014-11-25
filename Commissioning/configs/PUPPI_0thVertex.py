@@ -36,7 +36,6 @@ puppiCentral = cms.VPSet(
 			rmsScaleFactor   = cms.untracked.double(1.0)
 			)
 		)
-
 puppiForward = cms.VPSet(
 		cms.PSet(
 			algoId         = cms.untracked.int32(5),  #0 is default Puppi
@@ -48,7 +47,6 @@ puppiForward = cms.VPSet(
 			rmsScaleFactor = cms.untracked.double(1.0)
 			)
 		)
-
 process.puppi = cms.EDProducer("PuppiProducer",
 		PuppiName      = cms.untracked.string("Puppi"),
 		UseDeltaZCut   = cms.untracked.bool  (True),
