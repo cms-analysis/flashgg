@@ -50,6 +50,7 @@ namespace flashgg {
    edm::FileInPath vertexIdMVAweightfile_;
    edm::FileInPath vertexProbMVAweightfile_;
 
+   unsigned int nVtxSaveInfo;
    double dRexclude;
    double sigma1Pix;
    double sigma1Tib;
@@ -99,6 +100,13 @@ namespace flashgg {
    float dZ2_;
    float vtxprobmva_;
 
+   std::vector<float> vlogsumpt2_;
+   std::vector<float> vptbal_;
+   std::vector<float> vptasym_;
+   std::vector<float> vpull_conv_;
+   std::vector<float> vnConv_;
+   std::vector<float> vmva_value_;
+
   };
 
   LegacyVertexSelector::LegacyVertexSelector(const edm::ParameterSet& iConfig) :
@@ -107,6 +115,7 @@ namespace flashgg {
     vertexIdMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vertexIdMVAweightfile");
     vertexProbMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vertexProbMVAweightfile");
 
+    nVtxSaveInfo          =iConfig.getUntrackedParameter<int>("nVtxSaveInfo", 3); 
     dRexclude             =iConfig.getUntrackedParameter<double>("dRexclude", 0.05);
     sigma1Pix             =iConfig.getUntrackedParameter<double>("sigma1Pix", 0.011);
     sigma1Tib             =iConfig.getUntrackedParameter<double>("sigma1Tib", 0.492);
@@ -352,6 +361,13 @@ namespace flashgg {
 
 
 
+    vlogsumpt2_.clear();
+    vptbal_.clear();
+    vptasym_.clear();
+    vpull_conv_.clear();
+    vnConv_.clear();
+    vmva_value_.clear();
+
     int IndexMatchedConversionLeadPhoton=-1;
     int IndexMatchedConversionTrailPhoton=-1;
 
@@ -447,6 +463,15 @@ namespace flashgg {
       nConv_=nConv;
       float mva_value = VertexIdMva_->EvaluateMVA("BDT"); 
 
+      if( vlogsumpt2_.size() < nVtxSaveInfo ){
+	vlogsumpt2_.push_back( logsumpt2_ );
+	vptbal_.push_back( ptbal_ );
+	vptasym_.push_back( ptasym_ );
+	vpull_conv_.push_back( pull_conv_ );
+	vnConv_.push_back(nConv_ );
+	vmva_value_.push_back( mva_value );
+      }
+
       if(mva_value>max_mva_value){
 	max_mva_value=mva_value;
         selected_vertex_index=vertex_index;
@@ -493,6 +518,13 @@ namespace flashgg {
     dipho.setMVA2(MVA2_);
     dipho.setDZ1(dZ1_);
     dipho.setDZ2(dZ2_);
+
+    dipho.setVNConv(vnConv_);
+    dipho.setVPullConv(vpull_conv_);
+    dipho.setVPtBal(vptbal_);
+    dipho.setVPtAsym(vptasym_);
+    dipho.setVLogSumPt2(vlogsumpt2_);
+    dipho.setVMVA(vmva_value_);
 
     dipho.setVtxProbMVA(vtxprobmva_);
 
