@@ -37,7 +37,8 @@
 #include "flashgg/TagFormats/interface/DiPhotonTagBase.h"
 #include "flashgg/TagFormats/interface/TTHhadronicTag.h"
 #include "flashgg/TagFormats/interface/TTHleptonicTag.h"
-
+#include "flashgg/TagFormats/interface/VHtightTag.h"
+#include "flashgg/TagFormats/interface/VHlooseTag.h"
 
 #include "TMath.h"
 #include "TTree.h"
@@ -323,9 +324,26 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 			    << std::endl;
 		}
 
+		const   VHtightTag *vhtighttag = dynamic_cast<const VHtightTag*>(chosenTag);                                                                                        
+
+				if(vhtighttag != NULL) {
+				  std::cout << "[VHtight] Category " << vhtighttag->getCategoryNumber() 
+					    << " nmuons=" << vhtighttag->getMuons().size() 
+					    << std::endl;
+		 }
+
+
+		 const   VHlooseTag *vhloosetag = dynamic_cast<const VHlooseTag*>(chosenTag);                                                                                         
+
+				if(vhloosetag != NULL) {
+				  std::cout << "[VHloose] Category " << vhloosetag->getCategoryNumber() 
+					    << " nmuons=" << vhloosetag->getMuons().size() 
+					    << std::endl;
+		 }
+
 		// IMPORTANT: All future Tags must be added in the way of untagged and vbftag.	
 
-		if (untagged == NULL && vbftag == NULL && tthhadronictag == NULL && tthleptonictag == NULL ) {
+		if (untagged == NULL && vbftag == NULL && tthhadronictag == NULL && tthleptonictag == NULL && vhtighttag == NULL && vhloosetag == NULL) {
 		  std::cout << "[FAILED TO CONVERT TAG] with SumPt " << chosenTag->getSumPt() << std::endl;
 		}
 
@@ -409,10 +427,10 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 				break;
 			}
 
-
 			// gen match leading pho 
 			for(unsigned int ip=0;ip<gens.size();++ip) {
-			  //			  std::cout << "GMLP " << gens[ip]->status() << " "  << gens[ip]->pdgId() << " " << gens[ip]->mother(0) << std::endl;
+			  			  //std::cout << "GMLP " << gens[ip]->status() << " "  << gens[ip]->pdgId() << " " << gens[ip]->mother(0) << std::endl;
+
 				if( gens[ip]->status() != 1 || gens[ip]->pdgId() != 22 ) {
 					continue;
 				}
@@ -451,7 +469,6 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 
 		/* NB: This entire section has been superseded by the TagSorter, which now selects the best diPhoton.
 			 Will remove in next iteration.
-
 		//------> higgs diphoton candidate properties
 		// We have a problem here, because until we are sure that there is consistently one higgs diphoton candiate, we 
 		// will either need to select one of the multiple diphoton pairs. The following does that, by choosing the one closets to 125GeV..	
@@ -459,7 +476,6 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		float higgsMass =125. ;
 		Int_t higgsCandPresent = 0; //Is 0 is there are no candidates in event, set to 1 if there is at least one candidate pair.
 		Int_t candIndex = 9999; //This int will store the index of the best higgs diphoton candidate...
-
 		for (unsigned int diphotonlooper =0; diphotonlooper < diPhotonPointers.size() ; diphotonlooper++){
 		if  (fabs(diPhotonPointers[diphotonlooper]->mass() - higgsMass) < higgsMassDifference){
 		higgsMassDifference = fabs(diPhotonPointers[diphotonlooper]->mass() - higgsMass);
