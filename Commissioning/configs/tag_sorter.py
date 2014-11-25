@@ -10,11 +10,12 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 100) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 1000) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 
 #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT.root"))
-process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/Spring14miniaod/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/049C0F9C-E61E-E411-9388-D8D385AE8466.root"))
+#process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/Spring14miniaod/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/049C0F9C-E61E-E411-9388-D8D385AE8466.root"))
+process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/Spring14miniaod/WH_ZH_HToGG_M-125_13TeV_pythia6/MINIAODSIM/PU20bx25_POSTLS170_V5-v2/30000/E0D066C6-2219-E411-BD9A-02163E00ECDF.root"))
 
 
 
@@ -34,6 +35,8 @@ process.load("flashgg/TagProducers/flashggTags_cfi")
 process.flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                           DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
                                           TagVectorTag = cms.untracked.VInputTag(
+									cms.untracked.InputTag('flashggVHlooseTag'),
+                                                                        cms.untracked.InputTag('flashggVHtightTag'),
         								cms.untracked.InputTag('flashggTTHleptonicTag'),
                                                                         cms.untracked.InputTag('flashggTTHhadronicTag'),
         								cms.untracked.InputTag('flashggVBFTag'),
@@ -98,7 +101,7 @@ process.p = cms.Path(process.flashggVertexMapUnique*
                      (process.flashggVBFDiPhoDiJetMVA)* # Needs to happen after VBF MVA and DiPho MVA
 
                      # Tag producers, once written, can run in parallel, so they go in here with +
-                     (process.flashggUntaggedCategory+process.flashggVBFTag+process.flashggTTHleptonicTag+process.flashggTTHhadronicTag)*
+                     (process.flashggUntaggedCategory+process.flashggVBFTag+process.flashggTTHleptonicTag+process.flashggTTHhadronicTag+process.flashggVHlooseTag+process.flashggVHtightTag)*
 
                      process.flashggTagSorter*
                      process.flashggTreeMakerWithTagSorter
