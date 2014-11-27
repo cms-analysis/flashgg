@@ -121,15 +121,27 @@ namespace flashgg {
       p14.SetPxPyPzE(Photon1Dir_uv.x(),Photon1Dir_uv.y(),Photon1Dir_uv.z(),g1->superCluster()->rawEnergy()); 
       p24.SetPxPyPzE(Photon2Dir_uv.x(),Photon2Dir_uv.y(),Photon2Dir_uv.z(),g2->superCluster()->rawEnergy()); 
       //photon 4-vector with respect to correct vertex and superCluster hit//
+      
+      //
 
       float angle = p14.Angle(p24.Vect());
-      float r1 = g1->superCluster()->position().r();
-      float r2 = g2->superCluster()->position().r();
-      float cos_term = TMath::Cos(g1->phi()-g2->phi());
-      float sech1 = 1.0/TMath::CosH(g1->eta());
-      float sech2 = 1.0/TMath::CosH(g2->eta());
-      float tanh1 = 1.0/TMath::TanH(g1->phi());
-      float tanh2 = 1.0/TMath::TanH(g2->phi());
+
+      float x1 = g1->superCluster()->position().x() - vtx->position().x();
+      float y1 = g1->superCluster()->position().y() - vtx->position().y();
+      float z1 = g1->superCluster()->position().z() - vtx->position().z();
+
+      float x2 = g2->superCluster()->position().x() - vtx->position().x();
+      float y2 = g2->superCluster()->position().y() - vtx->position().y();
+      float z2 = g2->superCluster()->position().z() - vtx->position().z();
+
+      float r1 = TMath::Sqrt(x1*x1+y1*y1+z1*z1);
+      float r2 = TMath::Sqrt(x2*x2+y2*y2+z2*z2);	
+
+      float cos_term = TMath::Cos(p14.Phi()-p24.Phi());
+      float sech1 = 1.0/TMath::CosH(p14.Eta());
+      float sech2 = 1.0/TMath::CosH(p24.Eta());
+      float tanh1 = 1.0/TMath::TanH(p14.Phi());
+      float tanh2 = 1.0/TMath::TanH(p24.Phi());
       float numerator1 = sech1*(sech1*tanh2-tanh1*sech2*cos_term);
       float numerator2 = sech2*(sech2*tanh1-tanh2*sech1*cos_term);
       float denominator = 1. - tanh1*tanh2 - sech1*sech2*cos_term;
