@@ -124,7 +124,7 @@ namespace flashgg {
       
       //
 
-      float angle = p14.Angle(p24.Vect());
+      //float angle = p14.Angle(p24.Vect());
 
       float x1 = g1->superCluster()->position().x() - vtx->position().x();
       float y1 = g1->superCluster()->position().y() - vtx->position().y();
@@ -146,7 +146,7 @@ namespace flashgg {
       float numerator2 = sech2*(sech2*tanh1-tanh2*sech1*cos_term);
       float denominator = 1. - tanh1*tanh2 - sech1*sech2*cos_term;
       float angleResolutionWrgVtx = ((-1.*beamsig*TMath::Sqrt(.2))/denominator)*(numerator1/r1 + numerator2/r2);//dz = sigmabeamspot*sqrt(2)
-      float angleResolutionCorrVtx = ((-1.*0.1*TMath::Sqrt(.2))/denominator)*(numerator1/r1 + numerator2/r2);//dz = 0.1
+      //float angleResolutionCorrVtx = ((-1.*0.1*TMath::Sqrt(.2))/denominator)*(numerator1/r1 + numerator2/r2);//dz = 0.1
       float alpha_sig_wrg = 0.5*angleResolutionWrgVtx;
       float alpha_sig_corr = angleResolutionCorrVtx;
       float SigmaM = 0.5*TMath::Sqrt(g1->getSigEOverE()*g1->getSigEOverE() + g2->getSigEOverE()*g2->getSigEOverE());
@@ -159,7 +159,7 @@ namespace flashgg {
       leadmva_        = g1->getPhoIdMvaDWrtVtx(vtx);
       leadeta_        = g2->eta();
       subleadeta_     = g1->eta();
-      sigmarv_        = .5*sqrt((g1->getSigEOverE())*(g1->getSigEOverE()) + (g2->getSigEOverE())*(g2->getSigEOverE())+((alpha_sig_corr*alpha_sig_corr)*(TMath::Sin(angle)/(1.-TMath::Cos(angle)))*(TMath::Sin(angle)/(1.-TMath::Cos(angle)))));
+      sigmarv_        = .5*sqrt((g1->getSigEOverE())*(g1->getSigEOverE()) + (g2->getSigEOverE())*(g2->getSigEOverE()));
       sigmawv_        = MassResolutionWrongVtx;
       CosPhi_         = TMath::Cos(g1->phi()-g2->phi());
       vtxprob_        =  1.-vertex_prob_slope_*(1+diPhotonPointers[candIndex]->getVtxProbMVA());
