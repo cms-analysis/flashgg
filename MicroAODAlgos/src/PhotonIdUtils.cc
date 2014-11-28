@@ -3,6 +3,8 @@
 #include "DataFormats/Math/interface/deltaR.h"
 #include "DataFormats/Candidate/interface/Candidate.h"
 
+/// #include <tuple>
+
 using namespace std;
 using namespace flashgg;
 
@@ -81,19 +83,19 @@ float PhotonIdUtils::pfIsoChgWrtVtx( edm::Ptr<pat::Photon>& photon,
 }
 
 
-std::map<edm::Ptr<reco::Vertex>,float> PhotonIdUtils::pfIsoChgWrtAllVtx( edm::Ptr<pat::Photon>& photon, 
+map<edm::Ptr<reco::Vertex>,float> PhotonIdUtils::pfIsoChgWrtAllVtx( edm::Ptr<pat::Photon>& photon, 
 									 const edm::PtrVector<reco::Vertex>& vertices,
 									 const flashgg::VertexCandidateMap vtxcandmap,
 									 float coneSize, float coneVetoBarrel, float coneVetoEndcap, 
 									 float ptMin )
 {
-  std::map<edm::Ptr<reco::Vertex>,float> isomap;
+  map<edm::Ptr<reco::Vertex>,float> isomap;
   isomap.clear();
 
   for( unsigned int iv = 0; iv < vertices.size(); iv++ ) {
     
     float iso = pfIsoChgWrtVtx( photon, vertices[iv], vtxcandmap, coneSize, coneVetoBarrel, coneVetoEndcap, ptMin );
-    isomap.insert( std::make_pair(vertices[iv],iso) );
+    isomap.insert( make_pair(vertices[iv],iso) );
   }
 
   return isomap;
@@ -101,12 +103,12 @@ std::map<edm::Ptr<reco::Vertex>,float> PhotonIdUtils::pfIsoChgWrtAllVtx( edm::Pt
 
 
 
-float PhotonIdUtils::pfIsoChgWrtWorstVtx( std::map<edm::Ptr<reco::Vertex>,float>& vtxIsoMap )
+float PhotonIdUtils::pfIsoChgWrtWorstVtx( map<edm::Ptr<reco::Vertex>,float>& vtxIsoMap )
 {
   float MaxValueMap = -1000;  
   float itValue = 0;
   
-  for (std::map<edm::Ptr<reco::Vertex>,float>::iterator it=vtxIsoMap.begin(); it!=vtxIsoMap.end(); ++it) {
+  for (map<edm::Ptr<reco::Vertex>,float>::iterator it=vtxIsoMap.begin(); it!=vtxIsoMap.end(); ++it) {
     itValue = it->second;
     if (itValue > MaxValueMap) MaxValueMap = itValue;
   }
@@ -125,7 +127,8 @@ float PhotonIdUtils::pfCaloIso( edm::Ptr<pat::Photon>& photon,
 				float etaStripEndcap, 
 				float minEnergyBarrel, 
 				float minEnergyEndcap,
-				reco::PFCandidate::ParticleType type
+				reco::PFCandidate::ParticleType type,
+				const reco::Vertex * vtx
 	)
 {
   // just used to translate particle types to pdgId. Sure: it's very hugly...
@@ -145,6 +148,7 @@ float PhotonIdUtils::pfCaloIso( edm::Ptr<pat::Photon>& photon,
     maxetaStrip  = etaStripEndcap; 
   }   
 
+  //// map<float,tuple<edm::Ptr<pat::PackedCandidate>,float,float> > candidates;
   for( size_t ipf = 0; ipf < pfcandidates.size(); ipf++ ) { 
 
     edm::Ptr<pat::PackedCandidate> pfcand = pfcandidates[ipf]; 
@@ -154,21 +158,41 @@ float PhotonIdUtils::pfCaloIso( edm::Ptr<pat::Photon>& photon,
     if( photon->isEE() ) if( fabs(pfcand->energy()) < minEnergyEndcap ) continue;
     
     if( removeOverlappingCandidates_ && vetoPackedCand(*photon,pfcand) ) { continue; }
-
-    math::XYZPoint  pfcandvtx = pfcand->vertex();
-    math::XYZVector SCdirectionWrtCandVtx( photon->superCluster()->x() - pfcandvtx.x(),
-					   photon->superCluster()->y() - pfcandvtx.y(),
-					   photon->superCluster()->z() - pfcandvtx.z() 
+    
+    double vx, vy, vz;
+    if( vtx ) {
+	    vx=vtx->x(), vy=vtx->y(), vz=vtx->z();
+    } else {
+	    math::XYZPoint  pfcandvtx = pfcand->vertex();
+	    vx=pfcandvtx.x(), vy=pfcandvtx.y(), vz=pfcandvtx.z();
+    }
+    math::XYZVector SCdirectionWrtCandVtx( photon->superCluster()->x() - vx,
+					   photon->superCluster()->y() - vy,
+					   photon->superCluster()->z() - vz 
 					   );
 
     float dEta = fabs( SCdirectionWrtCandVtx.Eta() - pfcand->momentum().Eta() );
     float dR   = deltaR( SCdirectionWrtCandVtx.Eta(), SCdirectionWrtCandVtx.Phi(), pfcand->momentum().Eta(), pfcand->momentum().Phi() ); 
-    
+    //// float dPhi = deltaPhi( SCdirectionWrtCandVtx.Phi(),pfcand->momentum().Phi() );
+
     if( dEta < maxetaStrip )        continue;
     if( dR < dRVeto || dR > dRMax ) continue;
       
     isovalue += pfcand->pt();
+    //// candidates[dR] = make_tuple(pfcand,dEta,dPhi);
   }
+
+  //// if( isovalue >= photon->pt() ) {
+  //// 	  cout << "isolation value larger than photon pt " <<  photon->pt() << ". Dumping candidates. " <<endl;
+  //// 	  int nmax = 2;
+  //// 	  for(auto & ci : candidates) {
+  //// 		  auto & cand = get<0>(ci.second);
+  //// 		  auto & dEta = get<1>(ci.second);
+  //// 		  auto & dPhi = get<2>(ci.second);
+  //// 		  cout << "dR " << ci.first << " dEta " << dEta << " " << dPhi << " pt " <<  cand->pt() << " dz " << cand->dz() << " dxy " << cand->dxy() << endl;
+  //// 		  if( --nmax == 0 ) { break; }
+  //// 	  }
+  //// }
 
   return isovalue;
 }
@@ -182,7 +206,7 @@ float PhotonIdUtils::pfCaloIso( edm::Ptr<pat::Photon>& photon,
 - decide what to do with EE and EB
 */
 
-void PhotonIdUtils::setupMVA( const std::string& xmlfilenameEB, const std::string& xmlfilenameEE )
+void PhotonIdUtils::setupMVA( const string& xmlfilenameEB, const string& xmlfilenameEE )
 {
 
   //  cout << " photonId MVA weights for EB set from file: " << xmlfilenameEB << endl;
@@ -191,7 +215,7 @@ void PhotonIdUtils::setupMVA( const std::string& xmlfilenameEB, const std::strin
  
   string mvamethod = "BDT";
   
-  phoIdMva_2012_EB_ = std::make_shared<TMVA::Reader>("!Color:Silent");
+  phoIdMva_2012_EB_ = make_shared<TMVA::Reader>("!Color:Silent");
  
   phoIdMva_2012_EB_->AddVariable( "ph.scrawe", &phoIdMva_SCRawE_);
   phoIdMva_2012_EB_->AddVariable( "ph.r9",                &phoIdMva_R9_ );
@@ -209,7 +233,7 @@ void PhotonIdUtils::setupMVA( const std::string& xmlfilenameEB, const std::strin
 
   // **** bdt 2012 EE ****
 
-  phoIdMva_2012_EE_ = std::make_shared<TMVA::Reader>("!Color:Silent");
+  phoIdMva_2012_EE_ = make_shared<TMVA::Reader>("!Color:Silent");
   
   phoIdMva_2012_EE_->AddVariable( "ph.scrawe", &phoIdMva_SCRawE_);
   phoIdMva_2012_EE_->AddVariable( "ph.r9",                &phoIdMva_R9_ );
@@ -256,19 +280,19 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
   return mvavalue;
 }
 
-std::map<edm::Ptr<reco::Vertex>,float> PhotonIdUtils::computeMVAWrtAllVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
+map<edm::Ptr<reco::Vertex>,float> PhotonIdUtils::computeMVAWrtAllVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
 									  flashgg::Photon& photon,
 									  const edm::PtrVector<reco::Vertex>& vertices,
 									  const double rho )
   
 {  
-  std::map<edm::Ptr<reco::Vertex>,float> mvamap;
+  map<edm::Ptr<reco::Vertex>,float> mvamap;
   mvamap.clear();
 
   for( unsigned int iv = 0; iv < vertices.size(); iv++ ) {
     edm::Ptr<reco::Vertex> vertex = vertices[iv];
     float mvapervtx = computeMVAWrtVtx( photon, vertex, rho);
-    mvamap.insert( std::make_pair(vertex, mvapervtx) );
+    mvamap.insert( make_pair(vertex, mvapervtx) );
   }
 
   return mvamap;

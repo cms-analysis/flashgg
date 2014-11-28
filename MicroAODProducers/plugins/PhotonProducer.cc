@@ -1,3 +1,4 @@
+
 #include "FWCore/Framework/interface/EDProducer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
@@ -51,7 +52,7 @@ namespace flashgg {
     edm::FileInPath regressionWeightFile_;
 
     EGEnergyCorrectorSemiParm corV8_;      
-    bool doOverlapRemovalForIsolation_;
+    bool doOverlapRemovalForIsolation_, useVtx0ForNeutralIso_;
     std::vector<CaloIsoParams> extraCaloIsolations_;
   };
 
@@ -75,6 +76,7 @@ namespace flashgg {
     regressionWeightFile_ = iConfig.getParameter<edm::FileInPath>("regressionWeightFile");
     
     doOverlapRemovalForIsolation_ = iConfig.getParameter<bool>("doOverlapRemovalForIsolation");
+    useVtx0ForNeutralIso_ = iConfig.getParameter<bool>("useVtx0ForNeutralIso");
     
     std::vector<ParameterSet> extraCaloIsolations = iConfig.getParameter<std::vector<ParameterSet> >("extraCaloIsolations");
     for(std::vector<ParameterSet>::iterator it=extraCaloIsolations.begin(); it!=extraCaloIsolations.end(); ++it) {
@@ -110,6 +112,8 @@ namespace flashgg {
     const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
     const flashgg::VertexCandidateMap vtxToCandMap = *(vertexCandidateMap.product());    
     const double rhoFixedGrd = *(rhoHandle.product());
+
+    const reco::Vertex * neutVtx = (useVtx0ForNeutralIso_ ? &vertices->at(0) : 0);
 
     auto_ptr<vector<flashgg::Photon> > photonColl(new vector<flashgg::Photon>);
     
@@ -173,13 +177,13 @@ namespace flashgg {
       fg.setpfChgIso02(isomap02);
       fg.setpfChgIsoWrtChosenVtx02( 0. ); // just to initalize things properly, will be setup for real in the diphoton producer once the vertex is chosen
       
-      float pfPhoIso04 = phoTools_.pfCaloIso(pp, pfcandidatePointers, 0.4, 0.0, 0.070, 0.015, 0.0, 0.0, 0.0, PFCandidate::gamma);
-      float pfPhoIso03 = phoTools_.pfCaloIso(pp, pfcandidatePointers, 0.3, 0.0, 0.070, 0.015, 0.0, 0.0, 0.0, PFCandidate::gamma);
+      float pfPhoIso04 = phoTools_.pfCaloIso(pp, pfcandidatePointers, 0.4, 0.0, 0.070, 0.015, 0.0, 0.0, 0.0, PFCandidate::gamma, neutVtx);
+      float pfPhoIso03 = phoTools_.pfCaloIso(pp, pfcandidatePointers, 0.3, 0.0, 0.070, 0.015, 0.0, 0.0, 0.0, PFCandidate::gamma, neutVtx);
       fg.setpfPhoIso04(pfPhoIso04);
       fg.setpfPhoIso03(pfPhoIso03);
 
-      float pfNeutIso04 = phoTools_.pfCaloIso(pp, pfcandidatePointers, 0.4, 0.0, 0.000, 0.000, 0.0, 0.0, 0.0, PFCandidate::h0);
-      float pfNeutIso03 = phoTools_.pfCaloIso(pp, pfcandidatePointers, 0.3, 0.0, 0.000, 0.000, 0.0, 0.0, 0.0, PFCandidate::h0);
+      float pfNeutIso04 = phoTools_.pfCaloIso(pp, pfcandidatePointers, 0.4, 0.0, 0.000, 0.000, 0.0, 0.0, 0.0, PFCandidate::h0, neutVtx);
+      float pfNeutIso03 = phoTools_.pfCaloIso(pp, pfcandidatePointers, 0.3, 0.0, 0.000, 0.000, 0.0, 0.0, 0.0, PFCandidate::h0, neutVtx);
       fg.setpfNeutIso04(pfNeutIso04);
       fg.setpfNeutIso03(pfNeutIso03);
       
@@ -193,7 +197,7 @@ namespace flashgg {
 		      phoTools_.removeOverlappingCandidates(p.overlapRemoval_);
 		      float val = phoTools_.pfCaloIso(pp, pfcandidatePointers, 
 						      p.vetos_[0],p.vetos_[1],p.vetos_[2],p.vetos_[3],p.vetos_[4],p.vetos_[5],p.vetos_[6],
-						      p.type_);
+						      p.type_, neutVtx);
 		      /// cout << "User Isolation " << iso << " " << val << endl;
 		      fg.setUserIso( val, iso );
 	      }
