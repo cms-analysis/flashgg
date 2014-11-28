@@ -4,10 +4,10 @@ flashgg
 1. Create a CMSSW_7_2_1_patch5 (or later) project:
  ```
  # make sure you are on lxplus6 or otherwise using an SLC6 machine
- # make sure SCRAM_ARCH is slc6_amd64_gcc481 (should be default)
- cmsrel CMSSW_7_2_1_patch5 
+ # make sure SCRAM_ARCH is slc6_amd64_gcc481
+ cmsrel CMSSW_7_2_2_patch2
  # or later
- cd CMSSW_7_2_1_patch5/src
+ cd CMSSW_7_2_2_patch2/src
  cmsenv
  ```
 
