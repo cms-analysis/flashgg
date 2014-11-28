@@ -148,7 +148,7 @@ namespace flashgg {
       float angleResolutionWrgVtx = ((-1.*beamsig*TMath::Sqrt(.2))/denominator)*(numerator1/r1 + numerator2/r2);//dz = sigmabeamspot*sqrt(2)
       //float angleResolutionCorrVtx = ((-1.*0.1*TMath::Sqrt(.2))/denominator)*(numerator1/r1 + numerator2/r2);//dz = 0.1
       float alpha_sig_wrg = 0.5*angleResolutionWrgVtx;
-      float alpha_sig_corr = angleResolutionCorrVtx;
+      //float alpha_sig_corr = angleResolutionCorrVtx;
       float SigmaM = 0.5*TMath::Sqrt(g1->getSigEOverE()*g1->getSigEOverE() + g2->getSigEOverE()*g2->getSigEOverE());
       float MassResolutionWrongVtx = TMath::Sqrt((SigmaM*SigmaM)+(alpha_sig_wrg*alpha_sig_wrg));
 
