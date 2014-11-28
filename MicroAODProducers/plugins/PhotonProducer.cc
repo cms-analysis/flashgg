@@ -49,7 +49,7 @@ namespace flashgg {
 
     PhotonIdUtils phoTools_;
     edm::FileInPath phoIdMVAweightfileEB_, phoIdMVAweightfileEE_;
-    edm::FileInPath regressionWeightFile_;
+    //    edm::FileInPath regressionWeightFile_;
 
     /// EGEnergyCorrectorSemiParm corV8_;      
     bool doOverlapRemovalForIsolation_, useVtx0ForNeutralIso_;
@@ -73,7 +73,7 @@ namespace flashgg {
     phoIdMVAweightfileEE_ = iConfig.getParameter<edm::FileInPath>("photonIdMVAweightfile_EE");
     phoTools_.setupMVA( phoIdMVAweightfileEB_.fullPath(), phoIdMVAweightfileEE_.fullPath() );
 
-    regressionWeightFile_ = iConfig.getParameter<edm::FileInPath>("regressionWeightFile");
+    //    regressionWeightFile_ = iConfig.getParameter<edm::FileInPath>("regressionWeightFile");
     
     doOverlapRemovalForIsolation_ = iConfig.getParameter<bool>("doOverlapRemovalForIsolation");
     useVtx0ForNeutralIso_ = iConfig.getParameter<bool>("useVtx0ForNeutralIso");
