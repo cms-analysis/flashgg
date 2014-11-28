@@ -521,7 +521,7 @@ namespace flashgg {
     }
 
     for (unsigned int jj=0;jj<sorter.size();jj++){
-      std::cout<<"JM CHECK sorter:"<<sorter[jj].first<<" "<<sorter[jj].second<< std::endl;
+      //      std::cout<<"JM CHECK sorter:"<<sorter[jj].first<<" "<<sorter[jj].second<< std::endl;
       vmva_sortedindex.push_back(sorter[jj].first);   
       
       if( vlogsumpt2_.size() < nVtxSaveInfo ){
