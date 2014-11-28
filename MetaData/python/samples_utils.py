@@ -30,7 +30,9 @@ class SamplesManager(object):
         self.dbs_instance_ = dbs_instance
 
         for xsecFile in cross_sections:
-            self.cross_sections_.update( json.loads( open(shell_expand(xsecFile)).read() ) )
+            fname = shell_expand(xsecFile)
+            print fname
+            self.cross_sections_.update( json.loads( open(fname).read() ) )
             
         self.catalog_ = shell_expand(catalog)
 
@@ -148,7 +150,7 @@ class SamplesManager(object):
             fout.write( json.dumps(content,indent=4,sort_keys=True) )
             fout.close()
     
-    def getDatasetMetaData(self,maxEvents,primary,secondary=None):
+    def getDatasetMetaData(self,maxEvents,primary,secondary=None,jobId=-1,nJobs=0):
         """
         Extract dataset meta data.
         @maxEvents: maximum number of events to read.
@@ -162,7 +164,7 @@ class SamplesManager(object):
         primary = primary.lstrip("/")
         found = False
         xsec  = 0.
-        files = []
+        allFiles = []
         totEvents = 0
         for dataset,info in catalog.iteritems():
             empty,prim,sec,tier=dataset.split("/")
@@ -177,12 +179,20 @@ class SamplesManager(object):
                 for fil in info["files"]:
                     nev, name = fil["nevents"], fil["name"]
                     totEvents += nev
-                    files.append(name)
+                    allFiles.append(name)
                     if maxEvents > -1 and totEvents > maxEvents:
                         break
         if not found:
             raise Exception("No dataset matched the request: /%s/%s" % ( primary, str(secondary) ))
         
+        if maxEvents > -1 and totEvents > maxEvents:
+            totEvents = maxEvents
+        
+        if jobId != -1:
+            files = [ allFiles[i] for i in range(jobId,len(allFiles),nJobs) ]
+        else:
+            files = allFiles
+
         return found,xsec,totEvents,files
 
 if __name__ == "__main__":

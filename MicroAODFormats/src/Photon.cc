@@ -1,23 +1,24 @@
 #include "flashgg/MicroAODFormats/interface/Photon.h"
+#include "FWCore/Utilities/interface/Exception.h"
 
 using namespace flashgg;
 
 Photon::Photon() {
-  sipip = 0.;
-  sieip = 0.;
-  zernike20 = 0.;
-  zernike42 = 0.;
-  e2nd = 0.;
-  e2x5right = 0.;
-  e2x5left = 0.;
-  e2x5top = 0.;
-  e2x5bottom = 0.;
-  e2x5max = 0.;
-  eright = 0.;
-  eleft = 0.;
-  etop = 0.;
-  ebottom = 0.;
-  e1x3 = 0.;
+  sipip_ = 0.;
+  sieip_ = 0.;
+  zernike20_ = 0.;
+  zernike42_ = 0.;
+  e2nd_ = 0.;
+  e2x5right_ = 0.;
+  e2x5left_ = 0.;
+  e2x5top_ = 0.;
+  e2x5bottom_ = 0.;
+  e2x5max_ = 0.;
+  eright_ = 0.;
+  eleft_ = 0.;
+  etop_ = 0.;
+  ebottom_ = 0.;
+  e1x3_ = 0.;
   S4_ = 0.;
   pfPhoIso04_ = 0.;
   pfPhoIso03_ = 0.;
@@ -44,6 +45,21 @@ float const Photon::getEnergyAtStep(std::string key) const {
 }
 bool Photon::hasEnergyAtStep(std::string key) const {
   return hasUserData(key);
+}
+
+
+float const Photon::findVertexFloat( const edm::Ptr<reco::Vertex>& vtx, const std::map<edm::Ptr<reco::Vertex>,float> & mp, bool lazy) const 
+{
+	lazy = lazy && (vtx.id() == edm::ProductID(0,0));
+	for(std::map<edm::Ptr<reco::Vertex>,float>::const_iterator it=mp.begin(); it!=mp.end(); ++it) {
+		if( (lazy && it->first.key() == vtx.key()) || it->first == vtx  ) { 
+			return  it->second;
+		}
+	}
+	
+	throw cms::Exception("Missing Data") << "could not find value for vertex " << vtx.key() << " " << vtx.id() << " lazy search: "<< lazy <<  "\n";;
+	
+	return 0.;
 }
 
 void Photon::updateEnergy(std::string key, float val) {
