@@ -13,6 +13,7 @@ config.General.saveLogs = False
 config.section_("JobType")
 config.JobType.pluginName = "Analysis"
 config.JobType.psetName = "PSET"
+## config.JobType.scriptExe = "cmsWrapper.sh"
 
 config.section_("Data")
 config.Data.inputDataset = "DATASET"
