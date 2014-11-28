@@ -31,7 +31,15 @@ namespace flashgg {
     void setDZ2(float val) { dZ2_ = val; }
     void setVtxProbMVA(float val) { vtxprobmva_ = val; }
     void setVertex_index(int val) { vertex_index_ = val; }
+
+    void setVLogSumPt2( std::vector<float> vval) { vlogsumpt2_ = vval; }
+    void setVPtBal( std::vector<float> vval ) { vptbal_ = vval; }
+    void setVPtAsym( std::vector<float> vval ) { vptasym_ = vval; }
+    void setVNConv( std::vector<float> vval ) { vnConv_ = vval; }
+    void setVPullConv( std::vector<float> vval ) { vpull_conv_ = vval; }
+    void setVMVA( std::vector<float> vval ) { vmva_value_ = vval; }
     
+
     float getLogSumPt2() const { return logsumpt2_; }
     float getPtBal() const { return ptbal_; }
     float getPtAsym() const { return ptasym_; }
@@ -48,6 +56,15 @@ namespace flashgg {
 		return (this->leadingPhoton()->pt() + this->subLeadingPhoton()->pt()); 
 		}
     int vertex_index() const { return vertex_index_; }
+
+    unsigned int getnVtxInfoSize() const { return (vlogsumpt2_.size()) ;}
+    float getLogSumPt2(unsigned int iVtx) const { return (iVtx<vlogsumpt2_.size())?vlogsumpt2_.at(iVtx):-9999. ;} 
+    float getPtBal(unsigned int iVtx) const  { return iVtx<vptbal_.size()?vptbal_.at(iVtx):-9999. ;}
+    float getPtAsym(unsigned int iVtx) const  { return iVtx<vptasym_.size()?vptasym_.at(iVtx):-9999. ; } 
+    float getNConv(unsigned int iVtx) const  { return iVtx<vnConv_.size()?vnConv_.at(iVtx):-9999.; } 
+    float getPullConv(unsigned int iVtx) const  { return iVtx<vpull_conv_.size()?vpull_conv_.at(iVtx):-9999.; } 
+    float getMVA(unsigned int iVtx) const  { return iVtx<vmva_value_.size()?vmva_value_.at(iVtx):-9999.; } 
+
 
 
   private:
@@ -66,6 +83,14 @@ namespace flashgg {
     float dZ1_;
     float dZ2_;
     float vtxprobmva_;
+
+    std::vector<float> vlogsumpt2_;
+    std::vector<float> vptbal_;
+    std::vector<float> vptasym_;
+    std::vector<float> vpull_conv_;
+    std::vector<float> vnConv_;
+    std::vector<float> vmva_value_;
+
   };
 
 

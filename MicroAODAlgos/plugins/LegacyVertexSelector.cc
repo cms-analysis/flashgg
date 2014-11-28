@@ -13,6 +13,14 @@
 
 namespace flashgg {
   
+  struct Sorter
+  {
+    bool operator() ( const std::pair<unsigned int,float> pair1, const std::pair<unsigned int,float> pair2 )
+    {
+      return ( pair1.second > pair2.second );
+    };
+  };
+
  class LegacyVertexSelector : public VertexSelectorBase {
   
     
@@ -50,6 +58,7 @@ namespace flashgg {
    edm::FileInPath vertexIdMVAweightfile_;
    edm::FileInPath vertexProbMVAweightfile_;
 
+   unsigned int nVtxSaveInfo;
    double dRexclude;
    double sigma1Pix;
    double sigma1Tib;
@@ -99,6 +108,13 @@ namespace flashgg {
    float dZ2_;
    float vtxprobmva_;
 
+   std::vector<float> vlogsumpt2_;
+   std::vector<float> vptbal_;
+   std::vector<float> vptasym_;
+   std::vector<float> vpull_conv_;
+   std::vector<float> vnConv_;
+   std::vector<float> vmva_value_;
+
   };
 
   LegacyVertexSelector::LegacyVertexSelector(const edm::ParameterSet& iConfig) :
@@ -107,6 +123,7 @@ namespace flashgg {
     vertexIdMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vertexIdMVAweightfile");
     vertexProbMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vertexProbMVAweightfile");
 
+    nVtxSaveInfo          =iConfig.getUntrackedParameter<unsigned int>("nVtxSaveInfo", 3); 
     dRexclude             =iConfig.getUntrackedParameter<double>("dRexclude", 0.05);
     sigma1Pix             =iConfig.getUntrackedParameter<double>("sigma1Pix", 0.011);
     sigma1Tib             =iConfig.getUntrackedParameter<double>("sigma1Tib", 0.492);
@@ -338,8 +355,13 @@ namespace flashgg {
           selected_conversion_index=i;
         }
       }
-    }  
-    return selected_conversion_index; //-1 if no match was found
+    } 
+    
+    if(mindR<0.1)
+      return selected_conversion_index; 
+    else
+      return -1; //-1 if no match was found
+
   }
   
   edm::Ptr<reco::Vertex> LegacyVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::PtrVector<reco::Vertex>& vtxs,
@@ -351,6 +373,15 @@ namespace flashgg {
                                                       ) {
 
 
+
+    vlogsumpt2_.clear();
+    vptbal_.clear();
+    vptasym_.clear();
+    vpull_conv_.clear();
+    vnConv_.clear();
+    vmva_value_.clear();
+
+    std::vector<std::pair<unsigned int, float>> sorter;
 
     int IndexMatchedConversionLeadPhoton=-1;
     int IndexMatchedConversionTrailPhoton=-1;
@@ -375,9 +406,17 @@ namespace flashgg {
       Initialize();
     }
   
+    std::vector<float> vlogsumpt2;
+    std::vector<float> vptbal;
+    std::vector<float> vptasym;
+    std::vector<float> vpull_conv;
+    std::vector<float> vnConv;
+    std::vector<float> vmva_value;
+    std::vector<unsigned int> vmva_sortedindex;
+
     for (vertex_index = 0 ; vertex_index < vtxs.size() ; vertex_index++) {
       edm::Ptr<reco::Vertex> vtx = vtxs[vertex_index];
-      //if(vertex_index != closest_vertex_index)continue;   
+
       TVector3 Photon1Dir;
       TVector3 Photon1Dir_uv;
       TVector3 Photon2Dir;
@@ -411,6 +450,9 @@ namespace flashgg {
         sumpt += tkXY;
         dr1 = tk.DeltaR(p14.Vect());
         dr2 = tk.DeltaR(p24.Vect());
+	bool isPure=cand->trackHighPurity(); 
+	if(!isPure) continue; 
+
         if(dr1 < dRexclude || dr2 < dRexclude){
           sumpt2_in+=tkXY.Mod2();
           continue;
@@ -439,7 +481,7 @@ namespace flashgg {
 	}
       }
       
-      if(pull_conv>10.)pull_conv = 10.;  
+      if(pull_conv>10.) pull_conv = 10.;  
       
       logsumpt2_=log(sumpt2_in+sumpt2_out);
       ptbal_=ptbal;
@@ -447,23 +489,52 @@ namespace flashgg {
       nConv_=nConv;
       float mva_value = VertexIdMva_->EvaluateMVA("BDT"); 
 
+      vlogsumpt2.push_back( logsumpt2_ );
+      vptbal.push_back( ptbal_ );
+      vptasym.push_back( ptasym_ );
+      vpull_conv.push_back( pull_conv_ );
+      vnConv.push_back(nConv_ );
+      vmva_value.push_back( mva_value );
+      
+      std::pair<unsigned int,float>pairToSort=std::make_pair(vmva_value.size()-1, mva_value);
+      sorter.push_back(pairToSort);
+      
+
       if(mva_value>max_mva_value){
 	max_mva_value=mva_value;
         selected_vertex_index=vertex_index;
 	logsumpt2selected_=logsumpt2_;
 	ptbalselected_=ptbal_;
 	ptasymselected_=ptasym_;
-      }
+      }      
+    }
+
+    std::sort( sorter.begin(), sorter.end(), Sorter());
+
+    if(sorter.size()>1){
+      second_max_mva_value=sorter[1].second;
+      second_selected_vertex_index=sorter[1].first;
+    }
+    if(sorter.size()>2){
+      third_max_mva_value=sorter[2].second;
+      third_selected_vertex_index=sorter[2].first;
+    }
+
+    for (unsigned int jj=0;jj<sorter.size();jj++){
+      std::cout<<"JM CHECK sorter:"<<sorter[jj].first<<" "<<sorter[jj].second<< std::endl;
+      vmva_sortedindex.push_back(sorter[jj].first);   
       
-      if(mva_value<max_mva_value && mva_value>second_max_mva_value){
-        second_max_mva_value=mva_value;
-        second_selected_vertex_index=vertex_index;
+      if( vlogsumpt2_.size() < nVtxSaveInfo ){
+	
+      	vlogsumpt2_.push_back(vlogsumpt2[sorter[jj].first]);
+	vptbal_.push_back(vptbal[sorter[jj].first]);
+	vptasym_.push_back(vptasym[sorter[jj].first]);
+	vpull_conv_.push_back(vpull_conv[sorter[jj].first]);
+	vnConv_.push_back(vnConv[sorter[jj].first]);
+	vmva_value_.push_back(vmva_value[sorter[jj].first]);
 
       }
-      if(mva_value<second_max_mva_value && mva_value>third_max_mva_value){
-        third_max_mva_value=mva_value;
-        third_selected_vertex_index=vertex_index;
-      }   
+      
     }
   
     dipho_pt_ = (g1->p4()+g2->p4()).pt();
@@ -493,6 +564,13 @@ namespace flashgg {
     dipho.setMVA2(MVA2_);
     dipho.setDZ1(dZ1_);
     dipho.setDZ2(dZ2_);
+
+    dipho.setVNConv(vnConv_);
+    dipho.setVPullConv(vpull_conv_);
+    dipho.setVPtBal(vptbal_);
+    dipho.setVPtAsym(vptasym_);
+    dipho.setVLogSumPt2(vlogsumpt2_);
+    dipho.setVMVA(vmva_value_);
 
     dipho.setVtxProbMVA(vtxprobmva_);
 
