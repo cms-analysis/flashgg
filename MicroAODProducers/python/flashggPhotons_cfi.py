@@ -11,5 +11,6 @@ flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                 photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAODProducers/data/2013FinalPaper_PhotonID_Endcap_BDT_TrainRangePT15_8TeV.weights.xml"),
                                 regressionWeightFile = cms.FileInPath("HiggsAnalysis/GBRLikelihoodEGTools/data/regweights_v8_8TeV_forest_ph.root"),
                                 doOverlapRemovalForIsolation = cms.bool(True),
+                                useVtx0ForNeutralIso = cms.bool(True),
                                 extraCaloIsolations = cms.VPSet()
                                 )

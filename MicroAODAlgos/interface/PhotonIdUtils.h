@@ -1,3 +1,4 @@
+
 #ifndef FLASHgg_PhotonIdUtils_h
 #define FLASHgg_PhotonIdUtils_h
 
@@ -43,7 +44,7 @@ namespace flashgg {
 
     float              pfCaloIso( edm::Ptr<pat::Photon>&, 
 				   const edm::PtrVector<pat::PackedCandidate>&, 
-				  float, float, float, float, float, float, float, reco::PFCandidate::ParticleType);
+				  float, float, float, float, float, float, float, reco::PFCandidate::ParticleType, const reco::Vertex * vtx=0);
     
     
     void               setupMVA( const std::string&, const std::string& );
