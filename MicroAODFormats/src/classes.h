@@ -6,8 +6,11 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/Common/interface/Ptr.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
+#include "DataFormats/JetReco/interface/PileupJetIdentifier.h"
 
 #include <vector>
+#include <map>
+
 namespace  { struct dictionary {
   flashgg::Photon                                                   fgg_pho;
   edm::Ptr<flashgg::Photon>                                     ptr_fgg_pho;
@@ -24,6 +27,11 @@ namespace  { struct dictionary {
   edm::Wrapper<std::vector<edm::Ptr<flashgg::DiPhotonCandidate> > >   wrp_vec_ptr_fgg_dip;
 
   edm::Ptr<reco::Vertex>                                        ptr_rec_vtx;
+
+  PileupJetIdentifier                                               pujetid;
+  std::pair<edm::Ptr<reco::Vertex>,PileupJetIdentifier>                    pair_ptr_vtx_pujetid;
+  std::map<edm::Ptr<reco::Vertex>,PileupJetIdentifier>                    map_ptr_vtx_pujetid;
+
   flashgg::Jet                                                      fgg_jet;
   edm::Wrapper<flashgg::Jet>                                    wrp_fgg_jet;
   std::vector<flashgg::Jet>                                     vec_fgg_jet;
