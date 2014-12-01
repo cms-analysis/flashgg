@@ -169,7 +169,7 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
   std::cout << " JET CHECKER ::  Event                      = " << event_number << std::endl;
   
   for (unsigned int jdz = 0 ; jdz < jetsDzPointers.size() ; jdz++) {
-    std::cout << "\t JET CHECKER :: jet["<< jdz <<"] pt  =" <<jetsDzPointers[jdz]->pt() << std::endl;
+    //std::cout << "\t JET CHECKER :: jet["<< jdz <<"] pt  =" <<jetsDzPointers[jdz]->pt() << std::endl;
     jInfo.pt                = jetsDzPointers[jdz]->pt();
     jInfo.eta               = jetsDzPointers[jdz]->eta();
     jInfo.phi               = jetsDzPointers[jdz]->phi();
@@ -238,7 +238,6 @@ JetValidationTreeMaker::beginJob()
   genPartTree->Branch("phi"    ,&genInfo.phi     ,"phi/F");
   genPartTree->Branch("status" ,&genInfo.status  ,"status/I" );
   genPartTree->Branch("pdgid"  ,&genInfo.pdgid   ,"pdgid/I");
-
   
 }
 
