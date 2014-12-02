@@ -47,7 +47,8 @@ process.load("flashgg/TagProducers/flashggDiPhotonMVA_cfi")
 process.load("flashgg/TagProducers/flashggVBFMVA_cfi")
 process.load("flashgg/TagProducers/flashggVBFDiPhoDiJetMVA_cfi")
 process.load("flashgg/TagProducers/flashggTags_cfi")
-
+process.load("flashgg/TagProducers/flashggTagSorter_cfi")
+process.load("flashgg/TagProducers/flashggTagTester_cfi")
 
 from flashgg.TagProducers.flashggTagOutputCommands_cff import tagDefaultOutputCommand
 
@@ -61,7 +62,9 @@ process.p = cms.Path((process.flashggDiPhotonMVA)*
                      (process.flashggVBFDiPhoDiJetMVA)* # Needs to happen after VBF MVA and DiPho MVA
                      
                      # Tag producers, once written, can run in parallel, so they go in here with +
-                     (process.flashggUntaggedCategory+process.flashggVBFTag+process.flashggTTHleptonicTag+process.flashggTTHhadronicTag+process.flashggVHlooseTag+process.flashggVHtightTag)
+                     (process.flashggUntaggedCategory+process.flashggVBFTag+process.flashggTTHleptonicTag+process.flashggTTHhadronicTag+process.flashggVHlooseTag+process.flashggVHtightTag)*
+                     process.flashggTagSorter*
+                     process.flashggTagTester
                     )
 
 process.e = cms.EndPath(process.out)
