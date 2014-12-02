@@ -114,6 +114,7 @@ namespace flashgg {
    std::vector<float> vpull_conv_;
    std::vector<float> vnConv_;
    std::vector<float> vmva_value_;
+   edm::PtrVector<reco::Vertex>  Vertices_;
 
   };
 
@@ -379,6 +380,7 @@ namespace flashgg {
     vpull_conv_.clear();
     vnConv_.clear();
     vmva_value_.clear();
+    Vertices_.clear();
 
     std::vector<std::pair<unsigned int, float>> sorter;
 
@@ -412,6 +414,7 @@ namespace flashgg {
     std::vector<float> vnConv;
     std::vector<float> vmva_value;
     std::vector<unsigned int> vmva_sortedindex;
+    edm::PtrVector<reco::Vertex> Vertices;
 
     for (vertex_index = 0 ; vertex_index < vtxs.size() ; vertex_index++) {
       edm::Ptr<reco::Vertex> vtx = vtxs[vertex_index];
@@ -494,6 +497,7 @@ namespace flashgg {
       vpull_conv.push_back( pull_conv_ );
       vnConv.push_back(nConv_ );
       vmva_value.push_back( mva_value );
+      Vertices.push_back( vtx );	
       
       std::pair<unsigned int,float>pairToSort=std::make_pair(vmva_value.size()-1, mva_value);
       sorter.push_back(pairToSort);
@@ -531,6 +535,7 @@ namespace flashgg {
 	vpull_conv_.push_back(vpull_conv[sorter[jj].first]);
 	vnConv_.push_back(vnConv[sorter[jj].first]);
 	vmva_value_.push_back(vmva_value[sorter[jj].first]);
+	Vertices_.push_back( Vertices[sorter[jj].first] );
 
       }
       
@@ -570,6 +575,7 @@ namespace flashgg {
     dipho.setVPtAsym(vptasym_);
     dipho.setVLogSumPt2(vlogsumpt2_);
     dipho.setVMVA(vmva_value_);
+    dipho.setVertices( Vertices_ );
 
     dipho.setVtxProbMVA(vtxprobmva_);
 

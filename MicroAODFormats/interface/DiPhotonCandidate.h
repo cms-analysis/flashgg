@@ -38,6 +38,7 @@ namespace flashgg {
     void setVNConv( std::vector<float> vval ) { vnConv_ = vval; }
     void setVPullConv( std::vector<float> vval ) { vpull_conv_ = vval; }
     void setVMVA( std::vector<float> vval ) { vmva_value_ = vval; }
+    void setVertices( edm::PtrVector<reco::Vertex> vval ) { Vertices_ = vval; }
     
 
     float getLogSumPt2() const { return logsumpt2_; }
@@ -63,7 +64,8 @@ namespace flashgg {
     float getPtAsym(unsigned int iVtx) const  { return iVtx<vptasym_.size()?vptasym_.at(iVtx):-9999. ; } 
     float getNConv(unsigned int iVtx) const  { return iVtx<vnConv_.size()?vnConv_.at(iVtx):-9999.; } 
     float getPullConv(unsigned int iVtx) const  { return iVtx<vpull_conv_.size()?vpull_conv_.at(iVtx):-9999.; } 
-    float getMVA(unsigned int iVtx) const  { return iVtx<vmva_value_.size()?vmva_value_.at(iVtx):-9999.; } 
+    float getMVA(unsigned int iVtx) const  { return iVtx<vmva_value_.size()?vmva_value_.at(iVtx):-9999.; }
+    edm::Ptr<reco::Vertex> getVertices(unsigned int iVtx) const {return iVtx<Vertices_.size()?Vertices_[iVtx]:vertex_; } 
 
 
 
@@ -90,6 +92,7 @@ namespace flashgg {
     std::vector<float> vpull_conv_;
     std::vector<float> vnConv_;
     std::vector<float> vmva_value_;
+    edm::PtrVector<reco::Vertex> Vertices_;
 
   };
 
