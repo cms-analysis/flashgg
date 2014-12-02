@@ -81,7 +81,7 @@ namespace flashgg {
 	// Method written just for MiniAOD --> MicroAOD
 	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),vtx,*vertexCandidateMap,true);
 
-	fjet.setPuJetId(vtx,lPUJetId.mva());
+	fjet.setPuJetId(vtx,lPUJetId);
       }
       jetColl->push_back(fjet);
     }

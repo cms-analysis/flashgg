@@ -71,7 +71,7 @@ namespace flashgg {
 			double muPFIsoSumRelThreshold_;
 			double deltaRMuonJetcountThreshold_;
 			double deltaRElectronJetcountThreshold_;
-			double PuIDCutoffThreshold_;
+	  //			double PuIDCutoffThreshold_;
 			double PhoMVAThreshold_;
 			double ElectronPtThreshold_;
 			double DeltaRTrkElec_;
@@ -113,7 +113,7 @@ namespace flashgg {
 		string default_bTag_ = "combinedSecondaryVertexBJetTags";
 		double default_muPFIsoSumRelThreshold_ = 0.2;
 		double default_deltaRMuonJetcountThreshold_ = 2.;
-		double default_PuIDCutoffThreshold_ = 0.8;
+		//		double default_PuIDCutoffThreshold_ = 0.8;
 		double default_PhoMVAThreshold_ = -0.2;
 		double default_ElectronPtThreshold_ = 20.;
 		double default_DeltaRTrkElec_ = 1.;
@@ -142,7 +142,7 @@ namespace flashgg {
 		muPFIsoSumRelThreshold_ = iConfig.getUntrackedParameter<double>("muPFIsoSumRelThreshold",default_muPFIsoSumRelThreshold_); 
 		deltaRMuonJetcountThreshold_=iConfig.getUntrackedParameter<double>("deltaRMuonJetcountThreshold",default_deltaRMuonJetcountThreshold_);
 		deltaRElectronJetcountThreshold_=iConfig.getUntrackedParameter<double>("deltaRMuonJetcountThreshold",default_deltaRMuonJetcountThreshold_);
-		PuIDCutoffThreshold_ = iConfig.getUntrackedParameter<double>("PuIDCutoffThreshold",default_PuIDCutoffThreshold_);
+		//		PuIDCutoffThreshold_ = iConfig.getUntrackedParameter<double>("PuIDCutoffThreshold",default_PuIDCutoffThreshold_);
 		PhoMVAThreshold_ = iConfig.getUntrackedParameter<double>("PhoMVAThreshold",default_PhoMVAThreshold_);
 		ElectronPtThreshold_ = iConfig.getUntrackedParameter<double>("ElectronPtThreshold",default_ElectronPtThreshold_);
 		DeltaRTrkElec_ = iConfig.getUntrackedParameter<double>("DeltaRTrkElec",default_DeltaRTrkElec_);
@@ -239,7 +239,8 @@ namespace flashgg {
 				{
 					edm::Ptr<flashgg::Jet> thejet = jetPointers[candIndex_outer];
 
-					if (thejet->getPuJetId(dipho) <  PuIDCutoffThreshold_) continue;
+					//					if (thejet->getPuJetId(dipho) <  PuIDCutoffThreshold_) continue;
+					if (!thejet->passesPuJetId(dipho)) continue;
 
 					if(fabs(thejet->eta()) > jetEtaThreshold_) continue; 
 
@@ -320,7 +321,8 @@ namespace flashgg {
 				{
 					edm::Ptr<flashgg::Jet> thejet = jetPointers[candIndex_outer];
 
-					if (thejet->getPuJetId(dipho) <  PuIDCutoffThreshold_) continue;
+					//					if (thejet->getPuJetId(dipho) <  PuIDCutoffThreshold_) continue;
+					if (!thejet->passesPuJetId(dipho)) continue;
 
 					//https://github.com/h2gglobe/h2gglobe/blob/master/PhotonAnalysis/src/PhotonAnalysis.cc#L5367
 					if(fabs(thejet->eta()) > jetEtaThreshold_) continue; 

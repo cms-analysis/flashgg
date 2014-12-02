@@ -3,7 +3,7 @@
 using namespace flashgg;
 
 Jet::Jet() : pat::Jet() {
-  PuJetId_.clear();
+  puJetId_.clear();
 }
 
 Jet::Jet(const pat::Jet& aJet ) : pat::Jet(aJet) {
@@ -11,21 +11,38 @@ Jet::Jet(const pat::Jet& aJet ) : pat::Jet(aJet) {
 
 Jet::~Jet() {}
 
-float Jet::getPuJetId(const edm::Ptr<reco::Vertex> vtx) const {
-  if (PuJetId_.count(vtx)) {
-    return PuJetId_.at(vtx);
-  }
-  return -1.9;
+void Jet::setPuJetId(const edm::Ptr<reco::Vertex> vtx, const PileupJetIdentifier & id) {
+  MinimalPileupJetIdentifier min_id;
+  min_id.RMS = id.RMS();
+  min_id.betaStar = id.betaStar();
+  min_id.idFlag = id.idFlag();
+  puJetId_.insert(std::make_pair(vtx,min_id));
 }
 
-float Jet::getPuJetId(const edm::Ptr<DiPhotonCandidate> dipho) const {
-  return getPuJetId(dipho->getVertex());
+bool Jet::passesPuJetId(const edm::Ptr<reco::Vertex> vtx, PileupJetIdentifier::Id level) const {
+  assert (puJetId_.count(vtx));
+  return PileupJetIdentifier::passJetId(puJetId_.at(vtx).idFlag,level);
 }
 
-void Jet::setPuJetId(const edm::Ptr<reco::Vertex> vtx, float val) {
-  if (PuJetId_.count(vtx)) {
-    PuJetId_[vtx] = val;
-  } else {
-    PuJetId_.insert(std::make_pair(vtx,val));
-  }
+float Jet::RMS(const edm::Ptr<reco::Vertex> vtx) const {
+  assert (puJetId_.count(vtx));
+  return puJetId_.at(vtx).RMS;
 }
+
+float Jet::betaStar(const edm::Ptr<reco::Vertex> vtx) const {
+  assert (puJetId_.count(vtx));
+  return puJetId_.at(vtx).betaStar;
+}
+
+bool Jet::passesPuJetId(const edm::Ptr<DiPhotonCandidate> dipho, PileupJetIdentifier::Id level) const {
+  return passesPuJetId(dipho->getVertex());
+}
+
+float Jet::RMS(const edm::Ptr<DiPhotonCandidate> dipho) const {
+  return RMS(dipho->getVertex());
+}
+
+float Jet::betaStar(const edm::Ptr<DiPhotonCandidate> dipho) const {
+  return betaStar(dipho->getVertex());
+}
+

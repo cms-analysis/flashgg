@@ -56,7 +56,7 @@ namespace flashgg {
 			double jetPtThreshold_;
 			double jetEtaThreshold_;
 			double muPFIsoSumRelThreshold_;
-			double PuIDCutoffThreshold_;
+	  //			double PuIDCutoffThreshold_;
 			double PhoMVAThreshold_;
 			double METThreshold_;
 
@@ -93,7 +93,7 @@ namespace flashgg {
 			double default_jetPtThreshold_ = 30.;
 			double default_jetEtaThreshold_ = 2.4;
 			double default_muPFIsoSumRelThreshold_ = 0.2;
-			double default_PuIDCutoffThreshold_ = 0.8;
+			//			double default_PuIDCutoffThreshold_ = 0.8;
 			double default_PhoMVAThreshold_ = -0.2;
 			double default_METThreshold_=45.;
 			double default_deltaRJetMuonThreshold_ = 0.5;
@@ -117,7 +117,7 @@ namespace flashgg {
 		jetPtThreshold_ = iConfig.getUntrackedParameter<double>("jetPtThreshold",default_jetPtThreshold_);
 		jetEtaThreshold_ = iConfig.getUntrackedParameter<double>("jetEtaThreshold",default_jetEtaThreshold_);
 		muPFIsoSumRelThreshold_ = iConfig.getUntrackedParameter<double>("muPFIsoSumRelThreshold",default_muPFIsoSumRelThreshold_); 
-		PuIDCutoffThreshold_ = iConfig.getUntrackedParameter<double>("PuIDCutoffThreshold",default_PuIDCutoffThreshold_);
+		//		PuIDCutoffThreshold_ = iConfig.getUntrackedParameter<double>("PuIDCutoffThreshold",default_PuIDCutoffThreshold_);
 		PhoMVAThreshold_ = iConfig.getUntrackedParameter<double>("PhoMVAThreshold",default_PhoMVAThreshold_);
 		METThreshold_ = iConfig.getUntrackedParameter<double>("METThreshold",default_METThreshold_);
 
@@ -263,7 +263,8 @@ namespace flashgg {
 				{
 					edm::Ptr<flashgg::Jet> thejet = jetPointers[candIndex_outer];
 					
-					if (thejet->getPuJetId(dipho) <  PuIDCutoffThreshold_) continue;
+					//					if (thejet->getPuJetId(dipho) <  PuIDCutoffThreshold_) continue;
+					if (! thejet->passesPuJetId(dipho)) continue;
 
 					if(fabs(thejet->eta()) > jetEtaThreshold_) continue; 
 
