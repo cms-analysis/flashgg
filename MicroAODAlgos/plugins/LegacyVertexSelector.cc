@@ -59,6 +59,7 @@ namespace flashgg {
    edm::FileInPath vertexProbMVAweightfile_;
 
    unsigned int nVtxSaveInfo;
+   bool trackHighPurity;
    double dRexclude;
    double sigma1Pix;
    double sigma1Tib;
@@ -114,6 +115,8 @@ namespace flashgg {
    std::vector<float> vpull_conv_;
    std::vector<float> vnConv_;
    std::vector<float> vmva_value_;
+   std::vector<unsigned int> vmva_sortedindex_;
+   std::vector<edm::Ptr<reco::Vertex> >  vVtxPtr_;
 
   };
 
@@ -124,6 +127,7 @@ namespace flashgg {
     vertexProbMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vertexProbMVAweightfile");
 
     nVtxSaveInfo          =iConfig.getUntrackedParameter<unsigned int>("nVtxSaveInfo", 3); 
+    trackHighPurity       =iConfig.getUntrackedParameter<bool>("trackHighPurity", false); 
     dRexclude             =iConfig.getUntrackedParameter<double>("dRexclude", 0.05);
     sigma1Pix             =iConfig.getUntrackedParameter<double>("sigma1Pix", 0.011);
     sigma1Tib             =iConfig.getUntrackedParameter<double>("sigma1Tib", 0.492);
@@ -380,8 +384,10 @@ namespace flashgg {
     vpull_conv_.clear();
     vnConv_.clear();
     vmva_value_.clear();
+    vVtxPtr_.clear();
+    vmva_sortedindex_.clear();
 
-    std::vector<std::pair<unsigned int, float>> sorter;
+    std::vector<std::pair<unsigned int, float> > sorter;
 
     int IndexMatchedConversionLeadPhoton=-1;
     int IndexMatchedConversionTrailPhoton=-1;
@@ -412,8 +418,8 @@ namespace flashgg {
     std::vector<float> vpull_conv;
     std::vector<float> vnConv;
     std::vector<float> vmva_value;
-    std::vector<unsigned int> vmva_sortedindex;
-
+    std::vector<edm::Ptr<reco::Vertex> >  vVtxPtr;
+   
     for (vertex_index = 0 ; vertex_index < vtxs.size() ; vertex_index++) {
       edm::Ptr<reco::Vertex> vtx = vtxs[vertex_index];
 
@@ -451,7 +457,7 @@ namespace flashgg {
         dr1 = tk.DeltaR(p14.Vect());
         dr2 = tk.DeltaR(p24.Vect());
 	bool isPure=cand->trackHighPurity(); 
-	if(!isPure) continue; 
+	if( !isPure && trackHighPurity ) continue; 
 
         if(dr1 < dRexclude || dr2 < dRexclude){
           sumpt2_in+=tkXY.Mod2();
@@ -495,6 +501,7 @@ namespace flashgg {
       vpull_conv.push_back( pull_conv_ );
       vnConv.push_back(nConv_ );
       vmva_value.push_back( mva_value );
+      vVtxPtr.push_back(vtx);
       
       std::pair<unsigned int,float>pairToSort=std::make_pair(vmva_value.size()-1, mva_value);
       sorter.push_back(pairToSort);
@@ -521,17 +528,18 @@ namespace flashgg {
     }
 
     for (unsigned int jj=0;jj<sorter.size();jj++){
-      //      std::cout<<"JM CHECK sorter:"<<sorter[jj].first<<" "<<sorter[jj].second<< std::endl;
-      vmva_sortedindex.push_back(sorter[jj].first);   
+     
       
       if( vlogsumpt2_.size() < nVtxSaveInfo ){
 	
+	vmva_sortedindex_.push_back(sorter[jj].first);   
       	vlogsumpt2_.push_back(vlogsumpt2[sorter[jj].first]);
 	vptbal_.push_back(vptbal[sorter[jj].first]);
 	vptasym_.push_back(vptasym[sorter[jj].first]);
 	vpull_conv_.push_back(vpull_conv[sorter[jj].first]);
 	vnConv_.push_back(vnConv[sorter[jj].first]);
 	vmva_value_.push_back(vmva_value[sorter[jj].first]);
+	vVtxPtr_.push_back(vVtxPtr[sorter[jj].first]);
 
       }
       
@@ -571,6 +579,8 @@ namespace flashgg {
     dipho.setVPtAsym(vptasym_);
     dipho.setVLogSumPt2(vlogsumpt2_);
     dipho.setVMVA(vmva_value_);
+    dipho.setVVtxPtr(vVtxPtr_);
+    dipho.setVMVASortedIndex(vmva_sortedindex_);
 
     dipho.setVtxProbMVA(vtxprobmva_);
 
