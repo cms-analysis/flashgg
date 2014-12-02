@@ -66,6 +66,10 @@ struct GenPartInfo {
 // per jet tree
 struct jetInfo {
   float pt;
+  float rawPt;
+  float energy;
+  float mass;
+  float area;
   float eta;
   float phi;
   int   npart;
@@ -120,9 +124,10 @@ private:
   jetInfo     jInfo;
   GenPartInfo genInfo;
   Int_t event_number;
-  
+ 	std::string jetCollectionName; 
   
   TH1F *h_jetPt ;      
+  TH1F *h_jetRawPt ;      
   TH1F *h_jetEta ;     
   TH1F *h_jetPhi  ;    
   
@@ -137,6 +142,7 @@ JetValidationTreeMaker::JetValidationTreeMaker(const edm::ParameterSet& iConfig)
   jetDzToken_ (consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagDz")))
 {
   event_number = 0;
+	jetCollectionName = iConfig.getParameter<string>("StringTag");
 }
 
 JetValidationTreeMaker::~JetValidationTreeMaker()
@@ -165,23 +171,27 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
   
   initEventStructure();
   
-  std::cout << " JET CHECKER ::  jetsDzCheckPointers.size() = " << jetsDzPointers.size() << std::endl;
-  std::cout << " JET CHECKER ::  Event                      = " << event_number << std::endl;
+ // std::cout << " JET CHECKER ::  jetsDzCheckPointers.size() = " << jetsDzPointers.size() << std::endl;
+ // std::cout << " JET CHECKER ::  Event                      = " << event_number << std::endl;
   
   for (unsigned int jdz = 0 ; jdz < jetsDzPointers.size() ; jdz++) {
     //std::cout << "\t JET CHECKER :: jet["<< jdz <<"] pt  =" <<jetsDzPointers[jdz]->pt() << std::endl;
     jInfo.pt                = jetsDzPointers[jdz]->pt();
+    jInfo.rawPt                = jetsDzPointers[jdz]->correctedJet("Uncorrected").pt() ;
+    jInfo.energy                = jetsDzPointers[jdz]->energy() ;
+    jInfo.mass                = jetsDzPointers[jdz]->mass() ;
     jInfo.eta               = jetsDzPointers[jdz]->eta();
     jInfo.phi               = jetsDzPointers[jdz]->phi();
     
     h_jetPt ->Fill(jetsDzPointers[jdz]->pt() );	
+    h_jetRawPt ->Fill(jetsDzPointers[jdz]->correctedJet("Uncorrected").pt() );	
     h_jetEta->Fill(jetsDzPointers[jdz]->eta());	
     h_jetPhi->Fill(jetsDzPointers[jdz]->phi());	
     
     jetTree->Fill();
   }
     
-  std::cout << " Number of genParticles : " <<  gens.size() << std::endl;
+ // std::cout << " Number of genParticles : " <<  gens.size() << std::endl;
   for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++){
     
     genInfo.pt     = gens[genLoop]->pt() ;
@@ -196,11 +206,11 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
       h_genEta->Fill(gens[genLoop]->eta());	
       h_genPhi->Fill(gens[genLoop]->phi());	
       
-      std::cout << "\t GenQuarks id::" << genLoop 
+   /*   std::cout << "\t GenQuarks id::" << genLoop 
 		<< "  pt::"         << genInfo.pt    
 		<< "  pid::("       << genInfo.pdgid  << "," << gens[genLoop]->pdgId() << ")"
 		<< "  sts::"        << genInfo.status 
-		<< std::endl;
+		<< std::endl;*/
     }
     genPartTree->Fill();
   }
@@ -217,6 +227,7 @@ JetValidationTreeMaker::beginJob()
 
   
   h_jetPt    = fs_->make<TH1F>("h_jetPt" ,"flashgg jets;P_{t}[GeV]",500,0,500);
+  h_jetRawPt    = fs_->make<TH1F>("h_jetRawPt" ,"flashgg jets;rawP_{t}[GeV]",500,0,500);
   h_jetEta   = fs_->make<TH1F>("h_jetEta","flashgg jets;#eta"      ,500,-5,5);
   h_jetPhi   = fs_->make<TH1F>("h_jetPhi","flashgg jets;#phi"      ,500,-6.3,6.3);
   
@@ -224,11 +235,18 @@ JetValidationTreeMaker::beginJob()
   h_genEta   = fs_->make<TH1F>("h_genEta","gen quarks only;#eta"      ,500,-5,5);
   h_genPhi   = fs_->make<TH1F>("h_genPhi","gen quarks only;#phi"      ,500,-6.3,6.3);
   
-  eventTree = fs_->make<TTree>("eventTree","per-event tree");
+	std::string type("eventTree_");
+	type += jetCollectionName;
+  eventTree = fs_->make<TTree>(type.c_str(),jetCollectionName.c_str());
   eventTree->Branch("eventBranch",&eInfo.genVertexZ,"gen_vertex_z/F:zeroth_vertex_z/F:diphotonVertexZ/F:higgs_pt/F");
   
-  jetTree = fs_->make<TTree>("jetTree","Check per-jet tree");
+	std::string typeJet("jetTree_");
+	typeJet += jetCollectionName;
+  jetTree = fs_->make<TTree>(typeJet.c_str(),jetCollectionName.c_str());
   jetTree->Branch("pt"   ,&jInfo.pt  ,"pt/F" );
+  jetTree->Branch("rawPt"   ,&jInfo.rawPt  ,"rawPt/F" );
+  jetTree->Branch("energy"   ,&jInfo.energy  ,"energy/F" );
+  jetTree->Branch("mass"   ,&jInfo.mass  ,"mass/F" );
   jetTree->Branch("eta"  ,&jInfo.eta ,"eta/F");
   jetTree->Branch("phi"  ,&jInfo.phi ,"phi/F");
   

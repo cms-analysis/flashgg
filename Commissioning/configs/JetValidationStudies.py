@@ -12,8 +12,8 @@ process.source = cms.Source("PoolSource",
                             #skipEvents=cms.untracked.uint32(13000)
                             )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 100 ) )
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 10000 ) )
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 process.load("flashgg/MicroAODProducers/flashggVertexMaps_cfi")
 process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
@@ -450,16 +450,32 @@ process.flashggPFCollAnalyzer = cms.EDAnalyzer('FlashggFlashggPFCollAnalyzer',
 #process.TFileService = cms.Service("TFileService",fileName = cms.string("JetValidationTree.root"))
 process.flashggJetValidationTreeMaker = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
                                                        GenParticleTag           = cms.untracked.InputTag('prunedGenParticles'),
-                                                       #VertexCandidateMapTagDz  = cms.InputTag('flashggVertexMapUnique'),
-                                                       #VertexCandidateMapTagAOD = cms.InputTag('flashggVertexMapValidator'),
-                                                       JetTagDz                 = cms.InputTag("flashggJets")
-                                                       #JetTagRecoBasedMap       = cms.InputTag("flashggJets"),
-                                                       #DiPhotonTag              = cms.untracked.InputTag('flashggDiPhotons')
-                                                       # JetTagReco = cms.InputTag("flashggJetsUsingRecoJets")
+                                                       JetTagDz                 = cms.InputTag("flashggJets"),
+																											 StringTag								= cms.string("PF"),
                                                        )
 
+process.flashggJetValidationTreeMakerPFCHS0 = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
+                                                       GenParticleTag           = cms.untracked.InputTag('prunedGenParticles'),
+                                                       JetTagDz                 = cms.InputTag("flashggJetsPFCHS0"),
+																											 StringTag								= cms.string("PFCHS0"),
+                                                       )
 
+process.flashggJetValidationTreeMakerPFCHSLeg = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
+                                                       GenParticleTag           = cms.untracked.InputTag('prunedGenParticles'),
+                                                       JetTagDz                 = cms.InputTag("flashggJetsPFCHSLeg"),
+																											 StringTag								= cms.string("PFCHSLeg"),
+                                                       )
 
+process.flashggJetValidationTreeMakerPUPPI0 = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
+                                                       GenParticleTag           = cms.untracked.InputTag('prunedGenParticles'),
+                                                       JetTagDz                 = cms.InputTag("flashggJetsPUPPI0"),
+																											 StringTag								= cms.string("PUPPI0"),
+                                                       )
+process.flashggJetValidationTreeMakerPUPPILeg = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
+                                                       GenParticleTag           = cms.untracked.InputTag('prunedGenParticles'),
+                                                       JetTagDz                 = cms.InputTag("flashggJetsPUPPILeg"),
+																											 StringTag								= cms.string("PUPPILeg"),
+                                                       )
 #new PAT default running is "unscheduled" so we just need to say in the outputCommands what we want to store
 process.options = cms.untracked.PSet(
     allowUnscheduled = cms.untracked.bool(True)
@@ -467,7 +483,11 @@ process.options = cms.untracked.PSet(
 
 process.p = cms.Path(
     process.flashggPFCollAnalyzer + 
-    process.flashggJetValidationTreeMaker
+    process.flashggJetValidationTreeMaker +
+    process.flashggJetValidationTreeMakerPFCHS0 +
+    process.flashggJetValidationTreeMakerPFCHSLeg +
+    process.flashggJetValidationTreeMakerPUPPI0 +
+    process.flashggJetValidationTreeMakerPUPPILeg 
     #process.commissioning*
     )
 process.OUT = cms.OutputModule("PoolOutputModule",
