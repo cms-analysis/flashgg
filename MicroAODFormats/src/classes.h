@@ -24,6 +24,7 @@ namespace  { struct dictionary {
   edm::Wrapper<std::vector<edm::Ptr<flashgg::DiPhotonCandidate> > >   wrp_vec_ptr_fgg_dip;
 
   edm::Ptr<reco::Vertex>                                        ptr_rec_vtx;
+  std::vector<edm::Ptr<reco::Vertex> >                      vec_ptr_rec_vtx;
   flashgg::Jet                                                      fgg_jet;
   edm::Wrapper<flashgg::Jet>                                    wrp_fgg_jet;
   std::vector<flashgg::Jet>                                     vec_fgg_jet;

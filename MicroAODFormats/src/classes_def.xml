@@ -1,5 +1,6 @@
 <lcgdict>
  <class name="edm::Ptr<reco::Vertex>"/> 
+ <class name="std::vector<edm::Ptr<reco::Vertex> >"/> 
  <class name="flashgg::Photon"/>
  <class name="edm::Ptr<flashgg::Photon>"/>
  <class name="std::vector<flashgg::Photon>"/>
