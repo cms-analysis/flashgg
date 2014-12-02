@@ -115,6 +115,7 @@ namespace flashgg {
    std::vector<float> vpull_conv_;
    std::vector<float> vnConv_;
    std::vector<float> vmva_value_;
+   std::vector<unsigned int> vmva_sortedindex_;
    std::vector<edm::Ptr<reco::Vertex> >  vVtxPtr_;
 
   };
@@ -384,6 +385,7 @@ namespace flashgg {
     vnConv_.clear();
     vmva_value_.clear();
     vVtxPtr_.clear();
+    vmva_sortedindex_.clear();
 
     std::vector<std::pair<unsigned int, float> > sorter;
 
@@ -416,9 +418,8 @@ namespace flashgg {
     std::vector<float> vpull_conv;
     std::vector<float> vnConv;
     std::vector<float> vmva_value;
-    std::vector<unsigned int> vmva_sortedindex;
     std::vector<edm::Ptr<reco::Vertex> >  vVtxPtr;
-
+   
     for (vertex_index = 0 ; vertex_index < vtxs.size() ; vertex_index++) {
       edm::Ptr<reco::Vertex> vtx = vtxs[vertex_index];
 
@@ -528,10 +529,10 @@ namespace flashgg {
 
     for (unsigned int jj=0;jj<sorter.size();jj++){
      
-      vmva_sortedindex.push_back(sorter[jj].first);   
       
       if( vlogsumpt2_.size() < nVtxSaveInfo ){
 	
+	vmva_sortedindex_.push_back(sorter[jj].first);   
       	vlogsumpt2_.push_back(vlogsumpt2[sorter[jj].first]);
 	vptbal_.push_back(vptbal[sorter[jj].first]);
 	vptasym_.push_back(vptasym[sorter[jj].first]);
@@ -579,6 +580,7 @@ namespace flashgg {
     dipho.setVLogSumPt2(vlogsumpt2_);
     dipho.setVMVA(vmva_value_);
     dipho.setVVtxPtr(vVtxPtr_);
+    dipho.setVMVASortedIndex(vmva_sortedindex_);
 
     dipho.setVtxProbMVA(vtxprobmva_);
 
