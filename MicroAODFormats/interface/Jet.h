@@ -8,6 +8,12 @@
 
 namespace flashgg {
 
+  struct MinimalPileupJetIdentifier {
+    float RMS;
+    float betaStar;
+    int idFlag;
+  };
+
   class Jet : public pat::Jet {
 
   public:
@@ -22,7 +28,7 @@ namespace flashgg {
     float RMS(const edm::Ptr<DiPhotonCandidate> dipho) const;
     float betaStar(const edm::Ptr<DiPhotonCandidate> dipho) const;
   private:
-    std::map<edm::Ptr<reco::Vertex>, PileupJetIdentifier> puJetId_;
+    std::map<edm::Ptr<reco::Vertex>,MinimalPileupJetIdentifier> puJetId_;
   };
 }
 

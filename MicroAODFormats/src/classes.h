@@ -28,9 +28,9 @@ namespace  { struct dictionary {
 
   edm::Ptr<reco::Vertex>                                        ptr_rec_vtx;
 
-  PileupJetIdentifier                                               pujetid;
-  std::pair<edm::Ptr<reco::Vertex>,PileupJetIdentifier>                    pair_ptr_vtx_pujetid;
-  std::map<edm::Ptr<reco::Vertex>,PileupJetIdentifier>                    map_ptr_vtx_pujetid;
+  flashgg::MinimalPileupJetIdentifier                                               pujetid;
+  std::pair<edm::Ptr<reco::Vertex>,flashgg::MinimalPileupJetIdentifier>                    pair_ptr_vtx_pujetid;
+  std::map<edm::Ptr<reco::Vertex>,flashgg::MinimalPileupJetIdentifier>                    map_ptr_vtx_pujetid;
 
   flashgg::Jet                                                      fgg_jet;
   edm::Wrapper<flashgg::Jet>                                    wrp_fgg_jet;
