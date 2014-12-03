@@ -70,7 +70,7 @@ namespace flashgg {
 
 		edm::Ptr<reco::Vertex> flashVertex;
 		if (diPhotonPointers.size()==0){
-			std::cout << "[WARNING] No Diphotons in event. Using 0th Vtx for CHS PU subtraction."<< std::cout ; //replace with Error Logger at some stage, cout is not thread safe.
+			std::cout << "[WARNING] No Diphotons in event. Using 0th Vtx for CHS PU subtraction."<< std::endl ; //replace with Error Logger at some stage, cout is not thread safe.
 			flashVertex = pvPtrs[0];
 		}
 		if (diPhotonPointers.size() ==1){

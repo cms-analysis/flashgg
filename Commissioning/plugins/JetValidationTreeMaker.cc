@@ -63,10 +63,28 @@ struct GenPartInfo {
   }
 };
 
-// per jet tree
+// per-genJet tree
+struct GenJetInfo {
+  float pt;
+  float eta;
+  float phi;
+  float recoJetPt   ; 
+  float recoJetRawPt ;
+  float recoJetBestPt;
+  int   recoJetMatch ;
+  float recoJetEta   ;
+  float dR   ;
+  
+  void init(){
+    pt  =-999;
+    eta =-999; 
+  }
+};
+// per recoJet tree
 struct jetInfo {
   float pt;
   float rawPt;
+  float bestPt;
   float energy;
   float mass;
   float area;
@@ -75,6 +93,13 @@ struct jetInfo {
   int   npart;
   int   nphoton;
   int   ncharged;
+  float genJetPt;
+  float genJetEta;
+  int genJetMatch;
+  float genQuarkPt;
+  float genQuarkEta;
+  int genQuarkMatch;
+  int genQuarkPdgId;
   
   void init(){
     pt  =-999;
@@ -113,16 +138,19 @@ private:
   //EDGetTokenT< VertexCandidateMap > vertexCandidateMapTokenAOD_;
   
   EDGetTokenT< edm::View<reco::GenParticle> > genPartToken_;
+  EDGetTokenT< edm::View<reco::GenJet> > genJetToken_;
   EDGetTokenT< edm::View<flashgg::Jet> >      jetDzToken_;
   
   
   TTree*     eventTree;
   TTree*     jetTree;
   TTree*     genPartTree;
+  TTree*     genJetTree;
   
   eventInfo   eInfo;
   jetInfo     jInfo;
   GenPartInfo genInfo;
+  GenJetInfo genJetInfo;
   Int_t event_number;
  	std::string jetCollectionName; 
   
@@ -139,6 +167,7 @@ private:
 
 JetValidationTreeMaker::JetValidationTreeMaker(const edm::ParameterSet& iConfig):
   genPartToken_(consumes<View<reco::GenParticle> >(iConfig.getUntrackedParameter<InputTag> ("GenParticleTag", InputTag("prunedGenParticles")))),
+  genJetToken_(consumes<View<reco::GenJet> >(iConfig.getUntrackedParameter<InputTag> ("GenJetTag", InputTag("slimmedGenJets")))),
   jetDzToken_ (consumes<View<flashgg::Jet> >(iConfig.getParameter<InputTag>("JetTagDz")))
 {
   event_number = 0;
@@ -164,6 +193,10 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
   iEvent.getByToken(genPartToken_,genParticles);
   const PtrVector<reco::GenParticle>& gens = genParticles->ptrVector();
   
+	Handle<View<reco::GenJet> > genJet;
+  iEvent.getByToken(genJetToken_,genJet);
+  const PtrVector<reco::GenJet>& genJets = genJet->ptrVector();
+  
   Handle<View<flashgg::Jet> > jetsDz;
   iEvent.getByToken(jetDzToken_,jetsDz);
   const PtrVector<flashgg::Jet>& jetsDzPointers = jetsDz->ptrVector();
@@ -173,11 +206,41 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
   
  // std::cout << " JET CHECKER ::  jetsDzCheckPointers.size() = " << jetsDzPointers.size() << std::endl;
  // std::cout << " JET CHECKER ::  Event                      = " << event_number << std::endl;
-  
   for (unsigned int jdz = 0 ; jdz < jetsDzPointers.size() ; jdz++) {
     //std::cout << "\t JET CHECKER :: jet["<< jdz <<"] pt  =" <<jetsDzPointers[jdz]->pt() << std::endl;
     jInfo.pt                = jetsDzPointers[jdz]->pt();
     jInfo.rawPt                = jetsDzPointers[jdz]->correctedJet("Uncorrected").pt() ;
+		if(jetCollectionName.find("PPI")>1 && jetCollectionName.find("PPI")<jetCollectionName.size()){
+    jInfo.bestPt                = jetsDzPointers[jdz]->correctedJet("Uncorrected").pt() ;
+		} else {
+    jInfo.bestPt                = jetsDzPointers[jdz]->pt() ;
+		}
+	
+		if( jetsDzPointers[jdz]->genJet()){
+		jInfo.genJetMatch           = 1;
+		jInfo.genJetPt              = jetsDzPointers[jdz]->genJet()->pt();
+		jInfo.genJetEta             = jetsDzPointers[jdz]->genJet()->eta();
+
+		} else {
+		jInfo.genJetPt              = -9999.;
+		jInfo.genJetEta             = -9999.;
+		jInfo.genJetMatch           = 0;
+		}
+
+		if( jetsDzPointers[jdz]->genParton()){
+		jInfo.genQuarkMatch           = 1;
+		jInfo.genQuarkPt              = jetsDzPointers[jdz]->genParton()->pt();
+		jInfo.genQuarkEta             = jetsDzPointers[jdz]->genParton()->eta();
+		jInfo.genQuarkPdgId           = jetsDzPointers[jdz]->genParton()->pdgId();
+
+		} else {
+		jInfo.genQuarkPt              = -9999.;
+		jInfo.genQuarkEta             = -9999.;
+		jInfo.genQuarkMatch           = 0;
+		jInfo.genQuarkPdgId           = -9999;
+		}
+
+
     jInfo.energy                = jetsDzPointers[jdz]->energy() ;
     jInfo.mass                = jetsDzPointers[jdz]->mass() ;
     jInfo.eta               = jetsDzPointers[jdz]->eta();
@@ -214,72 +277,147 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
     }
     genPartTree->Fill();
   }
-    
-  eventTree->Fill();
-  event_number++;
+  
+	// fill genJet tree
+	//
+		std::cout << "DEBUG - gen Jets size " << genJets.size() << std::endl;
+	for( unsigned int genLoop =0 ; genLoop < genJets.size(); genLoop++){
+
+		genJetInfo.recoJetPt       = -999.;
+		genJetInfo.recoJetRawPt    = -999. ;
+		genJetInfo.recoJetBestPt   = -999. ;
+		genJetInfo.recoJetMatch    = 0 ;
+		genJetInfo.recoJetEta      =  -999.;
+		genJetInfo.dR      =  -999.;
+		genJetInfo.pt     = -999. ;
+		genJetInfo.eta    = -999.;
+		genJetInfo.phi    = -999.;
+
+		if (genJets[genLoop]->pt() <20) { continue;}
+
+		genJetInfo.pt     = genJets[genLoop]->pt() ;
+	//	std::cout << "DEBUG " << genJets[genLoop]->pt() << std::endl;
+		genJetInfo.eta    = genJets[genLoop]->eta();
+		genJetInfo.phi    = genJets[genLoop]->phi();
+
+		float deta;
+		float dphi;
+		float dr  ;
+		//loop over reco to do dR match
+		for (unsigned int recoLoop=0; recoLoop <  jetsDzPointers.size(); recoLoop++){
+
+			if(jetsDzPointers[recoLoop]->pt() < 5) continue;
+
+			deta= jetsDzPointers[recoLoop]->eta() - 	 genJets[genLoop]->eta();
+			dphi= jetsDzPointers[recoLoop]->phi() - 	 genJets[genLoop]->phi();
+			dr = std::sqrt(deta*deta + dphi*dphi);
+
+			if (dr < 0.4 ) {
+
+				genJetInfo.dR      =  dr;
+				genJetInfo.recoJetPt       = jetsDzPointers[recoLoop]->pt() ;
+				genJetInfo.recoJetRawPt    = jetsDzPointers[recoLoop]->correctedJet("Uncorrected").pt()  ;
+
+				if(jetCollectionName.find("PPI")>1 && jetCollectionName.find("PPI")<jetCollectionName.size()){
+					genJetInfo.recoJetBestPt   =  jetsDzPointers[recoLoop]->correctedJet("Uncorrected").pt() ;
+				} else{  
+					genJetInfo.recoJetBestPt   = jetsDzPointers[recoLoop]->pt()  ;
+				}
+				genJetInfo.recoJetMatch    = 1 ;
+				break;
+
+			}
+		}
+
+		genJetTree->Fill();
+	}
+
+	eventTree->Fill();
+	event_number++;
 }
 
 
-void 
+	void 
 JetValidationTreeMaker::beginJob()
 {
-  
 
-  
-  h_jetPt    = fs_->make<TH1F>("h_jetPt" ,"flashgg jets;P_{t}[GeV]",500,0,500);
-  h_jetRawPt    = fs_->make<TH1F>("h_jetRawPt" ,"flashgg jets;rawP_{t}[GeV]",500,0,500);
-  h_jetEta   = fs_->make<TH1F>("h_jetEta","flashgg jets;#eta"      ,500,-5,5);
-  h_jetPhi   = fs_->make<TH1F>("h_jetPhi","flashgg jets;#phi"      ,500,-6.3,6.3);
-  
-  h_genPt    = fs_->make<TH1F>("h_genPt" ,"gen quarks only;P_{t}[GeV]",500,0,500);
-  h_genEta   = fs_->make<TH1F>("h_genEta","gen quarks only;#eta"      ,500,-5,5);
-  h_genPhi   = fs_->make<TH1F>("h_genPhi","gen quarks only;#phi"      ,500,-6.3,6.3);
-  
+
+
+	h_jetPt    = fs_->make<TH1F>("h_jetPt" ,"flashgg jets;P_{t}[GeV]",500,0,500);
+	h_jetRawPt    = fs_->make<TH1F>("h_jetRawPt" ,"flashgg jets;rawP_{t}[GeV]",500,0,500);
+	h_jetEta   = fs_->make<TH1F>("h_jetEta","flashgg jets;#eta"      ,500,-5,5);
+	h_jetPhi   = fs_->make<TH1F>("h_jetPhi","flashgg jets;#phi"      ,500,-6.3,6.3);
+
+	h_genPt    = fs_->make<TH1F>("h_genPt" ,"gen quarks only;P_{t}[GeV]",500,0,500);
+	h_genEta   = fs_->make<TH1F>("h_genEta","gen quarks only;#eta"      ,500,-5,5);
+	h_genPhi   = fs_->make<TH1F>("h_genPhi","gen quarks only;#phi"      ,500,-6.3,6.3);
+
 	std::string type("eventTree_");
 	type += jetCollectionName;
-  eventTree = fs_->make<TTree>(type.c_str(),jetCollectionName.c_str());
-  eventTree->Branch("eventBranch",&eInfo.genVertexZ,"gen_vertex_z/F:zeroth_vertex_z/F:diphotonVertexZ/F:higgs_pt/F");
-  
+	eventTree = fs_->make<TTree>(type.c_str(),jetCollectionName.c_str());
+	eventTree->Branch("eventBranch",&eInfo.genVertexZ,"gen_vertex_z/F:zeroth_vertex_z/F:diphotonVertexZ/F:higgs_pt/F");
+
 	std::string typeJet("jetTree_");
 	typeJet += jetCollectionName;
-  jetTree = fs_->make<TTree>(typeJet.c_str(),jetCollectionName.c_str());
-  jetTree->Branch("pt"   ,&jInfo.pt  ,"pt/F" );
-  jetTree->Branch("rawPt"   ,&jInfo.rawPt  ,"rawPt/F" );
-  jetTree->Branch("energy"   ,&jInfo.energy  ,"energy/F" );
-  jetTree->Branch("mass"   ,&jInfo.mass  ,"mass/F" );
-  jetTree->Branch("eta"  ,&jInfo.eta ,"eta/F");
-  jetTree->Branch("phi"  ,&jInfo.phi ,"phi/F");
-  
-  genPartTree = fs_->make<TTree>("genPartTree","Check per-jet tree");
-  genPartTree->Branch("pt"     ,&genInfo.pt      ,"pt/F" );
-  genPartTree->Branch("eta"    ,&genInfo.eta     ,"eta/F");
-  genPartTree->Branch("phi"    ,&genInfo.phi     ,"phi/F");
-  genPartTree->Branch("status" ,&genInfo.status  ,"status/I" );
-  genPartTree->Branch("pdgid"  ,&genInfo.pdgid   ,"pdgid/I");
-  
+	jetTree = fs_->make<TTree>(typeJet.c_str(),jetCollectionName.c_str());
+	jetTree->Branch("pt"   ,&jInfo.pt  ,"pt/F" );
+	jetTree->Branch("rawPt"   ,&jInfo.rawPt  ,"rawPt/F" );
+	jetTree->Branch("bestPt"   ,&jInfo.bestPt  ,"bestPt/F" );
+	jetTree->Branch("energy"   ,&jInfo.energy  ,"energy/F" );
+	jetTree->Branch("mass"   ,&jInfo.mass  ,"mass/F" );
+	jetTree->Branch("eta"  ,&jInfo.eta ,"eta/F");
+	jetTree->Branch("phi"  ,&jInfo.phi ,"phi/F");
+	jetTree->Branch("genJetPt"   ,&jInfo.genJetPt  ,"genJetPt/F" );
+	jetTree->Branch("genJetEta"   ,&jInfo.genJetEta  ,"genJetEta/F" );
+	jetTree->Branch("genJetMatch"   ,&jInfo.genJetMatch  ,"genJetMatch/I" );
+	jetTree->Branch("genQuarkPt"   ,&jInfo.genQuarkPt  ,"genQuarkPt/F" );
+	jetTree->Branch("genQuarkEta"   ,&jInfo.genQuarkEta  ,"genQuarkEta/F" );
+	jetTree->Branch("genQuarkMatch"   ,&jInfo.genQuarkMatch  ,"genQuarkMatch/I" );
+	jetTree->Branch("genQuarkPdgId"   ,&jInfo.genQuarkPdgId  ,"genQuarkPdfId/I" );
+
+	genPartTree = fs_->make<TTree>("genPartTree","Check per-jet tree");
+	genPartTree->Branch("pt"     ,&genInfo.pt      ,"pt/F" );
+	genPartTree->Branch("eta"    ,&genInfo.eta     ,"eta/F");
+	genPartTree->Branch("phi"    ,&genInfo.phi     ,"phi/F");
+	genPartTree->Branch("status" ,&genInfo.status  ,"status/I" );
+	genPartTree->Branch("pdgid"  ,&genInfo.pdgid   ,"pdgid/I");
+	
+	std::string typeGenJet("genJetTree_");
+	typeGenJet += jetCollectionName;
+	genJetTree = fs_->make<TTree>(typeGenJet.c_str(),jetCollectionName.c_str());
+	genJetTree->Branch("pt"     ,&genJetInfo.pt      ,"pt/F" );
+	genJetTree->Branch("eta"    ,&genJetInfo.eta     ,"eta/F");
+	genJetTree->Branch("phi"    ,&genJetInfo.phi     ,"phi/F");
+
+	genJetTree->Branch("recoJetPt"        ,&genJetInfo.recoJetPt         ,"recoJetPt/F" );
+	genJetTree->Branch("recoJetRawPt"     ,&genJetInfo.recoJetRawPt      ,"recoJetRawPt/F" );
+	genJetTree->Branch("recoJetBestPt"    ,&genJetInfo.recoJetBestPt     ,"recoJetBestPt/F");
+	genJetTree->Branch("recoJetMatch"     ,&genJetInfo.recoJetMatch      ,"recoJetMatch/I");
+	genJetTree->Branch("recoJetEta"       ,&genJetInfo.recoJetEta        ,"recoJetEta/F" );
+	genJetTree->Branch("dR"       ,&genJetInfo.dR       ,"dR/F" );
+
 }
+	void 
+		JetValidationTreeMaker::endJob() 
+		{
 
-void 
-JetValidationTreeMaker::endJob() 
-{
-  
-}
+		}
 
-void
-JetValidationTreeMaker::initEventStructure() 
-{
-  
-}
+	void
+		JetValidationTreeMaker::initEventStructure() 
+		{
+
+		}
 
 
-void 
-JetValidationTreeMaker::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
-  // The following says we do not know what parameters are allowed so do no validation
-  // Please change this to state exactly what you do use, even if it is no parameters
-  edm::ParameterSetDescription desc;
-  desc.setUnknown();
-  descriptions.addDefault(desc);
-}
+	void 
+		JetValidationTreeMaker::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+			// The following says we do not know what parameters are allowed so do no validation
+			// Please change this to state exactly what you do use, even if it is no parameters
+			edm::ParameterSetDescription desc;
+			desc.setUnknown();
+			descriptions.addDefault(desc);
+		}
 
-typedef JetValidationTreeMaker FlashggJetValidationTreeMaker;
-DEFINE_FWK_MODULE(FlashggJetValidationTreeMaker);
+	typedef JetValidationTreeMaker FlashggJetValidationTreeMaker;
+	DEFINE_FWK_MODULE(FlashggJetValidationTreeMaker);
