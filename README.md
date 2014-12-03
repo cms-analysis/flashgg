@@ -28,13 +28,12 @@ flashgg
  # see https://help.github.com/articles/fork-a-repo for more about this 
  ```
 
-5. Now build, a very basic workflow test, and an extremely primitive FWLite script:
+5. Now build, a very basic workflow test:
  ```
  cd $CMSSW_BASE/src
  scram b
- cd flashgg/MicroAODProducers/test
- cmsRun simple_Producer_test.py
- root -b -q scan_test_output.C
+ cmsRun flashgg/MicroAODProducers/test/simple_Producer_test.py
+ cmsRun flashgg/TagProducers/test/simple_Tag_test.py
  ```
 
 For the impatient user (SLC6 right SCRAM_ARCH) just:

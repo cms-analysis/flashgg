@@ -38,8 +38,8 @@ namespace flashgg {
     void setVNConv( std::vector<float> vval ) { vnConv_ = vval; }
     void setVPullConv( std::vector<float> vval ) { vpull_conv_ = vval; }
     void setVMVA( std::vector<float> vval ) { vmva_value_ = vval; }
-    void setVertices( edm::PtrVector<reco::Vertex> vval ) { Vertices_ = vval; }
-    
+    void setVVtxPtr( std::vector<edm::Ptr<reco::Vertex> >  vval) { vVtxPtr_ = vval;}
+    void setVMVASortedIndex( std::vector<unsigned int>  vval) { vmva_sortedindex_= vval;}
 
     float getLogSumPt2() const { return logsumpt2_; }
     float getPtBal() const { return ptbal_; }
@@ -64,12 +64,12 @@ namespace flashgg {
     float getPtAsym(unsigned int iVtx) const  { return iVtx<vptasym_.size()?vptasym_.at(iVtx):-9999. ; } 
     float getNConv(unsigned int iVtx) const  { return iVtx<vnConv_.size()?vnConv_.at(iVtx):-9999.; } 
     float getPullConv(unsigned int iVtx) const  { return iVtx<vpull_conv_.size()?vpull_conv_.at(iVtx):-9999.; } 
-    float getMVA(unsigned int iVtx) const  { return iVtx<vmva_value_.size()?vmva_value_.at(iVtx):-9999.; }
-    edm::Ptr<reco::Vertex> getVertices(unsigned int iVtx) const {return iVtx<Vertices_.size()?Vertices_[iVtx]:vertex_; } 
-
-
-
+    float getMVA(unsigned int iVtx) const  { return iVtx<vmva_value_.size()?vmva_value_.at(iVtx):-9999.; } 
+    int getMVASortedIndex(unsigned int iVtx) const  { return iVtx<vmva_sortedindex_.size()?vmva_sortedindex_.at(iVtx):-1; } 
+    edm::Ptr<reco::Vertex> getVertexPtr(unsigned int iVtx) const  { return iVtx< vVtxPtr_.size()?vVtxPtr_.at(iVtx):edm::Ptr<reco::Vertex>(); }
+    
   private:
+
     edm::Ptr<reco::Vertex> vertex_;
     int vertex_index_;
 
@@ -92,12 +92,13 @@ namespace flashgg {
     std::vector<float> vpull_conv_;
     std::vector<float> vnConv_;
     std::vector<float> vmva_value_;
-    edm::PtrVector<reco::Vertex> Vertices_;
+    std::vector<unsigned int> vmva_sortedindex_;
+    std::vector<edm::Ptr<reco::Vertex> > vVtxPtr_;
 
-  };
-
-
-}
+   };
 
 
-#endif
+ }
+
+
+ #endif

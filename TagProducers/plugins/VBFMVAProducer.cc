@@ -119,7 +119,7 @@ namespace flashgg {
 			// First find dijet by looking for highest-pt jets...  
 			std::pair <int,int> dijet_indices(-1,-1); 
 			std::pair <float, float> dijet_pts(-1.,-1.); 
-			float PuIDCutoff = 0.8;
+			//			float PuIDCutoff = 0.8;
 			float dr2pho = 0.5;
 
 			float phi1 = diPhotonPointers[candIndex]->leadingPhoton()->phi();
@@ -133,7 +133,8 @@ namespace flashgg {
 				Ptr<flashgg::Jet> jet  = jetPointersDz[jetLoop]; 
 
 				//pass PU veto??	
-				if (jet->getPuJetId(diPhotonPointers[candIndex]) <  PuIDCutoff) {continue;} 
+				//				if (jet->getPuJetId(diPhotonPointers[candIndex]) <  PuIDCutoff) {continue;} 
+				if (!jet->passesPuJetId(diPhotonPointers[candIndex])) continue;
 				// within eta 4.7?
 				if (fabs(jet->eta()) > 4.7) continue;
 				// close to lead photon?

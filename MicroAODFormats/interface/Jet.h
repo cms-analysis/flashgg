@@ -4,9 +4,15 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
-//#include <unordered_map>
+#include "DataFormats/JetReco/interface/PileupJetIdentifier.h"
 
 namespace flashgg {
+
+  struct MinimalPileupJetIdentifier {
+    float RMS;
+    float betaStar;
+    int idFlag;
+  };
 
   class Jet : public pat::Jet {
 
@@ -14,11 +20,15 @@ namespace flashgg {
     Jet();
     Jet(const pat::Jet &);
     ~Jet();
-    float getPuJetId(const edm::Ptr<reco::Vertex>) const;
-    float getPuJetId(const edm::Ptr<DiPhotonCandidate>) const;
-    void setPuJetId(const edm::Ptr<reco::Vertex>, float);
+    void setPuJetId(const edm::Ptr<reco::Vertex> vtx, const PileupJetIdentifier &);
+    bool passesPuJetId(const edm::Ptr<reco::Vertex> vtx, PileupJetIdentifier::Id level = PileupJetIdentifier::kLoose) const;
+    float RMS(const edm::Ptr<reco::Vertex> vtx) const;
+    float betaStar(const edm::Ptr<reco::Vertex> vtx) const;
+    bool passesPuJetId(const edm::Ptr<DiPhotonCandidate> dipho, PileupJetIdentifier::Id level = PileupJetIdentifier::kLoose) const;
+    float RMS(const edm::Ptr<DiPhotonCandidate> dipho) const;
+    float betaStar(const edm::Ptr<DiPhotonCandidate> dipho) const;
   private:
-    std::map<edm::Ptr<reco::Vertex>, float> PuJetId_; // change to unordered_map later.  getting c++11 errors in 7_0_4
+    std::map<edm::Ptr<reco::Vertex>,MinimalPileupJetIdentifier> puJetId_;
   };
 }
 

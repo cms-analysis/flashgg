@@ -1,6 +1,6 @@
 <lcgdict>
- <class name="edm::Ptr<reco::Vertex>"/>
- <class name="edm::PtrVector<reco::Vertex>"/> 
+ <class name="edm::Ptr<reco::Vertex>"/> 
+ <class name="std::vector<edm::Ptr<reco::Vertex> >"/> 
  <class name="flashgg::Photon"/>
  <class name="edm::Ptr<flashgg::Photon>"/>
  <class name="std::vector<flashgg::Photon>"/>
@@ -12,6 +12,9 @@
  <class name="edm::Wrapper<edm::Ptr<flashgg::DiPhotonCandidate> >"/>
  <class name="std::vector<edm::Ptr<flashgg::DiPhotonCandidate> >"/>
  <class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::DiPhotonCandidate> > >"/>
+ <class name="flashgg::MinimalPileupJetIdentifier"/>
+ <class name="std::pair<edm::Ptr<reco::Vertex>,flashgg::MinimalPileupJetIdentifier>"/>
+ <class name="std::map<edm::Ptr<reco::Vertex>,flashgg::MinimalPileupJetIdentifier>"/>
  <class name="flashgg::Jet"/>
  <class name="std::vector<flashgg::Jet>"/>
  <class name="edm::Ptr<flashgg::Jet>"/>
