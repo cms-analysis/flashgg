@@ -43,6 +43,7 @@ namespace flashgg {
 			EDGetTokenT<View<pat::Muon> > muonToken_;
 			EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
 			EDGetTokenT<View<pat::MET> > METToken_;
+			EDGetTokenT<View<reco::Vertex> > vertexToken_;
 
 			//Thresholds
  			double leptonPtThreshold_;
@@ -62,6 +63,11 @@ namespace flashgg {
 			double deltaRPhoLeadJet_;
 			double deltaRPhoSubLeadJet_;
 
+			double LowPtEtaPhoThreshold_;
+			double MidPtEtaPhoThreshold_;
+			double HighEtaPhoThreshold_;
+
+
 
 	};
 
@@ -71,7 +77,8 @@ namespace flashgg {
 		electronToken_(consumes<View<pat::Electron> >(iConfig.getUntrackedParameter<InputTag> ("ElectronTag", InputTag("slimmedElectrons")))),
 		muonToken_(consumes<View<pat::Muon> >(iConfig.getUntrackedParameter<InputTag>("MuonTag",InputTag("slimmedMuons")))),
 		mvaResultToken_(consumes<View<flashgg::DiPhotonMVAResult> >(iConfig.getUntrackedParameter<InputTag> ("MVAResultTag", InputTag("flashggDiPhotonMVA")))),
-		METToken_(consumes<View<pat::MET> >(iConfig.getUntrackedParameter<InputTag> ("METTag", InputTag("slimmedMETs"))))
+		METToken_(consumes<View<pat::MET> >(iConfig.getUntrackedParameter<InputTag> ("METTag", InputTag("slimmedMETs")))),
+		vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag",InputTag("offlinePrimaryVertices"))))
 	{
 
  			double default_leptonPtThreshold_ = 20.;
@@ -91,6 +98,10 @@ namespace flashgg {
 			double default_deltaRPhoLeadJet_= 0.5;
 			double default_deltaRPhoSubLeadJet_= 0.5;
 
+			double default_LowPtEtaPhoThreshold_ = 1.4447;
+			double default_MidPtEtaPhoThreshold_ = 1.566;
+			double default_HighEtaPhoThreshold_ = 2.5;
+
  		leptonPtThreshold_ = iConfig.getUntrackedParameter<double>("leptonPtThreshold",default_leptonPtThreshold_);
 		leptonEtaThreshold_ = iConfig.getUntrackedParameter<double>("leptonEtaThreshold",default_leptonEtaThreshold_);
 		leadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>("leadPhoOverMassThreshold",default_leadPhoOverMassThreshold_);
@@ -107,6 +118,10 @@ namespace flashgg {
 		deltaRJetMuonThreshold_ = iConfig.getUntrackedParameter<double>("deltaRJetMuonThreshold",default_deltaRJetMuonThreshold_);
 		deltaRPhoLeadJet_ = iConfig.getUntrackedParameter<double>("deltaRPhoLeadJet",default_deltaRPhoLeadJet_);
 		deltaRPhoSubLeadJet_ = iConfig.getUntrackedParameter<double>("deltaRPhoSubLeadJet",default_deltaRPhoSubLeadJet_);
+
+		LowPtEtaPhoThreshold_ = iConfig.getUntrackedParameter<double>("LowPtEtaPhoThreshold",default_LowPtEtaPhoThreshold_);
+		MidPtEtaPhoThreshold_ = iConfig.getUntrackedParameter<double>("MidPtEtaPhoThreshold",default_MidPtEtaPhoThreshold_);
+		HighEtaPhoThreshold_ = iConfig.getUntrackedParameter<double>("HighEtaPhoThreshold",default_HighEtaPhoThreshold_);
 
 		produces<vector<VHlooseTag> >(); 
 	}
@@ -136,6 +151,10 @@ namespace flashgg {
 		evt.getByToken(METToken_,METs);
 		const PtrVector<pat::MET>& METPointers = METs->ptrVector();
 
+		Handle<View<reco::Vertex> > vertices;
+		evt.getByToken(vertexToken_,vertices);
+		const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
+
  		assert(diPhotonPointers.size() == mvaResultPointers.size());
 
 		bool photonSelection = false;
@@ -159,6 +178,10 @@ namespace flashgg {
 
 				if(dipho->subLeadingPhoton()->pt() < (dipho->mass())*subleadPhoOverMassThreshold_) continue;
 
+				if ((fabs(dipho->leadingPhoton()->superCluster()->eta()) > LowPtEtaPhoThreshold_ && fabs(dipho->leadingPhoton()->superCluster()->eta()) < MidPtEtaPhoThreshold_) || fabs(dipho->leadingPhoton()->superCluster()->eta()) > HighEtaPhoThreshold_) continue;
+
+				if ((fabs(dipho->subLeadingPhoton()->superCluster()->eta()) > LowPtEtaPhoThreshold_ && fabs(dipho->subLeadingPhoton()->superCluster()->eta()) < MidPtEtaPhoThreshold_) || fabs(dipho->subLeadingPhoton()->superCluster()->eta()) > HighEtaPhoThreshold_) continue;
+
 				idmva1 = dipho->leadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
 				idmva2 = dipho->subLeadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
 				if(idmva1 <= PhoMVAThreshold_ || idmva2 <= PhoMVAThreshold_) continue;
@@ -167,7 +190,7 @@ namespace flashgg {
 		
 				photonSelection = true;
 			
-				tagMuons = selectMuons(muonPointers,dipho, leptonEtaThreshold_,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
+				tagMuons = selectMuons(muonPointers,dipho,vertexPointers, leptonEtaThreshold_,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
 
 				if (!tagMuons) continue;
 
@@ -181,7 +204,7 @@ namespace flashgg {
 				{
 					edm::Ptr<flashgg::Jet> thejet = jetPointers[candIndex_outer];
 					
-					//					if (thejet->getPuJetId(dipho) <  PuIDCutoffThreshold_) continue;
+					//		if (thejet->getPuJetId(dipho) <  PuIDCutoffThreshold_) continue;
 					if (! thejet->passesPuJetId(dipho)) continue;
 
 
