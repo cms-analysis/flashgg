@@ -339,56 +339,59 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
     genPartTree->Fill();
   }
   
-  // fill genJet tree
-  for( unsigned int genLoop =0 ; genLoop < genJets.size(); genLoop++){
-    
-    genJetInfo.recoJetPt    = -999.;
-    genJetInfo.recoJetRawPt = -999. ;
-    genJetInfo.recoJetBestPt= -999. ;
-    genJetInfo.recoJetMatch = 0 ;
-    genJetInfo.recoJetEta   = -999.;
-    genJetInfo.dR           = -999.;
-    genJetInfo.pt           = -999. ;
-    genJetInfo.eta          = -999.;
-    genJetInfo.phi          = -999.;
-    
-    if (genJets[genLoop]->pt() <20) { continue;}
-    
-    genJetInfo.pt     = genJets[genLoop]->pt() ;
-    genJetInfo.eta    = genJets[genLoop]->eta();
-    genJetInfo.phi    = genJets[genLoop]->phi();
-    
-    float deta;
-    float dphi;
-    float dr  ;
-    //loop over reco to do dR match
-    for (unsigned int recoLoop=0; recoLoop <  jetsDzPointers.size(); recoLoop++){
-      
-      if(jetsDzPointers[recoLoop]->pt() < 5) continue;
-      
-      deta= jetsDzPointers[recoLoop]->eta() - 	 genJets[genLoop]->eta();
-      dphi= jetsDzPointers[recoLoop]->phi() - 	 genJets[genLoop]->phi();
-      dr = std::sqrt(deta*deta + dphi*dphi);
+	// fill genJet tree
+	//
+		//std::cout << "DEBUG - gen Jets size " << genJets.size() << std::endl;
+	for( unsigned int genLoop =0 ; genLoop < genJets.size(); genLoop++){
 
-      if (dr < 0.4 ) {
+		genJetInfo.recoJetPt       = -999.;
+		genJetInfo.recoJetRawPt    = -999. ;
+		genJetInfo.recoJetBestPt   = -999. ;
+		genJetInfo.recoJetMatch    = 0 ;
+		genJetInfo.recoJetEta      =  -999.;
+		genJetInfo.dR      =  -999.;
+		genJetInfo.pt     = -999. ;
+		genJetInfo.eta    = -999.;
+		genJetInfo.phi    = -999.;
 
-	genJetInfo.dR      =  dr;
-	genJetInfo.recoJetPt       = jetsDzPointers[recoLoop]->pt() ;
-	genJetInfo.recoJetRawPt    = jetsDzPointers[recoLoop]->correctedJet("Uncorrected").pt()  ;
+		if (genJets[genLoop]->pt() <20) { continue;}
 
-	if(jetCollectionName.find("PPI")>1 && jetCollectionName.find("PPI")<jetCollectionName.size()){
-	  genJetInfo.recoJetBestPt   =  jetsDzPointers[recoLoop]->correctedJet("Uncorrected").pt() ;
-	} else{  
-	  genJetInfo.recoJetBestPt   = jetsDzPointers[recoLoop]->pt()  ;
+		genJetInfo.pt     = genJets[genLoop]->pt() ;
+	//	std::cout << "DEBUG " << genJets[genLoop]->pt() << std::endl;
+		genJetInfo.eta    = genJets[genLoop]->eta();
+		genJetInfo.phi    = genJets[genLoop]->phi();
+
+		float deta;
+		float dphi;
+		float dr  ;
+		//loop over reco to do dR match
+		for (unsigned int recoLoop=0; recoLoop <  jetsDzPointers.size(); recoLoop++){
+
+			if(jetsDzPointers[recoLoop]->pt() < 5) continue;
+
+			deta= jetsDzPointers[recoLoop]->eta() - 	 genJets[genLoop]->eta();
+			dphi= jetsDzPointers[recoLoop]->phi() - 	 genJets[genLoop]->phi();
+			dr = std::sqrt(deta*deta + dphi*dphi);
+
+			if (dr < 0.4 ) {
+
+				genJetInfo.dR      =  dr;
+				genJetInfo.recoJetPt       = jetsDzPointers[recoLoop]->pt() ;
+				genJetInfo.recoJetRawPt    = jetsDzPointers[recoLoop]->correctedJet("Uncorrected").pt()  ;
+
+				if(jetCollectionName.find("PPI")>1 && jetCollectionName.find("PPI")<jetCollectionName.size()){
+					genJetInfo.recoJetBestPt   =  jetsDzPointers[recoLoop]->correctedJet("Uncorrected").pt() ;
+				} else{  
+					genJetInfo.recoJetBestPt   = jetsDzPointers[recoLoop]->pt()  ;
+				}
+				genJetInfo.recoJetMatch    = 1 ;
+				break;
+
+			}
+		}
+
+		genJetTree->Fill();
 	}
-	genJetInfo.recoJetMatch    = 1 ;
-	break;
-
-      }
-    }
-
-    genJetTree->Fill();
-  }
   
   eventTree->Fill();
   event_number++;

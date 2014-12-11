@@ -32,13 +32,16 @@ namespace flashgg {
 			EDGetTokenT< VertexCandidateMap > vertexCandidateMapToken_;
 			//			double maxAllowedDz_;
 			//			bool useEachTrackOnce_;
+			
+		 bool useZeroth;
 	};
 
 	CHSLegacyVertexCandidateProducer::CHSLegacyVertexCandidateProducer(const ParameterSet & iConfig) :
 		vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
 		diPhotonsToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
 		pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates")))),
-		vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag")))
+		vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
+		useZeroth(iConfig.getUntrackedParameter<bool>("UseZeroth",false))
 	{
 		produces<vector<pat::PackedCandidate> >();
 	}
@@ -69,6 +72,9 @@ namespace flashgg {
 
 
 		edm::Ptr<reco::Vertex> flashVertex;
+
+if(useZeroth) flashVertex =  pvPtrs[0];
+else {
 		if (diPhotonPointers.size()==0){
 			std::cout << "[WARNING] No Diphotons in event. Using 0th Vtx for CHS PU subtraction."<< std::endl ; //replace with Error Logger at some stage, cout is not thread safe.
 			flashVertex = pvPtrs[0];
@@ -80,6 +86,7 @@ namespace flashgg {
 			flashVertex = diPhotonPointers[0]->getVertex();
 		}
 
+
 		for (unsigned int diPhoLoop = 0; diPhoLoop< diPhotonPointers.size() ; diPhoLoop++){
 			//if( diPhotonPointers[diPhoLoop]->getVertex()->position() != flashVertex->position()){
 			if( diPhotonPointers[diPhoLoop]->getVertex() != flashVertex){ // we only have a problem if the mutliple diphotons haev different vertices...
@@ -87,7 +94,7 @@ namespace flashgg {
 				break;
 			}
 		}
-		
+		}
 
 		std::auto_ptr<vector<pat::PackedCandidate> > result(new vector<pat::PackedCandidate>());
 

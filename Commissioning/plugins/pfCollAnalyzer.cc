@@ -38,6 +38,7 @@
 #include "flashgg/TagFormats/interface/TTHhadronicTag.h"
 #include "flashgg/TagFormats/interface/TTHleptonicTag.h"
 
+#include "DataFormats/VertexReco/interface/Vertex.h"
 
 #include "TMath.h"
 #include "TTree.h"
@@ -81,7 +82,7 @@ private:
   EDGetTokenT<View<reco::Candidate> > pfCollPFCHSLeg_;
   EDGetTokenT<View<reco::Candidate> > pfCollPUPPI0_;
   EDGetTokenT<View<reco::Candidate> > pfCollPUPPILeg_;
-
+EDGetTokenT<View<reco::Vertex> > vertexToken_;
   TTree *tree_PF;
   TTree *tree_PFCHS0;
   TTree *tree_PFCHSLeg;
@@ -140,7 +141,8 @@ FlashggPFCollAnalyzer::FlashggPFCollAnalyzer(const edm::ParameterSet& iConfig):
   pfCollPFCHS0_(consumes<View<reco::Candidate> >(iConfig.getParameter<InputTag>("CollTagPFPFCHS0"))),
   pfCollPFCHSLeg_(consumes<View<reco::Candidate> >(iConfig.getParameter<InputTag>("CollTagPFPFCHSLeg"))),
   pfCollPUPPI0_(consumes<View<reco::Candidate> >(iConfig.getParameter<InputTag>("CollTagPFPUPPI0"))),
-  pfCollPUPPILeg_(consumes<View<reco::Candidate> >(iConfig.getParameter<InputTag>("CollTagPFPUPPILeg")))
+  pfCollPUPPILeg_(consumes<View<reco::Candidate> >(iConfig.getParameter<InputTag>("CollTagPFPUPPILeg"))),
+	vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices"))))
 {
 }
 
@@ -176,6 +178,9 @@ FlashggPFCollAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
   Handle<View<reco::Candidate> > pfCollPUPPILeg;
   iEvent.getByToken(pfCollPUPPILeg_,pfCollPUPPILeg);
   const PtrVector<reco::Candidate>& puppiLegPtrs = pfCollPUPPILeg->ptrVector();
+	Handle<View<reco::Vertex> > primaryVertices;
+	iEvent.getByToken(vertexToken_,primaryVertices);
+	const PtrVector<reco::Vertex>& vtxs = primaryVertices->ptrVector();
 
 
   for (UInt_t Loop =0; Loop < pfPtrs.size() ; Loop++){
@@ -218,6 +223,8 @@ FlashggPFCollAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
     info_PFCHS0.phi            = phi;
     info_PFCHS0.pdgId          = int(pdgId);
     
+		//std::cout << "[PFCHS0] particle " << Loop <<  ", eta "<< eta << ", phi " << phi << ", pt " << pt << ", pdgid " << pdgId << ", dz" << pfchs0Ptrs[Loop]->vertex().z()-vtxs[0]->position().z() << std::endl;
+		if(vtxs.size());
     pfchs0Pt->Fill(pt);
     pfchs0Eta->Fill(eta);
     pfchs0Phi->Fill(phi);
