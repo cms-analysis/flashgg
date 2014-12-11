@@ -12,8 +12,6 @@ namespace flashgg {
 
 		PtrVector<pat::Muon> goodMuons;
 
-		//Ptr<reco::Vertex> vtx = dipho->getVertex();
-
 		for(unsigned int muonIndex = 0; muonIndex < muonPointers.size(); muonIndex++ )
 		{
 			Ptr<pat::Muon> muon = muonPointers[muonIndex]; 			
