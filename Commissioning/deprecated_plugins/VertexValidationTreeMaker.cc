@@ -39,19 +39,19 @@
 
 // per-event tree
 struct eventInfo {
- // float nvtx;
- // float ntrk_tot_AOD;
- // float ntrk_tot_Dz;
-float genVertexZ;
-float zerothVertexZ;
-float diphotonVertexZ;
-float higgsPt;
+  // float nvtx;
+  // float ntrk_tot_AOD;
+  // float ntrk_tot_Dz;
+  float genVertexZ;
+  float zerothVertexZ;
+  float diphotonVertexZ;
+  float higgsPt;
 };
 
 // per-vertex tree
 struct vertexInfo {
-  int ntrk_AOD;
-  int ntrk_Dz;
+  int   ntrk_AOD;
+  int   ntrk_Dz;
   float sumptsq_AOD;
   float sumptsq_Dz;
 };
@@ -76,30 +76,30 @@ using namespace flashgg;
 // **********************************************************************
 
 class VertexValidationTreeMaker : public edm::EDAnalyzer {
-   public:
-      explicit VertexValidationTreeMaker(const edm::ParameterSet&);
-      ~VertexValidationTreeMaker();
+public:
+  explicit VertexValidationTreeMaker(const edm::ParameterSet&);
+  ~VertexValidationTreeMaker();
 
-      static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
+  static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
 
-   private:
+private:
 
-      edm::Service<TFileService> fs_;
+  edm::Service<TFileService> fs_;
 
-      virtual void beginJob() override;
-      virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
-      virtual void endJob() override;
+  virtual void beginJob() override;
+  virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
+  virtual void endJob() override;
 
-      void initEventStructure();
+  void initEventStructure();
 
-  EDGetTokenT<View<reco::Vertex> > vertexToken_;
+  EDGetTokenT<View<reco::Vertex> >      vertexToken_;
   EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
-	EDGetTokenT< VertexCandidateMap > vertexCandidateMapTokenDz_;
-  EDGetTokenT< VertexCandidateMap > vertexCandidateMapTokenAOD_;
-  EDGetTokenT<View<flashgg::Jet> > jetTokenDz_;
-  EDGetTokenT<View<flashgg::Jet> > jetTokenRecoBasedMap_;
-  EDGetTokenT<View<flashgg::Jet> > jetTokenReco_;
+  EDGetTokenT< VertexCandidateMap >     vertexCandidateMapTokenDz_;
+  EDGetTokenT< VertexCandidateMap >     vertexCandidateMapTokenAOD_;
+  EDGetTokenT<View<flashgg::Jet> >      jetTokenDz_;
+  EDGetTokenT<View<flashgg::Jet> >      jetTokenRecoBasedMap_;
+  EDGetTokenT<View<flashgg::Jet> >      jetTokenReco_;
   EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> >  diPhotonToken_; // LDC work-in-progress adding this!
 
   
@@ -118,7 +118,7 @@ class VertexValidationTreeMaker : public edm::EDAnalyzer {
 
   //      TTree* photonTree; 
   //      photonInfo phoInfo;
-      // add all variables as private members
+  // add all variables as private members
       
   //      flashgg::PhotonIdUtils phou;
       
@@ -166,7 +166,7 @@ VertexValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSet
   // ********************************************************************************
 
   // access edm objects
-
+  
   Handle<VertexCandidateMap> vertexCandidateMapDz;
   iEvent.getByToken(vertexCandidateMapTokenDz_,vertexCandidateMapDz);
 
@@ -205,188 +205,188 @@ VertexValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSet
 
   // cout << "size = " << pvPointers.size() << " " << pfCandPointers.size() << endl;
   
-	// ********************************************************************************
-	initEventStructure();
+  // ********************************************************************************
+  initEventStructure();
 
-	//	std::cout << " SCZ jetPointersDz.size() = " << jetPointersDz.size() << std::endl;
-	//	std::cout <<" SCZ jetPointersRecoBasedMap.size() = " << jetPointersRecoBasedMap.size() << std::endl;
-	//	std::cout <<" SCZ jetPointersReco.size() = " << jetPointersReco.size() << std::endl;
-	//	std::cout << " SCZ vtxs.size() = " << vtxs.size() << std::endl;
+  //	std::cout << " SCZ jetPointersDz.size() = " << jetPointersDz.size() << std::endl;
+  //	std::cout <<" SCZ jetPointersRecoBasedMap.size() = " << jetPointersRecoBasedMap.size() << std::endl;
+  //	std::cout <<" SCZ jetPointersReco.size() = " << jetPointersReco.size() << std::endl;
+  //	std::cout << " SCZ vtxs.size() = " << vtxs.size() << std::endl;
 
-	for (unsigned int jdz = 0 ; jdz < jetPointersDz.size() ; jdz++) {
-	  //	  std::cout << "jdz=" << jdz << std::endl;
-	  //	  std::cout << "jdzpt=" <<jetPointersDz[jdz]->pt() << std::endl;
-	  if (jetPointersDz[jdz]->pt() > 20.) {
-	    //	    std::cout << " scz JetDz " << jdz << " Pt=" << jetPointersDz[jdz]->pt() 
-	    //		      << " Eta=" << jetPointersDz[jdz]->eta() 
-	    //		      << " pujetid=" << jetPointersDz[jdz]->getPuJetId(vtxs[0]) << std::endl;
-	  }
-	  jInfo.pt = jetPointersDz[jdz]->pt();
-	  jInfo.eta = jetPointersDz[jdz]->eta();
-	  jInfo.pujetid_dz = jetPointersDz[jdz]->getPuJetId(vtxs[0]);
-	  jInfo.pujetid_jr = jetPointersDz[jdz]->userFloat("pileupJetId:fullDiscriminant");
-          jInfo.pujetid_jrbm = -99.;
-	  jInfo.overlap_photon_pt = -99.;
-	  jInfo.n_overlap_photon = 0;
-	  for (unsigned int jrbm = 0 ; jrbm < jetPointersRecoBasedMap.size() ; jrbm++) {
-	    //	    std::cout << "jrbm=" << jrbm << std::endl;
-	    if (fabs(jetPointersDz[jdz]->pt() - jetPointersRecoBasedMap[jrbm]->pt()) < 0.1 &&
-		fabs(jetPointersDz[jdz]->eta() -jetPointersRecoBasedMap[jrbm]->eta()) < 0.01) {
-	      jInfo.pujetid_jrbm = jetPointersRecoBasedMap[jrbm]->getPuJetId(vtxs[0]);
-	      break;
-	    }
-	  }
-	  for (unsigned int np = 0 ; np < photonPointers.size() ; np++) {
-	    if (deltaR(jetPointersDz[jdz]->eta(),jetPointersDz[jdz]->phi(),photonPointers[np]->eta(),photonPointers[np]->phi()) < 0.4) {
-	      jInfo.overlap_photon_pt = photonPointers[np]->pt();
-	      jInfo.n_overlap_photon++;
-	      //	      std::cout << " SCZ DEBUG photon pt=" << photonPointers[np]->pt() << " eta=" << photonPointers[np]->eta() << " phi=" << photonPointers[np]->phi() << std::endl;
-	    }
-	  }
+  for (unsigned int jdz = 0 ; jdz < jetPointersDz.size() ; jdz++) {
+    //	  std::cout << "jdz=" << jdz << std::endl;
+    //	  std::cout << "jdzpt=" <<jetPointersDz[jdz]->pt() << std::endl;
+    if (jetPointersDz[jdz]->pt() > 20.) {
+      //	    std::cout << " scz JetDz " << jdz << " Pt=" << jetPointersDz[jdz]->pt() 
+      //		      << " Eta=" << jetPointersDz[jdz]->eta() 
+      //		      << " pujetid=" << jetPointersDz[jdz]->getPuJetId(vtxs[0]) << std::endl;
+    }
+    jInfo.pt = jetPointersDz[jdz]->pt();
+    jInfo.eta = jetPointersDz[jdz]->eta();
+    jInfo.pujetid_dz = jetPointersDz[jdz]->getPuJetId(vtxs[0]);
+    jInfo.pujetid_jr = jetPointersDz[jdz]->userFloat("pileupJetId:fullDiscriminant");
+    jInfo.pujetid_jrbm = -99.;
+    jInfo.overlap_photon_pt = -99.;
+    jInfo.n_overlap_photon = 0;
+    for (unsigned int jrbm = 0 ; jrbm < jetPointersRecoBasedMap.size() ; jrbm++) {
+      //	    std::cout << "jrbm=" << jrbm << std::endl;
+      if (fabs(jetPointersDz[jdz]->pt() - jetPointersRecoBasedMap[jrbm]->pt()) < 0.1 &&
+	  fabs(jetPointersDz[jdz]->eta() -jetPointersRecoBasedMap[jrbm]->eta()) < 0.01) {
+	jInfo.pujetid_jrbm = jetPointersRecoBasedMap[jrbm]->getPuJetId(vtxs[0]);
+	break;
+      }
+    }
+    for (unsigned int np = 0 ; np < photonPointers.size() ; np++) {
+      if (deltaR(jetPointersDz[jdz]->eta(),jetPointersDz[jdz]->phi(),photonPointers[np]->eta(),photonPointers[np]->phi()) < 0.4) {
+	jInfo.overlap_photon_pt = photonPointers[np]->pt();
+	jInfo.n_overlap_photon++;
+	//	      std::cout << " SCZ DEBUG photon pt=" << photonPointers[np]->pt() << " eta=" << photonPointers[np]->eta() << " phi=" << photonPointers[np]->phi() << std::endl;
+      }
+    }
 	  
-	  //          for (unsigned int jr = 0 ; jr < jetPointersReco.size() ; jr++) {
-	  //	    std::cout << "jr=" << jr << std::endl;
-	  //            if (fabs(jetPointersDz[jdz]->pt() - jetPointersReco[jr]->pt()) < 5.0 &&
-	  //                fabs(jetPointersDz[jdz]->eta() -jetPointersReco[jr]->eta()) < 0.1) {
-	  //	      jInfo.pujetid_jr = jetPointersReco[jr]->getPuJetId(vtxs[0]);
-	  //	      break;
-	  //            }
-	  //          }
-	  jetTree->Fill();
-	}
+    //          for (unsigned int jr = 0 ; jr < jetPointersReco.size() ; jr++) {
+    //	    std::cout << "jr=" << jr << std::endl;
+    //            if (fabs(jetPointersDz[jdz]->pt() - jetPointersReco[jr]->pt()) < 5.0 &&
+    //                fabs(jetPointersDz[jdz]->eta() -jetPointersReco[jr]->eta()) < 0.1) {
+    //	      jInfo.pujetid_jr = jetPointersReco[jr]->getPuJetId(vtxs[0]);
+    //	      break;
+    //            }
+    //          }
+    jetTree->Fill();
+  }
 
-/*
-	for (unsigned int jrbm = 0 ; jrbm < jetPointersRecoBasedMap.size() ; jrbm++) {
-          if (jetPointersRecoBasedMap[jrbm]->pt() > 20.) {
-	    std::cout << " scz JetRecoBasedMap " << jrbm << " Pt=" << jetPointersRecoBasedMap[jrbm]->pt() 
-		      << " Eta=" << jetPointersRecoBasedMap[jrbm]->eta()
-		      << " pujetid=" << jetPointersRecoBasedMap[jrbm]->getPuJetId(vtxs[0]) << std::endl;
-          }
-        }
+  /*
+    for (unsigned int jrbm = 0 ; jrbm < jetPointersRecoBasedMap.size() ; jrbm++) {
+    if (jetPointersRecoBasedMap[jrbm]->pt() > 20.) {
+    std::cout << " scz JetRecoBasedMap " << jrbm << " Pt=" << jetPointersRecoBasedMap[jrbm]->pt() 
+    << " Eta=" << jetPointersRecoBasedMap[jrbm]->eta()
+    << " pujetid=" << jetPointersRecoBasedMap[jrbm]->getPuJetId(vtxs[0]) << std::endl;
+    }
+    }
 
-	for (unsigned int jr = 0 ; jr < jetPointersReco.size() ; jr++) {
-          if (jetPointersReco[jr]->pt() > 20.) {
-	    std::cout << " scz JetReco " << jr << " Pt=" << jetPointersReco[jr]->pt() 
-                      << " Eta=" << jetPointersReco[jr]->eta()
-		      << " pujetid=" << jetPointersReco[jr]->getPuJetId(vtxs[0]) << std::endl;
-          }
-        }
-*/
+    for (unsigned int jr = 0 ; jr < jetPointersReco.size() ; jr++) {
+    if (jetPointersReco[jr]->pt() > 20.) {
+    std::cout << " scz JetReco " << jr << " Pt=" << jetPointersReco[jr]->pt() 
+    << " Eta=" << jetPointersReco[jr]->eta()
+    << " pujetid=" << jetPointersReco[jr]->getPuJetId(vtxs[0]) << std::endl;
+    }
+    }
+  */
 
 
-//	std::cout << " Number of genParticles : " <<  gens.size() << std::endl;
-	for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++)
+  //	std::cout << " Number of genParticles : " <<  gens.size() << std::endl;
+  for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++)
+    {
+      //		std::cout << "genParticle " << genLoop << " has vertex at z= " << gens[genLoop]->vz() << " 	PDGID:" << gens[genLoop]->pdgId() << ", status" << gens[genLoop]->status()<< std::endl;
+
+      if(  gens[genLoop]->pdgId() ==25)
 	{
-	  //		std::cout << "genParticle " << genLoop << " has vertex at z= " << gens[genLoop]->vz() << " 	PDGID:" << gens[genLoop]->pdgId() << ", status" << gens[genLoop]->status()<< std::endl;
+	  eInfo.genVertexZ=gens[genLoop]->vz();
+	  eInfo.higgsPt=gens[genLoop]->pt();
 
-		if(  gens[genLoop]->pdgId() ==25)
-		{
-		eInfo.genVertexZ=gens[genLoop]->vz();
-		eInfo.higgsPt=gens[genLoop]->pt();
-
-		break;
-		}
+	  break;
 	}
+    }
 
 
-	//std::cout << "DiPhoton Candidates " << diPhotonPointers.size() << std::endl;
+  //std::cout << "DiPhoton Candidates " << diPhotonPointers.size() << std::endl;
 
-//eInfo.diphotonVertexZ = vtx->position().z(); 
-eInfo.diphotonVertexZ = -9999; 
-float higgsMassDifference =9999;
+  //eInfo.diphotonVertexZ = vtx->position().z(); 
+  eInfo.diphotonVertexZ = -9999; 
+  float higgsMassDifference =9999;
 
- for (unsigned int diphotonlooper =0; diphotonlooper < diPhotonPointers.size() ; diphotonlooper++)
-   {
-     //std::cout << diPhotonPointers[diphotonlooper]->mass() << std::endl;
+  for (unsigned int diphotonlooper =0; diphotonlooper < diPhotonPointers.size() ; diphotonlooper++)
+    {
+      //std::cout << diPhotonPointers[diphotonlooper]->mass() << std::endl;
      
-     if  (fabs(diPhotonPointers[diphotonlooper]->mass() - 125) < higgsMassDifference)
-       {
-	 eInfo.diphotonVertexZ = diPhotonPointers[diphotonlooper]->getVertex()->z();
-	 higgsMassDifference = fabs(diPhotonPointers[diphotonlooper]->mass() - 125); 
-       }
-     //     std::cout << "closest mass diff " << higgsMassDifference << " vertex dz" << eInfo.diphotonVertexZ << std::endl;
+      if  (fabs(diPhotonPointers[diphotonlooper]->mass() - 125) < higgsMassDifference)
+	{
+	  eInfo.diphotonVertexZ = diPhotonPointers[diphotonlooper]->getVertex()->z();
+	  higgsMassDifference = fabs(diPhotonPointers[diphotonlooper]->mass() - 125); 
+	}
+      //     std::cout << "closest mass diff " << higgsMassDifference << " vertex dz" << eInfo.diphotonVertexZ << std::endl;
 
-   }
+    }
 
- for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
+  for (unsigned int i = 0 ; i < vtxs.size() ; i++) {
    
    
-   edm::Ptr<reco::Vertex> vtx = vtxs[i];
+    edm::Ptr<reco::Vertex> vtx = vtxs[i];
    
    
-   if(i==0)
-     {
-       eInfo.zerothVertexZ = vtx->position().z(); 
-     }
-   //		std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
-   if (! vertexCandidateMapDz->count(vtx) ) {
-     //     std::cout << " Missing vertex from vertexCandidateMapDz - skipping" << std::endl;
-     continue;
-   }
-   if (! vertexCandidateMapAOD->count(vtx) ) {
-     //     std::cout << " Missing vertex from vertexCandidateMapAOD - skipping" << std::endl;
-     continue;
-   }
-   vInfo.ntrk_AOD = vertexCandidateMapAOD->at(vtx).size() ;
-   vInfo.ntrk_Dz = vertexCandidateMapDz->at(vtx).size() ;
-   vInfo.sumptsq_AOD = 0.;
-   vInfo.sumptsq_Dz = 0.;
-   for (unsigned int j = 0 ; j < vertexCandidateMapDz->at(vtx).size() ; j++) {
-     edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMapDz->at(vtx)[j];
-     //std::cout << " Candidate " << j << " in vertex " << i << " (Dz Map) has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
-     vInfo.sumptsq_Dz += (cand->pt()*cand->pt());
-   }
-   for (unsigned int j = 0 ; j < vertexCandidateMapAOD->at(vtx).size() ; j++) {
-     edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMapAOD->at(vtx)[j];
-     //std::cout << " Candidate " << j << " in vertex " << i << " (AOD Map) has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
-     vInfo.sumptsq_AOD += (cand->pt()*cand->pt());
-   }
-   vertexTree->Fill();
- }
+    if(i==0)
+      {
+	eInfo.zerothVertexZ = vtx->position().z(); 
+      }
+    //		std::cout << " On vertex " << i << " with z position " << vtx->position().z() << std::endl;
+    if (! vertexCandidateMapDz->count(vtx) ) {
+      //     std::cout << " Missing vertex from vertexCandidateMapDz - skipping" << std::endl;
+      continue;
+    }
+    if (! vertexCandidateMapAOD->count(vtx) ) {
+      //     std::cout << " Missing vertex from vertexCandidateMapAOD - skipping" << std::endl;
+      continue;
+    }
+    vInfo.ntrk_AOD = vertexCandidateMapAOD->at(vtx).size() ;
+    vInfo.ntrk_Dz = vertexCandidateMapDz->at(vtx).size() ;
+    vInfo.sumptsq_AOD = 0.;
+    vInfo.sumptsq_Dz = 0.;
+    for (unsigned int j = 0 ; j < vertexCandidateMapDz->at(vtx).size() ; j++) {
+      edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMapDz->at(vtx)[j];
+      //std::cout << " Candidate " << j << " in vertex " << i << " (Dz Map) has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
+      vInfo.sumptsq_Dz += (cand->pt()*cand->pt());
+    }
+    for (unsigned int j = 0 ; j < vertexCandidateMapAOD->at(vtx).size() ; j++) {
+      edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMapAOD->at(vtx)[j];
+      //std::cout << " Candidate " << j << " in vertex " << i << " (AOD Map) has dz (w.r.t that vertex) of  " << cand->dz(vtx->position()) << std::endl;
+      vInfo.sumptsq_AOD += (cand->pt()*cand->pt());
+    }
+    vertexTree->Fill();
+  }
  
- eventTree->Fill();
+  eventTree->Fill();
  
 }
 
 
-	void 
+void 
 VertexValidationTreeMaker::beginJob()
 {
-	vertexTree = fs_->make<TTree>("vertexTree","per-vertex tree");
-	vertexTree->Branch("vertexBranch",&vInfo.ntrk_AOD,"ntrk_AOD/I:ntrk_Dz/I:sumptsq_AOD/F:sumptsq_Dz/F");
-	eventTree = fs_->make<TTree>("eventTree","per-event tree");
-	eventTree->Branch("eventBranch",&eInfo.genVertexZ,"gen_vertex_z/F:zeroth_vertex_z/F:diphotonVertexZ/F:higgs_pt/F");
-	jetTree = fs_->make<TTree>("jetTree","per-jet tree");
-	jetTree->Branch("jetBranch",&jInfo.pt,"pt/F:eta/F:pujetid_dz/F:pujetid_jrbm/F:pujetid_jr/F:overlap_photon_pt/F:n_overlap_photon/I");
+  vertexTree = fs_->make<TTree>("vertexTree","per-vertex tree");
+  vertexTree->Branch("vertexBranch",&vInfo.ntrk_AOD,"ntrk_AOD/I:ntrk_Dz/I:sumptsq_AOD/F:sumptsq_Dz/F");
+  eventTree = fs_->make<TTree>("eventTree","per-event tree");
+  eventTree->Branch("eventBranch",&eInfo.genVertexZ,"gen_vertex_z/F:zeroth_vertex_z/F:diphotonVertexZ/F:higgs_pt/F");
+  jetTree = fs_->make<TTree>("jetTree","per-jet tree");
+  jetTree->Branch("jetBranch",&jInfo.pt,"pt/F:eta/F:pujetid_dz/F:pujetid_jrbm/F:pujetid_jr/F:overlap_photon_pt/F:n_overlap_photon/I");
 }
 
-	void 
+void 
 VertexValidationTreeMaker::endJob() 
 {
 }
 
-	void
+void
 VertexValidationTreeMaker::initEventStructure() 
 {
-	vInfo.ntrk_AOD = -999;
-	vInfo.ntrk_Dz = -999;
-	vInfo.sumptsq_AOD = -999.;
-	vInfo.sumptsq_Dz = -999.;
+  vInfo.ntrk_AOD = -999;
+  vInfo.ntrk_Dz = -999;
+  vInfo.sumptsq_AOD = -999.;
+  vInfo.sumptsq_Dz = -999.;
 
-	eInfo.genVertexZ =-999.;
-	eInfo.zerothVertexZ =-999.;
-	eInfo.diphotonVertexZ =-999.;
-	eInfo.higgsPt = -999.;
+  eInfo.genVertexZ =-999.;
+  eInfo.zerothVertexZ =-999.;
+  eInfo.diphotonVertexZ =-999.;
+  eInfo.higgsPt = -999.;
 }
 
 
 void
 VertexValidationTreeMaker::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
-	//The following says we do not know what parameters are allowed so do no validation
-	// Please change this to state exactly what you do use, even if it is no parameters
-	edm::ParameterSetDescription desc;
-	desc.setUnknown();
-	descriptions.addDefault(desc);
+  //The following says we do not know what parameters are allowed so do no validation
+  // Please change this to state exactly what you do use, even if it is no parameters
+  edm::ParameterSetDescription desc;
+  desc.setUnknown();
+  descriptions.addDefault(desc);
 }
 
 typedef VertexValidationTreeMaker FlashggVertexValidationTreeMaker;
