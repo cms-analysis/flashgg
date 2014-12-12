@@ -8,11 +8,9 @@ using namespace edm;
 
 namespace flashgg {
 
-	PtrVector<pat::Muon> selectMuons(const PtrVector<pat::Muon>& muonPointers,Ptr<flashgg::DiPhotonCandidate> dipho, double muonEtaThreshold, double muonPtThreshold, double muPFIsoSumRelThreshold, double dRPhoLeadMuonThreshold, double dRPhoSubLeadMuonThreshold) {
+	PtrVector<pat::Muon> selectMuons(const PtrVector<pat::Muon>& muonPointers,Ptr<flashgg::DiPhotonCandidate> dipho, const PtrVector<reco::Vertex>& vertexPointers, double muonEtaThreshold, double muonPtThreshold, double muPFIsoSumRelThreshold, double dRPhoLeadMuonThreshold, double dRPhoSubLeadMuonThreshold) {
 
 		PtrVector<pat::Muon> goodMuons;
-
-		Ptr<reco::Vertex> vtx = dipho->getVertex();
 
 		for(unsigned int muonIndex = 0; muonIndex < muonPointers.size(); muonIndex++ )
 		{
@@ -21,9 +19,29 @@ namespace flashgg {
 			if(fabs(muon->eta()) > muonEtaThreshold) continue;
 			if(muon->pt() < muonPtThreshold) continue;
 
+				int vtxInd = 0;
+    				double dzmin = 9999;
+
+				 for( size_t ivtx = 0 ; ivtx < vertexPointers.size(); ivtx++ ) {
+
+				  	Ptr<reco::Vertex> vtx = vertexPointers[ivtx];
+
+					if (!muon->innerTrack()) continue;
+
+				      	if(fabs(muon->innerTrack()->vz()- vtx->position().z()) < dzmin ) {
+
+					dzmin = fabs(muon->innerTrack()->vz() - vtx->position().z());
+
+					vtxInd = ivtx;
+				      }
+
+				}
+
+				Ptr<reco::Vertex> best_vtx = vertexPointers[vtxInd];
+
 			//https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId#Tight_Muon and https://cmssdt.cern.ch/SDT/lxr/source/RecoBTag/SoftLepton/plugins/SoftPFMuonTagInfoProducer.cc#0135
 
-			if(!muon::isTightMuon(*muon,*vtx)) continue;
+			if(!muon::isTightMuon(*muon,*best_vtx)) continue;
 
 			//I = [sumChargedHadronPt+ max(0.,sumNeutralHadronPt+sumPhotonPt-0.5sumPUPt]/pt
 			//https://cmssdt.cern.ch/SDT/doxygen/CMSSW_5_3_14/doc/html/df/d33/structreco_1_1MuonPFIsolation.html
