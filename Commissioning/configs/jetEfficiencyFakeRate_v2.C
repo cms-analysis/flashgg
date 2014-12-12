@@ -53,7 +53,7 @@ int color=0;
 	TTree *genJetTree50[3]= (TTree*)flashggJetValidationTreeMakerPUPPI0->Get("genJetTree_PUPPI0");
 	TTree *genJetTree50[4]= (TTree*)flashggJetValidationTreeMakerPUPPILeg->Get("genJetTree_PUPPILeg");
 
-	TFile *_file1 = TFile::Open("jetValidationCollection_PU20bx25.root");//Open File
+	TFile *_file1 = TFile::Open("jetValidationCollection_PU40bx50_new.root");//Open File
 	//TFile *_file1 = TFile::Open("/afs/cern.ch/work/s/sethzenz/public/72x_jetValidationCollection_PU20bx25.root");//Open File
 	//TFile *_file1 = TFile::Open("/afs/cern.ch/work/s/sethzenz/public/jetValidationCollection_72xMiniAOD_GluGluToHgg_PU20bx25.root");//Open File
 	TTree *jetTree25[0] = (TTree*)flashggJetValidationTreeMaker->Get("jetTree_PF");
