@@ -33,6 +33,7 @@ namespace flashgg {
     unique_ptr<PileupJetIdAlgo>  pileupJetIdAlgo_;
     ParameterSet pileupJetIdParameters_;
     //    bool useAODOnlyPileupJetIdMethod_;
+    double minJetPt_; // GeV
   };
 
 
@@ -42,7 +43,8 @@ namespace flashgg {
     //    vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
     //    vertexToken_(consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
     vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
-    pileupJetIdParameters_(iConfig.getParameter<ParameterSet>("PileupJetIdParameters"))
+    pileupJetIdParameters_(iConfig.getParameter<ParameterSet>("PileupJetIdParameters")),
+    minJetPt_(iConfig.getUntrackedParameter<double>("MinJetPt",0.))
     //    useAODOnlyPileupJetIdMethod_(iConfig.getUntrackedParameter<bool>("UseAODOnlyPileupJetIdMethod",false))
     
   {
@@ -73,6 +75,7 @@ namespace flashgg {
 
     for (unsigned int i = 0 ; i < jetPointers.size() ; i++) {
       Ptr<pat::Jet> pjet = jetPointers[i];
+      if (pjet->pt() < minJetPt_) continue;
       flashgg::Jet fjet = flashgg::Jet(*pjet);
       for (unsigned int j = 0 ; j < diPhotonPointers.size() ; j++) {
 	Ptr<DiPhotonCandidate> diPhoton = diPhotonPointers[j];
