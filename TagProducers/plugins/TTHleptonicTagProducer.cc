@@ -83,8 +83,6 @@ namespace flashgg {
 			double TransverseImpactParam_;
 			double LongitudinalImpactParam_;
 
-			int count = 0;
-
 			bool hasGoodElec = false;
 			bool hasGoodMuons = false;
 
@@ -404,9 +402,6 @@ namespace flashgg {
 
 			if(tagBJets.size() >= bjetsNumberThreshold_ && tagJets.size() >= jetsNumberThreshold_ && photonSelection && ((tagMuons.size()>0 && muonJets) || tagElectrons.size()>0) )
 			{
-
-				count++;
-
 				tthltags_obj.setJets(tagJets);
 				tthltags_obj.setBJets(tagBJets);
 				tthltags_obj.setMuons(tagMuons);
@@ -418,7 +413,6 @@ namespace flashgg {
 			//diPho loop end
 		}
 		evt.put(tthltags);
-		cout<< "# of tags = " << count << endl;
 	}
 
 }
