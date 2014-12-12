@@ -95,7 +95,7 @@ namespace flashgg {
 		 		SelectedTag->push_back(*TagPointers[chosenIndex]);
 				//debug message:
 			//	std::cout << "[DEBUG] Priority " << TagListLoop << " Tag Found! Tag entry "<< chosenIndex  << " with sumPt " 
-					  << TagPointers[chosenIndex]->getSumPt() << std::endl;
+				//					  << TagPointers[chosenIndex]->getSumPt() << std::endl;
 				break;
 			} else {
 			  //debug message
