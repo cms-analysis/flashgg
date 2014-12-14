@@ -85,6 +85,7 @@ namespace flashgg {
 
 			bool hasGoodElec = false;
 			bool hasGoodMuons = false;
+
 	};
 
 	TTHleptonicTagProducer::TTHleptonicTagProducer(const ParameterSet & iConfig) :
@@ -297,7 +298,7 @@ namespace flashgg {
 
 				numMuonJetsdR.push_back(deltaRMuonJetcount);
 				tagMuons.push_back(muon);
-
+			
 			}//end of muons loop
 
 		}
@@ -380,9 +381,11 @@ namespace flashgg {
 							tagBJets.push_back(thejet);
 						}
 					}
-
+					
 				}//end of jets loop 
 
+				tagElectrons.push_back(Electron);
+	
 			}//end of electron loop
 
 		}
