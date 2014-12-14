@@ -85,7 +85,6 @@ namespace flashgg {
 
 			bool hasGoodElec = false;
 			bool hasGoodMuons = false;
-
 	};
 
 	TTHleptonicTagProducer::TTHleptonicTagProducer(const ParameterSet & iConfig) :
@@ -245,12 +244,9 @@ namespace flashgg {
 
 			PtrVector<Electron> goodElectrons = selectElectrons(electronPointers,vertexPointers,ElectronPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_);
 
-			if (!goodMuons && !goodElectrons) continue;
-
-			if (!goodMuons && goodElectrons.size()>0) { hasGoodElec = true; hasGoodMuons = false; }
-			if (goodMuons.size()>0 && !goodElectrons) { hasGoodMuons = true; hasGoodElec = false; }
-
-			if (goodMuons.size()>0 && goodElectrons.size()>0) { hasGoodMuons = true; hasGoodElec = true; }
+			hasGoodElec = (goodElectrons.size()>0);
+			hasGoodMuons = (goodMuons.size()>0);
+			if (!hasGoodElec && !hasGoodMuons) continue;
 
 			numMuonJetsdR.clear();
 			muonJets = false;
@@ -296,15 +292,15 @@ namespace flashgg {
 						tagBJets.push_back(thejet);
 					}
 
-					//end of jets loop 
-				}
+					
+				}//end of jets loop 
 
 				numMuonJetsdR.push_back(deltaRMuonJetcount);
 				tagMuons.push_back(muon);
-				//end of muons loop
-			}
 
-		}// if good muons here
+			}//end of muons loop
+
+		}
 
 		if (hasGoodElec){
 
@@ -384,14 +380,12 @@ namespace flashgg {
 							tagBJets.push_back(thejet);
 						}
 					}
-					//end of jets loop 
-				}
 
-				tagElectrons.push_back(Electron);
-				//end of electron loop
-			}
+				}//end of jets loop 
 
-		}// if good electrons here
+			}//end of electron loop
+
+		}
 
 
 			for (unsigned num = 0; num<numMuonJetsdR.size(); num++ ) 
@@ -408,6 +402,7 @@ namespace flashgg {
 				tthltags_obj.setElectrons(tagElectrons);	
 				tthltags_obj.setDiPhotonIndex(diphoIndex);
 				tthltags->push_back(tthltags_obj);
+					
 			}
 
 			//diPho loop end
