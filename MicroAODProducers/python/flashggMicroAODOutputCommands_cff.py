@@ -13,7 +13,8 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep *_fixedGridRhoAll_*_*",
                                                      "keep *_offlineBeamSpot_*_*",
                                                      "keep *_TriggerResults_*_*",
-                                                     "keep *_eventCount_*_*"
+                                                     "keep *_eventCount_*_*",
+                                                     "keep *_packedGenParticles_*_*"
                                                      )
 
 # Should be included for now for ongoing studies, but to be removed some day
