@@ -61,6 +61,11 @@ namespace flashgg {
 			double deltaRJetLeadPhoThreshold_;
 			double deltaRJetSubLeadPhoThreshold_;
 
+			double LowPtEtaPhoThreshold_;
+			double MidPtEtaPhoThreshold_;
+			double HighEtaPhoThreshold_;
+
+
 			double jetsNumberThreshold_;
 			double bjetsNumberThreshold_;
 			double jetPtThreshold_;
@@ -77,6 +82,9 @@ namespace flashgg {
 			double DeltaRTrkElec_;
 			double TransverseImpactParam_;
 			double LongitudinalImpactParam_;
+
+			bool hasGoodElec = false;
+			bool hasGoodMuons = false;
 
 	};
 
@@ -120,6 +128,12 @@ namespace flashgg {
 		double default_TransverseImpactParam_ = 0.02;
 		double default_LongitudinalImpactParam_ = 0.2;
 
+		double default_LowPtEtaPhoThreshold_ = 1.4447;
+		double default_MidPtEtaPhoThreshold_ = 1.566;
+		double default_HighEtaPhoThreshold_ = 2.5;
+
+		
+
 
 		leptonPtThreshold_ = iConfig.getUntrackedParameter<double>("leptonPtThreshold",default_leptonPtThreshold_);
 		leptonEtaThreshold_ = iConfig.getUntrackedParameter<double>("leptonEtaThreshold",default_leptonEtaThreshold_);
@@ -148,6 +162,10 @@ namespace flashgg {
 		DeltaRTrkElec_ = iConfig.getUntrackedParameter<double>("DeltaRTrkElec",default_DeltaRTrkElec_);
 		TransverseImpactParam_ = iConfig.getUntrackedParameter<double>("TransverseImpactParam",default_TransverseImpactParam_);
 		LongitudinalImpactParam_ = iConfig.getUntrackedParameter<double>("LongitudinalImpactParam",default_LongitudinalImpactParam_);
+
+		LowPtEtaPhoThreshold_ = iConfig.getUntrackedParameter<double>("LowPtEtaPhoThreshold",default_LowPtEtaPhoThreshold_);
+		MidPtEtaPhoThreshold_ = iConfig.getUntrackedParameter<double>("MidPtEtaPhoThreshold",default_MidPtEtaPhoThreshold_);
+		HighEtaPhoThreshold_ = iConfig.getUntrackedParameter<double>("HighEtaPhoThreshold",default_HighEtaPhoThreshold_);
 
 		produces<vector<TTHleptonicTag> >(); 
 	}
@@ -194,6 +212,8 @@ namespace flashgg {
 		for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoIndex++ )
 		{
 
+			hasGoodElec = false;
+			hasGoodMuons = false;
 
 			PtrVector<pat::Muon> tagMuons;
 			PtrVector<Electron> tagElectrons;
@@ -209,6 +229,10 @@ namespace flashgg {
 
 			if(dipho->subLeadingPhoton()->pt() < (dipho->mass())*subleadPhoOverMassThreshold_) continue;
 
+			if ((fabs(dipho->leadingPhoton()->superCluster()->eta()) > LowPtEtaPhoThreshold_ && fabs(dipho->leadingPhoton()->superCluster()->eta()) < MidPtEtaPhoThreshold_) || fabs(dipho->leadingPhoton()->superCluster()->eta()) > HighEtaPhoThreshold_) continue;
+
+			if ((fabs(dipho->subLeadingPhoton()->superCluster()->eta()) > LowPtEtaPhoThreshold_ && fabs(dipho->subLeadingPhoton()->superCluster()->eta()) < MidPtEtaPhoThreshold_) || fabs(dipho->subLeadingPhoton()->superCluster()->eta()) > HighEtaPhoThreshold_) continue;
+
 			idmva1 = dipho->leadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
 			idmva2 = dipho->subLeadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
 			if(idmva1 <= PhoMVAThreshold_|| idmva2 <= PhoMVAThreshold_) continue;
@@ -217,14 +241,18 @@ namespace flashgg {
 
 			photonSelection = true;
 
-			PtrVector<pat::Muon> goodMuons = selectMuons(muonPointers,dipho,leptonEtaThreshold_ ,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
+			PtrVector<pat::Muon> goodMuons = selectMuons(muonPointers,dipho, vertexPointers, leptonEtaThreshold_ ,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
 
 			PtrVector<Electron> goodElectrons = selectElectrons(electronPointers,vertexPointers,ElectronPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_);
 
-			if (!goodMuons || !goodElectrons) continue;
+			hasGoodElec = (goodElectrons.size()>0);
+			hasGoodMuons = (goodMuons.size()>0);
+			if (!hasGoodElec && !hasGoodMuons) continue;
 
 			numMuonJetsdR.clear();
 			muonJets = false;
+
+		if (hasGoodMuons){
 
 			for(unsigned int muonIndex = 0; muonIndex < goodMuons.size(); muonIndex++)
 			{
@@ -265,13 +293,17 @@ namespace flashgg {
 						tagBJets.push_back(thejet);
 					}
 
-					//end of jets loop 
-				}
+					
+				}//end of jets loop 
 
 				numMuonJetsdR.push_back(deltaRMuonJetcount);
 				tagMuons.push_back(muon);
-				//end of muons loop
-			}
+			
+			}//end of muons loop
+
+		}
+
+		if (hasGoodElec){
 
 			for(unsigned int ElectronIndex = 0; ElectronIndex < goodElectrons.size(); ElectronIndex++)
 			{
@@ -349,12 +381,14 @@ namespace flashgg {
 							tagBJets.push_back(thejet);
 						}
 					}
-					//end of jets loop 
-				}
+					
+				}//end of jets loop 
 
 				tagElectrons.push_back(Electron);
-				//end of electron loop
-			}
+	
+			}//end of electron loop
+
+		}
 
 
 			for (unsigned num = 0; num<numMuonJetsdR.size(); num++ ) 
@@ -365,13 +399,13 @@ namespace flashgg {
 
 			if(tagBJets.size() >= bjetsNumberThreshold_ && tagJets.size() >= jetsNumberThreshold_ && photonSelection && ((tagMuons.size()>0 && muonJets) || tagElectrons.size()>0) )
 			{
-
 				tthltags_obj.setJets(tagJets);
 				tthltags_obj.setBJets(tagBJets);
 				tthltags_obj.setMuons(tagMuons);
 				tthltags_obj.setElectrons(tagElectrons);	
 				tthltags_obj.setDiPhotonIndex(diphoIndex);
 				tthltags->push_back(tthltags_obj);
+					
 			}
 
 			//diPho loop end
