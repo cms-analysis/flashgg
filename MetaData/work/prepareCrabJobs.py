@@ -2,7 +2,7 @@
 import os
 from subprocess import call, Popen, PIPE
 
-# Load command line option utilities
+#  Load command line option utilities
 from flashgg.MetaData.optpars_utils import *
 
 def dumpCfg(options):
