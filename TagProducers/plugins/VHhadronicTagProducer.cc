@@ -69,7 +69,6 @@ namespace flashgg {
     double default_jetsNumberThreshold_         = 2;
     double default_jetPtThreshold_              = 40.;
     double default_jetEtaThreshold_             = 2.4;
-    double default_PuIDCutoffThreshold_         = 0.8;  // CHECK THIS
     double default_phoIdMVAThreshold_           = -0.2; // assumes we apply the same cut as for all other VH categories
     
     leadPhoOverMassThreshold_    = iConfig.getUntrackedParameter<double>("leadPhoOverMassThreshold",default_leadPhoOverMassThreshold_);
@@ -104,7 +103,6 @@ namespace flashgg {
     
     assert(diPhotonPointers.size() == mvaResultPointers.size());
 
-    bool   tagged = false;
     double idmva1 = 0.;
     double idmva2 = 0.;
 
@@ -125,57 +123,52 @@ namespace flashgg {
 
 	if(mvares->result < diphoMVAThreshold_) continue;
 
-	// jet-selection logic: loop over jets and build a vector of jets passing kinematical cuts. second loop to check if at least one pair of jets passes the invariant mass requirement. MAKE SURE THIS IS THE GOOD WAY TO GO
-	
 	edm::PtrVector<flashgg::Jet> goodJets;
 
 	for( size_t ijet = 0; ijet < jetPointers.size(); ijet++ ) {
 
 	  edm::Ptr<flashgg::Jet> thejet = jetPointers[ijet];
-	  //if( thejet->getPuJetId(dipho) <  PuIDCutoffThreshold_ ) continue;
 	  if (!thejet->passesPuJetId(dipho))                        continue;
 	  if( fabs(thejet->eta()) > jetEtaThreshold_ )              continue; 
 	  if( thejet->pt() < jetPtThreshold_ )                      continue;
-	  	  
+
 	  goodJets.push_back( thejet );
 	} 
 
 	// *********************************************************************
 
-	vector<jetptrpair> tagJetPairs;
-	
-	for( size_t jjet = 0; jjet < goodJets.size(); jjet++ ) {
+	if( goodJets.size() < 2 ) continue;
 
-	  for( size_t kjet = (jjet+1); kjet < goodJets.size(); kjet++ ) {
+	cout << " found two jets" << endl;
 
-	    TLorentzVector jetl, jets, dijet, phol, phos, diphoton, vstar; 
-	    jetl.SetPtEtaPhiE( jetPointers[jjet]->pt(),jetPointers[jjet]->eta(),jetPointers[jjet]->phi(),jetPointers[jjet]->energy() );
-	    jets.SetPtEtaPhiE( jetPointers[kjet]->pt(),jetPointers[kjet]->eta(),jetPointers[kjet]->phi(),jetPointers[kjet]->energy() );
-	    phol.SetPtEtaPhiE( dipho->leadingPhoton()->pt(), dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi(), dipho->leadingPhoton()->energy() );
-	    phos.SetPtEtaPhiE( dipho->subLeadingPhoton()->pt(), dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi(), dipho->subLeadingPhoton()->energy() );
-	    dijet = jetl + jets;
-	    diphoton = phol + phos;
-	    vstar = diphoton + dijet;
-	    
-	    float invmass = dijet.M();
-	    if( invmass < 60 || invmass > 120 ) continue;
-	    
-	    dijet.Boost( -vstar.BoostVector() );     // check definition of costhetastar angle
-	    float costhetastar = TMath::Cos( dijet.Angle(vstar.BoostVector()) );  
-	    if( abs(costhetastar) > 0.5 ) continue; 
+	TLorentzVector jetl, jets, dijet, phol, phos, diphoton, vstar; 
 
-	    tagJetPairs.push_back( make_pair(jetPointers[jjet],jetPointers[kjet]) );
-	  }
-	} // end of double jet loop
+	phol.SetPtEtaPhiE( dipho->leadingPhoton()->pt(), dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi(), dipho->leadingPhoton()->energy() );
+	phos.SetPtEtaPhiE( dipho->subLeadingPhoton()->pt(), dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi(), dipho->subLeadingPhoton()->energy() );
+	jetl.SetPtEtaPhiE( goodJets[0]->pt(),goodJets[0]->eta(),goodJets[0]->phi(),goodJets[0]->energy() );
+	jets.SetPtEtaPhiE( goodJets[1]->pt(),goodJets[1]->eta(),goodJets[1]->phi(),goodJets[1]->energy() );
+
+	diphoton = phol + phos;	
+	dijet = jetl + jets;
+	vstar = diphoton + dijet;
+
+	float invmass = dijet.M();
+	cout << " inv mass = " << invmass << endl;	
+	if( invmass < 60 || invmass > 120 ) continue;  // go out of diphoton loop
+
+	cout << " good inv mass " << invmass << endl;
+
+	diphoton.Boost( -vstar.BoostVector() );    
+	float costhetastar = -diphoton.CosTheta();  
+	if( abs(costhetastar) > 0.5 ) continue; 
 	
 	// at least ONE pair should pass the selection on invariant mass
-	if( tagJetPairs.size() > 0 ) {
+	//if( tagJetPairs.size() > 0 ) {
 	  
-	  tagged = true;
-	  VHhadronicTag vhhadtag_obj(dipho,mvares);
-	  vhhadtag_obj.setJets( tagJetPairs[0].first, tagJetPairs[0].second );    // select the first pair (highest pt jets)
-	  vhhadtags->push_back( vhhadtag_obj );
-	}
+	VHhadronicTag vhhadtag_obj(dipho,mvares);
+	vhhadtag_obj.setJets( goodJets[0], goodJets[1] );    // select the first pair (highest pt jets)
+	vhhadtags->push_back( vhhadtag_obj );
+	//}
 
       }  // END OF DIPHOTON LOOP
     
