@@ -70,7 +70,7 @@ parser = OptionParser(option_list=[
                     ),
         make_option("-o","--outputPath",
                     dest="outputPath",action="store",type="string",
-                    default="/store/group/phys_higgs/cmshgg/flashgg",
+                    default="/store/group/phys_higgs/cmshgg/%(s)/flashgg" % os.getusername(),
                     help="output storage path. default: %default",
                     ),
         make_option("-C","--campaign",
