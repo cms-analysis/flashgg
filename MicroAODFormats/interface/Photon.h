@@ -2,6 +2,8 @@
 #define FLASHgg_Photon_h
 
 #include "DataFormats/PatCandidates/interface/Photon.h"
+#include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
+
 
 namespace flashgg {
 
@@ -82,6 +84,10 @@ namespace flashgg {
     
     std::map<edm::Ptr<reco::Vertex>,float> const getPhoIdMvaD() const {return phoIdMvaD_;};
     float const getPhoIdMvaDWrtVtx( const edm::Ptr<reco::Vertex>& vtx, bool lazy=false ) const { return findVertexFloat(vtx,phoIdMvaD_,lazy); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
+
+    void setMatchedGenPhoton ( const edm::Ptr<pat::PackedGenParticle> pgp) { addUserCand("matchedGenPhoton",pgp); };
+    const pat::PackedGenParticle* const matchedGenPhoton() const { return (const pat::PackedGenParticle*)(userCand("matchedGenPhoton").get()); };
+    bool hasMatchedGenPhoton () const { return hasUserCand("matchedGenPhoton"); };
 
   private:
     float const findVertexFloat(const edm::Ptr<reco::Vertex>& vtx, const std::map<edm::Ptr<reco::Vertex>,float> & mp, bool lazy) const;

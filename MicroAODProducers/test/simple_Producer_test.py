@@ -30,21 +30,21 @@ process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to wo
 process.load("flashgg/MicroAODProducers/flashggMicroAODSequence_cff")
 
 from flashgg.MicroAODProducers.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand,microAODDebugOutputCommand
-
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile.root'),
                                outputCommands = microAODDefaultOutputCommand
                                )
 process.out.outputCommands += microAODDebugOutputCommand # extra items for debugging, CURRENTLY REQUIRED
 
+process.p = cms.Path(process.flashggMicroAODSequence)
+process.e = cms.EndPath(process.out)
+
+# Uncomment these lines to run the example commissioning module and send its output to root
 #process.commissioning = cms.EDAnalyzer('flashggCommissioning',
 #                                       PhotonTag=cms.untracked.InputTag('flashggPhotons'),
 #                                       DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
 #                                       VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
 #)
 #process.TFileService = cms.Service("TFileService",
-#                                   fileName = cms.string("tree.root")
+#                                   fileName = cms.string("commissioningTree.root")
 #)
-
-process.p = cms.Path(process.flashggMicroAODSequence)
-
-process.e = cms.EndPath(process.out)
+#process.p *= process.commissioning

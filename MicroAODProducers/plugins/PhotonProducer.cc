@@ -13,6 +13,7 @@
 #include "flashgg/MicroAODFormats/interface/Photon.h"
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 #include "flashgg/MicroAODAlgos/interface/PhotonIdUtils.h"
+#include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 // #include "HiggsAnalysis/GBRLikelihoodEGTools/interface/EGEnergyCorrectorSemiParm.h"
 
 using namespace std;
@@ -42,6 +43,9 @@ namespace flashgg {
     EDGetTokenT<View<reco::Vertex> > vertexToken_;   
     EDGetTokenT<flashgg::VertexCandidateMap> vertexCandidateMapToken_;
 
+    EDGetTokenT<View<pat::PackedGenParticle> > genPhotonToken_;
+    double maxGenDeltaR_;
+
     edm::EDGetTokenT<EcalRecHitCollection> ecalHitEBToken_;
     edm::EDGetTokenT<EcalRecHitCollection> ecalHitEEToken_;
     edm::EDGetTokenT<EcalRecHitCollection> ecalHitESToken_;
@@ -62,6 +66,7 @@ namespace flashgg {
     pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates")))),
     vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
     vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
+    genPhotonToken_(consumes<View<pat::PackedGenParticle> >(iConfig.getParameter<InputTag>("GenPhotonTag"))),
     ecalHitEBToken_(consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("reducedBarrelRecHitCollection"))),
     ecalHitEEToken_(consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("reducedEndcapRecHitCollection"))),
     ecalHitESToken_(consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("reducedPreshowerRecHitCollection")))
@@ -77,6 +82,8 @@ namespace flashgg {
     
     doOverlapRemovalForIsolation_ = iConfig.getParameter<bool>("doOverlapRemovalForIsolation");
     useVtx0ForNeutralIso_ = iConfig.getParameter<bool>("useVtx0ForNeutralIso");
+
+    maxGenDeltaR_ = iConfig.getUntrackedParameter<double>("maxGenDeltaR",0.1);
     
     std::vector<ParameterSet> extraCaloIsolations = iConfig.getParameter<std::vector<ParameterSet> >("extraCaloIsolations");
     for(std::vector<ParameterSet>::iterator it=extraCaloIsolations.begin(); it!=extraCaloIsolations.end(); ++it) {
@@ -105,13 +112,15 @@ namespace flashgg {
     evt.getByToken(vertexCandidateMapToken_,vertexCandidateMap);
     Handle<double> rhoHandle;        // the old way for now...move to getbytoken?
     evt.getByLabel(rhoFixedGrid_, rhoHandle );
-
+    Handle<View<pat::PackedGenParticle> > genPhotons;
+    evt.getByToken(genPhotonToken_,genPhotons);
     
     const PtrVector<pat::Photon>& photonPointers = photons->ptrVector();
     const PtrVector<pat::PackedCandidate>& pfcandidatePointers = pfcandidates->ptrVector();
     const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
     const flashgg::VertexCandidateMap vtxToCandMap = *(vertexCandidateMap.product());    
     const double rhoFixedGrd = *(rhoHandle.product());
+    const PtrVector<pat::PackedGenParticle> & genPhotonPointers = genPhotons->ptrVector();
 
     const reco::Vertex * neutVtx = (useVtx0ForNeutralIso_ ? &vertices->at(0) : 0);
 
@@ -124,7 +133,29 @@ namespace flashgg {
 
       Ptr<pat::Photon> pp = photonPointers[i];
       flashgg::Photon fg = flashgg::Photon(*pp);
-      
+
+      // Gen matching
+      unsigned int best = INT_MAX;
+      float bestptdiff = 99e15;
+      for (unsigned int j = 0 ; j < genPhotonPointers.size() ; j++) {
+	auto gen = genPhotonPointers[j];
+	if (gen->pdgId() != 22) continue;
+	float dR = reco::deltaR(*pp,*gen);
+	if (dR > maxGenDeltaR_) continue;
+	float ptdiff = fabs(pp->pt() - gen->pt());
+	if (ptdiff < bestptdiff) {
+	  bestptdiff = ptdiff;
+	  best = j;
+	}
+      }
+      if (best < INT_MAX) {
+	fg.setMatchedGenPhoton( genPhotonPointers[best] );
+      }
+      //      if (fg.hasMatchedGenPhoton()) {
+      //	std::cout << " fg.pt()=" << fg.pt() << " fg.matchedGenPhoton()->pt()=" << fg.matchedGenPhoton()->pt() << std::endl;
+      //      } else {
+      //	std::cout << " fg.pt()=" << fg.pt() << " has no match" << std::endl;
+      //      }
 
       EcalClusterLazyTools lazyTool(evt, iSetup, ecalHitEBToken_, ecalHitEEToken_);        
 

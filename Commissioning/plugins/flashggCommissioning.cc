@@ -194,7 +194,15 @@ flashggCommissioning::analyze(const edm::Event& iEvent, const edm::EventSetup& i
     initEventStructure();
 
     Ptr<flashgg::Photon> phoPtr = photonPointers[ipho];
-    // cout << " photon pt = " << phoPtr->pt() << endl;
+
+    /*
+    cout << " In flashggCommissioning: photon pt = " << phoPtr->pt() << endl;
+    if (phoPtr->hasMatchedGenPhoton()) {
+      std::cout << "     match pt " << phoPtr->matchedGenPhoton()->pt() << std::endl;
+    } else {
+      std::cout << "     No gen match!" << std::endl;
+    }
+    */
 
     phoInfo.pt =  phoPtr->pt();
     phoInfo.eta    = phoPtr->eta();
