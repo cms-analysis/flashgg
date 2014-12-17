@@ -71,3 +71,15 @@ echo crabConfig_*.py | xargs -n 1 crab sub
 ## parallel 'crab sub {}' ::: crabConfig_*.py
 ```
 
+## Specific production campaigns
+
+Exact instructions used, after setting up the area with the given tag, doing cmsenv, and vomx-proxy-init as above:
+
+### PHYS14
+
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C HggPhys14 -U 5 -s campaigns/Phys14_samples.json -V Phys14MicroAODV0 -p ../../MicroAODProducers/test/simple_Producer_test.py
+cd HggPhys14
+echo crabConfig_*.py | xargs -n 1 crab sub
+```

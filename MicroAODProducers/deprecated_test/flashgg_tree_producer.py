@@ -10,8 +10,8 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 1000 ) )
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 100 ) )
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 10 )
 
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT.root"))
 
@@ -35,21 +35,10 @@ process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
 
 
-process.TFileService = cms.Service("TFileService",fileName = cms.string("flashggTree.root"))
-process.flashggTreeMaker = cms.EDAnalyzer('FlashggFlashggTreeMaker',
-                                                          VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+process.TFileService = cms.Service("TFileService",fileName = cms.string("VtxIdTree.root"))
+process.flashggTreeMaker = cms.EDAnalyzer('FlashggVtxIdTreeMaker',
                                                           GenParticleTag=cms.untracked.InputTag('prunedGenParticles'),
-                                                          VertexCandidateMapTagDz=cms.InputTag('flashggVertexMapUnique'),
-                                                          VertexCandidateMapTagAOD = cms.InputTag('flashggVertexMapValidator'),
-                                                          JetTagDz = cms.InputTag("flashggJets"),
 																													DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
-																													METTag = cms.untracked.InputTag('slimmedMETs'),
-																													PileUpTag = cms.untracked.InputTag('addPileupInfo'),
-																													rhoFixedGridCollection = cms.InputTag('fixedGridRhoAll'),
-                                     									     diphotonMVAweightfile = cms.FileInPath("flashgg/MicroAODProducers/data/HggBambu_SMDipho_Oct29_rwgtptallsigevenbkg7TeV_BDTG.weights.xml"),
-                                     									     vbfMVAweightfile = cms.FileInPath("flashgg/MicroAODProducers/data/TMVA_dijet_sherpa_scalewt50_2evenb_powheg200_maxdPhi_oct9_Gradient.weights.xml"),
-                                     									     vbfDiphotonMVAweightfile = cms.FileInPath("flashgg/MicroAODProducers/data/TMVA_vbf_dijet_dipho_evenbkg_scaledwt50_maxdPhi_Gradient.weights.xml"),
-#                                                          JetTagReco = cms.InputTag("flashggJetsUsingRecoJets")
                                                           )
                                                  
 # This requires you to have done: git cms-merge-topic -u sethzenz:pileupjetid-for-flashgg
@@ -63,7 +52,7 @@ process.flashggJets = cms.EDProducer('FlashggJetProducer',
                                      PileupJetIdParameters=cms.PSet(process.full_53x) # from PileupJetIDParams_cfi
                                      )
 
-process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFile.root'),
+process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myOutputFile_test2.root'),
                                outputCommands = cms.untracked.vstring("drop *",
                                                                       "keep *_flashgg*_*_*",
                                                                       "drop *_flashggVertexMap*_*_*",
