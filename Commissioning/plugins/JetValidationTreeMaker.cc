@@ -252,7 +252,7 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
   
   initEventStructure();
   
-  std::cout << " Event Number : " <<  event_number << std::endl;
+  //std::cout << " Event Number : " <<  event_number << std::endl;
   
   std::map<unsigned int, GenPhotonInfo> photonJet_id;
   
@@ -273,12 +273,15 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
     //----------------------
     // matching with photons
     //std::cout << "gens.size() == " << gens.size() << std::endl;
-    std::map<float,int> minim;
+    std::map<float,unsigned int> minim;
+    std::map<unsigned int,GenPhotonInfo> minim_info;
     float DeltaRmin=999.;
     
-    GenPhotonInfo tmp_info;
+    
     if (gens[genLoop]->pdgId() == 22  && gens[genLoop]->numberOfDaughters() == 0){
       for( unsigned int jetLoop =0 ; jetLoop < jetsDzPointers.size(); jetLoop++){
+	GenPhotonInfo tmp_info;
+	
 	float dphi  = jetsDzPointers[jetLoop]->phi() -  gens[genLoop]->phi();
 	float deta  = jetsDzPointers[jetLoop]->eta() -  gens[genLoop]->eta();
 	float dr    =  std::sqrt(deta*deta + dphi*dphi);
@@ -290,10 +293,13 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	tmp_info.pt     = gens[genLoop]->pt ();
 	tmp_info.eta    = gens[genLoop]->eta();
 	tmp_info.phi    = gens[genLoop]->phi();	
-	tmp_info.DRmin  = DeltaRmin;	
+	tmp_info.DRmin  = DeltaRmin;
+	
+	minim_info[jetLoop] = tmp_info;
       }
       
-      photonJet_id[minim.find(DeltaRmin)->second] = tmp_info;
+      unsigned int bestjetid = minim.find(DeltaRmin)->second;
+      photonJet_id[bestjetid] = minim_info[bestjetid];
       //----------------------
       //std::cout << genLoop <<"  "
       //		<< minim.find(DeltaRmin)->second 
@@ -306,23 +312,23 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
   
   for (unsigned int jdz = 0 ; jdz < jetsDzPointers.size() ; jdz++) {
     
-    jInfo.photondRmin = 999.;
     if( photonJet_id.find(jdz) != photonJet_id.end()){
       GenPhotonInfo tmp_info = photonJet_id.find(jdz)->second; // call find ones 
       jInfo.photondRmin  = tmp_info.DRmin;
-      jInfo.GenPhotonPt  = tmp_info.pt;
-      jInfo.GenPhotonEta = tmp_info.eta;
-      jInfo.GenPhotonPhi = tmp_info.phi;
+      jInfo.GenPhotonPt  = tmp_info.pt   ;
+      jInfo.GenPhotonEta = tmp_info.eta  ;
+      jInfo.GenPhotonPhi = tmp_info.phi  ;
       jInfo.photonMatch  = 1;
     }else{
-      jInfo.photondRmin  = 999.;
-      jInfo.GenPhotonPt  = 999.;
-      jInfo.GenPhotonEta = 999.;
-      jInfo.GenPhotonPhi = 999.;
-      
-      jInfo.photonMatch = 0;
-      jInfo.photondRmin = 999.;
+      jInfo.photondRmin  = -999.;
+      jInfo.GenPhotonPt  = -999.;
+      jInfo.GenPhotonEta = -999.;
+      jInfo.GenPhotonPhi = -999.;
+      jInfo.photonMatch  =  0   ;
+      jInfo.photondRmin  = -999.;
     }
+    
+    //if(jInfo.photonMatch == 1) std::cout << "pt == " <<  jInfo.GenPhotonPt << "\t match==" << jInfo.photonMatch <<std::endl;
     
     jInfo.pt            = jetsDzPointers[jdz]->pt();
     jInfo.rawPt         = jetsDzPointers[jdz]->correctedJet("Uncorrected").pt() ;
