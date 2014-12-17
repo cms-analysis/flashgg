@@ -27,8 +27,7 @@ namespace flashgg {
     void produce( Event &, const EventSetup & ) override;
     EDGetTokenT<View<pat::Jet> > jetToken_;
     EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
-    //    EDGetTokenT<View<reco::Vertex> >  vertexToken_;
-    //    EDGetTokenT<reco::VertexCollection> vertexToken_;
+    EDGetTokenT<View<reco::Vertex> >  vertexToken_;
     EDGetTokenT< VertexCandidateMap > vertexCandidateMapToken_;
     unique_ptr<PileupJetIdAlgo>  pileupJetIdAlgo_;
     ParameterSet pileupJetIdParameters_;
@@ -40,13 +39,10 @@ namespace flashgg {
   JetProducer::JetProducer(const ParameterSet & iConfig) :
     jetToken_(consumes<View<pat::Jet> >(iConfig.getUntrackedParameter<InputTag> ("JetTag", InputTag("slimmedJets")))),
     diPhotonToken_(consumes<View<DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag>("DiPhotonTag",InputTag("flashggDiPhotons")))),
-    //    vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
-    //    vertexToken_(consumes<reco::VertexCollection>(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
+    vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
     vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
     pileupJetIdParameters_(iConfig.getParameter<ParameterSet>("PileupJetIdParameters")),
     minJetPt_(iConfig.getUntrackedParameter<double>("MinJetPt",0.))
-    //    useAODOnlyPileupJetIdMethod_(iConfig.getUntrackedParameter<bool>("UseAODOnlyPileupJetIdMethod",false))
-    
   {
     pileupJetIdAlgo_.reset(new PileupJetIdAlgo(pileupJetIdParameters_));
 
@@ -65,9 +61,11 @@ namespace flashgg {
     evt.getByToken(diPhotonToken_,diPhotons);
     const PtrVector<DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
+    Handle<View<reco::Vertex> > primaryVertices;
+    evt.getByToken(vertexToken_,primaryVertices);
+    const PtrVector<reco::Vertex>& pvPointers = primaryVertices->ptrVector();
+    
     Handle<VertexCandidateMap> vertexCandidateMap;
-    //    Handle<View<reco::Vertex> > primaryVertices;
-    //    Handle<reco::VertexCollection> primaryVertices;
     evt.getByToken(vertexCandidateMapToken_,vertexCandidateMap);
 
     // output jets
@@ -81,10 +79,15 @@ namespace flashgg {
 	Ptr<DiPhotonCandidate> diPhoton = diPhotonPointers[j];
 	Ptr<reco::Vertex> vtx = diPhoton->getVertex();
 
-	// Method written just for MiniAOD --> MicroAOD
-	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),vtx,*vertexCandidateMap,true);
-
-	fjet.setPuJetId(vtx,lPUJetId);
+	if (!fjet.hasPuJetId(vtx)) {
+	  // Method written just for MiniAOD --> MicroAOD
+	  PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),vtx,*vertexCandidateMap,true);
+	  fjet.setPuJetId(vtx,lPUJetId);
+	}
+      }
+      if (pvPointers.size() > 0 && !fjet.hasPuJetId(pvPointers[0])) {
+	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),pvPointers[0],*vertexCandidateMap,true);
+	fjet.setPuJetId(pvPointers[0],lPUJetId);
       }
       jetColl->push_back(fjet);
     }

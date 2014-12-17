@@ -38,6 +38,7 @@
 #include "flashgg/MicroAODAlgos/interface/VertexSelectorBase.h"
 #include "flashgg/MicroAODFormats/interface/Photon.h"
 #include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/MicroAODFormats/interface/Jet.h"
 
 #include "flashgg/MicroAODAlgos/interface/PhotonIdUtils.h"
 
@@ -109,8 +110,8 @@ class flashggCommissioning : public edm::EDAnalyzer {
       edm::EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> > diphotonToken_;
       edm::EDGetTokenT<edm::View<reco::Vertex> >               vertexToken_; 
       edm::EDGetTokenT<edm::View<pat::PackedCandidate> >       pfcandidateToken_;
-      edm::EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
-
+      edm::EDGetTokenT<edm::View<reco::GenParticle> > genParticleToken_;
+      edm::EDGetTokenT<edm::View<flashgg::Jet> > jetToken_;	
 
       TTree* photonTree; 
       photonInfo phoInfo;
@@ -141,7 +142,8 @@ flashggCommissioning::flashggCommissioning(const edm::ParameterSet& iConfig):
   diphotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
   vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
   pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates")))),
-  genParticleToken_(consumes<View<reco::GenParticle> >(iConfig.getUntrackedParameter<InputTag> ("GenParticleTag", InputTag("prunedGenParticles"))))
+  genParticleToken_(consumes<View<reco::GenParticle> >(iConfig.getUntrackedParameter<InputTag> ("GenParticleTag", InputTag("prunedGenParticles")))),
+  jetToken_(consumes<View<flashgg::Jet> >(iConfig.getUntrackedParameter<InputTag> ("JetTag", InputTag("flashggJets"))))
 {
  
 }
@@ -171,11 +173,9 @@ flashggCommissioning::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   iEvent.getByToken(diphotonToken_,diphotons);
   const PtrVector<flashgg::DiPhotonCandidate>& diphotonPointers = diphotons->ptrVector();  
    
-  /*
   Handle<View<reco::Vertex> > primaryVertices;
   iEvent.getByToken(vertexToken_,primaryVertices);
   const PtrVector<reco::Vertex>& pvPointers = primaryVertices->ptrVector();
-  */
 
   Handle<View<pat::PackedCandidate> > pfcandidates;
   iEvent.getByToken(pfcandidateToken_,pfcandidates);
@@ -184,6 +184,26 @@ flashggCommissioning::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   Handle<View<reco::GenParticle> > genParticles;
   iEvent.getByToken(genParticleToken_,genParticles);
   const PtrVector<reco::GenParticle>& gens = genParticles->ptrVector();
+
+  Handle<View<flashgg::Jet> > jets;
+  iEvent.getByToken(jetToken_,jets);
+  const PtrVector<flashgg::Jet>& jetPointers = jets->ptrVector();
+
+  for (unsigned int i = 0 ; i < diphotonPointers.size(); i++) {
+    for (unsigned int j = 0 ; j < jetPointers.size() ; j++) {
+      std::cout << " For jet " << j << ", diphoton " << i << " the RMS is " << jetPointers[j]->RMS(diphotonPointers[i]) 
+		<< " the betaStar is " << jetPointers[j]->betaStar(diphotonPointers[i]) 
+		<< " and passesPuJetID is " << jetPointers[j]->passesPuJetId(diphotonPointers[i]) <<  std::endl;
+    }
+  }
+
+  if (pvPointers.size() > 0) {
+    for (unsigned int j = 0 ; j < jetPointers.size() ; j++) {
+      std::cout << " For jet " << j << ", vertex 0 the RMS  is " << jetPointers[j]->RMS(pvPointers[0])
+                << " the betaStar is " << jetPointers[j]->betaStar(pvPointers[0])
+                << " and passesPuJetID is " << jetPointers[j]->passesPuJetId(pvPointers[0]) <<  std::endl;
+    }
+  }
 
   // cout << "size = " << pvPointers.size() << " " << pfCandPointers.size() << endl;
   
