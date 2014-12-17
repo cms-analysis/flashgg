@@ -1,0 +1,14 @@
+{
+    "data" : [
+	      ],
+    "sig"  : ["/GluGluToHToGG_M-125_13TeV-powheg-pythia6/Phys14DR-PU40bx25_PHYS14_25_V1-v1/MINIAODSIM",
+    	      "/GluGluToHToGG_M-60_13TeV_pythia6/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM",
+	      "/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM",
+	      "/VBF_HToGG_M-125_13TeV-powheg-pythia6/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM",
+	      "/WH_ZH_HToGG_M-125_13TeV_pythia6/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM"		
+	      ],
+    "bkg"  : ["/GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM",
+	      "/DYJetsToLL_M-50_13TeV-madgraph-pythia8/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM",
+	      "/DYJetsToLL_M-50_13TeV-madgraph-pythia8/Phys14DR-PU4bx50_PHYS14_25_V1-v1/MINIAODSIM"
+	      ]
+}
