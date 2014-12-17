@@ -201,7 +201,7 @@ private:
   EDGetTokenT< edm::View<reco::GenParticle> > genPartToken_;
   EDGetTokenT< edm::View<reco::GenJet> >      genJetToken_;
   EDGetTokenT< edm::View<flashgg::Jet> >      jetDzToken_;
-  EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> > diPhotonToken_;
+	EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> > diPhotonToken_;
   EDGetTokenT< View<reco::Vertex> > vertexToken_;
   
   TTree*     eventTree;
@@ -244,7 +244,6 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
 {
 
 
-  //std::cout <<" DEBUG 0"<<std::endl;
   
   Handle<View<reco::Vertex> > primaryVertices;
   iEvent.getByToken(vertexToken_,primaryVertices);
@@ -266,22 +265,22 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
   iEvent.getByToken(jetDzToken_,jetsDz);
   const PtrVector<flashgg::Jet>& jetsDzPointers = jetsDz->ptrVector();
   
-  int legacyEqZeroth =0;
-  int nDiphotons =0;
+	int legacyEqZeroth =0;
+	int nDiphotons =0;
+
+	nDiphotons = diPhotonPointers.size();
+	if(diPhotonPointers.size()==0){
+		legacyEqZeroth =1; //if there is no diphoton, we use 0th vertex anyway.
+	} else {
+		if(fabs(diPhotonPointers[0]->getVertex()->z() - vtxs[0]->z())<0.01){
+			legacyEqZeroth =1;
+		}
+	}
+
+eInfo.nDiphotons = nDiphotons;
+eInfo.legacyEqZeroth = legacyEqZeroth;
   
-  nDiphotons = diPhotonPointers.size();
-  
-  if(diPhotonPointers.size()==0){
-    legacyEqZeroth =1; //if there is no diphoton, we use 0th vertex anyway.
-  } else {
-    if(fabs(diPhotonPointers[0]->getVertex()->z() - vtxs[0]->z())<0.01){
-      legacyEqZeroth =1;
-    }
-  }
-  eInfo.nDiphotons = nDiphotons;
-  eInfo.legacyEqZeroth = legacyEqZeroth;
-  
-  initEventStructure();
+	initEventStructure();
   
   eInfo.nJet = jetsDzPointers.size();
   eInfo.nPV  = vtxs.size();
@@ -630,24 +629,23 @@ JetValidationTreeMaker::beginJob()
   
 }
 
-void JetValidationTreeMaker::endJob() 
-{
+	void JetValidationTreeMaker::endJob() 
+	{
 
-}
+	}
 
 void JetValidationTreeMaker::initEventStructure() 
 {
 
 }
 
+	void JetValidationTreeMaker::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+		// The following says we do not know what parameters are allowed so do no validation
+		// Please change this to state exactly what you do use, even if it is no parameters
+		edm::ParameterSetDescription desc;
+		desc.setUnknown();
+		descriptions.addDefault(desc);
+	}
 
-void JetValidationTreeMaker::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
-  // The following says we do not know what parameters are allowed so do no validation
-  // Please change this to state exactly what you do use, even if it is no parameters
-  edm::ParameterSetDescription desc;
-  desc.setUnknown();
-  descriptions.addDefault(desc);
-}
-
-typedef JetValidationTreeMaker FlashggJetValidationTreeMaker;
-DEFINE_FWK_MODULE(FlashggJetValidationTreeMaker);
+	typedef JetValidationTreeMaker FlashggJetValidationTreeMaker;
+	DEFINE_FWK_MODULE(FlashggJetValidationTreeMaker);
