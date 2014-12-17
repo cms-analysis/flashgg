@@ -18,8 +18,8 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep *_eventCount_*_*",
                                                      "keep *_weightsCount_*_*",
                                                      "keep *_generator_*_*",
-                                                     "keep *_addPileupInfo_*_*"
-                                                     "keep *_slimmedGenJets_*_*",
+                                                     "keep *_addPileupInfo_*_*",
+                                                     "keep *_slimmedGenJets_*_*"
                                                      )
 
 # Should be included for now for ongoing studies, but to be removed some day
