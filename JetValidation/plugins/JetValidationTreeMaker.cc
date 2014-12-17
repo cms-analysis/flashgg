@@ -268,6 +268,7 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	int legacyEqZeroth =0;
 	int nDiphotons =0;
 
+std::cout <<" DEBUG 1"<<std::endl;
 	nDiphotons = diPhotonPointers.size();
 	if(diPhotonPointers.size()==0){
 		legacyEqZeroth =1; //if there is no diphoton, we use 0th vertex anyway.
@@ -288,6 +289,7 @@ eInfo.legacyEqZeroth = legacyEqZeroth;
   
   // ++  finding the photon-jet overlaping
   std::map<unsigned int, GenPhotonInfo> photonJet_id;
+  
   for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++){
     genInfo.pt     = gens[genLoop]->pt() ;
     genInfo.eta    = gens[genLoop]->eta();
@@ -353,7 +355,6 @@ eInfo.legacyEqZeroth = legacyEqZeroth;
       jInfo.bestPt      = jetsDzPointers[jdz]->pt() ;
     }
     
-    //std::cout <<" DEBUG 4c"<<std::endl;
     if( jetsDzPointers[jdz]->genJet()){
       jInfo.genJetMatch           = 1;
       jInfo.genJetPt              = jetsDzPointers[jdz]->genJet()->pt();
@@ -377,6 +378,7 @@ eInfo.legacyEqZeroth = legacyEqZeroth;
       jInfo.genQuarkMatch           = 0;
       jInfo.genQuarkPdgId           = -9999;
     }
+    //----------------------
     jInfo.energy           = jetsDzPointers[jdz]->energy() ;
     jInfo.mass             = jetsDzPointers[jdz]->mass() ;
     jInfo.eta              = jetsDzPointers[jdz]->eta();
@@ -427,8 +429,6 @@ eInfo.legacyEqZeroth = legacyEqZeroth;
     jInfo.nphoton_10 = 0; //
     jInfo.nphoton_20 = 0; //
     // loop over consitutuants
-
-    //std::cout <<" DEBUG 5"<<std::endl;
     for (unsigned int i = 0 ; i < jetsDzPointers[jdz]->getJetConstituentsQuick().size() ; i++){
       
       const reco::Candidate* icand = jetsDzPointers[jdz]->getJetConstituentsQuick()[i];
@@ -487,6 +487,7 @@ eInfo.legacyEqZeroth = legacyEqZeroth;
     
 		for (unsigned int recoLoop=0; recoLoop <  jetsDzPointers.size(); recoLoop++){
       
+
       if(jetsDzPointers[recoLoop]->pt() < 5) continue;
       
       deta= jetsDzPointers[recoLoop]->eta() - 	 genJets[genLoop]->eta();
