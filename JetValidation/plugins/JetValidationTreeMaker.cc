@@ -268,7 +268,7 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	int legacyEqZeroth =0;
 	int nDiphotons =0;
 
-std::cout <<" DEBUG 1"<<std::endl;
+//std::cout <<" DEBUG 1"<<std::endl;
 	nDiphotons = diPhotonPointers.size();
 	if(diPhotonPointers.size()==0){
 		legacyEqZeroth =1; //if there is no diphoton, we use 0th vertex anyway.
