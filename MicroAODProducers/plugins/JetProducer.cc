@@ -33,7 +33,7 @@ namespace flashgg {
     ParameterSet pileupJetIdParameters_;
 		 bool usePuppi;
 		 double minJetPt_; // GeV
-    //    bool useAODOnlyPileupJetIdMethod_;
+    //     bool useAODOnlyPileupJetIdMethod_;
     double minJetPt_; // GeV
   };
 
