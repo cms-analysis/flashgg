@@ -14,7 +14,7 @@ process.source = cms.Source("PoolSource",
                             #skipEvents=cms.untracked.uint32(13000)
                             )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 1000 ) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 200 ) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 )
 
 process.load("flashgg/MicroAODProducers/flashggVertexMaps_cfi")
@@ -431,7 +431,7 @@ process.flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                           massCutLower=cms.untracked.double(100)
                                           )
 
-process.TFileService = cms.Service("TFileService",fileName  = cms.string("jetValidationCollection_PU40bx50_new.root"))
+process.TFileService = cms.Service("TFileService",fileName  = cms.string("jetValidationCollection_PU40bx50_ptag.root"))
 #process.TFileService = cms.Service("TFileService",fileName = cms.string("jetValidationCollection_PU20bx25_new.root"))
 #process.TFileService = cms.Service("TFileService",fileName = cms.string("Test.root"))
 

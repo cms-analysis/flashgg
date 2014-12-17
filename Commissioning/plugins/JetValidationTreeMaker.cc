@@ -1,6 +1,6 @@
 // By Y.Haddad & L.Corpe
 // Cut and pasted from the flashggCommissioning tree maker code  by C. Favaro et al.
-// 
+
 
 #include <memory>
 
@@ -98,20 +98,20 @@ struct jetInfo {
   float eta;
   float phi;
   
-  int   npart_0 ; // number of particles at pt>0
-  int   npart_5 ; // number of particles at pt>5
-  int   npart_10; // number of particles at pt>10
-  int   npart_20; // number of particles at pt>20
+  int   npart_0 ;    // number of particles at pt>0
+  int   npart_5 ;    // number of particles at pt>5
+  int   npart_10;    // number of particles at pt>10
+  int   npart_20;    // number of particles at pt>20
   
   int   ncharged_0 ; // number of particles at pt>0
   int   ncharged_5 ; // number of particles at pt>5
   int   ncharged_10; // number of particles at pt>10
   int   ncharged_20; // number of particles at pt>20
   
-  int   nphoton_0 ; // number of particles at pt>0
-  int   nphoton_5 ; // number of particles at pt>5
-  int   nphoton_10; // number of particles at pt>10
-  int   nphoton_20; // number of particles at pt>20
+  int   nphoton_0 ;  // number of particles at pt>0
+  int   nphoton_5 ;  // number of particles at pt>5
+  int   nphoton_10;  // number of particles at pt>10
+  int   nphoton_20;  // number of particles at pt>20
   
   float genJetPt;
   float genJetEta;
@@ -120,11 +120,31 @@ struct jetInfo {
   float genQuarkEta;
   int   genQuarkMatch;
   int   genQuarkPdgId;
-  
   void init(){
     pt  =-999;
     eta =-999; 
   }
+  
+
+  // photon matching part
+  int   photonMatch;
+  float photondRmin;
+  float GenPhotonEta;
+  float GenPhotonPhi;
+  float GenPhotonPt;
+  
+};  
+
+struct GenPhotonInfo{
+  float pt;
+  float phi;
+  float eta;
+  float DRmin;
+  void init(){
+    pt  =-999;
+    eta =-999; 
+  }
+  
 };
 
 // **********************************************************************
@@ -151,6 +171,7 @@ private:
   virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
   virtual void endJob() override;
   
+  
   // Additional methods
   void initEventStructure();
   
@@ -173,6 +194,9 @@ private:
   GenJetInfo  genJetInfo;
   Int_t       event_number;
   std::string jetCollectionName; 
+  
+  GenPartInfo jGenPhotonInfo;
+  //----------------------
   
   TH1F *h_jetPt ;      
   TH1F *h_jetRawPt ;      
@@ -228,7 +252,78 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
   
   initEventStructure();
   
+  std::cout << " Event Number : " <<  event_number << std::endl;
+  
+  std::map<unsigned int, GenPhotonInfo> photonJet_id;
+  
+  for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++){
+    genInfo.pt     = gens[genLoop]->pt() ;
+    genInfo.eta    = gens[genLoop]->eta();
+    genInfo.phi    = gens[genLoop]->phi();
+    genInfo.status = gens[genLoop]->status();
+    genInfo.pdgid  = int(gens[genLoop]->pdgId());
+    
+    // takes only the light quarks pid < 6
+    if ( fabs(gens[genLoop]->pdgId()) < 6 ){
+      h_genPt ->Fill(gens[genLoop]->pt() );	
+      h_genEta->Fill(gens[genLoop]->eta());	
+      h_genPhi->Fill(gens[genLoop]->phi());	
+    }
+    
+    //----------------------
+    // matching with photons
+    //std::cout << "gens.size() == " << gens.size() << std::endl;
+    std::map<float,int> minim;
+    float DeltaRmin=999.;
+    
+    GenPhotonInfo tmp_info;
+    if (gens[genLoop]->pdgId() == 22  && gens[genLoop]->numberOfDaughters() == 0){
+      for( unsigned int jetLoop =0 ; jetLoop < jetsDzPointers.size(); jetLoop++){
+	float dphi  = jetsDzPointers[jetLoop]->phi() -  gens[genLoop]->phi();
+	float deta  = jetsDzPointers[jetLoop]->eta() -  gens[genLoop]->eta();
+	float dr    =  std::sqrt(deta*deta + dphi*dphi);
+	
+	DeltaRmin = std::min (dr, DeltaRmin);
+	minim[dr] = jetLoop; 
+	
+	// fill the info
+	tmp_info.pt     = gens[genLoop]->pt ();
+	tmp_info.eta    = gens[genLoop]->eta();
+	tmp_info.phi    = gens[genLoop]->phi();	
+	tmp_info.DRmin  = DeltaRmin;	
+      }
+      
+      photonJet_id[minim.find(DeltaRmin)->second] = tmp_info;
+      //----------------------
+      //std::cout << genLoop <<"  "
+      //		<< minim.find(DeltaRmin)->second 
+      //	<<" DeltaMin to photon == "<< DeltaRmin << std::endl;
+    }
+    genPartTree->Fill();
+  }
+  
+  //std::cout << "number of matched photon == " << photonJet_id.size() << std::endl;
+  
   for (unsigned int jdz = 0 ; jdz < jetsDzPointers.size() ; jdz++) {
+    
+    jInfo.photondRmin = 999.;
+    if( photonJet_id.find(jdz) != photonJet_id.end()){
+      GenPhotonInfo tmp_info = photonJet_id.find(jdz)->second; // call find ones 
+      jInfo.photondRmin  = tmp_info.DRmin;
+      jInfo.GenPhotonPt  = tmp_info.pt;
+      jInfo.GenPhotonEta = tmp_info.eta;
+      jInfo.GenPhotonPhi = tmp_info.phi;
+      jInfo.photonMatch  = 1;
+    }else{
+      jInfo.photondRmin  = 999.;
+      jInfo.GenPhotonPt  = 999.;
+      jInfo.GenPhotonEta = 999.;
+      jInfo.GenPhotonPhi = 999.;
+      
+      jInfo.photonMatch = 0;
+      jInfo.photondRmin = 999.;
+    }
+    
     jInfo.pt            = jetsDzPointers[jdz]->pt();
     jInfo.rawPt         = jetsDzPointers[jdz]->correctedJet("Uncorrected").pt() ;
     
@@ -248,20 +343,20 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
       jInfo.genJetEta             = -9999.;
       jInfo.genJetMatch           = 0;
     }
-
+    
     if( jetsDzPointers[jdz]->genParton()){
       jInfo.genQuarkMatch           = 1;
       jInfo.genQuarkPt              = jetsDzPointers[jdz]->genParton()->pt();
       jInfo.genQuarkEta             = jetsDzPointers[jdz]->genParton()->eta();
       jInfo.genQuarkPdgId           = jetsDzPointers[jdz]->genParton()->pdgId();
-
+      
     } else {
       jInfo.genQuarkPt              = -9999.;
       jInfo.genQuarkEta             = -9999.;
       jInfo.genQuarkMatch           = 0;
       jInfo.genQuarkPdgId           = -9999;
     }
-    
+    //----------------------
     jInfo.energy           = jetsDzPointers[jdz]->energy() ;
     jInfo.mass             = jetsDzPointers[jdz]->mass() ;
     jInfo.eta              = jetsDzPointers[jdz]->eta();
@@ -284,9 +379,6 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
     jInfo.nphoton_20 = 0; //
     // loop over consitutuants
     
-    
-    
-    //for (unsigned int i = 0 ; i < jetsDzPointers[jdz]->numberOfDaughters() ; i++){
     for (unsigned int i = 0 ; i < jetsDzPointers[jdz]->getJetConstituentsQuick().size() ; i++){
       //1edm::Ptr<pat::PackedCandidate> icand = edm::Ptr<pat::PackedCandidate> ( jetsDzPointers[jdz]->daughterPtr(i) );
       const reco::Candidate* icand = jetsDzPointers[jdz]->getJetConstituentsQuick()[i];
@@ -321,78 +413,60 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
     //
     jetTree->Fill();
   }
-    
-  // std::cout << " Number of genParticles : " <<  gens.size() << std::endl;
-  for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++){
-    
-    genInfo.pt     = gens[genLoop]->pt() ;
-    genInfo.eta    = gens[genLoop]->eta();
-    genInfo.phi    = gens[genLoop]->phi();
-    genInfo.status = gens[genLoop]->status();
-    genInfo.pdgid  = int(gens[genLoop]->pdgId());
-    
-    // takes only the light quarks pid < 6
-    if ( fabs(gens[genLoop]->pdgId()) < 6 ){
-      h_genPt ->Fill(gens[genLoop]->pt() );	
-      h_genEta->Fill(gens[genLoop]->eta());	
-      h_genPhi->Fill(gens[genLoop]->phi());	
-    }
-    genPartTree->Fill();
-  }
   
-	// fill genJet tree
-	//
-		//std::cout << "DEBUG - gen Jets size " << genJets.size() << std::endl;
-	for( unsigned int genLoop =0 ; genLoop < genJets.size(); genLoop++){
+  // fill genJet tree
+  //
+  //std::cout << "DEBUG - gen Jets size " << genJets.size() << std::endl;
+  for( unsigned int genLoop =0 ; genLoop < genJets.size(); genLoop++){
+    
+    genJetInfo.recoJetPt       = -999.;
+    genJetInfo.recoJetRawPt    = -999.;
+    genJetInfo.recoJetBestPt   = -999.;
+    genJetInfo.recoJetMatch    =  0   ;
+    genJetInfo.recoJetEta      = -999.;
+    genJetInfo.dR              = -999.;
+    genJetInfo.pt              = -999.;
+    genJetInfo.eta             = -999.;
+    genJetInfo.phi             = -999.;
 
-		genJetInfo.recoJetPt       = -999.;
-		genJetInfo.recoJetRawPt    = -999. ;
-		genJetInfo.recoJetBestPt   = -999. ;
-		genJetInfo.recoJetMatch    = 0 ;
-		genJetInfo.recoJetEta      =  -999.;
-		genJetInfo.dR      =  -999.;
-		genJetInfo.pt     = -999. ;
-		genJetInfo.eta    = -999.;
-		genJetInfo.phi    = -999.;
+    if (genJets[genLoop]->pt() <20) { continue;}
 
-		if (genJets[genLoop]->pt() <20) { continue;}
+    genJetInfo.pt     = genJets[genLoop]->pt() ;
+    //	std::cout << "DEBUG " << genJets[genLoop]->pt() << std::endl;
+    genJetInfo.eta    = genJets[genLoop]->eta();
+    genJetInfo.phi    = genJets[genLoop]->phi();
+    
+    float deta;
+    float dphi;
+    float dr  ;
+    //loop over reco to do dR match
+    for (unsigned int recoLoop=0; recoLoop <  jetsDzPointers.size(); recoLoop++){
 
-		genJetInfo.pt     = genJets[genLoop]->pt() ;
-	//	std::cout << "DEBUG " << genJets[genLoop]->pt() << std::endl;
-		genJetInfo.eta    = genJets[genLoop]->eta();
-		genJetInfo.phi    = genJets[genLoop]->phi();
+      if(jetsDzPointers[recoLoop]->pt() < 5) continue;
 
-		float deta;
-		float dphi;
-		float dr  ;
-		//loop over reco to do dR match
-		for (unsigned int recoLoop=0; recoLoop <  jetsDzPointers.size(); recoLoop++){
+      deta= jetsDzPointers[recoLoop]->eta() - 	 genJets[genLoop]->eta();
+      dphi= jetsDzPointers[recoLoop]->phi() - 	 genJets[genLoop]->phi();
+      dr = std::sqrt(deta*deta + dphi*dphi);
 
-			if(jetsDzPointers[recoLoop]->pt() < 5) continue;
+      if (dr < 0.4 ) {
 
-			deta= jetsDzPointers[recoLoop]->eta() - 	 genJets[genLoop]->eta();
-			dphi= jetsDzPointers[recoLoop]->phi() - 	 genJets[genLoop]->phi();
-			dr = std::sqrt(deta*deta + dphi*dphi);
+	genJetInfo.dR      =  dr;
+	genJetInfo.recoJetPt       = jetsDzPointers[recoLoop]->pt() ;
+	genJetInfo.recoJetRawPt    = jetsDzPointers[recoLoop]->correctedJet("Uncorrected").pt()  ;
 
-			if (dr < 0.4 ) {
-
-				genJetInfo.dR      =  dr;
-				genJetInfo.recoJetPt       = jetsDzPointers[recoLoop]->pt() ;
-				genJetInfo.recoJetRawPt    = jetsDzPointers[recoLoop]->correctedJet("Uncorrected").pt()  ;
-
-				if(jetCollectionName.find("PPI")>1 && jetCollectionName.find("PPI")<jetCollectionName.size()){
-					genJetInfo.recoJetBestPt   =  jetsDzPointers[recoLoop]->correctedJet("Uncorrected").pt() ;
-				} else{  
-					genJetInfo.recoJetBestPt   = jetsDzPointers[recoLoop]->pt()  ;
-				}
-				genJetInfo.recoJetMatch    = 1 ;
-				break;
-
-			}
-		}
-
-		genJetTree->Fill();
+	if(jetCollectionName.find("PPI")>1 && jetCollectionName.find("PPI")<jetCollectionName.size()){
+	  genJetInfo.recoJetBestPt   =  jetsDzPointers[recoLoop]->correctedJet("Uncorrected").pt() ;
+	} else{  
+	  genJetInfo.recoJetBestPt   = jetsDzPointers[recoLoop]->pt()  ;
 	}
+	genJetInfo.recoJetMatch    = 1 ;
+	break;
+
+      }
+    }
+
+    genJetTree->Fill();
+  }
   
   eventTree->Fill();
   event_number++;
@@ -407,7 +481,7 @@ JetValidationTreeMaker::beginJob()
   h_jetRawPt = fs_->make<TH1F>("h_jetRawPt" ,"flashgg jets;rawP_{t}[GeV]",500,0,500);
   h_jetEta   = fs_->make<TH1F>("h_jetEta"   ,"flashgg jets;#eta"         ,500,-5,5);
   h_jetPhi   = fs_->make<TH1F>("h_jetPhi"   ,"flashgg jets;#phi"         ,500,-6.3,6.3);
-
+  
   h_genPt    = fs_->make<TH1F>("h_genPt" ,"gen quarks only;P_{t}[GeV]",500,0,500);
   h_genEta   = fs_->make<TH1F>("h_genEta","gen quarks only;#eta"      ,500,-5,5);
   h_genPhi   = fs_->make<TH1F>("h_genPhi","gen quarks only;#phi"      ,500,-6.3,6.3);
@@ -452,7 +526,14 @@ JetValidationTreeMaker::beginJob()
   jetTree->Branch("genQuarkEta"    ,&jInfo.genQuarkEta  ,"genQuarkEta/F" );
   jetTree->Branch("genQuarkMatch"  ,&jInfo.genQuarkMatch,"genQuarkMatch/I" );
   jetTree->Branch("genQuarkPdgId"  ,&jInfo.genQuarkPdgId,"genQuarkPdfId/I" );
-
+  
+  jetTree->Branch("photonMatch"    ,&jInfo.photonMatch  ,"photonMatch/I" );
+  jetTree->Branch("photondRmin"    ,&jInfo.photondRmin  ,"photondRmin/F" );
+  
+  jetTree->Branch("GenPhotonPt"    ,&jInfo.GenPhotonPt   ,"GenPhotonPt/F" );
+  jetTree->Branch("GenPhotonEta"   ,&jInfo.GenPhotonEta  ,"GenPhotonEta/F" );
+  jetTree->Branch("GenPhotonPhi"   ,&jInfo.GenPhotonPhi  ,"GenPhotonPhi/F" );
+  
   genPartTree = fs_->make<TTree>("genPartTree","Check per-jet tree");
   genPartTree->Branch("pt"     ,&genInfo.pt      ,"pt/F" );
   genPartTree->Branch("eta"    ,&genInfo.eta     ,"eta/F");
