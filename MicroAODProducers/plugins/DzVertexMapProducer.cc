@@ -48,6 +48,11 @@ namespace flashgg {
 
     std::auto_ptr<VertexCandidateMap> assoc(new VertexCandidateMap);
 
+    // Create empty vector for each vertex in advance
+    for (unsigned int j = 0 ; j < pvPtrs.size() ; j++) {
+      assoc->insert(std::make_pair(pvPtrs[j],edm::PtrVector<pat::PackedCandidate>()));
+    }
+
     if (useEachTrackOnce_) {
       // Associate a track to the closest vertex only, and only if dz < maxAllowedDz_
       for (unsigned int i = 0 ; i < pfPtrs.size() ; i++) {
@@ -69,9 +74,6 @@ namespace flashgg {
 	if (closestDz < maxAllowedDz_) {
 	  //	cout << " Final insert index_Pf index_Vtx Dz " << i << " " << closestDzIndex << " " << closestDz << endl;
 	  Ptr<reco::Vertex> vtx =pvPtrs[closestDzIndex];
-	  if (!assoc->count(vtx)) {
-	    assoc->insert(std::make_pair(vtx,edm::PtrVector<pat::PackedCandidate>()));
-	  }
 	  assoc->at(vtx).push_back(cand);
 	}
       }
@@ -84,9 +86,6 @@ namespace flashgg {
 	  Ptr<reco::Vertex> vtx = pvPtrs[j];
 	  double dz = fabs(cand->dz(vtx->position()));
 	  if (dz < maxAllowedDz_) {
-	    if (!assoc->count(vtx)) {
-	      assoc->insert(std::make_pair(vtx,edm::PtrVector<pat::PackedCandidate>()));
-	    }
 	    assoc->at(vtx).push_back(cand);
 	  }
 	}
