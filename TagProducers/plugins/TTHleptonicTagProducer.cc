@@ -246,7 +246,6 @@ namespace flashgg {
 			PtrVector<Electron> goodElectrons = selectElectrons(electronPointers,vertexPointers,ElectronPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_);
 
 			hasGoodElec = (goodElectrons.size()>0);
-			//std::cout << "goodElectrons " << goodElectrons.size() << std::endl;
 			hasGoodMuons = (goodMuons.size()>0);
 			if (!hasGoodElec && !hasGoodMuons) continue;
 
@@ -397,7 +396,6 @@ namespace flashgg {
 				tagElectrons.push_back(Electron);
 			}//end of electron loop
 				
-			//std::cout << "number of selected Electrons  " << tagElectrons.size() << std::endl;
 		}
 
 
