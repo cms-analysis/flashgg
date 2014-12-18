@@ -120,6 +120,9 @@ flashggVHhadronicTag = cms.EDProducer("FlashggVHhadronicTagProducer",
                                       jetsNumberThreshold = cms.untracked.double(2.),
                                       jetPtThreshold = cms.untracked.double(40.),
                                       jetEtaThreshold= cms.untracked.double(2.4),
+                                      dijetMassLowThreshold = cms.untracked.double(60.),
+                                      dijetMassHighThreshold = cms.untracked.double(120.),
+                                      cosThetaStarThreshold = cms.untracked.double(0.5),
                                       PhoMVAThreshold = cms.untracked.double(-0.2)
                                       )
 

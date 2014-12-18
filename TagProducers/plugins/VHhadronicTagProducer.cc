@@ -49,6 +49,9 @@ namespace flashgg {
     double jetsNumberThreshold_;
     double jetPtThreshold_;
     double jetEtaThreshold_;
+    double dijetMassLowThreshold_;
+    double dijetMassHighThreshold_;
+    double cosThetaStarThreshold_;
     double phoIdMVAThreshold_;
     
 
@@ -69,7 +72,11 @@ namespace flashgg {
     double default_jetsNumberThreshold_         = 2;
     double default_jetPtThreshold_              = 40.;
     double default_jetEtaThreshold_             = 2.4;
+    double default_dijetMassLowThreshold_       = 60;
+    double default_dijetMassHighThreshold_      = 120; 
+    double default_cosThetaStarThreshold_       = 0.5;
     double default_phoIdMVAThreshold_           = -0.2; // assumes we apply the same cut as for all other VH categories
+  
     
     leadPhoOverMassThreshold_    = iConfig.getUntrackedParameter<double>("leadPhoOverMassThreshold",default_leadPhoOverMassThreshold_);
     subleadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>("subleadPhoOverMassThreshold",default_subleadPhoOverMassThreshold_);
@@ -77,6 +84,9 @@ namespace flashgg {
     jetsNumberThreshold_         = iConfig.getUntrackedParameter<double>("jetsNumberThreshold",default_jetsNumberThreshold_);
     jetPtThreshold_              = iConfig.getUntrackedParameter<double>("jetPtThreshold",default_jetPtThreshold_);
     jetEtaThreshold_             = iConfig.getUntrackedParameter<double>("jetEtaThreshold",default_jetEtaThreshold_);
+    dijetMassLowThreshold_       = iConfig.getUntrackedParameter<double>("dijetMassLowThreshold",default_dijetMassLowThreshold_); 
+    dijetMassHighThreshold_      = iConfig.getUntrackedParameter<double>("dijetMassHighThreshold",default_dijetMassHighThreshold_); 
+    cosThetaStarThreshold_       = iConfig.getUntrackedParameter<double>("cosThetaStarThreshold",default_cosThetaStarThreshold_);
     phoIdMVAThreshold_           = iConfig.getUntrackedParameter<double>("phoIdMVAThreshold",default_phoIdMVAThreshold_);
 
     // *************************************************
@@ -139,8 +149,7 @@ namespace flashgg {
 
 	if( goodJets.size() < 2 ) continue;
 
-	cout << " found two jets" << endl;
-
+	
 	TLorentzVector jetl, jets, dijet, phol, phos, diphoton, vstar; 
 
 	phol.SetPtEtaPhiE( dipho->leadingPhoton()->pt(), dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi(), dipho->leadingPhoton()->energy() );
@@ -153,22 +162,16 @@ namespace flashgg {
 	vstar = diphoton + dijet;
 
 	float invmass = dijet.M();
-	cout << " inv mass = " << invmass << endl;	
-	if( invmass < 60 || invmass > 120 ) continue;  // go out of diphoton loop
-
-	cout << " good inv mass " << invmass << endl;
+	
+	if( invmass < dijetMassLowThreshold_ || invmass > dijetMassHighThreshold_ ) continue;  // go out of diphoton loop
 
 	diphoton.Boost( -vstar.BoostVector() );    
 	float costhetastar = -diphoton.CosTheta();  
-	if( abs(costhetastar) > 0.5 ) continue; 
+	if( abs(costhetastar) > cosThetaStarThreshold_ ) continue; 
 	
-	// at least ONE pair should pass the selection on invariant mass
-	//if( tagJetPairs.size() > 0 ) {
-	  
 	VHhadronicTag vhhadtag_obj(dipho,mvares);
-	vhhadtag_obj.setJets( goodJets[0], goodJets[1] );    // select the first pair (highest pt jets)
+	vhhadtag_obj.setJets( goodJets[0], goodJets[1] );   
 	vhhadtags->push_back( vhhadtag_obj );
-	//}
 
       }  // END OF DIPHOTON LOOP
     

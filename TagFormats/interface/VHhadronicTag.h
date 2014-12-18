@@ -11,16 +11,16 @@ namespace flashgg {
   public:
 
     VHhadronicTag();
+    VHhadronicTag(edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult);
     VHhadronicTag(edm::Ptr<DiPhotonCandidate>,edm::Ptr<DiPhotonMVAResult>);
+    VHhadronicTag* clone() const;
     ~VHhadronicTag();
     
-    //const std::pair<edm::Ptr<flashgg::Jet>,edm::Ptr<flashgg::Jet> > getJets() const { return JetPair_;}
-    const edm::Ptr<flashgg::Jet>      getLeadingJet()    { return leadingJet_; }
-    const edm::Ptr<flashgg::Jet>      getSubLeadingJet() { return subleadingJet_; }
+    const edm::Ptr<flashgg::Jet>      getLeadingJet()  const  { return leadingJet_; }
+    const edm::Ptr<flashgg::Jet>      getSubLeadingJet() const { return subleadingJet_; }
     const edm::Ptr<DiPhotonCandidate> getDiPhotonCandidate() const { return theDiPhotonCandidate_;} 
     //const edm::Ptr<DiPhotonMVAResult> getDiPhotonMVAResult() const { return theDiPhotonMVAResult_;} // doesn't work for some reason
     
-    //void setJets( std::pair<edm::Ptr<flashgg::Jet>,edm::Ptr<flashgg::Jet> > JetPair ) { JetPair_ = JetPair; }
     void setJets( edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet> );
   
   private:
