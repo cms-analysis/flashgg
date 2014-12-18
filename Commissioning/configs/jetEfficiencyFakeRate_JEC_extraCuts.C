@@ -1,5 +1,5 @@
 {
-	TFile *_file0 = TFile::Open("jetValidationCollection_ggH_JEC.root");//Open File
+	TFile *_file0 = TFile::Open("jetValidationCollection_ggH_JEC_small.root");//Open File
 	//TFile *_file0 = TFile::Open("/afs/cern.ch/work/s/sethzenz/public/72x_jetValidationCollection_PU40bx50.root");//Open File
 	//TFile *_file0 = TFile::Open("/afs/cern.ch/work/s/sethzenz/public/jetValidationCollection_70x_GluGluToHgg_PU20bx25.root");//Open File
 
@@ -9,7 +9,9 @@ int color=0;
 	std::string jetColList[5]={"PF","PFCHS0","PFCHSLeg","PUPPI0","PUPPILeg"};
 	std::string etaList[5]={"Inner","Ears","Outer"};
 	std::string ptList[4]={"lowest","low","mid","high"};
-	TCut extraCut="legacyEqZeroth==1 && nDiphotons>1";
+	//TCut extraCut="legacyEqZeroth==1 && nDiphotons>1";
+	TCut extraCut="!(photonMatch==1 && GenPhotonPt/bestPt > 0.5 && photondRmin < 0.2)";
+	TCut numCut="passesPUJetID>0";
 	std::cout << extraCut.GetName() << std::endl;
 
 
@@ -55,7 +57,7 @@ int color=0;
 	TTree *genJetTree50[3]= (TTree*)flashggJetValidationTreeMakerPUPPI0->Get("genJetTree_PUPPI0");
 	TTree *genJetTree50[4]= (TTree*)flashggJetValidationTreeMakerPUPPILeg->Get("genJetTree_PUPPILeg");
 
-	TFile *_file1 = TFile::Open("jetValidationCollection_ggH_JEC.root");//Open File
+	TFile *_file1 = TFile::Open("jetValidationCollection_ggH_JEC_small.root");//Open File
 	//TFile *_file1 = TFile::Open("/afs/cern.ch/work/s/sethzenz/public/72x_jetValidationCollection_PU20bx25.root");//Open File
 	//TFile *_file1 = TFile::Open("/afs/cern.ch/work/s/sethzenz/public/jetValidationCollection_72xMiniAOD_GluGluToHgg_PU20bx25.root");//Open File
 	TTree *jetTree25[0] = (TTree*)flashggJetValidationTreeMaker->Get("jetTree_PF");
@@ -163,7 +165,7 @@ dummy7->SetLineColor(kViolet);
 			//	TCut cutString = new TCut(cutStringText);
 
 			//ETA plots (fake rates)
-			jetTree50[treeLoop]->Draw("eta>>htemp(50,-5,5)",extraCut && bestPtCut && cutStringsBestPt[cutLoop] && !genMatch); 
+			jetTree50[treeLoop]->Draw("eta>>htemp(50,-5,5)",numCut && extraCut && bestPtCut && cutStringsBestPt[cutLoop] && !genMatch); 
 			TH1F *htemp = (TH1F*)gPad->GetPrimitive("htemp");
 			TH1F *num = (TH1F*)htemp->Clone("num");
 			num->SetTitle(("fake rate "+ cutStringsPtText[cutLoop] + " "+ jetColList[treeLoop] ).c_str());
@@ -271,7 +273,7 @@ dummy7->SetLineColor(kViolet);
 			c->cd();
 			}
 
-			jetTree25[treeLoop]->Draw("eta>>htemp(50,-5,5)",extraCut && bestPtCut && cutStringsBestPt[cutLoop] && !genMatch); 
+			jetTree25[treeLoop]->Draw("eta>>htemp(50,-5,5)",numCut && extraCut && bestPtCut && cutStringsBestPt[cutLoop] && !genMatch); 
 			TH1F *htemp = (TH1F*)gPad->GetPrimitive("htemp");
 			TH1F *num = (TH1F*)htemp->Clone("num");
 			num->SetTitle(("fake rate "+ cutStringsPtText[cutLoop] + " "+ jetColList[treeLoop] ).c_str());
@@ -402,7 +404,7 @@ dummy7->SetLineColor(kViolet);
 			////	std::cout << "DEBUG 9 "<< std::endl;
 			if(cutLoop!=3){
 			// PT plots (fake rates)
-			jetTree50[treeLoop]->Draw("bestPt>>htemp(50,0,250)", extraCut && bestPtCut && cutStringsEta[cutLoop] && !genMatch); 
+			jetTree50[treeLoop]->Draw("bestPt>>htemp(50,0,250)", numCut && extraCut && bestPtCut && cutStringsEta[cutLoop] && !genMatch); 
 			TH1F *htemp = (TH1F*)gPad->GetPrimitive("htemp");
 			TH1F *num = (TH1F*)htemp->Clone("num");
 			num->SetTitle(("fake rate "+ cutStringsEtaText[cutLoop] + " "+ jetColList[treeLoop] ).c_str());
@@ -487,7 +489,7 @@ dummy7->SetLineColor(kViolet);
 			}
 			c->cd();
 			}
-			jetTree25[treeLoop]->Draw("bestPt>>htemp(50,0,250)",extraCut && ptCut && cutStringsEta[cutLoop] && !genMatch); 
+			jetTree25[treeLoop]->Draw("bestPt>>htemp(50,0,250)", numCut && extraCut && ptCut && cutStringsEta[cutLoop] && !genMatch); 
 			TH1F *htemp = (TH1F*)gPad->GetPrimitive("htemp");
 			TH1F *num = (TH1F*)htemp->Clone("num");
 			num->SetTitle(("fake rate "+ cutStringsEtaText[cutLoop]).c_str());
@@ -585,7 +587,7 @@ dummy7->SetLineColor(kViolet);
 			}
 
 			// Eta Plots (eff)
-			genJetTree50[treeLoop]->Draw("eta>>htemp(50,-5,5)",extraCut && ptCut && cutStringsPt[cutLoop] && recoMatch); 
+			genJetTree50[treeLoop]->Draw("eta>>htemp(50,-5,5)",numCut && extraCut && ptCut && cutStringsPt[cutLoop] && recoMatch); 
 			TH1F *htemp = (TH1F*)gPad->GetPrimitive("htemp");
 			TH1F *num = (TH1F*)htemp->Clone("num");
 			num->SetTitle(("efficiency "+ cutStringsPtText[cutLoop] + " "+ jetColList[treeLoop] ).c_str());
@@ -694,7 +696,7 @@ dummy7->SetLineColor(kViolet);
 			}
 		//	graph50->SetLineColor(kRed);
 
-			genJetTree25[treeLoop]->Draw("eta>>htemp(50,-5,5)",extraCut && ptCut && cutStringsPt[cutLoop] && recoMatch); 
+			genJetTree25[treeLoop]->Draw("eta>>htemp(50,-5,5)", numCut && extraCut && ptCut && cutStringsPt[cutLoop] && recoMatch); 
 			TH1F *htemp = (TH1F*)gPad->GetPrimitive("htemp");
 			TH1F *num = (TH1F*)htemp->Clone("num");
 			num->SetTitle(("efficiency "+ cutStringsPtText[cutLoop]).c_str());
@@ -817,7 +819,7 @@ dummy7->SetLineColor(kViolet);
 
 			if(cutLoop!=3){
 			// PT Plots (eff)
-			genJetTree50[treeLoop]->Draw("pt>>htemp(50,0,250)",extraCut && ptCut && cutStringsEta[cutLoop] && recoMatch); 
+			genJetTree50[treeLoop]->Draw("pt>>htemp(50,0,250)",numCut && extraCut && ptCut && cutStringsEta[cutLoop] && recoMatch); 
 			TH1F *htemp = (TH1F*)gPad->GetPrimitive("htemp");
 			TH1F *num = (TH1F*)htemp->Clone("num");
 			num->SetTitle(("efficiency "+ cutStringsEtaText[cutLoop] + " "+ jetColList[treeLoop] ).c_str());
@@ -903,7 +905,7 @@ dummy7->SetLineColor(kViolet);
 			}
 		//	graph50->SetLineColor(kRed);
 
-			genJetTree25[treeLoop]->Draw("pt>>htemp(50,0,250)",extraCut && ptCut && cutStringsEta[cutLoop] && recoMatch); 
+			genJetTree25[treeLoop]->Draw("pt>>htemp(50,0,250)",numCut && extraCut && ptCut && cutStringsEta[cutLoop] && recoMatch); 
 			TH1F *htemp = (TH1F*)gPad->GetPrimitive("htemp");
 			TH1F *num = (TH1F*)htemp->Clone("num");
 			num->SetTitle(("efficiency "+ cutStringsEtaText[cutLoop]).c_str());

@@ -537,14 +537,14 @@ eInfo.legacyEqZeroth = legacyEqZeroth;
       }
     }
 
-    genJetTree->Fill();
-  }
+		genJetTree->Fill();
+	}
 
-  eventTree->Fill();
-  event_number++;
+	eventTree->Fill();
+	event_number++;
 }
 
-void 
+	void 
 JetValidationTreeMaker::beginJob()
 {
   // +++ trees 
@@ -630,23 +630,24 @@ JetValidationTreeMaker::beginJob()
   
 }
 
-	void JetValidationTreeMaker::endJob() 
-	{
+void JetValidationTreeMaker::endJob() 
+{
 
-	}
+}
 
 void JetValidationTreeMaker::initEventStructure() 
 {
 
 }
 
-	void JetValidationTreeMaker::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
-		// The following says we do not know what parameters are allowed so do no validation
-		// Please change this to state exactly what you do use, even if it is no parameters
-		edm::ParameterSetDescription desc;
-		desc.setUnknown();
-		descriptions.addDefault(desc);
-	}
 
-	typedef JetValidationTreeMaker FlashggJetValidationTreeMaker;
-	DEFINE_FWK_MODULE(FlashggJetValidationTreeMaker);
+void JetValidationTreeMaker::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+	// The following says we do not know what parameters are allowed so do no validation
+	// Please change this to state exactly what you do use, even if it is no parameters
+	edm::ParameterSetDescription desc;
+	desc.setUnknown();
+	descriptions.addDefault(desc);
+}
+
+typedef JetValidationTreeMaker FlashggJetValidationTreeMaker;
+DEFINE_FWK_MODULE(FlashggJetValidationTreeMaker);
