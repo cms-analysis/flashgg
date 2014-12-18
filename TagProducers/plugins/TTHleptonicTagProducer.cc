@@ -207,8 +207,10 @@ namespace flashgg {
 		double idmva2 = 0.;
 
 		vector<int> numMuonJetsdR;
+		vector<int> numElectronJetsdR;
 		bool muonJets = false;
-
+		bool ElectronJets = false;
+	
 		for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoIndex++ )
 		{
 
@@ -250,7 +252,9 @@ namespace flashgg {
 			if (!hasGoodElec && !hasGoodMuons) continue;
 
 			numMuonJetsdR.clear();
+			numElectronJetsdR.clear();
 			muonJets = false;
+			ElectronJets = false;
 
 		if (hasGoodMuons){
 
@@ -383,7 +387,7 @@ namespace flashgg {
 					}
 					
 				}//end of jets loop 
-
+				numElectronJetsdR.push_back(deltaRElectronJetcount);
 				tagElectrons.push_back(Electron);
 	
 			}//end of electron loop
@@ -397,7 +401,13 @@ namespace flashgg {
 				if (check >= deltaRMuonJetcountThreshold_) {muonJets = true;}
 			}
 
-			if(tagBJets.size() >= bjetsNumberThreshold_ && tagJets.size() >= jetsNumberThreshold_ && photonSelection && ((tagMuons.size()>0 && muonJets) || tagElectrons.size()>0) )
+			for (unsigned num = 0; num<numElectronJetsdR.size(); num++ ) 
+			{
+				int check = numElectronJetsdR.at(num);
+				if (check >= deltaRElectronJetcountThreshold_) {ElectronJets = true;}
+			}
+			
+			if(tagBJets.size() >= bjetsNumberThreshold_ && tagJets.size() >= jetsNumberThreshold_ && photonSelection && ((tagMuons.size()>0 && muonJets) || (tagElectrons.size()>0 && ElectronJets)) )
 			{
 				tthltags_obj.setJets(tagJets);
 				tthltags_obj.setBJets(tagBJets);
