@@ -21,6 +21,7 @@ namespace flashgg {
     Jet(const pat::Jet &);
     ~Jet();
     void setPuJetId(const edm::Ptr<reco::Vertex> vtx, const PileupJetIdentifier &);
+    bool hasPuJetId(const edm::Ptr<reco::Vertex> vtx) const;
     bool passesPuJetId(const edm::Ptr<reco::Vertex> vtx, PileupJetIdentifier::Id level = PileupJetIdentifier::kLoose) const;
     float RMS(const edm::Ptr<reco::Vertex> vtx) const;
     float betaStar(const edm::Ptr<reco::Vertex> vtx) const;
