@@ -217,11 +217,11 @@ namespace flashgg {
     double ReturnValue = 0;
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
 
-      if(fabs(pho->superCluster()->eta()<1.5)) { 
-	if (perp<=15.0) {
-	  //Pixel Barrel
-	  ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
-	} else if  (perp>15 && perp<=60.0) {
+    if(fabs(pho->superCluster()->eta())<1.5) { 
+      if(perp<=15.0){
+	//Pixel Barrel
+	ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
+      }else if(perp>15 && perp<=60.0) {
 	  //Tracker Inner Barrel
 	ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
       }else{
@@ -377,7 +377,6 @@ namespace flashgg {
                                                       ) {
 
 
-
     vlogsumpt2_.clear();
     vptbal_.clear();
     vptasym_.clear();
@@ -418,6 +417,8 @@ namespace flashgg {
     std::vector<float> vpull_conv;
     std::vector<float> vnConv;
     std::vector<float> vmva_value;
+    std::vector<unsigned int> vmva_sortedindex;
+
     std::vector<edm::Ptr<reco::Vertex> >  vVtxPtr;
    
     for (vertex_index = 0 ; vertex_index < vtxs.size() ; vertex_index++) {
@@ -540,7 +541,6 @@ namespace flashgg {
 	vnConv_.push_back(vnConv[sorter[jj].first]);
 	vmva_value_.push_back(vmva_value[sorter[jj].first]);
 	vVtxPtr_.push_back(vVtxPtr[sorter[jj].first]);
-
       }
       
     }
@@ -581,7 +581,6 @@ namespace flashgg {
     dipho.setVMVA(vmva_value_);
     dipho.setVVtxPtr(vVtxPtr_);
     dipho.setVMVASortedIndex(vmva_sortedindex_);
-
     dipho.setVtxProbMVA(vtxprobmva_);
 
   } 

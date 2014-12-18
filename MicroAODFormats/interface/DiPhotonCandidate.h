@@ -68,7 +68,6 @@ namespace flashgg {
     int getMVASortedIndex(unsigned int iVtx) const  { return iVtx<vmva_sortedindex_.size()?vmva_sortedindex_.at(iVtx):-1; } 
     edm::Ptr<reco::Vertex> getVertexPtr(unsigned int iVtx) const  { return iVtx< vVtxPtr_.size()?vVtxPtr_.at(iVtx):edm::Ptr<reco::Vertex>(); }
     
-
   private:
 
     edm::Ptr<reco::Vertex> vertex_;

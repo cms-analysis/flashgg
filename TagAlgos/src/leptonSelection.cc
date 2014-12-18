@@ -70,6 +70,10 @@ namespace flashgg {
 
 			Ptr<flashgg::Electron> Electron = ElectronPointers[ElectronIndex];
 
+			//int phi = Electron->superCluster()->phi();
+
+			//std::cout << "phi" << phi << std::endl;
+
 			Ptr<reco::Vertex> Electron_vtx = ChooseElectronVertex(Electron,vertexPointers);
 
 			if(Electron->pt()<ElectronPtThreshold)continue;
@@ -92,7 +96,7 @@ namespace flashgg {
 		unsigned int min_dz_vtx = -1;
 		for(unsigned int vtxi=0; vtxi<vertices.size();vtxi++){
 
-			Ptr<reco::Vertex> vtx = vertices[vtxi];	
+			Ptr<reco::Vertex> vtx = vertices[vtxi];
 
 			if(vtx_dz > elec->gsfTrack()->dz(vtx->position())){
 
