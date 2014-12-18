@@ -62,7 +62,7 @@ process.p = cms.Path((process.flashggDiPhotonMVA)*
                      (process.flashggVBFDiPhoDiJetMVA)* # Needs to happen after VBF MVA and DiPho MVA
                      
                      # Tag producers, once written, can run in parallel, so they go in here with +
-                     (process.flashggUntaggedCategory+process.flashggVBFTag+process.flashggTTHleptonicTag+process.flashggTTHhadronicTag+process.flashggVHlooseTag+process.flashggVHtightTag+process.flashggVHhadronicTag)*
+                     (process.flashggUntaggedCategory+process.flashggVBFTag+process.flashggTTHleptonicTag+process.flashggTTHhadronicTag+process.flashggVHlooseTag+process.flashggVHtightTag)*
                      process.flashggTagSorter*
                      process.flashggTagTester
                     )

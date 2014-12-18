@@ -19,18 +19,22 @@ void Jet::setPuJetId(const edm::Ptr<reco::Vertex> vtx, const PileupJetIdentifier
   puJetId_.insert(std::make_pair(vtx,min_id));
 }
 
+bool Jet::hasPuJetId(const edm::Ptr<reco::Vertex> vtx) const {
+  return (puJetId_.count(vtx) > 0);
+}
+
 bool Jet::passesPuJetId(const edm::Ptr<reco::Vertex> vtx, PileupJetIdentifier::Id level) const {
-  assert (puJetId_.count(vtx));
+  assert (hasPuJetId(vtx));
   return PileupJetIdentifier::passJetId(puJetId_.at(vtx).idFlag,level);
 }
 
 float Jet::RMS(const edm::Ptr<reco::Vertex> vtx) const {
-  assert (puJetId_.count(vtx));
+  assert (hasPuJetId(vtx));
   return puJetId_.at(vtx).RMS;
 }
 
 float Jet::betaStar(const edm::Ptr<reco::Vertex> vtx) const {
-  assert (puJetId_.count(vtx));
+  assert (hasPuJetId(vtx));
   return puJetId_.at(vtx).betaStar;
 }
 
