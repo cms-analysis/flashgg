@@ -65,10 +65,17 @@ The `--mkPilot` option will create an additional crab3 configuration that can be
 You can now lanch the microAOD production.
 
 ```
-cd <microAODCampaginName>
+cd <microAODCampaignName>
 echo crabConfig_*.py | xargs -n 1 crab sub
 ## or using GNU parallel 
 ## parallel 'crab sub {}' ::: crabConfig_*.py
+```
+
+To check status of all jobs:
+
+```
+cd <microAODCampaignName>
+echo crab_* | xargs -n 1 crab status
 ```
 
 ## Specific production campaigns
@@ -79,7 +86,7 @@ Exact instructions used, after setting up the area with the given tag, doing cms
 
 ```
 cd $CMSSW_BASE/src/flashgg/MetaData/work
-./prepareCrabJobs.py -C HggPhys14 -U 5 -s campaigns/Phys14_samples.json -V Phys14MicroAODV0 -p ../../MicroAODProducers/test/simple_Producer_test.py
+./prepareCrabJobs.py -C HggPhys14 -U 5 -s campaigns/Phys14_samples.json -V Phys14MicroAODV1 -p ../../MicroAODProducers/test/simple_Producer_test.py
 cd HggPhys14
 echo crabConfig_*.py | xargs -n 1 crab sub
 ```
