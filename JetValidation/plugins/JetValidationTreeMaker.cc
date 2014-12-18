@@ -43,8 +43,8 @@ struct eventInfo {
   float genVertexZ;
   float zerothVertexZ;
   float diphotonVertexZ;
-  int   legacyEqZeroth;
-  int   nDiphotons;
+  int legacyEqZeroth;
+  int nDiphotons;
   
   unsigned int nJet;
   unsigned int nPV;
@@ -85,11 +85,11 @@ struct GenJetInfo {
   int   recoJetMatch ;
   float recoJetEta   ;
   float dR   ;
-  int   legacyEqZeroth;
-  int   nDiphotons;
+  int legacyEqZeroth;
+  int nDiphotons;
   float PUJetID_betaStar;
   float PUJetID_rms;
-  int   passesPUJetID;
+  int passesPUJetID;
   
 
   int   photonMatch;
@@ -114,9 +114,9 @@ struct jetInfo {
   float phi;
   float PUJetID_betaStar;
   float PUJetID_rms;
-  int   passesPUJetID;
-  int   legacyEqZeroth;
-  int   nDiphotons;
+  int passesPUJetID;
+  int legacyEqZeroth;
+  int nDiphotons;
   
   int   npart_0 ;    // number of particles at pt>0
   int   npart_5 ;    // number of particles at pt>5
@@ -242,6 +242,9 @@ JetValidationTreeMaker::~JetValidationTreeMaker()
 void
 JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
+
+
+  //std::cout <<" DEBUG 0"<<std::endl;
   
   Handle<View<reco::Vertex> > primaryVertices;
   iEvent.getByToken(vertexToken_,primaryVertices);
@@ -275,7 +278,6 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
       legacyEqZeroth =1;
     }
   }
-  
   eInfo.nDiphotons = nDiphotons;
   eInfo.legacyEqZeroth = legacyEqZeroth;
   
@@ -325,7 +327,8 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
   
   std::map<unsigned int, jetInfo> recojetmap;
   for (unsigned int jdz = 0 ; jdz < jetsDzPointers.size() ; jdz++) {
-    jInfo.photondRmin = 999.;
+    
+		jInfo.photondRmin = 999.;
     if( photonJet_id.find(jdz) != photonJet_id.end()){
       GenPhotonInfo tmp_info = photonJet_id.find(jdz)->second; // call find ones 
       jInfo.photondRmin  = tmp_info.DRmin;
@@ -351,6 +354,7 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
       jInfo.bestPt      = jetsDzPointers[jdz]->pt() ;
     }
     
+    //std::cout <<" DEBUG 4c"<<std::endl;
     if( jetsDzPointers[jdz]->genJet()){
       jInfo.genJetMatch           = 1;
       jInfo.genJetPt              = jetsDzPointers[jdz]->genJet()->pt();
@@ -374,7 +378,6 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
       jInfo.genQuarkMatch           = 0;
       jInfo.genQuarkPdgId           = -9999;
     }
-    
     jInfo.energy           = jetsDzPointers[jdz]->energy() ;
     jInfo.mass             = jetsDzPointers[jdz]->mass() ;
     jInfo.eta              = jetsDzPointers[jdz]->eta();
@@ -425,7 +428,8 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
     jInfo.nphoton_10 = 0; //
     jInfo.nphoton_20 = 0; //
     // loop over consitutuants
-    
+
+    //std::cout <<" DEBUG 5"<<std::endl;
     for (unsigned int i = 0 ; i < jetsDzPointers[jdz]->getJetConstituentsQuick().size() ; i++){
       
       const reco::Candidate* icand = jetsDzPointers[jdz]->getJetConstituentsQuick()[i];
@@ -457,8 +461,8 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
     jetTree->Fill();
   }
   
-  for( unsigned int genLoop =0 ; genLoop < genJets.size(); genLoop++){
-    
+	for( unsigned int genLoop =0 ; genLoop < genJets.size(); genLoop++){
+
     genJetInfo.recoJetPt       = -999.;
     genJetInfo.recoJetRawPt    = -999.;
     genJetInfo.recoJetBestPt   = -999.;
@@ -482,7 +486,7 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
     float dphi;
     float dr  ;
     
-    for (unsigned int recoLoop=0; recoLoop <  jetsDzPointers.size(); recoLoop++){
+		for (unsigned int recoLoop=0; recoLoop <  jetsDzPointers.size(); recoLoop++){
       
       if(jetsDzPointers[recoLoop]->pt() < 5) continue;
       
@@ -501,7 +505,9 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	genJetInfo.GenPhotonPt     = tmpjetinfo.GenPhotonPt;//recojetmap[recojetmap].GenPhotonPt  ;
 	genJetInfo.photondRmin     = tmpjetinfo.photondRmin;//recojetmap[recojetmap].photondRmin  ;
 	
-	if(!(jetCollectionName.find("PPI")>1 && jetCollectionName.find("PPI")<jetCollectionName.size())){
+
+
+	if(jetCollectionName.find("PPI")>1 && jetCollectionName.find("PPI")<jetCollectionName.size()){
 	  genJetInfo.recoJetBestPt   =  jetsDzPointers[recoLoop]->correctedJet("Uncorrected").pt() ;
 	  if( (diPhotonPointers.size() > 0 ) && 
 	      ((jetCollectionName.find("Leg")>1 && jetCollectionName.find("Leg")<jetCollectionName.size())||(jetCollectionName.length()   <3 )) ) { // for PF
@@ -541,7 +547,6 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
 void 
 JetValidationTreeMaker::beginJob()
 {
-  
   // +++ trees 
   std::string type("eventTree_");
   type += jetCollectionName;

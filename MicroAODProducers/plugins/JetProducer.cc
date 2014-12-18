@@ -82,16 +82,6 @@ namespace flashgg {
 	Ptr<DiPhotonCandidate> diPhoton = diPhotonPointers[j];
 	Ptr<reco::Vertex> vtx = diPhoton->getVertex();
 
-	if (!fjet.hasPuJetId(vtx)) {
-	  // Method written just for MiniAOD --> MicroAOD
-	  PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),vtx,*vertexCandidateMap,true);
-	  fjet.setPuJetId(vtx,lPUJetId);
-	}
-      }
-      if (pvPointers.size() > 0 && !fjet.hasPuJetId(pvPointers[0])) {
-	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),pvPointers[0],*vertexCandidateMap,true);
-	fjet.setPuJetId(pvPointers[0],lPUJetId);
-	// Method written just for MiniAOD --> MicroAOD
 	if(!usePuppi){
 	if (!fjet.hasPuJetId(vtx)) {
 	  // Method written just for MiniAOD --> MicroAOD
