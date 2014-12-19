@@ -11,16 +11,18 @@ process.source = cms.Source("PoolSource",
                             skipEvents=cms.untracked.uint32(0)
                             )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 10000 ) )
-
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 10) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 )
 
-process.load("flashgg/MicroAODProducers/flashggVertexMaps_cfi")
-process.flashggVertexMapUnique.MaxAllowedDz = 0.2
-process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
-process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
-process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
-process.load("flashgg/MicroAODProducers/flashggElectrons_cfi")
+#process.load("flashgg/MicroAODProducers/flashggVertexMaps_cfi")
+#process.flashggVertexMapUnique.MaxAllowedDz = 0.2
+#process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
+#process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
+#process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
+#process.load("flashgg/MicroAODProducers/flashggElectrons_cfi")
+
+process.load("flashgg/MicroAODProducers/flashggMicroAODSequence_cff")
+
 
 ##-------------------- Import the JEC services -----------------------
 process.load('JetMETCorrections.Configuration.DefaultJEC_cff')
@@ -432,9 +434,9 @@ process.flashggJetsPUPPILeg = cms.EDProducer('FlashggJetProducer',
 		)
 ##Tag stuff
 process.load("flashgg/TagProducers/flashggDiPhotonMVA_cfi")
-process.load("flashgg/TagProducers/flashggVBFMVA_cfi")
-process.load("flashgg/TagProducers/flashggVBFDiPhoDiJetMVA_cfi")
-process.load("flashgg/TagProducers/flashggTags_cfi")
+process.load("flashgg/TagProducers/flashggVBFMVA_cff")
+#process.load("flashgg/TagProducers/flashggVBFDiPhoDiJetMVA_cff")
+process.load("flashgg/TagProducers/flashggTags_cff")
 
 process.flashggTagSorter = cms.EDProducer('FlashggTagSorter',
 		DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
