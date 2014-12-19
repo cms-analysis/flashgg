@@ -119,23 +119,24 @@ dummy7->SetLineColor(kViolet);
 			TLegend *legu = new TLegend(0.1,0.8,0.48,0.9);
 			legu->AddEntry(dummy0 ,"pf","LEP");
 			legu->AddEntry(dummy1 ,"f0dz02","LEP");
-			legu->AddEntry(dummy2 ,"f0dz05","LEP");
-			legu->AddEntry(dummy3 ,"f0dz1","LEP");
-			legu->AddEntry(dummy4 ,"f0dz2","LEP");
+	//		legu->AddEntry(dummy2 ,"f0dz05","LEP");
+	//		legu->AddEntry(dummy3 ,"f0dz1","LEP");
+	//		legu->AddEntry(dummy4 ,"f0dz2","LEP");
 			legu->AddEntry(dummy5 ,"fpv1","LEP");
 			legu->AddEntry(dummy6 ,"fpv2","LEP");
-			legu->AddEntry(dummy7 ,"fpv3","LEP");
+	//		legu->AddEntry(dummy7 ,"fpv3","LEP");
 			TLegend *legd = new TLegend(0.1,0.1,0.48,0.2);
 			legd->AddEntry(dummy0 ,"pf","LEP");
 			legd->AddEntry(dummy1 ,"f0dz02","LEP");
-			legd->AddEntry(dummy2 ,"f0dz05","LEP");
-			legd->AddEntry(dummy3 ,"f0dz1","LEP");
-			legd->AddEntry(dummy4 ,"f0dz2","LEP");
+	//		legd->AddEntry(dummy2 ,"f0dz05","LEP");
+	//		legd->AddEntry(dummy3 ,"f0dz1","LEP");
+	//		legd->AddEntry(dummy4 ,"f0dz2","LEP");
 			legd->AddEntry(dummy5 ,"fpv1","LEP");
 			legd->AddEntry(dummy6 ,"fpv2","LEP");
-			legd->AddEntry(dummy7 ,"fpv3","LEP");
+	//		legd->AddEntry(dummy7 ,"fpv3","LEP");
 
 	for(unsigned int treeLoop=0; treeLoop<8 ; treeLoop++){
+	if(treeLoop ==2 || treeLoop ==3 || treeLoop == 4 || treeLoop > 6) continue;
 		for(unsigned int cutLoop =0 ; cutLoop < 3; cutLoop++){
 
 
