@@ -207,8 +207,10 @@ namespace flashgg {
 		double idmva2 = 0.;
 
 		vector<int> numMuonJetsdR;
+		vector<int> numElectronJetsdR;
 		bool muonJets = false;
-
+		bool ElectronJets = false;
+	
 		for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoIndex++ )
 		{
 
@@ -250,7 +252,9 @@ namespace flashgg {
 			if (!hasGoodElec && !hasGoodMuons) continue;
 
 			numMuonJetsdR.clear();
+			numElectronJetsdR.clear();
 			muonJets = false;
+			ElectronJets = false;
 
 		if (hasGoodMuons){
 
@@ -304,17 +308,22 @@ namespace flashgg {
 		}
 
 		if (hasGoodElec){
+			
+			bool photon_veto = false;
+		
+			std::vector<const flashgg::Photon*> photons;
+
+			photons.push_back(dipho->leadingPhoton()); 		
+			photons.push_back(dipho->subLeadingPhoton()); 		
+		
 
 			for(unsigned int ElectronIndex = 0; ElectronIndex < goodElectrons.size(); ElectronIndex++)
 			{
 
 				Ptr<Electron> Electron = goodElectrons[ElectronIndex];
 				TLorentzVector elec_p4;
-				elec_p4.SetXYZT(Electron->px(),Electron->py(),Electron->pz(),Electron->energy()); 
-				TLorentzVector leadp;
-				leadp.SetXYZT(dipho->leadingPhoton()->px(),dipho->leadingPhoton()->py(),dipho->leadingPhoton()->pz(),dipho->leadingPhoton()->energy());	
-				TLorentzVector subleadp;
-				subleadp.SetXYZT(dipho->subLeadingPhoton()->px(),dipho->subLeadingPhoton()->py(),dipho->subLeadingPhoton()->pz(),dipho->subLeadingPhoton()->energy());
+				elec_p4.SetXYZT(Electron->px(),Electron->py(),Electron->pz(),Electron->energy());
+			
 				float phi = Electron->superCluster()->phi();	
 				float theta = (2*atan(exp(-Electron->superCluster()->eta())));
 				float energy = Electron->ecalEnergy();
@@ -326,28 +335,32 @@ namespace flashgg {
 
 				elec_superClusterVect.SetXYZT(px,py,pz,energy);
 
-				if( leadp.DeltaR(elec_superClusterVect)< 1.)continue;
-				if( subleadp.DeltaR(elec_superClusterVect)< 1.)continue;
-				if(!(&(*dipho->leadingPhoton()->superCluster())==&(*Electron->superCluster())) || !(&(*dipho->leadingPhoton()->superCluster())==&(*Electron->superCluster())) ){	
+				for(unsigned int phoIndex = 0; phoIndex < photons.size(); phoIndex++ ){
+ 
+				TLorentzVector p;
+				
+				p.SetXYZT(photons.at(phoIndex)->px(),photons.at(phoIndex)->py(),photons.at(phoIndex)->pz(),photons.at(phoIndex)->energy());	
+				if( p.DeltaR(elec_superClusterVect)< 1.)continue;
+
+				if(&(*photons.at(phoIndex)->superCluster())==&(*Electron->superCluster())){	
+
 					float TrkElecSCDeltaR = sqrt(Electron->deltaEtaSuperClusterTrackAtVtx()*Electron->deltaEtaSuperClusterTrackAtVtx()+Electron->deltaPhiSuperClusterTrackAtVtx()*Electron->deltaPhiSuperClusterTrackAtVtx());
 
 					if(TrkElecSCDeltaR < DeltaRTrkElec_)continue;
 				}
-				if(!(&(*dipho->subLeadingPhoton()->superCluster())==&(*Electron->superCluster())) || !(&(*dipho->subLeadingPhoton()->superCluster())==&(*Electron->superCluster())) ){	
-					float TrkElecSCDeltaR = sqrt(Electron->deltaEtaSuperClusterTrackAtVtx()*Electron->deltaEtaSuperClusterTrackAtVtx()+Electron->deltaPhiSuperClusterTrackAtVtx()*Electron->deltaPhiSuperClusterTrackAtVtx());
 
-					if(TrkElecSCDeltaR < DeltaRTrkElec_)continue;
+				if( p.DeltaR(elec_p4) <= 1. )continue;
+				TLorentzVector elep = elec_p4+p;
+				if( fabs(elep.M()-91.9)<=10)continue;
+		
+				photon_veto = true;
+			
 				}
-
-				if( leadp.DeltaR(elec_p4) <= 1. )continue;
-				if( subleadp.DeltaR(elec_p4) <= 1. )continue;
-				TLorentzVector eleleadp = elec_p4+leadp;
-				TLorentzVector elesubleadp = elec_p4+subleadp;
-				if( fabs(eleleadp.M()-91.9)<=10)continue;
-				if( fabs(elesubleadp.M()-91.1)<=10)continue;
 
 				int deltaRElectronJetcount = 0;
 				double bDiscriminatorValue = -999.;
+
+				if(!photon_veto)continue;
 
 				for (unsigned int candIndex_outer =0; candIndex_outer < jetPointers.size() ; candIndex_outer++)
 				{
@@ -383,7 +396,7 @@ namespace flashgg {
 					}
 					
 				}//end of jets loop 
-
+				numElectronJetsdR.push_back(deltaRElectronJetcount);
 				tagElectrons.push_back(Electron);
 	
 			}//end of electron loop
@@ -397,7 +410,13 @@ namespace flashgg {
 				if (check >= deltaRMuonJetcountThreshold_) {muonJets = true;}
 			}
 
-			if(tagBJets.size() >= bjetsNumberThreshold_ && tagJets.size() >= jetsNumberThreshold_ && photonSelection && ((tagMuons.size()>0 && muonJets) || tagElectrons.size()>0) )
+			for (unsigned num = 0; num<numElectronJetsdR.size(); num++ ) 
+			{
+				int check = numElectronJetsdR.at(num);
+				if (check >= deltaRElectronJetcountThreshold_) {ElectronJets = true;}
+			}
+			
+			if(tagBJets.size() >= bjetsNumberThreshold_ && tagJets.size() >= jetsNumberThreshold_ && photonSelection && ((tagMuons.size()>0 && muonJets) || (tagElectrons.size()>0 && ElectronJets)) )
 			{
 				tthltags_obj.setJets(tagJets);
 				tthltags_obj.setBJets(tagBJets);
@@ -408,7 +427,7 @@ namespace flashgg {
 					
 			}
 
-			//diPho loop end
+			//diPho loop end !
 		}
 		evt.put(tthltags);
 	}
