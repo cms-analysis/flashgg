@@ -43,7 +43,6 @@ namespace flashgg {
     vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
     pileupJetIdParameters_(iConfig.getParameter<ParameterSet>("PileupJetIdParameters")),
     minJetPt_(iConfig.getUntrackedParameter<double>("MinJetPt",0.))
-		usePuppi(iConfig.getUntrackedParameter<bool>("UsePuppi",false))
   {
     pileupJetIdAlgo_.reset(new PileupJetIdAlgo(pileupJetIdParameters_));
 
