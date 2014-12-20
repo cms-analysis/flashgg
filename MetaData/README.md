@@ -65,7 +65,7 @@ The `--mkPilot` option will create an additional crab3 configuration that can be
 You can now lanch the microAOD production.
 
 ```
-cd <microAODCampaignName>
+cd <microAODCampaginName>
 echo crabConfig_*.py | xargs -n 1 crab sub
 ## or using GNU parallel 
 ## parallel 'crab sub {}' ::: crabConfig_*.py
