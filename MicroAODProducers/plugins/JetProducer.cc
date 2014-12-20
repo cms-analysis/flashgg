@@ -41,7 +41,8 @@ namespace flashgg {
     diPhotonToken_(consumes<View<DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag>("DiPhotonTag",InputTag("flashggDiPhotons")))),
     vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
     vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
-    pileupJetIdParameters_(iConfig.getParameter<ParameterSet>("PileupJetIdParameters")),
+		pileupJetIdParameters_(iConfig.getParameter<ParameterSet>("PileupJetIdParameters")),
+    usePuppi(iConfig.getUntrackedParameter<bool>("UsePuppi",false)),
     minJetPt_(iConfig.getUntrackedParameter<double>("MinJetPt",0.))
   {
     pileupJetIdAlgo_.reset(new PileupJetIdAlgo(pileupJetIdParameters_));
