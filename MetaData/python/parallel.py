@@ -64,9 +64,12 @@ class Wrap:
         self.func = func
         self.args = args
         
-    def __call__(self):
+    def __call__(self,interactive=False):
         ret = self.func( *self.args )
-        self.queue.put( ret  )
+        if interactive:
+            return ret
+        else:
+            self.queue.put( ret  )
 
     
 class Parallel:
@@ -83,8 +86,10 @@ class Parallel:
             self.running = Queue(ncpu)
         
             
-    def run(self,cmd,args):
+    def run(self,cmd,args,interactive=False):
         wrap = Wrap( self, (cmd,args), self.returned )
+        if interactive:
+            return wrap(interactive=True)
 	self.njobs += 1
         thread = Thread(None,wrap)
         thread.start()
@@ -112,3 +117,15 @@ class Parallel:
         self.running.get()
         self.running.task_done()
         return cmd,args,ret
+
+    def wait(self):
+        returns = []
+        for i in range(self.njobs):
+            print "Finished jobs: %d. Total jobs: %d" % (i, self.njobs)
+            job, jobargs, ret = self.returned.get()
+            if type(job) == str:
+                print "finished: %s %s" % ( job, " ".join(jobargs) )
+                for line in ret[1].split("\n"):
+                    print line
+            returns.append(ret)
+        return returns
