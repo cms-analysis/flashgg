@@ -5,12 +5,23 @@ from das_cli import get_data as das_query
 from pprint import pprint
 
 import os,json,fcntl
+from parallel  import Parallel
+from threading import Semaphore
 
 # -------------------------------------------------------------------------------
 def shell_expand(string):
     if string:
         return os.path.expanduser( os.path.expandvars(string) )
     return None
+
+
+# -------------------------------------------------------------------------------
+def ask_user(question,responses=["y","n"]):
+    reply = None
+    while not reply in responses:
+        print "%s [%s]" % ( question, "".join(responses) ), 
+        reply = raw_input()
+    return reply
 
 # -------------------------------------------------------------------------------
 class SamplesManager(object):
@@ -19,6 +30,7 @@ class SamplesManager(object):
                  catalog,
                  cross_sections=["$CMSSW_BASE/src/flashgg/MetaData/data/cross_sections.json"],
                  dbs_instance="prod/phys03",
+                 queue=None,
                  ):
         """
         Constructur:
@@ -31,11 +43,18 @@ class SamplesManager(object):
 
         for xsecFile in cross_sections:
             fname = shell_expand(xsecFile)
-            print fname
             self.cross_sections_.update( json.loads( open(fname).read() ) )
             
         self.catalog_ = shell_expand(catalog)
 
+        self.parallel_ = None
+        self.sem_ = Semaphore()
+
+        print "Will use the following datasets catalog:"
+        print self.catalog_
+        
+        self.queue_ = queue
+        
     def importFromDAS(self,datasets):
         """
         Import datasets from DAS to the catalog.
@@ -43,21 +62,27 @@ class SamplesManager(object):
         """
         catalog = self.readCatalog()
         
+        print "Importing from das %s" % datasets
         if "*" in datasets:
             response = das_query("https://cmsweb.cern.ch","dataset dataset=%s | grep dataset.name" % datasets, 0, 0, False, self.dbs_instance_)
         
         datasets=[]
         for d in response["data"]:
             datasets.append( d["dataset"][0]["name"] )
-    
+        print "Datasets to import"
+        print "\n".join(datasets)
+            
         for dsetName in datasets:
+            print "Importing %s" % dsetName
             files = self.getFilesFomDAS(dsetName)
             if dsetName in catalog:
                 catalog[ dsetName ]["files"]  = files
             else:
                 catalog[ dsetName ] = { "files" : files }
             
+        print "Writing catalog"
         self.writeCatalog(catalog)
+        print "Done"
 
     def getFilesFomDAS(self,dsetName):
         """
@@ -96,21 +121,104 @@ class SamplesManager(object):
         """
         pass
 
-    def checkDatasetFiles(self,dsetName):
+    def checkAllDatasets(self):
+        """
+        Look for corrupted files in the whole catalog.
+        """
+        catalog = self.readCatalog()
+        
+        self.parallel_ = Parallel(100,self.queue_)
+
+        print "Checking all datasets"
+        for dataset in catalog.keys():            
+            self.checkDatasetFiles(dataset,catalog)
+        
+        outcomes = self.parallel_.wait()
+        for dsetName,ifile,fName,ret,out in outcomes:
+            info = catalog[dsetName]["files"][ifile]
+            if info["name"] != fName:
+                print "Inconsistent outcome ", info["name"], dsetName,ifile,fName,ret,out
+            else:
+                if ret != 0:
+                    info["bad"] = True
+                else:
+                    extraInfo = json.loads(out)
+                    for key,val in extraInfo.iteritems():
+                        info[key] = val
+        print "Writing catalog"
+        self.writeCatalog(catalog)
+        print "Done"
+    
+    def checkDatasetFiles(self,dsetName,catalog=None):
         """
         Look for corrupted files in dataset.
         @dsetName: dataset name
         Note: not implemented
         """
-        pass
+        writeCatalog = False
+        if not catalog:
+            catalog = self.readCatalog()
+            writeCatalog = True
+        
+        wait = False
+        if not self.parallel_:
+            self.parallel_ = Parallel(16,self.queue_)
+            wait = True
 
-    def checkFile(self,fileName):
+        print "Checking dataset",dsetName
+        info = catalog[dsetName]
+        files = info["files"]
+
+        for ifile,finfo in enumerate(files):            
+            name = finfo["name"]
+            self.parallel_.run(SamplesManager.checkFile,[self,name,dsetName,ifile])
+
+        if wait:
+            self.parallel_.wait()            
+            self.parallel_ = None
+        if writeCatalog:
+            self.writeCatalog(catalog)
+
+    def reviewCatalog(self):
+        datasets,catalog = self.getAllDatasets()
+
+        primaries = {}
+        keepAll = False
+        for d in datasets:
+            if not keepAll:
+                reply = ask_user("keep this dataset (yes/no/all)?\n %s\n" % d, ["y","n","a"])
+                if reply == "n":
+                    catalog.pop(d)
+                    continue
+                if reply == "a": 
+                    keepAll = True
+                    
+            primary = d.split("/")[1]
+            if not primary in primaries:
+                primaries[ primary ] = []
+                
+            primaries[ primary ].append(d)
+            
+        for name,val in primaries.iteritems():
+            if len(val) == 1: continue
+            reply = ask_user("More than one sample for %s:\n %s\nKeep all?" % (name,"\n ".join(val)))
+            if reply == "n":
+                for d in val:
+                    reply = ask_user("keep this dataset?\n %s\n" % d)
+                    if reply == "n":
+                        catalog.pop(d)
+           
+        self.writeCatalog(catalog)
+
+    def checkFile(self,fileName,dsetName,ifile):
         """
         Check if file is valid.
         @fileName: file name
-        Note: not implemented
         """
-        pass
+        fName = "root://eoscms//eos/cms%s" % fileName
+        ret,out = self.parallel_.run("fggCheckFile.py",[fName,"2>/dev/null"],interactive=True)[2]
+        
+        return dsetName,ifile,fileName,ret,out
     
     
     def lockCatalog(self):
@@ -177,6 +285,8 @@ class SamplesManager(object):
                 if prim in self.cross_sections_:
                     xsec = self.cross_sections_[prim]
                 for fil in info["files"]:
+                    if fil.get("bad",False):
+                        continue
                     nev, name = fil["nevents"], fil["name"]
                     totEvents += nev
                     allFiles.append(name)
@@ -195,36 +305,103 @@ class SamplesManager(object):
 
         return found,xsec,totEvents,files
 
-if __name__ == "__main__":
+    def getAllDatasets(self):
+        catalog = self.readCatalog()
+        datasets = sorted(catalog.keys())
+        return datasets,catalog
     
-    parser = OptionParser(option_list=[
-            make_option("-V","--flashggVersion",
-                        action="store", dest="flashggVersion", type="string",
-                        default="*",
-                        help="FLASHgg version to use. default: %default", 
-                        ),
-            make_option("-C","--campaign",
-                        dest="campaign",action="store",type="string",
-                        default="CSA14",
-                        help="production campaign. default: %default",
-                        ),
-            make_option("--load",  # special option to load whole configuaration from JSON
-                        action="callback",callback=Load(),dest="__opt__",
-                        type="string",
-                        help="load JSON file with configuration",metavar="CONFIG.json"
-                        ),
-            make_option("-v","--verbose",
-                        action="store_true", dest="verbose",
-                        default=False,
-                        help="default: %default",)
-            ]
-                          )
+    def clearCatalog(self):
+        self.writeCatalog({})
+    
+# -------------------------------------------------------------------------------
+class SamplesManagerCli(SamplesManager):
+    
+    def __init__(self,*args,**kwargs):
+
+        commands = [ "",
+                     "import   imports datasets from DBS to catalog", 
+                     "list     lists datasets in catalog", 
+                     "review   review catalog to remove datasets", 
+                     "check    check files in datasets for errors and mark bad files"
+                     ]
         
-    # parse the command line
-    (options, args) = parser.parse_args()
+        parser = OptionParser(
+            usage="""%%prog [options] <command> [[command2] [command3] ..]
+
+Command line utility to handle FLASHgg samples catalog.
+
+Commands:
+%s
+            """ % "\n   ".join(commands),
+            option_list=[
+                make_option("-V","--flashggVersion",
+                            action="store", dest="flashggVersion", type="string",
+                            default="*",
+                            help="FLASHgg version to use (only relevant when importing). default: %default", 
+                            ),
+                make_option("-C","--campaign",
+                            dest="campaign",action="store",type="string",
+                            default="",
+                            help="production campaign. default: %default",
+                            ),
+                make_option("-m","--metaDataSrc",
+                            dest="metaDataSrc",action="store",type="string",
+                            default="flashgg",
+                            help="MetaData package to use. default: %default",
+                            ),
+                make_option("--load",  # special option to load whole configuaration from JSON
+                            action="callback",callback=Load(),dest="__opt__",
+                            type="string",
+                            help="load JSON file with configuration",metavar="CONFIG.json"
+                            ),
+                make_option("-q","--queue",
+                            dest="queue",action="store",type="string",
+                            default=None,
+                            help="Run jobs in batch using specified queue. default: %default",
+                            ),
+                make_option("-v","--verbose",
+                            action="store_true", dest="verbose",
+                            default=False,
+                            help="default: %default",)
+                ]
+                              )
+        
+        # parse the command line
+        (self.options, self.args) = parser.parse_args()
+        
     
-    mn = SamplesManager("$CMSSW_BASE/src/flashgg/MetaData/data/%s/datasets.json" % options.campaign)
+    def __call__(self):
+        
+        (options,args) = (self.options,self.args)
     
-    pprint( mn.cross_sections_ )
-    mn.importFromDAS("/*/*%s-%s*/USER" % (options.campaign,options.flashggVersion) )
+        self.mn = SamplesManager("$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % (options.metaDataSrc,options.campaign),
+                                 )
+        
+        ## pprint( mn.cross_sections_ )
+        if len(args) == 0:
+            args = ["import"]
+        
+        for a in args:
+            method = getattr(self,"run_%s" % a,None)
+            if not method:
+                sys.exit("Unkown command %s" % a)
+            method()
+                
+    def run_import(self):
+        self.mn.importFromDAS("/*/*%s-%s*/USER" % (self.options.campaign,self.options.flashggVersion) )
     
+    def run_check(self):
+        self.mn.checkAllDatasets()
+    
+    def run_list(self):
+        print
+        print "Datasets in catalog:"
+        datasets = self.mn.getAllDatasets()[0]
+        for d in datasets:
+            print d
+            
+    def run_clear(self):
+        self.mn.clearCatalog()
+    
+    def run_review(self):
+        self.mn.reviewCatalog()

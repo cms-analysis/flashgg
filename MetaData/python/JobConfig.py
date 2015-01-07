@@ -14,7 +14,7 @@ class JobConfig(object):
         self.crossSections=kwargs.get("crossSections",["$CMSSW_BASE/src/flashgg/MetaData/data/cross_sections.json"])
 
         self.options = VarParsing.VarParsing("analysis")
-        self.options.setDefault ('maxEvents',100)
+        ## self.options.setDefault ('maxEvents',100)
         self.options.register ('dataset',
                        "", # default value
                        VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -50,6 +50,11 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.int,          # string, int, or float
                                "jobId")
+        self.options.register ('dryRun',
+                       False, # default value
+                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                       VarParsing.VarParsing.varType.bool,          # string, int, or float
+                       "dryRun")
         
         self.parsed = False
 
@@ -69,8 +74,35 @@ class JobConfig(object):
         self.parse()
 
         isFwlite = False
+        hasOutput = False
+        hasTFile = False
         if hasattr(process,"fwliteInput"):
             isFwlite = True
+        if not isFwlite:
+            hasOutput = hasattr(process,"out")            
+            hasTFile = hasattr(process,"TFileService")
+        
+        if hasOutput and hasTFile:
+            tfile = self.outputFile.replace(".root","_histos.root")
+        else:
+            tfile = self.outputFile
+            
+        if self.dryRun:
+            import sys
+            if self.dataset:
+                name,xsec,totEvents,files = self.dataset
+                if len(files) != 0:
+                    if isFwlite:
+                        print "hadd:%s" % self.outputFile
+                    else:
+                        if hasOutput:
+                            print "edm:%s" % self.outputFile
+                        if hasTFile:
+                            print "hadd:%s" % tfile
+                    sys.exit(0)
+            sys.exit(1)
+            
+
 
         if self.dataset:
             name,xsec,totEvents,files = self.dataset
@@ -94,15 +126,12 @@ class JobConfig(object):
         ## full framework
         else:
             process.maxEvents.input = self.maxEvents
-            hasOutput = hasattr(process,"out")            
-            hasTFile = hasattr(process,"TFileService")
             
             if hasOutput:
                 process.out.fileName = self.outputFile
-                self.outputFile = self.outputFile.replace(".root","_histos.root")
 
             if hasTFile:
-                process.TFileService.fileName = self.outputFile
+                process.TFileService.fileName = tfile
         
             
     # parse command line and do post-processing
