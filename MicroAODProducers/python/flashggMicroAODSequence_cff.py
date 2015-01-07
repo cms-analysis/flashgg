@@ -1,5 +1,5 @@
 import FWCore.ParameterSet.Config as cms
-from flashgg.MicroAODProducers.flashggVertexMaps_cff import flashggVertexMapUnique,flashggVertexMapNonUnique
+from flashgg.MicroAODProducers.flashggTkVtxMap_cfi import flashggVertexMapUnique,flashggVertexMapNonUnique
 from flashgg.MicroAODProducers.flashggPhotons_cfi import flashggPhotons
 from flashgg.MicroAODProducers.flashggDiPhotons_cfi import flashggDiPhotons
 from flashgg.MicroAODProducers.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
