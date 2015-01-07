@@ -45,9 +45,11 @@ namespace flashgg {
 
   {
     vector<double> default_boundaries;
-    default_boundaries.push_back(0.21);
-    default_boundaries.push_back(0.6);
-    default_boundaries.push_back(0.82);//these have just been read off fig 8 in legacy paper
+    default_boundaries.push_back(0.52);
+    default_boundaries.push_back(0.85);
+    default_boundaries.push_back(0.915);
+    default_boundaries.push_back(1);// from here
+		//https://github.com/h2gglobe/h2gglobe/blob/master/AnalysisScripts/massfac_mva_binned/massfactorizedmvaanalysis.dat#L32
 
     // getUntrackedParameter<vector<float> > has no library, so we use double transiently
     boundaries = iConfig.getUntrackedParameter<vector<double > >("Boundaries",default_boundaries);
