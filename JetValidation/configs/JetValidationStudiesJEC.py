@@ -43,7 +43,7 @@ addJetCollection(
 		trackSource = cms.InputTag('unpackedTracksAndVertices'), 
 		pvSource = cms.InputTag('unpackedTracksAndVertices'), 
 		jetCorrections = ('AK4PF', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute']), 'None'),
-		btagDiscriminators = [      'combinedSecondaryVertexBJetTags'     ]
+		btagDiscriminators = [      'combinedInclusiveSecondaryVertexV2BJetTags'     ]
 		,algo= 'AK', rParam = 0.4
 		)
 #adjust MC matching
@@ -86,7 +86,7 @@ addJetCollection(
 		trackSource = cms.InputTag('unpackedTracksAndVertices'), 
 		pvSource = cms.InputTag('unpackedTracksAndVertices'), 
 		jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute']), 'None'),
-		btagDiscriminators = [      'combinedSecondaryVertexBJetTags'     ]
+		btagDiscriminators = [      'combinedInclusiveSecondaryVertexV2BJetTags'     ]
 		,algo= 'AK', rParam = 0.4
 		)
 #adjust MC matching
@@ -122,7 +122,7 @@ addJetCollection(
 		trackSource = cms.InputTag('unpackedTracksAndVertices'), 
 		pvSource = cms.InputTag('unpackedTracksAndVertices'), 
 		jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute']), 'None'),
-		btagDiscriminators = [      'combinedSecondaryVertexBJetTags'     ]
+		btagDiscriminators = [      'combinedInclusiveSecondaryVertexV2BJetTags'     ]
 		,algo= 'AK', rParam = 0.4
 		)
 #adjust MC matching
@@ -210,7 +210,7 @@ addJetCollection(
 		trackSource = cms.InputTag('unpackedTracksAndVertices'), 
 		pvSource = cms.InputTag('unpackedTracksAndVertices'), 
 		jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute']), 'None'),
-		btagDiscriminators = [      'combinedSecondaryVertexBJetTags'     ]
+		btagDiscriminators = [      'combinedInclusiveSecondaryVertexV2BJetTags'     ]
 		,algo= 'AK', rParam = 0.4
 		)
 #adjust MC matching
@@ -277,7 +277,7 @@ addJetCollection(
 		trackSource = cms.InputTag('unpackedTracksAndVertices'), 
 		pvSource = cms.InputTag('unpackedTracksAndVertices'), 
 		jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute']), 'None'),
-		btagDiscriminators = [      'combinedSecondaryVertexBJetTags'     ]
+		btagDiscriminators = [      'combinedInclusiveSecondaryVertexV2BJetTags'     ]
 		,algo= 'AK', rParam = 0.4
 		)
 #adjust MC matching
