@@ -49,6 +49,8 @@ namespace flashgg {
     double jetsNumberThreshold_;
     double jetPtThreshold_;
     double jetEtaThreshold_;
+    double dRJetToPhoLThreshold_;
+    double dRJetToPhoSThreshold_;
     double dijetMassLowThreshold_;
     double dijetMassHighThreshold_;
     double cosThetaStarThreshold_;
@@ -72,6 +74,8 @@ namespace flashgg {
     double default_jetsNumberThreshold_         = 2;
     double default_jetPtThreshold_              = 40.;
     double default_jetEtaThreshold_             = 2.4;
+    double default_dRJetToPhoLThreshold_        = 0.5;
+    double default_dRJetToPhoSThreshold_        = 0.5;
     double default_dijetMassLowThreshold_       = 60;
     double default_dijetMassHighThreshold_      = 120; 
     double default_cosThetaStarThreshold_       = 0.5;
@@ -84,6 +88,8 @@ namespace flashgg {
     jetsNumberThreshold_         = iConfig.getUntrackedParameter<double>("jetsNumberThreshold",default_jetsNumberThreshold_);
     jetPtThreshold_              = iConfig.getUntrackedParameter<double>("jetPtThreshold",default_jetPtThreshold_);
     jetEtaThreshold_             = iConfig.getUntrackedParameter<double>("jetEtaThreshold",default_jetEtaThreshold_);
+    dRJetToPhoLThreshold_        = iConfig.getUntrackedParameter<double>("dRJetToPhoLThreshold",default_dRJetToPhoLThreshold_);
+    dRJetToPhoSThreshold_        = iConfig.getUntrackedParameter<double>("dRJetToPhoSThreshold",default_dRJetToPhoSThreshold_);   
     dijetMassLowThreshold_       = iConfig.getUntrackedParameter<double>("dijetMassLowThreshold",default_dijetMassLowThreshold_); 
     dijetMassHighThreshold_      = iConfig.getUntrackedParameter<double>("dijetMassHighThreshold",default_dijetMassHighThreshold_); 
     cosThetaStarThreshold_       = iConfig.getUntrackedParameter<double>("cosThetaStarThreshold",default_cosThetaStarThreshold_);
@@ -131,16 +137,30 @@ namespace flashgg {
 	idmva2 = dipho->subLeadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
 	if(idmva1 <= phoIdMVAThreshold_|| idmva2 <= phoIdMVAThreshold_) continue;
 
-	if(mvares->result < diphoMVAThreshold_) continue;
+	if(mvares->result < diphoMVAThreshold_) continue; 
 
 	edm::PtrVector<flashgg::Jet> goodJets;
 
 	for( size_t ijet = 0; ijet < jetPointers.size(); ijet++ ) {
 
 	  edm::Ptr<flashgg::Jet> thejet = jetPointers[ijet];
+
 	  if (!thejet->passesPuJetId(dipho))                        continue;
 	  if( fabs(thejet->eta()) > jetEtaThreshold_ )              continue; 
 	  if( thejet->pt() < jetPtThreshold_ )                      continue;
+
+	  float dPhiJetToPhoL = fabs( dipho->leadingPhoton()->phi() - thejet->phi() ) < TMath::Pi()? 
+	    fabs( dipho->leadingPhoton()->phi()- thejet->phi() ):2*TMath::Pi() - fabs( dipho->leadingPhoton()->phi()- thejet->phi() );
+	  float dEtaJetToPhoL = dipho->leadingPhoton()->eta() - thejet->eta();
+	  float dRJetToPhoL   = sqrt( dEtaJetToPhoL*dEtaJetToPhoL + dPhiJetToPhoL*dPhiJetToPhoL );
+
+	  float dPhiJetToPhoS = fabs( dipho->subLeadingPhoton()->phi() - thejet->phi() ) < TMath::Pi()? 
+	    fabs( dipho->subLeadingPhoton()->phi()- thejet->phi() ):2*TMath::Pi() - fabs( dipho->subLeadingPhoton()->phi()- thejet->phi() );
+	  float dEtaJetToPhoS = dipho->subLeadingPhoton()->eta() - thejet->eta();
+	  float dRJetToPhoS   = sqrt( dEtaJetToPhoS*dEtaJetToPhoS + dPhiJetToPhoS*dPhiJetToPhoS );
+	  
+	  if( abs(dRJetToPhoL) < dRJetToPhoLThreshold_ )            continue;
+	  if( abs(dRJetToPhoS) < dRJetToPhoSThreshold_ )            continue;
 
 	  goodJets.push_back( thejet );
 	} 
@@ -148,7 +168,6 @@ namespace flashgg {
 	// *********************************************************************
 
 	if( goodJets.size() < 2 ) continue;
-
 	
 	TLorentzVector jetl, jets, dijet, phol, phos, diphoton, vstar; 
 
