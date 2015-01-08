@@ -50,11 +50,13 @@ namespace flashgg {
     edm::EDGetTokenT<EcalRecHitCollection> ecalHitEEToken_;
     edm::EDGetTokenT<EcalRecHitCollection> ecalHitESToken_;
     edm::InputTag rhoFixedGrid_;
-
+	  
+	  
     PhotonIdUtils phoTools_;
     edm::FileInPath phoIdMVAweightfileEB_, phoIdMVAweightfileEE_;
     //    edm::FileInPath regressionWeightFile_;
-
+    bool useNonZsLazyTools_, recomputeNonZsClusterShapes_;
+    
     /// EGEnergyCorrectorSemiParm corV8_;      
     bool doOverlapRemovalForIsolation_, useVtx0ForNeutralIso_;
     std::vector<CaloIsoParams> extraCaloIsolations_;
@@ -93,6 +95,9 @@ namespace flashgg {
 	    extraCaloIsolations_.push_back(p);
     }
     
+    useNonZsLazyTools_ = iConfig.getParameter<bool>("recomputeNonZsClusterShapes");
+    recomputeNonZsClusterShapes_ = iConfig.getParameter<bool>("recomputeNonZsClusterShapes");
+
     produces<vector<flashgg::Photon> >();
   }
 
@@ -129,6 +134,9 @@ namespace flashgg {
     //// // this is hacky and dangerous
     //// const reco::VertexCollection* orig_collection = static_cast<const reco::VertexCollection*>(vertices->product());
 
+    EcalClusterLazyTools zsLazyTool(evt, iSetup, ecalHitEBToken_, ecalHitEEToken_);        
+    noZS::EcalClusterLazyTools noZsLazyTool(evt, iSetup, ecalHitEBToken_, ecalHitEEToken_);        
+
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
 
       Ptr<pat::Photon> pp = photonPointers[i];
@@ -150,15 +158,15 @@ namespace flashgg {
       }
       if (best < INT_MAX) {
 	fg.setMatchedGenPhoton( genPhotonPointers[best] );
+	phoTools_.determineMatchType(fg);
       }
+      
       //      if (fg.hasMatchedGenPhoton()) {
       //	std::cout << " fg.pt()=" << fg.pt() << " fg.matchedGenPhoton()->pt()=" << fg.matchedGenPhoton()->pt() << std::endl;
       //      } else {
       //	std::cout << " fg.pt()=" << fg.pt() << " has no match" << std::endl;
       //      }
-
-      EcalClusterLazyTools lazyTool(evt, iSetup, ecalHitEBToken_, ecalHitEEToken_);        
-
+      
       /// double ecor, sigeovere, mean, sigma, alpha1, n1, alpha2, n2, pdfval;
       /// 
       /// corV8_.CorrectedEnergyWithErrorV8(*pp, *orig_collection, *rhoHandle, lazyTool, iSetup,ecor, sigeovere, mean, sigma, alpha1, n1, alpha2, n2, pdfval);
@@ -167,29 +175,15 @@ namespace flashgg {
       /// fg.updateEnergy("regression",ecor);
       /// fg.setSigEOverE(sigeovere);
       
-      const reco::CaloClusterPtr  seed_clu = pp->superCluster()->seed();
-      const reco::SuperClusterRef super_clu= pp->superCluster();
-
-      std::vector<float> viCov;
-      viCov.clear();
-      viCov = lazyTool.localCovariances(*seed_clu);
+      if( recomputeNonZsClusterShapes_ ) {
+	phoTools_.recomputeNonZsClusterShapes(fg,noZsLazyTool);
+      }
+      if( useNonZsLazyTools_ ) {
+	phoTools_.fillExtraClusterShapes(fg,noZsLazyTool);
+      } else {
+	phoTools_.fillExtraClusterShapes(fg,zsLazyTool);
+      }
       
-      fg.setSipip(viCov[2]);
-      fg.setSieip(viCov[1]);
-      fg.setE2nd(lazyTool.e2nd(*seed_clu));
-      fg.setE2x5right(lazyTool.e2x5Right(*seed_clu));
-      fg.setE2x5left(lazyTool.e2x5Left(*seed_clu));
-      fg.setE2x5top(lazyTool.e2x5Top(*seed_clu));
-      fg.setE2x5bottom(lazyTool.e2x5Bottom(*seed_clu));
-      fg.setE2x5max(lazyTool.e2x5Max(*seed_clu));
-      fg.setEright(lazyTool.e2x5Right(*seed_clu));
-      fg.setEleft(lazyTool.e2x5Left(*seed_clu));
-      fg.setEtop(lazyTool.e2x5Top(*seed_clu));
-      fg.setEbottom(lazyTool.e2x5Bottom(*seed_clu));
-      fg.setE1x3(lazyTool.e1x3(*seed_clu));
-      fg.setS4(lazyTool.e2x2(*seed_clu)/pp->e5x5());
-      fg.setESEffSigmaRR(lazyTool.eseffsirir(*super_clu));
-
       phoTools_.removeOverlappingCandidates(doOverlapRemovalForIsolation_);
       
       std::map<edm::Ptr<reco::Vertex>,float> isomap04 = phoTools_.pfIsoChgWrtAllVtx(pp, vertexPointers, vtxToCandMap, 0.4, 0.02, 0.02, 0.1);

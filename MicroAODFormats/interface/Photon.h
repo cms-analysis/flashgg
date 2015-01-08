@@ -15,6 +15,7 @@ namespace flashgg {
     ~Photon();
     virtual Photon * clone() const;
 
+    enum mcMatch_t { kUnkown=0, kPrompt, kFake  };
     
     // someone had the insane idea of shadowing these methods in the pat::Photon....
     float egChargedHadronIso() const {return  reco::Photon::chargedHadronIso();}
@@ -86,8 +87,12 @@ namespace flashgg {
     float const getPhoIdMvaDWrtVtx( const edm::Ptr<reco::Vertex>& vtx, bool lazy=false ) const { return findVertexFloat(vtx,phoIdMvaD_,lazy); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
 
     void setMatchedGenPhoton ( const edm::Ptr<pat::PackedGenParticle> pgp) { addUserCand("matchedGenPhoton",pgp); };
-    const pat::PackedGenParticle* const matchedGenPhoton() const { return (const pat::PackedGenParticle*)(userCand("matchedGenPhoton").get()); };
+    const pat::PackedGenParticle* const matchedGenPhoton() const { return dynamic_cast<const pat::PackedGenParticle*>(userCand("matchedGenPhoton").get()); };
     bool hasMatchedGenPhoton () const { return hasUserCand("matchedGenPhoton"); };
+
+    void setGenMatchType (mcMatch_t typ) { addUserInt("genMatchType",(int)typ); };
+    mcMatch_t  genMatchType() const { return (hasUserInt("genMatchType") ? (mcMatch_t)userInt("genMatchType") : kUnkown); };
+    bool  hasGenMatchType () const { return hasUserInt("genMatchType"); };
 
   private:
     float const findVertexFloat(const edm::Ptr<reco::Vertex>& vtx, const std::map<edm::Ptr<reco::Vertex>,float> & mp, bool lazy) const;
