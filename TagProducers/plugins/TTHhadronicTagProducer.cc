@@ -101,7 +101,7 @@ namespace flashgg {
 				jetcount++;
 				JetVect.push_back(thejet);
 
-				bDiscriminatorValue = thejet->bDiscriminator("combinedSecondaryVertexBJetTags");
+				bDiscriminatorValue = thejet->bDiscriminator("combinedInclusiveSecondaryVertexV2BJetTags");
 
 				if(bDiscriminatorValue>0.244)njets_btagloose++; 
 				if(bDiscriminatorValue>0.679){ 

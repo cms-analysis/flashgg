@@ -118,7 +118,7 @@ namespace flashgg {
 		default_bDiscriminator_.push_back(0.244);
 		default_bDiscriminator_.push_back(0.679);
 
-		string default_bTag_ = "combinedSecondaryVertexBJetTags";
+		string default_bTag_ = "combinedInclusiveSecondaryVertexV2BJetTags";
 		double default_muPFIsoSumRelThreshold_ = 0.2;
 		double default_deltaRMuonJetcountThreshold_ = 2.;
 		//		double default_PuIDCutoffThreshold_ = 0.8;
