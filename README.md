@@ -14,7 +14,12 @@ flashgg
 2. Get extra files for Pileup Jet Identification (must be done *before* getting flashgg):
  ```
  git cms-addpkg RecoJets/JetProducers
- git cms-merge-topic -u musella:pileupjetid-for-flashgg-72x
+ git cms-merge-topic -u sethzenz:pileupjetid-for-flashgg-72x
+ ```
+
+3. Extra stuff for PUPPI jets:
+ ```
+ git clone -b flashgg https://github.com/ldcorpe/Dummy
  ```
 
 3. Get weight counter from musella until it is integrated in the release
