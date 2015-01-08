@@ -111,3 +111,23 @@ flashggVHtightTag = cms.EDProducer("FlashggVHtightTagProducer",
 					HighEtaPhoThreshold = cms.untracked.double(2.5)
 				    )
 
+
+flashggVHhadronicTag = cms.EDProducer("FlashggVHhadronicTagProducer",
+                                      DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+                                      JetTag = cms.untracked.InputTag('flashggJets'),
+                                      leadPhoOverMassThreshold = cms.untracked.double(0.375),
+                                      subleadPhoOverMassThreshold = cms.untracked.double(0.25),
+                                      MVAThreshold = cms.untracked.double(-0.6),
+                                      jetsNumberThreshold = cms.untracked.double(2.),
+                                      jetPtThreshold = cms.untracked.double(40.),
+                                      jetEtaThreshold= cms.untracked.double(2.4),
+                                      dRJetToPhoLThreshold = cms.untracked.double(0.5),
+                                      dRJetToPhoSThreshold = cms.untracked.double(0.5),
+                                      dijetMassLowThreshold = cms.untracked.double(60.),
+                                      dijetMassHighThreshold = cms.untracked.double(120.),
+                                      cosThetaStarThreshold = cms.untracked.double(0.5),
+                                      PhoMVAThreshold = cms.untracked.double(-0.2)
+                                      )
+
+
+
