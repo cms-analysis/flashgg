@@ -153,7 +153,8 @@ class JobsManager(object):
                         poutfiles[name][1].append( outfiles[-1] )
                     print " %d jobs actually submitted" % dnjobs                
                 else:
-                    ret,out = parallel.run("python %s" % pyjob,args+["dryRun=1"],interactive=True)[2]
+                    ret,out = parallel.run("python %s" % pyjob,jobargs+["dryRun=1"],interactive=True)[2]
+                    print  out, ret
                     if ret != 0:
                         continue
                     if not options.dry_run:

@@ -5,9 +5,6 @@ class JobConfig(object):
     
     def __init__(self,*args,**kwargs):
         
-        print args
-        print kwargs
-
         super(JobConfig,self).__init__()
 
         self.metaDataSrc=kwargs.get("metaDataSrc","flashgg")
