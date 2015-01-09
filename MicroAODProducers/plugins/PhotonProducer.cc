@@ -11,6 +11,7 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "flashgg/MicroAODFormats/interface/Photon.h"
+#include "flashgg/MicroAODFormats/interface/GenPhotonExtra.h"
 #include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
 #include "flashgg/MicroAODAlgos/interface/PhotonIdUtils.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
@@ -43,9 +44,10 @@ namespace flashgg {
     EDGetTokenT<View<reco::Vertex> > vertexToken_;   
     EDGetTokenT<flashgg::VertexCandidateMap> vertexCandidateMapToken_;
 
-    EDGetTokenT<View<pat::PackedGenParticle> > genPhotonToken_;
+    EDGetTokenT<vector<flashgg::GenPhotonExtra> > genPhotonToken_;
     double maxGenDeltaR_;
-
+    bool copyExtraGenInfo_;
+    
     edm::EDGetTokenT<EcalRecHitCollection> ecalHitEBToken_;
     edm::EDGetTokenT<EcalRecHitCollection> ecalHitEEToken_;
     edm::EDGetTokenT<EcalRecHitCollection> ecalHitESToken_;
@@ -64,11 +66,11 @@ namespace flashgg {
 
 
   PhotonProducer::PhotonProducer(const ParameterSet & iConfig) :
-    photonToken_(consumes<View<pat::Photon> >(iConfig.getUntrackedParameter<InputTag> ("PhotonTag", InputTag("slimmedPhotons")))),
-    pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates")))),
-    vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
-    vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
-    genPhotonToken_(consumes<View<pat::PackedGenParticle> >(iConfig.getParameter<InputTag>("GenPhotonTag"))),
+    photonToken_(consumes<View<pat::Photon> >(iConfig.getParameter<InputTag> ("photonTag"))),
+    pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getParameter<InputTag> ("pfCandidatesTag"))),
+    vertexToken_(consumes<View<reco::Vertex> >(iConfig.getParameter<InputTag> ("vertexTag"))),
+    vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("vertexCandidateMapTag"))),
+    genPhotonToken_(mayConsume<vector<flashgg::GenPhotonExtra> >(iConfig.getParameter<InputTag>("genPhotonTag"))),
     ecalHitEBToken_(consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("reducedBarrelRecHitCollection"))),
     ecalHitEEToken_(consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("reducedEndcapRecHitCollection"))),
     ecalHitESToken_(consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("reducedPreshowerRecHitCollection")))
@@ -85,7 +87,8 @@ namespace flashgg {
     doOverlapRemovalForIsolation_ = iConfig.getParameter<bool>("doOverlapRemovalForIsolation");
     useVtx0ForNeutralIso_ = iConfig.getParameter<bool>("useVtx0ForNeutralIso");
 
-    maxGenDeltaR_ = iConfig.getUntrackedParameter<double>("maxGenDeltaR",0.1);
+    copyExtraGenInfo_ = iConfig.getParameter<bool>("copyExtraGenInfo");
+    maxGenDeltaR_ = iConfig.getParameter<double>("maxGenDeltaR");
     
     std::vector<ParameterSet> extraCaloIsolations = iConfig.getParameter<std::vector<ParameterSet> >("extraCaloIsolations");
     for(std::vector<ParameterSet>::iterator it=extraCaloIsolations.begin(); it!=extraCaloIsolations.end(); ++it) {
@@ -117,16 +120,16 @@ namespace flashgg {
     evt.getByToken(vertexCandidateMapToken_,vertexCandidateMap);
     Handle<double> rhoHandle;        // the old way for now...move to getbytoken?
     evt.getByLabel(rhoFixedGrid_, rhoHandle );
-    Handle<View<pat::PackedGenParticle> > genPhotons;
-    evt.getByToken(genPhotonToken_,genPhotons);
+    Handle<vector<flashgg::GenPhotonExtra> > genPhotonsHandle;
+    if( ! evt.isRealData() ) {
+      evt.getByToken(genPhotonToken_,genPhotonsHandle);
+    }
     
     const PtrVector<pat::Photon>& photonPointers = photons->ptrVector();
     const PtrVector<pat::PackedCandidate>& pfcandidatePointers = pfcandidates->ptrVector();
     const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
     const flashgg::VertexCandidateMap vtxToCandMap = *(vertexCandidateMap.product());    
     const double rhoFixedGrd = *(rhoHandle.product());
-    const PtrVector<pat::PackedGenParticle> & genPhotonPointers = genPhotons->ptrVector();
-
     const reco::Vertex * neutVtx = (useVtx0ForNeutralIso_ ? &vertices->at(0) : 0);
 
     auto_ptr<vector<flashgg::Photon> > photonColl(new vector<flashgg::Photon>);
@@ -143,29 +146,30 @@ namespace flashgg {
       flashgg::Photon fg = flashgg::Photon(*pp);
 
       // Gen matching
-      unsigned int best = INT_MAX;
-      float bestptdiff = 99e15;
-      for (unsigned int j = 0 ; j < genPhotonPointers.size() ; j++) {
-	auto gen = genPhotonPointers[j];
-	if (gen->pdgId() != 22) continue;
-	float dR = reco::deltaR(*pp,*gen);
-	if (dR > maxGenDeltaR_) continue;
-	float ptdiff = fabs(pp->pt() - gen->pt());
-	if (ptdiff < bestptdiff) {
-	  bestptdiff = ptdiff;
-	  best = j;
+      if( ! evt.isRealData() ) {
+	unsigned int best = INT_MAX;
+	float bestptdiff = 99e15;
+	const auto & genPhotons = *genPhotonsHandle;
+	for (unsigned int j = 0 ; j < genPhotons.size() ; j++) {
+	  auto gen = genPhotons[j].ptr();
+	  if (gen->pdgId() != 22) continue;
+	  float dR = reco::deltaR(*pp,*gen);
+	  if (dR > maxGenDeltaR_) continue;
+	  float ptdiff = fabs(pp->pt() - gen->pt());
+	  if (ptdiff < bestptdiff) {
+	    bestptdiff = ptdiff;
+	    best = j;
+	  }
+	}
+	if (best < INT_MAX) {
+	  auto & extra = genPhotons[best];
+	  fg.setMatchedGenPhoton(extra.ptr());
+	  fg.setGenMatchType(extra.type());
+	  if( copyExtraGenInfo_ ) {
+	    extra.copyTo(fg);
+	  }
 	}
       }
-      if (best < INT_MAX) {
-	fg.setMatchedGenPhoton( genPhotonPointers[best] );
-	phoTools_.determineMatchType(fg);
-      }
-      
-      //      if (fg.hasMatchedGenPhoton()) {
-      //	std::cout << " fg.pt()=" << fg.pt() << " fg.matchedGenPhoton()->pt()=" << fg.matchedGenPhoton()->pt() << std::endl;
-      //      } else {
-      //	std::cout << " fg.pt()=" << fg.pt() << " has no match" << std::endl;
-      //      }
       
       /// double ecor, sigeovere, mean, sigma, alpha1, n1, alpha2, n2, pdfval;
       /// 

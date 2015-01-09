@@ -384,20 +384,3 @@ void PhotonIdUtils::recomputeNonZsClusterShapes(reco::Photon & pho, const EcalRe
 	pho.full5x5_setShowerShapeVariables(showerShape);
 }
 
-void PhotonIdUtils::determineMatchType(flashgg::Photon & fg, flashgg::Photon::mcMatch_t defaultType) 
-{
-	if( ! fg.hasMatchedGenPhoton() ) { return; }
-	auto gen = fg.matchedGenPhoton();
-	auto matchType = defaultType;
-	for(size_t imom=0; imom<gen->numberOfMothers(); ++imom) {
-	  int mstat = gen->mother(imom)->status();
-	  int mpdgId = abs(gen->mother(imom)->pdgId());
-	  if( mpdgId > 0 && mpdgId <= 25 && (mstat == 3 || mstat == 23 || mstat == 22) ) {
-	    matchType = flashgg::Photon::kPrompt;
-	  }
-	  if( mstat == 2 && mpdgId != 22 ) {
-	    matchType = flashgg::Photon::kFake;
-	  }
-	}
-	fg.setGenMatchType(matchType);
-}
