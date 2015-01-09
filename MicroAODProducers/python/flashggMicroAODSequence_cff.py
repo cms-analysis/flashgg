@@ -4,9 +4,9 @@ from flashgg.MicroAODProducers.flashggPhotons_cfi import flashggPhotons
 from flashgg.MicroAODProducers.flashggDiPhotons_cfi import flashggDiPhotons
 from flashgg.MicroAODProducers.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
 from flashgg.MicroAODProducers.flashggJets_cfi import flashggJets
-from flashgg.MicroAODProducers.flashggPrunedGenParticles_cfi import flashggPrunedGenParticles
-from flashgg.MicroAODProducers.flashggGenPhotons_cfi import flashggGenPhotons
 from flashgg.MicroAODProducers.flashggElectrons_cfi import flashggElectrons
+
+from flashgg.MicroAODProducers.flashggMicroAODGenSequence_cff import *
 
 eventCount = cms.EDProducer("EventCountProducer")
 weightsCount = cms.EDProducer("WeightsCountProducer",
@@ -18,8 +18,10 @@ weightsCount = cms.EDProducer("WeightsCountProducer",
                               nbinsObsPileup=cms.int32(101),
                               )
 
-flashggMicroAODSequence = cms.Sequence((eventCount+weightsCount+flashggVertexMapUnique+flashggVertexMapNonUnique+flashggPrunedGenParticles+flashggGenPhotons+flashggElectrons)*
-                                       flashggPhotons*
-                                       flashggDiPhotons*
-                                       (flashggPreselectedDiPhotons+flashggJets)
+flashggMicroAODSequence = cms.Sequence((eventCount+weightsCount
+                                        +flashggVertexMapUnique+flashggVertexMapNonUnique+flashggElectrons
+                                        +flashggMicroAODGenSequence
+                                        )
+                                       *flashggPhotons*flashggDiPhotons
+                                       *(flashggPreselectedDiPhotons+flashggJets)
                                        )

@@ -68,8 +68,7 @@ namespace flashgg {
     
     static void recomputeNonZsClusterShapes(reco::Photon & pho, noZS::EcalClusterLazyTools &tools);
     static void recomputeNonZsClusterShapes(reco::Photon & pho, const EcalRecHitCollection* ebRecHists, const EcalRecHitCollection * eeRecHist, const CaloTopology * topology);
-    static void determineMatchType(flashgg::Photon & pho, flashgg::Photon::mcMatch_t defaultType=flashgg::Photon::kFake); // FIXME should move to some MC utils class
-    
+   
     template <class T> static void fillExtraClusterShapes(flashgg::Photon & pho, T & lazyTool) {
       const reco::CaloClusterPtr  seed_clu = pho.superCluster()->seed();
       const reco::SuperClusterRef super_clu= pho.superCluster();
