@@ -3,6 +3,9 @@
 #include "DataFormats/Math/interface/deltaR.h"
 #include "DataFormats/Candidate/interface/Candidate.h"
 
+#include "Geometry/CaloTopology/interface/CaloTopology.h"
+#include "RecoEcal/EgammaCoreTools/interface/EcalClusterTools.h"
+
 /// #include <tuple>
 
 using namespace std;
@@ -321,4 +324,80 @@ flashgg::Photon PhotonIdUtils::pho4MomCorrection(edm::Ptr<flashgg::Photon>& phot
   flashgg::Photon p4CorrPho = *photon;
   p4CorrPho.setP4(corrected_p4);
   return p4CorrPho;
+}
+
+void PhotonIdUtils::recomputeNonZsClusterShapes(reco::Photon & pho, noZS::EcalClusterLazyTools & tools )
+{
+	reco::SuperClusterRef scRef=pho.superCluster();
+	
+	float maxXtal =   tools.eMax( *(scRef->seed()) );
+	//AA
+	//Change these to consider severity level of hits
+	float e1x5    =   tools.e1x5(  *(scRef->seed()) );
+	float e2x5    =   tools.e2x5Max(  *(scRef->seed()) );
+	float e3x3    =   tools.e3x3(  *(scRef->seed()) );
+	float e5x5    =   tools.e5x5( *(scRef->seed()) );
+	std::vector<float> cov =  tools.covariances( *(scRef->seed()) );
+	std::vector<float> locCov =  tools.localCovariances( *(scRef->seed()) );
+	
+	reco::Photon::ShowerShape  showerShape;
+	showerShape.e1x5= e1x5;
+	showerShape.e2x5= e2x5;
+	showerShape.e3x3= e3x3;
+	showerShape.e5x5= e5x5;
+	showerShape.maxEnergyXtal =  maxXtal;
+	showerShape.sigmaIetaIeta =  sqrt(locCov[0]);
+	showerShape.sigmaEtaEta =  sqrt(cov[0]);
+		
+	pho.full5x5_setShowerShapeVariables(showerShape);
+	
+
+}
+
+
+void PhotonIdUtils::recomputeNonZsClusterShapes(reco::Photon & pho, const EcalRecHitCollection* ebRecHists, const EcalRecHitCollection * eeRecHist, const CaloTopology * topology)
+{
+	noZS::EcalClusterTools tools;
+		
+	reco::SuperClusterRef scRef=pho.superCluster();
+
+	int subdetId = scRef->seed()->hitsAndFractions()[0].first.subdetId();
+	const EcalRecHitCollection * hits = (subdetId == EcalBarrel ? ebRecHists : eeRecHist);
+
+	float maxXtal =   noZS::EcalClusterTools::eMax( *(scRef->seed()), &(*hits) );
+	//AA
+	//Change these to consider severity level of hits
+	float e1x5    =   noZS::EcalClusterTools::e1x5(  *(scRef->seed()), &(*hits), &(*topology));
+	float e2x5    =   noZS::EcalClusterTools::e2x5Max(  *(scRef->seed()), &(*hits), &(*topology));    
+	float e3x3    =   noZS::EcalClusterTools::e3x3(  *(scRef->seed()), &(*hits), &(*topology));
+	float e5x5    =   noZS::EcalClusterTools::e5x5( *(scRef->seed()), &(*hits), &(*topology));   
+	std::vector<float> locCov =  noZS::EcalClusterTools::localCovariances( *(scRef->seed()), &(*hits), &(*topology));
+	
+	reco::Photon::ShowerShape  showerShape;
+	showerShape.e1x5= e1x5;
+	showerShape.e2x5= e2x5;
+	showerShape.e3x3= e3x3;
+	showerShape.e5x5= e5x5;
+	showerShape.maxEnergyXtal =  maxXtal;
+	showerShape.sigmaIetaIeta =  sqrt(locCov[0]);
+		
+	pho.full5x5_setShowerShapeVariables(showerShape);
+}
+
+void PhotonIdUtils::determineMatchType(flashgg::Photon & fg, flashgg::Photon::mcMatch_t defaultType) 
+{
+	if( ! fg.hasMatchedGenPhoton() ) { return; }
+	auto gen = fg.matchedGenPhoton();
+	auto matchType = defaultType;
+	for(size_t imom=0; imom<gen->numberOfMothers(); ++imom) {
+	  int mstat = gen->mother(imom)->status();
+	  int mpdgId = abs(gen->mother(imom)->pdgId());
+	  if( mpdgId > 0 && mpdgId <= 25 && (mstat == 3 || mstat == 23 || mstat == 22) ) {
+	    matchType = flashgg::Photon::kPrompt;
+	  }
+	  if( mstat == 2 && mpdgId != 22 ) {
+	    matchType = flashgg::Photon::kFake;
+	  }
+	}
+	fg.setGenMatchType(matchType);
 }
