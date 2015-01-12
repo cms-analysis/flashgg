@@ -19,7 +19,7 @@ process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store
 
 
 
-process.load("flashgg/MicroAODProducers/flashggVertexMaps_cfi")
+process.load("flashgg/MicroAODProducers/flashggTkVtxMap_cfi")
 process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
 process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
