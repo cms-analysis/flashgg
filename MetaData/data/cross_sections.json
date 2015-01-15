@@ -1,0 +1,9 @@
+{
+        "DYJetsToLL_M-50_13TeV-madgraph-pythia8"                        : { "xs" : 4746.0                                },
+        "GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6"           : { "xs" : 17180.0,  "br" : 0.0379,   "kf" : 1.0 },
+        "GJet_Pt20to40_doubleEMEnriched_TuneZ2star_13TeV-pythia6"       : { "xs" : 145400.0, "br" : 0.001776, "kf" : 1.0 },
+        "GluGluToHToGG_M-125_13TeV-powheg-pythia6"                      : { "xs" : 43.92,    "br" : 2.28e-3              },
+        "VBF_HToGG_M-125_13TeV-powheg-pythia6"                          : { "xs" : 3.748,    "br" : 2.28e-3              },
+        "WH_ZH_HToGG_M-125_13TeV_pythia6"                               : { "xs" : 2.2496,   "br" : 2.28e-3              },
+        "TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola"              : { "xs" : 0.5608,   "br" : 2.28e-3              }
+}
