@@ -6,7 +6,7 @@ import os,json,fcntl
 from parallel  import Parallel
 from threading import Semaphore
 
-import os
+import sys
 from subprocess import call, Popen, PIPE
 from copy import copy
 import shlex
@@ -23,6 +23,15 @@ def shell_expand(string):
     if string:
         return os.path.expanduser( os.path.expandvars(string) )
     return None
+
+# -------------------------------------------------------------------------------
+def dumpCfg(options):
+    cfg = {}
+    for key,val in options.__dict__.iteritems():
+        if not key.startswith("__opt__") and key != "dumpCfg":
+            cfg[key] = val
+    return json.dumps( cfg,indent=4)
+
 
 # -------------------------------------------------------------------------------
 class JobsManager(object):
@@ -100,15 +109,23 @@ class JobsManager(object):
         outputPfx = options.output.replace(".root","")
         jobName = "runJobs"
         
-        if options.outputDir:
-            if not os.path.exists(options.outputDir):
-                os.mkdir(options.outputDir)
-            outputPfx = "%s/%s" % ( options.outputDir, outputPfx )
-            jobName   = "%s/%s" % ( options.outputDir, jobName )
-        
+        if not options.outputDir:
+            sys.exit("Please specify an output folder")
+
         if options.dumpCfg:
-            print ( dumpCfg(cfg) )
-            exit(0)
+            print ( dumpCfg(options) )
+            sys.exit(0)
+
+        if not os.path.exists(options.outputDir):
+            os.mkdir(options.outputDir)
+        outputPfx = "%s/%s" % ( options.outputDir, outputPfx )
+        jobName   = "%s/%s" % ( options.outputDir, jobName )
+        
+        args.append("processIdMap=%s/config.json" % options.outputDir)
+        options.cmdLine += " %s" % (" ".join(args))
+        with open("%s/config.json" % (options.outputDir), "w+" ) as fout:
+            fout.write( dumpCfg(options) )
+            
         
         parallel = Parallel(options.ncpu,lsfQueue=options.queue,lsfJobName=jobName)
         
@@ -154,8 +171,8 @@ class JobsManager(object):
                     print " %d jobs actually submitted" % dnjobs                
                 else:
                     ret,out = parallel.run("python %s" % pyjob,jobargs+["dryRun=1"],interactive=True)[2]
-                    print  out, ret
                     if ret != 0:
+                        print ret,out
                         continue
                     if not options.dry_run:
                         parallel.run(job,jobargs)

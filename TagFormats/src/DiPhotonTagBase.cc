@@ -16,6 +16,10 @@ DiPhotonTagBase::DiPhotonTagBase(edm::Ptr<flashgg::DiPhotonCandidate> diPho,DiPh
   dipho_ = diPho;
 }
 
+DiPhotonTagBase::~DiPhotonTagBase(){
+}
+
+
 DiPhotonTagBase* DiPhotonTagBase::clone () const {
   DiPhotonTagBase* result = new DiPhotonTagBase(dipho_,mva_result_);
   result->setCategoryNumber(category_number_);

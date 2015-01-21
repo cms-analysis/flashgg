@@ -9,7 +9,7 @@ namespace flashgg {
   class DiPhotonTagBase {
   public:
     DiPhotonTagBase();
-    virtual ~DiPhotonTagBase() {};
+    virtual ~DiPhotonTagBase();
     DiPhotonTagBase(edm::Ptr<DiPhotonCandidate>,DiPhotonMVAResult);
     DiPhotonTagBase(edm::Ptr<DiPhotonCandidate>,edm::Ptr<DiPhotonMVAResult>);
     const edm::Ptr<DiPhotonCandidate> diPhoton() const { return dipho_; }
@@ -18,10 +18,10 @@ namespace flashgg {
     void setDiPhotonIndex(int i) { diPhotonIndex_ = i; }
     float getSumPt() const { return this->diPhoton()->getSumPt() ;}
     bool operator <(const DiPhotonTagBase & b) const;
+    operator int() const { return getCategoryNumber(); }
     virtual DiPhotonTagBase* clone() const;
     void setCategoryNumber(int value) { category_number_ = value; }
     int getCategoryNumber() const { return category_number_; }
-    
 
   private:
     DiPhotonMVAResult mva_result_;
