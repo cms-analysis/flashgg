@@ -98,7 +98,9 @@ void setildStyle(){
   ildStyle->SetTitleFillColor(0);                // Changed -- JEK
   ildStyle->SetTitleFontSize(0.05); //@
   ildStyle->SetTitleBorderSize(0);
-  
+  ildStyle->SetTitleAlign(33);
+  ildStyle->SetTitleX(0.8);
+  ildStyle->SetTitleY(0.95);
   // Axis Titles
   ildStyle->SetTitleColor(1,   "xyz");
   ildStyle->SetTitleFont (42,  "xyz");
