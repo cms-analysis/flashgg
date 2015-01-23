@@ -2,7 +2,6 @@ import FWCore.ParameterSet.Config as cms
 
 microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep *_flashgg*_*_*",
-                                                     "keep *_patJetsAK4*_*_*",# keep jets
                                                      "drop *_flashggVertexMap*_*_*", 
                                                      "drop *_flashggDiPhotons_*_*", # keep preselected only
                                                      "drop *_flashggPrunedGenParticles_*_*",   

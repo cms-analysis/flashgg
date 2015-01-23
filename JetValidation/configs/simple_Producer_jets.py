@@ -458,7 +458,8 @@ from flashgg.MicroAODProducers.flashggMicroAODOutputCommands_cff import microAOD
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile.root'),
                                outputCommands = microAODDefaultOutputCommand
                                )
-process.out.outputCommands += microAODDebugOutputCommand # extra items for debugging, CURRENTLY REQUIRED
+process.out.outputCommands += microAODDebugOutputCommand# extra items for debugging
+process.out.outputCommands += ["keep *_patJetsAK4*_*_*"]
 
 process.options = cms.untracked.PSet(
     allowUnscheduled = cms.untracked.bool(True)
