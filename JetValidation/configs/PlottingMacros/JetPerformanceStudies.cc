@@ -219,7 +219,9 @@ void JetPerformanceStudies(int catbin=1, bool withPUJID=true){
   
   c_fake_pt->SaveAs(Form("plots/fakerate_cat_%i_PUJID_%i.pdf",catbin,withPUJID));
   c_fake_pt->SaveAs(Form("plots/fakerate_cat_%i_PUJID_%i.png",catbin,withPUJID));
+  
   std::cout << "      efficiency"<< std::endl;
+  
   TCanvas *c_eff_pt  = new TCanvas("c_eff_pt","",500,500);
   c_eff_pt->cd();
   count = 1;
@@ -243,7 +245,7 @@ void JetPerformanceStudies(int catbin=1, bool withPUJID=true){
 	      eff_vs_pt["PFCHSLeg"],
 	      "PF",
 	      "PFCHS0",
-	      "PFCHSLeg");
+	      "PFCHSLeg","3");
   c_eff_pt->SaveAs(Form("plots/eff_cat_%i_PUJID_%i.pdf",catbin,withPUJID));
   c_eff_pt->SaveAs(Form("plots/eff_cat_%i_PUJID_%i.png",catbin,withPUJID));
   //TCanvas *c_roc  = new TCanvas("c_roc","",500,500);

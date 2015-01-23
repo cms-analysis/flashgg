@@ -102,6 +102,7 @@ void Draw3Legend(TH1 *histo1,
   TLegend *legend ;
   if(opt=="1") legend = new TLegend(0.5,0.75,0.85,0.85,NULL,"brNDC");
   if(opt=="2") legend = new TLegend(0.5,0.65,0.85,0.75,NULL,"brNDC");
+  if(opt=="3") legend = new TLegend(0.5,0.55,0.85,0.65,NULL,"brNDC");
   
   legend->SetTextAlign(22);
   TLegendEntry* entry1 = legend->AddEntry(histo1,label1.c_str(),"LP");  
@@ -130,6 +131,7 @@ void Draw3Legend(TGraph *histo1,
   TLegend *legend ;
   if(opt=="1") legend = new TLegend(0.5,0.75,0.85,0.85,NULL,"brNDC");
   if(opt=="2") legend = new TLegend(0.5,0.65,0.85,0.75,NULL,"brNDC");
+  if(opt=="3") legend = new TLegend(0.5,0.55,0.85,0.65,NULL,"brNDC");
   
   legend->SetTextAlign(22);
   TLegendEntry* entry1 = legend->AddEntry(histo1,label1.c_str(),"LP");  

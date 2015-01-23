@@ -12,8 +12,16 @@ crabConfig_*
 
 # ROOT-related files
 *.root
+*_cc.d
+*_cc.so
+*_C.d
+*_C.so
+*\#*
+.\#*
+AutoDict_*
 
 # Other temp files
 *.txt
 *.log
 *.png
+*.pdf

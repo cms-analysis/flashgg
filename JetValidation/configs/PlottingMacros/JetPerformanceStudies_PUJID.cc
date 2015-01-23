@@ -51,14 +51,10 @@ void JetPerformanceStudies_PUJID(int catbin=1){
   std::map<TString,TCanvas*> Canv_PUJID;
   //std::map<TString,TCanvas*> Canv_BetaStar;
   
-  TFile *file        = TFile::Open("/afs/cern.ch/work/y/yhaddad/jetValidationTrees_VBF_HToGG_PU20bx25.root");
+  TFile *file = TFile::Open("/afs/cern.ch/work/y/yhaddad/jetValidationTrees_VBF_HToGG_PU20bx25.root");
   JetTree["PF"]      = (TTree*)file->Get("flashggJetValidationTreeMaker/jetTree_PF");
   JetTree["PFCHS0"]  = (TTree*)file->Get("flashggJetValidationTreeMakerPFCHS0/jetTree_PFCHS0"); 
   JetTree["PFCHSLeg"]= (TTree*)file->Get("flashggJetValidationTreeMakerPFCHSLeg/jetTree_PFCHSLeg"); 
-  
-  //GenJetTree["PF"]      = (TTree*)file->Get("flashggJetValidationTreeMaker/genJetTree_PF");
-  //GenJetTree["PFCHS0"]  = (TTree*)file->Get("flashggJetValidationTreeMakerPFCHS0/genJetTree_PFCHS0"); 
-  //GenJetTree["PFCHSLeg"]= (TTree*)file->Get("flashggJetValidationTreeMakerPFCHSLeg/genJetTree_PFCHSLeg"); 
   //====> cuts
   
   TCut cat;
@@ -75,47 +71,54 @@ void JetPerformanceStudies_PUJID(int catbin=1){
   }
   
   TCut cut_photon_rej     = "!(photonMatch==1 && GenPhotonPt/bestPt > 0.5 && photondRmin < 0.2)";
-  TCut cut_gen_photon_rej = "!(photonMatch==1 && GenPhotonPt/pt > 0.5 && photondRmin < 0.2)";
-  TCut cut_pt             = "bestPt>1.0";
+  TCut cut_gen_photon_rej = "!(photonMatch==1 && GenPhotonPt/pt > 0.5     && photondRmin < 0.2)";
+  TCut cut_pt             = "bestPt>20.0";
   TCut cut_genjetmatch    = "genJetMatch==1";
   
-  TCut cut_PUJ = cut_pt && cut_photon_rej && cat && cut_genjetmatch;
-  TCut cut_JET = cut_pt && cut_photon_rej && cat &&!cut_genjetmatch;
+  TCut cut_PUJ = cut_pt && cut_photon_rej && cat &&!cut_genjetmatch;
+  TCut cut_JET = cut_pt && cut_photon_rej && cat && cut_genjetmatch;
   // ===> Only for def
   std::cout << ":: PUJ == " << cut_PUJ.GetTitle() << std::endl;
   std::cout << ":: JET == " << cut_JET.GetTitle() << std::endl;
-    
+  
   for (std::map<TString,TTree*>::iterator it=JetTree.begin(); it!=JetTree.end(); ++it){
     h_betaStar_PUJ[it->first]    = new TH1F(Form("h_betaStar_PUJ_%s",it->first.Data()),
-					    Form("%s beta;#beta^{*};n_{jets}",it->first.Data()),
-					    200,0,1);
+					    Form("%s %s;#beta^{*};n_{jets}",it->first.Data(),catname.Data()),
+					    50,0,1);
     
     h_betaStar_JET[it->first]    = new TH1F(Form("h_betaStar_JET_%s",it->first.Data()),
-					    Form("%s beta;#beta^{*};n_{jets}",it->first.Data()),
-					    200,0,1);
+					    Form("%s %s;#beta^{*};n_{jets}",it->first.Data(),catname.Data()),
+					    50,0,1);
 
     
     h_RMS_PUJ[it->first]    = new TH1F(Form("h_RMS_PUJ_%s",it->first.Data()),
-				       Form("%s rms ;RMS;n_{jets}",it->first.Data()),
-				       200,0,0.2);
+				       Form("%s %s;#LT#Delta R^{2}#GT;n_{jets}",it->first.Data(),catname.Data()),
+				       50,0,0.1);
     
     h_RMS_JET[it->first]    = new TH1F(Form("h_RMS_JET_%s",it->first.Data()),
-				       Form("%s rms ;RMS;n_{jets}",it->first.Data()),
-				       200,0,0.2);
+				       Form("%s %s;#LT#Delta R^{2}#GT;n_{jets}",it->first.Data(),catname.Data()),
+				       50,0,0.1);
     
     
-        
-    JetTree[it->first]->Draw(Form("PUJetID_betaStar>>h_betaStar_PUJ_%s",it->first.Data()),cut_PUJ,"");
-    JetTree[it->first]->Draw(Form("PUJetID_betaStar>>h_betaStar_JET_%s",it->first.Data()),cut_JET,"");
+
     
-    JetTree[it->first]->Draw(Form("PUJetID_rms>>h_RMS_PUJ_%s",it->first.Data()),cut_PUJ,"");
-    JetTree[it->first]->Draw(Form("PUJetID_rms>>h_RMS_JET_%s",it->first.Data()),cut_JET,"");
+    std::cout <<" -----------------------------------------------------------------"<< std::endl;
+    std::cout <<"beta PUJ::"<<  Form("PUJetID_betaStar>>h_betaStar_PUJ_%s",it->first.Data()) << std::endl;
+    std::cout <<"beta JET::"<<  Form("PUJetID_betaStar>>h_betaStar_JET_%s",it->first.Data()) << std::endl;
+    std::cout <<"rms  PUJ::"<<  Form("PUJetID_rms>>h_RMS_PUJ_%s",it->first.Data()) << std::endl;
+    std::cout <<"rms  JET::"<<  Form("PUJetID_rms>>h_RMS_JET_%s",it->first.Data()) << std::endl;
+    std::cout <<" -----------------------------------------------------------------"<< std::endl;
+    
+    JetTree[it->first]->Project(Form("h_betaStar_PUJ_%s",it->first.Data()),"PUJetID_betaStar",cut_PUJ,"");
+    JetTree[it->first]->Project(Form("h_betaStar_JET_%s",it->first.Data()),"PUJetID_betaStar",cut_JET,"");
+    
+    JetTree[it->first]->Project(Form("h_RMS_PUJ_%s",it->first.Data()),"PUJetID_rms",cut_PUJ,"");
+    JetTree[it->first]->Project(Form("h_RMS_JET_%s",it->first.Data()),"PUJetID_rms",cut_JET,"");
     
     // canvas
-
     std::cout << it->first 
-	      << " :JET: "<<  h_RMS_JET[it->first]->GetEntries() 
-	      << " :PUJ: "<<  h_RMS_PUJ[it->first]->GetEntries() 
+	      << "\t :JET: "<<  h_RMS_JET[it->first]->GetEntries() 
+	      << "\t :PUJ: "<<  h_RMS_PUJ[it->first]->GetEntries() 
 	      << std::endl;
     
     Canv_PUJID[it->first] = new TCanvas(Form("c_PUJID_%s",it->first.Data()),
@@ -124,15 +127,20 @@ void JetPerformanceStudies_PUJID(int catbin=1){
     Canv_PUJID[it->first]->cd(1);
     gPad->SetLogy();
     h_RMS_JET[it->first]->SetLineColor(kRed);
+    h_RMS_JET[it->first]->SetMarkerColor(kRed);
     h_RMS_JET[it->first]->Draw("");
     h_RMS_PUJ[it->first]->Draw("same");
-    
+    Draw2Legend(h_RMS_JET[it->first],h_RMS_PUJ[it->first],"Jets","PU Jets");
     Canv_PUJID[it->first]->cd(2);
     gPad->SetLogy();
     h_betaStar_JET[it->first]->SetLineColor(kRed);
-    h_betaStar_PUJ[it->first]->Draw("");
-    h_betaStar_JET[it->first]->Draw("same");
+    h_betaStar_JET[it->first]->SetMarkerColor(kRed);
+    h_betaStar_JET[it->first]->DrawNormalized("");
+    h_betaStar_PUJ[it->first]->DrawNormalized("same");
+    Draw2Legend(h_betaStar_JET[it->first],h_betaStar_PUJ[it->first],"Jets","PU Jets");
     
+    Canv_PUJID[it->first]->SaveAs(Form("plots/PUJID_var_%s_%i.png",it->first.Data(),catbin));
+    Canv_PUJID[it->first]->SaveAs(Form("plots/PUJID_var_%s_%i.pdf",it->first.Data(),catbin));
   }
   
 }
