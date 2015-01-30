@@ -33,6 +33,7 @@ namespace flashgg {
 			void produce(edm::Event&, const edm::EventSetup&);
 
 			bool verbose_;
+			bool applyCuts_;  
 			edm::EDGetTokenT<View<pat::Electron> > electronToken_;
 			edm::EDGetTokenT<View<reco::Vertex> > vertexToken_;
 			edm::EDGetTokenT<reco::ConversionCollection> convToken_;
@@ -44,7 +45,7 @@ namespace flashgg {
 			string method_;
 			vector<string> mvaWeightFiles_;
 
-			double nontrigmva_;
+	  		// double nontrigmva_;
 			EGammaMvaEleEstimator* mvaID_;
 
 	};
@@ -56,6 +57,7 @@ namespace flashgg {
 		beamSpotToken_(consumes<reco::BeamSpot >(iConfig.getUntrackedParameter<InputTag>("BeamSpotTag",InputTag("offlineBeamSpot"))))
 
 	{		
+		applyCuts_ = iConfig.getUntrackedParameter<bool>("ApplyCuts", false);
 		verbose_ = iConfig.getUntrackedParameter<bool>("verbose", false);
 		method_ = iConfig.getParameter<string>("method");
 		std::vector<string> fpMvaWeightFiles = iConfig.getParameter<std::vector<std::string> >("mvaWeightFile");
@@ -78,7 +80,7 @@ namespace flashgg {
 
 		mvaID_->initialize(method_, type_, manualCat_, mvaWeightFiles_);
 		produces<vector<flashgg::Electron> >();	
-		nontrigmva_ = 0;
+		// nontrigmva_ = 0;
 	}
 
 	void ElectronProducer::produce(Event& evt, const EventSetup& ) {
@@ -113,17 +115,18 @@ namespace flashgg {
 		for ( unsigned int elecIndex =0; elecIndex < pelectronPointers.size(); elecIndex++ ) {
 			Ptr<pat::Electron> pelec = pelectronPointers[elecIndex];
 			flashgg::Electron felec = flashgg::Electron(*pelec);
-			double nontrigmva_ = -999999;
+			// double nontrigmva_ = -999999;
 			double Aeff = 0;	
 
 			float pelec_eta = fabs(pelec->superCluster()->eta());
 			float pelec_pt = pelec->pt();			
 
-			nontrigmva_ = mvaID_->mvaValue( *pelec, *vertexPointers[0], _Rho, verbose_);
-			felec.nontrigmva = nontrigmva_;		
+			double nontrigmva = mvaID_->mvaValue( *pelec, *vertexPointers[0], _Rho, verbose_);
+			felec.setNonTrigMVA((float)nontrigmva);
 
-			if(nontrigmva_ < 0.9)continue;	
-			if(pelec_eta>2.5 || (pelec_eta>1.442 && pelec_eta<1.566))continue;
+			if(applyCuts_ && nontrigmva < 0.9)continue;	
+			if(pelec_eta>2.5 || (pelec_eta>1.442 && pelec_eta<1.566))continue; // this cut is NOT controlled by applyCuts_
+
 			if(pelec_eta<1.0)                   	Aeff=0.135;
 			if(pelec_eta>=1.0 && pelec_eta<1.479) 	Aeff=0.168;
 			if(pelec_eta>=1.479 && pelec_eta<2.0) 	Aeff=0.068;
@@ -133,14 +136,18 @@ namespace flashgg {
 			if(pelec_eta>=2.4)                  	Aeff=0.23;
 
 			float	pelec_iso = pelec->chargedHadronIso()+std::max(pelec->neutralHadronIso()+pelec->photonIso()-_Rho*Aeff,0.);
-			if (pelec_iso/pelec_pt>0.15)continue;
-			//if{} //d0
-			//if{} //dz 	
-			/// if(pelec->gsfTrack()->trackerExpectedHitsInner().numberOfHits()>1)continue;
-			if(pelec->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS)>1){ continue; }
-			if(!ConversionTools::hasMatchedConversion(*pelec,convs,vertexPoint)){
-				elecColl->push_back(felec);
-			}
+			felec.setStandardHggIso(pelec_iso); 
+
+			if (applyCuts_) {
+			  if (pelec_iso/pelec_pt>0.15)continue;
+			  //if{} //d0
+			  //if{} //dz 	
+			  /// if(pelec->gsfTrack()->trackerExpectedHitsInner().numberOfHits()>1)continue;
+			  if(pelec->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS)>1){ continue; }
+			  if(ConversionTools::hasMatchedConversion(*pelec,convs,vertexPoint)) { continue; }
+			} // otherwise ALL pat::Electrons are converted to flashgg::Electrons -- this is default behavior, especially for studies
+			
+			elecColl->push_back(felec);
 		}
 		evt.put(elecColl);
 	}
