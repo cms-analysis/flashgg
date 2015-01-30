@@ -13,10 +13,15 @@ namespace flashgg {
 			Electron(const pat::Electron& );
 			~Electron();
 
-			float nontrigmva;
+			float getNonTrigMVA() const {return nontrigmva_;}
+			void setNonTrigMVA(float val) { nontrigmva_ = val; }
 
-			float getNonTrigMVA() const {return nontrigmva;}
+			float getStandardHggIso() const { return PfRhoAreaCorrectedIso_; }
+			void setStandardHggIso( float val ) { PfRhoAreaCorrectedIso_ = val; }
 
+		private:
+			float nontrigmva_;
+			float PfRhoAreaCorrectedIso_;
 	};
 }	
 
