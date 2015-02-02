@@ -76,12 +76,15 @@ namespace flashgg {
 			double muPFIsoSumRelThreshold_;
 			double deltaRMuonJetcountThreshold_;
 			double deltaRElectronJetcountThreshold_;
-	  //			double PuIDCutoffThreshold_;
 			double PhoMVAThreshold_;
 			double ElectronPtThreshold_;
 			double DeltaRTrkElec_;
 			double TransverseImpactParam_;
 			double LongitudinalImpactParam_;
+
+			double deltaRPhoElectronThreshold_;
+			double Zmass_;
+			double deltaMassElectronZThreshold_;
 
 			bool hasGoodElec = false;
 			bool hasGoodMuons = false;
@@ -121,7 +124,6 @@ namespace flashgg {
 		string default_bTag_ = "combinedInclusiveSecondaryVertexV2BJetTags";
 		double default_muPFIsoSumRelThreshold_ = 0.2;
 		double default_deltaRMuonJetcountThreshold_ = 2.;
-		//		double default_PuIDCutoffThreshold_ = 0.8;
 		double default_PhoMVAThreshold_ = -0.2;
 		double default_ElectronPtThreshold_ = 20.;
 		double default_DeltaRTrkElec_ = 1.;
@@ -132,7 +134,10 @@ namespace flashgg {
 		double default_MidPtEtaPhoThreshold_ = 1.566;
 		double default_HighEtaPhoThreshold_ = 2.5;
 
-		
+		double default_deltaRPhoElectronThreshold_ = 1.;
+                double default_Zmass_ = 91.9;
+                double default_deltaMassElectronZThreshold_ = 10.;
+
 
 
 		leptonPtThreshold_ = iConfig.getUntrackedParameter<double>("leptonPtThreshold",default_leptonPtThreshold_);
@@ -156,7 +161,6 @@ namespace flashgg {
 		muPFIsoSumRelThreshold_ = iConfig.getUntrackedParameter<double>("muPFIsoSumRelThreshold",default_muPFIsoSumRelThreshold_); 
 		deltaRMuonJetcountThreshold_=iConfig.getUntrackedParameter<double>("deltaRMuonJetcountThreshold",default_deltaRMuonJetcountThreshold_);
 		deltaRElectronJetcountThreshold_=iConfig.getUntrackedParameter<double>("deltaRMuonJetcountThreshold",default_deltaRMuonJetcountThreshold_);
-		//		PuIDCutoffThreshold_ = iConfig.getUntrackedParameter<double>("PuIDCutoffThreshold",default_PuIDCutoffThreshold_);
 		PhoMVAThreshold_ = iConfig.getUntrackedParameter<double>("PhoMVAThreshold",default_PhoMVAThreshold_);
 		ElectronPtThreshold_ = iConfig.getUntrackedParameter<double>("ElectronPtThreshold",default_ElectronPtThreshold_);
 		DeltaRTrkElec_ = iConfig.getUntrackedParameter<double>("DeltaRTrkElec",default_DeltaRTrkElec_);
@@ -166,6 +170,11 @@ namespace flashgg {
 		LowPtEtaPhoThreshold_ = iConfig.getUntrackedParameter<double>("LowPtEtaPhoThreshold",default_LowPtEtaPhoThreshold_);
 		MidPtEtaPhoThreshold_ = iConfig.getUntrackedParameter<double>("MidPtEtaPhoThreshold",default_MidPtEtaPhoThreshold_);
 		HighEtaPhoThreshold_ = iConfig.getUntrackedParameter<double>("HighEtaPhoThreshold",default_HighEtaPhoThreshold_);
+
+                deltaRPhoElectronThreshold_ = iConfig.getUntrackedParameter<double>("deltaRPhoElectronThreshold",default_deltaRPhoElectronThreshold_);
+                Zmass_ = iConfig.getUntrackedParameter<double>("Zmass_",default_Zmass_);
+                deltaMassElectronZThreshold_ = iConfig.getUntrackedParameter<double>("deltaMassElectronZThreshold_",default_deltaMassElectronZThreshold_);
+
 
 		produces<vector<TTHleptonicTag> >(); 
 	}
@@ -237,6 +246,7 @@ namespace flashgg {
 
 			idmva1 = dipho->leadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
 			idmva2 = dipho->subLeadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
+
 			if(idmva1 <= PhoMVAThreshold_|| idmva2 <= PhoMVAThreshold_) continue;
 
 			if(mvares->result < MVAThreshold_) continue;
@@ -271,7 +281,6 @@ namespace flashgg {
 				{
 					edm::Ptr<flashgg::Jet> thejet = jetPointers[candIndex_outer];
 
-					//					if (thejet->getPuJetId(dipho) <  PuIDCutoffThreshold_) continue;
 					if (!thejet->passesPuJetId(dipho)) continue;
 
 					if(fabs(thejet->eta()) > jetEtaThreshold_) continue; 
@@ -345,13 +354,12 @@ namespace flashgg {
 				if(&(*photons.at(phoIndex)->superCluster())==&(*Electron->superCluster())){	
 
 					float TrkElecSCDeltaR = sqrt(Electron->deltaEtaSuperClusterTrackAtVtx()*Electron->deltaEtaSuperClusterTrackAtVtx()+Electron->deltaPhiSuperClusterTrackAtVtx()*Electron->deltaPhiSuperClusterTrackAtVtx());
-
 					if(TrkElecSCDeltaR < DeltaRTrkElec_)continue;
 				}
 
-				if( p.DeltaR(elec_p4) <= 1. )continue;
+				if( p.DeltaR(elec_p4) <= deltaRPhoElectronThreshold_ )continue;
 				TLorentzVector elep = elec_p4+p;
-				if( fabs(elep.M()-91.9)<=10)continue;
+				if( fabs(elep.M()-Zmass_)<=deltaMassElectronZThreshold_)continue;
 		
 				photon_veto = true;
 			
@@ -360,13 +368,12 @@ namespace flashgg {
 				int deltaRElectronJetcount = 0;
 				double bDiscriminatorValue = -999.;
 
-				if(!photon_veto)continue;
+				if(!photon_veto) break;
 
 				for (unsigned int candIndex_outer =0; candIndex_outer < jetPointers.size() ; candIndex_outer++)
 				{
 					edm::Ptr<flashgg::Jet> thejet = jetPointers[candIndex_outer];
 
-					//					if (thejet->getPuJetId(dipho) <  PuIDCutoffThreshold_) continue;
 					if (!thejet->passesPuJetId(dipho)) continue;
 
 					//https://github.com/h2gglobe/h2gglobe/blob/master/PhotonAnalysis/src/PhotonAnalysis.cc#L5367
@@ -381,19 +388,14 @@ namespace flashgg {
 					if(dRJetElectron < deltaRJetLepThreshold_) continue; 
 					deltaRElectronJetcount++;
 
-					if(deltaRElectronJetcount<deltaRElectronJetcountThreshold_) continue;
+					tagJets.push_back(thejet);	
 
-					if(tagJets.size()==0){
+					bDiscriminatorValue = thejet->bDiscriminator(bTag_.c_str());
 
-						tagJets.push_back(thejet);	
-
-						bDiscriminatorValue = thejet->bDiscriminator(bTag_.c_str());
-
-						if(bDiscriminatorValue>bDiscriminator_[1]) 
-						{
-							tagBJets.push_back(thejet);
-						}
-					}
+					if(bDiscriminatorValue>bDiscriminator_[1]) 
+					{
+						tagBJets.push_back(thejet);
+				        }
 					
 				}//end of jets loop 
 				numElectronJetsdR.push_back(deltaRElectronJetcount);
@@ -424,11 +426,9 @@ namespace flashgg {
 				tthltags_obj.setElectrons(tagElectrons);	
 				tthltags_obj.setDiPhotonIndex(diphoIndex);
 				tthltags->push_back(tthltags_obj);
-					
 			}
 
-			//diPho loop end !
-		}
+		}//diPho loop end !
 		evt.put(tthltags);
 	}
 

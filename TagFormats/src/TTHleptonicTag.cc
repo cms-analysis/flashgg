@@ -20,11 +20,7 @@ TTHleptonicTag* TTHleptonicTag::clone () const {
   result->setJets(Jets_);
   result->setBJets(BJets_);
   result->setMuons(Muons_);
-
-    //  std::copy(Jets_.begin(),Jets_.end(),result->Jets_.begin());
-    //  std::copy(BJets_.begin(),BJets_.end(),result->BJets_.begin());
-    //  std::copy(Muons_.begin(),Muons_.end(),result->Muons_.begin());
-
+  result->setElectrons(Electrons_);
 
   return result;
 }
