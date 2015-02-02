@@ -49,12 +49,15 @@ flashggTTHleptonicTag = cms.EDProducer("FlashggTTHleptonicTagProducer",
 					LongitudinalImpactParam = cms.untracked.double(0.02),
 					LowPtEtaPhoThreshold = cms.untracked.double(1.4447),
 					MidPtEtaPhoThreshold = cms.untracked.double(1.566),
-					HighEtaPhoThreshold = cms.untracked.double(2.5)
+					HighEtaPhoThreshold = cms.untracked.double(2.5),
+					deltaRPhoElectronThreshold = cms.untracked.double(1.),
+					Zmass_ = cms.untracked.double(91.9),
+					deltaMassElectronZThreshold_ = cms.untracked.double(10.)
 				    )
 flashggVHlooseTag = cms.EDProducer("FlashggVHlooseTagProducer",
 					DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
 					VHlooseJetTag=cms.untracked.InputTag('flashggJets'),
-					ElectronTag=cms.untracked.InputTag('slimmedElectrons'),
+					ElectronTag=cms.untracked.InputTag('flashggElectrons'),
 					MuonTag=cms.untracked.InputTag('slimmedMuons'),
 					VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
 					MVAResultTag=cms.untracked.InputTag('flashggDiPhotonMVA'),
@@ -74,12 +77,20 @@ flashggVHlooseTag = cms.EDProducer("FlashggVHlooseTagProducer",
 					METThreshold = cms.untracked.double(45.),
 					LowPtEtaPhoThreshold = cms.untracked.double(1.4447),
 					MidPtEtaPhoThreshold = cms.untracked.double(1.566),
-					HighEtaPhoThreshold = cms.untracked.double(2.5)
+					HighEtaPhoThreshold = cms.untracked.double(2.5),
+					ElectronPtThreshold = cms.untracked.double(20.),
+                                        DeltaRTrkElec = cms.untracked.double(1.),
+                                        TransverseImpactParam = cms.untracked.double(0.2),
+                                        LongitudinalImpactParam = cms.untracked.double(0.02),
+ 					deltaRPhoElectronThreshold = cms.untracked.double(1.),
+                                        Zmass_ = cms.untracked.double(91.9),
+                                        deltaMassElectronZThreshold_ = cms.untracked.double(10.)
+
 				    )
 flashggVHtightTag = cms.EDProducer("FlashggVHtightTagProducer",
 					DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
 					VHtightJetTag=cms.untracked.InputTag('flashggJets'),
-					ElectronTag=cms.untracked.InputTag('slimmedElectrons'),
+					ElectronTag=cms.untracked.InputTag('flashggElectrons'),
 					MuonTag=cms.untracked.InputTag('slimmedMuons'),
 					VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
 					MVAResultTag=cms.untracked.InputTag('flashggDiPhotonMVA'),
@@ -108,7 +119,15 @@ flashggVHtightTag = cms.EDProducer("FlashggVHtightTagProducer",
 					deltaRPhoSubLeadJet = cms.untracked.double(0.5),
 					LowPtEtaPhoThreshold = cms.untracked.double(1.4447),
 					MidPtEtaPhoThreshold = cms.untracked.double(1.566),
-					HighEtaPhoThreshold = cms.untracked.double(2.5)
+					HighEtaPhoThreshold = cms.untracked.double(2.5),
+					ElectronPtThreshold = cms.untracked.double(20.),
+                                        DeltaRTrkElec = cms.untracked.double(1.),
+                                        TransverseImpactParam = cms.untracked.double(0.2),
+                                        LongitudinalImpactParam = cms.untracked.double(0.02),
+ 					deltaRPhoElectronThreshold = cms.untracked.double(1.),
+                                        Zmass_ = cms.untracked.double(91.9),
+                                        deltaMassElectronZThreshold_ = cms.untracked.double(10.)
+
 				    )
 
 
