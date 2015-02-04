@@ -92,7 +92,10 @@ namespace flashgg {
                         bool hasGoodElectrons_highPt = false;
                         bool hasGoodElectrons_lowPt = false;
 
-
+                        double nonTrigMVAThreshold_;
+                        double electronIsoThreshold_;
+                        double electronNumOfHitsThreshold_;
+			vector<double> EtaCuts_;
 
 	};
 
@@ -143,6 +146,14 @@ namespace flashgg {
                 	double default_Zmass_ = 91.9;
                 	double default_deltaMassElectronZThreshold_ = 10.;
 
+                        double default_nonTrigMVAThreshold_ = 0.9;
+                        double default_electronIsoThreshold_ = 0.15;
+                        double default_electronNumOfHitsThreshold_ = 1.;
+
+                 	vector<double> default_EtaCuts_;
+                	default_EtaCuts_.push_back(1.442);
+                	default_EtaCuts_.push_back(1.566);
+                	default_EtaCuts_.push_back(2.5);
 
 
  		leptonPtThreshold_ = iConfig.getUntrackedParameter<double>("leptonPtThreshold",default_leptonPtThreshold_);
@@ -180,6 +191,12 @@ namespace flashgg {
                 deltaRPhoElectronThreshold_ = iConfig.getUntrackedParameter<double>("deltaRPhoElectronThreshold",default_deltaRPhoElectronThreshold_);
                 Zmass_ = iConfig.getUntrackedParameter<double>("Zmass_",default_Zmass_);
                 deltaMassElectronZThreshold_ = iConfig.getUntrackedParameter<double>("deltaMassElectronZThreshold_",default_deltaMassElectronZThreshold_);
+
+                nonTrigMVAThreshold_ = iConfig.getUntrackedParameter<double>("nonTrigMVAThreshold",default_nonTrigMVAThreshold_);
+                electronIsoThreshold_ = iConfig.getUntrackedParameter<double>("electronIsoThreshold",default_electronIsoThreshold_);
+                electronNumOfHitsThreshold_ = iConfig.getUntrackedParameter<double>("electronNumOfHitsThreshold",default_electronNumOfHitsThreshold_);
+
+		EtaCuts_ = iConfig.getUntrackedParameter<vector<double > >("EtaCuts",default_EtaCuts_);
 
 		produces<vector<VHtightTag> >(); 
 	}
@@ -277,8 +294,8 @@ for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoInde
     hasGoodMuons_highPt = (tagMuons_highPt.size()>0);
     hasGoodMuons_lowPt = (tagMuons_lowPt.size()>0);
 
-    tagElectrons_highPt = selectElectrons(electronPointers,vertexPointers,leptonPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_);
-    tagElectrons_lowPt = selectElectrons(electronPointers,vertexPointers,leptonLowPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_);
+    tagElectrons_highPt = selectElectrons(electronPointers,vertexPointers,leptonPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_,nonTrigMVAThreshold_,electronIsoThreshold_,electronNumOfHitsThreshold_,EtaCuts_);
+    tagElectrons_lowPt = selectElectrons(electronPointers,vertexPointers,leptonLowPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_, nonTrigMVAThreshold_,electronIsoThreshold_,electronNumOfHitsThreshold_,EtaCuts_);
     hasGoodElectrons_highPt = (tagElectrons_highPt.size()>0);
     hasGoodElectrons_lowPt = (tagElectrons_lowPt.size()>0);
 

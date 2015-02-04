@@ -61,7 +61,7 @@ namespace flashgg {
 		return goodMuons;
 	}
 
-	PtrVector<Electron> selectElectrons(const PtrVector<flashgg::Electron>& ElectronPointers, const PtrVector<reco::Vertex>& vertexPointers ,double ElectronPtThreshold,double DeltaRTrkElec, double TransverseImpactParam, double LongitudinalImapctParam){
+	PtrVector<Electron> selectElectrons(const PtrVector<flashgg::Electron>& ElectronPointers, const PtrVector<reco::Vertex>& vertexPointers ,double ElectronPtThreshold,double DeltaRTrkElec, double TransverseImpactParam, double LongitudinalImapctParam, double NonTrigMVAThreshold, double IsoThreshold, double NumOfMissingHitsThreshold, vector<double> EtaCuts){
 
 		PtrVector<flashgg::Electron> goodElectrons;
 
@@ -69,10 +69,18 @@ namespace flashgg {
 		for(unsigned int ElectronIndex=0; ElectronIndex < ElectronPointers.size(); ElectronIndex++ ){
 
 			Ptr<flashgg::Electron> Electron = ElectronPointers[ElectronIndex];
+			float Electron_eta = fabs(Electron->superCluster()->eta());
+
+                        if (Electron_eta>EtaCuts[2] || (Electron_eta>EtaCuts[0] && Electron_eta<EtaCuts[1])) continue;
+                        if(Electron->pt()<ElectronPtThreshold)continue;
 
 			Ptr<reco::Vertex> Electron_vtx = ChooseElectronVertex(Electron,vertexPointers);
 
-			if(Electron->pt()<ElectronPtThreshold)continue;
+			if (Electron->getNonTrigMVA() < NonTrigMVAThreshold) continue; 
+			if (Electron->getStandardHggIso() > IsoThreshold) continue;
+
+			if(Electron->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS)>NumOfMissingHitsThreshold) continue; 
+			if (Electron->getHasMatchedConversion()) continue; 
 
 			float dxy = Electron->gsfTrack()->dxy(Electron_vtx->position());							  
 			float dz = Electron->gsfTrack()->dz(Electron_vtx->position()); 

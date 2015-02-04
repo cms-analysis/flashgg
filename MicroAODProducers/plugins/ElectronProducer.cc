@@ -125,7 +125,7 @@ namespace flashgg {
 			felec.setNonTrigMVA((float)nontrigmva);
 
 			if(applyCuts_ && nontrigmva < 0.9)continue;	
-			if(pelec_eta>2.5 || (pelec_eta>1.442 && pelec_eta<1.566))continue; // this cut is NOT controlled by applyCuts_
+			if(applyCuts_ &&  (pelec_eta>2.5 || (pelec_eta>1.442 && pelec_eta<1.566)))continue;
 
 			if(pelec_eta<1.0)                   	Aeff=0.135;
 			if(pelec_eta>=1.0 && pelec_eta<1.479) 	Aeff=0.168;
@@ -137,6 +137,8 @@ namespace flashgg {
 
 			float	pelec_iso = pelec->chargedHadronIso()+std::max(pelec->neutralHadronIso()+pelec->photonIso()-_Rho*Aeff,0.);
 			felec.setStandardHggIso(pelec_iso); 
+
+			felec.setHasMatchedConversion(ConversionTools::hasMatchedConversion(*pelec,convs,vertexPoint));
 
 			if (applyCuts_) {
 			  if (pelec_iso/pelec_pt>0.15)continue;
