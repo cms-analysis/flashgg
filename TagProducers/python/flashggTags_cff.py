@@ -52,7 +52,11 @@ flashggTTHleptonicTag = cms.EDProducer("FlashggTTHleptonicTagProducer",
 					HighEtaPhoThreshold = cms.untracked.double(2.5),
 					deltaRPhoElectronThreshold = cms.untracked.double(1.),
 					Zmass_ = cms.untracked.double(91.9),
-					deltaMassElectronZThreshold_ = cms.untracked.double(10.)
+					deltaMassElectronZThreshold_ = cms.untracked.double(10.),
+					EtaCuts=cms.untracked.vdouble(1.442,1.566,2.5),
+					nonTrigMVAThreshold = cms.untracked.double(0.9),
+					electronIsoThreshold = cms.untracked.double(0.15),
+					electronNumOfHitsThreshold = cms.untracked.double(1)
 				    )
 flashggVHlooseTag = cms.EDProducer("FlashggVHlooseTagProducer",
 					DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
@@ -84,7 +88,11 @@ flashggVHlooseTag = cms.EDProducer("FlashggVHlooseTagProducer",
                                         LongitudinalImpactParam = cms.untracked.double(0.02),
  					deltaRPhoElectronThreshold = cms.untracked.double(1.),
                                         Zmass_ = cms.untracked.double(91.9),
-                                        deltaMassElectronZThreshold_ = cms.untracked.double(10.)
+                                        deltaMassElectronZThreshold_ = cms.untracked.double(10.),
+                                        EtaCuts=cms.untracked.vdouble(1.442,1.566,2.5),
+                                        nonTrigMVAThreshold = cms.untracked.double(0.9),
+                                        electronIsoThreshold = cms.untracked.double(0.15),
+                                        electronNumOfHitsThreshold = cms.untracked.double(1)
 
 				    )
 flashggVHtightTag = cms.EDProducer("FlashggVHtightTagProducer",
@@ -126,8 +134,11 @@ flashggVHtightTag = cms.EDProducer("FlashggVHtightTagProducer",
                                         LongitudinalImpactParam = cms.untracked.double(0.02),
  					deltaRPhoElectronThreshold = cms.untracked.double(1.),
                                         Zmass_ = cms.untracked.double(91.9),
-                                        deltaMassElectronZThreshold_ = cms.untracked.double(10.)
-
+                                        deltaMassElectronZThreshold_ = cms.untracked.double(10.),
+                                        EtaCuts=cms.untracked.vdouble(1.442,1.566,2.5),
+                                        nonTrigMVAThreshold = cms.untracked.double(0.9),
+                                        electronIsoThreshold = cms.untracked.double(0.15),
+                                        electronNumOfHitsThreshold = cms.untracked.double(1)
 				    )
 
 

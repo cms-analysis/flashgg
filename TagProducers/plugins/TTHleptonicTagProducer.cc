@@ -86,6 +86,11 @@ namespace flashgg {
 			double Zmass_;
 			double deltaMassElectronZThreshold_;
 
+                        double nonTrigMVAThreshold_;
+                        double electronIsoThreshold_;
+                        double electronNumOfHitsThreshold_;
+			vector<double> EtaCuts_;
+
 			bool hasGoodElec = false;
 			bool hasGoodMuons = false;
 
@@ -138,7 +143,14 @@ namespace flashgg {
                 double default_Zmass_ = 91.9;
                 double default_deltaMassElectronZThreshold_ = 10.;
 
+                double default_nonTrigMVAThreshold_ = 0.9;
+                double default_electronIsoThreshold_ = 0.15;
+                double default_electronNumOfHitsThreshold_ = 1.;
 
+		vector<double> default_EtaCuts_;
+		default_EtaCuts_.push_back(1.442);
+		default_EtaCuts_.push_back(1.566);
+		default_EtaCuts_.push_back(2.5);
 
 		leptonPtThreshold_ = iConfig.getUntrackedParameter<double>("leptonPtThreshold",default_leptonPtThreshold_);
 		leptonEtaThreshold_ = iConfig.getUntrackedParameter<double>("leptonEtaThreshold",default_leptonEtaThreshold_);
@@ -175,6 +187,11 @@ namespace flashgg {
                 Zmass_ = iConfig.getUntrackedParameter<double>("Zmass_",default_Zmass_);
                 deltaMassElectronZThreshold_ = iConfig.getUntrackedParameter<double>("deltaMassElectronZThreshold_",default_deltaMassElectronZThreshold_);
 
+                nonTrigMVAThreshold_ = iConfig.getUntrackedParameter<double>("nonTrigMVAThreshold",default_nonTrigMVAThreshold_);
+                electronIsoThreshold_ = iConfig.getUntrackedParameter<double>("electronIsoThreshold",default_electronIsoThreshold_);
+                electronNumOfHitsThreshold_ = iConfig.getUntrackedParameter<double>("electronNumOfHitsThreshold",default_electronNumOfHitsThreshold_);
+ 		
+		EtaCuts_ = iConfig.getUntrackedParameter<vector<double > >("EtaCuts",default_EtaCuts_);
 
 		produces<vector<TTHleptonicTag> >(); 
 	}
@@ -207,8 +224,7 @@ namespace flashgg {
 		Handle<View<reco::Vertex> > vertices;
 		evt.getByToken(vertexToken_,vertices);
 		const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
-
-
+		
 		assert(diPhotonPointers.size() == mvaResultPointers.size());
 
 		bool photonSelection = false;
@@ -255,7 +271,7 @@ namespace flashgg {
 
 			PtrVector<pat::Muon> goodMuons = selectMuons(muonPointers,dipho, vertexPointers, leptonEtaThreshold_ ,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
 
-			PtrVector<Electron> goodElectrons = selectElectrons(electronPointers,vertexPointers,ElectronPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_);
+			PtrVector<Electron> goodElectrons = selectElectrons(electronPointers,vertexPointers,ElectronPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_, nonTrigMVAThreshold_,electronIsoThreshold_,electronNumOfHitsThreshold_,EtaCuts_);
 
 			hasGoodElec = (goodElectrons.size()>0);
 			hasGoodMuons = (goodMuons.size()>0);

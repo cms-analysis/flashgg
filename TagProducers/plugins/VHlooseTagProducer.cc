@@ -11,6 +11,7 @@
 #include "flashgg/MicroAODFormats/interface/Jet.h"
 #include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/TagFormats/interface/VHlooseTag.h"
+#include "flashgg/MicroAODFormats/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
@@ -24,6 +25,8 @@
 #include <algorithm>
 #include <string>
 #include <utility>
+#include "TLorentzVector.h"
+#include "TMath.h"
 
 using namespace std;
 using namespace edm;
@@ -39,7 +42,7 @@ namespace flashgg {
 
 			EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
 			EDGetTokenT<View<Jet> > thejetToken_;
-			EDGetTokenT<View<pat::Electron> > electronToken_;
+ 			EDGetTokenT<View<Electron> > electronToken_;
 			EDGetTokenT<View<pat::Muon> > muonToken_;
 			EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
 			EDGetTokenT<View<pat::MET> > METToken_;
@@ -56,7 +59,6 @@ namespace flashgg {
 			double jetPtThreshold_;
 			double jetEtaThreshold_;
 			double muPFIsoSumRelThreshold_;
-	  //			double PuIDCutoffThreshold_;
 			double PhoMVAThreshold_;
 			double METThreshold_;
 			double deltaRJetMuonThreshold_;
@@ -67,14 +69,29 @@ namespace flashgg {
 			double MidPtEtaPhoThreshold_;
 			double HighEtaPhoThreshold_;
 
+		        double ElectronPtThreshold_;
+                        double DeltaRTrkElec_;
+                        double TransverseImpactParam_;
+                        double LongitudinalImpactParam_;
 
+                        double deltaRPhoElectronThreshold_;
+                        double Zmass_;
+                        double deltaMassElectronZThreshold_;
+			
+			bool hasGoodElec = false;
+                        bool hasGoodMuons = false;
+
+			double nonTrigMVAThreshold_;
+			double electronIsoThreshold_;
+			double electronNumOfHitsThreshold_;
+			vector<double> EtaCuts_;
 
 	};
 
 	VHlooseTagProducer::VHlooseTagProducer(const ParameterSet & iConfig) :
 		diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
 		thejetToken_(consumes<View<flashgg::Jet> >(iConfig.getUntrackedParameter<InputTag>("VHlooseJetTag",InputTag("flashggJets")))),
-		electronToken_(consumes<View<pat::Electron> >(iConfig.getUntrackedParameter<InputTag> ("ElectronTag", InputTag("slimmedElectrons")))),
+		electronToken_(consumes<View<flashgg::Electron> >(iConfig.getUntrackedParameter<InputTag> ("ElectronTag", InputTag("flashggElectrons")))),
 		muonToken_(consumes<View<pat::Muon> >(iConfig.getUntrackedParameter<InputTag>("MuonTag",InputTag("slimmedMuons")))),
 		mvaResultToken_(consumes<View<flashgg::DiPhotonMVAResult> >(iConfig.getUntrackedParameter<InputTag> ("MVAResultTag", InputTag("flashggDiPhotonMVA")))),
 		METToken_(consumes<View<pat::MET> >(iConfig.getUntrackedParameter<InputTag> ("METTag", InputTag("slimmedMETs")))),
@@ -91,7 +108,6 @@ namespace flashgg {
 			double default_jetPtThreshold_ = 20.;
 			double default_jetEtaThreshold_ = 2.4;
 			double default_muPFIsoSumRelThreshold_ = 0.2;
-			//			double default_PuIDCutoffThreshold_ = 0.8;
 			double default_PhoMVAThreshold_ = -0.2;
 			double default_METThreshold_=45.;
 			double default_deltaRJetMuonThreshold_=0.5;
@@ -101,6 +117,23 @@ namespace flashgg {
 			double default_LowPtEtaPhoThreshold_ = 1.4447;
 			double default_MidPtEtaPhoThreshold_ = 1.566;
 			double default_HighEtaPhoThreshold_ = 2.5;
+
+			double default_ElectronPtThreshold_ = 20.;
+                	double default_DeltaRTrkElec_ = 1.;
+                	double default_TransverseImpactParam_ = 0.02;
+                	double default_LongitudinalImpactParam_ = 0.2;
+
+                        double default_deltaRPhoElectronThreshold_ = 1.;
+                        double default_Zmass_ = 91.9;
+                        double default_deltaMassElectronZThreshold_ = 10.;
+
+                        double default_nonTrigMVAThreshold_ = 0.9;
+                        double default_electronIsoThreshold_ = 0.15;
+                        double default_electronNumOfHitsThreshold_ = 1.;
+                        vector<double> default_EtaCuts_;
+                        default_EtaCuts_.push_back(1.442);
+                        default_EtaCuts_.push_back(1.566);
+                        default_EtaCuts_.push_back(2.5);
 
  		leptonPtThreshold_ = iConfig.getUntrackedParameter<double>("leptonPtThreshold",default_leptonPtThreshold_);
 		leptonEtaThreshold_ = iConfig.getUntrackedParameter<double>("leptonEtaThreshold",default_leptonEtaThreshold_);
@@ -112,7 +145,6 @@ namespace flashgg {
 		jetPtThreshold_ = iConfig.getUntrackedParameter<double>("jetPtThreshold",default_jetPtThreshold_);
 		jetEtaThreshold_ = iConfig.getUntrackedParameter<double>("jetEtaThreshold",default_jetEtaThreshold_);
 		muPFIsoSumRelThreshold_ = iConfig.getUntrackedParameter<double>("muPFIsoSumRelThreshold",default_muPFIsoSumRelThreshold_); 
-		//		PuIDCutoffThreshold_ = iConfig.getUntrackedParameter<double>("PuIDCutoffThreshold",default_PuIDCutoffThreshold_);
 		PhoMVAThreshold_ = iConfig.getUntrackedParameter<double>("PhoMVAThreshold",default_PhoMVAThreshold_);
 		METThreshold_ = iConfig.getUntrackedParameter<double>("METThreshold",default_METThreshold_);
 		deltaRJetMuonThreshold_ = iConfig.getUntrackedParameter<double>("deltaRJetMuonThreshold",default_deltaRJetMuonThreshold_);
@@ -123,134 +155,200 @@ namespace flashgg {
 		MidPtEtaPhoThreshold_ = iConfig.getUntrackedParameter<double>("MidPtEtaPhoThreshold",default_MidPtEtaPhoThreshold_);
 		HighEtaPhoThreshold_ = iConfig.getUntrackedParameter<double>("HighEtaPhoThreshold",default_HighEtaPhoThreshold_);
 
+ 		ElectronPtThreshold_ = iConfig.getUntrackedParameter<double>("ElectronPtThreshold",default_ElectronPtThreshold_);
+                DeltaRTrkElec_ = iConfig.getUntrackedParameter<double>("DeltaRTrkElec",default_DeltaRTrkElec_);
+                TransverseImpactParam_ = iConfig.getUntrackedParameter<double>("TransverseImpactParam",default_TransverseImpactParam_);
+                LongitudinalImpactParam_ = iConfig.getUntrackedParameter<double>("LongitudinalImpactParam",default_LongitudinalImpactParam_);
+
+                deltaRPhoElectronThreshold_ = iConfig.getUntrackedParameter<double>("deltaRPhoElectronThreshold",default_deltaRPhoElectronThreshold_);
+                Zmass_ = iConfig.getUntrackedParameter<double>("Zmass_",default_Zmass_);
+                deltaMassElectronZThreshold_ = iConfig.getUntrackedParameter<double>("deltaMassElectronZThreshold_",default_deltaMassElectronZThreshold_);
+
+
+                nonTrigMVAThreshold_ = iConfig.getUntrackedParameter<double>("nonTrigMVAThreshold",default_nonTrigMVAThreshold_);
+                electronIsoThreshold_ = iConfig.getUntrackedParameter<double>("electronIsoThreshold",default_electronIsoThreshold_);
+                electronNumOfHitsThreshold_ = iConfig.getUntrackedParameter<double>("electronNumOfHitsThreshold",default_electronNumOfHitsThreshold_);
+		EtaCuts_ = iConfig.getUntrackedParameter<vector<double > >("EtaCuts",default_EtaCuts_);
+
 		produces<vector<VHlooseTag> >(); 
 	}
 
-	void VHlooseTagProducer::produce( Event & evt, const EventSetup & )
-
+void VHlooseTagProducer::produce( Event & evt, const EventSetup & )
 {
 
-		Handle<View<flashgg::Jet> > theJets;
-		evt.getByToken(thejetToken_,theJets);
-		const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
+Handle<View<flashgg::Jet> > theJets;
+evt.getByToken(thejetToken_,theJets);
+const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
 
-		Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
-		evt.getByToken(diPhotonToken_,diPhotons);
-		const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
+evt.getByToken(diPhotonToken_,diPhotons);
+const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
-		Handle<View<pat::Muon> > theMuons;
-		evt.getByToken(muonToken_,theMuons);
-		const PtrVector<pat::Muon>& muonPointers = theMuons->ptrVector();
+Handle<View<pat::Muon> > theMuons;
+evt.getByToken(muonToken_,theMuons);
+const PtrVector<pat::Muon>& muonPointers = theMuons->ptrVector();
 
-		Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
-    		evt.getByToken(mvaResultToken_,mvaResults);
-    		const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
-		std::auto_ptr<vector<VHlooseTag> > vhloosetags(new vector<VHlooseTag>);
+Handle<View<flashgg::Electron> > theElectrons;
+evt.getByToken(electronToken_,theElectrons);
+const PtrVector<flashgg::Electron>& electronPointers = theElectrons->ptrVector();
 
-		Handle<View<pat::MET> > METs;
-		evt.getByToken(METToken_,METs);
-		const PtrVector<pat::MET>& METPointers = METs->ptrVector();
+Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
+evt.getByToken(mvaResultToken_,mvaResults);
+const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
+std::auto_ptr<vector<VHlooseTag> > vhloosetags(new vector<VHlooseTag>);
 
-		Handle<View<reco::Vertex> > vertices;
-		evt.getByToken(vertexToken_,vertices);
-		const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
+Handle<View<pat::MET> > METs;
+evt.getByToken(METToken_,METs);
+const PtrVector<pat::MET>& METPointers = METs->ptrVector();
 
- 		assert(diPhotonPointers.size() == mvaResultPointers.size());
+Handle<View<reco::Vertex> > vertices;
+evt.getByToken(vertexToken_,vertices);
+const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
 
-		bool photonSelection = false;
-		double idmva1 = 0.;
-		double idmva2 = 0.;
+assert(diPhotonPointers.size() == mvaResultPointers.size());
 
-			for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoIndex++ )
-			{
-				
+bool photonSelection = false;
+double idmva1 = 0.;
+double idmva2 = 0.;
 
-				PtrVector<pat::Muon> tagMuons;
-				PtrVector<Jet> tagJets;
-				PtrVector<pat::MET> tagMETs;
-
-				edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[diphoIndex];
-				edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[diphoIndex];
-
-				VHlooseTag vhloosetags_obj(dipho, mvares);
-
-				if(dipho->leadingPhoton()->pt() < (dipho->mass())*leadPhoOverMassThreshold_) continue;
-
-				if(dipho->subLeadingPhoton()->pt() < (dipho->mass())*subleadPhoOverMassThreshold_) continue;
-
-				if ((fabs(dipho->leadingPhoton()->superCluster()->eta()) > LowPtEtaPhoThreshold_ && fabs(dipho->leadingPhoton()->superCluster()->eta()) < MidPtEtaPhoThreshold_) || fabs(dipho->leadingPhoton()->superCluster()->eta()) > HighEtaPhoThreshold_) continue;
-
-				if ((fabs(dipho->subLeadingPhoton()->superCluster()->eta()) > LowPtEtaPhoThreshold_ && fabs(dipho->subLeadingPhoton()->superCluster()->eta()) < MidPtEtaPhoThreshold_) || fabs(dipho->subLeadingPhoton()->superCluster()->eta()) > HighEtaPhoThreshold_) continue;
-
-				idmva1 = dipho->leadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
-				idmva2 = dipho->subLeadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
-				if(idmva1 <= PhoMVAThreshold_ || idmva2 <= PhoMVAThreshold_) continue;
-
-				if(mvares->result < MVAThreshold_) continue;
+ for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoIndex++ ){
+  hasGoodElec = false;
+  hasGoodMuons = false;
 		
-				photonSelection = true;
-			
-				tagMuons = selectMuons(muonPointers,dipho,vertexPointers, leptonEtaThreshold_,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
+  PtrVector<pat::Muon> tagMuons;
+  PtrVector<Electron> tagElectrons;
+  PtrVector<Jet> tagJets;
+  PtrVector<pat::MET> tagMETs;
 
-				if (!tagMuons) continue;
+  edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[diphoIndex];
+  edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[diphoIndex];
 
+  VHlooseTag vhloosetags_obj(dipho, mvares);
+ 
+  if(dipho->leadingPhoton()->pt() < (dipho->mass())*leadPhoOverMassThreshold_) continue;
+  if(dipho->subLeadingPhoton()->pt() < (dipho->mass())*subleadPhoOverMassThreshold_) continue;
+  if ((fabs(dipho->leadingPhoton()->superCluster()->eta()) > LowPtEtaPhoThreshold_ && fabs(dipho->leadingPhoton()->superCluster()->eta()) < MidPtEtaPhoThreshold_) || fabs(dipho->leadingPhoton()->superCluster()->eta()) > HighEtaPhoThreshold_) continue;
+  if ((fabs(dipho->subLeadingPhoton()->superCluster()->eta()) > LowPtEtaPhoThreshold_ && fabs(dipho->subLeadingPhoton()->superCluster()->eta()) < MidPtEtaPhoThreshold_) || fabs(dipho->subLeadingPhoton()->superCluster()->eta()) > HighEtaPhoThreshold_) continue;
 
-			for(unsigned int muonIndex = 0; muonIndex < tagMuons.size(); muonIndex++)
-			{
+  idmva1 = dipho->leadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
+  idmva2 = dipho->subLeadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
+  if(idmva1 <= PhoMVAThreshold_ || idmva2 <= PhoMVAThreshold_) continue;
+  if(mvares->result < MVAThreshold_) continue;
+		
+  photonSelection = true;
+  PtrVector<pat::Muon> goodMuons = selectMuons(muonPointers,dipho,vertexPointers, leptonEtaThreshold_,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
+  PtrVector<Electron> goodElectrons = selectElectrons(electronPointers,vertexPointers,ElectronPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_,nonTrigMVAThreshold_,electronIsoThreshold_,electronNumOfHitsThreshold_,EtaCuts_);
 
-					Ptr<pat::Muon> muon = tagMuons[muonIndex];			
+  hasGoodElec = (goodElectrons.size()>0);
+  hasGoodMuons = (goodMuons.size()>0);
+  if (!hasGoodElec && !hasGoodMuons) continue;
+  if (hasGoodMuons){
 
-			for (unsigned int candIndex_outer =0; candIndex_outer < jetPointers.size() ; candIndex_outer++)
-				{
-					edm::Ptr<flashgg::Jet> thejet = jetPointers[candIndex_outer];
+   for(unsigned int muonIndex = 0; muonIndex < goodMuons.size(); muonIndex++)
+   {
+
+     Ptr<pat::Muon> muon = goodMuons[muonIndex];			
+
+     for (unsigned int candIndex_outer =0; candIndex_outer < jetPointers.size() ; candIndex_outer++)
+     {
+      edm::Ptr<flashgg::Jet> thejet = jetPointers[candIndex_outer];
 					
-					//		if (thejet->getPuJetId(dipho) <  PuIDCutoffThreshold_) continue;
-					if (! thejet->passesPuJetId(dipho)) continue;
+      if (! thejet->passesPuJetId(dipho)) continue;
+      if(fabs(thejet->eta()) > jetEtaThreshold_) continue; 
+      if(thejet->pt() < jetPtThreshold_) continue;
+
+      float dRPhoLeadJet =deltaR(thejet->eta(),thejet->phi(),dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi()) ;
+      float dRPhoSubLeadJet = deltaR(thejet->eta(),thejet->phi(),dipho->subLeadingPhoton()->superCluster()->eta(), dipho->subLeadingPhoton()->superCluster()->phi());	
+
+      if(dRPhoLeadJet < deltaRPhoLeadJet_ || dRPhoSubLeadJet < deltaRPhoSubLeadJet_) continue;
+      float dRJetMuon =deltaR(thejet->eta(),thejet->phi(), muon->eta(),muon->phi()) ;
+      if(dRJetMuon < deltaRJetMuonThreshold_) continue;
+
+      tagJets.push_back(thejet);
+    }
+
+   tagMuons.push_back(muon);
+   }
+}
+
+  if (hasGoodElec){
+   bool photon_veto = false;
+
+   std::vector<const flashgg::Photon*> photons;
+   photons.push_back(dipho->leadingPhoton());
+   photons.push_back(dipho->subLeadingPhoton());
+   for(unsigned int ElectronIndex = 0; ElectronIndex < goodElectrons.size(); ElectronIndex++)
+    {
+     Ptr<Electron> Electron = goodElectrons[ElectronIndex];
+     TLorentzVector elec_p4;
+     elec_p4.SetXYZT(Electron->px(),Electron->py(),Electron->pz(),Electron->energy());
+
+     float phi = Electron->superCluster()->phi();
+     float theta = (2*atan(exp(-Electron->superCluster()->eta())));
+     float energy = Electron->ecalEnergy();
+     float px = energy*sin(theta)*cos(phi);
+     float py = energy*sin(theta)*sin(phi);
+     float pz = energy*cos(theta);
+
+     TLorentzVector elec_superClusterVect;
+     elec_superClusterVect.SetXYZT(px,py,pz,energy);
+
+     for(unsigned int phoIndex = 0; phoIndex < photons.size(); phoIndex++ ){
+      TLorentzVector p;
+
+      p.SetXYZT(photons.at(phoIndex)->px(),photons.at(phoIndex)->py(),photons.at(phoIndex)->pz(),photons.at(phoIndex)->energy());
+      if( p.DeltaR(elec_superClusterVect)< 1.)continue;
+      if(&(*photons.at(phoIndex)->superCluster())==&(*Electron->superCluster())){
+      float TrkElecSCDeltaR = sqrt(Electron->deltaEtaSuperClusterTrackAtVtx()*Electron->deltaEtaSuperClusterTrackAtVtx()+Electron->deltaPhiSuperClusterTrackAtVtx()*Electron->deltaPhiSuperClusterTrackAtVtx());
+      if(TrkElecSCDeltaR < DeltaRTrkElec_)continue;
+     }
+
+     if( p.DeltaR(elec_p4) <= deltaRPhoElectronThreshold_ )continue;
+     TLorentzVector elep = elec_p4+p;
+     if( fabs(elep.M()-Zmass_)<=deltaMassElectronZThreshold_)continue;
+     photon_veto = true;
+     }
+				
+     if(!photon_veto) break;
+		
+     for(unsigned int candIndex_outer =0; candIndex_outer < jetPointers.size() ; candIndex_outer++)
+      {
+       edm::Ptr<flashgg::Jet> thejet = jetPointers[candIndex_outer];
+       if (! thejet->passesPuJetId(dipho)) continue;
+       if(fabs(thejet->eta()) > jetEtaThreshold_) continue;
+       if(thejet->pt() < jetPtThreshold_) continue;
+       float dRPhoLeadJet =deltaR(thejet->eta(),thejet->phi(),dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi()) ;
+       float dRPhoSubLeadJet = deltaR(thejet->eta(),thejet->phi(),dipho->subLeadingPhoton()->superCluster()->eta(), dipho->subLeadingPhoton()->superCluster()->phi());
+
+       if(dRPhoLeadJet < deltaRPhoLeadJet_ || dRPhoSubLeadJet < deltaRPhoSubLeadJet_) continue;
+       float dRJetElectron =deltaR(thejet->eta(),thejet->phi(),Electron->eta(),Electron->phi()) ;
+       if(dRJetElectron < deltaRJetMuonThreshold_) continue;
+       tagJets.push_back(thejet);
+      }
+      tagElectrons.push_back(Electron);
+      }
+   }
 
 
-					if(fabs(thejet->eta()) > jetEtaThreshold_) continue; 
+//------>MET info
+ if (METPointers.size() != 1) { std::cout << "WARNING - #MET is not 1" << std::endl;}
+ Ptr<pat::MET> theMET = METPointers[0];
+ if(theMET->pt() < METThreshold_)
+ {
+  tagMETs.push_back(theMET);
+ }
 
-					if(thejet->pt() < jetPtThreshold_) continue;
-
-					float dRPhoLeadJet =deltaR(thejet->eta(),thejet->phi(),dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi()) ;
-					float dRPhoSubLeadJet = deltaR(thejet->eta(),thejet->phi(),dipho->subLeadingPhoton()->superCluster()->eta(), dipho->subLeadingPhoton()->superCluster()->phi());	
-
-					if(dRPhoLeadJet < deltaRPhoLeadJet_ || dRPhoSubLeadJet < deltaRPhoSubLeadJet_) continue;
-
-					float dRJetMuon =deltaR(thejet->eta(),thejet->phi(), muon->eta(),muon->phi()) ;
-					if(dRJetMuon < deltaRJetMuonThreshold_) continue;
-
-					tagJets.push_back(thejet);
-
-				//end of jets loop 
-				}
-
-			//end of muons loop 
-			}
-
-
-			//------>MET info
-			if (METPointers.size() != 1) { std::cout << "WARNING - #MET is not 1" << std::endl;}
-			Ptr<pat::MET> theMET = METPointers[0];
-
-			if(theMET->pt() < METThreshold_){
-
-				tagMETs.push_back(theMET);
-			}
-
-			if(tagJets.size() < jetsNumberThreshold_ && photonSelection && tagMuons.size()==1 && tagMETs.size()>0)
-			{
-				vhloosetags_obj.setJets(tagJets);
-				vhloosetags_obj.setMuons(tagMuons);
-				vhloosetags_obj.setMET(tagMETs);
-				vhloosetags_obj.setDiPhotonIndex(diphoIndex);
-				vhloosetags->push_back(vhloosetags_obj);
-			}
-
-			//diPho loop end
-			}
-			evt.put(vhloosetags);
-
+ if(tagJets.size() < jetsNumberThreshold_ && photonSelection && (tagMuons.size()==1 || tagElectrons.size() == 1) && tagMETs.size()>0)
+ {
+  vhloosetags_obj.setJets(tagJets);
+  vhloosetags_obj.setMuons(tagMuons);
+  vhloosetags_obj.setElectrons(tagElectrons);
+  vhloosetags_obj.setMET(tagMETs);
+  vhloosetags_obj.setDiPhotonIndex(diphoIndex);
+  vhloosetags->push_back(vhloosetags_obj);
+ }
+ }
+ evt.put(vhloosetags);
 }
 
 }

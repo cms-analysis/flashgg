@@ -18,6 +18,7 @@ VHlooseTag* VHlooseTag::clone () const {
   result->setDiPhotonIndex(getDiPhotonIndex());
   result->setJets(Jets_);
   result->setMuons(Muons_);
+  result->setElectrons(Electrons_);
   result->setMET(MET_);
 
 return result;
