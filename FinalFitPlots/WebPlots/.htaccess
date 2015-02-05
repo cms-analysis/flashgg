@@ -1,0 +1,13 @@
+ShibRequireAll On
+ShibRequireSession On
+ShibExportAssertion On
+SSLRequireSSL
+AuthType Shibboleth
+
+Require adfs-group "cms-private"
+
+DirectoryIndex index.php
+
+SSLVerifyClient optional
+SSLVerifyDepth 5
+SSLOptions +StrictRequire

@@ -1,0 +1,76 @@
+# sideband BDT
+isCutBased=0
+bdtname=BDTgradMIT
+
+weightsFile=SidebandTrainingOut_7TeV.root
+
+IntLumi=5089
+
+# Testing hypothesis
+mHMinimum=115.0
+mHMaximum=150.0
+mHStep=.1
+
+# Options for the mass spectrum range
+
+massMin=100
+massMax=180
+nDataBins=160
+diphotonBdtCut=0.19
+
+# Options for the sidebands
+signalRegionWidth=0.02
+sidebandWidth=0.02
+numberOfSidebands=6
+numberOfSidebandsForAlgos=3
+numberOfSidebandGaps=1
+massSidebandMin=99.5
+massSidebandMax=180.0
+
+# OptimizedBinEdges
+rederiveOptimizedBinEdges=0
+LepBinEdges_110=1.0600,1.0900,1.1200,1.1500,1.1800,1.2100
+VbfBinEdges_110=1.0000,1.0300,1.0600
+LepBinEdges_115=1.0600,1.0900,1.1200,1.1500,1.1800,1.2100
+VbfBinEdges_115=1.0000,1.0300,1.0600
+LepBinEdges_120=1.0600,1.0900,1.1200,1.1500,1.1800,1.2100
+VbfBinEdges_120=1.0000,1.0300,1.0600
+LepBinEdges_125=1.0600,1.0900,1.1200,1.1500,1.1800,1.2100
+VbfBinEdges_125=1.0000,1.0300,1.0600
+LepBinEdges_130=1.0600,1.0900,1.1200,1.1500,1.1800,1.2100
+VbfBinEdges_130=1.0000,1.0300,1.0600
+LepBinEdges_135=1.0600,1.0900,1.1200,1.1500,1.1800,1.2100
+VbfBinEdges_135=1.0000,1.0300,1.0600
+LepBinEdges_140=1.0600,1.0900,1.1200,1.1500,1.1800,1.2100
+VbfBinEdges_140=1.0000,1.0300,1.0600
+LepBinEdges_145=1.0600,1.0900,1.1200,1.1500,1.1800,1.2100
+VbfBinEdges_145=1.0000,1.0300,1.0600
+LepBinEdges_150=1.0600,1.0900,1.1200,1.1500,1.1800,1.2100
+VbfBinEdges_150=1.0000,1.0300,1.0600
+GradBinEdges_110=-1,0.166667,0.333333,0.5,0.666667,0.833333,1
+GradBinEdges_115=-1,0.166667,0.333333,0.5,0.666667,0.833333,1
+GradBinEdges_120=-1,0.166667,0.333333,0.5,0.666667,0.833333,1
+GradBinEdges_125=-1,0.166667,0.333333,0.5,0.666667,0.833333,1
+GradBinEdges_130=-1,0.166667,0.333333,0.5,0.666667,0.833333,1
+GradBinEdges_135=-1,0.166667,0.333333,0.5,0.666667,0.833333,1
+GradBinEdges_140=-1,0.166667,0.333333,0.5,0.666667,0.833333,1
+GradBinEdges_145=-1,0.166667,0.333333,0.5,0.666667,0.833333,1
+GradBinEdges_150=-1,0.166667,0.333333,0.5,0.666667,0.833333,1
+
+# General options - Most Important to get this right from mass-fac analysis
+nInclusiveCategories=1
+nMassFacInclusiveCategories=4
+includeVBF=1
+nVBFCategories=2
+includeLEP=1
+nLEPCategories=5
+
+# smearing flags
+doEscaleSyst=1
+doEresolSyst=1
+doRegressionSyst=1
+doPhotonIdEffSyst=1
+doVtxEffSyst=1
+doTriggerEffSyst=1
+doPhotonMvaIdSyst=1
+#doPdfWeight=1

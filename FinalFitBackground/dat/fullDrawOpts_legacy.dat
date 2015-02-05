@@ -1,0 +1,14 @@
+basedir=/eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/
+cats=0,1,2,3,4,5,6,7,8,9,10
+year=2011
+# 2011 mass
+type=mass cat={cat} outDir=bias_plots/coverage2011/cat{cat}/ injectVal=0.0 expMass=110,120,125,130,140,150 files={basedir}/coverage2011/cat{cat}_mu0.0_mass110/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2011/cat{cat}_mu0.0_mass120/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2011/cat{cat}_mu0.0_mass125/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2011/cat{cat}_mu0.0_mass130/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2011/cat{cat}_mu0.0_mass140/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2011/cat{cat}_mu0.0_mass150/BiasStudyOutHistograms_cat{cat}Hists.root
+
+type=mass cat={cat} outDir=bias_plots/coverage2011/cat{cat}/ injectVal=1.0 expMass=110,120,125,130,140,150 files={basedir}/coverage2011/cat{cat}_mu1.0_mass110/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2011/cat{cat}_mu1.0_mass120/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2011/cat{cat}_mu1.0_mass125/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2011/cat{cat}_mu1.0_mass130/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2011/cat{cat}_mu1.0_mass140/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2011/cat{cat}_mu1.0_mass150/BiasStudyOutHistograms_cat{cat}Hists.root
+
+cats=0,1,2,3,4,5,6,7,8,9,10,11,12,13
+year=2012
+# 2012 mass
+type=mass cat={cat} outDir=bias_plots/coverage2012/cat{cat}/ injectVal=0.0 expMass=110,120,125,130,140,150 files={basedir}/coverage2012/cat{cat}_mu0.0_mass110/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2012/cat{cat}_mu0.0_mass120/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2012/cat{cat}_mu0.0_mass125/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2012/cat{cat}_mu0.0_mass130/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2012/cat{cat}_mu0.0_mass140/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2012/cat{cat}_mu0.0_mass150/BiasStudyOutHistograms_cat{cat}Hists.root
+
+type=mass cat={cat} outDir=bias_plots/coverage2012/cat{cat}/ injectVal=1.0 expMass=110,120,125,130,140,150 files={basedir}/coverage2012/cat{cat}_mu1.0_mass110/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2012/cat{cat}_mu1.0_mass120/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2012/cat{cat}_mu1.0_mass125/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2012/cat{cat}_mu1.0_mass130/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2012/cat{cat}_mu1.0_mass140/BiasStudyOutHistograms_cat{cat}Hists.root,{basedir}/coverage2012/cat{cat}_mu1.0_mass150/BiasStudyOutHistograms_cat{cat}Hists.root

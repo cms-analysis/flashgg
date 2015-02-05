@@ -1,0 +1,26 @@
+# write eff val and its error in separate columns
+# write them in the order defined by effTypes
+# this is important as presel has different categories than the others
+# i.e. :
+# effTypes=presel,id,etc.
+# cat0 preselEff preselEffErr idEff idEffErr etc.
+# use effL1HLT to pass L1+HLT efficiency and error
+# use effHighR9 to pass HighR9EB nominal eff, scale factor and error, HighR9EE nominal eff, scale factor  and error
+
+effTypes=presel,id,elveto
+
+analType=cutbased
+effL1HLT=0.9978,0.0003
+effHighR9=0.5756,1.000,0.023,0.6270,1.000,0.055
+cat0  0.999 0.003   1.002 0.003   0.999   0.000
+cat1  0.995 0.006   1.017 0.008   0.994   0.001
+cat2  1.005 0.009   1.026 0.006   0.996   0.002
+cat3  1.011 0.019   1.028 0.013   0.990   0.004
+
+analType=mva
+effL1HLT=0.9978,0.0003
+effHighR9=0.5756,1.000,0.023,0.6270,1.000,0.055
+cat0  0.999 0.003   1.00001 0.0002   0.999   0.000
+cat1  0.995 0.006   1.00001 0.0005   0.994   0.001
+cat2  1.005 0.009   0.99998 0.0001   0.996   0.002
+cat3  1.011 0.019   0.99987 0.0006   0.990   0.004

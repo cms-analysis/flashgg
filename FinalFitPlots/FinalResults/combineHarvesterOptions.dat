@@ -1,0 +1,12 @@
+datacard=cms_hgg_mva_multipdf_8TeV.dat
+files=CMS-HGG_massfac_legacy_sigfit_8TeV.root,CMS-HGG_massfac_legacy_multipdf_8TeV.root
+
+#outDir=combineJobs/Asymptotic										method=Asymptotic expected=True mhLow=110. mhHigh=150. mhStep=1. jobs=41
+
+outDir=combineJobs/ExpProfileLikelihood 					method=ProfileLikelihood expected=1 expectSignal=1 mhLow=110. mhHigh=150. mhStep=1. jobs=41 
+
+outDir=combineJobs/MuScan													method=MuScan	expected=1 expectSignal=1 expectSignalMass=125 mh=125 muLow=0. muHigh=2. jobs=10 pointsperjob=5 opts=--squareDistPoi
+outDir=combineJobs/RVScan													method=RVScan expected=1 expectSignal=1 expectSignalMass=125 mh=125 rvLow=-0.5 rvHigh=2.5 jobs=10 pointsperjob=5 opts=--squareDistPoi
+outDir=combineJobs/MHScan													method=MHScan	expected=1 expectSignal=1 expectSignalMass=125 mhLow=122. mhHigh=128. jobs=10 pointsperjob=5 opts=--squareDistPoi
+outDir=combineJobs/MHScanStat											method=MHScan	expected=1 expectSignal=1 expectSignalMass=125 mhLow=122. mhHigh=128. jobs=10 pointsperjob=5 opts=--squareDistPoi,--fastScan
+
