@@ -1,0 +1,31 @@
+# cat dir outfile expSig meanB meanL meanH errB errL errH pullB pullL pullH
+cats=0,1,2,3,4,5,6,7,8,9,10
+
+# 2011 mass
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu0.0_mass125 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu0.0_mass125/BiasStudyOutHistograms_cat{cat}Hists.root  0. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu1.0_mass125 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu1.0_mass125/BiasStudyOutHistograms_cat{cat}Hists.root  1. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu0.0_mass110 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu0.0_mass110/BiasStudyOutHistograms_cat{cat}Hists.root  0. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu1.0_mass110 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu1.0_mass110/BiasStudyOutHistograms_cat{cat}Hists.root  1. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu0.0_mass120 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu0.0_mass120/BiasStudyOutHistograms_cat{cat}Hists.root  0. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu1.0_mass120 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu1.0_mass120/BiasStudyOutHistograms_cat{cat}Hists.root  1. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu0.0_mass130 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu0.0_mass130/BiasStudyOutHistograms_cat{cat}Hists.root  0. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu1.0_mass130 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu1.0_mass130/BiasStudyOutHistograms_cat{cat}Hists.root  1. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu0.0_mass140 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu0.0_mass140/BiasStudyOutHistograms_cat{cat}Hists.root  0. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu1.0_mass140 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu1.0_mass140/BiasStudyOutHistograms_cat{cat}Hists.root  1. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu0.0_mass150 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu0.0_mass150/BiasStudyOutHistograms_cat{cat}Hists.root  0. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu1.0_mass150 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2011/cat{cat}_mu1.0_mass150/BiasStudyOutHistograms_cat{cat}Hists.root  1. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+ 
+cats=0,1,2,3,4,5,6,7,8,9,10,11,12,13
+# 2012 mass
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu0.0_mass125 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu0.0_mass125/BiasStudyOutHistograms_cat{cat}Hists.root  0. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu1.0_mass125 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu1.0_mass125/BiasStudyOutHistograms_cat{cat}Hists.root  1. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu0.0_mass110 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu0.0_mass110/BiasStudyOutHistograms_cat{cat}Hists.root  0. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu1.0_mass110 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu1.0_mass110/BiasStudyOutHistograms_cat{cat}Hists.root  1. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu0.0_mass120 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu0.0_mass120/BiasStudyOutHistograms_cat{cat}Hists.root  0. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu1.0_mass120 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu1.0_mass120/BiasStudyOutHistograms_cat{cat}Hists.root  1. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu0.0_mass130 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu0.0_mass130/BiasStudyOutHistograms_cat{cat}Hists.root  0. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu1.0_mass130 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu1.0_mass130/BiasStudyOutHistograms_cat{cat}Hists.root  1. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu0.0_mass140 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu0.0_mass140/BiasStudyOutHistograms_cat{cat}Hists.root  0. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu1.0_mass140 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu1.0_mass140/BiasStudyOutHistograms_cat{cat}Hists.root  1. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu0.0_mass150 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu0.0_mass150/BiasStudyOutHistograms_cat{cat}Hists.root  0. 201 -3. 5. 100 0.5 5.0 50 -5 5 
+{cat} /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu1.0_mass150 /eos/cms/store/caf/user/nckw/MultiPdfBiasStudies/coverage2012/cat{cat}_mu1.0_mass150/BiasStudyOutHistograms_cat{cat}Hists.root  1. 201 -3. 5. 100 0.5 5.0 50 -5 5 

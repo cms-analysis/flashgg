@@ -1,0 +1,45 @@
+year=2011
+sigfilename=CMS-HGG_mva_7TeV_Sig.root
+bkgfilename=CMS-HGG_mva_7TeV_data.root
+sigwsname=cms_hgg_workspace
+bkgwsname=cms_hgg_workspace
+datfile=dat/bsConfig_2011_legacy.dat
+outerDir=coverage2011
+eosPath=/store/caf/user/nckw/MultiPdfBiasStudies
+cats=0,1,2,3,4,5,6,7,8,9,10
+#cats=6,7,8,9,10
+cat={cat} mu=0.0  mlow=-20.  mhigh=20.   matep=0.1 mass=110
+cat={cat} mu=0.0  mlow=-20.  mhigh=20.   matep=0.1 mass=120
+cat={cat} mu=0.0  mlow=-20.  mhigh=20.   matep=0.1 mass=125
+cat={cat} mu=0.0  mlow=-20.  mhigh=20.   matep=0.1 mass=130
+cat={cat} mu=0.0  mlow=-20.  mhigh=20.   matep=0.1 mass=140
+cat={cat} mu=0.0  mlow=-20.  mhigh=20.   matep=0.1 mass=150
+cat={cat} mu=1.0  mlow=-20.  mhigh=20.   matep=0.1 mass=110
+cat={cat} mu=1.0  mlow=-20.  mhigh=20.   matep=0.1 mass=120
+cat={cat} mu=1.0  mlow=-20.  mhigh=20.   matep=0.1 mass=125
+cat={cat} mu=1.0  mlow=-20.  mhigh=20.   matep=0.1 mass=130
+cat={cat} mu=1.0  mlow=-20.  mhigh=20.   matep=0.1 mass=140
+cat={cat} mu=1.0  mlow=-20.  mhigh=20.   matep=0.1 mass=150
+
+year=2012
+sigfilename=CMS-HGG_mva_8TeV_Sig.root
+bkgfilename=CMS-HGG_mva_8TeV_data.root
+sigwsname=cms_hgg_workspace
+bkgwsname=cms_hgg_workspace
+datfile=dat/bsConfig_2012_legacy.dat
+outerDir=coverage2012
+eosPath=/store/caf/user/nckw/MultiPdfBiasStudies
+cats=0,1,2,3,4,5,6,7,8,9,10,11,12,13
+#cats=8,9,11,12
+cat={cat} mu=0.0  mlow=-20.  mhigh=20.   matep=0.1 mass=110
+cat={cat} mu=0.0  mlow=-20.  mhigh=20.   matep=0.1 mass=120
+cat={cat} mu=0.0  mlow=-20.  mhigh=20.   matep=0.1 mass=125
+cat={cat} mu=0.0  mlow=-20.  mhigh=20.   matep=0.1 mass=130
+cat={cat} mu=0.0  mlow=-20.  mhigh=20.   matep=0.1 mass=140
+cat={cat} mu=0.0  mlow=-20.  mhigh=20.   matep=0.1 mass=150
+cat={cat} mu=1.0  mlow=-20.  mhigh=20.   matep=0.1 mass=110
+cat={cat} mu=1.0  mlow=-20.  mhigh=20.   matep=0.1 mass=120
+cat={cat} mu=1.0  mlow=-20.  mhigh=20.   matep=0.1 mass=125
+cat={cat} mu=1.0  mlow=-20.  mhigh=20.   matep=0.1 mass=130
+cat={cat} mu=1.0  mlow=-20.  mhigh=20.   matep=0.1 mass=140
+cat={cat} mu=1.0  mlow=-20.  mhigh=20.   matep=0.1 mass=150

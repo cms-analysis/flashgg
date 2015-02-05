@@ -1,0 +1,17 @@
+<use name="HiggsAnalysis/CombinedLimit"/>
+<use name="FWCore/Framework"/>
+<use name="rootrflx"/>
+<use name="roofitcore"/>
+<use name="roofit"/>
+<use name="roostats"/>
+<use name="rootmath"/>
+<use name="root"/>
+<use name="rootcint"/>
+
+<lib name="TreePlayer"/>
+<lib name="PyROOT"/>
+<export>
+<lib name="1"/>
+</export>
+
+

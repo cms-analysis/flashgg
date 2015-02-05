@@ -1,0 +1,68 @@
+# .dat file dumped by FullMvaToolkit
+
+IntLumi=12195
+# Testing hypothesis
+mHMinimum=110.0
+mHMaximum=150.0
+mHStep=0.5
+
+# Options for the mass spectrum range
+massMin=100
+massMax=180
+nDataBins=160
+
+# Options for the sidebands
+signalRegionWidth=0.02
+sidebandWidth=0.02
+numberOfSidebands=6
+numberOfSidebandsForAlgos=3
+numberOfSidebandGaps=1
+massSidebandMin=99.5
+massSidebandMax=180.0
+
+# OptimizedBinEdges
+rederiveOptimizedBinEdges=0
+LepBinEdges_110=1.0800,1.1200,1.1600,1.2000
+VbfBinEdges_110=1.0000,1.0400,1.0800
+GradBinEdges_110=-1.0000,0.0688,0.3320,0.5512,0.7516,0.8744,1.0000
+LepBinEdges_115=1.0800,1.1200,1.1600,1.2000
+VbfBinEdges_115=1.0000,1.0400,1.0800
+GradBinEdges_115=-1.0000,0.0936,0.3308,0.5384,0.7288,0.8640,1.0000
+LepBinEdges_120=1.0800,1.1200,1.1600,1.2000
+VbfBinEdges_120=1.0000,1.0400,1.0800
+GradBinEdges_120=-1.0000,0.0860,0.3300,0.5280,0.7540,0.8548,1.0000
+LepBinEdges_125=1.0800,1.1200,1.1600,1.2000
+VbfBinEdges_125=1.0000,1.0400,1.0800
+GradBinEdges_125=-1.0000,0.0308,0.2384,0.4384,0.6604,0.8436,1.0000
+LepBinEdges_130=1.0800,1.1200,1.1600,1.2000
+VbfBinEdges_130=1.0000,1.0400,1.0800
+GradBinEdges_130=-1.0000,0.0872,0.3156,0.5172,0.6732,0.8400,1.0000
+LepBinEdges_135=1.0800,1.1200,1.1600,1.2000
+VbfBinEdges_135=1.0000,1.0400,1.0800
+GradBinEdges_135=-1.0000,-0.0208,0.2016,0.3900,0.6236,0.8324,1.0000
+LepBinEdges_140=1.0800,1.1200,1.1600,1.2000
+VbfBinEdges_140=1.0000,1.0400,1.0800
+GradBinEdges_140=-1.0000,0.0400,0.2620,0.4228,0.5360,0.7276,1.0000
+LepBinEdges_145=1.0800,1.1200,1.1600,1.2000
+VbfBinEdges_145=1.0000,1.0400,1.0800
+GradBinEdges_145=-1.0000,-0.0316,0.1816,0.3684,0.5652,0.7964,1.0000
+LepBinEdges_150=1.0800,1.1200,1.1600,1.2000
+VbfBinEdges_150=1.0000,1.0400,1.0800
+GradBinEdges_150=-1.0000,-0.0396,0.1816,0.3632,0.5240,0.7888,1.0000
+
+# General options
+nInclusiveCategories=1
+includeVBF=1
+nVBFCategories=2
+includeLEP=1
+nLEPCategories=3
+
+# smearing flags
+doEscaleSyst=1
+doEresolSyst=1
+doRegressionSyst=1
+doPhotonIdEffSyst=1
+doVtxEffSyst=1
+doTriggerEffSyst=1
+doPhotonMvaIdSyst=1
+#doPdfWeight=1

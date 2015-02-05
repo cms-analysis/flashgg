@@ -1,0 +1,195 @@
+year=2011
+sigfilename=CMS-HGG_massfacmva_jan16reload.root
+bkgfilename=CMS-HGG_massfacmva_jan16reload.root
+sigwsname=cms_hgg_workspace
+bkgwsname=cms_hgg_workspace
+datfile=dat/bsConfig_2011.dat
+outerDir=coverage2011
+eosPath=/store/group/phys_higgs/cmshgg/analyzed/BackgroundProfiling_v2
+cat=0 mu=-1.5 mlow=-6.5 mhigh=3.5  mstep=0.5 mass=125
+cat=0 mu=-1.  mlow=-6.  mhigh=4.   mstep=0.5 mass=125
+cat=0 mu=-0.5 mlow=-5.5 mhigh=4.5  mstep=0.5 mass=125
+cat=0 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=125
+cat=0 mu=0.5  mlow=-4.5 mhigh=5.5  mstep=0.5 mass=125
+cat=0 mu=1.   mlow=-4.  mhigh=6.   mstep=0.5 mass=125
+cat=0 mu=1.5  mlow=-3.5 mhigh=6.5  mstep=0.5 mass=125
+cat=1 mu=-1.5 mlow=-6.5 mhigh=3.5  mstep=0.5 mass=125
+cat=1 mu=-1.  mlow=-6.  mhigh=4.   mstep=0.5 mass=125
+cat=1 mu=-0.5 mlow=-5.5 mhigh=4.5  mstep=0.5 mass=125
+cat=1 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=125
+cat=1 mu=0.5  mlow=-4.5 mhigh=5.5  mstep=0.5 mass=125
+cat=1 mu=1.   mlow=-4.  mhigh=6.   mstep=0.5 mass=125
+cat=1 mu=1.5  mlow=-3.5 mhigh=6.5  mstep=0.5 mass=125
+cat=2 mu=-1.5 mlow=-6.5 mhigh=3.5  mstep=0.5 mass=125
+cat=2 mu=-1.  mlow=-6.  mhigh=4.   mstep=0.5 mass=125
+cat=2 mu=-0.5 mlow=-5.5 mhigh=4.5  mstep=0.5 mass=125
+cat=2 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=125
+cat=2 mu=0.5  mlow=-4.5 mhigh=5.5  mstep=0.5 mass=125
+cat=2 mu=1.   mlow=-4.  mhigh=6.   mstep=0.5 mass=125
+cat=2 mu=1.5  mlow=-3.5 mhigh=6.5  mstep=0.5 mass=125
+cat=3 mu=-1.5 mlow=-6.5 mhigh=3.5  mstep=0.5 mass=125
+cat=3 mu=-1.  mlow=-6.  mhigh=4.   mstep=0.5 mass=125
+cat=3 mu=-0.5 mlow=-5.5 mhigh=4.5  mstep=0.5 mass=125
+cat=3 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=125
+cat=3 mu=0.5  mlow=-4.5 mhigh=5.5  mstep=0.5 mass=125
+cat=3 mu=1.   mlow=-4.  mhigh=6.   mstep=0.5 mass=125
+cat=3 mu=1.5  mlow=-3.5 mhigh=6.5  mstep=0.5 mass=125
+cat=4 mu=-1.5 mlow=-6.5 mhigh=3.5  mstep=0.5 mass=125
+cat=4 mu=-1.  mlow=-6.  mhigh=4.   mstep=0.5 mass=125
+cat=4 mu=-0.5 mlow=-5.5 mhigh=4.5  mstep=0.5 mass=125
+cat=4 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=125
+cat=4 mu=0.5  mlow=-4.5 mhigh=5.5  mstep=0.5 mass=125
+cat=4 mu=1.   mlow=-4.  mhigh=6.   mstep=0.5 mass=125
+cat=4 mu=1.5  mlow=-3.5 mhigh=6.5  mstep=0.5 mass=125
+
+year=2011
+sigfilename=CMS-HGG_massfacmva_jan16reload.root
+bkgfilename=CMS-HGG_massfacmva_jan16reload.root
+sigwsname=cms_hgg_workspace
+bkgwsname=cms_hgg_workspace
+datfile=dat/bsConfig_2011.dat
+outerDir=coverage2011
+eosPath=/store/group/phys_higgs/cmshgg/analyzed/BackgroundProfiling_v2
+cat=0 mu=1.0  mlow=-3.  mhigh=5.   mstep=0.5 mass=110
+cat=0 mu=1.0  mlow=-3.  mhigh=5.   mstep=0.5 mass=120
+cat=0 mu=1.0  mlow=-3.  mhigh=5.   mstep=0.5 mass=130
+cat=0 mu=1.0  mlow=-3.  mhigh=5.   mstep=0.5 mass=140
+cat=0 mu=1.0  mlow=-3.  mhigh=5.   mstep=0.5 mass=150
+cat=1 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=110
+cat=1 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=120
+cat=1 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=130
+cat=1 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=140
+cat=1 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=150
+cat=2 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=110
+cat=2 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=120
+cat=2 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=130
+cat=2 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=140
+cat=2 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=150
+cat=3 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=110
+cat=3 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=120
+cat=3 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=130
+cat=3 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=140
+cat=3 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=150
+cat=4 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=110
+cat=4 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=120
+cat=4 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=130
+cat=4 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=140
+cat=4 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=150
+
+year=2012
+sigfilename=hgg.inputsig_8TeV_nosplitVH_MVA.root
+bkgfilename=hgg.inputbkgdata_8TeV_MVA.root
+sigwsname=wsig_8TeV
+bkgwsname=cms_hgg_workspace
+datfile=dat/bsConfig_2012.dat
+outerDir=coverage2012
+eosPath=/store/group/phys_higgs/cmshgg/analyzed/BackgroundProfiling_v2
+cat=0 mu=-1.5 mlow=-6.5 mhigh=3.5  mstep=0.5 mass=125
+cat=0 mu=-1.  mlow=-6.  mhigh=4.   mstep=0.5 mass=125
+cat=0 mu=-0.5 mlow=-5.5 mhigh=4.5  mstep=0.5 mass=125
+cat=0 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=125
+cat=0 mu=0.5  mlow=-4.5 mhigh=5.5  mstep=0.5 mass=125
+cat=0 mu=1.   mlow=-4.  mhigh=6.   mstep=0.5 mass=125
+cat=0 mu=1.5  mlow=-3.5 mhigh=6.5  mstep=0.5 mass=125
+cat=1 mu=-1.5 mlow=-6.5 mhigh=3.5  mstep=0.5 mass=125
+cat=1 mu=-1.  mlow=-6.  mhigh=4.   mstep=0.5 mass=125
+cat=1 mu=-0.5 mlow=-5.5 mhigh=4.5  mstep=0.5 mass=125
+cat=1 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=125
+cat=1 mu=0.5  mlow=-4.5 mhigh=5.5  mstep=0.5 mass=125
+cat=1 mu=1.   mlow=-4.  mhigh=6.   mstep=0.5 mass=125
+cat=1 mu=1.5  mlow=-3.5 mhigh=6.5  mstep=0.5 mass=125
+cat=2 mu=-1.5 mlow=-6.5 mhigh=3.5  mstep=0.5 mass=125
+cat=2 mu=-1.  mlow=-6.  mhigh=4.   mstep=0.5 mass=125
+cat=2 mu=-0.5 mlow=-5.5 mhigh=4.5  mstep=0.5 mass=125
+cat=2 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=125
+cat=2 mu=0.5  mlow=-4.5 mhigh=5.5  mstep=0.5 mass=125
+cat=2 mu=1.   mlow=-4.  mhigh=6.   mstep=0.5 mass=125
+cat=2 mu=1.5  mlow=-3.5 mhigh=6.5  mstep=0.5 mass=125
+cat=3 mu=-1.5 mlow=-6.5 mhigh=3.5  mstep=0.5 mass=125
+cat=3 mu=-1.  mlow=-6.  mhigh=4.   mstep=0.5 mass=125
+cat=3 mu=-0.5 mlow=-5.5 mhigh=4.5  mstep=0.5 mass=125
+cat=3 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=125
+cat=3 mu=0.5  mlow=-4.5 mhigh=5.5  mstep=0.5 mass=125
+cat=3 mu=1.   mlow=-4.  mhigh=6.   mstep=0.5 mass=125
+cat=3 mu=1.5  mlow=-3.5 mhigh=6.5  mstep=0.5 mass=125
+cat=4 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=125
+cat=4 mu=0.5  mlow=-4.5 mhigh=5.5  mstep=0.5 mass=125
+cat=4 mu=1.   mlow=-4.  mhigh=6.   mstep=0.5 mass=125
+cat=4 mu=1.5  mlow=-3.5 mhigh=6.5  mstep=0.5 mass=125
+cat=4 mu=2.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=125
+cat=5 mu=-1.5 mlow=-6.5 mhigh=3.5  mstep=0.5 mass=125
+cat=5 mu=-1.  mlow=-6.  mhigh=4.   mstep=0.5 mass=125
+cat=5 mu=-0.5 mlow=-5.5 mhigh=4.5  mstep=0.5 mass=125
+cat=5 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=125
+cat=5 mu=0.5  mlow=-4.5 mhigh=5.5  mstep=0.5 mass=125
+cat=5 mu=1.   mlow=-4.  mhigh=6.   mstep=0.5 mass=125
+cat=5 mu=1.5  mlow=-3.5 mhigh=6.5  mstep=0.5 mass=125
+cat=6 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=125
+cat=6 mu=0.5  mlow=-4.5 mhigh=5.5  mstep=0.5 mass=125
+cat=6 mu=1.   mlow=-4.  mhigh=6.   mstep=0.5 mass=125
+cat=6 mu=1.5  mlow=-3.5 mhigh=6.5  mstep=0.5 mass=125
+cat=6 mu=2.   mlow=-3.  mhigh=7.   mstep=0.5 mass=125
+cat=7 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=125
+cat=7 mu=0.5  mlow=-4.5 mhigh=5.5  mstep=0.5 mass=125
+cat=7 mu=1.   mlow=-4.  mhigh=6.   mstep=0.5 mass=125
+cat=7 mu=1.5  mlow=-3.5 mhigh=6.5  mstep=0.5 mass=125
+cat=7 mu=2.   mlow=-3.  mhigh=7.   mstep=0.5 mass=125
+cat=8 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=125
+cat=8 mu=0.5  mlow=-4.5 mhigh=5.5  mstep=0.5 mass=125
+cat=8 mu=1.   mlow=-4.  mhigh=6.   mstep=0.5 mass=125
+cat=8 mu=1.5  mlow=-3.5 mhigh=6.5  mstep=0.5 mass=125
+cat=8 mu=2.   mlow=-3.  mhigh=7.   mstep=0.5 mass=125
+
+year=2012
+sigfilename=hgg.inputsig_8TeV_nosplitVH_MVA.root
+bkgfilename=hgg.inputbkgdata_8TeV_MVA.root
+sigwsname=wsig_8TeV
+bkgwsname=cms_hgg_workspace
+datfile=dat/bsConfig_2012.dat
+outerDir=coverage2012
+eosPath=/store/group/phys_higgs/cmshgg/analyzed/BackgroundProfiling_v2
+cat=0 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=110
+cat=0 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=120
+cat=0 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=130
+cat=0 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=140
+cat=0 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=150
+cat=1 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=110
+cat=1 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=120
+cat=1 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=130
+cat=1 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=140
+cat=1 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=150
+cat=2 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=110
+cat=2 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=120
+cat=2 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=130
+cat=2 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=140
+cat=2 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=150
+cat=3 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=110
+cat=3 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=120
+cat=3 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=130
+cat=3 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=140
+cat=3 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=150
+cat=4 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=110
+cat=4 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=120
+cat=4 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=130
+cat=4 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=140
+cat=4 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=150
+cat=5 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=110
+cat=5 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=120
+cat=5 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=130
+cat=5 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=140
+cat=5 mu=0.0  mlow=-5.  mhigh=5.   mstep=0.5 mass=150
+cat=6 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=110
+cat=6 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=120
+cat=6 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=130
+cat=6 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=140
+cat=6 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=150
+cat=7 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=110
+cat=7 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=120
+cat=7 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=130
+cat=7 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=140
+cat=7 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=150
+cat=8 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=110
+cat=8 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=120
+cat=8 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=130
+cat=8 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=140
+cat=8 mu=1.0  mlow=-3.  mhigh=7.   mstep=0.5 mass=150

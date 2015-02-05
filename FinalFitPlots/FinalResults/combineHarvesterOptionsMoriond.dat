@@ -1,0 +1,32 @@
+datacard=hgg_comb.txt
+files=hgg.inputsig_7TeV.root,hgg.inputsig_8TeV.root,hgg.inputbkgdata_7TeV.root,hgg.inputbkgdata_8TeV.root
+
+# limit
+outDir=combineJobs/Asymptotic											method=Asymptotic expected=0 mhLow=110. mhHigh=150. mhStep=1. jobs=41
+
+# exp pval
+outDir=combineJobs/ExpProfileLikelihood 					method=ProfileLikelihood expected=1 expectSignal=1 mhLow=110. mhHigh=150. mhStep=1. jobs=41 
+outDir=combineJobs/ExpProfileLikelihood/inc 			method=ProfileLikelihood expected=1 expectSignal=1 mhLow=110. mhHigh=150. mhStep=1. jobs=41 splitChannels=ch1_cat0_7TeV,ch1_cat1_7TeV,ch1_cat2_7TeV,ch1_cat3_7TeV,ch2_cat0_8TeV,ch2_cat1_8TeV,ch2_cat2_8TeV,ch2_cat3_8TeV
+outDir=combineJobs/ExpProfileLikelihood/vbf				method=ProfileLikelihood expected=1 expectSignal=1 mhLow=110. mhHigh=150. mhStep=1. jobs=41 splitChannels=ch1_cat4_7TeV,ch2_cat4_8TeV,ch2_cat5_8TeV
+outDir=combineJobs/ExpProfileLikelihood/ass				method=ProfileLikelihood expected=1 expectSignal=1 mhLow=110. mhHigh=150. mhStep=1. jobs=41 splitChannels=ch2_cat6_8TeV,ch2_cat7_8TeV,ch2_cat8_8TeV
+
+# exp pval @ 125
+outDir=combineJobs/ExpProfileLikelihood_m125 			method=ProfileLikelihood expected=1 expectSignal=1 expectSignalMass=125 mhLow=110. mhHigh=150. mhStep=1. jobs=41 
+
+# obs pval
+outDir=combineJobs/ProfileLikelihood 							method=ProfileLikelihood expected=0 mhLow=110. mhHigh=150. mhStep=1. jobs=41 
+outDir=combineJobs/ProfileLikelihood/inc 					method=ProfileLikelihood expected=0 mhLow=110. mhHigh=150. mhStep=1. jobs=41 splitChannels=ch1_cat0_7TeV,ch1_cat1_7TeV,ch1_cat2_7TeV,ch1_cat3_7TeV,ch2_cat0_8TeV,ch2_cat1_8TeV,ch2_cat2_8TeV,ch2_cat3_8TeV
+outDir=combineJobs/ProfileLikelihood/vbf					method=ProfileLikelihood expected=0 mhLow=110. mhHigh=150. mhStep=1. jobs=41 splitChannels=ch1_cat4_7TeV,ch2_cat4_8TeV,ch2_cat5_8TeV
+outDir=combineJobs/ProfileLikelihood/ass					method=ProfileLikelihood expected=0 mhLow=110. mhHigh=150. mhStep=1. jobs=41 splitChannels=ch2_cat6_8TeV,ch2_cat7_8TeV,ch2_cat8_8TeV
+
+# nll scans
+outDir=combineJobs/MuScan													method=MuScan	expected=0 mh=125 muLow=0. muHigh=2. jobs=5 pointsperjob=10 opts=--squareDistPoi
+outDir=combineJobs/MHScan													method=MHScan	expected=0 mhLow=122. mhHigh=128. jobs=5 pointsperjob=10 opts=--squareDistPoi
+outDir=combineJobs/RVScan													method=RVScan expected=0 mh=125 rvLow=-2. rvHigh=3. jobs=5 pointsperjob=10 opts=--squareDistPoi
+outDir=combineJobs/RVRFScan												method=RVRFScan expected=0 mh=125 rvLow=-1. rvHigh=4.5 rfLow=-1. rfHigh=2.5 jobs=100 pointsperjob=50
+outDir=combineJobs/MuMHScan												method=MuMHScan	expected=0 muLow=0. muHigh=2. mhLow=122. mhHigh=128.	jobs=100 pointsperjob=50
+
+#outDir=combineJobs/MuScan													method=MuScan	expected=0 mh=125 muLow=-4. muHigh=6. jobs=21
+#outDir=combineJobs/MHScan													method=MHScan expected=0 mhLow=122 mhHigh=128 jobs=9 
+#outDir=combineJobs/RVRFScan												method=RVRFScan expected=0 rvLow=-5. rvHigh=5. rfLow=-5. rfHigh=5. jobs=100
+#outDir=combineJobs/MuMHScan												method=MuMHScan	expected=0 muLow=-4. muHigh=6. mhLow=122 mhHigh=128 jobs=100

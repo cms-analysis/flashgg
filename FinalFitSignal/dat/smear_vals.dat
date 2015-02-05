@@ -1,0 +1,13 @@
+# These numbers are calculated as: 
+# sqrt(sig_eff_smeared^2 + sig_eff_unsmeared^2)
+# This gets added in later so that the nuissance is treated properly
+
+CMS_hgg_constsmearcat0 0.0080838
+CMS_hgg_constsmearcat1 0.0083661
+CMS_hgg_constsmearcat2 0.0086261
+CMS_hgg_constsmearcat3 0.0134325
+CMS_hgg_constsmearcat4 0.0119792
+CMS_hgg_constsmearcat5 0.0111493
+CMS_hgg_constsmearcat6 0.015272
+CMS_hgg_constsmearcat7 0.015013
+CMS_hgg_constsmearcat8 0.0120657
