@@ -17,6 +17,9 @@
 
 #include "flashgg/TagAlgos/interface/StringHelpers.h"
 
+#include "CommonTools/Utils/interface/StringObjectFunction.h"
+#include "CommonTools/Utils/interface/StringCutObjectSelector.h"
+
 namespace flashgg {
 	
 	template<class FunctorT, class ObjectT>
