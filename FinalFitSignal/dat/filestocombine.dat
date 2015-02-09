@@ -1,7 +1,0 @@
-# list of files to package up into output
-# filename proc_cat
-
-CMS-HGG_ggh_cat0.root ggh_cat0
-CMS-HGG_ggh_cat1.root ggh_cat1
-CMS-HGG_ggh_cat2.root ggh_cat2
-CMS-HGG_ggh_cat3.root ggh_cat3

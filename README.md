@@ -22,21 +22,16 @@ flashgg
  git clone -b flashgg https://github.com/ldcorpe/Dummy
  ```
 
-4. Get the HiggsAnalysis/CombinedLimit tool :
- ```
- git clone https://github.com/cms-analysis/HiggsAnalysis-CombinedLimit.git HiggsAnalysis/CombinedLimit
- ```
-
-5. Get weight counter from musella until it is integrated in the release
+4. Get weight counter from musella until it is integrated in the release
   ```
   git cms-addpkg CommonTools/UtilAlgos
   git cms-addpkg DataFormats/Common
   git cms-merge-topic musella:topic-weights-count
   ```
 
-6. Fork flashgg repository on the web here: https://github.com/cms-analysis/flashgg
+5. Fork flashgg repository on the web here: https://github.com/cms-analysis/flashgg
 
-7. In CMSSW_7_2_2_patch2/src, do commands something like: 
+6. In CMSSW_7_2_2_patch2/src, do commands something like: 
  ```
  cd $CMSSW_BASE/src
  git clone git@github.com:yourusername/flashgg.git flashgg
@@ -45,7 +40,7 @@ flashgg
  # see https://help.github.com/articles/fork-a-repo for more about this 
  ```
 
-8. Now build, a very basic workflow test:
+7. Now build, a very basic workflow test:
  ```
  cd $CMSSW_BASE/src
  scram b
