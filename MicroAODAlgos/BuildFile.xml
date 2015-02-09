@@ -5,6 +5,8 @@
 <use name="flashgg/MicroAODFormats"/>
 <use name="Geometry/CaloTopology" />
 <use name="RecoEcal/EgammaCoreTools" />
+<use name="FWCore/Utilities"/>
+<use name="CommonTools/Utils"/>
 <use name="roottmva"/>
 <export>
   <lib   name="1"/>
