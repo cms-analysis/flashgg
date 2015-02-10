@@ -137,8 +137,8 @@ namespace flashgg {
     //// // this is hacky and dangerous
     //// const reco::VertexCollection* orig_collection = static_cast<const reco::VertexCollection*>(vertices->product());
 
-    EcalClusterLazyTools zsLazyTool(evt, iSetup, ecalHitEBToken_, ecalHitEEToken_);        
-    noZS::EcalClusterLazyTools noZsLazyTool(evt, iSetup, ecalHitEBToken_, ecalHitEEToken_);        
+    EcalClusterLazyTools zsLazyTool(evt, iSetup, ecalHitEBToken_, ecalHitEEToken_, ecalHitESToken_);        
+    noZS::EcalClusterLazyTools noZsLazyTool(evt, iSetup, ecalHitEBToken_, ecalHitEEToken_, ecalHitESToken_);        
 
     for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
 

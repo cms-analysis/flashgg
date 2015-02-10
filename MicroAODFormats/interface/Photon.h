@@ -68,6 +68,8 @@ namespace flashgg {
     float const getS4() const {return S4_;};   
     float const getpfPhoIso04() const {return pfPhoIso04_;};   
     float const getpfPhoIso03() const {return pfPhoIso03_;};   
+    float const getpfNeutIso04() const {return pfNeutIso04_;};
+    float const getpfNeutIso03() const {return pfNeutIso03_;};
     std::map<edm::Ptr<reco::Vertex>,float> const getpfChgIso04() const {return pfChgIso04_;};
     std::map<edm::Ptr<reco::Vertex>,float> const getpfChgIso03() const {return pfChgIso03_;};
     std::map<edm::Ptr<reco::Vertex>,float> const getpfChgIso02() const {return pfChgIso02_;};
