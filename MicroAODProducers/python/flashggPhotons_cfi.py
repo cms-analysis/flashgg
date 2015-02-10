@@ -23,5 +23,5 @@ flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                 
                                 genPhotonTag = cms.InputTag("flashggGenPhotonsExtra"),
                                 maxGenDeltaR = cms.double(0.1),
-                                copyExtraGenInfo = cms.bool(False),
+                                copyExtraGenInfo = cms.bool(True),
                                 )
