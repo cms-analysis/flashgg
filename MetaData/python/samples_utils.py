@@ -4,7 +4,7 @@ from das_cli import get_data as das_query
 
 from pprint import pprint
 
-import os,json,fcntl
+import os,json,fcntl,sys
 from parallel  import Parallel
 from threading import Semaphore
 
@@ -30,7 +30,7 @@ class SamplesManager(object):
                  catalog,
                  cross_sections=["$CMSSW_BASE/src/flashgg/MetaData/data/cross_sections.json"],
                  dbs_instance="prod/phys03",
-                 queue=None,
+                 queue=None
                  ):
         """
         Constructur:
@@ -66,11 +66,11 @@ class SamplesManager(object):
         if "*" in datasets:
             response = das_query("https://cmsweb.cern.ch","dataset dataset=%s | grep dataset.name" % datasets, 0, 0, False, self.dbs_instance_)
         
-        datasets=[]
-        for d in response["data"]:
-            datasets.append( d["dataset"][0]["name"] )
-        print "Datasets to import"
-        print "\n".join(datasets)
+            datasets=[]
+            for d in response["data"]:
+                datasets.append( d["dataset"][0]["name"] )
+            print "Datasets to import"
+            print "\n".join(datasets)
             
         for dsetName in datasets:
             print "Importing %s" % dsetName
@@ -93,18 +93,57 @@ class SamplesManager(object):
         
         files=[]
         for d in response["data"]:
-            files.append( { "name" : d["file"][0]["name"], "nevents" : d["file"][0]["nevents"] } )
-        
+            for jf in d["file"]:
+                if "nevents" in jf:
+                    files.append({ "name" : jf["name"], "nevents" : jf["nevents"] })
+                    break
+                ## files.append( { "name" : d["file"][0]["name"], "nevents" : d["file"][0]["nevents"] } )
+
         return files
 
+    def importFromEOS(self,folders):
+        """
+        Import datasets from DAS to the catalog.
+        @datasets: dataset to be imported
+        """
+        catalog = self.readCatalog()
+
+        for folder in folders:
+            dsetName = ""
+            while not len(dsetName.split("/")) == 4:
+                print "enter dataset name for folder %s" % folder, 
+                dsetName = raw_input()
+                
+            print "Importing %s as %s" % (folder,dsetName)
+            files = self.getFilesFomEOS(folder)            
+            if dsetName in catalog:
+                catalog[ dsetName ]["files"]  = files
+            else:
+                catalog[ dsetName ] = { "files" : files }
+            
+        print "Writing catalog"
+        self.writeCatalog(catalog)
+        print "Done"
+        
     def getFilesFomEOS(self,dsetName):
         """
         Read dataset files crawling EOS.
         @dsetName: dataset name
         Note: not implemented
         """
-        pass
-    
+        
+        if not self.parallel_:
+            self.parallel_ = Parallel(200,self.queue_)
+        
+        ret,out = self.parallel_.run("/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select",["find",dsetName],interactive=True)[2]
+        print out
+        files = []
+        for line in out.split("\n"):
+            if line.endswith(".root"):
+                files.append( {"name":line.replace("/eos/cms",""), "nevents":0} )
+
+        return files
+
     def findDuplicates(self,dsetName):
         """
         Find duplicate job outputs in dataset.
@@ -127,7 +166,8 @@ class SamplesManager(object):
         """
         catalog = self.readCatalog()
         
-        self.parallel_ = Parallel(100,self.queue_)
+        self.parallel_ = Parallel(50,self.queue_)
+        ## self.parallel_ = Parallel(1,self.queue_)
 
         print "Checking all datasets"
         for dataset in catalog.keys():            
@@ -142,11 +182,13 @@ class SamplesManager(object):
                 if ret != 0:
                     info["bad"] = True
                 else:
-                    extraInfo = json.loads(out)
+                    extraInfo = json.loads(str(out))
                     for key,val in extraInfo.iteritems():
                         info[key] = val
-        print "Writing catalog"
-        self.writeCatalog(catalog)
+
+            print "Writing catalog"
+            self.writeCatalog(catalog)
+        
         print "Done"
     
     def checkDatasetFiles(self,dsetName,catalog=None):
@@ -169,6 +211,7 @@ class SamplesManager(object):
         info = catalog[dsetName]
         files = info["files"]
 
+        print len(files)
         for ifile,finfo in enumerate(files):            
             name = finfo["name"]
             self.parallel_.run(SamplesManager.checkFile,[self,name,dsetName,ifile])
@@ -215,9 +258,22 @@ class SamplesManager(object):
         Check if file is valid.
         @fileName: file name
         """
-        fName = "root://eoscms//eos/cms%s" % fileName
-        ret,out = self.parallel_.run("fggCheckFile.py",[fName,"2>/dev/null"],interactive=True)[2]
+        ## fName = "root://eoscms//eos/cms%s" % fileName
+        fName = fileName
+        tmp = ".tmp%s_%d.json"%(dsetName.replace("/","_"),ifile)
+        ## print "fggCheckFile.py",[fName,tmp,"2>/dev/null"]
+        ret,out = self.parallel_.run("fggCheckFile.py",[fName,tmp,"2>/dev/null"],interactive=True)[2]
         
+        try:
+            fout = open(tmp)
+            out = fout.read()
+            fout.close()
+        except IOError, e:
+            print ret, out 
+            print e
+            out = "{}"
+
+        os.remove(tmp)
         return dsetName,ifile,fileName,ret,out
     
     
@@ -273,7 +329,8 @@ class SamplesManager(object):
         found = False
         xsec  = 0.
         allFiles = []
-        totEvents = 0
+        totEvents = 0.
+        totWeights = 0.
         for dataset,info in catalog.iteritems():
             empty,prim,sec,tier=dataset.split("/")
             if prim == primary:
@@ -289,6 +346,7 @@ class SamplesManager(object):
                         continue
                     nev, name = fil["nevents"], fil["name"]
                     totEvents += nev
+                    totWeights += fil.get("weights",0.)
                     allFiles.append(name)
                     if maxEvents > -1 and totEvents > maxEvents:
                         break
@@ -296,14 +354,19 @@ class SamplesManager(object):
             raise Exception("No dataset matched the request: /%s/%s" % ( primary, str(secondary) ))
         
         if maxEvents > -1 and totEvents > maxEvents:
+            totWeights = maxEvents / totEvents * totWeights
             totEvents = maxEvents
+        maxEvents = int(totEvents)
         
+        if totWeights != 0.:
+            totEvents = totWeights
+            
         if jobId != -1:
             files = [ allFiles[i] for i in range(jobId,len(allFiles),nJobs) ]
         else:
             files = allFiles
 
-        return found,xsec,totEvents,files
+        return found,xsec,totEvents,files,maxEvents
 
     def getAllDatasets(self):
         catalog = self.readCatalog()
@@ -320,6 +383,7 @@ class SamplesManagerCli(SamplesManager):
 
         commands = [ "",
                      "import   imports datasets from DBS to catalog", 
+                     "eosimport   imports datasets from EOS", 
                      "list     lists datasets in catalog", 
                      "review   review catalog to remove datasets", 
                      "check    check files in datasets for errors and mark bad files"
@@ -343,6 +407,11 @@ Commands:
                             dest="campaign",action="store",type="string",
                             default="",
                             help="production campaign. default: %default",
+                            ),
+                make_option("-d","--dbs-instance",
+                            dest="dbs_instance",action="store",type="string",
+                            default="prod/phys03",
+                            help="DBS instance to use. default: %default",
                             ),
                 make_option("-m","--metaDataSrc",
                             dest="metaDataSrc",action="store",type="string",
@@ -375,30 +444,47 @@ Commands:
         (options,args) = (self.options,self.args)
     
         self.mn = SamplesManager("$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % (options.metaDataSrc,options.campaign),
-                                 )
+                                 dbs_instance=options.dbs_instance)
         
         ## pprint( mn.cross_sections_ )
         if len(args) == 0:
-            args = ["import"]
+            args = ["list"]
         
-        for a in args:
-            method = getattr(self,"run_%s" % a,None)
-            if not method:
-                sys.exit("Unkown command %s" % a)
+        method = getattr(self,"run_%s" % args[0],None)
+        if not method:
+            sys.exit("Unkown command %s" % a)
+        if len(args)>1:
+            method(*args[1:])
+        else:
             method()
                 
-    def run_import(self):
-        self.mn.importFromDAS("/*/*%s-%s*/USER" % (self.options.campaign,self.options.flashggVersion) )
+    def run_import(self,query=None):
+        if query:
+            self.mn.importFromDAS([query])
+        else:
+            self.mn.importFromDAS("/*/*%s-%s*/USER" % (self.options.campaign,self.options.flashggVersion) )
     
+    def run_eosimport(self,*args):
+        self.mn.importFromEOS(args)
+        
     def run_check(self):
         self.mn.checkAllDatasets()
     
     def run_list(self):
         print
         print "Datasets in catalog:"
-        datasets = self.mn.getAllDatasets()[0]
+        datasets,catalog = self.mn.getAllDatasets()
+        ## datasets = [ d.rsplit("/",1)[0] for d in datasets ]
+        largest = max( [len(d) for d in datasets] )
         for d in datasets:
-            print d
+            nevents = 0.
+            weights = 0.
+            for fil in catalog[d]["files"]:
+                nevents += fil.get("nevents",0.)
+                weights += fil.get("weights",0.)
+            print d.ljust(largest), ("%d" % int(nevents)).rjust(8),
+            if weights != 0.: print ("%1.2g" % ( weights/nevents ) )
+            else: print
             
     def run_clear(self):
         self.mn.clearCatalog()

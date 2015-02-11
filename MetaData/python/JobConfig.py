@@ -104,7 +104,7 @@ class JobConfig(object):
         if self.dryRun:
             import sys
             if self.dataset:
-                name,xsec,totEvents,files = self.dataset
+                name,xsec,totEvents,files,maxEvents = self.dataset
                 if len(files) != 0:
                     if isFwlite:
                         print "hadd:%s" % self.outputFile
@@ -119,7 +119,8 @@ class JobConfig(object):
 
 
         if self.dataset:
-            name,xsec,totEvents,files = self.dataset
+            name,xsec,totEvents,files,maxEvents = self.dataset
+            self.maxEvents = int(maxEvents)
             
             processId = self.getProcessId(name)
 
@@ -145,7 +146,7 @@ class JobConfig(object):
  
         ## fwlite
         if isFwlite:
-            process.fwliteInput.maxEvents = self.options.maxEvents
+            process.fwliteInput.maxEvents = self.maxEvents
             process.fwliteOutput.fileName = self.outputFile
         ## full framework
         else:
@@ -189,13 +190,21 @@ class JobConfig(object):
 
     
     def getProcessId(self,name):
+        return self.getProcessId_(name).replace("/","") ## .replace("-","_")
+    
+    def getProcessId_(self,name):
         if self.processId != "":
             return self.processId
         
+        ## print name, self.processIdMap
         if name in self.processIdMap:
             return self.processIdMap[name]
 
         primSet,secSet = name.rsplit("/")[1:3]
+        if primSet in self.processIdMap:
+            return self.processIdMap[primSet]
+
+        primSet = "/"+primSet
         if primSet in self.processIdMap:
             return self.processIdMap[primSet]
         
