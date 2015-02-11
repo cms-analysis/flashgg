@@ -5,7 +5,7 @@ photonDumpConfig = cms.PSet(
     src = cms.InputTag("flashggPhotons"),
     generatorInfo = cms.InputTag("generator"),
     processId = cms.string(""),
-    maxCandPerEvent = cms.int32(1),
+    maxCandPerEvent = cms.int32(2),
     lumiWeight = cms.double(1.0),
     classifierCfg = cms.PSet(categories=cms.VPSet()),
     categories = cms.VPSet(),
