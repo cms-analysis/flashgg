@@ -14,6 +14,7 @@
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "flashgg/TagFormats/interface/VHlooseTag.h"
 #include "flashgg/TagFormats/interface/VHtightTag.h"
+#include "flashgg/TagFormats/interface/VHhadronicTag.h"
 #include <map>
 #include <vector>
 
@@ -60,6 +61,9 @@ namespace  { struct dictionary {
 	edm::Wrapper<std::vector<flashgg::TTHhadronicTag> > wrp_vec_tthh;
 
 	std::vector<edm::Ptr<flashgg::Jet> > vect_ptr_jet;
+
+	edm::Ptr<flashgg::DiPhotonTagBase> Ptr_tagbase;
+	edm::Wrapper<edm::Ptr<flashgg::DiPhotonTagBase> > wrp_ptr_tagbase;
 	
 	edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> > ownvec_tagbase;
 	edm::Wrapper<edm::OwnVector<flashgg::DiPhotonTagBase,edm::ClonePolicy<flashgg::DiPhotonTagBase> > > wrp_ownvec_tagbase;
@@ -76,6 +80,11 @@ namespace  { struct dictionary {
 	flashgg::VHtightTag vht;
   	std::vector<flashgg::VHtightTag> vec_vht;
   	edm::Wrapper<std::vector<flashgg::VHtightTag> > wrp_vec_vht;
+
+        flashgg::VHhadronicTag vhhad;
+        std::vector<flashgg::VHhadronicTag> vec_vhhad;
+        edm::Wrapper<std::vector<flashgg::VHhadronicTag> > wrp_vec_vhhad;
+
   	edm::Ptr<pat::Electron> ptr_elec_vht;
   	edm::Ptr<pat::Muon> ptr_muon_vht;
 	edm::PtrVector<pat::Muon> vec_ptr_muon_vht;

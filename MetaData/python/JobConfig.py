@@ -5,21 +5,35 @@ class JobConfig(object):
     
     def __init__(self,*args,**kwargs):
         
-        print args
-        print kwargs
-
         super(JobConfig,self).__init__()
 
         self.metaDataSrc=kwargs.get("metaDataSrc","flashgg")
         self.crossSections=kwargs.get("crossSections",["$CMSSW_BASE/src/flashgg/MetaData/data/cross_sections.json"])
 
+        self.processIdMap = {}
+
         self.options = VarParsing.VarParsing("analysis")
-        self.options.setDefault ('maxEvents',100)
+        ## self.options.setDefault ('maxEvents',100)
         self.options.register ('dataset',
                        "", # default value
                        VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                        VarParsing.VarParsing.varType.string,          # string, int, or float
                        "dataset")
+        self.options.register ('processId',
+                       "", # default value
+                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                       VarParsing.VarParsing.varType.string,          # string, int, or float
+                       "processId")
+        self.options.register ('processIdMap',
+                       "", # default value
+                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                       VarParsing.VarParsing.varType.string,          # string, int, or float
+                       "processIdMap")
+        self.options.register ('secondaryDatasetInProcId',
+                       False, # default value
+                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                       VarParsing.VarParsing.varType.bool,          # string, int, or float
+                       "secondaryDatasetInProcId")
         self.options.register ('campaign',
                        "", # default value
                        VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -50,6 +64,11 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.int,          # string, int, or float
                                "jobId")
+        self.options.register ('dryRun',
+                       False, # default value
+                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                       VarParsing.VarParsing.varType.bool,          # string, int, or float
+                       "dryRun")
         
         self.parsed = False
 
@@ -60,7 +79,7 @@ class JobConfig(object):
             return getattr(self.options,name)
         
         raise AttributeError
-                                             
+    
     def __call__(self,process):
         self.customize(process)
  
@@ -69,17 +88,54 @@ class JobConfig(object):
         self.parse()
 
         isFwlite = False
+        hasOutput = False
+        hasTFile = False
         if hasattr(process,"fwliteInput"):
             isFwlite = True
+        if not isFwlite:
+            hasOutput = hasattr(process,"out")            
+            hasTFile = hasattr(process,"TFileService")
+        
+        if hasOutput and hasTFile:
+            tfile = self.outputFile.replace(".root","_histos.root")
+        else:
+            tfile = self.outputFile
+            
+        if self.dryRun:
+            import sys
+            if self.dataset:
+                name,xsec,totEvents,files = self.dataset
+                if len(files) != 0:
+                    if isFwlite:
+                        print "hadd:%s" % self.outputFile
+                    else:
+                        if hasOutput:
+                            print "edm:%s" % self.outputFile
+                        if hasTFile:
+                            print "hadd:%s" % tfile
+                    sys.exit(0)
+            sys.exit(1)
+            
+
 
         if self.dataset:
             name,xsec,totEvents,files = self.dataset
             
+            processId = self.getProcessId(name)
+
+            if self.targetLumi > 0.:
             ## look for analyzers which have lumiWeight as attribute
-            for name,obj in process.__dict__.iteritems():
-                if hasattr(obj,"lumiWeight"):
-                    obj.lumiWeight = xsec["xs"]/float(totEvents)*self.targetLumi
+                for name,obj in process.__dict__.iteritems():
+                    if hasattr(obj,"lumiWeight"):
+                        wei = xsec["xs"]/float(totEvents)*self.targetLumi
+                        wei *= xsec.get("br",1.)
+                        wei *= xsec.get("kf",1.)
+                        obj.lumiWeight = wei
             
+            for name,obj in process.__dict__.iteritems():
+                if hasattr(obj,"processId"):
+                    obj.processId = str(processId)
+                        
             ## fwlite
             if isFwlite:
                 process.fwliteInput.fileNames.extend([ str("%s%s" % (self.filePrepend,f)) for f in  files])
@@ -94,15 +150,12 @@ class JobConfig(object):
         ## full framework
         else:
             process.maxEvents.input = self.maxEvents
-            hasOutput = hasattr(process,"out")            
-            hasTFile = hasattr(process,"TFileService")
             
             if hasOutput:
                 process.out.fileName = self.outputFile
-                self.outputFile = self.outputFile.replace(".root","_histos.root")
 
             if hasTFile:
-                process.TFileService.fileName = self.outputFile
+                process.TFileService.fileName = tfile
         
             
     # parse command line and do post-processing
@@ -112,6 +165,9 @@ class JobConfig(object):
             return
 
         self.options.parseArguments()
+        if self.options.processIdMap != "":
+            self.readProcessIdMap(self.options.processIdMap)
+        
         if self.useAAA:
             self.filePrepend = "root://xrootd-cms.infn.it/"
         elif self.useEOS:
@@ -131,6 +187,36 @@ class JobConfig(object):
         self.setType ("outputFile", VarParsing.VarParsing.varType.string)
         self.outputFile = outputFile
 
+    
+    def getProcessId(self,name):
+        if self.processId != "":
+            return self.processId
+        
+        if name in self.processIdMap:
+            return self.processIdMap[name]
 
+        primSet,secSet = name.rsplit("/")[1:3]
+        if primSet in self.processIdMap:
+            return self.processIdMap[primSet]
+        
+        if self.secondaryDatasetInProcId:
+            return primSet + "_" + secSet
+        return primSet
+
+    def readProcessIdMap(self,fname):
+        
+        with open(fname) as fin:
+            import json
+
+            cfg = json.loads(fin.read())
+            
+            processes = cfg["processes"]
+            for key,val in processes.iteritems():
+                for dst in val:
+                    self.processIdMap[dst] = key
+            
+            fin.close()
+
+        
 # customization object
 customize = JobConfig()

@@ -1,4 +1,3 @@
-
 #include "FWCore/Framework/interface/EDProducer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
@@ -47,7 +46,7 @@ namespace flashgg {
     const PtrVector<pat::PackedCandidate>& pfPtrs = pfCandidates->ptrVector();
 
     std::auto_ptr<VertexCandidateMap> assoc(new VertexCandidateMap);
-
+    
     // Create empty vector for each vertex in advance
     for (unsigned int j = 0 ; j < pvPtrs.size() ; j++) {
       assoc->insert(std::make_pair(pvPtrs[j],edm::PtrVector<pat::PackedCandidate>()));

@@ -37,8 +37,7 @@
 #include "flashgg/TagFormats/interface/DiPhotonTagBase.h"
 #include "flashgg/TagFormats/interface/TTHhadronicTag.h"
 #include "flashgg/TagFormats/interface/TTHleptonicTag.h"
-#include "flashgg/TagFormats/interface/VHtightTag.h"
-#include "flashgg/TagFormats/interface/VHlooseTag.h"
+
 
 #include "TMath.h"
 #include "TTree.h"
@@ -189,9 +188,12 @@ class FlashggTreeMakerWithTagSorter : public edm::EDAnalyzer {
 		Float_t vtxdz;
 		Float_t dipho_mva;
 		Float_t dipho_mva_cat;
+		Float_t dipho_PToM;
 		//Tag Categories
 		Int_t flash_Untagged_Category;
 		Int_t flash_VBFTag_Category;
+		Int_t leadjet_genmatch;
+		Int_t subljet_genmatch;
 
 
 		edm::EDGetTokenT<edm::View<flashgg::Photon> >            photonToken_; // SCZ work-in-progress adding this!
@@ -277,6 +279,8 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 
 	flash_Untagged_Category= -1; // so that there is at least some value to fill even if not part of category
 	flash_VBFTag_Category =-1;// so that there is at least some value to fill even if untagged
+	leadjet_genmatch =-1;
+	subljet_genmatch =-1;
 	//	int hasTag =0;
 
 	//-----------> Determine if there is a Tag, and select it! This givens diPhoton candIndex
@@ -324,26 +328,9 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 			    << std::endl;
 		}
 
-		const   VHtightTag *vhtighttag = dynamic_cast<const VHtightTag*>(chosenTag);                                                                                        
-
-				if(vhtighttag != NULL) {
-				  std::cout << "[VHtight] Category " << vhtighttag->getCategoryNumber() 
-					    << " nmuons=" << vhtighttag->getMuons().size() 
-					    << std::endl;
-		 }
-
-
-		 const   VHlooseTag *vhloosetag = dynamic_cast<const VHlooseTag*>(chosenTag);                                                                                         
-
-				if(vhloosetag != NULL) {
-				  std::cout << "[VHloose] Category " << vhloosetag->getCategoryNumber() 
-					    << " nmuons=" << vhloosetag->getMuons().size() 
-					    << std::endl;
-		 }
-
 		// IMPORTANT: All future Tags must be added in the way of untagged and vbftag.	
 
-		if (untagged == NULL && vbftag == NULL && tthhadronictag == NULL && tthleptonictag == NULL && vhtighttag == NULL && vhloosetag == NULL) {
+		if (untagged == NULL && vbftag == NULL && tthhadronictag == NULL && tthleptonictag == NULL ) {
 		  std::cout << "[FAILED TO CONVERT TAG] with SumPt " << chosenTag->getSumPt() << std::endl;
 		}
 
@@ -427,10 +414,58 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 				break;
 			}
 
+			//	int hasQuarks =0;
+
+			for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++){
+		//		std::cout << "[TREE] PDG: "<< gens[genLoop]->pdgId() << "	, status " << gens[genLoop]->status() << std::endl;
+			}
+
+			std::cout << std::endl;
+			std::vector<int> vbfQuarkIndices;
+			bool count =0;
+			for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++){
+				if (gens[genLoop]->status() !=3) continue;
+				if (gens[genLoop]->pdgId() ==25) {count =1 ;continue ;}
+				if ((fabs(gens[genLoop]->pdgId()) >8) && (count ==1)) {count =0; break;}
+				if(count) {
+					vbfQuarkIndices.push_back(genLoop);
+			//		std::cout << "[GEN] PDG: "<< gens[genLoop]->pdgId() << "	, status " << gens[genLoop]->status() << std::endl;
+				}
+			}
+			
+//std::cout << "[DEBUG] " << vbfQuarkIndices.size() << std::endl;
+			leadjet_genmatch =0;
+			subljet_genmatch =0;
+			if(vbftag != NULL) {
+				for (unsigned int i =0 ; 	i< vbfQuarkIndices.size(); i++)
+				{
+				//	std::cout << "quark index " << vbfQuarkIndices[i] << std::endl;
+					float deta =  vbftag->leadingJet().eta() - gens[vbfQuarkIndices[i]]->eta();
+					float dphi =  vbftag->leadingJet().phi() - gens[vbfQuarkIndices[i]]->phi();
+					float dr = sqrt(deta*deta + dphi*dphi);
+					if(fabs(dr) <0.5){
+						leadjet_genmatch =1;
+						break;
+					}
+				}
+
+				for (unsigned int i =0 ; 	i< vbfQuarkIndices.size(); i++)
+				{
+					float deta =  vbftag->subLeadingJet().eta() - gens[vbfQuarkIndices[i]]->eta();
+					float dphi =  vbftag->subLeadingJet().phi() - gens[vbfQuarkIndices[i]]->phi();
+					float dr = sqrt(deta*deta + dphi*dphi);
+					if(fabs(dr) <0.5){
+						subljet_genmatch =1;	
+						break;
+					}
+				}
+	//		std::cout << leadjet_genmatch << "	" << subljet_genmatch << std::endl;
+			}
+
+
 			// gen match leading pho 
 			for(unsigned int ip=0;ip<gens.size();++ip) {
-			  			  //std::cout << "GMLP " << gens[ip]->status() << " "  << gens[ip]->pdgId() << " " << gens[ip]->mother(0) << std::endl;
-
+			  //			  std::cout << "GMLP " << gens[ip]->status() << " "  << gens[ip]->pdgId() << " " << gens[ip]->mother(0) << std::endl;
 				if( gens[ip]->status() != 1 || gens[ip]->pdgId() != 22 ) {
 					continue;
 				}
@@ -446,7 +481,6 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 					}
 				}
 			}
-
 			// gen match subleading pho
 			for(unsigned int ip=0;ip<gens.size();++ip) {
 			  //			  std::cout << "GMSLP " << gens[ip]->status() << " "  << gens[ip]->pdgId() << " " << gens[ip]->mother(0) << std::endl;
@@ -469,6 +503,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 
 		/* NB: This entire section has been superseded by the TagSorter, which now selects the best diPhoton.
 			 Will remove in next iteration.
+
 		//------> higgs diphoton candidate properties
 		// We have a problem here, because until we are sure that there is consistently one higgs diphoton candiate, we 
 		// will either need to select one of the multiple diphoton pairs. The following does that, by choosing the one closets to 125GeV..	
@@ -476,6 +511,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		float higgsMass =125. ;
 		Int_t higgsCandPresent = 0; //Is 0 is there are no candidates in event, set to 1 if there is at least one candidate pair.
 		Int_t candIndex = 9999; //This int will store the index of the best higgs diphoton candidate...
+
 		for (unsigned int diphotonlooper =0; diphotonlooper < diPhotonPointers.size() ; diphotonlooper++){
 		if  (fabs(diPhotonPointers[diphotonlooper]->mass() - higgsMass) < higgsMassDifference){
 		higgsMassDifference = fabs(diPhotonPointers[diphotonlooper]->mass() - higgsMass);
@@ -487,7 +523,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 
 		mass = diPhotonPointers[candIndex]->mass();
 		dipho_pt = diPhotonPointers[candIndex]->pt();
-
+		dipho_PToM = dipho_pt/mass;
 		//------->full_cat FIXME leaving blank for now, need to implement if/when events are categoriesed. Discuss event interpretatrion.
 		full_cat =0;
 
@@ -574,17 +610,17 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		//------>VBF information
 		dRphojet1 = -1;
 		dRphojet2 = -1;
-		vbfcat=-1;
-		dijet_leadEta = -1;
-		dijet_subleadEta= -1;
-		dijet_LeadJPt = -1;
-		dijet_SubJPt= -1;
-		dijet_dEta= -1;
-		dijet_Zep= -1;
-		dijet_dPhi= -1;
-		dijet_Mjj= -1;
-		dijet_MVA= -1;
-		bdt_combined =-1;
+		vbfcat=-9999;
+		dijet_leadEta = -9999;
+		dijet_subleadEta= -9999;
+		dijet_LeadJPt = -9999;
+		dijet_SubJPt= -9999;
+		dijet_dEta= -9999;
+		dijet_Zep= -9999;
+		dijet_dPhi= -9999;
+		dijet_Mjj= -9999;
+		dijet_MVA= -9999;
+		bdt_combined =-9999;
 		if(vbftag != NULL) {
 			float dEtaLeadPho = vbftag->leadingJet().eta() - eta1; 
 			float dPhiLeadPho = vbftag->leadingJet().phi() - phi1; 
@@ -743,8 +779,11 @@ FlashggTreeMakerWithTagSorter::beginJob()
 	flashggTreeWithTagSorter->Branch("vtxdz", &vtxdz, "vtxdz/F");
 	flashggTreeWithTagSorter->Branch("dipho_mva", &dipho_mva, "dipho_mva/F");
 	flashggTreeWithTagSorter->Branch("dipho_mva_cat", &dipho_mva_cat, "dipho_mva_cat/F");
+	flashggTreeWithTagSorter->Branch("dipho_PToM", &dipho_PToM, "dipho_PToM/F");
 	flashggTreeWithTagSorter->Branch("flash_Untagged_Category", &flash_Untagged_Category, "flash_Untagged_Category/I");
 	flashggTreeWithTagSorter->Branch("flash_VBFTag_Category", &flash_VBFTag_Category, "flash_VBFTag_Category/I");
+	flashggTreeWithTagSorter->Branch("subljet_genmatch", &subljet_genmatch, "subljet_genmatch/I");
+	flashggTreeWithTagSorter->Branch("leadjet_genmatch", &leadjet_genmatch, "leadjet_genmatch/I");
 }
 
 	void 

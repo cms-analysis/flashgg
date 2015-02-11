@@ -28,6 +28,7 @@
 #include "flashgg/TagFormats/interface/TTHleptonicTag.h"
 #include "flashgg/TagFormats/interface/VHtightTag.h"
 #include "flashgg/TagFormats/interface/VHlooseTag.h"
+#include "flashgg/TagFormats/interface/VHhadronicTag.h"
 
 using namespace std;
 using namespace edm;
@@ -100,7 +101,7 @@ namespace flashgg {
 			const	VBFTag *vbftag = dynamic_cast<const VBFTag*>(chosenTag);
 			if(vbftag != NULL) {
 			  std::cout << "[VBF] Category " << vbftag->getCategoryNumber() << " with lead jet eta "
-				    << vbftag->leadingJet().eta() << " and sublead jet eta " << vbftag->subLeadingJet().eta() << std::endl;
+				    << vbftag->leadingJet().pt() << " and sublead jet eta " << vbftag->subLeadingJet().pt() << std::endl;
 			}
 
 	                const   TTHhadronicTag *tthhadronictag = dynamic_cast<const TTHhadronicTag*>(chosenTag);
@@ -134,9 +135,17 @@ namespace flashgg {
 				  << std::endl;
 			}
 
+			const   VHhadronicTag *vhhadronictag = dynamic_cast<const VHhadronicTag*>(chosenTag);
+			if(vhhadronictag != NULL) {
+			  std::cout << "[VHhadronic] Category "    << vhhadronictag->getCategoryNumber()
+				    << " with leadingJet    pt = " << vhhadronictag->getLeadingJet()->pt()
+				    << " and  subleadingJet pt = " << vhhadronictag->getSubLeadingJet()->pt()
+				    << std::endl;
+			}
+
 			// IMPORTANT: All future Tags must be added in the way of untagged and vbftag.	
 
-			if (untagged == NULL && vbftag == NULL && tthhadronictag == NULL && tthleptonictag == NULL && vhtighttag == NULL && vhloosetag == NULL) {
+			if (untagged == NULL && vbftag == NULL && tthhadronictag == NULL && tthleptonictag == NULL && vhtighttag == NULL && vhloosetag == NULL && vhhadronictag==NULL) {
 				std::cout << "[FAILED TO CONVERT TAG] with SumPt " << chosenTag->getSumPt() << std::endl;
 			}
 

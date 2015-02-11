@@ -28,6 +28,13 @@ class Load:
             dest = parser.values
         else:
             dest = getattr(parser.values,option.dest)
+        origin = getattr(parser.values,"%s_src" % option.dest,None)
+        if origin:
+            origin += ",%s",value
+        else:
+            origin = value
+            setattr(parser.values,"%s_src" % option.dest,origin)
+
         if type(dest) == dict:
             setter = dict.__setitem__
             getter = dict.get

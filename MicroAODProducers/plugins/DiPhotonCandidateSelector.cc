@@ -17,11 +17,32 @@
 #include "CommonTools/UtilAlgos/interface/SingleObjectSelector.h"
 #include "CommonTools/UtilAlgos/interface/StringCutObjectSelector.h"
 #include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/MicroAODAlgos/interface/CutBasedDiPhotonObjectSelector.h"
+
+#include "CommonTools/UtilAlgos/interface/ObjectSelectorStream.h"
+#include "CommonTools/UtilAlgos/interface/SingleElementCollectionSelectorPlusEvent.h"
 
 typedef SingleObjectSelector<
 	edm::View<flashgg::DiPhotonCandidate>,
-  StringCutObjectSelector<flashgg::DiPhotonCandidate, true>,
+	StringCutObjectSelector<flashgg::DiPhotonCandidate, true>,
 	std::vector<flashgg::DiPhotonCandidate>
        > DiPhotonCandidateSelector;
 
+/// typedef SingleObjectSelector<
+/// 	edm::View<flashgg::DiPhotonCandidate>,
+/// 	flashgg::CutBasedDiPhotonObjectSelector,
+/// 	std::vector<flashgg::DiPhotonCandidate>
+//       > GenericDiPhotonCandidateSelector;
+
+
+typedef ObjectSelectorStream<
+	SingleElementCollectionSelectorPlusEvent<
+		edm::View<flashgg::DiPhotonCandidate>,
+		flashgg::CutBasedDiPhotonObjectSelector,
+		std::vector<flashgg::DiPhotonCandidate>
+		>,
+	std::vector<flashgg::DiPhotonCandidate> > GenericDiPhotonCandidateSelector;
+
 DEFINE_FWK_MODULE(DiPhotonCandidateSelector);
+DEFINE_FWK_MODULE(GenericDiPhotonCandidateSelector);
+

@@ -33,6 +33,11 @@
  <class name="edm::PtrVector<flashgg::Electron>"/>
  <class name="std::vector<flashgg::Electron>"/>
  <class name="edm::Wrapper<std::vector<flashgg::Electron> >"/>
+ <class name="edm::Ptr<pat::PackedGenParticle>"/>
+ <class name="flashgg::GenPhotonExtra"/>
+ <class name="edm::Ptr<flashgg::GenPhotonExtra>"/>
+ <class name="std::vector<flashgg::GenPhotonExtra>"/>
+ <class name="edm::Wrapper<std::vector<flashgg::GenPhotonExtra> >"/>
 </lcgdict>
 
 
