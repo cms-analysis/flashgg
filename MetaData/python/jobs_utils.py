@@ -93,7 +93,7 @@ class JobsManager(object):
         (self.options, self.args) = parser.parse_args()
         
         if self.options.cmdLine:
-            self.args = self.args+shell_args(self.options.cmdLine)
+            self.args = self.args+shell_args(str(self.options.cmdLine))
         
         if self.options.jobExe:
             self.args = [shell_expand(self.options.jobExe)]+self.args
@@ -122,7 +122,8 @@ class JobsManager(object):
         jobName   = "%s/%s" % ( options.outputDir, jobName )
         
         args.append("processIdMap=%s/config.json" % options.outputDir)
-        options.cmdLine += " %s" % (" ".join(args))
+        ## options.cmdLine += " %s" % (" ".join(args))
+        options.cmdLine = str(" ".join(args))
         with open("%s/config.json" % (options.outputDir), "w+" ) as fout:
             fout.write( dumpCfg(options) )
             

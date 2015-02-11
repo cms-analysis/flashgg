@@ -2,7 +2,7 @@ from Queue import Queue
 
 import commands
 import subprocess
-import os
+import os,sys
 
 from threading import Thread, Semaphore
 from multiprocessing import cpu_count
@@ -59,17 +59,22 @@ class LsfJob:
         return self.exitStatus, ""
     
 class Wrap:
-    def __init__(self, func, args, queue):
-        self.queue = queue
+    def __init__(self, func, args, retqueue, runqueue):
+        self.retqueue = retqueue
+        self.runqueue = runqueue
         self.func = func
         self.args = args
         
     def __call__(self,interactive=False):
+        if not interactive:
+            self.runqueue.put(1)
         ret = self.func( *self.args )
         if interactive:
             return ret
         else:
-            self.queue.put( ret  )
+            self.runqueue.get()
+            self.runqueue.task_done()
+            self.retqueue.put( ret  )
 
     
 class Parallel:
@@ -87,10 +92,13 @@ class Parallel:
         
             
     def run(self,cmd,args,interactive=False):
-        wrap = Wrap( self, (cmd,args), self.returned )
+        wrap = Wrap( self, (cmd,args,interactive), self.returned, self.running )
         if interactive:
             return wrap(interactive=True)
+        self.sem.acquire()
 	self.njobs += 1
+        self.sem.release()
+        ## print self.njobs
         thread = Thread(None,wrap)
         thread.start()
     
@@ -101,26 +109,33 @@ class Parallel:
         self.sem.release()
         return ret
         
-    def __call__(self,cmd,args):
+    def __call__(self,cmd,args,interactive):
 
         if type(cmd) == str or type(cmd) == unicode:
             ## print cmd
             cmd = "%s %s" % (cmd, " ".join(args) )
             args = (cmd,)
-            if self.lsfQueue:
+            if self.lsfQueue and not interactive:
                 cmd = LsfJob(self.lsfQueue,"%s%d" % (self.lsfJobName, self.getJobId()))
             else:
                 cmd = commands.getstatusoutput
-                
-        self.running.put((cmd,args))
+        ## print "put"
+        ## self.running.put((cmd,args))
+        ## print args
         ret = cmd( *args ) 
-        self.running.get()
-        self.running.task_done()
+        ## print "get"
+        ## self.running.get()
+        ## print "done"
+        ## self.running.task_done()
+        ## print "ok"
         return cmd,args,ret
 
     def wait(self):
         returns = []
-        for i in range(self.njobs):
+        self.sem.acquire()
+        njobs = self.njobs
+        self.sem.release()
+        for i in range(njobs):
             print "Finished jobs: %d. Total jobs: %d" % (i, self.njobs)
             job, jobargs, ret = self.returned.get()
             if type(job) == str:
@@ -128,4 +143,8 @@ class Parallel:
                 for line in ret[1].split("\n"):
                     print line
             returns.append(ret)
+        
+        self.sem.acquire()
+        self.njobs -= njobs
+        self.sem.release()
         return returns
