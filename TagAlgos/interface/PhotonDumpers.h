@@ -12,6 +12,9 @@
 namespace flashgg 
 { 
 	typedef CollectionDumper<std::vector<Photon> > PhotonDumper;
+	typedef CollectionDumper<std::vector<Photon>,
+				 Photon,
+				 CutBasedClassifier<Photon> > CutBasedPhotonDumper;
 	typedef CollectionDumper<std::vector<DiPhotonCandidate> > DiPhotonDumper;
 	typedef CollectionDumper<std::vector<DiPhotonCandidate>,
 				 DiPhotonCandidate,

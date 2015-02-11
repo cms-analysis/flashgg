@@ -20,6 +20,8 @@
 #include "CommonTools/Utils/interface/StringObjectFunction.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 
+#include "flashgg/TagAlgos/interface/GlobalVariablesDumper.h"
+
 namespace flashgg {
 	
 	template<class FunctorT, class ObjectT>
@@ -28,13 +30,13 @@ namespace flashgg {
 		typedef ObjectT object_type;
 		typedef FunctorT functor_type;
 		
-		CategoryDumper(const std::string & name, const edm::ParameterSet & cfg);
+		CategoryDumper(const std::string & name, const edm::ParameterSet & cfg, GlobalVariablesDumper * dumper=0);
 		~CategoryDumper();
 		
 		void bookHistos(TFileDirectory &fs, const std::map<std::string,std::string> & replacements);
 		void bookTree(TFileDirectory &fs, const char * weightVar, const std::map<std::string,std::string> & replacements);
 		void bookRooDataset(RooWorkspace &ws, const char * weightVar, const std::map<std::string,std::string> & replacements);
-		
+
 		void fill(const object_type & obj, double weight);
 		
 	private:
@@ -47,11 +49,12 @@ namespace flashgg {
 		RooArgSet rooVars_;
 		RooAbsData * dataset_;
 		TTree * tree_;
+		GlobalVariablesDumper * globalVarsDumper_;
 	};
 	
 	template<class F, class O>
-	CategoryDumper<F,O>::CategoryDumper(const std::string & name, const edm::ParameterSet & cfg):
-		dataset_(0), tree_(0)
+	CategoryDumper<F,O>::CategoryDumper(const std::string & name, const edm::ParameterSet & cfg, GlobalVariablesDumper * dumper):
+		dataset_(0), tree_(0), globalVarsDumper_(dumper)
 	{
 		using namespace std;
 		name_ = name;
@@ -133,13 +136,16 @@ namespace flashgg {
 		for(size_t iv=0; iv<names_.size(); ++iv) {
 			tree_->Branch(names_[iv].c_str(),&std::get<0>(variables_[iv]));
 		}
+		if( globalVarsDumper_ ) {
+			globalVarsDumper_->bookTreeVariables(tree_,replacements);
+		}
 	}
 
 	template<class F, class O>
 	void CategoryDumper<F,O>::bookRooDataset(RooWorkspace &ws, const char * weightVar, const std::map<std::string,std::string> & replacements)
 	{
 		rooVars_.add( *ws.var(weightVar) );
-		
+
 		for(size_t iv=0; iv<names_.size(); ++iv) {
 			auto & name = names_[iv];
 			auto & var = variables_[iv];
@@ -155,6 +161,7 @@ namespace flashgg {
 			}
 			rooVars_.add(rooVar,true);
 		}
+		/// globalVarsDumper_.bookRooVars(ws,rooVars_,replacements);
 		/// if( ! binnedOnly_ ) {
 		RooDataSet dset(formatString(name_,replacements).c_str(),formatString(name_,replacements).c_str(),rooVars_,weightVar);
 		ws.import( dset );

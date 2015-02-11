@@ -26,6 +26,8 @@
 #include "RooMsgService.h"
 
 #include "flashgg/MicroAODAlgos/interface/CutBasedClassifier.h"
+#include "flashgg/TagAlgos/interface/GlobalVariablesDumper.h"
+
 
 /**
    \class CollectionDumper
@@ -115,7 +117,7 @@ namespace flashgg {
 		bool dumpTrees_; 
 		bool dumpWorkspace_;
 		std::string workspaceName_;
-		bool dumpHistos_;
+		bool dumpHistos_, dumpGlobalVariables_;
 		
 		classifier_type classifier_;
 		std::map<std::string,bool> hasSubcat_;
@@ -127,7 +129,8 @@ namespace flashgg {
 		RooWorkspace * ws_;
 		/// TTree * bookTree(const std::string & name, TFileDirectory& fs);
 		/// void fillTreeBranches(const flashgg::Photon & pho)
-
+		
+		GlobalVariablesDumper * globalVarsDumper_;
 	};
 	
 	template<class C, class T, class U>
@@ -144,7 +147,9 @@ namespace flashgg {
 		dumpWorkspace_(cfg.getUntrackedParameter<bool>("dumpWorkspace",false)),
 		workspaceName_(cfg.getUntrackedParameter<std::string>("workspaceName",src_.label())),
 		dumpHistos_(cfg.getUntrackedParameter<bool>("dumpHistos",false)),
-		classifier_(cfg.getParameter<edm::ParameterSet>("classifierCfg"))
+		dumpGlobalVariables_(cfg.getUntrackedParameter<bool>("dumpGlobalVariables",true)),
+		classifier_(cfg.getParameter<edm::ParameterSet>("classifierCfg")),
+		globalVarsDumper_(0)
 		
 	{
 		if( cfg.getUntrackedParameter<bool>("quietRooFit",false) ) {
@@ -157,6 +162,10 @@ namespace flashgg {
 		replacements.insert(std::make_pair("$SQRTS",Form("%1.0fTeV",sqrtS_)));
 		nameTemplate_ = formatString(nameTemplate_,replacements);
 		
+		if(dumpGlobalVariables_) {
+			globalVarsDumper_ = new GlobalVariablesDumper(cfg.getParameter<edm::ParameterSet>("globalVariables"));
+		}
+
 		auto categories = cfg.getParameter<std::vector<edm::ParameterSet> >("categories");
 		for( auto & cat : categories ) {
 			auto label   = cat.getParameter<std::string>("label");
@@ -166,11 +175,11 @@ namespace flashgg {
 			auto & dumpers = dumpers_[label];
 			if(subcats == 0 ) {
 				name=replaceString( replaceString( replaceString( name, "_$SUBCAT", "" ), "$SUBCAT_", ""), "$SUBCAT", "");
-				dumpers.push_back(dumper_type(name,cat));
+				dumpers.push_back(dumper_type(name,cat,globalVarsDumper_));
 			} else {
 				for(int isub=0; isub<subcats; ++isub) {
 					name=replaceString( name, "$SUBCAT", Form("%d",isub) );
-					dumpers.push_back(dumper_type(name,cat));
+					dumpers.push_back(dumper_type(name,cat,globalVarsDumper_));
 				}
 			}
 		}
@@ -229,6 +238,8 @@ namespace flashgg {
 		const auto & collection = *collectionH;
 		
 		weight_ = getEventWeight(event);
+		
+		if(globalVarsDumper_) { globalVarsDumper_->fill(event); }
 		
 		int nfilled = maxCandPerEvent_;
 		for(auto & cand : collection) {
