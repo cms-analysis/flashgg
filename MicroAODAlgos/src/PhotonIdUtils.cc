@@ -69,7 +69,8 @@ float PhotonIdUtils::pfIsoChgWrtVtx( edm::Ptr<pat::Photon>& photon,
     for( size_t ipf = 0; ipf < pfcandidates.size(); ipf++ ) { 
 	    
       edm::Ptr<pat::PackedCandidate> pfcand = pfcandidates[ipf];
-      
+
+      if( abs(pfcand->pdgId()) == 11 || abs(pfcand->pdgId()) == 13 ) continue; //J. Tao not e/mu       
       if( removeOverlappingCandidates_ && vetoPackedCand(*photon,pfcand) ) { continue; }
       
       if( pfcand->pt() < ptMin )         continue;    
