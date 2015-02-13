@@ -13,7 +13,7 @@ config.General.transferLogs = False
 config.section_("JobType")
 config.JobType.pluginName = "Analysis"
 config.JobType.psetName = "PSET"
-config.JobType.maxMemoryMB = 3000
+## config.JobType.maxMemoryMB = 3000 # For memory leaks. NB. will block jobs on many sites
 ## config.JobType.scriptExe = "cmsWrapper.sh"
 
 config.section_("Data")
