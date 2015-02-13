@@ -1,6 +1,7 @@
 <library   name="FlashggTagProducerPlugins" file="*.cc">
 <use   name="FWCore/Framework"/>
 <use   name="FWCore/PluginManager"/>
+<use   name="flashgg/MicroAODFormats"/>
 <use   name="flashgg/TagFormats"/>
 <use   name="flashgg/TagAlgos"/>
 <use name="FWCore/Utilities"/>

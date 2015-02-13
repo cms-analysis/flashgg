@@ -8,6 +8,8 @@
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/JetReco/interface/PileupJetIdentifier.h"
 #include "flashgg/MicroAODFormats/interface/GenPhotonExtra.h"
+#include "flashgg/MicroAODFormats/interface/SinglePhotonView.h"
+#include "flashgg/MicroAODFormats/interface/SingleVertexView.h" 
 
 #include <vector>
 #include <map>
@@ -29,6 +31,19 @@ namespace  { struct dictionary {
 
   edm::Ptr<reco::Vertex>                                        ptr_rec_vtx;
   std::vector<edm::Ptr<reco::Vertex> >                      vec_ptr_rec_vtx;
+
+  flashgg::SinglePhotonView                                      fgg_phoview;
+  edm::Ptr<flashgg::SinglePhotonView>                        ptr_fgg_phoview;
+  edm::Wrapper<flashgg::SinglePhotonView>                    wrp_fgg_phoview;
+  std::vector<flashgg::SinglePhotonView>                     vec_fgg_phoview;
+  edm::Wrapper<std::vector<flashgg::SinglePhotonView> >  wrp_vec_fgg_phoview;
+
+  flashgg::SingleVertexView                                      fgg_vtxview;
+  edm::Ptr<flashgg::SingleVertexView>                        ptr_fgg_vtxview;
+  edm::Wrapper<flashgg::SingleVertexView>                    wrp_fgg_vtxview;
+  std::vector<flashgg::SingleVertexView>                     vec_fgg_vtxview;
+  edm::Wrapper<std::vector<flashgg::SingleVertexView> >  wrp_vec_fgg_vtxview;
+  
 
   flashgg::MinimalPileupJetIdentifier                                               pujetid;
   std::pair<edm::Ptr<reco::Vertex>,flashgg::MinimalPileupJetIdentifier>                    pair_ptr_vtx_pujetid;

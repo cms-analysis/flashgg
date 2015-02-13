@@ -3,6 +3,8 @@
 
 #include "flashgg/MicroAODFormats/interface/Photon.h"
 #include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/MicroAODFormats/interface/SinglePhotonView.h"
+#include "flashgg/MicroAODFormats/interface/SingleVertexView.h"
 #include "flashgg/TagFormats/interface/DiPhotonTagBase.h"
 
 #include "flashgg/TagAlgos/interface/CollectionDumper.h"
@@ -19,6 +21,12 @@ namespace flashgg
 	typedef CollectionDumper<std::vector<DiPhotonCandidate>,
 				 DiPhotonCandidate,
 				 CutBasedClassifier<DiPhotonCandidate> > CutBasedDiPhotonDumper;
+	typedef CollectionDumper<std::vector<SinglePhotonView>,
+				 SinglePhotonView,
+				 CutBasedClassifier<SinglePhotonView> > CutBasedSinglePhotonViewDumper;
+	typedef CollectionDumper<std::vector<SingleVertexView>,
+				 SingleVertexView,
+				 CutBasedClassifier<SingleVertexView> > CutBasedSingleVertexViewDumper;
 	typedef CollectionDumper<edm::OwnVector<DiPhotonTagBase>,
 				 DiPhotonTagBase,
 				 ClassNameClassifier<DiPhotonTagBase> > DiPhotonTagDumper;

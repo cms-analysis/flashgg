@@ -5,6 +5,7 @@
 <use   name="DataFormats/Common"/>
 <use   name="DataFormats/JetReco"/>
 <use name="rootrflx"/>
+<!-- Flags CXXFLAGS="-ggdb"/ -->
 <export>
   <lib   name="1"/>
 </export>
