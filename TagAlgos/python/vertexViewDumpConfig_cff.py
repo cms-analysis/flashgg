@@ -5,7 +5,7 @@ vertexViewDumpConfig = cms.PSet(
     src = cms.InputTag("flashggSingleVertexViews"),
     generatorInfo = cms.InputTag("generator"),
     processId = cms.string(""),
-    maxCandPerEvent = cms.int32(2),
+    maxCandPerEvent = cms.int32(2000),
     lumiWeight = cms.double(1.0),
     classifierCfg = cms.PSet(categories=cms.VPSet()),
     categories = cms.VPSet(),
