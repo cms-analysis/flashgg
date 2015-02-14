@@ -1,5 +1,6 @@
 #include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/MicroAODFormats/interface/Photon.h"
+#include "flashgg/MicroAODFormats/interface/SinglePhotonView.h"
 #include "CommonTools/CandUtils/interface/AddFourMomenta.h"
 
 using namespace flashgg;
@@ -45,5 +46,21 @@ const flashgg::Photon * DiPhotonCandidate::subLeadingPhoton() const {
     return dynamic_cast<const flashgg::Photon*> (daughter(1));
   } else {
     return dynamic_cast<const flashgg::Photon*> (daughter(0));
+  }
+}
+
+SinglePhotonView DiPhotonCandidate::leadingView() const {
+  if (daughter(0)->pt() > daughter(1)->pt()) {
+	  return SinglePhotonView(this,0);
+  } else {
+	  return SinglePhotonView(this,1);
+  }
+}
+
+SinglePhotonView DiPhotonCandidate::subLeadingView() const {
+  if (daughter(0)->pt() > daughter(1)->pt()) {
+	  return SinglePhotonView(this,1);
+  } else {
+	  return SinglePhotonView(this,0);
   }
 }

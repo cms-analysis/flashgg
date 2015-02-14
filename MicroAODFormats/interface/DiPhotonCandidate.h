@@ -5,8 +5,9 @@
 #include "flashgg/MicroAODFormats/interface/Photon.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 
-
 namespace flashgg {
+  class SinglePhotonView;
+
   class DiPhotonCandidate : public reco::CompositeCandidate {
   public:
     DiPhotonCandidate();
@@ -17,6 +18,9 @@ namespace flashgg {
     const edm::Ptr<reco::Vertex> getVertex() const { return vertex_; }
     const flashgg::Photon* leadingPhoton() const;
     const flashgg::Photon* subLeadingPhoton() const;
+
+    flashgg::SinglePhotonView leadingView() const;
+    flashgg::SinglePhotonView subLeadingView() const;
 
     void setLogSumPt2(float val) { logsumpt2_ = val; }
     void setPtBal(float val) { ptbal_ = val; }
@@ -53,9 +57,9 @@ namespace flashgg {
     float getDZ1() const { return dZ1_; }
     float getDZ2() const { return dZ2_; }
     float getVtxProbMVA() const { return vtxprobmva_; }
-		float getSumPt() const {
-		return (this->leadingPhoton()->pt() + this->subLeadingPhoton()->pt()); 
-		}
+    float getSumPt() const {
+	    return (this->daughter(0)->pt() + this->daughter(1)->pt()); 
+    }
     int vertex_index() const { return vertex_index_; }
 
     unsigned int getnVtxInfoSize() const { return (vlogsumpt2_.size()) ;}
