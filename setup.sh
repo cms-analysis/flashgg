@@ -23,11 +23,12 @@ fi
 
 echo
 echo "You should have checked out from flashgg. Renaming this to upstream for convenience of existing developers..."
-git remote mv origin upstream
+cd $CMSSW_BASE/src/flashgg
+git remote rename origin upstream
 echo "Remember that:"
 echo "  * To get a branch you can commit to, do: git checkout -b my-informative-branchname"
 echo "  * YOU will need to add your own repo as a remote to push anything, e.g. by putting in yourusername here:"
-echo "      git remote add origin git@github.com:yourusername/flashgg.git"
+echo "      cd ${CMSSW_BASE}/src/flashgg ; git remote add origin git@github.com:yourusername/flashgg.git"
 echo
 
 if ${SETUP_REMOTES} ; then
