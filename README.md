@@ -30,5 +30,5 @@ And a very basic workflow test:
 The setup code will automatically change the initial remote branch's name to upstream to synchronize with the project's old conventions.  
 If you need to commit, you'll have to put your username in the following:
  ```
- git remote add origin git@github.com:yourusername/flashgg.git
+ cd ${CMSSW_BASE}/src/flashgg ; git remote add origin git@github.com:yourusername/flashgg.git
  ```
