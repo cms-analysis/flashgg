@@ -2,26 +2,36 @@
 
 SETUP_REMOTES=false
 
+echo
 echo "Welcome to the FLASHgg automagic setup script!"
 
 if [ ! -f $CMSSW_BASE/src/.git/HEAD ];
 then
   echo "CMSSW area appears not to be set up correctly. Check README carefully."
+  echo
   return 1
 fi
 
 NFILES=`ls -1 ${CMSSW_BASE}/src | wc -l`
 if [ ! ${NFILES} = "1" ]
 then
-  echo "CMSSW area appears to have extra files already. Start over and README carefully."
-  echo "You can remote this condition from the setup script if you wish, but proceed with caution!"
+  echo "CMSSW area appears to have extra files already. Start over and check README carefully."
+  echo "You can remove this condition from the setup script if you wish, but proceed with caution!"
+  echo
   return 1
 fi
+
+echo
+echo "You should have checked out from flashgg. Renaming this to upstream for convenience of existing developers..."
+git remote mv origin upstream
+echo "Remember that:"
+echo "  * To get a branch you can commit to, do: git checkout -b my-informative-branchname"
+echo "  * YOU will need to add your own repo as a remote to push anything"
+echo
 
 if ${SETUP_REMOTES} ; then
   echo "Setting up remotes listed in setup script..."
   cd $CMSSW_BASE/src/flashgg
-  git remote add upstream https://github.com/cms-analysis/flashgg
   git remote add bmarzocc https://github.com/bmarzocc/flashgg
   git remote add camilocarrillo https://github.com/camilocarrillo/flashgg
   git remote add favaro https://github.com/favaro/flashgg
@@ -43,7 +53,7 @@ if ${SETUP_REMOTES} ; then
   git remote add yhaddad https://github.com/yhaddad/flashgg
   git remote add upstream-writable git@github.com:cms-analysis/flashgg.git
 else
-  echo "Not setting up remote names (default)"
+  echo "Not setting up additional remote names (default)"
 fi
 
 cd $CMSSW_BASE/src
