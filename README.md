@@ -13,7 +13,7 @@ Get everything you need, starting from a clean area:
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src 
- git clone https://git.com/cms-analysis/flashgg flashgg
+ git clone https://github.com/cms-analysis/flashgg flashgg
  source flashgg/setup.sh
  ```
 Now if everything looks reasonable, you can build:
@@ -25,4 +25,10 @@ And a very basic workflow test:
  ```
  cmsRun flashgg/MicroAODProducers/test/simple_Producer_test.py
  cmsRun flashgg/TagProducers/test/simple_Tag_test.py
+ ```
+
+The setup code will automatically change the initial remote branch's name to upstream to synchronize with the project's old conventions.  
+If you need to commit, you'll have to put your username in the following:
+ ```
+ git remote add origin git@github.com:yourusername/flashgg.git
  ```
