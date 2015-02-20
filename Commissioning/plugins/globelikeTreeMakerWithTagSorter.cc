@@ -441,7 +441,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 				{
 				//	std::cout << "quark index " << vbfQuarkIndices[i] << std::endl;
 					float deta =  vbftag->leadingJet().eta() - gens[vbfQuarkIndices[i]]->eta();
-					float dphi =  vbftag->leadingJet().phi() - gens[vbfQuarkIndices[i]]->phi();
+					float dphi =  deltaPhi(vbftag->leadingJet().phi(),gens[vbfQuarkIndices[i]]->phi());
 					float dr = sqrt(deta*deta + dphi*dphi);
 					if(fabs(dr) <0.5){
 						leadjet_genmatch =1;
@@ -452,7 +452,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 				for (unsigned int i =0 ; 	i< vbfQuarkIndices.size(); i++)
 				{
 					float deta =  vbftag->subLeadingJet().eta() - gens[vbfQuarkIndices[i]]->eta();
-					float dphi =  vbftag->subLeadingJet().phi() - gens[vbfQuarkIndices[i]]->phi();
+					float dphi =  deltaPhi(vbftag->subLeadingJet().phi(),gens[vbfQuarkIndices[i]]->phi());
 					float dr = sqrt(deta*deta + dphi*dphi);
 					if(fabs(dr) <0.5){
 						subljet_genmatch =1;	
@@ -472,7 +472,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 				if( diPhotonPointers[candIndex]->leadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->leadingPhoton()->eta()) > 3. ) { continue; }
 				if (gens[ip]->mother(0) != NULL && gens[ip]->mother(0)->pdgId() <= 25) {
 					float deta =  diPhotonPointers[candIndex]->leadingPhoton()->eta() - gens[ip]->eta();
-					float dphi =  diPhotonPointers[candIndex]->leadingPhoton()->phi() - gens[ip]->phi();
+					float dphi =  deltaPhi(diPhotonPointers[candIndex]->leadingPhoton()->phi(),gens[ip]->phi());
 					float dr = sqrt(deta*deta + dphi*dphi);
 					float pt_change = (diPhotonPointers[candIndex]->leadingPhoton()->et() - gens[ip]->et())/gens[ip]->et();
 					if (dr<0.3 && fabs(pt_change) < 0.5) {
@@ -490,7 +490,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 				if( diPhotonPointers[candIndex]->subLeadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->subLeadingPhoton()->eta()) > 3. ) { continue; }
 				if ( gens[ip]->mother(0) != NULL && gens[ip]->mother(0)->pdgId() <= 25) {
 					float deta =  diPhotonPointers[candIndex]->subLeadingPhoton()->eta() - gens[ip]->eta();
-					float dphi =  diPhotonPointers[candIndex]->subLeadingPhoton()->phi() - gens[ip]->phi();
+					float dphi =  deltaPhi(diPhotonPointers[candIndex]->subLeadingPhoton()->phi(),gens[ip]->phi());
 					float dr = sqrt(deta*deta + dphi*dphi);
 					float pt_change = (diPhotonPointers[candIndex]->subLeadingPhoton()->et() - gens[ip]->et())/gens[ip]->et();
 					if (dr<0.3 && fabs(pt_change) < 0.5) {
@@ -623,16 +623,16 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		bdt_combined =-9999;
 		if(vbftag != NULL) {
 			float dEtaLeadPho = vbftag->leadingJet().eta() - eta1; 
-			float dPhiLeadPho = vbftag->leadingJet().phi() - phi1; 
+			float dPhiLeadPho = deltaPhi(vbftag->leadingJet().phi(),phi1); 
 			float dEtaSublPho = vbftag->leadingJet().eta() - eta2; 
-			float dPhiSublPho = vbftag->leadingJet().phi() - phi2;
+			float dPhiSublPho = deltaPhi(vbftag->leadingJet().phi(),phi2);
 			float dRLeadPho = sqrt(dEtaLeadPho*dEtaLeadPho + dPhiLeadPho*dPhiLeadPho);
 			float dRSublPho = sqrt(dEtaSublPho*dEtaSublPho + dPhiSublPho*dPhiSublPho);
 			dRphojet1 = min(dRSublPho, dRLeadPho); //distance of jet 1 to closest photon
 			dEtaLeadPho = vbftag->leadingJet().eta() - eta1; 
-			dPhiLeadPho = vbftag->leadingJet().phi() - phi1; 
+			dPhiLeadPho = deltaPhi(vbftag->leadingJet().phi(),phi1); 
 			dEtaSublPho = vbftag->leadingJet().eta() - eta2; 
-			dPhiSublPho = vbftag->leadingJet().phi() - phi2;
+			dPhiSublPho = deltaPhi(vbftag->leadingJet().phi(),phi2);
 			dRLeadPho = sqrt(dEtaLeadPho*dEtaLeadPho + dPhiLeadPho*dPhiLeadPho);
 			dRSublPho = sqrt(dEtaSublPho*dEtaSublPho + dPhiSublPho*dPhiSublPho);
 			dRphojet2 =  min(dRSublPho, dRLeadPho); //distance of jet 2 to closest photon

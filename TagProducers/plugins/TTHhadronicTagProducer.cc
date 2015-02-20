@@ -88,8 +88,8 @@ namespace flashgg {
 				float dEtaLead = thejet->eta() - dipho->leadingPhoton()->eta();
 				float dEtaSublead = thejet->eta() - dipho->subLeadingPhoton()->eta();
 
-				float dPhiLead = thejet->phi() - dipho->leadingPhoton()->phi();
-				float dPhiSublead = thejet->phi() - dipho->subLeadingPhoton()->phi();
+				float dPhiLead = deltaPhi(thejet->phi(),dipho->leadingPhoton()->phi());
+				float dPhiSublead = deltaPhi(thejet->phi(),dipho->subLeadingPhoton()->phi());
 
 				float dRJetPhoLead = sqrt(dEtaLead*dEtaLead + dPhiLead*dPhiLead);
 				float dRJetPhoSubLead = sqrt(dEtaSublead*dEtaSublead + dPhiSublead*dPhiSublead);

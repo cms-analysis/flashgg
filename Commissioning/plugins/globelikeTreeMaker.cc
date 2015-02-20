@@ -521,7 +521,7 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 				if( diPhotonPointers[candIndex]->leadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->leadingPhoton()->eta()) > 3. ) { continue; }
 				if( gens[ip]->motherRef(0)->pdgId() <= 25 ) {
 					float deta =  diPhotonPointers[candIndex]->leadingPhoton()->eta() - gens[ip]->eta();
-					float dphi =  diPhotonPointers[candIndex]->leadingPhoton()->phi() - gens[ip]->phi();
+					float dphi =  deltaPhi(diPhotonPointers[candIndex]->leadingPhoton()->phi(),gens[ip]->phi());
 					float dr = sqrt(deta*deta + dphi*dphi);
 					float pt_change = (diPhotonPointers[candIndex]->leadingPhoton()->et() - gens[ip]->et())/gens[ip]->et();
 					if (dr<0.3 && fabs(pt_change) < 0.5) {
@@ -539,7 +539,7 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 				if( diPhotonPointers[candIndex]->subLeadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->subLeadingPhoton()->eta()) > 3. ) { continue; }
 				if( gens[ip]->motherRef(0)->pdgId() <= 25 ) {
 					float deta =  diPhotonPointers[candIndex]->subLeadingPhoton()->eta() - gens[ip]->eta();
-					float dphi =  diPhotonPointers[candIndex]->subLeadingPhoton()->phi() - gens[ip]->phi();
+					float dphi =  deltaPhi(diPhotonPointers[candIndex]->subLeadingPhoton()->phi(),gens[ip]->phi());
 					float dr = sqrt(deta*deta + dphi*dphi);
 					float pt_change = (diPhotonPointers[candIndex]->subLeadingPhoton()->et() - gens[ip]->et())/gens[ip]->et();
 					if (dr<0.3 && fabs(pt_change) < 0.5) {
@@ -650,11 +650,11 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 			// within eta 4.7?
 			if (fabs(jet->eta()) > 4.7) continue;
 			// close to lead photon?
-			float dPhi = jet->phi() - phi1;
+			float dPhi = deltaPhi(jet->phi(),phi1);
 			float dEta = jet->eta() - eta1;
 			if (sqrt(dPhi*dPhi +dEta*dEta) < dr2pho) continue;
 			// close to sublead photon?
-			dPhi = jet->phi() - phi2;
+			dPhi = deltaPhi(jet->phi(),phi2);
 			dEta = jet->eta() - eta2;
 			if (sqrt(dPhi*dPhi +dEta*dEta) < dr2pho) continue;
 
@@ -696,7 +696,7 @@ FlashggTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 		auto dijet_p4 = leadJet_p4 + sublJet_p4;
 
 		dijet_Zep = fabs(diphoton_p4.Eta() - 0.5*(leadJet_p4.Eta() + sublJet_p4.Eta()));
-		dijet_dPhi = fabs( dijet_p4.Phi() - diphoton_p4.Phi());
+		dijet_dPhi = deltaPhi(dijet_p4.Phi(),diphoton_p4.Phi());
 		dijet_Mjj = dijet_p4.M();
 		float dipho_PToM = diphoton_p4.Pt() / diphoton_p4.M();
 
