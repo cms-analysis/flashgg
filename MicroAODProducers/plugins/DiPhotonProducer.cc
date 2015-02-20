@@ -101,6 +101,9 @@ namespace flashgg {
         // - compute isolations with respect to chosen vertex needed for preselection
         photon1_corr.setpfChgIsoWrtChosenVtx02( photon1_corr.getpfChgIso02WrtVtx( pvx ) );
         photon2_corr.setpfChgIsoWrtChosenVtx02( photon2_corr.getpfChgIso02WrtVtx( pvx ) );
+        photon1_corr.setpfChgIsoWrtChosenVtx03( photon1_corr.getpfChgIso03WrtVtx( pvx ) );
+        photon2_corr.setpfChgIsoWrtChosenVtx03( photon2_corr.getpfChgIso03WrtVtx( pvx ) );
+
         DiPhotonCandidate dipho(photon1_corr,photon2_corr,pvx);
         dipho.setVertex_index(ivtx);
 
