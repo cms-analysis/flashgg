@@ -637,13 +637,18 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 			dRSublPho = sqrt(dEtaSublPho*dEtaSublPho + dPhiSublPho*dPhiSublPho);
 			dRphojet2 =  min(dRSublPho, dRLeadPho); //distance of jet 2 to closest photon
 
+                        TLorentzVector leadingJet, subLeadingJet, dijet;
+                        leadingJet.SetPtEtaPhiE(vbftag->leadingJet().pt(),vbftag->leadingJet().eta(),vbftag->leadingJet().phi(),vbftag->leadingJet().energy());
+                        subLeadingJet.SetPtEtaPhiE(vbftag->subLeadingJet().pt(),vbftag->subLeadingJet().eta(),vbftag->subLeadingJet().phi(),vbftag->subLeadingJet().energy());
+
+                        dijet = leadingJet + subLeadingJet;
 			vbfcat = flash_VBFTag_Category;
 			dijet_leadEta = vbftag->VBFMVA().dijet_leadEta; 
 			dijet_subleadEta = vbftag->VBFMVA().dijet_subleadEta ;
 			dijet_LeadJPt = vbftag->VBFMVA().dijet_LeadJPt ;
 			dijet_SubJPt= vbftag->VBFMVA().dijet_SubJPt ;
 			dijet_dEta= fabs(vbftag->leadingJet().eta() - vbftag->subLeadingJet().eta()) ;
-			dijet_dPhi= fabs(vbftag->leadingJet().phi() - vbftag->subLeadingJet().phi()) ;
+			dijet_dPhi= deltaPhi(dijet.Phi(),diPhotonPointers[candIndex]->phi());
 			dijet_Zep= vbftag->VBFMVA().dijet_Zep ;
 			dijet_Mjj= vbftag->VBFMVA().dijet_Mjj ;
 			dijet_MVA= vbftag->VBFMVA().VBFMVAValue() ;
