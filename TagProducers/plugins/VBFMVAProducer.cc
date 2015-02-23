@@ -138,11 +138,11 @@ namespace flashgg {
 				// within eta 4.7?
 				if (fabs(jet->eta()) > 4.7) continue;
 				// close to lead photon?
-				float dPhi = jet->phi() - phi1;
+				float dPhi = deltaPhi(jet->phi(),phi1);
 				float dEta = jet->eta() - eta1;
 				if (sqrt(dPhi*dPhi +dEta*dEta) < dr2pho) continue;
 				// close to sublead photon?
-				dPhi = jet->phi() - phi2;
+				dPhi = deltaPhi(jet->phi(),phi2);
 				dEta = jet->eta() - eta2;
 				if (sqrt(dPhi*dPhi +dEta*dEta) < dr2pho) continue;
 
@@ -190,7 +190,7 @@ namespace flashgg {
 			dijet_dPhi_trunc_ = std::min(dijet_dPhi_, (float) 2.916);
 
 			dijet_Zep_ = fabs(diphoton_p4.Eta() - 0.5*(leadJet_p4.Eta() + sublJet_p4.Eta()));
-			dijet_dPhi_ = fabs( dijet_p4.Phi() - diphoton_p4.Phi());
+			dijet_dPhi_ = deltaPhi(dijet_p4.Phi(),diphoton_p4.Phi());
 			dijet_Mjj_ = dijet_p4.M();
 	    dipho_PToM_ = diphoton_p4.Pt() / diphoton_p4.M();
 		

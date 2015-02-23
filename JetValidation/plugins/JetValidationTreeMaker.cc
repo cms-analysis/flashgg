@@ -305,7 +305,7 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
       for( unsigned int jetLoop =0 ; jetLoop < jetsDzPointers.size(); jetLoop++){
 	GenPhotonInfo tmp_info;
 	
-	float dphi  = jetsDzPointers[jetLoop]->phi() -  gens[genLoop]->phi();
+	float dphi  = deltaPhi(jetsDzPointers[jetLoop]->phi(),gens[genLoop]->phi());
 	float deta  = jetsDzPointers[jetLoop]->eta() -  gens[genLoop]->eta();
 	float dr    =  std::sqrt(deta*deta + dphi*dphi);
 	
@@ -492,7 +492,7 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
       if(jetsDzPointers[recoLoop]->pt() < 5) continue;
 
       deta= jetsDzPointers[recoLoop]->eta() - 	 genJets[genLoop]->eta();
-      dphi= jetsDzPointers[recoLoop]->phi() - 	 genJets[genLoop]->phi();
+      dphi= deltaPhi(jetsDzPointers[recoLoop]->phi(),genJets[genLoop]->phi());
       dr = std::sqrt(deta*deta + dphi*dphi);
 
       if (dr < 0.4 ) {

@@ -149,13 +149,11 @@ namespace flashgg {
 	  if( fabs(thejet->eta()) > jetEtaThreshold_ )              continue; 
 	  if( thejet->pt() < jetPtThreshold_ )                      continue;
 
-	  float dPhiJetToPhoL = fabs( dipho->leadingPhoton()->phi() - thejet->phi() ) < TMath::Pi()? 
-	    fabs( dipho->leadingPhoton()->phi()- thejet->phi() ):2*TMath::Pi() - fabs( dipho->leadingPhoton()->phi()- thejet->phi() );
+	  float dPhiJetToPhoL = deltaPhi( dipho->leadingPhoton()->phi(),thejet->phi() );
 	  float dEtaJetToPhoL = dipho->leadingPhoton()->eta() - thejet->eta();
 	  float dRJetToPhoL   = sqrt( dEtaJetToPhoL*dEtaJetToPhoL + dPhiJetToPhoL*dPhiJetToPhoL );
 
-	  float dPhiJetToPhoS = fabs( dipho->subLeadingPhoton()->phi() - thejet->phi() ) < TMath::Pi()? 
-	    fabs( dipho->subLeadingPhoton()->phi()- thejet->phi() ):2*TMath::Pi() - fabs( dipho->subLeadingPhoton()->phi()- thejet->phi() );
+	  float dPhiJetToPhoS = deltaPhi( dipho->subLeadingPhoton()->phi(),thejet->phi() );
 	  float dEtaJetToPhoS = dipho->subLeadingPhoton()->eta() - thejet->eta();
 	  float dRJetToPhoS   = sqrt( dEtaJetToPhoS*dEtaJetToPhoS + dPhiJetToPhoS*dPhiJetToPhoS );
 	  

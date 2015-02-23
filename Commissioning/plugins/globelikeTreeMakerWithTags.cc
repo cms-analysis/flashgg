@@ -512,7 +512,7 @@ FlashggTreeMakerWithTags::analyze(const edm::Event& iEvent, const edm::EventSetu
 				if( diPhotonPointers[candIndex]->leadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->leadingPhoton()->eta()) > 3. ) { continue; }
 				if( gens[ip]->motherRef(0)->pdgId() <= 25 ) {
 					float deta =  diPhotonPointers[candIndex]->leadingPhoton()->eta() - gens[ip]->eta();
-					float dphi =  diPhotonPointers[candIndex]->leadingPhoton()->phi() - gens[ip]->phi();
+					float dphi =  deltaPhi(diPhotonPointers[candIndex]->leadingPhoton()->phi(),gens[ip]->phi());
 					float dr = sqrt(deta*deta + dphi*dphi);
 					float pt_change = (diPhotonPointers[candIndex]->leadingPhoton()->et() - gens[ip]->et())/gens[ip]->et();
 					if (dr<0.3 && fabs(pt_change) < 0.5) {
@@ -530,7 +530,7 @@ FlashggTreeMakerWithTags::analyze(const edm::Event& iEvent, const edm::EventSetu
 				if( diPhotonPointers[candIndex]->subLeadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->subLeadingPhoton()->eta()) > 3. ) { continue; }
 				if( gens[ip]->motherRef(0)->pdgId() <= 25 ) {
 					float deta =  diPhotonPointers[candIndex]->subLeadingPhoton()->eta() - gens[ip]->eta();
-					float dphi =  diPhotonPointers[candIndex]->subLeadingPhoton()->phi() - gens[ip]->phi();
+					float dphi =  deltaPhi(diPhotonPointers[candIndex]->subLeadingPhoton()->phi(),gens[ip]->phi());
 					float dr = sqrt(deta*deta + dphi*dphi);
 					float pt_change = (diPhotonPointers[candIndex]->subLeadingPhoton()->et() - gens[ip]->et())/gens[ip]->et();
 					if (dr<0.3 && fabs(pt_change) < 0.5) {

@@ -161,7 +161,7 @@ namespace flashgg {
       subleadeta_     = g1->eta();
       sigmarv_        = .5*sqrt((g1->getSigEOverE())*(g1->getSigEOverE()) + (g2->getSigEOverE())*(g2->getSigEOverE()));
       sigmawv_        = MassResolutionWrongVtx;
-      CosPhi_         = TMath::Cos(g1->phi()-g2->phi());
+      CosPhi_         = TMath::Cos(deltaPhi(g1->phi(),g2->phi()));
       vtxprob_        =  1.-vertex_prob_slope_*(1+diPhotonPointers[candIndex]->getVtxProbMVA());
 
       mvares.result = DiphotonMva_->EvaluateMVA("BDT");
