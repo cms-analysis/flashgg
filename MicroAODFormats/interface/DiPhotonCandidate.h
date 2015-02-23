@@ -71,8 +71,10 @@ namespace flashgg {
     float getMVA(unsigned int iVtx) const  { return iVtx<vmva_value_.size()?vmva_value_.at(iVtx):-9999.; } 
     int getMVASortedIndex(unsigned int iVtx) const  { return iVtx<vmva_sortedindex_.size()?vmva_sortedindex_.at(iVtx):-1; } 
     edm::Ptr<reco::Vertex> getVertexPtr(unsigned int iVtx) const  { return iVtx< vVtxPtr_.size()?vVtxPtr_.at(iVtx):edm::Ptr<reco::Vertex>(); }
-    
 
+    float getLeadPhotonId() const { return leadingPhoton()->getPhoIdMvaDWrtVtx(vertex_); }
+    float getSubLeadPhotonId() const { return subLeadingPhoton()->getPhoIdMvaDWrtVtx(vertex_); }
+    
   private:
 
     edm::Ptr<reco::Vertex> vertex_;

@@ -46,6 +46,7 @@ namespace flashgg {
     void setpfChgIsoWrtWorstVtx04(float val) {pfChgIsoWrtWorstVtx04_=val;};
     void setpfChgIsoWrtWorstVtx03(float val) {pfChgIsoWrtWorstVtx03_=val;};
     void setpfChgIsoWrtChosenVtx02(float val) {pfChgIsoWrtChosenVtx02_=val;};
+    void setpfChgIsoWrtChosenVtx03(float val) {pfChgIsoWrtChosenVtx03_=val;};
     void setESEffSigmaRR(float val) {ESEffSigmaRR_=val;};  
     void setPhoIdMvaD( std::map<edm::Ptr<reco::Vertex>,float> valmap ) {  phoIdMvaD_ = valmap; };   // concept: pass the pre-computed map when calling this in the producer
     void setEnergyAtStep(std::string key,float val);
@@ -79,6 +80,7 @@ namespace flashgg {
     float const getpfChgIsoWrtWorstVtx04() const {return pfChgIsoWrtWorstVtx04_;};
     float const getpfChgIsoWrtWorstVtx03() const {return pfChgIsoWrtWorstVtx03_;};
     float const getpfChgIsoWrtChosenVtx02() const {return pfChgIsoWrtChosenVtx02_;};
+    float const getpfChgIsoWrtChosenVtx03() const {return pfChgIsoWrtChosenVtx03_;};
     float const getESEffSigmaRR() const {return ESEffSigmaRR_;};
 
     bool hasEnergyAtStep(std::string key) const;
@@ -122,6 +124,7 @@ namespace flashgg {
     float pfChgIsoWrtWorstVtx04_;
     float pfChgIsoWrtWorstVtx03_;
     float pfChgIsoWrtChosenVtx02_;
+    float pfChgIsoWrtChosenVtx03_;
     float ESEffSigmaRR_;
     float sigEOverE_;
     std::map<edm::Ptr<reco::Vertex>,float> pfChgIso04_; 
