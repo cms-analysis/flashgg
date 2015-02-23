@@ -5,28 +5,31 @@
 
 namespace flashgg {
 
-	//	class SimplePhotonSmear: public BaseSystMethods<flashgg::Photon,float> {
-	class SimplePhotonSmear: public BaseSystMethods {
+	class SimplePhotonSmear: public BaseSystMethods<flashgg::Photon, int> {
 
 
 		public:
-			SimplePhotonSmear(const edm::ParameterSet& conf):
-				BaseSystMethods(conf){}
-			//	SimplePhotonSmear();
+			SimplePhotonSmear(const edm::ParameterSet& conf);
 
+			void applyCorrection( flashgg::Photon & y, int syst_shift) override;
 
-			void applyCorrection( flashgg::Photon & y, float syst_shift) override;
+		private:
+	  		double sigma_;
 	};
 
-	void SimplePhotonSmear::applyCorrection( flashgg::Photon & y, float syst_shift)
+	SimplePhotonSmear::SimplePhotonSmear(const edm::ParameterSet& conf) : 
+		BaseSystMethods(conf),
+		sigma_(conf.getParameter<double>("Sigma")) {}
+
+	void SimplePhotonSmear::applyCorrection( flashgg::Photon & y, int syst_shift)
 	{
 		if(syst_shift == 0 ){
 			
-			std::cout << "Nominal correction" << std::endl;
+		  std::cout << "Nominal correction" << std::endl;
 
 		}else{
 			std::cout <<"momentum before correction  " << y.pt() << std::endl; 
-			y.updateEnergy("smearedEnergy",y.energy()+syst_shift);
+			y.updateEnergy("smearedEnergy",y.energy()+sigma_*syst_shift);
 			std::cout << "corrected momentum value  " << y.pt() << std::endl;
 		}
 	}

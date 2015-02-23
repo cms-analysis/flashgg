@@ -8,8 +8,7 @@
 
 namespace flashgg {
 
-//	template <typename flashgg_object, typename... Args> 
-
+		template <class flashgg_object, class param_var>  
 		class BaseSystMethods {
 
 		public:
@@ -22,15 +21,11 @@ namespace flashgg {
 			BaseSystMethods( const BaseSystMethods& ) = delete;
 			BaseSystMethods& operator=( const BaseSystMethods&) = delete;
 
-			//typedef std::map<std::string,double> Parameters_Selector_Type;
-		
-			virtual void applyCorrection( flashgg::Photon&, float syst_value) = 0;//main function//
-			//virtual void applyCorrection( flashgg_object& , Args ...) = 0;//main function//
-//			virtual void applyCorrection( flashgg_object& object, float syst_value);//main function//
+			virtual void applyCorrection( flashgg_object&, param_var syst_value) = 0;//main function//
 
 			const std::string& name() const { return _SystematicName; };
 
-//		private:
+		private:
 			const std::string _SystematicName;
 			//typename flashgg_object object;
 
@@ -38,7 +33,7 @@ namespace flashgg {
 	};
 }
 #include "FWCore/PluginManager/interface/PluginFactory.h"
-typedef edmplugin::PluginFactory< flashgg::BaseSystMethods* ( const edm::ParameterSet&) > FlashggSystematicPhotonMethodsFactory;
+typedef edmplugin::PluginFactory< flashgg::BaseSystMethods<flashgg::Photon,int>* ( const edm::ParameterSet&) > FlashggSystematicPhotonMethodsFactory;
 //typedef edmplugin::PluginFactory< flashgg::BaseSystMethods<flashgg::Photon,float>* ( const edm::ParameterSet&) > FlashggSystematicPhotonMethodsFactory;
 //typedef edmplugin::PluginFactory< flashgg::BaseSystMethods<flashgg::DiPhotonCandidate>* ( const edm::ParameterSet&) > FlashggSystematicDiPhotonMethodsFactory;
 
