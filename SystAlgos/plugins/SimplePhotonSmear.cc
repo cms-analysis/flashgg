@@ -12,6 +12,7 @@ namespace flashgg {
 			SimplePhotonSmear(const edm::ParameterSet& conf);
 
 			void applyCorrection( flashgg::Photon & y, int syst_shift) override;
+			std::string shiftLabel(int) override;
 
 		private:
 	  		double sigma_;
@@ -21,16 +22,24 @@ namespace flashgg {
 		BaseSystMethods(conf),
 		sigma_(conf.getParameter<double>("Sigma")) {}
 
+	std::string SimplePhotonSmear::shiftLabel(int syst_value)  {
+		std::string result;  
+		if (syst_value == 0) {
+			result = Form("%sCentral",label().c_str());	
+		} else if (syst_value > 0) {
+			result = Form("%sUp%.2dsigma",label().c_str(),syst_value);
+		} else {
+			result = Form("%sDown%.2dsigma",label().c_str(),-1*syst_value);
+		}
+		return result;
+	} 
+
 	void SimplePhotonSmear::applyCorrection( flashgg::Photon & y, int syst_shift)
 	{
 		if(syst_shift == 0 ){
-			
-		  std::cout << "Nominal correction" << std::endl;
-
+		  // std::cout << "Nominal correction" << std::endl;
 		}else{
-			std::cout <<"momentum before correction  " << y.pt() << std::endl; 
-			y.updateEnergy("smearedEnergy",y.energy()+sigma_*syst_shift);
-			std::cout << "corrected momentum value  " << y.pt() << std::endl;
+			y.updateEnergy(shiftLabel(syst_shift),y.energy()+sigma_*syst_shift);
 		}
 	}
 }

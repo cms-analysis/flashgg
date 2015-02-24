@@ -14,19 +14,24 @@ namespace flashgg {
 		public:
 
 			BaseSystMethods( const edm::ParameterSet& conf):
-			_SystematicName( conf.getParameter<std::string>("MethodName") ){ }
-			//BaseSystMethods();
-			//virtual ~BaseSystMethods();
+		  	_Name( conf.getParameter<std::string>("MethodName") ),
+			_Label( conf.getParameter<std::string>("Label") )  { }
+			BaseSystMethods() {};
+			virtual ~BaseSystMethods() {};
 
 			BaseSystMethods( const BaseSystMethods& ) = delete;
 			BaseSystMethods& operator=( const BaseSystMethods&) = delete;
 
 			virtual void applyCorrection( flashgg_object&, param_var syst_value) = 0;//main function//
 
-			const std::string& name() const { return _SystematicName; };
+			const std::string& name() const { return _Name; };
+			const std::string& label() const { return _Label; };
+
+			virtual std::string shiftLabel(param_var syst_val) = 0;
 
 		private:
-			const std::string _SystematicName;
+			const std::string _Name;
+			const std::string _Label;
 			//typename flashgg_object object;
 
 
