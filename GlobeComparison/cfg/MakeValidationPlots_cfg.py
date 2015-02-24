@@ -2,24 +2,30 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.PSet()
 
-process.ioFilesOpt = cms.PSet(
-    globeFile = cms.string('root://eoscms.cern.ch//store/group/phys_higgs/cmshgg/analyzed/legacy/legacy_paper_feeze_v6_high_stat/histograms_CMS-HGG_8TeV_massfac_highstat.root'),
-    globeTreeName = cms.string('vbf_m125_8TeV'),
-    
-    flashggFile = cms.string('/afs/cern.ch/user/s/spigazzi/work/FLASHgg/CMSSW_7_2_2_patch2/src/flashgg/GlobeComparison/plots/globeLikeTree.root'),
-    flashggTreeName = cms.string('commissioning/flashggTreeWithTagSorter'),
-    
-    outFile = cms.string('validation_test.root'),
-    outDir = cms.string(''),
-    ## output option: root, png, pdf 
-    drawOpt = cms.string('root png pdf')
+process.samplesOpt = cms.PSet(
+    ## turn sample processing on/off
+    GGH = cms.bool(False),
+    VBF = cms.bool(True),
+    WZH = cms.bool(False),
+    TTH = cms.bool(False)
 )
 
-process.samples = cms.PSet(
-    ggH = cms.bool(False),
-    vbfH = cms.bool(True),
-    wzH = cms.bool(False),
-    ttH = cms.bool(False)
+process.ioFilesOpt = cms.PSet(
+    ## GLOBE input file
+    globeFile = cms.string('root://eoscms.cern.ch//store/group/phys_higgs/cmshgg/analyzed/legacy/legacy_paper_feeze_v6_high_stat/histograms_CMS-HGG_8TeV_massfac_highstat.root'),
+
+    ## FLASHgg input files
+    flashggFileGGH = cms.string('/afs/cern.ch/user/s/spigazzi/work/FLASHgg/CMSSW_7_2_2_patch2/src/flashgg/GlobeComparison/plots/globeLikeTreeGGH.root'),
+    flashggFileVBF = cms.string('/afs/cern.ch/user/s/spigazzi/work/FLASHgg/CMSSW_7_2_2_patch2/src/flashgg/GlobeComparison/plots/globeLikeTreeVBF.root'),
+    flashggFileWZH = cms.string('/afs/cern.ch/user/s/spigazzi/work/FLASHgg/CMSSW_7_2_2_patch2/src/flashgg/GlobeComparison/plots/globeLikeTreeWZH.root'),
+    flashggFileTTH = cms.string('/afs/cern.ch/user/s/spigazzi/work/FLASHgg/CMSSW_7_2_2_patch2/src/flashgg/GlobeComparison/plots/globeLikeTreeTTH.root'),
+    flashggTreeName = cms.string('commissioning/flashggTreeWithTagSorter'),
+
+    ## base output directory: default $CMSSW_BASE/src/flashgg/GlobeComparison/plots/
+    outDir = cms.string(''),
+
+    ## output option: root, png, pdf 
+    drawOpt = cms.string('root png pdf')
 )
 
 ## categories list: - 'all' means draw plots for all categories
@@ -64,11 +70,11 @@ process.variables = cms.PSet(
         'ptbal 100 -100 400',
         'ptasym 100 0 1',
         'logspt2 50 0 15',
-        'p2conv 50 0 10',
+        'p2conv 50 -2 15',
         'nconv 2 0 1',
         'vtxmva 100 0 1',
         'vtxdz 100 -30 30',
-        'vbfcat 100 0 1',
+        # 'vbfcat 100 0 1',
         'et1 100 0 500',
         'et2 100 0 500',
         'eta1 100 -3 3',

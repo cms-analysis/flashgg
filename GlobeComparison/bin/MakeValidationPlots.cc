@@ -50,8 +50,82 @@ void GetAllVBFCat(vector<string>* categories)
     return;
 }
 
-//**********MAIN**************************************************************************
+//----------Variables and categories loop function----------------------------------------
+void ProcessSample(TTree* flashggTree, TTree* globeTree,
+                   vector<string>* variables, vector<string>* categories,
+                   TString* drawOption, string outputDir, string sampleName, bool doSplit)
+{
+    //---create outdir if not exists
+    std::string mkdir_command = "mkdir -p "+outputDir+sampleName;
+    system(mkdir_command.c_str());
+    
+    TFile* outFile = TFile::Open((outputDir+sampleName+"/comparison_plots.root").c_str(), "recreate");
+    //---variables loop---   
+    for(unsigned int iVar=0; iVar<variables->size(); iVar++)
+    {
+        istringstream splitter(variables->at(iVar));
+        string variable;
+        int nbins=100;
+        float min=0, max=100;
+        vector<string> tokens{istream_iterator<string>{splitter},
+                istream_iterator<string>{}};
 
+        variable = tokens.at(0); 
+        if(tokens.size() > 1)
+            nbins = stoi(tokens.at(1));
+        if(tokens.size() > 2)
+            min = stof(tokens.at(2));
+        if(tokens.size() > 3)
+            max = stof(tokens.at(3));        
+
+        //---categories loop---
+        for(unsigned int iCat=0; iCat<categories->size(); iCat++)
+        {                
+            //---draw vbf var only for vbf categories
+            if(variable.find("dijet") != string::npos &&
+               categories->at(iCat).find("vbf") == string::npos &&
+               categories->at(iCat) != "all_cat")
+                continue;
+            
+            outFile->cd();
+            string h_name = categories->at(iCat)+"_"+variable;
+            TH1F* h_new = new TH1F(TString(h_name+"_FLASHgg"), h_name.c_str(), nbins, min, max);
+            TH1F* h_old =  new TH1F(TString(h_name+"_GLOBE"), h_name.c_str(), nbins, min, max);
+           
+            TString cat_cut(categories->at(iCat));
+            //---do not split in categories if cat_string is void
+            if(categories->at(iCat) != "all_cat")                
+                cat_cut.Insert(cat_cut.Last('t')+1, "==");
+            else
+                cat_cut = "1";
+            //---Draw histos from trees
+            flashggTree->Draw(TString(variable+">>"+h_name+"_FLASHgg"), cat_cut,"goff");
+            globeTree->Draw(TString(variable+">>"+h_name+"_GLOBE"),
+                            TString("full_weight*("+cat_cut+")"),"goff");
+            
+            //---Draw histos to output files---
+            //---skip empty categories
+            if(h_new->GetEntries() == 0 && h_old->GetEntries() == 0)
+                continue;
+            //---output root file
+            if(drawOption->Contains("root"))
+            {
+                h_new->Write();
+                h_old->Write();
+            }
+            //---draw png/pdf plots
+            string plotsDir = outputDir+sampleName+"/";
+            if(doSplit)
+                plotsDir += categories->at(iCat)+"/";
+            if(drawOption->Contains("png") || drawOption->Contains("pdf"))
+                compareHistos(h_new, h_old, string("FLASHgg"), string("GLOBE"),
+                              h_name, plotsDir, drawOption);
+        }
+    }
+    outFile->Close();
+}
+
+//**********MAIN**************************************************************************
 int main(int argc, char* argv[])
 {
     setTDRStyle();
@@ -76,19 +150,13 @@ int main(int argc, char* argv[])
              << endl;
         return 0;
     }
-    //---get the python configuration---
+    //-----get the python configuration-----
     const edm::ParameterSet& process = edm::readPSetsFrom(argv[1])->getParameter<edm::ParameterSet>("process");
     const edm::ParameterSet& filesOpt = process.getParameter<edm::ParameterSet>("ioFilesOpt");
-    //---input files option
-    TFile* globeFile = TFile::Open(filesOpt.getParameter<string>("globeFile").c_str());    
-    TTree* globeTree = (TTree*)globeFile->Get(filesOpt.getParameter<string>("globeTreeName").c_str());    
-    TFile* flashggFile = TFile::Open(filesOpt.getParameter<string>("flashggFile").c_str());
-    TTree* flashggTree = (TTree*)flashggFile->Get(filesOpt.getParameter<string>("flashggTreeName").c_str());
-    //---out file option
+    //---out file option---
     string outputDir = filesOpt.getParameter<string>("outDir");
     if(outputDir == "")
-        outputDir = "$CMSSW_BASE/src/flashgg/Validation/plots/";    
-    TFile* outFile = TFile::Open((outputDir+filesOpt.getParameter<string>("outFile")).c_str(), "recreate");    
+        outputDir = "$CMSSW_BASE/src/flashgg/GlobeComparison/plots/";    
     //---draw option---
     TString drawOption(filesOpt.getParameter<string>("drawOpt"));
     //---categories option---
@@ -123,68 +191,43 @@ int main(int argc, char* argv[])
     //---get the validation variables---
     const edm::ParameterSet& var_param = process.getParameter<edm::ParameterSet>("variables");
     vector<string> variables(var_param.getParameter<vector<string> >("variables"));
-
-    //---variables loop---   
-    for(unsigned int iVar=0; iVar<variables.size(); iVar++)
+    const edm::ParameterSet& samplesOpt = process.getParameter<edm::ParameterSet>("samplesOpt");
+    bool processGGH = samplesOpt.getParameter<bool>("GGH");
+    bool processVBF = samplesOpt.getParameter<bool>("VBF");
+    bool processWZH = samplesOpt.getParameter<bool>("WZH");
+    bool processTTH = samplesOpt.getParameter<bool>("TTH");
+    //---process selected samples---
+    TFile* globeFile = TFile::Open(filesOpt.getParameter<string>("globeFile").c_str());
+    if(processGGH)
     {
-        istringstream splitter(variables.at(iVar));
-        string variable;
-        int nbins=100;
-        float min=0, max=100;
-        vector<string> tokens{istream_iterator<string>{splitter},
-                istream_iterator<string>{}};
-
-        variable = tokens.at(0); 
-        if(tokens.size() > 1)
-            nbins = stoi(tokens.at(1));
-        if(tokens.size() > 2)
-            min = stof(tokens.at(2));
-        if(tokens.size() > 3)
-            max = stof(tokens.at(3));        
-
-        //---categories loop---
-        for(unsigned int iCat=0; iCat<categories.size(); iCat++)
-        {                
-            //---draw vbf var only for vbf categories
-            if(variable.find("dijet") != string::npos &&
-               categories.at(iCat).find("vbf") == string::npos &&
-               categories.at(iCat) != "all_cat")
-                continue;
-            
-            outFile->cd();
-            string h_name = categories.at(iCat)+"_"+variable;
-            TH1F* h_new = new TH1F(TString(h_name+"_FLASHgg"), h_name.c_str(), nbins, min, max);
-            TH1F* h_old =  new TH1F(TString(h_name+"_GLOBE"), h_name.c_str(), nbins, min, max);
-           
-            TString cat_cut(categories.at(iCat));
-            //---do not split in categories if cat_string is void
-            if(categories.at(iCat) != "all_cat")                
-                cat_cut.Insert(cat_cut.Last('t')+1, "==");
-            else
-                cat_cut = "1";
-            //---Draw histos from trees
-            flashggTree->Draw(TString(variable+">>"+h_name+"_FLASHgg"), cat_cut,"goff");
-            globeTree->Draw(TString(variable+">>"+h_name+"_GLOBE"),
-                            TString("full_weight*("+cat_cut+")"),"goff");
-            
-            //---Draw histos to output files---
-            //---skip empty categories
-            if(h_new->GetEntries() == 0 && h_old->GetEntries() == 0)
-                continue;
-            //---output root file
-            if(drawOption.Contains("root"))
-            {
-                h_new->Write();
-                h_old->Write();
-            }
-            //---draw png/pdf plots
-            string plotsDir = outputDir;
-            if(doSplit)
-                plotsDir += categories.at(iCat)+"/";
-            if(drawOption.Contains("png") || drawOption.Contains("pdf"))
-                compareHistos(h_new, h_old, string("FLASHgg"), string("GLOBE"),
-                              h_name, plotsDir, &drawOption);
-        }
+        TFile* flashggFileGGH = TFile::Open(filesOpt.getParameter<string>("flashggFileGGH").c_str());
+        TTree* flashggTreeGGH = (TTree*)flashggFileGGH->Get(filesOpt.getParameter<string>("flashggTreeName").c_str());
+        TTree* globeTreeGGH = (TTree*)globeFile->Get("ggh_m125_8TeV");
+        ProcessSample(flashggTreeGGH, globeTreeGGH, &variables, &categories, &drawOption,                      
+                      outputDir, string("ggh_m125"), doSplit);
     }
-    outFile->Close();
+    if(processVBF)
+    {
+        TFile* flashggFileVBF = TFile::Open(filesOpt.getParameter<string>("flashggFileVBF").c_str());
+        TTree* flashggTreeVBF = (TTree*)flashggFileVBF->Get(filesOpt.getParameter<string>("flashggTreeName").c_str());
+        TTree* globeTreeVBF = (TTree*)globeFile->Get("vbf_m125_8TeV");
+        ProcessSample(flashggTreeVBF, globeTreeVBF, &variables, &categories, &drawOption,                      
+                      outputDir, string("vbf_m125"), doSplit);
+    }
+    if(processWZH)
+    {
+        TFile* flashggFileWZH = TFile::Open(filesOpt.getParameter<string>("flashggFileWZH").c_str());
+        TTree* flashggTreeWZH = (TTree*)flashggFileWZH->Get(filesOpt.getParameter<string>("flashggTreeName").c_str());
+        TTree* globeTreeWZH = (TTree*)globeFile->Get("wzh_m125_8TeV");
+        ProcessSample(flashggTreeWZH, globeTreeWZH, &variables, &categories, &drawOption,                      
+                      outputDir, string("wzh_m125"), doSplit);        
+    }
+    if(processTTH)
+    {
+        TFile* flashggFileTTH = TFile::Open(filesOpt.getParameter<string>("flashggFileTTH").c_str());
+        TTree* flashggTreeTTH = (TTree*)flashggFileTTH->Get(filesOpt.getParameter<string>("flashggTreeName").c_str());
+        TTree* globeTreeTTH = (TTree*)globeFile->Get("tth_m125_8TeV");
+        ProcessSample(flashggTreeTTH, globeTreeTTH, &variables, &categories, &drawOption,                      
+                      outputDir, string("tth_m125"), doSplit);
+    }
 }

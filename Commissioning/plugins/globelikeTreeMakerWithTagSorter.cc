@@ -633,7 +633,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
                                        eta1, phi1); 
                     dRSublPho = deltaR(vbftag->subLeadingJet().eta(), vbftag->subLeadingJet().phi(),
                                        eta2, phi2);
-                    dRphojet2 =  min(dRSublPho, dRLeadPho); //distance of jet 2 to closest photon
+                    dRphojet2 = min(dRSublPho, dRLeadPho); //distance of jet 2 to closest photon
 
                     TLorentzVector leadingJet, subLeadingJet, dijet;
                     leadingJet.SetPtEtaPhiE(vbftag->leadingJet().pt(),vbftag->leadingJet().eta(),vbftag->leadingJet().phi(),vbftag->leadingJet().energy());
@@ -656,11 +656,11 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		sigmaMrvoM = chosenTag->diPhotonMVA().sigmarv;
 		sigmaMwvoM =chosenTag->diPhotonMVA().sigmawv;
 		vtxprob =chosenTag->diPhotonMVA().vtxprob;
-		ptbal = diPhotonPointers[candIndex]->getPtBal();
-		ptasym = diPhotonPointers[candIndex]->getPtAsym();
-		logspt2 = diPhotonPointers[candIndex]->getLogSumPt2();
-		p2conv = diPhotonPointers[candIndex]->getPullConv(); 
-		nconv = diPhotonPointers[candIndex]->getNConv(); 
+		ptbal = diPhotonPointers[candIndex]->getPtBal(0);
+		ptasym = diPhotonPointers[candIndex]->getPtAsym(0);
+		logspt2 = diPhotonPointers[candIndex]->getLogSumPt2(0);
+		p2conv = diPhotonPointers[candIndex]->getPullConv(0); 
+		nconv = diPhotonPointers[candIndex]->getNConv(0); 
 		vtxmva = diPhotonPointers[candIndex]->getVtxProbMVA();
 		vtxdz = diPhotonPointers[candIndex]->getDZ1(); 
 		dipho_mva = chosenTag->diPhotonMVA().getMVAValue();

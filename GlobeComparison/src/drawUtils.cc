@@ -7,8 +7,8 @@ void compareHistos(TH1F* histo_new, TH1F* histo_old, std::string label_new,
     //---create outdir if not exists
     std::string mkdir_command = "mkdir -p "+outputDir;
     system(mkdir_command.c_str());
-    
     gStyle->SetOptStat("emr");
+    
     double xNorm = histo_new->Integral()/histo_old->Integral();
     histo_old -> Scale(xNorm);
     
