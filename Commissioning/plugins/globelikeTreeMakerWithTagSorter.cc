@@ -661,7 +661,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		logspt2 = diPhotonPointers[candIndex]->getLogSumPt2(0);
 		p2conv = diPhotonPointers[candIndex]->getPullConv(0); 
 		nconv = diPhotonPointers[candIndex]->getNConv(0); 
-		vtxmva = diPhotonPointers[candIndex]->getVtxProbMVA();
+		vtxmva = -1.*diPhotonPointers[candIndex]->getVtxProbMVA();
 		vtxdz = diPhotonPointers[candIndex]->getDZ1(); 
 		dipho_mva = chosenTag->diPhotonMVA().getMVAValue();
 

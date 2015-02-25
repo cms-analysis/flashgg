@@ -15,10 +15,10 @@ process.ioFilesOpt = cms.PSet(
     globeFile = cms.string('root://eoscms.cern.ch//store/group/phys_higgs/cmshgg/analyzed/legacy/legacy_paper_feeze_v6_high_stat/histograms_CMS-HGG_8TeV_massfac_highstat.root'),
 
     ## FLASHgg input files
-    flashggFileGGH = cms.string('/afs/cern.ch/user/s/spigazzi/work/FLASHgg/CMSSW_7_2_2_patch2/src/flashgg/GlobeComparison/plots/globeLikeTreeGGH.root'),
-    flashggFileVBF = cms.string('/afs/cern.ch/user/s/spigazzi/work/FLASHgg/CMSSW_7_2_2_patch2/src/flashgg/GlobeComparison/plots/globeLikeTreeVBF.root'),
-    flashggFileWZH = cms.string('/afs/cern.ch/user/s/spigazzi/work/FLASHgg/CMSSW_7_2_2_patch2/src/flashgg/GlobeComparison/plots/globeLikeTreeWZH.root'),
-    flashggFileTTH = cms.string('/afs/cern.ch/user/s/spigazzi/work/FLASHgg/CMSSW_7_2_2_patch2/src/flashgg/GlobeComparison/plots/globeLikeTreeTTH.root'),
+    flashggFileGGH = cms.string('/afs/cern.ch/work/b/bmarzocc/public/FLASHggValidation/globeLikeTree_GluGluToHToGG_M-125_13TeV-powheg-pythia6_HggPhys14MicroAODV2-PU20bx25_PHYS14_25_V1-v1.root'),
+    flashggFileVBF = cms.string('/afs/cern.ch/work/b/bmarzocc/public/FLASHggValidation/globeLikeTree_VBF_HToGG_M-125_13TeV-powheg-pythia6_HggPhys14MicroAODV2-PU20bx25_PHYS14_25_V1-v1.root'),
+    flashggFileWZH = cms.string('/afs/cern.ch/work/b/bmarzocc/public/FLASHggValidation/globeLikeTree_WH_ZH_HToGG_M-125_13TeV_pythia6_HggPhys14MicroAODV2-PU20bx25_PHYS14_25_V1-v1.root'),
+    flashggFileTTH = cms.string('/afs/cern.ch/work/b/bmarzocc/public/FLASHggValidation/globeLikeTree_TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola_HggPhys14MicroAODV2-PU20bx25_PHYS14_25_V1-v1.root'),
     flashggTreeName = cms.string('commissioning/flashggTreeWithTagSorter'),
 
     ## base output directory: default $CMSSW_BASE/src/flashgg/GlobeComparison/plots/
@@ -66,7 +66,7 @@ process.variables = cms.PSet(
         'sigmaEoE2 100 0 1',
         'ptoM1 100 0 3',
         'ptoM2 100 0 3',
-        'vtxprob 100 0 1',
+        'vtxprob 100 -1 1',
         'ptbal 100 -100 400',
         'ptasym 100 0 1',
         'logspt2 50 0 15',
