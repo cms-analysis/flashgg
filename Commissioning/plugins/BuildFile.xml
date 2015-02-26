@@ -13,4 +13,5 @@
 <use name="flashgg/TagFormats"/>
 <use name="flashgg/MicroAODAlgos"/>
 <use name="RecoJets/JetProducers"/>
+<use name="HLTrigger/HLTcore"/>
 <flags EDM_PLUGIN="1"/>
