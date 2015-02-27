@@ -621,49 +621,47 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		dijet_Mjj= -9999;
 		dijet_MVA= -9999;
 		bdt_combined =-9999;
-		if(vbftag != NULL) {
-			float dEtaLeadPho = vbftag->leadingJet().eta() - eta1; 
-			float dPhiLeadPho = deltaPhi(vbftag->leadingJet().phi(),phi1); 
-			float dEtaSublPho = vbftag->leadingJet().eta() - eta2; 
-			float dPhiSublPho = deltaPhi(vbftag->leadingJet().phi(),phi2);
-			float dRLeadPho = sqrt(dEtaLeadPho*dEtaLeadPho + dPhiLeadPho*dPhiLeadPho);
-			float dRSublPho = sqrt(dEtaSublPho*dEtaSublPho + dPhiSublPho*dPhiSublPho);
-			dRphojet1 = min(dRSublPho, dRLeadPho); //distance of jet 1 to closest photon
-			dEtaLeadPho = vbftag->leadingJet().eta() - eta1; 
-			dPhiLeadPho = deltaPhi(vbftag->leadingJet().phi(),phi1); 
-			dEtaSublPho = vbftag->leadingJet().eta() - eta2; 
-			dPhiSublPho = deltaPhi(vbftag->leadingJet().phi(),phi2);
-			dRLeadPho = sqrt(dEtaLeadPho*dEtaLeadPho + dPhiLeadPho*dPhiLeadPho);
-			dRSublPho = sqrt(dEtaSublPho*dEtaSublPho + dPhiSublPho*dPhiSublPho);
-			dRphojet2 =  min(dRSublPho, dRLeadPho); //distance of jet 2 to closest photon
+		if(vbftag != NULL)
+                {
+                    
+                    float dRLeadPho = deltaR(vbftag->leadingJet().eta(), vbftag->leadingJet().phi(),
+                                             eta1, phi1); 
+                    float dRSublPho = deltaR(vbftag->leadingJet().eta(), vbftag->leadingJet().phi(),
+                                             eta2, phi2); 
+                    dRphojet1 = min(dRSublPho, dRLeadPho); //distance of jet 1 to closest photon
+                    dRLeadPho = deltaR(vbftag->subLeadingJet().eta(), vbftag->subLeadingJet().phi(),
+                                       eta1, phi1); 
+                    dRSublPho = deltaR(vbftag->subLeadingJet().eta(), vbftag->subLeadingJet().phi(),
+                                       eta2, phi2);
+                    dRphojet2 = min(dRSublPho, dRLeadPho); //distance of jet 2 to closest photon
 
-                        TLorentzVector leadingJet, subLeadingJet, dijet;
-                        leadingJet.SetPtEtaPhiE(vbftag->leadingJet().pt(),vbftag->leadingJet().eta(),vbftag->leadingJet().phi(),vbftag->leadingJet().energy());
-                        subLeadingJet.SetPtEtaPhiE(vbftag->subLeadingJet().pt(),vbftag->subLeadingJet().eta(),vbftag->subLeadingJet().phi(),vbftag->subLeadingJet().energy());
+                    TLorentzVector leadingJet, subLeadingJet, dijet;
+                    leadingJet.SetPtEtaPhiE(vbftag->leadingJet().pt(),vbftag->leadingJet().eta(),vbftag->leadingJet().phi(),vbftag->leadingJet().energy());
+                    subLeadingJet.SetPtEtaPhiE(vbftag->subLeadingJet().pt(),vbftag->subLeadingJet().eta(),vbftag->subLeadingJet().phi(),vbftag->subLeadingJet().energy());
 
-                        dijet = leadingJet + subLeadingJet;
-			vbfcat = flash_VBFTag_Category;
-			dijet_leadEta = vbftag->VBFMVA().dijet_leadEta; 
-			dijet_subleadEta = vbftag->VBFMVA().dijet_subleadEta ;
-			dijet_LeadJPt = vbftag->VBFMVA().dijet_LeadJPt ;
-			dijet_SubJPt= vbftag->VBFMVA().dijet_SubJPt ;
-			dijet_dEta= fabs(vbftag->leadingJet().eta() - vbftag->subLeadingJet().eta()) ;
-			dijet_dPhi= deltaPhi(dijet.Phi(),diPhotonPointers[candIndex]->phi());
-			dijet_Zep= vbftag->VBFMVA().dijet_Zep ;
-			dijet_Mjj= vbftag->VBFMVA().dijet_Mjj ;
-			dijet_MVA= vbftag->VBFMVA().VBFMVAValue() ;
-			bdt_combined= vbftag->VBFDiPhoDiJetMVA().vbfDiPhoDiJetMvaResult;
+                    dijet = leadingJet + subLeadingJet;
+                    vbfcat = flash_VBFTag_Category;
+                    dijet_leadEta = vbftag->VBFMVA().dijet_leadEta; 
+                    dijet_subleadEta = vbftag->VBFMVA().dijet_subleadEta ;
+                    dijet_LeadJPt = vbftag->VBFMVA().dijet_LeadJPt ;
+                    dijet_SubJPt= vbftag->VBFMVA().dijet_SubJPt ;
+                    dijet_dEta= fabs(vbftag->leadingJet().eta() - vbftag->subLeadingJet().eta()) ;
+                    dijet_dPhi= deltaPhi(dijet.Phi(),diPhotonPointers[candIndex]->phi());
+                    dijet_Zep= vbftag->VBFMVA().dijet_Zep ;
+                    dijet_Mjj= vbftag->VBFMVA().dijet_Mjj ;
+                    dijet_MVA= vbftag->VBFMVA().VBFMVAValue() ;
+                    bdt_combined= vbftag->VBFDiPhoDiJetMVA().vbfDiPhoDiJetMvaResult;
 		}
 
 		sigmaMrvoM = chosenTag->diPhotonMVA().sigmarv;
 		sigmaMwvoM =chosenTag->diPhotonMVA().sigmawv;
 		vtxprob =chosenTag->diPhotonMVA().vtxprob;
-		ptbal = diPhotonPointers[candIndex]->getPtBal();
-		ptasym = diPhotonPointers[candIndex]->getPtAsym();
-		logspt2 = diPhotonPointers[candIndex]->getLogSumPt2();
-		p2conv = diPhotonPointers[candIndex]->getPullConv(); 
-		nconv = diPhotonPointers[candIndex]->getNConv(); 
-		vtxmva = diPhotonPointers[candIndex]->getVtxProbMVA();
+		ptbal = diPhotonPointers[candIndex]->getPtBal(0);
+		ptasym = diPhotonPointers[candIndex]->getPtAsym(0);
+		logspt2 = diPhotonPointers[candIndex]->getLogSumPt2(0);
+		p2conv = diPhotonPointers[candIndex]->getPullConv(0); 
+		nconv = diPhotonPointers[candIndex]->getNConv(0); 
+		vtxmva = -1.*diPhotonPointers[candIndex]->getVtxProbMVA();
 		vtxdz = diPhotonPointers[candIndex]->getDZ1(); 
 		dipho_mva = chosenTag->diPhotonMVA().getMVAValue();
 

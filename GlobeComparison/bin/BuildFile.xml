@@ -1,0 +1,13 @@
+<use name="root"/>
+<use name="rootgraphics"/>
+<use name="FWCore/FWLite"/>
+<use name="FWCore/ParameterSet"/>
+<use name="FWCore/PythonParameterSet"/>
+<flags EDM_PLUGIN="1"/>
+<environment>
+  <bin
+      name="MakeValidationPlots"
+      file="MakeValidationPlots.cc,
+            ../src/drawUtils.cc,">
+  </bin>
+</environment>
