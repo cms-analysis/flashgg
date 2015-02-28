@@ -404,7 +404,7 @@ process.flashggJets = cms.EDProducer('FlashggJetProducer',
                                      DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
                                      VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                      JetTag=cms.untracked.InputTag('patJetsAK4PF'),
-                                     VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
+                                     VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                                      PileupJetIdParameters=cms.PSet(full_53x) # from PileupJetIDParams_cfi
                                  )
 
@@ -412,7 +412,7 @@ process.flashggJetsPFCHS0 = cms.EDProducer('FlashggJetProducer',
                                            DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
                                            VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                            JetTag=cms.untracked.InputTag('patJetsAK4PFCHS0'),
-                                           VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
+                                           VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                                            PileupJetIdParameters=cms.PSet(full_53x) # from PileupJetIDParams_cfi
                                            )
 
@@ -420,7 +420,7 @@ process.flashggJetsPFCHSLeg = cms.EDProducer('FlashggJetProducer',
                                              DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
                                              VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                              JetTag=cms.untracked.InputTag('patJetsAK4PFCHSLeg'),
-                                             VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
+                                             VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                                              PileupJetIdParameters=cms.PSet(full_53x) # from PileupJetIDParams_cfi
                                              )
 #process.flashggJetsPUPPI0 = cms.EDProducer('FlashggJetProducer',
@@ -440,19 +440,19 @@ process.flashggJetsPFCHSLeg = cms.EDProducer('FlashggJetProducer',
 #                                             PileupJetIdParameters=cms.PSet(full_53x) # from PileupJetIDParams_cfi
 #                                             )
 ##Tag stuff
-process.load("flashgg/TagProducers/flashggDiPhotonMVA_cfi")
-process.load("flashgg/TagProducers/flashggVBFMVA_cff")
+#process.load("flashgg/TagProducers/flashggDiPhotonMVA_cfi")
+#process.load("flashgg/TagProducers/flashggVBFMVA_cff")
 #process.load("flashgg/TagProducers/flashggVBFDiPhoDiJetMVA_cfi")
-process.load("flashgg/TagProducers/flashggTags_cff")
+#process.load("flashgg/TagProducers/flashggTags_cff")
 
-process.flashggTagSorter = cms.EDProducer('FlashggTagSorter',
-                                          DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
-                                          TagVectorTag = cms.untracked.VInputTag(cms.untracked.InputTag('flashggVBFTag'),
-                                                                                 cms.untracked.InputTag('flashggUntaggedCategory'),
-                                                                                 ),
-                                          massCutUpper=cms.untracked.double(180),
-                                          massCutLower=cms.untracked.double(100)
-                                          )
+#process.flashggTagSorter = cms.EDProducer('FlashggTagSorter',
+#                                          DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+#                                          TagVectorTag = cms.untracked.VInputTag(cms.untracked.InputTag('flashggVBFTag'),
+#                                                                                 cms.untracked.InputTag('flashggUntaggedCategory'),
+#                                                                                 ),
+#                                          massCutUpper=cms.untracked.double(180),
+#                                          massCutLower=cms.untracked.double(100)
+#                                          )
 
 process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to work: disable all warnings for now
 # process.MessageLogger.suppressWarning.extend(['SimpleMemoryCheck','MemoryCheck']) # this would have been better...
@@ -467,7 +467,7 @@ process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to wo
 process.load("flashgg/MicroAODProducers/flashggMicroAODSequence_cff")
 
 from flashgg.MicroAODProducers.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand,microAODDebugOutputCommand
-process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('/afs/cern.ch/work/y/yhaddad/myMicroAODOutputFile.root'),
+process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile.root'),
                                outputCommands = microAODDefaultOutputCommand
                                )
 process.out.outputCommands += microAODDebugOutputCommand # extra items for debugging, CURRENTLY REQUIRED

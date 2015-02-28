@@ -149,7 +149,7 @@ process.combinedSecondaryVertex.trackMultiplicityMin = 1  #needed for CMSSW < 71
 process.flashggCHSLegacyVertexCandidates = cms.EDProducer('FlashggCHSLegacyVertexCandidateProducer',
                                                           PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
                                                           DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
-                                                          VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
+                                                          VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                                                           VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
                                                           )
 # first select the packedCandidates passing the loose "fromPV()" requirement (equivalent to CHS definition used for Jets in Run I)
