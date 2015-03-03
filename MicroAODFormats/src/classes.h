@@ -10,7 +10,7 @@
 #include "flashgg/MicroAODFormats/interface/GenPhotonExtra.h"
 #include "flashgg/MicroAODFormats/interface/SinglePhotonView.h"
 #include "flashgg/MicroAODFormats/interface/SingleVertexView.h" 
-
+#include "flashgg/MicroAODFormats/interface/Muon.h"
 #include <vector>
 #include <map>
 
@@ -54,9 +54,9 @@ namespace  { struct dictionary {
   std::vector<flashgg::Jet>                                     vec_fgg_jet;
   edm::Ptr<flashgg::Jet>                                        ptr_fgg_jet;
   edm::PtrVector<flashgg::Jet>                                     ptr_vec_fgg_jet;
-  edm::Ptr<pat::Muon>                                        ptr_fgg_muon;
-  std::vector<pat::Muon>                                        vec_fgg_muon;
-  edm::PtrVector<pat::Muon>                                     ptr_vec_fgg_muon;
+//  edm::Ptr<pat::Muon>                                        ptr_fgg_muon;
+//  std::vector<pat::Muon>                                        vec_fgg_muon;
+//  edm::PtrVector<pat::Muon>                                     ptr_vec_fgg_muon;
   edm::Wrapper<std::vector<flashgg::Jet> >                  wrp_vec_fgg_jet;
   edm::PtrVector<pat::PackedCandidate>                          ptr_vec_pac;
   std::map<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> >    map_ptr_vtx_ptr_vec_pac;
@@ -72,7 +72,13 @@ namespace  { struct dictionary {
   std::vector<flashgg::Electron>				  vec_fgg_ele;
   edm::Wrapper<std::vector<flashgg::Electron> >               wrp_vec_fgg_ele;					
   std::vector<reco::Conversion>					  vec_rec_con;		
-	
+
+  flashgg::Muon                                                 fgg_mu;
+  edm::Ptr<flashgg::Muon>                                     ptr_fgg_mu;
+  edm::PtrVector<flashgg::Muon>                           vec_ptr_fgg_mu;
+  edm::Wrapper<flashgg::Muon>                                 wrp_fgg_mu;
+  std::vector<flashgg::Muon>                                  vec_fgg_mu;
+  edm::Wrapper<std::vector<flashgg::Muon> >               wrp_vec_fgg_mu;	
   
   edm::Ptr<pat::PackedGenParticle>                                     ptr_pat_pak_cand;
   flashgg::GenPhotonExtra                                                   fgg_pho_xtra;

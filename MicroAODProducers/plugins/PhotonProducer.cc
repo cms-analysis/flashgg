@@ -16,6 +16,8 @@
 #include "flashgg/MicroAODAlgos/interface/PhotonIdUtils.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 // #include "HiggsAnalysis/GBRLikelihoodEGTools/interface/EGEnergyCorrectorSemiParm.h"
+#include "DataFormats/PatCandidates/interface/Electron.h"
+#include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
 
 using namespace std;
 using namespace edm;
@@ -52,7 +54,15 @@ namespace flashgg {
     edm::EDGetTokenT<EcalRecHitCollection> ecalHitEEToken_;
     edm::EDGetTokenT<EcalRecHitCollection> ecalHitESToken_;
     edm::InputTag rhoFixedGrid_;
-	  
+
+    float lxyMin_ = 2.0;
+    float probMin_ = 1e-6;
+    int nHitsBeforeVtxMax_ = 0;
+    string electronLabel_;	 
+ 
+    edm::EDGetTokenT<reco::ConversionCollection> convToken_;
+
+    edm::EDGetTokenT<reco::BeamSpot> beamSpotToken_;
 	  
     PhotonIdUtils phoTools_;
     edm::FileInPath phoIdMVAweightfileEB_, phoIdMVAweightfileEE_;
@@ -73,9 +83,12 @@ namespace flashgg {
     genPhotonToken_(mayConsume<vector<flashgg::GenPhotonExtra> >(iConfig.getParameter<InputTag>("genPhotonTag"))),
     ecalHitEBToken_(consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("reducedBarrelRecHitCollection"))),
     ecalHitEEToken_(consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("reducedEndcapRecHitCollection"))),
-    ecalHitESToken_(consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("reducedPreshowerRecHitCollection")))
+    ecalHitESToken_(consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("reducedPreshowerRecHitCollection"))),
+    convToken_(consumes<reco::ConversionCollection>(iConfig.getParameter<edm::InputTag>("convTag"))),
+    beamSpotToken_(consumes<reco::BeamSpot >(iConfig.getParameter<edm::InputTag>("beamSpotTag")))
   {
 
+    electronLabel_ = iConfig.getParameter<string>("elecLabel");
     rhoFixedGrid_  = iConfig.getParameter<edm::InputTag>("rhoFixedGridCollection");
 
     phoIdMVAweightfileEB_ = iConfig.getParameter<edm::FileInPath>("photonIdMVAweightfile_EB");
@@ -124,7 +137,17 @@ namespace flashgg {
     if( ! evt.isRealData() ) {
       evt.getByToken(genPhotonToken_,genPhotonsHandle);
     }
+     Handle<std::vector<pat::Electron> > electronHandle;
+     evt.getByLabel(electronLabel_, electronHandle);
     
+     Handle<reco::ConversionCollection> convs;
+     evt.getByToken(convToken_,convs);
+
+     Handle<reco::BeamSpot> recoBeamSpotHandle;
+     evt.getByToken(beamSpotToken_,recoBeamSpotHandle);
+
+     const reco::BeamSpot &beamspot = *recoBeamSpotHandle.product();
+
     const PtrVector<pat::Photon>& photonPointers = photons->ptrVector();
     const PtrVector<pat::PackedCandidate>& pfcandidatePointers = pfcandidates->ptrVector();
     const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
@@ -144,6 +167,9 @@ namespace flashgg {
 
       Ptr<pat::Photon> pp = photonPointers[i];
       flashgg::Photon fg = flashgg::Photon(*pp);
+	
+      if(!ConversionTools::hasMatchedPromptElectron(pp->superCluster(),electronHandle,convs,beamspot.position(),lxyMin_,probMin_,nHitsBeforeVtxMax_)) { fg.setPassElectronVeto(true) ; }
+       else { fg.setPassElectronVeto(false) ;}
 
       // Gen matching
       if( ! evt.isRealData() ) {
