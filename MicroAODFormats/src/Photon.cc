@@ -30,6 +30,7 @@ Photon::Photon() {
   pfChgIso03_.clear();
   pfChgIso02_.clear();
   phoIdMvaD_.clear();
+  passElecVeto_ = false;
 }
 Photon::Photon(const pat::Photon& aPhoton ) : pat::Photon(aPhoton) {}
 Photon::~Photon() {}
