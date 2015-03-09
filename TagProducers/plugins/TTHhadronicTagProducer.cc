@@ -33,6 +33,8 @@ namespace flashgg {
 			EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
 			EDGetTokenT<View<Jet> > thejetToken_;
 			EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
+
+			int count = 0;
 	};
 
 	TTHhadronicTagProducer::TTHhadronicTagProducer(const ParameterSet & iConfig) :
@@ -76,6 +78,8 @@ namespace flashgg {
 			edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[diphoIndex];
 			edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[diphoIndex]; 
 
+			if ( !dipho->leadingPhoton()->getPassElectronVeto() || !dipho->subLeadingPhoton()->getPassElectronVeto() ) continue;
+		
 			if(dipho->leadingPhoton()->pt() < (60*(dipho->mass()))/120. && dipho->subLeadingPhoton()->pt() < 25. && dipho->subLeadingPhoton()->pt() < 33.) continue;	
 			if(mvares->getMVAValue() < .2)continue;
 
@@ -119,10 +123,12 @@ namespace flashgg {
 				tthhtags_obj.setNBMedium(njets_btagmedium);
 				tthhtags_obj.setDiPhotonIndex(diphoIndex);
 				tthhtags->push_back(tthhtags_obj);
+				count++;
 
 			}
 		}
 		evt.put(tthhtags);
+		cout << "tagged events = " << count << endl;
 	}
 }
 typedef flashgg::TTHhadronicTagProducer FlashggTTHhadronicTagProducer;

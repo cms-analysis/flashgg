@@ -98,6 +98,9 @@ namespace flashgg {
     mcMatch_t  genMatchType() const { return (hasUserInt("genMatchType") ? (mcMatch_t)userInt("genMatchType") : kUnkown); };
     bool  hasGenMatchType () const { return hasUserInt("genMatchType"); };
 
+    void setPassElectronVeto( bool val) { passElecVeto_ = val; };
+    bool getPassElectronVeto() const { return passElecVeto_ ; };
+
   private:
     float const findVertexFloat(const edm::Ptr<reco::Vertex>& vtx, const std::map<edm::Ptr<reco::Vertex>,float> & mp, bool lazy) const;
     
@@ -131,6 +134,7 @@ namespace flashgg {
     std::map<edm::Ptr<reco::Vertex>,float> pfChgIso03_; 
     std::map<edm::Ptr<reco::Vertex>,float> pfChgIso02_; 
     std::map<edm::Ptr<reco::Vertex>,float> phoIdMvaD_;
+    bool passElecVeto_;
   };
 }
 
