@@ -9,10 +9,6 @@ def addFlashggPFCHSLegJets(process):
 	# load various necessary plugins.
   process.load("PhysicsTools.PatAlgos.producersLayer1.patCandidates_cff")
   process.load('PhysicsTools.PatAlgos.slimming.unpackedTracksAndVertices_cfi')
-  process.load("Configuration.EventContent.EventContent_cff")
-  process.load('Configuration.StandardSequences.MagneticField_38T_cff')
-  process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-  process.GlobalTag.globaltag = 'PLS170_V7AN1::All'
 	# leptons to remove as per default CHS workflow
   process.selectedMuons = cms.EDFilter("CandPtrSelector", src = cms.InputTag("slimmedMuons"), cut = cms.string('''abs(eta)<2.5 && pt>10. &&
 				(pfIsolationR04().sumChargedHadronPt+
