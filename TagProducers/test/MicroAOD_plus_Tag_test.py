@@ -28,5 +28,15 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
                                )
 process.out.outputCommands += microAODDebugOutputCommand # extra items for debugging, CURRENTLY REQUIRED
 
+# need to allow unscheduled processes otherwise reclustering function will fail
+# this is because of the jet clustering tool, and we have to live with it for now.
+process.options = cms.untracked.PSet(
+    allowUnscheduled = cms.untracked.bool(True)
+    )
+# import function which takes care of reclustering the jets using legacy vertex		
+from flashgg.MicroAODProducers.flashggJets_cfi import addFlashggPFCHSLegJets 
+# call the function, it takes care of everything else.
+addFlashggPFCHSLegJets(process)
+
 process.p = cms.Path(process.flashggMicroAODSequence*process.flashggTagSequence*process.flashggTagTester)
 process.e = cms.EndPath(process.out)

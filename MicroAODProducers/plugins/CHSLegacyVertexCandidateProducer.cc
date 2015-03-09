@@ -71,7 +71,7 @@ namespace flashgg {
     evt.getByToken(vertexCandidateMapToken_,vtxmap);
     edm::Ptr<reco::Vertex> flashVertex;
     
-    std::cout <<"Run[" << evt.run() <<  "]=evt["<< evt.id().event() << "]\t npart::" <<  pfPtrs.size() << std::endl;
+    //std::cout <<"Run[" << evt.run() <<  "]=evt["<< evt.id().event() << "]\t npart::" <<  pfPtrs.size() << std::endl;
     if(useZeroth) flashVertex =  pvPtrs[0];
     else {
       if ( diPhotonPointers.size()==0 ){
