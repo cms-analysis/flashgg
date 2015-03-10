@@ -81,5 +81,10 @@ git cms-addpkg RecoEcal/EgammaCoreTools
 git cherry-pick fd6b6bd88dc74d8f73299f395cc075aa89c8d701 
 
 echo
+echo "Setting up Conversion tools for pat electron..."
+git cms-addpkg RecoEgamma/EgammaTools
+git cms-merge-topic -u sethzenz:topic-conversion-tools-for-pat-ele
+
+echo
 echo "Done with setup script! You still need to build!"
 echo
