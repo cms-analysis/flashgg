@@ -111,7 +111,7 @@ namespace flashgg {
 	    extraCaloIsolations_.push_back(p);
     }
     
-    useNonZsLazyTools_ = iConfig.getParameter<bool>("recomputeNonZsClusterShapes");
+    useNonZsLazyTools_ = iConfig.getParameter<bool>("useNonZsLazyTools");
     recomputeNonZsClusterShapes_ = iConfig.getParameter<bool>("recomputeNonZsClusterShapes");
 
     produces<vector<flashgg::Photon> >();
