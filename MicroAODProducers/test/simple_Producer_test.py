@@ -9,7 +9,7 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-process.GlobalTag.globaltag = 'POSTLS170_V5::All'
+process.GlobalTag.globaltag = 'PLS170_V7AN1::All'
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 1000) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
@@ -39,6 +39,17 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
                                outputCommands = microAODDefaultOutputCommand
                                )
 process.out.outputCommands += microAODDebugOutputCommand # extra items for debugging, CURRENTLY REQUIRED
+
+# need to allow unscheduled processes otherwise reclustering function will fail
+# this is because of the jet clustering tool, and we have to live with it for now.
+process.options = cms.untracked.PSet(
+    allowUnscheduled = cms.untracked.bool(True)
+    )
+# import function which takes care of reclustering the jets using legacy vertex		
+from flashgg.MicroAODProducers.flashggJets_cfi import addFlashggPFCHSLegJets 
+# call the function, it takes care of everything else.
+addFlashggPFCHSLegJets(process)
+
 
 process.p = cms.Path(process.flashggMicroAODSequence)
 process.e = cms.EndPath(process.out)
