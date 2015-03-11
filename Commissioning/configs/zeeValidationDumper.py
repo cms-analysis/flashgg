@@ -14,13 +14,13 @@ process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
-process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring("file:../../MicroAODProducers/test/myMicroAODOutputFile.root",
+process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring("file:../../MicroAOD/test/myMicroAODOutputFile.root",
 ))
 
-import flashgg.TagAlgos.dumperConfigTools as cfgTools
-process.load("flashgg.TagProducers.diphotoMVAWithZeeDumper_cff")
-process.load("flashgg.TagProducers.photonDumper_cfi")
-process.load("flashgg.TagProducers.diphotonDumper_cfi") 
+import flashgg.Taggers.dumperConfigTools as cfgTools
+process.load("flashgg.Taggers.diphotoMVAWithZeeDumper_cff")
+process.load("flashgg.Taggers.photonDumper_cfi")
+process.load("flashgg.Taggers.diphotonDumper_cfi") 
 process.diphotonDumper.src = cms.InputTag("flashggZeeDiPhotons")
 
 process.TFileService = cms.Service("TFileService",

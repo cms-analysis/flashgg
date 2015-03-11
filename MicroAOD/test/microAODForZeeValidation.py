@@ -53,12 +53,12 @@ process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring(
 
 process.MessageLogger.cerr.threshold = 'ERROR'
 
-process.load("flashgg/MicroAODProducers/flashggMicroAODZeeValidationSequence_cff")
-process.load("flashgg/TagProducers/flashggDiPhotonMVA_cfi")
+process.load("flashgg/MicroAOD/flashggMicroAODZeeValidationSequence_cff")
+process.load("flashgg/Taggers/flashggDiPhotonMVA_cfi")
 process.flashggDiPhotonMVA.DiPhotonTag = cms.untracked.InputTag('flashggZeeDiPhotons')
 
-#from flashgg.MicroAODProducers.flashggMicroAODOutputCommands_cff import microAODDebugOutputCommand
-from flashgg.MicroAODProducers.flashggMicroAODZeeValidationOutputCommands_cff import microAODZeeValidationOutputCommand
+#from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDebugOutputCommand
+from flashgg.MicroAOD.flashggMicroAODZeeValidationOutputCommands_cff import microAODZeeValidationOutputCommand
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile.root'),
                                SelectEvents = cms.untracked.PSet(
                                 SelectEvents = cms.vstring('p1')

@@ -18,7 +18,7 @@ process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string("test.root")
 )
 
-from flashgg.MicroAODProducers.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
+from flashgg.MicroAOD.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
 process.kinPreselDiPhotons = flashggPreselectedDiPhotons.clone(
 cut=cms.string(
         "mass > 100"
@@ -36,8 +36,8 @@ process.flashggSinglePhotonViews = cms.EDProducer("FlashggSinglePhotonViewProduc
                                                   
                                           )
 
-process.load("flashgg.TagProducers.photonViewDumper_cfi") ##  import diphotonDumper 
-import flashgg.TagAlgos.dumperConfigTools as cfgTools
+process.load("flashgg.Taggers.photonViewDumper_cfi") ##  import diphotonDumper 
+import flashgg.Taggers.dumperConfigTools as cfgTools
 
 process.photonViewDumper.src = "flashggSinglePhotonViews"
 process.photonViewDumper.dumpTrees = True

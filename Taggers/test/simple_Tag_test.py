@@ -21,10 +21,10 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring("file:myMicroAODOutputFile.root"))
 
-process.load("flashgg/TagProducers/flashggTagSequence_cfi")
-process.load("flashgg/TagProducers/flashggTagTester_cfi")
+process.load("flashgg/Taggers/flashggTagSequence_cfi")
+process.load("flashgg/Taggers/flashggTagTester_cfi")
 
-from flashgg.TagProducers.flashggTagOutputCommands_cff import tagDefaultOutputCommand
+from flashgg.Taggers.flashggTagOutputCommands_cff import tagDefaultOutputCommand
 
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myTagOutputFile.root'),
                                outputCommands = tagDefaultOutputCommand			       

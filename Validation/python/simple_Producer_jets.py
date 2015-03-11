@@ -28,13 +28,13 @@ process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
 
 
 # the cofigurations
-#process.load("flashgg/MicroAODProducers/flashggVertexMaps_cfi")
+#process.load("flashgg/MicroAOD/flashggVertexMaps_cfi")
 #flashggTkVtxMap_cfi.py
-process.load("flashgg/MicroAODProducers/flashggTkVtxMap_cfi") 
-process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
-process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
-process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
-process.load("flashgg/MicroAODProducers/flashggElectrons_cfi")
+process.load("flashgg/MicroAOD/flashggTkVtxMap_cfi") 
+process.load("flashgg/MicroAOD/flashggPhotons_cfi")
+process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
+process.load("flashgg/MicroAOD/flashggPreselectedDiPhotons_cfi")
+process.load("flashgg/MicroAOD/flashggElectrons_cfi")
 
 #Import RECO jet producer for ak4 PF and GEN jet
 
@@ -426,10 +426,10 @@ process.flashggJetsPFCHSLeg = cms.EDProducer('FlashggJetProducer',
 #                                             PileupJetIdParameters=cms.PSet(full_53x) # from PileupJetIDParams_cfi
 #                                             )
 ##Tag stuff
-process.load("flashgg/TagProducers/flashggDiPhotonMVA_cfi")
-process.load("flashgg/TagProducers/flashggVBFMVA_cff")
-#process.load("flashgg/TagProducers/flashggVBFDiPhoDiJetMVA_cfi")
-process.load("flashgg/TagProducers/flashggTags_cff")
+process.load("flashgg/Taggers/flashggDiPhotonMVA_cfi")
+process.load("flashgg/Taggers/flashggVBFMVA_cff")
+#process.load("flashgg/Taggers/flashggVBFDiPhoDiJetMVA_cfi")
+process.load("flashgg/Taggers/flashggTags_cff")
 
 process.flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                           DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
@@ -452,9 +452,9 @@ process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to wo
 #                                        monitorPssAndPrivate = cms.untracked.bool(True)
 #                                       )
 
-process.load("flashgg/MicroAODProducers/flashggMicroAODSequence_cff")
+process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
 
-from flashgg.MicroAODProducers.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand,microAODDebugOutputCommand
+from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand,microAODDebugOutputCommand
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile.root'),
                                outputCommands = microAODDefaultOutputCommand
                                )

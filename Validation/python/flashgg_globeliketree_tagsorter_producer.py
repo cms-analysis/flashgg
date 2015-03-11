@@ -17,9 +17,9 @@ process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/Spring14miniaod/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/MINIAODSIM/PU20bx25_POSTLS170_V5-v1/00000/049C0F9C-E61E-E411-9388-D8D385AE8466.root"))                                                                                                                            
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/HggPhys14/Phys14MicroAODV2/VBF_HToGG_M-125_13TeV-powheg-pythia6/HggPhys14-Phys14MicroAODV2-v0-Phys14DR-PU20bx25_PHYS14_25_V1-v1/150210_160130/0000/myMicroAODOutputFile_1.root"))
 
-process.load("flashgg/MicroAODProducers/flashggMicroAODSequence_cff")
-process.load("flashgg/TagProducers/flashggTagSequence_cfi")
-process.load("flashgg/TagProducers/flashggTagTester_cfi")
+process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
+process.load("flashgg/Taggers/flashggTagSequence_cfi")
+process.load("flashgg/Taggers/flashggTagTester_cfi")
 
 process.commissioning = cms.EDAnalyzer('FlashggFlashggTreeMakerWithTagSorter',
                                        VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),

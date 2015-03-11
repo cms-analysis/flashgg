@@ -22,9 +22,9 @@ process.source = cms.Source("PoolSource", fileNames = readFiles)
 
 #**************************************************************
 
-process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
-process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
-process.load("flashgg/MicroAODProducers/flashggTkVtxMap_cfi")
+process.load("flashgg/MicroAOD/flashggPhotons_cfi")
+process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
+process.load("flashgg/MicroAOD/flashggTkVtxMap_cfi")
 
 process.commissioning = cms.EDAnalyzer('flashggCommissioning',
                                        PhotonTag=cms.untracked.InputTag('flashggPhotons'),

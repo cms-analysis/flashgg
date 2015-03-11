@@ -18,8 +18,8 @@ process.fwliteOutput = cms.PSet(
       fileName = cms.string("output.root")      ## mandatory
 )
 
-from flashgg.TagAlgos.photonDumpConfig_cff import photonDumpConfig
-import flashgg.TagAlgos.dumperConfigTools as cfgTools
+from flashgg.Taggers.photonDumpConfig_cff import photonDumpConfig
+import flashgg.Taggers.dumperConfigTools as cfgTools
 
 
 ## Dumper
