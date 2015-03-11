@@ -1,0 +1,10 @@
+import FWCore.ParameterSet.Config as cms
+
+from flashgg.MicroAODProducers.flashggMicroAODSequence_cff import *
+from flashgg.MicroAODProducers.flashggHLTDiPhotons_cfi import flashggHLTDiPhotons
+
+flashggMicroAODHLTEfficiencySequence = cms.Sequence(flashggMicroAODSequence)
+flashggMicroAODHLTEfficiencySequence.remove(flashggPreselectedDiPhotons)
+flashggMicroAODHLTEfficiencySequence.remove(flashggJets)
+flashggMicroAODHLTEfficiencySequence += (flashggHLTDiPhotons) 
+
