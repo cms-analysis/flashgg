@@ -4,10 +4,10 @@ flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                   DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
                                   # Top of list is highest priority
                                   # Optionally can add category ranges if priority depends on category number
-                                  TagPriorityRanges = cms.VPSet(cms.PSet(TagName = cms.InputTag('flashggVHtightTag')),
-                                                                cms.PSet(TagName = cms.InputTag('flashggVHlooseTag')),
-                                                                cms.PSet(TagName = cms.InputTag('flashggTTHleptonicTag')),
-                                                                cms.PSet(TagName = cms.InputTag('flashggTTHhadronicTag')),
+                                  TagPriorityRanges = cms.VPSet(cms.PSet(TagName = cms.InputTag('flashggVHTightTag')),
+                                                                cms.PSet(TagName = cms.InputTag('flashggVHLooseTag')),
+                                                                cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag')),
+                                                                cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag')),
                                                                 cms.PSet(TagName = cms.InputTag('flashggVBFTag'),
                                                                          MinCategory = cms.untracked.int32(0),
                                                                          MaxCategory = cms.untracked.int32(0)
@@ -30,11 +30,11 @@ flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                   )
 
 #                                  TagVectorTag = cms.untracked.VInputTag(
-#                                                                        cms.untracked.InputTag('flashggVHlooseTag'),
-#                                                                        cms.untracked.InputTag('flashggVHtightTag'),
-#                                                                        cms.untracked.InputTag('flashggTTHleptonicTag'),
-#                                                                        cms.untracked.InputTag('flashggTTHhadronicTag'),
+#                                                                        cms.untracked.InputTag('flashggVHLooseTag'),
+#                                                                        cms.untracked.InputTag('flashggVHTightTag'),
+#                                                                        cms.untracked.InputTag('flashggTTHLeptonicTag'),
+#                                                                        cms.untracked.InputTag('flashggTTHHadronicTag'),
 #                                                                        cms.untracked.InputTag('flashggVBFTag'),
-#                                                                        cms.untracked.InputTag('flashggVHhadronicTag'),
+#                                                                        cms.untracked.InputTag('flashggVHHadronicTag'),
 #                                                                        cms.untracked.InputTag('flashggUntaggedCategory'),
 
