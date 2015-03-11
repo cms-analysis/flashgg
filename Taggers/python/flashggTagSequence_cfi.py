@@ -4,10 +4,16 @@ from flashgg.Taggers.flashggVBFMVA_cff import flashggVBFMVA,flashggVBFDiPhoDiJet
 from flashgg.Taggers.flashggTags_cff import *
 from flashgg.Taggers.flashggTagSorter_cfi import flashggTagSorter
 
-flashggTagSequence = cms.Sequence(flashggDiPhotonMVA*
-                                  flashggVBFMVA*
-                                  flashggVBFDiPhoDiJetMVA*
-                                  (flashggUntaggedCategory+flashggVBFTag+flashggTTHleptonicTag+flashggTTHhadronicTag+flashggVHlooseTag+flashggVHtightTag+flashggVHhadronicTag)*
-                                  flashggTagSorter
+flashggTagSequence = cms.Sequence(flashggDiPhotonMVA
+                                  * flashggVBFMVA
+                                  * flashggVBFDiPhoDiJetMVA
+                                  * (flashggUntaggedCategory
+                                     + flashggVBFTag
+                                     + flashggTTHLeptonicTag
+                                     + flashggTTHHadronicTag
+                                     + flashggVHLooseTag
+                                     + flashggVHTightTag
+                                     + flashggVHHadronicTag)
+                                  * flashggTagSorter
                                   )
 

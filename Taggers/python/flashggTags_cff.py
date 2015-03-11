@@ -7,7 +7,7 @@ flashggUntaggedCategory = cms.EDProducer("FlashggUntaggedCategoryProducer",
 		Boundaries=cms.untracked.vdouble(0.07,0.31,0.62,0.86,0.98)
 		)
 
-flashggTTHhadronicTag = cms.EDProducer("FlashggTTHhadronicTagProducer",
+flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
 		TTHJetTag=cms.untracked.InputTag('flashggJets')
 		)
 
@@ -18,7 +18,7 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                          VBFMVAResultTag=cms.untracked.InputTag('flashggVBFMVA'),
                                          Boundaries=cms.untracked.vdouble(0.21,0.6,0.81)
                                          )
-flashggTTHleptonicTag = cms.EDProducer("FlashggTTHleptonicTagProducer",
+flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
 					DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
 					TTHJetTag=cms.untracked.InputTag('flashggJets'),
 					ElectronTag=cms.untracked.InputTag('flashggElectrons'),
@@ -58,7 +58,7 @@ flashggTTHleptonicTag = cms.EDProducer("FlashggTTHleptonicTagProducer",
 					electronIsoThreshold = cms.untracked.double(0.15),
 					electronNumOfHitsThreshold = cms.untracked.double(1)
 				    )
-flashggVHlooseTag = cms.EDProducer("FlashggVHlooseTagProducer",
+flashggVHLooseTag = cms.EDProducer("FlashggVHLooseTagProducer",
 					DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
 					VHlooseJetTag=cms.untracked.InputTag('flashggJets'),
 					ElectronTag=cms.untracked.InputTag('flashggElectrons'),
@@ -95,7 +95,7 @@ flashggVHlooseTag = cms.EDProducer("FlashggVHlooseTagProducer",
                                         electronNumOfHitsThreshold = cms.untracked.double(1)
 
 				    )
-flashggVHtightTag = cms.EDProducer("FlashggVHtightTagProducer",
+flashggVHTightTag = cms.EDProducer("FlashggVHTightTagProducer",
 					DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
 					VHtightJetTag=cms.untracked.InputTag('flashggJets'),
 					ElectronTag=cms.untracked.InputTag('flashggElectrons'),
@@ -142,7 +142,7 @@ flashggVHtightTag = cms.EDProducer("FlashggVHtightTagProducer",
 				    )
 
 
-flashggVHhadronicTag = cms.EDProducer("FlashggVHhadronicTagProducer",
+flashggVHHadronicTag = cms.EDProducer("FlashggVHHadronicTagProducer",
                                       DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
                                       JetTag = cms.untracked.InputTag('flashggJets'),
                                       leadPhoOverMassThreshold = cms.untracked.double(0.375),
