@@ -30,9 +30,9 @@ process.flashggVertexMapNonUnique = cms.EDProducer('FlashggDzVertexMapProducer',
                                                    UseEachTrackOnce=cms.untracked.bool(False)
                                                    )
 
-process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
-process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
-process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
+process.load("flashgg/MicroAOD/flashggPhotons_cfi")
+process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
+process.load("flashgg/MicroAOD/flashggPreselectedDiPhotons_cfi")
 
 
 process.TFileService = cms.Service("TFileService",fileName = cms.string("VtxIdTree.root"))

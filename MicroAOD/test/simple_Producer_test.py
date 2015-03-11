@@ -35,9 +35,9 @@ process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to wo
 #                                        monitorPssAndPrivate = cms.untracked.bool(True)
 #                                       )
 
-process.load("flashgg/MicroAODProducers/flashggMicroAODSequence_cff")
+process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
 
-from flashgg.MicroAODProducers.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand,microAODDebugOutputCommand
+from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand,microAODDebugOutputCommand
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile.root'),
                                outputCommands = microAODDefaultOutputCommand
                                )
@@ -49,7 +49,7 @@ process.options = cms.untracked.PSet(
     allowUnscheduled = cms.untracked.bool(True)
     )
 # import function which takes care of reclustering the jets using legacy vertex		
-from flashgg.MicroAODProducers.flashggJets_cfi import addFlashggPFCHSLegJets 
+from flashgg.MicroAOD.flashggJets_cfi import addFlashggPFCHSLegJets 
 # call the function, it takes care of everything else.
 addFlashggPFCHSLegJets(process)
 

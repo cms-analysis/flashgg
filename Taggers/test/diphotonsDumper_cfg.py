@@ -17,7 +17,7 @@ process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string("test.root")
 )
 
-from flashgg.MicroAODProducers.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
+from flashgg.MicroAOD.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
 process.kinPreselDiPhotons = flashggPreselectedDiPhotons.clone(
 cut=cms.string(
         "leadingPhoton.pt > 40 && subLeadingPhoton.pt > 30"
@@ -27,8 +27,8 @@ cut=cms.string(
         )
                                                               )
 
-process.load("flashgg.TagProducers.diphotonDumper_cfi") ##  import diphotonDumper 
-import flashgg.TagAlgos.dumperConfigTools as cfgTools
+process.load("flashgg.Taggers.diphotonDumper_cfi") ##  import diphotonDumper 
+import flashgg.Taggers.dumperConfigTools as cfgTools
 
 process.diphotonDumper.src = "kinPreselDiPhotons"
 

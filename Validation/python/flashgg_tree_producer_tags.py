@@ -16,17 +16,17 @@ process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT.root"))
 
 
-process.load("flashgg/MicroAODProducers/flashggTkVtxMap_cfi")
-process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
-process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
-process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
-process.load("flashgg/MicroAODProducers/flashggJets_cfi")
+process.load("flashgg/MicroAOD/flashggTkVtxMap_cfi")
+process.load("flashgg/MicroAOD/flashggPhotons_cfi")
+process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
+process.load("flashgg/MicroAOD/flashggPreselectedDiPhotons_cfi")
+process.load("flashgg/MicroAOD/flashggJets_cfi")
 
 #Tag stuff
-process.load("flashgg/TagProducers/flashggDiPhotonMVA_cfi")
-process.load("flashgg/TagProducers/flashggVBFMVA_cfi")
-process.load("flashgg/TagProducers/flashggVBFDiPhoDiJetMVA_cfi")
-process.load("flashgg/TagProducers/flashggTags_cfi")
+process.load("flashgg/Taggers/flashggDiPhotonMVA_cfi")
+process.load("flashgg/Taggers/flashggVBFMVA_cfi")
+process.load("flashgg/Taggers/flashggVBFDiPhoDiJetMVA_cfi")
+process.load("flashgg/Taggers/flashggTags_cfi")
 
 process.TFileService = cms.Service("TFileService",fileName = cms.string("flashggTreeWithTags.root"))
 process.flashggTreeMakerWithTags = cms.EDAnalyzer('FlashggFlashggTreeMakerWithTags',
