@@ -38,8 +38,8 @@
 #include "DataFormats/FWLite/interface/Event.h"
 #include "DataFormats/FWLite/interface/Handle.h"
 #if !defined(__CINT__) && !defined(__MAKECINT__)
-#include "flashgg/MicroAODFormats/interface/DiphotonCandidate.h"  
-#include "flashgg/MicroAODFormats/interface/Photon.h"  
+#include "flashgg/DataFormats/interface/DiphotonCandidate.h"  
+#include "flashgg/DataFormats/interface/Photon.h"  
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"

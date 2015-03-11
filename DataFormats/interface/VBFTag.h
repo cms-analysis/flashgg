@@ -2,9 +2,9 @@
 #define FLASHgg_VBFTag_h
 
 
-#include "flashgg/TagFormats/interface/DiPhotonTagBase.h"
-#include "flashgg/TagFormats/interface/VBFDiPhoDiJetMVAResult.h"
-#include "flashgg/MicroAODFormats/interface/Jet.h"
+#include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
+#include "flashgg/DataFormats/interface/VBFDiPhoDiJetMVAResult.h"
+#include "flashgg/DataFormats/interface/Jet.h"
 
 namespace flashgg {
 

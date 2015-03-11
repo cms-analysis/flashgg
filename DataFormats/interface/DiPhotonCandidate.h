@@ -2,7 +2,7 @@
 #define FLASHgg_DiPhotonCandidate_h
 
 #include "DataFormats/Candidate/interface/CompositeCandidate.h"
-#include "flashgg/MicroAODFormats/interface/Photon.h"
+#include "flashgg/DataFormats/interface/Photon.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 
 namespace flashgg {

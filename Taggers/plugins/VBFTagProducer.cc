@@ -7,10 +7,10 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/EDMException.h"
 
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/TagFormats/interface/VBFDiPhoDiJetMVAResult.h"
-#include "flashgg/TagFormats/interface/VBFMVAResult.h"
-#include "flashgg/TagFormats/interface/VBFTag.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/VBFDiPhoDiJetMVAResult.h"
+#include "flashgg/DataFormats/interface/VBFMVAResult.h"
+#include "flashgg/DataFormats/interface/VBFTag.h"
 
 #include <vector>
 #include <algorithm>

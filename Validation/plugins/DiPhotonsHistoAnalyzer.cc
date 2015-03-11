@@ -1,6 +1,6 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "CommonTools/UtilAlgos/interface/HistoAnalyzer.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 
 typedef HistoAnalyzer<edm::View<flashgg::DiPhotonCandidate> > DiPhotonsHistoAnalyzer;
 

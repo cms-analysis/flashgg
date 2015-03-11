@@ -20,13 +20,13 @@
 #include <typeindex>
 #include <unordered_map>
 
-#include "flashgg/TagAlgos/interface/StringHelpers.h"
+#include "flashgg/Taggers/interface/StringHelpers.h"
 
 #include "RooWorkspace.h"
 #include "RooMsgService.h"
 
-#include "flashgg/MicroAODAlgos/interface/CutBasedClassifier.h"
-#include "flashgg/TagAlgos/interface/GlobalVariablesDumper.h"
+#include "flashgg/MicroAOD/interface/CutBasedClassifier.h"
+#include "flashgg/Taggers/interface/GlobalVariablesDumper.h"
 
 
 /**

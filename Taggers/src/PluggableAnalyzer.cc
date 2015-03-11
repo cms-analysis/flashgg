@@ -1,4 +1,4 @@
-#include "flashgg/TagAlgos/interface/PluggableAnalyzer.h"
+#include "flashgg/Taggers/interface/PluggableAnalyzer.h"
 
 #include "PhysicsTools/UtilAlgos/interface/BasicAnalyzer.h"
 

@@ -2,8 +2,8 @@
 #define FLASHgg_VBFDiPhoDiJetMVAResult_h
 
 #include "DataFormats/Common/interface/Ptr.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/TagFormats/interface/VBFMVAResult.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/VBFMVAResult.h"
 
 namespace flashgg {
 

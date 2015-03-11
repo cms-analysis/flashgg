@@ -7,7 +7,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
-#include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
+#include "flashgg/DataFormats/interface/VertexCandidateMap.h"
 
 using namespace edm;
 using namespace std;

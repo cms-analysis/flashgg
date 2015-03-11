@@ -1,4 +1,4 @@
-#include "flashgg/TagFormats/interface/DiPhotonUntaggedCategory.h"
+#include "flashgg/DataFormats/interface/DiPhotonUntaggedCategory.h"
 
 using namespace flashgg;
 

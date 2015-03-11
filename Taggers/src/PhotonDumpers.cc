@@ -1,6 +1,6 @@
-#include "flashgg/TagAlgos/interface/PhotonDumpers.h"
+#include "flashgg/Taggers/interface/PhotonDumpers.h"
 
-#include "flashgg/TagAlgos/interface/PluggableAnalyzer.h"
+#include "flashgg/Taggers/interface/PluggableAnalyzer.h"
 
 namespace flashgg {
 	// typedef AnalyzerFactoryImpl<DiPhotonDumper,"DiPhotonDumper"> DiPhotonDumperFactory;

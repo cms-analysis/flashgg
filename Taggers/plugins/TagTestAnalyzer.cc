@@ -21,14 +21,14 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "DataFormats/Common/interface/Handle.h"
 
-#include "flashgg/TagFormats/interface/VBFTag.h"
-#include "flashgg/TagFormats/interface/DiPhotonUntaggedCategory.h"
-#include "flashgg/TagFormats/interface/DiPhotonTagBase.h"
-#include "flashgg/TagFormats/interface/TTHhadronicTag.h"
-#include "flashgg/TagFormats/interface/TTHleptonicTag.h"
-#include "flashgg/TagFormats/interface/VHtightTag.h"
-#include "flashgg/TagFormats/interface/VHlooseTag.h"
-#include "flashgg/TagFormats/interface/VHhadronicTag.h"
+#include "flashgg/DataFormats/interface/VBFTag.h"
+#include "flashgg/DataFormats/interface/DiPhotonUntaggedCategory.h"
+#include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
+#include "flashgg/DataFormats/interface/TTHhadronicTag.h"
+#include "flashgg/DataFormats/interface/TTHleptonicTag.h"
+#include "flashgg/DataFormats/interface/VHtightTag.h"
+#include "flashgg/DataFormats/interface/VHlooseTag.h"
+#include "flashgg/DataFormats/interface/VHhadronicTag.h"
 
 using namespace std;
 using namespace edm;

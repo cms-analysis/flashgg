@@ -1,4 +1,4 @@
-#include "flashgg/TagFormats/interface/VHtightTag.h"
+#include "flashgg/DataFormats/interface/VHtightTag.h"
 #include <algorithm>
 
 using namespace flashgg;

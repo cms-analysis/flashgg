@@ -1,7 +1,7 @@
 #ifndef FLASHgg_GenPhotonExtra_h
 #define FLASHgg_GenPhotonExtra_h
 
-#include "flashgg/MicroAODFormats/interface/Photon.h"
+#include "flashgg/DataFormats/interface/Photon.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 #include "DataFormats/Common/interface/Ptr.h"
 

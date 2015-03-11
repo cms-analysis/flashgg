@@ -2,7 +2,7 @@
 #define FLASHgg_Jet_h
 
 #include "DataFormats/PatCandidates/interface/Jet.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/JetReco/interface/PileupJetIdentifier.h"
 

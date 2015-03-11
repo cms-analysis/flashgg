@@ -1,13 +1,13 @@
 #ifndef flashgg_PhotonDumpers_h
 #define flashgg_PhotonDumpers_h
 
-#include "flashgg/MicroAODFormats/interface/Photon.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/MicroAODFormats/interface/SinglePhotonView.h"
-#include "flashgg/MicroAODFormats/interface/SingleVertexView.h"
-#include "flashgg/TagFormats/interface/DiPhotonTagBase.h"
+#include "flashgg/DataFormats/interface/Photon.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/SinglePhotonView.h"
+#include "flashgg/DataFormats/interface/SingleVertexView.h"
+#include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 
-#include "flashgg/TagAlgos/interface/CollectionDumper.h"
+#include "flashgg/Taggers/interface/CollectionDumper.h"
 
 /// #include "PhysicsTools/UtilAlgos/interface/FWLiteAnalyzerWrapper.h"
 

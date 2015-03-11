@@ -7,7 +7,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/EDMException.h"
 
-#include "flashgg/MicroAODFormats/interface/SinglePhotonView.h"
+#include "flashgg/DataFormats/interface/SinglePhotonView.h"
 
 #include <vector>
 #include <algorithm>

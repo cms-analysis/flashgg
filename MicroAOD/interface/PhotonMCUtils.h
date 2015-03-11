@@ -2,7 +2,7 @@
 #define _PhotonMCUtils_h_
 
 #include "DataFormats/Math/interface/deltaR.h"
-#include "flashgg/MicroAODFormats/interface/Photon.h"
+#include "flashgg/DataFormats/interface/Photon.h"
 
 namespace flashgg {
 

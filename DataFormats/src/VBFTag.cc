@@ -1,5 +1,5 @@
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/TagFormats/interface/VBFTag.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/VBFTag.h"
 #include "CommonTools/CandUtils/interface/AddFourMomenta.h"
 
 using namespace flashgg;

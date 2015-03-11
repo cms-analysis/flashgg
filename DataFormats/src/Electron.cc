@@ -1,4 +1,4 @@
-#include "flashgg/MicroAODFormats/interface/Electron.h"
+#include "flashgg/DataFormats/interface/Electron.h"
 
 using namespace flashgg;
 

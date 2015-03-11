@@ -1,4 +1,4 @@
-#include "flashgg/MicroAODAlgos/interface/CutBasedDiPhotonObjectSelector.h"
+#include "flashgg/MicroAOD/interface/CutBasedDiPhotonObjectSelector.h"
 #include "FWCore/Framework/interface/Event.h"
 
 using namespace edm;

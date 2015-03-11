@@ -1,4 +1,4 @@
-#include "flashgg/GlobeComparison/interface/drawUtils.h"
+#include "flashgg/Validation/interface/drawUtils.h"
 
 void compareHistos(TH1F* histo_new, TH1F* histo_old, std::string label_new,
                    std::string label_old, std::string variable,

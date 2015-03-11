@@ -7,7 +7,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "TrackingTools/IPTools/interface/IPTools.h"
 
-#include "flashgg/SystAlgos/interface/BaseSystMethods.h"
+#include "flashgg/Systematics/interface/BaseSystMethods.h"
 
 using namespace edm;
 using namespace std;

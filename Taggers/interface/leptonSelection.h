@@ -10,12 +10,12 @@
 #include "FWCore/Utilities/interface/EDMException.h"
 
 #include "DataFormats/PatCandidates/interface/Jet.h"
-#include "flashgg/MicroAODFormats/interface/Jet.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/TagFormats/interface/TTHleptonicTag.h"
+#include "flashgg/DataFormats/interface/Jet.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/TTHleptonicTag.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
-#include "flashgg/MicroAODFormats/interface/Electron.h"
+#include "flashgg/DataFormats/interface/Electron.h"
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 
 #include "DataFormats/TrackReco/interface/HitPattern.h"

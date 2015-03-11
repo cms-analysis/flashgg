@@ -7,11 +7,11 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
-#include "flashgg/MicroAODFormats/interface/Jet.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/Jet.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "RecoJets/JetProducers/interface/PileupJetIdAlgo.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
-#include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
+#include "flashgg/DataFormats/interface/VertexCandidateMap.h"
 
 
 using namespace std;

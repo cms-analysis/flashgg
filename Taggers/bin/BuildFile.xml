@@ -3,7 +3,7 @@
 <use   name="PhysicsTools/FWLite"/>
 <use   name="PhysicsTools/Utilities"/>
 <use   name="PhysicsTools/SelectorUtils"/>
-<use   name="flashgg/TagAlgos"/>
+<use   name="flashgg/Taggers"/>
 <!-- Flags CXXFLAGS="-ggdb"/ -->
 <environment>
   <bin   file="fwliteRun.cc"></bin>

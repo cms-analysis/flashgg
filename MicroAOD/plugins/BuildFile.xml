@@ -7,8 +7,8 @@
 <use   name="DataFormats/PatCandidates"/>
 <use   name="CommonTools/CandUtils"/>
 <use   name="DataFormats/VertexReco"/>
-<use   name="flashgg/MicroAODFormats"/>
-<use   name="flashgg/MicroAODAlgos"/>
+<use   name="flashgg/DataFormats"/>
+<use   name="flashgg/MicroAOD"/>
 <use   name="RecoJets/JetProducers"/>
 <use   name="EgammaAnalysis/ElectronTools"/>
 <use   name="DataFormats/EgammaCandidates"/>

@@ -5,9 +5,9 @@
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "FWCore/Framework/interface/Event.h"
-#include "flashgg/MicroAODFormats/interface/GenPhotonExtra.h"
-#include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
-#include "flashgg/MicroAODAlgos/interface/PhotonMCUtils.h"
+#include "flashgg/DataFormats/interface/GenPhotonExtra.h"
+#include "flashgg/DataFormats/interface/VertexCandidateMap.h"
+#include "flashgg/MicroAOD/interface/PhotonMCUtils.h"
 
 
 using namespace std;

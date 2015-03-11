@@ -1,5 +1,5 @@
 <use name="FWCore/PluginManager"/>
-<use name="flashgg/MicroAODFormats"/>
+<use name="flashgg/DataFormats"/>
 <use name="rootrflx"/>
 <export>
   <lib  name="1"/>

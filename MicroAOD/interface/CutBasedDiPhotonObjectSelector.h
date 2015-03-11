@@ -5,8 +5,8 @@
 #include "CommonTools/Utils/interface/StringObjectFunction.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 
-#include "flashgg/MicroAODAlgos/interface/CutBasedClassifier.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/MicroAOD/interface/CutBasedClassifier.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 
 #include "FWCore/Common/interface/EventBase.h"
 #include "FWCore/Framework/interface/ConsumesCollector.h"

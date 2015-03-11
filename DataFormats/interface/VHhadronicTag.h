@@ -1,8 +1,8 @@
 #ifndef FLASHgg_VHhadronicTag_h
 #define FLASHgg_VHhadronicTag_h
 
-#include "flashgg/TagFormats/interface/DiPhotonTagBase.h"
-#include "flashgg/MicroAODFormats/interface/Jet.h"
+#include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
+#include "flashgg/DataFormats/interface/Jet.h"
 
 namespace flashgg {
 

@@ -1,4 +1,4 @@
-#include "flashgg/TagAlgos/interface/GlobalVariablesDumper.h"
+#include "flashgg/Taggers/interface/GlobalVariablesDumper.h"
 
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"

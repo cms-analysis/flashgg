@@ -1,17 +1,16 @@
 <use   name="DataFormats/Candidate"/>
 <use   name="DataFormats/PatCandidates"/>
 <use   name="DataFormats/Common"/>
-<use   name="flashgg/MicroAODFormats"/>
-<use   name="flashgg/TagFormats"/>
-<use name="DataFormats/VertexReco"/>
-<use name="FWCore/Utilities"/>
-<use name="CommonTools/Utils"/>
-<use name="rootcore"/>
-<use name="rootrflx"/>
-<use name="roofit"/>
-<use name="roofitcore"/>
-<use name="boost_python"/>
-<Flags CXXFLAGS="-ggdb"/>
+<use   name="flashgg/DataFormats"/>
+<use   name="DataFormats/VertexReco"/>
+<use   name="FWCore/Utilities"/>
+<use   name="CommonTools/Utils"/>
+<use   name="rootcore"/>
+<use   name="rootrflx"/>
+<use   name="roofit"/>
+<use   name="roofitcore"/>
+<use   name="boost_python"/>
+<!-- Flags CXXFLAGS="-ggdb"/ -->
 <export>
   <lib   name="1"/>
 </export>

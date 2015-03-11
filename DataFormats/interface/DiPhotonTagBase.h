@@ -1,8 +1,8 @@
 #ifndef FLASHgg_DiPhotonTagBase_h
 #define FLASHgg_DiPhotonTagBase_h
 
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/TagFormats/interface/DiPhotonMVAResult.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
 
 namespace flashgg {
 

@@ -1,7 +1,7 @@
-#include "flashgg/SystAlgos/interface/BaseSystMethods.h"
+#include "flashgg/Systematics/interface/BaseSystMethods.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/Common/interface/PtrVector.h"
-#include "flashgg/MicroAODFormats/interface/Photon.h"
+#include "flashgg/DataFormats/interface/Photon.h"
 
 namespace flashgg {
 

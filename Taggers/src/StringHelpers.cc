@@ -1,4 +1,4 @@
-#include "flashgg/TagAlgos/interface/StringHelpers.h"
+#include "flashgg/Taggers/interface/StringHelpers.h"
 
 #include <boost/algorithm/string/replace.hpp>
 

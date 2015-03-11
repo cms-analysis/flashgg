@@ -1,6 +1,6 @@
-#include "flashgg/MicroAODAlgos/interface/VertexSelectorBase.h"
+#include "flashgg/MicroAOD/interface/VertexSelectorBase.h"
 #include "DataFormats/Common/interface/Handle.h"
-#include "flashgg/MicroAODFormats/interface/Photon.h"
+#include "flashgg/DataFormats/interface/Photon.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/Common/interface/PtrVector.h"
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"

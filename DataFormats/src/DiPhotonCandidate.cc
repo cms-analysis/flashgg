@@ -1,6 +1,6 @@
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/MicroAODFormats/interface/Photon.h"
-#include "flashgg/MicroAODFormats/interface/SinglePhotonView.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/Photon.h"
+#include "flashgg/DataFormats/interface/SinglePhotonView.h"
 #include "CommonTools/CandUtils/interface/AddFourMomenta.h"
 
 using namespace flashgg;

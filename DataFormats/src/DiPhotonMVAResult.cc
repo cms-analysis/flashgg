@@ -1,4 +1,4 @@
-#include "flashgg/TagFormats/interface/DiPhotonMVAResult.h"
+#include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
 
 
 namespace flashgg {

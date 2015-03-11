@@ -1,5 +1,5 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
-#include "flashgg/TagAlgos/interface/PhotonDumpers.h"
+#include "flashgg/Taggers/interface/PhotonDumpers.h"
 #include "PhysicsTools/UtilAlgos/interface/EDAnalyzerWrapper.h"
 
 typedef edm::AnalyzerWrapper<flashgg::PhotonDumper> PhotonDumper;
