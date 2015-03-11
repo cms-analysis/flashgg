@@ -7,8 +7,8 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/EDMException.h"
 
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/TagFormats/interface/DiPhotonMVAResult.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
 
 #include "TMVA/Reader.h"
 #include "TMath.h"

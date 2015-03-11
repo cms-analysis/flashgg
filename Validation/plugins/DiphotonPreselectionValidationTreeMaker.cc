@@ -19,16 +19,16 @@
 
 #include "DataFormats/VertexReco/interface/Vertex.h"
 
-#include "flashgg/MicroAODAlgos/interface/VertexSelectorBase.h"
+#include "flashgg/MicroAOD/interface/VertexSelectorBase.h"
 #include "DataFormats/EgammaCandidates/interface/PhotonCore.h"
 #include "DataFormats/EgammaCandidates/interface/Photon.h"
 #include "DataFormats/PatCandidates/interface/Photon.h"
-#include "flashgg/MicroAODFormats/interface/Photon.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/Photon.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 
-#include "flashgg/MicroAODAlgos/interface/PhotonIdUtils.h"
+#include "flashgg/MicroAOD/interface/PhotonIdUtils.h"
 
-#include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
+#include "flashgg/DataFormats/interface/VertexCandidateMap.h"
 #include "TTree.h"
 
 // **********************************************************************

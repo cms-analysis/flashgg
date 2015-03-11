@@ -8,10 +8,10 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
-#include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
+#include "flashgg/DataFormats/interface/VertexCandidateMap.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
 #include "DataFormats/Math/interface/deltaR.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 
 
 using namespace edm;

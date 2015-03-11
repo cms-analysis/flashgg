@@ -1,11 +1,11 @@
 #ifndef FLASHgg_VHlooseTag_h
 #define FLASHgg_VHlooseTag_h
 
-#include "flashgg/TagFormats/interface/DiPhotonTagBase.h"
+#include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
-#include "flashgg/MicroAODFormats/interface/Jet.h"
+#include "flashgg/DataFormats/interface/Jet.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
-#include "flashgg/MicroAODFormats/interface/Electron.h"
+#include "flashgg/DataFormats/interface/Electron.h"
 
 namespace flashgg {
 

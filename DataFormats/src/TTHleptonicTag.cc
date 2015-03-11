@@ -1,4 +1,4 @@
-#include "flashgg/TagFormats/interface/TTHleptonicTag.h"
+#include "flashgg/DataFormats/interface/TTHleptonicTag.h"
 #include <algorithm>
 
 using namespace flashgg;

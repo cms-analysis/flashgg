@@ -35,12 +35,12 @@
 
 #include "DataFormats/VertexReco/interface/Vertex.h"
 
-#include "flashgg/MicroAODAlgos/interface/VertexSelectorBase.h"
-#include "flashgg/MicroAODFormats/interface/Photon.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/MicroAODFormats/interface/Jet.h"
+#include "flashgg/MicroAOD/interface/VertexSelectorBase.h"
+#include "flashgg/DataFormats/interface/Photon.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/Jet.h"
 
-#include "flashgg/MicroAODAlgos/interface/PhotonIdUtils.h"
+#include "flashgg/MicroAOD/interface/PhotonIdUtils.h"
 
 #include "TTree.h"
 

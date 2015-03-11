@@ -1,4 +1,4 @@
-#include "flashgg/MicroAODFormats/interface/SinglePhotonView.h"
+#include "flashgg/DataFormats/interface/SinglePhotonView.h"
 
 namespace flashgg {
 

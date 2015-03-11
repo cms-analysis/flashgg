@@ -21,14 +21,14 @@
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
 
-#include "flashgg/MicroAODAlgos/interface/VertexSelectorBase.h"
-#include "flashgg/MicroAODFormats/interface/Photon.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/MicroAOD/interface/VertexSelectorBase.h"
+#include "flashgg/DataFormats/interface/Photon.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 
-#include "flashgg/MicroAODAlgos/interface/PhotonIdUtils.h"
+#include "flashgg/MicroAOD/interface/PhotonIdUtils.h"
 
-#include "flashgg/MicroAODFormats/interface/VertexCandidateMap.h"
-#include "flashgg/MicroAODFormats/interface/Jet.h"
+#include "flashgg/DataFormats/interface/VertexCandidateMap.h"
+#include "flashgg/DataFormats/interface/Jet.h"
 
 #include "DataFormats/Math/interface/deltaR.h"
 

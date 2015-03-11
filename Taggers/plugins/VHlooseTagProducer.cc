@@ -8,16 +8,16 @@
 #include "FWCore/Utilities/interface/EDMException.h"
 
 #include "DataFormats/PatCandidates/interface/Jet.h"
-#include "flashgg/MicroAODFormats/interface/Jet.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/TagFormats/interface/VHlooseTag.h"
-#include "flashgg/MicroAODFormats/interface/Electron.h"
+#include "flashgg/DataFormats/interface/Jet.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/VHlooseTag.h"
+#include "flashgg/DataFormats/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
 
 #include "DataFormats/TrackReco/interface/HitPattern.h"
-#include "flashgg/TagAlgos/interface/leptonSelection.h"
+#include "flashgg/Taggers/interface/leptonSelection.h"
 
 #include "DataFormats/Math/interface/deltaR.h"
 

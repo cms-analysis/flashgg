@@ -1,8 +1,9 @@
-<library name="FlashggSystProucerPlugins" file="*.cc">
+<library name="FlashggSystematicsPlugins" file="*.cc">
 <use name="FWCore/Framework"/>
 <use name="FWCore/PluginManager"/>
 <use name="FWCore/ParameterSet"/>
-<use name="flashgg/SystAlgos"/>
+<use name="flashgg/Systematics"/>
 <use name="roottmva"/>
+<use name="clhep"/>
 <flags  EDM_PLUGIN="1"/>
 </library>

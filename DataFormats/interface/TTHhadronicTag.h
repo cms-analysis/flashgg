@@ -1,8 +1,8 @@
 #ifndef FLASHgg_TTHhadronicTag_h
 #define FLASHgg_TTHhadronicTag_h
 
-#include "flashgg/TagFormats/interface/DiPhotonTagBase.h"
-#include "flashgg/MicroAODFormats/interface/Jet.h"
+#include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
+#include "flashgg/DataFormats/interface/Jet.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
 
 

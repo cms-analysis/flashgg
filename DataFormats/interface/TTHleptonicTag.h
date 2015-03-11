@@ -1,10 +1,10 @@
 #ifndef FLASHgg_TTHleptonicTag_h
 #define FLASHgg_TTHleptonicTag_h
 
-#include "flashgg/TagFormats/interface/DiPhotonTagBase.h"
+#include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
-#include "flashgg/MicroAODFormats/interface/Electron.h"
-#include "flashgg/MicroAODFormats/interface/Jet.h"
+#include "flashgg/DataFormats/interface/Electron.h"
+#include "flashgg/DataFormats/interface/Jet.h"
 
 namespace flashgg {
 

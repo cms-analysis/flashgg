@@ -8,10 +8,10 @@
 #include "FWCore/Utilities/interface/EDMException.h"
 
 #include "DataFormats/PatCandidates/interface/Jet.h"
-#include "flashgg/MicroAODFormats/interface/Jet.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/TagFormats/interface/TTHhadronicTag.h"
-#include "flashgg/TagFormats/interface/DiPhotonMVAResult.h"
+#include "flashgg/DataFormats/interface/Jet.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/TTHhadronicTag.h"
+#include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
 
 #include <vector>
 #include <algorithm>

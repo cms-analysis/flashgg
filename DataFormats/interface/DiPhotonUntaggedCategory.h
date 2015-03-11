@@ -1,4 +1,4 @@
-#include "flashgg/TagFormats/interface/DiPhotonTagBase.h"
+#include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 
 namespace flashgg {
 

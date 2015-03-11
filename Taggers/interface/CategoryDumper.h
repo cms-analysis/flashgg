@@ -15,12 +15,12 @@
 
 #include "CommonTools/Utils/interface/TFileDirectory.h"
 
-#include "flashgg/TagAlgos/interface/StringHelpers.h"
+#include "flashgg/Taggers/interface/StringHelpers.h"
 
 #include "CommonTools/Utils/interface/StringObjectFunction.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 
-#include "flashgg/TagAlgos/interface/GlobalVariablesDumper.h"
+#include "flashgg/Taggers/interface/GlobalVariablesDumper.h"
 
 namespace flashgg {
 	

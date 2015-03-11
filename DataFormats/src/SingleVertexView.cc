@@ -1,4 +1,4 @@
-#include "flashgg/MicroAODFormats/interface/SingleVertexView.h"
+#include "flashgg/DataFormats/interface/SingleVertexView.h"
 
 namespace flashgg {
 

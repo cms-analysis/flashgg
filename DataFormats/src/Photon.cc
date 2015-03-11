@@ -1,4 +1,4 @@
-#include "flashgg/MicroAODFormats/interface/Photon.h"
+#include "flashgg/DataFormats/interface/Photon.h"
 #include "FWCore/Utilities/interface/Exception.h"
 
 using namespace flashgg;

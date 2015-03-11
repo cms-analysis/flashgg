@@ -16,7 +16,7 @@
 #include "FWCore/PythonParameterSet/interface/MakeParameterSets.h"
 #include "PhysicsTools/Utilities/macros/setTDRStyle.C"
 
-#include "flashgg/GlobeComparison/interface/drawUtils.h"
+#include "flashgg/Validation/interface/drawUtils.h"
 
 using namespace std;
 

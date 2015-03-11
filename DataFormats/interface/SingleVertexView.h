@@ -1,7 +1,7 @@
 #ifndef FLASHgg_SingleVertexView_h
 #define FLASHgg_SingleVertexView_h
 
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "DataFormats/Common/interface/Ptr.h"
 
 #include <string>

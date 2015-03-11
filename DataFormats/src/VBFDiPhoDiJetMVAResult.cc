@@ -1,4 +1,4 @@
-#include "flashgg/TagFormats/interface/VBFDiPhoDiJetMVAResult.h"
+#include "flashgg/DataFormats/interface/VBFDiPhoDiJetMVAResult.h"
 
 
 namespace flashgg {

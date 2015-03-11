@@ -2,7 +2,7 @@
 #define FLASHgg_DiPhotonMVAResult_h
 
 #include "DataFormats/Common/interface/Ptr.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 
 namespace flashgg {
 

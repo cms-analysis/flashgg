@@ -1,4 +1,4 @@
-#include "flashgg/MicroAODAlgos/interface/PhotonMCUtils.h"
+#include "flashgg/MicroAOD/interface/PhotonMCUtils.h"
 
 using namespace flashgg;
 void PhotonMCUtils::determineMatchType(flashgg::Photon & fg, flashgg::Photon::mcMatch_t defaultType) 

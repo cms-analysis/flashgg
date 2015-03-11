@@ -10,9 +10,9 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/Math/interface/deltaR.h"
 
-#include "flashgg/MicroAODFormats/interface/Jet.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/TagFormats/interface/VHhadronicTag.h"
+#include "flashgg/DataFormats/interface/Jet.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/VHhadronicTag.h"
 
 #include <vector>
 #include <algorithm>

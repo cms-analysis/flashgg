@@ -1,4 +1,4 @@
-#include "flashgg/MicroAODFormats/interface/Jet.h"
+#include "flashgg/DataFormats/interface/Jet.h"
 
 using namespace flashgg;
 

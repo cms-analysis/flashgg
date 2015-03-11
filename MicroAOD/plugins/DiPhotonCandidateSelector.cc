@@ -16,8 +16,8 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "CommonTools/UtilAlgos/interface/SingleObjectSelector.h"
 #include "CommonTools/UtilAlgos/interface/StringCutObjectSelector.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/MicroAODAlgos/interface/CutBasedDiPhotonObjectSelector.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/MicroAOD/interface/CutBasedDiPhotonObjectSelector.h"
 
 #include "CommonTools/UtilAlgos/interface/ObjectSelectorStream.h"
 #include "CommonTools/UtilAlgos/interface/SingleElementCollectionSelectorPlusEvent.h"

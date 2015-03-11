@@ -2,8 +2,8 @@
 #define FLASHgg_VBFMVAResult_h
 
 #include "DataFormats/Common/interface/Ptr.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/MicroAODFormats/interface/Jet.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/Jet.h"
 
 
 namespace flashgg {

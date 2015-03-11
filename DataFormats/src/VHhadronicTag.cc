@@ -1,4 +1,4 @@
-#include "flashgg/TagFormats/interface/VHhadronicTag.h"
+#include "flashgg/DataFormats/interface/VHhadronicTag.h"
 
 using namespace flashgg;
 

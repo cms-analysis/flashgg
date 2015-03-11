@@ -1,4 +1,4 @@
-#include "flashgg/TagFormats/interface/VBFMVAResult.h"
+#include "flashgg/DataFormats/interface/VBFMVAResult.h"
 
 
 namespace flashgg {

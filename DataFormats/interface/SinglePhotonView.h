@@ -1,8 +1,8 @@
 #ifndef FLASHgg_SinglePhotonView_h
 #define FLASHgg_SinglePhotonView_h
 
-#include "flashgg/MicroAODFormats/interface/Photon.h"
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/Photon.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "DataFormats/Common/interface/Ptr.h"
 
 #include <string>
