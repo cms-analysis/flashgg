@@ -1,5 +1,5 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
-#include "flashgg/TagAlgos/interface/DiPhotonMVAResultDumper.h"
+#include "flashgg/Taggers/interface/DiPhotonMVAResultDumper.h"
 #include "PhysicsTools/UtilAlgos/interface/EDAnalyzerWrapper.h"
 
 typedef edm::AnalyzerWrapper<flashgg::DiPhotonMVAResultDumper> DiPhotonMVAResultDumper;
