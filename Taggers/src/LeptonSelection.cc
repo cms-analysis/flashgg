@@ -1,4 +1,4 @@
-#include "flashgg/Taggers/interface/leptonSelection.h"
+#include "flashgg/Taggers/interface/LeptonSelection.h"
 #include "DataFormats/EgammaCandidates/interface/GsfElectron.h" 
 #include "TLorentzVector.h"
 
@@ -74,13 +74,13 @@ namespace flashgg {
                         if (Electron_eta>EtaCuts[2] || (Electron_eta>EtaCuts[0] && Electron_eta<EtaCuts[1])) continue;
                         if(Electron->pt()<ElectronPtThreshold)continue;
 
-			Ptr<reco::Vertex> Electron_vtx = ChooseElectronVertex(Electron,vertexPointers);
+			Ptr<reco::Vertex> Electron_vtx = chooseElectronVertex(Electron,vertexPointers);
 
-			if (Electron->getNonTrigMVA() < NonTrigMVAThreshold) continue; 
-			if (Electron->getStandardHggIso() > IsoThreshold) continue;
+			if (Electron->nonTrigMVA() < NonTrigMVAThreshold) continue; 
+			if (Electron->standardHggIso() > IsoThreshold) continue;
 
 			if(Electron->gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS)>NumOfMissingHitsThreshold) continue; 
-			if (Electron->getHasMatchedConversion()) continue; 
+			if (Electron->hasMatchedConversion()) continue; 
 
 			float dxy = Electron->gsfTrack()->dxy(Electron_vtx->position());							  
 			float dz = Electron->gsfTrack()->dz(Electron_vtx->position()); 
@@ -94,7 +94,7 @@ namespace flashgg {
 	}
 
 
-	Ptr<reco::Vertex>  ChooseElectronVertex(Ptr<flashgg::Electron> & elec,const PtrVector<reco::Vertex> & vertices){
+	Ptr<reco::Vertex>  chooseElectronVertex(Ptr<flashgg::Electron> & elec,const PtrVector<reco::Vertex> & vertices){
 
 		double vtx_dz = 1000000;
 		unsigned int min_dz_vtx = -1;

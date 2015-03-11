@@ -105,7 +105,7 @@ namespace flashgg {
 			for (unsigned int  TagPointerLoop = 0; TagPointerLoop < TagPointers.size() ; TagPointerLoop++)        {
 
 				float mass = TagPointers[TagPointerLoop]->diPhoton()->mass();
-				int category = TagPointers[TagPointerLoop]->getCategoryNumber();
+				int category = TagPointers[TagPointerLoop]->categoryNumber();
 
 				// std::cout << "[DEBUG]" << tpr->name << " " << tpr->minCat << " " << tpr->maxCat << " " 
 				//           << mass << " " << category << " " << TagPointerLoop << std::endl;
@@ -125,7 +125,7 @@ namespace flashgg {
 		 		SelectedTag->push_back(*TagPointers[chosenIndex]);
 				//debug message:
 				// std::cout << "[DEBUG] Priority " << priority << " Tag Found! Tag entry "<< chosenIndex  << " with sumPt " 
-				//    	     << TagPointers[chosenIndex]->getSumPt() << std::endl;
+				//    	     << TagPointers[chosenIndex]->sumPt() << std::endl;
 				break;
 			} else {
 			  //debug message

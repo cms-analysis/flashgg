@@ -1,5 +1,5 @@
-#ifndef FLASHgg_VHlooseTag_h
-#define FLASHgg_VHlooseTag_h
+#ifndef FLASHgg_VHLooseTag_h
+#define FLASHgg_VHLooseTag_h
 
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
@@ -9,24 +9,24 @@
 
 namespace flashgg {
 
-	class VHlooseTag: public DiPhotonTagBase {
+	class VHLooseTag: public DiPhotonTagBase {
 		public:
-			VHlooseTag();
-                        VHlooseTag(edm::Ptr<DiPhotonCandidate>,edm::Ptr<DiPhotonMVAResult>);
-			VHlooseTag(edm::Ptr<DiPhotonCandidate>,DiPhotonMVAResult);
-			~VHlooseTag();
+			VHLooseTag();
+                        VHLooseTag(edm::Ptr<DiPhotonCandidate>,edm::Ptr<DiPhotonMVAResult>);
+			VHLooseTag(edm::Ptr<DiPhotonCandidate>,DiPhotonMVAResult);
+			~VHLooseTag();
 
-                const edm::PtrVector<pat::Muon> getMuons() const { return Muons_;}
-		const edm::PtrVector<flashgg::Electron> getElectrons() const {return Electrons_;}
-		const edm::PtrVector<Jet> getJets() const { return Jets_;}
-		const edm::PtrVector<pat::MET> getMET() const { return MET_;} 
+                const edm::PtrVector<pat::Muon> muons() const { return Muons_;}
+		const edm::PtrVector<flashgg::Electron> electrons() const {return Electrons_;}
+		const edm::PtrVector<Jet> jets() const { return Jets_;}
+		const edm::PtrVector<pat::MET> met() const { return MET_;} 
 
 		void setJets(edm::PtrVector<Jet> Jets) { Jets_ = Jets; }
 		void setMuons(edm::PtrVector<pat::Muon> Muons) {Muons_ = Muons;}
 		void setMET(edm::PtrVector<pat::MET> MET) {MET_ = MET;}
 		void setElectrons(edm::PtrVector<Electron> Electrons) {Electrons_ = Electrons;}
 
-		VHlooseTag* clone() const;
+		VHLooseTag* clone() const;
 
                 private:
                 edm::PtrVector<pat::Muon> Muons_;  

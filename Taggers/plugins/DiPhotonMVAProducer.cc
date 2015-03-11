@@ -103,7 +103,7 @@ namespace flashgg {
     for (unsigned int candIndex =0; candIndex < diPhotonPointers.size() ; candIndex++) {
       flashgg::DiPhotonMVAResult mvares;
 
-      edm::Ptr<reco::Vertex> vtx = diPhotonPointers[candIndex]->getVertex();
+      edm::Ptr<reco::Vertex> vtx = diPhotonPointers[candIndex]->vtx();
       const flashgg::Photon* g1 = diPhotonPointers[candIndex]->leadingPhoton();
       const flashgg::Photon* g2 = diPhotonPointers[candIndex]->subLeadingPhoton();
       
@@ -149,20 +149,20 @@ namespace flashgg {
       //float angleResolutionCorrVtx = ((-1.*0.1*TMath::Sqrt(.2))/denominator)*(numerator1/r1 + numerator2/r2);//dz = 0.1
       float alpha_sig_wrg = 0.5*angleResolutionWrgVtx;
       //float alpha_sig_corr = angleResolutionCorrVtx;
-      float SigmaM = 0.5*TMath::Sqrt(g1->getSigEOverE()*g1->getSigEOverE() + g2->getSigEOverE()*g2->getSigEOverE());
+      float SigmaM = 0.5*TMath::Sqrt(g1->sigEOverE()*g1->sigEOverE() + g2->sigEOverE()*g2->sigEOverE());
       float MassResolutionWrongVtx = TMath::Sqrt((SigmaM*SigmaM)+(alpha_sig_wrg*alpha_sig_wrg));
 
 
       leadptom_       = g1->pt()/(diPhotonPointers[candIndex]->mass());
       subleadptom_    = g2->pt()/(diPhotonPointers[candIndex]->mass());
-      subleadmva_     = g2->getPhoIdMvaDWrtVtx(vtx);
-      leadmva_        = g1->getPhoIdMvaDWrtVtx(vtx);
+      subleadmva_     = g2->phoIdMvaDWrtVtx(vtx);
+      leadmva_        = g1->phoIdMvaDWrtVtx(vtx);
       leadeta_        = g2->eta();
       subleadeta_     = g1->eta();
-      sigmarv_        = .5*sqrt((g1->getSigEOverE())*(g1->getSigEOverE()) + (g2->getSigEOverE())*(g2->getSigEOverE()));
+      sigmarv_        = .5*sqrt((g1->sigEOverE())*(g1->sigEOverE()) + (g2->sigEOverE())*(g2->sigEOverE()));
       sigmawv_        = MassResolutionWrongVtx;
       CosPhi_         = TMath::Cos(deltaPhi(g1->phi(),g2->phi()));
-      vtxprob_        =  1.-vertex_prob_slope_*(1+diPhotonPointers[candIndex]->getVtxProbMVA());
+      vtxprob_        =  1.-vertex_prob_slope_*(1+diPhotonPointers[candIndex]->vtxProbMVA());
 
       mvares.result = DiphotonMva_->EvaluateMVA("BDT");
 

@@ -12,7 +12,7 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/DataFormats/interface/TTHleptonicTag.h"
+#include "flashgg/DataFormats/interface/TTHLeptonicTag.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "flashgg/DataFormats/interface/Electron.h"
@@ -37,7 +37,7 @@ namespace flashgg {
 
 	PtrVector<Electron> selectElectrons(const PtrVector<flashgg::Electron>& ElectronPointers, const PtrVector<reco::Vertex>& vertexPointers,double ElectronPtThreshold ,double DeltaRTrkElec ,double TransverseImpactParam,double LongitudinalImpactParam, double NonTrigMVAThreshold, double IsoThreshold, double NumOfMissingHitsThreshold, vector<double> EtaCuts);
 
-	Ptr<reco::Vertex> ChooseElectronVertex(Ptr<flashgg::Electron> & elec,const PtrVector<reco::Vertex> & vertexPopinters);
+	Ptr<reco::Vertex> chooseElectronVertex(Ptr<flashgg::Electron> & elec,const PtrVector<reco::Vertex> & vertexPopinters);
 
 }
 

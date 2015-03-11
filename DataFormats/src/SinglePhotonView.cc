@@ -2,7 +2,7 @@
 
 namespace flashgg {
 
-	void SinglePhotonView::getDaughterMaybe() const
+	void SinglePhotonView::daughterMaybe() const
 	{
 		if(pho_ == 0) { 
 			if( dipho_ == 0 ) { dipho_ = &(*edmdipho_); }

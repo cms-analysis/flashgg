@@ -38,14 +38,14 @@ namespace flashgg {
     double vtxZFromConvOnly         (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
     double vtxZFromConvSuperCluster (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
     double vtxZFromConv             (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&,const math::XYZPoint&) const;
-    double vtxdZFromConv            (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&) const;
+    double vtxDZFromConv            (const edm::Ptr<flashgg::Photon>&,const edm::Ptr<reco::Conversion>&) const;
 
-    double getZFromConvPair(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,
+    double zFromConvPair(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,
 			    const int ,const int,
 			    const edm::PtrVector<reco::Conversion>&,
 			    const math::XYZPoint &) const;  
    
-    double getsZFromConvPair(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,
+    double sZFromConvPair(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,
 			     const int ,const int,
 			     const edm::PtrVector<reco::Conversion>&) const;
     
@@ -242,7 +242,7 @@ namespace flashgg {
     }
     return ReturnValue;
  } 
-  double LegacyVertexSelector::vtxdZFromConv (const edm::Ptr<flashgg::Photon>& pho, const edm::Ptr<reco::Conversion> & conversion) const{
+  double LegacyVertexSelector::vtxDZFromConv (const edm::Ptr<flashgg::Photon>& pho, const edm::Ptr<reco::Conversion> & conversion) const{
     double dz=-99999;
     double perp = sqrt(conversion->conversionVertex().x()*conversion->conversionVertex().x()+conversion->conversionVertex().y()*conversion->conversionVertex().y());
     if (conversion->nTracks()==2) {
@@ -286,7 +286,7 @@ namespace flashgg {
     return dz;
   }
   
-  double LegacyVertexSelector::getZFromConvPair(const edm::Ptr<flashgg::Photon>& p1,
+  double LegacyVertexSelector::zFromConvPair(const edm::Ptr<flashgg::Photon>& p1,
 						const edm::Ptr<flashgg::Photon>& p2,
 						const int index_conversionLead,
 						const int index_conversionTrail,
@@ -302,30 +302,30 @@ namespace flashgg {
     
     if (index_conversionLead!=-1 && index_conversionTrail!=-1){
       float z1  = vtxZFromConv (p1,conversionsVector[index_conversionLead],beamSpot);
-      float sz1 = vtxdZFromConv(p1,conversionsVector[index_conversionLead]); //,param);
+      float sz1 = vtxDZFromConv(p1,conversionsVector[index_conversionLead]); //,param);
       float z2  = vtxZFromConv (p2,conversionsVector[index_conversionTrail],beamSpot);
-      float sz2 = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]); //,param);
+      float sz2 = vtxDZFromConv(p2,conversionsVector[index_conversionTrail]); //,param);
       zconv  = (z1/sz1/sz1 + z2/sz2/sz2)/(1./sz1/sz1 + 1./sz2/sz2 );  // weighted average
     }
     return zconv;
   }
   
-  double LegacyVertexSelector::getsZFromConvPair(const edm::Ptr<flashgg::Photon>& p1,
+  double LegacyVertexSelector::sZFromConvPair(const edm::Ptr<flashgg::Photon>& p1,
 						 const edm::Ptr<flashgg::Photon>& p2,
 						 int index_conversionLead,
 						 int index_conversionTrail,
 						 const edm::PtrVector<reco::Conversion>& conversionsVector) const {
     double szconv=0;
     if ( index_conversionLead!=-1  && index_conversionTrail==-1 ){
-      szconv = vtxdZFromConv(p1,conversionsVector[index_conversionLead]); 
+      szconv = vtxDZFromConv(p1,conversionsVector[index_conversionLead]); 
     }
     if ( index_conversionLead==-1 && index_conversionTrail!=-1 ){
-      szconv = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]);
+      szconv = vtxDZFromConv(p2,conversionsVector[index_conversionTrail]);
     }
     
     if (index_conversionLead!=-1 && index_conversionTrail!=-1){
-      float sz1 = vtxdZFromConv(p1,conversionsVector[index_conversionLead]);
-      float sz2 = vtxdZFromConv(p2,conversionsVector[index_conversionTrail]);
+      float sz1 = vtxDZFromConv(p1,conversionsVector[index_conversionLead]);
+      float sz2 = vtxDZFromConv(p2,conversionsVector[index_conversionTrail]);
       szconv = sqrt( 1./(1./sz1/sz1 + 1./sz2/sz2)) ;
     }
     return szconv;
@@ -478,8 +478,8 @@ namespace flashgg {
       float pull_conv = 999;
       
       if (nConv !=0){
-	zconv=getZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot);
-	szconv=getsZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector);
+	zconv=zFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector,beamSpot);
+	szconv=sZFromConvPair(g1,g2,IndexMatchedConversionLeadPhoton,IndexMatchedConversionTrailPhoton,conversionsVector);
 	if(szconv != 0){
 	  pull_conv = fabs(vtx->position().z()-zconv)/szconv;
 	}else{

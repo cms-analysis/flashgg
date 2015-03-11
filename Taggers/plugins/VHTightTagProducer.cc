@@ -10,14 +10,14 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/DataFormats/interface/VHtightTag.h"
+#include "flashgg/DataFormats/interface/VHTightTag.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
 #include "flashgg/DataFormats/interface/Electron.h"
 
 #include "DataFormats/TrackReco/interface/HitPattern.h"
-#include "flashgg/Taggers/interface/leptonSelection.h"
+#include "flashgg/Taggers/interface/LeptonSelection.h"
 
 #include "DataFormats/Math/interface/deltaR.h"
 
@@ -33,10 +33,10 @@ using namespace edm;
 
 
 namespace flashgg {
-	class VHtightTagProducer : public EDProducer {
+	class VHTightTagProducer : public EDProducer {
 
 		public:
-			VHtightTagProducer( const ParameterSet & );
+			VHTightTagProducer( const ParameterSet & );
 		private:
 			void produce( Event &, const EventSetup & ) override;
 
@@ -99,7 +99,7 @@ namespace flashgg {
 
 	};
 
-	VHtightTagProducer::VHtightTagProducer(const ParameterSet & iConfig) :
+	VHTightTagProducer::VHTightTagProducer(const ParameterSet & iConfig) :
 		diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
 		thejetToken_(consumes<View<flashgg::Jet> >(iConfig.getUntrackedParameter<InputTag>("VHtightJetTag",InputTag("flashggJets")))),
 		electronToken_(consumes<View<flashgg::Electron> >(iConfig.getUntrackedParameter<InputTag> ("ElectronTag", InputTag("flashggElectrons")))),
@@ -198,10 +198,10 @@ namespace flashgg {
 
 		EtaCuts_ = iConfig.getUntrackedParameter<vector<double > >("EtaCuts",default_EtaCuts_);
 
-		produces<vector<VHtightTag> >(); 
+		produces<vector<VHTightTag> >(); 
 	}
 
-void VHtightTagProducer::produce( Event & evt, const EventSetup & )
+void VHTightTagProducer::produce( Event & evt, const EventSetup & )
 {
 
 Handle<View<flashgg::Jet> > theJets;
@@ -223,7 +223,7 @@ const PtrVector<flashgg::Electron>& electronPointers = theElectrons->ptrVector()
 Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
 evt.getByToken(mvaResultToken_,mvaResults);
 const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
-std::auto_ptr<vector<VHtightTag> > VHtightTags(new vector<VHtightTag>);
+std::auto_ptr<vector<VHTightTag> > VHTightTags(new vector<VHTightTag>);
 
 Handle<View<pat::MET> > METs;
 evt.getByToken(METToken_,METs);
@@ -275,15 +275,15 @@ for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoInde
    edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[diphoIndex];
    edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[diphoIndex];
 
-   VHtightTag VHtightTags_obj(dipho, mvares);
+   VHTightTag VHTightTags_obj(dipho, mvares);
    if(dipho->leadingPhoton()->pt() < (dipho->mass())*leadPhoOverMassThreshold_) continue;
 
     if(dipho->subLeadingPhoton()->pt() < (dipho->mass())*subleadPhoOverMassThreshold_) continue;
     if ((fabs(dipho->leadingPhoton()->superCluster()->eta()) > LowPtEtaPhoThreshold_ && fabs(dipho->leadingPhoton()->superCluster()->eta()) < MidPtEtaPhoThreshold_) || fabs(dipho->leadingPhoton()->superCluster()->eta()) > HighEtaPhoThreshold_) continue;
     if ((fabs(dipho->subLeadingPhoton()->superCluster()->eta()) > LowPtEtaPhoThreshold_ && fabs(dipho->subLeadingPhoton()->superCluster()->eta()) < MidPtEtaPhoThreshold_) || fabs(dipho->subLeadingPhoton()->superCluster()->eta()) > HighEtaPhoThreshold_) continue;
      
-    idmva1 = dipho->leadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
-    idmva2 = dipho->subLeadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
+    idmva1 = dipho->leadingPhoton()->phoIdMvaDWrtVtx(dipho->vtx());
+    idmva2 = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx(dipho->vtx());
     if(idmva1 <= PhoMVAThreshold_|| idmva2 <= PhoMVAThreshold_) continue;
     if(mvares->result < MVAThreshold_) continue;
 		
@@ -447,18 +447,18 @@ for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoInde
   }
  if( photonSelection && (((isMuonHighPt && tagMETs.size()>0 && tagJets.size() < jetsNumberThreshold_) || (isMuonLowPt && isInvMassOK)) ||(isElectronHighPt && tagMETs.size()>0 && tagJets.size() < jetsNumberThreshold_) || (isElectronLowPt && isInvMassOK_elec)  ) )
   {
-   VHtightTags_obj.setJets(tagJets);
-   VHtightTags_obj.setMuons(tagMuons);
-   VHtightTags_obj.setElectrons(tagElectrons);
-   VHtightTags_obj.setMET(tagMETs);
-   VHtightTags_obj.setDiPhotonIndex(diphoIndex);
-   VHtightTags->push_back(VHtightTags_obj);
+   VHTightTags_obj.setJets(tagJets);
+   VHTightTags_obj.setMuons(tagMuons);
+   VHTightTags_obj.setElectrons(tagElectrons);
+   VHTightTags_obj.setMET(tagMETs);
+   VHTightTags_obj.setDiPhotonIndex(diphoIndex);
+   VHTightTags->push_back(VHTightTags_obj);
   }
 }
-evt.put(VHtightTags);
+evt.put(VHTightTags);
 
 }
 
 }
-typedef flashgg::VHtightTagProducer FlashggVHtightTagProducer;
-DEFINE_FWK_MODULE(FlashggVHtightTagProducer);
+typedef flashgg::VHTightTagProducer FlashggVHTightTagProducer;
+DEFINE_FWK_MODULE(FlashggVHTightTagProducer);

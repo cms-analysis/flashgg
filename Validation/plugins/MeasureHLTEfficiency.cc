@@ -19,10 +19,10 @@
 #include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 
-#include "flashgg/MicroAODFormats/interface/DiPhotonCandidate.h" 
-#include "flashgg/MicroAODFormats/interface/Electron.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h" 
+#include "flashgg/DataFormats/interface/Electron.h"
 
-#include "flashgg/TagFormats/interface/DiPhotonMVAResult.h"
+#include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
 
 #include <DataFormats/Math/interface/deltaR.h>
 
@@ -40,7 +40,7 @@ public:
 
   //void endJob(const edm::LuminosityBlock& lumiSeg, const edm::EventSetup& c);
   bool L1Matching(edm::Handle<edm::View<l1extra::L1EmParticle>> l1H, math::XYZTLorentzVector cand, float ptThreshold); 
-  std::vector<math::XYZTLorentzVector> getHLTP4(const edm::TriggerNames & triggerNames, edm::Handle<pat::TriggerObjectStandAloneCollection> triggerObjects, std::vector<std::string> filterLabels);
+  std::vector<math::XYZTLorentzVector> hltP4(const edm::TriggerNames & triggerNames, edm::Handle<pat::TriggerObjectStandAloneCollection> triggerObjects, std::vector<std::string> filterLabels);
 
 private:
   virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
@@ -265,7 +265,7 @@ bool HLTEfficiency::L1Matching(edm::Handle<edm::View<l1extra::L1EmParticle>> l1H
   return false;
 }
 
-std::vector<math::XYZTLorentzVector> HLTEfficiency::getHLTP4(const edm::TriggerNames & triggerNames, edm::Handle<pat::TriggerObjectStandAloneCollection> triggerObjects, std::vector<std::string> filterLabels) {
+std::vector<math::XYZTLorentzVector> HLTEfficiency::hltP4(const edm::TriggerNames & triggerNames, edm::Handle<pat::TriggerObjectStandAloneCollection> triggerObjects, std::vector<std::string> filterLabels) {
   
   std::vector< math::XYZTLorentzVector> triggerCandidates;
   
@@ -331,7 +331,7 @@ void HLTEfficiency::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
 
   //// FIXME SERVONO ????
   //// get p4 of tag and probe T&P trigger
-  //std::vector< math::XYZTLorentzVector> triggerTags = getHLTP4(triggerNames, triggerObjects, tagFilterName_);
+  //std::vector< math::XYZTLorentzVector> triggerTags = hltP4(triggerNames, triggerObjects, tagFilterName_);
   //
   ////at least one offline electron matching tag trigger Ele 
   //std::vector<int> TAGind;
@@ -362,7 +362,7 @@ void HLTEfficiency::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
     edm::Ptr<flashgg::DiPhotonCandidate> diphoPtr = diphotonPointers[i];
     edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[i];
 
-    if (mvares->getMVAValue() < diphoMVACut_)
+    if (mvares->mvaValue() < diphoMVACut_)
       continue;
     // FIXME add check same size filter collections
     for (size_t f=0; f<tagFilterName_.size(); f++) {

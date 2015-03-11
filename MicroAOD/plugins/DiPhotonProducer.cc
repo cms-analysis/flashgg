@@ -99,13 +99,13 @@ namespace flashgg {
         flashgg::Photon photon1_corr = PhotonIdUtils::pho4MomCorrection(pp1, pvx);
         flashgg::Photon photon2_corr = PhotonIdUtils::pho4MomCorrection(pp2, pvx);
         // - compute isolations with respect to chosen vertex needed for preselection
-        photon1_corr.setpfChgIsoWrtChosenVtx02( photon1_corr.getpfChgIso02WrtVtx( pvx ) );
-        photon2_corr.setpfChgIsoWrtChosenVtx02( photon2_corr.getpfChgIso02WrtVtx( pvx ) );
-        photon1_corr.setpfChgIsoWrtChosenVtx03( photon1_corr.getpfChgIso03WrtVtx( pvx ) );
-        photon2_corr.setpfChgIsoWrtChosenVtx03( photon2_corr.getpfChgIso03WrtVtx( pvx ) );
+        photon1_corr.setpfChgIsoWrtChosenVtx02( photon1_corr.pfChgIso02WrtVtx( pvx ) );
+        photon2_corr.setpfChgIsoWrtChosenVtx02( photon2_corr.pfChgIso02WrtVtx( pvx ) );
+        photon1_corr.setpfChgIsoWrtChosenVtx03( photon1_corr.pfChgIso03WrtVtx( pvx ) );
+        photon2_corr.setpfChgIsoWrtChosenVtx03( photon2_corr.pfChgIso03WrtVtx( pvx ) );
 
         DiPhotonCandidate dipho(photon1_corr,photon2_corr,pvx);
-        dipho.setVertex_index(ivtx);
+        dipho.setVertexIndex(ivtx);
 
         // Obviously the last selection has to be for this diphoton or this is wrong
         vertexSelector_->writeInfoFromLastSelectionTo(dipho);

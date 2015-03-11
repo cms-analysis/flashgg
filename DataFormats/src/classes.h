@@ -13,14 +13,14 @@
 #include "flashgg/DataFormats/interface/Photon.h"
 #include "flashgg/DataFormats/interface/SinglePhotonView.h"
 #include "flashgg/DataFormats/interface/SingleVertexView.h" 
-#include "flashgg/DataFormats/interface/TTHhadronicTag.h"
-#include "flashgg/DataFormats/interface/TTHleptonicTag.h"
+#include "flashgg/DataFormats/interface/TTHHadronicTag.h"
+#include "flashgg/DataFormats/interface/TTHLeptonicTag.h"
 #include "flashgg/DataFormats/interface/VBFDiPhoDiJetMVAResult.h"
 #include "flashgg/DataFormats/interface/VBFMVAResult.h"
 #include "flashgg/DataFormats/interface/VBFTag.h"
-#include "flashgg/DataFormats/interface/VHhadronicTag.h"
-#include "flashgg/DataFormats/interface/VHlooseTag.h"
-#include "flashgg/DataFormats/interface/VHtightTag.h"
+#include "flashgg/DataFormats/interface/VHHadronicTag.h"
+#include "flashgg/DataFormats/interface/VHLooseTag.h"
+#include "flashgg/DataFormats/interface/VHTightTag.h"
 #include <vector>
 #include <map>
 
@@ -120,17 +120,17 @@ namespace  { struct dictionary {
         std::vector<flashgg::VBFTag> vec_vbf_cat;
         edm::Wrapper<std::vector<flashgg::VBFTag> > wrp_vec_vbf_cat;
 
-        flashgg::TTHleptonicTag tthl;
-        std::vector<flashgg::TTHleptonicTag> vec_tthl;
-        edm::Wrapper<std::vector<flashgg::TTHleptonicTag> > wrp_vec_tthl;
+        flashgg::TTHLeptonicTag tthl;
+        std::vector<flashgg::TTHLeptonicTag> vec_tthl;
+        edm::Wrapper<std::vector<flashgg::TTHLeptonicTag> > wrp_vec_tthl;
         edm::Ptr<pat::Electron> ptr_elec;
         edm::Ptr<pat::Muon> ptr_muon;
         edm::PtrVector<pat::Muon> vec_ptr_muon;
         edm::PtrVector<flashgg::Jet> vec_ptr_jet;
 
-        flashgg::TTHhadronicTag tthh;
-        std::vector<flashgg::TTHhadronicTag> vec_tthh;
-        edm::Wrapper<std::vector<flashgg::TTHhadronicTag> > wrp_vec_tthh;
+        flashgg::TTHHadronicTag tthh;
+        std::vector<flashgg::TTHHadronicTag> vec_tthh;
+        edm::Wrapper<std::vector<flashgg::TTHHadronicTag> > wrp_vec_tthh;
 
         std::vector<edm::Ptr<flashgg::Jet> > vect_ptr_jet;
 
@@ -140,22 +140,22 @@ namespace  { struct dictionary {
         edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> > ownvec_tagbase;
         edm::Wrapper<edm::OwnVector<flashgg::DiPhotonTagBase,edm::ClonePolicy<flashgg::DiPhotonTagBase> > > wrp_ownvec_tagbase;
 
-        flashgg::VHlooseTag vhl;
-        std::vector<flashgg::VHlooseTag> vec_vhl;
-        edm::Wrapper<std::vector<flashgg::VHlooseTag> > wrp_vec_vhl;
+        flashgg::VHLooseTag vhl;
+        std::vector<flashgg::VHLooseTag> vec_vhl;
+        edm::Wrapper<std::vector<flashgg::VHLooseTag> > wrp_vec_vhl;
         edm::Ptr<pat::Electron> ptr_elec_vhl;
         edm::Ptr<pat::Muon> ptr_muon_vhl;
         edm::PtrVector<pat::Muon> vec_ptr_muon_vhl;
         edm::PtrVector<flashgg::Jet> vec_ptr_jet_vhl;
         edm::PtrVector<pat::MET> vec_ptr_met_vhl;
 
-        flashgg::VHtightTag vht;
-        std::vector<flashgg::VHtightTag> vec_vht;
-        edm::Wrapper<std::vector<flashgg::VHtightTag> > wrp_vec_vht;
+        flashgg::VHTightTag vht;
+        std::vector<flashgg::VHTightTag> vec_vht;
+        edm::Wrapper<std::vector<flashgg::VHTightTag> > wrp_vec_vht;
 
-        flashgg::VHhadronicTag vhhad;
-        std::vector<flashgg::VHhadronicTag> vec_vhhad;
-        edm::Wrapper<std::vector<flashgg::VHhadronicTag> > wrp_vec_vhhad;
+        flashgg::VHHadronicTag vhhad;
+        std::vector<flashgg::VHHadronicTag> vec_vhhad;
+        edm::Wrapper<std::vector<flashgg::VHHadronicTag> > wrp_vec_vhhad;
 
         edm::Ptr<pat::Electron> ptr_elec_vht;
         edm::Ptr<pat::Muon> ptr_muon_vht;

@@ -191,7 +191,7 @@ flashggCommissioning::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 
   for (unsigned int i = 0 ; i < diphotonPointers.size(); i++) {
     for (unsigned int j = 0 ; j < jetPointers.size() ; j++) {
-      std::cout << " For jet " << j << ", diphoton " << i << " the RMS is " << jetPointers[j]->RMS(diphotonPointers[i]) 
+      std::cout << " For jet " << j << ", diphoton " << i << " the RMS is " << jetPointers[j]->rms(diphotonPointers[i]) 
 		<< " the betaStar is " << jetPointers[j]->betaStar(diphotonPointers[i]) 
 		<< " and passesPuJetID is " << jetPointers[j]->passesPuJetId(diphotonPointers[i]) <<  std::endl;
     }
@@ -199,7 +199,7 @@ flashggCommissioning::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 
   if (pvPointers.size() > 0) {
     for (unsigned int j = 0 ; j < jetPointers.size() ; j++) {
-      std::cout << " For jet " << j << ", vertex 0 the RMS  is " << jetPointers[j]->RMS(pvPointers[0])
+      std::cout << " For jet " << j << ", vertex 0 the RMS  is " << jetPointers[j]->rms(pvPointers[0])
                 << " the betaStar is " << jetPointers[j]->betaStar(pvPointers[0])
                 << " and passesPuJetID is " << jetPointers[j]->passesPuJetId(pvPointers[0]) <<  std::endl;
     }
@@ -236,9 +236,9 @@ flashggCommissioning::analyze(const edm::Event& iEvent, const edm::EventSetup& i
     phoInfo.sigmaEtaEta   = phoPtr->sigmaEtaEta();
     phoInfo.maxEnergyXtal = phoPtr->maxEnergyXtal();
 
-    phoInfo.energyInitial = phoPtr->getEnergyAtStep("initial");
-    phoInfo.energyRegression = phoPtr->getEnergyAtStep("regression");
-    phoInfo.sigmaEOverE = phoPtr->getSigEOverE();
+    phoInfo.energyInitial = phoPtr->energyAtStep("initial");
+    phoInfo.energyRegression = phoPtr->energyAtStep("regression");
+    phoInfo.sigmaEOverE = phoPtr->sigEOverE();
 
     for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++)
       {

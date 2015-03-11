@@ -10,7 +10,7 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/DataFormats/interface/TTHleptonicTag.h"
+#include "flashgg/DataFormats/interface/TTHLeptonicTag.h"
 #include "flashgg/DataFormats/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
@@ -18,7 +18,7 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 
 #include "DataFormats/TrackReco/interface/HitPattern.h"
-#include "flashgg/Taggers/interface/leptonSelection.h"
+#include "flashgg/Taggers/interface/LeptonSelection.h"
 
 #include "DataFormats/Math/interface/deltaR.h"
 
@@ -34,10 +34,10 @@ using namespace edm;
 
 
 namespace flashgg {
-	class TTHleptonicTagProducer : public EDProducer {
+	class TTHLeptonicTagProducer : public EDProducer {
 
 		public:
-			TTHleptonicTagProducer( const ParameterSet & );
+			TTHLeptonicTagProducer( const ParameterSet & );
 		private:
 			void produce( Event &, const EventSetup & ) override;
 
@@ -96,7 +96,7 @@ namespace flashgg {
 
 	};
 
-	TTHleptonicTagProducer::TTHleptonicTagProducer(const ParameterSet & iConfig) :
+	TTHLeptonicTagProducer::TTHLeptonicTagProducer(const ParameterSet & iConfig) :
 		diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
 		thejetToken_(consumes<View<flashgg::Jet> >(iConfig.getUntrackedParameter<InputTag>("TTHJetTag",InputTag("flashggJets")))),
 		electronToken_(consumes<View<flashgg::Electron> >(iConfig.getUntrackedParameter<InputTag> ("TTHElecTag", InputTag("flashggElectrons")))),
@@ -193,10 +193,10 @@ namespace flashgg {
  		
 		EtaCuts_ = iConfig.getUntrackedParameter<vector<double > >("EtaCuts",default_EtaCuts_);
 
-		produces<vector<TTHleptonicTag> >(); 
+		produces<vector<TTHLeptonicTag> >(); 
 	}
 
-	void TTHleptonicTagProducer::produce( Event & evt, const EventSetup & )
+	void TTHLeptonicTagProducer::produce( Event & evt, const EventSetup & )
 
 	{
 
@@ -219,7 +219,7 @@ namespace flashgg {
 		Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
 		evt.getByToken(mvaResultToken_,mvaResults);
 		const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
-		std::auto_ptr<vector<TTHleptonicTag> > tthltags(new vector<TTHleptonicTag>);
+		std::auto_ptr<vector<TTHLeptonicTag> > tthltags(new vector<TTHLeptonicTag>);
 
 		Handle<View<reco::Vertex> > vertices;
 		evt.getByToken(vertexToken_,vertices);
@@ -250,7 +250,7 @@ namespace flashgg {
 			edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[diphoIndex];
 			edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[diphoIndex];
 
-			TTHleptonicTag tthltags_obj(dipho,mvares);
+			TTHLeptonicTag tthltags_obj(dipho,mvares);
 
 			if(dipho->leadingPhoton()->pt() < (dipho->mass())*leadPhoOverMassThreshold_) continue;
 
@@ -260,8 +260,8 @@ namespace flashgg {
 
 			if ((fabs(dipho->subLeadingPhoton()->superCluster()->eta()) > LowPtEtaPhoThreshold_ && fabs(dipho->subLeadingPhoton()->superCluster()->eta()) < MidPtEtaPhoThreshold_) || fabs(dipho->subLeadingPhoton()->superCluster()->eta()) > HighEtaPhoThreshold_) continue;
 
-			idmva1 = dipho->leadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
-			idmva2 = dipho->subLeadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
+			idmva1 = dipho->leadingPhoton()->phoIdMvaDWrtVtx(dipho->vtx());
+			idmva2 = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx(dipho->vtx());
 
 			if(idmva1 <= PhoMVAThreshold_|| idmva2 <= PhoMVAThreshold_) continue;
 
@@ -449,5 +449,5 @@ namespace flashgg {
 	}
 
 }
-typedef flashgg::TTHleptonicTagProducer FlashggTTHleptonicTagProducer;
-DEFINE_FWK_MODULE(FlashggTTHleptonicTagProducer);
+typedef flashgg::TTHLeptonicTagProducer FlashggTTHLeptonicTagProducer;
+DEFINE_FWK_MODULE(FlashggTTHLeptonicTagProducer);

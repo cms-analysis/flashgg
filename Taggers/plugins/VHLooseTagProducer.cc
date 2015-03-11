@@ -10,14 +10,14 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/DataFormats/interface/VHlooseTag.h"
+#include "flashgg/DataFormats/interface/VHLooseTag.h"
 #include "flashgg/DataFormats/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
 
 #include "DataFormats/TrackReco/interface/HitPattern.h"
-#include "flashgg/Taggers/interface/leptonSelection.h"
+#include "flashgg/Taggers/interface/LeptonSelection.h"
 
 #include "DataFormats/Math/interface/deltaR.h"
 
@@ -33,10 +33,10 @@ using namespace edm;
 
 
 namespace flashgg {
-	class VHlooseTagProducer : public EDProducer {
+	class VHLooseTagProducer : public EDProducer {
 
 		public:
-			VHlooseTagProducer( const ParameterSet & );
+			VHLooseTagProducer( const ParameterSet & );
 		private:
 			void produce( Event &, const EventSetup & ) override;
 
@@ -88,7 +88,7 @@ namespace flashgg {
 
 	};
 
-	VHlooseTagProducer::VHlooseTagProducer(const ParameterSet & iConfig) :
+	VHLooseTagProducer::VHLooseTagProducer(const ParameterSet & iConfig) :
 		diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
 		thejetToken_(consumes<View<flashgg::Jet> >(iConfig.getUntrackedParameter<InputTag>("VHlooseJetTag",InputTag("flashggJets")))),
 		electronToken_(consumes<View<flashgg::Electron> >(iConfig.getUntrackedParameter<InputTag> ("ElectronTag", InputTag("flashggElectrons")))),
@@ -170,10 +170,10 @@ namespace flashgg {
                 electronNumOfHitsThreshold_ = iConfig.getUntrackedParameter<double>("electronNumOfHitsThreshold",default_electronNumOfHitsThreshold_);
 		EtaCuts_ = iConfig.getUntrackedParameter<vector<double > >("EtaCuts",default_EtaCuts_);
 
-		produces<vector<VHlooseTag> >(); 
+		produces<vector<VHLooseTag> >(); 
 	}
 
-void VHlooseTagProducer::produce( Event & evt, const EventSetup & )
+void VHLooseTagProducer::produce( Event & evt, const EventSetup & )
 {
 
 Handle<View<flashgg::Jet> > theJets;
@@ -195,7 +195,7 @@ const PtrVector<flashgg::Electron>& electronPointers = theElectrons->ptrVector()
 Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
 evt.getByToken(mvaResultToken_,mvaResults);
 const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
-std::auto_ptr<vector<VHlooseTag> > vhloosetags(new vector<VHlooseTag>);
+std::auto_ptr<vector<VHLooseTag> > vhloosetags(new vector<VHLooseTag>);
 
 Handle<View<pat::MET> > METs;
 evt.getByToken(METToken_,METs);
@@ -223,15 +223,15 @@ double idmva2 = 0.;
   edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[diphoIndex];
   edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[diphoIndex];
 
-  VHlooseTag vhloosetags_obj(dipho, mvares);
+  VHLooseTag vhloosetags_obj(dipho, mvares);
  
   if(dipho->leadingPhoton()->pt() < (dipho->mass())*leadPhoOverMassThreshold_) continue;
   if(dipho->subLeadingPhoton()->pt() < (dipho->mass())*subleadPhoOverMassThreshold_) continue;
   if ((fabs(dipho->leadingPhoton()->superCluster()->eta()) > LowPtEtaPhoThreshold_ && fabs(dipho->leadingPhoton()->superCluster()->eta()) < MidPtEtaPhoThreshold_) || fabs(dipho->leadingPhoton()->superCluster()->eta()) > HighEtaPhoThreshold_) continue;
   if ((fabs(dipho->subLeadingPhoton()->superCluster()->eta()) > LowPtEtaPhoThreshold_ && fabs(dipho->subLeadingPhoton()->superCluster()->eta()) < MidPtEtaPhoThreshold_) || fabs(dipho->subLeadingPhoton()->superCluster()->eta()) > HighEtaPhoThreshold_) continue;
 
-  idmva1 = dipho->leadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
-  idmva2 = dipho->subLeadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
+  idmva1 = dipho->leadingPhoton()->phoIdMvaDWrtVtx(dipho->vtx());
+  idmva2 = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx(dipho->vtx());
   if(idmva1 <= PhoMVAThreshold_ || idmva2 <= PhoMVAThreshold_) continue;
   if(mvares->result < MVAThreshold_) continue;
 		
@@ -352,5 +352,5 @@ double idmva2 = 0.;
 }
 
 }
-typedef flashgg::VHlooseTagProducer FlashggVHlooseTagProducer;
-DEFINE_FWK_MODULE(FlashggVHlooseTagProducer);
+typedef flashgg::VHLooseTagProducer FlashggVHLooseTagProducer;
+DEFINE_FWK_MODULE(FlashggVHLooseTagProducer);
