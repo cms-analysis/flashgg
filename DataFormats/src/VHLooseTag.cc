@@ -1,21 +1,21 @@
-#include "flashgg/DataFormats/interface/VHlooseTag.h"
+#include "flashgg/DataFormats/interface/VHLooseTag.h"
 #include <algorithm>
 
 using namespace flashgg;
 
-VHlooseTag::VHlooseTag() : DiPhotonTagBase::DiPhotonTagBase()
+VHLooseTag::VHLooseTag() : DiPhotonTagBase::DiPhotonTagBase()
 {}
 
-VHlooseTag::~VHlooseTag() 
+VHLooseTag::~VHLooseTag() 
 {}
 
 
-VHlooseTag::VHlooseTag(edm::Ptr<DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvares) : DiPhotonTagBase::DiPhotonTagBase(diPho,*mvares) {}
-VHlooseTag::VHlooseTag(edm::Ptr<DiPhotonCandidate> dipho,DiPhotonMVAResult mvares) : DiPhotonTagBase::DiPhotonTagBase(dipho,mvares) {}
+VHLooseTag::VHLooseTag(edm::Ptr<DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvares) : DiPhotonTagBase::DiPhotonTagBase(diPho,*mvares) {}
+VHLooseTag::VHLooseTag(edm::Ptr<DiPhotonCandidate> dipho,DiPhotonMVAResult mvares) : DiPhotonTagBase::DiPhotonTagBase(dipho,mvares) {}
 
-VHlooseTag* VHlooseTag::clone () const {
-  VHlooseTag* result = new VHlooseTag(diPhoton(),diPhotonMVA());
-  result->setDiPhotonIndex(getDiPhotonIndex());
+VHLooseTag* VHLooseTag::clone () const {
+  VHLooseTag* result = new VHLooseTag(diPhoton(),diPhotonMVA());
+  result->setDiPhotonIndex(diPhotonIndex());
   result->setJets(Jets_);
   result->setMuons(Muons_);
   result->setElectrons(Electrons_);

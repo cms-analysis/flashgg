@@ -1,21 +1,21 @@
-#include "flashgg/DataFormats/interface/VHtightTag.h"
+#include "flashgg/DataFormats/interface/VHTightTag.h"
 #include <algorithm>
 
 using namespace flashgg;
 
-VHtightTag::VHtightTag() : DiPhotonTagBase::DiPhotonTagBase()
+VHTightTag::VHTightTag() : DiPhotonTagBase::DiPhotonTagBase()
 {}
 
-VHtightTag::~VHtightTag() 
+VHTightTag::~VHTightTag() 
 {}
 
 
-VHtightTag::VHtightTag(edm::Ptr<DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvares) : DiPhotonTagBase::DiPhotonTagBase(diPho,*mvares) {}
-VHtightTag::VHtightTag(edm::Ptr<DiPhotonCandidate> dipho,DiPhotonMVAResult mvares) : DiPhotonTagBase::DiPhotonTagBase(dipho,mvares) {}
+VHTightTag::VHTightTag(edm::Ptr<DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvares) : DiPhotonTagBase::DiPhotonTagBase(diPho,*mvares) {}
+VHTightTag::VHTightTag(edm::Ptr<DiPhotonCandidate> dipho,DiPhotonMVAResult mvares) : DiPhotonTagBase::DiPhotonTagBase(dipho,mvares) {}
 
-VHtightTag* VHtightTag::clone () const {
-  VHtightTag* result = new VHtightTag(diPhoton(),diPhotonMVA());
-  result->setDiPhotonIndex(getDiPhotonIndex());
+VHTightTag* VHTightTag::clone () const {
+  VHTightTag* result = new VHTightTag(diPhoton(),diPhotonMVA());
+  result->setDiPhotonIndex(diPhotonIndex());
   result->setJets(Jets_);
   result->setMuons(Muons_);
   result->setElectrons(Electrons_);
