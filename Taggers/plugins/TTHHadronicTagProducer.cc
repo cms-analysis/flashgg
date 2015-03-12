@@ -10,7 +10,7 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/DataFormats/interface/TTHhadronicTag.h"
+#include "flashgg/DataFormats/interface/TTHHadronicTag.h"
 #include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
 
 #include <vector>
@@ -23,10 +23,10 @@ using namespace edm;
 
 namespace flashgg {
 
-	class TTHhadronicTagProducer : public EDProducer {
+	class TTHHadronicTagProducer : public EDProducer {
 
 		public:
-			TTHhadronicTagProducer( const ParameterSet & );
+			TTHHadronicTagProducer( const ParameterSet & );
 		private:
 			void produce( Event &, const EventSetup & ) override;
 
@@ -37,7 +37,7 @@ namespace flashgg {
 			int count = 0;
 	};
 
-	TTHhadronicTagProducer::TTHhadronicTagProducer(const ParameterSet & iConfig) :
+	TTHHadronicTagProducer::TTHHadronicTagProducer(const ParameterSet & iConfig) :
 		diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
 		thejetToken_(consumes<View<flashgg::Jet> >(iConfig.getUntrackedParameter<InputTag>("TTHJetTag",InputTag("flashggJets")))),
 		mvaResultToken_(consumes<View<flashgg::DiPhotonMVAResult> >(iConfig.getUntrackedParameter<InputTag>("MVAResultTag",InputTag("flashggDiPhotonMVA"))))
@@ -45,10 +45,10 @@ namespace flashgg {
 
 
 	{
-		produces<vector<TTHhadronicTag> >();
+		produces<vector<TTHHadronicTag> >();
 	}
 
-	void TTHhadronicTagProducer::produce( Event & evt, const EventSetup & ){
+	void TTHHadronicTagProducer::produce( Event & evt, const EventSetup & ){
 
 		Handle<View<flashgg::Jet> > theJets;
 		evt.getByToken(thejetToken_,theJets);
@@ -63,7 +63,7 @@ namespace flashgg {
 		const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
 
 
-		std::auto_ptr<vector<TTHhadronicTag> > tthhtags(new vector<TTHhadronicTag>);
+		std::auto_ptr<vector<TTHHadronicTag> > tthhtags(new vector<TTHHadronicTag>);
 
 
 		for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoIndex++ ){
@@ -78,10 +78,10 @@ namespace flashgg {
 			edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[diphoIndex];
 			edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[diphoIndex]; 
 
-			if ( !dipho->leadingPhoton()->getPassElectronVeto() || !dipho->subLeadingPhoton()->getPassElectronVeto() ) continue;
+			if ( !dipho->leadingPhoton()->passElectronVeto() || !dipho->subLeadingPhoton()->passElectronVeto() ) continue;
 		
 			if(dipho->leadingPhoton()->pt() < (60*(dipho->mass()))/120. && dipho->subLeadingPhoton()->pt() < 25. && dipho->subLeadingPhoton()->pt() < 33.) continue;	
-			if(mvares->getMVAValue() < .2)continue;
+			if(mvares->mvaValue() < .2)continue;
 
 			for (unsigned int jetIndex =0; jetIndex < jetPointers.size() ; jetIndex++){
 				edm::Ptr<flashgg::Jet> thejet = jetPointers[jetIndex];
@@ -118,7 +118,7 @@ namespace flashgg {
 
 			if(njets_btagmedium > 0 && jetcount >= 5) {
 
-				TTHhadronicTag tthhtags_obj(dipho,mvares,JetVect,BJetVect);
+				TTHHadronicTag tthhtags_obj(dipho,mvares,JetVect,BJetVect);
 				tthhtags_obj.setNBLoose(njets_btagloose);
 				tthhtags_obj.setNBMedium(njets_btagmedium);
 				tthhtags_obj.setDiPhotonIndex(diphoIndex);
@@ -131,8 +131,8 @@ namespace flashgg {
 		cout << "tagged events = " << count << endl;
 	}
 }
-typedef flashgg::TTHhadronicTagProducer FlashggTTHhadronicTagProducer;
-DEFINE_FWK_MODULE(FlashggTTHhadronicTagProducer);
+typedef flashgg::TTHHadronicTagProducer FlashggTTHHadronicTagProducer;
+DEFINE_FWK_MODULE(FlashggTTHHadronicTagProducer);
 
 
 

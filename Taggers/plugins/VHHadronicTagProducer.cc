@@ -12,7 +12,7 @@
 
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/DataFormats/interface/VHhadronicTag.h"
+#include "flashgg/DataFormats/interface/VHHadronicTag.h"
 
 #include <vector>
 #include <algorithm>
@@ -29,11 +29,11 @@ typedef std::pair< edm::Ptr<flashgg::Jet>,edm::Ptr<flashgg::Jet> > jetptrpair;
 
 namespace flashgg {
   
-  class VHhadronicTagProducer : public EDProducer {
+  class VHHadronicTagProducer : public EDProducer {
     
   public:
 
-    VHhadronicTagProducer( const ParameterSet & );
+    VHHadronicTagProducer( const ParameterSet & );
   private:
     
     void produce( Event &, const EventSetup & ) override;
@@ -59,7 +59,7 @@ namespace flashgg {
 
   };
 
-  VHhadronicTagProducer::VHhadronicTagProducer(const ParameterSet & iConfig) :
+  VHHadronicTagProducer::VHHadronicTagProducer(const ParameterSet & iConfig) :
 
     diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
     thejetToken_(consumes<View<flashgg::Jet> >(iConfig.getUntrackedParameter<InputTag>("JetTag",InputTag("flashggJets")))),
@@ -97,10 +97,10 @@ namespace flashgg {
 
     // *************************************************
 
-    produces<vector<VHhadronicTag> >(); 
+    produces<vector<VHHadronicTag> >(); 
   }
 
-  void VHhadronicTagProducer::produce( Event & evt, const EventSetup & )
+  void VHHadronicTagProducer::produce( Event & evt, const EventSetup & )
   {
 
     Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
@@ -115,7 +115,7 @@ namespace flashgg {
     evt.getByToken(mvaResultToken_,mvaResults);
     const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
     
-    std::auto_ptr<vector<VHhadronicTag> > vhhadtags(new vector<VHhadronicTag>);
+    std::auto_ptr<vector<VHHadronicTag> > vhhadtags(new vector<VHHadronicTag>);
     
     assert(diPhotonPointers.size() == mvaResultPointers.size());
 
@@ -133,8 +133,8 @@ namespace flashgg {
 	if(dipho->leadingPhoton()->pt() < (dipho->mass())*leadPhoOverMassThreshold_) continue;
 	if(dipho->subLeadingPhoton()->pt() < (dipho->mass())*subleadPhoOverMassThreshold_) continue;
 
-	idmva1 = dipho->leadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
-	idmva2 = dipho->subLeadingPhoton()->getPhoIdMvaDWrtVtx(dipho->getVertex());
+	idmva1 = dipho->leadingPhoton()->phoIdMvaDWrtVtx(dipho->vtx());
+	idmva2 = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx(dipho->vtx());
 	if(idmva1 <= phoIdMVAThreshold_|| idmva2 <= phoIdMVAThreshold_) continue;
 
 	if(mvares->result < diphoMVAThreshold_) continue; 
@@ -186,7 +186,7 @@ namespace flashgg {
 	float costhetastar = -diphoton.CosTheta();  
 	if( abs(costhetastar) > cosThetaStarThreshold_ ) continue; 
 	
-	VHhadronicTag vhhadtag_obj(dipho,mvares);
+	VHHadronicTag vhhadtag_obj(dipho,mvares);
 	vhhadtag_obj.setJets( goodJets[0], goodJets[1] );   
 	vhhadtags->push_back( vhhadtag_obj );
 
@@ -198,5 +198,5 @@ namespace flashgg {
 
 
 }
-typedef flashgg::VHhadronicTagProducer FlashggVHhadronicTagProducer;
-DEFINE_FWK_MODULE(FlashggVHhadronicTagProducer);
+typedef flashgg::VHHadronicTagProducer FlashggVHHadronicTagProducer;
+DEFINE_FWK_MODULE(FlashggVHHadronicTagProducer);
