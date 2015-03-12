@@ -27,7 +27,7 @@ parser = OptionParser(option_list=[
                     ),
         make_option("-p","--pset",
                     action="store", dest="parameterSet", type="string",
-                    default="../../MicroAODProducers/test/simple_Producer_test.py", # FIXME should move it to production eventually
+                    default="../../MicroAOD/test/simple_Producer_test.py", # FIXME should move it to production eventually
                     help="CMSSW parameter set. default: %default", 
                     ),
         make_option("-t","--crabTemplate",

@@ -1,0 +1,19 @@
+<library   name="FlashggProducerPlugins" file="*.cc">
+<use   name="Geometry/CaloTopology"/>
+<use   name="FWCore/PluginManager"/>
+<use   name="FWCore/ParameterSet"/>
+<use   name="RecoEcal/EgammaCoreTools"/>
+<use   name="DataFormats/Candidate"/>
+<use   name="DataFormats/PatCandidates"/>
+<use   name="CommonTools/CandUtils"/>
+<use   name="DataFormats/VertexReco"/>
+<use   name="flashgg/DataFormats"/>
+<use   name="flashgg/MicroAOD"/>
+<use   name="RecoJets/JetProducers"/>
+<use   name="EgammaAnalysis/ElectronTools"/>
+<use   name="DataFormats/EgammaCandidates"/>
+<use   name="RecoEgamma/EgammaTools"/>
+<use   name="roottmva"/>
+<!-- <use   name="HiggsAnalysis/GBRLikelihoodEGTools"/> -->
+<flags   EDM_PLUGIN="1"/>
+</library>
