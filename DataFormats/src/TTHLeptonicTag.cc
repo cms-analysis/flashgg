@@ -1,22 +1,22 @@
-#include "flashgg/DataFormats/interface/TTHleptonicTag.h"
+#include "flashgg/DataFormats/interface/TTHLeptonicTag.h"
 #include <algorithm>
 
 using namespace flashgg;
 
-TTHleptonicTag::TTHleptonicTag() : DiPhotonTagBase::DiPhotonTagBase()
+TTHLeptonicTag::TTHLeptonicTag() : DiPhotonTagBase::DiPhotonTagBase()
 {}
 
-TTHleptonicTag::~TTHleptonicTag() 
+TTHLeptonicTag::~TTHLeptonicTag() 
 {}
 
 // N.B. Other attributes are set using methods in header file
-TTHleptonicTag::TTHleptonicTag(edm::Ptr<DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvares) : TTHleptonicTag::TTHleptonicTag(diPho,*mvares) {}
-TTHleptonicTag::TTHleptonicTag(edm::Ptr<DiPhotonCandidate> dipho,DiPhotonMVAResult mvares) : DiPhotonTagBase::DiPhotonTagBase(dipho,mvares) {}
+TTHLeptonicTag::TTHLeptonicTag(edm::Ptr<DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvares) : TTHLeptonicTag::TTHLeptonicTag(diPho,*mvares) {}
+TTHLeptonicTag::TTHLeptonicTag(edm::Ptr<DiPhotonCandidate> dipho,DiPhotonMVAResult mvares) : DiPhotonTagBase::DiPhotonTagBase(dipho,mvares) {}
 
 
-TTHleptonicTag* TTHleptonicTag::clone () const {
-  TTHleptonicTag* result = new TTHleptonicTag(diPhoton(),diPhotonMVA());
-  result->setDiPhotonIndex(getDiPhotonIndex());
+TTHLeptonicTag* TTHLeptonicTag::clone () const {
+  TTHLeptonicTag* result = new TTHLeptonicTag(diPhoton(),diPhotonMVA());
+  result->setDiPhotonIndex(diPhotonIndex());
   result->setJets(Jets_);
   result->setBJets(BJets_);
   result->setMuons(Muons_);
