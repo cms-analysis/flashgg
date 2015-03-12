@@ -1,6 +1,0 @@
-<library   name="FlashggAlgoPlugins" file="*.cc">
-<use   name="DataFormats/VertexReco"/>
-  <use   name="FWCore/ParameterSet"/>
-<use   name="flashgg/MicroAODAlgos"/>
-<flags   EDM_PLUGIN="1"/>
-</library>
