@@ -197,7 +197,7 @@ DiphotonPreselectionValidationTreeMaker::analyze(const edm::Event& iEvent, const
     diphoInfo.pho1_full5x5_sieie = diphoPtr->leadingPhoton()->full5x5_sigmaIetaIeta();
     diphoInfo.pho1_hcalTowerSumEtConeDR03 = diphoPtr->leadingPhoton()->hcalTowerSumEtConeDR03();
     diphoInfo.pho1_trkSumPtHollowConeDR03 = diphoPtr->leadingPhoton()->trkSumPtHollowConeDR03();
-    diphoInfo.pho1_pfChgIsoWrtChosenVtx02 = diphoPtr->leadingPhoton()->getpfChgIsoWrtChosenVtx02();
+    diphoInfo.pho1_pfChgIsoWrtChosenVtx02 = diphoPtr->leadingPhoton()->pfChgIsoWrtChosenVtx02();
 // subleading photon
     diphoInfo.pho2_isEB = diphoPtr->subLeadingPhoton()->isEB();
     diphoInfo.pho2_isEE = diphoPtr->subLeadingPhoton()->isEE();
@@ -213,7 +213,7 @@ DiphotonPreselectionValidationTreeMaker::analyze(const edm::Event& iEvent, const
     diphoInfo.pho2_full5x5_sieie = diphoPtr->subLeadingPhoton()->full5x5_sigmaIetaIeta();
     diphoInfo.pho2_hcalTowerSumEtConeDR03 = diphoPtr->subLeadingPhoton()->hcalTowerSumEtConeDR03();
     diphoInfo.pho2_trkSumPtHollowConeDR03 = diphoPtr->subLeadingPhoton()->trkSumPtHollowConeDR03();
-    diphoInfo.pho2_pfChgIsoWrtChosenVtx02 = diphoPtr->subLeadingPhoton()->getpfChgIsoWrtChosenVtx02();
+    diphoInfo.pho2_pfChgIsoWrtChosenVtx02 = diphoPtr->subLeadingPhoton()->pfChgIsoWrtChosenVtx02();
 // diphoton info
     diphoInfo.pt = diphoPtr->pt();
     diphoInfo.eta = diphoPtr->eta();

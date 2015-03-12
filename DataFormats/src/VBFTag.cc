@@ -33,8 +33,8 @@ const Jet VBFTag::subLeadingJet() const{
 
 VBFTag* VBFTag::clone () const {
 	VBFTag* result = new VBFTag(diPhoton(),diPhotonMVA(),vbfDiPhoDiJet_mva_result_);
-	result->setCategoryNumber(getCategoryNumber());
-	result->setDiPhotonIndex(getDiPhotonIndex());
+	result->setCategoryNumber(categoryNumber());
+	result->setDiPhotonIndex(diPhotonIndex());
 	return result;
 }
 

@@ -106,8 +106,8 @@ class vertexTrainingTreeMaker : public edm::EDAnalyzer {
       virtual void endJob() override;
 
   void initEventStructure();
-  int getMCTruthVertexIndex( const PtrVector<reco::GenParticle>& gens, const edm::PtrVector<reco::Vertex>&, double dzMatch = 0.1);
-  int getSortedIndex( const unsigned int trueVtxIndex, const unsigned int sizemax, const Ptr<flashgg::DiPhotonCandidate> diphoPtr  );
+  int mcTruthVertexIndex( const PtrVector<reco::GenParticle>& gens, const edm::PtrVector<reco::Vertex>&, double dzMatch = 0.1);
+  int sortedIndex( const unsigned int trueVtxIndex, const unsigned int sizemax, const Ptr<flashgg::DiPhotonCandidate> diphoPtr  );
 
   //  edm::EDGetTokenT<edm::View<flashgg::Photon> >            photonToken_;
   edm::EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> > diphotonToken_;
@@ -236,23 +236,23 @@ vertexTrainingTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup
 
     // get true vertex index:
 
-    int trueVtxIndexI = getMCTruthVertexIndex(gens,pvPointers);
+    int trueVtxIndexI = mcTruthVertexIndex(gens, pvPointers);
     if (trueVtxIndexI < 0 ) continue;
   
     Ptr<flashgg::DiPhotonCandidate> diphoPtr = diphotonPointers[idipho];
     unsigned int trueVtxIndex=trueVtxIndexI;
-    int trueVtxSortedIndexI=getSortedIndex(trueVtxIndex,pvPointers.size(),diphoPtr);
+    int trueVtxSortedIndexI=sortedIndex(trueVtxIndex,pvPointers.size(),diphoPtr);
     if(trueVtxSortedIndexI<0) continue;
 
     unsigned int trueVtxSortedIndex=trueVtxSortedIndexI;
 
     // Fill Signal Info
-    if( trueVtxSortedIndex < diphoPtr->getnVtxInfoSize()){
-      sigInfo.LogSumPt2 = diphoPtr->getLogSumPt2(trueVtxSortedIndex);
-      sigInfo.PtBal  =  diphoPtr->getPtBal(trueVtxSortedIndex);
-      sigInfo.PtAsym  =  diphoPtr->getPtAsym(trueVtxSortedIndex);
-      sigInfo.NConv  =  diphoPtr->getNConv(trueVtxSortedIndex);
-      sigInfo.PullConv  =  diphoPtr->getPullConv(trueVtxSortedIndex);
+    if( trueVtxSortedIndex < diphoPtr->nVtxInfoSize()){
+      sigInfo.LogSumPt2 = diphoPtr->logSumPt2(trueVtxSortedIndex);
+      sigInfo.PtBal  =  diphoPtr->ptBal(trueVtxSortedIndex);
+      sigInfo.PtAsym  =  diphoPtr->ptAsym(trueVtxSortedIndex);
+      sigInfo.NConv  =  diphoPtr->nConv(trueVtxSortedIndex);
+      sigInfo.PullConv  =  diphoPtr->pullConv(trueVtxSortedIndex);
       signalTree->Fill();
     }
 
@@ -267,18 +267,18 @@ vertexTrainingTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup
     int randVtxIndex=-999;
     if(irand!=-999) randVtxIndex= pvVecNoTrue[irand];
     
-    int randVtxSortedIndexI=getSortedIndex(randVtxIndex,pvPointers.size(),diphoPtr);
+    int randVtxSortedIndexI=sortedIndex(randVtxIndex,pvPointers.size(),diphoPtr);
     if(randVtxSortedIndexI<0) continue;
     unsigned int randVtxSortedIndex=randVtxSortedIndexI;
 
     // Fill Background Info
 
-    if( randVtxSortedIndex<diphoPtr->getnVtxInfoSize()){
-      bkgInfo.LogSumPt2 = diphoPtr->getLogSumPt2(randVtxSortedIndex);  
-      bkgInfo.PtBal  =  diphoPtr->getPtBal(randVtxSortedIndex);
-      bkgInfo.PtAsym  =  diphoPtr->getPtAsym(randVtxSortedIndex);
-      bkgInfo.NConv  =  diphoPtr->getNConv(randVtxSortedIndex);
-      bkgInfo.PullConv  =  diphoPtr->getPullConv(randVtxSortedIndex);
+    if( randVtxSortedIndex<diphoPtr->nVtxInfoSize()){
+      bkgInfo.LogSumPt2 = diphoPtr->logSumPt2(randVtxSortedIndex);  
+      bkgInfo.PtBal  =  diphoPtr->ptBal(randVtxSortedIndex);
+      bkgInfo.PtAsym  =  diphoPtr->ptAsym(randVtxSortedIndex);
+      bkgInfo.NConv  =  diphoPtr->nConv(randVtxSortedIndex);
+      bkgInfo.PullConv  =  diphoPtr->pullConv(randVtxSortedIndex);
       backgroundTree->Fill();
     }
 
@@ -384,16 +384,16 @@ vertexTrainingTreeMaker::fillDescriptions(edm::ConfigurationDescriptions& descri
   desc.setUnknown();
   descriptions.addDefault(desc);
 }
-int vertexTrainingTreeMaker::getSortedIndex(const unsigned int trueVtxIndex, const unsigned int sizemax, const Ptr<flashgg::DiPhotonCandidate> diphoPtr  ){
+int vertexTrainingTreeMaker::sortedIndex(const unsigned int trueVtxIndex, const unsigned int sizemax, const Ptr<flashgg::DiPhotonCandidate> diphoPtr  ){
   
   for(unsigned int j=0;j<sizemax;j++){
-    int index=diphoPtr->getMVASortedIndex(j);
+    int index=diphoPtr->mvaSortedIndex(j);
     if(index<0) continue;
     if( (unsigned int) index == trueVtxIndex ) return j;  
   }  
   return -1;
 }
-int vertexTrainingTreeMaker::getMCTruthVertexIndex(  const PtrVector<reco::GenParticle>& gens , const PtrVector<reco::Vertex>& vertices, double dzMatch ) {
+int vertexTrainingTreeMaker::mcTruthVertexIndex(  const PtrVector<reco::GenParticle>& gens , const PtrVector<reco::Vertex>& vertices, double dzMatch ) {
     
   reco::Vertex::Point hardVertex(0,0,0);
 

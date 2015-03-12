@@ -41,7 +41,7 @@ Photon* Photon::clone() const { return new Photon(*this); }
 void Photon::setEnergyAtStep(std::string key, float val) {
   addUserFloat(key,val);
 }
-float const Photon::getEnergyAtStep(std::string key) const {
+float const Photon::energyAtStep(std::string key) const {
   return userFloat(key);
 }
 bool Photon::hasEnergyAtStep(std::string key) const {

@@ -273,7 +273,7 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
   if(diPhotonPointers.size()==0){
     legacyEqZeroth =1; //if there is no diphoton, we use 0th vertex anyway.
   } else {
-    if(fabs(diPhotonPointers[0]->getVertex()->z() - vtxs[0]->z())<0.01){
+    if(fabs(diPhotonPointers[0]->vtx()->z() - vtxs[0]->z())<0.01){
       legacyEqZeroth =1;
     }
   }
@@ -392,14 +392,14 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	if((diPhotonPointers.size() > 0 ) && 
 	   ((jetCollectionName.find("Leg")>1 && jetCollectionName.find("Leg")<jetCollectionName.size())||(jetCollectionName.length()   <3 )) ) { // for PF 
 
-	  jInfo.PUJetID_betaStar        = jetsDzPointers[jdz]->betaStar(diPhotonPointers[0]->getVertex());
-	  jInfo.PUJetID_rms             = jetsDzPointers[jdz]->RMS(diPhotonPointers[0]->getVertex());
-	  jInfo.passesPUJetID           = jetsDzPointers[jdz]->passesPuJetId(diPhotonPointers[0]->getVertex());
+	  jInfo.PUJetID_betaStar        = jetsDzPointers[jdz]->betaStar(diPhotonPointers[0]->vtx());
+	  jInfo.PUJetID_rms             = jetsDzPointers[jdz]->rms(diPhotonPointers[0]->vtx());
+	  jInfo.passesPUJetID           = jetsDzPointers[jdz]->passesPuJetId(diPhotonPointers[0]->vtx());
 
 	} else {
 
 	  jInfo.PUJetID_betaStar        = jetsDzPointers[jdz]->betaStar(vtxs[0]);
-	  jInfo.PUJetID_rms             = jetsDzPointers[jdz]->RMS(vtxs[0]);
+	  jInfo.PUJetID_rms             = jetsDzPointers[jdz]->rms(vtxs[0]);
 	  jInfo.passesPUJetID           = jetsDzPointers[jdz]->passesPuJetId(vtxs[0]);
 
 	}
@@ -429,9 +429,9 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
     jInfo.nphoton_10 = 0; //
     jInfo.nphoton_20 = 0; //
     // loop over consitutuants
-    //for (unsigned int i = 0 ; i < jetsDzPointers[jdz]->getJetConstituentsQuick().size() ; i++){
+    //for (unsigned int i = 0 ; i < jetsDzPointers[jdz]->jetConstituentsQuick().size() ; i++){
     //
-    //  const reco::Candidate* icand = jetsDzPointers[jdz]->getJetConstituentsQuick()[i];
+    //  const reco::Candidate* icand = jetsDzPointers[jdz]->jetConstituentsQuick()[i];
     //  float candPt                 = icand->pt();
     //  float candCharge             = icand->charge();
     //
@@ -513,14 +513,14 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
 	  if( (diPhotonPointers.size() > 0 ) && 
 	      ((jetCollectionName.find("Leg")>1 && jetCollectionName.find("Leg")<jetCollectionName.size())||(jetCollectionName.length()   <3 )) ) { // for PF
 
-	    genJetInfo.PUJetID_betaStar        = jetsDzPointers[recoLoop]->betaStar(diPhotonPointers[0]->getVertex());
-	    genJetInfo.PUJetID_rms             = jetsDzPointers[recoLoop]->RMS(diPhotonPointers[0]->getVertex());
-	    genJetInfo.passesPUJetID           = jetsDzPointers[recoLoop]->passesPuJetId(diPhotonPointers[0]->getVertex());
+	    genJetInfo.PUJetID_betaStar        = jetsDzPointers[recoLoop]->betaStar(diPhotonPointers[0]->vtx());
+	    genJetInfo.PUJetID_rms             = jetsDzPointers[recoLoop]->rms(diPhotonPointers[0]->vtx());
+	    genJetInfo.passesPUJetID           = jetsDzPointers[recoLoop]->passesPuJetId(diPhotonPointers[0]->vtx());
 
 	  } else {
 
 	    genJetInfo.PUJetID_betaStar        = jetsDzPointers[recoLoop]->betaStar(vtxs[0]);
-	    genJetInfo.PUJetID_rms             = jetsDzPointers[recoLoop]->RMS(vtxs[0]);
+	    genJetInfo.PUJetID_rms             = jetsDzPointers[recoLoop]->rms(vtxs[0]);
 	    genJetInfo.passesPUJetID           = jetsDzPointers[recoLoop]->passesPuJetId(vtxs[0]);
 
 	  }

@@ -26,7 +26,7 @@ namespace flashgg {
 		// Also store previous dijet MVA result
 		VBFMVAResult vbfMvaResult;
 		
-		VBFMVAResult getVBFMVAResult() const { return vbfMvaResult;}
+		VBFMVAResult vbfMVAResult() const { return vbfMvaResult;}
 		float VBFDiPhoDiJetMVAValue() const { return vbfDiPhoDiJetMvaResult;}
 
   };

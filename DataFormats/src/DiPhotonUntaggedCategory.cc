@@ -13,7 +13,7 @@ DiPhotonUntaggedCategory::DiPhotonUntaggedCategory(edm::Ptr<DiPhotonCandidate> d
 
 DiPhotonUntaggedCategory* DiPhotonUntaggedCategory::clone () const {
   DiPhotonUntaggedCategory* result = new DiPhotonUntaggedCategory(diPhoton(),diPhotonMVA());
-  result->setCategoryNumber(getCategoryNumber());
-  result->setDiPhotonIndex(getDiPhotonIndex());
+  result->setCategoryNumber(categoryNumber());
+  result->setDiPhotonIndex(diPhotonIndex());
   return result;
 }

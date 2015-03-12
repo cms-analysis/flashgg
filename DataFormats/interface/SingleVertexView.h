@@ -18,16 +18,16 @@ namespace flashgg {
 	  SingleVertexView(dipho_ptr_type dipho, int ivtx) : isClosestToGen_(false), dZtoGen_(0.), edmdipho_(dipho), ivtx_(ivtx), vtx_(0), dipho_(0) {}
 	  SingleVertexView(const DiPhotonCandidate * dipho, int ivtx) : isClosestToGen_(false), dZtoGen_(0.), ivtx_(ivtx), vtx_(0), dipho_(dipho) {}
 	  
-	  const cand_type& pos() const { getVertexMaybe(); return *vtx_; }
+	  const cand_type& pos() const { vertexMaybe(); return *vtx_; }
 	  
-	  const cand_type* operator->() const { getVertexMaybe(); return vtx_; }
+	  const cand_type* operator->() const { vertexMaybe(); return vtx_; }
 	  
-          float logSumPt2() const { getVertexMaybe(); return dipho_->getLogSumPt2(ivtx_); } 
-	  float ptBal() const { getVertexMaybe(); return dipho_->getPtBal(ivtx_);     }
-	  float ptAsym() const { getVertexMaybe(); return dipho_->getPtAsym(ivtx_);    }
-	  float nConv() const { getVertexMaybe(); return dipho_->getNConv(ivtx_);     }
-	  float pullConv() const { getVertexMaybe(); return dipho_->getPullConv(ivtx_);  }
-	  float mva() const { getVertexMaybe(); return dipho_->getMVA(ivtx_);       }
+          float logSumPt2() const { vertexMaybe(); return dipho_->logSumPt2(ivtx_); } 
+	  float ptBal() const { vertexMaybe(); return dipho_->ptBal(ivtx_);     }
+	  float ptAsym() const { vertexMaybe(); return dipho_->ptAsym(ivtx_);    }
+	  float nConv() const { vertexMaybe(); return dipho_->nConv(ivtx_);     }
+	  float pullConv() const { vertexMaybe(); return dipho_->pullConv(ivtx_);  }
+	  float mva() const { vertexMaybe(); return dipho_->mva(ivtx_);       }
 	  
 	  bool isClosestToGen() const { return isClosestToGen_; }
 	  float dZtoGen() const { return dZtoGen_; }
@@ -36,7 +36,7 @@ namespace flashgg {
 	  void setIsClosestToGen(bool x=true) { isClosestToGen_=x; };
 	  
   private:
-	  void getVertexMaybe() const;
+	  void vertexMaybe() const;
 	  bool isClosestToGen_;
 	  float dZtoGen_;
 	  

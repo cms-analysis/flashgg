@@ -133,7 +133,7 @@ namespace flashgg {
 				Ptr<flashgg::Jet> jet  = jetPointersDz[jetLoop]; 
 
 				//pass PU veto??	
-				//				if (jet->getPuJetId(diPhotonPointers[candIndex]) <  PuIDCutoff) {continue;} 
+				//				if (jet->puJetId(diPhotonPointers[candIndex]) <  PuIDCutoff) {continue;} 
 				if (!jet->passesPuJetId(diPhotonPointers[candIndex])) continue;
 				// within eta 4.7?
 				if (fabs(jet->eta()) > 4.7) continue;

@@ -264,17 +264,17 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
 
   phoIdMva_SCRawE_          = photon.superCluster()->rawEnergy();
   phoIdMva_R9_              = photon.r9();
-  phoIdMva_S4_              = photon.getS4();
+  phoIdMva_S4_              = photon.s4();
   phoIdMva_covIEtaIEta_     = photon.sigmaIetaIeta();
   phoIdMva_EtaWidth_        = photon.superCluster()->etaWidth();
   phoIdMva_PhiWidth_        = photon.superCluster()->phiWidth();
-  phoIdMva_covIEtaIPhi_     = photon.getSieip();                        
-  phoIdMva_pfPhoIso03_      = photon.getpfPhoIso03();
-  phoIdMva_pfChgIso03_      = photon.getpfChgIso03WrtVtx(vtx);
-  phoIdMva_pfChgIso03worst_ = photon.getpfChgIsoWrtWorstVtx03();
+  phoIdMva_covIEtaIPhi_     = photon.sieip();                        
+  phoIdMva_pfPhoIso03_      = photon.pfPhoIso03();
+  phoIdMva_pfChgIso03_      = photon.pfChgIso03WrtVtx(vtx);
+  phoIdMva_pfChgIso03worst_ = photon.pfChgIsoWrtWorstVtx03();
   phoIdMva_ScEta_           = photon.superCluster()->eta();
   phoIdMva_rho_             = rho; // we don't want to add the event-based rho as flashgg::photon member
-  phoIdMva_ESEffSigmaRR_    = photon.getESEffSigmaRR();  
+  phoIdMva_ESEffSigmaRR_    = photon.esEffSigmaRR();  
 
  
   if( photon.isEB() )      phoIdMva = phoIdMva_2012_EB_;

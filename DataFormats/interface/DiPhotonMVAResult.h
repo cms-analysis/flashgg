@@ -23,7 +23,7 @@ namespace flashgg {
     float sigmawv;
     float CosPhi;
     float vtxprob;
-		float getMVAValue() const {return result;}
+		float mvaValue() const {return result;}
     // Output
     float result;
   };
