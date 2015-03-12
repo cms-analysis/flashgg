@@ -1,0 +1,57 @@
+#ifndef FLASHgg_TTHHadronicTag_h
+#define FLASHgg_TTHHadronicTag_h
+
+#include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
+#include "flashgg/DataFormats/interface/Jet.h"
+#include "DataFormats/PatCandidates/interface/Jet.h"
+
+
+namespace flashgg {
+
+	class TTHHadronicTag: public DiPhotonTagBase {
+		public:
+			TTHHadronicTag();
+			TTHHadronicTag(edm::Ptr<DiPhotonCandidate>,edm::Ptr<DiPhotonMVAResult>,std::vector<edm::Ptr<flashgg::Jet> >,std::vector<edm::Ptr<flashgg::Jet> >);
+			TTHHadronicTag(edm::Ptr<DiPhotonCandidate>,DiPhotonMVAResult,std::vector<edm::Ptr<flashgg::Jet> >,std::vector<edm::Ptr<flashgg::Jet> >);
+			TTHHadronicTag* clone() const;
+			~TTHHadronicTag();
+
+			const std::vector<edm::Ptr<flashgg::Jet> > jetVector() const {return theJetVec_;}
+			const std::vector<edm::Ptr<flashgg::Jet> > bJetVector() const {return theBJetVec_; }
+			int nBLoose() const {return Nbtagloose_;}
+			int nBMedium() const {return Nbtagmedium_;}
+			void setNBLoose(int nb) { Nbtagloose_ = nb; }
+			void setNBMedium(int nb) { Nbtagmedium_ = nb; }
+
+		private:
+			int Nbtagloose_;
+			int Nbtagmedium_;
+			std::vector<edm::Ptr<flashgg::Jet> > theJetVec_;
+			std::vector<edm::Ptr<flashgg::Jet> > theBJetVec_;
+	};
+} 
+
+#endif 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
