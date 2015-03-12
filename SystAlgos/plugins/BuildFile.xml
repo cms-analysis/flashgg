@@ -1,5 +1,0 @@
-<library   name="FlashggSystAlgoPlugins" file="*.cc">
-<use   name="FWCore/ParameterSet"/>
-<use   name="flashgg/SystAlgos"/>
-<flags   EDM_PLUGIN="1"/>
-</library>

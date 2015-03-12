@@ -26,7 +26,7 @@ process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to wo
 #                                        monitorPssAndPrivate = cms.untracked.bool(True)
 #                                       )
 
-process.load("flashgg/MicroAODProducers/flashggMicroAODSequence_cff")
+process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
 
 ## extra calo isolations scan
 process.flashggPhotons.extraCaloIsolations.extend([
@@ -84,7 +84,7 @@ process.flashggPhotons.extraCaloIsolations.extend([
 ])
 
 
-from flashgg.MicroAODProducers.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand,microAODDebugOutputCommand
+from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand,microAODDebugOutputCommand
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile.root'),
                                outputCommands = microAODDefaultOutputCommand
                                )
