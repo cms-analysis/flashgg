@@ -36,8 +36,8 @@
 #include "flashgg/DataFormats/interface/VBFTag.h"
 #include "flashgg/DataFormats/interface/DiPhotonUntaggedCategory.h"
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
-#include "flashgg/DataFormats/interface/TTHhadronicTag.h"
-#include "flashgg/DataFormats/interface/TTHleptonicTag.h"
+#include "flashgg/DataFormats/interface/TTHHadronicTag.h"
+#include "flashgg/DataFormats/interface/TTHLeptonicTag.h"
 
 #include "DataFormats/VertexReco/interface/Vertex.h"
 

@@ -69,7 +69,7 @@ namespace flashgg {
 		int nCand = maxCandidates_;
 		for(auto & dipho : diPhotonPointers) {
 			
-			for(unsigned int iv=0; iv<dipho->getnVtxInfoSize(); ++iv) {
+			for(unsigned int iv=0; iv<dipho->nVtxInfoSize(); ++iv) {
 				vertexViews->push_back(SingleVertexView(dipho,iv));
 				auto & vi = vertexViews->back();
 				float dz = genV.z() - vi.pos().z();

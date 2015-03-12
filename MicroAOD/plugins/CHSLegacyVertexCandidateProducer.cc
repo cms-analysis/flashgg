@@ -78,17 +78,17 @@ namespace flashgg {
 	flashVertex = pvPtrs[0];
       }
       if ( diPhotonPointers.size()==1 ){
-	flashVertex = diPhotonPointers[0]->getVertex();
+	flashVertex = diPhotonPointers[0]->vtx();
       }
       if ( diPhotonPointers.size() >1 ){ //hopefully very rare
-	flashVertex = diPhotonPointers[0]->getVertex();
+	flashVertex = diPhotonPointers[0]->vtx();
       }
       
 
       for (unsigned int diPhoLoop = 0; diPhoLoop< diPhotonPointers.size() ; diPhoLoop++){
-	//if( diPhotonPointers[diPhoLoop]->getVertex()->position() != flashVertex->position()){
+	//if( diPhotonPointers[diPhoLoop]->vertex()->position() != flashVertex->position()){
 	// we only have a problem if the mutliple diphotons haev different vertices...
-	if( diPhotonPointers[diPhoLoop]->getVertex() != flashVertex){ 
+	if( diPhotonPointers[diPhoLoop]->vtx() != flashVertex){ 
 	  //replace with Error Logger at some stage, cout is not thread safe.
 	  std::cout <<"[WARNING] Multiple Diphotons in event, with different PVs "
 		    <<". Using 0th Diphoton Vtx for CHS PU subtraction."<< std::endl;

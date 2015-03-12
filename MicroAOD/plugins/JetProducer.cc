@@ -78,7 +78,7 @@ namespace flashgg {
       flashgg::Jet fjet = flashgg::Jet(*pjet);
       for (unsigned int j = 0 ; j < diPhotonPointers.size() ; j++) {
 	Ptr<DiPhotonCandidate> diPhoton = diPhotonPointers[j];
-	Ptr<reco::Vertex> vtx = diPhoton->getVertex();
+	Ptr<reco::Vertex> vtx = diPhoton->vtx();
 
 	if(!usePuppi){
 	if (!fjet.hasPuJetId(vtx)) {

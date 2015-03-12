@@ -419,7 +419,7 @@ FlashggTreeMakerWithTags::analyze(const edm::Event& iEvent, const edm::EventSetu
 		r91 = diPhotonPointers[candIndex]->leadingPhoton()->r9();
 		sieie1 = diPhotonPointers[candIndex]->leadingPhoton()->sigmaIetaIeta();
 		hoe1 = diPhotonPointers[candIndex]->leadingPhoton()->hadronicOverEm();
-		sigmaEoE1 = diPhotonPointers[candIndex]->leadingPhoton()->getSigEOverE();
+		sigmaEoE1 = diPhotonPointers[candIndex]->leadingPhoton()->sigEOverE();
 		ptoM1 = diPhotonPointers[candIndex]->leadingPhoton()->pt()/mass;
 		//---> Isolation variables, unsure if correct methods used...
 		//Mthods from reco::photon
@@ -428,26 +428,26 @@ FlashggTreeMakerWithTags::analyze(const edm::Event& iEvent, const edm::EventSetu
 		//phoiso1 = diPhotonPointers[candIndex]->leadingPhoton()->photonIso();
 		//phoiso041 = diPhotonPointers[candIndex]->leadingPhoton()->photonIso(); //how does this differ??? FIXME
 		//Methods from flashgg::photon
-		chiso1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfChgIso03WrtVtx(diPhotonPointers[candIndex]->getVertex());
-		chisow1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfChgIsoWrtWorstVtx04();//no flashgg method for come radius 04... ok to use 0.3?
-		phoiso1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfPhoIso03();
-		phoiso041 = diPhotonPointers[candIndex]->leadingPhoton()->getpfPhoIso04(); //unsure of default radius?
+		chiso1 = diPhotonPointers[candIndex]->leadingPhoton()->pfChgIso03WrtVtx(diPhotonPointers[candIndex]->vtx());
+		chisow1 = diPhotonPointers[candIndex]->leadingPhoton()->pfChgIsoWrtWorstVtx04();//no flashgg method for come radius 04... ok to use 0.3?
+		phoiso1 = diPhotonPointers[candIndex]->leadingPhoton()->pfPhoIso03();
+		phoiso041 = diPhotonPointers[candIndex]->leadingPhoton()->pfPhoIso04(); //unsure of default radius?
 		ecaliso03_1 = diPhotonPointers[candIndex]->leadingPhoton()->ecalRecHitSumEtConeDR03();
 		hcaliso03_1 = diPhotonPointers[candIndex]->leadingPhoton()->hcalTowerSumEtConeDR03();
 		trkiso03_1 = diPhotonPointers[candIndex]->leadingPhoton()->trkSumPtHollowConeDR03();
-		pfchiso2_1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfChgIso02WrtVtx(diPhotonPointers[candIndex]->getVertex());
+		pfchiso2_1 = diPhotonPointers[candIndex]->leadingPhoton()->pfChgIso02WrtVtx(diPhotonPointers[candIndex]->vtx());
 		isorv1 = (chiso1 + phoiso1 + 2.5 - rho*0.09)*(50./et1); //used in cic analysis, might not be useful for us but we have what we need in hand so adding anyway.
 		isowv1 = ( phoiso1 + chisow1 + 2.5 - rho*0.23)*(50./et1);
 
 
 		isEB1 = diPhotonPointers[candIndex]->leadingPhoton()->isEB();
-		sieip1 = diPhotonPointers[candIndex]->leadingPhoton()->getSieip();
+		sieip1 = diPhotonPointers[candIndex]->leadingPhoton()->sieip();
 		etawidth1 = diPhotonPointers[candIndex]->leadingPhoton()->superCluster()->etaWidth();
 		phiwidth1 = diPhotonPointers[candIndex]->leadingPhoton()->superCluster()->phiWidth();
 		regrerr1 = sigmaEoE1 * diPhotonPointers[candIndex]->leadingPhoton()->energy();
-		idmva1 = diPhotonPointers[candIndex]->leadingPhoton()->getPhoIdMvaDWrtVtx(diPhotonPointers[candIndex]->getVertex());
-		s4ratio1 =  diPhotonPointers[candIndex]->leadingPhoton()->getS4();
-		effSigma1 =  diPhotonPointers[candIndex]->leadingPhoton()->getESEffSigmaRR();
+		idmva1 = diPhotonPointers[candIndex]->leadingPhoton()->phoIdMvaDWrtVtx(diPhotonPointers[candIndex]->vtx());
+		s4ratio1 =  diPhotonPointers[candIndex]->leadingPhoton()->s4();
+		effSigma1 =  diPhotonPointers[candIndex]->leadingPhoton()->esEffSigmaRR();
 		scraw1 =  diPhotonPointers[candIndex]->leadingPhoton()->superCluster()->rawEnergy();
 
 		//PHOTON 2
@@ -457,7 +457,7 @@ FlashggTreeMakerWithTags::analyze(const edm::Event& iEvent, const edm::EventSetu
 		r92 = diPhotonPointers[candIndex]->subLeadingPhoton()->r9();
 		sieie2 = diPhotonPointers[candIndex]->subLeadingPhoton()->sigmaIetaIeta();
 		hoe2 = diPhotonPointers[candIndex]->subLeadingPhoton()->hadronicOverEm();
-		sigmaEoE2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getSigEOverE();
+		sigmaEoE2 = diPhotonPointers[candIndex]->subLeadingPhoton()->sigEOverE();
 		ptoM2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pt()/mass;
 		isEB2 = diPhotonPointers[candIndex]->subLeadingPhoton()->isEB();
 		//---> Isolation variables, unsure if correct methods used...
@@ -467,35 +467,35 @@ FlashggTreeMakerWithTags::analyze(const edm::Event& iEvent, const edm::EventSetu
 		//phoiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->photonIso();
 		//phoiso042 = diPhotonPointers[candIndex]->subLeadingPhoton()->photonIso(); //how does this differ??? FIXME
 		//Methods from flashgg::photon
-		chiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfChgIso03WrtVtx(diPhotonPointers[candIndex]->getVertex());
-		chisow2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfChgIsoWrtWorstVtx04();//no flashgg method for come radius 04... ok to use 0.3?
-		phoiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfPhoIso03();
+		chiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pfChgIso03WrtVtx(diPhotonPointers[candIndex]->vtx());
+		chisow2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pfChgIsoWrtWorstVtx04();//no flashgg method for come radius 04... ok to use 0.3?
+		phoiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pfPhoIso03();
 
 
-		phoiso042 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfPhoIso04(); //unsure of default radius?
+		phoiso042 = diPhotonPointers[candIndex]->subLeadingPhoton()->pfPhoIso04(); //unsure of default radius?
 		ecaliso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->ecalRecHitSumEtConeDR03();
 		hcaliso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->hcalTowerSumEtConeDR03();
 		trkiso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->trkSumPtHollowConeDR03();
-		pfchiso2_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfChgIso02WrtVtx(diPhotonPointers[candIndex]->getVertex());
+		pfchiso2_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pfChgIso02WrtVtx(diPhotonPointers[candIndex]->vtx());
 		isorv2 = (chiso2 + phoiso2 + 2.5 - rho*0.09)*(50./et2);
 		isowv2 = ( phoiso2 + chisow2 + 2.5 - rho*0.23)*(50./et2);
 
-		sieip2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getSieip();
+		sieip2 = diPhotonPointers[candIndex]->subLeadingPhoton()->sieip();
 		etawidth2 = diPhotonPointers[candIndex]->subLeadingPhoton()->superCluster()->etaWidth();
 		phiwidth2 = diPhotonPointers[candIndex]->subLeadingPhoton()->superCluster()->phiWidth();
 		regrerr2 = sigmaEoE1 * diPhotonPointers[candIndex]->subLeadingPhoton()->energy();
-		idmva2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getPhoIdMvaDWrtVtx(diPhotonPointers[candIndex]->getVertex());
-		s4ratio2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->getS4();
-		effSigma2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->getESEffSigmaRR();
+		idmva2 = diPhotonPointers[candIndex]->subLeadingPhoton()->phoIdMvaDWrtVtx(diPhotonPointers[candIndex]->vtx());
+		s4ratio2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->s4();
+		effSigma2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->esEffSigmaRR();
 		scraw2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->superCluster()->rawEnergy();
 
 		//-----> Cos of photon delta phi
 		cosphi = cos(diPhotonPointers[candIndex]->leadingPhoton()->phi()- diPhotonPointers[candIndex]->subLeadingPhoton()->phi());
 
 		//-------> vtx info
-		vtx_x= diPhotonPointers[candIndex]->getVertex()->x();
-		vtx_y= diPhotonPointers[candIndex]->getVertex()->y();
-		vtx_z= diPhotonPointers[candIndex]->getVertex()->z();
+		vtx_x= diPhotonPointers[candIndex]->vtx()->x();
+		vtx_y= diPhotonPointers[candIndex]->vtx()->y();
+		vtx_z= diPhotonPointers[candIndex]->vtx()->z();
 
 
 		// ---------> Gen match?
@@ -545,13 +545,13 @@ FlashggTreeMakerWithTags::analyze(const edm::Event& iEvent, const edm::EventSetu
 		 flash_Untagged_Category= -1; // so that there is at least some value to fill even if not part of category
 		for (unsigned int untaggedLooper =0; untaggedLooper < UntaggedCategoryPointers.size(); untaggedLooper++)
 		{
-		if (UntaggedCategoryPointers[untaggedLooper]->getDiPhotonIndex() != candIndex) continue;
+		if (UntaggedCategoryPointers[untaggedLooper]->diPhotonIndex() != candIndex) continue;
 		
 		sigmaMrvoM = UntaggedCategoryPointers[untaggedLooper]->diPhotonMVA().sigmarv;// Not sure if these variables are being filled properly... 
 		sigmaMwvoM = UntaggedCategoryPointers[untaggedLooper]->diPhotonMVA().sigmawv; 
 		vtxprob = UntaggedCategoryPointers[untaggedLooper]->diPhotonMVA().vtxprob ;
-		dipho_mva = UntaggedCategoryPointers[untaggedLooper]-> diPhotonMVA().getMVAValue()  ;
-		flash_Untagged_Category =  UntaggedCategoryPointers[untaggedLooper]->getCategoryNumber();
+		dipho_mva = UntaggedCategoryPointers[untaggedLooper]-> diPhotonMVA().mvaValue()  ;
+		flash_Untagged_Category =  UntaggedCategoryPointers[untaggedLooper]->categoryNumber();
 		dipho_mva_cat =(float) flash_Untagged_Category;
 
 /*		std::cout << "DiPho Debug"<< std::endl;
@@ -564,13 +564,13 @@ FlashggTreeMakerWithTags::analyze(const edm::Event& iEvent, const edm::EventSetu
 	break;
 	}
 
-		ptbal = diPhotonPointers[candIndex]->getPtBal();
-		ptasym = diPhotonPointers[candIndex]->getPtAsym();
-		logspt2 = diPhotonPointers[candIndex]->getLogSumPt2();
-		p2conv = diPhotonPointers[candIndex]->getPullConv(); 
-		nconv = diPhotonPointers[candIndex]->getNConv(); 
-		vtxmva = diPhotonPointers[candIndex]->getVtxProbMVA();
-		vtxdz = diPhotonPointers[candIndex]->getDZ1(); 
+		ptbal = diPhotonPointers[candIndex]->ptBal();
+		ptasym = diPhotonPointers[candIndex]->ptAsym();
+		logspt2 = diPhotonPointers[candIndex]->logSumPt2();
+		p2conv = diPhotonPointers[candIndex]->pullConv(); 
+		nconv = diPhotonPointers[candIndex]->nConv(); 
+		vtxmva = diPhotonPointers[candIndex]->vtxProbMVA();
+		vtxdz = diPhotonPointers[candIndex]->dZ1(); 
 
 
 
@@ -579,8 +579,8 @@ FlashggTreeMakerWithTags::analyze(const edm::Event& iEvent, const edm::EventSetu
 
 		for (unsigned int vbfLooper =0; vbfLooper < VBFTagPointers.size(); vbfLooper++)
 		{
-	//	std::cout << std::endl<< "candIndex " << candIndex << "	vbfLoop " << vbfLooper << " diPhoIndex " << 	VBFTagPointers[vbfLooper]->getDiPhotonIndex() << std::endl ; 
-		if (VBFTagPointers[vbfLooper]->getDiPhotonIndex()  != candIndex) continue;
+	//	std::cout << std::endl<< "candIndex " << candIndex << "	vbfLoop " << vbfLooper << " diPhoIndex " << 	VBFTagPointers[vbfLooper]->diPhotonIndex() << std::endl ; 
+		if (VBFTagPointers[vbfLooper]->diPhotonIndex()  != candIndex) continue;
 
 		dijet_leadEta = VBFTagPointers[vbfLooper]->VBFMVA().dijet_leadEta; 
 		dijet_subleadEta =VBFTagPointers[vbfLooper]->VBFMVA().dijet_subleadEta; 
@@ -590,7 +590,7 @@ FlashggTreeMakerWithTags::analyze(const edm::Event& iEvent, const edm::EventSetu
 		dijet_Mjj = VBFTagPointers[vbfLooper]->VBFMVA().      dijet_Mjj; 
 		dijet_MVA = VBFTagPointers[vbfLooper]->VBFMVA().      VBFMVAValue();
 		bdt_combined =VBFTagPointers[vbfLooper]->VBFDiPhoDiJetMVA().VBFDiPhoDiJetMVAValue();     
-		flash_VBFTag_Category = VBFTagPointers[vbfLooper]->getCategoryNumber();
+		flash_VBFTag_Category = VBFTagPointers[vbfLooper]->categoryNumber();
 		
 
 	//	std::cout<< std::endl << "VBFDebug"<< std::endl;

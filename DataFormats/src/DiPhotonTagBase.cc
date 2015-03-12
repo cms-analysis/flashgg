@@ -32,9 +32,9 @@ bool DiPhotonTagBase::operator <(const DiPhotonTagBase & b) const {
   // Comparison of different tags not currently supported - is it ever needed?
   // Overloading may be appropriate if different tags have different priorities
 
-  if (getCategoryNumber() == b.getCategoryNumber()) {
-    return (getSumPt() < b.getSumPt()); 
+  if (categoryNumber() == b.categoryNumber()) {
+    return (sumPt() < b.sumPt()); 
   } else {
-    return (getCategoryNumber() < b.getCategoryNumber());
+    return (categoryNumber() < b.categoryNumber());
   }
 }

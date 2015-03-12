@@ -28,7 +28,7 @@ bool Jet::passesPuJetId(const edm::Ptr<reco::Vertex> vtx, PileupJetIdentifier::I
   return PileupJetIdentifier::passJetId(puJetId_.at(vtx).idFlag,level);
 }
 
-float Jet::RMS(const edm::Ptr<reco::Vertex> vtx) const {
+float Jet::rms(const edm::Ptr<reco::Vertex> vtx) const {
   assert (hasPuJetId(vtx));
   return puJetId_.at(vtx).RMS;
 }
@@ -39,14 +39,14 @@ float Jet::betaStar(const edm::Ptr<reco::Vertex> vtx) const {
 }
 
 bool Jet::passesPuJetId(const edm::Ptr<DiPhotonCandidate> dipho, PileupJetIdentifier::Id level) const {
-  return passesPuJetId(dipho->getVertex());
+  return passesPuJetId(dipho->vtx());
 }
 
-float Jet::RMS(const edm::Ptr<DiPhotonCandidate> dipho) const {
-  return RMS(dipho->getVertex());
+float Jet::rms(const edm::Ptr<DiPhotonCandidate> dipho) const {
+  return rms(dipho->vtx());
 }
 
 float Jet::betaStar(const edm::Ptr<DiPhotonCandidate> dipho) const {
-  return betaStar(dipho->getVertex());
+  return betaStar(dipho->vtx());
 }
 

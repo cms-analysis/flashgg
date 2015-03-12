@@ -16,7 +16,7 @@ namespace flashgg {
 		
 	void AnalyzerFactory::registerClass(const string & name, AnalyzerFactory * factory)
 	{
-		getRegister()[name] = factory;
+                getRegister()[name] = factory;
 	}
 		
 		

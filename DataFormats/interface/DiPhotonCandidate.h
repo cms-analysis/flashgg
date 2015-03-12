@@ -15,7 +15,7 @@ namespace flashgg {
     DiPhotonCandidate(const flashgg::Photon&, const flashgg::Photon &,edm::Ptr<reco::Vertex>);
     ~DiPhotonCandidate();
 
-    const edm::Ptr<reco::Vertex> getVertex() const { return vertex_; }
+    const edm::Ptr<reco::Vertex> vtx() const { return vertex_; }
     const flashgg::Photon* leadingPhoton() const;
     const flashgg::Photon* subLeadingPhoton() const;
 
@@ -34,7 +34,7 @@ namespace flashgg {
     void setDZ1(float val) { dZ1_ = val; }
     void setDZ2(float val) { dZ2_ = val; }
     void setVtxProbMVA(float val) { vtxprobmva_ = val; }
-    void setVertex_index(int val) { vertex_index_ = val; }
+    void setVertexIndex(int val) { vertex_index_ = val; }
 
     void setVLogSumPt2( std::vector<float> vval) { vlogsumpt2_ = vval; }
     void setVPtBal( std::vector<float> vval ) { vptbal_ = vval; }
@@ -45,35 +45,35 @@ namespace flashgg {
     void setVVtxPtr( std::vector<edm::Ptr<reco::Vertex> >  vval) { vVtxPtr_ = vval;}
     void setVMVASortedIndex( std::vector<unsigned int>  vval) { vmva_sortedindex_= vval;}
 
-    float getLogSumPt2() const { return logsumpt2_; }
-    float getPtBal() const { return ptbal_; }
-    float getPtAsym() const { return ptasym_; }
-    float getNConv() const { return nConv_; }
-    float getPullConv() const { return pull_conv_; }
-    float getNVert() const { return nVert_; }
-    float getMVA0() const { return MVA0_; }
-    float getMVA1() const { return MVA1_; }
-    float getMVA2() const { return MVA2_; }
-    float getDZ1() const { return dZ1_; }
-    float getDZ2() const { return dZ2_; }
-    float getVtxProbMVA() const { return vtxprobmva_; }
-    float getSumPt() const {
+    float logSumPt2() const { return logsumpt2_; }
+    float ptBal() const { return ptbal_; }
+    float ptAsym() const { return ptasym_; }
+    float nConv() const { return nConv_; }
+    float pullConv() const { return pull_conv_; }
+    float nVert() const { return nVert_; }
+    float mva0() const { return MVA0_; }
+    float mva1() const { return MVA1_; }
+    float mva2() const { return MVA2_; }
+    float dZ1() const { return dZ1_; }
+    float dZ2() const { return dZ2_; }
+    float vtxProbMVA() const { return vtxprobmva_; }
+    float sumPt() const {
 	    return (this->daughter(0)->pt() + this->daughter(1)->pt()); 
     }
-    int vertex_index() const { return vertex_index_; }
+    int vertexIndex() const { return vertex_index_; }
 
-    unsigned int getnVtxInfoSize() const { return (vlogsumpt2_.size()) ;}
-    float getLogSumPt2(unsigned int iVtx) const { return (iVtx<vlogsumpt2_.size())?vlogsumpt2_.at(iVtx):-9999. ;} 
-    float getPtBal(unsigned int iVtx) const  { return iVtx<vptbal_.size()?vptbal_.at(iVtx):-9999. ;}
-    float getPtAsym(unsigned int iVtx) const  { return iVtx<vptasym_.size()?vptasym_.at(iVtx):-9999. ; } 
-    float getNConv(unsigned int iVtx) const  { return iVtx<vnConv_.size()?vnConv_.at(iVtx):-9999.; } 
-    float getPullConv(unsigned int iVtx) const  { return iVtx<vpull_conv_.size()?vpull_conv_.at(iVtx):-9999.; } 
-    float getMVA(unsigned int iVtx) const  { return iVtx<vmva_value_.size()?vmva_value_.at(iVtx):-9999.; } 
-    int getMVASortedIndex(unsigned int iVtx) const  { return iVtx<vmva_sortedindex_.size()?vmva_sortedindex_.at(iVtx):-1; } 
-    edm::Ptr<reco::Vertex> getVertexPtr(unsigned int iVtx) const  { return iVtx< vVtxPtr_.size()?vVtxPtr_.at(iVtx):edm::Ptr<reco::Vertex>(); }
+    unsigned int nVtxInfoSize() const { return (vlogsumpt2_.size()) ;}
+    float logSumPt2(unsigned int iVtx) const { return (iVtx<vlogsumpt2_.size())?vlogsumpt2_.at(iVtx):-9999. ;} 
+    float ptBal(unsigned int iVtx) const  { return iVtx<vptbal_.size()?vptbal_.at(iVtx):-9999. ;}
+    float ptAsym(unsigned int iVtx) const  { return iVtx<vptasym_.size()?vptasym_.at(iVtx):-9999. ; } 
+    float nConv(unsigned int iVtx) const  { return iVtx<vnConv_.size()?vnConv_.at(iVtx):-9999.; } 
+    float pullConv(unsigned int iVtx) const  { return iVtx<vpull_conv_.size()?vpull_conv_.at(iVtx):-9999.; } 
+    float mva(unsigned int iVtx) const  { return iVtx<vmva_value_.size()?vmva_value_.at(iVtx):-9999.; } 
+    int mvaSortedIndex(unsigned int iVtx) const  { return iVtx<vmva_sortedindex_.size()?vmva_sortedindex_.at(iVtx):-1; } 
+    edm::Ptr<reco::Vertex> vertexPtr(unsigned int iVtx) const  { return iVtx< vVtxPtr_.size()?vVtxPtr_.at(iVtx):edm::Ptr<reco::Vertex>(); }
 
-    float getLeadPhotonId() const { return leadingPhoton()->getPhoIdMvaDWrtVtx(vertex_); }
-    float getSubLeadPhotonId() const { return subLeadingPhoton()->getPhoIdMvaDWrtVtx(vertex_); }
+    float leadPhotonId() const { return leadingPhoton()->phoIdMvaDWrtVtx(vertex_); }
+    float subLeadPhotonId() const { return subLeadingPhoton()->phoIdMvaDWrtVtx(vertex_); }
     
   private:
 

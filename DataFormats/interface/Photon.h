@@ -53,42 +53,42 @@ namespace flashgg {
     void updateEnergy(std::string key,float val);
     void setSigEOverE(float val) { sigEOverE_ = val; };
 
-    float const getSipip() const {return sipip_;};
-    float const getSieip() const {return sieip_;};
-    float const getE2nd() const {return e2nd_;};
-    float const getE2x5right() const {return e2x5right_;};
-    float const getE2x5left() const {return e2x5left_;};
-    float const getE2x5top() const {return e2x5top_;};
-    float const getE2x5bottom() const {return e2x5bottom_;};
-    float const getE2x5max() const {return e2x5max_;};
-    float const getEright() const {return eright_;};
-    float const getEleft() const {return eleft_;};
-    float const getEtop() const {return etop_;};
-    float const getEbottom() const {return ebottom_;};
-    float const getE1x3() const {return e1x3_;};
-    float const getS4() const {return S4_;};   
-    float const getpfPhoIso04() const {return pfPhoIso04_;};   
-    float const getpfPhoIso03() const {return pfPhoIso03_;};   
-    float const getpfNeutIso04() const {return pfNeutIso04_;};
-    float const getpfNeutIso03() const {return pfNeutIso03_;};
-    std::map<edm::Ptr<reco::Vertex>,float> const getpfChgIso04() const {return pfChgIso04_;};
-    std::map<edm::Ptr<reco::Vertex>,float> const getpfChgIso03() const {return pfChgIso03_;};
-    std::map<edm::Ptr<reco::Vertex>,float> const getpfChgIso02() const {return pfChgIso02_;};
-    float const getpfChgIso04WrtVtx( const edm::Ptr<reco::Vertex>& vtx, bool lazy=false ) const { return findVertexFloat(vtx,pfChgIso04_,lazy); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
-    float const getpfChgIso03WrtVtx( const edm::Ptr<reco::Vertex>& vtx, bool lazy=false ) const { return findVertexFloat(vtx,pfChgIso03_,lazy); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
-    float const getpfChgIso02WrtVtx( const edm::Ptr<reco::Vertex>& vtx, bool lazy=false ) const { return findVertexFloat(vtx,pfChgIso02_,lazy); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
-    float const getpfChgIsoWrtWorstVtx04() const {return pfChgIsoWrtWorstVtx04_;};
-    float const getpfChgIsoWrtWorstVtx03() const {return pfChgIsoWrtWorstVtx03_;};
-    float const getpfChgIsoWrtChosenVtx02() const {return pfChgIsoWrtChosenVtx02_;};
-    float const getpfChgIsoWrtChosenVtx03() const {return pfChgIsoWrtChosenVtx03_;};
-    float const getESEffSigmaRR() const {return ESEffSigmaRR_;};
+    float const sipip() const {return sipip_;};
+    float const sieip() const {return sieip_;};
+    float const e2nd() const {return e2nd_;};
+    float const e2x5right() const {return e2x5right_;};
+    float const e2x5left() const {return e2x5left_;};
+    float const e2x5top() const {return e2x5top_;};
+    float const e2x5bottom() const {return e2x5bottom_;};
+    float const e2x5max() const {return e2x5max_;};
+    float const eright() const {return eright_;};
+    float const eleft() const {return eleft_;};
+    float const etop() const {return etop_;};
+    float const ebottom() const {return ebottom_;};
+    float const e1x3() const {return e1x3_;};
+    float const s4() const {return S4_;};   
+    float const pfPhoIso04() const {return pfPhoIso04_;};   
+    float const pfPhoIso03() const {return pfPhoIso03_;};   
+    float const pfNeutIso04() const {return pfNeutIso04_;};
+    float const pfNeutIso03() const {return pfNeutIso03_;};
+    std::map<edm::Ptr<reco::Vertex>,float> const pfChgIso04() const {return pfChgIso04_;};
+    std::map<edm::Ptr<reco::Vertex>,float> const pfChgIso03() const {return pfChgIso03_;};
+    std::map<edm::Ptr<reco::Vertex>,float> const pfChgIso02() const {return pfChgIso02_;};
+    float const pfChgIso04WrtVtx( const edm::Ptr<reco::Vertex>& vtx, bool lazy=false ) const { return findVertexFloat(vtx,pfChgIso04_,lazy); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
+    float const pfChgIso03WrtVtx( const edm::Ptr<reco::Vertex>& vtx, bool lazy=false ) const { return findVertexFloat(vtx,pfChgIso03_,lazy); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
+    float const pfChgIso02WrtVtx( const edm::Ptr<reco::Vertex>& vtx, bool lazy=false ) const { return findVertexFloat(vtx,pfChgIso02_,lazy); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
+    float const pfChgIsoWrtWorstVtx04() const {return pfChgIsoWrtWorstVtx04_;};
+    float const pfChgIsoWrtWorstVtx03() const {return pfChgIsoWrtWorstVtx03_;};
+    float const pfChgIsoWrtChosenVtx02() const {return pfChgIsoWrtChosenVtx02_;};
+    float const pfChgIsoWrtChosenVtx03() const {return pfChgIsoWrtChosenVtx03_;};
+    float const esEffSigmaRR() const {return ESEffSigmaRR_;};
 
     bool hasEnergyAtStep(std::string key) const;
-    float const getEnergyAtStep(std::string key) const;
-    float const getSigEOverE() const { return sigEOverE_; };
+    float const energyAtStep(std::string key) const;
+    float const sigEOverE() const { return sigEOverE_; };
     
-    std::map<edm::Ptr<reco::Vertex>,float> const getPhoIdMvaD() const {return phoIdMvaD_;};
-    float const getPhoIdMvaDWrtVtx( const edm::Ptr<reco::Vertex>& vtx, bool lazy=false ) const { return findVertexFloat(vtx,phoIdMvaD_,lazy); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
+    std::map<edm::Ptr<reco::Vertex>,float> const phoIdMvaD() const {return phoIdMvaD_;};
+    float const phoIdMvaDWrtVtx( const edm::Ptr<reco::Vertex>& vtx, bool lazy=false ) const { return findVertexFloat(vtx,phoIdMvaD_,lazy); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
 
     void setMatchedGenPhoton ( const edm::Ptr<pat::PackedGenParticle> pgp) { addUserCand("matchedGenPhoton",pgp); };
     const pat::PackedGenParticle* const matchedGenPhoton() const { return dynamic_cast<const pat::PackedGenParticle*>(userCand("matchedGenPhoton").get()); };
@@ -99,7 +99,7 @@ namespace flashgg {
     bool  hasGenMatchType () const { return hasUserInt("genMatchType"); };
 
     void setPassElectronVeto( bool val) { passElecVeto_ = val; };
-    bool getPassElectronVeto() const { return passElecVeto_ ; };
+    bool passElectronVeto() const { return passElecVeto_ ; };
 
   private:
     float const findVertexFloat(const edm::Ptr<reco::Vertex>& vtx, const std::map<edm::Ptr<reco::Vertex>,float> & mp, bool lazy) const;

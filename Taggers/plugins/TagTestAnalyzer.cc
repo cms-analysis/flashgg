@@ -24,11 +24,11 @@
 #include "flashgg/DataFormats/interface/VBFTag.h"
 #include "flashgg/DataFormats/interface/DiPhotonUntaggedCategory.h"
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
-#include "flashgg/DataFormats/interface/TTHhadronicTag.h"
-#include "flashgg/DataFormats/interface/TTHleptonicTag.h"
-#include "flashgg/DataFormats/interface/VHtightTag.h"
-#include "flashgg/DataFormats/interface/VHlooseTag.h"
-#include "flashgg/DataFormats/interface/VHhadronicTag.h"
+#include "flashgg/DataFormats/interface/TTHHadronicTag.h"
+#include "flashgg/DataFormats/interface/TTHLeptonicTag.h"
+#include "flashgg/DataFormats/interface/VHTightTag.h"
+#include "flashgg/DataFormats/interface/VHLooseTag.h"
+#include "flashgg/DataFormats/interface/VHHadronicTag.h"
 
 using namespace std;
 using namespace edm;
@@ -95,58 +95,58 @@ namespace flashgg {
 
 			const	DiPhotonUntaggedCategory *untagged = dynamic_cast<const DiPhotonUntaggedCategory*>(chosenTag);
 			if(untagged != NULL) {
-				std::cout << "[UNTAGGED] category " << untagged->getCategoryNumber() << std::endl;
+				std::cout << "[UNTAGGED] category " << untagged->categoryNumber() << std::endl;
 			}
 
 			const	VBFTag *vbftag = dynamic_cast<const VBFTag*>(chosenTag);
 			if(vbftag != NULL) {
-			  std::cout << "[VBF] Category " << vbftag->getCategoryNumber() << " with lead jet eta "
+			  std::cout << "[VBF] Category " << vbftag->categoryNumber() << " with lead jet eta "
 				    << vbftag->leadingJet().pt() << " and sublead jet eta " << vbftag->subLeadingJet().pt() << std::endl;
 			}
 
-	                const   TTHhadronicTag *tthhadronictag = dynamic_cast<const TTHhadronicTag*>(chosenTag);
+	                const   TTHHadronicTag *tthhadronictag = dynamic_cast<const TTHHadronicTag*>(chosenTag);
         	        if(tthhadronictag != NULL) {
-			  std::cout << "[TTHhadronic] Category " << tthhadronictag->getCategoryNumber() 
-				    << " with NJet=" << tthhadronictag->getJetVector().size()
-				    << " and NBLoose= " << tthhadronictag->getNBLoose() 
-				    << " and NBMedium= "<< tthhadronictag->getNBMedium()
+			  std::cout << "[TTHhadronic] Category " << tthhadronictag->categoryNumber() 
+				    << " with NJet=" << tthhadronictag->jetVector().size()
+				    << " and NBLoose= " << tthhadronictag->nBLoose() 
+				    << " and NBMedium= "<< tthhadronictag->nBMedium()
 				    << std::endl;
 	                }
 
-	                const   TTHleptonicTag *tthleptonictag = dynamic_cast<const TTHleptonicTag*>(chosenTag);
+	                const   TTHLeptonicTag *tthleptonictag = dynamic_cast<const TTHLeptonicTag*>(chosenTag);
         	        if(tthleptonictag != NULL) {
-			  std::cout << "[TTHleptonic] Category " << tthleptonictag->getCategoryNumber() 
-				    << " nelectrons=" << tthleptonictag->getElectrons().size() 
-				    << " nmuons=" << tthleptonictag->getMuons().size() 
+			  std::cout << "[TTHleptonic] Category " << tthleptonictag->categoryNumber() 
+				    << " nelectrons=" << tthleptonictag->electrons().size() 
+				    << " nmuons=" << tthleptonictag->muons().size() 
 				    << std::endl;
 			}
 
-			const   VHtightTag *vhtighttag = dynamic_cast<const VHtightTag*>(chosenTag);
+			const   VHTightTag *vhtighttag = dynamic_cast<const VHTightTag*>(chosenTag);
 			if(vhtighttag != NULL) {
-				std::cout << "[VHtight] Category " << vhtighttag->getCategoryNumber() 
-					  << " nmuons=" << vhtighttag->getMuons().size() 
+				std::cout << "[VHtight] Category " << vhtighttag->categoryNumber() 
+					  << " nmuons=" << vhtighttag->muons().size() 
 					  << std::endl;
 			}
 
-                	const   VHlooseTag *vhloosetag = dynamic_cast<const VHlooseTag*>(chosenTag);
+                	const   VHLooseTag *vhloosetag = dynamic_cast<const VHLooseTag*>(chosenTag);
 			if(vhloosetag != NULL) {
-			std::cout << "[VHloose] Category " << vhloosetag->getCategoryNumber() 
-				  << " nmuons=" << vhloosetag->getMuons().size() 
+			std::cout << "[VHloose] Category " << vhloosetag->categoryNumber() 
+				  << " nmuons=" << vhloosetag->muons().size() 
 				  << std::endl;
 			}
 
-			const   VHhadronicTag *vhhadronictag = dynamic_cast<const VHhadronicTag*>(chosenTag);
+			const   VHHadronicTag *vhhadronictag = dynamic_cast<const VHHadronicTag*>(chosenTag);
 			if(vhhadronictag != NULL) {
-			  std::cout << "[VHhadronic] Category "    << vhhadronictag->getCategoryNumber()
-				    << " with leadingJet    pt = " << vhhadronictag->getLeadingJet()->pt()
-				    << " and  subleadingJet pt = " << vhhadronictag->getSubLeadingJet()->pt()
+			  std::cout << "[VHhadronic] Category "    << vhhadronictag->categoryNumber()
+				    << " with leadingJet    pt = " << vhhadronictag->leadingJet()->pt()
+				    << " and  subleadingJet pt = " << vhhadronictag->subLeadingJet()->pt()
 				    << std::endl;
 			}
 
 			// IMPORTANT: All future Tags must be added in the way of untagged and vbftag.	
 
 			if (untagged == NULL && vbftag == NULL && tthhadronictag == NULL && tthleptonictag == NULL && vhtighttag == NULL && vhloosetag == NULL && vhhadronictag==NULL) {
-				std::cout << "[FAILED TO CONVERT TAG] with SumPt " << chosenTag->getSumPt() << std::endl;
+				std::cout << "[FAILED TO CONVERT TAG] with SumPt " << chosenTag->sumPt() << std::endl;
 			}
 
 		} else { //case where TagSorter[0] doesn't exist

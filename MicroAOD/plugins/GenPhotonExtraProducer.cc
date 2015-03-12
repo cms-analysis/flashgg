@@ -51,7 +51,7 @@ namespace flashgg {
 
 	    flashgg::GenPhotonExtra extra(genPho);
 	    extra.setType(PhotonMCUtils::determineMatchType(*genPho));
-	    extra.setGenIso(PhotonMCUtils::getIsoSum(*genPho, *genParticles, isoConeSize_));
+	    extra.setGenIso(PhotonMCUtils::isoSum(*genPho, *genParticles, isoConeSize_));
 	    extra.setFrixioneIso(PhotonMCUtils::frixioneIso(*genPho, *genParticles, isoConeSize_, epsilon0_, n0_));
 	    
 	    extraColl->push_back(extra);

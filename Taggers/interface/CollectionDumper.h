@@ -104,9 +104,9 @@ namespace flashgg {
 		
 		
 	protected:
-		double getEventWeight(const edm::EventBase& event);
+		double eventWeight(const edm::EventBase& event);
 		
-		/// float getEventWeight(const edm::EventBase& event);
+		/// float eventWeight(const edm::EventBase& event);
 		edm::InputTag src_, genInfo_;
 		std::string processId_;
 		double lumiWeight_;
@@ -224,7 +224,7 @@ namespace flashgg {
 	}
 	
 	template<class C, class T, class U>
-	double CollectionDumper<C,T,U>::getEventWeight(const edm::EventBase& event)
+	double CollectionDumper<C,T,U>::eventWeight(const edm::EventBase& event)
 	{
 		// FIMXE per-event weight(s)
 		return lumiWeight_;
@@ -237,7 +237,7 @@ namespace flashgg {
 		event.getByLabel(src_,collectionH);
 		const auto & collection = *collectionH;
 		
-		weight_ = getEventWeight(event);
+		weight_ = eventWeight(event);
 		
 		if(globalVarsDumper_) { globalVarsDumper_->fill(event); }
 		

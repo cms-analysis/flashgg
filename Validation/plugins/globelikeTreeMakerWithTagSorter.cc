@@ -35,8 +35,8 @@
 #include "flashgg/DataFormats/interface/VBFTag.h"
 #include "flashgg/DataFormats/interface/DiPhotonUntaggedCategory.h"
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
-#include "flashgg/DataFormats/interface/TTHhadronicTag.h"
-#include "flashgg/DataFormats/interface/TTHleptonicTag.h"
+#include "flashgg/DataFormats/interface/TTHHadronicTag.h"
+#include "flashgg/DataFormats/interface/TTHLeptonicTag.h"
 
 
 #include "TMath.h"
@@ -291,47 +291,47 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 
 		const flashgg::DiPhotonTagBase* chosenTag = &*(TagSorter.product()->begin());
 
-		candIndex = (chosenTag->getDiPhotonIndex()); //should exist regardless of tag type.
+		candIndex = (chosenTag->diPhotonIndex()); //should exist regardless of tag type.
 
 		const	DiPhotonUntaggedCategory *untagged = dynamic_cast<const DiPhotonUntaggedCategory*>(chosenTag);
 
 		//if(untagged == NULL) std::cout << "NOT UNTAGGED" <<std::endl;
 		if(untagged != NULL) {
-			std::cout << "[UNTAGGED] category " << untagged->getCategoryNumber() << std::endl;
-			flash_Untagged_Category= untagged->getCategoryNumber() ;
+			std::cout << "[UNTAGGED] category " << untagged->categoryNumber() << std::endl;
+			flash_Untagged_Category= untagged->categoryNumber() ;
 			//	hasTag=1;
 		}
 
 		const	VBFTag *vbftag = dynamic_cast<const VBFTag*>(chosenTag);
 		//if(vbftag == NULL) std::cout << "NOT VBF" <<std::endl;
 		if(vbftag != NULL) {
-			std::cout << "[VBF] Category " << vbftag->getCategoryNumber() <<std::endl;
-			flash_VBFTag_Category =vbftag->getCategoryNumber() ;
+			std::cout << "[VBF] Category " << vbftag->categoryNumber() <<std::endl;
+			flash_VBFTag_Category =vbftag->categoryNumber() ;
 			//	hasTag=1;
 			//	std::cout << "VBF lead Jet eta" <<vbftag->leadingJet().eta() <<std::endl; //debug variables to see if correct info is being saved...
 			//	std::cout << "VBF sublead Jet phi" <<vbftag->leadingJet().phi() <<std::endl;
 		}
 
-                const   TTHhadronicTag *tthhadronictag = dynamic_cast<const TTHhadronicTag*>(chosenTag);
+                const   TTHHadronicTag *tthhadronictag = dynamic_cast<const TTHHadronicTag*>(chosenTag);
                 //if(tthhadronictag == NULL) std::cout << "NOT TTHhadronic" <<std::endl;                                                                                                             
                 if(tthhadronictag != NULL) {
-		  std::cout << "[TTHhadronic] Category " << tthhadronictag->getCategoryNumber() <<std::endl;
+		  std::cout << "[TTHhadronic] Category " << tthhadronictag->categoryNumber() <<std::endl;
                 }
 
-                const   TTHleptonicTag *tthleptonictag = dynamic_cast<const TTHleptonicTag*>(chosenTag);
+                const   TTHLeptonicTag *tthleptonictag = dynamic_cast<const TTHLeptonicTag*>(chosenTag);
 		//if(tthleptonictag == NULL) std::cout << "NOT TTHleptonic" <<std::endl;                                                                                            
 
                 if(tthleptonictag != NULL) {
-		  std::cout << "[TTHleptonic] Category " << tthleptonictag->getCategoryNumber() 
-			    << " nelectrons=" << tthleptonictag->getElectrons().size() 
-			    << " nmuons=" << tthleptonictag->getMuons().size() 
+		  std::cout << "[TTHleptonic] Category " << tthleptonictag->categoryNumber() 
+			    << " nelectrons=" << tthleptonictag->electrons().size() 
+			    << " nmuons=" << tthleptonictag->muons().size() 
 			    << std::endl;
 		}
 
 		// IMPORTANT: All future Tags must be added in the way of untagged and vbftag.	
 
 		if (untagged == NULL && vbftag == NULL && tthhadronictag == NULL && tthleptonictag == NULL ) {
-		  std::cout << "[FAILED TO CONVERT TAG] with SumPt " << chosenTag->getSumPt() << std::endl;
+		  std::cout << "[FAILED TO CONVERT TAG] with SumPt " << chosenTag->sumPt() << std::endl;
 		}
 
 
@@ -541,28 +541,28 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		r91 = diPhotonPointers[candIndex]->leadingPhoton()->r9();
 		sieie1 = diPhotonPointers[candIndex]->leadingPhoton()->sigmaIetaIeta();
 		hoe1 = diPhotonPointers[candIndex]->leadingPhoton()->hadronicOverEm();
-		sigmaEoE1 = diPhotonPointers[candIndex]->leadingPhoton()->getSigEOverE();
+		sigmaEoE1 = diPhotonPointers[candIndex]->leadingPhoton()->sigEOverE();
 		ptoM1 = diPhotonPointers[candIndex]->leadingPhoton()->pt()/mass;
 		//---> Isolation variables, unsure if correct methods used...
-		chiso1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfChgIso03WrtVtx(diPhotonPointers[candIndex]->getVertex());
-		chisow1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfChgIsoWrtWorstVtx04();//no flashgg method for come radius 04... ok to use 0.3?
-		phoiso1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfPhoIso03();
-		phoiso041 = diPhotonPointers[candIndex]->leadingPhoton()->getpfPhoIso04(); //unsure of default radius?
+		chiso1 = diPhotonPointers[candIndex]->leadingPhoton()->pfChgIso03WrtVtx(diPhotonPointers[candIndex]->vtx());
+		chisow1 = diPhotonPointers[candIndex]->leadingPhoton()->pfChgIsoWrtWorstVtx04();//no flashgg method for come radius 04... ok to use 0.3?
+		phoiso1 = diPhotonPointers[candIndex]->leadingPhoton()->pfPhoIso03();
+		phoiso041 = diPhotonPointers[candIndex]->leadingPhoton()->pfPhoIso04(); //unsure of default radius?
 		ecaliso03_1 = diPhotonPointers[candIndex]->leadingPhoton()->ecalRecHitSumEtConeDR03();
 		hcaliso03_1 = diPhotonPointers[candIndex]->leadingPhoton()->hcalTowerSumEtConeDR03();
 		trkiso03_1 = diPhotonPointers[candIndex]->leadingPhoton()->trkSumPtHollowConeDR03();
-		pfchiso2_1 = diPhotonPointers[candIndex]->leadingPhoton()->getpfChgIso02WrtVtx(diPhotonPointers[candIndex]->getVertex());
+		pfchiso2_1 = diPhotonPointers[candIndex]->leadingPhoton()->pfChgIso02WrtVtx(diPhotonPointers[candIndex]->vtx());
 		isorv1 = (chiso1 + phoiso1 + 2.5 - rho*0.09)*(50./et1); //used in cic analysis, might not be useful for us but we have what we need in hand so adding anyway.
 		isowv1 = ( phoiso1 + chisow1 + 2.5 - rho*0.23)*(50./et1);
 
 		isEB1 = diPhotonPointers[candIndex]->leadingPhoton()->isEB();
-		sieip1 = diPhotonPointers[candIndex]->leadingPhoton()->getSieip();
+		sieip1 = diPhotonPointers[candIndex]->leadingPhoton()->sieip();
 		etawidth1 = diPhotonPointers[candIndex]->leadingPhoton()->superCluster()->etaWidth();
 		phiwidth1 = diPhotonPointers[candIndex]->leadingPhoton()->superCluster()->phiWidth();
 		regrerr1 = sigmaEoE1 * diPhotonPointers[candIndex]->leadingPhoton()->energy();
-		idmva1 = diPhotonPointers[candIndex]->leadingPhoton()->getPhoIdMvaDWrtVtx(diPhotonPointers[candIndex]->getVertex());
-		s4ratio1 =  diPhotonPointers[candIndex]->leadingPhoton()->getS4();
-		effSigma1 =  diPhotonPointers[candIndex]->leadingPhoton()->getESEffSigmaRR();
+		idmva1 = diPhotonPointers[candIndex]->leadingPhoton()->phoIdMvaDWrtVtx(diPhotonPointers[candIndex]->vtx());
+		s4ratio1 =  diPhotonPointers[candIndex]->leadingPhoton()->s4();
+		effSigma1 =  diPhotonPointers[candIndex]->leadingPhoton()->esEffSigmaRR();
 		scraw1 =  diPhotonPointers[candIndex]->leadingPhoton()->superCluster()->rawEnergy();
 
 		//PHOTON 2
@@ -572,40 +572,40 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		r92 = diPhotonPointers[candIndex]->subLeadingPhoton()->r9();
 		sieie2 = diPhotonPointers[candIndex]->subLeadingPhoton()->sigmaIetaIeta();
 		hoe2 = diPhotonPointers[candIndex]->subLeadingPhoton()->hadronicOverEm();
-		sigmaEoE2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getSigEOverE();
+		sigmaEoE2 = diPhotonPointers[candIndex]->subLeadingPhoton()->sigEOverE();
 		ptoM2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pt()/mass;
 		isEB2 = diPhotonPointers[candIndex]->subLeadingPhoton()->isEB();
 		//---> Isolation variables, unsure if correct methods used...
 		//Methods from flashgg::photon
-		chiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfChgIso03WrtVtx(diPhotonPointers[candIndex]->getVertex());
-		chisow2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfChgIsoWrtWorstVtx04();//no flashgg method for come radius 04... ok to use 0.3?
-		phoiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfPhoIso03();
+		chiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pfChgIso03WrtVtx(diPhotonPointers[candIndex]->vtx());
+		chisow2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pfChgIsoWrtWorstVtx04();//no flashgg method for come radius 04... ok to use 0.3?
+		phoiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pfPhoIso03();
 
 
-		phoiso042 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfPhoIso04(); 
+		phoiso042 = diPhotonPointers[candIndex]->subLeadingPhoton()->pfPhoIso04(); 
 		ecaliso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->ecalRecHitSumEtConeDR03();
 		hcaliso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->hcalTowerSumEtConeDR03();
 		trkiso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->trkSumPtHollowConeDR03();
-		pfchiso2_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getpfChgIso02WrtVtx(diPhotonPointers[candIndex]->getVertex());
+		pfchiso2_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pfChgIso02WrtVtx(diPhotonPointers[candIndex]->vtx());
 		isorv2 = (chiso2 + phoiso2 + 2.5 - rho*0.09)*(50./et2);
 		isowv2 = ( phoiso2 + chisow2 + 2.5 - rho*0.23)*(50./et2);
 
-		sieip2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getSieip();
+		sieip2 = diPhotonPointers[candIndex]->subLeadingPhoton()->sieip();
 		etawidth2 = diPhotonPointers[candIndex]->subLeadingPhoton()->superCluster()->etaWidth();
 		phiwidth2 = diPhotonPointers[candIndex]->subLeadingPhoton()->superCluster()->phiWidth();
 		regrerr2 = sigmaEoE1 * diPhotonPointers[candIndex]->subLeadingPhoton()->energy();
-		idmva2 = diPhotonPointers[candIndex]->subLeadingPhoton()->getPhoIdMvaDWrtVtx(diPhotonPointers[candIndex]->getVertex());
-		s4ratio2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->getS4();
-		effSigma2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->getESEffSigmaRR();
+		idmva2 = diPhotonPointers[candIndex]->subLeadingPhoton()->phoIdMvaDWrtVtx(diPhotonPointers[candIndex]->vtx());
+		s4ratio2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->s4();
+		effSigma2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->esEffSigmaRR();
 		scraw2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->superCluster()->rawEnergy();
 
 		//-----> Cos of photon delta phi
 		cosphi = cos(diPhotonPointers[candIndex]->leadingPhoton()->phi()- diPhotonPointers[candIndex]->subLeadingPhoton()->phi());
 
 		//-------> vtx info
-		vtx_x= diPhotonPointers[candIndex]->getVertex()->x();
-		vtx_y= diPhotonPointers[candIndex]->getVertex()->y();
-		vtx_z= diPhotonPointers[candIndex]->getVertex()->z();
+		vtx_x= diPhotonPointers[candIndex]->vtx()->x();
+		vtx_y= diPhotonPointers[candIndex]->vtx()->y();
+		vtx_z= diPhotonPointers[candIndex]->vtx()->z();
 
 		//------>VBF information
 		dRphojet1 = -1;
@@ -656,14 +656,14 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		sigmaMrvoM = chosenTag->diPhotonMVA().sigmarv;
 		sigmaMwvoM =chosenTag->diPhotonMVA().sigmawv;
 		vtxprob =chosenTag->diPhotonMVA().vtxprob;
-		ptbal = diPhotonPointers[candIndex]->getPtBal(0);
-		ptasym = diPhotonPointers[candIndex]->getPtAsym(0);
-		logspt2 = diPhotonPointers[candIndex]->getLogSumPt2(0);
-		p2conv = diPhotonPointers[candIndex]->getPullConv(0); 
-		nconv = diPhotonPointers[candIndex]->getNConv(0); 
-		vtxmva = -1.*diPhotonPointers[candIndex]->getVtxProbMVA();
-		vtxdz = diPhotonPointers[candIndex]->getDZ1(); 
-		dipho_mva = chosenTag->diPhotonMVA().getMVAValue();
+		ptbal = diPhotonPointers[candIndex]->ptBal(0);
+		ptasym = diPhotonPointers[candIndex]->ptAsym(0);
+		logspt2 = diPhotonPointers[candIndex]->logSumPt2(0);
+		p2conv = diPhotonPointers[candIndex]->pullConv(0); 
+		nconv = diPhotonPointers[candIndex]->nConv(0); 
+		vtxmva = -1.*diPhotonPointers[candIndex]->vtxProbMVA();
+		vtxdz = diPhotonPointers[candIndex]->dZ1(); 
+		dipho_mva = chosenTag->diPhotonMVA().mvaValue();
 
 		dipho_mva_cat = flash_Untagged_Category;		
 

@@ -19,18 +19,18 @@ namespace flashgg {
 	  SinglePhotonView(dipho_ptr_type dipho, int daughter) : edmdipho_(dipho), daughter_(daughter), pho_(0), dipho_(0) {}
 	  SinglePhotonView(const DiPhotonCandidate * dipho, int daughter) : daughter_(daughter), pho_(0), dipho_(dipho) {}
 	  
-	  const cand_type& photon() const { getDaughterMaybe(); return *pho_; }
+	  const cand_type& photon() const { daughterMaybe(); return *pho_; }
 	  
-	  const cand_type* operator->() const { getDaughterMaybe(); return pho_; }
+	  const cand_type* operator->() const { daughterMaybe(); return pho_; }
 	  
-	  float pfChIso02WrtChosenVtx() const { return photon().getpfChgIso02WrtVtx(dipho_->getVertex()); }
-	  float pfChIso03WrtChosenVtx() const { return photon().getpfChgIso03WrtVtx(dipho_->getVertex()); }
-	  float pfChIso04WrtChosenVtx() const { return photon().getpfChgIso04WrtVtx(dipho_->getVertex()); }
+	  float pfChIso02WrtChosenVtx() const { return photon().pfChgIso02WrtVtx(dipho_->vtx()); }
+	  float pfChIso03WrtChosenVtx() const { return photon().pfChgIso03WrtVtx(dipho_->vtx()); }
+	  float pfChIso04WrtChosenVtx() const { return photon().pfChgIso04WrtVtx(dipho_->vtx()); }
 	  					       
-	  float phoIdMvaWrtChosenVtx() const { return photon().getPhoIdMvaDWrtVtx(dipho_->getVertex()); }
+	  float phoIdMvaWrtChosenVtx() const { return photon().phoIdMvaDWrtVtx(dipho_->vtx()); }
 	  
   private:
-	  void getDaughterMaybe() const;
+	  void daughterMaybe() const;
 	  
 	  dipho_ptr_type edmdipho_;
 	  int daughter_;

@@ -9,7 +9,7 @@ namespace flashgg {
 	class PhotonMCUtils {
 		
 	public:
-		template<class GenT, class GenCollT> static float getIsoSum(const GenT & genp, const GenCollT & coll, float dRMax) {
+		template<class GenT, class GenCollT> static float isoSum(const GenT & genp, const GenCollT & coll, float dRMax) {
 			float sum = 0.;
 			for(auto & part : coll) {
 				if( reco::deltaR(genp,part) >= dRMax || part.p4() == genp.p4() ) { continue; }
