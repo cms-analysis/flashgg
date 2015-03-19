@@ -50,11 +50,12 @@ namespace flashgg {
 		RooAbsData * dataset_;
 		TTree * tree_;
 		GlobalVariablesDumper * globalVarsDumper_;
+                bool hbooked_;
 	};
 	
 	template<class F, class O>
 	CategoryDumper<F,O>::CategoryDumper(const std::string & name, const edm::ParameterSet & cfg, GlobalVariablesDumper * dumper):
-		dataset_(0), tree_(0), globalVarsDumper_(dumper)
+		dataset_(0), tree_(0), globalVarsDumper_(dumper), hbooked_(false)
 	{
 		using namespace std;
 		name_ = name;
@@ -126,6 +127,7 @@ namespace flashgg {
 				th1 = fs.make<TH1F>(name.c_str(),name.c_str(),xbins.size()-1,&xbins[0]);
 			}
 		}
+                hbooked_ = true;
 	}
 
 	template<class F, class O>
@@ -191,16 +193,18 @@ namespace flashgg {
 		}
 		if( tree_ ) { tree_->Fill(); }
 		if( dataset_ ) { dataset_->add(rooVars_,weight_); }
-		for( auto & histo : histograms_ ) {
-			auto & th1 = *std::get<5>(histo);
-			auto xv = std::get<1>(histo);
-			auto yv = std::get<3>(histo);
-			if( yv >= 0 ) {
-				dynamic_cast<TH2&>(th1).Fill( std::get<0>(variables_[xv]), std::get<0>(variables_[yv]), weight_ );
-			} else {
-				th1.Fill( std::get<0>(variables_[xv]), weight_ );
-			}
-		}	
+                if (hbooked_) {
+                        for( auto & histo : histograms_ ) {
+                                auto & th1 = *std::get<5>(histo);
+                                auto xv = std::get<1>(histo);
+                                auto yv = std::get<3>(histo);
+                                if( yv >= 0 ) {
+                                        dynamic_cast<TH2&>(th1).Fill( std::get<0>(variables_[xv]), std::get<0>(variables_[yv]), weight_ );
+                                } else {
+                                        th1.Fill( std::get<0>(variables_[xv]), weight_ );
+                                }
+                        }
+                }
 	}
 
 }
