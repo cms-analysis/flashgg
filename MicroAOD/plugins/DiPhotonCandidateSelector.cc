@@ -22,18 +22,13 @@
 #include "CommonTools/UtilAlgos/interface/ObjectSelectorStream.h"
 #include "CommonTools/UtilAlgos/interface/SingleElementCollectionSelectorPlusEvent.h"
 
+#include "flashgg/MicroAOD/interface/PerPhotonMVADiPhotonPostProcess.h"
+
 typedef SingleObjectSelector<
 	edm::View<flashgg::DiPhotonCandidate>,
 	StringCutObjectSelector<flashgg::DiPhotonCandidate, true>,
 	std::vector<flashgg::DiPhotonCandidate>
        > DiPhotonCandidateSelector;
-
-/// typedef SingleObjectSelector<
-/// 	edm::View<flashgg::DiPhotonCandidate>,
-/// 	flashgg::CutBasedDiPhotonObjectSelector,
-/// 	std::vector<flashgg::DiPhotonCandidate>
-//       > GenericDiPhotonCandidateSelector;
-
 
 typedef ObjectSelectorStream<
 	SingleElementCollectionSelectorPlusEvent<

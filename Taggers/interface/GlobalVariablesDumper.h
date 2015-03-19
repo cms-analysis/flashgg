@@ -5,27 +5,20 @@
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
+#include "flashgg/MicroAOD/interface/GlobalVariablesComputer.h"
+
 class TTree;
 
 namespace flashgg {
 	
-	class GlobalVariablesDumper {
+	class GlobalVariablesDumper : public GlobalVariablesComputer {
 	public:
-		struct DumpCache {
-			float rho;
-			int   nvtx;
-		};
-		
 		GlobalVariablesDumper(const edm::ParameterSet & cfg);
 		~GlobalVariablesDumper();
 		
 		void bookTreeVariables(TTree * target, const std::map<std::string,std::string> & replacements);
-
-		void fill(const edm::EventBase & event);
 		
-	private:
-		edm::InputTag rhoTag_, vtxTag_;
-		DumpCache cache_;
+		void fill(const edm::EventBase & event);
 	};	
 
 }
