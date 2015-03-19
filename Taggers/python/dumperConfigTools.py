@@ -1,13 +1,13 @@
 import FWCore.ParameterSet.Config as cms
 
 # -----------------------------------------------------------------------
-def addCategories(pset,cats,variables,histograms):
+def addCategories(pset,cats,variables,histograms,mvas=None):
     
     for cat in cats:
-        addCategory(pset,*cat,variables=variables,histograms=histograms)
+        addCategory(pset,*cat,variables=variables,histograms=histograms,mvas=mvas)
 
 # -----------------------------------------------------------------------
-def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[]):
+def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mvas=None):
     
     if subcats >= 0:
         catDef = cms.PSet(label=cms.string(label),
@@ -18,6 +18,9 @@ def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[]):
         
         addVariables( catDef.variables, variables )
         addHistograms( catDef.histograms, histograms  )
+        if mvas: 
+            catDef.mvas = cms.VPSet()
+            addMVAs( catDef.mvas, mvas  )
         
         pset.categories.append(catDef)
 
@@ -27,10 +30,13 @@ def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[]):
             cb.name = cms.untracked.string(label)
         pset.classifierCfg.categories.append(cb)
 
+    
 # -----------------------------------------------------------------------
 def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
     if ":=" in expr:
-        name,expr=[ v.rstrip(" ").lstrip(" ") for v in expr.split(":=") ]
+        toks=[ v.rstrip(" ").lstrip(" ") for v in expr.split(":=") ]
+        ## print toks
+        name,expr=toks
         
     if not name:
         name = expr.replace(".","_").replace("get","")
@@ -50,6 +56,7 @@ def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
         pset.vmin = cms.untracked.double(vmin)
         pset.vmax = cms.untracked.double(vmax)
     vpset.append(pset)
+    
     
 # -----------------------------------------------------------------------
 def addVariables(vpset,variables):
@@ -125,15 +132,28 @@ def addHistogram(vpset,histo):
             pset.ymax=cms.untracked.double(ybins[1])
 
     vpset.append( pset )
-
-        
-        
+               
 
 # -----------------------------------------------------------------------
 def addHistograms(vpset,histograms):
     
     for histo in histograms:
         addHistogram( vpset, histo )
+
+# -----------------------------------------------------------------------
+def addMVA(vpset,name,variables,classifier,weights):
+    
+    addVariable(vpset,name)
+    pset=vpset[-1]
+    pset.variables=cms.VPSet()
+    pset.classifier=cms.string(classifier)
+    pset.weights=cms.FileInPath(weights)
+    addVariables(pset.variables,variables)
+    
+# -----------------------------------------------------------------------
+def addMVAs(vpset,mvas):
+    for mva in mvas:
+        addMVA(vpset,*mva)
 
 # -----------------------------------------------------------------------
 def mkVarList(inp):
