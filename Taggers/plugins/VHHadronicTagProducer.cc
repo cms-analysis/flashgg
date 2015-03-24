@@ -139,7 +139,7 @@ namespace flashgg {
 
 	if(mvares->result < diphoMVAThreshold_) continue; 
 
-	edm::PtrVector<flashgg::Jet> goodJets;
+	std::vector<edm::Ptr<flashgg::Jet> > goodJets;
 
 	for( size_t ijet = 0; ijet < theJets->size(); ijet++ ) {
 

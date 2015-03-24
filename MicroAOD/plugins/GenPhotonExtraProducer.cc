@@ -49,10 +49,10 @@ namespace flashgg {
    // auto & genPhotonPointers = genPhotons->ptrVector();
    // for (auto & genPho : genPhotons ) {
 		for (unsigned int i =0; i< genPhotons->size() ; i++){
-	    flashgg::GenPhotonExtra extra(genPhotons->ptrAt(i));
-	    extra.setType(PhotonMCUtils::determineMatchType(genPhotons->ptrAt(i)));
-	    extra.setGenIso(PhotonMCUtils::isoSum(genPhotons->ptrAt(i), *genParticles, isoConeSize_));
-	    extra.setFrixioneIso(PhotonMCUtils::frixioneIso(genPhotons->ptrAt(i), *genParticles, isoConeSize_, epsilon0_, n0_));
+	    flashgg::GenPhotonExtra extra((genPhotons->ptrAt(i)));
+	    extra.setType(PhotonMCUtils::determineMatchType(*(genPhotons->ptrAt(i).get())));
+	    extra.setGenIso(PhotonMCUtils::isoSum(*(genPhotons->ptrAt(i).get()), *genParticles, isoConeSize_));
+	    extra.setFrixioneIso(PhotonMCUtils::frixioneIso(*(genPhotons->ptrAt(i).get()), *genParticles, isoConeSize_, epsilon0_, n0_));
 	    
 	    extraColl->push_back(extra);
     }

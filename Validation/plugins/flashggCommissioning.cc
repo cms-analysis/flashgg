@@ -201,7 +201,7 @@ flashggCommissioning::analyze(const edm::Event& iEvent, const edm::EventSetup& i
     for (unsigned int j = 0 ; j < jets->size() ; j++) {
       std::cout << " For jet " << j << ", vertex 0 the RMS  is " << jets->ptrAt(j)->rms(primaryVertices->ptrAt(0))
                 << " the betaStar is " << jets->ptrAt(j)->betaStar(primaryVertices->ptrAt(0))
-                << " and passesPuJetID is " << jets->ptrAt(j)->passesPuJetId(primaryVertices[0]) <<  std::endl;
+                << " and passesPuJetID is " << jets->ptrAt(j)->passesPuJetId(primaryVertices->ptrAt(0)) <<  std::endl;
     }
   }
 

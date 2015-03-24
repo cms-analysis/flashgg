@@ -68,7 +68,7 @@ namespace flashgg {
 		
 		int nCand = maxCandidates_;
 		//for(auto & dipho : diPhotons) {
-		for (unisgned int i =0; i<diPhotons->size(); i++){	
+		for (unsigned int i =0; i<diPhotons->size(); i++){	
 			
 			for(unsigned int iv=0; iv<(diPhotons->ptrAt(i))->nVtxInfoSize(); ++iv) {
 				vertexViews->push_back(SingleVertexView(diPhotons->ptrAt(i),iv));
