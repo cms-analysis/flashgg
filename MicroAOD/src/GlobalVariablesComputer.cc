@@ -1,9 +1,7 @@
-#include "flashgg/Taggers/interface/GlobalVariablesDumper.h"
+#include "flashgg/MicroAOD/interface/GlobalVariablesComputer.h"
 
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
-
-#include "TTree.h"
 
 using namespace edm;
 using namespace reco;
@@ -17,9 +15,6 @@ namespace flashgg {
 	{
 	}
 	
-	// GlobalVariablesComputer::~GlobalVariablesComputer()
-	// {}
-
 	float * GlobalVariablesComputer::addressOf(const std::string & varName)
 	{
 		if( varName == "rho" ) { return &cache_.rho; }
@@ -38,25 +33,4 @@ namespace flashgg {
 		cache_.rho = *rhoHandle;
 		cache_.nvtx = vertices->size();
 	}
-
-	GlobalVariablesDumper::GlobalVariablesDumper(const edm::ParameterSet & cfg) : 
-		GlobalVariablesComputer(cfg)
-	{}
-
-	
-	GlobalVariablesDumper::~GlobalVariablesDumper()
-	{}
-
-	void GlobalVariablesDumper::bookTreeVariables(TTree *tree, const std::map<std::string,std::string> & replacements)
-	{
-		tree->Branch("rho",&cache_.rho);
-		tree->Branch("nvtx",&cache_.nvtx);
-	}
-
-	void GlobalVariablesDumper::fill(const EventBase & evt)
-	{
-		update(evt);
-	}
-
-
 }

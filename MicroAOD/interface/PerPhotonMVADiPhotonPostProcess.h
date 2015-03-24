@@ -1,0 +1,35 @@
+#ifndef flashgg_PerPhotonMVADiPhotonComputer_h
+#define flashgg_PerPhotonMVADiPhotonComputer_h
+
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+
+#include "FWCore/Common/interface/EventBase.h"
+
+#include "flashgg/MicroAOD/interface/PhotonMVAComputer.h"
+
+#include <tuple>
+#include <vector>
+#include <map>
+
+namespace flashgg
+{
+	template<class OutputCollection> class PerPhotonMVADiPhotonPostProcess {
+
+	public:
+		PerPhotonMVADiPhotonPostProcess(const edm::ParameterSet & config, edm::ConsumesCollector && cc) : computer_(config) {};
+		
+		template<class EdmFilter> void init( EdmFilter & ) { }
+		
+		void process( edm::OrphanHandle<OutputCollection> output, edm::EventBase & event) {
+			computer_.update(event);
+			for( auto & dipho : *output ) {
+				computer_.fill(dipho.getLeadingPhoton());
+				computer_.fill(dipho.getSubLeadingPhoton());
+			}
+		};
+	private:
+		PhotonMVAComputer computer_;
+	};
+}
+
+#endif // flashgg_PerPhotonMVADiPhotonComputer_h

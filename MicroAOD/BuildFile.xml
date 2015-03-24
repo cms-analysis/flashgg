@@ -8,6 +8,7 @@
 <use name="FWCore/Utilities"/>
 <use name="CommonTools/Utils"/>
 <use name="roottmva"/>
+<!-- Flags CXXFLAGS="-ggdb"/ -->
 <export>
   <lib   name="1"/>
 </export>

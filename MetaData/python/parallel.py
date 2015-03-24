@@ -12,51 +12,61 @@ class LsfJob:
     """ a thread to run bsub and wait until it completes """
 
     #----------------------------------------
-    def __init__(self, lsfQueue, jobName=""):
+    def __init__(self, lsfQueue, jobName="", retry=5):
         """ @param cmd is the command to be executed inside the bsub script. Some CMSSW specific wrapper
             code will be added
         """
         self.lsfQueue = lsfQueue
         self.jobName = jobName
-    
+        self.retry=retry
+        
     def __str__(self):
         return "LsfJob: %s %s" % ( self.lsfQueue, self.jobName )
         
     #----------------------------------------
     def __call__(self,cmd):
+        
+        print cmd, "attempt", itry
+        
         bsubCmdParts = [ "bsub",
                          "-q " + self.lsfQueue,
                          "-K",  # bsub waits until job completes
                          ]
-
+        
         if( self.jobName ):
             bsubCmdParts.append("-J " + self.jobName)
             bsubCmdParts.append("-o %s.log" % self.jobName)
-
+        
         bsubCmd = " ".join(bsubCmdParts)
-
+        
         import subprocess
         lsf = subprocess.Popen(bsubCmd, shell=True, # bufsize=bufsize,
                                stdin=subprocess.PIPE,
                                close_fds=True)
         
         print >> lsf.stdin, "#!/bin/sh"
-
+        
         print >> lsf.stdin, "cd " + os.environ['CMSSW_BASE']
         print >> lsf.stdin, "eval `scram runtime -sh`"
         print >> lsf.stdin, "cd " + os.getcwd()
-
+        
         # the user command
         print >> lsf.stdin, cmd
         lsf.stdin.close()
         
         # wait for the job to complete
         self.exitStatus = lsf.wait()
-
-        if self.exitStatus != 0:
-            print "error running job",self.jobName
         
-        return self.exitStatus, ""
+        if self.exitStatus != 0:
+            print "error running job",self.jobName, self.exitStatus
+        
+        output = ""
+        if self.jobName:
+            with open("%s.log" % self.jobName) as lf:
+                output = lf.read()
+                lf.close()
+
+        return self.exitStatus, output
     
 class Wrap:
     def __init__(self, func, args, retqueue, runqueue):
@@ -130,7 +140,7 @@ class Parallel:
         ## print "ok"
         return cmd,args,ret
 
-    def wait(self):
+    def wait(self,handler=None):
         returns = []
         self.sem.acquire()
         njobs = self.njobs
@@ -139,10 +149,14 @@ class Parallel:
             print "Finished jobs: %d. Total jobs: %d" % (i, self.njobs)
             job, jobargs, ret = self.returned.get()
             if type(job) == str:
-                print "finished: %s %s" % ( job, " ".join(jobargs) )
-                for line in ret[1].split("\n"):
-                    print line
-            returns.append(ret)
+                print "finished: '%s' '%s'" % ( job, " ".join(jobargs) )
+                if not handler:
+                    for line in ret[1].split("\n"):
+                        print line
+            if handler:
+                handler.handleJobOutput(job, jobargs, ret)
+            else:
+                returns.append( (job,jobargs,ret) )
         
         self.sem.acquire()
         self.njobs -= njobs

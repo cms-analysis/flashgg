@@ -19,6 +19,9 @@ namespace flashgg {
     const flashgg::Photon* leadingPhoton() const;
     const flashgg::Photon* subLeadingPhoton() const;
 
+    flashgg::Photon & getLeadingPhoton();
+    flashgg::Photon & getSubLeadingPhoton();
+
     flashgg::SinglePhotonView leadingView() const;
     flashgg::SinglePhotonView subLeadingView() const;
 
