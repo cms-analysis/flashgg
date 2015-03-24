@@ -22,13 +22,14 @@ then
 fi
 
 echo
-echo "You should have checked out from flashgg. Renaming this to upstream for convenience of existing developers..."
+echo "You should have checked out from cms-analysis/flashgg. Renaming this to upstream for convenience of existing developers..."
 cd $CMSSW_BASE/src/flashgg
 git remote rename origin upstream
+GITHUBUSERNAME=`git config user.github`
 echo "Remember that:"
 echo "  * To get a branch you can commit to, do: git checkout -b my-informative-branchname"
-echo "  * YOU will need to add your own repo as a remote to push anything, e.g. by putting in yourusername here:"
-echo "      cd ${CMSSW_BASE}/src/flashgg ; git remote add origin git@github.com:yourusername/flashgg.git"
+echo "  * YOU will need to add your own repo as a remote to push anything, e.g. with this command (check your GitHub username!):"
+echo "      cd ${CMSSW_BASE}/src/flashgg ; git remote add origin git@github.com:${GITHUBUSERNAME}/flashgg.git"
 echo
 
 if ${SETUP_REMOTES} ; then
@@ -38,6 +39,7 @@ if ${SETUP_REMOTES} ; then
   git remote add camilocarrillo https://github.com/camilocarrillo/flashgg
   git remote add favaro https://github.com/favaro/flashgg
   git remote add fcouderc https://github.com/fcouderc/flashgg
+  git remote add ferriff https://github.com/ferriff/flashgg
   git remote add InnaKucher https://github.com/InnaKucher/flashgg
   git remote add ldcorpe https://github.com/ldcorpe/flashgg
   git remote add malcles https://github.com/malcles/flashgg
@@ -76,14 +78,9 @@ git cms-addpkg DataFormats/Common
 git cms-merge-topic musella:topic-weights-count
 
 echo
-echo "Setting up Photon Tool bugfix..."
-git cms-addpkg RecoEcal/EgammaCoreTools 
-git cherry-pick fd6b6bd88dc74d8f73299f395cc075aa89c8d701 
-
-echo
 echo "Setting up Conversion tools for pat electron..."
 git cms-addpkg RecoEgamma/EgammaTools
-git cms-merge-topic -u sethzenz:topic-conversion-tools-for-pat-ele
+git cms-merge-topic -u sethzenz:topic-conversion-tools-for-pat-ele-74x
 
 echo
 echo "Done with setup script! You still need to build!"
