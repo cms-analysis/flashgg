@@ -19,6 +19,14 @@ namespace flashgg {
 
         auto categories = cfg.getParameter<vector<edm::ParameterSet> >( "categories" );
 
+        if( cfg.exists( "ignore" ) ) {
+            ignoreCuts_ = cfg.getParameter<vector<int> >( "ignore" );
+        }
+        if( cfg.exists( "invert" ) ) {
+            invertCuts_ = cfg.getParameter<vector<int> >( "invert" );
+            invertNtimes_ = cfg.getParameter<int>( "invertNtimes" );
+        }
+
         for( auto &cat : categories ) {
             auto name = cat.getUntrackedParameter<string>( "name", Form( "cat%lu", selections_.size() ) );
 
@@ -29,15 +37,6 @@ namespace flashgg {
                 auto minval = var.getParameter<string>( "min" );
                 auto maxval = var.getParameter<string>( "max" );
                 auto rhocorr = var.getParameter<string>( "rhocorr" );
-
-                //// cout << minval << " " << maxval << " " << rhocorr << endl;
-                ////
-                //// functor_type aa(minval);
-                //// cout << "AA" << endl;
-                //// functor_type bb(maxval);
-                //// cout << "BB" << endl;
-                //// functor_type cc(rhocorr);
-                //// cout << "CC" << endl;
 
                 selval.push_back( make_tuple( functor_type( minval ), functor_type( maxval ), functor_type( rhocorr ) ) );
             }
@@ -54,22 +53,50 @@ namespace flashgg {
         rho_ = *rho;
         auto leadingPhoton = cand.leadingPhoton();
         auto subleadingPhoton = cand.subLeadingPhoton();
-        return pass( *leadingPhoton ) && pass( *subleadingPhoton );
+        bool passSelection = pass( *leadingPhoton ) && pass( *subleadingPhoton );
+        if( ! passSelection ) { return false; }
+        if( ! invertCuts_.empty() ) {
+            if( invertNtimes_ == 0 ) {
+                return passInverted( *leadingPhoton ) || passInverted( *subleadingPhoton );
+            } else if( invertNtimes_ == 1 ) {
+                return passInverted( *leadingPhoton ) ^ passInverted( *subleadingPhoton );
+            } else {
+                return passInverted( *leadingPhoton ) && passInverted( *subleadingPhoton );
+            }
+        }
+        return true;
     }
 
 
-    bool CutBasedDiPhotonObjectSelector::pass( const Photon &pho ) const
+    bool CutBasedDiPhotonObjectSelector::passInverted( const Photon &pho ) const
     {
         auto cat = classifier_( pho );
         auto isel = selections_.find( cat.first );
-        /// cout << cat.first << " " << (isel == selections_.end()) << endl;
         if( isel == selections_.end() ) {
             return false;
         }
         const auto &sel = isel->second;
         for( size_t iv = 0; iv < sel.size(); ++iv ) {
-            auto val  = functors_[iv]( pho ) - rho_ * get<2>( sel[iv] )( pho );
-            /// cout << iv << " "  << val << " " <<  get<0>(sel[iv])(pho) << " " << get<1>(sel[iv])(pho) << endl;
+            if( find( invertCuts_.begin(), invertCuts_.end(), iv ) == invertCuts_.end() ) { continue; }
+            auto val = functors_[iv]( pho ) - rho_ * get<2>( sel[iv] )( pho );
+            if( val > get<0>( sel[iv] )( pho ) && val < get<1>( sel[iv] )( pho ) ) { return false; }
+        }
+        return true;
+    }
+
+    bool CutBasedDiPhotonObjectSelector::pass( const Photon &pho ) const
+    {
+        auto cat = classifier_( pho );
+        auto isel = selections_.find( cat.first );
+        if( isel == selections_.end() ) {
+            return false;
+        }
+        const auto &sel = isel->second;
+        for( size_t iv = 0; iv < sel.size(); ++iv ) {
+            if( find( ignoreCuts_.begin(), ignoreCuts_.end(), iv ) != ignoreCuts_.end() ||
+                    find( invertCuts_.begin(), invertCuts_.end(), iv ) != invertCuts_.end()
+              ) { continue; }
+            auto val = functors_[iv]( pho ) - rho_ * get<2>( sel[iv] )( pho );
             if( val <= get<0>( sel[iv] )( pho ) || val >= get<1>( sel[iv] )( pho ) ) { return false; }
         }
         return true;

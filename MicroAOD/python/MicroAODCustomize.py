@@ -30,6 +30,8 @@ class MicroAODCustomize(object):
     
     def __call__(self,process):
         self.customize(process)
+        if hasattr(self,"userCustomize"):
+            getattr(self,"userCustomize")(process)
 
     # process customization
     def customize(self,process):

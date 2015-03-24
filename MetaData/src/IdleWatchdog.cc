@@ -1,6 +1,7 @@
 #include "flashgg/MetaData/interface/IdleWatchdog.h"
 
 #include <iostream>
+#include <cassert>
 
 using namespace std;
 
@@ -16,17 +17,17 @@ namespace flashgg {
     void IdleWatchdog::check()
     {
         ++ievent_;
-        if( ievent_ % checkEvery_ != 1 ) {
+        if( ( ( ievent_ - 1 ) % checkEvery_ ) != 0 ) {
             return;
         }
 
 
-        /// cout << "checking " << endl;
+        // cout << "checking " << endl;
         stopWatch_.Stop();
         float cputime  = stopWatch_.CpuTime();
         float realtime = stopWatch_.RealTime();
 
-        /// std::cout << cputime << " " << realtime << std::endl;
+        // std::cout << cputime << " " << realtime << std::endl;
         if( cputime / realtime < minIdleFraction_ ) {
             --nFailures_;
         } else {

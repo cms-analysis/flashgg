@@ -26,28 +26,34 @@ class CaloTopology;
 
 namespace flashgg {
 
+    class OverlapRemovalAlgo
+    {
+    public:
+        virtual bool operator()( const pat::Photon &photon, const edm::Ptr<pat::PackedCandidate> &pfcand ) = 0;
+    };
+
     class PhotonIdUtils
     {
 
     public:
 
-        PhotonIdUtils();
+        PhotonIdUtils( OverlapRemovalAlgo *algo = 0 );
         ~PhotonIdUtils();
 
         void               initialize( );
 
-        float              pfIsoChgWrtVtx( edm::Ptr<pat::Photon> &,
+        float              pfIsoChgWrtVtx( const edm::Ptr<pat::Photon> &,
                                            const edm::Ptr<reco::Vertex>,
                                            const flashgg::VertexCandidateMap,
                                            float, float, float, float );
-        std::map<edm::Ptr<reco::Vertex>, float> pfIsoChgWrtAllVtx( edm::Ptr<pat::Photon> &,
-                const std::vector<edm::Ptr<reco::Vertex> > &,
+        std::map<edm::Ptr<reco::Vertex>, float> pfIsoChgWrtAllVtx( const edm::Ptr<pat::Photon> &,
+								   const std::vector<edm::Ptr<reco::Vertex> > &,
                 const flashgg::VertexCandidateMap,
                 float, float, float, float );
 
         float              pfIsoChgWrtWorstVtx( std::map<edm::Ptr<reco::Vertex>, float> & );
 
-        float              pfCaloIso( edm::Ptr<pat::Photon> &,
+        float              pfCaloIso( const edm::Ptr<pat::Photon> &,
                                       const std::vector<edm::Ptr<pat::PackedCandidate> > &,
                                       float, float, float, float, float, float, float, reco::PFCandidate::ParticleType, const reco::Vertex *vtx = 0 );
 
@@ -59,11 +65,12 @@ namespace flashgg {
 
         static bool vetoPackedCand( const pat::Photon &photon, const edm::Ptr<pat::PackedCandidate> &pfcand );
 
-        std::map<edm::Ptr<reco::Vertex>, float> computeMVAWrtAllVtx( flashgg::Photon &, const std::vector<edm::Ptr<reco::Vertex> > &, const double );
+       std::map<edm::Ptr<reco::Vertex>, float> computeMVAWrtAllVtx( flashgg::Photon &, const std::vector<edm::Ptr<reco::Vertex> > &, const double );
 
         std::shared_ptr<TMVA::Reader> phoIdMva;
 
         void removeOverlappingCandidates( bool x ) { removeOverlappingCandidates_ = x; };
+        void deltaPhiRotation( double x ) { deltaPhiRotation_ = x; };
 
 
         static void recomputeNonZsClusterShapes( reco::Photon &pho, noZS::EcalClusterLazyTools &tools );
@@ -97,7 +104,9 @@ namespace flashgg {
 
     private:
 
+        OverlapRemovalAlgo *overlapAlgo_;
         bool removeOverlappingCandidates_;
+        double deltaPhiRotation_;
 
         // photon MVA variables: move to more sophisticated object?
 

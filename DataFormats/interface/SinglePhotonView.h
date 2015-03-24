@@ -30,6 +30,8 @@ namespace flashgg {
 
         float phoIdMvaWrtChosenVtx() const { return photon().phoIdMvaDWrtVtx( dipho_->vtx() ); }
 
+        float extraChIsoWrtChoosenVtx( const std::string &key ) const { return photon().extraChgIsoWrtVtx( key, dipho_->vtx() ); }
+
     private:
         void daughterMaybe() const;
 
