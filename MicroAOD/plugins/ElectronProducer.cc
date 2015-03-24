@@ -88,7 +88,7 @@ namespace flashgg {
 
 		Handle<View<pat::Electron> >  pelectrons;
 		evt.getByToken(electronToken_,pelectrons);
-		const PtrVector<pat::Electron> pelectronPointers = pelectrons->ptrVector();
+	//	const PtrVector<pat::Electron> pelectronPointers = pelectrons->ptrVector();
 
 		_Rho=0;
 		Handle<double> rhoHandle;
@@ -96,7 +96,7 @@ namespace flashgg {
 
 		Handle<View<reco::Vertex> >  vtxs;
 		evt.getByToken(vertexToken_,vtxs);
-		const PtrVector<reco::Vertex> vertexPointers = vtxs->ptrVector();
+	//	const PtrVector<reco::Vertex> vertexPointers = vtxs->ptrVector();
 
 		Handle<reco::ConversionCollection> convs;
 		evt.getByToken(convToken_,convs);
@@ -112,8 +112,8 @@ namespace flashgg {
 		std::auto_ptr<vector<flashgg::Electron> > elecColl(new vector<flashgg::Electron>);
 
 
-		for ( unsigned int elecIndex =0; elecIndex < pelectronPointers.size(); elecIndex++ ) {
-			Ptr<pat::Electron> pelec = pelectronPointers[elecIndex];
+		for ( unsigned int elecIndex =0; elecIndex < pelectrons->size(); elecIndex++ ) {
+			Ptr<pat::Electron> pelec = pelectrons->ptrAt(elecIndex);
 			flashgg::Electron felec = flashgg::Electron(*pelec);
 			// double nontrigmva_ = -999999;
 			double Aeff = 0;	
@@ -121,7 +121,7 @@ namespace flashgg {
 			float pelec_eta = fabs(pelec->superCluster()->eta());
 			float pelec_pt = pelec->pt();			
 
-			double nontrigmva = mvaID_->mvaValue( *pelec, *vertexPointers[0], _Rho, verbose_);
+			double nontrigmva = mvaID_->mvaValue( *pelec, *vtxs->ptrAt(0), _Rho, verbose_);
 			felec.setNonTrigMVA((float)nontrigmva);
 
 			if(applyCuts_ && nontrigmva < 0.9)continue;	

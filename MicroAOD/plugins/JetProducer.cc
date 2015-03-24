@@ -55,16 +55,16 @@ namespace flashgg {
     // input jets
     Handle<View<pat::Jet> > jets;
     evt.getByToken(jetToken_,jets);
-    const PtrVector<pat::Jet>& jetPointers = jets->ptrVector();
+   // const PtrVector<pat::Jet>& jetPointers = jets->ptrVector();
 
     // input DiPhoton candidates
     Handle<View<DiPhotonCandidate> > diPhotons;
     evt.getByToken(diPhotonToken_,diPhotons);
-    const PtrVector<DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+   // const PtrVector<DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
     Handle<View<reco::Vertex> > primaryVertices;
     evt.getByToken(vertexToken_,primaryVertices);
-    const PtrVector<reco::Vertex>& pvPointers = primaryVertices->ptrVector();
+   // const PtrVector<reco::Vertex>& pvPointers = primaryVertices->ptrVector();
     
     Handle<VertexCandidateMap> vertexCandidateMap;
     evt.getByToken(vertexCandidateMapToken_,vertexCandidateMap);
@@ -72,12 +72,12 @@ namespace flashgg {
     // output jets
     auto_ptr<vector<flashgg::Jet> > jetColl(new vector<flashgg::Jet>);
 
-    for (unsigned int i = 0 ; i < jetPointers.size() ; i++) {
-      Ptr<pat::Jet> pjet = jetPointers[i];
+    for (unsigned int i = 0 ; i < jets->size() ; i++) {
+      Ptr<pat::Jet> pjet = jets->ptrAt(i);
       if (pjet->pt() < minJetPt_) continue;
       flashgg::Jet fjet = flashgg::Jet(*pjet);
-      for (unsigned int j = 0 ; j < diPhotonPointers.size() ; j++) {
-	Ptr<DiPhotonCandidate> diPhoton = diPhotonPointers[j];
+      for (unsigned int j = 0 ; j < diPhotons->size() ; j++) {
+	Ptr<DiPhotonCandidate> diPhoton = diPhotons->ptrAt(j);
 	Ptr<reco::Vertex> vtx = diPhoton->vtx();
 
 	if(!usePuppi){
@@ -89,9 +89,9 @@ namespace flashgg {
 	}
       }
 			if(!usePuppi){
-      if (pvPointers.size() > 0 && !fjet.hasPuJetId(pvPointers[0])) {
-	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),pvPointers[0],*vertexCandidateMap,true);
-	fjet.setPuJetId(pvPointers[0],lPUJetId);
+      if (primaryVertices->size() > 0 && !fjet.hasPuJetId(primaryVertices->ptrAt(0))) {
+	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),primaryVertices->ptrAt(0),*vertexCandidateMap,true);
+	fjet.setPuJetId(primaryVertices->ptrAt(0),lPUJetId);
       }
 			}
       jetColl->push_back(fjet);

@@ -10,7 +10,7 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/Common/interface/Ptr.h"
-#include "DataFormats/Common/interface/PtrVector.h"
+//#include "DataFormats/Common/interface/PtrVector.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "flashgg/MicroAOD/interface/VertexSelectorBase.h"
 #include "DataFormats/EgammaCandidates/interface/PhotonCore.h"
@@ -82,14 +82,14 @@ PhotonCorrectionValidationTreeMaker::analyze(const edm::Event& iEvent, const edm
   // access edm objects
   Handle<View<flashgg::DiPhotonCandidate> > diphotons;
   iEvent.getByToken(diphotonToken_,diphotons);
-  const PtrVector<flashgg::DiPhotonCandidate>& diphotonPointers = diphotons->ptrVector();
+ // const PtrVector<flashgg::DiPhotonCandidate>& diphotonPointers = diphotons->ptrVector();
   // ********************************************************************************
   initEventStructure();
-  evInfo.ndiphoton = diphotonPointers.size();
+  evInfo.ndiphoton = diphotons->size();
   eventTree->Fill();
-  for( size_t idipho = 0; idipho < diphotonPointers.size(); idipho++ )
+  for( size_t idipho = 0; idipho < diphotons->size(); idipho++ )
     {
-      Ptr<flashgg::DiPhotonCandidate> diphoPtr = diphotonPointers[idipho];
+      Ptr<flashgg::DiPhotonCandidate> diphoPtr = diphotons->ptrAt(idipho);
       // diphoton info
       diphoInfo.pt = diphoPtr->pt();
       diphoInfo.eta = diphoPtr->eta();

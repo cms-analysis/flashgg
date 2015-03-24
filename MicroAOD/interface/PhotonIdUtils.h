@@ -5,7 +5,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/Common/interface/Ptr.h"
-#include "DataFormats/Common/interface/PtrVector.h"
+//#include "DataFormats/Common/interface/PtrVector.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidateFwd.h"
@@ -41,14 +41,14 @@ namespace flashgg {
 				       const flashgg::VertexCandidateMap,
 				       float, float, float, float );
     std::map<edm::Ptr<reco::Vertex>,float> pfIsoChgWrtAllVtx( edm::Ptr<pat::Photon>&, 
-							      const edm::PtrVector<reco::Vertex>&,
+							      const edm::Handle<edm::View<reco::Vertex> >&,
 							      const flashgg::VertexCandidateMap, 
 							      float, float, float, float );
 
     float              pfIsoChgWrtWorstVtx( std::map<edm::Ptr<reco::Vertex>,float>&);
 
     float              pfCaloIso( edm::Ptr<pat::Photon>&, 
-				   const edm::PtrVector<pat::PackedCandidate>&, 
+				   const edm::Handle<edm::View<pat::PackedCandidate> >&, 
 				  float, float, float, float, float, float, float, reco::PFCandidate::ParticleType, const reco::Vertex * vtx=0);
     
     
@@ -59,7 +59,7 @@ namespace flashgg {
 
     static bool vetoPackedCand(const pat::Photon& photon, const edm::Ptr<pat::PackedCandidate> & pfcand);
 
-    std::map<edm::Ptr<reco::Vertex>,float> computeMVAWrtAllVtx( flashgg::Photon&, const edm::PtrVector<reco::Vertex>&, const double );
+    std::map<edm::Ptr<reco::Vertex>,float> computeMVAWrtAllVtx( flashgg::Photon&, const edm::Handle< edm::View<reco::Vertex> >&, const double );
     
     std::shared_ptr<TMVA::Reader> phoIdMva;
 

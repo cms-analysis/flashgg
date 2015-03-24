@@ -105,28 +105,28 @@ namespace flashgg {
 
     Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
     evt.getByToken(diPhotonToken_,diPhotons);
-    const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();  
+  //  const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();  
   
     Handle<View<flashgg::Jet> > theJets;
     evt.getByToken(thejetToken_,theJets);
-    const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
+  //  const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
   
     Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
     evt.getByToken(mvaResultToken_,mvaResults);
-    const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
+ //   const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
     
     std::auto_ptr<vector<VHHadronicTag> > vhhadtags(new vector<VHHadronicTag>);
     
-    assert(diPhotonPointers.size() == mvaResultPointers.size());
+    assert(diPhotons->size() == mvaResults->size());
 
     double idmva1 = 0.;
     double idmva2 = 0.;
 
-    for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoIndex++ )
+    for(unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ )
       {
 	
-	edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[diphoIndex];
-	edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[diphoIndex];
+	edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt(diphoIndex);
+	edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt(diphoIndex);
 	
 	// ********** photon ID and diphoton requirements: *********
 
@@ -141,9 +141,9 @@ namespace flashgg {
 
 	edm::PtrVector<flashgg::Jet> goodJets;
 
-	for( size_t ijet = 0; ijet < jetPointers.size(); ijet++ ) {
+	for( size_t ijet = 0; ijet < theJets->size(); ijet++ ) {
 
-	  edm::Ptr<flashgg::Jet> thejet = jetPointers[ijet];
+	  edm::Ptr<flashgg::Jet> thejet = theJets->ptrAt(ijet);
 
 	  if (!thejet->passesPuJetId(dipho))                        continue;
 	  if( fabs(thejet->eta()) > jetEtaThreshold_ )              continue; 

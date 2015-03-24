@@ -67,19 +67,19 @@ namespace flashgg {
 
     Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
     evt.getByToken(diPhotonToken_,diPhotons);
-    const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+  //  const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
     Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
     evt.getByToken(mvaResultToken_,mvaResults);
-    const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
+ //   const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
 
     std::auto_ptr<vector<DiPhotonUntaggedCategory> > tags(new vector<DiPhotonUntaggedCategory>); 
 
-    assert(diPhotonPointers.size() == mvaResultPointers.size()); // We are relying on corresponding sets - update this to give an error/exception
+    assert(diPhotons->size() == mvaResults->size()); // We are relying on corresponding sets - update this to give an error/exception
 
-    for (unsigned int candIndex =0; candIndex < diPhotonPointers.size() ; candIndex++) {
-      edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[candIndex];
-      edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[candIndex];
+    for (unsigned int candIndex =0; candIndex < diPhotons->size() ; candIndex++) {
+      edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt(candIndex);
+      edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt(candIndex);
 
       DiPhotonUntaggedCategory tag_obj(dipho,mvares);
       tag_obj.setDiPhotonIndex(candIndex);

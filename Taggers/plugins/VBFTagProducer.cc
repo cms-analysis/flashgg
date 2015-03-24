@@ -72,15 +72,15 @@ namespace flashgg {
 
     Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
     evt.getByToken(diPhotonToken_,diPhotons);
-    const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+  //  const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
     Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
     evt.getByToken(mvaResultToken_,mvaResults);
-    const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
+  //  const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
 
     Handle<View<flashgg::VBFDiPhoDiJetMVAResult> > vbfDiPhoDiJetMvaResults;
     evt.getByToken(vbfDiPhoDiJetMvaResultToken_,vbfDiPhoDiJetMvaResults);
-    const PtrVector<flashgg::VBFDiPhoDiJetMVAResult>& vbfDiPhoDiJetMvaResultPointers = vbfDiPhoDiJetMvaResults->ptrVector();
+  //  const PtrVector<flashgg::VBFDiPhoDiJetMVAResult>& vbfDiPhoDiJetMvaResultPointers = vbfDiPhoDiJetMvaResults->ptrVector();
     
     //		Handle<View<flashgg::VBFMVAResult> > vbfMvaResults;
     //    evt.getByToken(vbfMvaResultToken_,vbfMvaResults);
@@ -89,16 +89,16 @@ namespace flashgg {
 
     std::auto_ptr<vector<VBFTag> > tags(new vector<VBFTag>); 
 
-    assert(diPhotonPointers.size() == vbfDiPhoDiJetMvaResultPointers.size()); // We are relying on corresponding sets - update this to give an error/exception
-    //    assert(diPhotonPointers.size() == vbfMvaResultPointers.size()); // We are relying on corresponding sets - update this to give an error/exception
-    assert(diPhotonPointers.size() == mvaResultPointers.size()); // We are relying on corresponding sets - update this to give an error/exception                                  
+    assert(diPhotons->size() == vbfDiPhoDiJetMvaResults->size()); // We are relying on corresponding sets - update this to give an error/exception
+    //    assert(diPhotons->size() == vbfMvaResultPointers.size()); // We are relying on corresponding sets - update this to give an error/exception
+    assert(diPhotons->size() == mvaResults->size()); // We are relying on corresponding sets - update this to give an error/exception                                  
 
-    for (unsigned int candIndex =0; candIndex < diPhotonPointers.size() ; candIndex++) {
-      edm::Ptr<flashgg::VBFDiPhoDiJetMVAResult> vbfdipho_mvares = vbfDiPhoDiJetMvaResultPointers[candIndex];
+    for (unsigned int candIndex =0; candIndex < diPhotons->size() ; candIndex++) {
+      edm::Ptr<flashgg::VBFDiPhoDiJetMVAResult> vbfdipho_mvares = vbfDiPhoDiJetMvaResults->ptrAt(candIndex);
       //      edm::Ptr<flashgg::VBFMVAResult> vbf_mvares = vbfMvaResultPointers[candIndex];
-      edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[candIndex];
+      edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt(candIndex);
      
-      edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[candIndex];
+      edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt(candIndex);
 
       VBFTag tag_obj(dipho,mvares,vbfdipho_mvares);
       tag_obj.setDiPhotonIndex(candIndex);

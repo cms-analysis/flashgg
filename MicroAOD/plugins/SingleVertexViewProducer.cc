@@ -45,7 +45,7 @@ namespace flashgg {
 		
 		Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
 		evt.getByToken(diPhotonToken_,diPhotons);
-		const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+	//	const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 		// FIXME: move gen vertex finding to dedicated producer
 		bool isData = evt.isRealData();
 		reco::GenParticle::Point genV;
@@ -67,10 +67,11 @@ namespace flashgg {
 		std::map<float, int> sortViews;
 		
 		int nCand = maxCandidates_;
-		for(auto & dipho : diPhotonPointers) {
+		//for(auto & dipho : diPhotons) {
+		for (unisgned int i =0; i<diPhotons->size(); i++){	
 			
-			for(unsigned int iv=0; iv<dipho->nVtxInfoSize(); ++iv) {
-				vertexViews->push_back(SingleVertexView(dipho,iv));
+			for(unsigned int iv=0; iv<(diPhotons->ptrAt(i))->nVtxInfoSize(); ++iv) {
+				vertexViews->push_back(SingleVertexView(diPhotons->ptrAt(i),iv));
 				auto & vi = vertexViews->back();
 				float dz = genV.z() - vi.pos().z();
 				vi.setDzToGen(dz);
