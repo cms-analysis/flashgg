@@ -64,7 +64,7 @@ float PhotonIdUtils::pfIsoChgWrtVtx( edm::Ptr<pat::Photon>& photon,
 
   if( vtxcandmap.count(vtx) ) {  
 
-    edm::PtrVector<pat::PackedCandidate> pfcandidates = vtxcandmap.at(vtx);
+    std::vector<edm::Ptr<pat::PackedCandidate> > pfcandidates = vtxcandmap.at(vtx);
     
     for( size_t ipf = 0; ipf < pfcandidates.size(); ipf++ ) { 
 	    
