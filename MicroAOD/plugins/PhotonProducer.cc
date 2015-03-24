@@ -148,9 +148,9 @@ namespace flashgg {
 
      const reco::BeamSpot &beamspot = *recoBeamSpotHandle.product();
 
-    const PtrVector<pat::Photon>& photonPointers = photons->ptrVector();
-    const PtrVector<pat::PackedCandidate>& pfcandidatePointers = pfcandidates->ptrVector();
-    const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
+   // const PtrVector<pat::Photon>& photonPointers = photons->ptrVector();
+   // const PtrVector<pat::PackedCandidate>& pfcandidatePointers = pfcandidates->ptrVector();
+   // const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
     const flashgg::VertexCandidateMap vtxToCandMap = *(vertexCandidateMap.product());    
     const double rhoFixedGrd = *(rhoHandle.product());
     const reco::Vertex * neutVtx = (useVtx0ForNeutralIso_ ? &vertices->at(0) : 0);
@@ -163,9 +163,9 @@ namespace flashgg {
     EcalClusterLazyTools zsLazyTool(evt, iSetup, ecalHitEBToken_, ecalHitEEToken_, ecalHitESToken_);        
     noZS::EcalClusterLazyTools noZsLazyTool(evt, iSetup, ecalHitEBToken_, ecalHitEEToken_, ecalHitESToken_);        
 
-    for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
+    for (unsigned int i = 0 ; i < photons->size() ; i++) {
 
-      Ptr<pat::Photon> pp = photonPointers[i];
+      Ptr<pat::Photon> pp = photons->ptrAt(i);
       flashgg::Photon fg = flashgg::Photon(*pp);
 	
       if(!ConversionTools::hasMatchedPromptElectron(pp->superCluster(),electronHandle,convs,beamspot.position(),lxyMin_,probMin_,nHitsBeforeVtxMax_)) { fg.setPassElectronVeto(true) ; }
@@ -216,8 +216,8 @@ namespace flashgg {
       
       phoTools_.removeOverlappingCandidates(doOverlapRemovalForIsolation_);
       
-      std::map<edm::Ptr<reco::Vertex>,float> isomap04 = phoTools_.pfIsoChgWrtAllVtx(pp, vertexPointers, vtxToCandMap, 0.4, 0.02, 0.02, 0.1);
-      std::map<edm::Ptr<reco::Vertex>,float> isomap03 = phoTools_.pfIsoChgWrtAllVtx(pp, vertexPointers, vtxToCandMap, 0.3, 0.02, 0.02, 0.1);
+      std::map<edm::Ptr<reco::Vertex>,float> isomap04 = phoTools_.pfIsoChgWrtAllVtx(pp, vertices, vtxToCandMap, 0.4, 0.02, 0.02, 0.1);
+      std::map<edm::Ptr<reco::Vertex>,float> isomap03 = phoTools_.pfIsoChgWrtAllVtx(pp, vertices, vtxToCandMap, 0.3, 0.02, 0.02, 0.1);
       fg.setpfChgIso04(isomap04);
       fg.setpfChgIso03(isomap03);
       std::map<edm::Ptr<reco::Vertex>,float>& ref_isomap04 = isomap04;
@@ -228,21 +228,21 @@ namespace flashgg {
       fg.setpfChgIsoWrtWorstVtx03(pfChgIsoWrtWorstVtx03);
 
       // This map is needed for the photon preselection
-      std::map<edm::Ptr<reco::Vertex>,float> isomap02 = phoTools_.pfIsoChgWrtAllVtx(pp, vertexPointers, vtxToCandMap, 0.2, 0.02, 0.02, 0.1);
+      std::map<edm::Ptr<reco::Vertex>,float> isomap02 = phoTools_.pfIsoChgWrtAllVtx(pp, vertices, vtxToCandMap, 0.2, 0.02, 0.02, 0.1);
       fg.setpfChgIso02(isomap02);
       fg.setpfChgIsoWrtChosenVtx02( 0. ); // just to initalize things properly, will be setup for real in the diphoton producer once the vertex is chosen
       
-      float pfPhoIso04 = phoTools_.pfCaloIso(pp, pfcandidatePointers, 0.4, 0.0, 0.070, 0.015, 0.0, 0.0, 0.0, PFCandidate::gamma, neutVtx);
-      float pfPhoIso03 = phoTools_.pfCaloIso(pp, pfcandidatePointers, 0.3, 0.0, 0.070, 0.015, 0.0, 0.0, 0.0, PFCandidate::gamma, neutVtx);
+      float pfPhoIso04 = phoTools_.pfCaloIso(pp, pfcandidates, 0.4, 0.0, 0.070, 0.015, 0.0, 0.0, 0.0, PFCandidate::gamma, neutVtx);
+      float pfPhoIso03 = phoTools_.pfCaloIso(pp, pfcandidates, 0.3, 0.0, 0.070, 0.015, 0.0, 0.0, 0.0, PFCandidate::gamma, neutVtx);
       fg.setpfPhoIso04(pfPhoIso04);
       fg.setpfPhoIso03(pfPhoIso03);
 
-      float pfNeutIso04 = phoTools_.pfCaloIso(pp, pfcandidatePointers, 0.4, 0.0, 0.000, 0.000, 0.0, 0.0, 0.0, PFCandidate::h0, neutVtx);
-      float pfNeutIso03 = phoTools_.pfCaloIso(pp, pfcandidatePointers, 0.3, 0.0, 0.000, 0.000, 0.0, 0.0, 0.0, PFCandidate::h0, neutVtx);
+      float pfNeutIso04 = phoTools_.pfCaloIso(pp, pfcandidates, 0.4, 0.0, 0.000, 0.000, 0.0, 0.0, 0.0, PFCandidate::h0, neutVtx);
+      float pfNeutIso03 = phoTools_.pfCaloIso(pp, pfcandidates, 0.3, 0.0, 0.000, 0.000, 0.0, 0.0, 0.0, PFCandidate::h0, neutVtx);
       fg.setpfNeutIso04(pfNeutIso04);
       fg.setpfNeutIso03(pfNeutIso03);
       
-      std::map<edm::Ptr<reco::Vertex>,float> mvamap = phoTools_.computeMVAWrtAllVtx(fg, vertexPointers,rhoFixedGrd);
+      std::map<edm::Ptr<reco::Vertex>,float> mvamap = phoTools_.computeMVAWrtAllVtx(fg, vertices,rhoFixedGrd);
       fg.setPhoIdMvaD(mvamap);
       
       // add extra isolations (useful for tuning)
@@ -250,7 +250,7 @@ namespace flashgg {
 	      for(size_t iso=0; iso<extraCaloIsolations_.size(); ++iso) {
 		      CaloIsoParams & p = extraCaloIsolations_[iso];		    
 		      phoTools_.removeOverlappingCandidates(p.overlapRemoval_);
-		      float val = phoTools_.pfCaloIso(pp, pfcandidatePointers, 
+		      float val = phoTools_.pfCaloIso(pp, pfcandidates, 
 						      p.vetos_[0],p.vetos_[1],p.vetos_[2],p.vetos_[3],p.vetos_[4],p.vetos_[5],p.vetos_[6],
 						      p.type_, neutVtx);
 		      /// cout << "User Isolation " << iso << " " << val << endl;

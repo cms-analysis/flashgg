@@ -42,26 +42,26 @@ namespace flashgg {
     
     Handle<View<reco::Vertex> > primaryVertices;
     evt.getByToken(vertexToken_,primaryVertices);
-    const PtrVector<reco::Vertex>& pvPtrs = primaryVertices->ptrVector();
+  //  const PtrVector<reco::Vertex>& pvPtrs = primaryVertices->ptrVector();
 
     Handle<View<pat::PackedCandidate> > pfCandidates;
     evt.getByToken(pfcandidateToken_,pfCandidates);
-    const PtrVector<pat::PackedCandidate>& pfPtrs = pfCandidates->ptrVector();
+   // const PtrVector<pat::PackedCandidate>& pfPtrs = pfCandidates->ptrVector();
 
     std::auto_ptr<VertexCandidateMap> assoc(new VertexCandidateMap);
     
     // Create empty vector for each vertex in advance
-    for (unsigned int j = 0 ; j < pvPtrs.size() ; j++) {
-      assoc->insert(std::make_pair(pvPtrs[j],edm::PtrVector<pat::PackedCandidate>()));
+    for (unsigned int j = 0 ; j < primaryVertices->size() ; j++) {
+      assoc->insert(std::make_pair(primaryVertices->ptrAt(j),edm::PtrVector<pat::PackedCandidate>()));
     }
 
-    for (unsigned int i = 0 ; i < pfPtrs.size() ; i++) {
-      Ptr<pat::PackedCandidate> cand = pfPtrs[i];
+    for (unsigned int i = 0 ; i < pfCandidates->size() ; i++) {
+      Ptr<pat::PackedCandidate> cand = pfCandidates->ptrAt(i);
       if (cand->charge() == 0) continue; // skip neutrals
       double closestDz = maxAllowedDz_;
       unsigned int closestDzIndex = -1;
-      for (unsigned int j = 0 ; j < pvPtrs.size() ; j++) {
-	Ptr<reco::Vertex> vtx = pvPtrs[j];
+      for (unsigned int j = 0 ; j < primaryVertices->size() ; j++) {
+	Ptr<reco::Vertex> vtx = primaryVertices->ptrAt(j);
 	double dz = fabs(cand->dz(vtx->position()));
 	if (dz < closestDz) {
 	  closestDz = dz;
@@ -70,12 +70,12 @@ namespace flashgg {
       }
       if (closestDz < maxAllowedDz_) {
 	// Within specified distance of a vertex, so attach only to it (or the closest one if multiple)
-	Ptr<reco::Vertex> vtx =pvPtrs[closestDzIndex];
+	Ptr<reco::Vertex> vtx =primaryVertices->ptrAt(closestDzIndex);
 	assoc->at(vtx).push_back(cand);
       } else { 
 	// if the track did not attach to any vertex, attach it to ALL vertices!
-	for (unsigned int j = 0 ; j < pvPtrs.size() ; j++) {
-	  Ptr<reco::Vertex> vtx = pvPtrs[j];
+	for (unsigned int j = 0 ; j < primaryVertices->size() ; j++) {
+	  Ptr<reco::Vertex> vtx = primaryVertices->ptrAt(j);
 	  assoc->at(vtx).push_back(cand);
 	}
       }

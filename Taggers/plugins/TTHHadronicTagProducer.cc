@@ -52,21 +52,21 @@ namespace flashgg {
 
 		Handle<View<flashgg::Jet> > theJets;
 		evt.getByToken(thejetToken_,theJets);
-		const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
+//		const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
 
 		Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
 		evt.getByToken(diPhotonToken_,diPhotons);
-		const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+	//	const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
 		Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
 		evt.getByToken(mvaResultToken_,mvaResults);
-		const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
+//		const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
 
 
 		std::auto_ptr<vector<TTHHadronicTag> > tthhtags(new vector<TTHHadronicTag>);
 
 
-		for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoIndex++ ){
+		for(unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ){
 
 			int jetcount = 0; 
 			int njets_btagloose = 0;
@@ -75,16 +75,16 @@ namespace flashgg {
 			std::vector<edm::Ptr<flashgg::Jet> > JetVect;
 			std::vector<edm::Ptr<flashgg::Jet> > BJetVect;	
 
-			edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[diphoIndex];
-			edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[diphoIndex]; 
+			edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt(diphoIndex);
+			edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt(diphoIndex); 
 
 			if ( !dipho->leadingPhoton()->passElectronVeto() || !dipho->subLeadingPhoton()->passElectronVeto() ) continue;
 		
 			if(dipho->leadingPhoton()->pt() < (60*(dipho->mass()))/120. && dipho->subLeadingPhoton()->pt() < 25. && dipho->subLeadingPhoton()->pt() < 33.) continue;	
 			if(mvares->mvaValue() < .2)continue;
 
-			for (unsigned int jetIndex =0; jetIndex < jetPointers.size() ; jetIndex++){
-				edm::Ptr<flashgg::Jet> thejet = jetPointers[jetIndex];
+			for (unsigned int jetIndex =0; jetIndex < theJets->size() ; jetIndex++){
+				edm::Ptr<flashgg::Jet> thejet = theJets->ptrAt(jetIndex);
 				if(fabs(thejet->eta()) > 2.4) continue;
 
 				float bDiscriminatorValue = 0;
