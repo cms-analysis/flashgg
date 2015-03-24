@@ -33,6 +33,22 @@ DiPhotonCandidate::DiPhotonCandidate(const flashgg::Photon & photon1,const flash
   addP4.set(*this);
 }
 
+flashgg::Photon & DiPhotonCandidate::getLeadingPhoton() {
+  if (daughter(0)->pt() > daughter(1)->pt()) {
+    return dynamic_cast<flashgg::Photon&> (*daughter(0));
+  } else {
+    return dynamic_cast<flashgg::Photon&> (*daughter(1));
+  }
+}
+
+flashgg::Photon & DiPhotonCandidate::getSubLeadingPhoton() {
+  if (daughter(0)->pt() > daughter(1)->pt()) {
+    return dynamic_cast<flashgg::Photon&> (*daughter(1));
+  } else {
+    return dynamic_cast<flashgg::Photon&> (*daughter(0));
+  }
+}
+
 const flashgg::Photon * DiPhotonCandidate::leadingPhoton() const {
   if (daughter(0)->pt() > daughter(1)->pt()) {
     return dynamic_cast<const flashgg::Photon*> (daughter(0));

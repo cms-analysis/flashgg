@@ -86,6 +86,9 @@ class JobsManager(object):
                 make_option("--dry-run",dest="dry_run",default=False, action="store_true",
                             help="do not actually run the jobs."
                             ),
+                make_option("-C","--cont",dest="cont",default=False, action="store_true",
+                            help="continue interrupted task."
+                            ),
                 ]
                               )
         
@@ -103,9 +106,21 @@ class JobsManager(object):
         __call__
         Run all jobs.
         """
+        self.parallel = Parallel(self.options.ncpu,lsfQueue=self.options.queue,lsfJobName="runJobs")
         
-        (options,args) = (self.options, self.args)
+        self.jobs = None
+        if self.options.cont:
+            pass
+        else:
+            self.firstRun()
+            
+        self.monitor()
+        
+    def firstRun(self):
 
+        (options,args) = (self.options, self.args)
+        parallel = self.parallel
+        
         outputPfx = options.output.replace(".root","")
         jobName = "runJobs"
         
@@ -128,12 +143,13 @@ class JobsManager(object):
             fout.write( dumpCfg(options) )
             
         
-        parallel = Parallel(options.ncpu,lsfQueue=options.queue,lsfJobName=jobName)
         
         outfiles = []
         doutfiles = {}
         poutfiles = {}
         
+        jobs = []
+
         for name,datasets in options.processes.iteritems():
             poutfiles[name] = ( "%s_%s.root" % ( outputPfx,name), [] )
         
@@ -169,6 +185,7 @@ class JobsManager(object):
                         outfiles.append( output )
                         doutfiles[dset][1].append( outfiles[-1] )
                         poutfiles[name][1].append( outfiles[-1] )
+                        jobs.append( (job,iargs,output) )
                     print " %d jobs actually submitted" % dnjobs                
                 else:
                     ret,out = parallel.run("python %s" % pyjob,jobargs+["dryRun=1"],interactive=True)[2]
@@ -180,13 +197,41 @@ class JobsManager(object):
                     ## outfiles.append( outfile )
                     output = self.getHadd(out,outfile)
                     outfiles.append( output )
+                    jobs.append( (job,jobargs,output) )
                     poutfiles[name][1].append( outfiles[-1] )
                 print
 
+        task_config = {
+            "jobs" : jobs,
+            "datasets_output" : doutfiles,
+            "process_output"  : poutfiles,
+            "output"          : outfiles,
+            "outputPfx"       : outputPfx
+            }
+        with open("%s/task_config.json" % (options.outputDir), "w+" ) as cfout:
+            cfout.write( json.dumps(task_config,indent=4) )
+            cfout.close()
+            
+    def monitor(self):
+
+        (options,args) = (self.options, self.args)
+        parallel = self.parallel
+        
+        with open("%s/task_config.json" % (options.outputDir), "r" ) as cfin:
+            task_config = json.loads(cfin.read())
+        
+        doutfiles = task_config["datasets_output"]
+        poutfiles = task_config["process_output"]
+        outfiles  = task_config["output"]
+        outputPfx = task_config["outputPfx"]
+        
+
         if not options.dry_run:
             ## FIXME: job resubmission
-            self.wait(parallel)        
-        
+            self.jobs = task_config["jobs"]
+            returns = self.wait(parallel,self)
+            task_config["jobs"] = self.jobs
+            
         if options.hadd:
             print "All jobs finished. Merging output."
             p = Parallel(options.ncpu)
@@ -206,14 +251,22 @@ class JobsManager(object):
             
             self.wait(p)
 
-    def wait(self,parallel):
-        for i in range(parallel.njobs):
-            print "Finished jobs: %d. Total jobs: %d" % (i, parallel.njobs)
-            job, jobargs, ret = parallel.returned.get()
-            print "finished: %s %s" % ( job, " ".join(jobargs) )
-            for line in ret[1].split("\n"):
-                print line
+        with open("%s/task_config.json" % (options.outputDir), "w+" ) as cfout:
+            cfout.write( json.dumps(task_config,indent=4) )
+            cfout.close()
 
+    def wait(self,parallel,handler=None):
+        return parallel.wait(handler)
+    
+        ### for i in range(parallel.njobs):
+        ###     print "Finished jobs: %d. Total jobs: %d" % (i, parallel.njobs)
+        ###     job, jobargs, ret = parallel.returned.get()
+        ###     print "finished: %s %s" % ( job, " ".join(jobargs) )
+        ###     for line in ret[1].split("\n"):
+        ###         print line
+
+    def handleJobOutput(self,job,jobargs,ret):
+        print "finished: (exit code %d) %s %s" % ( ret[0], job, " ".join(jobargs) )
     
     def getHadd(self,stg,fallback):
         for line in stg.split("\n"):

@@ -4,6 +4,7 @@
 #include <tuple>
 #include <vector>
 #include <string>
+#include <memory>
 
 #include "TH1F.h"
 #include "TH2F.h"
@@ -21,15 +22,46 @@
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 
 #include "flashgg/Taggers/interface/GlobalVariablesDumper.h"
+#include "flashgg/MicroAOD/interface/MVAComputer.h"
 
 namespace flashgg {
 	
+	
+	template<class ObjectT> class FunctorTrait {
+		
+	public:
+		virtual ~FunctorTrait() {};
+		virtual float operator()(const ObjectT &obj) const = 0;
+	};
+	
+	template<class ObjectT, class FunctorT> class FunctorWrapper : public FunctorTrait<ObjectT> {
+		
+	public:
+		FunctorWrapper(FunctorT * func=0) // : std::unique_ptr<FunctorT>(func) {};
+			: func_(func) {};
+		
+		virtual ~FunctorWrapper() {} ; //delete func_; };
+		
+		virtual float operator()(const ObjectT & obj) const { return (*func_)(obj); };
+
+		std::shared_ptr<FunctorT> ptr() { return func_; };
+		
+	private:
+		// FunctorT * func_;
+		std::shared_ptr<FunctorT> func_;
+	};
+		
+
 	template<class FunctorT, class ObjectT>
 	class CategoryDumper {
 	public:
 		typedef ObjectT object_type;
 		typedef FunctorT functor_type;
-		
+		typedef MVAComputer<object_type,functor_type> mva_type;
+		typedef FunctorTrait<object_type> trait_type;
+		typedef FunctorWrapper<object_type,functor_type> wrapped_functor_type;
+		typedef FunctorWrapper<object_type,mva_type> wrapped_mva_type;
+
 		CategoryDumper(const std::string & name, const edm::ParameterSet & cfg, GlobalVariablesDumper * dumper=0);
 		~CategoryDumper();
 		
@@ -42,7 +74,7 @@ namespace flashgg {
 	private:
 		std::string name_;
 		std::vector<std::string> names_;
-		std::vector<std::tuple<float,functor_type,int,double,double> > variables_;
+		std::vector<std::tuple<float,std::shared_ptr<trait_type>,int,double,double> > variables_;
 		std::vector<std::tuple<std::string,int,std::vector<double>,int,std::vector<double>,TH1 *> > histograms_;
 		
 		float weight_;
@@ -50,7 +82,9 @@ namespace flashgg {
 		RooAbsData * dataset_;
 		TTree * tree_;
 		GlobalVariablesDumper * globalVarsDumper_;
-                bool hbooked_;
+		std::vector<std::shared_ptr<wrapped_mva_type> > mvas_;
+		std::vector<std::shared_ptr<wrapped_functor_type> > functors_;
+                bool hbooked_;		
 	};
 	
 	template<class F, class O>
@@ -67,8 +101,22 @@ namespace flashgg {
 			auto nbins = var.getUntrackedParameter<int>("nbins",0);
 			auto vmin = var.getUntrackedParameter<double>("vmin",numeric_limits<double>::min());
 			auto vmax = var.getUntrackedParameter<double>("vmax",numeric_limits<double>::max());
+			functors_.push_back( std::shared_ptr<wrapped_functor_type>(new wrapped_functor_type(new functor_type(expr))) );
 			names_.push_back(name);
-			variables_.push_back( make_tuple(0.,functor_type(expr),nbins,vmin,vmax) );
+			variables_.push_back( make_tuple(0.,functors_.back(),nbins,vmin,vmax) );
+		}
+		
+		if( cfg.existsAs<vector<edm::ParameterSet> >("mvas") ) {
+			auto mvas = cfg.getParameter<vector<edm::ParameterSet> >("mvas");
+			for( auto & mva : mvas ) {
+				auto name = mva.getUntrackedParameter<string>("name");
+				auto nbins = mva.getUntrackedParameter<int>("nbins",0);
+				auto vmin = mva.getUntrackedParameter<double>("vmin",numeric_limits<double>::min());
+				auto vmax = mva.getUntrackedParameter<double>("vmax",numeric_limits<double>::max());
+				mvas_.push_back( std::shared_ptr<wrapped_mva_type>(new wrapped_mva_type(new mva_type(mva,globalVarsDumper_))) );
+				names_.push_back(name);
+				variables_.push_back( make_tuple(0.,mvas_.back(),nbins,vmin,vmax) );
+			}
 		}
 		
 		auto histograms = cfg.getParameter<vector<edm::ParameterSet> >("histograms");
@@ -186,7 +234,7 @@ namespace flashgg {
 			auto name = names_[ivar].c_str();
 			auto & var = variables_[ivar];
 			auto & val = std::get<0>(var);
-			val = std::get<1>(var)(obj);
+			val = (*std::get<1>(var))(obj);
 			if( dataset_ ) {
 				dynamic_cast<RooRealVar&>(rooVars_[name]).setVal(val);
 			}
