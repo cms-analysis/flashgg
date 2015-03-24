@@ -479,10 +479,11 @@ Commands:
         for d in datasets:
             nevents = 0.
             weights = 0.
+            nfiles = len(catalog[d]["files"])
             for fil in catalog[d]["files"]:
                 nevents += fil.get("nevents",0.)
                 weights += fil.get("weights",0.)
-            print d.ljust(largest), ("%d" % int(nevents)).rjust(8),
+            print d.ljust(largest), ("%d" % int(nevents)).rjust(8), ("%d" % nfiles).rjust(3),
             if weights != 0.: print ("%1.2g" % ( weights/nevents ) )
             else: print
             
