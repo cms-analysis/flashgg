@@ -69,6 +69,8 @@ namespace  {
         edm::Wrapper<std::vector<flashgg::Jet> >                  wrp_vec_fgg_jet;
         std::map<edm::Ptr<reco::Vertex>, float>                    map_ptr_vtx_flo;
         std::pair<edm::Ptr<reco::Vertex>, float>                   pai_ptr_vtx_flo;
+        std::map<std::string, std::map<edm::Ptr<reco::Vertex>, float> >  map_str_ptr_vtx_flo;
+        std::pair<std::string, std::map<edm::Ptr<reco::Vertex>, float> >  pai_str_ptr_vtx_flo;
         flashgg::Electron						    fgg_ele;
         edm::Ptr<flashgg::Electron> 					  ptr_fgg_ele;
         edm::Wrapper<flashgg::Electron>				  wrp_fgg_ele;

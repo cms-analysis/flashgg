@@ -11,7 +11,11 @@
 using namespace std;
 using namespace flashgg;
 
-PhotonIdUtils::PhotonIdUtils() : removeOverlappingCandidates_( true ) {};
+PhotonIdUtils::PhotonIdUtils( OverlapRemovalAlgo *algo ) :
+    overlapAlgo_( algo ), removeOverlappingCandidates_( true ), deltaPhiRotation_( 0. )
+{
+}
+
 PhotonIdUtils::~PhotonIdUtils()
 {
     // These delete commands caused an unpredictable segfault,
@@ -44,7 +48,7 @@ bool PhotonIdUtils::vetoPackedCand( const pat::Photon &photon, const edm::Ptr<pa
     return ( nass > 0 );
 }
 
-float PhotonIdUtils::pfIsoChgWrtVtx( edm::Ptr<pat::Photon> &photon,
+float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<pat::Photon> &photon,
                                      const edm::Ptr<reco::Vertex> vtx,
                                      const flashgg::VertexCandidateMap vtxcandmap,
                                      float coneSize, float coneVetoBarrel, float coneVetoEndcap,
@@ -61,28 +65,32 @@ float PhotonIdUtils::pfIsoChgWrtVtx( edm::Ptr<pat::Photon> &photon,
     math::XYZVector SCdirection( photon->superCluster()->x() - vtx->x(),
                                  photon->superCluster()->y() - vtx->y(),
                                  photon->superCluster()->z() - vtx->z()
-                               );
-
+        );
+    
     auto mapRange = std::equal_range( vtxcandmap.begin(), vtxcandmap.end(), vtx, flashgg::compare_with_vtx() );
     if( mapRange.first == mapRange.second ) { return -1.; } // no entries for this vertex
     for( auto pair_iter = mapRange.first ; pair_iter != mapRange.second ; pair_iter++ ) {
         edm::Ptr<pat::PackedCandidate> pfcand = pair_iter->second;
-
+        
         if( abs( pfcand->pdgId() ) == 11 || abs( pfcand->pdgId() ) == 13 ) { continue; } //J. Tao not e/mu
-        if( removeOverlappingCandidates_ && vetoPackedCand( *photon, pfcand ) ) { continue; }
-
+        if( removeOverlappingCandidates_ &&
+            ( ( overlapAlgo_ == 0 &&  vetoPackedCand( *photon, pfcand ) ) ||
+              ( overlapAlgo_ != 0 && ( *overlapAlgo_ )( *photon, pfcand ) ) ) ) { continue; }
+        
+        
         if( pfcand->pt() < ptMin )         { continue; }
         float dRTkToVtx  = deltaR( pfcand->momentum().Eta(), pfcand->momentum().Phi(),
-                                   SCdirection.Eta(), SCdirection.Phi() );
+                                   SCdirection.Eta(), SCdirection.Phi() + deltaPhiRotation_ ); // rotate SC in phi if requested (random cone isolation)
         if( dRTkToVtx > coneSize || dRTkToVtx < coneVeto ) { continue; }
-
+        
         isovalue += pfcand->pt();
     }
     return isovalue;
+    
 }
 
 
-map<edm::Ptr<reco::Vertex>, float> PhotonIdUtils::pfIsoChgWrtAllVtx( edm::Ptr<pat::Photon> &photon,
+map<edm::Ptr<reco::Vertex>, float> PhotonIdUtils::pfIsoChgWrtAllVtx( const edm::Ptr<pat::Photon> &photon,
         const std::vector<edm::Ptr<reco::Vertex> > &vertices,
         const flashgg::VertexCandidateMap vtxcandmap,
         float coneSize, float coneVetoBarrel, float coneVetoEndcap,
@@ -117,7 +125,7 @@ float PhotonIdUtils::pfIsoChgWrtWorstVtx( map<edm::Ptr<reco::Vertex>, float> &vt
 
 
 
-float PhotonIdUtils::pfCaloIso( edm::Ptr<pat::Photon> &photon,
+float PhotonIdUtils::pfCaloIso( const edm::Ptr<pat::Photon> &photon,
                                 const std::vector<edm::Ptr<pat::PackedCandidate> > &pfcandidates,
                                 float dRMax,
                                 float dRVetoBarrel,

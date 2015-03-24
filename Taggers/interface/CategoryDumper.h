@@ -77,6 +77,7 @@ namespace flashgg {
     private:
         std::string name_;
         std::vector<std::string> names_;
+        std::vector<std::string> dumpOnly_;
         std::vector<std::tuple<float, std::shared_ptr<trait_type>, int, double, double> > variables_;
         std::vector<std::tuple<std::string, int, std::vector<double>, int, std::vector<double>, TH1 *> > histograms_;
 
@@ -97,6 +98,9 @@ namespace flashgg {
         using namespace std;
         name_ = name;
 
+        if( cfg.existsAs<vector<string> >( "dumpOnly" ) ) {
+            dumpOnly_ = cfg.getParameter<vector<string> >( "dumpOnly" );
+        }
         auto variables = cfg.getParameter<vector<edm::ParameterSet> >( "variables" );
         for( auto &var : variables ) {
             auto expr = var.getParameter<string>( "expr" );
@@ -187,6 +191,7 @@ namespace flashgg {
         tree_ = fs.make<TTree>( formatString( name_, replacements ).c_str(), formatString( name_, replacements ).c_str() );
         tree_->Branch( weightName, &weight_ );
         for( size_t iv = 0; iv < names_.size(); ++iv ) {
+            if( ! dumpOnly_.empty() && find( dumpOnly_.begin(), dumpOnly_.end(), names_[iv] ) != dumpOnly_.end() ) { continue; }
             tree_->Branch( names_[iv].c_str(), &std::get<0>( variables_[iv] ) );
         }
         if( globalVarsDumper_ ) {

@@ -156,6 +156,12 @@ def addMVAs(vpset,mvas):
         addMVA(vpset,*mva)
 
 # -----------------------------------------------------------------------
+def dumpOnly(pset,varList):
+    for cat in pset.categories:
+        cat.dumpOnly = cms.vstring(varList)
+    
+
+# -----------------------------------------------------------------------
 def mkVarList(inp):
     
     ret = []
