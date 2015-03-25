@@ -65,6 +65,11 @@ namespace flashgg {
     Handle<View<reco::Vertex> > primaryVertices;
     evt.getByToken(vertexToken_,primaryVertices);
    // const PtrVector<reco::Vertex>& pvPointers = primaryVertices->ptrVector();
+	 
+	 reco::VertexCollection vc; // stupid - this is just temporary to use the old PUJID method before it is updated...
+	 for (unsigned int i =0 ; i< primaryVertices->size() ; i++){ //temporary
+		vc.push_back(*(primaryVertices->ptrAt(i))) ;//temporary
+	 } //temporary
     
     Handle<VertexCandidateMap> vertexCandidateMap;
     evt.getByToken(vertexCandidateMapToken_,vertexCandidateMap);
@@ -83,14 +88,16 @@ namespace flashgg {
 	if(!usePuppi){
 	if (!fjet.hasPuJetId(vtx)) {
 	  // Method written just for MiniAOD --> MicroAOD
-	  PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),vtx,*vertexCandidateMap,true);
+	 // PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),vtx,vc,true);
+	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),1.,vtx.get(),vc,true);
 	  fjet.setPuJetId(vtx,lPUJetId);
 	}
 	}
       }
 			if(!usePuppi){
       if (primaryVertices->size() > 0 && !fjet.hasPuJetId(primaryVertices->ptrAt(0))) {
-	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),primaryVertices->ptrAt(0),*vertexCandidateMap,true);
+//	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),primaryVertices->ptrAt(0),*vertexCandidateMap,true);
+	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),1.,(primaryVertices->ptrAt(0).get()),vc,true);
 	fjet.setPuJetId(primaryVertices->ptrAt(0),lPUJetId);
       }
 			}

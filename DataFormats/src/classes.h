@@ -63,21 +63,13 @@ namespace  { struct dictionary {
         edm::Wrapper<flashgg::Jet>                                    wrp_fgg_jet;
         std::vector<flashgg::Jet>                                     vec_fgg_jet;
         edm::Ptr<flashgg::Jet>                                        ptr_fgg_jet;
-        edm::PtrVector<flashgg::Jet>                                     ptr_vec_fgg_jet;
         edm::Ptr<pat::Muon>                                        ptr_fgg_muon;
         std::vector<pat::Muon>                                        vec_fgg_muon;
-        edm::PtrVector<pat::Muon>                                     ptr_vec_fgg_muon;
         edm::Wrapper<std::vector<flashgg::Jet> >                  wrp_vec_fgg_jet;
-        edm::PtrVector<pat::PackedCandidate>                          ptr_vec_pac;
-        std::map<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> >    map_ptr_vtx_ptr_vec_pac;
-        std::pair<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> >   pai_ptr_vtx_ptr_vec_pac;
-        edm::Wrapper<std::map<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> > >     wrp_map_ptr_vtx_ptr_vec_pac;
-        edm::Wrapper<std::pair<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> > >    wrp_pai_ptr_vtx_ptr_vec_pac;
         std::map<edm::Ptr<reco::Vertex>,float>                    map_ptr_vtx_flo;
         std::pair<edm::Ptr<reco::Vertex>,float>                   pai_ptr_vtx_flo;
         flashgg::Electron						    fgg_ele;
         edm::Ptr<flashgg::Electron> 					  ptr_fgg_ele;
-        edm::PtrVector<flashgg::Electron>			      vec_ptr_fgg_ele;
         edm::Wrapper<flashgg::Electron>				  wrp_fgg_ele;
         std::vector<flashgg::Electron>				  vec_fgg_ele;
         edm::Wrapper<std::vector<flashgg::Electron> >               wrp_vec_fgg_ele;					
@@ -125,8 +117,6 @@ namespace  { struct dictionary {
         edm::Wrapper<std::vector<flashgg::TTHLeptonicTag> > wrp_vec_tthl;
         edm::Ptr<pat::Electron> ptr_elec;
         edm::Ptr<pat::Muon> ptr_muon;
-        edm::PtrVector<pat::Muon> vec_ptr_muon;
-        edm::PtrVector<flashgg::Jet> vec_ptr_jet;
 
         flashgg::TTHHadronicTag tthh;
         std::vector<flashgg::TTHHadronicTag> vec_tthh;
@@ -145,9 +135,6 @@ namespace  { struct dictionary {
         edm::Wrapper<std::vector<flashgg::VHLooseTag> > wrp_vec_vhl;
         edm::Ptr<pat::Electron> ptr_elec_vhl;
         edm::Ptr<pat::Muon> ptr_muon_vhl;
-        edm::PtrVector<pat::Muon> vec_ptr_muon_vhl;
-        edm::PtrVector<flashgg::Jet> vec_ptr_jet_vhl;
-        edm::PtrVector<pat::MET> vec_ptr_met_vhl;
 
         flashgg::VHTightTag vht;
         std::vector<flashgg::VHTightTag> vec_vht;
@@ -159,8 +146,9 @@ namespace  { struct dictionary {
 
         edm::Ptr<pat::Electron> ptr_elec_vht;
         edm::Ptr<pat::Muon> ptr_muon_vht;
-        edm::PtrVector<pat::Muon> vec_ptr_muon_vht;
-        edm::PtrVector<flashgg::Jet> vec_ptr_jet_vht;
-        edm::PtrVector<pat::MET> vec_ptr_met_vht;
+        
+				std::pair<edm::Ptr<reco::Vertex>,edm::Ptr<pat::PackedCandidate> >  pair_ptr_vx_ptr_pat_pc;
+				std::vector<std::pair<edm::Ptr<reco::Vertex>,edm::Ptr<pat::PackedCandidate> > >  vec_pair_ptr_vx_ptr_pat_pc;
+				edm::Wrapper<std::vector<std::pair<edm::Ptr<reco::Vertex>,edm::Ptr<pat::PackedCandidate> > > > wrp_vec_pair_ptr_vx_ptr_pat_pc;
 
 };}
