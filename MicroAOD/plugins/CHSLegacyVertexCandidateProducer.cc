@@ -69,6 +69,11 @@ namespace flashgg {
     // Handle<View<reco::Vertex> > primaryVertices;
     // Handle<reco::VertexCollection> primaryVertices;
     evt.getByToken(vertexCandidateMapToken_,vtxmap);
+
+    // Non-const copy so we can sort by candidates (which may be associated to more than one vertex)
+    VertexCandidateMap vtxmapbycand(*vtxmap);
+    std::stable_sort(vtxmapbycand.begin(),vtxmapbycand.end(),flashgg::compare_by_cand());
+
     edm::Ptr<reco::Vertex> flashVertex;
     
     //std::cout <<"Run[" << evt.run() <<  "]=evt["<< evt.id().event() << "]\t npart::" <<  pfCandidates->size() << std::endl;
@@ -98,35 +103,26 @@ namespace flashgg {
     }
     
     std::auto_ptr<vector<pat::PackedCandidate> > result(new vector<pat::PackedCandidate>());
-    //std::vector<pat::PackedCandidate*> result;
     
     for(unsigned int pfCandLoop =0 ; pfCandLoop < pfCandidates->size() ; pfCandLoop++){
       
-      if(pfCandidates->ptrAt(pfCandLoop)->charge() ==0){ //keep all neutral objects. 
-	assert(!(pfCandidates->ptrAt(pfCandLoop).isNull()));
-	result->push_back(*(pfCandidates->ptrAt(pfCandLoop)));
+      edm::Ptr<pat::PackedCandidate> cand = pfCandidates->ptrAt(pfCandLoop);
+
+      if(cand->charge() ==0){ //keep all neutral objects. 
+	assert(!(cand.isNull()));
+	result->push_back(*cand);
 	continue;
       }
-      
-      //other wise, if it is charged, want to check if track comes from flashggVertex
-      for (std::map<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> >::const_iterator vi = vtxmap->begin() ; vi != vtxmap->end() ; vi++) {
-	const edm::Ptr<reco::Vertex> currentVertex = (vi->first);
-	// the arugment of the if returns 1 if pfPackedCand is in 
-	// the PtrVector of PackedCandidates corresponding to currentVertex in the Map.
-	
-	if (std::count((vtxmap->at(currentVertex).begin()),vtxmap->at(currentVertex).end(),pfCandidates->ptrAt(pfCandLoop))) {
-	  // Now check if the currentVertex is the same as the legacy PV.
-	  // Trying to do if (lpv == *currentVertex) gave weird compilation errors, so matchign positions is next best thing.
-	  //	if (flashVertex->position() == currentVertex->position())
-	  if (flashVertex == currentVertex) result->push_back(*(pfCandidates->ptrAt(pfCandLoop)));
-	  //result->push_back(*((pfCandidates[pfCandLoop])->clone()));
-	} // else {}
+
+      // Keep charged candidate if it's associated to the appropriate vertex
+      auto mapRange = std::equal_range(vtxmapbycand.begin(),vtxmapbycand.end(),cand,flashgg::compare_with_cand());
+      for (auto pair_iter = mapRange.first ; pair_iter != mapRange.second ; pair_iter++) {
+	edm::Ptr<reco::Vertex> currentVertex = pair_iter->first;
+	if (flashVertex == currentVertex) result->push_back(*cand);
       }
-      
     }
+
     evt.put(result);	
-
-
   }
 }
 typedef flashgg::CHSLegacyVertexCandidateProducer FlashggCHSLegacyVertexCandidateProducer;

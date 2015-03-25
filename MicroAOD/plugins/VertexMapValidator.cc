@@ -257,16 +257,17 @@ namespace flashgg {
 			matchCounter = matchCounter + myMap.count(primaryVerticesAOD->ptrAt(index));
 			//	{std::cout << myMap.count(primaryVerticesAOD->ptrAt(index)) << "	" << myMap.count(primaryVerticesAOD->ptrAt(i)) << "	" << primaryVerticesAOD->ptrAt(index)->tracksSize() <<std::endl;}
 
-			PtrVector<pat::PackedCandidate> finalTracks;
+			//			PtrVector<pat::PackedCandidate> finalTracks;
 			int tempCounter =0;
 			// use iterators to loop over this range.
 			for (std::multimap<Ptr<reco::Vertex>,Ptr<pat::PackedCandidate>>::iterator fillLoop = range.first; fillLoop != range.second; fillLoop++)
 			{
 				tempCounter++;	
-				finalTracks.push_back(fillLoop->second);
+				//				finalTracks.push_back(fillLoop->second);
+				assoc->emplace_back(vtx,fillLoop->second);
 			}
 			// finally, fill the assoc with the pair < vertex, track > for each corresponding track;
-			assoc->insert (std::make_pair(vtx,finalTracks));
+			//			assoc->insert (std::make_pair(vtx,finalTracks));
 			//assoc->insert (std::pair<<Ptr<reco::Vertex>,PtrVector<pat::PackedCandidate>>(vtx,finalTracks));
 		}
 
@@ -274,6 +275,7 @@ namespace flashgg {
 		std:: cout << "matched tracks : " << matchCounter  << std:: endl;
 
 		//		if (trkCounter > trackNumber) { std::cout << " [ISSUE] " << std::endl;}
+		std::stable_sort(assoc->begin(),assoc->end(),flashgg::compare_by_vtx());
 		evt.put(assoc);
 
 		cout << trackNumber << "	" << trackNumberMiniAOD << "	" << matchCounter << std::endl;

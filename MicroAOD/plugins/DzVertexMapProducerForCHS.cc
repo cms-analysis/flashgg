@@ -51,9 +51,9 @@ namespace flashgg {
     std::auto_ptr<VertexCandidateMap> assoc(new VertexCandidateMap);
     
     // Create empty vector for each vertex in advance
-    for (unsigned int j = 0 ; j < primaryVertices->size() ; j++) {
-      assoc->insert(std::make_pair(primaryVertices->ptrAt(j),edm::PtrVector<pat::PackedCandidate>()));
-    }
+    //    for (unsigned int j = 0 ; j < primaryVertices->size() ; j++) {
+    //      assoc->insert(std::make_pair(primaryVertices->ptrAt(j),edm::PtrVector<pat::PackedCandidate>()));
+    //    }
 
     for (unsigned int i = 0 ; i < pfCandidates->size() ; i++) {
       Ptr<pat::PackedCandidate> cand = pfCandidates->ptrAt(i);
@@ -71,15 +71,16 @@ namespace flashgg {
       if (closestDz < maxAllowedDz_) {
 	// Within specified distance of a vertex, so attach only to it (or the closest one if multiple)
 	Ptr<reco::Vertex> vtx =primaryVertices->ptrAt(closestDzIndex);
-	assoc->at(vtx).push_back(cand);
+	assoc->emplace_back(vtx,cand);
       } else { 
 	// if the track did not attach to any vertex, attach it to ALL vertices!
 	for (unsigned int j = 0 ; j < primaryVertices->size() ; j++) {
 	  Ptr<reco::Vertex> vtx = primaryVertices->ptrAt(j);
-	  assoc->at(vtx).push_back(cand);
+	  assoc->emplace_back(vtx,cand);
 	}
       }
     } // loop over pf 
+    std::stable_sort(assoc->begin(),assoc->end(),flashgg::compare_by_vtx());
     evt.put(assoc);
   } // produce method
 } // namespace flashgg

@@ -62,28 +62,22 @@ float PhotonIdUtils::pfIsoChgWrtVtx( edm::Ptr<pat::Photon>& photon,
 			       photon->superCluster()->z() - vtx->z() 
 			       );
 
-  if( vtxcandmap.count(vtx) ) {  
-
-    std::vector<edm::Ptr<pat::PackedCandidate> > pfcandidates = vtxcandmap.at(vtx);
+  auto mapRange = std::equal_range(vtxcandmap.begin(),vtxcandmap.end(),vtx,flashgg::compare_with_vtx());
+  if (mapRange.first == mapRange.second) return -1.; // no entries for this vertex
+  for (auto pair_iter = mapRange.first ; pair_iter != mapRange.second ; pair_iter++) {
+    edm::Ptr<pat::PackedCandidate> pfcand = pair_iter->second;
     
-    for( size_t ipf = 0; ipf < pfcandidates.size(); ipf++ ) { 
-	    
-      edm::Ptr<pat::PackedCandidate> pfcand = pfcandidates[ipf];
-
-      if( abs(pfcand->pdgId()) == 11 || abs(pfcand->pdgId()) == 13 ) continue; //J. Tao not e/mu       
-      if( removeOverlappingCandidates_ && vetoPackedCand(*photon,pfcand) ) { continue; }
-      
-      if( pfcand->pt() < ptMin )         continue;    
-      float dRTkToVtx  = deltaR( pfcand->momentum().Eta(), pfcand->momentum().Phi(),
-				 SCdirection.Eta(), SCdirection.Phi() );
-      if( dRTkToVtx > coneSize || dRTkToVtx < coneVeto ) continue;
-      
-      isovalue += pfcand->pt();
-    }
-    return isovalue;  
+    if( abs(pfcand->pdgId()) == 11 || abs(pfcand->pdgId()) == 13 ) continue; //J. Tao not e/mu       
+    if( removeOverlappingCandidates_ && vetoPackedCand(*photon,pfcand) ) { continue; }
+    
+    if( pfcand->pt() < ptMin )         continue;    
+    float dRTkToVtx  = deltaR( pfcand->momentum().Eta(), pfcand->momentum().Phi(),
+			       SCdirection.Eta(), SCdirection.Phi() );
+    if( dRTkToVtx > coneSize || dRTkToVtx < coneVeto ) continue;
+    
+    isovalue += pfcand->pt();
   }
-  else return -1;   // return -1 if the vertex is not found in the map
-
+  return isovalue;  
 }
 
 
