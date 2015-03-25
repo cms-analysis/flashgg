@@ -399,7 +399,7 @@ namespace flashgg {
         IndexMatchedConversionTrailPhoton = IndexMatchedConversion(g2,conversionsVector);
     }
 
-    unsigned int vertex_index,track_index;
+    unsigned int vertex_index;
 
     unsigned int selected_vertex_index=0;
     unsigned int second_selected_vertex_index=0;
@@ -444,9 +444,11 @@ namespace flashgg {
 
       sumpt.Set(0.,0.);
       
-      if(vertexCandidateMap.count(vtx) == 0) continue;
-      for(track_index = 0 ; track_index < vertexCandidateMap.at(vtx).size() ; track_index++) {
-        edm::Ptr<pat::PackedCandidate> cand = vertexCandidateMap.at(vtx)[track_index];
+      
+      auto mapRange = std::equal_range(vertexCandidateMap.begin(),vertexCandidateMap.end(),vtx,flashgg::compare_with_vtx());
+      if (mapRange.first == mapRange.second) continue;
+      for (auto pair_iter = mapRange.first ; pair_iter != mapRange.second ; pair_iter++) {
+	const edm::Ptr<pat::PackedCandidate> cand = pair_iter->second;
         TVector3 tk;
         TVector2 tkXY;
         double dr1 = 0;
