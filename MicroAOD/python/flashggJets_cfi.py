@@ -46,7 +46,7 @@ def addFlashggPFCHSLegJets(process):
       postfix   = "",
       labelName = 'AK4PFCHSLeg',
       jetSource = cms.InputTag('ak4PFJetsCHSLeg'),
-      trackSource = cms.InputTag('unpackedTracksAndVertices'), 
+      #trackSource = cms.InputTag('unpackedTracksAndVertices'), 
       pvSource = cms.InputTag('unpackedTracksAndVertices'), 
       jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute']), 'None'),
       btagDiscriminators = [      'combinedSecondaryVertexBJetTags'     ]
