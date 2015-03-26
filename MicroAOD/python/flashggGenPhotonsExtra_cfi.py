@@ -5,6 +5,7 @@ flashggGenPhotonsExtra = cms.EDProducer("FlashggGenPhotonExtraProducer",
                                       genParticles = cms.InputTag("packedGenParticles"),
                                       isoConeSize = cms.double(0.3),
                                       epsilon0 = cms.double(1.0), ## for Frixione isolation
-                                      n0 = cms.double(1.0)
+                                      n0 = cms.double(1.0),
+                                      defaultType = cms.int(0),  ## kUnknown
                                     )
 
