@@ -206,34 +206,34 @@ void VHTightTagProducer::produce( Event & evt, const EventSetup & )
 
 Handle<View<flashgg::Jet> > theJets;
 evt.getByToken(thejetToken_,theJets);
-const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
+//const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
 
 Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
 evt.getByToken(diPhotonToken_,diPhotons);
-const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+//const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
 Handle<View<pat::Muon> > theMuons;
 evt.getByToken(muonToken_,theMuons);
-const PtrVector<pat::Muon>& muonPointers = theMuons->ptrVector();
+//const PtrVector<pat::Muon>& muonPointers = theMuons->ptrVector();
 
 Handle<View<flashgg::Electron> > theElectrons;
 evt.getByToken(electronToken_,theElectrons);
-const PtrVector<flashgg::Electron>& electronPointers = theElectrons->ptrVector();
+//const PtrVector<flashgg::Electron>& electronPointers = theElectrons->ptrVector();
 
 Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
 evt.getByToken(mvaResultToken_,mvaResults);
-const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
+//const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
 std::auto_ptr<vector<VHTightTag> > VHTightTags(new vector<VHTightTag>);
 
 Handle<View<pat::MET> > METs;
 evt.getByToken(METToken_,METs);
-const PtrVector<pat::MET>& METPointers = METs->ptrVector();
+//const PtrVector<pat::MET>& METPointers = METs->ptrVector();
 
 Handle<View<reco::Vertex> > vertices;
 evt.getByToken(vertexToken_,vertices);
-const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
+//const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
 
-assert(diPhotonPointers.size() == mvaResultPointers.size());
+assert(diPhotons->size() == mvaResults->size());
 
 bool photonSelection = false;
 double idmva1 = 0.;
@@ -247,19 +247,19 @@ bool isElectronHighPt = false;
 bool isElectronLowPt = false;
 bool isInvMassOK_elec = false;
 
-for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoIndex++ )
+for(unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ )
  {
    hasGoodMuons_highPt = false;
    hasGoodMuons_lowPt = false;
    hasGoodElectrons_highPt = false;
    hasGoodElectrons_lowPt = false;
 	
-   PtrVector<pat::Muon> tagMuons_highPt;
-   PtrVector<pat::Muon> tagMuons_lowPt;
-   PtrVector<pat::Muon> tagMuons;
-   PtrVector<Electron> tagElectrons_highPt;
-   PtrVector<Electron> tagElectrons_lowPt;
-   PtrVector<Electron> tagElectrons;
+   std::vector<edm::Ptr<pat::Muon> > tagMuons_highPt;
+   std::vector<edm::Ptr<pat::Muon> > tagMuons_lowPt;
+   std::vector<edm::Ptr<pat::Muon> > tagMuons;
+   std::vector<edm::Ptr<Electron> > tagElectrons_highPt;
+   std::vector<edm::Ptr<Electron> > tagElectrons_lowPt;
+   std::vector<edm::Ptr<Electron> > tagElectrons;
 
    isMuonHighPt = false;
    isMuonLowPt = false;
@@ -269,11 +269,11 @@ for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoInde
    isElectronLowPt = false;
    isInvMassOK_elec = false;
 
-   PtrVector<Jet> tagJets;
-   PtrVector<pat::MET> tagMETs;
+   std::vector<edm::Ptr<Jet> > tagJets;
+   std::vector<edm::Ptr<pat::MET> > tagMETs;
  
-   edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[diphoIndex];
-   edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[diphoIndex];
+   edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt(diphoIndex);
+   edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt(diphoIndex);
 
    VHTightTag VHTightTags_obj(dipho, mvares);
    if(dipho->leadingPhoton()->pt() < (dipho->mass())*leadPhoOverMassThreshold_) continue;
@@ -289,13 +289,13 @@ for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoInde
 		
     photonSelection = true;
 
-    tagMuons_highPt = selectMuons(muonPointers,dipho, vertexPointers, leptonEtaThreshold_,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
-    tagMuons_lowPt = selectMuons(muonPointers,dipho, vertexPointers, leptonEtaThreshold_,leptonLowPtThreshold_,muPFIsoSumRelThreshold_,deltaRLowPtMuonPhoThreshold_,deltaRLowPtMuonPhoThreshold_);
+    tagMuons_highPt = selectMuons(theMuons,dipho, vertices, leptonEtaThreshold_,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
+    tagMuons_lowPt = selectMuons(theMuons,dipho, vertices, leptonEtaThreshold_,leptonLowPtThreshold_,muPFIsoSumRelThreshold_,deltaRLowPtMuonPhoThreshold_,deltaRLowPtMuonPhoThreshold_);
     hasGoodMuons_highPt = (tagMuons_highPt.size()>0);
     hasGoodMuons_lowPt = (tagMuons_lowPt.size()>0);
 
-    tagElectrons_highPt = selectElectrons(electronPointers,vertexPointers,leptonPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_,nonTrigMVAThreshold_,electronIsoThreshold_,electronNumOfHitsThreshold_,EtaCuts_);
-    tagElectrons_lowPt = selectElectrons(electronPointers,vertexPointers,leptonLowPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_, nonTrigMVAThreshold_,electronIsoThreshold_,electronNumOfHitsThreshold_,EtaCuts_);
+    tagElectrons_highPt = selectElectrons(theElectrons,vertices,leptonPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_,nonTrigMVAThreshold_,electronIsoThreshold_,electronNumOfHitsThreshold_,EtaCuts_);
+    tagElectrons_lowPt = selectElectrons(theElectrons,vertices,leptonLowPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_, nonTrigMVAThreshold_,electronIsoThreshold_,electronNumOfHitsThreshold_,EtaCuts_);
     hasGoodElectrons_highPt = (tagElectrons_highPt.size()>0);
     hasGoodElectrons_lowPt = (tagElectrons_lowPt.size()>0);
 
@@ -339,9 +339,9 @@ for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoInde
   {
    Ptr<pat::Muon> muon = tagMuons[muonIndex];
 
-   for (unsigned int candIndex_outer =0; candIndex_outer < jetPointers.size() ; candIndex_outer++)
+   for (unsigned int candIndex_outer =0; candIndex_outer < theJets->size() ; candIndex_outer++)
     {
-     edm::Ptr<flashgg::Jet> thejet = jetPointers[candIndex_outer];
+     edm::Ptr<flashgg::Jet> thejet = theJets->ptrAt(candIndex_outer);
      if (! thejet->passesPuJetId(dipho)) continue;
      if(fabs(thejet->eta()) > jetEtaThreshold_) continue; 
      if(thejet->pt() < jetPtThreshold_) continue;
@@ -421,9 +421,9 @@ for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoInde
     }
 
     if(!photon_veto) break;
-    for (unsigned int candIndex_outer =0; candIndex_outer < jetPointers.size() ; candIndex_outer++)
+    for (unsigned int candIndex_outer =0; candIndex_outer < theJets->size() ; candIndex_outer++)
      {
-       edm::Ptr<flashgg::Jet> thejet = jetPointers[candIndex_outer];
+       edm::Ptr<flashgg::Jet> thejet = theJets->ptrAt(candIndex_outer);
        if (! thejet->passesPuJetId(dipho)) continue;
        if(fabs(thejet->eta()) > jetEtaThreshold_) continue;
        if(thejet->pt() < jetPtThreshold_) continue;
@@ -439,8 +439,8 @@ for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoInde
 
    }
 
- if (METPointers.size() != 1) { std::cout << "WARNING - #MET is not 1" << std::endl;}
- Ptr<pat::MET> theMET = METPointers[0];
+ if (METs->size() != 1) { std::cout << "WARNING - #MET is not 1" << std::endl;}
+ Ptr<pat::MET> theMET = METs->ptrAt(0);
  if((isMuonHighPt || isElectronHighPt) && theMET->pt() > METThreshold_) 
   {
    tagMETs.push_back(theMET);

@@ -15,7 +15,7 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/Common/interface/Ptr.h"
-#include "DataFormats/Common/interface/PtrVector.h"
+//#include "DataFormats/Common/interface/PtrVector.h"
 
 #include "DataFormats/VertexReco/interface/Vertex.h"
 
@@ -172,16 +172,16 @@ DiphotonPreselectionValidationTreeMaker::analyze(const edm::Event& iEvent, const
 
   Handle<View<flashgg::DiPhotonCandidate> > diphotons;
   iEvent.getByToken(diphotonToken_,diphotons);
-  const PtrVector<flashgg::DiPhotonCandidate>& diphotonPointers = diphotons->ptrVector();  
+ // const PtrVector<flashgg::DiPhotonCandidate>& diphotonPointers = diphotons->ptrVector();  
   
   // ********************************************************************************
   initEventStructure();
-  evInfo.ndiphoton = diphotonPointers.size();
+  evInfo.ndiphoton = diphotons->size();
   eventTree->Fill();
-  for( size_t idipho = 0; idipho < diphotonPointers.size(); idipho++ )
+  for( size_t idipho = 0; idipho < diphotons->size(); idipho++ )
   {
     
-    Ptr<flashgg::DiPhotonCandidate> diphoPtr = diphotonPointers[idipho];
+    Ptr<flashgg::DiPhotonCandidate> diphoPtr = diphotons->ptrAt(idipho);
 // leading photon
     diphoInfo.pho1_isEB = diphoPtr->leadingPhoton()->isEB();
     diphoInfo.pho1_isEE = diphoPtr->leadingPhoton()->isEE();

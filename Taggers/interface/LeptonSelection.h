@@ -33,11 +33,11 @@ using namespace edm;
 
 namespace flashgg {
 
-	PtrVector<pat::Muon> selectMuons(const PtrVector<pat::Muon>& muonPointers,Ptr<flashgg::DiPhotonCandidate> dipho, const PtrVector<reco::Vertex>& vertexPointers, double muonEtaThreshold, double muonPtThreshold, double muPFIsoSumRelThreshold, double dRPhoLeadMuonThreshold, double dRPhoSubLeadMuonThreshold);
+	std::vector<edm::Ptr<pat::Muon> > selectMuons(const edm::Handle<edm::View<pat::Muon> >& muonPointers,Ptr<flashgg::DiPhotonCandidate> dipho, const edm::Handle<edm::View<reco::Vertex> >& vertexPointers, double muonEtaThreshold, double muonPtThreshold, double muPFIsoSumRelThreshold, double dRPhoLeadMuonThreshold, double dRPhoSubLeadMuonThreshold);
 
-	PtrVector<Electron> selectElectrons(const PtrVector<flashgg::Electron>& ElectronPointers, const PtrVector<reco::Vertex>& vertexPointers,double ElectronPtThreshold ,double DeltaRTrkElec ,double TransverseImpactParam,double LongitudinalImpactParam, double NonTrigMVAThreshold, double IsoThreshold, double NumOfMissingHitsThreshold, vector<double> EtaCuts);
+	std::vector<edm::Ptr<Electron> > selectElectrons(const edm::Handle<edm::View<flashgg::Electron> >& ElectronPointers, const edm::Handle<edm::View<reco::Vertex> >& vertexPointers,double ElectronPtThreshold ,double DeltaRTrkElec ,double TransverseImpactParam,double LongitudinalImpactParam, double NonTrigMVAThreshold, double IsoThreshold, double NumOfMissingHitsThreshold, vector<double> EtaCuts);
 
-	Ptr<reco::Vertex> chooseElectronVertex(Ptr<flashgg::Electron> & elec,const PtrVector<reco::Vertex> & vertexPopinters);
+	Ptr<reco::Vertex> chooseElectronVertex(Ptr<flashgg::Electron> & elec,const edm::Handle<edm::View<reco::Vertex> > & vertexPopinters);
 
 }
 

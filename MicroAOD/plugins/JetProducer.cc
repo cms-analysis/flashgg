@@ -55,16 +55,21 @@ namespace flashgg {
     // input jets
     Handle<View<pat::Jet> > jets;
     evt.getByToken(jetToken_,jets);
-    const PtrVector<pat::Jet>& jetPointers = jets->ptrVector();
+   // const PtrVector<pat::Jet>& jetPointers = jets->ptrVector();
 
     // input DiPhoton candidates
     Handle<View<DiPhotonCandidate> > diPhotons;
     evt.getByToken(diPhotonToken_,diPhotons);
-    const PtrVector<DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+   // const PtrVector<DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
     Handle<View<reco::Vertex> > primaryVertices;
     evt.getByToken(vertexToken_,primaryVertices);
-    const PtrVector<reco::Vertex>& pvPointers = primaryVertices->ptrVector();
+   // const PtrVector<reco::Vertex>& pvPointers = primaryVertices->ptrVector();
+	 
+	 reco::VertexCollection vc; // stupid - this is just temporary to use the old PUJID method before it is updated...
+	 for (unsigned int i =0 ; i< primaryVertices->size() ; i++){ //temporary
+		vc.push_back(*(primaryVertices->ptrAt(i))) ;//temporary
+	 } //temporary
     
     Handle<VertexCandidateMap> vertexCandidateMap;
     evt.getByToken(vertexCandidateMapToken_,vertexCandidateMap);
@@ -72,33 +77,43 @@ namespace flashgg {
     // output jets
     auto_ptr<vector<flashgg::Jet> > jetColl(new vector<flashgg::Jet>);
 
-    for (unsigned int i = 0 ; i < jetPointers.size() ; i++) {
-      Ptr<pat::Jet> pjet = jetPointers[i];
+    for (unsigned int i = 0 ; i < jets->size() ; i++) {
+      Ptr<pat::Jet> pjet = jets->ptrAt(i);
       if (pjet->pt() < minJetPt_) continue;
       flashgg::Jet fjet = flashgg::Jet(*pjet);
-      for (unsigned int j = 0 ; j < diPhotonPointers.size() ; j++) {
-	Ptr<DiPhotonCandidate> diPhoton = diPhotonPointers[j];
+      for (unsigned int j = 0 ; j < diPhotons->size() ; j++) {
+	Ptr<DiPhotonCandidate> diPhoton = diPhotons->ptrAt(j);
 	Ptr<reco::Vertex> vtx = diPhoton->vtx();
 
 	if(!usePuppi){
-	if (!fjet.hasPuJetId(vtx)) {
-	  // Method written just for MiniAOD --> MicroAOD
-	  PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),vtx,*vertexCandidateMap,true);
-	  fjet.setPuJetId(vtx,lPUJetId);
+		if (!fjet.hasPuJetId(vtx)) {
+			// temporarily remove PUJetId while bugs are investigated by jetMET
+			//	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),1.,vtx.get(),vc,true);
+			PileupJetIdentifier lPUJetId;
+			lPUJetId.RMS(0);
+			lPUJetId.betaStar(0);
+			int idFlag( 0 );
+			idFlag += 1 <<  PileupJetIdentifier::kTight;
+			idFlag += 1 <<  PileupJetIdentifier::kMedium;
+			idFlag += 1 <<  PileupJetIdentifier::kLoose;
+			lPUJetId.idFlag(idFlag);
+			fjet.setPuJetId(vtx,lPUJetId); //temporarily make all jets pass
+		//	std::cout << "debug fjet pass PujetId" << fjet.passesPuJetId(vtx) << std::endl;
+		}
 	}
-	}
-      }
-			if(!usePuppi){
-      if (pvPointers.size() > 0 && !fjet.hasPuJetId(pvPointers[0])) {
-	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),pvPointers[0],*vertexCandidateMap,true);
-	fjet.setPuJetId(pvPointers[0],lPUJetId);
-      }
 			}
-      jetColl->push_back(fjet);
-    }
-    
-    evt.put(jetColl);
-  }
+			if(!usePuppi){
+				if (primaryVertices->size() > 0 && !fjet.hasPuJetId(primaryVertices->ptrAt(0))) {
+					//	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),primaryVertices->ptrAt(0),*vertexCandidateMap,true);
+					//	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),1.,(primaryVertices->ptrAt(0).get()),vc,true);
+					//		fjet.setPuJetId(primaryVertices->ptrAt(0),lPUJetId);
+				}
+			}
+			jetColl->push_back(fjet);
+		}
+
+		evt.put(jetColl);
+	}
 }
 
 typedef flashgg::JetProducer FlashggJetProducer;

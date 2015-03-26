@@ -40,15 +40,15 @@ namespace flashgg {
 		
 		Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
 		evt.getByToken(diPhotonToken_,diPhotons);
-		const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+	//	const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 		
 		std::auto_ptr<vector<SinglePhotonView> > photonViews(new vector<SinglePhotonView>); 
 		
 		int nCand = maxCandidates_;
-		for(auto & dipho : diPhotonPointers) {
-			
-			SinglePhotonView leg0(dipho,0);
-			SinglePhotonView leg1(dipho,1);
+		//for(auto & dipho : diPhotons) {
+		for (unsigned int i =0 ; i< diPhotons->size(); i++){
+			SinglePhotonView leg0(diPhotons->ptrAt(i),0);
+			SinglePhotonView leg1(diPhotons->ptrAt(i),1);
 			
 			if( leg0->pt() < leg1->pt() ) { std::swap(leg0,leg1); }
 			

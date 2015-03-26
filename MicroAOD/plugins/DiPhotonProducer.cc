@@ -54,18 +54,18 @@ namespace flashgg {
     
     Handle<View<reco::Vertex> > primaryVertices;
     evt.getByToken(vertexToken_,primaryVertices);
-    const PtrVector<reco::Vertex>& pvPointers = primaryVertices->ptrVector();
+   // const PtrVector<reco::Vertex>& pvPointers = primaryVertices->ptrVector();
     
     Handle<View<flashgg::Photon> > photons;
     evt.getByToken(photonToken_,photons);
-    const PtrVector<flashgg::Photon>& photonPointers = photons->ptrVector();
+  //  const PtrVector<flashgg::Photon>& photonPointers = photons->ptrVector();
 
     Handle<VertexCandidateMap> vertexCandidateMap;
     evt.getByToken(vertexCandidateMapToken_,vertexCandidateMap);
     
     Handle<View<reco::Conversion> > conversions; 
     evt.getByToken(conversionToken_,conversions);
-    const PtrVector<reco::Conversion>& conversionPointers = conversions->ptrVector();
+   // const PtrVector<reco::Conversion>& conversionPointers = conversions->ptrVector();
    
     Handle<reco::BeamSpot> recoBeamSpotHandle;
     evt.getByToken(beamSpotToken_,recoBeamSpotHandle);
@@ -78,19 +78,19 @@ namespace flashgg {
 
 
       auto_ptr<vector<DiPhotonCandidate> > diPhotonColl(new vector<DiPhotonCandidate>);
-//    cout << "evt.id().event()= " << evt.id().event() << "\tevt.isRealData()= " << evt.isRealData() << "\tphotonPointers.size()= " << photonPointers.size() << "\tpvPointers.size()= " << pvPointers.size() << endl;
+//    cout << "evt.id().event()= " << evt.id().event() << "\tevt.isRealData()= " << evt.isRealData() << "\tphotons->size()= " << photons->size() << "\tprimaryVertices->size()= " << primaryVertices->size() << endl;
 
-    for (unsigned int i = 0 ; i < photonPointers.size() ; i++) {
-      Ptr<flashgg::Photon> pp1 = photonPointers[i];
-      for (unsigned int j = i+1 ; j < photonPointers.size() ; j++) {
-        Ptr<flashgg::Photon> pp2 = photonPointers[j];
+    for (unsigned int i = 0 ; i < photons->size() ; i++) {
+      Ptr<flashgg::Photon> pp1 = photons->ptrAt(i);
+      for (unsigned int j = i+1 ; j < photons->size() ; j++) {
+        Ptr<flashgg::Photon> pp2 = photons->ptrAt(j);
 
-        Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,pvPointers,*vertexCandidateMap,conversionPointers,vertexPoint); //,param,beamsig);
+        Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,primaryVertices,*vertexCandidateMap,conversions,vertexPoint); //,param,beamsig);
         // Finding and storing the vertex index to check if it corresponds to the primary vertex.
         // This could be moved within the vertexSelector, but would need rewriting some interface
         int ivtx = 0;
-        for(unsigned int k = 0; k < pvPointers.size() ; k++)
-            if( pvx == pvPointers[k] ){
+        for(unsigned int k = 0; k < primaryVertices->size() ; k++)
+            if( pvx == primaryVertices->ptrAt(k) ){
                 ivtx = k;
                 break;
             }

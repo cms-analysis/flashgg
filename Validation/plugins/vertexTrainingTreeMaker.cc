@@ -31,7 +31,7 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/Common/interface/Ptr.h"
-#include "DataFormats/Common/interface/PtrVector.h"
+//#include "DataFormats/Common/interface/PtrVector.h"
 
 #include "DataFormats/VertexReco/interface/Vertex.h"
 
@@ -106,7 +106,7 @@ class vertexTrainingTreeMaker : public edm::EDAnalyzer {
       virtual void endJob() override;
 
   void initEventStructure();
-  int mcTruthVertexIndex( const PtrVector<reco::GenParticle>& gens, const edm::PtrVector<reco::Vertex>&, double dzMatch = 0.1);
+  int mcTruthVertexIndex( const edm::Handle<edm::View<reco::GenParticle> >& genParticles, const edm::Handle<edm::View<reco::Vertex> >&, double dzMatch = 0.1);
   int sortedIndex( const unsigned int trueVtxIndex, const unsigned int sizemax, const Ptr<flashgg::DiPhotonCandidate> diphoPtr  );
 
   //  edm::EDGetTokenT<edm::View<flashgg::Photon> >            photonToken_;
@@ -172,11 +172,12 @@ vertexTrainingTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup
 
   Handle<View<flashgg::DiPhotonCandidate> > diphotons;
   iEvent.getByToken(diphotonToken_,diphotons);
-  const PtrVector<flashgg::DiPhotonCandidate>& diphotonPointers = diphotons->ptrVector();  
+ // const PtrVector<flashgg::DiPhotonCandidate>& diphotonPointers = diphotons->ptrVector();  
+	
    
   Handle<View<reco::Vertex> > primaryVertices;
   iEvent.getByToken(vertexToken_,primaryVertices);
-  const PtrVector<reco::Vertex>& pvPointers = primaryVertices->ptrVector();
+//  const PtrVector<reco::Vertex>& pvPointers = primaryVertices->ptrVector();
 
 
   /*
@@ -200,7 +201,7 @@ vertexTrainingTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup
 
   Handle<View<reco::GenParticle> > genParticles;
   iEvent.getByToken(genParticleToken_,genParticles);
-  const PtrVector<reco::GenParticle>& gens = genParticles->ptrVector();
+ // const PtrVector<reco::GenParticle>& gens = genParticles->ptrVector();
 
 
   
@@ -210,13 +211,13 @@ vertexTrainingTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup
 
   // gen loop.
 
-  for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++)
+  for( unsigned int genLoop =0 ; genLoop < genParticles->size(); genLoop++)
     {
     
-      if(  gens[genLoop]->pdgId() ==25)
+      if(  genParticles->ptrAt(genLoop)->pdgId() ==25)
 	{
-	  genInfo.genVertexZ=gens[genLoop]->vz();
-	  genInfo.genHiggsPt=gens[genLoop]->pt();
+	  genInfo.genVertexZ=genParticles->ptrAt(genLoop)->vz();
+	  genInfo.genHiggsPt=genParticles->ptrAt(genLoop)->pt();
 
 	  break;
 	}
@@ -224,24 +225,24 @@ vertexTrainingTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup
 
   // diphoton loop
   
-  for( size_t idipho = 0; idipho < diphotonPointers.size(); idipho++ ) {
+  for( size_t idipho = 0; idipho < diphotons->size(); idipho++ ) {
 
-    sigInfo.nvertex = pvPointers.size();
-    sigInfo.ndipho = diphotonPointers.size();
-    bkgInfo.nvertex = pvPointers.size();
-    bkgInfo.ndipho = diphotonPointers.size();
+    sigInfo.nvertex = primaryVertices->size();
+    sigInfo.ndipho = diphotons->size();
+    bkgInfo.nvertex = primaryVertices->size();
+    bkgInfo.ndipho = diphotons->size();
 
     sigInfo.dipho_index = idipho;
     bkgInfo.dipho_index = idipho;
 
     // get true vertex index:
 
-    int trueVtxIndexI = mcTruthVertexIndex(gens, pvPointers);
+    int trueVtxIndexI = mcTruthVertexIndex(genParticles, primaryVertices);
     if (trueVtxIndexI < 0 ) continue;
   
-    Ptr<flashgg::DiPhotonCandidate> diphoPtr = diphotonPointers[idipho];
+    Ptr<flashgg::DiPhotonCandidate> diphoPtr = diphotons->ptrAt(idipho);
     unsigned int trueVtxIndex=trueVtxIndexI;
-    int trueVtxSortedIndexI=sortedIndex(trueVtxIndex,pvPointers.size(),diphoPtr);
+    int trueVtxSortedIndexI=sortedIndex(trueVtxIndex,primaryVertices->size(),diphoPtr);
     if(trueVtxSortedIndexI<0) continue;
 
     unsigned int trueVtxSortedIndex=trueVtxSortedIndexI;
@@ -257,7 +258,7 @@ vertexTrainingTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup
     }
 
     vector<int>	pvVecNoTrue;
-    for (unsigned int i = 0 ; i < pvPointers.size() ; i++) {      
+    for (unsigned int i = 0 ; i < primaryVertices->size() ; i++) {      
       if(i!=trueVtxIndex) pvVecNoTrue.push_back(i);
     }
     
@@ -267,7 +268,7 @@ vertexTrainingTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup
     int randVtxIndex=-999;
     if(irand!=-999) randVtxIndex= pvVecNoTrue[irand];
     
-    int randVtxSortedIndexI=sortedIndex(randVtxIndex,pvPointers.size(),diphoPtr);
+    int randVtxSortedIndexI=sortedIndex(randVtxIndex,primaryVertices->size(),diphoPtr);
     if(randVtxSortedIndexI<0) continue;
     unsigned int randVtxSortedIndex=randVtxSortedIndexI;
 
@@ -393,22 +394,22 @@ int vertexTrainingTreeMaker::sortedIndex(const unsigned int trueVtxIndex, const 
   }  
   return -1;
 }
-int vertexTrainingTreeMaker::mcTruthVertexIndex(  const PtrVector<reco::GenParticle>& gens , const PtrVector<reco::Vertex>& vertices, double dzMatch ) {
+int vertexTrainingTreeMaker::mcTruthVertexIndex(  const edm::Handle<edm::View<reco::GenParticle> >& genParticles , const edm::Handle<edm::View<reco::Vertex> >& vertices, double dzMatch ) {
     
   reco::Vertex::Point hardVertex(0,0,0);
 
-  for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++){
+  for( unsigned int genLoop =0 ; genLoop < genParticles->size(); genLoop++){
     
-    if( fabs( gens[genLoop]->pdgId() ) < 10 || fabs(gens[genLoop]->pdgId() ) == 25 ) {
-      hardVertex.SetCoordinates(gens[genLoop]->vx(),gens[genLoop]->vy(),gens[genLoop]->vz());
+    if( fabs( genParticles->ptrAt(genLoop)->pdgId() ) < 10 || fabs(genParticles->ptrAt(genLoop)->pdgId() ) == 25 ) {
+      hardVertex.SetCoordinates(genParticles->ptrAt(genLoop)->vx(),genParticles->ptrAt(genLoop)->vy(),genParticles->ptrAt(genLoop)->vz());
       break;
     }
   }
   
   int  ivMatch = 0;
   double dzMin = 999;
-  for( unsigned int iv = 0; iv < vertices.size(); iv++ ) {
-    double dz = fabs( vertices[iv]->z() - hardVertex.z() );
+  for( unsigned int iv = 0; iv < vertices->size(); iv++ ) {
+    double dz = fabs( vertices->ptrAt(iv)->z() - hardVertex.z() );
     if( dz < dzMin ) {
       ivMatch = iv;
       dzMin   = dz;

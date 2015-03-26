@@ -96,16 +96,16 @@ namespace flashgg {
 
 			Handle<View<flashgg::DiPhotonTagBase> > TagVectorEntry;
 			evt.getByToken(TagList_[tpr->collIndex],TagVectorEntry);
-			const PtrVector<flashgg::DiPhotonTagBase>& TagPointers =  TagVectorEntry->ptrVector();
+	//		const PtrVector<flashgg::DiPhotonTagBase>& TagPointers =  TagVectorEntry->ptrVector();
 			// get Tags by requesting them as a DiPhotonTagBase, from which they inherit.
 
 			int chosenIndex = -1 ; //this will become the index of the highest priority candidate (operator<)
 
 			// Looking from highest priority to lowest, check if the tag has any entries.
-			for (unsigned int  TagPointerLoop = 0; TagPointerLoop < TagPointers.size() ; TagPointerLoop++)        {
+			for (unsigned int  TagPointerLoop = 0; TagPointerLoop < TagVectorEntry->size() ; TagPointerLoop++)        {
 
-				float mass = TagPointers[TagPointerLoop]->diPhoton()->mass();
-				int category = TagPointers[TagPointerLoop]->categoryNumber();
+				float mass = TagVectorEntry->ptrAt(TagPointerLoop)->diPhoton()->mass();
+				int category = TagVectorEntry->ptrAt(TagPointerLoop)->categoryNumber();
 
 				// std::cout << "[DEBUG]" << tpr->name << " " << tpr->minCat << " " << tpr->maxCat << " " 
 				//           << mass << " " << category << " " << TagPointerLoop << std::endl;
@@ -117,15 +117,15 @@ namespace flashgg {
 				if((mass < massCutLower) || (mass > massCutUpper )) {continue ;}
 			
 				// All the real work for prioritizing inside a tag type is done inside DiPhotonTagBase::operator< 
-				if (chosenIndex == -1 || (TagPointers[chosenIndex].get() < TagPointers[TagPointerLoop].get()));
+				if (chosenIndex == -1 || (TagVectorEntry->ptrAt(chosenIndex).get() < TagVectorEntry->ptrAt(TagPointerLoop).get()));
 				  chosenIndex = TagPointerLoop;
 			}
 		
 			if (chosenIndex != -1 ) {
-		 		SelectedTag->push_back(*TagPointers[chosenIndex]);
+		 		SelectedTag->push_back(*TagVectorEntry->ptrAt(chosenIndex));
 				//debug message:
 				// std::cout << "[DEBUG] Priority " << priority << " Tag Found! Tag entry "<< chosenIndex  << " with sumPt " 
-				//    	     << TagPointers[chosenIndex]->sumPt() << std::endl;
+				//    	     << TagVectorEntry->ptrAt(chosenIndex)->sumPt() << std::endl;
 				break;
 			} else {
 			  //debug message

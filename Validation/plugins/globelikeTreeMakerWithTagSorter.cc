@@ -15,7 +15,7 @@
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/Common/interface/Ptr.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
-#include "DataFormats/Common/interface/PtrVector.h"
+//#include "DataFormats/Common/interface/PtrVector.h"
 
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
@@ -247,27 +247,27 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 
 	Handle<View<reco::Vertex> > primaryVertices;
 	iEvent.getByToken(vertexToken_,primaryVertices);
-	const PtrVector<reco::Vertex>& vtxs = primaryVertices->ptrVector();
+//	const PtrVector<reco::Vertex>& vtxs = primaryVertices->ptrVector();
 
 	Handle<View<reco::GenParticle> > genParticles;
 	iEvent.getByToken(genParticleToken_,genParticles);
-	const PtrVector<reco::GenParticle>& gens = genParticles->ptrVector();
+//	const PtrVector<reco::GenParticle>& gens = genParticles->ptrVector();
 
 	Handle<View<flashgg::Jet> > jetsDz;
 	iEvent.getByToken(jetTokenDz_,jetsDz);
-	const PtrVector<flashgg::Jet>& jetPointersDz = jetsDz->ptrVector();
+//	const PtrVector<flashgg::Jet>& jetPointersDz = jetsDz->ptrVector();
 
 	Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
 	iEvent.getByToken(diPhotonToken_,diPhotons);
-	const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+//	const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
 	Handle<View<pat::MET> > METs;
 	iEvent.getByToken(METToken_,METs);
-	const PtrVector<pat::MET>& METPointers = METs->ptrVector();
+//	const PtrVector<pat::MET>& METPointers = METs->ptrVector();
 
 	Handle<View< PileupSummaryInfo> > PileupInfos;
 	iEvent.getByToken(PileUpToken_,PileupInfos);
-	const PtrVector<PileupSummaryInfo>& PileupInfoPointers = PileupInfos->ptrVector();
+//	const PtrVector<PileupSummaryInfo>& PileupInfoPointers = PileupInfos->ptrVector();
 
 	Handle<double> rhoHandle; // the old way for now...move to getbytoken?
 	iEvent.getByLabel(rhoFixedGrid_, rhoHandle );
@@ -344,9 +344,9 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		njets15 = 0.;
 		njets20 = 0.;
 
-		for (UInt_t jetLoop =0; jetLoop < jetPointersDz.size() ; jetLoop++){
+		for (UInt_t jetLoop =0; jetLoop < jetsDz->size() ; jetLoop++){
 
-			Float_t et = jetPointersDz[jetLoop]->et();
+			Float_t et = jetsDz->ptrAt(jetLoop)->et();
 
 			if( et > 10.){
 				njets10 = njets10 + 1.;
@@ -372,7 +372,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		// itype >0, background MC
 
 		//----> nvtx, numver of primary vertices
-		nvtx = vtxs.size();
+		nvtx = primaryVertices->size();
 
 		//-----> rho = energy density
 		rho = *(rhoHandle.product());
@@ -396,19 +396,19 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 			pu_n = 0;
 
 			// pileup info
-			for( unsigned int PVI = 0; PVI < PileupInfoPointers.size(); ++PVI) {	
-				Int_t pu_bunchcrossing = PileupInfoPointers[PVI]->getBunchCrossing();
+			for( unsigned int PVI = 0; PVI < PileupInfos->size(); ++PVI) {	
+				Int_t pu_bunchcrossing = PileupInfos->ptrAt(PVI)->getBunchCrossing();
 				if (pu_bunchcrossing ==0) {
-					pu_n = PileupInfoPointers[PVI]->getPU_NumInteractions();
+					pu_n = PileupInfos->ptrAt(PVI)->getPU_NumInteractions();
 				}
 			}
 
 			// gen vertex location
-			for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++){
-				if( gens[genLoop]->pdgId() == 25) { //might need to be changed for background MC samples...
-					gv_x = gens[genLoop]->vx();
-					gv_y = gens[genLoop]->vy();
-					gv_z = gens[genLoop]->vz();
+			for( unsigned int genLoop =0 ; genLoop < genParticles->size(); genLoop++){
+				if( genParticles->ptrAt(genLoop)->pdgId() == 25) { //might need to be changed for background MC samples...
+					gv_x = genParticles->ptrAt(genLoop)->vx();
+					gv_y = genParticles->ptrAt(genLoop)->vy();
+					gv_z = genParticles->ptrAt(genLoop)->vz();
 				}
 
 				break;
@@ -416,20 +416,20 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 
 			//	int hasQuarks =0;
 
-			for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++){
-		//		std::cout << "[TREE] PDG: "<< gens[genLoop]->pdgId() << "	, status " << gens[genLoop]->status() << std::endl;
+			for( unsigned int genLoop =0 ; genLoop < genParticles->size(); genLoop++){
+		//		std::cout << "[TREE] PDG: "<< genParticles->ptrAt(genLoop)->pdgId() << "	, status " << genParticles->ptrAt(genLoop)->status() << std::endl;
 			}
 
 			std::cout << std::endl;
 			std::vector<int> vbfQuarkIndices;
 			bool count =0;
-			for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++){
-				if (gens[genLoop]->status() !=3) continue;
-				if (gens[genLoop]->pdgId() ==25) {count =1 ;continue ;}
-				if ((fabs(gens[genLoop]->pdgId()) >8) && (count ==1)) {count =0; break;}
+			for( unsigned int genLoop =0 ; genLoop < genParticles->size(); genLoop++){
+				if (genParticles->ptrAt(genLoop)->status() !=3) continue;
+				if (genParticles->ptrAt(genLoop)->pdgId() ==25) {count =1 ;continue ;}
+				if ((fabs(genParticles->ptrAt(genLoop)->pdgId()) >8) && (count ==1)) {count =0; break;}
 				if(count) {
 					vbfQuarkIndices.push_back(genLoop);
-			//		std::cout << "[GEN] PDG: "<< gens[genLoop]->pdgId() << "	, status " << gens[genLoop]->status() << std::endl;
+			//		std::cout << "[GEN] PDG: "<< genParticles->ptrAt(genLoop)->pdgId() << "	, status " << genParticles->ptrAt(genLoop)->status() << std::endl;
 				}
 			}
 			
@@ -440,8 +440,8 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 				for (unsigned int i =0 ; 	i< vbfQuarkIndices.size(); i++)
 				{
 				//	std::cout << "quark index " << vbfQuarkIndices[i] << std::endl;
-					float deta =  vbftag->leadingJet().eta() - gens[vbfQuarkIndices[i]]->eta();
-					float dphi =  deltaPhi(vbftag->leadingJet().phi(),gens[vbfQuarkIndices[i]]->phi());
+					float deta =  vbftag->leadingJet().eta() - genParticles->ptrAt(vbfQuarkIndices[i])->eta();
+					float dphi =  deltaPhi(vbftag->leadingJet().phi(),genParticles->ptrAt(vbfQuarkIndices[i])->phi());
 					float dr = sqrt(deta*deta + dphi*dphi);
 					if(fabs(dr) <0.5){
 						leadjet_genmatch =1;
@@ -451,8 +451,8 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 
 				for (unsigned int i =0 ; 	i< vbfQuarkIndices.size(); i++)
 				{
-					float deta =  vbftag->subLeadingJet().eta() - gens[vbfQuarkIndices[i]]->eta();
-					float dphi =  deltaPhi(vbftag->subLeadingJet().phi(),gens[vbfQuarkIndices[i]]->phi());
+					float deta =  vbftag->subLeadingJet().eta() - genParticles->ptrAt(vbfQuarkIndices[i])->eta();
+					float dphi =  deltaPhi(vbftag->subLeadingJet().phi(),genParticles->ptrAt(vbfQuarkIndices[i])->phi());
 					float dr = sqrt(deta*deta + dphi*dphi);
 					if(fabs(dr) <0.5){
 						subljet_genmatch =1;	
@@ -464,17 +464,17 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 
 
 			// gen match leading pho 
-			for(unsigned int ip=0;ip<gens.size();++ip) {
-			  //			  std::cout << "GMLP " << gens[ip]->status() << " "  << gens[ip]->pdgId() << " " << gens[ip]->mother(0) << std::endl;
-				if( gens[ip]->status() != 1 || gens[ip]->pdgId() != 22 ) {
+			for(unsigned int ip=0;ip<genParticles->size();++ip) {
+			  //			  std::cout << "GMLP " << genParticles->ptrAt(ip)->status() << " "  << genParticles->ptrAt(ip)->pdgId() << " " << genParticles->ptrAt(ip)->mother(0) << std::endl;
+				if( genParticles->ptrAt(ip)->status() != 1 || genParticles->ptrAt(ip)->pdgId() != 22 ) {
 					continue;
 				}
-				if( diPhotonPointers[candIndex]->leadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->leadingPhoton()->eta()) > 3. ) { continue; }
-				if (gens[ip]->mother(0) != NULL && gens[ip]->mother(0)->pdgId() <= 25) {
-					float deta =  diPhotonPointers[candIndex]->leadingPhoton()->eta() - gens[ip]->eta();
-					float dphi =  deltaPhi(diPhotonPointers[candIndex]->leadingPhoton()->phi(),gens[ip]->phi());
+				if( diPhotons->ptrAt(candIndex)->leadingPhoton()->et()< 20. || fabs(diPhotons->ptrAt(candIndex)->leadingPhoton()->eta()) > 3. ) { continue; }
+				if (genParticles->ptrAt(ip)->mother(0) != NULL && genParticles->ptrAt(ip)->mother(0)->pdgId() <= 25) {
+					float deta =  diPhotons->ptrAt(candIndex)->leadingPhoton()->eta() - genParticles->ptrAt(ip)->eta();
+					float dphi =  deltaPhi(diPhotons->ptrAt(candIndex)->leadingPhoton()->phi(),genParticles->ptrAt(ip)->phi());
 					float dr = sqrt(deta*deta + dphi*dphi);
-					float pt_change = (diPhotonPointers[candIndex]->leadingPhoton()->et() - gens[ip]->et())/gens[ip]->et();
+					float pt_change = (diPhotons->ptrAt(candIndex)->leadingPhoton()->et() - genParticles->ptrAt(ip)->et())/genParticles->ptrAt(ip)->et();
 					if (dr<0.3 && fabs(pt_change) < 0.5) {
 						genmatch1 = true;
 						break;
@@ -482,17 +482,17 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 				}
 			}
 			// gen match subleading pho
-			for(unsigned int ip=0;ip<gens.size();++ip) {
-			  //			  std::cout << "GMSLP " << gens[ip]->status() << " "  << gens[ip]->pdgId() << " " << gens[ip]->mother(0) << std::endl;
-				if( gens[ip]->status() != 1 || gens[ip]->pdgId() != 22 ) {
+			for(unsigned int ip=0;ip<genParticles->size();++ip) {
+			  //			  std::cout << "GMSLP " << genParticles->ptrAt(ip)->status() << " "  << genParticles->ptrAt(ip)->pdgId() << " " << genParticles->ptrAt(ip)->mother(0) << std::endl;
+				if( genParticles->ptrAt(ip)->status() != 1 || genParticles->ptrAt(ip)->pdgId() != 22 ) {
 					continue;
 				}
-				if( diPhotonPointers[candIndex]->subLeadingPhoton()->et()< 20. || fabs(diPhotonPointers[candIndex]->subLeadingPhoton()->eta()) > 3. ) { continue; }
-				if ( gens[ip]->mother(0) != NULL && gens[ip]->mother(0)->pdgId() <= 25) {
-					float deta =  diPhotonPointers[candIndex]->subLeadingPhoton()->eta() - gens[ip]->eta();
-					float dphi =  deltaPhi(diPhotonPointers[candIndex]->subLeadingPhoton()->phi(),gens[ip]->phi());
+				if( diPhotons->ptrAt(candIndex)->subLeadingPhoton()->et()< 20. || fabs(diPhotons->ptrAt(candIndex)->subLeadingPhoton()->eta()) > 3. ) { continue; }
+				if ( genParticles->ptrAt(ip)->mother(0) != NULL && genParticles->ptrAt(ip)->mother(0)->pdgId() <= 25) {
+					float deta =  diPhotons->ptrAt(candIndex)->subLeadingPhoton()->eta() - genParticles->ptrAt(ip)->eta();
+					float dphi =  deltaPhi(diPhotons->ptrAt(candIndex)->subLeadingPhoton()->phi(),genParticles->ptrAt(ip)->phi());
 					float dr = sqrt(deta*deta + dphi*dphi);
-					float pt_change = (diPhotonPointers[candIndex]->subLeadingPhoton()->et() - gens[ip]->et())/gens[ip]->et();
+					float pt_change = (diPhotons->ptrAt(candIndex)->subLeadingPhoton()->et() - genParticles->ptrAt(ip)->et())/genParticles->ptrAt(ip)->et();
 					if (dr<0.3 && fabs(pt_change) < 0.5) {
 						genmatch1 = true;
 						break;
@@ -512,100 +512,100 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		Int_t higgsCandPresent = 0; //Is 0 is there are no candidates in event, set to 1 if there is at least one candidate pair.
 		Int_t candIndex = 9999; //This int will store the index of the best higgs diphoton candidate...
 
-		for (unsigned int diphotonlooper =0; diphotonlooper < diPhotonPointers.size() ; diphotonlooper++){
-		if  (fabs(diPhotonPointers[diphotonlooper]->mass() - higgsMass) < higgsMassDifference){
-		higgsMassDifference = fabs(diPhotonPointers[diphotonlooper]->mass() - higgsMass);
+		for (unsigned int diphotonlooper =0; diphotonlooper < diPhotons->size() ; diphotonlooper++){
+		if  (fabs(diPhotons[diphotonlooper]->mass() - higgsMass) < higgsMassDifference){
+		higgsMassDifference = fabs(diPhotons[diphotonlooper]->mass() - higgsMass);
 		candIndex = diphotonlooper;
 		higgsCandPresent=1;
 		}
 		}
 		*/
 
-		mass = diPhotonPointers[candIndex]->mass();
-		dipho_pt = diPhotonPointers[candIndex]->pt();
+		mass = diPhotons->ptrAt(candIndex)->mass();
+		dipho_pt = diPhotons->ptrAt(candIndex)->pt();
 		dipho_PToM = dipho_pt/mass;
 		//------->full_cat FIXME leaving blank for now, need to implement if/when events are categoriesed. Discuss event interpretatrion.
 		full_cat =0;
 
 		//------>MET info
-		if (METPointers.size() != 1) { std::cout << "WARNING - #MET is not 1" << std::endl;}
-		MET = METPointers[0]->pt();
-		MET_phi = METPointers[0]->phi();
+		if (METs->size() != 1) { std::cout << "WARNING - #MET is not 1" << std::endl;}
+		MET = METs->ptrAt(0)->pt();
+		MET_phi = METs->ptrAt(0)->phi();
 
 
 		//-------> individual photon properties
 		//PHOTON1
-		et1 = diPhotonPointers[candIndex]->leadingPhoton()->et();
-		eta1 = diPhotonPointers[candIndex]->leadingPhoton()->eta();
-		float phi1 = diPhotonPointers[candIndex]->leadingPhoton()->phi();
-		r91 = diPhotonPointers[candIndex]->leadingPhoton()->r9();
-		sieie1 = diPhotonPointers[candIndex]->leadingPhoton()->sigmaIetaIeta();
-		hoe1 = diPhotonPointers[candIndex]->leadingPhoton()->hadronicOverEm();
-		sigmaEoE1 = diPhotonPointers[candIndex]->leadingPhoton()->sigEOverE();
-		ptoM1 = diPhotonPointers[candIndex]->leadingPhoton()->pt()/mass;
+		et1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->et();
+		eta1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->eta();
+		float phi1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->phi();
+		r91 = diPhotons->ptrAt(candIndex)->leadingPhoton()->r9();
+		sieie1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->sigmaIetaIeta();
+		hoe1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->hadronicOverEm();
+		sigmaEoE1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->sigEOverE();
+		ptoM1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->pt()/mass;
 		//---> Isolation variables, unsure if correct methods used...
-		chiso1 = diPhotonPointers[candIndex]->leadingPhoton()->pfChgIso03WrtVtx(diPhotonPointers[candIndex]->vtx());
-		chisow1 = diPhotonPointers[candIndex]->leadingPhoton()->pfChgIsoWrtWorstVtx04();//no flashgg method for come radius 04... ok to use 0.3?
-		phoiso1 = diPhotonPointers[candIndex]->leadingPhoton()->pfPhoIso03();
-		phoiso041 = diPhotonPointers[candIndex]->leadingPhoton()->pfPhoIso04(); //unsure of default radius?
-		ecaliso03_1 = diPhotonPointers[candIndex]->leadingPhoton()->ecalRecHitSumEtConeDR03();
-		hcaliso03_1 = diPhotonPointers[candIndex]->leadingPhoton()->hcalTowerSumEtConeDR03();
-		trkiso03_1 = diPhotonPointers[candIndex]->leadingPhoton()->trkSumPtHollowConeDR03();
-		pfchiso2_1 = diPhotonPointers[candIndex]->leadingPhoton()->pfChgIso02WrtVtx(diPhotonPointers[candIndex]->vtx());
+		chiso1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->pfChgIso03WrtVtx(diPhotons->ptrAt(candIndex)->vtx());
+		chisow1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->pfChgIsoWrtWorstVtx04();//no flashgg method for come radius 04... ok to use 0.3?
+		phoiso1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->pfPhoIso03();
+		phoiso041 = diPhotons->ptrAt(candIndex)->leadingPhoton()->pfPhoIso04(); //unsure of default radius?
+		ecaliso03_1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->ecalRecHitSumEtConeDR03();
+		hcaliso03_1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->hcalTowerSumEtConeDR03();
+		trkiso03_1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->trkSumPtHollowConeDR03();
+		pfchiso2_1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->pfChgIso02WrtVtx(diPhotons->ptrAt(candIndex)->vtx());
 		isorv1 = (chiso1 + phoiso1 + 2.5 - rho*0.09)*(50./et1); //used in cic analysis, might not be useful for us but we have what we need in hand so adding anyway.
 		isowv1 = ( phoiso1 + chisow1 + 2.5 - rho*0.23)*(50./et1);
 
-		isEB1 = diPhotonPointers[candIndex]->leadingPhoton()->isEB();
-		sieip1 = diPhotonPointers[candIndex]->leadingPhoton()->sieip();
-		etawidth1 = diPhotonPointers[candIndex]->leadingPhoton()->superCluster()->etaWidth();
-		phiwidth1 = diPhotonPointers[candIndex]->leadingPhoton()->superCluster()->phiWidth();
-		regrerr1 = sigmaEoE1 * diPhotonPointers[candIndex]->leadingPhoton()->energy();
-		idmva1 = diPhotonPointers[candIndex]->leadingPhoton()->phoIdMvaDWrtVtx(diPhotonPointers[candIndex]->vtx());
-		s4ratio1 =  diPhotonPointers[candIndex]->leadingPhoton()->s4();
-		effSigma1 =  diPhotonPointers[candIndex]->leadingPhoton()->esEffSigmaRR();
-		scraw1 =  diPhotonPointers[candIndex]->leadingPhoton()->superCluster()->rawEnergy();
+		isEB1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->isEB();
+		sieip1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->sieip();
+		etawidth1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->superCluster()->etaWidth();
+		phiwidth1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->superCluster()->phiWidth();
+		regrerr1 = sigmaEoE1 * diPhotons->ptrAt(candIndex)->leadingPhoton()->energy();
+		idmva1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->phoIdMvaDWrtVtx(diPhotons->ptrAt(candIndex)->vtx());
+		s4ratio1 =  diPhotons->ptrAt(candIndex)->leadingPhoton()->s4();
+		effSigma1 =  diPhotons->ptrAt(candIndex)->leadingPhoton()->esEffSigmaRR();
+		scraw1 =  diPhotons->ptrAt(candIndex)->leadingPhoton()->superCluster()->rawEnergy();
 
 		//PHOTON 2
-		et2 = diPhotonPointers[candIndex]->subLeadingPhoton()->et();
-		eta2 = diPhotonPointers[candIndex]->subLeadingPhoton()->eta();
-		float phi2 = diPhotonPointers[candIndex]->subLeadingPhoton()->phi();
-		r92 = diPhotonPointers[candIndex]->subLeadingPhoton()->r9();
-		sieie2 = diPhotonPointers[candIndex]->subLeadingPhoton()->sigmaIetaIeta();
-		hoe2 = diPhotonPointers[candIndex]->subLeadingPhoton()->hadronicOverEm();
-		sigmaEoE2 = diPhotonPointers[candIndex]->subLeadingPhoton()->sigEOverE();
-		ptoM2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pt()/mass;
-		isEB2 = diPhotonPointers[candIndex]->subLeadingPhoton()->isEB();
+		et2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->et();
+		eta2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->eta();
+		float phi2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->phi();
+		r92 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->r9();
+		sieie2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->sigmaIetaIeta();
+		hoe2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->hadronicOverEm();
+		sigmaEoE2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->sigEOverE();
+		ptoM2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->pt()/mass;
+		isEB2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->isEB();
 		//---> Isolation variables, unsure if correct methods used...
 		//Methods from flashgg::photon
-		chiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pfChgIso03WrtVtx(diPhotonPointers[candIndex]->vtx());
-		chisow2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pfChgIsoWrtWorstVtx04();//no flashgg method for come radius 04... ok to use 0.3?
-		phoiso2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pfPhoIso03();
+		chiso2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->pfChgIso03WrtVtx(diPhotons->ptrAt(candIndex)->vtx());
+		chisow2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->pfChgIsoWrtWorstVtx04();//no flashgg method for come radius 04... ok to use 0.3?
+		phoiso2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->pfPhoIso03();
 
 
-		phoiso042 = diPhotonPointers[candIndex]->subLeadingPhoton()->pfPhoIso04(); 
-		ecaliso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->ecalRecHitSumEtConeDR03();
-		hcaliso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->hcalTowerSumEtConeDR03();
-		trkiso03_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->trkSumPtHollowConeDR03();
-		pfchiso2_2 = diPhotonPointers[candIndex]->subLeadingPhoton()->pfChgIso02WrtVtx(diPhotonPointers[candIndex]->vtx());
+		phoiso042 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->pfPhoIso04(); 
+		ecaliso03_2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->ecalRecHitSumEtConeDR03();
+		hcaliso03_2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->hcalTowerSumEtConeDR03();
+		trkiso03_2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->trkSumPtHollowConeDR03();
+		pfchiso2_2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->pfChgIso02WrtVtx(diPhotons->ptrAt(candIndex)->vtx());
 		isorv2 = (chiso2 + phoiso2 + 2.5 - rho*0.09)*(50./et2);
 		isowv2 = ( phoiso2 + chisow2 + 2.5 - rho*0.23)*(50./et2);
 
-		sieip2 = diPhotonPointers[candIndex]->subLeadingPhoton()->sieip();
-		etawidth2 = diPhotonPointers[candIndex]->subLeadingPhoton()->superCluster()->etaWidth();
-		phiwidth2 = diPhotonPointers[candIndex]->subLeadingPhoton()->superCluster()->phiWidth();
-		regrerr2 = sigmaEoE1 * diPhotonPointers[candIndex]->subLeadingPhoton()->energy();
-		idmva2 = diPhotonPointers[candIndex]->subLeadingPhoton()->phoIdMvaDWrtVtx(diPhotonPointers[candIndex]->vtx());
-		s4ratio2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->s4();
-		effSigma2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->esEffSigmaRR();
-		scraw2 =  diPhotonPointers[candIndex]->subLeadingPhoton()->superCluster()->rawEnergy();
+		sieip2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->sieip();
+		etawidth2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->superCluster()->etaWidth();
+		phiwidth2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->superCluster()->phiWidth();
+		regrerr2 = sigmaEoE1 * diPhotons->ptrAt(candIndex)->subLeadingPhoton()->energy();
+		idmva2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->phoIdMvaDWrtVtx(diPhotons->ptrAt(candIndex)->vtx());
+		s4ratio2 =  diPhotons->ptrAt(candIndex)->subLeadingPhoton()->s4();
+		effSigma2 =  diPhotons->ptrAt(candIndex)->subLeadingPhoton()->esEffSigmaRR();
+		scraw2 =  diPhotons->ptrAt(candIndex)->subLeadingPhoton()->superCluster()->rawEnergy();
 
 		//-----> Cos of photon delta phi
-		cosphi = cos(diPhotonPointers[candIndex]->leadingPhoton()->phi()- diPhotonPointers[candIndex]->subLeadingPhoton()->phi());
+		cosphi = cos(diPhotons->ptrAt(candIndex)->leadingPhoton()->phi()- diPhotons->ptrAt(candIndex)->subLeadingPhoton()->phi());
 
 		//-------> vtx info
-		vtx_x= diPhotonPointers[candIndex]->vtx()->x();
-		vtx_y= diPhotonPointers[candIndex]->vtx()->y();
-		vtx_z= diPhotonPointers[candIndex]->vtx()->z();
+		vtx_x= diPhotons->ptrAt(candIndex)->vtx()->x();
+		vtx_y= diPhotons->ptrAt(candIndex)->vtx()->y();
+		vtx_z= diPhotons->ptrAt(candIndex)->vtx()->z();
 
 		//------>VBF information
 		dRphojet1 = -1;
@@ -646,7 +646,7 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
                     dijet_LeadJPt = vbftag->VBFMVA().dijet_LeadJPt ;
                     dijet_SubJPt= vbftag->VBFMVA().dijet_SubJPt ;
                     dijet_dEta= fabs(vbftag->leadingJet().eta() - vbftag->subLeadingJet().eta()) ;
-                    dijet_dPhi= deltaPhi(dijet.Phi(),diPhotonPointers[candIndex]->phi());
+                    dijet_dPhi= deltaPhi(dijet.Phi(),diPhotons->ptrAt(candIndex)->phi());
                     dijet_Zep= vbftag->VBFMVA().dijet_Zep ;
                     dijet_Mjj= vbftag->VBFMVA().dijet_Mjj ;
                     dijet_MVA= vbftag->VBFMVA().VBFMVAValue() ;
@@ -656,13 +656,13 @@ FlashggTreeMakerWithTagSorter::analyze(const edm::Event& iEvent, const edm::Even
 		sigmaMrvoM = chosenTag->diPhotonMVA().sigmarv;
 		sigmaMwvoM =chosenTag->diPhotonMVA().sigmawv;
 		vtxprob =chosenTag->diPhotonMVA().vtxprob;
-		ptbal = diPhotonPointers[candIndex]->ptBal(0);
-		ptasym = diPhotonPointers[candIndex]->ptAsym(0);
-		logspt2 = diPhotonPointers[candIndex]->logSumPt2(0);
-		p2conv = diPhotonPointers[candIndex]->pullConv(0); 
-		nconv = diPhotonPointers[candIndex]->nConv(0); 
-		vtxmva = -1.*diPhotonPointers[candIndex]->vtxProbMVA();
-		vtxdz = diPhotonPointers[candIndex]->dZ1(); 
+		ptbal = diPhotons->ptrAt(candIndex)->ptBal(0);
+		ptasym = diPhotons->ptrAt(candIndex)->ptAsym(0);
+		logspt2 = diPhotons->ptrAt(candIndex)->logSumPt2(0);
+		p2conv = diPhotons->ptrAt(candIndex)->pullConv(0); 
+		nconv = diPhotons->ptrAt(candIndex)->nConv(0); 
+		vtxmva = -1.*diPhotons->ptrAt(candIndex)->vtxProbMVA();
+		vtxdz = diPhotons->ptrAt(candIndex)->dZ1(); 
 		dipho_mva = chosenTag->diPhotonMVA().mvaValue();
 
 		dipho_mva_cat = flash_Untagged_Category;		

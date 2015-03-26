@@ -62,25 +62,25 @@ fi
 
 cd $CMSSW_BASE/src
 
-echo
-echo "Setting up pileupjetid..."
-git cms-addpkg RecoJets/JetProducers
-git cms-merge-topic -u sethzenz:pileupjetid-for-flashgg-72x
-
-echo
-echo "Setting up PUPPI..."
-git clone -b flashgg https://github.com/ldcorpe/Dummy
+# temporarily disabled special jet stuff
+#echo
+#echo "Setting up pileupjetid..."
+#git cms-addpkg RecoJets/JetProducers
+#git cms-merge-topic -u sethzenz:pileupjetid-for-flashgg-72x
+#echo
+#echo "Setting up PUPPI..."
+#git clone -b flashgg https://github.com/ldcorpe/Dummy
 
 echo
 echo "Setting up weight counter..."
 git cms-addpkg CommonTools/UtilAlgos 
 git cms-addpkg DataFormats/Common
-git cms-merge-topic musella:topic-weights-count
+git cms-merge-topic sethzenz:topic-weights-count-74X
 
 echo
 echo "Setting up Conversion tools for pat electron..."
 git cms-addpkg RecoEgamma/EgammaTools
-git cms-merge-topic -u sethzenz:topic-conversion-tools-for-pat-ele-74x
+git cms-merge-topic -u sethzenz:topic-conversion-tools-for-pat-ele-74X
 
 echo
 echo "Done with setup script! You still need to build!"
