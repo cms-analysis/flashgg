@@ -202,30 +202,30 @@ namespace flashgg {
 
 		Handle<View<flashgg::Jet> > theJets;
 		evt.getByToken(thejetToken_,theJets);
-		const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
+		//const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
 
 		Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
 		evt.getByToken(diPhotonToken_,diPhotons);
-		const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+	//	const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
 		Handle<View<pat::Muon> > theMuons;
 		evt.getByToken(muonToken_,theMuons);
-		const PtrVector<pat::Muon>& muonPointers = theMuons->ptrVector();
+//		const PtrVector<pat::Muon>& muonPointers = theMuons->ptrVector();
 
 		Handle<View<flashgg::Electron> > theElectrons;
 		evt.getByToken(electronToken_,theElectrons);
-		const PtrVector<flashgg::Electron>& electronPointers = theElectrons->ptrVector();
+//		const PtrVector<flashgg::Electron>& electronPointers = theElectrons->ptrVector();
 
 		Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
 		evt.getByToken(mvaResultToken_,mvaResults);
-		const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
+//		const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
 		std::auto_ptr<vector<TTHLeptonicTag> > tthltags(new vector<TTHLeptonicTag>);
 
 		Handle<View<reco::Vertex> > vertices;
 		evt.getByToken(vertexToken_,vertices);
-		const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
+	//	const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
 		
-		assert(diPhotonPointers.size() == mvaResultPointers.size());
+		assert(diPhotons->size() == mvaResults->size());
 
 		bool photonSelection = false;
 		double idmva1 = 0.;
@@ -236,19 +236,19 @@ namespace flashgg {
 		bool muonJets = false;
 		bool ElectronJets = false;
 	
-		for(unsigned int diphoIndex = 0; diphoIndex < diPhotonPointers.size(); diphoIndex++ )
+		for(unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ )
 		{
 
 			hasGoodElec = false;
 			hasGoodMuons = false;
 
-			PtrVector<pat::Muon> tagMuons;
-			PtrVector<Electron> tagElectrons;
-			PtrVector<Jet> tagJets;
-			PtrVector<Jet> tagBJets;
+			std::vector<edm::Ptr<pat::Muon> > tagMuons;
+			std::vector<edm::Ptr<Electron> > tagElectrons;
+			std::vector<edm::Ptr<Jet> > tagJets;
+			std::vector<edm::Ptr<Jet> > tagBJets;
 
-			edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotonPointers[diphoIndex];
-			edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[diphoIndex];
+			edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt(diphoIndex);
+			edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt(diphoIndex);
 
 			TTHLeptonicTag tthltags_obj(dipho,mvares);
 
@@ -269,9 +269,9 @@ namespace flashgg {
 
 			photonSelection = true;
 
-			PtrVector<pat::Muon> goodMuons = selectMuons(muonPointers,dipho, vertexPointers, leptonEtaThreshold_ ,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
+			std::vector<edm::Ptr<pat::Muon> > goodMuons = selectMuons(theMuons,dipho, vertices, leptonEtaThreshold_ ,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
 
-			PtrVector<Electron> goodElectrons = selectElectrons(electronPointers,vertexPointers,ElectronPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_, nonTrigMVAThreshold_,electronIsoThreshold_,electronNumOfHitsThreshold_,EtaCuts_);
+			std::vector<edm::Ptr<Electron> > goodElectrons = selectElectrons(theElectrons,vertices,ElectronPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_, nonTrigMVAThreshold_,electronIsoThreshold_,electronNumOfHitsThreshold_,EtaCuts_);
 
 			hasGoodElec = (goodElectrons.size()>0);
 			hasGoodMuons = (goodMuons.size()>0);
@@ -293,9 +293,9 @@ namespace flashgg {
 				double bDiscriminatorValue = -999.;
 
 
-				for (unsigned int candIndex_outer =0; candIndex_outer < jetPointers.size() ; candIndex_outer++)
+				for (unsigned int candIndex_outer =0; candIndex_outer < theJets->size() ; candIndex_outer++)
 				{
-					edm::Ptr<flashgg::Jet> thejet = jetPointers[candIndex_outer];
+					edm::Ptr<flashgg::Jet> thejet = theJets->ptrAt(candIndex_outer);
 
 					if (!thejet->passesPuJetId(dipho)) continue;
 
@@ -386,9 +386,9 @@ namespace flashgg {
 
 				if(!photon_veto) break;
 
-				for (unsigned int candIndex_outer =0; candIndex_outer < jetPointers.size() ; candIndex_outer++)
+				for (unsigned int candIndex_outer =0; candIndex_outer < theJets->size() ; candIndex_outer++)
 				{
-					edm::Ptr<flashgg::Jet> thejet = jetPointers[candIndex_outer];
+					edm::Ptr<flashgg::Jet> thejet = theJets->ptrAt(candIndex_outer);
 
 					if (!thejet->passesPuJetId(dipho)) continue;
 

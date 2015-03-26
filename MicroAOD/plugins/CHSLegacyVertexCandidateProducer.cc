@@ -53,42 +53,47 @@ namespace flashgg {
     // diphotons)
     Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
     evt.getByToken(diPhotonsToken_,diPhotons);
-    const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers= diPhotons->ptrVector();
+   // const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers= diPhotons->ptrVector();
 
     // Primary Vertices in case no diphoton found
     Handle<View<reco::Vertex> > primaryVertices;
     evt.getByToken(vertexToken_,primaryVertices);
-    const PtrVector<reco::Vertex>& pvPtrs = primaryVertices->ptrVector();
+    //const PtrVector<reco::Vertex>& pvPtrs = primaryVertices->ptrVector();
 
     // packed cands
     Handle<View<pat::PackedCandidate> > pfCandidates;
     evt.getByToken(pfcandidateToken_,pfCandidates);
-    const PtrVector<pat::PackedCandidate>& pfPtrs = pfCandidates->ptrVector();
+   // const PtrVector<pat::PackedCandidate>& pfPtrs = pfCandidates->ptrVector();
 
     Handle<VertexCandidateMap> vtxmap;
     // Handle<View<reco::Vertex> > primaryVertices;
     // Handle<reco::VertexCollection> primaryVertices;
     evt.getByToken(vertexCandidateMapToken_,vtxmap);
+
+    // Non-const copy so we can sort by candidates (which may be associated to more than one vertex)
+    VertexCandidateMap vtxmapbycand(*vtxmap);
+    std::stable_sort(vtxmapbycand.begin(),vtxmapbycand.end(),flashgg::compare_by_cand());
+
     edm::Ptr<reco::Vertex> flashVertex;
     
-    //std::cout <<"Run[" << evt.run() <<  "]=evt["<< evt.id().event() << "]\t npart::" <<  pfPtrs.size() << std::endl;
-    if(useZeroth) flashVertex =  pvPtrs[0];
+    //std::cout <<"Run[" << evt.run() <<  "]=evt["<< evt.id().event() << "]\t npart::" <<  pfCandidates->size() << std::endl;
+    if(useZeroth) flashVertex =  primaryVertices->ptrAt(0);
     else {
-      if ( diPhotonPointers.size()==0 ){
-	flashVertex = pvPtrs[0];
+      if ( diPhotons->size()==0 ){
+	flashVertex = primaryVertices->ptrAt(0);
       }
-      if ( diPhotonPointers.size()==1 ){
-	flashVertex = diPhotonPointers[0]->vtx();
+      if ( diPhotons->size()==1 ){
+	flashVertex = diPhotons->ptrAt(0)->vtx();
       }
-      if ( diPhotonPointers.size() >1 ){ //hopefully very rare
-	flashVertex = diPhotonPointers[0]->vtx();
+      if ( diPhotons->size() >1 ){ //hopefully very rare
+	flashVertex = diPhotons->ptrAt(0)->vtx();
       }
       
 
-      for (unsigned int diPhoLoop = 0; diPhoLoop< diPhotonPointers.size() ; diPhoLoop++){
-	//if( diPhotonPointers[diPhoLoop]->vertex()->position() != flashVertex->position()){
+      for (unsigned int diPhoLoop = 0; diPhoLoop< diPhotons->size() ; diPhoLoop++){
+	//if( diPhotons[diPhoLoop]->vertex()->position() != flashVertex->position()){
 	// we only have a problem if the mutliple diphotons haev different vertices...
-	if( diPhotonPointers[diPhoLoop]->vtx() != flashVertex){ 
+	if( diPhotons->ptrAt(diPhoLoop)->vtx() != flashVertex){ 
 	  //replace with Error Logger at some stage, cout is not thread safe.
 	  std::cout <<"[WARNING] Multiple Diphotons in event, with different PVs "
 		    <<". Using 0th Diphoton Vtx for CHS PU subtraction."<< std::endl;
@@ -98,35 +103,26 @@ namespace flashgg {
     }
     
     std::auto_ptr<vector<pat::PackedCandidate> > result(new vector<pat::PackedCandidate>());
-    //std::vector<pat::PackedCandidate*> result;
     
-    for(unsigned int pfCandLoop =0 ; pfCandLoop < pfPtrs.size() ; pfCandLoop++){
+    for(unsigned int pfCandLoop =0 ; pfCandLoop < pfCandidates->size() ; pfCandLoop++){
       
-      if(pfPtrs[pfCandLoop]->charge() ==0){ //keep all neutral objects. 
-	assert(!(pfPtrs[pfCandLoop].isNull()));
-	result->push_back(*(pfPtrs[pfCandLoop]));
+      edm::Ptr<pat::PackedCandidate> cand = pfCandidates->ptrAt(pfCandLoop);
+
+      if(cand->charge() ==0){ //keep all neutral objects. 
+	assert(!(cand.isNull()));
+	result->push_back(*cand);
 	continue;
       }
-      
-      //other wise, if it is charged, want to check if track comes from flashggVertex
-      for (std::map<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> >::const_iterator vi = vtxmap->begin() ; vi != vtxmap->end() ; vi++) {
-	const edm::Ptr<reco::Vertex> currentVertex = (vi->first);
-	// the arugment of the if returns 1 if pfPackedCand is in 
-	// the PtrVector of PackedCandidates corresponding to currentVertex in the Map.
-	
-	if (std::count((vtxmap->at(currentVertex).begin()),vtxmap->at(currentVertex).end(),pfPtrs[pfCandLoop])) {
-	  // Now check if the currentVertex is the same as the legacy PV.
-	  // Trying to do if (lpv == *currentVertex) gave weird compilation errors, so matchign positions is next best thing.
-	  //	if (flashVertex->position() == currentVertex->position())
-	  if (flashVertex == currentVertex) result->push_back(*(pfPtrs[pfCandLoop]));
-	  //result->push_back(*((pfPtrs[pfCandLoop])->clone()));
-	} // else {}
+
+      // Keep charged candidate if it's associated to the appropriate vertex
+      auto mapRange = std::equal_range(vtxmapbycand.begin(),vtxmapbycand.end(),cand,flashgg::compare_with_cand());
+      for (auto pair_iter = mapRange.first ; pair_iter != mapRange.second ; pair_iter++) {
+	edm::Ptr<reco::Vertex> currentVertex = pair_iter->first;
+	if (flashVertex == currentVertex) result->push_back(*cand);
       }
-      
     }
+
     evt.put(result);	
-
-
   }
 }
 typedef flashgg::CHSLegacyVertexCandidateProducer FlashggCHSLegacyVertexCandidateProducer;

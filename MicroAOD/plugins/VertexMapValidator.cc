@@ -54,17 +54,17 @@ namespace flashgg {
 		// Primary Vertices from original AOD  (can access tracks using tracks_begin() etc)
 		Handle<View<reco::Vertex> > primaryVerticesAOD;
 		evt.getByToken(vertexTokenAOD_,primaryVerticesAOD);
-		const PtrVector<reco::Vertex>& pvPtrsAOD = primaryVerticesAOD->ptrVector();
+	// 	const PtrVector<reco::Vertex>& pvPtrsAOD = primaryVerticesAOD->ptrVector();
 
 		// Primary Vertices from miniAOD after AOD has been processed
 		Handle<View<reco::Vertex> > primaryVertices;
 		evt.getByToken(vertexToken_,primaryVertices);
-		const PtrVector<reco::Vertex>& pvPtrs = primaryVertices->ptrVector();
+	//	const PtrVector<reco::Vertex>& primaryVertices = primaryVertices->ptrVector();
 
 		// Tracks from miniAOD
 		Handle<View<pat::PackedCandidate> > pfCandidates;
 		evt.getByToken(pfcandidateToken_,pfCandidates);
-		const PtrVector<pat::PackedCandidate>& pfPtrs = pfCandidates->ptrVector();
+	//	const PtrVector<pat::PackedCandidate>& pfPtrs = pfCandidates->ptrVector();
 
 		// Association between tracks and PackedCandidates
 		// Treatment from https://github.com/cms-sw/cmssw/blob/743bde9939bbc4f34c2b4fd022cfb980314f912a/PhysicsTools/PatAlgos/plugins/PATSecondaryVertexSlimmer.cc
@@ -75,21 +75,21 @@ namespace flashgg {
 		// Track number is used to know how many valid AOD tracks exist 
 		int trackNumber =0;
 		//	int lostCounter=0;
-		for ( unsigned int i=0 ; i < pvPtrsAOD.size() ;i++)
+		for ( unsigned int i=0 ; i < primaryVerticesAOD->size() ;i++)
 		{
-			//	int nTracks    = pvPtrsAOD[i]->nTracks()   ;
-			//	int tracksSize = pvPtrsAOD[i]->tracksSize();
+			//	int nTracks    = primaryVerticesAOD->ptrAt(i)->nTracks()   ;
+			//	int tracksSize = primaryVerticesAOD->ptrAt(i)->tracksSize();
 			//	std:: cout <<  nTracks   << std::endl;
 			//	std:: cout <<  tracksSize<< std::endl;
-			trackNumber = trackNumber + pvPtrsAOD[i]->tracksSize();
+			trackNumber = trackNumber + primaryVerticesAOD->ptrAt(i)->tracksSize();
 		}
 
 
 		// Track number is used to know how many valid miniAOD tracks exist 
 		int trackNumberMiniAOD =0;
-		for (unsigned int i = 0 ; i < pfPtrs.size() ; i++) 
+		for (unsigned int i = 0 ; i < pfCandidates->size() ; i++) 
 		{
-			Ptr<pat::PackedCandidate> cand = pfPtrs[i];
+			Ptr<pat::PackedCandidate> cand = pfCandidates->ptrAt(i);
 			if (cand->charge() == 0) continue; // skip neutrals
 			//			if (abs(cand->pdgId()) != 211) continue; // skip neutrals
 			trackNumberMiniAOD++;
@@ -99,7 +99,7 @@ namespace flashgg {
 		std::auto_ptr<VertexCandidateMap> assoc(new VertexCandidateMap);
 
 		// print ifno for debugging
-		std::cout << "AOD vtxs:  "<<  pvPtrsAOD.size() << ", miniAOD vtxs: " << pvPtrs.size() << ", AOD tracks: " << trackNumber <<", miniAOD tracks: " << trackNumberMiniAOD <<  std::endl;
+		std::cout << "AOD vtxs:  "<<  primaryVerticesAOD->size() << ", miniAOD vtxs: " << primaryVertices->size() << ", AOD tracks: " << trackNumber <<", miniAOD tracks: " << trackNumberMiniAOD <<  std::endl;
 
 
 		// ***************************************************************************
@@ -108,27 +108,27 @@ namespace flashgg {
 
 		// pvMap is a map between vertices from miniAOD to AOD in format: pvMap(miniAOD_PV_index)= AOD_PV_index;
 		// Use int rather than unsigned int so that index can be -1 if no match.
-		int pvMap[pvPtrs.size()]; 
+		int pvMap[primaryVertices->size()]; 
 
 		// x-,y-,zLim represent the minimum proximity for each coordiante for the PVs to be considered the same.	
 		double xLim = 0.01 ;
 		double yLim = 0.01 ;
 		double zLim = 0.01 ;
 
-		for (unsigned int i=0; i< pvPtrs.size() ; i++)
+		for (unsigned int i=0; i< primaryVertices->size() ; i++)
 		{
-			double xMiniAOD = pvPtrs[i]->x();
-			double yMiniAOD = pvPtrs[i]->y();
-			double zMiniAOD = pvPtrs[i]->z();
+			double xMiniAOD = primaryVertices->ptrAt(i)->x();
+			double yMiniAOD = primaryVertices->ptrAt(i)->y();
+			double zMiniAOD = primaryVertices->ptrAt(i)->z();
 
 			// If no match is found, the index of corresponding entry is -1
 			pvMap[i]= -1;
 
-			for (unsigned int j=0; j< pvPtrsAOD.size(); j++)
+			for (unsigned int j=0; j< primaryVerticesAOD->size(); j++)
 			{
-				double xAOD = pvPtrsAOD[j]->x();
-				double yAOD = pvPtrsAOD[j]->y();
-				double zAOD = pvPtrsAOD[j]->z();
+				double xAOD = primaryVerticesAOD->ptrAt(j)->x();
+				double yAOD = primaryVerticesAOD->ptrAt(j)->y();
+				double zAOD = primaryVerticesAOD->ptrAt(j)->z();
 
 				// require x,y, and z to simulatenously be within the limits for a match
 				if( fabs(xAOD-xMiniAOD) < xLim && fabs(yAOD-yMiniAOD) < yLim && fabs(zAOD-zMiniAOD) < zLim )
@@ -169,10 +169,10 @@ namespace flashgg {
 		double ptLim = 0.01 ;
 		double matchCounter=0;
 
-		for (unsigned int i =0; i< pvPtrsAOD.size() ; i++)
+		for (unsigned int i =0; i< primaryVerticesAOD->size() ; i++)
 		{
 			if (doTextDebug_) std::cout << "Vertex " << i << std::endl;
-			for(auto trackAOD=pvPtrsAOD[i]->tracks_begin(); trackAOD != pvPtrsAOD[i]->tracks_end(); trackAOD++)		
+			for(auto trackAOD=primaryVerticesAOD->ptrAt(i)->tracks_begin(); trackAOD != primaryVerticesAOD->ptrAt(i)->tracks_end(); trackAOD++)		
 			{
 				double etaAOD = (**trackAOD).eta();
 				double phiAOD = (**trackAOD).phi();
@@ -199,7 +199,7 @@ namespace flashgg {
 							std::cout << "    Track : " << trkCounter << " pf2pc MATCH eta "<< etaMiniAOD << " , phi " << phiMiniAOD << " , pt " << ptMiniAOD << std::endl;
 						}
 
-						myMap.insert(std::pair<Ptr<reco::Vertex>,Ptr<pat::PackedCandidate>>(pvPtrsAOD[i],pfPtr));
+						myMap.insert(std::pair<Ptr<reco::Vertex>,Ptr<pat::PackedCandidate>>(primaryVerticesAOD->ptrAt(i),pfPtr));
 						matchCounter++;
 
 					} else {
@@ -208,15 +208,15 @@ namespace flashgg {
 				}
 				if (!useMiniAODTrackVertexAssociation_ || doTextDebug_) {
 					// Louie's original version
-					for (unsigned int j=0; j< pfPtrs.size(); j++)
+					for (unsigned int j=0; j< pfCandidates->size(); j++)
 					{
-						double	etaMiniAOD = pfPtrs[j]->eta();
-						double	phiMiniAOD = pfPtrs[j]->phi();
-						double	ptMiniAOD = pfPtrs[j]->pt();
+						double	etaMiniAOD = pfCandidates->ptrAt(j)->eta();
+						double	phiMiniAOD = pfCandidates->ptrAt(j)->phi();
+						double	ptMiniAOD = pfCandidates->ptrAt(j)->pt();
 
 						// require x,y, and z to simulatenously be within the limits for a match
-						if( pfPtrs[j]->charge() != 0 && // abs(pfPtrs[j]->pdgId()) == 211 && 
-								fabs(etaAOD-etaMiniAOD) < etaLim && reco::deltaPhi(**trackAOD,*pfPtrs[j]) < phiLim && fabs(ptAOD-ptMiniAOD) < ptLim )
+						if( pfCandidates->ptrAt(j)->charge() != 0 && // abs(pfCandidates->ptraT(j)->pdgId()) == 211 && 
+								fabs(etaAOD-etaMiniAOD) < etaLim && reco::deltaPhi(**trackAOD,*pfCandidates->ptrAt(j)) < phiLim && fabs(ptAOD-ptMiniAOD) < ptLim )
 						{
 							//set index if there is a match
 							trkMap[trkCounter]=j;
@@ -227,7 +227,7 @@ namespace flashgg {
 							} else {
 								//break loop if there is a match, unless we're doing text debugging
 								// Then don't store any output at all!
-								myMap.insert(std::pair<Ptr<reco::Vertex>,Ptr<pat::PackedCandidate>>(pvPtrsAOD[i],pfPtrs[j]));
+								myMap.insert(std::pair<Ptr<reco::Vertex>,Ptr<pat::PackedCandidate>>(primaryVerticesAOD->ptrAt(i),pfCandidates->ptrAt(j)));
 								break;
 							}
 						}
@@ -242,31 +242,32 @@ namespace flashgg {
 
 		matchCounter=0;
 		// loop over miniAOD PVs
-		for (unsigned int i = 0 ; i < pvPtrs.size() ; i++) 
+		for (unsigned int i = 0 ; i < primaryVertices->size() ; i++) 
 		{
 
 			// Grab ith PV in miniAOD
-			Ptr<reco::Vertex> vtx = pvPtrs[i];
+			Ptr<reco::Vertex> vtx = primaryVertices->ptrAt(i);
 			// use map created above to find corresponding PV index in AOD;
 			unsigned int index = pvMap[i];
 
 			// define a range to be accesses by the multimap: the range returns an interator to loop over all elements corresponding to a goiven key, in this case the AOD vertex.
 			std::pair <std::multimap<Ptr<reco::Vertex>, Ptr<pat::PackedCandidate>>::iterator,std::multimap<Ptr<reco::Vertex>, Ptr<pat::PackedCandidate>>::iterator> range;
 			// get range by feeding it the AOD vertex.
-			range = myMap.equal_range(pvPtrsAOD[index]);
-			matchCounter = matchCounter + myMap.count(pvPtrsAOD[index]);
-			//	{std::cout << myMap.count(pvPtrsAOD[index]) << "	" << myMap.count(pvPtrsAOD[i]) << "	" << pvPtrsAOD[index]->tracksSize() <<std::endl;}
+			range = myMap.equal_range(primaryVerticesAOD->ptrAt(index));
+			matchCounter = matchCounter + myMap.count(primaryVerticesAOD->ptrAt(index));
+			//	{std::cout << myMap.count(primaryVerticesAOD->ptrAt(index)) << "	" << myMap.count(primaryVerticesAOD->ptrAt(i)) << "	" << primaryVerticesAOD->ptrAt(index)->tracksSize() <<std::endl;}
 
-			PtrVector<pat::PackedCandidate> finalTracks;
+			//			PtrVector<pat::PackedCandidate> finalTracks;
 			int tempCounter =0;
 			// use iterators to loop over this range.
 			for (std::multimap<Ptr<reco::Vertex>,Ptr<pat::PackedCandidate>>::iterator fillLoop = range.first; fillLoop != range.second; fillLoop++)
 			{
 				tempCounter++;	
-				finalTracks.push_back(fillLoop->second);
+				//				finalTracks.push_back(fillLoop->second);
+				assoc->emplace_back(vtx,fillLoop->second);
 			}
 			// finally, fill the assoc with the pair < vertex, track > for each corresponding track;
-			assoc->insert (std::make_pair(vtx,finalTracks));
+			//			assoc->insert (std::make_pair(vtx,finalTracks));
 			//assoc->insert (std::pair<<Ptr<reco::Vertex>,PtrVector<pat::PackedCandidate>>(vtx,finalTracks));
 		}
 
@@ -274,6 +275,7 @@ namespace flashgg {
 		std:: cout << "matched tracks : " << matchCounter  << std:: endl;
 
 		//		if (trkCounter > trackNumber) { std::cout << " [ISSUE] " << std::endl;}
+		std::stable_sort(assoc->begin(),assoc->end(),flashgg::compare_by_vtx());
 		evt.put(assoc);
 
 		cout << trackNumber << "	" << trackNumberMiniAOD << "	" << matchCounter << std::endl;

@@ -86,7 +86,7 @@ namespace flashgg {
   void DiPhotonMVAProducer::produce( Event & evt, const EventSetup & ) {
     Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
     evt.getByToken(diPhotonToken_,diPhotons);
-    const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+   // const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
     Handle<reco::BeamSpot> recoBeamSpotHandle;
     evt.getByToken(beamSpotToken_,recoBeamSpotHandle);
@@ -100,12 +100,12 @@ namespace flashgg {
     //    std::auto_ptr<DiPhotonMVAResultMap> assoc(new DiPhotonMVAResultMap);
     std::auto_ptr<vector<DiPhotonMVAResult> > results(new vector<DiPhotonMVAResult>); // one per diphoton, always in same order, vector is more efficient than map
 
-    for (unsigned int candIndex =0; candIndex < diPhotonPointers.size() ; candIndex++) {
+    for (unsigned int candIndex =0; candIndex < diPhotons->size() ; candIndex++) {
       flashgg::DiPhotonMVAResult mvares;
 
-      edm::Ptr<reco::Vertex> vtx = diPhotonPointers[candIndex]->vtx();
-      const flashgg::Photon* g1 = diPhotonPointers[candIndex]->leadingPhoton();
-      const flashgg::Photon* g2 = diPhotonPointers[candIndex]->subLeadingPhoton();
+      edm::Ptr<reco::Vertex> vtx = diPhotons->ptrAt(candIndex)->vtx();
+      const flashgg::Photon* g1 = diPhotons->ptrAt(candIndex)->leadingPhoton();
+      const flashgg::Photon* g2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton();
       
       //used for photon resolution wrt to correct vertex//
       TVector3 Photon1Dir;
@@ -153,8 +153,8 @@ namespace flashgg {
       float MassResolutionWrongVtx = TMath::Sqrt((SigmaM*SigmaM)+(alpha_sig_wrg*alpha_sig_wrg));
 
 
-      leadptom_       = g1->pt()/(diPhotonPointers[candIndex]->mass());
-      subleadptom_    = g2->pt()/(diPhotonPointers[candIndex]->mass());
+      leadptom_       = g1->pt()/(diPhotons->ptrAt(candIndex)->mass());
+      subleadptom_    = g2->pt()/(diPhotons->ptrAt(candIndex)->mass());
       subleadmva_     = g2->phoIdMvaDWrtVtx(vtx);
       leadmva_        = g1->phoIdMvaDWrtVtx(vtx);
       leadeta_        = g2->eta();
@@ -162,7 +162,7 @@ namespace flashgg {
       sigmarv_        = .5*sqrt((g1->sigEOverE())*(g1->sigEOverE()) + (g2->sigEOverE())*(g2->sigEOverE()));
       sigmawv_        = MassResolutionWrongVtx;
       CosPhi_         = TMath::Cos(deltaPhi(g1->phi(),g2->phi()));
-      vtxprob_        =  1.-vertex_prob_slope_*(1+diPhotonPointers[candIndex]->vtxProbMVA());
+      vtxprob_        =  1.-vertex_prob_slope_*(1+diPhotons->ptrAt(candIndex)->vtxProbMVA());
 
       mvares.result = DiphotonMva_->EvaluateMVA("BDT");
 

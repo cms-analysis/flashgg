@@ -78,12 +78,12 @@ namespace flashgg {
 
 		Handle<View<flashgg::Photon> > photons;
 		evt.getByToken(PhotonToken_,photons);
-		const PtrVector<flashgg::Photon>& photonPointers = photons->ptrVector();
+	//	const PtrVector<flashgg::Photon>& photonPointers = photons->ptrVector();
 		
 		// Build central collection
 		auto_ptr<vector<flashgg::Photon> > centralPhotonColl(new vector<flashgg::Photon>);
-		for(unsigned int i = 0; i < photonPointers.size(); i++) {
-			flashgg::Photon pho = flashgg::Photon(*photonPointers[i]);
+		for(unsigned int i = 0; i < photons->size(); i++) {
+			flashgg::Photon pho = flashgg::Photon(*photons->ptrAt(i));
 			ApplyCorrections(pho, nullptr, 0);
 			centralPhotonColl->push_back(pho);
 		}
@@ -99,11 +99,11 @@ namespace flashgg {
 		for (unsigned int ncoll = 0 ; ncoll < collectionLabelsNonCentral_.size() ; ncoll++) {
 		  all_shifted_collections[ncoll].reset(new std::vector<flashgg::Photon>);
 		}
-		for(unsigned int i = 0; i < photonPointers.size(); i++) {
+		for(unsigned int i = 0; i < photons->size(); i++) {
 			unsigned int ncoll = 0;  
 			for (unsigned int ncorr = 0 ; ncorr < Corrections_.size() ; ncorr++) {
 				for (  const auto & sig : sigmas_.at(ncorr)) {
-					flashgg::Photon pho = flashgg::Photon(*photonPointers[i]);
+					flashgg::Photon pho = flashgg::Photon(*photons->ptrAt(i));
 					ApplyCorrections(pho, Corrections_.at(ncorr), sig);
 					all_shifted_collections[ncoll]->push_back(pho);
 					ncoll++;

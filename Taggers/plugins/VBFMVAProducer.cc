@@ -95,15 +95,15 @@ namespace flashgg {
 	void VBFMVAProducer::produce( Event & evt, const EventSetup & ) {
 		Handle<View<flashgg::DiPhotonCandidate> > diPhotons; 
 		evt.getByToken(diPhotonToken_,diPhotons); 
-		const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector(); 
+//		const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector(); 
 		Handle<View<flashgg::Jet> > jetsDz;
 		evt.getByToken(jetTokenDz_,jetsDz); 
-		const PtrVector<flashgg::Jet>& jetPointersDz = jetsDz->ptrVector(); 
+	//	const PtrVector<flashgg::Jet>& jetPointersDz = jetsDz->ptrVector(); 
 
 		std::auto_ptr<vector<VBFMVAResult> > vbf_results(new vector<VBFMVAResult>); // one per diphoton, always in same order, vector is more efficient than map 
 		
 
-		for (unsigned int candIndex =0; candIndex < diPhotonPointers.size() ; candIndex++){
+		for (unsigned int candIndex =0; candIndex < diPhotons->size() ; candIndex++){
 
 		dijet_leadEta_ = -999.; 
 		dijet_subleadEta_ = -999.;
@@ -122,19 +122,19 @@ namespace flashgg {
 			//			float PuIDCutoff = 0.8;
 			float dr2pho = 0.5;
 
-			float phi1 = diPhotonPointers[candIndex]->leadingPhoton()->phi();
-			float	eta1 = diPhotonPointers[candIndex]->leadingPhoton()->eta();
-			float phi2 = diPhotonPointers[candIndex]->subLeadingPhoton()->phi();
-			float	eta2 = diPhotonPointers[candIndex]->subLeadingPhoton()->eta();
+			float phi1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->phi();
+			float	eta1 = diPhotons->ptrAt(candIndex)->leadingPhoton()->eta();
+			float phi2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->phi();
+			float	eta2 = diPhotons->ptrAt(candIndex)->subLeadingPhoton()->eta();
 
 		bool hasValidVBFDijet =0;
-			for (UInt_t jetLoop =0; jetLoop < jetPointersDz.size() ; jetLoop++){ 
+			for (UInt_t jetLoop =0; jetLoop < jetsDz->size() ; jetLoop++){ 
 
-				Ptr<flashgg::Jet> jet  = jetPointersDz[jetLoop]; 
+				Ptr<flashgg::Jet> jet  = jetsDz->ptrAt(jetLoop); 
 
 				//pass PU veto??	
-				//				if (jet->puJetId(diPhotonPointers[candIndex]) <  PuIDCutoff) {continue;} 
-				if (!jet->passesPuJetId(diPhotonPointers[candIndex])) continue;
+				//				if (jet->puJetId(diPhotons[candIndex]) <  PuIDCutoff) {continue;} 
+				if (!jet->passesPuJetId(diPhotons->ptrAt(candIndex))) continue;
 				// within eta 4.7?
 				if (fabs(jet->eta()) > 4.7) continue;
 				// close to lead photon?
@@ -170,16 +170,16 @@ namespace flashgg {
 		{
 			std::pair < Ptr<flashgg::Jet>, Ptr<flashgg::Jet> > dijet;
 			// fill dijet pair with lead jet as first, sublead as second.
-			dijet.first =  jetPointersDz[dijet_indices.first];
-			dijet.second =  jetPointersDz[dijet_indices.second];
+			dijet.first =  jetsDz->ptrAt(dijet_indices.first);
+			dijet.second =  jetsDz->ptrAt(dijet_indices.second);
 
 			dijet_leadEta_ = dijet.first->eta();
 			dijet_subleadEta_ = dijet.second->eta();
 			dijet_LeadJPt_ = dijet.first->pt();
 			dijet_SubJPt_ = dijet.second->pt();
 
-			auto leadPho_p4 = diPhotonPointers[candIndex]->leadingPhoton()->p4();
-			auto sublPho_p4 =  diPhotonPointers[candIndex]->subLeadingPhoton()->p4();
+			auto leadPho_p4 = diPhotons->ptrAt(candIndex)->leadingPhoton()->p4();
+			auto sublPho_p4 =  diPhotons->ptrAt(candIndex)->subLeadingPhoton()->p4();
 			auto leadJet_p4 =  dijet.first->p4();
 			auto sublJet_p4 =  dijet.second->p4();
 
@@ -195,10 +195,10 @@ namespace flashgg {
 	    dipho_PToM_ = diphoton_p4.Pt() / diphoton_p4.M();
 		
 		//debug stuff
-		//	std::cout<<"numbr of jets " <<  jetPointersDz.size() << std::endl;  
+		//	std::cout<<"numbr of jets " <<  jetsDz->size() << std::endl;  
 		//	std::cout<<"jet indices: " <<  dijet_indices.first << "	" << dijet_indices.second << std::endl;
-			mvares.leadJet = *jetPointersDz[dijet_indices.first];
-			mvares.subleadJet = *jetPointersDz[dijet_indices.second];
+			mvares.leadJet = *jetsDz->ptrAt(dijet_indices.first);
+			mvares.subleadJet = *jetsDz->ptrAt(dijet_indices.second);
 
 			
 			//debug stuff

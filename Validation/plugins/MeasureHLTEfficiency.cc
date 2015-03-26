@@ -10,7 +10,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
 #include "DataFormats/Common/interface/Ptr.h"
-#include "DataFormats/Common/interface/PtrVector.h"
+//#include "DataFormats/Common/interface/PtrVector.h"
 
 #include "DataFormats/Math/interface/deltaR.h"
 #include "FWCore/Common/interface/TriggerNames.h"
@@ -252,13 +252,13 @@ void HLTEfficiency::init(const edm::TriggerResults &result, const edm::TriggerNa
 
 bool HLTEfficiency::L1Matching(edm::Handle<edm::View<l1extra::L1EmParticle>> l1H, math::XYZTLorentzVector cand, float ptThreshold) {  
   
-  const edm::PtrVector<l1extra::L1EmParticle>& l1Pointers = l1H->ptrVector();
-  //for (size_t i=0; i<l1Pointers.size(); i++) {
+ // const edm::PtrVector<l1extra::L1EmParticle>& l1Pointers = l1H->ptrVector();
+ for (unsigned int i=0; i<l1H->size(); i++) {
   
-  for (edm::Ptr<l1extra::L1EmParticle> l1Ptr : l1Pointers) {
+ // for (edm::Ptr<l1extra::L1EmParticle> l1Ptr : l1H) {
     
-    float dR = deltaR(l1Ptr->p4(), cand);
-    if (dR < 0.2 and l1Ptr->et() > ptThreshold)
+    float dR = deltaR(l1H->ptrAt(i)->p4(), cand);
+    if (dR < 0.2 and l1H->ptrAt(i)->et() > ptThreshold)
       return true;
   }
 
@@ -351,16 +351,16 @@ void HLTEfficiency::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
 
   // loop over diphoton pairs
   // check one matches to Ele and another matched to SC
-  const edm::PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector(); 
-  const edm::PtrVector<flashgg::DiPhotonCandidate>& diphotonPointers = diphotons->ptrVector();
-  assert(diphotonPointers.size() == mvaResultPointers.size()); // We are relying on corresponding sets - update this to give an error/exception
+  //const edm::PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector(); 
+ // const edm::PtrVector<flashgg::DiPhotonCandidate>& diphotonPointers = diphotons->ptrVector();
+  assert(diphotons->size() == mvaResults->size()); // We are relying on corresponding sets - update this to give an error/exception
 
   int diphotonIndex =-1;
   bool isInverted = false;
-  for (size_t i=0; i<diphotonPointers.size(); i++) {
+  for (size_t i=0; i<diphotons->size(); i++) {
 
-    edm::Ptr<flashgg::DiPhotonCandidate> diphoPtr = diphotonPointers[i];
-    edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResultPointers[i];
+    edm::Ptr<flashgg::DiPhotonCandidate> diphoPtr = diphotons->ptrAt(i);
+    edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt(i);
 
     if (mvares->mvaValue() < diphoMVACut_)
       continue;
@@ -386,7 +386,7 @@ void HLTEfficiency::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
   if (diphotonIndex == -1)
     return;
 
-  edm::Ptr<flashgg::DiPhotonCandidate> theDiPhoton = diphotonPointers[diphotonIndex];
+  edm::Ptr<flashgg::DiPhotonCandidate> theDiPhoton = diphotons->ptrAt(diphotonIndex);
   const flashgg::Photon* tag = theDiPhoton->leadingPhoton();
   const flashgg::Photon* probe = theDiPhoton->subLeadingPhoton();
 

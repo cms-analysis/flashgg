@@ -31,7 +31,7 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/Common/interface/Ptr.h"
-#include "DataFormats/Common/interface/PtrVector.h"
+//#include "DataFormats/Common/interface/PtrVector.h"
 
 #include "DataFormats/VertexReco/interface/Vertex.h"
 
@@ -167,15 +167,15 @@ flashggCommissioning::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 
   Handle<View<flashgg::Photon> > photons;
   iEvent.getByToken(photonToken_,photons);
-  const PtrVector<flashgg::Photon>& photonPointers = photons->ptrVector();
+//  const PtrVector<flashgg::Photon>& photonPointers = photons->ptrVector();
 
   Handle<View<flashgg::DiPhotonCandidate> > diphotons;
   iEvent.getByToken(diphotonToken_,diphotons);
-  const PtrVector<flashgg::DiPhotonCandidate>& diphotonPointers = diphotons->ptrVector();  
+//  const PtrVector<flashgg::DiPhotonCandidate>& diphotonPointers = diphotons->ptrVector();  
    
   Handle<View<reco::Vertex> > primaryVertices;
   iEvent.getByToken(vertexToken_,primaryVertices);
-  const PtrVector<reco::Vertex>& pvPointers = primaryVertices->ptrVector();
+//  const PtrVector<reco::Vertex>& pvPointers = primaryVertices->ptrVector();
 
   Handle<View<pat::PackedCandidate> > pfcandidates;
   iEvent.getByToken(pfcandidateToken_,pfcandidates);
@@ -183,37 +183,37 @@ flashggCommissioning::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 
   Handle<View<reco::GenParticle> > genParticles;
   iEvent.getByToken(genParticleToken_,genParticles);
-  const PtrVector<reco::GenParticle>& gens = genParticles->ptrVector();
+//  const PtrVector<reco::GenParticle>& gens = genParticles->ptrVector();
 
   Handle<View<flashgg::Jet> > jets;
   iEvent.getByToken(jetToken_,jets);
-  const PtrVector<flashgg::Jet>& jetPointers = jets->ptrVector();
+ // const PtrVector<flashgg::Jet>& jetPointers = jets->ptrVector();
 
-  for (unsigned int i = 0 ; i < diphotonPointers.size(); i++) {
-    for (unsigned int j = 0 ; j < jetPointers.size() ; j++) {
-      std::cout << " For jet " << j << ", diphoton " << i << " the RMS is " << jetPointers[j]->rms(diphotonPointers[i]) 
-		<< " the betaStar is " << jetPointers[j]->betaStar(diphotonPointers[i]) 
-		<< " and passesPuJetID is " << jetPointers[j]->passesPuJetId(diphotonPointers[i]) <<  std::endl;
+  for (unsigned int i = 0 ; i < diphotons->size(); i++) {
+    for (unsigned int j = 0 ; j < jets->size() ; j++) {
+      std::cout << " For jet " << j << ", diphoton " << i << " the RMS is " << jets->ptrAt(j)->rms(diphotons->ptrAt(i)) 
+		<< " the betaStar is " << jets->ptrAt(j)->betaStar(diphotons->ptrAt(i)) 
+		<< " and passesPuJetID is " << jets->ptrAt(j)->passesPuJetId(diphotons->ptrAt(i)) <<  std::endl;
     }
   }
 
-  if (pvPointers.size() > 0) {
-    for (unsigned int j = 0 ; j < jetPointers.size() ; j++) {
-      std::cout << " For jet " << j << ", vertex 0 the RMS  is " << jetPointers[j]->rms(pvPointers[0])
-                << " the betaStar is " << jetPointers[j]->betaStar(pvPointers[0])
-                << " and passesPuJetID is " << jetPointers[j]->passesPuJetId(pvPointers[0]) <<  std::endl;
+  if (primaryVertices->size() > 0) {
+    for (unsigned int j = 0 ; j < jets->size() ; j++) {
+      std::cout << " For jet " << j << ", vertex 0 the RMS  is " << jets->ptrAt(j)->rms(primaryVertices->ptrAt(0))
+                << " the betaStar is " << jets->ptrAt(j)->betaStar(primaryVertices->ptrAt(0))
+                << " and passesPuJetID is " << jets->ptrAt(j)->passesPuJetId(primaryVertices->ptrAt(0)) <<  std::endl;
     }
   }
 
-  // cout << "size = " << pvPointers.size() << " " << pfCandPointers.size() << endl;
+  // cout << "size = " << primaryVertices->size() << " " << pfCandPointers.size() << endl;
   
   // ********************************************************************************
 
-  for( size_t ipho = 0; ipho < photonPointers.size(); ipho++ ) {
+  for( size_t ipho = 0; ipho < photons->size(); ipho++ ) {
 
     initEventStructure();
 
-    Ptr<flashgg::Photon> phoPtr = photonPointers[ipho];
+    Ptr<flashgg::Photon> phoPtr = photons->ptrAt(ipho);
 
     /*
     cout << " In flashggCommissioning: photon pt = " << phoPtr->pt() << endl;
@@ -240,18 +240,18 @@ flashggCommissioning::analyze(const edm::Event& iEvent, const edm::EventSetup& i
     phoInfo.energyRegression = phoPtr->energyAtStep("regression");
     phoInfo.sigmaEOverE = phoPtr->sigEOverE();
 
-    for( unsigned int genLoop =0 ; genLoop < gens.size(); genLoop++)
+    for( unsigned int genLoop =0 ; genLoop < genParticles->size(); genLoop++)
       {
 
-	if(  gens[genLoop]->pdgId() == 22 && gens[genLoop]->status() == 1 &&
-	     (deltaR(gens[genLoop]->eta(),gens[genLoop]->phi(),phoPtr->eta(),phoPtr->phi()) < 0.1) ) {
-	  phoInfo.energyTrue = gens[genLoop]->energy();
+	if(  genParticles->ptrAt(genLoop)->pdgId() == 22 && genParticles->ptrAt(genLoop)->status() == 1 &&
+	     (deltaR(genParticles->ptrAt(genLoop)->eta(),genParticles->ptrAt(genLoop)->phi(),phoPtr->eta(),phoPtr->phi()) < 0.1) ) {
+	  phoInfo.energyTrue = genParticles->ptrAt(genLoop)->energy();
 	  break;
 	}
       }
 
 
-    // cout << " isolation = " << phou.pfIsoChgWrtVtx( phoPtr, pvPointers[0], pfCandPointers, 0.3, 0.01, 0.1, 0.01 ) << endl;
+    // cout << " isolation = " << phou.pfIsoChgWrtVtx( phoPtr, primaryVertices->ptrAt(0), pfCandPointers, 0.3, 0.01, 0.1, 0.01 ) << endl;
     //cout << " isolation = " << phou.pfIsoGamma( phoPtr, pfCandPointers, 0.2, 0.0, 0.070, 0.015, 0.0, 0.0, 0.0) << endl;
     
     photonTree->Fill();
@@ -263,9 +263,9 @@ flashggCommissioning::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 
   // ********************************************************************************
 
-  for( size_t idipho = 0; idipho < diphotonPointers.size(); idipho++ ) {
+  for( size_t idipho = 0; idipho < diphotons->size(); idipho++ ) {
 
-    //cout << "dummy loop to shut up warnings....leadingpho_pt =  " << diphotonPointers[idipho]->leadingPhoton()->pt() << endl;
+    //cout << "dummy loop to shut up warnings....leadingpho_pt =  " << diphotons->ptrAt(idipho)->leadingPhoton()->pt() << endl;
 
   }  // end diphoton candidate loop
   
