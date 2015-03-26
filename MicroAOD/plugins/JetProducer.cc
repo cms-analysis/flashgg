@@ -86,26 +86,34 @@ namespace flashgg {
 	Ptr<reco::Vertex> vtx = diPhoton->vtx();
 
 	if(!usePuppi){
-	if (!fjet.hasPuJetId(vtx)) {
-	  // Method written just for MiniAOD --> MicroAOD
-	 // PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),vtx,vc,true);
-	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),1.,vtx.get(),vc,true);
-	  fjet.setPuJetId(vtx,lPUJetId);
+		if (!fjet.hasPuJetId(vtx)) {
+			// temporarily remove PUJetId while bugs are investigated by jetMET
+			//	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),1.,vtx.get(),vc,true);
+			PileupJetIdentifier lPUJetId;
+			lPUJetId.RMS(0);
+			lPUJetId.betaStar(0);
+			int idFlag( 0 );
+			idFlag += 1 <<  PileupJetIdentifier::kTight;
+			idFlag += 1 <<  PileupJetIdentifier::kMedium;
+			idFlag += 1 <<  PileupJetIdentifier::kLoose;
+			lPUJetId.idFlag(idFlag);
+			fjet.setPuJetId(vtx,lPUJetId); //temporarily make all jets pass
+		//	std::cout << "debug fjet pass PujetId" << fjet.passesPuJetId(vtx) << std::endl;
+		}
 	}
-	}
-      }
-			if(!usePuppi){
-      if (primaryVertices->size() > 0 && !fjet.hasPuJetId(primaryVertices->ptrAt(0))) {
-//	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),primaryVertices->ptrAt(0),*vertexCandidateMap,true);
-	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),1.,(primaryVertices->ptrAt(0).get()),vc,true);
-	fjet.setPuJetId(primaryVertices->ptrAt(0),lPUJetId);
-      }
 			}
-      jetColl->push_back(fjet);
-    }
-    
-    evt.put(jetColl);
-  }
+			if(!usePuppi){
+				if (primaryVertices->size() > 0 && !fjet.hasPuJetId(primaryVertices->ptrAt(0))) {
+					//	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),primaryVertices->ptrAt(0),*vertexCandidateMap,true);
+					//	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),1.,(primaryVertices->ptrAt(0).get()),vc,true);
+					//		fjet.setPuJetId(primaryVertices->ptrAt(0),lPUJetId);
+				}
+			}
+			jetColl->push_back(fjet);
+		}
+
+		evt.put(jetColl);
+	}
 }
 
 typedef flashgg::JetProducer FlashggJetProducer;

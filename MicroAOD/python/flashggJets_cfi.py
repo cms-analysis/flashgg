@@ -2,10 +2,15 @@ import FWCore.ParameterSet.Config as cms
 
 from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased as pu_jetid
 from PhysicsTools.PatAlgos.tools.jetTools import addJetCollection
+#from Configuration.Geometry.GeometryAll_cff import *
 
 # define a function to add in the jet collection, as the reclustering need to know about the process
 # but we obviously don't want all this stuff clogging up python configs. 
 def addFlashggPFCHSLegJets(process):
+  #process.load("Configuration.StandardSequences.Geometry_cff")
+	#process.myPrefer = cms.ESPrefer("CaloSubdetectorGeometry" [,"ZDC"
+	#                                   [,ZdcGeometryFromDBEP = cms.vstring("<C++ data type>[/<data label>]"[,...])]
+	#																	                                   )
 	# load various necessary plugins.
   process.load("PhysicsTools.PatAlgos.producersLayer1.patCandidates_cff")
   process.load('PhysicsTools.PatAlgos.slimming.unpackedTracksAndVertices_cfi')
@@ -45,11 +50,13 @@ def addFlashggPFCHSLegJets(process):
       process,
       postfix   = "",
       labelName = 'AK4PFCHSLeg',
+		  pfCandidates = cms.InputTag('packedPFCandidates'),
       jetSource = cms.InputTag('ak4PFJetsCHSLeg'),
       #trackSource = cms.InputTag('unpackedTracksAndVertices'), 
       pvSource = cms.InputTag('unpackedTracksAndVertices'), 
       jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute']), 'None'),
-      btagDiscriminators = [      'combinedSecondaryVertexBJetTags'     ]
+      #btagDiscriminators = [      'combinedSecondaryVertexBJetTags'     ]
+      btagDiscriminators = [      'pfJetProbabilityBJetTags'     ]
       ,algo= 'AK', rParam = 0.4
       )
   # adjust MC matching

@@ -151,4 +151,12 @@ namespace  { struct dictionary {
 				std::vector<std::pair<edm::Ptr<reco::Vertex>,edm::Ptr<pat::PackedCandidate> > >  vec_pair_ptr_vx_ptr_pat_pc;
 				edm::Wrapper<std::vector<std::pair<edm::Ptr<reco::Vertex>,edm::Ptr<pat::PackedCandidate> > > > wrp_vec_pair_ptr_vx_ptr_pat_pc;
 
+        std::vector<edm::Ptr<pat::Muon> >        vec_ptr_pat_mu;
+        edm::Wrapper<std::vector<edm::Ptr<pat::Muon> > >   wrp_vec_ptr_pat_mu;
+
+        std::vector<edm::Ptr<flashgg::Electron> >        vec_ptr_pat_ele;
+        edm::Wrapper<std::vector<edm::Ptr<flashgg::Electron> > >   wrp_vec_ptr_pat_ele;
+
+        std::vector<edm::Ptr<pat::MET> >        vec_ptr_pat_met;
+        edm::Wrapper<std::vector<edm::Ptr<pat::MET> > >   wrp_vec_ptr_pat_met;
 };}
