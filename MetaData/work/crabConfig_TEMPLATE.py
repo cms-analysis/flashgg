@@ -15,6 +15,8 @@ config.JobType.pluginName = "Analysis"
 config.JobType.psetName = "PSET"
 ## config.JobType.maxMemoryMB = 3000 # For memory leaks. NB. will block jobs on many sites
 ## config.JobType.scriptExe = "cmsWrapper.sh"
+config.JobType.pyCfgParams = PYCFG_PARAMS
+config.JobType.sendPythonFolder = True
 
 config.section_("Data")
 config.Data.inputDataset = "DATASET"
