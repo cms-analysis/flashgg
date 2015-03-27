@@ -289,13 +289,13 @@ for(unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ )
 		
     photonSelection = true;
 
-    tagMuons_highPt = selectMuons(theMuons,dipho, vertices, leptonEtaThreshold_,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
-    tagMuons_lowPt = selectMuons(theMuons,dipho, vertices, leptonEtaThreshold_,leptonLowPtThreshold_,muPFIsoSumRelThreshold_,deltaRLowPtMuonPhoThreshold_,deltaRLowPtMuonPhoThreshold_);
+    tagMuons_highPt = selectMuons(theMuons->ptrs(),dipho, vertices->ptrs(), leptonEtaThreshold_,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
+    tagMuons_lowPt = selectMuons(theMuons->ptrs(),dipho, vertices->ptrs(), leptonEtaThreshold_,leptonLowPtThreshold_,muPFIsoSumRelThreshold_,deltaRLowPtMuonPhoThreshold_,deltaRLowPtMuonPhoThreshold_);
     hasGoodMuons_highPt = (tagMuons_highPt.size()>0);
     hasGoodMuons_lowPt = (tagMuons_lowPt.size()>0);
 
-    tagElectrons_highPt = selectElectrons(theElectrons,vertices,leptonPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_,nonTrigMVAThreshold_,electronIsoThreshold_,electronNumOfHitsThreshold_,EtaCuts_);
-    tagElectrons_lowPt = selectElectrons(theElectrons,vertices,leptonLowPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_, nonTrigMVAThreshold_,electronIsoThreshold_,electronNumOfHitsThreshold_,EtaCuts_);
+    tagElectrons_highPt = selectElectrons(theElectrons->ptrs(),vertices->ptrs(),leptonPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_,nonTrigMVAThreshold_,electronIsoThreshold_,electronNumOfHitsThreshold_,EtaCuts_);
+    tagElectrons_lowPt = selectElectrons(theElectrons->ptrs(),vertices->ptrs(),leptonLowPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_, nonTrigMVAThreshold_,electronIsoThreshold_,electronNumOfHitsThreshold_,EtaCuts_);
     hasGoodElectrons_highPt = (tagElectrons_highPt.size()>0);
     hasGoodElectrons_lowPt = (tagElectrons_lowPt.size()>0);
 

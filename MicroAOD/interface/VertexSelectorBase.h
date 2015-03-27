@@ -26,9 +26,9 @@ namespace flashgg {
 
     typedef std::map<std::string,double> Parameters_Selector_Type;
     virtual edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,
-					  const edm::Ptr<flashgg::Photon>&,const edm::Handle<edm::View<reco::Vertex> >&,
+					  const edm::Ptr<flashgg::Photon>&,const std::vector<edm::Ptr<reco::Vertex> >&,
 					  const VertexCandidateMap&,
-					  const edm::Handle<edm::View<reco::Conversion> >&,
+					  const std::vector<edm::Ptr<reco::Conversion> >&,
 					  const math::XYZPoint&
 					  //					  const Parameters_Selector_Type&,
 					  //                                          const float&

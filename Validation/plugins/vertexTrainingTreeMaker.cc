@@ -106,7 +106,7 @@ class vertexTrainingTreeMaker : public edm::EDAnalyzer {
       virtual void endJob() override;
 
   void initEventStructure();
-  int mcTruthVertexIndex( const edm::Handle<edm::View<reco::GenParticle> >& genParticles, const edm::Handle<edm::View<reco::Vertex> >&, double dzMatch = 0.1);
+  int mcTruthVertexIndex( const std::vector<edm::Ptr<reco::GenParticle> >& genParticles, const std::vector<edm::Ptr<reco::Vertex> >&, double dzMatch = 0.1);
   int sortedIndex( const unsigned int trueVtxIndex, const unsigned int sizemax, const Ptr<flashgg::DiPhotonCandidate> diphoPtr  );
 
   //  edm::EDGetTokenT<edm::View<flashgg::Photon> >            photonToken_;
@@ -172,7 +172,7 @@ vertexTrainingTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup
 
   Handle<View<flashgg::DiPhotonCandidate> > diphotons;
   iEvent.getByToken(diphotonToken_,diphotons);
- // const PtrVector<flashgg::DiPhotonCandidate>& diphotonPointers = diphotons->ptrVector();  
+  const std::vector<edm::Ptr<flashgg::DiPhotonCandidate> > diphotonsPtrs = diphotons->ptrs();  
 	
    
   Handle<View<reco::Vertex> > primaryVertices;
@@ -201,7 +201,7 @@ vertexTrainingTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup
 
   Handle<View<reco::GenParticle> > genParticles;
   iEvent.getByToken(genParticleToken_,genParticles);
- // const PtrVector<reco::GenParticle>& gens = genParticles->ptrVector();
+  const std::vector<edm::Ptr<reco::GenParticle> > genParticlesPtrs = genParticles->ptrs();
 
 
   
@@ -211,13 +211,13 @@ vertexTrainingTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup
 
   // gen loop.
 
-  for( unsigned int genLoop =0 ; genLoop < genParticles->size(); genLoop++)
+  for( unsigned int genLoop =0 ; genLoop < genParticlesPtrs.size(); genLoop++)
     {
     
-      if(  genParticles->ptrAt(genLoop)->pdgId() ==25)
+      if(  genParticlesPtrs[genLoop]->pdgId() ==25)
 	{
-	  genInfo.genVertexZ=genParticles->ptrAt(genLoop)->vz();
-	  genInfo.genHiggsPt=genParticles->ptrAt(genLoop)->pt();
+	  genInfo.genVertexZ=genParticlesPtrs[genLoop]->vz();
+	  genInfo.genHiggsPt=genParticlesPtrs[genLoop]->pt();
 
 	  break;
 	}
@@ -225,22 +225,22 @@ vertexTrainingTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup
 
   // diphoton loop
   
-  for( size_t idipho = 0; idipho < diphotons->size(); idipho++ ) {
+  for( size_t idipho = 0; idipho < diphotonsPtrs.size(); idipho++ ) {
 
     sigInfo.nvertex = primaryVertices->size();
-    sigInfo.ndipho = diphotons->size();
+    sigInfo.ndipho = diphotonsPtrs.size();
     bkgInfo.nvertex = primaryVertices->size();
-    bkgInfo.ndipho = diphotons->size();
+    bkgInfo.ndipho = diphotonsPtrs.size();
 
     sigInfo.dipho_index = idipho;
     bkgInfo.dipho_index = idipho;
 
     // get true vertex index:
 
-    int trueVtxIndexI = mcTruthVertexIndex(genParticles, primaryVertices);
+    int trueVtxIndexI = mcTruthVertexIndex(genParticles->ptrs(), primaryVertices->ptrs());
     if (trueVtxIndexI < 0 ) continue;
   
-    Ptr<flashgg::DiPhotonCandidate> diphoPtr = diphotons->ptrAt(idipho);
+    Ptr<flashgg::DiPhotonCandidate> diphoPtr = diphotonsPtrs[idipho];
     unsigned int trueVtxIndex=trueVtxIndexI;
     int trueVtxSortedIndexI=sortedIndex(trueVtxIndex,primaryVertices->size(),diphoPtr);
     if(trueVtxSortedIndexI<0) continue;
@@ -394,22 +394,22 @@ int vertexTrainingTreeMaker::sortedIndex(const unsigned int trueVtxIndex, const 
   }  
   return -1;
 }
-int vertexTrainingTreeMaker::mcTruthVertexIndex(  const edm::Handle<edm::View<reco::GenParticle> >& genParticles , const edm::Handle<edm::View<reco::Vertex> >& vertices, double dzMatch ) {
+int vertexTrainingTreeMaker::mcTruthVertexIndex(  const std::vector<edm::Ptr<reco::GenParticle> >& genParticles , const std::vector<edm::Ptr<reco::Vertex> >& vertices, double dzMatch ) {
     
   reco::Vertex::Point hardVertex(0,0,0);
 
-  for( unsigned int genLoop =0 ; genLoop < genParticles->size(); genLoop++){
+  for( unsigned int genLoop =0 ; genLoop < genParticles.size(); genLoop++){
     
-    if( fabs( genParticles->ptrAt(genLoop)->pdgId() ) < 10 || fabs(genParticles->ptrAt(genLoop)->pdgId() ) == 25 ) {
-      hardVertex.SetCoordinates(genParticles->ptrAt(genLoop)->vx(),genParticles->ptrAt(genLoop)->vy(),genParticles->ptrAt(genLoop)->vz());
+    if( fabs( genParticles[genLoop]->pdgId() ) < 10 || fabs(genParticles[genLoop]->pdgId() ) == 25 ) {
+      hardVertex.SetCoordinates(genParticles[genLoop]->vx(),genParticles[genLoop]->vy(),genParticles[genLoop]->vz());
       break;
     }
   }
   
   int  ivMatch = 0;
   double dzMin = 999;
-  for( unsigned int iv = 0; iv < vertices->size(); iv++ ) {
-    double dz = fabs( vertices->ptrAt(iv)->z() - hardVertex.z() );
+  for( unsigned int iv = 0; iv < vertices.size(); iv++ ) {
+    double dz = fabs( vertices[iv]->z() - hardVertex.z() );
     if( dz < dzMin ) {
       ivMatch = iv;
       dzMin   = dz;

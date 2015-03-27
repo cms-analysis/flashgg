@@ -8,13 +8,13 @@ using namespace edm;
 
 namespace flashgg {
 
-	std::vector<edm::Ptr<pat::Muon> > selectMuons(const edm::Handle<edm::View<pat::Muon> >& muonPointers,Ptr<flashgg::DiPhotonCandidate> dipho, const edm::Handle<edm::View<reco::Vertex> >& vertexPointers, double muonEtaThreshold, double muonPtThreshold, double muPFIsoSumRelThreshold, double dRPhoLeadMuonThreshold, double dRPhoSubLeadMuonThreshold) {
+	std::vector<edm::Ptr<pat::Muon> > selectMuons(const std::vector<edm::Ptr<pat::Muon> >& muonPointers,Ptr<flashgg::DiPhotonCandidate> dipho, const std::vector<edm::Ptr<reco::Vertex> >& vertexPointers, double muonEtaThreshold, double muonPtThreshold, double muPFIsoSumRelThreshold, double dRPhoLeadMuonThreshold, double dRPhoSubLeadMuonThreshold) {
 
 		std::vector<edm::Ptr<pat::Muon> > goodMuons;
 
-		for(unsigned int muonIndex = 0; muonIndex < muonPointers->size(); muonIndex++ )
+		for(unsigned int muonIndex = 0; muonIndex < muonPointers.size(); muonIndex++ )
 		{
-			Ptr<pat::Muon> muon = muonPointers->ptrAt(muonIndex); 			
+			Ptr<pat::Muon> muon = muonPointers[muonIndex]; 			
 
 			if(fabs(muon->eta()) > muonEtaThreshold) continue;
 			if(muon->pt() < muonPtThreshold) continue;
@@ -22,9 +22,9 @@ namespace flashgg {
 				int vtxInd = 0;
     				double dzmin = 9999;
 
-				 for( size_t ivtx = 0 ; ivtx < vertexPointers->size(); ivtx++ ) {
+				 for( size_t ivtx = 0 ; ivtx < vertexPointers.size(); ivtx++ ) {
 
-				  	Ptr<reco::Vertex> vtx = vertexPointers->ptrAt(ivtx);
+				  	Ptr<reco::Vertex> vtx = vertexPointers[ivtx];
 
 					if (!muon->innerTrack()) continue;
 
@@ -37,7 +37,7 @@ namespace flashgg {
 
 				}
 
-				Ptr<reco::Vertex> best_vtx = vertexPointers->ptrAt(vtxInd);
+				Ptr<reco::Vertex> best_vtx = vertexPointers[vtxInd];
 
 			//https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId#Tight_Muon and https://cmssdt.cern.ch/SDT/lxr/source/RecoBTag/SoftLepton/plugins/SoftPFMuonTagInfoProducer.cc#0135
 
@@ -61,14 +61,14 @@ namespace flashgg {
 		return goodMuons;
 	}
 
-	std::vector<edm::Ptr<Electron> > selectElectrons(const edm::Handle<edm::View<flashgg::Electron> >& ElectronPointers, const edm::Handle<edm::View<reco::Vertex> >& vertexPointers ,double ElectronPtThreshold,double DeltaRTrkElec, double TransverseImpactParam, double LongitudinalImapctParam, double NonTrigMVAThreshold, double IsoThreshold, double NumOfMissingHitsThreshold, vector<double> EtaCuts){
+	std::vector<edm::Ptr<Electron> > selectElectrons(const std::vector<edm::Ptr<flashgg::Electron> >& ElectronPointers, const std::vector<edm::Ptr<reco::Vertex> >& vertexPointers ,double ElectronPtThreshold,double DeltaRTrkElec, double TransverseImpactParam, double LongitudinalImapctParam, double NonTrigMVAThreshold, double IsoThreshold, double NumOfMissingHitsThreshold, vector<double> EtaCuts){
 
 		std::vector<edm::Ptr<flashgg::Electron> > goodElectrons;
 
 
-		for(unsigned int ElectronIndex=0; ElectronIndex < ElectronPointers->size(); ElectronIndex++ ){
+		for(unsigned int ElectronIndex=0; ElectronIndex < ElectronPointers.size(); ElectronIndex++ ){
 
-			Ptr<flashgg::Electron> Electron = ElectronPointers->ptrAt(ElectronIndex);
+			Ptr<flashgg::Electron> Electron = ElectronPointers[ElectronIndex];
 			float Electron_eta = fabs(Electron->superCluster()->eta());
 
                         if (Electron_eta>EtaCuts[2] || (Electron_eta>EtaCuts[0] && Electron_eta<EtaCuts[1])) continue;
@@ -94,13 +94,13 @@ namespace flashgg {
 	}
 
 
-	Ptr<reco::Vertex>  chooseElectronVertex(Ptr<flashgg::Electron> & elec,const edm::Handle<edm::View<reco::Vertex> > & vertices){
+	Ptr<reco::Vertex>  chooseElectronVertex(Ptr<flashgg::Electron> & elec,const std::vector<edm::Ptr<reco::Vertex> > & vertices){
 
 		double vtx_dz = 1000000;
 		unsigned int min_dz_vtx = -1;
-		for(unsigned int vtxi=0; vtxi<vertices->size();vtxi++){
+		for(unsigned int vtxi=0; vtxi<vertices.size();vtxi++){
 
-			Ptr<reco::Vertex> vtx = vertices->ptrAt(vtxi);	
+			Ptr<reco::Vertex> vtx = vertices[vtxi];	
 
 			if(vtx_dz > elec->gsfTrack()->dz(vtx->position())){
 
@@ -108,6 +108,6 @@ namespace flashgg {
 				min_dz_vtx = vtxi;
 			}
 		}
-		return vertices->ptrAt(min_dz_vtx); 
+		return vertices[min_dz_vtx]; 
 	}
 }
