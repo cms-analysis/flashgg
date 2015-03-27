@@ -85,7 +85,7 @@ namespace flashgg {
       for (unsigned int j = i+1 ; j < photons->size() ; j++) {
         Ptr<flashgg::Photon> pp2 = photons->ptrAt(j);
 
-        Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,primaryVertices,*vertexCandidateMap,conversions,vertexPoint); //,param,beamsig);
+        Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,primaryVertices->ptrs(),*vertexCandidateMap,conversions->ptrs(),vertexPoint); //,param,beamsig);
         // Finding and storing the vertex index to check if it corresponds to the primary vertex.
         // This could be moved within the vertexSelector, but would need rewriting some interface
         int ivtx = 0;
