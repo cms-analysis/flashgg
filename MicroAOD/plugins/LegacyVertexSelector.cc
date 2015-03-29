@@ -27,9 +27,9 @@ namespace flashgg {
  public:
    LegacyVertexSelector(const edm::ParameterSet& );
    ~LegacyVertexSelector();
-   edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const edm::Handle<edm::View<reco::Vertex> >&,
+   edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,const std::vector<edm::Ptr<reco::Vertex> >&,
 				 const VertexCandidateMap& vertexCandidateMap,
-				 const edm::Handle <edm::View<reco::Conversion> >&,
+				 const std::vector<edm::Ptr<reco::Conversion> >&,
 				 const math::XYZPoint&
 				 ) override;
 
@@ -42,14 +42,14 @@ namespace flashgg {
 
     double zFromConvPair(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,
 			    const int ,const int,
-			    const edm::Handle< edm::View<reco::Conversion> >&,
+			    const std::vector<edm::Ptr<reco::Conversion> >&,
 			    const math::XYZPoint &) const;  
    
     double sZFromConvPair(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,
 			     const int ,const int,
-			     const edm::Handle< edm::View<reco::Conversion> >&) const;
+			     const std::vector<edm::Ptr<reco::Conversion> >&) const;
     
-    int IndexMatchedConversion(const edm::Ptr<flashgg::Photon>&,const edm::Handle<edm::View<reco::Conversion> >&) const;
+    int IndexMatchedConversion(const edm::Ptr<flashgg::Photon>&,const std::vector<edm::Ptr<reco::Conversion> >&) const;
 
     void Initialize();
     
@@ -290,21 +290,21 @@ namespace flashgg {
 						const edm::Ptr<flashgg::Photon>& p2,
 						const int index_conversionLead,
 						const int index_conversionTrail,
-						const edm::Handle<edm::View<reco::Conversion> >& conversionsVector,
+						const std::vector<edm::Ptr<reco::Conversion> >& conversionsVector,
 						const math::XYZPoint & beamSpot) const {
     double zconv=0;
     if(index_conversionLead!=-1  && index_conversionTrail==-1){ 
-      zconv=vtxZFromConv(p1,conversionsVector->ptrAt(index_conversionLead),beamSpot);
+      zconv=vtxZFromConv(p1,conversionsVector[index_conversionLead],beamSpot);
     }
     if(index_conversionLead==-1 && index_conversionTrail!=-1){
-      zconv=vtxZFromConv (p2,conversionsVector->ptrAt(index_conversionTrail),beamSpot);
+      zconv=vtxZFromConv (p2,conversionsVector[index_conversionTrail],beamSpot);
     }
     
     if (index_conversionLead!=-1 && index_conversionTrail!=-1){
-      float z1  = vtxZFromConv (p1,conversionsVector->ptrAt(index_conversionLead),beamSpot);
-      float sz1 = vtxDZFromConv(p1,conversionsVector->ptrAt(index_conversionLead)); //,param);
-      float z2  = vtxZFromConv (p2,conversionsVector->ptrAt(index_conversionTrail),beamSpot);
-      float sz2 = vtxDZFromConv(p2,conversionsVector->ptrAt(index_conversionTrail)); //,param);
+      float z1  = vtxZFromConv (p1,conversionsVector[index_conversionLead],beamSpot);
+      float sz1 = vtxDZFromConv(p1,conversionsVector[index_conversionLead]); //,param);
+      float z2  = vtxZFromConv (p2,conversionsVector[index_conversionTrail],beamSpot);
+      float sz2 = vtxDZFromConv(p2,conversionsVector[index_conversionTrail]); //,param);
       zconv  = (z1/sz1/sz1 + z2/sz2/sz2)/(1./sz1/sz1 + 1./sz2/sz2 );  // weighted average
     }
     return zconv;
@@ -314,34 +314,34 @@ namespace flashgg {
 						 const edm::Ptr<flashgg::Photon>& p2,
 						 int index_conversionLead,
 						 int index_conversionTrail,
-						 const edm::Handle<edm::View<reco::Conversion> >& conversionsVector) const {
+						 const std::vector<edm::Ptr<reco::Conversion> >& conversionsVector) const {
     double szconv=0;
     if ( index_conversionLead!=-1  && index_conversionTrail==-1 ){
-      szconv = vtxDZFromConv(p1,conversionsVector->ptrAt(index_conversionLead)); 
+      szconv = vtxDZFromConv(p1,conversionsVector[index_conversionLead]); 
     }
     if ( index_conversionLead==-1 && index_conversionTrail!=-1 ){
-      szconv = vtxDZFromConv(p2,conversionsVector->ptrAt(index_conversionTrail));
+      szconv = vtxDZFromConv(p2,conversionsVector[index_conversionTrail]);
     }
     
     if (index_conversionLead!=-1 && index_conversionTrail!=-1){
-      float sz1 = vtxDZFromConv(p1,conversionsVector->ptrAt(index_conversionLead));
-      float sz2 = vtxDZFromConv(p2,conversionsVector->ptrAt(index_conversionTrail));
+      float sz1 = vtxDZFromConv(p1,conversionsVector[index_conversionLead]);
+      float sz2 = vtxDZFromConv(p2,conversionsVector[index_conversionTrail]);
       szconv = sqrt( 1./(1./sz1/sz1 + 1./sz2/sz2)) ;
     }
     return szconv;
   }
  
 
-  int LegacyVertexSelector::IndexMatchedConversion(const edm::Ptr<flashgg::Photon>& g,const edm::Handle<edm::View<reco::Conversion> >& conversionsVector) const{
+  int LegacyVertexSelector::IndexMatchedConversion(const edm::Ptr<flashgg::Photon>& g,const std::vector<edm::Ptr<reco::Conversion> >& conversionsVector) const{
     double mindR = 999;
     
     assert(g->hasConversionTracks());   //The photon has to have conversion tracks!
-    assert(conversionsVector->size()>0); //The photon has to have conversion tracks!
+    assert(conversionsVector.size()>0); //The photon has to have conversion tracks!
     int selected_conversion_index = -1; //returned value if no match was found
     
     if(g->hasConversionTracks()){
-      for (unsigned int i=0; i<conversionsVector->size();i++){
-        edm::Ptr<reco::Conversion> conv = conversionsVector->ptrAt(i);
+      for (unsigned int i=0; i<conversionsVector.size();i++){
+        edm::Ptr<reco::Conversion> conv = conversionsVector[i];
         if(!conv->isConverted()) continue;
         if(conv->refittedPair4Momentum().pt()<10.) continue;
         if(TMath::Prob(conv->conversionVertex().chi2(),conv->conversionVertex().ndof()) < 1e-6 ) continue;
@@ -368,9 +368,9 @@ namespace flashgg {
 
   }
   
-  edm::Ptr<reco::Vertex> LegacyVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const edm::Handle< edm::View<reco::Vertex> >& vtxs,
+  edm::Ptr<reco::Vertex> LegacyVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,const edm::Ptr<flashgg::Photon>& g2,const std::vector<edm::Ptr<reco::Vertex> >& vtxs,
 						      const VertexCandidateMap& vertexCandidateMap,
-						      const edm::Handle<edm::View<reco::Conversion> >& conversionsVector,
+						      const std::vector<edm::Ptr<reco::Conversion> >& conversionsVector,
 						      const math::XYZPoint & beamSpot
 						      //						      const std::map<std::string,double> & param,
 						      //                                                      const float & beamsig 
@@ -392,7 +392,7 @@ namespace flashgg {
     int IndexMatchedConversionLeadPhoton=-1;
     int IndexMatchedConversionTrailPhoton=-1;
 
-    if(conversionsVector->size()>0){
+    if(conversionsVector.size()>0){
       if(g1->hasConversionTracks())
         IndexMatchedConversionLeadPhoton = IndexMatchedConversion(g1,conversionsVector);
       if(g2->hasConversionTracks())
@@ -420,8 +420,8 @@ namespace flashgg {
     std::vector<float> vmva_value;
     std::vector<edm::Ptr<reco::Vertex> >  vVtxPtr;
    
-    for (vertex_index = 0 ; vertex_index < vtxs->size() ; vertex_index++) {
-      edm::Ptr<reco::Vertex> vtx = vtxs->ptrAt(vertex_index);
+    for (vertex_index = 0 ; vertex_index < vtxs.size() ; vertex_index++) {
+      edm::Ptr<reco::Vertex> vtx = vtxs[vertex_index];
 
       TVector3 Photon1Dir;
       TVector3 Photon1Dir_uv;
@@ -548,16 +548,16 @@ namespace flashgg {
     }
   
     dipho_pt_ = (g1->p4()+g2->p4()).pt();
-    nVert_    = vtxs->size();
+    nVert_    = vtxs.size();
     MVA0_     = max_mva_value;
     MVA1_     = second_max_mva_value;
-    dZ1_      = vtxs->ptrAt(selected_vertex_index)->position().z() - vtxs->ptrAt(second_selected_vertex_index)->position().z();
+    dZ1_      = vtxs[selected_vertex_index]->position().z() - vtxs[second_selected_vertex_index]->position().z();
     MVA2_     = third_max_mva_value;
-    dZ2_      = vtxs->ptrAt(selected_vertex_index)->position().z() - vtxs->ptrAt(third_selected_vertex_index)->position().z();  
+    dZ2_      = vtxs[selected_vertex_index]->position().z() - vtxs[third_selected_vertex_index]->position().z();  
 
     vtxprobmva_ = VertexProbMva_->EvaluateMVA("BDT");  
     
-    return vtxs->ptrAt(selected_vertex_index);
+    return vtxs[selected_vertex_index];
   }
 
   void LegacyVertexSelector::writeInfoFromLastSelectionTo(flashgg::DiPhotonCandidate& dipho) {

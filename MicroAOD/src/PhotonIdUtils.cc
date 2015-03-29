@@ -82,7 +82,7 @@ float PhotonIdUtils::pfIsoChgWrtVtx( edm::Ptr<pat::Photon>& photon,
 
 
 map<edm::Ptr<reco::Vertex>,float> PhotonIdUtils::pfIsoChgWrtAllVtx( edm::Ptr<pat::Photon>& photon, 
-									 const edm::Handle<edm::View<reco::Vertex> >& vertices,
+									 const std::vector<edm::Ptr<reco::Vertex> >& vertices,
 									 const flashgg::VertexCandidateMap vtxcandmap,
 									 float coneSize, float coneVetoBarrel, float coneVetoEndcap, 
 									 float ptMin )
@@ -90,10 +90,10 @@ map<edm::Ptr<reco::Vertex>,float> PhotonIdUtils::pfIsoChgWrtAllVtx( edm::Ptr<pat
   map<edm::Ptr<reco::Vertex>,float> isomap;
   isomap.clear();
 
-  for( unsigned int iv = 0; iv < vertices->size(); iv++ ) {
+  for( unsigned int iv = 0; iv < vertices.size(); iv++ ) {
     
-    float iso = pfIsoChgWrtVtx( photon, vertices->ptrAt(iv), vtxcandmap, coneSize, coneVetoBarrel, coneVetoEndcap, ptMin );
-    isomap.insert( make_pair(vertices->ptrAt(iv),iso) );
+    float iso = pfIsoChgWrtVtx( photon, vertices[iv], vtxcandmap, coneSize, coneVetoBarrel, coneVetoEndcap, ptMin );
+    isomap.insert( make_pair(vertices[iv],iso) );
   }
 
   return isomap;
@@ -117,7 +117,7 @@ float PhotonIdUtils::pfIsoChgWrtWorstVtx( map<edm::Ptr<reco::Vertex>,float>& vtx
 
 
 float PhotonIdUtils::pfCaloIso( edm::Ptr<pat::Photon>& photon, 
-				const edm::Handle<edm::View<pat::PackedCandidate> >& pfcandidates,
+				const std::vector<edm::Ptr<pat::PackedCandidate> >& pfcandidates,
 				float dRMax,
 				float dRVetoBarrel,
 				float dRVetoEndcap,
@@ -147,9 +147,9 @@ float PhotonIdUtils::pfCaloIso( edm::Ptr<pat::Photon>& photon,
   }   
 
   //// map<float,tuple<edm::Ptr<pat::PackedCandidate>,float,float> > candidates;
-  for( size_t ipf = 0; ipf < pfcandidates->size(); ipf++ ) { 
+  for( size_t ipf = 0; ipf < pfcandidates.size(); ipf++ ) { 
 
-    edm::Ptr<pat::PackedCandidate> pfcand = pfcandidates->ptrAt(ipf); 
+    edm::Ptr<pat::PackedCandidate> pfcand = pfcandidates[ipf]; 
     
     if( pfcand->pdgId() != pdgId ) continue;
     if( photon->isEB() ) if( fabs(pfcand->pt()) < minEnergyBarrel )     continue;  
@@ -280,15 +280,15 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
 
 map<edm::Ptr<reco::Vertex>,float> PhotonIdUtils::computeMVAWrtAllVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
 									  flashgg::Photon& photon,
-									  const edm::Handle<edm::View<reco::Vertex> >& vertices,
+									  const std::vector<edm::Ptr<reco::Vertex> >& vertices,
 									  const double rho )
   
 {  
   map<edm::Ptr<reco::Vertex>,float> mvamap;
   mvamap.clear();
 
-  for( unsigned int iv = 0; iv < vertices->size(); iv++ ) {
-    edm::Ptr<reco::Vertex> vertex = vertices->ptrAt(iv);
+  for( unsigned int iv = 0; iv < vertices.size(); iv++ ) {
+    edm::Ptr<reco::Vertex> vertex = vertices[iv];
     float mvapervtx = computeMVAWrtVtx( photon, vertex, rho);
     mvamap.insert( make_pair(vertex, mvapervtx) );
   }

@@ -87,18 +87,8 @@ namespace flashgg {
 
 	if(!usePuppi){
 		if (!fjet.hasPuJetId(vtx)) {
-			// temporarily remove PUJetId while bugs are investigated by jetMET
-			//	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),1.,vtx.get(),vc,true);
-			PileupJetIdentifier lPUJetId;
-			lPUJetId.RMS(0);
-			lPUJetId.betaStar(0);
-			int idFlag( 0 );
-			idFlag += 1 <<  PileupJetIdentifier::kTight;
-			idFlag += 1 <<  PileupJetIdentifier::kMedium;
-			idFlag += 1 <<  PileupJetIdentifier::kLoose;
-			lPUJetId.idFlag(idFlag);
-			fjet.setPuJetId(vtx,lPUJetId); //temporarily make all jets pass
-		//	std::cout << "debug fjet pass PujetId" << fjet.passesPuJetId(vtx) << std::endl;
+			  PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),vtx,*vertexCandidateMap,true);
+			  fjet.setPuJetId(vtx,lPUJetId); //temporarily make all jets pass
 		}
 	}
 			}

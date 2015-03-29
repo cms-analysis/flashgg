@@ -62,12 +62,12 @@ fi
 
 cd $CMSSW_BASE/src
 
-# temporarily disabled special jet stuff
-#echo
-#echo "Setting up pileupjetid..."
-#git cms-addpkg RecoJets/JetProducers
-#git cms-merge-topic -u sethzenz:pileupjetid-for-flashgg-72x
-#echo
+echo
+echo "Setting up pileupjetid..."
+git cms-addpkg RecoJets/JetProducers
+git cms-merge-topic -u ldcorpe:flashgg-new-vtxmap-pujetid-74X
+echo
+
 #echo "Setting up PUPPI..."
 #git clone -b flashgg https://github.com/ldcorpe/Dummy
 

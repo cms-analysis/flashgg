@@ -14,9 +14,9 @@ namespace flashgg {
       _whichVertex(conf.getUntrackedParameter<unsigned int>("whichVertex",0)) {}
 
     edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,const edm::Ptr<flashgg::Photon>&,
-      const edm::Handle<edm::View<reco::Vertex> >&,
+      const std::vector<edm::Ptr<reco::Vertex> >&,
       const VertexCandidateMap&,
-      const edm::Handle<edm::View<reco::Conversion> >&,
+      const std::vector<edm::Ptr<reco::Conversion> >&,
       const math::XYZPoint&
       //  const Parameters_Selector_Type&,
       //  const float&
@@ -31,14 +31,14 @@ namespace flashgg {
 
   edm::Ptr<reco::Vertex> ZerothVertexSelector::select(const edm::Ptr<flashgg::Photon>& g1,
 						      const edm::Ptr<flashgg::Photon>& g2,
-						      const edm::Handle<edm::View<reco::Vertex> >& vtxs,
+						      const std::vector<edm::Ptr<reco::Vertex> >& vtxs,
 						      const VertexCandidateMap& vertexCandidateMap,
-						      const edm::Handle< edm::View<reco::Conversion> >& convs,
+						      const std::vector<edm::Ptr<reco::Conversion> >& convs,
 						      const math::XYZPoint& beamSpot
 						      //						      const Parameters_Selector_Type& param,
 						      //                                                      const float& beamsig 
 						      ) {
-    return vtxs->ptrAt(_whichVertex);
+    return vtxs[_whichVertex];
   }
 
   void ZerothVertexSelector::writeInfoFromLastSelectionTo(flashgg::DiPhotonCandidate& dipho) {
