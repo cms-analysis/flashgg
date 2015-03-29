@@ -236,8 +236,8 @@ double idmva2 = 0.;
   if(mvares->result < MVAThreshold_) continue;
 		
   photonSelection = true;
-  std::vector<edm::Ptr<pat::Muon> > goodMuons = selectMuons(theMuons,dipho,vertices, leptonEtaThreshold_,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
-  std::vector<edm::Ptr<Electron> >goodElectrons = selectElectrons(theElectrons,vertices,ElectronPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_,nonTrigMVAThreshold_,electronIsoThreshold_,electronNumOfHitsThreshold_,EtaCuts_);
+  std::vector<edm::Ptr<pat::Muon> > goodMuons = selectMuons(theMuons->ptrs(),dipho,vertices->ptrs(), leptonEtaThreshold_,leptonPtThreshold_,muPFIsoSumRelThreshold_,deltaRLepPhoThreshold_,deltaRLepPhoThreshold_);
+  std::vector<edm::Ptr<Electron> >goodElectrons = selectElectrons(theElectrons->ptrs(),vertices->ptrs(),ElectronPtThreshold_,DeltaRTrkElec_,TransverseImpactParam_,LongitudinalImpactParam_,nonTrigMVAThreshold_,electronIsoThreshold_,electronNumOfHitsThreshold_,EtaCuts_);
 
   hasGoodElec = (goodElectrons.size()>0);
   hasGoodMuons = (goodMuons.size()>0);
