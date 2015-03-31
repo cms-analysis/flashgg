@@ -86,7 +86,7 @@ Exact instructions used, after setting up the area with the given tag, doing cms
 
 ```
 cd $CMSSW_BASE/src/flashgg/MetaData/work
-./prepareCrabJobs.py -C HggPhys14 -U 5 -s campaigns/Phys14_samples.json -V Phys14MicroAODV1 -p ../../MicroAODProducers/test/simple_Producer_test.py
+./prepareCrabJobs.py -C HggPhys14 -U 5 -s campaigns/Phys14_samples.json -V Phys14MicroAODV1 -p ../../MicroAODProducers/test/microAODstd.py
 cd HggPhys14
 echo crabConfig_*.py | xargs -n 1 crab sub
 ```

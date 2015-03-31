@@ -26,8 +26,6 @@ class LsfJob:
     #----------------------------------------
     def __call__(self,cmd):
         
-        print cmd, "attempt", itry
-        
         bsubCmdParts = [ "bsub",
                          "-q " + self.lsfQueue,
                          "-K",  # bsub waits until job completes
@@ -62,10 +60,13 @@ class LsfJob:
         
         output = ""
         if self.jobName:
-            with open("%s.log" % self.jobName) as lf:
-                output = lf.read()
-                lf.close()
-
+            try:
+                with open("%s.log" % self.jobName) as lf:
+                    output = lf.read()
+                    lf.close()
+            except:
+                output = "%s.log" % self.jobName
+                
         return self.exitStatus, output
     
 class Wrap:
@@ -143,21 +144,25 @@ class Parallel:
     def wait(self,handler=None):
         returns = []
         self.sem.acquire()
-        njobs = self.njobs
+        njobs = int(self.njobs)
         self.sem.release()
-        for i in range(njobs):
-            print "Finished jobs: %d. Total jobs: %d" % (i, self.njobs)
+        nleft = njobs
+        while nleft>0:
+            print ""
+            print "--- Running jobs: %d. Total jobs: %d (total submissions: %s)" % (nleft, njobs, self.njobs)
+            print ""
             job, jobargs, ret = self.returned.get()
             if type(job) == str:
-                print "finished: '%s' '%s'" % ( job, " ".join(jobargs) )
+                print "Job finished: '%s' '%s'" % ( job, " ".join(jobargs) )
                 if not handler:
                     for line in ret[1].split("\n"):
                         print line
             if handler:
-                handler.handleJobOutput(job, jobargs, ret)
+                nleft += handler.handleJobOutput(job, jobargs, ret)
             else:
                 returns.append( (job,jobargs,ret) )
-        
+            nleft -= 1 
+
         self.sem.acquire()
         self.njobs -= njobs
         self.sem.release()

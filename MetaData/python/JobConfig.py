@@ -117,7 +117,7 @@ class JobConfig(object):
             sys.exit(1)
             
 
-
+        files = self.inputFiles
         if self.dataset:
             name,xsec,totEvents,files,maxEvents = self.dataset
             self.maxEvents = int(maxEvents)
@@ -136,13 +136,21 @@ class JobConfig(object):
             for name,obj in process.__dict__.iteritems():
                 if hasattr(obj,"processId"):
                     obj.processId = str(processId)
-                        
-            ## fwlite
-            if isFwlite:
-                process.fwliteInput.fileNames.extend([ str("%s%s" % (self.filePrepend,f)) for f in  files])
-            ## full framework
+            
+        flist = []
+        for f in files:
+            if len(f.split(":",1))>1:
+                flist.append(str(f))
             else:
-                process.source.fileNames.extend([ str("%s%s" % (self.filePrepend,f)) for f in  files])
+                flist.append(str("%s%s" % (self.filePrepend,f)))
+        ## fwlite
+        if isFwlite:
+            ## process.fwliteInput.fileNames.extend([ str("%s%s" % (self.filePrepend,f)) for f in  files])
+            process.fwliteInput.fileNames.extend(flist)
+        ## full framework
+        else:
+            ## process.source.fileNames.extend([ str("%s%s" % (self.filePrepend,f)) for f in  files])
+            process.source.fileNames.extend(flist)
  
         ## fwlite
         if isFwlite:

@@ -73,6 +73,7 @@ class JobsManager(object):
                             action="store_true", dest="verbose",
                             default=False,
                             help="default: %default"),
+                make_option("-m","--max-resubmissions",dest="maxResub", type="int",default=3),
                 make_option("-N","--ncpu",dest="ncpu", type="int",default=cpu_count()),
                 make_option("-H","--hadd",dest="hadd",default=False, action="store_true",
                             help="hadd output files when all jobs are finished."
@@ -94,7 +95,8 @@ class JobsManager(object):
         
         # parse the command line
         (self.options, self.args) = parser.parse_args()
-        
+        self.maxResub = self.options.maxResub
+
         if self.options.cmdLine:
             self.args = self.args+shell_args(str(self.options.cmdLine))
         
@@ -106,7 +108,7 @@ class JobsManager(object):
         __call__
         Run all jobs.
         """
-        self.parallel = Parallel(self.options.ncpu,lsfQueue=self.options.queue,lsfJobName="runJobs")
+        self.parallel = Parallel(self.options.ncpu,lsfQueue=self.options.queue,lsfJobName="%s/runJobs" % self.options.outputDir)
         
         self.jobs = None
         if self.options.cont:
@@ -122,7 +124,6 @@ class JobsManager(object):
         parallel = self.parallel
         
         outputPfx = options.output.replace(".root","")
-        jobName = "runJobs"
         
         if not options.outputDir:
             sys.exit("Please specify an output folder")
@@ -134,7 +135,6 @@ class JobsManager(object):
         if not os.path.exists(options.outputDir):
             os.mkdir(options.outputDir)
         outputPfx = "%s/%s" % ( options.outputDir, outputPfx )
-        jobName   = "%s/%s" % ( options.outputDir, jobName )
         
         args.append("processIdMap=%s/config.json" % options.outputDir)
         ## options.cmdLine += " %s" % (" ".join(args))
@@ -169,7 +169,7 @@ class JobsManager(object):
                     dnjobs = 0
                     for ijob in range(options.njobs):
                         ## FIXME allow specific job selection
-                        iargs = jobargs+["nJobs=%d jobId=%d" % (options.njobs, ijob)]
+                        iargs = jobargs+shell_args("nJobs=%d jobId=%d" % (options.njobs, ijob))
                         # run python <command-line> dryRun=1 to check if the job needs to be run
                         ret,out = parallel.run("python %s" % pyjob,iargs+["dryRun=1"],interactive=True)[2]
                         if ret != 0:
@@ -185,7 +185,7 @@ class JobsManager(object):
                         outfiles.append( output )
                         doutfiles[dset][1].append( outfiles[-1] )
                         poutfiles[name][1].append( outfiles[-1] )
-                        jobs.append( (job,iargs,output) )
+                        jobs.append( (job,iargs,output,0,-1) )
                     print " %d jobs actually submitted" % dnjobs                
                 else:
                     ret,out = parallel.run("python %s" % pyjob,jobargs+["dryRun=1"],interactive=True)[2]
@@ -197,7 +197,7 @@ class JobsManager(object):
                     ## outfiles.append( outfile )
                     output = self.getHadd(out,outfile)
                     outfiles.append( output )
-                    jobs.append( (job,jobargs,output) )
+                    jobs.append( (job,jobargs,output,0,-1) )
                     poutfiles[name][1].append( outfiles[-1] )
                 print
 
@@ -266,7 +266,37 @@ class JobsManager(object):
         ###         print line
 
     def handleJobOutput(self,job,jobargs,ret):
-        print "finished: (exit code %d) %s %s" % ( ret[0], job, " ".join(jobargs) )
+        print "------------"
+        print "Job finished: (exit code %d) '%s' '%s'" % ( ret[0], job, " ".join(jobargs) )
+        print "Job output: "
+        print 
+        for line in ret[1].split("\n"):
+            print line
+        print
+        jobargs = shell_args(" ".join(jobargs))
+        job = jobargs[0]
+        jobargs = jobargs[1:]
+        for ijob in self.jobs:
+            inam,iargs = ijob[0:2]
+            ### print inam, job, inam == job
+            ### for i,a in enumerate(iargs):
+            ###     b = jobargs[i]
+            ###     print a, b,  a == b
+            if inam == job and iargs == jobargs:
+                ijob[4] = ret[0]
+                if ret[0] != 0:
+                    print ""
+                    print "Job failed. Number of resubmissions: %d / %d. " % (ijob[3], self.maxResub),
+                    if ijob[3] < self.maxResub:
+                        print "Resubmitting."
+                        self.parallel.run(inam,iargs)
+                        ijob[3] += 1
+                        print "------------"
+                        return 1
+                    else:
+                        print "Giving up."
+        print "------------"
+        return 0
     
     def getHadd(self,stg,fallback):
         for line in stg.split("\n"):

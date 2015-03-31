@@ -1,4 +1,5 @@
 <library   name="FlashggMetaDataPlugins" file="*.cc">
+  <use   name="flashgg/MetaData"/>
   <use   name="FWCore/Framework"/>
   <use   name="FWCore/ParameterSet"/>
   <use   name="FWCore/ServiceRegistry"/>
