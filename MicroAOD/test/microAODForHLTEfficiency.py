@@ -63,3 +63,6 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
 
 process.p = cms.Path(process.hltHighLevel+process.flashggMicroAODHLTEfficiencySequence+process.flashggDiPhotonMVA)
 process.e = cms.EndPath(process.out)
+
+from flashgg.MicroAOD.MicroAODCustomize import customize
+customize(process)
