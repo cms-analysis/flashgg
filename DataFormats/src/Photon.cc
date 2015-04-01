@@ -26,7 +26,6 @@ Photon::Photon() {
   pfChgIsoWrtWorstVtx03_ = 0.;
   pfChgIsoWrtChosenVtx02_ = 0.;
   ESEffSigmaRR_ = 0.;
-  sigEOverE_ = 0.;
   pfChgIso03_.clear();
   pfChgIso02_.clear();
   phoIdMvaD_.clear();
