@@ -75,7 +75,6 @@ namespace flashgg {
 		
 	 if(_isLegacyMVA){
 	 // legacy input var
-		std::cout << " debug leg " << std::endl; 
 	  VbfMva_->AddVariable("dijet_leadEta", &dijet_leadEta_);
 	  VbfMva_->AddVariable("dijet_subleadEta", &dijet_subleadEta_);
 	  VbfMva_->AddVariable("dijet_LeadJPt", &dijet_LeadJPt_);
@@ -87,7 +86,6 @@ namespace flashgg {
 		VbfMva_->BookMVA("BDTG",vbfMVAweightfile_.fullPath());
 	  }else{
 	  // new flashgg var
-		std::cout << " debug new " << std::endl; 
 	  VbfMva_->AddVariable("dijet_LeadJPt" , &dijet_LeadJPt_ );
 	  VbfMva_->AddVariable("dijet_SubJPt" , &dijet_SubJPt_ );
 	  VbfMva_->AddVariable("dijet_abs_dEta" , &dijet_abs_dEta_);

@@ -32,6 +32,7 @@ echo -e "+++++++++++ Run the training macro ++++++++++++++"
 echo
 # run the training on background and without diplays
 
+mkdir -p plots
 root -l -q VBFDiPhoDiJetMVA_Training.cc++\(\"${NEvent}\",\"VBFDiPhoDiJet\"\)
 
 echo 
