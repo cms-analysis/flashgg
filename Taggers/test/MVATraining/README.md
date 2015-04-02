@@ -1,5 +1,18 @@
 #flashgg/Taggers/MVATraining README
 
+## Quickstart
+
+For the impatient user...
+
+```
+export WORKSPACE=${CMSSW_BASE}/src/flashgg/Taggers/test/MVATraining
+cd $WORKSPACE
+cmsenv
+. runAllVBFMVARetrain.sh 1000
+```
+
+Details below...
+
 ## Introduction
 
 This area has been put together to retrain the MVA relevant to the VBF Tag, although the workflow, scripts, configs and plugins may be amended for other MVAs.
@@ -15,7 +28,7 @@ The basic workflow followed for each MVA is :
 The VBF Tag relies on 3 MVAs:
 
 * VBF DiJet MVA (aka VBFMVA), which determines if an event is VBF-like (ie has a valid dijet).
-* DiPhoton MVA, which determines if the vent has a valid Hgg-like diphoton.
+* DiPhoton MVA, which determines if the event has a valid Hgg-like diphoton.
 * VBF DiPhoton-DiJet MVA (aka VBFDiPhoDiJetMVA), which takes the inputs from the two above, and classifies events as VBF-like or not.
 
 The final MVA is used to generate the VBF Tag categories. This folder so far deals with reetraining the VBF DiJet MVA and the VBF DiPhoton-DiJet MVA only.
@@ -41,7 +54,7 @@ VBFDiPhoDiJetMVANew( e.g. trees of all input vars (legacy dipho MVA weights, new
 
 Before you start, please do:
 ```
-export WORKSPACE=${CMSSW_BASE}/flashgg/Taggers/test/MVATraining
+export WORKSPACE=${CMSSW_BASE}/src/flashgg/Taggers/test/MVATraining
 cd $WORKSPACE
 cmsenv
 ```

@@ -26,27 +26,23 @@ namespace flashgg {
   private:
     void produce( Event &, const EventSetup & ) override;
     EDGetTokenT<View<pat::Jet> > jetToken_;
-		 EDGetTokenT<View<pat::PackedCandidate> > pfcandidateToken_; // add yacine
     EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
     EDGetTokenT<View<reco::Vertex> >  vertexToken_;
     EDGetTokenT< VertexCandidateMap > vertexCandidateMapToken_;
     unique_ptr<PileupJetIdAlgo>  pileupJetIdAlgo_;
     ParameterSet pileupJetIdParameters_;
 		 bool usePuppi;
-		  bool useConeBetaStar;
 		 double minJetPt_; // GeV
   };
 
 
   JetProducer::JetProducer(const ParameterSet & iConfig) :
     jetToken_(consumes<View<pat::Jet> >(iConfig.getUntrackedParameter<InputTag> ("JetTag", InputTag("slimmedJets")))),
-		 pfcandidateToken_(consumes<View<pat::PackedCandidate> >(iConfig.getUntrackedParameter<InputTag> ("PFCandidatesTag", InputTag("packedPFCandidates")))),// yacine add
     diPhotonToken_(consumes<View<DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag>("DiPhotonTag",InputTag("flashggDiPhotons")))),
     vertexToken_(consumes<View<reco::Vertex> >(iConfig.getUntrackedParameter<InputTag> ("VertexTag", InputTag("offlineSlimmedPrimaryVertices")))),
     vertexCandidateMapToken_(consumes<VertexCandidateMap>(iConfig.getParameter<InputTag>("VertexCandidateMapTag"))),
 		pileupJetIdParameters_(iConfig.getParameter<ParameterSet>("PileupJetIdParameters")),
     usePuppi(iConfig.getUntrackedParameter<bool>("UsePuppi",false)),
-		 useConeBetaStar(iConfig.getUntrackedParameter<bool>("UseConeBetaStar",false)),
     minJetPt_(iConfig.getUntrackedParameter<double>("MinJetPt",0.))
   {
     pileupJetIdAlgo_.reset(new PileupJetIdAlgo(pileupJetIdParameters_));
@@ -62,8 +58,6 @@ namespace flashgg {
    // const PtrVector<pat::Jet>& jetPointers = jets->ptrVector();
 	 
 	 
-	   Handle<View<pat::PackedCandidate> > pfCandidates;
-	   evt.getByToken(pfcandidateToken_,pfCandidates);
 
     // input DiPhoton candidates
     Handle<View<DiPhotonCandidate> > diPhotons;
@@ -74,10 +68,6 @@ namespace flashgg {
     evt.getByToken(vertexToken_,primaryVertices);
    // const PtrVector<reco::Vertex>& pvPointers = primaryVertices->ptrVector();
 	 
-	 reco::VertexCollection vc; // stupid - this is just temporary to use the old PUJID method before it is updated...
-	 for (unsigned int i =0 ; i< primaryVertices->size() ; i++){ //temporary
-		vc.push_back(*(primaryVertices->ptrAt(i))) ;//temporary
-	 } //temporary
     
     Handle<VertexCandidateMap> vertexCandidateMap;
     evt.getByToken(vertexCandidateMapToken_,vertexCandidateMap);
@@ -95,7 +85,7 @@ namespace flashgg {
 
 	if(!usePuppi){
 		if (!fjet.hasPuJetId(vtx)) {
-			  PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),pfCandidates->ptrs(),vtx,*vertexCandidateMap,true,useConeBetaStar);
+			  PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),vtx,*vertexCandidateMap, true);
 			  fjet.setPuJetId(vtx,lPUJetId); //temporarily make all jets pass
 		}
 	}

@@ -65,7 +65,7 @@ fggRunJobs.py --load VBFMVATrainingSamples.json -d \
 echo 
 echo -e "+++++++++++ Generating ROC curves ++++++++++++++++"
 echo
-
+mkdir -p plots
 root -l -q makeROCs.cc++\(\"${NEvent}\",\"VBF\"\)
 root -l -q makeROCs.cc++\(\"${NEvent}\",\"VBFDiPhoDiJet\"\)
 
