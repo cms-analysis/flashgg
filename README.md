@@ -2,9 +2,9 @@ flashgg
 =======
 
 Before you start, **please take note** of these warnings and comments:
-* **N.B.** Make sure you are on lxplus6 or otherwise using an SLC6 machine. Make sure SCRAM_ARCH is slc6_amd64_gcc481.
+* **N.B.** Make sure you are on lxplus6 or otherwise using an SLC6 machine. Make sure SCRAM_ARCH is slc6_amd64_gcc491.
 * **N.B.** The setup script will check out many packages and take a while!
-* **N.B.** You can ignore "error: addinfo_cache" lines. (Probably. TBC.)
+* **N.B.** You can ignore "error: addinfo_cache" lines. 
 
 Get everything you need, starting from a clean area:
  ```
