@@ -1,9 +1,9 @@
 #ifndef FLASHgg_Photon_h
 #define FLASHgg_Photon_h
 
+#include "DataFormats/EgammaCandidates/interface/Photon.h"
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
-
 
 namespace flashgg {
 
@@ -49,9 +49,11 @@ namespace flashgg {
     void setpfChgIsoWrtChosenVtx03(float val) {pfChgIsoWrtChosenVtx03_=val;};
     void setESEffSigmaRR(float val) {ESEffSigmaRR_=val;};  
     void setPhoIdMvaD( std::map<edm::Ptr<reco::Vertex>,float> valmap ) {  phoIdMvaD_ = valmap; };   // concept: pass the pre-computed map when calling this in the producer
-    void setEnergyAtStep(std::string key,float val);
     void updateEnergy(std::string key,float val);
-    void setSigEOverE(float val) { sigEOverE_ = val; };
+    //    void setSigEOverE(float val) { sigEOverE_ = val; };
+
+    // define which regression from reco we use - only this one is valid as of 74X
+    static const reco::Photon::P4type regression_type = reco::Photon::regression1;
 
     float const sipip() const {return sipip_;};
     float const sieip() const {return sieip_;};
@@ -85,7 +87,7 @@ namespace flashgg {
 
     bool hasEnergyAtStep(std::string key) const;
     float const energyAtStep(std::string key) const;
-    float const sigEOverE() const { return sigEOverE_; };
+    float const sigEOverE() const;
     
     std::map<edm::Ptr<reco::Vertex>,float> const phoIdMvaD() const {return phoIdMvaD_;};
     float const phoIdMvaDWrtVtx( const edm::Ptr<reco::Vertex>& vtx, bool lazy=false ) const { return findVertexFloat(vtx,phoIdMvaD_,lazy); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
@@ -102,6 +104,7 @@ namespace flashgg {
     bool passElectronVeto() const { return passElecVeto_ ; };
 
   private:
+    void setEnergyAtStep(std::string key,float val); // updateEnergy should be used from outside the class to access this
     float const findVertexFloat(const edm::Ptr<reco::Vertex>& vtx, const std::map<edm::Ptr<reco::Vertex>,float> & mp, bool lazy) const;
     
     float sipip_;
@@ -129,7 +132,7 @@ namespace flashgg {
     float pfChgIsoWrtChosenVtx02_;
     float pfChgIsoWrtChosenVtx03_;
     float ESEffSigmaRR_;
-    float sigEOverE_;
+    //    float sigEOverE_;
     std::map<edm::Ptr<reco::Vertex>,float> pfChgIso04_; 
     std::map<edm::Ptr<reco::Vertex>,float> pfChgIso03_; 
     std::map<edm::Ptr<reco::Vertex>,float> pfChgIso02_; 

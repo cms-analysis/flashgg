@@ -26,7 +26,6 @@ Photon::Photon() {
   pfChgIsoWrtWorstVtx03_ = 0.;
   pfChgIsoWrtChosenVtx02_ = 0.;
   ESEffSigmaRR_ = 0.;
-  sigEOverE_ = 0.;
   pfChgIso03_.clear();
   pfChgIso02_.clear();
   phoIdMvaD_.clear();
@@ -42,6 +41,10 @@ void Photon::setEnergyAtStep(std::string key, float val) {
   addUserFloat(key,val);
 }
 float const Photon::energyAtStep(std::string key) const {
+  if (key=="initial" && !hasEnergyAtStep("initial")) {
+    return energy(); // "initial" is always set whenever any other value is set
+    		     // So if it's not present we can skip this mechanism for now
+  }
   return userFloat(key);
 }
 bool Photon::hasEnergyAtStep(std::string key) const {
@@ -75,4 +78,9 @@ void Photon::updateEnergy(std::string key, float val) {
   
   // Update 4-vector
   setP4((val/energy())*p4());
+}
+
+float const Photon::sigEOverE() const {
+  // Use uncertainty and error stored from reco because we want this fraction to be constant
+  return (getCorrectedEnergyError(regression_type) / getCorrectedEnergy(regression_type));
 }
