@@ -33,9 +33,10 @@ namespace flashgg {
 
 			unique_ptr<TMVA::Reader>vbfDiPhoDiJetMva_;
 			FileInPath vbfDiPhoDiJetMVAweightfile_;
+			bool _useLegacyMVA;
 
-			float dijet_mva_;
 			float dipho_mva_;
+			float dijet_mva_;
 			float dipho_PToM_;
 
 
@@ -44,7 +45,8 @@ namespace flashgg {
 	VBFDiPhoDiJetMVAProducer::VBFDiPhoDiJetMVAProducer(const ParameterSet & iConfig) :
 		diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
 		vbfMvaResultToken_(consumes<View<flashgg::VBFMVAResult> >(iConfig.getUntrackedParameter<InputTag> ("VBFMVAResultTag", InputTag("flashggVBFMVA")))),
-		mvaResultToken_(consumes<View<flashgg::DiPhotonMVAResult> >(iConfig.getUntrackedParameter<InputTag> ("MVAResultTag", InputTag("flashggDiPhotonMVA"))))
+		mvaResultToken_(consumes<View<flashgg::DiPhotonMVAResult> >(iConfig.getUntrackedParameter<InputTag> ("MVAResultTag", InputTag("flashggDiPhotonMVA")))),
+		 _useLegacyMVA (iConfig.getUntrackedParameter<bool>("UseLegacyMVA" ,false))
 	{
 
 		vbfDiPhoDiJetMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vbfDiPhoDiJetMVAweightfile");
@@ -55,11 +57,19 @@ namespace flashgg {
 
 
 		vbfDiPhoDiJetMva_.reset( new TMVA::Reader("!Color:Silent"));
+		
+		if(_useLegacyMVA){
 		vbfDiPhoDiJetMva_->AddVariable("dipho_mva", &dipho_mva_);
 		vbfDiPhoDiJetMva_->AddVariable("bdt_dijet_maxdPhi", &dijet_mva_);
 		vbfDiPhoDiJetMva_->AddVariable("dipho_pt/mass", &dipho_PToM_);
-
+		vbfDiPhoDiJetMva_->BookMVA("BDTG",vbfDiPhoDiJetMVAweightfile_.fullPath());
+		} else {
+		vbfDiPhoDiJetMva_->AddVariable("dipho_mva", &dipho_mva_);
+		vbfDiPhoDiJetMva_->AddVariable("dijet_mva", &dijet_mva_);
+		vbfDiPhoDiJetMva_->AddVariable("dipho_PToM", &dipho_PToM_);
 		vbfDiPhoDiJetMva_->BookMVA("BDT",vbfDiPhoDiJetMVAweightfile_.fullPath());
+	//	vbfDiPhoDiJetMva_->BookMVA("BDTG",vbfDiPhoDiJetMVAweightfile_.fullPath());
+		}
 
 
 		produces<vector<VBFDiPhoDiJetMVAResult> >(); 
@@ -95,7 +105,13 @@ namespace flashgg {
 			auto diphoton_p4 =leadPho_p4 + sublPho_p4;
 			dipho_PToM_ = diphoton_p4.Pt() / diphoton_p4.M();
 
+		if(_useLegacyMVA){
+			mvares.vbfDiPhoDiJetMvaResult = vbfDiPhoDiJetMva_->EvaluateMVA("BDTG");
+			}else {
+
+			//mvares.vbfDiPhoDiJetMvaResult = vbfDiPhoDiJetMva_->EvaluateMVA("BDTG");
 			mvares.vbfDiPhoDiJetMvaResult = vbfDiPhoDiJetMva_->EvaluateMVA("BDT");
+			}
 
 			mvares.dijet_mva =   dijet_mva_ ;
 			mvares.dipho_mva =   dipho_mva_ ;

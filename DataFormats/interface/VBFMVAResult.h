@@ -23,12 +23,16 @@ namespace flashgg {
     // Input variables
    	float dijet_leadEta ;   
     float dijet_subleadEta;
+		float dijet_abs_dEta;
     float dijet_LeadJPt ;
     float dijet_SubJPt;
     float dijet_Zep;
    	float dijet_dPhi_trunc; 
 		float dijet_Mjj;
 		float dipho_PToM;
+		float leadPho_PToM;
+		float sublPho_PToM;
+
     float VBFMVAValue() const {return vbfMvaResult_value;}
 
     // Output
