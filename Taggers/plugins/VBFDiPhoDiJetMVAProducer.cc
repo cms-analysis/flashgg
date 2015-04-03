@@ -20,110 +20,122 @@ using namespace edm;
 
 namespace flashgg {
 
-	class VBFDiPhoDiJetMVAProducer : public EDProducer {
+    class VBFDiPhoDiJetMVAProducer : public EDProducer
+    {
 
-		public:
-			VBFDiPhoDiJetMVAProducer( const ParameterSet & );
-		private:
-			void produce( Event &, const EventSetup & ) override;
+    public:
+        VBFDiPhoDiJetMVAProducer( const ParameterSet & );
+    private:
+        void produce( Event &, const EventSetup & ) override;
 
-			EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
-			EDGetTokenT<View<VBFMVAResult> > vbfMvaResultToken_;
-			EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
+        EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
+        EDGetTokenT<View<VBFMVAResult> > vbfMvaResultToken_;
+        EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
 
-			unique_ptr<TMVA::Reader>vbfDiPhoDiJetMva_;
-			FileInPath vbfDiPhoDiJetMVAweightfile_;
-			bool _useLegacyMVA;
+        unique_ptr<TMVA::Reader>vbfDiPhoDiJetMva_;
+        FileInPath vbfDiPhoDiJetMVAweightfile_;
+        bool _useLegacyMVA;
 
-			float dipho_mva_;
-			float dijet_mva_;
-			float dipho_PToM_;
-
-
-	};
-
-	VBFDiPhoDiJetMVAProducer::VBFDiPhoDiJetMVAProducer(const ParameterSet & iConfig) :
-		diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
-		vbfMvaResultToken_(consumes<View<flashgg::VBFMVAResult> >(iConfig.getUntrackedParameter<InputTag> ("VBFMVAResultTag", InputTag("flashggVBFMVA")))),
-		mvaResultToken_(consumes<View<flashgg::DiPhotonMVAResult> >(iConfig.getUntrackedParameter<InputTag> ("MVAResultTag", InputTag("flashggDiPhotonMVA")))),
-		 _useLegacyMVA (iConfig.getUntrackedParameter<bool>("UseLegacyMVA" ,false))
-	{
-
-		vbfDiPhoDiJetMVAweightfile_ = iConfig.getParameter<edm::FileInPath>("vbfDiPhoDiJetMVAweightfile");
-
-		dijet_mva_ = 0.; 
-		dipho_mva_ = 0.;
-		dipho_PToM_ = 0.;
+        float dipho_mva_;
+        float dijet_mva_;
+        float dipho_PToM_;
 
 
-		vbfDiPhoDiJetMva_.reset( new TMVA::Reader("!Color:Silent"));
-		
-		if(_useLegacyMVA){
-		vbfDiPhoDiJetMva_->AddVariable("dipho_mva", &dipho_mva_);
-		vbfDiPhoDiJetMva_->AddVariable("bdt_dijet_maxdPhi", &dijet_mva_);
-		vbfDiPhoDiJetMva_->AddVariable("dipho_pt/mass", &dipho_PToM_);
-		vbfDiPhoDiJetMva_->BookMVA("BDTG",vbfDiPhoDiJetMVAweightfile_.fullPath());
-		} else {
-		vbfDiPhoDiJetMva_->AddVariable("dipho_mva", &dipho_mva_);
-		vbfDiPhoDiJetMva_->AddVariable("dijet_mva", &dijet_mva_);
-		vbfDiPhoDiJetMva_->AddVariable("dipho_PToM", &dipho_PToM_);
-		vbfDiPhoDiJetMva_->BookMVA("BDT",vbfDiPhoDiJetMVAweightfile_.fullPath());
-	//	vbfDiPhoDiJetMva_->BookMVA("BDTG",vbfDiPhoDiJetMVAweightfile_.fullPath());
-		}
+    };
+
+    VBFDiPhoDiJetMVAProducer::VBFDiPhoDiJetMVAProducer( const ParameterSet &iConfig ) :
+        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "DiPhotonTag", InputTag( "flashggDiPhotons" ) ) ) ),
+        vbfMvaResultToken_( consumes<View<flashgg::VBFMVAResult> >( iConfig.getUntrackedParameter<InputTag> ( "VBFMVAResultTag", InputTag( "flashggVBFMVA" ) ) ) ),
+        mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getUntrackedParameter<InputTag> ( "MVAResultTag", InputTag( "flashggDiPhotonMVA" ) ) ) ),
+        _useLegacyMVA( iConfig.getUntrackedParameter<bool>( "UseLegacyMVA" , false ) )
+    {
+
+        vbfDiPhoDiJetMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "vbfDiPhoDiJetMVAweightfile" );
+
+        dijet_mva_ = 0.;
+        dipho_mva_ = 0.;
+        dipho_PToM_ = 0.;
 
 
-		produces<vector<VBFDiPhoDiJetMVAResult> >(); 
-	} 
+        vbfDiPhoDiJetMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
 
-	void VBFDiPhoDiJetMVAProducer::produce( Event & evt, const EventSetup & ) {
-		Handle<View<flashgg::DiPhotonCandidate> > diPhotons; evt.getByToken(diPhotonToken_,diPhotons); 
-//		const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector(); 
+        if( _useLegacyMVA ) {
+            vbfDiPhoDiJetMva_->AddVariable( "dipho_mva", &dipho_mva_ );
+            vbfDiPhoDiJetMva_->AddVariable( "bdt_dijet_maxdPhi", &dijet_mva_ );
+            vbfDiPhoDiJetMva_->AddVariable( "dipho_pt/mass", &dipho_PToM_ );
+            vbfDiPhoDiJetMva_->BookMVA( "BDTG", vbfDiPhoDiJetMVAweightfile_.fullPath() );
+        } else {
+            vbfDiPhoDiJetMva_->AddVariable( "dipho_mva", &dipho_mva_ );
+            vbfDiPhoDiJetMva_->AddVariable( "dijet_mva", &dijet_mva_ );
+            vbfDiPhoDiJetMva_->AddVariable( "dipho_PToM", &dipho_PToM_ );
+            vbfDiPhoDiJetMva_->BookMVA( "BDT", vbfDiPhoDiJetMVAweightfile_.fullPath() );
+            //	vbfDiPhoDiJetMva_->BookMVA("BDTG",vbfDiPhoDiJetMVAweightfile_.fullPath());
+        }
 
-		Handle<View<flashgg::VBFMVAResult> > vbfMvaResults;
-		evt.getByToken(vbfMvaResultToken_,vbfMvaResults);
+
+        produces<vector<VBFDiPhoDiJetMVAResult> >();
+    }
+
+    void VBFDiPhoDiJetMVAProducer::produce( Event &evt, const EventSetup & )
+    {
+        Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
+        evt.getByToken( diPhotonToken_, diPhotons );
+//		const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+
+        Handle<View<flashgg::VBFMVAResult> > vbfMvaResults;
+        evt.getByToken( vbfMvaResultToken_, vbfMvaResults );
 //		const PtrVector<flashgg::VBFMVAResult>& vbfMvaResultPointers = vbfMvaResults->ptrVector();
 
-		Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
-		evt.getByToken(mvaResultToken_,mvaResults);
+        Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
+        evt.getByToken( mvaResultToken_, mvaResults );
 //		const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
 
-		std::auto_ptr<vector<VBFDiPhoDiJetMVAResult> > vbfDiPhoDiJet_results(new vector<VBFDiPhoDiJetMVAResult>); // one per diphoton, always in same order, vector is more efficient than map 
+        std::auto_ptr<vector<VBFDiPhoDiJetMVAResult> > vbfDiPhoDiJet_results( new
+                vector<VBFDiPhoDiJetMVAResult> ); // one per diphoton, always in same order, vector is more efficient than map
 
-		for (unsigned int candIndex =0; candIndex < diPhotons->size() ; candIndex++){
+        for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
 
-      edm::Ptr<flashgg::DiPhotonMVAResult> dipho_mvares = mvaResults->ptrAt(candIndex);
-			dipho_mva_ = dipho_mvares->result;
+            edm::Ptr<flashgg::DiPhotonMVAResult> dipho_mvares = mvaResults->ptrAt( candIndex );
+            dipho_mva_ = dipho_mvares->result;
 
-      edm::Ptr<flashgg::VBFMVAResult> vbf_mvares = vbfMvaResults->ptrAt(candIndex);
-			dijet_mva_ = vbf_mvares->vbfMvaResult_value;
+            edm::Ptr<flashgg::VBFMVAResult> vbf_mvares = vbfMvaResults->ptrAt( candIndex );
+            dijet_mva_ = vbf_mvares->vbfMvaResult_value;
 
-		  flashgg::VBFDiPhoDiJetMVAResult mvares;
-		
+            flashgg::VBFDiPhoDiJetMVAResult mvares;
 
-			auto leadPho_p4 = diPhotons->ptrAt(candIndex)->leadingPhoton()->p4();
-			auto sublPho_p4 =  diPhotons->ptrAt(candIndex)->subLeadingPhoton()->p4();
-			auto diphoton_p4 =leadPho_p4 + sublPho_p4;
-			dipho_PToM_ = diphoton_p4.Pt() / diphoton_p4.M();
 
-		if(_useLegacyMVA){
-			mvares.vbfDiPhoDiJetMvaResult = vbfDiPhoDiJetMva_->EvaluateMVA("BDTG");
-			}else {
+            auto leadPho_p4 = diPhotons->ptrAt( candIndex )->leadingPhoton()->p4();
+            auto sublPho_p4 =  diPhotons->ptrAt( candIndex )->subLeadingPhoton()->p4();
+            auto diphoton_p4 = leadPho_p4 + sublPho_p4;
+            dipho_PToM_ = diphoton_p4.Pt() / diphoton_p4.M();
 
-			//mvares.vbfDiPhoDiJetMvaResult = vbfDiPhoDiJetMva_->EvaluateMVA("BDTG");
-			mvares.vbfDiPhoDiJetMvaResult = vbfDiPhoDiJetMva_->EvaluateMVA("BDT");
-			}
+            if( _useLegacyMVA ) {
+                mvares.vbfDiPhoDiJetMvaResult = vbfDiPhoDiJetMva_->EvaluateMVA( "BDTG" );
+            } else {
 
-			mvares.dijet_mva =   dijet_mva_ ;
-			mvares.dipho_mva =   dipho_mva_ ;
-			mvares.dipho_PToM =   dipho_PToM_ ;
+                //mvares.vbfDiPhoDiJetMvaResult = vbfDiPhoDiJetMva_->EvaluateMVA("BDTG");
+                mvares.vbfDiPhoDiJetMvaResult = vbfDiPhoDiJetMva_->EvaluateMVA( "BDT" );
+            }
 
-			mvares.vbfMvaResult =  (VBFMVAResult)vbf_mvares;
+            mvares.dijet_mva =   dijet_mva_ ;
+            mvares.dipho_mva =   dipho_mva_ ;
+            mvares.dipho_PToM =   dipho_PToM_ ;
 
-			vbfDiPhoDiJet_results->push_back(mvares);
-		}
-		evt.put(vbfDiPhoDiJet_results);
-	}
+            mvares.vbfMvaResult = ( VBFMVAResult )vbf_mvares;
+
+            vbfDiPhoDiJet_results->push_back( mvares );
+        }
+        evt.put( vbfDiPhoDiJet_results );
+    }
 }
 
 typedef flashgg::VBFDiPhoDiJetMVAProducer FlashggVBFDiPhoDiJetMVAProducer;
-DEFINE_FWK_MODULE(FlashggVBFDiPhoDiJetMVAProducer);
+DEFINE_FWK_MODULE( FlashggVBFDiPhoDiJetMVAProducer );
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
+
