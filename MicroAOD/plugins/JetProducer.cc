@@ -56,6 +56,8 @@ namespace flashgg {
     Handle<View<pat::Jet> > jets;
     evt.getByToken(jetToken_,jets);
    // const PtrVector<pat::Jet>& jetPointers = jets->ptrVector();
+	 
+	 
 
     // input DiPhoton candidates
     Handle<View<DiPhotonCandidate> > diPhotons;
@@ -66,10 +68,6 @@ namespace flashgg {
     evt.getByToken(vertexToken_,primaryVertices);
    // const PtrVector<reco::Vertex>& pvPointers = primaryVertices->ptrVector();
 	 
-	 reco::VertexCollection vc; // stupid - this is just temporary to use the old PUJID method before it is updated...
-	 for (unsigned int i =0 ; i< primaryVertices->size() ; i++){ //temporary
-		vc.push_back(*(primaryVertices->ptrAt(i))) ;//temporary
-	 } //temporary
     
     Handle<VertexCandidateMap> vertexCandidateMap;
     evt.getByToken(vertexCandidateMapToken_,vertexCandidateMap);
@@ -87,7 +85,7 @@ namespace flashgg {
 
 	if(!usePuppi){
 		if (!fjet.hasPuJetId(vtx)) {
-			  PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),vtx,*vertexCandidateMap,true);
+			  PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),vtx,*vertexCandidateMap, true);
 			  fjet.setPuJetId(vtx,lPUJetId); //temporarily make all jets pass
 		}
 	}
