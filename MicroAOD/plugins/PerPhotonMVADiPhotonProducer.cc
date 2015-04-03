@@ -21,37 +21,47 @@
 using namespace std;
 using namespace edm;
 
-namespace flashgg
-{
-	class PerPhotonMVADiPhotonProducer : public EDProducer {
+namespace flashgg {
+    class PerPhotonMVADiPhotonProducer : public EDProducer
+    {
 
-	public:
-		PerPhotonMVADiPhotonProducer(const edm::ParameterSet & config) : 
-			srcToken_(consumes<View<flashgg::DiPhotonCandidate> >(config.getParameter<InputTag>("src"))),
-			computer_(config,this->consumesCollector()) {
-			produces<vector<flashgg::DiPhotonCandidate> >();
-		};
-		
-		void produce( Event & evt, const EventSetup & ) {
-			Handle<View<flashgg::DiPhotonCandidate> > input;
-			evt.getByToken(srcToken_,input);
-			auto_ptr<vector<DiPhotonCandidate> > output(new vector<DiPhotonCandidate>);
-			computer_.update(evt);
-			for( auto dipho : *input ) {
-				computer_.fill(dipho.getLeadingPhoton());
-				computer_.fill(dipho.getSubLeadingPhoton());
-				output->push_back(dipho);
-			}
-			evt.put(output);
-		};
-		
-	private:
-		EDGetTokenT<View<DiPhotonCandidate> > srcToken_;
-		PhotonMVAComputer computer_;
-	};
+    public:
+        PerPhotonMVADiPhotonProducer( const edm::ParameterSet &config ) :
+            srcToken_( consumes<View<flashgg::DiPhotonCandidate> >( config.getParameter<InputTag>( "src" ) ) ),
+            computer_( config, this->consumesCollector() )
+        {
+            produces<vector<flashgg::DiPhotonCandidate> >();
+        };
+
+        void produce( Event &evt, const EventSetup & )
+        {
+            Handle<View<flashgg::DiPhotonCandidate> > input;
+            evt.getByToken( srcToken_, input );
+            auto_ptr<vector<DiPhotonCandidate> > output( new vector<DiPhotonCandidate> );
+            computer_.update( evt );
+            for( auto dipho : *input ) {
+                computer_.fill( dipho.getLeadingPhoton() );
+                computer_.fill( dipho.getSubLeadingPhoton() );
+                output->push_back( dipho );
+            }
+            evt.put( output );
+        };
+
+    private:
+        EDGetTokenT<View<DiPhotonCandidate> > srcToken_;
+        PhotonMVAComputer computer_;
+    };
 }
 
 typedef flashgg::PerPhotonMVADiPhotonProducer FlashggPerPhotonMVADiPhotonProducer;
-DEFINE_FWK_MODULE(FlashggPerPhotonMVADiPhotonProducer);
+DEFINE_FWK_MODULE( FlashggPerPhotonMVADiPhotonProducer );
 
 #endif // flashgg_PerPhotonMVADiPhotonComputer_h
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
+
