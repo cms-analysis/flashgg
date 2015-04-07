@@ -3,14 +3,22 @@
 #include "flashgg/Taggers/interface/PluggableAnalyzer.h"
 
 namespace flashgg {
-	// typedef AnalyzerFactoryImpl<DiPhotonDumper,"DiPhotonDumper"> DiPhotonDumperFactory;
-	namespace fwlite {
-		PLUGGABLE_ANALYZER(PhotonDumper);
-		PLUGGABLE_ANALYZER(CutBasedPhotonDumper);
-		PLUGGABLE_ANALYZER(DiPhotonDumper);
-		PLUGGABLE_ANALYZER(CutBasedDiPhotonDumper);
-		PLUGGABLE_ANALYZER(CutBasedSinglePhotonViewDumper);
-		PLUGGABLE_ANALYZER(CutBasedSingleVertexViewDumper);
-		PLUGGABLE_ANALYZER(DiPhotonTagDumper);
-	}
+    // typedef AnalyzerFactoryImpl<DiPhotonDumper,"DiPhotonDumper"> DiPhotonDumperFactory;
+    namespace fwlite {
+        PLUGGABLE_ANALYZER( PhotonDumper );
+        PLUGGABLE_ANALYZER( CutBasedPhotonDumper );
+        PLUGGABLE_ANALYZER( DiPhotonDumper );
+        PLUGGABLE_ANALYZER( CutBasedDiPhotonDumper );
+        PLUGGABLE_ANALYZER( CutBasedSinglePhotonViewDumper );
+        PLUGGABLE_ANALYZER( CutBasedSingleVertexViewDumper );
+        PLUGGABLE_ANALYZER( DiPhotonTagDumper );
+    }
 }
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
+

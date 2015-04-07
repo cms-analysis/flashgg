@@ -8,33 +8,31 @@
 
 namespace flashgg {
 
-	class TTHHadronicTag: public DiPhotonTagBase {
-		public:
-			TTHHadronicTag();
-			TTHHadronicTag(edm::Ptr<DiPhotonCandidate>,edm::Ptr<DiPhotonMVAResult>,std::vector<edm::Ptr<flashgg::Jet> >,std::vector<edm::Ptr<flashgg::Jet> >);
-			TTHHadronicTag(edm::Ptr<DiPhotonCandidate>,DiPhotonMVAResult,std::vector<edm::Ptr<flashgg::Jet> >,std::vector<edm::Ptr<flashgg::Jet> >);
-			TTHHadronicTag* clone() const;
-			~TTHHadronicTag();
+    class TTHHadronicTag: public DiPhotonTagBase
+    {
+    public:
+        TTHHadronicTag();
+        TTHHadronicTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult>, std::vector<edm::Ptr<flashgg::Jet> >, std::vector<edm::Ptr<flashgg::Jet> > );
+        TTHHadronicTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult, std::vector<edm::Ptr<flashgg::Jet> >, std::vector<edm::Ptr<flashgg::Jet> > );
+        TTHHadronicTag *clone() const;
+        ~TTHHadronicTag();
 
-			const std::vector<edm::Ptr<flashgg::Jet> > jetVector() const {return theJetVec_;}
-			const std::vector<edm::Ptr<flashgg::Jet> > bJetVector() const {return theBJetVec_; }
-			int nBLoose() const {return Nbtagloose_;}
-			int nBMedium() const {return Nbtagmedium_;}
-			void setNBLoose(int nb) { Nbtagloose_ = nb; }
-			void setNBMedium(int nb) { Nbtagmedium_ = nb; }
+        const std::vector<edm::Ptr<flashgg::Jet> > jetVector() const {return theJetVec_;}
+        const std::vector<edm::Ptr<flashgg::Jet> > bJetVector() const {return theBJetVec_; }
+        int nBLoose() const {return Nbtagloose_;}
+        int nBMedium() const {return Nbtagmedium_;}
+        void setNBLoose( int nb ) { Nbtagloose_ = nb; }
+        void setNBMedium( int nb ) { Nbtagmedium_ = nb; }
 
-		private:
-			int Nbtagloose_;
-			int Nbtagmedium_;
-			std::vector<edm::Ptr<flashgg::Jet> > theJetVec_;
-			std::vector<edm::Ptr<flashgg::Jet> > theBJetVec_;
-	};
-} 
+    private:
+        int Nbtagloose_;
+        int Nbtagmedium_;
+        std::vector<edm::Ptr<flashgg::Jet> > theJetVec_;
+        std::vector<edm::Ptr<flashgg::Jet> > theBJetVec_;
+    };
+}
 
-#endif 
-
-
-
+#endif
 
 
 
@@ -54,4 +52,15 @@ namespace flashgg {
 
 
 
+
+
+
+
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 

@@ -15,32 +15,40 @@
 #include <vector>
 #include <map>
 
-namespace flashgg
-{
-	class CutBasedDiPhotonObjectSelector {
+namespace flashgg {
+    class CutBasedDiPhotonObjectSelector
+    {
 
-	public:
-		typedef CutBasedClassifier<Photon> classifier_type;
-		typedef StringObjectFunction<Photon> functor_type;
-		typedef StringCutObjectSelector<DiPhotonCandidate> selector_type;
-		
-		CutBasedDiPhotonObjectSelector(const edm::ParameterSet & config, edm::ConsumesCollector & cc);
+    public:
+        typedef CutBasedClassifier<Photon> classifier_type;
+        typedef StringObjectFunction<Photon> functor_type;
+        typedef StringCutObjectSelector<DiPhotonCandidate> selector_type;
 
-		bool operator()(const DiPhotonCandidate & cand, const edm::EventBase & ev) const;
-		
-	private:
-		bool pass(const Photon & pho) const;
-		edm::EDGetTokenT<double> rhoToken_;
-		mutable double rho_;
+        CutBasedDiPhotonObjectSelector( const edm::ParameterSet &config, edm::ConsumesCollector &cc );
 
-		classifier_type classifier_;
-		std::vector<functor_type> functors_;
-		selector_type selector_;
-		// category -> vector< <min,max,rhocorr> >
-		std::map<std::string,std::vector<std::tuple<functor_type,functor_type,functor_type> > >  selections_;
+        bool operator()( const DiPhotonCandidate &cand, const edm::EventBase &ev ) const;
 
-	};
+    private:
+        bool pass( const Photon &pho ) const;
+        edm::EDGetTokenT<double> rhoToken_;
+        mutable double rho_;
+
+        classifier_type classifier_;
+        std::vector<functor_type> functors_;
+        selector_type selector_;
+        // category -> vector< <min,max,rhocorr> >
+        std::map<std::string, std::vector<std::tuple<functor_type, functor_type, functor_type> > >  selections_;
+
+    };
 
 }
 
 #endif // flashgg_CutBasedDiPhotonObjectSelector_h
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
+

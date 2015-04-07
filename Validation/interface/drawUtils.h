@@ -30,10 +30,18 @@
 #include <math.h>
 #include <vector>
 
-void compareHistos(TH1F* , TH1F* , std::string , std::string,
-                   std::string , std::string, TString*);
-double myChiSquareTest(TH1F*);
+void compareHistos( TH1F *, TH1F *, std::string , std::string,
+                    std::string , std::string, TString * );
+double myChiSquareTest( TH1F * );
 
 #endif
 
-        
+
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
+

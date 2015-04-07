@@ -15,37 +15,46 @@
 
 namespace flashgg {
 
-  class VertexSelectorBase {
+    class VertexSelectorBase
+    {
 
-  public:
-    VertexSelectorBase(const edm::ParameterSet& conf):
-      _selectorName( conf.getParameter<std::string>("VertexSelectorName") ) { }
+    public:
+        VertexSelectorBase( const edm::ParameterSet &conf ):
+            _selectorName( conf.getParameter<std::string>( "VertexSelectorName" ) ) { }
 
-    VertexSelectorBase(const VertexSelectorBase& ) = delete;
-    VertexSelectorBase& operator=(const VertexSelectorBase&) = delete;
+        VertexSelectorBase( const VertexSelectorBase & ) = delete;
+        VertexSelectorBase &operator=( const VertexSelectorBase & ) = delete;
 
-    typedef std::map<std::string,double> Parameters_Selector_Type;
-    virtual edm::Ptr<reco::Vertex> select(const edm::Ptr<flashgg::Photon>&,
-					  const edm::Ptr<flashgg::Photon>&,const std::vector<edm::Ptr<reco::Vertex> >&,
-					  const VertexCandidateMap&,
-					  const std::vector<edm::Ptr<reco::Conversion> >&,
-					  const math::XYZPoint&
-					  //					  const Parameters_Selector_Type&,
-					  //                                          const float&
-					  )  = 0;
-    
-    const std::string& name() const { return _selectorName; };
+        typedef std::map<std::string, double> Parameters_Selector_Type;
+        virtual edm::Ptr<reco::Vertex> select( const edm::Ptr<flashgg::Photon> &,
+                                               const edm::Ptr<flashgg::Photon> &, const std::vector<edm::Ptr<reco::Vertex> > &,
+                                               const VertexCandidateMap &,
+                                               const std::vector<edm::Ptr<reco::Conversion> > &,
+                                               const math::XYZPoint &
+                                               //					  const Parameters_Selector_Type&,
+                                               //                                          const float&
+                                             )  = 0;
 
-    virtual void writeInfoFromLastSelectionTo(flashgg::DiPhotonCandidate&) = 0;
+        const std::string &name() const { return _selectorName; };
 
-  private:
-    const std::string _selectorName;
+        virtual void writeInfoFromLastSelectionTo( flashgg::DiPhotonCandidate & ) = 0;
 
-      
-  };
+    private:
+        const std::string _selectorName;
+
+
+    };
 }
 
 #include "FWCore/PluginManager/interface/PluginFactory.h"
-typedef edmplugin::PluginFactory< flashgg::VertexSelectorBase* (const edm::ParameterSet&) > FlashggVertexSelectorFactory;
+typedef edmplugin::PluginFactory< flashgg::VertexSelectorBase* ( const edm::ParameterSet & ) > FlashggVertexSelectorFactory;
 
 #endif
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
+
