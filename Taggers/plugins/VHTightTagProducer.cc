@@ -361,8 +361,8 @@ namespace flashgg {
             if( !hasGoodElectrons_highPt && !hasGoodMuons_highPt && !hasGoodMuons_lowPt ) {
                 if( tagElectrons_lowPt.size() >= 2 ) {
                     isElectronLowPt = true;
-                    float invMass2 = 2 * tagElectrons_lowPt[0]->pt() * tagElectrons_lowPt[1]->pt() * ( cosh( tagElectrons_highPt[0]->eta() - tagElectrons_highPt[1]->eta() ) - cos(
-                                         tagElectrons_highPt[0]->phi() - tagElectrons_highPt[1]->phi() ) );
+                    float invMass2 = 2 * tagElectrons_lowPt[0]->pt() * tagElectrons_lowPt[1]->pt() * ( cosh( tagElectrons_lowPt[0]->eta() - tagElectrons_lowPt[1]->eta() ) - cos(
+                                         tagElectrons_lowPt[0]->phi() - tagElectrons_lowPt[1]->phi() ) );
                     if( sqrt( invMass2 ) < invMassLepHighThreshold_  && sqrt( invMass2 ) > invMassLepLowThreshold_ ) {
                         tagElectrons = tagElectrons_lowPt;
                         isInvMassOK_elec = true;
