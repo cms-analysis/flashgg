@@ -69,6 +69,16 @@ class JobConfig(object):
                        VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                        VarParsing.VarParsing.varType.bool,          # string, int, or float
                        "dryRun")
+        self.options.register ('getMaxJobs',
+                       False, # default value
+                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                       VarParsing.VarParsing.varType.bool,          # string, int, or float
+                       "getMaxJobs")
+        self.options.register ('processType',
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "processType")
         
         self.parsed = False
 
@@ -105,6 +115,8 @@ class JobConfig(object):
             import sys
             if self.dataset:
                 name,xsec,totEvents,files,maxEvents = self.dataset
+                if self.getMaxJobs:
+                    print "maxJobs:%d" % ( min(len(files),self.nJobs) )                    
                 if len(files) != 0:
                     if isFwlite:
                         print "hadd:%s" % self.outputFile
@@ -123,7 +135,8 @@ class JobConfig(object):
             self.maxEvents = int(maxEvents)
             
             processId = self.getProcessId(name)
-
+            self.processId = processId
+            
             if self.targetLumi > 0.:
             ## look for analyzers which have lumiWeight as attribute
                 for name,obj in process.__dict__.iteritems():
@@ -185,9 +198,14 @@ class JobConfig(object):
         dataset = None
         if self.dataset != "":
             print "Reading dataset (%s) %s" % ( self.campaign, self.dataset)
-            dataset = SamplesManager("$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % (self.metaDataSrc, self.campaign),
-                                    self.crossSections,
-                                     ).getDatasetMetaData(self.maxEvents,self.dataset,jobId=self.jobId,nJobs=self.nJobs)
+            if self.dryRun and self.getMaxJobs:
+                dataset = SamplesManager("$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % (self.metaDataSrc, self.campaign),
+                                         self.crossSections,
+                                         ).getDatasetMetaData(self.maxEvents,self.dataset,jobId=-1,nJobs=self.nJobs)
+            else:
+                dataset = SamplesManager("$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % (self.metaDataSrc, self.campaign),
+                                         self.crossSections,
+                                         ).getDatasetMetaData(self.maxEvents,self.dataset,jobId=self.jobId,nJobs=self.nJobs)
         self.dataset = dataset
 
         outputFile=self.outputFile
@@ -198,7 +216,7 @@ class JobConfig(object):
 
     
     def getProcessId(self,name):
-        return self.getProcessId_(name).replace("/","") ## .replace("-","_")
+        return self.getProcessId_(name).replace("/","").replace("-","_")
     
     def getProcessId_(self,name):
         if self.processId != "":
