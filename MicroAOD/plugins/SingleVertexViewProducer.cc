@@ -19,79 +19,89 @@ using namespace edm;
 
 namespace flashgg {
 
-	class SingleVertexViewProducer : public EDProducer {
-		
-	public:
-		SingleVertexViewProducer( const ParameterSet & );
-	private:
-		void produce( Event &, const EventSetup & ) override;
-		
-		EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
-		EDGetTokenT<View<reco::GenParticle> > genPartToken_;
-		int maxCandidates_;
-		
-	};
-	
-	SingleVertexViewProducer::SingleVertexViewProducer(const ParameterSet & iConfig) :
-		diPhotonToken_(consumes<View<flashgg::DiPhotonCandidate> >(iConfig.getUntrackedParameter<InputTag> ("DiPhotonTag", InputTag("flashggDiPhotons")))),
-		genPartToken_(consumes<View<reco::GenParticle> >(iConfig.getUntrackedParameter<InputTag> ("GenParticlesTag", InputTag("flashggPrunedGenParticles")))),
-		maxCandidates_(iConfig.getUntrackedParameter("maxCandidates",1))
-	{
-		produces<vector<SingleVertexView> >();
-	}
-	
-	void SingleVertexViewProducer::produce( Event & evt, const EventSetup & ) {
-		
-		
-		Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
-		evt.getByToken(diPhotonToken_,diPhotons);
-	//	const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
-		// FIXME: move gen vertex finding to dedicated producer
-		bool isData = evt.isRealData();
-		reco::GenParticle::Point genV;
-		if( ! isData ) {
-			Handle<View<reco::GenParticle> > genParts;
-			evt.getByToken(genPartToken_,genParts);
-			bool found = false;
-			for(auto & part : *genParts ) {
-				if( part.pdgId() != 2212 || part.vertex().z() != 0. ) {
-					genV = part.vertex();
-					found = true;
-					break;
-				}
-			}
-			assert( found );
-		}
-		
-		std::auto_ptr<vector<SingleVertexView> > vertexViews(new vector<SingleVertexView>); 
-		std::map<float, int> sortViews;
-		
-		int nCand = maxCandidates_;
-		//for(auto & dipho : diPhotons) {
-		for (unsigned int i =0; i<diPhotons->size(); i++){	
-			
-			for(unsigned int iv=0; iv<(diPhotons->ptrAt(i))->nVtxInfoSize(); ++iv) {
-				vertexViews->push_back(SingleVertexView(diPhotons->ptrAt(i),iv));
-				auto & vi = vertexViews->back();
-				float dz = genV.z() - vi.pos().z();
-				vi.setDzToGen(dz);
-				sortViews[ dz  ] = iv;
-			}
-			
-			if( --nCand == 0 ) { break; }
-		}
-		
-		if( ! isData && vertexViews->size() > 0 ) {
-			vertexViews->at(sortViews.begin()->second).setIsClosestToGen();
-		}
-		
-		//// if( vertexViews->size() != 0 ) { 
-		//// 	cout << vertexViews->size() << endl;
-		//// }
-		evt.put(vertexViews);
-		
-	}
+    class SingleVertexViewProducer : public EDProducer
+    {
+
+    public:
+        SingleVertexViewProducer( const ParameterSet & );
+    private:
+        void produce( Event &, const EventSetup & ) override;
+
+        EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
+        EDGetTokenT<View<reco::GenParticle> > genPartToken_;
+        int maxCandidates_;
+
+    };
+
+    SingleVertexViewProducer::SingleVertexViewProducer( const ParameterSet &iConfig ) :
+        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "DiPhotonTag", InputTag( "flashggDiPhotons" ) ) ) ),
+        genPartToken_( consumes<View<reco::GenParticle> >( iConfig.getUntrackedParameter<InputTag> ( "GenParticlesTag", InputTag( "flashggPrunedGenParticles" ) ) ) ),
+        maxCandidates_( iConfig.getUntrackedParameter( "maxCandidates", 1 ) )
+    {
+        produces<vector<SingleVertexView> >();
+    }
+
+    void SingleVertexViewProducer::produce( Event &evt, const EventSetup & )
+    {
+
+
+        Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
+        evt.getByToken( diPhotonToken_, diPhotons );
+        //	const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+        // FIXME: move gen vertex finding to dedicated producer
+        bool isData = evt.isRealData();
+        reco::GenParticle::Point genV;
+        if( ! isData ) {
+            Handle<View<reco::GenParticle> > genParts;
+            evt.getByToken( genPartToken_, genParts );
+            bool found = false;
+            for( auto &part : *genParts ) {
+                if( part.pdgId() != 2212 || part.vertex().z() != 0. ) {
+                    genV = part.vertex();
+                    found = true;
+                    break;
+                }
+            }
+            assert( found );
+        }
+
+        std::auto_ptr<vector<SingleVertexView> > vertexViews( new vector<SingleVertexView> );
+        std::map<float, int> sortViews;
+
+        int nCand = maxCandidates_;
+        //for(auto & dipho : diPhotons) {
+        for( unsigned int i = 0; i < diPhotons->size(); i++ ) {
+
+            for( unsigned int iv = 0; iv < ( diPhotons->ptrAt( i ) )->nVtxInfoSize(); ++iv ) {
+                vertexViews->push_back( SingleVertexView( diPhotons->ptrAt( i ), iv ) );
+                auto &vi = vertexViews->back();
+                float dz = genV.z() - vi.pos().z();
+                vi.setDzToGen( dz );
+                sortViews[ dz  ] = iv;
+            }
+
+            if( --nCand == 0 ) { break; }
+        }
+
+        if( ! isData && vertexViews->size() > 0 ) {
+            vertexViews->at( sortViews.begin()->second ).setIsClosestToGen();
+        }
+
+        //// if( vertexViews->size() != 0 ) {
+        //// 	cout << vertexViews->size() << endl;
+        //// }
+        evt.put( vertexViews );
+
+    }
 }
 
 typedef flashgg::SingleVertexViewProducer FlashggSingleVertexViewProducer;
-DEFINE_FWK_MODULE(FlashggSingleVertexViewProducer);
+DEFINE_FWK_MODULE( FlashggSingleVertexViewProducer );
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
+

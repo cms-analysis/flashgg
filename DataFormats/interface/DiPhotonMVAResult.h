@@ -6,30 +6,39 @@
 
 namespace flashgg {
 
-  class DiPhotonMVAResult {
+    class DiPhotonMVAResult
+    {
 
-  public:
-    DiPhotonMVAResult();
-    //    DiPhotonMVAResult(const DiPhotonMVAResult&) = default;  // C++11 only? Should happen automagically anyway
+    public:
+        DiPhotonMVAResult();
+        //    DiPhotonMVAResult(const DiPhotonMVAResult&) = default;  // C++11 only? Should happen automagically anyway
 
-    // Input variables
-    float leadptom;
-    float subleadptom;
-    float subleadmva;
-    float leadmva;
-    float leadeta;
-    float subleadeta;
-    float sigmarv;
-    float sigmawv;
-    float CosPhi;
-    float vtxprob;
-		float mvaValue() const {return result;}
-    // Output
-    float result;
-  };
+        // Input variables
+        float leadptom;
+        float subleadptom;
+        float subleadmva;
+        float leadmva;
+        float leadeta;
+        float subleadeta;
+        float sigmarv;
+        float sigmawv;
+        float CosPhi;
+        float vtxprob;
+        float mvaValue() const {return result;}
+        // Output
+        float result;
+    };
 
-  typedef std::map<edm::Ptr<DiPhotonCandidate>,DiPhotonMVAResult> DiPhotonMVAResultMap;
+    typedef std::map<edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult> DiPhotonMVAResultMap;
 
 }
 
 #endif
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
+

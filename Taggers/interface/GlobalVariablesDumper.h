@@ -10,17 +10,26 @@
 class TTree;
 
 namespace flashgg {
-	
-	class GlobalVariablesDumper : public GlobalVariablesComputer {
-	public:
-		GlobalVariablesDumper(const edm::ParameterSet & cfg);
-		~GlobalVariablesDumper();
-		
-		void bookTreeVariables(TTree * target, const std::map<std::string,std::string> & replacements);
-		
-		void fill(const edm::EventBase & event);
-	};	
+
+    class GlobalVariablesDumper : public GlobalVariablesComputer
+    {
+    public:
+        GlobalVariablesDumper( const edm::ParameterSet &cfg );
+        ~GlobalVariablesDumper();
+
+        void bookTreeVariables( TTree *target, const std::map<std::string, std::string> &replacements );
+
+        void fill( const edm::EventBase &event );
+    };
 
 }
 
 #endif  // flashgg_GlobalVariablesDumper_h
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
+

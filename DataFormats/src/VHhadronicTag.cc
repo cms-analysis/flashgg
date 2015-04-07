@@ -5,27 +5,36 @@ using namespace flashgg;
 VHHadronicTag::VHHadronicTag() : DiPhotonTagBase::DiPhotonTagBase()
 {}
 
-VHHadronicTag::~VHHadronicTag() 
+VHHadronicTag::~VHHadronicTag()
 {}
 
 
-VHHadronicTag::VHHadronicTag(edm::Ptr<DiPhotonCandidate> diPho, DiPhotonMVAResult mvares) : DiPhotonTagBase::DiPhotonTagBase(diPho,mvares) {}
+VHHadronicTag::VHHadronicTag( edm::Ptr<DiPhotonCandidate> diPho, DiPhotonMVAResult mvares ) : DiPhotonTagBase::DiPhotonTagBase( diPho, mvares ) {}
 
-VHHadronicTag::VHHadronicTag(edm::Ptr<DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvares) : VHHadronicTag::VHHadronicTag(diPho,*mvares) {}
+VHHadronicTag::VHHadronicTag( edm::Ptr<DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvares ) : VHHadronicTag::VHHadronicTag( diPho, *mvares ) {}
 
 
-void VHHadronicTag::setJets( edm::Ptr<flashgg::Jet> ljet, edm::Ptr<flashgg::Jet> sjet ) 
+void VHHadronicTag::setJets( edm::Ptr<flashgg::Jet> ljet, edm::Ptr<flashgg::Jet> sjet )
 {
-  leadingJet_    = ljet;
-  subleadingJet_ = sjet;
+    leadingJet_    = ljet;
+    subleadingJet_ = sjet;
 }
 
 
-VHHadronicTag* VHHadronicTag::clone () const {
-  VHHadronicTag* result = new VHHadronicTag(diPhoton(),diPhotonMVA());
-  result->setCategoryNumber(categoryNumber());
-  result->setDiPhotonIndex(diPhotonIndex());
-  result->setJets(leadingJet_, subleadingJet_);
-  return result;
+VHHadronicTag *VHHadronicTag::clone() const
+{
+    VHHadronicTag *result = new VHHadronicTag( diPhoton(), diPhotonMVA() );
+    result->setCategoryNumber( categoryNumber() );
+    result->setDiPhotonIndex( diPhotonIndex() );
+    result->setJets( leadingJet_, subleadingJet_ );
+    return result;
 }
+
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 

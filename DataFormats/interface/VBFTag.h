@@ -8,23 +8,32 @@
 
 namespace flashgg {
 
-  class VBFTag: public DiPhotonTagBase {
-  public:
-    VBFTag();
-    ~VBFTag();
+    class VBFTag: public DiPhotonTagBase
+    {
+    public:
+        VBFTag();
+        ~VBFTag();
 
-    VBFTag(edm::Ptr<DiPhotonCandidate>,edm::Ptr<DiPhotonMVAResult>,edm::Ptr<VBFDiPhoDiJetMVAResult>);
-    VBFTag(edm::Ptr<DiPhotonCandidate>,DiPhotonMVAResult,VBFDiPhoDiJetMVAResult);
-    VBFTag* clone() const;
-    const VBFDiPhoDiJetMVAResult VBFDiPhoDiJetMVA() const;
-    const VBFMVAResult VBFMVA() const ;
-		const Jet leadingJet() const; //needs to be validated
-		const Jet subLeadingJet() const; //needs to be validated
+        VBFTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult>, edm::Ptr<VBFDiPhoDiJetMVAResult> );
+        VBFTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult, VBFDiPhoDiJetMVAResult );
+        VBFTag *clone() const;
+        const VBFDiPhoDiJetMVAResult VBFDiPhoDiJetMVA() const;
+        const VBFMVAResult VBFMVA() const ;
+        const Jet leadingJet() const; //needs to be validated
+        const Jet subLeadingJet() const; //needs to be validated
 
-	private:
-		VBFDiPhoDiJetMVAResult vbfDiPhoDiJet_mva_result_;
-	};
+    private:
+        VBFDiPhoDiJetMVAResult vbfDiPhoDiJet_mva_result_;
+    };
 
 }
 
 #endif
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
+
