@@ -188,6 +188,7 @@ namespace flashgg {
 
             VHHadronicTag vhhadtag_obj( dipho, mvares );
             vhhadtag_obj.setJets( goodJets[0], goodJets[1] );
+            vhhadtag_obj.setDiPhotonIndex( diphoIndex );
             vhhadtags->push_back( vhhadtag_obj );
 
         }  // END OF DIPHOTON LOOP
