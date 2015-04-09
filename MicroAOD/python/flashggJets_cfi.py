@@ -4,6 +4,9 @@ from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased as pu_jetid
 from PhysicsTools.PatAlgos.tools.jetTools import addJetCollection
 #from Configuration.Geometry.GeometryAll_cff import *
 
+#flashggBTag = "pfCombinedInclusiveSecondaryVertexV2BJetTags"
+flashggBTag = "pfJetProbabilityBJetTags" # we pick this one because it doesn't require an extra recipe
+
 # define a function to add in the jet collection, as the reclustering need to know about the process
 # but we obviously don't want all this stuff clogging up python configs. 
 def addFlashggPFCHSLegJets(process):
@@ -55,8 +58,7 @@ def addFlashggPFCHSLegJets(process):
       #trackSource = cms.InputTag('unpackedTracksAndVertices'), 
       pvSource = cms.InputTag('unpackedTracksAndVertices'), 
       jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute']), 'None'),
-      #btagDiscriminators = [      'combinedSecondaryVertexBJetTags'     ]
-      btagDiscriminators = [      'pfJetProbabilityBJetTags'     ]
+      btagDiscriminators = [ flashggBTag ]
       ,algo= 'AK', rParam = 0.4
       )
   # adjust MC matching
