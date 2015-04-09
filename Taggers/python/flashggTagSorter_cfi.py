@@ -22,7 +22,7 @@ flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                                                          MaxCategory = cms.untracked.int32(2)
                                                                          ),
                                                                 cms.PSet(TagName = cms.InputTag('flashggUntaggedCategory'),
-                                                                         MinCategory = cms.untracked.int32(3),
+                                                                         MinCategory = cms.untracked.int32(2),
                                                                          MaxCategory = cms.untracked.int32(4)
                                                                          )
                                                                 ),

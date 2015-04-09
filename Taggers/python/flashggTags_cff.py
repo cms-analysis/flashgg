@@ -1,4 +1,5 @@
 import FWCore.ParameterSet.Config as cms
+from flashgg.MicroAOD.flashggJets_cfi import flashggBTag
 
 flashggUntaggedCategory = cms.EDProducer("FlashggUntaggedCategoryProducer",
 #                                         DiPhotonTag=cms.untracked.InputTag('flashggPreselectedDiPhotons'), # why doesn't this work?
@@ -8,7 +9,8 @@ flashggUntaggedCategory = cms.EDProducer("FlashggUntaggedCategoryProducer",
 		)
 
 flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
-		TTHJetTag=cms.untracked.InputTag('flashggJets')
+                                       TTHJetTag=cms.untracked.InputTag('flashggJets'),
+                                       bTag = cms.untracked.string(flashggBTag)
 		)
 
 flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
@@ -38,7 +40,7 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
 					deltaRJetLeadPhoThreshold = cms.untracked.double(0.5),
 					deltaRJetSubLeadPhoThreshold = cms.untracked.double(0.5),
 					bDiscriminator=cms.untracked.vdouble(0.244,0.679),
-					bTag = cms.untracked.string("combinedInclusiveSecondaryVertexV2BJetTags"),
+					bTag = cms.untracked.string(flashggBTag),
 					muPFIsoSumRelThreshold = cms.untracked.double(0.2),
 					deltaRMuonJetcountThreshold = cms.untracked.double(2.),
 					PuIDCutoffThreshold = cms.untracked.double(0.8),
