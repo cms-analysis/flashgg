@@ -36,16 +36,17 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
 
         int count = 0;
+        string bTag_;
     };
 
     TTHHadronicTagProducer::TTHHadronicTagProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "DiPhotonTag", InputTag( "flashggDiPhotons" ) ) ) ),
         thejetToken_( consumes<View<flashgg::Jet> >( iConfig.getUntrackedParameter<InputTag>( "TTHJetTag", InputTag( "flashggJets" ) ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getUntrackedParameter<InputTag>( "MVAResultTag", InputTag( "flashggDiPhotonMVA" ) ) ) )
-
-
-
     {
+        string default_bTag_ = "combinedInclusiveSecondaryVertexV2BJetTags";
+        bTag_ = iConfig.getUntrackedParameter<string>( "bTag", default_bTag_ );
+
         produces<vector<TTHHadronicTag> >();
     }
 
@@ -107,7 +108,7 @@ namespace flashgg {
                 jetcount++;
                 JetVect.push_back( thejet );
 
-                bDiscriminatorValue = thejet->bDiscriminator( "combinedInclusiveSecondaryVertexV2BJetTags" );
+                bDiscriminatorValue = thejet->bDiscriminator( bTag_ );
 
                 if( bDiscriminatorValue > 0.244 ) { njets_btagloose++; }
                 if( bDiscriminatorValue > 0.679 ) {
