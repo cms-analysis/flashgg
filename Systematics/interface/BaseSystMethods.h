@@ -3,8 +3,6 @@
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "DataFormats/Common/interface/Handle.h"
-#include "flashgg/DataFormats/interface/Photon.h"
-#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 
 namespace flashgg {
 
@@ -35,11 +33,20 @@ namespace flashgg {
         const std::string _Label;
         //typename flashgg_object object;
 
-
     };
 }
+
 #include "FWCore/PluginManager/interface/PluginFactory.h"
-typedef edmplugin::PluginFactory< flashgg::BaseSystMethods<flashgg::Photon, int>* ( const edm::ParameterSet & ) > FlashggSystematicPhotonMethodsFactory;
+#include "flashgg/DataFormats/interface/Photon.h"
+//template <class T, class U> struct A {
+//    typedef edmplugin::PluginFactory< flashgg::BaseSystMethods<T,U>* (const edm::ParameterSet & ) > FlashggSystematicMethodsFactory;
+//}
+
+//typedef template< class T, class U> edmplugin::PluginFactory< flashgg::BaseSystMethods<T,U>* (const edm::ParameterSet & ) > FlashggSystematicMethodsFactory;
+template< class T, class U > using FlashggSystematicMethodsFactory = edmplugin::PluginFactory< flashgg::BaseSystMethods<T, U>* ( const edm::ParameterSet & ) >;
+typedef FlashggSystematicMethodsFactory<flashgg::Photon,int> FlashggSystematicPhotonMethodsFactory;
+
+//typedef edmplugin::PluginFactory< flashgg::BaseSystMethods<flashgg::Photon, int>* ( const edm::ParameterSet & ) > FlashggSystematicPhotonMethodsFactory;
 //typedef edmplugin::PluginFactory< flashgg::BaseSystMethods<flashgg::Photon,float>* ( const edm::ParameterSet&) > FlashggSystematicPhotonMethodsFactory;
 //typedef edmplugin::PluginFactory< flashgg::BaseSystMethods<flashgg::DiPhotonCandidate>* ( const edm::ParameterSet&) > FlashggSystematicDiPhotonMethodsFactory;
 
