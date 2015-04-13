@@ -86,7 +86,7 @@ Exact instructions used, after setting up the area with the given tag, doing cms
 
 ```
 cd $CMSSW_BASE/src/flashgg/MetaData/work
-./prepareCrabJobs.py -C HggPhys14 -U 5 -s campaigns/Phys14_samples.json -V Phys14MicroAODV1 -p ../../MicroAODProducers/test/microAODstd.py
+./prepareCrabJobs.py -C HggPhys14 -U 5 -s campaigns/Phys14_samples.json -V Phys14MicroAODV1 -p ../../MicroAODProducers/test/simple_Producer_test.py
 cd HggPhys14
 echo crabConfig_*.py | xargs -n 1 crab sub
 ```
@@ -95,6 +95,14 @@ echo crabConfig_*.py | xargs -n 1 crab sub
 ```
 cd $CMSSW_BASE/src/flashgg/MetaData/work
 ./prepareCrabJobs.py -C HggPhys14 -U 5 -s campaigns/Phys14_samples.json -V Phys14MicroAODV2 -p configs/MicroAOD_withIsoScan_10Feb2015.py
+cd HggPhys14
+echo crabConfig_*.py | xargs -n 1 crab sub
+```
+
+### PHYS14 V3, 13 April 2015
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C HggPhys14 -U 5 -s campaigns/Phys14_samples.json -V Phys14MicroAODV3 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
 cd HggPhys14
 echo crabConfig_*.py | xargs -n 1 crab sub
 ```
