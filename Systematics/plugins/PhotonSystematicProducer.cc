@@ -4,7 +4,7 @@
 
 namespace flashgg {
 
-    typedef ObjectSystematicProducer<flashgg::Photon,int> PhotonSystematicProducer;
+    typedef ObjectSystematicProducer<flashgg::Photon, int> PhotonSystematicProducer;
 
 }
 

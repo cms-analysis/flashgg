@@ -9,7 +9,7 @@ using namespace edm;
 using namespace reco;
 
 namespace flashgg {
-    
+
 
     GlobalVariablesDumper::GlobalVariablesDumper( const edm::ParameterSet &cfg ) :
         GlobalVariablesComputer( cfg )

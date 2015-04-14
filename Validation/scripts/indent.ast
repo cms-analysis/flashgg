@@ -4,4 +4,5 @@
 --attach-namespaces --indent-namespaces
 --align-reference=name --align-pointer=name
 --break-after-logical --max-code-length=160
+--lineend=linux
 ## --recursive --preserve-date

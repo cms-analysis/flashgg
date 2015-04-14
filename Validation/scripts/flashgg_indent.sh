@@ -1,6 +1,13 @@
 #!/bin/bash
 
-cd ../../
+if [ ! -f $CMSSW_BASE/src/flashgg/.git/HEAD ];
+then
+  echo "CMSSW_BASE and flashgg appear not to be set correctly"
+  echo
+  return 1
+fi
+
+cd $CMSSW_BASE/src/flashgg
 
 find . -iname '*.C' > filelist
 find . -iname '*.cc' >> filelist
