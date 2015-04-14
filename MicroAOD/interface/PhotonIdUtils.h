@@ -47,7 +47,7 @@ namespace flashgg {
                                            const flashgg::VertexCandidateMap,
                                            float, float, float, float );
         std::map<edm::Ptr<reco::Vertex>, float> pfIsoChgWrtAllVtx( const edm::Ptr<pat::Photon> &,
-								   const std::vector<edm::Ptr<reco::Vertex> > &,
+                const std::vector<edm::Ptr<reco::Vertex> > &,
                 const flashgg::VertexCandidateMap,
                 float, float, float, float );
 
@@ -65,7 +65,7 @@ namespace flashgg {
 
         static bool vetoPackedCand( const pat::Photon &photon, const edm::Ptr<pat::PackedCandidate> &pfcand );
 
-       std::map<edm::Ptr<reco::Vertex>, float> computeMVAWrtAllVtx( flashgg::Photon &, const std::vector<edm::Ptr<reco::Vertex> > &, const double );
+        std::map<edm::Ptr<reco::Vertex>, float> computeMVAWrtAllVtx( flashgg::Photon &, const std::vector<edm::Ptr<reco::Vertex> > &, const double );
 
         std::shared_ptr<TMVA::Reader> phoIdMva;
 

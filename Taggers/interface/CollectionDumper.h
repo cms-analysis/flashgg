@@ -235,10 +235,10 @@ namespace flashgg {
         double weight = 1.;
         if( ! event.isRealData() ) {
             edm::Handle<GenEventInfoProduct> genInfo;
-            event.getByLabel(genInfo_,genInfo);
-            
+            event.getByLabel( genInfo_, genInfo );
+
             weight = lumiWeight_;
-            const auto & weights = genInfo->weights(); 
+            const auto &weights = genInfo->weights();
             // FIMXE store alternative/all weight-sets
             if( ! weights.empty() ) {
                 weight *= weights[0];
@@ -246,7 +246,7 @@ namespace flashgg {
         }
         return weight;
     }
-    
+
     template<class C, class T, class U>
     void CollectionDumper<C, T, U>::analyze( const edm::EventBase &event )
     {

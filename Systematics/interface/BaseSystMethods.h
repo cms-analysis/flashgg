@@ -44,7 +44,7 @@ namespace flashgg {
 
 //typedef template< class T, class U> edmplugin::PluginFactory< flashgg::BaseSystMethods<T,U>* (const edm::ParameterSet & ) > FlashggSystematicMethodsFactory;
 template< class T, class U > using FlashggSystematicMethodsFactory = edmplugin::PluginFactory< flashgg::BaseSystMethods<T, U>* ( const edm::ParameterSet & ) >;
-typedef FlashggSystematicMethodsFactory<flashgg::Photon,int> FlashggSystematicPhotonMethodsFactory;
+typedef FlashggSystematicMethodsFactory<flashgg::Photon, int> FlashggSystematicPhotonMethodsFactory;
 
 //typedef edmplugin::PluginFactory< flashgg::BaseSystMethods<flashgg::Photon, int>* ( const edm::ParameterSet & ) > FlashggSystematicPhotonMethodsFactory;
 //typedef edmplugin::PluginFactory< flashgg::BaseSystMethods<flashgg::Photon,float>* ( const edm::ParameterSet&) > FlashggSystematicPhotonMethodsFactory;

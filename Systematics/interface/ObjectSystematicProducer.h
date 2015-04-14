@@ -38,7 +38,7 @@ namespace flashgg {
     };
 
     template <typename flashgg_object, typename param_var>
-    ObjectSystematicProducer<flashgg_object,param_var>::ObjectSystematicProducer( const ParameterSet &iConfig ) :
+    ObjectSystematicProducer<flashgg_object, param_var>::ObjectSystematicProducer( const ParameterSet &iConfig ) :
         ObjectToken_( consumes<View<flashgg_object> >( iConfig.getUntrackedParameter<InputTag>( "InputTag", InputTag( "flashggPhotons" ) ) ) )
     {
         produces<std::vector<flashgg_object> >(); // Central value
@@ -58,7 +58,7 @@ namespace flashgg {
             nsigmas.erase( std::remove( nsigmas.begin(), nsigmas.end(), 0 ), nsigmas.end() );
 
             sigmas_.push_back( nsigmas );
-            Corrections_.at( ipset ).reset( FlashggSystematicMethodsFactory<flashgg_object,param_var>::get()->create( methodName, pset ) );
+            Corrections_.at( ipset ).reset( FlashggSystematicMethodsFactory<flashgg_object, param_var>::get()->create( methodName, pset ) );
             for( const auto &sig : sigmas_.at( ipset ) ) {
                 std::string collection_label = Corrections_.at( ipset )->shiftLabel( sig );
                 produces<vector<flashgg_object> >( collection_label );
@@ -70,7 +70,8 @@ namespace flashgg {
 
     ///fucntion takes in the current corection one is looping through and compares with its own internal loop, given that this will be within the corr and sys loop it takes care of the 2n+1 collection number////
     template <typename flashgg_object, typename param_var>
-    void ObjectSystematicProducer<flashgg_object,param_var>::ApplyCorrections( flashgg_object &y, shared_ptr<BaseSystMethods<flashgg_object, param_var> > CorrToShift, param_var syst_shift )
+    void ObjectSystematicProducer<flashgg_object, param_var>::ApplyCorrections( flashgg_object &y,
+            shared_ptr<BaseSystMethods<flashgg_object, param_var> > CorrToShift, param_var syst_shift )
     {
         for( unsigned int shift = 0; shift < Corrections_.size(); shift++ ) {
             if( CorrToShift == Corrections_.at( shift ) ) {
@@ -82,7 +83,7 @@ namespace flashgg {
     }
 
     template <typename flashgg_object, typename param_var>
-    void ObjectSystematicProducer<flashgg_object,param_var>::produce( Event &evt, const EventSetup & )
+    void ObjectSystematicProducer<flashgg_object, param_var>::produce( Event &evt, const EventSetup & )
     {
 
         Handle<View<flashgg_object> > objects;
