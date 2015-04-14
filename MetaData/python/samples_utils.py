@@ -107,12 +107,36 @@ class SamplesManager(object):
         @datasets: dataset to be imported
         """
         catalog = self.readCatalog()
-
+        
+        auto=False
+        assumeOk=False
         for folder in folders:
             dsetName = ""
+
+            print
+            print "importing folder\n %s" % folder
+            
             while not len(dsetName.split("/")) == 4:
-                print "enter dataset name for folder %s" % folder, 
-                dsetName = raw_input()
+                if auto:
+                    splitFolder = folder.split("/")
+                    prim, sec = splitFolder[-4:-2]
+                    dsetName = "/%s/%s/USER" % (prim,sec)
+                    print "guessed dataset name ", dsetName
+                    if not assumeOk:
+                        resp=ask_user("ok?",["y","n","a"])
+                        if resp == "n":
+                            dsetName = ""
+                            auto=False
+                        elif resp=="a":
+                            assumeOk=True
+                if not auto:
+                    print "enter dataset name (auto/noauto to enables/disables automatic guessing) ",
+                    dsetName = raw_input()
+                    if(dsetName=="auto"):
+                        auto=True
+                    elif (dsetName=="noauto"):
+                        auto=False
+                
                 
             print "Importing %s as %s" % (folder,dsetName)
             files = self.getFilesFomEOS(folder)            
@@ -136,7 +160,7 @@ class SamplesManager(object):
             self.parallel_ = Parallel(200,self.queue_)
         
         ret,out = self.parallel_.run("/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select",["find",dsetName],interactive=True)[2]
-        print out
+        ## print out
         files = []
         for line in out.split("\n"):
             if line.endswith(".root"):
@@ -174,7 +198,10 @@ class SamplesManager(object):
             self.checkDatasetFiles(dataset,catalog)
         
         outcomes = self.parallel_.wait()
-        for dsetName,ifile,fName,ret,out in outcomes:
+
+        ## for dsetName,ifile,fName,ret,out in outcomes:
+        for ign1, ign2, outcome in outcomes:
+            dsetName,ifile,fName,ret,out = outcome
             info = catalog[dsetName]["files"][ifile]
             if info["name"] != fName:
                 print "Inconsistent outcome ", info["name"], dsetName,ifile,fName,ret,out
@@ -186,9 +213,8 @@ class SamplesManager(object):
                     for key,val in extraInfo.iteritems():
                         info[key] = val
 
-            print "Writing catalog"
-            self.writeCatalog(catalog)
-        
+        print "Writing catalog"
+        self.writeCatalog(catalog)
         print "Done"
     
     def checkDatasetFiles(self,dsetName,catalog=None):
@@ -207,11 +233,43 @@ class SamplesManager(object):
             self.parallel_ = Parallel(16,self.queue_)
             wait = True
 
+        print 
         print "Checking dataset",dsetName
         info = catalog[dsetName]
         files = info["files"]
-
-        print len(files)
+        print "Number of files: ", len(files)
+        
+        toremove = []
+        for ifil,eifil in enumerate(files):
+            if ifil in toremove:
+                continue
+            for jfil,ejfil in enumerate(files[ifil+1:]):
+                if ifil+jfil in toremove:
+                    continue
+                if eifil["name"] == ejfil["name"]:
+                    toremove.append(ifil)
+                else:
+                    iid = eifil["name"].rstrip(".root").rsplit("_",1)[-1]
+                    jid = ejfil["name"].rstrip(".root").rsplit("_",1)[-1]
+                    if iid == jid:
+                        print "duplicated file index ", iid
+                        print eifil["name"]
+                        print ejfil["name"]
+                        reply=ask_user("keep both? ")
+                        if reply == "n":
+                            if ask_user( "keep %s? " % ejfil["name"] ) == "n":
+                                ## files.pop(ifil+jfil)
+                                toremove.append(ifil+jfil)
+                            if ask_user( "keep %s? " % eifil["name"] ) == "n":
+                                toremove.append(ifil)
+                                ## files.pop(ifil)
+                                
+        for ifile in sorted(toremove,reverse=True):
+            ## print ifile
+            files.pop(ifile)
+            
+        print "After duplicates removal: ", len(files)
+        info = catalog[dsetName]["files"] = files
         for ifile,finfo in enumerate(files):            
             name = finfo["name"]
             self.parallel_.run(SamplesManager.checkFile,[self,name,dsetName,ifile])
@@ -219,6 +277,7 @@ class SamplesManager(object):
         if wait:
             self.parallel_.wait()            
             self.parallel_ = None
+            
         if writeCatalog:
             self.writeCatalog(catalog)
 
@@ -235,7 +294,6 @@ class SamplesManager(object):
                     continue
                 if reply == "a": 
                     keepAll = True
-                    
             primary = d.split("/")[1]
             if not primary in primaries:
                 primaries[ primary ] = []
@@ -244,7 +302,12 @@ class SamplesManager(object):
             
         for name,val in primaries.iteritems():
             if len(val) == 1: continue
-            reply = ask_user("More than one sample for %s:\n %s\nKeep all?" % (name,"\n ".join(val)))
+            reply = ask_user("More than one sample for %s:\n %s\nKeep all?" % (name,"\n ".join(val)),["y","n","m"])
+            if reply == "m":
+                dst = val[0]
+                for merge in val[1:]:
+                    self.mergeDataset(catalog[dst],catalog[merge])
+                    catalog.pop(merge)
             if reply == "n":
                 for d in val:
                     reply = ask_user("keep this dataset?\n %s\n" % d)
@@ -252,7 +315,18 @@ class SamplesManager(object):
                         catalog.pop(d)
            
         self.writeCatalog(catalog)
-
+        
+    def mergeDataset(self,dst,merge):
+        dstFiles=dst["files"]
+        mergeFiles=merge["files"]
+        for fil in mergeFiles:
+            skip = False
+            for dfil in dstFiles:
+                if dfil["name"] == fil["name"]:
+                    skip = True
+            if not skip:
+                dstFiles.append( fil )
+        
     def checkFile(self,fileName,dsetName,ifile):
         """
         Check if file is valid.
@@ -382,11 +456,11 @@ class SamplesManagerCli(SamplesManager):
     def __init__(self,*args,**kwargs):
 
         commands = [ "",
-                     "import   imports datasets from DBS to catalog", 
-                     "eosimport   imports datasets from EOS", 
-                     "list     lists datasets in catalog", 
-                     "review   review catalog to remove datasets", 
-                     "check    check files in datasets for errors and mark bad files"
+                     "import                       imports datasets from DBS to catalog", 
+                     "eosimport <list_of_folders>  imports datasets from EOS", 
+                     "list                         lists datasets in catalog", 
+                     "review                       review catalog to remove datasets", 
+                     "check                        check files in datasets for errors and mark bad files"
                      ]
         
         parser = OptionParser(
@@ -471,22 +545,45 @@ Commands:
         self.mn.checkAllDatasets()
     
     def run_list(self):
-        print
-        print "Datasets in catalog:"
         datasets,catalog = self.mn.getAllDatasets()
         ## datasets = [ d.rsplit("/",1)[0] for d in datasets ]
-        largest = max( [len(d) for d in datasets] )
+        maxSec = 50
+        halfSec = maxSec / 2
+        firstHalf = halfSec - 1
+        secondHalf = maxSec - halfSec - 1
+        slim_datasets = []
         for d in datasets:
+            empty,prim,sec,tier = d.split("/")
+            if len(sec) > maxSec:
+                sec = sec[0:firstHalf]+".."+sec[-secondHalf:-1]
+            slim_datasets.append("/%s/%s/%s" % ( prim, sec, tier ) )
+        ## datasets = slim_datasets
+        ## largest = max( [len(d) for d in datasets] )
+        totev = 0.
+        totwei = 0.
+        totfiles = 0
+        largest = max( [len(d) for d in slim_datasets] )
+        print
+        print "Datasets in catalog:"
+        print "-"*(largest+37)
+        print "Name".ljust(largest), ("Num. events").rjust(11), ("Num. files").rjust(11), ("Avg weight").rjust(11)
+        print "-"*(largest+37)
+        for d,n in zip(datasets,slim_datasets):
             nevents = 0.
             weights = 0.
             nfiles = len(catalog[d]["files"])
             for fil in catalog[d]["files"]:
                 nevents += fil.get("nevents",0.)
                 weights += fil.get("weights",0.)
-            print d.ljust(largest), ("%d" % int(nevents)).rjust(8), ("%d" % nfiles).rjust(3),
-            if weights != 0.: print ("%1.2g" % ( weights/nevents ) )
+            print n.ljust(largest), ("%d" % int(nevents)).rjust(11), ("%d" % nfiles).rjust(11),
+            if weights != 0.: print ("%1.2g" % ( weights/nevents ) ).rjust(11)
             else: print
-            
+            totev += nevents
+            totwei += weights
+            totfiles += nfiles
+        print "-"*(largest+37)
+        print "total".rjust(largest), ("%d" % int(totev)).rjust(11), ("%d" % totfiles).rjust(11)
+        
     def run_clear(self):
         self.mn.clearCatalog()
     

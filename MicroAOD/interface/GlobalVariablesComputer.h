@@ -13,6 +13,9 @@ namespace flashgg {
         struct cache_t {
             float rho;
             int   nvtx;
+            unsigned int  event;
+            unsigned char lumi;
+            unsigned int  run;
         };
 
         GlobalVariablesComputer( const edm::ParameterSet &cfg );

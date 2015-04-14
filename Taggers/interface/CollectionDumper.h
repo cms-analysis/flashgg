@@ -15,6 +15,7 @@
 
 #include "CommonTools/Utils/interface/StringObjectFunction.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
+#include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 
 #include "FWCore/Utilities/interface/TypeID.h"
 #include <typeindex>
@@ -231,10 +232,21 @@ namespace flashgg {
     template<class C, class T, class U>
     double CollectionDumper<C, T, U>::eventWeight( const edm::EventBase &event )
     {
-        // FIMXE per-event weight(s)
-        return lumiWeight_;
+        double weight = 1.;
+        if( ! event.isRealData() ) {
+            edm::Handle<GenEventInfoProduct> genInfo;
+            event.getByLabel(genInfo_,genInfo);
+            
+            weight = lumiWeight_;
+            const auto & weights = genInfo->weights(); 
+            // FIMXE store alternative/all weight-sets
+            if( ! weights.empty() ) {
+                weight *= weights[0];
+            }
+        }
+        return weight;
     }
-
+    
     template<class C, class T, class U>
     void CollectionDumper<C, T, U>::analyze( const edm::EventBase &event )
     {

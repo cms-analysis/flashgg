@@ -5,6 +5,9 @@
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 
+#include <map>
+#include <string>
+
 namespace flashgg {
 
     class Photon : public pat::Photon
@@ -80,11 +83,41 @@ namespace flashgg {
         float const pfChgIso04WrtVtx( const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexFloat( vtx, pfChgIso04_, lazy ); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
         float const pfChgIso03WrtVtx( const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexFloat( vtx, pfChgIso03_, lazy ); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
         float const pfChgIso02WrtVtx( const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexFloat( vtx, pfChgIso02_, lazy ); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
+
+        float const pfChgIso04WrtVtx0() const { return findVertex0Float( pfChgIso04_ ); }; // WARNING: no guarantee that vertex 0 is the correct one
+        float const pfChgIso03WrtVtx0() const { return findVertex0Float( pfChgIso03_ ); }; // WARNING: no guarantee that vertex 0 is the correct one
+        float const pfChgIso02WrtVtx0() const { return findVertex0Float( pfChgIso02_ ); }; // WARNING: no guarantee that vertex 0 is the correct one
+
         float const pfChgIsoWrtWorstVtx04() const {return pfChgIsoWrtWorstVtx04_;};
         float const pfChgIsoWrtWorstVtx03() const {return pfChgIsoWrtWorstVtx03_;};
         float const pfChgIsoWrtChosenVtx02() const {return pfChgIsoWrtChosenVtx02_;};
         float const pfChgIsoWrtChosenVtx03() const {return pfChgIsoWrtChosenVtx03_;};
         float const esEffSigmaRR() const {return ESEffSigmaRR_;};
+
+        void setExtraNeutIso( const std::string &key, float val ) { extraNeutralIsolations_[key] = val; };
+        float const extraNeutIso( const std::string &key ) const
+        {
+            std::map<std::string, float>::const_iterator it = extraNeutralIsolations_.find( key );
+            return it != extraNeutralIsolations_.end() ? it->second : 0.;
+        };
+
+        void setExtraPhoIso( const std::string &key, float val ) { extraPhotonIsolations_[key] = val; };
+        float const extraPhoIso( const std::string &key ) const
+        {
+            std::map<std::string, float>::const_iterator it = extraPhotonIsolations_.find( key );
+            return it != extraPhotonIsolations_.end() ? it->second : 0.;
+        };
+
+        void setExtraChIso( const std::string &key, std::map<edm::Ptr<reco::Vertex>, float> &val ) { extraChargedIsolations_[key] = val; };
+        std::map<edm::Ptr<reco::Vertex>, float> extraChIso( const std::string &key ) const
+        {
+            std::map<std::string, std::map<edm::Ptr<reco::Vertex>, float> >::const_iterator it = extraChargedIsolations_.find( key );
+            return it != extraChargedIsolations_.end() ? it->second : std::map<edm::Ptr<reco::Vertex>, float>();
+        };
+
+        float const extraChgIsoWrtVtx0( const std::string &key ) const  { return findVertex0Float( extraChIso( key ) ); };
+        float const extraChgIsoWrtVtx( const std::string &key, const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexFloat( vtx, extraChIso( key ), lazy ); };
+        float const extraChgIsoWrtWorstVtx( const std::string &key ) const { return findWorstIso( extraChIso( key ) );  };
 
         bool hasEnergyAtStep( std::string key ) const;
         float const energyAtStep( std::string key ) const;
@@ -107,6 +140,8 @@ namespace flashgg {
     private:
         void setEnergyAtStep( std::string key, float val ); // updateEnergy should be used from outside the class to access this
         float const findVertexFloat( const edm::Ptr<reco::Vertex> &vtx, const std::map<edm::Ptr<reco::Vertex>, float> &mp, bool lazy ) const;
+        float const findVertex0Float( const std::map<edm::Ptr<reco::Vertex>, float> &mp ) const;
+        float const findWorstIso( const std::map<edm::Ptr<reco::Vertex>, float> &mp ) const;
 
         float sipip_;
         float sieip_;
@@ -133,12 +168,14 @@ namespace flashgg {
         float pfChgIsoWrtChosenVtx02_;
         float pfChgIsoWrtChosenVtx03_;
         float ESEffSigmaRR_;
-        //    float sigEOverE_;
+        float sigEOverE_;
         std::map<edm::Ptr<reco::Vertex>, float> pfChgIso04_;
         std::map<edm::Ptr<reco::Vertex>, float> pfChgIso03_;
         std::map<edm::Ptr<reco::Vertex>, float> pfChgIso02_;
         std::map<edm::Ptr<reco::Vertex>, float> phoIdMvaD_;
         bool passElecVeto_;
+        std::map<std::string, std::map<edm::Ptr<reco::Vertex>, float> > extraChargedIsolations_;
+        std::map<std::string, float> extraPhotonIsolations_, extraNeutralIsolations_;
     };
 }
 
