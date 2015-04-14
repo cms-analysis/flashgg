@@ -30,6 +30,11 @@ class MicroAODCustomize(object):
     
     def __call__(self,process):
         self.customize(process)
+        self.userCustomize(process)
+    
+    # empty default definition for userCutomize
+    def userCustomize(self,process):
+        pass 
 
     # process customization
     def customize(self,process):

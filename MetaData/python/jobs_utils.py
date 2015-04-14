@@ -108,7 +108,7 @@ class JobsManager(object):
         __call__
         Run all jobs.
         """
-        self.parallel = Parallel(self.options.ncpu,lsfQueue=self.options.queue,lsfJobName="%s/runJobs" % self.options.outputDir)
+        self.parallel = Parallel(self.options.ncpu,lsfQueue=self.options.queue,lsfJobName="%s/runJobs" % self.options.outputDir,asyncLsf=False)
         
         self.jobs = None
         if self.options.cont:
@@ -167,13 +167,22 @@ class JobsManager(object):
                 if options.njobs != 0:
                     print  "splitting in (up to) %d jobs\n checking how many are needed... " % options.njobs
                     dnjobs = 0
-                    for ijob in range(options.njobs):
+                    dargs = jobargs+shell_args("nJobs=%d" % (options.njobs)) 
+                    ret,out = parallel.run("python %s" % pyjob,dargs+shell_args("dryRun=1 getMaxJobs=1"),interactive=True)[2]
+                    maxJobs = self.getMaxJobs(out)
+                    if maxJobs < 0:
+                        print "Error getting numer of jobs to be submitted"
+                        print out
+                    hadd = self.getHadd(out,outfile)
+                    ## for ijob in range(options.njobs):
+                    for ijob in range(maxJobs):
                         ## FIXME allow specific job selection
-                        iargs = jobargs+shell_args("nJobs=%d jobId=%d" % (options.njobs, ijob))
-                        # run python <command-line> dryRun=1 to check if the job needs to be run
-                        ret,out = parallel.run("python %s" % pyjob,iargs+["dryRun=1"],interactive=True)[2]
-                        if ret != 0:
-                            continue
+                        ## iargs = dargs+shell_args("jobId=%d" % (ijob))
+                        iargs = jobargs+shell_args("nJobs=%d jobId=%d" % (maxJobs, ijob))
+                        ## # run python <command-line> dryRun=1 to check if the job needs to be run
+                        ## ret,out = parallel.run("python %s" % pyjob,iargs+shell_args("dryRun=1"),interactive=True)[2]
+                        ## if ret != 0:
+                        ##     continue
                         dnjobs += 1 
                         if not options.dry_run:
                             ## FIXME: 
@@ -181,7 +190,8 @@ class JobsManager(object):
                             ##   - store log files
                             parallel.run(job,iargs)
                         ## outfiles.append( outfile.replace(".root","_%d.root" % ijob) )
-                        output = self.getHadd(out,outfile.replace(".root","_%d.root" % ijob))
+                        ## output = self.getHadd(out,outfile.replace(".root","_%d.root" % ijob))
+                        output = hadd.replace(".root","_%d.root" % ijob)
                         outfiles.append( output )
                         doutfiles[dset][1].append( outfiles[-1] )
                         poutfiles[name][1].append( outfiles[-1] )
@@ -254,6 +264,8 @@ class JobsManager(object):
         with open("%s/task_config.json" % (options.outputDir), "w+" ) as cfout:
             cfout.write( json.dumps(task_config,indent=4) )
             cfout.close()
+        
+        self.parallel.stop()
 
     def wait(self,parallel,handler=None):
         return parallel.wait(handler)
@@ -303,3 +315,9 @@ class JobsManager(object):
             if line.startswith("hadd:"):
                 return line.replace("hadd:","")
         return fallback
+
+    def getMaxJobs(self,stg):
+        for line in stg.split("\n"):
+            if line.startswith("maxJobs:"):
+                return int(line.replace("maxJobs:",""))
+        return -1

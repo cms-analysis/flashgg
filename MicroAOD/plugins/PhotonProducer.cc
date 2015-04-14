@@ -18,6 +18,7 @@
 // #include "HiggsAnalysis/GBRLikelihoodEGTools/interface/EGEnergyCorrectorSemiParm.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
+#include "flashgg/MicroAOD/interface/IsolationAlgoBase.h"
 
 using namespace std;
 using namespace edm;
@@ -73,6 +74,7 @@ namespace flashgg {
         /// EGEnergyCorrectorSemiParm corV8_;
         bool doOverlapRemovalForIsolation_, useVtx0ForNeutralIso_;
         std::vector<CaloIsoParams> extraCaloIsolations_;
+        std::vector<std::unique_ptr<IsolationAlgoBase> > extraIsoAlgos_;
     };
 
 
@@ -259,9 +261,32 @@ namespace flashgg {
                     fg.setUserIso( val, iso );
                 }
             }
+
+            if( ! extraIsoAlgos_.empty() ) {
+                for( auto &algo : extraIsoAlgos_ ) {
+                    std::map<edm::Ptr<reco::Vertex>, float> iso;
+                    algo->begin( *pp, evt, iSetup );
+                    if( algo->hasChargedIsolation() ) {
+                        auto vpts = vertices->ptrs();
+                        for( auto &vtx : vpts ) {
+                            iso[vtx] = algo->chargedIsolation( pp, vtx, vtxToCandMap );
+                        }
+                        fg.setExtraChIso( algo->name(), iso );
+                    }
+                    if( algo->hasCaloIsolation( PFCandidate::gamma ) ) {
+                        fg.setExtraPhoIso( algo->name(), algo->caloIsolation( pp, pfcandidates->ptrs(), PFCandidate::gamma, neutVtx ) );
+                    }
+                    if( algo->hasCaloIsolation( PFCandidate::h0 ) ) {
+			fg.setExtraNeutIso( algo->name(), algo->caloIsolation( pp, pfcandidates->ptrs(), PFCandidate::h0, neutVtx ) );
+                    }
+                    algo->end( fg );
+                }
+            }
+
+
             phoTools_.removeOverlappingCandidates( doOverlapRemovalForIsolation_ );
 
-            photonColl->push_back( fg );
+           photonColl->push_back( fg );
         }
 
         evt.put( photonColl );

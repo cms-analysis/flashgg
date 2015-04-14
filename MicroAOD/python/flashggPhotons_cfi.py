@@ -20,7 +20,8 @@ flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                 doOverlapRemovalForIsolation = cms.bool(True),
                                 useVtx0ForNeutralIso = cms.bool(True),
                                 extraCaloIsolations = cms.VPSet(),
-                                
+                                extraIsolations = cms.VPSet(),
+
                                 genPhotonTag = cms.InputTag("flashggGenPhotonsExtra"),
                                 maxGenDeltaR = cms.double(0.1),
                                 copyExtraGenInfo = cms.bool(True),
