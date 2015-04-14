@@ -2,6 +2,7 @@
 <use   name="DataFormats/PatCandidates"/>
 <use   name="DataFormats/Common"/>
 <use   name="flashgg/DataFormats"/>
+<use   name="flashgg/MicroAOD"/>
 <use   name="DataFormats/VertexReco"/>
 <use   name="FWCore/Utilities"/>
 <use   name="CommonTools/Utils"/>
