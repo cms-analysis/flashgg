@@ -29,7 +29,9 @@ namespace flashgg {
         Handle<VertexCollection> vertices;
         evt.getByLabel( vtxTag_, vertices );
 
-
+        cache_.event = evt.id().event();
+        cache_.lumi = evt.id().luminosityBlock();
+        cache_.run  = evt.id().run();
         cache_.rho = *rhoHandle;
         cache_.nvtx = vertices->size();
     }

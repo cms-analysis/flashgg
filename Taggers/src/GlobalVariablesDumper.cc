@@ -9,35 +9,7 @@ using namespace edm;
 using namespace reco;
 
 namespace flashgg {
-
-
-    GlobalVariablesComputer::GlobalVariablesComputer( const edm::ParameterSet &cfg ) :
-        rhoTag_( cfg.getParameter<edm::InputTag>( "rho" ) ),
-        vtxTag_( cfg.getParameter<edm::InputTag>( "vertexes" ) )
-    {
-    }
-
-    // GlobalVariablesComputer::~GlobalVariablesComputer()
-    // {}
-
-    float *GlobalVariablesComputer::addressOf( const std::string &varName )
-    {
-        if( varName == "rho" ) { return &cache_.rho; }
-        return 0;
-    }
-
-    void GlobalVariablesComputer::update( const EventBase &evt )
-    {
-        Handle<double> rhoHandle;
-        evt.getByLabel( rhoTag_, rhoHandle );
-
-        Handle<VertexCollection> vertices;
-        evt.getByLabel( vtxTag_, vertices );
-
-
-        cache_.rho = *rhoHandle;
-        cache_.nvtx = vertices->size();
-    }
+    
 
     GlobalVariablesDumper::GlobalVariablesDumper( const edm::ParameterSet &cfg ) :
         GlobalVariablesComputer( cfg )
@@ -50,6 +22,10 @@ namespace flashgg {
     void GlobalVariablesDumper::bookTreeVariables( TTree *tree, const std::map<std::string, std::string> &replacements )
     {
         tree->Branch( "rho", &cache_.rho );
+        tree->Branch( "nvtx", &cache_.nvtx );
+        tree->Branch( "event", &cache_.event, "event/i" );
+        tree->Branch( "lumi", &cache_.lumi, "lumi/b" );
+        tree->Branch( "run", &cache_.run, "run/i" );
         tree->Branch( "nvtx", &cache_.nvtx );
     }
 
