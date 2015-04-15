@@ -5,6 +5,7 @@
 #include "CommonTools/Utils/interface/StringObjectFunction.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 
+#include "flashgg/MicroAOD/interface/StepWiseFunctor.h"
 #include "flashgg/MicroAOD/interface/CutBasedClassifier.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 
@@ -22,6 +23,7 @@ namespace flashgg {
     public:
         typedef CutBasedClassifier<Photon> classifier_type;
         typedef StringObjectFunction<Photon> functor_type;
+        typedef StepWiseFunctor<Photon> stepwise_functor_type;
         typedef StringCutObjectSelector<DiPhotonCandidate> selector_type;
 
         CutBasedDiPhotonObjectSelector( const edm::ParameterSet &config, edm::ConsumesCollector &cc );
@@ -29,6 +31,9 @@ namespace flashgg {
         bool operator()( const DiPhotonCandidate &cand, const edm::EventBase &ev ) const;
 
     private:
+        typedef std::shared_ptr<functor_type> functor_ptr;
+        typedef std::shared_ptr<stepwise_functor_type> stepwise_functor_ptr;
+
         bool pass( const Photon &pho ) const;
         bool passInverted( const Photon &pho ) const;
         edm::EDGetTokenT<double> rhoToken_;
@@ -38,7 +43,8 @@ namespace flashgg {
         std::vector<functor_type> functors_;
         selector_type selector_;
         // category -> vector< <min,max,rhocorr> >
-        std::map<std::string, std::vector<std::tuple<functor_type, functor_type, functor_type> > >  selections_;
+        // std::map<std::string, std::vector<std::tuple<functor_type, functor_type, functor_type> > >  selections_
+        std::map<std::string, std::vector<std::tuple<functor_ptr , functor_ptr, stepwise_functor_ptr > > >  selections_;
         std::vector<int> ignoreCuts_, invertCuts_;
         int invertNtimes_;
 

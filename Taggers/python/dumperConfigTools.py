@@ -46,8 +46,19 @@ def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
         nbins = int(rng[0])
         vmin  = float(rng[1])
         vmax  = float(rng[2])
-
-    pset = cms.PSet(
+    
+    if "map(" in  expr:
+        var, bins, vals = expr.lstrip("map(").rstrip(")").split("::")
+        bins = [ float(b) for b in bins.split(",") ]
+        vals = [ float(v) for v in vals.split(",") ]
+        pset = cms.PSet(
+            expr  = cms.PSet(
+                var = cms.string(var), bins = cms.vdouble(bins), vals = cms.vdouble(vals)
+                ),
+            name  = cms.untracked.string(name),
+            )        
+    else:
+        pset = cms.PSet(
             expr  = cms.string(expr),
             name  = cms.untracked.string(name),
             )

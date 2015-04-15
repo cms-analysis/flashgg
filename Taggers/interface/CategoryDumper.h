@@ -23,6 +23,7 @@
 
 #include "flashgg/Taggers/interface/GlobalVariablesDumper.h"
 #include "flashgg/MicroAOD/interface/MVAComputer.h"
+#include "flashgg/MicroAOD/interface/StepWiseFunctor.h"
 
 namespace flashgg {
 
@@ -60,9 +61,11 @@ namespace flashgg {
     public:
         typedef ObjectT object_type;
         typedef FunctorT functor_type;
+        typedef StepWiseFunctor<ObjectT,FunctorT> stepwise_functor_type;
         typedef MVAComputer<object_type, functor_type> mva_type;
         typedef FunctorTrait<object_type> trait_type;
         typedef FunctorWrapper<object_type, functor_type> wrapped_functor_type;
+        typedef FunctorWrapper<object_type, stepwise_functor_type> wrapped_stepwise_functor_type;
         typedef FunctorWrapper<object_type, mva_type> wrapped_mva_type;
 
         CategoryDumper( const std::string &name, const edm::ParameterSet &cfg, GlobalVariablesDumper *dumper = 0 );
@@ -88,6 +91,7 @@ namespace flashgg {
         GlobalVariablesDumper *globalVarsDumper_;
         std::vector<std::shared_ptr<wrapped_mva_type> > mvas_;
         std::vector<std::shared_ptr<wrapped_functor_type> > functors_;
+        std::vector<std::shared_ptr<wrapped_stepwise_functor_type> > stepwise_functors_;
         bool hbooked_;
     };
 
@@ -103,16 +107,24 @@ namespace flashgg {
         }
         auto variables = cfg.getParameter<vector<edm::ParameterSet> >( "variables" );
         for( auto &var : variables ) {
-            auto expr = var.getParameter<string>( "expr" );
-            auto name = var.getUntrackedParameter<string>( "name", expr );
             auto nbins = var.getUntrackedParameter<int>( "nbins", 0 );
             auto vmin = var.getUntrackedParameter<double>( "vmin", numeric_limits<double>::min() );
             auto vmax = var.getUntrackedParameter<double>( "vmax", numeric_limits<double>::max() );
-            functors_.push_back( std::shared_ptr<wrapped_functor_type>( new wrapped_functor_type( new functor_type( expr ) ) ) );
-            names_.push_back( name );
-            variables_.push_back( make_tuple( 0., functors_.back(), nbins, vmin, vmax ) );
+            if( var.existsAs<edm::ParameterSet>("expr") ) {
+                auto expr = var.getParameter<edm::ParameterSet>( "expr" );
+                auto name = var.getUntrackedParameter<string>( "name");
+                stepwise_functors_.push_back( std::shared_ptr<wrapped_stepwise_functor_type>( new wrapped_stepwise_functor_type( new stepwise_functor_type( expr ) ) ) );
+                names_.push_back( name );
+                variables_.push_back( make_tuple( 0., stepwise_functors_.back(), nbins, vmin, vmax ) );
+            } else {
+                auto expr = var.getParameter<string>( "expr" );
+                auto name = var.getUntrackedParameter<string>( "name", expr );
+                functors_.push_back( std::shared_ptr<wrapped_functor_type>( new wrapped_functor_type( new functor_type( expr ) ) ) );
+                names_.push_back( name );
+                variables_.push_back( make_tuple( 0., functors_.back(), nbins, vmin, vmax ) );
+            }
         }
-
+        
         if( cfg.existsAs<vector<edm::ParameterSet> >( "mvas" ) ) {
             auto mvas = cfg.getParameter<vector<edm::ParameterSet> >( "mvas" );
             for( auto &mva : mvas ) {
@@ -192,7 +204,7 @@ namespace flashgg {
         tree_ = fs.make<TTree>( formatString( name_, replacements ).c_str(), formatString( name_, replacements ).c_str() );
         tree_->Branch( weightName, &weight_ );
         for( size_t iv = 0; iv < names_.size(); ++iv ) {
-            if( ! dumpOnly_.empty() && find( dumpOnly_.begin(), dumpOnly_.end(), names_[iv] ) != dumpOnly_.end() ) { continue; }
+            if( ! dumpOnly_.empty() && find( dumpOnly_.begin(), dumpOnly_.end(), names_[iv] ) == dumpOnly_.end() ) { continue; }
             tree_->Branch( names_[iv].c_str(), &std::get<0>( variables_[iv] ) );
         }
         if( globalVarsDumper_ ) {

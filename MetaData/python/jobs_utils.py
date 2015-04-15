@@ -160,7 +160,8 @@ class JobsManager(object):
                 else:
                     pyjob = job
                 jobargs = copy(args[1:])
-                outfile = "%s_%s.root" % ( outputPfx, dset.lstrip("/").replace("/","_") )
+                dsetName = dset.lstrip("/").replace("/","_")
+                outfile = "%s_%s.root" % ( outputPfx, dsetName )
                 doutfiles[dset] = ( str(outfile),[] )
                 jobargs.extend( ["dataset=%s" % dset, "outputFile=%s" % outfile ] )
                 print "running: %s %s" % ( job, " ".join(jobargs) )
@@ -168,7 +169,7 @@ class JobsManager(object):
                     print  "splitting in (up to) %d jobs\n checking how many are needed... " % options.njobs
                     dnjobs = 0
                     dargs = jobargs+shell_args("nJobs=%d" % (options.njobs)) 
-                    ret,out = parallel.run("python %s" % pyjob,dargs+shell_args("dryRun=1 getMaxJobs=1"),interactive=True)[2]
+                    ret,out = parallel.run("python %s" % pyjob,dargs+shell_args("dryRun=1 getMaxJobs=1 dumpPython=%s.py" % os.path.join(options.outputDir,dsetName) ),interactive=True)[2]
                     maxJobs = self.getMaxJobs(out)
                     if maxJobs < 0:
                         print "Error getting numer of jobs to be submitted"
@@ -198,7 +199,7 @@ class JobsManager(object):
                         jobs.append( (job,iargs,output,0,-1) )
                     print " %d jobs actually submitted" % dnjobs                
                 else:
-                    ret,out = parallel.run("python %s" % pyjob,jobargs+["dryRun=1"],interactive=True)[2]
+                    ret,out = parallel.run("python %s" % pyjob,jobargs+shell_args("dryRun=1 dumpPython=%s.py" % os.path.join(options.outputDir,dsetName)),interactive=True)[2]
                     if ret != 0:
                         print ret,out
                         continue
