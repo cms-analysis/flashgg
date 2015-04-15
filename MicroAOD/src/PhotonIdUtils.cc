@@ -65,28 +65,28 @@ float PhotonIdUtils::pfIsoChgWrtVtx( const edm::Ptr<pat::Photon> &photon,
     math::XYZVector SCdirection( photon->superCluster()->x() - vtx->x(),
                                  photon->superCluster()->y() - vtx->y(),
                                  photon->superCluster()->z() - vtx->z()
-        );
-    
+                               );
+
     auto mapRange = std::equal_range( vtxcandmap.begin(), vtxcandmap.end(), vtx, flashgg::compare_with_vtx() );
     if( mapRange.first == mapRange.second ) { return -1.; } // no entries for this vertex
     for( auto pair_iter = mapRange.first ; pair_iter != mapRange.second ; pair_iter++ ) {
         edm::Ptr<pat::PackedCandidate> pfcand = pair_iter->second;
-        
+
         if( abs( pfcand->pdgId() ) == 11 || abs( pfcand->pdgId() ) == 13 ) { continue; } //J. Tao not e/mu
         if( removeOverlappingCandidates_ &&
-            ( ( overlapAlgo_ == 0 &&  vetoPackedCand( *photon, pfcand ) ) ||
-              ( overlapAlgo_ != 0 && ( *overlapAlgo_ )( *photon, pfcand ) ) ) ) { continue; }
-        
-        
+                ( ( overlapAlgo_ == 0 &&  vetoPackedCand( *photon, pfcand ) ) ||
+                  ( overlapAlgo_ != 0 && ( *overlapAlgo_ )( *photon, pfcand ) ) ) ) { continue; }
+
+
         if( pfcand->pt() < ptMin )         { continue; }
         float dRTkToVtx  = deltaR( pfcand->momentum().Eta(), pfcand->momentum().Phi(),
                                    SCdirection.Eta(), SCdirection.Phi() + deltaPhiRotation_ ); // rotate SC in phi if requested (random cone isolation)
         if( dRTkToVtx > coneSize || dRTkToVtx < coneVeto ) { continue; }
-        
+
         isovalue += pfcand->pt();
     }
     return isovalue;
-    
+
 }
 
 
