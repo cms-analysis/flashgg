@@ -219,7 +219,7 @@ class Parallel:
         if self.lsfQueue and self.asyncLsf:
             self.lsfMon.stop = True
         
-    def wait(self,handler=None):
+    def wait(self,handler=None,printOutput=True):
         returns = []
         self.sem.acquire()
         njobs = int(self.njobs)
@@ -230,10 +230,14 @@ class Parallel:
             print "--- Running jobs: %d. Total jobs: %d (total submissions: %s)" % (nleft, njobs, self.njobs)
             print ""
             job, jobargs, ret = self.returned.get()
-            print "Job finished: '%s' '%s'" % ( job, " ".join(jobargs) )
-            if not handler:
-                for line in ret[1].split("\n"):
-                    print line
+            if printOutput:
+                try:
+                    print "Job finished: '%s' '%s'" % ( job, " ".join([str(a) for a in jobargs]) )
+                    if not handler:
+                        for line in ret[1].split("\n"):
+                            print line
+                except:
+                    pass
             if handler:
                 nleft += handler.handleJobOutput(job, jobargs, ret)
             else:
