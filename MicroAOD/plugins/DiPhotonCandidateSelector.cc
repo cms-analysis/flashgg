@@ -22,6 +22,8 @@
 #include "CommonTools/UtilAlgos/interface/ObjectSelectorStream.h"
 #include "CommonTools/UtilAlgos/interface/SingleElementCollectionSelectorPlusEvent.h"
 
+#include "CommonTools/UtilAlgos/interface/SortCollectionSelector.h"
+
 #include "flashgg/MicroAOD/interface/PerPhotonMVADiPhotonPostProcess.h"
 
 typedef SingleObjectSelector <
@@ -38,8 +40,28 @@ edm::View<flashgg::DiPhotonCandidate>,
     >,
     std::vector<flashgg::DiPhotonCandidate> > GenericDiPhotonCandidateSelector;
 
+
+namespace flashgg {
+    class GreaterBySumpPt 
+    {
+    public:
+        bool operator()(const flashgg::DiPhotonCandidate & lh, const flashgg::DiPhotonCandidate & rh) const {
+            return lh.leadingPhoton()->pt() + lh.subLeadingPhoton()->pt() > rh.leadingPhoton()->pt() + rh.subLeadingPhoton()->pt();
+        };
+    };
+};
+
+typedef ObjectSelector<
+    SortCollectionSelector<
+        edm::View<flashgg::DiPhotonCandidate>,
+        flashgg::GreaterBySumpPt
+        >,
+    std::vector<flashgg::DiPhotonCandidate>
+    > DiPhotonCandidateSorter;
+
 DEFINE_FWK_MODULE( DiPhotonCandidateSelector );
 DEFINE_FWK_MODULE( GenericDiPhotonCandidateSelector );
+DEFINE_FWK_MODULE( DiPhotonCandidateSorter );
 
 // Local Variables:
 // mode:c++
