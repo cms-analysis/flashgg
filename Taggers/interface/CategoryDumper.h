@@ -72,7 +72,7 @@ namespace flashgg {
         void bookTree( TFileDirectory &fs, const char *weightVar, const std::map<std::string, std::string> &replacements );
         void bookRooDataset( RooWorkspace &ws, const char *weightVar, const std::map<std::string, std::string> &replacements );
 
-        void fill( const object_type &obj, double weight );
+        void fill( const object_type &obj, double weight, int n_cand=0 );
 
     private:
         std::string name_;
@@ -81,6 +81,7 @@ namespace flashgg {
         std::vector<std::tuple<float, std::shared_ptr<trait_type>, int, double, double> > variables_;
         std::vector<std::tuple<std::string, int, std::vector<double>, int, std::vector<double>, TH1 *> > histograms_;
 
+        int n_cand_;
         float weight_;
         RooArgSet rooVars_;
         RooAbsData *dataset_;
@@ -190,6 +191,7 @@ namespace flashgg {
     void CategoryDumper<F, O>::bookTree( TFileDirectory &fs, const char *weightName, const std::map<std::string, std::string> &replacements )
     {
         tree_ = fs.make<TTree>( formatString( name_, replacements ).c_str(), formatString( name_, replacements ).c_str() );
+        tree_->Branch( "candidate_id", &n_cand_, "candidate_id/I");
         tree_->Branch( weightName, &weight_ );
         for( size_t iv = 0; iv < names_.size(); ++iv ) {
             if( ! dumpOnly_.empty() && find( dumpOnly_.begin(), dumpOnly_.end(), names_[iv] ) != dumpOnly_.end() ) { continue; }
@@ -232,8 +234,9 @@ namespace flashgg {
     }
 
     template<class F, class O>
-    void CategoryDumper<F, O>::fill( const object_type &obj, double weight )
+    void CategoryDumper<F, O>::fill( const object_type &obj, double weight, int n_cand )
     {
+        n_cand_ = n_cand;
         weight_ = weight;
         if( dataset_ ) {
             dynamic_cast<RooRealVar &>( rooVars_["weight"] ).setVal( weight_ );

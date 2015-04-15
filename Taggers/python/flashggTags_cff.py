@@ -10,7 +10,11 @@ flashggUntaggedCategory = cms.EDProducer("FlashggUntaggedCategoryProducer",
 
 flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        TTHJetTag=cms.untracked.InputTag('flashggJets'),
-                                       bTag = cms.untracked.string(flashggBTag)
+                                       bDiscriminatorLoose = cms.untracked.double(0.275),
+                                       bDiscriminatorMedium = cms.untracked.double(0.545),
+                                       jetsNumberThreshold = cms.untracked.int32(4),
+                                       bjetsNumberThreshold = cms.untracked.int32(0),
+                                       bTag = cms.untracked.string(flashggBTag)                                       
 		)
 
 flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
@@ -20,6 +24,7 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                          VBFMVAResultTag=cms.untracked.InputTag('flashggVBFMVA'),
                                          Boundaries=cms.untracked.vdouble(0.21,0.6,0.81)
                                          )
+
 flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
 					DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
 					TTHJetTag=cms.untracked.InputTag('flashggJets'),
@@ -39,7 +44,7 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
 					jetEtaThreshold= cms.untracked.double(2.4),
 					deltaRJetLeadPhoThreshold = cms.untracked.double(0.5),
 					deltaRJetSubLeadPhoThreshold = cms.untracked.double(0.5),
-					bDiscriminator=cms.untracked.vdouble(0.244,0.679),
+					bDiscriminator=cms.untracked.vdouble(0.275,0.545),
 					bTag = cms.untracked.string(flashggBTag),
 					muPFIsoSumRelThreshold = cms.untracked.double(0.2),
 					deltaRMuonJetcountThreshold = cms.untracked.double(2.),
