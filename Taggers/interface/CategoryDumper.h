@@ -181,7 +181,7 @@ namespace flashgg {
             } else {
                 th1 = fs.make<TH1F>( name.c_str(), name.c_str(), xbins.size() - 1, &xbins[0] );
             }
-            th1->Sumw2(true);
+            th1->Sumw2( true );
         }
         hbooked_ = true;
     }

@@ -277,7 +277,7 @@ namespace flashgg {
                         fg.setExtraPhoIso( algo->name(), algo->caloIsolation( pp, pfcandidates->ptrs(), PFCandidate::gamma, neutVtx ) );
                     }
                     if( algo->hasCaloIsolation( PFCandidate::h0 ) ) {
-			fg.setExtraNeutIso( algo->name(), algo->caloIsolation( pp, pfcandidates->ptrs(), PFCandidate::h0, neutVtx ) );
+                        fg.setExtraNeutIso( algo->name(), algo->caloIsolation( pp, pfcandidates->ptrs(), PFCandidate::h0, neutVtx ) );
                     }
                     algo->end( fg );
                 }
@@ -286,7 +286,7 @@ namespace flashgg {
 
             phoTools_.removeOverlappingCandidates( doOverlapRemovalForIsolation_ );
 
-           photonColl->push_back( fg );
+            photonColl->push_back( fg );
         }
 
         evt.put( photonColl );
