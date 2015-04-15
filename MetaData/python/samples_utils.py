@@ -197,7 +197,7 @@ class SamplesManager(object):
         for dataset in catalog.keys():            
             self.checkDatasetFiles(dataset,catalog)
         
-        outcomes = self.parallel_.wait()
+        outcomes = self.parallel_.wait(printOutput=False)
 
         ## for dsetName,ifile,fName,ret,out in outcomes:
         for ign1, ign2, outcome in outcomes:
@@ -275,7 +275,7 @@ class SamplesManager(object):
             self.parallel_.run(SamplesManager.checkFile,[self,name,dsetName,ifile])
 
         if wait:
-            self.parallel_.wait()            
+            self.parallel_.wait(printOutput=False)            
             self.parallel_ = None
             
         if writeCatalog:
