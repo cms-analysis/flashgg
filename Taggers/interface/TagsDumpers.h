@@ -11,29 +11,28 @@
 
 #include "flashgg/Taggers/interface/CollectionDumper.h"
 
-namespace flashgg
-{
+namespace flashgg {
     typedef CollectionDumper<std::vector<DiPhotonUntaggedCategory>,
-                             DiPhotonUntaggedCategory,
-                             CutBasedClassifier<DiPhotonUntaggedCategory> > CutBasedUntaggedCategoryDumper;
+            DiPhotonUntaggedCategory,
+            CutBasedClassifier<DiPhotonUntaggedCategory> > CutBasedUntaggedCategoryDumper;
     typedef CollectionDumper<std::vector<VBFTag>,
-                             VBFTag,
-                             CutBasedClassifier<VBFTag> > CutBasedVBFTagDumper;
+            VBFTag,
+            CutBasedClassifier<VBFTag> > CutBasedVBFTagDumper;
     typedef CollectionDumper<std::vector<TTHLeptonicTag>,
-                             TTHLeptonicTag,
-                             CutBasedClassifier<TTHLeptonicTag> > CutBasedTTHLeptonicTagDumper;
+            TTHLeptonicTag,
+            CutBasedClassifier<TTHLeptonicTag> > CutBasedTTHLeptonicTagDumper;
     typedef CollectionDumper<std::vector<TTHHadronicTag>,
-                             TTHHadronicTag,
-                             CutBasedClassifier<TTHHadronicTag> > CutBasedTTHHadronicTagDumper;
+            TTHHadronicTag,
+            CutBasedClassifier<TTHHadronicTag> > CutBasedTTHHadronicTagDumper;
     typedef CollectionDumper<std::vector<VHLooseTag>,
-                             VHLooseTag,
-                             CutBasedClassifier<VHLooseTag> > CutBasedVHLooseTagDumper;
+            VHLooseTag,
+            CutBasedClassifier<VHLooseTag> > CutBasedVHLooseTagDumper;
     typedef CollectionDumper<std::vector<VHTightTag>,
-                             VHTightTag,
-                             CutBasedClassifier<VHTightTag> > CutBasedVHTightTagDumper;
+            VHTightTag,
+            CutBasedClassifier<VHTightTag> > CutBasedVHTightTagDumper;
     typedef CollectionDumper<std::vector<VHHadronicTag>,
-                             VHHadronicTag,
-                             CutBasedClassifier<VHHadronicTag> > CutBasedVHHadronicTagDumper;
+            VHHadronicTag,
+            CutBasedClassifier<VHHadronicTag> > CutBasedVHHadronicTagDumper;
 }
 
 #endif
