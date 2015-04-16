@@ -69,6 +69,11 @@ class JobConfig(object):
                        VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                        VarParsing.VarParsing.varType.bool,          # string, int, or float
                        "dryRun")
+        self.options.register ('dumpPython',
+                       "", # default value
+                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                       VarParsing.VarParsing.varType.string,          # string, int, or float
+                       "dumpPython")
         self.options.register ('getMaxJobs',
                        False, # default value
                        VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -125,8 +130,9 @@ class JobConfig(object):
                             print "edm:%s" % self.outputFile
                         if hasTFile:
                             print "hadd:%s" % tfile
-                    sys.exit(0)
-            sys.exit(1)
+                    ## sys.exit(0)
+            else:
+                sys.exit(1)
             
 
         files = self.inputFiles
@@ -156,14 +162,15 @@ class JobConfig(object):
                 flist.append(str(f))
             else:
                 flist.append(str("%s%s" % (self.filePrepend,f)))
-        ## fwlite
-        if isFwlite:
-            ## process.fwliteInput.fileNames.extend([ str("%s%s" % (self.filePrepend,f)) for f in  files])
-            process.fwliteInput.fileNames.extend(flist)
-        ## full framework
-        else:
-            ## process.source.fileNames.extend([ str("%s%s" % (self.filePrepend,f)) for f in  files])
-            process.source.fileNames.extend(flist)
+        if len(flist) > 0:
+            ## fwlite
+            if isFwlite:
+                ## process.fwliteInput.fileNames.extend([ str("%s%s" % (self.filePrepend,f)) for f in  files])
+                process.fwliteInput.fileNames = flist
+            ## full framework
+            else:
+                ## process.source.fileNames.extend([ str("%s%s" % (self.filePrepend,f)) for f in  files])
+                process.source.fileNames = flist
  
         ## fwlite
         if isFwlite:
@@ -179,7 +186,11 @@ class JobConfig(object):
             if hasTFile:
                 process.TFileService.fileName = tfile
         
-            
+        if self.dumpPython != "":
+            pyout = open(self.dumpPython,"w+")
+            pyout.write( process.dumpPython() )
+            pyout.close()
+
     # parse command line and do post-processing
     def parse(self):
 
