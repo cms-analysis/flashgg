@@ -42,20 +42,21 @@ edm::View<flashgg::DiPhotonCandidate>,
 
 
 namespace flashgg {
-    class GreaterBySumpPt 
+    class GreaterBySumpPt
     {
     public:
-        bool operator()(const flashgg::DiPhotonCandidate & lh, const flashgg::DiPhotonCandidate & rh) const {
+        bool operator()( const flashgg::DiPhotonCandidate &lh, const flashgg::DiPhotonCandidate &rh ) const
+        {
             return lh.leadingPhoton()->pt() + lh.subLeadingPhoton()->pt() > rh.leadingPhoton()->pt() + rh.subLeadingPhoton()->pt();
         };
     };
 };
 
-typedef ObjectSelector<
-    SortCollectionSelector<
-        edm::View<flashgg::DiPhotonCandidate>,
-        flashgg::GreaterBySumpPt
-        >,
+typedef ObjectSelector <
+SortCollectionSelector <
+edm::View<flashgg::DiPhotonCandidate>,
+    flashgg::GreaterBySumpPt
+    >,
     std::vector<flashgg::DiPhotonCandidate>
     > DiPhotonCandidateSorter;
 
