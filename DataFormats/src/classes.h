@@ -8,6 +8,7 @@
 #include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
 #include "flashgg/DataFormats/interface/UntaggedTag.h"
 #include "flashgg/DataFormats/interface/Electron.h"
+#include "flashgg/DataFormats/interface/Muon.h"
 #include "flashgg/DataFormats/interface/GenPhotonExtra.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "flashgg/DataFormats/interface/Photon.h"
@@ -90,6 +91,12 @@ namespace  {
         edm::Ptr<flashgg::Jet>                                        ptr_fgg_jet;
         edm::Ptr<pat::Muon>                                        ptr_fgg_muon;
         std::vector<pat::Muon>                                        vec_fgg_muon;
+        flashgg::Muon						                                fgg_mu;
+        edm::Ptr<flashgg::Muon> 					                    ptr_fgg_mu;
+        edm::Wrapper<flashgg::Muon>				                        wrp_fgg_mu;
+        std::vector<flashgg::Muon>				                        vec_fgg_mu;
+        edm::Wrapper<std::vector<flashgg::Muon> >                   wrp_vec_fgg_mu;
+
         edm::Wrapper<std::vector<flashgg::Jet> >                  wrp_vec_fgg_jet;
         std::map<edm::Ptr<reco::Vertex>, float>                    map_ptr_vtx_flo;
         std::pair<edm::Ptr<reco::Vertex>, float>                   pai_ptr_vtx_flo;
@@ -199,6 +206,9 @@ namespace  {
 
         std::vector<edm::Ptr<flashgg::Electron> >        vec_ptr_pat_ele;
         edm::Wrapper<std::vector<edm::Ptr<flashgg::Electron> > >   wrp_vec_ptr_pat_ele;
+
+        std::vector<edm::Ptr<flashgg::Muon> >        vec_ptr_fgg_mu;
+        edm::Wrapper<std::vector<edm::Ptr<flashgg::Muon> > >   wrp_vec_ptr_fgg_mu;
 
         std::vector<edm::Ptr<pat::MET> >        vec_ptr_pat_met;
         edm::Wrapper<std::vector<edm::Ptr<pat::MET> > >   wrp_vec_ptr_pat_met;

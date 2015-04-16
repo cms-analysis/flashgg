@@ -46,6 +46,60 @@ namespace flashgg {
         ObjectSystMethodBinnedByFunctor() {};
         virtual ~ObjectSystMethodBinnedByFunctor() {};
 
+        std::pair<std::vector<int>, std::vector<Bin> > adjacentBins( const flashgg_object &y )
+        {
+            std::vector<double> func_vals;//vector storing the structures of type Bin for later access .
+            std::vector<int> binIndices;//vector stroing the indices of adjacent bins. Need the indices to know if the been is one the boundary or if it is the last bin.
+            std::vector<Bin> bins;
+            int num_bins = bins_.size();
+            int myLowerBin = 0;
+            int myUpperBin = 0;
+
+            for( auto func : functors_ ) { func_vals.push_back( func( y ) ); }
+            for( int bin = 0 ; bin < num_bins ; bin++ ) {
+                bool found = true;
+                for( unsigned int i = 0; i < func_vals.size() ; i++ ) {
+                    if( func_vals[i] < bins_[0].min[i] ) {
+                        found = false;//if flashgg object is below the lower end of the efficiency .
+                        myLowerBin = 0;
+                        myUpperBin = 0;
+                        break;
+                    }
+                    if( func_vals[i] > bins_[num_bins - 1].max[i] ) {
+                        found = false;//if flashgg object is above the upper end of the efficiency .
+                        myLowerBin = num_bins - 1;
+                        myUpperBin = num_bins - 1;
+                        break;
+                    }
+                    if( func_vals[i] < bins_[bin].min[i] || func_vals[i] > bins_[bin].max[i] ) {
+                        found = false;//finds keeps making found false until you find the correct bin, this would make the if argument false .
+                        break;
+                    }
+                }
+                if( found ) {
+
+                    if( bin == num_bins - 1 ) {
+                        myLowerBin = bin;//if the found bin is the last bin, this is also at the boundary.
+                        myUpperBin = bin;
+
+                    } else {
+                        myLowerBin = bin;//indices of adjacent bins .
+                        myUpperBin = bin + 1;
+                    }
+                }
+
+            }
+
+            binIndices.push_back( myLowerBin ); //fill the vectors
+            binIndices.push_back( myUpperBin );
+
+            bins.push_back( bins_[myLowerBin] );
+            bins.push_back( bins_[myUpperBin] );
+
+            return std::make_pair( binIndices, bins ); //return the pair of vectors, the vectors are ordered from lower bins to upper bins.
+
+        }
+
         std::pair<std::vector<double>, std::vector<double> > binContents( const flashgg_object &y )
         {
             std::vector<double> func_vals;
@@ -68,10 +122,10 @@ namespace flashgg {
 
     protected:
         bool debug_;
+        std::vector<functor_type> functors_; // length: number of variables
 
     private:
         std::vector<Bin> bins_; // length: number of bins
-        std::vector<functor_type> functors_; // length: number of variables
 
     };
 }

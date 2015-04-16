@@ -51,6 +51,8 @@ namespace flashgg {
         float vtxProbMVA_;
         vector<double> vertex_prob_params_conv;
         vector<double> vertex_prob_params_noConv;
+
+        std::string Version_;
     };
 
     DiPhotonMVAProducer::DiPhotonMVAProducer( const ParameterSet &iConfig ) :
@@ -61,6 +63,10 @@ namespace flashgg {
         vertex_prob_params_noConv = iConfig.getParameter<vector<double>>( "VertexProbParamsNoConv" );
 
         diphotonMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "diphotonMVAweightfile" );
+
+        Version_ = iConfig.getParameter<string>( "Version" );
+
+        std::cout << "Version" << Version_ << std::endl;
 
         sigmarv_ = 0.;
         sigmawv_ = 0.;
@@ -73,19 +79,42 @@ namespace flashgg {
         leadmva_ = 0.;
         subleadmva_ = 0.;
 
-        DiphotonMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
-        DiphotonMva_->AddVariable( "masserrsmeared/mass", &sigmarv_ );
-        DiphotonMva_->AddVariable( "masserrsmearedwrongvtx/mass", &sigmawv_ );
-        DiphotonMva_->AddVariable( "vtxprob", &vtxprob_ );
-        DiphotonMva_->AddVariable( "ph1.pt/mass", &leadptom_ );
-        DiphotonMva_->AddVariable( "ph2.pt/mass", &subleadptom_ );
-        DiphotonMva_->AddVariable( "ph1.eta", &leadeta_ );
-        DiphotonMva_->AddVariable( "ph2.eta", &subleadeta_ );
-        DiphotonMva_->AddVariable( "TMath::Cos(ph1.phi-ph2.phi)", &CosPhi_ );
-        DiphotonMva_->AddVariable( "ph1.idmva", &leadmva_ );
-        DiphotonMva_->AddVariable( "ph2.idmva", &subleadmva_ );
-        DiphotonMva_->BookMVA( "BDT", diphotonMVAweightfile_.fullPath() );
+        std::string version_old = "old";
+        std::string version_new = "new";
 
+        if( version_old.compare( Version_ ) == 0 ) {
+            std::cout << "Reading MVA variables " << std::endl;
+            DiphotonMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
+            DiphotonMva_->AddVariable( "masserrsmeared/mass", &sigmarv_ );
+            DiphotonMva_->AddVariable( "masserrsmearedwrongvtx/mass", &sigmawv_ );
+            DiphotonMva_->AddVariable( "vtxprob", &vtxprob_ );
+            DiphotonMva_->AddVariable( "ph1.pt/mass", &leadptom_ );
+            DiphotonMva_->AddVariable( "ph2.pt/mass", &subleadptom_ );
+            DiphotonMva_->AddVariable( "ph1.eta", &leadeta_ );
+            DiphotonMva_->AddVariable( "ph2.eta", &subleadeta_ );
+            DiphotonMva_->AddVariable( "TMath::Cos(ph1.phi-ph2.phi)", &CosPhi_ );
+            DiphotonMva_->AddVariable( "ph1.idmva", &leadmva_ );
+            DiphotonMva_->AddVariable( "ph2.idmva", &subleadmva_ );
+            DiphotonMva_->BookMVA( "BDT", diphotonMVAweightfile_.fullPath() );
+            std::cout << "finished reading mva" << std::endl;
+        }
+
+        if( version_new.compare( Version_ ) == 0 ) {
+            std::cout << "Reading MVA variables " << std::endl;
+            DiphotonMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
+            DiphotonMva_->AddVariable( "leadptom", &leadptom_ );
+            DiphotonMva_->AddVariable( "subleadptom", &subleadptom_ );
+            DiphotonMva_->AddVariable( "leadmva", &leadmva_ );
+            DiphotonMva_->AddVariable( "subleadmva", &subleadmva_ );
+            DiphotonMva_->AddVariable( "leadeta", &leadeta_ );
+            DiphotonMva_->AddVariable( "subleadeta", &subleadeta_ );
+            DiphotonMva_->AddVariable( "sigmarv", &sigmarv_ );
+            DiphotonMva_->AddVariable( "sigmawv", &sigmawv_ );
+            DiphotonMva_->AddVariable( "CosPhi", &CosPhi_ );
+            DiphotonMva_->AddVariable( "vtxprob", &vtxprob_ );
+            DiphotonMva_->BookMVA( "BDT", diphotonMVAweightfile_.fullPath() );
+            std::cout << "finished reading mva" << std::endl;
+        }
         produces<vector<DiPhotonMVAResult> >(); // one per diphoton, always in same order, vector is more efficient than map
     }
 

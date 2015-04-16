@@ -58,6 +58,8 @@ namespace flashgg {
 #include "FWCore/PluginManager/interface/PluginFactory.h"
 #include "flashgg/DataFormats/interface/Photon.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/Electron.h"
+#include "flashgg/DataFormats/interface/Muon.h"
 //template <class T, class U> struct A {
 //    typedef edmplugin::PluginFactory< flashgg::BaseSystMethod<T,U>* (const edm::ParameterSet & ) > FlashggSystematicMethodsFactory;
 //}
@@ -68,6 +70,10 @@ typedef FlashggSystematicMethodsFactory<flashgg::Photon, int> FlashggSystematicP
 typedef FlashggSystematicMethodsFactory<flashgg::DiPhotonCandidate, int> FlashggSystematicDiPhotonMethodsFactory;
 typedef FlashggSystematicMethodsFactory<flashgg::Photon, std::pair<int, int> > FlashggSystematicPhotonMethodsFactory2D;
 typedef FlashggSystematicMethodsFactory<flashgg::DiPhotonCandidate, std::pair<int, int> > FlashggSystematicDiPhotonMethodsFactory2D;
+typedef FlashggSystematicMethodsFactory<flashgg::Electron, int> FlashggSystematicElectronMethodsFactory;
+typedef FlashggSystematicMethodsFactory<flashgg::Muon, int> FlashggSystematicMuonMethodsFactory;
+typedef FlashggSystematicMethodsFactory<flashgg::Electron, std::pair<int, int> > FlashggSystematicElectronMethodsFactory2D;
+typedef FlashggSystematicMethodsFactory<flashgg::Muon, std::pair<int, int> > FlashggSystematicMuonMethodsFactory2D;
 //typedef edmplugin::PluginFactory< flashgg::BaseSystMethod<flashgg::Photon, int>* ( const edm::ParameterSet & ) > FlashggSystematicPhotonMethodsFactory;
 //typedef edmplugin::PluginFactory< flashgg::BaseSystMethod<flashgg::Photon,float>* ( const edm::ParameterSet&) > FlashggSystematicPhotonMethodsFactory;
 //typedef edmplugin::PluginFactory< flashgg::BaseSystMethod<flashgg::DiPhotonCandidate>* ( const edm::ParameterSet&) > FlashggSystematicDiPhotonMethodsFactory;
