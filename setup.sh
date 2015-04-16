@@ -35,12 +35,22 @@ echo
 if ${SETUP_REMOTES} ; then
   echo "Setting up remotes listed in setup script..."
   cd $CMSSW_BASE/src/flashgg
+  git remote add ArnabPurohit https://github.com/ArnabPurohit/flashgg
+  git remote add bcourbon https://github.com/bcourbon/flashgg
   git remote add bmarzocc https://github.com/bmarzocc/flashgg
   git remote add camilocarrillo https://github.com/camilocarrillo/flashgg
+  git remote add cms-flashgg https://github.com/cms-flashgg/flashgg
+  git remote add crovelli https://github.com/crovelli/flashgg
   git remote add favaro https://github.com/favaro/flashgg
   git remote add fcouderc https://github.com/fcouderc/flashgg
   git remote add ferriff https://github.com/ferriff/flashgg
+  git remote add FMantegazzini FMantegazzini/flashgg
+  git remote add heppye https://github.com/heppye/flashgg
   git remote add InnaKucher https://github.com/InnaKucher/flashgg
+  git remote add itopsisg https://github.com/itopsisg/flashgg
+  git remote add J-C-Wright https://github.com/J-C-Wright/flashgg
+  git remote add JunquanTao https://github.com/JunquanTao/flashgg
+  git remote add kmondal https://github.com/kmondal/flashgg
   git remote add ldcorpe https://github.com/ldcorpe/flashgg
   git remote add malcles https://github.com/malcles/flashgg
   git remote add matteosan1 https://github.com/matteosan1/flashgg
@@ -52,7 +62,10 @@ if ${SETUP_REMOTES} ; then
   git remote add OlivierBondu https://github.com/OlivierBondu/flashgg
   git remote add pmeridian https://github.com/pmeridian/flashgg
   git remote add quittnat https://github.com/quittnat/flashgg
+  git remote add rateixei https://github.com/rateixei/flashgg
+  git remote add ResonantHbbHgg https://github.com/ResonantHbbHgg/flashgg
   git remote add sethzenz https://github.com/sethzenz/flashgg
+  git remote add simonepigazzini https://github.com/simonepigazzini/flashgg
   git remote add swagata87 https://github.com/swagata87/flashgg
   git remote add yhaddad https://github.com/yhaddad/flashgg
   git remote add upstream-writable git@github.com:cms-analysis/flashgg.git
