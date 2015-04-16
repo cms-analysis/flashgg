@@ -24,7 +24,7 @@ namespace flashgg {
         typedef ObjectT object_type;
         typedef FunctorT functor_type;
 
-        StepWiseFunctor( const edm::ParameterSet &cfg);
+        StepWiseFunctor( const edm::ParameterSet &cfg );
         ~StepWiseFunctor();
 
         float operator()( const object_type &obj ) const;
@@ -35,17 +35,17 @@ namespace flashgg {
         std::vector<double> bins_;
         std::vector<double> vals_;
         double default_;
-        
+
     };
 
     template<class F, class O>
-    StepWiseFunctor<F, O>::StepWiseFunctor( const edm::ParameterSet &cfg) : 
-        functor_(cfg.getParameter<std::string>("var")),
-        bins_(cfg.getParameter<std::vector<double> >("bins")),
-        vals_(cfg.getParameter<std::vector<double> >("vals")),
-        default_(0.)
+    StepWiseFunctor<F, O>::StepWiseFunctor( const edm::ParameterSet &cfg ) :
+        functor_( cfg.getParameter<std::string>( "var" ) ),
+        bins_( cfg.getParameter<std::vector<double> >( "bins" ) ),
+        vals_( cfg.getParameter<std::vector<double> >( "vals" ) ),
+        default_( 0. )
     {
-        if( cfg.exists("default") ) { default_ = cfg.getParameter<double>("default"); }
+        if( cfg.exists( "default" ) ) { default_ = cfg.getParameter<double>( "default" ); }
     }
 
     template<class F, class O>
@@ -57,11 +57,11 @@ namespace flashgg {
     float StepWiseFunctor<F, O>::operator()( const object_type &obj ) const
     {
         float ret = default_;
-        float val = functor_(obj);
-        if( val >= bins_[0] && val<=bins_.back() ) {
-            for(size_t ibin=1; ibin<bins_.size(); ++ibin) {
+        float val = functor_( obj );
+        if( val >= bins_[0] && val <= bins_.back() ) {
+            for( size_t ibin = 1; ibin < bins_.size(); ++ibin ) {
                 if( val <= bins_[ibin] ) {
-                    ret = vals_[ibin-1];
+                    ret = vals_[ibin - 1];
                     break;
                 }
             }

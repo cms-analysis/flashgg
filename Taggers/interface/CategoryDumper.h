@@ -61,7 +61,7 @@ namespace flashgg {
     public:
         typedef ObjectT object_type;
         typedef FunctorT functor_type;
-        typedef StepWiseFunctor<ObjectT,FunctorT> stepwise_functor_type;
+        typedef StepWiseFunctor<ObjectT, FunctorT> stepwise_functor_type;
         typedef MVAComputer<object_type, functor_type> mva_type;
         typedef FunctorTrait<object_type> trait_type;
         typedef FunctorWrapper<object_type, functor_type> wrapped_functor_type;
@@ -111,9 +111,9 @@ namespace flashgg {
             auto nbins = var.getUntrackedParameter<int>( "nbins", 0 );
             auto vmin = var.getUntrackedParameter<double>( "vmin", numeric_limits<double>::min() );
             auto vmax = var.getUntrackedParameter<double>( "vmax", numeric_limits<double>::max() );
-            if( var.existsAs<edm::ParameterSet>("expr") ) {
+            if( var.existsAs<edm::ParameterSet>( "expr" ) ) {
                 auto expr = var.getParameter<edm::ParameterSet>( "expr" );
-                auto name = var.getUntrackedParameter<string>( "name");
+                auto name = var.getUntrackedParameter<string>( "name" );
                 stepwise_functors_.push_back( std::shared_ptr<wrapped_stepwise_functor_type>( new wrapped_stepwise_functor_type( new stepwise_functor_type( expr ) ) ) );
                 names_.push_back( name );
                 variables_.push_back( make_tuple( 0., stepwise_functors_.back(), nbins, vmin, vmax ) );
@@ -125,7 +125,7 @@ namespace flashgg {
                 variables_.push_back( make_tuple( 0., functors_.back(), nbins, vmin, vmax ) );
             }
         }
-        
+
         if( cfg.existsAs<vector<edm::ParameterSet> >( "mvas" ) ) {
             auto mvas = cfg.getParameter<vector<edm::ParameterSet> >( "mvas" );
             for( auto &mva : mvas ) {
