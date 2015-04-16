@@ -72,7 +72,7 @@ namespace flashgg {
         void bookTree( TFileDirectory &fs, const char *weightVar, const std::map<std::string, std::string> &replacements );
         void bookRooDataset( RooWorkspace &ws, const char *weightVar, const std::map<std::string, std::string> &replacements );
 
-        void fill( const object_type &obj, double weight, int n_cand=0 );
+        void fill( const object_type &obj, double weight, int n_cand = 0 );
 
     private:
         std::string name_;
@@ -191,7 +191,7 @@ namespace flashgg {
     void CategoryDumper<F, O>::bookTree( TFileDirectory &fs, const char *weightName, const std::map<std::string, std::string> &replacements )
     {
         tree_ = fs.make<TTree>( formatString( name_, replacements ).c_str(), formatString( name_, replacements ).c_str() );
-        tree_->Branch( "candidate_id", &n_cand_, "candidate_id/I");
+        tree_->Branch( "candidate_id", &n_cand_, "candidate_id/I" );
         tree_->Branch( weightName, &weight_ );
         for( size_t iv = 0; iv < names_.size(); ++iv ) {
             if( ! dumpOnly_.empty() && find( dumpOnly_.begin(), dumpOnly_.end(), names_[iv] ) != dumpOnly_.end() ) { continue; }

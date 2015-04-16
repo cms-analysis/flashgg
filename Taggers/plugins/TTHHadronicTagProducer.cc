@@ -63,22 +63,22 @@ namespace flashgg {
     {
         MVAThreshold_ = iConfig.getUntrackedParameter<double>( "MVAThreshold_", 0.2 );
         leadPhoPtThreshold_ = iConfig.getUntrackedParameter<double>( "leadPhoPtThreshold", 33 );
-        leadPhoUseVariableTh_ = iConfig.getUntrackedParameter<bool>( "leadPhoUseVariableTh", false);
+        leadPhoUseVariableTh_ = iConfig.getUntrackedParameter<bool>( "leadPhoUseVariableTh", false );
         leadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>( "leadPhoOverMassThreshold", 0.5 );
         subleadPhoPtThreshold_ = iConfig.getUntrackedParameter<double>( "leadPhoPtThreshold", 25 );
-        subleadPhoUseVariableTh_ = iConfig.getUntrackedParameter<bool>( "subleadPhoUseVariableTh", false);
+        subleadPhoUseVariableTh_ = iConfig.getUntrackedParameter<bool>( "subleadPhoUseVariableTh", false );
         subleadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>( "subleadPhoOverMassThreshold", 0.25 );
         jetPtThreshold_ = iConfig.getUntrackedParameter<double>( "jetPtThreshold", 30 );
         jetEtaCut_ = iConfig.getUntrackedParameter<double>( "jetEtaCut", 2.4 );
         dRJetPhoLeadCut_ = iConfig.getUntrackedParameter<double>( "dRJetPhoLeadCut", 0.5 );
         dRJetPhoSubleadCut_ = iConfig.getUntrackedParameter<double>( "dRJetPhoSubleadCut", 0.5 );
         bDiscriminatorLoose_ = iConfig.getUntrackedParameter<double>( "bDiscriminatorLoose", 0.244 );
-        bDiscriminatorMedium_ = iConfig.getUntrackedParameter<double>( "bDiscriminatorMedium", 0.679 );        
+        bDiscriminatorMedium_ = iConfig.getUntrackedParameter<double>( "bDiscriminatorMedium", 0.679 );
         jetsNumberThreshold_ = iConfig.getUntrackedParameter<int>( "jetsNumberThreshold", 4 );
         bjetsNumberThreshold_ = iConfig.getUntrackedParameter<int>( "bjetsNumberThreshold", 0 );
-        bTag_ = iConfig.getUntrackedParameter<string> ( "bTag", "combinedInclusiveSecondaryVertexV2BJetTags");
+        bTag_ = iConfig.getUntrackedParameter<string> ( "bTag", "combinedInclusiveSecondaryVertexV2BJetTags" );
 
-        produces<vector<TTHHadronicTag> >();        
+        produces<vector<TTHHadronicTag> >();
     }
 
     void TTHHadronicTagProducer::produce( Event &evt, const EventSetup & )
@@ -86,7 +86,7 @@ namespace flashgg {
 
         Handle<View<flashgg::Jet> > theJets;
         evt.getByToken( thejetToken_, theJets );
-		// const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
+        // const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
 
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
@@ -115,9 +115,9 @@ namespace flashgg {
             double leadPhoPtCut = leadPhoPtThreshold_;
             double subleadPhoPtCut = subleadPhoPtThreshold_;
             if( leadPhoUseVariableTh_ )
-                leadPhoPtCut = leadPhoOverMassThreshold_ * dipho->mass();
+            { leadPhoPtCut = leadPhoOverMassThreshold_ * dipho->mass(); }
             if( subleadPhoUseVariableTh_ )
-                subleadPhoPtCut = subleadPhoOverMassThreshold_ * dipho->mass();
+            { subleadPhoPtCut = subleadPhoOverMassThreshold_ * dipho->mass(); }
 
             if( dipho->leadingPhoton()->pt() < leadPhoPtCut && dipho->subLeadingPhoton()->pt() < subleadPhoPtCut ) { continue; }
             if( mvares->mvaValue() < MVAThreshold_ ) { continue; }

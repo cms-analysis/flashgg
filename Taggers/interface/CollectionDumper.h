@@ -236,10 +236,10 @@ namespace flashgg {
         if( ! event.isRealData() ) {
             edm::Handle<GenEventInfoProduct> genInfo;
             event.getByLabel( genInfo_, genInfo );
-            
+
             weight = lumiWeight_;
 
-            if( genInfo.isValid() ){
+            if( genInfo.isValid() ) {
                 const auto &weights = genInfo->weights();
                 // FIMXE store alternative/all weight-sets
                 if( ! weights.empty() ) {
@@ -268,7 +268,7 @@ namespace flashgg {
             if( which != dumpers_.end() ) {
                 int isub = ( hasSubcat_[cat.first] ? cat.second : 0 );
                 // FIXME per-candidate weights
-                which->second[isub].fill( cand, weight_, maxCandPerEvent_-nfilled );
+                which->second[isub].fill( cand, weight_, maxCandPerEvent_ - nfilled );
                 --nfilled;
             }
             if( nfilled == 0 ) { break; }
