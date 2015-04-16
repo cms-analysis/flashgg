@@ -35,7 +35,24 @@ namespace flashgg {
         EDGetTokenT<View<Jet> > thejetToken_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
 
-        int count = 0;
+        //---thresholds---
+        //---photons
+        double MVAThreshold_;
+        double leadPhoPtThreshold_;
+        bool   leadPhoUseVariableTh_;
+        double leadPhoOverMassThreshold_;
+        double subleadPhoPtThreshold_;
+        bool   subleadPhoUseVariableTh_;
+        double subleadPhoOverMassThreshold_;
+        //---jets
+        double jetPtThreshold_;
+        double jetEtaCut_;
+        double dRJetPhoLeadCut_;
+        double dRJetPhoSubleadCut_;
+        double bDiscriminatorLoose_;
+        double bDiscriminatorMedium_;
+        double jetsNumberThreshold_;
+        double bjetsNumberThreshold_;
         string bTag_;
     };
 
@@ -44,8 +61,22 @@ namespace flashgg {
         thejetToken_( consumes<View<flashgg::Jet> >( iConfig.getUntrackedParameter<InputTag>( "TTHJetTag", InputTag( "flashggJets" ) ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getUntrackedParameter<InputTag>( "MVAResultTag", InputTag( "flashggDiPhotonMVA" ) ) ) )
     {
-        string default_bTag_ = "combinedInclusiveSecondaryVertexV2BJetTags";
-        bTag_ = iConfig.getUntrackedParameter<string>( "bTag", default_bTag_ );
+        MVAThreshold_ = iConfig.getUntrackedParameter<double>( "MVAThreshold_", 0.2 );
+        leadPhoPtThreshold_ = iConfig.getUntrackedParameter<double>( "leadPhoPtThreshold", 33 );
+        leadPhoUseVariableTh_ = iConfig.getUntrackedParameter<bool>( "leadPhoUseVariableTh", false );
+        leadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>( "leadPhoOverMassThreshold", 0.5 );
+        subleadPhoPtThreshold_ = iConfig.getUntrackedParameter<double>( "leadPhoPtThreshold", 25 );
+        subleadPhoUseVariableTh_ = iConfig.getUntrackedParameter<bool>( "subleadPhoUseVariableTh", false );
+        subleadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>( "subleadPhoOverMassThreshold", 0.25 );
+        jetPtThreshold_ = iConfig.getUntrackedParameter<double>( "jetPtThreshold", 30 );
+        jetEtaCut_ = iConfig.getUntrackedParameter<double>( "jetEtaCut", 2.4 );
+        dRJetPhoLeadCut_ = iConfig.getUntrackedParameter<double>( "dRJetPhoLeadCut", 0.5 );
+        dRJetPhoSubleadCut_ = iConfig.getUntrackedParameter<double>( "dRJetPhoSubleadCut", 0.5 );
+        bDiscriminatorLoose_ = iConfig.getUntrackedParameter<double>( "bDiscriminatorLoose", 0.244 );
+        bDiscriminatorMedium_ = iConfig.getUntrackedParameter<double>( "bDiscriminatorMedium", 0.679 );
+        jetsNumberThreshold_ = iConfig.getUntrackedParameter<int>( "jetsNumberThreshold", 4 );
+        bjetsNumberThreshold_ = iConfig.getUntrackedParameter<int>( "bjetsNumberThreshold", 0 );
+        bTag_ = iConfig.getUntrackedParameter<string> ( "bTag", "combinedInclusiveSecondaryVertexV2BJetTags" );
 
         produces<vector<TTHHadronicTag> >();
     }
@@ -55,19 +86,17 @@ namespace flashgg {
 
         Handle<View<flashgg::Jet> > theJets;
         evt.getByToken( thejetToken_, theJets );
-//		const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
+        // const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
 
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
-        //	const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+        // const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
         Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
         evt.getByToken( mvaResultToken_, mvaResults );
-//		const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
-
+        // const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
 
         std::auto_ptr<vector<TTHHadronicTag> > tthhtags( new vector<TTHHadronicTag> );
-
 
         for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
 
@@ -83,12 +112,19 @@ namespace flashgg {
 
             if( !dipho->leadingPhoton()->passElectronVeto() || !dipho->subLeadingPhoton()->passElectronVeto() ) { continue; }
 
-            if( dipho->leadingPhoton()->pt() < ( 60 * ( dipho->mass() ) ) / 120. && dipho->subLeadingPhoton()->pt() < 25. && dipho->subLeadingPhoton()->pt() < 33. ) { continue; }
-            if( mvares->mvaValue() < .2 ) { continue; }
+            double leadPhoPtCut = leadPhoPtThreshold_;
+            double subleadPhoPtCut = subleadPhoPtThreshold_;
+            if( leadPhoUseVariableTh_ )
+            { leadPhoPtCut = leadPhoOverMassThreshold_ * dipho->mass(); }
+            if( subleadPhoUseVariableTh_ )
+            { subleadPhoPtCut = subleadPhoOverMassThreshold_ * dipho->mass(); }
+
+            if( dipho->leadingPhoton()->pt() < leadPhoPtCut && dipho->subLeadingPhoton()->pt() < subleadPhoPtCut ) { continue; }
+            if( mvares->mvaValue() < MVAThreshold_ ) { continue; }
 
             for( unsigned int jetIndex = 0; jetIndex < theJets->size() ; jetIndex++ ) {
                 edm::Ptr<flashgg::Jet> thejet = theJets->ptrAt( jetIndex );
-                if( fabs( thejet->eta() ) > 2.4 ) { continue; }
+                if( fabs( thejet->eta() ) > jetEtaCut_ ) { continue; }
 
                 float bDiscriminatorValue = 0;
 
@@ -101,17 +137,16 @@ namespace flashgg {
                 float dRJetPhoLead = sqrt( dEtaLead * dEtaLead + dPhiLead * dPhiLead );
                 float dRJetPhoSubLead = sqrt( dEtaSublead * dEtaSublead + dPhiSublead * dPhiSublead );
 
-
-                if( dRJetPhoLead < 0.5 || dRJetPhoSubLead < 0.5 ) { continue; }
-                if( thejet->pt() < 30. ) { continue; }
+                if( dRJetPhoLead < dRJetPhoLeadCut_ || dRJetPhoSubLead < dRJetPhoSubleadCut_ ) { continue; }
+                if( thejet->pt() < jetPtThreshold_ ) { continue; }
 
                 jetcount++;
                 JetVect.push_back( thejet );
 
                 bDiscriminatorValue = thejet->bDiscriminator( bTag_ );
 
-                if( bDiscriminatorValue > 0.244 ) { njets_btagloose++; }
-                if( bDiscriminatorValue > 0.679 ) {
+                if( bDiscriminatorValue > bDiscriminatorLoose_ ) { njets_btagloose++; }
+                if( bDiscriminatorValue > bDiscriminatorMedium_ ) {
 
                     njets_btagmedium++;
                     JetVect.pop_back();
@@ -119,27 +154,22 @@ namespace flashgg {
                 }
             }
 
-            if( njets_btagmedium > 0 && jetcount >= 5 ) {
+            if( njets_btagmedium > bjetsNumberThreshold_ && jetcount > jetsNumberThreshold_ ) {
 
                 TTHHadronicTag tthhtags_obj( dipho, mvares, JetVect, BJetVect );
                 tthhtags_obj.setNBLoose( njets_btagloose );
                 tthhtags_obj.setNBMedium( njets_btagmedium );
                 tthhtags_obj.setDiPhotonIndex( diphoIndex );
                 tthhtags->push_back( tthhtags_obj );
-                count++;
-
+                // count++;
             }
         }
         evt.put( tthhtags );
-        cout << "tagged events = " << count << endl;
+        // cout << "tagged events = " << count << endl;
     }
 }
 typedef flashgg::TTHHadronicTagProducer FlashggTTHHadronicTagProducer;
 DEFINE_FWK_MODULE( FlashggTTHHadronicTagProducer );
-
-
-
-
 
 // Local Variables:
 // mode:c++
