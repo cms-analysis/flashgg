@@ -43,6 +43,7 @@ smearBins = cms.PSet(
                               values = cms.vdouble( 0.01860 ), uncertainties = cms.vdouble( 0.00078 ) ),
                     ))
 
+
 flashggSmearDiPhoton = cms.EDProducer('FlashggDiPhotonSystematicProducer',
 		src = cms.InputTag('flashggDiPhotons'),
                 SystMethods2D = cms.VPSet(
@@ -66,7 +67,7 @@ flashggSmearDiPhoton = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                     )
                                           ),
 		SystMethods = cms.VPSet(
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleString"),
+					cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleString"),
                                                   MethodName = cms.string("FlashggDiPhotonFromPhoton"),
                                                   Label = cms.string("MCScaleHighR9EB"),
                                                   NSigmas = cms.vint32(-1,1),
@@ -116,4 +117,3 @@ flashggSmearDiPhoton = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   )
                                         )
                                       )
-

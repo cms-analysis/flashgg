@@ -8,6 +8,15 @@ EDM_REGISTER_PLUGINFACTORY( FlashggSystematicPhotonMethodsFactory2D,
                             "SystematicPhotonMethodsFactory2D" );
 EDM_REGISTER_PLUGINFACTORY( FlashggSystematicDiPhotonMethodsFactory2D,
                             "SystematicDiPhotonMethodsFactory2D" );
+EDM_REGISTER_PLUGINFACTORY( FlashggSystematicElectronMethodsFactory,
+                            "SystematicElectronMethodsFactory" );
+EDM_REGISTER_PLUGINFACTORY( FlashggSystematicMuonMethodsFactory,
+                            "SystematicMuonMethodsFactory" );
+EDM_REGISTER_PLUGINFACTORY( FlashggSystematicElectronMethodsFactory2D,
+                            "SystematicElectronMethodsFactory2D" );
+EDM_REGISTER_PLUGINFACTORY( FlashggSystematicMuonMethodsFactory2D,
+                            "SystematicMuonMethodsFactory2D" );
+
 
 
 //EDM_REGISTER_PLUGINFACTORY(FlashggSystematicDiPhotonMethodsFactory,

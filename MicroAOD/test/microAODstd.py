@@ -13,8 +13,8 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 1000) )
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 10000) )
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 10000 )
 
 # 2012 data
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'GR_R_74_V8A::All')
@@ -85,7 +85,7 @@ process.e = cms.EndPath(process.out)
 #                                   fileName = cms.string("commissioningTree.root")
 #)
 #process.p *= process.commissioning
-
+print process.p
 
 from flashgg.MicroAOD.MicroAODCustomize import customize
 customize(process)
