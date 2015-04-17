@@ -102,6 +102,7 @@ namespace flashgg {
             }
         }
 
+
         std::auto_ptr<vector<pat::PackedCandidate> > result( new vector<pat::PackedCandidate>() );
 
         for( unsigned int pfCandLoop = 0 ; pfCandLoop < pfCandidates->size() ; pfCandLoop++ ) {
@@ -121,6 +122,8 @@ namespace flashgg {
                 if( flashVertex == currentVertex ) { result->push_back( *cand ); }
             }
         }
+
+
 
         evt.put( result );
     }

@@ -10,6 +10,8 @@
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
 
+#include "flashgg/DataFormats/interface/SinglePhotonView.h"
+
 #include "TMVA/Reader.h"
 #include "TMath.h"
 #include "TVector3.h"
@@ -89,9 +91,11 @@ namespace flashgg {
 
     void DiPhotonMVAProducer::produce( Event &evt, const EventSetup & )
     {
+        cout << "test1" << endl;
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
         // const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+        cout << "DIPHOTONS SIZE " << diPhotons->size() << endl;
 
         Handle<reco::BeamSpot> recoBeamSpotHandle;
         evt.getByToken( beamSpotToken_, recoBeamSpotHandle );
@@ -106,9 +110,18 @@ namespace flashgg {
         std::auto_ptr<vector<DiPhotonMVAResult> > results( new vector<DiPhotonMVAResult> ); // one per diphoton, always in same order, vector is more efficient than map
 
         for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
+            cout << "DIPHO m " << diPhotons->ptrAt( candIndex )->mass() << endl;
             flashgg::DiPhotonMVAResult mvares;
-
+            cout << "GETTING VTX PTR" << endl;
             edm::Ptr<reco::Vertex> vtx = diPhotons->ptrAt( candIndex )->vtx();
+            cout << "GETTING pho1 PTR" << endl;
+            const flashgg::SinglePhotonView v1 = diPhotons->ptrAt( candIndex )->leadingView();
+            cout << "GETTING pho2 PTR" << endl;
+            const flashgg::SinglePhotonView v2 = diPhotons->ptrAt( candIndex )->subLeadingView();
+            cout << "PT "  << endl;
+            cout << "Pho1 pt " << v1.photonRef()->pt() << " \t Pho2 pt " << v2->pt() << endl;
+
+
             const flashgg::Photon *g1 = diPhotons->ptrAt( candIndex )->leadingPhoton();
             const flashgg::Photon *g2 = diPhotons->ptrAt( candIndex )->subLeadingPhoton();
 
