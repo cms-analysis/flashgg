@@ -8,6 +8,7 @@
 #include "FWCore/Utilities/interface/EDMException.h"
 
 #include "flashgg/DataFormats/interface/SinglePhotonView.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 
 #include <vector>
 #include <algorithm>
@@ -49,8 +50,10 @@ namespace flashgg {
         int nCand = maxCandidates_;
         //for(auto & dipho : diPhotons) {
         for( unsigned int i = 0 ; i < diPhotons->size(); i++ ) {
-            SinglePhotonView leg0( diPhotons->ptrAt( i ), 0 );
-            SinglePhotonView leg1( diPhotons->ptrAt( i ), 1 );
+            SinglePhotonView leg0( diPhotons->ptrAt( i )->leadingView().photonRef(), diPhotons->ptrAt( i )->vtx() );
+            SinglePhotonView leg1( diPhotons->ptrAt( i )->subLeadingView().photonRef(), diPhotons->ptrAt( i )->vtx() );
+//            SinglePhotonView leg0( diPhotons->ptrAt( i ), 0 );
+//          SinglePhotonView leg1( diPhotons->ptrAt( i ), 1 );
 
             if( leg0->pt() < leg1->pt() ) { std::swap( leg0, leg1 ); }
 
