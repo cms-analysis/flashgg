@@ -1,5 +1,5 @@
-#ifndef flashgg_CutBasedDiPhotonObjectSelector_h
-#define flashgg_CutBasedDiPhotonObjectSelector_h
+#ifndef flashgg_CutBasedPhotonViewSelector_h
+#define flashgg_CutBasedPhotonViewSelector_h
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "CommonTools/Utils/interface/StringObjectFunction.h"
@@ -7,7 +7,7 @@
 
 #include "flashgg/MicroAOD/interface/StepWiseFunctor.h"
 #include "flashgg/MicroAOD/interface/CutBasedClassifier.h"
-#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/SinglePhotonView.h"
 
 #include "FWCore/Common/interface/EventBase.h"
 #include "FWCore/Framework/interface/ConsumesCollector.h"
@@ -19,25 +19,19 @@
 #include <map>
 
 namespace flashgg {
-    class CutBasedDiPhotonObjectSelector : public CutBasedPhotonObjectSelector
+    class CutBasedPhotonViewSelector : public CutBasedPhotonObjectSelector
     {
 
     public:
-        typedef StringCutObjectSelector<DiPhotonCandidate> selector_type;
+        CutBasedPhotonViewSelector( const edm::ParameterSet &config, edm::ConsumesCollector &cc );
 
-        CutBasedDiPhotonObjectSelector( const edm::ParameterSet &config, edm::ConsumesCollector &cc );
-
-        bool operator()( const DiPhotonCandidate &cand, const edm::EventBase &ev ) const;
-
-    private:
-        selector_type selector_;
-        int invertNtimes_;
+        bool operator()( const SinglePhotonView &cand, const edm::EventBase &ev ) const;
 
     };
 
 }
 
-#endif // flashgg_CutBasedDiPhotonObjectSelector_h
+#endif // flashgg_CutBasedPhotonViewSelector_h
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil
