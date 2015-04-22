@@ -10,9 +10,11 @@ flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                 vertexTag = cms.InputTag("offlineSlimmedPrimaryVertices"),
                                 vertexCandidateMapTag = cms.InputTag("flashggVertexMapNonUnique"),
                                 rhoFixedGridCollection = cms.InputTag('fixedGridRhoAll'),
-                                
-                                photonIdMVAweightfile_EB = cms.FileInPath("flashgg/MicroAOD/data/2013FinalPaper_PhotonID_Barrel_BDT_TrainRangePT15_8TeV.weights.xml"),
-                                photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/2013FinalPaper_PhotonID_Endcap_BDT_TrainRangePT15_8TeV.weights.xml"),
+ 
+                                photonIdMVAweightfile_EB = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_phys14_phys14microAODV2_withWeights_GED_diPhoPreSel_evenEv_BDT700trees_barrel_BDT.weights.xml"),
+                                Photonidmvaweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_phys14_phys14microAODV2_withWeights_GED_diPhoPreSel_evenEv_BDT700trees_endcap_BDT.weights.xml"),
+#                                photonIdMVAweightfile_EB = cms.FileInPath("flashgg/MicroAOD/data/2013FinalPaper_PhotonID_Barrel_BDT_TrainRangePT15_8TeV.weights.xml"),
+#                                photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/2013FinalPaper_PhotonID_Endcap_BDT_TrainRangePT15_8TeV.weights.xml"),
 #                                regressionWeightFile = cms.FileInPath("HiggsAnalysis/GBRLikelihoodEGTools/data/regweights_v8_8TeV_forest_ph.root"),
 
                                 useNonZsLazyTools = cms.bool(True),
