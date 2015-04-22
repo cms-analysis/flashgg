@@ -1,4 +1,5 @@
-#!/usr/bin/bash
+#!/usr/bin/bash/screen
+
 
 # Author: Louie Corpe, adapated from Y.Haddad
 # Email : lcorpe@cern.ch

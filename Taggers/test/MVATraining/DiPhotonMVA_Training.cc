@@ -22,7 +22,7 @@ void DiPhotonMVA_Training( TString Nevent = "1000", TString Level = "DiPhoton", 
       path = "test_dipho_training/";
 //    bool useDiphotonPt = 0;
 //    bool usePhotonsPt = true;
-
+ int nEvents= std::atoi(Nevent.Data());
 
     TFile *inputS1 = TFile::Open( path + "output_GluGluToHToGG_M-125_13TeV-powheg-pythia6_numEvent" + Nevent + "_histos.root" );
     TFile *inputS2 = TFile::Open( path + "output_TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola_numEvent" + Nevent + "_histos.root" );
@@ -42,29 +42,18 @@ void DiPhotonMVA_Training( TString Nevent = "1000", TString Level = "DiPhoton", 
     TTree *treeB2 = ( TTree * )inputB2->Get( Level + "MVADumperNew/trees/gamJet_13TeV_All" ); 
     TTree *treeB3 = ( TTree * )inputB3->Get( Level + "MVADumperNew/trees/dyJets_13TeV_All" );
 
-    // Declaration of leaf types
-
-    //float ph1.pt/mass;
-    //float ph2.pt/mass;
-    //float ph1.idmva
-    //float ph2.idmva; 
-    //float ph1.eta;
-    //float ph2.eta;
-    //float masserrsmeared/mass;
-    //float masserrsmearedwrongvtx/mass;
-    //float TMath::CosPhi(ph1.phi-ph2.phi);
-    //float vtxprob;
-
-    //    treeS1->SetBranchAddress("leadptom" ,&ph1.pt/mass);
-    //    treeS1->SetBranchAddress("subleadptom" ,&ph2.pt/mass);
-    //    treeS1->SetBranchAddress("leadmva" ,&ph1.idmva);
-    //    treeS1->SetBranchAddress("subleadmva" ,&ph2.idmva);
-    //    treeS1->SetBranchAddress("leadeta" ,&ph1.eta);
-    //    treeS1->SetBranchAddress("subleadeta" ,&ph2.eta);
-    //    treeS1->SetBranchAddress("sigmarv" ,&masserrsmeared/mass);
-    //    treeS1->SetBranchAddress("sigmawv" ,&masserrsmearedwrongvtx/mass);
-    //    treeS1->SetBranchAddress("CosPhi" ,&TMath::Cos(ph1.phi-ph2.phi));
-    //    treeS1->SetBranchAddress("vtxprob" ,&vtxprob);
+    float   weightS[5];
+    float   weightB[4];
+    weightB[0]=0;
+    weightB[1]=4746.0/nEvents;// DyJetsToLL
+    weightB[2]=17180.0*0.0379/nEvents;//gamJets pt>40
+    weightB[3]=145400.0*0.001776/nEvents;//gamJets pt  in 20->40
+   
+    weightS[0]=0;
+    weightS[1]=43.92*2.28e-3/nEvents; //ggH
+    weightS[2]=3.748*2.28e-3/nEvents; //ttH
+    weightS[3]=2.2496*2.28e-3/nEvents; //VBH
+    weightS[4]=0.5608*2.28e-3/nEvents; //WZH
 
     // Create a new root output file.
     string outputFileName;
@@ -87,35 +76,16 @@ void DiPhotonMVA_Training( TString Nevent = "1000", TString Level = "DiPhoton", 
         factory->AddVariable( "vtxprob");
 
 
-
-//        factory->AddVariable( "sigmarv" );
-//        factory->AddVariable( "sigmawv" );
-//        factory->AddVariable( "vtxprob" );
-//        factory->AddVariable( "leadptom" );
-//        factory->AddVariable( "subleadptom" );
-//        factory->AddVariable( "leadeta" );
-//        factory->AddVariable( "subleadeta" );
-//        factory->AddVariable( "CosPhi" );
-//        factory->AddVariable( "leadmva" );
-//        factory->AddVariable( "subleadmva" );
-
-
-
-    //event weights per tree (see below for setting event-wise weights)
-    Double_t signalWeight = 1.0;
-    Double_t backgroundWeight = 1.0;
-
-
     // ====== register trees ====================================================
-    factory->AddSignalTree( treeS1, signalWeight );
-    factory->AddSignalTree( treeS2, signalWeight );
-    factory->AddSignalTree( treeS3, signalWeight );
-    factory->AddSignalTree( treeS4, signalWeight );
+    factory->AddSignalTree( treeS1, weightS[1] );
+    factory->AddSignalTree( treeS2, weightS[2] );
+    factory->AddSignalTree( treeS3, weightS[3] );
+    factory->AddSignalTree( treeS4, weightS[4] );
 
 
-    factory->AddBackgroundTree( treeB1, backgroundWeight );
-    factory->AddBackgroundTree( treeB2, backgroundWeight );
-    factory->AddBackgroundTree( treeB3, backgroundWeight );
+    factory->AddBackgroundTree( treeB1, weightB[2] );
+    factory->AddBackgroundTree( treeB2, weightB[3] );
+    factory->AddBackgroundTree( treeB3, weightB[1] );
 
 
     // == supress the the negative points on the input variables
