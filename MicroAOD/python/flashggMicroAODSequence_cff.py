@@ -5,6 +5,8 @@ from flashgg.MicroAOD.flashggDiPhotons_cfi import flashggDiPhotons
 from flashgg.MicroAOD.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
 from flashgg.MicroAOD.flashggJets_cfi import flashggJets
 from flashgg.MicroAOD.flashggElectrons_cfi import flashggElectrons
+from flashgg.MicroAOD.flashggDiMuons_cfi import flashggDiMuons   ##JTao
+from flashgg.MicroAOD.flashggMuMuGamma_cfi import flashggMuMuGamma   ##JTao
 
 from flashgg.MicroAOD.flashggMicroAODGenSequence_cff import *
 
@@ -24,5 +26,6 @@ flashggMicroAODSequence = cms.Sequence((eventCount+weightsCount
                                         +flashggMicroAODGenSequence
                                         )
                                        *flashggPhotons*flashggDiPhotons
+                                       *flashggDiMuons*flashggMuMuGamma      ##JTao
                                        *(flashggPreselectedDiPhotons+flashggVertexMapForCHS*flashggJets)
                                        )
