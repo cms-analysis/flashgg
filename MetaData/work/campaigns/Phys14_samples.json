@@ -1,5 +1,6 @@
 {
-    "data" : [
+    "data" : ["/DoubleElectron/CMSSW_7_4_0_pre9-GR_R_74_V8A_RelVal_zEl2012D-v1/MINIAOD",
+    	      "/DoubleElectron/CMSSW_7_4_0_pre9-GR_R_74_V8A_RelVal_zEl2011A-v1/MINIAOD"
 	      ],
     "sig"  : ["/GluGluToHToGG_M-125_13TeV-powheg-pythia6/Phys14DR-PU40bx25_PHYS14_25_V1-v1/MINIAODSIM",
               "/GluGluToHToGG_M-125_13TeV-powheg-pythia6/Phys14DR-PU20bx25_tsg_PHYS14_25_V1-v1/MINIAODSIM",

@@ -201,6 +201,12 @@ if options.createCrabConfig:
             label = options.label
         # Increment flashgg- processing index if job has been launched before (ie if crab dir already exists)
         itry = 0
+        if sample in data:
+#            print "SCZ sample in data"
+            if ProcessedDataset.count("201"):
+                position = ProcessedDataset.find("201")
+                PrimaryDataset = PrimaryDataset +"-"+ ProcessedDataset[position:]
+#            print PrimaryDataset,ProcessedDataset
         jobname = "_".join([flashggVersion, PrimaryDataset, str(itry).zfill(2)])
         while os.path.isdir("crab_" + jobname):
             itry += 1
@@ -222,7 +228,7 @@ if options.createCrabConfig:
         # specific replacements for data and MC
         if sample in data:
             replacements["SPLITTING"]   = "LumiBased"
-            replacements["UNITSPERJOB"] = str(options.lumisPerJob),
+            replacements["UNITSPERJOB"] = str(options.lumisPerJob)
             replacements["PYCFG_PARAMS"].append("processType=data")
             ## FIXME: lumi mask, run ranges, etc.
         if sample in sig:
