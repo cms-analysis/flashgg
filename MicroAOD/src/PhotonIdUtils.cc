@@ -224,17 +224,17 @@ void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfile
 
     phoIdMva_2012_EB_ = make_shared<TMVA::Reader>( "!Color:Silent" );
 
-    phoIdMva_2012_EB_->AddVariable( "ph.scrawe", &phoIdMva_SCRawE_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.r9",                &phoIdMva_R9_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.sigietaieta",       &phoIdMva_covIEtaIEta_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.scetawidth",        &phoIdMva_EtaWidth_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.scphiwidth",        &phoIdMva_PhiWidth_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.idmva_CoviEtaiPhi", &phoIdMva_covIEtaIPhi_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.idmva_s4ratio",     &phoIdMva_S4_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.idmva_GammaIso",    &phoIdMva_pfPhoIso03_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.idmva_ChargedIso_selvtx",   &phoIdMva_pfChgIso03_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.idmva_ChargedIso_worstvtx", &phoIdMva_pfChgIso03worst_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.sceta",             &phoIdMva_ScEta_ );
+    phoIdMva_2012_EB_->AddVariable( "SCRawE", &phoIdMva_SCRawE_ );
+    phoIdMva_2012_EB_->AddVariable( "r9",                &phoIdMva_R9_ );
+    phoIdMva_2012_EB_->AddVariable( "sigmaIetaIeta",       &phoIdMva_covIEtaIEta_ );
+    phoIdMva_2012_EB_->AddVariable( "etaWidth",        &phoIdMva_EtaWidth_ );
+    phoIdMva_2012_EB_->AddVariable( "phiWidth",        &phoIdMva_PhiWidth_ );
+    phoIdMva_2012_EB_->AddVariable( "covIEtaIPhi", &phoIdMva_covIEtaIPhi_ );
+    phoIdMva_2012_EB_->AddVariable( "S4",     &phoIdMva_S4_ );
+    phoIdMva_2012_EB_->AddVariable( "phoIso03",    &phoIdMva_pfPhoIso03_ );
+    phoIdMva_2012_EB_->AddVariable( "chgIsoWrtChosenVtx",   &phoIdMva_pfChgIso03_ );
+    phoIdMva_2012_EB_->AddVariable( "chgIsoWrtWorstVtx", &phoIdMva_pfChgIso03worst_ );
+    phoIdMva_2012_EB_->AddVariable( "scEta",             &phoIdMva_ScEta_ );
     phoIdMva_2012_EB_->AddVariable( "rho",                  &phoIdMva_rho_ );
     phoIdMva_2012_EB_->BookMVA( mvamethod.c_str(), xmlfilenameEB );
 
@@ -242,19 +242,19 @@ void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfile
 
     phoIdMva_2012_EE_ = make_shared<TMVA::Reader>( "!Color:Silent" );
 
-    phoIdMva_2012_EE_->AddVariable( "ph.scrawe", &phoIdMva_SCRawE_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.r9",                &phoIdMva_R9_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.sigietaieta",       &phoIdMva_covIEtaIEta_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.scetawidth",        &phoIdMva_EtaWidth_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.scphiwidth",        &phoIdMva_PhiWidth_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.idmva_CoviEtaiPhi", &phoIdMva_covIEtaIPhi_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.idmva_s4ratio",     &phoIdMva_S4_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.idmva_GammaIso",    &phoIdMva_pfPhoIso03_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.idmva_ChargedIso_selvtx",   &phoIdMva_pfChgIso03_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.idmva_ChargedIso_worstvtx", &phoIdMva_pfChgIso03worst_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.sceta",             &phoIdMva_ScEta_ );
+    phoIdMva_2012_EE_->AddVariable( "SCRawE", &phoIdMva_SCRawE_ );
+    phoIdMva_2012_EE_->AddVariable( "r9",                &phoIdMva_R9_ );
+    phoIdMva_2012_EE_->AddVariable( "sigmaIetaIeta",       &phoIdMva_covIEtaIEta_ );
+    phoIdMva_2012_EE_->AddVariable( "etaWidth",        &phoIdMva_EtaWidth_ );
+    phoIdMva_2012_EE_->AddVariable( "phiWidth",        &phoIdMva_PhiWidth_ );
+    phoIdMva_2012_EE_->AddVariable( "covIEtaIPhi", &phoIdMva_covIEtaIPhi_ );
+    phoIdMva_2012_EE_->AddVariable( "S4",     &phoIdMva_S4_ );
+    phoIdMva_2012_EE_->AddVariable( "phoIso03",    &phoIdMva_pfPhoIso03_ );
+    phoIdMva_2012_EE_->AddVariable( "chgIsoWrtChosenVtx",   &phoIdMva_pfChgIso03_ );
+    phoIdMva_2012_EE_->AddVariable( "chgIsoWrtWorstVtx", &phoIdMva_pfChgIso03worst_ );
+    phoIdMva_2012_EE_->AddVariable( "scEta",             &phoIdMva_ScEta_ );
     phoIdMva_2012_EE_->AddVariable( "rho",                  &phoIdMva_rho_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.idmva_PsEffWidthSigmaRR",   &phoIdMva_ESEffSigmaRR_ );
+    phoIdMva_2012_EE_->AddVariable( "ESEffSigmaRR",   &phoIdMva_ESEffSigmaRR_ );
     phoIdMva_2012_EE_->BookMVA( mvamethod.c_str(), xmlfilenameEE );
 }
 
