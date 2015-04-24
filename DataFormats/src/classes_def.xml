@@ -100,4 +100,20 @@
 <class name="std::vector<edm::Ptr<pat::MET> >"/>
 <class name="edm::Wrapper<std::vector<edm::Ptr<pat::MET> > >"/>
 
+<class name="flashgg::DiMuonCandidate"/>
+<class name="std::vector<flashgg::DiMuonCandidate>"/>
+<class name="edm::Wrapper<std::vector<flashgg::DiMuonCandidate> >"/>
+<class name="edm::Ptr<flashgg::DiMuonCandidate>"/>
+<class name="edm::Wrapper<edm::Ptr<flashgg::DiMuonCandidate> >"/>
+<class name="std::vector<edm::Ptr<flashgg::DiMuonCandidate> >"/>
+<class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::DiMuonCandidate> > >"/>
+
+<class name="flashgg::MuMuGammaCandidate"/>
+<class name="std::vector<flashgg::MuMuGammaCandidate>"/>
+<class name="edm::Wrapper<std::vector<flashgg::MuMuGammaCandidate> >"/>
+<class name="edm::Ptr<flashgg::MuMuGammaCandidate>"/>
+<class name="edm::Wrapper<edm::Ptr<flashgg::MuMuGammaCandidate> >"/>
+<class name="std::vector<edm::Ptr<flashgg::MuMuGammaCandidate> >"/>
+<class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::MuMuGammaCandidate> > >"/>
+
 </lcgdict>
