@@ -6,7 +6,7 @@ using namespace std;
 
 namespace flashgg {
     CutBasedDiPhotonObjectSelector::CutBasedDiPhotonObjectSelector( const ParameterSet &cfg, edm::ConsumesCollector &cc ) :
-        CutBasedPhotonObjectSelector(cfg,cc),
+        CutBasedPhotonObjectSelector( cfg, cc ),
         selector_( cfg.getParameter<string>( "cut" ) )
     {
         if( cfg.exists( "invert" ) ) {
@@ -17,7 +17,7 @@ namespace flashgg {
     bool CutBasedDiPhotonObjectSelector::operator()( const DiPhotonCandidate &cand, const EventBase &ev ) const
     {
         if( ! selector_( cand ) ) { return false; }
-        handle(ev);
+        handle( ev );
         auto leadingPhoton = cand.leadingPhoton();
         auto subleadingPhoton = cand.subLeadingPhoton();
         bool passSelection = pass( *leadingPhoton ) && pass( *subleadingPhoton );
@@ -33,7 +33,7 @@ namespace flashgg {
         }
         return true;
     }
-    
+
 }
 // Local Variables:
 // mode:c++
