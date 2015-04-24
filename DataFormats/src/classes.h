@@ -21,6 +21,8 @@
 #include "flashgg/DataFormats/interface/VHHadronicTag.h"
 #include "flashgg/DataFormats/interface/VHLooseTag.h"
 #include "flashgg/DataFormats/interface/VHTightTag.h"
+#include "flashgg/DataFormats/interface/DiMuonCandidate.h"   //JTao
+#include "flashgg/DataFormats/interface/MuMuGammaCandidate.h"   //JTao
 #include <vector>
 #include <map>
 
@@ -39,6 +41,25 @@ namespace  {
         edm::Wrapper<edm::Ptr<flashgg::DiPhotonCandidate> >       wrp_ptr_fgg_dip;
         std::vector<edm::Ptr<flashgg::DiPhotonCandidate> >        vec_ptr_fgg_dip;
         edm::Wrapper<std::vector<edm::Ptr<flashgg::DiPhotonCandidate> > >   wrp_vec_ptr_fgg_dip;
+
+        //-----------J. Tao from IHEP-Beijing--------------
+        flashgg::DiMuonCandidate                                        fgg_dim;
+        edm::Wrapper<flashgg::DiMuonCandidate>                      wrp_fgg_dim;
+        std::vector<flashgg::DiMuonCandidate>                       vec_fgg_dim;
+        edm::Wrapper<std::vector<flashgg::DiMuonCandidate> >    wrp_vec_fgg_dim;
+        edm::Ptr<flashgg::DiMuonCandidate>                          ptr_fgg_dim;
+        edm::Wrapper<edm::Ptr<flashgg::DiMuonCandidate> >       wrp_ptr_fgg_dim;
+        std::vector<edm::Ptr<flashgg::DiMuonCandidate> >        vec_ptr_fgg_dim;
+        edm::Wrapper<std::vector<edm::Ptr<flashgg::DiMuonCandidate> > >   wrp_vec_ptr_fgg_dim;
+        flashgg::MuMuGammaCandidate                                        fgg_mmg;
+        edm::Wrapper<flashgg::MuMuGammaCandidate>                      wrp_fgg_mmg;
+        std::vector<flashgg::MuMuGammaCandidate>                       vec_fgg_mmg;
+        edm::Wrapper<std::vector<flashgg::MuMuGammaCandidate> >    wrp_vec_fgg_mmg;
+        edm::Ptr<flashgg::MuMuGammaCandidate>                          ptr_fgg_mmg;
+        edm::Wrapper<edm::Ptr<flashgg::MuMuGammaCandidate> >       wrp_ptr_fgg_mmg;
+        std::vector<edm::Ptr<flashgg::MuMuGammaCandidate> >        vec_ptr_fgg_mmg;
+        edm::Wrapper<std::vector<edm::Ptr<flashgg::MuMuGammaCandidate> > >   wrp_vec_ptr_fgg_mmg;
+        //-----------J. Tao from IHEP-Beijing--------------
 
         edm::Ptr<reco::Vertex>                                        ptr_rec_vtx;
         std::vector<edm::Ptr<reco::Vertex> >                      vec_ptr_rec_vtx;
