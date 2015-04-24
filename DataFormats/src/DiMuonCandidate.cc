@@ -46,3 +46,11 @@ const pat::Muon * DiMuonCandidate::subleadingMuon() const {
     return dynamic_cast<const pat::Muon*> (daughter(0));
   }
 }
+
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4

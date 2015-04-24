@@ -47,3 +47,11 @@ const flashgg::DiMuonCandidate * MuMuGammaCandidate::MMG_DiMu() const {
 const flashgg::Photon * MuMuGammaCandidate::MMG_Photon() const {
    return dynamic_cast<const flashgg::Photon*> (daughter(1));
 }
+
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
