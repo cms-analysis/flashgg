@@ -11,49 +11,58 @@
 //-----------J. Tao from IHEP-Beijing--------------
 
 namespace flashgg {
-  class MuMuGammaCandidate : public reco::CompositeCandidate {
-  public:
-    MuMuGammaCandidate();
-    MuMuGammaCandidate(edm::Ptr<flashgg::DiMuonCandidate>, edm::Ptr<flashgg::Photon>);
-    MuMuGammaCandidate(const flashgg::DiMuonCandidate&, const flashgg::Photon&);
-    MuMuGammaCandidate(edm::Ptr<flashgg::DiMuonCandidate>, const flashgg::Photon&); //mixed
-    ~MuMuGammaCandidate();
+    class MuMuGammaCandidate : public reco::CompositeCandidate
+    {
+    public:
+        MuMuGammaCandidate();
+        MuMuGammaCandidate( edm::Ptr<flashgg::DiMuonCandidate>, edm::Ptr<flashgg::Photon> );
+        MuMuGammaCandidate( const flashgg::DiMuonCandidate &, const flashgg::Photon & );
+        MuMuGammaCandidate( edm::Ptr<flashgg::DiMuonCandidate>, const flashgg::Photon & ); //mixed
+        ~MuMuGammaCandidate();
 
-    const flashgg::DiMuonCandidate* MMG_DiMu() const;
-    const flashgg::Photon* MMG_Photon() const;
+        const flashgg::DiMuonCandidate *MMG_DiMu() const;
+        const flashgg::Photon *MMG_Photon() const;
 
-    edm::Ptr<reco::Vertex> Vertex() const { return vertex_; }
-    void setVertex(edm::Ptr<reco::Vertex> val) { vertex_ = val; }
+        edm::Ptr<reco::Vertex> Vertex() const { return vertex_; }
+        void setVertex( edm::Ptr<reco::Vertex> val ) { vertex_ = val; }
 
-    bool Is2012FSRZMMG() const { return Is2012FSRZMMG_; }
-    void setIs2012FSRZMMG(bool val) { Is2012FSRZMMG_  = val;} 
+        bool Is2012FSRZMMG() const { return Is2012FSRZMMG_; }
+        void setIs2012FSRZMMG( bool val ) { Is2012FSRZMMG_  = val;}
 
-    bool IsHGammaStarGamma() const { return IsHGammaStarGamma_; }
-    void setIsHGammaStarGamma(bool val) { IsHGammaStarGamma_  = val;} 
+        bool IsHGammaStarGamma() const { return IsHGammaStarGamma_; }
+        void setIsHGammaStarGamma( bool val ) { IsHGammaStarGamma_  = val;}
 
-    bool IsHZgamma() const { return IsHZgamma_; }
-    void setIsHZgamma(bool val) { IsHZgamma_  = val;} 
+        bool IsHZgamma() const { return IsHZgamma_; }
+        void setIsHZgamma( bool val ) { IsHZgamma_  = val;}
 
-    double PhotonTrkIsoHollow03() const { return PhotonTrkIsoHollow03_; }
-    void setPhotonTrkIsoHollow03(double val) { PhotonTrkIsoHollow03_  = val;}
+        double PhotonTrkIsoHollow03() const { return PhotonTrkIsoHollow03_; }
+        void setPhotonTrkIsoHollow03( double val ) { PhotonTrkIsoHollow03_  = val;}
 
-    double PhotonTrkIsoHollow03MuCorr() const { return PhotonTrkIsoHollow03MuCorr_; }
-    void setPhotonTrkIsoHollow03MuCorr(double val) { PhotonTrkIsoHollow03MuCorr_  = val;}
-    
+        double PhotonTrkIsoHollow03MuCorr() const { return PhotonTrkIsoHollow03MuCorr_; }
+        void setPhotonTrkIsoHollow03MuCorr( double val ) { PhotonTrkIsoHollow03MuCorr_  = val;}
 
-  private:
 
-    edm::Ptr<reco::Vertex> vertex_;
-    bool Is2012FSRZMMG_;
-    bool IsHGammaStarGamma_;
-    bool IsHZgamma_;
-    double PhotonTrkIsoHollow03_;
-    double PhotonTrkIsoHollow03MuCorr_;
+    private:
 
-  };
+        edm::Ptr<reco::Vertex> vertex_;
+        bool Is2012FSRZMMG_;
+        bool IsHGammaStarGamma_;
+        bool IsHZgamma_;
+        double PhotonTrkIsoHollow03_;
+        double PhotonTrkIsoHollow03MuCorr_;
+
+    };
 
 
 }
 
 
- #endif
+#endif
+
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4

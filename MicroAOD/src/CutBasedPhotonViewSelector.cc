@@ -6,15 +6,15 @@ using namespace std;
 
 namespace flashgg {
     CutBasedPhotonViewSelector::CutBasedPhotonViewSelector( const ParameterSet &cfg, edm::ConsumesCollector &cc )  :
-        CutBasedPhotonObjectSelector(cfg,cc)
+        CutBasedPhotonObjectSelector( cfg, cc )
     {
     }
 
     bool CutBasedPhotonViewSelector::operator()( const SinglePhotonView &cand, const EventBase &ev ) const
     {
-        return CutBasedPhotonObjectSelector::operator()(cand.photon(), ev);
+        return CutBasedPhotonObjectSelector::operator()( cand.photon(), ev );
     }
-    
+
 }
 // Local Variables:
 // mode:c++
