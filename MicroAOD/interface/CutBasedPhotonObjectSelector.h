@@ -24,17 +24,17 @@ namespace flashgg {
         typedef CutBasedClassifier<Photon> classifier_type;
         typedef StringObjectFunction<Photon> functor_type;
         typedef StepWiseFunctor<Photon> stepwise_functor_type;
-        typedef StringCutObjectSelector<Photon,true> selector_type;
+        typedef StringCutObjectSelector<Photon, true> selector_type;
 
         CutBasedPhotonObjectSelector( const edm::ParameterSet &config, edm::ConsumesCollector &cc );
-        
+
         bool operator()( const Photon &cand, const edm::EventBase &ev ) const;
-        
+
     protected:
         typedef std::shared_ptr<functor_type> functor_ptr;
         typedef std::shared_ptr<stepwise_functor_type> stepwise_functor_ptr;
 
-        void handle( const edm::EventBase & ev) const;
+        void handle( const edm::EventBase &ev ) const;
         bool pass( const Photon &pho ) const;
         bool passInverted( const Photon &pho ) const;
 
@@ -50,7 +50,7 @@ namespace flashgg {
         mutable double rho_;
 
         selector_type selector_;
-        
+
     };
 
 }

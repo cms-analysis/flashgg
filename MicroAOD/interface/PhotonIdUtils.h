@@ -1,4 +1,3 @@
-
 #ifndef FLASHgg_PhotonIdUtils_h
 #define FLASHgg_PhotonIdUtils_h
 
