@@ -63,22 +63,22 @@ cfgTools.addCategories(process.mumugammaDumper,
                        ## variables to be dumped in trees/datasets. Same variables for all categories
                        ## if different variables wanted for different categories, can add categorie one by one with cfgTools.addCategory
                        variables=["Mass_mmg            :=mass",
-                                  #"Mass_mumu           :=MMG_DiMu.mass", 
-                                  #"PT_mumu             :=MMG_DiMu.pt", 
-                                  #"leadPt              :=MMG_DiMu.leadingMuon.pt",
-                                  #"subleadPt           :=MMG_DiMu.subleadingMuon.pt",
+                                  "Mass_mumu           :=DiMuPtr.mass", 
+                                  "PT_mumu             :=DiMuPtr.pt", 
+                                  "leadPt              :=DiMuPtr.leadingMuon.pt",
+                                  "subleadPt           :=DiMuPtr.subleadingMuon.pt",
                                   "photonPT            :=MMG_Photon.pt",
+                                  #"photonMVAOutput     :=MMG_Photon.PhoIdMvaDWrtVtx(Vertex)",
                                   "photonSCeta         :=MMG_Photon.superCluster.eta"
-                                  #"photonMVAOutput     :=MMG_Photon.PhoIdMvaDWrtVtx(Vertex)"
                                   #"evtrho              :=rho"
                                   ],
                          ## histograms to be plotted. 
                        ## the variables need to be defined first
                        histograms=["Mass_mmg>>mass(160,10,170)",
-                                   #"Mass_mumu>>mass_mumu(80,20,100)",
-                                   #"PT_mumu>>pt_mumu(100,0,100)",
-                                   #"Mass_mmg:Mass_mumu>>MmmgVsMmm(120,30,150:120,30,150)", 
-                                   #"subleadPt:leadPt>>ptSubVsLead(200,10,210:200,10,210)",
+                                   "Mass_mumu>>mass_mumu(80,20,100)",
+                                   "PT_mumu>>pt_mumu(100,0,100)",
+                                   "Mass_mmg:Mass_mumu>>MmmgVsMmm(120,30,150:120,30,150)", 
+                                   "subleadPt:leadPt>>ptSubVsLead(200,10,210:200,10,210)",
                                    #"evtrho>>eventRho(50, 0, 50)",
                                    "photonPT>>photonpt(100,10,110)",
                                    #"photonMVAOutput>>IDmva(80,0.2,1.0)",
