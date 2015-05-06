@@ -23,8 +23,8 @@ Now if everything looks reasonable, you can build:
  ```
 And a very basic workflow test:
  ```
- cmsRun flashgg/MicroAODProducers/test/microAODstd.py
- cmsRun flashgg/TagProducers/test/simple_Tag_test.py
+ cmsRun flashgg/MicroAOD/test/microAODstd.py
+ cmsRun flashgg/Taggers/test/simple_Tag_test.py 
  ```
 
 The setup code will automatically change the initial remote branch's name to upstream to synchronize with the project's old conventions.  
