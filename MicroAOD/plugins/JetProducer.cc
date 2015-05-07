@@ -21,7 +21,7 @@ namespace flashgg {
 
     class JetProducer : public EDProducer
     {
-
+        
     public:
         JetProducer( const ParameterSet & );
     private:
@@ -58,9 +58,7 @@ namespace flashgg {
         Handle<View<pat::Jet> > jets;
         evt.getByToken( jetToken_, jets );
         // const PtrVector<pat::Jet>& jetPointers = jets->ptrVector();
-
-
-
+        
         // input DiPhoton candidates
         Handle<View<DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
@@ -69,22 +67,22 @@ namespace flashgg {
         Handle<View<reco::Vertex> > primaryVertices;
         evt.getByToken( vertexToken_, primaryVertices );
         // const PtrVector<reco::Vertex>& pvPointers = primaryVertices->ptrVector();
-
-
+        // std::cout << " jet test ==" << primaryVertices->size() <<  std::endl;
+        
         Handle<VertexCandidateMap> vertexCandidateMap;
         evt.getByToken( vertexCandidateMapToken_, vertexCandidateMap );
-
+        // std::cout << " vtx map ==" << vertexCandidateMap->size() <<  std::endl;
         // output jets
         auto_ptr<vector<flashgg::Jet> > jetColl( new vector<flashgg::Jet> );
-
+        
         for( unsigned int i = 0 ; i < jets->size() ; i++ ) {
             Ptr<pat::Jet> pjet = jets->ptrAt( i );
             if( pjet->pt() < minJetPt_ ) { continue; }
             flashgg::Jet fjet = flashgg::Jet( *pjet );
+                        
             for( unsigned int j = 0 ; j < diPhotons->size() ; j++ ) {
                 Ptr<DiPhotonCandidate> diPhoton = diPhotons->ptrAt( j );
                 Ptr<reco::Vertex> vtx = diPhoton->vtx();
-
                 if( !usePuppi ) {
                     if( !fjet.hasPuJetId( vtx ) ) {
                         PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables( pjet.get(), vtx, *vertexCandidateMap, true );
@@ -94,14 +92,13 @@ namespace flashgg {
             }
             if( !usePuppi ) {
                 if( primaryVertices->size() > 0 && !fjet.hasPuJetId( primaryVertices->ptrAt( 0 ) ) ) {
-                    //	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),primaryVertices->ptrAt(0),*vertexCandidateMap,true);
-                    //	PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),1.,(primaryVertices->ptrAt(0).get()),vc,true);
-                    //		fjet.setPuJetId(primaryVertices->ptrAt(0),lPUJetId);
+                    PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables(pjet.get(),primaryVertices->ptrAt(0),*vertexCandidateMap,true);
+                    fjet.setPuJetId(primaryVertices->ptrAt(0),lPUJetId);
                 }
             }
             jetColl->push_back( fjet );
         }
-
+        
         evt.put( jetColl );
     }
 }
