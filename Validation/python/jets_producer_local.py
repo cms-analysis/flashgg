@@ -7,18 +7,16 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
  
 process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
-
-#process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-#process.GlobalTag.globaltag = 'PLS170_V7AN1::All'
-#process.GlobalTag.globaltag = 'auto:run2_mc'
-
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
+
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc')
 
-process.maxEvents  = cms.untracked.PSet( input = cms.untracked.int32( 1000 ) )
+process.maxEvents  = cms.untracked.PSet( input = cms.untracked.int32( 500 ) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
+
+jdebug=False
 
 # PHYS14 Files
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring(
@@ -28,7 +26,7 @@ process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring(
     #"/store/mc/Phys14DR/DYToMuMu_M-50_Tune4C_13TeV-pythia8/MINIAODSIM/PU40bx25_tsg_castor_PHYS14_25_V1-v2/10000/F620A7C9-F799-E411-8DEF-002590A371AC.root"
     #"/store/mc/Spring14miniaod/VBF_HToGG_M-125_13TeV-powheg-pythia6/MINIAODSIM/141029_PU40bx50_PLS170_V6AN2-v1/10000/5C3A5675-7C72-E411-AC85-003048D436EA.root"
     "/store/mc/Phys14DR/GluGluToHToGG_M-125_13TeV-powheg-pythia6/MINIAODSIM/PU20bx25_tsg_PHYS14_25_V1-v1/00000/3C2EFAB1-B16F-E411-AB34-7845C4FC39FB.root"),
-    skipEvents=cms.untracked.uint32(2500)
+    skipEvents=cms.untracked.uint32(0)
                        
 )
 
@@ -37,10 +35,10 @@ process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to wo
  
 # Uncomment the following if you notice you have a memory leak
 # This is a lightweight tool to digg further
-#process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
-#                                        ignoreTotal = cms.untracked.int32(1),
-#                                        monitorPssAndPrivate = cms.untracked.bool(True)
-#                                       )
+process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
+                                        ignoreTotal = cms.untracked.int32(1),
+                                        monitorPssAndPrivate = cms.untracked.bool(True)
+                                    )
 
 process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
 process.load("flashgg/MicroAOD/flashggMicroAODExtraJetsSequence_cff")
@@ -56,7 +54,7 @@ process.out.outputCommands += microAODDebugOutputCommand # extra items for debug
 
 # need to allow unscheduled processes otherwise reclustering function will fail
 # this is because of the jet clustering tool, and we have to live with it for now.
-
+# NOTE: new PAT default running is "unscheduled" so we just need to say in the outputCommands what we want to store
 process.options = cms.untracked.PSet(
     allowUnscheduled = cms.untracked.bool(True)
 )
@@ -90,31 +88,33 @@ process.flashggJetValidationTreeMakerPF = cms.EDAnalyzer('FlashggJetValidationTr
                                                          JetTagDz              = cms.InputTag("flashggJetsPF"),
                                                          StringTag	       = cms.string("PF"),
                                                          VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
-                                                         debug                 = cms.untracked.bool(True),
+                                                         debug                 = cms.untracked.bool(jdebug),
                                                      )
 
-#process.flashggJetValidationTreeMakerPFCHS0 = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
-#                                                             GenParticleTag     = cms.untracked.InputTag('prunedGenParticles'),
-#                                                             JetTagDz           = cms.InputTag("flashggJetsPFCHS0"),
-#                                                             StringTag		= cms.string("PFCHS0"),
-#                                                             VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
-#                                                         )
-#
-#process.flashggJetValidationTreeMakerPFCHSLeg = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
-#                                                               GenParticleTag = cms.untracked.InputTag('prunedGenParticles'),
-#                                                               JetTagDz       = cms.InputTag("flashggJets"),                  
-#                                                               StringTag	= cms.string("PFCHSLeg"),
-#                                                               VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
-#                                                           )
-# +++++++++++++++++++++++++++++++++
+process.flashggJetValidationTreeMakerPFCHS0 = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
+                                                             GenParticleTag     = cms.untracked.InputTag('prunedGenParticles'),
+                                                             JetTagDz           = cms.InputTag("flashggJetsPFCHS0"),
+                                                             StringTag		= cms.string("PFCHS0"),
+                                                             VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
+                                                             debug                 = cms.untracked.bool(jdebug),
+                                                         )
 
-process.p = cms.Path(process.flashggMicroAODSequence
-                     + process.flashggMicroAODExtraJetsSequence
-                     # tree producer ...
-                     + process.flashggJetValidationTreeMakerPF 
-                     #+ process.flashggJetValidationTreeMakerPFCHS0
-                     #+ process.flashggJetValidationTreeMakerPFCHSLeg
-                 )
+process.flashggJetValidationTreeMakerPFCHSLeg = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
+                                                               GenParticleTag = cms.untracked.InputTag('prunedGenParticles'),
+                                                               JetTagDz       = cms.InputTag("flashggJets"),                  
+                                                               StringTag	= cms.string("PFCHSLeg"),
+                                                               VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
+                                                               debug                 = cms.untracked.bool(jdebug),
+                                                           )
+
+# +++++++++++++++++++++++++++++++++
+process.p = cms.Path(  process.flashggMicroAODSequence
+                       + process.flashggMicroAODExtraJetsSequence
+                       # tree producer ...
+                       + process.flashggJetValidationTreeMakerPF 
+                       + process.flashggJetValidationTreeMakerPFCHS0
+                       + process.flashggJetValidationTreeMakerPFCHSLeg
+                   )
 
 process.e = cms.EndPath(process.out)
 
@@ -128,7 +128,6 @@ process.e = cms.EndPath(process.out)
 #                                   fileName = cms.string("commissioningTree.root")
 #)
 #process.p *= process.commissioning
- 
- 
+
 from flashgg.MicroAOD.MicroAODCustomize import customize
 customize(process)
