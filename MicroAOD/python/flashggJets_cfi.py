@@ -7,7 +7,7 @@ from PhysicsTools.PatAlgos.tools.jetTools import addJetCollection
 
 
 
-bTagDiscriminators = ['pfCombinedInclusiveSecondaryVertexV2BJetTags']
+flashggBtag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
 
 
 def addFlashggPFCHSLegJets(process):
@@ -82,7 +82,7 @@ def addFlashggPFCHSLegJets(process):
     pvSource       = cms.InputTag('offlineSlimmedPrimaryVertices'),
     pfCandidates   = cms.InputTag('packedPFCandidates'),
     svSource       = cms.InputTag('slimmedSecondaryVertices'),
-    btagDiscriminators = bTagDiscriminators,
+    btagDiscriminators = [ flashggBtag ],
     jetCorrections = ('AK4PFchs', ['L1FastJet', 'L2Relative', 'L3Absolute'], 'None'),
     
     genJetCollection = cms.InputTag('ak4GenJetsLeg'),
