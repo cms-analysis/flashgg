@@ -15,13 +15,16 @@ namespace flashgg {
     {
     public:
         MuMuGammaCandidate();
-        MuMuGammaCandidate( edm::Ptr<flashgg::DiMuonCandidate>, edm::Ptr<flashgg::Photon> );
-        MuMuGammaCandidate( const flashgg::DiMuonCandidate &, const flashgg::Photon & );
-        MuMuGammaCandidate( edm::Ptr<flashgg::DiMuonCandidate>, const flashgg::Photon & ); //mixed
+        MuMuGammaCandidate( edm::Ptr<flashgg::DiMuonCandidate>, edm::Ptr<flashgg::Photon>, edm::Ptr<reco::Vertex> );
+        //MuMuGammaCandidate( const flashgg::DiMuonCandidate &, const flashgg::Photon &, edm::Ptr<reco::Vertex>, edm::Ptr<flashgg::DiMuonCandidate>);
+        MuMuGammaCandidate( edm::Ptr<flashgg::DiMuonCandidate>, const flashgg::Photon &, edm::Ptr<reco::Vertex> ); //mixed
         ~MuMuGammaCandidate();
 
         const flashgg::DiMuonCandidate *MMG_DiMu() const;
         const flashgg::Photon *MMG_Photon() const;
+
+        edm::Ptr<flashgg::DiMuonCandidate> DiMuPtr() const { return dimuptr_; }
+        void setDiMuPtr( edm::Ptr<flashgg::DiMuonCandidate> val ) { dimuptr_ = val; }
 
         edm::Ptr<reco::Vertex> Vertex() const { return vertex_; }
         void setVertex( edm::Ptr<reco::Vertex> val ) { vertex_ = val; }
@@ -44,6 +47,7 @@ namespace flashgg {
 
     private:
 
+        edm::Ptr<flashgg::DiMuonCandidate> dimuptr_;
         edm::Ptr<reco::Vertex> vertex_;
         bool Is2012FSRZMMG_;
         bool IsHGammaStarGamma_;
@@ -58,11 +62,3 @@ namespace flashgg {
 
 
 #endif
-
-// Local Variables:
-// mode:c++
-// indent-tabs-mode:nil
-// tab-width:4
-// c-basic-offset:4
-// End:
-// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
