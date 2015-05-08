@@ -80,7 +80,7 @@ namespace flashgg {
                 if( PhotonET < minPhotonPT_ ) { continue; }
 
                 //MuMuGammaCandidate mumugamma(dimu, photon_corr);
-                MuMuGammaCandidate mumugamma( dimuon, photon_corr );
+                MuMuGammaCandidate mumugamma( dimuon, photon_corr, pvx );
                 mumugamma.setVertex( pvx );
                 //====================
                 bool passFSRZmmg2012 = 0;
@@ -147,11 +147,3 @@ namespace flashgg {
 
 typedef flashgg::MuMuGammaProducer FlashggMuMuGammaProducer;
 DEFINE_FWK_MODULE( FlashggMuMuGammaProducer );
-
-// Local Variables:
-// mode:c++
-// indent-tabs-mode:nil
-// tab-width:4
-// c-basic-offset:4
-// End:
-// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
