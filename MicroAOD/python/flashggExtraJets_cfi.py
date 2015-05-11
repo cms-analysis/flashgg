@@ -6,20 +6,44 @@ from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased as pu_jetid
 from PhysicsTools.PatAlgos.tools.jetTools import addJetCollection
 
 
-
 flashggBtag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
 
+def addFlashggPF(process):
+  print "JET PRODUCER :: Flashgg PF producer ::"
+  from RecoJets.JetProducers.ak4PFJets_cfi  import ak4PFJets
+  from RecoJets.JetProducers.ak4GenJets_cfi import ak4GenJets
+  
+  process.ak4PFJets  = ak4PFJets.clone (src = 'packedPFCandidates', doAreaFastjet = True)
+  process.ak4GenJets = ak4GenJets.clone(src = 'packedGenParticles')
+  ## cluster the jets
+  addJetCollection(
+    process,
+    labelName      = 'AK4PF',
+    jetSource      = cms.InputTag('ak4PFJets'),
+    pvSource       = cms.InputTag('offlineSlimmedPrimaryVertices'),
+    pfCandidates   = cms.InputTag('packedPFCandidates'),
+    svSource       = cms.InputTag('slimmedSecondaryVertices'),
+    btagDiscriminators = [ flashggBtag ],
+    jetCorrections = ('AK4PFchs', ['L1FastJet', 'L2Relative', 'L3Absolute'], 'None'),
+    
+    genJetCollection = cms.InputTag('ak4GenJets'),
+    genParticles     = cms.InputTag('prunedGenParticles'),
+    # jet param
+    algo = 'AK', rParam = 0.4
+  )
+  ## adjust MC matching
+  process.patJetGenJetMatchAK4PF.matched = "ak4GenJets"
+  process.patJetPartonMatchAK4PF.matched = "prunedGenParticles"
+  #process.patJetPartons.particles        = "prunedGenParticles"
+  
+  #adjust PV used for Jet Corrections
+  process.patJetCorrFactorsAK4PF.primaryVertices = "offlineSlimmedPrimaryVertices"
 
-def addFlashggPFCHSLegJets(process):
-
-  # NOTE : these lines are not longer needed
-  # load various necessary plugins.
-  ## process.load("PhysicsTools.PatAlgos.producersLayer1.patCandidates_cff")
-  ## process.load('PhysicsTools.PatAlgos.slimming.unpackedTracksAndVertices_cfi')
+def addFlashggPFCHS0(process):
+  print "JET PRODUCER :: Flashgg PFCHS producer ::"
   
   # leptons to remove as per default CHS workflow
   # select the isolated leptons : electrons + muons
-  
   process.selectedMuons     = cms.EDFilter("CandPtrSelector", 
                                            src = cms.InputTag("slimmedMuons"), 
                                            cut = cms.string('''abs(eta)<2.5 && pt>10. &&
@@ -48,24 +72,24 @@ def addFlashggPFCHSLegJets(process):
                                                             VertexTag = cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
                                                           )
   
-  process.pfCHSLeg = cms.EDFilter("CandPtrSelector", 
-                                  src = cms.InputTag("flashggCHSLegacyVertexCandidates"), 
-                                  cut = cms.string(""))
+  process.pfCHS0 = cms.EDFilter("CandPtrSelector", 
+                                src = cms.InputTag("flashggCHSLegacyVertexCandidates"), 
+                                cut = cms.string(""))
   
   # then remove the previously selected muons
-  process.pfNoMuonCHSLeg      = cms.EDProducer("CandPtrProjector", 
-                                               src  = cms.InputTag("pfCHSLeg"), 
-                                               veto = cms.InputTag("selectedMuons"))
+  process.pfNoMuonCHS0      = cms.EDProducer("CandPtrProjector", 
+                                             src  = cms.InputTag("pfCHS0"), 
+                                             veto = cms.InputTag("selectedMuons"))
   # then remove the previously selected electrons
-  process.pfNoElectronsCHSLeg = cms.EDProducer("CandPtrProjector", 
-                                               src  = cms.InputTag("pfNoMuonCHSLeg"), 
-                                               veto = cms.InputTag("selectedElectrons"))
+  process.pfNoElectronsCHS0 = cms.EDProducer("CandPtrProjector", 
+                                             src  = cms.InputTag("pfNoMuonCHS0"), 
+                                             veto = cms.InputTag("selectedElectrons"))
   
   #Import RECO jet producer for ak4 PF and GEN jet
   from RecoJets.JetProducers.ak4PFJets_cfi  import ak4PFJets
   from RecoJets.JetProducers.ak4GenJets_cfi import ak4GenJets
-  process.ak4PFJetsCHSLeg = ak4PFJets.clone ( src = 'pfNoElectronsCHSLeg', doAreaFastjet = True)
-  process.ak4GenJetsLeg   = ak4GenJets.clone( src = 'packedGenParticles')
+  process.ak4PFJetsCHS0 = ak4PFJets.clone ( src = 'pfNoElectronsCHS0', doAreaFastjet = True)
+  process.ak4GenJets    = ak4GenJets.clone( src = 'packedGenParticles')
   
   # NOTE : these line are from the new Jet recipe 
   # The following is make patJets, but EI is done with the above
@@ -73,41 +97,53 @@ def addFlashggPFCHSLegJets(process):
   process.load("Configuration.Geometry.GeometryRecoDB_cff")
   process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
   
+  
+  
   # cluster the jets
   # NOTE: this is the 74X recipe for the jet clustering 
   addJetCollection(
     process,
-    labelName      = 'AK4PFCHSLeg',
-    jetSource      = cms.InputTag('ak4PFJetsCHSLeg'),
+    labelName      = 'AK4PFCHS0',
+    jetSource      = cms.InputTag('ak4PFJetsCHS0'),
     pvSource       = cms.InputTag('offlineSlimmedPrimaryVertices'),
     pfCandidates   = cms.InputTag('packedPFCandidates'),
     svSource       = cms.InputTag('slimmedSecondaryVertices'),
-    btagDiscriminators = [ flashggBtag ],
+    btagDiscriminators =  [ flashggBtag ],
     jetCorrections = ('AK4PFchs', ['L1FastJet', 'L2Relative', 'L3Absolute'], 'None'),
     
-    genJetCollection = cms.InputTag('ak4GenJetsLeg'),
+    genJetCollection = cms.InputTag('ak4GenJets0'),
     genParticles     = cms.InputTag('prunedGenParticles'),
     # jet param
     algo = 'AK', rParam = 0.4
   )
-
-  #adjust PV used for Jet Corrections
-  process.patJetCorrFactorsAK4PFCHSLeg.primaryVertices = "offlineSlimmedPrimaryVertices"
   
   # adjust MC matching
-  process.patJetGenJetMatchAK4PFCHSLeg.matched = "ak4GenJetsLeg"
-  process.patJetPartonMatchAK4PFCHSLeg.matched = "prunedGenParticles"
+  process.patJetGenJetMatchAK4PFCHS0.matched = "ak4GenJetsLeg"
+  process.patJetPartonMatchAK4PFCHS0.matched = "prunedGenParticles"
   #process.patJetPartons.particles = "prunedGenParticles"
+
+  #adjust PV used for Jet Corrections
+  process.patJetCorrFactorsAK4PFCHS0.primaryVertices = "offlineSlimmedPrimaryVertices"
   
-  
-# Flashgg Jet producer using the collection created with function above.
-flashggJets = cms.EDProducer('FlashggJetProducer',
-                             DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
-                             VertexTag   = cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
-                             JetTag      = cms.untracked.InputTag('patJetsAK4PFCHSLeg'),
-                             VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
-                             PileupJetIdParameters = cms.PSet(pu_jetid),
-                             MinJetPt=cms.untracked.double(0.)             
-)
-  
+
+
+
+
+flashggJetsPF     = cms.EDProducer('FlashggJetProducer',
+                                   DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                   VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                   JetTag=cms.untracked.InputTag('patJetsAK4PF'),
+                                   VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
+                                   PileupJetIdParameters=cms.PSet(pu_jetid),
+                                   MinJetPt=cms.untracked.double(0.)             
+                                 )
+
+flashggJetsPFCHS0 = cms.EDProducer('FlashggJetProducer',
+                                   DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                   VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                   JetTag=cms.untracked.InputTag('patJetsAK4PFCHS0'),
+                                   VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
+                                   PileupJetIdParameters=cms.PSet(pu_jetid),
+                                   MinJetPt=cms.untracked.double(0.)             
+                                 )
 
