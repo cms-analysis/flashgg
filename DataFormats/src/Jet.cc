@@ -47,7 +47,7 @@ float Jet::betaStar( const edm::Ptr<reco::Vertex> vtx ) const
 
 bool Jet::passesPuJetId( const edm::Ptr<DiPhotonCandidate> dipho, PileupJetIdentifier::Id level ) const
 {
-    return passesPuJetId( dipho->vtx() );
+    return passesPuJetId( dipho->vtx(), level );
 }
 
 float Jet::rms( const edm::Ptr<DiPhotonCandidate> dipho ) const
