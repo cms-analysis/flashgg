@@ -12,11 +12,11 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc')
 
-process.maxEvents  = cms.untracked.PSet( input = cms.untracked.int32( 500 ) )
+process.maxEvents  = cms.untracked.PSet( input = cms.untracked.int32( 100 ) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 
-jdebug=False
+jdebug=True
 
 # PHYS14 Files
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring(
@@ -46,7 +46,7 @@ process.load("flashgg/Validation/JetTreeMaker_cff")
 
 from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand,microAODDebugOutputCommand
 process.out = cms.OutputModule("PoolOutputModule",
-                               fileName       = cms.untracked.string('myMicroAODOutputFile.root'),
+                               fileName       = cms.untracked.string('.workspace/myMicroAODOutputFile.root'),
                                outputCommands = microAODDefaultOutputCommand
                            )
 
