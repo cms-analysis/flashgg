@@ -633,9 +633,8 @@ JetValidationTreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup&
     double betaStar = 0;
     //if(debug_ && std::abs(jetsDz->ptrAt( jdz )->eta())<2.5){
     if(debug_ && std::abs(jetsDz->ptrAt( jdz )->eta())<2.5 && jetsDz->ptrAt( jdz )->pt() > 20.0 ){
-      std::cout << setw(12)<<"jet["<< jdz
-		<<"] nPuJetId( "   << jetsDz->ptrAt( jdz )->nPuJetId() << " )"
-		<<" vtx0==vtxgg( " << jInfo.LegIsPV0 << " )"
+      std::cout << setw(12)<<"jet[" << jdz
+		<<"] vtx0==vtxgg( " << jInfo.LegIsPV0 << " )"
 		<< std::endl ;
       std::cout << setw(6) <<"";
       std::cout << setw(6) <<"=======================================================" << std::endl;
