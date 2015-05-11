@@ -65,6 +65,7 @@ class MicroAODCustomize(object):
             for mod in modules:
                 path.remove( getattr(process,mod))
             print getattr(process,pathName)
+        process.out.outputCommands.append("drop *_*Gen*_*_*")
             
 # customization object
 customize = MicroAODCustomize()
