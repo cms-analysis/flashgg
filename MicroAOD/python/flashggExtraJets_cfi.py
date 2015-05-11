@@ -4,9 +4,7 @@
 import FWCore.ParameterSet.Config as cms
 from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased as pu_jetid
 from PhysicsTools.PatAlgos.tools.jetTools import addJetCollection
-
-
-flashggBtag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
+from flashgg.MicroAOD.flashggJets_cfi import flashggBTag
 
 def addFlashggPF(process):
   print "JET PRODUCER :: Flashgg PF producer ::"
@@ -23,7 +21,7 @@ def addFlashggPF(process):
     pvSource       = cms.InputTag('offlineSlimmedPrimaryVertices'),
     pfCandidates   = cms.InputTag('packedPFCandidates'),
     svSource       = cms.InputTag('slimmedSecondaryVertices'),
-    btagDiscriminators = [ flashggBtag ],
+    btagDiscriminators = [ flashggBTag ],
     jetCorrections = ('AK4PFchs', ['L1FastJet', 'L2Relative', 'L3Absolute'], 'None'),
     
     genJetCollection = cms.InputTag('ak4GenJets'),
@@ -108,7 +106,7 @@ def addFlashggPFCHS0(process):
     pvSource       = cms.InputTag('offlineSlimmedPrimaryVertices'),
     pfCandidates   = cms.InputTag('packedPFCandidates'),
     svSource       = cms.InputTag('slimmedSecondaryVertices'),
-    btagDiscriminators =  [ flashggBtag ],
+    btagDiscriminators =  [ flashggBTag ],
     jetCorrections = ('AK4PFchs', ['L1FastJet', 'L2Relative', 'L3Absolute'], 'None'),
     
     genJetCollection = cms.InputTag('ak4GenJets0'),
