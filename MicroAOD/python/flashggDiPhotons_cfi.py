@@ -10,11 +10,20 @@ flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                   VertexSelectorName=cms.string("FlashggLegacyVertexSelector"),
                                   VertexCandidateMapTag=cms.InputTag("flashggVertexMapUnique"),
                                   ConversionTag=cms.untracked.InputTag("reducedEgamma","reducedConversions"),             
+                                  ConversionTagSingleLeg=cms.untracked.InputTag("reducedEgamma","reducedSingleLegConversions"),
 
                                   ##Parameters for Legacy Vertex Selector                                                
-                                  vertexIdMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/2013FinalPaper_VertexID_BDTCat_conversions.weights.xml"),
+                                  #old
+                                  #vertexIdMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/2013FinalPaper_VertexID_BDTCat_conversions.weights.xml"),
+                                  #new xml, new reso, no single leg conv : useSingleLeg = false
+                                  #useSingleLeg=cms.untracked.bool(False),
+                                  #vertexIdMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_allModes_NewReso_noSingleLeg.weights.xml"),
+                                  #new xml, new reso, with single leg conv : useSingleLeg = true
+                                  useSingleLeg=cms.untracked.bool(True),
+                                  vertexIdMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_allModes_NewReso_withSingleLeg.weights.xml"), 
                                   vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTvtxprob2012.weights.xml"),
                                   dRexclude=cms.untracked.double(0.05),
+                                  #useSingleLeg=cms.untracked.bool(True),
                                   sigma1Pix=cms.untracked.double(0.011),                     
                                   sigma1Tib=cms.untracked.double(0.492),                     
                                   sigma1Tob=cms.untracked.double(4.398),                     
