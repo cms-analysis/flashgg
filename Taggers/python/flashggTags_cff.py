@@ -25,6 +25,12 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                          Boundaries=cms.untracked.vdouble(0.21,0.6,0.81)
                                          )
 
+flashggVHEtTag = cms.EDProducer("FlashggVHEtTagProducer",
+                                         DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                         #metThreshold = cms.untracked.double(70),
+                                         #Boundaries=cms.untracked.vdouble(0.21,0.6,0.81)
+                                         )
+
 flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
 					DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
 					TTHJetTag=cms.untracked.InputTag('flashggJets'),
