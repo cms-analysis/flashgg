@@ -40,6 +40,16 @@ namespace flashgg {
         void setVtxProbMVA( float val ) { vtxprobmva_ = val; }
         void setVertexIndex( int val ) { vertex_index_ = val; }
 
+        void setNConvSingleLeg( float val ) { nConvSingleLeg_ = val; }
+        void setNConvLegsLeadPhoton(float val) { nConvLegs_LeadPhoton_ = val; }
+        void setNConvLegsTrailPhoton(float val) { nConvLegs_TrailPhoton_ = val; }
+        void setMindRLeadPhoton(float val) { mindR_LeadPhoton_ = val; }
+        void setMindRTrailPhoton(float val) { mindR_TrailPhoton_ = val; }
+        void setHasOneLegConvLeadPhoton(int val){HasOneLegConvLeadPhoton_=val;}
+        void setHasOneLegConvTrailPhoton(int val){ HasOneLegConvTrailPhoton_ = val;}
+        void setHasBothMatchedConvLeadPhoton(int val) { hasBothMatchedConv_LeadPhoton_ = val; }
+        void setHasBothMatchedConvTrailPhoton(int val) { hasBothMatchedConv_TrailPhoton_ = val; }
+
         void setVLogSumPt2( std::vector<float> vval ) { vlogsumpt2_ = vval; }
         void setVPtBal( std::vector<float> vval ) { vptbal_ = vval; }
         void setVPtAsym( std::vector<float> vval ) { vptasym_ = vval; }
@@ -48,6 +58,8 @@ namespace flashgg {
         void setVMVA( std::vector<float> vval ) { vmva_value_ = vval; }
         void setVVtxPtr( std::vector<edm::Ptr<reco::Vertex> >  vval ) { vVtxPtr_ = vval;}
         void setVMVASortedIndex( std::vector<unsigned int>  vval ) { vmva_sortedindex_ = vval;}
+
+        void setVNConvSingleLeg( std::vector<float> vval ) { vnConvSingleLeg_ = vval; }
 
         float logSumPt2() const { return logsumpt2_; }
         float ptBal() const { return ptbal_; }
@@ -80,6 +92,20 @@ namespace flashgg {
         float leadPhotonId() const { return leadingPhoton()->phoIdMvaDWrtVtx( vertex_ ); }
         float subLeadPhotonId() const { return subLeadingPhoton()->phoIdMvaDWrtVtx( vertex_ ); }
 
+        int hasBothMatchedConvLeadPhoton()const{return hasBothMatchedConv_LeadPhoton_;}
+        int hasBothMatchedConvTrailPhoton()const{return hasBothMatchedConv_TrailPhoton_;}
+        int hasOneLegConvLeadPhoton() const {return HasOneLegConvLeadPhoton_; }
+        int hasOneLegConvTrailPhoton() const {return HasOneLegConvTrailPhoton_; }
+
+        float getVNConvSingleLeg(unsigned int iVtx)const {return iVtx<vnConvSingleLeg_.size()?vnConvSingleLeg_.at(iVtx):-9999.; }
+
+        float nConvSingleLeg() const {return nConvSingleLeg_;}
+        float nConvLegsLeadPhoton() const {return nConvLegs_TrailPhoton_;}
+        float nConvLegsTrailPhoton() const {return nConvLegs_LeadPhoton_;}
+        float mindRLeadPhoton() const {return mindR_TrailPhoton_;}
+        float mindRTrailPhoton()const {return mindR_LeadPhoton_;}
+
+
     private:
 
         edm::Ptr<reco::Vertex> vertex_;
@@ -97,6 +123,18 @@ namespace flashgg {
         float dZ1_;
         float dZ2_;
         float vtxprobmva_;
+
+        int HasOneLegConvTrailPhoton_;
+        int HasOneLegConvLeadPhoton_;
+        int hasBothMatchedConv_LeadPhoton_;
+        int hasBothMatchedConv_TrailPhoton_;
+        float nConvSingleLeg_;
+        float nConvLegs_TrailPhoton_;
+        float nConvLegs_LeadPhoton_;
+        float mindR_TrailPhoton_;
+        float mindR_LeadPhoton_;
+
+        std::vector<float> vnConvSingleLeg_;
 
         std::vector<float> vlogsumpt2_;
         std::vector<float> vptbal_;
