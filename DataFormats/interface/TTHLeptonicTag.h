@@ -17,6 +17,9 @@ namespace flashgg {
 
         ~TTHLeptonicTag();
 
+        TTHLeptonicTag( const TTHLeptonicTag & );
+        TTHLeptonicTag *clone() const { return ( new TTHLeptonicTag( *this ) ); }
+
         const std::vector<edm::Ptr<pat::Muon> > muons() const { return Muons_;}
         const std::vector<edm::Ptr<flashgg::Electron> > electrons() const {return Electrons_;}
         const std::vector<edm::Ptr<Jet> > jets() const { return Jets_;}
@@ -26,8 +29,6 @@ namespace flashgg {
         void setBJets( std::vector<edm::Ptr<Jet> > BJets )  { BJets_ = BJets;}
         void setMuons( std::vector<edm::Ptr<pat::Muon> > Muons ) {Muons_ = Muons;}
         void setElectrons( std::vector<edm::Ptr<Electron> > Electrons ) {Electrons_ = Electrons;}
-
-        TTHLeptonicTag *clone() const;
 
     private:
         std::vector<edm::Ptr<pat::Muon> > Muons_;

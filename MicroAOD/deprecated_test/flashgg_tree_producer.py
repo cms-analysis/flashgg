@@ -38,14 +38,14 @@ process.load("flashgg/MicroAOD/flashggPreselectedDiPhotons_cfi")
 process.TFileService = cms.Service("TFileService",fileName = cms.string("VtxIdTree.root"))
 process.flashggTreeMaker = cms.EDAnalyzer('FlashggVtxIdTreeMaker',
                                                           GenParticleTag=cms.untracked.InputTag('prunedGenParticles'),
-																													DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+																													DiPhotonTag = cms.InputTag('flashggDiPhotons'),
                                                           )
                                                  
 # This requires you to have done: git cms-merge-topic -u sethzenz:pileupjetid-for-flashgg
 process.load("RecoJets.JetProducers.PileupJetIDParams_cfi")
 
 process.flashggJets = cms.EDProducer('FlashggJetProducer',
-                                     DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                     DiPhotonTag=cms.InputTag('flashggDiPhotons'),
                                      VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                      JetTag=cms.untracked.InputTag('slimmedJets'),
                                      VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
@@ -69,7 +69,7 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
 
 process.commissioning = cms.EDAnalyzer('flashggCommissioning',
                                        PhotonTag=cms.untracked.InputTag('flashggPhotons'),
-                                       DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+                                       DiPhotonTag = cms.InputTag('flashggDiPhotons'),
                                        VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
 )
 
