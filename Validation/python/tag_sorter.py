@@ -33,7 +33,7 @@ process.load("flashgg/TagProducers/flashggVBFDiPhoDiJetMVA_cfi")
 process.load("flashgg/TagProducers/flashggTags_cfi")
 
 process.flashggTagSorter = cms.EDProducer('FlashggTagSorter',
-                                          DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+                                          DiPhotonTag = cms.InputTag('flashggDiPhotons'),
                                           TagVectorTag = cms.untracked.VInputTag(
 									cms.untracked.InputTag('flashggVHLooseTag'),
                                                                         cms.untracked.InputTag('flashggVHTightTag'),
@@ -55,7 +55,7 @@ process.flashggTreeMakerWithTagSorter = cms.EDAnalyzer('FlashggFlashggTreeMakerW
                                                           VertexCandidateMapTagDz=cms.InputTag('flashggVertexMapUnique'),
                                                           VertexCandidateMapTagAOD = cms.InputTag('flashggVertexMapValidator'),
                                                           JetTagDz = cms.InputTag("flashggJets"),
-																													DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+																													DiPhotonTag = cms.InputTag('flashggDiPhotons'),
 																													METTag = cms.untracked.InputTag('slimmedMETs'),
 																													PileUpTag = cms.untracked.InputTag('addPileupInfo'),
 																													TagSorter = cms.untracked.InputTag('flashggTagSorter'),
@@ -83,7 +83,7 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
 
 process.commissioning = cms.EDAnalyzer('flashggCommissioning',
                                        PhotonTag=cms.untracked.InputTag('flashggPhotons'),
-                                       DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+                                       DiPhotonTag = cms.InputTag('flashggDiPhotons'),
                                        VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
 )
 

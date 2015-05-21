@@ -65,7 +65,7 @@ def addFlashggPFCHS0(process):
   # don't come from the legacy vertex according to the Flashgg Vertex Map
   process.flashggCHSLegacyVertexCandidates = cms.EDProducer('FlashggCHSLegacyVertexCandidateProducer',
                                                             PFCandidatesTag       = cms.untracked.InputTag('packedPFCandidates'),
-                                                            DiPhotonTag           = cms.untracked.InputTag('flashggDiPhotons'),
+                                                            DiPhotonTag           = cms.InputTag('flashggDiPhotons'),
                                                             VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                                                             VertexTag = cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
                                                           )
@@ -121,7 +121,7 @@ def addFlashggPFCHS0(process):
 
 
 flashggJetsPF     = cms.EDProducer('FlashggJetProducer',
-                                   DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                   DiPhotonTag=cms.InputTag('flashggDiPhotons'),
                                    VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                    JetTag=cms.untracked.InputTag('patJetsAK4PF'),
                                    VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
@@ -130,7 +130,7 @@ flashggJetsPF     = cms.EDProducer('FlashggJetProducer',
                                  )
 
 flashggJetsPFCHS0 = cms.EDProducer('FlashggJetProducer',
-                                   DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                   DiPhotonTag=cms.InputTag('flashggDiPhotons'),
                                    VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                    JetTag=cms.untracked.InputTag('patJetsAK4PFCHS0'),
                                    VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),

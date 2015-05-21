@@ -39,7 +39,7 @@ namespace flashgg {
 
     template <typename flashgg_object, typename param_var>
     ObjectSystematicProducer<flashgg_object, param_var>::ObjectSystematicProducer( const ParameterSet &iConfig ) :
-        ObjectToken_( consumes<View<flashgg_object> >( iConfig.getUntrackedParameter<InputTag>( "InputTag", InputTag( "flashggPhotons" ) ) ) )
+        ObjectToken_( consumes<View<flashgg_object> >( iConfig.getParameter<InputTag>( "src" ) ) )
     {
         produces<std::vector<flashgg_object> >(); // Central value
         std::vector<edm::ParameterSet> vpset = iConfig.getParameter<std::vector<edm::ParameterSet> >( "SystMethods" );

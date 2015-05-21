@@ -149,7 +149,7 @@ unsigned int nphoton_passing_pfISO[8] = {0};
 // constructors and destructor
 //
 DiphotonPreselectionValidationTreeMaker::DiphotonPreselectionValidationTreeMaker( const edm::ParameterSet &iConfig ):
-    diphotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "DiPhotonTag", InputTag( "flashggDiPhotons" ) ) ) )
+    diphotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) )
 {
 
 }

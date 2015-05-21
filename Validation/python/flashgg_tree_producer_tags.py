@@ -35,7 +35,7 @@ process.flashggTreeMakerWithTags = cms.EDAnalyzer('FlashggFlashggTreeMakerWithTa
                                                           VertexCandidateMapTagDz=cms.InputTag('flashggVertexMapUnique'),
                                                           VertexCandidateMapTagAOD = cms.InputTag('flashggVertexMapValidator'),
                                                           JetTagDz = cms.InputTag("flashggJets"),
-																													DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+																													DiPhotonTag = cms.InputTag('flashggDiPhotons'),
 																													METTag = cms.untracked.InputTag('slimmedMETs'),
 																													PileUpTag = cms.untracked.InputTag('addPileupInfo'),
 																													UntaggedTag = cms.untracked.InputTag('flashggUntaggedCategory'),
@@ -62,7 +62,7 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
 
 process.commissioning = cms.EDAnalyzer('flashggCommissioning',
                                        PhotonTag=cms.untracked.InputTag('flashggPhotons'),
-                                       DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+                                       DiPhotonTag = cms.InputTag('flashggDiPhotons'),
                                        VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
 )
 

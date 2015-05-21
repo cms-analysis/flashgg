@@ -14,6 +14,9 @@
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/VHHadronicTag.h"
 
+#include "flashgg/DataFormats/interface/TagTruthBase.h"
+#include "DataFormats/Common/interface/RefToPtr.h"
+
 #include <vector>
 #include <algorithm>
 #include <string>
@@ -33,6 +36,7 @@ namespace flashgg {
     {
 
     public:
+        typedef math::XYZPoint Point;
 
         VHHadronicTagProducer( const ParameterSet & );
     private:
@@ -42,6 +46,7 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         EDGetTokenT<View<Jet> > thejetToken_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
+        EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
 
         //Thresholds
         double leadPhoOverMassThreshold_;
@@ -62,9 +67,10 @@ namespace flashgg {
 
     VHHadronicTagProducer::VHHadronicTagProducer( const ParameterSet &iConfig ) :
 
-        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "DiPhotonTag", InputTag( "flashggDiPhotons" ) ) ) ),
+        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         thejetToken_( consumes<View<flashgg::Jet> >( iConfig.getUntrackedParameter<InputTag>( "JetTag", InputTag( "flashggJets" ) ) ) ),
-        mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getUntrackedParameter<InputTag> ( "MVAResultTag", InputTag( "flashggDiPhotonMVA" ) ) ) )
+        mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getUntrackedParameter<InputTag> ( "MVAResultTag", InputTag( "flashggDiPhotonMVA" ) ) ) ),
+        genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getUntrackedParameter<InputTag> ( "GenParticleTag", InputTag( "prunedGenParticles" ) ) ) )
     {
 
         // ***** define thresholds ***********************
@@ -99,6 +105,7 @@ namespace flashgg {
         // *************************************************
 
         produces<vector<VHHadronicTag> >();
+        produces<vector<TagTruthBase> >();
     }
 
     void VHHadronicTagProducer::produce( Event &evt, const EventSetup & )
@@ -116,7 +123,24 @@ namespace flashgg {
         evt.getByToken( mvaResultToken_, mvaResults );
 //   const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
 
+        Handle<View<reco::GenParticle> > genParticles;
+        evt.getByToken( genParticleToken_, genParticles );
+
         std::auto_ptr<vector<VHHadronicTag> > vhhadtags( new vector<VHHadronicTag> );
+        std::auto_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
+
+        Point higgsVtx;
+
+        for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+            int pdgid = genParticles->ptrAt( genLoop )->pdgId();
+            if( pdgid == 25 || pdgid == 22 ) {
+                higgsVtx = genParticles->ptrAt( genLoop )->vertex();
+                break;
+            }
+        }
+
+        edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
+        unsigned int idx = 0;
 
         assert( diPhotons->size() == mvaResults->size() );
 
@@ -191,9 +215,13 @@ namespace flashgg {
             vhhadtag_obj.setDiPhotonIndex( diphoIndex );
             vhhadtags->push_back( vhhadtag_obj );
 
-        }  // END OF DIPHOTON LOOP
-
+            TagTruthBase truth_obj;
+            truth_obj.setGenPV( higgsVtx );
+            truths->push_back( truth_obj );
+            vhhadtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
+        }
         evt.put( vhhadtags );
+        evt.put( truths );
     }
 
 

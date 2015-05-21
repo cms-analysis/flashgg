@@ -68,7 +68,7 @@ private:
 // constructors and destructor
 //
 PhotonCorrectionValidationTreeMaker::PhotonCorrectionValidationTreeMaker( const edm::ParameterSet &iConfig ):
-    diphotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "DiPhotonTag", InputTag( "flashggDiPhotons" ) ) ) )
+    diphotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) )
 {
 }
 

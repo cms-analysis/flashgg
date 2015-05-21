@@ -17,6 +17,9 @@ namespace flashgg {
         VHTightTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult );
         ~VHTightTag();
 
+        VHTightTag( const VHTightTag & );
+        VHTightTag *clone() const { return ( new VHTightTag( *this ) ); }
+
         const std::vector<edm::Ptr<pat::Muon> > muons() const { return Muons_;}
         const std::vector<edm::Ptr<flashgg::Electron> > electrons() const {return Electrons_;}
         const std::vector<edm::Ptr<Jet> > jets() const { return Jets_;}
@@ -26,8 +29,6 @@ namespace flashgg {
         void setMuons( std::vector<edm::Ptr<pat::Muon> > Muons ) {Muons_ = Muons;}
         void setMET( std::vector<edm::Ptr<pat::MET> > MET ) {MET_ = MET;}
         void setElectrons( std::vector<edm::Ptr<Electron> > Electrons ) {Electrons_ = Electrons;}
-
-        VHTightTag *clone() const;
 
     private:
         std::vector<edm::Ptr<pat::Muon> > Muons_;

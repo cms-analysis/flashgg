@@ -28,7 +28,7 @@ process.load("flashgg/MicroAOD/flashggTkVtxMap_cfi")
 
 process.commissioning = cms.EDAnalyzer('flashggCommissioning',
                                        PhotonTag=cms.untracked.InputTag('flashggPhotons'),
-                                       DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+                                       DiPhotonTag = cms.InputTag('flashggDiPhotons'),
                                        VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
 )
 
