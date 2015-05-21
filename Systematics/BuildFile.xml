@@ -1,4 +1,5 @@
 <use name="FWCore/PluginManager"/>
+<use name="CommonTools/Utils"/>
 <use name="flashgg/DataFormats"/>
 <use name="rootrflx"/>
 <export>
