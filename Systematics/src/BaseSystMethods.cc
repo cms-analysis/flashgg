@@ -6,6 +6,8 @@ EDM_REGISTER_PLUGINFACTORY( FlashggSystematicElectronMethodsFactory,
                             "SystematicElectronMethodsFactory" );
 EDM_REGISTER_PLUGINFACTORY( FlashggSystematicMuonMethodsFactory,
                             "SystematicMuonMethodsFactory" );
+EDM_REGISTER_PLUGINFACTORY( FlashggSystematicDiPhotonMethodsFactory,
+                            "SystematicDiPhotonMethodsFactory" );
 
 //EDM_REGISTER_PLUGINFACTORY(FlashggSystematicDiPhotonMethodsFactory,
 //				"SystematicDiPhotonMethodsFactory");
