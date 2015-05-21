@@ -1,8 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 
-scaleBins = cms.VPSet(cms.PSet( Range = cms.string("pt>10.&&pt<15."), Scale = cms.double(0.5) ),
-                      cms.PSet( Range = cms.string("pt>15.&&pt<20."), Scale = cms.double(1.0) ),
-                      cms.PSet( Range = cms.string("pt>20."), Scale = cms.double(2.0) )
+scaleBins = cms.VPSet(cms.PSet( Range = cms.string("pt>10.&&pt<15."), Shift = cms.double(0.003), Uncertainty = cms.double(0.001) ),
+                      cms.PSet( Range = cms.string("pt>15.&&pt<20."), Shift = cms.double(-0.001), Uncertainty = cms.double(0.0005) ),
+                      cms.PSet( Range = cms.string("pt>20."), Shift = cms.double(0.002), Uncertainty = cms.double(0.0004) )
                       )
 
 flashggSmearPhoton = cms.EDProducer('FlashggPhotonSystematicProducer',

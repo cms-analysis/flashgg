@@ -7,6 +7,18 @@
 
 namespace flashgg {
 
+    struct ScaleBin {
+
+        StringCutObjectSelector<Photon, true> selector;
+        double shift;
+        double shift_err;
+
+        ScaleBin( std::string s, double val, double err ) :
+            selector( s ),
+            shift( val ),
+            shift_err( err ) {}
+    };
+
     class PhotonScaleString: public BaseSystMethods<flashgg::Photon, int>
     {
 
@@ -17,7 +29,7 @@ namespace flashgg {
         std::string shiftLabel( int ) override;
 
     private:
-        std::vector<std::pair<StringCutObjectSelector<Photon, true>, double> > bins_;
+        std::vector<ScaleBin> bins_;
         StringCutObjectSelector<Photon, true> overall_range_;
         bool debug_;
     };
@@ -30,8 +42,9 @@ namespace flashgg {
         const auto &vpset = conf.getParameterSetVector( "Bins" );
         for( const auto &pset : vpset ) {
             std::string range = pset.getParameter<std::string>( "Range" );
-            double scale = pset.getParameter<double>( "Scale" );
-            bins_.emplace_back( StringCutObjectSelector<Photon, true>( range ), scale );
+            double shift = pset.getParameter<double>( "Shift" );
+            double uncertainty = pset.getParameter<double>( "Uncertainty" );
+            bins_.emplace_back( range, shift, uncertainty );
         }
     }
 
@@ -50,16 +63,15 @@ namespace flashgg {
 
     void PhotonScaleString::applyCorrection( flashgg::Photon &y, int syst_shift )
     {
-        if( syst_shift == 0 || !overall_range_( y ) ) {
-            // Nominal correction or this corrector does not apply to this object
-        } else {
-            for( auto binit = bins_.begin() ; binit != bins_.end() ; binit++ ) {
-                if( ( binit->first )( y ) ) {
+        if( overall_range_( y ) ) {
+            for( auto bin = bins_.begin() ; bin != bins_.end() ; bin++ ) {
+                if( ( bin->selector )( y ) ) {
+                    float scale = 1 + bin->shift + syst_shift * bin->shift_err;
                     if( debug_ ) {
-                        std::cout << "  " << label() << ": Photon has pt= " << y.pt() << " eta=" << y.eta()
-                                  << " and we a apply a " << syst_shift << " sigma shift with sigma=" << binit->second << std::endl;
+                        std::cout << "  " << shiftLabel( syst_shift ) << ": Photon has pt= " << y.pt() << " eta=" << y.eta()
+                                  << " and we a apply a multiplicative correction of " << scale << std::endl;
                     }
-                    y.updateEnergy( shiftLabel( syst_shift ), y.energy() + binit->second * syst_shift );
+                    y.updateEnergy( shiftLabel( syst_shift ), scale * y.energy() );
                     break;
                 }
             }
