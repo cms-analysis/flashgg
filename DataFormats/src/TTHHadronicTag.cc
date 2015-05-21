@@ -19,17 +19,13 @@ TTHHadronicTag::TTHHadronicTag( edm::Ptr<DiPhotonCandidate> dipho, DiPhotonMVARe
     theBJetVec_ = std::vector<edm::Ptr<flashgg::Jet> >( theBJetVec );
 }
 
-TTHHadronicTag *TTHHadronicTag::clone() const
+TTHHadronicTag::TTHHadronicTag( const TTHHadronicTag &b ) : DiPhotonTagBase::DiPhotonTagBase( b )
 {
-    TTHHadronicTag *result = new TTHHadronicTag( diPhoton(), diPhotonMVA(), theJetVec_, theBJetVec_ );
-    result->setDiPhotonIndex( diPhotonIndex() );
-    return result;
+    theJetVec_ = b.jetVector();
+    theBJetVec_ = b.bJetVector();
+    setNBLoose( b.nBLoose() );
+    setNBMedium( b.nBMedium() );
 }
-
-
-
-
-
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

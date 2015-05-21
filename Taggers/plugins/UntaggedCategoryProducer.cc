@@ -10,6 +10,9 @@
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
 #include "flashgg/DataFormats/interface/DiPhotonUntaggedCategory.h"
+#include "flashgg/DataFormats/interface/TagTruthBase.h"
+#include "DataFormats/Common/interface/RefToPtr.h"
+
 
 #include <vector>
 #include <algorithm>
@@ -23,6 +26,8 @@ namespace flashgg {
     {
 
     public:
+        typedef math::XYZPoint Point;
+
         UntaggedCategoryProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
@@ -30,15 +35,16 @@ namespace flashgg {
 
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
+        EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
 
         vector<double> boundaries;
 
     };
 
     UntaggedCategoryProducer::UntaggedCategoryProducer( const ParameterSet &iConfig ) :
-        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "DiPhotonTag", InputTag( "flashggDiPhotons" ) ) ) ),
-        mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getUntrackedParameter<InputTag> ( "MVAResultTag", InputTag( "flashggDiPhotonMVA" ) ) ) )
-
+        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
+        mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getUntrackedParameter<InputTag> ( "MVAResultTag", InputTag( "flashggDiPhotonMVA" ) ) ) ),
+        genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getUntrackedParameter<InputTag> ( "GenParticleTag", InputTag( "prunedGenParticles" ) ) ) )
     {
         vector<double> default_boundaries;
         default_boundaries.push_back( 0.07 );
@@ -53,6 +59,7 @@ namespace flashgg {
         assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception
 
         produces<vector<DiPhotonUntaggedCategory> >();
+        produces<vector<TagTruthBase> >();
     }
 
     int UntaggedCategoryProducer::chooseCategory( float mvavalue )
@@ -76,9 +83,28 @@ namespace flashgg {
         evt.getByToken( mvaResultToken_, mvaResults );
 //   const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
 
+        Handle<View<reco::GenParticle> > genParticles;
+        evt.getByToken( genParticleToken_, genParticles );
+
         std::auto_ptr<vector<DiPhotonUntaggedCategory> > tags( new vector<DiPhotonUntaggedCategory> );
+        std::auto_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
+
+        Point higgsVtx;
+
+        for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+            int pdgid = genParticles->ptrAt( genLoop )->pdgId();
+            if( pdgid == 25 || pdgid == 22 ) {
+                higgsVtx = genParticles->ptrAt( genLoop )->vertex();
+                break;
+            }
+        }
 
         assert( diPhotons->size() == mvaResults->size() ); // We are relying on corresponding sets - update this to give an error/exception
+
+        unsigned int idx = 0;
+
+        // Je ne comprends pas ces RefProds, mais je le fais
+        edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
 
         for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
             edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( candIndex );
@@ -86,11 +112,9 @@ namespace flashgg {
 
             DiPhotonUntaggedCategory tag_obj( dipho, mvares );
             tag_obj.setDiPhotonIndex( candIndex );
-            //		tag_obj.setDiPhoMVAResult(mvares);
-            //		tag_obj.setSigmaMwvoM( (float) mvares->sigmawv);
-            //		tag_obj.setSigmaMrvoM( mvares->sigmarv);
-            //		tag_obj.setVtxProb(   mvares->vtxprob);
-            //		tag_obj.setDiphoMva(  mvares->mvaValue());
+
+            TagTruthBase truth_obj;
+            truth_obj.setGenPV( higgsVtx );
 
             int catnum = chooseCategory( mvares->result );
             tag_obj.setCategoryNumber( catnum );
@@ -100,9 +124,12 @@ namespace flashgg {
 
             if( tag_obj.categoryNumber() >= 0 ) {
                 tags->push_back( tag_obj );
+                truths->push_back( truth_obj );
+                tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
             }
         }
         evt.put( tags );
+        evt.put( truths );
 
     }
 }
