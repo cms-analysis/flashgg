@@ -13,6 +13,9 @@
 //#include "flashgg/DataFormats/interface/VBFMVAResult.h"
 #include "flashgg/DataFormats/interface/VHEtTag.h"
 
+#include "flashgg/DataFormats/interface/TagTruthBase.h"
+#include "DataFormats/Common/interface/RefToPtr.h"
+
 #include <vector>
 #include <algorithm>
 
@@ -25,6 +28,8 @@ namespace flashgg {
     {
 
     public:
+        typedef math::XYZPoint Point;
+
         VHEtTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
@@ -32,6 +37,8 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<pat::MET> > METToken_;
+        EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
+
         //configurable selection variables
         double leadPhoOverMassThreshold_;
         double subleadPhoOverMassThreshold_;
@@ -41,9 +48,10 @@ namespace flashgg {
     };
 
     VHEtTagProducer::VHEtTagProducer( const ParameterSet &iConfig ) :
-        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "DiPhotonTag", InputTag( "flashggDiPhotons" ) ) ) ),
+        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getUntrackedParameter<InputTag> ( "MVAResultTag", InputTag( "flashggDiPhotonMVA" ) ) ) ),
-        METToken_( consumes<View<pat::MET> >( iConfig.getUntrackedParameter<InputTag> ( "METTag", InputTag( "slimmedMETs" ) ) ) )
+        METToken_( consumes<View<pat::MET> >( iConfig.getUntrackedParameter<InputTag> ( "METTag", InputTag( "slimmedMETs" ) ) ) ),
+        genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getUntrackedParameter<InputTag> ( "GenParticleTag", InputTag( "prunedGenParticles" ) ) ) )
     {
         leadPhoOverMassThreshold_    = iConfig.getUntrackedParameter<double>( "leadPhoOverMassThreshold", 0.334 );
         subleadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>( "subleadPhoOverMassThreshold", 0.25 );
@@ -52,6 +60,7 @@ namespace flashgg {
         phoIdMVAThreshold_           = iConfig.getUntrackedParameter<double>( "phoIdMVAThreshold", -0.2 );
 
         produces<vector<VHEtTag> >();
+        produces<vector<TagTruthBase> >();
     }
 
     void VHEtTagProducer::produce( Event &evt, const EventSetup & )
@@ -70,7 +79,24 @@ namespace flashgg {
         { std::cout << "WARNING number of MET is not equal to 1" << std::endl; }
         Ptr<pat::MET> theMET = METs->ptrAt( 0 );
 
+        Handle<View<reco::GenParticle> > genParticles;
+        evt.getByToken( genParticleToken_, genParticles );
+
         std::auto_ptr<vector<VHEtTag> > vhettags( new vector<VHEtTag> );
+        std::auto_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
+
+        Point higgsVtx;
+
+        for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+            int pdgid = genParticles->ptrAt( genLoop )->pdgId();
+            if( pdgid == 25 || pdgid == 22 ) {
+                higgsVtx = genParticles->ptrAt( genLoop )->vertex();
+                break;
+            }
+        }
+
+        edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
+        unsigned int idx = 0;
 
         assert( diPhotons->size() ==
                 mvaResults->size() ); // We are relying on corresponding sets - update this to give an error/exception
@@ -100,6 +126,10 @@ namespace flashgg {
             VHEtTag tag_obj( dipho, mvares );
             tag_obj.setDiPhotonIndex( candIndex );
             tag_obj.setMet( theMET );
+
+            TagTruthBase truth_obj;
+            truth_obj.setGenPV( higgsVtx );
+
             //MetCorrections2012_Simple(leadp4,subleadp4);
             //if(diphoton.mass()>100&&diphoton.mass()<180)
             {
@@ -110,9 +140,12 @@ namespace flashgg {
                 //setdiphotonindex
                 //setMET
                 vhettags->push_back( tag_obj );
+                truths->push_back( truth_obj );
+                vhettags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
             }
         }
         evt.put( vhettags );
+        evt.put( truths );
     }
 }
 

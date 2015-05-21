@@ -3,12 +3,13 @@ from flashgg.MicroAOD.flashggJets_cfi import flashggBTag
 
 flashggUntaggedCategory = cms.EDProducer("FlashggUntaggedCategoryProducer",
 #                                         DiPhotonTag=cms.untracked.InputTag('flashggPreselectedDiPhotons'), # why doesn't this work?
-		DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+		DiPhotonTag=cms.InputTag('flashggDiPhotons'),
 		MVAResultTag=cms.untracked.InputTag('flashggDiPhotonMVA'),
 		Boundaries=cms.untracked.vdouble(0.07,0.31,0.62,0.86,0.98)
 		)
 
 flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
+                                       DiPhotonTag=cms.InputTag('flashggDiPhotons'),
                                        TTHJetTag=cms.untracked.InputTag('flashggJets'),
                                        bDiscriminatorLoose = cms.untracked.double(0.275),
                                        bDiscriminatorMedium = cms.untracked.double(0.545),
@@ -19,20 +20,20 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
 
 flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
 #                                         DiPhotonTag=cms.untracked.InputTag('flashggPreselectedDiPhotons'), # why doesn't this work?
-                                         DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                         DiPhotonTag=cms.InputTag('flashggDiPhotons'),
                                          VBFDiPhoDiJetMVAResultTag=cms.untracked.InputTag('flashggVBFDiPhoDiJetMVA'),
                                          VBFMVAResultTag=cms.untracked.InputTag('flashggVBFMVA'),
                                          Boundaries=cms.untracked.vdouble(0.21,0.6,0.81)
                                          )
 
 flashggVHEtTag = cms.EDProducer("FlashggVHEtTagProducer",
-                                         DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                         DiPhotonTag=cms.InputTag('flashggDiPhotons'),
                                          #metThreshold = cms.untracked.double(70),
                                          #Boundaries=cms.untracked.vdouble(0.21,0.6,0.81)
                                          )
 
 flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
-					DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+					DiPhotonTag=cms.InputTag('flashggDiPhotons'),
 					TTHJetTag=cms.untracked.InputTag('flashggJets'),
 					ElectronTag=cms.untracked.InputTag('flashggElectrons'),
 					MuonTag=cms.untracked.InputTag('slimmedMuon'),
@@ -72,7 +73,7 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
 					electronNumOfHitsThreshold = cms.untracked.double(1)
 				    )
 flashggVHLooseTag = cms.EDProducer("FlashggVHLooseTagProducer",
-					DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+					DiPhotonTag=cms.InputTag('flashggDiPhotons'),
 					VHlooseJetTag=cms.untracked.InputTag('flashggJets'),
 					ElectronTag=cms.untracked.InputTag('flashggElectrons'),
 					MuonTag=cms.untracked.InputTag('slimmedMuons'),
@@ -109,7 +110,7 @@ flashggVHLooseTag = cms.EDProducer("FlashggVHLooseTagProducer",
 
 				    )
 flashggVHTightTag = cms.EDProducer("FlashggVHTightTagProducer",
-					DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+					DiPhotonTag=cms.InputTag('flashggDiPhotons'),
 					VHtightJetTag=cms.untracked.InputTag('flashggJets'),
 					ElectronTag=cms.untracked.InputTag('flashggElectrons'),
 					MuonTag=cms.untracked.InputTag('slimmedMuons'),
@@ -156,7 +157,7 @@ flashggVHTightTag = cms.EDProducer("FlashggVHTightTagProducer",
 
 
 flashggVHHadronicTag = cms.EDProducer("FlashggVHHadronicTagProducer",
-                                      DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+                                      DiPhotonTag = cms.InputTag('flashggDiPhotons'),
                                       JetTag = cms.untracked.InputTag('flashggJets'),
                                       leadPhoOverMassThreshold = cms.untracked.double(0.375),
                                       subleadPhoOverMassThreshold = cms.untracked.double(0.25),

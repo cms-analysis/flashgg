@@ -80,6 +80,11 @@ namespace flashgg {
         float leadPhotonId() const { return leadingPhoton()->phoIdMvaDWrtVtx( vertex_ ); }
         float subLeadPhotonId() const { return subLeadingPhoton()->phoIdMvaDWrtVtx( vertex_ ); }
 
+        void setSystLabel( const std::string label ) { systLabel_ = label; }
+        std::string systLabel() const { return systLabel_; }
+
+        bool operator <( const DiPhotonCandidate &b ) const;
+
     private:
 
         edm::Ptr<reco::Vertex> vertex_;
@@ -106,6 +111,7 @@ namespace flashgg {
         std::vector<float> vmva_value_;
         std::vector<unsigned int> vmva_sortedindex_;
         std::vector<edm::Ptr<reco::Vertex> > vVtxPtr_;
+        std::string systLabel_;
 
     };
 

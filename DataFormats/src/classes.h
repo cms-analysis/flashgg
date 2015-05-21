@@ -24,6 +24,8 @@
 #include "flashgg/DataFormats/interface/VHEtTag.h"
 #include "flashgg/DataFormats/interface/DiMuonCandidate.h"   //JTao
 #include "flashgg/DataFormats/interface/MuMuGammaCandidate.h"   //JTao
+#include "flashgg/DataFormats/interface/TagTruthBase.h"
+#include "flashgg/DataFormats/interface/VBFTagTruth.h"
 #include <vector>
 #include <map>
 
@@ -140,8 +142,10 @@ namespace  {
         flashgg::TTHLeptonicTag tthl;
         std::vector<flashgg::TTHLeptonicTag> vec_tthl;
         edm::Wrapper<std::vector<flashgg::TTHLeptonicTag> > wrp_vec_tthl;
+
         edm::Ptr<pat::Electron> ptr_elec;
         edm::Ptr<pat::Muon> ptr_muon;
+        edm::Ptr<reco::GenParticle> ptr_genp;
 
         flashgg::TTHHadronicTag tthh;
         std::vector<flashgg::TTHHadronicTag> vec_tthh;
@@ -152,8 +156,20 @@ namespace  {
         edm::Ptr<flashgg::DiPhotonTagBase> Ptr_tagbase;
         edm::Wrapper<edm::Ptr<flashgg::DiPhotonTagBase> > wrp_ptr_tagbase;
 
+        flashgg::TagTruthBase truthbase;
+        std::vector<flashgg::TagTruthBase> vec_truthbase;
+        edm::Wrapper<std::vector<flashgg::TagTruthBase> > wrp_vec_truthbase;
+        edm::Ptr<flashgg::TagTruthBase> ptr_truthbase;
+
         edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> > ownvec_tagbase;
         edm::Wrapper<edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> > > wrp_ownvec_tagbase;
+
+        edm::OwnVector<flashgg::TagTruthBase, edm::ClonePolicy<flashgg::TagTruthBase> > ownvec_truthbase;
+        edm::Wrapper<edm::OwnVector<flashgg::TagTruthBase, edm::ClonePolicy<flashgg::TagTruthBase> > > wrp_ownvec_truthbase;
+
+        flashgg::VBFTagTruth vbftt;
+        std::vector<flashgg::VBFTagTruth> vec_vbftt;
+        edm::Wrapper<std::vector<flashgg::VBFTagTruth> > wrp_vec_vbftt;
 
         flashgg::VHLooseTag vhl;
         std::vector<flashgg::VHLooseTag> vec_vhl;
