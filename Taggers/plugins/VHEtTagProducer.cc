@@ -105,14 +105,13 @@ namespace flashgg {
             {
                 //calculate met
             }
-            //if(correctedMet>70)
+            
             if(theMET->pt()>70)
             //if( tag_obj.categoryNumber() >= 0 ) 
             {
                 //setdiphotonindex
                 //setMET
                 tags->push_back( tag_obj );
-                std::cout << "in Met tagger" << std::endl;
             }
         }
         evt.put( tags );
