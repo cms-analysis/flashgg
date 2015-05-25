@@ -14,16 +14,16 @@ VHEtTag::VHEtTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<DiPhotonM
 VHEtTag::VHEtTag( edm::Ptr<DiPhotonCandidate> dipho, DiPhotonMVAResult mvares ) :
     DiPhotonTagBase::DiPhotonTagBase( dipho, mvares ) {}
 
-float VHEtTag::met()
+void VHEtTag::setMet( edm::Ptr<pat::MET> met)
 {
-    return 100;
+    theMet_ = met;
 }
 
 VHEtTag *VHEtTag::clone() const
 {
     VHEtTag *result = new VHEtTag( diPhoton(), diPhotonMVA());
-    result->setCategoryNumber( categoryNumber() );
     result->setDiPhotonIndex( diPhotonIndex() );
+    result->setMet( theMet_ );
     return result;
 }
 
