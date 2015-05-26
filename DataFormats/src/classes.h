@@ -21,6 +21,7 @@
 #include "flashgg/DataFormats/interface/VHHadronicTag.h"
 #include "flashgg/DataFormats/interface/VHLooseTag.h"
 #include "flashgg/DataFormats/interface/VHTightTag.h"
+#include "flashgg/DataFormats/interface/VHEtTag.h"
 #include "flashgg/DataFormats/interface/DiMuonCandidate.h"   //JTao
 #include "flashgg/DataFormats/interface/MuMuGammaCandidate.h"   //JTao
 #include <vector>
@@ -168,6 +169,10 @@ namespace  {
         std::vector<flashgg::VHHadronicTag> vec_vhhad;
         edm::Wrapper<std::vector<flashgg::VHHadronicTag> > wrp_vec_vhhad;
 
+        flashgg::VHEtTag vhet;
+        std::vector<flashgg::VHEtTag> vec_vhet;
+        edm::Wrapper<std::vector<flashgg::VHEtTag> > wrp_vec_vhet;
+        
         edm::Ptr<pat::Electron> ptr_elec_vht;
         edm::Ptr<pat::Muon> ptr_muon_vht;
 

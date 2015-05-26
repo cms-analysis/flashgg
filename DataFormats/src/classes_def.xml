@@ -33,6 +33,9 @@
 <class name="flashgg::TTHHadronicTag"/>
 <class name="std::vector<flashgg::TTHHadronicTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TTHHadronicTag> >"/>
+<class name="flashgg::VHEtTag"/>
+<class name="std::vector<flashgg::VHEtTag>"/>
+<class name="edm::Wrapper<std::vector<flashgg::VHEtTag> >"/>
 <class name="std::vector<edm::Ptr<flashgg::Jet> >"/>
 <class name="edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> >" />
 <class name="edm::Wrapper<edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> > >" />
