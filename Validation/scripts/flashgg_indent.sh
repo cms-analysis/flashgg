@@ -1,12 +1,21 @@
 #!/bin/bash
 
+if [ ! -f $CMSSW_BASE/src/flashgg/.git/HEAD ];
+then
+  echo "CMSSW_BASE and flashgg appear not to be set correctly"
+  echo
+  return 1
+fi
+
+cd $CMSSW_BASE/src/flashgg
+
 find . -iname '*.C' > filelist
 find . -iname '*.cc' >> filelist
 find . -iname '*.h' >> filelist
 
 for file in `cat filelist`;do Validation/scripts/astyle --options=Validation/scripts/indent.ast $file; done
 
-#carefull this line just the first time
+#carefull this line is to add the headers, just the first time or to change it in the future
 #for file in `cat filelist`;do cat $file Validation/scripts/header > $file.buff;mv $file.buff $file; done
 
 find . -iname '*.orig' >> orig_filelist
@@ -15,9 +24,8 @@ export changed_files=`wc -l orig_filelist | awk '{print $1}'`
 
 if [ $changed_files == 0 ]
 then
-  echo "no files changed due to indentation"
+    echo "no files changed due to indentation"
 else
-
     echo "You are about to change $changed_files files due to indentation"
     cat orig_filelist | sed -e "s|.orig||g"
 
