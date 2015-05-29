@@ -22,5 +22,4 @@ else
     exit 1
 fi
 
-echo "did not go out!"
 rm orig_filelist filelist
