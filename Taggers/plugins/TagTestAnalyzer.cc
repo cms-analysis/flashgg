@@ -148,17 +148,17 @@ namespace flashgg {
             const    VHEtTag *vhettag = dynamic_cast<const VHEtTag *>( chosenTag );
             if( vhettag != NULL ) {
                 std::cout << "[VHEt] Category "      << vhettag->categoryNumber()
-                    //<< " with MEt        = "   << vhettag->met()
+                          //<< " with MEt        = "   << vhettag->met()
                           << std::endl;
             }
-            
+
             // IMPORTANT: All future Tags must be added in the way of untagged and vbftag.
 
             if( untagged == NULL && vbftag == NULL && tthhadronictag == NULL && tthleptonictag == NULL && vhtighttag == NULL && vhloosetag == NULL &&
                     vhhadronictag == NULL && vhettag == NULL ) {
                 std::cout << "[FAILED TO CONVERT TAG] with SumPt " << chosenTag->sumPt() << std::endl;
             }
-            
+
         } else { //case where TagSorter[0] doesn't exist
             std::cout << "[NO TAG]" << std::endl;
         }
