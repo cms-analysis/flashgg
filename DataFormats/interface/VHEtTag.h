@@ -13,7 +13,7 @@ namespace flashgg {
         ~VHEtTag();
 
         VHEtTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult> );
-        VHEtTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult);
+        VHEtTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult );
         VHEtTag *clone() const;
         const edm::Ptr<pat::MET> met() const {return theMet_;}
         const edm::Ptr<DiPhotonCandidate> diPhotonCandidate() const { return theDiPhotonCandidate_;}

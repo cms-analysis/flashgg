@@ -55,7 +55,7 @@ namespace flashgg {
         double bjetsNumberThreshold_;
         string bTag_;
     };
-    
+
     TTHHadronicTagProducer::TTHHadronicTagProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "DiPhotonTag", InputTag( "flashggDiPhotons" ) ) ) ),
         thejetToken_( consumes<View<flashgg::Jet> >( iConfig.getUntrackedParameter<InputTag>( "TTHJetTag", InputTag( "flashggJets" ) ) ) ),
