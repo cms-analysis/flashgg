@@ -13,17 +13,22 @@ flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                   ConversionTagSingleLeg=cms.untracked.InputTag("reducedEgamma","reducedSingleLegConversions"),
 
                                   ##Parameters for Legacy Vertex Selector                                                
-                                  #old
+                                  #vtxId 2012
                                   #vertexIdMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/2013FinalPaper_VertexID_BDTCat_conversions.weights.xml"),
-                                  #new xml, new reso, no single leg conv : useSingleLeg = false
+                                  #vxtProb2012
+                                  #vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTvtxprob2012.weights.xml"),
+
+                                  #vtxId and vtxProb 2015 no single leg
                                   #useSingleLeg=cms.untracked.bool(False),
-                                  #vertexIdMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_allModes_NewReso_noSingleLeg.weights.xml"),
-                                  #new xml, new reso, with single leg conv : useSingleLeg = true
+                                  #vertexIdMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_noSL_2015.xml"),
+                                  #vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_noSL_2015.xml"),
+
+                                  #vtxId and vtxProb 2015 with single leg
+                                  vertexIdMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2015.xml"),
+                                  vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_SL_2015.xml"),
                                   useSingleLeg=cms.untracked.bool(True),
-                                  vertexIdMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_allModes_NewReso_withSingleLeg.weights.xml"), 
-                                  vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTvtxprob2012.weights.xml"),
+
                                   dRexclude=cms.untracked.double(0.05),
-                                  #useSingleLeg=cms.untracked.bool(True),
                                   #new reso:
                                   sigma1Pix=cms.untracked.double(0.0125255),
                                   sigma1Tib=cms.untracked.double(0.716301), 
