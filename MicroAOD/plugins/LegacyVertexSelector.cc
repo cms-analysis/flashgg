@@ -195,7 +195,6 @@ namespace flashgg {
     void LegacyVertexSelector::Initialize()
     {
         VertexIdMva_ = new TMVA::Reader( "!Color:Silent" );
-        //VertexIdMva_->AddVariable( "ptbal", &ptbal_ );
         VertexIdMva_->AddVariable( "ptasym", &ptasym_ );
         VertexIdMva_->AddVariable("ptbal",&ptbal_);
         VertexIdMva_->AddVariable( "logsumpt2", &logsumpt2_ );
@@ -208,14 +207,16 @@ namespace flashgg {
         VertexIdMva_->BookMVA( "BDT", vertexIdMVAweightfile_.fullPath() );
 
         VertexProbMva_ = new TMVA::Reader( "!Color:Silent" );
-        VertexProbMva_->AddVariable( "diphoPt0", &dipho_pt_ );
-        VertexProbMva_->AddVariable( "nVert", &nVert_ );
-        VertexProbMva_->AddVariable( "MVA0", &MVA0_ );
-        VertexProbMva_->AddVariable( "MVA1", &MVA1_ );
-        VertexProbMva_->AddVariable( "dZ1", &dZ1_ );
-        VertexProbMva_->AddVariable( "MVA2", &MVA2_ );
-        VertexProbMva_->AddVariable( "dZ2", &dZ2_ );
-        VertexProbMva_->AddVariable( "nConv", &nConv_ );
+
+	VertexProbMva_->AddVariable("pt",&dipho_pt_);
+	VertexProbMva_->AddVariable("NVert",&nVert_);
+	VertexProbMva_->AddVariable("MVA0",&MVA0_);
+	VertexProbMva_->AddVariable("MVA1",&MVA1_);
+	VertexProbMva_->AddVariable("DZ1",&dZ1_);
+	VertexProbMva_->AddVariable("MVA2",&MVA2_);
+	VertexProbMva_->AddVariable("DZ2",&dZ2_);
+	VertexProbMva_->AddVariable("NConv",&nConv_);
+
         VertexProbMva_->BookMVA( "BDT", vertexProbMVAweightfile_.fullPath() );
 
         initialized_ = true;
