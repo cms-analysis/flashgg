@@ -17,13 +17,21 @@ process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 
-process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT_big.root"))
+readFiles = cms.untracked.vstring()
+secFiles = cms.untracked.vstring()
+process.source = cms.Source ("PoolSource",fileNames = readFiles, secondaryFileNames = secFiles)
+
+readFiles.extend( [
+       '/store/mc/Phys14DR/GluGluToHToGG_M-125_13TeV-powheg-pythia6/MINIAODSIM/PU20bx25_tsg_PHYS14_25_V1-v1/00000/3C2EFAB1-B16F-E411-AB34-7845C4FC39FB.root',
+       '/store/mc/Phys14DR/GluGluToHToGG_M-125_13TeV-powheg-pythia6/MINIAODSIM/PU20bx25_tsg_PHYS14_25_V1-v1/00000/7440A69A-4F70-E411-93D3-00A0D1EE273C.root',
+       '/store/mc/Phys14DR/GluGluToHToGG_M-125_13TeV-powheg-pythia6/MINIAODSIM/PU20bx25_tsg_PHYS14_25_V1-v1/00000/E270C596-4F70-E411-9EB9-7845C4FC347F.root' ] );
+
+secFiles.extend( [
+               ] )
 
 #**************************************************************
 
-process.load("flashgg/MicroAODProducers/flashggPhotons_cfi")
-process.load("flashgg/MicroAODProducers/flashggDiPhotons_cfi")
-process.load("flashgg/MicroAODProducers/flashggTkVtxMap_cfi")
+process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
 
 process.flashggDiPhotons.nVtxSaveInfo = cms.untracked.uint32(999) 
 
@@ -39,8 +47,7 @@ process.commissioning = cms.EDAnalyzer('vertexTrainingTreeMaker',
 #**************************************************************
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("VertexMVATraining.root")
+                                   fileName = cms.string("test.root")
 )
 
-process.p = cms.Path(process.flashggVertexMapUnique*process.flashggVertexMapNonUnique*process.flashggPhotons*process.flashggDiPhotons*process.commissioning)
-
+process.p = cms.Path(process.flashggMicroAODSequence*process.commissioning)
