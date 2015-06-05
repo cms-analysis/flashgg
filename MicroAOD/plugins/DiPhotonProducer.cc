@@ -122,8 +122,11 @@ namespace flashgg {
 
                 // store the diphoton into the collection
                 diPhotonColl->push_back( dipho );
+
             }
         }
+        // Sort the final collection (descending) and put it in the event
+        std::sort( diPhotonColl->begin(), diPhotonColl->end(), []( const DiPhotonCandidate & a, const DiPhotonCandidate & b ) { return b < a; } );
         evt.put( diPhotonColl );
     }
 }

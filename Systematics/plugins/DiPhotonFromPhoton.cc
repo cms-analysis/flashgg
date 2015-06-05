@@ -42,6 +42,7 @@ namespace flashgg {
         photon_corr_->applyCorrection( y.getSubLeadingPhoton(), syst_shift );
         AddFourMomenta addP4;
         addP4.set( y );
+        y.setSystLabel( shiftLabel( syst_shift ) );
         if( debug_ ) { std::cout << "END OF DiPhotonFromPhoton::applyCorrection M PT E1 E2 " << y.mass() << " " << y.pt() << " " << y.leadingPhoton()->energy() << " " << y.subLeadingPhoton()->energy() << std::endl; }
     }
 }
