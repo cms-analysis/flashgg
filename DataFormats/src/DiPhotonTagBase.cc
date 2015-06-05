@@ -9,8 +9,8 @@ DiPhotonTagBase::DiPhotonTagBase()
     category_number_ = -1;
 }
 
-DiPhotonTagBase::DiPhotonTagBase( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvaRes ) : DiPhotonTagBase::DiPhotonTagBase( diPho,
-            *mvaRes ) {}
+DiPhotonTagBase::DiPhotonTagBase( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvaRes )
+    : DiPhotonTagBase::DiPhotonTagBase( diPho, *mvaRes ) {}
 
 DiPhotonTagBase::DiPhotonTagBase( edm::Ptr<flashgg::DiPhotonCandidate> diPho, DiPhotonMVAResult mvaRes )
 {
@@ -19,18 +19,17 @@ DiPhotonTagBase::DiPhotonTagBase( edm::Ptr<flashgg::DiPhotonCandidate> diPho, Di
     dipho_ = diPho;
 }
 
+DiPhotonTagBase::DiPhotonTagBase( const DiPhotonTagBase &b ) : DiPhotonTagBase::DiPhotonTagBase( b.diPhoton(), b.diPhotonMVA() )
+{
+    setCategoryNumber( b.categoryNumber() );
+    setDiPhotonIndex( b.diPhotonIndex() );
+    setTagTruth( b.tagTruth() );
+}
+
 DiPhotonTagBase::~DiPhotonTagBase()
 {
 }
 
-
-DiPhotonTagBase *DiPhotonTagBase::clone() const
-{
-    DiPhotonTagBase *result = new DiPhotonTagBase( dipho_, mva_result_ );
-    result->setCategoryNumber( category_number_ );
-    result->setDiPhotonIndex( diPhotonIndex_ );
-    return result;
-}
 
 bool DiPhotonTagBase::operator <( const DiPhotonTagBase &b ) const
 {

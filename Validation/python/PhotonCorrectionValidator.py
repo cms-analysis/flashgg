@@ -15,7 +15,7 @@ process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:m
 
 process.TFileService = cms.Service("TFileService",fileName = cms.string("PhotonCorrectionValidationTree_ZerothVtx.root"))
 process.flashggPhotonCorrectionValidationTreeMaker = cms.EDAnalyzer('FlashggPhotonCorrectionValidationTreeMaker',
-                                                                    DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons')
+                                                                    DiPhotonTag = cms.InputTag('flashggDiPhotons')
                                                                    )
 
 process.p = cms.Path(
