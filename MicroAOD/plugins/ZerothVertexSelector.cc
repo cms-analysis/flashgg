@@ -18,7 +18,9 @@ namespace flashgg {
                                        const std::vector<edm::Ptr<reco::Vertex> > &,
                                        const VertexCandidateMap &,
                                        const std::vector<edm::Ptr<reco::Conversion> > &,
-                                       const math::XYZPoint &
+                                       const std::vector<edm::Ptr<reco::Conversion> > &,
+                                       const math::XYZPoint &,
+                                       bool
                                        //  const Parameters_Selector_Type&,
                                        //  const float&
                                      ) override;
@@ -35,7 +37,9 @@ namespace flashgg {
             const std::vector<edm::Ptr<reco::Vertex> > &vtxs,
             const VertexCandidateMap &vertexCandidateMap,
             const std::vector<edm::Ptr<reco::Conversion> > &convs,
-            const math::XYZPoint &beamSpot
+            const std::vector<edm::Ptr<reco::Conversion> > &convsSingleLeg,
+            const math::XYZPoint &beamSpot,
+            bool
             //						      const Parameters_Selector_Type& param,
             //                                                      const float& beamsig
                                                        )

@@ -45,15 +45,18 @@ namespace flashgg {
         float leadmva_;
         float subleadmva_;
 
-        double vertex_prob_slope_;
-
+        float nConv_;
+        float vtxProbMVA_;
+        vector<double> vertex_prob_params_conv;
+        vector<double> vertex_prob_params_noConv;
     };
 
     DiPhotonMVAProducer::DiPhotonMVAProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "DiPhotonTag", InputTag( "flashggDiPhotons" ) ) ) ),
         beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getUntrackedParameter<InputTag>( "BeamSpotTag", InputTag( "offlineBeamSpot" ) ) ) )
     {
-        vertex_prob_slope_ = iConfig.getParameter<double>( "VertexProbSlope" ); // 0.49 in legacy, 0.40 in first-pass flashgg fit
+        vertex_prob_params_conv = iConfig.getParameter<vector<double>>("VertexProbParamsConv");
+        vertex_prob_params_noConv= iConfig.getParameter<vector<double>>("VertexProbParamsNoConv");
 
         diphotonMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "diphotonMVAweightfile" );
 
@@ -166,7 +169,17 @@ namespace flashgg {
             sigmarv_        = .5 * sqrt( ( g1->sigEOverE() ) * ( g1->sigEOverE() ) + ( g2->sigEOverE() ) * ( g2->sigEOverE() ) );
             sigmawv_        = MassResolutionWrongVtx;
             CosPhi_         = TMath::Cos( deltaPhi( g1->phi(), g2->phi() ) );
-            vtxprob_        =  1. - vertex_prob_slope_ * ( 1 + diPhotons->ptrAt( candIndex )->vtxProbMVA() );
+
+            vtxProbMVA_ = diPhotons->ptrAt( candIndex )->vtxProbMVA();
+            nConv_ = diPhotons->ptrAt( candIndex )->nConv();
+
+            if (nConv_ > 0){
+                vtxprob_        = (1+vertex_prob_params_conv.at(0)-vertex_prob_params_conv.at(1)+vertex_prob_params_conv.at(2)-vertex_prob_params_conv.at(3)) + vertex_prob_params_conv.at(0)*vtxProbMVA_+vertex_prob_params_conv.at(1)*pow(vtxProbMVA_,2)+vertex_prob_params_conv.at(2)*pow(vtxProbMVA_,3)+vertex_prob_params_conv.at(3)*pow(vtxProbMVA_,4);
+            }
+
+            else{
+                vtxprob_        = (1+vertex_prob_params_noConv.at(0)-vertex_prob_params_noConv.at(1)+vertex_prob_params_noConv.at(2)-vertex_prob_params_noConv.at(3)) + vertex_prob_params_noConv.at(0)*vtxProbMVA_+vertex_prob_params_noConv.at(1)*pow(vtxProbMVA_,2)+vertex_prob_params_noConv.at(2)*pow(vtxProbMVA_,3)+vertex_prob_params_noConv.at(3)*pow(vtxProbMVA_,4);
+                }
 
             mvares.result = DiphotonMva_->EvaluateMVA( "BDT" );
 

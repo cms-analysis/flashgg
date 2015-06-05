@@ -30,7 +30,9 @@ namespace flashgg {
                                                const edm::Ptr<flashgg::Photon> &, const std::vector<edm::Ptr<reco::Vertex> > &,
                                                const VertexCandidateMap &,
                                                const std::vector<edm::Ptr<reco::Conversion> > &,
-                                               const math::XYZPoint &
+                                               const std::vector<edm::Ptr<reco::Conversion> > &,
+                                               const math::XYZPoint &,
+                                               bool
                                                //					  const Parameters_Selector_Type&,
                                                //                                          const float&
                                              )  = 0;
