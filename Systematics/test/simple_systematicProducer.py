@@ -9,7 +9,7 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 #process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 # Uncomment the following if you notice you have a memory leak
@@ -28,7 +28,7 @@ process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService
                                                    flashggSmearDiPhoton = cms.PSet(initialSeed = cms.untracked.uint32(664))
                                                   )
 
-#process.load("flashgg.Systematics.flashggPhotonSmear_cfi")
+process.load("flashgg.Systematics.flashggPhotonSmear_cfi")
 process.load("flashgg.Systematics.flashggSmearLeptonEff_cfi")
 
 # Code to artificially scale photon energies to make different mass points for signal fit tests

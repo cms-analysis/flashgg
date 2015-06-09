@@ -31,7 +31,6 @@ namespace flashgg {
     private:
         const std::string _Name;
         const std::string _Label;
-        //typename flashgg_object object;
 
     };
 }
@@ -39,6 +38,7 @@ namespace flashgg {
 #include "FWCore/PluginManager/interface/PluginFactory.h"
 #include "flashgg/DataFormats/interface/Photon.h"
 #include "flashgg/DataFormats/interface/Electron.h"
+#include "DataFormats/PatCandidates/interface/Muon.h"
 //template <class T, class U> struct A {
 //    typedef edmplugin::PluginFactory< flashgg::BaseSystMethods<T,U>* (const edm::ParameterSet & ) > FlashggSystematicMethodsFactory;
 //}

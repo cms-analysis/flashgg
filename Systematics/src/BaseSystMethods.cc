@@ -2,8 +2,11 @@
 
 EDM_REGISTER_PLUGINFACTORY( FlashggSystematicPhotonMethodsFactory,
                             "SystematicPhotonMethodsFactory" );
-EDM_REGISTER_PLUGINFACTORY( FlashggSystematicLeptonMethodsFactory,
-                            "SystematicLeptonMethodsFactory" );
+EDM_REGISTER_PLUGINFACTORY( FlashggSystematicElectronMethodsFactory,
+                            "SystematicElectronMethodsFactory" );
+EDM_REGISTER_PLUGINFACTORY( FlashggSystematicMuonMethodsFactory,
+                            "SystematicMuonMethodsFactory" );
+
 //EDM_REGISTER_PLUGINFACTORY(FlashggSystematicDiPhotonMethodsFactory,
 //				"SystematicDiPhotonMethodsFactory");
 // Local Variables:
