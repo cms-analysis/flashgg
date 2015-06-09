@@ -10,11 +10,6 @@
     TString cmsswbase = getenv( "CMSSW_BASE" );
     if( cmsswbase.Length() > 0 )
     {
-        //
-        // The CMSSW environment is defined (this is true even for FW Lite)
-        // so set up the rest.
-        //
-        cout << "Loading FW Lite setup." << endl;
         gSystem->Load( "libFWCoreFWLite.so" );
         AutoLibraryLoader::enable();
         gSystem->Load( "libDataFormatsFWLite.so" );
@@ -22,15 +17,9 @@
         gSystem->Load( "libflashggMicroAODFormats.so" );
 
     }
-
-    //TFile f("/afs/cern.ch/user/c/carrillo/eoscarrillo/low_mass_hlt/V8/outputfilelist125GeVgenparticles.root");
-    //TFile f( "/afs/cern.ch/user/c/carrillo/eoscarrillo/low_mass_hlt/V6/outputfilelist125GeV.root" );
-    TFile f("/afs/cern.ch/user/c/carrillo/flashgg/CMSSW_7_4_0_pre9/src/flashgg/MicroAOD/test/myMicroAODOutputFile.root");
+    TFile f( "/afs/cern.ch/user/c/carrillo/eoscarrillo/low_mass_hlt/V6/outputfilelist125GeV.root" );
     TTree *Events = f.Get( "Events" );
-    //Events->Print();
     Events->SetScanField( 0 );
-    //Events->Scan("flashggDiPhotonCandidates_flashggDiPhotons__FLASHggTEST.obj.pt_:flashggPhotons_flashggPhotons__FLASHggTEST.obj.zernike42:flashggPhotons_flashggPhotons__FLASHggTEST.obj.hcalTowersBehindClusters[0]");
-
 
 #include "DataFormats/FWLite/interface/Event.h"
 #include "DataFormats/FWLite/interface/Handle.h"
@@ -196,27 +185,72 @@
             continue;
         }
 
-        bool preselection =
-            !( ( fabs( dipho[sel_i].leadingPhoton()->eta() ) > 1.4442 && fabs( dipho[sel_i].leadingPhoton()->eta() ) < 1.5660 )
-               || ( fabs( dipho[sel_i].subLeadingPhoton()->eta() ) > 1.4442 && fabs( dipho[sel_i].subLeadingPhoton()->eta() ) < 1.5660 ) )
-            && dipho[sel_i].leadingPhoton()->pt() > dipho[sel_i].mass() / 3
-            && dipho[sel_i].subLeadingPhoton()->pt() > dipho[sel_i].mass() / 4;
+        bool preselection_olivier =
+            //Leading
+            (
+                ( dipho[sel_i].leadingPhoton()->r9() <= 0.9
+                  &&
+                  ( ( ( dipho[sel_i].leadingPhoton()->isEB() && dipho[sel_i].leadingPhoton()->hadronicOverEm() < 0.075 && dipho[sel_i].leadingPhoton()->sigmaIetaIeta() < 0.014 )
+                      || ( dipho[sel_i].leadingPhoton()->isEE() && dipho[sel_i].leadingPhoton()->hadronicOverEm() < 0.075 && dipho[sel_i].leadingPhoton()->sigmaIetaIeta() < 0.034 ) )
+                    && ( dipho[sel_i].leadingPhoton()->hcalTowerSumEtConeDR03() - 0.005 * dipho[sel_i].leadingPhoton()->pt() < 4.0 )
+                    && ( dipho[sel_i].leadingPhoton()->trkSumPtHollowConeDR03() - 0.002 * dipho[sel_i].leadingPhoton()->pt() < 4.0 )
+                    && ( dipho[sel_i].leadingPhoton()->pfChgIsoWrtChosenVtx02() < 4.0 )
+                    ) )
+                ||
+                ( dipho[sel_i].leadingPhoton()->r9() > 0.9
+                  &&
+                  ( ( ( dipho[sel_i].leadingPhoton()->isEB() && dipho[sel_i].leadingPhoton()->hadronicOverEm() < 0.082 && dipho[sel_i].leadingPhoton()->sigmaIetaIeta() < 0.014 )
+                      || ( dipho[sel_i].leadingPhoton()->isEE() && dipho[sel_i].leadingPhoton()->hadronicOverEm() < 0.075 && dipho[sel_i].leadingPhoton()->sigmaIetaIeta() < 0.034 ) )
+                    && ( dipho[sel_i].leadingPhoton()->hcalTowerSumEtConeDR03() - 0.005 * dipho[sel_i].leadingPhoton()->pt() < 50.0 )
+                    && ( dipho[sel_i].leadingPhoton()->trkSumPtHollowConeDR03() - 0.002 * dipho[sel_i].leadingPhoton()->pt() < 50.0 )
+                    && ( dipho[sel_i].leadingPhoton()->pfChgIsoWrtChosenVtx02() < 4.0 )
+                  )
+                  )
+             )
+            &&//SubLeading
+            (
+                ( dipho[sel_i].SubLeadingPhoton()->r9() <= 0.9
+                  &&
+                  ( ( ( dipho[sel_i].SubLeadingPhoton()->isEB() && dipho[sel_i].SubLeadingPhoton()->hadronicOverEm() < 0.075 &&
+                        dipho[sel_i].SubLeadingPhoton()->sigmaIetaIeta() < 0.014 )
+                      || ( dipho[sel_i].SubLeadingPhoton()->isEE() && dipho[sel_i].SubLeadingPhoton()->hadronicOverEm() < 0.075 &&
+                           dipho[sel_i].SubLeadingPhoton()->sigmaIetaIeta() < 0.034 ) )
+                    && ( dipho[sel_i].SubLeadingPhoton()->hcalTowerSumEtConeDR03() - 0.005 * dipho[sel_i].SubLeadingPhoton()->pt() < 4.0 )
+                    && ( dipho[sel_i].SubLeadingPhoton()->trkSumPtHollowConeDR03() - 0.002 * dipho[sel_i].SubLeadingPhoton()->pt() < 4.0 )
+                    && ( dipho[sel_i].SubLeadingPhoton()->pfChgIsoWrtChosenVtx02() < 4.0 )
+                  ) )
+                ||
+                ( dipho[sel_i].SubLeadingPhoton()->r9() > 0.9
+                  &&
+                  ( ( ( dipho[sel_i].SubLeadingPhoton()->isEB() && dipho[sel_i].SubLeadingPhoton()->hadronicOverEm() < 0.082 &&
+                        dipho[sel_i].SubLeadingPhoton()->sigmaIetaIeta() < 0.014 )
+                      || ( dipho[sel_i].SubLeadingPhoton()->isEE() && dipho[sel_i].SubLeadingPhoton()->hadronicOverEm() < 0.075 &&
+                           dipho[sel_i].SubLeadingPhoton()->sigmaIetaIeta() < 0.034 ) )
+                    && ( dipho[sel_i].SubLeadingPhoton()->hcalTowerSumEtConeDR03() - 0.005 * dipho[sel_i].SubLeadingPhoton()->pt() < 50.0 )
+                    && ( dipho[sel_i].SubLeadingPhoton()->trkSumPtHollowConeDR03() - 0.002 * dipho[sel_i].SubLeadingPhoton()->pt() < 50.0 )
+                    && ( dipho[sel_i].SubLeadingPhoton()->pfChgIsoWrtChosenVtx02() < 4.0 )
+                  )
+                )
+            );
 
-        bool hlt = ( hTriggerResults->accept( 210 ) || hTriggerResults->accept( 210 ) );
+        bool preselection = preselection_olivier;
+        bool hlt_rediscovery = ( hTriggerResults->accept( 210 ) || hTriggerResults->accept( 210 ) );
+        bool hlt_EB = ( hTriggerResults->accept( 210 ) || hTriggerResults->accept( 210 ) );
+        bool hlt_AND = ( hTriggerResults->accept( 210 ) || hTriggerResults->accept( 210 ) );
 
         cut[0] = true; //all minitree level plots for reference, no cuts
-        cut[1] = preselection && ( dipho[sel_i].leadingPhoton()->isEB() && dipho[sel_i].leadingPhoton()->isEB()
-                                   && dipho[sel_i].leadingPhoton()->r9() > 0.94 && dipho[sel_i].subLeadingPhoton()->r9() > 0.94 );
-        cut[2] = cut[1] && hlt;
-        cut[3] = preselection && ( dipho[sel_i].leadingPhoton()->isEB() && dipho[sel_i].leadingPhoton()->isEB() &&
-                                   ( dipho[sel_i].leadingPhoton()->r9() < 0.94 || dipho[sel_i].subLeadingPhoton()->r9() < 0.94 ) );
-        cut[4] = cut[3] && hlt;
-        cut[5] = preselection && ( dipho[sel_i].leadingPhoton()->isEE() || dipho[sel_i].leadingPhoton()->isEE() &&
-                                   ( dipho[sel_i].leadingPhoton()->r9() > 0.94 && dipho[sel_i].subLeadingPhoton()->r9() > 0.94 ) );
-        cut[6] = cut[5] && hlt;
-        cut[7] = preselection && ( dipho[sel_i].leadingPhoton()->isEE() || dipho[sel_i].leadingPhoton()->isEE() &&
-                                   ( dipho[sel_i].leadingPhoton()->r9() < 0.94 || dipho[sel_i].subLeadingPhoton()->r9() < .94 ) );
-        cut[8] = cut[7] && hlt;
+
+        cut[1] = preselection;
+        cut[2] = cut[1] && hlt_rediscovery;
+
+        cut[3] = preselection;
+        cut[4] = cut[3] && hlt_EB;
+
+        cut[5] = preselection;
+        cut[6] = cut[5] && hlt_AND;
+
+        cut[7] = true;
+        cut[8] = cut[7] && preselection;
 
         for( cut_index = 0; cut_index < 9  ; cut_index++ ) { //Loop over the different histograms
             if( cut[cut_index] ) { //all hitograms below will be filled up if the boolean is true.
@@ -287,11 +321,9 @@
         diphoton_Leadpfiso02[cut_index]->Write();
         diphoton_SubLeadpfiso02[cut_index]->Write();
     }
-
     theFileOut->Close();
     exit( 0 );
 }
-
 
 // Local Variables:
 // mode:c++
