@@ -4,7 +4,7 @@ namespace flashgg {
 
 		typedef LeptonEffSmear<flashgg::Electron, int> ElectronEffSmear;
 		typedef LeptonEffSmear<pat::Muon, int> MuonEffSmear;
-
+		
 }
 	
 DEFINE_EDM_PLUGIN(FlashggSystematicElectronMethodsFactory,
