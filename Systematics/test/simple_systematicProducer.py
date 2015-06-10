@@ -163,6 +163,7 @@ massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggDiP
 #vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCScaleGoldEEDown01sigma"   "FLASHggSyst"     
 #vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCScaleGoldEEUp01sigma"   "FLASHggSyst"     
 
+process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
 
 process.systematicsTagSequences = cms.Sequence()
 for r9 in ["HighR9","LowR9"]:
@@ -171,8 +172,9 @@ for r9 in ["HighR9","LowR9"]:
             systlabel = "MCScale%s%s%s01sigma" % (r9,region,direction)
             newseq = cloneProcessingSnippet(process,process.flashggTagSequence,systlabel)
             massSearchReplaceAnyInputTag(newseq,cms.InputTag("flashggSmearDiPhoton"),cms.InputTag("flashggSmearDiPhoton",systlabel))
-            print newseq
+#            print newseq
             process.systematicsTagSequences += newseq
+            process.flashggSystTagMerger.src.append(cms.InputTag("flashggTagSorter" + systlabel))
 
 from flashgg.Taggers.flashggTagOutputCommands_cff import tagDefaultOutputCommand
 
