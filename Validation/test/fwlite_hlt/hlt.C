@@ -25,7 +25,7 @@
 
     //TFile f("/afs/cern.ch/user/c/carrillo/eoscarrillo/low_mass_hlt/V8/outputfilelist125GeVgenparticles.root");
     //TFile f( "/afs/cern.ch/user/c/carrillo/eoscarrillo/low_mass_hlt/V6/outputfilelist125GeV.root" );
-    TFile f("/afs/cern.ch/user/c/carrillo/flashgg/CMSSW_7_4_0_pre9/src/flashgg/MicroAOD/test/myMicroAODOutputFile.root");
+    TFile f( "/afs/cern.ch/user/c/carrillo/flashgg/CMSSW_7_4_0_pre9/src/flashgg/MicroAOD/test/myMicroAODOutputFile.root" );
     TTree *Events = f.Get( "Events" );
     //Events->Print();
     Events->SetScanField( 0 );

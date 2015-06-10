@@ -195,7 +195,7 @@
                     && ( dipho[sel_i].leadingPhoton()->hcalTowerSumEtConeDR03() - 0.005 * dipho[sel_i].leadingPhoton()->pt() < 4.0 )
                     && ( dipho[sel_i].leadingPhoton()->trkSumPtHollowConeDR03() - 0.002 * dipho[sel_i].leadingPhoton()->pt() < 4.0 )
                     && ( dipho[sel_i].leadingPhoton()->pfChgIsoWrtChosenVtx02() < 4.0 )
-                    ) )
+                  ) )
                 ||
                 ( dipho[sel_i].leadingPhoton()->r9() > 0.9
                   &&
@@ -205,8 +205,8 @@
                     && ( dipho[sel_i].leadingPhoton()->trkSumPtHollowConeDR03() - 0.002 * dipho[sel_i].leadingPhoton()->pt() < 50.0 )
                     && ( dipho[sel_i].leadingPhoton()->pfChgIsoWrtChosenVtx02() < 4.0 )
                   )
-                  )
-             )
+                )
+            )
             &&//SubLeading
             (
                 ( dipho[sel_i].SubLeadingPhoton()->r9() <= 0.9
