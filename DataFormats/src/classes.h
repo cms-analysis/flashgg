@@ -172,7 +172,7 @@ namespace  {
         flashgg::VHEtTag vhet;
         std::vector<flashgg::VHEtTag> vec_vhet;
         edm::Wrapper<std::vector<flashgg::VHEtTag> > wrp_vec_vhet;
-        
+
         edm::Ptr<pat::Electron> ptr_elec_vht;
         edm::Ptr<pat::Muon> ptr_muon_vht;
 
