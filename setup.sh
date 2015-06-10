@@ -96,7 +96,7 @@ git cms-addpkg RecoEgamma/EgammaTools
 git cms-merge-topic -u sethzenz:topic-conversion-tools-for-pat-ele-74X
 
 echo "adding hook for indentation"
-ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh .git/hooks/pre-commit
+ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit
 
 echo
 echo "Done with setup script! You still need to build!"
