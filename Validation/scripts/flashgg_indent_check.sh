@@ -4,7 +4,7 @@ find . -iname '*.C' > filelist
 find . -iname '*.cc' >> filelist
 find . -iname '*.h' >> filelist
 
-for file in `cat filelist`;do Validation/scripts/astyle --options=Validation/scripts/indent.ast $file -q; done
+for file in `cat filelist`;do $CMSSW_BASE/src/flashgg/Validation/scripts/astyle --options=$CMSSW_BASE/src/flashgg/Validation/scripts/indent.ast $file -q; done
 
 find . -iname '*.orig' >> orig_filelist
 
@@ -16,7 +16,7 @@ then
 else
     echo "Your commit has $changed_files files failing indentation, please run Validation/scripts/flashgg_indent.sh before commit"
     cat orig_filelist | sed -e "s|.orig||g"
-    echo "please run Validation/scripts/flashgg_indent.sh before commit"
+    echo "please run flashgg/Validation/scripts/flashgg_indent.sh before commit"
     echo
     rm orig_filelist filelist
     exit 1
