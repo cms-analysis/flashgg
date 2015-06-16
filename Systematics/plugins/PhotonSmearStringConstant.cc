@@ -1,18 +1,22 @@
+// One-parameter smear, constant term only
+// For 2 parameters, see PhotonSmearStringStoachastic.cc
+
 #include "flashgg/Systematics/interface/ObjectSystMethodBinnedByFunctor.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/Common/interface/PtrVector.h"
 #include "flashgg/DataFormats/interface/Photon.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
+#include "CLHEP/Random/RandGauss.h"
 
 namespace flashgg {
 
-    class PhotonScaleString: public ObjectSystMethodBinnedByFunctor<flashgg::Photon, int>
+    class PhotonSmearStringConstant: public ObjectSystMethodBinnedByFunctor<flashgg::Photon, int>
     {
 
     public:
         typedef StringCutObjectSelector<Photon, true> selector_type;
 
-        PhotonScaleString( const edm::ParameterSet &conf );
+        PhotonSmearStringConstant( const edm::ParameterSet &conf );
         void applyCorrection( flashgg::Photon &y, int syst_shift ) override;
         std::string shiftLabel( int ) const override;
 
@@ -20,13 +24,13 @@ namespace flashgg {
         selector_type overall_range_;
     };
 
-    PhotonScaleString::PhotonScaleString( const edm::ParameterSet &conf ) :
+    PhotonSmearStringConstant::PhotonSmearStringConstant( const edm::ParameterSet &conf ) :
         ObjectSystMethodBinnedByFunctor( conf ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) )
     {
     }
 
-    std::string PhotonScaleString::shiftLabel( int syst_value ) const
+    std::string PhotonSmearStringConstant::shiftLabel( int syst_value ) const
     {
         std::string result;
         if( syst_value == 0 ) {
@@ -39,27 +43,28 @@ namespace flashgg {
         return result;
     }
 
-    void PhotonScaleString::applyCorrection( flashgg::Photon &y, int syst_shift )
+    void PhotonSmearStringConstant::applyCorrection( flashgg::Photon &y, int syst_shift )
     {
         if( overall_range_( y ) ) {
             auto val_err = binContents( y );
             if( val_err.first.size() == 1 && val_err.second.size() == 1 ) { // otherwise no-op because we don't have an entry
-                float shift_val = val_err.first[0];
-                float shift_err = val_err.second[0];
-                float scale = 1 + shift_val + syst_shift * shift_err;
+                float sigma_smearing = val_err.first[0];
+                float sigma_smearing_err = val_err.second[0];
+                float sigma = sigma_smearing + syst_shift * sigma_smearing_err;
+                float newe = CLHEP::RandGauss::shoot( RandomEngine(), y.energy(), sigma * y.energy() );
                 if( debug_ ) {
-                    std::cout << "  " << shiftLabel( syst_shift ) << ": Photon has pt= " << y.pt() << " eta=" << y.eta()
-                              << " and we apply a multiplicative correction of " << scale << std::endl;
+                    std::cout << "  " << shiftLabel( syst_shift ) << ": Photon has energy= " << y.energy() << " eta=" << y.eta()
+                              << " and we apply a smearing with sigma " << ( 100 * sigma ) << "% to get new energy=" << newe << std::endl;
                 }
-                y.updateEnergy( shiftLabel( syst_shift ), scale * y.energy() );
+                y.updateEnergy( shiftLabel( syst_shift ), newe );
             }
         }
     }
 }
 
 DEFINE_EDM_PLUGIN( FlashggSystematicPhotonMethodsFactory,
-                   flashgg::PhotonScaleString,
-                   "FlashggPhotonScaleString" );
+                   flashgg::PhotonSmearStringConstant,
+                   "FlashggPhotonSmearStringConstant" );
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil
