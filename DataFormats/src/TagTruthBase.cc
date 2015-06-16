@@ -9,7 +9,6 @@ TagTruthBase::TagTruthBase( const TagTruthBase &b )
 
 TagTruthBase *TagTruthBase::clone() const
 {
-    std::cout << " Base clone method!" << std::endl;
     TagTruthBase *result = new TagTruthBase( *this );
     return result;
 }

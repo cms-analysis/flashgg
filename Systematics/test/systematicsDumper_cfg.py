@@ -194,16 +194,22 @@ cfgTools.addCategory(process.diphotonDumper,
                     )
 
 process.extraDumpers = cms.Sequence()
+systlabels = []
 for r9 in ["HighR9","LowR9"]:
-    for region in ["EB","EE"]:
-        for direction in ["Up","Down"]:
-            systlabel = "MCScale%s%s%s01sigma" % (r9,region,direction)
-            exec "process.diphotonDumper_%s = process.diphotonDumper.clone(src='flashggTagSorter%s')" % (systlabel,systlabel)
-            exec "process.extraDumpers += process.diphotonDumper_%s" % systlabel
+    for direction in ["Up","Down"]:
+        systlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
+        for var in ["Rho","Phi"]:
+            systlabels.append("MCSmear%sEB%s%s01sigma" % (r9,var,direction))
+        for region in ["EB","EE"]:
+            systlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
+
+for systlabel in systlabels:
+    exec "process.diphotonDumper_%s = process.diphotonDumper.clone(src='flashggTagSorter%s')" % (systlabel,systlabel)
+    exec "process.extraDumpers += process.diphotonDumper_%s" % systlabel
 
 process.p1 = cms.Path(
     process.diphotonDumper
-#    + process.extraDumpers
+    + process.extraDumpers
     )
 
 print process.p1
