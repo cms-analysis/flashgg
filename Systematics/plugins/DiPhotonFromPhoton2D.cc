@@ -2,13 +2,13 @@
 
 namespace flashgg {
 
-    typedef DiPhotonFromPhotonBase<int> DiPhotonFromPhoton;
+    typedef DiPhotonFromPhotonBase<std::pair<int, int> > DiPhotonFromPhoton2D;
 
 }
 
-DEFINE_EDM_PLUGIN( FlashggSystematicDiPhotonMethodsFactory,
-                   flashgg::DiPhotonFromPhoton,
-                   "FlashggDiPhotonFromPhoton" );
+DEFINE_EDM_PLUGIN( FlashggSystematicDiPhotonMethodsFactory2D,
+                   flashgg::DiPhotonFromPhoton2D,
+                   "FlashggDiPhotonFromPhoton2D" );
 
 // Local Variables:
 // mode:c++
