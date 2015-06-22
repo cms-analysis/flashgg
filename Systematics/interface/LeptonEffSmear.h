@@ -5,16 +5,14 @@
 #include "flashgg/Systematics/interface/BaseSystMethods.h"
 #include "flashgg/DataFormats/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
-//#include "flashgg/Systematics/interface/ObjectSystMethodBinnedByFunctor.h"
+#include "flashgg/Systematics/interface/ObjectSystMethodBinnedByFunctor.h"
 
 namespace flashgg {
 
 	template <typename lepton,typename param_var>
-		//class LeptonEffSmear : public ObjectSystMethodBinnedByFunctor<lepton,param_var> 
- 		class LeptonEffSmear : public BaseSystMethods<lepton,param_var> 
+		class LeptonEffSmear : public ObjectSystMethodBinnedByFunctor<lepton,param_var> 
 	{
 		public:
-			//typedef StringCutObjectSelector<lepton, true> selector_type;
 			struct LeptonBin {
 
 				std::vector<double> bin_min;
@@ -37,8 +35,7 @@ namespace flashgg {
 	};
 	
         template<typename lepton,typename param_var>
-	LeptonEffSmear<lepton,param_var>::LeptonEffSmear( const edm::ParameterSet &conf) :
-		BaseSystMethods<lepton,param_var>( conf ),
+	LeptonEffSmear<lepton,param_var>::LeptonEffSmear( const edm::ParameterSet &conf) : ObjectSystMethodBinnedByFunctor<lepton,param_var>::ObjectSystMethodBinnedByFunctor(conf),
 //		overall_range_(conf.getParameter<std::string>("OverallRange") ),
 		debug_( conf.getUntrackedParameter<bool>("Debug",false) )
 	{
@@ -48,7 +45,7 @@ namespace flashgg {
                 	bin_info_.emplace_back(b.getParameter<std::vector<double> >("lowBounds"),
                                    b.getParameter<std::vector<double> >("upBounds"),
                                    b.getParameter<std::vector<double> >("values"),
-                                   b.getParameter<std::vector<double> >("uncertainty"));
+                                   b.getParameter<std::vector<double> >("uncertainties"));
 
 
 		}
@@ -78,8 +75,10 @@ namespace flashgg {
 		double pt = lep.pt();
 		int num_bins = bin_info_.size();
 
+		std::cout << "momentum " << pt << std::endl;
+
 		for(int bin = 0; bin < num_bins; bin++){
-			if ( pt > bin_info_[bin].bin_max[0] ) {
+			if ( pt > bin_info_[bin].bin_min[0] ) {
 				myBin = bin;
 			}
 			else break;
@@ -92,10 +91,10 @@ namespace flashgg {
 		if (myBin == -1) {
 			binHigh = 0; binLow=0; atBoundary=true;
 
-		} else if (myBin == num_bins) {
+		} else if (myBin == num_bins-1) {
 
-			binHigh = bin_info_.size(); 
-			binLow=bin_info_.size(); 
+			binHigh = bin_info_.size()-1; 
+			binLow=bin_info_.size()-1; 
 			atBoundary=true;
 
 		} else {
@@ -105,7 +104,7 @@ namespace flashgg {
 		}
 		
 
-		double xLow=bin_info_[binLow].bin_min[0]; 
+		double xLow=bin_info_[binLow].bin_min[0];
 		double xHigh=bin_info_[binHigh].bin_max[0];
 		double yLow=bin_info_[binLow].value[0];
 		double yHigh=bin_info_[binHigh].value[0];
@@ -132,10 +131,11 @@ namespace flashgg {
 
 		if(!atBoundary) {
 			theWeight = yLow + (yHigh-yLow) / (xHigh-xLow) * (pt-xLow);
+			std::cout << "theWeight " << theWeight << std::endl;
 			theError  = theErrorLow + (theErrorHigh-theErrorLow) / (xHigh-xLow) * (pt-xLow);
 		} else {
 
-			if(myBin == num_bins) {
+			if(myBin == num_bins-1 ) {
 				theWeight = yHigh; 	  
 				theError  = theErrorHigh;	
 			} else if (myBin == -1) {
@@ -143,11 +143,12 @@ namespace flashgg {
 				theError  = theErrorLow; 	
 			} else {   
 
-				std::cout << " ** you claim to be at boundaries of TGraphAsymmErrors but your not! This is a problem " << std::endl;
+				std::cout << " ** you claim to be at boundary of the efficiency range! This is a problem " << std::endl;
 
 			}
 		} 
 		double Weight = theWeight + (theError*syst_shift);
+		std::cout << "Weight " << theWeight << std::endl;
 		lep.addUserFloat("effweight",Weight);
 	}
 

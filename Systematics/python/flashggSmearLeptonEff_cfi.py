@@ -3,9 +3,9 @@ import FWCore.ParameterSet.Config as cms
 binInfo = cms.PSet(
 		variables = cms.vstring("pt"),
 		bins = cms.VPSet(
-			cms.PSet(lowBounds = cms.vdouble(20.0), upBounds = cms.vdouble(25.0), values = cms.vdouble(1.6), uncertainty = cms.vdouble(.05,0.3)),
-			cms.PSet(lowBounds = cms.vdouble(25.0), upBounds = cms.vdouble(100.0), values = cms.vdouble(1.6), uncertainty = cms.vdouble(.05,0.3)),
-			cms.PSet(lowBounds = cms.vdouble(100.0), upBounds = cms.vdouble(300.0), values = cms.vdouble(1.6), uncertainty = cms.vdouble(.05,0.3))
+			cms.PSet(lowBounds = cms.vdouble(1.0), upBounds = cms.vdouble(25.0), values = cms.vdouble(1.6), uncertainties = cms.vdouble(.05,0.3)),
+			cms.PSet(lowBounds = cms.vdouble(25.0), upBounds = cms.vdouble(100.0), values = cms.vdouble(2.0), uncertainties = cms.vdouble(.05,0.3)),
+			cms.PSet(lowBounds = cms.vdouble(100.0), upBounds = cms.vdouble(300.0), values = cms.vdouble(.5), uncertainties = cms.vdouble(.05,0.3))
 			)
 		)	
 
