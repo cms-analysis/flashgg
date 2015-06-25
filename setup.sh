@@ -78,7 +78,7 @@ cd $CMSSW_BASE/src
 echo
 echo "Setting up pileupjetid..."
 git cms-addpkg RecoJets/JetProducers
-git cms-merge-topic -u ldcorpe:flashgg-new-vtxmap-pujetid-74X
+git cms-merge-topic -u yhaddad:topic-pujid-flashgg
 echo
 
 #echo "Setting up PUPPI..."
