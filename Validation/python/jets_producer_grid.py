@@ -11,7 +11,7 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc')
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( -1 ) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 100 ) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 # PHYS14 Files
@@ -20,18 +20,9 @@ process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring(
 ))
 
 process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to work: disable all warnings for now
-# process.MessageLogger.suppressWarning.extend(['SimpleMemoryCheck','MemoryCheck']) # this would have been better...
-
-# Uncomment the following if you notice you have a memory leak
-# This is a lightweight tool to digg further
-#process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
-#                                        ignoreTotal = cms.untracked.int32(1),
-#                                        monitorPssAndPrivate = cms.untracked.bool(True)
-#                                       )
 
 process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
 process.load("flashgg/MicroAOD/flashggMicroAODExtraJetsSequence_cff")
-process.load("flashgg/Validation/JetTreeMaker_cff")
 
 from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand,microAODDebugOutputCommand
 process.out = cms.OutputModule("PoolOutputModule",
@@ -66,52 +57,11 @@ from flashgg.MicroAOD.flashggJets_cfi import addFlashggPFCHSLegJets
 addFlashggPFCHSLegJets(process)
 # +++++++++++++++++++++++++++++++++++
 
-
-# ++++++++++++ JetTreeMaker +++++++++
-#process.TFileService = cms.Service("TFileService",
-#                                   fileName  = cms.string("JetValidationTrees_DYToMuMu_M-50.root"))
-
-#process.flashggJetValidationTreeMakerPF = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
-#                                                         GenParticleTag        = cms.untracked.InputTag('prunedGenParticles'),
-#                                                         JetTagDz              = cms.InputTag("flashggJetsPF"),
-#                                                         StringTag	     = cms.string("PF"),
-#                                                         VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
-#                                                     )
-#process.flashggJetValidationTreeMakerPFCHS0 = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
-#                                                             GenParticleTag     = cms.untracked.InputTag('prunedGenParticles'),
-#                                                             JetTagDz           = cms.InputTag("flashggJetsPFCHS0"),
-#                                                             StringTag		= cms.string("PFCHS0"),
-#                                                             VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
-#                                                         )
-#
-#process.flashggJetValidationTreeMakerPFCHSLeg = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
-#                                                               GenParticleTag = cms.untracked.InputTag('prunedGenParticles'),
-#                                                               JetTagDz       = cms.InputTag("flashggJets"),                  
-#                                                               StringTag	= cms.string("PFCHSLeg"),
-#                                                               VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
-#                                                           )
-# +++++++++++++++++++++++++++++++++
-
 process.p = cms.Path(process.flashggMicroAODSequence
                      + process.flashggMicroAODExtraJetsSequence
-                     # tree producer ...
-                     #+ process.flashggJetValidationTreeMakerPF 
-                     #+ process.flashggJetValidationTreeMakerPFCHS0
-                     #+ process.flashggJetValidationTreeMakerPFCHSLeg
                  )
 
 process.e = cms.EndPath(process.out)
-
-# Uncomment these lines to run the example commissioning module and send its output to root
-# process.commissioning = cms.EDAnalyzer('flashggCommissioning',
-#                                         PhotonTag=cms.untracked.InputTag('flashggPhotons'),
-#                                         DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
-#                                         VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
-#)
-#process.TFileService = cms.Service("TFileService",
-#                                   fileName = cms.string("commissioningTree.root")
-#)
-#process.p *= process.commissioning
 
 from flashgg.MicroAOD.MicroAODCustomize import customize
 customize(process)
