@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 flashggTagSorter = cms.EDProducer('FlashggTagSorter',
-                                  DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+                                  DiPhotonTag = cms.InputTag('flashggDiPhotons'),
                                   # Top of list is highest priority
                                   # Optionally can add category ranges if priority depends on category number
                                   TagPriorityRanges = cms.VPSet(cms.PSet(TagName = cms.InputTag('flashggVHTightTag')),

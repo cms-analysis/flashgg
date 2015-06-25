@@ -26,7 +26,7 @@ config.Data.unitsPerJob = UNITSPERJOB
 config.Data.publication = True
 config.Data.publishDBS = 'phys03'
 config.Data.publishDataName = 'FLASHGG_VERSION-PROCESSED_DSET'
-config.Data.outLFN = "OUTLFN"
+config.Data.outLFNDirBase = "OUTLFN"
 
 config.section_("Site")
 config.Site.storageSite = "OUTSITE"

@@ -45,12 +45,13 @@ namespace flashgg {
         vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTag" ) ) ),
         conversionToken_( consumes<View<reco::Conversion> >( iConfig.getUntrackedParameter<InputTag>( "ConversionTag", InputTag( "reducedConversions" ) ) ) ),
         beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getUntrackedParameter<InputTag>( "BeamSpotTag", InputTag( "offlineBeamSpot" ) ) ) ),
-        conversionTokenSingleLeg_(consumes<View<reco::Conversion> >(iConfig.getUntrackedParameter<InputTag>("ConversionTagSingleLeg",InputTag("reducedSingleLegConversions"))))
+        conversionTokenSingleLeg_( consumes<View<reco::Conversion> >( iConfig.getUntrackedParameter<InputTag>( "ConversionTagSingleLeg",
+                                   InputTag( "reducedSingleLegConversions" ) ) ) )
     {
         bool default_useSingleLeg_ = true;
         const std::string &VertexSelectorName = iConfig.getParameter<std::string>( "VertexSelectorName" );
         vertexSelector_.reset( FlashggVertexSelectorFactory::get()->create( VertexSelectorName, iConfig ) );
-        useSingleLeg_ = iConfig.getUntrackedParameter<bool>("useSingleLeg",default_useSingleLeg_);
+        useSingleLeg_ = iConfig.getUntrackedParameter<bool>( "useSingleLeg", default_useSingleLeg_ );
         produces<vector<flashgg::DiPhotonCandidate> >();
     }
 
@@ -82,7 +83,7 @@ namespace flashgg {
         }
 
         Handle<View<reco::Conversion> > conversionsSingleLeg;
-        evt.getByToken(conversionTokenSingleLeg_,conversionsSingleLeg);
+        evt.getByToken( conversionTokenSingleLeg_, conversionsSingleLeg );
         //const PtrVector<reco::Conversion>& conversionPointersSingleLeg = conversionsSingleLeg->ptrVector();
 
         auto_ptr<vector<DiPhotonCandidate> > diPhotonColl( new vector<DiPhotonCandidate> );
@@ -93,7 +94,8 @@ namespace flashgg {
             for( unsigned int j = i + 1 ; j < photons->size() ; j++ ) {
                 Ptr<flashgg::Photon> pp2 = photons->ptrAt( j );
 
-                Ptr<reco::Vertex> pvx = vertexSelector_->select(pp1,pp2,primaryVertices->ptrs(),*vertexCandidateMap,conversions->ptrs(),conversionsSingleLeg->ptrs(), vertexPoint, useSingleLeg_);
+                Ptr<reco::Vertex> pvx = vertexSelector_->select( pp1, pp2, primaryVertices->ptrs(), *vertexCandidateMap, conversions->ptrs(), conversionsSingleLeg->ptrs(),
+                                        vertexPoint, useSingleLeg_ );
                 // Finding and storing the vertex index to check if it corresponds to the primary vertex.
                 // This could be moved within the vertexSelector, but would need rewriting some interface
                 int ivtx = 0;
@@ -120,8 +122,11 @@ namespace flashgg {
 
                 // store the diphoton into the collection
                 diPhotonColl->push_back( dipho );
+
             }
         }
+        // Sort the final collection (descending) and put it in the event
+        std::sort( diPhotonColl->begin(), diPhotonColl->end(), []( const DiPhotonCandidate & a, const DiPhotonCandidate & b ) { return b < a; } );
         evt.put( diPhotonColl );
     }
 }

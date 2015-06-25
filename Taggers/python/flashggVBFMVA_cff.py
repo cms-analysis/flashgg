@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 # legacy VBF MVA
 flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
-		DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+		DiPhotonTag=cms.InputTag('flashggDiPhotons'),
 		JetTag=cms.untracked.InputTag('flashggJets'),
 		UseLegacyMVA = cms.untracked.bool(True),
 		MinDijetMinv = cms.double(0.0),
@@ -11,7 +11,7 @@ flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
 
 # Legacy DiPhoDiJet MVA
 flashggVBFDiPhoDiJetMVA = cms.EDProducer('FlashggVBFDiPhoDiJetMVAProducer',
-		DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+		DiPhotonTag=cms.InputTag('flashggDiPhotons'),
 		VBFMVAResultTag=cms.untracked.InputTag('flashggVBFMVA'),
 		MVAResultTag=cms.untracked.InputTag('flashggDiPhotonMVA'),
 		UseLegacyMVA = cms.untracked.bool(True),
@@ -21,7 +21,7 @@ flashggVBFDiPhoDiJetMVA = cms.EDProducer('FlashggVBFDiPhoDiJetMVAProducer',
 
 # the new VBF MVA
 flashggVBFMVANew = cms.EDProducer('FlashggVBFMVAProducer',
-		DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+		DiPhotonTag = cms.InputTag('flashggDiPhotons'),
 		JetTag = cms.untracked.InputTag('flashggJets'),
 		UseLegacyMVA = cms.untracked.bool(False),
 		MinDijetMinv = cms.double(0.0),
@@ -31,7 +31,7 @@ flashggVBFMVANew = cms.EDProducer('FlashggVBFMVAProducer',
 
 #New DiPhoDiJet MVA
 flashggVBFDiPhoDiJetMVANew = cms.EDProducer('FlashggVBFDiPhoDiJetMVAProducer',
-		DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+		DiPhotonTag=cms.InputTag('flashggDiPhotons'),
 		VBFMVAResultTag=cms.untracked.InputTag('flashggVBFMVANew'),
 		UseLegacyMVA = cms.untracked.bool(False),
 		MVAResultTag=cms.untracked.InputTag('flashggDiPhotonMVA'),

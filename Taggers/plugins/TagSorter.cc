@@ -12,6 +12,8 @@
 #include "flashgg/DataFormats/interface/VBFMVAResult.h"
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 #include "flashgg/DataFormats/interface/DiPhotonUntaggedCategory.h"
+#include "flashgg/DataFormats/interface/TagTruthBase.h"
+#include "DataFormats/Common/interface/RefToPtr.h"
 #include "flashgg/DataFormats/interface/VBFTag.h"
 
 #include "TMVA/Reader.h"
@@ -59,7 +61,7 @@ namespace flashgg {
     };
 
     TagSorter::TagSorter( const ParameterSet &iConfig ) :
-        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "DiPhotonTag", InputTag( "flashggDiPhotons" ) ) ) )
+        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) )
     {
 
         massCutUpper = iConfig.getUntrackedParameter<double>( "massCutUpper", 180. );
@@ -75,7 +77,7 @@ namespace flashgg {
             int c2 = pset.getUntrackedParameter<int>( "MaxCategory", 999 );
             unsigned int i = 0;
             for( ; i < labels.size() ; i++ ) {
-                std::cout << labels[i] << " " << tag.label() << std::endl;
+                //                std::cout << labels[i] << " " << tag.label() << std::endl;
                 if( labels[i] == tag.label() ) { break; }
             }
             if( i == TagList_.size() ) {
@@ -86,12 +88,14 @@ namespace flashgg {
         }
 
         produces<edm::OwnVector<flashgg::DiPhotonTagBase> >();
+        produces<edm::OwnVector<flashgg::TagTruthBase> >();
     }
 
     void TagSorter::produce( Event &evt, const EventSetup & )
     {
 
         auto_ptr<edm::OwnVector<flashgg::DiPhotonTagBase> > SelectedTag( new edm::OwnVector<flashgg::DiPhotonTagBase> );
+        auto_ptr<edm::OwnVector<flashgg::TagTruthBase> > SelectedTagTruth( new edm::OwnVector<flashgg::TagTruthBase> );
 
         //		int priority = -1; // for debug
         for( auto tpr = TagPriorityRanges.begin() ; tpr != TagPriorityRanges.end() ; tpr++ ) {
@@ -99,6 +103,15 @@ namespace flashgg {
 
             Handle<View<flashgg::DiPhotonTagBase> > TagVectorEntry;
             evt.getByToken( TagList_[tpr->collIndex], TagVectorEntry );
+
+            //            Handle<View<flashgg::TagTruthBase> > TruthVectorEntry;
+            //            evt.getByToken( TagList_[tpr->collIndex], TruthVectorEntry );
+
+            //            std::cout << std::cout << " TruthVectorEntry->size() = " << TruthVectorEntry->size() << std::endl;
+            //            assert ( TruthVectorEntry->size() == TagVectorEntry->size() );
+
+            edm::RefProd<edm::OwnVector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<edm::OwnVector<TagTruthBase> >();
+
             //		const PtrVector<flashgg::DiPhotonTagBase>& TagPointers =  TagVectorEntry->ptrVector();
             // get Tags by requesting them as a DiPhotonTagBase, from which they inherit.
 
@@ -126,6 +139,11 @@ namespace flashgg {
 
             if( chosenIndex != -1 ) {
                 SelectedTag->push_back( *TagVectorEntry->ptrAt( chosenIndex ) );
+                edm::Ptr<TagTruthBase> truth = TagVectorEntry->ptrAt( chosenIndex )->tagTruth();
+                if( truth.isNonnull() ) {
+                    SelectedTagTruth->push_back( *truth );
+                    SelectedTag->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) ); // Normally this 0 would be the index number
+                }
                 //debug message:
                 // std::cout << "[DEBUG] Priority " << priority << " Tag Found! Tag entry "<< chosenIndex  << " with sumPt "
                 //    	     << TagVectorEntry->ptrAt(chosenIndex)->sumPt() << std::endl;
@@ -138,6 +156,7 @@ namespace flashgg {
 
         assert( SelectedTag->size() == 1 || SelectedTag->size() == 0 );
         evt.put( SelectedTag );
+        evt.put( SelectedTagTruth );
     }
 }
 

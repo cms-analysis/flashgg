@@ -1,5 +1,5 @@
 #include "flashgg/DataFormats/interface/Photon.h"
-#include "flashgg/Systematics/interface/BaseSystMethods.h"
+#include "flashgg/Systematics/interface/BaseSystMethod.h"
 #include "flashgg/Systematics/interface/ObjectSystematicProducer.h"
 
 namespace flashgg {

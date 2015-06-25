@@ -7,4 +7,5 @@
 <!-- Flags CXXFLAGS="-ggdb"/ -->
 <environment>
   <bin   file="fwliteRun.cc"></bin>
+  <bin   file="hadd_workspaces.cc"></bin>
 </environment>

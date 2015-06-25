@@ -29,7 +29,7 @@ process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:m
 
 process.TFileService = cms.Service("TFileService",fileName = cms.string("DiphotonValidationTree.root"))
 process.flashggDiphotonPreselectionValidationTreeMaker = cms.EDAnalyzer('FlashggDiphotonPreselectionValidationTreeMaker',
-    DiPhotonTag  = cms.untracked.InputTag('flashggDiPhotons')
+    DiPhotonTag  = cms.InputTag('flashggDiPhotons')
                                                           )
 
 process.p = cms.Path(

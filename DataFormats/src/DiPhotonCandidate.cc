@@ -88,6 +88,11 @@ SinglePhotonView DiPhotonCandidate::subLeadingView() const
         return SinglePhotonView( this, 0 );
     }
 }
+
+bool DiPhotonCandidate::operator <( const DiPhotonCandidate &b ) const
+{
+    return ( sumPt() < b.sumPt() );
+}
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

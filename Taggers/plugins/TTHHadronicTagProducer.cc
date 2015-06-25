@@ -13,6 +13,9 @@
 #include "flashgg/DataFormats/interface/TTHHadronicTag.h"
 #include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
 
+#include "flashgg/DataFormats/interface/TagTruthBase.h"
+#include "DataFormats/Common/interface/RefToPtr.h"
+
 #include <vector>
 #include <algorithm>
 #include <string>
@@ -27,6 +30,8 @@ namespace flashgg {
     {
 
     public:
+        typedef math::XYZPoint Point;
+
         TTHHadronicTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
@@ -34,6 +39,7 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         EDGetTokenT<View<Jet> > thejetToken_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
+        EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
 
         //---thresholds---
         //---photons
@@ -57,9 +63,10 @@ namespace flashgg {
     };
 
     TTHHadronicTagProducer::TTHHadronicTagProducer( const ParameterSet &iConfig ) :
-        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "DiPhotonTag", InputTag( "flashggDiPhotons" ) ) ) ),
+        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         thejetToken_( consumes<View<flashgg::Jet> >( iConfig.getUntrackedParameter<InputTag>( "TTHJetTag", InputTag( "flashggJets" ) ) ) ),
-        mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getUntrackedParameter<InputTag>( "MVAResultTag", InputTag( "flashggDiPhotonMVA" ) ) ) )
+        mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getUntrackedParameter<InputTag>( "MVAResultTag", InputTag( "flashggDiPhotonMVA" ) ) ) ),
+        genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getUntrackedParameter<InputTag> ( "GenParticleTag", InputTag( "prunedGenParticles" ) ) ) )
     {
         MVAThreshold_ = iConfig.getUntrackedParameter<double>( "MVAThreshold_", 0.2 );
         leadPhoPtThreshold_ = iConfig.getUntrackedParameter<double>( "leadPhoPtThreshold", 33 );
@@ -79,6 +86,7 @@ namespace flashgg {
         bTag_ = iConfig.getUntrackedParameter<string> ( "bTag", "combinedInclusiveSecondaryVertexV2BJetTags" );
 
         produces<vector<TTHHadronicTag> >();
+        produces<vector<TagTruthBase> >();
     }
 
     void TTHHadronicTagProducer::produce( Event &evt, const EventSetup & )
@@ -96,7 +104,24 @@ namespace flashgg {
         evt.getByToken( mvaResultToken_, mvaResults );
         // const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
 
+        Handle<View<reco::GenParticle> > genParticles;
+        evt.getByToken( genParticleToken_, genParticles );
+
         std::auto_ptr<vector<TTHHadronicTag> > tthhtags( new vector<TTHHadronicTag> );
+        std::auto_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
+
+        Point higgsVtx;
+
+        for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+            int pdgid = genParticles->ptrAt( genLoop )->pdgId();
+            if( pdgid == 25 || pdgid == 22 ) {
+                higgsVtx = genParticles->ptrAt( genLoop )->vertex();
+                break;
+            }
+        }
+
+        edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
+        unsigned int idx = 0;
 
         for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
 
@@ -155,16 +180,20 @@ namespace flashgg {
             }
 
             if( njets_btagmedium > bjetsNumberThreshold_ && jetcount > jetsNumberThreshold_ ) {
-
                 TTHHadronicTag tthhtags_obj( dipho, mvares, JetVect, BJetVect );
                 tthhtags_obj.setNBLoose( njets_btagloose );
                 tthhtags_obj.setNBMedium( njets_btagmedium );
                 tthhtags_obj.setDiPhotonIndex( diphoIndex );
                 tthhtags->push_back( tthhtags_obj );
+                TagTruthBase truth_obj;
+                truth_obj.setGenPV( higgsVtx );
+                truths->push_back( truth_obj );
+                tthhtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
                 // count++;
             }
         }
         evt.put( tthhtags );
+        evt.put( truths );
         // cout << "tagged events = " << count << endl;
     }
 }

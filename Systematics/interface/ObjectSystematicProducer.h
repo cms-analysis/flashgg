@@ -10,7 +10,11 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "TrackingTools/IPTools/interface/IPTools.h"
 
-#include "flashgg/Systematics/interface/BaseSystMethods.h"
+#include "flashgg/Systematics/interface/BaseSystMethod.h"
+
+//#include <type_traits>
+//#include <typeinfo>
+//#include "FWCore/Utilities/interface/EDMException.h"
 
 using namespace edm;
 using namespace std;
@@ -27,37 +31,56 @@ namespace flashgg {
     private:
 
         void produce( edm::Event &, const edm::EventSetup & ) override;
-        void ApplyCorrections( flashgg_object &y, shared_ptr<BaseSystMethods<flashgg_object, param_var> > CorrToShift, param_var syst_shift );
+        void ApplyCorrections( flashgg_object &y, shared_ptr<BaseSystMethod<flashgg_object, param_var> > CorrToShift, param_var syst_shift );
+        void ApplyCorrections( flashgg_object &y, shared_ptr<BaseSystMethod<flashgg_object, pair<param_var, param_var> > > CorrToShift,
+                               pair<param_var, param_var>  syst_shift );
 
         edm::EDGetTokenT<View<flashgg_object> > ObjectToken_;
 
-        std::vector<shared_ptr<BaseSystMethods<flashgg_object, param_var> > > Corrections_;
+        std::vector<shared_ptr<BaseSystMethod<flashgg_object, param_var> > > Corrections_;
         std::vector<std::vector<param_var> > sigmas_;
-
         std::vector<std::string> collectionLabelsNonCentral_;
+
+        std::vector<shared_ptr<BaseSystMethod<flashgg_object, pair<param_var, param_var> > > > Corrections2D_;
+        std::vector<std::vector<pair<param_var, param_var> > > sigmas2D_;
     };
 
     template <typename flashgg_object, typename param_var>
     ObjectSystematicProducer<flashgg_object, param_var>::ObjectSystematicProducer( const ParameterSet &iConfig ) :
-        ObjectToken_( consumes<View<flashgg_object> >( iConfig.getUntrackedParameter<InputTag>( "InputTag", InputTag( "flashggPhotons" ) ) ) )
+        ObjectToken_( consumes<View<flashgg_object> >( iConfig.getParameter<InputTag>( "src" ) ) )
     {
+        edm::Service<edm::RandomNumberGenerator> rng;
+        if( ! rng.isAvailable() ) {
+            throw cms::Exception( "Configuration" ) << "ObjectSystematicProducer requires the RandomNumberGeneratorService  - please add to configuration";
+        }
+
         produces<std::vector<flashgg_object> >(); // Central value
         std::vector<edm::ParameterSet> vpset = iConfig.getParameter<std::vector<edm::ParameterSet> >( "SystMethods" );
+        std::vector<edm::ParameterSet> vpset2D = iConfig.getParameter<std::vector<edm::ParameterSet> >( "SystMethods2D" );
 
         Corrections_.resize( vpset.size() );
+        Corrections2D_.resize( vpset2D.size() );
 
         unsigned int ipset = 0;
+        unsigned int ipset2D = 0;
         for( const auto &pset : vpset ) {
             std::string methodName = pset.getParameter<string>( "MethodName" );
 
-            // If nsigmas ends up being empty for a given corrector,
-            // the central operation will still be applied to all collections
+            // This block of code supports a list of integer or float type objects
+
             std::vector<param_var> nsigmas = pset.getParameter<vector<param_var> >( "NSigmas" );
 
             // Remove 0 values, because we always have a central collection
-            nsigmas.erase( std::remove( nsigmas.begin(), nsigmas.end(), 0 ), nsigmas.end() );
+            // If nsigmas ends up being empty for a given corrector,
+            // the central operation will still be applied to all collections
+            nsigmas.erase( std::remove( nsigmas.begin(), nsigmas.end(), param_var( 0 ) ), nsigmas.end() );
 
             sigmas_.push_back( nsigmas );
+            //            std::cout << " About to create a 1D factory with methodName = " << methodName << std::endl;
+            if( pset.exists( "PhotonMethodName" ) ) {
+                string photonMethodName = pset.getParameter<string>( "PhotonMethodName" );
+                //                std::cout << "    PhotonMethodName = " << photonMethodName << std::endl;
+            }
             Corrections_.at( ipset ).reset( FlashggSystematicMethodsFactory<flashgg_object, param_var>::get()->create( methodName, pset ) );
             for( const auto &sig : sigmas_.at( ipset ) ) {
                 std::string collection_label = Corrections_.at( ipset )->shiftLabel( sig );
@@ -66,18 +89,77 @@ namespace flashgg {
             }
             ipset++;
         }
+
+        for( const auto &pset : vpset2D ) {
+            // This block of code supports pairs of integer or float type objects, e.g. for smearing
+
+            std::string methodName = pset.getParameter<string>( "MethodName" );
+
+            auto pairset = pset.getParameterSet( "NSigmas" );
+            std::vector<param_var> firstVar = pairset.getParameter<vector<param_var> >( "firstVar" );
+            std::vector<param_var> secondVar = pairset.getParameter<vector<param_var> >( "secondVar" );
+            assert( firstVar.size() == secondVar.size() );
+
+            std::vector<pair<param_var, param_var> > nsigmas;
+            for( unsigned int isig = 0 ; isig < firstVar.size() ; isig++ ) {
+                nsigmas.emplace_back( firstVar[isig], secondVar[isig] );
+            }
+
+            nsigmas.erase( std::remove( nsigmas.begin(), nsigmas.end(), make_pair( param_var( 0 ), param_var( 0 ) ) ), nsigmas.end() );
+
+            sigmas2D_.push_back( nsigmas );
+            //            std::cout << " About to create a 2D factory with methodName = " << methodName << std::endl;
+            if( pset.exists( "PhotonMethodName" ) ) {
+                string photonMethodName = pset.getParameter<string>( "PhotonMethodName" );
+                //                std::cout << "    PhotonMethodName = " << photonMethodName << std::endl;
+            }
+            Corrections2D_.at( ipset2D ).reset( FlashggSystematicMethodsFactory<flashgg_object, pair<param_var, param_var> >::get()->create( methodName, pset ) );
+            for( const auto &sig : sigmas2D_.at( ipset2D ) ) {
+                std::string collection_label = Corrections2D_.at( ipset2D )->shiftLabel( sig );
+                produces<vector<flashgg_object> >( collection_label );
+                collectionLabelsNonCentral_.push_back( collection_label );
+            }
+            ipset2D++;
+        }
     }
 
     ///fucntion takes in the current corection one is looping through and compares with its own internal loop, given that this will be within the corr and sys loop it takes care of the 2n+1 collection number////
     template <typename flashgg_object, typename param_var>
     void ObjectSystematicProducer<flashgg_object, param_var>::ApplyCorrections( flashgg_object &y,
-            shared_ptr<BaseSystMethods<flashgg_object, param_var> > CorrToShift, param_var syst_shift )
+            shared_ptr<BaseSystMethod<flashgg_object, param_var> > CorrToShift,
+            param_var syst_shift )
     {
+        //        std::cout << " 1d before 1d " << std::endl;
         for( unsigned int shift = 0; shift < Corrections_.size(); shift++ ) {
             if( CorrToShift == Corrections_.at( shift ) ) {
                 Corrections_.at( shift )->applyCorrection( y, syst_shift );
             } else {
-                Corrections_.at( shift )->applyCorrection( y, 0 );
+                Corrections_.at( shift )->applyCorrection( y, param_var( 0 ) );
+            }
+        }
+        //        std::cout << " 1d before 2d " << std::endl;
+        for( unsigned int shift = 0; shift < Corrections2D_.size(); shift++ ) {
+            //            std::cout << shift << std::endl;
+            Corrections2D_.at( shift )->applyCorrection( y, make_pair( param_var( 0 ), param_var( 0 ) ) );
+        }
+        //        std::cout << " 1d end " << std::endl;
+    }
+
+    template <typename flashgg_object, typename param_var>
+    void ObjectSystematicProducer<flashgg_object, param_var>::ApplyCorrections( flashgg_object &y,
+            shared_ptr<BaseSystMethod<flashgg_object, pair<param_var, param_var> > > CorrToShift,
+            pair<param_var, param_var>  syst_shift )
+    {
+        //        std::cout << "2d before 1d" << std::endl;
+        for( unsigned int shift = 0; shift < Corrections_.size(); shift++ ) {
+            Corrections_.at( shift )->applyCorrection( y, param_var( 0 ) );
+        }
+        //        std::cout << "2d before 2d" << std::endl;
+        for( unsigned int shift = 0; shift < Corrections2D_.size(); shift++ ) {
+            if( CorrToShift == Corrections2D_.at( shift ) ) {
+                Corrections2D_.at( shift )->applyCorrection( y, syst_shift );
+            } else {
+                Corrections2D_.at( shift )->applyCorrection( y, make_pair( param_var( 0 ), param_var( 0 ) ) );
             }
         }
     }
@@ -89,14 +171,40 @@ namespace flashgg {
         Handle<View<flashgg_object> > objects;
         evt.getByToken( ObjectToken_, objects );
 
+        //        std::cout << " start of produce" << std::endl;
+
+        // Give each corrector a pointer to the random service engine that it can use if needs it
+        edm::Service<edm::RandomNumberGenerator> rng;
+
+        //        std::cout << " rng.isAvailable()=" << rng.isAvailable() << std::endl;
+
+        CLHEP::HepRandomEngine &engine = rng->getEngine( evt.streamID() );
+
+        //        std::cout << " Got engine!" << std::endl;
+
+        for( unsigned int ncorr = 0 ; ncorr < Corrections_.size() ; ncorr++ ) {
+            //            std::cout << " Setting engine 1D " << ncorr << std::endl;
+            Corrections_.at( ncorr )->setRandomEngine( engine );
+            //            std::cout << " Set engine 1D " << ncorr << " label=" << Corrections_.at( ncorr )->shiftLabel( param_var( 0 ) ) << std::endl;
+        }
+        for( unsigned int ncorr = 0 ; ncorr < Corrections2D_.size() ; ncorr++ ) {
+            //            std::cout << " Setting engine 2D " << ncorr << std::endl;
+            Corrections2D_.at( ncorr )->setRandomEngine( engine );
+            //            std::cout << " Setting engine 2D " << ncorr << " label=" << Corrections2D_.at( ncorr )->shiftLabel( make_pair( param_var( 0 ), param_var( 0 ) ) ) << std::endl;
+        }
+
+        //        std::cout << "Engines set!" << std::endl;
+
         // Build central collection
         auto_ptr<vector<flashgg_object> > centralObjectColl( new vector<flashgg_object> );
         for( unsigned int i = 0; i < objects->size(); i++ ) {
             flashgg_object obj = flashgg_object( *objects->ptrAt( i ) );
-            ApplyCorrections( obj, nullptr, 0 );
+            ApplyCorrections( obj, nullptr, param_var( 0 ) );
             centralObjectColl->push_back( obj );
         }
         evt.put( centralObjectColl ); // put central collection in event
+
+        //        std::cout << " after producing central" << std::endl;
 
         // build 2N shifted collections
         // A dynamically allocated array of auto_ptrs may be a bit "unsafe" to maintain,
@@ -104,16 +212,27 @@ namespace flashgg {
         // Problem: vector<auto_ptr> is not allowed
         // Possible alternate solutions: map, multimap, vector<unique_ptr> + std::move ??
         std::auto_ptr<std::vector<flashgg_object> > *all_shifted_collections;
-        all_shifted_collections = new std::auto_ptr<std::vector<flashgg_object> >[collectionLabelsNonCentral_.size()];
-        for( unsigned int ncoll = 0 ; ncoll < collectionLabelsNonCentral_.size() ; ncoll++ ) {
+        unsigned int total_shifted_collections = collectionLabelsNonCentral_.size();
+        all_shifted_collections = new std::auto_ptr<std::vector<flashgg_object> >[total_shifted_collections];
+        for( unsigned int ncoll = 0 ; ncoll < total_shifted_collections ; ncoll++ ) {
             all_shifted_collections[ncoll].reset( new std::vector<flashgg_object> );
         }
         for( unsigned int i = 0; i < objects->size(); i++ ) {
             unsigned int ncoll = 0;
             for( unsigned int ncorr = 0 ; ncorr < Corrections_.size() ; ncorr++ ) {
                 for( const auto &sig : sigmas_.at( ncorr ) ) {
+                    //                    std::cout << i << " " << ncoll << " " << sig << std::endl;
                     flashgg_object obj = flashgg_object( *objects->ptrAt( i ) );
                     ApplyCorrections( obj, Corrections_.at( ncorr ), sig );
+                    all_shifted_collections[ncoll]->push_back( obj );
+                    ncoll++;
+                }
+            }
+            for( unsigned int ncorr = 0 ; ncorr < Corrections2D_.size() ; ncorr++ ) {
+                for( const auto &sig : sigmas2D_.at( ncorr ) ) {
+                    //                    std::cout << i << " " << ncoll << " " << sig.first << " " << sig.second << std::endl;
+                    flashgg_object obj = flashgg_object( *objects->ptrAt( i ) );
+                    ApplyCorrections( obj, Corrections2D_.at( ncorr ), sig );
                     all_shifted_collections[ncoll]->push_back( obj );
                     ncoll++;
                 }
@@ -121,7 +240,7 @@ namespace flashgg {
         }
 
         // Put shifted collections in event
-        for( unsigned int ncoll = 0 ; ncoll < collectionLabelsNonCentral_.size() ; ncoll++ ) {
+        for( unsigned int ncoll = 0 ; ncoll < total_shifted_collections ; ncoll++ ) {
             evt.put( all_shifted_collections[ncoll], collectionLabelsNonCentral_[ncoll] );
         }
 
