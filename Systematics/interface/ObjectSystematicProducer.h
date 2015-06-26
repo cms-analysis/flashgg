@@ -130,6 +130,7 @@ namespace flashgg {
             param_var syst_shift )
     {
         //        std::cout << " 1d before 1d " << std::endl;
+        //        std::cout << " In ObjectSystematicProducer::ApplyCorrections pt m " << y.pt() << " " << y.mass() << std::endl;
         for( unsigned int shift = 0; shift < Corrections_.size(); shift++ ) {
             if( CorrToShift == Corrections_.at( shift ) ) {
                 Corrections_.at( shift )->applyCorrection( y, syst_shift );
@@ -150,6 +151,7 @@ namespace flashgg {
             shared_ptr<BaseSystMethod<flashgg_object, pair<param_var, param_var> > > CorrToShift,
             pair<param_var, param_var>  syst_shift )
     {
+        //        std::cout << " In ObjectSystematicProducer::ApplyCorrections pt m " << y.pt() << " " << y.mass() << std::endl;
         //        std::cout << "2d before 1d" << std::endl;
         for( unsigned int shift = 0; shift < Corrections_.size(); shift++ ) {
             Corrections_.at( shift )->applyCorrection( y, param_var( 0 ) );

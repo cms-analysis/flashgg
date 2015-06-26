@@ -12,7 +12,7 @@ namespace flashgg {
 
     bool CutBasedPhotonViewSelector::operator()( const SinglePhotonView &cand, const EventBase &ev ) const
     {
-        return CutBasedPhotonObjectSelector::operator()( cand.photon(), ev );
+        return CutBasedPhotonObjectSelector::operator()( *cand.photon(), ev );
     }
 
 }

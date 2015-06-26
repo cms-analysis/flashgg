@@ -11,71 +11,11 @@ DiPhotonCandidate::~DiPhotonCandidate() {}
 
 DiPhotonCandidate::DiPhotonCandidate( edm::Ptr<flashgg::Photon> photon1, edm::Ptr<flashgg::Photon> photon2, edm::Ptr<reco::Vertex> vertex )
 {
+    //    std::cout << " DiPhotonCandidate::DiPhotonCandidate " << std::endl;
     vertex_ = vertex;
-    if( DiPhotonCandidate::PhoP4Corr( photon1 ).pt() > DiPhotonCandidate::PhoP4Corr( photon2 ).pt() ) {
-//		viewPho1_ = new flashgg::SinglePhotonView(photon1, vertex);
-//		viewPho2_ = new flashgg::SinglePhotonView(photon2, vertex);
-        viewPho1_ = flashgg::SinglePhotonView( photon1, vertex );
-        viewPho2_ = flashgg::SinglePhotonView( photon2, vertex );
-        corrPho1_ = DiPhotonCandidate::PhoP4Corr( photon1 );
-        corrPho2_ = DiPhotonCandidate::PhoP4Corr( photon2 );
-    } else {
-//		viewPho1_ = new flashgg::SinglePhotonView(photon2, vertex);
-//		viewPho2_ = new flashgg::SinglePhotonView(photon1, vertex);
-        viewPho1_ = flashgg::SinglePhotonView( photon2, vertex );
-        viewPho2_ = flashgg::SinglePhotonView( photon1, vertex );
-        corrPho1_ = DiPhotonCandidate::PhoP4Corr( photon2 );
-        corrPho2_ = DiPhotonCandidate::PhoP4Corr( photon1 );
-    }
-
-//    std::cout << "SETTING VIEWS: \t VIEW1 pt " << viewPho1_->photonPtr()->pt() << " \t VIEW 2 pt " << viewPho2_->photonPtr()->pt() << std::endl;
-
-//	math::XYZTLorentzVector pho1corr = DiPhotonCandidate::PhoP4Corr(photon1);
-//	math::XYZTLorentzVector pho2corr = DiPhotonCandidate::PhoP4Corr(photon2);
-//	corrPho1_ = DiPhotonCandidate::PhoP4Corr(photon1);
-//	corrPho2_ = DiPhotonCandidate::PhoP4Corr(photon2);
-//
-
-//	double thisX = corrPho1_.px() + corrPho2_.Px();
-//	double thisY = corrPho1_.py() + corrPho2_.Py();
-//	double thisZ = corrPho1_.pz() + corrPho2_.Pz();
-//	double thisE = corrPho1_.energy() + corrPho2_.energy();
-//	this->SetPxPyPzE(thisX, thisY, thisZ, thisE);
-
-    this->setP4( corrPho1_ + corrPho2_ );
-
-    // Adding momenta
-    // Needs its own object - but why?
-    // Copied from example
-//    AddFourMomenta addP4;
-//    addP4.set( *this );
-}
-
-
-const flashgg::Photon *DiPhotonCandidate::leadingPhoton() const
-{
-//	return viewPho1_->photonPtr();
-    return viewPho1_.photonPtr();
-}
-
-const flashgg::Photon *DiPhotonCandidate::subLeadingPhoton() const
-{
-//	return viewPho2_->photonPtr();
-    return viewPho2_.photonPtr();
-}
-
-flashgg::Photon &DiPhotonCandidate::getLeadingPhoton()
-{
-//	return const_cast<flashgg::Photon &>(*viewPho1_->photonPtr());
-    return const_cast<flashgg::Photon &>( *viewPho1_.photonPtr() );
-//	return remove_const<flashgg::Photon>(viewPho1_->photon());
-}
-
-flashgg::Photon &DiPhotonCandidate::getSubLeadingPhoton()
-{
-//	return const_cast<flashgg::Photon &>(*viewPho2_->photonPtr());
-    return const_cast<flashgg::Photon &>( *viewPho2_.photonPtr() );
-//	return const_cast<flashgg::Photon>(viewPho2_->photon());
+    viewPho1_ = flashgg::SinglePhotonView( photon1, vertex );
+    viewPho2_ = flashgg::SinglePhotonView( photon2, vertex );
+    computeP4AndOrder();
 }
 
 bool DiPhotonCandidate::operator <( const DiPhotonCandidate &b ) const
@@ -83,26 +23,19 @@ bool DiPhotonCandidate::operator <( const DiPhotonCandidate &b ) const
     return ( sumPt() < b.sumPt() );
 }
 
-// SinglePhotonView DiPhotonCandidate::leadingView() const
-// {
-//     // if( daughter( 0 )->pt() > daughter( 1 )->pt() ) {
-//     //     return SinglePhotonView( this, 0 );
-//     // } else {
-//     //     return SinglePhotonView( this, 1 );
-//     // }
-// 	return 0;
-// }
-//
-// SinglePhotonView DiPhotonCandidate::subLeadingView() const
-// {
-//     // if( daughter( 0 )->pt() > daughter( 1 )->pt() ) {
-//     //     return SinglePhotonView( this, 1 );
-//     // } else {
-//     //     return SinglePhotonView( this, 0 );
-//     // }
-// 	return 0;
-// }
+void DiPhotonCandidate::computeP4AndOrder()
+{
+    //    std::cout << " START of DiPhotonCandidate::computeP4AndOrder PT M PT1 PT2 " << this->pt() << " " << this->mass() << " " << leadingPhoton()->pt() << " " <<
+    //              subLeadingPhoton()->pt() << std::endl;
+    if( leadingPhoton()->pt() < subLeadingPhoton()->pt() ) {
+        std::swap( viewPho1_, viewPho2_ );
+    }
+    this->setP4( leadingPhoton()->p4() + subLeadingPhoton()->p4() );
+    //    std::cout << " END of DiPhotonCandidate::computeP4AndOrder PT M PT1 PT2 " << this->pt() << " " << this->mass() << " " << leadingPhoton()->pt() << " " <<
+    //              subLeadingPhoton()->pt() << std::endl;
+}
 
+/*
 math::XYZTLorentzVector DiPhotonCandidate::PhoP4Corr( edm::Ptr<flashgg::Photon> photon1 ) const
 {
     /// vtx should be the chosen vtx, not primary vtx ///
@@ -122,6 +55,7 @@ math::XYZTLorentzVector DiPhotonCandidate::PhoP4Corr( edm::Ptr<flashgg::Photon> 
     math::XYZTLorentzVector corrected_p4( p.x(), p.y(), p.z(), photon1->energy() );
     return corrected_p4;
 }
+*/
 
 // Local Variables:
 // mode:c++
