@@ -184,8 +184,8 @@ namespace flashgg {
                 dumpers.push_back( dumper_type( name, cat, globalVarsDumper_ ) );
             } else {
                 for( int isub = 0; isub < subcats; ++isub ) {
-                    name = replaceString( name, "$SUBCAT", Form( "%d", isub ) );
-                    dumpers.push_back( dumper_type( name, cat, globalVarsDumper_ ) );
+                    auto subcatname = replaceString( name, "$SUBCAT", Form( "%d", isub ) );
+                    dumpers.push_back( dumper_type( subcatname, cat, globalVarsDumper_ ) );
                 }
             }
         }

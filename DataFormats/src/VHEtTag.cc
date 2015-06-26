@@ -19,15 +19,10 @@ void VHEtTag::setMet( edm::Ptr<pat::MET> met )
     theMet_ = met;
 }
 
-VHEtTag *VHEtTag::clone() const
+VHEtTag::VHEtTag( const VHEtTag &b ) : DiPhotonTagBase::DiPhotonTagBase( b )
 {
-    VHEtTag *result = new VHEtTag( diPhoton(), diPhotonMVA() );
-    result->setDiPhotonIndex( diPhotonIndex() );
-    result->setMet( theMet_ );
-    return result;
+    setMet( b.met() );
 }
-
-
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

@@ -148,7 +148,7 @@ process.combinedSecondaryVertex.trackMultiplicityMin = 1  #needed for CMSSW < 71
 	### Do "projections"
 process.flashggCHSLegacyVertexCandidates = cms.EDProducer('FlashggCHSLegacyVertexCandidateProducer',
                                                           PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
-                                                          DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                                          DiPhotonTag=cms.InputTag('flashggDiPhotons'),
                                                           VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                                                           VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
                                                           )
@@ -230,7 +230,7 @@ puppiForward = cms.VPSet(
 #                                candName      = cms.untracked.string('packedPFCandidates'),
 #                                vertexName     = cms.untracked.string('offlineSlimmedPrimaryVertices'),
 #                                VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
-#                                DiPhotonTag   = cms.untracked.InputTag('flashggDiPhotons'),
+#                                DiPhotonTag   = cms.InputTag('flashggDiPhotons'),
 #                                VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
 #                                applyCHS       = cms.untracked.bool  (True),
 #                                useExp         = cms.untracked.bool  (False),
@@ -313,7 +313,7 @@ puppiForward = cms.VPSet(
 #                                  candName      = cms.untracked.string('packedPFCandidates'),
 #                                  vertexName     = cms.untracked.string('offlineSlimmedPrimaryVertices'),
 #                                  VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
-#                                  DiPhotonTag   = cms.untracked.InputTag('flashggDiPhotons'),
+#                                  DiPhotonTag   = cms.InputTag('flashggDiPhotons'),
 #                                  VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
 #                                  applyCHS       = cms.untracked.bool  (True),
 #                                  useExp         = cms.untracked.bool  (False),
@@ -387,7 +387,7 @@ puppiForward = cms.VPSet(
 
 from RecoJets.JetProducers.PileupJetIDParams_cfi import full_53x
 process.flashggJets = cms.EDProducer('FlashggJetProducer',
-                                     DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                     DiPhotonTag=cms.InputTag('flashggDiPhotons'),
                                      VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                      JetTag=cms.untracked.InputTag('patJetsAK4PF'),
                                      VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
@@ -395,7 +395,7 @@ process.flashggJets = cms.EDProducer('FlashggJetProducer',
                                      )
 
 process.flashggJetsPFCHS0 = cms.EDProducer('FlashggJetProducer',
-                                           DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                           DiPhotonTag=cms.InputTag('flashggDiPhotons'),
                                            VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                            JetTag=cms.untracked.InputTag('patJetsAK4PFCHS0'),
                                            VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
@@ -403,14 +403,14 @@ process.flashggJetsPFCHS0 = cms.EDProducer('FlashggJetProducer',
                                            )
 
 process.flashggJetsPFCHSLeg = cms.EDProducer('FlashggJetProducer',
-                                             DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                             DiPhotonTag=cms.InputTag('flashggDiPhotons'),
                                              VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                              JetTag=cms.untracked.InputTag('patJetsAK4PFCHSLeg'),
                                              VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
                                              PileupJetIdParameters=cms.PSet(full_53x) # from PileupJetIDParams_cfi
                                              )
 #process.flashggJetsPUPPI0 = cms.EDProducer('FlashggJetProducer',
-#                                           DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+#                                           DiPhotonTag=cms.InputTag('flashggDiPhotons'),
 #                                           VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
 #                                           JetTag=cms.untracked.InputTag('patJetsAK4PFPUPPI0'),
 #                                           VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
@@ -418,7 +418,7 @@ process.flashggJetsPFCHSLeg = cms.EDProducer('FlashggJetProducer',
 #                                           PileupJetIdParameters=cms.PSet(full_53x) # from PileupJetIDParams_cfi
 #                                           )
 #process.flashggJetsPUPPILeg = cms.EDProducer('FlashggJetProducer',
-#                                             DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+#                                             DiPhotonTag=cms.InputTag('flashggDiPhotons'),
 #                                             VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
 #                                             JetTag=cms.untracked.InputTag('patJetsAK4PFPUPPILeg'),
 #                                             VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
@@ -432,7 +432,7 @@ process.load("flashgg/Taggers/flashggVBFMVA_cff")
 process.load("flashgg/Taggers/flashggTags_cff")
 
 process.flashggTagSorter = cms.EDProducer('FlashggTagSorter',
-                                          DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+                                          DiPhotonTag = cms.InputTag('flashggDiPhotons'),
                                           TagVectorTag = cms.untracked.VInputTag(cms.untracked.InputTag('flashggVBFTag'),
                                                                                  cms.untracked.InputTag('flashggUntaggedCategory'),
                                                                                  ),
@@ -479,7 +479,7 @@ process.e = cms.EndPath(process.out)
 # Uncomment these lines to run the example commissioning module and send its output to root
 #process.commissioning = cms.EDAnalyzer('flashggCommissioning',
 #                                       PhotonTag=cms.untracked.InputTag('flashggPhotons'),
-#                                       DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+#                                       DiPhotonTag = cms.InputTag('flashggDiPhotons'),
 #                                       VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
 #)
 #process.TFileService = cms.Service("TFileService",

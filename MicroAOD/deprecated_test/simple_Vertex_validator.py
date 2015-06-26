@@ -96,7 +96,7 @@ process.flashggVertexValidationTreeMaker = cms.EDAnalyzer('FlashggVertexValidati
                                                           VertexCandidateMapTagAOD = cms.InputTag('flashggVertexMapValidator'),
                                                           JetTagDz = cms.InputTag("flashggJets"),
                                                           JetTagRecoBasedMap = cms.InputTag("flashggJetsUsingRecoBasedVertexMap"),
-																													DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons')
+																													DiPhotonTag = cms.InputTag('flashggDiPhotons')
 #                                                          JetTagReco = cms.InputTag("flashggJetsUsingRecoJets")
                                                           )
                  
@@ -104,7 +104,7 @@ process.flashggVertexValidationTreeMaker = cms.EDAnalyzer('FlashggVertexValidati
 process.load("RecoJets.JetProducers.PileupJetIDParams_cfi")
 
 process.flashggJets = cms.EDProducer('FlashggJetProducer',
-                                     DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                     DiPhotonTag=cms.InputTag('flashggDiPhotons'),
 #                                     VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                      JetTag=cms.untracked.InputTag('slimmedJets'),
                                      VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
@@ -112,7 +112,7 @@ process.flashggJets = cms.EDProducer('FlashggJetProducer',
                                      )
 
 process.flashggJetsUsingRecoBasedVertexMap = cms.EDProducer('FlashggJetProducer',
-                                                           DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                                           DiPhotonTag=cms.InputTag('flashggDiPhotons'),
 #                                                           VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                                            JetTag=cms.untracked.InputTag('slimmedJets'),
                                                            VertexCandidateMapTag = cms.InputTag("flashggVertexMapValidator"),

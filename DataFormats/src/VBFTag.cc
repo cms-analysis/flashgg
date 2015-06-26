@@ -17,6 +17,11 @@ VBFTag::VBFTag( edm::Ptr<DiPhotonCandidate> dipho, DiPhotonMVAResult mvares, VBF
     vbfDiPhoDiJet_mva_result_ = vbfDiPhoDiJet_mvaRes;
 }
 
+VBFTag::VBFTag( const VBFTag &b ) : DiPhotonTagBase::DiPhotonTagBase( b )
+{
+    vbfDiPhoDiJet_mva_result_ = b.VBFDiPhoDiJetMVA();
+}
+
 const VBFDiPhoDiJetMVAResult VBFTag::VBFDiPhoDiJetMVA() const
 {
     return vbfDiPhoDiJet_mva_result_;
@@ -35,15 +40,6 @@ const Jet VBFTag::subLeadingJet() const
 {
     return vbfDiPhoDiJet_mva_result_.vbfMvaResult.subleadJet;
 }
-
-VBFTag *VBFTag::clone() const
-{
-    VBFTag *result = new VBFTag( diPhoton(), diPhotonMVA(), vbfDiPhoDiJet_mva_result_ );
-    result->setCategoryNumber( categoryNumber() );
-    result->setDiPhotonIndex( diPhotonIndex() );
-    return result;
-}
-
 
 // Local Variables:
 // mode:c++

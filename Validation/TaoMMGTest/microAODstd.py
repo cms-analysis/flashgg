@@ -70,7 +70,7 @@ process.e = cms.EndPath(process.out)
 # Uncomment these lines to run the example commissioning module and send its output to root
 #process.commissioning = cms.EDAnalyzer('flashggCommissioning',
 #                                       PhotonTag=cms.untracked.InputTag('flashggPhotons'),
-#                                       DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+#                                       DiPhotonTag = cms.InputTag('flashggDiPhotons'),
 #                                       VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
 #)
 #process.TFileService = cms.Service("TFileService",

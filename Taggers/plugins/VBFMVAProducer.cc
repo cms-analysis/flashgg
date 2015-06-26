@@ -35,7 +35,7 @@ namespace flashgg {
         bool _isLegacyMVA;
         bool _usePuJetID;
         double _minDijetMinv;
-        
+
         float dijet_leadEta_;
         float dijet_subleadEta_;
         float dijet_abs_dEta_;
@@ -52,10 +52,10 @@ namespace flashgg {
     };
 
     VBFMVAProducer::VBFMVAProducer( const ParameterSet &iConfig ) :
-        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "DiPhotonTag", InputTag( "flashggDiPhotons" ) ) ) ),
+        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         jetTokenDz_( consumes<View<flashgg::Jet> >( iConfig.getUntrackedParameter<InputTag>( "JetTag", InputTag( "flashggJets" ) ) ) ),
-        _isLegacyMVA ( iConfig.getUntrackedParameter<bool>( "UseLegacyMVA" , false ) ),
-        _usePuJetID  ( iConfig.getUntrackedParameter<bool>( "UsePuJetID" , false ) ),
+        _isLegacyMVA( iConfig.getUntrackedParameter<bool>( "UseLegacyMVA" , false ) ),
+        _usePuJetID( iConfig.getUntrackedParameter<bool>( "UsePuJetID" , false ) ),
         _minDijetMinv( iConfig.getParameter<double>( "MinDijetMinv" ) )
     {
 
@@ -153,7 +153,7 @@ namespace flashgg {
 
                 //pass PU veto??
                 //if (jet->puJetId(diPhotons[candIndex]) <  PuIDCutoff) {continue;}
-                if (_usePuJetID && !jet->passesPuJetId(diPhotons->ptrAt(candIndex))) continue;
+                if( _usePuJetID && !jet->passesPuJetId( diPhotons->ptrAt( candIndex ) ) ) { continue; }
                 // within eta 4.7?
                 if( fabs( jet->eta() ) > 4.7 ) { continue; }
                 // close to lead photon?

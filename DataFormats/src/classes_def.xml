@@ -30,6 +30,7 @@
 <class name="edm::Ptr<pat::Electron>"/>
 <class name="std::vector<pat::Muon>"/>
 <class name="edm::Ptr<pat::Muon>"/> 
+<class name="edm::Ptr<reco::GenParticle>"/>
 <class name="flashgg::TTHHadronicTag"/>
 <class name="std::vector<flashgg::TTHHadronicTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TTHHadronicTag> >"/>
@@ -39,6 +40,9 @@
 <class name="std::vector<edm::Ptr<flashgg::Jet> >"/>
 <class name="edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> >" />
 <class name="edm::Wrapper<edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> > >" />
+<class name="flashgg::VBFTagTruth"/>
+<class name="std::vector<flashgg::VBFTagTruth>"/>
+<class name="edm::Wrapper<std::vector<flashgg::VBFTagTruth> >"/>
 <class name="flashgg::VHLooseTag"/>
 <class name="std::vector<flashgg::VHLooseTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::VHLooseTag> >"/>
@@ -88,6 +92,14 @@
 <class name="edm::Ptr<flashgg::Electron>"/>
 <class name="std::vector<flashgg::Electron>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Electron> >"/>
+<class name="flashgg::TagTruthBase"/>
+<class name="std::vector<flashgg::TagTruthBase>"/>
+<class name="edm::Wrapper<std::vector<flashgg::TagTruthBase> >"/>
+<!-- <class pattern="edm::Ref<std::vector<flashgg::TagTruthBase>,*>"/> -->
+<class name="edm::OwnVector<flashgg::TagTruthBase, edm::ClonePolicy<flashgg::TagTruthBase> >" />
+<class name="edm::Wrapper<edm::OwnVector<flashgg::TagTruthBase, edm::ClonePolicy<flashgg::TagTruthBase> > >" />
+<!-- <class pattern="edm::Ref<edm::OwnVector<flashgg::TagTruthBase, edm::ClonePolicy<flashgg::TagTruthBase> >,* >" /> -->
+<class name="edm::Ptr<flashgg::TagTruthBase>"/>
 <class name="edm::Ptr<pat::PackedGenParticle>"/>
 <class name="flashgg::GenPhotonExtra"/>
 <class name="edm::Ptr<flashgg::GenPhotonExtra>"/>
