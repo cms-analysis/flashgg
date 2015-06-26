@@ -1,8 +1,8 @@
 #include "flashgg/DataFormats/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
-#include "flashgg/Systematics/interface/BaseSystMethods.h"
+#include "flashgg/Systematics/interface/BaseSystMethod.h"
 #include "flashgg/Systematics/interface/ObjectSystematicProducer.h"
-#include "flashgg/Systematics/interface/LeptonEffSmear.h"
+#include "flashgg/Systematics/interface/LeptonEffSmearNew.h"
 
 namespace flashgg {
     

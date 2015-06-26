@@ -1,10 +1,9 @@
-#include "flashgg/Systematics/interface/LeptonEffSmear.h"
+#include "flashgg/Systematics/interface/LeptonEffSmearNew.h"
 
 namespace flashgg {
 
-		typedef LeptonEffSmear<flashgg::Electron, int> ElectronEffSmear;
-		typedef LeptonEffSmear<pat::Muon, int> MuonEffSmear;
-		
+		typedef LeptonEffSmearNew<flashgg::Electron, int> ElectronEffSmear;
+		typedef LeptonEffSmearNew<pat::Muon, int> MuonEffSmear;
 }
 	
 DEFINE_EDM_PLUGIN(FlashggSystematicElectronMethodsFactory,
