@@ -2,7 +2,7 @@
 # twiki source : https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD2015#Advanced_topics_re_clustering_ev
 
 import FWCore.ParameterSet.Config as cms
-from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased as pu_jetid
+from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased_new as pu_jetid
 from PhysicsTools.PatAlgos.tools.jetTools import addJetCollection
 
 flashggBTag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
