@@ -16,8 +16,11 @@ namespace flashgg {
     public:
         Photon();
         Photon( const pat::Photon & );
+        Photon( const flashgg::Photon & );
         ~Photon();
         virtual Photon *clone() const;
+
+        void ZeroVariables();
 
         enum mcMatch_t { kUnkown = 0, kPrompt, kFake  };
 
@@ -145,8 +148,8 @@ namespace flashgg {
 
         float sipip_;
         float sieip_;
-        float zernike20_;
-        float zernike42_;
+        //        float zernike20_;
+        //        float zernike42_;
         float e2nd_;
         float e2x5right_;
         float e2x5left_;
