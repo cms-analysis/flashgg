@@ -30,6 +30,7 @@
 #include "flashgg/DataFormats/interface/VHEtTag.h"
 #include "flashgg/DataFormats/interface/VHLooseTag.h"
 #include "flashgg/DataFormats/interface/VHHadronicTag.h"
+#include "flashgg/DataFormats/interface/VBFTagTruth.h"
 
 using namespace std;
 using namespace edm;
@@ -98,13 +99,67 @@ namespace flashgg {
 
             const	DiPhotonUntaggedCategory *untagged = dynamic_cast<const DiPhotonUntaggedCategory *>( chosenTag );
             if( untagged != NULL ) {
-                std::cout << "[UNTAGGED] category " << untagged->categoryNumber() << std::endl;
+                std::cout << "[UNTAGGED] category " << untagged->categoryNumber() << " mass=" << untagged->diPhoton()->mass() << std::endl;
+                if( untagged->tagTruth().isNonnull() ) {
+                    std::cout << "\t[UNTAGGED TRUTH]: genPV=" << untagged->tagTruth()->genPV() << std::endl;
+                }
             }
 
             const	VBFTag *vbftag = dynamic_cast<const VBFTag *>( chosenTag );
             if( vbftag != NULL ) {
-                std::cout << "[VBF] Category " << vbftag->categoryNumber() << " with lead jet eta "
-                          << vbftag->leadingJet().pt() << " and sublead jet eta " << vbftag->subLeadingJet().pt() << std::endl;
+                std::cout << "[VBF] Category " << vbftag->categoryNumber() << " with lead jet pt eta "
+                          << vbftag->leadingJet().pt() << " " << vbftag->leadingJet().eta()
+                          << " and sublead jet eta " << vbftag->subLeadingJet().pt() << " " << vbftag->subLeadingJet().eta() << std::endl;
+                if( vbftag->tagTruth().isNonnull() ) {
+                    const VBFTagTruth *truth = dynamic_cast<const VBFTagTruth *>( &*vbftag->tagTruth() );
+                    assert( truth != NULL );  // If we stored a VBFTag with a nonnull pointer, we either have VBFTagTruth or a nutty bug
+                    std::cout << "\t[VBF TRUTH]: genPV=" << truth->genPV() << std::endl;
+                    std::cout << "\t\t------------------------------------------" << std::endl;
+                    if( truth->closestGenJetToLeadingJet().isNonnull() ) {
+                        std::cout << "\t\tclosestGenJetToLeadingJet pt eta " << truth->closestGenJetToLeadingJet()->pt() << " " << truth->closestGenJetToLeadingJet()->eta() <<
+                                  std::endl;
+                    }
+                    std::cout << "  truth->closestParticleToLeadingJet().isNonnull() " << truth->closestParticleToLeadingJet().isNonnull() << std::endl;
+                    if( truth->closestParticleToLeadingJet().isNonnull() ) {
+                        std::cout << "\t\tclosestParticleToLeadingJet pt eta id "   << truth->closestParticleToLeadingJet()->pt() << " " << truth->closestParticleToLeadingJet()->eta()
+                                  << " " << truth->closestParticleToLeadingJet()->pdgId() << std::endl;
+                    }
+                    std::cout << "\t\t------------------------------------------" << std::endl;
+                    if( truth->closestGenJetToSubLeadingJet().isNonnull() ) {
+                        std::cout << "\t\tclosestGenJetToSubLeadingJet pt eta id " << truth->closestGenJetToSubLeadingJet()->pt() << " " << truth->closestGenJetToSubLeadingJet()->eta()
+                                  << std::endl;
+                    }
+                    if( truth->closestParticleToSubLeadingJet().isNonnull() ) {
+                        std::cout << "\t\tclosestParticleToSubLeadingJet pt eta " << truth->closestParticleToSubLeadingJet()->pt() << " " <<
+                                  truth->closestParticleToSubLeadingJet()->eta()
+                                  << " " << truth->closestParticleToSubLeadingJet()->pdgId() << std::endl;
+                    }
+                    std::cout << "\t\t------------------------------------------" << std::endl;
+                    if( truth->closestParticleToLeadingPhoton().isNonnull() ) {
+                        std::cout << "\t\tclosestParticleToLeadingPhoton pt eta id " << truth->closestParticleToLeadingPhoton()->pt() << " " <<
+                                  truth->closestParticleToLeadingPhoton()->eta()
+                                  << " " << truth->closestParticleToLeadingPhoton()->pdgId() << std::endl;
+                    }
+                    std::cout << "\t\t------------------------------------------" << std::endl;
+                    if( truth->closestParticleToSubLeadingPhoton().isNonnull() ) {
+                        std::cout << "\t\tclosestParticleToSubLeadingPhoton pt eta id " << truth->closestParticleToSubLeadingPhoton()->pt() << " " <<
+                                  truth->closestParticleToSubLeadingPhoton()->eta()
+                                  << " " << truth->closestParticleToSubLeadingPhoton()->pdgId() << std::endl;
+                    }
+                    std::cout << "\t\t------------------------------------------" << std::endl;
+                    if( truth->leadingQuark().isNonnull() ) {
+                        std::cout << "\t\tleadingQuark pt eta id " << truth->leadingQuark()->pt() << " " << truth->leadingQuark()->eta()
+                                  << " " << truth->leadingQuark()->pdgId() << std::endl;
+                    }
+                    if( truth->subLeadingQuark().isNonnull() ) {
+                        std::cout << "\t\tsubLeadingQuark pt eta id "  << truth->subLeadingQuark()->pt() << " " << truth->subLeadingQuark()->eta()
+                                  << " " << truth->subLeadingQuark()->pdgId() << std::endl;
+                    }
+                    if( truth->leadingQuark().isNonnull() && truth->subLeadingQuark().isNonnull() ) {
+                        std::cout << "\t\tDiquark mass: " << ( truth->leadingQuark()->p4() + truth->subLeadingQuark()->p4() ).mass() << std::endl;
+                    }
+                }
+
             }
 
             const   TTHHadronicTag *tthhadronictag = dynamic_cast<const TTHHadronicTag *>( chosenTag );

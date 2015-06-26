@@ -21,6 +21,9 @@
 
 #include "DataFormats/Math/interface/deltaR.h"
 
+#include "flashgg/DataFormats/interface/TagTruthBase.h"
+#include "DataFormats/Common/interface/RefToPtr.h"
+
 #include <vector>
 #include <algorithm>
 #include <string>
@@ -37,6 +40,8 @@ namespace flashgg {
     {
 
     public:
+        typedef math::XYZPoint Point;
+
         VHTightTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
@@ -48,6 +53,7 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<pat::MET> > METToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
+        EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
 
         //Thresholds
         double leptonPtThreshold_;
@@ -101,13 +107,14 @@ namespace flashgg {
     };
 
     VHTightTagProducer::VHTightTagProducer( const ParameterSet &iConfig ) :
-        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "DiPhotonTag", InputTag( "flashggDiPhotons" ) ) ) ),
+        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         thejetToken_( consumes<View<flashgg::Jet> >( iConfig.getUntrackedParameter<InputTag>( "VHtightJetTag", InputTag( "flashggJets" ) ) ) ),
         electronToken_( consumes<View<flashgg::Electron> >( iConfig.getUntrackedParameter<InputTag> ( "ElectronTag", InputTag( "flashggElectrons" ) ) ) ),
         muonToken_( consumes<View<pat::Muon> >( iConfig.getUntrackedParameter<InputTag>( "MuonTag", InputTag( "slimmedMuons" ) ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getUntrackedParameter<InputTag> ( "MVAResultTag", InputTag( "flashggDiPhotonMVA" ) ) ) ),
         METToken_( consumes<View<pat::MET> >( iConfig.getUntrackedParameter<InputTag> ( "METTag", InputTag( "slimmedMETs" ) ) ) ),
-        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getUntrackedParameter<InputTag> ( "VertexTag", InputTag( "offlinePrimaryVertices" ) ) ) )
+        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getUntrackedParameter<InputTag> ( "VertexTag", InputTag( "offlinePrimaryVertices" ) ) ) ),
+        genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getUntrackedParameter<InputTag> ( "GenParticleTag", InputTag( "prunedGenParticles" ) ) ) )
 
     {
 
@@ -200,6 +207,7 @@ namespace flashgg {
         EtaCuts_ = iConfig.getUntrackedParameter<vector<double > >( "EtaCuts", default_EtaCuts_ );
 
         produces<vector<VHTightTag> >();
+        produces<vector<TagTruthBase> >();
     }
 
     void VHTightTagProducer::produce( Event &evt, const EventSetup & )
@@ -224,7 +232,25 @@ namespace flashgg {
         Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
         evt.getByToken( mvaResultToken_, mvaResults );
 //const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
+
+        Handle<View<reco::GenParticle> > genParticles;
+        evt.getByToken( genParticleToken_, genParticles );
+
         std::auto_ptr<vector<VHTightTag> > VHTightTags( new vector<VHTightTag> );
+        std::auto_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
+
+        Point higgsVtx;
+
+        for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+            int pdgid = genParticles->ptrAt( genLoop )->pdgId();
+            if( pdgid == 25 || pdgid == 22 ) {
+                higgsVtx = genParticles->ptrAt( genLoop )->vertex();
+                break;
+            }
+        }
+
+        edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
+        unsigned int idx = 0;
 
         Handle<View<pat::MET> > METs;
         evt.getByToken( METToken_, METs );
@@ -449,9 +475,14 @@ namespace flashgg {
                 VHTightTags_obj.setMET( tagMETs );
                 VHTightTags_obj.setDiPhotonIndex( diphoIndex );
                 VHTightTags->push_back( VHTightTags_obj );
+                TagTruthBase truth_obj;
+                truth_obj.setGenPV( higgsVtx );
+                truths->push_back( truth_obj );
+                VHTightTags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
             }
         }
         evt.put( VHTightTags );
+        evt.put( truths );
 
     }
 

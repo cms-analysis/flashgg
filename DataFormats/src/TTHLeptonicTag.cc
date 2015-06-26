@@ -13,17 +13,12 @@ TTHLeptonicTag::~TTHLeptonicTag()
 TTHLeptonicTag::TTHLeptonicTag( edm::Ptr<DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvares ) : TTHLeptonicTag::TTHLeptonicTag( diPho, *mvares ) {}
 TTHLeptonicTag::TTHLeptonicTag( edm::Ptr<DiPhotonCandidate> dipho, DiPhotonMVAResult mvares ) : DiPhotonTagBase::DiPhotonTagBase( dipho, mvares ) {}
 
-
-TTHLeptonicTag *TTHLeptonicTag::clone() const
+TTHLeptonicTag::TTHLeptonicTag( const TTHLeptonicTag &b ) : DiPhotonTagBase::DiPhotonTagBase( b )
 {
-    TTHLeptonicTag *result = new TTHLeptonicTag( diPhoton(), diPhotonMVA() );
-    result->setDiPhotonIndex( diPhotonIndex() );
-    result->setJets( Jets_ );
-    result->setBJets( BJets_ );
-    result->setMuons( Muons_ );
-    result->setElectrons( Electrons_ );
-
-    return result;
+    setJets( b.jets() );
+    setBJets( b.bJets() );
+    setMuons( b.muons() );
+    setElectrons( b.electrons() );
 }
 // Local Variables:
 // mode:c++

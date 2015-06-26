@@ -37,7 +37,7 @@ process.flashggDiPhotons.nVtxSaveInfo = cms.untracked.uint32(999)
 
 process.commissioning = cms.EDAnalyzer('vertexTrainingTreeMaker',
                                        PhotonTag=cms.untracked.InputTag('flashggPhotons'),
-                                       DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
+                                       DiPhotonTag = cms.InputTag('flashggDiPhotons'),
                                        VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                        VertexCandidateMapTagDz=cms.InputTag('flashggVertexMapUnique'),
                                        ConversionTag=cms.untracked.InputTag("reducedEgamma","reducedConversions"), 

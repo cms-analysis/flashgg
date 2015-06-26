@@ -221,7 +221,7 @@ FlashggTreeMakerWithTagSorter::FlashggTreeMakerWithTagSorter( const edm::Paramet
     vertexCandidateMapTokenDz_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTagDz" ) ) ),
     vertexCandidateMapTokenAOD_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTagAOD" ) ) ),
     jetTokenDz_( consumes<View<flashgg::Jet> >( iConfig.getParameter<InputTag>( "JetTagDz" ) ) ),
-    diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "DiPhotonTag", InputTag( "flashggDiPhotons" ) ) ) ),
+    diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
     METToken_( consumes<View<pat::MET> >( iConfig.getUntrackedParameter<InputTag> ( "METTag", InputTag( "slimmedMETs" ) ) ) ),
     PileUpToken_( consumes<View<PileupSummaryInfo> >( iConfig.getUntrackedParameter<InputTag> ( "PileUpTag", InputTag( "addPileupInfo" ) ) ) ),
     TagSorterToken_( consumes<edm::OwnVector<flashgg::DiPhotonTagBase> >( iConfig.getUntrackedParameter<InputTag> ( "TagSorter",

@@ -32,7 +32,7 @@ namespace flashgg {
                                        const std::vector<edm::Ptr<reco::Conversion> > &,
                                        const math::XYZPoint &,
                                        bool
-                                    ) override;
+                                     ) override;
 
         void writeInfoFromLastSelectionTo( flashgg::DiPhotonCandidate & ) override;
 
@@ -49,12 +49,13 @@ namespace flashgg {
 
         double sZFromConvPair( const edm::Ptr<flashgg::Photon> &, const edm::Ptr<flashgg::Photon> &,
                                const int , const int, const int, const int,
-                               const std::vector<edm::Ptr<reco::Conversion> > &, 
+                               const std::vector<edm::Ptr<reco::Conversion> > &,
                                const std::vector<edm::Ptr<reco::Conversion> > & ) const;
 
-      std::vector<int> IndexMatchedConversion( const edm::Ptr<flashgg::Photon> &, const std::vector<edm::Ptr<reco::Conversion> > &, const std::vector<edm::Ptr<reco::Conversion> > &, bool ) const;
+        std::vector<int> IndexMatchedConversion( const edm::Ptr<flashgg::Photon> &, const std::vector<edm::Ptr<reco::Conversion> > &,
+                const std::vector<edm::Ptr<reco::Conversion> > &, bool ) const;
 
-      void Initialize();
+        void Initialize();
 
     private:
 
@@ -163,23 +164,23 @@ namespace flashgg {
     {
         VertexIdMva_ = new TMVA::Reader( "!Color:Silent" );
         VertexIdMva_->AddVariable( "ptasym", &ptasym_ );
-        VertexIdMva_->AddVariable("ptbal",&ptbal_);
+        VertexIdMva_->AddVariable( "ptbal", &ptbal_ );
         VertexIdMva_->AddVariable( "logsumpt2", &logsumpt2_ );
         VertexIdMva_->AddVariable( "limPullToConv", &pull_conv_ );
-	VertexIdMva_->AddVariable( "nConv", &nConv_ );
-        
+        VertexIdMva_->AddVariable( "nConv", &nConv_ );
+
         VertexIdMva_->BookMVA( "BDT", vertexIdMVAweightfile_.fullPath() );
 
         VertexProbMva_ = new TMVA::Reader( "!Color:Silent" );
 
-	VertexProbMva_->AddVariable("pt",&dipho_pt_);
-	VertexProbMva_->AddVariable("NVert",&nVert_);
-	VertexProbMva_->AddVariable("MVA0",&MVA0_);
-	VertexProbMva_->AddVariable("MVA1",&MVA1_);
-	VertexProbMva_->AddVariable("DZ1",&dZ1_);
-	VertexProbMva_->AddVariable("MVA2",&MVA2_);
-	VertexProbMva_->AddVariable("DZ2",&dZ2_);
-	VertexProbMva_->AddVariable("NConv",&nConv_);
+        VertexProbMva_->AddVariable( "pt", &dipho_pt_ );
+        VertexProbMva_->AddVariable( "NVert", &nVert_ );
+        VertexProbMva_->AddVariable( "MVA0", &MVA0_ );
+        VertexProbMva_->AddVariable( "MVA1", &MVA1_ );
+        VertexProbMva_->AddVariable( "DZ1", &dZ1_ );
+        VertexProbMva_->AddVariable( "MVA2", &MVA2_ );
+        VertexProbMva_->AddVariable( "DZ2", &dZ2_ );
+        VertexProbMva_->AddVariable( "NConv", &nConv_ );
 
         VertexProbMva_->BookMVA( "BDT", vertexProbMVAweightfile_.fullPath() );
 
@@ -193,22 +194,22 @@ namespace flashgg {
     }
 
     double LegacyVertexSelector::vtxZFromConvOnly( const edm::Ptr<flashgg::Photon> &pho, const edm::Ptr<reco:: Conversion> &conversion,
-                                                   const math::XYZPoint &beamSpot ) const
+            const math::XYZPoint &beamSpot ) const
     {
         double dz = 0;
-        if (conversion->nTracks()==2){
+        if( conversion->nTracks() == 2 ) {
             double r = sqrt( conversion->refittedPairMomentum().perp2() );
             dz = ( conversion->conversionVertex().z() - beamSpot.z() )
-                    -
-                ( ( conversion->conversionVertex().x() - beamSpot.x() ) * conversion->refittedPair4Momentum().x() + ( conversion->conversionVertex().y() - beamSpot.y() ) *
-                  conversion->refittedPair4Momentum().y() ) / r * conversion->refittedPair4Momentum().z() / r;
+                 -
+                 ( ( conversion->conversionVertex().x() - beamSpot.x() ) * conversion->refittedPair4Momentum().x() + ( conversion->conversionVertex().y() - beamSpot.y() ) *
+                   conversion->refittedPair4Momentum().y() ) / r * conversion->refittedPair4Momentum().z() / r;
         }
-        if (conversion->nTracks()==1){
-                double r = sqrt(conversion->tracksPin()[0].x()*conversion->tracksPin()[0].x()+conversion->tracksPin()[0].y()*conversion->tracksPin()[0].y());
-                dz = ( conversion->conversionVertex().z() - beamSpot.z() )
-                    -
-                    ( ( conversion->conversionVertex().x() - beamSpot.x() ) * conversion->tracksPin()[0].x() + ( conversion->conversionVertex().y() - beamSpot.y() ) *
-                      conversion->tracksPin()[0].y() ) / r * conversion->tracksPin()[0].z() / r;
+        if( conversion->nTracks() == 1 ) {
+            double r = sqrt( conversion->tracksPin()[0].x() * conversion->tracksPin()[0].x() + conversion->tracksPin()[0].y() * conversion->tracksPin()[0].y() );
+            dz = ( conversion->conversionVertex().z() - beamSpot.z() )
+                 -
+                 ( ( conversion->conversionVertex().x() - beamSpot.x() ) * conversion->tracksPin()[0].x() + ( conversion->conversionVertex().y() - beamSpot.y() ) *
+                   conversion->tracksPin()[0].y() ) / r * conversion->tracksPin()[0].z() / r;
         }
         return dz + beamSpot.z();
     }
@@ -232,96 +233,96 @@ namespace flashgg {
     }
 
     double LegacyVertexSelector::vtxZFromConv( const edm::Ptr<flashgg::Photon> &pho, const edm::Ptr<reco::Conversion> &conversion,
-                                               const math::XYZPoint &beamSpot ) const
+            const math::XYZPoint &beamSpot ) const
     {
         double ReturnValue = 0;
         double perp = sqrt( conversion->conversionVertex().x() * conversion->conversionVertex().x() + conversion->conversionVertex().y() *
                             conversion->conversionVertex().y() );
 
-        float nTracksConv=conversion->nTracks();
+        float nTracksConv = conversion->nTracks();
 
-        if(nTracksConv==2){
-            if(fabs(pho->superCluster()->eta())<1.5) {
-                if (perp<=15.0) {
+        if( nTracksConv == 2 ) {
+            if( fabs( pho->superCluster()->eta() ) < 1.5 ) {
+                if( perp <= 15.0 ) {
 
-                    if(sigma1Pix<sigma2Pix)
-                        ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
+                    if( sigma1Pix < sigma2Pix )
+                    { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
                     else
-                        ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
-                } else if  (perp>15 && perp<=60.0) {
+                    { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+                } else if( perp > 15 && perp <= 60.0 ) {
 
-                    if(sigma1Tib<sigma2Tib)
-                        ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
+                    if( sigma1Tib < sigma2Tib )
+                    { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
                     else
-                        ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
-                }else{
+                    { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+                } else {
 
-                    if(sigma1Tob<sigma2Tob)
-                        ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
+                    if( sigma1Tob < sigma2Tob )
+                    { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
                     else
-                        ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
+                    { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
                 }
-            }else{
-                if(fabs(conversion->conversionVertex().z())<=50.0){
+            } else {
+                if( fabs( conversion->conversionVertex().z() ) <= 50.0 ) {
 
-                    if(sigma1PixFwd<sigma2PixFwd)
-                        ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
+                    if( sigma1PixFwd < sigma2PixFwd )
+                    { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
                     else
-                        ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
-                }else if(fabs(conversion->conversionVertex().z())>50.0 && fabs(conversion->conversionVertex().z())<=100.0){
-                    if(sigma1Tid<sigma2Tid)
-                        ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
+                    { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+                } else if( fabs( conversion->conversionVertex().z() ) > 50.0 && fabs( conversion->conversionVertex().z() ) <= 100.0 ) {
+                    if( sigma1Tid < sigma2Tid )
+                    { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
                     else
-                        ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
-                }else{
+                    { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+                } else {
 
-                    if(sigma1Tec<sigma2Tec)
-                        ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
+                    if( sigma1Tec < sigma2Tec )
+                    { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
                     else
-                        ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
+                    { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
                 }
             }
         }
-        if(nTracksConv==1){
-            if(fabs(pho->superCluster()->eta())<1.5) {
-                if (perp<=15.0) {
+        if( nTracksConv == 1 ) {
+            if( fabs( pho->superCluster()->eta() ) < 1.5 ) {
+                if( perp <= 15.0 ) {
 
-                    if(singlelegsigma1Pix<singlelegsigma2Pix)
-                        ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
+                    if( singlelegsigma1Pix < singlelegsigma2Pix )
+                    { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
                     else
-                        ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
-                } else if  (perp>15 && perp<=60.0) {
+                    { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+                } else if( perp > 15 && perp <= 60.0 ) {
 
-                    if(singlelegsigma1Tib<singlelegsigma2Tib)
-                        ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
+                    if( singlelegsigma1Tib < singlelegsigma2Tib )
+                    { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
                     else
-                        ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
-                }else{
+                    { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+                } else {
 
-                    if(singlelegsigma1Tob<singlelegsigma2Tob)
-                        ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
+                    if( singlelegsigma1Tob < singlelegsigma2Tob )
+                    { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
                     else
-                        ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
+                    { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
                 }
-            }else{
-                if(fabs(conversion->conversionVertex().z())<=50.0){
+            } else {
+                if( fabs( conversion->conversionVertex().z() ) <= 50.0 ) {
 
-                    if(singlelegsigma1PixFwd<singlelegsigma2PixFwd)
-                        ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
+                    if( singlelegsigma1PixFwd < singlelegsigma2PixFwd )
+                    { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
                     else
-                        ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
-                }else if(fabs(conversion->conversionVertex().z())>50.0 && fabs(conversion->conversionVertex().z())<=100.0){
+                    { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+                } else if( fabs( conversion->conversionVertex().z() ) > 50.0 && fabs( conversion->conversionVertex().z() ) <= 100.0 ) {
 
-                    if(singlelegsigma1Tid<singlelegsigma2Tid)
-                        ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
+                    if( singlelegsigma1Tid < singlelegsigma2Tid )
+                    { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
                     else
-                        ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
-                }else{
+                    { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
+                } else {
 
-                    if(singlelegsigma1Tec<singlelegsigma2Tec)
-                        ReturnValue = vtxZFromConvOnly(pho,conversion,beamSpot);
+                    if( singlelegsigma1Tec < singlelegsigma2Tec )
+                    { ReturnValue = vtxZFromConvOnly( pho, conversion, beamSpot ); }
                     else
-                        ReturnValue = vtxZFromConvSuperCluster(pho,conversion,beamSpot);
+                    { ReturnValue = vtxZFromConvSuperCluster( pho, conversion, beamSpot ); }
                 }
             }
         }
@@ -377,191 +378,192 @@ namespace flashgg {
     }
 
     double LegacyVertexSelector::zFromConvPair( const edm::Ptr<flashgg::Photon> &p1,
-                                                const edm::Ptr<flashgg::Photon> &p2,
-                                                const int index_conversionLead,
-                                                const int index_conversionTrail,
-                                                const int nConvLegs_LeadPhoton,
-                                                const int nConvLegs_TrailPhoton,
-						const std::vector<edm::Ptr<reco::Conversion> > &conversionsVector,
-						const std::vector<edm::Ptr<reco::Conversion> > &conversionsVectorSingleLeg,
-                                                const math::XYZPoint &beamSpot ) const
+            const edm::Ptr<flashgg::Photon> &p2,
+            const int index_conversionLead,
+            const int index_conversionTrail,
+            const int nConvLegs_LeadPhoton,
+            const int nConvLegs_TrailPhoton,
+            const std::vector<edm::Ptr<reco::Conversion> > &conversionsVector,
+            const std::vector<edm::Ptr<reco::Conversion> > &conversionsVectorSingleLeg,
+            const math::XYZPoint &beamSpot ) const
     {
         double zconv = 0;
-	float z1 = 0;
-	float sz1 = 0;
-	float z2 = 0;
-	float sz2 = 0;
+        float z1 = 0;
+        float sz1 = 0;
+        float z2 = 0;
+        float sz2 = 0;
 
         if( index_conversionLead != -1  && index_conversionTrail == -1 ) {
- 	  if(nConvLegs_LeadPhoton==2) { zconv = vtxZFromConv( p1, conversionsVector[index_conversionLead], beamSpot ); }
-	  if(nConvLegs_LeadPhoton==1) { zconv = vtxZFromConv( p1, conversionsVectorSingleLeg[index_conversionLead], beamSpot );}
-	}
+            if( nConvLegs_LeadPhoton == 2 ) { zconv = vtxZFromConv( p1, conversionsVector[index_conversionLead], beamSpot ); }
+            if( nConvLegs_LeadPhoton == 1 ) { zconv = vtxZFromConv( p1, conversionsVectorSingleLeg[index_conversionLead], beamSpot );}
+        }
 
-        if( index_conversionLead == -1 && index_conversionTrail != -1) {
-	  if( nConvLegs_TrailPhoton==2 ){ zconv = vtxZFromConv( p2, conversionsVector[index_conversionTrail], beamSpot ); }
-	  if( nConvLegs_TrailPhoton==1 ){ zconv = vtxZFromConv( p2, conversionsVectorSingleLeg[index_conversionTrail], beamSpot ); }
-	}
+        if( index_conversionLead == -1 && index_conversionTrail != -1 ) {
+            if( nConvLegs_TrailPhoton == 2 ) { zconv = vtxZFromConv( p2, conversionsVector[index_conversionTrail], beamSpot ); }
+            if( nConvLegs_TrailPhoton == 1 ) { zconv = vtxZFromConv( p2, conversionsVectorSingleLeg[index_conversionTrail], beamSpot ); }
+        }
 
-	if(index_conversionLead != -1 && index_conversionTrail != -1){
+        if( index_conversionLead != -1 && index_conversionTrail != -1 ) {
 
-	  if( nConvLegs_LeadPhoton ==2 && nConvLegs_TrailPhoton == 2) {
-            z1  = vtxZFromConv( p1, conversionsVector[index_conversionLead], beamSpot );
-            sz1 = vtxDZFromConv( p1, conversionsVector[index_conversionLead] );
-            z2  = vtxZFromConv( p2, conversionsVector[index_conversionTrail], beamSpot );
-            sz2 = vtxDZFromConv( p2, conversionsVector[index_conversionTrail] );
-	  }
-	  if( nConvLegs_LeadPhoton ==1 && nConvLegs_TrailPhoton == 1) {
-            z1  = vtxZFromConv( p1, conversionsVectorSingleLeg[index_conversionLead], beamSpot );
-            sz1 = vtxDZFromConv( p1, conversionsVectorSingleLeg[index_conversionLead] );
-            z2  = vtxZFromConv( p2, conversionsVectorSingleLeg[index_conversionTrail], beamSpot );
-            sz2 = vtxDZFromConv( p2, conversionsVectorSingleLeg[index_conversionTrail] );
-	  }
-	  if( nConvLegs_LeadPhoton ==2 && nConvLegs_TrailPhoton == 1) {
-            z1  = vtxZFromConv( p1, conversionsVector[index_conversionLead], beamSpot );
-            sz1 = vtxDZFromConv( p1, conversionsVector[index_conversionLead] );
-            z2  = vtxZFromConv( p2, conversionsVectorSingleLeg[index_conversionTrail], beamSpot );
-            sz2 = vtxDZFromConv( p2, conversionsVectorSingleLeg[index_conversionTrail] );
-	  }
-	  if( nConvLegs_LeadPhoton ==1 && nConvLegs_TrailPhoton == 2) {
-            z1  = vtxZFromConv( p1, conversionsVectorSingleLeg[index_conversionLead], beamSpot );
-            sz1 = vtxDZFromConv( p1, conversionsVectorSingleLeg[index_conversionLead] );
-            z2  = vtxZFromConv( p2, conversionsVector[index_conversionTrail], beamSpot );
-            sz2 = vtxDZFromConv( p2, conversionsVector[index_conversionTrail] );
-	  }
-	  if(sz1 != 0 && sz2 != 0){
-	    zconv  = ( z1 / sz1 / sz1 + z2 / sz2 / sz2 ) / ( 1. / sz1 / sz1 + 1. / sz2 / sz2 ); 
-	  }
-	}
+            if( nConvLegs_LeadPhoton == 2 && nConvLegs_TrailPhoton == 2 ) {
+                z1  = vtxZFromConv( p1, conversionsVector[index_conversionLead], beamSpot );
+                sz1 = vtxDZFromConv( p1, conversionsVector[index_conversionLead] );
+                z2  = vtxZFromConv( p2, conversionsVector[index_conversionTrail], beamSpot );
+                sz2 = vtxDZFromConv( p2, conversionsVector[index_conversionTrail] );
+            }
+            if( nConvLegs_LeadPhoton == 1 && nConvLegs_TrailPhoton == 1 ) {
+                z1  = vtxZFromConv( p1, conversionsVectorSingleLeg[index_conversionLead], beamSpot );
+                sz1 = vtxDZFromConv( p1, conversionsVectorSingleLeg[index_conversionLead] );
+                z2  = vtxZFromConv( p2, conversionsVectorSingleLeg[index_conversionTrail], beamSpot );
+                sz2 = vtxDZFromConv( p2, conversionsVectorSingleLeg[index_conversionTrail] );
+            }
+            if( nConvLegs_LeadPhoton == 2 && nConvLegs_TrailPhoton == 1 ) {
+                z1  = vtxZFromConv( p1, conversionsVector[index_conversionLead], beamSpot );
+                sz1 = vtxDZFromConv( p1, conversionsVector[index_conversionLead] );
+                z2  = vtxZFromConv( p2, conversionsVectorSingleLeg[index_conversionTrail], beamSpot );
+                sz2 = vtxDZFromConv( p2, conversionsVectorSingleLeg[index_conversionTrail] );
+            }
+            if( nConvLegs_LeadPhoton == 1 && nConvLegs_TrailPhoton == 2 ) {
+                z1  = vtxZFromConv( p1, conversionsVectorSingleLeg[index_conversionLead], beamSpot );
+                sz1 = vtxDZFromConv( p1, conversionsVectorSingleLeg[index_conversionLead] );
+                z2  = vtxZFromConv( p2, conversionsVector[index_conversionTrail], beamSpot );
+                sz2 = vtxDZFromConv( p2, conversionsVector[index_conversionTrail] );
+            }
+            if( sz1 != 0 && sz2 != 0 ) {
+                zconv  = ( z1 / sz1 / sz1 + z2 / sz2 / sz2 ) / ( 1. / sz1 / sz1 + 1. / sz2 / sz2 );
+            }
+        }
         return zconv;
     }
 
     double LegacyVertexSelector::sZFromConvPair( const edm::Ptr<flashgg::Photon> &p1,
-                                                 const edm::Ptr<flashgg::Photon> &p2,
-                                                 int index_conversionLead,
-                                                 int index_conversionTrail,
-                                                 const int nConvLegs_LeadPhoton,
-                                                 const int nConvLegs_TrailPhoton,
-						 const std::vector<edm::Ptr<reco::Conversion> > &conversionsVector,
-						 const std::vector<edm::Ptr<reco::Conversion> > &conversionsVectorSingleLeg) const
+            const edm::Ptr<flashgg::Photon> &p2,
+            int index_conversionLead,
+            int index_conversionTrail,
+            const int nConvLegs_LeadPhoton,
+            const int nConvLegs_TrailPhoton,
+            const std::vector<edm::Ptr<reco::Conversion> > &conversionsVector,
+            const std::vector<edm::Ptr<reco::Conversion> > &conversionsVectorSingleLeg ) const
     {
         double szconv = 0;
-	float sz1 = 0;
-	float sz2 = 0;
+        float sz1 = 0;
+        float sz2 = 0;
 
         if( index_conversionLead != -1  && index_conversionTrail == -1 ) {
-	  if(nConvLegs_LeadPhoton ==2){ szconv = vtxDZFromConv( p1, conversionsVector[index_conversionLead] ); }
-	  if(nConvLegs_LeadPhoton ==1){  szconv = vtxDZFromConv( p1, conversionsVectorSingleLeg[index_conversionLead] ); }
+            if( nConvLegs_LeadPhoton == 2 ) { szconv = vtxDZFromConv( p1, conversionsVector[index_conversionLead] ); }
+            if( nConvLegs_LeadPhoton == 1 ) {  szconv = vtxDZFromConv( p1, conversionsVectorSingleLeg[index_conversionLead] ); }
         }
 
-        if( index_conversionLead == -1 && index_conversionTrail != -1) {
-	  if(nConvLegs_TrailPhoton ==2){ szconv = vtxDZFromConv( p2, conversionsVector[index_conversionTrail] ); }
-	  if(nConvLegs_TrailPhoton ==1) { szconv = vtxDZFromConv( p2, conversionsVectorSingleLeg[index_conversionTrail] ); }
-	}
+        if( index_conversionLead == -1 && index_conversionTrail != -1 ) {
+            if( nConvLegs_TrailPhoton == 2 ) { szconv = vtxDZFromConv( p2, conversionsVector[index_conversionTrail] ); }
+            if( nConvLegs_TrailPhoton == 1 ) { szconv = vtxDZFromConv( p2, conversionsVectorSingleLeg[index_conversionTrail] ); }
+        }
 
-	if(index_conversionLead != -1 && index_conversionTrail != -1){
-	  if(nConvLegs_LeadPhoton ==2 &&  nConvLegs_TrailPhoton ==2 ) {
-            sz1 = vtxDZFromConv( p1, conversionsVector[index_conversionLead] );
-            sz2 = vtxDZFromConv( p2, conversionsVector[index_conversionTrail] );
-	  }
-	  if(nConvLegs_LeadPhoton ==1 &&  nConvLegs_TrailPhoton ==1 ) {
-            sz1 = vtxDZFromConv( p1, conversionsVectorSingleLeg[index_conversionLead] );
-            sz2 = vtxDZFromConv( p2, conversionsVectorSingleLeg[index_conversionTrail] );
-	  }
-	  if( nConvLegs_LeadPhoton ==2 &&  nConvLegs_TrailPhoton ==1 ) {
-            sz1 = vtxDZFromConv( p1, conversionsVector[index_conversionLead] );
-            sz2 = vtxDZFromConv( p2, conversionsVectorSingleLeg[index_conversionTrail] );
-	  }
-	  if( nConvLegs_LeadPhoton ==1 &&  nConvLegs_TrailPhoton ==2 ) {
-            sz1 = vtxDZFromConv( p1, conversionsVectorSingleLeg[index_conversionLead] );
-            sz2 = vtxDZFromConv( p2, conversionsVector[index_conversionTrail] );
-	  }
-	  if(sz1 != 0 && sz2 != 0){
-	    szconv = sqrt( 1. / ( 1. / sz1 / sz1 + 1. / sz2 / sz2 ) ) ;
-	  }
-	}
+        if( index_conversionLead != -1 && index_conversionTrail != -1 ) {
+            if( nConvLegs_LeadPhoton == 2 &&  nConvLegs_TrailPhoton == 2 ) {
+                sz1 = vtxDZFromConv( p1, conversionsVector[index_conversionLead] );
+                sz2 = vtxDZFromConv( p2, conversionsVector[index_conversionTrail] );
+            }
+            if( nConvLegs_LeadPhoton == 1 &&  nConvLegs_TrailPhoton == 1 ) {
+                sz1 = vtxDZFromConv( p1, conversionsVectorSingleLeg[index_conversionLead] );
+                sz2 = vtxDZFromConv( p2, conversionsVectorSingleLeg[index_conversionTrail] );
+            }
+            if( nConvLegs_LeadPhoton == 2 &&  nConvLegs_TrailPhoton == 1 ) {
+                sz1 = vtxDZFromConv( p1, conversionsVector[index_conversionLead] );
+                sz2 = vtxDZFromConv( p2, conversionsVectorSingleLeg[index_conversionTrail] );
+            }
+            if( nConvLegs_LeadPhoton == 1 &&  nConvLegs_TrailPhoton == 2 ) {
+                sz1 = vtxDZFromConv( p1, conversionsVectorSingleLeg[index_conversionLead] );
+                sz2 = vtxDZFromConv( p2, conversionsVector[index_conversionTrail] );
+            }
+            if( sz1 != 0 && sz2 != 0 ) {
+                szconv = sqrt( 1. / ( 1. / sz1 / sz1 + 1. / sz2 / sz2 ) ) ;
+            }
+        }
         return szconv;
     }
 
-  std::vector<int> LegacyVertexSelector::IndexMatchedConversion( const edm::Ptr<flashgg::Photon> &g,  const std::vector<edm::Ptr<reco::Conversion> > &conversionsVector,  const std::vector<edm::Ptr<reco::Conversion> > & conversionsVectorSingleLeg, bool useSingleLeg) const
-  {
-    double mindR = 999;
-    int nConvLegs = 0;
-    bool doOneLeg=true;
-      
-    std::vector<int> result;
-    
-    assert( g->hasConversionTracks() );
-    int selected_conversion_index = -1;
+    std::vector<int> LegacyVertexSelector::IndexMatchedConversion( const edm::Ptr<flashgg::Photon> &g,
+            const std::vector<edm::Ptr<reco::Conversion> > &conversionsVector,  const std::vector<edm::Ptr<reco::Conversion> > &conversionsVectorSingleLeg,
+            bool useSingleLeg ) const
+    {
+        double mindR = 999;
+        int nConvLegs = 0;
+        bool doOneLeg = true;
 
-    if( g->hasConversionTracks() ) {
-      for( unsigned int i = 0; i < conversionsVector.size(); i++ ) {
-	edm::Ptr<reco::Conversion> conv = conversionsVector[i];
-	if(conv->nTracks() ==2){
-	  if( !conv->isConverted() ) { continue; }
-	  if( conv->refittedPair4Momentum().pt() < 10. ) { continue; }
-	  if( TMath::Prob( conv->conversionVertex().chi2(), conv->conversionVertex().ndof() ) < 1e-6 ) { continue; }
-	  
-	  TVector3 VtxtoSC;
-	  VtxtoSC.SetXYZ( g->superCluster()->position().x() - conv->conversionVertex().x(),
-			  g->superCluster()->position().y() - conv->conversionVertex().y(),
-			  g->superCluster()->position().z() - conv->conversionVertex().z() );
-	  TVector3 RefPairMo;
-	  RefPairMo.SetXYZ( conv->refittedPairMomentum().x(), conv->refittedPairMomentum().y(), conv->refittedPairMomentum().z() );
-	  double dR = 0;
-	  dR = VtxtoSC.DeltaR( RefPairMo );
-	  if( dR < mindR ) {
-	    mindR = dR;
-	    selected_conversion_index = i;
-	  }
-	}
-      }
-      if(mindR<0.1){
-	result.push_back(selected_conversion_index);
-	nConvLegs = 2;
-	result.push_back(nConvLegs);
-	doOneLeg=false;
-      }
-      if (doOneLeg && useSingleLeg){
-	mindR = 999;
-	for (unsigned int j=0; j<conversionsVectorSingleLeg.size();j++){
-	  edm::Ptr<reco::Conversion> conv = conversionsVectorSingleLeg[j];
-	  if (conv->nTracks() ==1){
-	    TVector3 VtxtoSC;
-	    VtxtoSC.SetXYZ(g->superCluster()->position().x() - conv->conversionVertex().x(),
-			   g->superCluster()->position().y() - conv->conversionVertex().y(),
-			   g->superCluster()->position().z() - conv->conversionVertex().z());
-	    TVector3 RefPairMo;
-	    float oneLegTrack_X = conv->tracksPin()[0].x();
-	    float oneLegTrack_Y = conv->tracksPin()[0].y();
-	    float oneLegTrack_Z = conv->tracksPin()[0].z();
-	    
-	    RefPairMo.SetXYZ(oneLegTrack_X, oneLegTrack_Y, oneLegTrack_Z);
-	    double dR = 0;
-	    dR = VtxtoSC.DeltaR(RefPairMo);
-	    if(dR<mindR){
-	      mindR=dR;
-	      selected_conversion_index=j;
-	    }
-	    
-	  }
-	}
-	if (mindR<0.1){
-	  result.push_back(selected_conversion_index);
-	  nConvLegs = 1;
-	  result.push_back(nConvLegs);
-	}
-      }
+        std::vector<int> result;
+
+        assert( g->hasConversionTracks() );
+        int selected_conversion_index = -1;
+
+        if( g->hasConversionTracks() ) {
+            for( unsigned int i = 0; i < conversionsVector.size(); i++ ) {
+                edm::Ptr<reco::Conversion> conv = conversionsVector[i];
+                if( conv->nTracks() == 2 ) {
+                    if( !conv->isConverted() ) { continue; }
+                    if( conv->refittedPair4Momentum().pt() < 10. ) { continue; }
+                    if( TMath::Prob( conv->conversionVertex().chi2(), conv->conversionVertex().ndof() ) < 1e-6 ) { continue; }
+
+                    TVector3 VtxtoSC;
+                    VtxtoSC.SetXYZ( g->superCluster()->position().x() - conv->conversionVertex().x(),
+                                    g->superCluster()->position().y() - conv->conversionVertex().y(),
+                                    g->superCluster()->position().z() - conv->conversionVertex().z() );
+                    TVector3 RefPairMo;
+                    RefPairMo.SetXYZ( conv->refittedPairMomentum().x(), conv->refittedPairMomentum().y(), conv->refittedPairMomentum().z() );
+                    double dR = 0;
+                    dR = VtxtoSC.DeltaR( RefPairMo );
+                    if( dR < mindR ) {
+                        mindR = dR;
+                        selected_conversion_index = i;
+                    }
+                }
+            }
+            if( mindR < 0.1 ) {
+                result.push_back( selected_conversion_index );
+                nConvLegs = 2;
+                result.push_back( nConvLegs );
+                doOneLeg = false;
+            }
+            if( doOneLeg && useSingleLeg ) {
+                mindR = 999;
+                for( unsigned int j = 0; j < conversionsVectorSingleLeg.size(); j++ ) {
+                    edm::Ptr<reco::Conversion> conv = conversionsVectorSingleLeg[j];
+                    if( conv->nTracks() == 1 ) {
+                        TVector3 VtxtoSC;
+                        VtxtoSC.SetXYZ( g->superCluster()->position().x() - conv->conversionVertex().x(),
+                                        g->superCluster()->position().y() - conv->conversionVertex().y(),
+                                        g->superCluster()->position().z() - conv->conversionVertex().z() );
+                        TVector3 RefPairMo;
+                        float oneLegTrack_X = conv->tracksPin()[0].x();
+                        float oneLegTrack_Y = conv->tracksPin()[0].y();
+                        float oneLegTrack_Z = conv->tracksPin()[0].z();
+
+                        RefPairMo.SetXYZ( oneLegTrack_X, oneLegTrack_Y, oneLegTrack_Z );
+                        double dR = 0;
+                        dR = VtxtoSC.DeltaR( RefPairMo );
+                        if( dR < mindR ) {
+                            mindR = dR;
+                            selected_conversion_index = j;
+                        }
+
+                    }
+                }
+                if( mindR < 0.1 ) {
+                    result.push_back( selected_conversion_index );
+                    nConvLegs = 1;
+                    result.push_back( nConvLegs );
+                }
+            }
+        }
+        if( mindR < 0.1 )
+        {return result;}
+        else {
+            result.push_back( -1 );
+            result.push_back( -1 );
+            return result;
+        }
     }
-    if( mindR < 0.1 )
-      {return result;}
-    else
-      {   
-	result.push_back(-1);
-	result.push_back(-1);
-	return result;
-      }
-  }
-  
+
     edm::Ptr<reco::Vertex> LegacyVertexSelector::select( const edm::Ptr<flashgg::Photon> &g1, const edm::Ptr<flashgg::Photon> &g2,
             const std::vector<edm::Ptr<reco::Vertex> > &vtxs,
             const VertexCandidateMap &vertexCandidateMap,
@@ -594,17 +596,17 @@ namespace flashgg {
         float nConvLegs_TrailPhoton = 0;
         float nConvLegs_LeadPhoton = 0;
 
-	if( conversionsVector.size() > 0 ) {
-            if( g1->hasConversionTracks() ){
-                vIndexMatchedConversionLeadPhoton = IndexMatchedConversion(g1,conversionsVector,conversionsVectorSingleLeg, useSingleLeg);
+        if( conversionsVector.size() > 0 ) {
+            if( g1->hasConversionTracks() ) {
+                vIndexMatchedConversionLeadPhoton = IndexMatchedConversion( g1, conversionsVector, conversionsVectorSingleLeg, useSingleLeg );
                 IndexMatchedConversionLeadPhoton = vIndexMatchedConversionLeadPhoton[0];
                 nConvLegs_LeadPhoton = vIndexMatchedConversionLeadPhoton[1];
-	    }
-            if( g2->hasConversionTracks() ){
-                vIndexMatchedConversionTrailPhoton = IndexMatchedConversion(g2,conversionsVector,conversionsVectorSingleLeg, useSingleLeg);
+            }
+            if( g2->hasConversionTracks() ) {
+                vIndexMatchedConversionTrailPhoton = IndexMatchedConversion( g2, conversionsVector, conversionsVectorSingleLeg, useSingleLeg );
                 IndexMatchedConversionTrailPhoton = vIndexMatchedConversionTrailPhoton[0];
                 nConvLegs_TrailPhoton = vIndexMatchedConversionTrailPhoton[1];
-	    }
+            }
         }
 
         unsigned int vertex_index;
@@ -683,17 +685,19 @@ namespace flashgg {
             ptasym_ = ptasym;
 
             float nConv = 0;
-            if (IndexMatchedConversionLeadPhoton != -1) ++nConv;
-            if (IndexMatchedConversionTrailPhoton != -1) ++nConv;
+            if( IndexMatchedConversionLeadPhoton != -1 ) { ++nConv; }
+            if( IndexMatchedConversionTrailPhoton != -1 ) { ++nConv; }
 
             float zconv = 0;
             float szconv = 0;
             float pull_conv = 999;
 
             if( nConv != 0 ) {
-	      zconv = zFromConvPair( g1, g2, IndexMatchedConversionLeadPhoton, IndexMatchedConversionTrailPhoton,nConvLegs_LeadPhoton,nConvLegs_TrailPhoton, conversionsVector,conversionsVectorSingleLeg, beamSpot );
+                zconv = zFromConvPair( g1, g2, IndexMatchedConversionLeadPhoton, IndexMatchedConversionTrailPhoton, nConvLegs_LeadPhoton, nConvLegs_TrailPhoton,
+                                       conversionsVector, conversionsVectorSingleLeg, beamSpot );
 
-	      szconv = sZFromConvPair( g1, g2, IndexMatchedConversionLeadPhoton, IndexMatchedConversionTrailPhoton, nConvLegs_LeadPhoton,nConvLegs_TrailPhoton, conversionsVector,conversionsVectorSingleLeg);
+                szconv = sZFromConvPair( g1, g2, IndexMatchedConversionLeadPhoton, IndexMatchedConversionTrailPhoton, nConvLegs_LeadPhoton, nConvLegs_TrailPhoton,
+                                         conversionsVector, conversionsVectorSingleLeg );
                 if( szconv != 0 ) {
                     pull_conv = fabs( vtx->position().z() - zconv ) / szconv;
                 } else {

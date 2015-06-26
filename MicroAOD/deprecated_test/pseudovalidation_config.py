@@ -38,7 +38,7 @@ process.load("flashgg/MicroAODProducers/flashggPreselectedDiPhotons_cfi")
 process.load("RecoJets.JetProducers.PileupJetIDParams_cfi")
 
 process.flashggJets = cms.EDProducer('FlashggJetProducer',
-                                     DiPhotonTag=cms.untracked.InputTag('flashggDiPhotons'),
+                                     DiPhotonTag=cms.InputTag('flashggDiPhotons'),
                                      VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
                                      JetTag=cms.untracked.InputTag('slimmedJets'),
                                      VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),

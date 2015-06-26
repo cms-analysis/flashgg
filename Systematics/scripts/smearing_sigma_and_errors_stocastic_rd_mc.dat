@@ -1,0 +1,29 @@
+# Source immediately prior to flashgg import
+# https://github.com/h2gglobe/h2gglobe/blob/master/AnalysisScripts/common/jan22rereco_8TeV/smearing_sigma_and_errors_stocastic_rd_mc.dat
+
+# category      type(0=any,1=CM,2=GAP) minEta  MaxEta   mr9    Mr9      mrun    Mrun   Emean  Emean_err rho rho_err phi phi_err
+# Jan22 smearings for rd MC 
+# derivation with sqrt(Et) 
+#Emean absEta_0_1-bad-Et_20-trigger-noPF 6.7276 0.347156
+#Emean absEta_0_1-gold-Et_20-trigger-noPF 6.60119 0.31923
+#Emean absEta_1_1.4442-bad-Et_20-trigger-noPF 6.73261 0.290074
+#Emean absEta_1_1.4442-gold-Et_20-trigger-noPF 6.52397 0.584685
+#phi absEta_0_1-bad-Et_20-trigger-noPF = 0.0000 +/- 0.155660 L(-0.223607 - 0.0877058)
+#phi absEta_0_1-gold-Et_20-trigger-noPF = 0.0000 +/- 0.161800 L(-0.223607 - 0.1)
+#phi absEta_1_1.4442-bad-Et_20-trigger-noPF = 0.0000 +/- 0.071697 L(-0.092198 - 0.0511965)
+#phi absEta_1_1.4442-gold-Et_20-trigger-noPF = 0.0000 +/- 0.223610 L(-0.223607 - 0.223607)
+#rho absEta_0_1-bad-Et_20-trigger-noPF = 0.0077 +/- 0.000145 L(0.0075049 - 0.00779466)
+#rho absEta_0_1-gold-Et_20-trigger-noPF = 0.0074 +/- 0.000190 L(0.00714565 - 0.00752564)
+#rho absEta_1_1.4442-bad-Et_20-trigger-noPF = 0.0126 +/- 0.000204 L(0.0124083 - 0.0128159)
+#rho absEta_1_1.4442-gold-Et_20-trigger-noPF = 0.0112 +/- 0.000704 L(0.0103186 - 0.0117256)
+##################################################################################################
+EBlowEtaBad8TeV    0 0.0 1.0 -999. 0.94 -999999 999999 6.73 0. 7.7e-3  6.32e-4 0.00 0.16
+EBlowEtaGold8TeV   0 0.0 1.0 0.94  999. -999999 999999 6.60 0. 7.4e-3  6.50e-4 0.00 0.16
+EBhighEtaBad8TeV   0 1.0 1.5 -999. 0.94 -999999 999999 6.73 0. 1.26e-2 1.03e-3 0.00 0.07
+EBhighEtaGold8TeV  0 1.0 1.5 0.94  999. -999999 999999 6.52 0. 1.12e-2 1.32e-3 0.00 0.22
+##################################################################################################
+EElowEtaBad8TeV    0 1.5 2.0 -999. 0.94 -999999 999999 0.   0. 1.98e-2 3.03e-3 0.  0.
+EElowEtaGold8TeV   0 1.5 2.0 0.94  999. -999999 999999 0.   0. 1.63e-2 1.22e-3 0.  0.
+EEhighEtaBad8TeV   0 2.0 3.0 -999. 0.94 -999999 999999 0.   0. 1.92e-2 9.22e-4 0.  0.
+EEhighEtaGold8TeV  0 2.0 3.0 0.94  999. -999999 999999 0.   0. 1.86e-2 7.81e-4 0.  0.
+##################################################################################################
