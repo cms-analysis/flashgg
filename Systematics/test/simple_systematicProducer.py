@@ -25,7 +25,9 @@ process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring("fil
 )
 
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
-                                                   flashggSmearDiPhoton = cms.PSet(initialSeed = cms.untracked.uint32(664))
+                                                   flashggSmearDiPhoton = cms.PSet(initialSeed = cms.untracked.uint32(664)),
+						   flashggSmearElectronEff = cms.PSet(initialSeed = cms.untracked.uint32(564)),
+						   flashggSmearMuonEff = cms.PSet(initialSeed = cms.untracked.uint32(464))
                                                   )
 
 process.load("flashgg.Systematics.flashggPhotonSmear_cfi")
@@ -184,7 +186,8 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
 
 process.p = cms.Path(process.flashggSmearDiPhoton*
                      (process.flashggTagSequence+process.systematicsTagSequences)*
-                     process.flashggSystTagMerger)
+                     process.flashggSystTagMerger*(
+		    process.flashggSmearMuonEff+process.flashggSmearElectronEff))
 
 print process.p
 

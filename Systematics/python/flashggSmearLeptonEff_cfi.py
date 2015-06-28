@@ -12,6 +12,7 @@ binInfo = cms.PSet(
 
 flashggSmearElectronEff = cms.EDProducer('FlashggElectronEffSystematicProducer',
 					src = cms.InputTag('flashggElectrons'),
+					SystMethods2D = cms.VPSet(),
 					SystMethods = cms.VPSet(cms.PSet( MethodName = cms.string("FlashggElectronEffSmear"),
 									  Label = cms.string("ElectronWeight"),
 									  NSigmas = cms.vint32(-1,1),
@@ -25,12 +26,14 @@ flashggSmearElectronEff = cms.EDProducer('FlashggElectronEffSystematicProducer',
 
 flashggSmearMuonEff = cms.EDProducer('FlashggMuonEffSystematicProducer',
 					src = cms.InputTag('slimmedMuons'),
+					SystMethods2D = cms.VPSet(),
 					SystMethods = cms.VPSet(cms.PSet( MethodName = cms.string("FlashggMuonEffSmear"),
 									  Label = cms.string("MuonWeight"),
 									  NSigmas = cms.vint32(-1,1),
 									  OverallRange = cms.string("abs(eta)<1.5"),
 									  BinList = binInfo,
 									  Debug = cms.untracked.bool(True)
-									)	
+									)
 								)
 							)
+

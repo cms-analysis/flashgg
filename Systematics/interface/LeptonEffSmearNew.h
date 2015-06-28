@@ -52,12 +52,6 @@ namespace flashgg {
 
 		double var_value = ObjectSystMethodBinnedByFunctor<lepton,param_var>::functors_[0](lep);//value of lepton parameter, most probably eithr lep.pt() or lep.eta()
 
-		std::cout << "var_value " << var_value << std::endl;
-	
-		double pt = lep.pt();
-
-		std::cout << "momentum " << pt << std::endl;
-
 		int myLowerIndex = myBins.first[0];
 		int myUpperIndex = myBins.first[1]; 
 		//std::cout << "myLowerBin " << myLowerIndex << std::endl;
