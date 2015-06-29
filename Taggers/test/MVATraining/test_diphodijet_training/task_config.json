@@ -1,20 +1,20 @@
 {
     "output": [
-        "/afs/cern.ch/user/l/lcorpe/work/private/FLASH_Mar2015_3/CMSSW_7_4_0_pre9/src/flashgg/Taggers/test/MVATraining/test_diphodijet_training/output_VBF_HToGG_M-125_13TeV-powheg-pythia6_numEvent10000_histos.root", 
-        "/afs/cern.ch/user/l/lcorpe/work/private/FLASH_Mar2015_3/CMSSW_7_4_0_pre9/src/flashgg/Taggers/test/MVATraining/test_diphodijet_training/output_GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6_numEvent10000_histos.root"
+        "test_diphodijet_training/output_VBF_HToGG_M-125_13TeV-powheg-pythia6_numEvent100_histos.root", 
+        "test_diphodijet_training/output_GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6_numEvent100_histos.root"
     ], 
-    "outputPfx": "/afs/cern.ch/user/l/lcorpe/work/private/FLASH_Mar2015_3/CMSSW_7_4_0_pre9/src/flashgg/Taggers/test/MVATraining/test_diphodijet_training/output", 
+    "outputPfx": "test_diphodijet_training/output", 
     "process_output": {
         "vbf_m125": [
-            "/afs/cern.ch/user/l/lcorpe/work/private/FLASH_Mar2015_3/CMSSW_7_4_0_pre9/src/flashgg/Taggers/test/MVATraining/test_diphodijet_training/output_vbf_m125.root", 
+            "test_diphodijet_training/output_vbf_m125.root", 
             [
-                "/afs/cern.ch/user/l/lcorpe/work/private/FLASH_Mar2015_3/CMSSW_7_4_0_pre9/src/flashgg/Taggers/test/MVATraining/test_diphodijet_training/output_VBF_HToGG_M-125_13TeV-powheg-pythia6_numEvent10000_histos.root"
+                "test_diphodijet_training/output_VBF_HToGG_M-125_13TeV-powheg-pythia6_numEvent100_histos.root"
             ]
         ], 
         "gamJet": [
-            "/afs/cern.ch/user/l/lcorpe/work/private/FLASH_Mar2015_3/CMSSW_7_4_0_pre9/src/flashgg/Taggers/test/MVATraining/test_diphodijet_training/output_gamJet.root", 
+            "test_diphodijet_training/output_gamJet.root", 
             [
-                "/afs/cern.ch/user/l/lcorpe/work/private/FLASH_Mar2015_3/CMSSW_7_4_0_pre9/src/flashgg/Taggers/test/MVATraining/test_diphodijet_training/output_GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6_numEvent10000_histos.root"
+                "test_diphodijet_training/output_GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6_numEvent100_histos.root"
             ]
         ]
     }, 
@@ -23,34 +23,38 @@
             "cmsRun", 
             [
                 "VBFDiPhoDiJetMVA_Training.py", 
-                "maxEvents=10000", 
+                "maxEvents=100", 
                 "campaign=HggPhys14-Phys14MicroAODV2", 
-                "processIdMap=/afs/cern.ch/user/l/lcorpe/work/private/FLASH_Mar2015_3/CMSSW_7_4_0_pre9/src/flashgg/Taggers/test/MVATraining/test_diphodijet_training/config.json", 
+                "processIdMap=test_diphodijet_training/config.json", 
                 "dataset=VBF_HToGG_M-125_13TeV-powheg-pythia6", 
-                "outputFile=/afs/cern.ch/user/l/lcorpe/work/private/FLASH_Mar2015_3/CMSSW_7_4_0_pre9/src/flashgg/Taggers/test/MVATraining/test_diphodijet_training/output_VBF_HToGG_M-125_13TeV-powheg-pythia6.root"
+                "outputFile=test_diphodijet_training/output_VBF_HToGG_M-125_13TeV-powheg-pythia6.root"
             ], 
-            "/afs/cern.ch/user/l/lcorpe/work/private/FLASH_Mar2015_3/CMSSW_7_4_0_pre9/src/flashgg/Taggers/test/MVATraining/test_diphodijet_training/output_VBF_HToGG_M-125_13TeV-powheg-pythia6_numEvent10000_histos.root"
+            "test_diphodijet_training/output_VBF_HToGG_M-125_13TeV-powheg-pythia6_numEvent100_histos.root", 
+            0, 
+            0
         ], 
         [
             "cmsRun", 
             [
                 "VBFDiPhoDiJetMVA_Training.py", 
-                "maxEvents=10000", 
+                "maxEvents=100", 
                 "campaign=HggPhys14-Phys14MicroAODV2", 
-                "processIdMap=/afs/cern.ch/user/l/lcorpe/work/private/FLASH_Mar2015_3/CMSSW_7_4_0_pre9/src/flashgg/Taggers/test/MVATraining/test_diphodijet_training/config.json", 
+                "processIdMap=test_diphodijet_training/config.json", 
                 "dataset=GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6", 
-                "outputFile=/afs/cern.ch/user/l/lcorpe/work/private/FLASH_Mar2015_3/CMSSW_7_4_0_pre9/src/flashgg/Taggers/test/MVATraining/test_diphodijet_training/output_GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6.root"
+                "outputFile=test_diphodijet_training/output_GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6.root"
             ], 
-            "/afs/cern.ch/user/l/lcorpe/work/private/FLASH_Mar2015_3/CMSSW_7_4_0_pre9/src/flashgg/Taggers/test/MVATraining/test_diphodijet_training/output_GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6_numEvent10000_histos.root"
+            "test_diphodijet_training/output_GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6_numEvent100_histos.root", 
+            0, 
+            0
         ]
     ], 
     "datasets_output": {
         "VBF_HToGG_M-125_13TeV-powheg-pythia6": [
-            "/afs/cern.ch/user/l/lcorpe/work/private/FLASH_Mar2015_3/CMSSW_7_4_0_pre9/src/flashgg/Taggers/test/MVATraining/test_diphodijet_training/output_VBF_HToGG_M-125_13TeV-powheg-pythia6.root", 
+            "test_diphodijet_training/output_VBF_HToGG_M-125_13TeV-powheg-pythia6.root", 
             []
         ], 
         "GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6": [
-            "/afs/cern.ch/user/l/lcorpe/work/private/FLASH_Mar2015_3/CMSSW_7_4_0_pre9/src/flashgg/Taggers/test/MVATraining/test_diphodijet_training/output_GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6.root", 
+            "test_diphodijet_training/output_GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6.root", 
             []
         ]
     }
