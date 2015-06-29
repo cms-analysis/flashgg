@@ -13,6 +13,7 @@ process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 100 ) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 10 )
 
+
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/cmst3/user/gpetrucc/miniAOD/v1/GluGluToHToGG_M-125_13TeV-powheg-pythia6_Flat20to50_PAT.root"))
 
 process.flashggVertexMapUnique = cms.EDProducer('FlashggDzVertexMapProducer',
@@ -43,6 +44,7 @@ process.flashggTreeMaker = cms.EDAnalyzer('FlashggVtxIdTreeMaker',
                                                  
 # This requires you to have done: git cms-merge-topic -u sethzenz:pileupjetid-for-flashgg
 process.load("RecoJets.JetProducers.PileupJetIDParams_cfi")
+
 
 process.flashggJets = cms.EDProducer('FlashggJetProducer',
                                      DiPhotonTag=cms.InputTag('flashggDiPhotons'),
@@ -84,7 +86,7 @@ process.p = cms.Path(process.flashggVertexMapUnique*
                      process.flashggPreselectedDiPhotons*
                      process.flashggJets*
                      process.commissioning*
-										 process.flashggTreeMaker
+		     process.flashggTreeMaker
                     )
 
 process.e = cms.EndPath(process.out)
