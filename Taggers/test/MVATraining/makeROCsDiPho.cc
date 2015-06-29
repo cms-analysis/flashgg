@@ -152,11 +152,11 @@ TGraph *makeROC( TH1 *sig, TH1 *bkg, TLegend *leg, int tc )
 void makeROCsDiPho( TString eventN = "10000", TString Level = "DiPhoton" )
 {
 
-    int nevent = std::atoi(eventN.Data()); 
+    int nevent = std::atoi( eventN.Data() );
 
     TString path;
     path = "${WORKSPACE}/test_dipho_compare/";
-    
+
     TFile *f_sig1 = TFile::Open( path + "output_GluGluToHToGG_M-125_13TeV-powheg-pythia6_numEvent" + eventN + "_histos.root" );
     TFile *f_sig2 = TFile::Open( path + "output_TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola_numEvent" + eventN + "_histos.root" );
     TFile *f_sig3 = TFile::Open( path + "output_VBF_HToGG_M-125_13TeV-powheg-pythia6_numEvent" + eventN + "_histos.root" );
@@ -167,19 +167,19 @@ void makeROCsDiPho( TString eventN = "10000", TString Level = "DiPhoton" )
     TH1F *old_sig3 = ( TH1F * ) f_sig3->Get( Level + "MVADumper/histograms/vbf_m125_13TeV_All" + Level + "MVAValue" );
     TH1F *old_sig4 = ( TH1F * ) f_sig4->Get( Level + "MVADumper/histograms/wzh_m125_13TeV_All" + Level + "MVAValue" );
 
-    float wS[5];    
-    wS[0]=0;
-    wS[1]=43.92*2.28e-3/(nevent); //ggH
-    wS[2]=3.748*2.28e-3 /(nevent); //ttH
-    wS[3]=2.2496*2.28e-3/(nevent); //VBH
-    wS[4]=0.5608*2.28e-3/(nevent); //WZH
+    float wS[5];
+    wS[0] = 0;
+    wS[1] = 43.92 * 2.28e-3 / ( nevent ); //ggH
+    wS[2] = 3.748 * 2.28e-3 / ( nevent ); //ttH
+    wS[3] = 2.2496 * 2.28e-3 / ( nevent ); //VBH
+    wS[4] = 0.5608 * 2.28e-3 / ( nevent ); //WZH
 
-    TH1F *old_sig = new TH1F("old_sig","old_sig",old_sig1->GetNbinsX(),-1,1);
-    
-    old_sig->Add(old_sig1,wS[1]);
-    old_sig->Add(old_sig2,wS[2]);
-    old_sig->Add(old_sig3,wS[3]); 
-    old_sig->Add(old_sig4,wS[4]); 
+    TH1F *old_sig = new TH1F( "old_sig", "old_sig", old_sig1->GetNbinsX(), -1, 1 );
+
+    old_sig->Add( old_sig1, wS[1] );
+    old_sig->Add( old_sig2, wS[2] );
+    old_sig->Add( old_sig3, wS[3] );
+    old_sig->Add( old_sig4, wS[4] );
 
 //    std::cout << Level + "MVADumper/histograms/vbf_m125_13TeV_Good" + Level + "Leg" + Level + "MVAValue" << std::endl ;
     TH1F *new_sig1 = ( TH1F * ) f_sig1->Get( Level + "MVADumperNew/histograms/ggh_m125_13TeV_All" + Level + "MVAValue" );
@@ -187,43 +187,43 @@ void makeROCsDiPho( TString eventN = "10000", TString Level = "DiPhoton" )
     TH1F *new_sig3 = ( TH1F * ) f_sig3->Get( Level + "MVADumperNew/histograms/vbf_m125_13TeV_All" + Level + "MVAValue" );
     TH1F *new_sig4 = ( TH1F * ) f_sig4->Get( Level + "MVADumperNew/histograms/wzh_m125_13TeV_All" + Level + "MVAValue" );
 
-    TH1F *new_sig = new TH1F("new_sig","new_sig",new_sig1->GetNbinsX(),-1,1);
+    TH1F *new_sig = new TH1F( "new_sig", "new_sig", new_sig1->GetNbinsX(), -1, 1 );
 
-    new_sig->Add(new_sig1,wS[1]);
-    new_sig->Add(new_sig2,wS[2]);
-    new_sig->Add(new_sig3,wS[3]); 
-    new_sig->Add(new_sig4,wS[4]); 
+    new_sig->Add( new_sig1, wS[1] );
+    new_sig->Add( new_sig2, wS[2] );
+    new_sig->Add( new_sig3, wS[3] );
+    new_sig->Add( new_sig4, wS[4] );
 
-    TFile *f_bkg1 = TFile::Open( path + "output_DYJetsToLL_M-50_13TeV-madgraph-pythia8_numEvent" + eventN + "_histos.root" ); 
+    TFile *f_bkg1 = TFile::Open( path + "output_DYJetsToLL_M-50_13TeV-madgraph-pythia8_numEvent" + eventN + "_histos.root" );
     TFile *f_bkg2 = TFile::Open( path + "output_GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6_numEvent" + eventN + "_histos.root" );
     TFile *f_bkg3 = TFile::Open( path + "output_GJet_Pt20to40_doubleEMEnriched_TuneZ2star_13TeV-pythia6_numEvent" + eventN + "_histos.root" );
 
-    TH1F *old_bkg1 = ( TH1F * ) f_bkg1->Get( Level + "MVADumper/histograms/dyJets_13TeV_All" + Level + "MVAValue" );  
+    TH1F *old_bkg1 = ( TH1F * ) f_bkg1->Get( Level + "MVADumper/histograms/dyJets_13TeV_All" + Level + "MVAValue" );
     TH1F *old_bkg2 = ( TH1F * ) f_bkg2->Get( Level + "MVADumper/histograms/gamJet_13TeV_All" + Level + "MVAValue" );
     TH1F *old_bkg3 = ( TH1F * ) f_bkg3->Get( Level + "MVADumper/histograms/gamJet_13TeV_All" + Level + "MVAValue" );
 
-    TH1F *new_bkg1 = ( TH1F * ) f_bkg1->Get( Level + "MVADumperNew/histograms/dyJets_13TeV_All" + Level + "MVAValue" );  
+    TH1F *new_bkg1 = ( TH1F * ) f_bkg1->Get( Level + "MVADumperNew/histograms/dyJets_13TeV_All" + Level + "MVAValue" );
     TH1F *new_bkg2 = ( TH1F * ) f_bkg2->Get( Level + "MVADumperNew/histograms/gamJet_13TeV_All" + Level + "MVAValue" );
     TH1F *new_bkg3 = ( TH1F * ) f_bkg3->Get( Level + "MVADumperNew/histograms/gamJet_13TeV_All" + Level + "MVAValue" );
 
     float wB[4];
- 
-    wB[0]=0;
-    wB[1]=4746.0/(nevent);// DyJetsToLL
-    wB[2]=17180.0*0.0379/(nevent);//gamJets pt>40
-    wB[3]=145400.0*0.001776/(nevent);//gamJets pt  in 20->40
 
-    TH1F *old_bkg = new TH1F("old_bkg","old_bkg",old_bkg1->GetNbinsX(),-1,1);
-    
-    old_bkg->Add(old_bkg1,wB[1]);
-    old_bkg->Add(old_bkg2,wB[2]);
-    old_bkg->Add(old_bkg3,wB[3]);
-   
-    TH1F *new_bkg = new TH1F("new_bkg","new_bkg",new_bkg2->GetNbinsX(),-1,1);
+    wB[0] = 0;
+    wB[1] = 4746.0 / ( nevent ); // DyJetsToLL
+    wB[2] = 17180.0 * 0.0379 / ( nevent ); //gamJets pt>40
+    wB[3] = 145400.0 * 0.001776 / ( nevent ); //gamJets pt  in 20->40
 
-    new_bkg->Add(new_bkg1,wB[1]); 
-    new_bkg->Add(new_bkg2,wB[2]);
-    new_bkg->Add(new_bkg3,wB[3]);
+    TH1F *old_bkg = new TH1F( "old_bkg", "old_bkg", old_bkg1->GetNbinsX(), -1, 1 );
+
+    old_bkg->Add( old_bkg1, wB[1] );
+    old_bkg->Add( old_bkg2, wB[2] );
+    old_bkg->Add( old_bkg3, wB[3] );
+
+    TH1F *new_bkg = new TH1F( "new_bkg", "new_bkg", new_bkg2->GetNbinsX(), -1, 1 );
+
+    new_bkg->Add( new_bkg1, wB[1] );
+    new_bkg->Add( new_bkg2, wB[2] );
+    new_bkg->Add( new_bkg3, wB[3] );
 
     std::cout << "plotting" << std::endl;
     std::cout << " --> obj::old_bkg::" << old_bkg  << std::endl;
@@ -258,7 +258,7 @@ void makeROCsDiPho( TString eventN = "10000", TString Level = "DiPhoton" )
 
     c1->SaveAs( "plots/" + Level + "_ROCs.pdf" );
     c1->SaveAs( "plots/" + Level + "_ROCs.root" );
-  //TCanvas *c2 = new TCanvas("c2","",600,600);
+    //TCanvas *c2 = new TCanvas("c2","",600,600);
     //c2->cd();
     //new_bkg->SetLineColor(kBlue);
     //new_sig->SetLineColor(kRed);

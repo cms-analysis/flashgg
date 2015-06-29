@@ -5,7 +5,7 @@
 #include "flashgg/Systematics/interface/LeptonEffSmear.h"
 
 namespace flashgg {
-    
+
     typedef ObjectSystematicProducer<flashgg::Electron, int> ElectronEffSystematicProducer;
     typedef ObjectSystematicProducer<pat::Muon, int> MuonEffSystematicProducer;
 
