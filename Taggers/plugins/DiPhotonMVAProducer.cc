@@ -49,6 +49,8 @@ namespace flashgg {
         float vtxProbMVA_;
         vector<double> vertex_prob_params_conv;
         vector<double> vertex_prob_params_noConv;
+
+        std::string Version_;
     };
 
     DiPhotonMVAProducer::DiPhotonMVAProducer( const ParameterSet &iConfig ) :

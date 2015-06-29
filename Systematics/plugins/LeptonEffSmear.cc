@@ -1,4 +1,4 @@
-#include "flashgg/Systematics/interface/LeptonEffSmearNew.h"
+#include "flashgg/Systematics/interface/LeptonEffSmear.h"
 
 namespace flashgg {
 

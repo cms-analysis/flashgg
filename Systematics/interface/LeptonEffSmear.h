@@ -91,7 +91,7 @@ namespace flashgg {
 			//std::cout << "it reaches this level " << std::endl;
 			theWeight = yLow + (yHigh-yLow) / (xHigh-xLow) * (var_value-xLow);
 			//std::cout << "theWeight " << theWeight << std::endl;
-			theError  = theErrorLow + (theErrorHigh-theErrorLow) / (xHigh-xLow) * (pt-xLow);
+			theError  = theErrorLow + (theErrorHigh-theErrorLow) / (xHigh-xLow) * (var_value-xLow);
 		} else {
 
 			if(myLowerIndex == 0 && myUpperIndex == 0) {
