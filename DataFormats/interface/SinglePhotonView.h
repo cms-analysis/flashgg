@@ -2,10 +2,10 @@
 #define FLASHgg_SinglePhotonView_h
 
 #include "flashgg/DataFormats/interface/Photon.h"
-#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "DataFormats/Common/interface/Ptr.h"
 
 #include <string>
+#include <vector>
 
 namespace flashgg {
 
@@ -13,33 +13,36 @@ namespace flashgg {
     {
 
     public:
-        typedef edm::Ptr<DiPhotonCandidate> dipho_ptr_type;
+        typedef edm::Ptr<flashgg::Photon> pho_ptr_type;
+        typedef edm::Ptr<reco::Vertex> vtx_ptr_type;
         typedef Photon cand_type;
 
-        SinglePhotonView() : pho_( 0 ), dipho_( 0 ) {}
-        SinglePhotonView( dipho_ptr_type dipho, int daughter ) : edmdipho_( dipho ), daughter_( daughter ), pho_( 0 ), dipho_( 0 ) {}
-        SinglePhotonView( const DiPhotonCandidate *dipho, int daughter ) : daughter_( daughter ), pho_( 0 ), dipho_( dipho ) {}
+        SinglePhotonView() : hasPhoton_( 0 ) {}
+        SinglePhotonView( edm::Ptr<flashgg::Photon> pho, edm::Ptr<reco::Vertex> vtx ) : phoPtr_( pho ), vtxRef_( vtx ), hasPhoton_( 0 ), hasVtx_( 1 ) {}
+        SinglePhotonView( edm::Ptr<flashgg::Photon> pho ) : phoPtr_( pho ), hasPhoton_( 0 ), hasVtx_( 0 ) {}
 
-        const cand_type &photon() const { daughterMaybe(); return *pho_; }
+        const cand_type *photon() const;
+        cand_type &getPhoton(); // You can only have a non-const pointer if you call makePersistent() first
+        edm::Ptr<flashgg::Photon> originalPhoton() const { return phoPtr_; }
 
-        const cand_type *operator->() const { daughterMaybe(); return pho_; }
+        float pfChIso02WrtChosenVtx() const { MakePhoton(); return ( photon()->pfChgIso02WrtVtx( vtxRef_ ) ); }
+        float pfChIso03WrtChosenVtx() const { MakePhoton(); return ( photon()->pfChgIso03WrtVtx( vtxRef_ ) ); }
+        float pfChIso04WrtChosenVtx() const { MakePhoton(); return ( photon()->pfChgIso04WrtVtx( vtxRef_ ) ); }
 
-        float pfChIso02WrtChosenVtx() const { return photon().pfChgIso02WrtVtx( dipho_->vtx() ); }
-        float pfChIso03WrtChosenVtx() const { return photon().pfChgIso03WrtVtx( dipho_->vtx() ); }
-        float pfChIso04WrtChosenVtx() const { return photon().pfChgIso04WrtVtx( dipho_->vtx() ); }
+        float phoIdMvaWrtChosenVtx() const { MakePhoton(); return ( photon()->phoIdMvaDWrtVtx( vtxRef_ ) ); }
 
-        float phoIdMvaWrtChosenVtx() const { return photon().phoIdMvaDWrtVtx( dipho_->vtx() ); }
+        float extraChIsoWrtChoosenVtx( const std::string &key ) const { MakePhoton(); return ( photon()->extraChgIsoWrtVtx( key, vtxRef_ ) ); }
 
-        float extraChIsoWrtChoosenVtx( const std::string &key ) const { return photon().extraChgIsoWrtVtx( key, dipho_->vtx() ); }
+        void MakePersistent();
 
     private:
-        void daughterMaybe() const;
-
-        dipho_ptr_type edmdipho_;
-        int daughter_;
-        mutable const Photon *pho_;
-        mutable const DiPhotonCandidate *dipho_;
-
+        mutable flashgg::Photon pho_;
+        edm::Ptr<flashgg::Photon> phoPtr_;
+        edm::Ptr<reco::Vertex> vtxRef_;
+        mutable bool hasPhoton_;
+        bool hasVtx_;
+        bool MakePhoton() const;
+        std::vector<flashgg::Photon> persistVec_;
     };
 }
 

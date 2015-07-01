@@ -53,13 +53,21 @@ namespace flashgg {
     template<class param_var>
     void DiPhotonFromPhotonBase<param_var>::applyCorrection( DiPhotonCandidate &y, param_var syst_shift )
     {
-        if( debug_ ) { std::cout << "START OF DiPhotonFromPhoton::applyCorrection M PT E1 E2 " << y.mass() << " " << y.pt() << " " << y.leadingPhoton()->energy() << " " << y.subLeadingPhoton()->energy() << std::endl; }
+        if( debug_ ) {
+            std::cout << "START OF DiPhotonFromPhoton::applyCorrection M PT E1 E2 ETA1 ETA2 "
+                      << y.mass() << " " << y.pt() << " " << y.leadingPhoton()->energy() << " " << y.subLeadingPhoton()->energy() << " "
+                      << y.leadingPhoton()->eta() << " " << y.subLeadingPhoton()->eta() << std::endl;
+        }
+        y.makePhotonsPersistent();
         photon_corr_->applyCorrection( y.getLeadingPhoton(), syst_shift );
         photon_corr_->applyCorrection( y.getSubLeadingPhoton(), syst_shift );
-        AddFourMomenta addP4;
-        addP4.set( y );
+        y.computeP4AndOrder();
         y.setSystLabel( shiftLabel( syst_shift ) );
-        if( debug_ ) { std::cout << "END OF DiPhotonFromPhoton::applyCorrection M PT E1 E2 " << y.mass() << " " << y.pt() << " " << y.leadingPhoton()->energy() << " " << y.subLeadingPhoton()->energy() << std::endl; }
+        if( debug_ ) {
+            std::cout << "END OF DiPhotonFromPhoton::applyCorrection M PT E1 E2 ETA1 ETA2 "
+                      << y.mass() << " " << y.pt() << " " << y.leadingPhoton()->energy() << " " << y.subLeadingPhoton()->energy() << " "
+                      << y.leadingPhoton()->eta() << " " << y.subLeadingPhoton()->eta() << std::endl;
+        }
     }
 }
 
