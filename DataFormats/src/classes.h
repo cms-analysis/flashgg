@@ -143,8 +143,6 @@ namespace  {
         std::vector<flashgg::TTHLeptonicTag> vec_tthl;
         edm::Wrapper<std::vector<flashgg::TTHLeptonicTag> > wrp_vec_tthl;
 
-        edm::Ptr<pat::Electron> ptr_elec;
-        edm::Ptr<pat::Muon> ptr_muon;
         edm::Ptr<reco::GenParticle> ptr_genp;
 
         flashgg::TTHHadronicTag tthh;
