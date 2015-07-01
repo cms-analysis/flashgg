@@ -204,6 +204,8 @@ namespace  {
 
         std::vector<edm::Ptr<pat::MET> >        vec_ptr_pat_met;
         edm::Wrapper<std::vector<edm::Ptr<pat::MET> > >   wrp_vec_ptr_pat_met;
+
+
     };
 }
 // Local Variables:

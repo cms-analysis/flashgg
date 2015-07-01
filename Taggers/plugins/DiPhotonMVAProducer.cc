@@ -10,6 +10,8 @@
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
 
+#include "flashgg/DataFormats/interface/SinglePhotonView.h"
+
 #include "TMVA/Reader.h"
 #include "TMath.h"
 #include "TVector3.h"
@@ -107,8 +109,8 @@ namespace flashgg {
 
         for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
             flashgg::DiPhotonMVAResult mvares;
-
             edm::Ptr<reco::Vertex> vtx = diPhotons->ptrAt( candIndex )->vtx();
+
             const flashgg::Photon *g1 = diPhotons->ptrAt( candIndex )->leadingPhoton();
             const flashgg::Photon *g2 = diPhotons->ptrAt( candIndex )->subLeadingPhoton();
 
