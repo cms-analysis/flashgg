@@ -119,7 +119,6 @@ namespace flashgg {
                         std::cout << "\t\tclosestGenJetToLeadingJet pt eta " << truth->closestGenJetToLeadingJet()->pt() << " " << truth->closestGenJetToLeadingJet()->eta() <<
                                   std::endl;
                     }
-                    std::cout << "  truth->closestParticleToLeadingJet().isNonnull() " << truth->closestParticleToLeadingJet().isNonnull() << std::endl;
                     if( truth->closestParticleToLeadingJet().isNonnull() ) {
                         std::cout << "\t\tclosestParticleToLeadingJet pt eta id "   << truth->closestParticleToLeadingJet()->pt() << " " << truth->closestParticleToLeadingJet()->eta()
                                   << " " << truth->closestParticleToLeadingJet()->pdgId() << std::endl;

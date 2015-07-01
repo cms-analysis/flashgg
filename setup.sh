@@ -26,15 +26,11 @@ echo "You should have checked out from cms-analysis/flashgg. Renaming this to up
 cd $CMSSW_BASE/src/flashgg
 git remote rename origin upstream
 GITHUBUSERNAME=`git config user.github`
-echo "Remember that:"
-echo "  * To get a branch you can commit to, do: git checkout -b my-informative-branchname"
-echo "  * YOU will need to add your own repo as a remote to push anything, e.g. with this command (check your GitHub username!):"
-echo "      cd ${CMSSW_BASE}/src/flashgg ; git remote add origin git@github.com:${GITHUBUSERNAME}/flashgg.git"
-echo
 
 if ${SETUP_REMOTES} ; then
   echo "Setting up remotes listed in setup script..."
   cd $CMSSW_BASE/src/flashgg
+  git remote add origin git@github.com:${GITHUBUSERNAME}/flashgg.git
   git remote add ArnabPurohit https://github.com/ArnabPurohit/flashgg
   git remote add bcourbon https://github.com/bcourbon/flashgg
   git remote add bmarzocc https://github.com/bmarzocc/flashgg
@@ -71,6 +67,12 @@ if ${SETUP_REMOTES} ; then
   git remote add upstream-writable git@github.com:cms-analysis/flashgg.git
 else
   echo "Not setting up additional remote names (default)"
+  echo
+  echo "Remember that:"
+  echo "  * To get a branch you can commit to, do: git checkout -b my-informative-branchname"
+  echo "  * YOU will need to add your own repo as a remote to push anything, e.g. with this command (check your GitHub username!):"
+  echo "      cd ${CMSSW_BASE}/src/flashgg ; git remote add origin git@github.com:${GITHUBUSERNAME}/flashgg.git"
+  echo
 fi
 
 cd $CMSSW_BASE/src
@@ -78,7 +80,7 @@ cd $CMSSW_BASE/src
 echo
 echo "Setting up pileupjetid..."
 git cms-addpkg RecoJets/JetProducers
-git cms-merge-topic -u yhaddad:topic-pujid-flashgg
+git cms-merge-topic sethzenz:topic-pujid-74X
 echo
 
 #echo "Setting up PUPPI..."
