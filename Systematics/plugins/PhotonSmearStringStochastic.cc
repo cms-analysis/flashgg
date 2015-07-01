@@ -27,13 +27,15 @@ namespace flashgg {
         selector_type overall_range_;
         const std::string label1_;
         const std::string label2_;
+        bool exaggerateShiftUp_; // debugging
     };
 
     PhotonSmearStringStochastic::PhotonSmearStringStochastic( const edm::ParameterSet &conf ) :
         ObjectSystMethodBinnedByFunctor( conf ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
         label1_( conf.getUntrackedParameter<std::string>( "FirstParameterName", "Rho" ) ),
-        label2_( conf.getUntrackedParameter<std::string>( "SecondParameterName", "Phi" ) )
+        label2_( conf.getUntrackedParameter<std::string>( "SecondParameterName", "Phi" ) ),
+        exaggerateShiftUp_( conf.getUntrackedParameter<bool>( "ExaggerateShiftUp", false ) )
     {
     }
 
@@ -66,6 +68,7 @@ namespace flashgg {
                 // 3 values (rho, phi, ETmean) and 2 errors (rho, phi) are required
                 float rho_val = val_err.first[0];
                 float rho_err = val_err.second[0];
+                if( exaggerateShiftUp_ && syst_shift.first == 1 ) { rho_err  = 9 * rho_val; }
                 float phi_val = val_err.first[1];
                 float phi_err = val_err.second[1];
                 float ETmean = val_err.first[2];
@@ -84,6 +87,7 @@ namespace flashgg {
 
                 float rho_val = val_err.first[0];
                 float rho_err = val_err.second[0];
+                if( exaggerateShiftUp_ && syst_shift.first == 1 ) { rho_err = 9 * rho_val; }
                 sigma = rho_val + syst_shift.first * rho_err;
             }
 

@@ -22,11 +22,14 @@ namespace flashgg {
 
     private:
         selector_type overall_range_;
+        bool exaggerateShiftUp_; // for sanity checks only
     };
 
     PhotonSmearStringConstant::PhotonSmearStringConstant( const edm::ParameterSet &conf ) :
         ObjectSystMethodBinnedByFunctor( conf ),
-        overall_range_( conf.getParameter<std::string>( "OverallRange" ) )
+        overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
+        exaggerateShiftUp_( conf.getUntrackedParameter<bool>( "ExaggerateShiftUp", false ) )
+
     {
     }
 
@@ -50,6 +53,7 @@ namespace flashgg {
             if( val_err.first.size() == 1 && val_err.second.size() == 1 ) { // otherwise no-op because we don't have an entry
                 float sigma_smearing = val_err.first[0];
                 float sigma_smearing_err = val_err.second[0];
+                if( exaggerateShiftUp_ && syst_shift == 1 ) { sigma_smearing_err  = 9 * sigma_smearing; }
                 float sigma = sigma_smearing + syst_shift * sigma_smearing_err;
                 float newe = CLHEP::RandGauss::shoot( RandomEngine(), y.energy(), sigma * y.energy() );
                 if( debug_ ) {
