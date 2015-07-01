@@ -27,9 +27,7 @@
 <class name="flashgg::TTHLeptonicTag"/>
 <class name="std::vector<flashgg::TTHLeptonicTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TTHLeptonicTag> >"/>
-<class name="edm::Ptr<pat::Electron>"/>
 <class name="std::vector<pat::Muon>"/>
-<class name="edm::Ptr<pat::Muon>"/> 
 <class name="edm::Ptr<reco::GenParticle>"/>
 <class name="flashgg::TTHHadronicTag"/>
 <class name="std::vector<flashgg::TTHHadronicTag>"/>
