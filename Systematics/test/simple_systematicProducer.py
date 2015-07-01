@@ -31,8 +31,8 @@ process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService
 process.load("flashgg.Systematics.flashggPhotonSmear_cfi")
 
 # Code to artificially scale photon energies to make different mass points for signal fit tests
-srcMass = 130.
-targetMass = 130.
+srcMass = 125.
+targetMass = 120.
 process.flashggSmearDiPhoton.SystMethods.append(cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleString"),
                                                           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
                                                           Label = cms.string("FakeMassScale"),

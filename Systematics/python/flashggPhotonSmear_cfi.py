@@ -53,7 +53,8 @@ flashggSmearDiPhoton = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                     NSigmas = cms.PSet( firstVar = cms.vint32(1,-1,0,0),
                                                                         secondVar = cms.vint32(0,0,1,-1)),
                                                     BinList = smearBins,
-                                                    Debug = cms.untracked.bool(True)
+                                                    Debug = cms.untracked.bool(True),
+                                                    ExaggerateShiftUp = cms.untracked.bool(True),
                                                     ),
                                           cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearStringStochastic"),
                                                     MethodName = cms.string("FlashggDiPhotonFromPhoton2D"),
@@ -62,7 +63,8 @@ flashggSmearDiPhoton = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                     NSigmas = cms.PSet( firstVar = cms.vint32(1,-1,0,0),
                                                                         secondVar = cms.vint32(0,0,1,-1)),
                                                     BinList = smearBins,
-                                                    Debug = cms.untracked.bool(True)
+                                                    Debug = cms.untracked.bool(True),
+                                                    ExaggerateShiftUp = cms.untracked.bool(True),
                                                     )
                                           ),
 		SystMethods = cms.VPSet(
@@ -104,7 +106,8 @@ flashggSmearDiPhoton = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("r9>0.94&&abs(eta)>=1.5"),
                                                   BinList = smearBins,
-                                                  Debug = cms.untracked.bool(True)
+                                                  Debug = cms.untracked.bool(True),
+                                                  ExaggerateShiftUp = cms.untracked.bool(True),
                                                   ),
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearStringConstant"),
                                                   MethodName = cms.string("FlashggDiPhotonFromPhoton"),
@@ -112,7 +115,8 @@ flashggSmearDiPhoton = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("r9<0.94&&abs(eta)>=1.5"),
                                                   BinList = smearBins,
-                                                  Debug = cms.untracked.bool(True)
+                                                  Debug = cms.untracked.bool(True),
+                                                  ExaggerateShiftUp = cms.untracked.bool(True),
                                                   )
                                         )
                                       )
