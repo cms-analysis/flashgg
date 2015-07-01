@@ -24,7 +24,6 @@ VBFTagTruth::VBFTagTruth(const VBFTagTruth &b) : TagTruthBase::TagTruthBase(b)
 
 VBFTagTruth *VBFTagTruth::clone() const
 {
-    std::cout << " Derived clone!" << std::endl;
     //    return (new VBFTagTruth(*this));
     VBFTagTruth *result = new VBFTagTruth;
     result->setClosestGenJetToLeadingJet( closestGenJetToLeadingJet() );
