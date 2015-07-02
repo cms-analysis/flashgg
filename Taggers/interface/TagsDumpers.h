@@ -1,7 +1,7 @@
 #ifndef flashgg_TagsDumpers_h
 #define flashgg_TagsDumpers_h
 
-#include "flashgg/DataFormats/interface/DiPhotonUntaggedCategory.h"
+#include "flashgg/DataFormats/interface/UntaggedTag.h"
 #include "flashgg/DataFormats/interface/VBFTag.h"
 #include "flashgg/DataFormats/interface/TTHLeptonicTag.h"
 #include "flashgg/DataFormats/interface/TTHHadronicTag.h"
@@ -12,9 +12,9 @@
 #include "flashgg/Taggers/interface/CollectionDumper.h"
 
 namespace flashgg {
-    typedef CollectionDumper<std::vector<DiPhotonUntaggedCategory>,
-            DiPhotonUntaggedCategory,
-            CutBasedClassifier<DiPhotonUntaggedCategory> > CutBasedUntaggedCategoryDumper;
+    typedef CollectionDumper<std::vector<UntaggedTag>,
+            UntaggedTag,
+            CutBasedClassifier<UntaggedTag> > CutBasedUntaggedDumper;
     typedef CollectionDumper<std::vector<VBFTag>,
             VBFTag,
             CutBasedClassifier<VBFTag> > CutBasedVBFTagDumper;

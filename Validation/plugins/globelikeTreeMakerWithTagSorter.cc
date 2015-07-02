@@ -33,7 +33,7 @@
 #include "DataFormats/Math/interface/deltaR.h"
 
 #include "flashgg/DataFormats/interface/VBFTag.h"
-#include "flashgg/DataFormats/interface/DiPhotonUntaggedCategory.h"
+#include "flashgg/DataFormats/interface/UntaggedTag.h"
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 #include "flashgg/DataFormats/interface/TTHHadronicTag.h"
 #include "flashgg/DataFormats/interface/TTHLeptonicTag.h"
@@ -295,7 +295,7 @@ FlashggTreeMakerWithTagSorter::analyze( const edm::Event &iEvent, const edm::Eve
 
         candIndex = ( chosenTag->diPhotonIndex() ); //should exist regardless of tag type.
 
-        const	DiPhotonUntaggedCategory *untagged = dynamic_cast<const DiPhotonUntaggedCategory *>( chosenTag );
+        const	UntaggedTag *untagged = dynamic_cast<const UntaggedTag *>( chosenTag );
 
         //if(untagged == NULL) std::cout << "NOT UNTAGGED" <<std::endl;
         if( untagged != NULL ) {

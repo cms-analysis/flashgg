@@ -434,7 +434,7 @@ process.load("flashgg/Taggers/flashggTags_cff")
 process.flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                           DiPhotonTag = cms.InputTag('flashggDiPhotons'),
                                           TagVectorTag = cms.untracked.VInputTag(cms.untracked.InputTag('flashggVBFTag'),
-                                                                                 cms.untracked.InputTag('flashggUntaggedCategory'),
+                                                                                 cms.untracked.InputTag('flashggUntagged'),
                                                                                  ),
                                           massCutUpper=cms.untracked.double(180),
                                           massCutLower=cms.untracked.double(100)
