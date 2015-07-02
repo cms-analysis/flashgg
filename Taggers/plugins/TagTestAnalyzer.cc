@@ -22,7 +22,7 @@
 #include "DataFormats/Common/interface/Handle.h"
 
 #include "flashgg/DataFormats/interface/VBFTag.h"
-#include "flashgg/DataFormats/interface/DiPhotonUntaggedCategory.h"
+#include "flashgg/DataFormats/interface/UntaggedTag.h"
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 #include "flashgg/DataFormats/interface/TTHHadronicTag.h"
 #include "flashgg/DataFormats/interface/TTHLeptonicTag.h"
@@ -97,7 +97,7 @@ namespace flashgg {
         if( TagSorter.product()->size() > 0 ) {
             const flashgg::DiPhotonTagBase *chosenTag = &*( TagSorter.product()->begin() );
 
-            const	DiPhotonUntaggedCategory *untagged = dynamic_cast<const DiPhotonUntaggedCategory *>( chosenTag );
+            const	UntaggedTag *untagged = dynamic_cast<const UntaggedTag *>( chosenTag );
             if( untagged != NULL ) {
                 std::cout << "[UNTAGGED] category " << untagged->categoryNumber() << " mass=" << untagged->diPhoton()->mass() << std::endl;
                 if( untagged->tagTruth().isNonnull() ) {

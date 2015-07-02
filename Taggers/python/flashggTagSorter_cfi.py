@@ -14,7 +14,7 @@ flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                                                          MinCategory = cms.untracked.int32(0),
                                                                          MaxCategory = cms.untracked.int32(0)
                                                                          ),
-                                                                cms.PSet(TagName = cms.InputTag('flashggUntaggedCategory'),
+                                                                cms.PSet(TagName = cms.InputTag('flashggUntagged'),
                                                                          MinCategory = cms.untracked.int32(0),
                                                                          MaxCategory = cms.untracked.int32(1)
                                                                          ),
@@ -22,7 +22,7 @@ flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                                                          MinCategory = cms.untracked.int32(1),
                                                                          MaxCategory = cms.untracked.int32(2)
                                                                          ),
-                                                                cms.PSet(TagName = cms.InputTag('flashggUntaggedCategory'),
+                                                                cms.PSet(TagName = cms.InputTag('flashggUntagged'),
                                                                          MinCategory = cms.untracked.int32(2),
                                                                          MaxCategory = cms.untracked.int32(4)
                                                                          )
@@ -38,5 +38,5 @@ flashggTagSorter = cms.EDProducer('FlashggTagSorter',
 #                                                                        cms.untracked.InputTag('flashggTTHHadronicTag'),
 #                                                                        cms.untracked.InputTag('flashggVBFTag'),
 #                                                                        cms.untracked.InputTag('flashggVHHadronicTag'),
-#                                                                        cms.untracked.InputTag('flashggUntaggedCategory'),
+#                                                                        cms.untracked.InputTag('flashggUntagged'),
 
