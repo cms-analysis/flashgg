@@ -49,7 +49,7 @@ process.diphotonDumper.quietRooFit = True
 
 ## define categories and associated objects to dump
 cfgTools.addCategory(process.diphotonDumper,
-                    "flashggDiPhotonUntaggedCategory",
+                    "flashggUntaggedTag",
                           subcats=5,
                                   variables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass", 
                                   "leadPt                   :=diPhoton().leadingPhoton.pt",

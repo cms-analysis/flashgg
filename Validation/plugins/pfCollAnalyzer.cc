@@ -34,7 +34,7 @@
 #include "DataFormats/Math/interface/deltaR.h"
 
 #include "flashgg/DataFormats/interface/VBFTag.h"
-#include "flashgg/DataFormats/interface/DiPhotonUntaggedCategory.h"
+#include "flashgg/DataFormats/interface/UntaggedTag.h"
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 #include "flashgg/DataFormats/interface/TTHHadronicTag.h"
 #include "flashgg/DataFormats/interface/TTHLeptonicTag.h"
