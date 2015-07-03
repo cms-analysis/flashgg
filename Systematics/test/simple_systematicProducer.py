@@ -65,7 +65,7 @@ from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet,massSearc
 #process.flashggTagSequence += process.flashggTagTester
 massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggDiPhotons"),cms.InputTag("flashggSmearDiPhoton"))
 
-#process.flashggUntaggedCategory.DiPhotonTag = cms.InputTag("flashggSmearDiPhoton")
+#process.flashggUntagged.DiPhotonTag = cms.InputTag("flashggSmearDiPhoton")
 #process.flashggTTHHadronicTag.DiPhotonTag = cms.InputTag("flashggSmearDiPhoton")
 #process.flashggVBFTag.DiPhotonTag = cms.InputTag("flashggSmearDiPhoton")
 #process.flashggVHEtTag.DiPhotonTag = cms.InputTag("flashggSmearDiPhoton")

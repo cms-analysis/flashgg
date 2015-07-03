@@ -6,7 +6,7 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
-#include "flashgg/DataFormats/interface/DiPhotonUntaggedCategory.h"
+#include "flashgg/DataFormats/interface/UntaggedTag.h"
 #include "flashgg/DataFormats/interface/Electron.h"
 #include "flashgg/DataFormats/interface/GenPhotonExtra.h"
 #include "flashgg/DataFormats/interface/Jet.h"
@@ -131,9 +131,9 @@ namespace  {
         std::vector<flashgg::DiPhotonTagBase> vec_tagbase;
         edm::Wrapper<std::vector<flashgg::DiPhotonTagBase> > wrp_vec_tagbase;
 
-        flashgg::DiPhotonUntaggedCategory untaggedcat;
-        std::vector<flashgg::DiPhotonUntaggedCategory> vec_untaggedcat;
-        edm::Wrapper<std::vector<flashgg::DiPhotonUntaggedCategory> > wrp_vec_untaggedcat;
+        flashgg::UntaggedTag untaggedcat;
+        std::vector<flashgg::UntaggedTag> vec_untaggedcat;
+        edm::Wrapper<std::vector<flashgg::UntaggedTag> > wrp_vec_untaggedcat;
 
         flashgg::VBFTag vbf_cat;
         std::vector<flashgg::VBFTag> vec_vbf_cat;

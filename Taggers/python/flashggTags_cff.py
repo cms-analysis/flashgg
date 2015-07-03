@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 from flashgg.MicroAOD.flashggJets_cfi import flashggBTag
 
-flashggUntaggedCategory = cms.EDProducer("FlashggUntaggedCategoryProducer",
+flashggUntagged = cms.EDProducer("FlashggUntaggedTagProducer",
 #                                         DiPhotonTag=cms.untracked.InputTag('flashggPreselectedDiPhotons'), # why doesn't this work?
 		DiPhotonTag=cms.InputTag('flashggDiPhotons'),
 		MVAResultTag=cms.untracked.InputTag('flashggDiPhotonMVA'),

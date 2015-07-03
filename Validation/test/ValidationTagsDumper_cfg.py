@@ -31,7 +31,7 @@ process.TFileService = cms.Service("TFileService",
 ## TAGS DUMPERS ##
 from flashgg.Taggers.tagsDumpers_cfi import *
 
-process.untaggedDumper = createTagDumper("UntaggedCategory")
+process.untaggedDumper = createTagDumper("Untagged")
 process.vbfTagDumper = createTagDumper("VBFTag")
 process.tthLeptonicTagDumper = createTagDumper("TTHLeptonicTag")
 process.tthHadronicTagDumper = createTagDumper("TTHHadronicTag")
