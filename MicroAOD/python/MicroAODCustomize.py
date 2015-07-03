@@ -18,7 +18,16 @@ class MicroAODCustomize(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "processType")
-        
+        self.options.register('debug',
+                              1, # default value
+                              VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                              VarParsing.VarParsing.varType.int,          # string, int, or float
+                              "debug")
+        self.options.register('muMuGamma',
+                              0, # default value
+                              VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                              VarParsing.VarParsing.varType.int,          # string, int, or float
+                              "muMuGamma")
 
     def __getattr__(self,name):
         ## did not manage to inherit from VarParsing, because of some issues in __init__
@@ -39,13 +48,17 @@ class MicroAODCustomize(object):
     # process customization
     def customize(self,process):
         self.options.parseArguments()
-        
+
         if self.processType == "data":
             self.customizeData(process)
         elif self.processType == "signal":
             self.customizeSignal(process)
         if self.processType == "background":
             self.customizeBackground(process)
+        if self.debug == 1:
+            self.customizeDebug(process)
+        if self.muMuGamma == 1:
+            self.customizeMuMuGamma(process)
 
     # signal specific customization
     def customizeSignal(self,process):
@@ -66,6 +79,17 @@ class MicroAODCustomize(object):
                 path.remove( getattr(process,mod))
             print getattr(process,pathName)
         process.out.outputCommands.append("drop *_*Gen*_*_*")
+
+    # Add debug collections    
+    def customizeDebug(self,process):    
+        from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDebugOutputCommand
+        process.out.outputCommands += microAODDebugOutputCommand # extra items for debugging, CURRENTLY REQUIRED
+        process.flashggJets.MinJetPt = 0.
+
+    def customizeMuMuGamma(self,process):
+        process.load("flashgg/MicroAOD/flashggDiMuons_cfi")
+        process.load("flashgg/MicroAOD/flashggMuMuGamma_cfi")
+        process.p *= process.flashggDiMuons*process.flashggMuMuGamma
             
 # customization object
 customize = MicroAODCustomize()

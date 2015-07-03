@@ -38,7 +38,7 @@ process.flashggTreeMakerWithTags = cms.EDAnalyzer('FlashggFlashggTreeMakerWithTa
 																													DiPhotonTag = cms.InputTag('flashggDiPhotons'),
 																													METTag = cms.untracked.InputTag('slimmedMETs'),
 																													PileUpTag = cms.untracked.InputTag('addPileupInfo'),
-																													UntaggedTag = cms.untracked.InputTag('flashggUntaggedCategory'),
+																													UntaggedTag = cms.untracked.InputTag('flashggUntagged'),
 																													VBFTag = cms.untracked.InputTag('flashggVBFTag'),
 																													rhoFixedGridCollection = cms.InputTag('fixedGridRhoAll'),
                                                           )
@@ -76,7 +76,7 @@ process.p = cms.Path(process.flashggVertexMapUnique*
                      process.flashggDiPhotons*
                      process.flashggPreselectedDiPhotons*
                      (process.flashggDiPhotonMVA+process.flashggJets)* # These two could run in parallel, so use +
-                     process.flashggUntaggedCategory*
+                     process.flashggUntagged*
 										 (process.flashggVBFMVA)* # Needs to happen after Jets
                      (process.flashggVBFDiPhoDiJetMVA)* # Needs to happen after VBF MVA and DiPho MVA
                      (process.flashggVBFTag)* # Tag producers, once written, can run in parallel, so they go in here with +

@@ -3,7 +3,7 @@
 
 #include "flashgg/Taggers/interface/TagsDumpers.h"
 
-typedef edm::AnalyzerWrapper<flashgg::CutBasedUntaggedCategoryDumper> CutBasedUntaggedCategoryDumper;
+typedef edm::AnalyzerWrapper<flashgg::CutBasedUntaggedTagDumper> CutBasedUntaggedTagDumper;
 typedef edm::AnalyzerWrapper<flashgg::CutBasedVBFTagDumper> CutBasedVBFTagDumper;
 typedef edm::AnalyzerWrapper<flashgg::CutBasedTTHLeptonicTagDumper> CutBasedTTHLeptonicTagDumper;
 typedef edm::AnalyzerWrapper<flashgg::CutBasedTTHHadronicTagDumper> CutBasedTTHHadronicTagDumper;
@@ -11,7 +11,7 @@ typedef edm::AnalyzerWrapper<flashgg::CutBasedVHLooseTagDumper> CutBasedVHLooseT
 typedef edm::AnalyzerWrapper<flashgg::CutBasedVHTightTagDumper> CutBasedVHTightTagDumper;
 typedef edm::AnalyzerWrapper<flashgg::CutBasedVHHadronicTagDumper> CutBasedVHHadronicTagDumper;
 
-DEFINE_FWK_MODULE( CutBasedUntaggedCategoryDumper );
+DEFINE_FWK_MODULE( CutBasedUntaggedTagDumper );
 DEFINE_FWK_MODULE( CutBasedVBFTagDumper );
 DEFINE_FWK_MODULE( CutBasedTTHLeptonicTagDumper );
 DEFINE_FWK_MODULE( CutBasedTTHHadronicTagDumper );

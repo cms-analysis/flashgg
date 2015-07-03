@@ -1,20 +1,20 @@
-#include "flashgg/DataFormats/interface/DiPhotonUntaggedCategory.h"
+#include "flashgg/DataFormats/interface/UntaggedTag.h"
 
 using namespace flashgg;
 
-DiPhotonUntaggedCategory::DiPhotonUntaggedCategory() : DiPhotonTagBase::DiPhotonTagBase() {}
+UntaggedTag::UntaggedTag() : DiPhotonTagBase::DiPhotonTagBase() {}
 
-DiPhotonUntaggedCategory::~DiPhotonUntaggedCategory() {}
+UntaggedTag::~UntaggedTag() {}
 
-DiPhotonUntaggedCategory::DiPhotonUntaggedCategory( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvaRes )
-    : DiPhotonUntaggedCategory::DiPhotonUntaggedCategory( diPho, *mvaRes ) {}
+UntaggedTag::UntaggedTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvaRes )
+    : UntaggedTag::UntaggedTag( diPho, *mvaRes ) {}
 
-DiPhotonUntaggedCategory::DiPhotonUntaggedCategory( edm::Ptr<DiPhotonCandidate> dipho, DiPhotonMVAResult mvares ) :  DiPhotonTagBase::DiPhotonTagBase( dipho,
+UntaggedTag::UntaggedTag( edm::Ptr<DiPhotonCandidate> dipho, DiPhotonMVAResult mvares ) :  DiPhotonTagBase::DiPhotonTagBase( dipho,
             mvares ) {}
 
-DiPhotonUntaggedCategory *DiPhotonUntaggedCategory::clone() const
+UntaggedTag *UntaggedTag::clone() const
 {
-    DiPhotonUntaggedCategory *result = new DiPhotonUntaggedCategory( diPhoton(), diPhotonMVA() );
+    UntaggedTag *result = new UntaggedTag( diPhoton(), diPhotonMVA() );
     result->setCategoryNumber( categoryNumber() );
     result->setDiPhotonIndex( diPhotonIndex() );
     return result;

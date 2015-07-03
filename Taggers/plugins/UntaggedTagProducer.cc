@@ -9,7 +9,7 @@
 
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
-#include "flashgg/DataFormats/interface/DiPhotonUntaggedCategory.h"
+#include "flashgg/DataFormats/interface/UntaggedTag.h"
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
 
@@ -22,13 +22,13 @@ using namespace edm;
 
 namespace flashgg {
 
-    class UntaggedCategoryProducer : public EDProducer
+    class UntaggedTagProducer : public EDProducer
     {
 
     public:
         typedef math::XYZPoint Point;
 
-        UntaggedCategoryProducer( const ParameterSet & );
+        UntaggedTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
         int chooseCategory( float );
@@ -41,7 +41,7 @@ namespace flashgg {
 
     };
 
-    UntaggedCategoryProducer::UntaggedCategoryProducer( const ParameterSet &iConfig ) :
+    UntaggedTagProducer::UntaggedTagProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getUntrackedParameter<InputTag> ( "MVAResultTag", InputTag( "flashggDiPhotonMVA" ) ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getUntrackedParameter<InputTag> ( "GenParticleTag", InputTag( "prunedGenParticles" ) ) ) )
@@ -58,11 +58,11 @@ namespace flashgg {
 
         assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception
 
-        produces<vector<DiPhotonUntaggedCategory> >();
+        produces<vector<UntaggedTag> >();
         produces<vector<TagTruthBase> >();
     }
 
-    int UntaggedCategoryProducer::chooseCategory( float mvavalue )
+    int UntaggedTagProducer::chooseCategory( float mvavalue )
     {
         // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
         int n;
@@ -72,7 +72,7 @@ namespace flashgg {
         return -1; // Does not pass, object will not be produced
     }
 
-    void UntaggedCategoryProducer::produce( Event &evt, const EventSetup & )
+    void UntaggedTagProducer::produce( Event &evt, const EventSetup & )
     {
 
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
@@ -86,7 +86,7 @@ namespace flashgg {
         Handle<View<reco::GenParticle> > genParticles;
         evt.getByToken( genParticleToken_, genParticles );
 
-        std::auto_ptr<vector<DiPhotonUntaggedCategory> > tags( new vector<DiPhotonUntaggedCategory> );
+        std::auto_ptr<vector<UntaggedTag> > tags( new vector<UntaggedTag> );
         std::auto_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
 
         Point higgsVtx;
@@ -110,7 +110,7 @@ namespace flashgg {
             edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( candIndex );
             edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( candIndex );
 
-            DiPhotonUntaggedCategory tag_obj( dipho, mvares );
+            UntaggedTag tag_obj( dipho, mvares );
             tag_obj.setDiPhotonIndex( candIndex );
 
             TagTruthBase truth_obj;
@@ -134,8 +134,8 @@ namespace flashgg {
     }
 }
 
-typedef flashgg::UntaggedCategoryProducer FlashggUntaggedCategoryProducer;
-DEFINE_FWK_MODULE( FlashggUntaggedCategoryProducer );
+typedef flashgg::UntaggedTagProducer FlashggUntaggedTagProducer;
+DEFINE_FWK_MODULE( FlashggUntaggedTagProducer );
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil
