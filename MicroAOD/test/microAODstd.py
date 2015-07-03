@@ -55,11 +55,10 @@ process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to wo
 
 process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
 
-from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand,microAODDebugOutputCommand
+from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile.root'),
                                outputCommands = microAODDefaultOutputCommand
                                )
-process.out.outputCommands += microAODDebugOutputCommand # extra items for debugging, CURRENTLY REQUIRED
 
 # need to allow unscheduled processes otherwise reclustering function will fail
 # this is because of the jet clustering tool, and we have to live with it for now.
@@ -89,3 +88,4 @@ process.e = cms.EndPath(process.out)
 
 from flashgg.MicroAOD.MicroAODCustomize import customize
 customize(process)
+

@@ -105,7 +105,7 @@ flashggJets = cms.EDProducer('FlashggJetProducer',
                              JetTag      = cms.untracked.InputTag('patJetsAK4PFCHSLeg'),
                              VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                              PileupJetIdParameters = cms.PSet(pu_jetid),
-                             MinJetPt=cms.untracked.double(0.)             
+                             MinJetPt=cms.untracked.double(20.)            
 )
   
 
