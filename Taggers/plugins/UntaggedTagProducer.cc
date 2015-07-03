@@ -56,8 +56,7 @@ namespace flashgg {
         // getUntrackedParameter<vector<float> > has no library, so we use double transiently
         boundaries = iConfig.getUntrackedParameter<vector<double > >( "Boundaries", default_boundaries );
 
-        assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception
-
+        assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception        
         produces<vector<UntaggedTag> >();
         produces<vector<TagTruthBase> >();
     }
@@ -100,7 +99,7 @@ namespace flashgg {
         }
 
         assert( diPhotons->size() == mvaResults->size() ); // We are relying on corresponding sets - update this to give an error/exception
-
+        
         unsigned int idx = 0;
 
         // Je ne comprends pas ces RefProds, mais je le fais
@@ -121,7 +120,6 @@ namespace flashgg {
 
             // Leave in debugging statement temporarily while tag framework is being developed
             // std::cout << "[UNTAGGED] MVA is "<< mvares->result << " and category is " << tag_obj.categoryNumber() << std::endl;
-
             if( tag_obj.categoryNumber() >= 0 ) {
                 tags->push_back( tag_obj );
                 truths->push_back( truth_obj );
@@ -130,7 +128,6 @@ namespace flashgg {
         }
         evt.put( tags );
         evt.put( truths );
-
     }
 }
 
@@ -143,4 +140,3 @@ DEFINE_FWK_MODULE( FlashggUntaggedTagProducer );
 // c-basic-offset:4
 // End:
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
-
