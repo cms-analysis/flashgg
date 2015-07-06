@@ -11,7 +11,6 @@ Electron::~Electron()
 Electron::Electron( const pat::Electron &anelectron ) : pat::Electron( anelectron )
 {}
 
-
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

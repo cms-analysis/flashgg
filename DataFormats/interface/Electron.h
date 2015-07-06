@@ -23,10 +23,14 @@ namespace flashgg {
         bool hasMatchedConversion() const { return hasMatchedConversion_; }
         void setHasMatchedConversion( bool val ) { hasMatchedConversion_ = val;}
 
+        void setWeight( double val ) { weight_ = val; }
+        double weight() const { return weight_; }
+
     private:
         float nontrigmva_;
         float PfRhoAreaCorrectedIso_;
         bool hasMatchedConversion_;
+        double weight_;
     };
 }
 

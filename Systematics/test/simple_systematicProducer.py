@@ -25,10 +25,14 @@ process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring("fil
 )
 
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
-                                                   flashggSmearDiPhoton = cms.PSet(initialSeed = cms.untracked.uint32(664))
+                                                   flashggSmearDiPhoton = cms.PSet(initialSeed = cms.untracked.uint32(664)),
+						   flashggSmearElectronEff = cms.PSet(initialSeed = cms.untracked.uint32(564)),
+						   flashggSmearMuonEff = cms.PSet(initialSeed = cms.untracked.uint32(464))
                                                   )
 
 process.load("flashgg.Systematics.flashggPhotonSmear_cfi")
+process.load("flashgg.Systematics.flashggSmearLeptonEff_cfi")
+process.load("flashgg.MicroAOD.flashggMuons_cfi")
 
 # Code to artificially scale photon energies to make different mass points for signal fit tests
 srcMass = 125.
@@ -117,16 +121,18 @@ for systlabel in systlabels:
     process.systematicsTagSequences += newseq
     process.flashggSystTagMerger.src.append(cms.InputTag("flashggTagSorter" + systlabel))
 
+
 from flashgg.Taggers.flashggTagOutputCommands_cff import tagDefaultOutputCommand
 
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myTagOutputFile_%s_%i.root' % (processId,targetMass)),
                                outputCommands = tagDefaultOutputCommand
                                )
 
-process.p = cms.Path(process.flashggSmearDiPhoton*
+process.p = cms.Path(process.flashggMuons*process.flashggSmearDiPhoton*
                      (process.flashggTagSequence+process.systematicsTagSequences)*
-                     process.flashggSystTagMerger)
-
+                     process.flashggSystTagMerger*(
+		    process.flashggSmearMuonEff+process.flashggSmearElectronEff)
+		   )
 print process.p
 
 process.e = cms.EndPath(process.out)
