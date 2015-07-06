@@ -89,7 +89,6 @@ namespace  {
         edm::Wrapper<flashgg::Jet>                                    wrp_fgg_jet;
         std::vector<flashgg::Jet>                                     vec_fgg_jet;
         edm::Ptr<flashgg::Jet>                                        ptr_fgg_jet;
-        edm::Ptr<pat::Muon>                                        ptr_fgg_muon;
         std::vector<pat::Muon>                                        vec_fgg_muon;
         flashgg::Muon						                                fgg_mu;
         edm::Ptr<flashgg::Muon> 					                    ptr_fgg_mu;
