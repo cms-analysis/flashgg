@@ -387,8 +387,7 @@ namespace flashgg {
             }
         }
         evt.put( vhloosetags );
-        if( ! evt.isRealData() )
-        { evt.put( truths ); }
+        evt.put( truths );
     }
 
 }

@@ -484,8 +484,7 @@ namespace flashgg {
             }
         }
         evt.put( VHTightTags );
-        if( ! evt.isRealData() )
-        { evt.put( truths ); }
+        evt.put( truths );
     }
 
 }

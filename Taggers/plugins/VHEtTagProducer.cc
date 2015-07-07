@@ -148,8 +148,7 @@ namespace flashgg {
             }
         }
         evt.put( vhettags );
-        if( ! evt.isRealData() )
-        { evt.put( truths ); }
+        evt.put( truths );
     }
 }
 

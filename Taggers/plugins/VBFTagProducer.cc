@@ -222,8 +222,7 @@ namespace flashgg {
         }
 
         evt.put( tags );
-        if( ! evt.isRealData() )
-        { evt.put( truths ); }
+        evt.put( truths );
     }
 }
 
