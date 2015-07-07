@@ -1,5 +1,5 @@
+import FWCore.ParameterSet.Config as cms
 import FWCore.ParameterSet.VarParsing as VarParsing
-
 class MicroAODCustomize(object):
     
     def __init__(self,*args,**kwargs):
@@ -8,6 +8,11 @@ class MicroAODCustomize(object):
     
         self.options = VarParsing.VarParsing()
         
+        self.options.register ('fileNames',
+                                "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "fileNames")
         self.options.register ('datasetName',
                                "", # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -18,6 +23,11 @@ class MicroAODCustomize(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "processType")
+        self.options.register ('globalTag',
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "globalTag")
         self.options.register('debug',
                               1, # default value
                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -48,7 +58,7 @@ class MicroAODCustomize(object):
     # process customization
     def customize(self,process):
         self.options.parseArguments()
-
+        
         if self.processType == "data":
             self.customizeData(process)
         elif self.processType == "signal":
@@ -59,19 +69,28 @@ class MicroAODCustomize(object):
             self.customizeDebug(process)
         if self.muMuGamma == 1:
             self.customizeMuMuGamma(process)
+        if len(self.globalTag) >0:
+            self.customizeGlobalTag(process)
+        if len(self.fileNames) >0:
+            self.customizeFileNames(process)
 
+            
     # signal specific customization
     def customizeSignal(self,process):
         process.flashggGenPhotonsExtra.defaultType = 1
-
+        process.GlobalTag.globaltag = "GR_R_74_V8::All"
+        
     # background specific customization
     def customizeBackground(self,process):
         if "sherpa" in self.datasetName:
             process.flashggGenPhotonsExtra.defaultType = 1
+            process.GlobalTag.globaltag = "GR_R_74_V8::All"
 
+            
     # data specific customization
     def customizeData(self,process):
         ## remove MC-specific modules
+        process.GlobalTag.globaltag = "GR_R_74_V13A::All"
         modules = process.flashggMicroAODGenSequence.moduleNames()
         for pathName in process.paths:
             path = getattr(process,pathName)
@@ -79,7 +98,7 @@ class MicroAODCustomize(object):
                 path.remove( getattr(process,mod))
             print getattr(process,pathName)
         process.out.outputCommands.append("drop *_*Gen*_*_*")
-
+        
     # Add debug collections    
     def customizeDebug(self,process):    
         from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDebugOutputCommand
@@ -90,6 +109,13 @@ class MicroAODCustomize(object):
         process.load("flashgg/MicroAOD/flashggDiMuons_cfi")
         process.load("flashgg/MicroAOD/flashggMuMuGamma_cfi")
         process.p *= process.flashggDiMuons*process.flashggMuMuGamma
+
+    def customizeGlobalTag(self,process):
+        process.GlobalTag.globaltag = self.globalTag
+
+    def customizeFileNames(self,process):
+        process.source.fileNames = cms.untracked.vstring(self.fileNames)
+
             
 # customization object
 customize = MicroAODCustomize()
