@@ -481,8 +481,7 @@ namespace flashgg {
 
         }//diPho loop end !
         evt.put( tthltags );
-        if( ! evt.isRealData() )
-        { evt.put( truths ); }
+        evt.put( truths ); 
     }
 
 }

@@ -195,8 +195,7 @@ namespace flashgg {
             }
         }
         evt.put( tthhtags );
-        if( ! evt.isRealData() )
-        { evt.put( truths ); }
+        evt.put( truths ); 
         // cout << "tagged events = " << count << endl;
     }
 }
