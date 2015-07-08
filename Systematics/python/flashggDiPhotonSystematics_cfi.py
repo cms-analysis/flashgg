@@ -43,7 +43,7 @@ smearBins = cms.PSet(
                               values = cms.vdouble( 0.01860 ), uncertainties = cms.vdouble( 0.00078 ) ),
                     ))
 
-flashggSmearDiPhoton = cms.EDProducer('FlashggDiPhotonSystematicProducer',
+flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
 		src = cms.InputTag('flashggDiPhotons'),
                 SystMethods2D = cms.VPSet(
                                           cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearStringStochastic"),

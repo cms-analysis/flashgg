@@ -66,7 +66,7 @@ namespace flashgg {
 
         Version_ = iConfig.getParameter<string>( "Version" );
 
-        std::cout << "Version" << Version_ << std::endl;
+        //        std::cout << "Version" << Version_ << std::endl;
 
         sigmarv_ = 0.;
         sigmawv_ = 0.;
@@ -83,7 +83,6 @@ namespace flashgg {
         std::string version_new = "new";
 
         if( version_old.compare( Version_ ) == 0 ) {
-            std::cout << "Reading MVA variables " << std::endl;
             DiphotonMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
             DiphotonMva_->AddVariable( "masserrsmeared/mass", &sigmarv_ );
             DiphotonMva_->AddVariable( "masserrsmearedwrongvtx/mass", &sigmawv_ );
@@ -96,11 +95,11 @@ namespace flashgg {
             DiphotonMva_->AddVariable( "ph1.idmva", &leadmva_ );
             DiphotonMva_->AddVariable( "ph2.idmva", &subleadmva_ );
             DiphotonMva_->BookMVA( "BDT", diphotonMVAweightfile_.fullPath() );
-            std::cout << "finished reading mva" << std::endl;
+            //            std::cout << "finished reading mva" << std::endl;
         }
 
         if( version_new.compare( Version_ ) == 0 ) {
-            std::cout << "Reading MVA variables " << std::endl;
+            //            std::cout << "Reading MVA variables " << std::endl;
             DiphotonMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
             DiphotonMva_->AddVariable( "leadptom", &leadptom_ );
             DiphotonMva_->AddVariable( "subleadptom", &subleadptom_ );
@@ -113,7 +112,7 @@ namespace flashgg {
             DiphotonMva_->AddVariable( "CosPhi", &CosPhi_ );
             DiphotonMva_->AddVariable( "vtxprob", &vtxprob_ );
             DiphotonMva_->BookMVA( "BDT", diphotonMVAweightfile_.fullPath() );
-            std::cout << "finished reading mva" << std::endl;
+            //            std::cout << "finished reading mva" << std::endl;
         }
         produces<vector<DiPhotonMVAResult> >(); // one per diphoton, always in same order, vector is more efficient than map
     }

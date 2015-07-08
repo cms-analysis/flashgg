@@ -3,10 +3,11 @@
 
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/WeightedObject.h"
 
 namespace flashgg {
 
-    class Electron : public pat::Electron
+    class Electron : public pat::Electron, public WeightedObject
     {
 
     public:
@@ -23,14 +24,10 @@ namespace flashgg {
         bool hasMatchedConversion() const { return hasMatchedConversion_; }
         void setHasMatchedConversion( bool val ) { hasMatchedConversion_ = val;}
 
-        void setWeight( double val ) { weight_ = val; }
-        double weight() const { return weight_; }
-
     private:
         float nontrigmva_;
         float PfRhoAreaCorrectedIso_;
         bool hasMatchedConversion_;
-        double weight_;
     };
 }
 
