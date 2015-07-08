@@ -10,7 +10,7 @@ class MicroAODCustomize(object):
         
         self.options.register ('fileNames',
                                 "", # default value
-                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.multiplicity.list, # singleton or list
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "fileNames")
         self.options.register ('datasetName',
