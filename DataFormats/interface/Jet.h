@@ -5,6 +5,7 @@
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/JetReco/interface/PileupJetIdentifier.h"
+#include "flashgg/DataFormats/interface/WeightedObject.h"
 
 namespace flashgg {
 
@@ -14,7 +15,7 @@ namespace flashgg {
         int idFlag;
     };
 
-    class Jet : public pat::Jet
+    class Jet : public pat::Jet, public WeightedObject
     {
 
     public:

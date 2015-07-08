@@ -29,7 +29,7 @@ namespace flashgg {
     };
 
     MuonProducer::MuonProducer( const ParameterSet &iConfig ):
-        muonToken_( consumes<View<pat::Muon> >( iConfig.getUntrackedParameter<InputTag>( "muonTag", InputTag( "slimmedMuons" ) ) ) )
+        muonToken_( consumes<View<pat::Muon> >( iConfig.getParameter<InputTag>( "muonTag" ) ) )
     {
         produces<vector<flashgg::Muon> >();
     }
@@ -40,7 +40,7 @@ namespace flashgg {
         evt.getByToken( muonToken_, pmuons );
         //	const PtrVector<pat::Muon> pmuonsPointers = pmuons->ptrVector();
 
-        std::cout << "calling produce function " << std::endl;
+        //        std::cout << "calling produce function " << std::endl;
 
         std::auto_ptr<vector<flashgg::Muon> > muColl( new vector<flashgg::Muon> );
 

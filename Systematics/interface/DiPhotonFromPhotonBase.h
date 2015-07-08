@@ -42,6 +42,7 @@ namespace flashgg {
     {
         std::string photonMethodName = conf.getParameter<std::string>( "PhotonMethodName" );
         photon_corr_.reset( FlashggSystematicMethodsFactory<flashgg::Photon, param_var>::get()->create( photonMethodName, conf ) );
+        this->setMakesWeight( photon_corr_->makesWeight() );
     }
 
     template<class param_var>

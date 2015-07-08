@@ -4,13 +4,14 @@
 #include "DataFormats/EgammaCandidates/interface/Photon.h"
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
+#include "flashgg/DataFormats/interface/WeightedObject.h"
 
 #include <map>
 #include <string>
 
 namespace flashgg {
 
-    class Photon : public pat::Photon
+    class Photon : public pat::Photon, public WeightedObject
     {
 
     public:

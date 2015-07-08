@@ -3,7 +3,7 @@
 import FWCore.ParameterSet.Config as cms
 
 flashggDiMuons = cms.EDProducer('FlashggDiMuonProducer',
-                                  MuonTag=cms.untracked.InputTag('slimmedMuons'),
+                                  MuonTag=cms.InputTag('flashggMuons'),
                                   VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'), 
                                   ##Parameters                                                
                                   minMuonPT=cms.untracked.double(5.),
