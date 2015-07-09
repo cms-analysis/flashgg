@@ -240,14 +240,14 @@ namespace flashgg {
         std::auto_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
 
         Point higgsVtx;
-
-        for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
-            int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-            if( pdgid == 25 || pdgid == 22 ) {
-                higgsVtx = genParticles->ptrAt( genLoop )->vertex();
-                break;
+        if( ! evt.isRealData() )
+            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+                int pdgid = genParticles->ptrAt( genLoop )->pdgId();
+                if( pdgid == 25 || pdgid == 22 ) {
+                    higgsVtx = genParticles->ptrAt( genLoop )->vertex();
+                    break;
+                }
             }
-        }
 
         edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
         unsigned int idx = 0;
@@ -303,6 +303,7 @@ namespace flashgg {
 
             VHTightTag VHTightTags_obj( dipho, mvares );
             if( dipho->leadingPhoton()->pt() < ( dipho->mass() )*leadPhoOverMassThreshold_ ) { continue; }
+
             if( dipho->subLeadingPhoton()->pt() < ( dipho->mass() )*subleadPhoOverMassThreshold_ ) { continue; }
             if( ( fabs( dipho->leadingPhoton()->superCluster()->eta() ) > LowPtEtaPhoThreshold_ &&
                     fabs( dipho->leadingPhoton()->superCluster()->eta() ) < MidPtEtaPhoThreshold_ ) ||
@@ -476,13 +477,14 @@ namespace flashgg {
                 VHTightTags->push_back( VHTightTags_obj );
                 TagTruthBase truth_obj;
                 truth_obj.setGenPV( higgsVtx );
-                truths->push_back( truth_obj );
-                VHTightTags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
+                if( ! evt.isRealData() ) {
+                    truths->push_back( truth_obj );
+                    VHTightTags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
+                }
             }
         }
         evt.put( VHTightTags );
         evt.put( truths );
-
     }
 
 }
