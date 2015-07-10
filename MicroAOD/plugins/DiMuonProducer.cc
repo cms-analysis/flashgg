@@ -32,8 +32,8 @@ namespace flashgg {
     };
 
     DiMuonProducer::DiMuonProducer( const ParameterSet &iConfig ) :
-        muonToken_( consumes<View<pat::Muon> >( iConfig.getUntrackedParameter<InputTag> ( "MuonTag", InputTag( "slimmedMuons" ) ) ) ),
-        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getUntrackedParameter<InputTag> ( "VertexTag", InputTag( "offlineSlimmedPrimaryVertices" ) ) ) )
+        muonToken_( consumes<View<pat::Muon> >( iConfig.getParameter<InputTag> ( "MuonTag" ) ) ),
+        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) )
     {
         minMuPT_ = iConfig.getUntrackedParameter<double>( "minMuonPT" );
         maxMuEta_ = iConfig.getUntrackedParameter<double>( "maxMuonEta" );

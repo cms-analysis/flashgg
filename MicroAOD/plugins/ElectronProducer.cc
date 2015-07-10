@@ -52,11 +52,10 @@ namespace flashgg {
     };
 
     ElectronProducer::ElectronProducer( const ParameterSet &iConfig ):
-        electronToken_( consumes<View<pat::Electron> >( iConfig.getUntrackedParameter<InputTag>( "electronTag", InputTag( "slimmedElectrons" ) ) ) ),
-        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getUntrackedParameter<InputTag>( "vertexTag", InputTag( "offlineSlimmedPrimaryVertices" ) ) ) ),
-        convToken_( consumes<reco::ConversionCollection>( iConfig.getUntrackedParameter<InputTag>( "convTag", InputTag( "reducedEgamma", "reducedConversions" ) ) ) ),
-        beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getUntrackedParameter<InputTag>( "BeamSpotTag", InputTag( "offlineBeamSpot" ) ) ) )
-
+        electronToken_( consumes<View<pat::Electron> >( iConfig.getParameter<InputTag>( "electronTag" ) ) ),
+        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag>( "vertexTag" ) ) ),
+        convToken_( consumes<reco::ConversionCollection>( iConfig.getParameter<InputTag>( "convTag" ) ) ),
+        beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getParameter<InputTag>( "beamSpotTag" ) ) )
     {
         applyCuts_ = iConfig.getUntrackedParameter<bool>( "ApplyCuts", false );
         verbose_ = iConfig.getUntrackedParameter<bool>( "verbose", false );
