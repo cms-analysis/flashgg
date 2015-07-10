@@ -74,8 +74,7 @@ namespace flashgg {
 // constructors and destructor
 //
     TagTestAnalyzer::TagTestAnalyzer( const edm::ParameterSet &iConfig ):
-        TagSorterToken_( consumes<edm::OwnVector<flashgg::DiPhotonTagBase> >( iConfig.getUntrackedParameter<InputTag> ( "TagSorter",
-                         InputTag( "flashggTagSorter" ) ) ) )
+        TagSorterToken_( consumes<edm::OwnVector<flashgg::DiPhotonTagBase> >( iConfig.getParameter<InputTag> ( "TagSorter" ) ) )
     {
     }
 

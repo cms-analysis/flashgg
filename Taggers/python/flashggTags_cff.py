@@ -2,42 +2,54 @@ import FWCore.ParameterSet.Config as cms
 from flashgg.MicroAOD.flashggJets_cfi import flashggBTag
 
 flashggUntagged = cms.EDProducer("FlashggUntaggedTagProducer",
-#                                         DiPhotonTag=cms.untracked.InputTag('flashggPreselectedDiPhotons'), # why doesn't this work?
+#                                         DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'), # why doesn't this work?
 		DiPhotonTag=cms.InputTag('flashggDiPhotons'),
-		MVAResultTag=cms.untracked.InputTag('flashggDiPhotonMVA'),
+		MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
+                GenParticleTag=cms.InputTag( "prunedGenParticles" ),
 		Boundaries=cms.untracked.vdouble(0.07,0.31,0.62,0.86,0.98)
 		)
 
 flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        DiPhotonTag=cms.InputTag('flashggDiPhotons'),
-                                       TTHJetTag=cms.untracked.InputTag('flashggJets'),
+                                       MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
+                                       JetTag=cms.InputTag('flashggJets'),
                                        bDiscriminatorLoose = cms.untracked.double(0.275),
                                        bDiscriminatorMedium = cms.untracked.double(0.545),
                                        jetsNumberThreshold = cms.untracked.int32(4),
                                        bjetsNumberThreshold = cms.untracked.int32(0),
-                                       bTag = cms.untracked.string(flashggBTag)                                       
+                                       bTag = cms.untracked.string(flashggBTag),
+                                       GenParticleTag=cms.InputTag( "prunedGenParticles" ),
 		)
 
 flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
-#                                         DiPhotonTag=cms.untracked.InputTag('flashggPreselectedDiPhotons'), # why doesn't this work?
+#                                         DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'), # why doesn't this work?
                                          DiPhotonTag=cms.InputTag('flashggDiPhotons'),
-                                         VBFDiPhoDiJetMVAResultTag=cms.untracked.InputTag('flashggVBFDiPhoDiJetMVA'),
-                                         VBFMVAResultTag=cms.untracked.InputTag('flashggVBFMVA'),
+                                         MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
+                                         VBFDiPhoDiJetMVAResultTag=cms.InputTag('flashggVBFDiPhoDiJetMVA'),
+                                         VBFMVAResultTag=cms.InputTag('flashggVBFMVA'),
+                                         GenParticleTag=cms.InputTag( "prunedGenParticles" ),
+                                         GenJetTag = cms.InputTag("slimmedGenJets"),
                                          Boundaries=cms.untracked.vdouble(0.21,0.6,0.81)
                                          )
 
+
 flashggVHEtTag = cms.EDProducer("FlashggVHEtTagProducer",
                                          DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+                                         GenParticleTag=cms.InputTag( "prunedGenParticles" ),
+                                         MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
+                                         METTag=cms.InputTag('slimmedMETs'),
                                          #metThreshold = cms.untracked.double(70),
                                          #Boundaries=cms.untracked.vdouble(0.21,0.6,0.81)
                                          )
 
 flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
 					DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+                                        MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
 					JetTag=cms.InputTag('flashggJets'),
 					ElectronTag=cms.InputTag('flashggElectrons'),
 					MuonTag=cms.InputTag('flashggMuons'),
-					VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+					VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
+                                        GenParticleTag=cms.InputTag( "prunedGenParticles" ),
 					leptonPtThreshold = cms.untracked.double(20),
 					leptonEtaThreshold = cms.untracked.double(2.4),
 					leadPhoOverMassThreshold = cms.untracked.double(0.5),
@@ -74,12 +86,13 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
 				    )
 flashggVHLooseTag = cms.EDProducer("FlashggVHLooseTagProducer",
 					DiPhotonTag=cms.InputTag('flashggDiPhotons'),
-					VHlooseJetTag=cms.untracked.InputTag('flashggJets'),
+					JetTag=cms.InputTag('flashggJets'),
 					ElectronTag=cms.InputTag('flashggElectrons'),
 					MuonTag=cms.InputTag('flashggMuons'),
-					VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
-					MVAResultTag=cms.untracked.InputTag('flashggDiPhotonMVA'),
-					METTag=cms.untracked.InputTag('slimmedMETs'),
+					VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
+					MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
+					METTag=cms.InputTag('slimmedMETs'),
+                                        GenParticleTag=cms.InputTag( "prunedGenParticles" ),
 					leptonPtThreshold = cms.untracked.double(20),
 					leptonEtaThreshold = cms.untracked.double(2.4),
 					leadPhoOverMassThreshold = cms.untracked.double(0.375),
@@ -111,12 +124,13 @@ flashggVHLooseTag = cms.EDProducer("FlashggVHLooseTagProducer",
 				    )
 flashggVHTightTag = cms.EDProducer("FlashggVHTightTagProducer",
 					DiPhotonTag=cms.InputTag('flashggDiPhotons'),
-					VHtightJetTag=cms.untracked.InputTag('flashggJets'),
+					JetTag=cms.InputTag('flashggJets'),
 					ElectronTag=cms.InputTag('flashggElectrons'),
 					MuonTag=cms.InputTag('flashggMuons'),
-					VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
-					MVAResultTag=cms.untracked.InputTag('flashggDiPhotonMVA'),
-					METTag=cms.untracked.InputTag('slimmedMETs'),
+					VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
+					MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
+					METTag=cms.InputTag('slimmedMETs'),
+                                        GenParticleTag=cms.InputTag( "prunedGenParticles" ),
 					leptonPtThreshold = cms.untracked.double(20),
 					leptonEtaThreshold = cms.untracked.double(2.4),
 					leadPhoOverMassThreshold = cms.untracked.double(0.375),
@@ -158,7 +172,9 @@ flashggVHTightTag = cms.EDProducer("FlashggVHTightTagProducer",
 
 flashggVHHadronicTag = cms.EDProducer("FlashggVHHadronicTagProducer",
                                       DiPhotonTag = cms.InputTag('flashggDiPhotons'),
-                                      JetTag = cms.untracked.InputTag('flashggJets'),
+                                      MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
+                                      JetTag = cms.InputTag('flashggJets'),
+                                      GenParticleTag=cms.InputTag( "prunedGenParticles" ),
                                       leadPhoOverMassThreshold = cms.untracked.double(0.375),
                                       subleadPhoOverMassThreshold = cms.untracked.double(0.25),
                                       MVAThreshold = cms.untracked.double(-0.6),

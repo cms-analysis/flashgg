@@ -10,13 +10,13 @@
 
 namespace flashgg {
 
-    class PhotonSmearStringConstant: public ObjectSystMethodBinnedByFunctor<flashgg::Photon, int>
+    class PhotonSmearConstant: public ObjectSystMethodBinnedByFunctor<flashgg::Photon, int>
     {
 
     public:
         typedef StringCutObjectSelector<Photon, true> selector_type;
 
-        PhotonSmearStringConstant( const edm::ParameterSet &conf );
+        PhotonSmearConstant( const edm::ParameterSet &conf );
         void applyCorrection( flashgg::Photon &y, int syst_shift ) override;
         std::string shiftLabel( int ) const override;
 
@@ -25,7 +25,7 @@ namespace flashgg {
         bool exaggerateShiftUp_; // for sanity checks only
     };
 
-    PhotonSmearStringConstant::PhotonSmearStringConstant( const edm::ParameterSet &conf ) :
+    PhotonSmearConstant::PhotonSmearConstant( const edm::ParameterSet &conf ) :
         ObjectSystMethodBinnedByFunctor( conf ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
         exaggerateShiftUp_( conf.getUntrackedParameter<bool>( "ExaggerateShiftUp", false ) )
@@ -33,7 +33,7 @@ namespace flashgg {
     {
     }
 
-    std::string PhotonSmearStringConstant::shiftLabel( int syst_value ) const
+    std::string PhotonSmearConstant::shiftLabel( int syst_value ) const
     {
         std::string result;
         if( syst_value == 0 ) {
@@ -46,7 +46,7 @@ namespace flashgg {
         return result;
     }
 
-    void PhotonSmearStringConstant::applyCorrection( flashgg::Photon &y, int syst_shift )
+    void PhotonSmearConstant::applyCorrection( flashgg::Photon &y, int syst_shift )
     {
         if( overall_range_( y ) ) {
             auto val_err = binContents( y );
@@ -67,8 +67,8 @@ namespace flashgg {
 }
 
 DEFINE_EDM_PLUGIN( FlashggSystematicPhotonMethodsFactory,
-                   flashgg::PhotonSmearStringConstant,
-                   "FlashggPhotonSmearStringConstant" );
+                   flashgg::PhotonSmearConstant,
+                   "FlashggPhotonSmearConstant" );
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

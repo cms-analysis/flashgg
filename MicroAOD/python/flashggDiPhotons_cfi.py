@@ -5,12 +5,13 @@ import FWCore.ParameterSet.Config as cms
 
 
 flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
-                                  PhotonTag=cms.untracked.InputTag('flashggPhotons'),
-                                  VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                  PhotonTag=cms.InputTag('flashggPhotons'),
+                                  VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
                                   VertexSelectorName=cms.string("FlashggLegacyVertexSelector"),
                                   VertexCandidateMapTag=cms.InputTag("flashggVertexMapUnique"),
-                                  ConversionTag=cms.untracked.InputTag("reducedEgamma","reducedConversions"),             
-                                  ConversionTagSingleLeg=cms.untracked.InputTag("reducedEgamma","reducedSingleLegConversions"),
+                                  ConversionTag=cms.InputTag("reducedEgamma","reducedConversions"),             
+                                  ConversionTagSingleLeg=cms.InputTag("reducedEgamma","reducedSingleLegConversions"),
+                                  beamSpotTag = cms.InputTag( "offlineBeamSpot" ),
 
                                   ##Parameters for Legacy Vertex Selector                                                
                                   #vtxId 2012

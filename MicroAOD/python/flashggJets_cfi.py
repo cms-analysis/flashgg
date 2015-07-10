@@ -39,10 +39,10 @@ def addFlashggPFCHSLegJets(process):
   # Simple producer which just removes the Candidates which
   # don't come from the legacy vertex according to the Flashgg Vertex Map
   process.flashggCHSLegacyVertexCandidates = cms.EDProducer('FlashggCHSLegacyVertexCandidateProducer',
-                                                            PFCandidatesTag       = cms.untracked.InputTag('packedPFCandidates'),
+                                                            PFCandidatesTag       = cms.InputTag('packedPFCandidates'),
                                                             DiPhotonTag           = cms.InputTag('flashggDiPhotons'),
                                                             VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
-                                                            VertexTag = cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
+                                                            VertexTag = cms.InputTag('offlineSlimmedPrimaryVertices')
                                                           )
   
   process.pfCHSLeg = cms.EDFilter("CandPtrSelector", 
@@ -101,8 +101,8 @@ def addFlashggPFCHSLegJets(process):
 # Flashgg Jet producer using the collection created with function above.
 flashggJets = cms.EDProducer('FlashggJetProducer',
                              DiPhotonTag = cms.InputTag('flashggDiPhotons'),
-                             VertexTag   = cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
-                             JetTag      = cms.untracked.InputTag('patJetsAK4PFCHSLeg'),
+                             VertexTag   = cms.InputTag('offlineSlimmedPrimaryVertices'),
+                             JetTag      = cms.InputTag('patJetsAK4PFCHSLeg'),
                              VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                              PileupJetIdParameters = cms.PSet(pu_jetid),
                              MinJetPt=cms.untracked.double(20.)            

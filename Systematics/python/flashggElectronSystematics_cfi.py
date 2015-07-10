@@ -13,7 +13,7 @@ binInfo = cms.PSet(
 flashggElectronSystematics = cms.EDProducer('FlashggElectronEffSystematicProducer',
                                             src = cms.InputTag('flashggElectrons'),
                                             SystMethods2D = cms.VPSet(),
-                                            SystMethods = cms.VPSet(cms.PSet( MethodName = cms.string("FlashggElectronEffSmear"),
+                                            SystMethods = cms.VPSet(cms.PSet( MethodName = cms.string("FlashggElectronEffScale"),
                                                                               Label = cms.string("ElectronWeight"),
                                                                               NSigmas = cms.vint32(-1,1),
                                                                               OverallRange = cms.string("abs(eta)<1.5"),
