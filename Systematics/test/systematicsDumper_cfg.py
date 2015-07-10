@@ -10,8 +10,8 @@ from flashgg.MetaData.samples_utils import SamplesManager
 options = VarParsing('analysis')
 print options
 
-processId = "ggh"
-targetMass = 130.
+processId = "tth"
+targetMass = 120.
 processId = "%s_%i" % (processId,int(targetMass))
 
 # maxEvents is the max number of events processed of each file, not globally
@@ -155,6 +155,11 @@ cfgTools.addCategory(process.diphotonDumper,
                                              "genZ           :=tagTruth().genPV().z",
                                              "vtxZ           :=diPhoton().vtx().z",
                                              "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
+                                            "centralWeight := centralWeight"
+#                                            "MuonWeightDown01sigma : weight('MuonWeightDown01sigma')",
+#                                            "MuonWeightUp01sigma : weight('MuonWeightUp01sigma')",
+#                                            "ElectronWeightDown01sigma : weight('ElectronWeightDown01sigma')",
+#                                            "ElectronWeightUp01sigma : weight('ElectronWeightUp01sigma')",
                                   ],
                        ## histograms to be plotted. 
                        ## the variables need to be defined first

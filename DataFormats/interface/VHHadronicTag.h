@@ -4,6 +4,7 @@
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 
+
 namespace flashgg {
 
     class VHHadronicTag: public DiPhotonTagBase

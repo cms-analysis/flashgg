@@ -27,11 +27,15 @@
 #include "flashgg/DataFormats/interface/MuMuGammaCandidate.h"   //JTao
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "flashgg/DataFormats/interface/VBFTagTruth.h"
+#include "flashgg/DataFormats/interface/WeightedObject.h"
+
 #include <vector>
 #include <map>
 
 namespace  {
     struct dictionary {
+        flashgg::WeightedObject                                             fgg_obj;
+
         flashgg::Photon                                                   fgg_pho;
         edm::Ptr<flashgg::Photon>                                     ptr_fgg_pho;
         edm::Wrapper<flashgg::Photon>                                 wrp_fgg_pho;

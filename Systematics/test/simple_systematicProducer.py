@@ -19,25 +19,25 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
 #                                        monitorPssAndPrivate = cms.untracked.bool(True)
 #                                       )
 
-processId = "ggh"
+processId = "tth"
 process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring("file:myMicroAODOutputFile_%s.root" % processId),
 #                             skipEvents=cms.untracked.uint32(4965)
 )
 
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
-                                                   flashggSmearDiPhoton = cms.PSet(initialSeed = cms.untracked.uint32(664)),
-						   flashggSmearElectronEff = cms.PSet(initialSeed = cms.untracked.uint32(564)),
-						   flashggSmearMuonEff = cms.PSet(initialSeed = cms.untracked.uint32(464))
+                                                   flashggDiPhotonSystematics = cms.PSet(initialSeed = cms.untracked.uint32(664)),
+						   flashggElectronSystematics = cms.PSet(initialSeed = cms.untracked.uint32(11)),
+						   flashggMuonSystematics = cms.PSet(initialSeed = cms.untracked.uint32(13))
                                                   )
 
-process.load("flashgg.Systematics.flashggPhotonSmear_cfi")
-process.load("flashgg.Systematics.flashggSmearLeptonEff_cfi")
-process.load("flashgg.MicroAOD.flashggMuons_cfi")
+process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
+process.load("flashgg.Systematics.flashggMuonSystematics_cfi")
+process.load("flashgg.Systematics.flashggElectronSystematics_cfi")
 
 # Code to artificially scale photon energies to make different mass points for signal fit tests
 srcMass = 125.
 targetMass = 120.
-process.flashggSmearDiPhoton.SystMethods.append(cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleString"),
+process.flashggDiPhotonSystematics.SystMethods.append(cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleString"),
                                                           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
                                                           Label = cms.string("FakeMassScale"),
                                                           NSigmas = cms.vint32(0),
@@ -51,12 +51,12 @@ process.flashggSmearDiPhoton.SystMethods.append(cms.PSet( PhotonMethodName = cms
                                                         )
                                                 )
 
-for pset in process.flashggSmearDiPhoton.SystMethods:
+for pset in process.flashggDiPhotonSystematics.SystMethods:
     print "=== 1D syst method pset ==="
     print pset
     print
 
-for pset in process.flashggSmearDiPhoton.SystMethods2D:
+for pset in process.flashggDiPhotonSystematics.SystMethods2D:
     print "=== 2D syst method pset ==="
     print pset
     print
@@ -67,40 +67,9 @@ process.load("flashgg/Taggers/flashggTagTester_cfi")
 from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet,massSearchReplaceAnyInputTag
 
 #process.flashggTagSequence += process.flashggTagTester
-massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggDiPhotons"),cms.InputTag("flashggSmearDiPhoton"))
-
-#process.flashggUntagged.DiPhotonTag = cms.InputTag("flashggSmearDiPhoton")
-#process.flashggTTHHadronicTag.DiPhotonTag = cms.InputTag("flashggSmearDiPhoton")
-#process.flashggVBFTag.DiPhotonTag = cms.InputTag("flashggSmearDiPhoton")
-#process.flashggVHEtTag.DiPhotonTag = cms.InputTag("flashggSmearDiPhoton")
-#process.flashggTTHLeptonicTag.DiPhotonTag = cms.InputTag("flashggSmearDiPhoton")
-#process.flashggVHLooseTag.DiPhotonTag = cms.InputTag("flashggSmearDiPhoton")
-#process.flashggVHTightTag.DiPhotonTag = cms.InputTag("flashggSmearDiPhoton")
-#process.flashggVHHadronicTag.DiPhotonTag = cms.InputTag("flashggSmearDiPhoton")
-
-
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      ""                "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCScaleHighR9EBDown01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCScaleHighR9EBUp01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCScaleHighR9EEDown01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCScaleHighR9EEUp01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCScaleLowR9EBDown01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCScaleLowR9EBUp01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCScaleLowR9EEDown01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCScaleLowR9EEUp01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCSmearHighR9EBPhiDown01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCSmearHighR9EBPhiUp01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCSmearHighR9EBRhoDown01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCSmearHighR9EBRhoUp01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCSmearHighR9EEDown01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCSmearHighR9EEUp01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCSmearLowR9EBPhiDown01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCSmearLowR9EBPhiUp01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCSmearLowR9EBRhoDown01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCSmearLowR9EBRhoUp01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCSmearLowR9EEDown01sigma"   "FLASHggSyst"     
-#vector<flashgg::DiPhotonCandidate>    "flashggSmearDiPhoton"      "MCSmearLowR9EEUp01sigma"   "FLASHggSyst"     
-
+massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggDiPhotons"),cms.InputTag("flashggDiPhotonSystematics"))
+massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggElectrons"),cms.InputTag("flashggElectronSystematics"))
+massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggMuons"),cms.InputTag("flashggMuonSystematics"))
 
 process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
 
@@ -117,7 +86,7 @@ for r9 in ["HighR9","LowR9"]:
 
 for systlabel in systlabels:
     newseq = cloneProcessingSnippet(process,process.flashggTagSequence,systlabel)
-    massSearchReplaceAnyInputTag(newseq,cms.InputTag("flashggSmearDiPhoton"),cms.InputTag("flashggSmearDiPhoton",systlabel))
+    massSearchReplaceAnyInputTag(newseq,cms.InputTag("flashggDiPhotonSystematics"),cms.InputTag("flashggDiPhotonSystematics",systlabel))
     process.systematicsTagSequences += newseq
     process.flashggSystTagMerger.src.append(cms.InputTag("flashggTagSorter" + systlabel))
 
@@ -128,11 +97,9 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
                                outputCommands = tagDefaultOutputCommand
                                )
 
-process.p = cms.Path(process.flashggMuons*process.flashggSmearDiPhoton*
+process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSystematics+process.flashggElectronSystematics)*
                      (process.flashggTagSequence+process.systematicsTagSequences)*
-                     process.flashggSystTagMerger*(
-		    process.flashggSmearMuonEff+process.flashggSmearElectronEff)
-		   )
+                     process.flashggSystTagMerger)
 print process.p
 
 process.e = cms.EndPath(process.out)

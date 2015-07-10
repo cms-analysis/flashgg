@@ -7,7 +7,7 @@
 
 namespace flashgg {
 
-    class DiPhotonTagBase
+    class DiPhotonTagBase : public WeightedObject
     {
     public:
         DiPhotonTagBase();

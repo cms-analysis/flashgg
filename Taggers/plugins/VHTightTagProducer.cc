@@ -11,10 +11,9 @@
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/VHTightTag.h"
-#include "DataFormats/PatCandidates/interface/Electron.h"
-#include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
 #include "flashgg/DataFormats/interface/Electron.h"
+#include "flashgg/DataFormats/interface/Muon.h"
 
 #include "DataFormats/TrackReco/interface/HitPattern.h"
 #include "flashgg/Taggers/interface/LeptonSelection.h"
@@ -49,7 +48,7 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         EDGetTokenT<View<Jet> > thejetToken_;
         EDGetTokenT<View<flashgg::Electron> > electronToken_;
-        EDGetTokenT<View<pat::Muon> > muonToken_;
+        EDGetTokenT<View<flashgg::Muon> > muonToken_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<pat::MET> > METToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
@@ -109,8 +108,8 @@ namespace flashgg {
     VHTightTagProducer::VHTightTagProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         thejetToken_( consumes<View<flashgg::Jet> >( iConfig.getUntrackedParameter<InputTag>( "VHtightJetTag", InputTag( "flashggJets" ) ) ) ),
-        electronToken_( consumes<View<flashgg::Electron> >( iConfig.getUntrackedParameter<InputTag> ( "ElectronTag", InputTag( "flashggElectrons" ) ) ) ),
-        muonToken_( consumes<View<pat::Muon> >( iConfig.getUntrackedParameter<InputTag>( "MuonTag", InputTag( "slimmedMuons" ) ) ) ),
+        electronToken_( consumes<View<flashgg::Electron> >( iConfig.getParameter<InputTag> ( "ElectronTag" ) ) ),
+        muonToken_( consumes<View<flashgg::Muon> >( iConfig.getParameter<InputTag>( "MuonTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getUntrackedParameter<InputTag> ( "MVAResultTag", InputTag( "flashggDiPhotonMVA" ) ) ) ),
         METToken_( consumes<View<pat::MET> >( iConfig.getUntrackedParameter<InputTag> ( "METTag", InputTag( "slimmedMETs" ) ) ) ),
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getUntrackedParameter<InputTag> ( "VertexTag", InputTag( "offlinePrimaryVertices" ) ) ) ),
@@ -221,9 +220,9 @@ namespace flashgg {
         evt.getByToken( diPhotonToken_, diPhotons );
 //const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
-        Handle<View<pat::Muon> > theMuons;
+        Handle<View<flashgg::Muon> > theMuons;
         evt.getByToken( muonToken_, theMuons );
-//const PtrVector<pat::Muon>& muonPointers = theMuons->ptrVector();
+//const PtrVector<flashgg::Muon>& muonPointers = theMuons->ptrVector();
 
         Handle<View<flashgg::Electron> > theElectrons;
         evt.getByToken( electronToken_, theElectrons );
@@ -280,9 +279,9 @@ namespace flashgg {
             hasGoodElectrons_highPt = false;
             hasGoodElectrons_lowPt = false;
 
-            std::vector<edm::Ptr<pat::Muon> > tagMuons_highPt;
-            std::vector<edm::Ptr<pat::Muon> > tagMuons_lowPt;
-            std::vector<edm::Ptr<pat::Muon> > tagMuons;
+            std::vector<edm::Ptr<flashgg::Muon> > tagMuons_highPt;
+            std::vector<edm::Ptr<flashgg::Muon> > tagMuons_lowPt;
+            std::vector<edm::Ptr<flashgg::Muon> > tagMuons;
             std::vector<edm::Ptr<Electron> > tagElectrons_highPt;
             std::vector<edm::Ptr<Electron> > tagElectrons_lowPt;
             std::vector<edm::Ptr<Electron> > tagElectrons;
@@ -365,7 +364,7 @@ namespace flashgg {
             }
 
             for( unsigned int muonIndex = 0; muonIndex < tagMuons.size(); muonIndex++ ) {
-                Ptr<pat::Muon> muon = tagMuons[muonIndex];
+                Ptr<flashgg::Muon> muon = tagMuons[muonIndex];
 
                 for( unsigned int candIndex_outer = 0; candIndex_outer < theJets->size() ; candIndex_outer++ ) {
                     edm::Ptr<flashgg::Jet> thejet = theJets->ptrAt( candIndex_outer );

@@ -7,12 +7,12 @@
 #include "flashgg/DataFormats/interface/Photon.h"
 #include "flashgg/DataFormats/interface/SinglePhotonView.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
-
+#include "flashgg/DataFormats/interface/WeightedObject.h"
 
 
 namespace flashgg {
 
-    class DiPhotonCandidate : public reco::LeafCandidate
+    class DiPhotonCandidate : public reco::LeafCandidate , public WeightedObject
     {
     public:
         DiPhotonCandidate();

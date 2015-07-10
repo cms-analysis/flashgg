@@ -12,8 +12,7 @@
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/VHLooseTag.h"
 #include "flashgg/DataFormats/interface/Electron.h"
-#include "DataFormats/PatCandidates/interface/Electron.h"
-#include "DataFormats/PatCandidates/interface/Muon.h"
+#include "flashgg/DataFormats/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
 
 #include "DataFormats/TrackReco/interface/HitPattern.h"
@@ -49,7 +48,7 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         EDGetTokenT<View<Jet> > thejetToken_;
         EDGetTokenT<View<Electron> > electronToken_;
-        EDGetTokenT<View<pat::Muon> > muonToken_;
+        EDGetTokenT<View<flashgg::Muon> > muonToken_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<pat::MET> > METToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
@@ -98,8 +97,8 @@ namespace flashgg {
     VHLooseTagProducer::VHLooseTagProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         thejetToken_( consumes<View<flashgg::Jet> >( iConfig.getUntrackedParameter<InputTag>( "VHlooseJetTag", InputTag( "flashggJets" ) ) ) ),
-        electronToken_( consumes<View<flashgg::Electron> >( iConfig.getUntrackedParameter<InputTag> ( "ElectronTag", InputTag( "flashggElectrons" ) ) ) ),
-        muonToken_( consumes<View<pat::Muon> >( iConfig.getUntrackedParameter<InputTag>( "MuonTag", InputTag( "slimmedMuons" ) ) ) ),
+        electronToken_( consumes<View<flashgg::Electron> >( iConfig.getParameter<InputTag> ( "ElectronTag" ) ) ),
+        muonToken_( consumes<View<flashgg::Muon> >( iConfig.getParameter<InputTag>( "MuonTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getUntrackedParameter<InputTag> ( "MVAResultTag", InputTag( "flashggDiPhotonMVA" ) ) ) ),
         METToken_( consumes<View<pat::MET> >( iConfig.getUntrackedParameter<InputTag> ( "METTag", InputTag( "slimmedMETs" ) ) ) ),
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getUntrackedParameter<InputTag> ( "VertexTag", InputTag( "offlinePrimaryVertices" ) ) ) ),
@@ -193,9 +192,9 @@ namespace flashgg {
         evt.getByToken( diPhotonToken_, diPhotons );
 //const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
-        Handle<View<pat::Muon> > theMuons;
+        Handle<View<flashgg::Muon> > theMuons;
         evt.getByToken( muonToken_, theMuons );
-// const PtrVector<pat::Muon>& muonPointers = theMuons->ptrVector();
+// const PtrVector<flashgg::Muon>& muonPointers = theMuons->ptrVector();
 
         Handle<View<flashgg::Electron> > theElectrons;
         evt.getByToken( electronToken_, theElectrons );
@@ -243,7 +242,7 @@ namespace flashgg {
             hasGoodElec = false;
             hasGoodMuons = false;
 
-            std::vector<edm::Ptr<pat::Muon> > tagMuons;
+            std::vector<edm::Ptr<flashgg::Muon> > tagMuons;
             std::vector<edm::Ptr<Electron> > tagElectrons;
             std::vector<edm::Ptr<Jet> > tagJets;
             std::vector<edm::Ptr<pat::MET> > tagMETs;
@@ -268,7 +267,7 @@ namespace flashgg {
             if( mvares->result < MVAThreshold_ ) { continue; }
 
             photonSelection = true;
-            std::vector<edm::Ptr<pat::Muon> > goodMuons = selectMuons( theMuons->ptrs(), dipho, vertices->ptrs(), leptonEtaThreshold_, leptonPtThreshold_,
+            std::vector<edm::Ptr<flashgg::Muon> > goodMuons = selectMuons( theMuons->ptrs(), dipho, vertices->ptrs(), leptonEtaThreshold_, leptonPtThreshold_,
                     muPFIsoSumRelThreshold_, deltaRLepPhoThreshold_, deltaRLepPhoThreshold_ );
             std::vector<edm::Ptr<Electron> >goodElectrons = selectElectrons( theElectrons->ptrs(), vertices->ptrs(), ElectronPtThreshold_, DeltaRTrkElec_,
                     TransverseImpactParam_, LongitudinalImpactParam_, nonTrigMVAThreshold_, electronIsoThreshold_, electronNumOfHitsThreshold_, EtaCuts_ );
@@ -280,7 +279,7 @@ namespace flashgg {
 
                 for( unsigned int muonIndex = 0; muonIndex < goodMuons.size(); muonIndex++ ) {
 
-                    Ptr<pat::Muon> muon = goodMuons[muonIndex];
+                    Ptr<flashgg::Muon> muon = goodMuons[muonIndex];
 
                     for( unsigned int candIndex_outer = 0; candIndex_outer < theJets->size() ; candIndex_outer++ ) {
                         edm::Ptr<flashgg::Jet> thejet = theJets->ptrAt( candIndex_outer );

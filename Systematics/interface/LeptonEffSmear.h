@@ -14,18 +14,14 @@ namespace flashgg {
     public:
 
         LeptonEffSmearNew( const edm::ParameterSet &conf );
-        void applyCorrection( lepton &lep, param_var syst_shift ) override;
+        float makeWeight( const lepton &lep, param_var syst_shift ) override;
         std::string shiftLabel( param_var syst_shift ) const override;
-    private:
-        //selector_type overall_range_;
-        bool debug_;
     };
 
     template<typename lepton, typename param_var>
-    LeptonEffSmearNew<lepton, param_var>::LeptonEffSmearNew( const edm::ParameterSet &conf ) : ObjectSystMethodBinnedByFunctor<lepton, param_var>( conf ),
-        //		overall_range_(conf.getParameter<std::string>("OverallRange") ),
-        debug_( conf.getUntrackedParameter<bool>( "Debug", false ) )
+    LeptonEffSmearNew<lepton, param_var>::LeptonEffSmearNew( const edm::ParameterSet &conf ) : ObjectSystMethodBinnedByFunctor<lepton, param_var>( conf )
     {
+        this->setMakesWeight( true );
     }
 
     template<typename lepton, typename param_var>
@@ -42,10 +38,10 @@ namespace flashgg {
         return result;
     }
 
-
     template<typename lepton, typename param_var>
-    void LeptonEffSmearNew<lepton, param_var>::applyCorrection( lepton &lep, param_var syst_shift )
+    float LeptonEffSmearNew<lepton, param_var>::makeWeight( const lepton &lep, param_var syst_shift )
     {
+        if( this->debug_ ) { std::cout << "  Start of LeptonEffSmearNew<lepton, param_var>::makeWeight" << std::endl; }
 
         typedef typename ObjectSystMethodBinnedByFunctor<lepton, param_var>::Bin LeptonBin;
 
@@ -113,9 +109,20 @@ namespace flashgg {
             }
         }
         double Weight = theWeight + ( theError * syst_shift );
-        lep.setWeight( Weight );
+        //        lep.setWeight( shiftLabel(syst_shift), Weight );
         //std::cout << "Weight " << lep.weight() << std::endl;
+        if( this->debug_ ) { std::cout << "  end of LeptonEffSmearNew<lepton, param_var>::makeWeight - returning " << Weight << std::endl; }
+
+        return Weight;
     }
 
 }
 #endif
+
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4

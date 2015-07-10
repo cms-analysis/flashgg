@@ -12,8 +12,7 @@
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/TTHLeptonicTag.h"
 #include "flashgg/DataFormats/interface/Electron.h"
-#include "DataFormats/PatCandidates/interface/Electron.h"
-#include "DataFormats/PatCandidates/interface/Muon.h"
+#include "flashgg/DataFormats/interface/Muon.h"
 #include "flashgg/DataFormats/interface/Photon.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 
@@ -50,7 +49,7 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         EDGetTokenT<View<Jet> > thejetToken_;
         EDGetTokenT<View<Electron> > electronToken_;
-        EDGetTokenT<View<pat::Muon> > muonToken_;
+        EDGetTokenT<View<flashgg::Muon> > muonToken_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<Photon> > photonToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
@@ -105,9 +104,9 @@ namespace flashgg {
 
     TTHLeptonicTagProducer::TTHLeptonicTagProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
-        thejetToken_( consumes<View<flashgg::Jet> >( iConfig.getUntrackedParameter<InputTag>( "TTHJetTag", InputTag( "flashggJets" ) ) ) ),
-        electronToken_( consumes<View<flashgg::Electron> >( iConfig.getUntrackedParameter<InputTag> ( "TTHElecTag", InputTag( "flashggElectrons" ) ) ) ),
-        muonToken_( consumes<View<pat::Muon> >( iConfig.getUntrackedParameter<InputTag>( "TTHMuonTag", InputTag( "slimmedMuons" ) ) ) ),
+        thejetToken_( consumes<View<flashgg::Jet> >( iConfig.getParameter<InputTag>( "JetTag" ) ) ),
+        electronToken_( consumes<View<flashgg::Electron> >( iConfig.getParameter<InputTag>( "ElectronTag" ) ) ),
+        muonToken_( consumes<View<flashgg::Muon> >( iConfig.getParameter<InputTag>( "MuonTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getUntrackedParameter<InputTag> ( "MVAResultTag", InputTag( "flashggDiPhotonMVA" ) ) ) ),
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getUntrackedParameter<InputTag> ( "VertexTag", InputTag( "offlinePrimaryVertices" ) ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getUntrackedParameter<InputTag> ( "GenParticleTag", InputTag( "prunedGenParticles" ) ) ) )
@@ -217,12 +216,13 @@ namespace flashgg {
         evt.getByToken( diPhotonToken_, diPhotons );
         //	const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
-        Handle<View<pat::Muon> > theMuons;
+        Handle<View<flashgg::Muon> > theMuons;
         evt.getByToken( muonToken_, theMuons );
-//		const PtrVector<pat::Muon>& muonPointers = theMuons->ptrVector();
+//		const PtrVector<flashgg::Muon>& muonPointers = theMuons->ptrVector();
 
         Handle<View<flashgg::Electron> > theElectrons;
         evt.getByToken( electronToken_, theElectrons );
+
 //		const PtrVector<flashgg::Electron>& electronPointers = theElectrons->ptrVector();
 
         Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
@@ -271,7 +271,7 @@ namespace flashgg {
             hasGoodElec = false;
             hasGoodMuons = false;
 
-            std::vector<edm::Ptr<pat::Muon> > tagMuons;
+            std::vector<edm::Ptr<Muon> > tagMuons;
             std::vector<edm::Ptr<Electron> > tagElectrons;
             std::vector<edm::Ptr<Jet> > tagJets;
             std::vector<edm::Ptr<Jet> > tagBJets;
@@ -302,7 +302,7 @@ namespace flashgg {
 
             photonSelection = true;
 
-            std::vector<edm::Ptr<pat::Muon> > goodMuons = selectMuons( theMuons->ptrs(), dipho, vertices->ptrs(), leptonEtaThreshold_ , leptonPtThreshold_,
+            std::vector<edm::Ptr<flashgg::Muon> > goodMuons = selectMuons( theMuons->ptrs(), dipho, vertices->ptrs(), leptonEtaThreshold_ , leptonPtThreshold_,
                     muPFIsoSumRelThreshold_, deltaRLepPhoThreshold_, deltaRLepPhoThreshold_ );
 
             std::vector<edm::Ptr<Electron> > goodElectrons = selectElectrons( theElectrons->ptrs(), vertices->ptrs(), ElectronPtThreshold_, DeltaRTrkElec_,
@@ -321,7 +321,7 @@ namespace flashgg {
 
                 for( unsigned int muonIndex = 0; muonIndex < goodMuons.size(); muonIndex++ ) {
 
-                    Ptr<pat::Muon> muon = goodMuons[muonIndex];
+                    Ptr<flashgg::Muon> muon = goodMuons[muonIndex];
 
                     int deltaRMuonJetcount = 0;
                     double bDiscriminatorValue = -999.;
@@ -378,6 +378,16 @@ namespace flashgg {
                 for( unsigned int ElectronIndex = 0; ElectronIndex < goodElectrons.size(); ElectronIndex++ ) {
 
                     Ptr<Electron> Electron = goodElectrons[ElectronIndex];
+
+                    /*
+                    std::cout << " TTHLeptonicTagProducer goodElectrons, looking at electron " << ElectronIndex << std::endl;
+                    auto weightList = Electron->weightList();
+                    std::cout << " TTHLeptonicTag Electron weightList size=" << weightList.size();
+                    for( unsigned int i = 0 ; i < weightList.size() ; i++ ) {
+                        std::cout << "    " << weightList[i] << " " << Electron->weight( weightList[i] );
+                    }
+                    */
+
                     TLorentzVector elec_p4;
                     elec_p4.SetXYZT( Electron->px(), Electron->py(), Electron->pz(), Electron->energy() );
 
@@ -446,6 +456,16 @@ namespace flashgg {
 
                     }//end of jets loop
                     numElectronJetsdR.push_back( deltaRElectronJetcount );
+
+                    /*
+                    std::cout << " TTHLeptonicTagProducer about to push back electron " << ElectronIndex << std::endl;
+                    auto weightList2 = Electron->weightList();
+                    std::cout << " TTHLeptonicTag Electron weightList size=" << weightList2.size();
+                    for( unsigned int i = 0 ; i < weightList2.size() ; i++ ) {
+                        std::cout << "    " << weightList2[i] << " " << Electron->weight( weightList2[i] );
+                    }
+                    */
+
                     tagElectrons.push_back( Electron );
 
                 }//end of electron loop
@@ -465,6 +485,22 @@ namespace flashgg {
 
             if( tagBJets.size() >= bjetsNumberThreshold_ && tagJets.size() >= jetsNumberThreshold_ && photonSelection && ( ( tagMuons.size() > 0 && muonJets ) ||
                     ( tagElectrons.size() > 0 && ElectronJets ) ) ) {
+                if( tagElectrons.size() > 0 && ElectronJets ) {
+                    //                    std::cout << "including electron weights" << std::endl;
+                    tthltags_obj.includeWeights( *tagElectrons[0] );
+                } else if( tagMuons.size() > 0 && muonJets ) {
+                    //                    std::cout << "including muon weights" << std::endl;
+                    tthltags_obj.includeWeights( *tagMuons[0] );
+                }
+                /*
+                auto weightList = tthltags_obj.weightList();
+                std::cout << " TTHLeptonicTag weightList size=" << weightList.size();
+                for( unsigned int i = 0 ; i < weightList.size() ; i++ ) {
+                    std::cout << "    " << weightList[i] << " " << tthltags_obj.weight( weightList[i] );
+                }
+                std::cout << std::endl;
+                */
+
                 tthltags_obj.setJets( tagJets );
                 tthltags_obj.setBJets( tagBJets );
                 tthltags_obj.setMuons( tagMuons );
@@ -481,7 +517,7 @@ namespace flashgg {
 
         }//diPho loop end !
         evt.put( tthltags );
-        evt.put( truths ); 
+        evt.put( truths );
     }
 
 }
