@@ -6,13 +6,13 @@
 
 namespace flashgg {
 
-    class PhotonScaleString: public ObjectSystMethodBinnedByFunctor<flashgg::Photon, int>
+    class PhotonScale: public ObjectSystMethodBinnedByFunctor<flashgg::Photon, int>
     {
 
     public:
         typedef StringCutObjectSelector<Photon, true> selector_type;
 
-        PhotonScaleString( const edm::ParameterSet &conf );
+        PhotonScale( const edm::ParameterSet &conf );
         void applyCorrection( flashgg::Photon &y, int syst_shift ) override;
         std::string shiftLabel( int ) const override;
 
@@ -20,13 +20,13 @@ namespace flashgg {
         selector_type overall_range_;
     };
 
-    PhotonScaleString::PhotonScaleString( const edm::ParameterSet &conf ) :
+    PhotonScale::PhotonScale( const edm::ParameterSet &conf ) :
         ObjectSystMethodBinnedByFunctor( conf ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) )
     {
     }
 
-    std::string PhotonScaleString::shiftLabel( int syst_value ) const
+    std::string PhotonScale::shiftLabel( int syst_value ) const
     {
         std::string result;
         if( syst_value == 0 ) {
@@ -39,7 +39,7 @@ namespace flashgg {
         return result;
     }
 
-    void PhotonScaleString::applyCorrection( flashgg::Photon &y, int syst_shift )
+    void PhotonScale::applyCorrection( flashgg::Photon &y, int syst_shift )
     {
         if( overall_range_( y ) ) {
             auto val_err = binContents( y );
@@ -58,8 +58,8 @@ namespace flashgg {
 }
 
 DEFINE_EDM_PLUGIN( FlashggSystematicPhotonMethodsFactory,
-                   flashgg::PhotonScaleString,
-                   "FlashggPhotonScaleString" );
+                   flashgg::PhotonScale,
+                   "FlashggPhotonScale" );
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

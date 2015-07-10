@@ -2,7 +2,6 @@
 #include "flashgg/DataFormats/interface/Muon.h"
 #include "flashgg/Systematics/interface/BaseSystMethod.h"
 #include "flashgg/Systematics/interface/ObjectSystematicProducer.h"
-#include "flashgg/Systematics/interface/LeptonEffSmear.h"
 
 namespace flashgg {
 

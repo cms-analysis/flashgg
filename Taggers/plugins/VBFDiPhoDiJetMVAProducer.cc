@@ -45,8 +45,8 @@ namespace flashgg {
 
     VBFDiPhoDiJetMVAProducer::VBFDiPhoDiJetMVAProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
-        vbfMvaResultToken_( consumes<View<flashgg::VBFMVAResult> >( iConfig.getUntrackedParameter<InputTag> ( "VBFMVAResultTag", InputTag( "flashggVBFMVA" ) ) ) ),
-        mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getUntrackedParameter<InputTag> ( "MVAResultTag", InputTag( "flashggDiPhotonMVA" ) ) ) ),
+        vbfMvaResultToken_( consumes<View<flashgg::VBFMVAResult> >( iConfig.getParameter<InputTag> ( "VBFMVAResultTag" ) ) ),
+        mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
         _useLegacyMVA( iConfig.getUntrackedParameter<bool>( "UseLegacyMVA" , false ) )
     {
 

@@ -38,9 +38,9 @@ namespace flashgg {
 
 
     JetProducer::JetProducer( const ParameterSet &iConfig ) :
-        jetToken_( consumes<View<pat::Jet> >( iConfig.getUntrackedParameter<InputTag> ( "JetTag", InputTag( "slimmedJets" ) ) ) ),
+        jetToken_( consumes<View<pat::Jet> >( iConfig.getParameter<InputTag> ( "JetTag" ) ) ),
         diPhotonToken_( consumes<View<DiPhotonCandidate> >( iConfig.getParameter<InputTag>( "DiPhotonTag" ) ) ),
-        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getUntrackedParameter<InputTag> ( "VertexTag", InputTag( "offlineSlimmedPrimaryVertices" ) ) ) ),
+        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTag" ) ) ),
         pileupJetIdParameters_( iConfig.getParameter<ParameterSet>( "PileupJetIdParameters" ) ),
         usePuppi( iConfig.getUntrackedParameter<bool>( "UsePuppi", false ) ),
