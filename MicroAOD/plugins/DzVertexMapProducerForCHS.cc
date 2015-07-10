@@ -32,8 +32,8 @@ namespace flashgg {
     };
 
     DzVertexMapProducerForCHS::DzVertexMapProducerForCHS( const ParameterSet &iConfig ) :
-        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getUntrackedParameter<InputTag> ( "VertexTag", InputTag( "offlineSlimmedPrimaryVertices" ) ) ) ),
-        pfcandidateToken_( consumes<View<pat::PackedCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "PFCandidatesTag", InputTag( "packedPFCandidates" ) ) ) ),
+        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
+        pfcandidateToken_( consumes<View<pat::PackedCandidate> >( iConfig.getParameter<InputTag> ( "PFCandidatesTag" ) ) ),
         maxAllowedDz_( iConfig.getParameter<double>( "MaxAllowedDz" ) ) // in cm
     {
         produces<VertexCandidateMap>();

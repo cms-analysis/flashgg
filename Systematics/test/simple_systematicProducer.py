@@ -37,7 +37,7 @@ process.load("flashgg.Systematics.flashggElectronSystematics_cfi")
 # Code to artificially scale photon energies to make different mass points for signal fit tests
 srcMass = 125.
 targetMass = 120.
-process.flashggDiPhotonSystematics.SystMethods.append(cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleString"),
+process.flashggDiPhotonSystematics.SystMethods.append(cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
                                                           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
                                                           Label = cms.string("FakeMassScale"),
                                                           NSigmas = cms.vint32(0),

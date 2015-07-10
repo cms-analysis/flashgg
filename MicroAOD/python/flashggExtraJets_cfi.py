@@ -64,10 +64,10 @@ def addFlashggPFCHS0(process):
   # Simple producer which just removes the Candidates which
   # don't come from the legacy vertex according to the Flashgg Vertex Map
   process.flashggCHSLegacyVertexCandidates = cms.EDProducer('FlashggCHSLegacyVertexCandidateProducer',
-                                                            PFCandidatesTag       = cms.untracked.InputTag('packedPFCandidates'),
+                                                            PFCandidatesTag       = cms.InputTag('packedPFCandidates'),
                                                             DiPhotonTag           = cms.InputTag('flashggDiPhotons'),
                                                             VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
-                                                            VertexTag = cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
+                                                            VertexTag = cms.InputTag('offlineSlimmedPrimaryVertices')
                                                           )
   
   process.pfCHS0 = cms.EDFilter("CandPtrSelector", 
@@ -122,8 +122,8 @@ def addFlashggPFCHS0(process):
 
 flashggJetsPF     = cms.EDProducer('FlashggJetProducer',
                                    DiPhotonTag=cms.InputTag('flashggDiPhotons'),
-                                   VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
-                                   JetTag=cms.untracked.InputTag('patJetsAK4PF'),
+                                   VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
+                                   JetTag=cms.InputTag('patJetsAK4PF'),
                                    VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                                    PileupJetIdParameters=cms.PSet(pu_jetid),
                                    MinJetPt=cms.untracked.double(0.)             
@@ -131,8 +131,8 @@ flashggJetsPF     = cms.EDProducer('FlashggJetProducer',
 
 flashggJetsPFCHS0 = cms.EDProducer('FlashggJetProducer',
                                    DiPhotonTag=cms.InputTag('flashggDiPhotons'),
-                                   VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
-                                   JetTag=cms.untracked.InputTag('patJetsAK4PFCHS0'),
+                                   VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
+                                   JetTag=cms.InputTag('patJetsAK4PFCHS0'),
                                    VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                                    PileupJetIdParameters=cms.PSet(pu_jetid),
                                    MinJetPt=cms.untracked.double(0.)             

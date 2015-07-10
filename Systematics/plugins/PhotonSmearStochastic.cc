@@ -10,13 +10,13 @@
 
 namespace flashgg {
 
-    class PhotonSmearStringStochastic: public ObjectSystMethodBinnedByFunctor<flashgg::Photon, std::pair<int, int> >
+    class PhotonSmearStochastic: public ObjectSystMethodBinnedByFunctor<flashgg::Photon, std::pair<int, int> >
     {
 
     public:
         typedef StringCutObjectSelector<Photon, true> selector_type;
 
-        PhotonSmearStringStochastic( const edm::ParameterSet &conf );
+        PhotonSmearStochastic( const edm::ParameterSet &conf );
         void applyCorrection( flashgg::Photon &y, std::pair<int, int> syst_shift ) override;
         std::string shiftLabel( std::pair<int, int> ) const override;
 
@@ -30,7 +30,7 @@ namespace flashgg {
         bool exaggerateShiftUp_; // debugging
     };
 
-    PhotonSmearStringStochastic::PhotonSmearStringStochastic( const edm::ParameterSet &conf ) :
+    PhotonSmearStochastic::PhotonSmearStochastic( const edm::ParameterSet &conf ) :
         ObjectSystMethodBinnedByFunctor( conf ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
         label1_( conf.getUntrackedParameter<std::string>( "FirstParameterName", "Rho" ) ),
@@ -39,7 +39,7 @@ namespace flashgg {
     {
     }
 
-    std::string PhotonSmearStringStochastic::shiftLabel( std::pair<int, int> syst_value ) const
+    std::string PhotonSmearStochastic::shiftLabel( std::pair<int, int> syst_value ) const
     {
         std::string result = label();
         if( syst_value.first == 0 && syst_value.second == 0 ) {
@@ -53,7 +53,7 @@ namespace flashgg {
         return result;
     }
 
-    void PhotonSmearStringStochastic::applyCorrection( flashgg::Photon &y, std::pair<int, int> syst_shift )
+    void PhotonSmearStochastic::applyCorrection( flashgg::Photon &y, std::pair<int, int> syst_shift )
     {
         if( overall_range_( y ) ) {
             auto val_err = binContents( y );
@@ -102,8 +102,8 @@ namespace flashgg {
 }
 
 DEFINE_EDM_PLUGIN( FlashggSystematicPhotonMethodsFactory2D,
-                   flashgg::PhotonSmearStringStochastic,
-                   "FlashggPhotonSmearStringStochastic" );
+                   flashgg::PhotonSmearStochastic,
+                   "FlashggPhotonSmearStochastic" );
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

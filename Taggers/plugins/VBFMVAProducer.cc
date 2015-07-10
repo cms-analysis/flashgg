@@ -53,7 +53,7 @@ namespace flashgg {
 
     VBFMVAProducer::VBFMVAProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
-        jetTokenDz_( consumes<View<flashgg::Jet> >( iConfig.getUntrackedParameter<InputTag>( "JetTag", InputTag( "flashggJets" ) ) ) ),
+        jetTokenDz_( consumes<View<flashgg::Jet> >( iConfig.getParameter<InputTag>( "JetTag" ) ) ),
         _isLegacyMVA( iConfig.getUntrackedParameter<bool>( "UseLegacyMVA" , false ) ),
         _usePuJetID( iConfig.getUntrackedParameter<bool>( "UsePuJetID" , false ) ),
         _minDijetMinv( iConfig.getParameter<double>( "MinDijetMinv" ) )
