@@ -6,11 +6,12 @@
 #include "CLHEP/Random/RandomEngine.h"
 #include "FWCore/Utilities/interface/RandomNumberGenerator.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
+#include "flashgg/DataFormats/interface/WeightedObject.h"
 
 namespace flashgg {
 
     template <class flashgg_object, class param_var>
-    class BaseSystMethod
+    class BaseSystMethod : public WeightedObject
     {
 
     public:
@@ -18,6 +19,7 @@ namespace flashgg {
         BaseSystMethod( const edm::ParameterSet &conf ):
             _Name( conf.getParameter<std::string>( "MethodName" ) ),
             _Label( conf.getParameter<std::string>( "Label" ) ),
+            _MakesWeight( false ),
             _RandomEngine( nullptr )
         { }
         BaseSystMethod() {};
@@ -26,10 +28,19 @@ namespace flashgg {
         BaseSystMethod( const BaseSystMethod & ) = delete;
         BaseSystMethod &operator=( const BaseSystMethod & ) = delete;
 
-        virtual void applyCorrection( flashgg_object &, param_var syst_value ) = 0; //main function//
+        virtual void applyCorrection( flashgg_object &, param_var syst_value ) //main function for object-modified case//
+        {
+            throw cms::Exception( "NotImplemented" ) << " concrete classes need only implement one of applyCorrection or makeWeight - check class setup";
+        }
+
+        virtual float makeWeight( const flashgg_object &, param_var syst_value ) //main function for weight-making case//
+        {
+            throw cms::Exception( "NotImplemented" ) << " concrete classes need only implement one of applyCorrection or makeWeight - check class setup";
+        }
 
         const std::string &name() const { return _Name; };
         const std::string &label() const { return _Label; };
+        bool makesWeight() const { return _MakesWeight; }
 
         virtual std::string shiftLabel( param_var syst_val ) const = 0;
 
@@ -47,9 +58,13 @@ namespace flashgg {
             return _RandomEngine;
         }
 
+    protected:
+        void setMakesWeight( bool makes_weight ) { _MakesWeight = makes_weight; }
+
     private:
         const std::string _Name;
         const std::string _Label;
+        bool _MakesWeight;
         CLHEP::HepRandomEngine *_RandomEngine;
 
     };

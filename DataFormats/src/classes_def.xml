@@ -1,5 +1,6 @@
 <lcgdict>
- <class name="flashgg::DiPhotonMVAResult"/>
+<class name="flashgg::WeightedObject"/>
+<class name="flashgg::DiPhotonMVAResult"/>
 <!--
 <class name="edm::Wrapper<flashgg::DiPhotonMVAResult>"/>
 <class name="std::pair<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult>"/>

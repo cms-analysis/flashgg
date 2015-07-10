@@ -3,23 +3,17 @@
 
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/WeightedObject.h"
 
 namespace flashgg {
 
-    class Muon : public pat::Muon
+    class Muon : public pat::Muon, public WeightedObject
     {
 
     public:
         Muon();
         Muon( const pat::Muon & );
         ~Muon();
-
-        void setWeight( double val ) { weight_ = val; }
-        double weight() const { return weight_; }
-
-    private:
-        float  weight_;
-
     };
 }
 
