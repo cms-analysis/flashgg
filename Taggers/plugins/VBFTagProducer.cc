@@ -118,7 +118,7 @@ namespace flashgg {
             }
             for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
                 edm::Ptr<reco::GenParticle> part = genParticles->ptrAt( genLoop );
-                if( part->status() == 3 ) {
+                if( part->isHardProcess() ) {
                     if( abs( part->pdgId() ) <= 5 ) {
                         if( part->pt() > pt_leadq ) {
                             index_subleadq = index_leadq;
@@ -163,7 +163,7 @@ namespace flashgg {
             if( ! evt.isRealData() ) {
                 for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
                     edm::Ptr<reco::GenParticle> part = genParticles->ptrAt( genLoop );
-                    if( part->status() == 3 ) {
+                    if( part->isHardProcess() ) {
                         float dr = deltaR( tag_obj.leadingJet().eta(), tag_obj.leadingJet().phi(), part->eta(), part->phi() );
                         if( dr < dr_gp_leadjet ) {
                             dr_gp_leadjet = dr;
