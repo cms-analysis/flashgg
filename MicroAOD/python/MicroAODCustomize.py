@@ -101,6 +101,9 @@ class MicroAODCustomize(object):
         process.load("flashgg/MicroAOD/flashggMuMuGamma_cfi")
         process.p *= process.flashggDiMuons*process.flashggMuMuGamma
 
+    def customizeGlobalTag(self,process):
+        process.GlobalTag.globaltag = self.globalTag
+
     def customizeFileNames(self,process):
         process.source.fileNames = cms.untracked.vstring(self.fileNames)
 
