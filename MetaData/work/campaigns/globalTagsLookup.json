@@ -1,5 +1,5 @@
 {
-    "Run2015B-PromptReco"                          : ["GR_P_V56::All"],
-    "RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A"   : ["MCRUN2_74_V9A::All"],
-    "RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9"	   : ["MCRUN2_74_V9::All"]
+    "Run2015B-PromptReco"                          : ["GR_P_V56"],
+    "RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A"   : ["MCRUN2_74_V9A"],
+    "RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9"	   : ["MCRUN2_74_V9"]
 }
