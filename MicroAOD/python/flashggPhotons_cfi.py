@@ -16,7 +16,7 @@ flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
 #                                regressionWeightFile = cms.FileInPath("HiggsAnalysis/GBRLikelihoodEGTools/data/regweights_v8_8TeV_forest_ph.root"),
 
                                 useNonZsLazyTools = cms.bool(True),
-                                recomputeNonZsClusterShapes = cms.bool(True),
+                                recomputeNonZsClusterShapes = cms.bool(False),
                                 doOverlapRemovalForIsolation = cms.bool(True),
                                 useVtx0ForNeutralIso = cms.bool(True),
                                 extraCaloIsolations = cms.VPSet(),
