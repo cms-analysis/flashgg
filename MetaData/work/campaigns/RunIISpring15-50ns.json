@@ -1,0 +1,16 @@
+{
+    "data" : ["/DoubleEG/Run2015B-PromptReco-v1/MINIAOD",
+       	      "/EGamma/Run2015B-PromptReco-v1/MINIAOD",
+       	      "/SinglePhoton/Run2015B-PromptReco-v1/MINIAOD"
+	      ],
+    "sig"  : ["/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/MINIAODSIM",
+              "/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/MINIAODSIM",
+    	      "/ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/MINIAODSIM"
+	      ],
+    "bkg"  : ["/GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/MINIAODSIM",
+    	      "/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/MINIAODSIM",	      
+    	      "/QCD_Pt-30to40_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/MINIAODSIM",
+	      "/QCD_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/MINIAODSIM",
+	      "/QCD_Pt-30toInf_DoubleEMEnriched_MGG-40to80_TuneCUETP8M1_13TeV_Pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/MINIAODSIM"
+	      ]
+}

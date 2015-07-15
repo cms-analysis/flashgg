@@ -99,7 +99,12 @@ parser = OptionParser(option_list=[
         make_option("-v","--verbose",
                     action="store_true", dest="verbose",
                     default=False,
-                    help="default: %default",)
+                    help="default: %default"),
+        make_option("--gt","--globalTags",
+                    dest="globalTags",
+                    action="store",type="string",
+                    default="campaigns/globalTagsLookup.json",
+                    help="List of global tags to be used for data and MC. Default: %default")
         ]
                       )
 # parse the command line
@@ -182,6 +187,12 @@ if options.checkNFiles:
 if options.createCrabConfig:
     print ("\nCreating CRAB configurations in %s" % options.campaign)
     print ("--------------------------------------------------------")
+
+    # get the globaltag json
+    globalTagPath = options.globalTags
+    gtJson = json.load(open(globalTagPath,'r'))
+    print options.globalTags
+
     if not os.path.isdir(options.campaign):
         os.mkdir(options.campaign)
     os.chdir(options.campaign)
@@ -194,6 +205,7 @@ if options.createCrabConfig:
     infile = open(options.crabTemplate)
     template = [ line for line in infile ]
     infile.close()
+
     for sample in samples:
         PrimaryDataset, ProcessedDataset, DataTier = filter(None, sample.split("/"))
         label = ProcessedDataset
@@ -223,6 +235,18 @@ if options.createCrabConfig:
                         "OUTSITE"         : options.outputSite,
                         "PYCFG_PARAMS"    : [str("datasetName=%s" % PrimaryDataset)]
                        }
+
+        # remove the processing version number from the ProcessedDataset
+        PrimaryDataset, ProcessedDataset, DataTier = filter(None, sample.split("/")) 
+        position = ProcessedDataset.find("-v")
+        processedLabel = ProcessedDataset[:position]
+        # print processedLabel
+
+        # associate the processedLabel to the globaltag from the json filex
+        globalTag = gtJson[processedLabel]
+        # print ProcessedDataset, globalTag
+        replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % globalTag[0])) 
+
         # specific replacements for data and MC
         if sample in data:
             replacements["SPLITTING"]   = "LumiBased"
