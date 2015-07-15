@@ -25,7 +25,7 @@ class MicroAODCustomize(object):
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "processType")
         self.options.register('debug',
-                              1, # default value
+                              0, # default value
                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                               VarParsing.VarParsing.varType.int,          # string, int, or float
                               "debug")
