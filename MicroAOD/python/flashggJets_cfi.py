@@ -64,11 +64,12 @@ def addFlashggPFCHSLegJets(process):
   process.ak4PFJetsCHSLeg = ak4PFJets.clone ( src = 'pfNoElectronsCHSLeg', doAreaFastjet = True)
   #process.ak4GenJetsLeg   = ak4GenJets.clone( src = 'packedGenParticles')
   
-  # NOTE : these line are from the new Jet recipe 
-  # The following is make patJets, but EI is done with the above
-  process.load("Configuration.StandardSequences.MagneticField_cff")
-  process.load("Configuration.Geometry.GeometryRecoDB_cff")
-  process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
+  ## PM: Took out as this was interphering with the global tag settings
+  ## # NOTE : these line are from the new Jet recipe 
+  ## # The following is make patJets, but EI is done with the above
+  ## process.load("Configuration.StandardSequences.MagneticField_cff")
+  ## process.load("Configuration.Geometry.GeometryRecoDB_cff")
+  ## process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
   
   # cluster the jets
   # NOTE: this is the 74X recipe for the jet clustering 
