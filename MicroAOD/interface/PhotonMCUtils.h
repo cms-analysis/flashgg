@@ -50,18 +50,25 @@ namespace flashgg {
             flashgg::Photon::mcMatch_t defaultType = flashgg::Photon::kUnkown )
         {
             auto matchType = defaultType;
-            for( size_t imom = 0; imom < gen.numberOfMothers(); ++imom ) {
-                int mstat = gen.mother( imom )->status();
-                int mpdgId = abs( gen.mother( imom )->pdgId() );
-                /// std::cout << mpdgId << std::endl;
-                if( ( ( mpdgId > 0 && mpdgId <= 25 ) && ( mstat == 3 || mstat == 23 || mstat == 22 ) )
-                        || ( find( promptMothers.begin(), promptMothers.end(), mpdgId ) != promptMothers.end() ) ) {
-                    matchType = flashgg::Photon::kPrompt;
-                }
-                if( mstat == 2 && mpdgId != 22 ) {
-                    matchType = flashgg::Photon::kFake;
-                }
+            //            std::cout<< " Gen " << gen.pdgId() << std::endl;
+
+
+            //for( size_t imom = 0; imom < gen.numberOfMothers(); ++imom ) {
+            //  int mstat = gen.mother( imom )->status();
+            //int mpdgId = abs( gen.mother( imom )->pdgId() );
+            // std::cout << " mstat " << mstat << " mpdgId " << mpdgId << std::endl;
+
+            //     if( ( ( mpdgId > 0 && mpdgId <= 25 ) && ( mstat == 3 || mstat == 23 || mstat == 22 ) )
+            //       || ( find( promptMothers.begin(), promptMothers.end(), mpdgId ) != promptMothers.end() ) ) {
+            if( gen.pdgId() == 22 &&  gen.isPromptFinalState() ) {
+                matchType = flashgg::Photon::kPrompt;
+                // std::cout << " type prompt "  << std::endl;
+            } else {
+                //if( mstat == 2 && mpdgId != 22 ) {
+                matchType = flashgg::Photon::kFake;
+                //std::cout << " type fake "  << std::endl;
             }
+            // }
             return matchType;
         }
 
