@@ -248,29 +248,24 @@ if options.createCrabConfig:
         # print processedLabel
 
         # associate the processedLabel to the globaltag from the json filex
-        gtData = ''
-        gtMc   = ''
-        if ProcessedDataset.count("201"): #check if data or mc
-            gtData = gtJson[processedLabel]
-        else:
-            gtMc   = gtJson[processedLabel]
-        # print ProcessedDataset, gtData, gtMc
+        globalTag = gtJson[processedLabel]
+        # print ProcessedDataset, globalTag
 
         # specific replacements for data and MC
         if sample in data:
             replacements["SPLITTING"]   = "LumiBased"
             replacements["UNITSPERJOB"] = str(options.lumisPerJob)
             replacements["PYCFG_PARAMS"].append("processType=data")
-            replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % gtData[0]))  #MDDB
+            replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % globalTag[0]))  #MDDB
             ## FIXME: lumi mask, run ranges, etc.
         if sample in sig:
             ## Extra options for signal samples
             replacements["PYCFG_PARAMS"].append("processType=signal")
-            replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % gtMc[0]))  #MDDB
+            replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % globalTag[0]))  #MDDB
         if sample in bkg:
             ## Extra options for background samples
             replacements["PYCFG_PARAMS"].append("processType=background")
-            replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % gtMc[0]))  #MDDB
+            replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % globalTag[0]))  #MDDB
 
         replacements["PYCFG_PARAMS"] = str(replacements["PYCFG_PARAMS"])
         
