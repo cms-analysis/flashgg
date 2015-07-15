@@ -82,6 +82,15 @@ echo crab_* | xargs -n 1 crab status
 
 Exact instructions used, after setting up the area with the given tag, doing cmsenv, and vomx-proxy-init as above:
 
+### SPRING15
+
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-50ns -U 1 -s campaigns/RunIISpring15-50ns.json -V Spring15BetaV0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
+cd RunIISpring15-50ns
+echo crabConfig_*.py | xargs -n 1 crab sub
+```
+
 ### PHYS14
 
 ```
