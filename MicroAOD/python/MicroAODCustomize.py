@@ -1,3 +1,4 @@
+
 import FWCore.ParameterSet.Config as cms
 import FWCore.ParameterSet.VarParsing as VarParsing
 class MicroAODCustomize(object):
@@ -23,11 +24,6 @@ class MicroAODCustomize(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "processType")
-        self.options.register ('globalTag',
-                               "", # default value
-                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                               VarParsing.VarParsing.varType.string,          # string, int, or float
-                               "globalTag")
         self.options.register('debug',
                               1, # default value
                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -38,6 +34,11 @@ class MicroAODCustomize(object):
                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                               VarParsing.VarParsing.varType.int,          # string, int, or float
                               "muMuGamma")
+        self.options.register ('globalTag',
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "globalTag")
 
     def __getattr__(self,name):
         ## did not manage to inherit from VarParsing, because of some issues in __init__
@@ -78,19 +79,16 @@ class MicroAODCustomize(object):
     # signal specific customization
     def customizeSignal(self,process):
         process.flashggGenPhotonsExtra.defaultType = 1
-        process.GlobalTag.globaltag = "GR_R_74_V8::All"
         
     # background specific customization
     def customizeBackground(self,process):
         if "sherpa" in self.datasetName:
             process.flashggGenPhotonsExtra.defaultType = 1
-            process.GlobalTag.globaltag = "GR_R_74_V8::All"
 
             
     # data specific customization
     def customizeData(self,process):
         ## remove MC-specific modules
-        process.GlobalTag.globaltag = "GR_R_74_V13A::All"
         modules = process.flashggMicroAODGenSequence.moduleNames()
         for pathName in process.paths:
             path = getattr(process,pathName)
