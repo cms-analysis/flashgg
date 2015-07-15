@@ -99,7 +99,17 @@ parser = OptionParser(option_list=[
         make_option("-v","--verbose",
                     action="store_true", dest="verbose",
                     default=False,
-                    help="default: %default",)
+                    help="default: %default"),
+#        make_option("--gt","--globalTags",
+#                    dest="globalTags",
+#                    action="callback",callback=Load(),type="string",
+#                    default={},
+#                    help="List of global tags to be used for data and MC. Default: %default"),
+        make_option("--gt","--globalTags",
+                    dest="globalTags",
+                    action="store",type="string",
+                    default="campaigns/globalTagsLookup.json",
+                    help="List of global tags to be used for data and MC. Default: %default")
         ]
                       )
 # parse the command line
@@ -182,6 +192,12 @@ if options.checkNFiles:
 if options.createCrabConfig:
     print ("\nCreating CRAB configurations in %s" % options.campaign)
     print ("--------------------------------------------------------")
+
+    # get the globaltag json
+    globalTagPath = options.globalTags
+    gtJson = json.load(open(globalTagPath,'r'))
+    print options.globalTags
+
     if not os.path.isdir(options.campaign):
         os.mkdir(options.campaign)
     os.chdir(options.campaign)
@@ -194,6 +210,7 @@ if options.createCrabConfig:
     infile = open(options.crabTemplate)
     template = [ line for line in infile ]
     infile.close()
+
     for sample in samples:
         PrimaryDataset, ProcessedDataset, DataTier = filter(None, sample.split("/"))
         label = ProcessedDataset
@@ -223,18 +240,37 @@ if options.createCrabConfig:
                         "OUTSITE"         : options.outputSite,
                         "PYCFG_PARAMS"    : [str("datasetName=%s" % PrimaryDataset)]
                        }
+
+        # remove the processing version number from the ProcessedDataset
+        PrimaryDataset, ProcessedDataset, DataTier = filter(None, sample.split("/")) 
+        position = ProcessedDataset.find("-v")
+        processedLabel = ProcessedDataset[:position]
+        # print processedLabel
+
+        # associate the processedLabel to the globaltag from the json filex
+        gtData = ''
+        gtMc   = ''
+        if ProcessedDataset.count("201"): #check if data or mc
+            gtData = gtJson[processedLabel]
+        else:
+            gtMc   = gtJson[processedLabel]
+        # print ProcessedDataset, gtData, gtMc
+
         # specific replacements for data and MC
         if sample in data:
             replacements["SPLITTING"]   = "LumiBased"
             replacements["UNITSPERJOB"] = str(options.lumisPerJob)
             replacements["PYCFG_PARAMS"].append("processType=data")
+            replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % gtData[0]))  #MDDB
             ## FIXME: lumi mask, run ranges, etc.
         if sample in sig:
             ## Extra options for signal samples
             replacements["PYCFG_PARAMS"].append("processType=signal")
+            replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % gtMc[0]))  #MDDB
         if sample in bkg:
             ## Extra options for background samples
             replacements["PYCFG_PARAMS"].append("processType=background")
+            replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % gtMc[0]))  #MDDB
 
         replacements["PYCFG_PARAMS"] = str(replacements["PYCFG_PARAMS"])
         
