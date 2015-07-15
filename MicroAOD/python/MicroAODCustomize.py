@@ -34,6 +34,11 @@ class MicroAODCustomize(object):
                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                               VarParsing.VarParsing.varType.int,          # string, int, or float
                               "muMuGamma")
+        self.options.register ('globalTag',
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "globalTag")
 
     def __getattr__(self,name):
         ## did not manage to inherit from VarParsing, because of some issues in __init__
@@ -65,6 +70,8 @@ class MicroAODCustomize(object):
             self.customizeDebug(process)
         if self.muMuGamma == 1:
             self.customizeMuMuGamma(process)
+        if len(self.globalTag) >0:
+            self.customizeGlobalTag(process)
         if len(self.fileNames) >0:
             self.customizeFileNames(process)
 
