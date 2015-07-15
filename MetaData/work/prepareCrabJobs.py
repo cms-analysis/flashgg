@@ -100,11 +100,6 @@ parser = OptionParser(option_list=[
                     action="store_true", dest="verbose",
                     default=False,
                     help="default: %default"),
-#        make_option("--gt","--globalTags",
-#                    dest="globalTags",
-#                    action="callback",callback=Load(),type="string",
-#                    default={},
-#                    help="List of global tags to be used for data and MC. Default: %default"),
         make_option("--gt","--globalTags",
                     dest="globalTags",
                     action="store",type="string",
@@ -250,22 +245,20 @@ if options.createCrabConfig:
         # associate the processedLabel to the globaltag from the json filex
         globalTag = gtJson[processedLabel]
         # print ProcessedDataset, globalTag
+        replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % globalTag[0])) 
 
         # specific replacements for data and MC
         if sample in data:
             replacements["SPLITTING"]   = "LumiBased"
             replacements["UNITSPERJOB"] = str(options.lumisPerJob)
             replacements["PYCFG_PARAMS"].append("processType=data")
-            replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % globalTag[0]))  #MDDB
             ## FIXME: lumi mask, run ranges, etc.
         if sample in sig:
             ## Extra options for signal samples
             replacements["PYCFG_PARAMS"].append("processType=signal")
-            replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % globalTag[0]))  #MDDB
         if sample in bkg:
             ## Extra options for background samples
             replacements["PYCFG_PARAMS"].append("processType=background")
-            replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % globalTag[0]))  #MDDB
 
         replacements["PYCFG_PARAMS"] = str(replacements["PYCFG_PARAMS"])
         
