@@ -100,8 +100,7 @@ class MicroAODCustomize(object):
     # Add debug collections    
     def customizeDebug(self,process):    
         from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDebugOutputCommand
-        process.out.outputCommands += microAODDebugOutputCommand # extra items for debugging, CURRENTLY REQUIRED
-        process.flashggJets.MinJetPt = 0.
+        process.out.outputCommands += microAODDebugOutputCommand # extra items for debugging
 
     def customizeMuMuGamma(self,process):
         process.load("flashgg/MicroAOD/flashggDiMuons_cfi")

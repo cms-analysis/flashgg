@@ -97,7 +97,6 @@ def addFlashggPFCHSLegJets(process):
   # process.patJetGenJetMatchAK4PFCHSLeg.matched = "ak4GenJetsLeg"
   # process.patJetPartonMatchAK4PFCHSLeg.matched = "prunedGenParticles"
   # process.patJetPartons.particles = "prunedGenParticles"
-    
   
 # Flashgg Jet producer using the collection created with function above.
 flashggJets = cms.EDProducer('FlashggJetProducer',
@@ -105,8 +104,7 @@ flashggJets = cms.EDProducer('FlashggJetProducer',
                              VertexTag   = cms.InputTag('offlineSlimmedPrimaryVertices'),
                              JetTag      = cms.InputTag('patJetsAK4PFCHSLeg'),
                              VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
-                             PileupJetIdParameters = cms.PSet(pu_jetid),
-                             MinJetPt=cms.untracked.double(20.)            
+                             PileupJetIdParameters = cms.PSet(pu_jetid)
 )
   
 

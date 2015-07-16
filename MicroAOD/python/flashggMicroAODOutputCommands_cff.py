@@ -29,5 +29,6 @@ microAODDebugOutputCommand = cms.untracked.vstring("keep *_reducedEgamma_*_*",
                                                    "keep recoGenParticles_prunedGenParticles_*_*", # MiniAOD important status non-1
                                                    "keep patPackedGenParticles_packedGenParticles_*_*", # MiniAOD status 1
                                                    "keep *_slimmedTaus_*_*", # no tag uses these
-                                                   "keep *_slimmedMuons_*_*", ## flashggMuons exist insted
+                                                   "keep *_slimmedMuons_*_*", 
+                                                   "keep *_slimmedElectrons_*_*",
                                                    )
