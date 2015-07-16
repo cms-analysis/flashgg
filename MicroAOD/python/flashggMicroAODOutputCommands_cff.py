@@ -20,7 +20,15 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep *_slimmedGenJets_*_*",
                                                      "keep *_flashggDiPhotons_*_*", # STILL NEEDED
                                                      "keep *_addPileupInfo_*_*", # Huge - a few Validation codes use this
-                                                     "keep *GsfElectronCore*_*_*_*" # needed by at least one Tag
+                                                                                 # PileupSummaryInfos_addPileupInfo__HLT. 4602.5 1640.32
+                                                     "keep *GsfElectronCore*_*_*_*", # needed by at least one Tag
+
+                                                     "keep *_selectedFlashgg*_*_*",
+                                                     # Drop these in favor of selectedFlashgg collections
+                                                     "drop *_flashggJets_*_*",
+                                                     "drop *_flashggMuons_*_*",
+                                                     "drop *_flashggElectrons_*_*",
+                                                     "drop *_flashggPhotons_*_*",
                                                      )
 
 # Should be included for now for ongoing studies, but to be removed some day

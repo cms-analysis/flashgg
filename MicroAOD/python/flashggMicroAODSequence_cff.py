@@ -6,8 +6,7 @@ from flashgg.MicroAOD.flashggPreselectedDiPhotons_cfi import flashggPreselectedD
 from flashgg.MicroAOD.flashggJets_cfi import flashggJets
 from flashgg.MicroAOD.flashggElectrons_cfi import flashggElectrons
 from flashgg.MicroAOD.flashggMuons_cfi import flashggMuons
-#from flashgg.MicroAOD.flashggDiMuons_cfi import flashggDiMuons   ##JTao
-#from flashgg.MicroAOD.flashggMuMuGamma_cfi import flashggMuMuGamma   ##JTao
+from flashgg.MicroAOD.flashggObjectSelectors_cff import selectedFlashggJets,selectedFlashggMuons,selectedFlashggElectrons,selectedFlashggPhotons
 
 from flashgg.MicroAOD.flashggMicroAODGenSequence_cff import *
 
@@ -23,11 +22,10 @@ weightsCount = cms.EDProducer("WeightsCountProducer",
 
 flashggMicroAODSequence = cms.Sequence((eventCount+weightsCount
                                         +flashggVertexMapUnique+flashggVertexMapNonUnique
-                                        +flashggElectrons
-                                        +flashggMuons
+                                        +(flashggElectrons*selectedFlashggElectrons)
+                                        +(flashggMuons*selectedFlashggMuons)
                                         +flashggMicroAODGenSequence
                                         )
-                                       *flashggPhotons*flashggDiPhotons
-#                                       *flashggDiMuons*flashggMuMuGamma      ##JTao
-                                       *(flashggPreselectedDiPhotons+flashggVertexMapForCHS*flashggJets)
+                                       *flashggPhotons*selectedFlashggPhotons*flashggDiPhotons
+                                       *(flashggPreselectedDiPhotons+flashggVertexMapForCHS*flashggJets*selectedFlashggJets)
                                        )
