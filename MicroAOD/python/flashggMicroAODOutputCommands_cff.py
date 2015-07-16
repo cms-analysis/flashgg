@@ -10,7 +10,6 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep *_offlineSlimmedPrimaryVertices_*_*",
                                                      "keep *_reducedEgamma_reduced*Clusters_*",
                                                      "keep *_reducedEgamma_*PhotonCores_*",
-                                                     "keep *_slimmedMuons_*_*",
                                                      "keep *_slimmedMETs_*_*",
                                                      "keep *_fixedGridRhoAll_*_*",
                                                      "keep *_offlineBeamSpot_*_*",
@@ -18,7 +17,9 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep *_eventCount_*_*",
                                                      "keep *_weightsCount_*_*",
                                                      "keep *_generator_*_*",
-                                                     "keep *_slimmedGenJets_*_*"
+                                                     "keep *_slimmedGenJets_*_*",
+                                                     "keep *_flashggDiPhotons_*_*", # STILL NEEDED
+                                                     "keep *_addPileupInfo_*_*", # Huge - a few Validation codes use this
                                                      )
 
 # Should be included for now for ongoing studies, but to be removed some day
@@ -26,7 +27,6 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
 microAODDebugOutputCommand = cms.untracked.vstring("keep *_reducedEgamma_*_*",
                                                    "keep recoGenParticles_prunedGenParticles_*_*", # MiniAOD important status non-1
                                                    "keep patPackedGenParticles_packedGenParticles_*_*", # MiniAOD status 1
-                                                   "keep *_flashggDiPhotons_*_*", # STILL NEEDED
-                                                   "keep *_addPileupInfo_*_*", # Huge - a few Validation codes use this
                                                    "keep *_slimmedTaus_*_*", # no tag uses these
+                                                   "keep *_slimmedMuons_*_*", ## flashggMuons exist insted
                                                    )
