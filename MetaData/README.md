@@ -84,6 +84,15 @@ Exact instructions used, after setting up the area with the given tag, doing cms
 
 ### SPRING15
 
+# Further fixes and configuration tweaks for smooth running
+
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-50ns -U 1 -s campaigns/RunIISpring15-50ns.json -V Spring15BetaV2 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
+cd RunIISpring15-50ns
+echo crabConfig_*.py | xargs -n 1 crab sub
+```
+
 # CMSSW 7_4_6_patch2, no recomputation of cluster shapes
 
 ```
