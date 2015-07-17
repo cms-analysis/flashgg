@@ -55,23 +55,26 @@ class SamplesManager(object):
         
         self.queue_ = queue
         
-    def importFromDAS(self,datasets):
+    def importFromDAS(self,list_datasets):
         """
         Import datasets from DAS to the catalog.
         @datasets: wildecard to be usd in dataset query
         """
         catalog = self.readCatalog()
         
-        print "Importing from das %s" % datasets
-        if "*" in datasets:
-            response = das_query("https://cmsweb.cern.ch","dataset dataset=%s | grep dataset.name" % datasets, 0, 0, False, self.dbs_instance_)
+        print "Importing from das %s" % list_datasets
+        datasets = []
+        for dataset in list_datasets:
+            if "*" in dataset:
+                response = das_query("https://cmsweb.cern.ch","dataset dataset=%s | grep dataset.name" % dataset, 0, 0, False, self.dbs_instance_)
         
-            datasets=[]
-            for d in response["data"]:
-                datasets.append( d["dataset"][0]["name"] )
-            print "Datasets to import"
-            print "\n".join(datasets)
-            
+                for d in response["data"]:
+                    datasets.append( d["dataset"][0]["name"] )
+            else:
+                datasets.append(dataset)
+
+        print "Datasets to import"
+        print "\n".join(datasets)
         for dsetName in datasets:
             print "Importing %s" % dsetName
             files = self.getFilesFomDAS(dsetName)
@@ -532,9 +535,10 @@ Commands:
         else:
             method()
                 
-    def run_import(self,query=None):
-        if query:
-            self.mn.importFromDAS([query])
+    def run_import(self,*args):
+        if len(args)>0:
+            print args
+            self.mn.importFromDAS(list(args))
         else:
             self.mn.importFromDAS("/*/*%s-%s*/USER" % (self.options.campaign,self.options.flashggVersion) )
     
