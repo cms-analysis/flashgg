@@ -213,11 +213,12 @@ if options.createCrabConfig:
             label = options.label
         # Increment flashgg- processing index if job has been launched before (ie if crab dir already exists)
         itry = 0
-        if sample in data:
-            if ProcessedDataset.count("201"):
-                position = ProcessedDataset.find("201")
-                PrimaryDataset = PrimaryDataset +"-"+ ProcessedDataset[position:]
-        jobname = "_".join([flashggVersion, PrimaryDataset, str(itry).zfill(2)])
+        ### if sample in data:
+        ###     if ProcessedDataset.count("201"):
+        ###         position = ProcessedDataset.find("201")
+        ###         PrimaryDataset = PrimaryDataset +"-"+ ProcessedDataset[position:]
+            
+        jobname = "_".join([flashggVersion, PrimaryDataset, ProcessedDataset, str(itry).zfill(2)])
         while os.path.isdir("crab_" + jobname):
             itry += 1
             jobname = "_".join([flashggVersion, PrimaryDataset, str(itry).zfill(2)])
@@ -233,7 +234,7 @@ if options.createCrabConfig:
                         "SPLITTING"       : "FileBased",
                         "OUTLFN"          : "%s/%s/%s" % (options.outputPath,options.campaign,flashggVersion),
                         "OUTSITE"         : options.outputSite,
-                        "PYCFG_PARAMS"    : [str("datasetName=%s" % PrimaryDataset)]
+                        "PYCFG_PARAMS"    : [str("datasetName=%s" % sample)]
                        }
 
         # remove the processing version number from the ProcessedDataset
@@ -278,6 +279,7 @@ if options.createCrabConfig:
         if pilotFile:
             pilotFile.write("config.Data.totalUnits = %d\n" % (options.unitsPerJob))
             pilotFile.write("config.Data.publication = False\n")
+            pilotFile.write("config.Data.jobname = pilot_%s\n" % jobname)
         # close output files
         for outfile in outfiles:
             outfile.close()
