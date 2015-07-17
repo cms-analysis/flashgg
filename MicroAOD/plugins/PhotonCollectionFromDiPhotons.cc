@@ -17,6 +17,8 @@
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 
+#include <set>
+
 using namespace edm;
 using namespace std;
 
@@ -57,6 +59,11 @@ namespace flashgg {
             std::cout << std::cout << " Input DiPhoton collection size: " << diPhotons->size() << std::endl;
         }
 
+        std::set<edm::Ptr<reco::Vertex> > usedVertices;
+        for( unsigned int i = 0 ; i < diPhotons->size() ; i++ ) {
+            usedVertices.insert( diPhotons->ptrAt( i )->vtx() );
+        }
+
         for( unsigned int i = 0 ; i < diPhotons->size() ; i++ ) {
             //            std::cout << "  DiPhoton " << i << std::endl;
             Ptr<DiPhotonCandidate> oldpdp = diPhotons->ptrAt( i );
@@ -84,6 +91,7 @@ namespace flashgg {
             // If photon not yet copied: copy photon, create pointers into new collection
             if( !donepp1 ) {
                 Photon p1( *oldpp1 );
+                p1.removeVerticesExcept( usedVertices );
                 pp1 = edm::refToPtr( edm::Ref<vector<Photon> >( rPhoton, usedPhotonPtrs.size() ) );
                 if( debug_ ) { std::cout << "   Putting copy of Leading photon with pt " << oldpp1->pt() << " in at place " << usedPhotonPtrs.size() << std::endl; }
                 photonColl->push_back( p1 );
@@ -91,6 +99,7 @@ namespace flashgg {
             }
             if( !donepp2 ) {
                 Photon p2( *oldpp2 ); // copy Photon
+                p2.removeVerticesExcept( usedVertices );
                 pp2 = edm::refToPtr( edm::Ref<vector<Photon> >( rPhoton, usedPhotonPtrs.size() ) );
                 if( debug_ ) { std::cout << "   Putting copy of Subleading photon with pt " << oldpp2->pt() << " in at place " << usedPhotonPtrs.size() << std::endl; }
                 photonColl->push_back( p2 );
