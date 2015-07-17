@@ -33,7 +33,6 @@ namespace flashgg {
         unique_ptr<PileupJetIdAlgo>  pileupJetIdAlgo_;
         ParameterSet pileupJetIdParameters_;
         bool usePuppi;
-        double minJetPt_; // GeV
     };
 
 
@@ -43,8 +42,7 @@ namespace flashgg {
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTag" ) ) ),
         pileupJetIdParameters_( iConfig.getParameter<ParameterSet>( "PileupJetIdParameters" ) ),
-        usePuppi( iConfig.getUntrackedParameter<bool>( "UsePuppi", false ) ),
-        minJetPt_( iConfig.getUntrackedParameter<double>( "MinJetPt", 0. ) )
+        usePuppi( iConfig.getUntrackedParameter<bool>( "UsePuppi", false ) )
     {
         pileupJetIdAlgo_.reset( new PileupJetIdAlgo( pileupJetIdParameters_ ) );
 
@@ -77,7 +75,6 @@ namespace flashgg {
 
         for( unsigned int i = 0 ; i < jets->size() ; i++ ) {
             Ptr<pat::Jet> pjet = jets->ptrAt( i );
-            if( pjet->pt() < minJetPt_ ) { continue; }
             flashgg::Jet fjet = flashgg::Jet( *pjet );
 
             for( unsigned int j = 0 ; j < diPhotons->size() ; j++ ) {

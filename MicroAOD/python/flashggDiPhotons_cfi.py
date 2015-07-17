@@ -5,7 +5,7 @@ import FWCore.ParameterSet.Config as cms
 
 
 flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
-                                  PhotonTag=cms.InputTag('flashggPhotons'),
+                                  PhotonTag=cms.InputTag('selectedFlashggPhotons'),
                                   VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
                                   VertexSelectorName=cms.string("FlashggLegacyVertexSelector"),
                                   VertexCandidateMapTag=cms.InputTag("flashggVertexMapUnique"),
