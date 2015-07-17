@@ -540,7 +540,7 @@ Commands:
             print args
             self.mn.importFromDAS(list(args))
         else:
-            self.mn.importFromDAS("/*/*%s-%s*/USER" % (self.options.campaign,self.options.flashggVersion) )
+            self.mn.importFromDAS(["/*/*%s-%s*/USER" % (self.options.campaign,self.options.flashggVersion)])
     
     def run_eosimport(self,*args):
         self.mn.importFromEOS(args)
