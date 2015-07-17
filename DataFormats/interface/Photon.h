@@ -8,6 +8,7 @@
 
 #include <map>
 #include <string>
+#include <set>
 
 namespace flashgg {
 
@@ -22,6 +23,7 @@ namespace flashgg {
         virtual Photon *clone() const;
 
         void ZeroVariables();
+        void removeVerticesExcept( const std::set<edm::Ptr<reco::Vertex> > & );
 
         enum mcMatch_t { kUnkown = 0, kPrompt, kFake  };
 
