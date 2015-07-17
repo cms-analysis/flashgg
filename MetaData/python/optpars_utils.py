@@ -30,7 +30,7 @@ class Load:
             dest = getattr(parser.values,option.dest)
         origin = getattr(parser.values,"%s_src" % option.dest,None)
         if origin:
-            origin += ",%s",value
+            origin += ",%s" % value
         else:
             origin = value
             setattr(parser.values,"%s_src" % option.dest,origin)

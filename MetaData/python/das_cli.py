@@ -5,6 +5,7 @@
 """
 DAS command line tool
 """
+from __future__ import print_function
 __author__ = "Valentin Kuznetsov"
 
 import sys
@@ -23,6 +24,7 @@ import httplib
 import cookielib
 from   optparse import OptionParser
 from   math import log
+from   types import GeneratorType
 
 # define exit codes according to Linux sysexists.h
 EX_OK           = 0  # successful termination
@@ -127,7 +129,7 @@ class DASOptionParser:
 
         msg = 'List DAS key/attributes, use "all" or specific DAS key value, e.g. site'
         self.parser.add_option("--list-attributes", action="store", type="string",
-                               default="", dest="keys_attrs", help=msg)        
+                               default="", dest="keys_attrs", help=msg)
     def get_opt(self):
         """
         Returns parse list of options
@@ -191,38 +193,39 @@ def unique_filter(rows):
         old_row = row
     yield row
 
+def extract_value(row, key):
+    """Generator which extracts row[key] value"""
+    if  isinstance(row, dict) and key in row:
+        if  key == 'creation_time':
+            row = convert_time(row[key])
+        elif  key == 'size':
+            row = size_format(row[key], base)
+        else:
+            row = row[key]
+        yield row
+    if  isinstance(row, list) or isinstance(row, GeneratorType):
+        for item in row:
+            for vvv in extract_value(item, key):
+                yield vvv
+
 def get_value(data, filters, base=10):
     """Filter data from a row for given list of filters"""
     for ftr in filters:
         if  ftr.find('>') != -1 or ftr.find('<') != -1 or ftr.find('=') != -1:
             continue
         row = dict(data)
-        values = set()
-        for key in ftr.split('.'):
-            if  isinstance(row, dict) and key in row:
-                if  key == 'creation_time':
-                    row = convert_time(row[key])
-                elif  key == 'size':
-                    row = size_format(row[key], base)
-                else:
-                    row = row[key]
-            if  isinstance(row, list):
-                for item in row:
-                    if  isinstance(item, dict) and key in item:
-                        if  key == 'creation_time':
-                            row = convert_time(item[key])
-                        elif  key == 'size':
-                            row = size_format(item[key], base)
-                        else:
-                            row = item[key]
-                        values.add(row)
-                    else:
-                        if  isinstance(item, basestring):
-                            values.add(item)
+        values = []
+        keys = ftr.split('.')
+        for key in keys:
+            val = [v for v in extract_value(row, key)]
+            if  key == keys[-1]: # we collect all values at last key
+                values += [json.dumps(i) for i in val]
+            else:
+                row = val
         if  len(values) == 1:
-            yield str(values.pop())
+            yield values[0]
         else:
-            yield str(list(values))
+            yield values
 
 def fullpath(path):
     "Expand path to full path"
@@ -320,15 +323,15 @@ def print_summary(rec):
         maxlen = max([len(k) for k in keys])
         for key, val in row.items():
             pkey = '%s%s' % (key, ' '*(maxlen-len(key)))
-            print '%s: %s' % (pkey, val)
-        print
+            print('%s: %s' % (pkey, val))
+        print()
 
 def print_from_cache(cache, query):
     "print the list of files reading it from cache"
     data = open(cache).read()
     jsondict = json.loads(data)
     if query in jsondict:
-      print "\n".join(jsondict[query])
+      print("\n".join(jsondict[query]))
       exit(0)
     exit(1)
 
@@ -352,22 +355,22 @@ def keys_attrs(lkey, oformat, host, ckey, cert, debug=0):
     fdesc.close()
     if  oformat.lower() == 'json':
         if  lkey == 'all':
-            print json.dumps(data)
+            print(json.dumps(data))
         else:
-            print json.dumps({lkey:data[lkey]})
+            print(json.dumps({lkey:data[lkey]}))
         return
     for key, vdict in data.items():
         if  lkey == 'all':
             pass
         elif lkey != key:
             continue
-        print
-        print "DAS key:", key
+        print()
+        print("DAS key:", key)
         for attr, examples in vdict.items():
             prefix = '    '
-            print '%s%s' % (prefix, attr)
+            print('%s%s' % (prefix, attr))
             for item in examples:
-                print '%s%s%s' % (prefix, prefix, item)
+                print('%s%s%s' % (prefix, prefix, item))
 
 def main():
     """Main function"""
@@ -382,35 +385,34 @@ def main():
     ckey    = opts.ckey
     cert    = opts.cert
     base    = opts.base
-    instance= "prod/%s" % opts.instance
     if  opts.keys_attrs:
         keys_attrs(opts.keys_attrs, opts.format, host, ckey, cert, debug)
         return
     if  not query:
-        print 'Input query is missing'
+        print('Input query is missing')
         sys.exit(EX_USAGE)
     if  opts.format == 'plain':
-        jsondict = get_data(host, query, idx, limit, debug, instance, thr, ckey, cert)
+        jsondict = get_data(host, query, idx, limit, debug, thr, ckey, cert)
         cli_msg  = jsondict.get('client_message', None)
         if  cli_msg:
-            print "DAS CLIENT WARNING: %s" % cli_msg
+            print("DAS CLIENT WARNING: %s" % cli_msg)
         if  'status' not in jsondict and opts.cache:
             print_from_cache(opts.cache, query)
         if  'status' not in jsondict:
-            print 'DAS record without status field:\n%s' % jsondict
+            print('DAS record without status field:\n%s' % jsondict)
             sys.exit(EX_PROTOCOL)
         if  jsondict["status"] != 'ok' and opts.cache:
             print_from_cache(opts.cache, query)
         if  jsondict['status'] != 'ok':
-            print "status: %s, reason: %s" \
-                % (jsondict.get('status'), jsondict.get('reason', 'N/A'))
+            print("status: %s, reason: %s" \
+                % (jsondict.get('status'), jsondict.get('reason', 'N/A')))
             if  opts.retry:
                 found = False
                 for attempt in xrange(1, int(opts.retry)):
                     interval = log(attempt)**5
-                    print "Retry in %5.3f sec" % interval
+                    print("Retry in %5.3f sec" % interval)
                     time.sleep(interval)
-                    data = get_data(host, query, idx, limit, debug, instance, thr, ckey, cert)
+                    data = get_data(host, query, idx, limit, debug, thr, ckey, cert)
                     jsondict = json.loads(data)
                     if  jsondict.get('status', 'fail') == 'ok':
                         found = True
@@ -427,7 +429,7 @@ def main():
         if  opts.limit:
             msg  = "\nShowing %s results" % drange
             msg += ", for more results use --idx/--limit options\n"
-            print msg
+            print(msg)
         mongo_query = jsondict['mongo_query']
         unique  = False
         fdict   = mongo_query.get('filters', {})
@@ -439,13 +441,13 @@ def main():
             data = jsondict['data']
             if  isinstance(data, dict):
                 rows = [r for r in get_value(data, filters, base)]
-                print ' '.join(rows)
+                print(' '.join(rows))
             elif isinstance(data, list):
                 if  unique:
                     data = unique_filter(data)
                 for row in data:
                     rows = [r for r in get_value(row, filters, base)]
-                    print ' '.join(rows)
+                    print(' '.join(rows))
             else:
                 print(json.dumps(jsondict))
         elif aggregators:
@@ -458,8 +460,8 @@ def main():
                     val = size_format(row['result']['value'], base)
                 else:
                     val = row['result']['value']
-                print '%s(%s)=%s' \
-                % (row['function'], row['key'], val)
+                print('%s(%s)=%s' \
+                % (row['function'], row['key'], val))
         else:
             data = jsondict['data']
             if  isinstance(data, list):
@@ -473,19 +475,19 @@ def main():
                     val = prim_value(row)
                     if  not opts.limit:
                         if  val != old:
-                            print val
+                            print(val)
                             old = val
                     else:
-                        print val
+                        print(val)
                 if  val != old and not opts.limit:
-                    print val
+                    print(val)
             elif isinstance(data, dict):
-                print prim_value(data)
+                print(prim_value(data))
             else:
-                print data
+                print(data)
     else:
         jsondict = get_data(\
-                host, query, idx, limit, debug, instance, thr, ckey, cert)
+                host, query, idx, limit, debug, thr, ckey, cert)
         print(json.dumps(jsondict))
 
 #
