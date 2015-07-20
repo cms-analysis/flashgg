@@ -29,6 +29,11 @@ class MicroAODCustomize(object):
                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                               VarParsing.VarParsing.varType.int,          # string, int, or float
                               "debug")
+        self.options.register('hlt',
+                              0, # default value
+                              VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                              VarParsing.VarParsing.varType.int,          # string, int, or float
+                              "hlt")
         self.options.register('muMuGamma',
                               0, # default value
                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -68,6 +73,8 @@ class MicroAODCustomize(object):
             self.customizeBackground(process)
         if self.debug == 1:
             self.customizeDebug(process)
+        if self.hlt == 1:
+            self.customizeHLT(process)
         if self.muMuGamma == 1:
             self.customizeMuMuGamma(process)
         if len(self.globalTag) >0:
@@ -101,6 +108,11 @@ class MicroAODCustomize(object):
     def customizeDebug(self,process):    
         from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDebugOutputCommand
         process.out.outputCommands += microAODDebugOutputCommand # extra items for debugging
+
+    # Add HLT collections    
+    def customizeHLT(self,process):    
+        from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODHLTOutputCommand
+        process.out.outputCommands += microAODHLTOutputCommand # extra items for HLT efficiency
 
     def customizeMuMuGamma(self,process):
         process.load("flashgg/MicroAOD/flashggDiMuons_cfi")
