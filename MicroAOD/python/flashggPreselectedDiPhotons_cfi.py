@@ -1,6 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 
-# FIXME INVERT ELECTRON VETO
+#changed to match trigger logic
+#uses objects which don't quite match HLT objects
+#needs to be updated with final preselection
 flashggPreselectedDiPhotons = cms.EDFilter("DiPhotonCandidateSelector",
                                    src = cms.InputTag("flashggDiPhotons"),
                                    cut = cms.string("""(leadingPhoton.pt > 30. && subLeadingPhoton.pt>18) &&
