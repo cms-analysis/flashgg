@@ -35,6 +35,9 @@ namespace flashgg {
 
         void MakePersistent();
 
+        // DO NOT USE THIS FUNCTION UNLESS YOU HAVE A GOOD REASON AND KNOW IT WON'T CAUSE INTERNAL INCONSISTENCIES
+        void replacePtr( edm::Ptr<flashgg::Photon> replacement ) { phoPtr_ = replacement; }
+
     private:
         mutable flashgg::Photon pho_;
         edm::Ptr<flashgg::Photon> phoPtr_;
