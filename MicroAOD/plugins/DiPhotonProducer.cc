@@ -103,15 +103,6 @@ namespace flashgg {
                         ivtx = k;
                         break;
                     }
-                // A number of things need to be done once the vertex is chosen
-                // recomputing photon 4-momenta accordingly
-                flashgg::Photon photon1_corr = PhotonIdUtils::pho4MomCorrection( pp1, pvx );
-                flashgg::Photon photon2_corr = PhotonIdUtils::pho4MomCorrection( pp2, pvx );
-                // - compute isolations with respect to chosen vertex needed for preselection
-                photon1_corr.setpfChgIsoWrtChosenVtx02( photon1_corr.pfChgIso02WrtVtx( pvx ) );
-                photon2_corr.setpfChgIsoWrtChosenVtx02( photon2_corr.pfChgIso02WrtVtx( pvx ) );
-                photon1_corr.setpfChgIsoWrtChosenVtx03( photon1_corr.pfChgIso03WrtVtx( pvx ) );
-                photon2_corr.setpfChgIsoWrtChosenVtx03( photon2_corr.pfChgIso03WrtVtx( pvx ) );
 
                 DiPhotonCandidate dipho( pp1, pp2, pvx );
                 dipho.setVertexIndex( ivtx );
