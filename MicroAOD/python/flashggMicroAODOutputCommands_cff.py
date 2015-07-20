@@ -8,7 +8,7 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "drop *_flashggPrunedGenParticles_*_*",   
                                                      "keep recoGenParticles_flashggPrunedGenParticles_*_*", # this line, and preceding, drop unneded association object
                                                      "keep *_offlineSlimmedPrimaryVertices_*_*",
-                                                     "keep *_reducedEgamma_reduced*Clusters_*",
+                                                     "keep *_reducedEgamma_reducedSuperClusters_*",
                                                      "keep *_reducedEgamma_*PhotonCores_*",
                                                      "keep *_slimmedMETs_*_*",
                                                      "keep *_fixedGridRhoAll_*_*",
