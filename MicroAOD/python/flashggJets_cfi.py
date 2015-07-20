@@ -111,10 +111,8 @@ flashggJets = cms.EDProducer('FlashggJetProducer',
 
 def addQGTaggerPFCHSLeg(process):
   process.load('RecoJets.JetProducers.QGTagger_cfi')
+  process.QGTaggerPFCHSLeg                  = process.QGTagger.clone( srcJets   = 'flashggJetsPFCHSLeg', jetsLabel = 'ak4PFJetsCHS')
 
-  process.QGTaggerPFCHSLeg = process.QGTagger.clone( srcJets   = 'flashggJets' ,
-                                                     jetsLabel = 'QGL_AK4PFchs')
-  
-  process.QGTaggerPFCHSLeg.jec              = cms.InputTag('')# keept empty, because are already corrected
-  process.QGTaggerPFCHSLeg.systematicsLabel = cms.string('')# Produce systematic smearings (not yet available, keep empty)
+  #process.QGTaggerPFCHSLeg.jec              = cms.InputTag('')# keept empty, because are already corrected
+  #process.QGTaggerPFCHSLeg.systematicsLabel = cms.string('')# Produce systematic smearings (not yet available, keep empty)
   
