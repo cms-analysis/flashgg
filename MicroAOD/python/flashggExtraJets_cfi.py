@@ -140,16 +140,14 @@ flashggJetsPFCHS0 = cms.EDProducer('FlashggJetProducer',
 
 def addQGTaggerPF(process):
   process.load('RecoJets.JetProducers.QGTagger_cfi')
-  process.QGTaggerPF     =  process.QGTagger.clone( srcJets   = 'flashggJets' ,
-                                                               jetsLabel = 'QGL_AK4PFchs')
+  process.QGTaggerPF     =  process.QGTagger.clone( srcJets   = 'flashggJetsPF' ,jetsLabel = 'QGL_AK4PF')
   
-  process.QGTaggerPF.jec              = cms.InputTag('')# keept empty, because are already corrected
-  process.QGTaggerPF.systematicsLabel = cms.string('')# Produce systematic smearings (not yet available, keep empty)
+  #process.QGTaggerPF.jec              = cms.InputTag('')# keept empty, because are already corrected
+  #process.QGTaggerPF.systematicsLabel = cms.string('')# Produce systematic smearings (not yet available, keep empty)
   
 def addQGTaggerPFCHS0(process):
   process.load('RecoJets.JetProducers.QGTagger_cfi')
-  process.QGTaggerPFCHS0 =  process.QGTagger.clone( srcJets   = 'flashggJets' ,
-                                                               jetsLabel = 'QGL_AK4PFchs')
+  process.QGTaggerPFCHS0 =  process.QGTagger.clone( srcJets   = 'flashggJetsPFCHS0' ,jetsLabel = 'ak4PFJetsCHS')
   
-  process.QGTaggerPFCHS0.jec              = cms.InputTag('')# keept empty, because are already corrected
-  process.QGTaggerPFCHS0.systematicsLabel = cms.string('')# Produce systematic smearings (not yet available, keep empty)
+  #process.QGTaggerPFCHS0.jec              = cms.InputTag('')# keept empty, because are already corrected
+  #process.QGTaggerPFCHS0.systematicsLabel = cms.string('')# Produce systematic smearings (not yet available, keep empty)

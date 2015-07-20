@@ -96,6 +96,7 @@ double delta_R( const reco::GenJet *genJet, edm::Ptr<flashgg::Jet> jet )
 }
 
 struct eventInfo {
+    int   eventID;
 
     float genVertexZ;
     float zerothVertexZ;
@@ -128,6 +129,7 @@ struct eventInfo {
 
 // per-vertex tree
 struct GenPartInfo {
+    int   eventID;
     float pt;
     float eta;
     float y;
@@ -144,6 +146,7 @@ struct GenPartInfo {
 
 // per-genJet tree
 struct GenJetInfo {
+    int   eventID;
     float pt;
     float eta;
     float phi;
@@ -178,6 +181,7 @@ struct GenJetInfo {
 };
 // per recoJet tree
 struct jetInfo {
+    int   eventID;
     float pt;
     float rawPt;
     float bestPt;
@@ -294,13 +298,15 @@ private:
     //EDGetTokenT< VertexCandidateMap > vertexCandidateMapTokenDz_;
     //EDGetTokenT< VertexCandidateMap > vertexCandidateMapTokenAOD_;
 
-    EDGetTokenT< edm::View<reco::GenParticle> > genPartToken_;
-    EDGetTokenT< edm::View<reco::GenJet> >      genJetToken_;
-    EDGetTokenT< edm::View<flashgg::Jet> >      jetDzToken_;
-    EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> > diPhotonToken_;
-    EDGetTokenT< View<reco::Vertex> >           vertexToken_;
+    EDGetTokenT< edm::View<reco::GenParticle> >          genPartToken_;
+    EDGetTokenT< edm::View<reco::GenJet> >               genJetToken_;
+    EDGetTokenT< edm::View<flashgg::Jet> >               jetDzToken_;
+    EDGetTokenT< edm::View<flashgg::DiPhotonCandidate> > diPhotonToken_;
+    EDGetTokenT< View<reco::Vertex> >                    vertexToken_;
     EDGetTokenT< VertexCandidateMap > vertexCandidateMapToken_;
-    EDGetTokenT< edm::ValueMap<float> > qgToken_;
+
+    edm::InputTag 					qgVariablesInputTag;
+    edm::EDGetTokenT<edm::ValueMap<float>> 		qgToken;
 
 
     TTree     *eventTree;
@@ -331,8 +337,9 @@ JetValidationTreeMaker::JetValidationTreeMaker( const edm::ParameterSet &iConfig
     diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
     vertexToken_( consumes<View<reco::Vertex> >( iConfig.getUntrackedParameter<InputTag> ( "VertexTag", InputTag( "offlineSlimmedPrimaryVertices" ) ) ) ),
     vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTag" ) ) ),
-    qgToken_( consumes<edm::ValueMap<float> > ( iConfig.getUntrackedParameter<InputTag>( "QGTagger", InputTag( "qgLikelihood" ) ) ) ),
-    //qgToken_      (consumes<edm::ValueMap<float> >(edm::InputTag("QGTagger", "qgLikelihood"))),
+
+    qgVariablesInputTag( iConfig.getParameter<edm::InputTag>( "qgVariablesInputTag" ) ),
+
     usePUJetID( iConfig.getUntrackedParameter<bool>( "UsePUJetID"   , false ) ),
     photonJetVeto( iConfig.getUntrackedParameter<bool>( "PhotonJetVeto", true ) ),
     homeGenJetMatching_( iConfig.getUntrackedParameter<bool>( "homeGenJetMatching", false ) ),
@@ -341,6 +348,7 @@ JetValidationTreeMaker::JetValidationTreeMaker( const edm::ParameterSet &iConfig
 {
     event_number = 0;
     jetCollectionName = iConfig.getParameter<string>( "StringTag" );
+    qgToken	= consumes<edm::ValueMap<float>>( edm::InputTag( qgVariablesInputTag.label(), "qgLikelihood" ) );
 
 }
 
@@ -356,9 +364,9 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
 
     if( debug_ ) {
         std::cout << "\e[0;31m";
-        std::cout << setw( 6 )  << "========================= "     << std::endl;
+        std::cout << setw( 6 )  << "========================= "            << std::endl;
         std::cout << setw( 12 ) << "Event" << setw( 12 ) << event_number   << std::endl;
-        std::cout << setw( 6 )  << "------------------------- "     << std::endl;
+        std::cout << setw( 6 )  << "------------------------- "            << std::endl;
         std::cout << "\e[0m" << std::endl;
     }
 
@@ -385,8 +393,9 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
     iEvent.getByToken( jetDzToken_, jetsDz );
     //const PtrVector<flashgg::Jet>& jetsDzPointers = jetsDz->ptrVector();
 
-    Handle<edm::ValueMap<float>> qgHandle;
-    iEvent.getByToken( qgToken_, qgHandle );
+    edm::Handle<edm::ValueMap<float>> qgHandle;
+    //if(!isPatJetCollection(jets))
+    iEvent.getByToken( qgToken, qgHandle );
 
     Handle<VertexCandidateMap> vtxmap;
     if( debug_ ) {
@@ -403,16 +412,17 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
             legacyEqZeroth = 1;
         }
     }
+
     eInfo.nDiphotons     = nDiphotons;
     eInfo.legacyEqZeroth = legacyEqZeroth;
 
     initEventStructure();
-
-    jInfo.nJets = jetsDz->size();
-    jInfo.nPV   = vtxs->size();
+    eInfo.eventID    = event_number;
+    jInfo.nJets      = jetsDz->size();
+    jInfo.nPV        = vtxs->size();
     genJetInfo.nJets = jetsDz->size();
     genJetInfo.nPV   = vtxs->size();
-    eInfo.nSV   = 0;
+    eInfo.nSV        = 0;
 
     if( debug_ ) {
         std::cout << "\e[0;31m";
@@ -550,7 +560,7 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
 
     // +++ loop on the reconstructed jets
     for( unsigned int jdz = 0 ; jdz < jetsDz->size() ; jdz++ ) {
-
+        jInfo.eventID       = event_number;
         jInfo.id            = jdz;
         // qg likelihood retrieve
         jInfo.photonMatch   = int( _isPhoton[jdz] );
@@ -784,7 +794,7 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
     }// ++++ end loop reco jets
     // loop over the GenJets
     for( unsigned int genLoop = 0 ; genLoop < genJets->size(); genLoop++ ) {
-
+        genJetInfo.eventID         = event_number;
         genJetInfo.recoJetPt       = -999.;
         genJetInfo.recoJetRawPt    = -999.;
         genJetInfo.recoJetBestPt   = -999.;
@@ -863,11 +873,14 @@ JetValidationTreeMaker::beginJob()
     type += jetCollectionName;
 
     eventTree = fs_->make<TTree>( type.c_str(), jetCollectionName.c_str() );
+    eventTree->Branch( "eventID"    , &eInfo.eventID       , "eventID/I" );
     eventTree->Branch( "eventBranch", &eInfo.legacyEqZeroth, "legacyEqZeroth/I:nDiphotons/I" );
 
     std::string typeJet( "jetTree_" );
     typeJet += jetCollectionName;
     jetTree = fs_->make<TTree>( typeJet.c_str(), jetCollectionName.c_str() );
+
+    jetTree->Branch( "eventID"         , &jInfo.eventID           , "eventID/I" );
     jetTree->Branch( "pt"              , &jInfo.pt                , "pt/F" );
     jetTree->Branch( "rawPt"           , &jInfo.rawPt             , "rawPt/F" );
     jetTree->Branch( "bestPt"          , &jInfo.bestPt            , "bestPt/F" );
@@ -903,6 +916,7 @@ JetValidationTreeMaker::beginJob()
     jetTree->Branch( "nNeutral"  , &jInfo.nNeutral  , "nNeutral/F" );
     jetTree->Branch( "chgEmFrac" , &jInfo.chgEmFrac , "chgEmFrac/F" );
     jetTree->Branch( "neuEmFrac" , &jInfo.neuEmFrac , "neuEmFrac/F" );
+    jetTree->Branch( "qgLikelihood" , &jInfo.jet_qgLikelihood , "qgLikelihood/F" );
 
     jetTree->Branch( "genJetPt"       , &jInfo.genJetPt     , "genJetPt/F" );
     jetTree->Branch( "genJetEta"      , &jInfo.genJetEta    , "genJetEta/F" );
@@ -931,6 +945,7 @@ JetValidationTreeMaker::beginJob()
     std::string typeGenJet( "genJetTree_" );
     typeGenJet += jetCollectionName;
     genJetTree = fs_->make<TTree>( typeGenJet.c_str(), jetCollectionName.c_str() );
+    genJetTree->Branch( "eventID", &genJetInfo.eventID , "eventID/I" );
     genJetTree->Branch( "pt"     , &genJetInfo.pt      , "pt/F" );
     genJetTree->Branch( "eta"    , &genJetInfo.eta     , "eta/F" );
     genJetTree->Branch( "phi"    , &genJetInfo.phi     , "phi/F" );
