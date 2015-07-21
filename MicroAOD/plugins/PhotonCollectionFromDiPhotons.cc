@@ -16,6 +16,8 @@
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
+#include "DataFormats/EgammaCandidates/interface/PhotonCore.h"
+#include "DataFormats/EgammaReco/interface/SuperCluster.h"
 
 #include <set>
 
@@ -39,8 +41,15 @@ namespace flashgg {
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         debug_( iConfig.getUntrackedParameter( "Debug", false ) )
     {
+        // vector<reco::PhotonCore>              "reducedEgamma"             "reducedGedPhotonCores"   "PAT"
+        // vector<reco::SuperCluster>            "reducedEgamma"             "reducedSuperClusters"   "PAT"
+        // recoSuperClusters_reducedEgamma_reducedSuperClusters_PAT. 3021.95 1028.47
+        // recoPhotonCores_reducedEgamma_reducedGedPhotonCores_PAT. 265.606 55.832
+
         produces<vector<flashgg::DiPhotonCandidate> >();
         produces<vector<flashgg::Photon> >();
+        produces<vector<reco::SuperCluster> >();
+        produces<vector<reco::PhotonCore> >();
     }
 
     void PhotonCollectionFromDiPhotons::produce( Event &evt, const EventSetup & )
@@ -50,7 +59,13 @@ namespace flashgg {
 
         auto_ptr<vector<DiPhotonCandidate> > diPhotonColl( new vector<DiPhotonCandidate> );
         auto_ptr<vector<Photon> > photonColl( new vector<Photon> );
+        auto_ptr<vector<reco::SuperCluster> > scColl( new vector<reco::SuperCluster> );
+        auto_ptr<vector<reco::PhotonCore> > photonCoreColl( new vector<reco::PhotonCore> );
+
         edm::RefProd<vector<Photon> > rPhoton = evt.getRefBeforePut<vector<Photon> >();
+        edm::RefProd<vector<reco::SuperCluster> > rSuperCluster = evt.getRefBeforePut<vector<reco::SuperCluster> >();
+        edm::RefProd<vector<reco::PhotonCore> > rPhotonCore = evt.getRefBeforePut<vector<reco::PhotonCore> >();
+
 
         // Same order as output photon collection to keep track of what's copied already
         vector<Ptr<Photon> > usedPhotonPtrs;
@@ -94,6 +109,13 @@ namespace flashgg {
                 p1.removeVerticesExcept( usedVertices );
                 pp1 = edm::refToPtr( edm::Ref<vector<Photon> >( rPhoton, usedPhotonPtrs.size() ) );
                 if( debug_ ) { std::cout << "   Putting copy of Leading photon with pt " << oldpp1->pt() << " in at place " << usedPhotonPtrs.size() << std::endl; }
+
+                reco::PhotonCore p1c( *( p1.photonCore() ) );
+                p1c.setSuperCluster( edm::Ref<vector<reco::SuperCluster> >( rSuperCluster, usedPhotonPtrs.size() ) );
+                p1.setPhotonCore( edm::Ref<vector<reco::PhotonCore> >( rPhotonCore, usedPhotonPtrs.size() ) );
+
+                scColl->push_back( *( oldpp1->superCluster() ) );
+                photonCoreColl->push_back( p1c );
                 photonColl->push_back( p1 );
                 usedPhotonPtrs.push_back( oldpp1 );
             }
@@ -102,6 +124,13 @@ namespace flashgg {
                 p2.removeVerticesExcept( usedVertices );
                 pp2 = edm::refToPtr( edm::Ref<vector<Photon> >( rPhoton, usedPhotonPtrs.size() ) );
                 if( debug_ ) { std::cout << "   Putting copy of Subleading photon with pt " << oldpp2->pt() << " in at place " << usedPhotonPtrs.size() << std::endl; }
+
+                reco::PhotonCore p2c( *( p2.photonCore() ) );
+                p2c.setSuperCluster( edm::Ref<vector<reco::SuperCluster> >( rSuperCluster, usedPhotonPtrs.size() ) );
+                p2.setPhotonCore( edm::Ref<vector<reco::PhotonCore> >( rPhotonCore, usedPhotonPtrs.size() ) );
+
+                scColl->push_back( *( oldpp2->superCluster() ) );
+                photonCoreColl->push_back( p2c );
                 photonColl->push_back( p2 );
                 usedPhotonPtrs.push_back( oldpp2 );
             }
@@ -121,6 +150,8 @@ namespace flashgg {
             std::cout << " Final photon collection size: " << photonColl->size() << std::endl;
         }
 
+        evt.put( scColl );
+        evt.put( photonCoreColl );
         evt.put( photonColl );
 
         if( debug_ ) {
