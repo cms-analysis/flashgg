@@ -386,6 +386,7 @@ namespace flashgg {
                     for( unsigned int i = 0 ; i < weightList.size() ; i++ ) {
                         std::cout << "    " << weightList[i] << " " << Electron->weight( weightList[i] );
                     }
+                    std::cout << std::endl;
                     */
 
                     TLorentzVector elec_p4;
@@ -464,6 +465,7 @@ namespace flashgg {
                     for( unsigned int i = 0 ; i < weightList2.size() ; i++ ) {
                         std::cout << "    " << weightList2[i] << " " << Electron->weight( weightList2[i] );
                     }
+                    std::cout << std::endl;
                     */
 
                     tagElectrons.push_back( Electron );
@@ -483,8 +485,18 @@ namespace flashgg {
                 if( check >= deltaRElectronJetcountThreshold_ ) {ElectronJets = true;}
             }
 
-            if( tagBJets.size() >= bjetsNumberThreshold_ && tagJets.size() >= jetsNumberThreshold_ && photonSelection && ( ( tagMuons.size() > 0 && muonJets ) ||
-                    ( tagElectrons.size() > 0 && ElectronJets ) ) ) {
+            /*
+            std::cout << " TTHLeptonicTagProducer tagBJets.size()=" << tagBJets.size()
+                      << " tagJets.size()=" << tagJets.size()
+                      << " photonSelection=" << photonSelection
+                      << " tagMuons.size()=" << tagMuons.size() << " muonJets=" << muonJets
+                      << " tagElectrons.size()="<< tagElectrons.size() << " ElectronJets=" << ElectronJets
+                      << std::endl;
+            */
+
+            if( tagBJets.size() >= bjetsNumberThreshold_ && tagJets.size() >= jetsNumberThreshold_ && photonSelection
+                    && ( ( tagMuons.size() > 0 && muonJets ) || ( tagElectrons.size() > 0 && ElectronJets ) ) ) {
+                //                std::cout << " TTHLeptonicTagProducer TAGGED " << std::endl;
                 if( tagElectrons.size() > 0 && ElectronJets ) {
                     //                    std::cout << "including electron weights" << std::endl;
                     tthltags_obj.includeWeights( *tagElectrons[0] );
@@ -513,6 +525,8 @@ namespace flashgg {
                     truths->push_back( truth_obj );
                     tthltags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
                 }
+            } else {
+                //                std::cout << " TTHLeptonicTagProducer NO TAG " << std::endl;
             }
 
         }//diPho loop end !
