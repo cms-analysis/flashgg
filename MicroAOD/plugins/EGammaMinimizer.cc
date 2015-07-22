@@ -8,16 +8,13 @@
 #include "FWCore/Utilities/interface/EDMException.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
-#include "flashgg/MicroAOD/interface/PhotonIdUtils.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
-#include "flashgg/MicroAOD/interface/VertexSelectorBase.h"
-#include "DataFormats/PatCandidates/interface/PackedCandidate.h"
-#include "flashgg/DataFormats/interface/VertexCandidateMap.h"
-#include "DataFormats/EgammaCandidates/interface/Conversion.h"
-#include "DataFormats/BeamSpot/interface/BeamSpot.h"
-#include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 #include "DataFormats/EgammaCandidates/interface/PhotonCore.h"
 #include "DataFormats/EgammaReco/interface/SuperCluster.h"
+#include "flashgg/DataFormats/interface/Electron.h"
+#include "DataFormats/EgammaCandidates/interface/GsfElectronCore.h"
+#include "DataFormats/Common/interface/RefToPtr.h"
+
 
 #include <set>
 
@@ -34,41 +31,65 @@ namespace flashgg {
     private:
         void produce( Event &, const EventSetup & ) override;
         EDGetTokenT<View<flashgg::DiPhotonCandidate> > diPhotonToken_;
+        EDGetTokenT<View<flashgg::Electron> > electronToken_;
+        string photonCollectionName_, electronCollectionName_, diPhotonCollectionName_;
+        string superClusterCollectionName_, photonCoreCollectionName_, electronCoreCollectionName_;
         bool debug_;
     };
 
     EGammaMinimizer::EGammaMinimizer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
+        electronToken_( consumes<View<flashgg::Electron> >( iConfig.getParameter<InputTag> ( "ElectronTag" ) ) ),
+        photonCollectionName_( iConfig.getParameter<string> ( "PhotonCollectionName" ) ),
+        electronCollectionName_( iConfig.getParameter<string> ( "ElectronCollectionName" ) ),
+        diPhotonCollectionName_( iConfig.getParameter<string> ( "DiPhotonCollectionName" ) ),
+        superClusterCollectionName_( iConfig.getParameter<string> ( "SuperClusterCollectionName" ) ),
+        photonCoreCollectionName_( iConfig.getParameter<string> ( "PhotonCoreCollectionName" ) ),
+        electronCoreCollectionName_( iConfig.getParameter<string> ( "ElectronCoreCollectionName" ) ),
         debug_( iConfig.getUntrackedParameter( "Debug", false ) )
     {
-        // vector<reco::PhotonCore>              "reducedEgamma"             "reducedGedPhotonCores"   "PAT"
-        // vector<reco::SuperCluster>            "reducedEgamma"             "reducedSuperClusters"   "PAT"
-        // recoSuperClusters_reducedEgamma_reducedSuperClusters_PAT. 3021.95 1028.47
-        // recoPhotonCores_reducedEgamma_reducedGedPhotonCores_PAT. 265.606 55.832
-
-        produces<vector<flashgg::DiPhotonCandidate> >();
-        produces<vector<flashgg::Photon> >();
-        produces<vector<reco::SuperCluster> >();
-        produces<vector<reco::PhotonCore> >();
+        produces<vector<flashgg::DiPhotonCandidate> >( diPhotonCollectionName_ );
+        produces<vector<flashgg::Photon> >( photonCollectionName_ );
+        produces<vector<flashgg::Electron> >( electronCollectionName_ );
+        produces<vector<reco::SuperCluster> >( superClusterCollectionName_ );
+        produces<vector<reco::PhotonCore> >( photonCoreCollectionName_ );
+        produces<vector<reco::GsfElectronCore> >( electronCoreCollectionName_ );
+        if( debug_ ) {
+            std::cout << "FLASHggEGammaMinimizer producing: " << std::endl;
+            std::cout << " diPhotonCollectionName_ " << diPhotonCollectionName_ << std::endl;
+            std::cout << " photonCollectionName_ " << photonCollectionName_ << std::endl;
+            std::cout << " photonCoreCollectionName_ " << photonCoreCollectionName_ << std::endl;
+            std::cout << " electronCollectionName_ " << electronCollectionName_ << std::endl;
+            std::cout << " electronCoreCollectionName_ " << electronCoreCollectionName_ << std::endl;
+            std::cout << " superClusterCollectionName_ " << superClusterCollectionName_ << std::endl;
+        }
     }
 
     void EGammaMinimizer::produce( Event &evt, const EventSetup & )
     {
-        Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
+        Handle<View<DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
+
+        Handle<View<Electron> > electrons;
+        evt.getByToken( electronToken_, electrons );
 
         auto_ptr<vector<DiPhotonCandidate> > diPhotonColl( new vector<DiPhotonCandidate> );
         auto_ptr<vector<Photon> > photonColl( new vector<Photon> );
         auto_ptr<vector<reco::SuperCluster> > scColl( new vector<reco::SuperCluster> );
         auto_ptr<vector<reco::PhotonCore> > photonCoreColl( new vector<reco::PhotonCore> );
+        auto_ptr<vector<Electron> > electronColl( new vector<Electron> );
+        auto_ptr<vector<reco::GsfElectronCore> > electronCoreColl( new vector<reco::GsfElectronCore> );
 
-        edm::RefProd<vector<Photon> > rPhoton = evt.getRefBeforePut<vector<Photon> >();
-        edm::RefProd<vector<reco::SuperCluster> > rSuperCluster = evt.getRefBeforePut<vector<reco::SuperCluster> >();
-        edm::RefProd<vector<reco::PhotonCore> > rPhotonCore = evt.getRefBeforePut<vector<reco::PhotonCore> >();
-
+        edm::RefProd<vector<Photon> > rPhoton = evt.getRefBeforePut<vector<Photon> >( photonCollectionName_ );
+        edm::RefProd<vector<reco::SuperCluster> > rSuperCluster = evt.getRefBeforePut<vector<reco::SuperCluster> >( superClusterCollectionName_ );
+        edm::RefProd<vector<reco::PhotonCore> > rPhotonCore = evt.getRefBeforePut<vector<reco::PhotonCore> >( photonCoreCollectionName_ );
+        edm::RefProd<vector<reco::GsfElectronCore> > rElectronCore = evt.getRefBeforePut<vector<reco::GsfElectronCore> >( electronCoreCollectionName_ );
 
         // Same order as output photon collection to keep track of what's copied already
         vector<Ptr<Photon> > usedPhotonPtrs;
+
+        // Refs to old super clusters to keep track of what's been copied already
+        vector<edm::Ref<vector<reco::SuperCluster> > > usedSuperClusterRefs;
 
         if( debug_ ) {
             std::cout << std::cout << " Input DiPhoton collection size: " << diPhotons->size() << std::endl;
@@ -80,7 +101,7 @@ namespace flashgg {
         }
 
         for( unsigned int i = 0 ; i < diPhotons->size() ; i++ ) {
-            //            std::cout << "  DiPhoton " << i << std::endl;
+            if( debug_ ) { std::cout << "  DiPhoton " << i << std::endl; }
             Ptr<DiPhotonCandidate> oldpdp = diPhotons->ptrAt( i );
             Ptr<Photon> oldpp1 = oldpdp->leadingView()->originalPhoton();
             Ptr<Photon> oldpp2 = oldpdp->subLeadingView()->originalPhoton();
@@ -118,6 +139,7 @@ namespace flashgg {
                 photonCoreColl->push_back( p1c );
                 photonColl->push_back( p1 );
                 usedPhotonPtrs.push_back( oldpp1 );
+                usedSuperClusterRefs.push_back( oldpp1->superCluster() );
             }
             if( !donepp2 ) {
                 Photon p2( *oldpp2 ); // copy Photon
@@ -133,6 +155,7 @@ namespace flashgg {
                 photonCoreColl->push_back( p2c );
                 photonColl->push_back( p2 );
                 usedPhotonPtrs.push_back( oldpp2 );
+                usedSuperClusterRefs.push_back( oldpp2->superCluster() );
             }
 
             // Can't use ordinary DiPhoton constructor with Ptrs because pp1 and pp2 are pointing into a collection that's not saved yet
@@ -145,14 +168,51 @@ namespace flashgg {
             diPhotonColl->push_back( dipho );
         }
 
+        // Now we have to do the electrons too so that they point into the same superCluster collection in the case of overlaps
+        for( unsigned int i = 0 ; i < electrons->size() ; i++ ) {
+            Electron ele( *electrons->ptrAt( i ) );
+            reco::GsfElectronCore elec( *ele.core() );
+            bool done = false;
+            for( unsigned int j = 0 ; j < usedSuperClusterRefs.size() ; j++ ) {
+                if( elec.superCluster() == usedSuperClusterRefs[j] ) {
+                    done = true;
+                    elec.setSuperCluster( edm::Ref<vector<reco::SuperCluster> >( rSuperCluster, j ) );
+                    if( debug_ ) { std::cout << "  Electron " << i << " with pt " << ele.pt() << " already has its supercluster at place " << j << std::endl; }
+                    break;
+                }
+            }
+            if( !done ) {
+                if( debug_ ) { std::cout << "  Electron " << i << " with pt " << ele.pt() << " has no supercluster yet, storing it at place " << usedSuperClusterRefs.size() << std::endl; }
+                elec.setSuperCluster( edm::Ref<vector<reco::SuperCluster> >( rSuperCluster, usedSuperClusterRefs.size() ) );
+                scColl->push_back( *ele.superCluster() ); // copy old sc from old core
+                usedSuperClusterRefs.push_back( ele.superCluster() ); // ref to old sc from old core
+            }
+            ele.setCore( edm::Ref<vector<reco::GsfElectronCore> >( rElectronCore, i ) );
+            electronCoreColl->push_back( elec );
+            electronColl->push_back( ele );
+        }
+
         if( debug_ ) {
             std::cout << " Final diphoton collection size: " << diPhotonColl->size() << std::endl;
             std::cout << " Final photon collection size: " << photonColl->size() << std::endl;
+            std::cout << " Final photon core collection size: " << photonCoreColl->size() << std::endl;
+            std::cout << " Final electron collection size: " << electronColl->size() << std::endl;
+            std::cout << " Final electron core collection size: " << electronCoreColl->size() << std::endl;
+            std::cout << " Final supercluster collection size: " << scColl->size() << std::endl;
+            std::cout << " Final diphoton collection name: " <<  diPhotonCollectionName_ << std::endl;
+            std::cout << " Final photon collection name: " << photonCollectionName_ << std::endl;
+            std::cout << " Final photon core collection name: " << photonCoreCollectionName_ << std::endl;
+            std::cout << " Final electron collection name: " << electronCollectionName_ << std::endl;
+            std::cout << " Final electron core collection name: " << electronCoreCollectionName_ << std::endl;
+            std::cout << " Final supercluster collection name: " << superClusterCollectionName_ << std::endl;
+
         }
 
-        evt.put( scColl );
-        evt.put( photonCoreColl );
-        evt.put( photonColl );
+        evt.put( scColl, superClusterCollectionName_ );
+        evt.put( photonCoreColl, photonCoreCollectionName_ );
+        evt.put( photonColl, photonCollectionName_ );
+        evt.put( electronCoreColl, electronCoreCollectionName_ );
+        evt.put( electronColl, electronCollectionName_ );
 
         if( debug_ ) {
             std::cout << " We put the photons in, now we check diphoton pt before and after recomputation: " << std::endl;
@@ -163,7 +223,7 @@ namespace flashgg {
             }
         }
 
-        evt.put( diPhotonColl );
+        evt.put( diPhotonColl, diPhotonCollectionName_ );
     }
 }
 
