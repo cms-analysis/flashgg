@@ -27,6 +27,20 @@ process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring("fil
 process.load("flashgg/Taggers/flashggTagSequence_cfi")
 process.load("flashgg/Taggers/flashggTagTester_cfi")
 
+# For debugging
+switchToPreselected = False
+switchToFinal = False
+assert(not switchToPreselected or not switchToFinal)
+
+if switchToPreselected:
+    from PhysicsTools.PatAlgos.tools.helpers import massSearchReplaceAnyInputTag
+    massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggDiPhotons"),cms.InputTag("flashggPreselectedDiPhotons"))
+
+if switchToFinal:
+    from flashgg.MicroAOD.flashggFinalEGamma_cfi import flashggFinalEGamma
+    from PhysicsTools.PatAlgos.tools.helpers import massSearchReplaceAnyInputTag
+    massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggDiPhotons"),cms.InputTag("flashggFinalEGamma",flashggFinalEGamma.DiPhotonCollectionName.value()))
+
 from flashgg.Taggers.flashggTagOutputCommands_cff import tagDefaultOutputCommand
 
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myTagOutputFile.root'),
