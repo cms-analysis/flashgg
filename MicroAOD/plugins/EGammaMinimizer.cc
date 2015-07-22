@@ -26,18 +26,18 @@ using namespace std;
 
 namespace flashgg {
 
-    class PhotonCollectionFromDiPhotons : public EDProducer
+    class EGammaMinimizer : public EDProducer
     {
 
     public:
-        PhotonCollectionFromDiPhotons( const ParameterSet & );
+        EGammaMinimizer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
         EDGetTokenT<View<flashgg::DiPhotonCandidate> > diPhotonToken_;
         bool debug_;
     };
 
-    PhotonCollectionFromDiPhotons::PhotonCollectionFromDiPhotons( const ParameterSet &iConfig ) :
+    EGammaMinimizer::EGammaMinimizer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         debug_( iConfig.getUntrackedParameter( "Debug", false ) )
     {
@@ -52,7 +52,7 @@ namespace flashgg {
         produces<vector<reco::PhotonCore> >();
     }
 
-    void PhotonCollectionFromDiPhotons::produce( Event &evt, const EventSetup & )
+    void EGammaMinimizer::produce( Event &evt, const EventSetup & )
     {
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
@@ -167,8 +167,8 @@ namespace flashgg {
     }
 }
 
-typedef flashgg::PhotonCollectionFromDiPhotons FlashggPhotonCollectionFromDiPhotons;
-DEFINE_FWK_MODULE( FlashggPhotonCollectionFromDiPhotons );
+typedef flashgg::EGammaMinimizer FlashggEGammaMinimizer;
+DEFINE_FWK_MODULE( FlashggEGammaMinimizer );
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil
