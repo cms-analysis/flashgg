@@ -3,10 +3,10 @@ from flashgg.MicroAOD.flashggTkVtxMap_cfi import flashggVertexMapUnique,flashggV
 from flashgg.MicroAOD.flashggPhotons_cfi import flashggPhotons
 from flashgg.MicroAOD.flashggDiPhotons_cfi import flashggDiPhotons
 from flashgg.MicroAOD.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
-from flashgg.MicroAOD.flashggJets_cfi import flashggJets
+#from flashgg.MicroAOD.flashggJets_cfi import flashggJets
 from flashgg.MicroAOD.flashggElectrons_cfi import flashggElectrons
 from flashgg.MicroAOD.flashggMuons_cfi import flashggMuons
-from flashgg.MicroAOD.flashggObjectSelectors_cff import selectedFlashggJets,selectedFlashggMuons,selectedFlashggElectrons,selectedFlashggPhotons
+from flashgg.MicroAOD.flashggObjectSelectors_cff import selectedFlashggMuons,selectedFlashggElectrons, selectedFlashggPhotons#, selectedFlashggJets
 
 from flashgg.MicroAOD.flashggMicroAODGenSequence_cff import *
 
@@ -25,7 +25,8 @@ flashggMicroAODSequence = cms.Sequence((eventCount+weightsCount
                                         +(flashggElectrons*selectedFlashggElectrons)
                                         +(flashggMuons*selectedFlashggMuons)
                                         +flashggMicroAODGenSequence
-                                        )
+                                    )
                                        *flashggPhotons*selectedFlashggPhotons*flashggDiPhotons
-                                       *(flashggPreselectedDiPhotons+flashggVertexMapForCHS*flashggJets*selectedFlashggJets)
-                                       )
+                                       *(flashggPreselectedDiPhotons+
+                                         flashggVertexMapForCHS)#*flashggJets*selectedFlashggJets))
+                                     )
