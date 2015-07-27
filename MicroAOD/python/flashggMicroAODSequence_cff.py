@@ -6,8 +6,14 @@ from flashgg.MicroAOD.flashggPreselectedDiPhotons_cfi import flashggPreselectedD
 #from flashgg.MicroAOD.flashggJets_cfi import flashggJets
 from flashgg.MicroAOD.flashggElectrons_cfi import flashggElectrons
 from flashgg.MicroAOD.flashggMuons_cfi import flashggMuons
+
 from flashgg.MicroAOD.flashggObjectSelectors_cff import selectedFlashggMuons,selectedFlashggElectrons, selectedFlashggPhotons#, selectedFlashggJets
 
+#=======
+#from flashgg.MicroAOD.flashggObjectSelectors_cff import selectedFlashggJets,selectedFlashggMuons,selectedFlashggElectrons,selectedFlashggPhotons
+#from flashgg.MicroAOD.flashggFinalEGamma_cfi import flashggFinalEGamma
+
+#>>>>>>> upstream/master
 from flashgg.MicroAOD.flashggMicroAODGenSequence_cff import *
 
 eventCount = cms.EDProducer("EventCountProducer")
@@ -26,7 +32,13 @@ flashggMicroAODSequence = cms.Sequence((eventCount+weightsCount
                                         +(flashggMuons*selectedFlashggMuons)
                                         +flashggMicroAODGenSequence
                                     )
-                                       *flashggPhotons*selectedFlashggPhotons*flashggDiPhotons
+                                    *flashggPhotons*selectedFlashggPhotons*flashggDiPhotons
+#<<<<<<< HEAD
                                        *(flashggPreselectedDiPhotons+
                                          flashggVertexMapForCHS)#*flashggJets*selectedFlashggJets))
-                                     )
+                                   )
+#=======
+#                                       *(flashggPreselectedDiPhotons+flashggVertexMapForCHS*flashggJets*selectedFlashggJets)
+#                                       *flashggFinalEGamma
+#                                       )
+#>>>>>>> upstream/master

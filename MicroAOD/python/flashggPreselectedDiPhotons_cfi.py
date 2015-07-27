@@ -1,41 +1,41 @@
 import FWCore.ParameterSet.Config as cms
 
-# single photon preselection is mickmicking as much as possible
-# what is documented in AN 2013/253 v8 page 41 table 18,
+#changed to match trigger logic
+#uses objects which don't quite match HLT objects
+#needs to be updated with final preselection
 flashggPreselectedDiPhotons = cms.EDFilter("DiPhotonCandidateSelector",
-           src = cms.InputTag("flashggDiPhotons"),
-           cut = cms.string("""
-                             ( 
-                              (leadingPhoton.r9 <= 0.9 
-                                    && ( ((leadingPhoton.isEB && leadingPhoton.hadronicOverEm < 0.075 && leadingPhoton.sigmaIetaIeta < 0.014) 
-                                    || (leadingPhoton.isEE && leadingPhoton.hadronicOverEm < 0.075 && leadingPhoton.sigmaIetaIeta < 0.034)) 
-                                    && (leadingPhoton.hcalTowerSumEtConeDR03 - 0.005 * leadingPhoton.pt < 4.0) 
-                                    && (leadingPhoton.trkSumPtHollowConeDR03 - 0.002 * leadingPhoton.pt < 4.0) 
-                                    && (leadingPhoton.pfChgIsoWrtChosenVtx02 < 4.0) 
-                                    )) 
-                               || (leadingPhoton.r9 > 0.9 
-                                    && ( ((leadingPhoton.isEB && leadingPhoton.hadronicOverEm < 0.082 && leadingPhoton.sigmaIetaIeta < 0.014) 
-                                    || (leadingPhoton.isEE && leadingPhoton.hadronicOverEm < 0.075 && leadingPhoton.sigmaIetaIeta < 0.034)) 
-                                    && (leadingPhoton.hcalTowerSumEtConeDR03 - 0.005 * leadingPhoton.pt < 50.0) 
-                                    && (leadingPhoton.trkSumPtHollowConeDR03 - 0.002 * leadingPhoton.pt < 50.0) 
-                                    && (leadingPhoton.pfChgIsoWrtChosenVtx02 < 4.0) 
-                                    )) 
-                             ) && ( 
-                              (subLeadingPhoton.r9 <= 0.9 
-                                    && ( ((subLeadingPhoton.isEB && subLeadingPhoton.hadronicOverEm < 0.075 && subLeadingPhoton.sigmaIetaIeta < 0.014) 
-                                    || (subLeadingPhoton.isEE && subLeadingPhoton.hadronicOverEm < 0.075 && subLeadingPhoton.sigmaIetaIeta < 0.034)) 
-                                    && (subLeadingPhoton.hcalTowerSumEtConeDR03 - 0.005 * subLeadingPhoton.pt < 4.0) 
-                                    && (subLeadingPhoton.trkSumPtHollowConeDR03 - 0.002 * subLeadingPhoton.pt < 4.0) 
-                                    && (subLeadingPhoton.pfChgIsoWrtChosenVtx02 < 4.0) 
-                                    )) 
-                               || (subLeadingPhoton.r9 > 0.9 
-                                    && ( ((subLeadingPhoton.isEB && subLeadingPhoton.hadronicOverEm < 0.082 && subLeadingPhoton.sigmaIetaIeta < 0.014) 
-                                    || (subLeadingPhoton.isEE && subLeadingPhoton.hadronicOverEm < 0.075 && subLeadingPhoton.sigmaIetaIeta < 0.034)) 
-                                    && (subLeadingPhoton.hcalTowerSumEtConeDR03 - 0.005 * subLeadingPhoton.pt < 50.0) 
-                                    && (subLeadingPhoton.trkSumPtHollowConeDR03 - 0.002 * subLeadingPhoton.pt < 50.0) 
-                                    && (subLeadingPhoton.pfChgIsoWrtChosenVtx02 < 4.0) 
-                                    )) 
-                             ) 
-                            """)
-          )
-
+                                   src = cms.InputTag("flashggDiPhotons"),
+                                   cut = cms.string("""(leadingPhoton.pt > 30. && subLeadingPhoton.pt>18) &&
+                                                    (abs(leadingPhoton.superCluster.eta) < 2.5 && abs(subLeadingPhoton.superCluster.eta) < 2.5) &&
+                                    (  leadingPhoton.hadronicOverEm < 0.1 && subLeadingPhoton.hadronicOverEm < 0.1) &&
+                                    (( leadingPhoton.r9 > 0.5 && leadingPhoton.isEB) || (leadingPhoton.r9 > 0.8 && leadingPhoton.isEE)) &&
+                                    (( subLeadingPhoton.r9 > 0.5 && subLeadingPhoton.isEB) || (subLeadingPhoton.r9 > 0.8 && subLeadingPhoton.isEE)) &&
+                                    (
+                                        ( leadingPhoton.isEB &&
+                                        (leadingPhoton.r9>0.85 || 
+                                        (leadingPhoton.sigmaIetaIeta < 0.015 && 
+                                         leadingPhoton.pfChgIsoWrtChosenVtx02 < 6.0 && 
+                                         leadingPhoton.trkSumPtHollowConeDR03 < 6.0 )))  ||
+                                        ( leadingPhoton.isEE &&
+                                        (leadingPhoton.r9>0.9 || 
+                                        (leadingPhoton.sigmaIetaIeta < 0.035 && 
+                                         leadingPhoton.pfChgIsoWrtChosenVtx02 < 6.0 && 
+                                         leadingPhoton.trkSumPtHollowConeDR03 < 6.0 ))) 
+                                     )
+                                     &&
+                                    (
+                                        ( subLeadingPhoton.isEB &&
+                                        (subLeadingPhoton.r9>0.85 || 
+                                        (subLeadingPhoton.sigmaIetaIeta < 0.015 && 
+                                         subLeadingPhoton.pfChgIsoWrtChosenVtx02 < 6.0 && 
+                                         subLeadingPhoton.trkSumPtHollowConeDR03 < 6.0 )))  ||
+                                        ( subLeadingPhoton.isEE &&
+                                        (subLeadingPhoton.r9>0.9 || 
+                                        (subLeadingPhoton.sigmaIetaIeta < 0.035 && 
+                                         subLeadingPhoton.pfChgIsoWrtChosenVtx02 < 6.0 && 
+                                         subLeadingPhoton.trkSumPtHollowConeDR03 < 6.0 ))) 
+                                     )
+                                        
+                                    
+                                     """)
+                                   )

@@ -17,6 +17,8 @@
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 
+#include <map>
+
 using namespace edm;
 using namespace std;
 
@@ -103,15 +105,6 @@ namespace flashgg {
                         ivtx = k;
                         break;
                     }
-                // A number of things need to be done once the vertex is chosen
-                // recomputing photon 4-momenta accordingly
-                flashgg::Photon photon1_corr = PhotonIdUtils::pho4MomCorrection( pp1, pvx );
-                flashgg::Photon photon2_corr = PhotonIdUtils::pho4MomCorrection( pp2, pvx );
-                // - compute isolations with respect to chosen vertex needed for preselection
-                photon1_corr.setpfChgIsoWrtChosenVtx02( photon1_corr.pfChgIso02WrtVtx( pvx ) );
-                photon2_corr.setpfChgIsoWrtChosenVtx02( photon2_corr.pfChgIso02WrtVtx( pvx ) );
-                photon1_corr.setpfChgIsoWrtChosenVtx03( photon1_corr.pfChgIso03WrtVtx( pvx ) );
-                photon2_corr.setpfChgIsoWrtChosenVtx03( photon2_corr.pfChgIso03WrtVtx( pvx ) );
 
                 DiPhotonCandidate dipho( pp1, pp2, pvx );
                 dipho.setVertexIndex( ivtx );
@@ -124,7 +117,25 @@ namespace flashgg {
             }
         }
         // Sort the final collection (descending) and put it in the event
-        std::sort( diPhotonColl->begin(), diPhotonColl->end(), []( const DiPhotonCandidate & a, const DiPhotonCandidate & b ) { return b < a; } );
+        std::sort( diPhotonColl->begin(), diPhotonColl->end(), greater<DiPhotonCandidate>() );
+
+        map<unsigned int, unsigned int> vtxidx_jetidx;
+        vtxidx_jetidx[0] = 0; // 0th jet collection index is always the event PV
+
+        for( unsigned int i = 0 ; i < diPhotonColl->size() ; i++ ) {
+            for( unsigned int j = 0 ; j < primaryVertices->size() ; j++ ) {
+                if( diPhotonColl->at( i ).vtx() == primaryVertices->ptrAt( j ) ) {
+                    //                    std::cout << " DiPhoton " << i << " (pt=" << diPhotonColl->at( i ).sumPt() << ") matches vertex " << j << std::endl;
+                    if( !vtxidx_jetidx.count( j ) ) {
+                        unsigned int newjetindex = vtxidx_jetidx.size();
+                        //                        std::cout << "   New vertex " << j << " set to jet collection index " << newjetindex << std::endl;
+                        vtxidx_jetidx[j] = newjetindex;
+                    }
+                    diPhotonColl->at( i ).setJetCollectionIndex( vtxidx_jetidx[j] );
+                    //                    std::cout << "   Set diphoton " << i << " to jet collection index " << vtxidx_jetidx[j] << std::endl;
+                }
+            }
+        }
 
         evt.put( diPhotonColl );
     }

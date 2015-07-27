@@ -8,7 +8,7 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "drop *_flashggPrunedGenParticles_*_*",   
                                                      "keep recoGenParticles_flashggPrunedGenParticles_*_*", # this line, and preceding, drop unneded association object
                                                      "keep *_offlineSlimmedPrimaryVertices_*_*",
-                                                     "keep *_reducedEgamma_reduced*Clusters_*",
+                                                     "keep *_reducedEgamma_reducedSuperClusters_*",
                                                      "keep *_reducedEgamma_*PhotonCores_*",
                                                      "keep *_slimmedMETs_*_*",
                                                      "keep *_fixedGridRhoAll_*_*",
@@ -40,3 +40,12 @@ microAODDebugOutputCommand = cms.untracked.vstring("keep *_reducedEgamma_*_*",
                                                    "keep *_slimmedMuons_*_*", 
                                                    "keep *_slimmedElectrons_*_*",
                                                    )
+
+#output needed for HLT efficiency study
+microAODHLTOutputCommand = cms.untracked.vstring("keep *_flashggDiPhotonMVA_*_*",
+                                                 "keep *_l1extraParticles_Isolated_*",
+                                                 "keep *_l1extraParticles_NonIsolated_*",
+                                                 "keep *_flashggElectrons_*_*",
+                                                 "keep *_selectedPatTrigger_*_*",
+                                                 "keep *_patTrigger_*_*",
+                                                 )
