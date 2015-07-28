@@ -7,7 +7,7 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "drop patPackedCandidates_*_*_*", # for intermediate PFCHSLeg jet constituents
                                                      "drop *_flashggPrunedGenParticles_*_*",   
                                                      "keep recoGenParticles_flashggPrunedGenParticles_*_*", # this line, and preceding, drop unneded association object
-                                                     "keep *_offlineSlimmedPrimaryVertices_*_*",
+                                                     "keep recoVertexs_offlineSlimmedPrimaryVertices_*_*", # leave out floatedmValueMap_offlineSlimmedPrimaryVertices__PAT
                                                      "keep *_reducedEgamma_reducedSuperClusters_*",
                                                      "keep *_reducedEgamma_*PhotonCores_*",
                                                      "keep *_slimmedMETs_*_*",
