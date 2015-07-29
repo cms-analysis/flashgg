@@ -34,8 +34,8 @@ namespace flashgg {
         EDGetTokenT<View<pat::PackedCandidate> >       pfcandidateToken_;
         EDGetTokenT< VertexCandidateMap >              vertexCandidateMapToken_;
 
-        unsigned int  indexVtx_;
-        bool debug_;
+        unsigned     indexVtx_;
+        bool         debug_;
         unsigned int eventNb;
     };
 
@@ -44,7 +44,7 @@ namespace flashgg {
         diPhotonsToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         pfcandidateToken_( consumes<View<pat::PackedCandidate> >( iConfig.getParameter<InputTag> ( "PFCandidatesTag" ) ) ),
         vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTag" ) ) ),
-        indexVtx_( iConfig.getUntrackedParameter<unsigned int> ( "vertexIndex",  0 ) ),
+        indexVtx_( iConfig.getUntrackedParameter<unsigned> ( "vertexIndex",  0 ) ),
         debug_( iConfig.getUntrackedParameter<bool>( "debug"      ,  false ) )
     {
         produces<vector<pat::PackedCandidate> >();
@@ -80,55 +80,56 @@ namespace flashgg {
 
         edm::Ptr<reco::Vertex> choosenVertex;
 
+
         // force the use of the MiniAOD default vertex
-
+        int  diphoton_index = -1;
+        bool keep_event     = true;
         if( indexVtx_ == 0 ) { choosenVertex =  primaryVertices->ptrAt( 0 ); }
-
-
         // Use the other vertices :
         // we are interested only by the di-photon candidates verticies
         // then retain only the vertex of the di-photon that matters
-
         else {
+            for( unsigned int diPhoLoop = 0; diPhoLoop < diPhotons->size() ; diPhoLoop++ ) {
+                // we only have a problem if the mutliple diphotons haev different vertices...
+                if( debug_ ) std::cout << setw( 13 ) << "(diphoton)=" << diPhoLoop
+                                           << setw( 13 ) << "(smartidx)=" << diPhotons->ptrAt( diPhoLoop )->jetCollectionIndex()
+                                           << std::endl;
 
-            // In the Old producer the case where there is no di-photon use
-            // the MiniAOD default vertex. In the MutiCHS the go is to store
-            // an empty collection --- > for now keeping the old version
-
-            //if ( diPhotons->size() == 0 ){
-            //choosenVertex = primaryVertices->ptrAt( 0 );
-            //}
-            if( diPhotons->size() > indexVtx_ ) {
-                choosenVertex = diPhotons->ptrAt( indexVtx_ - 1 )->vtx();
+                if( diPhotons->ptrAt( diPhoLoop )->jetCollectionIndex() == indexVtx_ ) {
+                    choosenVertex  = diPhotons->ptrAt( diPhoLoop )->vtx();
+                    diphoton_index = diPhoLoop;
+                    break;
+                } else {
+                    keep_event = false;
+                }
             }
         }
 
         std::auto_ptr<vector<pat::PackedCandidate> > result( new vector<pat::PackedCandidate>() );
-
-        for( unsigned int pfCandLoop = 0 ; pfCandLoop < pfCandidates->size() ; pfCandLoop++ ) {
-            edm::Ptr<pat::PackedCandidate> cand = pfCandidates->ptrAt( pfCandLoop );
-
-            if( cand->charge() == 0 ) { //keep all neutral objects.
-                assert( !( cand.isNull() ) );
-                result->push_back( *cand );
-                continue;
-            }
-
-            // Keep charged candidate if it's associated to the appropriate vertex
-            auto mapRange = std::equal_range( vtxmapbycand.begin(), vtxmapbycand.end(), cand, flashgg::compare_with_cand() );
-            for( auto pair_iter = mapRange.first ; pair_iter != mapRange.second ; pair_iter++ ) {
-                edm::Ptr<reco::Vertex> currentVertex = pair_iter->first;
-                if( choosenVertex == currentVertex ) { result->push_back( *cand ); }
+        if( keep_event ) {
+            for( unsigned int pfCandLoop = 0 ; pfCandLoop < pfCandidates->size() ; pfCandLoop++ ) {
+                edm::Ptr<pat::PackedCandidate> cand = pfCandidates->ptrAt( pfCandLoop );
+                if( cand->charge() == 0 ) { //keep all neutral objects.
+                    assert( !( cand.isNull() ) );
+                    result->push_back( *cand );
+                    continue;
+                }
+                // Keep charged candidate if it's associated to the appropriate vertex
+                auto mapRange = std::equal_range( vtxmapbycand.begin(), vtxmapbycand.end(), cand, flashgg::compare_with_cand() );
+                for( auto pair_iter = mapRange.first ; pair_iter != mapRange.second ; pair_iter++ ) {
+                    edm::Ptr<reco::Vertex> currentVertex = pair_iter->first;
+                    if( choosenVertex == currentVertex ) { result->push_back( *cand ); }
+                }
             }
         }
-
-        if( debug_ ) std::cout << setw( 12 ) << "event nb::" << eventNb
-                                   << setw( 12 ) << "dipho id::" << diPhotons->size()
-                                   << setw( 12 ) << "diphoton::" << diPhotons->size()
-                                   << setw( 12 ) << "prim vtx::" << primaryVertices->size()
-                                   << setw( 12 ) << "nbr cand::" << result->size()
+        if( debug_ ) std::cout << setw( 13 ) << "event nb=" << eventNb
+                                   << setw( 13 ) << "ndiphoto=" << diPhotons->size()
+                                   << setw( 13 ) << "input id=" << indexVtx_
+                                   << setw( 13 ) << "dipho id=" << diphoton_index
+                                   << setw( 13 ) << "result n=" << result->size()
                                    << std::endl;
 
+        if( debug_ ) { std::cout << setw( 13 ) << "-----------------------------" << std::endl; }
         evt.put( result );
         eventNb++;
     }

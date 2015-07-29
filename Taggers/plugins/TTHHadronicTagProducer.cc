@@ -37,10 +37,12 @@ namespace flashgg {
         void produce( Event &, const EventSetup & ) override;
 
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
-        EDGetTokenT<View<Jet> > thejetToken_;
+        //EDGetTokenT<View<Jet> > thejetToken_;
+        std::vector<edm::InputTag> inputTagJets_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
 
+        typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
         //---thresholds---
         //---photons
         double MVAThreshold_;
@@ -64,7 +66,8 @@ namespace flashgg {
 
     TTHHadronicTagProducer::TTHHadronicTagProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
-        thejetToken_( consumes<View<flashgg::Jet> >( iConfig.getParameter<InputTag>( "JetTag" ) ) ),
+        //thejetToken_( consumes<View<flashgg::Jet> >( iConfig.getParameter<InputTag>( "JetTag" ) ) ),
+        inputTagJets_( iConfig.getParameter<std::vector<edm::InputTag> >( "inputTagJets" ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag>( "MVAResultTag" ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) )
     {
@@ -92,9 +95,13 @@ namespace flashgg {
     void TTHHadronicTagProducer::produce( Event &evt, const EventSetup & )
     {
 
-        Handle<View<flashgg::Jet> > theJets;
-        evt.getByToken( thejetToken_, theJets );
+        //Handle<View<flashgg::Jet> > theJets;
+        //evt.getByToken( thejetToken_, theJets );
         // const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
+        JetCollectionVector Jets( inputTagJets_.size() );
+        for( size_t j = 0; j < inputTagJets_.size(); ++j ) {
+            evt.getByLabel( inputTagJets_[j], Jets[j] );
+        }
 
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
@@ -129,6 +136,8 @@ namespace flashgg {
             int njets_btagloose = 0;
             int njets_btagmedium = 0;
 
+            unsigned int jetCollectionIndex = diPhotons->ptrAt( diphoIndex )->jetCollectionIndex();
+
             std::vector<edm::Ptr<flashgg::Jet> > JetVect;
             std::vector<edm::Ptr<flashgg::Jet> > BJetVect;
 
@@ -147,8 +156,8 @@ namespace flashgg {
             if( dipho->leadingPhoton()->pt() < leadPhoPtCut && dipho->subLeadingPhoton()->pt() < subleadPhoPtCut ) { continue; }
             if( mvares->mvaValue() < MVAThreshold_ ) { continue; }
 
-            for( unsigned int jetIndex = 0; jetIndex < theJets->size() ; jetIndex++ ) {
-                edm::Ptr<flashgg::Jet> thejet = theJets->ptrAt( jetIndex );
+            for( unsigned int jetIndex = 0; jetIndex < Jets[jetCollectionIndex]->size() ; jetIndex++ ) {
+                edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( jetIndex );
                 if( fabs( thejet->eta() ) > jetEtaCut_ ) { continue; }
 
                 float bDiscriminatorValue = 0;
