@@ -28,13 +28,16 @@ namespace flashgg {
         void produce( Event &, const EventSetup & ) override;
 
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
-        EDGetTokenT<View<flashgg::Jet> > jetTokenDz_;
+        //EDGetTokenT<View<flashgg::Jet> > jetTokenDz_;
+        std::vector<edm::InputTag> inputTagJets_;
 
         unique_ptr<TMVA::Reader>VbfMva_;
         FileInPath vbfMVAweightfile_;
         bool _isLegacyMVA;
         bool _usePuJetID;
         double _minDijetMinv;
+
+        typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
 
         float dijet_leadEta_;
         float dijet_subleadEta_;
@@ -53,7 +56,8 @@ namespace flashgg {
 
     VBFMVAProducer::VBFMVAProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
-        jetTokenDz_( consumes<View<flashgg::Jet> >( iConfig.getParameter<InputTag>( "JetTag" ) ) ),
+        //jetTokenDz_( consumes<View<flashgg::Jet> >( iConfig.getParameter<InputTag>( "JetTag" ) ) ),
+        inputTagJets_( iConfig.getParameter<std::vector<edm::InputTag> >( "inputTagJets" ) ),
         _isLegacyMVA( iConfig.getUntrackedParameter<bool>( "UseLegacyMVA" , false ) ),
         _usePuJetID( iConfig.getUntrackedParameter<bool>( "UsePuJetID" , false ) ),
         _minDijetMinv( iConfig.getParameter<double>( "MinDijetMinv" ) )
@@ -110,12 +114,20 @@ namespace flashgg {
     {
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
-//		const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
-        Handle<View<flashgg::Jet> > jetsDz;
-        evt.getByToken( jetTokenDz_, jetsDz );
+        // const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+        //Handle<View<flashgg::Jet> > jetsDz;
+        //evt.getByToken( jetTokenDz_, jetsDz );
         //	const PtrVector<flashgg::Jet>& jetPointersDz = jetsDz->ptrVector();
+        // get the iso deposits
+        //IsoDepositMaps electronIso(inputTagElectronIsoDeposits_.size());
+        //IsoDepositMaps photonIsoDep(inputTagPhotonIsoDeposits_.size());
 
-        std::auto_ptr<vector<VBFMVAResult> > vbf_results( new vector<VBFMVAResult> ); // one per diphoton, always in same order, vector is more efficient than map
+        JetCollectionVector Jets( inputTagJets_.size() );
+        for( size_t j = 0; j < inputTagJets_.size(); ++j ) {
+            evt.getByLabel( inputTagJets_[j], Jets[j] );
+        }
+
+        std::auto_ptr<vector<VBFMVAResult> > vbf_results( new vector<VBFMVAResult> );
 
 
         for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
@@ -142,14 +154,18 @@ namespace flashgg {
             float dr2pho = 0.5;
 
             float phi1 = diPhotons->ptrAt( candIndex )->leadingPhoton()->phi();
-            float	eta1 = diPhotons->ptrAt( candIndex )->leadingPhoton()->eta();
+            float eta1 = diPhotons->ptrAt( candIndex )->leadingPhoton()->eta();
             float phi2 = diPhotons->ptrAt( candIndex )->subLeadingPhoton()->phi();
-            float	eta2 = diPhotons->ptrAt( candIndex )->subLeadingPhoton()->eta();
+            float eta2 = diPhotons->ptrAt( candIndex )->subLeadingPhoton()->eta();
 
             bool hasValidVBFDijet = 0;
-            for( UInt_t jetLoop = 0; jetLoop < jetsDz->size() ; jetLoop++ ) {
 
-                Ptr<flashgg::Jet> jet  = jetsDz->ptrAt( jetLoop );
+            // take the jets corresponding to the diphoton candidate
+            unsigned int jetCollectionIndex = diPhotons->ptrAt( candIndex )->jetCollectionIndex();
+
+            for( UInt_t jetLoop = 0; jetLoop < Jets[jetCollectionIndex]->size() ; jetLoop++ ) {
+
+                Ptr<flashgg::Jet> jet  = Jets[jetCollectionIndex]->ptrAt( jetLoop );
 
                 //pass PU veto??
                 //if (jet->puJetId(diPhotons[candIndex]) <  PuIDCutoff) {continue;}
@@ -188,8 +204,8 @@ namespace flashgg {
 
                 std::pair < Ptr<flashgg::Jet>, Ptr<flashgg::Jet> > dijet;
                 // fill dijet pair with lead jet as first, sublead as second.
-                dijet.first =  jetsDz->ptrAt( dijet_indices.first );
-                dijet.second =  jetsDz->ptrAt( dijet_indices.second );
+                dijet.first =  Jets[jetCollectionIndex]->ptrAt( dijet_indices.first );
+                dijet.second =  Jets[jetCollectionIndex]->ptrAt( dijet_indices.second );
 
                 dijet_leadEta_ = dijet.first->eta();
                 dijet_subleadEta_ = dijet.second->eta();
@@ -216,10 +232,10 @@ namespace flashgg {
                 sublPho_PToM_ = diPhotons->ptrAt( candIndex )->subLeadingPhoton()->pt() / diphoton_p4.M();
 
                 //debug stuff
-                //	std::cout<<"numbr of jets " <<  jetsDz->size() << std::endl;
+                //	std::cout<<"numbr of jets " <<  Jets[jetCollectionIndex]->size() << std::endl;
                 //	std::cout<<"jet indices: " <<  dijet_indices.first << "	" << dijet_indices.second << std::endl;
-                mvares.leadJet = *jetsDz->ptrAt( dijet_indices.first );
-                mvares.subleadJet = *jetsDz->ptrAt( dijet_indices.second );
+                mvares.leadJet    = *Jets[jetCollectionIndex]->ptrAt( dijet_indices.first );
+                mvares.subleadJet = *Jets[jetCollectionIndex]->ptrAt( dijet_indices.second );
 
 
                 //debug stuff
