@@ -19,10 +19,9 @@ process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 jdebug=True
 
 # PHYS14 Files
-process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring(
-    "/store/mc/RunIISpring15DR74/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v2/00000/00C4781D-6B08-E511-8A0A-0025905A6084.root"),
-    skipEvents=cms.untracked.uint32(0)
-    
+process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIISpring15DR74/VBFHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v1/50000/049AAFAA-CA2D-E511-93E8-02163E00F402.root"),
+                            skipEvents=cms.untracked.uint32(0)
+                            
 )
 
 process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to work: disable all warnings for now
@@ -64,7 +63,17 @@ from flashgg.MicroAOD.flashggJets_cfi      import addFlashggPFCHSLegJets
 
 print ':: process ==', process
 addFlashggPF           (process = process, doQGTagging = True, label = '')
-addFlashggPFCHSLegJets (process = process, doQGTagging = True, label = '')
+
+
+for vtx in range(0,5):
+    addFlashggPFCHSLegJets (process = process,
+                            vertexIndex =vtx,
+                            doQGTagging = True,
+                            label = '' + str(vtx))
+    
+
+
+
 #newseq = cloneProcessingSnippet(process,process.currentMicroAODExtraJetsSequence,'flashggJetsPF')
 #currentMicroAODExtraJetsSequence = cms.Sequence( )# addFlashggPF + addFlashggPFCHS0)
 
