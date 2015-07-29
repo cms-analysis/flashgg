@@ -1,8 +1,5 @@
 import FWCore.ParameterSet.Config as cms
-
-#-rw-r--r--. 1 sethzenz zh 1.1M Sep 22 09:36 TMVAClassification_BDTvtxprob2012.weights.xml
-#-rw-r--r--. 1 sethzenz zh 4.2M Sep 22 09:36 HggBambu_SMDipho_Oct29_rwgtptallsigevenbkg7TeV_BDTG.weights.xml
-
+from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
 
 flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                   PhotonTag=cms.InputTag('selectedFlashggPhotons'),
@@ -54,5 +51,6 @@ flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                   singlelegsigma2Tob=cms.untracked.double(0.62143),
                                   singlelegsigma2PixFwd=cms.untracked.double(0.577081),
                                   singlelegsigma2Tid=cms.untracked.double(0.892751),
-                                  singlelegsigma2Tec=cms.untracked.double(1.56638)
+                                  singlelegsigma2Tec=cms.untracked.double(1.56638),
+                                  MaxJetCollections = cms.uint32(maxJetCollections)
                                   )

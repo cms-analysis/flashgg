@@ -26,10 +26,8 @@ flashggMicroAODSequence = cms.Sequence((eventCount+weightsCount
                                         +(flashggElectrons*selectedFlashggElectrons)
                                         +(flashggMuons*selectedFlashggMuons)
                                         +flashggMicroAODGenSequence
-                                    )
+                                        )
                                        *flashggPhotons*selectedFlashggPhotons*flashggDiPhotons
                                        *(flashggPreselectedDiPhotons+flashggVertexMapForCHS)
                                        *flashggFinalEGamma
                                        )
-
-                                     )

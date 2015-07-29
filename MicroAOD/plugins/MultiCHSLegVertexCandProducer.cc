@@ -83,8 +83,11 @@ namespace flashgg {
 
         // force the use of the MiniAOD default vertex
         int  diphoton_index = -1;
-        bool keep_event     = true;
-        if( indexVtx_ == 0 ) { choosenVertex =  primaryVertices->ptrAt( 0 ); }
+        bool keep_event     = false;
+        if( indexVtx_ == 0 ) {
+            choosenVertex =  primaryVertices->ptrAt( 0 );
+            keep_event = true;
+        }
         // Use the other vertices :
         // we are interested only by the di-photon candidates verticies
         // then retain only the vertex of the di-photon that matters
@@ -98,9 +101,8 @@ namespace flashgg {
                 if( diPhotons->ptrAt( diPhoLoop )->jetCollectionIndex() == indexVtx_ ) {
                     choosenVertex  = diPhotons->ptrAt( diPhoLoop )->vtx();
                     diphoton_index = diPhoLoop;
+                    keep_event = true;
                     break;
-                } else {
-                    keep_event = false;
                 }
             }
         }
