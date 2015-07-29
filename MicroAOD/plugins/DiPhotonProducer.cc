@@ -39,6 +39,7 @@ namespace flashgg {
         EDGetTokenT<reco::BeamSpot>  beamSpotToken_;
         EDGetTokenT<View<reco::Conversion> > conversionTokenSingleLeg_;
         bool useSingleLeg_;
+        unsigned int maxJetCollections_;
     };
 
     DiPhotonProducer::DiPhotonProducer( const ParameterSet &iConfig ) :
@@ -47,7 +48,8 @@ namespace flashgg {
         vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTag" ) ) ),
         conversionToken_( consumes<View<reco::Conversion> >( iConfig.getParameter<InputTag>( "ConversionTag" ) ) ),
         beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getParameter<InputTag>( "beamSpotTag" ) ) ),
-        conversionTokenSingleLeg_( consumes<View<reco::Conversion> >( iConfig.getParameter<InputTag>( "ConversionTagSingleLeg" ) ) )
+        conversionTokenSingleLeg_( consumes<View<reco::Conversion> >( iConfig.getParameter<InputTag>( "ConversionTagSingleLeg" ) ) ),
+        maxJetCollections_( iConfig.getParameter<unsigned int>( "MaxJetCollections" ) )
     {
         bool default_useSingleLeg_ = true;
         const std::string &VertexSelectorName = iConfig.getParameter<std::string>( "VertexSelectorName" );
@@ -129,6 +131,10 @@ namespace flashgg {
                     if( !vtxidx_jetidx.count( j ) ) {
                         unsigned int newjetindex = vtxidx_jetidx.size();
                         //                        std::cout << "   New vertex " << j << " set to jet collection index " << newjetindex << std::endl;
+                        if( newjetindex >= maxJetCollections_ ) {
+                            throw cms::Exception( "Configuration" ) << " We need to setJetCollectionIndex to a value more than MaxJetCollections=" << maxJetCollections_ <<
+                                                                    " -- you must reconfigure and rerun";
+                        }
                         vtxidx_jetidx[j] = newjetindex;
                     }
                     diPhotonColl->at( i ).setJetCollectionIndex( vtxidx_jetidx[j] );

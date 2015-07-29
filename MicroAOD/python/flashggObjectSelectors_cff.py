@@ -14,8 +14,3 @@ selectedFlashggPhotons = cms.EDFilter("FLASHggPhotonSelector",
     src = cms.InputTag("flashggPhotons"),
     cut = cms.string("pt > 14 && hadTowOverEm()<0.15") # same as MiniAOD, so not doing anything
 )
-
-selectedFlashggJets = cms.EDFilter("FLASHggJetSelector",
-    src = cms.InputTag("flashggJets"),
-    cut = cms.string("pt > 15.")
-)
