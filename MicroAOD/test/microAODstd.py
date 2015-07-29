@@ -79,10 +79,14 @@ process.options = cms.untracked.PSet(
     allowUnscheduled = cms.untracked.bool(True)
     )
 # import function which takes care of reclustering the jets using legacy vertex		
-from flashgg.MicroAOD.flashggJets_cfi import addFlashggPFCHSLegJets 
+from flashgg.MicroAOD.flashggJets_cfi import addFlashggPFCHSJets 
+from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
 # call the function, it takes care of everything else.
-addFlashggPFCHSLegJets(process)
-
+for vtx in range(0,maxJetCollections):
+    addFlashggPFCHSJets (process = process,
+                         vertexIndex =vtx,
+                         doQGTagging = True,
+                         label = '' + str(vtx))    
 
 process.p = cms.Path(process.flashggMicroAODSequence)
 process.e = cms.EndPath(process.out)

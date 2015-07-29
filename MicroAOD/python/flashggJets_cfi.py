@@ -7,8 +7,9 @@ from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased_new as pu_jetid
 from PhysicsTools.PatAlgos.tools.jetTools        import addJetCollection
 
 flashggBTag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
+maxJetCollections = 5
 
-def addFlashggJets(process, vertexIndex = 0, doQGTagging = True, label ='', debug = False):
+def addFlashggPFCHSJets(process, vertexIndex = 0, doQGTagging = True, label ='', debug = False):
   setattr(process, 'selectedMuons' + label, cms.EDFilter("CandPtrSelector", 
                                                          src = cms.InputTag("slimmedMuons"), 
                                                          cut = cms.string('''abs(eta)<2.5 && pt>10. &&
@@ -89,13 +90,19 @@ def addFlashggJets(process, vertexIndex = 0, doQGTagging = True, label ='', debu
                                VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                                PileupJetIdParameters = cms.PSet(pu_jetid)
   )
-  setattr( process, 'flashggJets'+ label, flashggJets)
+  setattr( process, 'flashggPFCHSJets'+ label, flashggJets)
   
   if doQGTagging:
     from RecoJets.JetProducers.QGTagger_cfi import QGTagger
-    setattr( process, 'QGTaggerPFCHSLeg' + label,  QGTagger.clone( srcJets   = 'flashggJets' ,jetsLabel = 'ak4PFJetsCHS'))
-    
-  return getattr( process, 'flashggJets' + label)
+    setattr( process, 'QGTaggerPFCHS' + label,  QGTagger.clone( srcJets   = 'flashggPFCHSJets' + label ,jetsLabel = 'ak4PFJetsCHS'))
+
+  selectedFlashggJets = cms.EDFilter("FLASHggJetSelector",
+                                     src = cms.InputTag( 'flashggPFCHSJets'+ label ),
+                                     cut = cms.string("pt > 15.")
+                                     )
+  setattr( process, 'selectedFlashggPFCHSJets'+label, selectedFlashggJets )
+
+
 
 
 # Define a default Jet Collection VInputTag
@@ -104,7 +111,7 @@ def addFlashggJets(process, vertexIndex = 0, doQGTagging = True, label ='', debu
 import FWCore.ParameterSet.Config as cms
 
 JetCollectionVInputTag = cms.VInputTag()
-for i in range(0,5):
-  JetCollectionVInputTag.append(cms.InputTag('flashggJets' + str(i)))
+for i in range(0,maxJetCollections):
+  JetCollectionVInputTag.append(cms.InputTag('selectedFlashggPFCHSJets' + str(i)))
 
     
