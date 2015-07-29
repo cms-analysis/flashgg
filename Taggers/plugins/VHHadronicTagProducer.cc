@@ -44,9 +44,12 @@ namespace flashgg {
         void produce( Event &, const EventSetup & ) override;
 
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
-        EDGetTokenT<View<Jet> > thejetToken_;
+        //EDGetTokenT<View<Jet> > thejetToken_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
+
+        std::vector<edm::InputTag> inputTagJets_;
+        typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
 
         //Thresholds
         double leadPhoOverMassThreshold_;
@@ -68,7 +71,7 @@ namespace flashgg {
     VHHadronicTagProducer::VHHadronicTagProducer( const ParameterSet &iConfig ) :
 
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
-        thejetToken_( consumes<View<flashgg::Jet> >( iConfig.getParameter<InputTag>( "JetTag" ) ) ),
+        //thejetToken_     ( consumes<View<flashgg::Jet> >( iConfig.getParameter<InputTag>( "JetTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) )
     {
@@ -102,6 +105,9 @@ namespace flashgg {
         cosThetaStarThreshold_       = iConfig.getUntrackedParameter<double>( "cosThetaStarThreshold", default_cosThetaStarThreshold_ );
         phoIdMVAThreshold_           = iConfig.getUntrackedParameter<double>( "phoIdMVAThreshold", default_phoIdMVAThreshold_ );
 
+        // yacine: new recipe for flashgg jets
+        inputTagJets_                = iConfig.getParameter<std::vector<edm::InputTag> >( "inputTagJets" );
+
         // *************************************************
 
         produces<vector<VHHadronicTag> >();
@@ -115,13 +121,19 @@ namespace flashgg {
         evt.getByToken( diPhotonToken_, diPhotons );
         //  const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
 
-        Handle<View<flashgg::Jet> > theJets;
-        evt.getByToken( thejetToken_, theJets );
+        //  Yacine : this is not longer supported
+        //  Handle<View<flashgg::Jet> > theJets;
+        //  evt.getByToken( thejetToken_, theJets );
         //  const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
+
+        JetCollectionVector Jets( inputTagJets_.size() );
+        for( size_t j = 0; j < inputTagJets_.size(); ++j ) {
+            evt.getByLabel( inputTagJets_[j], Jets[j] );
+        }
 
         Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
         evt.getByToken( mvaResultToken_, mvaResults );
-//   const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
+        //   const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
 
         Handle<View<reco::GenParticle> > genParticles;
         evt.getByToken( genParticleToken_, genParticles );
@@ -149,7 +161,7 @@ namespace flashgg {
 
         for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
 
-            edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( diphoIndex );
+            edm::Ptr<flashgg::DiPhotonCandidate> dipho  = diPhotons->ptrAt( diphoIndex );
             edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );
 
             // ********** photon ID and diphoton requirements: *********
@@ -165,13 +177,15 @@ namespace flashgg {
 
             std::vector<edm::Ptr<flashgg::Jet> > goodJets;
 
-            for( size_t ijet = 0; ijet < theJets->size(); ijet++ ) {
+            unsigned int jetCollectionIndex = diPhotons->ptrAt( diphoIndex )->jetCollectionIndex();
 
-                edm::Ptr<flashgg::Jet> thejet = theJets->ptrAt( ijet );
+            for( size_t ijet = 0; ijet < Jets[jetCollectionIndex]->size(); ijet++ ) {
 
-                if( !thejet->passesPuJetId( dipho ) )                        { continue; }
-                if( fabs( thejet->eta() ) > jetEtaThreshold_ )              { continue; }
-                if( thejet->pt() < jetPtThreshold_ )                      { continue; }
+                edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( ijet );
+
+                if( !thejet->passesPuJetId( dipho ) )           { continue; }
+                if( fabs( thejet->eta() ) > jetEtaThreshold_ )  { continue; }
+                if( thejet->pt() < jetPtThreshold_ )            { continue; }
 
                 float dPhiJetToPhoL = deltaPhi( dipho->leadingPhoton()->phi(), thejet->phi() );
                 float dEtaJetToPhoL = dipho->leadingPhoton()->eta() - thejet->eta();
