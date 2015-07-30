@@ -39,6 +39,8 @@ microAODDebugOutputCommand = cms.untracked.vstring("keep *_reducedEgamma_*_*",
                                                    "keep *_slimmedTaus_*_*", # no tag uses these
                                                    "keep *_slimmedMuons_*_*", 
                                                    "keep *_slimmedElectrons_*_*",
+                                                   "keep *_flashgg*Jet*_*_*",
+                                                   "keep *_slimmedJets_*_*"
                                                    )
 
 #output needed for HLT efficiency study
