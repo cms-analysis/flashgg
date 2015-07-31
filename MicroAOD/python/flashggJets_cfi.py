@@ -114,4 +114,6 @@ JetCollectionVInputTag = cms.VInputTag()
 for i in range(0,maxJetCollections):
   JetCollectionVInputTag.append(cms.InputTag('selectedFlashggPFCHSJets' + str(i)))
 
-    
+flashggFinalJets = cms.EDProducer("FlashggVectorVectorJetCollector",
+                                  inputTagJets= JetCollectionVInputTag
+                                  )

@@ -3,7 +3,7 @@ from flashgg.MicroAOD.flashggTkVtxMap_cfi import flashggVertexMapUnique,flashggV
 from flashgg.MicroAOD.flashggPhotons_cfi import flashggPhotons
 from flashgg.MicroAOD.flashggDiPhotons_cfi import flashggDiPhotons
 from flashgg.MicroAOD.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
-#from flashgg.MicroAOD.flashggJets_cfi import flashggJets
+from flashgg.MicroAOD.flashggJets_cfi import flashggFinalJets
 from flashgg.MicroAOD.flashggElectrons_cfi import flashggElectrons
 from flashgg.MicroAOD.flashggMuons_cfi import flashggMuons
 from flashgg.MicroAOD.flashggFinalEGamma_cfi import flashggFinalEGamma
@@ -30,4 +30,5 @@ flashggMicroAODSequence = cms.Sequence((eventCount+weightsCount
                                        *flashggPhotons*selectedFlashggPhotons*flashggDiPhotons
                                        *(flashggPreselectedDiPhotons+flashggVertexMapForCHS)
                                        *flashggFinalEGamma
+                                       *flashggFinalJets
                                        )
