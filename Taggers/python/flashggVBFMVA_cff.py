@@ -1,12 +1,12 @@
 import FWCore.ParameterSet.Config as cms
 
-from flashgg.MicroAOD.flashggJets_cfi import JetCollectionVInputTag
+from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
 
 # legacy VBF MVA
 flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
                                DiPhotonTag=cms.InputTag('flashggDiPhotons'),
                                #JetTag=cms.InputTag('selectedFlashggJets'),
-                               inputTagJets= JetCollectionVInputTag,
+                               inputTagJets= UnpackedJetCollectionVInputTag,
                                UseLegacyMVA = cms.untracked.bool(True),
                                MinDijetMinv = cms.double(0.0),
                                vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVA_dijet_sherpa_scalewt50_2evenb_powheg200_maxdPhi_oct9_Gradient.weights.xml"),
@@ -26,7 +26,7 @@ flashggVBFDiPhoDiJetMVA = cms.EDProducer('FlashggVBFDiPhoDiJetMVAProducer',
 flashggVBFMVANew = cms.EDProducer('FlashggVBFMVAProducer',
                                   DiPhotonTag = cms.InputTag('flashggDiPhotons'),
                                   #JetTag = cms.InputTag('selectedFlashggJets'),
-                                  inputTagJets= JetCollectionVInputTag,
+                                  inputTagJets= UnpackedJetCollectionVInputTag,
                                   UseLegacyMVA = cms.untracked.bool(False),
                                   MinDijetMinv = cms.double(0.0),
                                   vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/Flashgg_VBF_BDT.weights.xml"),
