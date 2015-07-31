@@ -12,10 +12,11 @@
 using namespace edm;
 using namespace std;
 
-// if the track did not attach to any vertex, attach it to ALL vertices!
-// This probably mimics better how PFCHS works
-// We want to keep all the tracks for the vertex that's ultimately selected,
-// unless they're clearly close to another vertex
+// use PackedCandidate::fromPV to produce a flashgg vertex map
+// Require fromPV(int) > FromPVCut
+// From https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD2015#PV_Assignment
+//   "The definition normally used for isolation calculations is fromPV() > 1;
+//    the definition used for CHS subtraction in jets is fromPV() > 0."
 
 namespace flashgg {
 

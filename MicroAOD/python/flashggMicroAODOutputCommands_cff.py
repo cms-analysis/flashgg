@@ -29,6 +29,8 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "drop *_flashggMuons_*_*",
                                                      "drop *_flashggElectrons_*_*",
                                                      "drop *_flashggPhotons_*_*",
+
+                                                     "keep *_flashggFinalJets_*_*"
                                                      )
 
 # Should be included for now for ongoing studies, but to be removed some day

@@ -90,6 +90,8 @@
 <class name="std::map<std::string,std::map<edm::Ptr<reco::Vertex>,float>>"/>
 <class name="std::pair<std::string,std::map<edm::Ptr<reco::Vertex>,float>>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Jet> >"/>
+<class name="std::vector<std::vector<flashgg::Jet> >"/>
+<class name="edm::Wrapper<std::vector<std::vector<flashgg::Jet> > >"/>
 <class name="flashgg::Electron"/>
 <class name="edm::Ptr<flashgg::Electron>"/>
 <class name="std::vector<flashgg::Electron>"/>
