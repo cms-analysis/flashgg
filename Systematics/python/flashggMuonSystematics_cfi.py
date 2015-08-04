@@ -10,7 +10,7 @@ binInfo = cms.PSet(
 		)	
 
 flashggMuonSystematics = cms.EDProducer('FlashggMuonEffSystematicProducer',
-					src = cms.InputTag('flashggMuons'),
+					src = cms.InputTag("flashggSelectedMuons"),
 					SystMethods2D = cms.VPSet(),
 					SystMethods = cms.VPSet(cms.PSet( MethodName = cms.string("FlashggMuonEffScale"),
 									  Label = cms.string("MuonWeight"),

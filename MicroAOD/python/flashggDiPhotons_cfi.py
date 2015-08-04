@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
 
 flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
-                                  PhotonTag=cms.InputTag('selectedFlashggPhotons'),
+                                  PhotonTag=cms.InputTag('flashggPhotons'),
                                   VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
                                   VertexSelectorName=cms.string("FlashggLegacyVertexSelector"),
                                   VertexCandidateMapTag=cms.InputTag("flashggVertexMapUnique"),

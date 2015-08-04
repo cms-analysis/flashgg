@@ -23,14 +23,14 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                                                  # PileupSummaryInfos_addPileupInfo__HLT. 4602.5 1640.32
                                                      "keep *GsfElectronCore*_*_*_*", # needed by at least one Tag
 
-                                                     "keep *_selectedFlashgg*_*_*",
-                                                     # Drop these in favor of selectedFlashgg collections
+                                                     "keep *_flashggSelected*_*_*",
+                                                     # Drop intermediate collections in favor of selected/final collections
                                                      "drop *_flashgg*Jet*_*_*",
                                                      "drop *_flashggMuons_*_*",
                                                      "drop *_flashggElectrons_*_*",
-                                                     "drop *_flashggPhotons_*_*",
 
                                                      "keep *_flashggFinalJets_*_*"
+
                                                      )
 
 # Should be included for now for ongoing studies, but to be removed some day
