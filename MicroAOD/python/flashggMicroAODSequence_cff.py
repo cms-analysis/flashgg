@@ -8,7 +8,7 @@ from flashgg.MicroAOD.flashggElectrons_cfi import flashggElectrons
 from flashgg.MicroAOD.flashggMuons_cfi import flashggMuons
 from flashgg.MicroAOD.flashggFinalEGamma_cfi import flashggFinalEGamma
 
-from flashgg.MicroAOD.flashggObjectSelectors_cff import selectedFlashggMuons,selectedFlashggElectrons, selectedFlashggPhotons#, selecte
+from flashgg.MicroAOD.flashggLeptonSelectors_cff import flashggSelectedMuons,flashggSelectedElectrons
 from flashgg.MicroAOD.flashggMicroAODGenSequence_cff import *
 
 eventCount = cms.EDProducer("EventCountProducer")
@@ -21,14 +21,12 @@ weightsCount = cms.EDProducer("WeightsCountProducer",
                               nbinsObsPileup=cms.int32(101),
                               )
 
-flashggMicroAODSequence = cms.Sequence((eventCount+weightsCount
-                                        +flashggVertexMapUnique+flashggVertexMapNonUnique
-                                        +(flashggElectrons*selectedFlashggElectrons)
-                                        +(flashggMuons*selectedFlashggMuons)
-                                        +flashggMicroAODGenSequence
-                                        )
-                                       *flashggPhotons*selectedFlashggPhotons*flashggDiPhotons
-                                       *(flashggPreselectedDiPhotons+flashggVertexMapForCHS)
-                                       *flashggFinalEGamma
-                                       *flashggFinalJets
+flashggMicroAODSequence = cms.Sequence(eventCount+weightsCount
+                                       +flashggVertexMapUnique+flashggVertexMapNonUnique
+                                       +flashggElectrons*flashggSelectedElectrons
+                                       +flashggMuons*flashggSelectedMuons
+                                       +flashggMicroAODGenSequence
+                                       +flashggPhotons*flashggDiPhotons*flashggPreselectedDiPhotons
+                                       +flashggFinalEGamma
+                                       +flashggVertexMapForCHS*flashggFinalJets
                                        )

@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 flashggFinalEGamma = cms.EDProducer("FlashggEGammaMinimizer",
                                     DiPhotonTag=cms.InputTag("flashggPreselectedDiPhotons"),
-                                    ElectronTag=cms.InputTag("selectedFlashggElectrons"),
+                                    ElectronTag=cms.InputTag("flashggSelectedElectrons"),
                                     ElectronCollectionName=cms.string("finalElectrons"),
                                     ElectronCoreCollectionName=cms.string("finalElectronCores"),
                                     PhotonCollectionName=cms.string("finalPhotons"),

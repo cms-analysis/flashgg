@@ -5,7 +5,7 @@ from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
 # legacy VBF MVA
 flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
                                DiPhotonTag=cms.InputTag('flashggDiPhotons'),
-                               #JetTag=cms.InputTag('selectedFlashggJets'),
+                               #JetTag=cms.InputTag('flashggSelectedJets'),
                                inputTagJets= UnpackedJetCollectionVInputTag,
                                UseLegacyMVA = cms.untracked.bool(True),
                                MinDijetMinv = cms.double(0.0),
@@ -25,7 +25,7 @@ flashggVBFDiPhoDiJetMVA = cms.EDProducer('FlashggVBFDiPhoDiJetMVAProducer',
 # new test VBF MVA
 flashggVBFMVANew = cms.EDProducer('FlashggVBFMVAProducer',
                                   DiPhotonTag = cms.InputTag('flashggDiPhotons'),
-                                  #JetTag = cms.InputTag('selectedFlashggJets'),
+                                  #JetTag = cms.InputTag('flashggSelectedJets'),
                                   inputTagJets= UnpackedJetCollectionVInputTag,
                                   UseLegacyMVA = cms.untracked.bool(False),
                                   MinDijetMinv = cms.double(0.0),

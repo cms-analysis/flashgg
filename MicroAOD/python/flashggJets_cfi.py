@@ -96,11 +96,11 @@ def addFlashggPFCHSJets(process, vertexIndex = 0, doQGTagging = True, label ='',
     from RecoJets.JetProducers.QGTagger_cfi import QGTagger
     setattr( process, 'QGTaggerPFCHS' + label,  QGTagger.clone( srcJets   = 'flashggPFCHSJets' + label ,jetsLabel = 'ak4PFJetsCHS'))
 
-  selectedFlashggJets = cms.EDFilter("FLASHggJetSelector",
+  flashggSelectedJets = cms.EDFilter("FLASHggJetSelector",
                                      src = cms.InputTag( 'flashggPFCHSJets'+ label ),
                                      cut = cms.string("pt > 15.")
                                      )
-  setattr( process, 'selectedFlashggPFCHSJets'+label, selectedFlashggJets )
+  setattr( process, 'flashggSelectedPFCHSJets'+label, flashggSelectedJets )
 
 
 
@@ -112,7 +112,7 @@ import FWCore.ParameterSet.Config as cms
 
 JetCollectionVInputTag = cms.VInputTag()
 for i in range(0,maxJetCollections):
-  JetCollectionVInputTag.append(cms.InputTag('selectedFlashggPFCHSJets' + str(i)))
+  JetCollectionVInputTag.append(cms.InputTag('flashggSelectedPFCHSJets' + str(i)))
 
 flashggFinalJets = cms.EDProducer("FlashggVectorVectorJetCollector",
                                   inputTagJets= JetCollectionVInputTag

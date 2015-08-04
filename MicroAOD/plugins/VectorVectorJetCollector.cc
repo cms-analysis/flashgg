@@ -43,27 +43,17 @@ namespace flashgg {
         size_t output_size = 0;
         JetViewVector Jets( inputTagJets_.size() );
         for( size_t j = 0; j < inputTagJets_.size(); ++j ) {
-            std::cout << " before getByLabel " << j << std::endl;
             evt.getByLabel( inputTagJets_[j], Jets[j] );
             if( Jets[j]->size() > 0 ) { output_size = j + 1; }
-            std::cout << " Jets[j]->size()=" << Jets[j]->size() << std::endl;
         }
-
-        std::cout << " output_size=" << output_size << std::endl;
 
         result->resize( output_size );
 
-        std::cout << " Resized!" << std::endl;
-
         for( size_t j = 0 ; j < result->size() ; ++j ) {
-            std::cout << "  j=" << j << std::endl;
             for( size_t k = 0 ; k < Jets[j]->size() ; ++k ) {
-                std::cout << "   j=" << j << " k=" << k << std::endl;
                 result->at( j ).push_back( *( Jets[j]->ptrAt( k ) ) );
             }
         }
-
-        std::cout << " Before put" << std::endl;
 
         evt.put( result );
     }
