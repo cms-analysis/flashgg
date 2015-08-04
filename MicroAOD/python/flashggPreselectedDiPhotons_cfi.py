@@ -35,7 +35,13 @@ flashggPreselectedDiPhotons = cms.EDFilter("DiPhotonCandidateSelector",
                                          subLeadingPhoton.pfChgIsoWrtChosenVtx02 < 6.0 && 
                                          subLeadingPhoton.trkSumPtHollowConeDR03 < 6.0 ))) 
                                      )
-                                        
-                                    
+                                        &&
+                                     (leadingPhoton.pt > 14 && leadingPhoton.hadTowOverEm()<0.15 && 
+                                     (leadingPhoton.r9()>0.8 || leadingPhoton.chargedHadronIso()<20 
+                                      || leadingPhoton.chargedHadronIso()<0.3*leadingPhoton.pt())) &&
+                                     (subLeadingPhoton.pt > 14 && subLeadingPhoton.hadTowOverEm()<0.15 &&
+                                     (subLeadingPhoton.r9()>0.8 || subLeadingPhoton.chargedHadronIso()<20 
+                                      || subLeadingPhoton.chargedHadronIso()<0.3*subLeadingPhoton.pt()))               
+
                                      """)
                                    )
