@@ -55,6 +55,7 @@ namespace flashgg {
         EDGetTokenT<View<Photon> > photonToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
+        string systLabel_;
 
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
 
@@ -113,7 +114,8 @@ namespace flashgg {
         muonToken_( consumes<View<flashgg::Muon> >( iConfig.getParameter<InputTag>( "MuonTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
-        genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) )
+        genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
+        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
     {
 
         double default_leptonPtThreshold_ = 20.;
@@ -528,6 +530,7 @@ namespace flashgg {
                 tthltags_obj.setMuons( tagMuons );
                 tthltags_obj.setElectrons( tagElectrons );
                 tthltags_obj.setDiPhotonIndex( diphoIndex );
+                tthltags_obj.setSystLabel( systLabel_ );
                 tthltags->push_back( tthltags_obj );
                 TagTruthBase truth_obj;
                 if( ! evt.isRealData() ) {

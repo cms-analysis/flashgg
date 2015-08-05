@@ -41,6 +41,7 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<reco::GenParticle> > genPartToken_;
         EDGetTokenT<View<reco::GenJet> > genJetToken_;
+        string systLabel_;
 
         vector<double> boundaries;
 
@@ -51,8 +52,8 @@ namespace flashgg {
         vbfDiPhoDiJetMvaResultToken_( consumes<View<flashgg::VBFDiPhoDiJetMVAResult> >( iConfig.getParameter<InputTag> ( "VBFDiPhoDiJetMVAResultTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
         genPartToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
-        genJetToken_( consumes<View<reco::GenJet> >( iConfig.getParameter<InputTag> ( "GenJetTag" ) ) )
-
+        genJetToken_( consumes<View<reco::GenJet> >( iConfig.getParameter<InputTag> ( "GenJetTag" ) ) ),
+        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
     {
         vector<double> default_boundaries;
         default_boundaries.push_back( 0.52 );
@@ -144,6 +145,8 @@ namespace flashgg {
 
             VBFTag tag_obj( dipho, mvares, vbfdipho_mvares );
             tag_obj.setDiPhotonIndex( candIndex );
+
+            tag_obj.setSystLabel( systLabel_ );
 
             int catnum = chooseCategory( vbfdipho_mvares->vbfDiPhoDiJetMvaResult );
             tag_obj.setCategoryNumber( catnum );

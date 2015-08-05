@@ -87,6 +87,10 @@ for r9 in ["HighR9","LowR9"]:
 for systlabel in systlabels:
     newseq = cloneProcessingSnippet(process,process.flashggTagSequence,systlabel)
     massSearchReplaceAnyInputTag(newseq,cms.InputTag("flashggDiPhotonSystematics"),cms.InputTag("flashggDiPhotonSystematics",systlabel))
+    for name in newseq.moduleNames():
+        module = getattr(process,name)
+        if hasattr(module,"SystLabel"):
+            module.SystLabel = systlabel
     process.systematicsTagSequences += newseq
     process.flashggSystTagMerger.src.append(cms.InputTag("flashggTagSorter" + systlabel))
 
