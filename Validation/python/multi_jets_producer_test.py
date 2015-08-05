@@ -20,7 +20,7 @@ jdebug=True
 
 # PHYS14 Files
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIISpring15DR74/VBFHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v1/50000/049AAFAA-CA2D-E511-93E8-02163E00F402.root"),
-                            skipEvents=cms.untracked.uint32(3)
+                            skipEvents=cms.untracked.uint32(0)
                             
 )
 
@@ -67,15 +67,15 @@ addFlashggPF           (process = process, doQGTagging = True, label = '')
 
 for vtx in range(0,5):
     # chs
-#addFlashggPFCHSJets (process = process,
-#                     vertexIndex =vtx,
-#                     doQGTagging = True,
-#                     debug       = True,
-#                     label = '' + str(vtx))
-# puppi 
+    addFlashggPFCHSJets (process = process,
+                         vertexIndex =vtx,
+                         doQGTagging = True,
+                         debug       = True,
+                         label = '' + str(vtx))
+    # puppi 
     addFlashggPuppiJets (process     = process,
-                         #'out'
                          vertexIndex = vtx,
+                         debug       = True,
                          label = '' + str(vtx)) 
     
     
@@ -94,9 +94,7 @@ for vtx in range(0,5):
 #                                                           )
 #
 
-
 process.p = cms.Path(  process.flashggMicroAODSequence )
-
 process.e = cms.EndPath(process.out)
 
 from flashgg.MicroAOD.MicroAODCustomize import customize
