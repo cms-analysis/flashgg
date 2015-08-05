@@ -87,9 +87,6 @@ namespace flashgg {
         float leadPhotonId() const { return leadingPhoton()->phoIdMvaDWrtVtx( vertex_ ); }
         float subLeadPhotonId() const { return subLeadingPhoton()->phoIdMvaDWrtVtx( vertex_ ); }
 
-        void setSystLabel( const std::string label ) { systLabel_ = label; }
-        std::string systLabel() const { return systLabel_; }
-
         bool operator <( const DiPhotonCandidate &b ) const;
         bool operator >( const DiPhotonCandidate &b ) const;
 
@@ -131,11 +128,6 @@ namespace flashgg {
         std::vector<float> vmva_value_;
         std::vector<unsigned int> vmva_sortedindex_;
         std::vector<edm::Ptr<reco::Vertex> > vVtxPtr_;
-
-        std::string systLabel_;
-
-        //        math::XYZTLorentzVector corrPho1_;
-        //        math::XYZTLorentzVector corrPho2_;
 
         flashgg::SinglePhotonView viewPho1_;
         flashgg::SinglePhotonView viewPho2_;
