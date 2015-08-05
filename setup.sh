@@ -90,7 +90,7 @@ git cms-merge-topic sethzenz:topic-weights-count-74X
 
 echo "Setting up PUPPI..."
 git cms-addpkg CommonTools/PileupAlgos
-git cms-merge-topic yhaddad:topic-puppi-for-flashgg-74X
+git cms-merge-topic yhaddad:topic-puppi-flashgg-74X
 echo
 
 echo "Setting up Conversion tools for pat electron..."
