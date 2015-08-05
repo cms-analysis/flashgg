@@ -59,21 +59,26 @@ process.TFileService = cms.Service("TFileService",
 
 
 from flashgg.MicroAOD.flashggExtraJets_cfi import addFlashggPF
-from flashgg.MicroAOD.flashggJets_cfi      import addFlashggPFCHSLegJets
+from flashgg.MicroAOD.flashggJets_cfi      import addFlashggPFCHSJets, addFlashggPuppiJets
 
 print ':: process ==', process
 addFlashggPF           (process = process, doQGTagging = True, label = '')
 
 
 for vtx in range(0,5):
-    addFlashggPFCHSLegJets (process = process,
-                            vertexIndex =vtx,
-                            doQGTagging = True,
-                            label = '' + str(vtx))
+    # chs
+    addFlashggPFCHSJets (process = process,
+                         vertexIndex =vtx,
+                         doQGTagging = True,
+                         debug       = True,
+                         label = '' + str(vtx))
+    # puppi 
+    addFlashggPuppiJets (process     = process,
+                         vertexIndex = vtx,
+                         debug       = True,
+                         label = '' + str(vtx)) 
     
-
-
-
+    
 #newseq = cloneProcessingSnippet(process,process.currentMicroAODExtraJetsSequence,'flashggJetsPF')
 #currentMicroAODExtraJetsSequence = cms.Sequence( )# addFlashggPF + addFlashggPFCHS0)
 
@@ -89,9 +94,7 @@ for vtx in range(0,5):
 #                                                           )
 #
 
-
 process.p = cms.Path(  process.flashggMicroAODSequence )
-
 process.e = cms.EndPath(process.out)
 
 from flashgg.MicroAOD.MicroAODCustomize import customize
