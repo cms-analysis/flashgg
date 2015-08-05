@@ -44,6 +44,11 @@ class MicroAODCustomize(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "globalTag")
+        self.options.register ('timing',
+                               0,
+                              VarParsing.VarParsing.multiplicity.singleton,
+                              VarParsing.VarParsing.varType.int,
+                               'timing')
 
     def __getattr__(self,name):
         ## did not manage to inherit from VarParsing, because of some issues in __init__
@@ -81,6 +86,8 @@ class MicroAODCustomize(object):
             self.customizeGlobalTag(process)
         if len(self.fileNames) >0:
             self.customizeFileNames(process)
+        if self.timing == 1:
+            self.customizeTiming(process)
 
             
     # signal specific customization
@@ -125,6 +132,10 @@ class MicroAODCustomize(object):
     def customizeFileNames(self,process):
         process.source.fileNames = cms.untracked.vstring(self.fileNames)
 
+    def customizeTiming(self,process):
+        from Validation.Performance.TimeMemoryInfo import customise as TimeMemoryCustomize
+        TimeMemoryCustomize(process)
+        process.MessageLogger.cerr.threshold = 'WARNING'
             
 # customization object
 customize = MicroAODCustomize()
