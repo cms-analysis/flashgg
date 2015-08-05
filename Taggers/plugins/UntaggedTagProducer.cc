@@ -36,6 +36,7 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
+        string systLabel_;
 
         vector<double> boundaries;
 
@@ -44,7 +45,8 @@ namespace flashgg {
     UntaggedTagProducer::UntaggedTagProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
-        genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) )
+        genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
+        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
     {
         vector<double> default_boundaries;
         default_boundaries.push_back( 0.07 );
@@ -111,6 +113,8 @@ namespace flashgg {
 
             UntaggedTag tag_obj( dipho, mvares );
             tag_obj.setDiPhotonIndex( candIndex );
+
+            tag_obj.setSystLabel( systLabel_ );
 
             TagTruthBase truth_obj;
             truth_obj.setGenPV( higgsVtx );
