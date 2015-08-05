@@ -9,7 +9,7 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 #process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 # Uncomment the following if you notice you have a memory leak
@@ -76,8 +76,8 @@ massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSel
 process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
 
 process.systematicsTagSequences = cms.Sequence()
-
-systlabels = []
+systlabels = ["Nominal"]
+#systlabels = [""]
 for r9 in ["HighR9","LowR9"]:
     for direction in ["Up","Down"]:
         systlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
@@ -86,13 +86,19 @@ for r9 in ["HighR9","LowR9"]:
         for region in ["EB","EE"]:
             systlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
 
+import hashlib
 for systlabel in systlabels:
+    m = hashlib.md5()
+    exec "m.update('%s')" % systlabel
     newseq = cloneProcessingSnippet(process,process.flashggTagSequence,systlabel)
     massSearchReplaceAnyInputTag(newseq,cms.InputTag("flashggDiPhotonSystematics"),cms.InputTag("flashggDiPhotonSystematics",systlabel))
     for name in newseq.moduleNames():
         module = getattr(process,name)
         if hasattr(module,"SystLabel"):
             module.SystLabel = systlabel
+            #print "name," , name , "  systLabel " , systlabel
+        if hasattr(module,"SystLabelHash"):
+            module.SystLabelHash =  int(str(int(m.hexdigest(),16))[-8:])
     process.systematicsTagSequences += newseq
     process.flashggSystTagMerger.src.append(cms.InputTag("flashggTagSorter" + systlabel))
 
@@ -105,7 +111,7 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
 
 process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSystematics+process.flashggElectronSystematics)*
                      (process.flashggTagSequence+process.systematicsTagSequences)*
-                     process.flashggSystTagMerger)
+                     process.flashggSystTagMerger+process.flashggTagTester)
 print process.p
 
 process.e = cms.EndPath(process.out)
