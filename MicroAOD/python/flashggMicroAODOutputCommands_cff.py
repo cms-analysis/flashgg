@@ -4,6 +4,10 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep *_flashgg*_*_*",
                                                      "drop *_flashggVertexMap*_*_*", 
                                                      "drop *_flashggDiPhotons_*_*", # keep preselected only
+                                                     ## this part drop all the tools used to build puppi jets
+                                                     "drop *_flashggPuppi*_*_*",
+                                                     #
+                                                     ""
                                                      "drop patPackedCandidates_*_*_*", # for intermediate PFCHSLeg jet constituents
                                                      "drop *_flashggPrunedGenParticles_*_*",   
                                                      "keep recoGenParticles_flashggPrunedGenParticles_*_*", # this line, and preceding, drop unneded association object
