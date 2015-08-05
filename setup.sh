@@ -83,16 +83,16 @@ git cms-addpkg RecoJets/JetProducers
 git cms-merge-topic sethzenz:topic-pujid-74X
 echo
 
-#echo "Setting up PUPPI..."
-#git clone -b flashgg https://github.com/ldcorpe/Dummy
-
-echo
 echo "Setting up weight counter..."
 git cms-addpkg CommonTools/UtilAlgos 
 git cms-addpkg DataFormats/Common
 git cms-merge-topic sethzenz:topic-weights-count-74X
 
+echo "Setting up PUPPI..."
+git cms-addpkg CommonTools/PileupAlgos
+git cms-merge-topic yhaddad:topic-puppi-for-flashgg-74X
 echo
+
 echo "Setting up Conversion tools for pat electron..."
 git cms-addpkg RecoEgamma/EgammaTools
 git cms-merge-topic -u sethzenz:topic-conversion-tools-for-pat-ele-74X
