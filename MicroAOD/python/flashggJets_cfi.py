@@ -89,7 +89,7 @@ def addFlashggPFCHSJets(process, vertexIndex = 0, doQGTagging = True, label ='',
                                JetTag      = cms.InputTag('patJetsAK4PFCHSLeg' + label),
                                VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                                PileupJetIdParameters = cms.PSet(pu_jetid)
-  )
+                             )
   setattr( process, 'flashggPFCHSJets'+ label, flashggJets)
   
   if doQGTagging:
@@ -99,12 +99,102 @@ def addFlashggPFCHSJets(process, vertexIndex = 0, doQGTagging = True, label ='',
   selectedFlashggJets = cms.EDFilter("FLASHggJetSelector",
                                      src = cms.InputTag( 'flashggPFCHSJets'+ label ),
                                      cut = cms.string("pt > 15.")
-                                     )
+                                   )
   setattr( process, 'selectedFlashggPFCHSJets'+label, selectedFlashggJets )
 
 
 
 
+
+  
+def addFlashggPuppiJets(process,
+                        #jetSequence,
+                        vertexIndex = 0,
+                        doQGTagging = True,
+                        label ='',
+                        debug = False):
+  
+  print ":: new addFlashggPuppiJets ( vertexIndex = ", vertexIndex , ")"
+  
+  from CommonTools.PileupAlgos.flashggPuppi_cff          import flashggPuppi 
+  from RecoJets.JetProducers.PFJetParameters_cfi         import *
+  from RecoJets.JetProducers.AnomalousCellParameters_cfi import *
+  from RecoJets.JetProducers.ak4PFJets_cfi               import ak4PFJets
+
+  # create a seq
+  #jetSeq = cms.Sequence()
+  
+  # fill the puppi parameters
+  setattr(process, 'flashggPuppi' + label,
+          flashggPuppi.clone( candName              = cms.InputTag('packedPFCandidates'),
+                              vertexName            = cms.InputTag('offlineSlimmedPrimaryVertices'),
+                              diPhotonTag           = cms.InputTag('flashggDiPhotons'),
+                              VertexCandidateMapTag = cms.InputTag('flashggVertexMapForCHS'),
+                              vertexIndex           = cms.untracked.uint32(vertexIndex),
+                              debug                 = cms.untracked.bool(debug)
+                            )
+  )
+  
+  #setattr(process, 'pfCandPuppi' + label, cms.EDFilter("CandPtrSelector", 
+  #                                                     src = cms.InputTag('flashggPuppi' + label), 
+  #                                                     cut = cms.string('')))
+  print "     ::process.flashggPuppi = ", getattr(process, 'flashggPuppi' + label)
+  setattr ( process, 'ak4PFJetsPuppi' + label,
+            # the folowing is based on jettoolbox
+            ak4PFJets.clone ( src = cms.InputTag('flashggPuppi' + label), doAreaFastjet = True)
+          )
+
+  #jetSeq += getattr(process, 'flashggPuppi'   + label)
+  #jetSeq += getattr(process, 'ak4PFJetsPuppi' + label)
+  '''
+  setattr( proc, jetalgo+'PFJets'+PUMethod+'Constituents',
+           cms.EDFilter("MiniAODJetConstituentSelector",
+                        src = cms.InputTag( jetalgo+'PFJets'+PUMethod ),
+                        cut = cms.string( Cut ) )) 
+  jetSeq += getattr(proc, jetalgo+'PFJets'+PUMethod+'Constituents')   
+  '''
+  print "     ::process.ak4PFJetsPuppi = ", getattr(process, 'ak4PFJetsPuppi' + label)
+  # do jet clustering
+  addJetCollection(
+    process,
+    postfix            = label,
+    labelName          = 'AK4PUPPI',
+    jetSource          = cms.InputTag('ak4PFJetsPuppi' + label),
+    pvSource           = cms.InputTag('offlineSlimmedPrimaryVertices'),
+    pfCandidates       = cms.InputTag('packedPFCandidates'),
+    svSource           = cms.InputTag('slimmedSecondaryVertices'),
+    btagDiscriminators = [ flashggBTag ],
+    jetCorrections     = ('AK4PFchs',['L1FastJet',  'L2Relative', 'L3Absolute'], 'None'),
+    genJetCollection   = cms.InputTag('slimmedGenJets'),
+    genParticles       = cms.InputTag('prunedGenParticles'),
+    # jet param
+    algo = 'AK', rParam = 0.4
+  )
+  print "     ::process.patJetCorrFactorsAK4PUPPI = ", getattr(process, 'patJetCorrFactorsAK4PUPPI' + label)
+  getattr(process, 'patJetCorrFactorsAK4PUPPI' + label).primaryVertices = "offlineSlimmedPrimaryVertices"
+  
+  setattr( process,'flashggPUPPIJets'+ label,
+           cms.EDProducer('FlashggJetProducer',
+                          DiPhotonTag           = cms.InputTag('flashggDiPhotons'),
+                          VertexTag             = cms.InputTag('offlineSlimmedPrimaryVertices'),
+                          JetTag                = cms.InputTag('patJetsAK4PUPPI' + label),
+                          VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
+                          UsePuppi              = cms.untracked.bool(True),
+                          PileupJetIdParameters = cms.PSet(pu_jetid)
+                        ))
+  print "     ::process.flashggPUPPIJets = ", getattr(process, 'flashggPUPPIJets'+ label)
+  ##jetSeq += getattr(process, 'flashggPUPPIJets'+ label)
+  ##setattr( process, 'selectedFlashggJets'+ label,
+  ##         cms.EDFilter("FLASHggJetSelector",
+  ##                      src = cms.InputTag( 'flashggPUPPIJets'+ label ),
+  ##                      cut = cms.string("pt > 15.")
+  ##                    ))
+  ##print "     ::process.selectedFlashggJets = ", getattr(process, 'flashggPUPPIJets'+ label)
+  #jetSeq +=  getattr(process,  'selectedFlashggJets'+ label)
+  #setattr( process, 'selectedFlashggPUPPIJets'+label, selectedFlashggJets )
+  #setattr (process, jetSequence, jetSeq)
+  
+  
 # Define a default Jet Collection VInputTag
 # It is recomended to name the Jets flashggJets + 'jetlabel'
 
