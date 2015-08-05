@@ -25,6 +25,7 @@ DiPhotonTagBase::DiPhotonTagBase( const DiPhotonTagBase &b ) : DiPhotonTagBase::
     setDiPhotonIndex( b.diPhotonIndex() );
     setTagTruth( b.tagTruth() );
     setSystLabel( b.systLabel() );
+    setSystLabelHash( b.systLabelHash() );
 }
 
 DiPhotonTagBase::~DiPhotonTagBase()

@@ -56,6 +56,7 @@ namespace flashgg {
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
         string systLabel_;
+        int systLabelHash_;
 
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
 
@@ -120,7 +121,8 @@ namespace flashgg {
         METToken_( consumes<View<pat::MET> >( iConfig.getParameter<InputTag> ( "METTag" ) ) ),
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
-        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
+        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
+        systLabelHash_( iConfig.getParameter<int> ( "SystLabelHash" ) )
     {
 
         double default_leptonPtThreshold_ = 20.;
@@ -486,6 +488,7 @@ namespace flashgg {
                 VHTightTags_obj.setMET( tagMETs );
                 VHTightTags_obj.setDiPhotonIndex( diphoIndex );
                 VHTightTags_obj.setSystLabel( systLabel_ );
+                VHTightTags_obj.setSystLabelHash( systLabelHash_ );
                 VHTightTags->push_back( VHTightTags_obj );
                 TagTruthBase truth_obj;
                 truth_obj.setGenPV( higgsVtx );

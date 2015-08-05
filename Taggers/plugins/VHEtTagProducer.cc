@@ -39,6 +39,7 @@ namespace flashgg {
         EDGetTokenT<View<pat::MET> > METToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
         string systLabel_;
+        int systLabelHash_;
 
         //configurable selection variables
         double leadPhoOverMassThreshold_;
@@ -53,7 +54,8 @@ namespace flashgg {
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
         METToken_( consumes<View<pat::MET> >( iConfig.getParameter<InputTag> ( "METTag" ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
-        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
+        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
+        systLabelHash_( iConfig.getParameter<int> ( "SystLabelHash" ) )
     {
         leadPhoOverMassThreshold_    = iConfig.getUntrackedParameter<double>( "leadPhoOverMassThreshold", 0.334 );
         subleadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>( "subleadPhoOverMassThreshold", 0.25 );
@@ -129,6 +131,7 @@ namespace flashgg {
             VHEtTag tag_obj( dipho, mvares );
             tag_obj.setDiPhotonIndex( candIndex );
             tag_obj.setSystLabel( systLabel_ );
+            tag_obj.setSystLabelHash( systLabelHash_ );
             tag_obj.setMet( theMET );
 
             TagTruthBase truth_obj;

@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 diphotonDumpConfig = cms.PSet(
-    className  = cms.untracked.string("CutBasedDiPhotonDumper"),
+    className  = cms.untracked.string("CutAndClassBasedDiPhotonDumper"),
     src = cms.InputTag("flashggDiPhotons"),
     generatorInfo = cms.InputTag("generator"),
     processId = cms.string(""),
@@ -11,7 +11,8 @@ diphotonDumpConfig = cms.PSet(
     categories = cms.VPSet(),
 
     workspaceName = cms.untracked.string("cms_hgg_$SQRTS"),
-    nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$LABEL_$SUBCAT"),
+    nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$LABEL_$SUBCAT_$SYST"),
+    systLabel = cms.untracked.string(""),
     
     dumpHistos = cms.untracked.bool(True),
     dumpWorkspace = cms.untracked.bool(False),
