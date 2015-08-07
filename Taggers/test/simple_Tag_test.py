@@ -30,6 +30,7 @@ process.load("flashgg/Taggers/flashggTagTester_cfi")
 # For debugging
 switchToPreselected = False
 switchToFinal = False
+switchToPuppi = False
 assert(not switchToPreselected or not switchToFinal)
 
 if switchToPreselected:
@@ -40,6 +41,9 @@ if switchToFinal:
     from flashgg.MicroAOD.flashggFinalEGamma_cfi import flashggFinalEGamma
     from PhysicsTools.PatAlgos.tools.helpers import massSearchReplaceAnyInputTag
     massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggDiPhotons"),cms.InputTag("flashggFinalEGamma",flashggFinalEGamma.DiPhotonCollectionName.value()))
+
+if switchToPuppi:
+    process.flashggUnpackedJets.JetsTag = cms.InputTag("flashggFinalPuppiJets")
 
 from flashgg.Taggers.flashggTagOutputCommands_cff import tagDefaultOutputCommand
 
