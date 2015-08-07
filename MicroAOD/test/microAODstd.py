@@ -80,6 +80,7 @@ process.options = cms.untracked.PSet(
     )
 # import function which takes care of reclustering the jets using legacy vertex		
 from flashgg.MicroAOD.flashggJets_cfi import addFlashggPFCHSJets 
+from flashgg.MicroAOD.flashggJets_cfi import addFlashggPuppiJets
 from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
 # call the function, it takes care of everything else.
 for vtx in range(0,maxJetCollections):
@@ -87,6 +88,10 @@ for vtx in range(0,maxJetCollections):
                          vertexIndex =vtx,
                          doQGTagging = True,
                          label = '' + str(vtx))    
+    addFlashggPuppiJets (process     = process,
+                         vertexIndex = vtx,
+                         debug       = False,
+                         label = '' + str(vtx))
 
 process.p = cms.Path(process.flashggMicroAODSequence)
 process.e = cms.EndPath(process.out)
