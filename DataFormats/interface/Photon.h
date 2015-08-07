@@ -18,7 +18,7 @@ namespace flashgg {
     public:
         Photon();
         Photon( const pat::Photon & );
-        Photon( const flashgg::Photon & );
+        /// Photon( const flashgg::Photon & );
         ~Photon();
         virtual Photon *clone() const;
 

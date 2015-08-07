@@ -45,35 +45,38 @@ Photon::Photon( const pat::Photon &aPhoton ) : pat::Photon::Photon( aPhoton )
     ZeroVariables();
 }
 
-Photon::Photon( const Photon &aPhoton ) : pat::Photon::Photon( aPhoton )
-{
-    sipip_ = aPhoton.sipip();
-    sieip_ = aPhoton.sieip();
-    e2nd_ = aPhoton.e2nd();
-    e2x5right_ = aPhoton.e2x5right();
-    e2x5left_ = aPhoton.e2x5left();
-    e2x5top_ = aPhoton.e2x5top();
-    e2x5bottom_ = aPhoton.e2x5bottom();
-    e2x5max_ = aPhoton.e2x5max();
-    eright_ = aPhoton.eright();
-    eleft_ = aPhoton.eleft();
-    etop_ = aPhoton.etop();
-    ebottom_ = aPhoton.ebottom();
-    e1x3_ = aPhoton.e1x3();
-    S4_ = aPhoton.s4();
-    pfPhoIso04_ = aPhoton.pfPhoIso04();
-    pfPhoIso03_ = aPhoton.pfPhoIso03();
-    pfChgIsoWrtWorstVtx04_ = aPhoton.pfChgIsoWrtWorstVtx04();
-    pfChgIsoWrtWorstVtx03_ = aPhoton.pfChgIsoWrtWorstVtx03();
-    pfChgIsoWrtChosenVtx02_ = aPhoton.pfChgIsoWrtChosenVtx02();
-    ESEffSigmaRR_ = aPhoton.esEffSigmaRR();
-    sigEOverE_ = aPhoton.sigEOverE();
-    pfChgIso04_ = aPhoton.pfChgIso04();
-    pfChgIso03_ = aPhoton.pfChgIso03();
-    pfChgIso02_ = aPhoton.pfChgIso02();
-    phoIdMvaD_ = aPhoton.phoIdMvaD();
-    passElecVeto_ = aPhoton.passElectronVeto();
-}
+/// Photon::Photon( const Photon &aPhoton ) : pat::Photon::Photon( aPhoton )
+/// {
+///     sipip_ = aPhoton.sipip();
+///     sieip_ = aPhoton.sieip();
+///     e2nd_ = aPhoton.e2nd();
+///     e2x5right_ = aPhoton.e2x5right();
+///     e2x5left_ = aPhoton.e2x5left();
+///     e2x5top_ = aPhoton.e2x5top();
+///     e2x5bottom_ = aPhoton.e2x5bottom();
+///     e2x5max_ = aPhoton.e2x5max();
+///     eright_ = aPhoton.eright();
+///     eleft_ = aPhoton.eleft();
+///     etop_ = aPhoton.etop();
+///     ebottom_ = aPhoton.ebottom();
+///     e1x3_ = aPhoton.e1x3();
+///     S4_ = aPhoton.s4();
+///     pfPhoIso04_ = aPhoton.pfPhoIso04();
+///     pfPhoIso03_ = aPhoton.pfPhoIso03();
+///     pfChgIsoWrtWorstVtx04_ = aPhoton.pfChgIsoWrtWorstVtx04();
+///     pfChgIsoWrtWorstVtx03_ = aPhoton.pfChgIsoWrtWorstVtx03();
+///     pfChgIsoWrtChosenVtx02_ = aPhoton.pfChgIsoWrtChosenVtx02();
+///     ESEffSigmaRR_ = aPhoton.esEffSigmaRR();
+///     sigEOverE_ = aPhoton.sigEOverE();
+///     pfChgIso04_ = aPhoton.pfChgIso04();
+///     pfChgIso03_ = aPhoton.pfChgIso03();
+///     pfChgIso02_ = aPhoton.pfChgIso02();
+///     phoIdMvaD_ = aPhoton.phoIdMvaD();
+///     passElecVeto_ = aPhoton.passElectronVeto();
+///     extraChargedIsolations_ = aPhoton.extraChargedIsolations_;
+///     extraPhotonIsolations_  = aPhoton.extraPhotonIsolations_;
+///     extraNeutralIsolations_ = aPhoton.extraNeutralIsolations_;
+/// }
 
 Photon::~Photon() {}
 
@@ -227,7 +230,7 @@ float const Photon::findVertexFloat( const edm::Ptr<reco::Vertex> &vtx, const st
     }
 
     throw cms::Exception( "Missing Data" ) << "could not find value for vertex " << vtx.key() << " " << vtx.id() << " lazy search: " << lazy <<  "\n";;
-
+    
     return 0.;
 }
 
