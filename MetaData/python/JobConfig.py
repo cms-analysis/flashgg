@@ -64,6 +64,16 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.int,          # string, int, or float
                                "jobId")
+        self.options.register ('lastAttempt',
+                       False, # default value
+                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                       VarParsing.VarParsing.varType.bool,          # string, int, or float
+                       "lastAttempt")
+        self.options.register ('lumiMask',
+                       "", # default value
+                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                       VarParsing.VarParsing.varType.string,          # string, int, or float
+                       "lumiMask")
         self.options.register ('dryRun',
                        False, # default value
                        VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -159,6 +169,14 @@ class JobConfig(object):
             for name,obj in process.__dict__.iteritems():
                 if hasattr(obj,"processId"):
                     obj.processId = str(processId)
+            
+            if isdata and self.lumiMask != "":
+                if isFwlite:
+                    sys.exit("Lumi mask not supported in FWlite",-1)
+
+                import FWCore.PythonUtilities.LumiList as LumiList
+                process.source.lumisToProcess = LumiList.LumiList(filename = self.lumiMask).getVLuminosityBlockRange()
+                
             
         flist = []
         for f in files:

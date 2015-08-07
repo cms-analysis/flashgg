@@ -31,7 +31,7 @@ class SamplesManager(object):
                  catalog,
                  cross_sections=["$CMSSW_BASE/src/flashgg/MetaData/data/cross_sections.json"],
                  dbs_instance="prod/phys03",
-                 queue=None, maxThreads=200,force=False
+                 queue=None, maxThreads=200,force=False,doContinue=False
                  ):
         """
         Constructur:
@@ -57,6 +57,7 @@ class SamplesManager(object):
         self.queue_ = queue
         self.maxThreads_ = maxThreads
         self.force_ = force
+        self.continue_ = doContinue
 
     def importFromDAS(self,list_datasets):
         """
@@ -81,14 +82,19 @@ class SamplesManager(object):
         for dsetName in datasets:
             print "Importing %s" % dsetName
             files = self.getFilesFomDAS(dsetName)
-            if dsetName in catalog:
-                catalog[ dsetName ]["files"]  = files
-            else:
-                catalog[ dsetName ] = { "files" : files }
+            self.addToDataset(catalog,dsetName,files)
+            ## if dsetName in catalog:
+            ##     if self.force_:
+            ##         catalog[ dsetName ]["files"]  = files
+            ##     else:
+            ##         self.mergeDataset(catalog[ dsetName ],{ "files" : files })
+            ## else:
+            ##     catalog[ dsetName ] = { "files" : files }
             
         print "Writing catalog"
         self.writeCatalog(catalog)
         print "Done"
+    
 
     def getFilesFomDAS(self,dsetName):
         """
@@ -146,10 +152,11 @@ class SamplesManager(object):
                 
             print "Importing %s as %s" % (folder,dsetName)
             files = self.getFilesFomEOS(folder)            
-            if dsetName in catalog:
-                catalog[ dsetName ]["files"]  = files
-            else:
-                catalog[ dsetName ] = { "files" : files }
+            self.addToDataset(catalog,dsetName,files)
+            ## if dsetName in catalog:
+            ##     catalog[ dsetName ]["files"]  = files
+            ## else:
+            ##     catalog[ dsetName ] = { "files" : files }
             
         print "Writing catalog"
         self.writeCatalog(catalog)
@@ -200,14 +207,14 @@ class SamplesManager(object):
         ## self.parallel_ = Parallel(1,self.queue_)
 
         print "Checking all datasets"
+        self.outcomes = []
         for dataset in catalog.keys():  
             if match and not fnmatch(dataset,match): continue
             self.checkDatasetFiles(dataset,catalog,light=light)
         # write catalog to avoid redoing duplicates removal
         self.writeCatalog(catalog)
-        
+                
         if self.queue_:
-            self.outcomes = []
             self.parallel_.wait(printOutput=True,handler=self)
             outcomes = self.outcomes
         else:
@@ -215,7 +222,9 @@ class SamplesManager(object):
 
         ## for dsetName,ifile,fName,ret,out in outcomes:
         nfailed = 0
-        for ign1, ign2, outcome in outcomes:
+        for oc in outcomes:
+            ign1, ign2, outcome= oc
+            ## for ign1, ign2, outcome in outcomes:
             dsetName,ifile,fName,ret,out = outcome
             info = catalog[dsetName]["files"][ifile]
             if info["name"] != fName:
@@ -225,6 +234,7 @@ class SamplesManager(object):
                     info["bad"] = True
                     nfailed += 1
                 else:
+                    info["bad"] = False
                     extraInfo = json.loads(str(out))
                     if len(extraInfo.keys()) == 0:
                         nfailed += 1
@@ -273,57 +283,59 @@ class SamplesManager(object):
         files = info["files"]
         print "Number of files: ", len(files)
         
-        toremove = []
-        keep_wildcard=None
-        for ifil,eifil in enumerate(files):
-            if ifil in toremove:
-                continue
-            for jfil,ejfil in enumerate(files[ifil+1:]):
-                if ifil+jfil in toremove:
+        if self.force_ or not catalog[dsetName].get("vetted",False):
+            toremove = []
+            keep_wildcard=None
+            for ifil,eifil in enumerate(files):
+                if ifil in toremove:
                     continue
-                if eifil["name"] == ejfil["name"]:
-                    toremove.append(ifil)
-                else:
-                    iid = eifil["name"].rstrip(".root").rsplit("_",1)[-1]
-                    jid = ejfil["name"].rstrip(".root").rsplit("_",1)[-1]
-                    if iid == jid:
-                        if not keep_wildcard:
-                            print "duplicated file index ", iid
-                            print eifil["name"]
-                            print ejfil["name"]
-                            reply=ask_user("keep both (yes/no/matching)? ",["y","n","m"])
-                            if reply == "m":             
-                                while not keep_wildcard:
-                                    print "enter wildcard matching expression",
-                                    keep_wildcard=raw_input()
-                                    if ask_user("keep all files matching '%s'?" % keep_wildcard) == "n":
-                                        keep_wildcard=None
-                        if keep_wildcard:                            
-                            imatch=fnmatch(eifil["name"],keep_wildcard)
-                            jmatch=fnmatch(ejfil["name"],keep_wildcard)
-                            if imatch != jmatch:
-                                if imatch: toremove.append(ifil+jfil)
-                                else: toremove.append(ifil)                            
-                                continue                       
-                            else:
+                for jfil,ejfil in enumerate(files[ifil+1:]):
+                    if ifil+jfil in toremove:
+                        continue
+                    if eifil["name"] == ejfil["name"]:
+                        toremove.append(ifil)
+                    else:
+                        iid = eifil["name"].rstrip(".root").rsplit("_",1)[-1]
+                        jid = ejfil["name"].rstrip(".root").rsplit("_",1)[-1]
+                        if iid == jid:
+                            if not keep_wildcard:
                                 print "duplicated file index ", iid
                                 print eifil["name"]
                                 print ejfil["name"]
-                                reply=ask_user("keep both? ")
-                        if reply == "n":
-                            if ask_user( "keep %s? " % ejfil["name"] ) == "n":
-                                ## files.pop(ifil+jfil)
-                                toremove.append(ifil+jfil)
-                            if ask_user( "keep %s? " % eifil["name"] ) == "n":
-                                toremove.append(ifil)
-                                ## files.pop(ifil)
-                                
-        for ifile in sorted(toremove,reverse=True):
-            ## print ifile
-            files.pop(ifile)
+                                reply=ask_user("keep both (yes/no/matching)? ",["y","n","m"])
+                                if reply == "m":             
+                                    while not keep_wildcard:
+                                        print "enter wildcard matching expression",
+                                        keep_wildcard=raw_input()
+                                        if ask_user("keep all files matching '%s'?" % keep_wildcard) == "n":
+                                            keep_wildcard=None
+                            if keep_wildcard:                            
+                                imatch=fnmatch(eifil["name"],keep_wildcard)
+                                jmatch=fnmatch(ejfil["name"],keep_wildcard)
+                                if imatch != jmatch:
+                                    if imatch: toremove.append(ifil+jfil)
+                                    else: toremove.append(ifil)                            
+                                    continue                       
+                                else:
+                                    print "duplicated file index ", iid
+                                    print eifil["name"]
+                                    print ejfil["name"]
+                                    reply=ask_user("keep both? ")
+                            if reply == "n":
+                                if ask_user( "keep %s? " % ejfil["name"] ) == "n":
+                                    ## files.pop(ifil+jfil)
+                                    toremove.append(ifil+jfil)
+                                if ask_user( "keep %s? " % eifil["name"] ) == "n":
+                                    toremove.append(ifil)
+                                    ## files.pop(ifil)
+                                    
+            for ifile in sorted(toremove,reverse=True):
+                ## print ifile
+                files.pop(ifile)
             
         print "After duplicates removal: ", len(files)
         nsub = 0
+        catalog[dsetName]["vetted"] = True
         if not light:
             info = catalog[dsetName]["files"] = files
             for ifile,finfo in enumerate(files):            
@@ -364,7 +376,7 @@ class SamplesManager(object):
             
         for name,val in primaries.iteritems():
             if len(val) == 1: continue
-            reply = ask_user("More than one sample for %s:\n %s\nKeep all?" % (name,"\n ".join(val)),["y","n","m"])
+            reply = ask_user("More than one sample for %s:\n %s\nKeep all (yes/no/merge)?" % (name,"\n ".join(val)),["y","n","m"])
             if reply == "m":
                 dst = val[0]
                 for merge in val[1:]:
@@ -379,6 +391,7 @@ class SamplesManager(object):
         self.writeCatalog(catalog)
         
     def mergeDataset(self,dst,merge):
+        dst["vetted"]=False
         dstFiles=dst["files"]
         mergeFiles=merge["files"]
         for fil in mergeFiles:
@@ -389,6 +402,16 @@ class SamplesManager(object):
             if not skip:
                 dstFiles.append( fil )
         
+    def addToDataset(self,catalog,dsetName,files):
+        if dsetName in catalog:
+            if self.force_:
+                catalog[ dsetName ]["files"]  = files
+            else:
+                self.mergeDataset(catalog[ dsetName ],{ "files" : files })
+        else:
+            catalog[ dsetName ] = { "files" : files }
+
+
     def checkFile(self,fileName,dsetName,ifile):
         """
         Check if file is valid.
@@ -396,6 +419,15 @@ class SamplesManager(object):
         """
         fName = fileName
         tmp = ".tmp%s_%d.json"%(dsetName.replace("/","_"),ifile)
+        if self.continue_:
+            if os.path.exists(tmp):
+                print "%s already exists" % tmp
+                outcome = self.readJobOutput(tmp,0,"",dsetName,fileName,ifile)
+                if self.queue_:
+                    self.outcomes.append((None,None,outcome))
+                else:
+                    return outcome
+            return None
         if self.queue_:
             self.parallel_.run("fggCheckFile.py",[fName,tmp,dsetName,str(ifile),"2>/dev/null"],interactive=False)
         else:
@@ -552,7 +584,7 @@ class SamplesManagerCli(SamplesManager):
                      "eosimport <list_of_folders>   imports datasets from EOS", 
                      "list                          lists datasets in catalog", 
                      "review                        review catalog to remove datasets", 
-                     "check      [wildcard]         check duplicate files and errors in datasets and mark bad files"
+                     "check      [wildcard]         check duplicate files and errors in datasets and mark bad files",
                      "checklite  [wildcard]         check for duplicate files in datasets"
                      ]
         
@@ -585,6 +617,16 @@ Commands:
                             default="flashgg",
                             help="MetaData package to use. default: %default",
                             ),
+                make_option("-c","--continue",
+                            dest="doContinue",action="store_true",
+                            default=False,
+                            help="Continue previous check",
+                            ),
+                make_option("--force",
+                            dest="doForce",action="store_true",
+                            default=False,
+                            help="Force actions",
+                            ),
                 make_option("--load",  # special option to load whole configuaration from JSON
                             action="callback",callback=Load(),dest="__opt__",
                             type="string",
@@ -614,9 +656,12 @@ Commands:
     def __call__(self):
         
         (options,args) = (self.options,self.args)
-    
+        
+        print options
         self.mn = SamplesManager("$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % (options.metaDataSrc,options.campaign),
-                                 dbs_instance=options.dbs_instance,queue=options.queue,maxThreads=options.max_threads)
+                                 dbs_instance=options.dbs_instance,
+                                 force=options.doForce,
+                                 queue=options.queue,maxThreads=options.max_threads,doContinue=options.doContinue)
         
         ## pprint( mn.cross_sections_ )
         if len(args) == 0:
@@ -624,7 +669,7 @@ Commands:
         
         method = getattr(self,"run_%s" % args[0],None)
         if not method:
-            sys.exit("Unkown command %s" % a)
+            sys.exit("Unkown command %s" % args[0])
         if len(args)>1:
             method(*args[1:])
         else:
