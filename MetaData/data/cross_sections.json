@@ -1,5 +1,6 @@
 {
         "DYJetsToLL_M-50_13TeV-madgraph-pythia8"                        : { "xs" : 4746.0                                },
+        "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8"       : { "xs" : 6104.0                                },
         "GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6"           : { "xs" : 17180.0,  "br" : 0.0379,   "kf" : 1.0 },
         "GJet_Pt20to40_doubleEMEnriched_TuneZ2star_13TeV-pythia6"       : { "xs" : 145400.0, "br" : 0.001776, "kf" : 1.0 },
         "GluGluToHToGG_M-125_13TeV-powheg-pythia6"                      : { "xs" : 43.92,    "br" : 2.28e-3              },
