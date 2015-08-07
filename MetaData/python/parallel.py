@@ -38,6 +38,9 @@ class LsfJob:
             bsubCmdParts.append("-K")  # bsub waits until job completes
             
         if( self.jobName ):
+            logdir = os.path.dirname(self.jobName)
+            if not os.path.exists(logdir):
+                os.mkdir(logdir)
             bsubCmdParts.append("-J " + self.jobName)
             bsubCmdParts.append("-o %s.log" % self.jobName)
         
@@ -83,7 +86,7 @@ class LsfJob:
         return self.handleOutput()
     
     def handleOutput(self):
-        print "handleOutput"
+        ## print "handleOutput"
         if self.async:
             
             result = commands.getstatusoutput("bjobs %d" % self.jobid)

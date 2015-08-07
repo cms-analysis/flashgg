@@ -63,6 +63,11 @@ parser = OptionParser(option_list=[
                     default=10,
                     help="default: %default", 
                     ),
+        make_option("--lumiMask",
+                    action="store", dest="lumiMask", type="string",
+                    default=None,
+                    help="default: %default", 
+                    ),
         make_option("-s","--samples",
                     dest="samples",action="callback",callback=Load(),type="string",
                     default={},
@@ -276,10 +281,24 @@ if options.createCrabConfig:
                 oline = oline.replace(src, target)
             for outfile in outfiles:
                 outfile.write(oline)
+                
+        if sample in data:
+            if options.lumiMask:
+                outfile.write('config.Data.lumiMask = "%s"\n' % (options.lumiMask))
+                if pilotFile:
+                    pilotFile.write('config.Data.lumiMask = "%s"\n' % (options.lumiMask))
+            else:
+                print 
+                print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+                print "WARNING: you are running on data withut specifying a lumi mask"
+                print "         please make sure that you know what you are doing"
+                print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+                print 
+
         if pilotFile:
             pilotFile.write("config.Data.totalUnits = %d\n" % (options.unitsPerJob))
             pilotFile.write("config.Data.publication = False\n")
-            pilotFile.write("config.Data.jobname = pilot_%s\n" % jobname)
+            pilotFile.write('config.General.requestName = "pilot_%s"\n' % jobname)
         # close output files
         for outfile in outfiles:
             outfile.close()

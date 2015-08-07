@@ -5,5 +5,9 @@
         "GluGluToHToGG_M-125_13TeV-powheg-pythia6"                      : { "xs" : 43.92,    "br" : 2.28e-3              },
         "VBF_HToGG_M-125_13TeV-powheg-pythia6"                          : { "xs" : 3.748,    "br" : 2.28e-3              },
         "WH_ZH_HToGG_M-125_13TeV_pythia6"                               : { "xs" : 2.2496,   "br" : 2.28e-3              },
-        "TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola"              : { "xs" : 0.5608,   "br" : 2.28e-3              }
+        "TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola"              : { "xs" : 0.5608,   "br" : 2.28e-3              },
+	"DoubleEG"                                                      : { "xs" : 0.0                                   },
+	"DoublePhoton"                                                  : { "xs" : 0.0                                   },
+	"SinglePhoton"                                                  : { "xs" : 0.0                                   },
+	"SingleElectron"                                                : { "xs" : 0.0                                   }
 }
