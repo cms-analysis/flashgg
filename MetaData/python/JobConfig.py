@@ -143,14 +143,18 @@ class JobConfig(object):
             processId = self.getProcessId(name)
             self.processId = processId
             
-            if self.targetLumi > 0.:
-            ## look for analyzers which have lumiWeight as attribute
+            isdata = self.processType == "data"
+            if isdata or self.targetLumi > 0.:
+                ## look for analyzers which have lumiWeight as attribute
                 for name,obj in process.__dict__.iteritems():
                     if hasattr(obj,"lumiWeight"):
-                        wei = xsec["xs"]/float(totEvents)*self.targetLumi
-                        wei *= xsec.get("br",1.)
-                        wei *= xsec.get("kf",1.)
-                        obj.lumiWeight = wei
+                        if  isdata:
+                            obj.lumiWeight = 1.
+                        else:
+                            wei = xsec["xs"]/float(totEvents)*self.targetLumi
+                            wei *= xsec.get("br",1.)
+                            wei *= xsec.get("kf",1.)
+                            obj.lumiWeight = wei
             
             for name,obj in process.__dict__.iteritems():
                 if hasattr(obj,"processId"):
@@ -218,13 +222,19 @@ class JobConfig(object):
                                          self.crossSections,
                                          ).getDatasetMetaData(self.maxEvents,self.dataset,jobId=self.jobId,nJobs=self.nJobs)
         self.dataset = dataset
-
+        # auto-detect data from xsec = 0
+        name,xsec,totEvents,files,maxEvents = self.dataset
+        print xsec
+        if self.processType == "" and xsec["xs"] == 0.:
+            self.processType = "data"
+            
         outputFile=self.outputFile
         if self.jobId != -1:
             outputFile = "%s_%d.root" % ( outputFile.replace(".root",""), self.jobId )
         self.setType ("outputFile", VarParsing.VarParsing.varType.string)
         self.outputFile = outputFile
 
+        self.parsed=True
     
     def getProcessId(self,name):
         return self.getProcessId_(name).replace("/","").replace("-","_")
