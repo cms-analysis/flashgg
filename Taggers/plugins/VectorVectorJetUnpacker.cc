@@ -55,10 +55,12 @@ namespace flashgg {
             throw cms::Exception( "Configuration" ) << " Too many collections in input vector - inconsistency with MicroAOD";
         }
 
-        for( unsigned int i = 0 ; i < theJets->size() ; i++ ) {
+        for( unsigned int i = 0 ; i < nCollections_ ; i++ ) {
             auto_ptr<vector<Jet> > result( new vector<Jet> );
-            for( unsigned int j = 0 ; j < theJets->at( i ).size() ; j++ ) {
-                result->push_back( theJets->at( i )[j] );
+            if( theJets->size() > i ) {
+                for( unsigned int j = 0 ; j < theJets->at( i ).size() ; j++ ) {
+                    result->push_back( theJets->at( i )[j] );
+                }
             }
             char number[2];
             sprintf( number, "%u", i );

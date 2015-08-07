@@ -83,7 +83,19 @@ namespace flashgg {
                 if( !usePuppi ) {
                     if( !fjet.hasPuJetId( vtx ) ) {
                         PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables( pjet.get(), vtx, *vertexCandidateMap, true );
-                        fjet.setPuJetId( vtx, lPUJetId ); //temporarily make all jets pass
+                        fjet.setPuJetId( vtx, lPUJetId );
+                    }
+                } else {
+                    if( !fjet.hasPuJetId( vtx ) ) {
+                        PileupJetIdentifier lPUJetId;
+                        lPUJetId.RMS( 0 );
+                        lPUJetId.betaStar( 0 );
+                        int idFlag( 0 );
+                        idFlag += 1 <<  PileupJetIdentifier::kTight;
+                        idFlag += 1 <<  PileupJetIdentifier::kMedium;
+                        idFlag += 1 <<  PileupJetIdentifier::kLoose;
+                        lPUJetId.idFlag( idFlag );
+                        fjet.setPuJetId( vtx, lPUJetId ); //temporarily make puppi jets pass
                     }
                 }
             }
@@ -91,6 +103,18 @@ namespace flashgg {
                 if( primaryVertices->size() > 0 && !fjet.hasPuJetId( primaryVertices->ptrAt( 0 ) ) ) {
                     PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables( pjet.get(), primaryVertices->ptrAt( 0 ), *vertexCandidateMap, true );
                     fjet.setPuJetId( primaryVertices->ptrAt( 0 ), lPUJetId );
+                }
+            } else {
+                if( !fjet.hasPuJetId( primaryVertices->ptrAt( 0 ) ) ) {
+                    PileupJetIdentifier lPUJetId;
+                    lPUJetId.RMS( 0 );
+                    lPUJetId.betaStar( 0 );
+                    int idFlag( 0 );
+                    idFlag += 1 <<  PileupJetIdentifier::kTight;
+                    idFlag += 1 <<  PileupJetIdentifier::kMedium;
+                    idFlag += 1 <<  PileupJetIdentifier::kLoose;
+                    lPUJetId.idFlag( idFlag );
+                    fjet.setPuJetId( primaryVertices->ptrAt( 0 ), lPUJetId ); //temporarily make puppi jets pass
                 }
             }
             jetColl->push_back( fjet );

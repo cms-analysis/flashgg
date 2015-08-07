@@ -181,7 +181,7 @@ flashggFinalJets = cms.EDProducer("FlashggVectorVectorJetCollector",
                                   inputTagJets= JetCollectionVInputTag
 )
 
-flashggFinalPuppiJets = cms.EDProducer("FlashggVectorVectorPuppiJetCollector",
+flashggFinalPuppiJets = cms.EDProducer("FlashggVectorVectorJetCollector",
                                   inputTagJets= PuppiJetCollectionVInputTag
 )
 
