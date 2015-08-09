@@ -28,13 +28,20 @@
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "flashgg/DataFormats/interface/VBFTagTruth.h"
 #include "flashgg/DataFormats/interface/WeightedObject.h"
+#include "flashgg/DataFormats/interface/MCWeightObject.h"
 
 #include <vector>
 #include <map>
 
 namespace  {
     struct dictionary {
-        flashgg::WeightedObject                                             fgg_obj;
+        flashgg::WeightedObject                                           fgg_obj;
+
+        flashgg::MCWeightObject						                      fgg_mcobj;
+        edm::Ptr<flashgg::MCWeightObject> 					              ptr_fgg_mcobj;
+        edm::Wrapper<flashgg::MCWeightObject>				              wrp_fgg_mcobj;
+        std::vector<flashgg::MCWeightObject>				              vec_fgg_mcobj;
+        edm::Wrapper<std::vector<flashgg::MCWeightObject> >               wrp_vec_fgg_mcobj;
 
         flashgg::Photon                                                   fgg_pho;
         edm::Ptr<flashgg::Photon>                                     ptr_fgg_pho;
@@ -105,6 +112,8 @@ namespace  {
         std::pair<edm::Ptr<reco::Vertex>, float>                   pai_ptr_vtx_flo;
         std::map<std::string, std::map<edm::Ptr<reco::Vertex>, float> >  map_str_ptr_vtx_flo;
         std::pair<std::string, std::map<edm::Ptr<reco::Vertex>, float> >  pai_str_ptr_vtx_flo;
+        std::map<std::string, std::vector<double> >                 map_str_vec_dou;
+
         flashgg::Electron						    fgg_ele;
         edm::Ptr<flashgg::Electron> 					  ptr_fgg_ele;
         edm::Wrapper<flashgg::Electron>				  wrp_fgg_ele;

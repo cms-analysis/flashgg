@@ -1,5 +1,11 @@
 <lcgdict>
 <class name="flashgg::WeightedObject"/>
+
+<class name="flashgg::MCWeightObject"/>
+<class name="edm::Ptr<flashgg::MCWeightObject>"/>
+<class name="std::vector<flashgg::MCWeightObject>"/>
+<class name="edm::Wrapper<std::vector<flashgg::MCWeightObject> >"/>
+
 <class name="flashgg::DiPhotonMVAResult"/>
 <!--
 <class name="edm::Wrapper<flashgg::DiPhotonMVAResult>"/>
@@ -89,6 +95,7 @@
 <class name="std::pair<edm::Ptr<reco::Vertex>,float>"/>
 <class name="std::map<std::string,std::map<edm::Ptr<reco::Vertex>,float>>"/>
 <class name="std::pair<std::string,std::map<edm::Ptr<reco::Vertex>,float>>"/>
+<class name="std::map<std::string,std::vector<double>>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Jet> >"/>
 <class name="flashgg::Electron"/>
 <class name="edm::Ptr<flashgg::Electron>"/>
