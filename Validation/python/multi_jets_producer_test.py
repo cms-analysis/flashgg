@@ -54,7 +54,7 @@ process.options = cms.untracked.PSet(
     allowUnscheduled = cms.untracked.bool(True)
 )
 process.TFileService = cms.Service("TFileService",
-                                   fileName  = cms.string("./workspace/test.root"))
+                                   fileName  = cms.string("./workspace/JetTreeTest.root"))
 
 
 
@@ -67,11 +67,11 @@ addFlashggPF           (process = process, doQGTagging = True, label = '')
 
 for vtx in range(0,5):
     # chs
-    addFlashggPFCHSJets (process = process,
-                         vertexIndex =vtx,
-                         doQGTagging = True,
-                         debug       = True,
-                         label = '' + str(vtx))
+    #addFlashggPFCHSJets (process = process,
+    #                     vertexIndex =vtx,
+    #                     doQGTagging = True,
+    #                     debug       = True,
+    #                     label = '' + str(vtx))
     # puppi 
     addFlashggPuppiJets (process     = process,
                          vertexIndex = vtx,
@@ -83,18 +83,19 @@ for vtx in range(0,5):
 #currentMicroAODExtraJetsSequence = cms.Sequence( )# addFlashggPF + addFlashggPFCHS0)
 
 # This producer is the default in flashgg Dijet MVA 
-#process.flashggJetValidationTreeMakerPFCHSLeg = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
-#                                                               GenParticleTag        = cms.untracked.InputTag('prunedGenParticles'),
-#                                                               JetTagDz              = cms.InputTag("flashggJets"),                  
-#                                                               StringTag	     = cms.string  ("PFCHSLeg"),
-#                                                               VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
-#                                                               qgVariablesInputTag   = cms.InputTag('QGTaggerPFCHSLeg'),
-#                                                               DiPhotonTag           = cms.InputTag("flashggDiPhotons"),
-#                                                               debug                 = cms.untracked.bool(jdebug),
-#                                                           )
-#
+process.JetTreeMakerPUPPI = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
+                                           GenParticleTag        = cms.untracked.InputTag('prunedGenParticles'),
+                                           JetTagDz              = cms.InputTag("flashggJets"),                  
+                                           StringTag	         = cms.string  ("PUPPI"),
+                                           VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
+                                           DiPhotonTag           = cms.InputTag("flashggDiPhotons"),
+                                           debug                 = cms.untracked.bool(jdebug),
+                                       )
 
-process.p = cms.Path(  process.flashggMicroAODSequence )
+
+process.p = cms.Path(  process.flashggMicroAODSequence
+                       + JetTreeMakerPUPPI
+                   )
 process.e = cms.EndPath(process.out)
 
 from flashgg.MicroAOD.MicroAODCustomize import customize

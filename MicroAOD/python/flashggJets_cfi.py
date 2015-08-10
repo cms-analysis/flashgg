@@ -5,6 +5,7 @@ import FWCore.ParameterSet.Config as cms
 
 from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased_new as pu_jetid
 from PhysicsTools.PatAlgos.tools.jetTools        import addJetCollection
+import os
 
 flashggBTag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
 maxJetCollections = 5
@@ -132,6 +133,35 @@ def addFlashggPuppiJets(process,
             ak4PFJets.clone ( src = cms.InputTag('flashggPuppi' + label), doAreaFastjet = True)
           )
 
+  #===================================================
+  # local BD reader
+  # def addPoolDBESSource(process,moduleName,record,tag,label='',connect='sqlite_file:'):
+  import os
+  dbfile  = os.environ['CMSSW_BASE'] + '/src/flashgg/MetaData/data/PuppiJEC/PY8_RunIISpring15DR74_bx50_MC.db'
+  print ':: dbfile == ', dbfile
+  
+  process.load("CondCore.DBCommon.CondDBCommon_cfi")
+  from CondCore.DBCommon.CondDBSetup_cfi import *
+  process.jec = cms.ESSource("PoolDBESSource",
+                     DBParameters = cms.PSet(
+                       messageLevel = cms.untracked.int32(0)
+                     ),
+                     timetype = cms.string('runnumber'),
+                     toGet = cms.VPSet(cms.PSet(
+                       record = cms.string('JetCorrectionsRecord'),
+                       tag    = cms.string('JetCorrectorParametersCollection_PY8_RunIISpring15DR74_bx50_MC_AK4PUPPI'),
+                       #tag    = cms.string('JetCorrectorParametersCollection_Summer12_V3_MC_AK5PF'),
+                       label  = cms.untracked.string('AK4PFPuppi')
+                     )),
+                     connect = cms.string('sqlite_file:%s' % dbfile)
+  )
+  #authenticationMethod = cms.untracked.uint32(0))
+  #if authPath: calibDB.DBParameters.authenticationPath = authPath
+  #if connect.find('oracle:') != -1: calibDB.DBParameters.authenticationPath = '/afs/cern.ch/cms/DB/conddb'
+  process.es_prefer_jec  = cms.ESPrefer('PoolDBESSource','jec')
+    
+  
+  #===================================================
   # do jet clustering
   addJetCollection(
     process,
@@ -142,7 +172,7 @@ def addFlashggPuppiJets(process,
     pfCandidates       = cms.InputTag('packedPFCandidates'),
     svSource           = cms.InputTag('slimmedSecondaryVertices'),
     btagDiscriminators = [ flashggBTag ],
-    jetCorrections     = ('AK4PFchs',['L1FastJet',  'L2Relative', 'L3Absolute'], 'None'),
+    jetCorrections     = ('AK4PFPuppi',['L1FastJet',  'L2Relative', 'L3Absolute'], 'None'),
     genJetCollection   = cms.InputTag('slimmedGenJets'),
     genParticles       = cms.InputTag('prunedGenParticles'),
     # jet param
