@@ -29,13 +29,16 @@ namespace flashgg {
         void produce( Event &, const EventSetup & ) override;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
         EDGetTokenT<View<pat::PackedCandidate> > pfcandidateToken_;
-        unsigned int fromPVgt_;
+        unsigned int fromPVgt_, fromPVgtIfDz_;
+        double dzCut_;
     };
 
     VertexMapFromCandidateProducer::VertexMapFromCandidateProducer( const ParameterSet &iConfig ) :
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         pfcandidateToken_( consumes<View<pat::PackedCandidate> >( iConfig.getParameter<InputTag> ( "PFCandidatesTag" ) ) ),
-        fromPVgt_( iConfig.getParameter<unsigned int>( "FromPVCut" ) ) // 0 for standard CHS
+        fromPVgt_( iConfig.getParameter<unsigned int>( "FromPVCut" ) ), // 0 for standard CHS, 2 for PUPPI
+        fromPVgtIfDz_( iConfig.getParameter<unsigned int>( "FromPVCutIfPassDz" ) ), // 0 for CHS or PUPPI
+        dzCut_( iConfig.getParameter<double>( "DzCut" ) )
     {
         produces<VertexCandidateMap>();
     }
@@ -55,8 +58,31 @@ namespace flashgg {
             Ptr<pat::PackedCandidate> cand = pfCandidates->ptrAt( i );
             if( cand->charge() == 0 ) { continue; } // skip neutrals
             for( unsigned int j = 0 ; j < primaryVertices->size() ; j++ ) {
+                //                std::cout << "Particle " << i << " vertex " << j << " - cuts at " << fromPVgt_ << " " << fromPVgtIfDz_ << " " << dzCut_ << std::endl;
                 if( cand->fromPV( j ) > fromPVgt_ ) {
                     assoc->emplace_back( primaryVertices->ptrAt( j ), cand );
+                    //                    std::cout << " Included because fromPV=" << cand->fromPV( j ) << " > " << fromPVgt_ << std::endl;
+                } else if( cand->fromPV( j ) > fromPVgtIfDz_ ) {
+                    // This section to support extra cut on dZ in puppi code
+                    double absdz = fabs( cand->dz( primaryVertices->ptrAt( j )->position() ) );
+                    if( absdz  < dzCut_ ) {
+                        assoc->emplace_back( primaryVertices->ptrAt( j ), cand );
+                        //                        std::cout << " Included because fromPV=" <<cand->fromPV( j) << " > " << fromPVgtIfDz_<< " and dz=" << absdz << " < " << dzCut_ << std::endl;
+                        //                    } else {
+                        //                        std::cout << " Not included: fromPV=" << cand->fromPV( j) << " dz=" << absdz << " - cuts at " << fromPVgt_ << " " << fromPVgtIfDz_ << " " << dzCut_ << std::endl;
+                    }
+                    // Are we perfectly emulating logic from PUPPI? It might be more like the lines below
+                    // But maybe the basic PackedCandidate::dz already does the 'best' thing???
+                    // Sort it out later, keep code simple for now
+                    // N.B. trackRef and gsfTrackRef don't exist in PackedCandidate
+                    /*
+                    double pDZ    = -9999;
+                    if      ( cand->trackRef().isNonnull()    ) {
+                        pDZ = cand->trackRef()   ->dz(primaryVertices->ptrAt( j )->position());
+                    } else if ( cand->gsfTrackRef().isNonnull() ) {
+                        pDZ = cand->gsfTrackRef()->dz(primaryVertices->ptrAt( j )->position());
+                    }
+                    */
                 }
             }
         }
