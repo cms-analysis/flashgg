@@ -1,102 +1,110 @@
 import FWCore.ParameterSet.Config as cms
 import FWCore.Utilities.FileUtils as FileUtils
- 
+
 process = cms.Process("FLASHggMicroAOD")
- 
+
 process.load("FWCore.MessageService.MessageLogger_cfi")
- 
+
 process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
-process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-
+process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
+
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 1000) )
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
+
 process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc')
 
-process.maxEvents  = cms.untracked.PSet( input = cms.untracked.int32( 100 ) )
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
+# Fix because auto:run2_mc points to MCRUN2_74_V9::All
+current_gt = process.GlobalTag.globaltag.value()
+if current_gt.count("::All"):
+    new_gt = current_gt.replace("::All","")
+    print 'Removing "::All" from GlobalTag by hand for condDBv2: was %s, now %s' % (current_gt,new_gt)
+    process.GlobalTag.globaltag = new_gt
 
 
-jdebug=True
 
-# PHYS14 Files
-process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIISpring15DR74/VBFHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v1/50000/049AAFAA-CA2D-E511-93E8-02163E00F402.root"),
-                            skipEvents=cms.untracked.uint32(0)
-                            
+process.source = cms.Source("PoolSource",
+                            fileNames=cms.untracked.vstring(
+                                "/store/mc/RunIISpring15DR74/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v1/30000/54ECB9A4-912E-E511-BB7D-002590A831CA.root"
+                            )
 )
 
-process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to work: disable all warnings for now
-# process.MessageLogger.suppressWarning.extend(['SimpleMemoryCheck','MemoryCheck']) # this would have been better...
-# Uncomment the following if you notice you have a memory leak
-# This is a lightweight tool to digg further
+process.MessageLogger.cerr.threshold = 'ERROR' 
+# process.MessageLogger.suppressWarning.extend(['SimpleMemoryCheck','MemoryCheck'])
 
-process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
-                                        ignoreTotal = cms.untracked.int32(1),
-                                        monitorPssAndPrivate = cms.untracked.bool(True)
-                                    )
+# This is a lightweight tool to digg further
+#process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
+#                                        ignoreTotal = cms.untracked.int32(1),
+#                                        monitorPssAndPrivate = cms.untracked.bool(True)
+#                                       )
 
 process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
-#process.load("flashgg/MicroAOD/flashggMicroAODExtraJetsSequence_cff")
-#process.load("flashgg/MicroAOD/flashggMicroAODMultiJetsSequence_cff")
 
-from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand,microAODDebugOutputCommand
-process.out = cms.OutputModule("PoolOutputModule",
-                               fileName       = cms.untracked.string('workspace/myMicroAODOutputFile.root'),
+from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand
+process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile.root'),
                                outputCommands = microAODDefaultOutputCommand
-                           )
+                               )
 
-process.out.outputCommands += microAODDebugOutputCommand # extra items for debugging, CURRENTLY REQUIRED
+
+process.TFileService = cms.Service("TFileService",fileName  = cms.string("JetValidationTest.root"))
 
 # need to allow unscheduled processes otherwise reclustering function will fail
 # this is because of the jet clustering tool, and we have to live with it for now.
-# NOTE: new PAT default running is "unscheduled" so we just need to say in the outputCommands what we want to store
-
 process.options = cms.untracked.PSet(
     allowUnscheduled = cms.untracked.bool(True)
-)
-process.TFileService = cms.Service("TFileService",
-                                   fileName  = cms.string("./workspace/JetTreeTest.root"))
+    )
+# import function which takes care of reclustering the jets using legacy vertex		
+from flashgg.MicroAOD.flashggJets_cfi import addFlashggPFCHSJets 
+from flashgg.MicroAOD.flashggJets_cfi import addFlashggPuppiJets
+from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
+from flashgg.MicroAOD.flashggJets_cfi import PuppiJetCollectionVInputTag, JetCollectionVInputTag
+# call the function, it takes care of everything else.
 
 
-
-from flashgg.MicroAOD.flashggExtraJets_cfi import addFlashggPF
-from flashgg.MicroAOD.flashggJets_cfi      import addFlashggPFCHSJets, addFlashggPuppiJets
-
-print ':: process ==', process
-addFlashggPF           (process = process, doQGTagging = True, label = '')
-
-
-for vtx in range(0,5):
-    # chs
-    #addFlashggPFCHSJets (process = process,
-    #                     vertexIndex =vtx,
-    #                     doQGTagging = True,
-    #                     debug       = True,
-    #                     label = '' + str(vtx))
-    # puppi 
+for vtx in range(0,maxJetCollections):
+    addFlashggPFCHSJets (process = process,
+                         vertexIndex =vtx,
+                         doQGTagging = False,
+                         label = '' + str(vtx))    
     addFlashggPuppiJets (process     = process,
                          vertexIndex = vtx,
-                         debug       = True,
-                         label = '' + str(vtx)) 
-    
-    
-#newseq = cloneProcessingSnippet(process,process.currentMicroAODExtraJetsSequence,'flashggJetsPF')
-#currentMicroAODExtraJetsSequence = cms.Sequence( )# addFlashggPF + addFlashggPFCHS0)
+                         debug       = False,
+                         label = '' + str(vtx))
+# run a standard puppi with the default seeting
 
-# This producer is the default in flashgg Dijet MVA 
-process.JetTreeMakerPUPPI = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
-                                           GenParticleTag        = cms.untracked.InputTag('prunedGenParticles'),
-                                           JetTagDz              = cms.InputTag("flashggJets"),                  
-                                           StringTag	         = cms.string  ("PUPPI"),
-                                           VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
-                                           DiPhotonTag           = cms.InputTag("flashggDiPhotons"),
-                                           debug                 = cms.untracked.bool(jdebug),
-                                       )
+#from flashgg.MicroAOD.flashggExtraJets_cfi import addStandardPuppiJets 
+#addStandardPuppiJets(process, label = 'Test')
+#stdPuppiVtag = cms.VInputTag(cms.InputTag('flashggSTDPUPPIJetsTest'))
 
+# 
+from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag   
 
-process.p = cms.Path(  process.flashggMicroAODSequence
-                       + JetTreeMakerPUPPI
-                   )
+process.flashggJetTreeMakerPFCHS = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
+                                                  GenParticleTag = cms.untracked.InputTag('prunedGenParticles'),
+                                                  DiPhotonTag    = cms.InputTag('flashggDiPhotons'),
+                                                  inputTagJets   = JetCollectionVInputTag,
+                                                  StringTag      = cms.string("PFCHS"))
+
+process.flashggJetTreeMakerPUPPI = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
+                                                  GenParticleTag = cms.untracked.InputTag('prunedGenParticles'),
+                                                  DiPhotonTag    = cms.InputTag('flashggDiPhotons'),
+                                                  inputTagJets   = PuppiJetCollectionVInputTag,
+                                                  StringTag      = cms.string("PUPPI"))
+
+#process.flashggJetTreeMakerSTDPUPPI = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
+#                                                     GenParticleTag = cms.untracked.InputTag('prunedGenParticles'),
+#                                                     DiPhotonTag    = cms.InputTag('flashggDiPhotons'),
+#                                                     inputTagJets   = stdPuppiVtag,
+#                                                     StringTag      = cms.string("PUPPI"))
+
+process.p = cms.Path(process.flashggMicroAODSequence +
+                     process.flashggJetTreeMakerPFCHS +
+                     process.flashggJetTreeMakerPUPPI  )
 process.e = cms.EndPath(process.out)
+
+
 
 from flashgg.MicroAOD.MicroAODCustomize import customize
 customize(process)
+
