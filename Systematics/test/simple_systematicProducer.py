@@ -67,8 +67,10 @@ process.load("flashgg/Taggers/flashggTagTester_cfi")
 from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet,massSearchReplaceAnyInputTag
 
 #process.flashggTagSequence += process.flashggTagTester
-massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggFinalEGamma","finalDiPhotons"),cms.InputTag("flashggDiPhotonSystematics"))
-massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggFinalEGamma","finalElectrons"),cms.InputTag("flashggElectronSystematics"))
+#massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggFinalEGamma","finalDiPhotons"),cms.InputTag("flashggDiPhotonSystematics"))
+#massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggFinalEGamma","finalElectrons"),cms.InputTag("flashggElectronSystematics"))
+massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggDiPhotons"),cms.InputTag("flashggDiPhotonSystematics"))
+massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSelectedElectrons"),cms.InputTag("flashggElectronSystematics"))
 massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSelectedMuons"),cms.InputTag("flashggMuonSystematics"))
 
 process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
