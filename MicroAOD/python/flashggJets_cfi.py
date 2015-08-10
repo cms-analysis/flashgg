@@ -123,7 +123,7 @@ def addFlashggPuppiJets(process,
           flashggPuppi.clone( candName              = cms.InputTag('packedPFCandidates'),
                               vertexName            = cms.InputTag('offlineSlimmedPrimaryVertices'),
                               diPhotonTag           = cms.InputTag('flashggDiPhotons'),
-                              VertexCandidateMapTag = cms.InputTag('flashggVertexMapForCHS'),
+                              VertexCandidateMapTag = cms.InputTag('flashggVertexMapForPUPPI'),
                               vertexIndex           = cms.untracked.uint32(vertexIndex),
                               debug                 = cms.untracked.bool(debug)
                             )
@@ -155,7 +155,7 @@ def addFlashggPuppiJets(process,
                           DiPhotonTag           = cms.InputTag('flashggDiPhotons'),
                           VertexTag             = cms.InputTag('offlineSlimmedPrimaryVertices'),
                           JetTag                = cms.InputTag('patJetsAK4PUPPI' + label),
-                          VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
+                          VertexCandidateMapTag = cms.InputTag("flashggVertexMapForPUPPI"),
                           UsePuppi              = cms.untracked.bool(True),
                           PileupJetIdParameters = cms.PSet(pu_jetid)
                         ))

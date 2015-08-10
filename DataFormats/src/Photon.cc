@@ -230,7 +230,7 @@ float const Photon::findVertexFloat( const edm::Ptr<reco::Vertex> &vtx, const st
     }
 
     throw cms::Exception( "Missing Data" ) << "could not find value for vertex " << vtx.key() << " " << vtx.id() << " lazy search: " << lazy <<  "\n";;
-    
+
     return 0.;
 }
 
