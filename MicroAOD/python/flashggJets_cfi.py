@@ -111,11 +111,11 @@ def addFlashggPFCHSJets(process, vertexIndex = 0, doQGTagging = True, label ='',
 def addFlashggPuppiJets(process,
                         vertexIndex = 0,
                         doQGTagging = True,
-                        label ='',
-                        debug = False):
-  
-  #print ":: new addFlashggPuppiJets ( vertexIndex = ", vertexIndex , ")"
-  
+                        label       ='',
+                        useLocalJEC = True,
+                        dbfile      = 'flashgg/MetaData/data/PuppiJEC/PY8_RunIISpring15DR74_bx50_MC.db',
+                        debug       = False):
+    
   from CommonTools.PileupAlgos.flashggPuppi_cff          import flashggPuppi 
   from RecoJets.JetProducers.ak4PFJets_cfi               import ak4PFJets
 
@@ -132,36 +132,17 @@ def addFlashggPuppiJets(process,
   setattr ( process, 'ak4PFJetsPuppi' + label,
             ak4PFJets.clone ( src = cms.InputTag('flashggPuppi' + label), doAreaFastjet = True)
           )
-
-  #===================================================
-  # local BD reader
-  # def addPoolDBESSource(process,moduleName,record,tag,label='',connect='sqlite_file:'):
-  import os
-  dbfile  = os.environ['CMSSW_BASE'] + '/src/flashgg/MetaData/data/PuppiJEC/PY8_RunIISpring15DR74_bx50_MC.db'
-  print ':: dbfile == ', dbfile
   
-  process.load("CondCore.DBCommon.CondDBCommon_cfi")
-  from CondCore.DBCommon.CondDBSetup_cfi import *
-  process.jec = cms.ESSource("PoolDBESSource",
-                     DBParameters = cms.PSet(
-                       messageLevel = cms.untracked.int32(0)
-                     ),
-                     timetype = cms.string('runnumber'),
-                     toGet = cms.VPSet(cms.PSet(
-                       record = cms.string('JetCorrectionsRecord'),
-                       tag    = cms.string('JetCorrectorParametersCollection_PY8_RunIISpring15DR74_bx50_MC_AK4PUPPI'),
-                       #tag    = cms.string('JetCorrectorParametersCollection_Summer12_V3_MC_AK5PF'),
-                       label  = cms.untracked.string('AK4PFPuppi')
-                     )),
-                     connect = cms.string('sqlite_file:%s' % dbfile)
-  )
-  #authenticationMethod = cms.untracked.uint32(0))
-  #if authPath: calibDB.DBParameters.authenticationPath = authPath
-  #if connect.find('oracle:') != -1: calibDB.DBParameters.authenticationPath = '/afs/cern.ch/cms/DB/conddb'
-  process.es_prefer_jec  = cms.ESPrefer('PoolDBESSource','jec')
+  if useLocalJEC :
+    print ':: using a local JEC dbfile for PUPPI :',
+    print '\t -- ',  dbfile
     
-  
-  #===================================================
+    from flashgg.MicroAOD.flashggJetTools_cfi import loadLocalJECDBfile
+    loadLocalJECDBfile(process,
+                       dbfile = os.environ['CMSSW_BASE'] + '/src/' + dbfile,
+                       tag    = 'JetCorrectorParametersCollection_PY8_RunIISpring15DR74_bx50_MC_AK4PUPPI',
+                       label  = 'AK4PFPuppi')
+    
   # do jet clustering
   addJetCollection(
     process,
