@@ -5,6 +5,7 @@ import FWCore.ParameterSet.Config as cms
 
 from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased_new as pu_jetid
 from PhysicsTools.PatAlgos.tools.jetTools        import addJetCollection
+import os
 
 flashggBTag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
 maxJetCollections = 5
@@ -110,11 +111,11 @@ def addFlashggPFCHSJets(process, vertexIndex = 0, doQGTagging = True, label ='',
 def addFlashggPuppiJets(process,
                         vertexIndex = 0,
                         doQGTagging = True,
-                        label ='',
-                        debug = False):
-  
-  #print ":: new addFlashggPuppiJets ( vertexIndex = ", vertexIndex , ")"
-  
+                        label       ='',
+                        useLocalJEC = True,
+                        dbfile      = 'flashgg/MetaData/data/PuppiJEC/PY8_RunIISpring15DR74_bx50_MC.db',
+                        debug       = False):
+    
   from CommonTools.PileupAlgos.flashggPuppi_cff          import flashggPuppi 
   from RecoJets.JetProducers.ak4PFJets_cfi               import ak4PFJets
 
@@ -131,7 +132,17 @@ def addFlashggPuppiJets(process,
   setattr ( process, 'ak4PFJetsPuppi' + label,
             ak4PFJets.clone ( src = cms.InputTag('flashggPuppi' + label), doAreaFastjet = True)
           )
-
+  
+  if useLocalJEC :
+    print ':: using a local JEC dbfile for PUPPI :',
+    print '\t -- ',  dbfile
+    
+    from flashgg.MicroAOD.flashggJetTools_cfi import loadLocalJECDBfile
+    loadLocalJECDBfile(process,
+                       dbfile = os.environ['CMSSW_BASE'] + '/src/' + dbfile,
+                       tag    = 'JetCorrectorParametersCollection_PY8_RunIISpring15DR74_bx50_MC_AK4PUPPI',
+                       label  = 'AK4PFPuppi')
+    
   # do jet clustering
   addJetCollection(
     process,
@@ -142,7 +153,7 @@ def addFlashggPuppiJets(process,
     pfCandidates       = cms.InputTag('packedPFCandidates'),
     svSource           = cms.InputTag('slimmedSecondaryVertices'),
     btagDiscriminators = [ flashggBTag ],
-    jetCorrections     = ('AK4PFchs',['L1FastJet',  'L2Relative', 'L3Absolute'], 'None'),
+    jetCorrections     = ('AK4PFPuppi',['L1FastJet',  'L2Relative', 'L3Absolute'], 'None'),
     genJetCollection   = cms.InputTag('slimmedGenJets'),
     genParticles       = cms.InputTag('prunedGenParticles'),
     # jet param
