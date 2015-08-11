@@ -2,8 +2,8 @@ import FWCore.ParameterSet.Config as cms
 
 DiPhotonMVATrainingDumpConf = cms.PSet(
 		className = cms.untracked.string("CutBasedDiPhotonMVAResultDumper"),
-		src = cms.InputTag("flashggDiPhotonMVA"),
-#src = cms.InputTag("flashggPhotons"),
+		src = cms.InputTag("flashggDiPhotons"),
+		#src = cms.InputTag("flashggPhotons"),
 		generatorInfo = cms.InputTag("generator"),
 		processId = cms.string(""),
 		maxCandPerEvent = cms.int32(1),

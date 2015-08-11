@@ -131,17 +131,15 @@ namespace flashgg {
         } else {
             beamsig = -9999; // I hope this never happens! But it seems to in our default test, what's going wrong??
         }
-
         //    std::auto_ptr<DiPhotonMVAResultMap> assoc(new DiPhotonMVAResultMap);
         std::auto_ptr<vector<DiPhotonMVAResult> > results( new vector<DiPhotonMVAResult> ); // one per diphoton, always in same order, vector is more efficient than map
+
 
         for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
             flashgg::DiPhotonMVAResult mvares;
             edm::Ptr<reco::Vertex> vtx = diPhotons->ptrAt( candIndex )->vtx();
-
             const flashgg::Photon *g1 = diPhotons->ptrAt( candIndex )->leadingPhoton();
             const flashgg::Photon *g2 = diPhotons->ptrAt( candIndex )->subLeadingPhoton();
-
             //used for photon resolution wrt to correct vertex//
             TVector3 Photon1Dir;
             TVector3 Photon1Dir_uv;
@@ -158,7 +156,6 @@ namespace flashgg {
             p14.SetPxPyPzE( Photon1Dir_uv.x(), Photon1Dir_uv.y(), Photon1Dir_uv.z(), g1->superCluster()->rawEnergy() );
             p24.SetPxPyPzE( Photon2Dir_uv.x(), Photon2Dir_uv.y(), Photon2Dir_uv.z(), g2->superCluster()->rawEnergy() );
             //photon 4-vector with respect to correct vertex and superCluster hit//
-
             //
 
             //float angle = p14.Angle(p24.Vect());
@@ -214,9 +211,7 @@ namespace flashgg {
                                         2 ) - vertex_prob_params_noConv.at( 3 ) ) + vertex_prob_params_noConv.at( 0 ) * vtxProbMVA_ + vertex_prob_params_noConv.at( 1 ) * pow( vtxProbMVA_,
                                                 2 ) + vertex_prob_params_noConv.at( 2 ) * pow( vtxProbMVA_, 3 ) + vertex_prob_params_noConv.at( 3 ) * pow( vtxProbMVA_, 4 );
             }
-
             mvares.result = DiphotonMva_->EvaluateMVA( "BDT" );
-
             mvares.leadptom = leadptom_;
             mvares.subleadptom = subleadptom_;
             mvares.leadmva = leadmva_;
@@ -227,7 +222,6 @@ namespace flashgg {
             mvares.sigmawv = sigmawv_;
             mvares.CosPhi = CosPhi_;
             mvares.vtxprob = vtxprob_;
-
             results->push_back( mvares );
         }
         evt.put( results );
