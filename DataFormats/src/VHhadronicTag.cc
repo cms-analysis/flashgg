@@ -23,10 +23,7 @@ void VHHadronicTag::setJets( edm::Ptr<flashgg::Jet> ljet, edm::Ptr<flashgg::Jet>
 
 VHHadronicTag *VHHadronicTag::clone() const
 {
-    VHHadronicTag *result = new VHHadronicTag( diPhoton(), diPhotonMVA() );
-    result->setCategoryNumber( categoryNumber() );
-    result->setDiPhotonIndex( diPhotonIndex() );
-    result->setJets( leadingJet_, subleadingJet_ );
+    VHHadronicTag *result = new VHHadronicTag( *this );
     return result;
 }
 
