@@ -338,6 +338,7 @@ private:
     bool        usePUJetID;
     bool        photonJetVeto;
     bool        homeGenJetMatching_;
+    bool        ZeroVertexOnly_;
     bool        debug_;
 
 };
@@ -356,6 +357,7 @@ JetValidationTreeMaker::JetValidationTreeMaker( const edm::ParameterSet &iConfig
     usePUJetID( iConfig.getUntrackedParameter<bool>( "UsePUJetID"   , false ) ),
     photonJetVeto( iConfig.getUntrackedParameter<bool>( "PhotonJetVeto", true ) ),
     homeGenJetMatching_( iConfig.getUntrackedParameter<bool>( "homeGenJetMatching", false ) ),
+    ZeroVertexOnly_( iConfig.getUntrackedParameter<bool>( "ZeroVertexOnly", false ) ),
     debug_( iConfig.getUntrackedParameter<bool>( "debug", false ) )
 
 {
@@ -443,6 +445,7 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
         std::cout << setw( 12 ) << "nVtxs"    << setw( 12 ) << vtxs->size()     << std::endl;
         std::cout << setw( 12 ) << "nGenJet"  << setw( 12 ) << genJets->size()  << std::endl;
         std::cout << setw( 12 ) << "PV0==Leg" << setw( 12 ) << legacyEqZeroth   << std::endl;
+        std::cout << setw( 12 ) << "nDiPhoto" << setw( 12 ) << diPhotons->size() << std::endl;
         std::cout << setw( 6 )  << "========================= "     << std::endl;
         std::cout << "\e[0m" << std::endl;
     }
@@ -475,8 +478,14 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
     // find tag the jets close to the photons
     std::map<unsigned int, GenPhotonInfo> photonJet_id;
     std::map<unsigned int, bool>             _isPhoton;
-    for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
-        unsigned int jetCollectionIndex = diPhotons->ptrAt( diphoIndex )->jetCollectionIndex();
+
+    size_t diPhotonsSize = diPhotons->size();
+    if( ZeroVertexOnly_ ) { diPhotonsSize = 1; }
+
+    for( unsigned int diphoIndex = 0; diphoIndex < diPhotonsSize; diphoIndex++ ) {
+        unsigned int jetCollectionIndex = 0;
+        if( !ZeroVertexOnly_ ) { jetCollectionIndex = diPhotons->ptrAt( diphoIndex )->jetCollectionIndex(); }
+
         jInfo.nJets      = Jets[jetCollectionIndex]->size();
         jInfo.nPV        = vtxs->size();
         genJetInfo.nJets = Jets[jetCollectionIndex]->size();
@@ -818,6 +827,8 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
             jetTree->Fill();
         }// ++++ end loop reco jets
 
+
+
         // loop over the GenJets
         for( unsigned int genLoop = 0 ; genLoop < genJets->size(); genLoop++ ) {
             genJetInfo.eventID         = event_number;
@@ -841,8 +852,9 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
             genJetInfo.eta    = genJets->ptrAt( genLoop )->eta();
             genJetInfo.phi    = genJets->ptrAt( genLoop )->phi();
 
-            for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
-                unsigned int jetCollectionIndex = diPhotons->ptrAt( diphoIndex )->jetCollectionIndex();
+            for( unsigned int diphoIndex = 0; diphoIndex < diPhotonsSize ; diphoIndex++ ) {
+                unsigned int jetCollectionIndex = 0;
+                if( !ZeroVertexOnly_ ) { jetCollectionIndex = diPhotons->ptrAt( diphoIndex )->jetCollectionIndex(); }
                 for( unsigned int recoLoop = 0; recoLoop <  Jets[jetCollectionIndex]->size(); recoLoop++ ) {
                     if( Jets[jetCollectionIndex]->ptrAt( recoLoop )->pt() < 5 ) { continue; }
 

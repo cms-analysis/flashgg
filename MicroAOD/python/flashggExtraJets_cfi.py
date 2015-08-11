@@ -51,85 +51,80 @@ def addFlashggPF(process, doQGTagging =  True, label ='', debug = False):
   return getattr(process, 'flashggJetsPF' + label)  
 
 
-
-
-
-
 def addStandardPuppiJets(process,
-                         label ='',
-                         debug = False):
+                         label       ='',
+                         useLocalJEC = True,
+                         dbfile      = 'flashgg/MetaData/data/PuppiJEC/PY8_RunIISpring15DR74_bx50_MC.db',
+                         debug       = False):
 
-  print ':: standard puppi ... '
-  from CommonTools.PileupAlgos.Puppi_cff      import puppi
-  from RecoJets.JetProducers.ak4PFJets_cfi    import ak4PFJets
-  # fill the puppi parameters
-  setattr(process, 'Puppi' + label,
-          puppi.clone( candName              = cms.InputTag('packedPFCandidates'),
-                       vertexName            = cms.InputTag('offlineSlimmedPrimaryVertices')
-                     )
-        )
-  setattr ( process, 'ak4PFJetsPuppi' + label,
-            ak4PFJets.clone ( src = cms.InputTag('Puppi' + label), doAreaFastjet = True)
-          )
-
-  #===================================================
-  # local BD reader
-  # def addPoolDBESSource(process,moduleName,record,tag,label='',connect='sqlite_file:'):
-  import os
-  dbfile  = os.environ['CMSSW_BASE'] + '/src/flashgg/MetaData/data/PuppiJEC/PY8_RunIISpring15DR74_bx50_MC.db'
-  print ':: dbfile == ', dbfile
+  print  ':: Running a standard PUPPI : --'
   
-  process.load("CondCore.DBCommon.CondDBCommon_cfi")
-  from CondCore.DBCommon.CondDBSetup_cfi import *
-  process.jec = cms.ESSource("PoolDBESSource",
-                     DBParameters = cms.PSet(
-                       messageLevel = cms.untracked.int32(0)
-                     ),
-                     timetype = cms.string('runnumber'),
-                     toGet = cms.VPSet(cms.PSet(
-                       record = cms.string('JetCorrectionsRecord'),
-                       tag    = cms.string('JetCorrectorParametersCollection_PY8_RunIISpring15DR74_bx50_MC_AK4PUPPI'),
-                       #tag    = cms.string('JetCorrectorParametersCollection_Summer12_V3_MC_AK5PF'),
-                       label  = cms.untracked.string('AK4PFPuppi')
-                     )),
-                     connect = cms.string('sqlite_file:%s' % dbfile)
-  )
-  #authenticationMethod = cms.untracked.uint32(0))
-  #if authPath: calibDB.DBParameters.authenticationPath = authPath
-  #if connect.find('oracle:') != -1: calibDB.DBParameters.authenticationPath = '/afs/cern.ch/cms/DB/conddb'
-  process.es_prefer_jec  = cms.ESPrefer('PoolDBESSource','jec')
+  from CommonTools.PileupAlgos.Puppi_cff           import puppi 
+  from RecoJets.JetProducers.ak4PFJets_cfi         import ak4PFJets
+  from PhysicsTools.PatAlgos.tools.jetTools        import addJetCollection
+  from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased_new as pu_jetid
+  from flashgg.MicroAOD.flashggJets_cfi            import flashggBTag
+  
+  setattr(process, 'flashggStdPuppi' + label,
+          puppi.clone( candName    = cms.InputTag('packedPFCandidates'),
+                       vertexName  = cms.InputTag('offlineSlimmedPrimaryVertices'),
+                     ))
+  
+  setattr(process, 'ak4PFJetsStdPuppi' + label,
+          ak4PFJets.clone ( src = cms.InputTag('flashggStdPuppi'),
+                            doAreaFastjet = True
+                          ))
+
+  if useLocalJEC :
+    print ':: using a local JEC dbfile for PUPPI :',
+    print ' -- ',  dbfile
     
-  
-  #===================================================
-  # do jet clustering
+    from flashgg.MicroAOD.flashggJetTools_cfi import loadLocalJECDBfile
+    loadLocalJECDBfile(process,
+                       dbfile = os.environ['CMSSW_BASE'] + '/src/' + dbfile,
+                       tag    = 'JetCorrectorParametersCollection_PY8_RunIISpring15DR74_bx50_MC_AK4PUPPI',
+                       label  = 'AK4PFPuppi')
+    
+    
   addJetCollection(
     process,
-    postfix            = label,
+    postfix            = 'std' + label,
     labelName          = 'AK4PUPPI',
-    jetSource          = cms.InputTag('ak4PFJetsPuppi' + label),
+    jetSource          = cms.InputTag('ak4PFJetsStdPuppi'),
     pvSource           = cms.InputTag('offlineSlimmedPrimaryVertices'),
     pfCandidates       = cms.InputTag('packedPFCandidates'),
     svSource           = cms.InputTag('slimmedSecondaryVertices'),
     btagDiscriminators = [ flashggBTag ],
-    jetCorrections     = ('AK4PFPuppi',['L1FastJet',  'L2Relative', 'L3Absolute'], 'None'),
+    jetCorrections     = ('AK4PFchs',['L1FastJet',  'L2Relative', 'L3Absolute'], 'None'),
     genJetCollection   = cms.InputTag('slimmedGenJets'),
     genParticles       = cms.InputTag('prunedGenParticles'),
     # jet param
     algo = 'AK', rParam = 0.4
   )
   
-  getattr(process, 'patJetCorrFactorsAK4PUPPI' + label).primaryVertices = "offlineSlimmedPrimaryVertices"
-  setattr( process,'flashghSTDPUPPIJets'+ label,
-           cms.EDProducer('FlashggJetProducer',
-                          DiPhotonTag           = cms.InputTag('flashggDiPhotons'),
-                          VertexTag             = cms.InputTag('offlineSlimmedPrimaryVertices'),
-                          JetTag                = cms.InputTag('patJetsAK4PUPPI' + label),
-                          VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
-                          UsePuppi              = cms.untracked.bool(True),
-                          PileupJetIdParameters = cms.PSet(pu_jetid)
-                        ))
-  setattr( process, 'selectedFlashggSTDPUPPIJets'+ label,
-           cms.EDFilter("FLASHggJetSelector",
-                        src = cms.InputTag( 'flashggSTDPUPPIJets'+ label ),
-                        cut = cms.string("pt > 15.")
-                      ))
+  getattr(process, 'patJetCorrFactorsAK4PUPPIstd' + label).primaryVertices = "offlineSlimmedPrimaryVertices"
+  setattr(process, 'flashggStdPUPPIJets',
+          cms.EDProducer('FlashggJetProducer',
+                         DiPhotonTag           = cms.InputTag('flashggDiPhotons'),
+                         VertexTag             = cms.InputTag('offlineSlimmedPrimaryVertices'),
+                         JetTag                = cms.InputTag('patJetsAK4PUPPIstd' + label),
+                         VertexCandidateMapTag = cms.InputTag("flashggVertexMapForPUPPI"),
+                         UsePuppi              = cms.untracked.bool(True),
+                         PileupJetIdParameters = cms.PSet(pu_jetid))
+        )
+  setattr(process, 'selectedFlashggStdPUPPIJets' + label,
+          cms.EDFilter("FLASHggJetSelector",
+                       src = cms.InputTag( 'flashggStdPUPPIJets'),
+                       cut = cms.string("pt > 15."))
+          )
+
+
+  
+StandardPUPIJetVInputTag = cms.VInputTag()
+StandardPUPIJetVInputTag.append(cms.InputTag('selectedFlashggStdPUPPIJets'))
+
+PFJetVInputTag = cms.VInputTag()
+PFJetVInputTag.append(cms.InputTag('flashggJetsPF'))
+
+  
+#-----------------------------------------------------------------------------------------------    
