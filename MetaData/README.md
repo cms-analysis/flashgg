@@ -80,11 +80,31 @@ echo crab_* | xargs -n 1 crab status
 
 ## Specific production campaigns
 
-Exact instructions used, after setting up the area with the given tag, doing cmsenv, and vomx-proxy-init as above:
+Below are the exact instructions used, after setting up the area with the given tag, doing cmsenv, and vomx-proxy-init as above. 
+**N.B.** to duplicate the settings of the production below, you **must** setup with the relevant tag:
+
+```
+cd $CMSSW_BASE/src/flashgg
+git checkout [relevant tag]
+scram b -j 9
+```
+
+In fact, it is recommended to set up a new area from scratch and checkout the tag before running setup.sh, as described here: 
+
+https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_users  
 
 ### SPRING15
 
-# Further fixes and configuration tweaks for smooth running
+#### Latest (Spring15BetaV3)
+
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-50ns -U 5 -s campaigns/RunIISpring15-50ns.json -V Spring15BetaV3 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions15/13TeV/Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON_v2.txt
+cd RunIISpring15-50ns
+echo crabConfig_*.py | xargs -n 1 crab sub
+```
+
+#### Further fixes and configuration tweaks for smooth running
 
 ```
 cd $CMSSW_BASE/src/flashgg/MetaData/work
@@ -93,7 +113,7 @@ cd RunIISpring15-50ns
 echo crabConfig_*.py | xargs -n 1 crab sub
 ```
 
-# CMSSW 7_4_6_patch2, no recomputation of cluster shapes
+#### CMSSW 7_4_6_patch2, no recomputation of cluster shapes
 
 ```
 cd $CMSSW_BASE/src/flashgg/MetaData/work
