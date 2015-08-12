@@ -115,7 +115,6 @@ namespace flashgg {
             tag_obj.setDiPhotonIndex( candIndex );
 
             tag_obj.setSystLabel( systLabel_ );
-
             TagTruthBase truth_obj;
             truth_obj.setGenPV( higgsVtx );
 

@@ -77,6 +77,15 @@ namespace flashgg {
 
         void fill( const object_type &obj, double weight, int n_cand = 0 );
 
+        void print()
+        {
+            std::cout << "Dumper name is " << name_ << std::endl;
+            // for (unsigned int i =0; i<names_.size() ; i++){
+            // std::cout << "Map content " << i << " name is " << names_[i] << std::endl;
+            // }
+
+        }
+
     private:
         std::string name_;
         std::vector<std::string> names_;
