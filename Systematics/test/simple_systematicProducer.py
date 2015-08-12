@@ -76,8 +76,7 @@ massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSel
 process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
 
 process.systematicsTagSequences = cms.Sequence()
-systlabels = ["Nominal"]
-#systlabels = [""]
+systlabels = []
 for r9 in ["HighR9","LowR9"]:
     for direction in ["Up","Down"]:
         systlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
@@ -86,19 +85,13 @@ for r9 in ["HighR9","LowR9"]:
         for region in ["EB","EE"]:
             systlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
 
-import hashlib
 for systlabel in systlabels:
-    m = hashlib.md5()
-    exec "m.update('%s')" % systlabel
     newseq = cloneProcessingSnippet(process,process.flashggTagSequence,systlabel)
     massSearchReplaceAnyInputTag(newseq,cms.InputTag("flashggDiPhotonSystematics"),cms.InputTag("flashggDiPhotonSystematics",systlabel))
     for name in newseq.moduleNames():
         module = getattr(process,name)
         if hasattr(module,"SystLabel"):
             module.SystLabel = systlabel
-            #print "name," , name , "  systLabel " , systlabel
-        if hasattr(module,"SystLabelHash"):
-            module.SystLabelHash =  int(str(int(m.hexdigest(),16))[-8:])
     process.systematicsTagSequences += newseq
     process.flashggSystTagMerger.src.append(cms.InputTag("flashggTagSorter" + systlabel))
 

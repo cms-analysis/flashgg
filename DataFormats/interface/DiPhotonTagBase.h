@@ -28,9 +28,8 @@ namespace flashgg {
         void setTagTruth( const edm::Ptr<TagTruthBase> value ) { truth_ = value; }
         const edm::Ptr<TagTruthBase> tagTruth() const { return truth_; }
         void setSystLabel( const std::string label ) { systLabel_ = label; }
-        void setSystLabelHash( const int labelHash ) {  systLabelHash_ = labelHash;}
         std::string systLabel() const { return systLabel_; }
-        int systLabelHash() const { return systLabelHash_; }
+        bool hasSyst( const string &label ) const { return ( systLabel_ == label );}
     private:
         DiPhotonMVAResult mva_result_;
         int category_number_;
@@ -38,7 +37,6 @@ namespace flashgg {
         edm::Ptr<DiPhotonCandidate> dipho_;
         edm::Ptr<TagTruthBase> truth_;
         string systLabel_;
-        int systLabelHash_;
     };
 
 }

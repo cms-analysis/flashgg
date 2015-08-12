@@ -36,8 +36,7 @@ process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string(options.outputFile))
 
 process.extraDumpers = cms.Sequence()
-systlabels = ["Nominal"]
-#systlabels = [""]
+systlabels = [""]
 counter =0;
 for r9 in ["HighR9","LowR9"]:
     for direction in ["Up","Down"]:
@@ -60,13 +59,9 @@ process.diphotonDumper.dumpHistos = True
 process.diphotonDumper.quietRooFit = True
 process.diphotonDumper.systLabel = ""
 
-import hashlib
 for systlabel in systlabels:
-  m = hashlib.md5()
-  exec "m.update('%s')" % systlabel
-  hash=int(str(int(m.hexdigest(),16))[-8:])
-  cutstring = "systLabelHash()==" +str(hash)
-  print "syst label ", systlabel
+  cutstring = "hasSyst(\"%s\")"%systlabel
+  #print "syst label ", systlabel
 
   cfgTools.addCategory(process.diphotonDumper,
                       "flashggUntaggedTag__%s"%systlabel,
@@ -78,16 +73,14 @@ for systlabel in systlabels:
                                     "subleadPt                :=diPhoton().subLeadingPhoton.pt",
                                     "diphoMVA                 :=diPhotonMVA().result",    
                                     "maxEta                   :=max(abs(diPhoton().leadingPhoton.superCluster.eta),abs(diPhoton().leadingPhoton.superCluster.eta))",
-                                   # "genZ           :=tagTruth().genPV().z",
+                                    "genZ           :=tagTruth().genPV().z",
                                     "vtxZ           :=diPhoton().vtx().z",
-																		 "systLabelHash :=systLabelHash",
-                                  #  "dZ             :=abs(tagTruth().genPV().z-diPhoton().vtx().z)"
+                                    "dZ             :=abs(tagTruth().genPV().z-diPhoton().vtx().z)"
   
                                     ],
                          histograms=["CMS_hgg_mass>>mass(160,100,180)",
                                      "subleadPt:leadPt>>ptLeadvsSub(180,20,200:180,20,200)",
                                      "diphoMVA>>diphoMVA(50,0,1)",
-																		 "systLabelHash>>systLabelHash(1000,0,100000)",
                                      "maxEta>>maxEta[0.,0.1,0.2,0.3,0.4,0.6,0.8,1.0,1.2,1.4442,1.566,1.7,1.8,2.,2.2,2.3,2.5]"
                                      ]
                       )
@@ -105,9 +98,9 @@ for systlabel in systlabels:
                                                  "leadJetPt                :=leadingJet().pt",
                                                  "subleadJetPt             :=subLeadingJet().pt",
                                                  "VBFMVA                   :=VBFMVA().VBFMVAValue()",
-                                      #         "genZ           :=tagTruth().genPV().z",
+                                               "genZ           :=tagTruth().genPV().z",
                                                "vtxZ           :=diPhoton().vtx().z",
-                                     #          "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
+                                               "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
                                     ],
                          histograms=["CMS_hgg_mass>>mass(160,100,180)",
                                      "subleadPt:leadPt>>ptLeadvsSub(180,20,200:180,20,200)",
@@ -131,9 +124,9 @@ for systlabel in systlabels:
                                                    "nMuons                   :=muons().size()",
                                                    "nElectrons               :=electrons().size()",
                                                    "nJets                    :=jets().size()",
-                                      #         "genZ           :=tagTruth().genPV().z",
+                                               "genZ           :=tagTruth().genPV().z",
                                                "vtxZ           :=diPhoton().vtx().z",
-                                       #        "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
+                                               "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
                                     ],
                          histograms=["CMS_hgg_mass>>mass(160,100,180)",
                                      "subleadPt:leadPt>>ptLeadvsSub(180,20,200:180,20,200)",
@@ -157,9 +150,9 @@ for systlabel in systlabels:
                                                    "nMuons                   :=muons().size()",
                                                    "nElectrons               :=electrons().size()",
                                                    "nJets                    :=jets().size()",
-                                      #         "genZ           :=tagTruth().genPV().z",
+                                               "genZ           :=tagTruth().genPV().z",
                                                "vtxZ           :=diPhoton().vtx().z",
-                                       #        "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
+                                               "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
                                     ],
                          histograms=["CMS_hgg_mass>>mass(160,100,180)",
                                      "subleadPt:leadPt>>ptLeadvsSub(180,20,200:180,20,200)",
@@ -183,9 +176,9 @@ for systlabel in systlabels:
                                     "maxEta                   :=max(abs(diPhoton().leadingPhoton.superCluster.eta),abs(diPhoton().leadingPhoton.superCluster.eta))",
                                                  "leadJetPt                :=leadingJet().pt",
                                                  "subleadJetPt             :=subLeadingJet().pt",
-                                        #       "genZ           :=tagTruth().genPV().z",
+                                               "genZ           :=tagTruth().genPV().z",
                                                "vtxZ           :=diPhoton().vtx().z",
-                                         #      "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
+                                               "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
                                     ],
                          ## histograms to be plotted. 
                          ## the variables need to be defined first
@@ -211,9 +204,9 @@ for systlabel in systlabels:
                                                 "nElectrons               :=getElectrons().size()",
                                                 "nJets                    :=getJets().size()",
                                                 "nBJets                   :=getBJets().size()",
-                                          #     "genZ           :=tagTruth().genPV().z",
+                                               "genZ           :=tagTruth().genPV().z",
                                                "vtxZ           :=diPhoton().vtx().z",
-                                           #    "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
+                                               "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
                                               "centralWeight := centralWeight"
   #                                            "MuonWeightDown01sigma : weight('MuonWeightDown01sigma')",
   #                                            "MuonWeightUp01sigma : weight('MuonWeightUp01sigma')",
@@ -244,9 +237,9 @@ for systlabel in systlabels:
                                     "maxEta                   :=max(abs(diPhoton().leadingPhoton.superCluster.eta),abs(diPhoton().leadingPhoton.superCluster.eta))",
                                                   "nJets                    :=getJetVector().size()",
                                                   "nBJets                   :=getBJetVector().size()",
-                                       #        "genZ           :=tagTruth().genPV().z",
+                                               "genZ           :=tagTruth().genPV().z",
                                                "vtxZ           :=diPhoton().vtx().z",
-                                       #        "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
+                                               "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
   
                                     ],
                          ## histograms to be plotted. 
