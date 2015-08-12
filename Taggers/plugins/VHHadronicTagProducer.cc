@@ -66,7 +66,6 @@ namespace flashgg {
         double phoIdMVAThreshold_;
 
         string systLabel_;
-        int  systLabelHash_;
 
 
 
@@ -78,8 +77,7 @@ namespace flashgg {
         //thejetToken_     ( consumes<View<flashgg::Jet> >( iConfig.getParameter<InputTag>( "JetTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
-        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
-        systLabelHash_( iConfig.getParameter<int> ( "SystLabelHash" ) )
+        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
     {
 
         // ***** define thresholds ***********************
@@ -234,7 +232,6 @@ namespace flashgg {
             vhhadtag_obj.setJets( goodJets[0], goodJets[1] );
             vhhadtag_obj.setDiPhotonIndex( diphoIndex );
             vhhadtag_obj.setSystLabel( systLabel_ );
-            vhhadtag_obj.setSystLabelHash( systLabelHash_ );
             vhhadtags->push_back( vhhadtag_obj );
 
             TagTruthBase truth_obj;
