@@ -88,7 +88,7 @@ Exact instructions used, after setting up the area with the given tag, doing cms
 
 ```
 cd $CMSSW_BASE/src/flashgg/MetaData/work
-./prepareCrabJobs.py -C RunIISpring15-50ns -U 1 -L 50 -s campaigns/RunIISpring15-50ns.json -V Spring15BetaV3 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions15/13TeV/Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON_v2.txt
+./prepareCrabJobs.py -C RunIISpring15-50ns -U 1 -L 50 -s campaigns/RunIISpring15-50ns.json -V Spring15BetaV4 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions15/13TeV/Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON_v2.txt
 cd RunIISpring15-50ns
 echo crabConfig_*.py | xargs -n 1 crab sub
 ```
