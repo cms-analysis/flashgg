@@ -142,7 +142,7 @@ lowMassPreselection = cms.VPSet(
 
 selectedPreselection = rediscoveryPreselection
 
-process.highMassCiCDiPhotons = cms.EDFilter(
+process.flashggPreselectedDiPhotonsTEST = cms.EDFilter(
     "DiPhotonCandidateSelector",
     src = cms.InputTag("flashggDiPhotons"),
     rho = cms.InputTag("fixedGridRhoAll"),
@@ -155,12 +155,10 @@ process.highMassCiCDiPhotons = cms.EDFilter(
     categories = selectedPreselection,
     )
 
-from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand
-process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile_afterPreselection.root'),
-                               outputCommands = microAODDefaultOutputCommand
+process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile_afterPreselection.root')
                                )
 
-process.p = cms.Path(process.highMassCiCDiPhotons)
+process.p = cms.Path(process.flashggPreselectedDiPhotonsTEST)
 process.e = cms.EndPath(process.out)
 
 
