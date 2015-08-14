@@ -6,8 +6,8 @@ namespace flashgg {
     {
         auto found_label = std::lower_bound( _labels.begin(), _labels.end(), key );
         if( found_label == _labels.end() || *found_label != key ) {
-            _labels.push_back( key );
-            _weights.push_back( val );
+            _weights.insert( _weights.begin() + std::distance( _labels.begin(), found_label ), val );
+            _labels.insert( found_label, key );
         } else {
             _weights[std::distance( _labels.begin(), found_label )] = val;
         }
