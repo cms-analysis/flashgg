@@ -80,7 +80,18 @@ echo crab_* | xargs -n 1 crab status
 
 ## Specific production campaigns
 
-Exact instructions used, after setting up the area with the given tag, doing cmsenv, and vomx-proxy-init as above:
+Below are the exact instructions used, after setting up the area with the given tag, doing cmsenv, and vomx-proxy-init as above. 
+**N.B.** to duplicate the settings of the production below, you **must** setup with the relevant tag:
+
+```
+cd $CMSSW_BASE/src/flashgg
+git checkout [relevant tag]
+scram b -j 9
+```
+
+In fact, it is recommended to set up a new area from scratch and checkout the tag before running setup.sh, as described here: 
+
+https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_users  
 
 ### SPRING15
 
