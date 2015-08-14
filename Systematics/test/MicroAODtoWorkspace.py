@@ -35,7 +35,7 @@ massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSel
 process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
 
 process.systematicsTagSequences = cms.Sequence()
-systlabels = []
+systlabels = [""]
 for r9 in ["HighR9","LowR9"]:
     for direction in ["Up","Down"]:
         systlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
@@ -45,6 +45,8 @@ for r9 in ["HighR9","LowR9"]:
             systlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
 
 for systlabel in systlabels:
+    if systlabel == "":
+        continue
     newseq = cloneProcessingSnippet(process,process.flashggTagSequence,systlabel)
     massSearchReplaceAnyInputTag(newseq,cms.InputTag("flashggDiPhotonSystematics"),cms.InputTag("flashggDiPhotonSystematics",systlabel))
     for name in newseq.moduleNames():
@@ -71,7 +73,6 @@ from flashgg.MetaData.samples_utils import SamplesManager
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring("file:myMicroAODOutputFile.root"))
-process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
 
 #if options.maxEvents > 0:
 #    process.source.eventsToProcess = cms.untracked.VEventRange('1:1-1:'+str(options.maxEvents))
