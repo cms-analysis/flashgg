@@ -14,7 +14,7 @@ namespace flashgg {
     public:
         float weight( string key ) const;
         float centralWeight() const { return weight( central_key ); }
-        void setWeight( string key, float val ) { _labels.push_back( key ); _weights.push_back( val ); }
+        void setWeight( string key, float val );
         void setCentralWeight( float val ) { setWeight( central_key, val ); }
         bool hasWeight( string key ) const;
         void includeWeights( const WeightedObject &other );
@@ -25,7 +25,6 @@ namespace flashgg {
         vector<string> _labels;
         vector<float> _weights;
         static constexpr const char *central_key = "Central";
-
     };
 }
 

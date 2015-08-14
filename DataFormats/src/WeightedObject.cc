@@ -2,6 +2,18 @@
 
 namespace flashgg {
 
+    void WeightedObject::setWeight( string key, float val )
+    {
+        auto found_label = std::lower_bound( _labels.begin(), _labels.end(), key );
+        if( found_label == _labels.end() || *found_label != key ) {
+            _labels.push_back( key );
+            _weights.push_back( val );
+        } else {
+            _weights[std::distance( _labels.begin(), found_label )] = val;
+        }
+    }
+
+
     bool WeightedObject::hasWeight( string key ) const
     {
         auto found_label = std::lower_bound( _labels.begin(), _labels.end(), key );
@@ -33,3 +45,11 @@ namespace flashgg {
     }
 
 }
+
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
