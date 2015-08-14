@@ -114,9 +114,9 @@ def addHistogram(vpset,histo):
         nybins  = 0
     else:
         if len(xbins) != 3:
-            raise Exception("Invalid histogram definition %s. Expecting only three items for x binning definition")
+            raise Exception("Invalid histogram definition %s. Expecting only three items for x binning definition"% histo)
         if ybins and len(ybins) != 3:
-            raise Exception("Invalid histogram definition %s. Expecting only three items for y binning definition")
+            raise Exception("Invalid histogram definition %s. Expecting only three items for y binning definition"% histo)
         nxbins = int(xbins[0]) 
         xbins = xbins[1:3]
         if ybins:
