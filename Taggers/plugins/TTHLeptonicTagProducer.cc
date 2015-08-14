@@ -391,16 +391,6 @@ namespace flashgg {
 
                     Ptr<Electron> Electron = goodElectrons[ElectronIndex];
 
-                    /*
-                    std::cout << " TTHLeptonicTagProducer goodElectrons, looking at electron " << ElectronIndex << std::endl;
-                    auto weightList = Electron->weightList();
-                    std::cout << " TTHLeptonicTag Electron weightList size=" << weightList.size();
-                    for( unsigned int i = 0 ; i < weightList.size() ; i++ ) {
-                        std::cout << "    " << weightList[i] << " " << Electron->weight( weightList[i] );
-                    }
-                    std::cout << std::endl;
-                    */
-
                     TLorentzVector elec_p4;
                     elec_p4.SetXYZT( Electron->px(), Electron->py(), Electron->pz(), Electron->energy() );
 
@@ -470,16 +460,6 @@ namespace flashgg {
                     }//end of jets loop
                     numElectronJetsdR.push_back( deltaRElectronJetcount );
 
-                    /*
-                    std::cout << " TTHLeptonicTagProducer about to push back electron " << ElectronIndex << std::endl;
-                    auto weightList2 = Electron->weightList();
-                    std::cout << " TTHLeptonicTag Electron weightList size=" << weightList2.size();
-                    for( unsigned int i = 0 ; i < weightList2.size() ; i++ ) {
-                        std::cout << "    " << weightList2[i] << " " << Electron->weight( weightList2[i] );
-                    }
-                    std::cout << std::endl;
-                    */
-
                     tagElectrons.push_back( Electron );
 
                 }//end of electron loop
@@ -516,14 +496,6 @@ namespace flashgg {
                     //                    std::cout << "including muon weights" << std::endl;
                     tthltags_obj.includeWeights( *tagMuons[0] );
                 }
-                /*
-                auto weightList = tthltags_obj.weightList();
-                std::cout << " TTHLeptonicTag weightList size=" << weightList.size();
-                for( unsigned int i = 0 ; i < weightList.size() ; i++ ) {
-                    std::cout << "    " << weightList[i] << " " << tthltags_obj.weight( weightList[i] );
-                }
-                std::cout << std::endl;
-                */
 
                 tthltags_obj.setJets( tagJets );
                 tthltags_obj.setBJets( tagBJets );
