@@ -22,8 +22,9 @@ def main(args):
     
     lumi = fin.Get("LuminosityBlocks")
     ne = lumi.Draw("1>>totEvents(1,0,2)","edmMergeableCounter_eventCount__FLASHggMicroAOD.obj.value","goff")
+    ## ne = lumi.Draw("1>>totWeights(1,0,2)","Sum$(floatedmMergeableHisto_weightsCount_obsPileup_FLASHggMicroAOD.obj.values[])","goff")
+    ne = lumi.Draw("1>>totWeights(1,0,2)","edmMergeableDouble_weightsCount_totalWeight_FLASHggMicroAOD.obj.value","goff")
     if  ne>0:
-        lumi.Draw("1>>totWeights(1,0,2)","edmMergeableDouble_weightsCount_totalWeight_FLASHggMicroAOD.obj.value","goff")
         totEvents = ROOT.gDirectory.Get("totEvents").Integral()
         totWeights = ROOT.gDirectory.Get("totWeights").Integral()
     else:
