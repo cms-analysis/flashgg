@@ -203,6 +203,13 @@ Importing /GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6/sethzenz-HggPhys1
 ```
    At any time, the catalog content can be inspected by the `list` command.
 
+   *Note*: By default the `import` command imports all datasets matching the pattern `/*/*<campaing>-<fgg_version>*/*`. This can be changed explicitely specifying the patterns to be imported, e.g.:
+   `fggManangeSamples.py -C <campaing>_50ns /*/*<campaign>*50ns*/*`
+   `fggManangeSamples.py -C <campaing>_20ns /*/*<campaign>*20ns*/*`
+   
+   *Note 2*: Datasets that are submitted or finish at a later stage can be imported in arleady existing catalogs.
+   If a datataset with the same name already exists, the list of files will be merged (the `review` and `check` steps need to be re-run`).
+ 
 2. `review` . After importing a list of datasets, the catalog content can be reviewed with the `review` command. This allows to remove undesired (eg duplicated) datasets from the catalog.
    This operation is achieved by
    ```fggManageSample -C <campaign> review```
@@ -259,6 +266,26 @@ Done
 [...]
 }
 ```
+
+   *Note*: For large catalogs, it may be better to run the submit the check command to the batch system using the `-q <queu_name>`  (8nm on lxbatch would suffice) and also to check different datasets in different steps.
+   Furthermore, the check for duplicates can be decoupled from the actual file-by-file check. This can be achieved with the `checklite` command.
+   `fggManageSamples.py -C <campaing> checklite`
+   `fggManageSamples.py -C <campaing> -q 8nm check /DY*`
+   `fggManageSamples.py -C <campaing> -q 8nm check /QCD*`
+   `fggManageSamples.py -C <campaing> -q 8nm check /DiPhoton*`
+   `fggManageSamples.py -C <campaing> -q 8nm check /*/*Prompt*`
+
+   In general, it is best not to deal with more than 1000 files for each `check` run.
+
+   *Note 2*: If the check steps hangs for some reason (and the jobs were run on the batch system), the ouput of the partially completed jobs can be recovered in a subsequent run.
+`fggManageSamples.py -C <campaing> -c check /DY*`
+
+   This command will not submit any new jobs but just integrate the output of the successful ones into the catalog.    An additional call to:
+   `fggManageSamples.py -C <campaing> -q 8nm check /DY*`
+   Will submit the missing jobs.
+
+   *Note 3*: By default files or datasets that were not already checked are not included in subsequent runs of the `check` and `checklite` commands. To change this behaviour one can use the `--force` option.
+
 4. The file catalog can now be committed to git.
 
 ### Job preparation
@@ -335,3 +362,15 @@ fggRunJobs.py --load jobs_gamgam_highmass.json -H -D -P -n 5 -d testMe ./mypset.
 
 Fwlite exectuables can be run in the same way replacing `cmsRun` by the actual executable name.
 
+### Resuming jobs monitoring
+
+By default the `fggRunJobs.py` script waits for the submitted jobs to finish and then merges the output of all jobs in one single file.
+
+If jobs are submitted to the batch system (with the `-q <queue_id>` option) in asyncronouse mode (on by default) the monitoring of the jobs can be stopped and resumed.
+To stop the monitoring one can simply stop the process e.g. with `Control-C`.
+
+After that, the status of the submission can be checked with the `--summary` command:
+`fggRunJobs.py --load <task_folder>/config.json --summary`.
+
+To resume the task monitoring with 
+`fggRunJobs.py --load <task_folder>/config.json --cont`.
