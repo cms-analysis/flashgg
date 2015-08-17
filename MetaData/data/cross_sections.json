@@ -10,5 +10,9 @@
 	"DoubleEG"                                                      : { "xs" : 0.0                                   },
 	"DoublePhoton"                                                  : { "xs" : 0.0                                   },
 	"SinglePhoton"                                                  : { "xs" : 0.0                                   },
-	"SingleElectron"                                                : { "xs" : 0.0                                   }
+	"SingleElectron"                                                : { "xs" : 0.0                                   },
+        "GluGluHToGG_M-125_13TeV_powheg_pythia8"                        : { "xs" : 43.92,    "br" : 2.28e-3              },
+        "ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8"              : { "xs" : 0.5608,   "br" : 2.28e-3              },
+        "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8"              : { "xs" : 0.5608,   "br" : 2.28e-3              },
+        "ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8"              : { "xs" : 0.5608,   "br" : 2.28e-3              }
 }
