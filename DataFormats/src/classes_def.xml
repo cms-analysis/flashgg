@@ -1,5 +1,6 @@
 <lcgdict>
- <class name="flashgg::DiPhotonMVAResult"/>
+<class name="flashgg::WeightedObject"/>
+<class name="flashgg::DiPhotonMVAResult"/>
 <!--
 <class name="edm::Wrapper<flashgg::DiPhotonMVAResult>"/>
 <class name="std::pair<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult>"/>
@@ -28,7 +29,6 @@
 <class name="std::vector<flashgg::TTHLeptonicTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TTHLeptonicTag> >"/>
 <class name="std::vector<pat::Muon>"/>
-<class name="edm::Ptr<pat::Muon>"/>
 <class name="edm::Ptr<reco::GenParticle>"/>
 <class name="flashgg::TTHHadronicTag"/>
 <class name="std::vector<flashgg::TTHHadronicTag>"/>
@@ -90,6 +90,8 @@
 <class name="std::map<std::string,std::map<edm::Ptr<reco::Vertex>,float>>"/>
 <class name="std::pair<std::string,std::map<edm::Ptr<reco::Vertex>,float>>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Jet> >"/>
+<class name="std::vector<std::vector<flashgg::Jet> >"/>
+<class name="edm::Wrapper<std::vector<std::vector<flashgg::Jet> > >"/>
 <class name="flashgg::Electron"/>
 <class name="edm::Ptr<flashgg::Electron>"/>
 <class name="std::vector<flashgg::Electron>"/>

@@ -10,11 +10,21 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 #process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 #process.GlobalTag.globaltag = 'PLS170_V7AN1::All'
 #process.GlobalTag.globaltag = 'auto:run2_mc'
-process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
+process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 1000) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
+
+process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc')
+
+# Fix because auto:run2_mc points to MCRUN2_74_V9::All
+current_gt = process.GlobalTag.globaltag.value()
+if current_gt.count("::All"):
+    new_gt = current_gt.replace("::All","")
+    print 'Removing "::All" from GlobalTag by hand for condDBv2: was %s, now %s' % (current_gt,new_gt)
+    process.GlobalTag.globaltag = new_gt
+
 
 # 2012 data
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'GR_R_74_V8A::All')
@@ -25,7 +35,6 @@ process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 #        ))
 
 # PHYS14 Files
-process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc')
 #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring(
 #"/store/mc/Phys14DR/DYToMuMu_M-50_Tune4C_13TeV-pythia8/MINIAODSIM/PU40bx25_tsg_castor_PHYS14_25_V1-v2/00000/622CAFBA-BD9A-E411-BE11-002481E14FFC.root",
 #"/store/mc/Phys14DR/DYToMuMu_M-50_Tune4C_13TeV-pythia8/MINIAODSIM/PU40bx25_tsg_castor_PHYS14_25_V1-v2/00000/FA4B46B9-8E9A-E411-A899-002590A3C954.root",
@@ -40,8 +49,12 @@ process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc')
 
 # 740 RelVal
 #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/relval/CMSSW_7_4_0_pre9_ROOT6/RelValH130GGgluonfusion_13/MINIAODSIM/MCRUN2_74_V7-v1/00000/0A35F6D-DAD1-E411-A8CC-0026189438CC.root"))
-process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/relval/CMSSW_7_4_0_pre9/RelValH130GGgluonfusion_13/MINIAODSIM/PU25ns_MCRUN2_74_V7-v1/00000/5ABC049C-4CD4-E411-B28A-0025905A613C.root",
-                                                                         "/store/relval/CMSSW_7_4_0_pre9/RelValH130GGgluonfusion_13/MINIAODSIM/PU25ns_MCRUN2_74_V7-v1/00000/C65FAFAA-4CD4-E411-9026-0025905A607E.root"))
+#process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/relval/CMSSW_7_4_0_pre9/RelValH130GGgluonfusion_13/MINIAODSIM/PU25ns_MCRUN2_74_V7-v1/00000/5ABC049C-4CD4-E411-B28A-0025905A613C.root",
+#                                                                         "/store/relval/CMSSW_7_4_0_pre9/RelValH130GGgluonfusion_13/MINIAODSIM/PU25ns_MCRUN2_74_V7-v1/00000/C65FAFAA-4CD4-E411-9026-0025905A607E.root"))
+
+# Spring15
+#process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIISpring15DR74/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v1/70000/0232BC3C-01FF-E411-8779-0025907B4FC2.root"))
+process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIISpring15DR74/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v1/30000/54ECB9A4-912E-E511-BB7D-002590A831CA.root"))
 
 process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to work: disable all warnings for now
 # process.MessageLogger.suppressWarning.extend(['SimpleMemoryCheck','MemoryCheck']) # this would have been better...
@@ -66,10 +79,19 @@ process.options = cms.untracked.PSet(
     allowUnscheduled = cms.untracked.bool(True)
     )
 # import function which takes care of reclustering the jets using legacy vertex		
-from flashgg.MicroAOD.flashggJets_cfi import addFlashggPFCHSLegJets 
+from flashgg.MicroAOD.flashggJets_cfi import addFlashggPFCHSJets 
+from flashgg.MicroAOD.flashggJets_cfi import addFlashggPuppiJets
+from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
 # call the function, it takes care of everything else.
-addFlashggPFCHSLegJets(process)
-
+for vtx in range(0,maxJetCollections):
+    addFlashggPFCHSJets (process = process,
+                         vertexIndex =vtx,
+                         doQGTagging = True,
+                         label = '' + str(vtx))    
+    addFlashggPuppiJets (process     = process,
+                         vertexIndex = vtx,
+                         debug       = False,
+                         label = '' + str(vtx))
 
 process.p = cms.Path(process.flashggMicroAODSequence)
 process.e = cms.EndPath(process.out)

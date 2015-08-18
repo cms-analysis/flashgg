@@ -23,6 +23,11 @@ bool DiPhotonCandidate::operator <( const DiPhotonCandidate &b ) const
     return ( sumPt() < b.sumPt() );
 }
 
+bool DiPhotonCandidate::operator >( const DiPhotonCandidate &b ) const
+{
+    return ( sumPt() > b.sumPt() );
+}
+
 void DiPhotonCandidate::computeP4AndOrder()
 {
     //    std::cout << " START of DiPhotonCandidate::computeP4AndOrder PT M PT1 PT2 " << this->pt() << " " << this->mass() << " " << leadingPhoton()->pt() << " " <<

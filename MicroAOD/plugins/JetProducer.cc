@@ -33,18 +33,16 @@ namespace flashgg {
         unique_ptr<PileupJetIdAlgo>  pileupJetIdAlgo_;
         ParameterSet pileupJetIdParameters_;
         bool usePuppi;
-        double minJetPt_; // GeV
     };
 
 
     JetProducer::JetProducer( const ParameterSet &iConfig ) :
-        jetToken_( consumes<View<pat::Jet> >( iConfig.getUntrackedParameter<InputTag> ( "JetTag", InputTag( "slimmedJets" ) ) ) ),
+        jetToken_( consumes<View<pat::Jet> >( iConfig.getParameter<InputTag> ( "JetTag" ) ) ),
         diPhotonToken_( consumes<View<DiPhotonCandidate> >( iConfig.getParameter<InputTag>( "DiPhotonTag" ) ) ),
-        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getUntrackedParameter<InputTag> ( "VertexTag", InputTag( "offlineSlimmedPrimaryVertices" ) ) ) ),
+        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTag" ) ) ),
         pileupJetIdParameters_( iConfig.getParameter<ParameterSet>( "PileupJetIdParameters" ) ),
-        usePuppi( iConfig.getUntrackedParameter<bool>( "UsePuppi", false ) ),
-        minJetPt_( iConfig.getUntrackedParameter<double>( "MinJetPt", 0. ) )
+        usePuppi( iConfig.getUntrackedParameter<bool>( "UsePuppi", false ) )
     {
         pileupJetIdAlgo_.reset( new PileupJetIdAlgo( pileupJetIdParameters_ ) );
 
@@ -77,7 +75,6 @@ namespace flashgg {
 
         for( unsigned int i = 0 ; i < jets->size() ; i++ ) {
             Ptr<pat::Jet> pjet = jets->ptrAt( i );
-            if( pjet->pt() < minJetPt_ ) { continue; }
             flashgg::Jet fjet = flashgg::Jet( *pjet );
 
             for( unsigned int j = 0 ; j < diPhotons->size() ; j++ ) {
@@ -86,7 +83,19 @@ namespace flashgg {
                 if( !usePuppi ) {
                     if( !fjet.hasPuJetId( vtx ) ) {
                         PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables( pjet.get(), vtx, *vertexCandidateMap, true );
-                        fjet.setPuJetId( vtx, lPUJetId ); //temporarily make all jets pass
+                        fjet.setPuJetId( vtx, lPUJetId );
+                    }
+                } else {
+                    if( !fjet.hasPuJetId( vtx ) ) {
+                        PileupJetIdentifier lPUJetId;
+                        lPUJetId.RMS( 0 );
+                        lPUJetId.betaStar( 0 );
+                        int idFlag( 0 );
+                        idFlag += 1 <<  PileupJetIdentifier::kTight;
+                        idFlag += 1 <<  PileupJetIdentifier::kMedium;
+                        idFlag += 1 <<  PileupJetIdentifier::kLoose;
+                        lPUJetId.idFlag( idFlag );
+                        fjet.setPuJetId( vtx, lPUJetId ); //temporarily make puppi jets pass
                     }
                 }
             }
@@ -94,6 +103,18 @@ namespace flashgg {
                 if( primaryVertices->size() > 0 && !fjet.hasPuJetId( primaryVertices->ptrAt( 0 ) ) ) {
                     PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables( pjet.get(), primaryVertices->ptrAt( 0 ), *vertexCandidateMap, true );
                     fjet.setPuJetId( primaryVertices->ptrAt( 0 ), lPUJetId );
+                }
+            } else {
+                if( !fjet.hasPuJetId( primaryVertices->ptrAt( 0 ) ) ) {
+                    PileupJetIdentifier lPUJetId;
+                    lPUJetId.RMS( 0 );
+                    lPUJetId.betaStar( 0 );
+                    int idFlag( 0 );
+                    idFlag += 1 <<  PileupJetIdentifier::kTight;
+                    idFlag += 1 <<  PileupJetIdentifier::kMedium;
+                    idFlag += 1 <<  PileupJetIdentifier::kLoose;
+                    lPUJetId.idFlag( idFlag );
+                    fjet.setPuJetId( primaryVertices->ptrAt( 0 ), lPUJetId ); //temporarily make puppi jets pass
                 }
             }
             jetColl->push_back( fjet );

@@ -42,6 +42,7 @@ namespace flashgg {
     {
         std::string photonMethodName = conf.getParameter<std::string>( "PhotonMethodName" );
         photon_corr_.reset( FlashggSystematicMethodsFactory<flashgg::Photon, param_var>::get()->create( photonMethodName, conf ) );
+        this->setMakesWeight( photon_corr_->makesWeight() );
     }
 
     template<class param_var>
@@ -62,7 +63,6 @@ namespace flashgg {
         photon_corr_->applyCorrection( y.getLeadingPhoton(), syst_shift );
         photon_corr_->applyCorrection( y.getSubLeadingPhoton(), syst_shift );
         y.computeP4AndOrder();
-        y.setSystLabel( shiftLabel( syst_shift ) );
         if( debug_ ) {
             std::cout << "END OF DiPhotonFromPhoton::applyCorrection M PT E1 E2 ETA1 ETA2 "
                       << y.mass() << " " << y.pt() << " " << y.leadingPhoton()->energy() << " " << y.subLeadingPhoton()->energy() << " "

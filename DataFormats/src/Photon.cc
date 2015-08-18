@@ -45,39 +45,148 @@ Photon::Photon( const pat::Photon &aPhoton ) : pat::Photon::Photon( aPhoton )
     ZeroVariables();
 }
 
-Photon::Photon( const Photon &aPhoton ) : pat::Photon::Photon( aPhoton )
-{
-    sipip_ = aPhoton.sipip();
-    sieip_ = aPhoton.sieip();
-    e2nd_ = aPhoton.e2nd();
-    e2x5right_ = aPhoton.e2x5right();
-    e2x5left_ = aPhoton.e2x5left();
-    e2x5top_ = aPhoton.e2x5top();
-    e2x5bottom_ = aPhoton.e2x5bottom();
-    e2x5max_ = aPhoton.e2x5max();
-    eright_ = aPhoton.eright();
-    eleft_ = aPhoton.eleft();
-    etop_ = aPhoton.etop();
-    ebottom_ = aPhoton.ebottom();
-    e1x3_ = aPhoton.e1x3();
-    S4_ = aPhoton.s4();
-    pfPhoIso04_ = aPhoton.pfPhoIso04();
-    pfPhoIso03_ = aPhoton.pfPhoIso03();
-    pfChgIsoWrtWorstVtx04_ = aPhoton.pfChgIsoWrtWorstVtx04();
-    pfChgIsoWrtWorstVtx03_ = aPhoton.pfChgIsoWrtWorstVtx03();
-    pfChgIsoWrtChosenVtx02_ = aPhoton.pfChgIsoWrtChosenVtx02();
-    ESEffSigmaRR_ = aPhoton.esEffSigmaRR();
-    sigEOverE_ = aPhoton.sigEOverE();
-    pfChgIso04_ = aPhoton.pfChgIso04();
-    pfChgIso03_ = aPhoton.pfChgIso03();
-    pfChgIso02_ = aPhoton.pfChgIso02();
-    phoIdMvaD_ = aPhoton.phoIdMvaD();
-    passElecVeto_ = aPhoton.passElectronVeto();
-}
+/// Photon::Photon( const Photon &aPhoton ) : pat::Photon::Photon( aPhoton )
+/// {
+///     sipip_ = aPhoton.sipip();
+///     sieip_ = aPhoton.sieip();
+///     e2nd_ = aPhoton.e2nd();
+///     e2x5right_ = aPhoton.e2x5right();
+///     e2x5left_ = aPhoton.e2x5left();
+///     e2x5top_ = aPhoton.e2x5top();
+///     e2x5bottom_ = aPhoton.e2x5bottom();
+///     e2x5max_ = aPhoton.e2x5max();
+///     eright_ = aPhoton.eright();
+///     eleft_ = aPhoton.eleft();
+///     etop_ = aPhoton.etop();
+///     ebottom_ = aPhoton.ebottom();
+///     e1x3_ = aPhoton.e1x3();
+///     S4_ = aPhoton.s4();
+///     pfPhoIso04_ = aPhoton.pfPhoIso04();
+///     pfPhoIso03_ = aPhoton.pfPhoIso03();
+///     pfChgIsoWrtWorstVtx04_ = aPhoton.pfChgIsoWrtWorstVtx04();
+///     pfChgIsoWrtWorstVtx03_ = aPhoton.pfChgIsoWrtWorstVtx03();
+///     pfChgIsoWrtChosenVtx02_ = aPhoton.pfChgIsoWrtChosenVtx02();
+///     ESEffSigmaRR_ = aPhoton.esEffSigmaRR();
+///     sigEOverE_ = aPhoton.sigEOverE();
+///     pfChgIso04_ = aPhoton.pfChgIso04();
+///     pfChgIso03_ = aPhoton.pfChgIso03();
+///     pfChgIso02_ = aPhoton.pfChgIso02();
+///     phoIdMvaD_ = aPhoton.phoIdMvaD();
+///     passElecVeto_ = aPhoton.passElectronVeto();
+///     extraChargedIsolations_ = aPhoton.extraChargedIsolations_;
+///     extraPhotonIsolations_  = aPhoton.extraPhotonIsolations_;
+///     extraNeutralIsolations_ = aPhoton.extraNeutralIsolations_;
+/// }
 
 Photon::~Photon() {}
 
 Photon *Photon::clone() const { return new Photon( *this ); }
+
+void Photon::removeVerticesExcept( const std::set<edm::Ptr<reco::Vertex> > &vtxPtrList )
+{
+    /*
+        std::map<edm::Ptr<reco::Vertex>, float> pfChgIso04_;
+        std::map<edm::Ptr<reco::Vertex>, float> pfChgIso03_;
+        std::map<edm::Ptr<reco::Vertex>, float> pfChgIso02_;
+        std::map<edm::Ptr<reco::Vertex>, float> phoIdMvaD_;
+        bool passElecVeto_;
+        std::map<std::string, std::map<edm::Ptr<reco::Vertex>, float> > extraChargedIsolations_;
+    */
+
+    //    std::cout << "Running removeVerticesExcept" << std::endl;
+    //    std::cout << "  Size of pfChgIso04_: " << pfChgIso04_.size() << std::endl;
+    //    std::cout << "  Size of vtxPtrList: " << vtxPtrList.size() << std::endl;
+
+    std::map<edm::Ptr<reco::Vertex>, float>::iterator map_it;
+
+    for( auto extra_map_it = extraChargedIsolations_.begin() ; extra_map_it != extraChargedIsolations_.end() ; extra_map_it++ ) {
+        map_it = extra_map_it->second.begin();
+        while( map_it != extra_map_it->second.end() ) {
+            bool deleteMe = true;
+            for( auto list_it = vtxPtrList.begin() ; list_it != vtxPtrList.end() ; list_it++ ) {
+                if( *list_it == map_it->first ) {
+                    deleteMe = false;
+                    break;
+                }
+            }
+            if( deleteMe ) {
+                map_it = extra_map_it->second.erase( map_it );
+            } else {
+                map_it++;
+            }
+        }
+    }
+
+    map_it = phoIdMvaD_.begin();
+    while( map_it != phoIdMvaD_.end() ) {
+        bool deleteMe = true;
+        for( auto list_it = vtxPtrList.begin() ; list_it != vtxPtrList.end() ; list_it++ ) {
+            if( *list_it == map_it->first ) {
+                deleteMe = false;
+                break;
+            }
+        }
+        if( deleteMe ) {
+            map_it = phoIdMvaD_.erase( map_it );
+        } else {
+            map_it++;
+        }
+    }
+
+    map_it = pfChgIso04_.begin();
+    while( map_it != pfChgIso04_.end() ) {
+        bool deleteMe = true;
+        for( auto list_it = vtxPtrList.begin() ; list_it != vtxPtrList.end() ; list_it++ ) {
+            if( *list_it == map_it->first ) {
+                deleteMe = false;
+                break;
+            }
+        }
+        if( deleteMe ) {
+            map_it = pfChgIso04_.erase( map_it );
+        } else {
+            map_it++;
+        }
+    }
+
+    map_it = pfChgIso03_.begin();
+    while( map_it != pfChgIso03_.end() ) {
+        bool deleteMe = true;
+        for( auto list_it = vtxPtrList.begin() ; list_it != vtxPtrList.end() ; list_it++ ) {
+            if( *list_it == map_it->first ) {
+                deleteMe = false;
+                break;
+            }
+        }
+        if( deleteMe ) {
+            map_it = pfChgIso03_.erase( map_it );
+        } else {
+            map_it++;
+        }
+    }
+
+    map_it = pfChgIso02_.begin();
+    while( map_it != pfChgIso02_.end() ) {
+        bool deleteMe = true;
+        for( auto list_it = vtxPtrList.begin() ; list_it != vtxPtrList.end() ; list_it++ ) {
+            if( *list_it == map_it->first ) {
+                deleteMe = false;
+                break;
+            }
+        }
+        if( deleteMe ) {
+            map_it = pfChgIso02_.erase( map_it );
+        } else {
+            map_it++;
+        }
+    }
+
+
+    //    std::cout << "  Size of pfChgIso04_: " << pfChgIso04_.size() << std::endl;
+    //    std::cout << "  Size of vtxPtrList: " << vtxPtrList.size() << std::endl;
+    //    std::cout << "End of removeVerticesExcept"<< std::endl;
+}
+
 
 // Very simple functions now, but we want to be smarter about them later
 void Photon::setEnergyAtStep( std::string key, float val )

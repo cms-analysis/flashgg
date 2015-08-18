@@ -27,11 +27,15 @@
 #include "flashgg/DataFormats/interface/MuMuGammaCandidate.h"   //JTao
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "flashgg/DataFormats/interface/VBFTagTruth.h"
+#include "flashgg/DataFormats/interface/WeightedObject.h"
+
 #include <vector>
 #include <map>
 
 namespace  {
     struct dictionary {
+        flashgg::WeightedObject                                             fgg_obj;
+
         flashgg::Photon                                                   fgg_pho;
         edm::Ptr<flashgg::Photon>                                     ptr_fgg_pho;
         edm::Wrapper<flashgg::Photon>                                 wrp_fgg_pho;
@@ -85,11 +89,13 @@ namespace  {
         std::pair<edm::Ptr<reco::Vertex>, flashgg::MinimalPileupJetIdentifier>                    pair_ptr_vtx_pujetid;
         std::map<edm::Ptr<reco::Vertex>, flashgg::MinimalPileupJetIdentifier>                    map_ptr_vtx_pujetid;
 
-        flashgg::Jet                                                      fgg_jet;
-        edm::Wrapper<flashgg::Jet>                                    wrp_fgg_jet;
-        std::vector<flashgg::Jet>                                     vec_fgg_jet;
-        edm::Ptr<flashgg::Jet>                                        ptr_fgg_jet;
-        edm::Ptr<pat::Muon>                                        ptr_fgg_muon;
+        flashgg::Jet                                                       fgg_jet;
+        edm::Wrapper<flashgg::Jet>                                     wrp_fgg_jet;
+        std::vector<flashgg::Jet>                                      vec_fgg_jet;
+        edm::Ptr<flashgg::Jet>                                         ptr_fgg_jet;
+        std::vector<std::vector<flashgg::Jet> >                    vec_vec_fgg_jet;
+        edm::Wrapper<std::vector<flashgg::Jet> >                   wrp_vec_fgg_jet;
+        edm::Wrapper<std::vector<std::vector<flashgg::Jet> > > wrp_vec_vec_fgg_jet;
         std::vector<pat::Muon>                                        vec_fgg_muon;
         flashgg::Muon						                                fgg_mu;
         edm::Ptr<flashgg::Muon> 					                    ptr_fgg_mu;
@@ -97,7 +103,6 @@ namespace  {
         std::vector<flashgg::Muon>				                        vec_fgg_mu;
         edm::Wrapper<std::vector<flashgg::Muon> >                   wrp_vec_fgg_mu;
 
-        edm::Wrapper<std::vector<flashgg::Jet> >                  wrp_vec_fgg_jet;
         std::map<edm::Ptr<reco::Vertex>, float>                    map_ptr_vtx_flo;
         std::pair<edm::Ptr<reco::Vertex>, float>                   pai_ptr_vtx_flo;
         std::map<std::string, std::map<edm::Ptr<reco::Vertex>, float> >  map_str_ptr_vtx_flo;

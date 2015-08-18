@@ -1,35 +1,29 @@
-#ifndef FLASHgg_LeptonEffSmearNew_h
-#define FLASHgg_LeptonEffSmearNew_h
+#ifndef FLASHgg_ObjectEffScale_h
+#define FLASHgg_ObjectEffScale_h
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
-#include "flashgg/DataFormats/interface/Electron.h"
-#include "flashgg/DataFormats/interface/Muon.h"
 #include "flashgg/Systematics/interface/ObjectSystMethodBinnedByFunctor.h"
 
 namespace flashgg {
 
-    template <typename lepton, typename param_var>
-    class LeptonEffSmearNew : public ObjectSystMethodBinnedByFunctor<lepton, param_var>
+    template <typename flashgg_object, typename param_var>
+    class ObjectEffScale : public ObjectSystMethodBinnedByFunctor<flashgg_object, param_var>
     {
     public:
 
-        LeptonEffSmearNew( const edm::ParameterSet &conf );
-        void applyCorrection( lepton &lep, param_var syst_shift ) override;
+        ObjectEffScale( const edm::ParameterSet &conf );
+        float makeWeight( const flashgg_object &obj, param_var syst_shift ) override;
         std::string shiftLabel( param_var syst_shift ) const override;
-    private:
-        //selector_type overall_range_;
-        bool debug_;
     };
 
-    template<typename lepton, typename param_var>
-    LeptonEffSmearNew<lepton, param_var>::LeptonEffSmearNew( const edm::ParameterSet &conf ) : ObjectSystMethodBinnedByFunctor<lepton, param_var>( conf ),
-        //		overall_range_(conf.getParameter<std::string>("OverallRange") ),
-        debug_( conf.getUntrackedParameter<bool>( "Debug", false ) )
+    template<typename flashgg_object, typename param_var>
+    ObjectEffScale<flashgg_object, param_var>::ObjectEffScale( const edm::ParameterSet &conf ) : ObjectSystMethodBinnedByFunctor<flashgg_object, param_var>( conf )
     {
+        this->setMakesWeight( true );
     }
 
-    template<typename lepton, typename param_var>
-    std::string LeptonEffSmearNew<lepton, param_var>::shiftLabel( param_var syst_value ) const
+    template<typename flashgg_object, typename param_var>
+    std::string ObjectEffScale<flashgg_object, param_var>::shiftLabel( param_var syst_value ) const
     {
         std::string result;
         if( syst_value == 0 ) {
@@ -42,17 +36,16 @@ namespace flashgg {
         return result;
     }
 
-
-    template<typename lepton, typename param_var>
-    void LeptonEffSmearNew<lepton, param_var>::applyCorrection( lepton &lep, param_var syst_shift )
+    template<typename flashgg_object, typename param_var>
+    float ObjectEffScale<flashgg_object, param_var>::makeWeight( const flashgg_object &obj, param_var syst_shift )
     {
+        if( this->debug_ ) { std::cout << "  Start of ObjectEffScale<flashgg_object, param_var>::makeWeight" << std::endl; }
 
-        typedef typename ObjectSystMethodBinnedByFunctor<lepton, param_var>::Bin LeptonBin;
+        typedef typename ObjectSystMethodBinnedByFunctor<flashgg_object, param_var>::Bin BaseBin;
+        std::pair<std::vector<int>, std::vector<BaseBin> > myBins = ObjectSystMethodBinnedByFunctor<flashgg_object, param_var>::adjacentBins( obj );
 
-        std::pair<std::vector<int>, std::vector<LeptonBin> > myBins = ObjectSystMethodBinnedByFunctor<lepton, param_var>::adjacentBins( lep );
-
-        double var_value = ObjectSystMethodBinnedByFunctor<lepton, param_var>::functors_[0](
-                               lep ); //value of lepton parameter, most probably eithr lep.pt() or lep.eta()
+        double var_value = ObjectSystMethodBinnedByFunctor<flashgg_object, param_var>::functors_[0](
+                               obj ); //value of objton parameter, most probably eithr lep.pt() or lep.eta()
 
         int myLowerIndex = myBins.first[0];
         int myUpperIndex = myBins.first[1];
@@ -113,9 +106,20 @@ namespace flashgg {
             }
         }
         double Weight = theWeight + ( theError * syst_shift );
-        lep.setWeight( Weight );
+        //        lep.setWeight( shiftLabel(syst_shift), Weight );
         //std::cout << "Weight " << lep.weight() << std::endl;
+        if( this->debug_ ) { std::cout << "  end of ObjectEffScale<flashgg_object, param_var>::makeWeight - returning " << Weight << std::endl; }
+
+        return Weight;
     }
 
 }
 #endif
+
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4

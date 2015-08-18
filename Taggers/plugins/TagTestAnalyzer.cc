@@ -74,8 +74,7 @@ namespace flashgg {
 // constructors and destructor
 //
     TagTestAnalyzer::TagTestAnalyzer( const edm::ParameterSet &iConfig ):
-        TagSorterToken_( consumes<edm::OwnVector<flashgg::DiPhotonTagBase> >( iConfig.getUntrackedParameter<InputTag> ( "TagSorter",
-                         InputTag( "flashggTagSorter" ) ) ) )
+        TagSorterToken_( consumes<edm::OwnVector<flashgg::DiPhotonTagBase> >( iConfig.getParameter<InputTag> ( "TagSorter" ) ) )
     {
     }
 
@@ -99,7 +98,8 @@ namespace flashgg {
 
             const	UntaggedTag *untagged = dynamic_cast<const UntaggedTag *>( chosenTag );
             if( untagged != NULL ) {
-                std::cout << "[UNTAGGED] category " << untagged->categoryNumber() << " mass=" << untagged->diPhoton()->mass() << std::endl;
+                std::cout << "[UNTAGGED] category " << untagged->categoryNumber() << " mass=" << untagged->diPhoton()->mass() <<
+                          ", systLabel " << untagged->systLabel() <<  std::endl;
                 if( untagged->tagTruth().isNonnull() ) {
                     std::cout << "\t[UNTAGGED TRUTH]: genPV=" << untagged->tagTruth()->genPV() << std::endl;
                 }
@@ -109,7 +109,8 @@ namespace flashgg {
             if( vbftag != NULL ) {
                 std::cout << "[VBF] Category " << vbftag->categoryNumber() << " with lead jet pt eta "
                           << vbftag->leadingJet().pt() << " " << vbftag->leadingJet().eta()
-                          << " and sublead jet eta " << vbftag->subLeadingJet().pt() << " " << vbftag->subLeadingJet().eta() << std::endl;
+                          << " and sublead jet eta " << vbftag->subLeadingJet().pt() << " " << vbftag->subLeadingJet().eta() << " mass=" << vbftag->diPhoton()->mass()
+                          << ", systLabel " << vbftag->systLabel() << std::endl;
                 if( vbftag->tagTruth().isNonnull() ) {
                     const VBFTagTruth *truth = dynamic_cast<const VBFTagTruth *>( &*vbftag->tagTruth() );
                     assert( truth != NULL );  // If we stored a VBFTag with a nonnull pointer, we either have VBFTagTruth or a nutty bug
@@ -189,6 +190,7 @@ namespace flashgg {
             if( vhloosetag != NULL ) {
                 std::cout << "[VHloose] Category " << vhloosetag->categoryNumber()
                           << " nmuons=" << vhloosetag->muons().size()
+                          << " systLabel " << vhloosetag->systLabel()
                           << std::endl;
             }
 

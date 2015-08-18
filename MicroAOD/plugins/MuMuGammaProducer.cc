@@ -34,9 +34,9 @@ namespace flashgg {
     };
 
     MuMuGammaProducer::MuMuGammaProducer( const ParameterSet &iConfig ) :
-        dimuToken_( consumes<View<flashgg::DiMuonCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "DiMuonTag", InputTag( "flashggDiMuons" ) ) ) ),
-        photonToken_( consumes<View<flashgg::Photon> >( iConfig.getUntrackedParameter<InputTag> ( "PhotonTag", InputTag( "flashggPhotons" ) ) ) ),
-        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getUntrackedParameter<InputTag> ( "VertexTag", InputTag( "offlineSlimmedPrimaryVertices" ) ) ) )
+        dimuToken_( consumes<View<flashgg::DiMuonCandidate> >( iConfig.getParameter<InputTag> ( "DiMuonTag" ) ) ),
+        photonToken_( consumes<View<flashgg::Photon> >( iConfig.getParameter<InputTag> ( "PhotonTag" ) ) ),
+        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) )
     {
         minPhotonPT_ = iConfig.getUntrackedParameter<double>( "minPhotonPT" );
         produces<vector<flashgg::MuMuGammaCandidate> >();
@@ -147,3 +147,11 @@ namespace flashgg {
 
 typedef flashgg::MuMuGammaProducer FlashggMuMuGammaProducer;
 DEFINE_FWK_MODULE( FlashggMuMuGammaProducer );
+
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4

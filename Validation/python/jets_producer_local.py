@@ -20,16 +20,16 @@ jdebug=True
 
 # PHYS14 Files
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring(
-    "/store/mc/Phys14DR/GluGluToHToGG_M-125_13TeV-powheg-pythia6/MINIAODSIM/PU20bx25_tsg_PHYS14_25_V1-v1/00000/3C2EFAB1-B16F-E411-AB34-7845C4FC39FB.root"), 
+    "/store/mc/RunIISpring15DR74/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v2/00000/00C4781D-6B08-E511-8A0A-0025905A6084.root"),
                             skipEvents=cms.untracked.uint32(0)
-                            
-                        )
+    
+)
 
 process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to work: disable all warnings for now
 # process.MessageLogger.suppressWarning.extend(['SimpleMemoryCheck','MemoryCheck']) # this would have been better...
-
 # Uncomment the following if you notice you have a memory leak
 # This is a lightweight tool to digg further
+
 process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
                                         ignoreTotal = cms.untracked.int32(1),
                                         monitorPssAndPrivate = cms.untracked.bool(True)
@@ -81,15 +81,14 @@ addFlashggPFCHSLegJets(process)
 addQGTaggerPFCHSLeg(process)
 # +++++++++++++++++++++++++++++++++++
 
-
 # ++++++++++++ QG Tagger Test ++++++++++++
 #process.load('RecoJets.JetProducers.QGTagger_cfi')
-
-# Could be reco::PFJetCollection or pat::JetCollection (both AOD and miniAOD)
+#
+## Could be reco::PFJetCollection or pat::JetCollection (both AOD and miniAOD)
 #process.QGTagger.srcJets     = cms.InputTag('flashggJetsPFCHS0')
 #process.QGTagger.jetsLabel   = cms.string('QGL_AK4PFchs') 
-## for all the options :  https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
-
+### for all the options :  https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
+#
 #process.QGTaggerPF       = process.QGTagger.clone( srcJets = 'flashggJetsPF'      ,jetsLabel = 'QGL_AK4PF' );
 #process.QGTaggerPFCHS0   = process.QGTagger.clone( srcJets = 'flashggJetsPFCHS0'  ,jetsLabel = 'ak4PFJetsCHS' );
 #process.QGTaggerPFCHSLeg = process.QGTagger.clone( srcJets = 'flashggJetsPFCHSLeg',jetsLabel = 'ak4PFJetsCHS' );
@@ -104,7 +103,8 @@ process.flashggJetValidationTreeMakerPF = cms.EDAnalyzer('FlashggJetValidationTr
                                                          JetTagDz              = cms.InputTag("flashggJetsPF"),
                                                          StringTag	       = cms.string("PF"),
                                                          VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
-                                                         qgTaggerInput         = cms.untracked.InputTag("QGTaggerPF"),
+                                                         qgVariablesInputTag   = cms.InputTag('QGTaggerPF'),
+                                                         DiPhotonTag           = cms.InputTag("flashggDiPhotons"),
                                                          debug                 = cms.untracked.bool(jdebug),
                                                      )
 
@@ -113,7 +113,8 @@ process.flashggJetValidationTreeMakerPFCHS0 = cms.EDAnalyzer('FlashggJetValidati
                                                              JetTagDz              = cms.InputTag("flashggJetsPFCHS0"),
                                                              StringTag		   = cms.string("PFCHS0"),
                                                              VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
-                                                             qgTaggerInput         = cms.untracked.InputTag("QGTaggerPFCHS0"),
+                                                             qgVariablesInputTag   = cms.InputTag('QGTaggerPFCHS0'),
+                                                             DiPhotonTag           = cms.InputTag("flashggDiPhotons"),
                                                              debug                 = cms.untracked.bool(jdebug),
                                                          )
 # This producer is the default in flashgg Dijet MVA 
@@ -122,7 +123,8 @@ process.flashggJetValidationTreeMakerPFCHSLeg = cms.EDAnalyzer('FlashggJetValida
                                                                JetTagDz              = cms.InputTag("flashggJets"),                  
                                                                StringTag	     = cms.string("PFCHSLeg"),
                                                                VertexCandidateMapTag = cms.InputTag("flashggVertexMapUnique"),
-                                                               qgTaggerInput         = cms.untracked.InputTag("QGTaggerPFCHSLeg"),
+                                                               qgVariablesInputTag   = cms.InputTag('QGTaggerPFCHSLeg'),
+                                                               DiPhotonTag           = cms.InputTag("flashggDiPhotons"),
                                                                debug                 = cms.untracked.bool(jdebug),
                                                            )
 

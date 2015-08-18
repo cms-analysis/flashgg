@@ -63,6 +63,11 @@ parser = OptionParser(option_list=[
                     default=10,
                     help="default: %default", 
                     ),
+        make_option("--lumiMask",
+                    action="store", dest="lumiMask", type="string",
+                    default=None,
+                    help="default: %default", 
+                    ),
         make_option("-s","--samples",
                     dest="samples",action="callback",callback=Load(),type="string",
                     default={},
@@ -99,7 +104,12 @@ parser = OptionParser(option_list=[
         make_option("-v","--verbose",
                     action="store_true", dest="verbose",
                     default=False,
-                    help="default: %default",)
+                    help="default: %default"),
+        make_option("--gt","--globalTags",
+                    dest="globalTags",
+                    action="store",type="string",
+                    default="campaigns/globalTagsLookup.json",
+                    help="List of global tags to be used for data and MC. Default: %default")
         ]
                       )
 # parse the command line
@@ -182,6 +192,12 @@ if options.checkNFiles:
 if options.createCrabConfig:
     print ("\nCreating CRAB configurations in %s" % options.campaign)
     print ("--------------------------------------------------------")
+
+    # get the globaltag json
+    globalTagPath = options.globalTags
+    gtJson = json.load(open(globalTagPath,'r'))
+    print options.globalTags
+
     if not os.path.isdir(options.campaign):
         os.mkdir(options.campaign)
     os.chdir(options.campaign)
@@ -194,6 +210,7 @@ if options.createCrabConfig:
     infile = open(options.crabTemplate)
     template = [ line for line in infile ]
     infile.close()
+
     for sample in samples:
         PrimaryDataset, ProcessedDataset, DataTier = filter(None, sample.split("/"))
         label = ProcessedDataset
@@ -201,11 +218,12 @@ if options.createCrabConfig:
             label = options.label
         # Increment flashgg- processing index if job has been launched before (ie if crab dir already exists)
         itry = 0
-        if sample in data:
-            if ProcessedDataset.count("201"):
-                position = ProcessedDataset.find("201")
-                PrimaryDataset = PrimaryDataset +"-"+ ProcessedDataset[position:]
-        jobname = "_".join([flashggVersion, PrimaryDataset, str(itry).zfill(2)])
+        ### if sample in data:
+        ###     if ProcessedDataset.count("201"):
+        ###         position = ProcessedDataset.find("201")
+        ###         PrimaryDataset = PrimaryDataset +"-"+ ProcessedDataset[position:]
+            
+        jobname = "_".join([flashggVersion, PrimaryDataset, ProcessedDataset, str(itry).zfill(2)])
         while os.path.isdir("crab_" + jobname):
             itry += 1
             jobname = "_".join([flashggVersion, PrimaryDataset, str(itry).zfill(2)])
@@ -221,8 +239,20 @@ if options.createCrabConfig:
                         "SPLITTING"       : "FileBased",
                         "OUTLFN"          : "%s/%s/%s" % (options.outputPath,options.campaign,flashggVersion),
                         "OUTSITE"         : options.outputSite,
-                        "PYCFG_PARAMS"    : [str("datasetName=%s" % PrimaryDataset)]
+                        "PYCFG_PARAMS"    : [str("datasetName=%s" % sample)]
                        }
+
+        # remove the processing version number from the ProcessedDataset
+        PrimaryDataset, ProcessedDataset, DataTier = filter(None, sample.split("/")) 
+        position = ProcessedDataset.find("-v")
+        processedLabel = ProcessedDataset[:position]
+        # print processedLabel
+
+        # associate the processedLabel to the globaltag from the json filex
+        globalTag = gtJson[processedLabel]
+        # print ProcessedDataset, globalTag
+        replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % globalTag[0])) 
+
         # specific replacements for data and MC
         if sample in data:
             replacements["SPLITTING"]   = "LumiBased"
@@ -251,9 +281,23 @@ if options.createCrabConfig:
                 oline = oline.replace(src, target)
             for outfile in outfiles:
                 outfile.write(oline)
+                
+        if sample in data:
+            if options.lumiMask:
+                for outfile in outfiles:
+                    outfile.write('config.Data.lumiMask = "%s"\n' % (options.lumiMask))
+            else:
+                print 
+                print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+                print "WARNING: you are running on data withut specifying a lumi mask"
+                print "         please make sure that you know what you are doing"
+                print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+                print 
+
         if pilotFile:
             pilotFile.write("config.Data.totalUnits = %d\n" % (options.unitsPerJob))
             pilotFile.write("config.Data.publication = False\n")
+            pilotFile.write('config.General.requestName = "pilot_%s"\n' % jobname)
         # close output files
         for outfile in outfiles:
             outfile.close()

@@ -38,6 +38,7 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<pat::MET> > METToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
+        string systLabel_;
 
         //configurable selection variables
         double leadPhoOverMassThreshold_;
@@ -49,9 +50,10 @@ namespace flashgg {
 
     VHEtTagProducer::VHEtTagProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
-        mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getUntrackedParameter<InputTag> ( "MVAResultTag", InputTag( "flashggDiPhotonMVA" ) ) ) ),
-        METToken_( consumes<View<pat::MET> >( iConfig.getUntrackedParameter<InputTag> ( "METTag", InputTag( "slimmedMETs" ) ) ) ),
-        genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getUntrackedParameter<InputTag> ( "GenParticleTag", InputTag( "prunedGenParticles" ) ) ) )
+        mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
+        METToken_( consumes<View<pat::MET> >( iConfig.getParameter<InputTag> ( "METTag" ) ) ),
+        genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
+        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
     {
         leadPhoOverMassThreshold_    = iConfig.getUntrackedParameter<double>( "leadPhoOverMassThreshold", 0.334 );
         subleadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>( "subleadPhoOverMassThreshold", 0.25 );
@@ -87,13 +89,14 @@ namespace flashgg {
 
         Point higgsVtx;
 
-        for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
-            int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-            if( pdgid == 25 || pdgid == 22 ) {
-                higgsVtx = genParticles->ptrAt( genLoop )->vertex();
-                break;
+        if( ! evt.isRealData() )
+            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+                int pdgid = genParticles->ptrAt( genLoop )->pdgId();
+                if( pdgid == 25 || pdgid == 22 ) {
+                    higgsVtx = genParticles->ptrAt( genLoop )->vertex();
+                    break;
+                }
             }
-        }
 
         edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
         unsigned int idx = 0;
@@ -125,6 +128,7 @@ namespace flashgg {
 
             VHEtTag tag_obj( dipho, mvares );
             tag_obj.setDiPhotonIndex( candIndex );
+            tag_obj.setSystLabel( systLabel_ );
             tag_obj.setMet( theMET );
 
             TagTruthBase truth_obj;
@@ -140,8 +144,10 @@ namespace flashgg {
                 //setdiphotonindex
                 //setMET
                 vhettags->push_back( tag_obj );
-                truths->push_back( truth_obj );
-                vhettags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
+                if( ! evt.isRealData() ) {
+                    truths->push_back( truth_obj );
+                    vhettags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
+                }
             }
         }
         evt.put( vhettags );

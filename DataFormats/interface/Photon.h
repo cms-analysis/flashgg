@@ -4,23 +4,26 @@
 #include "DataFormats/EgammaCandidates/interface/Photon.h"
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
+#include "flashgg/DataFormats/interface/WeightedObject.h"
 
 #include <map>
 #include <string>
+#include <set>
 
 namespace flashgg {
 
-    class Photon : public pat::Photon
+    class Photon : public pat::Photon, public WeightedObject
     {
 
     public:
         Photon();
         Photon( const pat::Photon & );
-        Photon( const flashgg::Photon & );
+        /// Photon( const flashgg::Photon & );
         ~Photon();
         virtual Photon *clone() const;
 
         void ZeroVariables();
+        void removeVerticesExcept( const std::set<edm::Ptr<reco::Vertex> > & );
 
         enum mcMatch_t { kUnkown = 0, kPrompt, kFake  };
 

@@ -14,9 +14,7 @@ UntaggedTag::UntaggedTag( edm::Ptr<DiPhotonCandidate> dipho, DiPhotonMVAResult m
 
 UntaggedTag *UntaggedTag::clone() const
 {
-    UntaggedTag *result = new UntaggedTag( diPhoton(), diPhotonMVA() );
-    result->setCategoryNumber( categoryNumber() );
-    result->setDiPhotonIndex( diPhotonIndex() );
+    UntaggedTag *result = new UntaggedTag( *this );
     return result;
 }
 // Local Variables:

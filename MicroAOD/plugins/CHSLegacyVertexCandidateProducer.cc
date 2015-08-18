@@ -37,9 +37,9 @@ namespace flashgg {
     };
 
     CHSLegacyVertexCandidateProducer::CHSLegacyVertexCandidateProducer( const ParameterSet &iConfig ) :
-        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getUntrackedParameter<InputTag> ( "VertexTag", InputTag( "offlineSlimmedPrimaryVertices" ) ) ) ),
+        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         diPhotonsToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
-        pfcandidateToken_( consumes<View<pat::PackedCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "PFCandidatesTag", InputTag( "packedPFCandidates" ) ) ) ),
+        pfcandidateToken_( consumes<View<pat::PackedCandidate> >( iConfig.getParameter<InputTag> ( "PFCandidatesTag" ) ) ),
         vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTag" ) ) ),
         useZeroth( iConfig.getUntrackedParameter<bool>( "UseZeroth", false ) )
     {
@@ -102,11 +102,9 @@ namespace flashgg {
             }
         }
 
-
         std::auto_ptr<vector<pat::PackedCandidate> > result( new vector<pat::PackedCandidate>() );
 
         for( unsigned int pfCandLoop = 0 ; pfCandLoop < pfCandidates->size() ; pfCandLoop++ ) {
-
             edm::Ptr<pat::PackedCandidate> cand = pfCandidates->ptrAt( pfCandLoop );
 
             if( cand->charge() == 0 ) { //keep all neutral objects.

@@ -19,26 +19,38 @@ process.source = cms.Source("PoolSource",
 
 process.MessageLogger.cerr.threshold = 'ERROR'
 
-process.TFileService = cms.Service("TFileService",fileName  = cms.string("/afs/cern.ch/work/y/yhaddad/jetValidationTrees_VBF_HToGG.root"))
-process.flashggJetValidationTreeMaker = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
-                                                       GenParticleTag           = cms.untracked.InputTag('prunedGenParticles'),
-                                                       JetTagDz                 = cms.InputTag("flashggJets"),
-                                                       StringTag		= cms.string("PF"),
-                                                   )
+process.TFileService = cms.Service("TFileService",fileName  = cms.string("jetValidationTrees_VBF_HToGG_test.root"))
 
-process.flashggJetValidationTreeMakerPFCHS0 = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
-                                                             GenParticleTag     = cms.untracked.InputTag('prunedGenParticles'),
-                                                             JetTagDz           = cms.InputTag("flashggJetsPFCHS0"),
-                                                             StringTag		= cms.string("PFCHS0"),
-)
+# process.flashggJetValidationTreeMaker = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
+#                                                        GenParticleTag           = cms.untracked.InputTag('prunedGenParticles'),
+#                                                        JetTagDz                 = cms.InputTag("flashggJets"),
+#                                                        StringTag		= cms.string("PF"),
+#                                                    )
+#
 
-process.flashggJetValidationTreeMakerPFCHSLeg = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
-                                                               GenParticleTag   = cms.untracked.InputTag('prunedGenParticles'),
-                                                               JetTagDz         = cms.InputTag("flashggJetsPFCHSLeg"),
-                                                               StringTag	= cms.string("PFCHSLeg"),
-                                                           )
+JetCollectionVInputTagPFCHS = cms.VInputTag()
+JetCollectionVInputTagPUPPI = cms.VInputTag()
+for i in range(0,5):
+    JetCollectionVInputTagPFCHS.append(cms.InputTag('flashggPFCHSJets' + str(i)))
+    JetCollectionVInputTagPUPPI.append(cms.InputTag('flashggPUPPIJets' + str(i)))
+    
+process.flashggJetValidationTreeMakerPFCHS = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
+                                                            GenParticleTag  = cms.untracked.InputTag('prunedGenParticles'),
+                                                            #JetTagDz        = cms.InputTag("flashggJetsPFCHS0"),
+                                                            DiPhotonTag     = cms.InputTag('flashggDiPhotons'),
+                                                            #VertexCandidateMapTag = cms.InputTag('')
+                                                            inputTagJets    = JetCollectionVInputTagPFCHS,
+                                                            StringTag	    = cms.string("PFCHS"),
+                                                        )
 
-process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile.root'),
+process.flashggJetValidationTreeMakerPUPPI = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
+                                                            GenParticleTag = cms.untracked.InputTag('prunedGenParticles'),
+                                                            DiPhotonTag     = cms.InputTag('flashggDiPhotons'),
+                                                            inputTagJets   = JetCollectionVInputTagPUPPI,
+                                                            StringTag      = cms.string("PUPPI"),
+                                                        )
+
+process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('testetstestst.root'),
                                outputCommands = cms.untracked.vstring())
 
 process.options = cms.untracked.PSet(
@@ -46,8 +58,7 @@ process.options = cms.untracked.PSet(
 )
 
 process.p = cms.Path(
-    process.flashggJetValidationTreeMaker +
-    process.flashggJetValidationTreeMakerPFCHS0 +
-    process.flashggJetValidationTreeMakerPFCHSLeg 
+    process.flashggJetValidationTreeMakerPFCHS +
+    process.flashggJetValidationTreeMakerPUPPI 
 )
 process.e = cms.EndPath(process.out)

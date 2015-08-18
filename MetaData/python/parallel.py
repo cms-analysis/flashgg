@@ -38,6 +38,9 @@ class LsfJob:
             bsubCmdParts.append("-K")  # bsub waits until job completes
             
         if( self.jobName ):
+            logdir = os.path.dirname(self.jobName)
+            if not os.path.exists(logdir):
+                os.mkdir(logdir)
             bsubCmdParts.append("-J " + self.jobName)
             bsubCmdParts.append("-o %s.log" % self.jobName)
         
@@ -78,12 +81,12 @@ class LsfJob:
                     break
             
         if self.async:
-            return self.exitStatus, out
+            return self.exitStatus, (out,(self.jobName,self.jobid))
 
         return self.handleOutput()
     
     def handleOutput(self):
-        print "handleOutput"
+        ## print "handleOutput"
         if self.async:
             
             result = commands.getstatusoutput("bjobs %d" % self.jobid)
@@ -172,26 +175,55 @@ class Parallel:
             thread.start()
         
             
-    def run(self,cmd,args,interactive=False):
-        wrap = Wrap( self, (cmd,args,interactive), self.returned, self.running )
+    def run(self,cmd,args,interactive=False,jobName=None):
+        myargs = [cmd,args,interactive]
+        if jobName:
+            myargs.append(jobName)
+        wrap = Wrap( self, myargs, self.returned, self.running )
         if interactive:
             return wrap(interactive=True)
         
         while threading.activeCount() > self.maxThreads:
-            sleep(1)
+            sleep(0.05)
         
+        ret = (None,(None,None))
         if not ( self.lsfQueue and  self.asyncLsf ):
             thread = Thread(None,wrap)
             thread.start()
         else:
-            wrap(interactive=True)
+            ret = wrap(interactive=True)
             
             
         self.sem.acquire()
 	self.njobs += 1
         self.sem.release()
         
-    
+        return ret
+
+    def addJob(self,cmd,args,batchId,jobName=None):
+        if not self.asyncLsf:
+            return
+        
+        job = LsfJob(self.lsfQueue,jobName,async=True)
+        job.jobid = batchId
+        job.cmd = " ".join([cmd]+args)
+        self.lsfJobs.put(job)
+
+        self.sem.acquire()
+	self.njobs += 1
+        self.sem.release()
+        
+    def currJobId(self):
+        self.sem.acquire()
+        ret = self.jobId
+        self.sem.release()
+        return ret
+
+    def setJobId(self,jobId):
+        self.sem.acquire()
+        self.jobId = jobId
+        self.sem.release()
+        
     def getJobId(self):
         self.sem.acquire()
         ret = self.jobId
@@ -199,14 +231,16 @@ class Parallel:
         self.sem.release()
         return ret
         
-    def __call__(self,cmd,args,interactive):
+    def __call__(self,cmd,args,interactive,jobName=None):
 
         if type(cmd) == str or type(cmd) == unicode:
             ## print cmd
             cmd = "%s %s" % (cmd, " ".join(args) )
             args = (cmd,)
             if self.lsfQueue and not interactive:
-                cmd = LsfJob(self.lsfQueue,"%s%d" % (self.lsfJobName, self.getJobId()),async=self.asyncLsf)
+                if not jobName:
+                    jobName = "%s%d" % (self.lsfJobName,self.getJobId())
+                cmd = LsfJob(self.lsfQueue,jobName,async=self.asyncLsf)
             else:
                 cmd = commands.getstatusoutput
 
