@@ -56,7 +56,7 @@ namespace flashgg {
         // getUntrackedParameter<vector<float> > has no library, so we use double transiently
         boundaries = iConfig.getUntrackedParameter<vector<double > >( "Boundaries", default_boundaries );
 
-        assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception        
+        assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception
         produces<vector<UntaggedTag> >();
         produces<vector<TagTruthBase> >();
     }
@@ -99,7 +99,7 @@ namespace flashgg {
         }
 
         assert( diPhotons->size() == mvaResults->size() ); // We are relying on corresponding sets - update this to give an error/exception
-        
+
         unsigned int idx = 0;
 
         // Je ne comprends pas ces RefProds, mais je le fais
