@@ -65,6 +65,16 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.int,          # string, int, or float
                                "jobId")
+        self.options.register ('lastAttempt',
+                       False, # default value
+                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                       VarParsing.VarParsing.varType.bool,          # string, int, or float
+                       "lastAttempt")
+        self.options.register ('lumiMask',
+                       "", # default value
+                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                       VarParsing.VarParsing.varType.string,          # string, int, or float
+                       "lumiMask")
         self.options.register ('dryRun',
                        False, # default value
                        VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -119,7 +129,7 @@ class JobConfig(object):
             
         if self.dryRun:
             import sys
-            if self.dataset:
+            if self.dataset and self.dataset != "":
                 name,xsec,totEvents,files,maxEvents = self.dataset
                 if self.getMaxJobs:
                     print "maxJobs:%d" % ( min(len(files),self.nJobs) )                    
@@ -137,7 +147,7 @@ class JobConfig(object):
             
 
         files = self.inputFiles
-        if self.dataset:
+        if self.dataset and self.dataset != "":
             name,xsec,totEvents,files,maxEvents = self.dataset
             self.maxEvents = int(maxEvents)
             
@@ -160,6 +170,14 @@ class JobConfig(object):
             for name,obj in process.__dict__.iteritems():
                 if hasattr(obj,"processId"):
                     obj.processId = str(processId)
+            
+            if isdata and self.lumiMask != "":
+                if isFwlite:
+                    sys.exit("Lumi mask not supported in FWlite",-1)
+
+                import FWCore.PythonUtilities.LumiList as LumiList
+                process.source.lumisToProcess = LumiList.LumiList(filename = self.lumiMask).getVLuminosityBlockRange()
+                
             
         flist = []
         for f in files:
@@ -230,12 +248,19 @@ class JobConfig(object):
                 dataset = SamplesManager("$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % (self.metaDataSrc, self.campaign),
                                          self.crossSections,
                                          ).getDatasetMetaData(self.maxEvents,self.dataset,jobId=self.jobId,nJobs=self.nJobs)
+            if not dataset:
+                print "Could not find dataset %s in campaing %s/%s" % (self.dataset,self.metaDataSrc,self.campaing)
+                sys.exit(-1)
+                
         self.dataset = dataset
         # auto-detect data from xsec = 0
-        name,xsec,totEvents,files,maxEvents = self.dataset
-        print xsec
-        if self.processType == "" and xsec["xs"] == 0.:
-            self.processType = "data"
+        if self.dataset:
+            name,xsec,totEvents,files,maxEvents = self.dataset            
+            if type(xsec) != dict or type(xsec.get("xs",None)) != float:
+                print "Warning: you are running on a dataset for which you specified no cross section: \n %s " % name
+            else:
+                if self.processType == "" and xsec["xs"] == 0.:
+                    self.processType = "data"
             
         outputFile=self.outputFile
         if self.jobId != -1:

@@ -99,7 +99,7 @@ namespace flashgg {
 
         //		int priority = -1; // for debug
         for( auto tpr = TagPriorityRanges.begin() ; tpr != TagPriorityRanges.end() ; tpr++ ) {
-            //	priority += 1; // for debug
+            //    	priority += 1; // for debug
 
             Handle<View<flashgg::DiPhotonTagBase> > TagVectorEntry;
             evt.getByToken( TagList_[tpr->collIndex], TagVectorEntry );
@@ -145,8 +145,8 @@ namespace flashgg {
                     SelectedTag->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) ); // Normally this 0 would be the index number
                 }
                 //debug message:
-                // std::cout << "[DEBUG] Priority " << priority << " Tag Found! Tag entry "<< chosenIndex  << " with sumPt "
-                //    	     << TagVectorEntry->ptrAt(chosenIndex)->sumPt() << std::endl;
+                //  std::cout << "[DEBUG] Priority " << priority << " Tag Found! Tag entry "<< chosenIndex  << " with sumPt "
+                //    	     << TagVectorEntry->ptrAt(chosenIndex)->sumPt() << ", systLabel " << TagVectorEntry->ptrAt(chosenIndex)->systLabel() << ", systLabelHash " << TagVectorEntry->ptrAt(chosenIndex)->systLabelHash() <<   std::endl;
                 break;
             } else {
                 //debug message

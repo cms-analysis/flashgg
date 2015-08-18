@@ -7,13 +7,14 @@ def addCategories(pset,cats,variables,histograms,mvas=None):
         addCategory(pset,*cat,variables=variables,histograms=histograms,mvas=mvas)
 
 # -----------------------------------------------------------------------
-def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mvas=None):
+def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mvas=None,systLabel=""):
     
     if subcats >= 0:
         catDef = cms.PSet(label=cms.string(label),
                           subcats=cms.int32(subcats),
                           variables=cms.VPSet(),
-                          histograms=cms.VPSet()
+                          histograms=cms.VPSet(),
+													systLabel=cms.string(systLabel)
                           )
         
         addVariables( catDef.variables, variables )
@@ -27,7 +28,7 @@ def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mv
     if cutbased:
         cb = cms.PSet( cut=cms.string(cutbased) )
         if( label != "" ):
-            cb.name = cms.untracked.string(label)
+            cb.name = cms.untracked.string(systLabel)
         pset.classifierCfg.categories.append(cb)
 
     
@@ -113,9 +114,9 @@ def addHistogram(vpset,histo):
         nybins  = 0
     else:
         if len(xbins) != 3:
-            raise Exception("Invalid histogram definition %s. Expecting only three items for x binning definition")
+            raise Exception("Invalid histogram definition %s. Expecting only three items for x binning definition"% histo)
         if ybins and len(ybins) != 3:
-            raise Exception("Invalid histogram definition %s. Expecting only three items for y binning definition")
+            raise Exception("Invalid histogram definition %s. Expecting only three items for y binning definition"% histo)
         nxbins = int(xbins[0]) 
         xbins = xbins[1:3]
         if ybins:
