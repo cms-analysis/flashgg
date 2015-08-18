@@ -7,6 +7,18 @@
         "VBF_HToGG_M-125_13TeV-powheg-pythia6"                          : { "xs" : 3.748,    "br" : 2.28e-3              },
         "WH_ZH_HToGG_M-125_13TeV_pythia6"                               : { "xs" : 2.2496,   "br" : 2.28e-3              },
         "TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola"              : { "xs" : 0.5608,   "br" : 2.28e-3              },
+
+        "GluGluHToGG-M125-minloHJ-pythia6"                              : { "xs" : 19.27, "br" : 2.28e-3 },
+        "GluGluToHToGG-M125-amcatnlo-pythia8"                           : { "xs" : 19.27, "br" : 2.28e-3 },
+        "GluGluToHToGG-M125-powheg-pythia6"                             : { "xs" : 19.27, "br" : 2.28e-3 },
+        "GluGluToHToZZTo4L_M-125_8TeV-powheg15-pythia6"                 : { "xs" : 19.27, "br" : 2.28e-3 },
+        "GluGluToHToGG_M-125_7TeV-powheg-pythia6"                       : { "xs" : 15.13, "br" : 2.28e-3 },
+        "JJHiggs0MToGG_M-125p6_8TeV-JHUGenV4-pythia6-tauola"            : { "xs" : 19.27, "br" : 2.28e-3 },
+        "JJHiggs0PToGG_M-125p6_8TeV-JHUGenV4-pythia6-tauola"            : { "xs" : 19.27, "br" : 2.28e-3 },
+        "VBFHiggs0MToGG_M-125p6_8TeV-JHUGenV4-pythia6-tauola"           : { "xs" : 1.578, "br" : 2.28e-3 },
+        "VBFHiggs0PToGG_M-125p6_8TeV-JHUGenV4-pythia6-tauola"           : { "xs" : 1.578, "br" : 2.28e-3 },
+        "VBF_HToGG_M-125_8TeV-powheg-pythia6"                           : { "xs" : 1.578, "br" : 2.28e-3 },
+
 	"DoubleEG"                                                      : { "xs" : 0.0                                   },
 	"DoublePhoton"                                                  : { "xs" : 0.0                                   },
 	"SinglePhoton"                                                  : { "xs" : 0.0                                   },

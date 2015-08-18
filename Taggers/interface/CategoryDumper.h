@@ -55,7 +55,7 @@ namespace flashgg {
     };
 
     typedef std::tuple<std::string, int, std::vector<double>, int, std::vector<double>, TH1 *> histo_info;
-    
+
     template<class FunctorT, class ObjectT>
     class CategoryDumper
     {
@@ -159,21 +159,21 @@ namespace flashgg {
             vector<double> xbins, ybins;
             auto pos = xname.find( "global." );
             int xindex = -1;
-            if( pos == 0 ) { 
-                xindex = -globalVarsDumper_->indexOf(xname.substr(7))-2;
-            } else { 
+            if( pos == 0 ) {
+                xindex = -globalVarsDumper_->indexOf( xname.substr( 7 ) ) - 2;
+            } else {
                 xindex = find( names_.begin(), names_.end(), xname ) - names_.begin(); // FIXME: check validity
             }
             int yindex = -1;
             if( ! yname.empty() ) {
                 pos = yname.find( "global." );
-                if( pos == 0 ) { 
-                    yindex = -globalVarsDumper_->indexOf(yname.substr(7))-2;
-                } else { 
+                if( pos == 0 ) {
+                    yindex = -globalVarsDumper_->indexOf( yname.substr( 7 ) ) - 2;
+                } else {
                     yindex = find( names_.begin(), names_.end(), yname ) - names_.begin(); // FIXME: check validity
                 }
             }
-            if( find(histograms_.begin(), histograms_.end(), name ) != histograms_.end() ) {
+            if( find( histograms_.begin(), histograms_.end(), name ) != histograms_.end() ) {
                 histograms_.push_back( make_tuple( name, xindex, xbins, yindex, ybins, ( TH1 * )0 ) );
                 continue;
             }
@@ -181,7 +181,7 @@ namespace flashgg {
                 xbins = histo.getUntrackedParameter<vector<double> >( "xbins" );
             } else {
                 auto xmin = histo.getUntrackedParameter<double>( "xmin" );
-                auto xmax = histo.getUntrackedParameter<double>( "xmax" ); 
+                auto xmax = histo.getUntrackedParameter<double>( "xmax" );
                 auto step = ( xmax - xmin ) / ( double )nxbins;
                 for( auto bound = xmin; bound <= xmax; bound += step ) {
                     xbins.push_back( bound );
@@ -215,9 +215,9 @@ namespace flashgg {
             auto name = formatString( name_ + get<0>( histo ), replacements );
             auto &xbins = get<2>( histo );
             auto &th1 = get<5>( histo );
-            try { 
-                th1 = fs.getObject<TH1>(name);
-            } catch(...) {
+            try {
+                th1 = fs.getObject<TH1>( name );
+            } catch( ... ) {
                 if( get<3>( histo ) >= 0 ) {
                     auto &ybins = get<4>( histo );
                     th1 = fs.make<TH2F>( name.c_str(), name.c_str(), xbins.size() - 1, &xbins[0], ybins.size() - 1, &ybins[0] );
@@ -301,9 +301,9 @@ namespace flashgg {
                 auto &th1 = *std::get<5>( histo );
                 auto xv = std::get<1>( histo );
                 auto yv = std::get<3>( histo );
-                float xval = ( xv >= 0 ? get<0>(variables_[xv]) : globalVarsDumper_->valueOf(-xv-2) );
-                if( yv != -1) {
-                    float yval = ( yv >= 0 ? get<0>(variables_[yv]) : globalVarsDumper_->valueOf(-yv-2) );
+                float xval = ( xv >= 0 ? get<0>( variables_[xv] ) : globalVarsDumper_->valueOf( -xv - 2 ) );
+                if( yv != -1 ) {
+                    float yval = ( yv >= 0 ? get<0>( variables_[yv] ) : globalVarsDumper_->valueOf( -yv - 2 ) );
                     // dynamic_cast<TH2 &>( th1 ).Fill( std::get<0>( variables_[xv] ), std::get<0>( variables_[yv] ), weight_ );
                     dynamic_cast<TH2 &>( th1 ).Fill( xval, yval, weight_ );
                 } else {
@@ -316,8 +316,8 @@ namespace flashgg {
 
 }
 
-inline bool operator==(const flashgg::histo_info& lh, const std::string & rh) { return get<0>(lh) == rh; };
-inline bool operator==(const std::string & lh, const flashgg::histo_info& rh) { return lh == get<0>(rh); };
+inline bool operator==( const flashgg::histo_info &lh, const std::string &rh ) { return get<0>( lh ) == rh; };
+inline bool operator==( const std::string &lh, const flashgg::histo_info &rh ) { return lh == get<0>( rh ); };
 
 
 #endif  // flashgg_CategoryDumper_h

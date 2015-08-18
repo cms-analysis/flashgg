@@ -530,6 +530,7 @@ class SamplesManager(object):
         totEvents = 0.
         totWeights = 0.
         for dataset,info in catalog.iteritems():
+            print "-->", dataset, primary, dataset.split("/")
             empty,prim,sec,tier=dataset.split("/")
             if prim == primary:
                 if secondary and sec != secondary:
@@ -550,6 +551,7 @@ class SamplesManager(object):
                         break
         if not found:
             raise Exception("No dataset matched the request: /%s/%s" % ( primary, str(secondary) ))
+        sys.exit(1)
         
         if maxEvents > -1 and totEvents > maxEvents:
             totWeights = maxEvents / totEvents * totWeights
