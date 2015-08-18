@@ -28,7 +28,10 @@ namespace flashgg {
             CutBasedClassifier<SingleVertexView> > CutBasedSingleVertexViewDumper;
     typedef CollectionDumper<edm::OwnVector<DiPhotonTagBase>,
             DiPhotonTagBase,
-            ClassNameClassifier<DiPhotonTagBase> > DiPhotonTagDumper;
+            ClassNameClassifier<DiPhotonTagBase> > CutBasedDiPhotonTagDumper;
+    typedef CollectionDumper<edm::OwnVector<DiPhotonTagBase>,
+            DiPhotonTagBase,
+            CutAndClassBasedClassifier<DiPhotonTagBase> > DiPhotonTagDumper;
 
     //// namespace fwlite {
     //// 	typedef ::fwlite::AnalyzerWrapper<DiPhotonDumper> DiPhotonDumper;

@@ -5,6 +5,7 @@
 <use   name="flashgg/MicroAOD"/>
 <use   name="DataFormats/VertexReco"/>
 <use   name="FWCore/Utilities"/>
+<use   name="FWCore/Common"/>
 <use   name="CommonTools/Utils"/>
 <use   name="rootcore"/>
 <use   name="rootrflx"/>

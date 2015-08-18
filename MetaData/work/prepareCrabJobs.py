@@ -284,9 +284,8 @@ if options.createCrabConfig:
                 
         if sample in data:
             if options.lumiMask:
-                outfile.write('config.Data.lumiMask = "%s"\n' % (options.lumiMask))
-                if pilotFile:
-                    pilotFile.write('config.Data.lumiMask = "%s"\n' % (options.lumiMask))
+                for outfile in outfiles:
+                    outfile.write('config.Data.lumiMask = "%s"\n' % (options.lumiMask))
             else:
                 print 
                 print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"

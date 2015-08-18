@@ -9,7 +9,7 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 #process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 # Uncomment the following if you notice you have a memory leak
@@ -67,14 +67,15 @@ process.load("flashgg/Taggers/flashggTagTester_cfi")
 from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet,massSearchReplaceAnyInputTag
 
 #process.flashggTagSequence += process.flashggTagTester
-massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggFinalEGamma","finalDiPhotons"),cms.InputTag("flashggDiPhotonSystematics"))
-massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggFinalEGamma","finalElectrons"),cms.InputTag("flashggElectronSystematics"))
+#massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggFinalEGamma","finalDiPhotons"),cms.InputTag("flashggDiPhotonSystematics"))
+#massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggFinalEGamma","finalElectrons"),cms.InputTag("flashggElectronSystematics"))
+massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggDiPhotons"),cms.InputTag("flashggDiPhotonSystematics"))
+massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSelectedElectrons"),cms.InputTag("flashggElectronSystematics"))
 massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSelectedMuons"),cms.InputTag("flashggMuonSystematics"))
 
 process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
 
 process.systematicsTagSequences = cms.Sequence()
-
 systlabels = []
 for r9 in ["HighR9","LowR9"]:
     for direction in ["Up","Down"]:
@@ -103,7 +104,7 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
 
 process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSystematics+process.flashggElectronSystematics)*
                      (process.flashggTagSequence+process.systematicsTagSequences)*
-                     process.flashggSystTagMerger)
+                     process.flashggSystTagMerger+process.flashggTagTester)
 print process.p
 
 process.e = cms.EndPath(process.out)
