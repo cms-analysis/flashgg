@@ -9,6 +9,7 @@ class JobConfig(object):
 
         self.metaDataSrc=kwargs.get("metaDataSrc","flashgg")
         self.crossSections=kwargs.get("crossSections",["$CMSSW_BASE/src/flashgg/MetaData/data/cross_sections.json"])
+        self.tfileOut=kwargs.get("tfileOut",None)
 
         self.processIdMap = {}
 
@@ -128,7 +129,7 @@ class JobConfig(object):
                     else:
                         if hasOutput:
                             print "edm:%s" % self.outputFile
-                        if hasTFile:
+                        if hasTFile or self.tfileOut:
                             print "hadd:%s" % tfile
                     ## sys.exit(0)
             else:
@@ -189,7 +190,15 @@ class JobConfig(object):
 
             if hasTFile:
                 process.TFileService.fileName = tfile
-        
+    
+        if self.tfileOut:
+            if hasTFile:
+                print "Could not run with both TFileService and custom tfileOut"
+                sys.exit(-1)
+            name,attr = self.tfileOut
+            setattr( getattr( process, name ), attr, tfile )
+            
+
         if self.dumpPython != "":
             pyout = open(self.dumpPython,"w+")
             pyout.write( process.dumpPython() )
