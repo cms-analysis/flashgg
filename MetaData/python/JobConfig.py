@@ -44,6 +44,11 @@ class JobConfig(object):
                        VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                        VarParsing.VarParsing.varType.bool,          # string, int, or float
                        "useAAA")
+        self.options.register ('hasCustomOutput',
+                       False, # default value
+                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                       VarParsing.VarParsing.varType.bool,          # string, int, or float
+                       "hasCustomOutput")
         self.options.register ('useEOS',
                        True, # default value
                        VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -186,6 +191,11 @@ class JobConfig(object):
             if hasTFile:
                 process.TFileService.fileName = tfile
         
+            if self.hasCustomOutput:
+                for name,obj in process.__dict__.iteritems():
+                    if hasattr(obj,"outputFile"):
+                            obj.outputFile = self.outputFile
+
         if self.dumpPython != "":
             pyout = open(self.dumpPython,"w+")
             pyout.write( process.dumpPython() )
@@ -221,7 +231,7 @@ class JobConfig(object):
 
         outputFile=self.outputFile
         if self.jobId != -1:
-            outputFile = "%s_%d.root" % ( outputFile.replace(".root",""), self.jobId )
+            outputFile = "%s_%04d.root" % ( outputFile.replace(".root",""), self.jobId )
         self.setType ("outputFile", VarParsing.VarParsing.varType.string)
         self.outputFile = outputFile
 

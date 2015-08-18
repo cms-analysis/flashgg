@@ -32,6 +32,19 @@ def dumpCfg(options):
             cfg[key] = val
     return json.dumps( cfg,indent=4)
 
+# -------------------------------------------------------------------------------
+def parse_list(option, opt_str, value, parser):
+    l = set()
+    v = value.split(",")
+    for el in v:
+        if "-" in el:
+            w = el.split("-")
+            l.update(range(int(w[0]), int(w[1]) + 1))
+        else:
+            l.add(int(el))
+    l = list(l)
+    l.sort()
+    setattr(parser.values, option.dest, l)
 
 # -------------------------------------------------------------------------------
 class JobsManager(object):
@@ -55,6 +68,11 @@ class JobsManager(object):
                             ),
                 make_option("-n","--njobs",dest="njobs",type="int",default=0,
                             help="number of jobs to run"),
+                make_option("-l","--ljobs",dest="ljobs",type="string",
+                            default=None,
+                            action="callback",
+                            callback=parse_list,
+                            help="list of jobs to run, comma and dash separated. Example: 0-3,6,7,8-10"),
                 make_option("-q","--queue",dest="queue",type="string",default=None,
                             help="LSF queue to use. default: %default"),
                 make_option("-o","--output",dest="output",type="string",
@@ -167,6 +185,8 @@ class JobsManager(object):
                 print "running: %s %s" % ( job, " ".join(jobargs) )
                 if options.njobs != 0:
                     print  "splitting in (up to) %d jobs\n checking how many are needed... " % options.njobs
+                    if options.ljobs:
+                            print "list of jobs going to be processed:", options.ljobs
                     dnjobs = 0
                     dargs = jobargs+shell_args("nJobs=%d" % (options.njobs)) 
                     ret,out = parallel.run("python %s" % pyjob,dargs+shell_args("dryRun=1 getMaxJobs=1 dumpPython=%s.py" % os.path.join(options.outputDir,dsetName) ),interactive=True)[2]
