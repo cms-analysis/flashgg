@@ -43,6 +43,8 @@ void WorkspaceCombiner::Init( string outputFileName_, vector<string> inputfiles_
 TDirectoryFile *WorkspaceCombiner::GetFirstFile()
 {
 
+    std::cout << "WorkspaceCombiner::GetFirstFile" << std::endl;
+    std::cout << inputFileNames[0].c_str() << std::endl;
     TDirectoryFile *file0 = TFile::Open( inputFileNames[0].c_str() );
     return file0;
 
@@ -51,30 +53,47 @@ TDirectoryFile *WorkspaceCombiner::GetFirstFile()
 // ----------------------------------------------------------------------------------------------------
 void WorkspaceCombiner::GetWorkspaces( TDirectoryFile *file )
 {
+    std::cout << " WorkspaceCombiner::GetWorkspaces" << std::endl;
 
     TList *listofkeys = file->GetListOfKeys();
+    TKey *oldkey = 0;
     for( int k = 0; k < listofkeys->GetSize(); k++ ) {
         TKey *key = ( TKey * )listofkeys->At( k );
+        std::cout << " Key: " << key->GetName() << " CycleNumber: " << key->GetCycle() << std::endl;
+        if( oldkey && !strcmp( oldkey->GetName(), key->GetName() ) ) {
+            std::cout << "    Duplicate key to previous, continuing (relying on order being predictable)" << std::endl;
+            continue;
+        }
+        oldkey = key;
         if( strcmp( key->GetClassName(), "RooWorkspace" ) == 0 ) {
+            std::cout << " We got a workspace with name " << key->GetName() << std::endl;
             RooWorkspace *work = ( RooWorkspace * )file->Get( key->GetName() );
-            //work->Print();
+            //            work->Print();
+            std::cout << " made work" << std::endl;
             std::list<RooAbsData *> allData = work->allData();
+            std::cout << " made allData" << std::endl;
             vector<RooDataSet *> allDataClone;
+            std::cout << " about to iterate over allData " << std::endl;
             for( std::list<RooAbsData *>::iterator it = allData.begin(); it != allData.end(); ++it ) {
                 RooDataSet *dataset = dynamic_cast<RooDataSet *>( *it );
                 allDataClone.push_back( ( RooDataSet * )dataset->Clone() );
             }
+            std::cout << " gonna push back allDataClone " << std::endl;
             data.push_back( allDataClone );
+            std::cout << " gonna push back work " << std::endl;
             workspaceNames.push_back( work->GetName() );
             string workpath = "";
+            std::cout << " gonna build workpath" << std::endl;
             while( file->InheritsFrom( "TFile" ) == false ) {
                 workpath.insert( 0, Form( "/%s", file->GetName() ) );
                 file = ( TDirectoryFile * )file->GetMotherDir();
             }
             workpath.erase( 0, 1 );
+            std::cout << "workpath is " << workpath << std::endl;
             workspacePaths.push_back( workpath );
             delete work;
         }
+        std::cout << " before TDirectoryFile check" << std::endl;
         if( strcmp( key->GetClassName(), "TDirectoryFile" ) == 0 ) {
             TDirectoryFile *newdirectory = ( TDirectoryFile * )file->Get( key->GetName() );
             GetWorkspaces( newdirectory );
@@ -88,6 +107,8 @@ void WorkspaceCombiner::MergeWorkspaces()
 {
 
     for( unsigned int f = 1; f < inputFileNames.size(); f++ ) {
+
+        std::cout << " MergeWorkspaces f=" << f << std::endl;
 
         TFile *file = TFile::Open( inputFileNames[f].c_str() );
 
@@ -219,7 +240,14 @@ void WorkspaceCombiner::Save()
         RooWorkspace *outputws = new RooWorkspace();
         outputws->SetName( workspaceNames[w].c_str() );
         for( unsigned int d = 0; d < data[w].size(); d++ ) {
-            outputws->import( *data[w][d] );
+            RooDataSet *already_there = ( RooDataSet * ) outputws->data( data[w][d]->GetName() );
+            if( already_there ) {
+                std::cout << " doing an append of " << data[w][d]->GetName() << " in WorkspaceCombiner::Save" << std::endl;
+                already_there->append( *data[w][d] );
+            } else {
+                std::cout << " doing an explicit import of " << data[w][d]->GetName() << " in WorkspaceCombiner::Save" << std::endl;
+                outputws->import( *data[w][d] );
+            }
             //data[w][d]->Print();
         }
         if( outfile->GetDirectory( workspacePaths[w].c_str() ) == false ) { outfile->mkdir( workspacePaths[w].c_str() ); }
