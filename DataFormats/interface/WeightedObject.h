@@ -12,6 +12,9 @@ namespace flashgg {
     {
 
     public:
+        WeightedObject();
+        virtual ~WeightedObject();
+
         float weight( string key ) const;
         float centralWeight() const { return weight( central_key ); }
         void setWeight( string key, float val );

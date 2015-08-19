@@ -18,7 +18,6 @@ namespace flashgg {
         VHTightTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult );
         ~VHTightTag();
 
-        VHTightTag( const VHTightTag & );
         VHTightTag *clone() const { return ( new VHTightTag( *this ) ); }
 
         const std::vector<edm::Ptr<Muon> > muons() const { return Muons_;}
