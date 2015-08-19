@@ -5,7 +5,7 @@ diphotonDumpConfig = cms.PSet(
     src = cms.InputTag("flashggDiPhotons"),
     generatorInfo = cms.InputTag("generator"),
     processId = cms.string(""),
-    maxCandPerEvent = cms.int32(1),
+    maxCandPerEvent = cms.int32(-1), # -1 turns off the maxCandPerEvent check
     lumiWeight = cms.double(1.0),
     classifierCfg = cms.PSet(categories=cms.VPSet()),
     categories = cms.VPSet(),
