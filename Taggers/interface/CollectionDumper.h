@@ -270,7 +270,6 @@ namespace flashgg {
         weight_ = eventWeight( event );
 
         if( globalVarsDumper_ ) { globalVarsDumper_->fill( event ); }
-        maxCandPerEvent_ = 21;
         int nfilled = maxCandPerEvent_;
 
         // for (auto &dumper : dumpers_){
@@ -292,7 +291,7 @@ namespace flashgg {
                 --nfilled;
                 //   which++;
             }
-            if( nfilled == 0 ) { break; }
+            if( ( maxCandPerEvent_ > 0 )  && nfilled == 0 ) { break; }
         }
     }
 

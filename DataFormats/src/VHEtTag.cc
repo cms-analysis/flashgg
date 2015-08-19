@@ -19,10 +19,6 @@ void VHEtTag::setMet( edm::Ptr<pat::MET> met )
     theMet_ = met;
 }
 
-VHEtTag::VHEtTag( const VHEtTag &b ) : DiPhotonTagBase::DiPhotonTagBase( b )
-{
-    setMet( b.met() );
-}
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

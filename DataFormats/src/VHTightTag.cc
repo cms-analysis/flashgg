@@ -13,14 +13,6 @@ VHTightTag::~VHTightTag()
 VHTightTag::VHTightTag( edm::Ptr<DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvares ) : DiPhotonTagBase::DiPhotonTagBase( diPho, *mvares ) {}
 VHTightTag::VHTightTag( edm::Ptr<DiPhotonCandidate> dipho, DiPhotonMVAResult mvares ) : DiPhotonTagBase::DiPhotonTagBase( dipho, mvares ) {}
 
-VHTightTag::VHTightTag( const VHTightTag &b ) : DiPhotonTagBase::DiPhotonTagBase( b )
-{
-    setJets( b.jets() );
-    setMuons( b.muons() );
-    setElectrons( b.electrons() );
-    setMET( b.met() );
-}
-
 
 // Local Variables:
 // mode:c++
