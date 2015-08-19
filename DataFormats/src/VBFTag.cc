@@ -17,10 +17,6 @@ VBFTag::VBFTag( edm::Ptr<DiPhotonCandidate> dipho, DiPhotonMVAResult mvares, VBF
     vbfDiPhoDiJet_mva_result_ = vbfDiPhoDiJet_mvaRes;
 }
 
-VBFTag::VBFTag( const VBFTag &b ) : DiPhotonTagBase::DiPhotonTagBase( b )
-{
-    vbfDiPhoDiJet_mva_result_ = b.VBFDiPhoDiJetMVA();
-}
 
 const VBFDiPhoDiJetMVAResult VBFTag::VBFDiPhoDiJetMVA() const
 {

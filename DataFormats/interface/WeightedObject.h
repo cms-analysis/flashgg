@@ -1,7 +1,6 @@
 #ifndef FLASHgg_WeightedObject_h
 #define FLASHgg_WeightedObject_h
 
-#include <map>
 #include <vector>
 #include <string>
 
@@ -13,42 +12,22 @@ namespace flashgg {
     {
 
     public:
-        float weight( string key ) const { return ( hasWeight( key ) ? _weights.at( key ) : -1. ); }
+        WeightedObject();
+        virtual ~WeightedObject();
+
+        float weight( string key ) const;
         float centralWeight() const { return weight( central_key ); }
-        void setWeight( string key, float val ) { _weights[key] = val; }
+        void setWeight( string key, float val );
         void setCentralWeight( float val ) { setWeight( central_key, val ); }
-        bool hasWeight( string key ) const { return ( _weights.find( key ) != _weights.end() ); }
-
-        void includeWeights( const WeightedObject &other )
-        {
-            // multiplies weights which are present in this and other, imports weights that are only in other
-            auto myWeights = weightList();
-            auto otherWeights = other.weightList();
-            for( auto keyIt = myWeights.begin() ; keyIt != myWeights.end() ; keyIt++ ) {
-                if( other.hasWeight( *keyIt ) ) {
-                    setWeight( *keyIt, weight( *keyIt ) * other.weight( *keyIt ) );
-                }
-            }
-            for( auto keyIt = otherWeights.begin() ; keyIt != otherWeights.end() ; keyIt++ ) {
-                if( !hasWeight( *keyIt ) ) {
-                    setWeight( *keyIt, other.weight( *keyIt ) );
-                }
-            }
-        }
-
-        vector<string> weightList() const
-        {
-            vector<string> result;
-            for( auto it = _weights.begin() ; it != _weights.end() ; it++ ) {
-                result.push_back( it->first );
-            }
-            return result;
-        }
+        bool hasWeight( string key ) const;
+        void includeWeights( const WeightedObject &other );
+        vector<string>::const_iterator weightListBegin() const { return _labels.begin(); }
+        vector<string>::const_iterator weightListEnd() const { return _labels.end(); }
 
     private:
-        map<string, float> _weights;
+        vector<string> _labels;
+        vector<float> _weights;
         static constexpr const char *central_key = "Central";
-
     };
 }
 

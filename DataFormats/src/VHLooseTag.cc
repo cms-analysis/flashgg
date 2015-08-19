@@ -13,13 +13,6 @@ VHLooseTag::~VHLooseTag()
 VHLooseTag::VHLooseTag( edm::Ptr<DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvares ) : DiPhotonTagBase::DiPhotonTagBase( diPho, *mvares ) {}
 VHLooseTag::VHLooseTag( edm::Ptr<DiPhotonCandidate> dipho, DiPhotonMVAResult mvares ) : DiPhotonTagBase::DiPhotonTagBase( dipho, mvares ) {}
 
-VHLooseTag::VHLooseTag( const VHLooseTag &b ) : DiPhotonTagBase::DiPhotonTagBase( b )
-{
-    setJets( b.jets() );
-    setMuons( b.muons() );
-    setElectrons( b.electrons() );
-    setMET( b.met() );
-}
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

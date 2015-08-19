@@ -14,7 +14,6 @@ namespace flashgg {
         TTHHadronicTag();
         TTHHadronicTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult>, std::vector<edm::Ptr<flashgg::Jet> >, std::vector<edm::Ptr<flashgg::Jet> > );
         TTHHadronicTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult, std::vector<edm::Ptr<flashgg::Jet> >, std::vector<edm::Ptr<flashgg::Jet> > );
-        TTHHadronicTag( const TTHHadronicTag & );
         TTHHadronicTag *clone() const { return ( new TTHHadronicTag( *this ) ); }
         ~TTHHadronicTag();
 
