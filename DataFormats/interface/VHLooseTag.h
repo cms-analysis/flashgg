@@ -18,7 +18,6 @@ namespace flashgg {
         VHLooseTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult );
         ~VHLooseTag();
 
-        VHLooseTag( const VHLooseTag & );
         VHLooseTag *clone() const { return ( new VHLooseTag( *this ) ); }
 
         const std::vector<edm::Ptr<Muon> > muons() const { return Muons_;}

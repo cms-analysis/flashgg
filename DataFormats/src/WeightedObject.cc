@@ -2,6 +2,12 @@
 
 namespace flashgg {
 
+    WeightedObject::WeightedObject()
+    {}
+
+    WeightedObject::~WeightedObject()
+    {}
+
     void WeightedObject::setWeight( string key, float val )
     {
         auto found_label = std::lower_bound( _labels.begin(), _labels.end(), key );
