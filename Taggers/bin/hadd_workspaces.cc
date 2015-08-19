@@ -25,6 +25,8 @@ int main( int argc, char *argv[] )
 
     merger.GetWorkspaces( merger.GetFirstFile() );
 
+    cout << endl << " Got workspaces " << endl << endl;
+
     merger.MergeWorkspaces();
 
     cout << endl << " Merging trees and histos " << endl << endl;
