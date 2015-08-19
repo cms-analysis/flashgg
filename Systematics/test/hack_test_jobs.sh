@@ -1,0 +1,1 @@
+fggRunJobs.py --load hack_test_jobs.json -d hack_test_jobs -x cmsRun MicroAODtoWorkspace_125to120.py maxEvents=-1 -n 50 -q 1nd -D -P useAAA=1

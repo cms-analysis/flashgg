@@ -24,6 +24,24 @@ process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService
 process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
 process.load("flashgg.Systematics.flashggMuonSystematics_cfi")
 process.load("flashgg.Systematics.flashggElectronSystematics_cfi")
+
+# Code to artificially scale photon energies to make different mass points for signal fit tests                                                                            
+srcMass = 125.
+targetMass = 120.
+process.flashggDiPhotonSystematics.SystMethods.append(cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
+                                                                MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+                                                                Label = cms.string("FakeMassScale"),
+                                                                NSigmas = cms.vint32(0),
+                                                                OverallRange = cms.string("1"),
+                                                                BinList = cms.PSet(variables=cms.vstring(),
+                                                                                   bins=cms.VPSet(cms.PSet (lowBounds = cms.vdouble(),
+                                                                                                            upBounds =  cms.vdouble(),
+                                                                                                            values = cms.vdouble( targetMass/srcMass - 1. ),
+                                                                                                            uncertainties = cms.vdouble( 0. )))),
+                                                                Debug = cms.untracked.bool(False)
+                                                                )
+                                                      )
+
 process.load("flashgg/Taggers/flashggTagSequence_cfi")
 process.load("flashgg/Taggers/flashggTagTester_cfi")
 

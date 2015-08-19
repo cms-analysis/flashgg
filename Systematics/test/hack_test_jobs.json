@@ -1,0 +1,6 @@
+{
+    "processes" : {
+        "ggh_120"  : [ "/GluGluHToGG_M-125_13TeV_powheg_pythia8" ]
+     },	
+        "cmdLine" : "campaign=RunIISpring15-50ns"
+}
