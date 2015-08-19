@@ -371,7 +371,7 @@ Fwlite exectuables can be run in the same way replacing `cmsRun` by the actual e
 
 In case the pset output filename defined in the analysis code is not using TFile service the python variable used to store the filename can be loaded using customization.
 
-customize.tfileOut = ("process_name","python_variable_for_output_filename")
+customize.tfileOut = ("module_name","python_variable_for_output_filename")
 
 In case of errors, a full dump of the options loaded and full dump of the pset is sent to the -d directory defined.  This is very useful for debugging errors.
 
