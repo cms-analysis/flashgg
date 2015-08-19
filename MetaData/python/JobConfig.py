@@ -216,6 +216,7 @@ class JobConfig(object):
     # parse command line and do post-processing
     def parse(self):
 
+        import sys
         if self.parsed:
             return
 
@@ -224,6 +225,13 @@ class JobConfig(object):
             self.readProcessIdMap(self.options.processIdMap)
         
         if self.useAAA:
+            import subprocess
+            tleft = int(subprocess.check_output(["voms-proxy-info", "--actimeleft"]))
+            if not tleft:
+                    print "No valid proxy active. Please run `voms-proxy-init --voms cms' to create a proxy certificate."
+                    sys.exit(-2)
+            elif tleft < 3600 * 5:
+                    print "Warning: the proxy certificate will last for less than 5 h, please consider renewing it."
             self.filePrepend = "root://xrootd-cms.infn.it/"
         elif self.useEOS:
             self.filePrepend = "root://eoscms//eos/cms"
