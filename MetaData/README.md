@@ -170,7 +170,7 @@ The following scritps can be used to manage samples and jobs:
 * `fggManageSamples.py`
 * `fggRunJobs.py`
 Both scripts are locate in `flashgg/MetaData/scripts` and they are installed in the shell `PATH` upon `scram build`. 
-Note: make sure to run `cmsenv` before executing any of these commands. 
+Note: make sure to run `cmsenv` before executing any of these commands.  If crab was sourced during the setup, make sure to re-run `cmsenv` as you will get errors otherwise. 
 
 ### Importing datasets from DBS
 
@@ -286,6 +286,11 @@ Done
 
    *Note 3*: By default files or datasets that were not already checked are not included in subsequent runs of the `check` and `checklite` commands. To change this behaviour one can use the `--force` option.
 
+   *Note 4*: If the weights for a dataset are 0, the job splitting is done only base on the number of events.  If any of the files listed in the dataset are non-0, then only those with non-0 weights will be used.
+
+   *Note 5*: If you received an error during the `check` step: `[Errno 2] No such file or directory: u'.tmpxxxxxx.json'` rerun `cmsenv` and retry the fggManageSamples.py commands.
+
+
 4. The file catalog can now be committed to git.
 
 ### Job preparation
@@ -303,6 +308,8 @@ Before looking into the actual job configuration, some more meta-data need to be
 
 ```
 Its default location is `flashgg/MetaData/data/cross_sections.json`, but several files can be specified.
+
+    *Note: If the cross-section is set to 0, the dataset is assumed to be data.
 
 #### Customization statements
 The `fggRunJobs.py` supports jobs which are configured through a `CMSSW` parameter set. These can be `cmsRun` jobs, as well as compiled framework lite executable.
@@ -361,6 +368,12 @@ fggRunJobs.py --load jobs_gamgam_highmass.json -H -D -P -n 5 -d testMe ./mypset.
 ```
 
 Fwlite exectuables can be run in the same way replacing `cmsRun` by the actual executable name.
+
+In case the pset output filename defined in the analysis code is not using TFile service the python variable used to store the filename can be loaded using customization.
+
+customize.tfileOut = ("module_name","python_variable_for_output_filename")
+
+In case of errors, a full dump of the options loaded and full dump of the pset is sent to the -d directory defined.  This is very useful for debugging errors.
 
 ### Resuming jobs monitoring
 
