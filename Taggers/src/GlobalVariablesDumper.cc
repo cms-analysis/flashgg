@@ -22,7 +22,7 @@ namespace flashgg {
             triggerTag_ = trg.getParameter<InputTag>( "tag" );
             auto bitNames   = trg.getParameter<std::vector<std::string> >( "bits" );
             for( auto &bit : bitNames ) {
-                std::cout << bit << std::endl;
+                //                std::cout << bit << std::endl;
                 bits_.push_back( std::make_pair( bit, false ) );
             }
         }
