@@ -13,7 +13,7 @@ namespace flashgg {
 
         auto variables = cfg.getParameter<vector<string> >( "variables" );
         for( auto &expr : variables ) {
-            cout << expr << endl;
+            //            cout << expr << endl;
             functors_.push_back( functor_type( expr ) );
         }
 

@@ -164,7 +164,7 @@ cfgTools.addCategory(process.diphotonDumper,
 
 process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSystematics+process.flashggElectronSystematics)*
                      (process.flashggTagSequence+process.systematicsTagSequences)*
-                     process.flashggSystTagMerger+process.flashggTagTester
+                     process.flashggSystTagMerger
                      * process.diphotonDumper)
 
 # import flashgg customization
