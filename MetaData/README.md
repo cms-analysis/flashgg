@@ -355,6 +355,21 @@ EOF
 ```
 Any of the script options (see `fggJobsRun.py --help` for a full list) can actually be specified in the json file.
 
+##### Per-dataset specific options
+
+Sometimes, it may be useful to change the running options for some specific datasets. This can be done specifying the dataset as follows:
+
+```
+"processes":  {
+	      "DYJetsToLL_M-50_TuneCUETP8M1-amcatnloFXFX-pythia8" : [
+                                        ["/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8",{"args" : ["maxEvents=1000000"],"njobs":10}]
+                ]
+}
+```
+
+With this mechanism, the number of jobs to be used can be specified on a dataset-by-dataset basis. Also, command line arguments can be added or replaced.
+
+
 ### Running jobs
 
 At this point everythin is ready to run the analysis.
