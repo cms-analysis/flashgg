@@ -1,5 +1,10 @@
 {
-    "Run2015B-PromptReco"                          : ["74X_dataRun2_Prompt_v0"],
+    "Run2015D"                          : ["74X_dataRun2_Prompt_v2"],
+    "Run2015C"                          : ["74X_dataRun2_Prompt_v1"],
+    "Run2015B"                          : ["74X_dataRun2_Prompt_v1"],
+    "Run2015D-PromptReco"                          : ["74X_dataRun2_Prompt_v2"],
+    "Run2015C-PromptReco"                          : ["74X_dataRun2_Prompt_v1"],
+    "Run2015B-PromptReco"                          : ["74X_dataRun2_Prompt_v1"],
     "RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A"   : ["MCRUN2_74_V9A"],
     "RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9"	   : ["MCRUN2_74_V9"]
 }
