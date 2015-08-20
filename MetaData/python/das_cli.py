@@ -8,7 +8,10 @@ DAS command line tool
 from __future__ import print_function
 __author__ = "Valentin Kuznetsov"
 
+# system modules
+import os
 import sys
+import pwd
 if  sys.version_info < (2, 6):
     raise Exception("DAS requires python 2.6 or greater")
 
@@ -72,6 +75,15 @@ class HTTPSClientAuthHandler(urllib2.HTTPSHandler):
                                                 cert_file=self.cert)
         return httplib.HTTPSConnection(host)
 
+def x509():
+    "Helper function to get x509 either from env or tmp file"
+    x509 = os.environ.get('X509_USER_PROXY', '')
+    if  not x509:
+        x509 = '/tmp/x509up_u%s' % pwd.getpwuid( os.getuid() ).pw_uid
+        if  not os.path.isfile(x509):
+            return ''
+    return x509
+
 class DASOptionParser: 
     """
     DAS cache client option parser
@@ -91,7 +103,7 @@ class DASOptionParser:
                        default='https://cmsweb.cern.ch', dest="host", help=msg)
         msg  = "specify DBS instance to be queried default is global"
         self.parser.add_option("--instance", action="store", type="string", 
-                       default='global', dest="instance", help=msg)
+                       default='prod/global', dest="instance", help=msg)
         msg  = "start index for returned result set, aka pagination,"
         msg += " use w/ limit (default is 0)"
         self.parser.add_option("--idx", action="store", type="int", 
@@ -106,12 +118,12 @@ class DASOptionParser:
         msg  = 'query waiting threshold in sec, default is 5 minutes'
         self.parser.add_option("--threshold", action="store", type="int",
                                default=300, dest="threshold", help=msg)
-        msg  = 'specify private key file name'
+        msg  = 'specify private key file name, default $X509_USER_PROXY'
         self.parser.add_option("--key", action="store", type="string",
-                               default="", dest="ckey", help=msg)
-        msg  = 'specify private certificate file name'
+                               default=x509(), dest="ckey", help=msg)
+        msg  = 'specify private certificate file name, default $X509_USER_PROXY'
         self.parser.add_option("--cert", action="store", type="string",
-                               default="", dest="cert", help=msg)
+                               default=x509(), dest="cert", help=msg)
         msg  = 'specify number of retries upon busy DAS server message'
         self.parser.add_option("--retry", action="store", type="string",
                                default=0, dest="retry", help=msg)
@@ -374,17 +386,18 @@ def keys_attrs(lkey, oformat, host, ckey, cert, debug=0):
 
 def main():
     """Main function"""
-    optmgr  = DASOptionParser()
-    opts, _ = optmgr.get_opt()
-    host    = opts.host
-    debug   = opts.verbose
-    query   = opts.query
-    idx     = opts.idx
-    limit   = opts.limit
-    thr     = opts.threshold
-    ckey    = opts.ckey
-    cert    = opts.cert
-    base    = opts.base
+    optmgr   = DASOptionParser()
+    opts, _  = optmgr.get_opt()
+    host     = opts.host
+    debug    = opts.verbose
+    query    = opts.query
+    idx      = opts.idx
+    instance = opts.instance
+    limit    = opts.limit
+    thr      = opts.threshold
+    ckey     = opts.ckey
+    cert     = opts.cert
+    base     = opts.base
     if  opts.keys_attrs:
         keys_attrs(opts.keys_attrs, opts.format, host, ckey, cert, debug)
         return
@@ -392,7 +405,7 @@ def main():
         print('Input query is missing')
         sys.exit(EX_USAGE)
     if  opts.format == 'plain':
-        jsondict = get_data(host, query, idx, limit, debug, thr, ckey, cert)
+        jsondict = get_data(host, query, idx, limit, debug, instance, thr, ckey, cert)
         cli_msg  = jsondict.get('client_message', None)
         if  cli_msg:
             print("DAS CLIENT WARNING: %s" % cli_msg)
@@ -421,7 +434,7 @@ def main():
                 sys.exit(EX_TEMPFAIL)
             if  not found:
                 sys.exit(EX_TEMPFAIL)
-        nres = jsondict['nresults']
+        nres = jsondict.get('nresults', 0)
         if  not limit:
             drange = '%s' % nres
         else:
@@ -430,7 +443,7 @@ def main():
             msg  = "\nShowing %s results" % drange
             msg += ", for more results use --idx/--limit options\n"
             print(msg)
-        mongo_query = jsondict['mongo_query']
+        mongo_query = jsondict.get('mongo_query', {})
         unique  = False
         fdict   = mongo_query.get('filters', {})
         filters = fdict.get('grep', [])
@@ -487,7 +500,7 @@ def main():
                 print(data)
     else:
         jsondict = get_data(\
-                host, query, idx, limit, debug, thr, ckey, cert)
+                host, query, idx, limit, debug, instance, thr, ckey, cert)
         print(json.dumps(jsondict))
 
 #
