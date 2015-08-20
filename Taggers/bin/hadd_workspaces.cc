@@ -10,10 +10,10 @@
 
 int main( int argc, char *argv[] )
 {
-
-    std::string outputfile = argv[1];
+    bool doTreesAndHistograms = true;
 
     std::vector<string> input;
+    std::string outputfile = argv[1];
 
     for( int f = 2; f < argc; f++ ) { input.push_back( argv[f] ); }
 
@@ -29,15 +29,15 @@ int main( int argc, char *argv[] )
 
     merger.MergeWorkspaces();
 
-    cout << endl << " Merging trees and histos " << endl << endl;
+    if( doTreesAndHistograms ) {
+        cout << endl << " Merging trees and histos " << endl << endl;
+        merger.GetTreesAndHistograms( merger.MergeTreesAndHistograms() );
+        cout << endl << " Saving workspaces, histograms and trees " << endl << endl;
+    } else {
+        cout << endl << " Skipping trees and histos, saving workspaces only" << endl << endl;
+    }
 
-    merger.GetTreesAndHistograms( merger.MergeTreesAndHistograms() );
-
-    cout << endl << " Saving workspaces, histograms and trees " << endl << endl;
-
-    merger.Save();
-
-
+    merger.Save( doTreesAndHistograms );
 }
 
 // Local Variables:
