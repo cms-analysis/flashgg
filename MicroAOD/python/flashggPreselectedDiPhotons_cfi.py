@@ -1,82 +1,72 @@
 import FWCore.ParameterSet.Config as cms
 
-phoEffArea=cms.PSet( var=cms.string("abs(superCluster.eta)"), bins=cms.vdouble(0.,0.9,1.5,2,2.2,3), vals=cms.vdouble(0.21,0.2,0.14,0.22,0.31) )
-neuEffArea=cms.PSet( var=cms.string("abs(superCluster.eta)"), bins=cms.vdouble(0.,0.9,1.5,2,2.2,3), vals=cms.vdouble(0.04,0.059,0.05,0.05,0.15) )
+phoEffArea=cms.PSet( var=cms.string("abs(superCluster.eta)"), bins=cms.vdouble(0.,0.9,1.5,2,2.2,3), vals=cms.vdouble(0.16544,0.16544,0.13212,0.13212,0.13212) )
+#phoEffArea=cms.PSet( var=cms.string("abs(superCluster.eta)"), bins=cms.vdouble(0.,0.9,1.5,2,2.2,3), vals=cms.vdouble(1.,1.,1.,1.,1.) )
+#neuEffArea=cms.PSet( var=cms.string("abs(superCluster.eta)"), bins=cms.vdouble(0.,0.9,1.5,2,2.2,3), vals=cms.vdouble(0.04,0.059,0.05,0.05,0.15) )
 
-PreselectionVariables = cms.vstring(
-    "egChargedHadronIso", 
-    "egPhotonIso", 
-    "egNeutralHadronIso",
-    "hadTowOverEm",
-    "(?r9>0.8||egChargedHadronIso<20||egChargedHadronIso/pt<0.3?full5x5_sigmaIetaIeta:sigmaIetaIeta)",
-    "passElectronVeto"
+rediscoveryHLTvariables = cms.vstring(
+    "pfPhoIso03", 
+    "trkSumPtHollowConeDR03",
+    "sigmaIetaIeta",
+    "full5x5_r9"
     )
 
-rediscoveryPreselection = cms.VPSet(
-    cms.PSet(cut=cms.string("abs(superCluster.eta)<1.5 && r9>0.94"),
+rediscoveryHLTcutsV1 = cms.VPSet(
+    cms.PSet(cut=cms.string("isEB && full5x5_r9>0.85"), ##EB high R9
              selection = cms.VPSet(
-            cms.PSet(max=cms.string("5.95")),
-            cms.PSet(max=cms.string("2.87"), 
+            cms.PSet(max=cms.string("100000.0"), 
                      rhocorr=phoEffArea,
                      ),
-            cms.PSet(# no neutra iso cut
-                ),
-            cms.PSet(max=cms.string("4.53e-1")),
-            cms.PSet(min=cms.string("0.001"), max=cms.string("1.05e-2")),
+            cms.PSet(max=cms.string("100000.0")),
+            cms.PSet(max=cms.string("100000.0")),
             cms.PSet(min=cms.string("0.5"))
             ),
              ),
-    cms.PSet(cut=cms.string("abs(superCluster.eta)<1.5 && r9<=0.94"),
+    
+    cms.PSet(cut=cms.string("isEE && full5x5_r9>0.90"),  ##EE high R9
              selection = cms.VPSet(
-            cms.PSet(max=cms.string("7.08")),
-            cms.PSet(max=cms.string("5.47"), 
-                     rhocorr=phoEffArea
+            cms.PSet(max=cms.string("100000.0"), 
+                     rhocorr=phoEffArea,
                      ),
-            cms.PSet(# no neutra iso cut
-                ),
-            cms.PSet(max=cms.string("2.12e-1")),
-            cms.PSet(min=cms.string("0.001"), max=cms.string("1.05e-2")),
-            cms.PSet(min=cms.string("0.5"))
+            cms.PSet(max=cms.string("100000.0")),
+            cms.PSet(max=cms.string("100000.0")),
+            cms.PSet(min=cms.string("0.8"))
             ),
              ),
-    cms.PSet(cut=cms.string("abs(superCluster.eta)>=1.5 && r9>0.94"),
+    cms.PSet(cut=cms.string("isEB && full5x5_r9<=0.85"),  #EB low R9
              selection = cms.VPSet(
-            cms.PSet(max=cms.string("6.10")),
-            cms.PSet(max=cms.string("5.98"), 
-                     rhocorr=phoEffArea),
-            cms.PSet(# no neutra iso cut
-                ),
-            cms.PSet(max=cms.string("6.3e-2")),
-            cms.PSet(min=cms.string("0.001"), max=cms.string("2.82e-2")),
+            cms.PSet(max=cms.string("4.0"), 
+                     rhocorr=phoEffArea,
+                     ),
+            cms.PSet(max=cms.string("6.0")),
+            cms.PSet(max=cms.string("0.015")),
             cms.PSet(min=cms.string("0.5"))
-            ),
-             ),
-    cms.PSet(cut=cms.string("abs(superCluster.eta)>=1.5 && r9<=0.94"),
+            ),       
+             ),       
+    cms.PSet(cut=cms.string("isEE && full5x5_r9<=0.90"),  ##EE low R9
              selection = cms.VPSet(
-            cms.PSet(max=cms.string("5.07")),
-            cms.PSet(max=cms.string("3.44"), 
-                     rhocorr=phoEffArea),
-            cms.PSet(# no neutra iso cut
-                ),
-            cms.PSet(max=cms.string("7.8e-2")),
-            cms.PSet(min=cms.string("0.001"), max=cms.string("2.80e-2")),
-            cms.PSet(min=cms.string("0.5"))
+            cms.PSet(max=cms.string("4.0"), 
+                     rhocorr=phoEffArea,
+                     ),
+            cms.PSet(max=cms.string("6.0")),
+            cms.PSet(max=cms.string("0.015")),
+            cms.PSet(min=cms.string("0.8"))
             ),
              )
     )
-
-selectedPreselection = rediscoveryPreselection
+rediscoveryHLTcuts = rediscoveryHLTcutsV1
 
 flashggPreselectedDiPhotons = cms.EDFilter(
-    "DiPhotonCandidateSelector",
+    "GenericDiPhotonCandidateSelector",
     src = cms.InputTag("flashggDiPhotons"),
     rho = cms.InputTag("fixedGridRhoAll"),
     cut = cms.string(
-        "    (leadingPhoton.r9>0.8||leadingPhoton.egChargedHadronIso<20||leadingPhoton.egChargedHadronIso/leadingPhoton.pt<0.3)"
-        " && (subLeadingPhoton.r9>0.8||subLeadingPhoton.egChargedHadronIso<20||subLeadingPhoton.egChargedHadronIso/subLeadingPhoton.pt<0.3)" 
-        )
-    ,
-    variables = PreselectionVariables,
-    categories = selectedPreselection,
+        "    (leadingPhoton.full5x5_r9>0.8||leadingPhoton.egChargedHadronIso<20||leadingPhoton.egChargedHadronIso/leadingPhoton.pt<0.3)"
+        " && (subLeadingPhoton.full5x5_r9>0.8||subLeadingPhoton.egChargedHadronIso<20||subLeadingPhoton.egChargedHadronIso/subLeadingPhoton.pt<0.3)"
+        " && (leadingPhoton.hadronicOverEm < 0.08 && subLeadingPhoton.hadronicOverEm < 0.08)"
+        " && (leadingPhoton.pt >30.0 && subLeadingPhoton.pt > 20.0)"
+        " && (abs(leadingPhoton.superCluster.eta) < 2.5 && abs(subLeadingPhoton.superCluster.eta) < 2.5)"
+        ),
+    variables = rediscoveryHLTvariables,
+    categories = rediscoveryHLTcuts, 
     )
-

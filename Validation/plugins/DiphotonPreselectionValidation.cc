@@ -131,7 +131,7 @@ private:
 //
 DiphotonPreselectionValidation::DiphotonPreselectionValidation( const edm::ParameterSet &iConfig ):
     diphotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
-    diphotonToken_1( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag1" ) ) ), 
+    diphotonToken_1( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag1" ) ) ),
     diphotonToken_2( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag2" ) ) )
 {
 
@@ -164,48 +164,48 @@ DiphotonPreselectionValidation::analyze( const edm::Event &iEvent, const edm::Ev
     iEvent.getByToken( diphotonToken_2, diphotons2 );
 
 
-    std::cout<<"sizes:"<<diphotons->size()<<","<<diphotons1->size()<<","<<diphotons2->size()<<std::endl;
+    std::cout << "sizes:" << diphotons->size() << "," << diphotons1->size() << "," << diphotons2->size() << std::endl;
 
     for( size_t idipho = 0; idipho < diphotons->size(); idipho++ ) {
 
         Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( idipho );
-        
+
         //checking if preselected in 1
-        bool preselected_in_1=false;
+        bool preselected_in_1 = false;
         for( size_t idipho1 = 0; idipho1 < diphotons1->size(); idipho1++ ) {
-            if(dipho->eta()==diphotons->ptrAt( idipho1 )->eta()
-               &&dipho->phi()==diphotons->ptrAt( idipho1 )->phi()
-               &&dipho->mass()==diphotons->ptrAt( idipho1 )->mass()){
-                preselected_in_1=true;
+            if( dipho->eta() == diphotons->ptrAt( idipho1 )->eta()
+                    && dipho->phi() == diphotons->ptrAt( idipho1 )->phi()
+                    && dipho->mass() == diphotons->ptrAt( idipho1 )->mass() ) {
+                preselected_in_1 = true;
             }
         }
 
 
         //checking if preselected in 2
-        bool preselected_in_2=false;
+        bool preselected_in_2 = false;
         for( size_t idipho2 = 0; idipho2 < diphotons2->size(); idipho2++ ) {
-            if(dipho->eta()==diphotons->ptrAt( idipho2 )->eta()
-               &&dipho->phi()==diphotons->ptrAt( idipho2 )->phi()
-               &&dipho->mass()==diphotons->ptrAt( idipho2 )->mass()){
-                preselected_in_2=true;
+            if( dipho->eta() == diphotons->ptrAt( idipho2 )->eta()
+                    && dipho->phi() == diphotons->ptrAt( idipho2 )->phi()
+                    && dipho->mass() == diphotons->ptrAt( idipho2 )->mass() ) {
+                preselected_in_2 = true;
             }
         }
 
-        
+
         cut[0] = true; //all minitree level plots for reference, no cuts
-        
+
         cut[1] = true;
         cut[2] = preselected_in_1;
-        
+
         cut[3] = true;
         cut[4] = preselected_in_2;
-        
+
         cut[5] = true;
         cut[6] = true;
-        
+
         cut[7] = true;
         cut[8] = true;
-        
+
         for( cut_index = 0; cut_index < 9  ; cut_index++ ) { //Loop over the different histograms
             if( cut[cut_index] ) { //all hitograms below will be filled up if the boolean is true.
                 cutflow->Fill( cut_index );
@@ -225,24 +225,24 @@ DiphotonPreselectionValidation::analyze( const edm::Event &iEvent, const edm::Ev
                 ptTrailNorm[cut_index]->Fill( dipho->subLeadingPhoton()->pt() / dipho->mass() );
                 massHiggshisto[cut_index]->Fill( dipho->mass() );
                 massDiphotonhisto[cut_index]->Fill( dipho->mass() );
-                
+
                 diphoton_LeadR9[cut_index]->Fill( dipho->leadingPhoton()->r9() );
                 diphoton_SubLeadR9[cut_index]->Fill( dipho->subLeadingPhoton()->r9() );
-                
+
                 /*
                 diphoton_LeadTrkIso03[cut_index]->Fill(dipho->leadingPhoton()->TrkIso03);
                 diphotonsubLeadTrkIso03[cut_index]->Fill(dipho->subLeadingPhoton()->SubLeadTrkIso03);
-                
+
                 diphoton_LeadHcalIso03[cut_index]->Fill(dipho->leadingPhoton()->HcalIso03);
                 diphotonsubLeadHcalIso03[cut_index]->Fill(dipho->subLeadingPhoton()->HcalIso03);
-                
+
                 diphoton_Leadpfiso02[cut_index]->Fill(dipho->leadingPhoton()->pfiso02);
                 diphotonsubLeadpfiso02[cut_index]->Fill(dipho->subLeadingPhoton()->pfiso02);
                 */
             }
         }
-        
-    }        
+
+    }
 }
 
 
@@ -253,66 +253,65 @@ DiphotonPreselectionValidation::beginJob()
 
     cutflow = new TH1F( "cutflow", "cutflow", 9  , -0.5, 8.5 );
 
-    for( cut_index = 0; cut_index < 9  ; cut_index++ ) //Loop over the different histograms
-        {
-            name = Form( "ptLead_%d", cut_index );
-            ptLead[cut_index]            = new TH1F( name, name, 100, 0., 120. );
-            name = Form( "ptTrail_%d", cut_index );
-            ptTrail[cut_index]           = new TH1F( name, name, 100, 0., 120. );
-            name = Form( "ptLeadNorm_%d", cut_index );
-            ptLeadNorm[cut_index]        = new TH1F( name, name, 100, 0., 1. );
-            name = Form( "ptTrailNorm_%d", cut_index );
-            ptTrailNorm[cut_index]       = new TH1F( name, name, 100, 0., 1. );
-            name = Form( "massDiphoton_%d", cut_index );
-            massDiphotonhisto[cut_index] = new TH1F( name, name, 100, 60., 180. );
-            name = Form( "massHiggs_%d", cut_index );
-            massHiggshisto[cut_index]    = new TH1F( name, name, 100, 60., 180. );
-            name = Form( "higgsEta_%d", cut_index );
-            higgsEta[cut_index]          = new TH1F( name, name, 100, -5, 5 );
-            name = Form( "higgsPhi_%d", cut_index );
-            higgsPhi[cut_index]          = new TH1F( name, name, 180, -3.15, 3.15 );
-            name = Form( "higgsP_%d", cut_index );
-            higgsP[cut_index]            = new TH1F( name, name, 500, 0, 1200 );
-            name = Form( "higgsPt_%d", cut_index );
-            higgsPt[cut_index]           = new TH1F( name, name, 500, 0, 1200 );
-            name = Form( "phi1phi2_%d", cut_index );
-            phi1phi2[cut_index]          = new TH2F( name, name, 180, -3.15, 3.15, 180, -3.15, 3.15 );
-            name = Form( "eta1eta2_%d", cut_index );
-            eta1eta2[cut_index]          = new TH2F( name, name, 100, -5, 5, 100, -5, 5 );
-            name = Form( "pt1pt2_%d", cut_index );
-            pt1pt2[cut_index]            = new TH2F( name, name, 100, 0., 110., 100, 0., 110. );
-            name = Form( "pt1pt2Norm_%d", cut_index );
-            pt1pt2Norm[cut_index]        = new TH2F( name, name, 100, 0., 1., 100, 0., 1. );
-            name = Form( "pt1pt2Zoom_%d", cut_index );
-            pt1pt2Zoom[cut_index]        = new TH2F( name, name, 20, 0.3, 0.5, 20, 0.2, 0.4 );
-            name = Form( "wide_pt1pt2_%d", cut_index );
-            wide_pt1pt2[cut_index]       = new TH2F( name, name, 19 - 1, bins, 19 - 1, bins );
+    for( cut_index = 0; cut_index < 9  ; cut_index++ ) { //Loop over the different histograms
+        name = Form( "ptLead_%d", cut_index );
+        ptLead[cut_index]            = new TH1F( name, name, 100, 0., 120. );
+        name = Form( "ptTrail_%d", cut_index );
+        ptTrail[cut_index]           = new TH1F( name, name, 100, 0., 120. );
+        name = Form( "ptLeadNorm_%d", cut_index );
+        ptLeadNorm[cut_index]        = new TH1F( name, name, 100, 0., 1. );
+        name = Form( "ptTrailNorm_%d", cut_index );
+        ptTrailNorm[cut_index]       = new TH1F( name, name, 100, 0., 1. );
+        name = Form( "massDiphoton_%d", cut_index );
+        massDiphotonhisto[cut_index] = new TH1F( name, name, 100, 60., 180. );
+        name = Form( "massHiggs_%d", cut_index );
+        massHiggshisto[cut_index]    = new TH1F( name, name, 100, 60., 180. );
+        name = Form( "higgsEta_%d", cut_index );
+        higgsEta[cut_index]          = new TH1F( name, name, 100, -5, 5 );
+        name = Form( "higgsPhi_%d", cut_index );
+        higgsPhi[cut_index]          = new TH1F( name, name, 180, -3.15, 3.15 );
+        name = Form( "higgsP_%d", cut_index );
+        higgsP[cut_index]            = new TH1F( name, name, 500, 0, 1200 );
+        name = Form( "higgsPt_%d", cut_index );
+        higgsPt[cut_index]           = new TH1F( name, name, 500, 0, 1200 );
+        name = Form( "phi1phi2_%d", cut_index );
+        phi1phi2[cut_index]          = new TH2F( name, name, 180, -3.15, 3.15, 180, -3.15, 3.15 );
+        name = Form( "eta1eta2_%d", cut_index );
+        eta1eta2[cut_index]          = new TH2F( name, name, 100, -5, 5, 100, -5, 5 );
+        name = Form( "pt1pt2_%d", cut_index );
+        pt1pt2[cut_index]            = new TH2F( name, name, 100, 0., 110., 100, 0., 110. );
+        name = Form( "pt1pt2Norm_%d", cut_index );
+        pt1pt2Norm[cut_index]        = new TH2F( name, name, 100, 0., 1., 100, 0., 1. );
+        name = Form( "pt1pt2Zoom_%d", cut_index );
+        pt1pt2Zoom[cut_index]        = new TH2F( name, name, 20, 0.3, 0.5, 20, 0.2, 0.4 );
+        name = Form( "wide_pt1pt2_%d", cut_index );
+        wide_pt1pt2[cut_index]       = new TH2F( name, name, 19 - 1, bins, 19 - 1, bins );
 
-            name = Form( "diphoton_LeadR9_%d", cut_index );
-            diphoton_LeadR9[cut_index]       = new TH1F( name, name, 100, 0., 1. );
-            name = Form( "diphoton_SubLeadR9_%d", cut_index );
-            diphoton_SubLeadR9[cut_index]       = new TH1F( name, name, 100, 0., 1. );
+        name = Form( "diphoton_LeadR9_%d", cut_index );
+        diphoton_LeadR9[cut_index]       = new TH1F( name, name, 100, 0., 1. );
+        name = Form( "diphoton_SubLeadR9_%d", cut_index );
+        diphoton_SubLeadR9[cut_index]       = new TH1F( name, name, 100, 0., 1. );
 
-            name = Form( "diphoton_LeadHoE_%d", cut_index );
-            diphoton_LeadHoE[cut_index]       = new TH1F( name, name, 100, 0., 0.01 );
-            name = Form( "diphoton_SubLeadHoE_%d", cut_index );
-            diphoton_SubLeadHoE[cut_index]       = new TH1F( name, name, 100, 0., 0.01 );
+        name = Form( "diphoton_LeadHoE_%d", cut_index );
+        diphoton_LeadHoE[cut_index]       = new TH1F( name, name, 100, 0., 0.01 );
+        name = Form( "diphoton_SubLeadHoE_%d", cut_index );
+        diphoton_SubLeadHoE[cut_index]       = new TH1F( name, name, 100, 0., 0.01 );
 
-            name = Form( "diphoton_LeadTrkIso03_%d", cut_index );
-            diphoton_LeadTrkIso03[cut_index]       = new TH1F( name, name, 100, 0., 0.01 );
-            name = Form( "diphoton_SubLeadTrkIso03_%d", cut_index );
-            diphoton_SubLeadTrkIso03[cut_index]       = new TH1F( name, name, 100, 0., 0.01 );
+        name = Form( "diphoton_LeadTrkIso03_%d", cut_index );
+        diphoton_LeadTrkIso03[cut_index]       = new TH1F( name, name, 100, 0., 0.01 );
+        name = Form( "diphoton_SubLeadTrkIso03_%d", cut_index );
+        diphoton_SubLeadTrkIso03[cut_index]       = new TH1F( name, name, 100, 0., 0.01 );
 
-            name = Form( "diphoton_LeadHcalIso03_%d", cut_index );
-            diphoton_LeadHcalIso03[cut_index]       = new TH1F( name, name, 100, 0., 0.01 );
-            name = Form( "diphoton_SubLeadHcalIso03_%d", cut_index );
-            diphoton_SubLeadHcalIso03[cut_index]       = new TH1F( name, name, 100, 0., 0.01 );
+        name = Form( "diphoton_LeadHcalIso03_%d", cut_index );
+        diphoton_LeadHcalIso03[cut_index]       = new TH1F( name, name, 100, 0., 0.01 );
+        name = Form( "diphoton_SubLeadHcalIso03_%d", cut_index );
+        diphoton_SubLeadHcalIso03[cut_index]       = new TH1F( name, name, 100, 0., 0.01 );
 
-            name = Form( "diphoton_Leadpfiso02_%d", cut_index );
-            diphoton_Leadpfiso02[cut_index]       = new TH1F( name, name, 100, 0., 0.01 );
-            name = Form( "diphoton_SubLeadpfiso02_%d", cut_index );
-            diphoton_SubLeadpfiso02[cut_index]       = new TH1F( name, name, 100, 0., 0.01 );
-        }    
+        name = Form( "diphoton_Leadpfiso02_%d", cut_index );
+        diphoton_Leadpfiso02[cut_index]       = new TH1F( name, name, 100, 0., 0.01 );
+        name = Form( "diphoton_SubLeadpfiso02_%d", cut_index );
+        diphoton_SubLeadpfiso02[cut_index]       = new TH1F( name, name, 100, 0., 0.01 );
+    }
 
 
 
@@ -323,36 +322,35 @@ DiphotonPreselectionValidation::endJob()
 {
     theFileOut->cd();
     cutflow->Write();
-    for( cut_index = 0; cut_index < 9  ; cut_index++ ) //Loop over the different histograms
-        {
-            cout << "index=" << cut_index << endl;
-            ptLead[cut_index]->Write();
-            ptTrail[cut_index]->Write();
-            ptLeadNorm[cut_index]->Write();
-            ptTrailNorm[cut_index]->Write();
-            massDiphotonhisto[cut_index]->Write();
-            massHiggshisto[cut_index]->Write();
-            higgsEta[cut_index]->Write();
-            higgsPhi[cut_index]->Write();
-            higgsP[cut_index]->Write();
-            higgsPt[cut_index]->Write();
-            phi1phi2[cut_index]->Write();
-            eta1eta2[cut_index]->Write();
-            pt1pt2[cut_index]->Write();
-            pt1pt2Norm[cut_index]->Write();
-            pt1pt2Zoom[cut_index]->Write();
-            wide_pt1pt2[cut_index]->Write();
-            diphoton_LeadR9[cut_index]->Write();
-            diphoton_SubLeadR9[cut_index]->Write();
-            diphoton_LeadHoE[cut_index]->Write();
-            diphoton_SubLeadHoE[cut_index]->Write();
-            diphoton_LeadTrkIso03[cut_index]->Write();
-            diphoton_SubLeadTrkIso03[cut_index]->Write();
-            diphoton_LeadHcalIso03[cut_index]->Write();
-            diphoton_SubLeadHcalIso03[cut_index]->Write();
-            diphoton_Leadpfiso02[cut_index]->Write();
-            diphoton_SubLeadpfiso02[cut_index]->Write();
-        }
+    for( cut_index = 0; cut_index < 9  ; cut_index++ ) { //Loop over the different histograms
+        cout << "index=" << cut_index << endl;
+        ptLead[cut_index]->Write();
+        ptTrail[cut_index]->Write();
+        ptLeadNorm[cut_index]->Write();
+        ptTrailNorm[cut_index]->Write();
+        massDiphotonhisto[cut_index]->Write();
+        massHiggshisto[cut_index]->Write();
+        higgsEta[cut_index]->Write();
+        higgsPhi[cut_index]->Write();
+        higgsP[cut_index]->Write();
+        higgsPt[cut_index]->Write();
+        phi1phi2[cut_index]->Write();
+        eta1eta2[cut_index]->Write();
+        pt1pt2[cut_index]->Write();
+        pt1pt2Norm[cut_index]->Write();
+        pt1pt2Zoom[cut_index]->Write();
+        wide_pt1pt2[cut_index]->Write();
+        diphoton_LeadR9[cut_index]->Write();
+        diphoton_SubLeadR9[cut_index]->Write();
+        diphoton_LeadHoE[cut_index]->Write();
+        diphoton_SubLeadHoE[cut_index]->Write();
+        diphoton_LeadTrkIso03[cut_index]->Write();
+        diphoton_SubLeadTrkIso03[cut_index]->Write();
+        diphoton_LeadHcalIso03[cut_index]->Write();
+        diphoton_SubLeadHcalIso03[cut_index]->Write();
+        diphoton_Leadpfiso02[cut_index]->Write();
+        diphoton_SubLeadpfiso02[cut_index]->Write();
+    }
     theFileOut->Close();
 
 } // end of endJob
