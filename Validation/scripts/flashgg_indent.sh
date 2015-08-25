@@ -8,7 +8,7 @@ fi
 
 cd $CMSSW_BASE/src/flashgg
 
-git status -z | tr '\0' '\n' | grep "^[ ]*(A|M)" | grep -E "(\.cc$|\.h$|\.C$)" | awk '{print $2}' > filelist
+git status -z | tr '\0' '\n' | grep "^(A|M)" | grep -E "(\.cc$|\.h$|\.C$)" | awk '{print $2}' > filelist
 
 for file in `cat filelist`;do $CMSSW_BASE/src/flashgg/Validation/scripts/astyle --options=$CMSSW_BASE/src/flashgg/Validation/scripts/indent.ast $file -q; done
 
