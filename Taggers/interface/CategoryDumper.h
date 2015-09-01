@@ -212,14 +212,14 @@ namespace flashgg {
     {
         using namespace std;
         for( auto &histo : histograms_ ) {
-            auto name = formatString( name_ + get<0>( histo ), replacements );
-            auto &xbins = get<2>( histo );
-            auto &th1 = get<5>( histo );
+            auto name = formatString( name_ + std::get<0>( histo ), replacements );
+            auto &xbins = std::get<2>( histo );
+            auto &th1 = std::get<5>( histo );
             try {
                 th1 = fs.getObject<TH1>( name );
             } catch( ... ) {
-                if( get<3>( histo ) >= 0 ) {
-                    auto &ybins = get<4>( histo );
+                if( std::get<3>( histo ) >= 0 ) {
+                    auto &ybins = std::get<4>( histo );
                     th1 = fs.make<TH2F>( name.c_str(), name.c_str(), xbins.size() - 1, &xbins[0], ybins.size() - 1, &ybins[0] );
                 } else {
                     th1 = fs.make<TH1F>( name.c_str(), name.c_str(), xbins.size() - 1, &xbins[0] );
@@ -301,9 +301,9 @@ namespace flashgg {
                 auto &th1 = *std::get<5>( histo );
                 auto xv = std::get<1>( histo );
                 auto yv = std::get<3>( histo );
-                float xval = ( xv >= 0 ? get<0>( variables_[xv] ) : globalVarsDumper_->valueOf( -xv - 2 ) );
+                float xval = ( xv >= 0 ? std::get<0>( variables_[xv] ) : globalVarsDumper_->valueOf( -xv - 2 ) );
                 if( yv != -1 ) {
-                    float yval = ( yv >= 0 ? get<0>( variables_[yv] ) : globalVarsDumper_->valueOf( -yv - 2 ) );
+                    float yval = ( yv >= 0 ? std::get<0>( variables_[yv] ) : globalVarsDumper_->valueOf( -yv - 2 ) );
                     // dynamic_cast<TH2 &>( th1 ).Fill( std::get<0>( variables_[xv] ), std::get<0>( variables_[yv] ), weight_ );
                     dynamic_cast<TH2 &>( th1 ).Fill( xval, yval, weight_ );
                 } else {
@@ -316,8 +316,8 @@ namespace flashgg {
 
 }
 
-inline bool operator==( const flashgg::histo_info &lh, const std::string &rh ) { return get<0>( lh ) == rh; };
-inline bool operator==( const std::string &lh, const flashgg::histo_info &rh ) { return lh == get<0>( rh ); };
+inline bool operator==( const flashgg::histo_info &lh, const std::string &rh ) { return std::get<0>( lh ) == rh; };
+inline bool operator==( const std::string &lh, const flashgg::histo_info &rh ) { return lh == std::get<0>( rh ); };
 
 
 #endif  // flashgg_CategoryDumper_h
