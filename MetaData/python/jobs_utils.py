@@ -2,7 +2,7 @@ from optpars_utils import *
 
 from pprint import pprint
 
-import os,json,fcntl
+import os,json,fcntl,stat
 from parallel  import Parallel
 from threading import Semaphore
 
@@ -194,6 +194,7 @@ class JobsManager(object):
             with open("%s/%s" % ( options.outputDir, os.path.basename(pset) ), "w+" ) as pout:
                 pout.write(pin.read())
                 pout.close()
+                if not options.jobExe: os.chmod( "%s/%s" % ( options.outputDir, os.path.basename(pset)), 0755  )
             pin.close()
         pset = "%s/%s" % ( options.outputDir, os.path.basename(pset) )
         pset = os.path.abspath(pset)
