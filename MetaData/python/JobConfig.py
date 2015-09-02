@@ -261,6 +261,8 @@ class JobConfig(object):
             else:
                 if self.processType == "" and xsec["xs"] == 0.:
                     self.processType = "data"
+                    
+            self.processId = self.getProcessId(name)
             
         outputFile=self.outputFile
         if self.jobId != -1:
