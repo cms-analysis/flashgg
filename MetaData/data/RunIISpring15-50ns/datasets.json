@@ -4615,6 +4615,173 @@
         ], 
         "vetted": true
     }, 
+    "/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002\u001b[D\u001b[D\u001b[D\u001b[D": {
+        "files": [
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 1600, 
+                "weights": 1600.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 10200, 
+                "weights": 10200.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 23800, 
+                "weights": 23800.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 800, 
+                "weights": 800.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 49540, 
+                "weights": 49540.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 19740, 
+                "weights": 19740.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 7200, 
+                "weights": 7200.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 49540, 
+                "weights": 49540.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 49540, 
+                "weights": 49540.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 37940, 
+                "weights": 37940.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 800, 
+                "weights": 800.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 1200, 
+                "weights": 1200.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 49600, 
+                "weights": 49600.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 10400, 
+                "weights": 10400.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 32940, 
+                "weights": 32940.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 45540, 
+                "weights": 45540.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 8940, 
+                "weights": 8940.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 1600, 
+                "weights": 1600.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 1600, 
+                "weights": 1600.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 33340, 
+                "weights": 33340.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 5600, 
+                "weights": 5600.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 8000, 
+                "weights": 8000.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 9340, 
+                "weights": 9340.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 16800, 
+                "weights": 16800.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 2400, 
+                "weights": 2400.0
+            }, 
+            {
+                "bad": false, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-50ns/Spring15BetaV4/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150820_134002/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 800, 
+                "weights": 800.0
+            }
+        ], 
+        "vetted": true
+    }, 
     "/GluGluHToGG_M-125_13TeV_powheg_pythia8/sethzenz-RunIISpring15-50ns-Spring15BetaV4-v0-RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1-f59dce73912db7e1a8c683f4b9f7fa12/USER": {
         "files": [
             {
