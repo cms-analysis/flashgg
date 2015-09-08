@@ -80,7 +80,7 @@ namespace flashgg {
 
         void print()
         {
-            std::cout << "Dumper name is " << name_ << std::endl;
+            //            std::cout << "Dumper name is " << name_ << std::endl;
             // for (unsigned int i =0; i<names_.size() ; i++){
             // std::cout << "Map content " << i << " name is " << names_[i] << std::endl;
             // }
