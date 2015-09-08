@@ -9,14 +9,17 @@ import threading
 from multiprocessing import cpu_count
 from time import sleep
 
-class LsfJob:
+class LsfJob(object):
     """ a thread to run bsub and wait until it completes """
-
+    
     #----------------------------------------
     def __init__(self, lsfQueue, jobName="", async=False):
         """ @param cmd is the command to be executed inside the bsub script. Some CMSSW specific wrapper
             code will be added
         """
+        
+        # super(LsfJob,self).__init()
+        
         self.lsfQueue = lsfQueue
         self.jobName = jobName
         self.async = async
@@ -27,13 +30,12 @@ class LsfJob:
         return "LsfJob: %s %s" % ( self.lsfQueue, self.jobName )
         
     #----------------------------------------
-    def __call__(self,cmd):
+    def run(self,script):
         
         bsubCmdParts = [ "bsub",
                          "-q " + self.lsfQueue,
                          ]
         
-        self.cmd = cmd
         if not self.async:
             bsubCmdParts.append("-K")  # bsub waits until job completes
             
@@ -53,15 +55,9 @@ class LsfJob:
                                stderr=subprocess.PIPE,
                                close_fds=True)
         
-        script = ""
-        script += "#!/bin/sh\n"
-        
-        script += "cd " + os.environ['CMSSW_BASE']+"\n"
-        script += "eval `scram runtime -sh`"+"\n"
-        script += "cd " + os.getcwd()+"\n"
-        
-        # the user command
-        script += cmd+"\n"
+        with open("%s.sh" % self.jobName,"w+") as fout:
+            fout.write(script)
+            fout.close()        
         
         out,err = lsf.communicate(script)
         
@@ -84,7 +80,28 @@ class LsfJob:
             return self.exitStatus, (out,(self.jobName,self.jobid))
 
         return self.handleOutput()
+
+    #----------------------------------------
+    def __call__(self,cmd):
+        
+        self.cmd = cmd
+        script = ""
+        script += "#!/bin/bash\n"
+        
+        script += "cd " + os.environ['CMSSW_BASE']+"\n"
+        script += "eval `scram runtime -sh`"+"\n"
+        script += "cd " + os.getcwd()+"\n"
+        
+        if os.environ.get('X509_USER_PROXY',None):
+            script += "export $X509_USER_PROXY=%s\n" % os.environ['X509_USER_PROXY']
+                    
+        # the user command
+        script += cmd+"\n"
+        
+        return self.run(script)
+        
     
+    #----------------------------------------
     def handleOutput(self):
         ## print "handleOutput"
         if self.async:
@@ -105,11 +122,183 @@ class LsfJob:
                 with open("%s.log" % self.jobName) as lf:
                     output = lf.read()
                     lf.close()
+                    output += "%s.log\n" % self.jobName
             except:
                 output = "%s.log" % self.jobName
-                
+        
         return self.exitStatus, output
 
+
+# -----------------------------------------------------------------------------------------------------
+class TarballLsfJob(LsfJob):
+    
+    #----------------------------------------
+    def __init__(self,*args,**kwargs):
+        
+        
+        self.stage_dest      = kwargs.pop("stage_dest")
+        self.stage_cmd       = kwargs.pop("stage_cmd")
+        self.stage_patterns  = kwargs.pop("stage_patterns")
+        self.tarball         = kwargs.pop("tarball",None)
+        self.job_outdir      = kwargs.pop("job_outdir",None)
+
+        super(TarballLsfJob,self).__init__(*args,**kwargs)
+        
+    #----------------------------------------
+    def __call__(self,cmd):
+        
+        self.cmd = cmd
+        script = ""
+        script += "#!/bin/bash\n"
+        
+        script += "WD=$PWD\n"
+        script += "echo\n"
+        script += "echo\n"
+        script += "echo working directory is $WD\n"
+        script += "echo\n"
+        if not self.tarball:
+            script += "cd " + os.environ['CMSSW_BASE']+"\n"
+        else:
+            script += "[[ -n $CMS_PATH ]] && source $VO_CMS_SW_DIR/cmsset_default.sh\n"
+            script += "export SCRAM_ARCH=%s\n" % os.environ['SCRAM_ARCH']
+            script += "scram project CMSSW %s\n" % os.environ['CMSSW_VERSION']
+            script += "cd %s\n" % os.environ['CMSSW_VERSION']
+            script += "tar zxf %s\n" % self.tarball            
+            script += "scram b\n"
+            
+        script += "eval $(scram runtime -sh)"+"\n"
+        script += "cd $WD\n"
+        
+        if os.environ.get('X509_USER_PROXY',None):
+            script += "export $X509_USER_PROXY=%s\n" % os.environ['X509_USER_PROXY']
+            
+        if self.tarball and self.job_outdir:
+            script += "mkdir %s\n" % self.job_outdir
+            
+        # the user command
+        script += cmd+"\n"
+
+        if self.tarball and self.job_outdir:
+            script += 'cd %s\n' % self.job_outdir
+            script += 'echo\n'
+            script += 'echo\n'
+            script += 'echo "Job finished with exit code $?"\n'
+            script += 'echo "Files in ouput folder"\n'
+            script += 'ls -ltr\n'
+        # stage out files
+        script += 'retval=$?\n'
+        script += 'if [[ $retval == 0 ]]; then\n'
+        script += '    errors=""\n'
+        script += '    for file in $(find -name %s); do\n' % " -or -name ".join(self.stage_patterns)
+        script += '        %s $file %s\n' % ( self.stage_cmd, self.stage_dest )
+        script += '        if [[ $? != 0 ]]; then\n'
+        script += '            errors="$errors $file($?)"\n'
+        script += '        fi\n'
+        script += '    done\n'
+        script += '    if [[ -n "$errors" ]]; then\n'
+        script += '       echo "Errors while staging files"\n'
+        script += '       echo "$errors"\n'
+        script += '       exit -2\n'
+        script += '    fi\n'
+        script += 'fi\n'        
+        script += 'exit $retval\n'
+        script += '\n'
+        
+        return self.run(script)
+        
+
+# -----------------------------------------------------------------------------------------------------
+class TarballLsfJobFactory(object):
+    
+    # ------------------------------------------------------------------------------------------------
+    def __init__(self,stage_dest,
+                 stage_cmd="cp -pv",stage_patterns=["'*.root'","'*.xml'"],job_outdir=None):
+        
+        self.stage_dest = stage_dest
+        self.stage_cmd  = stage_cmd
+        self.stage_patterns  = stage_patterns
+        self.tarball = None
+        self.job_outdir      = job_outdir
+
+    # ------------------------------------------------------------------------------------------------
+    def stageDest(self,dest):
+        self.stage_dest = dest
+
+    # ------------------------------------------------------------------------------------------------
+    def setTarball(self,tarball):
+        self.tarball = tarball
+        
+    # ------------------------------------------------------------------------------------------------
+    def mkTarball(self,tarball=None,
+                  tarball_entries=["python","lib","bin"],tarball_patterns={"src/*":"data"},
+                  tarball_transform=None):
+        
+        self.tarball = tarball
+        content=tarball_entries
+        for folder,pattern in tarball_patterns.iteritems():
+            stat,out = commands.getstatusoutput("cd $CMSSW_BASE; find %s -name %s" % ( folder, pattern ) )
+            ## print out
+            if stat != 0:
+                print "error (%d) finding files to create job tarball" % stat
+                print "folder : %s"
+                print "pattern: %s"
+                print out
+                sys.exit(stat)
+            content.extend( [f for f in out.split("\n") if f != ""] )                
+        args = []
+        if tarball_transform:
+            args.extend( ["--transform",tarball_transform] )
+        args.extend(["-h","--show-transformed","-zvcf",tarball])
+        args.extend(content)
+        print 
+        print "Preparing tarball with the following content:"
+        print "\n".join(content)
+        print
+        stat,out =  commands.getstatusoutput("cd $CMSSW_BASE; tar %s" % " ".join(args) )
+        ## print out
+        ## print "CMSSW_BASE: %s" % os.environ["CMSSW_BASE"]
+        ## print "args: %s" % " ".join(args)
+        if stat != 0:
+            print "error (%d) creating job tarball"
+            print "CMSSW_BASE: %s" % os.environ["CMSSW_BASE"]
+            print "args: %s" % " ".join(args)
+            print out
+    
+
+    #----------------------------------------
+    def getStageCmd(self):
+        
+        stage_cmd = self.stage_cmd
+        if stage_cmd != "guess":
+            return stage_cmd
+
+        if self.stage_dest.startswith("/store"):
+            stage_cmd = "cmsStage"
+        elif self.stage_dest.startswith("root://"):
+            stage_cmd = "xrdcp"
+        elif self.stage_dest.startswith("rsync") or "@" in self.stage_dest or "::" in self.stage_dest:
+            stage_cmd = "rsync -av"
+        else:
+            stage_cmd = "cp -pv"
+
+        return stage_cmd
+            
+    #----------------------------------------
+    def __call__(self,*args,**kwargs):
+        
+        stage_cmd = self.getStageCmd()
+            
+        kwargs["stage_dest"]     = self.stage_dest
+        kwargs["stage_cmd"]      = stage_cmd
+        kwargs["stage_patterns"] = self.stage_patterns
+        kwargs["tarball"]        = self.tarball
+        kwargs["job_outdir"]     = self.job_outdir
+        
+        return TarballLsfJob(*args,**kwargs)
+
+        
+
+# -----------------------------------------------------------------------------------------------------
 class LsfMonitor:
     def __init__(self,jobsqueue,retqueue):
         self.jobsqueue = jobsqueue
@@ -134,6 +323,7 @@ class LsfMonitor:
                     jobsmap.pop(jobid)
             sleep(0.1)
 
+# -----------------------------------------------------------------------------------------------------
 class Wrap:
     def __init__(self, func, args, retqueue, runqueue):
         self.retqueue = retqueue
@@ -153,10 +343,12 @@ class Wrap:
             self.retqueue.put( ret  )
 
     
+# -----------------------------------------------------------------------------------------------------
 class Parallel:
-    def __init__(self,ncpu,lsfQueue=None,lsfJobName="job",asyncLsf=False,maxThreads=500):
+    def __init__(self,ncpu,lsfQueue=None,lsfJobName="job",asyncLsf=False,maxThreads=500,jobDriver=LsfJob):
         self.returned = Queue()
 	self.njobs = 0
+        self.JobDriver=jobDriver
         self.lsfJobs = Queue()
         self.lsfQueue = lsfQueue
         self.lsfJobName = lsfJobName
@@ -204,7 +396,7 @@ class Parallel:
         if not self.asyncLsf:
             return
         
-        job = LsfJob(self.lsfQueue,jobName,async=True)
+        job = self.JobDriver(self.lsfQueue,jobName,async=True)
         job.jobid = batchId
         job.cmd = " ".join([cmd]+args)
         self.lsfJobs.put(job)
@@ -240,7 +432,7 @@ class Parallel:
             if self.lsfQueue and not interactive:
                 if not jobName:
                     jobName = "%s%d" % (self.lsfJobName,self.getJobId())
-                cmd = LsfJob(self.lsfQueue,jobName,async=self.asyncLsf)
+                cmd = self.JobDriver(self.lsfQueue,jobName,async=self.asyncLsf)
             else:
                 cmd = commands.getstatusoutput
 

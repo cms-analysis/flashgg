@@ -50,6 +50,8 @@ class MicroAODCustomize(object):
                               VarParsing.VarParsing.varType.int,
                                'timing')
 
+        self.parsed_ = False
+
     def __getattr__(self,name):
         ## did not manage to inherit from VarParsing, because of some issues in __init__
         ## this allows to use VarParsing methods on JobConfig
@@ -66,9 +68,15 @@ class MicroAODCustomize(object):
     def userCustomize(self,process):
         pass 
 
+    def parse(self):
+        if self.parsed_:
+            return
+        self.options.parseArguments()
+        self.parsed_ = True
+
     # process customization
     def customize(self,process):
-        self.options.parseArguments()
+        self.parse()
         
         if self.processType == "data":
             self.customizeData(process)
