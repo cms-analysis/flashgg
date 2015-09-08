@@ -2,8 +2,8 @@
 import FWCore.ParameterSet.Config as cms
 import FWCore.Utilities.FileUtils as FileUtils
 from FWCore.ParameterSet.VarParsing import VarParsing
-
 from flashgg.MetaData.samples_utils import SamplesManager
+from flashgg.Systematics.SystematicDumperDefaultVariables import defaultVariables,defaultHistograms
 
 ## CMD LINE OPTIONS ##
 options = VarParsing('analysis')
@@ -64,198 +64,83 @@ for systlabel in systlabels:
   #print "syst label ", systlabel
 
   cfgTools.addCategory(process.diphotonDumper,
-                      "flashggUntaggedTag__%s"%systlabel,
-                      cutbased=cutstring,
-											systLabel=systlabel,
-                            subcats=5, 
-                                    variables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass", 
-                                    "leadPt                   :=diPhoton().leadingPhoton.pt",
-                                    "subleadPt                :=diPhoton().subLeadingPhoton.pt",
-                                    "diphoMVA                 :=diPhotonMVA().result",    
-                                    "maxEta                   :=max(abs(diPhoton().leadingPhoton.superCluster.eta),abs(diPhoton().leadingPhoton.superCluster.eta))",
-                                    "genZ           :=tagTruth().genPV().z",
-                                    "vtxZ           :=diPhoton().vtx().z",
-                                    "dZ             :=abs(tagTruth().genPV().z-diPhoton().vtx().z)"
-  
-                                    ],
-                         histograms=["CMS_hgg_mass>>mass(160,100,180)",
-                                     "subleadPt:leadPt>>ptLeadvsSub(180,20,200:180,20,200)",
-                                     "diphoMVA>>diphoMVA(50,0,1)",
-                                     "maxEta>>maxEta[0.,0.1,0.2,0.3,0.4,0.6,0.8,1.0,1.2,1.4442,1.566,1.7,1.8,2.,2.2,2.3,2.5]"
-                                     ]
-                      )
+                       "flashggUntaggedTag__%s"%systlabel,
+                       cutbased=cutstring,
+                       systLabel=systlabel,
+                       subcats=5, 
+                       variables = defaultVariables,
+                       histograms = defaultHistograms
+                       )
   
   cfgTools.addCategory(process.diphotonDumper,
-                      "flashggVBFTag__%s"%systlabel,
-                      cutbased=cutstring,
-											systLabel=systlabel,
-                            subcats=3,
-                                    variables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass", 
-                                    "leadPt                   :=diPhoton().leadingPhoton.pt",
-                                    "subleadPt                :=diPhoton().subLeadingPhoton.pt",
-                                               "diphoMVA                 :=diPhotonMVA().result",    
-                                    "maxEta                   :=max(abs(diPhoton().leadingPhoton.superCluster.eta),abs(diPhoton().leadingPhoton.superCluster.eta))",
-                                                 "leadJetPt                :=leadingJet().pt",
-                                                 "subleadJetPt             :=subLeadingJet().pt",
-                                                 "VBFMVA                   :=VBFMVA().VBFMVAValue()",
-                                               "genZ           :=tagTruth().genPV().z",
-                                               "vtxZ           :=diPhoton().vtx().z",
-                                               "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
-                                    ],
-                         histograms=["CMS_hgg_mass>>mass(160,100,180)",
-                                     "subleadPt:leadPt>>ptLeadvsSub(180,20,200:180,20,200)",
-                                     "diphoMVA>>diphoMVA(50,0,1)",
-                                     "maxEta>>maxEta[0.,0.1,0.2,0.3,0.4,0.6,0.8,1.0,1.2,1.4442,1.566,1.7,1.8,2.,2.2,2.3,2.5]",
-                                        "subleadJetPt:leadJetPt>>JetptLeadvsSub(8,20,100:8,20,100)",
-                                     "VBFMVA>>VBFMVA(50,0,1)"
-                                     ]
-                      )
+                       "flashggVBFTag__%s"%systlabel,
+                       cutbased=cutstring,
+                       systLabel=systlabel,
+                       subcats=3,
+                       variables = defaultVariables + [
+          "leadJetPt                :=leadingJet().pt",
+          "subleadJetPt             :=subLeadingJet().pt",
+          "VBFMVA                   :=VBFMVA().VBFMVAValue()",
+          ],
+                       histograms = defaultHistograms + [
+          "subleadJetPt:leadJetPt>>JetptLeadvsSub(8,20,100:8,20,100)",
+          "VBFMVA>>VBFMVA(50,0,1)"
+          ]
+                       )
   
   cfgTools.addCategory(process.diphotonDumper,
-                      "flashggVHTightTag__%s"%systlabel,
-                      cutbased=cutstring,
-											systLabel=systlabel,
-                            subcats=0,
-                                      variables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass", 
-                                    "leadPt                   :=diPhoton().leadingPhoton.pt",
-                                    "subleadPt                :=diPhoton().subLeadingPhoton.pt",
-                                                 "diphoMVA                 :=diPhotonMVA().result",    
-                                    "maxEta                   :=max(abs(diPhoton().leadingPhoton.superCluster.eta),abs(diPhoton().leadingPhoton.superCluster.eta))",
-                                                   "nMuons                   :=muons().size()",
-                                                   "nElectrons               :=electrons().size()",
-                                                   "nJets                    :=jets().size()",
-                                               "genZ           :=tagTruth().genPV().z",
-                                               "vtxZ           :=diPhoton().vtx().z",
-                                               "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
-                                    ],
-                         histograms=["CMS_hgg_mass>>mass(160,100,180)",
-                                     "subleadPt:leadPt>>ptLeadvsSub(180,20,200:180,20,200)",
-                                     "diphoMVA>>diphoMVA(50,0,1)",
-                                     "maxEta>>maxEta[0.,0.1,0.2,0.3,0.4,0.6,0.8,1.0,1.2,1.4442,1.566,1.7,1.8,2.,2.2,2.3,2.5]",
-                                     "nMuons:nElectrons>>nElectronsVsMuons(2,0,2:2,0,2)",
-                                     "nJets>>nJets(5,0,5)"
-                                     ]
-                         )
+                       "flashggVHTightTag__%s"%systlabel,
+                       cutbased=cutstring,
+                       systLabel=systlabel,
+                       subcats=0,
+                       variables = defaultVariables,
+                       histograms = defaultHistograms
+                       )
   
   cfgTools.addCategory(process.diphotonDumper,
-                      "flashggVHLooseTag__%s"%systlabel,
-                      cutbased=cutstring,
-											systLabel=systlabel,
-                            subcats=0,
-                                      variables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass", 
-                                    "leadPt                   :=diPhoton().leadingPhoton.pt",
-                                    "subleadPt                :=diPhoton().subLeadingPhoton.pt",
-                                                 "diphoMVA                 :=diPhotonMVA().result",    
-                                    "maxEta                   :=max(abs(diPhoton().leadingPhoton.superCluster.eta),abs(diPhoton().leadingPhoton.superCluster.eta))",
-                                                   "nMuons                   :=muons().size()",
-                                                   "nElectrons               :=electrons().size()",
-                                                   "nJets                    :=jets().size()",
-                                               "genZ           :=tagTruth().genPV().z",
-                                               "vtxZ           :=diPhoton().vtx().z",
-                                               "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
-                                    ],
-                         histograms=["CMS_hgg_mass>>mass(160,100,180)",
-                                     "subleadPt:leadPt>>ptLeadvsSub(180,20,200:180,20,200)",
-                                     "diphoMVA>>diphoMVA(50,0,1)",
-                                     "maxEta>>maxEta[0.,0.1,0.2,0.3,0.4,0.6,0.8,1.0,1.2,1.4442,1.566,1.7,1.8,2.,2.2,2.3,2.5]",
-                                     "nMuons:nElectrons>>nElectronsVsMuons(2,0,2:2,0,2)",
-                                     "nJets>>nJets(5,0,5)"
-                                     ]
-                         )
-  
+                       "flashggVHLooseTag__%s"%systlabel,
+                       cutbased=cutstring,
+                       systLabel=systlabel,
+                       subcats=0,
+                       variables = defaultVariables,
+                       histograms = defaultHistograms
+                       )
   
   cfgTools.addCategory(process.diphotonDumper,
-                      "flashggVHHadronicTag__%s"%systlabel,
-                      cutbased=cutstring,
-											systLabel=systlabel,
-                            subcats=0,
-                                    variables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass", 
-                                    "leadPt                   :=diPhoton().leadingPhoton.pt",
-                                    "subleadPt                :=diPhoton().subLeadingPhoton.pt",
-                                               "diphoMVA                 :=diPhotonMVA().result",    
-                                    "maxEta                   :=max(abs(diPhoton().leadingPhoton.superCluster.eta),abs(diPhoton().leadingPhoton.superCluster.eta))",
-                                                 "leadJetPt                :=leadingJet().pt",
-                                                 "subleadJetPt             :=subLeadingJet().pt",
-                                               "genZ           :=tagTruth().genPV().z",
-                                               "vtxZ           :=diPhoton().vtx().z",
-                                               "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
-                                    ],
-                         ## histograms to be plotted. 
-                         ## the variables need to be defined first
-                         histograms=["CMS_hgg_mass>>mass(160,100,180)",
-                                     "subleadPt:leadPt>>ptLeadvsSub(180,20,200:180,20,200)",
-                                     "diphoMVA>>diphoMVA(50,0,1)",
-                                     "maxEta>>maxEta[0.,0.1,0.2,0.3,0.4,0.6,0.8,1.0,1.2,1.4442,1.566,1.7,1.8,2.,2.2,2.3,2.5]",
-                                        "subleadJetPt:leadJetPt>>JetptLeadvsSub(8,20,100:18,20,200)",
-                                     ]
-                      )
+                       "flashggVHHadronicTag__%s"%systlabel,
+                       cutbased=cutstring,
+                       systLabel=systlabel,
+                       subcats=0,
+                       variables = defaultVariables,
+                       histograms = defaultHistograms
+                       )
   
   cfgTools.addCategory(process.diphotonDumper,
-                      "flashggTTHLeptonicTag__%s"%systlabel,
-                      cutbased=cutstring,
-											systLabel=systlabel,
-                            subcats=0,
-                                   variables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass", 
-                                    "leadPt                   :=diPhoton().leadingPhoton.pt",
-                                    "subleadPt                :=diPhoton().subLeadingPhoton.pt",
-                                              "diphoMVA                 :=diPhotonMVA().result",    
-                                    "maxEta                   :=max(abs(diPhoton().leadingPhoton.superCluster.eta),abs(diPhoton().leadingPhoton.superCluster.eta))",
-                                                "nMuons                   :=muons().size()",
-                                                "nElectrons               :=electrons().size()",
-                                                "nJets                    :=jets().size()",
-                                                "nBJets                   :=bJets().size()",
-                                               "genZ           :=tagTruth().genPV().z",
-                                               "vtxZ           :=diPhoton().vtx().z",
-                                               "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
-                                              "centralWeight := centralWeight",
-                                              "MuonWeightDown01sigma := weight(\"MuonWeightDown01sigma\")",
-                                              "MuonWeightUp01sigma := weight(\"MuonWeightUp01sigma\")",
-                                              "ElectronWeightDown01sigma := weight(\"ElectronWeightDown01sigma\")",
-                                              "ElectronWeightUp01sigma := weight(\"ElectronWeightUp01sigma\")"
-                                    ],
-                         ## histograms to be plotted. 
-                         ## the variables need to be defined first
-                         histograms=["CMS_hgg_mass>>mass(160,100,180)",
-                                     "subleadPt:leadPt>>ptLeadvsSub(180,20,200:180,20,200)",
-                                     "diphoMVA>>diphoMVA(50,0,1)",
-                                     "maxEta>>maxEta[0.,0.1,0.2,0.3,0.4,0.6,0.8,1.0,1.2,1.4442,1.566,1.7,1.8,2.,2.2,2.3,2.5]",
-                                     "nMuons:nElectrons>>nElectronsVsMuons(2,0,2:2,0,2)",
-                                     "nJets>>nJets(5,0,5)",
-                                     "nBJets>>nBJets(5,0,5)"
-                                     ]
-                      )
+                       "flashggTTHLeptonicTag__%s"%systlabel,
+                       cutbased=cutstring,
+                       systLabel=systlabel,
+                       subcats=0,
+                       variables = defaultVariables + [
+          "centralWeight := centralWeight",
+          "MuonWeightDown01sigma := weight(\"MuonWeightDown01sigma\")",
+          "MuonWeightUp01sigma := weight(\"MuonWeightUp01sigma\")",
+          "ElectronWeightDown01sigma := weight(\"ElectronWeightDown01sigma\")",
+          "ElectronWeightUp01sigma := weight(\"ElectronWeightUp01sigma\")"
+          ],
+                       histograms = defaultHistograms
+                       )
   
   cfgTools.addCategory(process.diphotonDumper,
-                      "flashggTTHHadronicTag__%s"%systlabel,
-                      cutbased=cutstring,
-											systLabel=systlabel,
-                            subcats=0,
-                                     variables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass", 
-                                    "leadPt                   :=diPhoton().leadingPhoton.pt",
-                                    "subleadPt                :=diPhoton().subLeadingPhoton.pt",
-                                                "diphoMVA                 :=diPhotonMVA().result",    
-                                    "maxEta                   :=max(abs(diPhoton().leadingPhoton.superCluster.eta),abs(diPhoton().leadingPhoton.superCluster.eta))",
-                                                  "nJets                    :=jetVector().size()",
-                                                  "nBJets                   :=bJetVector().size()",
-                                               "genZ           :=tagTruth().genPV().z",
-                                               "vtxZ           :=diPhoton().vtx().z",
-                                               "dZ            :=abs(tagTruth().genPV().z-diPhoton().vtx().z)",
+                       "flashggTTHHadronicTag__%s"%systlabel,
+                       cutbased=cutstring,
+                       systLabel=systlabel,
+                       subcats=0,
+                       variables = defaultVariables,
+                       histograms = defaultHistograms
+                       )
   
-                                    ],
-                         ## histograms to be plotted. 
-                         ## the variables need to be defined first
-                         histograms=["CMS_hgg_mass>>mass(160,100,180)",
-                                     "subleadPt:leadPt>>ptLeadvsSub(180,20,200:180,20,200)",
-                                     "diphoMVA>>diphoMVA(50,0,1)",
-                                     "maxEta>>maxEta[0.,0.1,0.2,0.3,0.4,0.6,0.8,1.0,1.2,1.4442,1.566,1.7,1.8,2.,2.2,2.3,2.5]",
-                                     "nJets>>nJets(5,0,5)",
-                                     "nBJets>>nBJets(5,0,5)"
-                                     ]
-                      )
-
 process.p1 = cms.Path(
     process.diphotonDumper
-   # + process.extraDumpers
     )
 
 print process.p1
