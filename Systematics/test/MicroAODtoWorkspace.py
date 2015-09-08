@@ -153,14 +153,23 @@ for systlabel in systlabels:
                        histograms = minimalHistograms
                        )
   
-cfgTools.addCategory(process.diphotonDumper,
-                     "flashggTTHHadronicTag__%s"%systlabel,
-                     cutbased=cutstring,
-                     systLabel=systlabel,
-                     subcats=0,
-                     variables = minimalVariables,
-                     histograms = minimalHistograms
-                     )
+  cfgTools.addCategory(process.diphotonDumper,
+                       "flashggTTHHadronicTag__%s"%systlabel,
+                       cutbased=cutstring,
+                       systLabel=systlabel,
+                       subcats=0,
+                       variables = minimalVariables,
+                       histograms = minimalHistograms
+                       )
+
+  cfgTools.addCategory(process.diphotonDumper,
+                       "flashggVHEtTag__%s"%systlabel,
+                       cutbased=cutstring,
+                       systLabel=systlabel,
+                       subcats=0,
+                       variables = minimalVariables,
+                       histograms = minimalHistograms
+                       )
 
 process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSystematics+process.flashggElectronSystematics)*
                      (process.flashggTagSequence+process.systematicsTagSequences)*
