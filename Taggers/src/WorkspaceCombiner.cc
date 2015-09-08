@@ -51,13 +51,15 @@ TDirectoryFile *WorkspaceCombiner::GetFirstFile()
 }
 
 // ----------------------------------------------------------------------------------------------------
-void WorkspaceCombiner::GetWorkspaces( TDirectoryFile *file )
+void WorkspaceCombiner::GetWorkspaces( TDirectoryFile *tdfile )
 {
     std::cout << " WorkspaceCombiner::GetWorkspaces" << std::endl;
-
-    TList *listofkeys = file->GetListOfKeys();
+    tdfile->Print();
+    TList *listofkeys = tdfile->GetListOfKeys();
+    std::cout << "Got list of keys!" << std::endl;
     TKey *oldkey = 0;
     for( int k = 0; k < listofkeys->GetSize(); k++ ) {
+        std::cout << k << std::endl;
         TKey *key = ( TKey * )listofkeys->At( k );
         std::cout << " Key: " << key->GetName() << " CycleNumber: " << key->GetCycle() << std::endl;
         if( oldkey && !strcmp( oldkey->GetName(), key->GetName() ) ) {
@@ -67,7 +69,7 @@ void WorkspaceCombiner::GetWorkspaces( TDirectoryFile *file )
         oldkey = key;
         if( strcmp( key->GetClassName(), "RooWorkspace" ) == 0 ) {
             std::cout << " We got a workspace with name " << key->GetName() << std::endl;
-            RooWorkspace *work = ( RooWorkspace * )file->Get( key->GetName() );
+            RooWorkspace *work = ( RooWorkspace * )tdfile->Get( key->GetName() );
             //            work->Print();
             std::cout << " made work" << std::endl;
             std::list<RooAbsData *> allData = work->allData();
@@ -84,9 +86,9 @@ void WorkspaceCombiner::GetWorkspaces( TDirectoryFile *file )
             workspaceNames.push_back( work->GetName() );
             string workpath = "";
             std::cout << " gonna build workpath" << std::endl;
-            while( file->InheritsFrom( "TFile" ) == false ) {
-                workpath.insert( 0, Form( "/%s", file->GetName() ) );
-                file = ( TDirectoryFile * )file->GetMotherDir();
+            while( tdfile->InheritsFrom( "TFile" ) == false ) {
+                workpath.insert( 0, Form( "/%s", tdfile->GetName() ) );
+                tdfile = ( TDirectoryFile * )tdfile->GetMotherDir();
             }
             workpath.erase( 0, 1 );
             std::cout << "workpath is " << workpath << std::endl;
@@ -95,8 +97,14 @@ void WorkspaceCombiner::GetWorkspaces( TDirectoryFile *file )
         }
         std::cout << " before TDirectoryFile check" << std::endl;
         if( strcmp( key->GetClassName(), "TDirectoryFile" ) == 0 ) {
-            TDirectoryFile *newdirectory = ( TDirectoryFile * )file->Get( key->GetName() );
-            GetWorkspaces( newdirectory );
+            std::cout << " We're gonna make a new TDirectoryFile with name " << key->GetName() << " (cycle " << key->GetCycle() << ")" << std::endl;
+            TDirectoryFile *newdirectory = ( TDirectoryFile * )tdfile->Get( key->GetName() );
+            if( newdirectory ) {
+                std::cout << " About to recursively call GetWorkspaces on " << newdirectory << std::endl;
+                GetWorkspaces( newdirectory );
+            } else {
+                std::cout << " That returned null for some reason. Skipping." << std::endl;
+            }
         }
     }
 }
@@ -230,7 +238,7 @@ void WorkspaceCombiner::GetTreesAndHistograms( TDirectoryFile *file )
 }
 // ----------------------------------------------------------------------------------------------------
 
-void WorkspaceCombiner::Save()
+void WorkspaceCombiner::Save( bool doTreesAndHistograms )
 {
 
     TFile *outfile = TFile::Open( outputFileName.c_str(), "RECREATE", "ROOT file with merge workspace" );
@@ -252,27 +260,41 @@ void WorkspaceCombiner::Save()
         }
         if( outfile->GetDirectory( workspacePaths[w].c_str() ) == false ) { outfile->mkdir( workspacePaths[w].c_str() ); }
         outfile->cd( workspacePaths[w].c_str() );
+        std::cout << " ABOUT TO WRITE OUTPUT WORKSPACE" << std::endl;
         outputws->Write();
+        std::cout << " ABOUT TO DELETE OUTPUT WORKSPACE" << std::endl;
         //outputws->Print();
         delete outputws;
+        std::cout << " DONE WITH WORKSPACE " << std::endl;
+
     }
 
-    for( unsigned int t = 0; t < trees.size(); t++ ) {
-        if( outfile->GetDirectory( treePaths[t].c_str() ) == false ) { outfile->mkdir( treePaths[t].c_str() ); }
-        outfile->cd( treePaths[t].c_str() );
-        trees[t]->CloneTree()->Write();
-        //trees[t]->CloneTree()->Print();
+
+    if( doTreesAndHistograms ) {
+        for( unsigned int t = 0; t < trees.size(); t++ ) {
+            if( outfile->GetDirectory( treePaths[t].c_str() ) == false ) { outfile->mkdir( treePaths[t].c_str() ); }
+            outfile->cd( treePaths[t].c_str() );
+            trees[t]->CloneTree()->Write();
+            //trees[t]->CloneTree()->Print();
+        }
+
+        for( unsigned int h = 0; h < histos.size(); h++ ) {
+            if( outfile->GetDirectory( histoPaths[h].c_str() ) == false ) { outfile->mkdir( histoPaths[h].c_str() ); }
+            outfile->cd( histoPaths[h].c_str() );
+            histos[h]->Write();
+            //histos[h]->Print();
+        }
+    } else {
+        std::cout << " SKIPPING TREES AND HISTOGRAMS IN SAVE" << std::endl;
     }
 
-    for( unsigned int h = 0; h < histos.size(); h++ ) {
-        if( outfile->GetDirectory( histoPaths[h].c_str() ) == false ) { outfile->mkdir( histoPaths[h].c_str() ); }
-        outfile->cd( histoPaths[h].c_str() );
-        histos[h]->Write();
-        //histos[h]->Print();
-    }
+    std::cout << " ABOUT TO CLOSE OUTPUT FILE " << std::endl;
 
     outfile->Close();
-    gSystem->Exec( Form( "rm %s", outputAux.c_str() ) );
+    if( doTreesAndHistograms ) {
+        gSystem->Exec( Form( "rm %s", outputAux.c_str() ) );
+    }
+    std::cout << " END OF WorkspaceCombiner::Save" << std::endl;
 }
 
 // ----------------------------------------------------------------------------------------------------
