@@ -249,10 +249,16 @@ if options.createCrabConfig:
         # print processedLabel
 
         # associate the processedLabel to the globaltag from the json filex
-        globalTag = gtJson[processedLabel]
-        # print ProcessedDataset, globalTag
-        replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % globalTag[0])) 
-
+        if gtJson.get(processedLabel,None):
+            globalTag = gtJson[processedLabel]
+            # print ProcessedDataset, globalTag
+            replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % globalTag[0])) 
+        else:
+            print 
+            print "WARNING: you did not associate any global tag to %s" % processedLabel
+            print "         therefore global tag customization will not work for %s" % sample
+            print 
+            
         # specific replacements for data and MC
         if sample in data:
             replacements["SPLITTING"]   = "LumiBased"

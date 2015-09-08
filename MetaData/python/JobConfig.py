@@ -261,6 +261,8 @@ class JobConfig(object):
             else:
                 if self.processType == "" and xsec["xs"] == 0.:
                     self.processType = "data"
+                    
+            self.processId = self.getProcessId(name)
             
         outputFile=self.outputFile
         if self.jobId != -1:
@@ -269,6 +271,11 @@ class JobConfig(object):
         self.outputFile = outputFile
 
         self.parsed=True
+
+    def datasetName(self):
+        if type(self.dataset) == tuple:
+            return self.dataset[0]
+        return self.dataset
     
     def getProcessId(self,name):
         return self.getProcessId_(name).replace("/","").replace("-","_")
@@ -303,7 +310,11 @@ class JobConfig(object):
             processes = cfg["processes"]
             for key,val in processes.iteritems():
                 for dst in val:
-                    self.processIdMap[dst] = key
+                    if type(dst) == list:
+                        name = dst[0]
+                    else:
+                        name = dst
+                    self.processIdMap[name] = key
             
             fin.close()
 
