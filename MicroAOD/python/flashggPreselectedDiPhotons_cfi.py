@@ -1,8 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
 phoEffArea=cms.PSet( var=cms.string("abs(superCluster.eta)"), bins=cms.vdouble(0.,0.9,1.5,2,2.2,3), vals=cms.vdouble(0.16544,0.16544,0.13212,0.13212,0.13212) )
-#phoEffArea=cms.PSet( var=cms.string("abs(superCluster.eta)"), bins=cms.vdouble(0.,0.9,1.5,2,2.2,3), vals=cms.vdouble(1.,1.,1.,1.,1.) )
-#neuEffArea=cms.PSet( var=cms.string("abs(superCluster.eta)"), bins=cms.vdouble(0.,0.9,1.5,2,2.2,3), vals=cms.vdouble(0.04,0.059,0.05,0.05,0.15) )
 
 rediscoveryHLTvariables = cms.vstring(
     "pfPhoIso03", 
@@ -11,6 +9,7 @@ rediscoveryHLTvariables = cms.vstring(
     "full5x5_r9"
     )
 
+#cuts to mimic category trigger cuts
 rediscoveryHLTcutsV1 = cms.VPSet(
     cms.PSet(cut=cms.string("isEB && full5x5_r9>0.85"), ##EB high R9
              selection = cms.VPSet(
@@ -55,6 +54,7 @@ rediscoveryHLTcutsV1 = cms.VPSet(
              )
     )
 
+#cuts here mimic the miniAOD photon cuts and the non-category based trigger cuts
 flashggPreselectedDiPhotons = cms.EDFilter(
     "GenericDiPhotonCandidateSelector",
     src = cms.InputTag("flashggDiPhotons"),
