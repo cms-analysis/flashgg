@@ -1,10 +1,10 @@
 <lcgdict>
 <class name="flashgg::WeightedObject"/>
 
-<class name="flashgg::MCWeightObject"/>
-<class name="edm::Ptr<flashgg::MCWeightObject>"/>
-<class name="std::vector<flashgg::MCWeightObject>"/>
-<class name="edm::Wrapper<std::vector<flashgg::MCWeightObject> >"/>
+<class name="flashgg::PDFWeightObject"/>
+<class name="edm::Ptr<flashgg::PDFWeightObject>"/>
+<class name="std::vector<flashgg::PDFWeightObject>"/>
+<class name="edm::Wrapper<std::vector<flashgg::PDFWeightObject> >"/>
 
 <class name="flashgg::DiPhotonMVAResult"/>
 <!--
