@@ -3,7 +3,7 @@
 
 import FWCore.ParameterSet.Config as cms
 
-from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased_new as pu_jetid
+#from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased_new as pu_jetid
 from PhysicsTools.PatAlgos.tools.jetTools        import addJetCollection
 import os
 
@@ -89,7 +89,7 @@ def addFlashggPFCHSJets(process, vertexIndex = 0, doQGTagging = True, label ='',
                                VertexTag   = cms.InputTag('offlineSlimmedPrimaryVertices'),
                                JetTag      = cms.InputTag('patJetsAK4PFCHSLeg' + label),
                                VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
-                               PileupJetIdParameters = cms.PSet(pu_jetid)
+#                               PileupJetIdParameters = cms.PSet(pu_jetid)
                              )
   setattr( process, 'flashggPFCHSJets'+ label, flashggJets)
   
@@ -168,7 +168,7 @@ def addFlashggPuppiJets(process,
                           JetTag                = cms.InputTag('patJetsAK4PUPPI' + label),
                           VertexCandidateMapTag = cms.InputTag("flashggVertexMapForPUPPI"),
                           UsePuppi              = cms.untracked.bool(True),
-                          PileupJetIdParameters = cms.PSet(pu_jetid)
+#                          PileupJetIdParameters = cms.PSet(pu_jetid)
                         ))
   setattr( process, 'selectedFlashggPUPPIJets'+ label,
            cms.EDFilter("FLASHggJetSelector",
