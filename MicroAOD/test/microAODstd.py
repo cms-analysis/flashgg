@@ -73,25 +73,8 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
                                outputCommands = microAODDefaultOutputCommand
                                )
 
-# need to allow unscheduled processes otherwise reclustering function will fail
-# this is because of the jet clustering tool, and we have to live with it for now.
-process.options = cms.untracked.PSet(
-    allowUnscheduled = cms.untracked.bool(True)
-    )
-# import function which takes care of reclustering the jets using legacy vertex		
-from flashgg.MicroAOD.flashggJets_cfi import addFlashggPFCHSJets 
-from flashgg.MicroAOD.flashggJets_cfi import addFlashggPuppiJets
-from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
-# call the function, it takes care of everything else.
-for vtx in range(0,maxJetCollections):
-    addFlashggPFCHSJets (process = process,
-                         vertexIndex =vtx,
-                         doQGTagging = True,
-                         label = '' + str(vtx))    
-    addFlashggPuppiJets (process     = process,
-                         vertexIndex = vtx,
-                         debug       = False,
-                         label = '' + str(vtx))
+# All jets are now handled in MicroAODCustomize.py
+# Switch from PFCHS to PUPPI with puppi=1 argument (both if puppi=2)
 
 process.p = cms.Path(process.flashggMicroAODSequence)
 process.e = cms.EndPath(process.out)
