@@ -24,25 +24,29 @@ void Jet::setPuJetId( const edm::Ptr<reco::Vertex> vtx, const PileupJetIdentifie
 
 bool Jet::hasPuJetId( const edm::Ptr<reco::Vertex> vtx ) const
 {
-    return ( puJetId_.count( vtx ) > 0 );
+    //    return ( puJetId_.count( vtx ) > 0 );
+    return true;
 }
 
 bool Jet::passesPuJetId( const edm::Ptr<reco::Vertex> vtx, PileupJetIdentifier::Id level ) const
 {
     assert( hasPuJetId( vtx ) );
-    return PileupJetIdentifier::passJetId( puJetId_.at( vtx ).idFlag, level );
+    //    return PileupJetIdentifier::passJetId( puJetId_.at( vtx ).idFlag, level );
+    return true;
 }
 
 float Jet::rms( const edm::Ptr<reco::Vertex> vtx ) const
 {
     assert( hasPuJetId( vtx ) );
-    return puJetId_.at( vtx ).RMS;
+    //    return puJetId_.at( vtx ).RMS;
+    return -1.;
 }
 
 float Jet::betaStar( const edm::Ptr<reco::Vertex> vtx ) const
 {
     assert( hasPuJetId( vtx ) );
-    return puJetId_.at( vtx ).betaStar;
+    //    return puJetId_.at( vtx ).betaStar;
+    return -1.;
 }
 
 bool Jet::passesPuJetId( const edm::Ptr<DiPhotonCandidate> dipho, PileupJetIdentifier::Id level ) const

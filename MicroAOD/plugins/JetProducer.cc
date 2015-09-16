@@ -9,7 +9,7 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
-#include "RecoJets/JetProducers/interface/PileupJetIdAlgo.h"
+//#include "RecoJets/JetProducers/interface/PileupJetIdAlgo.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 #include "flashgg/DataFormats/interface/VertexCandidateMap.h"
 
@@ -30,8 +30,8 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         EDGetTokenT<View<reco::Vertex> >  vertexToken_;
         EDGetTokenT< VertexCandidateMap > vertexCandidateMapToken_;
-        unique_ptr<PileupJetIdAlgo>  pileupJetIdAlgo_;
-        ParameterSet pileupJetIdParameters_;
+        //        unique_ptr<PileupJetIdAlgo>  pileupJetIdAlgo_;
+        //        ParameterSet pileupJetIdParameters_;
         bool usePuppi;
     };
 
@@ -40,11 +40,11 @@ namespace flashgg {
         jetToken_( consumes<View<pat::Jet> >( iConfig.getParameter<InputTag> ( "JetTag" ) ) ),
         diPhotonToken_( consumes<View<DiPhotonCandidate> >( iConfig.getParameter<InputTag>( "DiPhotonTag" ) ) ),
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
-        vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTag" ) ) ),
-        pileupJetIdParameters_( iConfig.getParameter<ParameterSet>( "PileupJetIdParameters" ) ),
-        usePuppi( iConfig.getUntrackedParameter<bool>( "UsePuppi", false ) )
+        vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTag" ) ) )
+        //        pileupJetIdParameters_( iConfig.getParameter<ParameterSet>( "PileupJetIdParameters" ) ),
+        //        usePuppi( iConfig.getUntrackedParameter<bool>( "UsePuppi", false ) )
     {
-        pileupJetIdAlgo_.reset( new PileupJetIdAlgo( pileupJetIdParameters_ ) );
+        //        pileupJetIdAlgo_.reset( new PileupJetIdAlgo( pileupJetIdParameters_ ) );
 
         produces<vector<flashgg::Jet> >();
     }
@@ -77,6 +77,7 @@ namespace flashgg {
             Ptr<pat::Jet> pjet = jets->ptrAt( i );
             flashgg::Jet fjet = flashgg::Jet( *pjet );
 
+            /*
             for( unsigned int j = 0 ; j < diPhotons->size() ; j++ ) {
                 Ptr<DiPhotonCandidate> diPhoton = diPhotons->ptrAt( j );
                 Ptr<reco::Vertex> vtx = diPhoton->vtx();
@@ -117,6 +118,7 @@ namespace flashgg {
                     fjet.setPuJetId( primaryVertices->ptrAt( 0 ), lPUJetId ); //temporarily make puppi jets pass
                 }
             }
+            */
             jetColl->push_back( fjet );
         }
 
