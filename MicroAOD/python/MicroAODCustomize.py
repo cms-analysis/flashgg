@@ -49,6 +49,11 @@ class MicroAODCustomize(object):
                               VarParsing.VarParsing.multiplicity.singleton,
                               VarParsing.VarParsing.varType.int,
                                'timing')
+        self.options.register ('puppi',
+                               0,
+                              VarParsing.VarParsing.multiplicity.singleton,
+                              VarParsing.VarParsing.varType.int,
+                               'puppi')
 
         self.parsed_ = False
 
@@ -96,7 +101,15 @@ class MicroAODCustomize(object):
             self.customizeFileNames(process)
         if self.timing == 1:
             self.customizeTiming(process)
-
+        if self.puppi == 0:
+            self.customizePFCHS(process)
+            self.customizeRemovePuppi(process)
+        elif self.puppi == 1:
+            self.customizePuppi(process)
+            self.customizeRemovePFCHS(process)
+        else: # e.g. 2
+            self.customizePFCHS(process)
+            self.customizePuppi(process)
             
     # signal specific customization
     def customizeSignal(self,process):
@@ -144,6 +157,42 @@ class MicroAODCustomize(object):
         from Validation.Performance.TimeMemoryInfo import customise as TimeMemoryCustomize
         TimeMemoryCustomize(process)
         process.MessageLogger.cerr.threshold = 'WARNING'
+
+    def customizePFCHS(self,process):    
+        # need to allow unscheduled processes otherwise reclustering function will fail
+        process.options = cms.untracked.PSet(
+            allowUnscheduled = cms.untracked.bool(True)
+            )
+        from flashgg.MicroAOD.flashggJets_cfi import addFlashggPFCHSJets
+        from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
+        for vtx in range(0,maxJetCollections):
+            addFlashggPFCHSJets (process = process,
+                                 vertexIndex =vtx,
+                                 doQGTagging = True,
+                                 label = '' + str(vtx))
             
+    def customizePuppi(self,process):
+        # need to allow unscheduled processes otherwise reclustering function will fail                                                            
+        process.options = cms.untracked.PSet(
+            allowUnscheduled = cms.untracked.bool(True)
+            )
+        from flashgg.MicroAOD.flashggJets_cfi import addFlashggPuppiJets
+        from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
+        for vtx in range(0,maxJetCollections):
+            addFlashggPuppiJets (process     = process,                                                                                           \
+                                     vertexIndex = vtx,
+                                 debug       = False,
+                                 label = '' + str(vtx))
+
+    def customizeRemovePFCHS(self,process):
+        process.flashggMicroAODSequence.remove(process.flashggVertexMapForCHS)
+        process.flashggMicroAODSequence.remove(process.flashggFinalJets)
+        process.out.outputCommands.remove('keep *_flashggFinalJets_*_*')
+
+    def customizeRemovePuppi(self,process):
+        process.flashggMicroAODSequence.remove(process.flashggVertexMapForPUPPI)
+        process.flashggMicroAODSequence.remove(process.flashggFinalPuppiJets)
+        process.out.outputCommands.remove('keep *_flashggFinalPuppiJets_*_*')
+
 # customization object
 customize = MicroAODCustomize()
