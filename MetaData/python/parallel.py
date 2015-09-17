@@ -10,9 +10,30 @@ from multiprocessing import cpu_count
 from time import sleep
 from math import floor
 
+# -----------------------------------------------------------------------------------------------------
+class BatchRegistry:
+    
+    #----------------------------------------
+    @staticmethod
+    def getRunner(batchSystem):
+        if batchSystem == "lsf" : return LsfJob
+        elif batchSystem == "sge": return SGEJob
+        else:
+            raise Exception,"Unrecognized batchSystem:", batchSystem
+
+    #----------------------------------------
+    @staticmethod
+    def getMonitor(batchSystem):
+        if batchSystem == "lsf" : return LsfMonitor
+        elif batchSystem == "sge": return SGEMonitor
+        else:
+            raise Exception,"Unrecognized batchSystem:", batchSystem
+    
+
+# -----------------------------------------------------------------------------------------------------
 class LsfJob(object):
     """ a thread to run bsub and wait until it completes """
-    
+
     #----------------------------------------
     def __init__(self, lsfQueue, jobName="", async=False, replacesJob=None):
         """ @param cmd is the command to be executed inside the bsub script. Some CMSSW specific wrapper
@@ -130,22 +151,29 @@ class LsfJob(object):
         
         return self.exitStatus, output
 
-
 # -----------------------------------------------------------------------------------------------------
-class TarballLsfJob(LsfJob):
+class TarballJob():
     
     #----------------------------------------
     def __init__(self,*args,**kwargs):
         
         
+        self.runner          = kwargs.pop("runner",LsfJob)
         self.stage_dest      = kwargs.pop("stage_dest")
         self.stage_cmd       = kwargs.pop("stage_cmd")
         self.stage_patterns  = kwargs.pop("stage_patterns")
         self.tarball         = kwargs.pop("tarball",None)
         self.job_outdir      = kwargs.pop("job_outdir",None)
 
-        super(TarballLsfJob,self).__init__(*args,**kwargs)
+        self.runner = self.runner(*args,**kwargs)
         
+    def __getattr__(self,name):
+        ## return runner attributes
+        if hasattr(self.runner,name):
+            return getattr(self.runner,name)
+        
+        raise AttributeError, "No attribute %s in runner instance %s" % (name,str(self.runner))
+
     #----------------------------------------
     def __call__(self,cmd):
         
@@ -206,16 +234,19 @@ class TarballLsfJob(LsfJob):
         script += 'exit $retval\n'
         script += '\n'
         
-        return self.run(script)
-        
+        return self.runner.run(script)
+
 
 # -----------------------------------------------------------------------------------------------------
-class TarballLsfJobFactory(object):
+class TarballJobFactory(object):
     
     # ------------------------------------------------------------------------------------------------
     def __init__(self,stage_dest,
-                 stage_cmd="cp -pv",stage_patterns=["'*.root'","'*.xml'"],job_outdir=None):
+                 stage_cmd="cp -pv",stage_patterns=["'*.root'","'*.xml'"],job_outdir=None,runner=None,batchSystem="lsf"):
         
+        if not runner:
+            self.runner = BatchRegistry.getRunner(batchSystem)
+            
         self.stage_dest = stage_dest
         self.stage_cmd  = stage_cmd
         self.stage_patterns  = stage_patterns
@@ -290,13 +321,15 @@ class TarballLsfJobFactory(object):
         
         stage_cmd = self.getStageCmd()
             
+        kwargs["runner"]         = self.runner
         kwargs["stage_dest"]     = self.stage_dest
         kwargs["stage_cmd"]      = stage_cmd
         kwargs["stage_patterns"] = self.stage_patterns
         kwargs["tarball"]        = self.tarball
         kwargs["job_outdir"]     = self.job_outdir
         
-        return TarballLsfJob(*args,**kwargs)
+        ## return TarballLsfJob(*args,**kwargs)        
+        return TarballJob(*args,**kwargs)
 
         
 
@@ -342,9 +375,115 @@ class LsfMonitor:
                     jobsmap.pop(jobid)
             sleep(0.1)
 
+
     def cancelJob(self,jobid):
         commands.getstatusoutput("bkill -s 9 %d" % jobid)
         
+# -----------------------------------------------------------------------------------------------------
+class SGEJob(LsfJob):
+    """ a thread to run qsub and wait until it completes """
+
+    def __str__(self):
+        return "SGEJob: %s %s" % ( self.lsfQueue, self.jobName )
+
+    def run(self,script):
+
+        qsubCmdParts = [ "qsub",
+                         "-q " + self.lsfQueue,
+                         ]
+
+        self.cmd = cmd
+        if not self.async:
+            qsubCmdParts.append("-sync y")  # qsub waits until job completes
+
+        if( self.jobName ):
+            logdir = os.path.dirname(self.jobName)
+            if not os.path.exists(logdir):
+                os.mkdir(logdir)
+            qsubCmdParts.append("-N " + self.jobName.strip("/").replace("/","_"))
+            qsubCmdParts.append("-o %s.log -e %s.log" % (self.jobName,self.jobName))
+
+        qsubCmd = " ".join(qsubCmdParts)
+
+        import subprocess
+        sge = subprocess.Popen(qsubCmd, shell=True, # bufsize=bufsize,                                                                                                                                                               
+                               stdin=subprocess.PIPE,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE,
+                               close_fds=True)
+        
+        out,err = sge.communicate(script)
+                                                         
+        self.exitStatus = sge.returncode
+
+        if self.exitStatus != 0:
+            print "error running job",self.jobName, self.exitStatus
+            print out
+            print err
+        else:
+            self.jobid = None
+            for line in out.split("\n"):
+                if line.startswith("Your job"):
+                    self.jobid = int(line.split(" ")[2])
+                    break
+
+        if self.async:
+            return self.exitStatus, (out,(self.jobName,self.jobid))
+
+        return self.handleOutput()
+
+    def handleOutput(self):
+
+        if self.async:
+            result = commands.getstatusoutput("qstat")
+#                print "We are in handleOutput and we have the following output:",result
+            self.exitStatus = 0 # assume it is done unless listed
+            for line in result[1].split("\n"):
+                if line.startswith(str(self.jobid)):
+                    self.exitStatus = -1
+                    break
+
+        output = ""
+        if self.jobName:
+            try:
+                with open("%s.log" % self.jobName) as lf:
+                    output = lf.read()
+                    lf.close()
+            except:
+                output = "%s.log" % self.jobName
+
+        return self.exitStatus, output
+
+# -----------------------------------------------------------------------------------------------------
+class SGEMonitor(LsfMonitor):
+    def __call__(self):
+        jobsmap = {}
+
+        while not self.stop:
+            if not self.jobsqueue.empty():
+                job = self.jobsqueue.get()
+                jobsmap[str(job.jobid)] = job
+
+            status = commands.getstatusoutput("qstat")
+            jobids = []
+            statuses = []
+            for line in status[1].split("\n")[2:]:
+                toks = line.split()
+                jobids.append(toks[0])
+                statuses.append(toks[2])
+#                print "DEBUG jobid jobids",jobid,jobids[0]
+#                print type(jobid),type(jobids[0])
+#                print
+#                print jobs
+            for jobid in jobsmap.keys():
+                if not jobids.count(jobid):
+                    # i.e. job is no longer on the list, and hence done
+                    lsfJob = jobsmap[jobid]
+                    self.retqueue.put( (lsfJob, [lsfJob.cmd], lsfJob.handleOutput()) )
+                    jobsmap.pop(jobid)
+            sleep(5.)
+
+
 # -----------------------------------------------------------------------------------------------------
 class Wrap:
     def __init__(self, func, args, retqueue, runqueue):
@@ -367,7 +506,7 @@ class Wrap:
     
 # -----------------------------------------------------------------------------------------------------
 class Parallel:
-    def __init__(self,ncpu,lsfQueue=None,lsfJobName="job",asyncLsf=False,maxThreads=500,jobDriver=LsfJob):
+    def __init__(self,ncpu,lsfQueue=None,lsfJobName="job",asyncLsf=False,maxThreads=500,jobDriver=None,batchSystem="lsf"):
         self.returned = Queue()
 	self.njobs = 0
         self.JobDriver=jobDriver
@@ -378,13 +517,18 @@ class Parallel:
         self.sem = Semaphore()
         self.maxThreads = maxThreads
         self.asyncLsf = asyncLsf
+        self.batchSystem = batchSystem
+
         if self.lsfQueue:
             self.running = Queue()
         else:
             self.running = Queue(ncpu)
+        
+        if not self.JobDriver:
+            self.JobDriver = BatchRegistry.getRunner(self.batchSystem)
             
         if self.lsfQueue and self.asyncLsf:
-            self.lsfMon = LsfMonitor(self.lsfJobs,self.returned)
+            self.lsfMon = BatchRegistry.getMonitor(self.batchSystem)(self.lsfJobs,self.returned)
             thread = Thread(None,self.lsfMon)
             thread.start()
         
@@ -419,6 +563,7 @@ class Parallel:
             return
         
         job = self.JobDriver(self.lsfQueue,jobName,async=True)
+
         job.jobid = batchId
         job.cmd = " ".join([cmd]+args)
         self.lsfJobs.put(job)
