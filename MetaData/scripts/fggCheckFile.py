@@ -19,30 +19,50 @@ def main(args):
             break
     if not fin or fin.IsZombie():
         sys.exit(1)
-    
-    lumi = fin.Get("LuminosityBlocks")
-    ne = lumi.Draw("1>>totEvents(1,0,2)","edmMergeableCounter_eventCount__FLASHggMicroAOD.obj.value","goff")
-    if  ne>0:
-        lumi.Draw("1>>totWeights(1,0,2)","edmMergeableDouble_weightsCount_totalWeight_FLASHggMicroAOD.obj.value","goff")
-        totEvents = ROOT.gDirectory.Get("totEvents").Integral()
-        totWeights = ROOT.gDirectory.Get("totWeights").Integral()
-    else:
-        events = fin.Get("Events")
-        totEvents = events.GetEntries()
-        ne = events.Draw("1>>totWeights(1,0,2)","GenEventInfoProduct_generator__GEN.obj.weights_[0]","goff")
-        if ne < 0:
-            ne = events.Draw("1>>totWeights(1,0,2)","GenEventInfoProduct_generator__SIM.obj.weights_[0]","goff")
-        if ne > 0:
+
+    events = fin.Get("Events")
+    if events.GetEntriesFast() > 0:
+        events.GetEntry(0)
+        isData=events.EventAuxiliary.isRealData()
+    elif "Run20" in fName: # try to guess from file name
+        isData=True
+
+    if not isData:
+        lumi = fin.Get("LuminosityBlocks")
+        ne = lumi.Draw("1>>totEvents(1,0,2)","edmMergeableCounter_eventCount__FLASHggMicroAOD.obj.value","goff")
+        ne = lumi.Draw("1>>totWeights(1,0,2)","edmMergeableDouble_weightsCount_totalWeight_FLASHggMicroAOD.obj.value","goff")
+        if  ne>0:
+            totEvents = ROOT.gDirectory.Get("totEvents").Integral()
             totWeights = ROOT.gDirectory.Get("totWeights").Integral()
         else:
-            totWeights = 0.
+            totEvents = events.GetEntries()
+            ne = events.Draw("1>>totWeights(1,0,2)","GenEventInfoProduct_generator__GEN.obj.weights_[0]","goff")
+            if ne < 0:
+                ne = events.Draw("1>>totWeights(1,0,2)","GenEventInfoProduct_generator__SIM.obj.weights_[0]","goff")
+            if ne > 0:
+                totWeights = ROOT.gDirectory.Get("totWeights").Integral()
+            else:
+                totWeights = 0.
+    else:
+        totEvents = events.GetEntriesFast()
+        totWeights = totEvents
 
-    ## FIXME: add PU integrationx
-    
-
-    output = { "nevents" : int(totEvents),
-               "weights" : totWeights
+    output = { "events"    : int(events.GetEntriesFast()),
+               "totEvents" : int(totEvents),
+               "weights" : totWeights,
                }
+
+    ### get list of processed lumi sections in data
+    if isData:
+        from DataFormats.FWLite import Lumis
+        runsLumisDict = {}
+        print fin.GetName()
+        lumis = Lumis ([fin.GetName()])
+        delivered = recorded = 0
+        for lum in lumis:
+            runList = runsLumisDict.setdefault (lum.aux().run(), [])
+            runList.append( lum.aux().id().luminosityBlock() )
+        output["lumis"] = runsLumisDict
     
     jf = open(jsonName,"w+")
     jf.write(json.dumps(output))

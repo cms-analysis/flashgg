@@ -20,6 +20,11 @@ namespace flashgg {
         void bookTreeVariables( TTree *target, const std::map<std::string, std::string> &replacements );
 
         void fill( const edm::EventBase &event );
+
+    private:
+        edm::InputTag triggerTag_;
+        std::vector<std::pair<std::string, bool>> bits_;
+
     };
 
 }

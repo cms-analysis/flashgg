@@ -13,7 +13,7 @@ namespace flashgg {
 
         auto variables = cfg.getParameter<vector<string> >( "variables" );
         for( auto &expr : variables ) {
-            cout << expr << endl;
+            //            cout << expr << endl;
             functors_.push_back( functor_type( expr ) );
         }
 
@@ -85,7 +85,7 @@ namespace flashgg {
     bool CutBasedPhotonObjectSelector::passInverted( const Photon &pho ) const
     {
         auto cat = classifier_( pho );
-        auto isel = selections_.find( cat.first );
+        auto isel = selections_.find( cat.first.second );
         if( isel == selections_.end() ) {
             return false;
         }
@@ -109,7 +109,7 @@ namespace flashgg {
     bool CutBasedPhotonObjectSelector::pass( const Photon &pho ) const
     {
         auto cat = classifier_( pho );
-        auto isel = selections_.find( cat.first );
+        auto isel = selections_.find( cat.first.second );
         if( isel == selections_.end() ) {
             return false;
         }

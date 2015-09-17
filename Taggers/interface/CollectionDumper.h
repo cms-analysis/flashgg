@@ -19,6 +19,7 @@
 
 #include "FWCore/Utilities/interface/TypeID.h"
 #include <typeindex>
+#include <typeinfo>
 #include <unordered_map>
 
 #include "flashgg/Taggers/interface/StringHelpers.h"
@@ -27,7 +28,9 @@
 #include "RooMsgService.h"
 
 #include "flashgg/MicroAOD/interface/CutBasedClassifier.h"
+#include "flashgg/MicroAOD/interface/CutAndClassBasedClassifier.h"
 #include "flashgg/Taggers/interface/GlobalVariablesDumper.h"
+#include <boost/type_index.hpp>
 
 
 /**
@@ -49,7 +52,7 @@ namespace flashgg {
     public:
         TrivialClassifier( const edm::ParameterSet &cfg ) {}
 
-        std::pair<std::string, int> operator()( const T &obj ) const { return std::make_pair( "", 0 ); }
+        std::pair<std::pair<std::string, std::string>, int> operator()( const T &obj ) const { return std::make_pair( std::make_pair( "", "" ), 0 ); }
     };
 
     template <class T>
@@ -66,16 +69,16 @@ namespace flashgg {
             }
         }
 
-        std::pair<std::string, int> operator()( const T &obj ) const
+        std::pair<std::pair <std::string, std::string>, int> operator()( const T &obj ) const
         {
             int id = ( int )obj;
             std::type_index idx( typeid( obj ) );
             auto cached = cache_.find( idx );
-            if( cached != cache_.end() ) { return std::make_pair( cached->second, id ); }
-            auto ret = std::make_pair( edm::stripNamespace( edm::TypeID( obj ).friendlyClassName() ), id );
-            auto rm = remap_.find( ret.first );
-            if( rm != remap_.end() ) { ret.first = rm->second; }
-            cache_.insert( std::make_pair( idx, ret.first ) );
+            if( cached != cache_.end() ) { return std::make_pair( std::make_pair( cached->second, "" ), id ); }
+            auto ret = std::make_pair( std::make_pair( edm::stripNamespace( edm::TypeID( obj ).friendlyClassName() ), "" ), id );
+            auto rm = remap_.find( ret.first.first );
+            if( rm != remap_.end() ) { ret.first = std::make_pair( rm->second, "" ); }
+            cache_.insert( std::make_pair( idx, ret.first.first ) );
             return ret;
         }
 
@@ -95,6 +98,7 @@ namespace flashgg {
         typedef StringObjectFunction<CandidateT, true> function_type;
         typedef CategoryDumper<function_type, candidate_type> dumper_type;
         typedef ClassifierT classifier_type;
+        typedef std::pair<std::string, std::string> KeyT;
 
         /// default constructor
         CollectionDumper( const edm::ParameterSet &cfg, TFileDirectory &fs );
@@ -118,6 +122,7 @@ namespace flashgg {
         double lumiWeight_;
         int maxCandPerEvent_;
         double sqrtS_;
+        std::string systLabel_;
         std::string nameTemplate_;
 
         bool dumpTrees_;
@@ -126,12 +131,13 @@ namespace flashgg {
         bool dumpHistos_, dumpGlobalVariables_;
 
         classifier_type classifier_;
-        std::map<std::string, bool> hasSubcat_;
+        std::map< std::pair<std::string, std::string>, bool> hasSubcat_;
 
         // event weight
         float weight_;
 
-        std::map<std::string, std::vector<dumper_type> > dumpers_;
+        //std::map<std::string, std::vector<dumper_type> > dumpers_; FIXME template key
+        std::map< KeyT, std::vector<dumper_type> > dumpers_;
         RooWorkspace *ws_;
         /// TTree * bookTree(const std::string & name, TFileDirectory& fs);
         /// void fillTreeBranches(const flashgg::Photon & pho)
@@ -148,6 +154,7 @@ namespace flashgg {
         lumiWeight_( cfg.getParameter<double>( "lumiWeight" ) ),
         maxCandPerEvent_( cfg.getParameter<int>( "maxCandPerEvent" ) ),
         sqrtS_( cfg.getUntrackedParameter<double>( "sqrtS", 13. ) ),
+        systLabel_( cfg.getUntrackedParameter<std::string>( "systLabel", "" ) ),
         nameTemplate_( cfg.getUntrackedParameter<std::string>( "nameTemplate", "$COLLECTION" ) ),
         dumpTrees_( cfg.getUntrackedParameter<bool>( "dumpTrees", false ) ),
         dumpWorkspace_( cfg.getUntrackedParameter<bool>( "dumpWorkspace", false ) ),
@@ -175,10 +182,14 @@ namespace flashgg {
         auto categories = cfg.getParameter<std::vector<edm::ParameterSet> >( "categories" );
         for( auto &cat : categories ) {
             auto label   = cat.getParameter<std::string>( "label" );
+            auto systLabel = cat.getParameter<std::string>( "systLabel" );
             auto subcats = cat.getParameter<int>( "subcats" );
-            auto name = replaceString( nameTemplate_, "$LABEL", label );
-            hasSubcat_[label] = ( subcats > 0 );
-            auto &dumpers = dumpers_[label];
+            auto label2 = replaceString( label, "__" + systLabel, "" );
+            auto name = replaceString( nameTemplate_, "$LABEL", label2 );
+            name = replaceString( name, "$SYST", systLabel );
+            auto key = std::make_pair( label2, systLabel );
+            hasSubcat_[key] = ( subcats > 0 );
+            auto &dumpers = dumpers_[key];
             if( subcats == 0 ) {
                 name = replaceString( replaceString( replaceString( name, "_$SUBCAT", "" ), "$SUBCAT_", "" ), "$SUBCAT", "" );
                 dumpers.push_back( dumper_type( name, cat, globalVarsDumper_ ) );
@@ -256,22 +267,31 @@ namespace flashgg {
         edm::Handle<collection_type> collectionH;
         event.getByLabel( src_, collectionH );
         const auto &collection = *collectionH;
-
         weight_ = eventWeight( event );
 
         if( globalVarsDumper_ ) { globalVarsDumper_->fill( event ); }
-
         int nfilled = maxCandPerEvent_;
+
+        // for (auto &dumper : dumpers_){
+        //   std::cout << "DEBUG available dumper keys " << dumper.first.first <<  ", " << dumper.first.second << std::endl;
+        //}
+
         for( auto &cand : collection ) {
             auto cat = classifier_( cand );
             auto which = dumpers_.find( cat.first );
+            //    std::cout << " DEBUG " << cat.first.first << ", " << cat.first.second << std::endl;
+            //    auto count = dumpers_.count( cat.first );
+            //    std::cout << ">> DEBUG Number of matches with that key " << count  << std::endl;
+
             if( which != dumpers_.end() ) {
+                // which->second.print();
                 int isub = ( hasSubcat_[cat.first] ? cat.second : 0 );
                 // FIXME per-candidate weights
                 which->second[isub].fill( cand, weight_, maxCandPerEvent_ - nfilled );
                 --nfilled;
+                //   which++;
             }
-            if( nfilled == 0 ) { break; }
+            if( ( maxCandPerEvent_ > 0 )  && nfilled == 0 ) { break; }
         }
     }
 

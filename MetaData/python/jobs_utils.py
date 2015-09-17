@@ -2,7 +2,7 @@ from optpars_utils import *
 
 from pprint import pprint
 
-import os,json,fcntl
+import os,json,fcntl,stat
 from parallel  import Parallel
 from threading import Semaphore
 
@@ -25,10 +25,10 @@ def shell_expand(string):
     return None
 
 # -------------------------------------------------------------------------------
-def dumpCfg(options):
+def dumpCfg(options,skip=[]):
     cfg = {}
     for key,val in options.__dict__.iteritems():
-        if not key.startswith("__opt__") and key != "dumpCfg":
+        if not key.startswith("__opt__") and key != "dumpCfg" and not key in skip:
             cfg[key] = val
     return json.dumps( cfg,indent=4)
 
@@ -57,6 +57,19 @@ class JobsManager(object):
                             help="number of jobs to run"),
                 make_option("-q","--queue",dest="queue",type="string",default=None,
                             help="LSF queue to use. default: %default"),
+                make_option("--sync-lsf",dest="asyncLsf",action="store_false",default=True,
+                            help="Run LSF jobs in sync mode (with -K). This will spawn one thread per job. Use only if you know what you are doing."
+                            " default: False"),
+                make_option("--use-tarball",dest="use_tarball",action="store_true",default=True,
+                            help="Make a sandbox tarball for the task default: %default"),
+                make_option("--no-use-tarball",dest="useTarball",action="store_false",default=True,
+                            help="Do not make a sandbox tarball for the task."),
+                make_option("--stage-to",dest="stageTo",action="store",default=None,type="string",
+                            help="Stage output to folder. default: %default"),                
+                make_option("--stage-cmd",dest="stageCmd",action="store",default="guess",type="string",
+                            help="Stage out command. (use 'guess' to have the script guessing the command from the output folder) default : %default"),                
+                make_option("--summary",dest="summary",action="store_true",default=False,
+                            help="Print jobs summary and exit"),
                 make_option("-o","--output",dest="output",type="string",
                             default="output.root", help="output file name. default: %default"),
                 make_option("-d","--outputDir",dest="outputDir",type="string",
@@ -101,23 +114,58 @@ class JobsManager(object):
             self.args = self.args+shell_args(str(self.options.cmdLine))
         
         if self.options.jobExe:
-            self.args = [shell_expand(self.options.jobExe)]+self.args
-            
+            self.options.jobExe = shell_expand(self.options.jobExe)
+            if not self.args[0] == self.options.jobExe:
+                self.args = [self.options.jobExe]+self.args
+
+    # -------------------------------------------------------------------------------------------------------------------
     def __call__(self):
         """
         __call__
         Run all jobs.
         """
-        self.parallel = Parallel(self.options.ncpu,lsfQueue=self.options.queue,lsfJobName="%s/runJobs" % self.options.outputDir,asyncLsf=False)
+        if self.options.summary:
+            self.options.dry_run = True
+            self.options.cont = True
+            
+        self.jobFactory = TarballLsfJobFactory(self.options.stageTo,self.options.stageCmd,job_outdir=self.options.outputDir)
+        self.parallel = Parallel(self.options.ncpu,lsfQueue=self.options.queue,lsfJobName="%s/runJobs" % self.options.outputDir,
+                                 asyncLsf=self.options.asyncLsf,jobDriver=self.jobFactory)
         
         self.jobs = None
         if self.options.cont:
-            pass
+            if self.options.asyncLsf:
+                self.loadLsfMon()
         else:
             self.firstRun()
             
         self.monitor()
+        self.parallel.stop()
+
+    # -------------------------------------------------------------------------------------------------------------------
+    def loadLsfMon(self):
         
+        with open("%s/task_config.json" % (self.options.outputDir), "r" ) as cfin:
+            task_config = json.loads(cfin.read())
+        jobs = task_config["jobs"]
+        
+        if self.options.useTarball:
+            self.jobFactory.setTarball(task_config["tarball"])
+            if not self.options.stageTo:
+                self.jobFactory.stageDest( os.path.abspath(self.options.outputDir) )
+
+        self.parallel.setJobId(task_config.get("last_job_id",1))
+        for job in jobs:
+            cmd, args, outfile, nsub, ret, batchId = job
+            if type(batchId) == tuple or type(batchId) == list:
+                jobName,batchId = batchId
+            else:
+                jobName=None
+            if ret != 0 and nsub < self.options.maxResub:
+                self.parallel.addJob(cmd,args,batchId,jobName)
+            
+
+    # -------------------------------------------------------------------------------------------------------------------
     def firstRun(self):
 
         (options,args) = (self.options, self.args)
@@ -126,24 +174,55 @@ class JobsManager(object):
         outputPfx = options.output.replace(".root","")
         
         if not options.outputDir:
-            sys.exit("Please specify an output folder")
+            sys.exit("\nPlease specify an output folder using the -d option\n")
 
         if options.dumpCfg:
             print ( dumpCfg(options) )
             sys.exit(0)
-
+            
         if not os.path.exists(options.outputDir):
             os.mkdir(options.outputDir)
         outputPfx = "%s/%s" % ( options.outputDir, outputPfx )
         
-        args.append("processIdMap=%s/config.json" % options.outputDir)
-        ## options.cmdLine += " %s" % (" ".join(args))
-        options.cmdLine = str(" ".join(args))
+
+        args.append("processIdMap=%s/config.json" % os.path.abspath(options.outputDir))
         with open("%s/config.json" % (options.outputDir), "w+" ) as fout:
-            fout.write( dumpCfg(options) )
+            fout.write( dumpCfg(options,skip=["dry_run","summary"]) )
             
+        pset = args[0] if not options.jobExe else args[1]
+        with open(pset,"r") as pin:
+            with open("%s/%s" % ( options.outputDir, os.path.basename(pset) ), "w+" ) as pout:
+                pout.write(pin.read())
+                pout.close()
+                if not options.jobExe: os.chmod( "%s/%s" % ( options.outputDir, os.path.basename(pset)), 0755  )
+            pin.close()
+        pset = "%s/%s" % ( options.outputDir, os.path.basename(pset) )
+        pset = os.path.abspath(pset)
         
-        
+        if options.useTarball:
+            apset = os.path.abspath(pset)
+            self.jobFactory.mkTarball("%s/sandbox.tgz" % os.path.abspath(options.outputDir),
+                                      tarball_entries=[apset,"python","lib","bin"],tarball_patterns={"src/*":"data"},
+                                      tarball_transform="'s,%s,pset.py,'" % (apset.lstrip("/"))
+                                      )
+            if not options.queue:
+                print "\nWARNING: You specified the --use-tarball option but no batch queue. The tarball was created but the jobs won't actually use it."
+                print "           To avoid this printout run with --no-use-tarball or specify a batch queue using the --queue option.\n"
+                options.useTarball = False
+                
+        if not options.stageTo:
+            self.jobFactory.stageDest( os.path.abspath(options.outputDir) )
+            options.stageTo = os.path.abspath(options.outputDir)
+            print "\nWill stage output to %s using the command '%s'\n" % ( self.jobFactory.stage_dest, self.jobFactory.getStageCmd() )
+
+        if options.jobExe:
+            args[1] = pset
+        else:
+            args[0] = pset
+
+        # store cmdLine
+        options.cmdLine = str(" ".join(args))
+
         outfiles = []
         doutfiles = {}
         poutfiles = {}
@@ -159,56 +238,82 @@ class JobsManager(object):
                     pyjob = ""
                 else:
                     pyjob = job
+                if type(dset) == list:
+                    dset,dopts = dset
+                else:
+                    dopts = {}
                 jobargs = copy(args[1:])
                 dsetName = dset.lstrip("/").replace("/","_")
                 outfile = "%s_%s.root" % ( outputPfx, dsetName )
                 doutfiles[dset] = ( str(outfile),[] )
                 jobargs.extend( ["dataset=%s" % dset, "outputFile=%s" % outfile ] )
+                # add (and replace) per-dataset job arguments
+                dargs = dopts.get("args",[])
+                if type(dargs) != list:
+                    print "\nERROR : dataset-specific arguments should be list not %s" % (type(dargs))
+                    print "          dataset %s" % dset
+                    sys.exit(-1)
+                if len(dargs) > 0:
+                    replace = {}
+                    for arg in dargs:
+                        aname,val = arg.split("=")
+                        replace[aname] = arg
+                    newargs = []
+                    anames = []
+                    for arg in jobargs:
+                        if not "=" in arg: 
+                            newargs.append(arg)
+                            continue
+                        aname,val = arg.split("=")
+                        if aname in replace: newargs.append( replace.pop(aname) )
+                        else: newargs.append(arg)
+                    jobargs = newargs
+                    for aname,arg in replace.iteritems(): jobargs.append(arg)
                 print "running: %s %s" % ( job, " ".join(jobargs) )
-                if options.njobs != 0:
-                    print  "splitting in (up to) %d jobs\n checking how many are needed... " % options.njobs
+                njobs = dopts.get("njobs",options.njobs)
+                if  njobs != 0:
+                    print  "splitting in (up to) %d jobs\n checking how many are needed... " % njobs, 
                     dnjobs = 0
-                    dargs = jobargs+shell_args("nJobs=%d" % (options.njobs)) 
+                    dargs = jobargs+shell_args("nJobs=%d" % (njobs)) 
                     ret,out = parallel.run("python %s" % pyjob,dargs+shell_args("dryRun=1 getMaxJobs=1 dumpPython=%s.py" % os.path.join(options.outputDir,dsetName) ),interactive=True)[2]
                     maxJobs = self.getMaxJobs(out)
+                    print maxJobs
                     if maxJobs < 0:
-                        print "Error getting numer of jobs to be submitted"
+                        print "Error getting number of jobs to be submitted"
                         print out
                     hadd = self.getHadd(out,outfile)
-                    ## for ijob in range(options.njobs):
+                    print " now submitting jobs",
                     for ijob in range(maxJobs):
                         ## FIXME allow specific job selection
-                        ## iargs = dargs+shell_args("jobId=%d" % (ijob))
                         iargs = jobargs+shell_args("nJobs=%d jobId=%d" % (maxJobs, ijob))
-                        ## # run python <command-line> dryRun=1 to check if the job needs to be run
-                        ## ret,out = parallel.run("python %s" % pyjob,iargs+shell_args("dryRun=1"),interactive=True)[2]
-                        ## if ret != 0:
-                        ##     continue
                         dnjobs += 1 
+                        batchId = -1
                         if not options.dry_run:
-                            ## FIXME: 
-                            ##   - handle output
-                            ##   - store log files
-                            parallel.run(job,iargs)
-                        ## outfiles.append( outfile.replace(".root","_%d.root" % ijob) )
-                        ## output = self.getHadd(out,outfile.replace(".root","_%d.root" % ijob))
+                            ret,out = parallel.run(job,iargs)[-1]
+                            if self.options.queue and self.options.asyncLsf:
+                                batchId = out[1]
+                            print ".",
                         output = hadd.replace(".root","_%d.root" % ijob)
                         outfiles.append( output )
                         doutfiles[dset][1].append( outfiles[-1] )
                         poutfiles[name][1].append( outfiles[-1] )
-                        jobs.append( (job,iargs,output,0,-1) )
-                    print " %d jobs actually submitted" % dnjobs                
+                        jobs.append( (job,iargs,output,0,-1,batchId) )
+                    print "\n %d jobs submitted" % dnjobs                
                 else:
                     ret,out = parallel.run("python %s" % pyjob,jobargs+shell_args("dryRun=1 dumpPython=%s.py" % os.path.join(options.outputDir,dsetName)),interactive=True)[2]
                     if ret != 0:
                         print ret,out
                         continue
-                    if not options.dry_run:
-                        parallel.run(job,jobargs)
-                    ## outfiles.append( outfile )
                     output = self.getHadd(out,outfile)
+
+                    batchId = -1
+                    if not options.dry_run:
+                        ret,out = parallel.run(job,jobargs)[-1]
+                        if self.options.queue and self.options.asyncLsf:
+                            batchId = out[1]
+                            
                     outfiles.append( output )
-                    jobs.append( (job,jobargs,output,0,-1) )
+                    jobs.append( (job,jobargs,output,0,-1,batchId) )
                     poutfiles[name][1].append( outfiles[-1] )
                 print
 
@@ -219,10 +324,20 @@ class JobsManager(object):
             "output"          : outfiles,
             "outputPfx"       : outputPfx
             }
-        with open("%s/task_config.json" % (options.outputDir), "w+" ) as cfout:
+        
+        if options.useTarball:
+            task_config["tarball"] = self.jobFactory.tarball
+
+        self.storeTaskConfig(task_config)
+
+    # -------------------------------------------------------------------------------------------------------------------
+    def storeTaskConfig(self,task_config):
+        with open("%s/task_config.json" % (self.options.outputDir), "w+" ) as cfout:
+            task_config["last_job_id"] = self.parallel.currJobId()
             cfout.write( json.dumps(task_config,indent=4) )
             cfout.close()
             
+    # -------------------------------------------------------------------------------------------------------------------
     def monitor(self):
 
         (options,args) = (self.options, self.args)
@@ -235,13 +350,16 @@ class JobsManager(object):
         poutfiles = task_config["process_output"]
         outfiles  = task_config["output"]
         outputPfx = task_config["outputPfx"]
+
+        self.task_config = task_config
         
+        if options.summary:
+            self.printSummary()
+            return
 
         if not options.dry_run:
             ## FIXME: job resubmission
-            self.jobs = task_config["jobs"]
             returns = self.wait(parallel,self)
-            task_config["jobs"] = self.jobs
             
         if options.hadd:
             print "All jobs finished. Merging output."
@@ -262,39 +380,32 @@ class JobsManager(object):
             
             self.wait(p)
 
-        with open("%s/task_config.json" % (options.outputDir), "w+" ) as cfout:
-            cfout.write( json.dumps(task_config,indent=4) )
-            cfout.close()
+        self.storeTaskConfig(task_config)
         
         self.parallel.stop()
 
+    # -------------------------------------------------------------------------------------------------------------------
     def wait(self,parallel,handler=None):
         return parallel.wait(handler)
-    
-        ### for i in range(parallel.njobs):
-        ###     print "Finished jobs: %d. Total jobs: %d" % (i, parallel.njobs)
-        ###     job, jobargs, ret = parallel.returned.get()
-        ###     print "finished: %s %s" % ( job, " ".join(jobargs) )
-        ###     for line in ret[1].split("\n"):
-        ###         print line
 
+    # -------------------------------------------------------------------------------------------------------------------
     def handleJobOutput(self,job,jobargs,ret):
         print "------------"
         print "Job finished: (exit code %d) '%s' '%s'" % ( ret[0], job, " ".join(jobargs) )
         print "Job output: "
-        print 
-        for line in ret[1].split("\n"):
+        print
+
+        lines = ret[1].split("\n")
+        if self.options.queue and self.options.asyncLsf:
+            lines = lines[-10:]
+        for line in lines:
             print line
         print
         jobargs = shell_args(" ".join(jobargs))
         job = jobargs[0]
         jobargs = jobargs[1:]
-        for ijob in self.jobs:
+        for ijob in self.task_config["jobs"]:
             inam,iargs = ijob[0:2]
-            ### print inam, job, inam == job
-            ### for i,a in enumerate(iargs):
-            ###     b = jobargs[i]
-            ###     print a, b,  a == b
             if inam == job and iargs == jobargs:
                 ijob[4] = ret[0]
                 if ret[0] != 0:
@@ -302,23 +413,65 @@ class JobsManager(object):
                     print "Job failed. Number of resubmissions: %d / %d. " % (ijob[3], self.maxResub),
                     if ijob[3] < self.maxResub:
                         print "Resubmitting."
-                        self.parallel.run(inam,iargs)
                         ijob[3] += 1
+                        if ijob[3] == self.maxResub:
+                            iargs.append("lastAttempt=1")                        
+                        jobName = ijob[5][0] if self.options.queue else None
+                        out = self.parallel.run(inam,iargs,jobName=jobName)
+                        if self.options.queue and self.options.asyncLsf:
+                            ijob[5] = out[-1][1][1]
                         print "------------"
                         return 1
                     else:
                         print "Giving up."
+
+        self.storeTaskConfig(self.task_config)
         print "------------"
         return 0
     
+    # -------------------------------------------------------------------------------------------------------------------
     def getHadd(self,stg,fallback):
         for line in stg.split("\n"):
             if line.startswith("hadd:"):
                 return line.replace("hadd:","")
         return fallback
 
+    # -------------------------------------------------------------------------------------------------------------------
     def getMaxJobs(self,stg):
         for line in stg.split("\n"):
             if line.startswith("maxJobs:"):
                 return int(line.replace("maxJobs:",""))
         return -1
+    
+    # -------------------------------------------------------------------------------------------------------------------
+    def printSummary(self):
+        
+        jobs = self.task_config["jobs"]
+        procs = self.task_config["datasets_output"]
+        
+        status = {}
+        for job in jobs:
+            cmd, args, outfile, nsub, ret, batchId = job
+            status[outfile] = (nsub,ret)
+            
+        for proc,out in procs.iteritems():
+            outfile,outfiles = out
+            finished = []
+            missing  = {}
+            for jfile in outfiles:
+                nsub,ret = status[jfile]
+                if ret != 0:
+                    if not nsub in missing:
+                        missing[nsub] = []
+                    missing[nsub].append( jfile )
+                else:
+                    finished.append(jfile)
+            print "----------"
+            print "process:           %s " % outfile.replace(".root","")
+            print "njobs:             %d " % len(outfiles)
+            print "finished:          %d " % len(finished)
+            for nsub,lst in missing.iteritems():
+                print "submitted %d times: %d"  % (nsub, len(lst))
+            print 
+                
+                

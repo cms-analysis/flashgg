@@ -23,6 +23,9 @@ namespace flashgg {
         void update( const edm::EventBase &event );
 
         float *addressOf( const std::string &varName );
+        int indexOf( const std::string &varName );
+        float valueOf( const std::string &varName );
+        float valueOf( int varIndex );
 
     protected:
         edm::InputTag rhoTag_, vtxTag_;

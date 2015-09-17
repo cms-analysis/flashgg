@@ -4,6 +4,7 @@
 #include "DataFormats/Common/interface/Ptr.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
+#include <string>
 
 namespace flashgg {
     //  typedef std::map<edm::Ptr<reco::Vertex>,edm::PtrVector<pat::PackedCandidate> > VertexCandidateMap;
@@ -47,7 +48,7 @@ namespace flashgg {
         }
     };
 
-
+    void print_track_count( const VertexCandidateMap &, std::string );
 }
 
 #endif

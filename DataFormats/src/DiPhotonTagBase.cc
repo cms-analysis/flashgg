@@ -19,13 +19,6 @@ DiPhotonTagBase::DiPhotonTagBase( edm::Ptr<flashgg::DiPhotonCandidate> diPho, Di
     dipho_ = diPho;
 }
 
-DiPhotonTagBase::DiPhotonTagBase( const DiPhotonTagBase &b ) : DiPhotonTagBase::DiPhotonTagBase( b.diPhoton(), b.diPhotonMVA() )
-{
-    setCategoryNumber( b.categoryNumber() );
-    setDiPhotonIndex( b.diPhotonIndex() );
-    setTagTruth( b.tagTruth() );
-}
-
 DiPhotonTagBase::~DiPhotonTagBase()
 {
 }

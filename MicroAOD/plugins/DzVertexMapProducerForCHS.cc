@@ -83,6 +83,9 @@ namespace flashgg {
             }
         } // loop over pf
         std::stable_sort( assoc->begin(), assoc->end(), flashgg::compare_by_vtx() );
+
+        //        flashgg::print_track_count( *assoc, "FlashggDzVertexMapProducerForCHS" );
+
         evt.put( assoc );
     } // produce method
 } // namespace flashgg

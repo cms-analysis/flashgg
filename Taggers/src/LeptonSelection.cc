@@ -88,7 +88,7 @@ namespace flashgg {
             Ptr<flashgg::Electron> Electron = ElectronPointers[ElectronIndex];
 
             /*
-            std::cout << " Electron index " << ElectronIndex << " has pt eta weight: "
+            std::cout << " LeptonSelection Electron index " << ElectronIndex << " has pt eta weight: "
                       << Electron->pt() << " " << Electron->eta() << " "
                       << Electron->centralWeight() << std::endl;
             auto weightList = Electron->weightList();
@@ -116,7 +116,7 @@ namespace flashgg {
             if( dxy > TransverseImpactParam ) { continue; }
             if( dz > LongitudinalImapctParam ) { continue; }
 
-            std::cout << "    ... pushing back Electron index " << ElectronIndex << std::endl;
+            //            std::cout << " LeptonSelection   ... pushing back Electron index " << ElectronIndex << std::endl;
             goodElectrons.push_back( Electron );
         }
 

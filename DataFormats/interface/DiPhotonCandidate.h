@@ -87,10 +87,8 @@ namespace flashgg {
         float leadPhotonId() const { return leadingPhoton()->phoIdMvaDWrtVtx( vertex_ ); }
         float subLeadPhotonId() const { return subLeadingPhoton()->phoIdMvaDWrtVtx( vertex_ ); }
 
-        void setSystLabel( const std::string label ) { systLabel_ = label; }
-        std::string systLabel() const { return systLabel_; }
-
         bool operator <( const DiPhotonCandidate &b ) const;
+        bool operator >( const DiPhotonCandidate &b ) const;
 
         //        math::XYZTLorentzVector PhoP4Corr( edm::Ptr<flashgg::Photon> ) const;
 
@@ -100,6 +98,9 @@ namespace flashgg {
             viewPho1_.MakePersistent();
             viewPho2_.MakePersistent();
         }
+
+        void setJetCollectionIndex( unsigned int val ) { jetCollectionIndex_ = val; }
+        unsigned int jetCollectionIndex() const { return jetCollectionIndex_; }
 
     private:
 
@@ -128,13 +129,10 @@ namespace flashgg {
         std::vector<unsigned int> vmva_sortedindex_;
         std::vector<edm::Ptr<reco::Vertex> > vVtxPtr_;
 
-        std::string systLabel_;
-
-        //        math::XYZTLorentzVector corrPho1_;
-        //        math::XYZTLorentzVector corrPho2_;
-
         flashgg::SinglePhotonView viewPho1_;
         flashgg::SinglePhotonView viewPho2_;
+
+        unsigned int jetCollectionIndex_; // index for which jet collection corresponds to the vertex choice in this diphoton
     };
 
 

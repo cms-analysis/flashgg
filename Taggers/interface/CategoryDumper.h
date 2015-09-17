@@ -54,6 +54,7 @@ namespace flashgg {
         std::shared_ptr<FunctorT> func_;
     };
 
+    typedef std::tuple<std::string, int, std::vector<double>, int, std::vector<double>, TH1 *> histo_info;
 
     template<class FunctorT, class ObjectT>
     class CategoryDumper
@@ -77,12 +78,21 @@ namespace flashgg {
 
         void fill( const object_type &obj, double weight, int n_cand = 0 );
 
+        void print()
+        {
+            //            std::cout << "Dumper name is " << name_ << std::endl;
+            // for (unsigned int i =0; i<names_.size() ; i++){
+            // std::cout << "Map content " << i << " name is " << names_[i] << std::endl;
+            // }
+
+        }
+
     private:
         std::string name_;
         std::vector<std::string> names_;
         std::vector<std::string> dumpOnly_;
         std::vector<std::tuple<float, std::shared_ptr<trait_type>, int, double, double> > variables_;
-        std::vector<std::tuple<std::string, int, std::vector<double>, int, std::vector<double>, TH1 *> > histograms_;
+        std::vector<histo_info> histograms_;
 
         int n_cand_;
         float weight_;
@@ -147,8 +157,26 @@ namespace flashgg {
             auto nxbins = histo.getUntrackedParameter<int>( "nxbins", 0 );
             auto nybins = histo.getUntrackedParameter<int>( "nybins", 0 );
             vector<double> xbins, ybins;
-            int xindex = find( names_.begin(), names_.end(), xname ) - names_.begin(); // FIXME: check validity
+            auto pos = xname.find( "global." );
+            int xindex = -1;
+            if( pos == 0 ) {
+                xindex = -globalVarsDumper_->indexOf( xname.substr( 7 ) ) - 2;
+            } else {
+                xindex = find( names_.begin(), names_.end(), xname ) - names_.begin(); // FIXME: check validity
+            }
             int yindex = -1;
+            if( ! yname.empty() ) {
+                pos = yname.find( "global." );
+                if( pos == 0 ) {
+                    yindex = -globalVarsDumper_->indexOf( yname.substr( 7 ) ) - 2;
+                } else {
+                    yindex = find( names_.begin(), names_.end(), yname ) - names_.begin(); // FIXME: check validity
+                }
+            }
+            if( find( histograms_.begin(), histograms_.end(), name ) != histograms_.end() ) {
+                histograms_.push_back( make_tuple( name, xindex, xbins, yindex, ybins, ( TH1 * )0 ) );
+                continue;
+            }
             if( nxbins <= 0 ) {
                 xbins = histo.getUntrackedParameter<vector<double> >( "xbins" );
             } else {
@@ -160,7 +188,6 @@ namespace flashgg {
                 }
             }
             if( ! yname.empty() ) {
-                yindex = find( names_.begin(), names_.end(), yname ) - names_.begin(); // FIXME: check validity
                 if( nybins <= 0 ) {
                     ybins = histo.getUntrackedParameter<vector<double> >( "ybins" );
                 } else {
@@ -185,16 +212,20 @@ namespace flashgg {
     {
         using namespace std;
         for( auto &histo : histograms_ ) {
-            auto name = formatString( name_ + get<0>( histo ), replacements );
-            auto &xbins = get<2>( histo );
-            auto &th1 = get<5>( histo );
-            if( get<3>( histo ) >= 0 ) {
-                auto &ybins = get<4>( histo );
-                th1 = fs.make<TH2F>( name.c_str(), name.c_str(), xbins.size() - 1, &xbins[0], ybins.size() - 1, &ybins[0] );
-            } else {
-                th1 = fs.make<TH1F>( name.c_str(), name.c_str(), xbins.size() - 1, &xbins[0] );
+            auto name = formatString( name_ + std::get<0>( histo ), replacements );
+            auto &xbins = std::get<2>( histo );
+            auto &th1 = std::get<5>( histo );
+            try {
+                th1 = fs.getObject<TH1>( name );
+            } catch( ... ) {
+                if( std::get<3>( histo ) >= 0 ) {
+                    auto &ybins = std::get<4>( histo );
+                    th1 = fs.make<TH2F>( name.c_str(), name.c_str(), xbins.size() - 1, &xbins[0], ybins.size() - 1, &ybins[0] );
+                } else {
+                    th1 = fs.make<TH1F>( name.c_str(), name.c_str(), xbins.size() - 1, &xbins[0] );
+                }
+                th1->Sumw2( true );
             }
-            th1->Sumw2( true );
         }
         hbooked_ = true;
     }
@@ -270,16 +301,24 @@ namespace flashgg {
                 auto &th1 = *std::get<5>( histo );
                 auto xv = std::get<1>( histo );
                 auto yv = std::get<3>( histo );
-                if( yv >= 0 ) {
-                    dynamic_cast<TH2 &>( th1 ).Fill( std::get<0>( variables_[xv] ), std::get<0>( variables_[yv] ), weight_ );
+                float xval = ( xv >= 0 ? std::get<0>( variables_[xv] ) : globalVarsDumper_->valueOf( -xv - 2 ) );
+                if( yv != -1 ) {
+                    float yval = ( yv >= 0 ? std::get<0>( variables_[yv] ) : globalVarsDumper_->valueOf( -yv - 2 ) );
+                    // dynamic_cast<TH2 &>( th1 ).Fill( std::get<0>( variables_[xv] ), std::get<0>( variables_[yv] ), weight_ );
+                    dynamic_cast<TH2 &>( th1 ).Fill( xval, yval, weight_ );
                 } else {
-                    th1.Fill( std::get<0>( variables_[xv] ), weight_ );
+                    /// th1.Fill( std::get<0>( variables_[xv] ), weight_ );
+                    th1.Fill( xval, weight_ );
                 }
             }
         }
     }
 
 }
+
+inline bool operator==( const flashgg::histo_info &lh, const std::string &rh ) { return std::get<0>( lh ) == rh; };
+inline bool operator==( const std::string &lh, const flashgg::histo_info &rh ) { return lh == std::get<0>( rh ); };
+
 
 #endif  // flashgg_CategoryDumper_h
 // Local Variables:

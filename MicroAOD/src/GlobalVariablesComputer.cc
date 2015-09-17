@@ -21,6 +21,32 @@ namespace flashgg {
         return 0;
     }
 
+    int GlobalVariablesComputer::indexOf( const std::string &varName )
+    {
+        if( varName == "rho" ) { return 0; }
+        else if( varName == "nvtx" ) { return 1; }
+        else if( varName == "run" ) { return 2; }
+        else if( varName == "event" ) { return 3; }
+        else if( varName == "lumi" ) { return 4; }
+        return -1;
+    }
+
+    float GlobalVariablesComputer::valueOf( const std::string &varName )
+    {
+        return valueOf( indexOf( varName ) );
+    }
+
+    float GlobalVariablesComputer::valueOf( int varIndex )
+    {
+        if( varIndex == 0 ) { return cache_.rho; }
+        else if( varIndex == 1 ) { return ( float )cache_.nvtx; }
+        else if( varIndex == 2 ) { return ( float )cache_.run; }
+        else if( varIndex == 3 ) { return ( float )cache_.event; }
+        else if( varIndex == 4 ) { return ( float )cache_.lumi; }
+        return -1e+6;
+
+    }
+
     void GlobalVariablesComputer::update( const EventBase &evt )
     {
         Handle<double> rhoHandle;

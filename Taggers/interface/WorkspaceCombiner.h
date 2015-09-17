@@ -84,7 +84,7 @@ public:
 
     void MergeWorkspaces();
 
-    void Save();
+    void Save( bool doTreesAndHistograms );
 
 
 private :
