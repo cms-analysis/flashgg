@@ -117,6 +117,9 @@ class JobsManager(object):
             self.options.jobExe = shell_expand(self.options.jobExe)
             if not self.args[0] == self.options.jobExe:
                 self.args = [self.options.jobExe]+self.args
+            
+        self.uniqueNames = {}
+
 
     # -------------------------------------------------------------------------------------------------------------------
     def __call__(self):
@@ -150,6 +153,13 @@ class JobsManager(object):
         jobs = task_config["jobs"]
         
         if self.options.useTarball:
+            if not "tarball" in task_config:
+                print 
+                print "You asked to run the jobs using a sandbox tarball, but the tarball name was not found in the task configuration"
+                print "    If you specified the --use-tarball now but not in the original submission, please remove it."
+                print "    Otherwise the task configuration may have been corrupted."
+                print 
+                sys.exit(-1)
             self.jobFactory.setTarball(task_config["tarball"])
             if not self.options.stageTo:
                 self.jobFactory.stageDest( os.path.abspath(self.options.outputDir) )
@@ -171,6 +181,8 @@ class JobsManager(object):
         (options,args) = (self.options, self.args)
         parallel = self.parallel
         
+        task_config = {}
+
         outputPfx = options.output.replace(".root","")
         
         if not options.outputDir:
@@ -186,9 +198,7 @@ class JobsManager(object):
         
 
         args.append("processIdMap=%s/config.json" % os.path.abspath(options.outputDir))
-        with open("%s/config.json" % (options.outputDir), "w+" ) as fout:
-            fout.write( dumpCfg(options,skip=["dry_run","summary"]) )
-            
+
         pset = args[0] if not options.jobExe else args[1]
         with open(pset,"r") as pin:
             with open("%s/%s" % ( options.outputDir, os.path.basename(pset) ), "w+" ) as pout:
@@ -210,6 +220,8 @@ class JobsManager(object):
                 print "           To avoid this printout run with --no-use-tarball or specify a batch queue using the --queue option.\n"
                 options.useTarball = False
                 
+            task_config["tarball"] = self.jobFactory.tarball
+            
         if not options.stageTo:
             self.jobFactory.stageDest( os.path.abspath(options.outputDir) )
             options.stageTo = os.path.abspath(options.outputDir)
@@ -220,6 +232,9 @@ class JobsManager(object):
         else:
             args[0] = pset
 
+        with open("%s/config.json" % (options.outputDir), "w+" ) as fout:
+            fout.write( dumpCfg(options,skip=["dry_run","summary"]) )
+        
         # store cmdLine
         options.cmdLine = str(" ".join(args))
 
@@ -244,8 +259,9 @@ class JobsManager(object):
                     dopts = {}
                 jobargs = copy(args[1:])
                 dsetName = dset.lstrip("/").replace("/","_")
+                dsetName = self.getUniqueName(dsetName)
                 outfile = "%s_%s.root" % ( outputPfx, dsetName )
-                doutfiles[dset] = ( str(outfile),[] )
+                doutfiles[dsetName] = ( str(outfile),[] )
                 jobargs.extend( ["dataset=%s" % dset, "outputFile=%s" % outfile ] )
                 # add (and replace) per-dataset job arguments
                 dargs = dopts.get("args",[])
@@ -270,7 +286,7 @@ class JobsManager(object):
                     jobargs = newargs
                     for aname,arg in replace.iteritems(): jobargs.append(arg)
                 print "running: %s %s" % ( job, " ".join(jobargs) )
-                njobs = dopts.get("njobs",options.njobs)
+                njobs = dopts.get("njobs",options.njobs) if options.njobs != 0 else 0
                 if  njobs != 0:
                     print  "splitting in (up to) %d jobs\n checking how many are needed... " % njobs, 
                     dnjobs = 0
@@ -295,7 +311,7 @@ class JobsManager(object):
                             print ".",
                         output = hadd.replace(".root","_%d.root" % ijob)
                         outfiles.append( output )
-                        doutfiles[dset][1].append( outfiles[-1] )
+                        doutfiles[dsetName][1].append( outfiles[-1] )
                         poutfiles[name][1].append( outfiles[-1] )
                         jobs.append( (job,iargs,output,0,-1,batchId) )
                     print "\n %d jobs submitted" % dnjobs                
@@ -317,17 +333,12 @@ class JobsManager(object):
                     poutfiles[name][1].append( outfiles[-1] )
                 print
 
-        task_config = {
-            "jobs" : jobs,
-            "datasets_output" : doutfiles,
-            "process_output"  : poutfiles,
-            "output"          : outfiles,
-            "outputPfx"       : outputPfx
-            }
+        task_config["jobs"] =  jobs
+        task_config["datasets_output"] =  doutfiles
+        task_config["process_output"] =  poutfiles
+        task_config["output"] =  outfiles
+        task_config["outputPfx"] =  outputPfx
         
-        if options.useTarball:
-            task_config["tarball"] = self.jobFactory.tarball
-
         self.storeTaskConfig(task_config)
 
     # -------------------------------------------------------------------------------------------------------------------
@@ -337,6 +348,15 @@ class JobsManager(object):
             cfout.write( json.dumps(task_config,indent=4) )
             cfout.close()
             
+    # -------------------------------------------------------------------------------------------------------------------
+    def getUniqueName(self,basename):
+        if basename in self.uniqueNames:
+            self.uniqueNames[basename] += 1
+        else:
+            self.uniqueNames[basename] = 0
+            return basename
+        return "%s%d" % (basename,self.uniqueNames[basename])
+
     # -------------------------------------------------------------------------------------------------------------------
     def monitor(self):
 
@@ -471,7 +491,7 @@ class JobsManager(object):
             print "njobs:             %d " % len(outfiles)
             print "finished:          %d " % len(finished)
             for nsub,lst in missing.iteritems():
-                print "submitted %d times: %d"  % (nsub, len(lst))
+                print "submitted %d times: %d"  % (nsub+1, len(lst))
             print 
                 
                 

@@ -8,12 +8,13 @@ from threading import Thread, Semaphore
 import threading 
 from multiprocessing import cpu_count
 from time import sleep
+from math import floor
 
 class LsfJob(object):
     """ a thread to run bsub and wait until it completes """
     
     #----------------------------------------
-    def __init__(self, lsfQueue, jobName="", async=False):
+    def __init__(self, lsfQueue, jobName="", async=False, replacesJob=None):
         """ @param cmd is the command to be executed inside the bsub script. Some CMSSW specific wrapper
             code will be added
         """
@@ -25,6 +26,7 @@ class LsfJob(object):
         self.async = async
         self.jobid = None
         self.cmd = None
+        self.replacesJob = replacesJob
         
     def __str__(self):
         return "LsfJob: %s %s" % ( self.lsfQueue, self.jobName )
@@ -304,14 +306,23 @@ class LsfMonitor:
         self.jobsqueue = jobsqueue
         self.retqueue = retqueue
         self.stop = False
+
     def __call__(self):
         jobsmap = {}
-        
+        jobids = {}
+        clonesMap = {}
+
         while not self.stop:
             if not self.jobsqueue.empty():
                 job = self.jobsqueue.get()
                 jobsmap[str(job.jobid)] = job
-                        
+                jobids[job.jobName] = job.jobid
+                
+                if job.replacesJob:
+                    if not job.replacesJob in clonesMap:
+                        clonesMap[job.replacesJob] = [jobids[job.replacesJob]]                        
+                    clonesMap[job.replacesJob].append(job.jobid)
+                
             status = commands.getstatusoutput("bjobs %s" % " ".join(jobsmap.keys()))
             for line in status[1].split("\n")[1:]:
                 toks = [ l for l in line.split(" ") if l != "" ]
@@ -320,9 +331,20 @@ class LsfMonitor:
                 if status in ["DONE","EXIT","ZOMBI","UNKWN"]:
                     lsfJob = jobsmap[jobid]
                     self.retqueue.put( (lsfJob, [lsfJob.cmd], lsfJob.handleOutput()) )
+                    
+                    ancestor = lsfJob.replacesJob if lsfJob.replacesJob else lsfJob.jobName
+                    if ancestor in clonesMap:
+                        for clone in clonesMap[ancestor]:
+                            if clone != jobid:
+                                self.cancelJob(clone)
+                            jobsmap.pop(clone)
+                        
                     jobsmap.pop(jobid)
             sleep(0.1)
 
+    def cancelJob(self,jobid):
+        commands.getstatusoutput("bkill -s 9 %d" % jobid)
+        
 # -----------------------------------------------------------------------------------------------------
 class Wrap:
     def __init__(self, func, args, retqueue, runqueue):
@@ -423,7 +445,7 @@ class Parallel:
         self.sem.release()
         return ret
         
-    def __call__(self,cmd,args,interactive,jobName=None):
+    def __call__(self,cmd,args,interactive,jobName=None,replacesJob=None):
 
         if type(cmd) == str or type(cmd) == unicode:
             ## print cmd
@@ -432,7 +454,7 @@ class Parallel:
             if self.lsfQueue and not interactive:
                 if not jobName:
                     jobName = "%s%d" % (self.lsfJobName,self.getJobId())
-                cmd = self.JobDriver(self.lsfQueue,jobName,async=self.asyncLsf)
+                cmd = self.JobDriver(self.lsfQueue,jobName,async=self.asyncLsf,replacesJob=replacesJob)
             else:
                 cmd = commands.getstatusoutput
 
@@ -445,12 +467,13 @@ class Parallel:
         if self.lsfQueue and self.asyncLsf:
             self.lsfMon.stop = True
         
-    def wait(self,handler=None,printOutput=True):
+    def wait(self,handler=None,printOutput=True,struggleThr=0.):
         returns = []
         self.sem.acquire()
         njobs = int(self.njobs)
         self.sem.release()
         nleft = njobs
+        nstruggle = int(floor(nleft*struggleThr))
         while nleft>0:
             print ""
             print "--- Running jobs: %d. Total jobs: %d (total submissions: %s)" % (nleft, njobs, self.njobs)
@@ -469,7 +492,11 @@ class Parallel:
             else:
                 returns.append( (job,jobargs,ret) )
             nleft -= 1 
-
+            if nleft != 0 and nleft == nstruggle and handler:
+                handler.analyzeStrugglers(self)
+                nstruggle = int(floor(nstruggle*struggleThr))
+            
+                
         self.sem.acquire()
         self.njobs -= njobs
         self.sem.release()
