@@ -28,6 +28,7 @@
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "flashgg/DataFormats/interface/VBFTagTruth.h"
 #include "flashgg/DataFormats/interface/WeightedObject.h"
+#include "flashgg/DataFormats/interface/PDFWeightObject.h"
 
 #include <vector>
 #include <map>
@@ -35,6 +36,13 @@
 namespace  {
     struct dictionary {
         flashgg::WeightedObject                                             fgg_obj;
+        
+        flashgg::PDFWeightObject                                             fgg_pobj;
+        edm::Ptr<flashgg::PDFWeightObject>                                ptr_fgg_pobj;
+        edm::Wrapper<flashgg::PDFWeightObject>                            wrp_fgg_pobj;
+        std::vector<flashgg::PDFWeightObject>                             vec_fgg_pobj;
+        edm::Wrapper<std::vector<flashgg::PDFWeightObject> >               wrp_vec_fgg_pobj;
+
 
         flashgg::Photon                                                   fgg_pho;
         edm::Ptr<flashgg::Photon>                                     ptr_fgg_pho;
