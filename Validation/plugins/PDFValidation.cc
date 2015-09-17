@@ -36,7 +36,6 @@ private:
     edm::EDGetTokenT<GenEventInfoProduct> genParticleToken_;
     edm::EDGetTokenT<LHEEventProduct> LHEEventToken_;
     edm::EDGetTokenT<LHERunInfoProduct> LHERunToken_;
-    // edm::EDGetTokenT<flashgg::PDFWeightObject> WeightToken_;
     edm::EDGetTokenT<vector<flashgg::PDFWeightObject> > WeightToken_;
 };
 
@@ -56,12 +55,12 @@ PDFWeight::~PDFWeight()
 void
 PDFWeight::analyze( const edm::Event &evt, const edm::EventSetup &iSetup )
 {
-//
+
 //    Handle<GenEventInfoProduct> genParticles;
 //    evt.getByToken( genParticleToken_, genParticles );
-//  const PtrVector<GenEventInfoProduct>& gens = genParticles->ptrVector();
+//    const PtrVector<GenEventInfoProduct>& gens = genParticles->ptrVector();
 
-//    cout << "the event weight  " << genParticles->weight() << endl;
+//   cout << "the event weight  " << genParticles->weight() << endl;
 
 //    Handle<LHEEventProduct> LHEHandle;
 //    evt.getByToken( LHEEventToken_, LHEHandle );
@@ -70,12 +69,13 @@ PDFWeight::analyze( const edm::Event &evt, const edm::EventSetup &iSetup )
 //    evt.getByToken( WeightToken_, WeightHandle );
 //    const PtrVector<flashgg::PDFWeightObject> mcWeightPointers = WeightHandle->ptrVector();
 
-    //cout << "XS  " << LHEHandle->originalXWGTUP() << endl;
+      //cout << "XS  " << LHEHandle->originalXWGTUP() << endl;
 
 //        for( unsigned int weight_index = 0; weight_index < (*WeightHandle).size(); weight_index++ ){
-//            Ptr<flashgg::PDFWeightObject> mcw = WeightHandle->ptrAt(weight_index);
+//            std::vector<float> uncompressed = (*WeightHandle)[weight_index].uncompress();
 //            for( unsigned int j=0; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
-//                    cout << "weight " << (*WeightHandle)[weight_index].pdf_weight_container[j] << endl;
+//                    cout << "compresed weight " << (*WeightHandle)[weight_index].pdf_weight_container[j] << endl;
+//                    cout << "uncompressed weight " << uncompressed[j] << endl;
 //       }
 //    }
 }

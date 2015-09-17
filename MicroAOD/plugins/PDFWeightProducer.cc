@@ -24,155 +24,166 @@ using namespace edm;
 
 namespace flashgg {
 
-    class PDFWeightProducer : public edm::EDProducer
-    {
-    public:
-        PDFWeightProducer( const edm::ParameterSet & );
-    private:
-        void produce( edm::Event &, const edm::EventSetup & );
-        EDGetTokenT<LHEEventProduct> LHEEventToken_;
-        string tag_;
-        string pdfset_;
-        string delimiter_1_;
-        string delimiter_2_;
-        string delimiter_3_;
-        void beginRun( edm::Run const &, edm::EventSetup const &iSetup );
-        vector<int> weight_indices;
-        string removeSpace( string line );
-    };
+	class PDFWeightProducer : public edm::EDProducer
+	{
+		public:
+			PDFWeightProducer( const edm::ParameterSet & );
+		private:
+			void produce( edm::Event &, const edm::EventSetup & );
+			EDGetTokenT<LHEEventProduct> LHEEventToken_;
+			string tag_;
+			string pdfset_;
+			string delimiter_1_;
+			string delimiter_2_;
+			string delimiter_3_;
+			void beginRun( edm::Run const &, edm::EventSetup const &iSetup );
+			vector<int> weight_indices;
+			string removeSpace( string line );
+	};
 
-    PDFWeightProducer::PDFWeightProducer( const edm::ParameterSet &iConfig ):
-        LHEEventToken_( consumes<LHEEventProduct>( iConfig.getUntrackedParameter<InputTag>( "LHEEventTag", InputTag( "LHEEventProduct" ) ) ) )
-    {
+	PDFWeightProducer::PDFWeightProducer( const edm::ParameterSet &iConfig ):
+		LHEEventToken_( consumes<LHEEventProduct>( iConfig.getUntrackedParameter<InputTag>( "LHEEventTag", InputTag( "LHEEventProduct" ) ) ) )
+	{
 
-        tag_ = iConfig.getUntrackedParameter<string>( "tag" );
-        pdfset_ = iConfig.getUntrackedParameter<string>( "pdfset", "PDF_variation" );
-        delimiter_1_ = iConfig.getUntrackedParameter<string>( "delimiter_1", "id=\"" );
-        delimiter_2_ = iConfig.getUntrackedParameter<string>( "delimiter_2", "\">" );
-        delimiter_3_ = iConfig.getUntrackedParameter<string>( "delimiter_3", "</weightgroup>" );
+		tag_ = iConfig.getUntrackedParameter<string>( "tag", "initrwgt" );
+		pdfset_ = iConfig.getUntrackedParameter<string>( "pdfset", "PDF_variation" );
+		delimiter_1_ = iConfig.getUntrackedParameter<string>( "delimiter_1", "id=\"" );
+		delimiter_2_ = iConfig.getUntrackedParameter<string>( "delimiter_2", "\">" );
+		delimiter_3_ = iConfig.getUntrackedParameter<string>( "delimiter_3", "</weightgroup>" );
 
-        produces<vector<flashgg::PDFWeightObject> >();
+		produces<vector<flashgg::PDFWeightObject> >();
 
-    }
+	}
 
-    string removeSpaces( string str )
-    {
-        str.erase( remove_if( str.begin(), str.end(), ::isspace ), str.end() );
-        return str;
-    }
+	string removeSpaces( string str )
+	{
+		str.erase( remove_if( str.begin(), str.end(), ::isspace ), str.end() );
+		return str;
+	}
 
-    void PDFWeightProducer::beginRun( edm::Run const &iRun, edm::EventSetup const &iSetup )
-    {
-        Handle<LHERunInfoProduct> run;
-        typedef vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
+	void PDFWeightProducer::beginRun( edm::Run const &iRun, edm::EventSetup const &iSetup )
+	{
+		Handle<LHERunInfoProduct> run;
+		typedef vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
 
-        iRun.getByLabel( "externalLHEProducer", run );
-        LHERunInfoProduct myLHERunInfoProduct = *( run.product() );
+		iRun.getByLabel( "externalLHEProducer", run );
+		LHERunInfoProduct myLHERunInfoProduct = *( run.product() );
 
-        int upper_index = 0;
+		int upper_index = 0;
 
-        for( headers_const_iterator iter = myLHERunInfoProduct.headers_begin(); iter != myLHERunInfoProduct.headers_end(); iter++ ) {
-            if( ( iter->tag() ).compare( tag_ ) == 0 ) {
-                //cout << iter->tag() << endl;
-                vector<string> lines = iter->lines();
-                for( unsigned int iLine = 0; iLine < lines.size(); iLine++ ) {
-                    string line = lines.at( iLine );
-                    //cout << line << endl;
-                    size_t pos = line.find( pdfset_ );
-                    string token;
-                    while( ( pos = line.find( pdfset_ ) ) != std::string::npos ) {
-                        token = line.substr( pos, pdfset_.length() );
-                        //std::cout << token << std::endl;
-                        if( token.compare( pdfset_ ) == 0 ) {
-                            upper_index = 1 + iLine;
-                            break;
-                        } else {
+		for( headers_const_iterator iter = myLHERunInfoProduct.headers_begin(); iter != myLHERunInfoProduct.headers_end(); iter++ ) {
+			if( ( iter->tag() ).compare( tag_ ) == 0 ) {
+				//cout << iter->tag() << endl;
+				vector<string> lines = iter->lines();
+				for( unsigned int iLine = 0; iLine < lines.size(); iLine++ ) {
+					string line = lines.at( iLine );
+					//cout << line << endl;
+					size_t pos = line.find( pdfset_ );
+					string token;
+					while( ( pos = line.find( pdfset_ ) ) != std::string::npos ) {
+						token = line.substr( pos, pdfset_.length() );
+						//std::cout << token << std::endl;
+						if( token.compare( pdfset_ ) == 0 ) {
+							upper_index = 1 + iLine;
+							break;
+						} else {
 
-                            upper_index = 0;
+							upper_index = 0;
 
-                        }
+						}
 
-                    }
+					}
 
-                    if( upper_index != 0 ) { break; }
-                }
+					if( upper_index != 0 ) { break; }
+				}
 
-                for( unsigned int nLine = upper_index; nLine < lines.size(); nLine++ ) {
+				for( unsigned int nLine = upper_index; nLine < lines.size(); nLine++ ) {
 
-                    string nline = lines.at( nLine );
+					string nline = lines.at( nLine );
 
-                    string jline = removeSpaces( nline );
+					//cout << nline << endl;	
 
-                    //cout << nline.length() << endl;
+					string jline = removeSpaces( nline );
 
-                    if( jline.compare( delimiter_3_ ) == 0 ) { break; }
+					//cout << nline.length() << endl;
 
-                    string ntoken;
-                    string mtoken;
+					if( jline.compare( delimiter_3_ ) == 0 ) { break; }
 
-                    size_t mpos_1 = jline.find( delimiter_1_ );
-                    size_t mpos_3 = jline.find( delimiter_2_ );
+					string ntoken;
+					string mtoken;
 
-                    ntoken = jline.erase( mpos_3 );
-                    mtoken = jline.substr( mpos_1 + delimiter_1_.length() );
-                    //cout << mtoken << endl;
+					size_t mpos_1 = jline.find( delimiter_1_ );
+					size_t mpos_3 = jline.find( delimiter_2_ );
 
-                    int wgt = stoi( mtoken );
+					ntoken = jline.erase( mpos_3 );
+					mtoken = jline.substr( mpos_1 + delimiter_1_.length() );
+					//cout << mtoken << endl;
 
-                    PDFWeightProducer::weight_indices.push_back( wgt );
+					int wgt = stoi( mtoken );
 
-                }
+					PDFWeightProducer::weight_indices.push_back( wgt );
 
-                break;
+				}
 
-            }
-        }
+				break;
 
-    }
+			}
+		}
+
+	}
 
 
 
-    void PDFWeightProducer::produce( Event &evt, const EventSetup & )
-    {
-        Handle<LHEEventProduct> LHEEventHandle;
-        evt.getByToken( LHEEventToken_, LHEEventHandle );
+	void PDFWeightProducer::produce( Event &evt, const EventSetup & )
+	{
+		Handle<LHEEventProduct> LHEEventHandle;
+		evt.getByToken( LHEEventToken_, LHEEventHandle );
 
-        std::auto_ptr<vector<flashgg::PDFWeightObject> > PDFWeight( new vector<flashgg::PDFWeightObject> );
+		std::auto_ptr<vector<flashgg::PDFWeightObject> > PDFWeight( new vector<flashgg::PDFWeightObject> );
 
-        flashgg::PDFWeightObject pdfWeight;
+		flashgg::PDFWeightObject pdfWeight;
 
-        float weight = 1;
+		float weight = 1;
+		uint16_t weight_16 =1;
 
-//		vector<float> event_pdf_weights;
-//		event_pdf_weights.clear();
+		//cout << "weight_container size " << LHEEventHandle->weights().size() << " num_weight " << PDFWeightProducer::weight_indices.size() << endl;
+		//	int lower_bound = LHEEventHandle->weights().size() - PDFWeightProducer::weight_indices.size();
+		int upper_bound = LHEEventHandle->weights().size();
+		int size = PDFWeightProducer::weight_indices.size();
+		//cout << "lower_bound " << lower_bound << " upper_bound " << upper_bound << endl;
 
-        //cout << "weight_container " << LHEEventHandle->weights().size() << " num_weight " << PDFWeightProducer::weight_indices.size() << endl;
-        int lower_bound = LHEEventHandle->weights().size() - PDFWeightProducer::weight_indices.size();
-        int upper_bound = LHEEventHandle->weights().size();
+		for( int i = 0; i < upper_bound; i++ ) {
 
-        for( int i = lower_bound; i < upper_bound; i++ ) {
+			int id_i = stoi( LHEEventHandle->weights()[i].id );
 
-//			cout << "inner index " << i << "index " << PDFWeightProducer::weight_indices[i-lower_bound] << "id " << LHEEventHandle->weights()[i].id << endl;
-            weight = LHEEventHandle->weights()[i].wgt / LHEEventHandle->originalXWGTUP();
+			for( int j = 0; j<size; j++ ){
 
-            //cout << "weight " << weight << endl;
+				int id_j = PDFWeightProducer::weight_indices[j];			
 
-            pdfWeight.pdf_weight_container.push_back( weight );
+//				cout << "id_i " << id_i << " id_j " << id_j << endl;
 
-//			event_pdf_weights.push_back(weight);
-        }
+				if( id_i == id_j ){
 
-//		pdfWeight.setPDFWeight( event_pdf_weights );
+				        //cout << "inner index " << j << " index " << PDFWeightProducer::weight_indices[j] << " id " << LHEEventHandle->weights()[i].id << endl;
+					weight = LHEEventHandle->weights()[i].wgt / LHEEventHandle->originalXWGTUP();
+					//cout << "weight " << weight << endl;
 
-        //pdfWeight.single_weight = pdfWeight.pdf_weight_container[1];
+					weight_16 = MiniFloatConverter::float32to16(weight);
 
-        PDFWeight->push_back( pdfWeight );
+					pdfWeight.pdf_weight_container.push_back( weight_16 );
+				}
 
-        evt.put( PDFWeight );
+			}
 
-        pdfWeight.pdf_weight_container.size();
+		}
 
-    }
+		PDFWeight->push_back( pdfWeight );
+
+		evt.put( PDFWeight );
+
+		pdfWeight.pdf_weight_container.size();
+
+	}
 
 }
 

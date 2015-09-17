@@ -2,7 +2,7 @@
 #define FLASHgg_PDFWeightObject_h
 
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
-#include <map>
+#include "DataFormats/PatCandidates/interface/libminifloat.h"
 #include <vector>
 
 using namespace std;
@@ -17,7 +17,10 @@ namespace flashgg {
         //PDFWeightObject( const PDFWeightObject& );
         ~PDFWeightObject();
 
-        vector<float> pdf_weight_container;
+        vector<uint16_t> pdf_weight_container;
+
+	vector<float> uncompress() const;
+
     };
 }
 
