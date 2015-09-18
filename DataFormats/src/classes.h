@@ -4,6 +4,7 @@
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
+#include "flashgg/DataFormats/interface/GenDiPhoton.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
 #include "flashgg/DataFormats/interface/UntaggedTag.h"
@@ -57,6 +58,15 @@ namespace  {
         edm::Wrapper<edm::Ptr<flashgg::DiPhotonCandidate> >       wrp_ptr_fgg_dip;
         std::vector<edm::Ptr<flashgg::DiPhotonCandidate> >        vec_ptr_fgg_dip;
         edm::Wrapper<std::vector<edm::Ptr<flashgg::DiPhotonCandidate> > >   wrp_vec_ptr_fgg_dip;
+
+        flashgg::GenDiPhoton                                        fgg_gdip;
+        edm::Wrapper<flashgg::GenDiPhoton>                      wrp_fgg_gdip;
+        std::vector<flashgg::GenDiPhoton>                       vec_fgg_gdip;
+        edm::Wrapper<std::vector<flashgg::GenDiPhoton> >    wrp_vec_fgg_gdip;
+        edm::Ptr<flashgg::GenDiPhoton>                          ptr_fgg_gdip;
+        edm::Wrapper<edm::Ptr<flashgg::GenDiPhoton> >       wrp_ptr_fgg_gdip;
+        std::vector<edm::Ptr<flashgg::GenDiPhoton> >        vec_ptr_fgg_gdip;
+        edm::Wrapper<std::vector<edm::Ptr<flashgg::GenDiPhoton> > >   wrp_vec_ptr_fgg_gdip;
 
         //-----------J. Tao from IHEP-Beijing--------------
         flashgg::DiMuonCandidate                                        fgg_dim;
