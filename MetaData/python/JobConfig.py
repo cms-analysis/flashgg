@@ -218,7 +218,8 @@ class JobConfig(object):
             
 
         if self.dumpPython != "":
-            pyout = open(self.dumpPython,"w+")
+            from gzip import open
+            pyout = open("%s.gz" % self.dumpPython,"w+")
             pyout.write( process.dumpPython() )
             pyout.close()
 
