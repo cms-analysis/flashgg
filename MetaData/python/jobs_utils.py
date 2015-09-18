@@ -104,7 +104,7 @@ class JobsManager(object):
                             help="continue interrupted task."
                             ),
                 make_option("-b","--batch-system",dest="batchSystem",type="string",
-                            default="lsf",help="Batch system name. Currently supported: sge lsf, default: %default"
+                            default="auto",help="Batch system name. Currently supported: sge lsf, default: %default"
                             ),
                 ]
                               )

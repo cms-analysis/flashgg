@@ -13,23 +13,81 @@ from math import floor
 # -----------------------------------------------------------------------------------------------------
 class BatchRegistry:
     
+    domain = None
+    host   = None
+    proxy  = None
+    autoprint  = True
+    domains_map = {
+        "cern.ch"          : "lsf",
+        "psi.ch"           : "sge",
+        "hep.ph.ic.ac.uk"  : "sge",
+        }
+    
     #----------------------------------------
     @staticmethod
     def getRunner(batchSystem):
+        if batchSystem == "auto": batchSystem = BatchRegistry.getBatchSystem()        
         if batchSystem == "lsf" : return LsfJob
         elif batchSystem == "sge": return SGEJob
         else:
-            raise Exception,"Unrecognized batchSystem:", batchSystem
+            raise Exception,"Unrecognized batchSystem: %s" % batchSystem
 
     #----------------------------------------
     @staticmethod
+    def getBatchSystem(domain=None):
+        if not domain:
+            domain = BatchRegistry.getDomain()
+        if not domain in BatchRegistry.domains_map:
+            raise Exception,"Could not automatically determine the batchSystem for domain %s. Please specify it manually.\n Known domains are: %s\n" % ( domain, " ".join(BatchRegistry.domains_map.keys()) )
+        ret = BatchRegistry.domains_map[domain]
+        if BatchRegistry.autoprint:
+            print( "\nINFO: We are at '%s', so we will use '%s' as bacth system.\n     Please specify the batch system on the command line if you are not happy with this." % (domain,ret) )
+            BatchRegistry.autoprint = False
+        return ret
+    
+    #----------------------------------------
+    @staticmethod
     def getMonitor(batchSystem):
+        if batchSystem == "auto": batchSystem = BatchRegistry.getBatchSystem(BatchRegistry.getDomain())        
         if batchSystem == "lsf" : return LsfMonitor
         elif batchSystem == "sge": return SGEMonitor
         else:
-            raise Exception,"Unrecognized batchSystem:", batchSystem
-    
+            raise Exception,"Unrecognized batchSystem: %s" % batchSystem
 
+    #----------------------------------------
+    @staticmethod
+    def getDomain():
+        if not BatchRegistry.domain:
+            stat,out = commands.getstatusoutput("hostname -d")
+            if stat:
+                raise Exception,"Unable to determine domain:\n%s" % out
+            BatchRegistry.domain = out.strip("\n")
+        return BatchRegistry.domain
+
+    #----------------------------------------
+    @staticmethod
+    def getHost():
+        if not BatchRegistry.host:
+            stat,out = commands.getstatusoutput("hostname -s")
+            if stat:
+                raise Exception,"Unable to determine domain:\n%s" % out
+            BatchRegistry.host = out.strip("\n")
+        return BatchRegistry.host
+
+    #----------------------------------------
+    @staticmethod
+    def getProxy():
+        if not BatchRegistry.proxy:
+            stat,out = commands.getstatusoutput("voms-proxy-info -e --valid 5:00")
+            if stat:
+                raise Exception,"voms proxy not found or validity  less than 5 hours:\n%s" % out
+            stat,out = commands.getstatusoutput("voms-proxy-info -p")
+            if stat:
+                raise Exception,"Unable to voms proxy:\n%s" % out
+            BatchRegistry.proxy = "%s:%s" % ( BatchRegistry.getHost(), out.strip("\n") )
+        return BatchRegistry.proxy
+    
+        
 # -----------------------------------------------------------------------------------------------------
 class LsfJob(object):
     """ a thread to run bsub and wait until it completes """
@@ -52,6 +110,10 @@ class LsfJob(object):
     def __str__(self):
         return "LsfJob: %s %s" % ( self.lsfQueue, self.jobName )
         
+    #----------------------------------------
+    def preamble(self):
+        return ""
+    
     #----------------------------------------
     def run(self,script):
         
@@ -154,6 +216,8 @@ class LsfJob(object):
 # -----------------------------------------------------------------------------------------------------
 class TarballJob():
     
+    nwarnings = 1
+    
     #----------------------------------------
     def __init__(self,*args,**kwargs):
         
@@ -181,6 +245,23 @@ class TarballJob():
         script = ""
         script += "#!/bin/bash\n"
         
+        # get specific preamble needed by the runner
+        #     this commands are expected to bring the process to the job working directory in the worker node
+        script += self.runner.preamble()+"\n"
+        
+        # copy grid proxy over
+        try:
+            proxy = BatchRegistry.getProxy()
+            script += "scp -p %s .\n" % proxy
+            proxyname = os.path.basename(proxy.split(":")[1])
+            script += "export X509_USER_PROXY=$PWD/%s\n" % proxyname
+        except Exception, e:
+            if TarballJob.nwarnings > 0:
+                TarballJob.nwarnings -= 1
+                print "WARNING: I could not find a valid grid proxy. This may cause problems if the jobs will read the input through AAA."
+                print e
+                
+        # set-up CMSSW
         script += "WD=$PWD\n"
         script += "echo\n"
         script += "echo\n"
@@ -189,7 +270,7 @@ class TarballJob():
         if not self.tarball:
             script += "cd " + os.environ['CMSSW_BASE']+"\n"
         else:
-            script += "[[ -n $CMS_PATH ]] && source $VO_CMS_SW_DIR/cmsset_default.sh\n"
+            script += "source $VO_CMS_SW_DIR/cmsset_default.sh\n"
             script += "export SCRAM_ARCH=%s\n" % os.environ['SCRAM_ARCH']
             script += "scram project CMSSW %s\n" % os.environ['CMSSW_VERSION']
             script += "cd %s\n" % os.environ['CMSSW_VERSION']
@@ -242,7 +323,7 @@ class TarballJobFactory(object):
     
     # ------------------------------------------------------------------------------------------------
     def __init__(self,stage_dest,
-                 stage_cmd="cp -pv",stage_patterns=["'*.root'","'*.xml'"],job_outdir=None,runner=None,batchSystem="lsf"):
+                 stage_cmd="cp -pv",stage_patterns=["'*.root'","'*.xml'"],job_outdir=None,runner=None,batchSystem="auto"):
         
         if not runner:
             self.runner = BatchRegistry.getRunner(batchSystem)
@@ -288,9 +369,7 @@ class TarballJobFactory(object):
         print "\n".join(content)
         print
         stat,out =  commands.getstatusoutput("cd $CMSSW_BASE; tar %s" % " ".join(args) )
-        ## print out
-        ## print "CMSSW_BASE: %s" % os.environ["CMSSW_BASE"]
-        ## print "args: %s" % " ".join(args)
+
         if stat != 0:
             print "error (%d) creating job tarball"
             print "CMSSW_BASE: %s" % os.environ["CMSSW_BASE"]
@@ -386,22 +465,31 @@ class SGEJob(LsfJob):
     def __str__(self):
         return "SGEJob: %s %s" % ( self.lsfQueue, self.jobName )
 
+    def preamble(self):
+        ret = ""
+        mydomain = BatchRegistry.getDomain()
+        # domain-specific configuration
+        if mydomain == "psi.ch":
+            ret += "mkdir -p /scratch/$(whoami)/sgejob-$JOB_ID\n"
+            ret += "cd /scratch/$(whoami)/sgejob-$JOB_ID\n"
+        return ret
+        
     def run(self,script):
 
         qsubCmdParts = [ "qsub",
                          "-q " + self.lsfQueue,
                          ]
 
-        self.cmd = cmd
         if not self.async:
             qsubCmdParts.append("-sync y")  # qsub waits until job completes
 
         if( self.jobName ):
-            logdir = os.path.dirname(self.jobName)
+            logdir = os.path.abspath(os.path.dirname(self.jobName))
+            logfile = "%s/%s.log" % (logdir, os.path.basename(self.jobName))
             if not os.path.exists(logdir):
                 os.mkdir(logdir)
             qsubCmdParts.append("-N " + self.jobName.strip("/").replace("/","_"))
-            qsubCmdParts.append("-o %s.log -e %s.log" % (self.jobName,self.jobName))
+            qsubCmdParts.append("-o %s -e %s" % (logfile,logfile))
 
         qsubCmd = " ".join(qsubCmdParts)
 
@@ -412,6 +500,9 @@ class SGEJob(LsfJob):
                                stderr=subprocess.PIPE,
                                close_fds=True)
         
+        with open("%s.sh" % self.jobName,"w+") as fout:
+            fout.write(script)
+            fout.close()
         out,err = sge.communicate(script)
                                                          
         self.exitStatus = sge.returncode
