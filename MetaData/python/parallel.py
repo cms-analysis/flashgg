@@ -109,8 +109,10 @@ class LsfJob(object):
         self.replacesJob = replacesJob
         
     def __str__(self):
-        return "LsfJob: %s %s" % ( self.lsfQueue, self.jobName )
+        return "LsfJob: [%s] [%s] [%s]" % ( self.lsfQueue, self.jobName, self.jobid )
         
+    def setJobId(self,jobid):
+        self.jobid = jobid
     #----------------------------------------
     def preamble(self):
         return ""
@@ -198,7 +200,9 @@ class LsfJob(object):
     def handleOutput(self):
         ## print "handleOutput"
         if self.async:
-            result = commands.getstatusoutput("bjobs %d" % self.jobid)
+            self.exitStatus = -1
+            result = commands.getstatusoutput("bjobs %s" % str(self.jobid))
+
             for line in result[1].split("\n"):
                 if line.startswith(str(self.jobid)):
                     exitStatus = [ l for l in line.split(" ") if l != "" ][2]
@@ -221,7 +225,7 @@ class LsfJob(object):
         return self.exitStatus, output
 
 # -----------------------------------------------------------------------------------------------------
-class TarballJob():
+class TarballJob(object):
     
     nwarnings = 1
     
@@ -242,8 +246,12 @@ class TarballJob():
         ## return runner attributes
         if hasattr(self.runner,name):
             return getattr(self.runner,name)
-        
-        raise AttributeError, "No attribute %s in runner instance %s" % (name,str(self.runner))
+            
+        ## raise AttributeError, "No attribute %s in runner instance %s" % (name,str(self.runner))
+        return object.__getattr__(name)
+           
+    def __str__(self):
+        return "TarballJob: [%s]" % ( self.runner )
 
     #----------------------------------------
     def __call__(self,cmd):
@@ -446,50 +454,65 @@ class LsfMonitor:
         self.stop = False
 
     def __call__(self):
-        jobsmap = {}
-        jobids = {}
-        clonesMap = {}
+        self.jobsmap = {}
+        self.jobids = {}
+        self.clonesMap = {}
 
         while not self.stop:
             if not self.jobsqueue.empty():
                 job = self.jobsqueue.get()
-                jobsmap[str(job.jobid)] = job
-                jobids[job.jobName] = job.jobid
-                
-                if job.replacesJob:
-                    if not job.replacesJob in clonesMap:
-                        clonesMap[job.replacesJob] = [jobids[job.replacesJob]]                        
-                    clonesMap[job.replacesJob].append(job.jobid)
-                
-            status = commands.getstatusoutput("bjobs %s" % " ".join(jobsmap.keys()))
-            for line in status[1].split("\n")[1:]:
-                toks = [ l for l in line.split(" ") if l != "" ]
-                jobid = toks[0]
-                status = toks[2]
-                if status in ["DONE","EXIT","ZOMBI","UNKWN"]:
-                    lsfJob = jobsmap[jobid]
-                    self.retqueue.put( (lsfJob, [lsfJob.cmd], lsfJob.handleOutput()) )
+                if job.jobid == None:
+                    print "INTERNAL ERROR: job id not set %s" % job
+                    self.retqueue.put( (job, [job.cmd], job.handleOutput()) )
+                else:
+                    self.jobsmap[str(job.jobid)] = job
+                    self.jobids[job.jobName] = job.jobid
                     
-                    ancestor = lsfJob.replacesJob if lsfJob.replacesJob else lsfJob.jobName
-                    if ancestor in clonesMap:
-                        for clone in clonesMap[ancestor]:
-                            if clone != jobid:
-                                self.cancelJob(clone)
-                            jobsmap.pop(clone)
-                        
-                    jobsmap.pop(jobid)
+                    if job.replacesJob:
+                        if not job.replacesJob in clonesMap:
+                            self.clonesMap[job.replacesJob] = [jobids[job.replacesJob]]                        
+                        self.clonesMap[job.replacesJob].append(job.jobid)
+            
+            self.monitor()
             sleep(0.1)
 
 
-    def cancelJob(self,jobid):
+    def cancel(self,jobid):
         commands.getstatusoutput("bkill -s 9 %d" % jobid)
         
+    def monitor(self):
+        status = commands.getstatusoutput("bjobs %s" % " ".join(self.jobsmap.keys()))
+        for line in status[1].split("\n")[1:]:
+            toks = [ l for l in line.split(" ") if l != "" ]
+            jobid = toks[0]
+            status = toks[2]
+            if status in ["DONE","EXIT","ZOMBI","UNKWN"]:
+                self.jobFinished(jobid,status)
+                
+    def jobFinished(self,jobid,status):
+        lsfJob = self.jobsmap[jobid]
+        try:
+            self.retqueue.put( (lsfJob, [lsfJob.cmd], lsfJob.handleOutput()) )
+        except Exception, e:
+            print "Error getting output of %s " % lsfJob
+            print jobid, status
+            print e
+                    
+        ancestor = lsfJob.replacesJob if lsfJob.replacesJob else lsfJob.jobName
+        if ancestor in self.clonesMap:
+            for clone in self.clonesMap[ancestor]:
+                if clone != jobid:
+                    self.cancel(clone)
+                self.jobsmap.pop(clone)
+                        
+        self.jobsmap.pop(jobid)
+
 # -----------------------------------------------------------------------------------------------------
 class SGEJob(LsfJob):
     """ a thread to run qsub and wait until it completes """
 
     def __str__(self):
-        return "SGEJob: %s %s" % ( self.lsfQueue, self.jobName )
+        return "SGEJob: [%s] [%s] [%s]" % ( self.lsfQueue, self.jobName, self.jobid )
 
     def preamble(self):
         ret = ""
@@ -600,34 +623,46 @@ class SGEJob(LsfJob):
 
 # -----------------------------------------------------------------------------------------------------
 class SGEMonitor(LsfMonitor):
-    def __call__(self):
-        jobsmap = {}
+    ### def __call__(self):
+    ###     jobsmap = {}
+    ### 
+    ###     while not self.stop:
+    ###         if not self.jobsqueue.empty():
+    ###             job = self.jobsqueue.get()
+    ###             jobsmap[str(job.jobid)] = job
+    ### 
+    ###         status = commands.getstatusoutput("qstat")
+    ###         jobids = []
+    ###         statuses = []
+    ###         for line in status[1].split("\n")[2:]:
+    ###             toks = line.split()
+    ###             jobids.append(toks[0])
+    ###             statuses.append(toks[2])
+    ###         for jobid in jobsmap.keys():
+    ###             if not jobids.count(jobid):
+    ###                 # i.e. job is no longer on the list, and hence done
+    ###                 lsfJob = jobsmap[jobid]
+    ###                 self.retqueue.put( (lsfJob, [lsfJob.cmd], lsfJob.handleOutput()) )
+    ###                 jobsmap.pop(jobid)
+    ###         sleep(5.)
 
-        while not self.stop:
-            if not self.jobsqueue.empty():
-                job = self.jobsqueue.get()
-                jobsmap[str(job.jobid)] = job
-
-            status = commands.getstatusoutput("qstat")
-            jobids = []
-            statuses = []
-            for line in status[1].split("\n")[2:]:
-                toks = line.split()
-                jobids.append(toks[0])
-                statuses.append(toks[2])
-#                print "DEBUG jobid jobids",jobid,jobids[0]
-#                print type(jobid),type(jobids[0])
-#                print
-#                print jobs
+    def monitor(self):
+        status = commands.getstatusoutput("qstat")
+        jobids = []
+        statuses = []
+        for line in status[1].split("\n")[2:]:
+            toks = line.split()
+            jobids.append(toks[0])
+            statuses.append(toks[2])
+            #                print "DEBUG jobid jobids",jobid,jobids[0]
+            #                print type(jobid),type(jobids[0])
+            #                print
+            #                print jobs
             for jobid in jobsmap.keys():
                 if not jobids.count(jobid):
                     # i.e. job is no longer on the list, and hence done
-                    lsfJob = jobsmap[jobid]
-                    self.retqueue.put( (lsfJob, [lsfJob.cmd], lsfJob.handleOutput()) )
-                    jobsmap.pop(jobid)
-            sleep(5.)
-
-
+                    self.jobFinished(jobid,None)
+                    
 # -----------------------------------------------------------------------------------------------------
 class Wrap:
     def __init__(self, func, args, retqueue, runqueue):
@@ -708,7 +743,7 @@ class Parallel:
         
         job = self.JobDriver(self.lsfQueue,jobName,async=True)
 
-        job.jobid = batchId
+        job.setJobId(batchId)
         job.cmd = " ".join([cmd]+args)
         self.lsfJobs.put(job)
 
