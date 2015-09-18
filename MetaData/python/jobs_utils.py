@@ -175,7 +175,7 @@ class JobsManager(object):
                 jobName,batchId = batchId
             else:
                 jobName=None
-            if ret != 0 and nsub < self.options.maxResub:
+            if ret != 0 and nsub <= self.options.maxResub:
                 self.parallel.addJob(cmd,args,batchId,jobName)
             
 
@@ -444,11 +444,12 @@ class JobsManager(object):
                         out = self.parallel.run(inam,iargs,jobName=jobName)
                         if self.options.queue and self.options.asyncLsf:
                             ijob[5] = out[-1][1][1]
+                            self.storeTaskConfig(self.task_config)
                         print "------------"
                         return 1
                     else:
                         print "Giving up."
-
+                        
         self.storeTaskConfig(self.task_config)
         print "------------"
         return 0
