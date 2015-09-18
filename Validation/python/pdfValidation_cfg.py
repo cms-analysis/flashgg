@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 import FWCore.Utilities.FileUtils as FileUtils
 
-process = cms.Process("FLASHggMicroAOD")
+process = cms.Process("PDFWeight")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 
@@ -13,7 +13,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 1000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 1000 ) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 
 process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc')
@@ -53,8 +53,15 @@ if current_gt.count("::All"):
 #                                                                         "/store/relval/CMSSW_7_4_0_pre9/RelValH130GGgluonfusion_13/MINIAODSIM/PU25ns_MCRUN2_74_V7-v1/00000/C65FAFAA-4CD4-E411-9026-0025905A607E.root"))
 
 # Spring15
+#process.source = cms.Source("PoolSource", fileNames=cms.untracked.vstring("/store/mc/RunIISpring15DR74/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/20000/02AE0634-0B23-E511-8E6F-02163E0133CA.root"))
+
 #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIISpring15DR74/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v1/70000/0232BC3C-01FF-E411-8779-0025907B4FC2.root"))
-process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIISpring15DR74/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v1/30000/54ECB9A4-912E-E511-BB7D-002590A831CA.root"))
+
+process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIISpring15DR74/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/MINIAODSIM/Asympt25ns_MCRUN2_74_V9-v1/50000/4E503483-EA32-E511-AB07-02163E013542.root"))
+
+#process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring("file:myMicroAODOutputFile.root"))
+
+
 process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to work: disable all warnings for now
 # process.MessageLogger.suppressWarning.extend(['SimpleMemoryCheck','MemoryCheck']) # this would have been better...
 
@@ -65,32 +72,11 @@ process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to wo
 #                                        monitorPssAndPrivate = cms.untracked.bool(True)
 #                                       )
 
-#process.load("flashgg/MicroAOD/flashggPDFWeightObject_cfi")
-process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
+process.PDFValidation = cms.EDAnalyzer('PDFWeight',
+					GenEventInfoProductTag=cms.untracked.InputTag('generator'),
+					LHETag=cms.untracked.InputTag('externalLHEProducer'),
+					LHERunTag=cms.untracked.InputTag('LHERunInfoProduct')
+					)
 
-from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand
-process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile.root'),
-                               outputCommands = microAODDefaultOutputCommand
-                               )
-
-# All jets are now handled in MicroAODCustomize.py
-# Switch from PFCHS to PUPPI with puppi=1 argument (both if puppi=2)
-
-process.p = cms.Path(process.flashggMicroAODSequence)
-#process.p = cms.Path(process.flashggPDFWeightObject*process.flashggMicroAODSequence)
-process.e = cms.EndPath(process.out)
-
-# Uncomment these lines to run the example commissioning module and send its output to root
-#process.commissioning = cms.EDAnalyzer('flashggCommissioning',
-#                                       PhotonTag=cms.untracked.InputTag('flashggPhotons'),
-#                                       DiPhotonTag = cms.untracked.InputTag('flashggDiPhotons'),
-#                                       VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices')
-#)
-#process.TFileService = cms.Service("TFileService",
-#                                   fileName = cms.string("commissioningTree.root")
-#)
-#process.p *= process.commissioning
-
-
-from flashgg.MicroAOD.MicroAODCustomize import customize
-customize(process)
+process.p = cms.Path(process.PDFValidation)
+#process.e = cms.EndPath(process.out)
