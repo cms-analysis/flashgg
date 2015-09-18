@@ -17,6 +17,7 @@ flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
 
                                 useNonZsLazyTools = cms.bool(True),
                                 recomputeNonZsClusterShapes = cms.bool(False),
+                                addRechitFlags = cms.bool(True),
                                 doOverlapRemovalForIsolation = cms.bool(True),
                                 useVtx0ForNeutralIso = cms.bool(True),
                                 extraCaloIsolations = cms.VPSet(),

@@ -1,6 +1,7 @@
 #ifndef flashgg_PhotonDumpers_h
 #define flashgg_PhotonDumpers_h
 
+#include "flashgg/DataFormats/interface/GenDiPhoton.h"
 #include "flashgg/DataFormats/interface/Photon.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/SinglePhotonView.h"
@@ -12,6 +13,10 @@
 /// #include "PhysicsTools/UtilAlgos/interface/FWLiteAnalyzerWrapper.h"
 
 namespace flashgg {
+    typedef CollectionDumper<std::vector<GenDiPhoton> > GenDiPhotonDumper;
+    typedef CollectionDumper<std::vector<GenDiPhoton>,
+            GenDiPhoton,
+            CutBasedClassifier<GenDiPhoton> > CutBasedGenDiPhotonDumper;
     typedef CollectionDumper<std::vector<Photon> > PhotonDumper;
     typedef CollectionDumper<std::vector<Photon>,
             Photon,

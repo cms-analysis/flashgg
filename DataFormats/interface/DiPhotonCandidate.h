@@ -102,8 +102,11 @@ namespace flashgg {
         void setJetCollectionIndex( unsigned int val ) { jetCollectionIndex_ = val; }
         unsigned int jetCollectionIndex() const { return jetCollectionIndex_; }
 
+        LorentzVector genP4() const; 
     private:
 
+    private:
+        
         edm::Ptr<reco::Vertex> vertex_;
         int vertex_index_;
 
