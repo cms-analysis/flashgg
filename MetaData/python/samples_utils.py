@@ -488,8 +488,30 @@ class SamplesManager(object):
         self.outcomes.append( (None,None,self.readJobOutput(tmp,ret,out,dsetName,fileName,ifile))) 
         return 0
         ## return dsetName,ifile,fileName,ret,out
-    
 
+    def getLumiList(self,*args):
+        
+        catalog = self.readCatalog(True)
+        datasets = []
+        for dataset in catalog.keys():
+            for arg in args:
+                if dataset == arg or fnmatch(dataset,arg):
+                    datasets.append(dataset)
+                    break
+        
+        from FWCore.PythonUtilities.LumiList import LumiList
+        for dataset in datasets:
+            dlist = LumiList()
+            jsonout = dataset.lstrip("/").rstrip("/").replace("/","_")+".json"
+            for fil in catalog[dataset]["files"]:
+                flist = LumiList( runsAndLumis=fil.get("lumis",{}) )
+                print flist
+                dlist += flist
+            
+            with open(jsonout,"w+") as fout:
+                fout.write(json.dumps(dlist.compactList,sort_keys=True))
+                fout.close()
+        
     def lockCatalog(self):
         """
         Lock catalog file for writing.
@@ -541,6 +563,8 @@ class SamplesManager(object):
         """
         catalog = self.readCatalog(True)
         primary = primary.lstrip("/")
+        if "/" in primary:
+            primary,secondary,tier = primary.split("/")
         found = False
         xsec  = 0.
         allFiles = []
@@ -604,7 +628,8 @@ class SamplesManagerCli(SamplesManager):
                      "review                                           review catalog to remove datasets", 
                      "check      [wildcard]                            check duplicate files and errors in datasets and mark bad files",
                      "checkopen  [wildcard]                            as above but just try open file",
-                     "checklite  [wildcard]                            check for duplicate files in datasets"
+                     "checklite  [wildcard]                            check for duplicate files in datasets",
+                     "getlumi    [wildcard|datasets]                   get list of processed lumi sections in dataset"
                      ]
         
         parser = OptionParser(
@@ -720,6 +745,9 @@ Commands:
     def run_checkopen(self,*args):
         self.mn.checkAllDatasets(*args,justOpen=True)
     
+    def run_getlumi(self,*args):
+        self.mn.getLumiList(*args)
+
     def run_list(self,what=None):        
         datasets,catalog = self.mn.getAllDatasets()
         if what=="raw":
