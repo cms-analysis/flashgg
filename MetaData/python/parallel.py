@@ -82,6 +82,7 @@ class BatchRegistry:
             if stat:
                 raise Exception,"voms proxy not found or validity  less than 5 hours:\n%s" % out
             stat,out = commands.getstatusoutput("voms-proxy-info -p")
+            out = out.strip().split("\n")[-1] # remove spurious java info at ic.ac.uk
             if stat:
                 raise Exception,"Unable to voms proxy:\n%s" % out
             BatchRegistry.proxy = "%s:%s" % ( BatchRegistry.getHost(), out.strip("\n") )
@@ -113,7 +114,14 @@ class LsfJob(object):
     #----------------------------------------
     def preamble(self):
         return ""
-    
+
+    #----------------------------------------
+    def epilogue(self,cmd,dest):
+        return ""
+
+    def copyProxy(self):
+        return True
+
     #----------------------------------------
     def run(self,script):
         
@@ -178,7 +186,7 @@ class LsfJob(object):
         script += "cd " + os.getcwd()+"\n"
         
         if os.environ.get('X509_USER_PROXY',None):
-            script += "export $X509_USER_PROXY=%s\n" % os.environ['X509_USER_PROXY']
+            script += "export X509_USER_PROXY=%s\n" % os.environ['X509_USER_PROXY']
                     
         # the user command
         script += cmd+"\n"
@@ -190,7 +198,6 @@ class LsfJob(object):
     def handleOutput(self):
         ## print "handleOutput"
         if self.async:
-            
             result = commands.getstatusoutput("bjobs %d" % self.jobid)
             for line in result[1].split("\n"):
                 if line.startswith(str(self.jobid)):
@@ -250,22 +257,36 @@ class TarballJob():
         script += self.runner.preamble()+"\n"
         
         # copy grid proxy over
-        try:
-            proxy = BatchRegistry.getProxy()
-            script += "scp -p %s .\n" % proxy
-            proxyname = os.path.basename(proxy.split(":")[1])
-            script += "export X509_USER_PROXY=$PWD/%s\n" % proxyname
-        except Exception, e:
-            if TarballJob.nwarnings > 0:
-                TarballJob.nwarnings -= 1
-                print "WARNING: I could not find a valid grid proxy. This may cause problems if the jobs will read the input through AAA."
-                print e
+        if self.runner.copyProxy():
+            try:
+                proxy = BatchRegistry.getProxy()
+                script += "scp -p %s .\n" % proxy
+                proxyname = os.path.basename(proxy.split(":")[1])
+                script += "export X509_USER_PROXY=$PWD/%s\n" % proxyname
+            except Exception, e:
+                if TarballJob.nwarnings > 0:
+                    TarballJob.nwarnings -= 1
+                    print "WARNING: I could not find a valid grid proxy. This may cause problems if the jobs will read the input through AAA."
+                    print e
+        else:
+            try:
+                proxy = BatchRegistry.getProxy()
+                proxyname = os.path.basename(proxy.split(":")[1])
+                if TarballJob.nwarnings > 0:
+                    TarballJob.nwarnings -= 1
+                    print "INFO: We are counting on the path for this proxy being visible to the remote jobs:",proxy.split(":")[1]
+            except Exception, e:
+                if TarballJob.nwarnings > 0:
+                    TarballJob.nwarnings -= 1
+                    print "WARNING: I could not find a valid grid proxy. This may cause problems if the jobs will read the input through AAA."
+                    print e
+
+
                 
         # set-up CMSSW
         script += "WD=$PWD\n"
         script += "echo\n"
         script += "echo\n"
-        script += "echo working directory is $WD\n"
         script += "echo\n"
         if not self.tarball:
             script += "cd " + os.environ['CMSSW_BASE']+"\n"
@@ -280,11 +301,11 @@ class TarballJob():
         script += "eval $(scram runtime -sh)"+"\n"
         script += "cd $WD\n"
         
-        if os.environ.get('X509_USER_PROXY',None):
-            script += "export $X509_USER_PROXY=%s\n" % os.environ['X509_USER_PROXY']
-            
-        if self.tarball and self.job_outdir:
+        if self.job_outdir:
             script += "mkdir %s\n" % self.job_outdir
+
+        script += 'echo "ls $X509_USER_PROXY"\n'
+        script += 'ls $X509_USER_PROXY\n'
             
         # the user command
         script += cmd+"\n"
@@ -312,6 +333,11 @@ class TarballJob():
         script += '       exit -2\n'
         script += '    fi\n'
         script += 'fi\n'        
+
+        # get specific epilogue needed by the runner
+        # this can be used, for example, to propagate $retval by touching a file
+        script += self.runner.epilogue(self.stage_cmd,self.stage_dest)+"\n"
+
         script += 'exit $retval\n'
         script += '\n'
         
@@ -472,7 +498,30 @@ class SGEJob(LsfJob):
         if mydomain == "psi.ch":
             ret += "mkdir -p /scratch/$(whoami)/sgejob-$JOB_ID\n"
             ret += "cd /scratch/$(whoami)/sgejob-$JOB_ID\n"
+        if mydomain == "hep.ph.ic.ac.uk":
+            ret += "mkdir -p /home/scratch/$(whoami)/sgejob-$JOB_ID\n"
+            ret += "cd /home/scratch/$(whoami)/sgejob-$JOB_ID\n"
         return ret
+
+    def epilogue(self,cmd,dest):
+        ret = ""
+        ret += 'if [[ $retval == 0 ]]; then\n'
+        fn = "%s.sh.done" % (self.jobName.split("/")[-1])
+        ret += '    touch %s\n' % fn
+        ret += '    %s %s %s\n' % ( cmd, fn, dest )
+        ret += 'else\n'
+        fn = "%s.sh.fail" % (self.jobName.split("/")[-1])
+        ret += '    touch %s\n' % fn
+        ret += '    %s %s %s\n' % ( cmd, fn, dest )
+        ret += 'fi\n'
+        return ret
+
+    def copyProxy(self):
+        mydomain = BatchRegistry.getDomain()
+        # domain-specific configuration
+        if mydomain == "hep.ph.ic.ac.uk":
+            return False
+        return True
         
     def run(self,script):
 
@@ -533,6 +582,10 @@ class SGEJob(LsfJob):
                 if line.startswith(str(self.jobid)):
                     self.exitStatus = -1
                     break
+            if self.exitStatus == 0:
+                logdir = os.path.abspath(os.path.dirname(self.jobName))
+                if os.path.isfile('%s/%s.sh.fail' % (logdir,self.jobName.split("/")[-1])) and not os.path.isfile('%s/%s.sh.done' % (logdir,self.jobName.split("/")[-1])):
+                    self.exitStatus = 1
 
         output = ""
         if self.jobName:
