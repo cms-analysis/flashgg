@@ -522,8 +522,8 @@ class SGEJob(LsfJob):
             ret += "mkdir -p /scratch/$(whoami)/sgejob-$JOB_ID\n"
             ret += "cd /scratch/$(whoami)/sgejob-$JOB_ID\n"
         if mydomain == "hep.ph.ic.ac.uk":
-            ret += "mkdir -p /home/scratch/$(whoami)/sgejob-$JOB_ID\n"
-            ret += "cd /home/scratch/$(whoami)/sgejob-$JOB_ID\n"
+            ret += "mkdir -p $TMP/sgejob-$JOB_ID\n"
+            ret += "cd $TMP/sgejob-$JOB_ID\n"
         return ret
 
     def epilogue(self,cmd,dest):
@@ -658,10 +658,10 @@ class SGEMonitor(LsfMonitor):
             #                print type(jobid),type(jobids[0])
             #                print
             #                print jobs
-            for jobid in jobsmap.keys():
-                if not jobids.count(jobid):
-                    # i.e. job is no longer on the list, and hence done
-                    self.jobFinished(jobid,None)
+        for jobid in self.jobsmap.keys():
+            if not jobids.count(jobid):
+                # i.e. job is no longer on the list, and hence done
+                self.jobFinished(jobid,None)
                     
 # -----------------------------------------------------------------------------------------------------
 class Wrap:
