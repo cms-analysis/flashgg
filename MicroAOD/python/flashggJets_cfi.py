@@ -8,7 +8,7 @@ from PhysicsTools.PatAlgos.tools.jetTools        import addJetCollection
 import os
 
 flashggBTag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
-maxJetCollections = 5
+maxJetCollections = 8
 
 def addFlashggPFCHSJets(process, vertexIndex = 0, doQGTagging = True, label ='', debug = False):
   setattr(process, 'selectedMuons' + label, cms.EDFilter("CandPtrSelector", 
