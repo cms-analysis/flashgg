@@ -1,9 +1,9 @@
 {
-    "data" : ["/DoubleEG/Run2015D-PromptReco-v1/MINIAOD",
-       	      "/EGamma/Run2015D-PromptReco-v1/MINIAOD",
-       	      "/SinglePhoton/Run2015D-PromptReco-v1/MINIAOD",
-	      "/MuonEG/Run2015D-PromptReco-v1/MINIAOD",
-	      "/DoubleMuon/Run2015D-PromptReco-v1/MINIAOD"
+    "data" : ["/DoubleEG/Run2015D-PromptReco-v3/MINIAOD",
+       	      "/EGamma/Run2015D-PromptReco-v3/MINIAOD",
+       	      "/SinglePhoton/Run2015D-PromptReco-v3/MINIAOD",
+	      "/MuonEG/Run2015D-PromptReco-v3/MINIAOD",
+	      "/DoubleMuon/Run2015D-PromptReco-v3/MINIAOD"
 	      ],
     "sig"  : [
 	      ],
