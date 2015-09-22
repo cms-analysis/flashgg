@@ -11,7 +11,7 @@ diphotonDumpConfig = cms.PSet(
     categories = cms.VPSet(),
 
     workspaceName = cms.untracked.string("cms_hgg_$SQRTS"),
-    nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$LABEL_$SUBCAT_$SYST"),
+    nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$SYST"),
     systLabel = cms.untracked.string(""),
     
     dumpHistos = cms.untracked.bool(True),

@@ -10,7 +10,7 @@ options = VarParsing('analysis')
 print options
 
 processId = "tth"
-targetMass = 120.
+targetMass = 130.
 processId = "%s_%i" % (processId,int(targetMass))
 
 # maxEvents is the max number of events processed of each file, not globally
@@ -67,6 +67,7 @@ for systlabel in systlabels:
                        "flashggUntaggedTag__%s"%systlabel,
                        cutbased=cutstring,
                        systLabel=systlabel,
+                       classname="flashggUntaggedTag",
                        subcats=5, 
                        variables = defaultVariables,
                        histograms = defaultHistograms
@@ -74,6 +75,7 @@ for systlabel in systlabels:
   
   cfgTools.addCategory(process.diphotonDumper,
                        "flashggVBFTag__%s"%systlabel,
+                       classname="flashggVBFTag",
                        cutbased=cutstring,
                        systLabel=systlabel,
                        subcats=3,
@@ -90,6 +92,7 @@ for systlabel in systlabels:
   
   cfgTools.addCategory(process.diphotonDumper,
                        "flashggVHTightTag__%s"%systlabel,
+                       classname="flashggVHTightTag",
                        cutbased=cutstring,
                        systLabel=systlabel,
                        subcats=0,
@@ -99,6 +102,7 @@ for systlabel in systlabels:
   
   cfgTools.addCategory(process.diphotonDumper,
                        "flashggVHLooseTag__%s"%systlabel,
+                       classname="flashggVHLooseTag",
                        cutbased=cutstring,
                        systLabel=systlabel,
                        subcats=0,
@@ -108,6 +112,7 @@ for systlabel in systlabels:
   
   cfgTools.addCategory(process.diphotonDumper,
                        "flashggVHHadronicTag__%s"%systlabel,
+                       classname="flashggVHHadronicTag",
                        cutbased=cutstring,
                        systLabel=systlabel,
                        subcats=0,
@@ -117,6 +122,7 @@ for systlabel in systlabels:
   
   cfgTools.addCategory(process.diphotonDumper,
                        "flashggTTHLeptonicTag__%s"%systlabel,
+                       classname="flashggTTHLeptonicTag",
                        cutbased=cutstring,
                        systLabel=systlabel,
                        subcats=0,
@@ -132,6 +138,7 @@ for systlabel in systlabels:
   
   cfgTools.addCategory(process.diphotonDumper,
                        "flashggTTHHadronicTag__%s"%systlabel,
+                       classname="flashggTTHHadronicTag",
                        cutbased=cutstring,
                        systLabel=systlabel,
                        subcats=0,
