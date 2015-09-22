@@ -182,12 +182,24 @@ namespace flashgg {
         auto categories = cfg.getParameter<std::vector<edm::ParameterSet> >( "categories" );
         for( auto &cat : categories ) {
             auto label   = cat.getParameter<std::string>( "label" );
+            std::cout << "DEBUG CategoryDumper label " << label << std::endl;
             auto systLabel = cat.getParameter<std::string>( "systLabel" );
+            std::cout << "DEBUG CategoryDumper systlabel " << systLabel << std::endl;
+            auto classname = cat.getParameter<std::string>( "classname" );
+            std::cout << "DEBUG CategoryDumper classname " << classname << std::endl;
             auto subcats = cat.getParameter<int>( "subcats" );
-            auto label2 = replaceString( label, "__" + systLabel, "" );
-            auto name = replaceString( nameTemplate_, "$LABEL", label2 );
+            std::cout << "DEBUG CategoryDumper subcats " << subcats << std::endl;
+            auto cutbased = cat.getParameter<bool>( "cutbased" );
+            //auto label2 = replaceString( label, "__" + systLabel, "" );
+            auto name = replaceString( nameTemplate_, "$LABEL", label );
             name = replaceString( name, "$SYST", systLabel );
-            auto key = std::make_pair( label2, systLabel );
+            name = replaceString( name, "$CLASSNAME", classname );
+            auto key = std::make_pair(label, systLabel );
+            // if classname has been specified, use that instead. In general classname is not used (for now?)
+            // it was added in order to cater for the systematics case where the label is classname_syst
+            // but for the key, we only want the classname, so it is specified on its own as an additional optional argument.
+            if (classname != "") key = std::make_pair(classname, systLabel ); 
+            if (cutbased) key = std::make_pair("",label); 
             hasSubcat_[key] = ( subcats > 0 );
             auto &dumpers = dumpers_[key];
             if( subcats == 0 ) {
@@ -274,16 +286,16 @@ namespace flashgg {
         if( globalVarsDumper_ ) { globalVarsDumper_->fill( event ); }
         int nfilled = maxCandPerEvent_;
 
-        // for (auto &dumper : dumpers_){
-        //   std::cout << "DEBUG available dumper keys " << dumper.first.first <<  ", " << dumper.first.second << std::endl;
-        //}
+         for (auto &dumper : dumpers_){
+           std::cout << "DEBUG available dumper keys " << dumper.first.first <<  ", " << dumper.first.second << std::endl;
+        }
 
         for( auto &cand : collection ) {
             auto cat = classifier_( cand );
             auto which = dumpers_.find( cat.first );
-            //    std::cout << " DEBUG " << cat.first.first << ", " << cat.first.second << std::endl;
-            //    auto count = dumpers_.count( cat.first );
-            //    std::cout << ">> DEBUG Number of matches with that key " << count  << std::endl;
+               std::cout << " DEBUG " << cat.first.first << ", " << cat.first.second << std::endl;
+                auto count = dumpers_.count( cat.first );
+                std::cout << ">> DEBUG Number of matches with that key " << count  << std::endl;
 
             if( which != dumpers_.end() ) {
                 // which->second.print();
