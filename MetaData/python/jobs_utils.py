@@ -3,16 +3,13 @@ from optpars_utils import *
 from pprint import pprint
 
 import os,json,fcntl,stat
-from parallel  import Parallel
+from parallel  import *
 from threading import Semaphore
 
 import sys
 from subprocess import call, Popen, PIPE
 from copy import copy
 import shlex
-
-# Load command line option utilities
-from parallel import *
 
 # -------------------------------------------------------------------------------                                                                                           
 def shell_args(cmd):
