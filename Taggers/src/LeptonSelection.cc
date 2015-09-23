@@ -82,7 +82,7 @@ namespace flashgg {
 
         std::vector<edm::Ptr<flashgg::Electron> > goodElectrons;
 
-
+        std::cout << " LC DEBUG (LeptonSlection.cc) nElectrons " << ElectronPointers.size() << std::endl;
         for( unsigned int ElectronIndex = 0; ElectronIndex < ElectronPointers.size(); ElectronIndex++ ) {
 
             Ptr<flashgg::Electron> Electron = ElectronPointers[ElectronIndex];
@@ -99,24 +99,48 @@ namespace flashgg {
             */
 
             float Electron_eta = fabs( Electron->superCluster()->eta() );
-
-            if( Electron_eta > EtaCuts[2] || ( Electron_eta > EtaCuts[0] && Electron_eta < EtaCuts[1] ) ) { continue; }
-            if( Electron->pt() < ElectronPtThreshold ) { continue; }
-
             Ptr<reco::Vertex> Electron_vtx = chooseElectronVertex( Electron, vertexPointers );
-
-            if( Electron->nonTrigMVA() < NonTrigMVAThreshold ) { continue; }
-            if( Electron->standardHggIso() > IsoThreshold ) { continue; }
-
-            if( Electron->gsfTrack()->hitPattern().numberOfHits( reco::HitPattern::MISSING_INNER_HITS ) > NumOfMissingHitsThreshold ) { continue; }
-            if( Electron->hasMatchedConversion() ) { continue; }
-
             float dxy = Electron->gsfTrack()->dxy( Electron_vtx->position() );
             float dz = Electron->gsfTrack()->dz( Electron_vtx->position() );
-            if( dxy > TransverseImpactParam ) { continue; }
-            if( dz > LongitudinalImapctParam ) { continue; }
+            //std::cout << "[DEBUG] LeptonSelection.cc Electron eta " << Electron_eta <<  "  -- cuts <"<< EtaCuts[0] << ", <" << EtaCuts[1] << ", >" << EtaCuts[2] << std::endl;
+            //std::cout << "[DEBUG] LeptonSelection.cc Electron pt " << Electron->pt() <<", pt cut  >" << ElectronPtThreshold<<  std::endl;
+            //std::cout << "[DEBUG] LeptonSelection.cc non trig MVA " << Electron->nonTrigMVA() <<", mva cut  >" << NonTrigMVAThreshold <<  std::endl;
+            //std::cout << "[DEBUG] LeptonSelection.cc iso" << Electron->standardHggIso()  <<", iso cut  <" << IsoThreshold <<  std::endl;
+            //std::cout << "[DEBUG] LeptonSelection.cc missing Hits" << Electron->gsfTrack()->hitPattern().numberOfHits( reco::HitPattern::MISSING_INNER_HITS )  <<", cut  <" << NumOfMissingHitsThreshold <<  std::endl;
+            //std::cout << "[DEBUG] LeptonSelection.cc hasConversion " << Electron->hasMatchedConversion() << " needed 0  to pass " << std::endl;
+            //std::cout << "[DEBUG] LeptonSelection.cc dxy " << dxy << " -- cut  < "<<TransverseImpactParam << std::endl;
+            //std::cout << "[DEBUG] LeptonSelection.cc dz " << dz << " -- cut  < "<< LongitudinalImapctParam << std::endl;
 
-            //            std::cout << " LeptonSelection   ... pushing back Electron index " << ElectronIndex << std::endl;
+            if( Electron_eta > EtaCuts[2] && ( Electron_eta > EtaCuts[0] && Electron_eta < EtaCuts[1] ) ) { continue; }
+            //fixed the ||  to become and && in above, otherwise all electrons above EtaCuts[2] (which is ~1.44) are thrown out.
+            //ie it would have ignored all electrons on the endcaps.. 
+            //std::cout << "[DEBUG] passed eta cuts. " << std::endl;
+            if( Electron->pt() < ElectronPtThreshold ) { continue; }
+            //std::cout << "[DEBUG] passed pt cuts." << std::endl;
+
+
+
+            if( Electron->nonTrigMVA() < NonTrigMVAThreshold ) { continue; }
+            //std::cout << "[DEBUG] passed non trig mva." << std::endl;
+         
+            //if( Electron->standardHggIso() > IsoThreshold ) { continue; } //FIXME
+            //std::cout << "[DEBUG] passed iso." << std::endl; //FIXME
+            //The default standardHggIso is delivering values which are an order or magnitude larger than the cut. Maybe need to add rho correction? 
+            std::cout << "[WARNING] Isolation cut for flashggElectrons temporarily disabled pending optimisation." << std::endl; //FIXME
+
+
+            if( Electron->gsfTrack()->hitPattern().numberOfHits( reco::HitPattern::MISSING_INNER_HITS ) > NumOfMissingHitsThreshold ) { continue; }
+            //std::cout << "[DEBUG] passed  missing hits cut." << std::endl;
+
+            if( Electron->hasMatchedConversion() ) { continue; }
+            //std::cout << "[DEBUG] passed hasConversion." << std::endl;
+
+            if( dxy > TransverseImpactParam ) { continue; }
+            //std::cout << "[DEBUG] passed dxy cut " << std::endl;
+            if( dz > LongitudinalImapctParam ) { continue; }
+            //std::cout << "[DEBUG] passed dz cut." << std::endl;
+
+            //std::cout << "[DEBUG] LeptonSelection.c   ... pushing back Electron index " << ElectronIndex << std::endl;
             goodElectrons.push_back( Electron );
         }
 
