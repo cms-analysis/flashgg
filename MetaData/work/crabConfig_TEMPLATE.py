@@ -5,6 +5,7 @@
 
 from WMCore.Configuration import Configuration
 config = Configuration()
+import os
 
 config.section_("General")
 config.General.requestName = "JOBNAME"
@@ -13,6 +14,13 @@ config.General.transferLogs = False
 config.section_("JobType")
 config.JobType.pluginName = "Analysis"
 config.JobType.psetName = "PSET"
+
+## to include local file in the sendbox, this will put the file in the directory where cmsRun runs
+#config.JobType.inputFiles   = [ os.environ['CMSSW_BASE'] + '/src/'+ 'flashgg/MetaData/data/PY8_RunIISpring15DR74_bx50_MC.db' ]
+
+## incrase jobs time wall, maximum 2800 minutes (46 hours)
+#config.JobType.maxJobRuntimeMin = 2800
+
 ## config.JobType.maxMemoryMB = 3000 # For memory leaks. NB. will block jobs on many sites
 ## config.JobType.scriptExe = "cmsWrapper.sh"
 config.JobType.pyCfgParams = PYCFG_PARAMS

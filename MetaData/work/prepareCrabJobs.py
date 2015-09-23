@@ -109,7 +109,16 @@ parser = OptionParser(option_list=[
                     dest="globalTags",
                     action="store",type="string",
                     default="campaigns/globalTagsLookup.json",
-                    help="List of global tags to be used for data and MC. Default: %default")
+                    help="List of global tags to be used for data and MC. Default: %default"),
+        
+        # include additional parameters for cmsRun, such as the parameters from microAODCustomize
+        # the default here is puppi=0 (as an example) see microAODCustomize_cfg.py for more detail
+        make_option("-e","--extraPyCfgParam",
+                    dest="extraPyCfgParam",
+                    action="store",type="string",
+                    default="puppi=0",
+                    help="Extra python config parameters. Default: %default")
+        
         ]
                       )
 # parse the command line
@@ -247,7 +256,12 @@ if options.createCrabConfig:
         position = ProcessedDataset.find("-v")
         processedLabel = ProcessedDataset[:position]
         # print processedLabel
-
+        
+        # apprend extra parameters
+        if options.extraPyCfgParam:
+            #print "options.extraPyCfgParam:",options.extraPyCfgParam
+            replacements["PYCFG_PARAMS"].append(str("%s" % options.extraPyCfgParam))
+            
         # associate the processedLabel to the globaltag from the json filex
         if gtJson.get(processedLabel,None):
             globalTag = gtJson[processedLabel]
