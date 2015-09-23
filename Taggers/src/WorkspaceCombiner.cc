@@ -125,8 +125,6 @@ void WorkspaceCombiner::MergeWorkspaces()
         file->cd();
 
         cout << endl << "before workspaceNames loop" << endl << endl;
-        intLumiVal_ = -999.;
-        
         for( unsigned int w = 0; w < workspaceNames.size(); w++ ) {
             std::cout << "   " << workspaceNames[w] << " " << workspacePaths[w]  << std::endl;
             RooWorkspace *work;
@@ -156,37 +154,10 @@ void WorkspaceCombiner::MergeWorkspaces()
                 //  				data[w][d]->Print();
                 //				d++;
             }
-
-            const RooArgSet allVars = work->allVars();
-            //std::cout << " [LC DEBUG] looking at TObjects == RooRealVars" << std::endl;
-            TIterator* itVar = allVars.createIterator();
-            //var =itVar.Next();
-            RooRealVar* arg ;
-            while((arg = (RooRealVar*)itVar->Next()) ) {
-                std::cout << "   Var name: " << arg->GetName()<<std::endl;// << ", value " << var->getVal() <<  std::endl;
-                string name="IntLumi";
-                if ( arg->GetName() == name) {
-                    RooRealVar *intL = dynamic_cast<RooRealVar *>( arg );
-                    if (intLumiVal_ < 0){
-                        // on first workspace, collect the value of the intLumi.
-                        // first workspace is the only time that we set IntLumi value.
-                        // before this, default of -999 (<0), and after we just want to check if subsequent workspaces have the same value.
-                        intLumiVal_ =  intL->getVal();
-                        std::cout << "[INFO] retrieved IntLumi RooRealVar, value : " << intLumiVal_ <<std::endl;
-                    } else {
-                        // all subsequent workspaces. Intlumi should now be the (positive) value of IntLumi for first workspace.
-                        // we just want to check this now.
-                        if ( intL->getVal() != intLumiVal_) {
-                            std::cout << "[ERROR] Value of IntLumi different between workspaces. Please only merge files with same IntLumi" << std::endl;
-                            return;
-                        }
-                    }
-                }
-
-            }
-
         }
         cout << endl << "after workspaceNames loop" << endl << endl;
+
+
         file->Close();
 
         cout << endl << "Finished Combining File - " << inputFileNames[f] << endl << endl;
@@ -289,9 +260,6 @@ void WorkspaceCombiner::Save( bool doTreesAndHistograms )
         }
         if( outfile->GetDirectory( workspacePaths[w].c_str() ) == false ) { outfile->mkdir( workspacePaths[w].c_str() ); }
         outfile->cd( workspacePaths[w].c_str() );
-        RooRealVar *intL = new RooRealVar ("IntLumi","IntLumi",intLumiVal_,0,300000000);
-        std::cout << "[INFO] Importing IntLumi into final workspace, value " << intL->getVal() << std::endl;
-        outputws->import(*intL); 
         std::cout << " ABOUT TO WRITE OUTPUT WORKSPACE" << std::endl;
         outputws->Write();
         std::cout << " ABOUT TO DELETE OUTPUT WORKSPACE" << std::endl;

@@ -229,8 +229,6 @@ namespace flashgg {
         workspaceName_ = formatString( workspaceName_, replacements );
         if( dumpWorkspace_ ) {
             ws_ = fs.make<RooWorkspace>( workspaceName_.c_str(), workspaceName_.c_str() );
-            RooRealVar* intLumi = new RooRealVar("IntLumi","IntLumi",lumiWeight_,0,30000000);
-            ws_->import(*intLumi);
             dynamic_cast<RooRealVar *>( ws_->factory( "weight[1.]" ) )->setConstant( false );
         } else {
             ws_ = 0;

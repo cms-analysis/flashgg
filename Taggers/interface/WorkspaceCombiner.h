@@ -66,40 +66,38 @@ using namespace RooFit;
 class WorkspaceCombiner
 {
 
-    public:
+public:
 
-        WorkspaceCombiner();
+    WorkspaceCombiner();
 
-        ~WorkspaceCombiner();
+    ~WorkspaceCombiner();
 
-        void Init( string outputFileName_, vector<string> inputfiles_ );
+    void Init( string outputFileName_, vector<string> inputfiles_ );
 
-        TDirectoryFile *GetFirstFile();
+    TDirectoryFile *GetFirstFile();
 
-        void GetWorkspaces( TDirectoryFile *file );
+    void GetWorkspaces( TDirectoryFile *file );
 
-        TDirectoryFile *MergeTreesAndHistograms();
+    TDirectoryFile *MergeTreesAndHistograms();
 
-        void GetTreesAndHistograms( TDirectoryFile *file );
+    void GetTreesAndHistograms( TDirectoryFile *file );
 
-        void MergeWorkspaces();
+    void MergeWorkspaces();
 
-        void Save( bool doTreesAndHistograms );
+    void Save( bool doTreesAndHistograms );
 
 
-    private :
+private :
 
-        vector<string> inputFileNames;
+    vector<string> inputFileNames;
 
-        string outputFileName;
+    string outputFileName;
 
     string outputAux; //store temporarely histograms and trees = output of standard hadd command
 
     vector<string> workspaceNames;
 
     vector<vector<RooDataSet *> > data; //[workspace][dataset(cat)]
-
-    vector<RooRealVar *> vars;
 
     vector<TTree *> trees;
 
@@ -110,8 +108,6 @@ class WorkspaceCombiner
     vector<string> treePaths;
 
     vector<string> histoPaths;
-
-    double intLumiVal_;
 
 };
 
