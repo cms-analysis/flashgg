@@ -225,7 +225,7 @@ class LsfJob(object):
         return self.exitStatus, output
 
 # -----------------------------------------------------------------------------------------------------
-class TarballJob(object):
+class WorkNodeJob(object):
     
     nwarnings = 1
     
@@ -251,7 +251,7 @@ class TarballJob(object):
         return object.__getattr__(name)
            
     def __str__(self):
-        return "TarballJob: [%s]" % ( self.runner )
+        return "WorkNodeJob: [%s]" % ( self.runner )
 
     #----------------------------------------
     def __call__(self,cmd):
@@ -272,20 +272,20 @@ class TarballJob(object):
                 proxyname = os.path.basename(proxy.split(":")[1])
                 script += "export X509_USER_PROXY=$PWD/%s\n" % proxyname
             except Exception, e:
-                if TarballJob.nwarnings > 0:
-                    TarballJob.nwarnings -= 1
+                if WorkNodeJob.nwarnings > 0:
+                    WorkNodeJob.nwarnings -= 1
                     print "WARNING: I could not find a valid grid proxy. This may cause problems if the jobs will read the input through AAA."
                     print e
         else:
             try:
                 proxy = BatchRegistry.getProxy()
                 proxyname = os.path.basename(proxy.split(":")[1])
-                if TarballJob.nwarnings > 0:
-                    TarballJob.nwarnings -= 1
+                if WorkNodeJob.nwarnings > 0:
+                    WorkNodeJob.nwarnings -= 1
                     print "INFO: We are counting on the path for this proxy being visible to the remote jobs:",proxy.split(":")[1]
             except Exception, e:
-                if TarballJob.nwarnings > 0:
-                    TarballJob.nwarnings -= 1
+                if WorkNodeJob.nwarnings > 0:
+                    WorkNodeJob.nwarnings -= 1
                     print "WARNING: I could not find a valid grid proxy. This may cause problems if the jobs will read the input through AAA."
                     print e
 
@@ -353,7 +353,7 @@ class TarballJob(object):
 
 
 # -----------------------------------------------------------------------------------------------------
-class TarballJobFactory(object):
+class WorkNodeJobFactory(object):
     
     # ------------------------------------------------------------------------------------------------
     def __init__(self,stage_dest,
@@ -441,8 +441,7 @@ class TarballJobFactory(object):
         kwargs["tarball"]        = self.tarball
         kwargs["job_outdir"]     = self.job_outdir
         
-        ## return TarballLsfJob(*args,**kwargs)        
-        return TarballJob(*args,**kwargs)
+        return WorkNodeJob(*args,**kwargs)
 
         
 

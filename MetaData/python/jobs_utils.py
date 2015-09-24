@@ -131,7 +131,7 @@ class JobsManager(object):
             self.options.dry_run = True
             self.options.cont = True
             
-        self.jobFactory = TarballJobFactory(self.options.stageTo,self.options.stageCmd,job_outdir=self.options.outputDir,
+        self.jobFactory = WorkNodeJobFactory(self.options.stageTo,self.options.stageCmd,job_outdir=self.options.outputDir,
                                             batchSystem=self.options.batchSystem)
         self.parallel = Parallel(self.options.ncpu,lsfQueue=self.options.queue,lsfJobName="%s/runJobs" % self.options.outputDir,
                                  asyncLsf=self.options.asyncLsf,jobDriver=self.jobFactory,batchSystem=self.options.batchSystem)

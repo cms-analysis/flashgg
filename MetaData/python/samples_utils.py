@@ -226,7 +226,7 @@ class SamplesManager(object):
         catalog = self.readCatalog()
         
         self.just_open_ = justOpen
-        factory = TarballJobFactory(os.getcwd(),stage_patterns=[".tmp*.json"],job_outdir=".fgg")
+        factory = WorkNodeJobFactory(os.getcwd(),stage_patterns=[".tmp*.json"],job_outdir=".fgg")
         self.parallel_ = Parallel(50,self.queue_,maxThreads=self.maxThreads_,asyncLsf=True,lsfJobName=".fgg/job",jobDriver=factory)
         ## self.parallel_ = Parallel(1,self.queue_)
         
@@ -694,7 +694,7 @@ Commands:
                             ),
                 make_option("-M","--max-threads",
                             dest="max_threads",action="store",type="int",
-                            default=200,
+                            default=20,
                             help="Maximum number of threads to use. default: %default",
                             ),
                 make_option("-v","--verbose",
