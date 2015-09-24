@@ -69,7 +69,7 @@ namespace flashgg {
         PhotonIdUtils phoTools_;
         edm::FileInPath phoIdMVAweightfileEB_, phoIdMVAweightfileEE_;
         //    edm::FileInPath regressionWeightFile_;
-        bool useNonZsLazyTools_, recomputeNonZsClusterShapes_;
+        bool useNonZsLazyTools_, recomputeNonZsClusterShapes_, addRechitFlags_;
 
         /// EGEnergyCorrectorSemiParm corV8_;
         bool doOverlapRemovalForIsolation_, useVtx0ForNeutralIso_;
@@ -116,6 +116,7 @@ namespace flashgg {
 
         useNonZsLazyTools_ = iConfig.getParameter<bool>( "useNonZsLazyTools" );
         recomputeNonZsClusterShapes_ = iConfig.getParameter<bool>( "recomputeNonZsClusterShapes" );
+        addRechitFlags_ = iConfig.getParameter<bool>( "addRechitFlags" );
 
         produces<vector<flashgg::Photon> >();
     }
@@ -216,6 +217,9 @@ namespace flashgg {
                 phoTools_.fillExtraClusterShapes( fg, noZsLazyTool );
             } else {
                 phoTools_.fillExtraClusterShapes( fg, zsLazyTool );
+            }
+            if( addRechitFlags_ ) {
+                phoTools_.fillRechHitFlags( fg, noZsLazyTool );
             }
 
             phoTools_.removeOverlappingCandidates( doOverlapRemovalForIsolation_ );
