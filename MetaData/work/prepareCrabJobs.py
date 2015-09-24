@@ -116,8 +116,8 @@ parser = OptionParser(option_list=[
         make_option("-e","--extraPyCfgParam",
                     dest="extraPyCfgParam",
                     action="store",type="string",
-                    default="puppi=0",
-                    help="Extra python config parameters. Default: %default")
+                    default=None,
+                    help="Extra python config parameters. The arguments must be : -e 'arg1 arg2 ...' ")
         
         ]
                       )
@@ -259,8 +259,7 @@ if options.createCrabConfig:
         
         # apprend extra parameters
         if options.extraPyCfgParam:
-            #print "options.extraPyCfgParam:",options.extraPyCfgParam
-            replacements["PYCFG_PARAMS"].append(str("%s" % options.extraPyCfgParam))
+            replacements["PYCFG_PARAMS"].extend(map( lambda x: '"%s"' % x, options.extraPyCfgParam.split(" ") ))
             
         # associate the processedLabel to the globaltag from the json filex
         if gtJson.get(processedLabel,None):
