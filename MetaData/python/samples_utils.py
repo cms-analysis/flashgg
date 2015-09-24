@@ -1,7 +1,6 @@
 from optpars_utils import *
 
-from das_cli import get_data as das_query
-from das_cli import x509
+from das_client import get_data as das_query
 
 from pprint import pprint
 
@@ -12,7 +11,18 @@ from fnmatch import fnmatch
 import commands
 
 import re
-        
+
+# -------------------------------------------------------------------------------
+import pwd
+def x509():
+    "Helper function to get x509 either from env or tmp file"
+    x509 = os.environ.get('X509_USER_PROXY', '')
+    if  not x509:
+        x509 = '/tmp/x509up_u%s' % pwd.getpwuid( os.getuid() ).pw_uid
+        if  not os.path.isfile(x509):
+            return ''
+    return x509
+
 # -------------------------------------------------------------------------------
 def shell_expand(string):
     if string:
@@ -105,7 +115,9 @@ class SamplesManager(object):
         datasets = []
         for dataset in list_datasets:
             if "*" in dataset:
-                response = das_query("https://cmsweb.cern.ch","dataset dataset=%s | grep dataset.name" % dataset, 0, 0, False, self.dbs_instance_, ckey=x509(), cert=x509())
+                # response = das_query("https://cmsweb.cern.ch","dataset dataset=%s | grep dataset.name" % dataset, 0, 0, False, self.dbs_instance_, ckey=x509(), cert=x509())
+                # response = das_query("https://cmsweb.cern.ch","dataset dataset=%s instance=%s | grep dataset.name" % (dataset, self.dbs_instance_), 0, 0, False, ckey=x509(), cert=x509())
+                response = das_query("https://cmsweb.cern.ch","dataset dataset=%s instance=%s | grep dataset.name" % (dataset, self.dbs_instance_), 0, 0, False)
                 ## print response
                 for d in response["data"]:
                     ## print d
@@ -130,7 +142,8 @@ class SamplesManager(object):
         Read dataset files from DAS.
         @dsetName: dataset name
         """
-        response = das_query("https://cmsweb.cern.ch","file dataset=%s | grep file.name,file.nevents" % dsetName, 0, 0, False, self.dbs_instance_, ckey=x509(), cert=x509())
+        ## response = das_query("https://cmsweb.cern.ch","file dataset=%s | grep file.name,file.nevents" % dsetName, 0, 0, False, self.dbs_instance_, ckey=x509(), cert=x509())
+        response = das_query("https://cmsweb.cern.ch","file dataset=%s instance=%s | grep file.name,file.nevents" % (dsetName,self.dbs_instance_), 0, 0, False, )
         
         files=[]
         for d in response["data"]:
@@ -504,23 +517,43 @@ class SamplesManager(object):
         
         catalog = self.readCatalog(True)
         datasets = []
+        output = filter(lambda x: "output=" in x, args)
+        args = filter(lambda x: not "output=" in x, args)
         for dataset in catalog.keys():
             for arg in args:
                 if dataset == arg or fnmatch(dataset,arg):
                     datasets.append(dataset)
                     break
+        if len(output) > 1:
+            print "ERROR: you specified the output json more than once:\n"
+            print "      %s" % " ".join(output)
+            sys.exit(-1)
         
+
+        if len(output) > 0:
+            output = output[0].strip("output=")
+        else:
+            output = None
+            
         from FWCore.PythonUtilities.LumiList import LumiList
+        fulist = LumiList()
         for dataset in datasets:
             dlist = LumiList()
             jsonout = dataset.lstrip("/").rstrip("/").replace("/","_")+".json"
             for fil in catalog[dataset]["files"]:
                 flist = LumiList( runsAndLumis=fil.get("lumis",{}) )
-                print flist
+                ## print flist
                 dlist += flist
-            
-            with open(jsonout,"w+") as fout:
-                fout.write(json.dumps(dlist.compactList,sort_keys=True))
+            if not output:
+                with open(jsonout,"w+") as fout:
+                    fout.write(json.dumps(dlist.compactList,sort_keys=True))
+                    fout.close()
+            else:
+                fulist += dlist
+                
+        if output:
+            with open(output,"w+") as fout:
+                fout.write(json.dumps(fulist.compactList,sort_keys=True))
                 fout.close()
         
     def lockCatalog(self):
@@ -782,7 +815,7 @@ Commands:
         totev = 0.
         totwei = 0.
         totfiles = 0
-        largest = max( [len(d) for d in slim_datasets] )
+        largest = max( [50]+[len(d) for d in slim_datasets] )
         print
         print "Datasets in catalog:"
         print "-"*(largest+37)
