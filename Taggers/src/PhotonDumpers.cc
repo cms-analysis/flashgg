@@ -5,6 +5,8 @@
 namespace flashgg {
     // typedef AnalyzerFactoryImpl<DiPhotonDumper,"DiPhotonDumper"> DiPhotonDumperFactory;
     namespace fwlite {
+        PLUGGABLE_ANALYZER( GenDiPhotonDumper );
+        PLUGGABLE_ANALYZER( CutBasedGenDiPhotonDumper );
         PLUGGABLE_ANALYZER( PhotonDumper );
         PLUGGABLE_ANALYZER( CutBasedPhotonDumper );
         PLUGGABLE_ANALYZER( DiPhotonDumper );

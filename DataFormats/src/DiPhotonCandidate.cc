@@ -62,6 +62,17 @@ math::XYZTLorentzVector DiPhotonCandidate::PhoP4Corr( edm::Ptr<flashgg::Photon> 
 }
 */
 
+
+DiPhotonCandidate::LorentzVector DiPhotonCandidate::genP4() const
+{
+    DiPhotonCandidate::LorentzVector ret(0,0,0,0);
+    if( leadingPhoton()->hasMatchedGenPhoton() && subLeadingPhoton()->hasMatchedGenPhoton() ) {
+        ret = leadingPhoton()->matchedGenPhoton()->p4() + subLeadingPhoton()->matchedGenPhoton()->p4();
+    }
+    return ret;
+}
+
+
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

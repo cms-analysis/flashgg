@@ -102,6 +102,39 @@ namespace flashgg {
             pho.setESEffSigmaRR( lazyTool.eseffsirir( *super_clu ) );
         }
 
+        template <class T> static void fillRechHitFlags(flashgg::Photon &pho, T &lazyTool )
+        {
+            DetId seed = (pho.superCluster()->seed()->hitsAndFractions())[0].first;
+            bool isBarrel = seed.subdetId() == EcalBarrel;
+            const EcalRecHitCollection * rechits = (isBarrel?lazyTool.getEcalEBRecHitCollection():lazyTool.getEcalEERecHitCollection());
+            
+            /// if( isBarrel ) {
+            ///     EBDetId ebId(seed);
+            ///     cout << "seed barrel " << ebId.ieta() << " " << ebId.iphi() << endl;
+            /// } else {
+            ///     EEDetId eeId(seed);
+            ///     cout << "seed endpcas " << eeId.ix() << " " << eeId.iy() << endl;
+            /// 
+            /// }
+            unsigned short nSaturated = 0, nLeRecovered = 0, nNeighRecovered = 0, nGain1 = 0, nGain6 = 0, nWeired = 0;
+            auto matrix5x5 = lazyTool.matrixDetId(seed,-2,+2,-2,+2);
+            for(auto & deId : matrix5x5 ) {
+                /// cout << "matrix " << deId.rawId() << endl;
+                auto rh = rechits->find(deId);
+                if( rh != rechits->end() ) {
+                    nSaturated += rh->checkFlag( EcalRecHit::kSaturated );
+                    nLeRecovered += rh->checkFlag( EcalRecHit::kLeadingEdgeRecovered );
+                    nNeighRecovered += rh->checkFlag( EcalRecHit::kNeighboursRecovered );
+                    nGain1 += rh->checkFlag( EcalRecHit::kHasSwitchToGain1 );
+                    nGain6 += rh->checkFlag( EcalRecHit::kHasSwitchToGain6 );
+                    nWeired += rh->checkFlag( EcalRecHit::kWeird ) || rh->checkFlag( EcalRecHit::kDiWeird );
+                }
+                
+            }
+            /// cout << "flags " << nSaturated<< " " << nLeRecovered<< " " << nNeighRecovered<< " " << nGain1<< " " << nGain6<< " " << nWeired <<endl;
+            pho.setStatusFlags( flashgg::Photon::encodeStatusFlags(nSaturated,nLeRecovered,nNeighRecovered,nGain1,nGain6,nWeired)  );
+        }
+        
 
     private:
 

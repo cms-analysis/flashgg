@@ -26,6 +26,7 @@ namespace flashgg {
         void removeVerticesExcept( const std::set<edm::Ptr<reco::Vertex> > & );
 
         enum mcMatch_t { kUnkown = 0, kPrompt, kFake  };
+        enum rechitSummaryFlags_t {  kSaturated=0, kLeRecovered, kNeighRecovered, kHasSwitchToGain1, kHasSwitchToGain6, kWeird };
 
         // someone had the insane idea of shadowing these methods in the pat::Photon....
         float egChargedHadronIso() const {return  reco::Photon::chargedHadronIso();}
@@ -142,6 +143,20 @@ namespace flashgg {
 
         void setPassElectronVeto( bool val ) { passElecVeto_ = val; };
         bool passElectronVeto() const { return passElecVeto_ ; };
+
+        static int32_t encodeStatusFlags( bool isSaturated, bool isLeRecovered, bool isNeighRecovered, bool isGain1, bool isGain6, bool isWeired) {
+            int32_t flags = 0;
+            if( isSaturated ) { flags |= 0x1<<kSaturated; };
+            if( isLeRecovered ) { flags |= 0x1<<kLeRecovered; };
+            if( isNeighRecovered ) { flags |= 0x1<<kNeighRecovered; };
+            if( isGain1 ) { flags |= 0x1<<kHasSwitchToGain1; };
+            if( isGain6 ) { flags |= 0x1<<kHasSwitchToGain6; };
+            if( isWeired ) { flags |= 0x1<<kWeird; };
+            return flags;
+        };
+        void setStatusFlags( int32_t st) { return addUserInt("rechitStatus",st); };
+        int32_t statusFlags() { return  (hasUserInt("rechitStatus")?userInt("rechitStatus"):-1); };
+        bool checkStatusFlag( rechitSummaryFlags_t ibit) { return (hasUserInt("rechitStatus")?userInt("rechitStatus")&(0x1<<ibit):0); };
 
     private:
         void setEnergyAtStep( std::string key, float val ); // updateEnergy should be used from outside the class to access this
