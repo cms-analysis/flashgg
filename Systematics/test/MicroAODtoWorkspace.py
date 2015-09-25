@@ -14,8 +14,8 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.globaltag = 'POSTLS170_V5::All'
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 10 )
 
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
                                                    flashggDiPhotonSystematics = cms.PSet(initialSeed = cms.untracked.uint32(664)),
@@ -89,11 +89,12 @@ import flashgg.Taggers.dumperConfigTools as cfgTools
 process.diphotonDumper.className = "DiPhotonTagDumper"
 process.diphotonDumper.src = "flashggSystTagMerger"
 process.diphotonDumper.processId = "test"
-process.diphotonDumper.dumpTrees = False
+process.diphotonDumper.dumpTrees = True
 process.diphotonDumper.dumpWorkspace = True
 process.diphotonDumper.dumpHistos = False
 process.diphotonDumper.quietRooFit = True
 process.diphotonDumper.systLabel = ""
+process.diphotonDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$SYST")
 
 for systlabel in systlabels:
   cutstring = "hasSyst(\"%s\")"%systlabel
@@ -101,6 +102,7 @@ for systlabel in systlabels:
 
   cfgTools.addCategory(process.diphotonDumper,
                        "flashggUntaggedTag__%s"%systlabel,
+                       classname="flashggUntaggedTag",
                        cutbased=cutstring,
                        systLabel=systlabel,
                        subcats=5, 
@@ -110,6 +112,7 @@ for systlabel in systlabels:
 
   cfgTools.addCategory(process.diphotonDumper,
                        "flashggVBFTag__%s"%systlabel,
+                       classname="flashggVBFTag",
                        cutbased=cutstring,
                        systLabel=systlabel,
                        subcats=3,
@@ -119,6 +122,7 @@ for systlabel in systlabels:
   
   cfgTools.addCategory(process.diphotonDumper,
                        "flashggVHTightTag__%s"%systlabel,
+                       classname="flashggVHTightTag",
                        cutbased=cutstring,
                        systLabel=systlabel,
                        subcats=0,
@@ -128,6 +132,7 @@ for systlabel in systlabels:
 
   cfgTools.addCategory(process.diphotonDumper,
                        "flashggVHLooseTag__%s"%systlabel,
+                       classname="flashggVHLooseTag",
                        cutbased=cutstring,
                        systLabel=systlabel,
                        subcats=0,
@@ -137,6 +142,7 @@ for systlabel in systlabels:
   
   cfgTools.addCategory(process.diphotonDumper,
                        "flashggVHHadronicTag__%s"%systlabel,
+                       classname="flashggVHHadronicTag",
                        cutbased=cutstring,
                        systLabel=systlabel,
                        subcats=0,
@@ -146,6 +152,7 @@ for systlabel in systlabels:
   
   cfgTools.addCategory(process.diphotonDumper,
                        "flashggTTHLeptonicTag__%s"%systlabel,
+                       classname="flashggTTHLeptonicTag",
                        cutbased=cutstring,
                        systLabel=systlabel,
                        subcats=0,
@@ -155,6 +162,7 @@ for systlabel in systlabels:
   
   cfgTools.addCategory(process.diphotonDumper,
                        "flashggTTHHadronicTag__%s"%systlabel,
+                       classname="flashggTTHHadronicTag",
                        cutbased=cutstring,
                        systLabel=systlabel,
                        subcats=0,
@@ -164,6 +172,7 @@ for systlabel in systlabels:
 
   cfgTools.addCategory(process.diphotonDumper,
                        "flashggVHEtTag__%s"%systlabel,
+											 classname="flashggVHEtTag",
                        cutbased=cutstring,
                        systLabel=systlabel,
                        subcats=0,
@@ -175,6 +184,16 @@ process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSyst
                      (process.flashggTagSequence+process.systematicsTagSequences)*
                      process.flashggSystTagMerger
                      * process.diphotonDumper)
+
+
+
+############################
+## Dump the output Python ##
+############################
+processDumpFile = open('processDump.py', 'w')
+print >> processDumpFile, process.dumpPython()
+
+
 
 # import flashgg customization
 from flashgg.MetaData.JobConfig import customize

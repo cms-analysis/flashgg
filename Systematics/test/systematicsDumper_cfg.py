@@ -58,10 +58,12 @@ process.diphotonDumper.dumpWorkspace = True
 process.diphotonDumper.dumpHistos = True
 process.diphotonDumper.quietRooFit = True
 process.diphotonDumper.systLabel = ""
+process.diphotonDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$SYST")
 
 for systlabel in systlabels:
   cutstring = "hasSyst(\"%s\")"%systlabel
   #print "syst label ", systlabel
+  print "DEBUG diphotonDumper dumpHistos ", process.diphotonDumper.dumpHistos ," nameTemplate ",process.diphotonDumper.nameTemplate
 
   cfgTools.addCategory(process.diphotonDumper,
                        "flashggUntaggedTag__%s"%systlabel,
