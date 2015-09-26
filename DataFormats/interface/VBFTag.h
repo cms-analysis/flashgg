@@ -23,7 +23,8 @@ namespace flashgg {
         const VBFMVAResult VBFMVA() const ;
         const Jet leadingJet() const; //needs to be validated
         const Jet subLeadingJet() const; //needs to be validated
-
+        bool isTag( std::string tagname) const override {return ("VBFTag"==tagname) ;}
+        std::string tagLabel() const override {return "VBFTag";}
     private:
         VBFDiPhoDiJetMVAResult vbfDiPhoDiJet_mva_result_;
     };

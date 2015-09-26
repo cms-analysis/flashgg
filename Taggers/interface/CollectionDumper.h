@@ -182,25 +182,20 @@ namespace flashgg {
         auto categories = cfg.getParameter<std::vector<edm::ParameterSet> >( "categories" );
         for( auto &cat : categories ) {
             auto label   = cat.getParameter<std::string>( "label" );
-            //std::cout << "DEBUG CategoryDumper label " << label << std::endl;
-            auto systLabel = cat.getParameter<std::string>( "systLabel" );
-            //std::cout << "DEBUG CategoryDumper systlabel " << systLabel << std::endl;
+            std::string systlabel = "";
+            if( cat.exists("systlabel") ) { systlabel = cat.getParameter<std::string>( "systlabel" ); }
             std::string classname = "";
-            std::cout<<"DEBUG CLASSNAME " << classname << std::endl; 
             if( cat.exists("classname") ) { classname = cat.getParameter<std::string>( "classname" ); }
-            if( cat.exists("classname") ) { std::cout<<"DEBUG CLASSNAME FOUND " << classname << std::endl; }
-            classname = cat.getParameter<std::string>( "classname" );
-            std::cout << "DEBUG CategoryDumper classname " << classname << std::endl;
-            auto subcats = cat.getParameter<int>( "subcats" );
+            //std::cout << "DEBUG CategoryDumper label " << label << std::endl;
+            //std::cout << "DEBUG CategoryDumper systlabel " << systlabel << std::endl;
+            //std::cout << "DEBUG CategoryDumper classname " << classname << std::endl;
             //std::cout << "DEBUG CategoryDumper subcats " << subcats << std::endl;
+            auto subcats = cat.getParameter<int>( "subcats" );
             auto cutbased = cat.getParameter<bool>( "cutbased" );
             auto name = replaceString( nameTemplate_, "$LABEL", label );
-            name = replaceString( name, "$SYST", systLabel );
-            if( cat.exists("classname") ) {
-            std::cout << "DEBUG replaceing $CLASSNAME by " << classname << " in name template " << name << std::endl;
-            name = replaceString( name, "$CLASSNAME", classname );
-            }
-            auto key = std::make_pair(label, systLabel );
+            if( cat.exists("systlabel") ) { name = replaceString( name, "$SYST", systlabel );}
+            if( cat.exists("classname") ) { name = replaceString( name, "$CLASSNAME", classname );}
+            auto key = std::make_pair(label, systlabel );
             bool classbased = (classname != "");
             // the key is in general of the format <classname,cutname>
             // for cutbased dumpers, the label is the cutname
@@ -212,14 +207,9 @@ namespace flashgg {
             key = std::make_pair(label,"");
             }
             //for cut-and-classbased, I guess the syntax should be to use the key <classname, label>
-            //if no systLabel is stored 
-            //if (classbased && cutbased && (systLabel=="")) key = std::make_pair(classname, label); 
-            //however, if a systLabel is specified, then this is the systDumper case, where the 
-            //cut is labelled by the systLabel. This could probably be merged with the case above in future. //FIXME
             // for now this is the only application of cut-and-class dumper, so should be amended in future if needed.
             if (classbased && cutbased) {
-                //key = std::make_pair(classname, systLabel); 
-                key = std::make_pair(classname, label); 
+            key = std::make_pair(classname, label); 
             }
             hasSubcat_[key] = ( subcats > 0 );
             auto &dumpers = dumpers_[key];
@@ -305,16 +295,16 @@ namespace flashgg {
             if( globalVarsDumper_ ) { globalVarsDumper_->fill( event ); }
             int nfilled = maxCandPerEvent_;
 
-            for (auto &dumper : dumpers_){
-                std::cout << "DEBUG available dumper keys " << dumper.first.first <<  ", " << dumper.first.second << std::endl;
-            }
+           // for (auto &dumper : dumpers_){
+           //     std::cout << "DEBUG available dumper keys " << dumper.first.first <<  ", " << dumper.first.second << std::endl;
+           // }
 
             for( auto &cand : collection ) {
                 auto cat = classifier_( cand );
                 auto which = dumpers_.find( cat.first );
-                std::cout << " DEBUG " << cat.first.first << ", " << cat.first.second << std::endl;
-                auto count = dumpers_.count( cat.first );
-                std::cout << ">> DEBUG Number of matches with that key " << count  << std::endl;
+             //   std::cout << " DEBUG " << cat.first.first << ", " << cat.first.second << std::endl;
+             //   auto count = dumpers_.count( cat.first );
+             //   std::cout << ">> DEBUG Number of matches with that key " << count  << std::endl;
 
                 if( which != dumpers_.end() ) {
                     // which->second.print();

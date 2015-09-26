@@ -24,7 +24,8 @@ namespace flashgg {
         //const edm::Ptr<DiPhotonMVAResult> diPhotonMVAResult() const { return theDiPhotonMVAResult_;} // doesn't work for some reason
 
         void setJets( edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet> );
-
+        bool isTag( std::string tagname) const override {return ("VHHadronicTag"==tagname) ;}
+        std::string tagLabel() const override {return "VHHadronicTag";}
     private:
         edm::Ptr<DiPhotonCandidate> theDiPhotonCandidate_;
         //edm::Ptr<DiPhotonMVAResult> theDiPhotonMVAResult_;

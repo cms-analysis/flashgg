@@ -57,96 +57,35 @@ process.diphotonDumper.dumpTrees = True
 process.diphotonDumper.dumpWorkspace = True
 process.diphotonDumper.dumpHistos = True
 process.diphotonDumper.quietRooFit = True
-process.diphotonDumper.systLabel = ""
+process.diphotonDumper.systlabel = ""
 process.diphotonDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$SYST")
 
-for systlabel in systlabels:
-  cutstring = "hasSyst(\"%s\")"%systlabel
-  #print "syst label ", systlabel
-  print "DEBUG diphotonDumper dumpHistos ", process.diphotonDumper.dumpHistos ," nameTemplate ",process.diphotonDumper.nameTemplate
+tagList=[
+["UntaggedTag",5],
+["VBFTag",3],
+["VHTightTag",0],
+["VHLooseTag",0],
+["VHEtTag",0],
+["VHHadronicTag",0],
+["TTHHadronicTag",0],
+["TTHLeptonicTag",0]
+]
 
-  cfgTools.addCategory(process.diphotonDumper,
-                       "flashggUntaggedTag__%s"%systlabel,
-                       cutbased=cutstring,
-                       systLabel=systlabel,
-                       classname="flashggUntaggedTag",
-                       subcats=5, 
-                       variables = defaultVariables,
-                       histograms = defaultHistograms
-                       )
-  
-  cfgTools.addCategory(process.diphotonDumper,
-                       "flashggVBFTag__%s"%systlabel,
-                       classname="flashggVBFTag",
-                       cutbased=cutstring,
-                       systLabel=systlabel,
-                       subcats=3,
-                       variables = defaultVariables + [
-          "leadJetPt                :=leadingJet().pt",
-          "subleadJetPt             :=subLeadingJet().pt",
-          "VBFMVA                   :=VBFMVA().VBFMVAValue()",
-          ],
-                       histograms = defaultHistograms + [
-          "subleadJetPt:leadJetPt>>JetptLeadvsSub(8,20,100:8,20,100)",
-          "VBFMVA>>VBFMVA(50,0,1)"
-          ]
-                       )
-  
-  cfgTools.addCategory(process.diphotonDumper,
-                       "flashggVHTightTag__%s"%systlabel,
-                       classname="flashggVHTightTag",
-                       cutbased=cutstring,
-                       systLabel=systlabel,
-                       subcats=0,
-                       variables = defaultVariables,
-                       histograms = defaultHistograms
-                       )
-  
-  cfgTools.addCategory(process.diphotonDumper,
-                       "flashggVHLooseTag__%s"%systlabel,
-                       classname="flashggVHLooseTag",
-                       cutbased=cutstring,
-                       systLabel=systlabel,
-                       subcats=0,
-                       variables = defaultVariables,
-                       histograms = defaultHistograms
-                       )
-  
-  cfgTools.addCategory(process.diphotonDumper,
-                       "flashggVHHadronicTag__%s"%systlabel,
-                       classname="flashggVHHadronicTag",
-                       cutbased=cutstring,
-                       systLabel=systlabel,
-                       subcats=0,
-                       variables = defaultVariables,
-                       histograms = defaultHistograms
-                       )
-  
-  cfgTools.addCategory(process.diphotonDumper,
-                       "flashggTTHLeptonicTag__%s"%systlabel,
-                       classname="flashggTTHLeptonicTag",
-                       cutbased=cutstring,
-                       systLabel=systlabel,
-                       subcats=0,
-                       variables = defaultVariables + [
-          "centralWeight := centralWeight",
-          "MuonWeightDown01sigma := weight(\"MuonWeightDown01sigma\")",
-          "MuonWeightUp01sigma := weight(\"MuonWeightUp01sigma\")",
-          "ElectronWeightDown01sigma := weight(\"ElectronWeightDown01sigma\")",
-          "ElectronWeightUp01sigma := weight(\"ElectronWeightUp01sigma\")"
-          ],
-                       histograms = defaultHistograms
-                       )
-  
-  cfgTools.addCategory(process.diphotonDumper,
-                       "flashggTTHHadronicTag__%s"%systlabel,
-                       classname="flashggTTHHadronicTag",
-                       cutbased=cutstring,
-                       systLabel=systlabel,
-                       subcats=0,
-                       variables = defaultVariables,
-                       histograms = defaultHistograms
-                       )
+for tag in tagList: 
+  tagName=tag[0]
+  tagCats=tag[1]
+  for systlabel in systlabels:
+    cutstring = " isTag('%s') && hasSyst(\"%s\") "%(tagName,systlabel)
+    cfgTools.addCategory(process.diphotonDumper,
+                         "flashgg%s__%s"%(tagName,systlabel),
+                         classname="flashgg%s"%tagName,
+                         cutbased=cutstring,
+                         systlabel=systlabel,
+                         subcats=tagCats, 
+                         variables = minimalVariables,
+                         histograms = minimalHistograms
+                         )
+
   
 process.p1 = cms.Path(
     process.diphotonDumper

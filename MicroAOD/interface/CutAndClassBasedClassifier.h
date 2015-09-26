@@ -20,7 +20,6 @@ namespace flashgg {
                 auto name = cat.getUntrackedParameter<std::string>( "name", Form( "cat%lu", cuts_.size() ) );
                 // auto name = cat.getUntrackedParameter<std::string>( "systLabel", Form( "cat%lu", cuts_.size() ) );
                 cuts_.push_back( std::make_pair( functor_type( cut ), name ) );
-                std::cout << "DEBUG ----> cut created name " << name <<", for cut " << cut  << std::endl;
             }
 
             auto remap = cfg.getUntrackedParameter<std::vector<edm::ParameterSet> >( "remap", std::vector<edm::ParameterSet>() );
@@ -40,6 +39,8 @@ namespace flashgg {
             for( auto &cut : cuts_ ) {
                 if( cut.first( obj ) ) {
                     cutbasedpair = std::make_pair( cut.second.c_str(), 0 );
+                } else {
+
                 }
                 counter++;
             }
@@ -55,7 +56,6 @@ namespace flashgg {
             classbasedpair = ret;
 
             auto strings = std::make_pair( classbasedpair.first, cutbasedpair.first );          
-            std::cout << "DEBUG cat created  " << classbasedpair.first << ", "<< cutbasedpair.first << std::endl;
             auto res = std::make_pair( strings, classbasedpair.second );
             return res;
 
