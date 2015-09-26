@@ -104,6 +104,13 @@ cd RunIISpring15-25ns
 echo crabConfig_*.py | xargs -n 1 crab sub
 ```
 
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-25ns -U 1 -L 5 -s campaigns/RunIISpring15-25ns-2015D-DCSonly.json -V Spring15BetaV5 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions15/13TeV/DCSOnly/json_DCSONLY.txt
+cd RunIISpring15-25ns
+echo crabConfig_*2015D*.py | xargs -n 1 crab sub
+```
+
 #### Spring15BetaV5 50ns
 
 ```
@@ -112,6 +119,14 @@ cd $CMSSW_BASE/src/flashgg/MetaData/work
 cd RunIISpring15-50ns
 echo crabConfig_*.py | xargs -n 1 crab sub
 ```
+
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-50ns -U 1 -L 5 -s campaigns/RunIISpring15-50ns-2015C.json -V Spring15BetaV5 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions15/13TeV/Cert_254833_13TeV_PromptReco_Collisions15_JSON.txt
+cd RunIISpring15-50ns
+echo crabConfig_*2015C*.py | xargs -n 1 crab sub
+```
+
 
 #### Spring15BetaV4
 
