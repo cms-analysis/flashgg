@@ -23,6 +23,8 @@ namespace flashgg {
         int nBMedium() const {return Nbtagmedium_;}
         void setNBLoose( int nb ) { Nbtagloose_ = nb; }
         void setNBMedium( int nb ) { Nbtagmedium_ = nb; }
+        bool isTag( std::string tagname) const override {return ("TTHHadronicTag"==tagname) ;}
+        std::string tagLabel() const override {return "TTHHadronicTag";}
 
     private:
         int Nbtagloose_;

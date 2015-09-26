@@ -39,6 +39,8 @@ namespace flashgg {
             for( auto &cut : cuts_ ) {
                 if( cut.first( obj ) ) {
                     cutbasedpair = std::make_pair( cut.second.c_str(), 0 );
+                } else {
+
                 }
                 counter++;
             }
@@ -53,7 +55,7 @@ namespace flashgg {
             cache_.insert( std::make_pair( idx, ret.first ) );
             classbasedpair = ret;
 
-            auto strings = std::make_pair( classbasedpair.first, cutbasedpair.first );
+            auto strings = std::make_pair( classbasedpair.first, cutbasedpair.first );          
             auto res = std::make_pair( strings, classbasedpair.second );
             return res;
 

@@ -29,7 +29,8 @@ namespace flashgg {
         void setMuons( std::vector<edm::Ptr<Muon> > Muons ) {Muons_ = Muons;}
         void setMET( std::vector<edm::Ptr<pat::MET> > MET ) {MET_ = MET;}
         void setElectrons( std::vector<edm::Ptr<Electron> > Electrons ) {Electrons_ = Electrons;}
-
+        bool isTag( std::string tagname) const override {return ("VHTightTag"==tagname) ;}
+        std::string tagLabel() const override {return "VHTightTag";}
     private:
         std::vector<edm::Ptr<Muon> > Muons_;
         std::vector<edm::Ptr<Electron> > Electrons_;

@@ -11,6 +11,8 @@ namespace flashgg {
         UntaggedTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult );
         UntaggedTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult> );
         virtual UntaggedTag *clone() const;
+        bool isTag( std::string tagname) const override {return ("UntaggedTag"==tagname) ;}
+        std::string tagLabel() const override {return "UntaggedTag" ;}
 
 
     private:
