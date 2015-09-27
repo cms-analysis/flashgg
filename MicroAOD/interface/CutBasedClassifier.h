@@ -22,12 +22,12 @@ namespace flashgg {
             }
         }
 
-        std::pair< std::pair <std::string, std::string> , int> operator()( const T &obj ) const
+        std::pair<std::string, int> operator()( const T &obj ) const
         {
             for( auto &cut : cuts_ ) {
-                if( cut.first( obj ) ) { return std::make_pair( std::make_pair( "", cut.second ), 0 ); }
+                if( cut.first( obj ) ) { return std::make_pair( cut.second, 0 ); }
             }
-            return std::make_pair( std::make_pair( "", "" ), 0 );
+            return std::make_pair( "", 0 );
         }
 
     private:
