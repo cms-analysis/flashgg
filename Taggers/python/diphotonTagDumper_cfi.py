@@ -1,9 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 
-from flashgg.Taggers.diphotonDumpConfig_cff import diphotonDumpConfig
+from flashgg.Taggers.tagsDumpConfig_cff import tagsDumpConfig
 
-#diphotonDumper = cms.EDAnalyzer('CutBasedDiPhotonDumper',
-diphotonDumper = cms.EDAnalyzer('DiPhotonTagDumper',
-                                **diphotonDumpConfig.parameters_()
-                                )
+tagsDumper = cms.EDAnalyzer('DiPhotonTagDumper',
+                            **tagsDumpConfig.parameters_()
+                            )
 

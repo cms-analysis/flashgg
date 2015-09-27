@@ -12,7 +12,6 @@ namespace flashgg {
         UntaggedTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult> );
         virtual UntaggedTag *clone() const;
 
-
     private:
 
 
