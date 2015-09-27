@@ -85,7 +85,7 @@ namespace flashgg {
     bool CutBasedPhotonObjectSelector::passInverted( const Photon &pho ) const
     {
         auto cat = classifier_( pho );
-        auto isel = selections_.find( cat.first.second );
+        auto isel = selections_.find( cat.first );
         if( isel == selections_.end() ) {
             return false;
         }
@@ -109,7 +109,7 @@ namespace flashgg {
     bool CutBasedPhotonObjectSelector::pass( const Photon &pho ) const
     {
         auto cat = classifier_( pho );
-        auto isel = selections_.find( cat.first.second );
+        auto isel = selections_.find( cat.first );
         if( isel == selections_.end() ) {
             return false;
         }

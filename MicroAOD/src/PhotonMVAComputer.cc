@@ -46,7 +46,7 @@ namespace flashgg {
         auto isel = mvas_.end();
         if( selected ) {
             auto cat = classifier_( pho );
-            isel = mvas_.find( cat.first.first );
+            isel = mvas_.find( cat.first );
 
             // cout << cat.first << endl;
             selected = ( isel != mvas_.end() );

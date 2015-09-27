@@ -7,16 +7,17 @@ def addCategories(pset,cats,variables,histograms,mvas=None):
         addCategory(pset,*cat,variables=variables,histograms=histograms,mvas=mvas)
 
 # -----------------------------------------------------------------------
-def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mvas=None,systLabel=""):
+def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mvas=None,classname=None):
     
+   
     if subcats >= 0:
         catDef = cms.PSet(label=cms.string(label),
                           subcats=cms.int32(subcats),
                           variables=cms.VPSet(),
                           histograms=cms.VPSet(),
-													systLabel=cms.string(systLabel)
                           )
-        
+        if classname: catDef.className=cms.string(classname)
+         
         addVariables( catDef.variables, variables )
         addHistograms( catDef.histograms, histograms  )
         if mvas: 
@@ -27,11 +28,11 @@ def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mv
 
     if cutbased:
         cb = cms.PSet( cut=cms.string(cutbased) )
-        if( label != "" ):
-            cb.name = cms.untracked.string(systLabel)
+        if( label != "" or classname):
+            cb.name = cms.untracked.string(label)
         pset.classifierCfg.categories.append(cb)
 
-    
+   
 # -----------------------------------------------------------------------
 def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
     if ":=" in expr:

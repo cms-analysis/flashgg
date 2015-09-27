@@ -20,6 +20,7 @@ namespace flashgg {
         const edm::Ptr<pat::MET> met() const {return theMet_;}
         const edm::Ptr<DiPhotonCandidate> diPhotonCandidate() const { return theDiPhotonCandidate_;}
         void setMet( edm::Ptr<pat::MET> );
+
     private:
         edm::Ptr<DiPhotonCandidate> theDiPhotonCandidate_;
         edm::Ptr<pat::MET> theMet_;
