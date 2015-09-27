@@ -172,6 +172,7 @@ else:
     bkg  = options.samples["bkg"]
     data = options.samples["data"]
 
+if options.lumiMask: options.lumiMask = os.path.abspath(options.lumiMask)
 lumiMasks = {}
 datasamples = []
 for sample in data:
@@ -183,7 +184,10 @@ for sample in data:
             sys.exit(-1)
         datasamples.append(sample[0])
         lumiMasks[sample[0]] = os.path.abspath(sample[1])
+    else:
+        datasamples.append(sample)
 data=datasamples
+
 
 samples = sig+bkg+data
 
