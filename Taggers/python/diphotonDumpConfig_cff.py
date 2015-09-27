@@ -2,6 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 diphotonDumpConfig = cms.PSet(
     className  = cms.untracked.string("CutBasedDiPhotonDumper"),
+
     src = cms.InputTag("flashggDiPhotons"),
     generatorInfo = cms.InputTag("generator"),
     processId = cms.string(""),
