@@ -21,6 +21,7 @@ def main(args):
         sys.exit(1)
 
     events = fin.Get("Events")
+    isData=False
     if events.GetEntriesFast() > 0:
         events.GetEntry(0)
         isData=events.EventAuxiliary.isRealData()
