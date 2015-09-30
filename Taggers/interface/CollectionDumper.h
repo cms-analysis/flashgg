@@ -117,7 +117,7 @@ namespace flashgg {
         genInfo_( cfg.getParameter<edm::InputTag>( "generatorInfo" ) ),
         processId_( cfg.getParameter<std::string>( "processId" ) ),
         lumiWeight_( cfg.getParameter<double>( "lumiWeight" ) ),
-        intLumi_( cfg.getParameter<double>( "intLumi" ) ),
+        intLumi_( cfg.getUntrackedParameter<double>( "intLumi",1000. ) ),
         maxCandPerEvent_( cfg.getParameter<int>( "maxCandPerEvent" ) ),
         sqrtS_( cfg.getUntrackedParameter<double>( "sqrtS", 13. ) ),
         nameTemplate_( cfg.getUntrackedParameter<std::string>( "nameTemplate", "$COLLECTION" ) ),
