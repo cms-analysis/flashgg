@@ -86,6 +86,7 @@ namespace flashgg {
         double lumiWeight_;
         int maxCandPerEvent_;
         double sqrtS_;
+        double intLumi_;
         std::string nameTemplate_;
 
         bool dumpTrees_;
@@ -118,6 +119,7 @@ namespace flashgg {
         lumiWeight_( cfg.getParameter<double>( "lumiWeight" ) ),
         maxCandPerEvent_( cfg.getParameter<int>( "maxCandPerEvent" ) ),
         sqrtS_( cfg.getUntrackedParameter<double>( "sqrtS", 13. ) ),
+        intLumi_( cfg.getUntrackedParameter<double>( "intLumi",1000. ) ),
         nameTemplate_( cfg.getUntrackedParameter<std::string>( "nameTemplate", "$COLLECTION" ) ),
         dumpTrees_( cfg.getUntrackedParameter<bool>( "dumpTrees", false ) ),
         dumpWorkspace_( cfg.getUntrackedParameter<bool>( "dumpWorkspace", false ) ),
@@ -184,6 +186,9 @@ namespace flashgg {
         if( dumpWorkspace_ ) {
             ws_ = fs.make<RooWorkspace>( workspaceName_.c_str(), workspaceName_.c_str() );
             dynamic_cast<RooRealVar *>( ws_->factory( "weight[1.]" ) )->setConstant( false );
+            RooRealVar* intLumi = new RooRealVar("IntLumi","IntLumi",intLumi_*0.001,0,30000000);
+            //workspace expects intlumi in /fb not /pb
+            ws_->import(*intLumi);
         } else {
             ws_ = 0;
         }

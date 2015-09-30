@@ -166,6 +166,11 @@ class JobConfig(object):
                             wei *= xsec.get("br",1.)
                             wei *= xsec.get("kf",1.)
                             obj.lumiWeight = wei
+                    if hasattr(obj,"intLumi"):
+                        if isdata:
+                            obj.intLumi=self.targetLumi #FIXME is this where this info should come from for data?
+                        else:
+                            obj.intLumi=self.targetLumi
             
             for name,obj in process.__dict__.iteritems():
                 if hasattr(obj,"processId"):
