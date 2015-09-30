@@ -84,6 +84,7 @@ namespace flashgg {
         edm::InputTag src_, genInfo_;
         std::string processId_;
         double lumiWeight_;
+        double intLumi_;
         int maxCandPerEvent_;
         double sqrtS_;
         std::string nameTemplate_;
@@ -116,6 +117,7 @@ namespace flashgg {
         genInfo_( cfg.getParameter<edm::InputTag>( "generatorInfo" ) ),
         processId_( cfg.getParameter<std::string>( "processId" ) ),
         lumiWeight_( cfg.getParameter<double>( "lumiWeight" ) ),
+        intLumi_( cfg.getParameter<double>( "intLumi" ) ),
         maxCandPerEvent_( cfg.getParameter<int>( "maxCandPerEvent" ) ),
         sqrtS_( cfg.getUntrackedParameter<double>( "sqrtS", 13. ) ),
         nameTemplate_( cfg.getUntrackedParameter<std::string>( "nameTemplate", "$COLLECTION" ) ),
@@ -184,6 +186,9 @@ namespace flashgg {
         if( dumpWorkspace_ ) {
             ws_ = fs.make<RooWorkspace>( workspaceName_.c_str(), workspaceName_.c_str() );
             dynamic_cast<RooRealVar *>( ws_->factory( "weight[1.]" ) )->setConstant( false );
+            RooRealVar* intLumi = new RooRealVar("IntLumi","IntLumi",intLumi_*0.001,0,30000000);
+            //workspace expects intlumi in /fb not /pb
+            ws_->import(*intLumi);
         } else {
             ws_ = 0;
         }
@@ -226,7 +231,6 @@ namespace flashgg {
             if( ! event.isRealData() ) {
                 edm::Handle<GenEventInfoProduct> genInfo;
                 event.getByLabel( genInfo_, genInfo );
-
                 weight = lumiWeight_;
 
                 if( genInfo.isValid() ) {
