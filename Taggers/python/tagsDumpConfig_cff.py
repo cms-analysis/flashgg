@@ -6,7 +6,8 @@ tagsDumpConfig = cms.PSet(
     generatorInfo = cms.InputTag("generator"),
     processId = cms.string(""),
     maxCandPerEvent = cms.int32(-1),
-    lumiWeight = cms.double(1.0),
+    lumiWeight = cms.double(1.0),# Over-written by metaData if using fggRunJobs
+    intLumi = cms.untracked.double(1000.), # in /pb. to be over-written by metaData if using fggRunJobs
     classifierCfg = cms.PSet(categories=cms.VPSet()),
     categories = cms.VPSet(),
 
