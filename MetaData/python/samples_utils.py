@@ -775,7 +775,8 @@ Commands:
         
     def run_catimport(self,src,pattern):
         if ":" in src:
-            src = "$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % src.split(":")
+            print src.split(":")
+            src = "$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % tuple(src.split(":"))
         else:
             src = "$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % ( self.options.metaDataSrc, src )
         self.mn.importFromCatalog(shell_expand(src),pattern)
