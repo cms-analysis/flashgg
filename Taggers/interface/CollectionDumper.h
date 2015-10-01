@@ -84,6 +84,7 @@ namespace flashgg {
         edm::InputTag src_, genInfo_;
         std::string processId_;
         double lumiWeight_;
+        bool splitLumiWeight_;
         int maxCandPerEvent_;
         double sqrtS_;
         std::string nameTemplate_;
@@ -116,6 +117,7 @@ namespace flashgg {
         genInfo_( cfg.getParameter<edm::InputTag>( "generatorInfo" ) ),
         processId_( cfg.getParameter<std::string>( "processId" ) ),
         lumiWeight_( cfg.getParameter<double>( "lumiWeight" ) ),
+        splitLumiWeight_( cfg.getUntrackedParameter<bool>( "splitLumiWeight", false ) ),
         maxCandPerEvent_( cfg.getParameter<int>( "maxCandPerEvent" ) ),
         sqrtS_( cfg.getUntrackedParameter<double>( "sqrtS", 13. ) ),
         nameTemplate_( cfg.getUntrackedParameter<std::string>( "nameTemplate", "$COLLECTION" ) ),
@@ -141,6 +143,12 @@ namespace flashgg {
 
         if( dumpGlobalVariables_ ) {
             globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ) );
+            if( splitLumiWeight_ ) {
+                globalVarsDumper_->dumpLumiFactor(lumiWeight_);
+                lumiWeight_ = 1.;
+            }
+        } else if ( splitLumiWeight_ ) {
+            throw cms::Exception("Configuration error") << "You specified the splitLumiWeight option but not the dumpGlobalVariables one. I can split the weight only if you also set the latter.\n";
         }
 
         auto categories = cfg.getParameter<std::vector<edm::ParameterSet> >( "categories" );
