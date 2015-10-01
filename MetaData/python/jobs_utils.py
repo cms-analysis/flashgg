@@ -3,16 +3,13 @@ from optpars_utils import *
 from pprint import pprint
 
 import os,json,fcntl,stat
-from parallel  import Parallel
+from parallel  import *
 from threading import Semaphore
 
 import sys
 from subprocess import call, Popen, PIPE
 from copy import copy
 import shlex
-
-# Load command line option utilities
-from parallel import *
 
 # -------------------------------------------------------------------------------                                                                                           
 def shell_args(cmd):
@@ -134,7 +131,7 @@ class JobsManager(object):
             self.options.dry_run = True
             self.options.cont = True
             
-        self.jobFactory = TarballJobFactory(self.options.stageTo,self.options.stageCmd,job_outdir=self.options.outputDir,
+        self.jobFactory = WorkNodeJobFactory(self.options.stageTo,self.options.stageCmd,job_outdir=self.options.outputDir,
                                             batchSystem=self.options.batchSystem)
         self.parallel = Parallel(self.options.ncpu,lsfQueue=self.options.queue,lsfJobName="%s/runJobs" % self.options.outputDir,
                                  asyncLsf=self.options.asyncLsf,jobDriver=self.jobFactory,batchSystem=self.options.batchSystem)

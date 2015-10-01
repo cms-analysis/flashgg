@@ -6,11 +6,13 @@ from das_cli import x509
 from pprint import pprint
 
 import os,json,fcntl,sys
-from parallel  import Parallel
+from parallel  import *
 from threading import Semaphore
 from fnmatch import fnmatch
 import commands
 
+import re
+        
 # -------------------------------------------------------------------------------
 def shell_expand(string):
     if string:
@@ -224,9 +226,10 @@ class SamplesManager(object):
         catalog = self.readCatalog()
         
         self.just_open_ = justOpen
-        self.parallel_ = Parallel(50,self.queue_,maxThreads=self.maxThreads_,asyncLsf=True,lsfJobName=".fgg/job")
+        factory = WorkNodeJobFactory(os.getcwd(),stage_patterns=[".tmp*.json"],job_outdir=".fgg")
+        self.parallel_ = Parallel(50,self.queue_,maxThreads=self.maxThreads_,asyncLsf=True,lsfJobName=".fgg/job",jobDriver=factory)
         ## self.parallel_ = Parallel(1,self.queue_)
-
+        
         print "Checking all datasets"
         self.outcomes = []
         for dataset in catalog.keys():  
@@ -385,6 +388,7 @@ class SamplesManager(object):
 
         primaries = {}
         keepAll = False
+        dataregex = re.compile("Run[0-9]+[A-Z]")
         for d in datasets:
             if not keepAll:
                 reply = ask_user("keep this dataset (yes/no/all)?\n %s\n" % d, ["y","n","a"])
@@ -393,7 +397,9 @@ class SamplesManager(object):
                     continue
                 if reply == "a": 
                     keepAll = True
-            primary = d.split("/")[1]
+            primary,secondary = d.split("/")[1:3]
+            search = dataregex.search(secondary)
+            if search: primary += "/%s" % search.group()
             if not primary in primaries:
                 primaries[ primary ] = []
                 
@@ -454,13 +460,18 @@ class SamplesManager(object):
                     return outcome
             return None
         if self.just_open_:
-            ret,out = self.parallel_.run("fggOpenFile.py",[fName,tmp,dsetName,str(ifile),"2>/dev/null"],interactive=True)[2]
-            return self.readJobOutput(tmp,ret,out,dsetName,fileName,ifile)
-        if self.queue_:
-            self.parallel_.run("fggCheckFile.py",[fName,tmp,dsetName,str(ifile),"2>/dev/null"],interactive=False)
+            ret,out = self.parallel_.run("fggOpenFile.py",[fName,tmp,dsetName,str(ifile)],interactive=True)[2]
+        elif self.queue_:
+            self.parallel_.run("fggCheckFile.py",[fName,tmp,dsetName,str(ifile)],interactive=False)
+            return
         else:
-            ret,out = self.parallel_.run("fggCheckFile.py",[fName,tmp,dsetName,str(ifile),"2>/dev/null"],interactive=True)[2]
-            return self.readJobOutput(tmp,ret,out,dsetName,fileName,ifile)
+            ret,out = self.parallel_.run("fggCheckFile.py",[fName,tmp,dsetName,str(ifile)],interactive=True)[2]
+
+        if ret != 0:
+            print "ERROR checking %s" % fName
+            print out
+        return self.readJobOutput(tmp,ret,out,dsetName,fileName,ifile)
+
 
     def readJobOutput(self,tmp,ret,out,dsetName,fileName,ifile):
         try:
@@ -683,7 +694,7 @@ Commands:
                             ),
                 make_option("-M","--max-threads",
                             dest="max_threads",action="store",type="int",
-                            default=200,
+                            default=20,
                             help="Maximum number of threads to use. default: %default",
                             ),
                 make_option("-v","--verbose",
