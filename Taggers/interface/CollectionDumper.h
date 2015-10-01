@@ -86,6 +86,7 @@ namespace flashgg {
         edm::InputTag src_, genInfo_, pdfWeightToken_;
         std::string processId_;
         double lumiWeight_;
+        bool splitLumiWeight_;
         int maxCandPerEvent_;
         double sqrtS_;
         double intLumi_;
@@ -124,6 +125,7 @@ namespace flashgg {
         genInfo_( cfg.getParameter<edm::InputTag>( "generatorInfo" ) ),
         processId_( cfg.getParameter<std::string>( "processId" ) ),
         lumiWeight_( cfg.getParameter<double>( "lumiWeight" ) ),
+        splitLumiWeight_( cfg.getUntrackedParameter<bool>( "splitLumiWeight", false ) ),
         maxCandPerEvent_( cfg.getParameter<int>( "maxCandPerEvent" ) ),
         sqrtS_( cfg.getUntrackedParameter<double>( "sqrtS", 13. ) ),
         intLumi_( cfg.getUntrackedParameter<double>( "intLumi",1000. ) ),
@@ -134,7 +136,7 @@ namespace flashgg {
         dumpHistos_( cfg.getUntrackedParameter<bool>( "dumpHistos", false ) ),
         dumpGlobalVariables_( cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true ) ),
         classifier_( cfg.getParameter<edm::ParameterSet>( "classifierCfg" ) ),
-        throwOnUnclassified_( cfg.exists("throwOnUnclassified") ? cfg.getParameter<bool>("throwOnUnclassified") : true ),
+        throwOnUnclassified_( cfg.exists("throwOnUnclassified") ? cfg.getParameter<bool>("throwOnUnclassified") : false ), //default was true!!
         globalVarsDumper_( 0 )        
 
     {
@@ -154,6 +156,12 @@ namespace flashgg {
 
         if( dumpGlobalVariables_ ) {
             globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ) );
+            if( splitLumiWeight_ ) {
+                globalVarsDumper_->dumpLumiFactor(lumiWeight_);
+                lumiWeight_ = 1.;
+            }
+        } else if ( splitLumiWeight_ ) {
+            throw cms::Exception("Configuration error") << "You specified the splitLumiWeight option but not the dumpGlobalVariables one. I can split the weight only if you also set the latter.\n";
         }
        
         pdfWeightHistosBooked_=false;

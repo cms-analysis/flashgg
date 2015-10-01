@@ -47,6 +47,7 @@ namespace flashgg {
         for( auto &bit : bits_ ) {
             tree->Branch( bit.first.c_str(), &bit.second, ( bit.first + "/O" ).c_str() );
         }
+        if( dumpLumiFactor_ ) { tree->Branch( "lumiFactor", &lumiFactor_ ); }
     }
 
     void GlobalVariablesDumper::fill( const EventBase &evt )

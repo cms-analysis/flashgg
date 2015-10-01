@@ -13,7 +13,7 @@ def createTagDumper (tagName):
 
     return tagDumper
 
-dict = {'Untagged': 'untagged',
+dict = {'UntaggedTag': 'untagged',
         'VBFTag': 'vbfh',                
         'TTHLeptonicTag': 'tth',
         'TTHHadronicTag': 'tth',
