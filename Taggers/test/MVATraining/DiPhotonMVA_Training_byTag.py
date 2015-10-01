@@ -42,6 +42,7 @@ from flashgg.Taggers.tagsDumpers_cfi import createTagDumper
 process.tagDumper = createTagDumper("UntaggedTag")
 process.tagDumper.src = "flashggUntagged"
 
+process.tagDumper.splitLumiWeight=cms.untracked.bool(True)
 process.tagDumper.dumpTrees = True
 process.tagDumper.dumpWorkspace = False
 process.tagDumper.quietRooFit = True
@@ -51,19 +52,25 @@ cfgTools.addCategories(process.tagDumper,
 			("All","1",0),
 			],
 			variables=[
-			"leadptom    := diPhotonMVA.leadptom  ",
-			"subleadptom := diPhotonMVA.subleadptom ",
-			"leadmva     := diPhotonMVA.leadmva ",
-			"subleadmva  := diPhotonMVA.subleadmva    ",
-			"leadeta     := diPhotonMVA.leadeta     ",
-			"subleadeta  := diPhotonMVA.subleadeta",
-			"sigmarv     := diPhotonMVA.sigmarv",
-     			"sigmawv     := diPhotonMVA.sigmawv",
-			"CosPhi      := diPhotonMVA.CosPhi",
-			"vtxprob     := diPhotonMVA.vtxprob",
-			"result      := diPhotonMVA.result",
-			"mass        := diPhoton.mass",
-			"pt          := diPhoton.pt",
+			"leadptom         := diPhotonMVA.leadptom  ",
+			"subleadptom      := diPhotonMVA.subleadptom ",
+			"leadmva          := diPhotonMVA.leadmva ",
+			"subleadmva       := diPhotonMVA.subleadmva    ",
+			"leadeta          := diPhotonMVA.leadeta     ",
+			"subleadeta       := diPhotonMVA.subleadeta",
+			"sigmarv          := diPhotonMVA.sigmarv",
+     			"sigmawv          := diPhotonMVA.sigmawv",
+			"CosPhi           := diPhotonMVA.CosPhi",
+			"vtxprob          := diPhotonMVA.vtxprob",
+			"result           := diPhotonMVA.result",
+			"mass             := diPhoton.mass",
+			"pt               := diPhoton.pt",
+                        "dz               := abs(tagTruth().genPV().z-diPhoton().vtx().z)",
+                        "leadMatchType    := diPhoton.getLeadingPhoton().genMatchType()",
+                        "subleadMatchType := diPhoton.getSubLeadingPhoton().genMatchType()"
+                        "leadptgen := diPhoton.getLeadingPhoton().matchedGenPhoton().pt()",
+                        "subleadptgen := diPhoton.getSubLeadingPhoton().matbchedGenPhoton().pt()",
+                        "mass := "
 			],
 			histograms=[
 			"result>>diphoMVAValue(100,-1,1)",
