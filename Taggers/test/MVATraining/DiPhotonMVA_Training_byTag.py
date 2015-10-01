@@ -70,7 +70,7 @@ cfgTools.addCategories(process.tagDumper,
                         "subleadMatchType := diPhoton.getSubLeadingPhoton().genMatchType()"
                         "leadptgen := diPhoton.getLeadingPhoton().matchedGenPhoton().pt()",
                         "subleadptgen := diPhoton.getSubLeadingPhoton().matbchedGenPhoton().pt()",
-                        "mass := "
+                        "massgen := diPhoton.genP4().mass()"
 			],
 			histograms=[
 			"result>>diphoMVAValue(100,-1,1)",
