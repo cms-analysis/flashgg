@@ -15,9 +15,11 @@ namespace flashgg {
         int idFlag;
     };
 
+    enum JetIDLevel {Loose=0, Tight=1};
+    
     class Jet : public pat::Jet, public WeightedObject
     {
-
+        
     public:
         Jet();
         Jet( const pat::Jet & );
@@ -27,9 +29,11 @@ namespace flashgg {
         bool passesPuJetId( const edm::Ptr<reco::Vertex> vtx, PileupJetIdentifier::Id level = PileupJetIdentifier::kLoose ) const;
         float rms( const edm::Ptr<reco::Vertex> vtx ) const;
         float betaStar( const edm::Ptr<reco::Vertex> vtx ) const;
-        bool passesPuJetId( const edm::Ptr<DiPhotonCandidate> dipho, PileupJetIdentifier::Id level = PileupJetIdentifier::kLoose ) const;
+        bool passesPuJetId( const edm::Ptr<DiPhotonCandidate> dipho, PileupJetIdentifier::Id level = PileupJetIdentifier::kLoose )const;
         float rms( const edm::Ptr<DiPhotonCandidate> dipho ) const;
         float betaStar( const edm::Ptr<DiPhotonCandidate> dipho ) const;
+        
+        bool passesJetID( JetIDLevel level = Loose ) const; 
     private:
         std::map<edm::Ptr<reco::Vertex>, MinimalPileupJetIdentifier> puJetId_;
     };
