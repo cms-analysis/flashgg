@@ -168,7 +168,9 @@ class JobConfig(object):
                             obj.lumiWeight = wei
                     if hasattr(obj,"intLumi"):
                         if isdata:
-                            obj.intLumi=self.targetLumi #FIXME is this where this info should come from for data?
+                            obj.intLumi= 0 # should not be used in final fits.
+                            # setting to 0 will cause error if someone tries to use
+                            #it for normalization downsteram
                         else:
                             obj.intLumi=self.targetLumi
             

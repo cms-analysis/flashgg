@@ -186,8 +186,10 @@ namespace flashgg {
         if( dumpWorkspace_ ) {
             ws_ = fs.make<RooWorkspace>( workspaceName_.c_str(), workspaceName_.c_str() );
             dynamic_cast<RooRealVar *>( ws_->factory( "weight[1.]" ) )->setConstant( false );
-            RooRealVar* intLumi = new RooRealVar("IntLumi","IntLumi",intLumi_*0.001,0,30000000);
-            //workspace expects intlumi in /fb not /pb
+            RooRealVar* intLumi = new RooRealVar("IntLumi","IntLumi",intLumi_);
+            //workspace expects intlumi in /pb
+            intLumi->setConstant(); 
+            // don't want this param to float in the fits at any point
             ws_->import(*intLumi);
         } else {
             ws_ = 0;
