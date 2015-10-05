@@ -158,8 +158,8 @@ namespace flashgg {
         float phoIdMva_rho_;
         float phoIdMva_ESEffSigmaRR_;
 
-        std::shared_ptr<TMVA::Reader> phoIdMva_2012_EB_;
-        std::shared_ptr<TMVA::Reader> phoIdMva_2012_EE_;
+        std::shared_ptr<TMVA::Reader> phoIdMva_EB_;
+        std::shared_ptr<TMVA::Reader> phoIdMva_EE_;
 
     };
 
