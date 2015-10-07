@@ -89,7 +89,7 @@ import flashgg.Taggers.dumperConfigTools as cfgTools
 process.tagsDumper.className = "DiPhotonTagDumper"
 process.tagsDumper.src = "flashggSystTagMerger"
 process.tagsDumper.processId = "test"
-process.tagsDumper.dumpTrees = True
+process.tagsDumper.dumpTrees = False
 process.tagsDumper.dumpWorkspace = True
 process.tagsDumper.dumpHistos = False
 process.tagsDumper.quietRooFit = True
@@ -120,13 +120,15 @@ for tag in tagList:
           definedSysts.add(systlabel)
       else:
           cutstring = None
+      isBinnedOnly = (systlabel !=  "")
       cfgTools.addCategory(process.tagsDumper,
                            systlabel,
                            classname=tagName,
                            cutbased=cutstring,
                            subcats=tagCats, 
                            variables=minimalVariables,
-                           histograms=minimalHistograms
+                           histograms=minimalHistograms,
+                           binnedOnly=isBinnedOnly
                            )
 
 process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSystematics+process.flashggElectronSystematics)*
