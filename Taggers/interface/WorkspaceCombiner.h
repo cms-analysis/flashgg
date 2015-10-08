@@ -98,6 +98,10 @@ private :
     vector<string> workspaceNames;
 
     vector<vector<RooDataSet *> > data; //[workspace][dataset(cat)]
+    
+    vector<vector<RooDataHist *> > dataH; //[workspace][dataset(cat)]
+    
+    vector<vector<RooRealVar *> > vars; //[workspace][dataset(cat)]
 
     vector<TTree *> trees;
 

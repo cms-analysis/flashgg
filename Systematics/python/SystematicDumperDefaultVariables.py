@@ -1,5 +1,8 @@
 minimalVariables = ["CMS_hgg_mass[160,100,180]:=diPhoton().mass",
-                    "dZ             :=abs(tagTruth().genPV().z-diPhoton().vtx().z)"]
+                    "dZ[2,0,2]:=abs(tagTruth().genPV().z-diPhoton().vtx().z)"] #only need to know if dZ<1 or dz>1
+										#when doing systematics, variables need to have a binning
+										#specified, otherwise the rooDataHist end up empty.
+										#an assert in the code prevents you from doing this.
 minimalHistograms = []
 
 defaultVariables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass", 
