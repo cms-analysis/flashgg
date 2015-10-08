@@ -141,8 +141,8 @@ process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSyst
 ############################
 ## Dump the output Python ##
 ############################
-processDumpFile = open('processDump.py', 'w')
-print >> processDumpFile, process.dumpPython()
+#processDumpFile = open('processDump.py', 'w')
+#print >> processDumpFile, process.dumpPython()
 
 
 
