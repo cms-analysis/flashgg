@@ -3,7 +3,7 @@ import FWCore.ParameterSet.Config as cms
 import FWCore.Utilities.FileUtils as FileUtils
 from FWCore.ParameterSet.VarParsing import VarParsing
 from flashgg.MetaData.samples_utils import SamplesManager
-from flashgg.Systematics.SystematicDumperDefaultVariables import defaultVariables,defaultHistograms
+from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariables,minimalHistograms
 
 ## CMD LINE OPTIONS ##
 options = VarParsing('analysis')
