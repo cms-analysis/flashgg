@@ -165,17 +165,6 @@ namespace flashgg {
                 p1.SetPxPyPzE( Photon1Dir_uv.x(), Photon1Dir_uv.y(), Photon1Dir_uv.z(), photon->superCluster()->rawEnergy() );
                 p2.SetPxPyPzE( jet->px(), jet->py(), jet->pz(), jet->energy());
                 photonjet.setPhotonJetPt((p1+p2).Pt());
-
-                
-                TVector3 Photon1Dir;
-                TVector3 Photon1Dir_uv;
-                TLorentzVector p1, p2;
-                Photon1Dir.SetXYZ( photon->superCluster()->position().x() - pvx->position().x(), photon->superCluster()->position().y() - pvx->position().y(),
-                                   photon->superCluster()->position().z() - pvx->position().z() );
-                Photon1Dir_uv = Photon1Dir.Unit() * photon->superCluster()->rawEnergy();
-                p1.SetPxPyPzE( Photon1Dir_uv.x(), Photon1Dir_uv.y(), Photon1Dir_uv.z(), photon->superCluster()->rawEnergy() );
-                p2.SetPxPyPzE( jet->px(), jet->py(), jet->pz(), jet->energy());
-                photonjet.setPhotonJetPt((p1+p2).Pt());
                 
                 // Obviously the last selection has to be for this diphoton or this is wrong
                 vertexSelector_->writeInfoFromLastSelectionTo( photonjet );
