@@ -24,7 +24,8 @@ Now if everything looks reasonable, you can build:
  ```
 And a very basic workflow test:
  ```
- cmsRun flashgg/MicroAOD/test/microAODstd.py
+ cd $CMSSW_BASE/src/flashgg
+ cmsRun MicroAOD/test/microAODstd.py
  cmsRun Taggers/test/diphotonsDumper_cfg.py
  cmsRun Systematics/test/MicroAODtoWorkspace.py
  ```
