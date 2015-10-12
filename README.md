@@ -25,8 +25,12 @@ Now if everything looks reasonable, you can build:
 And a very basic workflow test:
  ```
  cmsRun flashgg/MicroAOD/test/microAODstd.py
- cmsRun flashgg/Taggers/test/simple_Tag_test.py 
+ cmsRun Taggers/test/diphotonsDumper_cfg.py
+ cmsRun Systematics/test/MicroAODtoWorkspace.py
  ```
+
+These are just some test examples; the first makes MicroAOD from a MiniAOD file accessed via xrootd, 
+and the other two process the new MicroAOD file for different output.
 
 The setup code will automatically change the initial remote branch's name to upstream to synchronize with the project's old conventions.  
 The code will also automatically create an "origin" repo based on its guess as to where your personal flashgg fork is.
