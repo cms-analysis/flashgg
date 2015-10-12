@@ -52,6 +52,7 @@ if ${SETUP_REMOTES} ; then
   git remote add kmondal https://github.com/kmondal/flashgg
   git remote add ldcorpe https://github.com/ldcorpe/flashgg
   git remote add malcles https://github.com/malcles/flashgg
+  git remote add martinamalberti https://github.com/martinamalberti/flashgg
   git remote add matteosan1 https://github.com/matteosan1/flashgg
   git remote add mdonega https://github.com/mdonega/flashgg
   git remote add mmachet https://github.com/mmachet/flashgg
