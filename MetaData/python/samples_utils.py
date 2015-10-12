@@ -512,6 +512,36 @@ class SamplesManager(object):
         self.outcomes.append( (None,None,self.readJobOutput(tmp,ret,out,dsetName,fileName,ifile))) 
         return 0
         ## return dsetName,ifile,fileName,ret,out
+    
+    def getDatasetLumiList(self,name,catalog):
+        from FWCore.PythonUtilities.LumiList import LumiList
+
+        dlist = LumiList()
+        for fil in catalog[name]["files"]:
+            flist = LumiList( runsAndLumis=fil.get("lumis",{}) )
+            dlist += flist
+        
+        return dlist
+
+    def getOverlaps(self,*args):
+        catalog = self.readCatalog(True)
+        
+        datasets = {}
+        for dataset in catalog.keys():
+            for arg in args:
+                if dataset == arg or fnmatch(dataset,arg):
+                    datasets[dataset] = self.getDatasetLumiList(dataset,catalog)
+                    break
+        
+        keys = datasets.keys()
+        for ik,ikey in enumerate(keys):
+            for jkey in keys[ik+1:]:
+                overlap = datasets[ikey].__and__(datasets[jkey])
+                print ikey
+                print jkey
+                print overlap.compactList
+            
+        
 
     def getLumiList(self,*args):
         
@@ -673,7 +703,8 @@ class SamplesManagerCli(SamplesManager):
                      "check      [wildcard]                            check duplicate files and errors in datasets and mark bad files",
                      "checkopen  [wildcard]                            as above but just try open file",
                      "checklite  [wildcard]                            check for duplicate files in datasets",
-                     "getlumi    [wildcard|datasets]                   get list of processed lumi sections in dataset"
+                     "getlumi    [wildcard|datasets]                   get list of processed lumi sections in dataset",
+                     "overlap    [wildcard|datasets]                   checks overlap between datatasets"
                      ]
         
         parser = OptionParser(
@@ -792,6 +823,9 @@ Commands:
     
     def run_getlumi(self,*args):
         self.mn.getLumiList(*args)
+    
+    def run_overlap(self,*args):
+        self.mn.getOverlaps(*args)
 
     def run_list(self,what=None):        
         datasets,catalog = self.mn.getAllDatasets()
