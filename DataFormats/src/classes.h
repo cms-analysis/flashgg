@@ -26,6 +26,7 @@
 #include "flashgg/DataFormats/interface/VHEtTag.h"
 #include "flashgg/DataFormats/interface/DiMuonCandidate.h"   //JTao
 #include "flashgg/DataFormats/interface/MuMuGammaCandidate.h"   //JTao
+#include "flashgg/DataFormats/interface/PhotonJetCandidate.h" //Martina
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "flashgg/DataFormats/interface/VBFTagTruth.h"
 #include "flashgg/DataFormats/interface/WeightedObject.h"
@@ -235,6 +236,16 @@ namespace  {
 
         std::vector<edm::Ptr<pat::MET> >        vec_ptr_pat_met;
         edm::Wrapper<std::vector<edm::Ptr<pat::MET> > >   wrp_vec_ptr_pat_met;
+
+        // -- Martina
+        flashgg::PhotonJetCandidate                                       fgj_dip;
+        edm::Wrapper<flashgg::PhotonJetCandidate>                      wrp_fgj_dip;
+        std::vector<flashgg::PhotonJetCandidate>                       vec_fgj_dip;
+        edm::Wrapper<std::vector<flashgg::PhotonJetCandidate> >    wrp_vec_fgj_dip;
+        edm::Ptr<flashgg::PhotonJetCandidate>                          ptr_fgj_dip;
+        edm::Wrapper<edm::Ptr<flashgg::PhotonJetCandidate> >       wrp_ptr_fgj_dip;
+        std::vector<edm::Ptr<flashgg::PhotonJetCandidate> >        vec_ptr_fgj_dip;
+        edm::Wrapper<std::vector<edm::Ptr<flashgg::PhotonJetCandidate> > >   wrp_vec_ptr_fgj_dip;
 
 
     };

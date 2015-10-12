@@ -202,4 +202,14 @@
 <class name="std::vector<edm::Ptr<flashgg::MuMuGammaCandidate> >"/>
 <class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::MuMuGammaCandidate> > >"/>
 
+<class name="flashgg::PhotonJetCandidate" ClassVersion="10">
+  <version ClassVersion="10" checksum="1948641873"/>
+</class>
+<class name="std::vector<flashgg::PhotonJetCandidate>"/>
+<class name="edm::Wrapper<std::vector<flashgg::PhotonJetCandidate> >"/>
+<class name="edm::Ptr<flashgg::PhotonJetCandidate>"/>
+<class name="edm::Wrapper<edm::Ptr<flashgg::PhotonJetCandidate> >"/>
+<class name="std::vector<edm::Ptr<flashgg::PhotonJetCandidate> >"/>
+<class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::PhotonJetCandidate> > >"/>
+
 </lcgdict>
