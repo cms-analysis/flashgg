@@ -5,9 +5,11 @@
 #include "DataFormats/Common/interface/Handle.h"
 #include "flashgg/DataFormats/interface/Photon.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/PhotonJetCandidate.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/Common/interface/PtrVector.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
+#include "DataFormats/PatCandidates/interface/Jet.h"
 #include "flashgg/DataFormats/interface/VertexCandidateMap.h"
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
 
@@ -37,9 +39,21 @@ namespace flashgg {
                                                //                                          const float&
                                              )  = 0;
 
+        virtual edm::Ptr<reco::Vertex> select( const edm::Ptr<flashgg::Photon> &,
+                                               const edm::Ptr<pat::Jet> &, const std::vector<edm::Ptr<reco::Vertex> > &,
+                                               const VertexCandidateMap &,
+                                               const std::vector<edm::Ptr<reco::Conversion> > &,
+                                               const std::vector<edm::Ptr<reco::Conversion> > &,
+                                               const math::XYZPoint &,
+                                               bool
+                                               //					  const Parameters_Selector_Type&,
+                                               //                                          const float&
+                                             )  = 0;
+
         const std::string &name() const { return _selectorName; };
 
         virtual void writeInfoFromLastSelectionTo( flashgg::DiPhotonCandidate & ) = 0;
+        virtual void writeInfoFromLastSelectionTo( flashgg::PhotonJetCandidate & ) = 0;
 
     private:
         const std::string _selectorName;
