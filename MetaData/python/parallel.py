@@ -330,7 +330,8 @@ class WorkNodeJob(object):
             
         # the user command
         script += cmd+"\n"
-
+        script += 'retval=$?\n'
+        
         if self.tarball and self.job_outdir:
             script += 'cd %s\n' % self.job_outdir
             script += 'echo\n'
@@ -339,7 +340,6 @@ class WorkNodeJob(object):
             script += 'echo "Files in ouput folder"\n'
             script += 'ls -ltr\n'
         # stage out files
-        script += 'retval=$?\n'
         script += 'if [[ $retval == 0 ]]; then\n'
         script += '    errors=""\n'
         script += '    for file in $(find -name %s); do\n' % " -or -name ".join(self.stage_patterns)
