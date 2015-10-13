@@ -127,6 +127,10 @@ class MicroAODCustomize(object):
     # signal specific customization
     def customizeSignal(self,process):
         process.flashggGenPhotonsExtra.defaultType = 1
+
+        # Default should be the right name for all signals
+        process.load("flashgg/MicroAOD/flashggPDFWeightObject_cfi")
+        process.p *= process.flashggPDFWeightObject
         
     # background specific customization
     def customizeBackground(self,process):
