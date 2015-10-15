@@ -9,8 +9,8 @@ Before you start, **please take note** of these warnings and comments:
 
 Get everything you need, starting from a clean area:
  ```
- cmsrel CMSSW_7_4_12
- cd CMSSW_7_4_12/src
+ cmsrel CMSSW_7_4_15
+ cd CMSSW_7_4_15/src
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src 
@@ -26,12 +26,14 @@ And a very basic workflow test:
  ```
  cd $CMSSW_BASE/src/flashgg
  cmsRun MicroAOD/test/microAODstd.py
+ cmsRun Taggers/test/simple_Tag_test.py
  cmsRun Taggers/test/diphotonsDumper_cfg.py
  cmsRun Systematics/test/MicroAODtoWorkspace.py
  ```
 
 These are just some test examples; the first makes MicroAOD from a MiniAOD file accessed via xrootd, 
-and the other two process the new MicroAOD file for different output.
+the second produces tag objects and screen output from the new MicroAOD file,
+and the other two process the MicroAOD file to test ntuple and workspace output.
 
 The setup code will automatically change the initial remote branch's name to upstream to synchronize with the project's old conventions.  
 The code will also automatically create an "origin" repo based on its guess as to where your personal flashgg fork is.
