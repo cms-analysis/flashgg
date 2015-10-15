@@ -91,8 +91,12 @@ git cms-merge-topic sethzenz:topic-weights-count-74X
 # PUPPI is automagically in the release since 7_4_11 and 7_5_2, but we still need Multi-PUPPI
 echo "Setting up PUPPI..."
 git cms-addpkg CommonTools/PileupAlgos
-#git cms-merge-topic yhaddad:topic-puppi-flashgg-74X
 git cms-merge-topic sethzenz:topic-puppi-7_4_12 
+echo
+
+echo "Modifying FastjetJetProducer to avoid wasting time on empty collections..."
+git cms-addpkg RecoJets/JetProducers
+git cms-merge-topic sethzenz:topic-jetprod-skipempty
 echo
 
 echo "Setting up Conversion tools for pat electron..."
