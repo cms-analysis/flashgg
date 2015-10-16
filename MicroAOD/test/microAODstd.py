@@ -55,7 +55,13 @@ if current_gt.count("::All"):
 # Spring15
 #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIISpring15DR74/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v1/70000/0232BC3C-01FF-E411-8779-0025907B4FC2.root"))
 #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIISpring15DR74/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v1/30000/54ECB9A4-912E-E511-BB7D-002590A831CA.root"))
-process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:/afs/cern.ch/work/s/sethzenz/public/GluGluHToGG_M-125_13TeV_powheg_pythia8_MINIAODSIM_Asympt50ns_MCRUN2_74_V9A-v1_54ECB9A4-912E-E511-BB7D-002590A831CA.root"))
+#process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("file:/afs/cern.ch/work/s/sethzenz/public/GluGluHToGG_M-125_13TeV_powheg_pythia8_MINIAODSIM_Asympt50ns_MCRUN2_74_V9A-v1_54ECB9A4-912E-E511-BB7D-002590A831CA.root"))
+
+# IF YOU RUN ON ANY EXAMPLE ABOVE, YOU NEED TO CHANGE THE WEIGHTPRODUCER BELOW
+
+# reMiniAOD
+process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIISpring15MiniAODv2/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/MINIAODSIM/74X_mcRun2_asymptotic_v2-v1/40000/6C4EEC22-C36D-E511-8CCF-002590AC4C74.root"))
+
 process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to work: disable all warnings for now
 # process.MessageLogger.suppressWarning.extend(['SimpleMemoryCheck','MemoryCheck']) # this would have been better...
 
@@ -66,8 +72,10 @@ process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to wo
 #                                        monitorPssAndPrivate = cms.untracked.bool(True)
 #                                       )
 
-#process.load("flashgg/MicroAOD/flashggPDFWeightObject_cfi")
 process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
+
+# NEEDED FOR ANYTHING PRIOR TO reMiniAOD
+#process.weightsCount.pileupInfo = "addPileupInfo"
 
 from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile.root'),
@@ -78,7 +86,6 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
 # Switch from PFCHS to PUPPI with puppi=1 argument (both if puppi=2)
 
 process.p = cms.Path(process.flashggMicroAODSequence)
-#process.p = cms.Path(process.flashggPDFWeightObject*process.flashggMicroAODSequence)
 process.e = cms.EndPath(process.out)
 
 # Uncomment these lines to run the example commissioning module and send its output to root

@@ -14,7 +14,7 @@ from flashgg.MicroAOD.flashggMicroAODGenSequence_cff import *
 eventCount = cms.EDProducer("EventCountProducer")
 weightsCount = cms.EDProducer("WeightsCountProducer",
                               generator=cms.InputTag("generator"),
-                              pileupInfo=cms.InputTag("addPileupInfo"),
+                              pileupInfo=cms.InputTag("slimmedAddPileupInfo"),
                               doObsPileup=cms.untracked.bool(True),
                               minObsPileup=cms.double(-0.5),
                               maxObsPileup=cms.double(100.5),
