@@ -75,7 +75,7 @@ process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to wo
 process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
 
 # NEEDED FOR ANYTHING PRIOR TO reMiniAOD
-process.weightProducer.pileupInfo = "addPileupInfo"
+#process.weightsCount.pileupInfo = "addPileupInfo"
 
 from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand
 process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile.root'),
