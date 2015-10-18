@@ -7,5 +7,7 @@
     "Run2015B-PromptReco"                          : ["74X_dataRun2_Prompt_v1"],
     "RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A"   : ["MCRUN2_74_V9A"],
     "RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9"	   : ["MCRUN2_74_V9"],
-    "CMSSW_7_4_6_patch6-74X_mcRun2_asymptotic_realisticBS_v0_2015Jul24" : ["74X_mcRun2_asymptotic_realisticBS_v0"]
+    "CMSSW_7_4_6_patch6-74X_mcRun2_asymptotic_realisticBS_v0_2015Jul24" : ["74X_mcRun2_asymptotic_realisticBS_v0"],
+    "Run2015D-05Oct2015" : ["74X_dataRun2_reMiniAOD_v0"],
+    "RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2" : ["74X_mcRun2_asymptotic_v2"]
 }

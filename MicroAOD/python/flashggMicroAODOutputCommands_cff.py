@@ -51,10 +51,8 @@ microAODDebugOutputCommand = cms.untracked.vstring("keep *_reducedEgamma_*_*",
                                                    )
 
 #output needed for HLT efficiency study
-microAODHLTOutputCommand = cms.untracked.vstring("keep *_flashggDiPhotonMVA_*_*",
-                                                 "keep *_l1extraParticles_Isolated_*",
+microAODHLTOutputCommand = cms.untracked.vstring("keep *_l1extraParticles_Isolated_*",
                                                  "keep *_l1extraParticles_NonIsolated_*",
-                                                 "keep *_flashggElectrons_*_*",
                                                  "keep *_selectedPatTrigger_*_*",
-                                                 "keep *_patTrigger_*_*",
+                                                 "keep *_TriggerResults_*_HLT",
                                                  )

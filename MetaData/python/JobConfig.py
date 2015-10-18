@@ -166,6 +166,13 @@ class JobConfig(object):
                             wei *= xsec.get("br",1.)
                             wei *= xsec.get("kf",1.)
                             obj.lumiWeight = wei
+                    if hasattr(obj,"intLumi"):
+                        if isdata:
+                            obj.intLumi= 0 # should not be used in final fits.
+                            # setting to 0 will cause error if someone tries to use
+                            #it for normalization downsteram
+                        else:
+                            obj.intLumi=self.targetLumi
             
             for name,obj in process.__dict__.iteritems():
                 if hasattr(obj,"processId"):

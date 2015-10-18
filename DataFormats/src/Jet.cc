@@ -64,6 +64,46 @@ float Jet::betaStar( const edm::Ptr<DiPhotonCandidate> dipho ) const
     return betaStar( dipho->vtx() );
 }
 
+bool Jet::passesJetID( JetIDLevel level) const
+{
+    float eta      = this->eta();
+    float NHF      = this->neutralHadronEnergyFraction();
+    float NEMF     = this->neutralEmEnergyFraction();
+    float CHF      = this->chargedHadronEnergyFraction();
+    //float MUF      = this->muonEnergyFraction();
+    float CEMF     = this->chargedEmEnergyFraction();
+    int   NumConst = this->chargedMultiplicity()+this->neutralMultiplicity();
+    int   CHM      = this->chargedMultiplicity();
+    int   NumNeutralParticles = this->neutralMultiplicity();
+    
+    std::cout  << "DEBUG:: eta= " << eta << " NHF=" << NHF << std::endl;
+    
+    bool jetID_barel_loose  =  (NHF<0.99 && NEMF<0.99 && NumConst>1) && ((abs(eta)<=2.4 && CHF>0 && CHM>0 && CEMF<0.99) || abs(eta)>2.4) && abs(eta)<=3.0;
+    bool jetID_barel_tight  =  (NHF<0.90 && NEMF<0.90 && NumConst>1) && ((abs(eta)<=2.4 && CHF>0 && CHM>0 && CEMF<0.99) || abs(eta)>2.4) && abs(eta)<=3.0;
+    bool jetID_foaward      =  (NEMF<0.90 && NumNeutralParticles >10 && abs(eta)>3.0 );
+    
+    switch(level){
+    case Loose:
+        {
+            if(abs(eta)<=3.0 ) return jetID_barel_loose;
+            if(abs(eta)> 3.0 ) return jetID_foaward;
+            
+        }break;
+    case Tight:
+        {
+            if(abs(eta)<=3.0 ) return jetID_barel_tight;
+            if(abs(eta)> 3.0 ) return jetID_foaward;
+        }break;
+    default:
+        {
+            std::cout << "error:: wrong level !!" << std::endl;
+        }
+        break;
+    }
+    return 0;
+    
+}
+
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil
