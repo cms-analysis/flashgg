@@ -54,6 +54,13 @@ class MicroAODCustomize(object):
                               VarParsing.VarParsing.multiplicity.singleton,
                               VarParsing.VarParsing.varType.int,
                                'puppi')
+        self.options.register ('bunchSpacing',
+                               25,
+                               VarParsing.VarParsing.multiplicity.singleton,
+                               VarParsing.VarParsing.varType.int,
+                               'bunchSpacing'
+                               )
+
 
         self.parsed_ = False
 
@@ -110,10 +117,20 @@ class MicroAODCustomize(object):
             self.customizeFileNames(process)
         if self.timing == 1:
             self.customizeTiming(process)
+        if self.bunchSpacing == 25:
+            pass #default
+        elif self.bunchSpacing == 50:
+            self.customize50ns(process)
+        else:
+            raise Exception,"Only bunchSpacing=25 and bunchSpacing=50 are supported"
             
     # signal specific customization
     def customizeSignal(self,process):
         process.flashggGenPhotonsExtra.defaultType = 1
+
+        # Default should be the right name for all signals
+        process.load("flashgg/MicroAOD/flashggPDFWeightObject_cfi")
+        process.p *= process.flashggPDFWeightObject
         
     # background specific customization
     def customizeBackground(self,process):
@@ -197,6 +214,11 @@ class MicroAODCustomize(object):
             path.remove(process.flashggVertexMapForPUPPI)
             path.remove(process.flashggFinalPuppiJets)
         process.out.outputCommands.append('drop *_flashggFinalPuppiJets_*_*')
+
+    def customize50ns(self,process):
+        process.flashggPhotons.photonIdMVAweightfile_EB = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_Spring15_50ns_barrel.xml")
+        process.flashggPhotons.photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_Spring15_50ns_endcap.xml")
+
 
 # customization object
 customize = MicroAODCustomize()

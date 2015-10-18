@@ -52,6 +52,7 @@ if ${SETUP_REMOTES} ; then
   git remote add kmondal https://github.com/kmondal/flashgg
   git remote add ldcorpe https://github.com/ldcorpe/flashgg
   git remote add malcles https://github.com/malcles/flashgg
+  git remote add martinamalberti https://github.com/martinamalberti/flashgg
   git remote add matteosan1 https://github.com/matteosan1/flashgg
   git remote add mdonega https://github.com/mdonega/flashgg
   git remote add mmachet https://github.com/mmachet/flashgg
@@ -90,8 +91,12 @@ git cms-merge-topic sethzenz:topic-weights-count-74X
 # PUPPI is automagically in the release since 7_4_11 and 7_5_2, but we still need Multi-PUPPI
 echo "Setting up PUPPI..."
 git cms-addpkg CommonTools/PileupAlgos
-#git cms-merge-topic yhaddad:topic-puppi-flashgg-74X
 git cms-merge-topic sethzenz:topic-puppi-7_4_12 
+echo
+
+echo "Modifying FastjetJetProducer to avoid wasting time on empty collections..."
+git cms-addpkg RecoJets/JetProducers
+git cms-merge-topic sethzenz:topic-jetprod-skipempty
 echo
 
 echo "Setting up Conversion tools for pat electron..."

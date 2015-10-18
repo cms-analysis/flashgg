@@ -11,6 +11,7 @@
 #include "TTree.h"
 #include "RooWorkspace.h"
 #include "RooDataSet.h"
+#include "RooDataHist.h"
 #include "RooArgSet.h"
 #include "RooRealVar.h"
 
@@ -97,6 +98,7 @@ namespace flashgg {
         int n_cand_;
         float weight_;
         RooArgSet rooVars_;
+        RooArgSet rooVarsBinned_;
         RooAbsData *dataset_;
         TTree *tree_;
         GlobalVariablesDumper *globalVarsDumper_;
@@ -104,11 +106,12 @@ namespace flashgg {
         std::vector<std::shared_ptr<wrapped_functor_type> > functors_;
         std::vector<std::shared_ptr<wrapped_stepwise_functor_type> > stepwise_functors_;
         bool hbooked_;
+        bool binnedOnly_;
     };
 
     template<class F, class O>
     CategoryDumper<F, O>::CategoryDumper( const std::string &name, const edm::ParameterSet &cfg, GlobalVariablesDumper *dumper ):
-        dataset_( 0 ), tree_( 0 ), globalVarsDumper_( dumper ), hbooked_( false )
+        dataset_( 0 ), tree_( 0 ), globalVarsDumper_( dumper ), hbooked_( false ), binnedOnly_ (false)
     {
         using namespace std;
         name_ = name;
@@ -116,6 +119,11 @@ namespace flashgg {
         if( cfg.existsAs<vector<string> >( "dumpOnly" ) ) {
             dumpOnly_ = cfg.getParameter<vector<string> >( "dumpOnly" );
         }
+        
+        if( cfg.existsAs<bool >( "binnedOnly" ) ) {
+            binnedOnly_ = cfg.getParameter<bool >( "binnedOnly" );
+        }
+        
         auto variables = cfg.getParameter<vector<edm::ParameterSet> >( "variables" );
         for( auto &var : variables ) {
             auto nbins = var.getUntrackedParameter<int>( "nbins", 0 );
@@ -248,7 +256,7 @@ namespace flashgg {
     template<class F, class O>
     void CategoryDumper<F, O>::bookRooDataset( RooWorkspace &ws, const char *weightVar, const std::map<std::string, std::string> &replacements )
     {
-        rooVars_.add( *ws.var( weightVar ) );
+        rooVars_.add( *ws.var( weightVar ) ); 
 
         for( size_t iv = 0; iv < names_.size(); ++iv ) {
             auto &name = names_[iv];
@@ -258,61 +266,71 @@ namespace flashgg {
             auto &vmax = std::get<4>( var );
             RooRealVar &rooVar = dynamic_cast<RooRealVar &>( *ws.factory( Form( "%s[0.]", name.c_str() ) ) );
             rooVar.setConstant( false );
-            if( nbins >= 0 ) {
+            if(binnedOnly_ && (nbins==0)){
+                    throw cms::Exception( "Dumper Binning" ) << "One or more variable which is to be dumped in a RooDataHist has not been allocated any binning options. Please specify these in your dumper configuration using the format variable[nBins,min,max] := variable definition ";
+            }
+            if( nbins >= 0 ) { 
                 rooVar.setMin( vmin );
                 rooVar.setMax( vmax );
                 rooVar.setBins( nbins );
             }
             rooVars_.add( rooVar, true );
+            rooVarsBinned_.add( rooVar, true ); //all the same vars except weight
         }
         /// globalVarsDumper_.bookRooVars(ws,rooVars_,replacements);
-        /// if( ! binnedOnly_ ) {
         RooDataSet dset( formatString( name_, replacements ).c_str(), formatString( name_, replacements ).c_str(), rooVars_, weightVar );
-        ws.import( dset );
-        /// }
-        /// if( binned_ ) { FIXME implement binned datasets handling
-        /// 	ws.import( RooDataHist(formatString(name_,replacements),formatString(name_,replacements),rooVars_,weightVar) );
-        /// }
+        RooDataHist dhist(formatString(name_,replacements).c_str(),formatString(name_,replacements).c_str(),rooVarsBinned_,dset);
+        if( ! binnedOnly_ ) {
+            ws.import( dset );
+        }
+        if( binnedOnly_ ) {
+            ws.import( dhist );
+        }
         dataset_ = ws.data( name_.c_str() );
     }
 
     template<class F, class O>
-    void CategoryDumper<F, O>::fill( const object_type &obj, double weight, int n_cand )
-    {
-        n_cand_ = n_cand;
-        weight_ = weight;
+void CategoryDumper<F, O>::fill( const object_type &obj, double weight, int n_cand )
+{
+    n_cand_ = n_cand;
+    weight_ = weight;
+    if( dataset_ && (!binnedOnly_) ) {
+        // don't fill RooDataHists with weight variable, only RooDatSets
+        dynamic_cast<RooRealVar &>( rooVars_["weight"] ).setVal( weight_ );
+    }
+    // for( auto & var : variables_ ) {
+    for( size_t ivar = 0; ivar < names_.size(); ++ivar ) {
+        auto name = names_[ivar].c_str();
+        auto &var = variables_[ivar];
+        auto &val = std::get<0>( var );
+        val = ( *std::get<1>( var ) )( obj );
         if( dataset_ ) {
-            dynamic_cast<RooRealVar &>( rooVars_["weight"] ).setVal( weight_ );
+            if (!binnedOnly_)  dynamic_cast<RooRealVar &>( rooVars_[name] ).setVal( val );
+            if (binnedOnly_)   dynamic_cast<RooRealVar &>( rooVarsBinned_[name] ).setVal( val );
         }
-        // for( auto & var : variables_ ) {
-        for( size_t ivar = 0; ivar < names_.size(); ++ivar ) {
-            auto name = names_[ivar].c_str();
-            auto &var = variables_[ivar];
-            auto &val = std::get<0>( var );
-            val = ( *std::get<1>( var ) )( obj );
-            if( dataset_ ) {
-                dynamic_cast<RooRealVar &>( rooVars_[name] ).setVal( val );
-            }
-        }
-        if( tree_ ) { tree_->Fill(); }
-        if( dataset_ ) { dataset_->add( rooVars_, weight_ ); }
-        if( hbooked_ ) {
-            for( auto &histo : histograms_ ) {
-                auto &th1 = *std::get<5>( histo );
-                auto xv = std::get<1>( histo );
-                auto yv = std::get<3>( histo );
-                float xval = ( xv >= 0 ? std::get<0>( variables_[xv] ) : globalVarsDumper_->valueOf( -xv - 2 ) );
-                if( yv != -1 ) {
-                    float yval = ( yv >= 0 ? std::get<0>( variables_[yv] ) : globalVarsDumper_->valueOf( -yv - 2 ) );
-                    // dynamic_cast<TH2 &>( th1 ).Fill( std::get<0>( variables_[xv] ), std::get<0>( variables_[yv] ), weight_ );
-                    dynamic_cast<TH2 &>( th1 ).Fill( xval, yval, weight_ );
-                } else {
-                    /// th1.Fill( std::get<0>( variables_[xv] ), weight_ );
-                    th1.Fill( xval, weight_ );
-                }
+    }
+    if( tree_ ) { tree_->Fill(); }
+    if( dataset_ ) {
+        if (!binnedOnly_) dataset_->add( rooVars_, weight_ );
+        if (binnedOnly_)  dataset_->add( rooVarsBinned_, weight_ );
+    }
+    if( hbooked_ ) {
+        for( auto &histo : histograms_ ) {
+            auto &th1 = *std::get<5>( histo );
+            auto xv = std::get<1>( histo );
+            auto yv = std::get<3>( histo );
+            float xval = ( xv >= 0 ? std::get<0>( variables_[xv] ) : globalVarsDumper_->valueOf( -xv - 2 ) );
+            if( yv != -1 ) {
+                float yval = ( yv >= 0 ? std::get<0>( variables_[yv] ) : globalVarsDumper_->valueOf( -yv - 2 ) );
+                // dynamic_cast<TH2 &>( th1 ).Fill( std::get<0>( variables_[xv] ), std::get<0>( variables_[yv] ), weight_ );
+                dynamic_cast<TH2 &>( th1 ).Fill( xval, yval, weight_ );
+            } else {
+                /// th1.Fill( std::get<0>( variables_[xv] ), weight_ );
+                th1.Fill( xval, weight_ );
             }
         }
     }
+}
 
 }
 

@@ -18,17 +18,6 @@ PhotonIdUtils::PhotonIdUtils( OverlapRemovalAlgo *algo ) :
 
 PhotonIdUtils::~PhotonIdUtils()
 {
-    // These delete commands caused an unpredictable segfault,
-    // because phoIdMva was pointing to the same place as either phoIdMva_2012_EB_ or phoIdMva_2012_EE_.
-    // So something got deleted twice, which is not allowed and can cause memory issues.
-    // Replaced with shared_ptr that do not have this problem:
-    // they keep count internally and delete their memory automagically when they go out of scope.
-    //    delete phoIdMva;
-    //    delete phoIdMva_2012_EB_;
-    //    delete phoIdMva_2012_EE_;
-    //    phoIdMva = 0;
-    //    phoIdMva_2012_EB_ = 0;
-    //    phoIdMva_2012_EE_ = 0;
 };
 
 // *****************************************************************************************************************
@@ -216,46 +205,44 @@ float PhotonIdUtils::pfCaloIso( const edm::Ptr<pat::Photon> &photon,
 void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfilenameEE )
 {
 
-    //  cout << " photonId MVA weights for EB set from file: " << xmlfilenameEB << endl;
-    //  cout << " photonId MVA weights for EE set from file: " << xmlfilenameEE << endl;
-    // **** bdt 2012 EB ****
+    // **** bdt 2015 EB ****
 
     string mvamethod = "BDT";
 
-    phoIdMva_2012_EB_ = make_shared<TMVA::Reader>( "!Color:Silent" );
+    phoIdMva_EB_ = make_shared<TMVA::Reader>( "!Color:Silent" );
 
-    phoIdMva_2012_EB_->AddVariable( "ph.scrawe", &phoIdMva_SCRawE_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.r9",                &phoIdMva_R9_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.sigietaieta",       &phoIdMva_covIEtaIEta_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.scetawidth",        &phoIdMva_EtaWidth_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.scphiwidth",        &phoIdMva_PhiWidth_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.idmva_CoviEtaiPhi", &phoIdMva_covIEtaIPhi_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.idmva_s4ratio",     &phoIdMva_S4_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.idmva_GammaIso",    &phoIdMva_pfPhoIso03_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.idmva_ChargedIso_selvtx",   &phoIdMva_pfChgIso03_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.idmva_ChargedIso_worstvtx", &phoIdMva_pfChgIso03worst_ );
-    phoIdMva_2012_EB_->AddVariable( "ph.sceta",             &phoIdMva_ScEta_ );
-    phoIdMva_2012_EB_->AddVariable( "rho",                  &phoIdMva_rho_ );
-    phoIdMva_2012_EB_->BookMVA( mvamethod.c_str(), xmlfilenameEB );
+    phoIdMva_EB_->AddVariable( "SCRawE", &phoIdMva_SCRawE_ );
+    phoIdMva_EB_->AddVariable( "r9",                &phoIdMva_R9_ );
+    phoIdMva_EB_->AddVariable( "sigmaIetaIeta",       &phoIdMva_covIEtaIEta_ );
+    phoIdMva_EB_->AddVariable( "etaWidth",        &phoIdMva_EtaWidth_ );
+    phoIdMva_EB_->AddVariable( "phiWidth",        &phoIdMva_PhiWidth_ );
+    phoIdMva_EB_->AddVariable( "covIEtaIPhi", &phoIdMva_covIEtaIPhi_ );
+    phoIdMva_EB_->AddVariable( "s4",     &phoIdMva_S4_ );
+    phoIdMva_EB_->AddVariable( "phoIso03",    &phoIdMva_pfPhoIso03_ );
+    phoIdMva_EB_->AddVariable( "chgIsoWrtChosenVtx",   &phoIdMva_pfChgIso03_ );
+    phoIdMva_EB_->AddVariable( "chgIsoWrtWorstVtx", &phoIdMva_pfChgIso03worst_ );
+    phoIdMva_EB_->AddVariable( "scEta",             &phoIdMva_ScEta_ );
+    phoIdMva_EB_->AddVariable( "rho",                  &phoIdMva_rho_ );
+    phoIdMva_EB_->BookMVA( mvamethod.c_str(), xmlfilenameEB );
 
-    // **** bdt 2012 EE ****
+    // **** bdt 2015 EE ****
 
-    phoIdMva_2012_EE_ = make_shared<TMVA::Reader>( "!Color:Silent" );
+    phoIdMva_EE_ = make_shared<TMVA::Reader>( "!Color:Silent" );
 
-    phoIdMva_2012_EE_->AddVariable( "ph.scrawe", &phoIdMva_SCRawE_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.r9",                &phoIdMva_R9_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.sigietaieta",       &phoIdMva_covIEtaIEta_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.scetawidth",        &phoIdMva_EtaWidth_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.scphiwidth",        &phoIdMva_PhiWidth_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.idmva_CoviEtaiPhi", &phoIdMva_covIEtaIPhi_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.idmva_s4ratio",     &phoIdMva_S4_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.idmva_GammaIso",    &phoIdMva_pfPhoIso03_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.idmva_ChargedIso_selvtx",   &phoIdMva_pfChgIso03_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.idmva_ChargedIso_worstvtx", &phoIdMva_pfChgIso03worst_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.sceta",             &phoIdMva_ScEta_ );
-    phoIdMva_2012_EE_->AddVariable( "rho",                  &phoIdMva_rho_ );
-    phoIdMva_2012_EE_->AddVariable( "ph.idmva_PsEffWidthSigmaRR",   &phoIdMva_ESEffSigmaRR_ );
-    phoIdMva_2012_EE_->BookMVA( mvamethod.c_str(), xmlfilenameEE );
+    phoIdMva_EE_->AddVariable( "SCRawE", &phoIdMva_SCRawE_ );
+    phoIdMva_EE_->AddVariable( "r9",                &phoIdMva_R9_ );
+    phoIdMva_EE_->AddVariable( "sigmaIetaIeta",       &phoIdMva_covIEtaIEta_ );
+    phoIdMva_EE_->AddVariable( "etaWidth",        &phoIdMva_EtaWidth_ );
+    phoIdMva_EE_->AddVariable( "phiWidth",        &phoIdMva_PhiWidth_ );
+    phoIdMva_EE_->AddVariable( "covIEtaIPhi", &phoIdMva_covIEtaIPhi_ );
+    phoIdMva_EE_->AddVariable( "s4",     &phoIdMva_S4_ );
+    phoIdMva_EE_->AddVariable( "phoIso03",    &phoIdMva_pfPhoIso03_ );
+    phoIdMva_EE_->AddVariable( "chgIsoWrtChosenVtx",   &phoIdMva_pfChgIso03_ );
+    phoIdMva_EE_->AddVariable( "chgIsoWrtWorstVtx", &phoIdMva_pfChgIso03worst_ );
+    phoIdMva_EE_->AddVariable( "scEta",             &phoIdMva_ScEta_ );
+    phoIdMva_EE_->AddVariable( "rho",                  &phoIdMva_rho_ );
+    phoIdMva_EE_->AddVariable( "esEffSigmaRR",   &phoIdMva_ESEffSigmaRR_ );
+    phoIdMva_EE_->BookMVA( mvamethod.c_str(), xmlfilenameEE );
 }
 
 
@@ -280,8 +267,8 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
     phoIdMva_ESEffSigmaRR_    = photon.esEffSigmaRR();
 
 
-    if( photon.isEB() )      { phoIdMva = phoIdMva_2012_EB_; }
-    else if( photon.isEE() ) { phoIdMva = phoIdMva_2012_EE_; }
+    if( photon.isEB() )      { phoIdMva = phoIdMva_EB_; }
+    else if( photon.isEE() ) { phoIdMva = phoIdMva_EE_; }
 
     float mvavalue = phoIdMva->EvaluateMVA( "BDT" );
     return mvavalue;
