@@ -172,6 +172,23 @@ else:
     bkg  = options.samples["bkg"]
     data = options.samples["data"]
 
+if options.lumiMask: options.lumiMask = os.path.abspath(options.lumiMask)
+lumiMasks = {}
+datasamples = []
+for sample in data:
+    if type(sample) == list: 
+        if len(sample) != 2: 
+            print "ERROR: I think that you tried to specify a sample-specific lumi mask, but the format is incorrect."
+            print "       Valid format is [<sample_name>,<lumi_mask>]"
+            print "%s" % sample
+            sys.exit(-1)
+        datasamples.append(sample[0])
+        lumiMasks[sample[0]] = os.path.abspath(sample[1])
+    else:
+        datasamples.append(sample)
+data=datasamples
+
+
 samples = sig+bkg+data
 
 pilotSamples=[]
@@ -302,9 +319,10 @@ if options.createCrabConfig:
                 outfile.write(oline)
                 
         if sample in data:
-            if options.lumiMask:
+            lumiMask = lumiMasks.get(sample,options.lumiMask)
+            if lumiMask:
                 for outfile in outfiles:
-                    outfile.write('config.Data.lumiMask = "%s"\n' % (options.lumiMask))
+                    outfile.write('config.Data.lumiMask = "%s"\n' % (lumiMask))
             else:
                 print 
                 print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"

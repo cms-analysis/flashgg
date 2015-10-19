@@ -114,6 +114,16 @@ namespace flashgg {
             extraCaloIsolations_.push_back( p );
         }
 
+        if( iConfig.exists("extraIsolations") ) {
+            std::vector<ParameterSet> extraIsolationPlugins = iConfig.getParameter<std::vector<ParameterSet> >("extraIsolations");
+            extraIsoAlgos_.resize(extraIsolationPlugins.size());
+            for(size_t ip=0; ip<extraIsolationPlugins.size(); ++ip) {
+                auto & plugin = extraIsolationPlugins[ip];
+                auto className = plugin.getParameter<std::string>("algo");
+                extraIsoAlgos_[ip].reset( FlashggIsolationAlgoFactory::get()->create(className,plugin) );
+            }
+        }
+
         useNonZsLazyTools_ = iConfig.getParameter<bool>( "useNonZsLazyTools" );
         recomputeNonZsClusterShapes_ = iConfig.getParameter<bool>( "recomputeNonZsClusterShapes" );
         addRechitFlags_ = iConfig.getParameter<bool>( "addRechitFlags" );
