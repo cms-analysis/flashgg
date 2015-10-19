@@ -2,8 +2,8 @@
 <class name="flashgg::WeightedObject" ClassVersion="10">
   <version ClassVersion="10" checksum="1340095011"/>
 </class>
-<class name="flashgg::PDFWeightObject" ClassVersion="10">
-  <version ClassVersion="10" checksum="92077144"/>
+<class name="flashgg::PDFWeightObject" ClassVersion="11">
+  <version ClassVersion="11" checksum="103726048"/>
 </class>
 <class name="edm::Ptr<flashgg::PDFWeightObject>"/>
 <class name="std::vector<flashgg::PDFWeightObject>"/>
