@@ -83,7 +83,54 @@ def addVariables(vpset,variables):
             addVariable(vpset,var)
         else:
             addVariable(vpset,*var)
+
+# -----------------------------------------------------------------------
+def parseHistoDef(histo):
+    
+    hvars,hdef = histo.split(">>")
+    if "[" in hdef:
+        seps = "[]"
+    else:
+        seps = "()"
         
+    name, hdef = hdef.split(seps[0])
+    if name == "":
+        raise Exception("Empty name in histogram declaration %s." % histo)
+    
+    if not hdef.endswith(seps[1]):
+        raise Exception("Invalid histogram definition %s.\nBinning should be specified as either [xb1,xb2..xbN:yb1,yb2..ynB] or (nbx,x1,x2:nby,y1,y2)" % histo)
+    hdef = hdef.rstrip(seps[1])
+    
+    nxbins,nybins = 0,0
+    xvar,yvar = None,None
+    xbins,ybins = [],[]
+    
+    if ":" in hvars:
+        xvar, yvar = hvars.split(":")
+        xbins, ybins = hdef.lstrip("[").rstrip("]").lstrip("(").rstrip(")").split(":")
+    else:
+        xvar, yvar = hvars,None
+        xbins, ybins = hdef,None
+        
+    xbins = [ float(b) for b in xbins.lstrip(" ").rstrip(" ").split(",")  if b != ""]
+    if ybins:
+        ybins = [ float(b) for b in ybins.lstrip(" ").rstrip(" ").split(",")  if b != ""]
+    if seps == "[]":
+        nxbins  = 0
+        nybins  = 0
+    else:
+        if len(xbins) != 3:
+            raise Exception("Invalid histogram definition %s. Expecting only three items for x binning definition"% histo)
+        if ybins and len(ybins) != 3:
+            raise Exception("Invalid histogram definition %s. Expecting only three items for y binning definition"% histo)
+        nxbins = int(xbins[0]) 
+        xbins = xbins[1:3]
+        if ybins:
+            nybins = int(ybins[0]) 
+            ybins = ybins[1:3]
+            
+    return name, xvar, nxbins, xbins, yvar, nybins, yvar
+
 # -----------------------------------------------------------------------
 def addHistogram(vpset,histo):
     

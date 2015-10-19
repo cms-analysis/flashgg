@@ -1,17 +1,12 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
-#pylint: disable=C0301,C0103,R0914,R0903
+#pylint: disable-msg=C0301,C0103,R0914,R0903
 
 """
 DAS command line tool
 """
-from __future__ import print_function
 __author__ = "Valentin Kuznetsov"
 
-# system modules
-import os
 import sys
-import pwd
 if  sys.version_info < (2, 6):
     raise Exception("DAS requires python 2.6 or greater")
 
@@ -27,7 +22,6 @@ import httplib
 import cookielib
 from   optparse import OptionParser
 from   math import log
-from   types import GeneratorType
 
 # define exit codes according to Linux sysexists.h
 EX_OK           = 0  # successful termination
@@ -75,15 +69,6 @@ class HTTPSClientAuthHandler(urllib2.HTTPSHandler):
                                                 cert_file=self.cert)
         return httplib.HTTPSConnection(host)
 
-def x509():
-    "Helper function to get x509 either from env or tmp file"
-    x509 = os.environ.get('X509_USER_PROXY', '')
-    if  not x509:
-        x509 = '/tmp/x509up_u%s' % pwd.getpwuid( os.getuid() ).pw_uid
-        if  not os.path.isfile(x509):
-            return ''
-    return x509
-
 class DASOptionParser: 
     """
     DAS cache client option parser
@@ -101,9 +86,6 @@ class DASOptionParser:
         msg  = "host name of DAS cache server, default is https://cmsweb.cern.ch"
         self.parser.add_option("--host", action="store", type="string", 
                        default='https://cmsweb.cern.ch', dest="host", help=msg)
-        msg  = "specify DBS instance to be queried default is global"
-        self.parser.add_option("--instance", action="store", type="string", 
-                       default='prod/global', dest="instance", help=msg)
         msg  = "start index for returned result set, aka pagination,"
         msg += " use w/ limit (default is 0)"
         self.parser.add_option("--idx", action="store", type="int", 
@@ -118,12 +100,12 @@ class DASOptionParser:
         msg  = 'query waiting threshold in sec, default is 5 minutes'
         self.parser.add_option("--threshold", action="store", type="int",
                                default=300, dest="threshold", help=msg)
-        msg  = 'specify private key file name, default $X509_USER_PROXY'
+        msg  = 'specify private key file name'
         self.parser.add_option("--key", action="store", type="string",
-                               default=x509(), dest="ckey", help=msg)
-        msg  = 'specify private certificate file name, default $X509_USER_PROXY'
+                               default="", dest="ckey", help=msg)
+        msg  = 'specify private certificate file name'
         self.parser.add_option("--cert", action="store", type="string",
-                               default=x509(), dest="cert", help=msg)
+                               default="", dest="cert", help=msg)
         msg  = 'specify number of retries upon busy DAS server message'
         self.parser.add_option("--retry", action="store", type="string",
                                default=0, dest="retry", help=msg)
@@ -139,9 +121,6 @@ class DASOptionParser:
         self.parser.add_option("--cache", action="store", type="string",
                                default=None, dest="cache", help=msg)
 
-        msg = 'List DAS key/attributes, use "all" or specific DAS key value, e.g. site'
-        self.parser.add_option("--list-attributes", action="store", type="string",
-                               default="", dest="keys_attrs", help=msg)
     def get_opt(self):
         """
         Returns parse list of options
@@ -205,39 +184,38 @@ def unique_filter(rows):
         old_row = row
     yield row
 
-def extract_value(row, key):
-    """Generator which extracts row[key] value"""
-    if  isinstance(row, dict) and key in row:
-        if  key == 'creation_time':
-            row = convert_time(row[key])
-        elif  key == 'size':
-            row = size_format(row[key], base)
-        else:
-            row = row[key]
-        yield row
-    if  isinstance(row, list) or isinstance(row, GeneratorType):
-        for item in row:
-            for vvv in extract_value(item, key):
-                yield vvv
-
 def get_value(data, filters, base=10):
     """Filter data from a row for given list of filters"""
     for ftr in filters:
         if  ftr.find('>') != -1 or ftr.find('<') != -1 or ftr.find('=') != -1:
             continue
         row = dict(data)
-        values = []
-        keys = ftr.split('.')
-        for key in keys:
-            val = [v for v in extract_value(row, key)]
-            if  key == keys[-1]: # we collect all values at last key
-                values += [json.dumps(i) for i in val]
-            else:
-                row = val
+        values = set()
+        for key in ftr.split('.'):
+            if  isinstance(row, dict) and key in row:
+                if  key == 'creation_time':
+                    row = convert_time(row[key])
+                elif  key == 'size':
+                    row = size_format(row[key], base)
+                else:
+                    row = row[key]
+            if  isinstance(row, list):
+                for item in row:
+                    if  isinstance(item, dict) and key in item:
+                        if  key == 'creation_time':
+                            row = convert_time(item[key])
+                        elif  key == 'size':
+                            row = size_format(item[key], base)
+                        else:
+                            row = item[key]
+                        values.add(row)
+                    else:
+                        if  isinstance(item, basestring):
+                            values.add(item)
         if  len(values) == 1:
-            yield values[0]
+            yield str(values.pop())
         else:
-            yield values
+            yield str(list(values))
 
 def fullpath(path):
     "Expand path to full path"
@@ -247,10 +225,10 @@ def fullpath(path):
         path = os.path.join(os.environ['HOME'], path)
     return path
 
-def get_data(host, query, idx, limit, debug, instance, threshold=300, ckey=None,
+def get_data(host, query, idx, limit, debug, threshold=300, ckey=None,
         cert=None, das_headers=True):
     """Contact DAS server and retrieve data for given DAS query"""
-    params  = {'input':query, 'idx':idx, 'limit':limit, 'instance': instance}
+    params  = {'input':query, 'idx':idx, 'limit':limit}
     path    = '/das/cache'
     pat     = re.compile('http[s]{0,1}://')
     if  not pat.match(host):
@@ -335,95 +313,54 @@ def print_summary(rec):
         maxlen = max([len(k) for k in keys])
         for key, val in row.items():
             pkey = '%s%s' % (key, ' '*(maxlen-len(key)))
-            print('%s: %s' % (pkey, val))
-        print()
+            print '%s: %s' % (pkey, val)
+        print
 
 def print_from_cache(cache, query):
     "print the list of files reading it from cache"
     data = open(cache).read()
     jsondict = json.loads(data)
     if query in jsondict:
-      print("\n".join(jsondict[query]))
+      print "\n".join(jsondict[query])
       exit(0)
     exit(1)
 
-def keys_attrs(lkey, oformat, host, ckey, cert, debug=0):
-    "Contact host for list of key/attributes pairs"
-    url = '%s/das/keys?view=json' % host
-    headers = {"Accept": "application/json", "User-Agent": DAS_CLIENT}
-    req  = urllib2.Request(url=url, headers=headers)
-    if  ckey and cert:
-        ckey = fullpath(ckey)
-        cert = fullpath(cert)
-        http_hdlr  = HTTPSClientAuthHandler(ckey, cert, debug)
-    else:
-        http_hdlr  = urllib2.HTTPHandler(debuglevel=debug)
-    proxy_handler  = urllib2.ProxyHandler({})
-    cookie_jar     = cookielib.CookieJar()
-    cookie_handler = urllib2.HTTPCookieProcessor(cookie_jar)
-    opener = urllib2.build_opener(http_hdlr, proxy_handler, cookie_handler)
-    fdesc = opener.open(req)
-    data = json.load(fdesc)
-    fdesc.close()
-    if  oformat.lower() == 'json':
-        if  lkey == 'all':
-            print(json.dumps(data))
-        else:
-            print(json.dumps({lkey:data[lkey]}))
-        return
-    for key, vdict in data.items():
-        if  lkey == 'all':
-            pass
-        elif lkey != key:
-            continue
-        print()
-        print("DAS key:", key)
-        for attr, examples in vdict.items():
-            prefix = '    '
-            print('%s%s' % (prefix, attr))
-            for item in examples:
-                print('%s%s%s' % (prefix, prefix, item))
-
 def main():
     """Main function"""
-    optmgr   = DASOptionParser()
-    opts, _  = optmgr.get_opt()
-    host     = opts.host
-    debug    = opts.verbose
-    query    = opts.query
-    idx      = opts.idx
-    instance = opts.instance
-    limit    = opts.limit
-    thr      = opts.threshold
-    ckey     = opts.ckey
-    cert     = opts.cert
-    base     = opts.base
-    if  opts.keys_attrs:
-        keys_attrs(opts.keys_attrs, opts.format, host, ckey, cert, debug)
-        return
+    optmgr  = DASOptionParser()
+    opts, _ = optmgr.get_opt()
+    host    = opts.host
+    debug   = opts.verbose
+    query   = opts.query
+    idx     = opts.idx
+    limit   = opts.limit
+    thr     = opts.threshold
+    ckey    = opts.ckey
+    cert    = opts.cert
+    base    = opts.base
     if  not query:
-        print('Input query is missing')
+        print 'Input query is missing'
         sys.exit(EX_USAGE)
     if  opts.format == 'plain':
-        jsondict = get_data(host, query, idx, limit, debug, instance, thr, ckey, cert)
+        jsondict = get_data(host, query, idx, limit, debug, thr, ckey, cert)
         cli_msg  = jsondict.get('client_message', None)
         if  cli_msg:
-            print("DAS CLIENT WARNING: %s" % cli_msg)
+            print "DAS CLIENT WARNING: %s" % cli_msg
         if  'status' not in jsondict and opts.cache:
             print_from_cache(opts.cache, query)
         if  'status' not in jsondict:
-            print('DAS record without status field:\n%s' % jsondict)
+            print 'DAS record without status field:\n%s' % jsondict
             sys.exit(EX_PROTOCOL)
         if  jsondict["status"] != 'ok' and opts.cache:
             print_from_cache(opts.cache, query)
         if  jsondict['status'] != 'ok':
-            print("status: %s, reason: %s" \
-                % (jsondict.get('status'), jsondict.get('reason', 'N/A')))
+            print "status: %s, reason: %s" \
+                % (jsondict.get('status'), jsondict.get('reason', 'N/A'))
             if  opts.retry:
                 found = False
                 for attempt in xrange(1, int(opts.retry)):
                     interval = log(attempt)**5
-                    print("Retry in %5.3f sec" % interval)
+                    print "Retry in %5.3f sec" % interval
                     time.sleep(interval)
                     data = get_data(host, query, idx, limit, debug, thr, ckey, cert)
                     jsondict = json.loads(data)
@@ -434,7 +371,7 @@ def main():
                 sys.exit(EX_TEMPFAIL)
             if  not found:
                 sys.exit(EX_TEMPFAIL)
-        nres = jsondict.get('nresults', 0)
+        nres = jsondict['nresults']
         if  not limit:
             drange = '%s' % nres
         else:
@@ -442,8 +379,8 @@ def main():
         if  opts.limit:
             msg  = "\nShowing %s results" % drange
             msg += ", for more results use --idx/--limit options\n"
-            print(msg)
-        mongo_query = jsondict.get('mongo_query', {})
+            print msg
+        mongo_query = jsondict['mongo_query']
         unique  = False
         fdict   = mongo_query.get('filters', {})
         filters = fdict.get('grep', [])
@@ -454,13 +391,13 @@ def main():
             data = jsondict['data']
             if  isinstance(data, dict):
                 rows = [r for r in get_value(data, filters, base)]
-                print(' '.join(rows))
+                print ' '.join(rows)
             elif isinstance(data, list):
                 if  unique:
                     data = unique_filter(data)
                 for row in data:
                     rows = [r for r in get_value(row, filters, base)]
-                    print(' '.join(rows))
+                    print ' '.join(rows)
             else:
                 print(json.dumps(jsondict))
         elif aggregators:
@@ -473,8 +410,8 @@ def main():
                     val = size_format(row['result']['value'], base)
                 else:
                     val = row['result']['value']
-                print('%s(%s)=%s' \
-                % (row['function'], row['key'], val))
+                print '%s(%s)=%s' \
+                % (row['function'], row['key'], val)
         else:
             data = jsondict['data']
             if  isinstance(data, list):
@@ -488,19 +425,19 @@ def main():
                     val = prim_value(row)
                     if  not opts.limit:
                         if  val != old:
-                            print(val)
+                            print val
                             old = val
                     else:
-                        print(val)
+                        print val
                 if  val != old and not opts.limit:
-                    print(val)
+                    print val
             elif isinstance(data, dict):
-                print(prim_value(data))
+                print prim_value(data)
             else:
-                print(data)
+                print data
     else:
         jsondict = get_data(\
-                host, query, idx, limit, debug, instance, thr, ckey, cert)
+                host, query, idx, limit, debug, thr, ckey, cert)
         print(json.dumps(jsondict))
 
 #

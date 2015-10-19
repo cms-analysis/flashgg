@@ -134,7 +134,7 @@ namespace flashgg {
         float const phoIdMvaDWrtVtx( const edm::Ptr<reco::Vertex> &vtx, bool lazy = false ) const { return findVertexFloat( vtx, phoIdMvaD_, lazy ); }; // if lazy flag is true only compare key (needed since fwlite does not fill provenance info)
 
         void setMatchedGenPhoton( const edm::Ptr<pat::PackedGenParticle> pgp ) { addUserCand( "matchedGenPhoton", pgp ); };
-        const pat::PackedGenParticle *const matchedGenPhoton() const { return dynamic_cast<const pat::PackedGenParticle *>( userCand( "matchedGenPhoton" ).get() ); };
+        const pat::PackedGenParticle * matchedGenPhoton() const { return dynamic_cast<const pat::PackedGenParticle *>( userCand( "matchedGenPhoton" ).get() ); };
         bool hasMatchedGenPhoton() const { return hasUserCand( "matchedGenPhoton" ); };
 
         void setGenMatchType( mcMatch_t typ ) { addUserInt( "genMatchType", ( int )typ ); };
@@ -156,7 +156,7 @@ namespace flashgg {
         };
         void setStatusFlags( int32_t st) { return addUserInt("rechitStatus",st); };
         int32_t statusFlags() { return  (hasUserInt("rechitStatus")?userInt("rechitStatus"):-1); };
-        bool checkStatusFlag( rechitSummaryFlags_t ibit) { return (hasUserInt("rechitStatus")?userInt("rechitStatus")&(0x1<<ibit):0); };
+        bool checkStatusFlag( rechitSummaryFlags_t ibit) const { return (hasUserInt("rechitStatus")?userInt("rechitStatus")&(0x1<<ibit):0); };
 
     private:
         void setEnergyAtStep( std::string key, float val ); // updateEnergy should be used from outside the class to access this
