@@ -156,7 +156,7 @@ namespace flashgg {
         };
         void setStatusFlags( int32_t st) { return addUserInt("rechitStatus",st); };
         int32_t statusFlags() { return  (hasUserInt("rechitStatus")?userInt("rechitStatus"):-1); };
-        bool checkStatusFlag( rechitSummaryFlags_t ibit) { return (hasUserInt("rechitStatus")?userInt("rechitStatus")&(0x1<<ibit):0); };
+        bool checkStatusFlag( rechitSummaryFlags_t ibit) const { return (hasUserInt("rechitStatus")?userInt("rechitStatus")&(0x1<<ibit):0); };
 
     private:
         void setEnergyAtStep( std::string key, float val ); // updateEnergy should be used from outside the class to access this

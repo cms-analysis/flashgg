@@ -239,6 +239,7 @@ class WorkNodeJob(object):
         self.stage_patterns  = kwargs.pop("stage_patterns")
         self.tarball         = kwargs.pop("tarball",None)
         self.job_outdir      = kwargs.pop("job_outdir",None)
+        self.copy_proxy      = kwargs.pop("copy_proxy",True)
 
         self.runner = self.runner(*args,**kwargs)
         
@@ -265,12 +266,20 @@ class WorkNodeJob(object):
         script += self.runner.preamble()+"\n"
         
         # copy grid proxy over
-        if self.runner.copyProxy():
+        if self.copy_proxy and self.runner.copyProxy():
             try:
                 proxy = BatchRegistry.getProxy()
                 script += "scp -p %s .\n" % proxy
                 proxyname = os.path.basename(proxy.split(":")[1])
                 script += "export X509_USER_PROXY=$PWD/%s\n" % proxyname
+                if WorkNodeJob.nwarnings > 0:
+                    WorkNodeJob.nwarnings -= 1
+                    print 
+                    print
+                    print "WARNING: We are counting fact that the jobs will be able to scp the follwing file: %s" % proxy
+                    print "         Please make sure that ssh is properly configured."
+                    print "         Alternatively, you can copy the proxy to your home folder, set the variable X509_USER_PROXY accordingly and run with the --no-copy-proxy"
+                    print 
             except Exception, e:
                 if WorkNodeJob.nwarnings > 0:
                     WorkNodeJob.nwarnings -= 1
@@ -279,10 +288,14 @@ class WorkNodeJob(object):
         else:
             try:
                 proxy = BatchRegistry.getProxy()
-                proxyname = os.path.basename(proxy.split(":")[1])
+                proxyname = proxy.split(":")[1]
+                script += "export X509_USER_PROXY=%s\n" % proxyname
                 if WorkNodeJob.nwarnings > 0:
                     WorkNodeJob.nwarnings -= 1
-                    print "INFO: We are counting on the path for this proxy being visible to the remote jobs:",proxy.split(":")[1]
+                    print 
+                    print
+                    print "WARNING: We are counting on the path for this proxy being visible to the remote jobs:",proxyname
+                    print 
             except Exception, e:
                 if WorkNodeJob.nwarnings > 0:
                     WorkNodeJob.nwarnings -= 1
@@ -317,7 +330,8 @@ class WorkNodeJob(object):
             
         # the user command
         script += cmd+"\n"
-
+        script += 'retval=$?\n'
+        
         if self.tarball and self.job_outdir:
             script += 'cd %s\n' % self.job_outdir
             script += 'echo\n'
@@ -326,7 +340,6 @@ class WorkNodeJob(object):
             script += 'echo "Files in ouput folder"\n'
             script += 'ls -ltr\n'
         # stage out files
-        script += 'retval=$?\n'
         script += 'if [[ $retval == 0 ]]; then\n'
         script += '    errors=""\n'
         script += '    for file in $(find -name %s); do\n' % " -or -name ".join(self.stage_patterns)
@@ -357,7 +370,7 @@ class WorkNodeJobFactory(object):
     
     # ------------------------------------------------------------------------------------------------
     def __init__(self,stage_dest,
-                 stage_cmd="cp -pv",stage_patterns=["'*.root'","'*.xml'"],job_outdir=None,runner=None,batchSystem="auto"):
+                 stage_cmd="cp -pv",stage_patterns=["'*.root'","'*.xml'"],job_outdir=None,runner=None,batchSystem="auto",copy_proxy=True):
         
         if not runner:
             self.runner = BatchRegistry.getRunner(batchSystem)
@@ -367,6 +380,7 @@ class WorkNodeJobFactory(object):
         self.stage_patterns  = stage_patterns
         self.tarball = None
         self.job_outdir      = job_outdir
+        self.copy_proxy      = copy_proxy
 
     # ------------------------------------------------------------------------------------------------
     def stageDest(self,dest):
@@ -440,6 +454,7 @@ class WorkNodeJobFactory(object):
         kwargs["stage_patterns"] = self.stage_patterns
         kwargs["tarball"]        = self.tarball
         kwargs["job_outdir"]     = self.job_outdir
+        kwargs["copy_proxy"]     = self.copy_proxy
         
         return WorkNodeJob(*args,**kwargs)
 

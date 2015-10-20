@@ -23,8 +23,7 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep *_generator_*_*",
                                                      "keep *_slimmedGenJets_*_*",
                                                      "keep *_flashggDiPhotons_*_*", # STILL NEEDED
-                                                     "keep *_addPileupInfo_*_*", # Huge - a few Validation codes use this
-                                                                                 # PileupSummaryInfos_addPileupInfo__HLT. 4602.5 1640.32
+                                                     "keep *_slimmedAddPileupInfo_*_*", # Was huge in old MiniAod - hopefully better now
                                                      "keep *GsfElectronCore*_*_*_*", # needed by at least one Tag
 
                                                      "keep *_flashggSelected*_*_*",
@@ -34,8 +33,9 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "drop *_flashggElectrons_*_*",
 
                                                      "keep *_flashggFinalJets_*_*",
-                                                     "keep *_flashggFinalPuppiJets_*_*"
-
+                                                     "keep *_flashggFinalPuppiJets_*_*",
+						     "drop floatedmValueMap_electronMVAValueMapProducer_*_*",
+						     "drop intedmValueMap_electronMVAValueMapProducer_*_*"
                                                      )
 
 # Should be included for now for ongoing studies, but to be removed some day
@@ -51,10 +51,8 @@ microAODDebugOutputCommand = cms.untracked.vstring("keep *_reducedEgamma_*_*",
                                                    )
 
 #output needed for HLT efficiency study
-microAODHLTOutputCommand = cms.untracked.vstring("keep *_flashggDiPhotonMVA_*_*",
-                                                 "keep *_l1extraParticles_Isolated_*",
+microAODHLTOutputCommand = cms.untracked.vstring("keep *_l1extraParticles_Isolated_*",
                                                  "keep *_l1extraParticles_NonIsolated_*",
-                                                 "keep *_flashggElectrons_*_*",
                                                  "keep *_selectedPatTrigger_*_*",
-                                                 "keep *_patTrigger_*_*",
+                                                 "keep *_TriggerResults_*_HLT",
                                                  )
