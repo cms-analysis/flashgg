@@ -38,13 +38,19 @@ process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("fla
 
 process.systematicsTagSequences = cms.Sequence()
 systlabels = [""]
-for r9 in ["HighR9","LowR9"]:
-    for direction in ["Up","Down"]:
-        systlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
-        for var in ["Rho","Phi"]:
-            systlabels.append("MCSmear%sEB%s%s01sigma" % (r9,var,direction))
-        for region in ["EB","EE"]:
-            systlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
+
+# import flashgg customization to check if we have signal or background
+from flashgg.MetaData.JobConfig import customize
+#print "customize.processType:",customize.processType
+# Only run systematics for signal events
+if customize.processType == "signal":
+    for r9 in ["HighR9","LowR9"]:
+        for direction in ["Up","Down"]:
+            systlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
+            for var in ["Rho","Phi"]:
+                systlabels.append("MCSmear%sEB%s%s01sigma" % (r9,var,direction))
+            for region in ["EB","EE"]:
+                systlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
 
 for systlabel in systlabels:
     if systlabel == "":
@@ -146,8 +152,6 @@ process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSyst
 
 
 
-# import flashgg customization
-from flashgg.MetaData.JobConfig import customize
 # set default options if needed
 customize.setDefault("maxEvents",-1)
 customize.setDefault("targetLumi",20e+3)
