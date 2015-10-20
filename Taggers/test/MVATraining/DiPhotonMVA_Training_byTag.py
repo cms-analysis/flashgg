@@ -43,9 +43,14 @@ process.tagDumper = createTagDumper("UntaggedTag")
 process.tagDumper.src = "flashggUntagged"
 
 process.tagDumper.splitLumiWeight=cms.untracked.bool(True)
+#process.tagDumper.throwOnUnclassified= False
 process.tagDumper.dumpTrees = True
 process.tagDumper.dumpWorkspace = False
 process.tagDumper.quietRooFit = True
+
+cfgTools.addCategory(process.tagDumper, "Reject",  "diPhoton.mass<100 || diPhoton.mass>180",
+-1 ## if nSubcat is -1 do not store anythings
+)
 
 cfgTools.addCategories(process.tagDumper,
 			[## cuts are applied in cascade
@@ -66,10 +71,10 @@ cfgTools.addCategories(process.tagDumper,
 			"mass             := diPhoton.mass",
 			"pt               := diPhoton.pt",
                         "dz               := abs(tagTruth().genPV().z-diPhoton().vtx().z)",
-                        "leadMatchType    := diPhoton.getLeadingPhoton().genMatchType()",
-                        "subleadMatchType := diPhoton.getSubLeadingPhoton().genMatchType()"
-                        "leadptgen := diPhoton.getLeadingPhoton().matchedGenPhoton().pt()",
-                        "subleadptgen := diPhoton.getSubLeadingPhoton().matbchedGenPhoton().pt()",
+                        "leadMatchType    := diPhoton.leadingPhoton().genMatchType()",
+                        "subleadMatchType := diPhoton.subLeadingPhoton().genMatchType()",
+                        "leadptgen := ?diPhoton.leadingPhoton().hasMatchedGenPhoton()?diPhoton.leadingPhoton().matchedGenPhoton().pt():0",
+                        "subleadptgen := ?diPhoton.subLeadingPhoton().hasMatchedGenPhoton()?diPhoton.subLeadingPhoton().matchedGenPhoton().pt():0",
                         "massgen := diPhoton.genP4().mass()"
 			],
 			histograms=[
