@@ -1,7 +1,16 @@
 from os import listdir,popen,access,F_OK
 
+dobig = False
+dobigsig = True
+
 filelist = {}
 bigfiles = []
+bigsigfiles = []
+
+def printAndExec(cmd):
+    print cmd
+    result = popen(cmd).read()
+    print result
 
 for fn in listdir("."):
     if fn.count(".root"):
@@ -22,6 +31,9 @@ for fnr in filelist.keys():
     print fnr,result
     assert(result[-1]+1 == len(result))
     bigfile = fnr.replace("_%i","")
+    bigfiles.append(bigfile)
+    if bigfile.count("HToGG") or bigfile.count("ttHJetToGG"):
+        bigsigfiles.append(bigfile)
     if access(bigfile,F_OK):
         print "skipping",bigfile
         continue
@@ -38,24 +50,23 @@ for fnr in filelist.keys():
                 print "skipping",mediumfile
                 continue
             cmd = "hadd_workspaces %s %s" % (mediumfile," ".join(fnr%fnn for fnn in subres[i]))
-            print cmd
-            result = popen(cmd).read()
-            print result
+            printAndExec(cmd)
             mediumlist.append(mediumfile)
         cmd = "hadd_workspaces %s %s" % (bigfile," ".join(mediumlist))    
-        print cmd
-        result = popen(cmd).read()
-        print result
+        printAndExec(cmd)
     else:    
         cmd = "hadd_workspaces %s %s" % (bigfile," ".join([fnr%fnn for fnn in result]))
-        print cmd
-        result = popen(cmd).read()
-        print result
-    bigfiles += [bigfile]
+        print AndExec(cmd)
 
 print
-cmd = "hadd_workspaces everything.root %s" % (" ".join(bigfiles))
-print cmd
-result = popen(cmd).read()
-print result
+if not access("everything.root",F_OK) and dobig:
+    cmd = "hadd_workspaces everything.root %s" % (" ".join(bigfiles))
+    printAndExec(cmd)
+else:
+    print "skipping everything.root"
 
+if not access("allsig.root",F_OK) and dobigsig:
+    cmd = "hadd_workspaces allsig.root %s" % (" ".join(bigfiles))
+    printAndExec(cmd)
+else:
+    print "skipping allsig.root"
