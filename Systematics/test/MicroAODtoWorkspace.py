@@ -41,9 +41,11 @@ systlabels = [""]
 
 # import flashgg customization to check if we have signal or background
 from flashgg.MetaData.JobConfig import customize
-#print "customize.processType:",customize.processType
+customize.parse()
+print "customize.processId:",customize.processId
 # Only run systematics for signal events
-if customize.processType == "signal":
+if customize.processId.count("h_"):
+    print "Adding systematics"
     for r9 in ["HighR9","LowR9"]:
         for direction in ["Up","Down"]:
             systlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
