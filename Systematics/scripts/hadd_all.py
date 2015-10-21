@@ -56,7 +56,7 @@ for fnr in filelist.keys():
         printAndExec(cmd)
     else:    
         cmd = "hadd_workspaces %s %s" % (bigfile," ".join([fnr%fnn for fnn in result]))
-        print AndExec(cmd)
+        printAndExec(cmd)
 
 print
 if not access("everything.root",F_OK) and dobig:
