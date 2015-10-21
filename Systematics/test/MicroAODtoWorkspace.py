@@ -44,7 +44,7 @@ from flashgg.MetaData.JobConfig import customize
 customize.parse()
 print "customize.processId:",customize.processId
 # Only run systematics for signal events
-if customize.processId.count("h_"):
+if customize.processId.count("h_") or customize.processId.count("vbf_"): # convention: ggh vbf wzh tth
     print "Adding systematics"
     for r9 in ["HighR9","LowR9"]:
         for direction in ["Up","Down"]:
@@ -53,6 +53,8 @@ if customize.processId.count("h_"):
                 systlabels.append("MCSmear%sEB%s%s01sigma" % (r9,var,direction))
             for region in ["EB","EE"]:
                 systlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
+
+print systlabels
 
 for systlabel in systlabels:
     if systlabel == "":
