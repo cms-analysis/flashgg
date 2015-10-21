@@ -177,12 +177,12 @@ namespace flashgg {
             float cos_term = TMath::Cos( p14.Phi() - p24.Phi() );
             float sech1 = 1.0 / TMath::CosH( p14.Eta() );
             float sech2 = 1.0 / TMath::CosH( p24.Eta() );
-            float tanh1 = 1.0 / TMath::TanH( p14.Phi() );
-            float tanh2 = 1.0 / TMath::TanH( p24.Phi() );
+            float tanh1 = TMath::TanH( p14.Phi() );
+            float tanh2 = TMath::TanH( p24.Phi() );
             float numerator1 = sech1 * ( sech1 * tanh2 - tanh1 * sech2 * cos_term );
             float numerator2 = sech2 * ( sech2 * tanh1 - tanh2 * sech1 * cos_term );
             float denominator = 1. - tanh1 * tanh2 - sech1 * sech2 * cos_term;
-            float angleResolutionWrgVtx = ( ( -1.*beamsig * TMath::Sqrt( .2 ) ) / denominator ) * ( numerator1 / r1 + numerator2 / r2 ); //dz = sigmabeamspot*sqrt(2)
+            float angleResolutionWrgVtx = ( ( -1.*beamsig * TMath::Sqrt( 2. ) ) / denominator ) * ( numerator1 / r1 + numerator2 / r2 ); //dz = sigmabeamspot*sqrt(2)
             //float angleResolutionCorrVtx = ((-1.*0.1*TMath::Sqrt(.2))/denominator)*(numerator1/r1 + numerator2/r2);//dz = 0.1
             float alpha_sig_wrg = 0.5 * angleResolutionWrgVtx;
             //float alpha_sig_corr = angleResolutionCorrVtx;
