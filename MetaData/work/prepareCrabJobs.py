@@ -222,7 +222,7 @@ if options.createCrabConfig:
     # get the globaltag json
     globalTagPath = options.globalTags
     gtJson = json.load(open(globalTagPath,'r'))
-    print options.globalTags
+    print "GLOBAL TAGS:",options.globalTags
 
     if not os.path.isdir(options.campaign):
         os.mkdir(options.campaign)

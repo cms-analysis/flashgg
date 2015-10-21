@@ -19,7 +19,7 @@ config.JobType.psetName = "PSET"
 #config.JobType.inputFiles   = [ os.environ['CMSSW_BASE'] + '/src/'+ 'flashgg/MetaData/data/PY8_RunIISpring15DR74_bx50_MC.db' ]
 
 ## incrase jobs time wall, maximum 2800 minutes (46 hours)
-#config.JobType.maxJobRuntimeMin = 2800
+config.JobType.maxJobRuntimeMin = 2800
 
 ## config.JobType.maxMemoryMB = 3000 # For memory leaks. NB. will block jobs on many sites
 ## config.JobType.scriptExe = "cmsWrapper.sh"
