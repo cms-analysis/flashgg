@@ -95,6 +95,15 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 ### SPRING15
 
+#### Spring15BetaV7 on ReMiniAOD 25ns
+
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-ReMiniAOD-BetaV7-25ns -U 5 -L 25 -s campaigns/RunIISpring15-ReMiniAOD-BetaV7-25ns.json -V Spring15BetaV7 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask ${PWD}/jsons/Cert_246908-258750_13TeV_PromptReco_Collisions15_25ns_JSON.txt
+cd RunIISpring15-ReMiniAOD-BetaV7-25ns
+echo crabConfig_*.py | xargs -n 1 crab sub
+```
+
 #### Spring15BetaV6 on ReMiniAOD 25ns
 
 ```
