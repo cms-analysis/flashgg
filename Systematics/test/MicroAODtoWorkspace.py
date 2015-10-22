@@ -2,7 +2,7 @@
 
 import FWCore.ParameterSet.Config as cms
 import FWCore.Utilities.FileUtils as FileUtils
-from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariables,minimalHistograms
+from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariables,minimalHistograms,minimalNonSignalVariables,systematicVariables
 
 # SYSTEMATICS SECTION
 
@@ -45,7 +45,8 @@ customize.parse()
 print "customize.processId:",customize.processId
 # Only run systematics for signal events
 if customize.processId.count("h_") or customize.processId.count("vbf_"): # convention: ggh vbf wzh tth
-    print "Adding systematics"
+    print "Signal MC, so adding systematics and dZ"
+    variablesToUse = minimalVariables
     for r9 in ["HighR9","LowR9"]:
         for direction in ["Up","Down"]:
             systlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
@@ -53,6 +54,9 @@ if customize.processId.count("h_") or customize.processId.count("vbf_"): # conve
                 systlabels.append("MCSmear%sEB%s%s01sigma" % (r9,var,direction))
             for region in ["EB","EE"]:
                 systlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
+else:
+    print "Data or background MC, so store mgg and central only"
+    variablesToUse = minimalNonSignalVariables
 
 print systlabels
 
@@ -131,12 +135,16 @@ for tag in tagList:
       else:
           cutstring = None
       isBinnedOnly = (systlabel !=  "")
+      if systlabel == "":
+          currentVariables = variablesToUse
+      else:
+          currentVariables = systematicVariables
       cfgTools.addCategory(process.tagsDumper,
                            systlabel,
                            classname=tagName,
                            cutbased=cutstring,
                            subcats=tagCats, 
-                           variables=minimalVariables,
+                           variables=currentVariables,
                            histograms=minimalHistograms,
                            binnedOnly=isBinnedOnly
                            )
