@@ -30,6 +30,10 @@
 #include "flashgg/DataFormats/interface/WeightedObject.h"
 #include "flashgg/DataFormats/interface/PDFWeightObject.h"
 
+#include "DataFormats/Common/interface/RefToBase.h"
+#include "DataFormats/Common/interface/RefProd.h"
+#include "DataFormats/Common/interface/RefToBase.h"
+
 #include <vector>
 #include <map>
 
@@ -76,6 +80,12 @@ namespace  {
         std::vector<edm::Ptr<flashgg::MuMuGammaCandidate> >        vec_ptr_fgg_mmg;
         edm::Wrapper<std::vector<edm::Ptr<flashgg::MuMuGammaCandidate> > >   wrp_vec_ptr_fgg_mmg;
         //-----------J. Tao from IHEP-Beijing--------------
+        edm::Ref<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> > ref_fgg_pho;
+        std::vector<edm::Ref<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> > > vref_fgg_pho;
+        edm::RefProd<std::vector<flashgg::Photon> >              rfp_fgg_pho; 
+        edm::RefVector<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> >    refv_fgg_pho; 
+        edm::Wrapper<edm::RefVector<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> > >  wrp_rv_fgg_pho;
+        
 
         edm::Ptr<reco::Vertex>                                        ptr_rec_vtx;
         std::vector<edm::Ptr<reco::Vertex> >                      vec_ptr_rec_vtx;

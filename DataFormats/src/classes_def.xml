@@ -98,6 +98,25 @@
 <class name="edm::Wrapper<edm::Ptr<flashgg::DiPhotonCandidate> >"/>
 <class name="std::vector<edm::Ptr<flashgg::DiPhotonCandidate> >"/>
 <class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::DiPhotonCandidate> > >"/>
+
+<class name="edm::Wrapper<flashgg::DiPhotonMVAResult>"/>
+<class name="std::pair<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult>"/>
+<class name="std::map<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult>"/>
+<class name="edm::Wrapper<std::pair<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult> >"/>
+<class name="edm::Wrapper<std::map<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult> >"/>
+<class name="edm::reftobase::BaseHolder<flashgg::Photon>"/>
+<class name="edm::RefToBase<flashgg::Photon>"/>
+<class name="edm::reftobase::IndirectHolder<flashgg::Photon>" />
+<class name="edm::RefToBaseProd<flashgg::Photon>" />
+<class name="edm::RefToBaseVector<flashgg::Photon>" />
+<class name="edm::Wrapper<edm::RefToBaseVector<flashgg::Photon> >" />
+<class name="edm::reftobase::BaseVectorHolder<flashgg::Photon>" />
+<class name="edm::Wrapper<std::vector<flashgg::Photon> >"/>
+<class name="edm::Ref<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> >"/>
+<class name="edm::RefProd<std::vector<flashgg::Photon> >"/>
+<class name="edm::RefVector<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> >"/>
+<class name="edm::Wrapper<edm::RefVector<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> > >"/>
+
 <class name="flashgg::SinglePhotonView" ClassVersion="10">
   <version ClassVersion="10" checksum="853874792"/>
   <field name="pho_" transient="true"/>
