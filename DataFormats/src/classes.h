@@ -60,6 +60,13 @@ namespace  {
         std::vector<edm::Ptr<flashgg::DiPhotonCandidate> >        vec_ptr_fgg_dip;
         edm::Wrapper<std::vector<edm::Ptr<flashgg::DiPhotonCandidate> > >   wrp_vec_ptr_fgg_dip;
 
+        edm::Ref<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> > ref_fgg_pho;
+        std::vector<edm::Ref<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> > > vref_fgg_pho;
+        edm::RefProd<std::vector<flashgg::Photon> >              rfp_fgg_pho; 
+        edm::RefVector<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> >    refv_fgg_pho; 
+        edm::Wrapper<edm::RefVector<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> > >  wrp_rv_fgg_pho;
+
+
         flashgg::GenDiPhoton                                        fgg_gdip;
         edm::Wrapper<flashgg::GenDiPhoton>                      wrp_fgg_gdip;
         std::vector<flashgg::GenDiPhoton>                       vec_fgg_gdip;
