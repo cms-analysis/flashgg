@@ -139,11 +139,11 @@ for tag in tagList:
       else:
           currentVariables = systematicVariables
       
-			isBinnedOnly = (systlabel !=  "")
+      isBinnedOnly = (systlabel !=  "")
       dumpPdfWeights = (systlabel ==  "")
       nPdfWeights = 213
       
-			cfgTools.addCategory(process.tagsDumper,
+      cfgTools.addCategory(process.tagsDumper,
                            systlabel,
                            classname=tagName,
                            cutbased=cutstring,
@@ -152,7 +152,7 @@ for tag in tagList:
                            histograms=minimalHistograms,
                            binnedOnly=isBinnedOnly,
                            dumpPdfWeights=dumpPdfWeights,
-													 nPdfWeights=nPdfWeights
+                           nPdfWeights=nPdfWeights
                            )
 
 process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSystematics+process.flashggElectronSystematics)*
