@@ -13,6 +13,7 @@ namespace flashgg {
     public:
 
         PDFWeightObject();
+        //PDFWeightObject( const PDFWeightObject& );
         ~PDFWeightObject();
         
         vector<uint16_t> pdf_weight_container;
