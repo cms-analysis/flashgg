@@ -158,7 +158,6 @@ namespace flashgg {
        
         pdfWeightHistosBooked_=false;
 
-            std:: cout << "LC DEBUG dump PDF weights (pre-cats) ? " << dumpPdfWeights_ << std::endl;
         auto categories = cfg.getParameter<std::vector<edm::ParameterSet> >( "categories" );
         for( auto &cat : categories ) {
             auto label   = cat.getParameter<std::string>( "label" );
@@ -175,7 +174,6 @@ namespace flashgg {
             }
             if (dumpPdfWeights_ == false ) {
             dumpPdfWeights_ = cat.exists("dumpPdfWeights")? cat.getParameter<bool>( "dumpPdfWeights" ) : false;
-            std:: cout << "LC DEBUG dump PDF weights? " << dumpPdfWeights_ << std::endl;
             }
             std::string classname = ( cat.exists("className") ? cat.getParameter<std::string>( "className" ) : "" );
             //<------
@@ -212,9 +210,7 @@ namespace flashgg {
         }
 
         if(dumpPdfWeights_){
-            std::cout << "LC DEBUG DUMP PDF WEIGHTS " << std::endl;
             //if (cfg.exists("flashggPDFWeightObject")){
-            std::cout << "LC DEBUG DUMP PDF WEIGHTS 2" << std::endl;
                 pdfWeightToken_= cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject",edm::InputTag("flashggPDFWeightObject"));
            // }
         }
