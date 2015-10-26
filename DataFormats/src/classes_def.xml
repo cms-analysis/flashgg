@@ -102,6 +102,29 @@
 <class name="flashgg::GenDiPhoton" ClassVersion="10">
     <version ClassVersion="10" checksum="3743016204"/>
 </class>
+
+<class name="edm::Wrapper<flashgg::DiPhotonMVAResult>"/>
+<class name="std::pair<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult>"/>
+<class name="std::map<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult>"/>
+<class name="edm::Wrapper<std::pair<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult> >"/>
+<class name="edm::Wrapper<std::map<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult> >"/>
+<class name="edm::reftobase::BaseHolder<flashgg::Photon>"/>
+<class name="edm::RefToBase<flashgg::Photon>"/>
+<class name="edm::reftobase::IndirectHolder<flashgg::Photon>" />
+<class name="edm::RefToBaseProd<flashgg::Photon>" />
+<class name="edm::RefToBaseVector<flashgg::Photon>" />
+<class name="edm::Wrapper<edm::RefToBaseVector<flashgg::Photon> >" />
+<class name="edm::reftobase::BaseVectorHolder<flashgg::Photon>" />
+<class name="edm::Wrapper<std::vector<flashgg::Photon> >"/>
+<class name="edm::Ref<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> >"/>
+<class name="edm::RefProd<std::vector<flashgg::Photon> >"/>
+<class name="edm::RefVector<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> >"/>
+<class name="edm::Wrapper<edm::RefVector<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> > >"/>
+
+
+
+
+
 <class name="std::vector<flashgg::GenDiPhoton>"/>
 <class name="edm::Wrapper<std::vector<flashgg::GenDiPhoton> >"/>
 <class name="edm::Ptr<flashgg::GenDiPhoton>"/>
