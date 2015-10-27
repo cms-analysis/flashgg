@@ -68,6 +68,7 @@ if ${SETUP_REMOTES} ; then
   git remote add sethzenz https://github.com/sethzenz/flashgg
   git remote add simonepigazzini https://github.com/simonepigazzini/flashgg
   git remote add swagata87 https://github.com/swagata87/flashgg
+  git remote add vtavolar https://github.com/vtavolar/flashgg
   git remote add yhaddad https://github.com/yhaddad/flashgg
   git remote add upstream-writable git@github.com:cms-analysis/flashgg.git
 else
