@@ -141,7 +141,7 @@ for tag in tagList:
       
       isBinnedOnly = (systlabel !=  "")
       dumpPdfWeights = (systlabel ==  "")
-      nPdfWeights = 213
+      nPdfWeights = 102
       
       cfgTools.addCategory(process.tagsDumper,
                            systlabel,
