@@ -72,6 +72,7 @@ process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to wo
 #                                        monitorPssAndPrivate = cms.untracked.bool(True)
 #                                       )
 
+process.load("flashgg/MicroAOD/flashggPDFWeightObject_cfi")
 process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
 
 # NEEDED FOR ANYTHING PRIOR TO reMiniAOD
@@ -85,7 +86,8 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
 # All jets are now handled in MicroAODCustomize.py
 # Switch from PFCHS to PUPPI with puppi=1 argument (both if puppi=2)
 
-process.p = cms.Path(process.flashggMicroAODSequence)
+#process.p = cms.Path(process.flashggMicroAODSequence)
+process.p = cms.Path(process.flashggPDFWeightObject*process.flashggMicroAODSequence)
 process.e = cms.EndPath(process.out)
 
 # Uncomment these lines to run the example commissioning module and send its output to root
