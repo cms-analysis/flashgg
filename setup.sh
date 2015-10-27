@@ -104,6 +104,12 @@ echo "Setting up Conversion tools for pat electron..."
 git cms-addpkg RecoEgamma/EgammaTools
 git cms-merge-topic -u sethzenz:topic-conversion-tools-for-pat-ele-74X
 
+echo "Setting up TnP tools..."
+git cms-addpkg DataFormats/RecoCandidate
+git cms-addpkg PhysiscsTools/TagAndProbe
+git cms-merge-topic -u matteosan1:egm_tnp
+
+
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit
 
