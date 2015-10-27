@@ -36451,6 +36451,14 @@
                 "nevents": 216882, 
                 "totEvents": 216882, 
                 "weights": 216882.0
+            }, 
+            {
+                "bad": false, 
+                "events": 223734, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-BetaV7-25ns/Spring15BetaV7/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8/RunIISpring15-ReMiniAOD-BetaV7-25ns-Spring15BetaV7-v0-RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/151021_160300/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 223734, 
+                "totEvents": 223734, 
+                "weights": 223734.0
             }
         ], 
         "vetted": true
