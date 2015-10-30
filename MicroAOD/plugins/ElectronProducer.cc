@@ -18,6 +18,7 @@
 #include "DataFormats/EgammaCandidates/interface/GsfElectron.h"
 #include "TrackingTools/Records/interface/TransientTrackRecord.h"
 #include "TrackingTools/IPTools/interface/IPTools.h"
+#include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 
 using namespace std;
 using namespace edm;
@@ -26,22 +27,25 @@ namespace flashgg {
 
     class ElectronProducer : public edm::EDProducer
     {
-    public:
-        ElectronProducer( const edm::ParameterSet & );
+        public:
+            ElectronProducer( const edm::ParameterSet & );
 
-    private:
-        void produce( edm::Event &, const edm::EventSetup & );
+        private:
+            void produce( edm::Event &, const edm::EventSetup & );
 
-        bool verbose_;
-        bool applyCuts_;
-        edm::EDGetTokenT<View<pat::Electron> > electronToken_;
-        edm::EDGetTokenT<View<reco::Vertex> > vertexToken_;
-        edm::EDGetTokenT<reco::ConversionCollection> convToken_;
-        edm::EDGetTokenT<reco::BeamSpot> beamSpotToken_;
-        edm::EDGetTokenT<edm::ValueMap<float> > mvaValuesMapToken_;
+            bool verbose_;
+            bool applyCuts_;
+            edm::EDGetTokenT<View<pat::Electron> > electronToken_;
+            edm::EDGetTokenT<View<reco::Vertex> > vertexToken_;
+            edm::EDGetTokenT<reco::ConversionCollection> convToken_;
+            edm::EDGetTokenT<reco::BeamSpot> beamSpotToken_;
+            edm::EDGetTokenT<edm::ValueMap<float> > mvaValuesMapToken_;
 
-        float _Rho;
-        edm::InputTag rhoFixedGrid_;
+            EffectiveAreas _effectiveAreas;
+
+            float _Rho;
+            edm::InputTag rhoFixedGrid_;
+
     };
 
     ElectronProducer::ElectronProducer( const ParameterSet &iConfig ):
@@ -49,7 +53,9 @@ namespace flashgg {
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag>( "vertexTag" ) ) ),
         convToken_( consumes<reco::ConversionCollection>( iConfig.getParameter<InputTag>( "convTag" ) ) ),
         beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getParameter<InputTag>( "beamSpotTag" ) ) ),
-        mvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaValuesMap" ) ) )
+        mvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaValuesMap" ) ) ),
+        _effectiveAreas( (iConfig.getParameter<edm::FileInPath>("effAreasConfigFile")).fullPath())
+
     {
         applyCuts_ = iConfig.getUntrackedParameter<bool>( "ApplyCuts", false );
         verbose_ = iConfig.getUntrackedParameter<bool>( "verbose", false );
@@ -62,7 +68,6 @@ namespace flashgg {
 
     void ElectronProducer::produce( Event &evt, const EventSetup & )
     {
-        //using namespace edm;
 
         Handle<View<pat::Electron> >  pelectrons;
         evt.getByToken( electronToken_, pelectrons );
@@ -95,39 +100,27 @@ namespace flashgg {
         for( unsigned int elecIndex = 0; elecIndex < pelectrons->size(); elecIndex++ ) {
             Ptr<pat::Electron> pelec = pelectrons->ptrAt( elecIndex );
             flashgg::Electron felec = flashgg::Electron( *pelec );
-            // double nontrigmva_ = -999999;
-            double Aeff = 0;
+            
+            float Aeff = 0;
 
             float pelec_eta = fabs( pelec->superCluster()->eta() );
-            float pelec_pt = pelec->pt();
 
             double nontrigmva = (*mvaValues)[pelec];
             felec.setNonTrigMVA( ( float )nontrigmva );
 
-            if( applyCuts_ && nontrigmva < 0.9 ) { continue; }
             if( applyCuts_ && ( pelec_eta > 2.5 || ( pelec_eta > 1.442 && pelec_eta < 1.566 ) ) ) { continue; }
 
-            if( pelec_eta < 1.0 )                   	{ Aeff = 0.135; }
-            if( pelec_eta >= 1.0 && pelec_eta < 1.479 ) 	{ Aeff = 0.168; }
-            if( pelec_eta >= 1.479 && pelec_eta < 2.0 ) 	{ Aeff = 0.068; }
-            if( pelec_eta >= 2.0 && pelec_eta < 2.2 )   	{ Aeff = 0.116; }
-            if( pelec_eta >= 2.2 && pelec_eta < 2.3 )   	{ Aeff = 0.162; }
-            if( pelec_eta >= 2.3 && pelec_eta < 2.4 )   	{ Aeff = 0.241; }
-            if( pelec_eta >= 2.4 )                  	{ Aeff = 0.23; }
-
-            float	pelec_iso = pelec->chargedHadronIso() + std::max( pelec->neutralHadronIso() + pelec->photonIso() - _Rho * Aeff, 0. );
-            felec.setStandardHggIso( pelec_iso );
+            const reco::GsfElectron::PflowIsolationVariables& pfIso = pelec->pfIsolationVariables();
+            const float chad = pfIso.sumChargedHadronPt;
+            const float nhad = pfIso.sumNeutralHadronEt;
+            const float pho = pfIso.sumPhotonEt;
+            Aeff = _effectiveAreas.getEffectiveArea( pelec_eta );   
+            //cout << "Aff " << Aeff << endl;
+            float iso = chad + std::max(0.0f, nhad + pho - _Rho*Aeff);
+          
+            felec.setStandardHggIso( iso );
 
             felec.setHasMatchedConversion( ConversionTools::hasMatchedConversion( *pelec, convs, vertexPoint ) );
-
-            if( applyCuts_ ) {
-                if( pelec_iso / pelec_pt > 0.15 ) { continue; }
-                //if{} //d0
-                //if{} //dz
-                /// if(pelec->gsfTrack()->trackerExpectedHitsInner().numberOfHits()>1)continue;
-                if( pelec->gsfTrack()->hitPattern().numberOfHits( reco::HitPattern::MISSING_INNER_HITS ) > 1 ) { continue; }
-                if( ConversionTools::hasMatchedConversion( *pelec, convs, vertexPoint ) ) { continue; }
-            } // otherwise ALL pat::Electrons are converted to flashgg::Electrons -- this is default behavior, especially for studies
 
             elecColl->push_back( felec );
         }

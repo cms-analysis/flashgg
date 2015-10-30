@@ -22,28 +22,28 @@ using namespace edm;
 
 class PDFWeight : public edm::EDAnalyzer
 {
-	public:
-		explicit PDFWeight( const edm::ParameterSet & );
-		~PDFWeight();
+public:
+    explicit PDFWeight( const edm::ParameterSet & );
+    ~PDFWeight();
 
-	private:
+private:
 
-		virtual void beginJob() override;
-		virtual void analyze( const edm::Event &, const edm::EventSetup & ) override;
-		virtual void endJob() override;
-		virtual void beginRun( edm::Run const &, edm::EventSetup const &iSetup );
+    virtual void beginJob() override;
+    virtual void analyze( const edm::Event &, const edm::EventSetup & ) override;
+    virtual void endJob() override;
+    virtual void beginRun( edm::Run const &, edm::EventSetup const &iSetup );
 
-		edm::EDGetTokenT<GenEventInfoProduct> genParticleToken_;
-		edm::EDGetTokenT<LHEEventProduct> LHEEventToken_;
-		edm::EDGetTokenT<LHERunInfoProduct> LHERunToken_;
-		edm::EDGetTokenT<vector<flashgg::PDFWeightObject> > WeightToken_;
+    edm::EDGetTokenT<GenEventInfoProduct> genParticleToken_;
+    edm::EDGetTokenT<LHEEventProduct> LHEEventToken_;
+    edm::EDGetTokenT<LHERunInfoProduct> LHERunToken_;
+    edm::EDGetTokenT<vector<flashgg::PDFWeightObject> > WeightToken_;
 };
 
 PDFWeight::PDFWeight( const edm::ParameterSet &iConfig ):
-	genParticleToken_( consumes<GenEventInfoProduct>( iConfig.getUntrackedParameter<InputTag> ( "GenEventInfoProductTag", InputTag( "generator" ) ) ) ),
-	LHEEventToken_( consumes<LHEEventProduct>( iConfig.getUntrackedParameter<InputTag> ( "LHETag", InputTag( "LHEEventProduct" ) ) ) ),
-	LHERunToken_( consumes<LHERunInfoProduct>( iConfig.getUntrackedParameter<InputTag> ( "LHERunTag", InputTag( "LHERunInfoProduct" ) ) ) ),
-	WeightToken_( consumes<vector<flashgg::PDFWeightObject> >( iConfig.getUntrackedParameter<InputTag>( "WeightTag", InputTag( "flashggPDFWeightObject" ) ) ) )
+    genParticleToken_( consumes<GenEventInfoProduct>( iConfig.getUntrackedParameter<InputTag> ( "GenEventInfoProductTag", InputTag( "generator" ) ) ) ),
+    LHEEventToken_( consumes<LHEEventProduct>( iConfig.getUntrackedParameter<InputTag> ( "LHETag", InputTag( "LHEEventProduct" ) ) ) ),
+    LHERunToken_( consumes<LHERunInfoProduct>( iConfig.getUntrackedParameter<InputTag> ( "LHERunTag", InputTag( "LHERunInfoProduct" ) ) ) ),
+    WeightToken_( consumes<vector<flashgg::PDFWeightObject> >( iConfig.getUntrackedParameter<InputTag>( "WeightTag", InputTag( "flashggPDFWeightObject" ) ) ) )
 {
 
 }
@@ -52,63 +52,63 @@ PDFWeight::~PDFWeight()
 {
 }
 
-	void
+void
 PDFWeight::analyze( const edm::Event &evt, const edm::EventSetup &iSetup )
 {
 
-	//    Handle<GenEventInfoProduct> genParticles;
-	//    evt.getByToken( genParticleToken_, genParticles );
-	//    const PtrVector<GenEventInfoProduct>& gens = genParticles->ptrVector();
+    //    Handle<GenEventInfoProduct> genParticles;
+    //    evt.getByToken( genParticleToken_, genParticles );
+    //    const PtrVector<GenEventInfoProduct>& gens = genParticles->ptrVector();
 
-	//   cout << "the event weight  " << genParticles->weight() << endl;
+    //   cout << "the event weight  " << genParticles->weight() << endl;
 
-	//    Handle<LHEEventProduct> LHEHandle;
-	//    evt.getByToken( LHEEventToken_, LHEHandle );
+    //    Handle<LHEEventProduct> LHEHandle;
+    //    evt.getByToken( LHEEventToken_, LHEHandle );
 
-	//    Handle<vector<flashgg::PDFWeightObject> > WeightHandle;
-	//    evt.getByToken( WeightToken_, WeightHandle );
-	//    const PtrVector<flashgg::PDFWeightObject> mcWeightPointers = WeightHandle->ptrVector();
+    //    Handle<vector<flashgg::PDFWeightObject> > WeightHandle;
+    //    evt.getByToken( WeightToken_, WeightHandle );
+    //    const PtrVector<flashgg::PDFWeightObject> mcWeightPointers = WeightHandle->ptrVector();
 
-	//cout << "XS  " << LHEHandle->originalXWGTUP() << endl;
+    //cout << "XS  " << LHEHandle->originalXWGTUP() << endl;
 
-	//        for( unsigned int weight_index = 0; weight_index < (*WeightHandle).size(); weight_index++ ){
-	//            std::vector<float> uncompressed = (*WeightHandle)[weight_index].uncompress();
-	//            for( unsigned int j=0; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
-	//                    cout << "compresed weight " << (*WeightHandle)[weight_index].pdf_weight_container[j] << endl;
-	//                    cout << "uncompressed weight " << uncompressed[j] << endl;
-	//       }
-	//    }
+    //        for( unsigned int weight_index = 0; weight_index < (*WeightHandle).size(); weight_index++ ){
+    //            std::vector<float> uncompressed = (*WeightHandle)[weight_index].uncompress();
+    //            for( unsigned int j=0; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
+    //                    cout << "compresed weight " << (*WeightHandle)[weight_index].pdf_weight_container[j] << endl;
+    //                    cout << "uncompressed weight " << uncompressed[j] << endl;
+    //       }
+    //    }
 }
 
 
-	void
+void
 PDFWeight::beginJob()
 {
 }
 
-	void
+void
 PDFWeight::endJob()
 {
 }
 
 
-	void
+void
 PDFWeight::beginRun( edm::Run const &iRun, edm::EventSetup const &iSetup )
 {
-	Handle<LHERunInfoProduct> run;
-	typedef vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
+    Handle<LHERunInfoProduct> run;
+    typedef vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
 
-	iRun.getByLabel( "externalLHEProducer", run );
-	LHERunInfoProduct myLHERunInfoProduct = *( run.product() );
+    iRun.getByLabel( "externalLHEProducer", run );
+    LHERunInfoProduct myLHERunInfoProduct = *( run.product() );
 
-	for( headers_const_iterator iter = myLHERunInfoProduct.headers_begin(); iter != myLHERunInfoProduct.headers_end(); iter++ ) {
-		if( iter->tag() == "init" )
-		{ cout << iter->tag() << endl; }
-		vector<string> lines = iter->lines();
-		for( unsigned int iLine = 0; iLine < lines.size(); iLine++ ) {
-			cout << lines.at( iLine );
-		}
-	}
+    for( headers_const_iterator iter = myLHERunInfoProduct.headers_begin(); iter != myLHERunInfoProduct.headers_end(); iter++ ) {
+//        if ((iter->tag()).compare("initrwgt") == 0){//{ cout << "tag " << iter->tag() << endl;}
+        vector<string> lines = iter->lines();
+        for( unsigned int iLine = 0; iLine < lines.size(); iLine++ ) {
+            cout << lines.at( iLine );
+        }
+    }
+//    }
 }
 
 
