@@ -25,14 +25,15 @@ namespace flashgg {
 	{
 		public:
 			PDFWeightProducer( const edm::ParameterSet & );
+			string generator_type( vector<string> );
 		private:
 			void produce( edm::Event &, const edm::EventSetup & );
 			EDGetTokenT<LHEEventProduct> LHEEventToken_;
 			string tag_;
-			string pdfset_;
+			string pdfid_1;
+			string pdfid_2;
 			string delimiter_1_;
 			string delimiter_2_;
-			string delimiter_3_;
 			void beginRun( edm::Run const &, edm::EventSetup const &iSetup );
 			vector<int> weight_indices;
 			string removeSpace( string line );
@@ -43,10 +44,10 @@ namespace flashgg {
 	{
 
 		tag_ = iConfig.getUntrackedParameter<string>( "tag", "initrwgt" );
-		pdfset_ = iConfig.getUntrackedParameter<string>( "pdfset", "PDF_variation" );
+		pdfid_1 = iConfig.getUntrackedParameter<string>( "pdfid_1", "292201" );
+		pdfid_2 = iConfig.getUntrackedParameter<string>("pdfid_2","292302");
 		delimiter_1_ = iConfig.getUntrackedParameter<string>( "delimiter_1", "id=\"" );
 		delimiter_2_ = iConfig.getUntrackedParameter<string>( "delimiter_2", "\">" );
-		delimiter_3_ = iConfig.getUntrackedParameter<string>( "delimiter_3", "</weightgroup>" );
 
 		produces<vector<flashgg::PDFWeightObject> >();
 
@@ -58,6 +59,40 @@ namespace flashgg {
 		return str;
 	}
 
+	string PDFWeightProducer::generator_type( vector<string> text ){
+
+		string type;
+
+		for (unsigned int line = 0; line<text.size() ; line++ ){
+		
+			size_t found_mg = text.at(line).find("MadGraph"); 
+			size_t found_ph = text.at(line).find("powheg");
+
+			if (found_mg != string::npos ){ 
+				
+				pdfid_1 = "292201"; 	
+				pdfid_2 = "292302";
+				type = "mg";
+				break;
+			}	
+
+			if ( found_ph != string::npos ){
+			
+				pdfid_1 = "260001";
+				pdfid_2 = "260100";
+			
+				//alpha_s1 = "265000";
+				//alpha_s2 = "266000";
+				type = "ph";
+				break;
+	
+			} 
+
+		}
+	
+		return type;
+	}
+
 	void PDFWeightProducer::beginRun( edm::Run const &iRun, edm::EventSetup const &iSetup )
 	{
 		Handle<LHERunInfoProduct> run;
@@ -67,21 +102,35 @@ namespace flashgg {
 		LHERunInfoProduct myLHERunInfoProduct = *( run.product() );
 
 		int upper_index = 0;
+		vector<string> weight_lines;
+		string generator;	
+
 
 		for( headers_const_iterator iter = myLHERunInfoProduct.headers_begin(); iter != myLHERunInfoProduct.headers_end(); iter++ ) {
+
+			vector<string> lines = iter->lines();
+
 			if( ( iter->tag() ).compare( tag_ ) == 0 ) {
 				//cout << iter->tag() << endl;
-				vector<string> lines = iter->lines();
-			for( unsigned int iLine = 0; iLine < lines.size(); iLine++ ) {
-					string line = lines.at( iLine );
+				weight_lines = iter->lines();
+			}
+
+			generator = PDFWeightProducer::generator_type(lines);
+
+			//	cout << "generator " << generator << endl;
+			
+			}
+
+			for( unsigned int iLine = 0; iLine < weight_lines.size(); iLine++ ) {
+					string line = weight_lines.at( iLine );
 					//cout << line << endl;
-					size_t pos = line.find( pdfset_ );
+					size_t pos = line.find( pdfid_1 );
 					string token;
-					while( ( pos = line.find( pdfset_ ) ) != std::string::npos ) {
-						token = line.substr( pos, pdfset_.length() );
-						//std::cout << token << std::endl;
-						if( token.compare( pdfset_ ) == 0 ) {
-							upper_index = 1 + iLine;
+					while( ( pos = line.find( pdfid_1 ) ) != std::string::npos ) {
+						token = line.substr( pos, pdfid_1.length() );
+						//std::cout << "token " << token << std::endl;
+						if( token.compare( pdfid_1 ) == 0 ) {
+							upper_index = iLine;
 							break;
 						} else {
 
@@ -94,17 +143,24 @@ namespace flashgg {
 					if( upper_index != 0 ) { break; }
 				}
 
-				for( unsigned int nLine = upper_index; nLine < lines.size(); nLine++ ) {
+				for( unsigned int nLine = upper_index; nLine < weight_lines.size(); nLine++ ) {
 
-					string nline = lines.at( nLine );
+					string nline = weight_lines.at( nLine );
 
 					//cout << nline << endl;	
 					
 					string jline = removeSpaces( nline );
 
-					//cout << nline.length() << endl;
-
-					if( jline.compare( delimiter_3_ ) == 0 ) { break; }
+//					cout << "jline " << jline << endl;
+					string jtoken;
+					size_t jpos;	
+				
+					while( ( jpos = jline.find( pdfid_2 ) ) != std::string::npos ) {
+						jtoken = jline.substr( jpos, pdfid_2.length() );
+						//std::cout << "jtoken " << jtoken << std::endl;
+						break;
+					}
+				
 
 					string ntoken;
 					string mtoken;
@@ -114,19 +170,30 @@ namespace flashgg {
 
 					ntoken = jline.erase( mpos_3 );
 					mtoken = jline.substr( mpos_1 + delimiter_1_.length() );
-					//cout << mtoken << endl;
-	
+					//cout << "mtoken " << mtoken << endl;
 
 					int wgt = stoi( mtoken );
 
 					PDFWeightProducer::weight_indices.push_back( wgt );
 
+					if( jtoken.compare( pdfid_2 ) == 0 ) { break; }
+
 				}
 
-				break;
+				if (generator == "ph"){
 
-			}
-		}
+					int alphas_1 = PDFWeightProducer::weight_indices.back() + 1;
+					int alphas_2 = PDFWeightProducer::weight_indices.back() + 2;
+
+					PDFWeightProducer::weight_indices.push_back(alphas_1);
+					PDFWeightProducer::weight_indices.push_back(alphas_2);
+			
+				}
+
+				//break;
+
+		//	}
+		//}
 
 	}
 
