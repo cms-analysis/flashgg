@@ -193,12 +193,13 @@ void Photon::setEnergyAtStep( std::string key, float val )
 {
     addUserFloat( key, val );
 }
-float const Photon::energyAtStep( std::string key ) const
+float const Photon::energyAtStep( std::string key, std::string fallback ) const
 {
     if( key == "initial" && !hasEnergyAtStep( "initial" ) ) {
         return energy(); // "initial" is always set whenever any other value is set
         // So if it's not present we can skip this mechanism for now
     }
+    if( !fallback.empty() && (! hasEnergyAtStep(key) || userFloat(key) == 0.) ) { return energyAtStep(fallback,""); }
     return userFloat( key );
 }
 bool Photon::hasEnergyAtStep( std::string key ) const

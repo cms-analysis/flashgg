@@ -1,6 +1,8 @@
 
 import FWCore.ParameterSet.Config as cms
 
+from globalVariables_cff import globalVariables
+
 VBFDiPhoDiJetMVATrainingDumpConf = cms.PSet(
 		className = cms.untracked.string("CutBasedVBFDiPhoDiJetMVAResultDumper"),
 		src = cms.InputTag("flashggVBFDiPhoDiJetMVA"),
@@ -17,8 +19,5 @@ VBFDiPhoDiJetMVATrainingDumpConf = cms.PSet(
 		dumpTrees = cms.untracked.bool(False),
 		quietRooFit = cms.untracked.bool(False),
 		dumpGlobalVariables = cms.untracked.bool(True),
-		globalVariables = cms.PSet(
-			rho = cms.InputTag('fixedGridRhoAll'),
-			vertexes = cms.InputTag("offlineSlimmedPrimaryVertices"),
-			)
+		globalVariables = globalVariables
 		)
