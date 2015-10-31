@@ -1,6 +1,8 @@
 #-----------J. Tao from IHEP-Beijing--------------
 import FWCore.ParameterSet.Config as cms
 
+from globalVariables_cff import globalVariables
+
 dimuDumpConfig = cms.PSet(
     className  = cms.untracked.string("CutBasedDiMuonDumper"),
     src = cms.InputTag("flashggDiMuons"),
@@ -20,9 +22,6 @@ dimuDumpConfig = cms.PSet(
     
     quietRooFit = cms.untracked.bool(False),
     dumpGlobalVariables = cms.untracked.bool(True),
-    globalVariables = cms.PSet(
-        rho =  cms.InputTag('fixedGridRhoAll'),
-        vertexes = cms.InputTag("offlineSlimmedPrimaryVertices"),
-        )
+    globalVariables = globalVariables
 
 )

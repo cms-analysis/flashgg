@@ -88,7 +88,7 @@ namespace flashgg {
         double sqrtS_;
         double intLumi_;
         std::string nameTemplate_;
-
+        
         bool dumpTrees_;
         bool dumpWorkspace_;
         std::string workspaceName_;
@@ -144,7 +144,7 @@ namespace flashgg {
         if( dumpGlobalVariables_ ) {
             globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ) );
         }
-
+        
         auto categories = cfg.getParameter<std::vector<edm::ParameterSet> >( "categories" );
         for( auto &cat : categories ) {
             auto label   = cat.getParameter<std::string>( "label" );
@@ -243,6 +243,10 @@ namespace flashgg {
                         weight *= weights[0];
                     }
                 }
+                
+                if( globalVarsDumper_->puReWeight() ) {
+                    weight *= globalVarsDumper_->cache().puweight;
+                }
             }
             return weight;
         }
@@ -253,9 +257,11 @@ namespace flashgg {
             edm::Handle<collection_type> collectionH;
             event.getByLabel( src_, collectionH );
             const auto &collection = *collectionH;
-            weight_ = eventWeight( event );
 
             if( globalVarsDumper_ ) { globalVarsDumper_->fill( event ); }
+
+            weight_ = eventWeight( event );
+
             int nfilled = maxCandPerEvent_;
 
             for( auto &cand : collection ) {
