@@ -38,7 +38,7 @@ process.flashggUntagged.Boundaries=cms.untracked.vdouble(-2)
 import flashgg.Taggers.dumperConfigTools as cfgTools
 from flashgg.Taggers.tagsDumpers_cfi import createTagDumper
 # ## FIXME switch to preselected diphotons
-# process.flashggDiPhotonMVA.src = "flashggPreselectedDiPhotons"
+#process.flashggDiPhotonMVANew.DiPhotonTag = "flashggPreselectedDiPhotons"
 
 process.tagDumper = createTagDumper("UntaggedTag")
 process.tagDumper.src = "flashggUntagged"
