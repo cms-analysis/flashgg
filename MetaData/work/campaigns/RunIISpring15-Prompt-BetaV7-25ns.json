@@ -1,0 +1,12 @@
+{
+    "data" : ["/DoubleEG/Run2015D-PromptReco-v4/MINIAOD",
+       	      "/SingleElectron/Run2015D-PromptReco-v4/MINIAOD",
+       	      "/SinglePhoton/Run2015D-PromptReco-v4/MINIAOD",
+	      "/MuonEG/Run2015D-PromptReco-v4/MINIAOD",
+	      "/DoubleMuon/Run2015D-PromptReco-v4/MINIAOD"
+	      ],
+    "sig"  : [
+	      ],
+    "bkg"  : [
+	      ]
+}
