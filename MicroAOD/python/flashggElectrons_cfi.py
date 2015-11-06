@@ -28,4 +28,5 @@ flashggElectrons = cms.EDProducer('FlashggElectronProducer',
 		reducedEERecHitCollection = cms.InputTag('reducedEcalRecHitsEE'),
 		rhoFixedGridCollection = cms.InputTag('fixedGridRhoAll'),
                 mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"),
+	        effAreasConfigFile = cms.FileInPath("RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_25ns.txt")
 		)
