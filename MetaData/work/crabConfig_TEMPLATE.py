@@ -18,8 +18,8 @@ config.JobType.psetName = "PSET"
 ## to include local file in the sendbox, this will put the file in the directory where cmsRun runs
 #config.JobType.inputFiles   = [ os.environ['CMSSW_BASE'] + '/src/'+ 'flashgg/MetaData/data/PY8_RunIISpring15DR74_bx50_MC.db' ]
 
-## incrase jobs time wall, maximum 2800 minutes (46 hours)
-config.JobType.maxJobRuntimeMin = 2800
+## incrase jobs time wall, maximum 2750 minutes (~46 hours)
+config.JobType.maxJobRuntimeMin = 2750
 
 ## config.JobType.maxMemoryMB = 3000 # For memory leaks. NB. will block jobs on many sites
 ## config.JobType.scriptExe = "cmsWrapper.sh"
@@ -33,7 +33,7 @@ config.Data.splitting = "SPLITTING"
 config.Data.unitsPerJob = UNITSPERJOB
 config.Data.publication = True
 config.Data.publishDBS = 'phys03'
-config.Data.publishDataName = 'FLASHGG_VERSION-PROCESSED_DSET'
+config.Data.outputDatasetTag = 'FLASHGG_VERSION-PROCESSED_DSET'
 config.Data.outLFNDirBase = "OUTLFN"
 
 config.section_("Site")
