@@ -174,7 +174,7 @@ namespace flashgg {
 
 		evt.put( PDFWeight );
 
-		pdfWeight.pdf_weight_container.size();
+//		cout << "final size " <<pdfWeight.pdf_weight_container.size() << endl;
 
 	}
 

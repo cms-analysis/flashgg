@@ -9,5 +9,6 @@
     "RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9"	   : ["MCRUN2_74_V9"],
     "CMSSW_7_4_6_patch6-74X_mcRun2_asymptotic_realisticBS_v0_2015Jul24" : ["74X_mcRun2_asymptotic_realisticBS_v0"],
     "Run2015D-05Oct2015" : ["74X_dataRun2_reMiniAOD_v0"],
+    "Run2015C_25ns-05Oct2015" : ["74X_dataRun2_v4"],
     "RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2" : ["74X_mcRun2_asymptotic_v2"]
 }

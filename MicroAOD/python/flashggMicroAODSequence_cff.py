@@ -11,6 +11,11 @@ from flashgg.MicroAOD.flashggFinalEGamma_cfi import flashggFinalEGamma
 from flashgg.MicroAOD.flashggLeptonSelectors_cff import flashggSelectedMuons,flashggSelectedElectrons
 from flashgg.MicroAOD.flashggMicroAODGenSequence_cff import *
 
+from PhysicsTools.SelectorUtils.centralIDRegistry import central_id_registry
+from RecoEgamma.ElectronIdentification.ElectronMVAValueMapProducer_cfi import *
+
+
+
 eventCount = cms.EDProducer("EventCountProducer")
 weightsCount = cms.EDProducer("WeightsCountProducer",
                               generator=cms.InputTag("generator"),
@@ -24,7 +29,7 @@ weightsCount = cms.EDProducer("WeightsCountProducer",
 
 flashggMicroAODSequence = cms.Sequence(eventCount+weightsCount
                                        +flashggVertexMapUnique+flashggVertexMapNonUnique
-                                       +flashggElectrons*flashggSelectedElectrons
+                                       +electronMVAValueMapProducer*flashggElectrons*flashggSelectedElectrons
                                        +flashggMuons*flashggSelectedMuons
                                        +flashggMicroAODGenSequence
                                        +flashggPhotons*flashggDiPhotons*flashggPreselectedDiPhotons

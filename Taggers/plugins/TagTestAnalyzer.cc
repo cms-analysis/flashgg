@@ -190,6 +190,7 @@ namespace flashgg {
             if( vhloosetag != NULL ) {
                 std::cout << "[VHloose] Category " << vhloosetag->categoryNumber()
                           << " nmuons=" << vhloosetag->muons().size()
+                          << " nelectrons=" << vhloosetag->electrons().size()
                           << " systLabel " << vhloosetag->systLabel()
                           << std::endl;
             }

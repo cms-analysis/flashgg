@@ -2,7 +2,7 @@
 
 import FWCore.ParameterSet.Config as cms
 import FWCore.Utilities.FileUtils as FileUtils
-from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariables,minimalHistograms
+from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariables,minimalHistograms,minimalNonSignalVariables,systematicVariables
 
 # SYSTEMATICS SECTION
 
@@ -38,13 +38,27 @@ process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("fla
 
 process.systematicsTagSequences = cms.Sequence()
 systlabels = [""]
-for r9 in ["HighR9","LowR9"]:
-    for direction in ["Up","Down"]:
-        systlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
-        for var in ["Rho","Phi"]:
-            systlabels.append("MCSmear%sEB%s%s01sigma" % (r9,var,direction))
-        for region in ["EB","EE"]:
-            systlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
+
+# import flashgg customization to check if we have signal or background
+from flashgg.MetaData.JobConfig import customize
+customize.parse()
+print "customize.processId:",customize.processId
+# Only run systematics for signal events
+if customize.processId.count("h_") or customize.processId.count("vbf_"): # convention: ggh vbf wzh tth
+    print "Signal MC, so adding systematics and dZ"
+    variablesToUse = minimalVariables
+    for r9 in ["HighR9","LowR9"]:
+        for direction in ["Up","Down"]:
+            systlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
+            for var in ["Rho","Phi"]:
+                systlabels.append("MCSmear%sEB%s%s01sigma" % (r9,var,direction))
+            for region in ["EB","EE"]:
+                systlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
+else:
+    print "Data or background MC, so store mgg and central only"
+    variablesToUse = minimalNonSignalVariables
+
+print systlabels
 
 for systlabel in systlabels:
     if systlabel == "":
@@ -120,15 +134,25 @@ for tag in tagList:
           definedSysts.add(systlabel)
       else:
           cutstring = None
+      if systlabel == "":
+          currentVariables = variablesToUse
+      else:
+          currentVariables = systematicVariables
+      
       isBinnedOnly = (systlabel !=  "")
+      dumpPdfWeights = (systlabel ==  "")
+      nPdfWeights = 102
+      
       cfgTools.addCategory(process.tagsDumper,
                            systlabel,
                            classname=tagName,
                            cutbased=cutstring,
                            subcats=tagCats, 
-                           variables=minimalVariables,
+                           variables=currentVariables,
                            histograms=minimalHistograms,
-                           binnedOnly=isBinnedOnly
+                           binnedOnly=isBinnedOnly,
+                           dumpPdfWeights=dumpPdfWeights,
+                           nPdfWeights=nPdfWeights
                            )
 
 process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSystematics+process.flashggElectronSystematics)*
@@ -146,8 +170,6 @@ process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSyst
 
 
 
-# import flashgg customization
-from flashgg.MetaData.JobConfig import customize
 # set default options if needed
 customize.setDefault("maxEvents",-1)
 customize.setDefault("targetLumi",20e+3)

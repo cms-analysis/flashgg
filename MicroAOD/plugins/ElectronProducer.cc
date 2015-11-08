@@ -8,7 +8,6 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
-#include "EgammaAnalysis/ElectronTools/interface/EGammaMvaEleEstimator.h"
 #include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "flashgg/DataFormats/interface/Electron.h"
@@ -39,46 +38,24 @@ namespace flashgg {
         edm::EDGetTokenT<View<reco::Vertex> > vertexToken_;
         edm::EDGetTokenT<reco::ConversionCollection> convToken_;
         edm::EDGetTokenT<reco::BeamSpot> beamSpotToken_;
+        edm::EDGetTokenT<edm::ValueMap<float> > mvaValuesMapToken_;
 
         float _Rho;
         edm::InputTag rhoFixedGrid_;
-
-        string method_;
-        vector<string> mvaWeightFiles_;
-
-        // double nontrigmva_;
-        EGammaMvaEleEstimator *mvaID_;
-
     };
 
     ElectronProducer::ElectronProducer( const ParameterSet &iConfig ):
         electronToken_( consumes<View<pat::Electron> >( iConfig.getParameter<InputTag>( "electronTag" ) ) ),
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag>( "vertexTag" ) ) ),
         convToken_( consumes<reco::ConversionCollection>( iConfig.getParameter<InputTag>( "convTag" ) ) ),
-        beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getParameter<InputTag>( "beamSpotTag" ) ) )
+        beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getParameter<InputTag>( "beamSpotTag" ) ) ),
+        mvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaValuesMap" ) ) )
     {
         applyCuts_ = iConfig.getUntrackedParameter<bool>( "ApplyCuts", false );
         verbose_ = iConfig.getUntrackedParameter<bool>( "verbose", false );
-        method_ = iConfig.getParameter<string>( "method" );
-        std::vector<string> fpMvaWeightFiles = iConfig.getParameter<std::vector<std::string> >( "mvaWeightFile" );
         //	eventrhoToken_ = consumes<float>(iConfig.getParameter<edm::InputTag>("Rho"));
         rhoFixedGrid_  = iConfig.getParameter<edm::InputTag>( "rhoFixedGridCollection" );
 
-        mvaID_ = new EGammaMvaEleEstimator();
-
-        EGammaMvaEleEstimator::MVAType type_;
-
-        type_ = EGammaMvaEleEstimator::kNonTrig;
-
-        bool manualCat_ = true;
-
-        string path_mvaWeightFileEleID;
-        for( unsigned ifile = 0 ; ifile < fpMvaWeightFiles.size() ; ++ifile ) {
-            path_mvaWeightFileEleID = edm::FileInPath( fpMvaWeightFiles[ifile].c_str() ).fullPath();
-            mvaWeightFiles_.push_back( path_mvaWeightFileEleID );
-        }
-
-        mvaID_->initialize( method_, type_, manualCat_, mvaWeightFiles_ );
         produces<vector<flashgg::Electron> >();
         // nontrigmva_ = 0;
     }
@@ -109,6 +86,8 @@ namespace flashgg {
         if( recoBeamSpotHandle.isValid() )
         { vertexPoint = recoBeamSpotHandle->position(); }
 
+        edm::Handle<edm::ValueMap<float> > mvaValues;
+        evt.getByToken(mvaValuesMapToken_,mvaValues);
 
         std::auto_ptr<vector<flashgg::Electron> > elecColl( new vector<flashgg::Electron> );
 
@@ -122,7 +101,7 @@ namespace flashgg {
             float pelec_eta = fabs( pelec->superCluster()->eta() );
             float pelec_pt = pelec->pt();
 
-            double nontrigmva = mvaID_->mvaValue( *pelec, *vtxs->ptrAt( 0 ), _Rho, verbose_ );
+            double nontrigmva = (*mvaValues)[pelec];
             felec.setNonTrigMVA( ( float )nontrigmva );
 
             if( applyCuts_ && nontrigmva < 0.9 ) { continue; }

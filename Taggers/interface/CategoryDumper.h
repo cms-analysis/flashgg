@@ -75,9 +75,10 @@ namespace flashgg {
 
         void bookHistos( TFileDirectory &fs, const std::map<std::string, std::string> &replacements );
         void bookTree( TFileDirectory &fs, const char *weightVar, const std::map<std::string, std::string> &replacements );
-        void bookRooDataset( RooWorkspace &ws, const char *weightVar, const std::map<std::string, std::string> &replacements );
+        void bookRooDataset( RooWorkspace &ws, const char *weightVar, const std::map<std::string, std::string> &replacements);
+        
 
-        void fill( const object_type &obj, double weight, int n_cand = 0 );
+        void fill( const object_type &obj, double weight, vector<double>, int n_cand = 0);
 
         void print()
         {
@@ -107,11 +108,15 @@ namespace flashgg {
         std::vector<std::shared_ptr<wrapped_stepwise_functor_type> > stepwise_functors_;
         bool hbooked_;
         bool binnedOnly_;
+        bool dumpPdfWeights_;
+        int  nPdfWeights_;
+        bool pdfVarsAdded_;
+        RooWorkspace * ws_;
     };
 
     template<class F, class O>
     CategoryDumper<F, O>::CategoryDumper( const std::string &name, const edm::ParameterSet &cfg, GlobalVariablesDumper *dumper ):
-        dataset_( 0 ), tree_( 0 ), globalVarsDumper_( dumper ), hbooked_( false ), binnedOnly_ (false)
+        dataset_( 0 ), tree_( 0 ), globalVarsDumper_( dumper ), hbooked_( false ), binnedOnly_ (false), dumpPdfWeights_ (false ), nPdfWeights_ (0) 
     {
         using namespace std;
         name_ = name;
@@ -123,7 +128,13 @@ namespace flashgg {
         if( cfg.existsAs<bool >( "binnedOnly" ) ) {
             binnedOnly_ = cfg.getParameter<bool >( "binnedOnly" );
         }
-        
+        if( cfg.existsAs<bool >( "dumpPdfWeights" ) ) {
+            dumpPdfWeights_ = cfg.getParameter<bool >( "dumpPdfWeights" );
+        }
+        if( cfg.existsAs<int >( "nPdfWeights" ) ) {
+            nPdfWeights_ = cfg.getParameter<int >( "nPdfWeights" );
+        }
+       
         auto variables = cfg.getParameter<vector<edm::ParameterSet> >( "variables" );
         for( auto &var : variables ) {
             auto nbins = var.getUntrackedParameter<int>( "nbins", 0 );
@@ -252,51 +263,71 @@ namespace flashgg {
             globalVarsDumper_->bookTreeVariables( tree_, replacements );
         }
     }
+    
 
     template<class F, class O>
     void CategoryDumper<F, O>::bookRooDataset( RooWorkspace &ws, const char *weightVar, const std::map<std::string, std::string> &replacements )
-    {
-        rooVars_.add( *ws.var( weightVar ) ); 
+{
+    rooVars_.add( *ws.var( weightVar ) );
+    //ws_= (RooWorkspace*) ws.Clone();
+    ws_= &ws;
+    RooArgSet allvars0 = ws.allVars();
+    RooArgSet allvars1 = ws_->allVars();
 
-        for( size_t iv = 0; iv < names_.size(); ++iv ) {
-            auto &name = names_[iv];
-            auto &var = variables_[iv];
-            auto &nbins = std::get<2>( var );
-            auto &vmin = std::get<3>( var );
-            auto &vmax = std::get<4>( var );
-            RooRealVar &rooVar = dynamic_cast<RooRealVar &>( *ws.factory( Form( "%s[0.]", name.c_str() ) ) );
-            rooVar.setConstant( false );
-            if(binnedOnly_ && (nbins==0)){
-                    throw cms::Exception( "Dumper Binning" ) << "One or more variable which is to be dumped in a RooDataHist has not been allocated any binning options. Please specify these in your dumper configuration using the format variable[nBins,min,max] := variable definition ";
-            }
-            if( nbins >= 0 ) { 
-                rooVar.setMin( vmin );
-                rooVar.setMax( vmax );
-                rooVar.setBins( nbins );
-            }
-            rooVars_.add( rooVar, true );
-            rooVarsBinned_.add( rooVar, true ); //all the same vars except weight
+    if (dumpPdfWeights_){
+        for (int i =0; i< nPdfWeights_ ; i++) {
+            rooVars_.add( *ws.var( Form("pdfWeight_%d",i) ) ); 
         }
-        /// globalVarsDumper_.bookRooVars(ws,rooVars_,replacements);
-        RooDataSet dset( formatString( name_, replacements ).c_str(), formatString( name_, replacements ).c_str(), rooVars_, weightVar );
-        RooDataHist dhist(formatString(name_,replacements).c_str(),formatString(name_,replacements).c_str(),rooVarsBinned_,dset);
-        if( ! binnedOnly_ ) {
-            ws.import( dset );
-        }
-        if( binnedOnly_ ) {
-            ws.import( dhist );
-        }
-        dataset_ = ws.data( name_.c_str() );
     }
 
+    for( size_t iv = 0; iv < names_.size(); ++iv ) {
+        auto &name = names_[iv];
+        auto &var = variables_[iv];
+        auto &nbins = std::get<2>( var );
+        auto &vmin = std::get<3>( var );
+        auto &vmax = std::get<4>( var );
+        RooRealVar &rooVar = dynamic_cast<RooRealVar &>( *ws.factory( Form( "%s[0.]", name.c_str() ) ) );
+        rooVar.setConstant( false );
+        if(binnedOnly_ && (nbins==0)){
+            throw cms::Exception( "Dumper Binning" ) << "One or more variable which is to be dumped in a RooDataHist has not been allocated any binning options. Please specify these in your dumper configuration using the format variable[nBins,min,max] := variable definition ";
+        }
+        if( nbins >= 0 ) { 
+            rooVar.setMin( vmin );
+            rooVar.setMax( vmax );
+            rooVar.setBins( nbins );
+        }
+        rooVars_.add( rooVar, true );
+        rooVarsBinned_.add( rooVar, true ); //all the same vars except weight
+    }
+    /// globalVarsDumper_.bookRooVars(ws,rooVars_,replacements);
+    RooDataSet dset( formatString( name_, replacements ).c_str(), formatString( name_, replacements ).c_str(), rooVars_, weightVar );
+    RooDataHist dhist(formatString(name_,replacements).c_str(),formatString(name_,replacements).c_str(),rooVarsBinned_,dset);
+    if( ! binnedOnly_ ) {
+        ws.import( dset );
+    }
+    if( binnedOnly_ ) {
+        ws.import( dhist );
+    }
+    dataset_ = ws.data( name_.c_str() );
+}
+
     template<class F, class O>
-void CategoryDumper<F, O>::fill( const object_type &obj, double weight, int n_cand )
-{
+void CategoryDumper<F, O>::fill( const object_type &obj, double weight, vector<double> pdfWeights, int n_cand)
+{   
     n_cand_ = n_cand;
     weight_ = weight;
     if( dataset_ && (!binnedOnly_) ) {
         // don't fill RooDataHists with weight variable, only RooDatSets
         dynamic_cast<RooRealVar &>( rooVars_["weight"] ).setVal( weight_ );
+
+        if (dumpPdfWeights_){
+            if (nPdfWeights_ != (int) pdfWeights.size()){ 
+                throw cms::Exception( "Configuration" ) << " Specified number of pdfWeights (" << nPdfWeights_ <<") does not match length of pdfWeights Vector ("<< pdfWeights.size() << ")." ;
+            }
+            for (unsigned int i =0; i< pdfWeights.size() ; i++) {
+                dynamic_cast<RooRealVar &>( rooVars_[Form("pdfWeight_%d",i)] ).setVal( pdfWeights[i] );
+            }
+        }
     }
     // for( auto & var : variables_ ) {
     for( size_t ivar = 0; ivar < names_.size(); ++ivar ) {
@@ -311,7 +342,9 @@ void CategoryDumper<F, O>::fill( const object_type &obj, double weight, int n_ca
     }
     if( tree_ ) { tree_->Fill(); }
     if( dataset_ ) {
-        if (!binnedOnly_) dataset_->add( rooVars_, weight_ );
+        if (!binnedOnly_) {
+            dataset_->add( rooVars_, weight_ );
+        }
         if (binnedOnly_)  dataset_->add( rooVarsBinned_, weight_ );
     }
     if( hbooked_ ) {
