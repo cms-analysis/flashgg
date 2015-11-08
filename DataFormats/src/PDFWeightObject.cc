@@ -6,8 +6,8 @@ using namespace std;
 PDFWeightObject::PDFWeightObject()
 {}
 
-PDFWeightObject::PDFWeightObject( const PDFWeightObject& )
-{}
+//PDFWeightObject::PDFWeightObject( const PDFWeightObject& )
+//{}
 
 PDFWeightObject::~PDFWeightObject()
 {}

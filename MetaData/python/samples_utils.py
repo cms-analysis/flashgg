@@ -279,7 +279,12 @@ class SamplesManager(object):
                 else:
                     info["bad"] = False
                     if not self.just_open_:
-                        extraInfo = json.loads(str(out))
+                        try:
+                            extraInfo = json.loads(str(out))
+                        except Exception as e:
+                            print e
+                            print "WARNING: problem with extraInfo json line, so zeroing the dictionary, setting to bad, and skipping"
+                            extraInfo = {}
                         if len(extraInfo.keys()) == 0:
                             nfailed += 1
                             info["bad"] = True

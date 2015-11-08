@@ -59,6 +59,7 @@ if ${SETUP_REMOTES} ; then
   git remote add molmedon https://github.com/molmedon/flashgg
   git remote add mplaner https://github.com/mplaner/flashgg
   git remote add musella https://github.com/musella/flashgg
+  git remote add nancymarinelli https://github.com/nancymarinelli/flashgg
   git remote add OlivierBondu https://github.com/OlivierBondu/flashgg
   git remote add pmeridian https://github.com/pmeridian/flashgg
   git remote add quittnat https://github.com/quittnat/flashgg
@@ -67,6 +68,7 @@ if ${SETUP_REMOTES} ; then
   git remote add sethzenz https://github.com/sethzenz/flashgg
   git remote add simonepigazzini https://github.com/simonepigazzini/flashgg
   git remote add swagata87 https://github.com/swagata87/flashgg
+  git remote add vtavolar https://github.com/vtavolar/flashgg
   git remote add yhaddad https://github.com/yhaddad/flashgg
   git remote add upstream-writable git@github.com:cms-analysis/flashgg.git
 else
@@ -102,6 +104,12 @@ echo
 echo "Setting up Conversion tools for pat electron..."
 git cms-addpkg RecoEgamma/EgammaTools
 git cms-merge-topic -u sethzenz:topic-conversion-tools-for-pat-ele-74X
+
+echo "Setting up TnP tools..."
+git cms-addpkg DataFormats/RecoCandidate
+git cms-addpkg PhysiscsTools/TagAndProbe
+git cms-merge-topic -u matteosan1:egm_tnp
+
 
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit

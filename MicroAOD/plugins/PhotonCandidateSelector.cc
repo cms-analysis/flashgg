@@ -55,9 +55,15 @@ edm::View<flashgg::SinglePhotonView>,
     >,
     std::vector<flashgg::SinglePhotonView> > GenericPhotonViewSelector;
 
+typedef SingleObjectSelector<
+    std::vector<flashgg::Photon>,
+    StringCutObjectSelector<flashgg::Photon>,
+    edm::RefVector<std::vector<flashgg::Photon> >
+    > FlashggPhotonRefSelector;
 
 DEFINE_FWK_MODULE( PhotonSelector );
 DEFINE_FWK_MODULE( GenericPhotonSelector );
+DEFINE_FWK_MODULE( FlashggPhotonRefSelector );
 
 DEFINE_FWK_MODULE( PhotonViewSelector );
 DEFINE_FWK_MODULE( GenericPhotonViewSelector );

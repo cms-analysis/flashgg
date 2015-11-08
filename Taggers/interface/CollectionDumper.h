@@ -26,6 +26,7 @@
 #include "flashgg/MicroAOD/interface/ClassNameClassifier.h"
 #include "flashgg/MicroAOD/interface/CutAndClassBasedClassifier.h"
 #include "flashgg/Taggers/interface/GlobalVariablesDumper.h"
+#include "flashgg/DataFormats/interface/PDFWeightObject.h"
 
 #include "FWCore/Utilities/interface/Exception.h"
 
@@ -79,9 +80,10 @@ namespace flashgg {
 
     protected:
         double eventWeight( const edm::EventBase &event );
+        vector<double> pdfWeights( const edm::EventBase &event );
 
         /// float eventWeight(const edm::EventBase& event);
-        edm::InputTag src_, genInfo_;
+        edm::InputTag src_, genInfo_, pdfWeightToken_;
         std::string processId_;
         double lumiWeight_;
         int maxCandPerEvent_;
@@ -100,6 +102,11 @@ namespace flashgg {
         
         // event weight
         float weight_;
+        vector<double> pdfWeights_;
+        int pdfWeightSize_;
+        bool pdfWeightHistosBooked_;
+        bool dumpPdfWeights_;
+        int nPdfWeights_;
 
         //std::map<std::string, std::vector<dumper_type> > dumpers_; FIXME template key
         std::map< KeyT, std::vector<dumper_type> > dumpers_;
@@ -134,6 +141,10 @@ namespace flashgg {
         if( cfg.getUntrackedParameter<bool>( "quietRooFit", false ) ) {
             RooMsgService::instance().setGlobalKillBelow( RooFit::WARNING );
         }
+	    
+        
+        nPdfWeights_=0;
+        dumpPdfWeights_=false;
 
         std::map<std::string, std::string> replacements;
         replacements.insert( std::make_pair( "$COLLECTION", src_.label() ) );
@@ -144,12 +155,28 @@ namespace flashgg {
         if( dumpGlobalVariables_ ) {
             globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ) );
         }
-        
+       
+        pdfWeightHistosBooked_=false;
+
         auto categories = cfg.getParameter<std::vector<edm::ParameterSet> >( "categories" );
         for( auto &cat : categories ) {
             auto label   = cat.getParameter<std::string>( "label" );
             auto subcats = cat.getParameter<int>( "subcats" );
+            
+            //------->
+            //if any of the categories need pdfWeight dumping, we want to have the info in the WS
+            //the logic of this code is that dumpPdfWeights_ is false or nPdfWeights_ is 0
+            //we check to see what the category says. If any of the categories have more than 0 pdfWeight
+            //and want dumpPdfWeights_ true, then the if fails and we don't check: the value stays true or >0
+            //this relies on the fact that we want nPdfWeights the same for all cats.
+            if (nPdfWeights_ == 0) {
+		    nPdfWeights_ = cat.exists("nPdfWeights") ?  cat.getParameter<int>( "nPdfWeights" ) : 0;
+            }
+            if (dumpPdfWeights_ == false ) {
+		    dumpPdfWeights_ = cat.exists("dumpPdfWeights")? cat.getParameter<bool>( "dumpPdfWeights" ) : false;
+            }
             std::string classname = ( cat.exists("className") ? cat.getParameter<std::string>( "className" ) : "" );
+            //<------
             
             auto name = nameTemplate_;
             if( ! label.empty() ) {
@@ -182,10 +209,21 @@ namespace flashgg {
             }
         }
 
+        if(dumpPdfWeights_){
+            //if (cfg.exists("flashggPDFWeightObject")){
+                pdfWeightToken_= cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject",edm::InputTag("flashggPDFWeightObject"));
+           // }
+        }
+
         workspaceName_ = formatString( workspaceName_, replacements );
         if( dumpWorkspace_ ) {
             ws_ = fs.make<RooWorkspace>( workspaceName_.c_str(), workspaceName_.c_str() );
             dynamic_cast<RooRealVar *>( ws_->factory( "weight[1.]" ) )->setConstant( false );
+            if (dumpPdfWeights_){
+                for( int j=0; j<nPdfWeights_;j++ ) {
+                    dynamic_cast<RooRealVar *>( ws_->factory( Form("pdfWeight_%d[1.]",j)) )->setConstant( false );
+                }
+            }
             RooRealVar* intLumi = new RooRealVar("IntLumi","IntLumi",intLumi_);
             //workspace expects intlumi in /pb
             intLumi->setConstant(); 
@@ -197,7 +235,7 @@ namespace flashgg {
         for( auto &dumpers : dumpers_ ) {
             for( auto &dumper : dumpers.second ) {
                 if( dumpWorkspace_ ) {
-                    dumper.bookRooDataset( *ws_, "weight", replacements );
+                    dumper.bookRooDataset( *ws_, "weight", replacements);
                 }
                 if( dumpTrees_ ) {
                     TFileDirectory dir = fs.mkdir( "trees" );
@@ -252,6 +290,28 @@ namespace flashgg {
         }
 
     template<class C, class T, class U>
+
+        vector<double> CollectionDumper<C, T, U>::pdfWeights( const edm::EventBase &event )
+        {   
+            vector<double> pdfWeights;
+            edm::Handle<vector<flashgg::PDFWeightObject> > WeightHandle;
+            event.getByLabel( pdfWeightToken_, WeightHandle );
+
+
+            for( unsigned int weight_index = 0; weight_index < (*WeightHandle).size(); weight_index++ ){
+                std::vector<float> uncompressed = (*WeightHandle)[weight_index].uncompress();
+                for( unsigned int j=0; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
+                    pdfWeights.push_back(uncompressed[j]);
+                }
+            }
+
+
+            return pdfWeights;
+        }
+
+
+
+    template<class C, class T, class U>
         void CollectionDumper<C, T, U>::analyze( const edm::EventBase &event )
         {
             edm::Handle<collection_type> collectionH;
@@ -261,22 +321,25 @@ namespace flashgg {
             if( globalVarsDumper_ ) { globalVarsDumper_->fill( event ); }
 
             weight_ = eventWeight( event );
+	    if( dumpPdfWeights_){
+                pdfWeights_ =pdfWeights( event );
+            }
 
             int nfilled = maxCandPerEvent_;
 
             for( auto &cand : collection ) {
                 auto cat = classifier_( cand );
                 auto which = dumpers_.find( cat.first );
-                
+
                 if( which != dumpers_.end() ) {
                     int isub = ( hasSubcat_[cat.first] ? cat.second : 0 );
                     // FIXME per-candidate weights
-                    which->second[isub].fill( cand, weight_, maxCandPerEvent_ - nfilled );
+                    which->second[isub].fill( cand, weight_, pdfWeights_, maxCandPerEvent_ - nfilled );
                     --nfilled;
                 } else if( throwOnUnclassified_ ) {
                     throw cms::Exception( "Runtime error" ) << "could not find dumper for category [" << cat.first << "," << cat.second << "]"
-                                                            << "If you want to allow this (eg because you don't want to dump some of the candidates in the collection)\n"
-                                                            << "please set throwOnUnclassified in the dumper configuration\n";
+                        << "If you want to allow this (eg because you don't want to dump some of the candidates in the collection)\n"
+                        << "please set throwOnUnclassified in the dumper configuration\n";
                 }
                 if( ( maxCandPerEvent_ > 0 )  && nfilled == 0 ) { break; }
             }
