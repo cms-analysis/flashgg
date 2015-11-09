@@ -95,7 +95,20 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 ### SPRING15
 
+#### Spring15BetaV7 on Silver-Only Prompt 25ns
+
+Excludes ReMiniAOD and prompt Gold via JSON subtraction.  Only one run in this campaign!
+
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns -U 5 -L 25 -s campaigns/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns.json -V Spring15BetaV7 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask ${PWD}/jsons/ToRun_Prompt_2015D_SilverNotGold_JSON.txt
+cd RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns
+echo crabConfig_*.py | xargs -n 1 crab sub
+```
+
 #### Spring15BetaV7 on Silver-Only ReMiniAOD 25ns
+
+Excludes previous processings via JSON subtraction
 
 ```
 cd $CMSSW_BASE/src/flashgg/MetaData/work
