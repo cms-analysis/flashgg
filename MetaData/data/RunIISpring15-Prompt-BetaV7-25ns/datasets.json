@@ -22021,6 +22021,82 @@
                 "nevents": 16890, 
                 "totEvents": 16890, 
                 "weights": 16890
+            }, 
+            {
+                "bad": false, 
+                "events": 43907, 
+                "lumis": {
+                    "258448": [
+                        326, 
+                        327, 
+                        328, 
+                        329, 
+                        330, 
+                        331, 
+                        332, 
+                        333, 
+                        334, 
+                        335, 
+                        336, 
+                        337, 
+                        338, 
+                        339, 
+                        340, 
+                        341, 
+                        342, 
+                        343, 
+                        344, 
+                        345, 
+                        346, 
+                        347, 
+                        348, 
+                        349, 
+                        350
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151103_161313/0000/myMicroAODOutputFile_231.root", 
+                "nevents": 43907, 
+                "totEvents": 43907, 
+                "weights": 43907
+            }, 
+            {
+                "bad": false, 
+                "events": 76557, 
+                "lumis": {
+                    "258703": [
+                        385, 
+                        386, 
+                        387, 
+                        388, 
+                        389
+                    ], 
+                    "258705": [
+                        1, 
+                        2, 
+                        3, 
+                        4, 
+                        5, 
+                        6, 
+                        7, 
+                        8, 
+                        9, 
+                        10, 
+                        11, 
+                        12, 
+                        13, 
+                        14, 
+                        15, 
+                        16, 
+                        17, 
+                        18, 
+                        19, 
+                        20
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151103_161313/0000/myMicroAODOutputFile_296.root", 
+                "nevents": 76557, 
+                "totEvents": 76557, 
+                "weights": 76557
             }
         ], 
         "vetted": true
