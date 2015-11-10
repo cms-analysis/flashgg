@@ -398,6 +398,43 @@
                 "nevents": 52460, 
                 "totEvents": 52460, 
                 "weights": 52460
+            }, 
+            {
+                "bad": false, 
+                "events": 51107, 
+                "lumis": {
+                    "258443": [
+                        251, 
+                        252, 
+                        253, 
+                        254, 
+                        255, 
+                        256, 
+                        257, 
+                        258, 
+                        259, 
+                        260, 
+                        261, 
+                        262, 
+                        263, 
+                        264, 
+                        265, 
+                        266, 
+                        267, 
+                        268, 
+                        269, 
+                        270, 
+                        271, 
+                        272, 
+                        273, 
+                        274, 
+                        275
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 51107, 
+                "totEvents": 51107, 
+                "weights": 51107
             }
         ], 
         "vetted": true
