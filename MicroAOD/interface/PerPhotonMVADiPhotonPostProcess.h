@@ -24,6 +24,7 @@ namespace flashgg {
         {
             computer_.update( event );
             for( auto &dipho : *output ) {
+                dipho.makePhotonsPersistent();
                 computer_.fill( dipho.leadingPhoton() );
                 computer_.fill( dipho.subLeadingPhoton() );
             }

@@ -1,6 +1,8 @@
 #-----------J. Tao from IHEP-Beijing--------------
 import FWCore.ParameterSet.Config as cms
 
+from globalVariables_cff import globalVariables
+
 mumugammaDumpConfig = cms.PSet(
     className  = cms.untracked.string("CutBasedMuMuGammaDumper"),
     src = cms.InputTag("flashggMuMuGamma"),
@@ -20,9 +22,6 @@ mumugammaDumpConfig = cms.PSet(
     
     quietRooFit = cms.untracked.bool(False),
     dumpGlobalVariables = cms.untracked.bool(True),
-    globalVariables = cms.PSet(
-        rho =  cms.InputTag('fixedGridRhoAll'),
-        vertexes = cms.InputTag("offlineSlimmedPrimaryVertices"),
-        )
+    globalVariables = globalVariables
 
 )
