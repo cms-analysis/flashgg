@@ -40,6 +40,10 @@ namespace flashgg {
         tree->Branch( "lumi", &cache_.lumi, "lumi/b" );
         tree->Branch( "run", &cache_.run, "run/i" );
         tree->Branch( "nvtx", &cache_.nvtx );
+        if( getPu_ ) {
+            tree->Branch( "npu", &cache_.npu );
+            if( puReWeight_ ) { tree->Branch( "puweight", &cache_.puweight ); }
+        }
         for( auto &bit : bits_ ) {
             tree->Branch( bit.first.c_str(), &bit.second, ( bit.first + "/O" ).c_str() );
         }

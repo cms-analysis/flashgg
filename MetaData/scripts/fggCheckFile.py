@@ -44,6 +44,19 @@ def main(args):
                 totWeights = ROOT.gDirectory.Get("totWeights").Integral()
             else:
                 totWeights = 0.
+        lumi.GetEntry(0)
+        minpu = lumi.floatedmMergeableHisto_weightsCount_truePileup_FLASHggMicroAOD.min
+        maxpu = lumi.floatedmMergeableHisto_weightsCount_truePileup_FLASHggMicroAOD.max
+        npu   = lumi.floatedmMergeableHisto_weightsCount_truePileup_FLASHggMicroAOD.values.size()
+        print minpu, maxpu, npu
+        puhisto = [ 0. ] * npu
+        for il in xrange(lumi.GetEntries()):
+            for ibin in xrange(npu):
+                puhisto[ibin]  += lumi.floatedmMergeableHisto_weightsCount_truePileup_FLASHggMicroAOD.values[ibin]
+        print puhisto
+        tot = sum( puhisto )
+        print tot
+        print map(lambda x: float(x)/float(tot), puhisto)
     else:
         totEvents = events.GetEntriesFast()
         totWeights = totEvents
