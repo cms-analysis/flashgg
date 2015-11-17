@@ -85,6 +85,7 @@ namespace flashgg {
         /// float eventWeight(const edm::EventBase& event);
         edm::InputTag src_, genInfo_, pdfWeightToken_;
         std::string processId_;
+        int processIndex_;
         double lumiWeight_;
         bool splitLumiWeight_;
         int maxCandPerEvent_;
@@ -124,6 +125,8 @@ namespace flashgg {
         src_( cfg.getParameter<edm::InputTag>( "src" ) ),
         genInfo_( cfg.getParameter<edm::InputTag>( "generatorInfo" ) ),
         processId_( cfg.getParameter<std::string>( "processId" ) ),
+        processIndex_( cfg.exists("processIndex") ? cfg.getParameter<int>("processIndex") : 999 ),
+        //        processIndex_( cfg.getParameter<int>("processIndex")  ),
         lumiWeight_( cfg.getParameter<double>( "lumiWeight" ) ),
         splitLumiWeight_( cfg.getUntrackedParameter<bool>( "splitLumiWeight", false ) ),
         maxCandPerEvent_( cfg.getParameter<int>( "maxCandPerEvent" ) ),
@@ -147,7 +150,7 @@ namespace flashgg {
         
         nPdfWeights_=0;
         dumpPdfWeights_=false;
-
+        
         std::map<std::string, std::string> replacements;
         replacements.insert( std::make_pair( "$COLLECTION", src_.label() ) );
         replacements.insert( std::make_pair( "$PROCESS", processId_ ) );
@@ -160,6 +163,8 @@ namespace flashgg {
                 globalVarsDumper_->dumpLumiFactor(lumiWeight_);
                 lumiWeight_ = 1.;
             }
+            std::cout<<"In Collection dumper, processIndex is "<<processIndex_<<std::endl;
+            globalVarsDumper_->setProcessIndex(processIndex_);
         } else if ( splitLumiWeight_ ) {
             throw cms::Exception("Configuration error") << "You specified the splitLumiWeight option but not the dumpGlobalVariables one. I can split the weight only if you also set the latter.\n";
         }
