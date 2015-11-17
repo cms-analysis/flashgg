@@ -28,6 +28,7 @@ namespace flashgg {
         else if( varName == "run" ) { return 2; }
         else if( varName == "event" ) { return 3; }
         else if( varName == "lumi" ) { return 4; }
+        else if( varName == "processIndex" ) { return 5; }
         return -1;
     }
 
@@ -43,6 +44,7 @@ namespace flashgg {
         else if( varIndex == 2 ) { return ( float )cache_.run; }
         else if( varIndex == 3 ) { return ( float )cache_.event; }
         else if( varIndex == 4 ) { return ( float )cache_.lumi; }
+        else if( varIndex == 5 ) { return ( float )cache_.processIndex; }
         return -1e+6;
 
     }

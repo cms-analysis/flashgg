@@ -42,7 +42,7 @@ from flashgg.Taggers.tagsDumpers_cfi import createTagDumper
 
 process.tagDumper = createTagDumper("UntaggedTag")
 process.tagDumper.src = "flashggUntagged"
-
+#process.tagDumper.processIndex=cms.int32(1)
 process.tagDumper.splitLumiWeight=cms.untracked.bool(True)
 #process.tagDumper.throwOnUnclassified= False
 process.tagDumper.dumpTrees = True
@@ -93,5 +93,6 @@ process.p = cms.Path( process.tagDumper )
 # customization for job splitting, lumi weighting, etc.
 from flashgg.MetaData.JobConfig import customize
 customize.setDefault("maxEvents",-1)
+#customize.setDefault("processIndex",5)
 customize.setDefault("targetLumi",1.e+4)
 customize(process)

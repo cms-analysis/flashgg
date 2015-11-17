@@ -16,6 +16,7 @@ namespace flashgg {
             unsigned int  event;
             unsigned char lumi;
             unsigned int  run;
+            int processIndex;
         };
 
         GlobalVariablesComputer( const edm::ParameterSet &cfg );

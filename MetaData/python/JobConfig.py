@@ -30,6 +30,11 @@ class JobConfig(object):
                        VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                        VarParsing.VarParsing.varType.string,          # string, int, or float
                        "processIdMap")
+        self.options.register ('processIndex',
+                       "", # default value
+                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                       VarParsing.VarParsing.varType.int,          # string, int, or float
+                       "processIndex")
         self.options.register ('secondaryDatasetInProcId',
                        False, # default value
                        VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -150,7 +155,7 @@ class JobConfig(object):
         if self.dataset and self.dataset != "":
             name,xsec,totEvents,files,maxEvents = self.dataset
             self.maxEvents = int(maxEvents)
-            
+            self.processIndex = self.options.processIndex
             processId = self.getProcessId(name)
             self.processId = processId
             
@@ -177,6 +182,10 @@ class JobConfig(object):
             for name,obj in process.__dict__.iteritems():
                 if hasattr(obj,"processId"):
                     obj.processId = str(processId)
+
+            for name,obj in process.__dict__.iteritems():
+                if hasattr(obj,"processIndex"):
+                    obj.processIndex = int(self.processIndex)
             
             if isdata and self.lumiMask != "":
                 if isFwlite:
@@ -237,6 +246,8 @@ class JobConfig(object):
             return
 
         self.options.parseArguments()
+        print "parsing arguments, processIdnex is "+str(self.options.processIndex)
+        self.processIndex = self.options.processIndex
         if self.options.processIdMap != "":
             self.readProcessIdMap(self.options.processIdMap)
         

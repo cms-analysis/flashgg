@@ -53,6 +53,7 @@ namespace flashgg {
         float leadMatchtype_;
         float subleadMatchType_;
         float dz_;
+        int   processIndex_;
         float weightSig_;
         float weightBkg_;
         
@@ -93,7 +94,8 @@ namespace flashgg {
         lumiFactor_=0;          
         leadMatchtype_=0;       
         subleadMatchType_=0;    
-        dz_=0;                  
+        dz_=0;            
+        processIndex_=0;
         weightSig_=0;           
         weightBkg_=0;           
 
@@ -135,8 +137,9 @@ namespace flashgg {
             DiphotonMva_->AddSpectator("leadMatchType", &leadMatchtype_       );
             DiphotonMva_->AddSpectator("subleadMatchType", &subleadMatchType_    );
             DiphotonMva_->AddSpectator("dz", &dz_                  );
+            DiphotonMva_->AddSpectator("processIndex", &processIndex_                  );
             DiphotonMva_->AddSpectator("Signal_wei:=weight*lumiFactor*1e+04*(vtxprob*1./sigmarv+(1-vtxprob)*1./sigmawv)", &weightSig_           );
-            DiphotonMva_->AddSpectator("Background_wei:=weight*lumiFactor*(vtxprob*1./sigmarv+(1-vtxprob)*1./sigmawv)", &weightBkg_           );
+            DiphotonMva_->AddSpectator("Background_wei:=weight*lumiFactor", &weightBkg_           );
             //DiphotonMva_->AddSpectator("Signal_wei", &weightSig_       );
             //DiphotonMva_->AddSpectator("Background_wei", &weightBkg_           );            
             DiphotonMva_->BookMVA( "BDT", diphotonMVAweightfile_.fullPath() );
