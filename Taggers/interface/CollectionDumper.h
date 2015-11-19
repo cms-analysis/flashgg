@@ -282,7 +282,7 @@ namespace flashgg {
                     }
                 }
                 
-                if( globalVarsDumper_->puReWeight() ) {
+                if( globalVarsDumper_ && globalVarsDumper_->puReWeight() ) {
                     weight *= globalVarsDumper_->cache().puweight;
                 }
             }
