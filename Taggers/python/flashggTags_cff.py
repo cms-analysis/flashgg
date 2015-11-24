@@ -11,7 +11,8 @@ for i in range(0,maxJetCollections):
     UnpackedJetCollectionVInputTag.append(cms.InputTag('flashggUnpackedJets',str(i)))
 
 flashggUntagged = cms.EDProducer("FlashggUntaggedTagProducer",
-                                 DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+#                                 DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+                                 DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                  SystLabel=cms.string(""),
                                  MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
                                  GenParticleTag=cms.InputTag( "flashggPrunedGenParticles" ),
@@ -19,7 +20,7 @@ flashggUntagged = cms.EDProducer("FlashggUntaggedTagProducer",
 )
 
 flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
-                                       DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+                                       DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                        SystLabel=cms.string(""),
                                        MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
                                        #JetTag=cms.InputTag('flashggSelectedJets'),
@@ -33,7 +34,7 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
 )
 
 flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
-                               DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+                               DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                SystLabel=cms.string(""),
                                MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
                                VBFDiPhoDiJetMVAResultTag=cms.InputTag('flashggVBFDiPhoDiJetMVA'),
@@ -45,7 +46,7 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
 
 
 flashggVHEtTag = cms.EDProducer("FlashggVHEtTagProducer",
-                                DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+                                DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                 SystLabel=cms.string(""),
                                 GenParticleTag=cms.InputTag( "flashggPrunedGenParticles" ),
                                 MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
@@ -55,7 +56,7 @@ flashggVHEtTag = cms.EDProducer("FlashggVHEtTagProducer",
 )
 
 flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
-                                       DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+                                       DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                        SystLabel=cms.string(""),
                                        MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
                                        #JetTag=cms.InputTag('flashggSelectedJets'),
@@ -99,7 +100,7 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
                                        electronNumOfHitsThreshold = cms.untracked.double(1)
 )
 flashggVHLooseTag = cms.EDProducer("FlashggVHLooseTagProducer",
-                                   DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+                                   DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                    SystLabel=cms.string(""),
                                    #JetTag=cms.InputTag('flashggSelectedJets'),
                                    inputTagJets= UnpackedJetCollectionVInputTag,
@@ -139,7 +140,7 @@ flashggVHLooseTag = cms.EDProducer("FlashggVHLooseTagProducer",
 
 				    )
 flashggVHTightTag = cms.EDProducer("FlashggVHTightTagProducer",
-                                   DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+                                   DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                    SystLabel=cms.string(""),
                                    #JetTag=cms.InputTag('flashggSelectedJets'),
                                    inputTagJets= UnpackedJetCollectionVInputTag,
@@ -189,7 +190,7 @@ flashggVHTightTag = cms.EDProducer("FlashggVHTightTagProducer",
 
 
 flashggVHHadronicTag = cms.EDProducer("FlashggVHHadronicTagProducer",
-                                      DiPhotonTag = cms.InputTag('flashggDiPhotons'),
+                                      DiPhotonTag = cms.InputTag('flashggPreselectedDiPhotons'),
                                       SystLabel=cms.string(""),
                                       MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
                                       #JetTag = cms.InputTag('flashggSelectedJets'),
