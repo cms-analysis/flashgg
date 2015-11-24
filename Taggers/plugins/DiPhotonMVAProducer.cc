@@ -48,14 +48,6 @@ namespace flashgg {
         float subleadmva_;
         
         float mass_;
-        float weight_;
-        float lumiFactor_;
-        float leadMatchtype_;
-        float subleadMatchType_;
-        float dz_;
-        int   processIndex_;
-        float weightSig_;
-        float weightBkg_;
         
         float nConv_;
         float vtxProbMVA_;
@@ -90,14 +82,6 @@ namespace flashgg {
         subleadmva_ = 0.;
         
         mass_=0;                
-        weight_=0;              
-        lumiFactor_=0;          
-        leadMatchtype_=0;       
-        subleadMatchType_=0;    
-        dz_=0;            
-        processIndex_=0;
-        weightSig_=0;           
-        weightBkg_=0;           
 
         std::string version_old = "old";
         std::string version_new = "new";
@@ -131,17 +115,9 @@ namespace flashgg {
             DiphotonMva_->AddVariable( "sigmawv", &sigmawv_ );
             DiphotonMva_->AddVariable( "CosPhi", &CosPhi_ );
             DiphotonMva_->AddVariable( "vtxprob", &vtxprob_ );
-            DiphotonMva_->AddSpectator("mass", &mass_                );
-            DiphotonMva_->AddSpectator("myweight:=weight", &weight_              );
-            DiphotonMva_->AddSpectator("lumiFactor", &lumiFactor_          );
-            DiphotonMva_->AddSpectator("leadMatchType", &leadMatchtype_       );
-            DiphotonMva_->AddSpectator("subleadMatchType", &subleadMatchType_    );
-            DiphotonMva_->AddSpectator("dz", &dz_                  );
-            DiphotonMva_->AddSpectator("processIndex", &processIndex_                  );
-            DiphotonMva_->AddSpectator("Signal_wei:=weight*lumiFactor*1e+04*(vtxprob*1./sigmarv+(1-vtxprob)*1./sigmawv)", &weightSig_           );
-            DiphotonMva_->AddSpectator("Background_wei:=weight*lumiFactor", &weightBkg_           );
-            //DiphotonMva_->AddSpectator("Signal_wei", &weightSig_       );
-            //DiphotonMva_->AddSpectator("Background_wei", &weightBkg_           );            
+
+            //            DiphotonMva_->AddSpectator("Signal_wei", &weightSig_       );
+            //            DiphotonMva_->AddSpectator("Background_wei", &weightBkg_           );            
             DiphotonMva_->BookMVA( "BDT", diphotonMVAweightfile_.fullPath() );
             //            std::cout << "finished reading mva" << std::endl;
         }
