@@ -4,6 +4,7 @@ import FWCore.Utilities.FileUtils as FileUtils
 import FWCore.ParameterSet.VarParsing as VarParsing
 from flashgg.MetaData.samples_utils import SamplesManager
 
+
 process = cms.Process("DiPhotonMVATrainig")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
@@ -21,7 +22,11 @@ process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring("/st
 
 
 process.load("flashgg/Taggers/flashggTagSequence_cfi")
+#process.load("flashgg/MicroAOD/flashggPreselectedDiPhotons_cfi")
 ## process.load("flashgg/Taggers/flashggTagTester_cfi")
+
+from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
+process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring("HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95_v*") )
 
 
 from flashgg.Taggers.flashggTagOutputCommands_cff import tagDefaultOutputCommand
@@ -35,10 +40,26 @@ process.TFileService = cms.Service("TFileService",
 
 process.flashggUntagged.Boundaries=cms.untracked.vdouble(-2)
 
+# customization for job splitting, lumi weighting, etc.
+from flashgg.MetaData.JobConfig import customize
+customize.setDefault("maxEvents",-1)
+#customize.setDefault("processIndex",5)
+customize.setDefault("targetLumi",1.e+4)
+
+customize.options.register('diphoxml',
+                           'flashgg/Taggers/data/TMVAClassification_BDT_QCDflattened_pray.weights.xml',
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.string,
+                           'diphoxml'
+                           )
+customize.parse()
+
+
 import flashgg.Taggers.dumperConfigTools as cfgTools
 from flashgg.Taggers.tagsDumpers_cfi import createTagDumper
 # ## FIXME switch to preselected diphotons
 #process.flashggDiPhotonMVANew.DiPhotonTag = "flashggPreselectedDiPhotons"
+
 
 process.tagDumper = createTagDumper("UntaggedTag")
 process.tagDumper.src = "flashggUntagged"
@@ -48,6 +69,8 @@ process.tagDumper.splitLumiWeight=cms.untracked.bool(True)
 process.tagDumper.dumpTrees = True
 process.tagDumper.dumpWorkspace = False
 process.tagDumper.quietRooFit = True
+
+process.flashggDiPhotonMVA.diphotonMVAweightfile = customize.diphoxml
 
 cfgTools.addCategory(process.tagDumper, "Reject",  "diPhoton.mass<100 || diPhoton.mass>180",
 -1 ## if nSubcat is -1 do not store anythings
@@ -71,7 +94,7 @@ cfgTools.addCategories(process.tagDumper,
 			"result           := diPhotonMVA.result",
 			"mass             := diPhoton.mass",
 			"pt               := diPhoton.pt",
-                        "dz               := abs(tagTruth().genPV().z-diPhoton().vtx().z)",
+                        "dz               := ?!tagTruth().isNull()?abs(tagTruth().genPV().z-diPhoton().vtx().z):0",
                         "leadMatchType    := diPhoton.leadingPhoton().genMatchType()",
                         "subleadMatchType := diPhoton.subLeadingPhoton().genMatchType()",
                         "leadptgen := ?diPhoton.leadingPhoton().hasMatchedGenPhoton()?diPhoton.leadingPhoton().matchedGenPhoton().pt():0",
@@ -87,12 +110,11 @@ process.tagDumper.nameTemplate ="$PROCESS_$SQRTS_$LABEL"
 
 process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
 
-process.p = cms.Path( process.tagDumper )
+if customize.processType != 'data':
+    process.p = cms.Path( process.tagDumper )
+else:
+    process.p = cms.Path( process.hltHighLevel*process.tagDumper )
 
 
-# customization for job splitting, lumi weighting, etc.
-from flashgg.MetaData.JobConfig import customize
-customize.setDefault("maxEvents",-1)
-#customize.setDefault("processIndex",5)
-customize.setDefault("targetLumi",1.e+4)
+
 customize(process)
