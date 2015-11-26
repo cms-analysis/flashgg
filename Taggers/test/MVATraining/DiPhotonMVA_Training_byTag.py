@@ -46,14 +46,27 @@ customize.setDefault("maxEvents",-1)
 #customize.setDefault("processIndex",5)
 customize.setDefault("targetLumi",1.e+4)
 
+customize.setDefault("puTarget", 
+'1.435e+05,6.576e+05,8.781e+05,1.304e+06,2.219e+06,5.052e+06,1.643e+07,6.709e+07,1.975e+08,3.527e+08,4.44e+08,4.491e+08,3.792e+08,2.623e+08,1.471e+08,6.79e+07,2.748e+07,1.141e+07,5.675e+06,3.027e+06,1.402e+06,5.119e+05,1.467e+05,3.53e+04,8270,2235,721.3,258.8,97.27,36.87,13.73,4.932,1.692,0.5519,0.1706,0.04994,0.01383,0.003627,0.0008996,0.0002111,4.689e-05,9.854e-06,1.959e-06,3.686e-07,6.562e-08,1.105e-08,1.762e-09,2.615e-10,4.768e-11,0,0,0')
+
 customize.options.register('diphoxml',
                            'flashgg/Taggers/data/TMVAClassification_BDT_QCDflattened_pray.weights.xml',
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.string,
                            'diphoxml'
                            )
+
+customize.options.register('runOnZ',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'runOnZ'
+                           )
 customize.parse()
 
+if customize.runOnZ:
+    process.flashggPreselectedDiphotons.variables[-1] = "-(passElectronVeto - 1)"
+    process.hltHighLevel.HLTPaths = ["HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelSeedMatch_Mass70_v*"]
 
 import flashgg.Taggers.dumperConfigTools as cfgTools
 from flashgg.Taggers.tagsDumpers_cfi import createTagDumper
@@ -72,7 +85,14 @@ process.tagDumper.quietRooFit = True
 
 process.flashggDiPhotonMVA.diphotonMVAweightfile = customize.diphoxml
 
-cfgTools.addCategory(process.tagDumper, "Reject",  "diPhoton.mass<100 || diPhoton.mass>180",
+minmass=100.
+maxmass=180.
+
+if customize.runOnZ:
+    minmass=70.
+    maxmass=120.
+
+cfgTools.addCategory(process.tagDumper, "Reject",  "diPhoton.mass< %f || diPhoton.mass> %f" %(minmass, maxmass),
 -1 ## if nSubcat is -1 do not store anythings
 )
 
@@ -99,6 +119,14 @@ cfgTools.addCategories(process.tagDumper,
                         "subleadMatchType := diPhoton.subLeadingPhoton().genMatchType()",
                         "leadptgen := ?diPhoton.leadingPhoton().hasMatchedGenPhoton()?diPhoton.leadingPhoton().matchedGenPhoton().pt():0",
                         "subleadptgen := ?diPhoton.subLeadingPhoton().hasMatchedGenPhoton()?diPhoton.subLeadingPhoton().matchedGenPhoton().pt():0",
+                        "leadSCeta    := diPhoton.leadingPhoton().superCluster()->eta()"
+                        "subleadSCeta    := diPhoton.subLeadingPhoton().superCluster()->eta()"
+                        "leadSCphi    := diPhoton.leadingPhoton().superCluster()->phi()"
+                        "subleadSCphi    := diPhoton.subLeadingPhoton().superCluster()->phi()"
+                        "leadR9    := diPhoton.leadingPhoton().r9()"
+                        "subleadR9    := diPhoton.subLeadingPhoton().r9()"
+                        "leadSigEOverE := diPhoton.leadingPhoton().sigEOverE()"
+                        "subleadSigEOverE := diPhoton.subLeadingPhoton().sigEOverE()"
                         "massgen := diPhoton.genP4().mass()"
 			],
 			histograms=[
