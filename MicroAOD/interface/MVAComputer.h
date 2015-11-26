@@ -35,6 +35,7 @@ namespace flashgg {
         mutable TMVA::Reader *reader_;
         GlobalVariablesComputer *global_;
 
+        bool regression_;
         std::string classifier_, weights_;
         std::vector<std::tuple<std::string, int> > variables_;
         mutable std::vector<float> values_;
@@ -45,6 +46,7 @@ namespace flashgg {
     MVAComputer<F, O>::MVAComputer( const edm::ParameterSet &cfg, GlobalVariablesComputer *global ) :
         reader_( 0 ),
         global_( global ),
+        regression_( cfg.exists("regression") ? cfg.getParameter<bool>("regression") : false ),
         classifier_( cfg.getParameter<std::string>( "classifier" ) )
     {
         using namespace std;
@@ -104,7 +106,7 @@ namespace flashgg {
         for( size_t ivar = 0; ivar < functors_.size(); ++ivar ) {
             values_[ivar] = functors_[ivar]( obj );
         }
-        return reader_->EvaluateMVA( classifier_.c_str() );
+        return ( regression_ ? reader_->EvaluateRegression(0, classifier_.c_str() ) : reader_->EvaluateMVA( classifier_.c_str() ) );
     }
 
 }

@@ -24,6 +24,10 @@ weightsCount = cms.EDProducer("WeightsCountProducer",
                               minObsPileup=cms.double(-0.5),
                               maxObsPileup=cms.double(100.5),
                               nbinsObsPileup=cms.int32(101),
+                              doTruePileup=cms.untracked.bool(True),
+                              minTruePileup=cms.double(-0.5),
+                              maxTruePileup=cms.double(100.5),
+                              nbinsTruePileup=cms.int32(101),
                               )
 
 flashggMicroAODSequence = cms.Sequence(eventCount+weightsCount

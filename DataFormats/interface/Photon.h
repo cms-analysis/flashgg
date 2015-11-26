@@ -127,7 +127,7 @@ namespace flashgg {
         float const extraChgIsoWrtWorstVtx( const std::string &key ) const { return findWorstIso( extraChIso( key ) );  };
 
         bool hasEnergyAtStep( std::string key ) const;
-        float const energyAtStep( std::string key ) const;
+        float const energyAtStep( std::string key, std::string fallback="" ) const;
         float const sigEOverE() const;
 
         std::map<edm::Ptr<reco::Vertex>, float> const phoIdMvaD() const {return phoIdMvaD_;};

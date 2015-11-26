@@ -135,9 +135,9 @@ namespace flashgg {
             if( Electron->hasMatchedConversion() ) { continue; }
             //std::cout << "[DEBUG] passed hasConversion." << std::endl;
 
-            if( dxy > TransverseImpactParam ) { continue; }
+            if( fabs(dxy) > TransverseImpactParam ) { continue; }
             //std::cout << "[DEBUG] passed dxy cut " << std::endl;
-            if( dz > LongitudinalImapctParam ) { continue; }
+            if( fabs(dz) > LongitudinalImapctParam ) { continue; }
             //std::cout << "[DEBUG] passed dz cut." << std::endl;
 
             //std::cout << "[DEBUG] LeptonSelection.c   ... pushing back Electron index " << ElectronIndex << std::endl;
@@ -157,8 +157,8 @@ namespace flashgg {
 
             Ptr<reco::Vertex> vtx = vertices[vtxi];
 
-            if( vtx_dz > elec->gsfTrack()->dz( vtx->position() ) ) {
-
+            if( fabs( vtx_dz ) > fabs( elec->gsfTrack()->dz( vtx->position() ) ) ) {
+                
                 vtx_dz = elec->gsfTrack()->dz( vtx->position() );
                 min_dz_vtx = vtxi;
             }

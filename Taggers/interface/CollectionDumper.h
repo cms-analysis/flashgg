@@ -92,7 +92,7 @@ namespace flashgg {
         double sqrtS_;
         double intLumi_;
         std::string nameTemplate_;
-
+        
         bool dumpTrees_;
         bool dumpWorkspace_;
         std::string workspaceName_;
@@ -183,10 +183,10 @@ namespace flashgg {
             //and want dumpPdfWeights_ true, then the if fails and we don't check: the value stays true or >0
             //this relies on the fact that we want nPdfWeights the same for all cats.
             if (nPdfWeights_ == 0) {
-            nPdfWeights_ = cat.exists("nPdfWeights") ?  cat.getParameter<int>( "nPdfWeights" ) : 0;
+		    nPdfWeights_ = cat.exists("nPdfWeights") ?  cat.getParameter<int>( "nPdfWeights" ) : 0;
             }
             if (dumpPdfWeights_ == false ) {
-            dumpPdfWeights_ = cat.exists("dumpPdfWeights")? cat.getParameter<bool>( "dumpPdfWeights" ) : false;
+		    dumpPdfWeights_ = cat.exists("dumpPdfWeights")? cat.getParameter<bool>( "dumpPdfWeights" ) : false;
             }
             std::string classname = ( cat.exists("className") ? cat.getParameter<std::string>( "className" ) : "" );
             //<------
@@ -294,6 +294,10 @@ namespace flashgg {
                         weight *= weights[0];
                     }
                 }
+                
+                if( globalVarsDumper_ && globalVarsDumper_->puReWeight() ) {
+                    weight *= globalVarsDumper_->cache().puweight;
+                }
             }
             return weight;
         }
@@ -326,10 +330,11 @@ namespace flashgg {
             edm::Handle<collection_type> collectionH;
             event.getByLabel( src_, collectionH );
             const auto &collection = *collectionH;
-            weight_ = eventWeight( event );
 
             if( globalVarsDumper_ ) { globalVarsDumper_->fill( event ); }
-            if( dumpPdfWeights_){
+
+            weight_ = eventWeight( event );
+	    if( dumpPdfWeights_){
                 pdfWeights_ =pdfWeights( event );
             }
 

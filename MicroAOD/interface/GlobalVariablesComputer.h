@@ -17,6 +17,8 @@ namespace flashgg {
             unsigned char lumi;
             unsigned int  run;
             int processIndex;
+            float npu;
+            float puweight;
         };
 
         GlobalVariablesComputer( const edm::ParameterSet &cfg );
@@ -28,8 +30,17 @@ namespace flashgg {
         float valueOf( const std::string &varName );
         float valueOf( int varIndex );
 
+        const cache_t & cache() const { return cache_; }
+        
+        bool puReWeight() const { return puReWeight_; }
+        
     protected:
         edm::InputTag rhoTag_, vtxTag_;
+        bool getPu_, puReWeight_, useTruePu_;
+        std::vector<double> puBins_;
+        std::vector<double> puWeight_;
+        edm::InputTag puInfo_;
+
         cache_t cache_;
     };
 }
