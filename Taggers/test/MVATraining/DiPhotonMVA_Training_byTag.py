@@ -22,7 +22,7 @@ process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring("/st
 
 
 process.load("flashgg/Taggers/flashggTagSequence_cfi")
-#process.load("flashgg/MicroAOD/flashggPreselectedDiPhotons_cfi")
+process.load("flashgg/MicroAOD/flashggPreselectedDiPhotons_cfi")
 ## process.load("flashgg/Taggers/flashggTagTester_cfi")
 
 from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
@@ -57,16 +57,22 @@ customize.options.register('diphoxml',
                            )
 
 customize.options.register('runOnZ',
-                           False,
+                           '',
                            VarParsing.VarParsing.multiplicity.singleton,
-                           VarParsing.VarParsing.varType.bool,
+                           VarParsing.VarParsing.varType.string,
                            'runOnZ'
                            )
+customize.runOnZ = 'single'
 customize.parse()
 
-if customize.runOnZ:
-    process.flashggPreselectedDiphotons.variables[-1] = "-(passElectronVeto - 1)"
-    process.hltHighLevel.HLTPaths = ["HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelSeedMatch_Mass70_v*"]
+if customize.runOnZ != '':
+    process.flashggPreselectedDiPhotons.variables[-1] = "-(passElectronVeto - 1)"
+    if customize.runOnZ == 'double':
+        process.hltHighLevel.HLTPaths = ["HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelSeedMatch_Mass70_v*"]
+    if customize.runOnZ == 'single' and customize.processType == 'data':
+        process.hltHighLevel.HLTPaths = ["HLT_Ele27_eta2p1_WPLoose_Gsf_v*"]
+    if customize.runOnZ == 'single' and customize.processType != 'data':
+        process.hltHighLevel.HLTPaths = ["HLT_Ele27_eta2p1_WP75_Gsf_v*"]
 
 import flashgg.Taggers.dumperConfigTools as cfgTools
 from flashgg.Taggers.tagsDumpers_cfi import createTagDumper
@@ -119,14 +125,14 @@ cfgTools.addCategories(process.tagDumper,
                         "subleadMatchType := diPhoton.subLeadingPhoton().genMatchType()",
                         "leadptgen := ?diPhoton.leadingPhoton().hasMatchedGenPhoton()?diPhoton.leadingPhoton().matchedGenPhoton().pt():0",
                         "subleadptgen := ?diPhoton.subLeadingPhoton().hasMatchedGenPhoton()?diPhoton.subLeadingPhoton().matchedGenPhoton().pt():0",
-                        "leadSCeta    := diPhoton.leadingPhoton().superCluster()->eta()"
-                        "subleadSCeta    := diPhoton.subLeadingPhoton().superCluster()->eta()"
-                        "leadSCphi    := diPhoton.leadingPhoton().superCluster()->phi()"
-                        "subleadSCphi    := diPhoton.subLeadingPhoton().superCluster()->phi()"
-                        "leadR9    := diPhoton.leadingPhoton().r9()"
-                        "subleadR9    := diPhoton.subLeadingPhoton().r9()"
-                        "leadSigEOverE := diPhoton.leadingPhoton().sigEOverE()"
-                        "subleadSigEOverE := diPhoton.subLeadingPhoton().sigEOverE()"
+                        "leadSCeta    := diPhoton.leadingPhoton().superCluster().eta()",
+                        "subleadSCeta    := diPhoton.subLeadingPhoton().superCluster().eta()",
+                        "leadSCphi    := diPhoton.leadingPhoton().superCluster().phi()",
+                        "subleadSCphi    := diPhoton.subLeadingPhoton().superCluster().phi()",
+                        "leadR9    := diPhoton.leadingPhoton().r9()",
+                        "subleadR9    := diPhoton.subLeadingPhoton().r9()",
+                        "leadSigEOverE := diPhoton.leadingPhoton().sigEOverE()",
+                        "subleadSigEOverE := diPhoton.subLeadingPhoton().sigEOverE()",
                         "massgen := diPhoton.genP4().mass()"
 			],
 			histograms=[
@@ -138,7 +144,7 @@ process.tagDumper.nameTemplate ="$PROCESS_$SQRTS_$LABEL"
 
 process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
 
-if customize.processType != 'data':
+if customize.processType != 'data'and customize.runOnZ != 'single':
     process.p = cms.Path( process.tagDumper )
 else:
     process.p = cms.Path( process.hltHighLevel*process.tagDumper )
