@@ -95,6 +95,16 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 ### SPRING15
 
+#### Spring15BetaV7 extension of Gold prompt to end of run
+
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-FinalPrompt-BetaV7-25ns -U 5 -L 25 -s campaigns/RunIISpring15-FinalPrompt-BetaV7-25ns.json -V Spring15BetaV7 -p ${CMSSW_BAS\
+E}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask jsons/ToRun_FinalPrompt_2015D_JSON.txt
+cd RunIISpring15-Prompt-FinalPrompt-BetaV7-25ns
+echo crabConfig_*.py | xargs -n 1 crab sub
+```
+
 #### Spring15BetaV7 on Silver-Only Prompt 25ns
 
 Excludes ReMiniAOD and prompt Gold via JSON subtraction.  Only one run in this campaign!
