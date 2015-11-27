@@ -4,7 +4,7 @@ from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
 
 # legacy VBF MVA
 flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
-                               DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+                               DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                #JetTag=cms.InputTag('flashggSelectedJets'),
                                inputTagJets= UnpackedJetCollectionVInputTag,
                                UseLegacyMVA = cms.untracked.bool(True),
@@ -14,7 +14,7 @@ flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
 
 # Legacy DiPhoDiJet MVA
 flashggVBFDiPhoDiJetMVA = cms.EDProducer('FlashggVBFDiPhoDiJetMVAProducer',
-                                         DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+                                         DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                          VBFMVAResultTag=cms.InputTag('flashggVBFMVA'),
                                          MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
                                          UseLegacyMVA = cms.untracked.bool(True),
@@ -24,7 +24,7 @@ flashggVBFDiPhoDiJetMVA = cms.EDProducer('FlashggVBFDiPhoDiJetMVAProducer',
 
 # new test VBF MVA
 flashggVBFMVANew = cms.EDProducer('FlashggVBFMVAProducer',
-                                  DiPhotonTag = cms.InputTag('flashggDiPhotons'),
+                                  DiPhotonTag = cms.InputTag('flashggPreselectedDiPhotons'),
                                   #JetTag = cms.InputTag('flashggSelectedJets'),
                                   inputTagJets= UnpackedJetCollectionVInputTag,
                                   UseLegacyMVA = cms.untracked.bool(False),
@@ -35,7 +35,7 @@ flashggVBFMVANew = cms.EDProducer('FlashggVBFMVAProducer',
 
 # new test DiPhoDiJet MVA
 flashggVBFDiPhoDiJetMVANew = cms.EDProducer('FlashggVBFDiPhoDiJetMVAProducer',
-                                            DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+                                            DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                             VBFMVAResultTag=cms.InputTag('flashggVBFMVANew'),
                                             UseLegacyMVA = cms.untracked.bool(False),
                                             MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
