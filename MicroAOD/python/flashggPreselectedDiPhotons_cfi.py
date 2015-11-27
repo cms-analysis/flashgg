@@ -48,7 +48,7 @@ rediscoveryHLTcutsV1 = cms.VPSet(
                      rhocorr=phoEffArea,
                      ),
             cms.PSet(max=cms.string("6.0")),
-            cms.PSet(max=cms.string("0.015")),
+            cms.PSet(max=cms.string("0.035")),
             cms.PSet(min=cms.string("0.8"))
             ),
              )
