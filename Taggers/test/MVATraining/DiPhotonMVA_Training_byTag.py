@@ -61,7 +61,7 @@ customize.options.register('runOnZ',
                            VarParsing.VarParsing.varType.string,
                            'runOnZ'
                            )
-customize.runOnZ = 'single'
+customize.runOnZ = ''
 customize.parse()
 
 if customize.runOnZ != '':

@@ -33,7 +33,7 @@ class JobConfig(object):
                        VarParsing.VarParsing.varType.string,          # string, int, or float
                        "processIdMap")
         self.options.register ('processIndex',
-                       "", # default value
+                       0, # default value
                        VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                        VarParsing.VarParsing.varType.int,          # string, int, or float
                        "processIndex")
