@@ -17,7 +17,7 @@ namespace flashgg {
         struct cache_t {
             float rho;
             int   nvtx;
-            unsigned int  event;
+            unsigned long long event;
             unsigned char lumi;
             unsigned int  run;
             float npu;

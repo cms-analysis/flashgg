@@ -49,9 +49,19 @@ namespace flashgg {
                 bits_.push_back( std::make_pair( bit, false ) );
             }
         }
+
         dumpLumiFactor_ = false;
         lumiFactor_ = -999.;
         processIndex_ = -999;
+
+        if( cfg.exists( "extraFloats" ) ){
+            const auto extraFloats = cfg.getParameter<ParameterSet>( "extraFloats" );
+            extraFloatNames_ = extraFloats.getParameterNamesForType<InputTag>();
+            extraFloatVariables_.resize(extraFloatNames_.size(),0.);
+            for( auto & name : extraFloatNames_ ) {
+                extraFloatTags_.push_back( extraFloats.getParameter<InputTag>(name) );
+            }
+        }
     }
 
 
@@ -62,7 +72,7 @@ namespace flashgg {
     {
         tree->Branch( "rho", &cache_.rho );
         tree->Branch( "nvtx", &cache_.nvtx );
-        tree->Branch( "event", &cache_.event, "event/i" );
+        tree->Branch( "event", &cache_.event, "event/I" );
         tree->Branch( "lumi", &cache_.lumi, "lumi/b" );
         tree->Branch( "processIndex", &processIndex_, "processIndex/I" );
         tree->Branch( "run", &cache_.run, "run/i" );
@@ -75,6 +85,9 @@ namespace flashgg {
             tree->Branch( bit.first.c_str(), &bit.second, ( bit.first + "/O" ).c_str() );
         }
         if( dumpLumiFactor_ ) { tree->Branch( "lumiFactor", &lumiFactor_ ); }
+        for( size_t iextra = 0; iextra<extraFloatNames_.size(); ++iextra ) {
+            tree->Branch( extraFloatNames_[iextra].c_str(), &extraFloatVariables_[iextra] );
+        }
     }
 
     void GlobalVariablesDumper::fill( const EventBase &evt )
@@ -100,6 +113,19 @@ namespace flashgg {
                         break;
                     }
                 }
+            }
+        }
+        for( size_t iextra = 0; iextra<extraFloatTags_.size(); ++iextra ) {
+            try {
+                Handle<float> ihandle; 
+                evt.getByLabel( extraFloatTags_[iextra], ihandle );
+                extraFloatVariables_[iextra] = *ihandle;
+            } catch (...) {
+                Handle<std::vector<float> > ihandle; 
+                evt.getByLabel( extraFloatTags_[iextra], ihandle );
+                assert( ihandle->size() == 1 );
+                extraFloatVariables_[iextra] = (*ihandle)[0];
+
             }
         }
     }
