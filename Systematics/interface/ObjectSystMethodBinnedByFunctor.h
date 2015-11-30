@@ -116,7 +116,9 @@ namespace flashgg {
                     return std::make_pair( bin.val, bin.unc );
                 }
             }
-            throw cms::Exception( "Binning" ) << "binContents failed for method " << this->name() << ", label " << this->label() << ", shiftLabel " << this->shiftLabel(param_var()) << ", would return a pair of empty vectors - 0th val: " << func_vals[0] << std::endl;
+            std::stringstream str;
+            std::copy(func_vals.begin(),func_vals.end(),std::ostream_iterator<double>(str,","));
+            throw cms::Exception( "Binning" ) << " binContents failed and would return a pair of empty vectors " << str.str();
             return std::make_pair( std::vector<double>(), std::vector<double>() ); // this is bad
         }
 

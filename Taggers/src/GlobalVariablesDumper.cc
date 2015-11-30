@@ -72,8 +72,8 @@ namespace flashgg {
     {
         tree->Branch( "rho", &cache_.rho );
         tree->Branch( "nvtx", &cache_.nvtx );
-        tree->Branch( "event", &cache_.event, "event/I" );
-        tree->Branch( "lumi", &cache_.lumi, "lumi/b" );
+        tree->Branch( "event", &cache_.event, "event/l" );
+        tree->Branch( "lumi", &cache_.lumi, "lumi/i" );
         tree->Branch( "processIndex", &processIndex_, "processIndex/I" );
         tree->Branch( "run", &cache_.run, "run/i" );
         tree->Branch( "nvtx", &cache_.nvtx );
