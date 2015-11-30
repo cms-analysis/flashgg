@@ -123,7 +123,8 @@ namespace flashgg {
             } catch (...) {
                 Handle<std::vector<float> > ihandle; 
                 evt.getByLabel( extraFloatTags_[iextra], ihandle );
-                assert( ihandle->size() == 1 );
+                // assert( ihandle->size() == 1 );
+                if( ihandle->size()  < 1 ) { std::cout << "NO extra float......... " << extraFloatTags_[iextra].label() << std::endl; continue; }
                 extraFloatVariables_[iextra] = (*ihandle)[0];
 
             }
