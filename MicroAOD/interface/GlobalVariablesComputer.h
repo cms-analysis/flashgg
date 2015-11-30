@@ -18,7 +18,7 @@ namespace flashgg {
             float rho;
             int   nvtx;
             unsigned long long event;
-            unsigned char lumi;
+            unsigned int lumi;
             unsigned int  run;
             float npu;
             float puweight;
