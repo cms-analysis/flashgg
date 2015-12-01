@@ -1,5 +1,8 @@
 {
     "processes" : {
+        "Data" : [ "/DoubleEG/sethzenz-RunIISpring15-FinalPrompt-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4-270c398500dd950e9be0bd5b12d77f83/USER",
+                   "/DoubleEG/sethzenz-RunIISpring15-Prompt-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4-270c398500dd950e9be0bd5b12d77f83/USER",
+           	   "/DoubleEG/sethzenz-RunIISpring15-ReMiniAOD-BetaV7-25ns-Spring15BetaV7-v0-Run2015C_25ns-05Oct2015-v1-abb8a7e501c7a3475a3187a9efa3732c/USER" ],
         "ggh_120"  : [ "/GluGluHToGG_M-120_13TeV_powheg_pythia8" ],
         "ggh_125"  : [ "/GluGluHToGG_M-125_13TeV_powheg_pythia8" ],
 	"ggh_130" : [ "/GluGluHToGG_M-130_13TeV_powheg_pythia8" ],
@@ -21,5 +24,5 @@
 	"DYjet" : [ "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8" ]
 	
      },	
-        "cmdLine" : "campaign=RunIISpring15-ReMiniAOD-BetaV7-25ns"
+        "cmdLine" : "campaign=RunIISpring15-AllGold-BetaV7-25ns"
 }
