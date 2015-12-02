@@ -23,7 +23,12 @@ namespace flashgg {
         const VBFMVAResult VBFMVA() const ;
         const Jet leadingJet() const; //needs to be validated
         const Jet subLeadingJet() const; //needs to be validated
-
+        const Jet subSubLeadingJet() const; //needs to be validated // 3rd Jet needed for VBF studies
+        
+        const edm::Ptr<flashgg::Jet> leadingJet_ptr() const; //needs to be validated
+        const edm::Ptr<flashgg::Jet> subLeadingJet_ptr() const; //needs to be validated
+        const edm::Ptr<flashgg::Jet> subSubLeadingJet_ptr() const; //needs to be validated // 3rd Jet needed for VBF studies
+        const bool hasValidVBFTriJet() const; 
     private:
         VBFDiPhoDiJetMVAResult vbfDiPhoDiJet_mva_result_;
     };
