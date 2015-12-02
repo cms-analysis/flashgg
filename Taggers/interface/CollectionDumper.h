@@ -139,7 +139,7 @@ namespace flashgg {
         dumpHistos_( cfg.getUntrackedParameter<bool>( "dumpHistos", false ) ),
         dumpGlobalVariables_( cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true ) ),
         classifier_( cfg.getParameter<edm::ParameterSet>( "classifierCfg" ) ),
-        throwOnUnclassified_( cfg.exists("throwOnUnclassified") ? cfg.getParameter<bool>("throwOnUnclassified") : false ), //default was true!!
+        throwOnUnclassified_( cfg.exists("throwOnUnclassified") ? cfg.getParameter<bool>("throwOnUnclassified") : true ),
         globalVarsDumper_( 0 )        
 
     {
