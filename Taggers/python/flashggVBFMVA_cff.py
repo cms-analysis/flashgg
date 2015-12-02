@@ -9,8 +9,9 @@ flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
                                inputTagJets= UnpackedJetCollectionVInputTag,
                                UseLegacyMVA = cms.untracked.bool(True),
                                MinDijetMinv = cms.double(0.0),
-                               vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVA_dijet_sherpa_scalewt50_2evenb_powheg200_maxdPhi_oct9_Gradient.weights.xml"),
-		)
+                               #vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVA_dijet_sherpa_scalewt50_2evenb_powheg200_maxdPhi_oct9_Gradient.weights.xml"),
+                               vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/Flashgg_VBF_CHS_STD_BDTG.weights.xml"),
+                               )
 
 # Legacy DiPhoDiJet MVA
 flashggVBFDiPhoDiJetMVA = cms.EDProducer('FlashggVBFDiPhoDiJetMVAProducer',
@@ -19,7 +20,7 @@ flashggVBFDiPhoDiJetMVA = cms.EDProducer('FlashggVBFDiPhoDiJetMVAProducer',
                                          MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
                                          UseLegacyMVA = cms.untracked.bool(True),
                                          vbfDiPhoDiJetMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVA_vbf_dijet_dipho_evenbkg_scaledwt50_maxdPhi_Gradient.weights.xml"),
-		)
+                                         )
 
 
 # new test VBF MVA
