@@ -17,8 +17,8 @@ VBFTagTruth::VBFTagTruth(const VBFTagTruth &b) : TagTruthBase::TagTruthBase(b)
     setClosestParticleToSubLeadingJet(b.closestParticleToSubLeadingJet());
     setClosestParticleToLeadingPhoton(b.closestParticleToLeadingPhoton());
     setClosestParticleToSubLeadingPhoton(b.closestParticleToSubLeadingPhoton());
-    setLeadingQuark(b.leadingQuark());
-    setSubLeadingQuark(b.subLeadingQuark());
+    setLeadingQuark(b.leadingParton());
+    setSubLeadingQuark(b.subLeadingParton());
 }
 */
 
@@ -28,14 +28,22 @@ VBFTagTruth *VBFTagTruth::clone() const
     VBFTagTruth *result = new VBFTagTruth;
     result->setClosestGenJetToLeadingJet( closestGenJetToLeadingJet() );
     result->setClosestGenJetToSubLeadingJet( closestGenJetToSubLeadingJet() );
+    result->setClosestGenJetToSubSubLeadingJet( closestGenJetToSubSubLeadingJet() );
     result->setClosestParticleToLeadingJet( closestParticleToLeadingJet() );
     result->setClosestParticleToSubLeadingJet( closestParticleToSubLeadingJet() );
+    result->setClosestParticleToSubSubLeadingJet( closestParticleToSubSubLeadingJet() );
     result->setClosestParticleToLeadingPhoton( closestParticleToLeadingPhoton() );
     result->setClosestParticleToSubLeadingPhoton( closestParticleToSubLeadingPhoton() );
-    result->setLeadingQuark( leadingQuark() );
-    result->setSubLeadingQuark( subLeadingQuark() );
+    result->setLeadingParton( leadingParton() );
+    result->setSubLeadingParton( subLeadingParton() );
+    result->setSubLeadingParton( subSubLeadingParton() );
+    result->setPtOrderedPartons( ptOrderedPartons() );
+    result->setPtOrderedGenJets( ptOrderedGenJets() );
+    result->setPtOrderedFggJets( ptOrderedFggJets() );
+    result->setDiPhoton( diPhoton() );
     result->setGenPV( genPV() );
     return result;
+
 }
 
 // Local Variables:
