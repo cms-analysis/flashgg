@@ -28,7 +28,7 @@ And a very basic workflow test:
  cmsRun MicroAOD/test/microAODstd.py
  cmsRun Taggers/test/simple_Tag_test.py
  cmsRun Taggers/test/diphotonsDumper_cfg.py
- cmsRun Systematics/test/MicroAODtoWorkspace.py
+ cmsRun Systematics/test/MicroAODtoWorkspace.py processId=wzh_125
  ```
 
 These are just some test examples; the first makes MicroAOD from a MiniAOD file accessed via xrootd, 

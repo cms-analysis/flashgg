@@ -260,6 +260,17 @@ void Photon::updateEnergy( std::string key, float val )
     setP4( ( val / energy() )*p4() );
 }
 
+// For systematics
+void Photon::shiftAllMvaValuesBy( float val ) {
+    std::vector<edm::Ptr<reco::Vertex> > keys;
+    for(auto keyval = phoIdMvaD_.begin(); keyval != phoIdMvaD_.end(); ++keyval) { 
+        keys.push_back( keyval->first );
+    }
+    for(auto key = keys.begin() ; key != keys.end() ; ++key ) {
+        phoIdMvaD_[*key] += val;
+    }
+}
+
 float const Photon::sigEOverE() const
 {
     // Use uncertainty and error stored from reco because we want this fraction to be constant
