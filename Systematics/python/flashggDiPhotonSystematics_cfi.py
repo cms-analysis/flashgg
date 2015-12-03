@@ -43,6 +43,15 @@ smearBins = cms.PSet(
                               values = cms.vdouble( 0.01860 ), uncertainties = cms.vdouble( 0.00078 ) ),
                     ))
 
+mvaShiftBins = cms.PSet(
+    variables = cms.vstring("abs(superCluster.eta)"),
+    bins = cms.VPSet(
+                     cms.PSet( lowBounds = cms.vdouble(0.000), upBounds = cms.vdouble(999.),
+                               values = cms.vdouble( 0.0 ), uncertainties = cms.vdouble( 0.01 ))
+                     )
+    )
+
+
 flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
 		src = cms.InputTag("flashggFinalEGamma","finalDiPhotons"),
                 SystMethods2D = cms.VPSet(
@@ -54,7 +63,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                                         secondVar = cms.vint32(0,0,1,-1)),
                                                     BinList = smearBins,
                                                     Debug = cms.untracked.bool(False),
-                                                    ExaggerateShiftUp = cms.untracked.bool(True),
+                                                    ExaggerateShiftUp = cms.untracked.bool(False),
                                                     ),
                                           cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearStochastic"),
                                                     MethodName = cms.string("FlashggDiPhotonFromPhoton2D"),
@@ -64,7 +73,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                                         secondVar = cms.vint32(0,0,1,-1)),
                                                     BinList = smearBins,
                                                     Debug = cms.untracked.bool(False),
-                                                    ExaggerateShiftUp = cms.untracked.bool(True),
+                                                    ExaggerateShiftUp = cms.untracked.bool(False),
                                                     )
                                           ),
 		SystMethods = cms.VPSet(
@@ -107,7 +116,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   OverallRange = cms.string("r9>0.94&&abs(eta)>=1.5"),
                                                   BinList = smearBins,
                                                   Debug = cms.untracked.bool(False),
-                                                  ExaggerateShiftUp = cms.untracked.bool(True),
+                                                  ExaggerateShiftUp = cms.untracked.bool(False),
                                                   ),
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
                                                   MethodName = cms.string("FlashggDiPhotonFromPhoton"),
@@ -116,8 +125,16 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   OverallRange = cms.string("r9<0.94&&abs(eta)>=1.5"),
                                                   BinList = smearBins,
                                                   Debug = cms.untracked.bool(False),
-                                                  ExaggerateShiftUp = cms.untracked.bool(True),
+                                                  ExaggerateShiftUp = cms.untracked.bool(False),
+                                                  ),
+                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonMvaShift"),
+                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+                                                  Label = cms.string("MvaShift"),
+                                                  NSigmas = cms.vint32(-1,1),
+                                                  OverallRange = cms.string("1"),
+                                                  BinList = mvaShiftBins,
+                                                  Debug = cms.untracked.bool(False)
                                                   )
                                         )
-                                      )
+                                     )
 
