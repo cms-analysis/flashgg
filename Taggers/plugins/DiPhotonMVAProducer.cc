@@ -180,6 +180,7 @@ namespace flashgg {
             float sech2 = 1.0 / TMath::CosH( p24.Eta() );
             float tanh1 = TMath::TanH( p14.Eta() );
             float tanh2 = TMath::TanH( p24.Eta() );
+
             float numerator1 = sech1 * ( sech1 * tanh2 - tanh1 * sech2 * cos_term );
             float numerator2 = sech2 * ( sech2 * tanh1 - tanh2 * sech1 * cos_term );
             float denominator = 1. - tanh1 * tanh2 - sech1 * sech2 * cos_term;
