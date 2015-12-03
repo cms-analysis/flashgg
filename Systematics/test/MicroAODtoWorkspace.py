@@ -47,8 +47,9 @@ print "customize.processId:",customize.processId
 if customize.processId.count("h_") or customize.processId.count("vbf_"): # convention: ggh vbf wzh tth
     print "Signal MC, so adding systematics and dZ"
     variablesToUse = minimalVariables
-    for r9 in ["HighR9","LowR9"]:
-        for direction in ["Up","Down"]:
+    for direction in ["Up","Down"]:
+        systlabels.append("MvaShift%s01sigma" % direction)
+        for r9 in ["HighR9","LowR9"]:
             systlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
             for var in ["Rho","Phi"]:
                 systlabels.append("MCSmear%sEB%s%s01sigma" % (r9,var,direction))
@@ -140,8 +141,8 @@ for tag in tagList:
           currentVariables = systematicVariables
       
       isBinnedOnly = (systlabel !=  "")
-      dumpPdfWeights = (systlabel ==  "")
-      nPdfWeights = 102
+      dumpPdfWeights = False #(systlabel ==  "")
+      nPdfWeights = 0
       
       cfgTools.addCategory(process.tagsDumper,
                            systlabel,
