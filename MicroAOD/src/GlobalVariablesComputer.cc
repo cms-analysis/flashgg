@@ -48,6 +48,7 @@ namespace flashgg {
         else if( varName == "lumi" ) { return 4; }
         else if( varName == "npu" ) { return 5; }
         else if( varName == "puweight" ) { return 6; }
+        else if( varName == "processIndex" ) { return 7; }
         return -1;
     }
 
@@ -65,6 +66,7 @@ namespace flashgg {
         else if( varIndex == 4 ) { return ( float )cache_.lumi; }
         else if( varIndex == 5 ) { return ( float )cache_.npu; }
         else if( varIndex == 6 ) { return ( float )cache_.puweight; }
+        else if( varIndex == 7 ) { return ( float )cache_.processIndex; }
         return -1e+6;
 
     }
