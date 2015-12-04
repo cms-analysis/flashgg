@@ -294,7 +294,7 @@ class JobConfig(object):
             return
 
         self.options.parseArguments()
-        print "parsing arguments, processIdnex is "+str(self.options.processIndex)
+#        print "parsing arguments, processIdnex is "+str(self.options.processIndex)
         self.processIndex = self.options.processIndex
         if self.options.processIdMap != "":
             self.readProcessIdMap(self.options.processIdMap)

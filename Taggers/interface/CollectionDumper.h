@@ -163,7 +163,6 @@ namespace flashgg {
                 globalVarsDumper_->dumpLumiFactor(lumiWeight_);
                 lumiWeight_ = 1.;
             }
-            std::cout<<"In Collection dumper, processIndex is "<<processIndex_<<std::endl;
             globalVarsDumper_->setProcessIndex(processIndex_);
         } else if ( splitLumiWeight_ ) {
             throw cms::Exception("Configuration error") << "You specified the splitLumiWeight option but not the dumpGlobalVariables one. I can split the weight only if you also set the latter.\n";
