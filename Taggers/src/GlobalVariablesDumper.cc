@@ -38,6 +38,7 @@ namespace flashgg {
         tree->Branch( "nvtx", &cache_.nvtx );
         tree->Branch( "event", &cache_.event, "event/i" );
         tree->Branch( "lumi", &cache_.lumi, "lumi/b" );
+        tree->Branch( "processIndex", &processIndex_, "processIndex/I" );
         tree->Branch( "run", &cache_.run, "run/i" );
         tree->Branch( "nvtx", &cache_.nvtx );
         if( getPu_ ) {
@@ -47,6 +48,7 @@ namespace flashgg {
         for( auto &bit : bits_ ) {
             tree->Branch( bit.first.c_str(), &bit.second, ( bit.first + "/O" ).c_str() );
         }
+        if( dumpLumiFactor_ ) { tree->Branch( "lumiFactor", &lumiFactor_ ); }
     }
 
     void GlobalVariablesDumper::fill( const EventBase &evt )
