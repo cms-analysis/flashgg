@@ -147,16 +147,16 @@ namespace flashgg {
                                   << " " << truth->closestParticleToSubLeadingPhoton()->pdgId() << std::endl;
                     }
                     std::cout << "\t\t------------------------------------------" << std::endl;
-                    if( truth->leadingQuark().isNonnull() ) {
-                        std::cout << "\t\tleadingQuark pt eta id " << truth->leadingQuark()->pt() << " " << truth->leadingQuark()->eta()
-                                  << " " << truth->leadingQuark()->pdgId() << std::endl;
+                    if( truth->leadingParton().isNonnull() ) {
+                        std::cout << "\t\tleadingParton pt eta id " << truth->leadingParton()->pt() << " " << truth->leadingParton()->eta()
+                                  << " " << truth->leadingParton()->pdgId() << std::endl;
                     }
-                    if( truth->subLeadingQuark().isNonnull() ) {
-                        std::cout << "\t\tsubLeadingQuark pt eta id "  << truth->subLeadingQuark()->pt() << " " << truth->subLeadingQuark()->eta()
-                                  << " " << truth->subLeadingQuark()->pdgId() << std::endl;
+                    if( truth->subLeadingParton().isNonnull() ) {
+                        std::cout << "\t\tsubLeadingQuark pt eta id "  << truth->subLeadingParton()->pt() << " " << truth->subLeadingParton()->eta()
+                                  << " " << truth->subLeadingParton()->pdgId() << std::endl;
                     }
-                    if( truth->leadingQuark().isNonnull() && truth->subLeadingQuark().isNonnull() ) {
-                        std::cout << "\t\tDiquark mass: " << ( truth->leadingQuark()->p4() + truth->subLeadingQuark()->p4() ).mass() << std::endl;
+                    if( truth->leadingParton().isNonnull() && truth->subLeadingParton().isNonnull() ) {
+                        std::cout << "\t\tDiquark mass: " << ( truth->leadingParton()->p4() + truth->subLeadingParton()->p4() ).mass() << std::endl;
                     }
                 }
 

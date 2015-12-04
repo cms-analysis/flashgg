@@ -85,24 +85,24 @@ namespace flashgg {
         Handle<View<flashgg::VBFMVAResult> > vbfMvaResults;
         evt.getByToken( vbfMvaResultToken_, vbfMvaResults );
 //		const PtrVector<flashgg::VBFMVAResult>& vbfMvaResultPointers = vbfMvaResults->ptrVector();
-
+        
         Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
         evt.getByToken( mvaResultToken_, mvaResults );
 //		const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
-
-        std::auto_ptr<vector<VBFDiPhoDiJetMVAResult> > vbfDiPhoDiJet_results( new
-                vector<VBFDiPhoDiJetMVAResult> ); // one per diphoton, always in same order, vector is more efficient than map
+        
+        std::auto_ptr<vector<VBFDiPhoDiJetMVAResult> > vbfDiPhoDiJet_results( new vector<VBFDiPhoDiJetMVAResult> );
+        // one per diphoton, always in same order, vector is more efficient than map
 
         for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
-
+            
             edm::Ptr<flashgg::DiPhotonMVAResult> dipho_mvares = mvaResults->ptrAt( candIndex );
             dipho_mva_ = dipho_mvares->result;
 
             edm::Ptr<flashgg::VBFMVAResult> vbf_mvares = vbfMvaResults->ptrAt( candIndex );
             dijet_mva_ = vbf_mvares->vbfMvaResult_value;
-
+            
             flashgg::VBFDiPhoDiJetMVAResult mvares;
-
+            
 
             auto leadPho_p4 = diPhotons->ptrAt( candIndex )->leadingPhoton()->p4();
             auto sublPho_p4 =  diPhotons->ptrAt( candIndex )->subLeadingPhoton()->p4();
@@ -120,9 +120,9 @@ namespace flashgg {
             mvares.dijet_mva =   dijet_mva_ ;
             mvares.dipho_mva =   dipho_mva_ ;
             mvares.dipho_PToM =   dipho_PToM_ ;
-
+                        
             mvares.vbfMvaResult = ( VBFMVAResult )vbf_mvares;
-
+            
             vbfDiPhoDiJet_results->push_back( mvares );
         }
         evt.put( vbfDiPhoDiJet_results );

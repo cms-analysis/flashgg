@@ -27,14 +27,41 @@ const VBFMVAResult VBFTag::VBFMVA() const
     return vbfDiPhoDiJet_mva_result_.vbfMvaResult;
 }
 
-const Jet VBFTag::leadingJet() const
+const reco::Candidate::LorentzVector VBFTag::leadingJet() const
 {
     return vbfDiPhoDiJet_mva_result_.vbfMvaResult.leadJet;
 }
 
-const Jet VBFTag::subLeadingJet() const
+const reco::Candidate::LorentzVector  VBFTag::subLeadingJet() const
 {
     return vbfDiPhoDiJet_mva_result_.vbfMvaResult.subleadJet;
+}
+
+const reco::Candidate::LorentzVector  VBFTag::subSubLeadingJet() const
+{
+    //! adding a third jets for the VBF studies
+    return vbfDiPhoDiJet_mva_result_.vbfMvaResult.subsubleadJet;
+}
+
+const edm::Ptr<Jet> VBFTag::leadingJet_ptr() const
+{
+    return vbfDiPhoDiJet_mva_result_.vbfMvaResult.leadJet_ptr;
+}
+
+const edm::Ptr<Jet> VBFTag::subLeadingJet_ptr() const
+{
+    return vbfDiPhoDiJet_mva_result_.vbfMvaResult.subleadJet_ptr;
+}
+
+const edm::Ptr<Jet> VBFTag::subSubLeadingJet_ptr() const
+{
+    //! adding a third jets for the VBF studies
+    return vbfDiPhoDiJet_mva_result_.vbfMvaResult.subsubleadJet_ptr;
+}
+
+const bool VBFTag::hasValidVBFTriJet() const
+{
+    return vbfDiPhoDiJet_mva_result_.vbfMvaResult.hasValidVBFTriJet;
 }
 
 // Local Variables:
