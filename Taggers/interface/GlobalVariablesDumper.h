@@ -20,10 +20,17 @@ namespace flashgg {
         void bookTreeVariables( TTree *target, const std::map<std::string, std::string> &replacements );
 
         void fill( const edm::EventBase &event );
+        
+        void dumpLumiFactor(double lumiFactor) { dumpLumiFactor_ = true; lumiFactor_ = lumiFactor;  }
 
+        void setProcessIndex(int processIndex) {processIndex_= processIndex;}
     private:
         edm::InputTag triggerTag_;
         std::vector<std::pair<std::string, bool>> bits_;
+        
+        bool dumpLumiFactor_;
+        double lumiFactor_;
+        int processIndex_;
 
     };
 

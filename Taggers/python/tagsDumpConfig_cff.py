@@ -7,6 +7,7 @@ tagsDumpConfig = cms.PSet(
     src = cms.InputTag(""),    
     generatorInfo = cms.InputTag("generator"),
     processId = cms.string(""),
+    processIndex = cms.int32(50),
     maxCandPerEvent = cms.int32(-1),
     lumiWeight = cms.double(1.0),# Over-written by metaData if using fggRunJobs
     intLumi = cms.untracked.double(1000.), # in /pb. to be over-written by metaData if using fggRunJobs
