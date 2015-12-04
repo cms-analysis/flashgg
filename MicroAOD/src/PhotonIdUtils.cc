@@ -271,24 +271,6 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
     else if( photon.isEE() ) { phoIdMva = phoIdMva_EE_; }
 
     float mvavalue = phoIdMva->EvaluateMVA( "BDT" );
-    //    std::cout<<"CHECK mvavalue just after Evaluate "<<mvavalue<<std::endl;
-    if(mvavalue==-999){
-        std::cout<<"MVA value is "<<mvavalue<<", dumping input variables"<<std::endl;
-        std::cout<<"phoIdMva_SCRawE_         "<<phoIdMva_SCRawE_         <<std::endl;
-        std::cout<<"phoIdMva_R9_             "<<phoIdMva_R9_             <<std::endl;
-        std::cout<<"phoIdMva_S4_             "<<phoIdMva_S4_             <<std::endl;
-        std::cout<<"phoIdMva_covIEtaIEta_    "<<phoIdMva_covIEtaIEta_    <<std::endl;
-        std::cout<<"phoIdMva_EtaWidth_       "<<phoIdMva_EtaWidth_       <<std::endl;
-        std::cout<<"phoIdMva_PhiWidth_       "<<phoIdMva_PhiWidth_       <<std::endl;
-        std::cout<<"phoIdMva_covIEtaIPhi_    "<<phoIdMva_covIEtaIPhi_    <<std::endl;
-        std::cout<<"phoIdMva_pfPhoIso03_     "<<phoIdMva_pfPhoIso03_     <<std::endl;
-        std::cout<<"phoIdMva_pfChgIso03_     "<<phoIdMva_pfChgIso03_     <<std::endl;
-        std::cout<<"phoIdMva_pfChgIso03worst_"<<phoIdMva_pfChgIso03worst_<<std::endl;
-        std::cout<<"phoIdMva_ScEta_          "<<phoIdMva_ScEta_          <<std::endl;
-        std::cout<<"phoIdMva_rho_            "<<phoIdMva_rho_            <<std::endl;
-        std::cout<<"phoIdMva_ESEffSigmaRR_   "<<phoIdMva_ESEffSigmaRR_   <<std::endl;
-        
-    }
     return mvavalue;
 }
 
