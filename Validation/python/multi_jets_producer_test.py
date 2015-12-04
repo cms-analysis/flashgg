@@ -23,13 +23,11 @@ if current_gt.count("::All"):
     process.GlobalTag.globaltag = new_gt
 
 
-
+    
 process.source = cms.Source("PoolSource",
-                            fileNames=cms.untracked.vstring(
-                                #"/store/mc/RunIISpring15DR74/VBFHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v1/50000/049AAFAA-CA2D-E511-93E8-02163E00F402.root"
-                                "/store/mc/RunIISpring15DR74/QCD_Pt-15to7000_TuneCUETP8M1_Flat_13TeV_pythia8/MINIAODSIM/AsymptFlat0to50bx50Reco_MCRUN2_74_V9A-v3/00000/023F427F-0E08-E511-A813-0025905A60EE.root"
+                            fileNames=cms.untracked.vstring("/store/mc/RunIISpring15DR74/QCD_Pt-15to7000_TuneCUETP8M1_Flat_13TeV_pythia8/MINIAODSIM/AsymptFlat0to50bx50Reco_MCRUN2_74_V9A-v3/00000/023F427F-0E08-E511-A813-0025905A60EE.root"
+                                                            )
                             )
-)
 
 process.MessageLogger.cerr.threshold = 'ERROR' 
 # process.MessageLogger.suppressWarning.extend(['SimpleMemoryCheck','MemoryCheck'])

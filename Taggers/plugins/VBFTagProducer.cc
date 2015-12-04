@@ -33,7 +33,7 @@ namespace flashgg {
 
     private:
         void produce( Event &, const EventSetup & ) override;
-        int chooseCategory( float );
+        int  chooseCategory( float );
 
         EDGetTokenT<View<DiPhotonCandidate> >      diPhotonToken_;
         EDGetTokenT<View<VBFDiPhoDiJetMVAResult> > vbfDiPhoDiJetMvaResultToken_;
@@ -399,13 +399,7 @@ namespace flashgg {
                 }
             }
         }
-        
-        
-        
-        
-
-
-        
+                
         evt.put( tags );
         evt.put( truths );
     }

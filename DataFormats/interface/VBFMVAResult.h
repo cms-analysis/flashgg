@@ -5,7 +5,6 @@
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 
-
 namespace flashgg {
     
     class VBFMVAResult
@@ -16,20 +15,25 @@ namespace flashgg {
         VBFMVAResult( edm::Ptr<VBFMVAResult> );
         
         // diJet Info
-        flashgg::Jet leadJet;
-        flashgg::Jet subleadJet;
+        //flashgg::Jet leadJet;
+        //flashgg::Jet subleadJet;
         // 3rd jet
-        flashgg::Jet subsubleadJet;
-
+        //flashgg::Jet subsubleadJet;
+        reco::Candidate::LorentzVector leadJet;
+        reco::Candidate::LorentzVector subleadJet;
+        reco::Candidate::LorentzVector subsubleadJet;
+        
         edm::Ptr<flashgg::Jet> leadJet_ptr;
         edm::Ptr<flashgg::Jet> subleadJet_ptr;
         // 3rd jet
         edm::Ptr<flashgg::Jet> subsubleadJet_ptr; 
-
+        // 4-vec of the 3 jets
+        
+        
         bool hasValidVBFTriJet;
         
         // di-photon info 
-        flashgg::DiPhotonCandidate diphoton;
+        // flashgg::DiPhotonCandidate diphoton;
         
         // event based variables
         int  n_rec_jets;

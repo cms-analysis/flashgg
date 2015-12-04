@@ -27,17 +27,17 @@ const VBFMVAResult VBFTag::VBFMVA() const
     return vbfDiPhoDiJet_mva_result_.vbfMvaResult;
 }
 
-const Jet VBFTag::leadingJet() const
+const reco::Candidate::LorentzVector VBFTag::leadingJet() const
 {
     return vbfDiPhoDiJet_mva_result_.vbfMvaResult.leadJet;
 }
 
-const Jet VBFTag::subLeadingJet() const
+const reco::Candidate::LorentzVector  VBFTag::subLeadingJet() const
 {
     return vbfDiPhoDiJet_mva_result_.vbfMvaResult.subleadJet;
 }
 
-const Jet VBFTag::subSubLeadingJet() const
+const reco::Candidate::LorentzVector  VBFTag::subSubLeadingJet() const
 {
     //! adding a third jets for the VBF studies
     return vbfDiPhoDiJet_mva_result_.vbfMvaResult.subsubleadJet;
