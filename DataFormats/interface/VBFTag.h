@@ -21,9 +21,9 @@ namespace flashgg {
 
         const VBFDiPhoDiJetMVAResult VBFDiPhoDiJetMVA() const;
         const VBFMVAResult VBFMVA() const ;
-        const Jet leadingJet() const; //needs to be validated
-        const Jet subLeadingJet() const; //needs to be validated
-        const Jet subSubLeadingJet() const; //needs to be validated // 3rd Jet needed for VBF studies
+        const reco::Candidate::LorentzVector leadingJet() const; //needs to be validated
+        const reco::Candidate::LorentzVector subLeadingJet() const; //needs to be validated
+        const reco::Candidate::LorentzVector subSubLeadingJet() const; //needs to be validated // 3rd Jet needed for VBF studies
         
         const edm::Ptr<flashgg::Jet> leadingJet_ptr() const; //needs to be validated
         const edm::Ptr<flashgg::Jet> subLeadingJet_ptr() const; //needs to be validated

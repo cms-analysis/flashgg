@@ -246,7 +246,7 @@ namespace flashgg {
                 jetP4s.push_back(Jets[jetCollectionIndex]->ptrAt(dijet_indices.second)->p4());
             }
             if ( hasValidVBFTriJet ) {
-
+                
                 jetP4s.push_back(Jets[jetCollectionIndex]->ptrAt(jet_3_index)->p4());
 
                 float dR_13 = deltaR(jetP4s[0].eta(),jetP4s[0].phi(),jetP4s[2].eta(),jetP4s[2].phi());
@@ -314,23 +314,27 @@ namespace flashgg {
                 dijet_dy_         = fabs( (dijetP4s.first + dijetP4s.second).Rapidity() - (diPhotonP4s[0] + diPhotonP4s[1]).Rapidity() );
                 
                 dijet_leady_      = dijetP4s.first.Rapidity();
-
+                
                 dijet_subleady_   = dijetP4s.second.Rapidity();
                 
-                mvares.leadJet    = *Jets[jetCollectionIndex]->ptrAt( dijet_indices.first );
-                mvares.subleadJet = *Jets[jetCollectionIndex]->ptrAt( dijet_indices.second );
+                mvares.n_rec_jets = n_jets_count;
+                //mvares.leadJet    = *Jets[jetCollectionIndex]->ptrAt( dijet_indices.first );
+                //mvares.subleadJet = *Jets[jetCollectionIndex]->ptrAt( dijet_indices.second );
+                mvares.leadJet        = dijetP4s.first;
+                mvares.subleadJet     = dijetP4s.second;
                 
                 mvares.leadJet_ptr    = Jets[jetCollectionIndex]->ptrAt( dijet_indices.first );
                 mvares.subleadJet_ptr = Jets[jetCollectionIndex]->ptrAt( dijet_indices.second );
-                mvares.diphoton       = *diPhotons->ptrAt( candIndex );
+                //mvares.diphoton       = *diPhotons->ptrAt( candIndex );
             }else{
                 mvares.leadJet_ptr    = edm::Ptr<flashgg::Jet>();
                 mvares.subleadJet_ptr = edm::Ptr<flashgg::Jet>();
             }
             
             if ( hasValidVBFDiJet && hasValidVBFTriJet){
-                mvares.subsubleadJet     = *Jets[jetCollectionIndex]->ptrAt( jet_3_index );
-                mvares.subsubleadJet_ptr =  Jets[jetCollectionIndex]->ptrAt( jet_3_index );
+                //mvares.subsubleadJet     = *Jets[jetCollectionIndex]->ptrAt( jet_3_index );
+                mvares.subsubleadJet     = Jets[jetCollectionIndex]->ptrAt( jet_3_index )->p4();
+                mvares.subsubleadJet_ptr = Jets[jetCollectionIndex]->ptrAt( jet_3_index );
                 mvares.hasValidVBFTriJet = 1;
             }else{
                 mvares.subsubleadJet_ptr =  edm::Ptr<flashgg::Jet>();

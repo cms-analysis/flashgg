@@ -41,7 +41,7 @@ namespace flashgg {
     {
         leadJet          = x->leadJet;
         subleadJet       = x->subleadJet;
-    
+        
         leadJet_ptr      = x->leadJet_ptr;
         subleadJet_ptr   = x->subleadJet_ptr;
         
@@ -75,7 +75,6 @@ namespace flashgg {
         dijet_leady      = x->dijet_leady    ;
         dijet_subleady   = x->dijet_subleady ;
         dijet_dy         = x->dijet_dy;
-        
         
         // VBF MVA results different methods
         // need to be remove at some point ?
