@@ -11,7 +11,7 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            Label = cms.string("JEC"),
                                                            NSigmas = cms.vint32(-1,1),
                                                            OverallRange = cms.string("1"),
-                                                           Debug = cms.untracked.bool(True)
+                                                           Debug = cms.untracked.bool(False)
                                                            )
                                                  )
                          )
