@@ -57,6 +57,7 @@ namespace flashgg {
         virtual void endJob() override;
 
         edm::EDGetTokenT<edm::OwnVector<flashgg::DiPhotonTagBase> > TagSorterToken_;
+        bool expectMultiples_;
     };
 
 // ******************************************************************************************
@@ -74,7 +75,8 @@ namespace flashgg {
 // constructors and destructor
 //
     TagTestAnalyzer::TagTestAnalyzer( const edm::ParameterSet &iConfig ):
-        TagSorterToken_( consumes<edm::OwnVector<flashgg::DiPhotonTagBase> >( iConfig.getParameter<InputTag> ( "TagSorter" ) ) )
+        TagSorterToken_( consumes<edm::OwnVector<flashgg::DiPhotonTagBase> >( iConfig.getParameter<InputTag> ( "TagSorter" ) ) ),
+        expectMultiples_( iConfig.getUntrackedParameter<bool>( "ExpectMultiples", false) )
     {
     }
 
@@ -93,8 +95,15 @@ namespace flashgg {
         Handle<edm::OwnVector<flashgg::DiPhotonTagBase> > TagSorter;
         iEvent.getByToken( TagSorterToken_, TagSorter );
 
-        if( TagSorter.product()->size() > 0 ) {
-            const flashgg::DiPhotonTagBase *chosenTag = &*( TagSorter.product()->begin() );
+        if (!expectMultiples_) {
+            assert (TagSorter.product()->size() <= 1);
+            if ( TagSorter.product()->size() == 0) std::cout << "[NO TAG]" << std::endl;
+        } else {
+            std::cout << "Multiple tags allowed and we have a total of " << TagSorter.product()->size() << std::endl;
+        }
+
+        for ( auto tag = TagSorter.product()->begin() ; tag != TagSorter.product()->end() ; tag++ ) {
+            const flashgg::DiPhotonTagBase *chosenTag = &*( tag );
 
             const	UntaggedTag *untagged = dynamic_cast<const UntaggedTag *>( chosenTag );
             if( untagged != NULL ) {
@@ -216,9 +225,7 @@ namespace flashgg {
                 std::cout << "[FAILED TO CONVERT TAG] with SumPt " << chosenTag->sumPt() << std::endl;
             }
 
-        } else { //case where TagSorter[0] doesn't exist
-            std::cout << "[NO TAG]" << std::endl;
-        }
+        } 
     } // analyze
 
     void
