@@ -33,7 +33,6 @@ from flashgg.Systematics.flashggJetSystematics_cfi import createJetSystematics
 jetSystematicsInputTags = createJetSystematics(process,UnpackedJetCollectionVInputTag)
 
 process.load("flashgg/Taggers/flashggTagSequence_cfi")
-#process.load("flashgg/Taggers/flashggTagTester_cfi")
 
 # UnpackedJets has to go in front of the systematics producers, and only needs to be run once
 # We put it back later
@@ -183,15 +182,29 @@ process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSyst
                      process.flashggSystTagMerger
                      * process.tagsDumper)
 
+################################
+## Dump merged tags to screen ##
+################################
 
+#process.load("flashgg/Taggers/flashggTagTester_cfi")
+#process.flashggTagTester.TagSorter = cms.InputTag("flashggSystTagMerger")
+#process.flashggTagTester.ExpectMultiples = cms.untracked.bool(True)
+#process.p += process.flashggTagTester
+
+##############
+## Dump EDM ##
+##############
+
+#process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('CustomizeWillChangeThisAnyway.root'),
+#                               outputCommands = cms.untracked.vstring('keep *') # dump everything! small tests only!
+#                               )
+#process.e = cms.EndPath(process.out)
 
 ############################
 ## Dump the output Python ##
 ############################
 #processDumpFile = open('processDump.py', 'w')
 #print >> processDumpFile, process.dumpPython()
-
-
 
 # set default options if needed
 customize.setDefault("maxEvents",-1)
