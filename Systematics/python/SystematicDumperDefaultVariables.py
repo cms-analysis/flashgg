@@ -7,7 +7,7 @@ minimalVariables = ["CMS_hgg_mass[160,100,180]:=diPhoton().mass",
 
 minimalHistograms = []
 
-minimalNonSignalVariables = ["CMS_hgg_mass[160,100,180]:=diPhoton().mass"] # do we need centralWeight here?
+minimalNonSignalVariables = ["CMS_hgg_mass[160,100,180]:=diPhoton().mass"]
 
 defaultVariables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass", 
                                     "leadPt                   :=diPhoton().leadingPhoton.pt",
