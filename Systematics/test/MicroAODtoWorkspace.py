@@ -63,6 +63,7 @@ if customize.processId.count("h_") or customize.processId.count("vbf_"): # conve
     for direction in ["Up","Down"]:
         phosystlabels.append("MvaShift%s01sigma" % direction)
         jetsystlabels.append("JEC%s01sigma" % direction)
+        jetsystlabels.append("JER%s01sigma" % direction)
         for r9 in ["HighR9","LowR9"]:
             phosystlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
             for var in ["Rho","Phi"]:
