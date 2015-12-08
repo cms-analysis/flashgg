@@ -230,6 +230,7 @@ namespace flashgg {
             if( abs( costhetastar ) > cosThetaStarThreshold_ ) { continue; }
 
             VHHadronicTag vhhadtag_obj( dipho, mvares );
+            vhhadtag_obj.includeWeights( *dipho );
             vhhadtag_obj.setJets( goodJets[0], goodJets[1] );
             vhhadtag_obj.setDiPhotonIndex( diphoIndex );
             vhhadtag_obj.setSystLabel( systLabel_ );

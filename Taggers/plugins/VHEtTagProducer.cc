@@ -128,6 +128,7 @@ namespace flashgg {
 
 
             VHEtTag tag_obj( dipho, mvares );
+            tag_obj.includeWeights( *dipho );
             tag_obj.setDiPhotonIndex( candIndex );
             tag_obj.setSystLabel( systLabel_ );
             tag_obj.setMet( theMET );
