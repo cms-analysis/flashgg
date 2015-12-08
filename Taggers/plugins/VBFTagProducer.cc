@@ -92,17 +92,14 @@ namespace flashgg {
         evt.getByToken( vbfDiPhoDiJetMvaResultToken_, vbfDiPhoDiJetMvaResults );
 
         Handle<View<reco::GenParticle> > genParticles;
-        evt.getByToken( genPartToken_, genParticles );
-
         Handle<View<reco::GenJet> > genJets;
-        evt.getByToken( genJetToken_, genJets );
         
         std::auto_ptr<vector<VBFTag> >      tags  ( new vector<VBFTag> );
         std::auto_ptr<vector<VBFTagTruth> > truths( new vector<VBFTagTruth> );
 
         unsigned int idx = 0;
         edm::RefProd<vector<VBFTagTruth> > rTagTruth = evt.getRefBeforePut<vector<VBFTagTruth> >();
-        
+
         unsigned int index_leadq       = std::numeric_limits<unsigned int>::max();
         unsigned int index_subleadq    = std::numeric_limits<unsigned int>::max();
         unsigned int index_subsubleadq = std::numeric_limits<unsigned int>::max();
@@ -110,6 +107,8 @@ namespace flashgg {
         Point higgsVtx;
         
         if( ! evt.isRealData() ) {
+            evt.getByToken( genPartToken_, genParticles );
+            evt.getByToken( genJetToken_, genJets );
             for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
                 int pdgid = genParticles->ptrAt( genLoop )->pdgId();
                 if( pdgid == 25 || pdgid == 22 ) {
@@ -219,13 +218,13 @@ namespace flashgg {
                 if( index_leadq < std::numeric_limits<unsigned int>::max() ) { truth_obj.setLeadingParton( genParticles->ptrAt( index_leadq ) ); }
                 if( index_subleadq < std::numeric_limits<unsigned int>::max() ) { truth_obj.setSubLeadingParton( genParticles->ptrAt( index_subleadq ) ); }
                 if( index_subsubleadq < std::numeric_limits<unsigned int>::max()) { truth_obj.setSubSubLeadingParton( genParticles->ptrAt( index_subsubleadq ));}
-            }
+
             truth_obj.setGenPV( higgsVtx );
             // Yacine: filling tagTruth Tag with 3 jets matchings
             // the idea is to fill the truth_obj using Jack's 
             // implementation
             
-            // photon overla removal
+            // photon overlap removal
             std::vector<edm::Ptr<reco::GenJet>> ptOrderedgenJets;
             for( unsigned int jetLoop( 0 ); jetLoop < genJets->size(); jetLoop++ ) {
                 edm::Ptr<reco::GenJet> gj = genJets->ptrAt(jetLoop );
@@ -389,7 +388,8 @@ namespace flashgg {
             }
             truth_obj.setClosestParticleToLeadingPhoton(genParticles->ptrAt(gpIndex1));
             truth_obj.setClosestParticleToSubLeadingPhoton(genParticles->ptrAt(gpIndex2));
-            
+            }            
+
             // saving the collection
             if( tag_obj.categoryNumber() >= 0 ) {
                 tags->push_back( tag_obj );
