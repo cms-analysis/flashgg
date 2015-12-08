@@ -121,6 +121,8 @@ namespace flashgg {
             int catnum = chooseCategory( mvares->result );
             tag_obj.setCategoryNumber( catnum );
 
+            tag_obj.includeWeights( *dipho );
+
             // Leave in debugging statement temporarily while tag framework is being developed
             // std::cout << "[UNTAGGED] MVA is "<< mvares->result << " and category is " << tag_obj.categoryNumber() << std::endl;
             if( tag_obj.categoryNumber() >= 0 ) {
