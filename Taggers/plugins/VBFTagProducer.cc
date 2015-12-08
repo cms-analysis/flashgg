@@ -150,6 +150,8 @@ namespace flashgg {
             VBFTag tag_obj( dipho, mvares, vbfdipho_mvares );
             tag_obj.setDiPhotonIndex( candIndex );
             tag_obj.setSystLabel    ( systLabel_ );
+
+            tag_obj.includeWeights( *dipho );
             
             int catnum = chooseCategory( vbfdipho_mvares->vbfDiPhoDiJetMvaResult );
             tag_obj.setCategoryNumber( catnum );

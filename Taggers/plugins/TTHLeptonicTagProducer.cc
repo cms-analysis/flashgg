@@ -497,6 +497,7 @@ namespace flashgg {
                     //                    std::cout << "including muon weights" << std::endl;
                     tthltags_obj.includeWeights( *tagMuons[0] );
                 }
+                tthltags_obj.includeWeights( *dipho );
 
                 tthltags_obj.setJets( tagJets );
                 tthltags_obj.setBJets( tagBJets );
