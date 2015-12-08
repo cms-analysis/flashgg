@@ -70,13 +70,20 @@ if customize.processId.count("h_") or customize.processId.count("vbf_"): # conve
                 phosystlabels.append("MCSmear%sEB%s%s01sigma" % (r9,var,direction))
             for region in ["EB","EE"]:
                 phosystlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
+                variablesToUse.append("LooseMvaSF%s%s%s01sigma := weight(\"LooseMvaSF%s%s%s01sigma\")" % (r9,region,direction,r9,region,direction))
+                variablesToUse.append("PreselSF%s%s%s01sigma := weight(\"PreselSF%s%s%s01sigma\")" % (r9,region,direction,r9,region,direction))
     systlabels += phosystlabels
     systlabels += jetsystlabels
 else:
     print "Data or background MC, so store mgg and central only"
     variablesToUse = minimalNonSignalVariables
 
+print "--- Systematics  with independent collections ---"
 print systlabels
+print "-------------------------------------------------"
+print "--- Variables to be dumped, including systematic weights ---"
+print variablesToUse
+print "------------------------------------------------------------"
 
 for systlabel in systlabels:
     if systlabel == "":
@@ -111,6 +118,8 @@ from flashgg.MetaData.samples_utils import SamplesManager
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring("file:myMicroAODOutputFile.root"))
+#process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-FinalPrompt-BetaV7-25ns/Spring15#BetaV7/DoubleEG/RunIISpring15-FinalPrompt-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151124_234634/0000/myMicroAODOutputFile_1.root"))
+
 
 #if options.maxEvents > 0:
 #    process.source.eventsToProcess = cms.untracked.VEventRange('1:1-1:'+str(options.maxEvents))
@@ -125,7 +134,7 @@ import flashgg.Taggers.dumperConfigTools as cfgTools
 process.tagsDumper.className = "DiPhotonTagDumper"
 process.tagsDumper.src = "flashggSystTagMerger"
 process.tagsDumper.processId = "test"
-process.tagsDumper.dumpTrees = False
+process.tagsDumper.dumpTrees = True # TODO CHANGE THIS BACK TO FALSE
 process.tagsDumper.dumpWorkspace = True
 process.tagsDumper.dumpHistos = False
 process.tagsDumper.quietRooFit = True

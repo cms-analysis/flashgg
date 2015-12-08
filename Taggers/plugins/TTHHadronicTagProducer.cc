@@ -197,6 +197,7 @@ namespace flashgg {
                 tthhtags_obj.setNBMedium( njets_btagmedium );
                 tthhtags_obj.setDiPhotonIndex( diphoIndex );
                 tthhtags_obj.setSystLabel( systLabel_ );
+                tthhtags_obj.includeWeights( *dipho );
                 tthhtags->push_back( tthhtags_obj );
                 TagTruthBase truth_obj;
                 if( ! evt.isRealData() ) {

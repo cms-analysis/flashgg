@@ -64,7 +64,10 @@ namespace flashgg {
             theWeight = central;
             if ( syst_shift < 0 ) theWeight += syst_shift * errdown;
             if ( syst_shift > 0 ) theWeight += syst_shift * errup;
-            return theWeight;
+            if( this->debug_ ) {
+                std::cout << "  " << shiftLabel( syst_shift ) << ": Object has e= " << obj.energy() << " eta=" << obj.eta()
+                          << " and we apply a weight of " << theWeight << std::endl;
+            }
         }
         return theWeight;
     }
