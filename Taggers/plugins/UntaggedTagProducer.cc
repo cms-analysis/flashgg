@@ -85,13 +85,13 @@ namespace flashgg {
 //   const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
 
         Handle<View<reco::GenParticle> > genParticles;
-        evt.getByToken( genParticleToken_, genParticles );
 
         std::auto_ptr<vector<UntaggedTag> > tags( new vector<UntaggedTag> );
         std::auto_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
 
         Point higgsVtx;
-        if( ! evt.isRealData() )
+        if( ! evt.isRealData() ) {
+            evt.getByToken( genParticleToken_, genParticles );
             for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
                 int pdgid = genParticles->ptrAt( genLoop )->pdgId();
                 if( pdgid == 25 || pdgid == 22 ) {
@@ -99,6 +99,7 @@ namespace flashgg {
                     break;
                 }
             }
+        }
 
         assert( diPhotons->size() == mvaResults->size() ); // We are relying on corresponding sets - update this to give an error/exception
 
@@ -115,8 +116,6 @@ namespace flashgg {
             tag_obj.setDiPhotonIndex( candIndex );
 
             tag_obj.setSystLabel( systLabel_ );
-            TagTruthBase truth_obj;
-            truth_obj.setGenPV( higgsVtx );
 
             int catnum = chooseCategory( mvares->result );
             tag_obj.setCategoryNumber( catnum );
@@ -126,6 +125,8 @@ namespace flashgg {
             if( tag_obj.categoryNumber() >= 0 ) {
                 tags->push_back( tag_obj );
                 if( ! evt.isRealData() ) {
+                    TagTruthBase truth_obj;
+                    truth_obj.setGenPV( higgsVtx );
                     truths->push_back( truth_obj );
                     tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
                 }
