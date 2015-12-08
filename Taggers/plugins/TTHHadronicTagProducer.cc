@@ -115,13 +115,13 @@ namespace flashgg {
         // const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
 
         Handle<View<reco::GenParticle> > genParticles;
-        evt.getByToken( genParticleToken_, genParticles );
 
         std::auto_ptr<vector<TTHHadronicTag> > tthhtags( new vector<TTHHadronicTag> );
         std::auto_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
 
         Point higgsVtx;
-        if( ! evt.isRealData() )
+        if( ! evt.isRealData() ) {
+            evt.getByToken( genParticleToken_, genParticles );
             for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
                 int pdgid = genParticles->ptrAt( genLoop )->pdgId();
                 if( pdgid == 25 || pdgid == 22 ) {
@@ -129,6 +129,7 @@ namespace flashgg {
                     break;
                 }
             }
+        }
 
         edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
         unsigned int idx = 0;
@@ -198,8 +199,8 @@ namespace flashgg {
                 tthhtags_obj.setDiPhotonIndex( diphoIndex );
                 tthhtags_obj.setSystLabel( systLabel_ );
                 tthhtags->push_back( tthhtags_obj );
-                TagTruthBase truth_obj;
                 if( ! evt.isRealData() ) {
+                    TagTruthBase truth_obj;
                     truth_obj.setGenPV( higgsVtx );
                     truths->push_back( truth_obj );
                     tthhtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
