@@ -26,6 +26,7 @@ namespace flashgg {
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
         debug_( conf.getUntrackedParameter<bool>( "Debug", false ) )
     {
+        this->setMakesWeight( true );
     }
 
     std::string TagWeightFromFracRV::shiftLabel( int syst_value ) const
