@@ -16,7 +16,8 @@ namespace flashgg {
         typedef edm::Ptr<flashgg::Photon> pho_ptr_type;
         typedef edm::Ptr<reco::Vertex> vtx_ptr_type;
         typedef Photon cand_type;
-
+        
+        virtual ~SinglePhotonView() {}
         SinglePhotonView() : hasPhoton_( 0 ) {}
         SinglePhotonView( edm::Ptr<flashgg::Photon> pho, edm::Ptr<reco::Vertex> vtx ) : phoPtr_( pho ), vtxRef_( vtx ), hasPhoton_( 0 ), hasVtx_( 1 ) {}
         SinglePhotonView( edm::Ptr<flashgg::Photon> pho ) : phoPtr_( pho ), hasPhoton_( 0 ), hasVtx_( 0 ) {}

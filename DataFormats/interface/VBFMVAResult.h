@@ -13,7 +13,7 @@ namespace flashgg {
     public:
         VBFMVAResult();
         VBFMVAResult( edm::Ptr<VBFMVAResult> );
-        
+        virtual ~VBFMVAResult() {}
         // diJet Info
         //flashgg::Jet leadJet;
         //flashgg::Jet subleadJet;
