@@ -30,7 +30,7 @@ namespace flashgg {
     {
         auto found_label = std::lower_bound( _labels.begin(), _labels.end(), key );
         if( found_label == _labels.end() || *found_label != key ) {
-            return -1.;
+            return 1.;
         }
         return _weights[std::distance( _labels.begin(), found_label )];
     }

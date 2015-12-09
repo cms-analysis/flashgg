@@ -15,6 +15,8 @@ namespace flashgg {
         typedef edm::Ptr<DiPhotonCandidate> dipho_ptr_type;
         typedef reco::Vertex cand_type;
 
+        virtual ~SingleVertexView() {}
+
         SingleVertexView() : isClosestToGen_( false ), dZtoGen_( 0. ), vtx_( 0 ), dipho_( 0 ) {}
         SingleVertexView( dipho_ptr_type dipho, int ivtx ) : isClosestToGen_( false ), dZtoGen_( 0. ), edmdipho_( dipho ), ivtx_( ivtx ), vtx_( 0 ), dipho_( 0 ) {}
         SingleVertexView( const DiPhotonCandidate *dipho, int ivtx ) : isClosestToGen_( false ), dZtoGen_( 0. ), ivtx_( ivtx ), vtx_( 0 ), dipho_( dipho ) {}
