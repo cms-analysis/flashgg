@@ -56,7 +56,7 @@ namespace flashgg {
         virtual void analyze( const edm::Event &, const edm::EventSetup & ) override;
         virtual void endJob() override;
 
-        edm::EDGetTokenT<edm::OwnVector<flashgg::DiPhotonTagBase> > TagSorterToken_;
+        edm::EDGetTokenT<edm::View<flashgg::DiPhotonTagBase> > TagSorterToken_;
         bool expectMultiples_;
     };
 
@@ -75,7 +75,7 @@ namespace flashgg {
 // constructors and destructor
 //
     TagTestAnalyzer::TagTestAnalyzer( const edm::ParameterSet &iConfig ):
-        TagSorterToken_( consumes<edm::OwnVector<flashgg::DiPhotonTagBase> >( iConfig.getParameter<InputTag> ( "TagSorter" ) ) ),
+        TagSorterToken_( consumes<edm::View<flashgg::DiPhotonTagBase> >( iConfig.getParameter<InputTag> ( "TagSorter" ) ) ),
         expectMultiples_( iConfig.getUntrackedParameter<bool>( "ExpectMultiples", false) )
     {
     }
@@ -92,7 +92,7 @@ namespace flashgg {
         // ********************************************************************************
         // access edm objects
 
-        Handle<edm::OwnVector<flashgg::DiPhotonTagBase> > TagSorter;
+        Handle<edm::View<flashgg::DiPhotonTagBase> > TagSorter;
         iEvent.getByToken( TagSorterToken_, TagSorter );
 
         if (!expectMultiples_) {

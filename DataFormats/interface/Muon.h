@@ -14,6 +14,7 @@ namespace flashgg {
         Muon();
         Muon( const pat::Muon & );
         ~Muon();
+        Muon *clone() const { return ( new Muon( *this ) ); }
     };
 }
 

@@ -5,6 +5,7 @@
 <use name="CondFormats/JetMETObjects"/>
 <use name="JetMETCorrections/Objects"/>
 <use name="flashgg/Systematics"/>
+<use name="flashgg/DataFormats"/>
 <use name="roottmva"/>
 <use name="clhep"/>
 <flags  EDM_PLUGIN="1"/>

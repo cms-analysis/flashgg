@@ -103,7 +103,8 @@ namespace flashgg {
         unsigned int jetCollectionIndex() const { return jetCollectionIndex_; }
 
         LorentzVector genP4() const; 
-    private:
+
+        DiPhotonCandidate *clone() const { return ( new DiPhotonCandidate( *this ) ); }
 
     private:
         
