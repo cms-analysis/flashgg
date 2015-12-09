@@ -46,6 +46,7 @@ for i in range(len(UnpackedJetCollectionVInputTag)):
     massSearchReplaceAnyInputTag(process.flashggTagSequence,UnpackedJetCollectionVInputTag[i],jetSystematicsInputTags[i])
 
 process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
+process.load("flashgg.Systematics.flashggTagSystematics_cfi")
 
 process.systematicsTagSequences = cms.Sequence()
 systlabels = [""]
@@ -64,6 +65,7 @@ if customize.processId.count("h_") or customize.processId.count("vbf_"): # conve
         phosystlabels.append("MvaShift%s01sigma" % direction)
         jetsystlabels.append("JEC%s01sigma" % direction)
         jetsystlabels.append("JER%s01sigma" % direction)
+        variablesToUse.append("FracRVWeight%s01sigma := weight(\"FracRVWeight%s01sigma\")" % (direction,direction))
         for r9 in ["HighR9","LowR9"]:
             phosystlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
             for var in ["Rho","Phi"]:
@@ -132,7 +134,7 @@ process.load("flashgg.Taggers.diphotonTagDumper_cfi") ##  import diphotonTagDump
 import flashgg.Taggers.dumperConfigTools as cfgTools
 
 process.tagsDumper.className = "DiPhotonTagDumper"
-process.tagsDumper.src = "flashggSystTagMerger"
+process.tagsDumper.src = "flashggTagSystematics"
 process.tagsDumper.processId = "test"
 process.tagsDumper.dumpTrees = True # TODO CHANGE THIS BACK TO FALSE
 process.tagsDumper.dumpWorkspace = True
