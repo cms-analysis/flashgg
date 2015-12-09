@@ -266,7 +266,8 @@ namespace flashgg {
         // Build central collection
         auto_ptr<vector<flashgg_object> > centralObjectColl( new vector<flashgg_object> );
         for( unsigned int i = 0; i < objects->size(); i++ ) {
-            flashgg_object obj = flashgg_object( *objects->ptrAt( i ) );
+            flashgg_object *p_obj = objects->ptrAt( i )->clone();
+            flashgg_object obj = *p_obj;
             ApplyCorrections( obj, nullptr, param_var( 0 ) );
             ApplyNonCentralWeights( obj );
             centralObjectColl->push_back( obj );
@@ -292,7 +293,8 @@ namespace flashgg {
                 for( const auto &sig : sigmas_.at( ncorr ) ) {
                     //                    std::cout << i << " " << ncoll << " " << sig << std::endl;
                     if( !Corrections_.at( ncorr )->makesWeight() ) {
-                        flashgg_object obj = flashgg_object( *objects->ptrAt( i ) );
+                        flashgg_object *p_obj = objects->ptrAt( i )->clone();
+                        flashgg_object obj = *p_obj;
                         ApplyCorrections( obj, Corrections_.at( ncorr ), sig );
                         all_shifted_collections[ncoll]->push_back( obj );
                         ncoll++;
@@ -303,7 +305,8 @@ namespace flashgg {
                 for( const auto &sig : sigmas2D_.at( ncorr ) ) {
                     //                    std::cout << i << " " << ncoll << " " << sig.first << " " << sig.second << std::endl;
                     if( !Corrections_.at( ncorr )->makesWeight() ) {
-                        flashgg_object obj = flashgg_object( *objects->ptrAt( i ) );
+                        flashgg_object *p_obj = objects->ptrAt( i )->clone();
+                        flashgg_object obj = *p_obj;
                         ApplyCorrections( obj, Corrections2D_.at( ncorr ), sig );
                         all_shifted_collections[ncoll]->push_back( obj );
                         ncoll++;

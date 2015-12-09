@@ -32,6 +32,7 @@ namespace flashgg {
         bool passesPuJetId( const edm::Ptr<DiPhotonCandidate> dipho, PileupJetIdentifier::Id level = PileupJetIdentifier::kLoose )const;
         float rms( const edm::Ptr<DiPhotonCandidate> dipho ) const;
         float betaStar( const edm::Ptr<DiPhotonCandidate> dipho ) const;
+        Jet *clone() const { return ( new Jet( *this ) ); }
         
         bool passesJetID( JetIDLevel level = Loose ) const; 
     private:
