@@ -12,7 +12,7 @@ namespace flashgg {
     public:
         DiPhotonMVAResult();
         //    DiPhotonMVAResult(const DiPhotonMVAResult&) = default;  // C++11 only? Should happen automagically anyway
-
+        virtual ~DiPhotonMVAResult () {}
         // Input variables
         float leadptom;
         float subleadptom;
