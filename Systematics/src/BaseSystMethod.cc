@@ -16,6 +16,8 @@ EDM_REGISTER_PLUGINFACTORY( FlashggSystematicElectronMethodsFactory2D,
                             "SystematicElectronMethodsFactory2D" );
 EDM_REGISTER_PLUGINFACTORY( FlashggSystematicMuonMethodsFactory2D,
                             "SystematicMuonMethodsFactory2D" );
+EDM_REGISTER_PLUGINFACTORY( FlashggSystematicTagMethodsFactory,
+                            "SystematicTagMethodsFactory" );
 
 
 
