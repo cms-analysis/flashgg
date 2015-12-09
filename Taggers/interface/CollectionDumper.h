@@ -345,13 +345,16 @@ namespace flashgg {
 
                 if( which != dumpers_.end() ) {
                     int isub = ( hasSubcat_[cat.first] ? cat.second : 0 );
+                   double fillWeight =weight_;
                    const  WeightedObject* tag = dynamic_cast<const WeightedObject* >( &cand );
                     if ( tag != NULL ){
 
-                    weight_=weight_*(tag->centralWeight());
+                    //std::cout << "TEST  weight_  " << fillWeight << std::endl;
+                    fillWeight =fillWeight*(tag->centralWeight());
                     //std::cout << "TEST cand centralWeight " << tag->centralWeight() << std::endl;
+                    //std::cout << "TEST  weight  " << fillWeight << std::endl;
                     }
-                    which->second[isub].fill( cand, weight_, pdfWeights_, maxCandPerEvent_ - nfilled );
+                    which->second[isub].fill( cand, fillWeight, pdfWeights_, maxCandPerEvent_ - nfilled );
                     --nfilled;
                 } else if( throwOnUnclassified_ ) {
                     throw cms::Exception( "Runtime error" ) << "could not find dumper for category [" << cat.first << "," << cat.second << "]"
