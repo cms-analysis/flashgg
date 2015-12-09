@@ -20,6 +20,11 @@ EDM_REGISTER_PLUGINFACTORY( FlashggSystematicJetMethodsFactory,
                             "SystematicJetMethodsFactory" );
 EDM_REGISTER_PLUGINFACTORY( FlashggSystematicJetMethodsFactory2D,
                             "SystematicJetMethodsFactory2D" );
+EDM_REGISTER_PLUGINFACTORY( FlashggSystematicTagMethodsFactory,
+                            "SystematicTagMethodsFactory" );
+EDM_REGISTER_PLUGINFACTORY( FlashggSystematicTagMethodsFactory2D,
+                            "SystematicTagMethodsFactory2D" );
+
 
 //EDM_REGISTER_PLUGINFACTORY(FlashggSystematicDiPhotonMethodsFactory,
 //				"SystematicDiPhotonMethodsFactory");

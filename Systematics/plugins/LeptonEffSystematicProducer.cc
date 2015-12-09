@@ -5,8 +5,8 @@
 
 namespace flashgg {
 
-    typedef ObjectSystematicProducer<flashgg::Electron, int> ElectronEffSystematicProducer;
-    typedef ObjectSystematicProducer<flashgg::Muon, int> MuonEffSystematicProducer;
+    typedef ObjectSystematicProducer<flashgg::Electron, int, std::vector> ElectronEffSystematicProducer;
+    typedef ObjectSystematicProducer<flashgg::Muon, int, std::vector> MuonEffSystematicProducer;
 
 }
 

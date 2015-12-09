@@ -23,7 +23,7 @@ using namespace std;
 
 namespace flashgg {
 
-    template <typename flashgg_object, typename param_var>
+    template <typename flashgg_object, typename param_var, template <typename...> class output_container>
     class ObjectSystematicProducer : public edm::EDProducer
     {
     public:
@@ -50,8 +50,8 @@ namespace flashgg {
         std::vector<std::vector<pair<param_var, param_var> > > sigmas2D_;
     };
 
-    template <typename flashgg_object, typename param_var>
-    ObjectSystematicProducer<flashgg_object, param_var>::ObjectSystematicProducer( const ParameterSet &iConfig ) :
+    template <typename flashgg_object, typename param_var, template <typename...> class output_container>
+    ObjectSystematicProducer<flashgg_object, param_var, output_container>::ObjectSystematicProducer( const ParameterSet &iConfig ) :
         ObjectToken_( consumes<View<flashgg_object> >( iConfig.getParameter<InputTag>( "src" ) ) )
     {
         edm::Service<edm::RandomNumberGenerator> rng;
@@ -59,7 +59,7 @@ namespace flashgg {
             throw cms::Exception( "Configuration" ) << "ObjectSystematicProducer requires the RandomNumberGeneratorService  - please add to configuration";
         }
 
-        produces<std::vector<flashgg_object> >(); // Central value
+        produces<output_container<flashgg_object> >(); // Central value
         std::vector<edm::ParameterSet> vpset = iConfig.getParameter<std::vector<edm::ParameterSet> >( "SystMethods" );
         std::vector<edm::ParameterSet> vpset2D = iConfig.getParameter<std::vector<edm::ParameterSet> >( "SystMethods2D" );
 
@@ -90,7 +90,7 @@ namespace flashgg {
             if( !Corrections_.at( ipset )->makesWeight() ) {
                 for( const auto &sig : sigmas_.at( ipset ) ) {
                     std::string collection_label = Corrections_.at( ipset )->shiftLabel( sig );
-                    produces<vector<flashgg_object> >( collection_label );
+                    produces<output_container<flashgg_object> >( collection_label );
                     collectionLabelsNonCentral_.push_back( collection_label ); // 2N elements, current code gets labels right only if loops are consistent
                 }
             } else {
@@ -126,7 +126,7 @@ namespace flashgg {
             if( !Corrections_.at( ipset2D )->makesWeight() ) {
                 for( const auto &sig : sigmas2D_.at( ipset2D ) ) {
                     std::string collection_label = Corrections2D_.at( ipset2D )->shiftLabel( sig );
-                    produces<vector<flashgg_object> >( collection_label );
+                    produces<output_container<flashgg_object> >( collection_label );
                     collectionLabelsNonCentral_.push_back( collection_label );
                 }
             } else {
@@ -138,8 +138,8 @@ namespace flashgg {
     }
 
     ///fucntion takes in the current corection one is looping through and compares with its own internal loop, given that this will be within the corr and sys loop it takes care of the 2n+1 collection number////
-    template <typename flashgg_object, typename param_var>
-    void ObjectSystematicProducer<flashgg_object, param_var>::ApplyCorrections( flashgg_object &y,
+    template <typename flashgg_object, typename param_var, template <typename...> class output_container>
+    void ObjectSystematicProducer<flashgg_object, param_var, output_container>::ApplyCorrections( flashgg_object &y,
             shared_ptr<BaseSystMethod<flashgg_object, param_var> > CorrToShift,
             param_var syst_shift )
     {
@@ -178,8 +178,8 @@ namespace flashgg {
         //        std::cout << " 1d end " << std::endl;
     }
 
-    template <typename flashgg_object, typename param_var>
-    void ObjectSystematicProducer<flashgg_object, param_var>::ApplyCorrections( flashgg_object &y,
+    template <typename flashgg_object, typename param_var, template <typename...> class output_container>
+    void ObjectSystematicProducer<flashgg_object, param_var, output_container>::ApplyCorrections( flashgg_object &y,
             shared_ptr<BaseSystMethod<flashgg_object, pair<param_var, param_var> > > CorrToShift,
             pair<param_var, param_var>  syst_shift )
     {
@@ -207,8 +207,8 @@ namespace flashgg {
         //        std::cout << " Applied a central weight of " << theWeight << " - as part of 2d shift" << std::endl;
     }
 
-    template <typename flashgg_object, typename param_var>
-    void ObjectSystematicProducer<flashgg_object, param_var>::ApplyNonCentralWeights( flashgg_object &y )
+    template <typename flashgg_object, typename param_var, template <typename...> class output_container>
+    void ObjectSystematicProducer<flashgg_object, param_var, output_container>::ApplyNonCentralWeights( flashgg_object &y )
     {
         for( unsigned int ncorr = 0; ncorr < Corrections_.size(); ncorr++ ) {
             if( Corrections_.at( ncorr )->makesWeight() ) {
@@ -232,8 +232,8 @@ namespace flashgg {
         }
     }
 
-    template <typename flashgg_object, typename param_var>
-    void ObjectSystematicProducer<flashgg_object, param_var>::produce( Event &evt, const EventSetup & )
+    template <typename flashgg_object, typename param_var, template <typename...> class output_container>
+    void ObjectSystematicProducer<flashgg_object, param_var, output_container>::produce( Event &evt, const EventSetup & )
     {
 
         Handle<View<flashgg_object> > objects;
@@ -264,9 +264,10 @@ namespace flashgg {
         //        std::cout << "Engines set!" << std::endl;
 
         // Build central collection
-        auto_ptr<vector<flashgg_object> > centralObjectColl( new vector<flashgg_object> );
+        auto_ptr<output_container<flashgg_object> > centralObjectColl( new output_container<flashgg_object> );
         for( unsigned int i = 0; i < objects->size(); i++ ) {
-            flashgg_object obj = flashgg_object( *objects->ptrAt( i ) );
+            flashgg_object *p_obj = objects->ptrAt( i )->clone();
+            flashgg_object obj = *p_obj;
             ApplyCorrections( obj, nullptr, param_var( 0 ) );
             ApplyNonCentralWeights( obj );
             centralObjectColl->push_back( obj );
@@ -280,11 +281,11 @@ namespace flashgg {
         // although I think I have done it correctly - the delete[] statement below is vital
         // Problem: vector<auto_ptr> is not allowed
         // Possible alternate solutions: map, multimap, vector<unique_ptr> + std::move ??
-        std::auto_ptr<std::vector<flashgg_object> > *all_shifted_collections;
+        std::auto_ptr<output_container<flashgg_object> > *all_shifted_collections;
         unsigned int total_shifted_collections = collectionLabelsNonCentral_.size();
-        all_shifted_collections = new std::auto_ptr<std::vector<flashgg_object> >[total_shifted_collections];
+        all_shifted_collections = new std::auto_ptr<output_container<flashgg_object> >[total_shifted_collections];
         for( unsigned int ncoll = 0 ; ncoll < total_shifted_collections ; ncoll++ ) {
-            all_shifted_collections[ncoll].reset( new std::vector<flashgg_object> );
+            all_shifted_collections[ncoll].reset( new output_container<flashgg_object> );
         }
         for( unsigned int i = 0; i < objects->size(); i++ ) {
             unsigned int ncoll = 0;
@@ -292,7 +293,8 @@ namespace flashgg {
                 for( const auto &sig : sigmas_.at( ncorr ) ) {
                     //                    std::cout << i << " " << ncoll << " " << sig << std::endl;
                     if( !Corrections_.at( ncorr )->makesWeight() ) {
-                        flashgg_object obj = flashgg_object( *objects->ptrAt( i ) );
+                        flashgg_object *p_obj = objects->ptrAt( i )->clone();
+                        flashgg_object obj = *p_obj;
                         ApplyCorrections( obj, Corrections_.at( ncorr ), sig );
                         all_shifted_collections[ncoll]->push_back( obj );
                         ncoll++;
@@ -303,7 +305,8 @@ namespace flashgg {
                 for( const auto &sig : sigmas2D_.at( ncorr ) ) {
                     //                    std::cout << i << " " << ncoll << " " << sig.first << " " << sig.second << std::endl;
                     if( !Corrections_.at( ncorr )->makesWeight() ) {
-                        flashgg_object obj = flashgg_object( *objects->ptrAt( i ) );
+                        flashgg_object *p_obj = objects->ptrAt( i )->clone();
+                        flashgg_object obj = *p_obj;
                         ApplyCorrections( obj, Corrections2D_.at( ncorr ), sig );
                         all_shifted_collections[ncoll]->push_back( obj );
                         ncoll++;

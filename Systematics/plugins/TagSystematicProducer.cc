@@ -1,15 +1,15 @@
-#include "flashgg/DataFormats/interface/Photon.h"
+#include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 #include "flashgg/Systematics/interface/BaseSystMethod.h"
 #include "flashgg/Systematics/interface/ObjectSystematicProducer.h"
 
 namespace flashgg {
 
-    typedef ObjectSystematicProducer<flashgg::Photon, int, std::vector> PhotonSystematicProducer;
+    typedef ObjectSystematicProducer<flashgg::DiPhotonTagBase, int, edm::OwnVector> TagSystematicProducer;
 
 }
 
-typedef flashgg::PhotonSystematicProducer FlashggPhotonSystematicProducer;
-DEFINE_FWK_MODULE( FlashggPhotonSystematicProducer );
+typedef flashgg::TagSystematicProducer FlashggTagSystematicProducer;
+DEFINE_FWK_MODULE( FlashggTagSystematicProducer );
 
 // Local Variables:
 // mode:c++

@@ -21,7 +21,8 @@ process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 10 )
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
                                                    flashggDiPhotonSystematics = cms.PSet(initialSeed = cms.untracked.uint32(664)),
                                                    flashggElectronSystematics = cms.PSet(initialSeed = cms.untracked.uint32(11)),
-                                                   flashggMuonSystematics = cms.PSet(initialSeed = cms.untracked.uint32(13))
+                                                   flashggMuonSystematics = cms.PSet(initialSeed = cms.untracked.uint32(13)),
+                                                   flashggTagSystematics = cms.PSet(initialSeed = cms.untracked.uint32(999))
                                                   )
 
 process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
@@ -46,6 +47,7 @@ for i in range(len(UnpackedJetCollectionVInputTag)):
     massSearchReplaceAnyInputTag(process.flashggTagSequence,UnpackedJetCollectionVInputTag[i],jetSystematicsInputTags[i])
 
 process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
+process.load("flashgg.Systematics.flashggTagSystematics_cfi")
 
 process.systematicsTagSequences = cms.Sequence()
 systlabels = [""]
@@ -65,6 +67,7 @@ if customize.processId.count("h_") or customize.processId.count("vbf_"): # conve
         phosystlabels.append("SigmaEOverEShift%s01sigma" % direction)
         jetsystlabels.append("JEC%s01sigma" % direction)
         jetsystlabels.append("JER%s01sigma" % direction)
+        variablesToUse.append("FracRVWeight%s01sigma := weight(\"FracRVWeight%s01sigma\")" % (direction,direction))
         for r9 in ["HighR9","LowR9"]:
 #            phosystlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
 #            for var in ["Rho","Phi"]:
@@ -134,7 +137,8 @@ process.load("flashgg.Taggers.diphotonTagDumper_cfi") ##  import diphotonTagDump
 import flashgg.Taggers.dumperConfigTools as cfgTools
 
 process.tagsDumper.className = "DiPhotonTagDumper"
-process.tagsDumper.src = "flashggSystTagMerger"
+#process.tagsDumper.src = "flashggSystTagMerger"
+process.tagsDumper.src = "flashggTagSystematics"
 process.tagsDumper.processId = "test"
 process.tagsDumper.dumpTrees = True # TODO CHANGE THIS BACK TO FALSE
 process.tagsDumper.dumpWorkspace = True
@@ -191,8 +195,9 @@ for tag in tagList:
 process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSystematics+process.flashggElectronSystematics)*
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                      (process.flashggTagSequence+process.systematicsTagSequences)*
-                     process.flashggSystTagMerger
-                     * process.tagsDumper)
+                     process.flashggSystTagMerger*
+                     process.flashggTagSystematics*
+                     process.tagsDumper)
 
 ################################
 ## Dump merged tags to screen ##

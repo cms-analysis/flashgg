@@ -24,6 +24,8 @@ namespace flashgg {
         bool hasMatchedConversion() const { return hasMatchedConversion_; }
         void setHasMatchedConversion( bool val ) { hasMatchedConversion_ = val;}
 
+        Electron *clone() const { return ( new Electron( *this ) ); }
+
     private:
         float nontrigmva_;
         float PfRhoAreaCorrectedIso_;
