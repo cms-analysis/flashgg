@@ -4,7 +4,7 @@
 
 namespace flashgg {
 
-    typedef ObjectSystematicProducer<DiPhotonCandidate, int> DiPhotonSystematicProducer;
+    typedef ObjectSystematicProducer<DiPhotonCandidate, int, std::vector> DiPhotonSystematicProducer;
 
 }
 

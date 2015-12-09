@@ -4,7 +4,7 @@
 
 namespace flashgg {
 
-    typedef ObjectSystematicProducer<flashgg::DiPhotonTagBase, int> TagSystematicProducer;
+    typedef ObjectSystematicProducer<flashgg::DiPhotonTagBase, int, edm::OwnVector> TagSystematicProducer;
 
 }
 
