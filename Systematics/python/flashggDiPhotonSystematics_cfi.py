@@ -238,6 +238,8 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("r9>=0.9&&abs(superCluster.eta)<1.5"),
                                                   BinList = looseMvaBins,
+                                                  Debug = cms.untracked.bool(False)
+                                                  ),
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigEOverEShift"),
                                                   MethodName = cms.string("FlashggDiPhotonFromPhoton"),
                                                   Label = cms.string("SigmaEOverEShift"),
