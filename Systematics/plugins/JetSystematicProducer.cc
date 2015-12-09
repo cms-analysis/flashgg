@@ -20,7 +20,7 @@
 
 namespace flashgg {
 
-    class JetSystematicProducer : public ObjectSystematicProducer<flashgg::Jet,int>
+    class JetSystematicProducer : public ObjectSystematicProducer<flashgg::Jet,int,std::vector>
     {
         
     public:
@@ -31,7 +31,7 @@ namespace flashgg {
         bool correctionsSet_;
     };
 
-    JetSystematicProducer::JetSystematicProducer ( const edm::ParameterSet &iConfig ) : ObjectSystematicProducer<flashgg::Jet,int>( iConfig ) {
+    JetSystematicProducer::JetSystematicProducer ( const edm::ParameterSet &iConfig ) : ObjectSystematicProducer<flashgg::Jet,int,std::vector>( iConfig ) {
         correctionsSet_ = false;
     }
     
@@ -47,7 +47,7 @@ namespace flashgg {
                 this->Corrections2D_.at( ncorr )->setEnergyCorrections(JetCorPar);
             }
         }
-        ObjectSystematicProducer<flashgg::Jet,int>::produce( iEvent, iSetup );
+        ObjectSystematicProducer<flashgg::Jet,int,std::vector>::produce( iEvent, iSetup );
     }
 
 }
