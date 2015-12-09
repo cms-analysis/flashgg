@@ -18,7 +18,7 @@ flashggVBFDiPhoDiJetMVA = cms.EDProducer('FlashggVBFDiPhoDiJetMVAProducer',
                                          DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                          VBFMVAResultTag=cms.InputTag('flashggVBFMVA'),
                                          MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
-                                         UseLegacyMVA = cms.untracked.bool(True),
+                                         UseLegacyMVA = cms.untracked.bool(False),
                                          #vbfDiPhoDiJetMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVA_vbf_dijet_dipho_evenbkg_scaledwt50_maxdPhi_Gradient.weights.xml"),
                                          vbfDiPhoDiJetMVAweightfile = cms.FileInPath("flashgg/Taggers/data/Flashgg_DiPhoDiJet_CHS_STD_BDTG.weights.xml"),
                                          )
