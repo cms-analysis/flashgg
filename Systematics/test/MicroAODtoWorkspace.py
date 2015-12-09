@@ -65,10 +65,11 @@ if customize.processId.count("h_") or customize.processId.count("vbf_"): # conve
         jetsystlabels.append("JEC%s01sigma" % direction)
         jetsystlabels.append("JER%s01sigma" % direction)
         for r9 in ["HighR9","LowR9"]:
-            phosystlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
-            for var in ["Rho","Phi"]:
-                phosystlabels.append("MCSmear%sEB%s%s01sigma" % (r9,var,direction))
+#            phosystlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
+#            for var in ["Rho","Phi"]:
+#                phosystlabels.append("MCSmear%sEB%s%s01sigma" % (r9,var,direction))
             for region in ["EB","EE"]:
+                phosystlabels.append("MCSmear%s%s%s01sigma" % (r9,region,direction))
                 phosystlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
                 variablesToUse.append("LooseMvaSF%s%s%s01sigma := weight(\"LooseMvaSF%s%s%s01sigma\")" % (r9,region,direction,r9,region,direction))
                 variablesToUse.append("PreselSF%s%s%s01sigma := weight(\"PreselSF%s%s%s01sigma\")" % (r9,region,direction,r9,region,direction))
