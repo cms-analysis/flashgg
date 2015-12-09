@@ -41,7 +41,9 @@ def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mv
 def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
     if ":=" in expr:
         toks=[ v.rstrip(" ").lstrip(" ") for v in expr.split(":=") ]
-        ## print toks
+        ##print toks
+        if len(toks)!=2:
+            raise Exception("Could not parse variable definition %s" %expr)
         name,expr=toks
         
     if not name:

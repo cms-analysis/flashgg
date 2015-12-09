@@ -12,8 +12,9 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 
 process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
-process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-process.GlobalTag.globaltag = 'POSTLS170_V5::All'
+process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
+from Configuration.AlCa.GlobalTag import GlobalTag
+process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v4' # keep updated for JEC
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 10 )
 
@@ -26,18 +27,30 @@ process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService
 process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
 process.load("flashgg.Systematics.flashggMuonSystematics_cfi")
 process.load("flashgg.Systematics.flashggElectronSystematics_cfi")
+
+from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
+from flashgg.Systematics.flashggJetSystematics_cfi import createJetSystematics
+jetSystematicsInputTags = createJetSystematics(process,UnpackedJetCollectionVInputTag)
+
 process.load("flashgg/Taggers/flashggTagSequence_cfi")
-process.load("flashgg/Taggers/flashggTagTester_cfi")
+
+# UnpackedJets has to go in front of the systematics producers, and only needs to be run once
+# We put it back later
+process.flashggTagSequence.remove(process.flashggUnpackedJets)
 
 from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet,massSearchReplaceAnyInputTag
 massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggDiPhotons"),cms.InputTag("flashggDiPhotonSystematics"))
 massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSelectedElectrons"),cms.InputTag("flashggElectronSystematics"))
 massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSelectedMuons"),cms.InputTag("flashggMuonSystematics"))
+for i in range(len(UnpackedJetCollectionVInputTag)):
+    massSearchReplaceAnyInputTag(process.flashggTagSequence,UnpackedJetCollectionVInputTag[i],jetSystematicsInputTags[i])
 
 process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
 
 process.systematicsTagSequences = cms.Sequence()
 systlabels = [""]
+phosystlabels = []
+jetsystlabels = []
 
 # import flashgg customization to check if we have signal or background
 from flashgg.MetaData.JobConfig import customize
@@ -47,24 +60,40 @@ print "customize.processId:",customize.processId
 if customize.processId.count("h_") or customize.processId.count("vbf_"): # convention: ggh vbf wzh tth
     print "Signal MC, so adding systematics and dZ"
     variablesToUse = minimalVariables
-    for r9 in ["HighR9","LowR9"]:
-        for direction in ["Up","Down"]:
-            systlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
+    for direction in ["Up","Down"]:
+        phosystlabels.append("MvaShift%s01sigma" % direction)
+        jetsystlabels.append("JEC%s01sigma" % direction)
+        jetsystlabels.append("JER%s01sigma" % direction)
+        for r9 in ["HighR9","LowR9"]:
+            phosystlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
             for var in ["Rho","Phi"]:
-                systlabels.append("MCSmear%sEB%s%s01sigma" % (r9,var,direction))
+                phosystlabels.append("MCSmear%sEB%s%s01sigma" % (r9,var,direction))
             for region in ["EB","EE"]:
-                systlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
+                phosystlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
+                variablesToUse.append("LooseMvaSF%s%s%s01sigma := weight(\"LooseMvaSF%s%s%s01sigma\")" % (r9,region,direction,r9,region,direction))
+                variablesToUse.append("PreselSF%s%s%s01sigma := weight(\"PreselSF%s%s%s01sigma\")" % (r9,region,direction,r9,region,direction))
+    systlabels += phosystlabels
+    systlabels += jetsystlabels
 else:
     print "Data or background MC, so store mgg and central only"
     variablesToUse = minimalNonSignalVariables
 
+print "--- Systematics  with independent collections ---"
 print systlabels
+print "-------------------------------------------------"
+print "--- Variables to be dumped, including systematic weights ---"
+print variablesToUse
+print "------------------------------------------------------------"
 
 for systlabel in systlabels:
     if systlabel == "":
         continue
     newseq = cloneProcessingSnippet(process,process.flashggTagSequence,systlabel)
-    massSearchReplaceAnyInputTag(newseq,cms.InputTag("flashggDiPhotonSystematics"),cms.InputTag("flashggDiPhotonSystematics",systlabel))
+    if systlabel in phosystlabels:
+        massSearchReplaceAnyInputTag(newseq,cms.InputTag("flashggDiPhotonSystematics"),cms.InputTag("flashggDiPhotonSystematics",systlabel))
+    if systlabel in jetsystlabels:    
+        for i in range(len(jetSystematicsInputTags)):
+            massSearchReplaceAnyInputTag(newseq,jetSystematicsInputTags[i],cms.InputTag(jetSystematicsInputTags[i].moduleLabel,systlabel))
     for name in newseq.moduleNames():
         module = getattr(process,name)
         if hasattr(module,"SystLabel"):
@@ -89,6 +118,8 @@ from flashgg.MetaData.samples_utils import SamplesManager
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring("file:myMicroAODOutputFile.root"))
+#process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-FinalPrompt-BetaV7-25ns/Spring15#BetaV7/DoubleEG/RunIISpring15-FinalPrompt-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151124_234634/0000/myMicroAODOutputFile_1.root"))
+
 
 #if options.maxEvents > 0:
 #    process.source.eventsToProcess = cms.untracked.VEventRange('1:1-1:'+str(options.maxEvents))
@@ -103,7 +134,7 @@ import flashgg.Taggers.dumperConfigTools as cfgTools
 process.tagsDumper.className = "DiPhotonTagDumper"
 process.tagsDumper.src = "flashggSystTagMerger"
 process.tagsDumper.processId = "test"
-process.tagsDumper.dumpTrees = False
+process.tagsDumper.dumpTrees = True # TODO CHANGE THIS BACK TO FALSE
 process.tagsDumper.dumpWorkspace = True
 process.tagsDumper.dumpHistos = False
 process.tagsDumper.quietRooFit = True
@@ -140,8 +171,8 @@ for tag in tagList:
           currentVariables = systematicVariables
       
       isBinnedOnly = (systlabel !=  "")
-      dumpPdfWeights = (systlabel ==  "")
-      nPdfWeights = 102
+      dumpPdfWeights = False #(systlabel ==  "")
+      nPdfWeights = 0
       
       cfgTools.addCategory(process.tagsDumper,
                            systlabel,
@@ -156,19 +187,34 @@ for tag in tagList:
                            )
 
 process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSystematics+process.flashggElectronSystematics)*
+                     (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                      (process.flashggTagSequence+process.systematicsTagSequences)*
                      process.flashggSystTagMerger
                      * process.tagsDumper)
 
+################################
+## Dump merged tags to screen ##
+################################
 
+#process.load("flashgg/Taggers/flashggTagTester_cfi")
+#process.flashggTagTester.TagSorter = cms.InputTag("flashggSystTagMerger")
+#process.flashggTagTester.ExpectMultiples = cms.untracked.bool(True)
+#process.p += process.flashggTagTester
+
+##############
+## Dump EDM ##
+##############
+
+#process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('CustomizeWillChangeThisAnyway.root'),
+#                               outputCommands = cms.untracked.vstring('keep *') # dump everything! small tests only!
+#                               )
+#process.e = cms.EndPath(process.out)
 
 ############################
 ## Dump the output Python ##
 ############################
 #processDumpFile = open('processDump.py', 'w')
 #print >> processDumpFile, process.dumpPython()
-
-
 
 # set default options if needed
 customize.setDefault("maxEvents",-1)
