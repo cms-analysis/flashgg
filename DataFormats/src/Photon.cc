@@ -268,6 +268,8 @@ void Photon::shiftAllMvaValuesBy( float val ) {
     }
     for(auto key = keys.begin() ; key != keys.end() ; ++key ) {
         phoIdMvaD_[*key] += val;
+        if (phoIdMvaD_[*key] > 1.) phoIdMvaD_[*key] = 1.;
+        if (phoIdMvaD_[*key] < -1.) phoIdMvaD_[*key] = -1.;
     }
 }
 
