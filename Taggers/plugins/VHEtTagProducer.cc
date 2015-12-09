@@ -82,14 +82,14 @@ namespace flashgg {
         Ptr<pat::MET> theMET = METs->ptrAt( 0 );
 
         Handle<View<reco::GenParticle> > genParticles;
-        evt.getByToken( genParticleToken_, genParticles );
 
         std::auto_ptr<vector<VHEtTag> > vhettags( new vector<VHEtTag> );
         std::auto_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
 
         Point higgsVtx;
 
-        if( ! evt.isRealData() )
+        if( ! evt.isRealData() ) {
+            evt.getByToken( genParticleToken_, genParticles );
             for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
                 int pdgid = genParticles->ptrAt( genLoop )->pdgId();
                 if( pdgid == 25 || pdgid == 22 ) {
@@ -97,6 +97,7 @@ namespace flashgg {
                     break;
                 }
             }
+        }
 
         edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
         unsigned int idx = 0;
@@ -127,12 +128,11 @@ namespace flashgg {
 
 
             VHEtTag tag_obj( dipho, mvares );
+            tag_obj.includeWeights( *dipho );
             tag_obj.setDiPhotonIndex( candIndex );
             tag_obj.setSystLabel( systLabel_ );
             tag_obj.setMet( theMET );
 
-            TagTruthBase truth_obj;
-            truth_obj.setGenPV( higgsVtx );
 
             //MetCorrections2012_Simple(leadp4,subleadp4);
             //if(diphoton.mass()>100&&diphoton.mass()<180)
@@ -145,6 +145,8 @@ namespace flashgg {
                 //setMET
                 vhettags->push_back( tag_obj );
                 if( ! evt.isRealData() ) {
+                    TagTruthBase truth_obj;
+                    truth_obj.setGenPV( higgsVtx );
                     truths->push_back( truth_obj );
                     vhettags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
                 }

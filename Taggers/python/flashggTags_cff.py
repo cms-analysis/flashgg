@@ -16,7 +16,7 @@ flashggUntagged = cms.EDProducer("FlashggUntaggedTagProducer",
                                  SystLabel=cms.string(""),
                                  MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
                                  GenParticleTag=cms.InputTag( "flashggPrunedGenParticles" ),
-                                 Boundaries=cms.untracked.vdouble(0.07,0.31,0.62,0.86,0.98)
+                                 Boundaries=cms.untracked.vdouble(-0.089,0.563,0.798,0.945,1.000)
 )
 
 flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
@@ -41,8 +41,10 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                VBFMVAResultTag=cms.InputTag('flashggVBFMVA'),
                                GenParticleTag=cms.InputTag( "flashggPrunedGenParticles" ),
                                GenJetTag = cms.InputTag("slimmedGenJets"),
-                               Boundaries=cms.untracked.vdouble(0.21,0.6,0.81)
-)
+                               #Boundaries=cms.untracked.vdouble(0.21,0.6,0.81)
+                               #  for the moment we have two categories VBF-0 and VBF-1: to be changed when the diphoton MVA is ready 
+                               Boundaries=cms.untracked.vdouble(0.26,0.79) 
+                               )
 
 
 flashggVHEtTag = cms.EDProducer("FlashggVHEtTagProducer",

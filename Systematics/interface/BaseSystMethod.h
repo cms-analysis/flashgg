@@ -7,6 +7,8 @@
 #include "FWCore/Utilities/interface/RandomNumberGenerator.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "flashgg/DataFormats/interface/WeightedObject.h"
+#include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
+
 
 namespace flashgg {
 
@@ -43,6 +45,9 @@ namespace flashgg {
         bool makesWeight() const { return _MakesWeight; }
 
         virtual std::string shiftLabel( param_var syst_val ) const = 0;
+        virtual void setEnergyCorrections ( const JetCorrectorParameters & ) {
+            throw cms::Exception( "NotImplemented" ) << " should be used for JEC only";
+        } 
 
         virtual void setRandomEngine( CLHEP::HepRandomEngine &eng )
         {
@@ -76,6 +81,8 @@ namespace flashgg {
 #include "flashgg/DataFormats/interface/Electron.h"
 #include "flashgg/DataFormats/interface/Muon.h"
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
+#include "flashgg/DataFormats/interface/Jet.h"
+
 //template <class T, class U> struct A {
 //    typedef edmplugin::PluginFactory< flashgg::BaseSystMethod<T,U>* (const edm::ParameterSet & ) > FlashggSystematicMethodsFactory;
 //}
@@ -91,6 +98,9 @@ typedef FlashggSystematicMethodsFactory<flashgg::Muon, int> FlashggSystematicMuo
 typedef FlashggSystematicMethodsFactory<flashgg::Electron, std::pair<int, int> > FlashggSystematicElectronMethodsFactory2D;
 typedef FlashggSystematicMethodsFactory<flashgg::Muon, std::pair<int, int> > FlashggSystematicMuonMethodsFactory2D;
 typedef FlashggSystematicMethodsFactory<flashgg::DiPhotonTagBase, int> FlashggSystematicTagMethodsFactory;
+typedef FlashggSystematicMethodsFactory<flashgg::Jet, int > FlashggSystematicJetMethodsFactory;
+typedef FlashggSystematicMethodsFactory<flashgg::Jet, std::pair<int,int> > FlashggSystematicJetMethodsFactory2D;
+
 //typedef edmplugin::PluginFactory< flashgg::BaseSystMethod<flashgg::Photon, int>* ( const edm::ParameterSet & ) > FlashggSystematicPhotonMethodsFactory;
 //typedef edmplugin::PluginFactory< flashgg::BaseSystMethod<flashgg::Photon,float>* ( const edm::ParameterSet&) > FlashggSystematicPhotonMethodsFactory;
 //typedef edmplugin::PluginFactory< flashgg::BaseSystMethod<flashgg::DiPhotonCandidate>* ( const edm::ParameterSet&) > FlashggSystematicDiPhotonMethodsFactory;

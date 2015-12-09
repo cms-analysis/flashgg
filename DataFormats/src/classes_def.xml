@@ -15,8 +15,8 @@
 </class>
 <class name="std::vector<flashgg::DiPhotonMVAResult>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DiPhotonMVAResult> >"/>
-<class name="flashgg::VBFMVAResult" ClassVersion="10">
-  <version ClassVersion="10" checksum="3407874632"/>
+<class name="flashgg::VBFMVAResult" ClassVersion="12">
+  <version ClassVersion="12" checksum="585243665"/>
 </class>
 <class name="std::vector<flashgg::VBFMVAResult>"/>
 <class name="edm::Wrapper<std::vector<flashgg::VBFMVAResult> >"/>
@@ -60,8 +60,8 @@
 <class name="std::vector<edm::Ptr<flashgg::Jet> >"/>
 <class name="edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> >" />
 <class name="edm::Wrapper<edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> > >" />
-<class name="flashgg::VBFTagTruth" ClassVersion="10">
-  <version ClassVersion="10" checksum="573481217"/>
+<class name="flashgg::VBFTagTruth" ClassVersion="11">
+  <version ClassVersion="11" checksum="2745005875"/>
 </class>
 <class name="std::vector<flashgg::VBFTagTruth>"/>
 <class name="edm::Wrapper<std::vector<flashgg::VBFTagTruth> >"/>

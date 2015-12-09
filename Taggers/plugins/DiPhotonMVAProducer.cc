@@ -46,7 +46,9 @@ namespace flashgg {
         float CosPhi_;
         float leadmva_;
         float subleadmva_;
-
+        
+        float mass_;
+        
         float nConv_;
         float vtxProbMVA_;
         vector<double> vertex_prob_params_conv;
@@ -78,6 +80,8 @@ namespace flashgg {
         CosPhi_ = 0.;
         leadmva_ = 0.;
         subleadmva_ = 0.;
+        
+        mass_=0;                
 
         std::string version_old = "old";
         std::string version_new = "new";
@@ -111,6 +115,9 @@ namespace flashgg {
             DiphotonMva_->AddVariable( "sigmawv", &sigmawv_ );
             DiphotonMva_->AddVariable( "CosPhi", &CosPhi_ );
             DiphotonMva_->AddVariable( "vtxprob", &vtxprob_ );
+
+            //            DiphotonMva_->AddSpectator("Signal_wei", &weightSig_       );
+            //            DiphotonMva_->AddSpectator("Background_wei", &weightBkg_           );            
             DiphotonMva_->BookMVA( "BDT", diphotonMVAweightfile_.fullPath() );
             //            std::cout << "finished reading mva" << std::endl;
         }

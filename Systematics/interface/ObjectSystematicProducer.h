@@ -30,9 +30,13 @@ namespace flashgg {
 
         ObjectSystematicProducer( const edm::ParameterSet & );
 
+    protected:
+        std::vector<shared_ptr<BaseSystMethod<flashgg_object, param_var> > > Corrections_;
+        std::vector<shared_ptr<BaseSystMethod<flashgg_object, pair<param_var, param_var> > > > Corrections2D_;
+        void produce( edm::Event &, const edm::EventSetup & ) override;
+
     private:
 
-        void produce( edm::Event &, const edm::EventSetup & ) override;
         void ApplyCorrections( flashgg_object &y, shared_ptr<BaseSystMethod<flashgg_object, param_var> > CorrToShift, param_var syst_shift );
         void ApplyCorrections( flashgg_object &y, shared_ptr<BaseSystMethod<flashgg_object, pair<param_var, param_var> > > CorrToShift,
                                pair<param_var, param_var>  syst_shift );
@@ -40,11 +44,9 @@ namespace flashgg {
 
         edm::EDGetTokenT<View<flashgg_object> > ObjectToken_;
 
-        std::vector<shared_ptr<BaseSystMethod<flashgg_object, param_var> > > Corrections_;
         std::vector<std::vector<param_var> > sigmas_;
         std::vector<std::string> collectionLabelsNonCentral_;
 
-        std::vector<shared_ptr<BaseSystMethod<flashgg_object, pair<param_var, param_var> > > > Corrections2D_;
         std::vector<std::vector<pair<param_var, param_var> > > sigmas2D_;
     };
 

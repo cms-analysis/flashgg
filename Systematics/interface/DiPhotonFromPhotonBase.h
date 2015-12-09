@@ -19,6 +19,7 @@ namespace flashgg {
         DiPhotonFromPhotonBase( const edm::ParameterSet &conf );
 
         void applyCorrection( DiPhotonCandidate &y, param_var syst_shift ) override;
+        float makeWeight( const DiPhotonCandidate &y, param_var syst_shift ) override;
         std::string shiftLabel( param_var ) const override;
 
         void setRandomEngine( CLHEP::HepRandomEngine &eng ) override
@@ -49,6 +50,24 @@ namespace flashgg {
     std::string DiPhotonFromPhotonBase<param_var>::shiftLabel( param_var syst_value ) const
     {
         return photon_corr_->shiftLabel( syst_value );
+    }
+
+    template<typename param_var>
+    float DiPhotonFromPhotonBase<param_var>::makeWeight( const DiPhotonCandidate &y, param_var syst_shift )
+    {
+        if( debug_ ) {
+            std::cout << "START OF DiPhotonFromPhoton::makeWeight M PT E1 E2 ETA1 ETA2 "
+                      << y.mass() << " " << y.pt() << " " << y.leadingPhoton()->energy() << " " << y.subLeadingPhoton()->energy() << " "
+                      << y.leadingPhoton()->eta() << " " << y.subLeadingPhoton()->eta() << std::endl;
+        }
+        float weight1 = photon_corr_->makeWeight( *(y.leadingPhoton()), syst_shift );
+        float weight2 = photon_corr_->makeWeight( *(y.subLeadingPhoton()), syst_shift );
+        float diphoweight = weight1*weight2;
+        if( debug_ ) {
+            std::cout << "END OF DiPhotonFromPhoton::makeWeight M PT E1 E2 ETA1 ETA2 "
+                      << " weight1=" << weight1 << " weight2=" << weight2 << " diphoweight=" << diphoweight << std::endl;
+        }
+        return diphoweight;
     }
 
     template<class param_var>
