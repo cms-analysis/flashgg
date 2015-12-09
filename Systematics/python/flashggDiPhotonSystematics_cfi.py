@@ -83,7 +83,7 @@ looseMvaBins = cms.PSet(
 
 
 
-
+# RELATIVE shift of sigmaE/E --> 0.05 corresponds to a shift of 5%
 sigmaEOverEShiftBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)"),
     bins = cms.VPSet(
@@ -246,7 +246,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("1"),
                                                   BinList = sigmaEOverEShiftBins,
-                                                  Debug = cms.untracked.bool(True)
+                                                  Debug = cms.untracked.bool(False)
                                                   )
 
                                         )
