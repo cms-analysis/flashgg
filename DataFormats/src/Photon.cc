@@ -271,6 +271,22 @@ void Photon::shiftAllMvaValuesBy( float val ) {
     }
 }
 
+//sigmaEOverE systematycs
+void Photon::shiftSigmaEOverEValueBy( float val ) {
+    const LorentzVector pho_p4 = p4(regression_type);
+    float energyError = getCorrectedEnergyError(regression_type);
+    setP4(regression_type, pho_p4, energyError*(1.+val), false);
+}
+
+
+
+//void Photon::setSigEOverE(){
+//        sigEOverE_ = getCorrectedEnergyError( regression_type ) / getCorrectedEnergy( regression_type ) ;
+//}
+    
+
+
+
 float const Photon::sigEOverE() const
 {
     // Use uncertainty and error stored from reco because we want this fraction to be constant
