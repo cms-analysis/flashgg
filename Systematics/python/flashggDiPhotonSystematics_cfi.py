@@ -72,6 +72,15 @@ looseMvaBins = cms.PSet(
 
 
 
+# RELATIVE shift of sigmaE/E --> 0.05 corresponds to a shift of 5%
+sigmaEOverEShiftBins = cms.PSet(
+    variables = cms.vstring("abs(superCluster.eta)"),
+    bins = cms.VPSet(
+                     cms.PSet( lowBounds = cms.vdouble(0.000), upBounds = cms.vdouble(999.),
+                               values = cms.vdouble( 0.0 ), uncertainties = cms.vdouble( 0.05 ))
+                     )
+    )
+
 
 flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
 		src = cms.InputTag("flashggFinalEGamma","finalDiPhotons"),
@@ -218,6 +227,14 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("r9>=0.9&&abs(superCluster.eta)<1.5"),
                                                   BinList = looseMvaBins,
+                                                  Debug = cms.untracked.bool(False)
+                                                  ),
+                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigEOverEShift"),
+                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+                                                  Label = cms.string("SigmaEOverEShift"),
+                                                  NSigmas = cms.vint32(-1,1),
+                                                  OverallRange = cms.string("1"),
+                                                  BinList = sigmaEOverEShiftBins,
                                                   Debug = cms.untracked.bool(False)
                                                   )
                                         )
