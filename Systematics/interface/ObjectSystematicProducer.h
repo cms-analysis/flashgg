@@ -264,7 +264,7 @@ namespace flashgg {
         //        std::cout << "Engines set!" << std::endl;
 
         // Build central collection
-        auto_ptr<vector<flashgg_object> > centralObjectColl( new vector<flashgg_object> );
+        auto_ptr<output_container<flashgg_object> > centralObjectColl( new output_container<flashgg_object> );
         for( unsigned int i = 0; i < objects->size(); i++ ) {
             flashgg_object *p_obj = objects->ptrAt( i )->clone();
             flashgg_object obj = *p_obj;

@@ -21,7 +21,8 @@ process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 10 )
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
                                                    flashggDiPhotonSystematics = cms.PSet(initialSeed = cms.untracked.uint32(664)),
                                                    flashggElectronSystematics = cms.PSet(initialSeed = cms.untracked.uint32(11)),
-                                                   flashggMuonSystematics = cms.PSet(initialSeed = cms.untracked.uint32(13))
+                                                   flashggMuonSystematics = cms.PSet(initialSeed = cms.untracked.uint32(13)),
+                                                   flashggTagSystematics = cms.PSet(initialSeed = cms.untracked.uint32(999))
                                                   )
 
 process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
@@ -134,6 +135,7 @@ process.load("flashgg.Taggers.diphotonTagDumper_cfi") ##  import diphotonTagDump
 import flashgg.Taggers.dumperConfigTools as cfgTools
 
 process.tagsDumper.className = "DiPhotonTagDumper"
+#process.tagsDumper.src = "flashggSystTagMerger"
 process.tagsDumper.src = "flashggTagSystematics"
 process.tagsDumper.processId = "test"
 process.tagsDumper.dumpTrees = True # TODO CHANGE THIS BACK TO FALSE
@@ -191,8 +193,9 @@ for tag in tagList:
 process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSystematics+process.flashggElectronSystematics)*
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                      (process.flashggTagSequence+process.systematicsTagSequences)*
-                     process.flashggSystTagMerger
-                     * process.tagsDumper)
+                     process.flashggSystTagMerger*
+                     process.flashggTagSystematics*
+                     process.tagsDumper)
 
 ################################
 ## Dump merged tags to screen ##
