@@ -179,7 +179,6 @@ EXAMPLE2:
                 y.updateEnergy( shiftLabel( syst_shift ), newe );
  */
 
->>>>>>> malcles/master
 DEFINE_EDM_PLUGIN( FlashggSystematicTagMethodsFactory,
                    flashgg::TagWeightFromFracRV,
                    "FlashggTagWeightFromFracRV" );
@@ -191,7 +190,4 @@ DEFINE_EDM_PLUGIN( FlashggSystematicTagMethodsFactory,
 // c-basic-offset:4
 // End:
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
-<<<<<<< HEAD
 
-=======
->>>>>>> malcles/master
