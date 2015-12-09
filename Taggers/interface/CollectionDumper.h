@@ -345,7 +345,12 @@ namespace flashgg {
 
                 if( which != dumpers_.end() ) {
                     int isub = ( hasSubcat_[cat.first] ? cat.second : 0 );
-                    // FIXME per-candidate weights
+                   const  WeightedObject* tag = dynamic_cast<const WeightedObject* >( &cand );
+                    if ( tag != NULL ){
+
+                    weight_=weight_*(tag->centralWeight());
+                    //std::cout << "TEST cand centralWeight " << tag->centralWeight() << std::endl;
+                    }
                     which->second[isub].fill( cand, weight_, pdfWeights_, maxCandPerEvent_ - nfilled );
                     --nfilled;
                 } else if( throwOnUnclassified_ ) {

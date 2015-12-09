@@ -14,7 +14,7 @@ namespace flashgg {
         VBFDiPhoDiJetMVAResult();
 //    VBFDiPhoDiJetMVAResult(VBFMVAResult);
         //    VBFDiPhoDiJetMVAResult(const VBFDiPhoDiJetMVAResult&) = default;  // C++11 only? Should happen automagically anyway
-
+        virtual ~VBFDiPhoDiJetMVAResult() {}
         // Input variables
         float dijet_mva;
         float dipho_mva;
