@@ -41,9 +41,11 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                VBFMVAResultTag=cms.InputTag('flashggVBFMVA'),
                                GenParticleTag=cms.InputTag( "flashggPrunedGenParticles" ),
                                GenJetTag = cms.InputTag("slimmedGenJets"),
-                               #Boundaries=cms.untracked.vdouble(0.21,0.6,0.81)
-                               #  for the moment we have two categories VBF-0 and VBF-1: to be changed when the diphoton MVA is ready 
-                               Boundaries=cms.untracked.vdouble(0.26,0.79) 
+                               # Boundaries=cms.untracked.vdouble(0.21,0.6,0.81)
+                               # for the moment we have two categories VBF-0 and VBF-1: to be changed when the diphoton MVA is ready 
+                               # Boundaries=cms.untracked.vdouble(0.26,0.79) 
+                               # new boudaries using the prety new combined VBF-MVA (new dipho/dijet MVA's)
+                               Boundaries=cms.untracked.vdouble(0.64,0.92) 
                                )
 
 
