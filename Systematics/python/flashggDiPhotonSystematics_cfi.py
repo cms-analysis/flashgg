@@ -83,7 +83,7 @@ sigmaEOverEShiftBins = cms.PSet(
 
 
 RVBins = cms.PSet(
-                variables = cms.vstring("diPhoton().pt"),
+                variables = cms.vstring("pt"),
                 bins = cms.VPSet(
         cms.PSet(lowBounds = cms.vdouble(0), upBounds = cms.vdouble(10),
                  values = cms.vdouble(1.04969,0.925092), uncertainties = cms.vdouble(0.00369751,0.00369751,0.00557573,0.00557573)),
@@ -240,7 +240,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("1"),
                                                   BinList = RVBins,
-                                                  Debug = cms.untracked.bool(True)
+                                                  Debug = cms.untracked.bool(False)
                                                   )
                                         )
                                             )
