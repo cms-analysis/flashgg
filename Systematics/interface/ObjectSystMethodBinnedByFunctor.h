@@ -116,7 +116,7 @@ namespace flashgg {
                     return std::make_pair( bin.val, bin.unc );
                 }
             }
-            throw cms::Exception( "Binning" ) << " binContents failed and would return a pair of empty vectors";
+            throw cms::Exception( "Binning" ) << " binContents failed and would return a pair of empty vectors - 0th val:" << func_vals[0] << std::endl;
             return std::make_pair( std::vector<double>(), std::vector<double>() ); // this is bad
         }
 
