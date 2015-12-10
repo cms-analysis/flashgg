@@ -22,7 +22,8 @@ process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService
                                                    flashggDiPhotonSystematics = cms.PSet(initialSeed = cms.untracked.uint32(664)),
                                                    flashggElectronSystematics = cms.PSet(initialSeed = cms.untracked.uint32(11)),
                                                    flashggMuonSystematics = cms.PSet(initialSeed = cms.untracked.uint32(13)),
-                                                   flashggTagSystematics = cms.PSet(initialSeed = cms.untracked.uint32(999))
+                                                   flashggTagSystematics = cms.PSet(initialSeed = cms.untracked.uint32(999)),
+                                                   flashggRandomizedPerPhotonDiPhotons = cms.PSet(initialSeed = cms.untracked.uint32(281765313))
                                                   )
 
 process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
@@ -47,7 +48,6 @@ for i in range(len(UnpackedJetCollectionVInputTag)):
     massSearchReplaceAnyInputTag(process.flashggTagSequence,UnpackedJetCollectionVInputTag[i],jetSystematicsInputTags[i])
 
 process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
-#process.load("flashgg.Systematics.flashggTagSystematics_cfi")
 
 process.systematicsTagSequences = cms.Sequence()
 systlabels = [""]
@@ -194,7 +194,13 @@ for tag in tagList:
                            nPdfWeights=nPdfWeights
                            )
 
-process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSystematics+process.flashggElectronSystematics)*
+process.load("flashgg.MicroAOD.flashggRandomizedPerPhotonDiPhotonProducer_cff")
+
+# to be fixed once randomized photons will be produced at MicroAOD level
+process.flashggDiPhotonSystematics.src = "flashggRandomizedPerPhotonDiPhotons"
+
+process.p = cms.Path(process.flashggRandomizedPerPhotonDiPhotons *
+                (process.flashggDiPhotonSystematics+process.flashggMuonSystematics+process.flashggElectronSystematics)*
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                      (process.flashggTagSequence+process.systematicsTagSequences)*
                      process.flashggSystTagMerger*

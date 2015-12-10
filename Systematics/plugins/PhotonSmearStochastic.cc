@@ -6,7 +6,6 @@
 #include "DataFormats/Common/interface/PtrVector.h"
 #include "flashgg/DataFormats/interface/Photon.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
-#include "CLHEP/Random/RandGauss.h"
 
 namespace flashgg {
 
@@ -27,6 +26,7 @@ namespace flashgg {
         selector_type overall_range_;
         const std::string label1_;
         const std::string label2_;
+        std::string random_label_;
         bool exaggerateShiftUp_; // debugging
     };
 
@@ -35,6 +35,7 @@ namespace flashgg {
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
         label1_( conf.getUntrackedParameter<std::string>( "FirstParameterName", "Rho" ) ),
         label2_( conf.getUntrackedParameter<std::string>( "SecondParameterName", "Phi" ) ),
+        random_label_(conf.getParameter<std::string>("RandomLabel")),
         exaggerateShiftUp_( conf.getUntrackedParameter<bool>( "ExaggerateShiftUp", false ) )
     {
     }
@@ -91,7 +92,11 @@ namespace flashgg {
                 sigma = rho_val + syst_shift.first * rho_err;
             }
 
-            float newe = CLHEP::RandGauss::shoot( RandomEngine(), y.energy(), sigma * y.energy() );
+            if (!y.hasUserFloat(random_label_)) {
+                throw cms::Exception("Missing embedded random number") << "Could not find key " << random_label_ << " for random numbers embedded in the photon object, please make sure to read the appropriate version of MicroAOD and/or access the correct label and/or run the PerPhotonDiPhoton randomizer on-the-fly";
+            }
+            float rnd = y.userFloat(random_label_);
+            float newe = y.energy() * (1. + rnd * sigma);
             if( debug_ ) {
                 std::cout << "  " << shiftLabel( syst_shift ) << ": Photon has energy= " << y.energy() << " eta=" << y.eta()
                           << " and we apply a smearing with sigma " << ( 100 * sigma ) << "% to get new energy=" << newe << std::endl;
