@@ -84,6 +84,17 @@ if customize.processId.count("h_") or customize.processId.count("vbf_"): # conve
 else:
     print "Data or background MC, so store mgg and central only"
     variablesToUse = minimalNonSignalVariables
+    vpsetlist = [process.flashggDiPhotonSystematics.SystMethods, process.flashggMuonSystematics.SystMethods, process.flashggElectronSystematics.SystMethods]
+    vpsetlist += [getattr(process,"flashggJetSystematics%i"%i).SystMethods for i in range(len(UnpackedJetCollectionVInputTag))] 
+    # i.e. process.flashggJetSystematics0.SystMethods, ...
+    for vpset in vpsetlist:
+        for pset in vpset:
+            pset.NSigmas = cms.vint32() # Do not perform shifts if they will not be read, but still do all central values
+
+if customize.processId == "Data":
+    for pset in process.flashggDiPhotonSystematics.SystMethods:
+        if pset.Label.value().count("Scale"):
+            pset.NoCentralShift = cms.bool(False) # Turn on central shift for data (it is off for MC)
 
 print "--- Systematics  with independent collections ---"
 print systlabels
