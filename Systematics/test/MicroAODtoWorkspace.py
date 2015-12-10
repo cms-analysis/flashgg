@@ -228,6 +228,6 @@ process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSyst
 
 # set default options if needed
 customize.setDefault("maxEvents",-1)
-customize.setDefault("targetLumi",20e+3)
+customize.setDefault("targetLumi",2.46e+3)
 # call the customization
 customize(process)
