@@ -264,12 +264,14 @@ namespace flashgg {
         //        std::cout << "Engines set!" << std::endl;
 
         // Build central collection
+        std::vector<float> centralWeights;
         auto_ptr<output_container<flashgg_object> > centralObjectColl( new output_container<flashgg_object> );
         for( unsigned int i = 0; i < objects->size(); i++ ) {
             flashgg_object *p_obj = objects->ptrAt( i )->clone();
             flashgg_object obj = *p_obj;
             ApplyCorrections( obj, nullptr, param_var( 0 ) );
             ApplyNonCentralWeights( obj );
+            centralWeights.push_back( obj.centralWeight() );
             centralObjectColl->push_back( obj );
         }
         evt.put( centralObjectColl ); // put central collection in event
@@ -296,6 +298,7 @@ namespace flashgg {
                         flashgg_object *p_obj = objects->ptrAt( i )->clone();
                         flashgg_object obj = *p_obj;
                         ApplyCorrections( obj, Corrections_.at( ncorr ), sig );
+                        obj.setCentralWeight( centralWeights[i] );
                         all_shifted_collections[ncoll]->push_back( obj );
                         ncoll++;
                     }
@@ -308,6 +311,7 @@ namespace flashgg {
                         flashgg_object *p_obj = objects->ptrAt( i )->clone();
                         flashgg_object obj = *p_obj;
                         ApplyCorrections( obj, Corrections2D_.at( ncorr ), sig );
+                        obj.setCentralWeight( centralWeights[i] );
                         all_shifted_collections[ncoll]->push_back( obj );
                         ncoll++;
                     }
