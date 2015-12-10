@@ -47,7 +47,7 @@ for i in range(len(UnpackedJetCollectionVInputTag)):
     massSearchReplaceAnyInputTag(process.flashggTagSequence,UnpackedJetCollectionVInputTag[i],jetSystematicsInputTags[i])
 
 process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
-process.load("flashgg.Systematics.flashggTagSystematics_cfi")
+#process.load("flashgg.Systematics.flashggTagSystematics_cfi")
 
 process.systematicsTagSequences = cms.Sequence()
 systlabels = [""]
@@ -67,7 +67,9 @@ if customize.processId.count("h_") or customize.processId.count("vbf_"): # conve
         phosystlabels.append("SigmaEOverEShift%s01sigma" % direction)
         jetsystlabels.append("JEC%s01sigma" % direction)
         jetsystlabels.append("JER%s01sigma" % direction)
-        variablesToUse.append("FracRVWeight%s01sigma := weight(\"FracRVWeight%s01sigma\")" % (direction,direction))
+        variablesToUse.append("LooseMvaSF%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s01sigma\")" % (direction,direction))
+        variablesToUse.append("PreselSF%s01sigma[1,-999999.,999999.] := weight(\"PreselSF%s01sigma\")" % (direction,direction))
+#        variablesToUse.append("FracRVWeight%s01sigma[1,-999999.,999999.] := weight(\"FracRVWeight%s01sigma\")" % (direction,direction))
         for r9 in ["HighR9","LowR9"]:
 #            phosystlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
 #            for var in ["Rho","Phi"]:
@@ -75,8 +77,8 @@ if customize.processId.count("h_") or customize.processId.count("vbf_"): # conve
             for region in ["EB","EE"]:
                 phosystlabels.append("MCSmear%s%s%s01sigma" % (r9,region,direction))
                 phosystlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
-                variablesToUse.append("LooseMvaSF%s%s%s01sigma := weight(\"LooseMvaSF%s%s%s01sigma\")" % (r9,region,direction,r9,region,direction))
-                variablesToUse.append("PreselSF%s%s%s01sigma := weight(\"PreselSF%s%s%s01sigma\")" % (r9,region,direction,r9,region,direction))
+#                variablesToUse.append("LooseMvaSF%s%s%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s%s%s01sigma\")" % (r9,region,direction,r9,region,direction))
+#                variablesToUse.append("PreselSF%s%s%s01sigma[1,-999999.,999999.] := weight(\"PreselSF%s%s%s01sigma\")" % (r9,region,direction,r9,region,direction))
     systlabels += phosystlabels
     systlabels += jetsystlabels
 else:
@@ -137,8 +139,8 @@ process.load("flashgg.Taggers.diphotonTagDumper_cfi") ##  import diphotonTagDump
 import flashgg.Taggers.dumperConfigTools as cfgTools
 
 process.tagsDumper.className = "DiPhotonTagDumper"
-#process.tagsDumper.src = "flashggSystTagMerger"
-process.tagsDumper.src = "flashggTagSystematics"
+process.tagsDumper.src = "flashggSystTagMerger"
+#process.tagsDumper.src = "flashggTagSystematics"
 process.tagsDumper.processId = "test"
 process.tagsDumper.dumpTrees = True # TODO CHANGE THIS BACK TO FALSE
 process.tagsDumper.dumpWorkspace = True
@@ -196,26 +198,27 @@ process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSyst
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                      (process.flashggTagSequence+process.systematicsTagSequences)*
                      process.flashggSystTagMerger*
-                     process.flashggTagSystematics*
+#                     process.flashggTagSystematics*
                      process.tagsDumper)
 
 ################################
 ## Dump merged tags to screen ##
 ################################
 
-#process.load("flashgg/Taggers/flashggTagTester_cfi")
-#process.flashggTagTester.TagSorter = cms.InputTag("flashggSystTagMerger")
-#process.flashggTagTester.ExpectMultiples = cms.untracked.bool(True)
-#process.p += process.flashggTagTester
+process.load("flashgg/Taggers/flashggTagTester_cfi")
+#process.flashggTagTester.TagSorter = cms.InputTag("flashggTagSystematics")
+process.flashggTagTester.TagSorter = cms.InputTag("flashggSystTagMerger")
+process.flashggTagTester.ExpectMultiples = cms.untracked.bool(True)
+process.p += process.flashggTagTester
 
 ##############
 ## Dump EDM ##
 ##############
 
-#process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('CustomizeWillChangeThisAnyway.root'),
-#                               outputCommands = cms.untracked.vstring('keep *') # dump everything! small tests only!
-#                               )
-#process.e = cms.EndPath(process.out)
+process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('CustomizeWillChangeThisAnyway.root'),
+                               outputCommands = cms.untracked.vstring('keep *') # dump everything! small tests only!
+                               )
+process.e = cms.EndPath(process.out)
 
 ############################
 ## Dump the output Python ##
