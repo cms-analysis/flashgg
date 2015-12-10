@@ -46,11 +46,11 @@ preselBins = cms.PSet(
     bins = cms.VPSet(
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.0 ), upBounds = cms.vdouble( 1.5, 0.9 ),
                   values = cms.vdouble( 0.9968 ), uncertainties = cms.vdouble( 0.0227 ) ),
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.9 ), upBounds = cms.vdouble( 1.5, 1.0 ),
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.9 ), upBounds = cms.vdouble( 1.5, 999. ),
                   values = cms.vdouble(0.9978 ), uncertainties= cms.vdouble( 0.0029 ) ),
         cms.PSet( lowBounds = cms.vdouble( 1.5, 0.0 ), upBounds = cms.vdouble( 2.5, 0.9),
                   values = cms.vdouble( 1.0115 ), uncertainties= cms.vdouble( 0.0297 ) ),
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.9 ), upBounds = cms.vdouble( 2.5, 1.0 ),
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.9 ), upBounds = cms.vdouble( 2.5, 999. ),
                   values = cms.vdouble(0.9963 ), uncertainties= cms.vdouble( 0.0044 ) )
         )
     )
@@ -61,11 +61,11 @@ looseMvaBins = cms.PSet(
     bins = cms.VPSet(
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.0 ), upBounds = cms.vdouble( 1.5, 0.9 ),
                   values = cms.vdouble( 1.0001 ), uncertainties = cms.vdouble( 0.0022 ) ),
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.9 ), upBounds = cms.vdouble( 1.5, 1.0 ),
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.9 ), upBounds = cms.vdouble( 1.5, 999.0 ),
                   values = cms.vdouble( 1.000 ), uncertainties= cms.vdouble( 0.0001 ) ),
         cms.PSet( lowBounds = cms.vdouble( 1.5, 0.0 ), upBounds = cms.vdouble( 2.5, 0.9),
                   values = cms.vdouble( 0.9851 ), uncertainties= cms.vdouble( 0.0016 ) ),
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.9 ), upBounds = cms.vdouble( 2.5, 1.0 ),
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.9 ), upBounds = cms.vdouble( 2.5, 999.0 ),
                   values = cms.vdouble( 1.0001 ), uncertainties= cms.vdouble( 0.0009 ) )
         )
     )
@@ -147,7 +147,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   MethodName = cms.string("FlashggDiPhotonFromPhoton"),
                                                   Label = cms.string("MCSmearHighR9EB"),
                                                   NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("r9>0.94&&abs(eta)<1.5"),
+                                                  OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)<1.5"),
                                                   BinList = smearBins,
                                                   Debug = cms.untracked.bool(False),
                                                   ExaggerateShiftUp = cms.untracked.bool(False),
@@ -156,7 +156,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   MethodName = cms.string("FlashggDiPhotonFromPhoton"),
                                                   Label = cms.string("MCSmearLowR9EB"),
                                                   NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("r9<=0.94&&abs(eta)<1.5"),
+                                                  OverallRange = cms.string("r9<=0.94&&abs(superCluster.eta)<1.5"),
                                                   BinList = smearBins,
                                                   Debug = cms.untracked.bool(False),
                                                   ExaggerateShiftUp = cms.untracked.bool(False),
