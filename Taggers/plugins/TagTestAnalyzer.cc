@@ -110,7 +110,7 @@ namespace flashgg {
                 std::cout << "[UNTAGGED] category " << untagged->categoryNumber() << " mass=" << untagged->diPhoton()->mass() <<
                           ", systLabel " << untagged->systLabel() <<  std::endl;
                 if( untagged->tagTruth().isNonnull() ) {
-                    std::cout << "\t[UNTAGGED TRUTH]: genPV=" << untagged->tagTruth()->genPV() << std::endl;
+                    std::cout << "\t[UNTAGGED TRUTH]: genPV=" << untagged->diPhoton()->genPV() << std::endl;
                 }
             }
 
@@ -124,6 +124,7 @@ namespace flashgg {
                     const VBFTagTruth *truth = dynamic_cast<const VBFTagTruth *>( &*vbftag->tagTruth() );
                     assert( truth != NULL );  // If we stored a VBFTag with a nonnull pointer, we either have VBFTagTruth or a nutty bug
                     std::cout << "\t[VBF TRUTH]: genPV=" << truth->genPV() << std::endl;
+                    std::cout << "\t[VBF DIPHOTON]: genPV=" << vbftag->diPhoton()->genPV() << std::endl;
                     std::cout << "\t\t------------------------------------------" << std::endl;
                     if( truth->closestGenJetToLeadingJet().isNonnull() ) {
                         std::cout << "\t\tclosestGenJetToLeadingJet pt eta " << truth->closestGenJetToLeadingJet()->pt() << " " << truth->closestGenJetToLeadingJet()->eta() <<
