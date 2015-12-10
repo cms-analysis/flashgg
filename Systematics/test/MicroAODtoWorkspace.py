@@ -206,9 +206,10 @@ for tag in tagList:
                            )
 
 process.load("flashgg.MicroAOD.flashggRandomizedPerPhotonDiPhotonProducer_cff")
+process.load("flashgg.Systematics.flashggDiPhotonsWithAddedGenZ_cfi")
 
 # to be fixed once randomized photons will be produced at MicroAOD level
-process.flashggDiPhotonSystematics.src = "flashggRandomizedPerPhotonDiPhotons"
+process.flashggDiPhotonSystematics.src = "flashggDiPhotonsWithAddedGenZ" 
 
 from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
 process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring("HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95_v1") )
@@ -218,7 +219,7 @@ process.hltRequirement = cms.Sequence()
 if customize.processId == "Data":
         process.hltRequirement += process.hltHighLevel
 
-process.p = cms.Path(process.hltRequirement * process.flashggRandomizedPerPhotonDiPhotons *
+process.p = cms.Path(process.hltRequirement * process.flashggRandomizedPerPhotonDiPhotons * process.flashggDiPhotonsWithAddedGenZ *
                 (process.flashggDiPhotonSystematics+process.flashggMuonSystematics+process.flashggElectronSystematics)*
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                      (process.flashggTagSequence+process.systematicsTagSequences)*
