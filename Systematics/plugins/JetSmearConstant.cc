@@ -62,8 +62,10 @@ namespace flashgg {
                     }
                     y.setP4((newpt/recpt)*y.p4());
                 } else {
-                    std::cout << "  " << shiftLabel( syst_shift ) << ": Jet has pt=" << y.pt() << " eta=" << y.eta() << " AND NO GENJET! "
-                              << " ... so we do nothing" << std::endl;
+                    if ( debug_ ) {
+                        std::cout << "  " << shiftLabel( syst_shift ) << ": Jet has pt=" << y.pt() << " eta=" << y.eta() << " AND NO GENJET! "
+                                  << " ... so we do nothing" << std::endl;
+                    }
                 }
             }
         }

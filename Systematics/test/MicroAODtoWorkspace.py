@@ -142,7 +142,7 @@ process.tagsDumper.className = "DiPhotonTagDumper"
 process.tagsDumper.src = "flashggSystTagMerger"
 #process.tagsDumper.src = "flashggTagSystematics"
 process.tagsDumper.processId = "test"
-process.tagsDumper.dumpTrees = True # TODO CHANGE THIS BACK TO FALSE
+process.tagsDumper.dumpTrees = True
 process.tagsDumper.dumpWorkspace = True
 process.tagsDumper.dumpHistos = False
 process.tagsDumper.quietRooFit = True
@@ -150,13 +150,13 @@ process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNA
 
 tagList=[
 ["UntaggedTag",5],
-["VBFTag",3],
-["VHTightTag",0],
-["VHLooseTag",0],
-["VHEtTag",0],
-["VHHadronicTag",0],
-["TTHHadronicTag",0],
-["TTHLeptonicTag",0]
+["VBFTag",2],
+#["VHTightTag",0],
+#["VHLooseTag",0],
+#["VHEtTag",0],
+#["VHHadronicTag",0],
+#["TTHHadronicTag",0],
+#["TTHLeptonicTag",0]
 ]
 
 definedSysts=set()
@@ -205,20 +205,20 @@ process.p = cms.Path((process.flashggDiPhotonSystematics+process.flashggMuonSyst
 ## Dump merged tags to screen ##
 ################################
 
-process.load("flashgg/Taggers/flashggTagTester_cfi")
+#process.load("flashgg/Taggers/flashggTagTester_cfi")
 #process.flashggTagTester.TagSorter = cms.InputTag("flashggTagSystematics")
-process.flashggTagTester.TagSorter = cms.InputTag("flashggSystTagMerger")
-process.flashggTagTester.ExpectMultiples = cms.untracked.bool(True)
-process.p += process.flashggTagTester
+#process.flashggTagTester.TagSorter = cms.InputTag("flashggSystTagMerger")
+#process.flashggTagTester.ExpectMultiples = cms.untracked.bool(True)
+#process.p += process.flashggTagTester
 
 ##############
 ## Dump EDM ##
 ##############
 
-process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('CustomizeWillChangeThisAnyway.root'),
-                               outputCommands = cms.untracked.vstring('keep *') # dump everything! small tests only!
-                               )
-process.e = cms.EndPath(process.out)
+#process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('CustomizeWillChangeThisAnyway.root'),
+#                               outputCommands = cms.untracked.vstring('keep *') # dump everything! small tests only!
+#                               )
+#process.e = cms.EndPath(process.out)
 
 ############################
 ## Dump the output Python ##
