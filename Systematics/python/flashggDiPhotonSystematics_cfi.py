@@ -131,6 +131,10 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)>=1.5"),
                                                   BinList = smearBins,
+                                                  # has to match the labels embedded in the photon object as
+                                                  # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
+                                                  #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
+                                                  RandomLabel = cms.string("smearE"),
                                                   Debug = cms.untracked.bool(False),
                                                   ExaggerateShiftUp = cms.untracked.bool(False),
                                                   ),
@@ -140,6 +144,10 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("r9<0.94&&abs(superCluster.eta)>=1.5"),
                                                   BinList = smearBins,
+                                                  # has to match the labels embedded in the photon object as
+                                                  # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
+                                                  #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
+                                                  RandomLabel = cms.string("smearE"),
                                                   Debug = cms.untracked.bool(False),
                                                   ExaggerateShiftUp = cms.untracked.bool(False),
                                                   ),
@@ -149,6 +157,10 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)<1.5"),
                                                   BinList = smearBins,
+                                                  # has to match the labels embedded in the photon object as
+                                                  # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
+                                                  #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
+                                                  RandomLabel = cms.string("smearE"),
                                                   Debug = cms.untracked.bool(False),
                                                   ExaggerateShiftUp = cms.untracked.bool(False),
                                                   ),
@@ -158,6 +170,10 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("r9<=0.94&&abs(superCluster.eta)<1.5"),
                                                   BinList = smearBins,
+                                                  # has to match the labels embedded in the photon object as
+                                                  # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
+                                                  #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
+                                                  RandomLabel = cms.string("smearE"),
                                                   Debug = cms.untracked.bool(False),
                                                   ExaggerateShiftUp = cms.untracked.bool(False),
                                                   ),
@@ -195,4 +211,3 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   )
                                         )
 )
-
