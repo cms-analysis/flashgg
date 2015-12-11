@@ -8,6 +8,8 @@
 #include "flashgg/DataFormats/interface/SinglePhotonView.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "flashgg/DataFormats/interface/WeightedObject.h"
+#include "DataFormats/Math/interface/Point3D.h"
+
 
 
 namespace flashgg {
@@ -106,6 +108,9 @@ namespace flashgg {
 
         DiPhotonCandidate *clone() const { return ( new DiPhotonCandidate( *this ) ); }
 
+        Point genPV() const { return genPV_; }
+        void setGenPV( const Point genpv ) { genPV_ = genpv; }
+
     private:
         
         edm::Ptr<reco::Vertex> vertex_;
@@ -137,6 +142,8 @@ namespace flashgg {
         flashgg::SinglePhotonView viewPho2_;
 
         unsigned int jetCollectionIndex_; // index for which jet collection corresponds to the vertex choice in this diphoton
+
+        Point genPV_;
     };
 
 

@@ -9,6 +9,7 @@ flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                   ConversionTag=cms.InputTag("reducedEgamma","reducedConversions"),             
                                   ConversionTagSingleLeg=cms.InputTag("reducedEgamma","reducedSingleLegConversions"),
                                   beamSpotTag = cms.InputTag( "offlineBeamSpot" ),
+                                  GenParticleTag=cms.InputTag( "flashggPrunedGenParticles" ),
 
                                   ##Parameters for Legacy Vertex Selector                                                
                                   #vtxId 2012
