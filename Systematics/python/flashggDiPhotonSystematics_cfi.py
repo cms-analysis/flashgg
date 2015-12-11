@@ -103,7 +103,7 @@ RVBins = cms.PSet(
                  values = cms.vdouble(1.00369,0.786148), uncertainties = cms.vdouble(0.00105199,0.00105199,0.0609889,0.0609889)),
         cms.PSet(lowBounds = cms.vdouble(170), upBounds = cms.vdouble(400),
                  values = cms.vdouble(1,1), uncertainties = cms.vdouble(0.00383577,0.00383577,0.47521,0.47521)),
-        cms.PSet(lowBounds = cms.vdouble(400), upBounds = cms.vdouble(7000),
+        cms.PSet(lowBounds = cms.vdouble(400), upBounds = cms.vdouble(999999999), #  maximum energy beyond 7000 because of wonky DiPhotons in data
                  values = cms.vdouble(1,1), uncertainties = cms.vdouble(0.,0.,0.,0.))
         )
                 )
