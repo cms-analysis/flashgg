@@ -40,6 +40,7 @@ namespace flashgg {
         EDGetTokenT<View<reco::Conversion> > conversionTokenSingleLeg_;
         bool useSingleLeg_;
         unsigned int maxJetCollections_;
+        EDGetTokenT<View<reco::GenParticle> >      genPartToken_;
     };
 
     DiPhotonProducer::DiPhotonProducer( const ParameterSet &iConfig ) :
@@ -49,7 +50,8 @@ namespace flashgg {
         conversionToken_( consumes<View<reco::Conversion> >( iConfig.getParameter<InputTag>( "ConversionTag" ) ) ),
         beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getParameter<InputTag>( "beamSpotTag" ) ) ),
         conversionTokenSingleLeg_( consumes<View<reco::Conversion> >( iConfig.getParameter<InputTag>( "ConversionTagSingleLeg" ) ) ),
-        maxJetCollections_( iConfig.getParameter<unsigned int>( "MaxJetCollections" ) )
+        maxJetCollections_( iConfig.getParameter<unsigned int>( "MaxJetCollections" ) ),
+        genPartToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) )
     {
         bool default_useSingleLeg_ = true;
         const std::string &VertexSelectorName = iConfig.getParameter<std::string>( "VertexSelectorName" );
@@ -84,6 +86,19 @@ namespace flashgg {
             //      beamsig = recoBeamSpotHandle->sigmaZ();
         }
 
+        math::XYZPoint higgsVtx;
+        if( ! evt.isRealData() ) {
+            Handle<View<reco::GenParticle> > genParticles;
+            evt.getByToken( genPartToken_, genParticles );
+            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+                int pdgid = genParticles->ptrAt( genLoop )->pdgId();
+                if( pdgid == 25 || pdgid == 22 ) {
+                    higgsVtx = genParticles->ptrAt( genLoop )->vertex();
+                    break;
+                }
+            }
+        }
+
         Handle<View<reco::Conversion> > conversionsSingleLeg;
         evt.getByToken( conversionTokenSingleLeg_, conversionsSingleLeg );
         //const PtrVector<reco::Conversion>& conversionPointersSingleLeg = conversionsSingleLeg->ptrVector();
@@ -110,6 +125,7 @@ namespace flashgg {
 
                 DiPhotonCandidate dipho( pp1, pp2, pvx );
                 dipho.setVertexIndex( ivtx );
+                dipho.setGenPV( higgsVtx );
 
                 // Obviously the last selection has to be for this diphoton or this is wrong
                 vertexSelector_->writeInfoFromLastSelectionTo( dipho );
