@@ -162,7 +162,7 @@ process.tagsDumper.quietRooFit = True
 process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
 
 tagList=[
-["UntaggedTag",5],
+["UntaggedTag",4],
 ["VBFTag",2],
 #["VHTightTag",0],
 #["VHLooseTag",0],
