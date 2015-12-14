@@ -69,7 +69,7 @@ if customize.processId.count("h_") or customize.processId.count("vbf_"): # conve
         jetsystlabels.append("JER%s01sigma" % direction)
         variablesToUse.append("LooseMvaSF%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s01sigma\")" % (direction,direction))
         variablesToUse.append("PreselSF%s01sigma[1,-999999.,999999.] := weight(\"PreselSF%s01sigma\")" % (direction,direction))
-#        variablesToUse.append("FracRVWeight%s01sigma[1,-999999.,999999.] := weight(\"FracRVWeight%s01sigma\")" % (direction,direction))
+        variablesToUse.append("FracRVWeight%s01sigma[1,-999999.,999999.] := weight(\"FracRVWeight%s01sigma\")" % (direction,direction))
         for r9 in ["HighR9","LowR9"]:
 #            phosystlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
 #            for var in ["Rho","Phi"]:
@@ -138,6 +138,8 @@ process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring("file:myMicroAODOutputFile.root"))
 #process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-FinalPrompt-BetaV7-25ns/Spring15#BetaV7/DoubleEG/RunIISpring15-FinalPrompt-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151124_234634/0000/myMicroAODOutputFile_1.root"))
 #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-BetaV7-25ns/Spring15BetaV7/GluGluHToGG_M-125_13TeV_powheg_pythia8/RunIISpring15-ReMiniAOD-BetaV7-25ns-Spring15BetaV7-v0-RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/151021_152108/0000/myMicroAODOutputFile_2.root"))
+#process.source = cms.Source("PoolSource",   # quickest failure for binning in diphoton pt, after ~11 events you get one with pt > 7000
+#                            fileNames = cms.untracked.vstring("root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151103_161313/0000/myMicroAODOutputFile_378.root"))
 
 #if options.maxEvents > 0:
 #    process.source.eventsToProcess = cms.untracked.VEventRange('1:1-1:'+str(options.maxEvents))
@@ -160,7 +162,7 @@ process.tagsDumper.quietRooFit = True
 process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
 
 tagList=[
-["UntaggedTag",5],
+["UntaggedTag",4],
 ["VBFTag",2],
 #["VHTightTag",0],
 #["VHLooseTag",0],
@@ -206,9 +208,10 @@ for tag in tagList:
                            )
 
 process.load("flashgg.MicroAOD.flashggRandomizedPerPhotonDiPhotonProducer_cff")
+process.load("flashgg.Systematics.flashggDiPhotonsWithAddedGenZ_cfi")
 
 # to be fixed once randomized photons will be produced at MicroAOD level
-process.flashggDiPhotonSystematics.src = "flashggRandomizedPerPhotonDiPhotons"
+process.flashggDiPhotonSystematics.src = "flashggDiPhotonsWithAddedGenZ" 
 
 from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
 process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring("HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95_v1") )
@@ -218,7 +221,7 @@ process.hltRequirement = cms.Sequence()
 if customize.processId == "Data":
         process.hltRequirement += process.hltHighLevel
 
-process.p = cms.Path(process.hltRequirement * process.flashggRandomizedPerPhotonDiPhotons *
+process.p = cms.Path(process.hltRequirement * process.flashggRandomizedPerPhotonDiPhotons * process.flashggDiPhotonsWithAddedGenZ *
                 (process.flashggDiPhotonSystematics+process.flashggMuonSystematics+process.flashggElectronSystematics)*
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                      (process.flashggTagSequence+process.systematicsTagSequences)*

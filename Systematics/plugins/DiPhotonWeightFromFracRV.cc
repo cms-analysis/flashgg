@@ -1,19 +1,19 @@
 #include "flashgg/Systematics/interface/ObjectSystMethodBinnedByFunctor.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/Common/interface/PtrVector.h"
-#include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 
 namespace flashgg {
 
-    class TagWeightFromFracRV: public ObjectSystMethodBinnedByFunctor<flashgg::DiPhotonTagBase, int>
+    class DiPhotonWeightFromFracRV: public ObjectSystMethodBinnedByFunctor<flashgg::DiPhotonCandidate, int>
     {
 
     public:
-        typedef StringCutObjectSelector<DiPhotonTagBase, true> selector_type;
+        typedef StringCutObjectSelector<DiPhotonCandidate, true> selector_type;
 
-        TagWeightFromFracRV( const edm::ParameterSet &conf );
-        float makeWeight( const flashgg::DiPhotonTagBase &y, int syst_shift ) override;
+        DiPhotonWeightFromFracRV( const edm::ParameterSet &conf );
+        float makeWeight( const flashgg::DiPhotonCandidate &y, int syst_shift ) override;
         std::string shiftLabel( int ) const override;
 
     private:
@@ -21,7 +21,7 @@ namespace flashgg {
         bool debug_;
     };
 
-    TagWeightFromFracRV::TagWeightFromFracRV( const edm::ParameterSet &conf ) :
+    DiPhotonWeightFromFracRV::DiPhotonWeightFromFracRV( const edm::ParameterSet &conf ) :
         ObjectSystMethodBinnedByFunctor( conf ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
         debug_( conf.getUntrackedParameter<bool>( "Debug", false ) )
@@ -29,7 +29,7 @@ namespace flashgg {
         this->setMakesWeight( true );
     }
 
-    std::string TagWeightFromFracRV::shiftLabel( int syst_value ) const
+    std::string DiPhotonWeightFromFracRV::shiftLabel( int syst_value ) const
     {
         std::string result;
         if( syst_value == 0 ) {
@@ -42,7 +42,7 @@ namespace flashgg {
         return result;
     }
 
-    float TagWeightFromFracRV::makeWeight( const DiPhotonTagBase &obj, int syst_shift )
+    float DiPhotonWeightFromFracRV::makeWeight( const DiPhotonCandidate &obj, int syst_shift )
     {
         float theWeight = 1.;
         if( overall_range_( obj ) ) {
@@ -50,7 +50,7 @@ namespace flashgg {
 	    if( val_err.first.size() == 2 ){
 	      	      
 	      // Do the interpretation here!  See ObjectWeight for an example
-	      float dz=fabs(obj.tagTruth()->genPV().z()-obj.diPhoton()->vtx()->z());
+	      float dz=fabs(obj.genPV().z()-obj.vtx()->z());
 	      float sign = 1.;
 	      int index = 0;
 	      if(dz>1){
@@ -74,7 +74,7 @@ namespace flashgg {
 	      theWeight = weight + ( error * syst_shift * sign);
 	      
 	      if( this->debug_ ) {
-                std::cout << "  " << shiftLabel( syst_shift ) << ": Tag has diphoton pt " << obj.diPhoton()->pt() 
+                std::cout << "  " << shiftLabel( syst_shift ) << ": Diphoton has pt " << obj.pt() 
                           << " and we apply a weight of " << theWeight << std::endl;
 	      }
 	    }
@@ -179,9 +179,9 @@ EXAMPLE2:
                 y.updateEnergy( shiftLabel( syst_shift ), newe );
  */
 
-DEFINE_EDM_PLUGIN( FlashggSystematicTagMethodsFactory,
-                   flashgg::TagWeightFromFracRV,
-                   "FlashggTagWeightFromFracRV" );
+DEFINE_EDM_PLUGIN( FlashggSystematicDiPhotonMethodsFactory,
+                   flashgg::DiPhotonWeightFromFracRV,
+                   "FlashggDiPhotonWeightFromFracRV" );
 
 // Local Variables:
 // mode:c++
