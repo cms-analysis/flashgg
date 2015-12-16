@@ -678,7 +678,6 @@ namespace flashgg {
                 double dr2 = 0;
                 tk.SetXYZ( cand->px(), cand->py(), cand->pz() );
                 tkXY = tk.XYvector();
-                sumpt += tkXY;
                 dr1 = tk.DeltaR( p14.Vect() );
                 dr2 = tk.DeltaR( p24.Vect() );
                 bool isPure = cand->trackHighPurity();
@@ -688,6 +687,7 @@ namespace flashgg {
                     sumpt2_in += tkXY.Mod2();
                     continue;
                 }
+                sumpt += tkXY;
                 sumpt2_out += tkXY.Mod2();
                 ptbal -= tkXY * ( p14 + p24 ).Vect().XYvector().Unit();
             }
@@ -878,7 +878,6 @@ namespace flashgg {
                 double dr2 = 0;
                 tk.SetXYZ( cand->px(), cand->py(), cand->pz() );
                 tkXY = tk.XYvector();
-                sumpt += tkXY;
                 dr1 = tk.DeltaR( p14.Vect() );
                 dr2 = tk.DeltaR( p24.Vect() );
 
@@ -892,6 +891,7 @@ namespace flashgg {
                     sumpt2_in += tkXY.Mod2();
                     continue;
                 }
+                sumpt += tkXY;
                 sumpt2_out += tkXY.Mod2();
                 ptbal -= tkXY * ( p14 + p24 ).Vect().XYvector().Unit();
             }
