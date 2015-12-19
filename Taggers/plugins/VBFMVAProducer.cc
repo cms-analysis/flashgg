@@ -14,6 +14,7 @@
 #include "TMVA/Reader.h"
 #include "TMath.h"
 #include "DataFormats/Math/interface/deltaR.h"
+#include "DataFormats/Math/interface/deltaPhi.h"
 #include <string>
 
 using namespace std;
@@ -292,9 +293,9 @@ namespace flashgg {
                 dijet_LeadJPt_    = dijetP4s.first.pt();
                 dijet_SubJPt_     = dijetP4s.second.pt();
                 
-                dijet_dphi_trunc_ = std::min((float) abs( (dijetP4s.first + dijetP4s.second).phi() - (diPhotonP4s[0] + diPhotonP4s[1]).phi()), (float) 2.916);
-                dijet_dipho_dphi_ = fabs( (dijetP4s.first + dijetP4s.second).phi() - (diPhotonP4s[0] + diPhotonP4s[1]).phi() );
-
+                dijet_dphi_trunc_ = std::min((float) std::abs(reco::deltaPhi( (dijetP4s.first + dijetP4s.second).phi() - (diPhotonP4s[0] + diPhotonP4s[1]).phi()), (float) 2.9416));
+                dijet_dipho_dphi_ = std::abs(reco::deltaPhi((dijetP4s.first + dijetP4s.second).phi() - (diPhotonP4s[0] + diPhotonP4s[1]).phi() ));
+                
                 dijet_dipho_pt_   = (dijetP4s.first + dijetP4s.second + diPhotonP4s[0] + diPhotonP4s[1]).pt(); 
                 
                 dijet_Zep_        = fabs( (diPhotonP4s[0]+diPhotonP4s[1]).eta() - 0.5*(dijetP4s.first.eta()+dijetP4s.second.eta()) );
