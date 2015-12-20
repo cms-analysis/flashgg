@@ -238,6 +238,15 @@ process.p = cms.Path(process.hltRequirement * process.flashggRandomizedPerPhoton
 #                     process.flashggTagSystematics*
                      process.tagsDumper)
 
+print "--- Dumping modules that take diphotons as input: ---"
+mns = process.p.moduleNames()
+for mn in mns:
+    module = getattr(process,mn)
+    if hasattr(module,"src") and type(module.src) == type(cms.InputTag("")) and module.src.value().count("DiPhoton"):
+        print str(module),module.src
+    elif hasattr(module,"DiPhotonTag"):
+        print str(module),module.DiPhotonTag
+
 ################################
 ## Dump merged tags to screen ##
 ################################
