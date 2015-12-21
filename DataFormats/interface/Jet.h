@@ -34,9 +34,13 @@ namespace flashgg {
         float betaStar( const edm::Ptr<DiPhotonCandidate> dipho ) const;
         Jet *clone() const { return ( new Jet( *this ) ); }
         
+        void  setQGL(const float qglikelihood=-99) {qglikelihood_ = qglikelihood;}
+        float QGL(){return qglikelihood_;}
+        
         bool passesJetID( JetIDLevel level = Loose ) const; 
     private:
         std::map<edm::Ptr<reco::Vertex>, MinimalPileupJetIdentifier> puJetId_;
+        float qglikelihood_;
     };
 }
 
