@@ -101,7 +101,8 @@ namespace flashgg {
             //--- Retrieve the q/g likelihood
             float qgLikelihood = -99.0;
             if(qgHandle.isValid()) qgLikelihood = ( *qgHandle )[jets->refAt( i )];;
-            std::cout << "QGL jet["<< i << "] == " << qgLikelihood << std::endl;
+            fjet.setQGL(qgLikelihood);
+            //std::cout << "QGL jet["<< i << "] == " << qgLikelihood << std::endl;
             /*
             for( unsigned int j = 0 ; j < diPhotons->size() ; j++ ) {
                 Ptr<DiPhotonCandidate> diPhoton = diPhotons->ptrAt( j );

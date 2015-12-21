@@ -81,8 +81,22 @@ def addFlashggPFCHSJets(process, vertexIndex = 0, doQGTagging = True, label ='',
   #process.patJetCorrFactorsAK4PFCHSLeg.primaryVertices = "offlineSlimmedPrimaryVertices"
   getattr(process, 'patJetCorrFactorsAK4PFCHSLeg' + label).primaryVertices = "offlineSlimmedPrimaryVertices"
   #if doQGTagging:
+  qgDatabaseVersion = 'v1' # check https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
+  from CondCore.DBCommon.CondDBSetup_cfi import *
+  process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
+                                          CondDBSetup,
+                                          toGet = cms.VPSet(),
+                                          connect = cms.string('frontier://FrontierProd/CMS_COND_PAT_000'),)
+  
+  for type in ['AK4PFchs','AK4PFchs_antib']:
+    process.QGPoolDBESSource.toGet.extend(cms.VPSet(cms.PSet(
+          record = cms.string('QGLikelihoodRcd'),
+          tag    = cms.string('QGLikelihoodObject_'+qgDatabaseVersion+'_'+type),
+          label  = cms.untracked.string('QGL_'+type)
+          )))
+  
   from RecoJets.JetProducers.QGTagger_cfi import QGTagger
-  setattr( process, 'QGTaggerPFCHS' + label,  QGTagger.clone( srcJets   = 'patJetsAK4PFCHSLeg' + label ,jetsLabel = 'ak4PFJetsCHS'))
+  setattr( process, 'QGTaggerPFCHS' + label,  QGTagger.clone( srcJets   = 'patJetsAK4PFCHSLeg' + label ,jetsLabel = 'QGL_AK4PFchs'))
   
   flashggJets = cms.EDProducer('FlashggJetProducer',
                                DiPhotonTag = cms.InputTag('flashggDiPhotons'),
