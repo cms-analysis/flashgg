@@ -58,10 +58,8 @@ def addFlashggPFCHSJets(process, vertexIndex = 0, doQGTagging = True, label ='',
   
   #Import RECO jet producer for ak4 PF and GEN jet
   from RecoJets.JetProducers.ak4PFJets_cfi  import ak4PFJets
-  #from RecoJets.JetProducers.ak4GenJets_cfi import ak4GenJets
   setattr(process, 'ak4PFJetsCHSLeg' + label, ak4PFJets.clone ( src = 'pfNoElectronsCHSLeg' + label, doAreaFastjet = True))
-  #process.ak4GenJetsLeg   = ak4GenJets.clone( src = 'packedGenParticles')
-  
+    
   # NOTE: this is the 74X recipe for the jet clustering
   addJetCollection(
     process,
@@ -82,21 +80,18 @@ def addFlashggPFCHSJets(process, vertexIndex = 0, doQGTagging = True, label ='',
   #adjust PV used for Jet Corrections
   #process.patJetCorrFactorsAK4PFCHSLeg.primaryVertices = "offlineSlimmedPrimaryVertices"
   getattr(process, 'patJetCorrFactorsAK4PFCHSLeg' + label).primaryVertices = "offlineSlimmedPrimaryVertices"
-
-  # Flashgg Jet producer using the collection created with function above.
+  #if doQGTagging:
+  from RecoJets.JetProducers.QGTagger_cfi import QGTagger
+  setattr( process, 'QGTaggerPFCHS' + label,  QGTagger.clone( srcJets   = 'patJetsAK4PFCHSLeg' + label ,jetsLabel = 'ak4PFJetsCHS'))
+  
   flashggJets = cms.EDProducer('FlashggJetProducer',
                                DiPhotonTag = cms.InputTag('flashggDiPhotons'),
                                VertexTag   = cms.InputTag('offlineSlimmedPrimaryVertices'),
                                JetTag      = cms.InputTag('patJetsAK4PFCHSLeg' + label),
                                VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
-#                               PileupJetIdParameters = cms.PSet(pu_jetid)
-                             )
+                               qgVariablesInputTag   = cms.InputTag('QGTaggerPFCHS'+label, 'qgLikelihood'),
+                               )
   setattr( process, 'flashggPFCHSJets'+ label, flashggJets)
-  
-  if doQGTagging:
-    from RecoJets.JetProducers.QGTagger_cfi import QGTagger
-    setattr( process, 'QGTaggerPFCHS' + label,  QGTagger.clone( srcJets   = 'flashggPFCHSJets' + label ,jetsLabel = 'ak4PFJetsCHS'))
-
   flashggSelectedJets = cms.EDFilter("FLASHggJetSelector",
                                      src = cms.InputTag( 'flashggPFCHSJets'+ label ),
                                      cut = cms.string("pt > 15.")
