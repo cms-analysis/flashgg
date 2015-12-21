@@ -9,8 +9,13 @@ import os
 
 flashggBTag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
 maxJetCollections = 8
+qgDatabaseVersion = 'v1' # check https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
 
-def addFlashggPFCHSJets(process, vertexIndex = 0, doQGTagging = True, label ='', debug = False):
+def addFlashggPFCHSJets(process, 
+                        vertexIndex = 0, 
+                        #doQGTagging = True, 
+                        label ='', 
+                        debug = False):
   setattr(process, 'selectedMuons' + label, cms.EDFilter("CandPtrSelector", 
                                                          src = cms.InputTag("slimmedMuons"), 
                                                          cut = cms.string('''abs(eta)<2.5 && pt>10. &&
@@ -80,8 +85,9 @@ def addFlashggPFCHSJets(process, vertexIndex = 0, doQGTagging = True, label ='',
   #adjust PV used for Jet Corrections
   #process.patJetCorrFactorsAK4PFCHSLeg.primaryVertices = "offlineSlimmedPrimaryVertices"
   getattr(process, 'patJetCorrFactorsAK4PFCHSLeg' + label).primaryVertices = "offlineSlimmedPrimaryVertices"
-  #if doQGTagging:
-  qgDatabaseVersion = 'v1' # check https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
+  
+  #== QGTagging
+  
   from CondCore.DBCommon.CondDBSetup_cfi import *
   process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
                                           CondDBSetup,
