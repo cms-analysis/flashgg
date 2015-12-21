@@ -21,8 +21,6 @@ if current_gt.count("::All"):
     new_gt = current_gt.replace("::All","")
     print 'Removing "::All" from GlobalTag by hand for condDBv2: was %s, now %s' % (current_gt,new_gt)
     process.GlobalTag.globaltag = new_gt
-
-
     
 process.source = cms.Source("PoolSource",
                             fileNames=cms.untracked.vstring("/store/mc/RunIISpring15DR74/QCD_Pt-15to7000_TuneCUETP8M1_Flat_13TeV_pythia8/MINIAODSIM/AsymptFlat0to50bx50Reco_MCRUN2_74_V9A-v3/00000/023F427F-0E08-E511-A813-0025905A60EE.root"
@@ -55,31 +53,31 @@ process.options = cms.untracked.PSet(
     )
 # import function which takes care of reclustering the jets using legacy vertex		
 from flashgg.MicroAOD.flashggJets_cfi import addFlashggPFCHSJets 
-from flashgg.MicroAOD.flashggJets_cfi import addFlashggPuppiJets
+#from flashgg.MicroAOD.flashggJets_cfi import addFlashggPuppiJets
 from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
-from flashgg.MicroAOD.flashggJets_cfi import PuppiJetCollectionVInputTag, JetCollectionVInputTag
+from flashgg.MicroAOD.flashggJets_cfi import JetCollectionVInputTag#PuppiJetCollectionVInputTag, 
 # call the function, it takes care of everything else.
 
 
 for vtx in range(0,maxJetCollections):
     addFlashggPFCHSJets (process = process,
                          vertexIndex =vtx,
-                         doQGTagging = False,
+                         doQGTagging = True,
                          label = '' + str(vtx))    
-    addFlashggPuppiJets (process     = process,
-                         vertexIndex = vtx,
-                         debug       = False,
-                         label = '' + str(vtx))
+#    addFlashggPuppiJets (process     = process,
+#                         vertexIndex = vtx,
+#                         debug       = False,
+#                         label = '' + str(vtx))
 
 #------------------------------------------------------------------------------------------------    
 # run a standard puppi with the default seeting
-from flashgg.MicroAOD.flashggExtraJets_cfi import addStandardPuppiJets
-addStandardPuppiJets(process,
-                     label = '',
-                     debug = True)
+#from flashgg.MicroAOD.flashggExtraJets_cfi import addStandardPuppiJets
+#addStandardPuppiJets(process,
+#                     label = '',
+#                     debug = True)
 
 from flashgg.Taggers.flashggTags_cff       import UnpackedJetCollectionVInputTag   
-from flashgg.MicroAOD.flashggExtraJets_cfi import StandardPUPIJetVInputTag
+#from flashgg.MicroAOD.flashggExtraJets_cfi import StandardPUPIJetVInputTag
 
 process.flashggJetTreeMakerPFCHS = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
                                                   GenParticleTag = cms.untracked.InputTag('prunedGenParticles'),
@@ -87,24 +85,24 @@ process.flashggJetTreeMakerPFCHS = cms.EDAnalyzer('FlashggJetValidationTreeMaker
                                                   inputTagJets   = JetCollectionVInputTag,
                                                   StringTag      = cms.string("PFCHS"))
 
-process.flashggJetTreeMakerPUPPI = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
-                                                  GenParticleTag = cms.untracked.InputTag('prunedGenParticles'),
-                                                  DiPhotonTag    = cms.InputTag('flashggDiPhotons'),
-                                                  inputTagJets   = PuppiJetCollectionVInputTag,
-                                                  StringTag      = cms.string("PUPPI"))
-
-process.flashggJetTreeMakerSTDPUPPI = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
-                                                     GenParticleTag = cms.untracked.InputTag('prunedGenParticles'),
-                                                     DiPhotonTag    = cms.InputTag('flashggDiPhotons'),
-                                                     inputTagJets   = StandardPUPIJetVInputTag,#TmpJetVInputTag,
-                                                     debug          = cms.untracked.bool(True),
-                                                     ZeroVertexOnly = cms.untracked.bool(True),
-                                                     StringTag      = cms.string("PUPPI"))
-
+#process.flashggJetTreeMakerPUPPI = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
+#                                                  GenParticleTag = cms.untracked.InputTag('prunedGenParticles'),
+#                                                  DiPhotonTag    = cms.InputTag('flashggDiPhotons'),
+#                                                  inputTagJets   = PuppiJetCollectionVInputTag,
+#                                                  StringTag      = cms.string("PUPPI"))
+#
+#process.flashggJetTreeMakerSTDPUPPI = cms.EDAnalyzer('FlashggJetValidationTreeMaker',
+#                                                     GenParticleTag = cms.untracked.InputTag('prunedGenParticles'),
+#                                                     DiPhotonTag    = cms.InputTag('flashggDiPhotons'),
+#                                                     inputTagJets   = StandardPUPIJetVInputTag,#TmpJetVInputTag,
+#                                                     debug          = cms.untracked.bool(True),
+#                                                     ZeroVertexOnly = cms.untracked.bool(True),
+#                                                     StringTag      = cms.string("PUPPI"))
+#
 process.p = cms.Path(process.flashggMicroAODSequence +
-                     process.flashggJetTreeMakerPFCHS +
-                     process.flashggJetTreeMakerPUPPI  +
-                     process.flashggJetTreeMakerSTDPUPPI  )
+                     process.flashggJetTreeMakerPFCHS )
+#                     process.flashggJetTreeMakerPUPPI  +
+#                     process.flashggJetTreeMakerSTDPUPPI  )
 process.e = cms.EndPath(process.out)
 
 
