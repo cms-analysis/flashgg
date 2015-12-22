@@ -1,0 +1,10 @@
+{
+    "processes" : {
+        "Data" : [ "/DoubleEG/sethzenz-RunIISpring15-FinalPrompt-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4-270c398500dd950e9be0bd5b12d77f83/USER",
+                   "/DoubleEG/sethzenz-RunIISpring15-Prompt-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4-270c398500dd950e9be0bd5b12d77f83/USER",
+           	   "/DoubleEG/sethzenz-RunIISpring15-ReMiniAOD-BetaV7-25ns-Spring15BetaV7-v0-Run2015C_25ns-05Oct2015-v1-abb8a7e501c7a3475a3187a9efa3732c/USER",
+		   "/DoubleEG/sethzenz-RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4-270c398500dd950e9be0bd5b12d77f83/USER",
+		   "/DoubleEG/sethzenz-RunIISpring15-ReMiniAOD-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-05Oct2015-v1-6b8747da98d6c398d92ed9fbd80184bb/USER" ]
+     },	
+        "cmdLine" : "campaign=RunIISpring15-AllSilverIncludingGold-BetaV7-25ns"
+}
