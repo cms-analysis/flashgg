@@ -30,6 +30,10 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         EDGetTokenT<View<reco::Vertex> >  vertexToken_;
         EDGetTokenT< VertexCandidateMap > vertexCandidateMapToken_;
+        //EDGetTokenT<edm::ValueMap<float> > qgToken_; 
+        //edm::InputTag qgToken_;
+        edm::InputTag qgVariablesInputTag;
+        edm::EDGetTokenT<edm::ValueMap<float> > qgToken;
         //        unique_ptr<PileupJetIdAlgo>  pileupJetIdAlgo_;
         //        ParameterSet pileupJetIdParameters_;
         bool usePuppi;
@@ -39,24 +43,28 @@ namespace flashgg {
     JetProducer::JetProducer( const ParameterSet &iConfig ) :
         jetToken_( consumes<View<pat::Jet> >( iConfig.getParameter<InputTag> ( "JetTag" ) ) ),
         diPhotonToken_( consumes<View<DiPhotonCandidate> >( iConfig.getParameter<InputTag>( "DiPhotonTag" ) ) ),
-        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
-        vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTag" ) ) )
+        vertexToken_  ( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
+        vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTag" ) )),
+        qgVariablesInputTag( iConfig.getParameter<edm::InputTag>( "qgVariablesInputTag" ) )
+        //GluonTagSrc_  (iConfig.getParameter<edm::InputTag>("GluonTagSrc") )
         //        pileupJetIdParameters_( iConfig.getParameter<ParameterSet>( "PileupJetIdParameters" ) ),
         //        usePuppi( iConfig.getUntrackedParameter<bool>( "UsePuppi", false ) )
     {
         //        pileupJetIdAlgo_.reset( new PileupJetIdAlgo( pileupJetIdParameters_ ) );
-
+        //qgToken_ = consumes<edm::ValueMap<float> >(edm::InputTag("GluonTagSrc", "qgLikelihood"));
+        qgToken  = consumes<edm::ValueMap<float>>( edm::InputTag( qgVariablesInputTag.label(), "qgLikelihood" ) );
+        
         produces<vector<flashgg::Jet> >();
     }
-
+    
     void JetProducer::produce( Event &evt, const EventSetup & )
     {
-
+        
         // input jets
         Handle<View<pat::Jet> > jets;
         evt.getByToken( jetToken_, jets );
         // const PtrVector<pat::Jet>& jetPointers = jets->ptrVector();
-
+        
         // input DiPhoton candidates
         Handle<View<DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
@@ -71,12 +79,30 @@ namespace flashgg {
         evt.getByToken( vertexCandidateMapToken_, vertexCandidateMap );
         // std::cout << " vtx map ==" << vertexCandidateMap->size() <<  std::endl;
         // output jets
+        
+        //edm::Handle<edm::ValueMap<float> > qgHandle; 
+        //evt.getByToken(qgToken_, qgHandle);
+        
+        // input QGL
+        //edm::Handle<edm::ValueMap<float> >  qgHandle; 
+        //evt.getByToken(GluonTagSrc_, qgHandle);
+        edm::Handle<edm::ValueMap<float>> qgHandle;
+        evt.getByToken( qgToken, qgHandle );
+        
         auto_ptr<vector<flashgg::Jet> > jetColl( new vector<flashgg::Jet> );
-
+        
         for( unsigned int i = 0 ; i < jets->size() ; i++ ) {
             Ptr<pat::Jet> pjet = jets->ptrAt( i );
             flashgg::Jet fjet = flashgg::Jet( *pjet );
+            
+            
 
+            
+            //--- Retrieve the q/g likelihood
+            float qgLikelihood = -99.0;
+            if(qgHandle.isValid()) qgLikelihood = ( *qgHandle )[jets->refAt( i )];;
+            fjet.setQGL(qgLikelihood);
+            //std::cout << "QGL jet["<< i << "] == " << qgLikelihood << std::endl;
             /*
             for( unsigned int j = 0 ; j < diPhotons->size() ; j++ ) {
                 Ptr<DiPhotonCandidate> diPhoton = diPhotons->ptrAt( j );

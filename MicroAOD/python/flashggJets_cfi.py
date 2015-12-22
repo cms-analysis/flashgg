@@ -5,12 +5,19 @@ import FWCore.ParameterSet.Config as cms
 
 #from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased_new as pu_jetid
 from PhysicsTools.PatAlgos.tools.jetTools        import addJetCollection
+from CondCore.DBCommon.CondDBSetup_cfi import *
+
 import os
 
 flashggBTag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
 maxJetCollections = 8
+qgDatabaseVersion = 'v1' # check https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
 
-def addFlashggPFCHSJets(process, vertexIndex = 0, doQGTagging = True, label ='', debug = False):
+def addFlashggPFCHSJets(process, 
+                        vertexIndex = 0, 
+                        #doQGTagging = True, 
+                        label ='', 
+                        debug = False):
   setattr(process, 'selectedMuons' + label, cms.EDFilter("CandPtrSelector", 
                                                          src = cms.InputTag("slimmedMuons"), 
                                                          cut = cms.string('''abs(eta)<2.5 && pt>10. &&
@@ -58,10 +65,8 @@ def addFlashggPFCHSJets(process, vertexIndex = 0, doQGTagging = True, label ='',
   
   #Import RECO jet producer for ak4 PF and GEN jet
   from RecoJets.JetProducers.ak4PFJets_cfi  import ak4PFJets
-  #from RecoJets.JetProducers.ak4GenJets_cfi import ak4GenJets
   setattr(process, 'ak4PFJetsCHSLeg' + label, ak4PFJets.clone ( src = 'pfNoElectronsCHSLeg' + label, doAreaFastjet = True))
-  #process.ak4GenJetsLeg   = ak4GenJets.clone( src = 'packedGenParticles')
-  
+    
   # NOTE: this is the 74X recipe for the jet clustering
   addJetCollection(
     process,
@@ -82,21 +87,31 @@ def addFlashggPFCHSJets(process, vertexIndex = 0, doQGTagging = True, label ='',
   #adjust PV used for Jet Corrections
   #process.patJetCorrFactorsAK4PFCHSLeg.primaryVertices = "offlineSlimmedPrimaryVertices"
   getattr(process, 'patJetCorrFactorsAK4PFCHSLeg' + label).primaryVertices = "offlineSlimmedPrimaryVertices"
-
-  # Flashgg Jet producer using the collection created with function above.
+  
+  #== QGTagging
+  process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
+                                          CondDBSetup,
+                                          toGet = cms.VPSet(),
+                                          connect = cms.string('frontier://FrontierProd/CMS_COND_PAT_000'),)
+  
+  for type in ['AK4PFchs','AK4PFchs_antib']:
+    process.QGPoolDBESSource.toGet.extend(cms.VPSet(cms.PSet(
+          record = cms.string('QGLikelihoodRcd'),
+          tag    = cms.string('QGLikelihoodObject_'+qgDatabaseVersion+'_'+type),
+          label  = cms.untracked.string('QGL_'+type)
+          )))
+  
+  from RecoJets.JetProducers.QGTagger_cfi import QGTagger
+  setattr( process, 'QGTaggerPFCHS' + label,  QGTagger.clone( srcJets   = 'patJetsAK4PFCHSLeg' + label ,jetsLabel = 'QGL_AK4PFchs'))
+  
   flashggJets = cms.EDProducer('FlashggJetProducer',
                                DiPhotonTag = cms.InputTag('flashggDiPhotons'),
                                VertexTag   = cms.InputTag('offlineSlimmedPrimaryVertices'),
                                JetTag      = cms.InputTag('patJetsAK4PFCHSLeg' + label),
                                VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
-#                               PileupJetIdParameters = cms.PSet(pu_jetid)
-                             )
+                               qgVariablesInputTag   = cms.InputTag('QGTaggerPFCHS'+label, 'qgLikelihood'),
+                               )
   setattr( process, 'flashggPFCHSJets'+ label, flashggJets)
-  
-  if doQGTagging:
-    from RecoJets.JetProducers.QGTagger_cfi import QGTagger
-    setattr( process, 'QGTaggerPFCHS' + label,  QGTagger.clone( srcJets   = 'flashggPFCHSJets' + label ,jetsLabel = 'ak4PFJetsCHS'))
-
   flashggSelectedJets = cms.EDFilter("FLASHggJetSelector",
                                      src = cms.InputTag( 'flashggPFCHSJets'+ label ),
                                      cut = cms.string("pt > 15.")
