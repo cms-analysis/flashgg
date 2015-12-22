@@ -9,7 +9,7 @@ import FWCore.ParameterSet.Config as cms
 
 
 flashggRandomizedPerPhotonDiPhotons = cms.EDProducer("FlashggRandomizedPerPhotonDiPhotonProducer",
-                                    src = cms.InputTag("flashggPreselectedDiPhotons"),
+                                    src = cms.InputTag("flashggDiPhotons"),
 #                                    outputCollectionName = cms.string("flashggFinalRandomizedDiPhotons"),
                                     # labels of various gaussian random numbers with mean=0, sigma=1
                                     # to be associated with the photon object
