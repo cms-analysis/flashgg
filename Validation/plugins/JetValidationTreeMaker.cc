@@ -594,7 +594,8 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
             jInfo.diphotonIndex  = diphoIndex;
             jInfo.JetIndex       = jdz;
             //jInfo.jet_qgLikelihood = ( *qgHandle )[Jets[jetCollectionIndex]->refAt( jdz )];
-
+            jInfo.jet_qgLikelihood = Jets[jetCollectionIndex]->ptrAt( jdz )->userFloat("QGTagger:qgLikelihood");
+            std::cout << "QGL::"<< jInfo.jet_qgLikelihood << std::endl;
             GenPhotonInfo tmp_info = photonJet_id.find( jdz )->second; // call find ones
 
             jInfo.GenPhotonPt  = tmp_info.pt   ;

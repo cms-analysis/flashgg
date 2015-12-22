@@ -185,7 +185,7 @@ class MicroAODCustomize(object):
         for vtx in range(0,maxJetCollections):
             addFlashggPFCHSJets (process = process,
                                  vertexIndex =vtx,
-                                 doQGTagging = True,
+                                 #doQGTagging = True,
                                  label = '' + str(vtx))
             
     def customizePuppi(self,process):
