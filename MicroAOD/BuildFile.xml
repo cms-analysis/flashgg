@@ -7,6 +7,7 @@
 <use name="RecoEcal/EgammaCoreTools" />
 <use name="FWCore/Utilities"/>
 <use name="CommonTools/Utils"/>
+<use name="PhysicsTools/HepMCCandAlgos"/>
 <use name="roottmva"/>
 <!-- Flags CXXFLAGS="-ggdb"/ -->
 <export>
