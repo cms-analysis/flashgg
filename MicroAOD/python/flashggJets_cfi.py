@@ -5,6 +5,8 @@ import FWCore.ParameterSet.Config as cms
 
 #from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased_new as pu_jetid
 from PhysicsTools.PatAlgos.tools.jetTools        import addJetCollection
+from CondCore.DBCommon.CondDBSetup_cfi import *
+
 import os
 
 flashggBTag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
@@ -87,8 +89,6 @@ def addFlashggPFCHSJets(process,
   getattr(process, 'patJetCorrFactorsAK4PFCHSLeg' + label).primaryVertices = "offlineSlimmedPrimaryVertices"
   
   #== QGTagging
-  
-  from CondCore.DBCommon.CondDBSetup_cfi import *
   process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
                                           CondDBSetup,
                                           toGet = cms.VPSet(),
