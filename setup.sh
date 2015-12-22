@@ -110,6 +110,8 @@ git cms-addpkg DataFormats/RecoCandidate
 git cms-addpkg PhysiscsTools/TagAndProbe
 git cms-merge-topic -u matteosan1:egm_tnp
 
+echo "Setting up PDF weight tool..."
+git-cms-merge-topic bendavid:pdfweights_74x
 
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit
