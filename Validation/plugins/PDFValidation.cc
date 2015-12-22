@@ -65,19 +65,20 @@ PDFWeight::analyze( const edm::Event &evt, const edm::EventSetup &iSetup )
 	//    Handle<LHEEventProduct> LHEHandle;
 	//    evt.getByToken( LHEEventToken_, LHEHandle );
 
-	//    Handle<vector<flashgg::PDFWeightObject> > WeightHandle;
-	//    evt.getByToken( WeightToken_, WeightHandle );
-	//    const PtrVector<flashgg::PDFWeightObject> mcWeightPointers = WeightHandle->ptrVector();
+	    Handle<vector<flashgg::PDFWeightObject> > WeightHandle;
+	    evt.getByToken( WeightToken_, WeightHandle );
+//	    const PtrVector<flashgg::PDFWeightObject> mcWeightPointers = WeightHandle->ptrVector();
 
 	//cout << "XS  " << LHEHandle->originalXWGTUP() << endl;
 
-	//        for( unsigned int weight_index = 0; weight_index < (*WeightHandle).size(); weight_index++ ){
-	//            std::vector<float> uncompressed = (*WeightHandle)[weight_index].uncompress();
-	//            for( unsigned int j=0; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
-	//                    cout << "compresed weight " << (*WeightHandle)[weight_index].pdf_weight_container[j] << endl;
-	//                    cout << "uncompressed weight " << uncompressed[j] << endl;
-	//       }
-	//    }
+	        for( unsigned int weight_index = 0; weight_index < (*WeightHandle).size(); weight_index++ ){
+	            vector<uint16_t> compressed_weights = (*WeightHandle)[weight_index].pdf_weight_container; 
+                std::vector<float> uncompressed = (*WeightHandle)[weight_index].uncompress( compressed_weights );
+	            for( unsigned int j=0; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
+	                    cout << "compresed weight " << (*WeightHandle)[weight_index].pdf_weight_container[j] << endl;
+	                    cout << "uncompressed weight " << uncompressed[j] << endl;
+	       }
+	    }
 }
 
 
@@ -95,20 +96,20 @@ PDFWeight::endJob()
 	void
 PDFWeight::beginRun( edm::Run const &iRun, edm::EventSetup const &iSetup )
 {
-	Handle<LHERunInfoProduct> run;
-	typedef vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
-
-	iRun.getByLabel( "externalLHEProducer", run );
-	LHERunInfoProduct myLHERunInfoProduct = *( run.product() );
-
-	for( headers_const_iterator iter = myLHERunInfoProduct.headers_begin(); iter != myLHERunInfoProduct.headers_end(); iter++ ) {
-		if( iter->tag() == "init" )
-		{ cout << iter->tag() << endl; }
-		vector<string> lines = iter->lines();
-		for( unsigned int iLine = 0; iLine < lines.size(); iLine++ ) {
-			cout << lines.at( iLine );
-		}
-	}
+//	Handle<LHERunInfoProduct> run;
+//	typedef vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
+//
+//	iRun.getByLabel( "externalLHEProducer", run );
+//	LHERunInfoProduct myLHERunInfoProduct = *( run.product() );
+//
+//	for( headers_const_iterator iter = myLHERunInfoProduct.headers_begin(); iter != myLHERunInfoProduct.headers_end(); iter++ ) {
+//		if( iter->tag() == "init" )
+//		{ cout << iter->tag() << endl; }
+//		vector<string> lines = iter->lines();
+//		for( unsigned int iLine = 0; iLine < lines.size(); iLine++ ) {
+//			cout << lines.at( iLine );
+//		}
+//	}
 }
 
 

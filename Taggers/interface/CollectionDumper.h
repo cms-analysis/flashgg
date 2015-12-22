@@ -293,9 +293,12 @@ namespace flashgg {
             edm::Handle<vector<flashgg::PDFWeightObject> > WeightHandle;
             event.getByLabel( pdfWeightToken_, WeightHandle );
 
-
             for( unsigned int weight_index = 0; weight_index < (*WeightHandle).size(); weight_index++ ){
-                std::vector<float> uncompressed = (*WeightHandle)[weight_index].uncompress();
+
+                vector<uint16_t> compressed_weights = (*WeightHandle)[weight_index].pdf_weight_container; 
+
+                std::vector<float> uncompressed = (*WeightHandle)[weight_index].uncompress( compressed_weights );
+
                 for( unsigned int j=0; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
                     pdfWeights.push_back(uncompressed[j]);
                 }
