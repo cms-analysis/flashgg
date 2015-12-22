@@ -12,15 +12,15 @@ PDFWeightObject::PDFWeightObject()
 PDFWeightObject::~PDFWeightObject()
 {}
 
-vector<float> PDFWeightObject::uncompress() const {
+vector<float> PDFWeightObject::uncompress( vector<uint16_t> vec ) const {
 
 	vector<float> uncompressed_vector;
 
-	int size = PDFWeightObject::pdf_weight_container.size();	
+	int size = vec.size();	
 
 	for(int i = 0; i<size; i++ ){
 
-		uint16_t compressed_weight = PDFWeightObject::pdf_weight_container[i];
+		uint16_t compressed_weight = vec[i];
 
 		float uncompressed_weight = MiniFloatConverter::float16to32( compressed_weight );	
 
