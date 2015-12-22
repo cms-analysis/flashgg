@@ -2,7 +2,8 @@
 <class name="flashgg::WeightedObject" ClassVersion="10">
   <version ClassVersion="10" checksum="1340095011"/>
 </class>
-<class name="flashgg::PDFWeightObject" ClassVersion="11">
+<class name="flashgg::PDFWeightObject" ClassVersion="12">
+  <version ClassVersion="12" checksum="3929296232"/>
   <version ClassVersion="11" checksum="103726048"/>
   <version ClassVersion="10" checksum="92077144"/>
 </class>

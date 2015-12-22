@@ -37,8 +37,9 @@ namespace flashgg {
 			string delimiter_2_;
 			void beginRun( edm::Run const &, edm::EventSetup const &iSetup );
 			vector<int> weight_indices;
+			vector<int> alpha_indices;
 			string removeSpace( string line );
-			PDFWeightsHelper pdfweightshelper_;
+			PDFWeightsHelper pdfweightshelper_;//tool from HepMCCandAlgos/interface/PDFWeightsHelper
 		        unsigned int nPdfEigWeights_;
 //		        std::vector<float> pdfeigweights_;
 	                edm::FileInPath mc2hessianCSV;
@@ -192,16 +193,27 @@ namespace flashgg {
 
 					}
 
-					//if (generator == "ph"){
+//					if (generator == "ph"){
+
+						int alphas_1 = PDFWeightProducer::weight_indices.back() + 1;
+						int alphas_2 = PDFWeightProducer::weight_indices.back() + 2;
+
+					//	cout << "alpha 2 " << alphas_2 << endl; 
+
+						PDFWeightProducer::alpha_indices.push_back(alphas_1);
+						PDFWeightProducer::alpha_indices.push_back(alphas_2);
+			
+//					}
+
+					//if (generator == "mg"){
 
 					//	int alphas_1 = PDFWeightProducer::weight_indices.back() + 1;
 					//	int alphas_2 = PDFWeightProducer::weight_indices.back() + 2;
 
-					//	PDFWeightProducer::weight_indices.push_back(alphas_1);
-					//	PDFWeightProducer::weight_indices.push_back(alphas_2);
+					//	PDFWeightProducer::alpha_indices.push_back(alphas_1);
+					//	PDFWeightProducer::alpha_indices.push_back(alphas_2);
 			
 					//}
-
 
 			}	
 
@@ -228,17 +240,19 @@ namespace flashgg {
 
 		float weight = 1;
 		uint16_t weight_16 =1;
+		float alpha = 1;
 
 		//cout << "weight_container size " << LHEEventHandle->weights().size() << " num_weight " << PDFWeightProducer::weight_indices.size() << endl;
 		//int lower_bound = LHEEventHandle->weights().size() - PDFWeightProducer::weight_indices.size();
 		int upper_bound = LHEEventHandle->weights().size();
-		int size = PDFWeightProducer::weight_indices.size();
+		int size_weight = PDFWeightProducer::weight_indices.size();
+		int size_alpha = PDFWeightProducer::alpha_indices.size();
 		//cout << "lower_bound " << lower_bound << " upper_bound " << upper_bound << endl;
 		for( int i = 0; i < upper_bound; i++ ) {
 
 			int id_i = stoi( LHEEventHandle->weights()[i].id );
 
-			for( int j = 0; j<size; j++ ){
+			for( int j = 0; j<size_weight; j++ ){
 
 				int id_j = PDFWeightProducer::weight_indices[j];	
 //				cout << "id_i " << id_i << " id_j " << id_j << endl;
@@ -253,11 +267,30 @@ namespace flashgg {
 				}
 
 			}
+
+			for( int k = 0; k<size_alpha; k++ ){
+
+				int id_k = PDFWeightProducer::alpha_indices[k];
+
+			if(id_i == id_k ){
+			
+				//cout << " in here " << endl;
+	
+				alpha = LHEEventHandle->weights()[i].wgt;
+			
+				//cout << " alpha " << alpha  << endl;
+
+				uint16_t alpha_16 = MiniFloatConverter::float32to16( alpha );
+				pdfWeight.alpha_s_container.push_back(alpha_16);	
+			}
+		
+		   }
+
 		}
 
 		//cout << "should be 100   " << lhe_weights.size() << endl;
 
-		pdfweightshelper_.Init(size,nPdfEigWeights_,mc2hessianCSV);
+		pdfweightshelper_.Init(size_weight,nPdfEigWeights_,mc2hessianCSV);
 
 	        std::vector<double> outpdfweights(nPdfEigWeights_);
 
