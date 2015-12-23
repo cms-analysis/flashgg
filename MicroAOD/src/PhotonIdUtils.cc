@@ -253,9 +253,9 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
 {
 
     phoIdMva_SCRawE_          = photon.superCluster()->rawEnergy();
-    phoIdMva_R9_              = photon.r9();
+    phoIdMva_R9_              = photon.full5x5_r9();
     phoIdMva_S4_              = photon.s4();
-    phoIdMva_covIEtaIEta_     = photon.sigmaIetaIeta();
+    phoIdMva_covIEtaIEta_     = photon.full5x5_sigmaIetaIeta();
     phoIdMva_EtaWidth_        = photon.superCluster()->etaWidth();
     phoIdMva_PhiWidth_        = photon.superCluster()->phiWidth();
     phoIdMva_covIEtaIPhi_     = photon.sieip();
