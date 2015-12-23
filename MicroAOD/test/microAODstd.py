@@ -26,6 +26,11 @@ if current_gt.count("::All"):
     process.GlobalTag.globaltag = new_gt
 
 
+process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService")
+process.RandomNumberGeneratorService.flashggRandomizedPhotons = cms.PSet(
+          initialSeed = cms.untracked.uint32(16253245)
+        )
+
 # 2012 data
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'GR_R_74_V8A::All')
 #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring(
