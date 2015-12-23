@@ -1,7 +1,10 @@
 import FWCore.ParameterSet.Config as cms
 from flashgg.MicroAOD.flashggTkVtxMap_cfi import flashggVertexMapUnique,flashggVertexMapNonUnique,flashggVertexMapForCHS,flashggVertexMapForPUPPI
+
 from flashgg.MicroAOD.flashggPhotons_cfi import flashggPhotons
+from flashgg.MicroAOD.flashggRandomizedPhotonProducer_cff import flashggRandomizedPhotons
 from flashgg.MicroAOD.flashggDiPhotons_cfi import flashggDiPhotons
+
 from flashgg.MicroAOD.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
 from flashgg.MicroAOD.flashggJets_cfi import flashggFinalJets,flashggFinalPuppiJets
 from flashgg.MicroAOD.flashggElectrons_cfi import flashggElectrons
@@ -35,7 +38,7 @@ flashggMicroAODSequence = cms.Sequence(eventCount+weightsCount
                                        +electronMVAValueMapProducer*flashggElectrons*flashggSelectedElectrons
                                        +flashggMuons*flashggSelectedMuons
                                        +flashggMicroAODGenSequence
-                                       +flashggPhotons*flashggDiPhotons*flashggPreselectedDiPhotons
+                                       +flashggPhotons * flashggRandomizedPhotons * flashggDiPhotons*flashggPreselectedDiPhotons
                                        +flashggFinalEGamma
                                        +flashggVertexMapForCHS*flashggFinalJets
                                        +flashggVertexMapForPUPPI*flashggFinalPuppiJets
