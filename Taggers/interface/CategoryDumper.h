@@ -110,13 +110,14 @@ namespace flashgg {
         bool binnedOnly_;
         bool dumpPdfWeights_;
         int  nPdfWeights_;
+        int  nAlphaSWeights_;
         bool pdfVarsAdded_;
         RooWorkspace * ws_;
     };
 
     template<class F, class O>
     CategoryDumper<F, O>::CategoryDumper( const std::string &name, const edm::ParameterSet &cfg, GlobalVariablesDumper *dumper ):
-        dataset_( 0 ), tree_( 0 ), globalVarsDumper_( dumper ), hbooked_( false ), binnedOnly_ (false), dumpPdfWeights_ (false ), nPdfWeights_ (0) 
+        dataset_( 0 ), tree_( 0 ), globalVarsDumper_( dumper ), hbooked_( false ), binnedOnly_ (false), dumpPdfWeights_ (false ), nPdfWeights_ (0), nAlphaSWeights_(0) 
     {
         using namespace std;
         name_ = name;
@@ -133,6 +134,9 @@ namespace flashgg {
         }
         if( cfg.existsAs<int >( "nPdfWeights" ) ) {
             nPdfWeights_ = cfg.getParameter<int >( "nPdfWeights" );
+        }
+        if( cfg.existsAs<int >( "nAlphaSWeights" ) ) {
+            nAlphaSWeights_ = cfg.getParameter<int >( "nAlphaSWeights" );
         }
        
         auto variables = cfg.getParameter<vector<edm::ParameterSet> >( "variables" );
@@ -278,6 +282,9 @@ namespace flashgg {
         for (int i =0; i< nPdfWeights_ ; i++) {
             rooVars_.add( *ws.var( Form("pdfWeight_%d",i) ) ); 
         }
+        for (int i =0; i< nAlphaSWeights_ ; i++) {
+            rooVars_.add( *ws.var( Form("alphaSWeight_%d",i) ) ); 
+        }
     }
 
     for( size_t iv = 0; iv < names_.size(); ++iv ) {
@@ -321,11 +328,14 @@ void CategoryDumper<F, O>::fill( const object_type &obj, double weight, vector<d
         dynamic_cast<RooRealVar &>( rooVars_["weight"] ).setVal( weight_ );
 
         if (dumpPdfWeights_){
-            if (nPdfWeights_ != (int) pdfWeights.size()){ 
-                throw cms::Exception( "Configuration" ) << " Specified number of pdfWeights (" << nPdfWeights_ <<") does not match length of pdfWeights Vector ("<< pdfWeights.size() << ")." ;
+            if ((nPdfWeights_+ nAlphaSWeights_) != (int) (pdfWeights.size())){ 
+                throw cms::Exception( "Configuration" ) << " Specified number of pdfWeights (" << nPdfWeights_ <<") plus alphaSWeights ("<<nAlphaSWeights_<<") does not match length of pdfWeights Vector ("<< pdfWeights.size() << ")." ;
             }
-            for (unsigned int i =0; i< pdfWeights.size() ; i++) {
+            for ( int i =0; i< nPdfWeights_; i++) {
                 dynamic_cast<RooRealVar &>( rooVars_[Form("pdfWeight_%d",i)] ).setVal( pdfWeights[i] );
+            }
+            for ( int i =0; i<nAlphaSWeights_  ; i++) {
+                dynamic_cast<RooRealVar &>( rooVars_[Form("alphaSWeight_%d",i)] ).setVal( pdfWeights[i+nPdfWeights_] ); // alpha S weights currently stored at the end of pdfweight vector 
             }
         }
     }
