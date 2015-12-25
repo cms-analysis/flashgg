@@ -201,8 +201,9 @@ for tag in tagList:
           currentVariables = systematicVariables
       
       isBinnedOnly = (systlabel !=  "")
-      dumpPdfWeights = False #(systlabel ==  "")
-      nPdfWeights = 0
+      dumpPdfWeights =(systlabel ==  "")
+      nPdfWeights = 60
+      nAlphaSWeights = 2
       
       cfgTools.addCategory(process.tagsDumper,
                            systlabel,
@@ -213,7 +214,8 @@ for tag in tagList:
                            histograms=minimalHistograms,
                            binnedOnly=isBinnedOnly,
                            dumpPdfWeights=dumpPdfWeights,
-                           nPdfWeights=nPdfWeights
+                           nPdfWeights=nPdfWeights,
+													 nAlphaSWeights=nAlphaSWeights
                            )
 
 process.load("flashgg.MicroAOD.flashggRandomizedPerPhotonDiPhotonProducer_cff")
