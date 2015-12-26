@@ -137,7 +137,7 @@ namespace flashgg {
 
         for( unsigned int iLine = 0; iLine < weight_lines.size(); iLine++ ) {
             if ( weight_lines[iLine].find("muR") != std::string::npos ) {
-                std::cout << "Line for scale: " << weight_lines[iLine];
+                //                std::cout << "Line for scale: " << weight_lines[iLine];
                 size_t pos1 = weight_lines[iLine].find("\"");
                 size_t pos2 = weight_lines[iLine].find("\"",pos1+1);
                 assert (pos1 != std::string::npos && pos2 != std::string::npos);
@@ -146,10 +146,10 @@ namespace flashgg {
                 //                std::cout << "    " << pos1 << " " << pos2 << " " << tempstr << " " << scaleind << std::endl;
                 scale_indices.push_back( scaleind );
             } else {
-                std::cout << "Line NOT for scale: " << weight_lines[iLine];
+                //                std::cout << "Line NOT for scale: " << weight_lines[iLine];
             }
         }
-        std::cout << std::endl;
+        //        std::cout << std::endl;
         
         for( unsigned int iLine = 0; iLine < weight_lines.size(); iLine++ ) {
             
@@ -212,7 +212,7 @@ namespace flashgg {
         PDFWeightProducer::alpha_indices.push_back(alphas_1);
         PDFWeightProducer::alpha_indices.push_back(alphas_2);
 
-        std::cout << " Alpha indices: " << alphas_1 << " " << alphas_2 << std::endl;
+        //        std::cout << " Alpha indices: " << alphas_1 << " " << alphas_2 << std::endl;
 
         //        std::cout << " PDF weight indices final size: " << weight_indices.size() << std::endl;
     }
@@ -259,7 +259,7 @@ namespace flashgg {
 			}
 			for( int k = 0; k<size_alpha; k++ ){
 				int id_k = PDFWeightProducer::alpha_indices[k];
-                std::cout << " checking alpha_index " << id_k << " against id " << id_i << std::endl;
+                //                std::cout << " checking alpha_index " << id_k << " against id " << id_i << std::endl;
                 if(id_i == id_k ){
                     alpha = LHEEventHandle->weights()[i].wgt;
                     //cout << " alpha " << alpha  << endl;
@@ -310,9 +310,9 @@ namespace flashgg {
 
 		evt.put( PDFWeight );
 
-		cout << "FINAL pdf_weight_container size " <<pdfWeight.pdf_weight_container.size() << endl;
-        cout << "FINAL alpha_s_container size " <<pdfWeight.alpha_s_container.size() << endl;
-        cout << "FINAL qcd_scale_container size " <<pdfWeight.qcd_scale_container.size() << endl;
+        //		cout << "FINAL pdf_weight_container size " <<pdfWeight.pdf_weight_container.size() << endl;
+        //        cout << "FINAL alpha_s_container size " <<pdfWeight.alpha_s_container.size() << endl;
+        //        cout << "FINAL qcd_scale_container size " <<pdfWeight.qcd_scale_container.size() << endl;
 
 
 	}
