@@ -27,6 +27,8 @@ namespace flashgg {
         void setPuJetId( const edm::Ptr<reco::Vertex> vtx, const PileupJetIdentifier & );
         bool hasPuJetId( const edm::Ptr<reco::Vertex> vtx ) const;
         bool passesPuJetId( const edm::Ptr<reco::Vertex> vtx, PileupJetIdentifier::Id level = PileupJetIdentifier::kLoose ) const;
+        void setSimpleRMS( float theRMS )  { simpleRMS_ = theRMS; }
+        float rms() const { return simpleRMS_; }
         float rms( const edm::Ptr<reco::Vertex> vtx ) const;
         float betaStar( const edm::Ptr<reco::Vertex> vtx ) const;
         bool passesPuJetId( const edm::Ptr<DiPhotonCandidate> dipho, PileupJetIdentifier::Id level = PileupJetIdentifier::kLoose )const;
@@ -41,6 +43,7 @@ namespace flashgg {
     private:
         std::map<edm::Ptr<reco::Vertex>, MinimalPileupJetIdentifier> puJetId_;
         float qglikelihood_;
+        float simpleRMS_; // simpler storage for PFCHS where this is not vertex-dependent
     };
 }
 
