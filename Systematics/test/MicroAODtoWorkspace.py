@@ -204,6 +204,7 @@ for tag in tagList:
       dumpPdfWeights =(systlabel ==  "")
       nPdfWeights = 60
       nAlphaSWeights = 2
+      nScaleWeights = 9
       
       cfgTools.addCategory(process.tagsDumper,
                            systlabel,
@@ -215,7 +216,8 @@ for tag in tagList:
                            binnedOnly=isBinnedOnly,
                            dumpPdfWeights=dumpPdfWeights,
                            nPdfWeights=nPdfWeights,
-													 nAlphaSWeights=nAlphaSWeights
+                           nAlphaSWeights=nAlphaSWeights,
+                           nScaleWeights=nScaleWeights
                            )
 
 process.load("flashgg.MicroAOD.flashggRandomizedPerPhotonDiPhotonProducer_cff")

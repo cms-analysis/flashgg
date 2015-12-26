@@ -17,7 +17,7 @@
 #include "SimDataFormats/GeneratorProducts/interface/LHERunInfoProduct.h"
 #include "DataFormats/PatCandidates/interface/libminifloat.h"
 #include "PhysicsTools/HepMCCandAlgos/interface/PDFWeightsHelper.h"
-
+#include "FWCore/Utilities/interface/EDMException.h"
 using namespace std;
 using namespace edm;
 
@@ -27,7 +27,7 @@ namespace flashgg {
 	{
     public:
         PDFWeightProducer( const edm::ParameterSet & );
-        string generator_type( vector<string> );
+        void set_generator_type( vector<string> );
     private:
         void produce( edm::Event &, const edm::EventSetup & );
         EDGetTokenT<LHEEventProduct> LHEEventToken_;
@@ -38,6 +38,7 @@ namespace flashgg {
         void beginRun( edm::Run const &, edm::EventSetup const &iSetup );
         vector<int> weight_indices;
         vector<int> alpha_indices;
+        vector<int> scale_indices;
         string removeSpace( string line );
         PDFWeightsHelper pdfweightshelper_;//tool from HepMCCandAlgos/interface/PDFWeightsHelper
         unsigned int nPdfEigWeights_;
@@ -55,8 +56,8 @@ namespace flashgg {
 	{
         
 		tag_ = iConfig.getUntrackedParameter<string>( "tag", "initrwgt" );
-		pdfid_1 = iConfig.getUntrackedParameter<string>("pdfid_1","292201");
-		pdfid_2 = iConfig.getUntrackedParameter<string>("pdfid_1","292302");
+		pdfid_1 = iConfig.getUntrackedParameter<string>("pdfid_1","0");
+		pdfid_2 = iConfig.getUntrackedParameter<string>("pdfid_2","0");
 		delimiter_1_ = iConfig.getUntrackedParameter<string>( "delimiter_1", "id=\"" );
 		delimiter_2_ = iConfig.getUntrackedParameter<string>( "delimiter_2", "\">" );
         nPdfEigWeights_ = iConfig.getParameter<unsigned int>("nPdfEigWeights");
@@ -71,7 +72,7 @@ namespace flashgg {
 		return str;
 	}
 
-	string PDFWeightProducer::generator_type( vector<string> text ){
+	void PDFWeightProducer::set_generator_type( vector<string> text ){
         
 		string type;
         
@@ -102,7 +103,10 @@ namespace flashgg {
             
 		}
 
-		return type;
+        //        throw cms::Exception("UnexpectedInput") << " We were expecting this file generator info to be labelled as MadGraph or powheg";
+        std::cout << "  WARNING: We get nothing but assume the PDF weight range is 292201-292300 (a la MadGraph)" << std::endl;
+        pdfid_1 = "292201";
+        pdfid_2 = "292300";
         
 	}
     
@@ -117,8 +121,7 @@ namespace flashgg {
 
 		int upper_index = 0;
 		vector<string> weight_lines;
-		string generator;
-		
+        //		string generator;
         
 		for( headers_const_iterator iter = myLHERunInfoProduct.headers_begin(); iter != myLHERunInfoProduct.headers_end(); iter++ ) {
             
@@ -127,13 +130,26 @@ namespace flashgg {
 			if( ( iter->tag() ).compare( tag_ ) == 0 ) {
 				//cout << iter->tag() << endl;
 				weight_lines = iter->lines();
-                
+                PDFWeightProducer::set_generator_type(lines);
+                std::cout << " Set generator type, pdfids: " << pdfid_1 << " " << pdfid_2 << std::endl;
 			}
-            
-            
-			generator = PDFWeightProducer::generator_type(lines);
-            
         }
+
+        for( unsigned int iLine = 0; iLine < weight_lines.size(); iLine++ ) {
+            if ( weight_lines[iLine].find("muR") != std::string::npos ) {
+                std::cout << "Line for scale: " << weight_lines[iLine];
+                size_t pos1 = weight_lines[iLine].find("\"");
+                size_t pos2 = weight_lines[iLine].find("\"",pos1+1);
+                assert (pos1 != std::string::npos && pos2 != std::string::npos);
+                string tempstr = weight_lines[iLine].substr(pos1+1,pos2-pos1-1);
+                int scaleind = atoi(tempstr.c_str());
+                //                std::cout << "    " << pos1 << " " << pos2 << " " << tempstr << " " << scaleind << std::endl;
+                scale_indices.push_back( scaleind );
+            } else {
+                std::cout << "Line NOT for scale: " << weight_lines[iLine];
+            }
+        }
+        std::cout << std::endl;
         
         for( unsigned int iLine = 0; iLine < weight_lines.size(); iLine++ ) {
             
@@ -195,6 +211,10 @@ namespace flashgg {
         int alphas_2 = PDFWeightProducer::weight_indices.back() + 2;
         PDFWeightProducer::alpha_indices.push_back(alphas_1);
         PDFWeightProducer::alpha_indices.push_back(alphas_2);
+
+        std::cout << " Alpha indices: " << alphas_1 << " " << alphas_2 << std::endl;
+
+        //        std::cout << " PDF weight indices final size: " << weight_indices.size() << std::endl;
     }
 
 	void PDFWeightProducer::produce( Event &evt, const EventSetup & )
@@ -226,40 +246,33 @@ namespace flashgg {
 		int size_alpha = PDFWeightProducer::alpha_indices.size();
 		//cout << "lower_bound " << lower_bound << " upper_bound " << upper_bound << endl;
 		for( int i = 0; i < upper_bound; i++ ) {
-
 			int id_i = stoi( LHEEventHandle->weights()[i].id );
-            
 			for( int j = 0; j<size_weight; j++ ){
-                
 				int id_j = PDFWeightProducer::weight_indices[j];	
-//				cout << "id_i " << id_i << " id_j " << id_j << endl;
-
+                //				cout << "id_i " << id_i << " id_j " << id_j << endl;
                 if( id_i == id_j ){
-
-				        //cout << "inner index " << j << " index " << PDFWeightProducer::weight_indices[j] << " id " << LHEEventHandle->weights()[i].id << endl;
+                    //cout << "inner index " << j << " index " << PDFWeightProducer::weight_indices[j] << " id " << LHEEventHandle->weights()[i].id << endl;
 					weight = LHEEventHandle->weights()[i].wgt;
-
 					//cout << "weights " << weight << endl;
-
 					lhe_weights.push_back( weight );
 				}
-
 			}
-
 			for( int k = 0; k<size_alpha; k++ ){
-
 				int id_k = PDFWeightProducer::alpha_indices[k];
-                
+                std::cout << " checking alpha_index " << id_k << " against id " << id_i << std::endl;
                 if(id_i == id_k ){
-                    
-                    //cout << " in here " << endl;
-                    
                     alpha = LHEEventHandle->weights()[i].wgt;
-                    
                     //cout << " alpha " << alpha  << endl;
-                    
                     uint16_t alpha_16 = MiniFloatConverter::float32to16( alpha );
                     pdfWeight.alpha_s_container.push_back(alpha_16);	
+                }
+            }
+            for( unsigned k = 0 ; k < PDFWeightProducer::scale_indices.size() ; k++ ) {
+                int id_k = PDFWeightProducer::scale_indices[k];
+                if ( id_i == id_k ) {
+                    float scale = LHEEventHandle->weights()[i].wgt;
+                    uint16_t scale_16 = MiniFloatConverter::float32to16( scale );
+                    pdfWeight.qcd_scale_container.push_back( scale_16 );
                 }
             }
 		}
@@ -297,7 +310,10 @@ namespace flashgg {
 
 		evt.put( PDFWeight );
 
-//		cout << "final size " <<pdfWeight.pdf_weight_container.size() << endl;
+		cout << "FINAL pdf_weight_container size " <<pdfWeight.pdf_weight_container.size() << endl;
+        cout << "FINAL alpha_s_container size " <<pdfWeight.alpha_s_container.size() << endl;
+        cout << "FINAL qcd_scale_container size " <<pdfWeight.qcd_scale_container.size() << endl;
+
 
 	}
 
