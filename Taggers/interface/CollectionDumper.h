@@ -110,6 +110,7 @@ namespace flashgg {
         bool dumpPdfWeights_;
         int nPdfWeights_;
         int nAlphaSWeights_;
+        int nScaleWeights_;
 
         //std::map<std::string, std::vector<dumper_type> > dumpers_; FIXME template key
         std::map< KeyT, std::vector<dumper_type> > dumpers_;
@@ -151,6 +152,7 @@ namespace flashgg {
         
         nPdfWeights_=0;
         nAlphaSWeights_=0;
+        nScaleWeights_=0;
         dumpPdfWeights_=false;
         
         std::map<std::string, std::string> replacements;
@@ -184,10 +186,13 @@ namespace flashgg {
             //and want dumpPdfWeights_ true, then the if fails and we don't check: the value stays true or >0
             //this relies on the fact that we want nPdfWeights the same for all cats.
             if (nPdfWeights_ == 0) {
-		    nPdfWeights_ = cat.exists("nPdfWeights") ?  cat.getParameter<int>( "nPdfWeights" ) : 0;
+                nPdfWeights_ = cat.exists("nPdfWeights") ?  cat.getParameter<int>( "nPdfWeights" ) : 0;
             }
             if (nAlphaSWeights_ == 0) {
-		    nAlphaSWeights_ = cat.exists("nAlphaSWeights") ?  cat.getParameter<int>( "nAlphaSWeights" ) : 0;
+                nAlphaSWeights_ = cat.exists("nAlphaSWeights") ?  cat.getParameter<int>( "nAlphaSWeights" ) : 0;
+            }
+            if (nScaleWeights_ == 0) {
+                nScaleWeights_ = cat.exists("nScaleWeights") ? cat.getParameter<int>( "nScaleWeights" ) : 0;
             }
             if (dumpPdfWeights_ == false ) {
 		    dumpPdfWeights_ = cat.exists("dumpPdfWeights")? cat.getParameter<bool>( "dumpPdfWeights" ) : false;
@@ -242,6 +247,9 @@ namespace flashgg {
                 }
                 for( int j=0; j<nAlphaSWeights_;j++ ) {
                     dynamic_cast<RooRealVar *>( ws_->factory( Form("alphaSWeight_%d[1.]",j)) )->setConstant( false );
+                }
+                for( int j=0; j<nScaleWeights_;j++ ) {
+                    dynamic_cast<RooRealVar *>( ws_->factory( Form("scaleWeight_%d[1.]",j)) )->setConstant( false );
                 }
             }
             RooRealVar* intLumi = new RooRealVar("IntLumi","IntLumi",intLumi_);
@@ -321,20 +329,24 @@ namespace flashgg {
 
                 vector<uint16_t> compressed_weights = (*WeightHandle)[weight_index].pdf_weight_container; 
                 vector<uint16_t> compressed_alpha_s_weights = (*WeightHandle)[weight_index].alpha_s_container; 
+                vector<uint16_t> compressed_scale_weights = (*WeightHandle)[weight_index].qcd_scale_container;
 
                 std::vector<float> uncompressed = (*WeightHandle)[weight_index].uncompress( compressed_weights );
                 std::vector<float> uncompressed_alpha_s = (*WeightHandle)[weight_index].uncompress( compressed_alpha_s_weights );
+                std::vector<float> uncompressed_scale = (*WeightHandle)[weight_index].uncompress( compressed_scale_weights );
 
                 for( unsigned int j=0; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
                     pdfWeights.push_back(uncompressed[j]);
-
                 }
-                //std::cout << "DEBUG  pushed back " << (*WeightHandle)[weight_index].pdf_weight_container.size() << "pdf weights " << std::endl;
+                std::cout << "DEBUG  pushed back " << (*WeightHandle)[weight_index].pdf_weight_container.size() << "pdf weights " << std::endl;
                 for( unsigned int j=0; j<(*WeightHandle)[weight_index].alpha_s_container.size();j++ ) {
                     pdfWeights.push_back(uncompressed_alpha_s[j]);
-
                 }
                 std::cout << "DEBUG  pushed back " << (*WeightHandle)[weight_index].alpha_s_container.size() << " alpha_s weights " << std::endl;
+                for( unsigned int j=0; j<(*WeightHandle)[weight_index].qcd_scale_container.size();j++ ) {
+                    pdfWeights.push_back(uncompressed_scale[j]);
+                }
+                std::cout << "DEBUG  pushed back " << (*WeightHandle)[weight_index].qcd_scale_container.size() << " scale weights " << std::endl;
             }
 
 
@@ -361,7 +373,7 @@ namespace flashgg {
                 // The Scale Factor is then pdfWeight/nominalMC weight
                 pdfWeights_ =pdfWeights( event );
                 for (unsigned int i = 0; i < pdfWeights_.size() ; i++){
-                //std::cout << " LC DEBUG pdfWeight i=" << i << "  ("<< pdfWeights_[i] <<") -->  " << pdfWeights_[i] << " * (" << lumiWeight_ << "/"<< weight_ <<") = " << pdfWeights_[i] << " / " << 1/(lumiWeight_/weight_) << " = " <<  (pdfWeights_[i] )*(lumiWeight_/weight_) << std::endl;
+                    std::cout << " LC DEBUG pdfWeight i=" << i << "  ("<< pdfWeights_[i] <<") -->  " << pdfWeights_[i] << " * (" << lumiWeight_ << "/"<< weight_ <<") = " << pdfWeights_[i] << " / " << 1/(lumiWeight_/weight_) << " = " <<  (pdfWeights_[i] )*(lumiWeight_/weight_) << std::endl;
                 pdfWeights_[i]= (pdfWeights_[i] )*(lumiWeight_/weight_); // ie pdfWeight/nominal MC weight
                 }
                 
