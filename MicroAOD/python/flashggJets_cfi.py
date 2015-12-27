@@ -110,6 +110,7 @@ def addFlashggPFCHSJets(process,
                                JetTag      = cms.InputTag('patJetsAK4PFCHSLeg' + label),
                                VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                                qgVariablesInputTag   = cms.InputTag('QGTaggerPFCHS'+label, 'qgLikelihood'),
+                               ComputeSimpleRMS = cms.bool(True)
                                )
   setattr( process, 'flashggPFCHSJets'+ label, flashggJets)
 
@@ -191,6 +192,7 @@ def addFlashggPuppiJets(process,
                           JetTag                = cms.InputTag('patJetsAK4PUPPI' + label),
                           VertexCandidateMapTag = cms.InputTag("flashggVertexMapForPUPPI"),
                           UsePuppi              = cms.untracked.bool(True),
+                          ComputeSimpleRMS = cms.bool(True)
 #                          PileupJetIdParameters = cms.PSet(pu_jetid)
                         ))
 

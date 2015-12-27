@@ -12,6 +12,8 @@
 //#include "RecoJets/JetProducers/interface/PileupJetIdAlgo.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 #include "flashgg/DataFormats/interface/VertexCandidateMap.h"
+#include "FWCore/Utilities/interface/EDMException.h"
+#include "DataFormats/Math/interface/deltaR.h"
 
 
 using namespace std;
@@ -37,6 +39,7 @@ namespace flashgg {
         //        unique_ptr<PileupJetIdAlgo>  pileupJetIdAlgo_;
         //        ParameterSet pileupJetIdParameters_;
         bool usePuppi;
+        bool computeSimpleRMS;
     };
 
 
@@ -45,7 +48,8 @@ namespace flashgg {
         diPhotonToken_( consumes<View<DiPhotonCandidate> >( iConfig.getParameter<InputTag>( "DiPhotonTag" ) ) ),
         vertexToken_  ( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTag" ) )),
-        qgVariablesInputTag( iConfig.getParameter<edm::InputTag>( "qgVariablesInputTag" ) )
+        qgVariablesInputTag( iConfig.getParameter<edm::InputTag>( "qgVariablesInputTag" ) ),
+        computeSimpleRMS( iConfig.getParameter<bool>( "ComputeSimpleRMS" ) )
         //GluonTagSrc_  (iConfig.getParameter<edm::InputTag>("GluonTagSrc") )
         //        pileupJetIdParameters_( iConfig.getParameter<ParameterSet>( "PileupJetIdParameters" ) ),
         //        usePuppi( iConfig.getUntrackedParameter<bool>( "UsePuppi", false ) )
@@ -95,8 +99,24 @@ namespace flashgg {
             Ptr<pat::Jet> pjet = jets->ptrAt( i );
             flashgg::Jet fjet = flashgg::Jet( *pjet );
             
-            
-
+            if (computeSimpleRMS) {
+                float sumPtDrSq = 0.;
+                float sumPtSq = 0.;
+                for ( unsigned k = 0; k < fjet.numberOfSourceCandidatePtrs(); ++k ) {
+                    reco::CandidatePtr pfJetConstituent = fjet.sourceCandidatePtr(k);
+                    
+                    const reco::Candidate* kcand = pfJetConstituent.get();
+                    const pat::PackedCandidate* lPack = dynamic_cast<const pat::PackedCandidate *>( kcand );
+                    if ( !lPack ) throw cms::Exception( "NoPackedConstituent" ) << " For jet " << i << " failed to get constituent " << k << std::endl;
+                    float candPt = kcand->pt();
+                    float candDr   = reco::deltaR(*kcand,fjet);
+                    sumPtDrSq += candPt*candPt*candDr*candDr;
+                    sumPtSq += candPt*candPt;
+                }
+                
+                if (sumPtSq == 0.) throw cms::Exception( "NoConstituents" ) << " For jet " << i << " we get sumPtSq of 0!" << std::endl;
+                fjet.setSimpleRMS( sumPtDrSq / sumPtSq );
+            }
             
             //--- Retrieve the q/g likelihood
             float qgLikelihood = -99.0;

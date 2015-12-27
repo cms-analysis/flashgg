@@ -4,6 +4,8 @@ using namespace flashgg;
 
 Jet::Jet() : pat::Jet()
 {
+    simpleRMS_ = -1.;
+    qglikelihood_ = -999.;
     puJetId_.clear();
 }
 
@@ -39,7 +41,7 @@ float Jet::rms( const edm::Ptr<reco::Vertex> vtx ) const
 {
     assert( hasPuJetId( vtx ) );
     //    return puJetId_.at( vtx ).RMS;
-    return -1.;
+    return simpleRMS_;
 }
 
 float Jet::betaStar( const edm::Ptr<reco::Vertex> vtx ) const
