@@ -1,4 +1,3 @@
-
 import FWCore.ParameterSet.Config as cms
 
 # add the following lines to the module used to configure the RandomNumberGeneratorService
