@@ -112,8 +112,16 @@ def addFlashggPFCHSJets(process,
                                qgVariablesInputTag   = cms.InputTag('QGTaggerPFCHS'+label, 'qgLikelihood'),
                                )
   setattr( process, 'flashggPFCHSJets'+ label, flashggJets)
+
+  # randomize Jets
+  from flashgg.MicroAOD.flashggRandomizedJetProducer_cfi import flashggRandomizedJets
+  flashggRandomizedPFCHSJets = flashggRandomizedJets.clone()
+  flashggRandomizedPFCHSJets.src = "flashggPFCHSJets" + label
+  setattr(process.RandomNumberGeneratorService, 'flashggRandomizedPFCHSJets' + label, cms.PSet(initialSeed = cms.untracked.uint32(36423784 + int(label))))
+  setattr( process, 'flashggRandomizedPFCHSJets' + label, flashggRandomizedPFCHSJets )
+
   flashggSelectedJets = cms.EDFilter("FLASHggJetSelector",
-                                     src = cms.InputTag( 'flashggPFCHSJets'+ label ),
+                                     src = cms.InputTag( 'flashggRandomizedPFCHSJets' + label ),
                                      cut = cms.string("pt > 15.")
   )
   setattr( process, 'flashggSelectedPFCHSJets'+label, flashggSelectedJets )
@@ -185,9 +193,17 @@ def addFlashggPuppiJets(process,
                           UsePuppi              = cms.untracked.bool(True),
 #                          PileupJetIdParameters = cms.PSet(pu_jetid)
                         ))
+
+  # randomize Jets
+  from flashgg.MicroAOD.flashggRandomizedJetProducer_cfi import flashggRandomizedJets
+  flashggRandomizedPUPPIJets = flashggRandomizedJets.clone()
+  flashggRandomizedPUPPIJets.src = "flashggPUPPIJets" + label
+  setattr(process.RandomNumberGeneratorService, 'flashggRandomizedPUPPIJets' + label, cms.PSet(initialSeed = cms.untracked.uint32(36421523 + int(label))))
+  setattr( process, 'flashggRandomizedPUPPIJets' + label, flashggRandomizedPUPPIJets )
+
   setattr( process, 'selectedFlashggPUPPIJets'+ label,
            cms.EDFilter("FLASHggJetSelector",
-                        src = cms.InputTag( 'flashggPUPPIJets'+ label ),
+                        src = cms.InputTag( 'flashggRandomizedPUPPIJets'+ label ),
                         cut = cms.string("pt > 15.")
                       ))
   
