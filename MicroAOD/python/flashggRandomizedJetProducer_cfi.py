@@ -10,5 +10,5 @@ flashggRandomizedJets = cms.EDProducer("FlashggRandomizedJetProducer",
                                     src = cms.InputTag("flashggJets"),
                                     # labels of various gaussian random numbers with mean=0, sigma=1
                                     # to be associated with the photon object
-                                    labels = cms.vstring("smearJER")
+                                    labels = cms.vstring("rnd_g_JER")
                                     )
