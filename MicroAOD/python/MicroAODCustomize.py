@@ -131,7 +131,7 @@ class MicroAODCustomize(object):
         # Default should be the right name for all signals
         process.load("flashgg/MicroAOD/flashggPDFWeightObject_cfi")
         process.p *= process.flashggPDFWeightObject
-        
+
     # background specific customization
     def customizeBackground(self,process):
         if "sherpa" in self.datasetName:
@@ -148,6 +148,7 @@ class MicroAODCustomize(object):
                 path.remove( getattr(process,mod))
             print getattr(process,pathName)
         process.out.outputCommands.append("drop *_*Gen*_*_*")
+        process.out.outputCommands.append("keep *_*_*RecHit*_*") # for bad events
         
     # Add debug collections    
     def customizeDebug(self,process):    
