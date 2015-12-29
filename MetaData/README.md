@@ -99,8 +99,10 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 ```
 cd $CMSSW_BASE/src/flashgg/MetaData/work
-./prepareCrabJobs.py -C ChristmasTest -U 5 -L 25 -s campaigns/ChristmasTest.json -V ChristmasTestV1 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask jsons/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON.txt
+./prepareCrabJobs.py -C ChristmasTest -U 5 -L 25 -s campaigns/ChristmasTest.json -V ChristmasTestV2 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask jsons/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON.txt
 cd ChristmasTest
+python $CMSSW_BASE/src/flashgg/MetaData/scripts/stupid_fix.py # to shorten job names >100 chars (new crab "feature")
+mkdir orig ; mv crabConfig_*orig*.py orig
 echo crabConfig_*.py | xargs -n 1 crab sub
 ```
 
