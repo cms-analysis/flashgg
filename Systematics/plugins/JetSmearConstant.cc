@@ -20,11 +20,13 @@ namespace flashgg {
 
     private:
         selector_type overall_range_;
+        std::string random_label_;
     };
 
     JetSmearConstant::JetSmearConstant( const edm::ParameterSet &conf ) :
         ObjectSystMethodBinnedByFunctor( conf ),
-        overall_range_( conf.getParameter<std::string>( "OverallRange" ) )
+        overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
+        random_label_(conf.getParameter<std::string>("RandomLabel"))
         //        exaggerateShiftUp_( conf.getUntrackedParameter<bool>( "ExaggerateShiftUp", false ) )
     {
     }
@@ -62,6 +64,11 @@ namespace flashgg {
                     }
                     y.setP4((newpt/recpt)*y.p4());
                 } else {
+                    if (!y.hasUserFloat(random_label_)) {
+                        throw cms::Exception("Missing embedded random number") << "Could not find key " << random_label_ << " for random numbers embedded in the photon object, please make sure to read the appropriate version of MicroAOD and/or access the correct label and/or run the PerPhotonDiPhoton randomizer on-the-fly";
+                    }
+                    float rnd = y.userFloat(random_label_);                        
+                    std::cout << " We do not use it yet, but we have a random number for " << random_label_ << ": " << rnd << std::endl;
                     if ( debug_ ) {
                         std::cout << "  " << shiftLabel( syst_shift ) << ": Jet has pt=" << y.pt() << " eta=" << y.eta() << " AND NO GENJET! "
                                   << " ... so we do nothing" << std::endl;
