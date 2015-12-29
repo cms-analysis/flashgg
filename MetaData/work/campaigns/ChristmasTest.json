@@ -1,0 +1,12 @@
+{
+    "data" : ["/DoubleEG/Run2015D-05Oct2015-v1/MINIAOD",
+	      "/DoubleEG/Run2015C_25ns-05Oct2015-v1/MINIAOD"
+	      ],
+    "sig"  : ["/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM",
+	      "/VBFHToGG_M-125_13TeV_powheg_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM",
+              "/GluGluHToGG_M-125_13TeV_powheg_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM",
+              "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM"
+	      ],
+    "bkg"  : ["/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM"
+	      ]
+}

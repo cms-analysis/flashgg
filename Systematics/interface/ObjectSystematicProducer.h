@@ -54,10 +54,10 @@ namespace flashgg {
     ObjectSystematicProducer<flashgg_object, param_var, output_container>::ObjectSystematicProducer( const ParameterSet &iConfig ) :
         ObjectToken_( consumes<View<flashgg_object> >( iConfig.getParameter<InputTag>( "src" ) ) )
     {
-        edm::Service<edm::RandomNumberGenerator> rng;
-        if( ! rng.isAvailable() ) {
-            throw cms::Exception( "Configuration" ) << "ObjectSystematicProducer requires the RandomNumberGeneratorService  - please add to configuration";
-        }
+        //        edm::Service<edm::RandomNumberGenerator> rng;
+        //        if( ! rng.isAvailable() ) {
+        //            throw cms::Exception( "Configuration" ) << "ObjectSystematicProducer requires the RandomNumberGeneratorService  - please add to configuration";
+        //        }
 
         produces<output_container<flashgg_object> >(); // Central value
         std::vector<edm::ParameterSet> vpset = iConfig.getParameter<std::vector<edm::ParameterSet> >( "SystMethods" );
@@ -242,24 +242,24 @@ namespace flashgg {
         //        std::cout << " start of produce" << std::endl;
 
         // Give each corrector a pointer to the random service engine that it can use if needs it
-        edm::Service<edm::RandomNumberGenerator> rng;
+        //        edm::Service<edm::RandomNumberGenerator> rng;
 
         //        std::cout << " rng.isAvailable()=" << rng.isAvailable() << std::endl;
 
-        CLHEP::HepRandomEngine &engine = rng->getEngine( evt.streamID() );
+        //        CLHEP::HepRandomEngine &engine = rng->getEngine( evt.streamID() );
 
         //        std::cout << " Got engine!" << std::endl;
 
-        for( unsigned int ncorr = 0 ; ncorr < Corrections_.size() ; ncorr++ ) {
+        //        for( unsigned int ncorr = 0 ; ncorr < Corrections_.size() ; ncorr++ ) {
             //            std::cout << " Setting engine 1D " << ncorr << std::endl;
-            Corrections_.at( ncorr )->setRandomEngine( engine );
+        //            Corrections_.at( ncorr )->setRandomEngine( engine );
             //            std::cout << " Set engine 1D " << ncorr << " label=" << Corrections_.at( ncorr )->shiftLabel( param_var( 0 ) ) << std::endl;
-        }
-        for( unsigned int ncorr = 0 ; ncorr < Corrections2D_.size() ; ncorr++ ) {
+        //        }
+        //        for( unsigned int ncorr = 0 ; ncorr < Corrections2D_.size() ; ncorr++ ) {
             //            std::cout << " Setting engine 2D " << ncorr << std::endl;
-            Corrections2D_.at( ncorr )->setRandomEngine( engine );
+        //            Corrections2D_.at( ncorr )->setRandomEngine( engine );
             //            std::cout << " Setting engine 2D " << ncorr << " label=" << Corrections2D_.at( ncorr )->shiftLabel( PAIR_ZERO ) << std::endl;
-        }
+        //        }
 
         //        std::cout << "Engines set!" << std::endl;
 
