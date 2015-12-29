@@ -201,10 +201,18 @@ for tag in tagList:
           currentVariables = systematicVariables
       
       isBinnedOnly = (systlabel !=  "")
-      dumpPdfWeights =(systlabel ==  "")
-      nPdfWeights = 60
-      nAlphaSWeights = 2
-      nScaleWeights = 9
+      if customize.processId.count("h_") or customize.processId.count("vbf_") and (systlabel ==  ""):
+          print "Signal MC central value, so dumping PDF weights"
+          dumpPdfWeights = True
+          nPdfWeights = 60
+          nAlphaSWeights = 2
+          nScaleWeights = 9
+      else:
+          print "Data, background MC, or non-central value: no PDF weights"
+          dumpPdfWeights = False
+          nPdfWeights = -1
+          nAlphaSWeights = -1
+          nScaleWeights = -1
       
       cfgTools.addCategory(process.tagsDumper,
                            systlabel,
@@ -220,18 +228,21 @@ for tag in tagList:
                            nScaleWeights=nScaleWeights
                            )
 
-# to be fixed once randomized photons will be produced at MicroAOD level
 process.flashggDiPhotonSystematics.src = "flashggDiPhotons" 
 
 from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
 process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring("HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95_v1") )
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
-process.hltRequirement = cms.Sequence()
-if customize.processId == "Data":
-        process.hltRequirement += process.hltHighLevel
+process.load('RecoMET.METFilters.eeBadScFilter_cfi')
+process.eeBadScFilter.EERecHitSource = cms.InputTag("reducedEgamma","reducedEERecHits") # Saved MicroAOD Collection (data only)
 
-process.p = cms.Path(process.hltRequirement*
+process.dataRequirements = cms.Sequence()
+if customize.processId == "Data":
+        process.dataRequirements += process.hltHighLevel
+        process.dataRequirements += process.eeBadScFilter
+
+process.p = cms.Path(process.dataRequirements*
                      process.flashggDiPhotonSystematics*
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                      (process.flashggTagSequence*process.systematicsTagSequences)*
