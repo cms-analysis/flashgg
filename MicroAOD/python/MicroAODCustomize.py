@@ -149,6 +149,7 @@ class MicroAODCustomize(object):
             print getattr(process,pathName)
         process.out.outputCommands.append("drop *_*Gen*_*_*")
         process.out.outputCommands.append("keep *_*_*RecHit*_*") # for bad events
+        delattr(process,"flashggPrunedGenParticles") # will be run due to unscheduled mode unless deleted
         
     # Add debug collections    
     def customizeDebug(self,process):    
