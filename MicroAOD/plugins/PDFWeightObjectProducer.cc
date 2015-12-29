@@ -104,9 +104,10 @@ namespace flashgg {
 		}
 
         //        throw cms::Exception("UnexpectedInput") << " We were expecting this file generator info to be labelled as MadGraph or powheg";
-        std::cout << "  WARNING: We get nothing but assume the PDF weight range is 292201-292300 (a la MadGraph)" << std::endl;
-        pdfid_1 = "292201";
-        pdfid_2 = "292300";
+        //        std::cout << "  WARNING: We get nothing but assume the PDF weight range is 292201-292300 (a la MadGraph)" << std::endl;
+        //        pdfid_1 = "292201";
+        //        pdfid_2 = "292300";
+        // Actually if there is a noop we will process the next round of lines
         
 	}
     
@@ -130,9 +131,10 @@ namespace flashgg {
 			if( ( iter->tag() ).compare( tag_ ) == 0 ) {
 				//cout << iter->tag() << endl;
 				weight_lines = iter->lines();
-                PDFWeightProducer::set_generator_type(lines);
-                std::cout << " Set generator type, pdfids: " << pdfid_1 << " " << pdfid_2 << std::endl;
 			}
+
+            PDFWeightProducer::set_generator_type(lines);
+            std::cout << " After set_generator_type on " << iter->tag() << " we have pdfids: " << pdfid_1 << " " << pdfid_2 << std::endl;
         }
 
         for( unsigned int iLine = 0; iLine < weight_lines.size(); iLine++ ) {
