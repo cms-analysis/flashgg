@@ -91,7 +91,7 @@ RVBins = cms.PSet(
                 )
 
 flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
-		src = cms.InputTag("flashggPreselectedDiPhotons"),
+		src = cms.InputTag("flashggDiPhotons"),
                 SystMethods2D = cms.VPSet(),
                 # the number of syst methods matches the number of nuisance parameters
                 # assumed for a given systematic uncertainty and is NOT required
@@ -142,7 +142,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   # has to match the labels embedded in the photon object as
                                                   # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
                                                   #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
-                                                  RandomLabel = cms.string("smearE"),
+                                                  RandomLabel = cms.string("rnd_g_E"),
                                                   Debug = cms.untracked.bool(False),
                                                   ExaggerateShiftUp = cms.untracked.bool(False),
                                                   ),
@@ -155,7 +155,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   # has to match the labels embedded in the photon object as
                                                   # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
                                                   #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
-                                                  RandomLabel = cms.string("smearE"),
+                                                  RandomLabel = cms.string("rnd_g_E"),
                                                   Debug = cms.untracked.bool(False),
                                                   ExaggerateShiftUp = cms.untracked.bool(False),
                                                   ),
@@ -168,7 +168,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   # has to match the labels embedded in the photon object as
                                                   # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
                                                   #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
-                                                  RandomLabel = cms.string("smearE"),
+                                                  RandomLabel = cms.string("rnd_g_E"),
                                                   Debug = cms.untracked.bool(False),
                                                   ExaggerateShiftUp = cms.untracked.bool(False),
                                                   ),
@@ -181,7 +181,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   # has to match the labels embedded in the photon object as
                                                   # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
                                                   #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
-                                                  RandomLabel = cms.string("smearE"),
+                                                  RandomLabel = cms.string("rnd_g_E"),
                                                   Debug = cms.untracked.bool(False),
                                                   ExaggerateShiftUp = cms.untracked.bool(False),
                                                   ),
