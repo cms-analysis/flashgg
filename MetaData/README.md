@@ -95,6 +95,52 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 ### SPRING15
 
+#### 1_1_0 on Silver-Only Prompt 25ns
+
+Excludes previous processings via JSON subtraction
+
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns -U 5 -L 25 -s campaigns/RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns.json -V 1_1_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask ${PWD}/jsons/ToRun_Prompt_SilverNotGold_2015D_246908-260627_JSON_v2.txt
+cd RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns
+echo crabConfig_*.py | xargs -n 1 crab sub
+```
+
+#### 1_1_0 on Silver-Only ReMiniAOD 25ns
+
+Excludes previous processings via JSON subtraction
+
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-ReMiniAOD-SilverNotGold-1_1_0-25ns -U 5 -L 25 -s campaigns/RunIISpring15-ReMiniAOD-SilverNotGold-1_1_0-25ns.json -V 1_1_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask ${PWD}/jsons/SilverNotGold_246908-260627_JSON_v2.txt
+cd RunIISpring15-ReMiniAOD-SilverNotGold-1_1_0-25ns
+echo crabConfig_*.py | xargs -n 1 crab sub
+```
+
+
+#### 1_1_0 on Prompt 25ns
+
+Excludes ReMiniAOD 25ns via JSON subtraction
+
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-Prompt-1_1_0-25ns -U 5 -L 25 -s campaigns/RunIISpring15-Prompt-1_1_0-25ns.json -V 1_1_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask ${PWD}/jsons/ToRun_Prompt_2015D_246908-260627_JSON_v2.txt
+cd RunIISpring15-Prompt-1_1_0-25ns
+echo crabConfig_*.py | xargs -n 1 crab sub
+```
+
+
+#### 1_1_0 ReMiniAOD Gold
+
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-ReMiniAOD-1_1_0-25ns -U 5 -L 25 -s campaigns/RunIISpring15-ReMiniAOD-1_1_0-25ns.json -V 1_1_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask jsons/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_v2.txt
+cd RunIISpring15-ReMiniAOD-1_1_0-25ns
+python $CMSSW_BASE/src/flashgg/MetaData/scripts/stupid_fix.py 
+mkdir orig ; mv crabConfig_*orig*.py orig
+echo crabConfig_*.py | xargs -n 1 crab sub
+```
+
 #### 1_0_0 on Silver-Only Prompt 25ns
 
 Excludes previous processings via JSON subtraction
