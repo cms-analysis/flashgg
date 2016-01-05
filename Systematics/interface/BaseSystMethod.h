@@ -8,7 +8,7 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "flashgg/DataFormats/interface/WeightedObject.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
-
+#include "JetMETCorrections/Objects/interface/JetCorrector.h"
 
 namespace flashgg {
 
@@ -45,9 +45,13 @@ namespace flashgg {
         bool makesWeight() const { return _MakesWeight; }
 
         virtual std::string shiftLabel( param_var syst_val ) const = 0;
-        virtual void setEnergyCorrections ( const JetCorrectorParameters & ) {
+        virtual void setJECUncertainty ( const JetCorrectorParameters & ) {
             throw cms::Exception( "NotImplemented" ) << " should be used for JEC only";
         } 
+        virtual void setJEC( const JetCorrector*, const edm::Event &, const edm::EventSetup &  ) {
+            throw cms::Exception( "NotImplemented" ) << " should be used for JEC only";
+        }
+
 
         virtual void setRandomEngine( CLHEP::HepRandomEngine &eng )
         {
