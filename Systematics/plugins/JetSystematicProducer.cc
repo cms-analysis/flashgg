@@ -17,6 +17,7 @@
 #include "FWCore/Framework/interface/ESHandle.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
 #include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
+#include "JetMETCorrections/Objects/interface/JetCorrector.h"
 
 namespace flashgg {
 
@@ -36,15 +37,22 @@ namespace flashgg {
     }
     
     void JetSystematicProducer::produce( edm::Event &iEvent, const edm::EventSetup & iSetup ) {
+        const JetCorrector* corrector = JetCorrector::getJetCorrector ("ak4PFCHSL1FastL2L3",iSetup); 
+        for( unsigned int ncorr = 0; ncorr < this->Corrections_.size(); ncorr++ ) {
+            this->Corrections_.at( ncorr )->setJEC(corrector,iEvent,iSetup);
+        }
+        for( unsigned int ncorr = 0; ncorr < this->Corrections2D_.size(); ncorr++ ) {
+            this->Corrections2D_.at( ncorr )->setJEC(corrector,iEvent,iSetup);
+        }
         if (!correctionsSet_) {
             edm::ESHandle<JetCorrectorParametersCollection> JetCorParColl;
             iSetup.get<JetCorrectionsRecord>().get("AK4PFchs",JetCorParColl); 
             JetCorrectorParameters const & JetCorPar = (*JetCorParColl)["Uncertainty"];
             for( unsigned int ncorr = 0; ncorr < this->Corrections_.size(); ncorr++ ) {
-                this->Corrections_.at( ncorr )->setEnergyCorrections(JetCorPar);
+                this->Corrections_.at( ncorr )->setJECUncertainty(JetCorPar);
             }
             for( unsigned int ncorr = 0; ncorr < this->Corrections2D_.size(); ncorr++ ) {
-                this->Corrections2D_.at( ncorr )->setEnergyCorrections(JetCorPar);
+                this->Corrections2D_.at( ncorr )->setJECUncertainty(JetCorPar);
             }
         }
         ObjectSystematicProducer<flashgg::Jet,int,std::vector>::produce( iEvent, iSetup );
