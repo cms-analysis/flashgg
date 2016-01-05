@@ -35,7 +35,7 @@ class MicroAODCustomize(object):
                               VarParsing.VarParsing.varType.int,          # string, int, or float
                               "hlt")
         self.options.register('muMuGamma',
-                              0, # default value
+                              2, # 0 never, 1 always, 2 for DY and DoubleMuon
                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                               VarParsing.VarParsing.varType.int,          # string, int, or float
                               "muMuGamma")
@@ -76,7 +76,7 @@ class MicroAODCustomize(object):
         self.customize(process)
         self.userCustomize(process)
     
-    # empty default definition for userCutomize
+    # empty default definition for userCustomize
     def userCustomize(self,process):
         pass 
 
@@ -110,6 +110,8 @@ class MicroAODCustomize(object):
         if self.hlt == 1:
             self.customizeHLT(process)
         if self.muMuGamma == 1:
+            self.customizeMuMuGamma(process)
+        elif self.muMuGamma == 2 and ("DY" in customize.datasetName or "DoubleMuon" in customize.datasetName):
             self.customizeMuMuGamma(process)
         if len(self.globalTag) >0:
             self.customizeGlobalTag(process)
