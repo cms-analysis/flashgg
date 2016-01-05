@@ -671,7 +671,7 @@ class SamplesManager(object):
         if not found:
             raise Exception("No dataset matched the request: /%s/%s" % ( primary, str(secondary) ))
         
-        if maxEvents > -1 and totEvents > maxEvents:
+        if jobId != -1 and maxEvents > -1 and totEvents > maxEvents:
             totWeights = maxEvents / totEvents * totWeights
             totEvents = maxEvents
         maxEvents = int(totEvents)
