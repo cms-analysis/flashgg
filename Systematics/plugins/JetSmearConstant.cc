@@ -16,7 +16,8 @@ namespace flashgg {
         JetSmearConstant( const edm::ParameterSet &conf );
         void applyCorrection( flashgg::Jet &y, int syst_shift ) override;
         std::string shiftLabel( int ) const override;
-        void setEnergyCorrections ( const JetCorrectorParameters & ) override {}; // NotImplemented in base class --> harmless noop
+        void setJECUncertainty ( const JetCorrectorParameters & ) override {}; // NotImplemented in base class --> harmless noop
+        void setJEC( const JetCorrector*, const edm::Event &, const edm::EventSetup & ) override {}; // NotImplemented in base class --> harmless noop
 
     private:
         selector_type overall_range_;
@@ -24,7 +25,7 @@ namespace flashgg {
     };
 
     JetSmearConstant::JetSmearConstant( const edm::ParameterSet &conf ) :
-        ObjectSystMethodBinnedByFunctor( conf ),
+        ObjectSystMethodBinnedByFunctor( conf ), 
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
         random_label_(conf.getParameter<std::string>("RandomLabel"))
         //        exaggerateShiftUp_( conf.getUntrackedParameter<bool>( "ExaggerateShiftUp", false ) )
