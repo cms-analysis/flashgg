@@ -293,7 +293,7 @@ namespace flashgg {
                 dijet_LeadJPt_    = dijetP4s.first.pt();
                 dijet_SubJPt_     = dijetP4s.second.pt();
                 
-                dijet_dipho_dphi_ = reco::deltaPhi((dijetP4s.first + dijetP4s.second).phi(),(diPhotonP4s[0] + diPhotonP4s[1]).phi());
+                dijet_dipho_dphi_ = fabs(reco::deltaPhi((dijetP4s.first + dijetP4s.second).phi(),(diPhotonP4s[0] + diPhotonP4s[1]).phi()));
                 dijet_dphi_trunc_ = std::min((float) dijet_dipho_dphi_, (float) 2.9416);
                 
                 
