@@ -1,0 +1,27 @@
+{
+    "/SingleElectron/sethzenz-RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns-1_1_0-v0-Run2015D-PromptReco-v4-7b05e4f729d8444b2665263390b46268/USER": {
+        "files": [
+            {
+                "bad": true, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns/1_1_0/SingleElectron/RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns-1_1_0-v0-Run2015D-PromptReco-v4/160105_230718/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 69958
+            }, 
+            {
+                "bad": true, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns/1_1_0/SingleElectron/RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns-1_1_0-v0-Run2015D-PromptReco-v4/160105_230718/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 68529
+            }, 
+            {
+                "bad": true, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns/1_1_0/SingleElectron/RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns-1_1_0-v0-Run2015D-PromptReco-v4/160105_230718/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 69769
+            }, 
+            {
+                "bad": true, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns/1_1_0/SingleElectron/RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns-1_1_0-v0-Run2015D-PromptReco-v4/160105_230718/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 68683
+            }
+        ], 
+        "vetted": false
+    }
+}
