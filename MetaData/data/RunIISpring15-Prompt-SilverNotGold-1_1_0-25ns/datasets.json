@@ -2,26 +2,154 @@
     "/SingleElectron/sethzenz-RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns-1_1_0-v0-Run2015D-PromptReco-v4-7b05e4f729d8444b2665263390b46268/USER": {
         "files": [
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 69958, 
+                "lumis": {
+                    "258443": [
+                        1, 
+                        2, 
+                        3, 
+                        4, 
+                        5, 
+                        6, 
+                        7, 
+                        8, 
+                        9, 
+                        10, 
+                        11, 
+                        12, 
+                        13, 
+                        14, 
+                        15, 
+                        16, 
+                        17, 
+                        18, 
+                        19, 
+                        20, 
+                        21, 
+                        22, 
+                        23, 
+                        24, 
+                        25
+                    ]
+                }, 
                 "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns/1_1_0/SingleElectron/RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns-1_1_0-v0-Run2015D-PromptReco-v4/160105_230718/0000/myMicroAODOutputFile_1.root", 
-                "nevents": 69958
+                "nevents": 69958, 
+                "totEvents": 69958, 
+                "weights": 69958
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 68529, 
+                "lumis": {
+                    "258443": [
+                        226, 
+                        227, 
+                        228, 
+                        229, 
+                        230, 
+                        231, 
+                        232, 
+                        233, 
+                        234, 
+                        235, 
+                        236, 
+                        237, 
+                        238, 
+                        239, 
+                        240, 
+                        241, 
+                        242, 
+                        243, 
+                        244, 
+                        245, 
+                        246, 
+                        247, 
+                        248, 
+                        249, 
+                        250
+                    ]
+                }, 
                 "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns/1_1_0/SingleElectron/RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns-1_1_0-v0-Run2015D-PromptReco-v4/160105_230718/0000/myMicroAODOutputFile_10.root", 
-                "nevents": 68529
+                "nevents": 68529, 
+                "totEvents": 68529, 
+                "weights": 68529
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 69769, 
+                "lumis": {
+                    "258443": [
+                        51, 
+                        52, 
+                        53, 
+                        54, 
+                        55, 
+                        56, 
+                        57, 
+                        58, 
+                        59, 
+                        60, 
+                        61, 
+                        62, 
+                        63, 
+                        64, 
+                        65, 
+                        66, 
+                        67, 
+                        68, 
+                        69, 
+                        70, 
+                        71, 
+                        72, 
+                        73, 
+                        74, 
+                        75
+                    ]
+                }, 
                 "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns/1_1_0/SingleElectron/RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns-1_1_0-v0-Run2015D-PromptReco-v4/160105_230718/0000/myMicroAODOutputFile_3.root", 
-                "nevents": 69769
+                "nevents": 69769, 
+                "totEvents": 69769, 
+                "weights": 69769
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 68683, 
+                "lumis": {
+                    "258443": [
+                        101, 
+                        102, 
+                        103, 
+                        104, 
+                        105, 
+                        106, 
+                        107, 
+                        108, 
+                        109, 
+                        110, 
+                        111, 
+                        112, 
+                        113, 
+                        114, 
+                        115, 
+                        116, 
+                        117, 
+                        118, 
+                        119, 
+                        120, 
+                        121, 
+                        122, 
+                        123, 
+                        124, 
+                        125
+                    ]
+                }, 
                 "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns/1_1_0/SingleElectron/RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns-1_1_0-v0-Run2015D-PromptReco-v4/160105_230718/0000/myMicroAODOutputFile_5.root", 
-                "nevents": 68683
+                "nevents": 68683, 
+                "totEvents": 68683, 
+                "weights": 68683
             }
         ], 
-        "vetted": false
+        "vetted": true
     }
 }
