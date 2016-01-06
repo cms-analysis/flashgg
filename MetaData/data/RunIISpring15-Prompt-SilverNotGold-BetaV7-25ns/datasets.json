@@ -33,7 +33,7 @@
                         25
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_1.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_1.root", 
                 "nevents": 52763, 
                 "totEvents": 52763, 
                 "weights": 52763
@@ -70,7 +70,7 @@
                         250
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_10.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_10.root", 
                 "nevents": 51149, 
                 "totEvents": 51149, 
                 "weights": 51149
@@ -98,7 +98,7 @@
                         291
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_12.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_12.root", 
                 "nevents": 31186, 
                 "totEvents": 31186, 
                 "weights": 31186
@@ -135,7 +135,7 @@
                         50
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_2.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_2.root", 
                 "nevents": 52631, 
                 "totEvents": 52631, 
                 "weights": 52631
@@ -172,7 +172,7 @@
                         100
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_4.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_4.root", 
                 "nevents": 52496, 
                 "totEvents": 52496, 
                 "weights": 52496
@@ -209,7 +209,7 @@
                         125
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_5.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_5.root", 
                 "nevents": 51698, 
                 "totEvents": 51698, 
                 "weights": 51698
@@ -246,7 +246,7 @@
                         150
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_6.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_6.root", 
                 "nevents": 51890, 
                 "totEvents": 51890, 
                 "weights": 51890
@@ -283,7 +283,7 @@
                         175
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_7.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_7.root", 
                 "nevents": 51871, 
                 "totEvents": 51871, 
                 "weights": 51871
@@ -320,7 +320,7 @@
                         200
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_8.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_8.root", 
                 "nevents": 51052, 
                 "totEvents": 51052, 
                 "weights": 51052
@@ -357,7 +357,7 @@
                         225
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_9.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_9.root", 
                 "nevents": 49474, 
                 "totEvents": 49474, 
                 "weights": 49474
@@ -394,7 +394,7 @@
                         75
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_3.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_3.root", 
                 "nevents": 52460, 
                 "totEvents": 52460, 
                 "weights": 52460
@@ -431,7 +431,7 @@
                         275
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_11.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085308/0000/myMicroAODOutputFile_11.root", 
                 "nevents": 51107, 
                 "totEvents": 51107, 
                 "weights": 51107
@@ -473,7 +473,7 @@
                         25
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_1.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_1.root", 
                 "nevents": 30869, 
                 "totEvents": 30869, 
                 "weights": 30869
@@ -510,7 +510,7 @@
                         250
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_10.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_10.root", 
                 "nevents": 29838, 
                 "totEvents": 29838, 
                 "weights": 29838
@@ -547,7 +547,7 @@
                         275
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_11.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_11.root", 
                 "nevents": 29874, 
                 "totEvents": 29874, 
                 "weights": 29874
@@ -575,7 +575,7 @@
                         291
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_12.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_12.root", 
                 "nevents": 18149, 
                 "totEvents": 18149, 
                 "weights": 18149
@@ -612,7 +612,7 @@
                         50
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_2.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_2.root", 
                 "nevents": 30945, 
                 "totEvents": 30945, 
                 "weights": 30945
@@ -649,7 +649,7 @@
                         75
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_3.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_3.root", 
                 "nevents": 30876, 
                 "totEvents": 30876, 
                 "weights": 30876
@@ -686,7 +686,7 @@
                         100
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_4.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_4.root", 
                 "nevents": 30237, 
                 "totEvents": 30237, 
                 "weights": 30237
@@ -723,7 +723,7 @@
                         125
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_5.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_5.root", 
                 "nevents": 30884, 
                 "totEvents": 30884, 
                 "weights": 30884
@@ -760,7 +760,7 @@
                         150
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_6.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_6.root", 
                 "nevents": 30649, 
                 "totEvents": 30649, 
                 "weights": 30649
@@ -797,7 +797,7 @@
                         175
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_7.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_7.root", 
                 "nevents": 30414, 
                 "totEvents": 30414, 
                 "weights": 30414
@@ -834,7 +834,7 @@
                         200
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_8.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_8.root", 
                 "nevents": 30336, 
                 "totEvents": 30336, 
                 "weights": 30336
@@ -871,7 +871,7 @@
                         225
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_9.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/DoubleMuon/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085532/0000/myMicroAODOutputFile_9.root", 
                 "nevents": 29364, 
                 "totEvents": 29364, 
                 "weights": 29364
@@ -913,7 +913,7 @@
                         25
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_1.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_1.root", 
                 "nevents": 7407, 
                 "totEvents": 7407, 
                 "weights": 7407
@@ -950,7 +950,7 @@
                         250
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_10.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_10.root", 
                 "nevents": 7391, 
                 "totEvents": 7391, 
                 "weights": 7391
@@ -987,7 +987,7 @@
                         275
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_11.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_11.root", 
                 "nevents": 7174, 
                 "totEvents": 7174, 
                 "weights": 7174
@@ -1015,7 +1015,7 @@
                         291
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_12.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_12.root", 
                 "nevents": 4400, 
                 "totEvents": 4400, 
                 "weights": 4400
@@ -1052,7 +1052,7 @@
                         50
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_2.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_2.root", 
                 "nevents": 7318, 
                 "totEvents": 7318, 
                 "weights": 7318
@@ -1089,7 +1089,7 @@
                         75
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_3.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_3.root", 
                 "nevents": 7487, 
                 "totEvents": 7487, 
                 "weights": 7487
@@ -1126,7 +1126,7 @@
                         100
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_4.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_4.root", 
                 "nevents": 7379, 
                 "totEvents": 7379, 
                 "weights": 7379
@@ -1163,7 +1163,7 @@
                         125
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_5.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_5.root", 
                 "nevents": 7456, 
                 "totEvents": 7456, 
                 "weights": 7456
@@ -1200,7 +1200,7 @@
                         150
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_6.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_6.root", 
                 "nevents": 7435, 
                 "totEvents": 7435, 
                 "weights": 7435
@@ -1237,7 +1237,7 @@
                         175
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_7.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_7.root", 
                 "nevents": 7433, 
                 "totEvents": 7433, 
                 "weights": 7433
@@ -1274,7 +1274,7 @@
                         200
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_8.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_8.root", 
                 "nevents": 7153, 
                 "totEvents": 7153, 
                 "weights": 7153
@@ -1311,7 +1311,7 @@
                         225
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_9.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/MuonEG/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085601/0000/myMicroAODOutputFile_9.root", 
                 "nevents": 7158, 
                 "totEvents": 7158, 
                 "weights": 7158
@@ -1353,7 +1353,7 @@
                         25
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_1.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_1.root", 
                 "nevents": 69958, 
                 "totEvents": 69958, 
                 "weights": 69958
@@ -1390,7 +1390,7 @@
                         250
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_10.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_10.root", 
                 "nevents": 68529, 
                 "totEvents": 68529, 
                 "weights": 68529
@@ -1427,7 +1427,7 @@
                         275
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_11.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_11.root", 
                 "nevents": 68588, 
                 "totEvents": 68588, 
                 "weights": 68588
@@ -1455,7 +1455,7 @@
                         291
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_12.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_12.root", 
                 "nevents": 41245, 
                 "totEvents": 41245, 
                 "weights": 41245
@@ -1492,7 +1492,7 @@
                         50
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_2.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_2.root", 
                 "nevents": 69957, 
                 "totEvents": 69957, 
                 "weights": 69957
@@ -1529,7 +1529,7 @@
                         75
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_3.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_3.root", 
                 "nevents": 69769, 
                 "totEvents": 69769, 
                 "weights": 69769
@@ -1566,7 +1566,7 @@
                         100
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_4.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_4.root", 
                 "nevents": 69267, 
                 "totEvents": 69267, 
                 "weights": 69267
@@ -1603,7 +1603,7 @@
                         125
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_5.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_5.root", 
                 "nevents": 68683, 
                 "totEvents": 68683, 
                 "weights": 68683
@@ -1640,7 +1640,7 @@
                         150
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_6.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_6.root", 
                 "nevents": 69217, 
                 "totEvents": 69217, 
                 "weights": 69217
@@ -1677,7 +1677,7 @@
                         200
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_8.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_8.root", 
                 "nevents": 68221, 
                 "totEvents": 68221, 
                 "weights": 68221
@@ -1714,7 +1714,7 @@
                         225
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_9.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_9.root", 
                 "nevents": 66377, 
                 "totEvents": 66377, 
                 "weights": 66377
@@ -1751,7 +1751,7 @@
                         175
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_7.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SingleElectron/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085420/0000/myMicroAODOutputFile_7.root", 
                 "nevents": 68889, 
                 "totEvents": 68889, 
                 "weights": 68889
@@ -1793,7 +1793,7 @@
                         25
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_1.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_1.root", 
                 "nevents": 17417, 
                 "totEvents": 17417, 
                 "weights": 17417
@@ -1830,7 +1830,7 @@
                         250
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_10.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_10.root", 
                 "nevents": 16782, 
                 "totEvents": 16782, 
                 "weights": 16782
@@ -1867,7 +1867,7 @@
                         275
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_11.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_11.root", 
                 "nevents": 16743, 
                 "totEvents": 16743, 
                 "weights": 16743
@@ -1904,7 +1904,7 @@
                         50
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_2.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_2.root", 
                 "nevents": 17397, 
                 "totEvents": 17397, 
                 "weights": 17397
@@ -1941,7 +1941,7 @@
                         75
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_3.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_3.root", 
                 "nevents": 17325, 
                 "totEvents": 17325, 
                 "weights": 17325
@@ -1978,7 +1978,7 @@
                         100
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_4.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_4.root", 
                 "nevents": 17101, 
                 "totEvents": 17101, 
                 "weights": 17101
@@ -2015,7 +2015,7 @@
                         125
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_5.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_5.root", 
                 "nevents": 17045, 
                 "totEvents": 17045, 
                 "weights": 17045
@@ -2052,7 +2052,7 @@
                         150
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_6.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_6.root", 
                 "nevents": 16802, 
                 "totEvents": 16802, 
                 "weights": 16802
@@ -2089,7 +2089,7 @@
                         175
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_7.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_7.root", 
                 "nevents": 16950, 
                 "totEvents": 16950, 
                 "weights": 16950
@@ -2126,7 +2126,7 @@
                         200
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_8.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_8.root", 
                 "nevents": 16925, 
                 "totEvents": 16925, 
                 "weights": 16925
@@ -2163,7 +2163,7 @@
                         225
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_9.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_9.root", 
                 "nevents": 16208, 
                 "totEvents": 16208, 
                 "weights": 16208
@@ -2191,7 +2191,7 @@
                         291
                     ]
                 }, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_12.root", 
+                "name": "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns/Spring15BetaV7/SinglePhoton/RunIISpring15-Prompt-SilverNotGold-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151108_085032/0000/myMicroAODOutputFile_12.root", 
                 "nevents": 10024, 
                 "totEvents": 10024, 
                 "weights": 10024
