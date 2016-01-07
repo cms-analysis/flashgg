@@ -9,7 +9,7 @@ def main(args):
     fName = args[0]
     jsonName = args[1]
     if fName.startswith("/store"):
-        prepend = ["root://eoscms//eos/cms","root://xrootd-cms.infn.it/"]
+        prepend = ["root://eoscms.cern.ch//eos/cms","root://xrootd-cms.infn.it/"]
     else:
         prepend = [""]
         
