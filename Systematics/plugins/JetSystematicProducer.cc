@@ -30,19 +30,23 @@ namespace flashgg {
     private:
         void produce( edm::Event &, const edm::EventSetup & ) override;
         bool correctionsSet_;
+        bool doCentralJEC_;
     };
 
     JetSystematicProducer::JetSystematicProducer ( const edm::ParameterSet &iConfig ) : ObjectSystematicProducer<flashgg::Jet,int,std::vector>( iConfig ) {
         correctionsSet_ = false;
+        doCentralJEC_ = iConfig.getParameter<bool>("DoCentralJEC");
     }
     
     void JetSystematicProducer::produce( edm::Event &iEvent, const edm::EventSetup & iSetup ) {
-        const JetCorrector* corrector = JetCorrector::getJetCorrector ("ak4PFCHSL1FastL2L3",iSetup); 
-        for( unsigned int ncorr = 0; ncorr < this->Corrections_.size(); ncorr++ ) {
-            this->Corrections_.at( ncorr )->setJEC(corrector,iEvent,iSetup);
-        }
-        for( unsigned int ncorr = 0; ncorr < this->Corrections2D_.size(); ncorr++ ) {
-            this->Corrections2D_.at( ncorr )->setJEC(corrector,iEvent,iSetup);
+        if (doCentralJEC_) {
+            const JetCorrector* corrector = JetCorrector::getJetCorrector ("ak4PFCHSL1FastL2L3",iSetup); 
+            for( unsigned int ncorr = 0; ncorr < this->Corrections_.size(); ncorr++ ) {
+                this->Corrections_.at( ncorr )->setJEC(corrector,iEvent,iSetup);
+            }
+            for( unsigned int ncorr = 0; ncorr < this->Corrections2D_.size(); ncorr++ ) {
+                this->Corrections2D_.at( ncorr )->setJEC(corrector,iEvent,iSetup);
+            }
         }
         if (!correctionsSet_) {
             edm::ESHandle<JetCorrectorParametersCollection> JetCorParColl;
