@@ -64,6 +64,7 @@ namespace flashgg {
         void shiftAllMvaValuesBy( float val );
         void shiftSigmaEOverEValueBy( float val );
         //    void setSigEOverE(float val) { sigEOverE_ = val; };
+        void setSigEOverEValue(float val) { sigEOverE_ = val; };
 
         // define which regression from reco we use - only this one is valid as of 74X
         static const reco::Photon::P4type regression_type = reco::Photon::regression1;
