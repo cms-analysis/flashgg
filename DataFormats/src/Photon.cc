@@ -281,6 +281,15 @@ void Photon::shiftSigmaEOverEValueBy( float val ) {
 }
 
 
+//sigmaEOverE systematycs
+void Photon::smearSigmaEOverEValueBy( float val ) {
+    const LorentzVector pho_p4 = p4(regression_type);
+    float energyError = getCorrectedEnergyError(regression_type);
+    energyError = sqrt( pow( energyError,2) + pow(energyError,2) )
+    setP4(regression_type, pho_p4, energyError, false);
+}
+
+
 
 //void Photon::setSigEOverE(){
 //        sigEOverE_ = getCorrectedEnergyError( regression_type ) / getCorrectedEnergy( regression_type ) ;
