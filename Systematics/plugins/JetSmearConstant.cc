@@ -70,7 +70,9 @@ namespace flashgg {
                     }
                     float rnd = y.userFloat(random_label_);       
                     
-                    std::cout << " We do not use it yet, but we have a random number for " << random_label_ << ": " << rnd << std::endl;
+                    if ( debug_ ) {
+                        std::cout << " We do not use it yet, but we have a random number for " << random_label_ << ": " << rnd << std::endl;
+                    }
                     if ( debug_ ) {
                         std::cout << "  " << shiftLabel( syst_shift ) << ": Jet has pt=" << y.pt() << " eta=" << y.eta() << " AND NO GENJET! "
                                   << " ... so we do nothing" << std::endl;
