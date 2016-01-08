@@ -25,6 +25,7 @@ namespace flashgg {
         const JetCorrector* jec_cor_;
         const edm::Event* evt_;
         const edm::EventSetup* evt_setup_;
+        bool jec_set_;
         bool debug_;
     };
 
@@ -33,9 +34,11 @@ namespace flashgg {
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
         debug_( conf.getUntrackedParameter<bool>( "Debug", false ) )
     {
+        jec_set_ = false;
     }
 
     void JetEnergyCorrector::setJEC( const JetCorrector* theJEC, const edm::Event &iEvent, const edm::EventSetup & iSetup ) {
+        jec_set_ = true;
         jec_cor_ = theJEC;
         evt_ = &iEvent;
         evt_setup_ = &iSetup;
@@ -61,13 +64,20 @@ namespace flashgg {
     void JetEnergyCorrector::applyCorrection( flashgg::Jet &y, int syst_shift )
     {
         if( overall_range_( y ) ) {
-            double jec = jec_cor_->correction( y.correctedJet("Uncorrected") , *evt_, *evt_setup_ );
-            std::cout << " We get this jec from the corrector: " << jec << std::endl;
-            std::cout << "    ... previous jec was: " << (y.energy()/y.correctedJet("Uncorrected").energy()) << std::endl;
+            double jec_adjust = 1.;
+            if (jec_set_) {
+                double jec = jec_cor_->correction( y.correctedJet("Uncorrected") , *evt_, *evt_setup_ );
+                double oldjec = (y.energy()/y.correctedJet("Uncorrected").energy());
+                if ( debug_ ) {
+                    std::cout << " DOING JEC! We get this jec from the corrector: " << jec << std::endl;
+                    std::cout << "    ... previous jec was: " << oldjec << std::endl;
+                }
+                jec_adjust = jec/oldjec;
+            }
             jec_unc_->setJetEta(y.eta());
-            jec_unc_->setJetPt(jec*y.pt()); // TODO: confirm this is the corrected pt
+            jec_unc_->setJetPt(jec_adjust*y.pt()); 
             float unc = jec_unc_->getUncertainty(true);
-            float scale = jec + syst_shift*unc;
+            float scale = jec_adjust + syst_shift*unc;
             if( debug_ ) {
                 std::cout << "  " << shiftLabel( syst_shift ) << ": Jet has pt= " << y.pt() << " eta=" << y.eta()
                           << " and we apply a multiplicative correction of " << scale << std::endl;

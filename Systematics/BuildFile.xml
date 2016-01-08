@@ -2,6 +2,7 @@
 <use name="CommonTools/Utils"/>
 <use name="flashgg/DataFormats"/>
 <use name="rootrflx"/>
+<use name="root"/>
 <export>
   <lib  name="1"/>
 </export>
