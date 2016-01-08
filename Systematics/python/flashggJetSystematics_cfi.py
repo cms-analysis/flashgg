@@ -27,6 +27,7 @@ def createJetSystematicsForTag(process,jetInputTag):
   setattr(process,newName,
           cms.EDProducer('FlashggJetSystematicProducer',
                          src = jetInputTag,
+                         DoCentralJEC = cms.bool(False),
                          SystMethods2D = cms.VPSet(),
                          SystMethods = cms.VPSet(cms.PSet( MethodName = cms.string("FlashggJetEnergyCorrector"),
                                                            Label = cms.string("JEC"),
