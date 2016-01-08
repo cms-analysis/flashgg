@@ -95,6 +95,18 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 ### SPRING15
 
+### 1_1_0 Prompt 25ns MuonEG Rerun ###
+
+For borked jobs:
+
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-Prompt-MuonEGRerun-1_1_0-25ns -U 5 -L 25 -s campaigns/RunIISpring15-Prompt-MuonEGRerun-1_1_0-25ns.json -V 1_1_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask ${PWD}/jsons/MuonEG_missing.txt
+cd RunIISpring15-Prompt-MuonEGRerun-1_1_0-25ns
+echo crabConfig_*.py | xargs -n 1 crab sub
+```
+
+
 #### 1_1_0 on Silver-Only Prompt 25ns
 
 Excludes previous processings via JSON subtraction
