@@ -338,15 +338,15 @@ namespace flashgg {
                 for( unsigned int j=0; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
                     pdfWeights.push_back(uncompressed[j]);
                 }
-                std::cout << "DEBUG  pushed back " << (*WeightHandle)[weight_index].pdf_weight_container.size() << "pdf weights " << std::endl;
+                //                std::cout << "DEBUG  pushed back " << (*WeightHandle)[weight_index].pdf_weight_container.size() << "pdf weights " << std::endl;
                 for( unsigned int j=0; j<(*WeightHandle)[weight_index].alpha_s_container.size();j++ ) {
                     pdfWeights.push_back(uncompressed_alpha_s[j]);
                 }
-                std::cout << "DEBUG  pushed back " << (*WeightHandle)[weight_index].alpha_s_container.size() << " alpha_s weights " << std::endl;
+                //                std::cout << "DEBUG  pushed back " << (*WeightHandle)[weight_index].alpha_s_container.size() << " alpha_s weights " << std::endl;
                 for( unsigned int j=0; j<(*WeightHandle)[weight_index].qcd_scale_container.size();j++ ) {
                     pdfWeights.push_back(uncompressed_scale[j]);
                 }
-                std::cout << "DEBUG  pushed back " << (*WeightHandle)[weight_index].qcd_scale_container.size() << " scale weights " << std::endl;
+                //                std::cout << "DEBUG  pushed back " << (*WeightHandle)[weight_index].qcd_scale_container.size() << " scale weights " << std::endl;
             }
 
 
@@ -373,7 +373,7 @@ namespace flashgg {
                 // The Scale Factor is then pdfWeight/nominalMC weight
                 pdfWeights_ =pdfWeights( event );
                 for (unsigned int i = 0; i < pdfWeights_.size() ; i++){
-                    std::cout << " LC DEBUG pdfWeight i=" << i << "  ("<< pdfWeights_[i] <<") -->  " << pdfWeights_[i] << " * (" << lumiWeight_ << "/"<< weight_ <<") = " << pdfWeights_[i] << " / " << 1/(lumiWeight_/weight_) << " = " <<  (pdfWeights_[i] )*(lumiWeight_/weight_) << std::endl;
+                    //                    std::cout << " LC DEBUG pdfWeight i=" << i << "  ("<< pdfWeights_[i] <<") -->  " << pdfWeights_[i] << " * (" << lumiWeight_ << "/"<< weight_ <<") = " << pdfWeights_[i] << " / " << 1/(lumiWeight_/weight_) << " = " <<  (pdfWeights_[i] )*(lumiWeight_/weight_) << std::endl;
                 pdfWeights_[i]= (pdfWeights_[i] )*(lumiWeight_/weight_); // ie pdfWeight/nominal MC weight
                 }
                 

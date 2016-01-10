@@ -147,13 +147,10 @@ from flashgg.MetaData.samples_utils import SamplesManager
 #options.parseArguments()
 
 process.source = cms.Source ("PoolSource",
-                             fileNames = cms.untracked.vstring("file:myMicroAODOutputFile.root"))
-#process.source = cms.Source("PoolSource",
-#                            fileNames = cms.untracked.vstring("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-1_0_0-25ns/1_0_0/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-ReMiniAOD-1_0_0-25ns-1_0_0-v0-RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/151229_222419/0000/myMicroAODOutputFile_1.root"))
-#process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-FinalPrompt-BetaV7-25ns/Spring15#BetaV7/DoubleEG/RunIISpring15-FinalPrompt-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151124_234634/0000/myMicroAODOutputFile_1.root"))
-#process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-BetaV7-25ns/Spring15BetaV7/GluGluHToGG_M-125_13TeV_powheg_pythia8/RunIISpring15-ReMiniAOD-BetaV7-25ns-Spring15BetaV7-v0-RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/151021_152108/0000/myMicroAODOutputFile_2.root"))
-#process.source = cms.Source("PoolSource",   # quickest failure for binning in diphoton pt, after ~11 events you get one with pt > 7000
-#                            fileNames = cms.untracked.vstring("root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-Prompt-BetaV7-25ns/Spring15BetaV7/DoubleEG/RunIISpring15-Prompt-BetaV7-25ns-Spring15BetaV7-v0-Run2015D-PromptReco-v4/151103_161313/0000/myMicroAODOutputFile_378.root"))
+                             fileNames = cms.untracked.vstring(
+#                             "file:myMicroAODOutputFile.root"
+        "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-1_1_0-25ns/1_1_0/VBFHToGG_M-125_13TeV_powheg_pythia8/RunIISpring15-ReMiniAOD-1_1_0-25ns-1_1_0-v0-RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/160105_224017/0000/myMicroAODOutputFile_1.root"
+))
 
 #if options.maxEvents > 0:
 #    process.source.eventsToProcess = cms.untracked.VEventRange('1:1-1:'+str(options.maxEvents))
