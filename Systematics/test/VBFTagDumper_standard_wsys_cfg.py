@@ -118,32 +118,35 @@ else:
 # get the variable list
 import flashgg.Taggers.VBFTagVariables as var
 new_variables = [
-    "prompt_pho_1  := diPhoton.leadingPhoton.genMatchType()",
-    "prompt_pho_2  := diPhoton.subLeadingPhoton.genMatchType()",
-    "n_jets        := VBFMVA.n_rec_jets"
-    #"jet1_btag := leadingJet_ptr.bDiscriminator(\"pfCombinedInclusiveSecondaryVertexV2BJetTags\")",
-    #"jet2_btag := subLeadingJet_ptr.bDiscriminator(\"pfCombinedInclusiveSecondaryVertexV2BJetTags\")"
+    "prompt_pho_1   := diPhoton.leadingPhoton.genMatchType()",
+    "prompt_pho_2   := diPhoton.subLeadingPhoton.genMatchType()",
+    "n_jets         := VBFMVA.n_rec_jets",
+    "dijet_jet1_RMS := leadingJet_ptr.rms()",
+    "dijet_jet2_RMS := subLeadingJet_ptr.rms()"
+    #"dijet_jet1_QGL := leadingJet_ptr.QGL()",
+    #"dijet_jet2_QGL := subLeadingJet_ptr.QGL()"
+    #"jet1_btag     := leadingJet_ptr.bDiscriminator(\"pfCombinedInclusiveSecondaryVertexV2BJetTags\")",
+    #"jet2_btag     := subLeadingJet_ptr.bDiscriminator(\"pfCombinedInclusiveSecondaryVertexV2BJetTags\")"
     ]
 all_variables = var.dijet_variables + var.dipho_variables + new_variables #var.truth_variables
 if customize.processId != "Data":
     all_variables += var.truth_variables
 
-
 cats = []
 if doSystematics:
     for syst in jetsystlabels:
         systcutstring = "hasSyst(\"%s\") "%syst
-        cats += [("VBFDiJet_%s"%syst,"leadingJet.pt>0&&%s"%systcutstring,0),
-                 ("excluded_%s"%syst,systcutstring,0)]
+        cats += [("VBFDiJet_%s"%syst,"leadingJet.pt>0&&%s"%systcutstring,0)]#,
+                 #("excluded_%s"%syst,systcutstring,0)]
 else:
     cats = [
-                    ("VBFDiJet","leadingJet.pt>0",0),
-                    ("excluded","1",0)
+                    ("VBFDiJet","leadingJet.pt>0",0)#,
+                    #("excluded","1",0)
                     ]
 
 cats += [
-    ("VBFDiJet","leadingJet.pt>0",0),
-    ("excluded","1",0)
+    ("VBFDiJet","leadingJet.pt>0",0)#,
+    #("excluded","1",0)
     ]
 
 cfgTools.addCategories(process.vbfTagDumper,
