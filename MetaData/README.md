@@ -108,6 +108,15 @@ mkdir orig ; mv crabConfig_*orig*.py orig
 echo crabConfig_*.py | xargs -n 1 crab sub
 ```
 
+### 1_1_0 2015D DoubleEG ReReco ###
+
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-ReReco74X-1_1_0-25ns -U 5 -L 25 -s campaigns/RunIISpring15-ReReco74X-1_1_0-25ns.json -V 1_1_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask ${PWD}/jsons/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_v2.txt
+cd RunIISpring15-ReReco74X-1_1_0-25ns
+echo crabConfig_*.py | xargs -n 1 crab sub
+```
+
 ### 1_1_0 Prompt 25ns MuonEG Rerun ###
 
 For borked jobs:
