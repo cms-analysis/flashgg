@@ -33,7 +33,7 @@ cut=cms.string(
 
 process.flashggSingleVertexViews = cms.EDProducer("FlashggSingleVertexViewProducer",
                                           DiPhotonTag=cms.untracked.InputTag('kinPreselDiPhotons'),
-                                                  
+                                          maxCandidates = cms.int32(1)
                                           )
 
 process.load("flashgg.Taggers.vertexViewDumper_cfi") ##  import diphotonDumper 

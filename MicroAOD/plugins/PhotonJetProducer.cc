@@ -60,13 +60,11 @@ namespace flashgg {
         beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getParameter<InputTag>( "beamSpotTag" ) ) ),
         conversionTokenSingleLeg_( consumes<View<reco::Conversion> >( iConfig.getParameter<InputTag>( "ConversionTagSingleLeg" ) ) )
     {
-        bool default_useSingleLeg_ = true;
         const std::string &VertexSelectorName = iConfig.getParameter<std::string>( "VertexSelectorName" );
         vertexSelector_.reset( FlashggVertexSelectorFactory::get()->create( VertexSelectorName, iConfig ) );
-        useSingleLeg_ = iConfig.getUntrackedParameter<bool>( "useSingleLeg", default_useSingleLeg_ );
-        minJetPt_ = iConfig.getUntrackedParameter<double>( "minJetPt", 30. );
-        minPhotonPt_ = iConfig.getUntrackedParameter<double>( "minPhotonPt", 30. );
-        useSingleLeg_ = iConfig.getUntrackedParameter<bool>( "useSingleLeg", default_useSingleLeg_ );
+        useSingleLeg_ = iConfig.getParameter<bool>( "useSingleLeg" );
+        minJetPt_ = iConfig.getParameter<double>( "minJetPt" );
+        minPhotonPt_ = iConfig.getParameter<double>( "minPhotonPt" );
         produces<vector<flashgg::PhotonJetCandidate> >();
     }
 

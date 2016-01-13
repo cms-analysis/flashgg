@@ -29,7 +29,7 @@ namespace flashgg {
         ObjectSystMethodBinnedByFunctor( conf ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
         random_label_(conf.getParameter<std::string>("RandomLabel")),
-        exaggerateShiftUp_( conf.getUntrackedParameter<bool>( "ExaggerateShiftUp", false ) )
+        exaggerateShiftUp_( conf.getParameter<bool>( "ExaggerateShiftUp" ) )
 
     {
     }

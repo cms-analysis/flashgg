@@ -45,7 +45,7 @@ def addFlashggPFCHSJets(process,
                          DiPhotonTag           = cms.InputTag('flashggDiPhotons'),
                          VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                          VertexTag             = cms.InputTag('offlineSlimmedPrimaryVertices'),
-                         vertexIndex           = cms.untracked.uint32(vertexIndex),
+                         vertexIndex           = cms.uint32(vertexIndex),
                          debug                 = cms.untracked.bool(debug)
                        )
   )
@@ -149,7 +149,7 @@ def addFlashggPuppiJets(process,
                               vertexName            = cms.InputTag('offlineSlimmedPrimaryVertices'),
                               diPhotonTag           = cms.InputTag('flashggDiPhotons'),
                               VertexCandidateMapTag = cms.InputTag('flashggVertexMapForPUPPI'),
-                              vertexIndex           = cms.untracked.uint32(vertexIndex),
+                              vertexIndex           = cms.uint32(vertexIndex),
                               debug                 = cms.untracked.bool(debug)
                             )
   )

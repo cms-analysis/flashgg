@@ -117,94 +117,46 @@ namespace flashgg {
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
     {
+        leptonPtThreshold_ = iConfig.getParameter<double>( "leptonPtThreshold" );
+        leptonEtaThreshold_ = iConfig.getParameter<double>( "leptonEtaThreshold" );
+        leadPhoOverMassThreshold_ = iConfig.getParameter<double>( "leadPhoOverMassThreshold" );
+        subleadPhoOverMassThreshold_ = iConfig.getParameter<double>( "subleadPhoOverMassThreshold" );
+        MVAThreshold_ = iConfig.getParameter<double>( "MVAThreshold" );
+        deltaRLepPhoThreshold_ = iConfig.getParameter<double>( "deltaRLepPhoThreshold" );
+        deltaRJetLepThreshold_ = iConfig.getParameter<double>( "deltaRJetLepThreshold" );
+        jetsNumberThreshold_ = iConfig.getParameter<double>( "jetsNumberThreshold" );
+        bjetsNumberThreshold_ = iConfig.getParameter<double>( "bjetsNumberThreshold" );
+        jetPtThreshold_ = iConfig.getParameter<double>( "jetPtThreshold" );
+        jetEtaThreshold_ = iConfig.getParameter<double>( "jetEtaThreshold" );
 
-        double default_leptonPtThreshold_ = 20.;
-        double default_leptonEtaThreshold_ = 2.4;
-        double default_leadPhoOverMassThreshold_ = 0.5;
-        double default_subleadPhoOverMassThreshold_ = 0.25;
-        double default_MVAThreshold_ = -0.6;
-        double default_deltaRLepPhoThreshold_ = 0.5;
-        double default_deltaRJetLepThreshold_ = 0.5;
-        double default_jetsNumberThreshold_ = 2;
-        double default_bjetsNumberThreshold_ = 1;
-        double default_jetPtThreshold_ = 30.;
-        double default_jetEtaThreshold_ = 2.4;
+        deltaRJetLeadPhoThreshold_ = iConfig.getParameter<double>( "deltaRJetLeadPhoThreshold" );
+        deltaRJetSubLeadPhoThreshold_ = iConfig.getParameter<double>( "deltaRJetSubLeadPhoThreshold" );
 
+        bDiscriminator_ = iConfig.getParameter<vector<double > >( "bDiscriminator" );
+        bTag_ = iConfig.getParameter<string>( "bTag" );
 
-        double default_deltaRJetLeadPhoThreshold_ = 0.5;
-        double default_deltaRJetSubLeadPhoThreshold_ = 0.5;
+        muPFIsoSumRelThreshold_ = iConfig.getParameter<double>( "muPFIsoSumRelThreshold" );
+        deltaRMuonJetcountThreshold_ = iConfig.getParameter<double>( "deltaRMuonJetcountThreshold" );
+        deltaRElectronJetcountThreshold_ = iConfig.getParameter<double>( "deltaRMuonJetcountThreshold" );
+        PhoMVAThreshold_ = iConfig.getParameter<double>( "PhoMVAThreshold" );
+        ElectronPtThreshold_ = iConfig.getParameter<double>( "ElectronPtThreshold" );
+        DeltaRTrkElec_ = iConfig.getParameter<double>( "DeltaRTrkElec" );
+        TransverseImpactParam_ = iConfig.getParameter<double>( "TransverseImpactParam" );
+        LongitudinalImpactParam_ = iConfig.getParameter<double>( "LongitudinalImpactParam" );
 
+        LowPtEtaPhoThreshold_ = iConfig.getParameter<double>( "LowPtEtaPhoThreshold" );
+        MidPtEtaPhoThreshold_ = iConfig.getParameter<double>( "MidPtEtaPhoThreshold" );
+        HighEtaPhoThreshold_ = iConfig.getParameter<double>( "HighEtaPhoThreshold" );
 
-        vector<double> default_bDiscriminator_;
-        default_bDiscriminator_.push_back( 0.244 );
-        default_bDiscriminator_.push_back( 0.679 );
+        deltaRPhoElectronThreshold_ = iConfig.getParameter<double>( "deltaRPhoElectronThreshold" );
+        Zmass_ = iConfig.getParameter<double>( "Zmass_" );
+        deltaMassElectronZThreshold_ = iConfig.getParameter<double>( "deltaMassElectronZThreshold_" );
 
-        string default_bTag_ = "combinedInclusiveSecondaryVertexV2BJetTags";
-        double default_muPFIsoSumRelThreshold_ = 0.2;
-        double default_deltaRMuonJetcountThreshold_ = 2.;
-        double default_PhoMVAThreshold_ = -0.2;
-        double default_ElectronPtThreshold_ = 20.;
-        double default_DeltaRTrkElec_ = 1.;
-        double default_TransverseImpactParam_ = 0.02;
-        double default_LongitudinalImpactParam_ = 0.2;
+        nonTrigMVAThreshold_ = iConfig.getParameter<double>( "nonTrigMVAThreshold" );
+        electronIsoThreshold_ = iConfig.getParameter<double>( "electronIsoThreshold" );
+        electronNumOfHitsThreshold_ = iConfig.getParameter<double>( "electronNumOfHitsThreshold" );
 
-        double default_LowPtEtaPhoThreshold_ = 1.4447;
-        double default_MidPtEtaPhoThreshold_ = 1.566;
-        double default_HighEtaPhoThreshold_ = 2.5;
-
-        double default_deltaRPhoElectronThreshold_ = 1.;
-        double default_Zmass_ = 91.9;
-        double default_deltaMassElectronZThreshold_ = 10.;
-
-        double default_nonTrigMVAThreshold_ = 0.9;
-        double default_electronIsoThreshold_ = 0.15;
-        double default_electronNumOfHitsThreshold_ = 1.;
-
-        vector<double> default_EtaCuts_;
-        default_EtaCuts_.push_back( 1.442 );
-        default_EtaCuts_.push_back( 1.566 );
-        default_EtaCuts_.push_back( 2.5 );
-
-        leptonPtThreshold_ = iConfig.getUntrackedParameter<double>( "leptonPtThreshold", default_leptonPtThreshold_ );
-        leptonEtaThreshold_ = iConfig.getUntrackedParameter<double>( "leptonEtaThreshold", default_leptonEtaThreshold_ );
-        leadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>( "leadPhoOverMassThreshold", default_leadPhoOverMassThreshold_ );
-        subleadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>( "subleadPhoOverMassThreshold", default_subleadPhoOverMassThreshold_ );
-        MVAThreshold_ = iConfig.getUntrackedParameter<double>( "MVAThreshold", default_MVAThreshold_ );
-        deltaRLepPhoThreshold_ = iConfig.getUntrackedParameter<double>( "deltaRLepPhoThreshold", default_deltaRLepPhoThreshold_ );
-        deltaRJetLepThreshold_ = iConfig.getUntrackedParameter<double>( "deltaRJetLepThreshold", default_deltaRJetLepThreshold_ );
-        jetsNumberThreshold_ = iConfig.getUntrackedParameter<double>( "jetsNumberThreshold", default_jetsNumberThreshold_ );
-        bjetsNumberThreshold_ = iConfig.getUntrackedParameter<double>( "bjetsNumberThreshold", default_bjetsNumberThreshold_ );
-        jetPtThreshold_ = iConfig.getUntrackedParameter<double>( "jetPtThreshold", default_jetPtThreshold_ );
-        jetEtaThreshold_ = iConfig.getUntrackedParameter<double>( "jetEtaThreshold", default_jetEtaThreshold_ );
-
-        deltaRJetLeadPhoThreshold_ = iConfig.getUntrackedParameter<double>( "deltaRJetLeadPhoThreshold", default_deltaRJetLeadPhoThreshold_ );
-        deltaRJetSubLeadPhoThreshold_ = iConfig.getUntrackedParameter<double>( "deltaRJetSubLeadPhoThreshold", default_deltaRJetSubLeadPhoThreshold_ );
-
-        bDiscriminator_ = iConfig.getUntrackedParameter<vector<double > >( "bDiscriminator", default_bDiscriminator_ );
-        bTag_ = iConfig.getUntrackedParameter<string>( "bTag", default_bTag_ );
-
-        muPFIsoSumRelThreshold_ = iConfig.getUntrackedParameter<double>( "muPFIsoSumRelThreshold", default_muPFIsoSumRelThreshold_ );
-        deltaRMuonJetcountThreshold_ = iConfig.getUntrackedParameter<double>( "deltaRMuonJetcountThreshold", default_deltaRMuonJetcountThreshold_ );
-        deltaRElectronJetcountThreshold_ = iConfig.getUntrackedParameter<double>( "deltaRMuonJetcountThreshold", default_deltaRMuonJetcountThreshold_ );
-        PhoMVAThreshold_ = iConfig.getUntrackedParameter<double>( "PhoMVAThreshold", default_PhoMVAThreshold_ );
-        ElectronPtThreshold_ = iConfig.getUntrackedParameter<double>( "ElectronPtThreshold", default_ElectronPtThreshold_ );
-        DeltaRTrkElec_ = iConfig.getUntrackedParameter<double>( "DeltaRTrkElec", default_DeltaRTrkElec_ );
-        TransverseImpactParam_ = iConfig.getUntrackedParameter<double>( "TransverseImpactParam", default_TransverseImpactParam_ );
-        LongitudinalImpactParam_ = iConfig.getUntrackedParameter<double>( "LongitudinalImpactParam", default_LongitudinalImpactParam_ );
-
-        LowPtEtaPhoThreshold_ = iConfig.getUntrackedParameter<double>( "LowPtEtaPhoThreshold", default_LowPtEtaPhoThreshold_ );
-        MidPtEtaPhoThreshold_ = iConfig.getUntrackedParameter<double>( "MidPtEtaPhoThreshold", default_MidPtEtaPhoThreshold_ );
-        HighEtaPhoThreshold_ = iConfig.getUntrackedParameter<double>( "HighEtaPhoThreshold", default_HighEtaPhoThreshold_ );
-
-        deltaRPhoElectronThreshold_ = iConfig.getUntrackedParameter<double>( "deltaRPhoElectronThreshold", default_deltaRPhoElectronThreshold_ );
-        Zmass_ = iConfig.getUntrackedParameter<double>( "Zmass_", default_Zmass_ );
-        deltaMassElectronZThreshold_ = iConfig.getUntrackedParameter<double>( "deltaMassElectronZThreshold_", default_deltaMassElectronZThreshold_ );
-
-        nonTrigMVAThreshold_ = iConfig.getUntrackedParameter<double>( "nonTrigMVAThreshold", default_nonTrigMVAThreshold_ );
-        electronIsoThreshold_ = iConfig.getUntrackedParameter<double>( "electronIsoThreshold", default_electronIsoThreshold_ );
-        electronNumOfHitsThreshold_ = iConfig.getUntrackedParameter<double>( "electronNumOfHitsThreshold", default_electronNumOfHitsThreshold_ );
-
-        EtaCuts_ = iConfig.getUntrackedParameter<vector<double > >( "EtaCuts", default_EtaCuts_ );
+        EtaCuts_ = iConfig.getParameter<vector<double > >( "EtaCuts" );
 
         produces<vector<TTHLeptonicTag> >();
         produces<vector<TagTruthBase> >();

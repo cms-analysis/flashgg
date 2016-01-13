@@ -36,7 +36,7 @@ namespace flashgg {
     SingleVertexViewProducer::SingleVertexViewProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         genPartToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticlesTag" ) ) ),
-        maxCandidates_( iConfig.getUntrackedParameter( "maxCandidates", 1 ) )
+        maxCandidates_( iConfig.getParameter<int>( "maxCandidates" ) )
     {
         produces<vector<SingleVertexView> >();
     }
