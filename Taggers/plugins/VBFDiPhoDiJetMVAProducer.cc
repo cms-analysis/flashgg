@@ -47,7 +47,7 @@ namespace flashgg {
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         vbfMvaResultToken_( consumes<View<flashgg::VBFMVAResult> >( iConfig.getParameter<InputTag> ( "VBFMVAResultTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
-        _useLegacyMVA( iConfig.getUntrackedParameter<bool>( "UseLegacyMVA" , false ) )
+        _useLegacyMVA( iConfig.getParameter<bool>( "UseLegacyMVA" ) )
     {
 
         vbfDiPhoDiJetMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "vbfDiPhoDiJetMVAweightfile" );

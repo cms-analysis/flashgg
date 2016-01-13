@@ -13,7 +13,7 @@ namespace flashgg {
     public:
         ZerothVertexSelector( const edm::ParameterSet &conf ) :
             VertexSelectorBase( conf ),
-            _whichVertex( conf.getUntrackedParameter<unsigned int>( "whichVertex", 0 ) ) {}
+            _whichVertex( conf.getParameter<unsigned int>( "whichVertex" ) ) {} // default it to 0
 
         edm::Ptr<reco::Vertex> select( const edm::Ptr<flashgg::Photon> &, const edm::Ptr<flashgg::Photon> &,
                                        const std::vector<edm::Ptr<reco::Vertex> > &,

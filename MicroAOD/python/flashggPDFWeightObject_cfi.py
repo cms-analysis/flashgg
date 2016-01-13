@@ -5,6 +5,7 @@ flashggPDFWeightObject = cms.EDProducer('FlashggPDFWeightProducer',
 		nPdfEigWeights = cms.uint32(60),
 		delimiter_1 = cms.untracked.string("id=\""),
 		delimiter_2 = cms.untracked.string("\">"),
-		LHEEventTag = cms.untracked.InputTag('externalLHEProducer'),
+		LHEEventTag = cms.InputTag('externalLHEProducer'),
+                GenTag      = cms.InputTag('generator'),
 		mc2hessianCSV = cms.FileInPath('PhysicsTools/HepMCCandAlgos/data/NNPDF30_lo_as_0130_hessian_60.csv')
 	)

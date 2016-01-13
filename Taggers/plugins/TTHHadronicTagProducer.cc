@@ -74,22 +74,22 @@ namespace flashgg {
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
     {
-        MVAThreshold_ = iConfig.getUntrackedParameter<double>( "MVAThreshold_", 0.2 );
-        leadPhoPtThreshold_ = iConfig.getUntrackedParameter<double>( "leadPhoPtThreshold", 33 );
-        leadPhoUseVariableTh_ = iConfig.getUntrackedParameter<bool>( "leadPhoUseVariableTh", false );
-        leadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>( "leadPhoOverMassThreshold", 0.5 );
-        subleadPhoPtThreshold_ = iConfig.getUntrackedParameter<double>( "leadPhoPtThreshold", 25 );
-        subleadPhoUseVariableTh_ = iConfig.getUntrackedParameter<bool>( "subleadPhoUseVariableTh", false );
-        subleadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>( "subleadPhoOverMassThreshold", 0.25 );
-        jetPtThreshold_ = iConfig.getUntrackedParameter<double>( "jetPtThreshold", 30 );
-        jetEtaCut_ = iConfig.getUntrackedParameter<double>( "jetEtaCut", 2.4 );
-        dRJetPhoLeadCut_ = iConfig.getUntrackedParameter<double>( "dRJetPhoLeadCut", 0.5 );
-        dRJetPhoSubleadCut_ = iConfig.getUntrackedParameter<double>( "dRJetPhoSubleadCut", 0.5 );
-        bDiscriminatorLoose_ = iConfig.getUntrackedParameter<double>( "bDiscriminatorLoose", 0.244 );
-        bDiscriminatorMedium_ = iConfig.getUntrackedParameter<double>( "bDiscriminatorMedium", 0.679 );
-        jetsNumberThreshold_ = iConfig.getUntrackedParameter<int>( "jetsNumberThreshold", 4 );
-        bjetsNumberThreshold_ = iConfig.getUntrackedParameter<int>( "bjetsNumberThreshold", 0 );
-        bTag_ = iConfig.getUntrackedParameter<string> ( "bTag", "combinedInclusiveSecondaryVertexV2BJetTags" );
+        MVAThreshold_ = iConfig.getParameter<double>( "MVAThreshold" );
+        leadPhoPtThreshold_ = iConfig.getParameter<double>( "leadPhoPtThreshold" );
+        leadPhoUseVariableTh_ = iConfig.getParameter<bool>( "leadPhoUseVariableTh" );
+        leadPhoOverMassThreshold_ = iConfig.getParameter<double>( "leadPhoOverMassThreshold" );
+        subleadPhoPtThreshold_ = iConfig.getParameter<double>( "leadPhoPtThreshold" );
+        subleadPhoUseVariableTh_ = iConfig.getParameter<bool>( "subleadPhoUseVariableTh" );
+        subleadPhoOverMassThreshold_ = iConfig.getParameter<double>( "subleadPhoOverMassThreshold" );
+        jetPtThreshold_ = iConfig.getParameter<double>( "jetPtThreshold" );
+        jetEtaCut_ = iConfig.getParameter<double>( "jetEtaCut" );
+        dRJetPhoLeadCut_ = iConfig.getParameter<double>( "dRJetPhoLeadCut" );
+        dRJetPhoSubleadCut_ = iConfig.getParameter<double>( "dRJetPhoSubleadCut" );
+        bDiscriminatorLoose_ = iConfig.getParameter<double>( "bDiscriminatorLoose" );
+        bDiscriminatorMedium_ = iConfig.getParameter<double>( "bDiscriminatorMedium" );
+        jetsNumberThreshold_ = iConfig.getParameter<int>( "jetsNumberThreshold" );
+        bjetsNumberThreshold_ = iConfig.getParameter<int>( "bjetsNumberThreshold" );
+        bTag_ = iConfig.getParameter<string> ( "bTag" );
 
         produces<vector<TTHHadronicTag> >();
         produces<vector<TagTruthBase> >();

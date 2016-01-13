@@ -64,8 +64,8 @@ namespace flashgg {
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) )
     {
 
-        massCutUpper = iConfig.getUntrackedParameter<double>( "massCutUpper", 180. );
-        massCutLower = iConfig.getUntrackedParameter<double>( "massCutLower", 100. );
+        massCutUpper = iConfig.getParameter<double>( "massCutUpper" );
+        massCutLower = iConfig.getParameter<double>( "massCutLower" );
 
         const auto &vpset = iConfig.getParameterSetVector( "TagPriorityRanges" );
 

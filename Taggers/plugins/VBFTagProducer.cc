@@ -55,14 +55,7 @@ namespace flashgg {
         genJetToken_ ( consumes<View<reco::GenJet> >( iConfig.getParameter<InputTag> ( "GenJetTag" ) ) ),
         systLabel_   ( iConfig.getParameter<string> ( "SystLabel" ) )
     {
-        vector<double> default_boundaries;
-        default_boundaries.push_back( 0.52 );
-        default_boundaries.push_back( 0.85 );
-        default_boundaries.push_back( 0.915 );
-        default_boundaries.push_back( 1 ); // from here
-                
-        // getUntrackedParameter<vector<float> > has no library, so we use double transiently
-        boundaries = iConfig.getUntrackedParameter<vector<double > >( "Boundaries", default_boundaries );
+        boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
         assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception
         
         produces<vector<VBFTag> >();

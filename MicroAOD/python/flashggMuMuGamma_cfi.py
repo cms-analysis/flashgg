@@ -7,5 +7,5 @@ flashggMuMuGamma = cms.EDProducer('FlashggMuMuGammaProducer',
                                   PhotonTag=cms.InputTag('flashggPhotons'),
                                   VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
                                   ##Parameters                                                
-                                  minPhotonPT=cms.untracked.double(10.)
+                                  minPhotonPT=cms.double(10.)
                                   )

@@ -36,14 +36,13 @@ namespace flashgg {
     };
 
     VertexMapValidator::VertexMapValidator( const ParameterSet &iConfig ) :
-        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getUntrackedParameter<InputTag> ( "VertexTag", InputTag( "offlineSlimmedPrimaryVertices" ) ) ) ),
-        vertexTokenAOD_( consumes<View<reco::Vertex> >( iConfig.getUntrackedParameter<InputTag> ( "VertexTagAOD", InputTag( "offlinePrimaryVertices" ) ) ) ),
-        pfcandidateToken_( consumes<View<pat::PackedCandidate> >( iConfig.getUntrackedParameter<InputTag> ( "PFCandidatesTag", InputTag( "packedPFCandidates" ) ) ) ),
-        map_( consumes<edm::Association<pat::PackedCandidateCollection> >( iConfig.getUntrackedParameter<InputTag> ( "PFCandidatesTag",
-                InputTag( "packedPFCandidates" ) ) ) ),
+        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
+        vertexTokenAOD_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTagAOD" ) ) ),
+        pfcandidateToken_( consumes<View<pat::PackedCandidate> >( iConfig.getParameter<InputTag> ( "PFCandidatesTag" ) ) ),
+        map_( consumes<edm::Association<pat::PackedCandidateCollection> >( iConfig.getParameter<InputTag> ( "PFCandidatesTag" ) ) ),
         //		maxAllowedDz_(iConfig.getParameter<double>("MaxAllowedDz")), // in cm
         //		useEachTrackOnce_(iConfig.getUntrackedParameter<bool>("UseEachTrackOnce",true))
-        useMiniAODTrackVertexAssociation_( iConfig.getUntrackedParameter<bool>( "UseMiniAODTrackVertexAssociation", true ) ),
+        useMiniAODTrackVertexAssociation_( iConfig.getParameter<bool>( "UseMiniAODTrackVertexAssociation" ) ),
         doTextDebug_( iConfig.getUntrackedParameter<bool>( "DoTextDebug", false ) )
     {
         produces<VertexCandidateMap>();

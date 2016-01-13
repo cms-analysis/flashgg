@@ -38,7 +38,7 @@ namespace flashgg {
         photonToken_( consumes<View<flashgg::Photon> >( iConfig.getParameter<InputTag> ( "PhotonTag" ) ) ),
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) )
     {
-        minPhotonPT_ = iConfig.getUntrackedParameter<double>( "minPhotonPT" );
+        minPhotonPT_ = iConfig.getParameter<double>( "minPhotonPT" );
         produces<vector<flashgg::MuMuGammaCandidate> >();
     }
 

@@ -31,7 +31,7 @@ namespace flashgg {
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         pfcandidateToken_( consumes<View<pat::PackedCandidate> >( iConfig.getParameter<InputTag> ( "PFCandidatesTag" ) ) ),
         maxAllowedDz_( iConfig.getParameter<double>( "MaxAllowedDz" ) ), // in cm
-        useEachTrackOnce_( iConfig.getUntrackedParameter<bool>( "UseEachTrackOnce", true ) )
+        useEachTrackOnce_( iConfig.getParameter<bool>( "UseEachTrackOnce" ) )
     {
         produces<VertexCandidateMap>();
     }
