@@ -21,7 +21,7 @@ namespace flashgg {
 
         void fill( const edm::EventBase &event );
         
-        void dumpLumiFactor(double lumiFactor) { dumpLumiFactor_ = true; lumiFactor_ = lumiFactor;  }
+        void dumpLumiFactor(double lumiFactor);
 
         void setProcessIndex(int processIndex) {processIndex_= processIndex;}
     private:
