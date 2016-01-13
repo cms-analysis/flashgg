@@ -113,6 +113,8 @@ class MicroAODCustomize(object):
             self.customizeMuMuGamma(process)
         elif self.muMuGamma == 2 and ("DY" in customize.datasetName or "DoubleMuon" in customize.datasetName):
             self.customizeMuMuGamma(process)
+        if "ttH" in customize.datasetName:
+            self.customizeTTH(process)
         if len(self.globalTag) >0:
             self.customizeGlobalTag(process)
         if len(self.fileNames) >0:
@@ -168,6 +170,14 @@ class MicroAODCustomize(object):
         process.load("flashgg/MicroAOD/flashggMuMuGamma_cfi")
         process.p *= process.flashggDiMuons*process.flashggMuMuGamma
 
+    def customizeTTH(self,process):
+        process.load("flashgg/MicroAOD/ttHGGFilter_cfi")
+        process.p1 = cms.Path(process.ttHGGFilter)
+#        if not hasattr(process,"options"):
+#            process.options = cms.untracked.PSet()
+#        process.options.wantSummary = cms.untracked.bool(True)
+        process.out.SelectEvents = cms.untracked.PSet(SelectEvents=cms.vstring('p1'))
+
     def customizeGlobalTag(self,process):
         process.GlobalTag.globaltag = self.globalTag
 
@@ -181,9 +191,9 @@ class MicroAODCustomize(object):
 
     def customizePFCHS(self,process):    
         # need to allow unscheduled processes otherwise reclustering function will fail
-        process.options = cms.untracked.PSet(
-            allowUnscheduled = cms.untracked.bool(True)
-            )
+        if not hasattr(process,"options"):
+            process.options = cms.untracked.PSet()
+        process.options.allowUnscheduled = cms.untracked.bool(True)
         from flashgg.MicroAOD.flashggJets_cfi import addFlashggPFCHSJets
         from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
         for vtx in range(0,maxJetCollections):
@@ -194,9 +204,9 @@ class MicroAODCustomize(object):
             
     def customizePuppi(self,process):
         # need to allow unscheduled processes otherwise reclustering function will fail                                                            
-        process.options = cms.untracked.PSet(
-            allowUnscheduled = cms.untracked.bool(True)
-            )
+        if not hasattr(process,"options"):
+            process.options = cms.untracked.PSet()
+        process.options.allowUnscheduled = cms.untracked.bool(True)
         from flashgg.MicroAOD.flashggJets_cfi import addFlashggPuppiJets
         from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
         for vtx in range(0,maxJetCollections):
