@@ -13,6 +13,10 @@ using namespace reco;
 
 namespace flashgg {
 
+    void GlobalVariablesDumper::dumpLumiFactor(double lumiFactor) { 
+        dumpLumiFactor_ = true; 
+        lumiFactor_ = lumiFactor; 
+    }
 
     GlobalVariablesDumper::GlobalVariablesDumper( const ParameterSet &cfg ) :
         GlobalVariablesComputer( cfg )
@@ -26,6 +30,9 @@ namespace flashgg {
                 bits_.push_back( std::make_pair( bit, false ) );
             }
         }
+        dumpLumiFactor_ = false;
+        lumiFactor_ = -999.;
+        processIndex_ = -999;
     }
 
 
