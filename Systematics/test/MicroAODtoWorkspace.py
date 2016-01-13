@@ -16,7 +16,7 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v4' # keep updated for JEC
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 10 )
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 
 #process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
 #                                                   flashggDiPhotonSystematics = cms.PSet(initialSeed = cms.untracked.uint32(664)),
