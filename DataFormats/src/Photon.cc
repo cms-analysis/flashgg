@@ -285,7 +285,8 @@ void Photon::shiftSigmaEOverEValueBy( float val ) {
 void Photon::smearSigmaEOverEValueBy( float val ) {
     const LorentzVector pho_p4 = p4(regression_type);
     float energyError = getCorrectedEnergyError(regression_type);
-    energyError = sqrt( pow( energyError,2) + pow(energyError,2) )
+    float energy = getCorrectedEnergy(regression_type);
+    energyError = sqrt( energyError*energyError + val*val*energy*energy );
     setP4(regression_type, pho_p4, energyError, false);
 }
 

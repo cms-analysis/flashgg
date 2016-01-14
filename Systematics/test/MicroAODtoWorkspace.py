@@ -65,6 +65,7 @@ print "customize.processId:",customize.processId
 if customize.processId.count("h_") or customize.processId.count("vbf_"): # convention: ggh vbf wzh tth
     print "Signal MC, so adding systematics and dZ"
     variablesToUse = minimalVariables
+#    phosystlabels.append("SigmaEOverESmear")
     for direction in ["Up","Down"]:
         phosystlabels.append("MvaShift%s01sigma" % direction)
         phosystlabels.append("SigmaEOverEShift%s01sigma" % direction)
