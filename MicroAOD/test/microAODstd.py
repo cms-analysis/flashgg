@@ -16,7 +16,7 @@ from Configuration.AlCa.GlobalTag import GlobalTag
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 100) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 
-process.GlobalTag = GlobalTag(process.GlobalTag, '74X_mcRun2_asymptotic_v4')
+process.GlobalTag = GlobalTag(process.GlobalTag, '76X_mcRun2_asymptotic_v13')
 
 # Fix because auto:run2_mc points to MCRUN2_74_V9::All
 current_gt = process.GlobalTag.globaltag.value()
