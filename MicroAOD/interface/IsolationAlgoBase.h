@@ -9,6 +9,7 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/EventSetup.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
 // Shamelessly patterned on https://github.com/cms-sw/cmssw/blob/CMSSW_7_2_X/RecoParticleFlow/PFProducer/interface/BlockElementLinkerBase.h
 
@@ -18,7 +19,7 @@ namespace flashgg {
     {
 
     public:
-        IsolationAlgoBase( const edm::ParameterSet &conf )  : name_( conf.getParameter<std::string>( "name" ) ) {}
+        IsolationAlgoBase( const edm::ParameterSet &conf, edm::ConsumesCollector && iC )  : name_( conf.getParameter<std::string>( "name" ) ) {}
         virtual ~IsolationAlgoBase();
 
         virtual void begin( const pat::Photon &, const edm::Event &, const edm::EventSetup & ) {};
@@ -38,7 +39,7 @@ namespace flashgg {
 }
 
 #include "FWCore/PluginManager/interface/PluginFactory.h"
-typedef edmplugin::PluginFactory< flashgg::IsolationAlgoBase* ( const edm::ParameterSet & ) > FlashggIsolationAlgoFactory;
+typedef edmplugin::PluginFactory< flashgg::IsolationAlgoBase* ( const edm::ParameterSet &, edm::ConsumesCollector && ) > FlashggIsolationAlgoFactory;
 
 #endif
 // Local Variables:

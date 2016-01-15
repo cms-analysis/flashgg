@@ -55,12 +55,14 @@ namespace flashgg {
         edm::EDGetTokenT<EcalRecHitCollection> ecalHitEBToken_;
         edm::EDGetTokenT<EcalRecHitCollection> ecalHitEEToken_;
         edm::EDGetTokenT<EcalRecHitCollection> ecalHitESToken_;
-        edm::InputTag rhoFixedGrid_;
+        edm::EDGetTokenT<double> rhoToken_;
+        //        edm::InputTag rhoFixedGrid_;
 
         float lxyMin_ = 2.0;
         float probMin_ = 1e-6;
         int nHitsBeforeVtxMax_ = 0;
-        string electronLabel_;
+        //        string electronLabel_;
+        edm::EDGetTokenT<std::vector<pat::Electron> > electronToken_;
 
         edm::EDGetTokenT<reco::ConversionCollection> convToken_;
 
@@ -87,12 +89,14 @@ namespace flashgg {
         ecalHitEBToken_( consumes<EcalRecHitCollection>( iConfig.getParameter<edm::InputTag>( "reducedBarrelRecHitCollection" ) ) ),
         ecalHitEEToken_( consumes<EcalRecHitCollection>( iConfig.getParameter<edm::InputTag>( "reducedEndcapRecHitCollection" ) ) ),
         ecalHitESToken_( consumes<EcalRecHitCollection>( iConfig.getParameter<edm::InputTag>( "reducedPreshowerRecHitCollection" ) ) ),
+        rhoToken_( consumes<double>( iConfig.getParameter<edm::InputTag>( "rhoFixedGridCollection" ) ) ),
+        electronToken_( consumes<std::vector<pat::Electron> >( iConfig.getParameter<edm::InputTag>( "elecTag") ) ),
         convToken_( consumes<reco::ConversionCollection>( iConfig.getParameter<edm::InputTag>( "convTag" ) ) ),
         beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getParameter<edm::InputTag>( "beamSpotTag" ) ) )
     {
 
-        electronLabel_ = iConfig.getParameter<string>( "elecLabel" );
-        rhoFixedGrid_  = iConfig.getParameter<edm::InputTag>( "rhoFixedGridCollection" );
+        //        electronLabel_ = iConfig.getParameter<string>( "elecLabel" );
+        //        rhoFixedGrid_  = iConfig.getParameter<edm::InputTag>( "rhoFixedGridCollection" );
 
         phoIdMVAweightfileEB_ = iConfig.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EB" );
         phoIdMVAweightfileEE_ = iConfig.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EE" );
@@ -120,7 +124,7 @@ namespace flashgg {
             for(size_t ip=0; ip<extraIsolationPlugins.size(); ++ip) {
                 auto & plugin = extraIsolationPlugins[ip];
                 auto className = plugin.getParameter<std::string>("algo");
-                extraIsoAlgos_[ip].reset( FlashggIsolationAlgoFactory::get()->create(className,plugin) );
+                extraIsoAlgos_[ip].reset( FlashggIsolationAlgoFactory::get()->create(className,plugin,consumesCollector()) );
             }
         }
 
@@ -146,14 +150,16 @@ namespace flashgg {
         evt.getByToken( vertexToken_, vertices );
         Handle<VertexCandidateMap> vertexCandidateMap;
         evt.getByToken( vertexCandidateMapToken_, vertexCandidateMap );
-        Handle<double> rhoHandle;        // the old way for now...move to getbytoken?
-        evt.getByLabel( rhoFixedGrid_, rhoHandle );
+        Handle<double> rhoHandle; 
+        evt.getByToken( rhoToken_, rhoHandle );
+        //        evt.getByLabel( rhoFixedGrid_, rhoHandle );
         Handle<vector<flashgg::GenPhotonExtra> > genPhotonsHandle;
         if( ! evt.isRealData() ) {
             evt.getByToken( genPhotonToken_, genPhotonsHandle );
         }
         Handle<std::vector<pat::Electron> > electronHandle;
-        evt.getByLabel( electronLabel_, electronHandle );
+        evt.getByToken( electronToken_, electronHandle );
+        //        evt.getByLabel( electronLabel_, electronHandle );
 
         Handle<reco::ConversionCollection> convs;
         evt.getByToken( convToken_, convs );

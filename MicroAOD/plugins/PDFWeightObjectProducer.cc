@@ -54,7 +54,7 @@ namespace flashgg {
 		LHEEventToken_( consumes<LHEEventProduct>( iConfig.getParameter<InputTag>( "LHEEventTag" ) ) ),
         srcTokenGen_( consumes<GenEventInfoProduct>( iConfig.getParameter<InputTag>("GenTag") ) )
 	{
-        
+        consumes<LHERunInfoProduct,edm::InRun> (edm::InputTag("externalLHEProducer"));
 		tag_ = iConfig.getUntrackedParameter<string>( "tag", "initrwgt" );
 		pdfid_1 = iConfig.getUntrackedParameter<string>("pdfid_1","0");
 		pdfid_2 = iConfig.getUntrackedParameter<string>("pdfid_2","0");
@@ -117,7 +117,7 @@ namespace flashgg {
 		Handle<LHERunInfoProduct> run;
 		typedef vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
         
-		iRun.getByLabel( "externalLHEProducer", run );
+        iRun.getByLabel( "externalLHEProducer", run );
 		LHERunInfoProduct myLHERunInfoProduct = *( run.product() );
 
 		int upper_index = 0;

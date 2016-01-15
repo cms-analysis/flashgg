@@ -12,7 +12,7 @@ namespace flashgg {
     class RandomConeIsolationAlgo : public IsolationAlgoBase
     {
     public:
-        RandomConeIsolationAlgo( const edm::ParameterSet &conf )  : IsolationAlgoBase( conf ),
+        RandomConeIsolationAlgo( const edm::ParameterSet &conf, edm::ConsumesCollector && iC )  : IsolationAlgoBase( conf, std::forward<edm::ConsumesCollector>(iC) ),
             conesize_( conf.getParameter<double>( "coneSize" ) )
         {
             if( conf.exists( "charged" ) ) {
@@ -31,7 +31,10 @@ namespace flashgg {
             if( conf.exists( "vetoCollections" ) ) {
                 vetoCollections_ = conf.getParameter<std::vector<edm::InputTag> >( "vetoCollections" );
                 veto_ = conf.getParameter<double>( "veto" );
-                // FIXME: book tokens (required change in IsolationAlgoBase interface)
+                for (unsigned i = 0 ; i < vetoCollections_.size() ; i++) {
+                    auto token = iC.consumes<edm::View<reco::Candidate> >(vetoCollections_[i]);
+                    tokenVetos_.push_back(token);
+                }
             }
 
             utils_.removeOverlappingCandidates( conf.getParameter<bool>( "doOverlapRemoval" ) );
@@ -56,6 +59,7 @@ namespace flashgg {
         PhotonIdUtils utils_;
         std::vector<double> chargedVetos_, photonVetos_, neutralVetos_;
         std::vector<edm::InputTag> vetoCollections_;
+        std::vector<edm::EDGetTokenT<edm::View<reco::Candidate> > > tokenVetos_;
     };
 
     void RandomConeIsolationAlgo::begin( const pat::Photon &pho, const edm::Event &event, const edm::EventSetup & )
@@ -63,7 +67,8 @@ namespace flashgg {
         std::vector<edm::Handle<edm::View<reco::Candidate> > > vetos( vetoCollections_.size() );
 
         for( size_t icoll = 0; icoll < vetoCollections_.size(); ++icoll ) {
-            event.getByLabel( vetoCollections_[icoll], vetos[icoll] );
+            //            event.getByLabel( vetoCollections_[icoll], vetos[icoll] );
+            event.getByToken( tokenVetos_[icoll], vetos[icoll] );
         }
 
         found_ = false;
