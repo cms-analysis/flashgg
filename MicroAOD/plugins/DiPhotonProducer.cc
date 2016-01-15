@@ -53,10 +53,9 @@ namespace flashgg {
         maxJetCollections_( iConfig.getParameter<unsigned int>( "MaxJetCollections" ) ),
         genPartToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) )
     {
-        bool default_useSingleLeg_ = true;
         const std::string &VertexSelectorName = iConfig.getParameter<std::string>( "VertexSelectorName" );
         vertexSelector_.reset( FlashggVertexSelectorFactory::get()->create( VertexSelectorName, iConfig ) );
-        useSingleLeg_ = iConfig.getUntrackedParameter<bool>( "useSingleLeg", default_useSingleLeg_ );
+        useSingleLeg_ = iConfig.getParameter<bool>( "useSingleLeg" );
         produces<vector<flashgg::DiPhotonCandidate> >();
     }
 

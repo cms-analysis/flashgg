@@ -55,11 +55,11 @@ namespace flashgg {
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
     {
-        leadPhoOverMassThreshold_    = iConfig.getUntrackedParameter<double>( "leadPhoOverMassThreshold", 0.334 );
-        subleadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>( "subleadPhoOverMassThreshold", 0.25 );
-        diphoMVAThreshold_           = iConfig.getUntrackedParameter<double>( "diphoMVAThreshold", -1.0 );
-        metPtThreshold_              = iConfig.getUntrackedParameter<double>( "metPtThreshold", 70.0 );
-        phoIdMVAThreshold_           = iConfig.getUntrackedParameter<double>( "phoIdMVAThreshold", -0.2 );
+        leadPhoOverMassThreshold_    = iConfig.getParameter<double>( "leadPhoOverMassThreshold" );
+        subleadPhoOverMassThreshold_ = iConfig.getParameter<double>( "subleadPhoOverMassThreshold" );
+        diphoMVAThreshold_           = iConfig.getParameter<double>( "diphoMVAThreshold" );
+        metPtThreshold_              = iConfig.getParameter<double>( "metPtThreshold" );
+        phoIdMVAThreshold_           = iConfig.getParameter<double>( "phoIdMVAThreshold" );
 
         produces<vector<VHEtTag> >();
         produces<vector<TagTruthBase> >();

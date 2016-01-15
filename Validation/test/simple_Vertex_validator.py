@@ -63,23 +63,23 @@ process = miniAOD_customizeAllMC(process)
 # Each track associated only to the closest vertex (or none if dZ >= MaxAllowedDz for all vertices)
 process.flashggVertexMapUnique = cms.EDProducer('FlashggDzVertexMapProducer',
                                                 PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
-                                                VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                                VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
                                                 MaxAllowedDz=cms.double(0.2) # in cm
                                                 )
 
 # Tracks will show up as associated to every vertex for which dZ < MaxAllowedDz
 process.flashggVertexMapNonUnique = cms.EDProducer('FlashggDzVertexMapProducer',
                                                    PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
-                                                   VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+                                                   VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
                                                    MaxAllowedDz=cms.double(0.2), # in cm
                                                    UseEachTrackOnce=cms.untracked.bool(False)
                                                    )
 ### NEW to help validate, first sprout of vertex association based on AOD
 process.flashggVertexMapValidator = cms.EDProducer('FlashggVertexMapValidator',
-                                                PFCandidatesTag=cms.untracked.InputTag('packedPFCandidates'),
-                                                VertexTag=cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
-                                                VertexTagAOD=cms.untracked.InputTag('offlinePrimaryVertices'),
-                                                UseMiniAODTrackVertexAssociation=cms.untracked.bool(True),
+                                                PFCandidatesTag=cms.InputTag('packedPFCandidates'),
+                                                VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
+                                                VertexTagAOD=cms.InputTag('offlinePrimaryVertices'),
+                                                UseMiniAODTrackVertexAssociation=cms.bool(True),
                                                 DoTextDebug=cms.untracked.bool(False)
                                                 )
 

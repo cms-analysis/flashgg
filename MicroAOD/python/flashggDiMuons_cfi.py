@@ -6,6 +6,6 @@ flashggDiMuons = cms.EDProducer('FlashggDiMuonProducer',
                                   MuonTag=cms.InputTag('flashggSelectedMuons'),
                                   VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'), 
                                   ##Parameters                                                
-                                  minMuonPT=cms.untracked.double(5.),
-                                  maxMuonEta=cms.untracked.double(2.4)
+                                  minMuonPT=cms.double(5.),
+                                  maxMuonEta=cms.double(2.4)
                                   )
