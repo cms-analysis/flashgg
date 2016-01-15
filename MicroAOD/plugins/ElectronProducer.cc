@@ -39,9 +39,10 @@ namespace flashgg {
         edm::EDGetTokenT<reco::ConversionCollection> convToken_;
         edm::EDGetTokenT<reco::BeamSpot> beamSpotToken_;
         edm::EDGetTokenT<edm::ValueMap<float> > mvaValuesMapToken_;
+        edm::EDGetTokenT<double> rhoToken_;
 
         float _Rho;
-        edm::InputTag rhoFixedGrid_;
+        //        edm::InputTag rhoFixedGrid_;
     };
 
     ElectronProducer::ElectronProducer( const ParameterSet &iConfig ):
@@ -49,15 +50,13 @@ namespace flashgg {
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag>( "vertexTag" ) ) ),
         convToken_( consumes<reco::ConversionCollection>( iConfig.getParameter<InputTag>( "convTag" ) ) ),
         beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getParameter<InputTag>( "beamSpotTag" ) ) ),
-        mvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaValuesMap" ) ) )
+        mvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaValuesMap" ) ) ),
+        rhoToken_(consumes<double>(iConfig.getParameter<edm::InputTag>( "rhoFixedGridCollection" )))
     {
         applyCuts_ = iConfig.getUntrackedParameter<bool>( "ApplyCuts", false );
         verbose_ = iConfig.getUntrackedParameter<bool>( "verbose", false );
-        //	eventrhoToken_ = consumes<float>(iConfig.getParameter<edm::InputTag>("Rho"));
-        rhoFixedGrid_  = iConfig.getParameter<edm::InputTag>( "rhoFixedGridCollection" );
-
-        produces<vector<flashgg::Electron> >();
         // nontrigmva_ = 0;
+        produces<vector<flashgg::Electron> >();
     }
 
     void ElectronProducer::produce( Event &evt, const EventSetup & )
@@ -69,8 +68,10 @@ namespace flashgg {
         //	const PtrVector<pat::Electron> pelectronPointers = pelectrons->ptrVector();
 
         _Rho = 0;
+        //        Handle<double> rhoHandle;
+        //        evt.getByLabel( rhoFixedGrid_, rhoHandle );
         Handle<double> rhoHandle;
-        evt.getByLabel( rhoFixedGrid_, rhoHandle );
+        evt.getByToken( rhoToken_, rhoHandle );
 
         Handle<View<reco::Vertex> >  vtxs;
         evt.getByToken( vertexToken_, vtxs );
