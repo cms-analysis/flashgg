@@ -29,8 +29,8 @@ flashggTagSorter = cms.EDProducer('FlashggTagSorter',
 #                                                                         MaxCategory = cms.untracked.int32(4)
 #                                                                         )
 #                                                                ),
-                                  massCutUpper=cms.untracked.double(180.),
-                                  massCutLower=cms.untracked.double(100)
+                                  massCutUpper=cms.double(180.),
+                                  massCutLower=cms.double(100)
                                   )
 
 #                                  TagVectorTag = cms.untracked.VInputTag(

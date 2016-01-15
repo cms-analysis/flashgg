@@ -48,15 +48,7 @@ namespace flashgg {
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
     {
-        vector<double> default_boundaries;
-        default_boundaries.push_back( 0.07 );
-        default_boundaries.push_back( 0.31 );
-        default_boundaries.push_back( 0.62 );
-        default_boundaries.push_back( 0.86 );
-        default_boundaries.push_back( 0.98 );
-
-        // getUntrackedParameter<vector<float> > has no library, so we use double transiently
-        boundaries = iConfig.getUntrackedParameter<vector<double > >( "Boundaries", default_boundaries );
+        boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
 
         assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception
         produces<vector<UntaggedTag> >();

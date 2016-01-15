@@ -33,7 +33,7 @@ namespace flashgg {
 
     SinglePhotonViewProducer::SinglePhotonViewProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
-        maxCandidates_( iConfig.getUntrackedParameter( "maxCandidates", 1 ) )
+        maxCandidates_( iConfig.getParameter<int>( "maxCandidates" ) )
     {
         produces<vector<SinglePhotonView> >();
     }

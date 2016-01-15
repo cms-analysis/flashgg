@@ -82,32 +82,18 @@ namespace flashgg {
 
         // ***** define thresholds ***********************
 
-        double default_leadPhoOverMassThreshold_    = 0.375;
-        double default_subleadPhoOverMassThreshold_ = 0.25;
-        double default_diphoMVAThreshold_           = -1.0;  // CHECK THIS
-        double default_jetsNumberThreshold_         = 2;
-        double default_jetPtThreshold_              = 40.;
-        double default_jetEtaThreshold_             = 2.4;
-        double default_dRJetToPhoLThreshold_        = 0.5;
-        double default_dRJetToPhoSThreshold_        = 0.5;
-        double default_dijetMassLowThreshold_       = 60;
-        double default_dijetMassHighThreshold_      = 120;
-        double default_cosThetaStarThreshold_       = 0.5;
-        double default_phoIdMVAThreshold_           = -0.2; // assumes we apply the same cut as for all other VH categories
-
-
-        leadPhoOverMassThreshold_    = iConfig.getUntrackedParameter<double>( "leadPhoOverMassThreshold", default_leadPhoOverMassThreshold_ );
-        subleadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>( "subleadPhoOverMassThreshold", default_subleadPhoOverMassThreshold_ );
-        diphoMVAThreshold_           = iConfig.getUntrackedParameter<double>( "diphoMVAThreshold", default_diphoMVAThreshold_ );
-        jetsNumberThreshold_         = iConfig.getUntrackedParameter<double>( "jetsNumberThreshold", default_jetsNumberThreshold_ );
-        jetPtThreshold_              = iConfig.getUntrackedParameter<double>( "jetPtThreshold", default_jetPtThreshold_ );
-        jetEtaThreshold_             = iConfig.getUntrackedParameter<double>( "jetEtaThreshold", default_jetEtaThreshold_ );
-        dRJetToPhoLThreshold_        = iConfig.getUntrackedParameter<double>( "dRJetToPhoLThreshold", default_dRJetToPhoLThreshold_ );
-        dRJetToPhoSThreshold_        = iConfig.getUntrackedParameter<double>( "dRJetToPhoSThreshold", default_dRJetToPhoSThreshold_ );
-        dijetMassLowThreshold_       = iConfig.getUntrackedParameter<double>( "dijetMassLowThreshold", default_dijetMassLowThreshold_ );
-        dijetMassHighThreshold_      = iConfig.getUntrackedParameter<double>( "dijetMassHighThreshold", default_dijetMassHighThreshold_ );
-        cosThetaStarThreshold_       = iConfig.getUntrackedParameter<double>( "cosThetaStarThreshold", default_cosThetaStarThreshold_ );
-        phoIdMVAThreshold_           = iConfig.getUntrackedParameter<double>( "phoIdMVAThreshold", default_phoIdMVAThreshold_ );
+        leadPhoOverMassThreshold_    = iConfig.getParameter<double>( "leadPhoOverMassThreshold" );
+        subleadPhoOverMassThreshold_ = iConfig.getParameter<double>( "subleadPhoOverMassThreshold" );
+        diphoMVAThreshold_           = iConfig.getParameter<double>( "diphoMVAThreshold" );
+        jetsNumberThreshold_         = iConfig.getParameter<double>( "jetsNumberThreshold" );
+        jetPtThreshold_              = iConfig.getParameter<double>( "jetPtThreshold" );
+        jetEtaThreshold_             = iConfig.getParameter<double>( "jetEtaThreshold" );
+        dRJetToPhoLThreshold_        = iConfig.getParameter<double>( "dRJetToPhoLThreshold" );
+        dRJetToPhoSThreshold_        = iConfig.getParameter<double>( "dRJetToPhoSThreshold" );
+        dijetMassLowThreshold_       = iConfig.getParameter<double>( "dijetMassLowThreshold" );
+        dijetMassHighThreshold_      = iConfig.getParameter<double>( "dijetMassHighThreshold" );
+        cosThetaStarThreshold_       = iConfig.getParameter<double>( "cosThetaStarThreshold" );
+        phoIdMVAThreshold_           = iConfig.getParameter<double>( "phoIdMVAThreshold" );
 
         // yacine: new recipe for flashgg jets
         inputTagJets_                = iConfig.getParameter<std::vector<edm::InputTag> >( "inputTagJets" );

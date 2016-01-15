@@ -44,7 +44,7 @@ namespace flashgg {
         diPhotonsToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         pfcandidateToken_( consumes<View<pat::PackedCandidate> >( iConfig.getParameter<InputTag> ( "PFCandidatesTag" ) ) ),
         vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTag" ) ) ),
-        indexVtx_( iConfig.getUntrackedParameter<unsigned> ( "vertexIndex",  0 ) ),
+        indexVtx_( iConfig.getParameter<unsigned> ( "vertexIndex" ) ),
         debug_( iConfig.getUntrackedParameter<bool>( "debug"      ,  false ) )
     {
         produces<vector<pat::PackedCandidate> >();

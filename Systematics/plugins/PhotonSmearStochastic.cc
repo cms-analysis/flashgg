@@ -33,10 +33,10 @@ namespace flashgg {
     PhotonSmearStochastic::PhotonSmearStochastic( const edm::ParameterSet &conf ) :
         ObjectSystMethodBinnedByFunctor( conf ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
-        label1_( conf.getUntrackedParameter<std::string>( "FirstParameterName", "Rho" ) ),
-        label2_( conf.getUntrackedParameter<std::string>( "SecondParameterName", "Phi" ) ),
+        label1_( conf.getParameter<std::string>( "FirstParameterName" ) ), // default: "Rho"
+        label2_( conf.getParameter<std::string>( "SecondParameterName" ) ), // default; "Phi"
         random_label_(conf.getParameter<std::string>("RandomLabel")),
-        exaggerateShiftUp_( conf.getUntrackedParameter<bool>( "ExaggerateShiftUp", false ) )
+        exaggerateShiftUp_( conf.getParameter<bool>( "ExaggerateShiftUp" ) ) // default: false
     {
     }
 

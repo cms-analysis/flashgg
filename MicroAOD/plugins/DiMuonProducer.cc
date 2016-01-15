@@ -35,8 +35,8 @@ namespace flashgg {
         muonToken_( consumes<View<pat::Muon> >( iConfig.getParameter<InputTag> ( "MuonTag" ) ) ),
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) )
     {
-        minMuPT_ = iConfig.getUntrackedParameter<double>( "minMuonPT" );
-        maxMuEta_ = iConfig.getUntrackedParameter<double>( "maxMuonEta" );
+        minMuPT_ = iConfig.getParameter<double>( "minMuonPT" );
+        maxMuEta_ = iConfig.getParameter<double>( "maxMuonEta" );
         produces<vector<flashgg::DiMuonCandidate> >();
     }
 

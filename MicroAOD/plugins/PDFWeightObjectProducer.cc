@@ -51,8 +51,8 @@ namespace flashgg {
 	};
     
 	PDFWeightProducer::PDFWeightProducer( const edm::ParameterSet &iConfig ):
-		LHEEventToken_( consumes<LHEEventProduct>( iConfig.getUntrackedParameter<InputTag>( "LHEEventTag", InputTag( "LHEEventProduct" ) ) ) ),
-        srcTokenGen_( consumes<GenEventInfoProduct>( iConfig.getUntrackedParameter<InputTag>("GenTag", InputTag("generator") ) ) )
+		LHEEventToken_( consumes<LHEEventProduct>( iConfig.getParameter<InputTag>( "LHEEventTag" ) ) ),
+        srcTokenGen_( consumes<GenEventInfoProduct>( iConfig.getParameter<InputTag>("GenTag") ) )
 	{
         
 		tag_ = iConfig.getUntrackedParameter<string>( "tag", "initrwgt" );
