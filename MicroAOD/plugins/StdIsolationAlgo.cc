@@ -6,7 +6,7 @@ namespace flashgg {
     class StdIsolationAlgo : public IsolationAlgoBase
     {
     public:
-        StdIsolationAlgo( const edm::ParameterSet &conf )  : IsolationAlgoBase( conf ),
+        StdIsolationAlgo( const edm::ParameterSet &conf, edm::ConsumesCollector && iC )  : IsolationAlgoBase( conf, std::forward<edm::ConsumesCollector>(iC) ),
             conesize_( conf.getParameter<double>( "coneSize" ) )
         {
             if( conf.exists( "charged" ) ) {
