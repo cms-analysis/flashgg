@@ -114,7 +114,10 @@ git cherry-pick 5163a7c9937ebfbbd714b3d161af01f64b65224c
 git cherry-pick a45d253ea9850acecbcfcd7bd2e5c3f00d8f0bd9
 
 echo "Setting up PDF weight tool..."
-git-cms-merge-topic bendavid:pdfweights_76x
+#git-cms-merge-topic bendavid:pdfweights_76x
+git cms-addpkg PhysicsTools/HepMCCandAlgos
+git cherry-pick 9e4300582f284fa1fed6dcdbee88b3f75da39165
+
 
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit
