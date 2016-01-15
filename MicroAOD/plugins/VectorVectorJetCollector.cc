@@ -28,11 +28,16 @@ namespace flashgg {
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetViewVector;
 
         std::vector<edm::InputTag> inputTagJets_;
+        std::vector<edm::EDGetTokenT<View<flashgg::Jet> > > tokenJets_;
     };
 
     VectorVectorJetCollector::VectorVectorJetCollector( const ParameterSet &iConfig ) :
         inputTagJets_( iConfig.getParameter<std::vector<edm::InputTag> >( "inputTagJets" ) )
     {
+        for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
+            auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
+            tokenJets_.push_back(token);
+        }
         produces<vector<vector<Jet> > >();
     }
 
@@ -43,7 +48,8 @@ namespace flashgg {
         size_t output_size = 0;
         JetViewVector Jets( inputTagJets_.size() );
         for( size_t j = 0; j < inputTagJets_.size(); ++j ) {
-            evt.getByLabel( inputTagJets_[j], Jets[j] );
+            //            evt.getByLabel( inputTagJets_[j], Jets[j] );
+            evt.getByToken( tokenJets_[j], Jets[j] );
             if( Jets[j]->size() > 0 ) { output_size = j + 1; }
         }
 
