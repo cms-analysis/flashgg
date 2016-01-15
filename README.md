@@ -9,8 +9,8 @@ Before you start, **please take note** of these warnings and comments:
 
 Get everything you need, starting from a clean area:
  ```
- cmsrel CMSSW_7_4_15
- cd CMSSW_7_4_15/src
+ cmsrel CMSSW_7_6_3
+ cd CMSSW_7_6_3/src
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src 
