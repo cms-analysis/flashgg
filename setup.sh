@@ -122,6 +122,9 @@ git cherry-pick 9e4300582f284fa1fed6dcdbee88b3f75da39165
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit
 
+echo "deleting flashgg/Validation (temporary)"
+rm -rf $CMSSW_BASE/src/flashgg/Validation
+
 echo
 echo "Done with setup script! You still need to build!"
 echo
