@@ -54,6 +54,7 @@ namespace flashgg {
         bool pdfset_flag_;
         bool alpha_s_flag_;
         bool scale_flag_;
+        bool skip;
 	};
     
 	PDFWeightProducer::PDFWeightProducer( const edm::ParameterSet &iConfig ):
@@ -181,7 +182,6 @@ namespace flashgg {
             }
           }
         }
-        //        std::cout << std::endl;
         
         for( unsigned int iLine = 0; iLine < weight_lines.size(); iLine++ ) {
             
@@ -227,15 +227,26 @@ namespace flashgg {
                 
             }
             
-            if( upper_index != 0 ){break;} 
+            if( upper_index != 0 ){break;}
         }
+
 
         for( unsigned int nLine = upper_index; nLine < weight_lines.size(); nLine++ ) {
             
             string nline = weight_lines.at( nLine );
-            
+           
+            skip = false;
+ 
             //cout << "nline " << nline << endl;	
             string jline = removeSpaces( nline );
+            if(jline.empty()){cout << "WARNING unknown text format, member vectors will be empty or filled with incorrect values" << endl;
+
+                skip = true;
+                break;
+            }
+
+            //cout << skip << endl;
+
             //cout << "jline " << jline << endl;
             string jtoken;																					
             size_t jpos;				
@@ -255,12 +266,14 @@ namespace flashgg {
 
             }
 
+            if (!skip){
+
             string ntoken;
             string mtoken;
-            
+           
             size_t mpos_1 = jline.find( delimiter_1_ );
             size_t mpos_3 = jline.find( delimiter_2_ );
-            
+           
             ntoken = jline.erase( mpos_3 );
             mtoken = jline.substr( mpos_1 + delimiter_1_.length() );
             //cout << "mtoken " << mtoken << endl;
@@ -274,10 +287,10 @@ namespace flashgg {
             if( jtoken.compare( pdfid_2 ) == 0 ) { break; }
             
             }
+          }
+        }         
 
-        }
-
-        if(flashgg_flag_ && alpha_s_flag_ ){
+        if((flashgg_flag_ && alpha_s_flag_)  && !skip ){
 
         // See slide 13 here: https://indico.cern.ch/event/459797/contribution/2/attachments/1181555/1710844/mcaod-Nov4-2015.pdf
         int alphas_1 = PDFWeightProducer::weight_indices.back() + 1;
@@ -289,6 +302,7 @@ namespace flashgg {
 
         //        std::cout << " PDF weight indices final size: " << weight_indices.size() << std::endl;
         }
+      //cout << "reaches this point " << endl;
     }
 
 	void PDFWeightProducer::produce( Event &evt, const EventSetup & )
@@ -318,7 +332,7 @@ namespace flashgg {
 		int upper_bound = LHEEventHandle->weights().size();
 		int size_weight = PDFWeightProducer::weight_indices.size();
 		int size_alpha = PDFWeightProducer::alpha_indices.size();
-		//cout << "lower_bound " << lower_bound << " upper_bound " << upper_bound << endl;
+		//cout << "upper_bound " << upper_bound << endl;
 		for( int i = 0; i < upper_bound; i++ ) {
 			int id_i = stoi( LHEEventHandle->weights()[i].id );
 			for( int j = 0; j<size_weight; j++ ){
@@ -355,7 +369,7 @@ namespace flashgg {
           }
 		}
 
-		//cout << "should be 100   " << lhe_weights.size() << endl;
+		//cout << "should be 100 or 101 " << lhe_weights.size() << endl;
 
 		pdfweightshelper_.Init(size_weight,nPdfEigWeights_,mc2hessianCSV);
         
@@ -388,9 +402,9 @@ namespace flashgg {
 
 		evt.put( PDFWeight );
 
-        //		cout << "FINAL pdf_weight_container size " <<pdfWeight.pdf_weight_container.size() << endl;
-        //        cout << "FINAL alpha_s_container size " <<pdfWeight.alpha_s_container.size() << endl;
-        //        cout << "FINAL qcd_scale_container size " <<pdfWeight.qcd_scale_container.size() << endl;
+        		//cout << "FINAL pdf_weight_container size " <<pdfWeight.pdf_weight_container.size() << endl;
+                //cout << "FINAL alpha_s_container size " <<pdfWeight.alpha_s_container.size() << endl;
+                //cout << "FINAL qcd_scale_container size " <<pdfWeight.qcd_scale_container.size() << endl;
 
 
 	}
