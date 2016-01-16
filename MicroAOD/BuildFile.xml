@@ -9,6 +9,11 @@
 <use name="CommonTools/Utils"/>
 <use name="PhysicsTools/HepMCCandAlgos"/>
 <use name="roottmva"/>
+<use name="Geometry/CaloGeometry"/>
+<use name="MagneticField/Records"/>
+<use name="MagneticField/Engine"/>
+<use name="root"/>
+<lib name="Geom" />
 <!-- Flags CXXFLAGS="-ggdb"/ -->
 <export>
   <lib   name="1"/>
