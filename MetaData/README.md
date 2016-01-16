@@ -93,9 +93,21 @@ In fact, it is recommended to set up a new area from scratch and checkout the ta
 
 https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_users  
 
+### FALL15 (76x)
+
+#### First tests with 1_3_0 
+
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIIFall15DR76-1_3_0-25ns -U 5 -L 25 -s campaigns/RunIIFall15DR76-1_3_0-25ns.json -V 1_3_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
+cd RunIIFall15DR76-1_3_0-25ns  --lumiMask ${PWD}/jsons/SilverNotGold_246908-260627_JSON_v2.txt
+python $CMSSW_BASE/src/flashgg/MetaData/scripts/stupid_fix.py
+mkdir orig ; mv crabConfig_*orig*.py orig
+echo crabConfig_*.py | xargs -n 1 crab sub
+
+
 ### SPRING15
 
-### 1_2_0 ReMiniAOD TTH Filtered Rerun
+#### 1_2_0 ReMiniAOD TTH Filtered Rerun
 
 Should be 1_1_0 compatible
 
@@ -108,7 +120,7 @@ mkdir orig ; mv crabConfig_*orig*.py orig
 echo crabConfig_*.py | xargs -n 1 crab sub
 ```
 
-### 1_1_0 2015D DoubleEG ReReco ###
+#### 1_1_0 2015D DoubleEG ReReco ###
 
 ```
 cd $CMSSW_BASE/src/flashgg/MetaData/work
@@ -117,7 +129,7 @@ cd RunIISpring15-ReReco74X-1_1_0-25ns
 echo crabConfig_*.py | xargs -n 1 crab sub
 ```
 
-### 1_1_0 Prompt 25ns MuonEG Rerun ###
+#### 1_1_0 Prompt 25ns MuonEG Rerun ###
 
 For borked jobs:
 
