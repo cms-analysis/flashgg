@@ -36,7 +36,8 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep *_flashggFinalJets_*_*",
                                                      "keep *_flashggFinalPuppiJets_*_*",
 						     "drop floatedmValueMap_electronMVAValueMapProducer_*_*",
-						     "drop intedmValueMap_electronMVAValueMapProducer_*_*"
+						     "drop intedmValueMap_electronMVAValueMapProducer_*_*",
+                                                     "keep *_selectedPatTrigger_*_*",
                                                      )
 
 # Should be included for now for ongoing studies, but to be removed some day
