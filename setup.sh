@@ -110,7 +110,7 @@ echo "Setting up weight and pat electron conversion..."
 git cms-addpkg CommonTools/UtilAlgos
 git cms-addpkg DataFormats/RecoCandidate
 git cms-addpkg RecoEgamma/EgammaTools
-git remote add cmssw-sethzenz git@github.com:sethzenz/cmssw.git
+git remote add cmssw-sethzenz https://github.com/sethzenz/cmssw.git
 git fetch cmssw-sethzenz
 git cherry-pick 5163a7c9937ebfbbd714b3d161af01f64b65224c
 git cherry-pick a45d253ea9850acecbcfcd7bd2e5c3f00d8f0bd9
