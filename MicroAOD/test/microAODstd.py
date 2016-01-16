@@ -76,7 +76,8 @@ process.RandomNumberGeneratorService.flashggRandomizedPhotons = cms.PSet(
 ### 76X ###
 
 process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring(
-"/store/mc/RunIIFall15MiniAODv1/VBFHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/047F5248-5AAA-E511-8219-02163E017790.root"
+#"/store/mc/RunIIFall15MiniAODv1/VBFHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/047F5248-5AAA-E511-8219-02163E017790.root"
+"/store/mc/RunIIFall15DR76/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/25nsFlat10to25TSG_76X_mcRun2_asymptotic_v12-v1/00000/0C6C1B51-9198-E511-B305-002590747D94.root"
 #"/store/data/Run2015D/DoubleEG/MINIAOD/16Dec2015-v2/00000/000298CD-87A6-E511-9E56-002590593878.root"
 ))
 
