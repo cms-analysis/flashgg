@@ -154,6 +154,71 @@ class MicroAODCustomize(object):
         process.out.outputCommands.append("drop *_*Gen*_*_*")
         process.out.outputCommands.append("keep *_*_*RecHit*_*") # for bad events
         delattr(process,"flashggPrunedGenParticles") # will be run due to unscheduled mode unless deleted
+        customizeHighMassIsolations(process)
+
+    def customizeHighMassIsolations(self,process):
+        # for isolation cones
+        process.vetoPhotons = cms.EDFilter("CandPtrSelector",
+                                           src=cms.InputTag("flashggPhotons"),
+                                           cut=cms.string("pt>10"),
+                                           )
+        process.vetoJets = cms.EDFilter("CandPtrSelector",
+                                        src=cms.InputTag("slimmedJets"),
+                                        cut=cms.string("pt>30"),
+                                        )
+
+        process.flashggPhotons.extraIsolations.extend([
+                cms.PSet(
+                    algo=cms.string("FlashggRandomConeIsolationAlgo"),
+                    name=cms.string("rnd03"),
+                    coneSize=cms.double(0.3), doOverlapRemoval=cms.bool(False),
+                    charged=cms.vdouble(0.02,0.02,0.1),
+                    photon=cms.vdouble(0.0, 0.070, 0.015, 0.0, 0.0, 0.0),
+                    vetoCollections_=cms.VInputTag(cms.InputTag("vetoPhotons"),cms.InputTag("vetoJets")),
+                    veto=cms.double(0.699),
+                    ),
+                ###          cms.PSet(
+                ###              algo=cms.string("DiphotonsFootPrintRemovedIsolationAlgo"),
+                ###              name=cms.string("fpr03"),
+                ###              coneSize=cms.double(0.3), doRandomCone=cms.bool(False), removePhotonsInMap=cms.int32(1),
+                ###              rechitLinkEnlargement=cms.double(0.25),
+                ###              charged=cms.vdouble(0.02,0.02,0.1),
+                ###              photon=cms.vdouble(0.0, 0.070, 0.015, 0.0, 0.0, 0.0),
+                ###              ),
+                cms.PSet(
+                    algo=cms.string("DiphotonsFootPrintRemovedIsolationAlgo"),
+                    name=cms.string("fprNoMap03"),
+                    coneSize=cms.double(0.3), doRandomCone=cms.bool(False), removePhotonsInMap=cms.int32(0),
+                    rechitLinkEnlargement=cms.double(0.25),
+                    photon=cms.vdouble(0.0, 0.070, 0.015, 0.0, 0.0, 0.0),
+                    charged=cms.vdouble(0.02,0.02,0.1),
+                    ),
+                #### cms.PSet(
+                ####     algo=cms.string("DiphotonsFootPrintRemovedIsolationAlgo"),
+                ####     name=cms.string("fprRnd03"),
+                ####     coneSize=cms.double(0.3), doRandomCone=cms.bool(True), removePhotonsInMap=cms.int32(1),
+                ####     rechitLinkEnlargement=cms.double(0.25),
+                ####     charged=cms.vdouble(0.02,0.02,0.1),
+                ####     vetoCollections_=cms.VInputTag(cms.InputTag("vetoPhotons"),cms.InputTag("vetoJets")),
+                ####     veto=cms.double(0.699),
+                ####     ),
+                ]
+          )
+
+
+        for icone,dphi in enumerate( [0.7,1.3,1.9,2.5,3.1,-2.5,-1.9,-1.3,-0.7] ):
+            process.flashggPhotons.extraIsolations.append(
+                cms.PSet(
+                    algo=cms.string("FlashggRandomConeIsolationAlgo"),
+                    name=cms.string("rnd03_%d" % icone), deltaPhi=cms.double(dphi),
+                    coneSize=cms.double(0.3), doOverlapRemoval=cms.bool(False),
+                    charged=cms.vdouble(0.02,0.02,0.1),
+                    photon=cms.vdouble(0.0, 0.070, 0.015, 0.0, 0.0, 0.0),
+                    vetoCollections_=cms.VInputTag(cms.InputTag("vetoPhotons"),cms.InputTag("vetoJets")),
+                    veto=cms.double(0.699),
+                    ## maxVtx=cms.int32(1), computeWorstVtx=cms.bool(False)
+                    ),
+                )
         
     # Add debug collections    
     def customizeDebug(self,process):    
