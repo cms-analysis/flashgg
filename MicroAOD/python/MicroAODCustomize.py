@@ -154,7 +154,7 @@ class MicroAODCustomize(object):
         process.out.outputCommands.append("drop *_*Gen*_*_*")
         process.out.outputCommands.append("keep *_*_*RecHit*_*") # for bad events
         delattr(process,"flashggPrunedGenParticles") # will be run due to unscheduled mode unless deleted
-        customizeHighMassIsolations(process)
+        self.customizeHighMassIsolations(process)
 
     def customizeHighMassIsolations(self,process):
         # for isolation cones
