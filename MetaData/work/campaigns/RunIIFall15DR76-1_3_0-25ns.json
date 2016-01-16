@@ -1,0 +1,11 @@
+{
+    "data" : ["/DoubleEG/Run2015C_25ns-16Dec2015-v1/MINIAOD",
+              "/DoubleEG/Run2015D-16Dec2015-v2/MINIAOD",
+              "/SingleElectron/Run2015C_25ns-16Dec2015-v1/MINIAOD",
+              "/SingleElectron/Run2015D-16Dec2015-v2/MINIAOD"
+	      ],
+    "sig"  : ["/GluGluHToGG_M-125_13TeV_powheg_pythia8/RunIIFall15DR76-25nsFlat10to25TSG_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM"
+	      ],
+    "bkg"  : [
+    	      ]
+}
