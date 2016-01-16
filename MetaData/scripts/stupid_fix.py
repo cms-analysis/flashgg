@@ -12,6 +12,7 @@ for fn in listdir("."):
                 if len(theName) >= 100:
                     print "  ... has length %i characters!" % len(theName)
                     shortName = theName.replace("_RunIISpring15MiniAODv2","")
+                    shortName = shortName.replace("_RunIIFall15DR76","")
                     if len(shortName) >= 100:
                         shortName = shortName.replace("_TuneCUETP8M1_13TeV_Pythia8","").replace("_TuneCUETP8M1","")
                     print "  ... so we switch to %s (length %i)" % (shortName,len(shortName))
