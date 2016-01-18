@@ -1,4 +1,4 @@
-
+import os
 import FWCore.ParameterSet.Config as cms
 import FWCore.ParameterSet.VarParsing as VarParsing
 class MicroAODCustomize(object):
@@ -121,6 +121,11 @@ class MicroAODCustomize(object):
             self.customizeFileNames(process)
         if self.timing == 1:
             self.customizeTiming(process)
+        if os.environ["CMSSW_VERSION"].count("CMSSW_7_6"):
+            self.customize76X(process)
+        elif len(self.globalTag) == 0:
+            self.globalTag = "74X_mcRun2_asymptotic_v4"
+            self.customizeGlobalTag(process)
         if self.bunchSpacing == 25:
             pass #default
         elif self.bunchSpacing == 50:
@@ -298,6 +303,8 @@ class MicroAODCustomize(object):
         process.flashggPhotons.photonIdMVAweightfile_EB = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_Spring15_50ns_barrel.xml")
         process.flashggPhotons.photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_Spring15_50ns_endcap.xml")
 
+    def customize76X(self,process):
+        delattr(process,"QGPoolDBESSource")
 
 # customization object
 customize = MicroAODCustomize()
