@@ -95,6 +95,20 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 ### SPRING15
 
+### 1_2_0 SingleElectron (2015D) + TTH backgrounds
+
+Should be 1_1_0 compatible
+
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-SingleEle2015D-TTG-TTJ-TGJ-WG-ZG-1_2_0-25ns -U 5 -L 25 -s campaigns/RunIISpring15-SingleEle2015D-TTG-TTJ-TGJ-WG-ZG-1_2_0-25ns.json -V 1_2_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask $PWD/jsons/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_v2.txt
+cd RunIISpring15-SingleEle2015D-TTG-TTJ-TGJ-WG-ZG-1_2_0-25ns
+python $CMSSW_BASE/src/flashgg/MetaData/scripts/stupid_fix.py 
+mkdir orig ; mv crabConfig_*orig*.py orig
+echo crabConfig_*.py | xargs -n 1 crab sub
+```
+
+
 ### 1_2_0 ReMiniAOD TTH Filtered Rerun
 
 Should be 1_1_0 compatible
