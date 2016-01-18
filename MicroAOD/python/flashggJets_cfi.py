@@ -11,7 +11,7 @@ import os
 
 flashggBTag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
 maxJetCollections = 8
-#qgDatabaseVersion = 'v1' # check https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
+qgDatabaseVersion = 'v1' # check https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
 
 def addFlashggPFCHSJets(process, 
                         vertexIndex = 0, 
@@ -88,18 +88,18 @@ def addFlashggPFCHSJets(process,
   #process.patJetCorrFactorsAK4PFCHSLeg.primaryVertices = "offlineSlimmedPrimaryVertices"
   getattr(process, 'patJetCorrFactorsAK4PFCHSLeg' + label).primaryVertices = "offlineSlimmedPrimaryVertices"
   
-  #== QGTagging
-#  process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
-#                                          CondDBSetup,
-#                                          toGet = cms.VPSet(),
-#                                          connect = cms.string('frontier://FrontierProd/CMS_COND_PAT_000'),)
+  #== QGTagging, will be removed in 76X via customization
+  process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
+                                          CondDBSetup,
+                                          toGet = cms.VPSet(),
+                                          connect = cms.string('frontier://FrontierProd/CMS_COND_PAT_000'),)
   
-#  for type in ['AK4PFchs','AK4PFchs_antib']:
-#    process.QGPoolDBESSource.toGet.extend(cms.VPSet(cms.PSet(
-#          record = cms.string('QGLikelihoodRcd'),
-#          tag    = cms.string('QGLikelihoodObject_'+qgDatabaseVersion+'_'+type),
-#          label  = cms.untracked.string('QGL_'+type)
-#          )))
+  for type in ['AK4PFchs','AK4PFchs_antib']:
+    process.QGPoolDBESSource.toGet.extend(cms.VPSet(cms.PSet(
+          record = cms.string('QGLikelihoodRcd'),
+          tag    = cms.string('QGLikelihoodObject_'+qgDatabaseVersion+'_'+type),
+          label  = cms.untracked.string('QGL_'+type)
+          )))
   
   from RecoJets.JetProducers.QGTagger_cfi import QGTagger
   setattr( process, 'QGTaggerPFCHS' + label,  QGTagger.clone( srcJets   = 'patJetsAK4PFCHSLeg' + label ,jetsLabel = 'QGL_AK4PFchs'))

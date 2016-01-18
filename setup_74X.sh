@@ -85,44 +85,40 @@ cd $CMSSW_BASE/src
 #git cms-merge-topic sethzenz:topic-pujid-74X
 #echo
 
-#echo "Setting up weight counter..."
-#git cms-addpkg CommonTools/UtilAlgos 
-#git cms-addpkg DataFormats/Common
-#git cms-merge-topic sethzenz:topic-weights-count-74X
+echo "Setting up weight counter..."
+git cms-addpkg CommonTools/UtilAlgos 
+git cms-addpkg DataFormats/Common
+git cms-merge-topic sethzenz:topic-weights-count-74X
 
 # PUPPI is automagically in the release since 7_4_11 and 7_5_2, but we still need Multi-PUPPI
-# Not needed for Moriond
-#echo "Setting up PUPPI..."
-#git cms-addpkg CommonTools/PileupAlgos
-#git cms-merge-topic sethzenz:topic-puppi-7_4_12 
-#echo
+echo "Setting up PUPPI..."
+git cms-addpkg CommonTools/PileupAlgos
+git cms-merge-topic sethzenz:topic-puppi-7_4_12 
+echo
 
-#echo "Setting up Conversion tools for pat electron..."
-#git cms-addpkg RecoEgamma/EgammaTools
-#git cms-merge-topic -u sethzenz:topic-conversion-tools-for-pat-ele-74X
+echo "Modifying FastjetJetProducer to avoid wasting time on empty collections..."
+git cms-addpkg RecoJets/JetProducers
+git cms-merge-topic sethzenz:topic-jetprod-skipempty
+echo
+
+echo "Setting up Conversion tools for pat electron..."
+git cms-addpkg RecoEgamma/EgammaTools
+git cms-merge-topic -u sethzenz:topic-conversion-tools-for-pat-ele-74X
 
 echo "Setting up TnP tools..."
-#git cms-addpkg DataFormats/RecoCandidate
-#git cms-addpkg PhysiscsTools/TagAndProbe
-git cms-merge-topic -u matteosan1:egm_tnp_76X
-
-echo "Setting up weight and pat electron conversion..."
-git cms-addpkg CommonTools/UtilAlgos
-git cms-addpkg RecoEgamma/EgammaTools
-git remote add cmssw-sethzenz https://github.com/sethzenz/cmssw.git
-git fetch cmssw-sethzenz
-git cherry-pick 5163a7c9937ebfbbd714b3d161af01f64b65224c
-git cherry-pick a45d253ea9850acecbcfcd7bd2e5c3f00d8f0bd9
-git remote rm cmssw-sethzenz
+git cms-addpkg DataFormats/RecoCandidate
+git cms-addpkg PhysiscsTools/TagAndProbe
+git cms-merge-topic -u matteosan1:egm_tnp
 
 echo "Setting up PDF weight tool..."
-#git-cms-merge-topic bendavid:pdfweights_76x
-git cms-addpkg PhysicsTools/HepMCCandAlgos
-git cherry-pick 9e4300582f284fa1fed6dcdbee88b3f75da39165
-
+git-cms-merge-topic bendavid:pdfweights_74x
 
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit
+
+echo "Unfortunately we have to delete some files to compile the 74X recipe with the 76X repository"
+echo "rm Validation/plugins/FlashggTriggerCandProducer.cc"
+rm $CMSSW_BASE/src/flashgg/Validation/plugins/FlashggTriggerCandProducer.cc
 
 echo
 echo "Done with setup script! You still need to build!"
