@@ -108,7 +108,6 @@ git cms-merge-topic -u matteosan1:egm_tnp_76X
 
 echo "Setting up weight and pat electron conversion..."
 git cms-addpkg CommonTools/UtilAlgos
-git cms-addpkg DataFormats/RecoCandidate
 git cms-addpkg RecoEgamma/EgammaTools
 git remote add cmssw-sethzenz https://github.com/sethzenz/cmssw.git
 git fetch cmssw-sethzenz
