@@ -8,6 +8,8 @@ Before you start, **please take note** of these warnings and comments:
 * **N.B.** This is to set up the latest area in a self-consistent way. If you want a particular flashgg version corresponding to other samples, please see https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_users
 
 Get everything you need, starting from a clean area:
+
+Instructions for processing of 76X MiniAOD:
  ```
  cmsrel CMSSW_7_6_3
  cd CMSSW_7_6_3/src
@@ -17,7 +19,17 @@ Get everything you need, starting from a clean area:
  git clone https://github.com/cms-analysis/flashgg flashgg
  source flashgg/setup.sh
  ```
-Now if everything looks reasonable, you can build:
+To process 74X MiniAOD, instead do:
+ ```
+ cmsrel CMSSW_7_4_15
+ cd CMSSW_7_4_15/src
+ cmsenv
+ git cms-init
+ cd $CMSSW_BASE/src
+ git clone https://github.com/cms-analysis/flashgg flashgg
+ source flashgg/setup_74X.sh
+ ```
+In either case, if everything now looks reasonable, you can build:
  ```
  cd $CMSSW_BASE/src
  scram b -j 9
