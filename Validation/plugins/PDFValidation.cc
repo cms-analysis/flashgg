@@ -67,18 +67,32 @@ PDFWeight::analyze( const edm::Event &evt, const edm::EventSetup &iSetup )
 
 	    Handle<vector<flashgg::PDFWeightObject> > WeightHandle;
 	    evt.getByToken( WeightToken_, WeightHandle );
-//	    const PtrVector<flashgg::PDFWeightObject> mcWeightPointers = WeightHandle->ptrVector();
+	//   const PtrVector<flashgg::PDFWeightObject> mcWeightPointers = WeightHandle->ptrVector();
 
 	//cout << "XS  " << LHEHandle->originalXWGTUP() << endl;
 
 	        for( unsigned int weight_index = 0; weight_index < (*WeightHandle).size(); weight_index++ ){
 	            vector<uint16_t> compressed_weights = (*WeightHandle)[weight_index].pdf_weight_container; 
                 std::vector<float> uncompressed = (*WeightHandle)[weight_index].uncompress( compressed_weights );
+                vector<uint16_t> compressed_alpha = (*WeightHandle)[weight_index].alpha_s_container;
+                std::vector<float> uncompressed_alpha = (*WeightHandle)[weight_index].uncompress( compressed_alpha );
+                vector<uint16_t> compressed_scale = (*WeightHandle)[weight_index].qcd_scale_container;
+                std::vector<float> uncompressed_scale = (*WeightHandle)[weight_index].uncompress( compressed_scale );
+
 	            for( unsigned int j=0; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
 	                    cout << "compresed weight " << (*WeightHandle)[weight_index].pdf_weight_container[j] << endl;
 	                    cout << "uncompressed weight " << uncompressed[j] << endl;
 	       }
-	    }
+                for( unsigned int j=0; j<(*WeightHandle)[weight_index].alpha_s_container.size();j++ ) {
+                        cout << "compressed variation " << (*WeightHandle)[weight_index].alpha_s_container[j] << endl;
+                        cout << "uncompressed variation " << uncompressed_alpha[j] << endl;
+           }
+                for( unsigned int j=0; j<(*WeightHandle)[weight_index].qcd_scale_container.size();j++ ) {
+                        cout << "compressed scale " << (*WeightHandle)[weight_index].qcd_scale_container[j] << endl;
+                        cout << "uncompressed scale " << uncompressed_scale[j] << endl;
+           }
+	    
+    }
 }
 
 
