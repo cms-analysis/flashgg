@@ -18,12 +18,13 @@ namespace flashgg {
         lumiFactor_ = lumiFactor; 
     }
 
-    GlobalVariablesDumper::GlobalVariablesDumper( const ParameterSet &cfg ) :
-        GlobalVariablesComputer( cfg )
+    GlobalVariablesDumper::GlobalVariablesDumper( const ParameterSet &cfg, edm::ConsumesCollector&& iC ) :
+        GlobalVariablesComputer( cfg, std::forward<ConsumesCollector>( iC ) )
     {
         if( cfg.exists( "addTriggerBits" ) ) {
             const auto &trg = cfg.getParameter<ParameterSet>( "addTriggerBits" );
             triggerTag_ = trg.getParameter<InputTag>( "tag" );
+            triggerToken_ = iC.consumes<TriggerResults>(triggerTag_);
             auto bitNames   = trg.getParameter<std::vector<std::string> >( "bits" );
             for( auto &bit : bitNames ) {
                 //                std::cout << bit << std::endl;
@@ -58,12 +59,12 @@ namespace flashgg {
         if( dumpLumiFactor_ ) { tree->Branch( "lumiFactor", &lumiFactor_ ); }
     }
 
-    void GlobalVariablesDumper::fill( const EventBase &evt )
+    void GlobalVariablesDumper::fill( const Event &evt )
     {
         update( evt );
         if( ! bits_.empty() ) {
             Handle<TriggerResults> trigResults; //our trigger result object
-            evt.getByLabel( triggerTag_, trigResults );
+            evt.getByToken( triggerToken_, trigResults );
 
             for( auto &bit : bits_ ) { bit.second = false; }
             auto &trigNames = evt.triggerNames( *trigResults );
