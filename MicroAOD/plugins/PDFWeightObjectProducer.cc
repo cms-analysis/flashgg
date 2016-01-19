@@ -35,6 +35,7 @@ namespace flashgg {
         string tag_;
         string delimiter_1_;
         string delimiter_2_;
+        string delimiter_3_;
         void beginRun( edm::Run const &, edm::EventSetup const &iSetup );
         vector<int> weight_indices;
         vector<int> alpha_indices;
@@ -46,8 +47,14 @@ namespace flashgg {
         edm::FileInPath mc2hessianCSV;
         std::vector<double> lhe_weights;
         float gen_weight;
+        string pdfset_;
         string pdfid_1;
         string pdfid_2;
+        bool flashgg_flag_;
+        bool pdfset_flag_;
+        bool alpha_s_flag_;
+        bool scale_flag_;
+        bool skip;
 	};
     
 	PDFWeightProducer::PDFWeightProducer( const edm::ParameterSet &iConfig ):
@@ -55,11 +62,17 @@ namespace flashgg {
         srcTokenGen_( consumes<GenEventInfoProduct>( iConfig.getParameter<InputTag>("GenTag") ) )
 	{
         consumes<LHERunInfoProduct,edm::InRun> (edm::InputTag("externalLHEProducer"));
+        pdfset_flag_ = iConfig.getUntrackedParameter<bool>("pdfset_flag",false);
+        flashgg_flag_ = iConfig.getUntrackedParameter<bool>("flashgg_flag",true);       
+        alpha_s_flag_ = iConfig.getUntrackedParameter<bool>("alpha_s_flag","true");
+        scale_flag_ = iConfig.getUntrackedParameter<bool>("scale_flag","true"); 
 		tag_ = iConfig.getUntrackedParameter<string>( "tag", "initrwgt" );
-		pdfid_1 = iConfig.getUntrackedParameter<string>("pdfid_1","0");
-		pdfid_2 = iConfig.getUntrackedParameter<string>("pdfid_2","0");
+//		pdfid_1 = iConfig.getUntrackedParameter<string>("pdfid_1","0");
+//		pdfid_2 = iConfig.getUntrackedParameter<string>("pdfid_2","0");
+        pdfset_ = iConfig.getUntrackedParameter<string>("pdfset","NNPDF30_lo_as_0130.LHgrid");
 		delimiter_1_ = iConfig.getUntrackedParameter<string>( "delimiter_1", "id=\"" );
 		delimiter_2_ = iConfig.getUntrackedParameter<string>( "delimiter_2", "\">" );
+        delimiter_3_ = iConfig.getUntrackedParameter<string>( "delimiter_3", "</weightgroup>" );
         nPdfEigWeights_ = iConfig.getParameter<unsigned int>("nPdfEigWeights");
         mc2hessianCSV = iConfig.getParameter<edm::FileInPath>("mc2hessianCSV");
 
@@ -133,69 +146,134 @@ namespace flashgg {
 				weight_lines = iter->lines();
 			}
 
+            if(flashgg_flag_){
+            
             PDFWeightProducer::set_generator_type(lines);
-            std::cout << " After set_generator_type on " << iter->tag() << " we have pdfids: " << pdfid_1 << " " << pdfid_2 << std::endl;
+            //std::cout << " After set_generator_type on " << iter->tag() << " we have pdfids: " << pdfid_1 << " " << pdfid_2 << std::endl;
+
+            }
+
         }
 
+        if(scale_flag_){
+
+        string m_format;
+
+        if(flashgg_flag_){
+            m_format = "muR";
+        } 
+
+        if(pdfset_flag_){
+            m_format = "mur";
+        } 
+
         for( unsigned int iLine = 0; iLine < weight_lines.size(); iLine++ ) {
-            if ( weight_lines[iLine].find("muR") != std::string::npos ) {
+            if ( weight_lines[iLine].find(m_format) != std::string::npos ) {
                 //                std::cout << "Line for scale: " << weight_lines[iLine];
                 size_t pos1 = weight_lines[iLine].find("\"");
                 size_t pos2 = weight_lines[iLine].find("\"",pos1+1);
                 assert (pos1 != std::string::npos && pos2 != std::string::npos);
                 string tempstr = weight_lines[iLine].substr(pos1+1,pos2-pos1-1);
                 int scaleind = atoi(tempstr.c_str());
-                //                std::cout << "    " << pos1 << " " << pos2 << " " << tempstr << " " << scaleind << std::endl;
+                                //std::cout << "    " << pos1 << " " << pos2 << " " << tempstr << " " << scaleind << std::endl;
                 scale_indices.push_back( scaleind );
             } else {
                 //                std::cout << "Line NOT for scale: " << weight_lines[iLine];
             }
+          }
         }
-        //        std::cout << std::endl;
         
         for( unsigned int iLine = 0; iLine < weight_lines.size(); iLine++ ) {
             
             string line = weight_lines.at( iLine );
-            size_t pos = line.find( pdfid_1 );
+            string main;
+
+            if(flashgg_flag_){
+        
+                main = pdfid_1;
+            }
+
+            if(pdfset_flag_){
+
+                main = pdfset_;
+
+            }
+
+            size_t pos = line.find( main );
             string token;
-            while( (pos = line.find(pdfid_1)) != std::string::npos ){
-                token = line.substr(pos, pdfid_1.length() );
-                if( token.compare( pdfid_1 ) == 0 ){
-                    upper_index = iLine;
+            while( (pos = line.find(main)) != std::string::npos ){
+                token = line.substr(pos, main.length() );
+                //cout << "token " << token << endl;
+                if( token.compare( main ) == 0 ){
+
+                    if (pdfset_flag_){
+
+                    upper_index = iLine + 1;
                     break;
+            
+                    }
+
+                    if (flashgg_flag_){
+
+                    upper_index = iLine;
+                    //cout << "iLine " << iLine << endl;
+                    break;
+            
+                    }
+
                 } else {				
                     upper_index = 0;
                 }
                 
-                
             }
             
-            if( upper_index != 0 ){break;} 
+            if( upper_index != 0 ){break;}
         }
+
 
         for( unsigned int nLine = upper_index; nLine < weight_lines.size(); nLine++ ) {
             
             string nline = weight_lines.at( nLine );
-            
-            //cout << nline << endl;	
+           
+            skip = false;
+ 
+            //cout << "nline " << nline << endl;	
             string jline = removeSpaces( nline );
-            //						cout << "jline " << jline << endl;
+            if(jline.empty()){cout << "WARNING unknown text format, member vectors will be empty or filled with incorrect values" << endl;
+
+                skip = true;
+                break;
+            }
+
+            //cout << skip << endl;
+
+            //cout << "jline " << jline << endl;
             string jtoken;																					
             size_t jpos;				
-			
+		
+            if(flashgg_flag_) {
+	
             while( ( jpos = jline.find( pdfid_2 ) ) != std::string::npos ) {
                 jtoken = jline.substr( jpos, pdfid_2.length() );
                 //std::cout << "jtoken " << jtoken << std::endl;
                 break;
+               }
+			}
+
+            if(pdfset_flag_){
+
+            if( jline.compare(delimiter_3_ ) == 0 ) {break;}
+
             }
-			
-			
+
+            if (!skip){
+
             string ntoken;
             string mtoken;
-            
+           
             size_t mpos_1 = jline.find( delimiter_1_ );
             size_t mpos_3 = jline.find( delimiter_2_ );
-            
+           
             ntoken = jline.erase( mpos_3 );
             mtoken = jline.substr( mpos_1 + delimiter_1_.length() );
             //cout << "mtoken " << mtoken << endl;
@@ -203,10 +281,16 @@ namespace flashgg {
             int wgt = stoi( mtoken );
             
             PDFWeightProducer::weight_indices.push_back( wgt );
-            
+           
+            if(flashgg_flag_){
+ 
             if( jtoken.compare( pdfid_2 ) == 0 ) { break; }
             
-        }
+            }
+          }
+        }         
+
+        if((flashgg_flag_ && alpha_s_flag_)  && !skip ){
 
         // See slide 13 here: https://indico.cern.ch/event/459797/contribution/2/attachments/1181555/1710844/mcaod-Nov4-2015.pdf
         int alphas_1 = PDFWeightProducer::weight_indices.back() + 1;
@@ -217,6 +301,8 @@ namespace flashgg {
         //        std::cout << " Alpha indices: " << alphas_1 << " " << alphas_2 << std::endl;
 
         //        std::cout << " PDF weight indices final size: " << weight_indices.size() << std::endl;
+        }
+      //cout << "reaches this point " << endl;
     }
 
 	void PDFWeightProducer::produce( Event &evt, const EventSetup & )
@@ -246,7 +332,7 @@ namespace flashgg {
 		int upper_bound = LHEEventHandle->weights().size();
 		int size_weight = PDFWeightProducer::weight_indices.size();
 		int size_alpha = PDFWeightProducer::alpha_indices.size();
-		//cout << "lower_bound " << lower_bound << " upper_bound " << upper_bound << endl;
+		//cout << "upper_bound " << upper_bound << endl;
 		for( int i = 0; i < upper_bound; i++ ) {
 			int id_i = stoi( LHEEventHandle->weights()[i].id );
 			for( int j = 0; j<size_weight; j++ ){
@@ -259,6 +345,7 @@ namespace flashgg {
 					lhe_weights.push_back( weight );
 				}
 			}
+            if(flashgg_flag_ && alpha_s_flag_){
 			for( int k = 0; k<size_alpha; k++ ){
 				int id_k = PDFWeightProducer::alpha_indices[k];
                 //                std::cout << " checking alpha_index " << id_k << " against id " << id_i << std::endl;
@@ -268,7 +355,9 @@ namespace flashgg {
                     uint16_t alpha_16 = MiniFloatConverter::float32to16( alpha );
                     pdfWeight.alpha_s_container.push_back(alpha_16);	
                 }
+             }
             }
+            if(scale_flag_ ){ 
             for( unsigned k = 0 ; k < PDFWeightProducer::scale_indices.size() ; k++ ) {
                 int id_k = PDFWeightProducer::scale_indices[k];
                 if ( id_i == id_k ) {
@@ -277,9 +366,10 @@ namespace flashgg {
                     pdfWeight.qcd_scale_container.push_back( scale_16 );
                 }
             }
+          }
 		}
 
-		//cout << "should be 100   " << lhe_weights.size() << endl;
+		//cout << "should be 100 or 101 " << lhe_weights.size() << endl;
 
 		pdfweightshelper_.Init(size_weight,nPdfEigWeights_,mc2hessianCSV);
         
@@ -312,9 +402,9 @@ namespace flashgg {
 
 		evt.put( PDFWeight );
 
-        //		cout << "FINAL pdf_weight_container size " <<pdfWeight.pdf_weight_container.size() << endl;
-        //        cout << "FINAL alpha_s_container size " <<pdfWeight.alpha_s_container.size() << endl;
-        //        cout << "FINAL qcd_scale_container size " <<pdfWeight.qcd_scale_container.size() << endl;
+        		//cout << "FINAL pdf_weight_container size " <<pdfWeight.pdf_weight_container.size() << endl;
+                //cout << "FINAL alpha_s_container size " <<pdfWeight.alpha_s_container.size() << endl;
+                //cout << "FINAL qcd_scale_container size " <<pdfWeight.qcd_scale_container.size() << endl;
 
 
 	}
