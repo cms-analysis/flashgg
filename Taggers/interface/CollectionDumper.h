@@ -71,7 +71,7 @@ namespace flashgg {
 
         /// default constructor
         CollectionDumper( const edm::ParameterSet &cfg, TFileDirectory &fs );
-        CollectionDumper( const edm::ParameterSet &cfg, TFileDirectory &fs, const edm::ConsumesCollector &cc ) : CollectionDumper( cfg, fs ) {};
+        CollectionDumper( const edm::ParameterSet &cfg, TFileDirectory &fs, edm::ConsumesCollector &&cc );
         /// default destructor
         /// ~CollectionDumper();
         /// everything that needs to be done before the event loop
@@ -86,11 +86,12 @@ namespace flashgg {
         double eventWeight( const edm::EventBase &event );
         vector<double> pdfWeights( const edm::EventBase &event );
 
-        /// float eventWeight(const edm::EventBase& event);
+        classifier_type classifier_;
+
         edm::InputTag src_, genInfo_, pdfWeight_;
 
-        edm::EDGetTokenT<edm::Handle<collection_type> > srcToken_;
-        edm::EDGetTokenT<edm::Handle<GenEventInfoProduct> > genInfoToken_;
+        edm::EDGetTokenT<collection_type> srcToken_;
+        edm::EDGetTokenT<GenEventInfoProduct> genInfoToken_;
         edm::EDGetTokenT<std::vector<flashgg::PDFWeightObject> > pdfWeightToken_;
 
         std::string processId_;
@@ -107,7 +108,6 @@ namespace flashgg {
         std::string workspaceName_;
         bool dumpHistos_, dumpGlobalVariables_;
 
-        classifier_type classifier_;
         std::map< KeyT, bool> hasSubcat_;
         bool throwOnUnclassified_;
         
@@ -128,40 +128,61 @@ namespace flashgg {
         /// void fillTreeBranches(const flashgg::Photon & pho)
 
         GlobalVariablesDumper *globalVarsDumper_;
+
+    private:
+        void _init( const edm::ParameterSet &cfg, TFileDirectory &fs );
     };
 
     template<class C, class T, class U>
-    CollectionDumper<C, T, U>::CollectionDumper( const edm::ParameterSet &cfg, TFileDirectory &fs ):
+    CollectionDumper<C, T, U>::CollectionDumper( const edm::ParameterSet &cfg, TFileDirectory &fs ) :
         edm::BasicAnalyzer::BasicAnalyzer( cfg, fs ),
+        classifier_( cfg.getParameter<edm::ParameterSet>( "classifierCfg" ) ),
         src_( cfg.getParameter<edm::InputTag>( "src" ) ),
         genInfo_( cfg.getParameter<edm::InputTag>( "generatorInfo" ) ),
-        processId_( cfg.getParameter<std::string>( "processId" ) ),
-        processIndex_( cfg.exists("processIndex") ? cfg.getParameter<int>("processIndex") : 999 ),
-        //        processIndex_( cfg.getParameter<int>("processIndex")  ),
-        lumiWeight_( cfg.getParameter<double>( "lumiWeight" ) ),
-        splitLumiWeight_( cfg.getUntrackedParameter<bool>( "splitLumiWeight", false ) ),
-        maxCandPerEvent_( cfg.getParameter<int>( "maxCandPerEvent" ) ),
-        sqrtS_( cfg.getUntrackedParameter<double>( "sqrtS", 13. ) ),
-        intLumi_( cfg.getUntrackedParameter<double>( "intLumi",1000. ) ),
-        nameTemplate_( cfg.getUntrackedParameter<std::string>( "nameTemplate", "$COLLECTION" ) ),
-        dumpTrees_( cfg.getUntrackedParameter<bool>( "dumpTrees", false ) ),
-        dumpWorkspace_( cfg.getUntrackedParameter<bool>( "dumpWorkspace", false ) ),
-        workspaceName_( cfg.getUntrackedParameter<std::string>( "workspaceName", src_.label() ) ),
-        dumpHistos_( cfg.getUntrackedParameter<bool>( "dumpHistos", false ) ),
-        dumpGlobalVariables_( cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true ) ),
-        classifier_( cfg.getParameter<edm::ParameterSet>( "classifierCfg" ) ),
-        throwOnUnclassified_( cfg.exists("throwOnUnclassified") ? cfg.getParameter<bool>("throwOnUnclassified") : false ),
-        globalVarsDumper_( 0 )        
-
+        pdfWeight_( cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject", edm::InputTag("flashggPDFWeightObject") ) )
     {
+        _init(cfg, fs);
+    }
+
+    template<class C, class T, class U>
+    CollectionDumper<C, T, U>::CollectionDumper( const edm::ParameterSet &cfg, TFileDirectory &fs, edm::ConsumesCollector && cc) :
+        edm::BasicAnalyzer::BasicAnalyzer( cfg, fs ),
+        classifier_( cfg.getParameter<edm::ParameterSet>( "classifierCfg" ) ),
+        src_( cfg.getParameter<edm::InputTag>( "src" ) ),
+        genInfo_( cfg.getParameter<edm::InputTag>( "generatorInfo" ) ),
+        pdfWeight_( cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject", edm::InputTag("flashggPDFWeightObject") ) ),
+        srcToken_( cc.consumes<collection_type>( src_ ) ),
+        genInfoToken_( cc.consumes<GenEventInfoProduct>( genInfo_ ) ),
+        pdfWeightToken_( cc.consumes<std::vector<flashgg::PDFWeightObject> >( pdfWeight_ ) )
+    {
+        _init(cfg, fs);
+    }
+
+    template<class C, class T, class U>
+    void CollectionDumper<C, T, U>::_init( const edm::ParameterSet &cfg, TFileDirectory &fs )
+    {
+
+        processId_           = cfg.getParameter<std::string>( "processId" );
+        processIndex_        = cfg.exists("processIndex") ? cfg.getParameter<int>("processIndex") : 999;
+        lumiWeight_          = cfg.getParameter<double>( "lumiWeight" );
+        splitLumiWeight_     = cfg.getUntrackedParameter<bool>( "splitLumiWeight", false );
+        maxCandPerEvent_     = cfg.getParameter<int>( "maxCandPerEvent" );
+        sqrtS_               = cfg.getUntrackedParameter<double>( "sqrtS", 13. );
+        intLumi_             = cfg.getUntrackedParameter<double>( "intLumi",1000. );
+        nameTemplate_        = cfg.getUntrackedParameter<std::string>( "nameTemplate", "$COLLECTION" );
+        dumpTrees_           = cfg.getUntrackedParameter<bool>( "dumpTrees", false );
+        dumpWorkspace_       = cfg.getUntrackedParameter<bool>( "dumpWorkspace", false );
+        workspaceName_       = cfg.getUntrackedParameter<std::string>( "workspaceName", src_.label() );
+        dumpHistos_          = cfg.getUntrackedParameter<bool>( "dumpHistos", false );
+        dumpGlobalVariables_ = cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true );
+        classifier_          = cfg.getParameter<edm::ParameterSet>( "classifierCfg" );
+        throwOnUnclassified_ = cfg.exists("throwOnUnclassified") ? cfg.getParameter<bool>("throwOnUnclassified") : false;
+        globalVarsDumper_    = 0;
+
         if( cfg.getUntrackedParameter<bool>( "quietRooFit", false ) ) {
             RooMsgService::instance().setGlobalKillBelow( RooFit::WARNING );
         }
 	    
-        srcToken_ = consumes<edm::Handle<C> >( src_ );
-        pdfWeightToken_ = mayConsume<std::vector<flashgg::PDFWeightObject> >( pdfWeight_ );
-        genInfoToken_ = consumes<edm::EDGetTokenT<edm::Handle<GenEventInfoProduct> >( genInfo_ );
-        
         nPdfWeights_=0;
         nAlphaSWeights_=0;
         nScaleWeights_=0;
@@ -241,10 +262,6 @@ namespace flashgg {
                     dumpers.push_back( dumper_type( subcatname, cat, globalVarsDumper_ ) );
                 }
             }
-        }
-
-        if(dumpPdfWeights_){
-            pdfWeight_ = cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject",edm::InputTag("flashggPDFWeightObject"));
         }
 
         workspaceName_ = formatString( workspaceName_, replacements );
@@ -443,4 +460,3 @@ namespace flashgg {
 // c-basic-offset:4
 // End:
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
-
