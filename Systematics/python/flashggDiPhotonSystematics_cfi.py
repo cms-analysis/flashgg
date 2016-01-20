@@ -51,7 +51,7 @@ preselBins = cms.PSet(
     )
 #for 74x MC uses trigger efficiency not just scale factor since the trigger isn't in the MC
 leadTriggerScaleBins = cms.PSet(
-    variables = cms.vstring("r9","abs(superCluster.eta)","pt")
+    variables = cms.vstring("r9","abs(superCluster.eta)","pt"),
     bins = cms.VPSet(
         
         cms.PSet(lowBounds = cms.vdouble(0,0,0), upBounds = cms.vdouble(0.94,1.5,30), values = cms.vdouble(0.0), uncertainties = cms.vdouble(0.0448628,0.0300364)),
@@ -109,7 +109,7 @@ leadTriggerScaleBins = cms.PSet(
 
 
 subleadTriggerScaleBins = cms.PSet(
-    variables = cms.vstring("r9","abs(superCluster.eta)","pt")
+    variables = cms.vstring("r9","abs(superCluster.eta)","pt"),
     bins = cms.VPSet(
         
         cms.PSet(lowBounds = cms.vdouble(0.94,0,20), upBounds = cms.vdouble(999,1.5,22.5), values = cms.vdouble(0.98189), uncertainties = cms.vdouble(0.00578631,0.00473515)),
