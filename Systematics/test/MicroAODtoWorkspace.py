@@ -72,6 +72,8 @@ if customize.processId.count("h_") or customize.processId.count("vbf_"): # conve
         jetsystlabels.append("JER%s01sigma" % direction)
         variablesToUse.append("LooseMvaSF%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s01sigma\")" % (direction,direction))
         variablesToUse.append("PreselSF%s01sigma[1,-999999.,999999.] := weight(\"PreselSF%s01sigma\")" % (direction,direction))
+        variablesToUse.append("leadTriggerScaleBins%s01sigma[1,-999999.,999999.] := weight(\"leadTriggerScaleBins%s01sigma\")" % (direction,direction))
+        variablesToUse.append("subleadTriggerScaleBins%s01sigma[1,-999999.,999999.] := weight(\"subleadTriggerScaleBins%s01sigma\")" % (direction,direction))
         variablesToUse.append("FracRVWeight%s01sigma[1,-999999.,999999.] := weight(\"FracRVWeight%s01sigma\")" % (direction,direction))
         for r9 in ["HighR9","LowR9"]:
 #            phosystlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
