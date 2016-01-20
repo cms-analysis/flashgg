@@ -36,10 +36,20 @@ namespace flashgg {
             const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers, double muonEtaThreshold, double muonPtThreshold, double muPFIsoSumRelThreshold,
             double dRPhoLeadMuonThreshold, double dRPhoSubLeadMuonThreshold );
 
-    std::vector<edm::Ptr<Electron> > selectElectrons( const std::vector<edm::Ptr<flashgg::Electron> > &ElectronPointers,
-            const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers, double ElectronPtThreshold , double DeltaRTrkElec , double TransverseImpactParam,
-            double LongitudinalImpactParam, double NonTrigMVAThreshold, double IsoThreshold, double NumOfMissingHitsThreshold, vector<double> EtaCuts );
+    std::vector<edm::Ptr<flashgg::Muon> > selectAllMuons( const std::vector<edm::Ptr<flashgg::Muon> > &muonPointers, 
+            const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers, double muonEtaThreshold, double muonPtThreshold, double muPFIsoSumRelThreshold);
 
+    std::vector<edm::Ptr<Electron> > selectAllElectrons( const std::vector<edm::Ptr<flashgg::Electron> > &ElectronPointers,
+                                                         const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers, double ElectronPtThreshold ,  double TransverseImpactParam,
+                                                         double LongitudinalImpactParam, vector<double> NonTrigMVAThreshold, vector<double> NonTrigMVAEtaCuts,
+                                                         double IsoThreshold, double NumOfMissingHitsThreshold, vector<double> EtaCuts );
+    
+    std::vector<edm::Ptr<Electron> > selectElectrons( const std::vector<edm::Ptr<flashgg::Electron> > &ElectronPointers, Ptr<flashgg::DiPhotonCandidate> dipho,
+                                                      const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers, double ElectronPtThreshold ,  double TransverseImpactParam,
+                                                      double LongitudinalImpactParam, vector<double> NonTrigMVAThreshold, vector<double> NonTrigMVAEtaCuts, double IsoThreshold,
+                                                      double NumOfMissingHitsThreshold, vector<double> EtaCuts , double deltaRPhoElectronThreshold, double DeltaRTrkElec,
+                                                      double deltaMassElectronZThreshold );
+    
     Ptr<reco::Vertex> chooseElectronVertex( Ptr<flashgg::Electron> &elec, const std::vector<edm::Ptr<reco::Vertex> > &vertexPopinters );
 
 }

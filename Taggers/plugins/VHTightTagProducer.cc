@@ -85,9 +85,6 @@ namespace flashgg {
         double deltaRPhoLeadJet_;
         double deltaRPhoSubLeadJet_;
 
-        double LowPtEtaPhoThreshold_;
-        double MidPtEtaPhoThreshold_;
-        double HighEtaPhoThreshold_;
         double ElectronPtThreshold_;
         double DeltaRTrkElec_;
         double TransverseImpactParam_;
@@ -103,10 +100,11 @@ namespace flashgg {
         bool hasGoodElectrons_highPt = false;
         bool hasGoodElectrons_lowPt = false;
 
-        double nonTrigMVAThreshold_;
+        vector<double> nonTrigMVAThresholds_;
+        vector<double> nonTrigMVAEtaCuts_;
         double electronIsoThreshold_;
         double electronNumOfHitsThreshold_;
-        vector<double> EtaCuts_;
+        vector<double> electronEtaCuts_;
 
     };
 
@@ -122,47 +120,98 @@ namespace flashgg {
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
     {
-        leptonPtThreshold_            = iConfig.getParameter<double>( "leptonPtThreshold" );
-        leptonEtaThreshold_           = iConfig.getParameter<double>( "leptonEtaThreshold" );
-        leadPhoOverMassThreshold_     = iConfig.getParameter<double>( "leadPhoOverMassThreshold" );
-        subleadPhoOverMassThreshold_  = iConfig.getParameter<double>( "subleadPhoOverMassThreshold" );
-        MVAThreshold_                 = iConfig.getParameter<double>( "MVAThreshold" );
-        deltaRLepPhoThreshold_        = iConfig.getParameter<double>( "deltaRLepPhoThreshold" );
-        jetsNumberThreshold_          = iConfig.getParameter<double>( "jetsNumberThreshold" );
-        jetPtThreshold_               = iConfig.getParameter<double>( "jetPtThreshold" );
-        jetEtaThreshold_              = iConfig.getParameter<double>( "jetEtaThreshold" );
-        muPFIsoSumRelThreshold_       = iConfig.getParameter<double>( "muPFIsoSumRelThreshold" );
-        PhoMVAThreshold_              = iConfig.getParameter<double>( "PhoMVAThreshold" );
-        METThreshold_                 = iConfig.getParameter<double>( "METThreshold" );
 
-        deltaRJetMuonThreshold_       = iConfig.getParameter<double>( "deltaRJetMuonThreshold" );
-        invMassLepLowThreshold_       = iConfig.getParameter<double>( "invMassLepLowThreshold" );
-        invMassLepHighThreshold_      = iConfig.getParameter<double>( "invMassLepHighThreshold" );
-        numberOfLowPtMuonsThreshold_  = iConfig.getParameter<double>( "numberOfLowPtMuonsThreshold" );
-        numberOfHighPtMuonsThreshold_ = iConfig.getParameter<double>( "numberOfHighPtMuonsThreshold" );
-        leptonLowPtThreshold_         = iConfig.getParameter<double>( "leptonLowPtThreshold" );
-        deltaRLowPtMuonPhoThreshold_  = iConfig.getParameter<double>( "deltaRLowPtMuonPhoThreshold" );
-        deltaRPhoLeadJet_             = iConfig.getParameter<double>( "deltaRPhoLeadJet" );
-        deltaRPhoSubLeadJet_          = iConfig.getParameter<double>( "deltaRPhoSubLeadJet" );
+        double default_leptonPtThreshold_ = 20.;
+        double default_leptonEtaThreshold_ = 2.4;
+        double default_leadPhoOverMassThreshold_ = 0.375;
+        double default_subleadPhoOverMassThreshold_ = 0.25;
+        double default_MVAThreshold_ = -0.6;
+        double default_deltaRLepPhoThreshold_ = 1;
+        double default_jetsNumberThreshold_ = 3;
+        double default_jetPtThreshold_ = 30.;
+        double default_jetEtaThreshold_ = 2.4;
+        double default_muPFIsoSumRelThreshold_ = 0.2;
+        double default_PhoMVAThreshold_ = -0.2;
+        double default_METThreshold_ = 45.;
+        double default_deltaRJetMuonThreshold_ = 0.5;
+        double default_invMassLepLowThreshold_ = 70.;
+        double default_invMassLepHighThreshold_ = 110.;
+        double default_numberOfLowPtMuonsThreshold_ = 2.;
+        double default_numberOfHighPtMuonsThreshold_ = 1.;
+        double default_leptonLowPtThreshold_ = 10.;
+        double default_deltaRLowPtMuonPhoThreshold_ = 0.5;
 
-        LowPtEtaPhoThreshold_         = iConfig.getParameter<double>( "LowPtEtaPhoThreshold" );
-        MidPtEtaPhoThreshold_         = iConfig.getParameter<double>( "MidPtEtaPhoThreshold" );
-        HighEtaPhoThreshold_          = iConfig.getParameter<double>( "HighEtaPhoThreshold" );
+        double default_deltaRPhoLeadJet_ = 0.5;
+        double default_deltaRPhoSubLeadJet_ = 0.5;
 
-        ElectronPtThreshold_          = iConfig.getParameter<double>( "ElectronPtThreshold" );
-        DeltaRTrkElec_                = iConfig.getParameter<double>( "DeltaRTrkElec" );
-        TransverseImpactParam_        = iConfig.getParameter<double>( "TransverseImpactParam" );
-        LongitudinalImpactParam_      = iConfig.getParameter<double>( "LongitudinalImpactParam" );
+        double default_ElectronPtThreshold_ = 20.;
+        double default_DeltaRTrkElec_ = 1.;
+        double default_TransverseImpactParam_ = 0.02;
+        double default_LongitudinalImpactParam_ = 0.2;
 
-        deltaRPhoElectronThreshold_   = iConfig.getParameter<double>( "deltaRPhoElectronThreshold" );
-        Zmass_                        = iConfig.getParameter<double>( "Zmass" );
-        deltaMassElectronZThreshold_  = iConfig.getParameter<double>( "deltaMassElectronZThreshold_" );
+        double default_deltaRPhoElectronThreshold_ = 1.;
+        double default_Zmass_ = 91.9;
+        double default_deltaMassElectronZThreshold_ = 10.;
 
-        nonTrigMVAThreshold_          = iConfig.getParameter<double>( "nonTrigMVAThreshold" );
-        electronIsoThreshold_         = iConfig.getParameter<double>( "electronIsoThreshold" );
-        electronNumOfHitsThreshold_   = iConfig.getParameter<double>( "electronNumOfHitsThreshold" );
+        vector<double> default_nonTrigMVAThresholds_;
+        default_nonTrigMVAThresholds_.push_back(0.913286);
+        default_nonTrigMVAThresholds_.push_back(0.805013);
+        default_nonTrigMVAThresholds_.push_back(0.358969);
 
-        EtaCuts_                      = iConfig.getParameter<vector<double > >( "EtaCuts" );
+        vector<double> default_nonTrigMVAEtaCuts_;
+        default_nonTrigMVAEtaCuts_.push_back(0.8);
+        default_nonTrigMVAEtaCuts_.push_back(1.479);
+        default_nonTrigMVAEtaCuts_.push_back(2.5);
+
+        double default_electronIsoThreshold_ = 0.15;
+        double default_electronNumOfHitsThreshold_ = 1.;
+
+        vector<double> default_electronEtaCuts_;
+        default_electronEtaCuts_.push_back( 1.4442 );
+        default_electronEtaCuts_.push_back( 1.566 );
+        default_electronEtaCuts_.push_back( 2.5 );
+
+
+        leptonPtThreshold_ = iConfig.getUntrackedParameter<double>( "leptonPtThreshold", default_leptonPtThreshold_ );
+        leptonEtaThreshold_ = iConfig.getUntrackedParameter<double>( "leptonEtaThreshold", default_leptonEtaThreshold_ );
+        leadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>( "leadPhoOverMassThreshold", default_leadPhoOverMassThreshold_ );
+        subleadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>( "subleadPhoOverMassThreshold", default_subleadPhoOverMassThreshold_ );
+        MVAThreshold_ = iConfig.getUntrackedParameter<double>( "MVAThreshold", default_MVAThreshold_ );
+        deltaRLepPhoThreshold_ = iConfig.getUntrackedParameter<double>( "deltaRLepPhoThreshold", default_deltaRLepPhoThreshold_ );
+        jetsNumberThreshold_ = iConfig.getUntrackedParameter<double>( "jetsNumberThreshold", default_jetsNumberThreshold_ );
+        jetPtThreshold_ = iConfig.getUntrackedParameter<double>( "jetPtThreshold", default_jetPtThreshold_ );
+        jetEtaThreshold_ = iConfig.getUntrackedParameter<double>( "jetEtaThreshold", default_jetEtaThreshold_ );
+        muPFIsoSumRelThreshold_ = iConfig.getUntrackedParameter<double>( "muPFIsoSumRelThreshold", default_muPFIsoSumRelThreshold_ );
+        PhoMVAThreshold_ = iConfig.getUntrackedParameter<double>( "PhoMVAThreshold", default_PhoMVAThreshold_ );
+        METThreshold_ = iConfig.getUntrackedParameter<double>( "METThreshold", default_METThreshold_ );
+
+        deltaRJetMuonThreshold_ = iConfig.getUntrackedParameter<double>( "deltaRJetMuonThreshold", default_deltaRJetMuonThreshold_ );
+        invMassLepLowThreshold_ = iConfig.getUntrackedParameter<double>( "invMassLepLowThreshold", default_invMassLepLowThreshold_ );
+        invMassLepHighThreshold_ = iConfig.getUntrackedParameter<double>( "invMassLepHighThreshold", default_invMassLepHighThreshold_ );
+        numberOfLowPtMuonsThreshold_ = iConfig.getUntrackedParameter<double>( "numberOfLowPtMuonsThreshold", default_numberOfLowPtMuonsThreshold_ );
+        numberOfHighPtMuonsThreshold_ = iConfig.getUntrackedParameter<double>( "numberOfHighPtMuonsThreshold", default_numberOfHighPtMuonsThreshold_ );
+        leptonLowPtThreshold_ = iConfig.getUntrackedParameter<double>( "leptonLowPtThreshold", default_leptonLowPtThreshold_ );
+        deltaRLowPtMuonPhoThreshold_ = iConfig.getUntrackedParameter<double>( "deltaRLowPtMuonPhoThreshold", default_deltaRLowPtMuonPhoThreshold_ );
+        deltaRPhoLeadJet_ = iConfig.getUntrackedParameter<double>( "deltaRPhoLeadJet", default_deltaRPhoLeadJet_ );
+        deltaRPhoSubLeadJet_ = iConfig.getUntrackedParameter<double>( "deltaRPhoSubLeadJet", default_deltaRPhoSubLeadJet_ );
+
+        ElectronPtThreshold_ = iConfig.getUntrackedParameter<double>( "ElectronPtThreshold", default_ElectronPtThreshold_ );
+        DeltaRTrkElec_ = iConfig.getUntrackedParameter<double>( "DeltaRTrkElec", default_DeltaRTrkElec_ );
+        TransverseImpactParam_ = iConfig.getUntrackedParameter<double>( "TransverseImpactParam", default_TransverseImpactParam_ );
+        LongitudinalImpactParam_ = iConfig.getUntrackedParameter<double>( "LongitudinalImpactParam", default_LongitudinalImpactParam_ );
+        nonTrigMVAThresholds_ =  iConfig.getUntrackedParameter<vector<double > >( "nonTrigMVAThresholds", default_nonTrigMVAThresholds_ );
+        nonTrigMVAEtaCuts_ =  iConfig.getUntrackedParameter<vector<double > >( "nonTrigMVAEtaCuts", default_nonTrigMVAEtaCuts_ );
+
+        deltaRPhoElectronThreshold_ = iConfig.getUntrackedParameter<double>( "deltaRPhoElectronThreshold", default_deltaRPhoElectronThreshold_ );
+        Zmass_ = iConfig.getUntrackedParameter<double>( "Zmass_", default_Zmass_ );
+        deltaMassElectronZThreshold_ = iConfig.getUntrackedParameter<double>( "deltaMassElectronZThreshold_", default_deltaMassElectronZThreshold_ );
+
+
+
+        electronIsoThreshold_ = iConfig.getUntrackedParameter<double>( "electronIsoThreshold", default_electronIsoThreshold_ );
+        electronNumOfHitsThreshold_ = iConfig.getUntrackedParameter<double>( "electronNumOfHitsThreshold", default_electronNumOfHitsThreshold_ );
+
+        electronEtaCuts_ = iConfig.getUntrackedParameter<vector<double > >( "electronEtaCuts", default_electronEtaCuts_ );
 
         produces<vector<VHTightTag> >();
         produces<vector<TagTruthBase> >();
@@ -271,12 +320,7 @@ namespace flashgg {
             if( dipho->leadingPhoton()->pt() < ( dipho->mass() )*leadPhoOverMassThreshold_ ) { continue; }
 
             if( dipho->subLeadingPhoton()->pt() < ( dipho->mass() )*subleadPhoOverMassThreshold_ ) { continue; }
-            if( ( fabs( dipho->leadingPhoton()->superCluster()->eta() ) > LowPtEtaPhoThreshold_ &&
-                    fabs( dipho->leadingPhoton()->superCluster()->eta() ) < MidPtEtaPhoThreshold_ ) ||
-                    fabs( dipho->leadingPhoton()->superCluster()->eta() ) > HighEtaPhoThreshold_ ) { continue; }
-            if( ( fabs( dipho->subLeadingPhoton()->superCluster()->eta() ) > LowPtEtaPhoThreshold_ &&
-                    fabs( dipho->subLeadingPhoton()->superCluster()->eta() ) < MidPtEtaPhoThreshold_ ) ||
-                    fabs( dipho->subLeadingPhoton()->superCluster()->eta() ) > HighEtaPhoThreshold_ ) { continue; }
+
 
             idmva1 = dipho->leadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
             idmva2 = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
@@ -292,10 +336,23 @@ namespace flashgg {
             hasGoodMuons_highPt = ( tagMuons_highPt.size() > 0 );
             hasGoodMuons_lowPt = ( tagMuons_lowPt.size() > 0 );
 
-            tagElectrons_highPt = selectElectrons( theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, DeltaRTrkElec_, TransverseImpactParam_,
-                                                   LongitudinalImpactParam_, nonTrigMVAThreshold_, electronIsoThreshold_, electronNumOfHitsThreshold_, EtaCuts_ );
-            tagElectrons_lowPt = selectElectrons( theElectrons->ptrs(), vertices->ptrs(), leptonLowPtThreshold_, DeltaRTrkElec_, TransverseImpactParam_,
-                                                  LongitudinalImpactParam_, nonTrigMVAThreshold_, electronIsoThreshold_, electronNumOfHitsThreshold_, EtaCuts_ );
+            tagElectrons_highPt = selectElectrons( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_,  TransverseImpactParam_,
+                                                   LongitudinalImpactParam_,  nonTrigMVAThresholds_, nonTrigMVAEtaCuts_, 
+                                                   electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaCuts_ ,
+                                                  deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_);
+            
+            tagElectrons_lowPt = selectElectrons( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonLowPtThreshold_,  TransverseImpactParam_,
+                                                  LongitudinalImpactParam_,  nonTrigMVAThresholds_, nonTrigMVAEtaCuts_,
+                                                  electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaCuts_ ,
+                                                  deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_);
+
+        
+            std::vector<edm::Ptr<Electron> > goodElectrons = selectElectrons( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, 
+                                                                              TransverseImpactParam_, LongitudinalImpactParam_, nonTrigMVAThresholds_, nonTrigMVAEtaCuts_,
+                                                                                 electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaCuts_ ,
+                                                                                 deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_);
+
+        
             hasGoodElectrons_highPt = ( tagElectrons_highPt.size() > 0 );
             hasGoodElectrons_lowPt = ( tagElectrons_lowPt.size() > 0 );
 
@@ -377,39 +434,11 @@ namespace flashgg {
                 }
             }
             if( tagElectrons.size() > 0 ) {
-                bool photon_veto = false;
-                std::vector<const flashgg::Photon *> photons;
 
                 for( unsigned int elecIndex = 0; elecIndex < tagElectrons.size(); elecIndex++ ) {
+
                     Ptr<Electron> elec = tagElectrons[elecIndex];
-                    TLorentzVector elec_p4;
-                    elec_p4.SetXYZT( elec->px(), elec->py(), elec->pz(), elec->energy() );
-                    float phi = elec->superCluster()->phi();
-                    float theta = ( 2 * atan( exp( -elec->superCluster()->eta() ) ) );
-                    float energy = elec->ecalEnergy();
-                    float px = energy * sin( theta ) * cos( phi );
-                    float py = energy * sin( theta ) * sin( phi );
-                    float pz = energy * cos( theta );
-
-                    TLorentzVector elec_superClusterVect;
-                    elec_superClusterVect.SetXYZT( px, py, pz, energy );
-                    for( unsigned int phoIndex = 0; phoIndex < photons.size(); phoIndex++ ) {
-                        TLorentzVector p;
-                        p.SetXYZT( photons.at( phoIndex )->px(), photons.at( phoIndex )->py(), photons.at( phoIndex )->pz(), photons.at( phoIndex )->energy() );
-                        if( p.DeltaR( elec_superClusterVect ) < 1. ) { continue; }
-                        if( &( *photons.at( phoIndex )->superCluster() ) == &( *elec->superCluster() ) ) {
-                            float TrkElecSCDeltaR = sqrt( elec->deltaEtaSuperClusterTrackAtVtx() * elec->deltaEtaSuperClusterTrackAtVtx() + elec->deltaPhiSuperClusterTrackAtVtx() *
-                                                          elec->deltaPhiSuperClusterTrackAtVtx() );
-                            if( TrkElecSCDeltaR < DeltaRTrkElec_ ) { continue; }
-                        }
-
-                        if( p.DeltaR( elec_p4 ) <= deltaRPhoElectronThreshold_ ) { continue; }
-                        TLorentzVector elep = elec_p4 + p;
-                        if( fabs( elep.M() - Zmass_ ) <= deltaMassElectronZThreshold_ ) { continue; }
-                        photon_veto = true;
-                    }
-
-                    if( !photon_veto ) { break; }
+                   
                     for( unsigned int candIndex_outer = 0; candIndex_outer < Jets[jetCollectionIndex]->size() ; candIndex_outer++ ) {
                         edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( candIndex_outer );
                         if( ! thejet->passesPuJetId( dipho ) ) { continue; }
@@ -427,7 +456,7 @@ namespace flashgg {
                 }
 
             }
-
+        
             if( METs->size() != 1 ) { std::cout << "WARNING - #MET is not 1" << std::endl;}
             Ptr<pat::MET> theMET = METs->ptrAt( 0 );
             if( ( isMuonHighPt || isElectronHighPt ) && theMET->pt() > METThreshold_ ) {

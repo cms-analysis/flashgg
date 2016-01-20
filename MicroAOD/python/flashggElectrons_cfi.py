@@ -23,9 +23,13 @@ flashggElectrons = cms.EDProducer('FlashggElectronProducer',
 		electronTag = cms.InputTag('slimmedElectrons'),
 		vertexTag = cms.InputTag('offlineSlimmedPrimaryVertices'),
 		convTag   = cms.InputTag('reducedEgamma','reducedConversions'),
-		beamSpotTag = cms.InputTag( "offlineBeamSpot" ),
+                beamSpotTag = cms.InputTag( "offlineBeamSpot" ),
 		reducedEBRecHitCollection = cms.InputTag('reducedEcalRecHitsEB'),
 		reducedEERecHitCollection = cms.InputTag('reducedEcalRecHitsEE'),
 		rhoFixedGridCollection = cms.InputTag('fixedGridRhoAll'),
                 mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"),
+                effAreasConfigFile = cms.FileInPath("RecoEgamma/ElectronIdentification/data/Spring15/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_25ns.txt"),
+  		eleMVAMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp90"),
+                eleMVATightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80")
+
 		)
