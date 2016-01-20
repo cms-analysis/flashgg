@@ -8,6 +8,8 @@
 #include "TTree.h"
 #include "CommonTools/Utils/interface/TFileDirectory.h"
 
+//#include "FWCore/Framework/interface/ConsumesCollector.h""
+
 #include "PhysicsTools/UtilAlgos/interface/BasicAnalyzer.h"
 /// #include "PhysicsTools/FWLite/interface/ScannerHelpers.h"
 
@@ -16,6 +18,8 @@
 #include "CommonTools/Utils/interface/StringObjectFunction.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
+
+#include "FWCore/Framework/interface/Event.h"
 
 #include "flashgg/Taggers/interface/StringHelpers.h"
 
@@ -83,7 +87,12 @@ namespace flashgg {
         vector<double> pdfWeights( const edm::EventBase &event );
 
         /// float eventWeight(const edm::EventBase& event);
-        edm::InputTag src_, genInfo_, pdfWeightToken_;
+        edm::InputTag src_, genInfo_, pdfWeight_;
+
+        edm::EDGetTokenT<edm::Handle<collection_type> > srcToken_;
+        edm::EDGetTokenT<edm::Handle<GenEventInfoProduct> > genInfoToken_;
+        edm::EDGetTokenT<std::vector<flashgg::PDFWeightObject> > pdfWeightToken_;
+
         std::string processId_;
         int processIndex_;
         double lumiWeight_;
@@ -149,6 +158,9 @@ namespace flashgg {
             RooMsgService::instance().setGlobalKillBelow( RooFit::WARNING );
         }
 	    
+        srcToken_ = consumes<edm::Handle<C> >( src_ );
+        pdfWeightToken_ = mayConsume<std::vector<flashgg::PDFWeightObject> >( pdfWeight_ );
+        genInfoToken_ = consumes<edm::EDGetTokenT<edm::Handle<GenEventInfoProduct> >( genInfo_ );
         
         nPdfWeights_=0;
         nAlphaSWeights_=0;
@@ -232,9 +244,7 @@ namespace flashgg {
         }
 
         if(dumpPdfWeights_){
-            //if (cfg.exists("flashggPDFWeightObject")){
-                pdfWeightToken_= cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject",edm::InputTag("flashggPDFWeightObject"));
-           // }
+            pdfWeight_ = cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject",edm::InputTag("flashggPDFWeightObject"));
         }
 
         workspaceName_ = formatString( workspaceName_, replacements );
@@ -298,7 +308,12 @@ namespace flashgg {
             double weight = 1.;
             if( ! event.isRealData() ) {
                 edm::Handle<GenEventInfoProduct> genInfo;
-                event.getByLabel( genInfo_, genInfo );
+                const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&event);
+                if (fullEvent != 0) {
+                    fullEvent->getByToken(genInfoToken_, genInfo);
+                } else {
+                    event.getByLabel(genInfo_,genInfo);
+                }
 
                 weight = lumiWeight_;
 
@@ -323,7 +338,12 @@ namespace flashgg {
         {   
             vector<double> pdfWeights;
             edm::Handle<vector<flashgg::PDFWeightObject> > WeightHandle;
-            event.getByLabel( pdfWeightToken_, WeightHandle );
+            const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&event);
+            if (fullEvent != 0) {
+                fullEvent->getByToken(pdfWeightToken_, WeightHandle);
+            } else {
+                event.getByLabel(pdfWeight_, WeightHandle);
+            }
 
             for( unsigned int weight_index = 0; weight_index < (*WeightHandle).size(); weight_index++ ){
 
@@ -359,13 +379,19 @@ namespace flashgg {
         void CollectionDumper<C, T, U>::analyze( const edm::EventBase &event )
         {
             edm::Handle<collection_type> collectionH;
-            event.getByLabel( src_, collectionH );
-            const auto &collection = *collectionH;
+
+            const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&event);
+            if (fullEvent != 0) {
+                fullEvent->getByToken(srcToken_, collectionH);
+            } else {
+                event.getByLabel(src_,collectionH);
+            }
+            const auto & collection = *collectionH;
 
             if( globalVarsDumper_ ) { globalVarsDumper_->fill( event ); }
 
             weight_ = eventWeight( event );
-	    if( dumpPdfWeights_){
+            if( dumpPdfWeights_){
                 
                 // want pdfWeights_ to be scale factors rather than akternative weights.
                 // To do this, each PDF weight needs to be divided by the nominal MC weight
