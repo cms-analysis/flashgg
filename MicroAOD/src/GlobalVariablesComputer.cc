@@ -1,10 +1,8 @@
 #include "flashgg/MicroAOD/interface/GlobalVariablesComputer.h"
 
-#include "DataFormats/VertexReco/interface/VertexFwd.h"
-#include "DataFormats/VertexReco/interface/Vertex.h"
+#include "FWCore/Framework/interface/Event.h"
 
-// #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
-#include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
 
 using namespace edm;
 using namespace reco;
@@ -19,6 +17,24 @@ namespace flashgg {
     {
         if( getPu_ ) {
             puInfo_ = cfg.getParameter<edm::InputTag>("puInfo");
+        }
+        _init(cfg);
+    }
+
+    GlobalVariablesComputer::GlobalVariablesComputer( const edm::ParameterSet &cfg, edm::ConsumesCollector &&cc ) :
+        rhoToken_( cc.consumes<double>( cfg.getParameter<edm::InputTag>( "rho" ) ) ),
+        vtxToken_( cc.consumes<VertexCollection>( cfg.getParameter<edm::InputTag>( "vertexes" ) ) ),
+        getPu_( cfg.exists("puInfo") )
+    {
+        if( getPu_ ) {
+            puInfoToken_ = cc.consumes<std::vector<PileupSummaryInfo> >( cfg.getParameter<edm::InputTag>("puInfo") );
+        }
+        _init(cfg);
+    }
+
+    void GlobalVariablesComputer::_init( const edm::ParameterSet & cfg )
+    {
+        if( getPu_ ) {
             puReWeight_ = ( cfg.exists("puReWeight") ? cfg.getParameter<bool>("puReWeight") : false );
             if( puReWeight_ ) { 
                 puBins_ = cfg.getParameter<std::vector<double> >("puBins");
@@ -74,10 +90,22 @@ namespace flashgg {
     void GlobalVariablesComputer::update( const EventBase &evt )
     {
         Handle<double> rhoHandle;
-        evt.getByLabel( rhoTag_, rhoHandle );
-
         Handle<VertexCollection> vertices;
-        evt.getByLabel( vtxTag_, vertices );
+        Handle<std::vector<PileupSummaryInfo> > puInfo;
+        const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&evt);
+        if (fullEvent != 0) {
+            fullEvent->getByToken( rhoToken_, rhoHandle );
+            fullEvent->getByToken( vtxToken_, vertices );
+            if( ! evt.isRealData() && getPu_ ) {
+                fullEvent->getByToken(puInfoToken_,puInfo);
+            }
+        } else {
+            evt.getByLabel( rhoTag_, rhoHandle );
+            evt.getByLabel( vtxTag_, vertices );
+            if( ! evt.isRealData() && getPu_ ) {
+                evt.getByLabel(puInfo_,puInfo);
+            }
+        }
 
         cache_.event = evt.id().event();
         cache_.lumi = evt.id().luminosityBlock();
@@ -86,8 +114,6 @@ namespace flashgg {
         cache_.nvtx = vertices->size();
         
         if( ! evt.isRealData() && getPu_ ) {
-            edm::Handle<std::vector<PileupSummaryInfo> > puInfo;
-            evt.getByLabel(puInfo_,puInfo);
             double truePu=0., obsPu=0.;
             for( auto & frame : *puInfo ) {
                 if( frame.getBunchCrossing() == 0 ) {

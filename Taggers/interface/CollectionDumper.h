@@ -20,6 +20,7 @@
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 
 #include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
 #include "flashgg/Taggers/interface/StringHelpers.h"
 
@@ -139,8 +140,12 @@ namespace flashgg {
         classifier_( cfg.getParameter<edm::ParameterSet>( "classifierCfg" ) ),
         src_( cfg.getParameter<edm::InputTag>( "src" ) ),
         genInfo_( cfg.getParameter<edm::InputTag>( "generatorInfo" ) ),
-        pdfWeight_( cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject", edm::InputTag("flashggPDFWeightObject") ) )
+        pdfWeight_( cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject", edm::InputTag("flashggPDFWeightObject") ) ),
+        globalVarsDumper_(0)
     {
+        if( dumpGlobalVariables_ ) {
+            globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ) );
+        }
         _init(cfg, fs);
     }
 
@@ -153,8 +158,12 @@ namespace flashgg {
         pdfWeight_( cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject", edm::InputTag("flashggPDFWeightObject") ) ),
         srcToken_( cc.consumes<collection_type>( src_ ) ),
         genInfoToken_( cc.consumes<GenEventInfoProduct>( genInfo_ ) ),
-        pdfWeightToken_( cc.consumes<std::vector<flashgg::PDFWeightObject> >( pdfWeight_ ) )
+        pdfWeightToken_( cc.consumes<std::vector<flashgg::PDFWeightObject> >( pdfWeight_ ) ),
+        globalVarsDumper_(0)
     {
+        if( dumpGlobalVariables_ ) {
+            globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ), std::forward<edm::ConsumesCollector>(cc) );
+        }
         _init(cfg, fs);
     }
 
@@ -177,7 +186,6 @@ namespace flashgg {
         dumpGlobalVariables_ = cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true );
         classifier_          = cfg.getParameter<edm::ParameterSet>( "classifierCfg" );
         throwOnUnclassified_ = cfg.exists("throwOnUnclassified") ? cfg.getParameter<bool>("throwOnUnclassified") : false;
-        globalVarsDumper_    = 0;
 
         if( cfg.getUntrackedParameter<bool>( "quietRooFit", false ) ) {
             RooMsgService::instance().setGlobalKillBelow( RooFit::WARNING );
@@ -195,7 +203,6 @@ namespace flashgg {
         nameTemplate_ = formatString( nameTemplate_, replacements );
 
         if( dumpGlobalVariables_ ) {
-            globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ) );
             if( splitLumiWeight_ ) {
                 globalVarsDumper_->dumpLumiFactor(lumiWeight_);
                 lumiWeight_ = 1.;
