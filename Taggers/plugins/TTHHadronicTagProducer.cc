@@ -39,6 +39,7 @@ namespace flashgg {
     private:
         void produce( Event &, const EventSetup & ) override;
 
+        std::vector<edm::EDGetTokenT<View<flashgg::Jet> > > tokenJets_;
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         //EDGetTokenT<View<Jet> > thejetToken_;
         std::vector<edm::InputTag> inputTagJets_;
@@ -154,6 +155,10 @@ namespace flashgg {
         TransverseImpactParam_ = iConfig.getUntrackedParameter<double>( "TransverseImpactParam", default_TransverseImpactParam_ );
         LongitudinalImpactParam_ = iConfig.getUntrackedParameter<double>( "LongitudinalImpactParam", default_LongitudinalImpactParam_ );
         electronEtaCuts_ = iConfig.getUntrackedParameter<vector<double > >( "electronEtaCuts",default_electronEtaCuts_);
+        for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
+            auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
+            tokenJets_.push_back(token);
+        }
 
         produces<vector<TTHHadronicTag> >();
         produces<vector<TagTruthBase> >();
@@ -167,7 +172,7 @@ namespace flashgg {
         // const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
         JetCollectionVector Jets( inputTagJets_.size() );
         for( size_t j = 0; j < inputTagJets_.size(); ++j ) {
-            evt.getByLabel( inputTagJets_[j], Jets[j] );
+            evt.getByToken( tokenJets_[j], Jets[j] );
         }
 
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
