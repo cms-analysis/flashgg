@@ -24,9 +24,26 @@ namespace flashgg {
         if( cfg.exists( "addTriggerBits" ) ) {
             const auto &trg = cfg.getParameter<ParameterSet>( "addTriggerBits" );
             triggerTag_ = trg.getParameter<InputTag>( "tag" );
+        }
+    }
+
+
+    GlobalVariablesDumper::GlobalVariablesDumper( const ParameterSet &cfg, edm::ConsumesCollector && cc ) :
+        GlobalVariablesComputer( cfg, std::forward<edm::ConsumesCollector>(cc) )
+    {
+        if( cfg.exists( "addTriggerBits" ) ) {
+            const auto &trg = cfg.getParameter<ParameterSet>( "addTriggerBits" );
+            triggerToken_ = cc.consumes<TriggerResults>( trg.getParameter<InputTag>( "tag" ) );
+        }
+    }
+
+
+    void GlobalVariablesDumper::_init( const ParameterSet &cfg )
+    {
+        if( cfg.exists( "addTriggerBits" ) ) {
+            const auto &trg = cfg.getParameter<ParameterSet>( "addTriggerBits" );
             auto bitNames   = trg.getParameter<std::vector<std::string> >( "bits" );
             for( auto &bit : bitNames ) {
-                //                std::cout << bit << std::endl;
                 bits_.push_back( std::make_pair( bit, false ) );
             }
         }
@@ -63,7 +80,12 @@ namespace flashgg {
         update( evt );
         if( ! bits_.empty() ) {
             Handle<TriggerResults> trigResults; //our trigger result object
-            evt.getByLabel( triggerTag_, trigResults );
+            const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&evt);
+            if (fullEvent != 0) {
+                fullEvent->getByToken(triggerToken_, trigResults);
+            } else {
+                evt.getByLabel( triggerTag_, trigResults );
+            }
 
             for( auto &bit : bits_ ) { bit.second = false; }
             auto &trigNames = evt.triggerNames( *trigResults );
