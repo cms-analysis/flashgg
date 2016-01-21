@@ -2,6 +2,7 @@
 #define flashgg_GlobalVariablesDumper_h
 
 #include "FWCore/Common/interface/EventBase.h"
+#include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
@@ -15,6 +16,7 @@ namespace flashgg {
     {
     public:
         GlobalVariablesDumper( const edm::ParameterSet &cfg );
+        GlobalVariablesDumper( const edm::ParameterSet &cfg, edm::ConsumesCollector && cc );
         ~GlobalVariablesDumper();
 
         void bookTreeVariables( TTree *target, const std::map<std::string, std::string> &replacements );
@@ -24,8 +26,13 @@ namespace flashgg {
         void dumpLumiFactor(double lumiFactor);
 
         void setProcessIndex(int processIndex) {processIndex_= processIndex;}
+
     private:
+
+        void _init( const edm::ParameterSet &cfg );
+
         edm::InputTag triggerTag_;
+        edm::EDGetTokenT<edm::TriggerResults> triggerToken_;
         std::vector<std::pair<std::string, bool>> bits_;
         
         bool dumpLumiFactor_;
