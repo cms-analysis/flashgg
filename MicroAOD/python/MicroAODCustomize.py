@@ -268,6 +268,7 @@ class MicroAODCustomize(object):
         from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
         for vtx in range(0,maxJetCollections):
             addFlashggPFCHSJets (process = process,
+                                 isData=(self.processType == "data"),
                                  vertexIndex =vtx,
                                  #doQGTagging = True,
                                  label = '' + str(vtx))

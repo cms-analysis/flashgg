@@ -14,6 +14,7 @@ maxJetCollections = 8
 qgDatabaseVersion = 'v1' # check https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
 
 def addFlashggPFCHSJets(process, 
+                        isData,
                         vertexIndex = 0, 
                         #doQGTagging = True, 
                         label ='', 
@@ -66,6 +67,11 @@ def addFlashggPFCHSJets(process,
   #Import RECO jet producer for ak4 PF and GEN jet
   from RecoJets.JetProducers.ak4PFJets_cfi  import ak4PFJets
   setattr(process, 'ak4PFJetsCHSLeg' + label, ak4PFJets.clone ( src = 'pfNoElectronsCHSLeg' + label, doAreaFastjet = True))
+
+  if isData:
+    JECs = ['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual']
+  else:
+    JECs = ['L1FastJet', 'L2Relative', 'L3Absolute']
     
   # NOTE: this is the 74X recipe for the jet clustering
   addJetCollection(
@@ -77,7 +83,7 @@ def addFlashggPFCHSJets(process,
     pfCandidates   = cms.InputTag('packedPFCandidates'),
     svSource       = cms.InputTag('slimmedSecondaryVertices'),
     btagDiscriminators = [ flashggBTag ],
-    jetCorrections = ('AK4PFchs', ['L1FastJet', 'L2Relative', 'L3Absolute'], 'None'),
+    jetCorrections = ('AK4PFchs', JECs, 'None'),
     genJetCollection = cms.InputTag('slimmedGenJets'),
     genParticles     = cms.InputTag('prunedGenParticles'),
     # jet param
