@@ -31,16 +31,19 @@ namespace flashgg {
         void produce( edm::Event &, const edm::EventSetup & ) override;
         bool correctionsSet_;
         bool doCentralJEC_;
+        string JECLabel_;
     };
 
     JetSystematicProducer::JetSystematicProducer ( const edm::ParameterSet &iConfig ) : ObjectSystematicProducer<flashgg::Jet,int,std::vector>( iConfig ) {
         correctionsSet_ = false;
         doCentralJEC_ = iConfig.getParameter<bool>("DoCentralJEC");
+        JECLabel_ = iConfig.getParameter<string>("JECLabel");
     }
     
     void JetSystematicProducer::produce( edm::Event &iEvent, const edm::EventSetup & iSetup ) {
         if (doCentralJEC_) {
-            const JetCorrector* corrector = JetCorrector::getJetCorrector ("ak4PFCHSL1FastL2L3",iSetup); 
+            // Sal: IIRC, you want "ak4PFCHSL1FastL2L3Residual" for data, "ak4PFCHSL1FastL2L3" for MC
+            const JetCorrector* corrector = JetCorrector::getJetCorrector (JECLabel_,iSetup); 
             for( unsigned int ncorr = 0; ncorr < this->Corrections_.size(); ncorr++ ) {
                 this->Corrections_.at( ncorr )->setJEC(corrector,iEvent,iSetup);
             }
