@@ -95,9 +95,22 @@ elif customize.processId == "Data":
             newvpset += [pset]
     process.flashggDiPhotonSystematics.SystMethods = newvpset
     systprodlist = [] #[process.flashggMuonSystematics,process.flashggElectronSystematics]
-    systprodlist += [getattr(process,"flashggJetSystematics%i"%i) for i in range(len(UnpackedJetCollectionVInputTag))]
     for systprod in systprodlist:
-        systprod.SystMethods = cms.VPSet() # empty everything
+        systprod.SystMethods = cms.VPSet() # empty everything                                                                                                                                                                                                      
+    jetsystprodlist = [getattr(process,"flashggJetSystematics%i"%i) for i in range(len(UnpackedJetCollectionVInputTag))]
+    for systprod in jetsystprodlist:
+        # For any MicroAOD up to 1_3_0 the JEC in Data MicroAOD were bugged and this line makes sure they are fixed
+        # It should be a noop in cases where they are already correct
+        newvpset = cms.VPSet()
+        for pset in systprod.SystMethods:
+            if pset.Label.value().count("JEC"):
+                pset.NSigmas = cms.vint32() # Do not perform shifts, central value only                                                                                                                                                                        
+#                pset.Debug = True
+                newvpset += [pset]
+            systprod.SystMethods = newvpset
+        systprod.DoCentralJEC = True
+        systprod.JECLabel = "ak4PFCHSL1FastL2L3Residual"
+        process.load("JetMETCorrections/Configuration/JetCorrectionServices_cff")
 else:
     print "Background MC, so store mgg and central only"
     variablesToUse = minimalNonSignalVariables

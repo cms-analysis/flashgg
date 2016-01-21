@@ -18,6 +18,7 @@ if doSystematics:
     process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
     from Configuration.AlCa.GlobalTag import GlobalTag
     process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v4' # keep updated for JEC
+#    process.GlobalTag.globaltag = '74X_dataRun2_reMiniAOD_v0' # Original for checks against MiniAOD
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1))
@@ -26,6 +27,7 @@ process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
 #        "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-1_1_0-25ns/1_1_0/VBFHToGG_M-125_13TeV_powheg_pythia8/RunIISpring15-ReMiniAOD-1_1_0-25ns-1_1_0-v0-RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/160105_224017/0000/myMicroAODOutputFile_1.root"
         "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-1_1_0-25ns/1_1_0/DoubleEG/RunIISpring15-ReMiniAOD-1_1_0-25ns-1_1_0-v0-Run2015C_25ns-05Oct2015-v1/160105_222657/0000/myMicroAODOutputFile_41.root"
+#        "file:myMicroAODOutputFile.root"
                              ))
 
 process.TFileService = cms.Service("TFileService",
@@ -53,19 +55,19 @@ if doSystematics:
     process.flashggVBFTagMerger = cms.EDProducer("VBFTagMerger",src=cms.VInputTag("flashggVBFTag"))
 
 # Use JetID
-process.flashggVBFMVA.UseJetID      = cms.untracked.bool(True)
-process.flashggVBFMVA.JetIDLevel    = cms.untracked.string("Loose")
+process.flashggVBFMVA.UseJetID      = cms.bool(True)
+process.flashggVBFMVA.JetIDLevel    = cms.string("Loose")
 
 # use custum TMVA weights
 process.flashggVBFMVA.vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/Flashgg_VBF_CHS_STD_BDTG.weights.xml")
-process.flashggVBFMVA.MVAMethod        = cms.untracked.string("BDTG")
+process.flashggVBFMVA.MVAMethod        = cms.string("BDTG")
 
 # QCD Recovery 
 # process.flashggVBFMVA.merge3rdJet   = cms.untracked.bool(False)
 # process.flashggVBFMVA.thirdJetDRCut = cms.untracked.double(1.5)
 
 # combined MVA boundary set
-process.flashggVBFTag.Boundaries    = cms.untracked.vdouble(-2,0,2)
+process.flashggVBFTag.Boundaries    = cms.vdouble(-2,0,2)
 
 process.systematicsTagSequences = cms.Sequence()
 
@@ -80,7 +82,20 @@ if doSystematics:
     if customize.processId == "Data":
         systprodlist = [getattr(process,"flashggJetSystematics%i"%i) for i in range(len(UnpackedJetCollectionVInputTag))]
         for systprod in systprodlist:
-            systprod.SystMethods = cms.VPSet() # empty everything
+            #            systprod.SystMethods = cms.VPSet() # do no systematics
+
+            # For any MicroAOD up to 1_3_0 the JEC in Data MicroAOD were bugged and this line makes sure they are fixed
+            # It should be a noop in cases where they are already correct
+            newvpset = cms.VPSet()
+            for pset in systprod.SystMethods:
+                if pset.Label.value().count("JEC"):
+                    pset.NSigmas = cms.vint32() # Do not perform shifts, central value only
+                    pset.Debug = False
+                    newvpset += [pset]
+            systprod.SystMethods = newvpset        
+            systprod.DoCentralJEC = True
+            systprod.JECLabel = "ak4PFCHSL1FastL2L3Residual"
+            process.load("JetMETCorrections/Configuration/JetCorrectionServices_cff")
     else:
         for direction in ["Up","Down"]:
             jetsystlabels.append("JEC%s01sigma" % direction)
