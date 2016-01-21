@@ -77,6 +77,8 @@ print "customize.processId:",customize.processId
 
 # Do systematics on all MC (n.b. different from ordinary workspaces) but not on data
 if doSystematics:
+    process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
+    massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggDiPhotons"),cms.InputTag("flashggDiPhotonSystematics"))
     systlabels = [""]
     jetsystlabels = []
     if customize.processId == "Data":
@@ -96,12 +98,20 @@ if doSystematics:
             systprod.DoCentralJEC = True
             systprod.JECLabel = "ak4PFCHSL1FastL2L3Residual"
             process.load("JetMETCorrections/Configuration/JetCorrectionServices_cff")
+        newvpset = cms.VPSet()
+        for pset in process.flashggDiPhotonSystematics.SystMethods:
+            if pset.Label.value().count("Scale"):
+                pset.NoCentralShift = cms.bool(False) # Turn on central shift for data (it is off for MC)
+                pset.NSigmas = cms.vint32() # Do not perform shift
+            newvpset += [pset]
+        process.flashggDiPhotonSystematics.SystMethods = newvpset
     else:
         for direction in ["Up","Down"]:
             jetsystlabels.append("JEC%s01sigma" % direction)
             jetsystlabels.append("JER%s01sigma" % direction)
         systlabels += jetsystlabels
-
+        for pset in process.flashggDiPhotonSystematics.SystMethods:
+            pset.NSigmas = cms.vint32() # Central value only
     for systlabel in systlabels:
         if systlabel == "":
             continue
@@ -191,6 +201,7 @@ if customize.processId == "Data" and requireTriggerOnData:
 if doSystematics:
     process.p1 = cms.Path(
         process.hltRequirement*
+        process.flashggDiPhotonSystematics*
         (process.flashggUnpackedJets*process.jetSystematicsSequence)*
         (process.flashggTagSequence+process.systematicsTagSequences)*
         process.flashggVBFTagMerger*
