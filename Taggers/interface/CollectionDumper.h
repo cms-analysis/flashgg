@@ -141,6 +141,7 @@ namespace flashgg {
         src_( cfg.getParameter<edm::InputTag>( "src" ) ),
         genInfo_( cfg.getParameter<edm::InputTag>( "generatorInfo" ) ),
         pdfWeight_( cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject", edm::InputTag("flashggPDFWeightObject") ) ),
+        dumpGlobalVariables_( cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true ) ),
         globalVarsDumper_(0)
     {
         if( dumpGlobalVariables_ ) {
@@ -159,6 +160,7 @@ namespace flashgg {
         srcToken_( cc.consumes<collection_type>( src_ ) ),
         genInfoToken_( cc.consumes<GenEventInfoProduct>( genInfo_ ) ),
         pdfWeightToken_( cc.consumes<std::vector<flashgg::PDFWeightObject> >( pdfWeight_ ) ),
+        dumpGlobalVariables_( cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true ) ),
         globalVarsDumper_(0)
     {
         if( dumpGlobalVariables_ ) {
@@ -183,7 +185,6 @@ namespace flashgg {
         dumpWorkspace_       = cfg.getUntrackedParameter<bool>( "dumpWorkspace", false );
         workspaceName_       = cfg.getUntrackedParameter<std::string>( "workspaceName", src_.label() );
         dumpHistos_          = cfg.getUntrackedParameter<bool>( "dumpHistos", false );
-        dumpGlobalVariables_ = cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true );
         classifier_          = cfg.getParameter<edm::ParameterSet>( "classifierCfg" );
         throwOnUnclassified_ = cfg.exists("throwOnUnclassified") ? cfg.getParameter<bool>("throwOnUnclassified") : false;
 
