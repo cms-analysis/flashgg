@@ -1,24 +1,18 @@
 #include "flashgg/MicroAOD/interface/GlobalVariablesComputer.h"
 
-#include "DataFormats/VertexReco/interface/VertexFwd.h"
-#include "DataFormats/VertexReco/interface/Vertex.h"
-
-// #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
-#include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
-
 using namespace edm;
 using namespace reco;
 
 namespace flashgg {
 
 
-    GlobalVariablesComputer::GlobalVariablesComputer( const edm::ParameterSet &cfg ) :
+    GlobalVariablesComputer::GlobalVariablesComputer( const edm::ParameterSet &cfg) :
         rhoTag_( cfg.getParameter<edm::InputTag>( "rho" ) ),
         vtxTag_( cfg.getParameter<edm::InputTag>( "vertexes" ) ),
         getPu_( cfg.exists("puInfo") )
     {
         if( getPu_ ) {
-            puInfo_ = cfg.getParameter<edm::InputTag>("puInfo");
+            puInfoTag_ = cfg.getParameter<edm::InputTag>("puInfo");
             puReWeight_ = ( cfg.exists("puReWeight") ? cfg.getParameter<bool>("puReWeight") : false );
             if( puReWeight_ ) { 
                 puBins_ = cfg.getParameter<std::vector<double> >("puBins");
@@ -31,6 +25,14 @@ namespace flashgg {
                 if( cfg.exists("useTruePu") ) { useTruePu_ = cfg.getParameter<bool>("useTruePu"); }
             }
         }
+    }
+
+    GlobalVariablesComputer::GlobalVariablesComputer( const edm::ParameterSet &cfg, edm::ConsumesCollector&& iC ) :
+        GlobalVariablesComputer( cfg )
+    {
+        rhoToken_ = iC.consumes<double>( rhoTag_ );
+        vtxToken_ = iC.consumes<VertexCollection>( vtxTag_ );
+        puInfoToken_ = iC.consumes<std::vector<PileupSummaryInfo> >( puInfoTag_ );
     }
 
     float *GlobalVariablesComputer::addressOf( const std::string &varName )
@@ -71,25 +73,44 @@ namespace flashgg {
 
     }
 
+    //---FWLite wrapper
     void GlobalVariablesComputer::update( const EventBase &evt )
-    {
-        Handle<double> rhoHandle;
-        evt.getByLabel( rhoTag_, rhoHandle );
-
-        Handle<VertexCollection> vertices;
-        evt.getByLabel( vtxTag_, vertices );
+    {        
+        evt.getByLabel( rhoTag_, rhoHandle_ );
+        evt.getByLabel( vtxTag_, vertices_ );
+        evt.getByLabel( puInfoTag_, puInfo_);
 
         cache_.event = evt.id().event();
         cache_.lumi = evt.id().luminosityBlock();
         cache_.run  = evt.id().run();
-        cache_.rho = *rhoHandle;
-        cache_.nvtx = vertices->size();
+        cache_.rho = *rhoHandle_;
+        cache_.nvtx = vertices_->size();
+
+        computer( evt.isRealData() );
+    }
+
+    //---FullFramework wrapper
+    void GlobalVariablesComputer::update( const Event &evt )
+    {
+        evt.getByToken( rhoToken_, rhoHandle_ );
+        evt.getByToken( vtxToken_, vertices_ );
+        evt.getByToken( puInfoToken_, puInfo_);
+
+        cache_.event = evt.id().event();
+        cache_.lumi = evt.id().luminosityBlock();
+        cache_.run  = evt.id().run();
+        cache_.rho = *rhoHandle_;
+        cache_.nvtx = vertices_->size();
         
-        if( ! evt.isRealData() && getPu_ ) {
-            edm::Handle<std::vector<PileupSummaryInfo> > puInfo;
-            evt.getByLabel(puInfo_,puInfo);
+        computer( evt.isRealData() );
+    }
+
+    //---real computer
+    void GlobalVariablesComputer::computer(bool isRealData)
+    {        
+        if( !isRealData && getPu_ ) {
             double truePu=0., obsPu=0.;
-            for( auto & frame : *puInfo ) {
+            for( auto & frame : *puInfo_ ) {
                 if( frame.getBunchCrossing() == 0 ) {
                     truePu = frame.getTrueNumInteractions();
                     obsPu = frame.getPU_NumInteractions();

@@ -29,6 +29,7 @@
 #include "flashgg/DataFormats/interface/PDFWeightObject.h"
 
 #include "FWCore/Utilities/interface/Exception.h"
+#include "FWCore/Framework/interface/Event.h"
 
 /**
    \class CollectionDumper
@@ -67,7 +68,7 @@ namespace flashgg {
 
         /// default constructor
         CollectionDumper( const edm::ParameterSet &cfg, TFileDirectory &fs );
-        CollectionDumper( const edm::ParameterSet &cfg, TFileDirectory &fs, const edm::ConsumesCollector &cc ) : CollectionDumper( cfg, fs ) {};
+        CollectionDumper( const edm::ParameterSet &cfg, TFileDirectory &fs, edm::ConsumesCollector&& iC );
         /// default destructor
         /// ~CollectionDumper();
         /// everything that needs to be done before the event loop
@@ -75,15 +76,19 @@ namespace flashgg {
         /// everything that needs to be done after the event loop
         void endJob();
         /// everything that needs to be done during the event loop
-        void analyze( const edm::EventBase &event );
+        void analyze( const edm::Event &event );
+        void analyze( const edm::EventBase &event ) {};
 
 
     protected:
-        double eventWeight( const edm::EventBase &event );
-        vector<double> pdfWeights( const edm::EventBase &event );
+        double eventWeight( const edm::Event &event );
+        vector<double> pdfWeights( const edm::Event &event );
 
-        /// float eventWeight(const edm::EventBase& event);
-        edm::InputTag src_, genInfo_, pdfWeightToken_;
+        /// float eventWeight(const edm::Event& event);
+        edm::InputTag srcTag_, genInfoTag_, pdfWeightTag_;
+        edm::EDGetTokenT<CollectionT> src_;
+        edm::EDGetTokenT<GenEventInfoProduct> genInfo_;
+        edm::EDGetTokenT<flashgg::PDFWeightObject> pdfWeightToken_;
         std::string processId_;
         int processIndex_;
         double lumiWeight_;
@@ -120,12 +125,12 @@ namespace flashgg {
 
         GlobalVariablesDumper *globalVarsDumper_;
     };
-
+    
     template<class C, class T, class U>
-    CollectionDumper<C, T, U>::CollectionDumper( const edm::ParameterSet &cfg, TFileDirectory &fs ):
-        edm::BasicAnalyzer::BasicAnalyzer( cfg, fs ),
-        src_( cfg.getParameter<edm::InputTag>( "src" ) ),
-        genInfo_( cfg.getParameter<edm::InputTag>( "generatorInfo" ) ),
+    CollectionDumper<C, T, U>::CollectionDumper( const edm::ParameterSet &cfg, TFileDirectory &fs):
+        edm::BasicAnalyzer::BasicAnalyzer( cfg, fs ),        
+        srcTag_( cfg.getParameter<edm::InputTag>( "src" ) ),
+        genInfoTag_( cfg.getParameter<edm::InputTag>( "generatorInfo" ) ),
         processId_( cfg.getParameter<std::string>( "processId" ) ),
         processIndex_( cfg.exists("processIndex") ? cfg.getParameter<int>("processIndex") : 999 ),
         //        processIndex_( cfg.getParameter<int>("processIndex")  ),
@@ -137,7 +142,7 @@ namespace flashgg {
         nameTemplate_( cfg.getUntrackedParameter<std::string>( "nameTemplate", "$COLLECTION" ) ),
         dumpTrees_( cfg.getUntrackedParameter<bool>( "dumpTrees", false ) ),
         dumpWorkspace_( cfg.getUntrackedParameter<bool>( "dumpWorkspace", false ) ),
-        workspaceName_( cfg.getUntrackedParameter<std::string>( "workspaceName", src_.label() ) ),
+        workspaceName_( cfg.getUntrackedParameter<std::string>( "workspaceName", srcTag_.label() ) ),
         dumpHistos_( cfg.getUntrackedParameter<bool>( "dumpHistos", false ) ),
         dumpGlobalVariables_( cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true ) ),
         classifier_( cfg.getParameter<edm::ParameterSet>( "classifierCfg" ) ),
@@ -156,21 +161,10 @@ namespace flashgg {
         dumpPdfWeights_=false;
         
         std::map<std::string, std::string> replacements;
-        replacements.insert( std::make_pair( "$COLLECTION", src_.label() ) );
+        replacements.insert( std::make_pair( "$COLLECTION", srcTag_.label() ) );
         replacements.insert( std::make_pair( "$PROCESS", processId_ ) );
         replacements.insert( std::make_pair( "$SQRTS", Form( "%1.0fTeV", sqrtS_ ) ) );
         nameTemplate_ = formatString( nameTemplate_, replacements );
-
-        if( dumpGlobalVariables_ ) {
-            globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ) );
-            if( splitLumiWeight_ ) {
-                globalVarsDumper_->dumpLumiFactor(lumiWeight_);
-                lumiWeight_ = 1.;
-            }
-            globalVarsDumper_->setProcessIndex(processIndex_);
-        } else if ( splitLumiWeight_ ) {
-            throw cms::Exception("Configuration error") << "You specified the splitLumiWeight option but not the dumpGlobalVariables one. I can split the weight only if you also set the latter.\n";
-        }
        
         pdfWeightHistosBooked_=false;
 
@@ -233,7 +227,7 @@ namespace flashgg {
 
         if(dumpPdfWeights_){
             //if (cfg.exists("flashggPDFWeightObject")){
-                pdfWeightToken_= cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject",edm::InputTag("flashggPDFWeightObject"));
+                pdfWeightTag_= cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject",edm::InputTag("flashggPDFWeightObject"));
            // }
         }
 
@@ -276,7 +270,27 @@ namespace flashgg {
             }
         }
     }
+    
+    template<class C, class T, class U>
+    CollectionDumper<C, T, U>::CollectionDumper( const edm::ParameterSet &cfg, TFileDirectory &fs, edm::ConsumesCollector&& iC ):
+        CollectionDumper( cfg, fs )
+    {
+        src_ = iC.consumes<C>( srcTag_ );
+        genInfo_ = iC.consumes<GenEventInfoProduct>( genInfoTag_ );
+        pdfWeightToken_ = iC.consumes<flashgg::PDFWeightObject>( pdfWeightTag_ );
 
+        if( dumpGlobalVariables_ ) {
+            globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ), std::forward<edm::ConsumesCollector>(iC) );
+            if( splitLumiWeight_ ) {
+                globalVarsDumper_->dumpLumiFactor(lumiWeight_);
+                lumiWeight_ = 1.;
+            }
+            globalVarsDumper_->setProcessIndex(processIndex_);
+        } else if ( splitLumiWeight_ ) {
+            throw cms::Exception("Configuration error") << "You specified the splitLumiWeight option but not the dumpGlobalVariables one. I can split the weight only if you also set the latter.\n";
+        }
+    }
+    
     //// template<class C, class T, class U>
     //// CollectionDumper<C,T,U>::~CollectionDumper()
     //// {
@@ -293,12 +307,12 @@ namespace flashgg {
         }
 
     template<class C, class T, class U>
-        double CollectionDumper<C, T, U>::eventWeight( const edm::EventBase &event )
+        double CollectionDumper<C, T, U>::eventWeight( const edm::Event &event )
         {
             double weight = 1.;
             if( ! event.isRealData() ) {
                 edm::Handle<GenEventInfoProduct> genInfo;
-                event.getByLabel( genInfo_, genInfo );
+                event.getByToken( genInfo_, genInfo );
 
                 weight = lumiWeight_;
 
@@ -319,11 +333,11 @@ namespace flashgg {
 
     template<class C, class T, class U>
 
-        vector<double> CollectionDumper<C, T, U>::pdfWeights( const edm::EventBase &event )
+        vector<double> CollectionDumper<C, T, U>::pdfWeights( const edm::Event &event )
         {   
             vector<double> pdfWeights;
             edm::Handle<vector<flashgg::PDFWeightObject> > WeightHandle;
-            event.getByLabel( pdfWeightToken_, WeightHandle );
+            event.getByToken( pdfWeightToken_, WeightHandle );
 
             for( unsigned int weight_index = 0; weight_index < (*WeightHandle).size(); weight_index++ ){
 
@@ -356,10 +370,10 @@ namespace flashgg {
 
 
     template<class C, class T, class U>
-        void CollectionDumper<C, T, U>::analyze( const edm::EventBase &event )
+        void CollectionDumper<C, T, U>::analyze( const edm::Event &event )
         {
             edm::Handle<collection_type> collectionH;
-            event.getByLabel( src_, collectionH );
+            event.getByToken( src_, collectionH );
             const auto &collection = *collectionH;
 
             if( globalVarsDumper_ ) { globalVarsDumper_->fill( event ); }

@@ -2,8 +2,16 @@
 #define flashgg_GlobalVariablesComputer_h
 
 #include "FWCore/Common/interface/EventBase.h"
+#include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "FWCore/Framework/interface/ConsumesCollector.h"
+
+#include "DataFormats/VertexReco/interface/VertexFwd.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
+
+// #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
+#include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 
 namespace flashgg {
 
@@ -22,8 +30,11 @@ namespace flashgg {
         };
 
         GlobalVariablesComputer( const edm::ParameterSet &cfg );
+        GlobalVariablesComputer( const edm::ParameterSet &cfg, edm::ConsumesCollector&& iC );
 
         void update( const edm::EventBase &event );
+        void update( const edm::Event &event );
+        void computer(bool isRealData);
 
         float *addressOf( const std::string &varName );
         int indexOf( const std::string &varName );
@@ -35,12 +46,19 @@ namespace flashgg {
         bool puReWeight() const { return puReWeight_; }
         
     protected:
+        edm::EDGetTokenT<double> rhoToken_;
+        edm::EDGetTokenT<reco::VertexCollection> vtxToken_;
+        edm::EDGetTokenT<std::vector<PileupSummaryInfo> > puInfoToken_;
         edm::InputTag rhoTag_, vtxTag_;
         bool getPu_, puReWeight_, useTruePu_;
         std::vector<double> puBins_;
         std::vector<double> puWeight_;
-        edm::InputTag puInfo_;
+        edm::InputTag puInfoTag_;
 
+        edm::Handle<double> rhoHandle_;
+        edm::Handle<reco::VertexCollection> vertices_;
+        edm::Handle<std::vector<PileupSummaryInfo> > puInfo_;
+        
         cache_t cache_;
     };
 }
