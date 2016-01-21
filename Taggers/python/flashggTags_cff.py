@@ -16,7 +16,7 @@ flashggUntagged = cms.EDProducer("FlashggUntaggedTagProducer",
                                  SystLabel=cms.string(""),
                                  MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
                                  GenParticleTag=cms.InputTag( "flashggPrunedGenParticles" ),
-                                 Boundaries=cms.untracked.vdouble(-0.089,0.563,0.798,0.945,1.000)
+                                 Boundaries=cms.vdouble(-0.089,0.563,0.798,0.945,1.000)
 )
 
 flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
