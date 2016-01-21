@@ -30,6 +30,7 @@ namespace flashgg {
     private:
         void produce( Event &, const EventSetup & ) override;
         
+        std::vector<edm::EDGetTokenT<View<flashgg::Jet> > > tokenJets_;
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         //EDGetTokenT<View<flashgg::Jet> > jetTokenDz_;
         std::vector<edm::InputTag> inputTagJets_;
@@ -117,6 +118,10 @@ namespace flashgg {
             //new variables
             VbfMva_->BookMVA( _MVAMethod.c_str() , vbfMVAweightfile_.fullPath() );
         }
+        for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
+            auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
+            tokenJets_.push_back(token);
+        }
         produces<vector<VBFMVAResult> >();
         
     }
@@ -128,7 +133,7 @@ namespace flashgg {
         
         JetCollectionVector Jets( inputTagJets_.size() );
         for( size_t j = 0; j < inputTagJets_.size(); ++j ) {
-            evt.getByLabel( inputTagJets_[j], Jets[j] );
+            evt.getByToken( tokenJets_[j], Jets[j] );
         }
         
         std::auto_ptr<vector<VBFMVAResult> > vbf_results( new vector<VBFMVAResult> );
