@@ -2,8 +2,12 @@
 #define flashgg_GlobalVariablesComputer_h
 
 #include "FWCore/Common/interface/EventBase.h"
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
+
+#include "DataFormats/VertexReco/interface/VertexFwd.h"
+#include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 
 namespace flashgg {
 
@@ -22,6 +26,7 @@ namespace flashgg {
         };
 
         GlobalVariablesComputer( const edm::ParameterSet &cfg );
+        GlobalVariablesComputer( const edm::ParameterSet &cfg, edm::ConsumesCollector &&cc );
 
         void update( const edm::EventBase &event );
 
@@ -35,11 +40,16 @@ namespace flashgg {
         bool puReWeight() const { return puReWeight_; }
         
     protected:
-        edm::InputTag rhoTag_, vtxTag_;
+
+        void _init( const edm::ParameterSet & cfg );
+
+        edm::InputTag rhoTag_, vtxTag_, puInfo_;
+        edm::EDGetTokenT<double> rhoToken_;
+        edm::EDGetTokenT<reco::VertexCollection> vtxToken_;
+        edm::EDGetTokenT<std::vector<PileupSummaryInfo> > puInfoToken_;
         bool getPu_, puReWeight_, useTruePu_;
         std::vector<double> puBins_;
         std::vector<double> puWeight_;
-        edm::InputTag puInfo_;
 
         cache_t cache_;
     };
