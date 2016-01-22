@@ -14,7 +14,7 @@ namespace flashgg {
     template <class param_var>
     class DiPhotonFromPhotonBase : public BaseSystMethod<DiPhotonCandidate, param_var>
     {
-        
+
     public:
         DiPhotonFromPhotonBase( const edm::ParameterSet &conf );
 
@@ -28,8 +28,6 @@ namespace flashgg {
             BaseSystMethod<DiPhotonCandidate, param_var>::setRandomEngine( eng );
             photon_corr_->setRandomEngine( eng );
         }
-        
-        
         
     protected:
         bool debug_;
@@ -110,8 +108,6 @@ namespace flashgg {
                       << y.leadingPhoton()->eta() << " " << y.subLeadingPhoton()->eta() << std::endl;
         }
     }
-
-
 }
 
 #endif
