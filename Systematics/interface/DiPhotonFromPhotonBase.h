@@ -46,11 +46,8 @@ namespace flashgg {
     {
         std::string photonMethodName = conf.getParameter<std::string>( "PhotonMethodName" );
         photon_corr_.reset( FlashggSystematicMethodsFactory<flashgg::Photon, param_var>::get()->create( photonMethodName, conf ) );
-        std::string binListName2 = "BinList2";
-        std::cout << "checking if binlist2 is present " << conf.exists("BinList2") << std::endl;
-        if(conf.exists("BinList2"))
+        if(conf.exists("BinList2"))  //if defined, BinList2 gives bins for sublead, lead uses BinList
             {
-                std::cout << "using bin list 2" << std::endl;
                 edm::ParameterSet conf2;// =  conf.clone();
                 
                 conf2.copyFrom(conf,"PhotonMethodName");
@@ -63,11 +60,10 @@ namespace flashgg {
                 conf2.addParameter<edm::ParameterSet>("BinList", pset);
                 std::string binListName = "BinList";
                 conf2.insertParameterSet(true,binListName, *(conf.retrieveUnknownParameterSet("BinList2")));
-                //conf2.addParameter<edm::ParameterSet>("BinList", conf.getParameter<std::string>("BinList2"));
                 photon_corr2_.reset( FlashggSystematicMethodsFactory<flashgg::Photon, param_var>::get()->create( photonMethodName, conf2 ) );
             
             }
-        else
+        else //if BinList2 is not defined, use BinList for both lead and sublead photons
             photon_corr2_.reset( FlashggSystematicMethodsFactory<flashgg::Photon, param_var>::get()->create( photonMethodName, conf ) );
         this->setMakesWeight( photon_corr_->makesWeight() );
     }
