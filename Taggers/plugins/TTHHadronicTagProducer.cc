@@ -41,7 +41,6 @@ namespace flashgg {
 
         std::vector<edm::EDGetTokenT<View<flashgg::Jet> > > tokenJets_;
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
-        //EDGetTokenT<View<Jet> > thejetToken_;
         std::vector<edm::InputTag> inputTagJets_;
         EDGetTokenT<View<Electron> > electronToken_;
         EDGetTokenT<View<flashgg::Muon> > muonToken_;
@@ -64,7 +63,7 @@ namespace flashgg {
         double subleadPhoOverMassThreshold_;
         //---jets
         double jetPtThreshold_;
-        double jetEtaCut_;
+        double jetEtaThreshold_;
         double dRJetPhoLeadCut_;
         double dRJetPhoSubleadCut_;
         vector<double> bDiscriminator_;
@@ -73,12 +72,12 @@ namespace flashgg {
         string bTag_;
         //leptons
         double leptonPtThreshold_;
-        double leptonEtaThreshold_;
+        double muonEtaThreshold_;
         vector<double> nonTrigMVAThresholds_;
         vector<double> nonTrigMVAEtaCuts_;
         double electronIsoThreshold_;
         double electronNumOfHitsThreshold_;
-        vector<double>  electronEtaCuts_;
+        vector<double>  electronEtaThresholds_;
         double muPFIsoSumRelThreshold_;
         double TransverseImpactParam_;
         double LongitudinalImpactParam_;
@@ -86,7 +85,6 @@ namespace flashgg {
 
     TTHHadronicTagProducer::TTHHadronicTagProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
-        //thejetToken_( consumes<View<flashgg::Jet> >( iConfig.getParameter<InputTag>( "JetTag" ) ) ),
         inputTagJets_( iConfig.getParameter<std::vector<edm::InputTag> >( "inputTagJets" ) ),
         electronToken_( consumes<View<flashgg::Electron> >( iConfig.getParameter<InputTag>( "ElectronTag" ) ) ),
         muonToken_( consumes<View<flashgg::Muon> >( iConfig.getParameter<InputTag>( "MuonTag" ) ) ),
@@ -96,65 +94,34 @@ namespace flashgg {
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
     {
 
-        double default_MVAThreshold_ = -1.0;
-        double default_PhoMVAThreshold_ = -0.9;
 
-        double default_leptonPtThreshold_ = 20.;
-        double default_leptonEtaThreshold_ = 2.4;
-        vector<double> default_nonTrigMVAThresholds_;
-        default_nonTrigMVAThresholds_.push_back(0.913286);
-        default_nonTrigMVAThresholds_.push_back(0.805013);
-        default_nonTrigMVAThresholds_.push_back(0.358969);
+        MVAThreshold_ = iConfig.getParameter<double>( "MVAThreshold");
+        PhoMVAThreshold_ = iConfig.getParameter<double>( "PhoMVAThreshold");
 
-        vector<double> default_nonTrigMVAEtaCuts_;
-        default_nonTrigMVAEtaCuts_.push_back(0.8);
-        default_nonTrigMVAEtaCuts_.push_back(1.479);
-        default_nonTrigMVAEtaCuts_.push_back(2.5);
-
-        vector<double> default_electronEtaCuts_;
-        default_electronEtaCuts_.push_back( 1.4442 );
-        default_electronEtaCuts_.push_back( 1.566 );
-        default_electronEtaCuts_.push_back( 2.5 );
-
-        double default_electronIsoThreshold_ = 0.15;
-        double default_electronNumOfHitsThreshold_ = 1.;
-        double default_muPFIsoSumRelThreshold_ = 0.25;
-
-        double default_TransverseImpactParam_ = 0.02;
-        double default_LongitudinalImpactParam_ = 0.2;
-
-        vector<double> default_bDiscriminator_;
-        default_bDiscriminator_.push_back( 0.605 );
-        default_bDiscriminator_.push_back( 0.890 );
-
-
-        MVAThreshold_ = iConfig.getUntrackedParameter<double>( "MVAThreshold_",default_MVAThreshold_ );
-        PhoMVAThreshold_ = iConfig.getUntrackedParameter<double>( "PhoMVAThreshold", default_PhoMVAThreshold_ );
-
-        leptonPtThreshold_ = iConfig.getUntrackedParameter<double>( "leptonPtThreshold", default_leptonPtThreshold_ );
-        leptonEtaThreshold_ = iConfig.getUntrackedParameter<double>( "leptonEtaThreshold", default_leptonEtaThreshold_ );
-        leadPhoPtThreshold_ = iConfig.getUntrackedParameter<double>( "leadPhoPtThreshold", 33 );
-        leadPhoUseVariableTh_ = iConfig.getUntrackedParameter<bool>( "leadPhoUseVariableTh", false );
-        leadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>( "leadPhoOverMassThreshold", 0.5 );
-        subleadPhoPtThreshold_ = iConfig.getUntrackedParameter<double>( "leadPhoPtThreshold", 25 );
-        subleadPhoUseVariableTh_ = iConfig.getUntrackedParameter<bool>( "subleadPhoUseVariableTh", false );
-        subleadPhoOverMassThreshold_ = iConfig.getUntrackedParameter<double>( "subleadPhoOverMassThreshold", 0.25 );
-        jetPtThreshold_ = iConfig.getUntrackedParameter<double>( "jetPtThreshold", 30 );
-        jetEtaCut_ = iConfig.getUntrackedParameter<double>( "jetEtaCut", 2.4 );
-        dRJetPhoLeadCut_ = iConfig.getUntrackedParameter<double>( "dRJetPhoLeadCut", 0.5 );
-        dRJetPhoSubleadCut_ = iConfig.getUntrackedParameter<double>( "dRJetPhoSubleadCut", 0.5 );
-        bDiscriminator_ = iConfig.getUntrackedParameter<vector<double > >( "bDiscriminator", default_bDiscriminator_ );
-        jetsNumberThreshold_ = iConfig.getUntrackedParameter<int>( "jetsNumberThreshold", 5 );
-        bjetsNumberThreshold_ = iConfig.getUntrackedParameter<int>( "bjetsNumberThreshold", 1 );
-        bTag_ = iConfig.getUntrackedParameter<string> ( "bTag", "combinedInclusiveSecondaryVertexV2BJetTags" );
-        muPFIsoSumRelThreshold_ = iConfig.getUntrackedParameter<double>( "muPFIsoSumRelThreshold", default_muPFIsoSumRelThreshold_ );
-        nonTrigMVAThresholds_ =  iConfig.getUntrackedParameter<vector<double > >( "nonTrigMVAThresholds", default_nonTrigMVAThresholds_ );
-        nonTrigMVAEtaCuts_ =  iConfig.getUntrackedParameter<vector<double > >( "nonTrigMVAEtaCuts", default_nonTrigMVAEtaCuts_ );
-        electronIsoThreshold_ = iConfig.getUntrackedParameter<double>( "electronIsoThreshold", default_electronIsoThreshold_ );
-        electronNumOfHitsThreshold_ = iConfig.getUntrackedParameter<double>( "electronNumOfHitsThreshold", default_electronNumOfHitsThreshold_ );
-        TransverseImpactParam_ = iConfig.getUntrackedParameter<double>( "TransverseImpactParam", default_TransverseImpactParam_ );
-        LongitudinalImpactParam_ = iConfig.getUntrackedParameter<double>( "LongitudinalImpactParam", default_LongitudinalImpactParam_ );
-        electronEtaCuts_ = iConfig.getUntrackedParameter<vector<double > >( "electronEtaCuts",default_electronEtaCuts_);
+        leptonPtThreshold_ = iConfig.getParameter<double>( "leptonPtThreshold");
+        muonEtaThreshold_ = iConfig.getParameter<double>( "muonEtaThreshold");
+        leadPhoPtThreshold_ = iConfig.getParameter<double>( "leadPhoPtThreshold");
+        leadPhoUseVariableTh_ = iConfig.getParameter<bool>( "leadPhoUseVariableThreshold");
+        leadPhoOverMassThreshold_ = iConfig.getParameter<double>( "leadPhoOverMassThreshold");
+        subleadPhoPtThreshold_ = iConfig.getParameter<double>( "subleadPhoPtThreshold");
+        subleadPhoUseVariableTh_ = iConfig.getParameter<bool>( "subleadPhoUseVariableThreshold");
+        subleadPhoOverMassThreshold_ = iConfig.getParameter<double>( "subleadPhoOverMassThreshold");
+        jetPtThreshold_ = iConfig.getParameter<double>( "jetPtThreshold");
+        jetEtaThreshold_ = iConfig.getParameter<double>( "jetEtaThreshold");
+        dRJetPhoLeadCut_ = iConfig.getParameter<double>( "dRJetPhoLeadCut");
+        dRJetPhoSubleadCut_ = iConfig.getParameter<double>( "dRJetPhoSubleadCut");
+        bDiscriminator_ = iConfig.getParameter<vector<double > >( "bDiscriminator");
+        jetsNumberThreshold_ = iConfig.getParameter<int>( "jetsNumberThreshold");
+        bjetsNumberThreshold_ = iConfig.getParameter<int>( "bjetsNumberThreshold");
+        bTag_ = iConfig.getParameter<string> ( "bTag");
+        muPFIsoSumRelThreshold_ = iConfig.getParameter<double>( "muPFIsoSumRelThreshold");
+        nonTrigMVAThresholds_ =  iConfig.getParameter<vector<double > >( "nonTrigMVAThresholds");
+        nonTrigMVAEtaCuts_ =  iConfig.getParameter<vector<double > >( "nonTrigMVAEtaCuts");
+        electronIsoThreshold_ = iConfig.getParameter<double>( "electronIsoThreshold");
+        electronNumOfHitsThreshold_ = iConfig.getParameter<double>( "electronNumOfHitsThreshold");
+        TransverseImpactParam_ = iConfig.getParameter<double>( "TransverseImpactParam");
+        LongitudinalImpactParam_ = iConfig.getParameter<double>( "LongitudinalImpactParam");
+        electronEtaThresholds_ = iConfig.getParameter<vector<double > >( "electronEtaThresholds");
         for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
             auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
             tokenJets_.push_back(token);
@@ -212,12 +179,11 @@ namespace flashgg {
         edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
         unsigned int idx = 0;
 
-        std::vector<edm::Ptr<flashgg::Muon> > goodMuons = selectAllMuons( theMuons->ptrs(), vertices->ptrs(), leptonEtaThreshold_ , leptonPtThreshold_,
-                                                                       muPFIsoSumRelThreshold_ );
+        std::vector<edm::Ptr<flashgg::Muon> > goodMuons = selectAllMuons( theMuons->ptrs(), vertices->ptrs(), muonEtaThreshold_ , leptonPtThreshold_, muPFIsoSumRelThreshold_ );
         
         std::vector<edm::Ptr<Electron> > goodElectrons = selectAllElectrons( theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, 
                                                                           TransverseImpactParam_, LongitudinalImpactParam_, nonTrigMVAThresholds_, nonTrigMVAEtaCuts_,
-                                                                          electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaCuts_ );
+                                                                          electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaThresholds_ );
         
        
 
@@ -260,7 +226,7 @@ namespace flashgg {
 
             for( unsigned int jetIndex = 0; jetIndex < Jets[jetCollectionIndex]->size() ; jetIndex++ ) {
                 edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( jetIndex );
-                if( fabs( thejet->eta() ) > jetEtaCut_ ) { continue; }
+                if( fabs( thejet->eta() ) > jetEtaThreshold_ ) { continue; }
 
                 float bDiscriminatorValue = 0;
 
