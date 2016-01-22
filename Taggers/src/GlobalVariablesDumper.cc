@@ -25,6 +25,7 @@ namespace flashgg {
             const auto &trg = cfg.getParameter<ParameterSet>( "addTriggerBits" );
             triggerTag_ = trg.getParameter<InputTag>( "tag" );
         }
+        _init(cfg);
     }
 
 
@@ -35,6 +36,7 @@ namespace flashgg {
             const auto &trg = cfg.getParameter<ParameterSet>( "addTriggerBits" );
             triggerToken_ = cc.consumes<TriggerResults>( trg.getParameter<InputTag>( "tag" ) );
         }
+        _init(cfg);
     }
 
 
