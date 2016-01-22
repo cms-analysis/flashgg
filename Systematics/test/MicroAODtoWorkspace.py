@@ -15,7 +15,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v4' # keep updated for JEC
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 
 #process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
@@ -72,6 +72,8 @@ if customize.processId.count("h_") or customize.processId.count("vbf_"): # conve
         jetsystlabels.append("JER%s01sigma" % direction)
         variablesToUse.append("LooseMvaSF%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s01sigma\")" % (direction,direction))
         variablesToUse.append("PreselSF%s01sigma[1,-999999.,999999.] := weight(\"PreselSF%s01sigma\")" % (direction,direction))
+        variablesToUse.append("TriggerWeight%s01sigma[1,-999999.,999999.] := weight(\"TriggerWeight%s01sigma\")" % (direction,direction))
+        #variablesToUse.append("TriggerWeightSubLead%s01sigma[1,-999999.,999999.] := weight(\"TriggerWeightSubLead%s01sigma\")" % (direction,direction))
         variablesToUse.append("FracRVWeight%s01sigma[1,-999999.,999999.] := weight(\"FracRVWeight%s01sigma\")" % (direction,direction))
         for r9 in ["HighR9","LowR9"]:
 #            phosystlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
@@ -166,9 +168,9 @@ process.tagsDumper.className = "DiPhotonTagDumper"
 process.tagsDumper.src = "flashggSystTagMerger"
 #process.tagsDumper.src = "flashggTagSystematics"
 process.tagsDumper.processId = "test"
-process.tagsDumper.dumpTrees = False
+process.tagsDumper.dumpTrees = True
 process.tagsDumper.dumpWorkspace = True
-process.tagsDumper.dumpHistos = False
+process.tagsDumper.dumpHistos = True
 process.tagsDumper.quietRooFit = True
 process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
 
@@ -286,7 +288,7 @@ for mn in mns:
 #print >> processDumpFile, process.dumpPython()
 
 # set default options if needed
-customize.setDefault("maxEvents",-1)
+customize.setDefault("maxEvents",5000)
 customize.setDefault("targetLumi",2.46e+3)
 # call the customization
 customize(process)
