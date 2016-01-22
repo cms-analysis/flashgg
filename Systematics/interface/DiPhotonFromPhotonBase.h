@@ -28,12 +28,13 @@ namespace flashgg {
             BaseSystMethod<DiPhotonCandidate, param_var>::setRandomEngine( eng );
             photon_corr_->setRandomEngine( eng );
         }
-
+        
     protected:
         bool debug_;
 
     private:
         std::unique_ptr<BaseSystMethod<flashgg::Photon, param_var> > photon_corr_;
+        std::unique_ptr<BaseSystMethod<flashgg::Photon, param_var> > photon_corr2_;
     };
 
     template<class param_var>
@@ -43,6 +44,25 @@ namespace flashgg {
     {
         std::string photonMethodName = conf.getParameter<std::string>( "PhotonMethodName" );
         photon_corr_.reset( FlashggSystematicMethodsFactory<flashgg::Photon, param_var>::get()->create( photonMethodName, conf ) );
+        if(conf.exists("BinList2"))  //if defined, BinList2 gives bins for sublead, lead uses BinList
+            {
+                edm::ParameterSet conf2;// =  conf.clone();
+                
+                conf2.copyFrom(conf,"PhotonMethodName");
+                conf2.copyFrom(conf,"MethodName");
+                conf2.copyFrom(conf,"Label");
+                conf2.copyFrom(conf,"NSigmas");
+                conf2.copyFrom(conf,"OverallRange");
+                conf2.copyFrom(conf,"Debug");
+                const auto &pset = conf.getParameterSet( "BinList2" );
+                conf2.addParameter<edm::ParameterSet>("BinList", pset);
+                std::string binListName = "BinList";
+                conf2.insertParameterSet(true,binListName, *(conf.retrieveUnknownParameterSet("BinList2")));
+                photon_corr2_.reset( FlashggSystematicMethodsFactory<flashgg::Photon, param_var>::get()->create( photonMethodName, conf2 ) );
+            
+            }
+        else //if BinList2 is not defined, use BinList for both lead and sublead photons
+            photon_corr2_.reset( FlashggSystematicMethodsFactory<flashgg::Photon, param_var>::get()->create( photonMethodName, conf ) );
         this->setMakesWeight( photon_corr_->makesWeight() );
     }
 
@@ -61,7 +81,7 @@ namespace flashgg {
                       << y.leadingPhoton()->eta() << " " << y.subLeadingPhoton()->eta() << std::endl;
         }
         float weight1 = photon_corr_->makeWeight( *(y.leadingPhoton()), syst_shift );
-        float weight2 = photon_corr_->makeWeight( *(y.subLeadingPhoton()), syst_shift );
+        float weight2 = photon_corr2_->makeWeight( *(y.subLeadingPhoton()), syst_shift );
         float diphoweight = weight1*weight2;
         if( debug_ ) {
             std::cout << "END OF DiPhotonFromPhoton::makeWeight M PT E1 E2 ETA1 ETA2 "
