@@ -15,7 +15,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v4' # keep updated for JEC
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 
 #process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
@@ -167,9 +167,9 @@ process.tagsDumper.className = "DiPhotonTagDumper"
 process.tagsDumper.src = "flashggSystTagMerger"
 #process.tagsDumper.src = "flashggTagSystematics"
 process.tagsDumper.processId = "test"
-process.tagsDumper.dumpTrees = True
+process.tagsDumper.dumpTrees = False
 process.tagsDumper.dumpWorkspace = True
-process.tagsDumper.dumpHistos = True
+process.tagsDumper.dumpHistos = False
 process.tagsDumper.quietRooFit = True
 process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
 
@@ -287,7 +287,7 @@ for mn in mns:
 #print >> processDumpFile, process.dumpPython()
 
 # set default options if needed
-customize.setDefault("maxEvents",5000)
+customize.setDefault("maxEvents",-1)
 customize.setDefault("targetLumi",2.46e+3)
 # call the customization
 customize(process)
