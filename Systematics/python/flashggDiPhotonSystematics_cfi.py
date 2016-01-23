@@ -403,7 +403,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(0,0),
                                                   OverallRange = cms.string("1"),
                                                   BinList = smearBinsRereco,
-                                                  Debug = cms.untracked.bool(True)
+                                                  Debug = cms.untracked.bool(False)
                                                   ),
                                         cms.PSet( MethodName = cms.string("FlashggDiPhotonWeightFromFracRV"),
                                                   Label = cms.string("FracRVWeight"),
