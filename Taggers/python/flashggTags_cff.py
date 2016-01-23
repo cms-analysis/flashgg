@@ -12,11 +12,11 @@ for i in range(0,maxJetCollections):
 
 flashggUntagged = cms.EDProducer("FlashggUntaggedTagProducer",
 #                                 DiPhotonTag=cms.InputTag('flashggDiPhotons'),
-                                 DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
-                                 SystLabel=cms.string(""),
-                                 MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
-                                 GenParticleTag=cms.InputTag( "flashggPrunedGenParticles" ),
-                                 Boundaries=cms.vdouble(-0.089,0.563,0.798,0.945,1.000)
+                                 DiPhotonTag    = cms.InputTag('flashggPreselectedDiPhotons'),
+                                 SystLabel      = cms.string(""),
+                                 MVAResultTag   = cms.InputTag('flashggDiPhotonMVA'),
+                                 GenParticleTag = cms.InputTag( "flashggPrunedGenParticles" ),
+                                 Boundaries     = cms.vdouble(-0.338,0.273,0.617,0.870) #,1.000)
 )
 
 flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
