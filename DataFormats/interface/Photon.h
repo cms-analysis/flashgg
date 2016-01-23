@@ -63,6 +63,7 @@ namespace flashgg {
         void updateEnergy( std::string key, float val );
         void shiftAllMvaValuesBy( float val );
         void shiftSigmaEOverEValueBy( float val );
+        void smearSigmaEOverEValueBy( float val );
         //    void setSigEOverE(float val) { sigEOverE_ = val; };
 
         // define which regression from reco we use - only this one is valid as of 74X
