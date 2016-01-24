@@ -27,8 +27,8 @@ process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 #                                                  )
 
 process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
-#process.load("flashgg.Systematics.flashggMuonSystematics_cfi")
-#process.load("flashgg.Systematics.flashggElectronSystematics_cfi")
+process.load("flashgg.Systematics.flashggMuonSystematics_cfi")
+process.load("flashgg.Systematics.flashggElectronSystematics_cfi")
 
 from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
 from flashgg.Systematics.flashggJetSystematics_cfi import createJetSystematics
@@ -45,8 +45,8 @@ process.flashggTagSequence.remove(process.flashggUnpackedJets)
 
 from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet,massSearchReplaceAnyInputTag
 massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggDiPhotons"),cms.InputTag("flashggDiPhotonSystematics"))
-#massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSelectedElectrons"),cms.InputTag("flashggElectronSystematics"))
-#massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSelectedMuons"),cms.InputTag("flashggMuonSystematics"))
+massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSelectedElectrons"),cms.InputTag("flashggElectronSystematics"))
+massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSelectedMuons"),cms.InputTag("flashggMuonSystematics"))
 for i in range(len(UnpackedJetCollectionVInputTag)):
     massSearchReplaceAnyInputTag(process.flashggTagSequence,UnpackedJetCollectionVInputTag[i],jetSystematicsInputTags[i])
 
@@ -56,6 +56,8 @@ process.systematicsTagSequences = cms.Sequence()
 systlabels = [""]
 phosystlabels = []
 jetsystlabels = []
+elesystlabels = []
+musystlabels = []
 
 # import flashgg customization to check if we have signal or background
 from flashgg.MetaData.JobConfig import customize
@@ -75,6 +77,8 @@ if customize.processId.count("h_") or customize.processId.count("vbf_"): # conve
         variablesToUse.append("PreselSF%s01sigma[1,-999999.,999999.] := weight(\"PreselSF%s01sigma\")" % (direction,direction))
         variablesToUse.append("TriggerWeight%s01sigma[1,-999999.,999999.] := weight(\"TriggerWeight%s01sigma\")" % (direction,direction))
         variablesToUse.append("FracRVWeight%s01sigma[1,-999999.,999999.] := weight(\"FracRVWeight%s01sigma\")" % (direction,direction))
+        variablesToUse.append("ElectronWeight%s01sigma[1,-999999.,999999.] := weight(\"ElectronWeight%s01sigma\")" % (direction,direction))
+        variablesToUse.append("MuonWeight%s01sigma[1,-999999.,999999.] := weight(\"MuonWeight%s01sigma\")" % (direction,direction))
         for r9 in ["HighR9","LowR9"]:
 #            phosystlabels.append("MCSmear%sEE%s01sigma" % (r9,direction))
 #            for var in ["Rho","Phi"]:
@@ -96,7 +100,7 @@ elif customize.processId == "Data":
             pset.NSigmas = cms.vint32() # Do not perform shift
             newvpset += [pset]
     process.flashggDiPhotonSystematics.SystMethods = newvpset
-    systprodlist = [] #[process.flashggMuonSystematics,process.flashggElectronSystematics]
+    systprodlist = [process.flashggMuonSystematics,process.flashggElectronSystematics]
     for systprod in systprodlist:
         systprod.SystMethods = cms.VPSet() # empty everything                                                                                                                                                                                                      
     jetsystprodlist = [getattr(process,"flashggJetSystematics%i"%i) for i in range(len(UnpackedJetCollectionVInputTag))]
@@ -116,7 +120,7 @@ elif customize.processId == "Data":
 else:
     print "Background MC, so store mgg and central only"
     variablesToUse = minimalNonSignalVariables
-    vpsetlist = [process.flashggDiPhotonSystematics.SystMethods] #, process.flashggMuonSystematics.SystMethods, process.flashggElectronSystematics.SystMethods]
+    vpsetlist = [process.flashggDiPhotonSystematics.SystMethods, process.flashggMuonSystematics.SystMethods, process.flashggElectronSystematics.SystMethods]
     vpsetlist += [getattr(process,"flashggJetSystematics%i"%i).SystMethods for i in range(len(UnpackedJetCollectionVInputTag))] 
     # i.e. process.flashggJetSystematics0.SystMethods, ...
     for vpset in vpsetlist:
@@ -164,7 +168,8 @@ from flashgg.MetaData.samples_utils import SamplesManager
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
 #                             "file:myMicroAODOutputFile.root"
-        "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-1_1_0-25ns/1_1_0/VBFHToGG_M-125_13TeV_powheg_pythia8/RunIISpring15-ReMiniAOD-1_1_0-25ns-1_1_0-v0-RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/160105_224017/0000/myMicroAODOutputFile_1.root"
+#        "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-1_1_0-25ns/1_1_0/VBFHToGG_M-125_13TeV_powheg_pythia8/RunIISpring15-ReMiniAOD-1_1_0-25ns-1_1_0-v0-RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/160105_224017/0000/myMicroAODOutputFile_1.root"
+"/store/group/phys_higgs/cmshgg/szenz/flashgg/RunIISpring15-ReReco74X-Rerun-1_1_0-25ns/1_2_0/DoubleEG/RunIISpring15-ReReco74X-Rerun-1_1_0-25ns-1_2_0-v0-Run2015D-04Dec2015-v2/160117_214114/0000/myMicroAODOutputFile_10.root"
 ))
 
 #if options.maxEvents > 0:
@@ -261,6 +266,7 @@ if customize.processId == "Data":
 
 process.p = cms.Path(process.dataRequirements*
                      process.flashggDiPhotonSystematics*
+                     process.flashggMuonSystematics*process.flashggElectronSystematics*
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                      (process.flashggTagSequence*process.systematicsTagSequences)*
                      process.flashggSystTagMerger*
@@ -302,6 +308,6 @@ for mn in mns:
 
 # set default options if needed
 customize.setDefault("maxEvents",-1)
-customize.setDefault("targetLumi",2.46e+3)
+customize.setDefault("targetLumi",2.21e+3)
 # call the customization
 customize(process)
