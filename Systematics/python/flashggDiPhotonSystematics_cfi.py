@@ -45,8 +45,8 @@ scaleBinsRereco = cms.PSet(
             cms.PSet( lowBounds = cms.vdouble(1.000 , 0.940    ) , upBounds = cms.vdouble(1.500 , 999.000 ) , values = cms.vdouble( -0.00488 ) ,  uncertainties = cms.vdouble( 0.00060 )   ) ,
             cms.PSet( lowBounds = cms.vdouble(1.500 , -999.000 ) , upBounds = cms.vdouble(2.000 , 0.940   ) , values = cms.vdouble( 0.00736  ) ,  uncertainties = cms.vdouble( 0.00200 )   ) ,
             cms.PSet( lowBounds = cms.vdouble(1.500 , 0.940    ) , upBounds = cms.vdouble(2.000 , 999.000 ) , values = cms.vdouble( -0.0007  ) ,  uncertainties = cms.vdouble( 0.00300 )   ) ,
-            cms.PSet( lowBounds = cms.vdouble(2.000 , -999.000 ) , upBounds = cms.vdouble(5.000 , 0.940   ) , values = cms.vdouble( 0.00503  ) ,  uncertainties = cms.vdouble( 0.00200 )   ) ,
-            cms.PSet( lowBounds = cms.vdouble(2.000 , 0.940    ) , upBounds = cms.vdouble(5.000 , 999.000 ) , values = cms.vdouble( -0.00229  ) , uncertainties = cms.vdouble( 0.00300 )   ) ,
+            cms.PSet( lowBounds = cms.vdouble(2.000 , -999.000 ) , upBounds = cms.vdouble(6.000 , 0.940   ) , values = cms.vdouble( 0.00503  ) ,  uncertainties = cms.vdouble( 0.00200 )   ) ,
+            cms.PSet( lowBounds = cms.vdouble(2.000 , 0.940    ) , upBounds = cms.vdouble(6.000 , 999.000 ) , values = cms.vdouble( -0.00229  ) , uncertainties = cms.vdouble( 0.00300 )   ) ,
                     ))
 
 smearBinsRereco = cms.PSet(
@@ -60,8 +60,8 @@ smearBinsRereco = cms.PSet(
             cms.PSet( lowBounds = cms.vdouble(1.000,0.940    ) , upBounds = cms.vdouble(1.500,999.000 ) , values = cms.vdouble( 0.0130 ) , uncertainties = cms.vdouble( 0.00098551 )  ) ,
             cms.PSet( lowBounds = cms.vdouble(1.500,-999.000 ) , upBounds = cms.vdouble(2.000,0.940   ) , values = cms.vdouble( 0.0223 ) , uncertainties = cms.vdouble( 0.00045816 )  ) ,
             cms.PSet( lowBounds = cms.vdouble(1.500,0.940    ) , upBounds = cms.vdouble(2.000,999.000 ) , values = cms.vdouble( 0.0204 ) , uncertainties = cms.vdouble( 0.00076386 )  ) ,
-            cms.PSet( lowBounds = cms.vdouble(2.000,-999.000 ) , upBounds = cms.vdouble(5.000,0.940   ) , values = cms.vdouble( 0.0260 ) , uncertainties = cms.vdouble( 0.00061517 )  ) ,
-            cms.PSet( lowBounds = cms.vdouble(2.000,0.940    ) , upBounds = cms.vdouble(5.000,999.000 ) , values = cms.vdouble( 0.0231 ) , uncertainties = cms.vdouble( 0.00042066 )  ) ,
+            cms.PSet( lowBounds = cms.vdouble(2.000,-999.000 ) , upBounds = cms.vdouble(6.000,0.940   ) , values = cms.vdouble( 0.0260 ) , uncertainties = cms.vdouble( 0.00061517 )  ) ,
+            cms.PSet( lowBounds = cms.vdouble(2.000,0.940    ) , upBounds = cms.vdouble(6.000,999.000 ) , values = cms.vdouble( 0.0231 ) , uncertainties = cms.vdouble( 0.00042066 )  ) ,
                     ))
 
 
