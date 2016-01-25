@@ -1,7 +1,8 @@
 from os import listdir,popen,access,F_OK
 
 dobig = False
-dobigsig = True
+dobigsig = False
+dobigdata = True # LOL
 
 filelist = {}
 bigfiles = []
@@ -70,3 +71,7 @@ if not access("allsig.root",F_OK) and dobigsig:
     printAndExec(cmd)
 else:
     print "skipping allsig.root"
+
+if not access("allData.root",F_OK) and dobigdata:
+    cmd = "hadd_workspaces allData.root *DoubleEG*USER.root"
+    printAndExec(cmd)
