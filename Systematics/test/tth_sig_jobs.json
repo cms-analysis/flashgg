@@ -1,0 +1,8 @@
+{
+    "processes" : {
+        "tth_120" : [ "/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8" ],
+        "tth_125" : [ "/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8" ],
+        "tth_130" : [ "/ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8" ]
+     },	
+        "cmdLine" : "campaign=RunIISpring15-TTHFiltered-1_2_0-25ns"
+}
