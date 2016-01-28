@@ -81,6 +81,11 @@ namespace flashgg {
         double muPFIsoSumRelThreshold_;
         double TransverseImpactParam_;
         double LongitudinalImpactParam_;
+
+        bool useStdElectronID_;
+        bool useElectronMVARecipe_;
+        bool useElectronLooseID_;
+
     };
 
     TTHHadronicTagProducer::TTHHadronicTagProducer( const ParameterSet &iConfig ) :
@@ -122,6 +127,10 @@ namespace flashgg {
         TransverseImpactParam_ = iConfig.getParameter<double>( "TransverseImpactParam");
         LongitudinalImpactParam_ = iConfig.getParameter<double>( "LongitudinalImpactParam");
         electronEtaThresholds_ = iConfig.getParameter<vector<double > >( "electronEtaThresholds");
+        useStdElectronID_=iConfig.getParameter<bool>("useStdElectronID");
+        useElectronMVARecipe_=iConfig.getParameter<bool>("useElectronMVARecipe");
+        useElectronLooseID_=iConfig.getParameter<bool>("useElectronLooseID");
+        
         for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
             auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
             tokenJets_.push_back(token);
@@ -181,13 +190,16 @@ namespace flashgg {
 
         std::vector<edm::Ptr<flashgg::Muon> > goodMuons = selectAllMuons( theMuons->ptrs(), vertices->ptrs(), muonEtaThreshold_ , leptonPtThreshold_, muPFIsoSumRelThreshold_ );
         
-        std::vector<edm::Ptr<Electron> > goodElectrons = selectAllElectrons( theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, 
-                                                                          TransverseImpactParam_, LongitudinalImpactParam_, nonTrigMVAThresholds_, nonTrigMVAEtaCuts_,
-                                                                          electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaThresholds_ );
-        
        
+        std::vector<edm::Ptr<Electron> > goodElectrons ;
 
-
+        if( !useStdElectronID_) goodElectrons = selectAllElectrons( theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, 
+                                                                    TransverseImpactParam_, LongitudinalImpactParam_, nonTrigMVAThresholds_, nonTrigMVAEtaCuts_,
+                                                                    electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaThresholds_ );
+        else goodElectrons = selectStdAllElectrons(theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
+                                                   useElectronMVARecipe_, useElectronLooseID_);
+        
+        
         for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
 
             if( goodElectrons.size() > 0 ||  goodMuons.size() > 0 )  continue; 
