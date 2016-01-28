@@ -92,7 +92,6 @@ namespace flashgg {
         double LongitudinalImpactParam_;
 
         double deltaRPhoElectronThreshold_;
-        double Zmass_;
         double deltaMassElectronZThreshold_;
 
         bool hasGoodMuons_highPt = false;
@@ -152,7 +151,6 @@ namespace flashgg {
         nonTrigMVAThresholds_ =  iConfig.getParameter<vector<double > >( "nonTrigMVAThresholds");
         nonTrigMVAEtaCuts_ =  iConfig.getParameter<vector<double > >( "nonTrigMVAEtaCuts");
         deltaRPhoElectronThreshold_ = iConfig.getParameter<double>( "deltaRPhoElectronThreshold");
-        Zmass_ = iConfig.getParameter<double>( "Zmass");
         deltaMassElectronZThreshold_ = iConfig.getParameter<double>( "deltaMassElectronZThreshold");
         electronIsoThreshold_ = iConfig.getParameter<double>( "electronIsoThreshold");
         electronNumOfHitsThreshold_ = iConfig.getParameter<double>( "electronNumOfHitsThreshold");
