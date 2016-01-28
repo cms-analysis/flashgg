@@ -21,6 +21,7 @@ class BatchRegistry:
         "cern.ch"          : "lsf",
         "psi.ch"           : "sge",
         "hep.ph.ic.ac.uk"  : "sge",
+        "irfu.ext"         : "iclust",
         }
     
     #----------------------------------------
@@ -29,6 +30,7 @@ class BatchRegistry:
         if batchSystem == "auto": batchSystem = BatchRegistry.getBatchSystem()        
         if batchSystem == "lsf" : return LsfJob
         elif batchSystem == "sge": return SGEJob
+        elif batchSystem == "iclust": return IclustJob
         else:
             raise Exception,"Unrecognized batchSystem: %s" % batchSystem
 
@@ -60,7 +62,11 @@ class BatchRegistry:
         if not BatchRegistry.domain:
             stat,out = commands.getstatusoutput("hostname -d")
             if stat:
-                raise Exception,"Unable to determine domain:\n%s" % out
+                raise Exception,"Unable to determine domain via `hostname':\n%s" % out
+            if out == "":
+                    stat, out = commands.getstatusoutput("domainname")
+                    if stat:
+                        raise Exception,"Unable to determine domain via `domainname':\n%s" % out
             BatchRegistry.domain = out.strip("\n")
         return BatchRegistry.domain
 
@@ -608,6 +614,105 @@ class SGEJob(LsfJob):
             return self.exitStatus, (out,(self.jobName,self.jobid))
 
         return self.handleOutput()
+
+    def handleOutput(self):
+
+        if self.async:
+            result = commands.getstatusoutput("qstat")
+#                print "We are in handleOutput and we have the following output:",result
+            self.exitStatus = 0 # assume it is done unless listed
+            for line in result[1].split("\n"):
+                if line.startswith(str(self.jobid)):
+                    self.exitStatus = -1
+                    break
+            if self.exitStatus == 0:
+                logdir = os.path.abspath(os.path.dirname(self.jobName))
+                if os.path.isfile('%s/%s.sh.fail' % (logdir,self.jobName.split("/")[-1])) and not os.path.isfile('%s/%s.sh.done' % (logdir,self.jobName.split("/")[-1])):
+                    self.exitStatus = 1
+
+        output = ""
+        if self.jobName:
+            try:
+                with open("%s.log" % self.jobName) as lf:
+                    output = lf.read()
+                    lf.close()
+            except:
+                output = "%s.log" % self.jobName
+
+        return self.exitStatus, output
+
+# -----------------------------------------------------------------------------------------------------
+class IclustJob(LsfJob):
+    """ a thread to run qsub and wait until it completes """
+
+    def __str__(self):
+        return "IclustJob: [%s] [%s] [%s]" % ( self.lsfQueue, self.jobName, self.jobid )
+
+    def preamble(self):
+        ret = ""
+        mydomain = BatchRegistry.getDomain()
+        # domain-specific configuration
+        if mydomain == "irfu.ext":
+            # from the submission directory... FIXME
+            ret += 'tmpdir="`mktemp -d sgejob.XXXXXXXXXX`"\n'
+            ret += "cd $tmpdir\n"
+        return ret
+
+    def epilogue(self,cmd,dest):
+        ret = ""
+        ret += 'if [[ $retval == 0 ]]; then\n'
+        fn = "%s.sh.done" % (self.jobName.split("/")[-1])
+        ret += '    touch %s\n' % fn
+        ret += 'else\n'
+        fn = "%s.sh.fail" % (self.jobName.split("/")[-1])
+        ret += '    touch %s\n' % fn
+        ret += 'fi\n'
+        return ret
+
+    def copyProxy(self):
+        mydomain = BatchRegistry.getDomain()
+        # domain-specific configuration
+        if mydomain == "irfu.ext":
+            return False
+        return True
+        
+    def run(self,script):
+
+        qsubCmdParts = [ "clubatch" ]
+
+        #if not self.async:
+        #    qsubCmdParts.append("-sync y")  # qsub waits until job completes
+
+        if( self.jobName ):
+            logdir = os.path.abspath(os.path.dirname(self.jobName))
+            logfile = "%s/%s.log" % (logdir, os.path.basename(self.jobName))
+            if not os.path.exists(logdir):
+                os.mkdir(logdir)
+            #qsubCmdParts.append("-N " + self.jobName.strip("/").replace("/","_"))
+            #qsubCmdParts.append("-o %s -e %s" % (logfile,logfile))
+
+        qsubCmd = " ".join(qsubCmdParts)
+
+        scriptname = "%s.sh" % self.jobName
+        with open(scriptname,"w+") as fout:
+            fout.write(script)
+            fout.close()
+        stat,out = commands.getstatusoutput("chmod 755 %s" % scriptname)
+        stat,out = commands.getstatusoutput("clubatch %s" % scriptname)
+                                                         
+        self.exitStatus = stat
+
+        if self.exitStatus != 0:
+            print "error running job",self.jobName, self.exitStatus
+            print out
+        else:
+            self.jobid = out.rstrip("\n")
+
+        #if self.async:
+        #    return self.exitStatus, (out,(self.jobName,self.jobid))
+
+        #return self.handleOutput()
+        return
 
     def handleOutput(self):
 
