@@ -69,7 +69,7 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                GenJetTag = cms.InputTag("slimmedGenJets"),
                                #Boundaries=cms.vdouble(0.21,0.6,0.81)
                                #  for the moment we have two categories VBF-0 and VBF-1: to be changed when the diphoton MVA is ready 
-                               Boundaries=cms.vdouble(0.668, 0.974) 
+                               Boundaries=cms.vdouble(0.5819, 0.9449) 
                                )
 
 
