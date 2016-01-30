@@ -13,7 +13,7 @@ binInfo = cms.PSet(
                         cms.PSet(lowBounds = cms.vdouble(50.000000), upBounds = cms.vdouble(60.000000), values = cms.vdouble(0.983446), uncertainties = cms.vdouble(0.014165,0.014165)),
                         cms.PSet(lowBounds = cms.vdouble(60.000000), upBounds = cms.vdouble(80.000000), values = cms.vdouble(0.987193), uncertainties = cms.vdouble(0.014235,0.014235)),
                         cms.PSet(lowBounds = cms.vdouble(80.000000), upBounds = cms.vdouble(120.000000), values = cms.vdouble(0.983453), uncertainties = cms.vdouble(0.014742,0.014742)),
-                        cms.PSet(lowBounds = cms.vdouble(120.000000), upBounds = cms.vdouble(9999.000000), values = cms.vdouble(1.003003), uncertainties = cms.vdouble(0.027881,0.027881))
+                        cms.PSet(lowBounds = cms.vdouble(120.000000), upBounds = cms.vdouble(9999999.000000), values = cms.vdouble(1.003003), uncertainties = cms.vdouble(0.027881,0.027881))
                         )
 		)	
 
