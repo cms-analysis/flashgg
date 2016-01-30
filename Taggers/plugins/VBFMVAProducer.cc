@@ -73,14 +73,14 @@ namespace flashgg {
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         //jetTokenDz_( consumes<View<flashgg::Jet> >( iConfig.getParameter<InputTag>( "JetTag" ) ) ),
         inputTagJets_ ( iConfig.getParameter<std::vector<edm::InputTag> >( "inputTagJets" ) ),
-        _MVAMethod    ( iConfig.getUntrackedParameter<string> ( "MVAMethod"    , "BDT"  ) ),
-        _usePuJetID   ( iConfig.getUntrackedParameter<bool>   ( "UsePuJetID"   , false  ) ),
-        _useJetID     ( iConfig.getUntrackedParameter<bool>   ( "UseJetID"     , false  ) ),
-        _merge3rdJet  ( iConfig.getUntrackedParameter<bool>   ( "merge3rdJet"  , false  ) ),
-        _thirdJetDRCut( iConfig.getUntrackedParameter<double> ( "thirdJetDRCut", 1.8    ) ),
-        _rmsforwardCut( iConfig.getUntrackedParameter<double> ( "rmsforwardCut", 1.0    ) ),
-        _JetIDLevel   ( iConfig.getUntrackedParameter<string> ( "JetIDLevel"   , "Loose") ), // Loose == 0, Tight == 1
-        _minDijetMinv ( iConfig.getParameter<double>          ( "MinDijetMinv" ) )
+        _MVAMethod    ( iConfig.getParameter<string> ( "MVAMethod"    ) ),
+        _usePuJetID   ( iConfig.getParameter<bool>   ( "UsePuJetID"   ) ),
+        _useJetID     ( iConfig.getParameter<bool>   ( "UseJetID"     ) ),
+        _merge3rdJet  ( iConfig.getParameter<bool>   ( "merge3rdJet"  ) ),
+        _thirdJetDRCut( iConfig.getParameter<double> ( "thirdJetDRCut") ),
+        _rmsforwardCut( iConfig.getParameter<double> ( "rmsforwardCut") ),
+        _JetIDLevel   ( iConfig.getParameter<string> ( "JetIDLevel"   ) ),
+        _minDijetMinv ( iConfig.getParameter<double> ( "MinDijetMinv" ) )
     {
         vbfMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "vbfMVAweightfile" );
         
