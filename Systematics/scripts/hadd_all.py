@@ -39,11 +39,12 @@ for fnr in filelist.keys():
         print "skipping",bigfile
         continue
     if len(result) > 8:
+        filesperintermediate = int((len(result))**0.5)
         subres = []
         nextone = 0
         while nextone < len(result):
-            subres.append(result[nextone:nextone+5])
-            nextone += 5
+            subres.append(result[nextone:nextone+filesperintermediate])
+            nextone += filesperintermediate
         mediumlist = []    
         for i in range(len(subres)):
             mediumfile = fnr.replace("_%i","intermediate%i"%i)
@@ -75,3 +76,5 @@ else:
 if not access("allData.root",F_OK) and dobigdata:
     cmd = "hadd_workspaces allData.root *DoubleEG*USER.root"
     printAndExec(cmd)
+else:
+    print "skipping allData.root"
