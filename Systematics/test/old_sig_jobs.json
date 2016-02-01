@@ -1,0 +1,11 @@
+{
+    "processes" : {
+        "ggh_120"  : [ "/GluGluHToGG_M-120_13TeV_powheg_pythia8" ],
+        "ggh_125"  : [ "/GluGluHToGG_M-125_13TeV_powheg_pythia8" ],
+	"ggh_130" : [ "/GluGluHToGG_M-130_13TeV_powheg_pythia8" ],
+	"vbf_120" : [ "/VBFHToGG_M-120_13TeV_powheg_pythia8" ],
+        "vbf_125" : [ "/VBFHToGG_M-125_13TeV_powheg_pythia8" ],
+        "vbf_130" : [ "/VBFHToGG_M-130_13TeV_powheg_pythia8" ]
+     },	
+        "cmdLine" : "campaign=RunIISpring15-AllSilverIncludingGold-1_1_0-25ns"
+}
