@@ -45,10 +45,14 @@ namespace flashgg {
             // Sal: IIRC, you want "ak4PFCHSL1FastL2L3Residual" for data, "ak4PFCHSL1FastL2L3" for MC
             const JetCorrector* corrector = JetCorrector::getJetCorrector (JECLabel_,iSetup); 
             for( unsigned int ncorr = 0; ncorr < this->Corrections_.size(); ncorr++ ) {
-                this->Corrections_.at( ncorr )->setJEC(corrector,iEvent,iSetup);
+                if( !this->Corrections_.at( ncorr )->makesWeight() ){
+                    this->Corrections_.at( ncorr )->setJEC(corrector,iEvent,iSetup);
+                }
             }
             for( unsigned int ncorr = 0; ncorr < this->Corrections2D_.size(); ncorr++ ) {
-                this->Corrections2D_.at( ncorr )->setJEC(corrector,iEvent,iSetup);
+                if( !this->Corrections2D_.at( ncorr )->makesWeight() ){
+                    this->Corrections2D_.at( ncorr )->setJEC(corrector,iEvent,iSetup);
+                }
             }
         }
         if (!correctionsSet_) {
@@ -56,10 +60,14 @@ namespace flashgg {
             iSetup.get<JetCorrectionsRecord>().get("AK4PFchs",JetCorParColl); 
             JetCorrectorParameters const & JetCorPar = (*JetCorParColl)["Uncertainty"];
             for( unsigned int ncorr = 0; ncorr < this->Corrections_.size(); ncorr++ ) {
-                this->Corrections_.at( ncorr )->setJECUncertainty(JetCorPar);
+                if( !this->Corrections_.at( ncorr )->makesWeight() ){
+                    this->Corrections_.at( ncorr )->setJECUncertainty(JetCorPar);
+                }
             }
             for( unsigned int ncorr = 0; ncorr < this->Corrections2D_.size(); ncorr++ ) {
-                this->Corrections2D_.at( ncorr )->setJECUncertainty(JetCorPar);
+                if( !this->Corrections2D_.at( ncorr )->makesWeight() ){
+                    this->Corrections2D_.at( ncorr )->setJECUncertainty(JetCorPar);
+                }
             }
         }
         ObjectSystematicProducer<flashgg::Jet,int,std::vector>::produce( iEvent, iSetup );
