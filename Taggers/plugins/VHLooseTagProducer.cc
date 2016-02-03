@@ -84,7 +84,6 @@ namespace flashgg {
         double LongitudinalImpactParam_;
 
         double deltaRPhoElectronThreshold_;
-        double Zmass_;
         double deltaMassElectronZThreshold_;
 
         bool hasGoodElec = false;
@@ -135,9 +134,7 @@ namespace flashgg {
         LongitudinalImpactParam_ = iConfig.getParameter<double>( "LongitudinalImpactParam");
 
         deltaRPhoElectronThreshold_ = iConfig.getParameter<double>( "deltaRPhoElectronThreshold");
-        Zmass_ = iConfig.getParameter<double>( "Zmass");
         deltaMassElectronZThreshold_ = iConfig.getParameter<double>( "deltaMassElectronZThreshold");
-
 
         nonTrigMVAThresholds_ =  iConfig.getParameter<vector<double > >( "nonTrigMVAThresholds");
         nonTrigMVAEtaCuts_ =  iConfig.getParameter<vector<double > >( "nonTrigMVAEtaCuts");

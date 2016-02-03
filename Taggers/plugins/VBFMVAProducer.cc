@@ -42,6 +42,7 @@ namespace flashgg {
         bool       _useJetID;
         bool       _merge3rdJet;
         double     _thirdJetDRCut;
+        double     _rmsforwardCut;
         string     _JetIDLevel;
         double     _minDijetMinv;
         
@@ -72,13 +73,14 @@ namespace flashgg {
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         //jetTokenDz_( consumes<View<flashgg::Jet> >( iConfig.getParameter<InputTag>( "JetTag" ) ) ),
         inputTagJets_ ( iConfig.getParameter<std::vector<edm::InputTag> >( "inputTagJets" ) ),
-        _MVAMethod    ( iConfig.getParameter<string> ( "MVAMethod"     ) ),
-        _usePuJetID   ( iConfig.getParameter<bool>   ( "UsePuJetID"    ) ),
-        _useJetID     ( iConfig.getParameter<bool>   ( "UseJetID"      ) ),
-        _merge3rdJet  ( iConfig.getParameter<bool>   ( "merge3rdJet"   ) ),
-        _thirdJetDRCut( iConfig.getParameter<double> ( "thirdJetDRCut" ) ),
-        _JetIDLevel   ( iConfig.getParameter<string> ( "JetIDLevel"    ) ), // Loose == 0, Tight == 1
-        _minDijetMinv ( iConfig.getParameter<double>          ( "MinDijetMinv" ) )
+        _MVAMethod    ( iConfig.getParameter<string> ( "MVAMethod"    ) ),
+        _usePuJetID   ( iConfig.getParameter<bool>   ( "UsePuJetID"   ) ),
+        _useJetID     ( iConfig.getParameter<bool>   ( "UseJetID"     ) ),
+        _merge3rdJet  ( iConfig.getParameter<bool>   ( "merge3rdJet"  ) ),
+        _thirdJetDRCut( iConfig.getParameter<double> ( "thirdJetDRCut") ),
+        _rmsforwardCut( iConfig.getParameter<double> ( "rmsforwardCut") ),
+        _JetIDLevel   ( iConfig.getParameter<string> ( "JetIDLevel"   ) ),
+        _minDijetMinv ( iConfig.getParameter<double> ( "MinDijetMinv" ) )
     {
         vbfMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "vbfMVAweightfile" );
         
@@ -188,7 +190,11 @@ namespace flashgg {
                     if( _JetIDLevel == "Loose" && !jet->passesJetID  ( flashgg::Loose ) ) continue;
                     if( _JetIDLevel == "Tight" && !jet->passesJetID  ( flashgg::Tight ) ) continue;
                 }
-                
+                // rms cuts over 2.5 
+                if( fabs( jet->eta() ) > 2.5 && jet->rms() > _rmsforwardCut ){ 
+                    //std::cout << "("<< jet->eta()<< ")("<< jet->rms() <<").. jet rejected ::" << std::endl;
+                    continue; 
+                }
                 // within eta 4.7?
                 if( fabs( jet->eta() ) > 4.7 ) { continue; }
 
@@ -230,7 +236,7 @@ namespace flashgg {
                     jet_3_index = jetLoop;
                     jet_3_pt    = jet->pt();
                 }
-                n_jets_count++;
+                if( jet->pt() > 30.0 ) n_jets_count++;
                 // if the jet's pt is neither higher than the lead jet or sublead jet, then forget it!
                 if( dijet_indices.first != -1 && dijet_indices.second != -1 ) {hasValidVBFDiJet  = 1;}
                 if( hasValidVBFDiJet          && jet_3_index != -1          ) {hasValidVBFTriJet = 1;}

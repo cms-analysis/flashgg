@@ -119,6 +119,39 @@ echo crabConfig_*.py | xargs -n 1 crab sub
 
 ### SPRING15
 
+### 1_2_0 Missing ReReco DoubleEG ###
+
+cd $CMSSW_BASE/src/flashgg/MetaData/work/jsons
+fggManageSamples.py -C RunIISpring15-ReReco74X-All-1_1_0-Or-1_2_0-25ns getlumi "/DoubleEG/*2015*/*" output=DoubleEG_ReRecoAsRun_29Jan.json
+compareJSON.py --sub Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_Silver_v2.txt DoubleEG_ReRecoAsRun_29Jan.json > DoubleEG_ToRun_29Jan.json
+
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-ReReco74XMissingDoubleEG-1_2_0-25ns -s campaigns/RunIISpring15-ReReco74XMissingDoubleEG-1_2_0-25ns.json  -V 1_2_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask ${PWD}/jsons/DoubleEG_ToRun_29Jan.json
+cd RunIISpring15-ReReco74XMissingDoubleEG-1_2_0-25ns
+echo crabConfig_*.py | xargs -n 1 crab sub
+
+
+### 1_2_0 Missing ReReco SingleElectron ###
+
+cd $CMSSW_BASE/src/flashgg/MetaData/work/jsons
+fggManageSamples.py -C RunIISpring15-ReReco74X-All-1_1_0-Or-1_2_0-25ns getlumi "/SingleElectron/*2015*/*" output=SingleElectron_ReRecoAsRun_29Jan.json
+compareJSON.py --sub Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_Silver_v2.txt SingleElectron_ReRecoAsRun_29Jan.json > SingleElectron_ToRun_29Jan.json
+
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-ReReco74XMissingSingleElectron-1_2_0-25ns -s campaigns/RunIISpring15-ReReco74XMissingSingleElectron-1_2_0-25ns.json  -V 1_2_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask ${PWD}/jsons/SingleElectron_ToRun_29Jan.json
+cd RunIISpring15-ReReco74XMissingSingleElectron-1_2_0-25ns
+echo crabConfig_*.py | xargs -n 1 crab sub
+
+### 1_2_0 ReMiniAOD missing signal samples
+
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring15-MoreSignal-1_2_0-25ns -U 1 -L 25 -s campaigns/RunIISpring15-MoreSignal-1_2_0-25ns.json -V 1_2_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
+cd RunIISpring15-MoreSignal-1_2_0-25ns
+python $CMSSW_BASE/src/flashgg/MetaData/scripts/stupid_fix.py
+mkdir orig ; mv crabConfig_*orig*.py orig
+echo crabConfig_*.py | xargs -n 1 crab sub
+
+
 #### 1_2_0 ReMiniAOD TTH Filtered Rerun
 
 Should be 1_1_0 compatible
