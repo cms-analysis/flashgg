@@ -1,0 +1,13 @@
+{
+    "data" : [
+	      ],
+    "sig"  : ["/GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM",
+    	      "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM",
+	      "/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM",
+	      "/VBFHToGG_M120_13TeV_amcatnlo_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM",
+	      "/VBFHToGG_M125_13TeV_amcatnlo_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2_ext1-v1/MINIAODSIM",
+	      "/VBFHToGG_M130_13TeV_amcatnlo_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM"
+	      ],
+    "bkg"  : [
+	      ]
+}

@@ -1,3 +1,4 @@
+
 import FWCore.ParameterSet.Config as cms
 
 from flashgg.Taggers.DiPhotonMVATrainingDumpConfNew_cff import DiPhotonMVATrainingDumpConfNew
