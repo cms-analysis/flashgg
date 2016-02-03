@@ -95,7 +95,7 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 ### FALL15 (76x)
 
-#### First tests with 1_3_0 
+#### First tests with 1_3_1
 
 ```
 cd $CMSSW_BASE/src/flashgg/MetaData/work
