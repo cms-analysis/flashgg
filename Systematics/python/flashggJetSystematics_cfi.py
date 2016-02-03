@@ -21,6 +21,28 @@ smearBins = cms.PSet(
                               values = cms.vdouble( 1.320 ), uncertainties = cms.vdouble( 0.286 ) )
                     ))
 
+#https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideBTagMCTools#Hadron_parton_based_jet_flavour
+#B Tag MC efficiencies
+bTagEffBins = cms.PSet(
+    variables = cms.vstring("hadronFlavour","abs(eta)","pt"),
+    bins = cms.VPSet(
+                     #udsg jets
+                     cms.PSet(lowBounds = cms.vdouble(-0.5,0.0,20.0), upBounds = cms.vdouble(3.5,2.4,50.0), values = cms.vdouble(1.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(-0.5,0.0,50.0), upBounds = cms.vdouble(3.5,2.4,100.0), values = cms.vdouble(1.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(-0.5,0.0,100.0), upBounds = cms.vdouble(3.5,2.4,200.0), values = cms.vdouble(1.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(-0.5,0.0,200.0), upBounds = cms.vdouble(3.5,2.4,1000.0), values = cms.vdouble(1.0), uncertainties = cms.vdouble(0.0)),
+                     #c jets
+                     cms.PSet(lowBounds = cms.vdouble(3.5,0.0,20.0), upBounds = cms.vdouble(4.5,2.4,50.0), values = cms.vdouble(1.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(3.5,0.0,50.0), upBounds = cms.vdouble(4.5,2.4,100.0), values = cms.vdouble(1.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(3.5,0.0,100.0), upBounds = cms.vdouble(4.5,2.4,200.0), values = cms.vdouble(1.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(3.5,0.0,200.0), upBounds = cms.vdouble(4.5,2.4,1000.0), values = cms.vdouble(1.0), uncertainties = cms.vdouble(0.0)),
+                     #b jets
+                     cms.PSet(lowBounds = cms.vdouble(4.5,0.0,20.0), upBounds = cms.vdouble(5.5,2.4,50.0), values = cms.vdouble(1.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(4.5,0.0,50.0), upBounds = cms.vdouble(5.5,2.4,100.0), values = cms.vdouble(1.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(4.5,0.0,100.0), upBounds = cms.vdouble(5.5,2.4,200.0), values = cms.vdouble(1.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(4.5,0.0,200.0), upBounds = cms.vdouble(5.5,2.4,1000.0), values = cms.vdouble(1.0), uncertainties = cms.vdouble(0.0))
+                  ))   
+
 def createJetSystematicsForTag(process,jetInputTag):
   num = jetInputTag.productInstanceLabel
   newName = 'flashggJetSystematics'+num
@@ -42,7 +64,16 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            OverallRange = cms.string("abs(eta)<5.0"),
                                                            RandomLabel = cms.string("rnd_g_JER"), # for no-match case
                                                            BinList = smearBins,
-                                                           Debug = cms.untracked.bool(False),
+                                                           Debug = cms.untracked.bool(False)
+                                                           ),
+                                                 cms.PSet( MethodName = cms.string("FlashggJetBTagWeight"),
+                                                           Label = cms.string("BtagSF"),
+                                                           NSigmas = cms.vint32(-1,1),
+                                                           OverallRange = cms.string("pt>25.0&&abs(eta)<2.4"),
+                                                           BinList = bTagEffBins,
+							   bTag = cms.string("flashggBTag"),
+							   BDiscriminator = cms.double(0.890), #Medium working point for CSV B tagger
+                                                           Debug = cms.untracked.bool(False)
                                                            )
                                                  )
                          
