@@ -97,13 +97,25 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 #### First tests with 1_3_0 
 
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIIFall15DR76-1_3_0-25ns_ext1 -U 5 -L 25 -s campaigns/RunIIFall15DR76-1_3_0-25ns_ext1.json -V 1_3_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask ${PWD}/jsons/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_Silver_v2.txt
+cd RunIIFall15DR76-1_3_0-25ns_ext1/
+python $CMSSW_BASE/src/flashgg/MetaData/scripts/stupid_fix.py
+mkdir orig ; mv crabConfig_*orig*.py orig
+echo crabConfig_*.py | xargs -n 1 crab sub
+```
+
+#### First tests with 1_3_0 
+
+```
 cd $CMSSW_BASE/src/flashgg/MetaData/work
 ./prepareCrabJobs.py -C RunIIFall15DR76-1_3_0-25ns -U 5 -L 25 -s campaigns/RunIIFall15DR76-1_3_0-25ns.json -V 1_3_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
 cd RunIIFall15DR76-1_3_0-25ns  --lumiMask ${PWD}/jsons/SilverNotGold_246908-260627_JSON_v2.txt
 python $CMSSW_BASE/src/flashgg/MetaData/scripts/stupid_fix.py
 mkdir orig ; mv crabConfig_*orig*.py orig
 echo crabConfig_*.py | xargs -n 1 crab sub
-
+```
 
 ### SPRING15
 
