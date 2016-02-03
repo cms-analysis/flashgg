@@ -1,6 +1,9 @@
 import FWCore.ParameterSet.Config as cms
 from flashgg.MicroAOD.flashggJets_cfi import flashggBTag, maxJetCollections
 
+bDiscriminator74X = cms.vdouble(0.605,0.890)
+bDiscriminator76X = cms.vdouble(0.460,0.800)
+
 flashggUnpackedJets = cms.EDProducer("FlashggVectorVectorJetUnpacker",
                                      JetsTag = cms.InputTag("flashggFinalJets"),
                                      NCollections = cms.uint32(maxJetCollections)
@@ -38,7 +41,7 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        inputTagJets= UnpackedJetCollectionVInputTag, 
                                        jetPtThreshold = cms.double(25.),
                                        jetEtaThreshold = cms.double(2.4),
-                                       bDiscriminator=cms.vdouble(0.605,0.890), 
+                                       bDiscriminator = bDiscriminator76X, #For CMSSW74X use : bDiscriminator74X
                                        bTag = cms.string(flashggBTag),
                                        jetsNumberThreshold = cms.int32(5),
                                        bjetsNumberThreshold = cms.int32(1),  
@@ -110,7 +113,7 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
                                        jetEtaThreshold= cms.double(2.4),
                                        deltaRJetLeadPhoThreshold = cms.double(0.4),
                                        deltaRJetSubLeadPhoThreshold = cms.double(0.4),
-                                       bDiscriminator=cms.vdouble(0.605,0.890), 
+                                       bDiscriminator = bDiscriminator76X, #For CMSSW74X use : bDiscriminator74X
                                        bTag = cms.string(flashggBTag),
                                        muPFIsoSumRelThreshold = cms.double(0.25), 
                                        PuIDCutoffThreshold = cms.double(0.8),
