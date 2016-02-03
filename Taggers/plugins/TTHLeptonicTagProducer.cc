@@ -68,32 +68,31 @@ namespace flashgg {
         double MVAThreshold_;
         double deltaRMuonPhoThreshold_;
         double deltaRJetLepThreshold_;
-
         double deltaRJetLeadPhoThreshold_;
         double deltaRJetSubLeadPhoThreshold_;
-
         double jetsNumberThreshold_;
         double bjetsNumberThreshold_;
         double jetPtThreshold_;
         double jetEtaThreshold_;
-
+        vector<double>  electronEtaThresholds_;
         vector<double> bDiscriminator_;
         string bTag_;
         double muPFIsoSumRelThreshold_;
         double PhoMVAThreshold_;
         double DeltaRTrkElec_;
-        double TransverseImpactParam_;
-        double LongitudinalImpactParam_;
-
         double deltaRPhoElectronThreshold_;
-        double Zmass_;
         double deltaMassElectronZThreshold_;
 
+        double TransverseImpactParam_;
+        double LongitudinalImpactParam_;
         vector<double> nonTrigMVAThresholds_;
         vector<double> nonTrigMVAEtaCuts_;
         double electronIsoThreshold_;
         double electronNumOfHitsThreshold_;
-        vector<double>  electronEtaThresholds_;
+        
+        bool useStdElectronID_;
+        bool useElectronMVARecipe_;
+        bool useElectronLooseID_;
 
         bool hasGoodElec = false;
         bool hasGoodMuons = false;
@@ -133,19 +132,22 @@ namespace flashgg {
 
         muPFIsoSumRelThreshold_ = iConfig.getParameter<double>( "muPFIsoSumRelThreshold");
         PhoMVAThreshold_ = iConfig.getParameter<double>( "PhoMVAThreshold");
-        DeltaRTrkElec_ = iConfig.getParameter<double>( "DeltaRTrkElec");
-        TransverseImpactParam_ = iConfig.getParameter<double>( "TransverseImpactParam");
-        LongitudinalImpactParam_ = iConfig.getParameter<double>( "LongitudinalImpactParam");
 
+        DeltaRTrkElec_ = iConfig.getParameter<double>( "DeltaRTrkElec");
         deltaRPhoElectronThreshold_ = iConfig.getParameter<double>( "deltaRPhoElectronThreshold");
-        Zmass_ = iConfig.getParameter<double>( "Zmass");
         deltaMassElectronZThreshold_ = iConfig.getParameter<double>( "deltaMassElectronZThreshold");
 
+        TransverseImpactParam_ = iConfig.getParameter<double>( "TransverseImpactParam");
+        LongitudinalImpactParam_ = iConfig.getParameter<double>( "LongitudinalImpactParam");
         nonTrigMVAThresholds_ =  iConfig.getParameter<vector<double > >( "nonTrigMVAThresholds");
         nonTrigMVAEtaCuts_ =  iConfig.getParameter<vector<double > >( "nonTrigMVAEtaCuts");
         electronIsoThreshold_ = iConfig.getParameter<double>( "electronIsoThreshold");
         electronNumOfHitsThreshold_ = iConfig.getParameter<double>( "electronNumOfHitsThreshold");
-
+        
+        useStdElectronID_=iConfig.getParameter<bool>("useStdElectronID");
+        useElectronMVARecipe_=iConfig.getParameter<bool>("useElectronMVARecipe");
+        useElectronLooseID_=iConfig.getParameter<bool>("useElectronLooseID");
+        
         for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
             auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
             tokenJets_.push_back(token);
@@ -240,27 +242,34 @@ namespace flashgg {
             idmva1 = dipho->leadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
             idmva2 = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
 
-            if( idmva1 <= PhoMVAThreshold_ || idmva2 <= PhoMVAThreshold_ ) { continue; }
+            if( idmva1 < PhoMVAThreshold_ || idmva2 < PhoMVAThreshold_ ) { continue; }
 
             if( mvares->result < MVAThreshold_ ) { continue; }
 
             photonSelection = true;
 
-            std::vector<edm::Ptr<flashgg::Muon> > goodMuons = selectMuons( theMuons->ptrs(), dipho, vertices->ptrs(), muonEtaThreshold_ , leptonPtThreshold_,
-                    muPFIsoSumRelThreshold_, deltaRMuonPhoThreshold_, deltaRMuonPhoThreshold_ );
-
-
-            std::vector<edm::Ptr<Electron> > goodElectrons = selectElectrons( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, 
-                                                                              TransverseImpactParam_, LongitudinalImpactParam_, nonTrigMVAThresholds_, nonTrigMVAEtaCuts_,
-                                                                                 electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaThresholds_ ,
-                                                                                 deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_);
+            std::vector<edm::Ptr<flashgg::Muon> > goodMuons = selectMuons( theMuons->ptrs(), dipho, vertices->ptrs(), muonEtaThreshold_ , 
+                                                                           leptonPtThreshold_,muPFIsoSumRelThreshold_, deltaRMuonPhoThreshold_, deltaRMuonPhoThreshold_ );
+            
+            
+            std::vector<edm::Ptr<Electron> > goodElectrons;
+            if( !useStdElectronID_) goodElectrons= selectElectrons( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, 
+                                                                    TransverseImpactParam_, LongitudinalImpactParam_, nonTrigMVAThresholds_, nonTrigMVAEtaCuts_,
+                                                                    electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaThresholds_ ,
+                                                                    deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_);
+            else goodElectrons = selectStdElectrons(theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_,  electronEtaThresholds_ ,
+                                                    useElectronMVARecipe_,useElectronLooseID_,
+                                                    deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_);
+            
 
             hasGoodElec = ( goodElectrons.size() > 0 );
             hasGoodMuons = ( goodMuons.size() > 0 );
+            
             if( !hasGoodElec && !hasGoodMuons ) { continue; }
-
+            
             numMuonJetsdR.clear();
             numElectronJetsdR.clear();
+            
             muonJets = false;
             ElectronJets = false;
 
@@ -272,7 +281,6 @@ namespace flashgg {
 
                     int deltaRMuonJetcount = 0;
                     double bDiscriminatorValue = -999.;
-
 
                     for( unsigned int candIndex_outer = 0; candIndex_outer < Jets[jetCollectionIndex]->size() ; candIndex_outer++ ) {
                         edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( candIndex_outer );
