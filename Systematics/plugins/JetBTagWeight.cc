@@ -1,3 +1,4 @@
+#include <TSystem.h>
 #include "flashgg/Systematics/interface/ObjectSystMethodBinnedByFunctor.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/Common/interface/PtrVector.h"
@@ -152,7 +153,7 @@ namespace flashgg {
                 p_data_up = 1.0 - (jet_scalefactor_up * eff_central);
             }
 
-            if(fabs(p_mc) > 1e-16){
+            if(fabs(p_mc) > 1e-10){
                 central = p_data / p_mc ;
                 errdown = p_data_down / p_mc ;
                 errup = p_data_up / p_mc ;
