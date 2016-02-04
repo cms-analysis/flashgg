@@ -274,7 +274,9 @@ namespace flashgg {
                 tthhtags_obj.setNBMedium( njets_btagmedium );
                 tthhtags_obj.setDiPhotonIndex( diphoIndex );
                 tthhtags_obj.setSystLabel( systLabel_ );
-                tthhtags_obj.includeWeights( *JetVect[0] );
+                for( unsigned num = 0; num < JetVect.size(); num++ ) {
+                    tthhtags_obj.includeWeights( *JetVect[num] );
+                }
                 tthhtags_obj.includeWeights( *dipho );
                 tthhtags->push_back( tthhtags_obj );
                 if( ! evt.isRealData() ) {

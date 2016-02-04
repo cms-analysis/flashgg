@@ -3,11 +3,13 @@
 #include "DataFormats/Common/interface/PtrVector.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
-//#include "flashgg/Systematics/interface/ObjectWeight.h"
 #include "flashgg/Systematics/interface/BTagCalibrationStandalone.h"
 
 // setup calibration readers
-BTagCalibration calib("CSVv2", "/afs/cern.ch/work/s/saghosh/analysis/ttHgg_BTagSF_v2/CMSSW_7_6_3/src/flashgg/Systematics/data/CSVv2.csv");
+std::string CMSSW_BASE(getenv("CMSSW_BASE"));
+std::string CSVfilename = CMSSW_BASE + std::string("/src/flashgg/Systematics/data/CSVv2.csv");
+BTagCalibration calib("CSVv2", CSVfilename);
+
 BTagCalibrationReader reader(&calib,               // calibration instance
                              BTagEntry::OP_MEDIUM,  // operating point
                              "comb",               // measurement type
@@ -25,19 +27,20 @@ namespace flashgg {
         typedef StringCutObjectSelector<Jet, true> selector_type;
 
         JetBTagWeight( const edm::ParameterSet &conf );
-        //float makeWeight( flashgg::Jet &y, int syst_shift ) override;
-        float makeWeight( flashgg::Jet &y, int syst_shift );
+        float makeWeight( const flashgg::Jet &y, int syst_shift ) override;
         std::string shiftLabel( int syst_shift ) const override;
 
     private:
         selector_type overall_range_;
+        bool debug_;
         std::string bTag_;
         double bDiscriminator_;
     };
 
     JetBTagWeight::JetBTagWeight( const edm::ParameterSet &conf ) : 
         ObjectSystMethodBinnedByFunctor( conf ),
-        overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
+        overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),        
+        debug_( conf.getUntrackedParameter<bool>( "Debug", false ) ),
         bTag_( conf.getParameter<std::string>("BTag") ),
         bDiscriminator_( conf.getParameter<double>("BDiscriminator") )
     {
@@ -57,15 +60,15 @@ namespace flashgg {
         return result;
     }
 
-    float JetBTagWeight::makeWeight( flashgg::Jet &y, int syst_shift ) 
+    float JetBTagWeight::makeWeight( const flashgg::Jet &obj, int syst_shift ) 
     {
         float theWeight = 1.;
-        if( overall_range_( y ) ) {
+        if( overall_range_( obj ) ) {
 
             float central = 1., errup = 1., errdown = 1.;
 
             //obtaining efficiencies
-            auto val_err = binContents( y );
+            auto val_err = binContents( obj );
             float eff_central = 1.;//, eff_errup = 0., eff_errdown = 0.;
             if( val_err.first.size() == 1 && val_err.second.size() == 1 ) { // symmetric
                 eff_central = val_err.first[0];  
@@ -82,11 +85,11 @@ namespace flashgg {
 
             //https://twiki.cern.ch/twiki/bin/view/CMS/BTagCalibration
             float MaxBJetPt = 670., MaxLJetPt = 1000.;
-            float JetPt = y.pt();
-            float JetEta = y.eta();
-            int JetFlav = y.hadronFlavour();
+            float JetPt = obj.pt();
+            float JetEta = obj.eta();
+            int JetFlav = obj.hadronFlavour();
             bool JetBTagStatus = false;
-            if(y.bDiscriminator(bTag_.c_str()) > bDiscriminator_ ) JetBTagStatus = true;
+            if(obj.bDiscriminator(bTag_.c_str()) > bDiscriminator_ ) JetBTagStatus = true;
             bool DoubleUncertainty = false;
 
             if(JetFlav == 5 || JetFlav == 4){ // for b and c jets
@@ -161,7 +164,7 @@ namespace flashgg {
             if ( syst_shift > 0 ) theWeight = errup;
 
             if( this->debug_ ) {
-                std::cout << "  " << shiftLabel( syst_shift ) << ": Object has e= " << y.energy() << " eta=" << y.eta()
+                std::cout << "  " << shiftLabel( syst_shift ) << ": Object has e= " << obj.energy() << " eta=" << obj.eta()
                           << " and we apply a weight of " << theWeight << std::endl;
             }
         }
