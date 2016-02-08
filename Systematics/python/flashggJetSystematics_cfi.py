@@ -58,6 +58,9 @@ bTagEffBins = cms.PSet(
                      cms.PSet(lowBounds = cms.vdouble(4.5,2.4,200.0), upBounds = cms.vdouble(5.5,10.0,999999.0), values = cms.vdouble(1.0), uncertainties = cms.vdouble(0.0))
                   ))   
 
+bDiscriminator74X = cms.double(0.890)
+bDiscriminator76X = cms.double(0.800)
+
 def createJetSystematicsForTag(process,jetInputTag):
   num = jetInputTag.productInstanceLabel
   newName = 'flashggJetSystematics'+num
@@ -82,13 +85,12 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            Debug = cms.untracked.bool(False)
                                                            ),
                                                  cms.PSet( MethodName = cms.string("FlashggJetBTagWeight"),
-                                                           Label = cms.string("BTagWeight"),
+                                                           Label = cms.string("JetBTagWeight"),
                                                            NSigmas = cms.vint32(-1,1),
                                                            OverallRange = cms.string("pt>25.0&&abs(eta)<2.4"),
                                                            BinList = bTagEffBins,
 							   bTag = cms.string("flashggBTag"),
-							   BDiscriminator = cms.double(0.890), #Medium working point for CSV B tagger
-                                                           BDiscriminator76X = cms.double(0.800), # For CMSSW76X
+							   bDiscriminator = bDiscriminator74X, #Medium working point for CSV B tagger, for CMSSW76X use: bDiscriminator76X
 							   Debug = cms.untracked.bool(False)
                                                            )
                                                  )

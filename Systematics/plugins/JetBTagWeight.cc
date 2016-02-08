@@ -42,8 +42,8 @@ namespace flashgg {
         ObjectSystMethodBinnedByFunctor( conf ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),        
         debug_( conf.getUntrackedParameter<bool>( "Debug", false ) ),
-        bTag_( conf.getParameter<std::string>("BTag") ),
-        bDiscriminator_( conf.getParameter<double>("BDiscriminator") )
+        bTag_( conf.getParameter<std::string>("bTag") ),
+        bDiscriminator_( conf.getParameter<double>("bDiscriminator") )
     {
         this->setMakesWeight( true );
     }
@@ -63,9 +63,10 @@ namespace flashgg {
 
     float JetBTagWeight::makeWeight( const flashgg::Jet &obj, int syst_shift ) 
     {
+
         float theWeight = 1.;
         if( overall_range_( obj ) ) {
-
+            
             float central = 1., errup = 1., errdown = 1.;
 
             //obtaining efficiencies
