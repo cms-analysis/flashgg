@@ -40,8 +40,14 @@ namespace flashgg {
                 puBins_ = cfg.getParameter<std::vector<double> >("puBins");
                 puWeight_ = cfg.getParameter<std::vector<double> >("dataPu");
                 auto mcpu = cfg.getParameter<std::vector<double> >("mcPu");
+
                 assert( puWeight_.size() == mcpu.size() );
-                assert( puWeight_.size() == puBins_.size()-1 );
+                if ( puWeight_.size() != puBins_.size()-1 ) {
+                    puBins_.resize(puWeight_.size()+1);
+                    for (unsigned int i=0; i<puBins_.size(); ++i)
+                        puBins_[i] = int(i);
+                }
+
                 auto scl  = std::accumulate(mcpu.begin(),mcpu.end(),0.) / std::accumulate(puWeight_.begin(),puWeight_.end(),0.); // rescale input distribs to unit ara
                 for( size_t ib = 0; ib<puWeight_.size(); ++ib ) { puWeight_[ib] *= scl / mcpu[ib]; }
                 if( cfg.exists("useTruePu") ) { useTruePu_ = cfg.getParameter<bool>("useTruePu"); }
