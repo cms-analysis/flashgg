@@ -64,6 +64,10 @@ namespace flashgg {
     float JetBTagWeight::makeWeight( const flashgg::Jet &obj, int syst_shift ) 
     {
 
+        if( this->debug_ ) {
+            std::cout<<"In JetBTagProducer "<<std::endl;
+        }
+
         float theWeight = 1.;
         if( overall_range_( obj ) ) {
             
@@ -166,7 +170,7 @@ namespace flashgg {
             if ( syst_shift > 0 ) theWeight = errup;
 
             if( this->debug_ ) {
-                std::cout << "  " << shiftLabel( syst_shift ) << ": Object has e= " << obj.energy() << " eta=" << obj.eta()
+                std::cout << " In JetBTagWeight : " << shiftLabel( syst_shift ) << ": Object has pt= " << obj.pt() << " eta=" << obj.eta()
                           << " and we apply a weight of " << theWeight << std::endl;
             }
         }
