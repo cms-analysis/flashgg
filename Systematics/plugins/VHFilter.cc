@@ -30,23 +30,19 @@ VHFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   Handle<View<reco::GenParticle> > genParticles;
   iEvent.getByToken( genParticleToken_, genParticles );
   
-  // -- look for Higgs decaying to two photons                                                                                                                                            
   for( unsigned int i = 0 ; i < genParticles->size(); i++ ) {
     Ptr<reco::GenParticle> gen = genParticles->ptrAt(i);
     if (gen->status() >= 60) continue; // in aMC@NLO we get extra bosons above here
-    if (gen->pdgId() == 25){
-      cout << "Higgs found status=" << " " << gen->status() << endl;
-    }
+    //    if (gen->pdgId() == 25){
+    //      cout << "Higgs found status=" << " " << gen->status() << endl;
+    //    }
     if (gen->pdgId() == 23 ){ 
-      cout << "Z found status=" << " " << gen->status() << endl;
+      //      cout << "Z found status=" << " " << gen->status() << endl;
       isZH = true;
     }
     if (abs(gen->pdgId()) == 24){
-      cout << "W found status=" << " " << gen->status() << endl;
+      //      cout << "W found status=" << " " << gen->status() << endl;
       isWH = true;
-    }
-    if (gen->pdgId() == 22) {
-      cout << "Gamma found status=" << " " << gen->status()<< endl;
     }
   }
 
