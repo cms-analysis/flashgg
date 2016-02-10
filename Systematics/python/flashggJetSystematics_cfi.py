@@ -60,6 +60,7 @@ bTagEffBins = cms.PSet(
 
 bDiscriminator74X = cms.double(0.890)
 bDiscriminator76X = cms.double(0.800)
+from flashgg.MicroAOD.flashggJets_cfi import flashggBTag
 
 def createJetSystematicsForTag(process,jetInputTag):
   num = jetInputTag.productInstanceLabel
@@ -89,9 +90,9 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            NSigmas = cms.vint32(-1,1),
                                                            OverallRange = cms.string("pt>25.0&&abs(eta)<2.4"),
                                                            BinList = bTagEffBins,
-						 	   bTag = cms.string("flashggBTag"),
+						 	   bTag = cms.string(flashggBTag),
 						 	   bDiscriminator = bDiscriminator76X, #Medium working point for CSV B tagger, for CMSSW74X use: bDiscriminator74X
-							   Debug = cms.untracked.bool(False)
+							   Debug = cms.untracked.bool(True)
                                                            )
                                                  )
                          
