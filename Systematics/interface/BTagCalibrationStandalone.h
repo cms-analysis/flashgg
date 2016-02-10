@@ -1,5 +1,5 @@
-#ifndef BTagEntry_H
-#define BTagEntry_H
+#ifndef FlashggBTagEntry_H
+#define FlashggBTagEntry_H
 
 /**
  *
@@ -20,7 +20,7 @@
 #include <TH1.h>
 
 
-class BTagEntry
+class FlashggBTagEntry
 {
 public:
   enum OperatingPoint {
@@ -62,12 +62,12 @@ public:
 
   };
 
-  BTagEntry() {}
-  BTagEntry(const std::string &csvLine);
-  BTagEntry(const std::string &func, Parameters p);
-  BTagEntry(const TF1* func, Parameters p);
-  BTagEntry(const TH1* histo, Parameters p);
-  ~BTagEntry() {}
+  FlashggBTagEntry() {}
+  FlashggBTagEntry(const std::string &csvLine);
+  FlashggBTagEntry(const std::string &func, Parameters p);
+  FlashggBTagEntry(const TF1* func, Parameters p);
+  FlashggBTagEntry(const TH1* histo, Parameters p);
+  ~FlashggBTagEntry() {}
   static std::string makeCSVHeader();
   std::string makeCSVLine() const;
   static std::string trimStr(std::string str);
@@ -78,11 +78,11 @@ public:
 
 };
 
-#endif  // BTagEntry_H
+#endif  // FlashggBTagEntry_H
 
 
-#ifndef BTagCalibration_H
-#define BTagCalibration_H
+#ifndef FlashggBTagCalibration_H
+#define FlashggBTagCalibration_H
 
 /**
  * BTagCalibration
@@ -105,18 +105,18 @@ public:
 #include <ostream>
 
 
-class BTagCalibration
+class FlashggBTagCalibration
 {
 public:
-  BTagCalibration() {}
-  BTagCalibration(const std::string &tagger);
-  BTagCalibration(const std::string &tagger, const std::string &filename);
-  ~BTagCalibration() {}
+  FlashggBTagCalibration() {}
+  FlashggBTagCalibration(const std::string &tagger);
+  FlashggBTagCalibration(const std::string &tagger, const std::string &filename);
+  ~FlashggBTagCalibration() {}
 
   std::string tagger() const {return tagger_;}
 
-  void addEntry(const BTagEntry &entry);
-  const std::vector<BTagEntry>& getEntries(const BTagEntry::Parameters &par) const;
+  void addEntry(const FlashggBTagEntry &entry);
+  const std::vector<FlashggBTagEntry>& getEntries(const FlashggBTagEntry::Parameters &par) const;
 
   void readCSV(std::istream &s);
   void readCSV(const std::string &s);
@@ -124,23 +124,23 @@ public:
   std::string makeCSV() const;
 
 protected:
-  static std::string token(const BTagEntry::Parameters &par);
+  static std::string token(const FlashggBTagEntry::Parameters &par);
 
   std::string tagger_;
-  std::map<std::string, std::vector<BTagEntry> > data_;
+  std::map<std::string, std::vector<FlashggBTagEntry> > data_;
 
 };
 
-#endif  // BTagCalibration_H
+#endif  // FlashggBTagCalibration_H
 
 
-#ifndef BTagCalibrationReader_H
-#define BTagCalibrationReader_H
+#ifndef FlashggBTagCalibrationReader_H
+#define FlashggBTagCalibrationReader_H
 
 /**
  * BTagCalibrationReader
  *
- * Helper class to pull out a specific set of BTagEntry's out of a
+ * Helper class to pull out a specific set of FlashggBTagEntry's out of a
  * BTagCalibration. TF1 functions are set up at initialization time.
  *
  ************************************************************/
@@ -151,17 +151,17 @@ protected:
 #include <TF1.h>
 
 
-class BTagCalibrationReader
+class FlashggBTagCalibrationReader
 {
 public:
-  BTagCalibrationReader() {}
-  BTagCalibrationReader(const BTagCalibration* c,
-                        BTagEntry::OperatingPoint op,
+  FlashggBTagCalibrationReader() {}
+  FlashggBTagCalibrationReader(const FlashggBTagCalibration* c,
+                        FlashggBTagEntry::OperatingPoint op,
                         std::string measurementType="comb",
                         std::string sysType="central");
-  ~BTagCalibrationReader() {}
+  ~FlashggBTagCalibrationReader() {}
 
-  double eval(BTagEntry::JetFlavor jf,
+  double eval(FlashggBTagEntry::JetFlavor jf,
               float eta,
               float pt,
               float discr=0.) const;
@@ -176,10 +176,10 @@ protected:
     float discrMax;
     TF1 func;
   };
-  void setupTmpData(const BTagCalibration* c);
+  void setupTmpData(const FlashggBTagCalibration* c);
 
-  BTagEntry::Parameters params;
-  std::map<BTagEntry::JetFlavor, std::vector<TmpEntry> > tmpData_;
+  FlashggBTagEntry::Parameters params;
+  std::map<FlashggBTagEntry::JetFlavor, std::vector<TmpEntry> > tmpData_;
   std::vector<bool> useAbsEta;
 };
 

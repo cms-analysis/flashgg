@@ -9,21 +9,21 @@
 // setup calibration readers
 std::string CMSSW_BASE(getenv("CMSSW_BASE"));
 std::string CSVfilename = CMSSW_BASE + std::string("/src/flashgg/Systematics/data/CSVv2.csv");
-BTagCalibration calib("CSVv2", CSVfilename);
+FlashggBTagCalibration calib("CSVv2", CSVfilename);
 
-BTagCalibrationReader readerBC(&calib,               // calibration instance
-                               BTagEntry::OP_MEDIUM,  // operating point
+FlashggBTagCalibrationReader readerBC(&calib,               // calibration instance
+                               FlashggBTagEntry::OP_MEDIUM,  // operating point
                                "mujets",               // measurement type
                                "central");           // systematics type
-BTagCalibrationReader readerBC_up(&calib, BTagEntry::OP_MEDIUM, "mujets", "up");  // sys up
-BTagCalibrationReader readerBC_do(&calib, BTagEntry::OP_MEDIUM, "mujets", "down");  // sys down
+FlashggBTagCalibrationReader readerBC_up(&calib, FlashggBTagEntry::OP_MEDIUM, "mujets", "up");  // sys up
+FlashggBTagCalibrationReader readerBC_do(&calib, FlashggBTagEntry::OP_MEDIUM, "mujets", "down");  // sys down
 
-BTagCalibrationReader readerUDSG(&calib,               // calibration instance
-                             BTagEntry::OP_MEDIUM,  // operating point
+FlashggBTagCalibrationReader readerUDSG(&calib,               // calibration instance
+                             FlashggBTagEntry::OP_MEDIUM,  // operating point
                              "comb",               // measurement type
                              "central");           // systematics type
-BTagCalibrationReader readerUDSG_up(&calib, BTagEntry::OP_MEDIUM, "comb", "up");  // sys up
-BTagCalibrationReader readerUDSG_do(&calib, BTagEntry::OP_MEDIUM, "comb", "down");  // sys down
+FlashggBTagCalibrationReader readerUDSG_up(&calib, FlashggBTagEntry::OP_MEDIUM, "comb", "up");  // sys up
+FlashggBTagCalibrationReader readerUDSG_do(&calib, FlashggBTagEntry::OP_MEDIUM, "comb", "down");  // sys down
 
 namespace flashgg {
 
@@ -137,17 +137,17 @@ namespace flashgg {
             double jet_scalefactor_up =  1.0;
             double jet_scalefactor_do =  1.0;
             if(JetFlav == 5){// b jets
-                jet_scalefactor = readerBC.eval(BTagEntry::FLAV_B, JetEta, JetPt); 
-                jet_scalefactor_up =  readerBC_up.eval(BTagEntry::FLAV_B, JetEta, JetPt); 
-                jet_scalefactor_do =  readerBC_do.eval(BTagEntry::FLAV_B, JetEta, JetPt);
+                jet_scalefactor = readerBC.eval(FlashggBTagEntry::FLAV_B, JetEta, JetPt); 
+                jet_scalefactor_up =  readerBC_up.eval(FlashggBTagEntry::FLAV_B, JetEta, JetPt); 
+                jet_scalefactor_do =  readerBC_do.eval(FlashggBTagEntry::FLAV_B, JetEta, JetPt);
             } else if(JetFlav == 4){// c jets
-                jet_scalefactor = readerBC.eval(BTagEntry::FLAV_C, JetEta, JetPt); 
-                jet_scalefactor_up =  readerBC_up.eval(BTagEntry::FLAV_C, JetEta, JetPt); 
-                jet_scalefactor_do =  readerBC_do.eval(BTagEntry::FLAV_C, JetEta, JetPt);
+                jet_scalefactor = readerBC.eval(FlashggBTagEntry::FLAV_C, JetEta, JetPt); 
+                jet_scalefactor_up =  readerBC_up.eval(FlashggBTagEntry::FLAV_C, JetEta, JetPt); 
+                jet_scalefactor_do =  readerBC_do.eval(FlashggBTagEntry::FLAV_C, JetEta, JetPt);
             } else {// light jets
-                jet_scalefactor = readerUDSG.eval(BTagEntry::FLAV_UDSG, JetEta, JetPt); 
-                jet_scalefactor_up =  readerUDSG_up.eval(BTagEntry::FLAV_UDSG, JetEta, JetPt); 
-                jet_scalefactor_do =  readerUDSG_do.eval(BTagEntry::FLAV_UDSG, JetEta, JetPt);
+                jet_scalefactor = readerUDSG.eval(FlashggBTagEntry::FLAV_UDSG, JetEta, JetPt); 
+                jet_scalefactor_up =  readerUDSG_up.eval(FlashggBTagEntry::FLAV_UDSG, JetEta, JetPt); 
+                jet_scalefactor_do =  readerUDSG_do.eval(FlashggBTagEntry::FLAV_UDSG, JetEta, JetPt);
             }
 
             if( this->debug_ ) {

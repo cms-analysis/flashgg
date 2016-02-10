@@ -5,7 +5,7 @@
 #include <sstream>
 
 
-BTagEntry::Parameters::Parameters(
+FlashggBTagEntry::Parameters::Parameters(
   OperatingPoint op,
   std::string measurement_type,
   std::string sys_type,
@@ -34,21 +34,21 @@ BTagEntry::Parameters::Parameters(
                  sysType.begin(), ::tolower);
 }
 
-BTagEntry::BTagEntry(const std::string &csvLine)
+FlashggBTagEntry::FlashggBTagEntry(const std::string &csvLine)
 {
   // make tokens
   std::stringstream buff(csvLine);
   std::vector<std::string> vec;
   std::string token;
   while (std::getline(buff, token, ","[0])) {
-    token = BTagEntry::trimStr(token);
+    token = FlashggBTagEntry::trimStr(token);
     if (token.empty()) {
       continue;
     }
     vec.push_back(token);
   }
   if (vec.size() != 11) {
-std::cerr << "ERROR in BTagCalibration: "
+std::cerr << "ERROR in FlashggBTagCalibration: "
           << "Invalid csv line; num tokens != 11: "
           << csvLine;
 throw std::exception();
@@ -66,7 +66,7 @@ throw std::exception();
   formula = vec[10];
   TF1 f1("", formula.c_str());  // compile formula to check validity
   if (f1.IsZombie()) {
-std::cerr << "ERROR in BTagCalibration: "
+std::cerr << "ERROR in FlashggBTagCalibration: "
           << "Invalid csv line; formula does not compile: "
           << csvLine;
 throw std::exception();
@@ -75,23 +75,23 @@ throw std::exception();
   // make parameters
   unsigned op = stoi(vec[0]);
   if (op > 3) {
-std::cerr << "ERROR in BTagCalibration: "
+std::cerr << "ERROR in FlashggBTagCalibration: "
           << "Invalid csv line; OperatingPoint > 3: "
           << csvLine;
 throw std::exception();
   }
   unsigned jf = stoi(vec[3]);
   if (jf > 2) {
-std::cerr << "ERROR in BTagCalibration: "
+std::cerr << "ERROR in FlashggBTagCalibration: "
           << "Invalid csv line; JetFlavor > 2: "
           << csvLine;
 throw std::exception();
   }
-  params = BTagEntry::Parameters(
-    BTagEntry::OperatingPoint(op),
+  params = FlashggBTagEntry::Parameters(
+    FlashggBTagEntry::OperatingPoint(op),
     vec[1],
     vec[2],
-    BTagEntry::JetFlavor(jf),
+    FlashggBTagEntry::JetFlavor(jf),
     stof(vec[4]),
     stof(vec[5]),
     stof(vec[6]),
@@ -101,25 +101,25 @@ throw std::exception();
   );
 }
 
-BTagEntry::BTagEntry(const std::string &func, BTagEntry::Parameters p):
+FlashggBTagEntry::FlashggBTagEntry(const std::string &func, FlashggBTagEntry::Parameters p):
   formula(func),
   params(p)
 {
   TF1 f1("", formula.c_str());  // compile formula to check validity
   if (f1.IsZombie()) {
-std::cerr << "ERROR in BTagCalibration: "
+std::cerr << "ERROR in FlashggBTagCalibration: "
           << "Invalid func string; formula does not compile: "
           << func;
 throw std::exception();
   }
 }
 
-BTagEntry::BTagEntry(const TF1* func, BTagEntry::Parameters p):
+FlashggBTagEntry::FlashggBTagEntry(const TF1* func, FlashggBTagEntry::Parameters p):
   formula(std::string(func->GetExpFormula("p").Data())),
   params(p)
 {
   if (func->IsZombie()) {
-std::cerr << "ERROR in BTagCalibration: "
+std::cerr << "ERROR in FlashggBTagCalibration: "
           << "Invalid TF1 function; function is zombie: "
           << func->GetName();
 throw std::exception();
@@ -190,14 +190,14 @@ std::string th1ToFormulaBinTree(const TH1* hist, int start=0, int end=-1) {
   return buff.str();
 }
 
-BTagEntry::BTagEntry(const TH1* hist, BTagEntry::Parameters p):
+FlashggBTagEntry::FlashggBTagEntry(const TH1* hist, FlashggBTagEntry::Parameters p):
   params(p)
 {
   int nbins = hist->GetNbinsX();
   TAxis const* axis = hist->GetXaxis();
 
   // overwrite bounds with histo values
-  if (params.operatingPoint == BTagEntry::OP_RESHAPING) {
+  if (params.operatingPoint == FlashggBTagEntry::OP_RESHAPING) {
     params.discrMin = axis->GetBinLowEdge(1);
     params.discrMax = axis->GetBinUpEdge(nbins);
   } else {
@@ -216,14 +216,14 @@ BTagEntry::BTagEntry(const TH1* hist, BTagEntry::Parameters p):
   // compile formula to check validity
   TF1 f1("", formula.c_str());
   if (f1.IsZombie()) {
-std::cerr << "ERROR in BTagCalibration: "
+std::cerr << "ERROR in FlashggBTagCalibration: "
           << "Invalid histogram; formula does not compile (>150 bins?): "
           << hist->GetName();
 throw std::exception();
   }
 }
 
-std::string BTagEntry::makeCSVHeader()
+std::string FlashggBTagEntry::makeCSVHeader()
 {
   return "OperatingPoint, "
          "measurementType, "
@@ -238,7 +238,7 @@ std::string BTagEntry::makeCSVHeader()
          "formula \n";
 }
 
-std::string BTagEntry::makeCSVLine() const
+std::string FlashggBTagEntry::makeCSVLine() const
 {
   std::stringstream buff;
   buff << params.operatingPoint
@@ -256,7 +256,7 @@ std::string BTagEntry::makeCSVLine() const
   return buff.str();
 }
 
-std::string BTagEntry::trimStr(std::string str) {
+std::string FlashggBTagEntry::trimStr(std::string str) {
   size_t s = str.find_first_not_of(" \n\r\t");
   size_t e = str.find_last_not_of (" \n\r\t");
 
@@ -272,11 +272,11 @@ std::string BTagEntry::trimStr(std::string str) {
 
 
 
-BTagCalibration::BTagCalibration(const std::string &taggr):
+FlashggBTagCalibration::FlashggBTagCalibration(const std::string &taggr):
   tagger_(taggr)
 {}
 
-BTagCalibration::BTagCalibration(const std::string &taggr,
+FlashggBTagCalibration::FlashggBTagCalibration(const std::string &taggr,
                                  const std::string &filename):
   tagger_(taggr)
 {
@@ -285,17 +285,17 @@ BTagCalibration::BTagCalibration(const std::string &taggr,
   ifs.close();
 }
 
-void BTagCalibration::addEntry(const BTagEntry &entry)
+void FlashggBTagCalibration::addEntry(const FlashggBTagEntry &entry)
 {
   data_[token(entry.params)].push_back(entry);
 }
 
-const std::vector<BTagEntry>& BTagCalibration::getEntries(
-  const BTagEntry::Parameters &par) const
+const std::vector<FlashggBTagEntry>& FlashggBTagCalibration::getEntries(
+  const FlashggBTagEntry::Parameters &par) const
 {
   std::string tok = token(par);
   if (!data_.count(tok)) {
-std::cerr << "ERROR in BTagCalibration: "
+std::cerr << "ERROR in FlashggBTagCalibration: "
           << "(OperatingPoint, measurementType, sysType) not available: "
           << tok;
 throw std::exception();
@@ -303,52 +303,52 @@ throw std::exception();
   return data_.at(tok);
 }
 
-void BTagCalibration::readCSV(const std::string &s)
+void FlashggBTagCalibration::readCSV(const std::string &s)
 {
   std::stringstream buff(s);
   readCSV(buff);
 }
 
-void BTagCalibration::readCSV(std::istream &s)
+void FlashggBTagCalibration::readCSV(std::istream &s)
 {
   std::string line;
 
   // firstline might be the header
   getline(s,line);
   if (line.find("OperatingPoint") == std::string::npos) {
-    addEntry(BTagEntry(line));
+    addEntry(FlashggBTagEntry(line));
   }
 
   while (getline(s,line)) {
-    line = BTagEntry::trimStr(line);
+    line = FlashggBTagEntry::trimStr(line);
     if (line.empty()) {  // skip empty lines
       continue;
     }
-    addEntry(BTagEntry(line));
+    addEntry(FlashggBTagEntry(line));
   }
 }
 
-void BTagCalibration::makeCSV(std::ostream &s) const
+void FlashggBTagCalibration::makeCSV(std::ostream &s) const
 { 
-  s << tagger_ << ";" << BTagEntry::makeCSVHeader();
-  for (std::map<std::string, std::vector<BTagEntry> >::const_iterator i 
+  s << tagger_ << ";" << FlashggBTagEntry::makeCSVHeader();
+  for (std::map<std::string, std::vector<FlashggBTagEntry> >::const_iterator i 
            = data_.cbegin(); i != data_.cend(); ++i) {
-    const std::vector<BTagEntry> &vec = i->second;
-    for (std::vector<BTagEntry>::const_iterator j 
+    const std::vector<FlashggBTagEntry> &vec = i->second;
+    for (std::vector<FlashggBTagEntry>::const_iterator j 
              = vec.cbegin(); j != vec.cend(); ++j) {
       s << j->makeCSVLine();
     }
   }
 }
 
-std::string BTagCalibration::makeCSV() const
+std::string FlashggBTagCalibration::makeCSV() const
 {
   std::stringstream buff;
   makeCSV(buff);
   return buff.str();
 }
 
-std::string BTagCalibration::token(const BTagEntry::Parameters &par)
+std::string FlashggBTagCalibration::token(const FlashggBTagEntry::Parameters &par)
 {
   std::stringstream buff;
   buff << par.operatingPoint << ", "
@@ -359,22 +359,22 @@ std::string BTagCalibration::token(const BTagEntry::Parameters &par)
 
 
 
-BTagCalibrationReader::BTagCalibrationReader(const BTagCalibration* c,
-                                             BTagEntry::OperatingPoint op,
+FlashggBTagCalibrationReader::FlashggBTagCalibrationReader(const FlashggBTagCalibration* c,
+                                             FlashggBTagEntry::OperatingPoint op,
                                              std::string measurementType,
                                              std::string sysType):
-  params(BTagEntry::Parameters(op, measurementType, sysType)),
+  params(FlashggBTagEntry::Parameters(op, measurementType, sysType)),
   useAbsEta(true)
 {
   setupTmpData(c);
 }
 
-double BTagCalibrationReader::eval(BTagEntry::JetFlavor jf,
+double FlashggBTagCalibrationReader::eval(FlashggBTagEntry::JetFlavor jf,
                                    float eta,
                                    float pt,
                                    float discr) const
 {
-  bool use_discr = (params.operatingPoint == BTagEntry::OP_RESHAPING);
+  bool use_discr = (params.operatingPoint == FlashggBTagEntry::OP_RESHAPING);
   if (useAbsEta[jf] && eta < 0) {
     eta = -eta;
   }
@@ -383,7 +383,7 @@ double BTagCalibrationReader::eval(BTagEntry::JetFlavor jf,
   // future: find some clever data structure based on intervals
   const std::vector<TmpEntry> &entries = tmpData_.at(jf);
   for (unsigned i=0; i<entries.size(); ++i) {
-    const BTagCalibrationReader::TmpEntry &e = entries.at(i);
+    const FlashggBTagCalibrationReader::TmpEntry &e = entries.at(i);
     if (
       e.etaMin <= eta && eta < e.etaMax                   // find eta
       && e.ptMin <= pt && pt < e.ptMax                    // check pt
@@ -401,13 +401,13 @@ double BTagCalibrationReader::eval(BTagEntry::JetFlavor jf,
   return 0.;  // default value
 }
 
-void BTagCalibrationReader::setupTmpData(const BTagCalibration* c)
+void FlashggBTagCalibrationReader::setupTmpData(const FlashggBTagCalibration* c)
 {
   useAbsEta = std::vector<bool>(4, true);
-  const std::vector<BTagEntry> &entries = c->getEntries(params);
+  const std::vector<FlashggBTagEntry> &entries = c->getEntries(params);
   for (unsigned i=0; i<entries.size(); ++i) {
-    const BTagEntry &be = entries[i];
-    BTagCalibrationReader::TmpEntry te;
+    const FlashggBTagEntry &be = entries[i];
+    FlashggBTagCalibrationReader::TmpEntry te;
     te.etaMin = be.params.etaMin;
     te.etaMax = be.params.etaMax;
     te.ptMin = be.params.ptMin;
@@ -415,7 +415,7 @@ void BTagCalibrationReader::setupTmpData(const BTagCalibration* c)
     te.discrMin = be.params.discrMin;
     te.discrMax = be.params.discrMax;
 
-    if (params.operatingPoint == BTagEntry::OP_RESHAPING) {
+    if (params.operatingPoint == FlashggBTagEntry::OP_RESHAPING) {
       te.func = TF1("", be.formula.c_str(),
                     be.params.discrMin, be.params.discrMax);
     } else {
