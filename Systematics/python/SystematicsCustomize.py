@@ -78,7 +78,7 @@ def customizeLeptonSystematicsForData(process):
         systprod.SystMethods = cms.VPSet() # empty everything
 
 def customizeJetSystematicsForData(process):
-    # By default remote the systematic entirely
+    # By default remove the systematic entirely
     # For JEC, re-do central value in case the global tag has been updated
 
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
@@ -91,7 +91,7 @@ def customizeJetSystematicsForData(process):
             if pset.Label.value().count("JEC"):
                 pset.NSigmas = cms.vint32() # Do not perform shifts, central value only                                                                                            
                 newvpset += [pset]
-            systprod.SystMethods = newvpset
+        systprod.SystMethods = newvpset
         systprod.DoCentralJEC = True
         systprod.JECLabel = "ak4PFCHSL1FastL2L3Residual"
         process.load("JetMETCorrections/Configuration/JetCorrectionServices_cff")
