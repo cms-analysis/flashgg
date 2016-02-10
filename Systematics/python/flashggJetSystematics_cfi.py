@@ -92,7 +92,7 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            BinList = bTagEffBins,
 						 	   bTag = cms.string(flashggBTag),
 						 	   bDiscriminator = bDiscriminator76X, #Medium working point for CSV B tagger, for CMSSW74X use: bDiscriminator74X
-							   Debug = cms.untracked.bool(True)
+							   Debug = cms.untracked.bool(False)
                                                            )
                                                  )
                          
