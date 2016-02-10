@@ -171,6 +171,7 @@ process.source = cms.Source ("PoolSource",
 #        "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-1_1_0-25ns/1_1_0/VBFHToGG_M-125_13TeV_powheg_pythia8/RunIISpring15-ReMiniAOD-1_1_0-25ns-1_1_0-v0-RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/160105_224017/0000/myMicroAODOutputFile_1.root"
 #"/store/group/phys_higgs/cmshgg/szenz/flashgg/RunIISpring15-ReReco74X-Rerun-1_1_0-25ns/1_2_0/DoubleEG/RunIISpring15-ReReco74X-Rerun-1_1_0-25ns-1_2_0-v0-Run2015D-04Dec2015-v2/160117_214114/0000/myMicroAODOutputFile_10.root"
 "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-1_1_0-25ns/1_1_0/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIISpring15-ReMiniAOD-1_1_0-25ns-1_1_0-v0-RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/160105_224456/0000/myMicroAODOutputFile_2.root"
+#"root://eoscms.cern.ch//eos/cms//store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-1_1_0-25ns/1_1_0/VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8/RunIISpring15-ReMiniAOD-1_1_0-25ns-1_1_0-v0-RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/160105_224138/0000/myMicroAODOutputFile_1.root"
 ))
 
 #if options.maxEvents > 0:
@@ -265,7 +266,15 @@ if customize.processId == "Data":
         process.dataRequirements += process.hltHighLevel
         process.dataRequirements += process.eeBadScFilter
 
+process.genFilter = cms.Sequence()
+if customize.processId.count("wh") or customize.processId.count("zh"):
+    process.load("flashgg/Systematics/VHFilter_cfi")
+    process.genFilter += process.VHFilter
+    process.VHFilter.chooseW = customize.processId.count("wh")
+    process.VHFilter.chooseZ = customize.processId.count("zh")
+
 process.p = cms.Path(process.dataRequirements*
+                     process.genFilter*
                      process.flashggDiPhotonSystematics*
                      process.flashggMuonSystematics*process.flashggElectronSystematics*
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
