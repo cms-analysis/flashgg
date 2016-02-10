@@ -105,10 +105,13 @@ namespace flashgg {
 
             }
         }
+        if (!this->applyCentralValue()) theWeight = 1.;
         double Weight = theWeight + ( theError * syst_shift );
         //        lep.setWeight( shiftLabel(syst_shift), Weight );
         //std::cout << "Weight " << lep.weight() << std::endl;
         if( this->debug_ ) { std::cout << "  end of ObjectEffScale<flashgg_object, param_var>::makeWeight - returning " << Weight << std::endl; }
+
+        
 
         return Weight;
     }

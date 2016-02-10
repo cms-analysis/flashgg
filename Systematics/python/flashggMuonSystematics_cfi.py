@@ -25,7 +25,8 @@ flashggMuonSystematics = cms.EDProducer('FlashggMuonEffSystematicProducer',
 									  NSigmas = cms.vint32(-1,1),
 									  OverallRange = cms.string("abs(eta)<2.4"),
 									  BinList = binInfo,
-									  Debug = cms.untracked.bool(False)
+									  Debug = cms.untracked.bool(False),
+                                                                          ApplyCentralValue = cms.bool(True)
                                                                           )
 								)
                                         )

@@ -1,5 +1,36 @@
 import FWCore.ParameterSet.Config as cms
 
+def printSystematicInfo(process):
+    vpsetlist = [process.flashggDiPhotonSystematics.SystMethods, process.flashggMuonSystematics.SystMethods, process.flashggElectronSystematics.SystMethods]
+#    from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
+#    vpsetlist += [getattr(process,"flashggJetSystematics%i"%i).SystMethods for i in range(len(UnpackedJetCollectionVInputTag))]
+    vpsetlist += [process.flashggJetSystematics0.SystMethods]
+    print (14*"-"+" DUMPING SYSTEMATIC OVERVIEW "+14*"-")
+    print "%20s %15s %20s" % ("Systematic","Central value?","Systematic shifts?")
+    print 57*"-"
+    for vpset in vpsetlist:
+        for pset in vpset:
+#            if detailed:
+#               if hasattr(pset,"PhotonMethodName"):
+#                    print pset.PhotonMethodName.value(),pset.Label.value(),pset.OverallRange.value(),
+#                else:    
+#                    print pset.MethodName.value(),pset.Label.value(),pset.OverallRange.value(),
+            syst = pset.Label.value()
+            if pset.ApplyCentralValue.value():
+                cv = "YES"
+            else:
+                cv = "NO"
+            sigmalist = pset.NSigmas.value()    
+            sig = ""
+            if len(sigmalist) > 0:
+                for val in sigmalist:
+                    sig += "%i " % val
+            else:    
+                sig += "NO"
+            print "%20s %15s %20s" % (syst,cv,sig)
+        print 57*"-"
+
+
 def createStandardSystematicsProducers(process):
     process.load("flashgg/Taggers/flashggTagSequence_cfi")
     process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
@@ -65,7 +96,7 @@ def customizePhotonSystematicsForData(process):
     newvpset = cms.VPSet()
     for pset in process.flashggDiPhotonSystematics.SystMethods:
         if pset.Label.value().count("Scale"):
-            pset.NoCentralShift = cms.bool(False) # Turn on central shift for data (it is off for MC)
+            pset.ApplyCentralValue = cms.bool(True) # Turn on central shift for data (it is off for MC)
             pset.NSigmas = cms.vint32() # Do not perform shift
             newvpset += [pset]
     process.flashggDiPhotonSystematics.SystMethods = newvpset

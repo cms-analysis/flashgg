@@ -22,7 +22,8 @@ namespace flashgg {
             _Name( conf.getParameter<std::string>( "MethodName" ) ),
             _Label( conf.getParameter<std::string>( "Label" ) ),
             _MakesWeight( false ),
-            _RandomEngine( nullptr )
+            _RandomEngine( nullptr ),
+            _ApplyCentralValue( conf.getParameter<bool>( "ApplyCentralValue" ) )
         { }
         BaseSystMethod() {};
         virtual ~BaseSystMethod() {};
@@ -43,6 +44,7 @@ namespace flashgg {
         const std::string &name() const { return _Name; };
         const std::string &label() const { return _Label; };
         bool makesWeight() const { return _MakesWeight; }
+        bool applyCentralValue() const { return _ApplyCentralValue; }
 
         virtual std::string shiftLabel( param_var syst_val ) const = 0;
         virtual void setJECUncertainty ( const JetCorrectorParameters & ) {
@@ -65,7 +67,7 @@ namespace flashgg {
                 throw cms::Exception( "Configuration" ) << "Tried to access BaseSystMethod::RandomEngine() when it is not set";
             }
             return _RandomEngine;
-        }
+        }        
 
     protected:
         void setMakesWeight( bool makes_weight ) { _MakesWeight = makes_weight; }
@@ -75,7 +77,7 @@ namespace flashgg {
         const std::string _Label;
         bool _MakesWeight;
         CLHEP::HepRandomEngine *_RandomEngine;
-
+        bool _ApplyCentralValue;
     };
 }
 

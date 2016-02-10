@@ -54,6 +54,7 @@ namespace flashgg {
                 conf2.copyFrom(conf,"NSigmas");
                 conf2.copyFrom(conf,"OverallRange");
                 conf2.copyFrom(conf,"Debug");
+                conf2.copyFrom(conf,"ApplyCentralValue");
                 const auto &pset = conf.getParameterSet( "BinList2" );
                 conf2.addParameter<edm::ParameterSet>("BinList", pset);
                 std::string binListName = "BinList";
