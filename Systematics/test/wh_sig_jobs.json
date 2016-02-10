@@ -1,0 +1,8 @@
+{
+    "processes" : {
+	"wh_120" : [ "/VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8" ],
+        "wh_125" : [ "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8" ],
+        "wh_130" : [ "/VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8" ]
+     },	
+        "cmdLine" : "campaign=RunIISpring15-AllSilverIncludingGold-1_1_0-25ns"
+}
