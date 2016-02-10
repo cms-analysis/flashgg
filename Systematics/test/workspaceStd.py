@@ -198,6 +198,10 @@ for mn in mns:
         print str(module),module.src
     elif hasattr(module,"DiPhotonTag"):
         print str(module),module.DiPhotonTag
+print
+printSystematicInfo(process)
+
+
 
 ################################
 ## Dump merged tags to screen ##
@@ -221,7 +225,7 @@ for mn in mns:
 ############################
 ## Dump the output Python ##
 ############################
-print process.dumpPython()
+#print process.dumpPython()
 #processDumpFile = open('processDump.py', 'w')
 #print >> processDumpFile, process.dumpPython()
 

@@ -38,6 +38,7 @@ namespace flashgg {
         random_label_(conf.getParameter<std::string>("RandomLabel")),
         exaggerateShiftUp_( conf.getParameter<bool>( "ExaggerateShiftUp" ) ) // default: false
     {
+        if (!applyCentralValue()) throw cms::Exception("SmearingLogic") << "If we do not apply central smearing we cannot scale down the smearing";
     }
 
     std::string PhotonSmearStochastic::shiftLabel( std::pair<int, int> syst_value ) const
