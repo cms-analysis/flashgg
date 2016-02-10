@@ -267,11 +267,11 @@ if customize.processId == "Data":
         process.dataRequirements += process.eeBadScFilter
 
 process.genFilter = cms.Sequence()
-if customize.processId.count("wh") or customize.processId.count("zh"):
+if (customize.processId.count("wh") or customize.processId.count("zh")) and not customize.processId.count("wzh"):
     process.load("flashgg/Systematics/VHFilter_cfi")
     process.genFilter += process.VHFilter
-    process.VHFilter.chooseW = customize.processId.count("wh")
-    process.VHFilter.chooseZ = customize.processId.count("zh")
+    process.VHFilter.chooseW = bool(customize.processId.count("wh"))
+    process.VHFilter.chooseZ = bool(customize.processId.count("zh"))
 
 process.p = cms.Path(process.dataRequirements*
                      process.genFilter*
