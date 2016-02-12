@@ -61,7 +61,11 @@ namespace flashgg {
             } else {
                 throw cms::Exception("BadConfig") << " We do not recognize the bin format or this object is not in any bin";
             }
-            theWeight = central;
+            if (this->applyCentralValue()) {
+                theWeight = central;
+            } else {
+                theWeight = 1;
+            }
             if ( syst_shift < 0 ) theWeight += syst_shift * errdown;
             if ( syst_shift > 0 ) theWeight += syst_shift * errup;
             if( this->debug_ ) {

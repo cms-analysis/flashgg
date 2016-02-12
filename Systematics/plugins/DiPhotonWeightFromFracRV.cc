@@ -59,6 +59,7 @@ namespace flashgg {
 	      }
 	      
 	      float weight = val_err.first[index];
+          if (!applyCentralValue()) weight = 1.;
 	      float eUp, eDown;
 	      if(val_err.second.size() == 4){
 		eUp= val_err.second[index*2];

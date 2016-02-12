@@ -51,6 +51,7 @@ namespace flashgg {
             auto val_err = binContents( y );
             if( val_err.first.size() == 1 && val_err.second.size() == 1 ) { // otherwise no-op because we don't have an entry
                 float scale_factor_central = val_err.first[0];
+                if(!applyCentralValue()) scale_factor_central = 1.;
                 float scale_factor_err = val_err.second[0];
                 float scale_factor = scale_factor_central + syst_shift * scale_factor_err;
                 float recpt = y.pt();

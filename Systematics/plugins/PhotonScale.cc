@@ -18,13 +18,11 @@ namespace flashgg {
 
     private:
         selector_type overall_range_;
-        bool no_central_shift_;
     };
 
     PhotonScale::PhotonScale( const edm::ParameterSet &conf ) :
         ObjectSystMethodBinnedByFunctor( conf ),
-        overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
-        no_central_shift_( conf.getParameter<bool>( "NoCentralShift" ) )
+        overall_range_( conf.getParameter<std::string>( "OverallRange" ) )
     {
     }
 
@@ -47,7 +45,7 @@ namespace flashgg {
             auto val_err = binContents( y );
             if( val_err.first.size() == 1 && val_err.second.size() == 1 ) { // otherwise no-op because we don't have an entry
                 float shift_val = val_err.first[0];
-                if (no_central_shift_) shift_val = 0.;
+                if (!applyCentralValue()) shift_val = 0.;
                 float shift_err = val_err.second[0];
                 float scale = 1 + shift_val + syst_shift * shift_err;
                 if( debug_ ) {
