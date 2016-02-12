@@ -6,6 +6,8 @@
 #include "DataFormats/Common/interface/PtrVector.h"
 #include "flashgg/DataFormats/interface/Photon.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
+#include "FWCore/Framework/interface/Event.h"
+#include "EgammaAnalysis/ElectronTools/interface/EnergyScaleCorrection_class.hh"
 
 namespace flashgg {
 
@@ -16,7 +18,7 @@ namespace flashgg {
         typedef StringCutObjectSelector<Photon, true> selector_type;
 
         PhotonSmearStochastic( const edm::ParameterSet &conf );
-        void applyCorrection( flashgg::Photon &y, std::pair<int, int> syst_shift ) override;
+        void applyCorrection( flashgg::Photon &y, std::pair<int, int> syst_shift, const edm::Event & ev ) override;
         std::string shiftLabel( std::pair<int, int> ) const override;
 
         const std::string &firstParameterName() const { return label1_; }
@@ -27,6 +29,7 @@ namespace flashgg {
         const std::string label1_;
         const std::string label2_;
         std::string random_label_;
+        EnergyScaleCorrection_class scaler_;
         bool exaggerateShiftUp_; // debugging
     };
 
@@ -36,6 +39,7 @@ namespace flashgg {
         label1_( conf.getParameter<std::string>( "FirstParameterName" ) ), // default: "Rho"
         label2_( conf.getParameter<std::string>( "SecondParameterName" ) ), // default; "Phi"
         random_label_(conf.getParameter<std::string>("RandomLabel")),
+        scaler_(conf.getParameter<std::string>( "CorrectionFile" )),
         exaggerateShiftUp_( conf.getParameter<bool>( "ExaggerateShiftUp" ) ) // default: false
     {
         if (!applyCentralValue()) throw cms::Exception("SmearingLogic") << "If we do not apply central smearing we cannot scale down the smearing";
@@ -55,43 +59,17 @@ namespace flashgg {
         return result;
     }
 
-    void PhotonSmearStochastic::applyCorrection( flashgg::Photon &y, std::pair<int, int> syst_shift )
+    void PhotonSmearStochastic::applyCorrection( flashgg::Photon &y, std::pair<int, int> syst_shift, const edm::Event & ev )
     {
         if( overall_range_( y ) ) {
             auto val_err = binContents( y );
-            float sigma = 0.;
 
             // Nothing will happen, with no warning, if the bin count doesn't match expected options
             // TODO for production: make this behavior more robust
 
-            // 3 values (rho, phi, ETmean) and 2 errors (rho, phi) are required
-
-            if( val_err.first.size() == 3 && val_err.second.size() == 2 ) {
-                // 3 values (rho, phi, ETmean) and 2 errors (rho, phi) are required
-                float rho_val = val_err.first[0];
-                float rho_err = val_err.second[0];
-                if( exaggerateShiftUp_ && syst_shift.first == 1 ) { rho_err  = 9 * rho_val; }
-                float phi_val = val_err.first[1];
-                float phi_err = val_err.second[1];
-                float ETmean = val_err.first[2];
-
-                // Not entirely yet sure about either the output units or their consistency
-                float rho = rho_val + syst_shift.first * rho_err;
-                float phi = phi_val + syst_shift.second * phi_err;
-                float sigma_C = rho * sin( phi );
-                float sigma_S = rho * cos( phi ) * sqrt( ETmean / y.et() );
-                sigma = std::sqrt( sigma_C * sigma_C + sigma_S * sigma_S );
-            }
-            if( val_err.first.size() == 1 && val_err.second.size() == 1 ) {
-                // Constant only, correlate systematics with rho and ignore second nusiance parameter
-                // This should only be used if some bins are constant and others are stochastic
-                // Otherwise we'll have an extra needless parameter and extra needless collections
-
-                float rho_val = val_err.first[0];
-                float rho_err = val_err.second[0];
-                if( exaggerateShiftUp_ && syst_shift.first == 1 ) { rho_err = 9 * rho_val; }
-                sigma = rho_val + syst_shift.first * rho_err;
-            }
+            // the combination of central value + NSigma * sigma is already
+            // computed by getSmearingSigma(...)
+            auto sigma = scaler_.getSmearingSigma(ev.run(), y.isEB(), y.full5x5_r9(), y.superCluster()->eta(), y.et(), syst_shift.first, syst_shift.second);
 
             if (!y.hasUserFloat(random_label_)) {
                 throw cms::Exception("Missing embedded random number") << "Could not find key " << random_label_ << " for random numbers embedded in the photon object, please make sure to read the appropriate version of MicroAOD and/or access the correct label and/or run the PerPhotonDiPhoton randomizer on-the-fly";

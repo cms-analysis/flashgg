@@ -10,6 +10,10 @@
 #include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
 #include "JetMETCorrections/Objects/interface/JetCorrector.h"
 
+namespace edm {
+    class Event;
+}
+
 namespace flashgg {
 
     template <class flashgg_object, class param_var>
@@ -31,7 +35,7 @@ namespace flashgg {
         BaseSystMethod( const BaseSystMethod & ) = delete;
         BaseSystMethod &operator=( const BaseSystMethod & ) = delete;
 
-        virtual void applyCorrection( flashgg_object &, param_var syst_value ) //main function for object-modified case//
+        virtual void applyCorrection( flashgg_object &, param_var syst_value, const edm::Event & ev ) //main function for object-modified case//
         {
             throw cms::Exception( "NotImplemented" ) << " concrete classes need only implement one of applyCorrection or makeWeight - check class setup";
         }

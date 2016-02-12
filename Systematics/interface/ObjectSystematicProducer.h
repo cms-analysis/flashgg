@@ -37,9 +37,9 @@ namespace flashgg {
 
     private:
 
-        void ApplyCorrections( flashgg_object &y, shared_ptr<BaseSystMethod<flashgg_object, param_var> > CorrToShift, param_var syst_shift );
+        void ApplyCorrections( flashgg_object &y, shared_ptr<BaseSystMethod<flashgg_object, param_var> > CorrToShift, param_var syst_shift, const edm::Event & ev );
         void ApplyCorrections( flashgg_object &y, shared_ptr<BaseSystMethod<flashgg_object, pair<param_var, param_var> > > CorrToShift,
-                               pair<param_var, param_var>  syst_shift );
+                               pair<param_var, param_var>  syst_shift, const edm::Event & ev);
         void ApplyNonCentralWeights( flashgg_object &y );
 
         edm::EDGetTokenT<View<flashgg_object> > ObjectToken_;
@@ -141,18 +141,18 @@ namespace flashgg {
     template <typename flashgg_object, typename param_var, template <typename...> class output_container>
     void ObjectSystematicProducer<flashgg_object, param_var, output_container>::ApplyCorrections( flashgg_object &y,
             shared_ptr<BaseSystMethod<flashgg_object, param_var> > CorrToShift,
-            param_var syst_shift )
+            param_var syst_shift, const edm::Event & ev )
     {
         float theWeight = 1.;
         //        std::cout << " 1d before 1d " << std::endl;
         //        std::cout << " In ObjectSystematicProducer::ApplyCorrections pt m " << y.pt() << " " << y.mass() << std::endl;
         for( unsigned int ncorr = 0; ncorr < Corrections_.size(); ncorr++ ) {
             if( CorrToShift == Corrections_.at( ncorr ) ) {
-                Corrections_.at( ncorr )->applyCorrection( y, syst_shift );
+                Corrections_.at( ncorr )->applyCorrection( y, syst_shift, ev );
             } else if( Corrections_.at( ncorr )->makesWeight() ) {
                 theWeight *= Corrections_.at( ncorr )->makeWeight( y, param_var( 0 ) );
             } else {
-                Corrections_.at( ncorr )->applyCorrection( y, param_var( 0 ) );
+                Corrections_.at( ncorr )->applyCorrection( y, param_var( 0 ), ev );
             }
         }
         //        std::cout << " 1d before 2d " << std::endl;
@@ -163,7 +163,7 @@ namespace flashgg {
                 //                std::cout << " 2d changed the weight to" << theWeight << std::endl;
                 //                std::cout << "    " << Corrections2D_.at( ncorr )->shiftLabel( PAIR_ZERO ) << std::endl;
             } else {
-                Corrections2D_.at( ncorr )->applyCorrection( y, PAIR_ZERO );
+                Corrections2D_.at( ncorr )->applyCorrection( y, PAIR_ZERO, ev );
                 //                std::cout << " 2d applied correction " << std::endl;
                 //                std::cout << "    " << Corrections2D_.at( ncorr )->shiftLabel( PAIR_ZERO ) << std::endl;
             }
@@ -181,7 +181,7 @@ namespace flashgg {
     template <typename flashgg_object, typename param_var, template <typename...> class output_container>
     void ObjectSystematicProducer<flashgg_object, param_var, output_container>::ApplyCorrections( flashgg_object &y,
             shared_ptr<BaseSystMethod<flashgg_object, pair<param_var, param_var> > > CorrToShift,
-            pair<param_var, param_var>  syst_shift )
+            pair<param_var, param_var>  syst_shift, const edm::Event & ev )
     {
         float theWeight = 1.;
         //        std::cout << " In ObjectSystematicProducer::ApplyCorrections pt m " << y.pt() << " " << y.mass() << std::endl;
@@ -190,17 +190,17 @@ namespace flashgg {
             if( Corrections_.at( ncorr )->makesWeight() ) {
                 theWeight *= Corrections_.at( ncorr )->makeWeight( y, param_var( 0 ) );
             } else {
-                Corrections_.at( ncorr )->applyCorrection( y, param_var( 0 ) );
+                Corrections_.at( ncorr )->applyCorrection( y, param_var( 0 ), ev );
             }
         }
         //        std::cout << "2d before 2d" << std::endl;
         for( unsigned int ncorr = 0; ncorr < Corrections2D_.size(); ncorr++ ) {
             if( CorrToShift == Corrections2D_.at( ncorr ) ) {
-                Corrections2D_.at( ncorr )->applyCorrection( y, syst_shift );
+                Corrections2D_.at( ncorr )->applyCorrection( y, syst_shift, ev );
             } else if( Corrections2D_.at( ncorr )->makesWeight() ) {
                 theWeight *= Corrections2D_.at( ncorr )->makeWeight( y, PAIR_ZERO );
             } else {
-                Corrections2D_.at( ncorr )->applyCorrection( y, PAIR_ZERO );
+                Corrections2D_.at( ncorr )->applyCorrection( y, PAIR_ZERO, ev );
             }
         }
         y.setCentralWeight( theWeight );
@@ -270,7 +270,7 @@ namespace flashgg {
             flashgg_object *p_obj = objects->ptrAt( i )->clone();
             flashgg_object obj = *p_obj;
             delete p_obj;
-            ApplyCorrections( obj, nullptr, param_var( 0 ) );
+            ApplyCorrections( obj, nullptr, param_var( 0 ), evt );
             ApplyNonCentralWeights( obj );
             centralWeights.push_back( obj.centralWeight() );
             centralObjectColl->push_back( obj );
@@ -299,7 +299,7 @@ namespace flashgg {
                         flashgg_object *p_obj = objects->ptrAt( i )->clone();
                         flashgg_object obj = *p_obj;
                         delete p_obj;
-                        ApplyCorrections( obj, Corrections_.at( ncorr ), sig );
+                        ApplyCorrections( obj, Corrections_.at( ncorr ), sig, evt );
                         obj.setCentralWeight( centralWeights[i] );
                         all_shifted_collections[ncoll]->push_back( obj );
                         ncoll++;
@@ -313,7 +313,7 @@ namespace flashgg {
                         flashgg_object *p_obj = objects->ptrAt( i )->clone();
                         flashgg_object obj = *p_obj;
                         delete p_obj;
-                        ApplyCorrections( obj, Corrections2D_.at( ncorr ), sig );
+                        ApplyCorrections( obj, Corrections2D_.at( ncorr ), sig, evt );
                         obj.setCentralWeight( centralWeights[i] );
                         all_shifted_collections[ncoll]->push_back( obj );
                         ncoll++;

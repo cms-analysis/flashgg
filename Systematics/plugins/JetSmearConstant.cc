@@ -5,6 +5,10 @@
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 #include "CLHEP/Random/RandGauss.h"
 
+namespace edm {
+    class Event;
+}
+
 namespace flashgg {
 
     class JetSmearConstant: public ObjectSystMethodBinnedByFunctor<flashgg::Jet, int>
@@ -14,7 +18,7 @@ namespace flashgg {
         typedef StringCutObjectSelector<Jet, true> selector_type;
 
         JetSmearConstant( const edm::ParameterSet &conf );
-        void applyCorrection( flashgg::Jet &y, int syst_shift ) override;
+        void applyCorrection( flashgg::Jet &y, int syst_shift, const edm::Event & ev ) override;
         std::string shiftLabel( int ) const override;
         void setJECUncertainty ( const JetCorrectorParameters & ) override {}; // NotImplemented in base class --> harmless noop
         void setJEC( const JetCorrector*, const edm::Event &, const edm::EventSetup & ) override {}; // NotImplemented in base class --> harmless noop
@@ -45,7 +49,7 @@ namespace flashgg {
         return result;
     }
 
-    void JetSmearConstant::applyCorrection( flashgg::Jet &y, int syst_shift )
+    void JetSmearConstant::applyCorrection( flashgg::Jet &y, int syst_shift, const edm::Event & ev )
     {
         if( overall_range_( y ) ) {
             auto val_err = binContents( y );
