@@ -24,6 +24,7 @@ namespace flashgg {
         ObjectSystMethodBinnedByFunctor( conf ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) )
     {
+        if (!applyCentralValue()) throw cms::Exception("SmearingLogic") << "If we do not apply central smearing we cannot scale down the smearing";
     }
 
     std::string PhotonSigEoverESmearing::shiftLabel( int syst_value ) const

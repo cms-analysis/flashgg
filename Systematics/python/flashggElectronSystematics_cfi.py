@@ -65,7 +65,8 @@ flashggElectronSystematics = cms.EDProducer('FlashggElectronEffSystematicProduce
                                                                               NSigmas = cms.vint32(-1,1),
                                                                               OverallRange = cms.string("abs(eta)<2.5"),
                                                                               BinList = binInfo,
-                                                                              Debug = cms.untracked.bool(False)
+                                                                              Debug = cms.untracked.bool(False),
+                                                                              ApplyCentralValue = cms.bool(True)
                                                                               )	
                                                                     )
                                             )

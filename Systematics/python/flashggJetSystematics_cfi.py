@@ -34,7 +34,8 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            Label = cms.string("JEC"),
                                                            NSigmas = cms.vint32(-1,1),
                                                            OverallRange = cms.string("abs(eta)<5.0"),
-                                                           Debug = cms.untracked.bool(False)
+                                                           Debug = cms.untracked.bool(False),
+                                                           ApplyCentralValue = cms.bool(True)
                                                            ),
                                                  cms.PSet( MethodName = cms.string("FlashggJetSmearConstant"),
                                                            Label = cms.string("JER"),
@@ -43,6 +44,7 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            RandomLabel = cms.string("rnd_g_JER"), # for no-match case
                                                            BinList = smearBins,
                                                            Debug = cms.untracked.bool(False),
+                                                           ApplyCentralValue = cms.bool(True)
                                                            )
                                                  )
                          

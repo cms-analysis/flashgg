@@ -65,7 +65,7 @@ namespace flashgg {
     {
         if( overall_range_( y ) ) {
             double jec_adjust = 1.;
-            if (jec_set_) {
+            if (jec_set_ && applyCentralValue()) {
                 double jec = jec_cor_->correction( y.correctedJet("Uncorrected") , *evt_, *evt_setup_ );
                 double oldjec = (y.energy()/y.correctedJet("Uncorrected").energy());
                 if ( debug_ ) {

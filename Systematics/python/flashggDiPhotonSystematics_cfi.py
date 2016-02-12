@@ -263,14 +263,14 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                 # the number of syst methods matches the number of nuisance parameters
                 # assumed for a given systematic uncertainty and is NOT required
                 # to match 1-to-1 the number of bins above.
-		SystMethods = cms.VPSet(
+                SystMethods = cms.VPSet(
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
                                                   MethodName = cms.string("FlashggDiPhotonFromPhoton"),
                                                   Label = cms.string("MCScaleHighR9EB"),
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)<1.5"),
                                                   BinList = scaleBinsRereco,
-                                                  NoCentralShift = cms.bool(True),
+                                                  ApplyCentralValue = cms.bool(False),
                                                   Debug = cms.untracked.bool(False)
                                                   ),
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
@@ -279,7 +279,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("r9<0.94&&abs(superCluster.eta)<1.5"),
                                                   BinList = scaleBinsRereco,
-                                                  NoCentralShift = cms.bool(True),
+                                                  ApplyCentralValue = cms.bool(False),
                                                   Debug = cms.untracked.bool(False)
                                                   ),
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
@@ -288,7 +288,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)>=1.5"),
                                                   BinList = scaleBinsRereco,
-                                                  NoCentralShift = cms.bool(True),
+                                                  ApplyCentralValue = cms.bool(False),
                                                   Debug = cms.untracked.bool(False)
                                                   ),
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
@@ -297,7 +297,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("r9<0.94&&abs(superCluster.eta)>=1.5"),
                                                   BinList = scaleBinsRereco,
-                                                  NoCentralShift = cms.bool(True),
+                                                  ApplyCentralValue = cms.bool(False),
                                                   Debug = cms.untracked.bool(False)
                                                   ),
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
@@ -312,6 +312,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   RandomLabel = cms.string("rnd_g_E"),
                                                   Debug = cms.untracked.bool(False),
                                                   ExaggerateShiftUp = cms.bool(False),
+                                                  ApplyCentralValue = cms.bool(True)
                                                   ),
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
                                                   MethodName = cms.string("FlashggDiPhotonFromPhoton"),
@@ -325,6 +326,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   RandomLabel = cms.string("rnd_g_E"),
                                                   Debug = cms.untracked.bool(False),
                                                   ExaggerateShiftUp = cms.bool(False),
+                                                  ApplyCentralValue = cms.bool(True)
                                                   ),
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
                                                   MethodName = cms.string("FlashggDiPhotonFromPhoton"),
@@ -338,6 +340,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   RandomLabel = cms.string("rnd_g_E"),
                                                   Debug = cms.untracked.bool(False),
                                                   ExaggerateShiftUp = cms.bool(False),
+                                                  ApplyCentralValue = cms.bool(True)
                                                   ),
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
                                                   MethodName = cms.string("FlashggDiPhotonFromPhoton"),
@@ -351,6 +354,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   RandomLabel = cms.string("rnd_g_E"),
                                                   Debug = cms.untracked.bool(False),
                                                   ExaggerateShiftUp = cms.bool(False),
+                                                  ApplyCentralValue = cms.bool(True)
                                                   ),
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonMvaShift"),
                                                   MethodName = cms.string("FlashggDiPhotonFromPhoton"),
@@ -358,7 +362,8 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("1"),
                                                   BinList = mvaShiftBins,
-                                                  Debug = cms.untracked.bool(False)
+                                                  Debug = cms.untracked.bool(False),
+                                                  ApplyCentralValue = cms.bool(True)
                                                   ),
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
                                                   MethodName = cms.string("FlashggDiPhotonFromPhoton"),
@@ -366,7 +371,8 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("1"),
                                                   BinList = preselBins,
-                                                  Debug = cms.untracked.bool(False)
+                                                  Debug = cms.untracked.bool(False),
+                                                  ApplyCentralValue = cms.bool(True)
                                                   ),
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
                                                   MethodName = cms.string("FlashggDiPhotonFromPhoton"),
@@ -375,7 +381,8 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   OverallRange = cms.string("1"),
                                                   BinList = leadTriggerScaleBins,
                                                   BinList2 = subleadTriggerScaleBins,
-                                                  Debug = cms.untracked.bool(False)
+                                                  Debug = cms.untracked.bool(False),
+                                                  ApplyCentralValue = cms.bool(True)
                                                   ),
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
                                                   MethodName = cms.string("FlashggDiPhotonFromPhoton"),
@@ -383,7 +390,8 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("1"),
                                                   BinList = looseMvaBins,
-                                                  Debug = cms.untracked.bool(False)
+                                                  Debug = cms.untracked.bool(False),
+                                                  ApplyCentralValue = cms.bool(True)
                                                   ),
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigEOverEShift"),
                                                   MethodName = cms.string("FlashggDiPhotonFromPhoton"),
@@ -391,7 +399,8 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("1"),
                                                   BinList = sigmaEOverEShiftBins,
-                                                  Debug = cms.untracked.bool(False)
+                                                  Debug = cms.untracked.bool(False),
+                                                  ApplyCentralValue = cms.bool(True)
                                                   ),
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigEoverESmearing"),
                                                   MethodName = cms.string("FlashggDiPhotonFromPhoton"),
@@ -399,14 +408,16 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(0,0),
                                                   OverallRange = cms.string("1"),
                                                   BinList = smearBinsRereco,
-                                                  Debug = cms.untracked.bool(False)
+                                                  Debug = cms.untracked.bool(False),
+                                                  ApplyCentralValue = cms.bool(True)
                                                   ),
                                         cms.PSet( MethodName = cms.string("FlashggDiPhotonWeightFromFracRV"),
                                                   Label = cms.string("FracRVWeight"),
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("1"),
                                                   BinList = RVBins,
-                                                  Debug = cms.untracked.bool(False)
+                                                  Debug = cms.untracked.bool(False),
+                                                  ApplyCentralValue = cms.bool(True)
                                                   )
                                         )
                                             )
