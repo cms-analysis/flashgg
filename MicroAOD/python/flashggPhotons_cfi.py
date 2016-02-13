@@ -11,8 +11,8 @@ flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                 vertexCandidateMapTag = cms.InputTag("flashggVertexMapNonUnique"),
                                 rhoFixedGridCollection = cms.InputTag('fixedGridRhoAll'),
                                 
-                                photonIdMVAweightfile_EB = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_Spring15_25ns_barrel_final.xml"),
-                                photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_Spring15_25ns_endcap_final.xml"),
+                                photonIdMVAweightfile_EB = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_76X_25ns_barrel.xml"),
+                                photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_76X_25ns_endcap.xml"),
 
                                 useNonZsLazyTools = cms.bool(True),
                                 recomputeNonZsClusterShapes = cms.bool(False),
