@@ -21,6 +21,47 @@ smearBins = cms.PSet(
                               values = cms.vdouble( 1.320 ), uncertainties = cms.vdouble( 0.286 ) )
                     ))
 
+#https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideBTagMCTools#Hadron_parton_based_jet_flavour
+#B Tag MC efficiencies
+bTagEffBins = cms.PSet(
+    variables = cms.vstring("hadronFlavour","abs(eta)","pt"),
+    bins = cms.VPSet(
+                     #udsg jets
+                     cms.PSet(lowBounds = cms.vdouble(-0.5,0.0,0.0), upBounds = cms.vdouble(3.5,2.4,50.0), values = cms.vdouble(0.04360846), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(-0.5,0.0,50.0), upBounds = cms.vdouble(3.5,2.4,100.0), values = cms.vdouble(0.02723417), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(-0.5,0.0,100.0), upBounds = cms.vdouble(3.5,2.4,200.0), values = cms.vdouble(0.02553537), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(-0.5,0.0,200.0), upBounds = cms.vdouble(3.5,2.4,999999.0), values = cms.vdouble(0.03050519), uncertainties = cms.vdouble(0.0)),
+                     #
+                     cms.PSet(lowBounds = cms.vdouble(-0.5,2.4,0.0), upBounds = cms.vdouble(3.5,10.0,50.0), values = cms.vdouble(0.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(-0.5,2.4,50.0), upBounds = cms.vdouble(3.5,10.0,100.0), values = cms.vdouble(0.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(-0.5,2.4,100.0), upBounds = cms.vdouble(3.5,10.0,200.0), values = cms.vdouble(0.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(-0.5,2.4,200.0), upBounds = cms.vdouble(3.5,10.0,999999.0), values = cms.vdouble(0.0), uncertainties = cms.vdouble(0.0)),
+                     #c jets
+                     cms.PSet(lowBounds = cms.vdouble(3.5,0.0,0.0), upBounds = cms.vdouble(4.5,2.4,50.0), values = cms.vdouble(0.1269147), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(3.5,0.0,50.0), upBounds = cms.vdouble(4.5,2.4,100.0), values = cms.vdouble(0.1301700), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(3.5,0.0,100.0), upBounds = cms.vdouble(4.5,2.4,200.0), values = cms.vdouble(0.1364042), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(3.5,0.0,200.0), upBounds = cms.vdouble(4.5,2.4,999999.0), values = cms.vdouble(0.1647941), uncertainties = cms.vdouble(0.0)),
+                     #
+                     cms.PSet(lowBounds = cms.vdouble(3.5,2.4,0.0), upBounds = cms.vdouble(4.5,10.0,50.0), values = cms.vdouble(0.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(3.5,2.4,50.0), upBounds = cms.vdouble(4.5,10.0,100.0), values = cms.vdouble(0.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(3.5,2.4,100.0), upBounds = cms.vdouble(4.5,10.0,200.0), values = cms.vdouble(0.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(3.5,2.4,200.0), upBounds = cms.vdouble(4.5,10.0,999999.0), values = cms.vdouble(0.0), uncertainties = cms.vdouble(0.0)),
+                     #b jets
+                     cms.PSet(lowBounds = cms.vdouble(4.5,0.0,0.0), upBounds = cms.vdouble(5.5,2.4,50.0), values = cms.vdouble(0.5500933), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(4.5,0.0,50.0), upBounds = cms.vdouble(5.5,2.4,100.0), values = cms.vdouble(0.6088235), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(4.5,0.0,100.0), upBounds = cms.vdouble(5.5,2.4,200.0), values = cms.vdouble(0.6348762), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(4.5,0.0,200.0), upBounds = cms.vdouble(5.5,2.4,999999.0), values = cms.vdouble(0.5543137), uncertainties = cms.vdouble(0.0)),
+                     #
+                     cms.PSet(lowBounds = cms.vdouble(4.5,2.4,0.0), upBounds = cms.vdouble(5.5,10.0,50.0), values = cms.vdouble(1.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(4.5,2.4,50.0), upBounds = cms.vdouble(5.5,10.0,100.0), values = cms.vdouble(1.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(4.5,2.4,100.0), upBounds = cms.vdouble(5.5,10.0,200.0), values = cms.vdouble(1.0), uncertainties = cms.vdouble(0.0)),
+                     cms.PSet(lowBounds = cms.vdouble(4.5,2.4,200.0), upBounds = cms.vdouble(5.5,10.0,999999.0), values = cms.vdouble(1.0), uncertainties = cms.vdouble(0.0))
+                  ))   
+
+bDiscriminator74X = cms.double(0.890)
+bDiscriminator76X = cms.double(0.800)
+from flashgg.MicroAOD.flashggJets_cfi import flashggBTag
+
 def createJetSystematicsForTag(process,jetInputTag):
   num = jetInputTag.productInstanceLabel
   newName = 'flashggJetSystematics'+num
@@ -44,6 +85,16 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            RandomLabel = cms.string("rnd_g_JER"), # for no-match case
                                                            BinList = smearBins,
                                                            Debug = cms.untracked.bool(False),
+                                                           ApplyCentralValue = cms.bool(True)
+                                                           ),
+                                                 cms.PSet( MethodName = cms.string("FlashggJetBTagWeight"),
+                                                           Label = cms.string("JetBTagWeight"),
+                                                           NSigmas = cms.vint32(-1,1),
+                                                           OverallRange = cms.string("pt>25.0&&abs(eta)<2.4"),
+                                                           BinList = bTagEffBins,
+						 	   bTag = cms.string(flashggBTag),
+						 	   bDiscriminator = bDiscriminator76X, #Medium working point for CSV B tagger, for CMSSW74X use: bDiscriminator74X
+							   Debug = cms.untracked.bool(False),
                                                            ApplyCentralValue = cms.bool(True)
                                                            )
                                                  )
