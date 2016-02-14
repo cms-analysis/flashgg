@@ -29,6 +29,8 @@ namespace flashgg {
         void setSystLabel( const std::string label ) { systLabel_ = label; }
         std::string systLabel() const { return systLabel_; }
         bool hasSyst( const string &label ) const { return ( systLabel_ == label );}
+        void setIsGold ( int runNumber );
+        bool isGold() const { return isGold_; }
     private:
         DiPhotonMVAResult mva_result_;
         int category_number_;
@@ -36,6 +38,7 @@ namespace flashgg {
         edm::Ptr<DiPhotonCandidate> dipho_;
         edm::Ptr<TagTruthBase> truth_;
         string systLabel_;
+        bool isGold_;
     };
 
 }

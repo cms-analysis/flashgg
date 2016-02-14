@@ -239,5 +239,13 @@ flashggVHHadronicTag = cms.EDProducer("FlashggVHHadronicTagProducer",
                                       phoIdMVAThreshold = cms.double(-0.9)
 )
 
-
+# Tag is for jet studies only, not in default sequence
+flashggZPlusJetTag = cms.EDProducer("FlashggZPlusJetTagProducer",
+                                    DiPhotonTag    = cms.InputTag('flashggPreselectedDiPhotons'),
+                                    SystLabel      = cms.string(""),
+                                    MVAResultTag   = cms.InputTag('flashggDiPhotonMVA'),
+                                    inputTagJets= UnpackedJetCollectionVInputTag,
+                                    GenParticleTag=cms.InputTag( "flashggPrunedGenParticles" ),
+                                    GenJetTag = cms.InputTag("slimmedGenJets")
+                                    )
 

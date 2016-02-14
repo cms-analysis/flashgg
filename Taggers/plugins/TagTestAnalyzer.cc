@@ -31,6 +31,7 @@
 #include "flashgg/DataFormats/interface/VHLooseTag.h"
 #include "flashgg/DataFormats/interface/VHHadronicTag.h"
 #include "flashgg/DataFormats/interface/VBFTagTruth.h"
+#include "flashgg/DataFormats/interface/ZPlusJetTag.h"
 
 using namespace std;
 using namespace edm;
@@ -104,6 +105,11 @@ namespace flashgg {
 
         for ( auto tag = TagSorter.product()->begin() ; tag != TagSorter.product()->end() ; tag++ ) {
             const flashgg::DiPhotonTagBase *chosenTag = &*( tag );
+
+            const ZPlusJetTag *zplusjet = dynamic_cast<const ZPlusJetTag *>( chosenTag );
+            if( zplusjet != NULL ) {
+                std::cout << "[ZPLUSJET] njets=" << zplusjet->nJets() << " jet pt=" << zplusjet->jet()->pt() << " dipho mass=" << zplusjet->diPhoton()->mass() << std::endl;
+            }
 
             const	UntaggedTag *untagged = dynamic_cast<const UntaggedTag *>( chosenTag );
             if( untagged != NULL ) {
@@ -222,7 +228,7 @@ namespace flashgg {
             // IMPORTANT: All future Tags must be added in the way of untagged and vbftag.
 
             if( untagged == NULL && vbftag == NULL && tthhadronictag == NULL && tthleptonictag == NULL && vhtighttag == NULL && vhloosetag == NULL &&
-                    vhhadronictag == NULL && vhettag == NULL ) {
+                    vhhadronictag == NULL && vhettag == NULL && zplusjet==NULL ) {
                 std::cout << "[FAILED TO CONVERT TAG] with SumPt " << chosenTag->sumPt() << std::endl;
             }
 
