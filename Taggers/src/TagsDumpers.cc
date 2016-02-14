@@ -7,6 +7,7 @@ namespace flashgg {
         PLUGGABLE_ANALYZER( CutBasedTTHHadronicTagDumper );
         PLUGGABLE_ANALYZER( CutBasedTTHLeptonicTagDumper );
         PLUGGABLE_ANALYZER( CutBasedVBFTagDumper );
+        PLUGGABLE_ANALYZER( CutBasedZPlusJetTagDumper );
     }
 }
 
