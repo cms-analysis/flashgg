@@ -31,6 +31,7 @@
 #include "flashgg/DataFormats/interface/VBFTagTruth.h"
 #include "flashgg/DataFormats/interface/WeightedObject.h"
 #include "flashgg/DataFormats/interface/PDFWeightObject.h"
+#include "flashgg/DataFormats/interface/ZPlusJetTag.h"
 
 #include <vector>
 #include <map>
@@ -160,6 +161,10 @@ namespace  {
         flashgg::VBFMVAResult vbf_res;
         std::vector<flashgg::VBFMVAResult> vec_vbf_res;
         edm::Wrapper<std::vector<flashgg::VBFMVAResult> > wrp_vec_vbf_res;
+
+        flashgg::ZPlusJetTag zpj_res;
+        std::vector<flashgg::ZPlusJetTag> vec_zpj_res;
+        edm::Wrapper<std::vector<flashgg::ZPlusJetTag> > wrp_vec_zpj_res;
 
         flashgg::VBFDiPhoDiJetMVAResult vbfDiPhoDiJet_res;
         std::vector<flashgg::VBFDiPhoDiJetMVAResult> vec_vbfDiPhoDiJet_res;
