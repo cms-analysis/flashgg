@@ -37,7 +37,7 @@ namespace flashgg {
         Jet *clone() const { return ( new Jet( *this ) ); }
         
         void  setQGL(const float qglikelihood=-99) {qglikelihood_ = qglikelihood;}
-        float QGL(){return qglikelihood_;}
+        float QGL () const {return qglikelihood_;}
         
         bool passesJetID( JetIDLevel level = Loose ) const; 
     private:
