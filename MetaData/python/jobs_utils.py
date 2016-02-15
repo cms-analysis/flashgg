@@ -100,6 +100,9 @@ class JobsManager(object):
                 make_option("-C","--cont",dest="cont",default=False, action="store_true",
                             help="continue interrupted task."
                             ),
+                make_option("-R","--resubmit-missing",dest="resubMissing",default=False, action="store_true",
+                            help="resubmit unfinished jobs upon continue."
+                            ),
                 make_option("-b","--batch-system",dest="batchSystem",type="string",
                             default="auto",help="Batch system name. Currently supported: sge lsf, default: %default"
                             ),
@@ -176,8 +179,14 @@ class JobsManager(object):
             else:
                 jobName=None
             if ret != 0 and nsub <= self.options.maxResub:
-                self.parallel.addJob(cmd,args,batchId,jobName)
-            
+                if self.options.resubMissing:
+                    out = self.parallel.run(cmd,args,jobName=jobName)
+                    if self.options.queue and self.options.asyncLsf:
+                        job[5] = out[-1][1][1]
+                    self.storeTaskConfig(task_config)
+                else:
+                    self.parallel.addJob(cmd,args,batchId,jobName)
+
 
     # -------------------------------------------------------------------------------------------------------------------
     def firstRun(self):
@@ -477,18 +486,18 @@ class JobsManager(object):
         status = {}
         for job in jobs:
             cmd, args, outfile, nsub, ret, batchId = job
-            status[outfile] = (nsub,ret)
+            status[outfile] = (nsub,ret,batchId)
             
         for proc,out in procs.iteritems():
             outfile,outfiles = out
             finished = []
             missing  = {}
             for jfile in outfiles:
-                nsub,ret = status[jfile]
+                nsub,ret,batchId = status[jfile]
                 if ret != 0:
                     if not nsub in missing:
                         missing[nsub] = []
-                    missing[nsub].append( jfile )
+                    missing[nsub].append( (jfile,batchId) )
                 else:
                     finished.append(jfile)
             print "----------"
@@ -497,6 +506,9 @@ class JobsManager(object):
             print "finished:          %d " % len(finished)
             for nsub,lst in missing.iteritems():
                 print "submitted %d times: %d"  % (nsub+1, len(lst))
+                if self.options.verbose:
+                    for jfile,batchId in lst:
+                        print "%s: %s" % (jfile,batchId[0])
             print 
                 
                 
