@@ -1,5 +1,7 @@
 #!/usr/bin/env cmsRun
 
+raise Exception,"please use workspaceStd.py instead, this file is here for reference but no longer maintained"
+
 import FWCore.ParameterSet.Config as cms
 import FWCore.Utilities.FileUtils as FileUtils
 from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariables,minimalHistograms,minimalNonSignalVariables,systematicVariables
