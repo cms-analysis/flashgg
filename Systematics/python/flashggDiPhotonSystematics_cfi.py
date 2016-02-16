@@ -258,7 +258,7 @@ RVBins = cms.PSet(
                 )
 
 flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
-		src = cms.InputTag("flashggDiPhotons"),
+		src = cms.InputTag("flashggUpdatedIdMVADiPhotons"),
                 SystMethods2D = cms.VPSet(),
                 # the number of syst methods matches the number of nuisance parameters
                 # assumed for a given systematic uncertainty and is NOT required

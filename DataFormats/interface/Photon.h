@@ -60,6 +60,7 @@ namespace flashgg {
         void setpfChgIsoWrtChosenVtx03( float val ) {pfChgIsoWrtChosenVtx03_ = val;};
         void setESEffSigmaRR( float val ) {ESEffSigmaRR_ = val;};
         void setPhoIdMvaD( std::map<edm::Ptr<reco::Vertex>, float> valmap ) {  phoIdMvaD_ = valmap; };  // concept: pass the pre-computed map when calling this in the producer
+        void setPhoIdMvaWrtVtx( edm::Ptr<reco::Vertex> key, float val ) { phoIdMvaD_[key] = val; } // For later updates, e.g. recomputation when vertex is already selected
         void updateEnergy( std::string key, float val );
         void shiftAllMvaValuesBy( float val );
         void shiftSigmaEOverEValueBy( float val );
