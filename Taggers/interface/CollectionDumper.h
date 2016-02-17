@@ -325,7 +325,16 @@ namespace flashgg {
     template<class C, class T, class U>
         void CollectionDumper<C, T, U>::endJob()
         {
+          for (auto &dumper: dumpers_){
+            for (unsigned int i =0; i < dumper.second.size() ; i++){
+              if (dumper.second[i].isBinnedOnly()) continue;
+              else {
+                dumper.second[i].compressPdfWeightDatasets(ws_); 
+              }
+            }
+          }
         }
+         
 
     template<class C, class T, class U>
         double CollectionDumper<C, T, U>::eventWeight( const edm::EventBase &event )
@@ -383,15 +392,12 @@ namespace flashgg {
                 for( unsigned int j=0; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
                     pdfWeights.push_back(uncompressed[j]);
                 }
-                //                std::cout << "DEBUG  pushed back " << (*WeightHandle)[weight_index].pdf_weight_container.size() << "pdf weights " << std::endl;
                 for( unsigned int j=0; j<(*WeightHandle)[weight_index].alpha_s_container.size();j++ ) {
                     pdfWeights.push_back(uncompressed_alpha_s[j]);
                 }
-                //                std::cout << "DEBUG  pushed back " << (*WeightHandle)[weight_index].alpha_s_container.size() << " alpha_s weights " << std::endl;
                 for( unsigned int j=0; j<(*WeightHandle)[weight_index].qcd_scale_container.size();j++ ) {
                     pdfWeights.push_back(uncompressed_scale[j]);
                 }
-                //                std::cout << "DEBUG  pushed back " << (*WeightHandle)[weight_index].qcd_scale_container.size() << " scale weights " << std::endl;
             }
 
 
@@ -424,7 +430,6 @@ namespace flashgg {
                 // The Scale Factor is then pdfWeight/nominalMC weight
                 pdfWeights_ =pdfWeights( event );
                 for (unsigned int i = 0; i < pdfWeights_.size() ; i++){
-                    //                    std::cout << " LC DEBUG pdfWeight i=" << i << "  ("<< pdfWeights_[i] <<") -->  " << pdfWeights_[i] << " * (" << lumiWeight_ << "/"<< weight_ <<") = " << pdfWeights_[i] << " / " << 1/(lumiWeight_/weight_) << " = " <<  (pdfWeights_[i] )*(lumiWeight_/weight_) << std::endl;
                 pdfWeights_[i]= (pdfWeights_[i] )*(lumiWeight_/weight_); // ie pdfWeight/nominal MC weight
                 }
                 
@@ -442,10 +447,7 @@ namespace flashgg {
                    const  WeightedObject* tag = dynamic_cast<const WeightedObject* >( &cand );
                     if ( tag != NULL ){
 
-                    //std::cout << "TEST  weight_  " << fillWeight << std::endl;
                     fillWeight =fillWeight*(tag->centralWeight());
-                    //std::cout << "TEST cand centralWeight " << tag->centralWeight() << std::endl;
-                    //std::cout << "TEST  weight  " << fillWeight << std::endl;
                     }
                     which->second[isub].fill( cand, fillWeight, pdfWeights_, maxCandPerEvent_ - nfilled );
                     --nfilled;
