@@ -204,7 +204,7 @@ float const Photon::energyAtStep( std::string key, std::string fallback ) const
 }
 bool Photon::hasEnergyAtStep( std::string key ) const
 {
-    return hasUserData( key );
+    return hasUserFloat( key );
 }
 
 
