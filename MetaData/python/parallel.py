@@ -501,6 +501,8 @@ class LsfMonitor:
         commands.getstatusoutput("bkill -s 9 %d" % jobid)
         
     def monitor(self):
+        if len(self.jobsmap.keys())==0:
+            return
         status = commands.getstatusoutput("bjobs %s" % " ".join(self.jobsmap.keys()))
         for line in status[1].split("\n")[1:]:
             toks = [ l for l in line.split(" ") if l != "" ]
@@ -510,6 +512,9 @@ class LsfMonitor:
                 self.jobFinished(jobid,status)
                 
     def jobFinished(self,jobid,status):
+        if not jobid in self.jobsmap:
+            print "%s not found: %s" % ( jobid, " ".join(self.jobsmap.keys()) )
+            return
         lsfJob = self.jobsmap[jobid]
         try:
             self.retqueue.put( (lsfJob, [lsfJob.cmd], lsfJob.handleOutput()) )

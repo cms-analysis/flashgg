@@ -39,6 +39,12 @@ namespace flashgg {
         double lumiFactor_;
         int processIndex_;
 
+        std::vector<edm::EDGetTokenT<float>> extraFloatTokens_;
+        std::vector<edm::EDGetTokenT<std::vector<float>>> extraVectorFloatTokens_;
+        std::vector<edm::InputTag> extraFloatTags_;
+        std::vector<std::string> extraFloatNames_;
+        std::vector<float> extraFloatVariables_;
+        
     };
 
 }
