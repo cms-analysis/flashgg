@@ -212,7 +212,7 @@ namespace flashgg {
             subleadmva_     = g2->phoIdMvaDWrtVtx( vtx );
 
             leadeta_        = g1->eta();
-            subleadeta_     = g1->eta();
+            subleadeta_     = g2->eta();
 
             sigmarv_        = .5 * sqrt( ( g1->sigEOverE() ) * ( g1->sigEOverE() ) + ( g2->sigEOverE() ) * ( g2->sigEOverE() ) );
             sigmawv_        = MassResolutionWrongVtx;
