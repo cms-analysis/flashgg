@@ -25,8 +25,8 @@ namespace flashgg {
                 min( mi ), max( ma ), val( va ), unc( er ) {}
         };
 
-        ObjectSystMethodBinnedByFunctor( const edm::ParameterSet &conf ) :
-            BaseSystMethod<flashgg_object, param_var>::BaseSystMethod( conf ),
+        ObjectSystMethodBinnedByFunctor( const edm::ParameterSet &conf, edm::ConsumesCollector && iC ) :
+            BaseSystMethod<flashgg_object, param_var>::BaseSystMethod( conf, std::forward<edm::ConsumesCollector>(iC) ),
             debug_( conf.getUntrackedParameter<bool>( "Debug", false ) )
         {
             const auto &pset = conf.getParameterSet( "BinList" );

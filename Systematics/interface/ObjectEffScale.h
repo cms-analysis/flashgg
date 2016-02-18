@@ -11,13 +11,14 @@ namespace flashgg {
     {
     public:
 
-        ObjectEffScale( const edm::ParameterSet &conf );
+        ObjectEffScale( const edm::ParameterSet &conf, edm::ConsumesCollector && iC );
         float makeWeight( const flashgg_object &obj, param_var syst_shift ) override;
         std::string shiftLabel( param_var syst_shift ) const override;
     };
 
     template<typename flashgg_object, typename param_var>
-    ObjectEffScale<flashgg_object, param_var>::ObjectEffScale( const edm::ParameterSet &conf ) : ObjectSystMethodBinnedByFunctor<flashgg_object, param_var>( conf )
+    ObjectEffScale<flashgg_object, param_var>::ObjectEffScale( const edm::ParameterSet &conf, edm::ConsumesCollector && iC )
+        : ObjectSystMethodBinnedByFunctor<flashgg_object, param_var>( conf, std::forward<edm::ConsumesCollector>(iC) )
     {
         this->setMakesWeight( true );
     }

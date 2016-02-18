@@ -3,6 +3,7 @@
 import FWCore.ParameterSet.Config as cms
 import FWCore.Utilities.FileUtils as FileUtils
 from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariables,minimalHistograms,minimalNonSignalVariables,systematicVariables
+import os
 
 # SYSTEMATICS SECTION
 
@@ -14,7 +15,10 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v4' # keep updated for JEC
+if os.environ["CMSSW_VERSION"].count("CMSSW_7_6"):
+    process.GlobalTag.globaltag = '76X_mcRun2_asymptotic_v12'
+else:
+    process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v4' 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 

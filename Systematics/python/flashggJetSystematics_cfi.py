@@ -76,7 +76,9 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            NSigmas = cms.vint32(-1,1),
                                                            OverallRange = cms.string("abs(eta)<5.0"),
                                                            Debug = cms.untracked.bool(False),
-                                                           ApplyCentralValue = cms.bool(True)
+                                                           ApplyCentralValue = cms.bool(True),
+                                                           SetupUncertainties = cms.bool(True),
+                                                           JetCorrectorTag = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
                                                            ),
                                                  cms.PSet( MethodName = cms.string("FlashggJetSmearConstant"),
                                                            Label = cms.string("JER"),
@@ -106,7 +108,9 @@ def createJetSystematicsForTag(process,jetInputTag):
   return (getattr(process,newName),cms.InputTag(newName))
   
 def createJetSystematics(process,replaceTagList):
-  process.jetSystematicsSequence = cms.Sequence()
+  process.load("JetMETCorrections.Configuration.JetCorrectors_cff")
+  process.jetCorrectorChain = cms.Sequence(process.ak4PFCHSL1FastL2L3CorrectorChain)
+  process.jetSystematicsSequence = cms.Sequence(process.jetCorrectorChain)
   systematicsInputList = cms.VInputTag()
   for jetInputTag in replaceTagList:
     module,tag = createJetSystematicsForTag(process,jetInputTag)
