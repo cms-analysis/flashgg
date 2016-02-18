@@ -340,7 +340,6 @@ namespace flashgg {
     if (dumpPdfWeights_){
         for (int i =0; i< nPdfWeights_ ; i++) {
             rooVars_pdfWeights0.add( *ws.var( Form("pdfWeight_%d",i) ) ); 
-            rooVars_pdfWeights0.Print();
         }
         for (int i =0; i< nAlphaSWeights_ ; i++) {
             rooVars_pdfWeights0.add( *ws.var( Form("alphaSWeight_%d",i) ) ); 
@@ -383,8 +382,7 @@ namespace flashgg {
     RooDataHist dhist(formatString(name_,replacements).c_str(),formatString(name_,replacements).c_str(),rooVarsBinned_,dset);
     if( ! binnedOnly_ ) {
         ws.import( dset );
-       //ws.import( dset_pdfWeights ); can't over-write datasets so only improt this one at the end  once it has been collapsed
-        rooVars_pdfWeights_.Print();
+       //ws.import( dset_pdfWeights ); can't over-write datasets so only import this one at the end  once it has been collapsed
         RooDataSet * dset_pdfWeights = new RooDataSet( (formatString( name_, replacements )+"_pdfWeights").c_str(), (formatString( name_, replacements )+"_pdfWeights").c_str(), rooVars_pdfWeights_, weightVar ); // store in separate RooDataSet where we store all PDF weights as one. (because including it as a refular weight is too heavy and causes crashes)
     // the compressing of the entries in dset_pdfWeights into one event per dataset happens later.
         dataset_pdfWeights_ = dset_pdfWeights;
@@ -393,7 +391,6 @@ namespace flashgg {
         ws.import( dhist );
     }
 
-    rooVars_pdfWeights_.Print();
     dataset_ = ws.data( name_.c_str() );
 }
     template<class F, class O>
@@ -415,10 +412,8 @@ void CategoryDumper<F, O>::fill( const object_type &obj, double weight, vector<d
     if( dataset_ && (!binnedOnly_) ) {
         // don't fill RooDataHists with weight variable, only RooDatSets
         dynamic_cast<RooRealVar &>( rooVars_["weight"] ).setVal( weight_ );
-    rooVars_.Print();
 
         if (dumpPdfWeights_){
-          rooVars_pdfWeights_.Print();
           dynamic_cast<RooRealVar &>( rooVars_pdfWeights_["weight"] ).setVal( weight_ );
           if ((nPdfWeights_+ nAlphaSWeights_ + nScaleWeights_) != (int) (pdfWeights.size())){ 
                 throw cms::Exception( "Configuration" ) << " Specified number of pdfWeights (" << nPdfWeights_ <<") plus alphaSWeights ("<<nAlphaSWeights_
@@ -426,7 +421,6 @@ void CategoryDumper<F, O>::fill( const object_type &obj, double weight, vector<d
                                                         << pdfWeights.size() << ")." ;
             }
             for ( int i =0; i< nPdfWeights_; i++) {
-    rooVars_pdfWeights_.Print();
                 dynamic_cast<RooRealVar &>( rooVars_pdfWeights_[Form("pdfWeight_%d",i)] ).setVal( pdfWeights[i] );
             }
             for ( int i =0; i<nAlphaSWeights_  ; i++) {
