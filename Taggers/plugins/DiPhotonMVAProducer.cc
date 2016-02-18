@@ -32,6 +32,7 @@ namespace flashgg {
 
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         EDGetTokenT<reco::BeamSpot > beamSpotToken_;
+        double BeamSig_fromConf_=-1.;
 
         unique_ptr<TMVA::Reader>DiphotonMva_;
         FileInPath diphotonMVAweightfile_;
@@ -63,7 +64,7 @@ namespace flashgg {
     {
         vertex_prob_params_conv = iConfig.getParameter<vector<double>>( "VertexProbParamsConv" );
         vertex_prob_params_noConv = iConfig.getParameter<vector<double>>( "VertexProbParamsNoConv" );
-
+        BeamSig_fromConf_ = iConfig.getParameter<double>( "BeamSpotSigma" );
         diphotonMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "diphotonMVAweightfile" );
 
         Version_ = iConfig.getParameter<string>( "Version" );
@@ -133,11 +134,17 @@ namespace flashgg {
         Handle<reco::BeamSpot> recoBeamSpotHandle;
         evt.getByToken( beamSpotToken_, recoBeamSpotHandle );
         float beamsig;
-        if( recoBeamSpotHandle.isValid() ) {
-            beamsig = recoBeamSpotHandle->sigmaZ();
-        } else {
-            beamsig = -9999; // I hope this never happens! But it seems to in our default test, what's going wrong??
+        if(BeamSig_fromConf_ < 0){
+            if( recoBeamSpotHandle.isValid() ) {
+                beamsig = recoBeamSpotHandle->sigmaZ();
+            } else {
+                beamsig = -9999; // I hope this never happens! But it seems to in our default test, what's going wrong??
+            }
         }
+        else{
+            beamsig = BeamSig_fromConf_;
+        }
+
 
         //    std::auto_ptr<DiPhotonMVAResultMap> assoc(new DiPhotonMVAResultMap);
         std::auto_ptr<vector<DiPhotonMVAResult> > results( new vector<DiPhotonMVAResult> ); // one per diphoton, always in same order, vector is more efficient than map
@@ -200,10 +207,13 @@ namespace flashgg {
 
             leadptom_       = g1->pt() / ( diPhotons->ptrAt( candIndex )->mass() );
             subleadptom_    = g2->pt() / ( diPhotons->ptrAt( candIndex )->mass() );
-            subleadmva_     = g2->phoIdMvaDWrtVtx( vtx );
+
             leadmva_        = g1->phoIdMvaDWrtVtx( vtx );
-            leadeta_        = g2->eta();
+            subleadmva_     = g2->phoIdMvaDWrtVtx( vtx );
+
+            leadeta_        = g1->eta();
             subleadeta_     = g1->eta();
+
             sigmarv_        = .5 * sqrt( ( g1->sigEOverE() ) * ( g1->sigEOverE() ) + ( g2->sigEOverE() ) * ( g2->sigEOverE() ) );
             sigmawv_        = MassResolutionWrongVtx;
             CosPhi_         = TMath::Cos( deltaPhi( g1->phi(), g2->phi() ) );
