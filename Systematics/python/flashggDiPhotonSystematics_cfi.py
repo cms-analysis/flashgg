@@ -259,7 +259,72 @@ RVBins = cms.PSet(
 
 flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
 		src = cms.InputTag("flashggDiPhotons"),
-                SystMethods2D = cms.VPSet(),
+                SystMethods2D = cms.VPSet(
+                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
+                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+                                                  Label = cms.string("MCSmearHighR9EE"),
+                                                  #NSigmas = cms.vint32(-1,1),
+                                                  NSigmas = cms.PSet( firstVar = cms.vint32(1,-1,0,0),
+                                                                      secondVar = cms.vint32(0,0,1,-1)),
+                                                  OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)>=1.5"),
+                                                  BinList = smearBinsRereco,
+                                                  # has to match the labels embedded in the photon object as
+                                                  # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
+                                                  #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
+                                                  RandomLabel = cms.string("rnd_g_E"),
+                                                  Debug = cms.untracked.bool(False),
+                                                  ExaggerateShiftUp = cms.bool(False),
+                                                  ApplyCentralValue = cms.bool(True)
+                                                  ),
+                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
+                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+                                                  Label = cms.string("MCSmearLowR9EE"),
+                                                  #NSigmas = cms.vint32(-1,1),
+                                                  NSigmas = cms.PSet( firstVar = cms.vint32(1,-1,0,0),
+                                                                      secondVar = cms.vint32(0,0,1,-1)),
+                                                  OverallRange = cms.string("r9<=0.94&&abs(superCluster.eta)>=1.5"),
+                                                  BinList = smearBinsRereco,
+                                                  # has to match the labels embedded in the photon object as
+                                                  # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
+                                                  #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
+                                                  RandomLabel = cms.string("rnd_g_E"),
+                                                  Debug = cms.untracked.bool(False),
+                                                  ExaggerateShiftUp = cms.bool(False),
+                                                  ApplyCentralValue = cms.bool(True)
+                                                  ),
+                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
+                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+                                                  Label = cms.string("MCSmearHighR9EB"),
+                                                  #NSigmas = cms.vint32(-1,1),
+                                                  NSigmas = cms.PSet( firstVar = cms.vint32(1,-1,0,0),
+                                                                      secondVar = cms.vint32(0,0,1,-1)),
+                                                  OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)<1.5"),
+                                                  BinList = smearBinsRereco,
+                                                  # has to match the labels embedded in the photon object as
+                                                  # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
+                                                  #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
+                                                  RandomLabel = cms.string("rnd_g_E"),
+                                                  Debug = cms.untracked.bool(False),
+                                                  ExaggerateShiftUp = cms.bool(False),
+                                                  ApplyCentralValue = cms.bool(True)
+                                                  ),
+                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
+                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+                                                  Label = cms.string("MCSmearLowR9EB"),
+                                                  #NSigmas = cms.vint32(-1,1),
+                                                  NSigmas = cms.PSet( firstVar = cms.vint32(1,-1,0,0),
+                                                                      secondVar = cms.vint32(0,0,1,-1)),
+                                                  OverallRange = cms.string("r9<=0.94&&abs(superCluster.eta)<1.5"),
+                                                  BinList = smearBinsRereco,
+                                                  # has to match the labels embedded in the photon object as
+                                                  # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
+                                                  #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
+                                                  RandomLabel = cms.string("rnd_g_E"),
+                                                  Debug = cms.untracked.bool(False),
+                                                  ExaggerateShiftUp = cms.bool(False),
+                                                  ApplyCentralValue = cms.bool(True)
+                                                  ),
+                ),
                 # the number of syst methods matches the number of nuisance parameters
                 # assumed for a given systematic uncertainty and is NOT required
                 # to match 1-to-1 the number of bins above.
