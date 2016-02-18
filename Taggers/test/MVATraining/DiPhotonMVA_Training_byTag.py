@@ -3,7 +3,7 @@ import FWCore.Utilities.FileUtils as FileUtils
 
 import FWCore.ParameterSet.VarParsing as VarParsing
 from flashgg.MetaData.samples_utils import SamplesManager
-
+from flashgg.Taggers.DiPhotonMVATrainingDumpConfNew_cff import DiPhotonMVATrainingDumpConfNew
 
 process = cms.Process("DiPhotonMVATrainig")
 
@@ -16,7 +16,8 @@ process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc')
 #process.GlobalTag.globaltag = 'POSTLS170_V5::All'
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(1000)
-process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-25ns/Spring15BetaV5/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-25ns-Spring15BetaV5-v0-RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/150922_093229/0000/myMicroAODOutputFile_1.root"))
+#process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-25ns/Spring15BetaV5/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-25ns-Spring15BetaV5-v0-RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/150922_093229/0000/myMicroAODOutputFile_1.root"))
+process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReReco74X-1_1_0-25ns/1_1_0/DoubleEG/RunIISpring15-ReReco74X-1_1_0-25ns-1_1_0-v0-Run2015D-04Dec2015-v2/160112_095813/0000/myMicroAODOutputFile_1.root"))
 ##process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-25ns/Spring15BetaV5/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring15-25ns-Spring15BetaV5-v0-RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/150922_093229/0000/myMicroAODOutputFile_1.root"))
 #process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring( "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/HggPhys14/Phys14MicroAODV2/VBF_HToGG_M-125_13TeV-powheg-pythia6/HggPhys14-Phys14MicroAODV2-v0-Phys14DR-PU20bx25_PHYS14_25_V1-v1/150210_160130/0000/myMicroAODOutputFile_1.root"))
 
@@ -43,6 +44,7 @@ process.flashggDiPhotonSmeared = cms.EDProducer('FlashggDiPhotonSystematicProduc
                   NSigmas = cms.vint32(0,0),
                   OverallRange = cms.string("1"),
                   BinList = smearBinsRereco,
+                  ApplyCentralValue = cms.bool(True),
                   Debug = cms.untracked.bool(False)
                   ),
         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
@@ -53,6 +55,7 @@ process.flashggDiPhotonSmeared = cms.EDProducer('FlashggDiPhotonSystematicProduc
                   #OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)>=1.5"),
                   OverallRange = cms.string("1"),
                   BinList = smearBinsRereco,
+                  ApplyCentralValue = cms.bool(True),
                   # has to match the labels embedded in the photon object as
                   # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
                   #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
@@ -82,6 +85,7 @@ process.flashggDiPhotonScale = cms.EDProducer('FlashggDiPhotonSystematicProducer
                   NSigmas = cms.vint32(0,0),
                   OverallRange = cms.string("1"),
                   BinList = smearBinsRereco,
+                  ApplyCentralValue = cms.bool(True),
                   Debug = cms.untracked.bool(False)
                   ),
         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
@@ -91,6 +95,7 @@ process.flashggDiPhotonScale = cms.EDProducer('FlashggDiPhotonSystematicProducer
                   OverallRange = cms.string("1"),
                   BinList = scaleBinsRereco,
                   NoCentralShift = cms.bool(False),
+                  ApplyCentralValue = cms.bool(True),
                   Debug = cms.untracked.bool(False)
                   )
         
@@ -123,12 +128,12 @@ process.flashggUntagged.Boundaries=cms.vdouble(-2)
 from flashgg.MetaData.JobConfig import customize
 customize.setDefault("maxEvents",-1)
 #customize.setDefault("processIndex",5)
-customize.setDefault("targetLumi",1.e+4)
+customize.setDefault("targetLumi",1.e+3)
 
-customize.setDefault("puTarget", '1.435e+05,6.576e+05,8.781e+05,1.304e+06,2.219e+06,5.052e+06,1.643e+07,6.709e+07,1.975e+08,3.527e+08,4.44e+08,4.491e+08,3.792e+08,2.623e+08,1.471e+08,6.79e+07,2.748e+07,1.141e+07,5.675e+06,3.027e+06,1.402e+06,5.119e+05,1.467e+05,3.53e+04,8270,2235,721.3,258.8,97.27,36.87,13.73,4.932,1.692,0.5519,0.1706,0.04994,0.01383,0.003627,0.0008996,0.0002111,4.689e-05,9.854e-06,1.959e-06,3.686e-07,6.562e-08,1.105e-08,1.762e-09,2.615e-10,4.768e-11,0,0,0')
+#customize.setDefault("puTarget", '1.435e+05,6.576e+05,8.781e+05,1.304e+06,2.219e+06,5.052e+06,1.643e+07,6.709e+07,1.975e+08,3.527e+08,4.44e+08,4.491e+08,3.792e+08,2.623e+08,1.471e+08,6.79e+07,2.748e+07,1.141e+07,5.675e+06,3.027e+06,1.402e+06,5.119e+05,1.467e+05,3.53e+04,8270,2235,721.3,258.8,97.27,36.87,13.73,4.932,1.692,0.5519,0.1706,0.04994,0.01383,0.003627,0.0008996,0.0002111,4.689e-05,9.854e-06,1.959e-06,3.686e-07,6.562e-08,1.105e-08,1.762e-09,2.615e-10,4.768e-11,0,0,0')
 
 customize.options.register('diphoxml',
-                           'flashgg/Taggers/data/TMVAClassification_BDT_QCDflattened_pray.weights.xml',
+                           'flashgg/Taggers/data/Flashgg_DiPhoton_Rereco.weights.xml',
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.string,
                            'diphoxml'
@@ -229,7 +234,8 @@ cfgTools.addCategories(process.tagDumper,
 # split tree, histogram and datasets by process
 process.tagDumper.nameTemplate ="$PROCESS_$SQRTS_$LABEL"
 
-process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
+process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True), wantSummary = cms.untracked.bool(True)  )
+
 
 if customize.processType != 'data'and customize.runOnZ != 'single':
     process.p = cms.Path( process.tagDumper )
