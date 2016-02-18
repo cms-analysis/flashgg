@@ -325,6 +325,7 @@ namespace flashgg {
     template<class C, class T, class U>
         void CollectionDumper<C, T, U>::endJob()
         {
+         if(dumpPdfWeights_){
           for (auto &dumper: dumpers_){
             for (unsigned int i =0; i < dumper.second.size() ; i++){
               if (dumper.second[i].isBinnedOnly()) continue;
@@ -332,6 +333,7 @@ namespace flashgg {
                 dumper.second[i].compressPdfWeightDatasets(ws_); 
               }
             }
+           }
           }
         }
          
