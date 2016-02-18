@@ -187,6 +187,7 @@ if (customize.processId.count("wh") or customize.processId.count("zh")) and not 
 
 process.p = cms.Path(process.dataRequirements*
                      process.genFilter*
+                     process.flashggUpdatedIdMVADiPhotons*
                      process.flashggDiPhotonSystematics*
                      process.flashggMuonSystematics*process.flashggElectronSystematics*
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
