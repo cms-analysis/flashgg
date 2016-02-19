@@ -249,14 +249,17 @@ void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfile
 float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
     flashgg::Photon &photon,
     const edm::Ptr<reco::Vertex> &vtx,
-    const double rho )
+    const double rho, const double correctedEtaWidth)
 {
 
     phoIdMva_SCRawE_          = photon.superCluster()->rawEnergy();
     phoIdMva_R9_              = photon.full5x5_r9();
     phoIdMva_S4_              = photon.s4();
     phoIdMva_covIEtaIEta_     = photon.full5x5_sigmaIetaIeta();
-    phoIdMva_EtaWidth_        = photon.superCluster()->etaWidth();
+    if (correctedEtaWidth == 0.)
+        phoIdMva_EtaWidth_        = photon.superCluster()->etaWidth();
+    else
+        phoIdMva_EtaWidth_        = correctedEtaWidth;
     phoIdMva_PhiWidth_        = photon.superCluster()->phiWidth();
     phoIdMva_covIEtaIPhi_     = photon.sieip();
     phoIdMva_pfPhoIso03_      = photon.pfPhoIso03();
