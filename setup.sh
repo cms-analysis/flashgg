@@ -118,8 +118,8 @@ git remote rm cmssw-sethzenz
 echo "Setting up PDF weight tool..."
 #git-cms-merge-topic bendavid:pdfweights_76x
 git cms-addpkg PhysicsTools/HepMCCandAlgos
-git cherry-pick 9e4300582f284fa1fed6dcdbee88b3f75da39165
-
+#git cherry-pick 9e4300582f284fa1fed6dcdbee88b3f75da39165
+git cherry-pick ca5f8100a28c597ad118e3a4b3dcadda7f6e45ca
 
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit
