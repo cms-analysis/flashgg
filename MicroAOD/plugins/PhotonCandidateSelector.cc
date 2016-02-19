@@ -30,7 +30,7 @@ typedef SingleObjectSelector <
 edm::View<flashgg::Photon>,
     StringCutObjectSelector<flashgg::Photon, true>,
     std::vector<flashgg::Photon>
-    > PhotonSelector;
+    > FlashggPhotonSelector;
 
 typedef ObjectSelectorStream <
 SingleElementCollectionSelectorPlusEvent <
@@ -61,7 +61,7 @@ typedef SingleObjectSelector<
     edm::RefVector<std::vector<flashgg::Photon> >
     > FlashggPhotonRefSelector;
 
-DEFINE_FWK_MODULE( PhotonSelector );
+DEFINE_FWK_MODULE( FlashggPhotonSelector );
 DEFINE_FWK_MODULE( GenericPhotonSelector );
 DEFINE_FWK_MODULE( FlashggPhotonRefSelector );
 
