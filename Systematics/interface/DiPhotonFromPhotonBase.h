@@ -8,6 +8,10 @@
 #include "CommonTools/CandUtils/interface/AddFourMomenta.h"
 #include <memory>
 
+namespace edm {
+    class Event;
+}
+
 namespace flashgg {
 
 
@@ -18,7 +22,7 @@ namespace flashgg {
     public:
         DiPhotonFromPhotonBase( const edm::ParameterSet &conf );
 
-        void applyCorrection( DiPhotonCandidate &y, param_var syst_shift ) override;
+        void applyCorrection( DiPhotonCandidate &y, param_var syst_shift, const edm::Event & ev ) override;
         float makeWeight( const DiPhotonCandidate &y, param_var syst_shift ) override;
         std::string shiftLabel( param_var ) const override;
 
@@ -92,7 +96,7 @@ namespace flashgg {
     }
 
     template<class param_var>
-    void DiPhotonFromPhotonBase<param_var>::applyCorrection( DiPhotonCandidate &y, param_var syst_shift )
+    void DiPhotonFromPhotonBase<param_var>::applyCorrection( DiPhotonCandidate &y, param_var syst_shift, const edm::Event & ev )
     {
         if( debug_ ) {
             std::cout << "START OF DiPhotonFromPhoton::applyCorrection M PT E1 E2 ETA1 ETA2 "
@@ -100,8 +104,8 @@ namespace flashgg {
                       << y.leadingPhoton()->eta() << " " << y.subLeadingPhoton()->eta() << std::endl;
         }
         y.makePhotonsPersistent();
-        photon_corr_->applyCorrection( y.getLeadingPhoton(), syst_shift );
-        photon_corr_->applyCorrection( y.getSubLeadingPhoton(), syst_shift );
+        photon_corr_->applyCorrection( y.getLeadingPhoton(), syst_shift, ev );
+        photon_corr_->applyCorrection( y.getSubLeadingPhoton(), syst_shift, ev );
         y.computeP4AndOrder();
         if( debug_ ) {
             std::cout << "END OF DiPhotonFromPhoton::applyCorrection M PT E1 E2 ETA1 ETA2 "

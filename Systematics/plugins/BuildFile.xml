@@ -3,6 +3,7 @@
 <use name="FWCore/PluginManager"/>
 <use name="FWCore/ParameterSet"/>
 <use name="CondFormats/JetMETObjects"/>
+<use name="EgammaAnalysis/ElectronTools"/>
 <use name="JetMETCorrections/Objects"/>
 <use name="flashgg/Systematics"/>
 <use name="flashgg/DataFormats"/>

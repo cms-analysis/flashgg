@@ -4,6 +4,10 @@
 #include "flashgg/DataFormats/interface/Photon.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 
+namespace edm {
+    class Event;
+}
+
 namespace flashgg {
 
     class PhotonSigEOverEShift: public ObjectSystMethodBinnedByFunctor<flashgg::Photon, int>
@@ -13,7 +17,7 @@ namespace flashgg {
         typedef StringCutObjectSelector<Photon, true> selector_type;
 
         PhotonSigEOverEShift( const edm::ParameterSet &conf );
-        void applyCorrection( flashgg::Photon &y, int syst_shift ) override;
+        void applyCorrection( flashgg::Photon &y, int syst_shift, const edm::Event & ev ) override;
         std::string shiftLabel( int ) const override;
 
     private:
@@ -39,7 +43,7 @@ namespace flashgg {
         return result;
     }
 
-    void PhotonSigEOverEShift::applyCorrection( flashgg::Photon &y, int syst_shift )
+    void PhotonSigEOverEShift::applyCorrection( flashgg::Photon &y, int syst_shift, const edm::Event & ev )
     {
         if( overall_range_( y ) ) {
             auto val_err = binContents( y );

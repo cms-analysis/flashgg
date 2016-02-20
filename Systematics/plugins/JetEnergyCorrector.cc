@@ -5,6 +5,10 @@
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 
+namespace edm {
+    class Event;
+}
+
 namespace flashgg {
 
     class JetEnergyCorrector: public BaseSystMethod<flashgg::Jet, int>
@@ -14,7 +18,7 @@ namespace flashgg {
         typedef StringCutObjectSelector<Jet, true> selector_type;
 
         JetEnergyCorrector( const edm::ParameterSet &conf );
-        void applyCorrection( flashgg::Jet &y, int syst_shift ) override;
+        void applyCorrection( flashgg::Jet &y, int syst_shift, const edm::Event & ev ) override;
         std::string shiftLabel( int ) const override;
         void setJECUncertainty ( const JetCorrectorParameters &) override;
         void setJEC( const JetCorrector*, const edm::Event &, const edm::EventSetup &  ) override;
@@ -61,7 +65,7 @@ namespace flashgg {
         return result;
     }
 
-    void JetEnergyCorrector::applyCorrection( flashgg::Jet &y, int syst_shift )
+    void JetEnergyCorrector::applyCorrection( flashgg::Jet &y, int syst_shift, const edm::Event & ev )
     {
         if( overall_range_( y ) ) {
             double jec_adjust = 1.;

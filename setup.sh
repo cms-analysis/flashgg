@@ -105,6 +105,7 @@ echo "Setting up TnP tools..."
 #git cms-addpkg DataFormats/RecoCandidate
 #git cms-addpkg PhysiscsTools/TagAndProbe
 git cms-merge-topic -u matteosan1:egm_tnp_76X_v1
+git cms-merge-topic -u ferriff:smearer_76X_test_v2
 
 echo "Setting up weight and pat electron conversion..."
 git cms-addpkg CommonTools/UtilAlgos
