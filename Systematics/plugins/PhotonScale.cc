@@ -31,7 +31,7 @@ namespace flashgg {
     PhotonScale::PhotonScale( const edm::ParameterSet &conf ) :
         ObjectSystMethodBinnedByFunctor( conf ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
-        correctionFile_( conf.getParameter<std::string>( "correctionFile" )),
+        correctionFile_( conf.getParameter<std::string>( "CorrectionFile" )),
         scaler_(correctionFile_)
     {
     }
