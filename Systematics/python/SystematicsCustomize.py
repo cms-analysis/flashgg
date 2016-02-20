@@ -8,6 +8,15 @@ def printSystematicInfo(process):
     print (14*"-"+" DUMPING SYSTEMATIC OVERVIEW "+14*"-")
     print "%20s %15s %20s" % ("Systematic","Central value?","Systematic shifts?")
     print 57*"-"
+    printSystematicVPSet(vpsetlist)
+    print (13*"-"+" DUMPING 2D SYSTEMATIC OVERVIEW "+12*"-")
+    print "%20s %15s %20s" % ("Systematic","Central value?","Systematic shifts?")
+    print 57*"-"
+    vpsetlist2D  = [process.flashggDiPhotonSystematics.SystMethods2D, process.flashggMuonSystematics.SystMethods2D, process.flashggElectronSystematics.SystMethods2D]
+    vpsetlist2D += [process.flashggJetSystematics0.SystMethods2D]
+    printSystematicVPSet(vpsetlist2D)
+
+def printSystematicVPSet(vpsetlist):
     for vpset in vpsetlist:
         for pset in vpset:
 #            if detailed:
@@ -22,13 +31,19 @@ def printSystematicInfo(process):
                 cv = "NO"
             sigmalist = pset.NSigmas.value()    
             sig = ""
-            if len(sigmalist) > 0:
+            if type(sigmalist) == 'list' and len(sigmalist) > 0:
                 for val in sigmalist:
                     sig += "%i " % val
+            if type(sigmalist) == 'FWCore.ParameterSet.Types.PSet':
+                    for p in sigmalist:
+                            for val in p:
+                                    sig += "%i" % val
+                            sig += "-;-"
             else:    
                 sig += "NO"
             print "%20s %15s %20s" % (syst,cv,sig)
-        print 57*"-"
+        if len(vpset):
+                print 57*"-"
 
 
 def createStandardSystematicsProducers(process):
