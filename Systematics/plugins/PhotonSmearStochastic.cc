@@ -62,8 +62,6 @@ namespace flashgg {
     void PhotonSmearStochastic::applyCorrection( flashgg::Photon &y, std::pair<int, int> syst_shift, const edm::Event & ev )
     {
         if( overall_range_( y ) ) {
-            auto val_err = binContents( y );
-
             // Nothing will happen, with no warning, if the bin count doesn't match expected options
             // TODO for production: make this behavior more robust
 
