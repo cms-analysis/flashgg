@@ -11,8 +11,8 @@ Get everything you need, starting from a clean area:
 
 Instructions for processing of 76X MiniAOD:
  ```
- cmsrel CMSSW_7_6_3
- cd CMSSW_7_6_3/src
+ cmsrel CMSSW_7_6_3_patch2
+ cd CMSSW_7_6_3_patch2/src
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src 
