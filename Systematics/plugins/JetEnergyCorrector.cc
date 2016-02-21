@@ -13,7 +13,7 @@ namespace flashgg {
     public:
         typedef StringCutObjectSelector<Jet, true> selector_type;
 
-        JetEnergyCorrector( const edm::ParameterSet &conf );
+        JetEnergyCorrector( const edm::ParameterSet &conf, const GlobalVariablesComputer * gv );
         void applyCorrection( flashgg::Jet &y, int syst_shift ) override;
         std::string shiftLabel( int ) const override;
         void setJECUncertainty ( const JetCorrectorParameters &) override;
@@ -29,7 +29,7 @@ namespace flashgg {
         bool debug_;
     };
 
-    JetEnergyCorrector::JetEnergyCorrector( const edm::ParameterSet &conf ) :
+    JetEnergyCorrector::JetEnergyCorrector( const edm::ParameterSet &conf, const GlobalVariablesComputer * gv ) :
         BaseSystMethod( conf ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
         debug_( conf.getUntrackedParameter<bool>( "Debug", false ) )

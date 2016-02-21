@@ -13,7 +13,7 @@ namespace flashgg {
     public:
         typedef StringCutObjectSelector<Jet, true> selector_type;
 
-        JetSmearConstant( const edm::ParameterSet &conf );
+        JetSmearConstant( const edm::ParameterSet &conf, const GlobalVariablesComputer * gv );
         void applyCorrection( flashgg::Jet &y, int syst_shift ) override;
         std::string shiftLabel( int ) const override;
         void setJECUncertainty ( const JetCorrectorParameters & ) override {}; // NotImplemented in base class --> harmless noop
@@ -24,8 +24,8 @@ namespace flashgg {
         std::string random_label_;
     };
 
-    JetSmearConstant::JetSmearConstant( const edm::ParameterSet &conf ) :
-        ObjectSystMethodBinnedByFunctor( conf ), 
+    JetSmearConstant::JetSmearConstant( const edm::ParameterSet &conf, const GlobalVariablesComputer * gv  ) :
+        ObjectSystMethodBinnedByFunctor( conf, gv ), 
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
         random_label_(conf.getParameter<std::string>("RandomLabel"))
         //        exaggerateShiftUp_( conf.getUntrackedParameter<bool>( "ExaggerateShiftUp", false ) )

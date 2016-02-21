@@ -12,7 +12,7 @@ namespace flashgg {
     public:
         typedef StringCutObjectSelector<DiPhotonCandidate, true> selector_type;
 
-        DiPhotonWeightFromFracRV( const edm::ParameterSet &conf );
+        DiPhotonWeightFromFracRV( const edm::ParameterSet &conf, const GlobalVariablesComputer * gv);
         float makeWeight( const flashgg::DiPhotonCandidate &y, int syst_shift ) override;
         std::string shiftLabel( int ) const override;
 
@@ -21,8 +21,8 @@ namespace flashgg {
         bool debug_;
     };
 
-    DiPhotonWeightFromFracRV::DiPhotonWeightFromFracRV( const edm::ParameterSet &conf ) :
-        ObjectSystMethodBinnedByFunctor( conf ),
+    DiPhotonWeightFromFracRV::DiPhotonWeightFromFracRV( const edm::ParameterSet &conf, const GlobalVariablesComputer * gv ) :
+        ObjectSystMethodBinnedByFunctor( conf, gv ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
         debug_( conf.getUntrackedParameter<bool>( "Debug", false ) )
     {

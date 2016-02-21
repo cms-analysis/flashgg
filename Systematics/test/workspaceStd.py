@@ -32,6 +32,9 @@ musystlabels = []
 from flashgg.MetaData.JobConfig import customize
 customize.parse()
 print "customize.processId:",customize.processId
+# load appropriate scale and smearing bins here
+# systematics customization scripts will take care of adjusting flashggDiPhotonSystematics
+process.load("flashgg.Systematics.escales.76X_16DecRereco_2015")
 # Only run systematics for signal events
 if customize.processId.count("h_") or customize.processId.count("vbf_"): # convention: ggh vbf wzh (wh zh) tth
     print "Signal MC, so adding systematics and dZ"
@@ -54,6 +57,7 @@ if customize.processId.count("h_") or customize.processId.count("vbf_"): # conve
                 phosystlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
     systlabels += phosystlabels
     systlabels += jetsystlabels
+    customizeSystematicsForSignal(process)
 elif customize.processId == "Data":
     print "Data, so turn of all shifts and systematics, with some exceptions"
     variablesToUse = minimalNonSignalVariables
