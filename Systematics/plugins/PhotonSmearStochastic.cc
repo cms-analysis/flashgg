@@ -15,7 +15,7 @@ namespace flashgg {
     public:
         typedef StringCutObjectSelector<Photon, true> selector_type;
 
-        PhotonSmearStochastic( const edm::ParameterSet &conf );
+        PhotonSmearStochastic( const edm::ParameterSet &conf, const GlobalVariablesComputer *gv );
         void applyCorrection( flashgg::Photon &y, std::pair<int, int> syst_shift ) override;
         std::string shiftLabel( std::pair<int, int> ) const override;
 
@@ -30,8 +30,8 @@ namespace flashgg {
         bool exaggerateShiftUp_; // debugging
     };
 
-    PhotonSmearStochastic::PhotonSmearStochastic( const edm::ParameterSet &conf ) :
-        ObjectSystMethodBinnedByFunctor( conf ),
+    PhotonSmearStochastic::PhotonSmearStochastic( const edm::ParameterSet &conf, const GlobalVariablesComputer *gv ) :
+        ObjectSystMethodBinnedByFunctor( conf, gv ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
         label1_( conf.getParameter<std::string>( "FirstParameterName" ) ), // default: "Rho"
         label2_( conf.getParameter<std::string>( "SecondParameterName" ) ), // default; "Phi"
