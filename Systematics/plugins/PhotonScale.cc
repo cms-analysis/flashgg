@@ -12,7 +12,7 @@ namespace flashgg {
     public:
         typedef StringCutObjectSelector<Photon, true> selector_type;
 
-        PhotonScale( const edm::ParameterSet &conf );
+        PhotonScale( const edm::ParameterSet &conf, edm::ConsumesCollector && iC );
         void applyCorrection( flashgg::Photon &y, int syst_shift ) override;
         std::string shiftLabel( int ) const override;
 
@@ -20,8 +20,8 @@ namespace flashgg {
         selector_type overall_range_;
     };
 
-    PhotonScale::PhotonScale( const edm::ParameterSet &conf ) :
-        ObjectSystMethodBinnedByFunctor( conf ),
+    PhotonScale::PhotonScale( const edm::ParameterSet &conf, edm::ConsumesCollector && iC ) :
+        ObjectSystMethodBinnedByFunctor( conf, std::forward<edm::ConsumesCollector>(iC)  ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) )
     {
     }

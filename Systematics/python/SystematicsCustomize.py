@@ -83,6 +83,8 @@ def customizeSystematicsForBackground(process):
     for vpset in vpsetlist:
         for pset in vpset:
             pset.NSigmas = cms.vint32()
+            if hasattr(pset,"SetupUncertainties"):
+                pset.SetupUncertainties = False
 
 def customizeSystematicsForData(process):
     customizePhotonSystematicsForData(process)
@@ -99,6 +101,8 @@ def customizePhotonSystematicsForData(process):
         if pset.Label.value().count("Scale"):
             pset.ApplyCentralValue = cms.bool(True) # Turn on central shift for data (it is off for MC)
             pset.NSigmas = cms.vint32() # Do not perform shift
+            newvpset += [pset]
+        if pset.Label.value().count("SigmaEOverESmearing"):
             newvpset += [pset]
     process.flashggDiPhotonSystematics.SystMethods = newvpset
 
@@ -121,11 +125,11 @@ def customizeJetSystematicsForData(process):
         newvpset = cms.VPSet()
         for pset in systprod.SystMethods:
             if pset.Label.value().count("JEC"):
-                pset.NSigmas = cms.vint32() # Do not perform shifts, central value only                                                                                            
+                pset.NSigmas = cms.vint32() # Do not perform shifts, central value only
+                pset.SetupUncertainties = False
+                pset.JetCorrectorTag = cms.InputTag("ak4PFCHSL1FastL2L3ResidualCorrector")
                 newvpset += [pset]
         systprod.SystMethods = newvpset
-        systprod.DoCentralJEC = True
-        systprod.JECLabel = "ak4PFCHSL1FastL2L3Residual"
         process.load("JetMETCorrections/Configuration/JetCorrectionServices_cff")
-
+    process.jetCorrectorChain = cms.Sequence(process.ak4PFCHSL1FastL2L3ResidualCorrectorChain)
 
