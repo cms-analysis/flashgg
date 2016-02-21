@@ -31,8 +31,8 @@ namespace flashgg {
     };
 
     void JetSmear::eventInitialize( const edm::Event &iEvent, const edm::EventSetup & iSetup ) {
-        resolution = JME::JetResolution::get(iSetup, "AK4PFchs");
-        res_sf = JME::JetResolutionScaleFactor::get(iSetup, "AK4PFchs_pt");
+        resolution = JME::JetResolution::get(iSetup, "AK4PFchs_pt");
+        res_sf = JME::JetResolutionScaleFactor::get(iSetup, "AK4PFchs");
 
         edm::Handle<double> rho;
         iEvent.getByToken(m_rho_token, rho);

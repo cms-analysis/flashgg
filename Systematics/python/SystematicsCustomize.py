@@ -130,7 +130,6 @@ def customizeJetSystematicsForData(process):
                 pset.JetCorrectorTag = cms.InputTag("ak4PFCHSL1FastL2L3ResidualCorrector")
                 newvpset += [pset]
         systprod.SystMethods = newvpset
-        systprod.DoCentralJEC = True
         process.load("JetMETCorrections/Configuration/JetCorrectionServices_cff")
     process.jetCorrectorChain = cms.Sequence(process.ak4PFCHSL1FastL2L3ResidualCorrectorChain)
 

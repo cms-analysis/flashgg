@@ -1,4 +1,5 @@
 import FWCore.ParameterSet.Config as cms
+from os import environ
 
 # https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetResolution#JER_Scaling_factors_and_Uncertai
 # Data/MC SFs
@@ -73,7 +74,7 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            Label = cms.string("JEC"),
                                                            NSigmas = cms.vint32(-1,1),
                                                            OverallRange = cms.string("abs(eta)<5.0"),
-                                                           Debug = cms.untracked.bool(False),
+                                                           Debug = cms.untracked.bool(True),
                                                            ApplyCentralValue = cms.bool(True),
                                                            SetupUncertainties = cms.bool(True),
                                                            JetCorrectorTag = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
@@ -84,7 +85,7 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            OverallRange = cms.string("abs(eta)<5.0"),
                                                            RandomLabel = cms.string("rnd_g_JER"), # for no-match case
                                                            rho = cms.InputTag('fixedGridRhoAll'),
-                                                           Debug = cms.untracked.bool(False),
+                                                           Debug = cms.untracked.bool(True),
                                                            ApplyCentralValue = cms.bool(True)
                                                            ),
                                                  cms.PSet( MethodName = cms.string("FlashggJetBTagWeight"),
@@ -114,14 +115,35 @@ def createJetSystematics(process,replaceTagList):
     module,tag = createJetSystematicsForTag(process,jetInputTag)
     process.jetSystematicsSequence += module
     systematicsInputList.append(tag)
-#  createJERESource(process)  
+  createJECESource(process)  
+  createJERESource(process)  
   return systematicsInputList
-          
+
+def createJECESource(process):
+    datadir = "%s/src/flashgg/Systematics/data/JEC" % environ['CMSSW_BASE']
+    print "WARNING: we are reading JEC from %s so GRID jobs might not work" % datadir
+    process.load("CondCore.DBCommon.CondDBCommon_cfi")
+    process.load("CondCore.DBCommon.CondDBSetup_cfi")
+    process.jec = cms.ESSource("PoolDBESSource",
+                               DBParameters = cms.PSet(
+        messageLevel = cms.untracked.int32(0)
+        ),
+                               timetype = cms.string('runnumber'),
+                               toGet = cms.VPSet(cms.PSet(
+          record = cms.string('JetCorrectionsRecord'),
+          tag    = cms.string('JetCorrectorParametersCollection_Fall15_25nsV2_MC_AK4PFchs'),
+          label  = cms.untracked.string("AK4PFchs")
+          )),
+                               connect = cms.string('sqlite_file:%s/Fall15_25nsV2_MC.db' % datadir)
+                               )                               
+    process.es_prefer_jec = cms.ESPrefer('PoolDBESSource', 'jec')
+
 def createJERESource(process):
-    raise Exception,"I don't think we actually need this, we just need to advance to 7_6_3_patch1 or more"
+    datadir = "%s/src/flashgg/Systematics/data/JER" % environ['CMSSW_BASE']
+    print "WARNING: we are reading JER from %s so GRID jobs might not work" % datadir
     process.load('Configuration.StandardSequences.Services_cff')
     process.load("JetMETCorrections.Modules.JetResolutionESProducer_cfi")
-    from CondCore.DBCommon.CondDBSetup_cfi import *
+    from CondCore.DBCommon.CondDBSetup_cfi import CondDBSetup
 
     process.jer = cms.ESSource("PoolDBESSource",
                                CondDBSetup,
@@ -129,18 +151,22 @@ def createJERESource(process):
         # Resolution
         cms.PSet(
           record = cms.string('JetResolutionRcd'),
-          tag    = cms.string('JER_MC_PtResolution_Summer15_25nsV6_AK4PFchs'),
+          tag    = cms.string('JR_Summer15_25nsV6_MC_PtResolution_AK4PFchs'),
           label  = cms.untracked.string('AK4PFchs_pt')
           ),
         
         # Scale factors
         cms.PSet(
           record = cms.string('JetResolutionScaleFactorRcd'),
-          tag    = cms.string('JER_DATAMCSF_Summer15_25nsV6_AK4PFchs'),
+          tag    = cms.string('JR_Summer15_25nsV6_MC_SF_AK4PFchs'),
           label  = cms.untracked.string('AK4PFchs')
           ),
         ),
-                               connect = cms.string('sqlite:Summer15_25nsV6.db')
+# [2016-02-21 14:50:14,703] INFO: Connecting to Systematics/data/JER/Summer15_25nsV6_MC.db [sqlite:///Systematics/data/JER/Summer15_25nsV6_MC.db]
+# JR_Summer15_25nsV6_MC_SF_AK4PFchs             Run       JME::JetResolutionObject  any              -1             2016-02-05 20:59:34.061327  New Tag      
+# JR_Summer15_25nsV6_MC_PtResolution_AK4PFchs   Run       JME::JetResolutionObject  any              -1             2016-02-05 20:59:34.064554  New Tag      
+                               connect = cms.string('sqlite_file:%s/Summer15_25nsV6_MC.db' % datadir)
+
                                )
     process.es_prefer_jer = cms.ESPrefer('PoolDBESSource', 'jer')
 
