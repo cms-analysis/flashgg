@@ -16,7 +16,7 @@ namespace flashgg {
     {
 
     public:
-        DiPhotonFromPhotonBase( const edm::ParameterSet &conf );
+        DiPhotonFromPhotonBase( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer * gv );
 
         void applyCorrection( DiPhotonCandidate &y, param_var syst_shift ) override;
         float makeWeight( const DiPhotonCandidate &y, param_var syst_shift ) override;
@@ -38,12 +38,12 @@ namespace flashgg {
     };
 
     template<class param_var>
-    DiPhotonFromPhotonBase<param_var>::DiPhotonFromPhotonBase( const edm::ParameterSet &conf ) :
-        BaseSystMethod<DiPhotonCandidate, param_var>::BaseSystMethod( conf ),
+    DiPhotonFromPhotonBase<param_var>::DiPhotonFromPhotonBase( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer * gv ) :
+        BaseSystMethod<DiPhotonCandidate, param_var>::BaseSystMethod( conf, std::forward<edm::ConsumesCollector>(iC) ),
         debug_( conf.getUntrackedParameter<bool>( "Debug", false ) )
     {
         std::string photonMethodName = conf.getParameter<std::string>( "PhotonMethodName" );
-        photon_corr_.reset( FlashggSystematicMethodsFactory<flashgg::Photon, param_var>::get()->create( photonMethodName, conf ) );
+        photon_corr_.reset( FlashggSystematicMethodsFactory<flashgg::Photon, param_var>::get()->create( photonMethodName, conf, std::forward<edm::ConsumesCollector>(iC), gv ) );
         if(conf.exists("BinList2"))  //if defined, BinList2 gives bins for sublead, lead uses BinList
             {
                 edm::ParameterSet conf2;// =  conf.clone();
@@ -59,11 +59,12 @@ namespace flashgg {
                 conf2.addParameter<edm::ParameterSet>("BinList", pset);
                 std::string binListName = "BinList";
                 conf2.insertParameterSet(true,binListName, *(conf.retrieveUnknownParameterSet("BinList2")));
-                photon_corr2_.reset( FlashggSystematicMethodsFactory<flashgg::Photon, param_var>::get()->create( photonMethodName, conf2 ) );
-            
+                photon_corr2_.reset( FlashggSystematicMethodsFactory<flashgg::Photon, param_var>::get()->create( photonMethodName, conf2, std::forward<edm::ConsumesCollector>(iC),  gv ) );
+                
             }
-        else //if BinList2 is not defined, use BinList for both lead and sublead photons
-            photon_corr2_.reset( FlashggSystematicMethodsFactory<flashgg::Photon, param_var>::get()->create( photonMethodName, conf ) );
+        else { //if BinList2 is not defined, use BinList for both lead and sublead photons
+            photon_corr2_.reset( FlashggSystematicMethodsFactory<flashgg::Photon, param_var>::get()->create( photonMethodName, conf, std::forward<edm::ConsumesCollector>(iC),  gv ) );
+        }
         this->setMakesWeight( photon_corr_->makesWeight() );
     }
 

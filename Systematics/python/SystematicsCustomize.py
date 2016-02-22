@@ -74,15 +74,33 @@ def cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystla
         process.systematicsTagSequences += newseq
         process.flashggSystTagMerger.src.append(cms.InputTag("flashggTagSorter" + systlabel))
 
+
+def customizeSystematicsForMC(process):
+    customizePhotonSystematicsForMC(process)
+
+def customizePhotonSystematicsForMC(process):
+    photonSmearBins = getattr(process,'photonSmearBins',None)
+    photonScaleUncertBins = getattr(process,'photonScaleUncertBins',None)
+    for pset in process.flashggDiPhotonSystematics.SystMethods:
+        if photonSmearBins and pset.Label.value().startswith("MCSmear"):
+            pset.BinList = photonSmearBins
+        elif photonScaleUncertBins and pset.Label.value().count("Scale"):
+            pset.BinList = photonScaleUncertBins
+    
+def customizeSystematicsForSignal(process):
+    customizeSystematicsForMC(process)
+
 def customizeSystematicsForBackground(process):
     # Keep default MC central value behavior, remove all up/down shifts
-
+    customizeSystematicsForMC(process)
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
     vpsetlist = [process.flashggDiPhotonSystematics.SystMethods, process.flashggMuonSystematics.SystMethods, process.flashggElectronSystematics.SystMethods]
     vpsetlist += [getattr(process,"flashggJetSystematics%i"%i).SystMethods for i in range(len(UnpackedJetCollectionVInputTag))]
     for vpset in vpsetlist:
         for pset in vpset:
             pset.NSigmas = cms.vint32()
+            if hasattr(pset,"SetupUncertainties"):
+                pset.SetupUncertainties = False
 
 def customizeSystematicsForData(process):
     customizePhotonSystematicsForData(process)
@@ -94,11 +112,17 @@ def customizePhotonSystematicsForData(process):
     # For scale: put in central value, but omit shifts
     # TODO: this is wrong for sigE/E and possibly others - check!
 
+    photonScaleBinsData = getattr(process,'photonScaleBinsData',None)
+    print photonScaleBinsData, process.photonScaleBinsData
     newvpset = cms.VPSet()
     for pset in process.flashggDiPhotonSystematics.SystMethods:
-        if pset.Label.value().count("Scale"):
+        if pset.Label.value().count("Scale") or pset.Label.value().count("SigmaEOverESmearing"):
             pset.ApplyCentralValue = cms.bool(True) # Turn on central shift for data (it is off for MC)
             pset.NSigmas = cms.vint32() # Do not perform shift
+            if pset.Label.value().count("Scale") and photonScaleBinsData != None: 
+                pset.BinList = photonScaleBinsData 
+            newvpset += [pset]
+        if pset.Label.value().count("SigmaEOverESmearing"):
             newvpset += [pset]
     process.flashggDiPhotonSystematics.SystMethods = newvpset
 
@@ -121,11 +145,11 @@ def customizeJetSystematicsForData(process):
         newvpset = cms.VPSet()
         for pset in systprod.SystMethods:
             if pset.Label.value().count("JEC"):
-                pset.NSigmas = cms.vint32() # Do not perform shifts, central value only                                                                                            
+                pset.NSigmas = cms.vint32() # Do not perform shifts, central value only
+                pset.SetupUncertainties = False
+                pset.JetCorrectorTag = cms.InputTag("ak4PFCHSL1FastL2L3ResidualCorrector")
                 newvpset += [pset]
         systprod.SystMethods = newvpset
-        systprod.DoCentralJEC = True
-        systprod.JECLabel = "ak4PFCHSL1FastL2L3Residual"
         process.load("JetMETCorrections/Configuration/JetCorrectionServices_cff")
-
+    process.jetCorrectorChain = cms.Sequence(process.ak4PFCHSL1FastL2L3ResidualCorrectorChain)
 

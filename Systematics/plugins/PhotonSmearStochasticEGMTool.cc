@@ -1,47 +1,58 @@
-// General 2 nusianceparameter stochastic oplus constant smearing
-// If you want constant smearing only, with only 1 nusiance parameter, use PhotonSmearStringConstant.cc
+// written by F Ferri, adapted by S Zenz  
 
-#include "flashgg/Systematics/interface/ObjectSystMethodBinnedByFunctor.h"
+#include "flashgg/Systematics/interface/BaseSystMethod.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/Common/interface/PtrVector.h"
 #include "flashgg/DataFormats/interface/Photon.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
+#include "FWCore/Framework/interface/Event.h"
+#include "EgammaAnalysis/ElectronTools/interface/EnergyScaleCorrection_class.hh"
 
 namespace flashgg {
-
-    class PhotonSmearStochastic: public ObjectSystMethodBinnedByFunctor<flashgg::Photon, std::pair<int, int> >
+    
+    class PhotonSmearStochasticEGMTool: public BaseSystMethod<flashgg::Photon, std::pair<int, int> >
     {
-
+        
     public:
         typedef StringCutObjectSelector<Photon, true> selector_type;
-
-        PhotonSmearStochastic( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer *gv );
+        
+        PhotonSmearStochasticEGMTool( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer *gv );
         void applyCorrection( flashgg::Photon &y, std::pair<int, int> syst_shift ) override;
         std::string shiftLabel( std::pair<int, int> ) const override;
-
+        void eventInitialize( const edm::Event &iEvent, const edm::EventSetup & iSetup ) override;
+        
         const std::string &firstParameterName() const { return label1_; }
         const std::string &secondParameterName() const { return label2_; }
-
+        
     private:
         selector_type overall_range_;
         const std::string label1_;
         const std::string label2_;
         std::string random_label_;
+        EnergyScaleCorrection_class scaler_;
         bool exaggerateShiftUp_; // debugging
+        unsigned run_number_;
+        bool debug_;
     };
 
-    PhotonSmearStochastic::PhotonSmearStochastic( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer *gv ) :
-        ObjectSystMethodBinnedByFunctor( conf, std::forward<edm::ConsumesCollector>(iC), gv ),
+    void PhotonSmearStochasticEGMTool::eventInitialize( const edm::Event &iEvent, const edm::EventSetup & iSetup ) {
+        run_number_ = iEvent.run();
+    }
+    
+    PhotonSmearStochasticEGMTool::PhotonSmearStochasticEGMTool( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer *gv ) :
+        BaseSystMethod( conf, std::forward<edm::ConsumesCollector>(iC) ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
         label1_( conf.getParameter<std::string>( "FirstParameterName" ) ), // default: "Rho"
         label2_( conf.getParameter<std::string>( "SecondParameterName" ) ), // default; "Phi"
         random_label_(conf.getParameter<std::string>("RandomLabel")),
-        exaggerateShiftUp_( conf.getParameter<bool>( "ExaggerateShiftUp" ) ) // default: false
+        scaler_(conf.getParameter<std::string>( "CorrectionFile" )),
+        exaggerateShiftUp_( conf.getParameter<bool>( "ExaggerateShiftUp" ) ), // default: false
+        debug_( conf.getUntrackedParameter<bool>("Debug", false) )
     {
         if (!applyCentralValue()) throw cms::Exception("SmearingLogic") << "If we do not apply central smearing we cannot scale down the smearing";
     }
-
-    std::string PhotonSmearStochastic::shiftLabel( std::pair<int, int> syst_value ) const
+    
+    std::string PhotonSmearStochasticEGMTool::shiftLabel( std::pair<int, int> syst_value ) const
     {
         std::string result = label();
         if( syst_value.first == 0 && syst_value.second == 0 ) {
@@ -54,45 +65,17 @@ namespace flashgg {
         }
         return result;
     }
-
-    void PhotonSmearStochastic::applyCorrection( flashgg::Photon &y, std::pair<int, int> syst_shift )
+    
+    void PhotonSmearStochasticEGMTool::applyCorrection( flashgg::Photon &y, std::pair<int, int> syst_shift )
     {
         if( overall_range_( y ) ) {
-            auto val_err = binContents( y );
-            float sigma = 0.;
-
             // Nothing will happen, with no warning, if the bin count doesn't match expected options
             // TODO for production: make this behavior more robust
-
-            // 3 values (rho, phi, ETmean) and 2 errors (rho, phi) are required
-
-            if( val_err.first.size() == 3 && val_err.second.size() == 2 ) {
-                // 3 values (rho, phi, ETmean) and 2 errors (rho, phi) are required
-                float rho_val = val_err.first[0];
-                float rho_err = val_err.second[0];
-                if( exaggerateShiftUp_ && syst_shift.first == 1 ) { rho_err  = 9 * rho_val; }
-                float phi_val = val_err.first[1];
-                float phi_err = val_err.second[1];
-                float ETmean = val_err.first[2];
-
-                // Not entirely yet sure about either the output units or their consistency
-                float rho = rho_val + syst_shift.first * rho_err;
-                float phi = phi_val + syst_shift.second * phi_err;
-                float sigma_C = rho * sin( phi );
-                float sigma_S = rho * cos( phi ) * sqrt( ETmean / y.et() );
-                sigma = std::sqrt( sigma_C * sigma_C + sigma_S * sigma_S );
-            }
-            if( val_err.first.size() == 1 && val_err.second.size() == 1 ) {
-                // Constant only, correlate systematics with rho and ignore second nusiance parameter
-                // This should only be used if some bins are constant and others are stochastic
-                // Otherwise we'll have an extra needless parameter and extra needless collections
-
-                float rho_val = val_err.first[0];
-                float rho_err = val_err.second[0];
-                if( exaggerateShiftUp_ && syst_shift.first == 1 ) { rho_err = 9 * rho_val; }
-                sigma = rho_val + syst_shift.first * rho_err;
-            }
-
+            
+            // the combination of central value + NSigma * sigma is already
+            // computed by getSmearingSigma(...)
+            auto sigma = scaler_.getSmearingSigma(run_number_, y.isEB(), y.full5x5_r9(), y.superCluster()->eta(), y.et(), syst_shift.first, syst_shift.second);
+            
             if (!y.hasUserFloat(random_label_)) {
                 throw cms::Exception("Missing embedded random number") << "Could not find key " << random_label_ << " for random numbers embedded in the photon object, please make sure to read the appropriate version of MicroAOD and/or access the correct label and/or run the PerPhotonDiPhoton randomizer on-the-fly";
             }
@@ -108,8 +91,9 @@ namespace flashgg {
 }
 
 DEFINE_EDM_PLUGIN( FlashggSystematicPhotonMethodsFactory2D,
-                   flashgg::PhotonSmearStochastic,
-                   "FlashggPhotonSmearStochastic" );
+                   flashgg::PhotonSmearStochasticEGMTool,
+                   "FlashggPhotonSmearStochasticEGMTool" );
+
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil
@@ -117,4 +101,3 @@ DEFINE_EDM_PLUGIN( FlashggSystematicPhotonMethodsFactory2D,
 // c-basic-offset:4
 // End:
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
-

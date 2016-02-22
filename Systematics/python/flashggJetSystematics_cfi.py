@@ -1,4 +1,5 @@
 import FWCore.ParameterSet.Config as cms
+from os import environ
 
 # https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetResolution#JER_Scaling_factors_and_Uncertai
 # Data/MC SFs
@@ -68,22 +69,22 @@ def createJetSystematicsForTag(process,jetInputTag):
   setattr(process,newName,
           cms.EDProducer('FlashggJetSystematicProducer',
                          src = jetInputTag,
-                         DoCentralJEC = cms.bool(False),
-                         JECLabel = cms.string("UNDEFINED"),
                          SystMethods2D = cms.VPSet(),
                          SystMethods = cms.VPSet(cms.PSet( MethodName = cms.string("FlashggJetEnergyCorrector"),
                                                            Label = cms.string("JEC"),
                                                            NSigmas = cms.vint32(-1,1),
                                                            OverallRange = cms.string("abs(eta)<5.0"),
                                                            Debug = cms.untracked.bool(False),
-                                                           ApplyCentralValue = cms.bool(True)
+                                                           ApplyCentralValue = cms.bool(True),
+                                                           SetupUncertainties = cms.bool(True),
+                                                           JetCorrectorTag = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
                                                            ),
-                                                 cms.PSet( MethodName = cms.string("FlashggJetSmearConstant"),
+                                                 cms.PSet( MethodName = cms.string("FlashggJetSmear"),
                                                            Label = cms.string("JER"),
                                                            NSigmas = cms.vint32(-1,1),
                                                            OverallRange = cms.string("abs(eta)<5.0"),
                                                            RandomLabel = cms.string("rnd_g_JER"), # for no-match case
-                                                           BinList = smearBins,
+                                                           rho = cms.InputTag('fixedGridRhoAll'),
                                                            Debug = cms.untracked.bool(False),
                                                            ApplyCentralValue = cms.bool(True)
                                                            ),
@@ -106,12 +107,66 @@ def createJetSystematicsForTag(process,jetInputTag):
   return (getattr(process,newName),cms.InputTag(newName))
   
 def createJetSystematics(process,replaceTagList):
-  process.jetSystematicsSequence = cms.Sequence()
+  process.load("JetMETCorrections.Configuration.JetCorrectors_cff")
+  process.jetCorrectorChain = cms.Sequence(process.ak4PFCHSL1FastL2L3CorrectorChain)
+  process.jetSystematicsSequence = cms.Sequence(process.jetCorrectorChain)
   systematicsInputList = cms.VInputTag()
   for jetInputTag in replaceTagList:
     module,tag = createJetSystematicsForTag(process,jetInputTag)
     process.jetSystematicsSequence += module
     systematicsInputList.append(tag)
+  createJECESource(process)  
+  createJERESource(process)  
   return systematicsInputList
-          
+
+def createJECESource(process):
+    datadir = "%s/src/flashgg/Systematics/data/JEC" % environ['CMSSW_BASE']
+    print "WARNING: we are reading JEC from %s so GRID jobs might not work" % datadir
+    process.load("CondCore.DBCommon.CondDBCommon_cfi")
+    process.load("CondCore.DBCommon.CondDBSetup_cfi")
+    process.jec = cms.ESSource("PoolDBESSource",
+                               DBParameters = cms.PSet(
+        messageLevel = cms.untracked.int32(0)
+        ),
+                               timetype = cms.string('runnumber'),
+                               toGet = cms.VPSet(cms.PSet(
+          record = cms.string('JetCorrectionsRecord'),
+          tag    = cms.string('JetCorrectorParametersCollection_Fall15_25nsV2_MC_AK4PFchs'),
+          label  = cms.untracked.string("AK4PFchs")
+          )),
+                               connect = cms.string('sqlite_file:%s/Fall15_25nsV2_MC.db' % datadir)
+                               )                               
+    process.es_prefer_jec = cms.ESPrefer('PoolDBESSource', 'jec')
+
+def createJERESource(process):
+    datadir = "%s/src/flashgg/Systematics/data/JER" % environ['CMSSW_BASE']
+    print "WARNING: we are reading JER from %s so GRID jobs might not work" % datadir
+    process.load('Configuration.StandardSequences.Services_cff')
+    process.load("JetMETCorrections.Modules.JetResolutionESProducer_cfi")
+    from CondCore.DBCommon.CondDBSetup_cfi import CondDBSetup
+
+    process.jer = cms.ESSource("PoolDBESSource",
+                               CondDBSetup,
+                               toGet = cms.VPSet(
+        # Resolution
+        cms.PSet(
+          record = cms.string('JetResolutionRcd'),
+          tag    = cms.string('JR_Summer15_25nsV6_MC_PtResolution_AK4PFchs'),
+          label  = cms.untracked.string('AK4PFchs_pt')
+          ),
+        
+        # Scale factors
+        cms.PSet(
+          record = cms.string('JetResolutionScaleFactorRcd'),
+          tag    = cms.string('JR_Summer15_25nsV6_MC_SF_AK4PFchs'),
+          label  = cms.untracked.string('AK4PFchs')
+          ),
+        ),
+# [2016-02-21 14:50:14,703] INFO: Connecting to Systematics/data/JER/Summer15_25nsV6_MC.db [sqlite:///Systematics/data/JER/Summer15_25nsV6_MC.db]
+# JR_Summer15_25nsV6_MC_SF_AK4PFchs             Run       JME::JetResolutionObject  any              -1             2016-02-05 20:59:34.061327  New Tag      
+# JR_Summer15_25nsV6_MC_PtResolution_AK4PFchs   Run       JME::JetResolutionObject  any              -1             2016-02-05 20:59:34.064554  New Tag      
+                               connect = cms.string('sqlite_file:%s/Summer15_25nsV6_MC.db' % datadir)
+
+                               )
+    process.es_prefer_jer = cms.ESPrefer('PoolDBESSource', 'jer')
 
