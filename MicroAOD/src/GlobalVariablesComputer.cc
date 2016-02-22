@@ -11,23 +11,35 @@ namespace flashgg {
 
 
     GlobalVariablesComputer::GlobalVariablesComputer( const edm::ParameterSet &cfg ) :
-        rhoTag_( cfg.getParameter<edm::InputTag>( "rho" ) ),
-        vtxTag_( cfg.getParameter<edm::InputTag>( "vertexes" ) ),
+        doRho_( cfg.exists("rho") ),
+        doVtx_( cfg.exists("vertexes") ),
         getPu_( cfg.exists("puInfo") )
     {
         if( getPu_ ) {
             puInfo_ = cfg.getParameter<edm::InputTag>("puInfo");
         }
+        if( doRho_ ) { 
+            rhoTag_ = cfg.getParameter<edm::InputTag>( "rho" );
+        }
+        if( doVtx_ ) {
+            vtxTag_ = cfg.getParameter<edm::InputTag>( "vertexes" );
+        }
         _init(cfg);
     }
 
     GlobalVariablesComputer::GlobalVariablesComputer( const edm::ParameterSet &cfg, edm::ConsumesCollector &&cc ) :
-        rhoToken_( cc.consumes<double>( cfg.getParameter<edm::InputTag>( "rho" ) ) ),
-        vtxToken_( cc.consumes<VertexCollection>( cfg.getParameter<edm::InputTag>( "vertexes" ) ) ),
+        doRho_( cfg.exists("rho") ),
+        doVtx_( cfg.exists("vertexes") ),
         getPu_( cfg.exists("puInfo") )
     {
         if( getPu_ ) {
             puInfoToken_ = cc.consumes<std::vector<PileupSummaryInfo> >( cfg.getParameter<edm::InputTag>("puInfo") );
+        }
+        if( doRho_ ) { 
+            rhoToken_ = cc.consumes<double>( cfg.getParameter<edm::InputTag>( "rho" ) );
+        }
+        if( doVtx_ ) {
+            vtxToken_ = cc.consumes<VertexCollection>( cfg.getParameter<edm::InputTag>( "vertexes" ) );
         }
         _init(cfg);
     }
@@ -61,10 +73,16 @@ namespace flashgg {
         return 0;
     }
 
-    int GlobalVariablesComputer::indexOf( const std::string &varName )
+    int GlobalVariablesComputer::indexOf( const std::string &varName ) const
     {
-        if( varName == "rho" ) { return 0; }
-        else if( varName == "nvtx" ) { return 1; }
+        if( varName == "rho" ) { 
+            if( ! doRho_ ) throw cms::Exception( "GlobalVariablesComputer" ) << " Rho variable required, but no collection given.";
+            return 0; 
+        }
+        else if( varName == "nvtx" ) { 
+            if( ! doVtx_ ) throw cms::Exception( "GlobalVariablesComputer" ) << " Nvtx variable required, but no collection given.";
+            return 1; 
+        }
         else if( varName == "run" ) { return 2; }
         else if( varName == "event" ) { return 3; }
         else if( varName == "lumi" ) { return 4; }
@@ -74,12 +92,12 @@ namespace flashgg {
         return -1;
     }
 
-    float GlobalVariablesComputer::valueOf( const std::string &varName )
+    float GlobalVariablesComputer::valueOf( const std::string &varName ) const
     {
         return valueOf( indexOf( varName ) );
     }
 
-    float GlobalVariablesComputer::valueOf( int varIndex )
+    float GlobalVariablesComputer::valueOf( int varIndex ) const
     {
         if( varIndex == 0 ) { return cache_.rho; }
         else if( varIndex == 1 ) { return ( float )cache_.nvtx; }
@@ -100,14 +118,22 @@ namespace flashgg {
         Handle<std::vector<PileupSummaryInfo> > puInfo;
         const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&evt);
         if (fullEvent != 0) {
-            fullEvent->getByToken( rhoToken_, rhoHandle );
-            fullEvent->getByToken( vtxToken_, vertices );
+            if( doRho_ ) {
+                fullEvent->getByToken( rhoToken_, rhoHandle );
+            }
+            if( doVtx_ ) {
+                fullEvent->getByToken( vtxToken_, vertices );
+            }
             if( ! evt.isRealData() && getPu_ ) {
                 fullEvent->getByToken(puInfoToken_,puInfo);
             }
         } else {
-            evt.getByLabel( rhoTag_, rhoHandle );
-            evt.getByLabel( vtxTag_, vertices );
+            if( doRho_ ) {
+                evt.getByLabel( rhoTag_, rhoHandle );
+            }
+            if( doVtx_ ) {
+                evt.getByLabel( vtxTag_, vertices );
+            }
             if( ! evt.isRealData() && getPu_ ) {
                 evt.getByLabel(puInfo_,puInfo);
             }
@@ -116,8 +142,12 @@ namespace flashgg {
         cache_.event = evt.id().event();
         cache_.lumi = evt.id().luminosityBlock();
         cache_.run  = evt.id().run();
-        cache_.rho = *rhoHandle;
-        cache_.nvtx = vertices->size();
+        if( doRho_ ) {
+            cache_.rho = *rhoHandle;
+        }
+        if( doVtx_ ) {
+            cache_.nvtx = vertices->size();
+        }
         
         if( ! evt.isRealData() && getPu_ ) {
             double truePu=0., obsPu=0.;

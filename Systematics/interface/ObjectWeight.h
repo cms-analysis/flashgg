@@ -13,7 +13,7 @@ namespace flashgg {
     public:
         typedef StringCutObjectSelector<flashgg_object, true> selector_type;
 
-        ObjectWeight( const edm::ParameterSet &conf );
+        ObjectWeight( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer *gv=0 );
         float makeWeight( const flashgg_object &obj, param_var syst_shift ) override;
         std::string shiftLabel( param_var syst_shift ) const override;
         
@@ -23,8 +23,8 @@ namespace flashgg {
     };
 
     template<typename flashgg_object, typename param_var>
-    ObjectWeight<flashgg_object, param_var>::ObjectWeight( const edm::ParameterSet &conf ) : 
-        ObjectSystMethodBinnedByFunctor<flashgg_object, param_var>( conf ),
+    ObjectWeight<flashgg_object, param_var>::ObjectWeight( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer *gv ) : 
+        ObjectSystMethodBinnedByFunctor<flashgg_object, param_var>( conf, std::forward<edm::ConsumesCollector>(iC), gv ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) )
     {
         this->setMakesWeight( true );
