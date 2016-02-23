@@ -6,15 +6,48 @@
 #include "DataFormats/Common/interface/Handle.h"
 #include "CommonTools/Utils/interface/StringObjectFunction.h"
 
+#include "flashgg/MicroAOD/interface/GlobalVariablesComputer.h"
+
 namespace flashgg {
 
+    template <class flashgg_object> class ObjectFunctorTrait
+    {
+    public:
+        virtual double eval(const flashgg_object & obj) const = 0;
+    };
+    
+    template<class flashgg_object> class WrappedGlobalVariablesComputer : public ObjectFunctorTrait<flashgg_object>
+    {
+    public:
+        WrappedGlobalVariablesComputer(const flashgg::GlobalVariablesComputer & gv, const std::string & var) : gv_(gv), globalIndex_(gv_.indexOf(var))  { 
+        }
+        
+        double eval(const flashgg_object & obj) const { return gv_.valueOf(globalIndex_); }
+        
+    private:
+        const flashgg::GlobalVariablesComputer & gv_;
+        
+        int globalIndex_;
+        
+    };
+        
+
+    template<class flashgg_object> class WrappedStringObjectFunctor : public ObjectFunctorTrait<flashgg_object>, StringObjectFunction<flashgg_object>
+    {
+    public:
+        WrappedStringObjectFunctor(const std::string & expr) : StringObjectFunction<flashgg_object>(expr,true) {};
+        
+        double eval(const flashgg_object & obj) const { return this->operator()(obj); };
+    };
+
+        
     template <class flashgg_object, class param_var>
     class ObjectSystMethodBinnedByFunctor : public BaseSystMethod<flashgg_object, param_var>
     {
 
     public:
-        typedef StringObjectFunction<flashgg_object> functor_type;
-
+        typedef ObjectFunctorTrait<flashgg_object> functor_type;
+        
         struct Bin {
             std::vector<double> min; // length: number of variables
             std::vector<double> max; // length: number of variables
@@ -24,14 +57,21 @@ namespace flashgg {
             Bin( std::vector<double> mi, std::vector<double> ma, std::vector<double> va, std::vector<double> er ) :
                 min( mi ), max( ma ), val( va ), unc( er ) {}
         };
-
-        ObjectSystMethodBinnedByFunctor( const edm::ParameterSet &conf ) :
-            BaseSystMethod<flashgg_object, param_var>::BaseSystMethod( conf ),
+        ObjectSystMethodBinnedByFunctor( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer * globalVariables ) :
+            BaseSystMethod<flashgg_object, param_var>::BaseSystMethod( conf, std::forward<edm::ConsumesCollector>(iC) ),
             debug_( conf.getUntrackedParameter<bool>( "Debug", false ) )
         {
             const auto &pset = conf.getParameterSet( "BinList" );
             for( const auto variable : pset.getParameter<std::vector<std::string> >( "variables" ) ) {
-                functors_.emplace_back( variable );
+                auto pos = variable.find( "global." );
+                if( pos == 0 ) {
+                    if( globalVariables == 0 ) {
+                        throw cms::Exception( "Binning" ) << " Global-variables-based binning required but no GlobalVariablesComputer is available.";
+                    }
+                    functors_.emplace_back( new WrappedGlobalVariablesComputer<flashgg_object>(*globalVariables,variable.substr(7)));
+                } else {
+                    functors_.emplace_back( new WrappedStringObjectFunctor<flashgg_object>(variable));
+                }
             }
 
             for( const auto &b : pset.getParameterSetVector( "bins" ) ) {
@@ -55,7 +95,7 @@ namespace flashgg {
             int myLowerBin = 0;
             int myUpperBin = 0;
 
-            for( auto func : functors_ ) { func_vals.push_back( func( y ) ); }
+            for( auto func : functors_ ) { func_vals.push_back( func->eval( y ) ); }
             for( int bin = 0 ; bin < num_bins ; bin++ ) {
                 bool found = true;
                 for( unsigned int i = 0; i < func_vals.size() ; i++ ) {
@@ -103,7 +143,7 @@ namespace flashgg {
         std::pair<std::vector<double>, std::vector<double> > binContents( const flashgg_object &y )
         {
             std::vector<double> func_vals;
-            for( const auto &func : functors_ ) { func_vals.push_back( func( y ) ); }
+            for( const auto &func : functors_ ) { func_vals.push_back( func->eval( y ) ); }
             for( const auto &bin : bins_ ) {
                 bool found = true;
                 for( unsigned int i = 0 ; i < func_vals.size() ; i++ ) {
@@ -124,7 +164,7 @@ namespace flashgg {
 
     protected:
         bool debug_;
-        std::vector<functor_type> functors_; // length: number of variables
+        std::vector<std::shared_ptr<functor_type>> functors_; // length: number of variables
 
     private:
         std::vector<Bin> bins_; // length: number of bins
