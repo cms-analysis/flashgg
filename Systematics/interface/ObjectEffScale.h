@@ -11,13 +11,14 @@ namespace flashgg {
     {
     public:
 
-        ObjectEffScale( const edm::ParameterSet &conf );
+        ObjectEffScale( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer *gv );
         float makeWeight( const flashgg_object &obj, param_var syst_shift ) override;
         std::string shiftLabel( param_var syst_shift ) const override;
     };
 
     template<typename flashgg_object, typename param_var>
-    ObjectEffScale<flashgg_object, param_var>::ObjectEffScale( const edm::ParameterSet &conf ) : ObjectSystMethodBinnedByFunctor<flashgg_object, param_var>( conf )
+    ObjectEffScale<flashgg_object, param_var>::ObjectEffScale( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer *gv )
+        : ObjectSystMethodBinnedByFunctor<flashgg_object, param_var>( conf, std::forward<edm::ConsumesCollector>(iC), gv )
     {
         this->setMakesWeight( true );
     }
@@ -44,7 +45,7 @@ namespace flashgg {
         typedef typename ObjectSystMethodBinnedByFunctor<flashgg_object, param_var>::Bin BaseBin;
         std::pair<std::vector<int>, std::vector<BaseBin> > myBins = ObjectSystMethodBinnedByFunctor<flashgg_object, param_var>::adjacentBins( obj );
 
-        double var_value = ObjectSystMethodBinnedByFunctor<flashgg_object, param_var>::functors_[0](
+        double var_value = ObjectSystMethodBinnedByFunctor<flashgg_object, param_var>::functors_[0]->eval(
                                obj ); //value of objton parameter, most probably eithr lep.pt() or lep.eta()
 
         int myLowerIndex = myBins.first[0];

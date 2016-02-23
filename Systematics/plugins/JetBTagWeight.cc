@@ -34,7 +34,7 @@ namespace flashgg {
     public:
         typedef StringCutObjectSelector<Jet, true> selector_type;
 
-        JetBTagWeight( const edm::ParameterSet &conf );
+        JetBTagWeight( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer * gv );
         float makeWeight( const flashgg::Jet &y, int syst_shift ) override;
         std::string shiftLabel( int syst_shift ) const override;
 
@@ -45,8 +45,8 @@ namespace flashgg {
         double bDiscriminator_;
     };
 
-    JetBTagWeight::JetBTagWeight( const edm::ParameterSet &conf ) : 
-        ObjectSystMethodBinnedByFunctor( conf ),
+    JetBTagWeight::JetBTagWeight( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer * gv ) : 
+        ObjectSystMethodBinnedByFunctor( conf, std::forward<edm::ConsumesCollector>(iC), gv  ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),        
         debug_( conf.getUntrackedParameter<bool>( "Debug", false ) ),
         bTag_( conf.getParameter<std::string>("bTag") ),

@@ -12,7 +12,7 @@ namespace flashgg {
     public:
         typedef StringCutObjectSelector<Photon, true> selector_type;
 
-        PhotonSigEoverESmearing( const edm::ParameterSet &conf );
+        PhotonSigEoverESmearing( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer *gv );
         void applyCorrection( flashgg::Photon &y, int syst_shift ) override;
         std::string shiftLabel( int ) const override;
 
@@ -20,8 +20,8 @@ namespace flashgg {
         selector_type overall_range_;
     };
 
-    PhotonSigEoverESmearing::PhotonSigEoverESmearing( const edm::ParameterSet &conf ) :
-        ObjectSystMethodBinnedByFunctor( conf ),
+    PhotonSigEoverESmearing::PhotonSigEoverESmearing( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer *gv ) :
+        ObjectSystMethodBinnedByFunctor( conf, std::forward<edm::ConsumesCollector>(iC), gv  ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) )
     {
         if (!applyCentralValue()) throw cms::Exception("SmearingLogic") << "If we do not apply central smearing we cannot scale down the smearing";

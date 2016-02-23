@@ -31,9 +31,9 @@ namespace flashgg {
         void update( const edm::EventBase &event );
 
         float *addressOf( const std::string &varName );
-        int indexOf( const std::string &varName );
-        float valueOf( const std::string &varName );
-        float valueOf( int varIndex );
+        int indexOf( const std::string &varName ) const ;
+        float valueOf( const std::string &varName ) const ;
+        float valueOf( int varIndex ) const;
 
         const cache_t & cache() const { return cache_; }
         
@@ -42,7 +42,8 @@ namespace flashgg {
     protected:
 
         void _init( const edm::ParameterSet & cfg );
-
+        
+        bool doRho_, doVtx_;
         edm::InputTag rhoTag_, vtxTag_, puInfo_;
         edm::EDGetTokenT<double> rhoToken_;
         edm::EDGetTokenT<reco::VertexCollection> vtxToken_;

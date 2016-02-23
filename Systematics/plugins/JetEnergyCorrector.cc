@@ -3,7 +3,13 @@
 #include "DataFormats/Common/interface/PtrVector.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
+
+#include "JetMETCorrections/JetCorrector/interface/JetCorrector.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
+#include "FWCore/Framework/interface/ESHandle.h"
+#include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
+#include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
+
 
 namespace flashgg {
 
@@ -13,39 +19,45 @@ namespace flashgg {
     public:
         typedef StringCutObjectSelector<Jet, true> selector_type;
 
-        JetEnergyCorrector( const edm::ParameterSet &conf );
+        JetEnergyCorrector( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer * gv );
         void applyCorrection( flashgg::Jet &y, int syst_shift ) override;
         std::string shiftLabel( int ) const override;
-        void setJECUncertainty ( const JetCorrectorParameters &) override;
-        void setJEC( const JetCorrector*, const edm::Event &, const edm::EventSetup &  ) override;
+        void eventInitialize( const edm::Event &iEvent, const edm::EventSetup & iSetup ) override;
 
     private:
         selector_type overall_range_;
         unique_ptr<JetCorrectionUncertainty> jec_unc_;
-        const JetCorrector* jec_cor_;
-        const edm::Event* evt_;
-        const edm::EventSetup* evt_setup_;
-        bool jec_set_;
+        const reco::JetCorrector* jec_cor_;
         bool debug_;
+        bool uncertainties_set_;
+        bool setup_uncertainties_;
+        edm::EDGetTokenT<reco::JetCorrector> mJetCorrector;
     };
 
-    JetEnergyCorrector::JetEnergyCorrector( const edm::ParameterSet &conf ) :
-        BaseSystMethod( conf ),
+
+    JetEnergyCorrector::JetEnergyCorrector( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer * gv ) :
+        BaseSystMethod( conf, std::forward<edm::ConsumesCollector>(iC)  ),
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
-        debug_( conf.getUntrackedParameter<bool>( "Debug", false ) )
+        debug_( conf.getUntrackedParameter<bool>( "Debug", false ) ),
+        setup_uncertainties_( conf.getParameter<bool>( "SetupUncertainties" ) ),
+        mJetCorrector( iC.consumes<reco::JetCorrector>(conf.getParameter<edm::InputTag>("JetCorrectorTag") ) )
     {
-        jec_set_ = false;
+        uncertainties_set_ = false;
     }
 
-    void JetEnergyCorrector::setJEC( const JetCorrector* theJEC, const edm::Event &iEvent, const edm::EventSetup & iSetup ) {
-        jec_set_ = true;
-        jec_cor_ = theJEC;
-        evt_ = &iEvent;
-        evt_setup_ = &iSetup;
-    }
-
-    void JetEnergyCorrector::setJECUncertainty( const JetCorrectorParameters & JetCorPar ) {
-        jec_unc_.reset( new JetCorrectionUncertainty(JetCorPar) );
+    void JetEnergyCorrector::eventInitialize( const edm::Event &iEvent, const edm::EventSetup & iSetup ) {
+        if (applyCentralValue()) {
+            edm::Handle<reco::JetCorrector>  corrector  ;
+            iEvent.getByToken(mJetCorrector, corrector );
+            jec_cor_ = corrector.product();
+        }
+        if (setup_uncertainties_ && !uncertainties_set_) {
+            edm::ESHandle<JetCorrectorParametersCollection> JetCorParColl;
+            iSetup.get<JetCorrectionsRecord>().get("AK4PFchs",JetCorParColl); 
+            JetCorrectorParameters const & JetCorPar = (*JetCorParColl)["Uncertainty"];
+            jec_unc_.reset( new JetCorrectionUncertainty(JetCorPar) );
+            uncertainties_set_ = true;
+        }
     }
 
     std::string JetEnergyCorrector::shiftLabel( int syst_value ) const
@@ -65,8 +77,8 @@ namespace flashgg {
     {
         if( overall_range_( y ) ) {
             double jec_adjust = 1.;
-            if (jec_set_ && applyCentralValue()) {
-                double jec = jec_cor_->correction( y.correctedJet("Uncorrected") , *evt_, *evt_setup_ );
+            if (applyCentralValue()) {
+                double jec = jec_cor_->correction( y.correctedJet("Uncorrected") );
                 double oldjec = (y.energy()/y.correctedJet("Uncorrected").energy());
                 if ( debug_ ) {
                     std::cout << " DOING JEC! We get this jec from the corrector: " << jec << std::endl;
@@ -74,9 +86,15 @@ namespace flashgg {
                 }
                 jec_adjust = jec/oldjec;
             }
-            jec_unc_->setJetEta(y.eta());
-            jec_unc_->setJetPt(jec_adjust*y.pt()); 
-            float unc = jec_unc_->getUncertainty(true);
+            float unc = 0.;
+            if (syst_shift != 0 && !uncertainties_set_) {
+                throw cms::Exception( "JECUncertaintiesMissing" ) << " syst_shift=" << syst_shift << " but JEC Uncertanties were not set!";
+            }
+            if (uncertainties_set_) {
+                jec_unc_->setJetEta(y.eta());
+                jec_unc_->setJetPt(jec_adjust*y.pt()); 
+                unc = jec_unc_->getUncertainty(true);
+            }
             float scale = jec_adjust + syst_shift*unc;
             if( debug_ ) {
                 std::cout << "  " << shiftLabel( syst_shift ) << ": Jet has pt= " << y.pt() << " eta=" << y.eta()
