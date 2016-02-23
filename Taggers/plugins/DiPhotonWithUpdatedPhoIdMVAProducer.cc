@@ -9,6 +9,9 @@
 #include "flashgg/MicroAOD/interface/PhotonIdUtils.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 
+#include "TFile.h"
+#include "TGraph.h"
+
 namespace flashgg {
 
     class DiPhotonWithUpdatedPhoIdMVAProducer : public edm::EDProducer
@@ -21,8 +24,10 @@ namespace flashgg {
         edm::EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> > token_;
         edm::EDGetTokenT<double> rhoToken_;
         PhotonIdUtils phoTools_;
-        edm::FileInPath phoIdMVAweightfileEB_, phoIdMVAweightfileEE_;
+        edm::FileInPath phoIdMVAweightfileEB_, phoIdMVAweightfileEE_, correctionFile_;
+        bool correctInputs_;
         bool debug_;
+        std::vector<TGraph*> corrections_;
     };
 
     DiPhotonWithUpdatedPhoIdMVAProducer::DiPhotonWithUpdatedPhoIdMVAProducer( const edm::ParameterSet &ps ) :
@@ -33,6 +38,16 @@ namespace flashgg {
         phoIdMVAweightfileEB_ = ps.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EB" );
         phoIdMVAweightfileEE_ = ps.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EE" );
         phoTools_.setupMVA( phoIdMVAweightfileEB_.fullPath(), phoIdMVAweightfileEE_.fullPath() );
+
+        correctInputs_ = ps.existsAs<edm::FileInPath>("correctionFile") ? true: false;
+        if (correctInputs_) {
+            correctionFile_ = ps.getParameter<edm::FileInPath>( "correctionFile" );
+            TFile* f = TFile::Open(correctionFile_.fullPath().c_str());
+            corrections_.push_back((TGraph*) f->Get("transffull5x5R9EB"));
+            corrections_.push_back((TGraph*) f->Get("transfEtaWidthEB"));
+            corrections_.push_back((TGraph*) f->Get("transfS4EB"));
+            f->Close();
+        }
 
         produces<std::vector<flashgg::DiPhotonCandidate> >();
     }
@@ -49,14 +64,42 @@ namespace flashgg {
         auto_ptr<std::vector<flashgg::DiPhotonCandidate> > out_obj( new std::vector<flashgg::DiPhotonCandidate>() );
 
         for (const auto & obj : *objects) {
+            flashgg::DiPhotonCandidate *new_obj = obj.clone();
+            new_obj->makePhotonsPersistent();
+            double leadCorrectedEtaWidth = 0., subLeadCorrectedEtaWidth = 0.;
+            if (not evt.isRealData() and correctInputs_) { 
+                if (new_obj->getLeadingPhoton().isEB()) {
+                    if (this->debug_) {
+                        std::cout << new_obj->getLeadingPhoton().full5x5_r9() << std::endl;
+                        std::cout << new_obj->getLeadingPhoton().r9() << std::endl;
+                    }
+                    reco::Photon::ShowerShape newShowerShapes = new_obj->getLeadingPhoton().full5x5_showerShapeVariables();
+                    newShowerShapes.e3x3 = corrections_[0]->Eval(new_obj->getLeadingPhoton().full5x5_r9())*new_obj->getLeadingPhoton().superCluster()->rawEnergy();
+                    new_obj->getLeadingPhoton().full5x5_setShowerShapeVariables(newShowerShapes);
+                    leadCorrectedEtaWidth = corrections_[1]->Eval(new_obj->getLeadingPhoton().superCluster()->etaWidth());
+                    new_obj->getLeadingPhoton().setS4(corrections_[2]->Eval(new_obj->getLeadingPhoton().s4()));
+
+                    if (this->debug_) {
+                        std::cout << new_obj->getLeadingPhoton().full5x5_r9() << std::endl;
+                        std::cout << new_obj->getLeadingPhoton().r9() << std::endl;
+                    }
+                }
+                
+                if (new_obj->getSubLeadingPhoton().isEB()) {
+                    reco::Photon::ShowerShape newShowerShapes = new_obj->getSubLeadingPhoton().full5x5_showerShapeVariables();
+                    newShowerShapes.e3x3 = corrections_[0]->Eval(new_obj->getSubLeadingPhoton().full5x5_r9())*new_obj->getSubLeadingPhoton().superCluster()->rawEnergy();
+                    new_obj->getSubLeadingPhoton().full5x5_setShowerShapeVariables(newShowerShapes);
+                    subLeadCorrectedEtaWidth = corrections_[1]->Eval(new_obj->getSubLeadingPhoton().superCluster()->etaWidth());
+                    new_obj->getSubLeadingPhoton().setS4(corrections_[2]->Eval(new_obj->getSubLeadingPhoton().s4()));
+                }
+            }
+
             if (this->debug_) {
                 std::cout << " Input DiPhoton lead (sublead) MVA: " << obj.leadPhotonId() << " " << obj.subLeadPhotonId() << std::endl;
             }
-            flashgg::DiPhotonCandidate *new_obj = obj.clone();
-            new_obj->makePhotonsPersistent();
-            float newleadmva = phoTools_.computeMVAWrtVtx( new_obj->getLeadingPhoton(), new_obj->vtx(), rhoFixedGrd );
+            float newleadmva = phoTools_.computeMVAWrtVtx( new_obj->getLeadingPhoton(), new_obj->vtx(), rhoFixedGrd, leadCorrectedEtaWidth );
             new_obj->getLeadingPhoton().setPhoIdMvaWrtVtx( new_obj->vtx(), newleadmva);
-            float newsubleadmva = phoTools_.computeMVAWrtVtx( new_obj->getSubLeadingPhoton(), new_obj->vtx(), rhoFixedGrd );
+            float newsubleadmva = phoTools_.computeMVAWrtVtx( new_obj->getSubLeadingPhoton(), new_obj->vtx(), rhoFixedGrd, subLeadCorrectedEtaWidth );
             new_obj->getSubLeadingPhoton().setPhoIdMvaWrtVtx( new_obj->vtx(), newsubleadmva);
             if (this->debug_) {
                 std::cout << " Output DiPhoton lead (sublead) MVA: " << new_obj->leadPhotonId() << " " << new_obj->subLeadPhotonId() << std::endl;
