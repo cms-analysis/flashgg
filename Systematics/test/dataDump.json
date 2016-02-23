@@ -1,0 +1,9 @@
+{
+    "processes" : {
+	"Data" : [
+	    "/DoubleEG/ferrif-RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-Run2015C_25ns-16Dec2015-v1-5edb826a5c37da64e53f7a0f39c62a72/USER",
+	    "/DoubleEG/ferrif-RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-Run2015D-16Dec2015-v2-5edb826a5c37da64e53f7a0f39c62a72/USER"
+	]
+    },	
+    "cmdLine" : "campaign=RunIIFall15DR76-1_3_0-25ns_ext1"
+}
