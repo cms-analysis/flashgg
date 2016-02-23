@@ -27,7 +27,8 @@ namespace flashgg {
         edm::FileInPath phoIdMVAweightfileEB_, phoIdMVAweightfileEE_, correctionFile_;
         bool correctInputs_;
         bool debug_;
-        std::vector<TGraph*> corrections_;
+        //        std::vector<TGraph*> corrections_;
+        std::vector<std::unique_ptr<TGraph> > corrections_;
     };
 
     DiPhotonWithUpdatedPhoIdMVAProducer::DiPhotonWithUpdatedPhoIdMVAProducer( const edm::ParameterSet &ps ) :
@@ -43,9 +44,9 @@ namespace flashgg {
         if (correctInputs_) {
             correctionFile_ = ps.getParameter<edm::FileInPath>( "correctionFile" );
             TFile* f = TFile::Open(correctionFile_.fullPath().c_str());
-            corrections_.push_back((TGraph*) f->Get("transffull5x5R9EB"));
-            corrections_.push_back((TGraph*) f->Get("transfEtaWidthEB"));
-            corrections_.push_back((TGraph*) f->Get("transfS4EB"));
+            corrections_.emplace_back((TGraph*)((TGraph*) f->Get("transffull5x5R9EB"))->Clone() );
+            corrections_.emplace_back((TGraph*)((TGraph*) f->Get("transfEtaWidthEB"))->Clone() );
+            corrections_.emplace_back((TGraph*)((TGraph*) f->Get("transfS4EB"))->Clone() );
             f->Close();
         }
 
@@ -105,6 +106,7 @@ namespace flashgg {
                 std::cout << " Output DiPhoton lead (sublead) MVA: " << new_obj->leadPhotonId() << " " << new_obj->subLeadPhotonId() << std::endl;
             }
             out_obj->push_back(*new_obj);
+            delete new_obj;
         }
         evt.put(out_obj);
     }
