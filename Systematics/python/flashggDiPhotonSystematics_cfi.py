@@ -20,6 +20,18 @@ preselBins = cms.PSet(
         cms.PSet( lowBounds = cms.vdouble( 1.5, 0.9 ) , upBounds = cms.vdouble( 6.0, 999. ) , values = cms.vdouble(0.9963  ) , uncertainties = cms.vdouble( 0.0044 )  ) 
         )
     )
+
+# slide 5 of https://indico.cern.ch/event/489840/session/1/contribution/17/attachments/1232312/1807794/20160223UpdateOnZmmgForHgg_preselectionIssues.pdf
+electronVetoBins = cms.PSet(
+    variables = cms.vstring("abs(superCluster.eta)","r9"),
+    bins = cms.VPSet(
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00 ) , upBounds = cms.vdouble( 1.5, 0.85 ) , values = cms.vdouble( 0.9904 ) , uncertainties = cms.vdouble( 0.0045 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ) , upBounds = cms.vdouble( 1.5, 999. ) , values = cms.vdouble( 0.9978 ) , uncertainties = cms.vdouble( 0.0011 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00 ) , upBounds = cms.vdouble( 6.0, 0.90 ) , values = cms.vdouble( 1.0095 ) , uncertainties = cms.vdouble( 0.0163 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90 ) , upBounds = cms.vdouble( 6.0, 999. ) , values = cms.vdouble( 0.9989 ) , uncertainties = cms.vdouble( 0.0028 )  ) 
+        )
+    )
+
 #for 74x MC uses trigger efficiency not just scale factor since the trigger isn't in the MC
 
 leadTriggerScaleBins = cms.PSet(
@@ -317,6 +329,15 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("1"),
                                                   BinList = preselBins,
+                                                  Debug = cms.untracked.bool(False),
+                                                  ApplyCentralValue = cms.bool(True)
+                                                  ),
+                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
+                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+                                                  Label = cms.string("electronVetoSF"),
+                                                  NSigmas = cms.vint32(-1,1),
+                                                  OverallRange = cms.string("1"),
+                                                  BinList = electronVetoBins,
                                                   Debug = cms.untracked.bool(False),
                                                   ApplyCentralValue = cms.bool(True)
                                                   ),
