@@ -42,7 +42,7 @@ def createStandardSystematicsProducers(process):
     jetSystematicsInputTags = createJetSystematics(process,UnpackedJetCollectionVInputTag)
     return jetSystematicsInputTags
 
-def modifyTagSequenceForSystematics(process,jetSystematicsInputTags):
+def modifyTagSequenceForSystematics(process,jetSystematicsInputTags,ZPlusJetMode=False):
     process.flashggTagSequence.remove(process.flashggUnpackedJets) # to avoid unnecessary cloning
     process.flashggTagSequence.remove(process.flashggUpdatedIdMVADiPhotons) # Needs to be run before systematics
     from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet,massSearchReplaceAnyInputTag
@@ -53,10 +53,13 @@ def modifyTagSequenceForSystematics(process,jetSystematicsInputTags):
     for i in range(len(jetSystematicsInputTags)):
         massSearchReplaceAnyInputTag(process.flashggTagSequence,UnpackedJetCollectionVInputTag[i],jetSystematicsInputTags[i])
 
-    process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
+    if ZPlusJetMode:    
+        process.flashggSystTagMerger = cms.EDProducer("ZPlusJetTagMerger",src=cms.VInputTag("flashggZPlusJetTag"))
+    else:
+        process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
     process.systematicsTagSequences = cms.Sequence()
 
-def cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags):
+def cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags,ZPlusJetMode=False):
     for systlabel in systlabels:
         if systlabel == "":
             continue
@@ -72,7 +75,10 @@ def cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystla
             if hasattr(module,"SystLabel"):
                 module.SystLabel = systlabel
         process.systematicsTagSequences += newseq
-        process.flashggSystTagMerger.src.append(cms.InputTag("flashggTagSorter" + systlabel))
+        if ZPlusJetMode:
+            process.flashggSystTagMerger.src.append(cms.InputTag("flashggZPlusJetTag" + systlabel))
+        else:
+            process.flashggSystTagMerger.src.append(cms.InputTag("flashggTagSorter" + systlabel))
 
 
 def customizeSystematicsForMC(process):

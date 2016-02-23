@@ -7,6 +7,8 @@ from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariable
 
 # SYSTEMATICS SECTION
 
+doJetSystTrees = True
+
 process = cms.Process("FLASHggSyst")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
@@ -27,7 +29,7 @@ jetSystematicsInputTags = createStandardSystematicsProducers(process)
 #process.flashggTagSorter.TagPriorityRanges = cms.VPSet(cms.PSet(TagName = cms.InputTag('flashggZPlusJetTag')))
 #process.flashggTagSequence=cms.Sequence(process.flashggPreselectedDiPhotons*process.flashggDiPhotonMVA*process.flashggZPlusJetTag*process.flashggTagSorter)
 process.flashggTagSequence=cms.Sequence(process.flashggPreselectedDiPhotons*process.flashggDiPhotonMVA*process.flashggZPlusJetTag)
-modifyTagSequenceForSystematics(process,jetSystematicsInputTags)
+modifyTagSequenceForSystematics(process,jetSystematicsInputTags,doJetSystTrees)
 
 systlabels = [""]
 phosystlabels = []
@@ -39,6 +41,7 @@ musystlabels = []
 from flashgg.MetaData.JobConfig import customize
 customize.parse()
 print "customize.processId:",customize.processId
+process.load("flashgg.Systematics.escales.escale76X_16DecRereco_2015")
 # Only run systematics for signal events
 if customize.processId.count("h_") or customize.processId.count("vbf_"): # convention: ggh vbf wzh (wh zh) tth
     raise Exception,"not really set up for signal or for shifted MCs right now"
@@ -47,9 +50,17 @@ elif customize.processId == "Data":
     variablesToUse = minimalNonSignalVariables
     customizeSystematicsForData(process)
 else:
-    print "Background MC, so store mgg and central only"
     variablesToUse = minimalNonSignalVariables
-    customizeSystematicsForBackground(process)
+    if doJetSystTrees:
+        print "Running jet systematics and putting them in ntuples because doJetSystTrees is set"
+        for direction in ["Up","Down"]:
+            jetsystlabels.append("JEC%s01sigma" % direction)
+            jetsystlabels.append("JER%s01sigma" % direction)
+            systlabels.append("JEC%s01sigma" % direction)
+            systlabels.append("JER%s01sigma" % direction)
+    else:
+        print "Background MC, so store mgg and central only"
+        customizeSystematicsForBackground(process)
 
 print "--- Systematics  with independent collections ---"
 print systlabels
@@ -58,7 +69,7 @@ print "--- Variables to be dumped, including systematic weights ---"
 print variablesToUse
 print "------------------------------------------------------------"
 
-cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags)
+cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags,doJetSystTrees)
 
 ###### Dumper section
 
@@ -88,12 +99,18 @@ process.ZPlusJetTagDumper.dumpTrees     = True
 process.ZPlusJetTagDumper.dumpHistos    = True
 process.ZPlusJetTagDumper.dumpWorkspace = False
 
+if doJetSystTrees:
+    process.ZPlusJetTagDumper.src = cms.InputTag("flashggSystTagMerger")
+
 # DY
 process.flashggPreselectedDiPhotons.variables =  cms.vstring('pfPhoIso03', 
                                                              'trkSumPtHollowConeDR03', 
                                                              'full5x5_sigmaIetaIeta', 
                                                              'full5x5_r9', 
                                                              '1-passElectronVeto')
+if doJetSystTrees:
+    for syst in jetsystlabels:
+        getattr(process,"flashggPreselectedDiPhotons%s"%syst).variables = process.flashggPreselectedDiPhotons.variables
 
 # get the variable list
 import flashgg.Taggers.VBFTagVariables as var
@@ -128,17 +145,20 @@ if customize.processId != "Data":
 #    all_variables += var.truth_variables + matching_photon
     all_variables += matching_photon
 
-cats = [
-    #("VBFDiJet","leadingJet.pt>0",0)#,
-    ("ZPlusJet","1",0)#,
-    #("excluded","1",0)
-    ]
+cats = []
+if doJetSystTrees:
+    for syst in jetsystlabels:
+        systcutstring = "hasSyst(\"%s\") "%syst
+        cats += [("ZPlusJet_%s"%syst,systcutstring,0)]
+
+cats += [("ZPlusJet","1",0)]
 
 cfgTools.addCategories(process.ZPlusJetTagDumper,
                        cats,
                        variables  = all_variables,
                        histograms = []
 )
+
 process.ZPlusJetTagDumper.nameTemplate = "$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL"
 
 customize.setDefault("maxEvents" ,  5000        ) # max-number of events
@@ -168,12 +188,17 @@ if (customize.processId.count("wh") or customize.processId.count("zh")) and not 
 
 process.p = cms.Path(process.dataRequirements*
                      process.genFilter*
+                     process.flashggUpdatedIdMVADiPhotons*
                      process.flashggDiPhotonSystematics*
                      process.flashggMuonSystematics*process.flashggElectronSystematics*
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
-                     (process.flashggTagSequence*process.systematicsTagSequences)*
-                     process.ZPlusJetTagDumper
+                     (process.flashggTagSequence*process.systematicsTagSequences)
                      )
+
+if doJetSystTrees:
+    process.p += process.flashggSystTagMerger
+
+process.p += process.ZPlusJetTagDumper
 
 print "--- Dumping modules that take diphotons as input: ---"
 mns = process.p.moduleNames()

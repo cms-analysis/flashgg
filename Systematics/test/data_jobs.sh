@@ -1,2 +1,2 @@
 # NB this command is specific to the configuration at IC and is not gaurenteed elsewhere
-fggRunJobs.py --load data_jobs.json -d /vols/cms04/szenz/data_jobs_36 -x cmsRun MicroAODtoWorkspace.py maxEvents=-1 -n 500 -q hepmedium.q -D -P useAAA=1 --no-use-tarball 
+fggRunJobs.py --load data_76x.json -d /vols/cms04/szenz/data_jobs_45 -x cmsRun workspaceStd.py maxEvents=-1 -n 500 -q hepmedium.q -D -P useAAA=1 --no-use-tarball 
