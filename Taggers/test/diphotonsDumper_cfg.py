@@ -18,6 +18,7 @@ process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string("test.root")
 )
 
+process.load("flashgg.Taggers.flashggUpdatedIdMVADiPhotons_cfi") 
 from flashgg.Taggers.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
 process.kinPreselDiPhotons = flashggPreselectedDiPhotons.clone(
 cut=cms.string(
@@ -82,7 +83,7 @@ cfgTools.addCategories(process.diphotonDumper,
 
 
 process.p1 = cms.Path(
-    process.kinPreselDiPhotons*process.diphotonDumper
+    process.flashggUpdatedIdMVADiPhotons*process.kinPreselDiPhotons*process.diphotonDumper
     )
 
 
