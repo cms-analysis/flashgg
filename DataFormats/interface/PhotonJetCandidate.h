@@ -39,6 +39,7 @@ namespace flashgg {
         void setDZ2( float val ) { dZ2_ = val; }
         void setVtxProbMVA( float val ) { vtxprobmva_ = val; }
         void setVertexIndex( int val ) { vertex_index_ = val; }
+        void setVertexIndexJet( int val ) { vertex_index_jet_ = val; }
         void setDZfromRecoPV( float val) { dZfromRecoPV_ = val;}
         void setPhotonJetPt( float val ) { photonjetPt_ = val; }
 
@@ -71,6 +72,7 @@ namespace flashgg {
         float photonjetPt() const {return photonjetPt_; }
 
         int vertexIndex() const { return vertex_index_; }
+        int vertexIndexJet() const { return vertex_index_jet_; }
 
         unsigned int nVtxInfoSize() const { return ( vlogsumpt2_.size() ) ;}
         float logSumPt2( unsigned int iVtx ) const { return ( iVtx < vlogsumpt2_.size() ) ? vlogsumpt2_.at( iVtx ) : -9999. ;}
@@ -93,6 +95,7 @@ namespace flashgg {
         
         edm::Ptr<reco::Vertex> vertex_;
         int vertex_index_;
+        int vertex_index_jet_;
 
         float logsumpt2_;
         float ptbal_;

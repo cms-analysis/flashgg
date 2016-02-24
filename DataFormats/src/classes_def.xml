@@ -231,8 +231,8 @@
 <class name="std::vector<edm::Ptr<flashgg::MuMuGammaCandidate> >"/>
 <class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::MuMuGammaCandidate> > >"/>
 
-<class name="flashgg::PhotonJetCandidate" ClassVersion="10">
-  <version ClassVersion="10" checksum="1948641873"/>
+<class name="flashgg::PhotonJetCandidate" ClassVersion="11">
+  <version ClassVersion="11" checksum="4247679146"/>
 </class>
 <class name="std::vector<flashgg::PhotonJetCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::PhotonJetCandidate> >"/>

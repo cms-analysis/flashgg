@@ -43,12 +43,31 @@ namespace flashgg {
         unique_ptr<VertexSelectorBase> vertexSelector_;
         EDGetTokenT<View<reco::Conversion> > conversionToken_;
         EDGetTokenT<reco::BeamSpot>  beamSpotToken_;
+        EDGetTokenT<double> rhoTag_;
         EDGetTokenT<View<reco::Conversion> > conversionTokenSingleLeg_;
 
         bool useSingleLeg_;
 
         double minJetPt_;
+        double maxJetEta_;
         double minPhotonPt_;
+        double minPhotEBHoE_;
+        double minPhotEEHoE_;
+        double minPhotEBsietaieta_;
+        double minPhotEEsietaieta_;
+        double minPhotEBChgIso_;
+        double minPhotEEChgIso_;
+        double minPhotEBNeuIso_;
+        double minPhotEENeuIso_;
+        double minPhotEBPhoIso_;
+        double minPhotEEPhoIso_;
+
+        //https://indico.cern.ch/event/370513/contribution/1/attachments/1183744/1715032/SP15_25_4th_final.pdf
+        int iphotIsolnAreaValN_;
+        vector<double> photIsolnEAreaVal_;
+        vector<double> photIsolnEAreaChgHad_;
+        vector<double> photIsolnEAreaNeuHad_;
+        vector<double> photIsolnEAreaPhot_;
     };
 
     PhotonJetProducer::PhotonJetProducer( const ParameterSet &iConfig ) :
@@ -58,14 +77,32 @@ namespace flashgg {
         vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTag" ) ) ),
         conversionToken_( consumes<View<reco::Conversion> >( iConfig.getParameter<InputTag>( "ConversionTag" ) ) ),
         beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getParameter<InputTag>( "beamSpotTag" ) ) ),
+        rhoTag_( consumes<double>( iConfig.getParameter<InputTag>( "rhoTag" ) ) ),
         conversionTokenSingleLeg_( consumes<View<reco::Conversion> >( iConfig.getParameter<InputTag>( "ConversionTagSingleLeg" ) ) )
     {
         const std::string &VertexSelectorName = iConfig.getParameter<std::string>( "VertexSelectorName" );
         vertexSelector_.reset( FlashggVertexSelectorFactory::get()->create( VertexSelectorName, iConfig ) );
         useSingleLeg_ = iConfig.getParameter<bool>( "useSingleLeg" );
         minJetPt_ = iConfig.getParameter<double>( "minJetPt" );
+        maxJetEta_ = iConfig.getParameter<double>( "maxJetEta" );
         minPhotonPt_ = iConfig.getParameter<double>( "minPhotonPt" );
-        produces<vector<flashgg::PhotonJetCandidate> >();
+        minPhotEBHoE_ = iConfig.getParameter<double>( "minPhotEBHoE" );
+        minPhotEEHoE_ = iConfig.getParameter<double>( "minPhotEEHoE" );
+        minPhotEBsietaieta_ = iConfig.getParameter<double>( "minPhotEBsietaieta" );
+        minPhotEEsietaieta_ = iConfig.getParameter<double>( "minPhotEEsietaieta" );
+        minPhotEBChgIso_ = iConfig.getParameter<double>( "minPhotEBChgIso" );
+        minPhotEEChgIso_ = iConfig.getParameter<double>( "minPhotEEChgIso" );
+        minPhotEBNeuIso_ = iConfig.getParameter<double>( "minPhotEBNeuIso" );
+        minPhotEENeuIso_ = iConfig.getParameter<double>( "minPhotEENeuIso" );
+        minPhotEBPhoIso_ = iConfig.getParameter<double>( "minPhotEBPhoIso" );
+        minPhotEEPhoIso_ = iConfig.getParameter<double>( "minPhotEEPhoIso" );
+        iphotIsolnAreaValN_ = iConfig.getParameter<int>( "iphotIsolnAreaValN" );
+        photIsolnEAreaVal_ = iConfig.getParameter<vector<double>>( "photIsolnEAreaVal" );
+        photIsolnEAreaChgHad_ = iConfig.getParameter<vector<double>>( "photIsolnEAreaChgHad" );
+        photIsolnEAreaNeuHad_ = iConfig.getParameter<vector<double>>( "photIsolnEAreaNeuHad" );
+        photIsolnEAreaPhot_ = iConfig.getParameter<vector<double>>( "photIsolnEAreaPhot" );
+        
+        produces<vector<flashgg::PhotonJetCandidate>>();
     }
 
     void PhotonJetProducer::produce( Event &evt, const EventSetup & )
@@ -99,29 +136,53 @@ namespace flashgg {
         Handle<View<reco::Conversion> > conversionsSingleLeg;
         evt.getByToken( conversionTokenSingleLeg_, conversionsSingleLeg );
 
+        edm::Handle<double>  rho;
+        evt.getByToken(rhoTag_,rho);
+        double rho_    = *rho;
+
         auto_ptr<vector<PhotonJetCandidate> > PhotonJetColl( new vector<PhotonJetCandidate> );
 
         // --- Photon selection (min pt, photon id)
         for ( unsigned int i = 0 ; i < photons->size() ; i++ ){
             Ptr<flashgg::Photon> photon = photons->ptrAt( i );
-            if (photon->pt() < minPhotonPt_) continue;
-            // photon ID cut based - medium
+            double photPt_ = photon->pt();
+            if (photPt_ < minPhotonPt_) continue;
+            // photon ID cut based : //https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedPhotonIdentificationRun2#Recommended_Working_points_for_2
+            if ( !photon->passElectronVeto() ) continue;
+            int iphotEA_ = iphotIsolnAreaValN_ - 1;
+            for (int iEA = 0; iEA < iphotIsolnAreaValN_; iEA++){
+                if (fabs(photon->eta()) < photIsolnEAreaVal_.at(iEA)) {
+                    iphotEA_ = iEA;
+                    break;
+                }
+            }
+
             if ( photon->isEB() ){
-                if ( photon->hadronicOverEm() > 0.05 )  continue;
-                if ( photon->full5x5_sigmaIetaIeta() > 0.01) continue;
-                // ... add isolation cuts
+                if ( photon->hadronicOverEm() > minPhotEBHoE_ )  continue;
+                if ( photon->full5x5_sigmaIetaIeta() > minPhotEBsietaieta_) continue;
+                double photChargedHadronIso_ = max(photon->chargedHadronIso() - rho_*photIsolnEAreaChgHad_[iphotEA_], 0.);
+                if (photChargedHadronIso_ > minPhotEBChgIso_ ) continue;
+                double photNeutralHadronIso_ = max(photon->neutralHadronIso() - rho_*photIsolnEAreaNeuHad_[iphotEA_], 0.);
+                if (photNeutralHadronIso_ - 0.014*photPt_ - 0.000019*photPt_*photPt_ > minPhotEBNeuIso_ ) continue;
+                double photPhotonIso_ = max(photon->photonIso() - rho_*photIsolnEAreaPhot_[iphotEA_], 0.);
+                if (photPhotonIso_ - 0.0053*photPt_ > minPhotEBPhoIso_ ) continue;
             }
             if ( photon->isEE() ){
-                if ( photon->hadronicOverEm() > 0.05 )  continue;
-                if ( photon->full5x5_sigmaIetaIeta() > 0.0267) continue;
-                // ... add isolation cuts
+                if ( photon->hadronicOverEm() > minPhotEEHoE_ )  continue;
+                if ( photon->full5x5_sigmaIetaIeta() > minPhotEEsietaieta_ ) continue;
+                double photChargedHadronIso_ = max(photon->chargedHadronIso() - rho_*photIsolnEAreaChgHad_[iphotEA_], 0.);
+                if (photChargedHadronIso_ > minPhotEEChgIso_ ) continue;
+                double photNeutralHadronIso_ = max(photon->neutralHadronIso() - rho_*photIsolnEAreaNeuHad_[iphotEA_], 0.);
+                if (photNeutralHadronIso_ - 0.0139*photPt_ - 0.000025*photPt_*photPt_ > minPhotEENeuIso_ ) continue;
+                double photPhotonIso_ = max(photon->photonIso() - rho_*photIsolnEAreaPhot_[iphotEA_], 0.);
+                if (photPhotonIso_ - 0.0034*photPt_ > minPhotEEPhoIso_ ) continue;
             }
                         
             // -- loop over jets
             for( unsigned int j = 0 ; j < jets->size() ; j++ ) {
                 Ptr<pat::Jet> jet = jets->ptrAt( j );
                 if ( jet->pt() < minJetPt_ ) continue;
-                if ( fabs(jet->eta()) > 2.5 ) continue;
+                if ( fabs(jet->eta()) > maxJetEta_ ) continue;
                 // -- check that the jet is not overlapping with the photon
                 float dR = reco::deltaR(photon->eta(), photon->phi(), jet->eta(), jet->phi());
                 if ( dR < 0.4 ) continue;
@@ -135,7 +196,7 @@ namespace flashgg {
                     pTrks+=pTrk;
                 }
                 //std::cout << "track sum pt = "<< pTrks.Pt() <<std::endl;
-                if (pTrks.Pt()<30) continue;
+                if (pTrks.Pt()< minJetPt_ ) continue;
 
                 // -- now build gamma+jet candidate 
                 Ptr<reco::Vertex> pvx = vertexSelector_->select( photon, jet, primaryVertices->ptrs(), *vertexCandidateMap, conversions->ptrs(), conversionsSingleLeg->ptrs(),
@@ -152,7 +213,10 @@ namespace flashgg {
 
                 PhotonJetCandidate photonjet( photon, jet, pvx );
                 photonjet.setVertexIndex( ivtx );
-                photonjet.setDZfromRecoPV(pvx->position().z() - primaryVertices->ptrAt(0)->position().z());
+
+                int iJetvtx = 0;
+                photonjet.setVertexIndexJet( iJetvtx );
+                photonjet.setDZfromRecoPV(pvx->position().z() - primaryVertices->ptrAt(iJetvtx)->position().z());
                 
                 TVector3 Photon1Dir;
                 TVector3 Photon1Dir_uv;
