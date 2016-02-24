@@ -15,7 +15,7 @@ binInfo = cms.PSet(
                         cms.PSet(lowBounds = cms.vdouble(50.000000), upBounds = cms.vdouble(60.000000), values = cms.vdouble(0.983007), uncertainties = cms.vdouble(0.015022,0.015022)),
                         cms.PSet(lowBounds = cms.vdouble(60.000000), upBounds = cms.vdouble(80.000000), values = cms.vdouble(0.986717), uncertainties = cms.vdouble(0.015089,0.015089)),
                         cms.PSet(lowBounds = cms.vdouble(80.000000), upBounds = cms.vdouble(120.000000), values = cms.vdouble(0.977206), uncertainties = cms.vdouble(0.015616,0.015616)),
-                        cms.PSet(lowBounds = cms.vdouble(120.000000), upBounds = cms.vdouble(9999999.000000), values = cms.vdouble(0.975379), uncertainties = cms.vdouble(0.025048,0.025048))
+                        cms.PSet(lowBounds = cms.vdouble(120.000000), upBounds = cms.vdouble(9999999999.000000), values = cms.vdouble(0.975379), uncertainties = cms.vdouble(0.025048,0.025048))
                         #74X
                         #cms.PSet(lowBounds = cms.vdouble(0.), upBounds = cms.vdouble(20.), values = cms.vdouble(1.), uncertainties = cms.vdouble(0.,0.)), # This bin should never be selected, just here to avoid crashes
                         #cms.PSet(lowBounds = cms.vdouble(20.000000), upBounds = cms.vdouble(25.000000), values = cms.vdouble(0.992659), uncertainties = cms.vdouble(0.014311,0.014311)),
