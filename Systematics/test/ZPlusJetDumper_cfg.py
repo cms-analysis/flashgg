@@ -56,8 +56,8 @@ else:
         for direction in ["Up","Down"]:
             jetsystlabels.append("JEC%s01sigma" % direction)
             jetsystlabels.append("JER%s01sigma" % direction)
-            systlabels.append("JEC%s01sigma" % direction)
-            systlabels.append("JER%s01sigma" % direction)
+            jetsystlabels.append("RMSShift%s01sigma" % direction)
+        systlabels += jetsystlabels
     else:
         print "Background MC, so store mgg and central only"
         customizeSystematicsForBackground(process)
