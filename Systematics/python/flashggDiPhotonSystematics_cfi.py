@@ -10,14 +10,14 @@ mvaShiftBins = cms.PSet(
                      )
     )
 
-# slide 7 of https://indico.cern.ch/event/367883/contribution/2/attachments/1194817/1736347/egamma_26_11_2015.pdf
+# AN version 5
 preselBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)","r9"),
     bins = cms.VPSet(
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.0 ) , upBounds = cms.vdouble( 1.5, 0.9  ) , values = cms.vdouble( 0.9968 ) , uncertainties = cms.vdouble( 0.0227 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.9 ) , upBounds = cms.vdouble( 1.5, 999. ) , values = cms.vdouble(0.9978  ) , uncertainties = cms.vdouble( 0.0029 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.0 ) , upBounds = cms.vdouble( 6.0, 0.9  ) , values = cms.vdouble( 1.0115 ) , uncertainties = cms.vdouble( 0.0297 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.9 ) , upBounds = cms.vdouble( 6.0, 999. ) , values = cms.vdouble(0.9963  ) , uncertainties = cms.vdouble( 0.0044 )  ) 
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.0 ) , upBounds = cms.vdouble( 1.5, 0.85 ) , values = cms.vdouble( 1.032 ) , uncertainties = cms.vdouble( 0.008 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ), upBounds = cms.vdouble( 1.5, 999. ) , values = cms.vdouble( 1.004 ) , uncertainties = cms.vdouble( 0.003 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.0 ) , upBounds = cms.vdouble( 6.0, 0.9  ) , values = cms.vdouble( 1.006 ) , uncertainties = cms.vdouble( 0.032 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.9 ) , upBounds = cms.vdouble( 6.0, 999. ) , values = cms.vdouble( 1.004 ) , uncertainties = cms.vdouble( 0.022 )  ) 
         )
     )
 
@@ -167,15 +167,15 @@ subleadTriggerScaleBins = cms.PSet(
     )
 
 
-# Slide 9 https://indico.cern.ch/event/464689/session/12/contribution/65/attachments/1204381/1754436/flashgg_14_12_2015.pdf
-# N.B. for lose MVA cut SF the R9 boundary is at 0.94
+# AN version 5
+# N.B. boundary changed accordingly to the preselection
 looseMvaBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)","r9"),
     bins = cms.VPSet(
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.0  ) , upBounds = cms.vdouble( 1.5, 0.94  ) , values = cms.vdouble( 1.0012 ) , uncertainties = cms.vdouble( 0.0016 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.94 ) , upBounds = cms.vdouble( 1.5, 999.0 ) , values = cms.vdouble( 0.9999 ) , uncertainties = cms.vdouble( 0.0005 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.0  ) , upBounds = cms.vdouble( 6.0, 0.94  ) , values = cms.vdouble( 1.0018 ) , uncertainties = cms.vdouble( 0.0019 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.94 ) , upBounds = cms.vdouble( 6.0, 999.0 ) , values = cms.vdouble( 0.9997 ) , uncertainties = cms.vdouble( 0.0008 )  ) 
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.0  ) , upBounds = cms.vdouble( 1.5, 0.85  ) , values = cms.vdouble( 0.9996 ) , uncertainties = cms.vdouble( 0.0008 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ) , upBounds = cms.vdouble( 1.5, 999.0 ) , values = cms.vdouble( 0.9992 ) , uncertainties = cms.vdouble( 0.0005 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.0  ) , upBounds = cms.vdouble( 6.0, 0.9   ) , values = cms.vdouble( 1.0014 ) , uncertainties = cms.vdouble( 0.0016 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.9  ) , upBounds = cms.vdouble( 6.0, 999.0 ) , values = cms.vdouble( 0.9998 ) , uncertainties = cms.vdouble( 0.0019 )  ) 
         )
     )
 
