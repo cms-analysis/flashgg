@@ -311,6 +311,7 @@ namespace flashgg {
                   float w_nominal =dataset_pdfWeights_->weight();
                   float w_up = dataset_pdfWeights_->get(i)->getRealValue(var->GetName());
                   float w_central = dataset_pdfWeights_->get(i)->getRealValue(weight_central->GetName());
+                  if (w_central == 0.) continue;
                   var->setVal(w_nominal*(w_up/w_central));
                   weight->setVal( var->getVal());
                   data_temp->add(RooArgSet(*mass,*weight),var->getVal());
@@ -442,6 +443,9 @@ void CategoryDumper<F, O>::fill( const object_type &obj, double weight, vector<d
             if (dumpPdfWeights_) {
             if (names_[ivar].compare("CMS_hgg_mass") ==0 || names_[ivar].compare("centralObjectWeight") ==0){ 
             // hard-coded for now, need to find a better way evenutally...
+                if ( val == 0. ) {
+                    std::cout << " WARNING we have a weight 0 that we're pushing back into rooVars_pdfWeights_[ " << name << " ] " << std::endl;
+                }
               dynamic_cast<RooRealVar &>( rooVars_pdfWeights_[name] ).setVal( val ); 
              }
             }
