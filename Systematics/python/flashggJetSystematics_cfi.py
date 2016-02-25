@@ -63,6 +63,13 @@ bDiscriminator74X = cms.double(0.890)
 bDiscriminator76X = cms.double(0.800)
 from flashgg.MicroAOD.flashggJets_cfi import flashggBTag
 
+RMSShiftBins = cms.PSet(
+    variables = cms.vstring("abs(eta)"),
+    bins = cms.VPSet(
+                     cms.PSet( lowBounds = cms.vdouble(0.000), upBounds = cms.vdouble(999.), values = cms.vdouble( 0.0 ), uncertainties = cms.vdouble( 0.002 ))
+                     )
+    )
+
 def createJetSystematicsForTag(process,jetInputTag):
   num = jetInputTag.productInstanceLabel
   newName = 'flashggJetSystematics'+num
@@ -97,6 +104,13 @@ def createJetSystematicsForTag(process,jetInputTag):
 						 	   bDiscriminator = bDiscriminator76X, #Medium working point for CSV B tagger, for CMSSW74X use: bDiscriminator74X
 							   Debug = cms.untracked.bool(False),
                                                            ApplyCentralValue = cms.bool(True)
+                                                           ),
+                                                 cms.PSet( MethodName = cms.string("FlashggJetRMSShift"),
+                                                           Label = cms.string("RMSShift"),
+                                                           NSigmas = cms.vint32(-1,1),
+                                                           OverallRange = cms.string("abs(eta)<5.0"),
+                                                           BinList  = RMSShiftBins,
+                                                           ApplyCentralValue = cms.bool(False)
                                                            )
                                                  )
                          
