@@ -50,6 +50,8 @@ if customize.processId.count("h_") or customize.processId.count("vbf_"): # conve
     for direction in ["Up","Down"]:
         phosystlabels.append("MvaShift%s01sigma" % direction)
         phosystlabels.append("SigmaEOverEShift%s01sigma" % direction)
+        phosystlabels.append("MaterialCentral%s01sigma" % direction)
+        phosystlabels.append("MaterialForward%s01sigma" % direction)
         jetsystlabels.append("JEC%s01sigma" % direction)
         jetsystlabels.append("JER%s01sigma" % direction)
         jetsystlabels.append("RMSShift%s01sigma" % direction)
