@@ -126,6 +126,10 @@ namespace flashgg {
                           << vbftag->leadingJet().pt() << " " << vbftag->leadingJet().eta()
                           << " and sublead jet eta " << vbftag->subLeadingJet().pt() << " " << vbftag->subLeadingJet().eta() << " mass=" << vbftag->diPhoton()->mass()
                           << ", systLabel " << vbftag->systLabel() << std::endl;
+                std::cout << "    VBFDiPhoDiJetMVA=" << vbftag->VBFDiPhoDiJetMVA().VBFDiPhoDiJetMVAValue()
+                          << " VBFMVA=" << vbftag->VBFMVA().VBFMVAValue()
+                          << std::endl;
+
                 if( vbftag->tagTruth().isNonnull() ) {
                     const VBFTagTruth *truth = dynamic_cast<const VBFTagTruth *>( &*vbftag->tagTruth() );
                     assert( truth != NULL );  // If we stored a VBFTag with a nonnull pointer, we either have VBFTagTruth or a nutty bug
