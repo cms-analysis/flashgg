@@ -7,6 +7,7 @@ import os
 
 # SYSTEMATICS SECTION
 dropVBFInNonGold = True
+systsOnlyFor125 = True
 
 process = cms.Process("FLASHggSyst")
 
@@ -36,6 +37,8 @@ jetsystlabels = []
 elesystlabels = []
 musystlabels = []
 
+
+
 # import flashgg customization to check if we have signal or background
 from flashgg.MetaData.JobConfig import customize
 customize.parse()
@@ -44,7 +47,7 @@ print "customize.processId:",customize.processId
 # systematics customization scripts will take care of adjusting flashggDiPhotonSystematics
 process.load("flashgg.Systematics.escales.escale76X_16DecRereco_2015")
 # Only run systematics for signal events
-if customize.processId.count("h_") or customize.processId.count("vbf_"): # convention: ggh vbf wzh (wh zh) tth
+if (customize.processId.count("h_") or customize.processId.count("vbf_")) and (customize.processId.count("125") or not systsOnlyFor125): # convention: ggh vbf wzh (wh zh) tth
     print "Signal MC, so adding systematics and dZ"
     variablesToUse = minimalVariables
     for direction in ["Up","Down"]:
@@ -154,7 +157,7 @@ for tag in tagList:
           currentVariables = systematicVariables
       
       isBinnedOnly = (systlabel !=  "")
-      if customize.processId.count("h_") or customize.processId.count("vbf_") and (systlabel ==  ""):
+      if (customize.processId.count("h_") or customize.processId.count("vbf_")) and (systlabel ==  "")  and (customize.processId.count("125") or not systsOnlyFor125):
           print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
           nPdfWeights = 60
