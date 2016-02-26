@@ -37,6 +37,7 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
         string systLabel_;
+        bool requireScaledPtCuts_;
 
         vector<double> boundaries;
 
@@ -46,7 +47,8 @@ namespace flashgg {
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
-        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
+        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
+        requireScaledPtCuts_   ( iConfig.getParameter<bool> ( "RequireScaledPtCuts" ) )
     {
         boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
 
@@ -114,9 +116,17 @@ namespace flashgg {
 
             tag_obj.includeWeights( *dipho );
 
-            // Leave in debugging statement temporarily while tag framework is being developed
-            // std::cout << "[UNTAGGED] MVA is "<< mvares->result << " and category is " << tag_obj.categoryNumber() << std::endl;
-            if( tag_obj.categoryNumber() >= 0 ) {
+            bool passScaledPtCuts = 1;
+            if ( requireScaledPtCuts_ ) {
+
+                float pt_over_mgg_1 = (dipho->leadingPhoton()->pt() / dipho->mass());
+                float pt_over_mgg_2 = (dipho->subLeadingPhoton()->pt() / dipho->mass());
+
+                passScaledPtCuts = ( pt_over_mgg_1 > (1./3) && pt_over_mgg_2 > (1./4) );
+                //                std::cout << " pt_over_mgg_1=" << pt_over_mgg_1 << " pt_over_mgg_2=" << pt_over_mgg_2 << " passScaledPtCuts=" << passScaledPtCuts << std::endl;
+            }
+
+            if( passScaledPtCuts && tag_obj.categoryNumber() >= 0 ) {
                 tags->push_back( tag_obj );
                 if( ! evt.isRealData() ) {
                     TagTruthBase truth_obj;
