@@ -214,6 +214,33 @@ RVBins = cms.PSet(
         )
     )       
 
+# Photon categoryscale [$\times 10^{-2}$]
+# central EB (eta<0.8) low r9  0.035
+# central EB (eta<0.8) high r9  0.033
+# intermediate EB (0.8 < eta < 1.0) low r9  0.058
+# intermediate EB (0.8 < eta < 1.0) high r9  0.12
+# outer EB (eta>1.0) low r9  0.22
+# outer EB (eta>1.0) high r9  0.34
+# EE low r9  0.22
+# EE high r9  0.34
+#
+# Copied from Run 1 values
+# https://twiki.cern.ch/twiki/bin/viewauth/CMS/HggLegacySystematicUncertainties#Upstream_material_electron_to_ph
+# NB these are comparable to other scale uncertainties
+materialBinsRun1 = cms.PSet(
+    variables = cms.vstring("abs(superCluster.eta)","r9"),
+    bins = cms.VPSet(
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.0  ), upBounds = cms.vdouble( 0.8, 0.94  ), values = cms.vdouble( 0. ), uncertainties = cms.vdouble( 0.00035 ) ),
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.94 ), upBounds = cms.vdouble( 0.8, 999.0 ), values = cms.vdouble( 0. ), uncertainties = cms.vdouble( 0.00033 ) ),
+        cms.PSet( lowBounds = cms.vdouble( 0.8, 0.0  ), upBounds = cms.vdouble( 1.0, 0.94  ), values = cms.vdouble( 0. ), uncertainties = cms.vdouble( 0.00058 ) ),
+        cms.PSet( lowBounds = cms.vdouble( 0.8, 0.94 ), upBounds = cms.vdouble( 1.0, 999.0 ), values = cms.vdouble( 0. ), uncertainties = cms.vdouble( 0.0012 ) ),
+        cms.PSet( lowBounds = cms.vdouble( 1.0, 0.0  ), upBounds = cms.vdouble( 1.5, 0.94  ), values = cms.vdouble( 0. ), uncertainties = cms.vdouble( 0.0022 ) ),
+        cms.PSet( lowBounds = cms.vdouble( 1.0, 0.94 ), upBounds = cms.vdouble( 1.5, 999.0 ), values = cms.vdouble( 0. ), uncertainties = cms.vdouble( 0.0034 ) ),
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.0  ), upBounds = cms.vdouble( 999., 0.94  ), values = cms.vdouble( 0. ), uncertainties = cms.vdouble( 0.0022 ) ),
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.94 ), upBounds = cms.vdouble( 999., 999.0 ), values = cms.vdouble( 0. ), uncertainties = cms.vdouble( 0.0034 ) ),
+
+        )
+    )
 
 
 flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
@@ -256,6 +283,24 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                                   NSigmas = cms.vint32(-1,1),
                                                   OverallRange = cms.string("r9<0.94&&abs(superCluster.eta)>=1.5"),
                                                   BinList = photonScaleUncertBins,
+                                                  ApplyCentralValue = cms.bool(False),
+                                                  Debug = cms.untracked.bool(False)
+                                                  ),
+                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
+                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+                                                  Label = cms.string("MaterialCentral"),
+                                                  NSigmas = cms.vint32(-1,1),
+                                                  OverallRange = cms.string("abs(superCluster.eta)<1.0"),
+                                                  BinList = materialBinsRun1,
+                                                  ApplyCentralValue = cms.bool(False),
+                                                  Debug = cms.untracked.bool(False)
+                                                  ),
+                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
+                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+                                                  Label = cms.string("MaterialForward"),
+                                                  NSigmas = cms.vint32(-1,1),
+                                                  OverallRange = cms.string("abs(superCluster.eta)>=1.0"),
+                                                  BinList = materialBinsRun1,
                                                   ApplyCentralValue = cms.bool(False),
                                                   Debug = cms.untracked.bool(False)
                                                   ),

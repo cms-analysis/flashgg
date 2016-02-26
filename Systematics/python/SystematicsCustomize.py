@@ -128,8 +128,6 @@ def customizePhotonSystematicsForData(process):
             if pset.Label.value().count("Scale") and photonScaleBinsData != None: 
                 pset.BinList = photonScaleBinsData 
             newvpset += [pset]
-        if pset.Label.value().count("SigmaEOverESmearing"):
-            newvpset += [pset]
     process.flashggDiPhotonSystematics.SystMethods = newvpset
 
 def customizeLeptonSystematicsForData(process):

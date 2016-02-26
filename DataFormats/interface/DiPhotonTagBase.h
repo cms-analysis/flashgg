@@ -30,6 +30,7 @@ namespace flashgg {
         std::string systLabel() const { return systLabel_; }
         bool hasSyst( const string &label ) const { return ( systLabel_ == label );}
         void setIsGold ( int runNumber );
+        void setIsGoldMC( bool isGold ) { isGold_ = isGold; }
         bool isGold() const { return isGold_; }
     private:
         DiPhotonMVAResult mva_result_;

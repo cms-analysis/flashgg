@@ -25,7 +25,6 @@ namespace flashgg {
 
     private:
         selector_type overall_range_;
-        bool debug_;
     };
 
 
