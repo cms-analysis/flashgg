@@ -21,6 +21,7 @@ namespace flashgg {
         void applyCorrection( DiPhotonCandidate &y, param_var syst_shift ) override;
         float makeWeight( const DiPhotonCandidate &y, param_var syst_shift ) override;
         std::string shiftLabel( param_var ) const override;
+        void eventInitialize( const edm::Event &iEvent, const edm::EventSetup & iSetup ) override;
 
         void setRandomEngine( CLHEP::HepRandomEngine &eng ) override
         {
@@ -109,6 +110,16 @@ namespace flashgg {
                       << y.mass() << " " << y.pt() << " " << y.leadingPhoton()->energy() << " " << y.subLeadingPhoton()->energy() << " "
                       << y.leadingPhoton()->eta() << " " << y.subLeadingPhoton()->eta() << std::endl;
         }
+    }
+
+    template<class param_var>
+    void DiPhotonFromPhotonBase<param_var>::eventInitialize( const edm::Event &ev, const edm::EventSetup & es )
+    {
+        if( debug_ ) {
+            std::cout << "calling event initialize for both photons " << std::endl;
+        }
+        photon_corr_->eventInitialize( ev, es );
+        photon_corr2_->eventInitialize( ev, es );
     }
 }
 
