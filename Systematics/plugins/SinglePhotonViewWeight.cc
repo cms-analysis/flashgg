@@ -26,12 +26,12 @@ namespace flashgg {
             } else {
                 theWeight = 1;
             }
-
+            
             if ( syst_shift < 0 ) theWeight += syst_shift * errdown;
             if ( syst_shift > 0 ) theWeight += syst_shift * errup;
             if( this->debug_ ) {
                 std::cout << "  " << shiftLabel( syst_shift ) << ": Object has e= " << obj.photon()->energy() << " and eta=" << obj.photon()->superCluster()->eta() 
-                          << " and we apply a weight of " << theWeight << std::endl;
+                          << " and we apply a weight of " << theWeight << " " << errdown << " " << errup << " " << syst_shift<< std::endl;
             }
         }
         return theWeight;
