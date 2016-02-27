@@ -49,13 +49,14 @@ if customize.processId.count("h_") or customize.processId.count("vbf_"): # conve
     variablesToUse = minimalVariables
     for direction in ["Up","Down"]:
         phosystlabels.append("MvaShift%s01sigma" % direction)
-        phosystlabels.append("MvaLinearSyst%s01sigma" % direction)
+#        phosystlabels.append("MvaLinearSyst%s01sigma" % direction)
         phosystlabels.append("SigmaEOverEShift%s01sigma" % direction)
         phosystlabels.append("MaterialCentral%s01sigma" % direction)
         phosystlabels.append("MaterialForward%s01sigma" % direction)
         jetsystlabels.append("JEC%s01sigma" % direction)
         jetsystlabels.append("JER%s01sigma" % direction)
         jetsystlabels.append("RMSShift%s01sigma" % direction)
+        variablesToUse.append("MvaLinearSyst%s01sigma[1,-999999.,999999.] := weight(\"MvaLinearSyst%s01sigma\")" % (direction,direction))
         variablesToUse.append("LooseMvaSF%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s01sigma\")" % (direction,direction))
         variablesToUse.append("PreselSF%s01sigma[1,-999999.,999999.] := weight(\"PreselSF%s01sigma\")" % (direction,direction))
         variablesToUse.append("electronVetoSF%s01sigma[1,-999999.,999999.] := weight(\"electronVetoSF%s01sigma\")" % (direction,direction))
