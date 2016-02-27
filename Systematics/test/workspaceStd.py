@@ -49,6 +49,7 @@ if customize.processId.count("h_") or customize.processId.count("vbf_"): # conve
     variablesToUse = minimalVariables
     for direction in ["Up","Down"]:
         phosystlabels.append("MvaShift%s01sigma" % direction)
+        phosystlabels.append("MvaLinearSyst%s01sigma" % direction)
         phosystlabels.append("SigmaEOverEShift%s01sigma" % direction)
         phosystlabels.append("MaterialCentral%s01sigma" % direction)
         phosystlabels.append("MaterialForward%s01sigma" % direction)
