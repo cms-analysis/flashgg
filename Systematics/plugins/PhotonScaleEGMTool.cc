@@ -47,8 +47,6 @@ namespace flashgg {
 
     void PhotonScaleEGMTool::eventInitialize( const edm::Event &iEvent, const edm::EventSetup & iSetup ) {
         run_number_ = iEvent.run();
-        printf("--> run number: %u\n", run_number_);
-        assert(0);
     }
     
     std::string PhotonScaleEGMTool::shiftLabel( int syst_value ) const
@@ -67,7 +65,6 @@ namespace flashgg {
     void PhotonScaleEGMTool::applyCorrection( flashgg::Photon &y, int syst_shift )
     {
         if( overall_range_( y ) ) {
-        printf("--> passo: %u\n", run_number_);
             auto shift_val = scaler_.ScaleCorrection(run_number_, y.isEB(), y.full5x5_r9(), y.superCluster()->eta(), y.et());
             auto shift_err = scaler_.ScaleCorrectionUncertainty(run_number_, y.isEB(), y.full5x5_r9(), y.superCluster()->eta(), y.et());
             if (!applyCentralValue()) shift_val = 1.;

@@ -50,6 +50,7 @@ namespace flashgg {
         debug_( conf.getUntrackedParameter<bool>("Debug", false) )
     {
         if (!applyCentralValue()) throw cms::Exception("SmearingLogic") << "If we do not apply central smearing we cannot scale down the smearing";
+        else scaler_.doSmearings = true;
     }
     
     std::string PhotonSmearStochasticEGMTool::shiftLabel( std::pair<int, int> syst_value ) const

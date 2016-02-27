@@ -51,7 +51,6 @@ namespace flashgg {
         virtual std::string shiftLabel( param_var syst_val ) const = 0;
 
         virtual void eventInitialize( const edm::Event &, const edm::EventSetup & ) {
-
         }
 
         virtual void setRandomEngine( CLHEP::HepRandomEngine &eng )
