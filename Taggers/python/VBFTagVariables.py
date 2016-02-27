@@ -92,6 +92,8 @@ truth_variables=[
     "J1J2_dipho_dPhi     := tagTruth().dPhijj_J1J2_FggJet()",
     "J1J3_dipho_dPhi     := tagTruth().dPhijj_J1J3_FggJet()",
     "J2J3_dipho_dPhi     := tagTruth().dPhijj_J2J3_FggJet()",
+
+    "J1J2_dipho_dPhi_Gen     := tagTruth().dPhijj_J1J2_GenJet()",
     
     "J1J2J3_dipho_dPhi   := tagTruth().dPhijjj_FggJet()",
     
