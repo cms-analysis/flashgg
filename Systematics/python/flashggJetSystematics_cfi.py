@@ -64,9 +64,28 @@ bDiscriminator76X = cms.double(0.800)
 from flashgg.MicroAOD.flashggJets_cfi import flashggBTag
 
 RMSShiftBins = cms.PSet(
-    variables = cms.vstring("abs(eta)"),
+    variables = cms.vstring("abs(eta)","pt"),
     bins = cms.VPSet(
-                     cms.PSet( lowBounds = cms.vdouble(0.000), upBounds = cms.vdouble(999.), values = cms.vdouble( 0.0 ), uncertainties = cms.vdouble( 0.002 ))
+                     cms.PSet( lowBounds = cms.vdouble(2.5,20.), upBounds = cms.vdouble(3.0,25.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.006 )),
+                     cms.PSet( lowBounds = cms.vdouble(3.0,20.), upBounds = cms.vdouble(3.5,25.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.010 )),
+                     cms.PSet( lowBounds = cms.vdouble(3.5,20.), upBounds = cms.vdouble(4.0,25.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.006 )),
+                     cms.PSet( lowBounds = cms.vdouble(4.0,20.), upBounds = cms.vdouble(4.7,25.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.008 )),
+                     cms.PSet( lowBounds = cms.vdouble(2.5,25.), upBounds = cms.vdouble(3.0,30.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.005 )),
+                     cms.PSet( lowBounds = cms.vdouble(3.0,25.), upBounds = cms.vdouble(3.5,30.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.006 )),
+                     cms.PSet( lowBounds = cms.vdouble(3.5,25.), upBounds = cms.vdouble(4.0,30.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.002 )),
+                     cms.PSet( lowBounds = cms.vdouble(4.0,25.), upBounds = cms.vdouble(4.7,30.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.005 )),
+                     cms.PSet( lowBounds = cms.vdouble(2.5,30.), upBounds = cms.vdouble(3.0,40.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.002 )),
+                     cms.PSet( lowBounds = cms.vdouble(3.0,30.), upBounds = cms.vdouble(3.5,40.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.004 )),
+                     cms.PSet( lowBounds = cms.vdouble(3.5,30.), upBounds = cms.vdouble(4.0,40.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.002 )),
+                     cms.PSet( lowBounds = cms.vdouble(4.0,30.), upBounds = cms.vdouble(4.7,40.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.002 )),
+                     cms.PSet( lowBounds = cms.vdouble(2.5,40.), upBounds = cms.vdouble(3.0,50.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.002 )),
+                     cms.PSet( lowBounds = cms.vdouble(3.0,40.), upBounds = cms.vdouble(3.5,50.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.004 )),
+                     cms.PSet( lowBounds = cms.vdouble(3.5,40.), upBounds = cms.vdouble(4.0,50.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.002 )),
+                     cms.PSet( lowBounds = cms.vdouble(4.0,40.), upBounds = cms.vdouble(4.7,50.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.002 )),
+                     cms.PSet( lowBounds = cms.vdouble(2.5,50.), upBounds = cms.vdouble(3.0,9999999.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.002 )),
+                     cms.PSet( lowBounds = cms.vdouble(3.0,50.), upBounds = cms.vdouble(3.5,9999999.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.002 )),
+                     cms.PSet( lowBounds = cms.vdouble(3.5,50.), upBounds = cms.vdouble(4.0,9999999.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.002 )),
+                     cms.PSet( lowBounds = cms.vdouble(4.0,50.), upBounds = cms.vdouble(4.7,9999999.), values = cms.vdouble(0.0), uncertainties = cms.vdouble( 0.002 )),
                      )
     )
 
@@ -108,7 +127,7 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                  cms.PSet( MethodName = cms.string("FlashggJetRMSShift"),
                                                            Label = cms.string("RMSShift"),
                                                            NSigmas = cms.vint32(-1,1),
-                                                           OverallRange = cms.string("abs(eta)<5.0"),
+                                                           OverallRange = cms.string("abs(eta)>2.5&&abs(eta)<4.7&&pt>20."),
                                                            BinList  = RMSShiftBins,
                                                            ApplyCentralValue = cms.bool(False),
                                                            Debug = cms.untracked.bool(False)
