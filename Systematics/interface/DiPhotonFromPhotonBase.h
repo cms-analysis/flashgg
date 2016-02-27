@@ -102,7 +102,7 @@ namespace flashgg {
         }
         y.makePhotonsPersistent();
         photon_corr_->applyCorrection( y.getLeadingPhoton(), syst_shift );
-        photon_corr_->applyCorrection( y.getSubLeadingPhoton(), syst_shift );
+        photon_corr2_->applyCorrection( y.getSubLeadingPhoton(), syst_shift );
         y.computeP4AndOrder();
         if( debug_ ) {
             std::cout << "END OF DiPhotonFromPhoton::applyCorrection M PT E1 E2 ETA1 ETA2 "
