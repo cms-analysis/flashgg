@@ -31,17 +31,22 @@ def printSystematicVPSet(vpsetlist):
                 cv = "NO"
             sigmalist = pset.NSigmas.value()    
             sig = ""
-            if type(sigmalist) == 'list' and len(sigmalist) > 0:
+            sig2 = ""
+            if type(sigmalist) == type([]) and len(sigmalist) > 0:
                 for val in sigmalist:
                     sig += "%i " % val
-            if type(sigmalist) == 'FWCore.ParameterSet.Types.PSet':
-                    for p in sigmalist:
-                            for val in p:
-                                    sig += "%i" % val
-                            sig += "-;-"
+            elif type(sigmalist) == type(cms.PSet()) and (len(sigmalist.firstVar) > 0 or len(sigmalist.secondVar) > 0):
+                sig += "1st: "
+                for val in sigmalist.firstVar:
+                    sig += "%i " % val
+                sig2 += "2nd: "
+                for val in sigmalist.secondVar:
+                        sig2 += "%i " % val
             else:    
                 sig += "NO"
             print "%20s %15s %20s" % (syst,cv,sig)
+            if (sig2 != ""):
+                print "%20s %15s %20s" % ("","",sig2)
         if len(vpset):
             print 57*"-"
 
@@ -123,7 +128,10 @@ def customizeSystematicsForBackground(process):
     vpsetlist += [getattr(process,"flashggJetSystematics%i"%i).SystMethods for i in range(len(UnpackedJetCollectionVInputTag))]
     for vpset in vpsetlist:
         for pset in vpset:
-            pset.NSigmas = cms.vint32()
+            if type(pset.NSigmas) == type(cms.vint32()):
+                pset.NSigmas = cms.vint32() # Do not perform shift
+            else:
+                pset.NSigmas = cms.PSet( firstVar = cms.vint32(), secondVar = cms.vint32() ) # Do not perform shift - 2D case
             if hasattr(pset,"SetupUncertainties"):
                 pset.SetupUncertainties = False
 
@@ -140,7 +148,7 @@ def customizeVPSetForData(systs, phScaleBins):
             if type(pset.NSigmas) == type(cms.vint32()):
                 pset.NSigmas = cms.vint32() # Do not perform shift
             else:
-                pset.NSigmas = cms.PSet( firstVar = cms.vint32(), secondVar = cms.vint32() )
+                pset.NSigmas = cms.PSet( firstVar = cms.vint32(), secondVar = cms.vint32() ) # Do not perform shift - 2D case
             if pset.Label.value().count("Scale") and phScaleBins != None: 
                 pset.BinList = phScaleBins
             newvpset += [pset]
