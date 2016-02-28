@@ -137,7 +137,10 @@ def customizeVPSetForData(systs, phScaleBins):
     for pset in systs:
         if pset.Label.value().count("Scale") or pset.Label.value().count("SigmaEOverESmearing"):
             pset.ApplyCentralValue = cms.bool(True) # Turn on central shift for data (it is off for MC)
-            pset.NSigmas = cms.vint32() # Do not perform shift
+            if type(pset.NSigmas) == type(cms.vint32()):
+                pset.NSigmas = cms.vint32() # Do not perform shift
+            else:
+                pset.NSigmas = cms.PSet( firstVar = cms.vint32(), secondVar = cms.vint32() )
             if pset.Label.value().count("Scale") and phScaleBins != None: 
                 pset.BinList = phScaleBins
             newvpset += [pset]
