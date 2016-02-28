@@ -442,6 +442,19 @@ SigmaEOverESmearing = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigE
           ApplyCentralValue = cms.bool(True)
           )
 
+SigmaEOverESmearingEGMTool = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigEoverESmearingEGMTool"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("SigmaEOverESmearing"),
+          FirstParameterName = cms.string("Rho"),
+          SecondParameterName = cms.string("Phi"),
+          CorrectionFile = scalesAndSmearingsPrefix,
+          NSigmas = cms.vint32(),
+          OverallRange = cms.string("1"),
+          BinList = emptyBins,
+          Debug = cms.untracked.bool(False),
+          ApplyCentralValue = cms.bool(True)
+          )
+
 FracRVWeight = cms.PSet( MethodName = cms.string("FlashggDiPhotonWeightFromFracRV"),
           Label = cms.string("FracRVWeight"),
           NSigmas = cms.vint32(-1,1),
