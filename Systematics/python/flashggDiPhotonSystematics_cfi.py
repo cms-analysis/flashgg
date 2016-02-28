@@ -247,6 +247,11 @@ emptyBins = cms.PSet(
     bins = cms.VPSet()
     )
 
+emptySigma = cms.PSet(
+    firstVar = cms.vint32(),
+    secondVar = cms.vint32()
+)
+
 scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/76X_16DecRereco_2015_photons")
 
 
