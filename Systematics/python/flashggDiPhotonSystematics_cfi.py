@@ -458,10 +458,12 @@ SigmaEOverESmearing_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhoton
           FirstParameterName = cms.string("Rho"),
           SecondParameterName = cms.string("Phi"),
           CorrectionFile = scalesAndSmearingsPrefix,
-          NSigmas = cms.vint32(),
+          NSigmas = cms.PSet( firstVar = cms.vint32(),
+                            secondVar = cms.vint32()),
           OverallRange = cms.string("1"),
           BinList = emptyBins,
           Debug = cms.untracked.bool(False),
+          ExaggerateShiftUp = cms.bool(False),
           ApplyCentralValue = cms.bool(True)
           )
 
