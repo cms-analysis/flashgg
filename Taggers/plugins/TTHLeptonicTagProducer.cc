@@ -404,6 +404,33 @@ namespace flashgg {
                 }
                 tthltags_obj.includeWeights( *dipho );
 
+                // This code illustrates why usecentralifnotfound had to be added to DataFormats/src/WeightedObject.cc
+                // See the comment there for what's going on, once read the lines below should help understand
+                if (false && systLabel_ == "") {
+                    std::cout << "DEBUGGING WEIGHTS   - FOR TTHLEPTONIC TAG:" << std::endl;
+                    for (auto it = tthltags_obj.weightListBegin() ; it != tthltags_obj.weightListEnd(); it++) {
+                        float checkold = dipho->weight(*it);
+                        float checknew = (dipho->hasWeight(*it) ? dipho->weight(*it) : dipho->centralWeight() );
+                        std::cout << "  DIPHO " << (*it) << " " << dipho->weight(*it) << std::endl;
+                        if( tagElectrons.size() > 0 && ElectronJets ) {
+                            checkold *= tagElectrons[0]->weight(*it);
+                            checknew *= (tagElectrons[0]->hasWeight(*it) ? tagElectrons[0]->weight(*it) : tagElectrons[0]->centralWeight() );
+                            std::cout << "  ELE " << (*it) << " " << tagElectrons[0]->weight(*it) << std::endl;
+                        }
+                        if( tagMuons.size() > 0 && muonJets ) {
+                            checkold *= tagMuons[0]->weight(*it);
+                            checknew *= (tagMuons[0]->hasWeight(*it) ? tagMuons[0]->weight(*it) : tagMuons[0]->centralWeight() );
+                            std::cout << "  MU " << (*it) << " " << tagMuons[0]->weight(*it) << std::endl;
+                        }
+                        for( unsigned num = 0; num < tagJets.size(); num++ ) {
+                            checkold *= tagJets[num]->weight(*it);
+                            checknew *= (tagJets[num]->hasWeight(*it) ? tagJets[num]->weight(*it) : tagJets[num]->centralWeight() );
+                            std::cout << " JET " << num << " " << (*it) << " " << tagJets[num]->weight(*it) << std::endl;
+                        }                            
+                        std::cout << "  TAG " << (*it) << " " << tthltags_obj.weight(*it) << " CHECKOLD: " << checkold << " CHECKNEW: " << checknew << std::endl;
+                    }
+                }
+
                 tthltags_obj.setJets( tagJets );
                 tthltags_obj.setBJets( tagBJets );
                 tthltags_obj.setMuons( tagMuons );
