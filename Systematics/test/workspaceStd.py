@@ -106,6 +106,8 @@ process.source = cms.Source ("PoolSource",
 #        "root://eoscms.cern.ch//eos/cms//store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIIFall15DR76-1_3_0-25ns_ext1/1_3_1/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8/RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/160127_024939/0000/myMicroAODOutputFile_1.root"
 #"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIIFall15DR76-1_3_0-25ns_ext1/1_3_1/DoubleEG/RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-Run2015D-16Dec2015-v2/160127_022911/0000/myMicroAODOutputFile_100.root"
 "root://eoscms.cern.ch//eos/cms//store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIIFall15DR76-1_3_0-25ns_ext1/1_3_1/VBFHToGG_M-120_13TeV_powheg_pythia8/RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/160210_045711/0000/myMicroAODOutputFile_1.root"
+#"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIIFall15DR76-1_3_0-25ns_ext1/1_3_1/QCD_Pt-30to40_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8/RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/160127_023721/0000/myMicroAODOutputFile_1.root"
+#"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIIFall15DR76-1_3_0-25ns_ext1/1_3_1/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8/RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/160210_050208/0000/myMicroAODOutputFile_1.root"
 ))
 
 process.TFileService = cms.Service("TFileService",
@@ -208,6 +210,20 @@ if (customize.processId.count("wh") or customize.processId.count("zh")) and not 
     process.VHFilter.chooseW = bool(customize.processId.count("wh"))
     process.VHFilter.chooseZ = bool(customize.processId.count("zh"))
 
+# Split out prompt-fake or fake-fake
+process.finalFilter = cms.Sequence()
+if (customize.processId.count("qcd") or customize.processId.count("gjet")) and customize.processId.count("fake"):
+    process.load("flashgg/Systematics/PromptFakeFilter_cfi")
+    process.finalFilter += process.PromptFakeFilter
+    if (customize.processId.count("promptfake")):
+        process.PromptFakeFilter.doPromptFake = cms.bool(True)
+        process.PromptFakeFilter.doFakeFake =cms.bool(False)
+    elif (customize.processId.count("fakefake")):
+        process.PromptFakeFilter.doPromptFake =cms.bool(False)
+        process.PromptFakeFilter.doFakeFake =cms.bool(True)
+    else:
+        raise Exception,"Mis-configuration of python for prompt-fake filter"
+
 process.p = cms.Path(process.dataRequirements*
                      process.genFilter*
                      process.flashggUpdatedIdMVADiPhotons*
@@ -216,6 +232,7 @@ process.p = cms.Path(process.dataRequirements*
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                      (process.flashggTagSequence*process.systematicsTagSequences)*
                      process.flashggSystTagMerger*
+                     process.finalFilter*
                      process.tagsDumper)
 
 print "--- Dumping modules that take diphotons as input: ---"
