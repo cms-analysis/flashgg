@@ -1,0 +1,14 @@
+{
+    "processes" : {
+	"gjet_promptfake" : [
+	    "/GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8",
+	    "/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8"
+	],
+	"qcd_promptfake" : [
+	    "/QCD_Pt-30toInf_DoubleEMEnriched_MGG-40to80_TuneCUETP8M1_13TeV_Pythia8",
+	    "/QCD_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8",
+	    "/QCD_Pt-30to40_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8"
+	]
+    },	
+    "cmdLine" : "campaign=RunIIFall15DR76-1_3_0-25ns_ext1"
+}

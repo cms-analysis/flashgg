@@ -1,0 +1,8 @@
+{
+    "processes" : {
+	"dipho" : [
+	    "/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa"
+	]
+    },	
+    "cmdLine" : "campaign=RunIIFall15DR76-1_3_0-25ns_ext1"
+}
