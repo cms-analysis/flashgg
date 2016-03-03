@@ -381,6 +381,16 @@ MvaShift = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonMvaTransform"),
           ApplyCentralValue = cms.bool(False)
           )
 
+MvaLinearSyst = cms.PSet( PhotonMethodName = cms.string("FlashggSinglePhotonViewWeight"),
+          MethodName = cms.string("FlashggDiPhotonFromSinglePhotonView"),
+          Label = cms.string("MvaLinearSyst"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("phoIdMvaWrtChosenVtx<0.2"),
+          BinList = mvaLinearSystBins,
+          Debug = cms.untracked.bool(False),
+          ApplyCentralValue = cms.bool(False)
+          )
+
 PreselSF = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
           Label = cms.string("PreselSF"),
@@ -442,8 +452,8 @@ SigmaEOverESmearing = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigE
           ApplyCentralValue = cms.bool(True)
           )
 
-SigmaEOverESmearingEGMTool = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigEoverESmearingEGMTool"),
-          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+SigmaEOverESmearing_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigEoverESmearingEGMTool"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton2D"),
           Label = cms.string("SigmaEOverESmearing"),
           FirstParameterName = cms.string("Rho"),
           SecondParameterName = cms.string("Phi"),
@@ -471,7 +481,7 @@ MCSmearHighR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmea
          SecondParameterName = cms.string("Phi"),
          CorrectionFile = scalesAndSmearingsPrefix,
          NSigmas = cms.PSet( firstVar = cms.vint32(1,-1,0,0),
-                                                                                                  secondVar = cms.vint32(0,0,1,-1)),
+                            secondVar = cms.vint32(0,0,1,-1)),
          OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)>=1.5"),
          BinList = emptyBins,
          # has to match the labels embedded in the photon object as
