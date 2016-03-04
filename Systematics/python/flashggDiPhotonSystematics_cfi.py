@@ -6,7 +6,7 @@ from flashgg.Systematics.escales.escale76X_16DecRereco_2015 import photonSmearBi
 mvaShiftBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)"),
     bins = cms.VPSet(
-                     cms.PSet( lowBounds = cms.vdouble(0.000), upBounds = cms.vdouble(999.), values = cms.vdouble( 0.0 ), uncertainties = cms.vdouble( 0.03 ))
+                     cms.PSet( lowBounds = cms.vdouble(0.000), upBounds = cms.vdouble(999.), values = cms.vdouble( 0.0 ), uncertainties = cms.vdouble( 0.00 ))
                      )
     )
 
@@ -363,9 +363,9 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                                         cms.PSet( PhotonMethodName = cms.string("FlashggPhotonMvaTransform"),
                                                   MethodName = cms.string("FlashggDiPhotonFromPhoton"),
                                                   Label = cms.string("MvaShift"),
-                                                  NSigmas = cms.vint32(-1,1),
+                                                  NSigmas = cms.vint32(-2,-1,1,2),
                                                   OverallRange = cms.string("1"),
-                                                  CorrectionFile = cms.FileInPath("flashgg/MicroAOD/data/transformationIDMVA.root"),
+                                                  CorrectionFile = cms.FileInPath("flashgg/MicroAOD/data/transformationIDMVA_v2.root"),
                                                   BinList = mvaShiftBins,
                                                   Debug = cms.untracked.bool(False),
                                                   ApplyCentralValue = cms.bool(False)
