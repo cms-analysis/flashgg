@@ -242,6 +242,339 @@ materialBinsRun1 = cms.PSet(
         )
     )
 
+emptyBins = cms.PSet(
+    variables = cms.vstring("1"),
+    bins = cms.VPSet()
+    )
+
+scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/76X_16DecRereco_2015_photons")
+
+
+MCScaleHighR9EB = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("MCScaleHighR9EB"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)<1.5"),
+          BinList = photonScaleUncertBins,
+          ApplyCentralValue = cms.bool(False),
+          Debug = cms.untracked.bool(False)
+          )
+
+MCScaleLowR9EB = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("MCScaleLowR9EB"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("r9<0.94&&abs(superCluster.eta)<1.5"),
+          BinList = photonScaleUncertBins,
+          ApplyCentralValue = cms.bool(False),
+          Debug = cms.untracked.bool(False)
+          )
+
+MCScaleHighR9EE = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("MCScaleHighR9EE"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)>=1.5"),
+          BinList = photonScaleUncertBins,
+          ApplyCentralValue = cms.bool(False),
+          Debug = cms.untracked.bool(False)
+          )
+
+MCScaleLowR9EE = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("MCScaleLowR9EE"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("r9<0.94&&abs(superCluster.eta)>=1.5"),
+          BinList = photonScaleUncertBins,
+          ApplyCentralValue = cms.bool(False),
+          Debug = cms.untracked.bool(False)
+          )
+
+MaterialCentral = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("MaterialCentral"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("abs(superCluster.eta)<1.0"),
+          BinList = materialBinsRun1,
+          ApplyCentralValue = cms.bool(False),
+          Debug = cms.untracked.bool(False)
+          )
+
+MaterialForward = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("MaterialForward"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("abs(superCluster.eta)>=1.0"),
+          BinList = materialBinsRun1,
+          ApplyCentralValue = cms.bool(False),
+          Debug = cms.untracked.bool(False)
+          )
+
+MCSmearHighR9EE = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("MCSmearHighR9EE"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)>=1.5"),
+          BinList = photonSmearBins,
+          # has to match the labels embedded in the photon object as
+          # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
+          #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
+          RandomLabel = cms.string("rnd_g_E"),
+          Debug = cms.untracked.bool(False),
+          ExaggerateShiftUp = cms.bool(False),
+          ApplyCentralValue = cms.bool(True)
+          )
+
+MCSmearLowR9EE = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("MCSmearLowR9EE"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("r9<0.94&&abs(superCluster.eta)>=1.5"),
+          BinList = photonSmearBins,
+          # has to match the labels embedded in the photon object as
+          # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
+          #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
+          RandomLabel = cms.string("rnd_g_E"),
+          Debug = cms.untracked.bool(False),
+          ExaggerateShiftUp = cms.bool(False),
+          ApplyCentralValue = cms.bool(True)
+          )
+
+MCSmearHighR9EB = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("MCSmearHighR9EB"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)<1.5"),
+          BinList = photonSmearBins,
+          # has to match the labels embedded in the photon object as
+          # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
+          #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
+          RandomLabel = cms.string("rnd_g_E"),
+          Debug = cms.untracked.bool(False),
+          ExaggerateShiftUp = cms.bool(False),
+          ApplyCentralValue = cms.bool(True)
+          )
+
+MCSmearLowR9EB = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("MCSmearLowR9EB"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("r9<=0.94&&abs(superCluster.eta)<1.5"),
+          BinList = photonSmearBins,
+          # has to match the labels embedded in the photon object as
+          # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
+          #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
+          RandomLabel = cms.string("rnd_g_E"),
+          Debug = cms.untracked.bool(False),
+          ExaggerateShiftUp = cms.bool(False),
+          ApplyCentralValue = cms.bool(True)
+          )
+
+MvaShift = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonMvaTransform"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("MvaShift"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("1"),
+          CorrectionFile = cms.FileInPath("flashgg/MicroAOD/data/transformationIDMVA_v2.root"),
+          BinList = mvaShiftBins,
+          Debug = cms.untracked.bool(False),
+          ApplyCentralValue = cms.bool(False)
+          )
+
+PreselSF = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("PreselSF"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("1"),
+          BinList = preselBins,
+          Debug = cms.untracked.bool(False),
+          ApplyCentralValue = cms.bool(True)
+          )
+
+electronVetoSF = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("electronVetoSF"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("1"),
+          BinList = electronVetoBins,
+          Debug = cms.untracked.bool(False),
+          ApplyCentralValue = cms.bool(True)
+          )
+
+TriggerWeight = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("TriggerWeight"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("1"),
+          BinList = leadTriggerScaleBins,
+          BinList2 = subleadTriggerScaleBins,
+          Debug = cms.untracked.bool(False),
+          ApplyCentralValue = cms.bool(True)
+          )
+
+LooseMvaSF = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("LooseMvaSF"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("1"),
+          BinList = looseMvaBins,
+          Debug = cms.untracked.bool(False),
+          ApplyCentralValue = cms.bool(True)
+          )
+
+SigmaEOverEShift = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigEOverEShift"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("SigmaEOverEShift"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("1"),
+          BinList = sigmaEOverEShiftBins,
+          Debug = cms.untracked.bool(False),
+          ApplyCentralValue = cms.bool(True)
+          )
+
+SigmaEOverESmearing = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigEoverESmearing"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("SigmaEOverESmearing"),
+          NSigmas = cms.vint32(),
+          OverallRange = cms.string("1"),
+          BinList = photonSmearBins,
+          Debug = cms.untracked.bool(False),
+          ApplyCentralValue = cms.bool(True)
+          )
+
+FracRVWeight = cms.PSet( MethodName = cms.string("FlashggDiPhotonWeightFromFracRV"),
+          Label = cms.string("FracRVWeight"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("1"),
+          BinList = RVBins,
+          Debug = cms.untracked.bool(False),
+          ApplyCentralValue = cms.bool(True)
+          )
+
+MCSmearHighR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearStochasticEGMTool"),
+         MethodName = cms.string("FlashggDiPhotonFromPhoton2D"),
+         Label = cms.string("MCSmearHighR9EE"),
+         FirstParameterName = cms.string("Rho"),
+         SecondParameterName = cms.string("Phi"),
+         CorrectionFile = scalesAndSmearingsPrefix,
+         NSigmas = cms.PSet( firstVar = cms.vint32(1,-1,0,0),
+                                                                                                  secondVar = cms.vint32(0,0,1,-1)),
+         OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)>=1.5"),
+         BinList = emptyBins,
+         # has to match the labels embedded in the photon object as
+         # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
+         #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
+         RandomLabel = cms.string("rnd_g_E"),
+         Debug = cms.untracked.bool(False),
+         ExaggerateShiftUp = cms.bool(False),
+         ApplyCentralValue = cms.bool(True)
+         )
+
+MCSmearLowR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearStochasticEGMTool"),
+         MethodName = cms.string("FlashggDiPhotonFromPhoton2D"),
+         Label = cms.string("MCSmearLowR9EE"),
+         FirstParameterName = cms.string("Rho"),
+         SecondParameterName = cms.string("Phi"),
+         CorrectionFile = scalesAndSmearingsPrefix,
+         NSigmas = cms.PSet( firstVar = cms.vint32(1,-1,0,0),
+                            secondVar = cms.vint32(0,0,1,-1)),
+         OverallRange = cms.string("r9<=0.94&&abs(superCluster.eta)>=1.5"),
+         BinList = emptyBins,
+         # has to match the labels embedded in the photon object as
+         # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
+         #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
+         RandomLabel = cms.string("rnd_g_E"),
+         Debug = cms.untracked.bool(False),
+         ExaggerateShiftUp = cms.bool(False),
+         ApplyCentralValue = cms.bool(True)
+         )
+
+MCSmearHighR9EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearStochasticEGMTool"),
+         MethodName = cms.string("FlashggDiPhotonFromPhoton2D"),
+         Label = cms.string("MCSmearHighR9EB"),
+         FirstParameterName = cms.string("Rho"),
+         SecondParameterName = cms.string("Phi"),
+         CorrectionFile = scalesAndSmearingsPrefix,
+         NSigmas = cms.PSet( firstVar = cms.vint32(1,-1,0,0),
+                                                                                                  secondVar = cms.vint32(0,0,1,-1)),
+         OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)<1.5"),
+         BinList = emptyBins,
+         # has to match the labels embedded in the photon object as
+         # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
+         #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
+         RandomLabel = cms.string("rnd_g_E"),
+         Debug = cms.untracked.bool(False),
+         ExaggerateShiftUp = cms.bool(False),
+         ApplyCentralValue = cms.bool(True)
+         )
+
+MCSmearLowR9EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearStochasticEGMTool"),
+         MethodName = cms.string("FlashggDiPhotonFromPhoton2D"),
+         Label = cms.string("MCSmearLowR9EB"),
+         FirstParameterName = cms.string("Rho"),
+         SecondParameterName = cms.string("Phi"),
+         CorrectionFile = scalesAndSmearingsPrefix,
+         NSigmas = cms.PSet( firstVar = cms.vint32(1,-1,0,0),
+                            secondVar = cms.vint32(0,0,1,-1)),
+         OverallRange = cms.string("r9<=0.94&&abs(superCluster.eta)<1.5"),
+         BinList = emptyBins,
+         # has to match the labels embedded in the photon object as
+         # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
+         #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
+         RandomLabel = cms.string("rnd_g_E"),
+         Debug = cms.untracked.bool(False),
+         ExaggerateShiftUp = cms.bool(False),
+         ApplyCentralValue = cms.bool(True)
+         )
+
+MCScaleHighR9EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleEGMTool"),
+         MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+         Label = cms.string("MCScaleHighR9EB"),
+         NSigmas = cms.vint32(-1,1),
+         OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)<1.5"),
+         BinList = emptyBins,
+         CorrectionFile = scalesAndSmearingsPrefix,
+         ApplyCentralValue = cms.bool(False),
+         ExaggerateShiftUp = cms.bool(False),
+         Debug = cms.untracked.bool(False)
+         )
+
+MCScaleLowR9EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleEGMTool"),
+         MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+         Label = cms.string("MCScaleLowR9EB"),
+         NSigmas = cms.vint32(-1,1),
+         OverallRange = cms.string("r9<0.94&&abs(superCluster.eta)<1.5"),
+         BinList = emptyBins,
+         CorrectionFile = scalesAndSmearingsPrefix,
+         ApplyCentralValue = cms.bool(False),
+         ExaggerateShiftUp = cms.bool(False),
+         Debug = cms.untracked.bool(False)
+         )
+
+MCScaleHighR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleEGMTool"),
+         MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+         Label = cms.string("MCScaleHighR9EE"),
+         NSigmas = cms.vint32(-1,1),
+         OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)>=1.5"),
+         BinList = emptyBins,
+         CorrectionFile = scalesAndSmearingsPrefix,
+         ApplyCentralValue = cms.bool(False),
+         ExaggerateShiftUp = cms.bool(False),
+         Debug = cms.untracked.bool(False)
+         )
+
+MCScaleLowR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleEGMTool"),
+         MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+         Label = cms.string("MCScaleLowR9EE"),
+         NSigmas = cms.vint32(-1,1),
+         OverallRange = cms.string("r9<0.94&&abs(superCluster.eta)>=1.5"),
+         BinList = emptyBins,
+         CorrectionFile = scalesAndSmearingsPrefix,
+         ApplyCentralValue = cms.bool(False),
+         ExaggerateShiftUp = cms.bool(False),
+         Debug = cms.untracked.bool(False)
+         )
+
 
 flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
 		src = cms.InputTag("flashggUpdatedIdMVADiPhotons"),
@@ -250,208 +583,23 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                 # assumed for a given systematic uncertainty and is NOT required
                 # to match 1-to-1 the number of bins above.
                 SystMethods = cms.VPSet(
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
-                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                                  Label = cms.string("MCScaleHighR9EB"),
-                                                  NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)<1.5"),
-                                                  BinList = photonScaleUncertBins,
-                                                  ApplyCentralValue = cms.bool(False),
-                                                  Debug = cms.untracked.bool(False)
-                                                  ),
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
-                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                                  Label = cms.string("MCScaleLowR9EB"),
-                                                  NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("r9<0.94&&abs(superCluster.eta)<1.5"),
-                                                  BinList = photonScaleUncertBins,
-                                                  ApplyCentralValue = cms.bool(False),
-                                                  Debug = cms.untracked.bool(False)
-                                                  ),
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
-                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                                  Label = cms.string("MCScaleHighR9EE"),
-                                                  NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)>=1.5"),
-                                                  BinList = photonScaleUncertBins,
-                                                  ApplyCentralValue = cms.bool(False),
-                                                  Debug = cms.untracked.bool(False)
-                                                  ),
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
-                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                                  Label = cms.string("MCScaleLowR9EE"),
-                                                  NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("r9<0.94&&abs(superCluster.eta)>=1.5"),
-                                                  BinList = photonScaleUncertBins,
-                                                  ApplyCentralValue = cms.bool(False),
-                                                  Debug = cms.untracked.bool(False)
-                                                  ),
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
-                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                                  Label = cms.string("MaterialCentral"),
-                                                  NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("abs(superCluster.eta)<1.0"),
-                                                  BinList = materialBinsRun1,
-                                                  ApplyCentralValue = cms.bool(False),
-                                                  Debug = cms.untracked.bool(False)
-                                                  ),
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
-                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                                  Label = cms.string("MaterialForward"),
-                                                  NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("abs(superCluster.eta)>=1.0"),
-                                                  BinList = materialBinsRun1,
-                                                  ApplyCentralValue = cms.bool(False),
-                                                  Debug = cms.untracked.bool(False)
-                                                  ),
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
-                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                                  Label = cms.string("MCSmearHighR9EE"),
-                                                  NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)>=1.5"),
-                                                  BinList = photonSmearBins,
-                                                  # has to match the labels embedded in the photon object as
-                                                  # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
-                                                  #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
-                                                  RandomLabel = cms.string("rnd_g_E"),
-                                                  Debug = cms.untracked.bool(False),
-                                                  ExaggerateShiftUp = cms.bool(False),
-                                                  ApplyCentralValue = cms.bool(True)
-                                                  ),
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
-                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                                  Label = cms.string("MCSmearLowR9EE"),
-                                                  NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("r9<0.94&&abs(superCluster.eta)>=1.5"),
-                                                  BinList = photonSmearBins,
-                                                  # has to match the labels embedded in the photon object as
-                                                  # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
-                                                  #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
-                                                  RandomLabel = cms.string("rnd_g_E"),
-                                                  Debug = cms.untracked.bool(False),
-                                                  ExaggerateShiftUp = cms.bool(False),
-                                                  ApplyCentralValue = cms.bool(True)
-                                                  ),
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
-                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                                  Label = cms.string("MCSmearHighR9EB"),
-                                                  NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)<1.5"),
-                                                  BinList = photonSmearBins,
-                                                  # has to match the labels embedded in the photon object as
-                                                  # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
-                                                  #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
-                                                  RandomLabel = cms.string("rnd_g_E"),
-                                                  Debug = cms.untracked.bool(False),
-                                                  ExaggerateShiftUp = cms.bool(False),
-                                                  ApplyCentralValue = cms.bool(True)
-                                                  ),
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearConstant"),
-                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                                  Label = cms.string("MCSmearLowR9EB"),
-                                                  NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("r9<=0.94&&abs(superCluster.eta)<1.5"),
-                                                  BinList = photonSmearBins,
-                                                  # has to match the labels embedded in the photon object as
-                                                  # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
-                                                  #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
-                                                  RandomLabel = cms.string("rnd_g_E"),
-                                                  Debug = cms.untracked.bool(False),
-                                                  ExaggerateShiftUp = cms.bool(False),
-                                                  ApplyCentralValue = cms.bool(True)
-                                                  ),
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonMvaTransform"),
-                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                                  Label = cms.string("MvaShift"),
-                                                  NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("1"),
-                                                  CorrectionFile = cms.FileInPath("flashgg/MicroAOD/data/transformationIDMVA_v2.root"),
-                                                  BinList = mvaShiftBins,
-                                                  Debug = cms.untracked.bool(False),
-                                                  ApplyCentralValue = cms.bool(False)
-                                                  ),
-                                        #cms.PSet( PhotonMethodName = cms.string("FlashggPhotonMvaShift"),
-                                        #          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                        #          Label = cms.string("MvaShift"),
-                                        #          NSigmas = cms.vint32(-1,1),
-                                        #          OverallRange = cms.string("1"),
-                                        #          BinList = mvaShiftBins,
-                                        #          Debug = cms.untracked.bool(False),
-                                        #          ApplyCentralValue = cms.bool(True)
-                                        #          ),
-                                        #cms.PSet( PhotonMethodName = cms.string("FlashggSinglePhotonViewWeight"),
-                                        #          MethodName = cms.string("FlashggDiPhotonFromSinglePhotonView"),
-                                        #          Label = cms.string("MvaLinearSyst"),
-                                        #          NSigmas = cms.vint32(-1,1),
-                                        #          OverallRange = cms.string("phoIdMvaWrtChosenVtx<0.2"),
-                                        #          BinList = mvaLinearSystBins,
-                                        #          Debug = cms.untracked.bool(False),
-                                        #          ApplyCentralValue = cms.bool(False)
-                                        #          ),
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
-                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                                  Label = cms.string("PreselSF"),
-                                                  NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("1"),
-                                                  BinList = preselBins,
-                                                  Debug = cms.untracked.bool(False),
-                                                  ApplyCentralValue = cms.bool(True)
-                                                  ),
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
-                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                                  Label = cms.string("electronVetoSF"),
-                                                  NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("1"),
-                                                  BinList = electronVetoBins,
-                                                  Debug = cms.untracked.bool(False),
-                                                  ApplyCentralValue = cms.bool(True)
-                                                  ),
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
-                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                                  Label = cms.string("TriggerWeight"),
-                                                  NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("1"),
-                                                  BinList = leadTriggerScaleBins,
-                                                  BinList2 = subleadTriggerScaleBins,
-                                                  Debug = cms.untracked.bool(False),
-                                                  ApplyCentralValue = cms.bool(True)
-                                                  ),
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
-                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                                  Label = cms.string("LooseMvaSF"),
-                                                  NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("1"),
-                                                  BinList = looseMvaBins,
-                                                  Debug = cms.untracked.bool(False),
-                                                  ApplyCentralValue = cms.bool(True)
-                                                  ),
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigEOverEShift"),
-                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                                  Label = cms.string("SigmaEOverEShift"),
-                                                  NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("1"),
-                                                  BinList = sigmaEOverEShiftBins,
-                                                  Debug = cms.untracked.bool(False),
-                                                  ApplyCentralValue = cms.bool(True)
-                                                  ),
-                                        cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigEoverESmearing"),
-                                                  MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-                                                  Label = cms.string("SigmaEOverESmearing"),
-                                                  NSigmas = cms.vint32(),
-                                                  OverallRange = cms.string("1"),
-                                                  BinList = photonSmearBins,
-                                                  Debug = cms.untracked.bool(False),
-                                                  ApplyCentralValue = cms.bool(True)
-                                                  ),
-                                        cms.PSet( MethodName = cms.string("FlashggDiPhotonWeightFromFracRV"),
-                                                  Label = cms.string("FracRVWeight"),
-                                                  NSigmas = cms.vint32(-1,1),
-                                                  OverallRange = cms.string("1"),
-                                                  BinList = RVBins,
-                                                  Debug = cms.untracked.bool(False),
-                                                  ApplyCentralValue = cms.bool(True)
-                                                  )
-                                        )
-                                            )
-
-
+                    MCScaleHighR9EB,
+                    MCScaleLowR9EB,
+                    MCScaleHighR9EE,
+                    MCScaleLowR9EE,
+                    MaterialCentral,
+                    MaterialForward,
+                    MCSmearHighR9EE,
+                    MCSmearLowR9EE,
+                    MCSmearHighR9EB,
+                    MCSmearLowR9EB,
+                    MvaShift,
+                    PreselSF,
+                    electronVetoSF,
+                    TriggerWeight,
+                    LooseMvaSF,
+                    SigmaEOverEShift,
+                    SigmaEOverESmearing,
+                    FracRVWeight
+                )
+                )
