@@ -273,6 +273,13 @@ void Photon::shiftAllMvaValuesBy( float val ) {
     }
 }
 
+
+void Photon::shiftMvaValueBy( float val, edm::Ptr<reco::Vertex> vtx ) {
+    phoIdMvaD_[vtx] += val;
+    if (phoIdMvaD_[vtx] > 1.) phoIdMvaD_[vtx] = 1.;
+    if (phoIdMvaD_[vtx] < -1.) phoIdMvaD_[vtx] = -1.;
+}
+
 //sigmaEOverE systematycs
 void Photon::shiftSigmaEOverEValueBy( float val ) {
     const LorentzVector pho_p4 = p4(regression_type);
