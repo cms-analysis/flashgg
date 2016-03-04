@@ -59,7 +59,7 @@ namespace flashgg {
                     std::cout << beforeSigEoE << " ";
                     std::cout << std::endl;
                 }
-                y.addUserFloat("unsmaeraedSigmaEoE", y.sigEOverE() );
+                y.addUserFloat("unsmearedSigmaEoE", y.sigEOverE() );
                 y.smearSigmaEOverEValueBy( shift ); 
                 // the others are no longer used at this stage anyway, so it cannot hurt
                 if ( debug_) {
