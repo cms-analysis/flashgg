@@ -192,3 +192,23 @@ def customizeJetSystematicsForData(process):
         process.load("JetMETCorrections/Configuration/JetCorrectionServices_cff")
     process.jetCorrectorChain = cms.Sequence(process.ak4PFCHSL1FastL2L3ResidualCorrectorChain)
 
+def useEGMTools(process):
+    # remove old scales
+    for isyst in [ process.MCScaleHighR9EB, process.MCScaleLowR9EB, process.MCScaleHighR9EE, process.MCScaleLowR9EE ]:
+        process.flashggDiPhotonSystematics.SystMethods.remove(isyst)
+
+    # add EGM scales
+    for isyst in [ process.MCScaleHighR9EB_EGM, process.MCScaleLowR9EB_EGM, process.MCScaleHighR9EE_EGM, process.MCScaleLowR9EE_EGM ]:
+        process.flashggDiPhotonSystematics.SystMethods.insert(0, isyst)
+
+    # remove old smearings
+    for isyst in [ process.MCSmearHighR9EE, process.MCSmearLowR9EE, process.MCSmearHighR9EB, process.MCSmearLowR9EB, process.SigmaEOverESmearing ]:
+        process.flashggDiPhotonSystematics.SystMethods.remove(isyst)
+
+    # add EGM smearings (2D)
+    process.flashggDiPhotonSystematics.SystMethods2D.extend([
+            process.MCSmearHighR9EE_EGM,
+            process.MCSmearLowR9EE_EGM,
+            process.MCSmearHighR9EB_EGM,
+            process.MCSmearLowR9EB_EGM,
+            process.SigmaEOverESmearing_EGM])
