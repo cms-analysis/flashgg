@@ -120,7 +120,7 @@ import flashgg.Taggers.dumperConfigTools as cfgTools
 process.tagsDumper.className = "DiPhotonTagDumper"
 process.tagsDumper.src = "flashggSystTagMerger"
 #process.tagsDumper.src = "flashggTagSystematics"
-process.tagsDumper.processId = "test"
+process.tagsDumper.processId = "VBF"
 process.tagsDumper.dumpTrees = False
 process.tagsDumper.dumpWorkspace = True
 process.tagsDumper.dumpHistos = False
