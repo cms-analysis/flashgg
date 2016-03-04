@@ -8,6 +8,15 @@ def printSystematicInfo(process):
     print (14*"-"+" DUMPING SYSTEMATIC OVERVIEW "+14*"-")
     print "%20s %15s %20s" % ("Systematic","Central value?","Systematic shifts?")
     print 57*"-"
+    printSystematicVPSet(vpsetlist)
+    print (13*"-"+" DUMPING 2D SYSTEMATIC OVERVIEW "+12*"-")
+    print "%20s %15s %20s" % ("Systematic","Central value?","Systematic shifts?")
+    print 57*"-"
+    vpsetlist2D  = [process.flashggDiPhotonSystematics.SystMethods2D, process.flashggMuonSystematics.SystMethods2D, process.flashggElectronSystematics.SystMethods2D]
+    vpsetlist2D += [process.flashggJetSystematics0.SystMethods2D]
+    printSystematicVPSet(vpsetlist2D)
+
+def printSystematicVPSet(vpsetlist):
     for vpset in vpsetlist:
         for pset in vpset:
 #            if detailed:
@@ -22,13 +31,24 @@ def printSystematicInfo(process):
                 cv = "NO"
             sigmalist = pset.NSigmas.value()    
             sig = ""
-            if len(sigmalist) > 0:
+            sig2 = ""
+            if type(sigmalist) == type([]) and len(sigmalist) > 0:
                 for val in sigmalist:
                     sig += "%i " % val
+            elif type(sigmalist) == type(cms.PSet()) and (len(sigmalist.firstVar) > 0 or len(sigmalist.secondVar) > 0):
+                sig += "1st: "
+                for val in sigmalist.firstVar:
+                    sig += "%i " % val
+                sig2 += "2nd: "
+                for val in sigmalist.secondVar:
+                        sig2 += "%i " % val
             else:    
                 sig += "NO"
             print "%20s %15s %20s" % (syst,cv,sig)
-        print 57*"-"
+            if (sig2 != ""):
+                print "%20s %15s %20s" % ("","",sig2)
+        if len(vpset):
+            print 57*"-"
 
 
 def createStandardSystematicsProducers(process):
@@ -108,7 +128,10 @@ def customizeSystematicsForBackground(process):
     vpsetlist += [getattr(process,"flashggJetSystematics%i"%i).SystMethods for i in range(len(UnpackedJetCollectionVInputTag))]
     for vpset in vpsetlist:
         for pset in vpset:
-            pset.NSigmas = cms.vint32()
+            if type(pset.NSigmas) == type(cms.vint32()):
+                pset.NSigmas = cms.vint32() # Do not perform shift
+            else:
+                pset.NSigmas = cms.PSet( firstVar = cms.vint32(), secondVar = cms.vint32() ) # Do not perform shift - 2D case
             if hasattr(pset,"SetupUncertainties"):
                 pset.SetupUncertainties = False
 
@@ -117,22 +140,30 @@ def customizeSystematicsForData(process):
     customizeLeptonSystematicsForData(process)
     customizeJetSystematicsForData(process)
 
+def customizeVPSetForData(systs, phScaleBins):
+    newvpset = cms.VPSet()
+    for pset in systs:
+        if pset.Label.value().count("Scale") or pset.Label.value().count("SigmaEOverESmearing"):
+            pset.ApplyCentralValue = cms.bool(True) # Turn on central shift for data (it is off for MC)
+            if type(pset.NSigmas) == type(cms.vint32()):
+                pset.NSigmas = cms.vint32() # Do not perform shift
+            else:
+                pset.NSigmas = cms.PSet( firstVar = cms.vint32(), secondVar = cms.vint32() ) # Do not perform shift - 2D case
+            if pset.Label.value().count("Scale") and phScaleBins != None: 
+                pset.BinList = phScaleBins
+            newvpset += [pset]
+    return newvpset
+
 def customizePhotonSystematicsForData(process):
     # By default remove the systematic entirely (central value and shifts)
     # For scale: put in central value, but omit shifts
     # TODO: this is wrong for sigE/E and possibly others - check!
 
     photonScaleBinsData = getattr(process,'photonScaleBinsData',None)
-    print photonScaleBinsData, process.photonScaleBinsData
-    newvpset = cms.VPSet()
-    for pset in process.flashggDiPhotonSystematics.SystMethods:
-        if pset.Label.value().count("Scale") or pset.Label.value().count("SigmaEOverESmearing"):
-            pset.ApplyCentralValue = cms.bool(True) # Turn on central shift for data (it is off for MC)
-            pset.NSigmas = cms.vint32() # Do not perform shift
-            if pset.Label.value().count("Scale") and photonScaleBinsData != None: 
-                pset.BinList = photonScaleBinsData 
-            newvpset += [pset]
-    process.flashggDiPhotonSystematics.SystMethods = newvpset
+    if hasattr(process,'photonScaleBinsData'):
+        print photonScaleBinsData, process.photonScaleBinsData
+    process.flashggDiPhotonSystematics.SystMethods = customizeVPSetForData(process.flashggDiPhotonSystematics.SystMethods, photonScaleBinsData)
+    process.flashggDiPhotonSystematics.SystMethods2D = customizeVPSetForData(process.flashggDiPhotonSystematics.SystMethods2D, photonScaleBinsData)
 
 def customizeLeptonSystematicsForData(process):
     # Remove systematics entirely
