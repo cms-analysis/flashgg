@@ -252,7 +252,11 @@ emptySigma = cms.PSet(
     secondVar = cms.vint32()
 )
 
-scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/76X_16DecRereco_2015_photons")
+# latest greatest
+# scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/76X_16DecRereco_2015_photons")
+
+# unblinding version + Et-dependent scale uncertainties
+scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/76X_16DecRereco_2015_Etunc")
 
 
 MCScaleHighR9EB = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
