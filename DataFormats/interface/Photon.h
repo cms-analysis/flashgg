@@ -63,6 +63,7 @@ namespace flashgg {
         void setPhoIdMvaWrtVtx( edm::Ptr<reco::Vertex> key, float val ) { phoIdMvaD_[key] = val; } // For later updates, e.g. recomputation when vertex is already selected
         void updateEnergy( std::string key, float val );
         void shiftAllMvaValuesBy( float val );
+        void shiftMvaValueBy( float val, edm::Ptr<reco::Vertex> vtx );
         void shiftSigmaEOverEValueBy( float val );
         void smearSigmaEOverEValueBy( float val );
         //    void setSigEOverE(float val) { sigEOverE_ = val; };
