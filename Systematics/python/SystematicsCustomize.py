@@ -126,6 +126,8 @@ def customizeSystematicsForBackground(process):
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
     vpsetlist = [process.flashggDiPhotonSystematics.SystMethods, process.flashggMuonSystematics.SystMethods, process.flashggElectronSystematics.SystMethods]
     vpsetlist += [getattr(process,"flashggJetSystematics%i"%i).SystMethods for i in range(len(UnpackedJetCollectionVInputTag))]
+    vpsetlist += [process.flashggDiPhotonSystematics.SystMethods2D, process.flashggMuonSystematics.SystMethods2D, process.flashggElectronSystematics.SystMethods2D]
+    vpsetlist += [getattr(process,"flashggJetSystematics%i"%i).SystMethods2D for i in range(len(UnpackedJetCollectionVInputTag))]
     for vpset in vpsetlist:
         for pset in vpset:
             if type(pset.NSigmas) == type(cms.vint32()):
