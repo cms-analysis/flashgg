@@ -112,7 +112,10 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            RandomLabel = cms.string("rnd_g_JER"), # for no-match case
                                                            rho = cms.InputTag('fixedGridRhoAll'),
                                                            Debug = cms.untracked.bool(False),
-                                                           ApplyCentralValue = cms.bool(True)
+                                                           ApplyCentralValue = cms.bool(True),
+                                                           UseTextFiles = cms.bool(True),
+                                                           TextFileResolution = cms.string("%s/src/flashgg/Systematics/data/JER/Fall15_25nsV2_MC_PtResolution_AK4PFchs.txt" % environ['CMSSW_BASE']),
+                                                           TextFileSF = cms.string("%s/src/flashgg/Systematics/data/JER/Fall15_25nsV2_MC_SF_AK4PFchs.txt" % environ['CMSSW_BASE'])
                                                            ),
                                                  cms.PSet( MethodName = cms.string("FlashggJetBTagWeight"),
                                                            Label = cms.string("JetBTagWeight"),
@@ -150,7 +153,7 @@ def createJetSystematics(process,replaceTagList):
     process.jetSystematicsSequence += module
     systematicsInputList.append(tag)
   createJECESource(process)  
-  createJERESource(process)  
+#  createJERESource(process)  
   return systematicsInputList
 
 def createJECESource(process):
