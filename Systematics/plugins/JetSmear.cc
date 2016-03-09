@@ -28,11 +28,29 @@ namespace flashgg {
         JME::JetResolution resolution;
         JME::JetResolutionScaleFactor res_sf;
         double current_rho_;
+
+        bool useTextFiles_;
+        std::string textFileSF_;
+        std::string textFileResolution_;
+
+        bool textFilesRead_;
     };
 
     void JetSmear::eventInitialize( const edm::Event &iEvent, const edm::EventSetup & iSetup ) {
-        resolution = JME::JetResolution::get(iSetup, "AK4PFchs_pt");
-        res_sf = JME::JetResolutionScaleFactor::get(iSetup, "AK4PFchs");
+
+        if (useTextFiles_) {
+            if (!textFilesRead_) {
+                std::cout << " About to read resolution" << std::endl;
+                resolution = JME::JetResolution(textFileResolution_);
+                std::cout << " About to read SF" <<std::endl;
+                res_sf = JME::JetResolutionScaleFactor(textFileSF_);
+                std::cout << " Both resolution and SF now read" << std::endl;
+                textFilesRead_ = true;
+            }
+        } else {
+            resolution = JME::JetResolution::get(iSetup, "AK4PFchs_pt");
+            res_sf = JME::JetResolutionScaleFactor::get(iSetup, "AK4PFchs");
+        }
 
         edm::Handle<double> rho;
         iEvent.getByToken(m_rho_token, rho);
@@ -44,9 +62,13 @@ namespace flashgg {
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
         random_label_( conf.getParameter<std::string>("RandomLabel")),
         m_rho_token(iC.consumes<double>( conf.getParameter<edm::InputTag>("rho"))),
-        debug_( conf.getUntrackedParameter<bool>("Debug", false) )
+        debug_( conf.getUntrackedParameter<bool>("Debug", false) ),
+        useTextFiles_( conf.getParameter<bool>("UseTextFiles") ),
+        textFileSF_( conf.getParameter<string>("TextFileSF") ),
+        textFileResolution_( conf.getParameter<string>("TextFileResolution") )
     {
         if (!applyCentralValue()) throw cms::Exception("Configuration") << " module not set up to have central value turned off";
+        textFilesRead_ = false;
     }
 
     std::string JetSmear::shiftLabel( int syst_value ) const
@@ -65,11 +87,17 @@ namespace flashgg {
     void JetSmear::applyCorrection( flashgg::Jet &y, int syst_shift )
     {
         if( overall_range_( y ) ) {
+            if ( debug_ ) {
+                std::cout << "  " << shiftLabel( syst_shift ) << ": Jet has pt=" << y.pt() << " eta=" << y.eta() << std::endl;
+            }
             JME::JetParameters parameters_1;
             parameters_1.setJetPt(y.pt());
             parameters_1.setJetEta(y.eta());
             parameters_1.setRho(current_rho_);
             float r = resolution.getResolution(parameters_1);
+            if ( debug_ ) {
+                std::cout << " GOT RESOLUTION " << std::endl;
+            }
             float scale_factor;
             if (syst_shift == 0) {
                 scale_factor = res_sf.getScaleFactor({{JME::Binning::JetEta, y.eta()}});
@@ -80,6 +108,7 @@ namespace flashgg {
             } else {
                 throw cms::Exception("UnsupportedJERShift") << " syst_shift=" << syst_shift << " is not supported";
             }
+            if (debug_) std::cout << " GOT SCALE FACTOR " << std::endl;
             float recpt = y.pt();
             auto genjet = y.genJet();
             if (genjet != nullptr) {
