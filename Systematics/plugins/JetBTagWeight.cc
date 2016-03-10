@@ -106,7 +106,7 @@ namespace flashgg {
             //obtaining scale factors
 
             //https://twiki.cern.ch/twiki/bin/view/CMS/BTagCalibration
-            float MaxBJetPt = 670., MaxLJetPt = 1000.;
+            float MaxBJetPt = 669.99, MaxLJetPt = 999.99;
             float MinBJetPt = 30.01, MinLJetPt = 20.01;
             float JetPt = obj.pt();
             float JetEta = obj.eta();
