@@ -17,7 +17,9 @@ flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                                                  cms.PSet(TagName = cms.InputTag('flashggUntagged'))
                                                                 ),
                                   massCutUpper=cms.double(180.),
-                                  massCutLower=cms.double(100)
+                                  massCutLower=cms.double(100),
+                                  minAcceptableObjectWeight = cms.double(0.1),
+                                  maxAcceptableObjectWeight = cms.double(10.)
                                   )
 
 #                                  TagVectorTag = cms.untracked.VInputTag(
