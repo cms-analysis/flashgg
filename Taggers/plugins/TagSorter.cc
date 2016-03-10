@@ -58,6 +58,9 @@ namespace flashgg {
 
         double massCutUpper;
         double massCutLower;
+
+        double minAcceptableObjectWeight;
+        double maxAcceptableObjectWeight;
     };
 
     TagSorter::TagSorter( const ParameterSet &iConfig ) :
@@ -66,6 +69,8 @@ namespace flashgg {
 
         massCutUpper = iConfig.getParameter<double>( "massCutUpper" );
         massCutLower = iConfig.getParameter<double>( "massCutLower" );
+        minAcceptableObjectWeight = iConfig.getParameter<double>( "minAcceptableObjectWeight" );
+        maxAcceptableObjectWeight = iConfig.getParameter<double>( "maxAcceptableObjectWeight" );
 
         const auto &vpset = iConfig.getParameterSetVector( "TagPriorityRanges" );
 
@@ -135,6 +140,13 @@ namespace flashgg {
                 // All the real work for prioritizing inside a tag type is done inside DiPhotonTagBase::operator<
                 if( chosenIndex == -1 || ( TagVectorEntry->ptrAt( chosenIndex ).get() < TagVectorEntry->ptrAt( TagPointerLoop ).get() ) );
                 chosenIndex = TagPointerLoop;
+
+                float centralObjectWeight = TagVectorEntry->ptrAt( TagPointerLoop )->centralWeight();
+                if (centralObjectWeight < minAcceptableObjectWeight || centralObjectWeight > maxAcceptableObjectWeight) {
+                    throw cms::Exception( "TagObjectWeight" ) << " Tag centralWeight=" << centralObjectWeight << " outside of bound [" 
+                                                              << minAcceptableObjectWeight << "," << maxAcceptableObjectWeight 
+                                                              << "] - " << tpr->name << " chosenIndex=" << chosenIndex << " - change bounds or debug tag";
+                }
             }
 
             if( chosenIndex != -1 ) {
