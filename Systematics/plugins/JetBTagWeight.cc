@@ -107,6 +107,7 @@ namespace flashgg {
 
             //https://twiki.cern.ch/twiki/bin/view/CMS/BTagCalibration
             float MaxBJetPt = 670., MaxLJetPt = 1000.;
+            float MinBJetPt = 30.01, MinLJetPt = 20.01;
             float JetPt = obj.pt();
             float JetEta = obj.eta();
             int JetFlav = obj.hadronFlavour();
@@ -119,11 +120,19 @@ namespace flashgg {
                     JetPt = MaxBJetPt; 
                     DoubleUncertainty = true;
                 }  
+                if(JetPt<MinBJetPt)  {
+                    JetPt = MinBJetPt;   
+                    DoubleUncertainty = true;
+                }
             } else { // for light jets
                 if(JetPt>MaxLJetPt)  {
                     JetPt = MaxLJetPt; 
                     DoubleUncertainty = true;
                 } 
+                if(JetPt<MinLJetPt)  {
+                    JetPt = MinLJetPt;   
+                    DoubleUncertainty = true;
+                }
             }
 
             if( this->debug_ ) {
