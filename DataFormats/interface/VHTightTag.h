@@ -30,6 +30,8 @@ namespace flashgg {
         void setMET( std::vector<edm::Ptr<pat::MET> > MET ) {MET_ = MET;}
         void setElectrons( std::vector<edm::Ptr<Electron> > Electrons ) {Electrons_ = Electrons;}
 
+        DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kVHTight; }
+
     private:
         std::vector<edm::Ptr<Muon> > Muons_;
         std::vector<edm::Ptr<Electron> > Electrons_;

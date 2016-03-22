@@ -24,6 +24,8 @@ namespace flashgg {
         void setNBLoose( int nb ) { Nbtagloose_ = nb; }
         void setNBMedium( int nb ) { Nbtagmedium_ = nb; }
 
+        DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kTTHHadronic; }
+
     private:
         int Nbtagloose_;
         int Nbtagmedium_;

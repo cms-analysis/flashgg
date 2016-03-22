@@ -12,22 +12,14 @@ flashggTagSorter = cms.EDProducer('FlashggTagSorter',
 #                                                                cms.PSet(TagName = cms.InputTag('flashggVHEtTag')),
                                                                  cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag')),   
                                                                  cms.PSet(TagName = cms.InputTag('flashggVBFTag')),     
-#                                                                
 #                                                                cms.PSet(TagName = cms.InputTag('flashggVHHadronicTag')),
                                                                  cms.PSet(TagName = cms.InputTag('flashggUntagged'))
                                                                 ),
-                                  massCutUpper=cms.double(180.),
-                                  massCutLower=cms.double(100),
-                                  minAcceptableObjectWeight = cms.double(0.1),
-                                  maxAcceptableObjectWeight = cms.double(10.)
+                                  MassCutUpper=cms.double(180.),
+                                  MassCutLower=cms.double(100),
+                                  MinAcceptableObjectWeight = cms.double(0.5),
+                                  MaxAcceptableObjectWeight = cms.double(2.0),
+                                  StoreOtherTagInfo = cms.bool(False),
+                                  Debug = cms.untracked.bool(False)
                                   )
-
-#                                  TagVectorTag = cms.untracked.VInputTag(
-#                                                                        cms.untracked.InputTag('flashggVHLooseTag'),
-#                                                                        cms.untracked.InputTag('flashggVHTightTag'),
-#                                                                        cms.untracked.InputTag('flashggTTHLeptonicTag'),
-#                                                                        cms.untracked.InputTag('flashggTTHHadronicTag'),
-#                                                                        cms.untracked.InputTag('flashggVBFTag'),
-#                                                                        cms.untracked.InputTag('flashggVHHadronicTag'),
-#                                                                        cms.untracked.InputTag('flashggUntagged'),
 
