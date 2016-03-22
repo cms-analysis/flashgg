@@ -25,6 +25,8 @@ namespace flashgg {
 
         void setJets( edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet> );
 
+        DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kVHHadronic; }
+
     private:
         edm::Ptr<DiPhotonCandidate> theDiPhotonCandidate_;
         //edm::Ptr<DiPhotonMVAResult> theDiPhotonMVAResult_;

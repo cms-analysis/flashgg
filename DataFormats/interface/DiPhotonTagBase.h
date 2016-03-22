@@ -10,6 +10,8 @@ namespace flashgg {
     class DiPhotonTagBase : public WeightedObject
     {
     public:
+        enum tag_t { kUndefined = 0, kUntagged, kVBF, kTTHHadronic, kTTHLeptonic, kVHTight, kVHLoose, kVHHadronic, kVHEt };
+
         DiPhotonTagBase();
         virtual ~DiPhotonTagBase(); 
         DiPhotonTagBase( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult );
@@ -32,6 +34,13 @@ namespace flashgg {
         void setIsGold ( int runNumber );
         void setIsGoldMC( bool isGold ) { isGold_ = isGold; }
         bool isGold() const { return isGold_; }
+        virtual DiPhotonTagBase::tag_t tagEnum() const { return DiPhotonTagBase::kUndefined; }
+        unsigned nOtherTags() const { return otherTags_.size(); }
+        void addOtherTag( const DiPhotonTagBase& other ) { otherTags_.emplace_back( other.tagEnum(), other.diPhotonIndex() ); }
+        void addOtherTagTypeAndIndex( DiPhotonTagBase::tag_t tag_i, int dipho_i ) { otherTags_.emplace_back( tag_i, dipho_i ); }
+        void addOtherTags( std::vector<std::pair<DiPhotonTagBase::tag_t,int> > others ) { otherTags_ = others; }
+        DiPhotonTagBase::tag_t otherTagType( unsigned i ) const { return otherTags_[i].first; };
+        int otherTagDiPhotonIndex ( unsigned i ) const { return otherTags_[i].second; };
     private:
         DiPhotonMVAResult mva_result_;
         int category_number_;
@@ -40,6 +49,7 @@ namespace flashgg {
         edm::Ptr<TagTruthBase> truth_;
         string systLabel_;
         bool isGold_;
+        std::vector<std::pair<DiPhotonTagBase::tag_t,int> > otherTags_;
     };
 
 }
