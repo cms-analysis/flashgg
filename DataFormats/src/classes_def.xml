@@ -253,4 +253,8 @@
 <class name="std::vector<edm::Ptr<flashgg::PhotonJetCandidate> >"/>
 <class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::PhotonJetCandidate> > >"/>
 
+<class name="flashgg::TagCandidate" ClassVersion="0">
+</class>
+<class name="std::vector<flashgg::TagCandidate>"/>
+<class name="edm::Wrapper<std::vector<flashgg::TagCandidate> >"/>
 </lcgdict>
