@@ -5,106 +5,80 @@ import sys
 process = cms.Process("tnp")
 
 ###################################################################
-options = dict()
-varOptions = VarParsing('analysis')
-varOptions.register(
-    "isMC",
-    True,
-    VarParsing.multiplicity.singleton,
-    VarParsing.varType.bool,
-    "Compute MC efficiencies"
-    )
+myoptions = dict()
+isMC = False
 
-varOptions.parseArguments()
+myoptions['HLTProcessName']        = "HLT"
 
-options['HLTProcessName']        = "HLT"
-
-#options['PHOTON_COLL']           = "slimmedPhotons"
-options['DIPHOTON_COLL']         = "flashggDiPhotons"
-options['PHOTON_CUTS']           = "(abs(superCluster.eta)<2.5) && ((superCluster.energy*sin(superCluster.position.theta))>15.0)"
-options['PHOTON_TAG_CUTS']       = "(abs(superCluster.eta)<=2.1) && !(1.4442<=abs(superCluster.eta)<=1.566) && (superCluster.energy*sin(superCluster.position.theta))>30.0"
-options['MAXEVENTS']             = cms.untracked.int32(-1) 
-options['useAOD']                = cms.bool(False)
-options['OUTPUTEDMFILENAME']     = 'edmFile.root'
-options['DEBUG']                 = cms.bool(False)
-options['LEADING_PRESELECTION']  = """
-                                                    (abs(leadingPhoton.superCluster.eta) < 2.5 && abs(subLeadingPhoton.superCluster.eta) < 2.5) &&
-                                    (  leadingPhoton.hadronicOverEm < 0.1) &&
-                                    (( leadingPhoton.r9 > 0.5 && leadingPhoton.isEB) || (leadingPhoton.r9 > 0.8 && leadingPhoton.isEE)) &&
-                                    (( subLeadingPhoton.r9 > 0.5 && subLeadingPhoton.isEB) || (subLeadingPhoton.r9 > 0.8 && subLeadingPhoton.isEE)) &&
-                                    (
-                                        ( leadingPhoton.isEB &&
-                                        (leadingPhoton.r9>0.85 || 
-                                        (leadingPhoton.sigmaIetaIeta < 0.015 && 
-                                         leadingPhoton.pfChgIsoWrtChosenVtx02 < 6.0 && 
-                                         leadingPhoton.trkSumPtHollowConeDR03 < 6.0 )))  ||
-                                        ( leadingPhoton.isEE &&
-                                        (leadingPhoton.r9>0.9 || 
-                                        (leadingPhoton.sigmaIetaIeta < 0.035 && 
-                                         leadingPhoton.pfChgIsoWrtChosenVtx02 < 6.0 && 
-                                         leadingPhoton.trkSumPtHollowConeDR03 < 6.0 ))) 
-                                     )
-                                        &&
-                                     (leadingPhoton.pt > 14 && leadingPhoton.hadTowOverEm()<0.15 && 
-                                     (leadingPhoton.r9()>0.8 || leadingPhoton.chargedHadronIso()<20 
-                                      || leadingPhoton.chargedHadronIso()<0.3*leadingPhoton.pt())) 
+myoptions['DIPHOTON_COLL']         = "flashggDiPhotons"
+myoptions['PHOTON_CUTS']           = "(abs(superCluster.eta)<2.5) && ((superCluster.energy*sin(superCluster.position.theta))>20.0)&& !(1.4442<=abs(superCluster.eta)<=1.566)"
+myoptions['PHOTON_TAG_CUTS']       = "(abs(superCluster.eta)<=2.5) && !(1.4442<=abs(superCluster.eta)<=1.566) && (superCluster.energy*sin(superCluster.position.theta))>30.0"
+myoptions['MAXEVENTS']             = cms.untracked.int32(-1) 
+myoptions['useAOD']                = cms.bool(False)
+myoptions['OUTPUTEDMFILENAME']     = 'edmFile.root'
+myoptions['DEBUG']                 = cms.bool(False)
+myoptions['LEADING_PRESELECTION']  = """(abs(leadingPhoton.superCluster.eta) < 2.5 && abs(subLeadingPhoton.superCluster.eta) < 2.5) &&
+                                        (leadingPhoton.pt > 20) &&
+                                        (leadingPhoton.hadronicOverEm < 0.1) &&
+                                        ((leadingPhoton.full5x5_r9 > 0.5 && leadingPhoton.isEB) || (leadingPhoton.full5x5_r9 > 0.8 && leadingPhoton.isEE)) &&
+                                        ((subLeadingPhoton.full5x5_r9 > 0.5 && subLeadingPhoton.isEB) || (subLeadingPhoton.full5x5_r9 > 0.8 && subLeadingPhoton.isEE)) &&
+                                        ((leadingPhoton.isEB &&
+                                        (leadingPhoton.full5x5_r9>0.85 ||
+                                        (leadingPhoton.full5x5_sigmaIetaIeta < 0.015 && leadingPhoton.pfPhoIso03 < 4.0 && leadingPhoton.trkSumPtHollowConeDR03 < 6.0 ))) ||
+                                        (leadingPhoton.isEE &&
+                                        (leadingPhoton.full5x5_r9>0.9 ||
+                                        (leadingPhoton.full5x5_sigmaIetaIeta < 0.035 && leadingPhoton.pfPhoIso03 < 4.0 && leadingPhoton.trkSumPtHollowConeDR03 < 6.0 )))) &&
+                                        (leadingPhoton.pt > 14 && leadingPhoton.hadTowOverEm()<0.15 &&
+                                        (leadingPhoton.r9()>0.8 || leadingPhoton.chargedHadronIso()<20 || leadingPhoton.chargedHadronIso()<0.3*leadingPhoton.pt())) 
 """ 
 
-options['SUBLEADING_PRESELECTION'] = """
-                                                    (abs(leadingPhoton.superCluster.eta) < 2.5 && abs(subLeadingPhoton.superCluster.eta) < 2.5) &&
-                                    ( subLeadingPhoton.hadronicOverEm < 0.1) &&
-                                    (( leadingPhoton.r9 > 0.5 && leadingPhoton.isEB) || (leadingPhoton.r9 > 0.8 && leadingPhoton.isEE)) &&
-                                    (( subLeadingPhoton.r9 > 0.5 && subLeadingPhoton.isEB) || (subLeadingPhoton.r9 > 0.8 && subLeadingPhoton.isEE)) &&
-                                    (
-                                        ( subLeadingPhoton.isEB &&
-                                        (subLeadingPhoton.r9>0.85 || 
-                                        (subLeadingPhoton.sigmaIetaIeta < 0.015 && 
-                                         subLeadingPhoton.pfChgIsoWrtChosenVtx02 < 6.0 && 
-                                         subLeadingPhoton.trkSumPtHollowConeDR03 < 6.0 )))  ||
-                                        ( subLeadingPhoton.isEE &&
-                                        (subLeadingPhoton.r9>0.9 || 
-                                        (subLeadingPhoton.sigmaIetaIeta < 0.035 && 
-                                         subLeadingPhoton.pfChgIsoWrtChosenVtx02 < 6.0 && 
-                                         subLeadingPhoton.trkSumPtHollowConeDR03 < 6.0 ))) 
-                                     )
-                                        &&
-                                     (subLeadingPhoton.pt > 14 && subLeadingPhoton.hadTowOverEm()<0.15 &&
-                                     (subLeadingPhoton.r9()>0.8 || subLeadingPhoton.chargedHadronIso()<20 
-                                      || subLeadingPhoton.chargedHadronIso()<0.3*subLeadingPhoton.pt()))               
+myoptions['SUBLEADING_PRESELECTION'] = """(abs(leadingPhoton.superCluster.eta) < 2.5 && abs(subLeadingPhoton.superCluster.eta) < 2.5) &&
+                                          (subLeadingPhoton.pt > 20) && 
+                                          (subLeadingPhoton.hadronicOverEm < 0.1) &&
+                                          ((leadingPhoton.full5x5_r9 > 0.5 && leadingPhoton.isEB) || (leadingPhoton.full5x5_r9 > 0.8 && leadingPhoton.isEE)) &&
+                                          ((subLeadingPhoton.full5x5_r9 > 0.5 && subLeadingPhoton.isEB) || (subLeadingPhoton.full5x5_r9 > 0.8 && subLeadingPhoton.isEE)) &&
+                                          (( subLeadingPhoton.isEB &&
+                                          (subLeadingPhoton.full5x5_r9>0.85 ||
+                                          (subLeadingPhoton.full5x5_sigmaIetaIeta < 0.015 && subLeadingPhoton.pfPhoIso03 < 4.0 && subLeadingPhoton.trkSumPtHollowConeDR03 < 6.0 ))) ||
+                                          (subLeadingPhoton.isEE &&
+                                          (subLeadingPhoton.full5x5_r9>0.9 ||
+                                          (subLeadingPhoton.full5x5_sigmaIetaIeta < 0.035 && subLeadingPhoton.pfPhoIso03 < 6.0 && subLeadingPhoton.trkSumPtHollowConeDR03 < 6.0 )))) &&
+                                          (subLeadingPhoton.pt > 14 && subLeadingPhoton.hadTowOverEm()<0.15 &&
+                                          (subLeadingPhoton.r9()>0.8 || subLeadingPhoton.chargedHadronIso()<20 || subLeadingPhoton.chargedHadronIso()<0.3*subLeadingPhoton.pt()))
 """
 
 
 from flashgg.Validation.treeMakerOptionsPhotons_cfi import *
 
-if (varOptions.isMC):
-    options['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-BetaV6-25ns/Spring15BetaV6/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8//RunIISpring15-ReMiniAOD-BetaV6-25ns-Spring15BetaV6-v1-RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/151015_170625/0000/myMicroAODOutputFile_1.root")
+if (isMC):
+    myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIIFall15DR76-1_3_0-25ns_ext1/1_3_1/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/160127_112132/0000/myMicroAODOutputFile_9.root")
 
-    options['OUTPUT_FILE_NAME']      = "TnPTree_mc.root"
-    options['TnPPATHS']              = cms.vstring("HLT_Ele22_eta2p1_WP75_Gsf_v*")
-    options['TnPHLTTagFilters']      = cms.vstring()#"hltEle22eta2p1WP75GsfTrackIsoFilter")
-    options['TnPHLTProbeFilters']    = cms.vstring()
-    options['HLTFILTERTOMEASURE']    = cms.vstring("")
-    options['GLOBALTAG']             = 'MCRUN2_74_V9'
-    options['EVENTSToPROCESS']       = cms.untracked.VEventRange()
+    myoptions['OUTPUT_FILE_NAME']      = "TnPTree_mc.root"
+    myoptions['TnPPATHS']              = cms.vstring("HLT_Ele23_WPLoose_Gsf_v*")
+    myoptions['TnPHLTTagFilters']      = cms.vstring("hltEle23WPLooseGsfTrackIsoFilter")
+    myoptions['TnPHLTProbeFilters']    = cms.vstring()
+    myoptions['HLTFILTERTOMEASURE']    = cms.vstring("")
+    myoptions['GLOBALTAG']             = '76X_mcRun2_asymptotic_v12'
+    myoptions['EVENTSToPROCESS']       = cms.untracked.VEventRange()
 else:
-    options['INPUT_FILE_NAME']       = ("/store/relval/CMSSW_7_4_1/RelValZEE_13/MINIAODSIM/MCRUN2_74_V9_gensim_740pre7-v1/00000/1E35CCF8-32EC-E411-8F29-0025905A48D0.root")
-    options['OUTPUT_FILE_NAME']      = "TnPTree_data.root"
-    options['TnPPATHS']              = ["HLT_Ele23_WPLoose_Gsf_v1",]
-    options['TnPHLTTagFilters']      = ["hltEle23WPLooseGsfTrackIsoFilter"]
-    options['TnPHLTProbeFilters']    = cms.vstring()
-    options['HLTFILTERTOMEASURE']    = cms.vstring("")
-    options['GLOBALTAG']             = 'MCRUN2_74_V9'
-    options['EVENTSToPROCESS']       = cms.untracked.VEventRange()
+    myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIIFall15DR76-1_3_0-25ns_ext1/1_3_1/SingleElectron/RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-Run2015D-16Dec2015-v1/160127_024003/0000/myMicroAODOutputFile_10.root")
+    myoptions['OUTPUT_FILE_NAME']      = "TnPTree_data.root"
+    myoptions['TnPPATHS']              = cms.vstring("HLT_Ele23_WPLoose_Gsf_v*")
+    myoptions['TnPHLTTagFilters']      = cms.vstring("hltEle23WPLooseGsfTrackIsoFilter")
+    myoptions['TnPHLTProbeFilters']    = cms.vstring()
+    myoptions['HLTFILTERTOMEASURE']    = cms.vstring("")
+    myoptions['GLOBALTAG']             = '76X_dataRun2_v15'
+    myoptions['EVENTSToPROCESS']       = cms.untracked.VEventRange()
 
 ###################################################################
 
-setModules(process, options)
-from PhysicsTools.TagAndProbe.treeContentPhotons_cfi import *
+setModules(process, myoptions)
+from flashgg.Validation.treeContentPhotons_cfi import *
 
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
 process.load("Configuration.Geometry.GeometryRecoDB_cff")
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
-process.GlobalTag.globaltag = options['GLOBALTAG']
+process.GlobalTag.globaltag = myoptions['GLOBALTAG']
 
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
@@ -114,18 +88,18 @@ process.MessageLogger.cerr.threshold = ''
 process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
 process.source = cms.Source("PoolSource",
-                            fileNames = cms.untracked.vstring(options['INPUT_FILE_NAME']),
-                            eventsToProcess = options['EVENTSToPROCESS']
+                            fileNames = cms.untracked.vstring(myoptions['INPUT_FILE_NAME']),
+                            eventsToProcess = myoptions['EVENTSToPROCESS']
                             )
 
-process.maxEvents = cms.untracked.PSet( input = options['MAXEVENTS'])
+process.maxEvents = cms.untracked.PSet( input = myoptions['MAXEVENTS'])
 
 ###################################################################
 ## ID
 ###################################################################
 
-from PhysicsTools.TagAndProbe.photonIDModules_cfi import *
-setIDs(process, options)
+from flashgg.Validation.photonIDModules_cfi import *
+setIDs(process, myoptions)
 
 ###################################################################
 ## SEQUENCES
@@ -154,13 +128,10 @@ process.allTagsAndProbes *= process.tagTightRECO
 
 process.mc_sequence = cms.Sequence()
 
-if (varOptions.isMC):
-    process.mc_sequence *= (process.McMatchTag + process.McMatchRECO)
-
 ##########################################################################
 ## TREE MAKER OPTIONS
 ##########################################################################
-if (not varOptions.isMC):
+if (not isMC):
     mcTruthCommonStuff = cms.PSet(
         isMC = cms.bool(False)
         )
@@ -175,12 +146,11 @@ process.PhotonToRECO = cms.EDAnalyzer("TagProbeFitTreeProducer",
                                       allProbes     = cms.InputTag("goodPhotonsProbeHLT"),
                                       )
 
-if (varOptions.isMC):
-    process.PhotonToRECO.probeMatches  = cms.InputTag("McMatchRECO")
+if (isMC):
+    #process.PhotonToRECO.probeMatches  = cms.InputTag("McMatchRECO")
     process.PhotonToRECO.eventWeight   = cms.InputTag("generator")
     process.PhotonToRECO.PUWeightSrc   = cms.InputTag("pileupReweightingProducer","pileupWeights")
-    process.PhotonToRECO.variables.Pho_dRTau  = cms.InputTag("GsfDRToNearestTauProbe")
-    process.PhotonToRECO.tagVariables.probe_dRTau    = cms.InputTag("GsfDRToNearestTauProbe")
+    
 
 process.tree_sequence = cms.Sequence(process.PhotonToRECO)
 
@@ -189,11 +159,11 @@ process.tree_sequence = cms.Sequence(process.PhotonToRECO)
 ##########################################################################
 
 process.out = cms.OutputModule("PoolOutputModule", 
-                               fileName = cms.untracked.string(options['OUTPUTEDMFILENAME']),
+                               fileName = cms.untracked.string(myoptions['OUTPUTEDMFILENAME']),
                                SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring("p"))
                                )
 process.outpath = cms.EndPath(process.out)
-if (not options['DEBUG']):
+if (not myoptions['DEBUG']):
     process.outpath.remove(process.out)
 
 ##########################################################################################
@@ -203,31 +173,39 @@ if (not options['DEBUG']):
 process.load("flashgg/Taggers/flashggDiPhotonMVA_cfi")
 process.flashggDiPhotonMVA.DiPhotonTag = cms.InputTag('flashggDiPhotons')
 
-if (varOptions.isMC):
+if (isMC):
     process.p = cms.Path(
         process.flashggDiPhotonMVA +
         process.sampleInfo +
         process.hltFilter +
         process.pho_sequence + 
         process.allTagsAndProbes +
-        #process.pileupReweightingProducer +
+        process.pileupReweightingProducer +
         process.mc_sequence + 
-        process.GsfDRToNearestTauProbe + 
-        process.GsfDRToNearestTauTag + 
         process.tree_sequence
         )
 else:
     process.p = cms.Path(
         process.flashggDiPhotonMVA +
-        process.sampleInfo +
+        #process.sampleInfo +
         process.hltFilter +
         process.pho_sequence + 
         process.allTagsAndProbes +
+        process.pileupReweightingProducer +
         process.mc_sequence +
         process.tree_sequence
         )
 
-process.TFileService = cms.Service(
-    "TFileService", fileName = cms.string(options['OUTPUT_FILE_NAME']),
-    closeFileFast = cms.untracked.bool(True)
-    )
+process.TFileService = cms.Service("TFileService", 
+                                   #fileName = cms.string(myoptions['OUTPUT_FILE_NAME']),
+                                   fileName = cms.string("TnP.root"),
+                                   closeFileFast = cms.untracked.bool(True)
+                                   )
+
+from flashgg.MetaData.JobConfig import JobConfig
+
+customize = JobConfig(crossSections=["$CMSSW_BASE/src/flashgg/MetaData/data/cross_sections.json"])
+customize.setDefault("maxEvents", -1)
+customize.setDefault("targetLumi", 1)
+customize(process)
+
