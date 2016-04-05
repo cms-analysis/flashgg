@@ -183,6 +183,12 @@ class JobConfig(object):
 
             self.processIndex = self.options.processIndex
             self.processId = processId
+
+            if ("itype" in xsec):
+                for name,obj in process.__dict__.iteritems():
+                    if hasattr(obj, "sampleIndex"):
+                        obj.sampleIndex = xsec["itype"]
+
             
             isdata = self.processType == "data"
             if isdata or self.targetLumi > 0. or putarget:
