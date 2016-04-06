@@ -65,7 +65,7 @@ namespace flashgg {
         bool debug_;
         bool storeOtherTagInfo_;
 
-        std::vector<std::pair<DiPhotonTagBase::tag_t,int> > otherTags_;
+        std::vector<std::tuple<DiPhotonTagBase::tag_t,int,int> > otherTags_; // (type,category,diphoton index)
     };
 
     TagSorter::TagSorter( const ParameterSet &iConfig ) :
@@ -159,7 +159,10 @@ namespace flashgg {
                          (TagVectorEntry->ptrAt( chosen_i )->categoryNumber() > category) ||
                          (TagVectorEntry->ptrAt( chosen_i )->categoryNumber() == category && TagVectorEntry->ptrAt( chosen_i )->diPhoton()->sumPt() < sumPt) ) {
                         if ( chosen_i >= 0 && storeOtherTagInfo_ ) {
-                            otherTags_.emplace_back( TagVectorEntry->ptrAt( chosen_i )->tagEnum(), TagVectorEntry->ptrAt( chosen_i )->diPhotonIndex() );
+                            otherTags_.emplace_back( TagVectorEntry->ptrAt( chosen_i )->tagEnum(), 
+                                                     TagVectorEntry->ptrAt( chosen_i )->categoryNumber(),
+                                                     TagVectorEntry->ptrAt( chosen_i )->diPhotonIndex() 
+                                                     );
                         }
                         if ( debug_  ) {
                             std::cout << "[TagSorter DEBUG] Updating chosen_i " << chosen_i << " --> " << tag_i  << std::endl;
@@ -196,7 +199,9 @@ namespace flashgg {
                               << TagVectorEntry->ptrAt(chosen_i)->sumPt() << ", systLabel " << TagVectorEntry->ptrAt(chosen_i)->systLabel() << std::endl;
                 }
                 if ( storeOtherTagInfo_ ) {
-                    std::cout << "[TagSorter DEBUG] Saving other interpretations, so we save the ones so far (if any) and then continue looping for new ones" << std::endl;
+                    if ( debug_ ) {
+                        std::cout << "[TagSorter DEBUG] Saving other interpretations, so we save the ones so far (if any) and then continue looping for new ones" << std::endl;
+                    }
                     alreadyChosen = true;
                     SelectedTag->back().addOtherTags( otherTags_ );
                     
@@ -217,7 +222,9 @@ namespace flashgg {
             if ( SelectedTag->back().nOtherTags() > 0 ) {
                 std::cout << "[TagSorter DEBUG] List of other tags: (" << SelectedTag->back().nOtherTags() << " total):" << std::endl;
                 for ( unsigned i = 0 ; i < SelectedTag->back().nOtherTags() ; i++) {
-                    std::cout << "[TagSorter DEBUG]  (tag_t,dipho_i)=(" << SelectedTag->back().otherTagType(i) << "," << SelectedTag->back().otherTagDiPhotonIndex(i) << ")" << std::endl;
+                    std::cout << "[TagSorter DEBUG]  (tag_t,cat,dipho_i)=(" << SelectedTag->back().otherTagType(i) << "," 
+                              << SelectedTag->back().otherTagCategory(i) << ","
+                              << SelectedTag->back().otherTagDiPhotonIndex(i) << ")" << std::endl;
                 }
             } else {
                 std::cout << "[TagSorter DEBUG] No other tag interpretations for this event" << std::endl;

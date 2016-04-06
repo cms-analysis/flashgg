@@ -258,8 +258,6 @@ namespace  {
         edm::Wrapper<edm::Ptr<flashgg::PhotonJetCandidate> >       wrp_ptr_fgj_dip;
         std::vector<edm::Ptr<flashgg::PhotonJetCandidate> >        vec_ptr_fgj_dip;
         edm::Wrapper<std::vector<edm::Ptr<flashgg::PhotonJetCandidate> > >   wrp_vec_ptr_fgj_dip;
-
-
     };
 }
 // Local Variables:

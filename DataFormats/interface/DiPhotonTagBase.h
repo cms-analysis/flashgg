@@ -35,12 +35,26 @@ namespace flashgg {
         void setIsGoldMC( bool isGold ) { isGold_ = isGold; }
         bool isGold() const { return isGold_; }
         virtual DiPhotonTagBase::tag_t tagEnum() const { return DiPhotonTagBase::kUndefined; }
-        unsigned nOtherTags() const { return otherTags_.size(); }
-        void addOtherTag( const DiPhotonTagBase& other ) { otherTags_.emplace_back( other.tagEnum(), other.diPhotonIndex() ); }
-        void addOtherTagTypeAndIndex( DiPhotonTagBase::tag_t tag_i, int dipho_i ) { otherTags_.emplace_back( tag_i, dipho_i ); }
-        void addOtherTags( std::vector<std::pair<DiPhotonTagBase::tag_t,int> > others ) { otherTags_ = others; }
-        DiPhotonTagBase::tag_t otherTagType( unsigned i ) const { return otherTags_[i].first; };
-        int otherTagDiPhotonIndex ( unsigned i ) const { return otherTags_[i].second; };
+        unsigned nOtherTags() const { 
+            assert(otherTagTypes_.size() == otherTagCategories_.size());
+            assert(otherTagTypes_.size() == otherTagIndices_.size());
+            return otherTagTypes_.size(); 
+        }
+        void addOtherTag( const DiPhotonTagBase& other ) { 
+            otherTagTypes_.push_back(other.tagEnum());
+            otherTagCategories_.push_back(other.categoryNumber());
+            otherTagIndices_.push_back(other.diPhotonIndex());
+        }
+        void addOtherTags( std::vector<std::tuple<DiPhotonTagBase::tag_t,int,int> > others ) { 
+            for (unsigned i = 0 ; i < others.size() ; i++) {
+                otherTagTypes_.push_back(std::get<0>(others[i]));
+                otherTagCategories_.push_back(std::get<1>(others[i]));
+                otherTagIndices_.push_back(std::get<2>(others[i]));
+            }
+        }
+        DiPhotonTagBase::tag_t otherTagType( unsigned i ) const { return otherTagTypes_[i]; }
+        int otherTagCategory( unsigned i ) const { return otherTagCategories_[i]; }
+        int otherTagDiPhotonIndex ( unsigned i ) const { return otherTagIndices_[i]; }
     private:
         DiPhotonMVAResult mva_result_;
         int category_number_;
@@ -49,7 +63,10 @@ namespace flashgg {
         edm::Ptr<TagTruthBase> truth_;
         string systLabel_;
         bool isGold_;
-        std::vector<std::pair<DiPhotonTagBase::tag_t,int> > otherTags_;
+        //        std::vector<std::tuple<DiPhotonTagBase::tag_t,int,int> > otherTags_; // (type,category,diphoton index) 
+        std::vector<DiPhotonTagBase::tag_t> otherTagTypes_;
+        std::vector<int> otherTagCategories_;
+        std::vector<int> otherTagIndices_;
     };
 
 }
