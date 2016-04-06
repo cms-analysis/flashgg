@@ -43,7 +43,7 @@ class BatchRegistry:
             raise Exception,"Could not automatically determine the batchSystem for domain %s. Please specify it manually.\n Known domains are: %s\n" % ( domain, " ".join(BatchRegistry.domains_map.keys()) )
         ret = BatchRegistry.domains_map[domain]
         if BatchRegistry.autoprint:
-            print( "\nINFO: We are at '%s', so we will use '%s' as bacth system.\n     Please specify the batch system on the command line if you are not happy with this." % (domain,ret) )
+            print( "\nINFO: We are at '%s', so we will use '%s' as batch system.\n     Please specify the batch system on the command line if you are not happy with this." % (domain,ret) )
             BatchRegistry.autoprint = False
         return ret
     
