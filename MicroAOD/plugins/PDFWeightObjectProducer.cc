@@ -18,6 +18,13 @@
 #include "DataFormats/PatCandidates/interface/libminifloat.h"
 #include "PhysicsTools/HepMCCandAlgos/interface/PDFWeightsHelper.h"
 #include "FWCore/Utilities/interface/EDMException.h"
+
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+#include <boost/foreach.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string.hpp>
+
 using namespace std;
 using namespace edm;
 
@@ -33,28 +40,24 @@ namespace flashgg {
         EDGetTokenT<LHEEventProduct> LHEEventToken_;
         EDGetTokenT<GenEventInfoProduct> srcTokenGen_;
         string tag_;
-        string delimiter_1_;
-        string delimiter_2_;
-        string delimiter_3_;
         void beginRun( edm::Run const &, edm::EventSetup const &iSetup );
-        vector<int> weight_indices;
+        vector<int> pdf_indices;
         vector<int> alpha_indices;
         vector<int> scale_indices;
-        string removeSpace( string line );
         PDFWeightsHelper pdfweightshelper_;//tool from HepMCCandAlgos/interface/PDFWeightsHelper
         unsigned int nPdfEigWeights_;
-        //		        std::vector<float> pdfeigweights_;
         edm::FileInPath mc2hessianCSV;
-        std::vector<double> lhe_weights;
+        std::vector<double> inpdfweights;
         float gen_weight;
         string pdfset_;
         string pdfid_1;
         string pdfid_2;
-        bool flashgg_flag_;
-        bool pdfset_flag_;
-        bool alpha_s_flag_;
-        bool scale_flag_;
-        bool skip;
+        string alphas_id_1;
+        string alphas_id_2;
+        bool isStandardSample_;
+        bool doAlphasWeights_;
+        bool doScaleWeights_;
+        string generatorType ;
 	};
     
 	PDFWeightProducer::PDFWeightProducer( const edm::ParameterSet &iConfig ):
@@ -62,323 +65,266 @@ namespace flashgg {
         srcTokenGen_( consumes<GenEventInfoProduct>( iConfig.getParameter<InputTag>("GenTag") ) )
 	{
         consumes<LHERunInfoProduct,edm::InRun> (edm::InputTag("externalLHEProducer"));
-        pdfset_flag_ = iConfig.getUntrackedParameter<bool>("pdfset_flag",false);
-        flashgg_flag_ = iConfig.getUntrackedParameter<bool>("flashgg_flag",true);       
-        alpha_s_flag_ = iConfig.getUntrackedParameter<bool>("alpha_s_flag","true");
-        scale_flag_ = iConfig.getUntrackedParameter<bool>("scale_flag","true"); 
 		tag_ = iConfig.getUntrackedParameter<string>( "tag", "initrwgt" );
-//		pdfid_1 = iConfig.getUntrackedParameter<string>("pdfid_1","0");
-//		pdfid_2 = iConfig.getUntrackedParameter<string>("pdfid_2","0");
+        isStandardSample_ = iConfig.getUntrackedParameter<bool>("isStandardSample",true);
+        doAlphasWeights_ = iConfig.getUntrackedParameter<bool>("doAlphasWeights",true);
+        doScaleWeights_ = iConfig.getUntrackedParameter<bool>("doScaleWeights",true); 
         pdfset_ = iConfig.getUntrackedParameter<string>("pdfset","NNPDF30_lo_as_0130.LHgrid");
-		delimiter_1_ = iConfig.getUntrackedParameter<string>( "delimiter_1", "id=\"" );
-		delimiter_2_ = iConfig.getUntrackedParameter<string>( "delimiter_2", "\">" );
-        delimiter_3_ = iConfig.getUntrackedParameter<string>( "delimiter_3", "</weightgroup>" );
         nPdfEigWeights_ = iConfig.getParameter<unsigned int>("nPdfEigWeights");
         mc2hessianCSV = iConfig.getParameter<edm::FileInPath>("mc2hessianCSV");
 
 		produces<vector<flashgg::PDFWeightObject> >();
 	}
 
-	string removeSpaces( string str )
-	{
-		str.erase( remove_if( str.begin(), str.end(), ::isspace ), str.end() );
-		return str;
-	}
-
-	void PDFWeightProducer::set_generator_type( vector<string> text ){
-        
-		string type;
-        
-		for(unsigned int line = 0; line<text.size(); line++ ){
-            
-			size_t found_mg = text.at(line).find("MadGraph");
-			size_t found_ph = text.at(line).find("powheg");
-            
-			if (found_mg != string::npos ){
-                
-				pdfid_1 = "292201";
-				pdfid_2 = "292300";
-				type = "mg";
-				break;
-			}
-            
-            
-			if ( found_ph != string::npos ){
-                
-				pdfid_1 = "260001";
-				pdfid_2 = "260100";
-                
-				//alpha_s1 = "265000";
-				//alpha_s2 = "266000";
-				type = "ph";
-				break;
-			}
-            
-		}
-
-        //        throw cms::Exception("UnexpectedInput") << " We were expecting this file generator info to be labelled as MadGraph or powheg";
-        //        std::cout << "  WARNING: We get nothing but assume the PDF weight range is 292201-292300 (a la MadGraph)" << std::endl;
-        //        pdfid_1 = "292201";
-        //        pdfid_2 = "292300";
-        // Actually if there is a noop we will process the next round of lines
-        
-	}
     
     
 	void PDFWeightProducer::beginRun( edm::Run const &iRun, edm::EventSetup const &iSetup )
 	{
+
+        pdf_indices.clear();
+        scale_indices.clear();
+        alpha_indices.clear();
+
+
 		Handle<LHERunInfoProduct> run;
 		typedef vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
         
         iRun.getByLabel( "externalLHEProducer", run );
 		LHERunInfoProduct myLHERunInfoProduct = *( run.product() );
-
-		int upper_index = 0;
-		vector<string> weight_lines;
-        //		string generator;
         
+        //--- get info from LHERunInfoProduct
+		vector<string> weight_lines;
 		for( headers_const_iterator iter = myLHERunInfoProduct.headers_begin(); iter != myLHERunInfoProduct.headers_end(); iter++ ) {
             
-			vector<string> lines = iter->lines();
+            vector<string> lines = iter->lines();
+            //for (unsigned int iLine = 0; iLine<lines.size(); iLine++) {
+            //    std::cout << lines.at(iLine);
+            //}
             
 			if( ( iter->tag() ).compare( tag_ ) == 0 ) {
 				//cout << iter->tag() << endl;
 				weight_lines = iter->lines();
 			}
 
-            if(flashgg_flag_){
-            
-            PDFWeightProducer::set_generator_type(lines);
-            //std::cout << " After set_generator_type on " << iter->tag() << " we have pdfids: " << pdfid_1 << " " << pdfid_2 << std::endl;
-
-            }
-
-        }
-
-        if(scale_flag_){
-
-        string m_format;
-
-        if(flashgg_flag_){
-            m_format = "muR";
-        } 
-
-        if(pdfset_flag_){
-            m_format = "mur";
-        } 
-
-        for( unsigned int iLine = 0; iLine < weight_lines.size(); iLine++ ) {
-            if ( weight_lines[iLine].find(m_format) != std::string::npos ) {
-                //                std::cout << "Line for scale: " << weight_lines[iLine];
-                size_t pos1 = weight_lines[iLine].find("\"");
-                size_t pos2 = weight_lines[iLine].find("\"",pos1+1);
-                assert (pos1 != std::string::npos && pos2 != std::string::npos);
-                string tempstr = weight_lines[iLine].substr(pos1+1,pos2-pos1-1);
-                int scaleind = atoi(tempstr.c_str());
-                                //std::cout << "    " << pos1 << " " << pos2 << " " << tempstr << " " << scaleind << std::endl;
-                scale_indices.push_back( scaleind );
-            } else {
-                //                std::cout << "Line NOT for scale: " << weight_lines[iLine];
-            }
-          }
-        }
-        
-        for( unsigned int iLine = 0; iLine < weight_lines.size(); iLine++ ) {
-            
-            string line = weight_lines.at( iLine );
-            string main;
-
-            if(flashgg_flag_){
-        
-                main = pdfid_1;
-            }
-
-            if(pdfset_flag_){
-
-                main = pdfset_;
-
-            }
-
-            size_t pos = line.find( main );
-            string token;
-            while( (pos = line.find(main)) != std::string::npos ){
-                token = line.substr(pos, main.length() );
-                //cout << "token " << token << endl;
-                if( token.compare( main ) == 0 ){
-
-                    if (pdfset_flag_){
-
-                    upper_index = iLine + 1;
+            for (unsigned int iLine = 0; iLine<lines.size(); iLine++) {
+                if (lines[iLine].find("powheg") != std::string::npos){
+                    generatorType = "powheg";
                     break;
-            
-                    }
-
-                    if (flashgg_flag_){
-
-                    upper_index = iLine;
-                    //cout << "iLine " << iLine << endl;
-                    break;
-            
-                    }
-
-                } else {				
-                    upper_index = 0;
                 }
+            }
+        }
+
+
+        // --- Get the PDF ids -
+        // See Josh's slides 13-15: https://indico.cern.ch/event/459797/contribution/2/attachments/1181555/1800214/mcaod-Feb15-2016.pdf
+        int pdfidx = 0;
+        pdfidx = run->heprup().PDFSUP.first;
+        if (pdfidx == -1 && generatorType == "powheg"){
+            pdfidx = 260000;    
+        }
+        cout <<" This sample was generated with the following PDFs : " << pdfidx <<endl;
+        
+        // --- Get min and max pdf index for 100 replicas
+        if (!isStandardSample_) { pdfidx = 0; } 
+        pdfid_1 = boost::lexical_cast<std::string>(pdfidx + 1);
+        pdfid_2 = boost::lexical_cast<std::string>(pdfidx + 100);
+
+        cout << "PDFs min and max id for MC replicas: " << pdfid_1 << "   " << pdfid_2 <<endl;
+        
+
+        // --- Get alphas id
+        if (doAlphasWeights_){
+         
+            if (pdfidx == 292200){
+                alphas_id_1 = "292301";
+                alphas_id_2 = "292302";
+            }
+            
+            if (pdfidx == 292000){
+                alphas_id_1 = "292101";
+                alphas_id_2 = "292102";
+            }
+            
+            if (pdfidx == 260000){
+                alphas_id_1 = "265000";
+                alphas_id_2 = "266000";
+            }
+            
+            if (pdfidx == 260400){
+                alphas_id_1 = "265400";
+                alphas_id_2 = "266400";
+            }
+            cout << "alpha_S min and max id             : " << alphas_id_1 << "   " << alphas_id_2 << endl;
+        }
+
+
+        // --- for amcatnlo samples, remove last line
+        if ( weight_lines.back() == "  <")
+            weight_lines.pop_back();
+                
+        // --- Convert weight_lines in std::stringstream object and populate boost::property_tree
+        std::stringstream ss;
+        std::copy(weight_lines.begin(), weight_lines.end(),std::ostream_iterator<std::string>(ss,""));
+        //cout << ss.str()<<endl;
+        boost::property_tree::ptree pt;
+        read_xml( ss , pt);
+        
+        
+        // --- Name of the weightgroup
+        string scalevar = "scale_variation";
+        string pdfvar   = "PDF_variation";
+        if (!isStandardSample_){
+            pdfvar = pdfset_;
+            scalevar = "Central scale variation";
+        }
+
+        // --- Loop over elements to get PDF, alpha_s and scale weights
+        BOOST_FOREACH( boost::property_tree::ptree::value_type const& v, pt.get_child("") ) {
+            
+            if (v.first == "weightgroup"){
+                //std::cout << "First data: " << v.first.data() << std::endl;
+                
+                boost::property_tree::ptree subtree = (boost::property_tree::ptree) v.second ;
+                
+                boost::optional<std::string> weightgroupname1 = v.second.get_optional<std::string>("<xmlattr>.name");
+                boost::optional<std::string> weightgroupname2 = v.second.get_optional<std::string>("<xmlattr>.type");
+                
+                //if (weightgroupname1) cout <<  weightgroupname1.get() <<endl;
+                //if (weightgroupname2) cout <<  weightgroupname2.get() <<endl;
+
+                // -- PDFs + alpha_s weights
+                if ( (weightgroupname1 && weightgroupname1.get() == pdfvar)  || (weightgroupname2 && weightgroupname2.get() == pdfvar)) {               
+                                    
+                    BOOST_FOREACH(boost::property_tree::ptree::value_type &vs,subtree)
+                        if (vs.first == "weight") {
+                            //cout << vs.first <<  "   " << vs.second.get<std::string>("<xmlattr>.id")  << "  " << vs.second.data()<< endl;
+                            
+                            string strwid  = vs.second.get<std::string>("<xmlattr>.id");
+                            string strw    = vs.second.data();
+
+                            int id = stoi(strwid);
+                            vector<string> strs;
+
+                            if (isStandardSample_){
+                                boost::split(strs, strw, boost::is_any_of("="));
+                            }
+                            else{
+                                boost::split(strs, strw, boost::is_any_of(" "));
+                            }
+                            
+                            int pdfindex  = stoi(strs.back());
+                            //cout << "pdfindex " << pdfindex <<endl;
+
+                            if (pdfindex >= stoi(pdfid_1) && pdfindex <= stoi(pdfid_2)){
+                                PDFWeightProducer::pdf_indices.push_back( id );
+                            }
+                            
+                            
+                            if (doAlphasWeights_){
+                                if (pdfindex == stoi(alphas_id_1) || pdfindex == stoi(alphas_id_2)){
+                                    PDFWeightProducer::alpha_indices.push_back( id );
+                                }
+                            }
+                        }
+                }// end loop over PDF weights
+
+
+
+                // -- Scale weights
+                if ( (weightgroupname1 && weightgroupname1.get() == scalevar)  || ( weightgroupname2 && weightgroupname2.get() == scalevar) ) {               
+                    
+                    BOOST_FOREACH(boost::property_tree::ptree::value_type &vs,subtree)
+                        if (vs.first == "weight") {
+                                                
+                            string strwid  = vs.second.get<std::string>("<xmlattr>.id");
+                            int id = stoi(strwid);
+                            
+                            scale_indices.push_back( id );
+                        }
+                }// end loop over scale weights
                 
             }
-            
-            if( upper_index != 0 ){break;}
         }
-
-
-        for( unsigned int nLine = upper_index; nLine < weight_lines.size(); nLine++ ) {
-            
-            string nline = weight_lines.at( nLine );
-           
-            skip = false;
- 
-            //cout << "nline " << nline << endl;	
-            string jline = removeSpaces( nline );
-            if(jline.empty()){cout << "WARNING unknown text format, member vectors will be empty or filled with incorrect values" << endl;
-
-                skip = true;
-                break;
-            }
-
-            //cout << skip << endl;
-
-            //cout << "jline " << jline << endl;
-            string jtoken;																					
-            size_t jpos;				
-		
-            if(flashgg_flag_) {
-	
-            while( ( jpos = jline.find( pdfid_2 ) ) != std::string::npos ) {
-                jtoken = jline.substr( jpos, pdfid_2.length() );
-                //std::cout << "jtoken " << jtoken << std::endl;
-                break;
-               }
-			}
-
-            if(pdfset_flag_){
-
-            if( jline.compare(delimiter_3_ ) == 0 ) {break;}
-
-            }
-
-            if (!skip){
-
-            string ntoken;
-            string mtoken;
-           
-            size_t mpos_1 = jline.find( delimiter_1_ );
-            size_t mpos_3 = jline.find( delimiter_2_ );
-           
-            ntoken = jline.erase( mpos_3 );
-            mtoken = jline.substr( mpos_1 + delimiter_1_.length() );
-            //cout << "mtoken " << mtoken << endl;
-			
-            int wgt = stoi( mtoken );
-            
-            PDFWeightProducer::weight_indices.push_back( wgt );
-           
-            if(flashgg_flag_){
- 
-            if( jtoken.compare( pdfid_2 ) == 0 ) { break; }
-            
-            }
-          }
-        }         
-
-        if((flashgg_flag_ && alpha_s_flag_)  && !skip ){
-
-        // See slide 13 here: https://indico.cern.ch/event/459797/contribution/2/attachments/1181555/1710844/mcaod-Nov4-2015.pdf
-        int alphas_1 = PDFWeightProducer::weight_indices.back() + 1;
-        int alphas_2 = PDFWeightProducer::weight_indices.back() + 2;
-        PDFWeightProducer::alpha_indices.push_back(alphas_1);
-        PDFWeightProducer::alpha_indices.push_back(alphas_2);
-
-        //        std::cout << " Alpha indices: " << alphas_1 << " " << alphas_2 << std::endl;
-
-        //        std::cout << " PDF weight indices final size: " << weight_indices.size() << std::endl;
-        }
-      //cout << "reaches this point " << endl;
     }
+
+
 
 	void PDFWeightProducer::produce( Event &evt, const EventSetup & )
 	{
+
+        //cout << "Entering PDFWeightProducer::produce " <<endl;
+
 		Handle<LHEEventProduct> LHEEventHandle;
 		evt.getByToken( LHEEventToken_, LHEEventHandle );
 
-	        Handle<GenEventInfoProduct> genInfo;
-                evt.getByToken( srcTokenGen_, genInfo );
+        Handle<GenEventInfoProduct> genInfo;
+        evt.getByToken( srcTokenGen_, genInfo );
     
-                gen_weight = genInfo->weight();
+        gen_weight = genInfo->weight();
+        //cout << "gen weight = " << gen_weight <<endl;
 
-		//cout << "gen " << gen_weight << endl;
 
 		std::auto_ptr<vector<flashgg::PDFWeightObject> > PDFWeight( new vector<flashgg::PDFWeightObject> );
 
-		lhe_weights.clear(); 
+		inpdfweights.clear(); 
 
 		flashgg::PDFWeightObject pdfWeight;
 
-		float weight = 1;
-		uint16_t weight_16 =1;
-		float alpha = 1;
 
-		//cout << "weight_container size " << LHEEventHandle->weights().size() << " num_weight " << PDFWeightProducer::weight_indices.size() << endl;
-		//int lower_bound = LHEEventHandle->weights().size() - PDFWeightProducer::weight_indices.size();
-		int upper_bound = LHEEventHandle->weights().size();
-		int size_weight = PDFWeightProducer::weight_indices.size();
-		int size_alpha = PDFWeightProducer::alpha_indices.size();
-		//cout << "upper_bound " << upper_bound << endl;
-		for( int i = 0; i < upper_bound; i++ ) {
+        for( unsigned int i = 0; i < LHEEventHandle->weights().size(); i++) {
+
 			int id_i = stoi( LHEEventHandle->weights()[i].id );
-			for( int j = 0; j<size_weight; j++ ){
-				int id_j = PDFWeightProducer::weight_indices[j];	
-                //				cout << "id_i " << id_i << " id_j " << id_j << endl;
+			
+            // --- Get PDF weights
+            for( unsigned int j = 0; j < PDFWeightProducer::pdf_indices.size(); j++ ){
+				int id_j = PDFWeightProducer::pdf_indices[j];	
                 if( id_i == id_j ){
-                    //cout << "inner index " << j << " index " << PDFWeightProducer::weight_indices[j] << " id " << LHEEventHandle->weights()[i].id << endl;
-					weight = LHEEventHandle->weights()[i].wgt;
-					//cout << "weights " << weight << endl;
-					lhe_weights.push_back( weight );
+                    float weight = LHEEventHandle->weights()[i].wgt;
+                    inpdfweights.push_back( weight );
 				}
 			}
-            if(flashgg_flag_ && alpha_s_flag_){
-			for( int k = 0; k<size_alpha; k++ ){
-				int id_k = PDFWeightProducer::alpha_indices[k];
-                //                std::cout << " checking alpha_index " << id_k << " against id " << id_i << std::endl;
-                if(id_i == id_k ){
-                    alpha = LHEEventHandle->weights()[i].wgt;
-                    //cout << " alpha " << alpha  << endl;
-                    uint16_t alpha_16 = MiniFloatConverter::float32to16( alpha );
-                    pdfWeight.alpha_s_container.push_back(alpha_16);	
-                }
-             }
-            }
-            if(scale_flag_ ){ 
-            for( unsigned k = 0 ; k < PDFWeightProducer::scale_indices.size() ; k++ ) {
-                int id_k = PDFWeightProducer::scale_indices[k];
-                if ( id_i == id_k ) {
-                    float scale = LHEEventHandle->weights()[i].wgt;
-                    uint16_t scale_16 = MiniFloatConverter::float32to16( scale );
-                    pdfWeight.qcd_scale_container.push_back( scale_16 );
+            
+            // --- Get alpha_s weights
+            if ( doAlphasWeights_ ){
+                for( unsigned int k = 0; k < PDFWeightProducer::alpha_indices.size(); k++ ){
+                    int id_k = PDFWeightProducer::alpha_indices[k];
+                    if(id_i == id_k ){
+                        float alpha = LHEEventHandle->weights()[i].wgt;
+                        uint16_t alpha_16 = MiniFloatConverter::float32to16( alpha );
+                        pdfWeight.alpha_s_container.push_back(alpha_16);	
+                    }
                 }
             }
-          }
-		}
+            
+            // --- Get qcd scale weights
+            if (doScaleWeights_ ){ 
+                for( unsigned int k = 0 ; k < PDFWeightProducer::scale_indices.size() ; k++ ) {
+                    int id_k = PDFWeightProducer::scale_indices[k];
+                    if ( id_i == id_k ) {
+                        float scale = LHEEventHandle->weights()[i].wgt;
+                        uint16_t scale_16 = MiniFloatConverter::float32to16( scale );
+                        pdfWeight.qcd_scale_container.push_back( scale_16 );
+                    }
+                }
+            }
+            
+		}// end loop over lhe weights
 
-		//cout << "should be 100 or 101 " << lhe_weights.size() << endl;
 
-		pdfweightshelper_.Init(size_weight,nPdfEigWeights_,mc2hessianCSV);
+		//cout << "Size of pdf weights    : " << inpdfweights.size() << endl;
+		//cout << "Size of scale weights  : " << PDFWeightProducer::scale_indices.size() << endl;
+		//cout << "Size of alpha_s weights: " << PDFWeightProducer::alpha_indices.size() << endl;
+        
+		
+        // --- Get MCtoHessian PDF weights
+        pdfweightshelper_.Init(PDFWeightProducer::pdf_indices.size(),nPdfEigWeights_,mc2hessianCSV);
         
         std::vector<double> outpdfweights(nPdfEigWeights_);
         
         double nomlheweight = LHEEventHandle->weights()[0].wgt;
 		//cout << "nomlheweight " << nomlheweight << endl;
         
-		pdfweightshelper_.DoMC2Hessian(nomlheweight,lhe_weights.data(),outpdfweights.data());
+		pdfweightshelper_.DoMC2Hessian(nomlheweight,inpdfweights.data(),outpdfweights.data());
         
         for (unsigned int iwgt=0; iwgt<nPdfEigWeights_; ++iwgt) {
             
@@ -388,7 +334,7 @@ namespace flashgg {
             
             float real_weight = wgtval*gen_weight/nomlheweight;
             
-            weight_16 = MiniFloatConverter::float32to16( real_weight );
+            uint16_t weight_16 = MiniFloatConverter::float32to16( real_weight );
 			
             //cout << "real_weight " << real_weight << endl; 
             //cout << "weight_16 " << weight_16 << endl;
@@ -397,16 +343,29 @@ namespace flashgg {
             pdfWeight.pdf_weight_container.push_back(weight_16);
             
 		}    
-	
+        
 		PDFWeight->push_back( pdfWeight );
 
 		evt.put( PDFWeight );
+        
+        /*
+        cout << "FINAL pdf_weight_container size " <<pdfWeight.pdf_weight_container.size() << endl;
+        for (unsigned int  i = 0 ; i < pdfWeight.pdf_weight_container.size() ; i++){
+            cout << i << "  " << pdfWeight.pdf_weight_container.at(i)  << endl;
+            //cout << i << "  " << (pdfWeight.uncompress(pdfWeight.pdf_weight_container)).at(i)  << endl;
+        }
+        
+        cout << "FINAL alpha_s_container size " <<pdfWeight.alpha_s_container.size() << endl;
+        for (unsigned int  i = 0 ; i < pdfWeight.alpha_s_container.size() ; i++){
+            cout << i << "  " << pdfWeight.alpha_s_container.at(i) <<endl;
+        }
 
-        		//cout << "FINAL pdf_weight_container size " <<pdfWeight.pdf_weight_container.size() << endl;
-                //cout << "FINAL alpha_s_container size " <<pdfWeight.alpha_s_container.size() << endl;
-                //cout << "FINAL qcd_scale_container size " <<pdfWeight.qcd_scale_container.size() << endl;
-
-
+        cout << "FINAL qcd_scale_container size " <<pdfWeight.qcd_scale_container.size() << endl;
+        for (unsigned int  i = 0 ; i < pdfWeight.qcd_scale_container.size() ; i++){
+            cout << i << "  " << pdfWeight.qcd_scale_container.at(i) <<endl;
+        }
+        */
+        
 	}
 
 }
