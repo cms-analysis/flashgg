@@ -91,8 +91,12 @@ namespace flashgg {
         tree->Branch( "nvtx", &cache_.nvtx );
         if( getPu_ ) {
             tree->Branch( "npu", &cache_.npu );
-            if( puReWeight_ ) { tree->Branch( "puweight", &cache_.puweight ); }
         }
+        // create the output branch puweight even for data
+        // so we can more easily merge different types
+        // of processes into one tree
+        tree->Branch( "puweight", &cache_.puweight );
+
         for( auto &bit : bits_ ) {
             tree->Branch( bit.first.c_str(), &bit.second, ( bit.first + "/O" ).c_str() );
         }
