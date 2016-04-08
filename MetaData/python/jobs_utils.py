@@ -45,6 +45,14 @@ class JobsManager(object):
         parser = OptionParser(option_list=[
                 make_option("--processes", action="callback", callback=Load(), type="string", dest="processes",
                             default={}, help="List of datasets to be analyzed"),
+
+                make_option("--dsfilter", action = "callback",
+                            callback = lambda option, opt, value, parser:
+                               setattr(parser.values, option.dest, value.split(',')),
+                            metavar = "'/ds1*,/ds2*'",
+                            type="string", dest="selectedDatasetPatterns",
+                            default=None, help="comma separated list of dataset name patterns to run on (default: run on all)"),
+
                 make_option("--load",  # special option to load whole configuaration from JSON
                             action="callback",callback=Load(),dest="__opts__",
                             type="string",
@@ -189,6 +197,18 @@ class JobsManager(object):
 
 
     # -------------------------------------------------------------------------------------------------------------------
+
+    def isSelectedDataset(self, dsname):
+        if self.options.selectedDatasetPatterns == None:
+            # no filter specified on the command line
+            return True
+
+        import fnmatch
+
+        matches = any(fnmatch.fnmatch(dsname, pattern) for pattern in self.options.selectedDatasetPatterns)
+        return matches
+
+    # -------------------------------------------------------------------------------------------------------------------
     def firstRun(self):
 
         (options,args) = (self.options, self.args)
@@ -261,6 +281,18 @@ class JobsManager(object):
             poutfiles[name] = ( "%s_%s.root" % ( outputPfx,name), [] )
         
             for dset in datasets:
+
+                #----------
+
+                # check if this datasets was selected
+                
+                if not self.isSelectedDataset(dset):
+                    # skip this dataset
+                    print "skipping",dset
+                    continue
+
+                #----------
+
                 job = args[0]
                 if self.options.jobExe:
                     pyjob = ""
