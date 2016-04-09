@@ -92,7 +92,7 @@ namespace flashgg {
         vector<edm::Ref<vector<reco::SuperCluster> > > usedSuperClusterRefs;
 
         if( debug_ ) {
-            std::cout << std::cout << " Input DiPhoton collection size: " << diPhotons->size() << std::endl;
+            std::cout << " Input DiPhoton collection size: " << diPhotons->size() << std::endl;
         }
 
         std::set<edm::Ptr<reco::Vertex> > usedVertices;
