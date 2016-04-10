@@ -582,7 +582,7 @@ class JobsManager(object):
 
                 # check if this datasets was selected
                 
-                if not self.isSelectedDataset(dset):
+                if not self.isSelectedDataset(dsName):
                     # skip this dataset
                     continue
 
