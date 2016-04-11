@@ -30,6 +30,7 @@ GITHUBUSERNAME=`git config user.github`
 echo "Setting up a new origin repo, assuming your fork name is ${GITHUBUSERNAME} - check this!"
 git remote add origin git@github.com:${GITHUBUSERNAME}/flashgg.git
 git config branch.master.remote origin
+git config merge.renamelimit 2000
 
 if ${SETUP_REMOTES} ; then
   echo "Setting up remotes listed in setup script..."
@@ -121,11 +122,15 @@ git cherry-pick 5163a7c9937ebfbbd714b3d161af01f64b65224c
 git cherry-pick a45d253ea9850acecbcfcd7bd2e5c3f00d8f0bd9
 git remote rm cmssw-sethzenz
 
-echo "Setting up PDF weight tool..."
-#git-cms-merge-topic bendavid:pdfweights_76x
-git cms-addpkg PhysicsTools/HepMCCandAlgos
-#git cherry-pick 9e4300582f284fa1fed6dcdbee88b3f75da39165
-git cherry-pick ca5f8100a28c597ad118e3a4b3dcadda7f6e45ca
+if [[ $CMSSW_BASE == *"7_6"* ]]
+then
+    echo "Setting up PDF weight tool..."
+    git cms-addpkg PhysicsTools/HepMCCandAlgos
+    git cherry-pick ca5f8100a28c597ad118e3a4b3dcadda7f6e45ca
+else
+    echo "Not setting up PDF weight because we appear to be in CMSSW 8"
+fi
+    
 
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit

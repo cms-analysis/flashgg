@@ -19,17 +19,9 @@ Instructions for processing of 76X MiniAOD:
  git clone https://github.com/cms-analysis/flashgg flashgg
  source flashgg/setup.sh
  ```
-To process 74X MiniAOD, instead do:
- ```
- cmsrel CMSSW_7_4_15
- cd CMSSW_7_4_15/src
- cmsenv
- git cms-init
- cd $CMSSW_BASE/src
- git clone https://github.com/cms-analysis/flashgg flashgg
- source flashgg/setup_74X.sh
- ```
-In either case, if everything now looks reasonable, you can build:
+The above should also work if you use CMSSW_8_0_3_patch1.  No changes to the setup script should be required, and the workflow tests should be ok too.  However the details are still under validation.
+
+If everything now looks reasonable, you can build:
  ```
  cd $CMSSW_BASE/src
  scram b -j 9
@@ -40,7 +32,7 @@ And a very basic workflow test:
  cmsRun MicroAOD/test/microAODstd.py
  cmsRun Taggers/test/simple_Tag_test.py
  cmsRun Taggers/test/diphotonsDumper_cfg.py
- cmsRun Systematics/test/MicroAODtoWorkspace.py processId=wzh_125
+ cmsRun Systematics/test/workspaceStd.py processId=wzh_125
  ```
 
 These are just some test examples; the first makes MicroAOD from a MiniAOD file accessed via xrootd, 

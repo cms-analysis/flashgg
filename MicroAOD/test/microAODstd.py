@@ -7,24 +7,19 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 
 process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
-#process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-#process.GlobalTag.globaltag = 'PLS170_V7AN1::All'
-#process.GlobalTag.globaltag = 'auto:run2_mc'
-process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
+process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff") # gives deprecated message in 80X but still runs
 from Configuration.AlCa.GlobalTag import GlobalTag
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 100) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 
-process.GlobalTag = GlobalTag(process.GlobalTag, '76X_mcRun2_asymptotic_v13')
-
-# Fix because auto:run2_mc points to MCRUN2_74_V9::All
-current_gt = process.GlobalTag.globaltag.value()
-if current_gt.count("::All"):
-    new_gt = current_gt.replace("::All","")
-    print 'Removing "::All" from GlobalTag by hand for condDBv2: was %s, now %s' % (current_gt,new_gt)
-    process.GlobalTag.globaltag = new_gt
-
+import os
+if os.environ["CMSSW_VERSION"].count("CMSSW_7_6"):
+    process.GlobalTag = GlobalTag(process.GlobalTag, '76X_mcRun2_asymptotic_v13')
+elif os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
+    process.GlobalTag = GlobalTag(process.GlobalTag,'80X_mcRun2_asymptotic_v11')
+else:
+    raise Exception,"The default setup for microAODstd.py does not support releases other than 76X and 80X"
 
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService")
 process.RandomNumberGeneratorService.flashggRandomizedPhotons = cms.PSet(
