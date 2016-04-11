@@ -1,3 +1,6 @@
+#ifndef flashgg_UntaggedTag
+#define flashgg_UntaggedTag
+
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 
 namespace flashgg {
@@ -18,6 +21,8 @@ namespace flashgg {
 
     };
 }
+
+#endif
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil
