@@ -21,6 +21,8 @@ namespace flashgg {
         const edm::Ptr<DiPhotonCandidate> diPhotonCandidate() const { return theDiPhotonCandidate_;}
         void setMet( edm::Ptr<pat::MET> );
 
+        DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kVHEt; }
+
     private:
         edm::Ptr<DiPhotonCandidate> theDiPhotonCandidate_;
         edm::Ptr<pat::MET> theMet_;
