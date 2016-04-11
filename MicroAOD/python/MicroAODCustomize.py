@@ -123,7 +123,7 @@ class MicroAODCustomize(object):
             self.customizeTiming(process)
         if os.environ["CMSSW_VERSION"].count("CMSSW_7_6"):
             self.customize76X(process)
-        if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
+        elif os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             self.customize80X(process)
         elif len(self.globalTag) == 0:
             self.globalTag = "74X_mcRun2_asymptotic_v4"
