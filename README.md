@@ -19,6 +19,8 @@ Instructions for processing of 76X MiniAOD:
  git clone https://github.com/cms-analysis/flashgg flashgg
  source flashgg/setup.sh
  ```
+The above should also work if you use CMSSW_8_0_3_patch1.  No changes to the setup script should be required, and the workflow tests should be ok too.  However the details are still under validation.
+
 If everything now looks reasonable, you can build:
  ```
  cd $CMSSW_BASE/src
