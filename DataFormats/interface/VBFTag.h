@@ -53,6 +53,8 @@ namespace flashgg {
             return (vbfDiPhoDiJet_mva_result_.vbfMvaResult.leadJet_ptr.isNonnull() && vbfDiPhoDiJet_mva_result_.vbfMvaResult.subleadJet_ptr.isNonnull()); 
         };
         const bool hasValidVBFTriJet() const; 
+
+        DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kVBF; }
     private:
         VBFDiPhoDiJetMVAResult vbfDiPhoDiJet_mva_result_;
     };
