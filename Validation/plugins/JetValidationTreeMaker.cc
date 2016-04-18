@@ -1,5 +1,6 @@
 // -----------------------
 // By Y.Haddad & L.Corpe  12/2014
+// Modified by E.Scott    04/2016
 //
 // Jet validation analyzer: tree maker for the jet studies in flashgg
 // -----------------------
@@ -165,7 +166,7 @@ struct GenJetInfo {
 
     int   diphotonIndex;
     int   smartIndex;
-    int   JetIndex;
+    int   jetIndex;
 
     int   LegIsPV0;
 
@@ -220,7 +221,8 @@ struct jetInfo {
     int   nDiphotons;
     int   diphotonIndex;
     int   smartIndex;
-    int   JetIndex;
+    int   jetIndex; // now modified to refer only to real jets (not photons) 
+    int   passesRMSIndex; // to aid comparison with VBFTag
 
 
     int   nPV;
@@ -257,6 +259,10 @@ struct jetInfo {
     float GenPhotonEta;
     float GenPhotonPhi;
     float GenPhotonPt;
+
+    // Added to help with plotting in Heppi
+    // Set to 1 by default
+    float weight; 
 
 };
 
@@ -309,8 +315,8 @@ private:
     EDGetTokenT< edm::View<reco::GenParticle> >          genPartToken_;
     EDGetTokenT< edm::View<reco::GenJet> >               genJetToken_;
     //EDGetTokenT< edm::View<flashgg::Jet> >               jetDzToken_;
-    //std::vector<edm::InputTag>                           tokenJets_;
-    std::vector<edm::InputTag> inputTagJets_;
+    std::vector<edm::EDGetTokenT<View<flashgg::Jet> > >  tokenJets_;
+    std::vector<edm::InputTag>                           inputTagJets_;
     EDGetTokenT< edm::View<flashgg::DiPhotonCandidate> > diPhotonToken_;
     EDGetTokenT< View<reco::Vertex> >                    vertexToken_;
     //EDGetTokenT< VertexCandidateMap > vertexCandidateMapToken_;
@@ -340,6 +346,7 @@ private:
     bool        homeGenJetMatching_;
     bool        ZeroVertexOnly_;
     bool        debug_;
+    bool        useVBFTagPhotonMatching_;
 
 };
 
@@ -358,9 +365,15 @@ JetValidationTreeMaker::JetValidationTreeMaker( const edm::ParameterSet &iConfig
     photonJetVeto( iConfig.getUntrackedParameter<bool>( "PhotonJetVeto", true ) ),
     homeGenJetMatching_( iConfig.getUntrackedParameter<bool>( "homeGenJetMatching", false ) ),
     ZeroVertexOnly_( iConfig.getUntrackedParameter<bool>( "ZeroVertexOnly", false ) ),
-    debug_( iConfig.getUntrackedParameter<bool>( "debug", false ) )
+    debug_( iConfig.getUntrackedParameter<bool>( "debug", false ) ),
+    useVBFTagPhotonMatching_( iConfig.getUntrackedParameter<bool>( "useVBFTagPhotonMatching", false ) )
 
 {
+    for( uint i = 0; i < inputTagJets_.size(); i++ ) {
+        auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
+        tokenJets_.push_back(token); 
+    }
+
     event_number = 0;
     jetCollectionName = iConfig.getParameter<string>( "StringTag" );
     //qgToken	= consumes<edm::ValueMap<float>>( edm::InputTag( qgVariablesInputTag.label(), "qgLikelihood" ) );
@@ -409,7 +422,8 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
     //const PtrVector<flashgg::Jet>& jetsDzPointers = jetsDz->ptrVector();
     JetCollectionVector Jets( inputTagJets_.size() );
     for( size_t j = 0; j < inputTagJets_.size(); ++j ) {
-        iEvent.getByLabel( inputTagJets_[j], Jets[j] );
+        //iEvent.getByLabel( inputTagJets_[j], Jets[j] );
+        iEvent.getByToken( tokenJets_[j], Jets[j] );
     }
 
 
@@ -493,7 +507,7 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
             float minDr = 1000;
             std::map<float, unsigned int> minim;
             GenPhotonInfo tmp_info;
-            if( genPhoton.size() != 0 ) {
+            if( genPhoton.size() != 0 && !useVBFTagPhotonMatching_) {
                 for( unsigned int ig = 0; ig < genPhoton.size(); ig++ ) {
                     float dphi  = deltaPhi( Jets[jetCollectionIndex]->ptrAt( jetLoop )->phi(), genPhoton[ig]->phi() );
                     float deta  = Jets[jetCollectionIndex]->ptrAt( jetLoop )->eta() -  genPhoton[ig]->eta();
@@ -513,7 +527,8 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
                     _isPhoton[jetLoop] = true;
                 }
                 photonJet_id[jetLoop] =  tmp_info;
-            } else {
+            }
+            else if( genPhoton.size() == 0 && !useVBFTagPhotonMatching_) {
                 tmp_info.pt     = -999.;
                 tmp_info.eta    = -999.;
                 tmp_info.phi    = -999.;
@@ -521,7 +536,27 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
 
                 _isPhoton[jetLoop] = false;
                 photonJet_id[jetLoop] =  tmp_info;
+            } 
+            else {
+                tmp_info.pt     = -999.;
+                tmp_info.eta    = -999.;
+                tmp_info.phi    = -999.;
+                tmp_info.DRmin  = -999.; 
+                photonJet_id[jetLoop] =  tmp_info; // This currently means if we do VBFTag style photon matching, we have no gen photon info
+                
+                // Check if jet is near to either of the two leading photons
+                float dphi1  = deltaPhi( Jets[jetCollectionIndex]->ptrAt( jetLoop )->phi(), diPhotons->ptrAt( diphoIndex )->leadingPhoton()->phi() );
+                float deta1  = Jets[jetCollectionIndex]->ptrAt( jetLoop )->eta() - diPhotons->ptrAt( diphoIndex )->leadingPhoton()->eta();
+                float dr1    =  std::sqrt( deta1 * deta1 + dphi1 * dphi1 );
+
+                float dphi2  = deltaPhi( Jets[jetCollectionIndex]->ptrAt( jetLoop )->phi(), diPhotons->ptrAt( diphoIndex )->subLeadingPhoton()->phi() );
+                float deta2  = Jets[jetCollectionIndex]->ptrAt( jetLoop )->eta() - diPhotons->ptrAt( diphoIndex )->subLeadingPhoton()->eta();
+                float dr2    =  std::sqrt( deta2 * deta2 + dphi2 * dphi2 );
+
+                if( dr1 < 0.5 || dr2 < 0.5 ) { _isPhoton[jetLoop] = true; }
+                else { _isPhoton[jetLoop] = false; }
             }
+
             //    if(debug_){
             //      std::cout << "\e[0;31m";
             //
@@ -543,7 +578,7 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
         //  std::cout <<"\e[0m"<< std::endl;
         //}
 
-        //+++ GenJet Matcing
+        //+++ GenJet Matching
         std::map<unsigned int, GenJetInfo>     genJet_id;
         std::map<unsigned int, bool>          _isMatched;
         std::map<unsigned int, unsigned int>   pairs;
@@ -585,17 +620,38 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
         std::map<unsigned int, jetInfo> recojetmap;
 
         // +++ loop on the reconstructed jets
+        unsigned int jetCounter = 0;   
+        unsigned int rmsCounter = 0;   
+        const float  rms_cut    = 0.03;
         for( unsigned int jdz = 0 ; jdz < Jets[jetCollectionIndex]->size() ; jdz++ ) {
             jInfo.eventID        = event_number;
+            jInfo.weight         = 1.0; 
             jInfo.id             = jdz;
-            // qg likelihood retrieve
             jInfo.photonMatch    = int( _isPhoton[jdz] );
             jInfo.smartIndex     = jetCollectionIndex;
             jInfo.diphotonIndex  = diphoIndex;
-            jInfo.JetIndex       = jdz;
+
+            if( !_isPhoton[jdz] ) { jInfo.jetIndex = jetCounter++; }
+            else { jInfo.jetIndex = -1; }
+
+            // Only include if eta less than 4.7
+            float tmp_eta = Jets[jetCollectionIndex]->ptrAt( jdz )->eta();
+            if( fabs(tmp_eta) > 4.7 ) { continue; }
+
+            // New index indicating if jet passed rms cut (for VBFTag comparison)
+            float tmp_rms = Jets[jetCollectionIndex]->ptrAt( jdz )->rms();
+            if( !_isPhoton[jdz] && fabs(tmp_eta) > 2.5 && tmp_rms < rms_cut ) { jInfo.passesRMSIndex = rmsCounter++; }
+            else if( !_isPhoton[jdz] && fabs(tmp_eta) < 2.5 ) { jInfo.passesRMSIndex = rmsCounter++; }
+            else { jInfo.passesRMSIndex = -1; }
+
             //jInfo.jet_qgLikelihood = ( *qgHandle )[Jets[jetCollectionIndex]->refAt( jdz )];
-            jInfo.jet_qgLikelihood = Jets[jetCollectionIndex]->ptrAt( jdz )->userFloat("QGTagger:qgLikelihood");
-            std::cout << "QGL::"<< jInfo.jet_qgLikelihood << std::endl;
+
+            if( Jets[jetCollectionIndex]->ptrAt( jdz )->hasUserFloat("QGTagger:qgLikelihood") ) {
+                jInfo.jet_qgLikelihood = Jets[jetCollectionIndex]->ptrAt( jdz )->userFloat("QGTagger:qgLikelihood");
+            } else {
+                jInfo.jet_qgLikelihood = -999.; // does not exist
+            }
+            //std::cout << "QGL::"<< jInfo.jet_qgLikelihood << std::endl;
             GenPhotonInfo tmp_info = photonJet_id.find( jdz )->second; // call find ones
 
             jInfo.GenPhotonPt  = tmp_info.pt   ;
@@ -613,11 +669,11 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
             }
 
             //if(debug_) std::cout << "jet correction:: uncorected pt("
-            std::cout << "jet correction:: uncorected pt("
+            /*std::cout << "jet correction:: uncorected pt("
                       <<  Jets[jetCollectionIndex]->ptrAt( jdz )->correctedJet( "Uncorrected" ).pt()
                       << ") corrected pt("
                       << Jets[jetCollectionIndex]->ptrAt( jdz )->pt()
-                      << std::endl;
+                      << std::endl; */
 
             if( homeGenJetMatching_ ) {
                 jInfo.genJetMatch             = int( _isMatched[jdz] );
@@ -826,7 +882,7 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
 
             recojetmap[jdz] = jInfo;
             jetTree->Fill();
-        }// ++++ end loop reco jets
+        } // ++++ end loop reco jets
 
 
 
@@ -902,8 +958,8 @@ JetValidationTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetup
                 }
             }
             genJetTree->Fill();
-        }
-    }// loop over the diphotons
+        } // end of loop over genJets
+    } //  end of loop over the diphotons
     eventTree->Fill();
     event_number++;
 }
@@ -942,7 +998,8 @@ JetValidationTreeMaker::beginJob()
 
     jetTree->Branch( "diphotonIndex"   , &jInfo.diphotonIndex     , "diphotonIndex/I" );
     jetTree->Branch( "smartIndex"      , &jInfo.smartIndex        , "smartIndex/I" );
-    jetTree->Branch( "jetIndex"        , &jInfo.JetIndex          , "jetIndex/I" );
+    jetTree->Branch( "jetIndex"        , &jInfo.jetIndex          , "jetIndex/I" );
+    jetTree->Branch( "passesRMSIndex"  , &jInfo.passesRMSIndex    , "passesRMSIndex/I" );
 
     jetTree->Branch( "nPV"             , &jInfo.nPV               , "nPV/I" );
     jetTree->Branch( "nJets"           , &jInfo.nJets             , "nJets/I" );
@@ -979,6 +1036,8 @@ JetValidationTreeMaker::beginJob()
     jetTree->Branch( "GenPhotonPt"    , &jInfo.GenPhotonPt   , "GenPhotonPt/F" );
     jetTree->Branch( "GenPhotonEta"   , &jInfo.GenPhotonEta  , "GenPhotonEta/F" );
     jetTree->Branch( "GenPhotonPhi"   , &jInfo.GenPhotonPhi  , "GenPhotonPhi/F" );
+
+    jetTree->Branch( "weight"   , &jInfo.weight , "weight/F" );
 
     genPartTree = fs_->make<TTree>( "genPartTree", "Check per-jet tree" );
     genPartTree->Branch( "pt"     , &genInfo.pt      , "pt/F" );
