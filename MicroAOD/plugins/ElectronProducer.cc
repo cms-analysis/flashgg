@@ -1,6 +1,6 @@
 // system include files
 #include <memory>
-// user include files
+// user include file
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDProducer.h"
 #include "FWCore/Utilities/interface/InputTag.h"
@@ -22,6 +22,7 @@
 
 using namespace std;
 using namespace edm;
+using namespace reco;
 
 namespace flashgg {
 
@@ -41,8 +42,13 @@ namespace flashgg {
         edm::EDGetTokenT<double> rhoToken_;
 
         EffectiveAreas effectiveAreas_;
-        //        edm::EDGetTokenT<edm::ValueMap<bool> > eleMVAMediumIdMapToken_;
-        //        edm::EDGetTokenT<edm::ValueMap<bool> > eleMVATightIdMapToken_;
+        edm::EDGetTokenT<edm::ValueMap<bool> > eleMVAMediumIdMapToken_;
+        edm::EDGetTokenT<edm::ValueMap<bool> > eleMVATightIdMapToken_;
+
+        edm::EDGetTokenT<edm::ValueMap<bool> > eleLooseIdMapToken_;
+        edm::EDGetTokenT<edm::ValueMap<bool> > eleMediumIdMapToken_;
+        edm::EDGetTokenT<edm::ValueMap<bool> > eleTightIdMapToken_;
+        edm::EDGetTokenT<edm::ValueMap<bool> > eleVetoIdMapToken_;
     };
 
     ElectronProducer::ElectronProducer( const ParameterSet &iConfig ):
@@ -52,9 +58,13 @@ namespace flashgg {
         beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getParameter<InputTag>( "beamSpotTag" ) ) ),
         mvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaValuesMap" ) ) ),
         rhoToken_(consumes<double>(iConfig.getParameter <edm::InputTag>("rhoFixedGridCollection"))),
-        effectiveAreas_((iConfig.getParameter<edm::FileInPath>("effAreasConfigFile")).fullPath())
-        //        eleMVAMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVAMediumIdMap"))),
-        //        eleMVATightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVATightIdMap")))
+        effectiveAreas_((iConfig.getParameter<edm::FileInPath>("effAreasConfigFile")).fullPath()),
+        eleMVAMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVAMediumIdMap"))),
+        eleMVATightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVATightIdMap"))),
+        eleLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleLooseIdMap"))),
+        eleMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMediumIdMap"))),
+        eleTightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTightIdMap"))),
+        eleVetoIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleVetoIdMap")))
     {
         
 
@@ -93,11 +103,19 @@ namespace flashgg {
         evt.getByToken(mvaValuesMapToken_,mvaValues);
 
         
-        //        edm::Handle<edm::ValueMap<bool> > mediumMVA_wp;
-        //        edm::Handle<edm::ValueMap<bool> > tightMVA_wp; 
-        //        evt.getByToken(eleMVAMediumIdMapToken_,mediumMVA_wp);
-        //        evt.getByToken(eleMVATightIdMapToken_,tightMVA_wp);
+        edm::Handle<edm::ValueMap<bool> > mediumMVA_wp;
+        edm::Handle<edm::ValueMap<bool> > tightMVA_wp; 
+        evt.getByToken(eleMVAMediumIdMapToken_,mediumMVA_wp);
+        evt.getByToken(eleMVATightIdMapToken_,tightMVA_wp);
 
+        edm::Handle<edm::ValueMap<bool> > loose_wp;
+        edm::Handle<edm::ValueMap<bool> > medium_wp;
+        edm::Handle<edm::ValueMap<bool> > tight_wp; 
+        edm::Handle<edm::ValueMap<bool> > veto_wp;
+        evt.getByToken(eleLooseIdMapToken_,loose_wp);
+        evt.getByToken(eleMediumIdMapToken_,medium_wp);
+        evt.getByToken(eleTightIdMapToken_,tight_wp);
+        evt.getByToken(eleVetoIdMapToken_,veto_wp);
 
         std::auto_ptr<vector<flashgg::Electron> > elecColl( new vector<flashgg::Electron> );
 
@@ -105,27 +123,38 @@ namespace flashgg {
             Ptr<pat::Electron> pelec = pelectrons->ptrAt( elecIndex );
             flashgg::Electron felec = flashgg::Electron( *pelec );
 
-            double Aeff = 0;
+            float Aeff = 0;
             Aeff = effectiveAreas_.getEffectiveArea( fabs( pelec->superCluster()->eta()));
 
             float pelec_eta = fabs( pelec->superCluster()->eta() );
-            //float pelec_pt = pelec->pt();
 
             double nontrigmva = (*mvaValues)[pelec];
             felec.setNonTrigMVA( ( float )nontrigmva );
 
             if( pelec_eta > 2.5 || ( pelec_eta > 1.4442 && pelec_eta < 1.566 ) ) { continue; }
 
-            float	pelec_iso = pelec->chargedHadronIso() + std::max( pelec->neutralHadronIso() + pelec->photonIso() - rho * Aeff, 0. );
-            felec.setStandardHggIso( pelec_iso );
+            GsfElectron::PflowIsolationVariables pfIso = pelec->pfIsolationVariables();
+            float pelec_egiso=( pfIso.sumChargedHadronPt + std::max( 0.0d, pfIso.sumNeutralHadronEt + pfIso.sumPhotonEt - Aeff*rho) ) / pelec->pt() ;
+        
+            felec.setStandardHggIso( pelec_egiso );
+
             felec.setHasMatchedConversion( ConversionTools::hasMatchedConversion( *pelec, convs, vertexPoint ) );
 
-            //   bool passMVAMediumId = (*mediumMVA_wp)[pelec];
-            //   bool passMVATightId = (*tightMVA_wp)[pelec];
-            
-            // felec.setPassEGWP90(passMVAMediumId);
-            // felec.setPassEGWP80(passMVATightId);
+            bool passMVAMediumId = (*mediumMVA_wp)[pelec];
+            bool passMVATightId = (*tightMVA_wp)[pelec];
 
+            bool passLooseId = (*loose_wp)[pelec];
+            bool passMediumId = (*medium_wp)[pelec];
+            bool passTightId = (*tight_wp)[pelec];
+            bool passVetoId = (*veto_wp)[pelec];
+            
+          
+            felec.setPassMVATightId(passMVATightId);
+            felec.setPassMVAMediumId(passMVAMediumId);
+            felec.setPassTightId(passTightId);
+            felec.setPassMediumId(passMediumId);
+            felec.setPassLooseId(passLooseId);
+            felec.setPassVetoId(passVetoId);
 
             elecColl->push_back( felec );
            
