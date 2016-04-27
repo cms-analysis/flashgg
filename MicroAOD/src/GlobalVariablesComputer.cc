@@ -149,9 +149,7 @@ namespace flashgg {
             cache_.nvtx = vertices->size();
         }
 
-        if (evt.isRealData()) {
-            cache_.puweight = 1.;
-        }
+        cache_.puweight = 1.;
 
         if( ! evt.isRealData() && getPu_ ) {
             double truePu=0., obsPu=0.;
