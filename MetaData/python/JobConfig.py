@@ -192,11 +192,11 @@ class JobConfig(object):
                 # in order not to confuse it with data (index 0)
 
                 if isinstance(xsec, dict):
-                    self.processIndex = xsec.get('itype', -0x80000000)
+                    self.processIndex = xsec.get('itype', -0x7FFFFFFF)
                 else:
                     # note that in some cases (process not defined in cross_sections.json ?)
                     # this can still be a float
-                    self.processIndex = -0x80000000
+                    self.processIndex = -0x7FFFFFFF
 
             #----------
 
