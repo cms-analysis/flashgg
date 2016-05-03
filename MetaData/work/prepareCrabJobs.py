@@ -249,10 +249,31 @@ if options.createCrabConfig:
         ###         position = ProcessedDataset.find("201")
         ###         PrimaryDataset = PrimaryDataset +"-"+ ProcessedDataset[position:]
             
-        jobname = "_".join([flashggVersion, PrimaryDataset, ProcessedDataset, str(itry).zfill(2)])
+        jobname = "_".join([flashggVersion, PrimaryDataset, ProcessedDataset])
         while os.path.isdir("crab_" + jobname):
             itry += 1
             jobname = "_".join([flashggVersion, PrimaryDataset, ProcessedDataset, str(itry).zfill(2)])
+        if len(jobname) > 97:
+            jobname = jobname.replace("TuneCUEP8M1_13TeV-pythia8","13TeV")
+        if len(jobname) > 97:
+            jobname = jobname.replace("TuneCUETP8M1_13TeV-madgraphMLM-pythia8","13TeV-mg")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RSGravToGG","Grav")
+        if len(jobname) > 97:
+            jobname = jobname.replace("-PU25nsData2015v1","")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIIFall15MiniAODv2_","")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIIFall15MiniAODv2-magnetOffBS0T_PU25nsData2015v1_0T","0T")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2","Spring16")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2","Spring16")
+        if len(jobname) > 97:
+            print "jobname length: %d " % len(jobname)
+            jobname = jobname[:97]
+        jobname = jobname.rstrip("-").rstrip("-v")
+        jobname += "_%s" % ( str(itry).zfill(2) )
         # Actually create the config file: copy the template and replace things where appropriate
         crabConfigFile = "crabConfig_" + jobname + ".py"
         print "Preparing crab for processing ", PrimaryDataset, "\n      -> ", crabConfigFile
