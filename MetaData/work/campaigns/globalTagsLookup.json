@@ -105,4 +105,5 @@
     "Run2016B-PromptReco" : ["80X_dataRun2_Prompt_v8"],
 
     "PhaseISpring17MiniAOD-FlatPU28to62_90X_upgrade2017_realistic_v20"						: ["90X_upgrade2017_realistic_v20"]
+
 }
