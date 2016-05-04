@@ -12,6 +12,8 @@
 	"DoublePhoton"                                                  : { "xs" : 0.0, "itype" :0                       },
 	"SinglePhoton"                                                  : { "xs" : 0.0, "itype" :0                       },
 	"SingleElectron"                                                : { "xs" : 0.0, "itype" :0                       },
+	"SingleMuon"                                                    : { "xs" : 0.0, "itype" :0                       },
+	"DoubleMuon"                                                    : { "xs" : 0.0, "itype" :0                       },
 	"Higgs_scalar" : {"xs":1, "br":1, "kf":1.0, "itype":-1125},
 	"ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8" : {"xs":0.5085, "br":2.28e-3, "kf":1.525639529, "itype":-120300},
 	"ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8" : {"xs":0.5085, "br":2.28e-3, "kf":1.695809438, "itype":-125300},
