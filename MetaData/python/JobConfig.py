@@ -33,7 +33,7 @@ class JobConfig(object):
                        VarParsing.VarParsing.varType.string,          # string, int, or float
                        "processIdMap")
         self.options.register ('processIndex',
-                       0, # default value
+                       None, # default value
                        VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                        VarParsing.VarParsing.varType.int,          # string, int, or float
                        "processIndex")
@@ -180,11 +180,27 @@ class JobConfig(object):
                 putarget = map(float, self.puTarget.split(","))
                 
             processId = self.getProcessId(dsetname)
-
-            self.processIndex = self.options.processIndex
             self.processId = processId
 
-            if ("itype" in xsec):
+            #----------
+
+            if self.options.processIndex != None:
+                self.processIndex = self.options.processIndex
+            else:
+                # not specified on the command line, try to take it 
+                # from the cross section file, otherwise use smallest int32 as default value
+                # in order not to confuse it with data (index 0)
+
+                if isinstance(xsec, dict):
+                    self.processIndex = xsec.get('itype', -0x7FFFFFFF)
+                else:
+                    # note that in some cases (process not defined in cross_sections.json ?)
+                    # this can still be a float
+                    self.processIndex = -0x7FFFFFFF
+
+            #----------
+
+            if isinstance(xsec, dict) and "itype" in xsec:
                 for name,obj in process.__dict__.iteritems():
                     if hasattr(obj, "sampleIndex"):
                         obj.sampleIndex = xsec["itype"]
