@@ -11,15 +11,15 @@ Get everything you need, starting from a clean area:
 
 Instructions for processing of 76X MiniAOD:
  ```
- cmsrel CMSSW_7_6_3_patch2
- cd CMSSW_7_6_3_patch2/src
+ cmsrel CMSSW_8_0_8
+ cd CMSSW_8_0_8/src
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src 
  git clone https://github.com/cms-analysis/flashgg flashgg
  source flashgg/setup.sh
  ```
-The above should also work if you use CMSSW_8_0_3_patch1.  No changes to the setup script should be required, and the workflow tests should be ok too.  However the details are still under validation.  One manual change is required: to change the flashgg::Muon checksum in DataFormats/src/classes_def.xml -- the new number will be provided after your first attempt to compile, then you can recompile after you edit.
+The above should also work if you use CMSSW_7_6_3_patch2.  No changes to the setup script should be required, and the workflow tests should be ok too.  One manual change is required: to change the flashgg::Muon checksum in DataFormats/src/classes_def.xml -- the new number will be provided after your first attempt to compile, then you can recompile after you edit.
 
 If everything now looks reasonable, you can build:
  ```
