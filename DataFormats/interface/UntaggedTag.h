@@ -13,7 +13,7 @@ namespace flashgg {
 
         UntaggedTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult );
         UntaggedTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult> );
-        virtual UntaggedTag *clone() const;
+        virtual UntaggedTag *clone() const override;
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kUntagged; }
 
     private:
