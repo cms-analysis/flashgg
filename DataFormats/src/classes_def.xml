@@ -139,7 +139,6 @@
 <class name="edm::RefToBaseVector<flashgg::Photon>" />
 <class name="edm::Wrapper<edm::RefToBaseVector<flashgg::Photon> >" />
 <class name="edm::reftobase::BaseVectorHolder<flashgg::Photon>" />
-<class name="edm::Wrapper<std::vector<flashgg::Photon> >"/>
 <class name="edm::Ref<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> >"/>
 <class name="edm::RefProd<std::vector<flashgg::Photon> >"/>
 <class name="edm::RefVector<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> >"/>
