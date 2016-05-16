@@ -14,7 +14,7 @@ namespace flashgg {
         VBFTag();
         ~VBFTag();
 
-        VBFTag *clone() const { return ( new VBFTag( *this ) ); }
+        VBFTag *clone() const override { return ( new VBFTag( *this ) ); }
 
         VBFTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult>, edm::Ptr<VBFDiPhoDiJetMVAResult> );
         VBFTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult, VBFDiPhoDiJetMVAResult );
