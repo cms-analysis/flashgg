@@ -17,7 +17,7 @@ namespace flashgg {
 
         ~TTHLeptonicTag();
 
-        TTHLeptonicTag *clone() const { return ( new TTHLeptonicTag( *this ) ); }
+        TTHLeptonicTag *clone() const override { return ( new TTHLeptonicTag( *this ) ); }
 
         const std::vector<edm::Ptr<Muon> > muons() const { return Muons_;}
         const std::vector<edm::Ptr<flashgg::Electron> > electrons() const {return Electrons_;}
