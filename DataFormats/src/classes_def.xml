@@ -139,7 +139,6 @@
 <class name="edm::RefToBaseVector<flashgg::Photon>" />
 <class name="edm::Wrapper<edm::RefToBaseVector<flashgg::Photon> >" />
 <class name="edm::reftobase::BaseVectorHolder<flashgg::Photon>" />
-<class name="edm::Wrapper<std::vector<flashgg::Photon> >"/>
 <class name="edm::Ref<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> >"/>
 <class name="edm::RefProd<std::vector<flashgg::Photon> >"/>
 <class name="edm::RefVector<std::vector<flashgg::Photon>,flashgg::Photon,edm::refhelper::FindUsingAdvance<std::vector<flashgg::Photon>,flashgg::Photon> >"/>
@@ -191,14 +190,16 @@
 <class name="edm::Wrapper<std::vector<flashgg::Jet> >"/>
 <class name="std::vector<std::vector<flashgg::Jet> >"/>
 <class name="edm::Wrapper<std::vector<std::vector<flashgg::Jet> > >"/>
-<class name="flashgg::Electron" ClassVersion="11">
+<class name="flashgg::Electron" ClassVersion="12">
+ <version ClassVersion="12" checksum="1018193332"/>
   <version ClassVersion="11" checksum="2620301447"/>
   <version ClassVersion="10" checksum="3162935784"/>
 </class>
 <class name="edm::Ptr<flashgg::Electron>"/>
 <class name="std::vector<flashgg::Electron>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Electron> >"/>
-<class name="flashgg::Muon" ClassVersion="10">
+<class name="flashgg::Muon" ClassVersion="11">
+ <version ClassVersion="11" checksum="3269337733"/>
  <version ClassVersion="11" checksum="3269337733"/>
   <version ClassVersion="10" checksum="1803852641"/>
 </class>
