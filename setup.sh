@@ -122,6 +122,12 @@ git cherry-pick 5163a7c9937ebfbbd714b3d161af01f64b65224c
 git cherry-pick a45d253ea9850acecbcfcd7bd2e5c3f00d8f0bd9
 git remote rm cmssw-sethzenz
 
+echo "Setting up MET tools"
+git cms-addpkg PhysicsTools/PatUtils
+git cms-addpkg PhysicsTools/PatAlgos
+sed -i 's/jetCorrInputFileName = cms.FileInPath(jetUncInfos\["jecUncFile"\] ),/#jetCorrInputFileName = cms.FileInPath(jetUncInfos["jecUncFile"] ),/g' $CMSSW_BASE/src/PhysicsTools/PatUtils/python/tools/runMETCorrectionsAndUncertainties.py
+sed -i 's/jetCorrUncertaintyTag = cms.string(jetUncInfos\["jecUncTag"\] ),/jetCorrUncertaintyTag = cms.string("Uncertainty"), #jecUncertaintyTag),/g' $CMSSW_BASE/src/PhysicsTools/PatUtils/python/tools/runMETCorrectionsAndUncertainties.py
+
 if [[ $CMSSW_BASE == *"7_6"* ]]
 then
     echo "Setting up PDF weight tool..."
