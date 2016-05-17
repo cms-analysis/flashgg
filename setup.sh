@@ -12,14 +12,14 @@ then
   return 1
 fi
 
-#NFILES=`ls -1 ${CMSSW_BASE}/src | wc -l`
-#if [ ! ${NFILES} = "1" ]
-#then
-#  echo "CMSSW area appears to have extra files already. Start over and check README carefully."
-#  echo "You can remove this condition from the setup script if you wish, but proceed with caution!"
-#  echo
-#  return 1
-#fi
+NFILES=`ls -1 ${CMSSW_BASE}/src | wc -l`
+if [ ! ${NFILES} = "1" ]
+then
+  echo "CMSSW area appears to have extra files already. Start over and check README carefully."
+  echo "You can remove this condition from the setup script if you wish, but proceed with caution!"
+  echo
+  return 1
+fi
 
 echo
 echo "You should have checked out from cms-analysis/flashgg. Renaming this to upstream for convenience of existing developers..."
