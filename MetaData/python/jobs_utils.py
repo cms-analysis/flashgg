@@ -578,10 +578,15 @@ class JobsManager(object):
 
         # loop over all types of processes (data, signal, background)
         for dsList in self.options.processes.values():
-            for dsName in dsList:
+            for idsName in dsList:
+                #if args were provided for this dataset, then it is a list...
+                if isinstance(idsName, list):
+                    dsName=idsName[0]
+                #... or just a string
+                else:
+                    dsName=idsName
 
                 # check if this datasets was selected
-                
                 if not self.isSelectedDataset(dsName):
                     # skip this dataset
                     continue
