@@ -130,7 +130,9 @@ then
 else
     echo "Not setting up PDF weight because we appear to be in CMSSW 8"
 fi
-    
+
+echo "copy databases for local running (consistency with crab)"
+cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Fall15_25nsV2_*.db $CMSSW_BASE/src/flashgg
 
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit
