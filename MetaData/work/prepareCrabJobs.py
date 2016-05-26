@@ -78,6 +78,11 @@ parser = OptionParser(option_list=[
                     default="/store/group/phys_higgs/cmshgg/%s/flashgg" % os.getlogin(),
                     help="output storage path. default: %default",
                     ),
+        make_option("-d","--task-dir",
+                    dest="task_dir",action="store",type="string",
+                    default=None,
+                    help="task folder. default: same as campaign",
+                    ),
         make_option("-C","--campaign",
                     dest="campaign",action="store",type="string",
                     default="CSA14",
@@ -224,9 +229,11 @@ if options.createCrabConfig:
     gtJson = json.load(open(globalTagPath,'r'))
     print "GLOBAL TAGS:",options.globalTags
 
-    if not os.path.isdir(options.campaign):
-        os.mkdir(options.campaign)
-    os.chdir(options.campaign)
+    if not options.task_dir:
+        options.task_dir = options.campaign
+    if not os.path.isdir(options.task_dir):
+        os.mkdir(options.task_dir)
+    os.chdir(options.task_dir)
     print ("Parameter set: %s\nflashggVersion: %s\ncrab template: %s\n" % (options.parameterSet,flashggVersion,options.crabTemplate))
     print ("Copying over parameter set")
     Popen(['cp', '-p', options.parameterSet, './'])

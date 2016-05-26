@@ -518,12 +518,18 @@ class SamplesManager(object):
         return 0
         ## return dsetName,ifile,fileName,ret,out
     
-    def getDatasetLumiList(self,name,catalog):
+    def getDatasetLumiList(self,name,catalog,check=False):
         from FWCore.PythonUtilities.LumiList import LumiList
 
         dlist = LumiList()
         for fil in catalog[name]["files"]:
             flist = LumiList( runsAndLumis=fil.get("lumis",{}) )
+            if check:
+                andlist = dlist.__and__(flist)
+                ## print andlist,  fil.get("name")
+                if len(andlist) != 0:
+                    print "Warning: duplicate lumi sections in dataset. %s" % fil.get("name")
+                    print andlist, flist
             dlist += flist
         
         return dlist
@@ -535,7 +541,7 @@ class SamplesManager(object):
         for dataset in catalog.keys():
             for arg in args:
                 if dataset == arg or fnmatch(dataset,arg):
-                    datasets[dataset] = self.getDatasetLumiList(dataset,catalog)
+                    datasets[dataset] = self.getDatasetLumiList(dataset,catalog,check=True)
                     break
         
         keys = datasets.keys()
@@ -566,7 +572,7 @@ class SamplesManager(object):
         
 
         if len(output) > 0:
-            output = output[0].strip("output=")
+            output = output[0].replace("output=","")
         else:
             output = None
             

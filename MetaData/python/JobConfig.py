@@ -120,6 +120,13 @@ class JobConfig(object):
             self.pu_distribs["PU25nsData2015v1"] = mix_2015_76_25ns.input.nbPileupEvents
         except Exception:
             print "Failed to load 76X mixing, this is expected in 74X!"
+            
+        try:
+            from SimGeneral.MixingModule.mix_2016_25ns_SpringMC_PUScenarioV1_PoissonOOTPU_cfi import mix as mix_2016_80_25ns
+            self.pu_distribs["80X_mcRun2_asymptotic_2016"] = mix_2016_80_25ns.input.nbPileupEvents
+        except Exception:
+            print "Failed to load 80X mixing, this is expected in 7X!"
+            
 
     def __getattr__(self,name):
         ## did not manage to inherit from VarParsing, because of some issues in __init__
@@ -172,6 +179,11 @@ class JobConfig(object):
         files = self.inputFiles
         if self.dataset and self.dataset != "":
             dsetname,xsec,totEvents,files,maxEvents = self.dataset
+            if type(xsec) == float:
+                print 
+                print "Error: cross section not found for dataset %s" % dsetname
+                print
+                
             self.maxEvents = int(maxEvents)
             
             putarget = None
