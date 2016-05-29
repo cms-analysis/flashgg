@@ -142,13 +142,13 @@ process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNA
 
 tagList=[
 ["UntaggedTag",4],
-["VBFTag",2],
+#["VBFTag",2],
 #["VHTightTag",0],
 #["VHLooseTag",0],
 #["VHEtTag",0],
 #["VHHadronicTag",0],
-["TTHHadronicTag",0],
-["TTHLeptonicTag",0]
+#["TTHHadronicTag",0],
+#["TTHLeptonicTag",0]
 ]
 
 definedSysts=set()
