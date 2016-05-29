@@ -23,6 +23,19 @@ flashggUntagged = cms.EDProducer("FlashggUntaggedTagProducer",
                                  RequireScaledPtCuts = cms.bool(True)
 )
 
+flashggSigmaMoMpToM = cms.EDProducer("FlashggSigmaMpTTagProducer",
+#                                 DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+                                 DiPhotonTag    = cms.InputTag('flashggPreselectedDiPhotons'),
+                                 SystLabel      = cms.string(""),
+                                 MVAResultTag   = cms.InputTag('flashggDiPhotonMVA'),
+                                 GenParticleTag = cms.InputTag( "flashggPrunedGenParticles" ),
+                                 BoundariesSigmaMoM  = cms.vdouble(0.,0.0078,0.0115,0.06), #,1.000),
+                                 BoundariespToM      = cms.vdouble(0.,1.02,1.83,10.0), #,1.000),
+                                 RequireScaledPtCuts = cms.bool(True)
+)
+
+
+
 flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                        SystLabel=cms.string(""),
