@@ -18,6 +18,9 @@ for fn in listdir("."):
                     shortName = shortName.replace("_asymptotic_","_asympt_")
                     shortName = shortName.replace("_mcRun2_","_mcR2_")
                     shortName = shortName.replace("Down","Do")
+                    # 2016
+                    shortName = shortName.replace("RunIISpring16MiniAODv1-PUSpring16RAWAODSIM", "")
+                    shortName = shortName.replace("RunIISpring16MiniAODv1-PUSpring16", "")
                     if len(shortName) >= 100:
                         shortName = shortName.replace("_TuneCUETP8M1_13TeV_Pythia8","").replace("_TuneCUETP8M1","")
                         shortName = shortName.replace("_amcatnloFXFX_madspin_","").replace("_amcFX_MS_","")
