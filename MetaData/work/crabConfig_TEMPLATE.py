@@ -17,6 +17,7 @@ config.JobType.psetName = "PSET"
 
 ## to include local file in the sendbox, this will put the file in the directory where cmsRun runs
 #config.JobType.inputFiles   = [ os.environ['CMSSW_BASE'] + '/src/'+ 'flashgg/MetaData/data/PY8_RunIISpring15DR74_bx50_MC.db' ]
+config.JobType.inputFiles = ['Fall15_25nsV2_MC.db','Fall15_25nsV2_DATA.db']
 
 ## incrase jobs time wall, maximum 2750 minutes (~46 hours)
 config.JobType.maxJobRuntimeMin = 2750

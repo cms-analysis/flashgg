@@ -651,7 +651,7 @@ class SamplesManager(object):
         if "/" in primary:
             primary,secondary,tier = primary.split("/")
         found = False
-        xsec  = 0.
+        xsec  = None
         allFiles = []
         totEvents = 0.
         totWeights = 0.

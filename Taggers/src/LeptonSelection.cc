@@ -109,19 +109,19 @@ namespace flashgg {
         float eldEtaIn = elec->deltaEtaSuperClusterTrackAtVtx();
         float eldPhiIn = elec->deltaPhiSuperClusterTrackAtVtx();
         float elhOverE = elec->hcalOverEcal();
-        float elRelIsoEA = elec->standardHggIso()/elec->pt();
+        float elRelIsoEA = elec->standardHggIso();
         
         float elooEmooP =-999 ; 
         
         float elNonTrigMVA = elec->nonTrigMVA();
-        
+        bool passConversionVeto= elec->passConversionVeto();
         
         if( elec->ecalEnergy() == 0 ){
             elooEmooP = 1e30;
         }else if( !std::isfinite(elec->ecalEnergy())){	    
             elooEmooP = 1e30;
         }else{
-            elooEmooP = fabs(1.0/elec->ecalEnergy() - elec->eSuperClusterOverP()/elec->ecalEnergy() );
+            elooEmooP = fabs(1.0/elec->ecalEnergy() - elec->eSuperClusterOverP()/elec->ecalEnergy() );                       
         }
 
         float elDxy = fabs( elec->gsfTrack()->dxy( best_vtx_elec->position()) ) ;
@@ -146,6 +146,7 @@ namespace flashgg {
                && fabs(elDxy) < 0.0261
                && fabs(elDz) < 0.41
                && elMissedHits <=	2 
+               && passConversionVeto
                ) doPassLoose = true;
             
             if( 
@@ -158,6 +159,7 @@ namespace flashgg {
                && fabs(elDxy) < 0.0118
                && fabs(elDz) < 0.373
                && elMissedHits <=	2 
+               && passConversionVeto
                 ) doPassMedium = true;
             
         }else{
@@ -175,6 +177,7 @@ namespace flashgg {
                && fabs(elDxy) < 0.118
                && fabs(elDz) < 0.822
                && elMissedHits <=	1 
+               && passConversionVeto
                 ) doPassLoose = true;
             
             if( 
@@ -187,8 +190,9 @@ namespace flashgg {
                && fabs(elDxy) < 0.0739
                && fabs(elDz) < 0.602
                && elMissedHits <=	1 
+               && passConversionVeto
                 ) doPassMedium = true;
-            }
+        }
 
         IDs.push_back(doPassLoose);
         IDs.push_back(doPassMedium);
@@ -273,7 +277,7 @@ namespace flashgg {
 
             // Put 3 different thresholds as recommended by egamma POG
             
-            if( Electron->standardHggIso() / Electron->pt() > IsoThreshold ) continue; 
+            if( Electron->standardHggIso() > IsoThreshold ) continue; 
 
             if( Electron->gsfTrack()->hitPattern().numberOfHits( reco::HitPattern::MISSING_INNER_HITS ) > NumOfMissingHitsThreshold ) { continue; }
             //std::cout << "[DEBUG] passed  missing hits cut." << std::endl;

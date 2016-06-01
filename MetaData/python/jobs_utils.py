@@ -134,6 +134,7 @@ class JobsManager(object):
             
         self.uniqueNames = {}
 
+        self.checkCrossSections()
 
     # -------------------------------------------------------------------------------------------------------------------
     def __call__(self):
@@ -543,4 +544,74 @@ class JobsManager(object):
                         print "%s: %s" % (jfile,batchId[0])
             print 
                 
-                
+    # -------------------------------------------------------------------------------------------------------------------
+
+    def checkCrossSections(self):
+        # checks if all cross sections (apart from data)
+        # were specified
+
+        import re
+        from flashgg.MetaData.samples_utils import SamplesManager
+        from flashgg.MetaData.JobConfig import JobConfig
+
+        # ignore any escaping etc.
+        kwargs = {}
+        for part in re.split('\s+', self.options.cmdLine):
+            key, value = part.split('=',1)
+            kwargs[key] = value
+
+        if not kwargs.has_key('campaign'):
+            print >> sys.stderr,"WARNING: campaign not set"
+
+        # TODO: the following line is duplicated from
+        #       JobConfig(..) but we can't make JobConfig.options.parseArguments()
+        #       to parse anything other than sys.argv without modifying sys.argv temporarily...
+        campaign = kwargs.get('campaign', "")
+
+        jobConfig = JobConfig(**kwargs)
+
+        sm = SamplesManager("$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % (jobConfig.metaDataSrc, campaign),
+                            jobConfig.crossSections,
+                            )
+
+        hasProblem = False
+
+        # loop over all types of processes (data, signal, background)
+        for dsList in self.options.processes.values():
+            for idsName in dsList:
+                #if args were provided for this dataset, then it is a list...
+                if isinstance(idsName, list):
+                    dsName=idsName[0]
+                #... or just a string
+                else:
+                    dsName=idsName
+
+                # check if this datasets was selected
+                if not self.isSelectedDataset(dsName):
+                    # skip this dataset
+                    continue
+
+                #----------
+                try:
+                    name, xsec, totEvents, files, maxEvents = sm.getDatasetMetaData(jobConfig.maxEvents, dsName, jobId=-1, nJobs= jobConfig.nJobs)
+
+                    if xsec == None:
+                        print >> sys.stderr,"cross section for",dsName,"not found in",jobConfig.crossSections
+                        hasProblem = True
+
+                except Exception, ex:
+                    if type(ex) == Exception and (
+                        ex.message.startswith('No dataset matched the request:') or
+                        ex.message.startswith('More then one dataset matched the request:')):
+                        print >> sys.stderr, ex.message
+                    else:
+                        raise
+
+            # end of loop over all processes
+        # end of loop over group of process types
+
+        if hasProblem:
+            print >> sys.stderr,"problems found, exiting"
+            sys.exit(1)
+
+    # -------------------------------------------------------------------------------------------------------------------        
