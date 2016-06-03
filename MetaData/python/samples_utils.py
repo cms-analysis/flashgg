@@ -521,9 +521,15 @@ class SamplesManager(object):
     def getDatasetLumiList(self,name,catalog,check=False):
         from FWCore.PythonUtilities.LumiList import LumiList
 
+        lumisToSkip = catalog[name].get('lumisToSkip',None)
+        if lumisToSkip:
+            print "Dataset %s has list of lumi sections to skip in catalog" % name
+            lumisToSkip = LumiList(compactList=lumisToSkip)
         dlist = LumiList()
         for fil in catalog[name]["files"]:
             flist = LumiList( runsAndLumis=fil.get("lumis",{}) )
+            if lumisToSkip and not check:
+                flist = flist.__sub__(lumisToSkip)
             if check:
                 andlist = dlist.__and__(flist)
                 ## print andlist,  fil.get("name")
@@ -550,9 +556,29 @@ class SamplesManager(object):
                 overlap = datasets[ikey].__and__(datasets[jkey])
                 print ikey
                 print jkey
-                print overlap.compactList
-            
+                overlaps = overlap.compactList
+                print overlaps
+                if len(overlaps) > 0:
+                    for key in ikey,jkey:
+                        reply=ask_user("\nMask lumi sections in\n %s (yes/no)? " % key,["y","n"])
+                        if reply == 'y': 
+                            catalog[key]["lumisToSkip"] = overlaps
+                            break
+                        
+        print "Writing catalog"
+        self.writeCatalog(catalog)
+        print "Done"
+
+
+    def getLumisToSkip(self,dataset):
+        catalog = self.readCatalog(True)
+        if not dataset in catalog:
+            return None
+
+        from FWCore.PythonUtilities.LumiList import LumiList
         
+        return LumiList( compactList=catalog[dataset].get('lumisToSkip',{}) )
+    
 
     def getLumiList(self,*args):
         

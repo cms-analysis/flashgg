@@ -41,7 +41,7 @@ class JsonManipulator(object):
         
         if self.options.bunch_space != "":
             self.options.bunch_space = "_%s" % self.options.bunch_space
-        cert_pattern = "Cert_*_13TeV_*_Collisions*%s%s_JSON*.txt" % ( self.cert_mapping[self.options.field], self.options.bunch_space )
+        cert_pattern = "Cert_*_13TeV_*_Collisions*%s%s_JSON.txt" % ( self.cert_mapping[self.options.field], self.options.bunch_space )
         search = os.path.join(self.options.dqm_folder,cert_pattern )
         print search
         files = sorted( map(lambda x: (int(x.split("-")[1].rsplit("_13TeV")[0]),x),  

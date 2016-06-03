@@ -253,17 +253,12 @@ if options.createCrabConfig:
         label = ProcessedDataset
         if options.label:
             label = options.label
-        # Increment flashgg- processing index if job has been launched before (ie if crab dir already exists)
-        itry = 0
         ### if sample in data:
         ###     if ProcessedDataset.count("201"):
         ###         position = ProcessedDataset.find("201")
         ###         PrimaryDataset = PrimaryDataset +"-"+ ProcessedDataset[position:]
             
         jobname = "_".join([flashggVersion, PrimaryDataset, ProcessedDataset])
-        while os.path.isdir("crab_" + jobname):
-            itry += 1
-            jobname = "_".join([flashggVersion, PrimaryDataset, ProcessedDataset, str(itry).zfill(2)])
         if len(jobname) > 97:
             jobname = jobname.replace("TuneCUEP8M1_13TeV-pythia8","13TeV")
         if len(jobname) > 97:
@@ -283,8 +278,15 @@ if options.createCrabConfig:
         if len(jobname) > 97:
             print "jobname length: %d " % len(jobname)
             jobname = jobname[:97]
-        jobname = jobname.rstrip("-").rstrip("-v")
-        jobname += "_%s" % ( str(itry).zfill(2) )
+        jobname0 = jobname.rstrip("-").rstrip("-v")
+        
+        # Increment flashgg- processing index if job has been launched before (ie if crab dir already exists)
+        itry = 0
+        jobname = jobname0+"_%s" % ( str(itry).zfill(2) )
+        while os.path.isdir("crab_" + jobname):
+            itry += 1
+            jobname = jobname0+"_%s" % ( str(itry).zfill(2) )
+            
         # Actually create the config file: copy the template and replace things where appropriate
         crabConfigFile = "crabConfig_" + jobname + ".py"
         print "Preparing crab for processing ", PrimaryDataset, "\n      -> ", crabConfigFile
