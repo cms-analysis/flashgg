@@ -349,7 +349,6 @@ class JobConfig(object):
                 if lumisToSkip: 
                     target = target.__sub__(lumisToSkip)                    
                 process.source.lumisToProcess = target.getVLuminosityBlockRange()
-
             if isdata:    
                 print process.source.lumisToProcess
             
@@ -413,7 +412,6 @@ class JobConfig(object):
             self.filePrepend = "root://xrootd-cms.infn.it/"
         elif self.useEOS:
             self.filePrepend = "root://eoscms.cern.ch//eos/cms"
-        
         self.samplesMan = None
         dataset = None
         if self.dataset != "":
