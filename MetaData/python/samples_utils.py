@@ -441,6 +441,16 @@ class SamplesManager(object):
         
     def mergeDataset(self,dst,merge):
         dst["vetted"]=False
+        
+        from FWCore.PythonUtilities.LumiList import LumiList
+        dstLumisToSkip = LumiList(compactList=dst.get('lumisToSkip',{}))
+        mergeLumisToSkip = Lumistoskip(compactList=merge.get('lumisToSkip',{}))
+        dstLumisToSkip += mergeLumisToSkip
+        dstLumisToSkip = dstLumisToSkip.compactList
+        if len(dstLumisToSkip) > 0:
+            dst['lumisToSkip'] = dstLumisToSkip
+            print "\nWARNING: Merged lumisToSkip list. It is reccomended to run the 'overlap' command to re-geneate the list from scratch."
+        
         dstFiles=dst["files"]
         mergeFiles=merge["files"]
         for fil in mergeFiles:
