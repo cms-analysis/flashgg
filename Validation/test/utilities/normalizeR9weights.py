@@ -8,7 +8,7 @@ def main(options):
     fmc = ROOT.TFile(options.weight)
     hmc = fmc.Get("eta_vs_r9_norm")
     
-    #hmc.Scale(1/hmc.Integral())
+    hmc.Scale(1/hmc.Integral())
     
     fdata.cd()
     directories = fdata.GetListOfKeys()

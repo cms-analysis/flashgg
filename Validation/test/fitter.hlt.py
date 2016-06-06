@@ -84,8 +84,8 @@ EfficiencyBins = cms.PSet(
     #probe_Pho_full5x5_r9 = cms.vdouble(0. ,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.875,0.9,0.925,0.95,0.975 ,1.),
     #probe_Pho_full5x5x_r9 = cms.vdouble(0.5,1.0),
     
-    probe_sc_abseta = cms.vdouble(0.0, 1.479),    probe_Pho_full5x5x_r9 = cms.vdouble(0.85, 1.0), #cat 0
-    #probe_sc_abseta = cms.vdouble( 1.566,2.5),  probe_Pho_full5x5x_r9 = cms.vdouble(0.90, 1.0), #cat 1
+    #probe_sc_abseta = cms.vdouble(0.0, 1.479),    probe_Pho_full5x5x_r9 = cms.vdouble(0.85, 1.0), #cat 0
+    probe_sc_abseta = cms.vdouble( 1.566,2.5),  probe_Pho_full5x5x_r9 = cms.vdouble(0.90, 1.0), #cat 1
     #probe_sc_abseta = cms.vdouble(0.0, 1.479),    probe_Pho_full5x5x_r9 = cms.vdouble(0.50, 0.85), #cat 2
     #probe_sc_abseta = cms.vdouble( 1.566,2.5),  probe_Pho_full5x5x_r9 = cms.vdouble(0.80, 0.9), #cat 3
     #probe_sc_abseta = cms.vdouble(0.0,0.2,0.4,0.8,1.0,1.2,1.479,1.7,1.9,2.1,2.3,2.5),
