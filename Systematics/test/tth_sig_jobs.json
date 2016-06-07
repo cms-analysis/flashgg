@@ -4,5 +4,5 @@
         "tth_125" : [ "/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8" ],
         "tth_130" : [ "/ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8" ]
      },	
-        "cmdLine" : "campaign=RunIIFall15DR76-1_3_0-25ns_ext1_Workspaces"
+        "cmdLine" : "campaign=RunIISpring16DR80X-2_0_0-25ns"
 }
