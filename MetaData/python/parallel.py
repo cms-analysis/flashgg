@@ -599,8 +599,6 @@ class SGEJob(LsfJob):
 
         qsubCmd = " ".join(qsubCmdParts)
 
-        print "SCZ DEBUG:",qsubCmd
-
         import subprocess
         sge = subprocess.Popen(qsubCmd, shell=True, # bufsize=bufsize,                                                                                                                                                               
                                stdin=subprocess.PIPE,
