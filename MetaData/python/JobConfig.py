@@ -259,7 +259,6 @@ class JobConfig(object):
                             puObj.puReWeight = True
                             puObj.puBins = cms.vdouble( map(float, samplepu.probFunctionVariable) )
                             puObj.mcPu   = samplepu.probValue
-                            ]
                             puObj.dataPu = cms.vdouble(putarget)
                             puObj.useTruePu = cms.bool(True)
                         
