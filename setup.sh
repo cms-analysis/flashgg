@@ -105,7 +105,8 @@ cd $CMSSW_BASE/src
 echo "Setting up TnP tools..."
 #git cms-addpkg DataFormats/RecoCandidate
 #git cms-addpkg PhysiscsTools/TagAndProbe
-git cms-merge-topic -u matteosan1:egm_tnp_76X
+#git cms-merge-topic -u matteosan1:egm_tnp_76X
+git cms-merge-topic -u mplaner:egm_tnp_80x
 git cms-merge-topic -u matteosan1:smearer_76X
 #git remote add cmssw-ferriff https://github.com/ferriff/cmssw.git
 #git fetch cmssw-ferriff
