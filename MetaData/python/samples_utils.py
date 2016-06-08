@@ -847,7 +847,7 @@ Commands:
         slim_datasets = []
         for d in datasets:
             empty,prim,sec,tier = d.split("/")
-            if len(sec) > maxSec:
+            if not self.options.verbose and len(sec) > maxSec:
                 sec = sec[0:firstHalf]+".."+sec[-secondHalf:-1]
             slim_datasets.append("/%s/%s/%s" % ( prim, sec, tier ) )
         ## datasets = slim_datasets
