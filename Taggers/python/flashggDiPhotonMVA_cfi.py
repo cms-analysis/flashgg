@@ -28,4 +28,3 @@ flashggDiPhotonMVA = cms.EDProducer('FlashggDiPhotonMVAProducer',
                                     )
 
 
-
