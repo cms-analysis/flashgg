@@ -75,6 +75,7 @@ namespace flashgg {
 
         unsigned int nVtxSaveInfo;
         bool trackHighPurity;
+        bool pureGeomConvMatching;
         double dRexclude;
         double sigma1Pix;
         double sigma1Tib;
@@ -142,6 +143,7 @@ namespace flashgg {
 
         nVtxSaveInfo          = iConfig.getUntrackedParameter<unsigned int>( "nVtxSaveInfo" );
         trackHighPurity       = iConfig.getParameter<bool>( "trackHighPurity" );
+        pureGeomConvMatching  = iConfig.getParameter<bool>( "pureGeomConvMatching" );
         dRexclude             = iConfig.getParameter<double>( "dRexclude" );
         sigma1Pix             = iConfig.getParameter<double>( "sigma1Pix" );
         sigma1Tib             = iConfig.getParameter<double>( "sigma1Tib" );
@@ -504,17 +506,18 @@ namespace flashgg {
 
         std::vector<int> result;
 
-        assert( g->hasConversionTracks() );
+        if(!pureGeomConvMatching) assert( g->hasConversionTracks() );
         int selected_conversion_index = -1;
 
-        if( g->hasConversionTracks() ) {
+        if( (g->hasConversionTracks() && !pureGeomConvMatching) || pureGeomConvMatching){
+            
             for( unsigned int i = 0; i < conversionsVector.size(); i++ ) {
                 edm::Ptr<reco::Conversion> conv = conversionsVector[i];
                 if( conv->nTracks() == 2 ) {
                     if( !conv->isConverted() ) { continue; }
                     if( conv->refittedPair4Momentum().pt() < 10. ) { continue; }
                     if( TMath::Prob( conv->conversionVertex().chi2(), conv->conversionVertex().ndof() ) < 1e-6 ) { continue; }
-
+                    
                     TVector3 VtxtoSC;
                     VtxtoSC.SetXYZ( g->superCluster()->position().x() - conv->conversionVertex().x(),
                                     g->superCluster()->position().y() - conv->conversionVertex().y(),
@@ -548,15 +551,14 @@ namespace flashgg {
                         float oneLegTrack_X = conv->tracksPin()[0].x();
                         float oneLegTrack_Y = conv->tracksPin()[0].y();
                         float oneLegTrack_Z = conv->tracksPin()[0].z();
-
+                        
                         RefPairMo.SetXYZ( oneLegTrack_X, oneLegTrack_Y, oneLegTrack_Z );
                         double dR = 0;
                         dR = VtxtoSC.DeltaR( RefPairMo );
                         if( dR < mindR ) {
                             mindR = dR;
                             selected_conversion_index = j;
-                        }
-
+                        }                        
                     }
                 }
                 if( mindR < 0.1 ) {
@@ -566,8 +568,9 @@ namespace flashgg {
                 }
             }
         }
+        
         if( mindR < 0.1 )
-        {return result;}
+            {return result;}
         else {
             result.push_back( -1 );
             result.push_back( -1 );
@@ -607,13 +610,13 @@ namespace flashgg {
         float nConvLegs_TrailPhoton = 0;
         float nConvLegs_LeadPhoton = 0;
 
-        if( conversionsVector.size() > 0 ) {
-            if( g1->hasConversionTracks() ) {
+        if( conversionsVector.size() > 0 || conversionsVectorSingleLeg.size() > 0 ) {
+            if( (g1->hasConversionTracks() && !pureGeomConvMatching) || pureGeomConvMatching) {
                 vIndexMatchedConversionLeadPhoton = IndexMatchedConversion( g1, conversionsVector, conversionsVectorSingleLeg, useSingleLeg );
                 IndexMatchedConversionLeadPhoton = vIndexMatchedConversionLeadPhoton[0];
                 nConvLegs_LeadPhoton = vIndexMatchedConversionLeadPhoton[1];
             }
-            if( g2->hasConversionTracks() ) {
+            if( (g2->hasConversionTracks() && !pureGeomConvMatching) || pureGeomConvMatching) {
                 vIndexMatchedConversionTrailPhoton = IndexMatchedConversion( g2, conversionsVector, conversionsVectorSingleLeg, useSingleLeg );
                 IndexMatchedConversionTrailPhoton = vIndexMatchedConversionTrailPhoton[0];
                 nConvLegs_TrailPhoton = vIndexMatchedConversionTrailPhoton[1];
@@ -816,7 +819,7 @@ namespace flashgg {
         float nConvLegs_TrailPhoton = 0;
         
         if( conversionsVector.size() > 0 ) {
-            if( g1->hasConversionTracks() ) {
+            if( (g1->hasConversionTracks() && !pureGeomConvMatching) || pureGeomConvMatching ) {
                 vIndexMatchedConversionLeadPhoton = IndexMatchedConversion( g1, conversionsVector, conversionsVectorSingleLeg, useSingleLeg );
                 IndexMatchedConversionLeadPhoton = vIndexMatchedConversionLeadPhoton[0];
                 nConvLegs_LeadPhoton = vIndexMatchedConversionLeadPhoton[1];

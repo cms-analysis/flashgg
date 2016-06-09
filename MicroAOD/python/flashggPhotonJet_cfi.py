@@ -24,8 +24,13 @@ flashggPhotonJet = cms.EDProducer('FlashggPhotonJetProducer',
                                   #vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_noSL_2015.xml"),
 
                                   #vtxId and vtxProb 2015 with single leg
-                                  vertexIdMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2015.xml"),
-                                  vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_SL_2015.xml"),
+                                  #vertexIdMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2015.xml"),
+                                  #vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_SL_2015.xml"),
+
+                                  #vtxId and vtxProb 2016 with single leg
+                                  vertexIdMVAweightfile   = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml"),
+                                  vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_SL_2016.xml"),
+
                                   useSingleLeg=cms.bool(True),
 					
                                   minJetPt = cms.double(30.),
@@ -48,6 +53,7 @@ flashggPhotonJet = cms.EDProducer('FlashggPhotonJetProducer',
 				  photIsolnEAreaPhot = cms.vdouble(0.1271, 0.1101, 0.0756, 0.1175, 0.1498, 0.1857, 0.2183),
                                   
 				  trackHighPurity = cms.bool(False),
+                                  pureGeomConvMatching    = cms.bool(True),
                                   dRexclude=cms.double(0.05),
                                   #new reso:
                                   sigma1Pix=cms.double(0.0125255),
