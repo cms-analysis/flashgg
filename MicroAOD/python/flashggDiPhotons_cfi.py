@@ -23,12 +23,18 @@ flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                   #vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_noSL_2015.xml"),
 
                                   #vtxId and vtxProb 2015 with single leg
-                                  vertexIdMVAweightfile   = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2015.xml"),
-                                  vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_SL_2015.xml"),
+                                  #vertexIdMVAweightfile   = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2015.xml"),
+                                  #vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_SL_2015.xml"),
+
+                                  #vtxId and vtxProb 2016 with single leg
+                                  vertexIdMVAweightfile   = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml"),
+                                  vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_SL_2016.xml"),
+
                                   useSingleLeg            = cms.bool(True),
 
                                   nVtxSaveInfo            = cms.untracked.uint32(3),
                                   trackHighPurity         = cms.bool(False),
+                                  pureGeomConvMatching    = cms.bool(True),
                                   dRexclude               = cms.double(0.05),
                                   #new reso:
                                   sigma1Pix               = cms.double(0.0125255),
