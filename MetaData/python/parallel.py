@@ -581,6 +581,9 @@ class SGEJob(LsfJob):
                 qsubCmdParts.append("-l h_rt=3:0:0")
             elif self.lsfQueue == "hepmedium.q":
                 qsubCmdParts.append("-l h_rt=6:0:0")
+            else:
+                # assume long queue is intended
+                qsubCmdParts.append("-l h_rt=48:0:0")
         else:
             qsubCmdParts = [ "qsub",
                              "-q " + self.lsfQueue,
