@@ -211,7 +211,7 @@ class SamplesManager(object):
         ret,out = self.parallel_.run("/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select",["find",dsetName],interactive=True)[2]
         files = []
         for line in out.split("\n"):
-            if line.endswith(".root"):
+            if line.endswith(".root") and not "failed" in line:
                 files.append( {"name":line.replace("/eos/cms",""), "nevents":0} )
 
         return files
@@ -444,7 +444,7 @@ class SamplesManager(object):
         
         from FWCore.PythonUtilities.LumiList import LumiList
         dstLumisToSkip = LumiList(compactList=dst.get('lumisToSkip',{}))
-        mergeLumisToSkip = Lumistoskip(compactList=merge.get('lumisToSkip',{}))
+        mergeLumisToSkip = LumiList(compactList=merge.get('lumisToSkip',{}))
         dstLumisToSkip += mergeLumisToSkip
         dstLumisToSkip = dstLumisToSkip.compactList
         if len(dstLumisToSkip) > 0:
@@ -615,12 +615,13 @@ class SamplesManager(object):
         from FWCore.PythonUtilities.LumiList import LumiList
         fulist = LumiList()
         for dataset in datasets:
-            dlist = LumiList()
+            ## dlist = LumiList()
+            dlist = self.getDatasetLumiList(dataset,catalog)
             jsonout = dataset.lstrip("/").rstrip("/").replace("/","_")+".json"
-            for fil in catalog[dataset]["files"]:
-                flist = LumiList( runsAndLumis=fil.get("lumis",{}) )
-                ## print flist
-                dlist += flist
+            ### for fil in catalog[dataset]["files"]:
+            ###     flist = LumiList( runsAndLumis=fil.get("lumis",{}) )
+            ###     ## print flist
+            ###     dlist += flist
             if not output:
                 with open(jsonout,"w+") as fout:
                     fout.write(json.dumps(dlist.compactList,sort_keys=True))

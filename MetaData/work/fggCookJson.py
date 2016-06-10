@@ -60,9 +60,9 @@ class JsonManipulator(object):
             most_recent_time, most_recent = 0, None
 
         dcs_only =  os.path.join(self.options.dqm_folder,"DCSOnly","json_DCSONLY%s.txt" % self.dcs_mapping[self.options.field] )
-        most_recent_time = min( most_recent_time, os.path.getmtime(dcs_only) )
+        most_recent_time = max( most_recent_time, os.path.getmtime(dcs_only) )
         print "Most recent jsons:\n %s\n %s" % (most_recent,dcs_only)
-        
+
         my_json = "myjson_%s_%s_%d.txt" % ( self.options.field, self.options.bunch_space, latest_run  )
         if not os.path.exists(my_json) or os.path.getmtime(my_json) < most_recent_time:
             print "updating %s" % my_json
