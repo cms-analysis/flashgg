@@ -17,8 +17,7 @@ photonSmearBins = cms.PSet(
 
 from flashgg.Systematics.ecalElfTools import getRunDependentScaleBins
 
-# photonScaleBinsData = getRunDependentScaleBins('EgammaAnalysis/ElectronTools/data/76X_16DecRereco_2015_scales.dat')
-photonScaleBinsData = getRunDependentScaleBins('flashgg/Systematics/data/test_2016B_scales.dat')
+photonScaleBinsData = getRunDependentScaleBins('flashgg/Systematics/data/test_scales_800_plus_DCSOnly.dat')
 
 photonScaleUncertBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)","r9"),
