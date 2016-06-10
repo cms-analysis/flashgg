@@ -4,5 +4,5 @@
         "ggh_125"  : [ "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8" ],
 	"ggh_130" : [ "/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8" ]
      },	
-        "cmdLine" : "campaign=RunIIFall15DR76-1_3_0-25ns_ext1_Workspaces"
+        "cmdLine" : "campaign=RunIISpring16DR80X-2_0_0-25ns"
 }

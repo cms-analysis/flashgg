@@ -1,4 +1,5 @@
 {
+    "Run2016B-PromptReco"                          : ["80X_dataRun2_Prompt_v8"],
     "Run2015D"                          : ["74X_dataRun2_v5"],
     "Run2015C"                          : ["74X_dataRun2_v5"],
     "Run2015B"                          : ["74X_dataRun2_v5"],

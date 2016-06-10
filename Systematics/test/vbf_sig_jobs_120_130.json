@@ -3,5 +3,5 @@
 	"vbf_120" : [ "/VBFHToGG_M120_13TeV_amcatnlo_pythia8" ],
         "vbf_130" : [ "/VBFHToGG_M130_13TeV_amcatnlo_pythia8" ]
      },	
-        "cmdLine" : "campaign=RunIIFall15DR76-1_3_0-25ns_ext1_Workspaces"
+        "cmdLine" : "campaign=RunIISpring16DR80X-2_0_0-25ns"
 }

@@ -573,9 +573,21 @@ class SGEJob(LsfJob):
         
     def run(self,script):
 
-        qsubCmdParts = [ "qsub",
-                         "-q " + self.lsfQueue,
-                         ]
+        mydomain = BatchRegistry.getDomain()
+
+        if mydomain == "hep.ph.ic.ac.uk":
+            qsubCmdParts = [ "qsub", "-q hep.q" ]
+            if self.lsfQueue == "hepshort.q":
+                qsubCmdParts.append("-l h_rt=3:0:0")
+            elif self.lsfQueue == "hepmedium.q":
+                qsubCmdParts.append("-l h_rt=6:0:0")
+            else:
+                # assume long queue is intended
+                qsubCmdParts.append("-l h_rt=48:0:0")
+        else:
+            qsubCmdParts = [ "qsub",
+                             "-q " + self.lsfQueue,
+                             ]
 
         if not self.async:
             qsubCmdParts.append("-sync y")  # qsub waits until job completes

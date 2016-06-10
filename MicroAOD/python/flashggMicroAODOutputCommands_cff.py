@@ -56,5 +56,6 @@ microAODDebugOutputCommand = cms.untracked.vstring("keep *_reducedEgamma_*_*",
 microAODHLTOutputCommand = cms.untracked.vstring("keep *_l1extraParticles_Isolated_*",
                                                  "keep *_l1extraParticles_NonIsolated_*",
                                                  "keep *_selectedPatTrigger_*_*",
+                                                 "keep *_caloStage2Digis_EGamma_*",
                                                  "keep *_TriggerResults_*_HLT",
                                                  )
