@@ -78,6 +78,11 @@ parser = OptionParser(option_list=[
                     default="/store/group/phys_higgs/cmshgg/%s/flashgg" % os.getlogin(),
                     help="output storage path. default: %default",
                     ),
+        make_option("-d","--task-dir",
+                    dest="task_dir",action="store",type="string",
+                    default=None,
+                    help="task folder. default: same as campaign",
+                    ),
         make_option("-C","--campaign",
                     dest="campaign",action="store",type="string",
                     default="CSA14",
@@ -224,9 +229,11 @@ if options.createCrabConfig:
     gtJson = json.load(open(globalTagPath,'r'))
     print "GLOBAL TAGS:",options.globalTags
 
-    if not os.path.isdir(options.campaign):
-        os.mkdir(options.campaign)
-    os.chdir(options.campaign)
+    if not options.task_dir:
+        options.task_dir = options.campaign
+    if not os.path.isdir(options.task_dir):
+        os.mkdir(options.task_dir)
+    os.chdir(options.task_dir)
     print ("Parameter set: %s\nflashggVersion: %s\ncrab template: %s\n" % (options.parameterSet,flashggVersion,options.crabTemplate))
     print ("Copying over parameter set")
     Popen(['cp', '-p', options.parameterSet, './'])
@@ -246,17 +253,40 @@ if options.createCrabConfig:
         label = ProcessedDataset
         if options.label:
             label = options.label
-        # Increment flashgg- processing index if job has been launched before (ie if crab dir already exists)
-        itry = 0
         ### if sample in data:
         ###     if ProcessedDataset.count("201"):
         ###         position = ProcessedDataset.find("201")
         ###         PrimaryDataset = PrimaryDataset +"-"+ ProcessedDataset[position:]
             
-        jobname = "_".join([flashggVersion, PrimaryDataset, ProcessedDataset, str(itry).zfill(2)])
+        jobname = "_".join([flashggVersion, PrimaryDataset, ProcessedDataset])
+        if len(jobname) > 97:
+            jobname = jobname.replace("TuneCUEP8M1_13TeV-pythia8","13TeV")
+        if len(jobname) > 97:
+            jobname = jobname.replace("TuneCUETP8M1_13TeV-madgraphMLM-pythia8","13TeV-mg")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RSGravToGG","Grav")
+        if len(jobname) > 97:
+            jobname = jobname.replace("-PU25nsData2015v1","")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIIFall15MiniAODv2_","")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIIFall15MiniAODv2-magnetOffBS0T_PU25nsData2015v1_0T","0T")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2","Spring16")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2","Spring16")
+        if len(jobname) > 97:
+            print "jobname length: %d " % len(jobname)
+            jobname = jobname[:97]
+        jobname0 = jobname.rstrip("-").rstrip("-v")
+        
+        # Increment flashgg- processing index if job has been launched before (ie if crab dir already exists)
+        itry = 0
+        jobname = jobname0+"_%s" % ( str(itry).zfill(2) )
         while os.path.isdir("crab_" + jobname):
             itry += 1
-            jobname = "_".join([flashggVersion, PrimaryDataset, ProcessedDataset, str(itry).zfill(2)])
+            jobname = jobname0+"_%s" % ( str(itry).zfill(2) )
+            
         # Actually create the config file: copy the template and replace things where appropriate
         crabConfigFile = "crabConfig_" + jobname + ".py"
         print "Preparing crab for processing ", PrimaryDataset, "\n      -> ", crabConfigFile
