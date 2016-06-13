@@ -35,8 +35,10 @@ class JsonManipulator(object):
     # -------------------------------------------------------------------------------------------------------------------
     def __call__(self):
         
-        target = sorted( map(lambda x: (os.path.getmtime(x), x), glob(self.options.target) ),
-                         key=lambda x: x[0] )[-1][1]
+        targets = sorted( map(lambda x: (os.path.getmtime(x), x), glob(self.options.target) ),
+                         key=lambda x: x[0] ) # [-1][1]
+        print targets
+        target = targets[-1][1]
         print target
         self.options.target = target
 
@@ -53,13 +55,15 @@ class JsonManipulator(object):
             print "Error running %s" % run
             sys.exit(ret)
         minrun = int(out)
-
+        
         run = "das_client.py --query 'run dataset=%s | max(run.run_number)' | tail -1 | awk -F= '{ print $2 }'" % dataset
         ret,out = commands.getstatusoutput(run)
         if ret != 0:
             print "Error running %s" % run
             sys.exit(ret)
         maxrun = int(out)
+
+        print 'minrun, maxrun: ', minrun, maxrun
 
         myfolder = "%s_%s" % ( dataset.strip("/").replace("/","_"), self.options.target.rsplit("_",1)[0] )
         if not os.path.exists(myfolder):
