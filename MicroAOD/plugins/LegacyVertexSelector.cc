@@ -752,10 +752,14 @@ namespace flashgg {
         if( sorter.size() > 1 ) {
             second_max_mva_value = sorter[1].second;
             second_selected_vertex_index = sorter[1].first;
+        } else{
+            second_max_mva_value = -2; 
         }
         if( sorter.size() > 2 ) {
             third_max_mva_value = sorter[2].second;
             third_selected_vertex_index = sorter[2].first;
+        }else{
+            third_max_mva_value = -2 ; 
         }
 
         for( unsigned int jj = 0; jj < sorter.size(); jj++ ) {
@@ -778,9 +782,13 @@ namespace flashgg {
         nVert_    = vtxs.size();
         MVA0_     = max_mva_value;
         MVA1_     = second_max_mva_value;
-        dZ1_      = vtxs[selected_vertex_index]->position().z() - vtxs[second_selected_vertex_index]->position().z();
+        dZ1_      = vtxs[selected_vertex_index]->position().z() - vtxs[second_selected_vertex_index]->position().z(); 
         MVA2_     = third_max_mva_value;
         dZ2_      = vtxs[selected_vertex_index]->position().z() - vtxs[third_selected_vertex_index]->position().z();
+       
+        if( sorter.size() < 2 ) dZ1_=100; 
+        if( sorter.size() < 3 ) dZ2_=100;
+        
 
         vtxprobmva_ = VertexProbMva_->EvaluateMVA( "BDT" );
 
