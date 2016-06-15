@@ -21,10 +21,9 @@ flashggDiPhotonMVA = cms.EDProducer('FlashggDiPhotonMVAProducer',
                                     # xml 2015                                    
 #			            VertexProbParamsConv=cms.vdouble(-0.049,-0.241,-0.505,-0.270),
 #                                   VertexProbParamsNoConv=cms.vdouble(-0.344,-0.091,-0.234,-0.186),
-                                    # xml 2016
-                                    VertexProbParamsConv=cms.vdouble(-0.092,-0.205,-0.310,-0.154),
-                                    VertexProbParamsNoConv=cms.vdouble(-0.351,-0.121,-0.145,-0.122),
+                                    # xml 2016 fix low nvtx
+                                    VertexProbParamsConv=cms.vdouble(-0.045,-0.148,-0.328,-0.184),
+                                    VertexProbParamsNoConv=cms.vdouble(-0.366,-0.126,-0.119,-0.091),
 				    Version=cms.string("new")
                                     )
-
 
