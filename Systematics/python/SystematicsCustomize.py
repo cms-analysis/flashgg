@@ -177,8 +177,8 @@ def customizeLeptonSystematicsForData(process):
 def customizeJetSystematicsForData(process):
     # By default remove the systematic entirely
     # For JEC, re-do central value in case the global tag has been updated
-    process.jec.toGet.tag = cms.string("JetCorrectorParametersCollection_Spring16_25nsV3_DATA_AK4PFchs")
-    process.jec.connect = cms.string('sqlite_file:%s/Spring16_25nsV3_DATA.db' % datadir)
+    process.jec.toGet[0].tag = cms.string(process.jec.toGet[0].tag.value().replace("DATA","MC"))
+    process.jec.connect = cms.string(process.jec.connect.value().replace("Data","MC"))
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
     jetsystprodlist = [getattr(process,"flashggJetSystematics%i"%i) for i in range(len(UnpackedJetCollectionVInputTag))]
     for systprod in jetsystprodlist:
