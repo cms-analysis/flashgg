@@ -37,6 +37,8 @@ namespace flashgg {
         const float jet_QGL() const { return theJet_->QGL(); }
         const float jet_rawPt() const { return theJet_->correctedJet("Uncorrected").pt(); }
 
+        const bool jet_match() const { return (theJet_->genJet() != 0); }
+
         edm::Ptr<DiPhotonCandidate> theZ() const { return diPhoton(); }
         const float zMass() const { return diPhoton()->mass(); }
         const float zPt() const { return diPhoton()->pt(); }
