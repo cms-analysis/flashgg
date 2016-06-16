@@ -225,7 +225,14 @@ namespace flashgg {
             if( Electron_eta > EtaCuts[2] || ( Electron_eta > EtaCuts[0] && Electron_eta < EtaCuts[1] ) )  continue;             
             if( Electron->pt() < ElectronPtThreshold ) continue; 
             
-            vector<bool> IDs=EgammaIDs(Electron, vertexPointers );
+            //vector<bool> IDs=EgammaIDs(Electron, vertexPointers );
+            vector<bool> IDs;
+            IDs.clear();
+            IDs.push_back(Electron->passLooseId());
+            IDs.push_back(Electron->passMediumId());
+            IDs.push_back(Electron->passMVAMediumId());
+            IDs.push_back(Electron->passMVATightId());
+            
             if(!IDs[idIndex]) continue;
 
             if( Electron->hasMatchedConversion() ) continue; 

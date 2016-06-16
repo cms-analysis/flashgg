@@ -38,6 +38,19 @@ flashggElectrons = cms.EDProducer('FlashggElectronProducer',
                 eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose"),
                 eleMediumIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium"),
                 eleTightIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight"),
-                eleHEEPIdMap = cms.InputTag("egmGsfElectronIDs:heepElectronID-HEEPV60")
+                eleHEEPIdMap = cms.InputTag("egmGsfElectronIDs:heepElectronID-HEEPV60"),
+		pfCandidatesTag = cms.InputTag("packedPFCandidates"),
 
+		elecminiso_r_min = cms.double(0.05),
+		elecminiso_r_max = cms.double(0.2),
+		elecminiso_kt_scale = cms.double(10.0),
+		elecEBminiso_deadcone_ch = cms.double(0.0),
+		elecEBminiso_deadcone_pu = cms.double(0.0),
+		elecEBminiso_deadcone_ph = cms.double(0.0),
+		elecEBminiso_deadcone_nh = cms.double(0.0),
+		elecEEminiso_deadcone_ch = cms.double(0.015),
+                elecEEminiso_deadcone_pu = cms.double(0.015),
+                elecEEminiso_deadcone_ph = cms.double(0.08),
+                elecEEminiso_deadcone_nh = cms.double(0.0),
+		elecminiso_ptThresh = cms.double(0.0)
 		)
