@@ -168,10 +168,10 @@ def createJECESource(process):
                                timetype = cms.string('runnumber'),
                                toGet = cms.VPSet(cms.PSet(
           record = cms.string('JetCorrectionsRecord'),
-          tag    = cms.string('JetCorrectorParametersCollection_Fall15_25nsV2_MC_AK4PFchs'),
+          tag    = cms.string('JetCorrectorParametersCollection_Spring16_25nsV3_MC_AK4PFchs'),
           label  = cms.untracked.string("AK4PFchs")
           )),
-                               connect = cms.string('sqlite_file:%s/Fall15_25nsV2_MC.db' % datadir)
+                               connect = cms.string('sqlite_file:%s/Spring16_25nsV3_MC.db' % datadir)
                                )                               
     process.es_prefer_jec = cms.ESPrefer('PoolDBESSource', 'jec')
 
