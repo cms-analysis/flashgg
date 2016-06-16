@@ -14,7 +14,22 @@ namespace flashgg {
         Muon();
         Muon( const pat::Muon & );
         ~Muon();
+
         Muon *clone() const { return ( new Muon( *this ) ); }
+
+        float fggPFIsoSumRelR04() const {return fggPFIsoSumRelR04_;}
+        void setFggPFIsoSumRelR04( float val ) {fggPFIsoSumRelR04_ = val;};
+
+        float fggTrkIsoSumRelR03() const {return fggTrkIsoSumRelR03_;}
+        void setFggTrkIsoSumRelR03( float val ) {fggTrkIsoSumRelR03_ = val;};
+
+        float fggMiniIsoSumRel() const {return fggMiniIsoSumRel_;}
+        void setFggMiniIsoSumRel( float val ) {fggMiniIsoSumRel_ = val;};
+
+    private:
+        float fggPFIsoSumRelR04_;
+        float fggTrkIsoSumRelR03_;
+        float fggMiniIsoSumRel_;
     };
 }
 

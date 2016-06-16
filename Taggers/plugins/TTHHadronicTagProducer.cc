@@ -16,6 +16,8 @@
 #include "flashgg/DataFormats/interface/Muon.h"
 #include "flashgg/Taggers/interface/LeptonSelection.h"
 
+#include "DataFormats/Math/interface/deltaR.h"
+
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
 
@@ -241,17 +243,12 @@ namespace flashgg {
                 if( fabs( thejet->eta() ) > jetEtaThreshold_ ) { continue; }
 
                 float bDiscriminatorValue = 0;
+                
+                float dRPhoLeadJet = deltaR( thejet->eta(), thejet->phi(), dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi() ) ;
+                float dRPhoSubLeadJet = deltaR( thejet->eta(), thejet->phi(), dipho->subLeadingPhoton()->superCluster()->eta(),
+                                                dipho->subLeadingPhoton()->superCluster()->phi() );
 
-                float dEtaLead = thejet->eta() - dipho->leadingPhoton()->eta();
-                float dEtaSublead = thejet->eta() - dipho->subLeadingPhoton()->eta();
-
-                float dPhiLead = deltaPhi( thejet->phi(), dipho->leadingPhoton()->phi() );
-                float dPhiSublead = deltaPhi( thejet->phi(), dipho->subLeadingPhoton()->phi() );
-
-                float dRJetPhoLead = sqrt( dEtaLead * dEtaLead + dPhiLead * dPhiLead );
-                float dRJetPhoSubLead = sqrt( dEtaSublead * dEtaSublead + dPhiSublead * dPhiSublead );
-
-                if( dRJetPhoLead < dRJetPhoLeadCut_ || dRJetPhoSubLead < dRJetPhoSubleadCut_ ) { continue; }
+                if( dRPhoLeadJet < dRJetPhoLeadCut_ || dRPhoSubLeadJet < dRJetPhoSubleadCut_ ) { continue; }
                 if( thejet->pt() < jetPtThreshold_ ) { continue; }
 
                 jetcount++;
