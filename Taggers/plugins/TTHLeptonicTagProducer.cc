@@ -212,10 +212,12 @@ namespace flashgg {
         double idmva1 = 0.;
         double idmva2 = 0.;
 
-        vector<int> numMuonJetsdR;
-        vector<int> numElectronJetsdR;
-        bool muonJets = false;
-        bool ElectronJets = false;
+        std::vector<edm::Ptr<Jet> > muonJets;
+        std::vector<edm::Ptr<Jet> > muonBJets;
+        std::vector<edm::Ptr<Jet> > ElectronJets;
+        std::vector<edm::Ptr<Jet> > ElectronBJets;
+        bool TTHLepTagMuon = false;
+        bool TTHLepTagElectron = false;
 
         for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
 
@@ -267,11 +269,8 @@ namespace flashgg {
             
             if( !hasGoodElec && !hasGoodMuons ) { continue; }
             
-            numMuonJetsdR.clear();
-            numElectronJetsdR.clear();
-            
-            muonJets = false;
-            ElectronJets = false;
+            TTHLepTagMuon = false;
+            TTHLepTagElectron = false;
 
             if( hasGoodMuons ) {
 
@@ -280,7 +279,10 @@ namespace flashgg {
                     Ptr<flashgg::Muon> muon = goodMuons[muonIndex];
 
                     int deltaRMuonJetcount = 0;
+                    int deltaRMuonBJetcount = 0;
                     double bDiscriminatorValue = -999.;
+                    muonJets.clear();
+                    muonBJets.clear();
 
                     for( unsigned int candIndex_outer = 0; candIndex_outer < Jets[jetCollectionIndex]->size() ; candIndex_outer++ ) {
                         edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( candIndex_outer );
@@ -301,106 +303,174 @@ namespace flashgg {
 
                         if( dRJetMuon < deltaRJetLepThreshold_ ) { continue; }
                         deltaRMuonJetcount++;
-
-                        tagJets.push_back( thejet );
+                        
+                        muonJets.push_back( thejet );
 
                         bDiscriminatorValue = thejet->bDiscriminator( bTag_.c_str() );
 
                         if( bDiscriminatorValue > bDiscriminator_[1] ) {
-                            tagBJets.push_back( thejet );
+                            deltaRMuonBJetcount++;
+                            muonBJets.push_back( thejet );
                         }
-
 
                     }//end of jets loop
 
-                    numMuonJetsdR.push_back( deltaRMuonJetcount );
-                    tagMuons.push_back( muon );
+                    if(deltaRMuonJetcount >= jetsNumberThreshold_ && deltaRMuonBJetcount >= bjetsNumberThreshold_){
+                        TTHLepTagMuon = true;
+                        tagMuons.push_back( muon );
 
-                }//end of muons loop
+                        for( unsigned int iJetIndex = 0; iJetIndex < muonJets.size(); iJetIndex++){
+                            if(tagJets.empty()){
+                                tagJets.push_back( muonJets.at(iJetIndex) );
+                            } else {
+                                if(std::find(tagJets.begin(), tagJets.end(), muonJets.at(iJetIndex)) != tagJets.end()) {
+                                    // Jet already in tagJets collection //tagJets.push_back( muonJets.at(iJetIndex) );
+                                } else {
+                                    tagJets.push_back( muonJets.at(iJetIndex) );
+                                }
+                            }
+                        }
+                        
+                        for( unsigned int iBJetIndex = 0; iBJetIndex < muonBJets.size(); iBJetIndex++){
+                            if(tagBJets.empty()){
+                                tagBJets.push_back( muonBJets.at(iBJetIndex) );
+                            } else {
+                                if(std::find(tagBJets.begin(), tagBJets.end(), muonBJets.at(iBJetIndex)) != tagBJets.end()) {
+                                    // Jet already in tagBJets collection //tagBJets.push_back( muonBJets.at(iBJetIndex) );
+                                } else {
+                                    tagBJets.push_back( muonBJets.at(iBJetIndex) );
+                                }
+                            }
+                        }                        
+
+                    }
+
+                 }//end of muons loop
 
             }
 
             if( hasGoodElec ) {
 
-                std::vector<const flashgg::Photon *> photons;
-
-                photons.push_back( dipho->leadingPhoton() );
-                photons.push_back( dipho->subLeadingPhoton() );
-
-
+              
                 for( unsigned int ElectronIndex = 0; ElectronIndex < goodElectrons.size(); ElectronIndex++ ) {
 
                     Ptr<Electron> Electron = goodElectrons[ElectronIndex];
 
                     int deltaRElectronJetcount = 0;
+                    int deltaRElectronBJetcount = 0;
                     double bDiscriminatorValue = -999.;
+                    ElectronJets.clear();
+                    ElectronBJets.clear();
 
                     for( unsigned int candIndex_outer = 0; candIndex_outer < Jets[jetCollectionIndex]->size() ; candIndex_outer++ ) {
                         edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( candIndex_outer );
-
+                        
                         if( !thejet->passesPuJetId( dipho ) ) { continue; }
-
+                        
                         //https://github.com/h2gglobe/h2gglobe/blob/master/PhotonAnalysis/src/PhotonAnalysis.cc#L5367
                         if( fabs( thejet->eta() ) > jetEtaThreshold_ ) { continue; }
-
+                        
                         //https://github.com/h2gglobe/h2gglobe/blob/master/PhotonAnalysis/src/PhotonAnalysis.cc#L5371
                         if( thejet->pt() < jetPtThreshold_ ) { continue; }
 
+                        float dRPhoLeadJet = deltaR( thejet->eta(), thejet->phi(), dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi() ) ;
+                        float dRPhoSubLeadJet = deltaR( thejet->eta(), thejet->phi(), dipho->subLeadingPhoton()->superCluster()->eta(),
+                                                        dipho->subLeadingPhoton()->superCluster()->phi() );
+                        
+                        if( dRPhoLeadJet < deltaRJetLeadPhoThreshold_ || dRPhoSubLeadJet < deltaRJetSubLeadPhoThreshold_ ) { continue; }
+                        
                         float dRJetElectron = deltaR( thejet->eta(), thejet->phi(), Electron->eta(), Electron->phi() ) ;
-
+                        
                         //https://github.com/njets_btagmediumh2gglobe/h2gglobe/blob/master/PhotonAnalysis/src/PhotonAnalysis.cc#L5370
                         if( dRJetElectron < deltaRJetLepThreshold_ ) { continue; }
                         deltaRElectronJetcount++;
-
-                        tagJets.push_back( thejet );
-
+                        
+                        ElectronJets.push_back( thejet );
+                    
                         bDiscriminatorValue = thejet->bDiscriminator( bTag_.c_str() );
-
+                    
                         if( bDiscriminatorValue > bDiscriminator_[1] ) {
-                            tagBJets.push_back( thejet );
+                            deltaRElectronBJetcount++;
+                            ElectronBJets.push_back( thejet );
                         }
 
                     }//end of jets loop
-                    numElectronJetsdR.push_back( deltaRElectronJetcount );
 
-                    tagElectrons.push_back( Electron );
+                    if(deltaRElectronJetcount >= jetsNumberThreshold_ && deltaRElectronBJetcount >= bjetsNumberThreshold_){
+                        TTHLepTagElectron = true;
+                        tagElectrons.push_back( Electron );
 
+                        for( unsigned int iJetIndex = 0; iJetIndex < ElectronJets.size(); iJetIndex++){
+                            if(tagJets.empty()){
+                                tagJets.push_back( ElectronJets.at(iJetIndex) );
+                            } else {
+                                if(std::find(tagJets.begin(), tagJets.end(), ElectronJets.at(iJetIndex)) != tagJets.end()) {
+                                    // Jet already in tagJets collection //tagJets.push_back( ElectronJets.at(iJetIndex) );
+                                } else {
+                                    tagJets.push_back( ElectronJets.at(iJetIndex) );
+                                }
+                            }
+                        }
+                        
+                        for( unsigned int iBJetIndex = 0; iBJetIndex < ElectronBJets.size(); iBJetIndex++){
+                            if(tagBJets.empty()){
+                                tagBJets.push_back( ElectronBJets.at(iBJetIndex) );
+                            } else {
+                                if(std::find(tagBJets.begin(), tagBJets.end(), ElectronBJets.at(iBJetIndex)) != tagBJets.end()) {
+                                    // Jet already in tagBJets collection //tagBJets.push_back( ElectronBJets.at(iBJetIndex) );
+                                } else {
+                                    tagBJets.push_back( ElectronBJets.at(iBJetIndex) );
+                                }
+                            }
+                        }                        
+
+                    }
+                    
                 }//end of electron loop
 
             }
 
-
-            for( unsigned num = 0; num < numMuonJetsdR.size(); num++ ) {
-                int check = numMuonJetsdR.at( num );
-                if( check >= jetsNumberThreshold_ ) {muonJets = true;}
-            }
-
-            for( unsigned num = 0; num < numElectronJetsdR.size(); num++ ) {
-                int check = numElectronJetsdR.at( num );
-                if( check >= jetsNumberThreshold_ ) {ElectronJets = true;}
-            }
-
+            
             /*
             std::cout << " TTHLeptonicTagProducer tagBJets.size()=" << tagBJets.size()
                       << " tagJets.size()=" << tagJets.size()
                       << " photonSelection=" << photonSelection
-                      << " tagMuons.size()=" << tagMuons.size() << " muonJets=" << muonJets
-                      << " tagElectrons.size()="<< tagElectrons.size() << " ElectronJets=" << ElectronJets
+                      << " tagMuons.size()=" << tagMuons.size() << " TTHLepTagMuon=" << TTHLepTagMuon
+                      << " tagElectrons.size()="<< tagElectrons.size() << " TTHLepTagElectron=" << TTHLepTagElectron
                       << std::endl;
             */
 
             if( tagBJets.size() >= bjetsNumberThreshold_ && tagJets.size() >= jetsNumberThreshold_ && photonSelection
-                    && ( ( tagMuons.size() > 0 && muonJets ) || ( tagElectrons.size() > 0 && ElectronJets ) ) ) {
+                    && ( ( tagMuons.size() > 0 && TTHLepTagMuon ) || ( tagElectrons.size() > 0 && TTHLepTagElectron ) ) ) {
                 //                std::cout << " TTHLeptonicTagProducer TAGGED " << std::endl;
                 for( unsigned num = 0; num < tagJets.size(); num++ ) {
-                    tthltags_obj.includeWeights( *tagJets[num] );
+                    tthltags_obj.includeWeights( *tagJets.at(num) );
                 }
-                if( tagElectrons.size() > 0 && ElectronJets ) {
-                    //                    std::cout << "including electron weights" << std::endl;
-                    tthltags_obj.includeWeights( *tagElectrons[0] );
-                } else if( tagMuons.size() > 0 && muonJets ) {
-                    //                    std::cout << "including muon weights" << std::endl;
-                    tthltags_obj.includeWeights( *tagMuons[0] );
+                // if( tagElectrons.size() > 0 && TTHLepTagElectron ) {
+                //     //                    std::cout << "including electron weights" << std::endl; 
+                //     for( unsigned num = 0; num < tagElectrons.size(); num++ ) {
+                //         tthltags_obj.includeWeights( *tagElectrons.at(num) );
+                //     }
+                // } 
+                // if( tagMuons.size() > 0 && TTHLepTagMuon ) {
+                //     //                    std::cout << "including muon weights" << std::endl; 
+                //     for( unsigned num = 0; num < tagMuons.size(); num++ ) {
+                //         tthltags_obj.includeWeights( *tagMuons.at(num) );
+                //     }
+                // }
+                if( tagElectrons.size() > 0 && TTHLepTagElectron && tagMuons.size() > 0 && TTHLepTagMuon) {
+                    //                    std::cout << "including lepton weights" << std::endl; 
+                    if( tagMuons.at(0)->pt() > tagElectrons.at(0)->pt() ) {
+                        tthltags_obj.includeWeights( *tagMuons.at(0) ); 
+                    } else {
+                        tthltags_obj.includeWeights( *tagElectrons.at(0) );
+                    }
+                } else if( tagMuons.size() > 0 && TTHLepTagMuon ) {
+                    //                    std::cout << "including muon weights" << std::endl; 
+                    tthltags_obj.includeWeights( *tagMuons.at(0) );
+                } else if( tagElectrons.size() > 0 && TTHLepTagElectron) {
+                    //                    std::cout << "including electron weights" << std::endl; 
+                    tthltags_obj.includeWeights( *tagElectrons.at(0) );                    
                 }
                 tthltags_obj.includeWeights( *dipho );
 
@@ -412,16 +482,39 @@ namespace flashgg {
                         float checkold = dipho->weight(*it);
                         float checknew = (dipho->hasWeight(*it) ? dipho->weight(*it) : dipho->centralWeight() );
                         std::cout << "  DIPHO " << (*it) << " " << dipho->weight(*it) << std::endl;
-                        if( tagElectrons.size() > 0 && ElectronJets ) {
-                            checkold *= tagElectrons[0]->weight(*it);
-                            checknew *= (tagElectrons[0]->hasWeight(*it) ? tagElectrons[0]->weight(*it) : tagElectrons[0]->centralWeight() );
-                            std::cout << "  ELE " << (*it) << " " << tagElectrons[0]->weight(*it) << std::endl;
-                        }
-                        if( tagMuons.size() > 0 && muonJets ) {
+                        if( tagElectrons.size() > 0 && TTHLepTagElectron && tagMuons.size() > 0 && TTHLepTagMuon) {
+                            if( tagMuons.at(0)->pt() > tagElectrons.at(0)->pt() ) {
+                                checkold *= tagMuons[0]->weight(*it);
+                                checknew *= (tagMuons[0]->hasWeight(*it) ? tagMuons[0]->weight(*it) : tagMuons[0]->centralWeight() );
+                                std::cout << "  LEP MU " << " " << (*it) << " " << tagMuons[0]->weight(*it) << std::endl; 
+                            } else {
+                                checkold *= tagElectrons[0]->weight(*it);
+                                checknew *= (tagElectrons[0]->hasWeight(*it) ? tagElectrons[0]->weight(*it) : tagElectrons[0]->centralWeight() );                            
+                                std::cout << "  LEP ELE " << " " << (*it) << " " << tagElectrons[0]->weight(*it) << std::endl;
+                            }                            
+                        } else if( tagMuons.size() > 0 && TTHLepTagMuon ) {
                             checkold *= tagMuons[0]->weight(*it);
                             checknew *= (tagMuons[0]->hasWeight(*it) ? tagMuons[0]->weight(*it) : tagMuons[0]->centralWeight() );
-                            std::cout << "  MU " << (*it) << " " << tagMuons[0]->weight(*it) << std::endl;
+                            std::cout << "  MU " << " " << (*it) << " " << tagMuons[0]->weight(*it) << std::endl;
+                        } else if( tagElectrons.size() > 0 && TTHLepTagElectron ) {
+                            checkold *= tagElectrons[0]->weight(*it);
+                            checknew *= (tagElectrons[0]->hasWeight(*it) ? tagElectrons[0]->weight(*it) : tagElectrons[0]->centralWeight() );                            
+                            std::cout << "  ELE " << " " << (*it) << " " << tagElectrons[0]->weight(*it) << std::endl;
                         }
+                        // if( tagElectrons.size() > 0 && TTHLepTagElectron ) {
+                        //     for( unsigned num = 0; num < tagElectrons.size(); num++ ) {
+                        //         checkold *= tagElectrons[num]->weight(*it);
+                        //         checknew *= (tagElectrons[num]->hasWeight(*it) ? tagElectrons[num]->weight(*it) : tagElectrons[num]->centralWeight() );                            
+                        //         std::cout << "  ELE " << num << " " << (*it) << " " << tagElectrons[num]->weight(*it) << std::endl;
+                        //     }
+                        // }
+                        // if( tagMuons.size() > 0 && TTHLepTagMuon ) {
+                        //     for( unsigned num = 0; num < tagMuons.size(); num++ ) {
+                        //         checkold *= tagMuons[num]->weight(*it);
+                        //         checknew *= (tagMuons[num]->hasWeight(*it) ? tagMuons[num]->weight(*it) : tagMuons[num]->centralWeight() );
+                        //         std::cout << "  MU " << num << " " << (*it) << " " << tagMuons[num]->weight(*it) << std::endl;
+                        //     }
+                        // }
                         for( unsigned num = 0; num < tagJets.size(); num++ ) {
                             checkold *= tagJets[num]->weight(*it);
                             checknew *= (tagJets[num]->hasWeight(*it) ? tagJets[num]->weight(*it) : tagJets[num]->centralWeight() );

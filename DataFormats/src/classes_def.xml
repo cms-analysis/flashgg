@@ -191,24 +191,25 @@
 <class name="edm::Wrapper<std::vector<flashgg::Jet> >"/>
 <class name="std::vector<std::vector<flashgg::Jet> >"/>
 <class name="edm::Wrapper<std::vector<std::vector<flashgg::Jet> > >"/>
-<class name="flashgg::Electron" ClassVersion="12">
- <version ClassVersion="12" checksum="1018193332"/>
+<class name="flashgg::Electron" ClassVersion="13">
+ <version ClassVersion="13" checksum="1505067635"/>
+  <version ClassVersion="12" checksum="1018193332"/>
   <version ClassVersion="11" checksum="2620301447"/>
   <version ClassVersion="10" checksum="3162935784"/>
 </class>
 <class name="edm::Ptr<flashgg::Electron>"/>
 <class name="std::vector<flashgg::Electron>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Electron> >"/>
-<class name="flashgg::Muon" ClassVersion="11">
- <version ClassVersion="11" checksum="3269337733"/>
- <version ClassVersion="11" checksum="3269337733"/>
+<class name="flashgg::Muon" ClassVersion="12">
+ <version ClassVersion="12" checksum="3130885816"/>
+  <version ClassVersion="11" checksum="3269337733"/>
   <version ClassVersion="10" checksum="1803852641"/>
 </class>
 <class name="edm::Ptr<flashgg::Muon>"/>
 <class name="std::vector<flashgg::Muon>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Muon> >"/>
 <class name="flashgg::TagTruthBase" ClassVersion="10">
-  <version ClassVersion="10" checksum="2663548356"/>
+ <version ClassVersion="10" checksum="2663548356"/>
 </class>
 <class name="std::vector<flashgg::TagTruthBase>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TagTruthBase> >"/>
