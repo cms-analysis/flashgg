@@ -42,6 +42,8 @@ namespace flashgg {
         bool passVetoId( ) const {return passVetoId_ ;}
         void setPassVetoId( bool val ) { passVetoId_ = val;}
 
+        float fggMiniIsoSumRel() const {return fggMiniIsoSumRel_;}
+        void setFggMiniIsoSumRel( float val ) {fggMiniIsoSumRel_ = val;}
 
         Electron *clone() const { return ( new Electron( *this ) ); }
 
@@ -55,6 +57,7 @@ namespace flashgg {
         bool passMediumId_;
         bool passLooseId_;
         bool passVetoId_;
+        float fggMiniIsoSumRel_;
     };
 }
 
