@@ -6,6 +6,7 @@ Jet::Jet() : pat::Jet()
 {
     simpleRMS_ = -1.;
     qglikelihood_ = -999.;
+    simpleMVA_ = -999.;
     puJetId_.clear();
 }
 

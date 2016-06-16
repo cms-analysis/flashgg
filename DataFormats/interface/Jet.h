@@ -28,12 +28,14 @@ namespace flashgg {
         bool hasPuJetId( const edm::Ptr<reco::Vertex> vtx ) const;
         bool passesPuJetId( const edm::Ptr<reco::Vertex> vtx, PileupJetIdentifier::Id level = PileupJetIdentifier::kLoose ) const;
         void setSimpleRMS( float theRMS )  { simpleRMS_ = theRMS; }
+        void setSimpleMVA( float theMVA )  { simpleMVA_ = theMVA; }
         float rms() const { return simpleRMS_; }
         float rms( const edm::Ptr<reco::Vertex> vtx ) const;
         float betaStar( const edm::Ptr<reco::Vertex> vtx ) const;
         bool passesPuJetId( const edm::Ptr<DiPhotonCandidate> dipho, PileupJetIdentifier::Id level = PileupJetIdentifier::kLoose )const;
         float rms( const edm::Ptr<DiPhotonCandidate> dipho ) const;
         float betaStar( const edm::Ptr<DiPhotonCandidate> dipho ) const;
+        float puJetIdMVA() const { return simpleMVA_; }
         Jet *clone() const { return ( new Jet( *this ) ); }
         
         void  setQGL(const float qglikelihood=-99) {qglikelihood_ = qglikelihood;}
@@ -44,6 +46,7 @@ namespace flashgg {
         std::map<edm::Ptr<reco::Vertex>, MinimalPileupJetIdentifier> puJetId_;
         float qglikelihood_;
         float simpleRMS_; // simpler storage for PFCHS where this is not vertex-dependent
+        float simpleMVA_;
     };
 }
 
