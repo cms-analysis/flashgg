@@ -128,6 +128,10 @@ cd $CMSSW_BASE/src
 #git cms-addpkg RecoEgamma/EgammaTools
 #git cms-merge-topic -u sethzenz:topic-conversion-tools-for-pat-ele-74X
 
+echo "Setting up pileup jet id..."
+git cms-addpkg RecoJets/JetProducers
+git cms-merge-topic -u sethzenz:topic-PileupJetId-NonStandardVtx
+
 echo "Setting up TnP tools..."
 #git cms-addpkg DataFormats/RecoCandidate
 #git cms-addpkg PhysiscsTools/TagAndProbe

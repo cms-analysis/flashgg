@@ -109,6 +109,8 @@ def addFlashggPFCHSJets(process,
   
   from RecoJets.JetProducers.QGTagger_cfi import QGTagger
   setattr( process, 'QGTaggerPFCHS' + label,  QGTagger.clone( srcJets   = 'patJetsAK4PFCHSLeg' + label ,jetsLabel = 'QGL_AK4PFchs'))
+
+  from RecoJets.JetProducers.PileupJetIDParams_cfi import full_80x_chs
   
   flashggJets = cms.EDProducer('FlashggJetProducer',
                                DiPhotonTag = cms.InputTag('flashggDiPhotons'),
@@ -116,7 +118,10 @@ def addFlashggPFCHSJets(process,
                                JetTag      = cms.InputTag('patJetsAK4PFCHSLeg' + label),
                                VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                                qgVariablesInputTag   = cms.InputTag('QGTaggerPFCHS'+label, 'qgLikelihood'),
-                               ComputeSimpleRMS = cms.bool(True)
+                               ComputeSimpleRMS = cms.bool(True),
+                               PileupJetIdParameters = full_80x_chs,
+                               rho     = cms.InputTag("fixedGridRhoFastjetAll"),
+                               JetCollectionIndex = cms.uint32(vertexIndex)
                                )
   setattr( process, 'flashggPFCHSJets'+ label, flashggJets)
 
