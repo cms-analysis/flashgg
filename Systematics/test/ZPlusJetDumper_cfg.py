@@ -57,8 +57,9 @@ elif customize.processId == "Data":
     variablesToUse = minimalNonSignalVariables
 
     # Special customization for exo files                                                                                                                                                                                                                         
-    from PhysicsTools.PatAlgos.tools.helpers import massSearchReplaceAnyInputTag
-    massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSelectedElectrons"),cms.InputTag("flashggElectrons"))
+#    from PhysicsTools.PatAlgos.tools.helpers import massSearchReplaceAnyInputTag
+#    massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSelectedElectrons"),cms.InputTag("flashggElectrons"))
+    process.flashggElectronSystematics.src = cms.InputTag("flashggElectrons")
 
     customizeSystematicsForData(process)
 else:
