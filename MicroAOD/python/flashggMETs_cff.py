@@ -13,7 +13,7 @@ if usePrivateSQlite:
 def runMETs(process,isMC):
     #================================ Get the most recent JEC ==================================================================#
     # Setup the private SQLite -- Ripped from PhysicsTools/PatAlgos/test/corMETFromMiniAOD.py
-    era = "Fall15_25nsV2"
+    era = "Spring16_25nsV3"
     if isMC : 
         era += "_MC"
     else :
