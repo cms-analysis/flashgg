@@ -1,0 +1,6 @@
+{
+    "processes" : {
+        "vbf_125" : [ "/VBFHToGG_M125_13TeV_amcatnlo_pythia8" ]
+     },	
+        "cmdLine" : "campaign=RunIISpring16DR80X-2_0_0-25ns"
+}

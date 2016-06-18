@@ -27,7 +27,7 @@ parser = OptionParser(option_list=[
                     ),
         make_option("-p","--pset",
                     action="store", dest="parameterSet", type="string",
-                    default="../../MicroAODProducers/test/simple_Producer_test.py", # FIXME should move it to production eventually
+                    default="../../MicroAOD/test/microAODstd.py", # FIXME should move it to production eventually
                     help="CMSSW parameter set. default: %default", 
                     ),
         make_option("-t","--crabTemplate",
@@ -63,6 +63,11 @@ parser = OptionParser(option_list=[
                     default=10,
                     help="default: %default", 
                     ),
+        make_option("--lumiMask",
+                    action="store", dest="lumiMask", type="string",
+                    default=None,
+                    help="default: %default", 
+                    ),
         make_option("-s","--samples",
                     dest="samples",action="callback",callback=Load(),type="string",
                     default={},
@@ -72,6 +77,11 @@ parser = OptionParser(option_list=[
                     dest="outputPath",action="store",type="string",
                     default="/store/group/phys_higgs/cmshgg/%s/flashgg" % os.getlogin(),
                     help="output storage path. default: %default",
+                    ),
+        make_option("-d","--task-dir",
+                    dest="task_dir",action="store",type="string",
+                    default=None,
+                    help="task folder. default: same as campaign",
                     ),
         make_option("-C","--campaign",
                     dest="campaign",action="store",type="string",
@@ -99,7 +109,21 @@ parser = OptionParser(option_list=[
         make_option("-v","--verbose",
                     action="store_true", dest="verbose",
                     default=False,
-                    help="default: %default",)
+                    help="default: %default"),
+        make_option("--gt","--globalTags",
+                    dest="globalTags",
+                    action="store",type="string",
+                    default="campaigns/globalTagsLookup.json",
+                    help="List of global tags to be used for data and MC. Default: %default"),
+        
+        # include additional parameters for cmsRun, such as the parameters from microAODCustomize
+        # the default here is puppi=0 (as an example) see microAODCustomize_cfg.py for more detail
+        make_option("-e","--extraPyCfgParam",
+                    dest="extraPyCfgParam",
+                    action="store",type="string",
+                    default=None,
+                    help="Extra python config parameters. The arguments must be : -e 'arg1 arg2 ...' ")
+        
         ]
                       )
 # parse the command line
@@ -153,6 +177,23 @@ else:
     bkg  = options.samples["bkg"]
     data = options.samples["data"]
 
+if options.lumiMask: options.lumiMask = os.path.abspath(options.lumiMask)
+lumiMasks = {}
+datasamples = []
+for sample in data:
+    if type(sample) == list: 
+        if len(sample) != 2: 
+            print "ERROR: I think that you tried to specify a sample-specific lumi mask, but the format is incorrect."
+            print "       Valid format is [<sample_name>,<lumi_mask>]"
+            print "%s" % sample
+            sys.exit(-1)
+        datasamples.append(sample[0])
+        lumiMasks[sample[0]] = os.path.abspath(sample[1])
+    else:
+        datasamples.append(sample)
+data=datasamples
+
+
 samples = sig+bkg+data
 
 pilotSamples=[]
@@ -182,29 +223,70 @@ if options.checkNFiles:
 if options.createCrabConfig:
     print ("\nCreating CRAB configurations in %s" % options.campaign)
     print ("--------------------------------------------------------")
-    if not os.path.isdir(options.campaign):
-        os.mkdir(options.campaign)
-    os.chdir(options.campaign)
+
+    # get the globaltag json
+    globalTagPath = options.globalTags
+    gtJson = json.load(open(globalTagPath,'r'))
+    print "GLOBAL TAGS:",options.globalTags
+
+    if not options.task_dir:
+        options.task_dir = options.campaign
+    if not os.path.isdir(options.task_dir):
+        os.mkdir(options.task_dir)
+    os.chdir(options.task_dir)
     print ("Parameter set: %s\nflashggVersion: %s\ncrab template: %s\n" % (options.parameterSet,flashggVersion,options.crabTemplate))
     print ("Copying over parameter set")
     Popen(['cp', '-p', options.parameterSet, './'])
+    rel = os.environ.get('CMSSW_BASE')
+    print rel
+    Popen(['cp', '-p', rel+'/src/flashgg/MicroAOD/data/Fall15_25nsV2_DATA.db', './'])
+    Popen(['cp', '-p', rel+'/src/flashgg/MicroAOD/data/Fall15_25nsV2_MC.db', './'])
     print ("Storing options into config.json")
     cfg = open("config.json","w+")
     cfg.write( dumpCfg(options) )
     infile = open(options.crabTemplate)
     template = [ line for line in infile ]
     infile.close()
+
     for sample in samples:
         PrimaryDataset, ProcessedDataset, DataTier = filter(None, sample.split("/"))
         label = ProcessedDataset
         if options.label:
             label = options.label
+        ### if sample in data:
+        ###     if ProcessedDataset.count("201"):
+        ###         position = ProcessedDataset.find("201")
+        ###         PrimaryDataset = PrimaryDataset +"-"+ ProcessedDataset[position:]
+            
+        jobname = "_".join([flashggVersion, PrimaryDataset, ProcessedDataset])
+        if len(jobname) > 97:
+            jobname = jobname.replace("TuneCUEP8M1_13TeV-pythia8","13TeV")
+        if len(jobname) > 97:
+            jobname = jobname.replace("TuneCUETP8M1_13TeV-madgraphMLM-pythia8","13TeV-mg")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RSGravToGG","Grav")
+        if len(jobname) > 97:
+            jobname = jobname.replace("-PU25nsData2015v1","")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIIFall15MiniAODv2_","")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIIFall15MiniAODv2-magnetOffBS0T_PU25nsData2015v1_0T","0T")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2","Spring16")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2","Spring16")
+        if len(jobname) > 97:
+            print "jobname length: %d " % len(jobname)
+            jobname = jobname[:97]
+        jobname0 = jobname.rstrip("-").rstrip("-v")
+        
         # Increment flashgg- processing index if job has been launched before (ie if crab dir already exists)
         itry = 0
-        jobname = "_".join([flashggVersion, PrimaryDataset, str(itry).zfill(2)])
+        jobname = jobname0+"_%s" % ( str(itry).zfill(2) )
         while os.path.isdir("crab_" + jobname):
             itry += 1
-            jobname = "_".join([flashggVersion, PrimaryDataset, str(itry).zfill(2)])
+            jobname = jobname0+"_%s" % ( str(itry).zfill(2) )
+            
         # Actually create the config file: copy the template and replace things where appropriate
         crabConfigFile = "crabConfig_" + jobname + ".py"
         print "Preparing crab for processing ", PrimaryDataset, "\n      -> ", crabConfigFile
@@ -216,19 +298,46 @@ if options.createCrabConfig:
                         "PROCESSED_DSET"  : label,
                         "SPLITTING"       : "FileBased",
                         "OUTLFN"          : "%s/%s/%s" % (options.outputPath,options.campaign,flashggVersion),
-                        "OUTSITE"         : options.outputSite
+                        "OUTSITE"         : options.outputSite,
+                        "PYCFG_PARAMS"    : [str("datasetName=%s" % sample)]
                        }
+
+        # remove the processing version number from the ProcessedDataset
+        PrimaryDataset, ProcessedDataset, DataTier = filter(None, sample.split("/")) 
+        position = ProcessedDataset.find("-v")
+        processedLabel = ProcessedDataset[:position]
+        # print processedLabel
+        
+        # apprend extra parameters
+        if options.extraPyCfgParam:
+            replacements["PYCFG_PARAMS"].extend(map( lambda x: '"%s"' % x, options.extraPyCfgParam.split(" ") ))
+            
+        # associate the processedLabel to the globaltag from the json filex
+        if gtJson.get(processedLabel,None):
+            globalTag = gtJson[processedLabel]
+            # print ProcessedDataset, globalTag
+            replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % globalTag[0])) 
+        else:
+            print 
+            print "WARNING: you did not associate any global tag to %s" % processedLabel
+            print "         therefore global tag customization will not work for %s" % sample
+            print 
+            
         # specific replacements for data and MC
         if sample in data:
             replacements["SPLITTING"]   = "LumiBased"
-            replacements["UNITSPERJOB"] = str(options.lumisPerJob),
+            replacements["UNITSPERJOB"] = str(options.lumisPerJob)
+            replacements["PYCFG_PARAMS"].append("processType=data")
             ## FIXME: lumi mask, run ranges, etc.
         if sample in sig:
             ## Extra options for signal samples
-            pass
+            replacements["PYCFG_PARAMS"].append("processType=signal")
         if sample in bkg:
             ## Extra options for background samples
-            pass
+            replacements["PYCFG_PARAMS"].append("processType=background")
+
+        replacements["PYCFG_PARAMS"] = str(replacements["PYCFG_PARAMS"])
+        
         # open output file
         outfiles = [ open(crabConfigFile, 'w') ]
         pilotFile = None
@@ -242,9 +351,24 @@ if options.createCrabConfig:
                 oline = oline.replace(src, target)
             for outfile in outfiles:
                 outfile.write(oline)
+                
+        if sample in data:
+            lumiMask = lumiMasks.get(sample,options.lumiMask)
+            if lumiMask:
+                for outfile in outfiles:
+                    outfile.write('config.Data.lumiMask = "%s"\n' % (lumiMask))
+            else:
+                print 
+                print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+                print "WARNING: you are running on data withut specifying a lumi mask"
+                print "         please make sure that you know what you are doing"
+                print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+                print 
+
         if pilotFile:
             pilotFile.write("config.Data.totalUnits = %d\n" % (options.unitsPerJob))
             pilotFile.write("config.Data.publication = False\n")
+            pilotFile.write('config.General.requestName = "pilot_%s"\n' % jobname)
         # close output files
         for outfile in outfiles:
             outfile.close()

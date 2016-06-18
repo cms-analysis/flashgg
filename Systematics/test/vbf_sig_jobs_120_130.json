@@ -1,0 +1,7 @@
+{
+    "processes" : {
+	"vbf_120" : [ "/VBFHToGG_M120_13TeV_amcatnlo_pythia8" ],
+        "vbf_130" : [ "/VBFHToGG_M130_13TeV_amcatnlo_pythia8" ]
+     },	
+        "cmdLine" : "campaign=RunIISpring16DR80X-2_0_0-25ns"
+}

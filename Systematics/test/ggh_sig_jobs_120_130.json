@@ -1,0 +1,7 @@
+{
+    "processes" : {
+        "ggh_120"  : [ "/GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8" ],
+	"ggh_130" : [ "/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8" ]
+     },	
+        "cmdLine" : "campaign=RunIISpring16DR80X-2_0_0-25ns"
+}

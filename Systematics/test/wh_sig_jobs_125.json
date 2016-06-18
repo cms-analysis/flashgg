@@ -1,0 +1,6 @@
+{
+    "processes" : {
+     "wh_125" : ["/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8"]
+     },	
+        "cmdLine" : "campaign=RunIISpring16DR80X-2_0_0-25ns"
+}

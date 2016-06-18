@@ -1,0 +1,32 @@
+{
+    "processes" : {
+    "Data" : [ 
+              "/DoubleEG/sethzenz-RunIISpring15-Prompt-1_1_0-25ns-1_1_0-v0-Run2015D-PromptReco-v4-7b05e4f729d8444b2665263390b46268/USER",
+	      "/DoubleEG/sethzenz-RunIISpring15-Prompt-SilverNotGold-1_1_0-25ns-1_1_0-v0-Run2015D-PromptReco-v4-7b05e4f729d8444b2665263390b46268/USER",
+	      "/DoubleEG/sethzenz-RunIISpring15-ReMiniAOD-1_1_0-25ns-1_1_0-v0-Run2015C_25ns-05Oct2015-v1-7b05e4f729d8444b2665263390b46268/USER",
+	      "/DoubleEG/sethzenz-RunIISpring15-ReMiniAOD-1_1_0-25ns-1_1_0-v0-Run2015D-05Oct2015-v1-7b05e4f729d8444b2665263390b46268/USER",
+	      "/DoubleEG/sethzenz-RunIISpring15-ReMiniAOD-SilverNotGold-1_1_0-25ns-1_1_0-v0-Run2015D-05Oct2015-v1-7b05e4f729d8444b2665263390b46268/USER"
+	      ],	      
+        "ggh_120"  : [ "/GluGluHToGG_M-120_13TeV_powheg_pythia8" ],
+        "ggh_125"  : [ "/GluGluHToGG_M-125_13TeV_powheg_pythia8" ],
+	"ggh_130" : [ "/GluGluHToGG_M-130_13TeV_powheg_pythia8" ],
+	"wzh_120" : [ "/VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8" ],
+        "wzh_125" : [ "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8" ],
+        "wzh_130" : [ "/VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8" ],
+	"vbf_120" : [ "/VBFHToGG_M-120_13TeV_powheg_pythia8" ],
+        "vbf_125" : [ "/VBFHToGG_M-125_13TeV_powheg_pythia8" ],
+        "vbf_130" : [ "/VBFHToGG_M-130_13TeV_powheg_pythia8" ],
+	"tth_120" : [ "/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8" ],
+        "tth_125" : [ "/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8" ],
+        "tth_130" : [ "/ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8" ],
+	"gjet" : [ "/GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8",
+	           "/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8" ],
+	"qcd" : [ "/QCD_Pt-30to40_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8",
+	          "/QCD_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8",
+		  "/QCD_Pt-30toInf_DoubleEMEnriched_MGG-40to80_TuneCUETP8M1_13TeV_Pythia8" ],
+	"dipho" : [ "/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa" ],
+	"DYjet" : [ "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8" ]
+	
+     },	
+        "cmdLine" : "campaign=RunIISpring15-AllSilverIncludingGold-1_1_0-25ns"
+}

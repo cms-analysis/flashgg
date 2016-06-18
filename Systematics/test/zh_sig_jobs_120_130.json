@@ -1,0 +1,7 @@
+{
+    "processes" : {
+     "zh_120" : ["/VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8"],
+     "zh_130" : ["/VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8"]
+     },	
+        "cmdLine" : "campaign=RunIISpring16DR80X-2_0_0-25ns"
+}

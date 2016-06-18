@@ -1,0 +1,32 @@
+{
+    "Run2016B-PromptReco"                          : ["80X_dataRun2_Prompt_v8"],
+    "Run2015D"                          : ["74X_dataRun2_v5"],
+    "Run2015C"                          : ["74X_dataRun2_v5"],
+    "Run2015B"                          : ["74X_dataRun2_v5"],
+    "Run2015D-PromptReco"                          : ["74X_dataRun2_v5"],
+    "Run2015C-PromptReco"                          : ["74X_dataRun2_v5"],
+    "Run2015B-PromptReco"                          : ["74X_dataRun2_v5"],
+    "Run2015D-05Oct2015" : ["74X_dataRun2_v5"],
+    "Run2015C_25ns-05Oct2015" : ["74X_dataRun2_v5"],
+    "RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2" : ["74X_mcRun2_asymptotic_v4"],
+    "Run2015D-04Dec2015" : ["74X_dataRun2_v5"],
+    "RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2_ext1" : ["74X_mcRun2_asymptotic_v4"],
+
+    "Run2015D-16Dec2015-v2" : ["76X_dataRun2_v15"],
+    "Run2015D-16Dec2015" : ["76X_dataRun2_v15"],
+    "Run2015C_25ns-16Dec2015-v1" : ["76X_dataRun2_v15"],
+    "Run2015C_25ns-16Dec2015" : ["76X_dataRun2_v15"],
+    "RunIIFall15DR76-25nsFlat10to25TSG_76X_mcRun2_asymptotic_v12-v1" : ["76X_mcRun2_asymptotic_v13"],
+    "RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12" : ["76X_mcRun2_asymptotic_v13"],
+    "RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1" : ["76X_mcRun2_asymptotic_v13"],
+    "RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext2" : ["76X_mcRun2_asymptotic_v13"],
+    "RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext4" : ["76X_mcRun2_asymptotic_v13"],
+    "RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1" : ["76X_mcRun2_asymptotic_v13"],
+
+    "Run2016B-PromptReco"                                                           : ["80X_dataRun2_Prompt_v8"],
+    "RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3"               : ["80X_mcRun2_asymptotic_2016_v3"],
+    "RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3_ext1"          : ["80X_mcRun2_asymptotic_2016_v3"],
+    "RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3"      : ["80X_mcRun2_asymptotic_2016_v3"],
+    "RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3_ext1" : ["80X_mcRun2_asymptotic_2016_v3"],
+    "RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3_ext2" : ["80X_mcRun2_asymptotic_2016_v3"]
+}

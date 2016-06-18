@@ -1,0 +1,10 @@
+{
+    "data" : [
+	      ],
+    "sig"  : ["/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM",
+              "/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM",
+    	      "/ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM"
+	      ],
+    "bkg"  : [
+	      ]
+}

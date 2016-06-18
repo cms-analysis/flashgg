@@ -1,64 +1,45 @@
 flashgg
 =======
 
-1. Create a CMSSW_7_2_2_patch2 (or later) project:
+Before you start, **please take note** of these warnings and comments:
+* **N.B.** Make sure you are on lxplus6 or otherwise using an SLC6 machine. Make sure SCRAM_ARCH is slc6_amd64_gcc491 (or later for 80X).
+* **N.B.** The setup script will check out many packages and take a while!
+* **N.B.** You can ignore "error: addinfo_cache" lines. 
+* **N.B.** This is to set up the latest area in a self-consistent way. If you want a particular flashgg version corresponding to other samples, please see https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_users
+
+Get everything you need, starting from a clean area:
+
+Instructions for processing of 76X MiniAOD:
  ```
- # make sure you are on lxplus6 or otherwise using an SLC6 machine
- # make sure SCRAM_ARCH is slc6_amd64_gcc481
- cmsrel CMSSW_7_2_2_patch2
- # or later
- cd CMSSW_7_2_2_patch2/src
+ cmsrel CMSSW_8_0_8_patch1
+ cd CMSSW_8_0_8_patch1/src
  cmsenv
+ git cms-init
+ cd $CMSSW_BASE/src 
+ git clone https://github.com/cms-analysis/flashgg flashgg
+ source flashgg/setup.sh
  ```
+The above should also work if you use CMSSW_7_6_3_patch2.  No changes to the setup script should be required, and the workflow tests should be ok too.  One manual change is required: to change the flashgg::Muon checksum in DataFormats/src/classes_def.xml -- the new number will be provided after your first attempt to compile, then you can recompile after you edit.
 
-2. Get extra files for Pileup Jet Identification (must be done *before* getting flashgg):
- ```
- git cms-addpkg RecoJets/JetProducers
- git cms-merge-topic -u sethzenz:pileupjetid-for-flashgg-72x
- ```
-
-3. Extra stuff for PUPPI jets:
- ```
- git clone -b flashgg https://github.com/ldcorpe/Dummy
- ```
-
-4. Get the HiggsAnalysis/CombinedLimit tool :
- ```
- git clone https://github.com/cms-analysis/HiggsAnalysis-CombinedLimit.git HiggsAnalysis/CombinedLimit
- ```
-
-5. Get weight counter from musella until it is integrated in the release
-  ```
-  git cms-addpkg CommonTools/UtilAlgos
-  git cms-addpkg DataFormats/Common
-  git cms-merge-topic musella:topic-weights-count
-  ```
-
-6. Fork flashgg repository on the web here: https://github.com/cms-analysis/flashgg
-
-7. In CMSSW_7_2_2_patch2/src, do commands something like: 
+If everything now looks reasonable, you can build:
  ```
  cd $CMSSW_BASE/src
- git clone git@github.com:yourusername/flashgg.git flashgg
- cd flashgg
- git remote add upstream https://github.com/cms-analysis/flashgg
- # see https://help.github.com/articles/fork-a-repo for more about this 
+ scram b -j 9
+ ```
+And a very basic workflow test:
+ ```
+ cd $CMSSW_BASE/src/flashgg
+ cmsRun MicroAOD/test/microAODstd.py
+ cmsRun Taggers/test/simple_Tag_test.py
+ cmsRun Taggers/test/diphotonsDumper_cfg.py
+ cmsRun Systematics/test/workspaceStd.py processId=wzh_125
  ```
 
-8. Now build, a very basic workflow test:
- ```
- cd $CMSSW_BASE/src
- scram b
- cmsRun flashgg/MicroAODProducers/test/simple_Producer_test.py
- cmsRun flashgg/TagProducers/test/simple_Tag_test.py
- ```
+These are just some test examples; the first makes MicroAOD from a MiniAOD file accessed via xrootd, 
+the second produces tag objects and screen output from the new MicroAOD file,
+and the other two process the MicroAOD file to test ntuple and workspace output.
 
-For the impatient user (SLC6 right SCRAM_ARCH) just:
-```
-source ~carrillo/public/for_All/flashgg_master_test.sh
-```
+The setup code will automatically change the initial remote branch's name to upstream to synchronize with the project's old conventions.  
+The code will also automatically create an "origin" repo based on its guess as to where your personal flashgg fork is.
+Check that this has worked correctly if you have trouble pushing.  (See setup.sh for what it does.)
 
-For the developer: Fork https://github.com/cms-analysis/flashgg and then execute
-```
-source ~carrillo/public/for_All/flashgg_me.sh
-```

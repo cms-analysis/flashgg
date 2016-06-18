@@ -1,0 +1,7 @@
+{
+    "processes" : {
+        "tth_120" : [ "/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8_v2" ],
+        "tth_130" : [ "/ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8_v2" ]
+     },	
+        "cmdLine" : "campaign=RunIISpring16DR80X-2_0_0-25ns"
+}
