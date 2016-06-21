@@ -39,6 +39,13 @@ namespace flashgg {
     std::vector<edm::Ptr<flashgg::Muon> > selectAllMuons( const std::vector<edm::Ptr<flashgg::Muon> > &muonPointers, 
             const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers, double muonEtaThreshold, double muonPtThreshold, double muPFIsoSumRelThreshold);
 
+    std::vector<edm::Ptr<flashgg::Muon> > selectMuonsSum16( const std::vector<edm::Ptr<flashgg::Muon> > &muonPointers, Ptr<flashgg::DiPhotonCandidate> dipho,
+            const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers, double muonEtaThreshold, double muonPtThreshold, double muMiniIsoSumRelThreshold,
+            double dRPhoLeadMuonThreshold, double dRPhoSubLeadMuonThreshold );
+
+    std::vector<edm::Ptr<flashgg::Muon> > selectAllMuonsSum16( const std::vector<edm::Ptr<flashgg::Muon> > &muonPointers, 
+            const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers, double muonEtaThreshold, double muonPtThreshold, double muMiniIsoSumRelThreshold );
+
     std::vector<edm::Ptr<Electron> > selectStdAllElectrons( const std::vector<edm::Ptr<flashgg::Electron> > &ElectronPointers,
                                                       const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers , double ElectronPtThreshold,
                                                          vector<double> EtaCuts , bool useMVARecipe, bool useLooseID);
@@ -58,6 +65,16 @@ namespace flashgg {
                                                       double LongitudinalImpactParam, vector<double> NonTrigMVAThreshold, vector<double> NonTrigMVAEtaCuts, double IsoThreshold,
                                                       double NumOfMissingHitsThreshold, vector<double> EtaCuts , double deltaRPhoElectronThreshold, double DeltaRTrkElec,
                                                       double deltaMassElectronZThreshold );
+
+    std::vector<edm::Ptr<Electron> > selectAllElectronsSum16( const std::vector<edm::Ptr<flashgg::Electron> > &ElectronPointers,
+                                                              const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers,  double ElectronPtThreshold,
+                                                              vector<double> EtaCuts , bool useMVARecipe, bool useLooseID,
+                                                              double elMiniIsoEBThreshold, double elMiniIsoEEThreshold);
+
+    std::vector<edm::Ptr<Electron> > selectElectronsSum16( const std::vector<edm::Ptr<flashgg::Electron> > &ElectronPointers, Ptr<flashgg::DiPhotonCandidate> dipho,
+                                                           const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers , double ElectronPtThreshold,  vector<double> EtaCuts,
+                                                           double deltaRPhoElectronThreshold, double DeltaRTrkElec, double deltaMassElectronZThreshold, 
+                                                           double elMiniIsoEBThreshold, double elMiniIsoEEThreshold);
     
 
     std::vector<edm::Ptr<Electron> > selectElectronsNotMatchingPhotons( const std::vector<edm::Ptr<flashgg::Electron> > &ElectronPointers, const Ptr<flashgg::DiPhotonCandidate> dipho );

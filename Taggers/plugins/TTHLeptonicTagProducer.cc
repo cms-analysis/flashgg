@@ -78,6 +78,7 @@ namespace flashgg {
         vector<double> bDiscriminator_;
         string bTag_;
         double muPFIsoSumRelThreshold_;
+        double muMiniIsoSumRelThreshold_;
         double PhoMVAThreshold_;
         double DeltaRTrkElec_;
         double deltaRPhoElectronThreshold_;
@@ -89,8 +90,10 @@ namespace flashgg {
         vector<double> nonTrigMVAEtaCuts_;
         double electronIsoThreshold_;
         double electronNumOfHitsThreshold_;
+        double elMiniIsoEBThreshold_;
+        double elMiniIsoEEThreshold_;
         
-        bool useStdElectronID_;
+        bool useStdLeptonID_;
         bool useElectronMVARecipe_;
         bool useElectronLooseID_;
 
@@ -131,6 +134,7 @@ namespace flashgg {
         bTag_ = iConfig.getParameter<string>( "bTag");
 
         muPFIsoSumRelThreshold_ = iConfig.getParameter<double>( "muPFIsoSumRelThreshold");
+        muMiniIsoSumRelThreshold_ = iConfig.getParameter<double>( "muMiniIsoSumRelThreshold");
         PhoMVAThreshold_ = iConfig.getParameter<double>( "PhoMVAThreshold");
 
         DeltaRTrkElec_ = iConfig.getParameter<double>( "DeltaRTrkElec");
@@ -143,8 +147,10 @@ namespace flashgg {
         nonTrigMVAEtaCuts_ =  iConfig.getParameter<vector<double > >( "nonTrigMVAEtaCuts");
         electronIsoThreshold_ = iConfig.getParameter<double>( "electronIsoThreshold");
         electronNumOfHitsThreshold_ = iConfig.getParameter<double>( "electronNumOfHitsThreshold");
+        elMiniIsoEBThreshold_ = iConfig.getParameter<double>( "elMiniIsoEBThreshold");
+        elMiniIsoEEThreshold_ = iConfig.getParameter<double>( "elMiniIsoEEThreshold");
         
-        useStdElectronID_=iConfig.getParameter<bool>("useStdElectronID");
+        useStdLeptonID_=iConfig.getParameter<bool>("useStdLeptonID");
         useElectronMVARecipe_=iConfig.getParameter<bool>("useElectronMVARecipe");
         useElectronLooseID_=iConfig.getParameter<bool>("useElectronLooseID");
         
@@ -250,18 +256,30 @@ namespace flashgg {
 
             photonSelection = true;
 
-            std::vector<edm::Ptr<flashgg::Muon> > goodMuons = selectMuons( theMuons->ptrs(), dipho, vertices->ptrs(), muonEtaThreshold_ , 
-                                                                           leptonPtThreshold_,muPFIsoSumRelThreshold_, deltaRMuonPhoThreshold_, deltaRMuonPhoThreshold_ );
+            std::vector<edm::Ptr<flashgg::Muon> > goodMuons;
+            if( !useStdLeptonID_) {
+                goodMuons = selectMuonsSum16( theMuons->ptrs(), dipho, vertices->ptrs(), muonEtaThreshold_ , 
+                         leptonPtThreshold_,muMiniIsoSumRelThreshold_, deltaRMuonPhoThreshold_, deltaRMuonPhoThreshold_ );
+            } else {
+                goodMuons = selectMuons( theMuons->ptrs(), dipho, vertices->ptrs(), muonEtaThreshold_ , 
+                                     leptonPtThreshold_,muPFIsoSumRelThreshold_, deltaRMuonPhoThreshold_, deltaRMuonPhoThreshold_ );
+            }
             
             
             std::vector<edm::Ptr<Electron> > goodElectrons;
-            if( !useStdElectronID_) goodElectrons= selectElectrons( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, 
-                                                                    TransverseImpactParam_, LongitudinalImpactParam_, nonTrigMVAThresholds_, nonTrigMVAEtaCuts_,
-                                                                    electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaThresholds_ ,
-                                                                    deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_);
-            else goodElectrons = selectStdElectrons(theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_,  electronEtaThresholds_ ,
+            // if( !useStdElectronID_) goodElectrons= selectElectrons( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, 
+            //                                                         TransverseImpactParam_, LongitudinalImpactParam_, nonTrigMVAThresholds_, nonTrigMVAEtaCuts_,
+            //                                                         electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaThresholds_ ,
+            //                                                         deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_);
+            if( !useStdLeptonID_) {
+                goodElectrons= selectElectronsSum16( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_,  electronEtaThresholds_ ,
+                                                                       deltaRPhoElectronThreshold_, DeltaRTrkElec_, deltaMassElectronZThreshold_,
+                                                                       elMiniIsoEBThreshold_, elMiniIsoEEThreshold_);
+            } else {
+                goodElectrons = selectStdElectrons(theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_,  electronEtaThresholds_ ,
                                                     useElectronMVARecipe_,useElectronLooseID_,
                                                     deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_);
+            }
             
 
             hasGoodElec = ( goodElectrons.size() > 0 );
