@@ -78,13 +78,16 @@ namespace flashgg {
         vector<double> nonTrigMVAThresholds_;
         vector<double> nonTrigMVAEtaCuts_;
         double electronIsoThreshold_;
+        double elMiniIsoEBThreshold_;
+        double elMiniIsoEEThreshold_;
         double electronNumOfHitsThreshold_;
         vector<double>  electronEtaThresholds_;
         double muPFIsoSumRelThreshold_;
+        double muMiniIsoSumRelThreshold_;
         double TransverseImpactParam_;
         double LongitudinalImpactParam_;
 
-        bool useStdElectronID_;
+        bool useStdLeptonID_;
         bool useElectronMVARecipe_;
         bool useElectronLooseID_;
 
@@ -122,14 +125,17 @@ namespace flashgg {
         bjetsNumberThreshold_ = iConfig.getParameter<int>( "bjetsNumberThreshold");
         bTag_ = iConfig.getParameter<string> ( "bTag");
         muPFIsoSumRelThreshold_ = iConfig.getParameter<double>( "muPFIsoSumRelThreshold");
+        muMiniIsoSumRelThreshold_ = iConfig.getParameter<double>( "muMiniIsoSumRelThreshold");
         nonTrigMVAThresholds_ =  iConfig.getParameter<vector<double > >( "nonTrigMVAThresholds");
         nonTrigMVAEtaCuts_ =  iConfig.getParameter<vector<double > >( "nonTrigMVAEtaCuts");
         electronIsoThreshold_ = iConfig.getParameter<double>( "electronIsoThreshold");
+        elMiniIsoEBThreshold_ = iConfig.getParameter<double>( "elMiniIsoEBThreshold");
+        elMiniIsoEEThreshold_ = iConfig.getParameter<double>( "elMiniIsoEEThreshold");
         electronNumOfHitsThreshold_ = iConfig.getParameter<double>( "electronNumOfHitsThreshold");
         TransverseImpactParam_ = iConfig.getParameter<double>( "TransverseImpactParam");
         LongitudinalImpactParam_ = iConfig.getParameter<double>( "LongitudinalImpactParam");
         electronEtaThresholds_ = iConfig.getParameter<vector<double > >( "electronEtaThresholds");
-        useStdElectronID_=iConfig.getParameter<bool>("useStdElectronID");
+        useStdLeptonID_=iConfig.getParameter<bool>("useStdLeptonID");
         useElectronMVARecipe_=iConfig.getParameter<bool>("useElectronMVARecipe");
         useElectronLooseID_=iConfig.getParameter<bool>("useElectronLooseID");
         
@@ -190,16 +196,29 @@ namespace flashgg {
         edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
         unsigned int idx = 0;
 
-        std::vector<edm::Ptr<flashgg::Muon> > goodMuons = selectAllMuons( theMuons->ptrs(), vertices->ptrs(), muonEtaThreshold_ , leptonPtThreshold_, muPFIsoSumRelThreshold_ );
+        std::vector<edm::Ptr<flashgg::Muon> > goodMuons;
+        if( !useStdLeptonID_) {
+            goodMuons = selectAllMuonsSum16( theMuons->ptrs(), vertices->ptrs(), muonEtaThreshold_ , leptonPtThreshold_, muMiniIsoSumRelThreshold_ );
+        } else {
+            goodMuons = selectAllMuons( theMuons->ptrs(), vertices->ptrs(), muonEtaThreshold_ , leptonPtThreshold_, muPFIsoSumRelThreshold_ );
+        }
         
        
         std::vector<edm::Ptr<Electron> > goodElectrons ;
 
-        if( !useStdElectronID_) goodElectrons = selectAllElectrons( theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, 
-                                                                    TransverseImpactParam_, LongitudinalImpactParam_, nonTrigMVAThresholds_, nonTrigMVAEtaCuts_,
-                                                                    electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaThresholds_ );
-        else goodElectrons = selectStdAllElectrons(theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
-                                                   useElectronMVARecipe_, useElectronLooseID_);
+        if( !useStdLeptonID_) {
+             // goodElectrons = selectAllElectrons( theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, 
+             //                                     TransverseImpactParam_, LongitudinalImpactParam_, nonTrigMVAThresholds_, nonTrigMVAEtaCuts_,
+             //                                     electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaThresholds_ );
+            //goodElectrons = selectAllElectronsSum16( theElectrons->ptrs(), vertices->ptrs(), 
+            //                                       leptonPtThreshold_, electronEtaThresholds_,
+            //                                       true, true, elMiniIsoEBThreshold_, elMiniIsoEEThreshold_);
+            goodElectrons = selectAllElectronsSum16( theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
+                                                     true, true, elMiniIsoEBThreshold_, elMiniIsoEEThreshold_);
+        } else {
+            goodElectrons = selectStdAllElectrons(theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
+                                                  useElectronMVARecipe_, useElectronLooseID_);
+        }
         
         
         for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
