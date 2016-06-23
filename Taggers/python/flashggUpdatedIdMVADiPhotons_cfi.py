@@ -10,5 +10,6 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
                                               photonIdMVAweightfile_EB = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_25ns_barrel_MoriondVtx.xml"),
                                               photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_25ns_endcap_MoriondVtx.xml"),
                                               correctionFile           = cms.FileInPath("flashgg/MicroAOD/data/transformation_76X_v2.root"),
-                                              Debug                    = cms.bool(False)
+                                              Debug                    = cms.bool(False),
+                                              applyCorrections         = cms.bool(True),
                                               )

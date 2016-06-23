@@ -25,6 +25,13 @@ namespace flashgg {
         edm::EDGetTokenT<double> rhoToken_;
         PhotonIdUtils phoTools_;
         edm::FileInPath phoIdMVAweightfileEB_, phoIdMVAweightfileEE_, correctionFile_;
+
+        /** whether to actually apply corrections (true) or not (false). 
+
+            This is explcitly configurable (ParameterSet.existsAs(..) fails with an error 
+            in recent releases if the given correction file does not exist). 
+
+            Disabling corrections is useful for testing corrections etc. */
         bool correctInputs_;
         bool debug_;
         //        std::vector<TGraph*> corrections_;
@@ -34,13 +41,13 @@ namespace flashgg {
     DiPhotonWithUpdatedPhoIdMVAProducer::DiPhotonWithUpdatedPhoIdMVAProducer( const edm::ParameterSet &ps ) :
         token_(consumes<edm::View<flashgg::DiPhotonCandidate> >(ps.getParameter<edm::InputTag>("src"))),
         rhoToken_( consumes<double>( ps.getParameter<edm::InputTag>( "rhoFixedGridCollection" ) ) ),
+        correctInputs_( ps.getParameter<bool> ("applyCorrections") ),
         debug_( ps.getParameter<bool>( "Debug" ) )
     {
         phoIdMVAweightfileEB_ = ps.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EB" );
         phoIdMVAweightfileEE_ = ps.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EE" );
         phoTools_.setupMVA( phoIdMVAweightfileEB_.fullPath(), phoIdMVAweightfileEE_.fullPath() );
 
-        correctInputs_ = ps.existsAs<edm::FileInPath>("correctionFile") ? true: false;
         if (correctInputs_) {
             correctionFile_ = ps.getParameter<edm::FileInPath>( "correctionFile" );
             TFile* f = TFile::Open(correctionFile_.fullPath().c_str());
