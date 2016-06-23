@@ -95,6 +95,19 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 ### SRING16 (80x)
 
+#### 80X trainings on 80X
+
+Tags for flashgg: `2_1_0` and `RunIISpring16DR80X-2_1_0-25ns_ICHEP16`
+
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring16DR80X-2_1_0-25ns_ICHEP16 -U 5 -L 25 -s campaigns/RunIISpring16DR80X-2_1_0-25ns_ICHEP16.json -V 2_1_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask ${PWD}/jsons/json_DCSONLY_1466185760.txt
+cd RunIISpring16DR80X-2_1_0-25ns_ICHEP16
+python $CMSSW_BASE/src/flashgg/MetaData/scripts/stupid_fix.py
+mkdir orig ; mv crabConfig_*orig*.py orig
+echo crabConfig_*.py | xargs -n 1 crab sub
+```
+
 #### 76X trainings on 80X, 2_0_0
 
 ```
