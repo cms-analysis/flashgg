@@ -315,7 +315,8 @@ class MicroAODCustomize(object):
         delattr(process,"QGPoolDBESSource")
 
     def customize80X(self,process):
-        delattr(process,"QGPoolDBESSource")
+        pass
+#        delattr(process,"QGPoolDBESSource")
 
 # customization object
 customize = MicroAODCustomize()

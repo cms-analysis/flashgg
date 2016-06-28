@@ -239,11 +239,9 @@ if options.createCrabConfig:
     Popen(['cp', '-p', options.parameterSet, './'])
     rel = os.environ.get('CMSSW_BASE')
     print rel
-    Popen(['cp', '-p', rel+'/src/flashgg/MicroAOD/data/Fall15_25nsV2_DATA.db', './'])
-    Popen(['cp', '-p', rel+'/src/flashgg/MicroAOD/data/Fall15_25nsV2_MC.db', './'])
-    # for the moment just add, then possibly remove the above 2 lines - FIXME
     Popen(['cp', '-p', rel+'/src/flashgg/MicroAOD/data/Spring16_25nsV3_DATA.db', './'])
     Popen(['cp', '-p', rel+'/src/flashgg/MicroAOD/data/Spring16_25nsV3_MC.db', './'])
+    Popen(['cp', '-p', rel+'/src/flashgg/MicroAOD/data/QGL_80X.db', './'])
     print ("Storing options into config.json")
     cfg = open("config.json","w+")
     cfg.write( dumpCfg(options) )
