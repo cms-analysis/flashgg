@@ -130,7 +130,8 @@ cd $CMSSW_BASE/src
 
 echo "Setting up pileup jet id..."
 git cms-addpkg RecoJets/JetProducers
-git cms-merge-topic -u sethzenz:topic-PileupJetId-NonStandardVtx
+#git cms-merge-topic -u sethzenz:topic-PileupJetId-NonStandardVtx
+git cms-merge-topic -u sethzenz:topic-PileupJetId-NonStandardVtx-bugfixSync
 
 echo "Setting up TnP tools..."
 #git cms-addpkg DataFormats/RecoCandidate
