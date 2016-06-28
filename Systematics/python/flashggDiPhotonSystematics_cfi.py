@@ -1,7 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 
-# default energy scale uncertainties and smearings from 76X re-reco
-from flashgg.Systematics.escales.escale76X_16DecRereco_2015 import photonSmearBins, photonScaleUncertBins 
+# No default. Latest is only in the EGM tool
+photonSmearBins = cms.PSet()
+photonScaleUncertBins = cms.PSet()
 
 mvaShiftBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)"),
