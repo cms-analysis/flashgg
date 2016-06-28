@@ -586,6 +586,9 @@ public:
     HistoConverter *getConverter( double x )
     {
         int ibin = hist_->GetXaxis()->FindBin( x );
+        if(ibin==0){
+            ibin=1;
+        }
         return dirtr_[ibin];
     };
 
