@@ -253,7 +253,7 @@ emptySigma = cms.PSet(
     secondVar = cms.vint32()
 )
 
-scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/Golden10June_plus_DCS")
+scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/Golden22June")
 
 MCScaleHighR9EB = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
