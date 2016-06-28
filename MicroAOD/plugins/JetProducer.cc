@@ -26,6 +26,7 @@ namespace flashgg {
 
     public:
         JetProducer( const ParameterSet & );
+        ~JetProducer();
     private:
         void produce( Event &, const EventSetup & ) override;
         EDGetTokenT<View<pat::Jet> > jetToken_;
@@ -44,6 +45,7 @@ namespace flashgg {
         EDGetTokenT<double> rhoToken_;
         EDGetTokenT<View<pat::Jet> > jetDebugToken_;
         bool debug_;
+        unsigned pudebug_matched_badrms_, pudebug_matched_;
     };
 
 
@@ -67,6 +69,15 @@ namespace flashgg {
         qgToken  = consumes<edm::ValueMap<float>>( edm::InputTag( qgVariablesInputTag.label(), "qgLikelihood" ) );
         
         produces<vector<flashgg::Jet> >();
+        pudebug_matched_badrms_ = 0;
+        pudebug_matched_ = 0;
+    }
+
+    JetProducer::~JetProducer()  {
+        if (debug_) {
+            std::cout << "* Total matching jets for PU Debug: " << pudebug_matched_ << std::endl;
+            std::cout << "*     Number with different MVA is: " << pudebug_matched_badrms_ << std::endl;
+        }
     }
     
     void JetProducer::produce( Event &evt, const EventSetup & )
@@ -155,8 +166,70 @@ namespace flashgg {
                 //                fjet.setPuJetId( primaryVertices->ptrAt( 0 ), lPUJetId );
                 if (debug_ && fjet.pt() > 20) {
                     std::cout << "[STANDARD] pt=" << fjet.pt() << " eta=" << fjet.eta() 
-                              << " lPUJetID RMS, betaStar, mva: " << lPUJetId.RMS() << " " << lPUJetId.betaStar() << " " << lPUJetId.mva() 
+                              << " lPUJetId RMS, betaStar, mva: " << lPUJetId.RMS() << " " << lPUJetId.betaStar() << " " << lPUJetId.mva() 
                               << "; simpleRMS " << fjet.rms() << "; match=" << (bool)(fjet.genJet()) << std::endl;
+                    for( unsigned int i = 0 ; i < debugJets->size() ; i++ ) {
+                        if (fabs(debugJets->ptrAt(i)->pt()-fjet.pt()) < 1. && fabs(debugJets->ptrAt(i)->eta()-fjet.eta()) < 0.1
+                            && fabs(debugJets->ptrAt(i)->phi()-fjet.phi()) < 0.1 ) {
+                            pudebug_matched_++;
+                            if (fabs(debugJets->ptrAt(i)->userFloat("pileupJetId:fullDiscriminant") - lPUJetId.mva()) > 0.02 ) {
+                                std::cout << "* ---------------------------------" << std::endl;
+                                std::cout << "* Matching jet, non-matching PU MVA" << std::endl;
+                                std::cout << "* ---------------------------------" << std::endl;
+                                std::cout << "*   mva=" << lPUJetId.mva() << " (" << 
+                                    debugJets->ptrAt(i)->userFloat("pileupJetId:fullDiscriminant") << ")" << std::endl;
+                                std::cout << "*   pt=" << fjet.pt() << " (" << debugJets->ptrAt(i)->pt() << ")" << std::endl;
+                                std::cout << "*   eta=" << fjet.eta() << " (" << debugJets->ptrAt(i)->eta() << ")" << std::endl;
+                                std::cout << "*   jetPhi=" << lPUJetId.jetPhi() << " (" << debugJets->ptrAt(i)->phi() << ")" << std::endl;
+                                std::cout << "*   jetM=" << lPUJetId.jetM() << std::endl;
+                                std::cout << "*   RMS=" << lPUJetId.RMS() << std::endl;
+                                std::cout << "*   nvtx=" << lPUJetId.nvtx() << std::endl;
+                                std::cout << "*   dR2Mean=" << lPUJetId.dR2Mean()      << std::endl;
+                                std::cout << "*   nParticles=" << lPUJetId.nParticles()      << std::endl;
+                                std::cout << "*   nCharged=" << lPUJetId.nCharged()  << std::endl;
+                                std::cout << "*   majW=" << lPUJetId.majW()  << std::endl;
+                                std::cout << "*   minW=" << lPUJetId.minW() << std::endl;
+                                std::cout << "*   frac01=" << lPUJetId.frac01()   << std::endl;
+                                std::cout << "*   frac02=" << lPUJetId.frac02()       << std::endl;
+                                std::cout << "*   frac03=" << lPUJetId.frac03()    << std::endl;
+                                std::cout << "*   frac04=" << lPUJetId.frac04()    << std::endl;
+                                std::cout << "*   ptD=" << lPUJetId.ptD()    << std::endl;
+                                std::cout << "*   beta=" << lPUJetId.beta()    << std::endl;
+                                std::cout << "*   pull=" << lPUJetId.pull()    << std::endl;
+                                std::cout << "*   jetR=" << lPUJetId.jetR()    << std::endl;
+                                std::cout << "*   jetRchg=" << lPUJetId.jetRchg()    << std::endl;
+                                std::cout << "* ---------------------------------" << std::endl;
+                                pudebug_matched_badrms_++;
+                            } else {
+                                std::cout << "+ ---------------------------------" << std::endl;
+                                std::cout << "+ Matching jet, matching PU MVA" << std::endl;
+                                std::cout << "+ ---------------------------------" << std::endl;
+                                std::cout << "+   mva=" << lPUJetId.mva() << " (" <<
+                                    debugJets->ptrAt(i)->userFloat("pileupJetId:fullDiscriminant") << ")" << std::endl;
+                                std::cout << "+   pt=" << fjet.pt() << " (" << debugJets->ptrAt(i)->pt() << ")" << std::endl;
+                                std::cout << "+   eta=" << fjet.eta() << " (" << debugJets->ptrAt(i)->eta() << ")" << std::endl;
+                                std::cout << "+   jetPhi=" << lPUJetId.jetPhi() << " (" << debugJets->ptrAt(i)->phi() << ")" << std::endl;
+                                std::cout << "+   jetM=" << lPUJetId.jetM() << std::endl;
+                                std::cout << "+   RMS=" << lPUJetId.RMS() << std::endl;
+                                std::cout << "+   nvtx=" << lPUJetId.nvtx() << std::endl;
+                                std::cout << "+   dR2Mean=" << lPUJetId.dR2Mean()      << std::endl;
+                                std::cout << "+   nParticles=" << lPUJetId.nParticles()      << std::endl;
+                                std::cout << "+   nCharged=" << lPUJetId.nCharged()  << std::endl;
+                                std::cout << "+   majW=" << lPUJetId.majW()  << std::endl;
+                                std::cout << "+   minW=" << lPUJetId.minW() << std::endl;
+                                std::cout << "+   frac01=" << lPUJetId.frac01()   << std::endl;
+                                std::cout << "+   frac02=" << lPUJetId.frac02()       << std::endl;
+                                std::cout << "+   frac03=" << lPUJetId.frac03()    << std::endl;
+                                std::cout << "+   frac04=" << lPUJetId.frac04()    << std::endl;
+                                std::cout << "+   ptD=" << lPUJetId.ptD()    << std::endl;
+                                std::cout << "+   beta=" << lPUJetId.beta()    << std::endl;
+                                std::cout << "+   pull=" << lPUJetId.pull()    << std::endl;
+                                std::cout << "+   jetR=" << lPUJetId.jetR()    << std::endl;
+                                std::cout << "+   jetRchg=" << lPUJetId.jetRchg()    << std::endl;
+                                std::cout << "+ ---------------------------------" << std::endl;
+                            }
+                        }
+                    }
                 }
                 fjet.setSimpleMVA( lPUJetId.mva() );
             } else {
