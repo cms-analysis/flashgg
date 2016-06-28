@@ -705,7 +705,10 @@ class SamplesManager(object):
                 for fil in info["files"]:
                     if fil.get("bad",False):
                         continue
-                    nev, name = fil["nevents"], fil["name"]
+                    try:
+                        nev, name = fil["nevents"], fil["name"]
+                    except Exception:
+                        nev, name = fil["events"], fil["name"]
                     totEvents += nev
                     totWeights += fil.get("weights",0.)
                     allFiles.append(name)
