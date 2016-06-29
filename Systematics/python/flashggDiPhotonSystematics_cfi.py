@@ -1,7 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 
-# default energy scale uncertainties and smearings from 76X re-reco
-from flashgg.Systematics.escales.escale76X_16DecRereco_2015 import photonSmearBins, photonScaleUncertBins 
+# No default. Latest is only in the EGM tool
+photonSmearBins = cms.PSet()
+photonScaleUncertBins = cms.PSet()
 
 mvaShiftBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)"),
@@ -252,12 +253,7 @@ emptySigma = cms.PSet(
     secondVar = cms.vint32()
 )
 
-# latest greatest
-# scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/76X_16DecRereco_2015_photons")
-
-# unblinding version + Et-dependent scale uncertainties
-scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/76X_16DecRereco_2015_Etunc")
-
+scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/Golden22June")
 
 MCScaleHighR9EB = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
