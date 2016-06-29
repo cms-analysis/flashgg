@@ -57,6 +57,11 @@ class JobConfig(object):
                        VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                        VarParsing.VarParsing.varType.bool,          # string, int, or float
                        "useEOS")
+        self.options.register ('atIC',
+                       False,
+                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                       VarParsing.VarParsing.varType.bool,          # string, int, or float 
+                       "atIC")
         self.options.register ('targetLumi',
                        1.e+3, # default value
                        VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -345,7 +350,10 @@ class JobConfig(object):
         if self.useAAA:
             self.filePrepend = "root://xrootd-cms.infn.it/"
         elif self.useEOS:
-            self.filePrepend = "root://eoscms//eos/cms"
+            if self.atIC:
+                self.filePrepend = "root://eoscms.cern.ch//eos/cms"
+            else:    
+                self.filePrepend = "root://eoscms//eos/cms"
         
         self.samplesMan = None
         dataset = None
