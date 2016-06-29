@@ -4,6 +4,8 @@ from das_client import get_data as das_query
 
 from pprint import pprint
 
+from hashlib import sha256
+
 import os,json,fcntl,sys
 from parallel  import *
 from threading import Semaphore
@@ -477,7 +479,7 @@ class SamplesManager(object):
         @fileName: file name
         """
         fName = fileName
-        tmp = ".tmp%s_%d.json"%(dsetName.replace("/","_"),ifile)
+        tmp = ".tmp%s_%d.json"%(sha256(dsetName).hexdigest(),ifile)
         if self.continue_:
             if os.path.exists(tmp):
                 print "%s already exists" % tmp
