@@ -11,7 +11,8 @@ import os
 
 flashggBTag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
 maxJetCollections = 8
-qgDatabaseVersion = 'v1' # check https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
+#qgDatabaseVersion = 'v1' # check https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
+qgDatabaseVersion = '80X'
 
 def addFlashggPFCHSJets(process, 
                         isData,
@@ -94,13 +95,15 @@ def addFlashggPFCHSJets(process,
   #process.patJetCorrFactorsAK4PFCHSLeg.primaryVertices = "offlineSlimmedPrimaryVertices"
   getattr(process, 'patJetCorrFactorsAK4PFCHSLeg' + label).primaryVertices = "offlineSlimmedPrimaryVertices"
   
-  #== QGTagging, will be removed in 76X via customization
-  process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
-                                          CondDBSetup,
-                                          toGet = cms.VPSet(),
-                                          connect = cms.string('frontier://FrontierProd/CMS_COND_PAT_000'),)
+  if not hasattr(process,"QGPoolDBESSource"):
+    process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
+                                            CondDBSetup,
+                                            toGet = cms.VPSet(),
+                                            connect = cms.string('sqlite:QGL_'+qgDatabaseVersion+'.db') 
+                                            )
+    process.es_prefer_qg = cms.ESPrefer('PoolDBESSource','QGPoolDBESSource')
   
-  for type in ['AK4PFchs','AK4PFchs_antib']:
+  for type in ['AK4PFchs']:#,'AK4PFchs_antib']:
     process.QGPoolDBESSource.toGet.extend(cms.VPSet(cms.PSet(
           record = cms.string('QGLikelihoodRcd'),
           tag    = cms.string('QGLikelihoodObject_'+qgDatabaseVersion+'_'+type),
@@ -108,7 +111,9 @@ def addFlashggPFCHSJets(process,
           )))
   
   from RecoJets.JetProducers.QGTagger_cfi import QGTagger
-  setattr( process, 'QGTaggerPFCHS' + label,  QGTagger.clone( srcJets   = 'patJetsAK4PFCHSLeg' + label ,jetsLabel = 'QGL_AK4PFchs'))
+  setattr( process, 'QGTaggerPFCHS' + label,  
+           QGTagger.clone( srcJets   = 'patJetsAK4PFCHSLeg' + label ,jetsLabel = 'QGL_AK4PFchs', vertexIndex = cms.uint32(vertexIndex),
+                           srcVertexCollection = 'offlineSlimmedPrimaryVertices'))
 
   from RecoJets.JetProducers.PileupJetIDParams_cfi import full_80x_chs
   
