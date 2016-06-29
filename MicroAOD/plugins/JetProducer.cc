@@ -159,7 +159,10 @@ namespace flashgg {
             float qgLikelihood = -99.0;
             if(qgHandle.isValid()) qgLikelihood = ( *qgHandle )[jets->refAt( i )];;
             fjet.setQGL(qgLikelihood);
-            //std::cout << "QGL jet["<< i << "] == " << qgLikelihood << std::endl;
+
+            //            if (fjet.pt() > 20.) {
+            //                std::cout << "Jet["<< i << "] QGL=" << qgLikelihood << " partonFlavour=" << fjet.partonFlavour() << std::endl;
+            //            }
 
             if ( jetCollectionIndex_ == 0 ) {
                 PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables( pjet.get(), 0., &vertexes[0], vertexes, rho );
