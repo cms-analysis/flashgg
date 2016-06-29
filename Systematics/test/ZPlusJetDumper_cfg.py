@@ -45,7 +45,7 @@ musystlabels = []
 from flashgg.MetaData.JobConfig import customize
 customize.parse()
 print "customize.processId:",customize.processId
-process.load("flashgg.Systematics.escales.escale76X_16DecRereco_2015")
+useEGMTools(process)
 # Only run systematics for signal events
 if customize.processId.count("h_") or customize.processId.count("vbf_"): # convention: ggh vbf wzh (wh zh) tth
     raise Exception,"not really set up for signal or for shifted MCs right now"

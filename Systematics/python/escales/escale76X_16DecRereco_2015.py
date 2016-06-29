@@ -1,5 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
+raise Exception,"This should not be used anymore, you should put useEGMTools(process) in your config instead"
+
 photonSmearBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)","r9"),
     bins = cms.VPSet(
