@@ -20,6 +20,7 @@ flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                   MinAcceptableObjectWeight = cms.double(0.4),
                                   MaxAcceptableObjectWeight = cms.double(2.5),
                                   StoreOtherTagInfo = cms.bool(False),
+                                  BlindedSelectionPrintout = cms.bool(False),
                                   Debug = cms.untracked.bool(False)
                                   )
 
