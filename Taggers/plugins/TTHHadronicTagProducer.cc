@@ -254,7 +254,7 @@ namespace flashgg {
             if( subleadPhoUseVariableTh_ )
             { subleadPhoPtCut = subleadPhoOverMassThreshold_ * dipho->mass(); }
 
-            if( dipho->leadingPhoton()->pt() < leadPhoPtCut && dipho->subLeadingPhoton()->pt() < subleadPhoPtCut ) { continue; }
+            if( dipho->leadingPhoton()->pt() < leadPhoPtCut || dipho->subLeadingPhoton()->pt() < subleadPhoPtCut ) { continue; }
             if( mvares->mvaValue() < MVAThreshold_ ) { continue; }
 
             for( unsigned int jetIndex = 0; jetIndex < Jets[jetCollectionIndex]->size() ; jetIndex++ ) {
