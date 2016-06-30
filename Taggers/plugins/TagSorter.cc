@@ -243,8 +243,9 @@ namespace flashgg {
                 std::cout << "******************************" << std::endl;
                 std::cout << "* Selected tag name: " << TagSorter::tagName(SelectedTag->back().tagEnum()) << std::endl;
                 if (cat >= 0) {
-                    std::cout << " Selected tag category: " << cat << std::endl;
+                    std::cout << "* Selected tag category: " << cat << std::endl;
                 }
+                std::cout << "* Selected tag MVA result: " << SelectedTag->back().diPhotonMVA().mvaValue() << std::endl;
                 std::cout << "* Selected tag mass: " << mass << std::endl;
                 if ( storeOtherTagInfo_ ) {
                     unsigned nother = SelectedTag->back().nOtherTags();
@@ -253,7 +254,7 @@ namespace flashgg {
                     for (unsigned i = 0 ; i < nother; i++) {
                         std::cout << "*     " << TagSorter::tagName(SelectedTag->back().otherTagType(i)) << " ";
                         int ocat = SelectedTag->back().otherTagCategory(i);
-                        if (ocat <= 0) {
+                        if (ocat >= 0) {
                             std::cout << ocat << " ";
                         }
                         if ( SelectedTag->back().otherTagDiPhotonIndex(i) == dipho_i ) {
