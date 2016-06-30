@@ -23,7 +23,8 @@
     "RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext4" : ["76X_mcRun2_asymptotic_v13"],
     "RunIIFall15MiniAODv2-PU25nsData2015v1_0T_magnetOffBS0T_76X_mcRun2_0T_v1" : ["76X_mcRun2_asymptotic_v13"],
 
-    "Run2016B-PromptReco"                                                           : ["80X_dataRun2_Prompt_v8"],
+    "Run2016B-PromptReco"    : ["80X_dataRun2_Prompt_v8"],
+    "Run2016C-PromptReco"    : ["80X_dataRun2_Prompt_v9"],
     "RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3"               : ["80X_mcRun2_asymptotic_2016_v3"],
     "RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3_ext1"          : ["80X_mcRun2_asymptotic_2016_v3"],
     "RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3"      : ["80X_mcRun2_asymptotic_2016_v3"],
