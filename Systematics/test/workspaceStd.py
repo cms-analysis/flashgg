@@ -258,6 +258,10 @@ for mn in mns:
 print
 printSystematicInfo(process)
 
+# Detailed tag interpretation information printout (blinded)
+# process.flashggTagSorter.StoreOtherTagInfo = True
+# process.flashggTagSorter.BlindedSelectionPrintout = True
+
 #from Validation.Performance.TimeMemoryInfo import customise as TimeMemoryCustomize
 #TimeMemoryCustomize(process)
 #process.MessageLogger.cerr.threshold = 'WARNING'

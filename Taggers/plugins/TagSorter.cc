@@ -43,7 +43,6 @@ namespace flashgg {
         }
     };
 
-
     class TagSorter : public EDProducer
     {
 
@@ -64,8 +63,11 @@ namespace flashgg {
 
         bool debug_;
         bool storeOtherTagInfo_;
+        bool blindedSelectionPrintout_;
 
         std::vector<std::tuple<DiPhotonTagBase::tag_t,int,int> > otherTags_; // (type,category,diphoton index)
+
+        string tagName(DiPhotonTagBase::tag_t) const;
     };
 
     TagSorter::TagSorter( const ParameterSet &iConfig ) :
@@ -79,6 +81,7 @@ namespace flashgg {
 
         debug_ = iConfig.getUntrackedParameter<bool>( "Debug", false );
         storeOtherTagInfo_ = iConfig.getParameter<bool>( "StoreOtherTagInfo" );
+        blindedSelectionPrintout_ = iConfig.getParameter<bool>("BlindedSelectionPrintout");
 
         const auto &vpset = iConfig.getParameterSetVector( "TagPriorityRanges" );
 
@@ -231,10 +234,73 @@ namespace flashgg {
             }
         }
 
+        if ( SelectedTag->size() == 1  && storeOtherTagInfo_ && blindedSelectionPrintout_ ) {
+            float mass = SelectedTag->back().diPhoton()->mass();
+            if (mass < 115. || mass > 135.) {
+                int cat = SelectedTag->back().categoryNumber();
+                std::cout << "******************************" << std::endl;
+                std::cout << "* BLINDED SELECTION PRINTOUT *" << std::endl;
+                std::cout << "******************************" << std::endl;
+                std::cout << "* Selected tag name: " << TagSorter::tagName(SelectedTag->back().tagEnum()) << std::endl;
+                if (cat >= 0) {
+                    std::cout << "* Selected tag category: " << cat << std::endl;
+                }
+                std::cout << "* Selected tag MVA result: " << SelectedTag->back().diPhotonMVA().mvaValue() << std::endl;
+                std::cout << "* Selected tag mass: " << mass << std::endl;
+                if ( storeOtherTagInfo_ ) {
+                    unsigned nother = SelectedTag->back().nOtherTags();
+                    int dipho_i = SelectedTag->back().diPhotonIndex();
+                    std::cout << "* Number of other tag interpretations: " << nother << std::endl;
+                    for (unsigned i = 0 ; i < nother; i++) {
+                        std::cout << "*     " << TagSorter::tagName(SelectedTag->back().otherTagType(i)) << " ";
+                        int ocat = SelectedTag->back().otherTagCategory(i);
+                        if (ocat >= 0) {
+                            std::cout << ocat << " ";
+                        }
+                        if ( SelectedTag->back().otherTagDiPhotonIndex(i) == dipho_i ) {
+                            std::cout << "(same diphoton)";
+                        } else {
+                            std::cout << "(different diphoton)";
+                        }
+                        std::cout << std::endl;
+                    }
+                } else {
+                    std::cout << "* Other tag interpretations not stored (config)" << std::endl;
+                }
+                std::cout << "******************************" << std::endl;
+            }
+        }
+
         assert( SelectedTag->size() == 1 || SelectedTag->size() == 0 );
         evt.put( SelectedTag );
         evt.put( SelectedTagTruth );
     }
+
+    string TagSorter::tagName(DiPhotonTagBase::tag_t tagEnumVal) const {
+        //        enum tag_t { kUndefined = 0, kUntagged, kVBF, kTTHHadronic, kTTHLeptonic, kVHTight, kVHLoose, kVHHadronic, kVHEt };
+        switch(tagEnumVal) {
+        case DiPhotonTagBase::tag_t::kUndefined:
+            return string("UNDEFINED");
+        case DiPhotonTagBase::tag_t::kUntagged: 
+            return string("Untagged");
+        case DiPhotonTagBase::tag_t::kVBF:
+            return string("VBF");
+        case DiPhotonTagBase::tag_t::kTTHHadronic:
+            return string("TTHHadronic");
+        case DiPhotonTagBase::tag_t::kTTHLeptonic:
+            return string("TTHLeptonic");
+        case DiPhotonTagBase::tag_t::kVHTight:
+            return string("VHTight");
+        case DiPhotonTagBase::tag_t::kVHLoose:
+            return string("VHLoose");
+        case DiPhotonTagBase::tag_t::kVHHadronic:
+            return string("VHHadronic");
+        case DiPhotonTagBase::tag_t::kVHEt:
+            return string("VHEt");
+        }
+        return string("TAG NOT ON LIST");
+    }
+
 }
 
 typedef flashgg::TagSorter FlashggTagSorter;
