@@ -1,13 +1,11 @@
 {
-    "cmdLine"  : "campaign=RunIISpring16DR80X-2_0_0-25ns", 
+    "cmdLine"  : "campaign=RunIISpring16DR80X-2_1_0-25ns_ICHEP16",
     "processes": {
 	"Data"   : [
-			"/DoubleEG/musella-EXOSpring16_v1_p3-diphotons_80_v1-v0-Run2016B-PromptReco-v1-ea408274daa18c6402a808da38fd2b89/USER",
-                        "/DoubleEG/musella-EXOSpring16_v1_p3-diphotons_80_v1-v0-Run2016B-PromptReco-v2-ea408274daa18c6402a808da38fd2b89/USER",
-			"/DoubleEG/musella-EXOSpring16_v1_p5-Moriond16WSFinal-70-ga303087-v0-Run2016B-PromptReco-v2-5c50ce53d80a6fec7ad55686b342f79d/USER", 
-			"/DoubleEG/musella-EXOSpring16_v1_p5-Moriond16WSFinal-70-ga303087-v1-Run2016B-PromptReco-v2-5c50ce53d80a6fec7ad55686b342f79d/USER",
-			"/DoubleEG/musella-EXOSpring16_v1_p8-Moriond16WSFinal-106-ga327d4a-v0-Run2016B-PromptReco-v2-a5f1c0c964d9d1f7d2e18cd5bbce5233/USER",
-			"/DoubleEG/spigazzi-EXOSpring16_v1_p6-Moriond16WSFinal-74-g8fd901f-v0-Run2016B-PromptReco-v2-5c50ce53d80a6fec7ad55686b342f79d/USER"
-	]
+			"/DoubleEG/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-Run2016B-PromptReco-v1-ce7c982ceb2d6ebc0677083f07225bc9/USER",
+			"/DoubleEG/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-Run2016B-PromptReco-v2-ce7c982ceb2d6ebc0677083f07225bc9/USER",
+			"/DoubleEG/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16_p2-2_1_0-v0-Run2016C-PromptReco-v2-6f9d706155f6ba1b069a5add4e9403b8/USER",
+			"/DoubleEG/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16_p2-2_1_0-v1-Run2016B-PromptReco-v2-ce7c982ceb2d6ebc0677083f07225bc9/USER"
+		   ]
     }
 }
