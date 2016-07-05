@@ -1,14 +1,15 @@
 {
     "processes" : {
-        "ggh_120"  : [ "/GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8" ],
-        "ggh_125"  : [ "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8" ],
-	"ggh_130" : [ "/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8" ],
-	"wzh_120" : [ "/VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8" ],
-        "wzh_125" : [ "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8" ],
-        "wzh_130" : [ "/VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8" ],
-	"vbf_120" : [ "/VBFHToGG_M120_13TeV_amcatnlo_pythia8" ],
-        "vbf_125" : [ "/VBFHToGG_M125_13TeV_amcatnlo_pythia8" ],
-        "vbf_130" : [ "/VBFHToGG_M130_13TeV_amcatnlo_pythia8" ]
+        "tth_125"  : [ "/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_v2/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1-6a14c00be3bc8fdb1d33bdb3fb280c2f/USER" ],
+        "vbf_125"  : [ "/VBFHToGG_M125_13TeV_amcatnlo_pythia8/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3_ext1-v1-5ea88bd70abed14168848bf06a0c993b/USER" ],
+        "vbf_130"  : [ "/VBFHToGG_M130_13TeV_amcatnlo_pythia8/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1-5ea88bd70abed14168848bf06a0c993b/USER" ],
+        "tth_120"  : [ "/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8_v2/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1-6a14c00be3bc8fdb1d33bdb3fb280c2f/USER" ],
+        "vbf_120"  : [ "/VBFHToGG_M120_13TeV_amcatnlo_pythia8/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1-5ea88bd70abed14168848bf06a0c993b/USER" ],
+        "ggh_125"  : [ "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1-5ea88bd70abed14168848bf06a0c993b/USER",
+                       "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3_ext2-v1-5ea88bd70abed14168848bf06a0c993b/USER" ],
+        "ggh_130"  : [ "/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1-5ea88bd70abed14168848bf06a0c993b/USER" ],
+        "tth_130"  : [ "/ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8_v2/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1-6a14c00be3bc8fdb1d33bdb3fb280c2f/USER" ],
+        "ggh_120"  : [ "/GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1-5ea88bd70abed14168848bf06a0c993b/USER" ]
      },	
-        "cmdLine" : "campaign=RunIISpring15-AllSilverIncludingGold-1_1_0-25ns"
+        "cmdLine" : "campaign=RunIISpring16DR80X-2_1_0-25ns_ICHEP16"
 }
