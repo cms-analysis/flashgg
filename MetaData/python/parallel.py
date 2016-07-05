@@ -636,6 +636,19 @@ class SGEJob(LsfJob):
 
         if self.async:
             result = commands.getstatusoutput("qstat")
+            checkcount = 0
+            while len(result[1].split("\n")) < 3:
+                print "SGE REBOOT MITIGATION: qstat result seems too short"
+                print "---------------------------------------------------"
+                print result[1]
+                print "---------------------------------------------------"
+                print "... so we wait before trying again"
+                sleep(5.)
+                result = commands.getstatusoutput("qstat")
+                checkcount += 1
+                if checkcount > 12:
+                    break
+                
 #                print "We are in handleOutput and we have the following output:",result
             self.exitStatus = 0 # assume it is done unless listed
             for line in result[1].split("\n"):
@@ -735,6 +748,18 @@ class IclustJob(LsfJob):
 
         if self.async:
             result = commands.getstatusoutput("qstat")
+            checkcount = 0
+            while len(result[1].split("\n")) < 3:
+                print "SGE REBOOT MITIGATION: qstat result seems too short"
+                print "---------------------------------------------------"
+                print result[1]
+                print "---------------------------------------------------"
+                print "... so we wait before trying again"
+                sleep(5.)
+                result = commands.getstatusoutput("qstat")
+                checkcount += 1
+                if checkcount > 12:
+                    break
 #                print "We are in handleOutput and we have the following output:",result
             self.exitStatus = 0 # assume it is done unless listed
             for line in result[1].split("\n"):
@@ -784,6 +809,18 @@ class SGEMonitor(LsfMonitor):
 
     def monitor(self):
         status = commands.getstatusoutput("qstat")
+        checkcount = 0
+        while len(status[1].split("\n")) < 3:
+            print "SGE REBOOT MITIGATION: qstat result seems too short"
+            print "---------------------------------------------------"
+            print status[1]
+            print "---------------------------------------------------"
+            print "... so we wait before trying again"
+            sleep(5.)
+            status = commands.getstatusoutput("qstat")
+            checkcount += 1
+            if checkcount > 12:
+                break
         jobids = []
         statuses = []
         for line in status[1].split("\n")[2:]:
