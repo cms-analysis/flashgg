@@ -289,7 +289,9 @@ class JobConfig(object):
                 if lumisToSkip: 
                     target = target.__sub__(lumisToSkip)                    
                 process.source.lumisToProcess = target.getVLuminosityBlockRange()
-            
+
+            if isdata:    
+                print process.source.lumisToProcess
             
         flist = []
         for f in files:

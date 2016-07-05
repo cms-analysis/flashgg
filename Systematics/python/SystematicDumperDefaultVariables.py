@@ -1,5 +1,5 @@
 minimalVariables = ["CMS_hgg_mass[160,100,180]:=diPhoton().mass",
-                    "dZ[2,0,2]:=abs(tagTruth().genPV().z-diPhoton().vtx().z)", #only need to know if dZ<1 or dz>1
+                    "dZ[40,-20.,20.]:=(tagTruth().genPV().z-diPhoton().vtx().z)", # store actual value
                                                                                #when doing systematics, variables need to have a binning
                                                                                #specified, otherwise the rooDataHist end up empty.
             								       #an assert in the code prevents you from doing this.
@@ -16,7 +16,7 @@ defaultVariables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass",
                                     "maxEta                   :=max(abs(diPhoton().leadingPhoton.superCluster.eta),abs(diPhoton().leadingPhoton.superCluster.eta))",
                                     "genZ           :=tagTruth().genPV().z",
                                     "vtxZ           :=diPhoton().vtx().z",
-                                    "dZ             :=abs(tagTruth().genPV().z-diPhoton().vtx().z)"]
+                                    "dZ             :=(tagTruth().genPV().z-diPhoton().vtx().z)"]
 
 
 defaultHistograms=["CMS_hgg_mass>>mass(160,100,180)",

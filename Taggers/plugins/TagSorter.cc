@@ -241,6 +241,7 @@ namespace flashgg {
                 std::cout << "******************************" << std::endl;
                 std::cout << "* BLINDED SELECTION PRINTOUT *" << std::endl;
                 std::cout << "******************************" << std::endl;
+                std::cout << "* Run " << evt.run() << " LumiSection " << evt.id().luminosityBlock() << " Event " << evt.id().event() << std::endl;
                 std::cout << "* Selected tag name: " << TagSorter::tagName(SelectedTag->back().tagEnum()) << std::endl;
                 if (cat >= 0) {
                     std::cout << "* Selected tag category: " << cat << std::endl;
