@@ -53,7 +53,7 @@ def runMETs(process,isMC):
                                    reclusterJets = False,
                                    pfCandColl = "packedPFCandidates",
                                    postfix="",
-                                   isData=True,
+                                   isData=(not isMC),
                                    )
         
 #===========================================================================================================================#
