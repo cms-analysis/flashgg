@@ -136,6 +136,9 @@ git cms-merge-topic -u sethzenz:topic-PileupJetId-NonStandardVtx-bugfixSync
 echo "Setting up QGL..."
 git cms-merge-topic -u sethzenz:topic-QGL-MiniAOD-vertexIndex
 
+echo "Setting up MET filters..."
+git cms-merge-topic -u mplaner:METfilters808
+
 echo "Setting up TnP tools..."
 #git cms-addpkg DataFormats/RecoCandidate
 #git cms-addpkg PhysiscsTools/TagAndProbe
