@@ -403,13 +403,15 @@ class SamplesManager(object):
         if writeCatalog:
             self.writeCatalog(catalog)
 
-    def reviewCatalog(self):
+    def reviewCatalog(self, pattern=None):
         datasets,catalog = self.getAllDatasets()
 
         primaries = {}
         keepAll = False
         dataregex = re.compile("Run[0-9]+[A-Z]")
         for d in datasets:
+            if pattern and not fnmatch(d, pattern):
+                continue
             if not keepAll:
                 reply = ask_user("keep this dataset (yes/no/all)?\n %s\n" % d, ["y","n","a"])
                 if reply == "n":
@@ -931,5 +933,5 @@ Commands:
     def run_clear(self):
         self.mn.clearCatalog()
     
-    def run_review(self):
-        self.mn.reviewCatalog()
+    def run_review(self, pattern=None):
+        self.mn.reviewCatalog(pattern)
