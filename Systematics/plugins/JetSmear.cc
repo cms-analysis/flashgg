@@ -124,7 +124,7 @@ namespace flashgg {
                     throw cms::Exception("Missing embedded random number") << "Could not find key " << random_label_ << " for random numbers embedded in the jet object, please make sure to read the appropriate version of MicroAOD and/or access the correct label and/or run the randomizer on-the-fly";
                 }
                 float rnd = y.userFloat(random_label_);       
-                float extra_smear_width = std::sqrt(scale_factor - 1) * r;
+                float extra_smear_width = std::sqrt(scale_factor*scale_factor - 1) * r;
                 if (extra_smear_width < 0) {
                     throw cms::Exception("NegativeSmearing") << " Calculated an extra_smear_width=" << extra_smear_width;
                 }
