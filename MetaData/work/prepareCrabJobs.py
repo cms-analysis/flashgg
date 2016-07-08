@@ -278,6 +278,8 @@ if options.createCrabConfig:
         if len(jobname) > 97:
             jobname = jobname.replace("RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2","Spring16")
         if len(jobname) > 97:
+            jobname = jobname.replace("RunIISpring16MiniAODv2-PUSpring16_80X_mcRun2","Spring16")
+        if len(jobname) > 97:
             jobname = jobname.replace("RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2","Spring16")
         if len(jobname) > 97:
             jobname = jobname.replace("RunIISpring16MiniAODv2-PUSpring16RAWAODSIM","Spring16")
@@ -299,6 +301,8 @@ if options.createCrabConfig:
             jobname = jobname.replace("mcRun2_asymptotic_2016","asym16")
         if len(jobname) > 97:
             jobname = jobname.replace("asymptotic_2016","asym16")
+        if len(jobname) > 97:
+            jobname = jobname.replace("reHLT_80X_mcRun2_asymptotic_v14-v1","reHLTasym16")
         if len(jobname) > 97:
             print orig_jobname
             print "-->", len(jobname), jobname
