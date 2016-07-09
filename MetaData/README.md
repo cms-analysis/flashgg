@@ -95,6 +95,20 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 ### SRING16 (80x)
 
+#### 80X MiniAODv2
+
+Tags for flashgg: `2_2_0` and `RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2`
+
+```
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+# split the campaign json file into sig and (data + bkg) to use different options for file splitting
+./prepareCrabJobs.py -C RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2 -U 1 -L 25 -s campaigns/RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2_sig.json -V 2_2_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask ${PWD}/jsons/json_DCSONLY_1467860596_for_ICHEP_MiniAODv2.txt
+./prepareCrabJobs.py -C RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2 -U 5 -L 25 -s campaigns/RunIISpring16DR80X-
+2_2_0-25ns_ICHEP16_MiniAODv2_data_bkg.json -V 2_2_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask ${PWD}/jsons/json_DCSONLY_1467860596_for_ICHEP_MiniAODv2.txt
+cd RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2
+echo crabConfig_*.py | xargs -n 1 crab sub
+```
+
 #### 80X QGL update
 
 Tags for flashgg: `2_1_0` and `RunIISpring16DR80X-2_1_0-25ns_ICHEP16`
