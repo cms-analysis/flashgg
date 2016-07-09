@@ -100,7 +100,7 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            Label = cms.string("JEC"),
                                                            NSigmas = cms.vint32(-1,1),
                                                            OverallRange = cms.string("abs(eta)<5.0"),
-                                                           Debug = cms.untracked.bool(False),
+                                                           Debug = cms.untracked.bool(True),
                                                            ApplyCentralValue = cms.bool(True),
                                                            SetupUncertainties = cms.bool(True),
                                                            JetCorrectorTag = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
@@ -111,11 +111,11 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            OverallRange = cms.string("abs(eta)<5.0"),
                                                            RandomLabel = cms.string("rnd_g_JER"), # for no-match case
                                                            rho = cms.InputTag('fixedGridRhoAll'),
-                                                           Debug = cms.untracked.bool(False),
+                                                           Debug = cms.untracked.bool(True),
                                                            ApplyCentralValue = cms.bool(True),
                                                            UseTextFiles = cms.bool(True),
-                                                           TextFileResolution = cms.string("%s/src/flashgg/Systematics/data/JER/Fall15_25nsV2_MC_PtResolution_AK4PFchs.txt" % environ['CMSSW_BASE']),
-                                                           TextFileSF = cms.string("%s/src/flashgg/Systematics/data/JER/Fall15_25nsV2_MC_SF_AK4PFchs.txt" % environ['CMSSW_BASE'])
+                                                           TextFileResolution = cms.string("%s/src/flashgg/Systematics/data/JER/Spring16_25nsV6_MC_PtResolution_AK4PFchs.txt" % environ['CMSSW_BASE']),
+                                                           TextFileSF = cms.string("%s/src/flashgg/Systematics/data/JER/Spring16_25nsV6_MC_SF_AK4PFchs.txt" % environ['CMSSW_BASE'])
                                                            ),
                                                  cms.PSet( MethodName = cms.string("FlashggJetBTagWeight"),
                                                            Label = cms.string("JetBTagWeight"),
@@ -168,10 +168,10 @@ def createJECESource(process):
                                timetype = cms.string('runnumber'),
                                toGet = cms.VPSet(cms.PSet(
           record = cms.string('JetCorrectionsRecord'),
-          tag    = cms.string('JetCorrectorParametersCollection_Spring16_25nsV3_MC_AK4PFchs'),
+          tag    = cms.string('JetCorrectorParametersCollection_Spring16_25nsV6_MC_AK4PFchs'),
           label  = cms.untracked.string("AK4PFchs")
           )),
-                               connect = cms.string('sqlite_file:%s/Spring16_25nsV3_MC.db' % datadir)
+                               connect = cms.string('sqlite_file:%s/Spring16_25nsV6_MC.db' % datadir)
                                )                               
     process.es_prefer_jec = cms.ESPrefer('PoolDBESSource', 'jec')
 
@@ -188,21 +188,21 @@ def createJERESource(process):
         # Resolution
         cms.PSet(
           record = cms.string('JetResolutionRcd'),
-          tag    = cms.string('JR_Summer15_25nsV6_MC_PtResolution_AK4PFchs'),
+          tag    = cms.string('JR_Spring16_25nsV6_MC_PtResolution_AK4PFchs'),
           label  = cms.untracked.string('AK4PFchs_pt')
           ),
         
         # Scale factors
         cms.PSet(
           record = cms.string('JetResolutionScaleFactorRcd'),
-          tag    = cms.string('JR_Summer15_25nsV6_MC_SF_AK4PFchs'),
+          tag    = cms.string('JR_Spring16_25nsV6_MC_SF_AK4PFchs'),
           label  = cms.untracked.string('AK4PFchs')
           ),
         ),
 # [2016-02-21 14:50:14,703] INFO: Connecting to Systematics/data/JER/Summer15_25nsV6_MC.db [sqlite:///Systematics/data/JER/Summer15_25nsV6_MC.db]
 # JR_Summer15_25nsV6_MC_SF_AK4PFchs             Run       JME::JetResolutionObject  any              -1             2016-02-05 20:59:34.061327  New Tag      
 # JR_Summer15_25nsV6_MC_PtResolution_AK4PFchs   Run       JME::JetResolutionObject  any              -1             2016-02-05 20:59:34.064554  New Tag      
-                               connect = cms.string('sqlite_file:%s/Summer15_25nsV6_MC.db' % datadir)
+                               connect = cms.string('sqlite_file:%s/Spring16_25nsV6_MC.db' % datadir)
 
                                )
     process.es_prefer_jer = cms.ESPrefer('PoolDBESSource', 'jer')
