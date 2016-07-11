@@ -129,6 +129,7 @@ class JobConfig(object):
         try:
             from SimGeneral.MixingModule.mix_2016_25ns_SpringMC_PUScenarioV1_PoissonOOTPU_cfi import mix as mix_2016_80_25ns
             self.pu_distribs["80X_mcRun2_asymptotic_2016"] = mix_2016_80_25ns.input.nbPileupEvents
+            self.pu_distribs["PUSpring16"] = mix_2016_80_25ns.input.nbPileupEvents
         except Exception:
             print "Failed to load 80X mixing, this is expected in 7X!"
             
