@@ -256,7 +256,17 @@ class JobConfig(object):
                                 matches = filter(lambda x: x in dsetname, self.pu_distribs.keys() )
                                 print matches
                                 if len(matches) > 1:
-                                    matches = filter(lambda x: x == dsetname, matches)
+                                    print "Multiple matches, check if they're all the same"
+                                    allsame = True
+                                    for i in range(1,len(matches)):
+                                        if self.pu_distribs[matches[0]] != self.pu_distribs[matches[i]]:
+                                            allsame = False
+                                    if allsame:
+                                        print "They're all the same so we just take the 0th one:",matches[0]
+                                        matches = [matches[0]]
+                                    else:
+                                        print "Not all the same... so we return to the old behavior and take an exact match, otherwise leave empty..."
+                                        matches = filter(lambda x: x == dsetname, matches)
                                 if len(matches) != 1:
                                     raise Exception("Could not determine sample pu distribution for reweighting. Possible matches are [%s]. Selected [%s]\n dataset: %s" % 
                                                 ( ",".join(self.pu_distribs.keys()), ",".join(matches), dsetname ) )
