@@ -1,6 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
+import flashgg.Taggers.PUJID_wps as pujid
 
 # legacy VBF MVA
 flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
@@ -12,9 +13,13 @@ flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
                                UseJetID = cms.bool(False),
                                merge3rdJet = cms.bool(False),
                                thirdJetDRCut = cms.double(1.8),
-                               JetIDLevel = cms.string("Loose"),
+                               JetIDLevel    = cms.string("Loose"),
+                               # changes loose to another working point, or comment if you want to disable pujid
+                               pujidWpPtBin1 = cms.vdouble(pujid.loose[0]),
+                               pujidWpPtBin2 = cms.vdouble(pujid.loose[1]),
+                               pujidWpPtBin3 = cms.vdouble(pujid.loose[2]), 
                                #UseLegacyMVA = cms.bool(True),
-                               rmsforwardCut = cms.double(0.03), # set to 1.0 to avoid pujid in this region
+                               rmsforwardCut = cms.double(3.00), # default was 0.03 , running on loose pujid
                                MinDijetMinv = cms.double(0.0),
                                #vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVA_dijet_sherpa_scalewt50_2evenb_powheg200_maxdPhi_oct9_Gradient.weights.xml"),
                                #vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_dijetMVA_Jan2016_rmscut_BDTG.weights.xml"),
