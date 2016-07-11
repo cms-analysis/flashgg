@@ -46,6 +46,10 @@ namespace flashgg {
         string     _JetIDLevel;
         double     _minDijetMinv;
         
+        std::vector<double> _pujid_wp_pt_bin_1;
+        std::vector<double> _pujid_wp_pt_bin_2;
+        std::vector<double> _pujid_wp_pt_bin_3;
+        
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
         
         float dijet_leadEta_   ;
@@ -80,7 +84,10 @@ namespace flashgg {
         _thirdJetDRCut( iConfig.getParameter<double> ( "thirdJetDRCut") ),
         _rmsforwardCut( iConfig.getParameter<double> ( "rmsforwardCut") ),
         _JetIDLevel   ( iConfig.getParameter<string> ( "JetIDLevel"   ) ),
-        _minDijetMinv ( iConfig.getParameter<double> ( "MinDijetMinv" ) )
+        _minDijetMinv ( iConfig.getParameter<double> ( "MinDijetMinv" ) ),
+        _pujid_wp_pt_bin_1  ( iConfig.getParameter<std::vector<double> > ( "pujidWpPtBin1" ) ),
+        _pujid_wp_pt_bin_2  ( iConfig.getParameter<std::vector<double> > ( "pujidWpPtBin2" ) ),
+        _pujid_wp_pt_bin_3  ( iConfig.getParameter<std::vector<double> > ( "pujidWpPtBin3" ) )
     {
         vbfMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "vbfMVAweightfile" );
         
@@ -194,6 +201,42 @@ namespace flashgg {
                 if( fabs( jet->eta() ) > 2.5 && jet->rms() > _rmsforwardCut ){ 
                     //std::cout << "("<< jet->eta()<< ")("<< jet->rms() <<").. jet rejected ::" << std::endl;
                     continue; 
+                }
+                // new PUJID for differents pt bins
+                std::vector<std::pair<double,double> > eta_cuts_(4);
+                eta_cuts_[0] = std::make_pair (0    ,2.50 );
+                eta_cuts_[1] = std::make_pair (2.50 ,2.75 );
+                eta_cuts_[2] = std::make_pair (2.75 ,3.00 );
+                eta_cuts_[3] = std::make_pair (3.00 ,10);
+
+                
+                if ( (!_pujid_wp_pt_bin_1.empty())  &&
+                     (!_pujid_wp_pt_bin_2.empty())  &&
+                     (!_pujid_wp_pt_bin_3.empty())  ){
+                    //std::cout << "VBFTagMVA::DEBUG  making the pujid --> "<< _pujid_wp_pt_bin_1.size() << std::endl;
+                    bool pass=false;
+                    for (UInt_t eta_bin=0; eta_bin < _pujid_wp_pt_bin_1.size(); eta_bin++ ){
+                        //std::cout << " eta-bin["<< eta_bin<< "] == " << eta_cuts_[eta_bin].first << "  :: "
+                        //          << eta_cuts_[eta_bin].second
+                        //          << " pt1: " << _pujid_wp_pt_bin_1[eta_bin]
+                        //          << " pt2: " << _pujid_wp_pt_bin_2[eta_bin]
+                        //          << " pt3: " << _pujid_wp_pt_bin_3[eta_bin]
+                        //          << std::endl;
+                        if ( fabs( jet->eta() ) >  eta_cuts_[eta_bin].first &&
+                             fabs( jet->eta() ) <= eta_cuts_[eta_bin].second){
+                            if ( jet->pt() >  20 &&
+                                 jet->pt() <= 30 && jet->puJetIdMVA() > _pujid_wp_pt_bin_1[eta_bin] )
+                                pass=true;
+                            if ( jet->pt() >  30 &&
+                                 jet->pt() <= 50 && jet->puJetIdMVA() > _pujid_wp_pt_bin_2[eta_bin] )
+                                pass=true;
+                            if ( jet->pt() >  50 &&
+                                 jet->pt() <= 100&& jet->puJetIdMVA() > _pujid_wp_pt_bin_3[eta_bin] )
+                                pass=true;
+                        }
+                    }
+                    //std::cout << "\t pt="<< jet->pt() << " :eta: "<< jet->eta() << " :mva: "<< jet->puJetIdMVA() << "  pass == " << pass << std::endl;
+                    if (!pass) continue;
                 }
                 // within eta 4.7?
                 if( fabs( jet->eta() ) > 4.7 ) { continue; }
