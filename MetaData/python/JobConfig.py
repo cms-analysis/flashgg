@@ -398,6 +398,14 @@ class JobConfig(object):
         outputFile=self.outputFile
         if self.jobId != -1:
             outputFile = "%s_%d.root" % ( outputFile.replace(".root",""), self.jobId )
+
+        if len(outputFile.split("/")[-1]) > 255:
+            outputFile = outputFile.replace("ferrif-RunIISpring16DR80X-","")
+            outputFile = outputFile.replace("_ICHEP16_MiniAODv2-2_2_0","")
+            outputFile = outputFile.replace("_USER","")
+        if len(outputFile.split("/")[-1]) > 255:
+            raise Exception,"output filename appears too long: %i - find this exception and update adhoc list or email flashgg list" % len(outputFile.split("/")[-1])
+
         self.setType ("outputFile", VarParsing.VarParsing.varType.string)
         self.outputFile = outputFile
 
