@@ -52,7 +52,8 @@ namespace flashgg {
         requireScaledPtCuts_   ( iConfig.getParameter<bool> ( "RequireScaledPtCuts" ) )
     {
         boundaries_sigmaMoM = iConfig.getParameter<vector<double > >( "BoundariesSigmaMoM" );
-        integratepT_ = iConfig.existsAs<vector<double >>("BoundariespToM") ? true: false;
+        //integratepT_ = iConfig.existsAs<vector<double >>("BoundariespToM") ? true: false;
+        integratepT_ = true;
         if(!integratepT_){
             boundaries_pToM = iConfig.getParameter<vector<double > >( "BoundariespToM" );
         }
