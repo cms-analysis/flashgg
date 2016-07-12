@@ -233,6 +233,7 @@ namespace flashgg {
                             if ( jet->pt() >  50 &&
                                  jet->pt() <= 100&& jet->puJetIdMVA() > _pujid_wp_pt_bin_3[eta_bin] )
                                 pass=true;
+                            if (jet->pt() > 100) pass = true;
                         }
                     }
                     //std::cout << "\t pt="<< jet->pt() << " :eta: "<< jet->eta() << " :mva: "<< jet->puJetIdMVA() << "  pass == " << pass << std::endl;
