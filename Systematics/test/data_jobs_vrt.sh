@@ -1,0 +1,3 @@
+# NB this command is specific to the configuration at IC and is not gaurenteed elsewhere
+#fggRunJobs.py --load sig_jobs.json -q 1nd -d signal_120_125_130 -n 500  -D -P  -x cmsRun workspaceStd.py maxEvents=100 
+fggRunJobs.py -q long.q --load data_jobs_vrt.json  -d data_testws_80_fixCatalog/ -n 500  -D -P  -x cmsRun workspaceStd_Differential_GenVars_new.py lumiMask=/mnt/t3nfs01/data01/shome/vtavolar/Flashgg/80forsigmaMdecorr/CMSSW_8_0_8_patch1/src/flashgg/Systematics/test/Cert_271036-275125_13TeV_PromptReco_Collisions16_JSON.txt maxEvents=-1
