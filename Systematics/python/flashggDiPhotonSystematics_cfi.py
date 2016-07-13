@@ -22,14 +22,14 @@ preselBins = cms.PSet(
         )
     )
 
-# slide 5 of https://indico.cern.ch/event/489840/session/1/contribution/17/attachments/1232312/1807794/20160223UpdateOnZmmgForHgg_preselectionIssues.pdf
+# slide 13 of https://indico.cern.ch/event/535800/contributions/2213640/attachments/1295950/1956455/201607ZmmgWith2016data_Update6p26perfb.pdf from the update with 6.26/fb
 electronVetoBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)","r9"),
     bins = cms.VPSet(
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00 ) , upBounds = cms.vdouble( 1.5, 0.85 ) , values = cms.vdouble( 0.9904 ) , uncertainties = cms.vdouble( 0.0045 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ) , upBounds = cms.vdouble( 1.5, 999. ) , values = cms.vdouble( 0.9978 ) , uncertainties = cms.vdouble( 0.0011 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00 ) , upBounds = cms.vdouble( 6.0, 0.90 ) , values = cms.vdouble( 1.0095 ) , uncertainties = cms.vdouble( 0.0163 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90 ) , upBounds = cms.vdouble( 6.0, 999. ) , values = cms.vdouble( 0.9989 ) , uncertainties = cms.vdouble( 0.0028 )  ) 
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00 ) , upBounds = cms.vdouble( 1.5, 0.85 ) , values = cms.vdouble( 0.9910 ) , uncertainties = cms.vdouble( 0.0049 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ) , upBounds = cms.vdouble( 1.5, 999. ) , values = cms.vdouble( 0.9961 ) , uncertainties = cms.vdouble( 0.0012 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00 ) , upBounds = cms.vdouble( 6.0, 0.90 ) , values = cms.vdouble( 0.9939 ) , uncertainties = cms.vdouble( 0.0171 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90 ) , upBounds = cms.vdouble( 6.0, 999. ) , values = cms.vdouble( 0.9994 ) , uncertainties = cms.vdouble( 0.0033 )  ) 
         )
     )
 
