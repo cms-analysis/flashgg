@@ -15,9 +15,9 @@ flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
                                thirdJetDRCut = cms.double(1.8),
                                JetIDLevel    = cms.string("Loose"),
                                # changes loose to another working point, or comment if you want to disable pujid
-                               pujidWpPtBin1 = cms.vdouble() # cms.vdouble(pujid.loose[0]),
-                               pujidWpPtBin2 = cms.vdouble() # cms.vdouble(pujid.loose[1]),
-                               pujidWpPtBin3 = cms.vdouble() # cms.vdouble(pujid.loose[2]), 
+                               pujidWpPtBin1 = cms.vdouble(), # cms.vdouble(pujid.loose[0]),
+                               pujidWpPtBin2 = cms.vdouble(), # cms.vdouble(pujid.loose[1]),
+                               pujidWpPtBin3 = cms.vdouble(), # cms.vdouble(pujid.loose[2]), 
                                #UseLegacyMVA = cms.bool(True),
                                rmsforwardCut = cms.double(0.03), # default was 0.03 , running on loose pujid
                                MinDijetMinv = cms.double(0.0),
