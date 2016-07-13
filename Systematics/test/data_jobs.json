@@ -1,11 +1,10 @@
 {
-    "cmdLine"  : "campaign=RunIISpring16DR80X-2_1_0-25ns_ICHEP16",
+    "cmdLine"  : "campaign=RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2_Workspaces",
     "processes": {
 	"Data"   : [
-			"/DoubleEG/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-Run2016B-PromptReco-v1-ce7c982ceb2d6ebc0677083f07225bc9/USER",
-			"/DoubleEG/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-Run2016B-PromptReco-v2-ce7c982ceb2d6ebc0677083f07225bc9/USER",
-			"/DoubleEG/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16_p2-2_1_0-v0-Run2016C-PromptReco-v2-6f9d706155f6ba1b069a5add4e9403b8/USER",
-			"/DoubleEG/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16_p2-2_1_0-v1-Run2016B-PromptReco-v2-ce7c982ceb2d6ebc0677083f07225bc9/USER"
+			"/DoubleEG/ferrif-RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2-2_2_0-v0-Run2016B-PromptReco-v1-6afd65c310508d0f49bd277bc7a8e5b1/USER",
+			"/DoubleEG/ferrif-RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2-2_2_0-v0-Run2016B-PromptReco-v2-6afd65c310508d0f49bd277bc7a8e5b1/USER",
+			"/DoubleEG/ferrif-RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2-2_2_0-v0-Run2016C-PromptReco-v2-9a092465adbfb13c40886e07b86f6d23/USER"
 		   ]
     }
 }
