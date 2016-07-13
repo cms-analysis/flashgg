@@ -2,7 +2,6 @@
 
 import FWCore.ParameterSet.Config as cms
 import FWCore.Utilities.FileUtils as FileUtils
-import FWCore.ParameterSet.VarParsing as VarParsing
 from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariables,minimalHistograms,minimalNonSignalVariables,systematicVariables
 import os
 
@@ -41,27 +40,6 @@ phosystlabels = []
 jetsystlabels = []
 elesystlabels = []
 musystlabels = []
-
-from flashgg.MetaData.JobConfig import customize
-customize.options.register('doFiducial',
-                           'true',
-                           VarParsing.VarParsing.multiplicity.singleton,
-                           VarParsing.VarParsing.varType.bool,
-                           'doFiducial'
-                           )
-
-process.load("flashgg/Taggers/flashggTagSequence_cfi")
-print process.flashggTagSequence
-if customize.doFiducial:
-    from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet,massSearchReplaceAnyInputTag
-    process.flashggTagSequence.remove(process.flashggVBFTag)
-    process.flashggTagSequence.remove(process.flashggTTHLeptonicTag)
-    process.flashggTagSequence.remove(process.flashggTTHHadronicTag)
-    process.flashggTagSequence.replace(process.flashggUntagged, process.flashggSigmaMoMpToMTag)
-
-
-print process.flashggTagSequence
-
 
 # import flashgg customization to check if we have signal or background
 from flashgg.MetaData.JobConfig import customize
@@ -113,7 +91,6 @@ else:
     print "Background MC, so store mgg and central only"
     variablesToUse = minimalNonSignalVariables
     customizeSystematicsForBackground(process)
-customize.setDefault("puTarget", '1.34e+05,6.34e+05,8.42e+05,1.23e+06,2.01e+06,4.24e+06,1.26e+07,4.88e+07,1.56e+08,3.07e+08,4.17e+08,4.48e+08,4.04e+08,3.05e+08,1.89e+08,9.64e+07,4.19e+07,1.71e+07,7.85e+06,4.2e+06,2.18e+06,9.43e+05,3.22e+05,8.9e+04,2.16e+04,5.43e+03,1.6e+03,551,206,80.1,31.2,11.9,4.38,1.54,0.518,0.165,0.0501,0.0144,0.00394,0.00102,0.000251,5.87e-05,1.3e-05,2.74e-06,5.47e-07,1.04e-07,1.86e-08,3.18e-09,5.16e-10,9.35e-11')
 
 print "--- Systematics  with independent collections ---"
 print systlabels
@@ -164,13 +141,13 @@ process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNA
 
 tagList=[
 ["UntaggedTag",4],
-#["VBFTag",2],
+["VBFTag",2],
 #["VHTightTag",0],
 #["VHLooseTag",0],
 #["VHEtTag",0],
 #["VHHadronicTag",0],
-#["TTHHadronicTag",0],
-#["TTHLeptonicTag",0]
+["TTHHadronicTag",0],
+["TTHLeptonicTag",0]
 ]
 
 definedSysts=set()
