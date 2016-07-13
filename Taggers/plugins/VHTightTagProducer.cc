@@ -375,25 +375,25 @@ namespace flashgg {
             if( mvares->result < MVAThreshold_ ) { continue; }
 
             photonSelection = true;
-            tagMuons_highPt = selectMuons( theMuons->ptrs(), dipho, vertices->ptrs(), muonEtaThreshold_, leptonPtThreshold_, muPFIsoSumRelThreshold_,
+            tagMuons_highPt = selectStdMuons( theMuons->ptrs(), dipho, vertices->ptrs(), muonEtaThreshold_, leptonPtThreshold_, muPFIsoSumRelThreshold_,
                                            deltaRMuonPhoThreshold_, deltaRMuonPhoThreshold_ );
-            tagMuons_lowPt = selectMuons( theMuons->ptrs(), dipho, vertices->ptrs(), muonEtaThreshold_, leptonLowPtThreshold_, muPFIsoSumRelThreshold_,
+            tagMuons_lowPt = selectStdMuons( theMuons->ptrs(), dipho, vertices->ptrs(), muonEtaThreshold_, leptonLowPtThreshold_, muPFIsoSumRelThreshold_,
                                           deltaRLowPtMuonPhoThreshold_, deltaRLowPtMuonPhoThreshold_ );
             hasGoodMuons_highPt = ( tagMuons_highPt.size() > 0 );
             hasGoodMuons_lowPt = ( tagMuons_lowPt.size() > 0 );
 
-            tagElectrons_highPt = selectElectrons( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_,  TransverseImpactParam_,
+            tagElectrons_highPt = selectStdElectrons( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_,  TransverseImpactParam_,
                                                    LongitudinalImpactParam_,  nonTrigMVAThresholds_, nonTrigMVAEtaCuts_, 
                                                    electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaThresholds_ ,
                                                   deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_);
             
-            tagElectrons_lowPt = selectElectrons( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonLowPtThreshold_,  TransverseImpactParam_,
+            tagElectrons_lowPt = selectStdElectrons( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonLowPtThreshold_,  TransverseImpactParam_,
                                                   LongitudinalImpactParam_,  nonTrigMVAThresholds_, nonTrigMVAEtaCuts_,
                                                   electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaThresholds_ ,
                                                   deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_);
 
         
-            std::vector<edm::Ptr<Electron> > goodElectrons = selectElectrons( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, 
+            std::vector<edm::Ptr<Electron> > goodElectrons = selectStdElectrons( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, 
                                                                               TransverseImpactParam_, LongitudinalImpactParam_, nonTrigMVAThresholds_, nonTrigMVAEtaCuts_,
                                                                                  electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaThresholds_ ,
                                                                                  deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_);

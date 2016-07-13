@@ -342,10 +342,10 @@ namespace flashgg {
             if( mvares->result < MVAThreshold_ ) { continue; }
             
             photonSelection = true;
-            std::vector<edm::Ptr<flashgg::Muon> > goodMuons = selectMuons( theMuons->ptrs(), dipho, vertices->ptrs(), muonEtaThreshold_, leptonPtThreshold_,
+            std::vector<edm::Ptr<flashgg::Muon> > goodMuons = selectStdMuons( theMuons->ptrs(), dipho, vertices->ptrs(), muonEtaThreshold_, leptonPtThreshold_,
                     muPFIsoSumRelThreshold_, deltaRMuonPhoThreshold_, deltaRMuonPhoThreshold_ );
             
-            std::vector<edm::Ptr<Electron> >goodElectrons = selectElectrons( theElectrons->ptrs(), dipho,vertices->ptrs(), ElectronPtThreshold_, 
+            std::vector<edm::Ptr<Electron> >goodElectrons = selectStdElectrons( theElectrons->ptrs(), dipho,vertices->ptrs(), ElectronPtThreshold_, 
                                                                              TransverseImpactParam_, LongitudinalImpactParam_, nonTrigMVAThresholds_, nonTrigMVAEtaCuts_, 
                                                                              electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaThresholds_ ,
                                                                              deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_);
