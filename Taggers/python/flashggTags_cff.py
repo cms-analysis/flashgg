@@ -91,7 +91,7 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                #  for the moment we have two categories VBF-0 and VBF-1: to be changed when the diphoton MVA is ready 
                                #Boundaries=cms.vdouble(0.5819, 0.9449)
                                #Boundaries=cms.vdouble(0.62, 0.94),
-                               Boundaries=cms.vdouble(0.632, 0.921),
+                               Boundaries=cms.vdouble(0.634, 0.919),
                                SetArbitraryNonGoldMC = cms.bool(False),
                                DropNonGoldData = cms.bool(False),
                                RequireVBFPreselection = cms.bool(True)
