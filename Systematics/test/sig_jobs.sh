@@ -1,6 +1,6 @@
 # NB this command is specific to the configuration on lxplus and is not gaurenteed elsewhere
 #outdir="/afs/cern.ch/work/s/sethzenz/ws/" # can't set absolute path on lsf because we're expecting to stage
-queue="all.q"
+queue="8nh"
 useAAA=0
 atIC=1 # only effect is setting eos path
 version="748"
