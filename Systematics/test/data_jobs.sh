@@ -1,3 +1,3 @@
 # NB this command is specific to the configuration at IC and is not gaurenteed elsewhere
 LM=/afs/cern.ch/work/s/sethzenz/fromscratch107/CMSSW_8_0_8_patch1/src/flashgg/Systematics/test/Cert_271036-275783_13TeV_PromptReco_Collisions16_JSON.txt #6.26/fb
-fggRunJobs.py --load data_jobs.json -d data_jobs_003 -x cmsRun workspaceStd.py maxEvents=-1 -n 500 -q 1nh -D -P useAAA=0 atIC=1 --no-use-tarball lumiMask=${LM}
+fggRunJobs.py --load data_jobs.json -d data_jobs_003 -x cmsRun workspaceStd.py maxEvents=-1 -n 500 -q 1nh -D -P useAAA=0 atIC=1 doFiducial=False --no-use-tarball lumiMask=${LM}
