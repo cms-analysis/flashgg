@@ -93,6 +93,7 @@ leadTriggerScaleBins = cms.PSet(
         cms.PSet(lowBounds = cms.vdouble(0.9,1.5,60), upBounds = cms.vdouble(999,3.0,70), values = cms.vdouble(0.991139), uncertainties = cms.vdouble(0.0387218,0.0387218)),
         cms.PSet(lowBounds = cms.vdouble(0.9,1.5,70), upBounds = cms.vdouble(999,3.0,90), values = cms.vdouble(0.99175), uncertainties = cms.vdouble(0.0663639,0.0663639)),
         cms.PSet(lowBounds = cms.vdouble(0.9,1.5,90), upBounds = cms.vdouble(999,3.0,999999), values = cms.vdouble(0.99343), uncertainties = cms.vdouble(0.0734221,0.0734221)),
+        cms.PSet(lowBounds = cms.vdouble(0.0,3.,0), upBounds = cms.vdouble(999,999,999999), values = cms.vdouble(1.), uncertainties = cms.vdouble(1.,1.))
         )
     )
 
@@ -100,7 +101,6 @@ leadTriggerScaleBins = cms.PSet(
 subleadTriggerScaleBins = cms.PSet(
     variables = cms.vstring("r9","abs(superCluster.eta)","pt"),
     bins = cms.VPSet(
-        
         cms.PSet(lowBounds = cms.vdouble(0.0,0,0), upBounds = cms.vdouble(0.55,1.5,22.5), values = cms.vdouble(0.854435), uncertainties = cms.vdouble(0.153914,0.153914)),
         cms.PSet(lowBounds = cms.vdouble(0.0,0,22.5), upBounds = cms.vdouble(0.55,1.5,25), values = cms.vdouble(0.890449), uncertainties = cms.vdouble(0.169063,0.169063)),
         cms.PSet(lowBounds = cms.vdouble(0.0,0,25), upBounds = cms.vdouble(0.55,1.5,27.5), values = cms.vdouble(0.896599), uncertainties = cms.vdouble(0.153691,0.153691)),
@@ -184,6 +184,7 @@ subleadTriggerScaleBins = cms.PSet(
         cms.PSet(lowBounds = cms.vdouble(0.9,1.5,60), upBounds = cms.vdouble(999,3.0,70), values = cms.vdouble(0.999471), uncertainties = cms.vdouble(0.0330566,0.0330566)),
         cms.PSet(lowBounds = cms.vdouble(0.9,1.5,70), upBounds = cms.vdouble(999,3.0,90), values = cms.vdouble(0.999194), uncertainties = cms.vdouble(0.0489851,0.0489851)),
         cms.PSet(lowBounds = cms.vdouble(0.9,1.5,90), upBounds = cms.vdouble(999,3.0,999999), values = cms.vdouble(0.999), uncertainties = cms.vdouble(0.0699623,0.0699623)),
+        cms.PSet(lowBounds = cms.vdouble(0.0,3.,0), upBounds = cms.vdouble(999,999,999999), values = cms.vdouble(1.), uncertainties = cms.vdouble(1.,1.))
         )
     )
 
