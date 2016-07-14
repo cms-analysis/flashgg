@@ -125,14 +125,7 @@
         "GJets_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8" : { "xs" : 9110.0,  "itype" : 5 },
         "GJets_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8" : { "xs" : 2280.0,  "itype" : 6 },
         "GJets_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8" : { "xs" :273.0 , "itype" : 7 },
-        "GJets_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8" : { "xs" :94.5 , "itype" : 8 },
-
-	"GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8" : {"xs":47.38, "br":2.218e-3, "kf":1.0, "itype":-120000},
-	"GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8" : {"xs":44.14, "br":2.27e-3, "kf":1.0, "itype":-125000},
-	"GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8" : {"xs":41.23, "br":2.238e-3, "kf":1.0, "itype":-130000},
-	"VBFHToGG_M120_13TeV_amcatnlo_pythia8" : {"xs":3.935, "br":2.218e-3, "kf":1.0, "itype":-120000},
-	"VBFHToGG_M125_13TeV_amcatnlo_pythia8" : {"xs":3.782, "br":2.27e-3, "kf":1.0, "itype":-125000},
-	"VBFHToGG_M130_13TeV_amcatnlo_pythia8" : {"xs":3.637, "br":2.238e-3, "kf":1.0, "itype":-130000}
+        "GJets_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8" : { "xs" :94.5 , "itype" : 8 }
 
 
 }
