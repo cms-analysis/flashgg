@@ -11,8 +11,8 @@
 <class name="edm::Ptr<flashgg::PDFWeightObject>"/>
 <class name="std::vector<flashgg::PDFWeightObject>"/>
 <class name="edm::Wrapper<std::vector<flashgg::PDFWeightObject> >"/>
-<class name="flashgg::DiPhotonMVAResult" ClassVersion="10">
-  <version ClassVersion="10" checksum="1323442079"/>
+<class name="flashgg::DiPhotonMVAResult" ClassVersion="11">
+  <version ClassVersion="11" checksum="1225448115"/>
 </class>
 <class name="std::vector<flashgg::DiPhotonMVAResult>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DiPhotonMVAResult> >"/>
@@ -43,6 +43,13 @@
 </class>
 <class name="std::vector<flashgg::UntaggedTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::UntaggedTag> >"/>
+
+<class name="flashgg::SigmaMpTTag" ClassVersion="0">
+  <version ClassVersion="0" checksum="3974770049"/>
+</class>
+<class name="std::vector<flashgg::SigmaMpTTag>"/>
+<class name="edm::Wrapper<std::vector<flashgg::SigmaMpTTag> >"/>
+
 <class name="flashgg::VBFTag" ClassVersion="12">
  <version ClassVersion="12" checksum="3071493064"/>
  <version ClassVersion="11" checksum="1094465099"/>

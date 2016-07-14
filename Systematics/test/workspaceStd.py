@@ -2,6 +2,7 @@
 
 import FWCore.ParameterSet.Config as cms
 import FWCore.Utilities.FileUtils as FileUtils
+import FWCore.ParameterSet.VarParsing as VarParsing
 from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariables,minimalHistograms,minimalNonSignalVariables,systematicVariables
 import os
 
@@ -41,9 +42,64 @@ jetsystlabels = []
 elesystlabels = []
 musystlabels = []
 
+from flashgg.MetaData.JobConfig import customize
+customize.options.register('doFiducial',
+                           'True',
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.string,
+                           'doFiducial'
+                           )
+
+customize.options.register('acceptance',
+                           'NONE',
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.string,
+                           'acceptance'
+                           )
+
+
 # import flashgg customization to check if we have signal or background
 from flashgg.MetaData.JobConfig import customize
 customize.parse()
+
+if customize.doFiducial == 'True':
+    matchCut = "leadingPhoton.hasMatchedGenPhoton() && subLeadingPhoton.hasMatchedGenPhoton()"
+    phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >0.320 && subLeadingView().phoIdMvaWrtChosenVtx() >0.320)'
+    accCut = "(leadingPhoton.userFloat(\"genIso\") < 10.0 && subLeadingPhoton.userFloat(\"genIso\") < 10.0 && abs(leadingPhoton.matchedGenPhoton.eta) <2.5 && abs(subLeadingPhoton.matchedGenPhoton.eta) <2.5 && leadingPhoton.matchedGenPhoton.pt / genP4.mass >1.0/3.0 && subLeadingPhoton.matchedGenPhoton.pt / genP4.mass >0.25)"
+
+    print process.flashggPreselectedDiPhotons.cut
+
+    if customize.acceptance == 'IN':
+        process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut)[12:-2] +' && '+ str(matchCut)+ ' && ' + str(accCut))
+
+    if customize.acceptance == 'OUT':
+        process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut)[12:-2] +' && '+ str(matchCut)+ ' && !' + str(accCut))
+        
+    if customize.acceptance == 'NONE':
+        process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut)[12:-2] +' && '+ str(phoIDcut))
+    print "Here we print the preslection cut"
+    print process.flashggPreselectedDiPhotons.cut
+
+process.load("flashgg/Taggers/flashggTagSequence_cfi")
+print 'here we print the tag sequence before'
+print process.flashggTagSequence
+if customize.doFiducial == 'True':
+    from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet,massSearchReplaceAnyInputTag
+    process.flashggTagSequence.remove(process.flashggVBFTag)
+    process.flashggTagSequence.remove(process.flashggTTHLeptonicTag)
+    process.flashggTagSequence.remove(process.flashggTTHHadronicTag)
+    process.flashggTagSequence.replace(process.flashggUntagged, process.flashggSigmaMoMpToMTag)
+
+
+print 'here we print the tag sequence after'
+print process.flashggTagSequence
+
+if customize.doFiducial == 'True':
+    print 'we do fiducial and we change tagsorter'
+    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggSigmaMoMpToMTag')) )
+
+
+
 print "customize.processId:",customize.processId
 # load appropriate scale and smearing bins here
 # systematics customization scripts will take care of adjusting flashggDiPhotonSystematics
@@ -53,7 +109,7 @@ print "customize.processId:",customize.processId
 useEGMTools(process)
 
 # Only run systematics for signal events
-if customize.processId.count("h_") or customize.processId.count("vbf_"): # convention: ggh vbf wzh (wh zh) tth
+if customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance"): # convention: ggh vbf wzh (wh zh) tth
     print "Signal MC, so adding systematics and dZ"
     variablesToUse = minimalVariables
     for direction in ["Up","Down"]:
@@ -139,16 +195,30 @@ process.tagsDumper.dumpHistos = False
 process.tagsDumper.quietRooFit = True
 process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
 
-tagList=[
-["UntaggedTag",4],
-["VBFTag",2],
+#tagList=[
+#["UntaggedTag",4],
+#["VBFTag",2],
 #["VHTightTag",0],
 #["VHLooseTag",0],
 #["VHEtTag",0],
 #["VHHadronicTag",0],
-["TTHHadronicTag",0],
-["TTHLeptonicTag",0]
-]
+#["TTHHadronicTag",0],
+##["TTHLeptonicTag",0]
+#]
+
+if customize.doFiducial == 'True':
+    tagList=[["SigmaMpTTag",3]]
+else:
+    tagList=[
+        ["UntaggedTag",4],
+        ["VBFTag",2],
+        #["VHTightTag",0],
+        #["VHLooseTag",0],
+        #["VHEtTag",0],
+        #["VHHadronicTag",0],
+        ["TTHHadronicTag",0],
+        ["TTHLeptonicTag",0]
+        ]
 
 definedSysts=set()
 process.tagsDumper.classifierCfg.remap=cms.untracked.VPSet()
