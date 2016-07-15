@@ -274,7 +274,7 @@ emptySigma = cms.PSet(
 )
 
 scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/80X_DCS05July_plus_Golden22")
-scalesAndSmearingsPrefixForSigmaEOverE = cms.string("EgammaAnalysis/ElectronTools/data/Golden10June_plus_DCS")
+scalesAndSmearingsPrefixForSigmaEOverE = cms.string("EgammaAnalysis/ElectronTools/data/Golden22June")
 
 MCScaleHighR9EB = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),

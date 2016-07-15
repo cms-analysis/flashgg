@@ -13,7 +13,7 @@ namespace flashgg {
 
         SigmaMpTTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult );
         SigmaMpTTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult> );
-        virtual SigmaMpTTag *clone() const;
+        virtual SigmaMpTTag *clone() const override;
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kUntagged; }
 
     private:
