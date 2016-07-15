@@ -118,6 +118,8 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
         phosystlabels.append("SigmaEOverEShift%s01sigma" % direction)
         phosystlabels.append("MaterialCentral%s01sigma" % direction)
         phosystlabels.append("MaterialForward%s01sigma" % direction)
+        phosystlabels.append("FNUFEB%s01sigma" % direction)
+        phosystlabels.append("FNUFEE%s01sigma" % direction)
         jetsystlabels.append("JEC%s01sigma" % direction)
         jetsystlabels.append("JER%s01sigma" % direction)
         jetsystlabels.append("RMSShift%s01sigma" % direction)
@@ -132,6 +134,7 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
         variablesToUse.append("JetBTagWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagWeight%s01sigma\")" % (direction,direction))
         for r9 in ["HighR9","LowR9"]:
             for region in ["EB","EE"]:
+                phosystlabels.append("ShowerShape%s%s%s01sigma"%(r9,region,direction))
 #                phosystlabels.append("MCSmear%s%s%s01sigma" % (r9,region,direction))
                 phosystlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
                 for var in ["Rho","Phi"]:
