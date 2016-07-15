@@ -311,7 +311,6 @@ class JobsManager(object):
                 jobargs.extend( ["dataset=%s" % dset, "outputFile=%s" % outfile ] )
                 # add (and replace) per-dataset job arguments
                 dargs = dopts.get("args",[])
-                print "SCZ Debug:",jobargs
                 if type(dargs) != list:
                     print "\nERROR : dataset-specific arguments should be list not %s" % (type(dargs))
                     print "          dataset %s" % dset
