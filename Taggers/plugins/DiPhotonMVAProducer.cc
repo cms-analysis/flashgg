@@ -161,7 +161,7 @@ namespace flashgg {
         //        DecorrTransform transf(h_decorr_ , 125., 1, 0);
         transfEBEB_ = new DecorrTransform(h_decorrEBEB_ , 125., 1, 0);
         transfNotEBEB_ = new DecorrTransform(h_decorrNotEBEB_ , 125., 1, 0);
-        std::cout<<"transformation created"<<std::endl;
+        //        std::cout<<"transformation created"<<std::endl;
         produces<vector<DiPhotonMVAResult> >(); // one per diphoton, always in same order, vector is more efficient than map
     }
 
@@ -285,7 +285,7 @@ namespace flashgg {
                     sigmarv_decorr_ = (*transfNotEBEB_)(mass_sigma,dummy);
                 }
                 //                sigmarv_decorr_ = (*transf_)(mass_sigma,dummy);
-                std::cout<<"transf evaluated, sigmarv_decorr = "<<sigmarv_decorr_<<std::endl;
+                //                std::cout<<"transf evaluated, sigmarv_decorr = "<<sigmarv_decorr_<<std::endl;
                 //                delete x;
                 //                delete p;
             }

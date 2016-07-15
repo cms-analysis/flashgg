@@ -44,7 +44,7 @@ musystlabels = []
 
 from flashgg.MetaData.JobConfig import customize
 customize.options.register('doFiducial',
-                           'True',
+                           'False',
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.string,
                            'doFiducial'
