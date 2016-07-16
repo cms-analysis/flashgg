@@ -1,8 +1,17 @@
 from os import listdir,popen,access,F_OK
+from sys import argv
+
+targetstring = ""
+if len(argv) > 1:
+    targetstring = argv[1]
+
+skipstring = ""
+if len(argv) > 2:
+    skipstring = argv[2]
 
 dobig = False
 dobigsig = False
-dobigdata = True # LOL
+dobigdata = False # LOL
 
 filelist = {}
 bigfiles = []
@@ -14,7 +23,7 @@ def printAndExec(cmd):
     print result
 
 for fn in listdir("."):
-    if fn.count(".root"):
+    if fn.count(".root") and fn.count(targetstring) and (not skipstring or not fn.count(skipstring)):
         fnr = "_".join(fn[:-5].split("_")[:-1])+"_%i.root"
         try:
             fnn = int(fn[:-5].split("_")[-1])

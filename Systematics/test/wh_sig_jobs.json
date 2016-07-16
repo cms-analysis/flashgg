@@ -1,8 +1,14 @@
 {
     "processes" : {
-        "wh_125"  : [ "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1-5ea88bd70abed14168848bf06a0c993b/USER" ],
-        "wh_120"  : [ "/VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1-5ea88bd70abed14168848bf06a0c993b/USER" ],
-        "wh_130"  : [ "/VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1-5ea88bd70abed14168848bf06a0c993b/USER" ]
+        "wh_120"  : [ [ "/VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8", { "args" :["outputFile=output_WHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
+        "wh_123"  : [ [ "/VHToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8", { "args" :["outputFile=output_WHToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
+        "wh_124"  : [ [ "/VHToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8", { "args" :["outputFile=output_WHToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
+        "wh_125"  : [ [ "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/ferrif-RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2-2_2_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1-9d6acec11aa5264fedffe5a321afb429/USER",
+                      { "args" :["outputFile=output_WHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
+        "wh_126"  : [ [ "/VHToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8", { "args" :["outputFile=output_WHToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
+        "wh_127"  : [ [ "/VHToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8", { "args" :["outputFile=output_WHToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
+        "wh_130"  : [ [ "/VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8", { "args" :["outputFile=output_WHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ]
+
      },	
-        "cmdLine" : "campaign=RunIISpring16DR80X-2_1_0-25ns_ICHEP16"
+        "cmdLine" : "campaign=RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2_Workspaces"
 }
