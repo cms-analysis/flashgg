@@ -1,19 +1,9 @@
 {
     "processes" : {
-        "tth_125"  : [ [ "/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_v2/ferrif-RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2-2_2_0-v0-RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14-v1-2a45e67daf15c7abeea509b3e1c7829c/USER",
-		       { "args" :["outputFile=output_ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
         "vbf_125"  : [ [ "/VBFHToGG_M125_13TeV_amcatnlo_pythia8/ferrif-RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2-2_2_0-v0-RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14_ext2-v1-9d6acec11aa5264fedffe5a321afb429/USER",
 		       { "args" :["outputFile=output_VBFHToGG_M125_13TeV_amcatnlo_pythia8.root"] } ] ],
         "ggh_125"  : [ [ "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/ferrif-RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2-2_2_0-v0-RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14-v1-9d6acec11aa5264fedffe5a321afb429/USER", 
 		       { "args" :["outputFile=output_GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8.root"] } ] ],
-	"tth_120"  : [ [ "/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8_v2", 
-		       { "args" :["outputFile=output_ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
-	"tth_123"  : [ "/ttHJetToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8" ],
-        "tth_124"  : [ "/ttHJetToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8" ],
-        "tth_126"  : [ "/ttHJetToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8" ],
-        "tth_127"  : [ "/ttHJetToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8" ],
-        "tth_130"  : [ [ "/ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8_v2",
-                       { "args" :["outputFile=output_ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
         "ggh_120"  : [ "/GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8" ],
         "ggh_123"  : [ "/GluGluHToGG_M123_13TeV_amcatnloFXFX_pythia8" ],
         "ggh_124"  : [ "/GluGluHToGG_M124_13TeV_amcatnloFXFX_pythia8" ],
@@ -33,16 +23,7 @@
 		      { "args" :["outputFile=output_ZHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
         "zh_126"  : [ [ "/VHToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8", { "args" :["outputFile=output_ZHToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
         "zh_127"  : [ [ "/VHToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8", { "args" :["outputFile=output_ZHToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
-        "zh_130"  : [ [ "/VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8", { "args" :["outputFile=output_ZHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
-        "wh_120"  : [ [ "/VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8", { "args" :["outputFile=output_WHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
-        "wh_123"  : [ [ "/VHToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8", { "args" :["outputFile=output_WHToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
-        "wh_124"  : [ [ "/VHToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8", { "args" :["outputFile=output_WHToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
-        "wh_125"  : [ [ "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/ferrif-RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2-2_2_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1-9d6acec11aa5264fedffe5a321afb429/USER", 
-		      { "args" :["outputFile=output_WHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
-        "wh_126"  : [ [ "/VHToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8", { "args" :["outputFile=output_WHToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
-        "wh_127"  : [ [ "/VHToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8", { "args" :["outputFile=output_WHToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
-        "wh_130"  : [ [ "/VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8", { "args" :["outputFile=output_WHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ]
-
+        "zh_130"  : [ [ "/VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8", { "args" :["outputFile=output_ZHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ]
      },	
         "cmdLine" : "campaign=RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2_Workspaces"
 }
