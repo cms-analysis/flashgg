@@ -123,6 +123,7 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
         jetsystlabels.append("JEC%s01sigma" % direction)
         jetsystlabels.append("JER%s01sigma" % direction)
         jetsystlabels.append("RMSShift%s01sigma" % direction)
+        variablesToUse.append("UnmatchedPUWeight%s01sigma[1,-999999.,999999.] := weight(\"UnmatchedPUWeight%s01sigma\")" % (direction,direction))
         variablesToUse.append("MvaLinearSyst%s01sigma[1,-999999.,999999.] := weight(\"MvaLinearSyst%s01sigma\")" % (direction,direction))
         variablesToUse.append("LooseMvaSF%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s01sigma\")" % (direction,direction))
         variablesToUse.append("PreselSF%s01sigma[1,-999999.,999999.] := weight(\"PreselSF%s01sigma\")" % (direction,direction))
@@ -179,6 +180,7 @@ process.source = cms.Source ("PoolSource",
 #"root://eoscms.cern.ch//eos/cms//store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIIFall15DR76-1_3_0-25ns_ext1/1_3_1/VBFHToGG_M-120_13TeV_powheg_pythia8/RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/160210_045711/0000/myMicroAODOutputFile_1.root"
 #"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIIFall15DR76-1_3_0-25ns_ext1/1_3_1/QCD_Pt-30to40_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8/RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/160127_023721/0000/myMicroAODOutputFile_1.root"
 #"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIIFall15DR76-1_3_0-25ns_ext1/1_3_1/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8/RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/160210_050208/0000/myMicroAODOutputFile_1.root"
+#"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2/2_2_0/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_v2/RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2-2_2_0-v0-RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14-v1/160707_152047/0000/myMicroAODOutputFile_8.root"),skipEvents=cms.untracked.uint32(31500))
 ))
 
 process.TFileService = cms.Service("TFileService",
@@ -335,6 +337,12 @@ printSystematicInfo(process)
 process.flashggTagSorter.StoreOtherTagInfo = True
 process.flashggTagSorter.BlindedSelectionPrintout = True
 
+#### BELOW HERE IS MOSTLY DEBUGGING STUFF
+
+#####################################################################
+## Memory and timing, n.b. igprof is very complicated to interpret ##
+##################################################################### 
+
 #from Validation.Performance.TimeMemoryInfo import customise as TimeMemoryCustomize
 #TimeMemoryCustomize(process)
 #process.MessageLogger.cerr.threshold = 'WARNING'
@@ -353,6 +361,12 @@ process.flashggTagSorter.BlindedSelectionPrintout = True
 #process.flashggTagTester.TagSorter = cms.InputTag("flashggSystTagMerger")
 #process.flashggTagTester.ExpectMultiples = cms.untracked.bool(True)
 #process.p += process.flashggTagTester
+
+############################################
+## Additional details on tag sorter steps ##
+############################################
+
+#process.flashggTagSorter.Debug = True
 
 ##############
 ## Dump EDM ##
