@@ -57,6 +57,25 @@ RMSShiftBins = cms.PSet(
                      )
     )
 
+
+UnmatchedPUBins = cms.PSet(
+    variables = cms.vstring("abs(eta)","pt"),
+    bins = cms.VPSet(
+                   cms.PSet( lowBounds = cms.vdouble(2.50,20.), upBounds = cms.vdouble(2.75,25.), values = cms.vdouble(1.046), uncertainties = cms.vdouble( 0.046 )),
+                   cms.PSet( lowBounds = cms.vdouble(2.75,20.), upBounds = cms.vdouble(3.00,25.), values = cms.vdouble(0.980), uncertainties = cms.vdouble( 0.020 )),
+                   cms.PSet( lowBounds = cms.vdouble(3.00,20.), upBounds = cms.vdouble(4.00,25.), values = cms.vdouble(0.946), uncertainties = cms.vdouble( 0.054 )),
+                   cms.PSet( lowBounds = cms.vdouble(4.00,20.), upBounds = cms.vdouble(4.70,25.), values = cms.vdouble(0.873), uncertainties = cms.vdouble( 0.127 )),
+                   cms.PSet( lowBounds = cms.vdouble(2.50,25.), upBounds = cms.vdouble(2.75,30.), values = cms.vdouble(0.986), uncertainties = cms.vdouble( 0.014 )),
+                   cms.PSet( lowBounds = cms.vdouble(2.75,25.), upBounds = cms.vdouble(3.00,30.), values = cms.vdouble(0.903), uncertainties = cms.vdouble( 0.097 )),
+                   cms.PSet( lowBounds = cms.vdouble(3.00,25.), upBounds = cms.vdouble(4.00,30.), values = cms.vdouble(0.926), uncertainties = cms.vdouble( 0.074 )),
+                   cms.PSet( lowBounds = cms.vdouble(4.00,25.), upBounds = cms.vdouble(4.70,30.), values = cms.vdouble(0.911), uncertainties = cms.vdouble( 0.089 )),
+                   cms.PSet( lowBounds = cms.vdouble(2.50,30.), upBounds = cms.vdouble(2.75,50.), values = cms.vdouble(1.052), uncertainties = cms.vdouble( 0.052 )),
+                   cms.PSet( lowBounds = cms.vdouble(2.75,30.), upBounds = cms.vdouble(3.00,50.), values = cms.vdouble(0.666), uncertainties = cms.vdouble( 0.334 )),
+                   cms.PSet( lowBounds = cms.vdouble(3.00,30.), upBounds = cms.vdouble(4.00,50.), values = cms.vdouble(0.927), uncertainties = cms.vdouble( 0.073 )),
+                   cms.PSet( lowBounds = cms.vdouble(4.00,30.), upBounds = cms.vdouble(4.70,50.), values = cms.vdouble(0.939), uncertainties = cms.vdouble( 0.061 ))
+                   )
+    )
+
 def createJetSystematicsForTag(process,jetInputTag):
   num = jetInputTag.productInstanceLabel
   newName = 'flashggJetSystematics'+num
@@ -102,9 +121,16 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            BinList  = RMSShiftBins,
                                                            ApplyCentralValue = cms.bool(False),
                                                            Debug = cms.untracked.bool(False)
+                                                           ),
+                                                 cms.PSet( MethodName = cms.string("FlashggJetWeight"),
+                                                           Label = cms.string("UnmatchedPUWeight"),
+                                                           NSigmas = cms.vint32(-1,1),
+                                                           OverallRange = cms.string("abs(eta)>2.5&&abs(eta)<4.7&&pt>20.&&pt<50.&&hasGenMatch==0"),
+                                                           BinList = UnmatchedPUBins,
+                                                           ApplyCentralValue = cms.bool(False),
+                                                           Debug = cms.untracked.bool(False),
                                                            )
                                                  )
-                         
                          )
           )
 #  setattr(process.RandomNumberGeneratorService,newName,cms.PSet(initialSeed = cms.untracked.uint32(int(num)))) 

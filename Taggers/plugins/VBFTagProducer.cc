@@ -152,6 +152,10 @@ namespace flashgg {
             tag_obj.setSystLabel    ( systLabel_ );
 
             tag_obj.includeWeights( *dipho );
+            if ( tag_obj.VBFMVA().dijet_Mjj > 0. ) {
+                tag_obj.includeWeights( *(tag_obj.VBFMVA().leadJet_ptr) );
+                tag_obj.includeWeights( *(tag_obj.VBFMVA().subleadJet_ptr) );
+            }
 
             if ( evt.isRealData() ) {
                 tag_obj.setIsGold ( evt.run() );
