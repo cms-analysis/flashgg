@@ -42,6 +42,9 @@ namespace flashgg {
         float QGL () const {return qglikelihood_;}
         
         bool passesJetID( JetIDLevel level = Loose ) const; 
+
+        const bool hasGenMatch() const { return (genJet() != 0); }
+
     private:
         std::map<edm::Ptr<reco::Vertex>, MinimalPileupJetIdentifier> puJetId_;
         float qglikelihood_;
