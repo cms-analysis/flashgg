@@ -156,8 +156,8 @@ echo crabConfig_*.py | xargs -n 1 crab sub
 
 for dset in DoubleEG SingleElectron DoubleMuon SingleMuon
 do
-        fggManageSamples.py -C RunIISpring16DR80X-2_1_0-25ns_ICHEP16 catimport RunIISpring16DR80X-2_1_0-25ns_ICHEP16_p2 ${dset}*
-        fggManageSamples.py -C RunIISpring16DR80X-2_1_0-25ns_ICHEP16 overlap ${dset}*
+        fggManageSamples.py -C RunIISpring16DR80X-2_1_0-25ns_ICHEP16 catimport RunIISpring16DR80X-2_1_0-25ns_ICHEP16_p2 "/${dset}*"
+        fggManageSamples.py -C RunIISpring16DR80X-2_1_0-25ns_ICHEP16 overlap "/${dset}*"
 done
 ```
 
