@@ -1,5 +1,7 @@
 print "Remember to get files with get_xs.sh first"
 
+brFromCombine = False # use dat file with more sig fits
+
 gghpos = 999
 brdict = {}
 xsdict = {}
@@ -9,6 +11,8 @@ combkeys = ["ttH","ggH","VH","vbfH"]
 templates = {}
 templates["vbfH"] = ["VBFHToGG_M%i_13TeV_amcatnlo_pythia8","VBFHToGG_M-%i_13TeV_powheg_pythia8"]
 templates["ggH"] = ["GluGluHToGG_M%i_13TeV_amcatnloFXFX_pythia8","GluGluHToGG_M%i_13TeV_amcatnlo_pythia8"]
+templates["ggH"] += ["GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_CUETP8M1Up","GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_CUETP8M1Down",
+                     "GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_UpPS","GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS"]
 templates["VH"] = ["VHToGG_M%i_13TeV_amcatnloFXFX_madspin_pythia8"]
 templates["ttH"] = ["ttHJetToGG_M%i_13TeV_amcatnloFXFX_madspin_pythia8","ttHJetToGG_M%i_13TeV_amcatnloFXFX_madspin_pythia8_v2"]
 
@@ -26,27 +30,47 @@ def computeItype(combkey,mass):
 def createLines(combkey,mass):
     result = ""
     for template in templates[combkey]:
-        stringargs = (template%mass,xsdict[(combkey,mass)],brdict[mass],computeItype(combkey,mass))
-        result += '        "%s"                          : { "xs" : %.4f,   "br" : %.3g, "itype":%i },\n'%stringargs
+        if template.count("125"):
+            if mass != 125:
+                continue
+            templatewithmass = template
+        else:
+            templatewithmass = template%mass
+        stringargs = (templatewithmass,xsdict[(combkey,mass)],brdict[mass],computeItype(combkey,mass))
+        result += '        "%s"                          : { "xs" : %.4f,   "br" : %.4g, "itype":%i },\n'%stringargs
     return result[:-1]    
 
-for line in open("BR4.txt",'r').readlines():
-    try:
-        mass = float(line.split()[0])
-    except Exception:
+if brFromCombine:
+    for line in open("BR4.txt",'r').readlines():
+        try:
+            mass = float(line.split()[0])
+        except Exception:
+            print line.strip()
+            for i in range(len(line.split())):
+                if line.split()[i] == "hgg":
+                    gghpos = i
+            continue
+        if abs(mass-int(mass)) > 0.01:
+            continue
+        mass = int(mass)
+        br = float(line.split()[gghpos])
         print line.strip()
-        for i in range(len(line.split())):
-            if line.split()[i] == "hgg":
-                gghpos = i
-        continue
-    if abs(mass-int(mass)) > 0.01:
-        continue
-    mass = int(mass)
-    br = float(line.split()[gghpos])
-    print line.strip()
-    print mass,br
-    brdict[mass] = br
-    masslist.append(mass)
+        print mass,br
+        brdict[mass] = br
+        masslist.append(mass)
+else:
+    for line in open("br_yr4.dat",'r').readlines():
+        try:
+            mass = float(line.split()[0])
+        except Exception:
+            continue
+        if abs(mass-int(mass)) > 0.01:
+            continue
+        br = float(line.split()[1])
+        print line.strip()
+        print mass,br
+        brdict[mass] = br
+        masslist.append(mass)
 
 for key in keys:
     for line in open("13TeV-%s.txt" % key,'r').readlines():
