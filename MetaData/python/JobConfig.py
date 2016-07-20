@@ -363,10 +363,12 @@ class JobConfig(object):
         if self.useAAA:
             self.filePrepend = "root://xrootd-cms.infn.it/"
         elif self.useEOS:
-            self.filePrepend = "root://eoscms.cern.ch//eos/cms"
-#            self.filePrepend = "root://xrootd.unl.edu/"
-#            self.filePrepend = "root://srmeos.cern.ch/"
-        self.samplesMan = None            
+            if self.atIC:
+                self.filePrepend = "root://eoscms.cern.ch//eos/cms"
+            else:    
+                self.filePrepend = "root://eoscms//eos/cms"
+        
+        self.samplesMan = None
         dataset = None
         if self.dataset != "":
             print "Reading dataset (%s) %s" % ( self.campaign, self.dataset)
