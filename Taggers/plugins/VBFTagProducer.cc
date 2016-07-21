@@ -153,8 +153,47 @@ namespace flashgg {
 
             tag_obj.includeWeights( *dipho );
             if ( tag_obj.VBFMVA().dijet_Mjj > 0. ) {
-                tag_obj.includeWeights( *(tag_obj.VBFMVA().leadJet_ptr) );
-                tag_obj.includeWeights( *(tag_obj.VBFMVA().subleadJet_ptr) );
+
+                // We don't want to include all the jet weights because btag weights are not relevant
+                // tag_obj.includeWeights( *(tag_obj.VBFMVA().leadJet_ptr) );
+                // tag_obj.includeWeights( *(tag_obj.VBFMVA().subleadJet_ptr) );
+
+                // So we do some tricky surgery instead, to get only the UnmatchedPUWeight
+                float tagcorig = tag_obj.centralWeight();
+                float j1corig = tag_obj.VBFMVA().leadJet_ptr->centralWeight();
+                float j2corig = tag_obj.VBFMVA().subleadJet_ptr->centralWeight();
+                float j1cadjust = tag_obj.VBFMVA().leadJet_ptr->weight("UnmatchedPUWeightCentral"); // stored without scaling to overall central
+                float j2cadjust = tag_obj.VBFMVA().subleadJet_ptr->weight("UnmatchedPUWeightCentral"); // stored without scaling to overall central
+                float j1upadjust = 1.;
+                float j2upadjust = 1.;
+                float j1downadjust = 1.;
+                float j2downadjust = 1.;
+                if (tag_obj.VBFMVA().leadJet_ptr->hasWeight("UnmatchedPUWeightUp01sigma") ) {
+                    j1upadjust = tag_obj.VBFMVA().leadJet_ptr->weight("UnmatchedPUWeightUp01sigma")  / j1corig;
+                    j1downadjust = tag_obj.VBFMVA().leadJet_ptr->weight("UnmatchedPUWeightDown01sigma") / j1corig;
+                }
+                if (tag_obj.VBFMVA().leadJet_ptr->hasWeight("UnmatchedPUWeightUp01sigma") ) {
+                    j2upadjust = tag_obj.VBFMVA().subleadJet_ptr->weight("UnmatchedPUWeightUp01sigma") / j2corig;
+                    j2downadjust = tag_obj.VBFMVA().subleadJet_ptr->weight("UnmatchedPUWeightDown01sigma") / j2corig;
+                }
+                if (false && systLabel_ == "") {
+                    std::cout << "tagcorig j1cadjust j2cadjust j1upadjust j2upadjust j1downadjust j2downadjust ";
+                    std::cout << tagcorig << " " << j1cadjust << " "<< j2cadjust << " "<< j1upadjust << " "<< j2upadjust << " "<< j1downadjust << " "<< j2downadjust << std::endl;
+                }
+                for (auto it = tag_obj.weightListBegin() ; it != tag_obj.weightListEnd(); it++) {
+                    tag_obj.setWeight(*it,tag_obj.weight(*it) * j1cadjust * j2cadjust); 
+                }
+                if (tag_obj.VBFMVA().leadJet_ptr->hasWeight("UnmatchedPUWeightUp01sigma") ) {
+                    tag_obj.setWeight("UnmatchedPUWeightUp01sigma", tag_obj.centralWeight() * j1upadjust * j2upadjust );
+                    tag_obj.setWeight("UnmatchedPUWeightDown01sigma", tag_obj.centralWeight() * j1downadjust * j2downadjust );
+                }
+
+                if (false && systLabel_ == "") {
+                    for (auto it = tag_obj.weightListBegin() ; it != tag_obj.weightListEnd(); it++) {
+                        std::cout << "SCZ Weight Debug " << *it << " " << tag_obj.weight(*it) << std::endl;
+                        
+                    }
+                }
             }
 
             if ( evt.isRealData() ) {
