@@ -62,8 +62,28 @@ namespace flashgg {
         const bool hasValidVBFTriJet() const; 
 
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kVBF; }
+
+        float alphaUp() const { return alphaUp_; }
+        float alphaDown() const { return alphaDown_; }
+        float scaleUp(unsigned i) const { return scaleUp_[i]; }
+        float scaleDown(unsigned i) const { return scaleDown_[i]; }
+        float pdf(unsigned i) const { return pdf_[i]; }
+
+        void setAlphaUp(float val) { alphaUp_ = val; }
+        void setAlphaDown(float val) { alphaDown_ = val; }
+        void setScaleUp(unsigned i, float val) { scaleUp_[i] = val; }
+        void setScaleDown(unsigned i, float val) { scaleDown_[i] = val; }
+        void setPdf(unsigned i, float val) { pdf_[i] = val; }
+
     private:
         VBFDiPhoDiJetMVAResult vbfDiPhoDiJet_mva_result_;
+
+        float alphaUp_;
+        float alphaDown_;
+        float scaleUp_[3];
+        float scaleDown_[3];
+        float pdf_[60];
+
     };
 
 }
