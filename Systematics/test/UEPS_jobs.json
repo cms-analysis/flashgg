@@ -1,0 +1,11 @@
+{
+    "processes" : {
+        "ggh_125"  : [ [ "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/ferrif-RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2-2_2_0-v0-RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14-v1-9d6acec11aa5264fedffe5a321afb429/USER", 
+		       { "args" :["outputFile=output_GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8.root"] } ] ],
+	"ggh_125_UpUE" : [ "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_CUETP8M1Up"],
+	"ggh_125_DownUE" : [ "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_CUETP8M1Down"],
+	"ggh_125_UpPS" : [ "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_UpPS"],
+	"ggh_125_DownPS" : [ "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS"]
+     },	
+        "cmdLine" : "campaign=RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2_Workspaces"
+}
