@@ -15,6 +15,8 @@
 
 #include "DataFormats/Common/interface/RefToPtr.h"
 
+#include "flashgg/DataFormats/interface/PDFWeightObject.h"
+
 #include <vector>
 #include <algorithm>
 
@@ -41,11 +43,13 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonMVAResult> >      mvaResultToken_;
         EDGetTokenT<View<reco::GenParticle> >      genPartToken_;
         EDGetTokenT<View<reco::GenJet> >           genJetToken_;
+        edm::EDGetTokenT<vector<flashgg::PDFWeightObject> > WeightToken_;
         string systLabel_;
 
         bool dropNonGoldData_;
         bool setArbitraryNonGoldMC_;
         bool requireVBFPreselection_;
+        bool getQCDWeights_;
 
         vector<double> boundaries;
 
@@ -57,10 +61,12 @@ namespace flashgg {
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
         genPartToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         genJetToken_ ( consumes<View<reco::GenJet> >( iConfig.getParameter<InputTag> ( "GenJetTag" ) ) ),
+        WeightToken_( consumes<vector<flashgg::PDFWeightObject> >( iConfig.getUntrackedParameter<InputTag>( "WeightTag", InputTag( "flashggPDFWeightObject" ) ) ) ),
         systLabel_   ( iConfig.getParameter<string> ( "SystLabel" ) ),
         dropNonGoldData_   ( iConfig.getParameter<bool> ( "DropNonGoldData" ) ),
         setArbitraryNonGoldMC_   ( iConfig.getParameter<bool> ( "SetArbitraryNonGoldMC" ) ),
-        requireVBFPreselection_   ( iConfig.getParameter<bool> ( "RequireVBFPreselection" ) )
+        requireVBFPreselection_   ( iConfig.getParameter<bool> ( "RequireVBFPreselection" ) ),
+        getQCDWeights_( iConfig.getParameter<bool>( "GetQCDWeights" ) )
     {
         boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
         assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception
@@ -94,6 +100,11 @@ namespace flashgg {
         Handle<View<reco::GenParticle> > genParticles;
         Handle<View<reco::GenJet> > genJets;
         
+        Handle<vector<flashgg::PDFWeightObject> > WeightHandle;
+        if (getQCDWeights_) {
+            evt.getByToken( WeightToken_, WeightHandle );
+        }
+
         std::auto_ptr<vector<VBFTag> >      tags  ( new vector<VBFTag> );
         std::auto_ptr<vector<VBFTagTruth> > truths( new vector<VBFTagTruth> );
 
@@ -153,9 +164,95 @@ namespace flashgg {
 
             tag_obj.includeWeights( *dipho );
             if ( tag_obj.VBFMVA().dijet_Mjj > 0. ) {
-                tag_obj.includeWeights( *(tag_obj.VBFMVA().leadJet_ptr) );
-                tag_obj.includeWeights( *(tag_obj.VBFMVA().subleadJet_ptr) );
+
+                // We don't want to include all the jet weights because btag weights are not relevant
+                // tag_obj.includeWeights( *(tag_obj.VBFMVA().leadJet_ptr) );
+                // tag_obj.includeWeights( *(tag_obj.VBFMVA().subleadJet_ptr) );
+
+                // So we do some tricky surgery instead, to get only the UnmatchedPUWeight
+                float tagcorig = tag_obj.centralWeight();
+                float j1corig = tag_obj.VBFMVA().leadJet_ptr->centralWeight();
+                float j2corig = tag_obj.VBFMVA().subleadJet_ptr->centralWeight();
+                float j1cadjust = tag_obj.VBFMVA().leadJet_ptr->weight("UnmatchedPUWeightCentral"); // stored without scaling to overall central
+                float j2cadjust = tag_obj.VBFMVA().subleadJet_ptr->weight("UnmatchedPUWeightCentral"); // stored without scaling to overall central
+                float j1upadjust = 1.;
+                float j2upadjust = 1.;
+                float j1downadjust = 1.;
+                float j2downadjust = 1.;
+                if (tag_obj.VBFMVA().leadJet_ptr->hasWeight("UnmatchedPUWeightUp01sigma") ) {
+                    j1upadjust = tag_obj.VBFMVA().leadJet_ptr->weight("UnmatchedPUWeightUp01sigma")  / j1corig;
+                    j1downadjust = tag_obj.VBFMVA().leadJet_ptr->weight("UnmatchedPUWeightDown01sigma") / j1corig;
+                }
+                if (tag_obj.VBFMVA().leadJet_ptr->hasWeight("UnmatchedPUWeightUp01sigma") ) {
+                    j2upadjust = tag_obj.VBFMVA().subleadJet_ptr->weight("UnmatchedPUWeightUp01sigma") / j2corig;
+                    j2downadjust = tag_obj.VBFMVA().subleadJet_ptr->weight("UnmatchedPUWeightDown01sigma") / j2corig;
+                }
+                if (false && systLabel_ == "") {
+                    std::cout << "tagcorig j1cadjust j2cadjust j1upadjust j2upadjust j1downadjust j2downadjust ";
+                    std::cout << tagcorig << " " << j1cadjust << " "<< j2cadjust << " "<< j1upadjust << " "<< j2upadjust << " "<< j1downadjust << " "<< j2downadjust << std::endl;
+                }
+                for (auto it = tag_obj.weightListBegin() ; it != tag_obj.weightListEnd(); it++) {
+                    tag_obj.setWeight(*it,tag_obj.weight(*it) * j1cadjust * j2cadjust); 
+                }
+                if (tag_obj.VBFMVA().leadJet_ptr->hasWeight("UnmatchedPUWeightUp01sigma") ) {
+                    tag_obj.setWeight("UnmatchedPUWeightUp01sigma", tag_obj.centralWeight() * j1upadjust * j2upadjust );
+                    tag_obj.setWeight("UnmatchedPUWeightDown01sigma", tag_obj.centralWeight() * j1downadjust * j2downadjust );
+                }
+
+                if (false && systLabel_ == "") {
+                    for (auto it = tag_obj.weightListBegin() ; it != tag_obj.weightListEnd(); it++) {
+                        std::cout << "SCZ Weight Debug " << *it << " " << tag_obj.weight(*it) << std::endl;
+                        
+                    }
+                }
             }
+            
+            if ( getQCDWeights_ ) {
+                for( unsigned int weight_index = 0; weight_index < (*WeightHandle).size(); weight_index++ ){
+                    vector<uint16_t> compressed_weights = (*WeightHandle)[weight_index].pdf_weight_container;
+                    std::vector<float> uncompressed = (*WeightHandle)[weight_index].uncompress( compressed_weights );
+                    vector<uint16_t> compressed_alpha = (*WeightHandle)[weight_index].alpha_s_container;
+                    std::vector<float> uncompressed_alpha = (*WeightHandle)[weight_index].uncompress( compressed_alpha );
+                    vector<uint16_t> compressed_scale = (*WeightHandle)[weight_index].qcd_scale_container;
+                    std::vector<float> uncompressed_scale = (*WeightHandle)[weight_index].uncompress( compressed_scale );
+
+                    for( unsigned int j=1; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
+                        //                        cout << "compresed weight " << j << " " << " " << (*WeightHandle)[weight_index].pdf_weight_container[j] << endl;
+                        //                        cout << "uncompressed weight " << j << " " << uncompressed[j] << endl;
+                        tag_obj.setPdf(j-1,uncompressed[j]/uncompressed[0]);
+                    }
+                    //                    for( unsigned int j=0; j<(*WeightHandle)[weight_index].alpha_s_container.size();j++ ) {
+                        //                        cout << "compressed variation " << (*WeightHandle)[weight_index].alpha_s_container[j] << endl;
+                        //                        cout << "uncompressed variation " << j << " " << uncompressed_alpha[j] << endl;
+                    //                    }
+                    tag_obj.setAlphaUp(uncompressed_alpha[0]/uncompressed[0]);
+                    tag_obj.setAlphaDown(uncompressed_alpha[1]/uncompressed[0]);
+                    tag_obj.setScaleUp(0,uncompressed_scale[1]/uncompressed_scale[0]);
+                    tag_obj.setScaleDown(0,uncompressed_scale[2]/uncompressed_scale[0]);
+                    tag_obj.setScaleUp(1,uncompressed_scale[3]/uncompressed_scale[0]);
+                    tag_obj.setScaleDown(1,uncompressed_scale[6]/uncompressed_scale[0]);
+                    tag_obj.setScaleUp(2,uncompressed_scale[4]/uncompressed_scale[0]);
+                    tag_obj.setScaleDown(2,uncompressed_scale[8]/uncompressed_scale[0]);
+
+                    //                    for( unsigned int j=0; j<(*WeightHandle)[weight_index].qcd_scale_container.size();j++ ) {
+                        //                        cout << "compressed scale " << (*WeightHandle)[weight_index].qcd_scale_container[j] << endl;
+                        //                        cout << "uncompressed scale " << j << " " << uncompressed_scale[j] << endl;
+                    //                    }
+
+                    //                    std::cout << "Alpha Up: " << tag_obj.alphaUp() << std::endl;
+                    //                    std::cout << "Alpha Down: " << tag_obj.alphaDown() <<std::endl;
+
+                    //                    for ( unsigned int j = 0 ; j < 3 ; j++) {
+                        //                        std::cout << "Scale Up [" << j << "]: " << tag_obj.scaleUp(j) << std::endl;
+                        //                        std::cout << "Scale Down [" << j  << "]: " << tag_obj.scaleDown(j) << std::endl;
+                    //                    }
+                    
+                    
+
+                }
+
+            }
+
 
             if ( evt.isRealData() ) {
                 tag_obj.setIsGold ( evt.run() );

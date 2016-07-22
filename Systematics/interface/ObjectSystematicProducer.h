@@ -154,6 +154,9 @@ namespace flashgg {
             if( CorrToShift == Corrections_.at( ncorr ) ) {
                 Corrections_.at( ncorr )->applyCorrection( y, syst_shift );
             } else if( Corrections_.at( ncorr )->makesWeight() ) {
+                //                std::cout << " Setting weight for " << Corrections_.at( ncorr )->shiftLabel( 0 ) <<
+                //                    " to " << Corrections_.at( ncorr )->makeWeight( y, param_var( 0 ) ) << std::endl;
+                y.setWeight( Corrections_.at( ncorr )->shiftLabel( 0 ), Corrections_.at( ncorr )->makeWeight( y, param_var( 0 ) ) ); // use very carefully, n.b. not scaled
                 theWeight *= Corrections_.at( ncorr )->makeWeight( y, param_var( 0 ) );
             } else {
                 Corrections_.at( ncorr )->applyCorrection( y, param_var( 0 ) );
@@ -163,6 +166,7 @@ namespace flashgg {
         for( unsigned int ncorr = 0; ncorr < Corrections2D_.size(); ncorr++ ) {
             //            std::cout << " 2d ncorr=" << ncorr << "/" << Corrections2D_.size() << std::endl;
             if( Corrections2D_.at( ncorr )->makesWeight() ) {
+                y.setWeight( Corrections2D_.at( ncorr )->shiftLabel( PAIR_ZERO ), Corrections2D_.at( ncorr )->makeWeight( y, PAIR_ZERO ) ); // use very carefully, n.b. not scaled
                 theWeight *= Corrections2D_.at( ncorr )->makeWeight( y, PAIR_ZERO );
                 //                std::cout << " 2d changed the weight to" << theWeight << std::endl;
                 //                std::cout << "    " << Corrections2D_.at( ncorr )->shiftLabel( PAIR_ZERO ) << std::endl;
@@ -192,6 +196,9 @@ namespace flashgg {
         //        std::cout << "2d before 1d" << std::endl;
         for( unsigned int ncorr = 0; ncorr < Corrections_.size(); ncorr++ ) {
             if( Corrections_.at( ncorr )->makesWeight() ) {
+                //                std::cout << " Setting weight for " << Corrections_.at( ncorr )->shiftLabel( 0 ) << 
+                //                    " to " << Corrections_.at( ncorr )->makeWeight( y, param_var( 0 ) ) << std::endl;
+                y.setWeight( Corrections_.at( ncorr )->shiftLabel( 0 ), Corrections_.at( ncorr )->makeWeight( y, param_var( 0 ) ) ); // use very carefully, n.b. not scaled
                 theWeight *= Corrections_.at( ncorr )->makeWeight( y, param_var( 0 ) );
             } else {
                 Corrections_.at( ncorr )->applyCorrection( y, param_var( 0 ) );
@@ -202,6 +209,8 @@ namespace flashgg {
             if( CorrToShift == Corrections2D_.at( ncorr ) ) {
                 Corrections2D_.at( ncorr )->applyCorrection( y, syst_shift );
             } else if( Corrections2D_.at( ncorr )->makesWeight() ) {
+                y.setWeight( Corrections2D_.at( ncorr )->shiftLabel( PAIR_ZERO ),
+                             Corrections2D_.at( ncorr )->makeWeight( y, PAIR_ZERO ) ); // use very carefully, n.b. not scaled        
                 theWeight *= Corrections2D_.at( ncorr )->makeWeight( y, PAIR_ZERO );
             } else {
                 Corrections2D_.at( ncorr )->applyCorrection( y, PAIR_ZERO );
