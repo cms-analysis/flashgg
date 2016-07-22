@@ -95,6 +95,13 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 ### SRING16 (80x)
 
+#### 80X with DY including PDFs
+
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISpring16DR80X-2_2_0-25ns_DYWithPDF -U 5 -L 25 -s campaigns/RunIISpring16DR80X-2_2_0-25ns_DYWithPDF.json -V 2_2_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
+cd RunIISpring16DR80X-2_2_0-25ns_DYWithPDF 
+echo crabConfig_*.py | xargs -n 1 crab sub
+
 #### 80X MiniAODv2
 
 Tags for flashgg: `2_2_0` and `RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2`
