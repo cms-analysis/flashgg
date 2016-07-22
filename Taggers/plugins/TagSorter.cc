@@ -58,8 +58,11 @@ namespace flashgg {
         double massCutUpper;
         double massCutLower;
 
-        double minAcceptableObjectWeight;
-        double maxAcceptableObjectWeight;
+        double minObjectWeightException;
+        double maxObjectWeightException;
+        double minObjectWeightWarning;
+        double maxObjectWeightWarning;
+
 
         bool debug_;
         bool storeOtherTagInfo_;
@@ -76,8 +79,11 @@ namespace flashgg {
 
         massCutUpper = iConfig.getParameter<double>( "MassCutUpper" );
         massCutLower = iConfig.getParameter<double>( "MassCutLower" );
-        minAcceptableObjectWeight = iConfig.getParameter<double>( "MinAcceptableObjectWeight" );
-        maxAcceptableObjectWeight = iConfig.getParameter<double>( "MaxAcceptableObjectWeight" );
+        minObjectWeightException = iConfig.getParameter<double>( "MinObjectWeightException" );
+        maxObjectWeightException = iConfig.getParameter<double>( "MaxObjectWeightException" );
+        minObjectWeightWarning = iConfig.getParameter<double>( "MinObjectWeightWarning" );
+        maxObjectWeightWarning = iConfig.getParameter<double>( "MaxObjectWeightWarning" );
+
 
         debug_ = iConfig.getUntrackedParameter<bool>( "Debug", false );
         storeOtherTagInfo_ = iConfig.getParameter<bool>( "StoreOtherTagInfo" );
@@ -185,11 +191,17 @@ namespace flashgg {
             if( chosen_i != -1 ) {
 
                 float centralObjectWeight = TagVectorEntry->ptrAt( chosen_i )->centralWeight();
-                if (centralObjectWeight < minAcceptableObjectWeight || centralObjectWeight > maxAcceptableObjectWeight) {
+                if (centralObjectWeight < minObjectWeightException || centralObjectWeight > maxObjectWeightException) {
                     throw cms::Exception( "TagObjectWeight" ) << " Tag centralWeight=" << centralObjectWeight << " outside of bound ["
-                                                              << minAcceptableObjectWeight << "," << maxAcceptableObjectWeight
+                                                              << minObjectWeightException << "," << maxObjectWeightException
                                                               << "] - " << tpr->name << " chosen_i=" << chosen_i << " - change bounds or debug tag";
                 }
+                if (centralObjectWeight < minObjectWeightWarning || centralObjectWeight > maxObjectWeightWarning) {
+                    std::cout << "WARNING Tag centralWeight=" << centralObjectWeight << " outside of bound ["
+                              << minObjectWeightException << "," << maxObjectWeightException
+                              << "] - " << tpr->name << " chosen_i=" << chosen_i << " - consider investigating!" << std::endl;
+                }
+
 
                 SelectedTag->push_back( *TagVectorEntry->ptrAt( chosen_i ) );
                 edm::Ptr<TagTruthBase> truth = TagVectorEntry->ptrAt( chosen_i )->tagTruth();
