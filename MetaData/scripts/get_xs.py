@@ -10,6 +10,8 @@ combkeys = ["ttH","ggH","VH","vbfH"]
 
 templates = {}
 templates["vbfH"] = ["VBFHToGG_M%i_13TeV_amcatnlo_pythia8","VBFHToGG_M-%i_13TeV_powheg_pythia8"]
+templates["vbfH"] += ["VBFHToGG_M125_13TeV_amcatnlo_pythia8_CUETP8M1Up","VBFHToGG_M125_13TeV_amcatnlo_pythia8_CUETP8M1Down",
+                     "VBFHToGG_M125_13TeV_amcatnlo_pythia8_UpPS","VBFHToGG_M125_13TeV_amcatnlo_pythia8_DownPS"]
 templates["ggH"] = ["GluGluHToGG_M%i_13TeV_amcatnloFXFX_pythia8","GluGluHToGG_M%i_13TeV_amcatnlo_pythia8"]
 templates["ggH"] += ["GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_CUETP8M1Up","GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_CUETP8M1Down",
                      "GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_UpPS","GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS"]

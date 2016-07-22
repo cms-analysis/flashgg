@@ -94,7 +94,8 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                Boundaries=cms.vdouble(0.634, 0.919),
                                SetArbitraryNonGoldMC = cms.bool(False),
                                DropNonGoldData = cms.bool(False),
-                               RequireVBFPreselection = cms.bool(True)
+                               RequireVBFPreselection = cms.bool(True),
+                               GetQCDWeights = cms.bool(False)
                                )
 
 
