@@ -145,6 +145,7 @@ namespace flashgg {
                     tag_obj.setSystLabel    ( systLabel_ );
                     tag_obj.setIsGold ( evt.run() );
                     tag_obj.includeWeights( *dipho );
+                    tag_obj.includeWeights( *leadingJet );
                     
                     //truth_obj.setGenPV( higgsVtx );
 
