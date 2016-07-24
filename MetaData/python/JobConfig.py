@@ -363,10 +363,7 @@ class JobConfig(object):
         if self.useAAA:
             self.filePrepend = "root://xrootd-cms.infn.it/"
         elif self.useEOS:
-            if self.atIC:
                 self.filePrepend = "root://eoscms.cern.ch//eos/cms"
-            else:    
-                self.filePrepend = "root://eoscms//eos/cms"
         
         self.samplesMan = None
         dataset = None
