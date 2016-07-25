@@ -13,17 +13,17 @@ FlashggBTagCalibration calib("CSVv2", CSVfilename);
 
 FlashggBTagCalibrationReader readerBC(&calib,               // calibration instance
                                FlashggBTagEntry::OP_MEDIUM,  // operating point
-                               "mujets",               // measurement type
+                               "comb",               // measurement type
                                "central");           // systematics type
-FlashggBTagCalibrationReader readerBC_up(&calib, FlashggBTagEntry::OP_MEDIUM, "mujets", "up");  // sys up
-FlashggBTagCalibrationReader readerBC_do(&calib, FlashggBTagEntry::OP_MEDIUM, "mujets", "down");  // sys down
+FlashggBTagCalibrationReader readerBC_up(&calib, FlashggBTagEntry::OP_MEDIUM, "comb", "up");  // sys up
+FlashggBTagCalibrationReader readerBC_do(&calib, FlashggBTagEntry::OP_MEDIUM, "comb", "down");  // sys down
 
 FlashggBTagCalibrationReader readerUDSG(&calib,               // calibration instance
                              FlashggBTagEntry::OP_MEDIUM,  // operating point
-                             "comb",               // measurement type
+                             "incl",               // measurement type
                              "central");           // systematics type
-FlashggBTagCalibrationReader readerUDSG_up(&calib, FlashggBTagEntry::OP_MEDIUM, "comb", "up");  // sys up
-FlashggBTagCalibrationReader readerUDSG_do(&calib, FlashggBTagEntry::OP_MEDIUM, "comb", "down");  // sys down
+FlashggBTagCalibrationReader readerUDSG_up(&calib, FlashggBTagEntry::OP_MEDIUM, "incl", "up");  // sys up
+FlashggBTagCalibrationReader readerUDSG_do(&calib, FlashggBTagEntry::OP_MEDIUM, "incl", "down");  // sys down
 
 namespace flashgg {
 

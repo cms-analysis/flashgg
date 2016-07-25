@@ -1,9 +1,7 @@
-# NB this command is specific to the configuration at IC and is not gaurenteed elsewhere
-outdir="/vols/cms/szenz"
-queue="heplong.q"
+# NB this command is specific to the configuration on lxplus and is not gaurenteed elsewhere
+#outdir="/afs/cern.ch/work/s/sethzenz/ws/" # can't set absolute path on lsf because we're expecting to stage
+queue="8nh"
 useAAA=0
-atIC=1
-version="023"
-fggRunJobs.py --load sig_jobs.json -d $outdir/sig_jobs_$version -x cmsRun workspaceStd.py maxEvents=-1 -n 500 -q $queue -D -P useAAA=$useAAA atIC=$atIC --no-use-tarball \
-puTarget=2.31e+03,3.09e+04,1.99e+05,5.39e+05,8.22e+05,1.09e+06,2e+06,1.12e+07,2.8e+07,4.49e+07,7.29e+07,1.13e+08,1.72e+08,2.53e+08,3.33e+08,3.9e+08,4.18e+08,4.2e+08,3.96e+08,3.52e+08,2.96e+08,2.35e+08,1.76e+08,1.23e+08,7.86e+07,4.6e+07,2.45e+07,1.18e+07,5.18e+06,2.09e+06,7.91e+05,2.86e+05,1.03e+05,3.95e+04,1.84e+04,1.12e+04,8.66e+03,7.55e+03,6.94e+03,6.56e+03,6.29e+03,6.1e+03,5.94e+03,5.79e+03,5.64e+03,5.47e+03,5.27e+03,5.04e+03,4.79e+03,4.51e+03
-#puTarget=2.18e+03,2.4e+04,7e+04,1.98e+05,3.61e+05,6.19e+05,1.29e+06,9e+06,2.33e+07,3.11e+07,4.09e+07,5.77e+07,8.37e+07,1.16e+08,1.51e+08,1.84e+08,2.06e+08,2.11e+08,2.01e+08,1.82e+08,1.56e+08,1.28e+08,9.8e+07,7.05e+07,4.72e+07,2.94e+07,1.71e+07,9.23e+06,4.68e+06,2.24e+06,1.02e+06,4.36e+05,1.78e+05,6.87e+04,2.51e+04,8.62e+03,2.79e+03,851,244,66.2,17.1,4.25,1.04,0.257,0.0658,0.0178,0.00504,0.00146,0.000424,0.000121 
+atIC=1 # only effect is setting eos path
+version="745"
+fggRunJobs.py --load sig_jobs.json -d sig_jobs_$version -x cmsRun workspaceStd.py maxEvents=-1 -n 500 -q $queue -D -P useAAA=$useAAA atIC=$atIC doFiducial=False  puTarget=5.05e+03,2.41e+05,7.83e+05,1.74e+06,2.37e+06,3.41e+06,6.12e+06,2.43e+07,6.78e+07,1.45e+08,2.57e+08,4.06e+08,5.63e+08,7.06e+08,8.41e+08,9.54e+08,1.03e+09,1.06e+09,1.06e+09,1.02e+09,9.47e+08,8.51e+08,7.41e+08,6.19e+08,4.93e+08,3.72e+08,2.67e+08,1.82e+08,1.18e+08,7.18e+07,4.13e+07,2.24e+07,1.15e+07,5.57e+06,2.56e+06,1.12e+06,4.7e+05,1.92e+05,7.78e+04,3.3e+04,1.61e+04,9.87e+03,7.67e+03,6.92e+03,6.66e+03,6.56e+03,6.49e+03,6.4e+03,6.28e+03,6.12e+03

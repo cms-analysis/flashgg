@@ -1,0 +1,6 @@
+{
+    "cmdLine"  : "campaign=RunIISpring16DR80X-2_2_0-25ns_DYWithPDF", 
+    "processes": {
+        "ggh_125"    : [ "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8" ]
+    }
+}

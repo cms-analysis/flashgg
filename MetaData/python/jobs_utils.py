@@ -319,7 +319,12 @@ class JobsManager(object):
                     replace = {}
                     for arg in dargs:
                         aname,val = arg.split("=")
-                        replace[aname] = arg
+                        if aname == "outputFile":
+                            if val.count("/") != outfile.count("/"):
+                                print "SCZ The specified outputFile does not yield same the subdir as expected:",val
+                                val = "/".join(outfile.split("/")[:-1]+[val.split("/")[-1]])
+                                print "SCZ So we adjust the outputFile name to: ",val
+                        replace[aname] = "=".join((aname,val))
                     newargs = []
                     anames = []
                     for arg in jobargs:

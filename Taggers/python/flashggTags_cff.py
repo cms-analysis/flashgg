@@ -19,9 +19,22 @@ flashggUntagged = cms.EDProducer("FlashggUntaggedTagProducer",
                                  SystLabel      = cms.string(""),
                                  MVAResultTag   = cms.InputTag('flashggDiPhotonMVA'),
                                  GenParticleTag = cms.InputTag( "flashggPrunedGenParticles" ),
-                                 Boundaries     = cms.vdouble(-0.435,0.187,0.574,0.895), #,1.000),
+                                 Boundaries     = cms.vdouble(-0.398,0.308,0.624,0.907), #,1.000),
                                  RequireScaledPtCuts = cms.bool(True)
 )
+
+flashggSigmaMoMpToMTag = cms.EDProducer("FlashggSigmaMpTTagProducer",
+#                                 DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+                                 DiPhotonTag    = cms.InputTag('flashggPreselectedDiPhotons'),
+                                 SystLabel      = cms.string(""),
+                                 MVAResultTag   = cms.InputTag('flashggDiPhotonMVA'),
+                                 GenParticleTag = cms.InputTag( "flashggPrunedGenParticles" ),
+                                 BoundariesSigmaMoM  = cms.vdouble(0.,0.00764,0.0109,0.0288), #boundaries have to be provided including lowest and highest
+#                                 BoundariespToM      = cms.vdouble(0.,1.02,1.83,10.0), #,1.000), #boundaries have to be provided including lowest and highest
+                                 RequireScaledPtCuts = cms.bool(True)
+)
+
+
 
 flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
@@ -37,7 +50,7 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        subleadPhoOverMassThreshold = cms.double(0.25),
                                        subleadPhoPtThreshold = cms.double(20),
                                        subleadPhoUseVariableThreshold =  cms.bool(True),
-                                       MVAThreshold = cms.double(0.0),
+                                       MVAThreshold = cms.double(0.5),
                                        PhoMVAThreshold = cms.double(-0.9),
                                        inputTagJets= UnpackedJetCollectionVInputTag, 
                                        jetPtThreshold = cms.double(25.),
@@ -78,10 +91,11 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                #  for the moment we have two categories VBF-0 and VBF-1: to be changed when the diphoton MVA is ready 
                                #Boundaries=cms.vdouble(0.5819, 0.9449)
                                #Boundaries=cms.vdouble(0.62, 0.94),
-                               Boundaries=cms.vdouble(0.632, 0.921),
+                               Boundaries=cms.vdouble(0.634, 0.919),
                                SetArbitraryNonGoldMC = cms.bool(False),
                                DropNonGoldData = cms.bool(False),
-                               RequireVBFPreselection = cms.bool(True)
+                               RequireVBFPreselection = cms.bool(True),
+                               GetQCDWeights = cms.bool(False)
                                )
 
 

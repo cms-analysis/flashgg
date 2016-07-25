@@ -4,18 +4,29 @@ binInfo = cms.PSet(
 		variables = cms.vstring("pt"),
 		bins = cms.VPSet(
 	                # TightID+LoosePFRelative isolation scale factors : SF = SF(ID)*SF(iso|ID)
-                        # taken from : https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffsRun2
-                        # uncertainties are: stat (+) syst. with syst: 1% for ID, 0.5% for iso, 1% to account for different Z vs multijet topology
+			# uncertainties are: stat (+) syst. with syst: 1% for ID, 0.5% for iso, 1% to account for different Z vs multijet topology
+                        # 80X
+			# Preliminary numbers (2.6/fb) taken from : https://twiki.cern.ch/twiki/bin/view/CMS/MuonWorkInProgressAndPagResults
+			cms.PSet(lowBounds = cms.vdouble(0.000000), upBounds = cms.vdouble(20.000000), values = cms.vdouble(1.000000), uncertainties = cms.vdouble(0.014870,0.014870)),	# This bin should never be selected, just here to avoid crashes   
+			cms.PSet(lowBounds = cms.vdouble(20.000000), upBounds = cms.vdouble(25.000000), values = cms.vdouble(0.982074), uncertainties = cms.vdouble(0.014870,0.014870)),
+			cms.PSet(lowBounds = cms.vdouble(25.000000), upBounds = cms.vdouble(30.000000), values = cms.vdouble(0.982037), uncertainties = cms.vdouble(0.014778,0.014778)),
+			cms.PSet(lowBounds = cms.vdouble(30.000000), upBounds = cms.vdouble(40.000000), values = cms.vdouble(0.982530), uncertainties = cms.vdouble(0.014746,0.014746)),
+			cms.PSet(lowBounds = cms.vdouble(40.000000), upBounds = cms.vdouble(50.000000), values = cms.vdouble(0.981415), uncertainties = cms.vdouble(0.014723,0.014723)),
+			cms.PSet(lowBounds = cms.vdouble(50.000000), upBounds = cms.vdouble(60.000000), values = cms.vdouble(0.977608), uncertainties = cms.vdouble(0.014689,0.014689)),
+			cms.PSet(lowBounds = cms.vdouble(60.000000), upBounds = cms.vdouble(80.000000), values = cms.vdouble(0.984926), uncertainties = cms.vdouble(0.014906,0.014906)),
+			cms.PSet(lowBounds = cms.vdouble(80.000000), upBounds = cms.vdouble(120.000000), values = cms.vdouble(0.968123), uncertainties = cms.vdouble(0.015627,0.015627)),
+			cms.PSet(lowBounds = cms.vdouble(120.000000), upBounds = cms.vdouble(9999999999.000000), values = cms.vdouble(1.026026), uncertainties = cms.vdouble(0.025844,0.025844))
+			# taken from : https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffsRun2
                         #76X
-                        cms.PSet(lowBounds = cms.vdouble(0.), upBounds = cms.vdouble(20.), values = cms.vdouble(1.), uncertainties = cms.vdouble(0.,0.)), # This bin should never be selected, just here to avoid crashes   
-                        cms.PSet(lowBounds = cms.vdouble(20.000000), upBounds = cms.vdouble(25.000000), values = cms.vdouble(0.989725), uncertainties = cms.vdouble(0.015148,0.015148)),
-                        cms.PSet(lowBounds = cms.vdouble(25.000000), upBounds = cms.vdouble(30.000000), values = cms.vdouble(0.984663), uncertainties = cms.vdouble(0.015053,0.015053)),
-                        cms.PSet(lowBounds = cms.vdouble(30.000000), upBounds = cms.vdouble(40.000000), values = cms.vdouble(0.988170), uncertainties = cms.vdouble(0.015008,0.015008)),
-                        cms.PSet(lowBounds = cms.vdouble(40.000000), upBounds = cms.vdouble(50.000000), values = cms.vdouble(0.986433), uncertainties = cms.vdouble(0.015003,0.015003)),
-                        cms.PSet(lowBounds = cms.vdouble(50.000000), upBounds = cms.vdouble(60.000000), values = cms.vdouble(0.983007), uncertainties = cms.vdouble(0.015022,0.015022)),
-                        cms.PSet(lowBounds = cms.vdouble(60.000000), upBounds = cms.vdouble(80.000000), values = cms.vdouble(0.986717), uncertainties = cms.vdouble(0.015089,0.015089)),
-                        cms.PSet(lowBounds = cms.vdouble(80.000000), upBounds = cms.vdouble(120.000000), values = cms.vdouble(0.977206), uncertainties = cms.vdouble(0.015616,0.015616)),
-                        cms.PSet(lowBounds = cms.vdouble(120.000000), upBounds = cms.vdouble(9999999999.000000), values = cms.vdouble(0.975379), uncertainties = cms.vdouble(0.025048,0.025048))
+                        #cms.PSet(lowBounds = cms.vdouble(0.), upBounds = cms.vdouble(20.), values = cms.vdouble(1.), uncertainties = cms.vdouble(0.,0.)), # This bin should never be selected, just here to avoid crashes   
+                        #cms.PSet(lowBounds = cms.vdouble(20.000000), upBounds = cms.vdouble(25.000000), values = cms.vdouble(0.989725), uncertainties = cms.vdouble(0.015148,0.015148)),
+                        #cms.PSet(lowBounds = cms.vdouble(25.000000), upBounds = cms.vdouble(30.000000), values = cms.vdouble(0.984663), uncertainties = cms.vdouble(0.015053,0.015053)),
+                        #cms.PSet(lowBounds = cms.vdouble(30.000000), upBounds = cms.vdouble(40.000000), values = cms.vdouble(0.988170), uncertainties = cms.vdouble(0.015008,0.015008)),
+                        #cms.PSet(lowBounds = cms.vdouble(40.000000), upBounds = cms.vdouble(50.000000), values = cms.vdouble(0.986433), uncertainties = cms.vdouble(0.015003,0.015003)),
+                        #cms.PSet(lowBounds = cms.vdouble(50.000000), upBounds = cms.vdouble(60.000000), values = cms.vdouble(0.983007), uncertainties = cms.vdouble(0.015022,0.015022)),
+                        #cms.PSet(lowBounds = cms.vdouble(60.000000), upBounds = cms.vdouble(80.000000), values = cms.vdouble(0.986717), uncertainties = cms.vdouble(0.015089,0.015089)),
+                        #cms.PSet(lowBounds = cms.vdouble(80.000000), upBounds = cms.vdouble(120.000000), values = cms.vdouble(0.977206), uncertainties = cms.vdouble(0.015616,0.015616)),
+                        #cms.PSet(lowBounds = cms.vdouble(120.000000), upBounds = cms.vdouble(9999999999.000000), values = cms.vdouble(0.975379), uncertainties = cms.vdouble(0.025048,0.025048))
                         #74X
                         #cms.PSet(lowBounds = cms.vdouble(0.), upBounds = cms.vdouble(20.), values = cms.vdouble(1.), uncertainties = cms.vdouble(0.,0.)), # This bin should never be selected, just here to avoid crashes
                         #cms.PSet(lowBounds = cms.vdouble(20.000000), upBounds = cms.vdouble(25.000000), values = cms.vdouble(0.992659), uncertainties = cms.vdouble(0.014311,0.014311)),
