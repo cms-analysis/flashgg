@@ -12,6 +12,9 @@
         "SingleMuon"                                                    : { "xs" : 0.0, "itype" :0                       },
         "DoubleMuon"                                                    : { "xs" : 0.0, "itype" :0                       },
 	"Higgs_scalar" : {"xs":1, "br":1, "kf":1.0, "itype":-1125},
+
+	"GluGluHToGG_M-125_13TeV_powheg_pythia8"                        : { "xs" : 44.14,   "br" : 2.27e-3, "itype":-125000 },
+
         "GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8"                          : { "xs" : 52.2200,   "br" : 0.002218, "itype":-120000 },
         "GluGluHToGG_M120_13TeV_amcatnlo_pythia8"                          : { "xs" : 52.2200,   "br" : 0.002218, "itype":-120000 },
         "GluGluHToGG_M121_13TeV_amcatnloFXFX_pythia8"                          : { "xs" : 51.4600,   "br" : 0.002235, "itype":-121000 },
