@@ -9,7 +9,7 @@ flashggMetSystematics = cms.EDProducer('FlashggMetSystematicProducer',
                                                                          Label = cms.string("metUncertainty"),
                                                                          NSigmas = cms.vint32(-1,1),
                                                                          OverallRange = cms.string("abs(eta)<2.5"),
-                                                                         BinList = binInfo,
+                                                                         #BinList = binInfo,
                                                                          Debug = cms.untracked.bool(False),
                                                                          ApplyCentralValue = cms.bool(False)
                                                                          )

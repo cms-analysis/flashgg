@@ -61,6 +61,7 @@ customize.options.register('acceptance',
 # import flashgg customization to check if we have signal or background
 from flashgg.MetaData.JobConfig import customize
 customize.parse()
+process.load("flashgg.Systematics.flashggMetSystematics_cfi")
 
 if customize.doFiducial == 'True':
     matchCut = "leadingPhoton.hasMatchedGenPhoton() && subLeadingPhoton.hasMatchedGenPhoton()"
@@ -317,6 +318,7 @@ process.p = cms.Path(process.dataRequirements*
                      process.genFilter*
                      process.flashggUpdatedIdMVADiPhotons*
                      process.flashggDiPhotonSystematics*
+                     process.flashggMetSystematics*
                      process.flashggMuonSystematics*process.flashggElectronSystematics*
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                      (process.flashggTagSequence*process.systematicsTagSequences)*
