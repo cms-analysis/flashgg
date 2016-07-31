@@ -199,6 +199,15 @@
 </class>
 <class name="std::vector<flashgg::Jet>"/>
 <class name="edm::Ptr<flashgg::Jet>"/>
+
+<class name="flashgg::Met" ClassVersion="10">
+  <version ClassVersion="10" checksum="2272826605"/>
+</class>
+<class name="std::vector<flashgg::Met>"/>
+<class name="edm::Ptr<flashgg::Met>"/>
+<class name="edm::Wrapper<std::vector<flashgg::Met> >"/>
+<class name="std::vector<std::vector<flashgg::Met> >"/>
+<class name="edm::Wrapper<std::vector<std::vector<flashgg::Met> > >"/>
 <class name="std::map<edm::Ptr<reco::Vertex>,float>"/>
 <class name="std::pair<edm::Ptr<reco::Vertex>,float>"/>
 <class name="std::map<std::string,std::map<edm::Ptr<reco::Vertex>,float>>"/>
