@@ -197,8 +197,9 @@ flashggVHLooseTag = cms.EDProducer("FlashggVHLooseTagProducer",
                                    nonTrigMVAThresholds = cms.vdouble(0.913286,0.805013,0.358969),
                                    nonTrigMVAEtaCuts = cms.vdouble(0.8,1.479,2.5),
                                    electronIsoThreshold = cms.double(0.15),
-                                   electronNumOfHitsThreshold = cms.double(1)
-
+                                   electronNumOfHitsThreshold = cms.double(1),
+                                   useElectronMVARecipe = cms.bool(False),
+                                   useElectronLooseID = cms.bool(True)
 				    )
 flashggVHTightTag = cms.EDProducer("FlashggVHTightTagProducer",
                                    DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
@@ -247,7 +248,9 @@ flashggVHTightTag = cms.EDProducer("FlashggVHTightTagProducer",
                                    nonTrigMVAThresholds = cms.vdouble(0.913286,0.805013,0.358969),
                                    nonTrigMVAEtaCuts = cms.vdouble(0.8,1.479,2.5),
                                    electronIsoThreshold = cms.double(0.15),
-                                   electronNumOfHitsThreshold = cms.double(1)
+                                   electronNumOfHitsThreshold = cms.double(1),
+                                   useElectronMVARecipe = cms.bool(False),
+                                   useElectronLooseID = cms.bool(True)
 )
 
 

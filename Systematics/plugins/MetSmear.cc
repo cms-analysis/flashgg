@@ -1,21 +1,22 @@
 #include "flashgg/Systematics/interface/BaseSystMethod.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/Common/interface/PtrVector.h"
-#include "DataFormats/PatCandidates/interface/MET.h"
+#include "flashgg/DataFormats/interface/Met.h"
+//#include "DataFormats/PatCandidates/interface/MET.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 
 
 namespace flashgg{
 
-  class MetSmear: public BaseSystMethod<pat::MET, int>
+  class MetSmear: public BaseSystMethod<flashgg::Met, int>
   {
 
 
   public:
-    typedef StringCutObjectSelector<pat::MET, true> selector_type;
+    typedef StringCutObjectSelector<flashgg::Met, true> selector_type;
     MetSmear( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer * gv );
 
-    void applyCorrection( pat::MET &y, int syst_shift ) override;
+    void applyCorrection( flashgg::Met &y, int syst_shift ) override;
     std::string shiftLabel( int ) const override;
     void eventInitialize( const edm::Event &iEvent, const edm::EventSetup & iSetup ) override;
   private:
@@ -47,7 +48,7 @@ namespace flashgg{
     return result;
   }
 
-  void MetSmear::applyCorrection( pat::MET &y, int syst_shift )
+  void MetSmear::applyCorrection( flashgg::Met &y, int syst_shift )
   {
     if( overall_range_( y ) ) 
       {
@@ -56,9 +57,10 @@ namespace flashgg{
 	    std::cout << "  " << shiftLabel( syst_shift ) << ": Met has et=" << y.corPt() << " phi=" << y.corPhi() << std::endl;
 	  }
 	
-	//      y.setCorPx(); y.setCorPy(); y.setCorPhi();
+    //    y.setCorPx(); y.setCorPy(); y.setCorPhi();
 	if(syst_shift==1)
 	  {
+          std::cout << "+1 sigma for MET shift" << std::endl;
 	    //y.setCorPx(y.corPx()+y.uncertainties->dpx());
 	    //y.setCorPy(y.corPy()+y.uncertainties->dpy());
 	    //y.setCorPt(sqrt(y.corPy()*y.corPy()+y.corPx()*y.corPx()));
@@ -66,18 +68,23 @@ namespace flashgg{
 	  }
 	else if(syst_shift==-1)
 	  {
-	    //y.setCorPx(y.corPx()-y.uncertainties->dpx());
-	    //y.setCorPy(y.corPy()-y.uncertainties->dpy());
-	    //y.setCorPt(sqrt(y.corPy()*y.corPy()+y.corPx()*y.corPx()));
+          std::cout << "-1 sigma for MET shift" << std::endl;
+          //y.setCorPx(y.corPx()-y.uncertainties->dpx());
+          //y.setCorPy(y.corPy()-y.uncertainties->dpy());
+          //y.setCorPt(sqrt(y.corPy()*y.corPy()+y.corPx()*y.corPx()));
 	  }
 	else
-	  throw cms::Exception("UnsupportedMET smear") << " syst_shift=" << syst_shift << " is not supported";
+        {std::cout << "central value for MET shift" << std::endl;}
+        //throw cms::Exception("UnsupportedMET smear") << " syst_shift=" << syst_shift << " is not supported";
       }
   }
+    //from python call
+    //NSigmas = cms.vint32(-1,1)
+    //ApplyCentralValue = cms.bool(False)
 }  
 DEFINE_EDM_PLUGIN( FlashggSystematicMetMethodsFactory,
-		   flashgg::MetSmear,
-		   "FlashggMetSmear" );
+                   flashgg::MetSmear,
+                   "FlashggMetSmear" );
 // Local Variables:
 // mode:c++        
 // indent-tabs-mode:nil
