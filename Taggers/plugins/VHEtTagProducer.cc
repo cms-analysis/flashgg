@@ -11,7 +11,8 @@
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
-#include "DataFormats/PatCandidates/interface/MET.h"
+#include "flashgg/DataFormats/interface/Met.h"
+//#include "DataFormats/PatCandidates/interface/MET.h"
 //#include "flashgg/DataFormats/interface/VBFDiPhoDiJetMVAResult.h"
 //#include "flashgg/DataFormats/interface/VBFMVAResult.h"
 #include "flashgg/DataFormats/interface/VHEtTag.h"
@@ -40,7 +41,8 @@ namespace flashgg {
 
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
-        EDGetTokenT<View<pat::MET> > METToken_;
+        //EDGetTokenT<View<pat::MET> > METToken_;
+        EDGetTokenT<View<flashgg::Met> > METToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
         string systLabel_;
         edm::InputTag photonCollection_;
@@ -60,7 +62,8 @@ namespace flashgg {
     VHEtTagProducer::VHEtTagProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
-        METToken_( consumes<View<pat::MET> >( iConfig.getParameter<InputTag> ( "METTag" ) ) ),
+        //METToken_( consumes<View<pat::MET> >( iConfig.getParameter<InputTag> ( "METTag" ) ) ),
+        METToken_( consumes<View<flashgg::Met> >( iConfig.getParameter<InputTag> ( "METTag" ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
         triggerRECO_( consumes<edm::TriggerResults>(iConfig.getParameter<InputTag>("RECOfilters") ) ),
@@ -88,12 +91,14 @@ namespace flashgg {
         Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
         evt.getByToken( mvaResultToken_, mvaResults );
 
-        Handle<View<pat::MET> > METs;
+        //Handle<View<pat::MET> > METs;
+        Handle<View<flashgg::Met> > METs;
         evt.getByToken( METToken_, METs );
 
         if( METs->size() != 1 )
         { std::cout << "WARNING number of MET is not equal to 1" << std::endl; }
-        Ptr<pat::MET> theMET = METs->ptrAt( 0 );
+        Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
+        //Ptr<pat::MET> theMET = METs->ptrAt( 0 );
 
         Handle<View<reco::GenParticle> > genParticles;
 
@@ -261,11 +266,19 @@ namespace flashgg {
                     py_0 = 0.480606;
                     py_1 = 0.0297115;   
                }  
+           /*
            float oldPx = theMET->corPt()*cos(theMET->corPhi());
            float oldPy = theMET->corPt()*sin(theMET->corPhi());
            float newPx = oldPx - (px_0 +px_1*theMET->corSumEt());
            float newPy = oldPy - (py_0 +py_1*theMET->corSumEt());
            float newPhi=theMET->corPhi();
+           */
+           float oldPx = theMET->getCorPx();
+           float oldPy = theMET->getCorPy();
+           float newPx = oldPx - (px_0 +px_1*theMET->corSumEt());
+           float newPy = oldPy - (py_0 +py_1*theMET->corSumEt());
+           float newPhi=theMET->getCorPhi();
+           
            newPhi = atan(newPy/newPx); //px>0
            if(newPx<0&&newPy<0)
                newPhi = -3.14159 + newPhi;
@@ -275,7 +288,7 @@ namespace flashgg {
            if(fabs(newPhi-dipho->phi())<dPhiDiphotonMetThreshold_)  //skip if close
                if(fabs(newPhi-dipho->phi())-3.14159<dPhiDiphotonMetThreshold_) //skip if close but on other side of phi=0
                    continue;
-           if(theMET->corPt()< metPtThreshold_ )  
+           if(theMET->getCorPt()< metPtThreshold_ )  
                continue;
            vhettags->push_back( tag_obj );
            if( ! evt.isRealData() ) 

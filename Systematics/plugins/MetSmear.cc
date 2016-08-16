@@ -50,38 +50,56 @@ namespace flashgg{
 
   void MetSmear::applyCorrection( flashgg::Met &y, int syst_shift )
   {
-    if( overall_range_( y ) ) 
-      {
-	if ( debug_ ) 
-	  {
-	    std::cout << "  " << shiftLabel( syst_shift ) << ": Met has et=" << y.corPt() << " phi=" << y.corPhi() << std::endl;
-	  }
-	
-    //    y.setCorPx(); y.setCorPy(); y.setCorPhi();
-	if(syst_shift==1)
-	  {
-          std::cout << "+1 sigma for MET shift" << std::endl;
-	    //y.setCorPx(y.corPx()+y.uncertainties->dpx());
-	    //y.setCorPy(y.corPy()+y.uncertainties->dpy());
-	    //y.setCorPt(sqrt(y.corPy()*y.corPy()+y.corPx()*y.corPx()));
-	    
-	  }
-	else if(syst_shift==-1)
-	  {
-          std::cout << "-1 sigma for MET shift" << std::endl;
-          //y.setCorPx(y.corPx()-y.uncertainties->dpx());
-          //y.setCorPy(y.corPy()-y.uncertainties->dpy());
-          //y.setCorPt(sqrt(y.corPy()*y.corPy()+y.corPx()*y.corPx()));
-	  }
-	else
-        {std::cout << "central value for MET shift" << std::endl;}
-        //throw cms::Exception("UnsupportedMET smear") << " syst_shift=" << syst_shift << " is not supported";
-      }
-  }
-    //from python call
-    //NSigmas = cms.vint32(-1,1)
-    //ApplyCentralValue = cms.bool(False)
-}  
+      //pat::METCorrectionLevel level = Type1;
+      if( overall_range_( y ) ) 
+          {
+
+              
+              //y.setCorPx(); y.setCorPy(); y.setCorPhi();
+              //pat::MET::METUncertainty shift;
+              //shift = JetResUp;
+              //std::cout << "Met has et= " << y.getCorPt();
+              if(syst_shift==0)
+                  {//do nothing
+                  }
+              
+              else if(syst_shift==1)
+                  {
+                      //std::cout << "+1 sigma for MET shift" << std::endl;
+                      //std::cout << "previous px value: " << y.corPx() <<  "   shifted up by jet:  " << y.shiftedPx((pat::MET::METUncertainty) 2) << std::endl;
+                      //std::cout << "previous px value: " << y.corPx() <<  "   shifted up by mu :  " << y.shiftedPx((pat::MET::METUncertainty) 4) << std::endl;
+                      //std::cout << "previous px value: " << y.corPx() <<  "   shifted up by ele:  " << y.shiftedPx((pat::MET::METUncertainty) 6) << std::endl;
+                      //std::cout << "previous px value: " << y.corPx() <<  "   shifted up by tau:  " << y.shiftedPx((pat::MET::METUncertainty) 8) << std::endl;
+                      //std::cout << "previous px value: " << y.corPx() <<  "   shifted up by unc:  " << y.shiftedPx((pat::MET::METUncertainty) 10) << std::endl;
+                      //std::cout << "previous px value: " << y.corPx() <<  "   shifted up by pho:  " << y.shiftedPx((pat::MET::METUncertainty) 12) << std::endl;
+                      //std::cout << "previous px value: " << y.corPx() <<  "   unshifted        :  " << y.shiftedPx((pat::MET::METUncertainty) 14) << std::endl;
+                      y.setCorPx(y.shiftedPx((pat::MET::METUncertainty) 10));
+                      y.setCorPy(y.shiftedPy((pat::MET::METUncertainty) 10));
+                      //std::cout << "  shifted up:  " << y.getCorPt() << std::endl;
+                  }
+              else if(syst_shift==-1)
+                  {
+                      //std::cout << "-1 sigma for MET shift" << std::endl;
+                      y.setCorPx(y.shiftedPx((pat::MET::METUncertainty) 11));
+                      y.setCorPy(y.shiftedPy((pat::MET::METUncertainty) 11));
+                      //std::cout << "  shifted down:  " << y.getCorPt() << std::endl;
+                  }
+              else
+                  {
+                      std::cout << std::endl;
+                      //std::cout << "central value for MET shift" << std::endl;
+                      throw cms::Exception("UnsupportedMET smear") << " syst_shift=" << syst_shift << " is not supported";
+                  }
+              if ( debug_ ) 
+                  {
+                      std::cout << "  " << shiftLabel( syst_shift ) << ": Met has et=" << y.getCorPt() << " phi=" << y.getCorPhi() << std::endl;
+                  }
+          }
+      //from python call
+      //NSigmas = cms.vint32(-1,1)
+      //ApplyCentralValue = cms.bool(False)
+  }  
+}
 DEFINE_EDM_PLUGIN( FlashggSystematicMetMethodsFactory,
                    flashgg::MetSmear,
                    "FlashggMetSmear" );

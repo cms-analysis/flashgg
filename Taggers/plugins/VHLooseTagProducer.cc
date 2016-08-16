@@ -13,7 +13,7 @@
 #include "flashgg/DataFormats/interface/VHLooseTag.h"
 #include "flashgg/DataFormats/interface/Electron.h"
 #include "flashgg/DataFormats/interface/Muon.h"
-#include "DataFormats/PatCandidates/interface/MET.h"
+#include "flashgg/DataFormats/interface/Met.h"
 
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
@@ -56,7 +56,7 @@ namespace flashgg {
         EDGetTokenT<View<Electron> > electronToken_;
         EDGetTokenT<View<flashgg::Muon> > muonToken_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
-        EDGetTokenT<View<pat::MET> > METToken_;
+        EDGetTokenT<View<flashgg::Met> > METToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
         string systLabel_;
@@ -113,7 +113,7 @@ namespace flashgg {
         electronToken_( consumes<View<flashgg::Electron> >( iConfig.getParameter<InputTag> ( "ElectronTag" ) ) ),
         muonToken_( consumes<View<flashgg::Muon> >( iConfig.getParameter<InputTag>( "MuonTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
-        METToken_( consumes<View<pat::MET> >( iConfig.getParameter<InputTag> ( "METTag" ) ) ),
+        METToken_( consumes<View<flashgg::Met> >( iConfig.getParameter<InputTag> ( "METTag" ) ) ),
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
@@ -194,7 +194,7 @@ namespace flashgg {
         //const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
         std::auto_ptr<vector<VHLooseTag> > vhloosetags( new vector<VHLooseTag> );
 
-        Handle<View<pat::MET> > METs;
+        Handle<View<flashgg::Met> > METs;
         evt.getByToken( METToken_, METs );
         //const PtrVector<pat::MET>& METPointers = METs->ptrVector();
 
@@ -328,7 +328,7 @@ namespace flashgg {
             //std::vector<edm::Ptr<flashgg::Muon> > tagMuons;
             //std::vector<edm::Ptr<Electron> > tagElectrons;
             std::vector<edm::Ptr<Jet> > tagJets;
-            std::vector<edm::Ptr<pat::MET> > tagMETs;
+            std::vector<edm::Ptr<flashgg::Met> > tagMETs;
 
             edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( diphoIndex );
             edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );
@@ -398,10 +398,10 @@ namespace flashgg {
             //std::cout << "------------------------loose has good jets" << std::endl;
             //------>MET info
             if( METs->size() != 1 ) { std::cout << "WARNING - #MET is not 1" << std::endl;}
-            Ptr<pat::MET> theMET = METs->ptrAt( 0 );
+            Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
             tagMETs.push_back( theMET );            
             //std::cout << "------------------------loose has good met" << std::endl;
-            if( (tagJets.size() < jetsNumberThreshold_) && photonSelection && ( goodMuons.size() >= 1 || goodElectrons.size() >= 1 ) && theMET->corPt()<METThreshold_) {
+            if( (tagJets.size() < jetsNumberThreshold_) && photonSelection && ( goodMuons.size() >= 1 || goodElectrons.size() >= 1 ) && theMET->getCorPt()<METThreshold_) {
                 vhloosetags_obj.setJets( tagJets );
                 vhloosetags_obj.setMuons( goodMuons );
                 vhloosetags_obj.setElectrons( goodElectrons );

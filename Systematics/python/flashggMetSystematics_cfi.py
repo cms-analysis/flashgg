@@ -12,7 +12,7 @@ flashggMetSystematics = cms.EDProducer('FlashggMetSmearSystematicProducer',
                                                                          OverallRange = cms.string("abs(eta)<2.5"),
                                                                          #BinList = binInfo,
                                                                          Debug = cms.untracked.bool(False),
-                                                                         ApplyCentralValue = cms.bool(True)
+                                                                         ApplyCentralValue = cms.bool(False)
                                                                          )
                                                                )
 )

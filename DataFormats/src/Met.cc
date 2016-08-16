@@ -9,21 +9,43 @@ Met::~Met()
 {}
 
 Met::Met( const pat::MET &amet ) : pat::MET( amet )
-{}
-/*
-Met::setCorPx(float mPx)
 {
-    
+    corpx= amet.corPx();
+    corpy= amet.corPy();
+    corphi= amet.corPhi();
+    corpt= amet.corPt();
 }
-Met::setCorPy(float mPx)
-{
 
-}
-Met::setCorPhi(float mPx)
+void Met::setCorPx(float mPx)
 {
-
+    corpx=mPx;
+    corphi = std::atan2(corpy,corpx);
+    corpt = hypotf(corpx,corpy); 
 }
-*/
+void Met::setCorPy(float mPy)
+{
+    corpy=mPy;
+    corphi = std::atan2(corpy,corpx);
+    corpt = hypotf(corpy,corpx); 
+}
+
+float Met::getCorPx() const
+{
+    return(corpx);
+}
+float Met::getCorPy() const
+{
+    return(corpy);
+}
+float Met::getCorPhi() const
+{
+    return(corphi);
+}
+float Met::getCorPt() const
+{
+    return(corpt);
+}
+
 
 
 // Local Variables:

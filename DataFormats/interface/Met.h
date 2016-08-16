@@ -16,12 +16,17 @@ namespace flashgg {
         ~Met();
 
         Met *clone() const { return ( new Met( *this ) ); }
-        /*
-        setCorPx(float mPx);
-        setCorPy(float mPx);
-        setCorPhi(float mPx);
-        */
+        
+        void setCorPx(float mPx);
+        void setCorPy(float mPy);
+        float getCorPhi();
+        float getCorPt();
+        
     private:
+        float corpx;
+        float corpy;
+        float corphi;
+        float corpt;
     };
 }
 
