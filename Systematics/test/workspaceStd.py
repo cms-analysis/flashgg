@@ -27,7 +27,7 @@ elif os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
 else:
     raise Exception,"Could not find a sensible CMSSW_VERSION for default globaltag"
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(300) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 from flashgg.Systematics.SystematicsCustomize import *
