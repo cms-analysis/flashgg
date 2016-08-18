@@ -501,7 +501,7 @@ namespace flashgg {
             //if( ( isMuonHighPt || isElectronHighPt ) && theMET->pt() > METThreshold_ ) {
             tagMETs.push_back( theMET );
             // }
-            std::cout << "tight met value: " << theMET->getCorPt() << std::endl;
+            //            std::cout << "tight met value: " << theMET->getCorPt() << std::endl;
             if( photonSelection && ( ( ( isMuonHighPt && theMET->getCorPt() >METThreshold_  && tagJets.size() < jetsNumberThreshold_ ) || ( isMuonLowPt && isInvMassOK ) ) ||
                                      ( isElectronHighPt && theMET->getCorPt() > METThreshold_ && tagJets.size() < jetsNumberThreshold_ ) || ( isElectronLowPt && isInvMassOK_elec ) ) ) {
                 VHTightTags_obj.setJets( tagJets );

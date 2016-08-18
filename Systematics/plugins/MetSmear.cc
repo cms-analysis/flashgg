@@ -58,7 +58,6 @@ namespace flashgg{
               //y.setCorPx(); y.setCorPy(); y.setCorPhi();
               //pat::MET::METUncertainty shift;
               //shift = JetResUp;
-              //std::cout << "Met has et= " << y.getCorPt();
               if(syst_shift==0)
                   {//do nothing
                   }
