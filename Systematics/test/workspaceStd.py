@@ -197,10 +197,8 @@ process.tagsDumper.className = "DiPhotonTagDumper"
 process.tagsDumper.src = "flashggSystTagMerger"
 #process.tagsDumper.src = "flashggTagSystematics"
 process.tagsDumper.processId = "test"
-#process.tagsDumper.dumpTrees = True
 process.tagsDumper.dumpTrees = False
-#process.tagsDumper.dumpWorkspace = True
-process.tagsDumper.dumpWorkspace = False
+process.tagsDumper.dumpWorkspace = True
 process.tagsDumper.dumpHistos = False
 process.tagsDumper.quietRooFit = True
 process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
@@ -250,7 +248,7 @@ for tag in tagList:
           currentVariables = systematicVariables
       
       isBinnedOnly = (systlabel !=  "")
-      if customize.processId.count("l_") or customize.processId.count("vbf_") and (systlabel ==  ""):
+      if customize.processId.count("h_") or customize.processId.count("vbf_") and (systlabel ==  ""):
           print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
           nPdfWeights = 60
