@@ -19,8 +19,10 @@ namespace flashgg {
         
         void setCorPx(float mPx);
         void setCorPy(float mPy);
-        float getCorPhi();
-        float getCorPt();
+        float getCorPx() const;
+        float getCorPy() const;
+        float getCorPhi() const;
+        float getCorPt() const;
         
     private:
         float corpx;
