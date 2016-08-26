@@ -77,7 +77,6 @@ namespace flashgg {
         phoIdMVAThreshold_           = iConfig.getParameter<double>( "phoIdMVAThreshold" );
         dPhiDiphotonMetThreshold_    = iConfig.getParameter<double>( "dPhiDiphotonMetThreshold" );
 
-
         produces<vector<VHEtTag> >();
         produces<vector<VHTagTruth> >();
         photonCollection_=iConfig.getParameter<InputTag> ( "DiPhotonTag" );
@@ -94,7 +93,6 @@ namespace flashgg {
         //Handle<View<pat::MET> > METs;
         Handle<View<flashgg::Met> > METs;
         evt.getByToken( METToken_, METs );
-
         if( METs->size() != 1 )
         { std::cout << "WARNING number of MET is not equal to 1" << std::endl; }
         Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
@@ -284,6 +282,7 @@ namespace flashgg {
                newPhi = -3.14159 + newPhi;
            else if(newPx<0&&newPy>=0)
                newPhi = 3.14159 + newPhi;
+           //std::cout << "metPT: " << theMET->getCorPt() << std::endl;
            
            if(fabs(newPhi-dipho->phi())<dPhiDiphotonMetThreshold_)  //skip if close
                if(fabs(newPhi-dipho->phi())-3.14159<dPhiDiphotonMetThreshold_) //skip if close but on other side of phi=0

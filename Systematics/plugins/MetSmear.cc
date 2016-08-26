@@ -51,10 +51,13 @@ namespace flashgg{
   void MetSmear::applyCorrection( flashgg::Met &y, int syst_shift )
   {
       //pat::METCorrectionLevel level = Type1;
+      
+      if ( debug_ && syst_shift==-1) 
+          {
+              std::cout << "        unshifted" << ": Met has et=" << y.getCorPt() << " phi=" << y.getCorPhi() << std::endl;
+          }
       if( overall_range_( y ) ) 
           {
-
-              
               //y.setCorPx(); y.setCorPy(); y.setCorPhi();
               //pat::MET::METUncertainty shift;
               //shift = JetResUp;
@@ -72,8 +75,10 @@ namespace flashgg{
                       //std::cout << "previous px value: " << y.corPx() <<  "   shifted up by unc:  " << y.shiftedPx((pat::MET::METUncertainty) 10) << std::endl;
                       //std::cout << "previous px value: " << y.corPx() <<  "   shifted up by pho:  " << y.shiftedPx((pat::MET::METUncertainty) 12) << std::endl;
                       //std::cout << "previous px value: " << y.corPx() <<  "   unshifted        :  " << y.shiftedPx((pat::MET::METUncertainty) 14) << std::endl;
+                      
                       y.setCorPx(y.shiftedPx((pat::MET::METUncertainty) 10));
                       y.setCorPy(y.shiftedPy((pat::MET::METUncertainty) 10));
+                      
                       //std::cout << "  shifted up:  " << y.getCorPt() << std::endl;
                   }
               else if(syst_shift==-1)
@@ -89,7 +94,7 @@ namespace flashgg{
                       //std::cout << "central value for MET shift" << std::endl;
                       throw cms::Exception("UnsupportedMET smear") << " syst_shift=" << syst_shift << " is not supported";
                   }
-              if ( debug_ ) 
+              if ( debug_ && syst_shift==-1) 
                   {
                       std::cout << "  " << shiftLabel( syst_shift ) << ": Met has et=" << y.getCorPt() << " phi=" << y.getCorPhi() << std::endl;
                   }

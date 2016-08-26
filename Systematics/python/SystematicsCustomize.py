@@ -14,6 +14,7 @@ def printSystematicInfo(process):
     print 57*"-"
     vpsetlist2D  = [process.flashggDiPhotonSystematics.SystMethods2D, process.flashggMuonSystematics.SystMethods2D, process.flashggElectronSystematics.SystMethods2D]
     vpsetlist2D += [process.flashggJetSystematics0.SystMethods2D]
+    vpsetlist +=[process.flashggMetSystematics.SystMethods]
     printSystematicVPSet(vpsetlist2D)
 
 def printSystematicVPSet(vpsetlist):
@@ -56,7 +57,8 @@ def createStandardSystematicsProducers(process):
     process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
     process.load("flashgg.Systematics.flashggMuonSystematics_cfi")
     process.load("flashgg.Systematics.flashggElectronSystematics_cfi")
-
+    process.load("flashgg.Systematics.flashggMetSystematics_cfi")
+    
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
     from flashgg.Systematics.flashggJetSystematics_cfi import createJetSystematics
     jetSystematicsInputTags = createJetSystematics(process,UnpackedJetCollectionVInputTag)
@@ -69,6 +71,7 @@ def modifyTagSequenceForSystematics(process,jetSystematicsInputTags,ZPlusJetMode
     massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggUpdatedIdMVADiPhotons"),cms.InputTag("flashggDiPhotonSystematics"))
     massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSelectedElectrons"),cms.InputTag("flashggElectronSystematics"))
     massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSelectedMuons"),cms.InputTag("flashggMuonSystematics"))
+    massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggMets"),cms.InputTag("flashggMetSystematics"))
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
     for i in range(len(jetSystematicsInputTags)):
         massSearchReplaceAnyInputTag(process.flashggTagSequence,UnpackedJetCollectionVInputTag[i],jetSystematicsInputTags[i])
@@ -81,12 +84,14 @@ def modifyTagSequenceForSystematics(process,jetSystematicsInputTags,ZPlusJetMode
         process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
     process.systematicsTagSequences = cms.Sequence()
 
-def cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags,ZPlusJetMode=False):
+def cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags,ZPlusJetMode=False):
     for systlabel in systlabels:
         if systlabel == "":
             continue
         from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet,massSearchReplaceAnyInputTag
         newseq = cloneProcessingSnippet(process,process.flashggTagSequence,systlabel)
+        if systlabel in metsystlabels:
+            massSearchReplaceAnyInputTag(newseq,cms.InputTag("flashggMetSystematics"),cms.InputTag("flashggMetSystematics",systlabel))
         if systlabel in phosystlabels:
             massSearchReplaceAnyInputTag(newseq,cms.InputTag("flashggDiPhotonSystematics"),cms.InputTag("flashggDiPhotonSystematics",systlabel))
         if systlabel in jetsystlabels:
