@@ -44,17 +44,40 @@ musystlabels = []
 
 from flashgg.MetaData.JobConfig import customize
 customize.options.register('doFiducial',
-                           'False',
+                           False,
                            VarParsing.VarParsing.multiplicity.singleton,
-                           VarParsing.VarParsing.varType.string,
+                           VarParsing.VarParsing.varType.bool,
                            'doFiducial'
                            )
-
 customize.options.register('acceptance',
                            'NONE',
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.string,
                            'acceptance'
+                           )
+customize.options.register('doSystematics',
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doSystematics'
+                           )
+customize.options.register('doPdfWeights',
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doPdfWeights'
+                           )
+customize.options.register('dumpTrees',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doSystematics'
+                           )
+customize.options.register('dumpWorkspace',
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doSystematics'
                            )
 
 
@@ -68,11 +91,16 @@ print "Printing options"
 print 'doFiducial '+str(customize.doFiducial)
 print 'acceptance '+str(customize.acceptance)
 
-if customize.doFiducial == 'True':
+if customize.doFiducial:
+    import flashgg.Systematics.fiducialCrossSectionsCustomize as fc
+    fc.leadCut = 1./3.
+    fc.subLeadCut = 1./4.
+    fc.isoCut = 10.
+    fc.etaCut = 2.5
     matchCut = "leadingPhoton.hasMatchedGenPhoton() && subLeadingPhoton.hasMatchedGenPhoton()"
     phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >0.320 && subLeadingView().phoIdMvaWrtChosenVtx() >0.320)'
-    accCut = "(leadingPhoton.userFloat(\"genIso\") < 10.0 && subLeadingPhoton.userFloat(\"genIso\") < 10.0 && abs(leadingPhoton.matchedGenPhoton.eta) <2.5 && abs(subLeadingPhoton.matchedGenPhoton.eta) <2.5 && leadingPhoton.matchedGenPhoton.pt / genP4.mass >1.0/3.0 && subLeadingPhoton.matchedGenPhoton.pt / genP4.mass >0.25)"
-
+    accCut   = fc.getAccRecoCut()
+    
     print process.flashggPreselectedDiPhotons.cut
 
     if customize.acceptance == 'IN':
@@ -89,7 +117,7 @@ if customize.doFiducial == 'True':
 process.load("flashgg/Taggers/flashggTagSequence_cfi")
 print 'here we print the tag sequence before'
 print process.flashggTagSequence
-if customize.doFiducial == 'True':
+if customize.doFiducial:
     from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet,massSearchReplaceAnyInputTag
     process.flashggTagSequence.remove(process.flashggVBFTag)
     process.flashggTagSequence.remove(process.flashggTTHLeptonicTag)
@@ -109,7 +137,7 @@ if customize.doFiducial == 'True':
 print 'here we print the tag sequence after'
 print process.flashggTagSequence
 
-if customize.doFiducial == 'True':
+if customize.doFiducial:
     print 'we do fiducial and we change tagsorter'
     process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggSigmaMoMpToMTag')) )
 
@@ -127,50 +155,44 @@ useEGMTools(process)
 if customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance"): # convention: ggh vbf wzh (wh zh) tth
     print "Signal MC, so adding systematics and dZ"
     variablesToUse = minimalVariables
-    variablesToUse.append("leadgeniso := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99.")
-    variablesToUse.append("subleadgeniso := ? diPhoton().subLeadingPhoton().hasMatchedGenPhoton() ? diPhoton().subLeadingPhoton().userFloat(\"genIso\") : -99.")
-    variablesToUse.append("leadGenEta := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().matchedGenPhoton().eta() : -99.")
-    variablesToUse.append("subleadGenEta := ? diPhoton().subLeadingPhoton().hasMatchedGenPhoton() ? diPhoton().subLeadingPhoton().matchedGenPhoton().eta() : -99.")
-
-    variablesToUse.append("leadGenPt := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().matchedGenPhoton().pt() : -99.")
-    variablesToUse.append("subleadGenPt := ? diPhoton().subLeadingPhoton().hasMatchedGenPhoton() ? diPhoton().subLeadingPhoton().matchedGenPhoton().pt() : -99.")
-    variablesToUse.append("genmass := diPhoton().genP4().mass()")
+    ## variablesToUse.extend(fc.getGenVariables())
     variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
     variablesToUse.append("leadmva := diPhotonMVA().leadmva")
     variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
 
-    for direction in ["Up","Down"]:
-        phosystlabels.append("MvaShift%s01sigma" % direction)
-#        phosystlabels.append("MvaLinearSyst%s01sigma" % direction)
-        phosystlabels.append("SigmaEOverEShift%s01sigma" % direction)
-        phosystlabels.append("MaterialCentral%s01sigma" % direction)
-        phosystlabels.append("MaterialForward%s01sigma" % direction)
-        phosystlabels.append("FNUFEB%s01sigma" % direction)
-        phosystlabels.append("FNUFEE%s01sigma" % direction)
-        jetsystlabels.append("JEC%s01sigma" % direction)
-        jetsystlabels.append("JER%s01sigma" % direction)
-        jetsystlabels.append("RMSShift%s01sigma" % direction)
-        #metsystlabels.append("metUncertainty%s01sigma" % direction)
-        variablesToUse.append("UnmatchedPUWeight%s01sigma[1,-999999.,999999.] := weight(\"UnmatchedPUWeight%s01sigma\")" % (direction,direction))
-        variablesToUse.append("MvaLinearSyst%s01sigma[1,-999999.,999999.] := weight(\"MvaLinearSyst%s01sigma\")" % (direction,direction))
-        variablesToUse.append("LooseMvaSF%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s01sigma\")" % (direction,direction))
-        variablesToUse.append("PreselSF%s01sigma[1,-999999.,999999.] := weight(\"PreselSF%s01sigma\")" % (direction,direction))
-        variablesToUse.append("electronVetoSF%s01sigma[1,-999999.,999999.] := weight(\"electronVetoSF%s01sigma\")" % (direction,direction))
-        variablesToUse.append("TriggerWeight%s01sigma[1,-999999.,999999.] := weight(\"TriggerWeight%s01sigma\")" % (direction,direction))
-        variablesToUse.append("FracRVWeight%s01sigma[1,-999999.,999999.] := weight(\"FracRVWeight%s01sigma\")" % (direction,direction))
-        variablesToUse.append("ElectronWeight%s01sigma[1,-999999.,999999.] := weight(\"ElectronWeight%s01sigma\")" % (direction,direction))
-        variablesToUse.append("MuonWeight%s01sigma[1,-999999.,999999.] := weight(\"MuonWeight%s01sigma\")" % (direction,direction))
-        variablesToUse.append("JetBTagWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagWeight%s01sigma\")" % (direction,direction))
-        for r9 in ["HighR9","LowR9"]:
-            for region in ["EB","EE"]:
-                phosystlabels.append("ShowerShape%s%s%s01sigma"%(r9,region,direction))
-#                phosystlabels.append("MCSmear%s%s%s01sigma" % (r9,region,direction))
-                phosystlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
-                for var in ["Rho","Phi"]:
-                    phosystlabels.append("MCSmear%s%s%s%s01sigma" % (r9,region,var,direction))
-    systlabels += phosystlabels
-    systlabels += jetsystlabels
-    #systlabels += metsystlabels
+    if customize.doSystematics:
+        for direction in ["Up","Down"]:
+            phosystlabels.append("MvaShift%s01sigma" % direction)
+#            phosystlabels.append("MvaLinearSyst%s01sigma" % direction)
+            phosystlabels.append("SigmaEOverEShift%s01sigma" % direction)
+            phosystlabels.append("MaterialCentral%s01sigma" % direction)
+            phosystlabels.append("MaterialForward%s01sigma" % direction)
+            phosystlabels.append("FNUFEB%s01sigma" % direction)
+            phosystlabels.append("FNUFEE%s01sigma" % direction)
+            jetsystlabels.append("JEC%s01sigma" % direction)
+            jetsystlabels.append("JER%s01sigma" % direction)
+            jetsystlabels.append("RMSShift%s01sigma" % direction)
+            #metsystlabels.append("metUncertainty%s01sigma" % direction)
+            variablesToUse.append("UnmatchedPUWeight%s01sigma[1,-999999.,999999.] := weight(\"UnmatchedPUWeight%s01sigma\")" % (direction,direction))
+            variablesToUse.append("MvaLinearSyst%s01sigma[1,-999999.,999999.] := weight(\"MvaLinearSyst%s01sigma\")" % (direction,direction))
+            variablesToUse.append("LooseMvaSF%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s01sigma\")" % (direction,direction))
+            variablesToUse.append("PreselSF%s01sigma[1,-999999.,999999.] := weight(\"PreselSF%s01sigma\")" % (direction,direction))
+            variablesToUse.append("electronVetoSF%s01sigma[1,-999999.,999999.] := weight(\"electronVetoSF%s01sigma\")" % (direction,direction))
+            variablesToUse.append("TriggerWeight%s01sigma[1,-999999.,999999.] := weight(\"TriggerWeight%s01sigma\")" % (direction,direction))
+            variablesToUse.append("FracRVWeight%s01sigma[1,-999999.,999999.] := weight(\"FracRVWeight%s01sigma\")" % (direction,direction))
+            variablesToUse.append("ElectronWeight%s01sigma[1,-999999.,999999.] := weight(\"ElectronWeight%s01sigma\")" % (direction,direction))
+            variablesToUse.append("MuonWeight%s01sigma[1,-999999.,999999.] := weight(\"MuonWeight%s01sigma\")" % (direction,direction))
+            variablesToUse.append("JetBTagWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagWeight%s01sigma\")" % (direction,direction))
+            for r9 in ["HighR9","LowR9"]:
+                for region in ["EB","EE"]:
+                    phosystlabels.append("ShowerShape%s%s%s01sigma"%(r9,region,direction))
+#                    phosystlabels.append("MCSmear%s%s%s01sigma" % (r9,region,direction))
+                    phosystlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
+                    for var in ["Rho","Phi"]:
+                        phosystlabels.append("MCSmear%s%s%s%s01sigma" % (r9,region,var,direction))
+        systlabels += phosystlabels
+        systlabels += jetsystlabels
+        #systlabels += metsystlabels
     customizeSystematicsForSignal(process)
 elif customize.processId == "Data":
     print "Data, so turn of all shifts and systematics, with some exceptions"
@@ -226,8 +248,8 @@ process.tagsDumper.className = "DiPhotonTagDumper"
 process.tagsDumper.src = "flashggSystTagMerger"
 #process.tagsDumper.src = "flashggTagSystematics"
 process.tagsDumper.processId = "test"
-process.tagsDumper.dumpTrees = True
-process.tagsDumper.dumpWorkspace = False
+process.tagsDumper.dumpTrees = customize.dumpTrees
+process.tagsDumper.dumpWorkspace = customize.dumpWorkspace
 process.tagsDumper.dumpHistos = False
 process.tagsDumper.quietRooFit = True
 process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
@@ -243,7 +265,7 @@ process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNA
 ##["TTHLeptonicTag",0]
 #]
 
-if customize.doFiducial == 'True':
+if customize.doFiducial:
     tagList=[["SigmaMpTTag",3]]
 else:
     tagList=[
@@ -278,14 +300,14 @@ for tag in tagList:
           currentVariables = systematicVariables
       
       isBinnedOnly = (systlabel !=  "")
-      if customize.processId.count("h_") or customize.processId.count("vbf_") and (systlabel ==  ""):
+      if ( customize.doPdfWeights or customize.doSystematics ) and ( customize.datasetName().count("HToGG") or customize.processId.count("h_") or customize.processId.count("vbf_") ) and (systlabel ==  ""):
           print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
           nPdfWeights = 60
           nAlphaSWeights = 2
           nScaleWeights = 9
       else:
-          print "Data, background MC, or non-central value: no PDF weights"
+          print "Data, background MC, or non-central value, or no systematics: no PDF weights"
           dumpPdfWeights = False
           nPdfWeights = -1
           nAlphaSWeights = -1
@@ -357,6 +379,11 @@ process.p = cms.Path(process.dataRequirements*
                      process.flashggSystTagMerger*
                      process.finalFilter*
                      process.tagsDumper)
+
+
+if customize.doFiducial:
+    
+    fc.addGenOnlyAnalysis(process,customize.acceptance,tagList,systlabels,pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights))
 
 print "--- Dumping modules that take diphotons as input: ---"
 mns = process.p.moduleNames()

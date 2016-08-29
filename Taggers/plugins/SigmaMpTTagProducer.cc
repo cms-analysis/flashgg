@@ -65,7 +65,7 @@ namespace flashgg {
 
     int SigmaMpTTagProducer::chooseCategory( float sigmaMoMvalue, float pToMvalue )
     {
-        std::cout<<"sigmaM/M "<<sigmaMoMvalue<<", pT/M "<<pToMvalue<<std::endl;
+        /// std::cout<<"sigmaM/M "<<sigmaMoMvalue<<", pT/M "<<pToMvalue<<std::endl;
         // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
         int n1;
         int n2;
@@ -80,7 +80,7 @@ namespace flashgg {
             }
             if(n2==0 || n2==(int)boundaries_pToM.size()){return -1;}//boundaries have to be provided including lowest and highest: if below lowest (0) or above highest (size) return -1 
         
-        std::cout<<"if we are here, we didn't throw away the event, n1 "<<n1<<", n2 "<<n2<<" and the cat number is  "<<((n1-1)*(boundaries_sigmaMoM.size()-1) + (n2-1))<<std::endl;
+            // std::cout<<"if we are here, we didn't throw away the event, n1 "<<n1<<", n2 "<<n2<<" and the cat number is  "<<((n1-1)*(boundaries_sigmaMoM.size()-1) + (n2-1))<<std::endl;
         return (n1-1)*((int)boundaries_sigmaMoM.size()-1) + (n2-1); // Does not pass, object will not be produced
         }
         else{
@@ -134,7 +134,7 @@ namespace flashgg {
             tag_obj.setSystLabel( systLabel_ );
 
             int catnum = chooseCategory( mvares->decorrSigmarv, dipho->pt()/dipho->mass() );
-            std::cout<<"cat num assigned is "<<catnum<<std::endl;
+            /// std::cout<<"cat num assigned is "<<catnum<<std::endl;
             tag_obj.setCategoryNumber( catnum );
 
             tag_obj.includeWeights( *dipho );
