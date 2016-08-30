@@ -3,15 +3,23 @@
         "/DoubleEG/Run2016B-PromptReco-v1/MINIAOD",
         "/DoubleEG/Run2016B-PromptReco-v2/MINIAOD",
         "/DoubleEG/Run2016C-PromptReco-v2/MINIAOD",
+        "/DoubleEG/Run2016D-PromptReco-v2/MINIAOD",
+        "/DoubleEG/Run2016E-PromptReco-v2/MINIAOD",
         "/SingleElectron/Run2016B-PromptReco-v1/MINIAOD",
         "/SingleElectron/Run2016B-PromptReco-v2/MINIAOD",
         "/SingleElectron/Run2016C-PromptReco-v2/MINIAOD",
+        "/SingleElectron/Run2016D-PromptReco-v2/MINIAOD",
+        "/SingleElectron/Run2016E-PromptReco-v2/MINIAOD",
         "/DoubleMuon/Run2016B-PromptReco-v1/MINIAOD",
         "/DoubleMuon/Run2016B-PromptReco-v2/MINIAOD",
         "/DoubleMuon/Run2016C-PromptReco-v2/MINIAOD",
+        "/DoubleMuon/Run2016D-PromptReco-v2/MINIAOD",
+        "/DoubleMuon/Run2016E-PromptReco-v2/MINIAOD",
         "/SingleMuon/Run2016B-PromptReco-v1/MINIAOD",
         "/SingleMuon/Run2016B-PromptReco-v2/MINIAOD",
         "/SingleMuon/Run2016C-PromptReco-v2/MINIAOD"
+        "/SingleMuon/Run2016D-PromptReco-v2/MINIAOD"
+        "/SingleMuon/Run2016E-PromptReco-v2/MINIAOD"
                 ],
         "sig" : [
         "/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14-v1/MINIAODSIM",

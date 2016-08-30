@@ -26,6 +26,9 @@
     "Run2016B-PromptReco"    : ["80X_dataRun2_Prompt_v8"],
     "Run2016C-PromptReco"    : ["80X_dataRun2_Prompt_v9"],
     "Run2016D-PromptReco"    : ["80X_dataRun2_Prompt_v9"],
+    "Run2016E-PromptReco"    : ["80X_dataRun2_Prompt_v10"],
+    "Run2016F-PromptReco"    : ["80X_dataRun2_Prompt_v10"],
+    "Run2016G-PromptReco"    : ["80X_dataRun2_Prompt_v10"],
 
     "RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3"                                 : ["80X_mcRun2_asymptotic_2016_v3"],
     "RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3_ext1"                            : ["80X_mcRun2_asymptotic_2016_v3"],
