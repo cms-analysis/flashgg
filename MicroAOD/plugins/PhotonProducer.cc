@@ -77,6 +77,8 @@ namespace flashgg {
         bool doOverlapRemovalForIsolation_, useVtx0ForNeutralIso_;
         std::vector<CaloIsoParams> extraCaloIsolations_;
         std::vector<std::unique_ptr<IsolationAlgoBase> > extraIsoAlgos_;
+
+        bool useNewPhoId_;
     };
 
 
@@ -98,9 +100,15 @@ namespace flashgg {
         //        electronLabel_ = iConfig.getParameter<string>( "elecLabel" );
         //        rhoFixedGrid_  = iConfig.getParameter<edm::InputTag>( "rhoFixedGridCollection" );
 
+
+        useNewPhoId_ = iConfig.getParameter<bool>( "useNewPhoId" ); 
         phoIdMVAweightfileEB_ = iConfig.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EB" );
         phoIdMVAweightfileEE_ = iConfig.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EE" );
-        phoTools_.setupMVA( phoIdMVAweightfileEB_.fullPath(), phoIdMVAweightfileEE_.fullPath() );
+        if(useNewPhoId_){
+            phoIdMVAweightfileEB_ = iConfig.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EB_new" );
+            phoIdMVAweightfileEE_ = iConfig.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EE_new" );
+        }
+        phoTools_.setupMVA( phoIdMVAweightfileEB_.fullPath(), phoIdMVAweightfileEE_.fullPath(), useNewPhoId_);
 
         //    regressionWeightFile_ = iConfig.getParameter<edm::FileInPath>("regressionWeightFile");
 
