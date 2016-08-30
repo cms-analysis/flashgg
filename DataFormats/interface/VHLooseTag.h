@@ -23,11 +23,13 @@ namespace flashgg {
         const std::vector<edm::Ptr<Muon> > muons() const { return Muons_;}
         const std::vector<edm::Ptr<flashgg::Electron> > electrons() const {return Electrons_;}
         const std::vector<edm::Ptr<Jet> > jets() const { return Jets_;}
-        const std::vector<edm::Ptr<flashgg::Met> > met() const { return MET_;}
+        //const std::vector<edm::Ptr<flashgg::Met> > met() const { return MET_;}
+        const edm::Ptr<flashgg::Met> met() const { return MET_;}
 
         void setJets( std::vector<edm::Ptr<Jet> > Jets ) { Jets_ = Jets; }
         void setMuons( std::vector<edm::Ptr<Muon> >Muons ) {Muons_ = Muons;}
-        void setMET( std::vector<edm::Ptr<flashgg::Met> > MET ) {MET_ = MET;}
+        //void setMET( std::vector<edm::Ptr<flashgg::Met> > MET ) {MET_ = MET;}
+        void setMET( edm::Ptr<flashgg::Met>  MET ) {MET_ = MET;}
         void setElectrons( std::vector<edm::Ptr<Electron> > Electrons ) {Electrons_ = Electrons;}
 
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kVHLoose; }
@@ -36,7 +38,8 @@ namespace flashgg {
         std::vector<edm::Ptr<Muon> > Muons_;
         std::vector<edm::Ptr<Electron> > Electrons_;
         std::vector<edm::Ptr<Jet> > Jets_;
-        std::vector<edm::Ptr<flashgg::Met> > MET_;
+        //std::vector<edm::Ptr<flashgg::Met> > MET_;
+        edm::Ptr<flashgg::Met> MET_;
     };
 }
 

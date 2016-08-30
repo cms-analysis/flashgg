@@ -74,7 +74,8 @@
 </class>
 <class name="std::vector<flashgg::TTHHadronicTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TTHHadronicTag> >"/>
-<class name="flashgg::VHEtTag" ClassVersion="12">
+<class name="flashgg::VHEtTag" ClassVersion="13">
+ <version ClassVersion="13" checksum="2125676410"/>
  <version ClassVersion="12" checksum="1192814105"/>
  <version ClassVersion="11" checksum="884120660"/>
   <version ClassVersion="10" checksum="1061507347"/>
@@ -89,7 +90,8 @@
 </class>
 <class name="std::vector<flashgg::VBFTagTruth>"/>
 <class name="edm::Wrapper<std::vector<flashgg::VBFTagTruth> >"/>
-<class name="flashgg::VHLooseTag" ClassVersion="13">
+<class name="flashgg::VHLooseTag" ClassVersion="14">
+ <version ClassVersion="14" checksum="1861363899"/>
  <version ClassVersion="13" checksum="3345591704"/>
  <version ClassVersion="12" checksum="2427728431"/>
  <version ClassVersion="11" checksum="3802982704"/>
@@ -104,7 +106,8 @@
 
 <class name="std::vector<flashgg::VHLooseTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::VHLooseTag> >"/>
-<class name="flashgg::VHTightTag" ClassVersion="13">
+<class name="flashgg::VHTightTag" ClassVersion="14">
+ <version ClassVersion="14" checksum="3413794279"/>
  <version ClassVersion="13" checksum="1140450204"/>
  <version ClassVersion="12" checksum="1711188723"/>
  <version ClassVersion="11" checksum="3086442996"/>
@@ -207,10 +210,12 @@
   <version ClassVersion="11" checksum="1231550995"/>
 </class>
 <class name="std::vector<flashgg::Met>"/>
-<class name="edm::Ptr<flashgg::Met>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Met> >"/>
 <class name="std::vector<std::vector<flashgg::Met> >"/>
 <class name="edm::Wrapper<std::vector<std::vector<flashgg::Met> > >"/>
+<class name="edm::Ptr<flashgg::Met>"/>
+<class name="std::vector<edm::Ptr<flashgg::Met> >"/>
+<class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::Met> > >"/>
 <class name="std::map<edm::Ptr<reco::Vertex>,float>"/>
 <class name="std::pair<edm::Ptr<reco::Vertex>,float>"/>
 <class name="std::map<std::string,std::map<edm::Ptr<reco::Vertex>,float>>"/>

@@ -328,7 +328,8 @@ namespace flashgg {
             //std::vector<edm::Ptr<flashgg::Muon> > tagMuons;
             //std::vector<edm::Ptr<Electron> > tagElectrons;
             std::vector<edm::Ptr<Jet> > tagJets;
-            std::vector<edm::Ptr<flashgg::Met> > tagMETs;
+            //std::vector<edm::Ptr<flashgg::Met> > tagMETs;
+            edm::Ptr<flashgg::Met>  tagMETs;
 
             edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( diphoIndex );
             edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );
@@ -399,7 +400,7 @@ namespace flashgg {
             //------>MET info
             if( METs->size() != 1 ) { std::cout << "WARNING - #MET is not 1" << std::endl;}
             Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
-            tagMETs.push_back( theMET );            
+            //tagMETs.push_back( theMET );            
             //std::cout << "------------------------loose has good met" << std::endl;
             if( (tagJets.size() < jetsNumberThreshold_) && photonSelection && ( goodMuons.size() >= 1 || goodElectrons.size() >= 1 ) && theMET->getCorPt()<METThreshold_) {
                 vhloosetags_obj.setJets( tagJets );
@@ -407,7 +408,8 @@ namespace flashgg {
                 vhloosetags_obj.setElectrons( goodElectrons );
                 vhloosetags_obj.setDiPhotonIndex( diphoIndex );
                 vhloosetags_obj.setSystLabel( systLabel_ );
-                vhloosetags_obj.setMET( tagMETs );
+                //vhloosetags_obj.setMET( tagMETs );
+                vhloosetags_obj.setMET( theMET );
                 vhloosetags->push_back( vhloosetags_obj );
                 if( ! evt.isRealData() ) 
                     {

@@ -364,7 +364,7 @@ namespace flashgg {
             isInvMassOK_elec = false;
 
             std::vector<edm::Ptr<Jet> > tagJets;
-            std::vector<edm::Ptr<flashgg::Met> > tagMETs;
+            //std::vector<edm::Ptr<flashgg::Met> > tagMETs;
 
             edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( diphoIndex );
             edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );
@@ -499,7 +499,7 @@ namespace flashgg {
             if( METs->size() != 1 ) { std::cout << "WARNING - #MET is not 1" << std::endl;}
             Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
             //if( ( isMuonHighPt || isElectronHighPt ) && theMET->pt() > METThreshold_ ) {
-            tagMETs.push_back( theMET );
+            //tagMETs.push_back( theMET );
             // }
             //            std::cout << "tight met value: " << theMET->getCorPt() << std::endl;
             if( photonSelection && ( ( ( isMuonHighPt && theMET->getCorPt() >METThreshold_  && tagJets.size() < jetsNumberThreshold_ ) || ( isMuonLowPt && isInvMassOK ) ) ||
@@ -507,7 +507,8 @@ namespace flashgg {
                 VHTightTags_obj.setJets( tagJets );
                 VHTightTags_obj.setMuons( tagMuons );
                 VHTightTags_obj.setElectrons( tagElectrons );
-                VHTightTags_obj.setMET( tagMETs );
+                //                VHTightTags_obj.setMET( tagMETs );
+                VHTightTags_obj.setMET( theMET );
                 VHTightTags_obj.setDiPhotonIndex( diphoIndex );
                 VHTightTags_obj.setSystLabel( systLabel_ );
                 VHTightTags->push_back( VHTightTags_obj );
