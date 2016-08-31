@@ -17,8 +17,8 @@
         "/DoubleMuon/Run2016E-PromptReco-v2/MINIAOD",
         "/SingleMuon/Run2016B-PromptReco-v1/MINIAOD",
         "/SingleMuon/Run2016B-PromptReco-v2/MINIAOD",
-        "/SingleMuon/Run2016C-PromptReco-v2/MINIAOD"
-        "/SingleMuon/Run2016D-PromptReco-v2/MINIAOD"
+        "/SingleMuon/Run2016C-PromptReco-v2/MINIAOD",
+        "/SingleMuon/Run2016D-PromptReco-v2/MINIAOD",
         "/SingleMuon/Run2016E-PromptReco-v2/MINIAOD"
                 ],
         "sig" : [
