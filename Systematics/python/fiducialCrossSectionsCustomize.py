@@ -4,10 +4,7 @@ leadCut = 1./3.
 subLeadCut = 1./4.
 isoCut = 10.
 etaCut = 2.5
-<<<<<<< HEAD
 jetPtCut = 30.
-=======
->>>>>>> bf4fd4c... Factorized fiducial cross-sections configuration and added classes for gen-level analysis
 
 # ----------------------------------------------------------------------------------------------------------------
 def getAccRecoCut():
@@ -106,29 +103,23 @@ def getGenVariables(isRecoTag=True):
 
 # ----------------------------------------------------------------------------------------------------------------
 def getRecoVariables(isRecoTag=True):
-#    diPhoVariables = ["mass","pt[-1,(0.0:15.0:30.0:45.0:85.0:125.0:200.0:10000.0)]","rapidity[-1,(-5.0:-2.5:0.0:2.5:5.0)]"]
-#    diPhoVariables = ["mass","pt[-1,(0.0:15.0:30.0:45.0:85.0:125.0:200.0:10000.0)]","rapidity"]
-    diPhoVariables = ["pt"]
-#    phoVariables = ["pt","eta","phi"]
-    phoVariables = []
+    diPhoVariables = ["mass","pt", "eta","rapidity", "phi"]
+    phoVariables = ["pt","eta","phi", "energy", "pz"]
     
 
     pfx = recoDiphoPfx(isRecoTag)
     dipho = map(lambda x: diPhoRecoVariable(x,pfx), diPhoVariables)
     
     expressions = recoPhoExpr(isRecoTag)
-###    legs = reduce(lambda z,w: z+w, (map (lambda x: phoRecoVariable(x,expressions) , phoVariables ) ) )
-    
-    return dipho
-###    return dipho+legs
+    legs = reduce(lambda z,w: z+w, (map (lambda x: phoRecoVariable(x,expressions) , phoVariables ) ) )
+
+    return dipho+legs
 
 # ----------------------------------------------------------------------------------------------------------------
 def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,recoDiphotonTags,genDiphotons,recoJetCollections=None,genJetCollection="slimmedGenJets"):
     if not recoJetCollections:
         from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
         recoJetCollections = UnpackedJetCollectionVInputTag
-    
-
     
     recoJets2p5 = cms.VInputTag()
     recoJets4p7 = cms.VInputTag()
@@ -216,6 +207,7 @@ def getJetKinVariables(pre,post,variables,nmax, getter):
                   )
 
 # ----------------------------------------------------------------------------------------------------------------
+
 def addJetGlobalVariables(process,dumper,src,pre,post,getter=""):    
     import flashgg.Taggers.dumperConfigTools as cfgTools
 
@@ -250,8 +242,33 @@ def addRecoGlobalVariables(process,dumper,tagGetter=""):
 # ----------------------------------------------------------------------------------------------------------------
 def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabels,pdfWeights=None,recoJetCollections=None):
     import itertools
+=======
+>>>>>>> d151a22... debugged exta variables
     import flashgg.Taggers.dumperConfigTools as cfgTools
+
+    variables  = [ "%sNjets%s:=numberOfDaughters" % (pre,post) ]
+    variables += getJetKinVariables(pre,post,["pt","eta","rapidity"],5)
+    variables += [ "%sDijetMass%s := ? numberOfDaughters > 1 ? sqrt( (daughter(0).energy+daughter(1).energy)^2 - (daughter(0).px+daughter(1).px)^2 - (daughter(0).py+daughter(1).py)^2 - (daughter(0).pz+daughter(1).pz)^2 ) : 0" % (pre,post) ]
+
+    cfgTools.addGlobalFloats(process,dumper.globalVariables,src,variables)
+
+# ----------------------------------------------------------------------------------------------------------------
+def addGenGlobalVariables(process,dumper):    
+    addJetGlobalVariables(process,dumper,"flashggGenHadronicActivity2p5","gen","2p5")
+    addJetGlobalVariables(process,dumper,"flashggGenHadronicActivity4p7","gen","4p7")
+
+# ----------------------------------------------------------------------------------------------------------------
+def addRecoGlobalVariables(process,dumper,tagGetter=""):
+    if tagGetter != "": tagGetter += "."
+    addJetGlobalVariables(process,dumper,None,"reco","2p5","%sgetCompCand('jets2p5')" % tagGetter)
+    addJetGlobalVariables(process,dumper,None,"reco","4p7","%sgetCompCand('jets4p7')" % tagGetter)    
     
+    
+# ----------------------------------------------------------------------------------------------------------------
+def addGenOnlyAnalysis(process,acceptance,tagList,systlabels,pdfWeights=None,recoJetCollections=None):
+    import itertools
+    import flashgg.Taggers.dumperConfigTools as cfgTools
+
     accCut = getAccGenCut()
     cut = "1"
     if acceptance == "IN": cut = accCut
@@ -266,7 +283,6 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
     process.flashggTaggedGenDiphotons.src  = "flashggSortedGenDiPhotons"
     process.flashggTaggedGenDiphotons.tags = "flashggTagSorter"
     process.flashggTaggedGenDiphotons.remap = process.tagsDumper.classifierCfg.remap
-## process.flashggTaggedGenDiphotons.tags = "flashggSystTagMerger"
 
     process.load("flashgg.Taggers.genDiphotonDumper_cfi")
     process.genDiphotonDumper.dumpTrees = True
@@ -280,7 +296,7 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
     ## bookHadronicActivityProducers(process,processId,"flashggTagSorter","flashggTaggedGenDiphotons",recoJetCollections,genJetCollection="slimmedGenJets")
     bookHadronicActivityProducers(process,processId,tagSequence,"flashggDiPhotonSystematics",process.flashggSigmaMoMpToMTag,"flashggTaggedGenDiphotons",recoJetCollections,genJetCollection="slimmedGenJets") ##FIXME 
     addGenGlobalVariables(process,process.genDiphotonDumper)
-    addRecoGlobalVariables(process,process.genDiphotonDumper,"tag()")
+    addRecoGlobalVariables(process,process.genDiphotonDumper,tagGetter="tag()")
 
     dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights=False,-1,-1,-1 
     if pdfWeights:
@@ -290,9 +306,6 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
     recoVariables = getRecoVariables(False)
     extravars = ["leadmva := recoTagObj.diPhoton.leadingView.phoIdMvaWrtChosenVtx", "subleadmva := recoTagObj.diPhoton.subLeadingView.phoIdMvaWrtChosenVtx"]
 
-#    return ("diPhoton.leadingPhoton.%s",
-#            "diPhoton.subLeadingPhoton.%s") if isRecoTag else("recoTagObj.diPhoton.leadingPhoton.%s",
-#                                                                  "recoTagObj.diPhoton.subLeadingPhoton.%s")
 
     cfgTools.addCategory(process.genDiphotonDumper,
                          "NoTag", 'isTagged("")',1,
