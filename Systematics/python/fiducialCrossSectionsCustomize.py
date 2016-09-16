@@ -4,10 +4,7 @@ leadCut = 1./3.
 subLeadCut = 1./4.
 isoCut = 10.
 etaCut = 2.5
-<<<<<<< HEAD
 jetPtCut = 30.
-=======
->>>>>>> bf4fd4c... Factorized fiducial cross-sections configuration and added classes for gen-level analysis
 
 # ----------------------------------------------------------------------------------------------------------------
 def getAccRecoCut():
