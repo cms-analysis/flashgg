@@ -7,7 +7,7 @@
 #include "DataFormats/JetReco/interface/GenJet.h"
 
 #include "flashgg/DataFormats/interface/WeightedObject.h"
-
+#include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 
 namespace flashgg {
 
@@ -21,8 +21,8 @@ namespace flashgg {
 
         virtual GenDiPhoton *clone() const { return ( new GenDiPhoton( *this ) ); }
         
-        const flashgg::GenPhotonExtra::cand_type& leadingPhoton() const { return leadingPhoton_.cand(); };
-        const flashgg::GenPhotonExtra::cand_type& subLeadingPhoton() const { return subLeadingPhoton_.cand(); }
+        const flashgg::GenPhotonExtra::cand_type* leadingPhoton() const { return   &(leadingPhoton_.cand()); };
+        const flashgg::GenPhotonExtra::cand_type* subLeadingPhoton() const { return &(subLeadingPhoton_.cand()); }
         
         const reco::GenJet & leadingJet() const { return *leadingJet_; };
         const reco::GenJet & subLeadingJet() const { return *subLeadingJet_; }
@@ -39,6 +39,9 @@ namespace flashgg {
         void setTag(const std::string & tag) { tag_ = tag; }
         std::string tag() const { return tag_; }
         bool isTagged(const std::string & cmp) const { return tag_ == cmp; }
+        void setTagObj(const edm::Ptr<DiPhotonTagBase> recoTagObj) { recoTagObj_ = recoTagObj; }
+        const edm::Ptr<DiPhotonTagBase> recoTagObj() const { return recoTagObj_; }
+        
         
         void setCategoryNumber(int cat) { cat_ = cat; }
         int categoryNumber() const { return cat_; }
@@ -55,6 +58,7 @@ namespace flashgg {
         
         int cat_;
         std::string tag_;
+        edm::Ptr<DiPhotonTagBase> recoTagObj_;
     };
     
 

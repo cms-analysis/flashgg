@@ -382,7 +382,19 @@ process.p = cms.Path(process.dataRequirements*
 
 
 if customize.doFiducial:
-    
+    if ( customize.doPdfWeights or customize.doSystematics ) and ( customize.datasetName().count("HToGG") 
+                                                                   or customize.processId.count("h_") or customize.processId.count("vbf_") ) and (systlabel ==  ""):
+          print "Signal MC central value, so dumping PDF weights"
+          dumpPdfWeights = True
+          nPdfWeights = 60
+          nAlphaSWeights = 2
+          nScaleWeights = 9
+    else:
+          print "Data, background MC, or non-central value, or no systematics: no PDF weights"
+          dumpPdfWeights = False
+          nPdfWeights = -1
+          nAlphaSWeights = -1
+          nScaleWeights = -1
     fc.addGenOnlyAnalysis(process,customize.acceptance,tagList,systlabels,pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights))
 
 print "--- Dumping modules that take diphotons as input: ---"

@@ -171,7 +171,7 @@
 <class name="flashgg::GenDiPhoton" ClassVersion="12">
     <version ClassVersion="10" checksum="3743016204"/>
     <version ClassVersion="11" checksum="3762840980"/>
-    <version ClassVersion="12" checksum="3730430603"/>
+    <version ClassVersion="12" checksum="618509360"/>
 </class>
 
 <class name="edm::Wrapper<flashgg::DiPhotonMVAResult>"/>

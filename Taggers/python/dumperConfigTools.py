@@ -39,9 +39,10 @@ def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mv
             cb.name = cms.untracked.string(label)
         pset.classifierCfg.categories.append(cb)
 
-   
+
 # -----------------------------------------------------------------------
-def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
+def getNameExpr(expr,name=None):
+    
     if ":=" in expr:
         toks=[ v.rstrip(" ").lstrip(" ") for v in expr.split(":=") ]
         ##print toks
@@ -51,6 +52,14 @@ def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
         
     if not name:
         name = expr.replace(".","_").replace("get","")
+    
+    return name,expr
+   
+# -----------------------------------------------------------------------
+def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
+
+    name,expr = getNameExpr(expr,name)
+    
     if name.endswith("]"):
         name,rng = name.replace("]","").split("[")
         rng = rng.split(",")
@@ -239,3 +248,21 @@ def mkVarList(inp):
             
     return ret
 
+
+# -----------------------------------------------------------------------
+def addGlobalFloats(process,globalVariables,src,variables):
+    
+    ntproducer = "%sNtpProducer" % src
+    if not hasattr(process,ntproducer):
+        setattr(process,ntproducer,cms.EDProducer(
+                "CandViewNtpProducer", 
+                src = cms.InputTag(src), lazyParser = cms.untracked.bool(True),
+                variables = cms.VPSet()
+                )
+            )
+    
+    for var in variables:
+        name,expr = getNameExpr(var)
+        getattr(process,ntproducer).variables.append( cms.PSet(tag=cms.untracked.string(name),quantity=cms.untracked.string(expr)) )
+        setattr(globalVariables.extraFloats,name,cms.InputTag(ntproducer,name))
+    

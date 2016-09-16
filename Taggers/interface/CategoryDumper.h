@@ -416,7 +416,9 @@ void CategoryDumper<F, O>::fill( const object_type &obj, double weight, vector<d
         dynamic_cast<RooRealVar &>( rooVars_["weight"] ).setVal( weight_ );
     }
     if (dumpPdfWeights_){
-        for( size_t iwei=0; iwei<pdfWeights.size(); ++iwei ) { variables_pdfWeights_[iwei] = pdfWeights[iwei]; }
+        if( tree_ ) {
+            std::copy(pdfWeights.begin(),pdfWeights.end(),variables_pdfWeights_.begin());
+        }
         if( dataset_pdfWeights_ ) {
             dynamic_cast<RooRealVar &>( rooVars_pdfWeights_["weight"] ).setVal( weight_ );
             if ((nPdfWeights_+ nAlphaSWeights_ + nScaleWeights_) != (int) (pdfWeights.size())){ 
