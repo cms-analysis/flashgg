@@ -122,7 +122,9 @@ class LsfJob(object):
         self.jobid = jobid
     #----------------------------------------
     def preamble(self):
-        return ""
+        # fix to ensure AAA redirecting works properly on lxplus/lxbatch
+        # see https://hypernews.cern.ch/HyperNews/CMS/get/wanaccess/448/1/1.html
+        return "export XRD_NETWORKSTACK=IPv4"
 
     #----------------------------------------
     def epilogue(self,cmd,dest):
