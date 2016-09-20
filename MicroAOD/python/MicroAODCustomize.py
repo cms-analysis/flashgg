@@ -138,7 +138,7 @@ class MicroAODCustomize(object):
     # signal specific customization
     def customizeSignal(self,process):
         process.flashggGenPhotonsExtra.defaultType = 1
-        from flashgg.MicroAOD.flashggMETs_cff import runMETs
+        from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs
         runMETs(process,True) #isMC
         # Default should be the right name for all signals
         process.load("flashgg/MicroAOD/flashggPDFWeightObject_cfi")
@@ -146,7 +146,7 @@ class MicroAODCustomize(object):
 
     # background specific customization
     def customizeBackground(self,process):
-        from flashgg.MicroAOD.flashggMETs_cff import runMETs
+        from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff.py import runMETs
         runMETs(process,True) #isMC
         if "sherpa" in self.datasetName:
             process.flashggGenPhotonsExtra.defaultType = 1
@@ -156,7 +156,7 @@ class MicroAODCustomize(object):
     def customizeData(self,process):
         ## remove MC-specific modules
         modules = process.flashggMicroAODGenSequence.moduleNames()
-        from flashgg.MicroAOD.flashggMETs_cff import runMETs
+        from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs
         runMETs(process,False) #!isMC
         for pathName in process.paths:
             path = getattr(process,pathName)

@@ -14,8 +14,6 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep recoVertexs_offlineSlimmedPrimaryVertices_*_*", # leave out floatedmValueMap_offlineSlimmedPrimaryVertices__PAT
                                                      "keep *_reducedEgamma_reducedSuperClusters_*",
                                                      "keep *_reducedEgamma_*PhotonCores_*",
-                                                     "keep *_slimmedMETs_*_*",
-                                                     "keep *_slimmedMETsNoHF_*_*",
                                                      "keep *_*Rho*_*_*",
                                                      "keep *_offlineBeamSpot_*_*",
                                                      "keep *_TriggerResults_*_*",
