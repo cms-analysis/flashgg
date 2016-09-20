@@ -167,6 +167,9 @@ class MicroAODCustomize(object):
         process.out.outputCommands.append("keep *_*_*RecHit*_*") # for bad events
         delattr(process,"flashggPrunedGenParticles") # will be run due to unscheduled mode unless deleted
         self.customizeHighMassIsolations(process)
+        process.load("flashgg/MicroAOD/flashggDiPhotonFilter_cfi")
+        process.p1 = cms.Path(process.diPhotonFilter) # Do not save events with 0 diphotons
+        process.out.SelectEvents = cms.untracked.PSet(SelectEvents=cms.vstring('p1'))
 
     def customizeHighMassIsolations(self,process):
         # for isolation cones
