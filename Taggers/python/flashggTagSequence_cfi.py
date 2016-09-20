@@ -17,9 +17,9 @@ flashggTagSequence = cms.Sequence(flashggUpdatedIdMVADiPhotons
                                      + flashggVBFTag
                                      + flashggTTHLeptonicTag
                                      + flashggTTHHadronicTag                                      
-#                                     + flashggVHEtTag
-#                                     + flashggVHLooseTag
-#                                     + flashggVHTightTag
+                                     + flashggVHEtTag
+                                     + flashggVHLooseTag
+                                     + flashggVHTightTag
 #                                     + flashggVHHadronicTag
 					)
                                  * flashggTagSorter
