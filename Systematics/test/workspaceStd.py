@@ -12,7 +12,6 @@ dropVBFInNonGold = False  # for 2015 only!
 process = cms.Process("FLASHggSyst")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
-
 process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
@@ -38,6 +37,7 @@ modifyTagSequenceForSystematics(process,jetSystematicsInputTags)
 
 systlabels = [""]
 phosystlabels = []
+metsystlabels = []
 jetsystlabels = []
 elesystlabels = []
 musystlabels = []
@@ -88,6 +88,10 @@ if customize.doFiducial == 'True':
     process.flashggTagSequence.remove(process.flashggVBFTag)
     process.flashggTagSequence.remove(process.flashggTTHLeptonicTag)
     process.flashggTagSequence.remove(process.flashggTTHHadronicTag)
+    #haven't tested VH tags with fiducial cross-section measurement yet
+    process.flashggTagSequence.remove(process.flashggVHEtTag)
+    process.flashggTagSequence.remove(process.flashggVHLooseTag)
+    process.flashggTagSequence.remove(process.flashggVHTightTag)
     process.flashggTagSequence.replace(process.flashggUntagged, process.flashggSigmaMoMpToMTag)
 
 
@@ -123,6 +127,7 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
         jetsystlabels.append("JEC%s01sigma" % direction)
         jetsystlabels.append("JER%s01sigma" % direction)
         jetsystlabels.append("RMSShift%s01sigma" % direction)
+        metsystlabels.append("metUncertainty%s01sigma" % direction)
         variablesToUse.append("UnmatchedPUWeight%s01sigma[1,-999999.,999999.] := weight(\"UnmatchedPUWeight%s01sigma\")" % (direction,direction))
         variablesToUse.append("MvaLinearSyst%s01sigma[1,-999999.,999999.] := weight(\"MvaLinearSyst%s01sigma\")" % (direction,direction))
         variablesToUse.append("LooseMvaSF%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s01sigma\")" % (direction,direction))
@@ -142,6 +147,7 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
                     phosystlabels.append("MCSmear%s%s%s%s01sigma" % (r9,region,var,direction))
     systlabels += phosystlabels
     systlabels += jetsystlabels
+    systlabels += metsystlabels
     customizeSystematicsForSignal(process)
 elif customize.processId == "Data":
     print "Data, so turn of all shifts and systematics, with some exceptions"
@@ -159,7 +165,7 @@ print "--- Variables to be dumped, including systematic weights ---"
 print variablesToUse
 print "------------------------------------------------------------"
 
-cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags)
+cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags)
 
 ###### Dumper section
 
@@ -171,7 +177,7 @@ process.source = cms.Source ("PoolSource",
 "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2/2_2_0/VBFHToGG_M125_13TeV_amcatnlo_pythia8/RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2-2_2_0-v0-RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14_ext2-v1/160707_150558/0000/myMicroAODOutputFile_25.root"
 #"file:/afs/cern.ch/work/s/sethzenz/fromscratch107/CMSSW_8_0_8_patch1/src/flashgg/myMicroAODOutputFile.root"
 #"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIISpring16DR80X-2_0_0-25ns/2_0_0/VBFHToGG_M-125_13TeV_powheg_pythia8/RunIISpring16DR80X-2_0_0-25ns-2_0_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1/160524_093752/0000/myMicroAODOutputFile_1.root"
-        #                             "file:myMicroAODOutputFile.root"
+        #"file:myMicroAODOutputFile.root"
         #        "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-1_1_0-25ns/1_1_0/VBFHToGG_M-125_13TeV_powheg_pythia8/RunIISpring15-ReMiniAOD-1_1_0-25ns-1_1_0-v0-RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/160105_224017/0000/myMicroAODOutputFile_1.root"
 #        "root://eoscms.cern.ch//eos/cms//store/group/phys_higgs/cmshgg/szenz/flashgg/RunIISpring15-ReReco74X-Rerun-1_1_0-25ns/1_2_0/DoubleEG/RunIISpring15-ReReco74X-Rerun-1_1_0-25ns-1_2_0-v0-Run2015D-04Dec2015-v2/160117_214114/0000/myMicroAODOutputFile_10.root"
 #        "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-1_1_0-25ns/1_1_0/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIISpring15-ReMiniAOD-1_1_0-25ns-1_1_0-v0-RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/160105_224456/0000/myMicroAODOutputFile_2.root"
@@ -219,9 +225,9 @@ else:
     tagList=[
         ["UntaggedTag",4],
         ["VBFTag",2],
-        #["VHTightTag",0],
-        #["VHLooseTag",0],
-        #["VHEtTag",0],
+        ["VHTightTag",0],
+        ["VHLooseTag",0],
+        ["VHEtTag",0],
         #["VHHadronicTag",0],
         ["TTHHadronicTag",0],
         ["TTHLeptonicTag",0]
@@ -312,11 +318,11 @@ if (customize.processId.count("qcd") or customize.processId.count("gjet")) and c
         process.PromptFakeFilter.doFakeFake =cms.bool(True)
     else:
         raise Exception,"Mis-configuration of python for prompt-fake filter"
-
 process.p = cms.Path(process.dataRequirements*
                      process.genFilter*
                      process.flashggUpdatedIdMVADiPhotons*
                      process.flashggDiPhotonSystematics*
+                     process.flashggMetSystematics*
                      process.flashggMuonSystematics*process.flashggElectronSystematics*
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                      (process.flashggTagSequence*process.systematicsTagSequences)*
