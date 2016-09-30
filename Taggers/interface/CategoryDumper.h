@@ -37,6 +37,8 @@ namespace flashgg {
         virtual float operator()( const ObjectT &obj ) const = 0;
     };
 
+
+
     template<class ObjectT, class FunctorT> class FunctorWrapper : public FunctorTrait<ObjectT>
     {
 
@@ -55,6 +57,31 @@ namespace flashgg {
         std::shared_ptr<FunctorT> func_;
     };
 
+
+    template<class ObjectT> class GlobalVarWrapper : public FunctorTrait<ObjectT>
+    {
+
+    public:
+        GlobalVarWrapper( GlobalVariablesDumper* globalDumper, const std::string & varname  ) // : std::unique_ptr<FunctorT>(func) {};
+        //            : varname_(varname), globalDumper_(globalDumper) {
+        {
+            varname_ = varname;
+            globalDumper_ = globalDumper;
+        };
+
+        virtual ~GlobalVarWrapper() {} ;
+
+        virtual float operator()( const ObjectT &obj ) const { return globalDumper_->getExtraFloat(varname_); };
+
+    private:
+        // FunctorT * func_;
+        std::string varname_;
+        GlobalVariablesDumper * globalDumper_;
+    };
+
+
+
+
     typedef std::tuple<std::string, int, std::vector<double>, int, std::vector<double>, TH1 *> histo_info;
 
     template<class FunctorT, class ObjectT>
@@ -65,10 +92,13 @@ namespace flashgg {
         typedef FunctorT functor_type;
         typedef StepWiseFunctor<ObjectT, FunctorT> stepwise_functor_type;
         typedef MVAComputer<object_type, functor_type> mva_type;
+
+
         typedef FunctorTrait<object_type> trait_type;
         typedef FunctorWrapper<object_type, functor_type> wrapped_functor_type;
         typedef FunctorWrapper<object_type, stepwise_functor_type> wrapped_stepwise_functor_type;
         typedef FunctorWrapper<object_type, mva_type> wrapped_mva_type;
+        typedef GlobalVarWrapper<object_type> wrapped_global_var_type;
 
         CategoryDumper( const std::string &name, const edm::ParameterSet &cfg, GlobalVariablesDumper *dumper = 0 );
         ~CategoryDumper();
@@ -109,6 +139,7 @@ namespace flashgg {
         TTree *tree_;
         GlobalVariablesDumper *globalVarsDumper_;
         std::vector<std::shared_ptr<wrapped_mva_type> > mvas_;
+        std::vector<std::shared_ptr<wrapped_global_var_type> > extraglobalvars_;
         std::vector<std::shared_ptr<wrapped_functor_type> > functors_;
         std::vector<std::shared_ptr<wrapped_stepwise_functor_type> > stepwise_functors_;
         bool hbooked_;
@@ -187,6 +218,23 @@ namespace flashgg {
                 variables_.push_back( make_tuple( 0., mvas_.back(), nbins, vmin, vmax ) );
             }
         }
+
+
+        //##########
+        auto globalExtraFloatNames = globalVarsDumper_->getExtraFloatNames();
+        for( auto &extraFloatName : globalExtraFloatNames ) {
+            std::cout<<"adding wrapper for extra float variable "<<extraFloatName<<std::endl; 
+//            auto name = mva.getUntrackedParameter<string>( "name" );
+            auto nbins =  100 ;
+            auto vmin =  numeric_limits<double>::min();
+            auto vmax =  numeric_limits<double>::max();
+            extraglobalvars_.push_back( std::shared_ptr<wrapped_global_var_type>( new wrapped_global_var_type( globalVarsDumper_ , extraFloatName ) ) );
+            names_.push_back( extraFloatName );
+            variables_.push_back( make_tuple( 0., extraglobalvars_.back(), nbins, vmin, vmax ) );
+            //            variables_.push_back( make_tuple( 0., extraglobalvars_.back()) );
+        }
+        //##########
+
 
         auto histograms = cfg.getParameter<vector<edm::ParameterSet> >( "histograms" );
         for( auto &histo : histograms ) {

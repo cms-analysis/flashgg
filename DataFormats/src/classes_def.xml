@@ -158,9 +158,10 @@
 <class name="edm::Ptr<flashgg::Photon>"/>
 <class name="std::vector<flashgg::Photon>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Photon> >"/>
-<class name="flashgg::DiPhotonCandidate" ClassVersion="11">
+<class name="flashgg::DiPhotonCandidate" ClassVersion="12">
   <version ClassVersion="10" checksum="2243573479"/>
   <version ClassVersion="11" checksum="3086156793"/>
+  <version ClassVersion="12" checksum="2290346388"/>
 </class>
 <class name="std::vector<flashgg::DiPhotonCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DiPhotonCandidate> >"/>
