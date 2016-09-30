@@ -242,7 +242,6 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
         variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
         variablesToUse.append("leadmva := diPhotonMVA().leadmva")
         variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
-
     if customize.doSystematics:
         for direction in ["Up","Down"]:
             phosystlabels.append("MvaShift%s01sigma" % direction)
@@ -307,8 +306,6 @@ print "-------------------------------------------------"
 print "--- Variables to be dumped, including systematic weights ---"
 print variablesToUse
 print "------------------------------------------------------------"
-
-
 
 
 #from flashgg.Taggers.globalVariables_cff import globalVariables
