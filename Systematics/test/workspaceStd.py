@@ -243,16 +243,6 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
 ##        variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
         variablesToUse.append("leadmva := diPhotonMVA().leadmva")
         variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
-#        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
-        
-    if customize.doSystematics and customize.doFiducial:
-        systematicVariables.extend(fc.getGenVariables(True))
-        systematicVariables.extend(fc.getRecoVariables(True))
-#        systematicVariables.append("genLeadGenIso[1,0.0,100.0] := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
-#        systematicVariables.append("decorrSigmarv[1,0.0,0.10] := diPhotonMVA().decorrSigmarv")
-        systematicVariables.append("leadmva[200,-1.0,1.0] := diPhotonMVA().leadmva")
-        systematicVariables.append("subleadmva[200,-1.0,1.0] := diPhotonMVA().subleadmva")
-        
     if customize.doSystematics:
         for direction in ["Up","Down"]:
             phosystlabels.append("MvaShift%s01sigma" % direction)
