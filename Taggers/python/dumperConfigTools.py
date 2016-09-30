@@ -261,8 +261,19 @@ def addGlobalFloats(process,globalVariables,src,variables):
                 )
             )
     
+    varlist = {}
     for var in variables:
         name,expr = getNameExpr(var)
-        getattr(process,ntproducer).variables.append( cms.PSet(tag=cms.untracked.string(name),quantity=cms.untracked.string(expr)) )
+        varlist[name] = expr
         setattr(globalVariables.extraFloats,name,cms.InputTag(ntproducer,name))
     
+    bookedVars = []
+    for ivar in getattr(process,ntproducer).variables:
+        bookedName = ivar.tag.value() 
+        bookedExpr = ivar.quantity.value()
+        if bookedName in varlist:
+            assert( bookedExpr == varlist[bookedName] )
+            bookedVars.append( bookedName )
+
+    for name,expr in filter(lambda x: x[0] not in bookedVars, varlist.iteritems()):
+        getattr(process,ntproducer).variables.append( cms.PSet(tag=cms.untracked.string(name),quantity=cms.untracked.string(expr)) )

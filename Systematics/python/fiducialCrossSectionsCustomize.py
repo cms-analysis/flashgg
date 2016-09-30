@@ -14,6 +14,8 @@ def getAccRecoCut():
         "lead" : leadCut,
         "sub"  : subLeadCut
         }
+#    return "1"
+
 
 # ----------------------------------------------------------------------------------------------------------------
 def getAccGenCut():
@@ -23,14 +25,15 @@ def getAccGenCut():
         "lead" : leadCut,
         "sub"  : subLeadCut
         }
+#    return "1"
 
 # ----------------------------------------------------------------------------------------------------------------
 def genDiphoPfx(isRecoTag):
-    return "diPhoton().genP4()." if isRecoTag else ""
+    return "diPhoton.genP4." if isRecoTag else ""
 
 # ----------------------------------------------------------------------------------------------------------------
 def recoDiphoPfx(isRecoTag):
-    return "" if isRecoTag else "recoTagObj().diPhoton()."
+    return "diPhoton." if isRecoTag else "recoTagObj.diPhoton."
 
 # ----------------------------------------------------------------------------------------------------------------
 def diPhoGenVariable(name,  pfx):
@@ -42,15 +45,15 @@ def diPhoRecoVariable(name, pfx=None):
 
 # ----------------------------------------------------------------------------------------------------------------
 def genPhoExpr(isRecoTag):
-    return ("? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().%s : -99.",
-            "? diPhoton().subLeadingPhoton().hasMatchedGenPhoton() ? diPhoton().subLeadingPhoton().%s : -99.") if isRecoTag else ("leadingPhoton().%s",
-                                                                                                                                  "subLeadingPhoton().%s")
+    return ("? diPhoton.leadingPhoton.hasMatchedGenPhoton ? diPhoton.leadingPhoton.%s : -99.",
+            "? diPhoton.subLeadingPhoton.hasMatchedGenPhoton ? diPhoton.subLeadingPhoton.%s : -99.") if isRecoTag else ("leadingPhoton.%s",
+                                                                                                                                  "subLeadingPhoton.%s")
 
 # ----------------------------------------------------------------------------------------------------------------
 def recoPhoExpr(isRecoTag):
-    return ("diPhoton().leadingPhoton().%s",
-            "diPhoton().subLeadingPhoton().%s") if isRecoTag else("recoTagObj().diPhoton().leadingPhoton().%s",
-                                                                  "recoTagObj().diPhoton().subLeadingPhoton().%s")
+    return ("diPhoton.leadingPhoton.%s",
+            "diPhoton.subLeadingPhoton.%s") if isRecoTag else("recoTagObj.diPhoton.leadingPhoton.%s",
+                                                                  "recoTagObj.diPhoton.subLeadingPhoton.%s")
 
 # ----------------------------------------------------------------------------------------------------------------
 def phoGenVariable(name, expressions):
@@ -58,11 +61,13 @@ def phoGenVariable(name, expressions):
 
 # ----------------------------------------------------------------------------------------------------------------
 def phoRecoVariable(name, expressions):
-    return map(lambda x: (("gen%s%s := "+x[1]) % (x[0],name.capitalize(),name)), zip(("Lead","Sublead"),expressions))
+    return map(lambda x: (("reco%s%s := "+x[1]) % (x[0],name.capitalize(),name)), zip(("Lead","Sublead"),expressions))
 
 # ----------------------------------------------------------------------------------------------------------------
 def getGenVariables(isRecoTag=True):
-    diPhoVariables = ["mass","pt","rapidity"]
+#    diPhoVariables = ["mass","pt","rapidity"]
+#    diPhoVariables = ["mass", "pt", "pz", "energy"]
+    diPhoVariables = ["mass", "pt"]
     phoVariables = ["pt","eta","phi"]
     
     pfx = genDiphoPfx(isRecoTag)
@@ -72,13 +77,14 @@ def getGenVariables(isRecoTag=True):
     legs = reduce(lambda z,w: z+w, (map (lambda x: phoGenVariable(x,expressions), phoVariables) ) )
         
     if isRecoTag:
-        legs.extend( ["genLeadGenIso := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99",
-                      "genSubleadGenIso := ? diPhoton().subLeadingPhoton().hasMatchedGenPhoton() ? diPhoton().subLeadingPhoton().userFloat(\"genIso\") : -99"] )
+        legs.extend( ["genLeadGenIso := ? diPhoton.leadingPhoton.hasMatchedGenPhoton ? diPhoton.leadingPhoton.userFloat(\"genIso\") : -99",
+                      "genSubleadGenIso := ? diPhoton.subLeadingPhoton.hasMatchedGenPhoton ? diPhoton.subLeadingPhoton.userFloat(\"genIso\") : -99"] )
     else:
         legs.extend( ["genLeadGenIso := leadingExtra.genIso",
                       "genSubleadGenIso:= subLeadingExtra.genIso"] )
         
-    return dipho+legs
+    return dipho
+#    return dipho+legs
 
 # ----------------------------------------------------------------------------------------------------------------
 def getRecoVariables(isRecoTag=True):
@@ -91,7 +97,8 @@ def getRecoVariables(isRecoTag=True):
     expressions = recoPhoExpr(isRecoTag)
     legs = reduce(lambda z,w: z+w, (map (lambda x: phoRecoVariable(x,expressions) , phoVariables ) ) )
     
-    return dipho+legs
+    return dipho
+#    return dipho+legs
 
 # ----------------------------------------------------------------------------------------------------------------
 def bookHadronicActivityProducers(process,recoDiphotonTags,genDiphotons,recoJetCollections=None,genJetCollection="slimmedGenJets"):
@@ -233,7 +240,16 @@ def addGenOnlyAnalysis(process,acceptance,tagList,systlabels,pdfWeights=None,rec
                                  )
     
             
-    process.pfid = cms.Path(process.genFilter*process.flashggGenDiPhotonsSequence*process.flashggTaggedGenDiphotons*process.genDiphotonDumper)
+    ## process.pfid = cms.Path(process.genFilter*process.flashggGenDiPhotonsSequence*process.flashggTaggedGenDiphotons*process.genDiphotonDumper)
+    process.pfid = cms.Path(process.genFilter*process.genDiphotonDumper)
     
     if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
     process.options.allowUnscheduled = cms.untracked.bool(True)
+
+def addObservables(process, dumper, processType, recoJetCollections=None):
+#    bookHadronicActivityProducers(process,"flashggTagSorter","flashggTaggedGenDiphotons",recoJetCollections,genJetCollection="slimmedGenJets")
+    addGenGlobalVariables(process,dumper)
+    addRecoGlobalVariables(process,dumper)
+    
+
+
