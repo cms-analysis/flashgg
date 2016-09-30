@@ -5,7 +5,7 @@
 
 using namespace flashgg;
 
-DiPhotonCandidate::DiPhotonCandidate() {}
+DiPhotonCandidate::DiPhotonCandidate() : genP4_(0) {}
 
 DiPhotonCandidate::~DiPhotonCandidate() 
 {
@@ -15,6 +15,7 @@ DiPhotonCandidate::~DiPhotonCandidate()
 }
 
 DiPhotonCandidate::DiPhotonCandidate( edm::Ptr<flashgg::Photon> photon1, edm::Ptr<flashgg::Photon> photon2, edm::Ptr<reco::Vertex> vertex )
+    : genP4_(0)
 {
     //    std::cout << " DiPhotonCandidate::DiPhotonCandidate " << std::endl;
     vertex_ = vertex;
