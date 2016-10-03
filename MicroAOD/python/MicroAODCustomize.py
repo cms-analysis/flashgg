@@ -101,6 +101,8 @@ class MicroAODCustomize(object):
             self.customizePuppi(process)
         if self.processType == "data":
             self.customizeData(process)
+            if "Mu" in customize.datasetName:
+                self.customizeDataMuons(process)
         elif self.processType == "signal":
             self.customizeSignal(process)
         if self.processType == "background":
@@ -167,6 +169,12 @@ class MicroAODCustomize(object):
         process.out.outputCommands.append("keep *_*_*RecHit*_*") # for bad events
         delattr(process,"flashggPrunedGenParticles") # will be run due to unscheduled mode unless deleted
         self.customizeHighMassIsolations(process)
+        process.load("flashgg/MicroAOD/flashggDiPhotonFilter_cfi")
+        process.p1 = cms.Path(process.diPhotonFilter) # Do not save events with 0 diphotons
+        process.out.SelectEvents = cms.untracked.PSet(SelectEvents=cms.vstring('p1'))
+
+    def customizeDataMuons(self,process):
+        process.diPhotonFilter.src = "flashggSelectedMuons"
 
     def customizeHighMassIsolations(self,process):
         # for isolation cones
