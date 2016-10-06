@@ -310,6 +310,12 @@ namespace flashgg {
             return string("VHHadronic");
         case DiPhotonTagBase::tag_t::kVHEt:
             return string("VHEt");
+        case DiPhotonTagBase::tag_t::kZHLeptonic:
+            return string("ZHLeptonic");
+        case DiPhotonTagBase::tag_t::kWHLeptonic:
+            return string("WHLeptonic");
+        case DiPhotonTagBase::tag_t::kVHMet:
+            return string("VHMet");
         }
         return string("TAG NOT ON LIST");
     }
