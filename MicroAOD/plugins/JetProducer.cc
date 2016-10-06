@@ -139,14 +139,20 @@ namespace flashgg {
 
             //store btagging userfloats
             if (computeRegVars) {
+
                 int nSecVertices = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->nVertices();
-                float vtxMass = -999, vtxPx = -999, vtxPy = -999, vtx3DVal = -999, vtx3DSig = -999;
-                int vtxNTracks = -1;
+                float vtxMass = 0, vtxPx = 0, vtxPy = 0, vtxPz = 0, vtx3DVal = 0, vtx3DSig = 0, vtxPosX = 0, vtxPosY = 0, vtxPosZ = 0;
+                int vtxNTracks = 0;
+
                 if(nSecVertices > 0){
                     vtxNTracks = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).numberOfSourceCandidatePtrs();
                     vtxMass = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).p4().mass();
                     vtxPx = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).p4().px();
                     vtxPy = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).p4().py();
+                    vtxPz = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).p4().pz();
+                    vtxPosX = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).vertex().x();
+                    vtxPosY = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).vertex().y();
+                    vtxPosZ = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).vertex().z();
                     vtx3DVal = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->flightDistance(0).value();
                     vtx3DSig = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->flightDistance(0).significance();
                 }
@@ -156,12 +162,17 @@ namespace flashgg {
                 fjet.addUserFloat("vtxMass", vtxMass);
                 fjet.addUserFloat("vtxPx", vtxPx);
                 fjet.addUserFloat("vtxPy", vtxPy);
+                fjet.addUserFloat("vtxPz", vtxPz);
+                fjet.addUserFloat("vtxPosX", vtxPosX);
+                fjet.addUserFloat("vtxPosY", vtxPosY);
+                fjet.addUserFloat("vtxPosZ", vtxPosZ);
                 fjet.addUserFloat("vtx3DVal", vtx3DVal);
                 fjet.addUserFloat("vtx3DSig", vtx3DSig);
+
             }
 
             if (computeSimpleRMS || computeRegVars) {
-                float leadTrackPt_ = -999., softLepPt = -999., softLepRatio = -999., softLepDr = -999.;
+                float leadTrackPt_ = 0, softLepPt = 0, softLepRatio = 0, softLepDr = 0;
                 float sumPtDrSq = 0.;
                 float sumPtSq = 0.;
                 for ( unsigned k = 0; k < fjet.numberOfSourceCandidatePtrs(); ++k ) {
