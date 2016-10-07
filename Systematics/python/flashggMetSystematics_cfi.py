@@ -19,7 +19,8 @@ metSmear = cms.PSet( MethodName = cms.string("FlashggMetSmear"),
 
 flashggMetSystematics = cms.EDProducer('FlashggMetSmearSystematicProducer',
                                        #src = cms.InputTag("slimmedMETs::FLASHggMicroAOD"),
-                                       src = cms.InputTag("flashggMets::FLASHggMicroAOD"),
+                                       #src = cms.InputTag("flashggMets::FLASHggMicroAOD"),
+                                       src = cms.InputTag("flashggMets"),
                                        SystMethods2D = cms.VPSet(),
                                        SystMethods = cms.VPSet(metSmear)
                                        )
