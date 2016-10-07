@@ -32,6 +32,7 @@ namespace flashgg {
         bool operator()( const object_type &cand, const edm::EventBase &ev ) const;
 
     protected:
+        typedef std::pair<bool,double> limit_type;
         typedef std::shared_ptr<functor_type> functor_ptr;
         typedef std::shared_ptr<stepwise_functor_type> stepwise_functor_ptr;
 
@@ -41,7 +42,7 @@ namespace flashgg {
 
         classifier_type classifier_;
         std::vector<functor_type> functors_;
-        std::map<std::string, std::vector<std::tuple<functor_ptr , functor_ptr, stepwise_functor_ptr > > >  selections_;
+        std::map<std::string, std::vector<std::tuple<functor_ptr , functor_ptr, stepwise_functor_ptr, limit_type > > >  selections_;
         std::vector<int> ignoreCuts_, invertCuts_, applyCuts_;
 
     private:
