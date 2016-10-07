@@ -27,6 +27,7 @@
 #include "flashgg/DataFormats/interface/VHTightTag.h"
 #include "flashgg/DataFormats/interface/WHLeptonicTag.h"
 #include "flashgg/DataFormats/interface/ZHLeptonicTag.h"
+#include "flashgg/DataFormats/interface/VHLeptonicLooseTag.h"
 #include "flashgg/DataFormats/interface/VHMetTag.h"
 #include "flashgg/DataFormats/interface/VHEtTag.h"
 #include "flashgg/DataFormats/interface/DiMuonCandidate.h"   //JTao
@@ -248,6 +249,10 @@ namespace  {
         flashgg::ZHLeptonicTag zht;
         std::vector<flashgg::ZHLeptonicTag> vec_zht;
         edm::Wrapper<std::vector<flashgg::ZHLeptonicTag> > wrp_vec_zht;
+        
+        flashgg::VHLeptonicLooseTag vhll;
+        std::vector<flashgg::VHLeptonicLooseTag> vec_vhll;
+        edm::Wrapper<std::vector<flashgg::VHLeptonicLooseTag> > wrp_vec_vhll;
 
         flashgg::WHLeptonicTag whl;
         std::vector<flashgg::WHLeptonicTag> vec_whl;

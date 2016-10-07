@@ -51,6 +51,7 @@ namespace flashgg {
         edm::EDGetTokenT<edm::TriggerResults> triggerFLASHggMicroAOD_;
         
         //configurable selection variables
+        bool useVertex0only_;
         double leadPhoOverMassThreshold_;
         double subleadPhoOverMassThreshold_;
         double diphoMVAThreshold_;
@@ -70,6 +71,7 @@ namespace flashgg {
         triggerPAT_( consumes<edm::TriggerResults>(iConfig.getParameter<InputTag>("PATfilters") ) ),
         triggerFLASHggMicroAOD_( consumes<edm::TriggerResults>( iConfig.getParameter<InputTag>("FLASHfilters") ) )
     {
+        useVertex0only_              = iConfig.getParameter<bool>("useVertex0only");
         leadPhoOverMassThreshold_    = iConfig.getParameter<double>( "leadPhoOverMassThreshold" );
         subleadPhoOverMassThreshold_ = iConfig.getParameter<double>( "subleadPhoOverMassThreshold" );
         diphoMVAThreshold_           = iConfig.getParameter<double>( "diphoMVAThreshold" );
@@ -219,6 +221,9 @@ namespace flashgg {
                 {
                     continue;
                 }
+            if(useVertex0only_)
+                if(diPhotons->ptrAt(candIndex)->vertexIndex()!=0)
+                    continue;
             /*
               if(candIndex==0)
                 {

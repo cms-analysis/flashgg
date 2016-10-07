@@ -92,6 +92,11 @@ if customize.doFiducial == 'True':
     process.flashggTagSequence.remove(process.flashggVHEtTag)
     process.flashggTagSequence.remove(process.flashggVHLooseTag)
     process.flashggTagSequence.remove(process.flashggVHTightTag)
+    process.flashggTagSequence.remove(process.flashggVHMetTag)
+    process.flashggTagSequence.remove(process.flashggWHLeptonicTag)
+    process.flashggTagSequence.remove(process.flashggZHLeptonicTag)
+    process.flashggTagSequence.remove(process.flashggVHLeptonicLooseTag)
+    process.flashggTagSequence.remove(process.flashggVHHadronicTag)
     process.flashggTagSequence.replace(process.flashggUntagged, process.flashggSigmaMoMpToMTag)
 
 
@@ -127,7 +132,7 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
         jetsystlabels.append("JEC%s01sigma" % direction)
         jetsystlabels.append("JER%s01sigma" % direction)
         jetsystlabels.append("RMSShift%s01sigma" % direction)
-        metsystlabels.append("metUncertainty%s01sigma" % direction)
+        #metsystlabels.append("metUncertainty%s01sigma" % direction)
         variablesToUse.append("UnmatchedPUWeight%s01sigma[1,-999999.,999999.] := weight(\"UnmatchedPUWeight%s01sigma\")" % (direction,direction))
         variablesToUse.append("MvaLinearSyst%s01sigma[1,-999999.,999999.] := weight(\"MvaLinearSyst%s01sigma\")" % (direction,direction))
         variablesToUse.append("LooseMvaSF%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s01sigma\")" % (direction,direction))
@@ -147,7 +152,7 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
                     phosystlabels.append("MCSmear%s%s%s%s01sigma" % (r9,region,var,direction))
     systlabels += phosystlabels
     systlabels += jetsystlabels
-    systlabels += metsystlabels
+    #systlabels += metsystlabels
     customizeSystematicsForSignal(process)
 elif customize.processId == "Data":
     print "Data, so turn of all shifts and systematics, with some exceptions"
@@ -164,6 +169,7 @@ print "-------------------------------------------------"
 print "--- Variables to be dumped, including systematic weights ---"
 print variablesToUse
 print "------------------------------------------------------------"
+
 
 cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags)
 
@@ -225,9 +231,10 @@ else:
     tagList=[
         ["UntaggedTag",4],
         ["VBFTag",2],
-        ["VHTightTag",0],
-        ["VHLooseTag",0],
-        ["VHEtTag",0],
+        #["ZHLeptonicTag",0],
+        #["WHLeptonicTag",0],
+        #["VHLeptonicLooseTag",0],
+        #["VHMetTag",0],
         #["VHHadronicTag",0],
         ["TTHHadronicTag",0],
         ["TTHLeptonicTag",0]
@@ -318,11 +325,14 @@ if (customize.processId.count("qcd") or customize.processId.count("gjet")) and c
         process.PromptFakeFilter.doFakeFake =cms.bool(True)
     else:
         raise Exception,"Mis-configuration of python for prompt-fake filter"
+
+#process.load("flashgg.MicroAOD.flashggMets_cfi")
 process.p = cms.Path(process.dataRequirements*
                      process.genFilter*
                      process.flashggUpdatedIdMVADiPhotons*
                      process.flashggDiPhotonSystematics*
-                     process.flashggMetSystematics*
+                     #process.flashggMets*
+                     #process.flashggMetSystematics*
                      process.flashggMuonSystematics*process.flashggElectronSystematics*
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                      (process.flashggTagSequence*process.systematicsTagSequences)*
