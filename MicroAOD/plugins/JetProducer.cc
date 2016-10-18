@@ -40,7 +40,7 @@ namespace flashgg {
         unique_ptr<PileupJetIdAlgo>  pileupJetIdAlgo_;
         ParameterSet pileupJetIdParameters_;
         bool usePuppi;
-        bool computeSimpleRMS;
+        bool computeSimpleRMS, computeRegVars;
         unsigned jetCollectionIndex_;
         EDGetTokenT<double> rhoToken_;
         EDGetTokenT<View<pat::Jet> > jetDebugToken_;
@@ -57,6 +57,7 @@ namespace flashgg {
         qgVariablesInputTag( iConfig.getParameter<edm::InputTag>( "qgVariablesInputTag" ) ),
         pileupJetIdParameters_( iConfig.getParameter<ParameterSet>( "PileupJetIdParameters" ) ),
         computeSimpleRMS( iConfig.getParameter<bool>( "ComputeSimpleRMS" ) ),
+        computeRegVars( iConfig.getParameter<bool>( "ComputeRegVars" ) ),
         jetCollectionIndex_( iConfig.getParameter<unsigned> ( "JetCollectionIndex" ) ),
         //GluonTagSrc_  (iConfig.getParameter<edm::InputTag>("GluonTagSrc") )
         rhoToken_( consumes<double>(iConfig.getParameter<edm::InputTag>("rho") ) ),
@@ -135,8 +136,43 @@ namespace flashgg {
         for( unsigned int i = 0 ; i < jets->size() ; i++ ) {
             Ptr<pat::Jet> pjet = jets->ptrAt( i );
             flashgg::Jet fjet = flashgg::Jet( *pjet );
-            
-            if (computeSimpleRMS) {
+
+            //store btagging userfloats
+            if (computeRegVars) {
+
+                int nSecVertices = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->nVertices();
+                float vtxMass = 0, vtxPx = 0, vtxPy = 0, vtxPz = 0, vtx3DVal = 0, vtx3DSig = 0, vtxPosX = 0, vtxPosY = 0, vtxPosZ = 0;
+                int vtxNTracks = 0;
+
+                if(nSecVertices > 0){
+                    vtxNTracks = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).numberOfSourceCandidatePtrs();
+                    vtxMass = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).p4().mass();
+                    vtxPx = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).p4().px();
+                    vtxPy = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).p4().py();
+                    vtxPz = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).p4().pz();
+                    vtxPosX = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).vertex().x();
+                    vtxPosY = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).vertex().y();
+                    vtxPosZ = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).vertex().z();
+                    vtx3DVal = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->flightDistance(0).value();
+                    vtx3DSig = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->flightDistance(0).significance();
+                }
+
+                fjet.addUserFloat("nSecVertices", nSecVertices);
+                fjet.addUserFloat("vtxNTracks", vtxNTracks);
+                fjet.addUserFloat("vtxMass", vtxMass);
+                fjet.addUserFloat("vtxPx", vtxPx);
+                fjet.addUserFloat("vtxPy", vtxPy);
+                fjet.addUserFloat("vtxPz", vtxPz);
+                fjet.addUserFloat("vtxPosX", vtxPosX);
+                fjet.addUserFloat("vtxPosY", vtxPosY);
+                fjet.addUserFloat("vtxPosZ", vtxPosZ);
+                fjet.addUserFloat("vtx3DVal", vtx3DVal);
+                fjet.addUserFloat("vtx3DSig", vtx3DSig);
+
+            }
+
+            if (computeSimpleRMS || computeRegVars) {
+                float leadTrackPt_ = 0, softLepPt = 0, softLepRatio = 0, softLepDr = 0;
                 float sumPtDrSq = 0.;
                 float sumPtSq = 0.;
                 for ( unsigned k = 0; k < fjet.numberOfSourceCandidatePtrs(); ++k ) {
@@ -149,10 +185,29 @@ namespace flashgg {
                     float candDr   = reco::deltaR(*kcand,fjet);
                     sumPtDrSq += candPt*candPt*candDr*candDr;
                     sumPtSq += candPt*candPt;
+
+                    if(lPack->charge() != 0 && candPt > leadTrackPt_) leadTrackPt_ = candPt;
+
+                    if(abs(lPack->pdgId()) == 11 || abs(lPack->pdgId()) == 13) {
+                        if(candPt > softLepPt){
+                            softLepPt = candPt;
+                            softLepRatio = candPt/pjet->pt();
+                            softLepDr = candDr;
+                        }
+                    }
                 }
                 
-                if (sumPtSq == 0.) throw cms::Exception( "NoConstituents" ) << " For jet " << i << " we get sumPtSq of 0!" << std::endl;
-                fjet.setSimpleRMS( sumPtDrSq / sumPtSq );
+                if (computeSimpleRMS) {
+                    if (sumPtSq == 0.) throw cms::Exception( "NoConstituents" ) << " For jet " << i << " we get sumPtSq of 0!" << std::endl;
+                    fjet.setSimpleRMS( sumPtDrSq / sumPtSq );
+                }
+
+                if (computeRegVars) {
+                    fjet.addUserFloat("leadTrackPt", leadTrackPt_);
+                    fjet.addUserFloat("softLepPt", softLepPt);
+                    fjet.addUserFloat("softLepRatio", softLepRatio);
+                    fjet.addUserFloat("softLepDr", softLepDr);
+                }
             }
             
             //--- Retrieve the q/g likelihood
