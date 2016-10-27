@@ -137,7 +137,11 @@ echo "Setting up QGL..."
 git cms-addpkg RecoJets/JetProducers
 git cms-merge-topic -u sethzenz:topic-QGL-MiniAOD-vertexIndex
 
-#echo "Setting up MET filters..."
+echo "grabbing MET topic updates..."
+git cms-merge-topic cms-met:METRecipe_8020
+#git remote add metCMS https://github.com/cms-met/cmssw
+git fetch https://github.com/cms-met/cmssw 
+git cherry-pick 246455ec0b031e54df70e2983d30243b058bf45a
 
 echo "Setting up TnP tools..."
 #git cms-addpkg DataFormats/RecoCandidate

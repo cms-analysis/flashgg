@@ -1,5 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+
+
+
 from os import environ
 usePrivateSQlite=True
 
@@ -50,10 +53,12 @@ def runMETs(process,isMC):
                                    photonColl="slimmedPhotons",
                                    muonColl="slimmedMuons",
                                    tauColl="slimmedTaus",
-                                   reclusterJets = False,
+                                   #reclusterJets = False,
+                                   recoMetFromPFCs=True,
                                    pfCandColl = "packedPFCandidates",
                                    postfix="",
                                    isData=(not isMC),
                                    )
         
 #===========================================================================================================================#
+
