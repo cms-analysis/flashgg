@@ -144,6 +144,7 @@ class MicroAODCustomize(object):
         runMETs(process,True) #isMC
         from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
         process.pfMEtMultShiftCorr.paramaters = multPhiCorr_MC_DY_80X
+        process.patPFMetTxyCorr.paramaters = multPhiCorr_MC_DY_80X
         # Default should be the right name for all signals
         process.load("flashgg/MicroAOD/flashggPDFWeightObject_cfi")
         process.p *= process.flashggPDFWeightObject
@@ -154,6 +155,7 @@ class MicroAODCustomize(object):
         runMETs(process,True) #isMC
         from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
         process.pfMEtMultShiftCorr.paramaters = multPhiCorr_MC_DY_80X
+        process.patPFMetTxyCorr.paramaters = multPhiCorr_MC_DY_80X
         if "sherpa" in self.datasetName:
             process.flashggGenPhotonsExtra.defaultType = 1
             
@@ -167,9 +169,11 @@ class MicroAODCustomize(object):
         if "2016G" in customize.datasetName:
             from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_Data_G_80X
             process.pfMEtMultShiftCorr.paramaters = multPhiCorr_Data_G_80X
+            process.patPFMetTxyCorr.paramaters = multPhiCorr_Data_G_80X
         else:    
             from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_Data_B_80X
             process.pfMEtMultShiftCorr.paramaters = multPhiCorr_Data_B_80X
+            process.patPFMetTxyCorr.paramaters = multPhiCorr_Data_B_80X
 
         for pathName in process.paths:
             path = getattr(process,pathName)
