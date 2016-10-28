@@ -140,16 +140,20 @@ class MicroAODCustomize(object):
     # signal specific customization
     def customizeSignal(self,process):
         process.flashggGenPhotonsExtra.defaultType = 1
-        from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs
+        from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
         runMETs(process,True) #isMC
+        from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
+        setMetCorr(process,multPhiCorr_MC_DY_80X)
         # Default should be the right name for all signals
         process.load("flashgg/MicroAOD/flashggPDFWeightObject_cfi")
         process.p *= process.flashggPDFWeightObject
 
     # background specific customization
     def customizeBackground(self,process):
-        from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff.py import runMETs
+        from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff.py import runMETs,setMetCorr
         runMETs(process,True) #isMC
+        from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
+        setMetCorr(process,multPhiCorr_MC_DY_80X)
         if "sherpa" in self.datasetName:
             process.flashggGenPhotonsExtra.defaultType = 1
             
@@ -158,8 +162,15 @@ class MicroAODCustomize(object):
     def customizeData(self,process):
         ## remove MC-specific modules
         modules = process.flashggMicroAODGenSequence.moduleNames()
-        from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs
+        from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
         runMETs(process,False) #!isMC
+        if "2016G" in customize.datasetName:
+            from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_Data_G_80X
+            setMetCorr(process,multPhiCorr_Data_G_80X)
+        else:    
+            from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_Data_B_80X
+            setMetCorr(process,multPhiCorr_Data_B_80X)
+
         for pathName in process.paths:
             path = getattr(process,pathName)
             for mod in modules:
