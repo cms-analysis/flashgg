@@ -290,7 +290,6 @@ namespace flashgg {
     }
 
     string TagSorter::tagName(DiPhotonTagBase::tag_t tagEnumVal) const {
-        //        enum tag_t { kUndefined = 0, kUntagged, kVBF, kTTHHadronic, kTTHLeptonic, kVHTight, kVHLoose, kVHHadronic, kVHEt };
         switch(tagEnumVal) {
         case DiPhotonTagBase::tag_t::kUndefined:
             return string("UNDEFINED");
@@ -310,6 +309,14 @@ namespace flashgg {
             return string("VHHadronic");
         case DiPhotonTagBase::tag_t::kVHEt:
             return string("VHEt");
+        case DiPhotonTagBase::tag_t::kZHLeptonic:
+            return string("ZHLeptonic");
+        case DiPhotonTagBase::tag_t::kWHLeptonic:
+            return string("WHLeptonic");
+        case DiPhotonTagBase::tag_t::kVHLeptonicLoose:
+            return string("VHLeptonicLoose");
+        case DiPhotonTagBase::tag_t::kVHMet:
+            return string("VHMet");
         }
         return string("TAG NOT ON LIST");
     }
