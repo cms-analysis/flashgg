@@ -110,8 +110,10 @@ git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-8_0_20
 
 echo "grabbing MET topic updates..."
 git cms-merge-topic cms-met:METRecipe_8020
-git fetch https://github.com/cms-met/cmssw 
+git remote add metCMS https://github.com/cms-met/cmssw
+git fetch --quiet metCMS
 git cherry-pick 246455ec0b031e54df70e2983d30243b058bf45a
+git remote remove metCMS
 
 echo "Setting up TnP tools..."
 git cms-merge-topic -u sethzenz:for-flashgg-egm_tnp-8_0_20
