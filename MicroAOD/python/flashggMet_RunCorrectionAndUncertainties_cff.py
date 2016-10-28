@@ -1,5 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+
+
+
 from os import environ
 usePrivateSQlite=True
 
@@ -50,10 +53,35 @@ def runMETs(process,isMC):
                                    photonColl="slimmedPhotons",
                                    muonColl="slimmedMuons",
                                    tauColl="slimmedTaus",
-                                   reclusterJets = False,
+                                   #reclusterJets = False,
+                                   recoMetFromPFCs=True,
                                    pfCandColl = "packedPFCandidates",
                                    postfix="",
                                    isData=(not isMC),
                                    )
         
 #===========================================================================================================================#
+
+def setMetCorr(process, metCorr):
+    
+    process.pfMEtMultShiftCorr.paramaters                 = metCorr
+    process.patPFMetTxyCorr.paramaters                    = metCorr
+    process.multPhiCorrParams_T0rtTxy_25ns                = cms.VPSet( pset for pset in metCorr)
+    process.multPhiCorrParams_T0rtT1Txy_25ns              = cms.VPSet( pset for pset in metCorr)
+    process.multPhiCorrParams_T0rtT1T2Txy_25ns            = cms.VPSet( pset for pset in metCorr)
+    process.multPhiCorrParams_T0pcTxy_25ns                = cms.VPSet( pset for pset in metCorr)
+    process.multPhiCorrParams_T0pcT1Txy_25ns              = cms.VPSet( pset for pset in metCorr)
+    process.multPhiCorrParams_T0pcT1T2Txy_25ns            = cms.VPSet( pset for pset in metCorr)
+    process.multPhiCorrParams_T1Txy_25ns                  = cms.VPSet( pset for pset in metCorr)
+    process.multPhiCorrParams_T1T2Txy_25ns                = cms.VPSet( pset for pset in metCorr)
+    process.patMultPhiCorrParams_T0pcT1SmearTxy_25ns      = cms.VPSet( pset for pset in metCorr)
+    process.patMultPhiCorrParams_T0pcT1T2SmearTxy_25ns    = cms.VPSet( pset for pset in metCorr)
+    process.patMultPhiCorrParams_T0pcT1T2Txy_25ns         = cms.VPSet( pset for pset in metCorr)
+    process.patMultPhiCorrParams_T0pcT1Txy_25ns           = cms.VPSet( pset for pset in metCorr)
+    process.patMultPhiCorrParams_T0pcTxy_25ns             = cms.VPSet( pset for pset in metCorr)
+    process.patMultPhiCorrParams_T1SmearTxy_25ns          = cms.VPSet( pset for pset in metCorr)
+    process.patMultPhiCorrParams_T1T2SmearTxy_25ns        = cms.VPSet( pset for pset in metCorr)
+    process.patMultPhiCorrParams_T1T2Txy_25ns             = cms.VPSet( pset for pset in metCorr)
+    process.patMultPhiCorrParams_T1Txy_25ns               = cms.VPSet( pset for pset in metCorr)
+    process.patMultPhiCorrParams_Txy_25ns                 = cms.VPSet( pset for pset in metCorr)
+    

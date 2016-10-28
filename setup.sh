@@ -128,37 +128,42 @@ cd $CMSSW_BASE/src
 #git cms-addpkg RecoEgamma/EgammaTools
 #git cms-merge-topic -u sethzenz:topic-conversion-tools-for-pat-ele-74X
 
-echo "Setting up pileup jet id..."
-git cms-addpkg RecoJets/JetProducers
+#echo "Setting up pileup jet id..."
+#git cms-addpkg RecoJets/JetProducers
 #git cms-merge-topic -u sethzenz:topic-PileupJetId-NonStandardVtx
-git cms-merge-topic -u sethzenz:topic-PileupJetId-NonStandardVtx-bugfixSync
+#git cms-merge-topic -u sethzenz:topic-PileupJetId-NonStandardVtx-bugfixSync
 
 echo "Setting up QGL..."
+git cms-addpkg RecoJets/JetProducers
 git cms-merge-topic -u sethzenz:topic-QGL-MiniAOD-vertexIndex
 
-echo "Setting up MET filters..."
-git cms-merge-topic -u mplaner:METfilters808
+echo "grabbing MET topic updates..."
+git cms-merge-topic cms-met:METRecipe_8020
+#git remote add metCMS https://github.com/cms-met/cmssw
+git fetch https://github.com/cms-met/cmssw 
+git cherry-pick 246455ec0b031e54df70e2983d30243b058bf45a
 
 echo "Setting up TnP tools..."
 #git cms-addpkg DataFormats/RecoCandidate
 #git cms-addpkg PhysiscsTools/TagAndProbe
 #git cms-merge-topic -u matteosan1:egm_tnp_76X
 git cms-merge-topic -u mplaner:egm_tnp_80x
-git cms-merge-topic -u matteosan1:smearer_76X
+#git cms-merge-topic -u matteosan1:smearer_76X
+git cms-merge-topic -u yhaddad:topic-smearer-from-76X
 #git remote add cmssw-ferriff https://github.com/ferriff/cmssw.git
 #git fetch cmssw-ferriff
 #git cherry-pick 5a028c0bd8fe8ea932ee602f2e82c455489f4ad1
 #git cherry-pick a2dc7fa601a13b43e79c118ba8cb746f8dd684ce
 #git cherry-pick 415903611957b5bd9f0b3f0c657cb903437db4f8
 
-echo "Setting up weight and pat electron conversion..."
-git cms-addpkg CommonTools/UtilAlgos
-git cms-addpkg RecoEgamma/EgammaTools
-git remote add cmssw-sethzenz https://github.com/sethzenz/cmssw.git
-git fetch cmssw-sethzenz
-git cherry-pick 5163a7c9937ebfbbd714b3d161af01f64b65224c
-git cherry-pick a45d253ea9850acecbcfcd7bd2e5c3f00d8f0bd9
-git remote rm cmssw-sethzenz
+#echo "Setting up weight and pat electron conversion..."
+#git cms-addpkg CommonTools/UtilAlgos
+#git cms-addpkg RecoEgamma/EgammaTools
+#git remote add cmssw-sethzenz https://github.com/sethzenz/cmssw.git
+#git fetch cmssw-sethzenz
+#git cherry-pick 5163a7c9937ebfbbd714b3d161af01f64b65224c
+#git cherry-pick a45d253ea9850acecbcfcd7bd2e5c3f00d8f0bd9
+#git remote rm cmssw-sethzenz
 
 if [[ $CMSSW_BASE == *"7_6"* ]]
 then
