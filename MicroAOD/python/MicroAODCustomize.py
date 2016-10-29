@@ -24,11 +24,6 @@ class MicroAODCustomize(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "processType")
-        self.options.register ('productionMode',
-                               "", # default value
-                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                               VarParsing.VarParsing.varType.string,          # string, int, or float 
-                               "productionMode")
         self.options.register('debug',
                               0, # default value
                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
