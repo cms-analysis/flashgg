@@ -125,6 +125,8 @@ class MicroAODCustomize(object):
             self.customizeMuMuGamma(process)
         elif self.muMuGamma == 2 and ("DY" in customize.datasetName or "DoubleMuon" in customize.datasetName):
             self.customizeMuMuGamma(process)
+        if "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8" in customize.datasetName:
+            self.customizePDFs(process)
         if len(self.globalTag) >0:
             self.customizeGlobalTag(process)
         if len(self.fileNames) >0:
@@ -169,18 +171,20 @@ class MicroAODCustomize(object):
         process.p *= process.myGenerator
         process.p *= process.rivetProducerHTXS
         process.out.outputCommands.append("keep *_rivetProducerHTXS_*_*")
+        self.customizePDFs(process)
+
+    def customizePDFs(self,process):     
         process.load("flashgg/MicroAOD/flashggPDFWeightObject_cfi")
         process.p *= process.flashggPDFWeightObject
 
     # background specific customization
     def customizeBackground(self,process):
-        from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff.py import runMETs,setMetCorr
+        from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
         runMETs(process,True) #isMC
         from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
         setMetCorr(process,multPhiCorr_MC_DY_80X)
         if "sherpa" in self.datasetName:
             process.flashggGenPhotonsExtra.defaultType = 1
-            
             
     # data specific customization
     def customizeData(self,process):
