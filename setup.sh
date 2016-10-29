@@ -104,75 +104,27 @@ fi
 
 cd $CMSSW_BASE/src
 
-# Removed because it requires new merging and it is not needed for default PFCHS
-# Will be restored if/when required for future studies
-#echo
-#echo "Setting up pileupjetid..."
-#git cms-addpkg RecoJets/JetProducers
-#git cms-merge-topic sethzenz:topic-pujid-74X
-#echo
-
-#echo "Setting up weight counter..."
-#git cms-addpkg CommonTools/UtilAlgos 
-#git cms-addpkg DataFormats/Common
-#git cms-merge-topic sethzenz:topic-weights-count-74X
-
-# PUPPI is automagically in the release since 7_4_11 and 7_5_2, but we still need Multi-PUPPI
-# Not needed for Moriond
-#echo "Setting up PUPPI..."
-#git cms-addpkg CommonTools/PileupAlgos
-#git cms-merge-topic sethzenz:topic-puppi-7_4_12 
-#echo
-
-#echo "Setting up Conversion tools for pat electron..."
-#git cms-addpkg RecoEgamma/EgammaTools
-#git cms-merge-topic -u sethzenz:topic-conversion-tools-for-pat-ele-74X
-
-#echo "Setting up pileup jet id..."
-#git cms-addpkg RecoJets/JetProducers
-#git cms-merge-topic -u sethzenz:topic-PileupJetId-NonStandardVtx
-#git cms-merge-topic -u sethzenz:topic-PileupJetId-NonStandardVtx-bugfixSync
-
 echo "Setting up QGL..."
 git cms-addpkg RecoJets/JetProducers
-git cms-merge-topic -u sethzenz:topic-QGL-MiniAOD-vertexIndex
+git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-8_0_20
 
 echo "grabbing MET topic updates..."
 git cms-merge-topic cms-met:METRecipe_8020
-#git remote add metCMS https://github.com/cms-met/cmssw
-git fetch https://github.com/cms-met/cmssw 
+
+echo "Cherry-pick for MET JES, including adding and removing met repo"
+git remote add metCMS https://github.com/cms-met/cmssw
+git fetch --quiet metCMS
 git cherry-pick 246455ec0b031e54df70e2983d30243b058bf45a
+git remote remove metCMS
+
+echo "Setting up MET filters..."
+git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate
 
 echo "Setting up TnP tools..."
-#git cms-addpkg DataFormats/RecoCandidate
-#git cms-addpkg PhysiscsTools/TagAndProbe
-#git cms-merge-topic -u matteosan1:egm_tnp_76X
-git cms-merge-topic -u mplaner:egm_tnp_80x
-#git cms-merge-topic -u matteosan1:smearer_76X
-git cms-merge-topic -u yhaddad:topic-smearer-from-76X
-#git remote add cmssw-ferriff https://github.com/ferriff/cmssw.git
-#git fetch cmssw-ferriff
-#git cherry-pick 5a028c0bd8fe8ea932ee602f2e82c455489f4ad1
-#git cherry-pick a2dc7fa601a13b43e79c118ba8cb746f8dd684ce
-#git cherry-pick 415903611957b5bd9f0b3f0c657cb903437db4f8
+git cms-merge-topic -u sethzenz:for-flashgg-egm_tnp-8_0_20
 
-#echo "Setting up weight and pat electron conversion..."
-#git cms-addpkg CommonTools/UtilAlgos
-#git cms-addpkg RecoEgamma/EgammaTools
-#git remote add cmssw-sethzenz https://github.com/sethzenz/cmssw.git
-#git fetch cmssw-sethzenz
-#git cherry-pick 5163a7c9937ebfbbd714b3d161af01f64b65224c
-#git cherry-pick a45d253ea9850acecbcfcd7bd2e5c3f00d8f0bd9
-#git remote rm cmssw-sethzenz
-
-if [[ $CMSSW_BASE == *"7_6"* ]]
-then
-    echo "Setting up PDF weight tool..."
-    git cms-addpkg PhysicsTools/HepMCCandAlgos
-    git cherry-pick ca5f8100a28c597ad118e3a4b3dcadda7f6e45ca
-else
-    echo "Not setting up PDF weight because we appear to be in CMSSW 8"
-fi
+echo "Setting up misc egm and weight stuff..."
+git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-weights-8_0_20
 
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Fall15_25nsV2_*.db $CMSSW_BASE/src/flashgg
@@ -181,7 +133,7 @@ cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV6*.db $CMSSW_BASE/src/fla
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV6*.db $CMSSW_BASE/src/flashgg/Systematics/data/JEC
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_80X.db $CMSSW_BASE/src/flashgg
 
-echo "copy smearing files tored in flashgg into egamma tools"
+echo "copy smearing files stored in flashgg into egamma tools"
 cp $CMSSW_BASE/src/flashgg/Systematics/data/Golden*.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 cp $CMSSW_BASE/src/flashgg/Systematics/data/80X_DCS05July_plus_Golden22_s*.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 cp $CMSSW_BASE/src/flashgg/Systematics/data/80X_ichepV1_2016_pho_s* $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
