@@ -107,12 +107,14 @@ class MicroAODCustomize(object):
             self.customizeSignal(process)
             if "tth" in customize.datasetName.lower():
                 self.customizeTTH(process)
-            if "vh" in customize.datasetName.lower():
+            elif "vh" in customize.datasetName.lower():
                 self.customizeVH(process)
-            if "ggh" in customize.datasetName.lower() or "glugluh" in customize.datasetName.lower():
+            elif "ggh" in customize.datasetName.lower() or "glugluh" in customize.datasetName.lower():
                 self.customizeGGH(process)
-            if "vbf" in customize.datasetName.lower():
+            elif "vbf" in customize.datasetName.lower():
                 self.customizeVBF(process)
+            else:
+                raise Exception,"processType=sig but datasetName does not contain recognized production mechanism - see MicroAODCustomize.py"
         if self.processType == "background":
             self.customizeBackground(process)
         if self.debug == 1:
