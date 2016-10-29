@@ -2,7 +2,7 @@ import os
 import FWCore.ParameterSet.Config as cms
 import FWCore.ParameterSet.VarParsing as VarParsing
 class MicroAODCustomize(object):
-    
+
     def __init__(self,*args,**kwargs):
         
         super(MicroAODCustomize,self).__init__()
@@ -103,8 +103,16 @@ class MicroAODCustomize(object):
             self.customizeData(process)
             if "Mu" in customize.datasetName:
                 self.customizeDataMuons(process)
-        elif self.processType == "signal":
+        elif "sig" in self.processType.lower():
             self.customizeSignal(process)
+            if "tth" in customize.datasetName.lower():
+                self.customizeTTH(process)
+            if "vh" in customize.datasetName.lower():
+                self.customizeVH(process)
+            if "ggh" in customize.datasetName.lower() or "glugluh" in customize.datasetName.lower():
+                self.customizeGGH(process)
+            if "vbf" in customize.datasetName.lower():
+                self.customizeVBF(process)
         if self.processType == "background":
             self.customizeBackground(process)
         if self.debug == 1:
@@ -115,8 +123,6 @@ class MicroAODCustomize(object):
             self.customizeMuMuGamma(process)
         elif self.muMuGamma == 2 and ("DY" in customize.datasetName or "DoubleMuon" in customize.datasetName):
             self.customizeMuMuGamma(process)
-        if "ttH" in customize.datasetName:
-            self.customizeTTH(process)
         if len(self.globalTag) >0:
             self.customizeGlobalTag(process)
         if len(self.fileNames) >0:
@@ -144,7 +150,23 @@ class MicroAODCustomize(object):
         runMETs(process,True) #isMC
         from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
         setMetCorr(process,multPhiCorr_MC_DY_80X)
-        # Default should be the right name for all signals
+        process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
+        process.rivetProducerHTXS = cms.EDProducer('HTXSRivetProducer',
+                                                   HepMCCollection = cms.InputTag('myGenerator','unsmeared'),
+                                                   ProductionMode = cms.string('PRODUCTIONMODENOTSET'),
+                                                   )
+        process.mergedGenParticles = cms.EDProducer("MergedGenParticleProducer",
+                                                    inputPruned = cms.InputTag("prunedGenParticles"),
+                                                    inputPacked = cms.InputTag("packedGenParticles"),
+                                                    )
+        process.myGenerator = cms.EDProducer("GenParticles2HepMCConverterHTXS",
+                                             genParticles = cms.InputTag("mergedGenParticles"),
+                                             genEventInfo = cms.InputTag("generator"),
+                                             )
+        process.p *= process.mergedGenParticles
+        process.p *= process.myGenerator
+        process.p *= process.rivetProducerHTXS
+        process.out.outputCommands.append("keep *_rivetProducerHTXS_*_*")
         process.load("flashgg/MicroAOD/flashggPDFWeightObject_cfi")
         process.p *= process.flashggPDFWeightObject
 
@@ -273,6 +295,16 @@ class MicroAODCustomize(object):
 #            process.options = cms.untracked.PSet()
 #        process.options.wantSummary = cms.untracked.bool(True)
         process.out.SelectEvents = cms.untracked.PSet(SelectEvents=cms.vstring('p1'))
+        process.rivetProducerHTXS.ProductionMode = "TTH"
+
+    def customizeVBF(self,process):
+        process.rivetProducerHTXS.ProductionMode = "VBF"
+
+    def customizeVH(self,process):
+        process.rivetProducerHTXS.ProductionMode = "VH"
+
+    def customizeGGH(self,process):
+        process.rivetProducerHTXS.ProductionMode = "GGF"
 
     def customizeGlobalTag(self,process):
         process.GlobalTag.globaltag = self.globalTag
