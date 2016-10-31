@@ -214,6 +214,7 @@ class MicroAODCustomize(object):
 
     def customizeDataMuons(self,process):
         process.diPhotonFilter.src = "flashggSelectedMuons"
+        process.diPhotonFilter.minNumber = 2
 
     def customizeHighMassIsolations(self,process):
         # for isolation cones
