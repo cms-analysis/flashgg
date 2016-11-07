@@ -141,7 +141,8 @@
 </class>
 <class name="std::vector<flashgg::VHTightTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::VHTightTag> >"/>
-<class name="flashgg::VHHadronicTag" ClassVersion="12">
+<class name="flashgg::VHHadronicTag" ClassVersion="13">
+ <version ClassVersion="13" checksum="3873078953"/>
  <version ClassVersion="12" checksum="1541512627"/>
  <version ClassVersion="11" checksum="1986614206"/>
   <version ClassVersion="10" checksum="2760911373"/>

@@ -22,10 +22,16 @@ namespace flashgg {
         const edm::Ptr<flashgg::Jet>      subLeadingJet() const { return subleadingJet_; }
         const edm::Ptr<DiPhotonCandidate> diPhotonCandidate() const { return theDiPhotonCandidate_;}
         //const edm::Ptr<DiPhotonMVAResult> diPhotonMVAResult() const { return theDiPhotonMVAResult_;} // doesn't work for some reason
+        
+        float CosThetaStar( float val ){ return costhetastar_; }
 
         void setJets( edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet> );
 
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kVHHadronic; }
+
+        void setCosThetaStar( float val ){ costhetastar_= val; }
+
+    
 
     private:
         edm::Ptr<DiPhotonCandidate> theDiPhotonCandidate_;
@@ -33,7 +39,7 @@ namespace flashgg {
         //std::pair<edm::Ptr<flashgg::Jet>,edm::Ptr<flashgg::Jet> > JetPair_;
         edm::Ptr<flashgg::Jet> leadingJet_;
         edm::Ptr<flashgg::Jet> subleadingJet_;
-
+        float costhetastar_;
     };
 }
 
