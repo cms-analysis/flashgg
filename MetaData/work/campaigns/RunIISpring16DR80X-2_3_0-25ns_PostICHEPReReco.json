@@ -14,13 +14,13 @@
 	"/DoubleMuon/Run2016E-23Sep2016-v1/MINIAOD",
 	"/DoubleMuon/Run2016F-23Sep2016-v1/MINIAOD",
 	"/DoubleMuon/Run2016G-23Sep2016-v1/MINIAOD",
-	/"SingleElectron/Run2016B-23Sep2016-v2/MINIAOD",
-	/"SingleElectron/Run2016B-23Sep2016-v3/MINIAOD",
-	/"SingleElectron/Run2016C-23Sep2016-v1/MINIAOD",
-	/"SingleElectron/Run2016D-23Sep2016-v1/MINIAOD",
-	/"SingleElectron/Run2016E-23Sep2016-v1/MINIAOD",
-	/"SingleElectron/Run2016F-23Sep2016-v1/MINIAOD",
-	/"SingleElectron/Run2016G-23Sep2016-v1/MINIAOD"
+	"/SingleElectron/Run2016B-23Sep2016-v2/MINIAOD",
+	"/SingleElectron/Run2016B-23Sep2016-v3/MINIAOD",
+	"/SingleElectron/Run2016C-23Sep2016-v1/MINIAOD",
+	"/SingleElectron/Run2016D-23Sep2016-v1/MINIAOD",
+	"/SingleElectron/Run2016E-23Sep2016-v1/MINIAOD",
+	"/SingleElectron/Run2016F-23Sep2016-v1/MINIAOD",
+	"/SingleElectron/Run2016G-23Sep2016-v1/MINIAOD"
                 ],
         "sig" : [
         "/GluGluHToGG_M-120_13TeV_powheg_pythia8/RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14-v1/MINIAODSIM",
