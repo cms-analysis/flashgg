@@ -45,6 +45,7 @@ namespace flashgg {
         double     _rmsforwardCut;
         string     _JetIDLevel;
         double     _minDijetMinv;
+        double     _drJetPhoton;
         
         std::vector<double> _pujid_wp_pt_bin_1;
         std::vector<double> _pujid_wp_pt_bin_2;
@@ -85,6 +86,7 @@ namespace flashgg {
         _rmsforwardCut( iConfig.getParameter<double> ( "rmsforwardCut") ),
         _JetIDLevel   ( iConfig.getParameter<string> ( "JetIDLevel"   ) ),
         _minDijetMinv ( iConfig.getParameter<double> ( "MinDijetMinv" ) ),
+        _drJetPhoton  ( iConfig.getParameter<double> ( "DrJetPhoton"  ) ),
         _pujid_wp_pt_bin_1  ( iConfig.getParameter<std::vector<double> > ( "pujidWpPtBin1" ) ),
         _pujid_wp_pt_bin_2  ( iConfig.getParameter<std::vector<double> > ( "pujidWpPtBin2" ) ),
         _pujid_wp_pt_bin_3  ( iConfig.getParameter<std::vector<double> > ( "pujidWpPtBin3" ) )
@@ -175,13 +177,12 @@ namespace flashgg {
             std::pair <float, float> dijet_pts( -1., -1. );
             int jet_3_index = -1;
             int jet_3_pt    = -1;
-            float dr2pho = 0.5;
-            
+                        
             float phi1 = diPhotons->ptrAt( candIndex )->leadingPhoton()->phi();
             float eta1 = diPhotons->ptrAt( candIndex )->leadingPhoton()->eta();
             float phi2 = diPhotons->ptrAt( candIndex )->subLeadingPhoton()->phi();
             float eta2 = diPhotons->ptrAt( candIndex )->subLeadingPhoton()->eta();
-
+            
             bool hasValidVBFDiJet  = 0;
             bool hasValidVBFTriJet = 0;
             
@@ -245,12 +246,12 @@ namespace flashgg {
                 // close to lead photon?
                 float dPhi = deltaPhi( jet->phi(), phi1 );
                 float dEta = jet->eta() - eta1;
-                if( sqrt( dPhi * dPhi + dEta * dEta ) < dr2pho ) { continue; }
+                if( sqrt( dPhi * dPhi + dEta * dEta ) < _drJetPhoton ) { continue; }
                 
                 // close to sublead photon?
                 dPhi = deltaPhi( jet->phi(), phi2 );
                 dEta = jet->eta() - eta2;
-                if( sqrt( dPhi * dPhi + dEta * dEta ) < dr2pho ) { continue; }
+                if( sqrt( dPhi * dPhi + dEta * dEta ) < _drJetPhoton ) { continue; }
                 
                 if( jet->pt() > dijet_pts.first ) {
                     // if pt of this jet is higher than the one currently in lead position
