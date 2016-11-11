@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SETUP_REMOTES=true
+SETUP_REMOTES=false
 
 echo
 echo "Welcome to the FLASHgg automagic setup script!"
