@@ -56,7 +56,7 @@ customize.options.register('acceptance',
                            'acceptance'
                            )
 customize.options.register('doSystematics',
-                           True,
+                           False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doSystematics'
@@ -68,16 +68,16 @@ customize.options.register('doPdfWeights',
                            'doPdfWeights'
                            )
 customize.options.register('dumpTrees',
-                           False,
+                           True,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
-                           'doSystematics'
+                           'dumpTrees'
                            )
 customize.options.register('dumpWorkspace',
                            True,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
-                           'doSystematics'
+                           'dumpWorkspace'
                            )
 
 
@@ -155,12 +155,13 @@ useEGMTools(process)
 if customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance"): # convention: ggh vbf wzh (wh zh) tth
     print "Signal MC, so adding systematics and dZ"
     variablesToUse = minimalVariables
-#    variablesToUse.extend(fc.getGenVariables(True))
-#    variablesToUse.extend(fc.getRecoVariables(True))
-    variablesToUse.append("genLeadGenIso := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
-    variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
-    variablesToUse.append("leadmva := diPhotonMVA().leadmva")
-    variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
+    if customize.doFiducial:
+        variablesToUse.extend(fc.getGenVariables(True))
+        variablesToUse.extend(fc.getRecoVariables(True))
+        variablesToUse.append("genLeadGenIso := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
+        variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
+        variablesToUse.append("leadmva := diPhotonMVA().leadmva")
+        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
 
     if customize.doSystematics:
         for direction in ["Up","Down"]:
@@ -197,8 +198,10 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
         #systlabels += metsystlabels
     customizeSystematicsForSignal(process)
 elif customize.processId == "Data":
-    print "Data, so turn of all shifts and systematics, with some exceptions"
+    print "Data, so turn off all shifts and systematics, with some exceptions"
     variablesToUse = minimalNonSignalVariables
+    if customize.doFiducial:
+        variablesToUse.extend(fc.getRecoVariables(True))
     customizeSystematicsForData(process)
 else:
     print "Background MC, so store mgg and central only"
@@ -264,8 +267,11 @@ process.tagsDumper.dumpHistos = False
 process.tagsDumper.quietRooFit = True
 process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
 
-#if(customize.doFiducial):
-#    fc.addObservables(process, process.tagsDumper, customize.processType )
+if(customize.doFiducial):
+#    if customize.processId == "Data":
+#        fc.addRecoGlobalVariables(process, process.tagsDumper)
+#    else:
+    fc.addObservables(process, process.tagsDumper, customize.processId )
 
 #tagList=[
 #["UntaggedTag",4],
@@ -408,7 +414,11 @@ if customize.doFiducial:
           nPdfWeights = -1
           nAlphaSWeights = -1
           nScaleWeights = -1
-#    fc.addGenOnlyAnalysis(process,customize.acceptance,tagList,systlabels,pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights))
+    if not customize.processId == "Data":
+        fc.addGenOnlyAnalysis(process,customize.processId,customize.acceptance,tagList,systlabels,pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights))
+
+if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
+process.options.allowUnscheduled = cms.untracked.bool(True)
 
 print "--- Dumping modules that take diphotons as input: ---"
 mns = process.p.moduleNames()
