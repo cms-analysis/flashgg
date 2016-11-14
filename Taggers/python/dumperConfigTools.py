@@ -55,9 +55,8 @@ def getNameExpr(expr,name=None):
     
     return name,expr
    
-# -----------------------------------------------------------------------
-def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
 
+def parseVariable(expr, name):
     name,expr = getNameExpr(expr,name)
     
     if name.endswith("]"):
@@ -66,20 +65,33 @@ def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
         nbins = int(rng[0])
         vmin  = float(rng[1])
         vmax  = float(rng[2])
-    
+        return name, [expr], nbins, vmin, vmax
+        
     if "map(" in  expr:
         var, bins, vals = expr.lstrip("map(").rstrip(")").split("::")
         bins = [ float(b) for b in bins.split(",") ]
         vals = [ float(v) for v in vals.split(",") ]
+        return name, [var,bins, vals], nbins, vmin, vmax
+    else:
+        return name, [expr], None, None, None
+    
+
+# -----------------------------------------------------------------------
+def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
+
+
+    name, expr1, nbins, vmin, vmax = parseVariable(expr, name)
+    
+    if len(expr1)>1:
         pset = cms.PSet(
             expr  = cms.PSet(
-                var = cms.string(var), bins = cms.vdouble(bins), vals = cms.vdouble(vals)
+                var = cms.string(expr1[0]), bins = cms.vdouble(expr1[1]), vals = cms.vdouble(expr1[2])
                 ),
             name  = cms.untracked.string(name),
             )        
     else:
         pset = cms.PSet(
-            expr  = cms.string(expr),
+            expr  = cms.string(expr1[0]),
             name  = cms.untracked.string(name),
             )
     if nbins:
@@ -87,6 +99,37 @@ def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
         pset.vmin = cms.untracked.double(vmin)
         pset.vmax = cms.untracked.double(vmax)
     vpset.append(pset)
+
+
+#    name,expr = getNameExpr(expr,name)
+#    
+#    if name.endswith("]"):
+#        name,rng = name.replace("]","").split("[")
+#        rng = rng.split(",")
+#        nbins = int(rng[0])
+#        vmin  = float(rng[1])
+#        vmax  = float(rng[2])
+#    
+#    if "map(" in  expr:
+#        var, bins, vals = expr.lstrip("map(").rstrip(")").split("::")
+#        bins = [ float(b) for b in bins.split(",") ]
+#        vals = [ float(v) for v in vals.split(",") ]
+#        pset = cms.PSet(
+#            expr  = cms.PSet(
+#                var = cms.string(var), bins = cms.vdouble(bins), vals = cms.vdouble(vals)
+#                ),
+#            name  = cms.untracked.string(name),
+#            )        
+#    else:
+#        pset = cms.PSet(
+#            expr  = cms.string(expr),
+#            name  = cms.untracked.string(name),
+#            )
+#    if nbins:
+#        pset.nbins = cms.untracked.int32(nbins)
+#        pset.vmin = cms.untracked.double(vmin)
+#        pset.vmax = cms.untracked.double(vmax)
+#    vpset.append(pset)
     
     
 # -----------------------------------------------------------------------
