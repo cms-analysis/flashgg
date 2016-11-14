@@ -122,14 +122,7 @@ def getGenVariables(isRecoTag=True):
                       "genSubleadFromHardProcess := ? diPhoton.subLeadingPhoton.hasMatchedGenPhoton ? diPhoton.subLeadingPhoton.matchedGenPhoton.fromHardProcessFinalState : 0"
                       ] )
         
-    else:
-        legs.extend( ["genLeadGenIso[-1,(0.0:10.0:13000.0)] := leadingExtra.genIso",
-                      "genSubleadGenIso[-1,(0.0:10.0:13000.0)]:= subLeadingExtra.genIso",
-                      "genLeadFromHardProcess := leadingPhoton.fromHardProcessFinalState",
-                      "genSubleadFromHardProcess := subLeadingPhoton.fromHardProcessFinalState"
-
-                      ] )
-###    return dipho        
+#    return dipho
     return dipho+legs
 
 #### ----------------------------------------------------------------------------------------------------------------
@@ -367,6 +360,21 @@ def addRecoGlobalVariables(process,dumper,tagGetter=""):
 def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabels,pdfWeights=None,recoJetCollections=None,mH=None,filterEvents=True):
     import itertools
     import flashgg.Taggers.dumperConfigTools as cfgTools
+    variables  = [ "%sNjets%s:=numberOfDaughters" % (pre,post) ]
+    variables += getJetKinVariables(pre,post,["pt","eta","rapidity"],5)
+    variables += [ "%sDijetMass%s := ? numberOfDaughters > 1 ? sqrt( (daughter(0).energy+daughter(1).energy)^2 - (daughter(0).px+daughter(1).px)^2 - (daughter(0).py+daughter(1).py)^2 - (daughter(0).pz+daughter(1).pz)^2 ) : 0" % (pre,post) ]
+
+    cfgTools.addGlobalFloats(process,dumper.globalVariables,src,variables)
+
+# ----------------------------------------------------------------------------------------------------------------
+def addGenGlobalVariables(process,dumper):    
+    addJetGlobalVariables(process,dumper,"flashggGenHadronicActivity2p5","gen","2p5")
+    addJetGlobalVariables(process,dumper,"flashggGenHadronicActivity4p7","gen","4p7")
+
+# ----------------------------------------------------------------------------------------------------------------
+def addRecoGlobalVariables(process,dumper):    
+    addJetGlobalVariables(process,dumper,"flashggRecoHadronicActivity2p5","reco","2p5")
+    addJetGlobalVariables(process,dumper,"flashggRecoHadronicActivity4p7","reco","4p7")
     
     accCut = getAccGenCut()
     cut = "1"
@@ -397,8 +405,7 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
     process.flashggTaggedGenDiphotons.src  = "flashggSortedGenDiPhotons"
     process.flashggTaggedGenDiphotons.tags = "flashggTagSorter"
     process.flashggTaggedGenDiphotons.remap = process.tagsDumper.classifierCfg.remap
-    ## process.flashggTaggedGenDiphotons.tags = "flashggSystTagMerger"
-    
+
     process.load("flashgg.Taggers.genDiphotonDumper_cfi")
     process.genDiphotonDumper.dumpTrees = True
     process.genDiphotonDumper.maxCandPerEvent = -1
@@ -421,9 +428,10 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
         
     genVariables  = getGenVariables(False)
     recoVariables = getRecoVariables(False)
-##    extravars = ["leadmva := recoTagObj.diPhoton.leadingView.phoIdMvaWrtChosenVtx", "subleadmva := recoTagObj.diPhoton.subLeadingView.phoIdMvaWrtChosenVtx"]
-    recoVariables.extend( ["leadmva := recoTagObj.diPhoton.leadingView.phoIdMvaWrtChosenVtx", "subleadmva := recoTagObj.diPhoton.subLeadingView.phoIdMvaWrtChosenVtx"] )
-##    recoVariables.extend( ["costheta := ( ( recoTagObj.diPhoton.leadingPhoton.energy + recoTagObj.diPhoton.leadingPhoton.p4.pz ) * ( recoTagObj.diPhoton.subLeadingPhoton.energy - recoTagObj.diPhoton.subLeadingPhoton.p4.pz ) - ( recoTagObj.diPhoton.leadingPhoton.energy - recoTagObj.diPhoton.leadingPhoton.p4.pz ) * ( recoTagObj.diPhoton.subLeadingPhoton.energy + recoTagObj.diPhoton.subLeadingPhoton.p4.pz ) ) / ( recoTagObj.diPhoton.mass * sqrt( recoTagObj.diPhoton.mass * recoTagObj.diPhoton.mass + recoTagObj.diPhoton.pt * recoTagObj.diPhoton.pt ) )"] )
+    
+    genVariables  = getGenVariables(False)
+    recoVariables = getRecoVariables(False)
+    
     cfgTools.addCategory(process.genDiphotonDumper,
                          "NoTag", 'isTagged("")',1,
                          variables=genVariables,
@@ -451,7 +459,7 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
             
     ## process.pfid = cms.Path(process.genFilter*process.flashggGenDiPhotonsSequence*process.flashggTaggedGenDiphotons*process.genDiphotonDumper)
     process.pfid = cms.Path(process.genFilter*process.genDiphotonDumper)
-    
+        
 
 def bookCompositeObjects(process,processId,tagSequence,recoJetCollections=None):
     ## bookHadronicActivityProducers(process,processId,"flashggTagSorter","flashggTaggedGenDiphotons",recoJetCollections,genJetCollection="slimmedGenJets")
@@ -461,14 +469,3 @@ def addObservables(process, dumper, processId, recoJetCollections=None):
     addRecoGlobalVariables(process,dumper)
     if not processId=="Data":    
         addGenGlobalVariables(process,dumper)
-    
-###def extraReplacementsHook(newseq,systlabel,systtype):
-###    from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet,massSearchReplaceAnyInputTag
-###    if systtype=="jet":
-###        from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
-###        recoJetCollections = UnpackedJetCollectionVInputTag
-###        for icoll,coll in enumerate(recoJetCollections):        
-###            massSearchReplaceAnyInputTag(newseq,cms.InputTag("filteredRecoJetsEta2p5%d" % icoll),cms.InputTag("filteredRecoJetsEta2p5%d%s" % (icoll,systlabel)))
-###            massSearchReplaceAnyInputTag(newseq,cms.InputTag("filteredRecoJetsEta4p7%d" % icoll),cms.InputTag("filteredRecoJetsEta4p7%d%s" % (icoll,systlabel)))
-###        massSearchReplaceAnyInputTag(newseq,cms.InputTag("flashggRecoHadronicActivity2p5"),cms.InputTag("flashggRecoHadronicActivity2p5%s" % (systlabel)))
-###        massSearchReplaceAnyInputTag(newseq,cms.InputTag("flashggRecoHadronicActivity4p7"),cms.InputTag("flashggRecoHadronicActivity4p7%s" % (systlabel)))
