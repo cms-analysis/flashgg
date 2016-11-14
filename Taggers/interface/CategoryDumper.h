@@ -189,7 +189,7 @@ namespace flashgg {
         auto variables = cfg.getParameter<vector<edm::ParameterSet> >( "variables" );
         for( auto &var : variables ) {
             auto nbins = var.getUntrackedParameter<int>( "nbins", 0 );
-            auto vmin = var.getUntrackedParameter<double>( "vmin", numeric_limits<double>::min() );
+            auto vmin = var.getUntrackedParameter<double>( "vmin", numeric_limits<double>::lowest() );
             auto vmax = var.getUntrackedParameter<double>( "vmax", numeric_limits<double>::max() );
             if( var.existsAs<edm::ParameterSet>( "expr" ) ) {
                 auto expr = var.getParameter<edm::ParameterSet>( "expr" );
@@ -211,7 +211,7 @@ namespace flashgg {
             for( auto &mva : mvas ) {
                 auto name = mva.getUntrackedParameter<string>( "name" );
                 auto nbins = mva.getUntrackedParameter<int>( "nbins", 0 );
-                auto vmin = mva.getUntrackedParameter<double>( "vmin", numeric_limits<double>::min() );
+                auto vmin = mva.getUntrackedParameter<double>( "vmin", numeric_limits<double>::lowest() );
                 auto vmax = mva.getUntrackedParameter<double>( "vmax", numeric_limits<double>::max() );
                 mvas_.push_back( std::shared_ptr<wrapped_mva_type>( new wrapped_mva_type( new mva_type( mva, globalVarsDumper_ ) ) ) );
                 names_.push_back( name );
@@ -226,7 +226,7 @@ namespace flashgg {
             std::cout<<"adding wrapper for extra float variable "<<extraFloatName<<std::endl; 
 //            auto name = mva.getUntrackedParameter<string>( "name" );
             auto nbins =  100 ;
-            auto vmin =  numeric_limits<double>::min();
+            auto vmin =  numeric_limits<double>::lowest();
             auto vmax =  numeric_limits<double>::max();
             extraglobalvars_.push_back( std::shared_ptr<wrapped_global_var_type>( new wrapped_global_var_type( globalVarsDumper_ , extraFloatName ) ) );
             names_.push_back( extraFloatName );
