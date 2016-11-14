@@ -82,7 +82,6 @@ def getGenVariables(isRecoTag=True):
         legs.extend( ["genLeadGenIso := leadingExtra.genIso",
                       "genSubleadGenIso:= subLeadingExtra.genIso"] )
         
-
 #    return dipho
     return dipho+legs
 
@@ -190,7 +189,6 @@ def addRecoGlobalVariables(process,dumper):
 def addGenOnlyAnalysis(process,processId,acceptance,tagList,systlabels,pdfWeights=None,recoJetCollections=None):
     import itertools
     import flashgg.Taggers.dumperConfigTools as cfgTools
-
     variables  = [ "%sNjets%s:=numberOfDaughters" % (pre,post) ]
     variables += getJetKinVariables(pre,post,["pt","eta","rapidity"],5)
     variables += [ "%sDijetMass%s := ? numberOfDaughters > 1 ? sqrt( (daughter(0).energy+daughter(1).energy)^2 - (daughter(0).px+daughter(1).px)^2 - (daughter(0).py+daughter(1).py)^2 - (daughter(0).pz+daughter(1).pz)^2 ) : 0" % (pre,post) ]
@@ -207,7 +205,6 @@ def addRecoGlobalVariables(process,dumper):
     addJetGlobalVariables(process,dumper,"flashggRecoHadronicActivity2p5","reco","2p5")
     addJetGlobalVariables(process,dumper,"flashggRecoHadronicActivity4p7","reco","4p7")
     
-    
     accCut = getAccGenCut()
     cut = "1"
     if acceptance == "IN": cut = accCut
@@ -222,7 +219,6 @@ def addRecoGlobalVariables(process,dumper):
     process.flashggTaggedGenDiphotons.src  = "flashggSortedGenDiPhotons"
     process.flashggTaggedGenDiphotons.tags = "flashggTagSorter"
     process.flashggTaggedGenDiphotons.remap = process.tagsDumper.classifierCfg.remap
-
 ## process.flashggTaggedGenDiphotons.tags = "flashggSystTagMerger"
 
     process.load("flashgg.Taggers.genDiphotonDumper_cfi")
@@ -247,7 +243,7 @@ def addRecoGlobalVariables(process,dumper):
     
     genVariables  = getGenVariables(False)
     recoVariables = getRecoVariables(False)
-
+    
     cfgTools.addCategory(process.genDiphotonDumper,
                          "NoTag", 'isTagged("")',1,
                          variables=genVariables,
@@ -270,12 +266,11 @@ def addRecoGlobalVariables(process,dumper):
                                  nAlphaSWeights=nAlphaSWeights,
                                  nScaleWeights=nScaleWeights
                                  )
-<<<<<<< HEAD
             
             
 ## process.pfid = cms.Path(process.genFilter*process.flashggGenDiPhotonsSequence*process.flashggTaggedGenDiphotons*process.genDiphotonDumper)
     process.pfid = cms.Path(process.genFilter*process.genDiphotonDumper)
-    
+        
 
 
 def addObservables(process, dumper, processId, recoJetCollections=None):
@@ -283,25 +278,5 @@ def addObservables(process, dumper, processId, recoJetCollections=None):
     addRecoGlobalVariables(process,dumper)
     if not processId=="Data":    
         addGenGlobalVariables(process,dumper)
-=======
-    
-            
-<<<<<<< HEAD
-    process.pfid = cms.Path(process.genFilter*process.flashggGenDiPhotonsSequence*process.flashggTaggedGenDiphotons*process.genDiphotonDumper)
->>>>>>> d151a22... debugged exta variables
-    
-=======
-    ## process.pfid = cms.Path(process.genFilter*process.flashggGenDiPhotonsSequence*process.flashggTaggedGenDiphotons*process.genDiphotonDumper)
-    process.pfid = cms.Path(process.genFilter*process.genDiphotonDumper)
-    
-    if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
-    process.options.allowUnscheduled = cms.untracked.bool(True)
-
-def addObservables(process, dumper, processType, recoJetCollections=None):
-#    bookHadronicActivityProducers(process,"flashggTagSorter","flashggTaggedGenDiphotons",recoJetCollections,genJetCollection="slimmedGenJets")
-    addGenGlobalVariables(process,dumper)
-    addRecoGlobalVariables(process,dumper)
-    
->>>>>>> 63dbdfc... state of the art of differential
 
 
