@@ -145,7 +145,7 @@ namespace flashgg {
 
         Point genPV_;
 
-        mutable LorentzVector* genP4_;
+        mutable std::vector<LorentzVector> genP4_;
     };
 
 

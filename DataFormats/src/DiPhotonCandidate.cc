@@ -5,17 +5,16 @@
 
 using namespace flashgg;
 
-DiPhotonCandidate::DiPhotonCandidate() : genP4_(0) {}
+DiPhotonCandidate::DiPhotonCandidate() {}
 
 DiPhotonCandidate::~DiPhotonCandidate() 
 {
-    if( genP4_ != 0 ) { 
-        delete genP4_;
-    }
+//    if( genP4_ != 0 ) { 
+//        delete genP4_;
+//    }
 }
 
 DiPhotonCandidate::DiPhotonCandidate( edm::Ptr<flashgg::Photon> photon1, edm::Ptr<flashgg::Photon> photon2, edm::Ptr<reco::Vertex> vertex )
-    : genP4_(0)
 {
     //    std::cout << " DiPhotonCandidate::DiPhotonCandidate " << std::endl;
     vertex_ = vertex;
@@ -72,10 +71,11 @@ math::XYZTLorentzVector DiPhotonCandidate::PhoP4Corr( edm::Ptr<flashgg::Photon> 
 const DiPhotonCandidate::LorentzVector& DiPhotonCandidate::genP4() const
 {
     // DiPhotonCandidate::LorentzVector ret(0,0,0,0);
-    if( genP4_ == 0 ) { 
-        std::cout<<"genP4 is 0, so we create it"<<std::endl;
-        genP4_ = new DiPhotonCandidate::LorentzVector();
-        std::cout<<"genP4"<<genP4_<<std::endl;
+    //    if( genP4_ == 0 ) { 
+    if (genP4_.size() == 0){
+        std::cout<<"genP4 has 0, so we create it"<<std::endl;
+        //        genP4_ = new DiPhotonCandidate::LorentzVector();
+        //        std::cout<<"genP4"<<genP4_<<std::endl;
         if( leadingPhoton()->hasMatchedGenPhoton() && subLeadingPhoton()->hasMatchedGenPhoton() ) {
             std::cout<<"we have both lead and sublead matched photons, so we read them"<<std::endl;
             std::cout<<"Leading gen: "<<std::endl;
@@ -93,21 +93,23 @@ const DiPhotonCandidate::LorentzVector& DiPhotonCandidate::genP4() const
             std::cout<<"	px: "<<subLeadingPhoton()->matchedGenPhoton()->p4().px()<<std::endl;
             std::cout<<"	py: "<<subLeadingPhoton()->matchedGenPhoton()->p4().py()<<std::endl;
             std::cout<<"	pz: "<<subLeadingPhoton()->matchedGenPhoton()->p4().pz()<<std::endl;
-            *genP4_ = (leadingPhoton()->matchedGenPhoton()->p4() + subLeadingPhoton()->matchedGenPhoton()->p4());
+            genP4_.push_back( (leadingPhoton()->matchedGenPhoton()->p4() + subLeadingPhoton()->matchedGenPhoton()->p4()) );
 
             std::cout<<"Dipho gen: "<<std::endl;
-            std::cout<<"	energy: "<<genP4_->energy()<<std::endl;
-            std::cout<<"	eta: "<<genP4_->eta()<<std::endl;
-            std::cout<<"	phi: "<<genP4_->phi()<<std::endl;
-            std::cout<<"	px: "<<genP4_->px()<<std::endl;
-            std::cout<<"	py: "<<genP4_->py()<<std::endl;
-            std::cout<<"	pz: "<<genP4_->pz()<<std::endl;
+            std::cout<<"	energy: "<<genP4_[0].energy()<<std::endl;
+            std::cout<<"	eta: "<<genP4_[0].eta()<<std::endl;
+            std::cout<<"	phi: "<<genP4_[0].phi()<<std::endl;
+            std::cout<<"	px: "<<genP4_[0].px()<<std::endl;
+            std::cout<<"	py: "<<genP4_[0].py()<<std::endl;
+            std::cout<<"	pz: "<<genP4_[0].pz()<<std::endl;
         }
         else{
-            genP4_ = new DiPhotonCandidate::LorentzVector(1e-6,1e-6,1e-6,3e-6);
+            std::cout<<"we enter the else"<<std::endl;
+            DiPhotonCandidate::LorentzVector* temp = new DiPhotonCandidate::LorentzVector(1e-6,1e-6,1e-6,3e-6);
+            genP4_.push_back(*temp);
         }
     }
-    return *genP4_;
+    return genP4_[0];
 }
 
 
