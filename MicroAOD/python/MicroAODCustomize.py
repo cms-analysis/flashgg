@@ -113,10 +113,14 @@ class MicroAODCustomize(object):
                 self.customizeGGH(process)
             elif "vbf" in customize.datasetName.lower():
                 self.customizeVBF(process)
+            elif "thq" in customize.datasetName.lower() or "thw" in customize.datasetName.lower():
+                raise Exception,"TH samples should not currently be classified as signal - see MicroAODCustomize.py"
             else:
                 raise Exception,"processType=sig but datasetName does not contain recognized production mechanism - see MicroAODCustomize.py"
         if self.processType == "background":
             self.customizeBackground(process)
+            if "thq" in customize.datasetName.lower() or "thw" in customize.datasetName.lower():
+                self.customizeTH(process)
         if self.debug == 1:
             self.customizeDebug(process)
         if self.hlt == 1:
@@ -312,6 +316,10 @@ class MicroAODCustomize(object):
 
     def customizeGGH(self,process):
         process.rivetProducerHTXS.ProductionMode = "GGF"
+
+    def customizeTH(self,process):
+        # N.B. should not be classified as a signal
+        process.out.outputCommands.append("keep *_source_*_LHEFile")
 
     def customizeGlobalTag(self,process):
         process.GlobalTag.globaltag = self.globalTag
