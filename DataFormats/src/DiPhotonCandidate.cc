@@ -104,7 +104,7 @@ const DiPhotonCandidate::LorentzVector& DiPhotonCandidate::genP4() const
             std::cout<<"	pz: "<<genP4_[0].pz()<<std::endl;
         }
         else{
-            std::cout<<"we enter the else"<<std::endl;
+            // std::cout<<"we enter the else"<<std::endl;
             DiPhotonCandidate::LorentzVector* temp = new DiPhotonCandidate::LorentzVector(1e-6,1e-6,1e-6,3e-6);
             genP4_.push_back(*temp);
         }
