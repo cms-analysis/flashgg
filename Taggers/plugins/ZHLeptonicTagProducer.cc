@@ -50,6 +50,8 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
+        EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
+        EDGetTokenT<float> pTHToken_,pTVToken_;
         string systLabel_;
         
 
@@ -125,14 +127,27 @@ namespace flashgg {
         electronEtaThresholds_ = iConfig.getParameter<vector<double > >( "electronEtaThresholds");
         useElectronMVARecipe_=iConfig.getParameter<bool>("useElectronMVARecipe");
         useElectronLooseID_=iConfig.getParameter<bool>("useElectronLooseID");
-        
+
+        ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
+        stage0catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0cat") );
+        stage1catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1cat") );
+        njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
+        pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
+        pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
+
         produces<vector<ZHLeptonicTag> >();
         produces<vector<VHTagTruth> >();
     }
 
     void ZHLeptonicTagProducer::produce( Event &evt, const EventSetup & )
     {
-
+        Handle<int> stage0cat, stage1cat, njets;
+        Handle<float> pTH, pTV;
+        evt.getByToken(stage0catToken_, stage0cat);
+        evt.getByToken(stage1catToken_,stage1cat);
+        evt.getByToken(njetsToken_,njets);
+        evt.getByToken(pTHToken_,pTH);
+        evt.getByToken(pTVToken_,pTV);
         
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
@@ -224,7 +239,6 @@ namespace flashgg {
                             }
                     }
             }
-        std::cout << "got gen info" << std::endl;
 
         edm::RefProd<vector<VHTagTruth> > rTagTruth = evt.getRefBeforePut<vector<VHTagTruth> >();
         unsigned int idx = 0;
@@ -240,7 +254,6 @@ namespace flashgg {
         double idmva2 = 0.;
         bool isDiMuon = false;
         bool isDiElectron = false;
-        std::cout << "starting diphotons" << std::endl;
         for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
 
             if(useVertex0only_)
@@ -265,7 +278,6 @@ namespace flashgg {
             idmva2 = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
             if( idmva1 <= PhoMVAThreshold_ || idmva2 <= PhoMVAThreshold_ ) { continue; }
             if( mvares->result < MVAThreshold_ ) { continue; }
-            std::cout << "loading muons/electrons" << std::endl;
             photonSelection = true;
             tagMuonsTemp = selectMuons( theMuons->ptrs(), dipho, vertices->ptrs(), muonEtaThreshold_, leptonPtThreshold_, muPFIsoSumRelThreshold_,
                                            deltaRMuonPhoThreshold_, deltaRMuonPhoThreshold_ );
@@ -314,6 +326,15 @@ namespace flashgg {
                 if( ! evt.isRealData() ) {
                     VHTagTruth truth_obj;
                     truth_obj.setGenPV( higgsVtx );
+                    if ( stage0cat.isValid() ) {
+                        truth_obj.setHTXSInfo( *( stage0cat.product() ),
+                                               *( stage1cat.product() ),
+                                               *( njets.product() ),
+                                               *( pTH.product() ),
+                                               *( pTV.product() ) );
+                    } else {
+                        truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
+                    }
                     truth_obj.setAssociatedZ( associatedZ );
                     truth_obj.setAssociatedW( associatedW );
                     truth_obj.setVhasDaughters( VhasDaughters );

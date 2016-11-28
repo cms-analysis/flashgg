@@ -1,6 +1,18 @@
 import FWCore.ParameterSet.Config as cms
 from flashgg.MicroAOD.flashggJets_cfi import flashggBTag, maxJetCollections
 
+#float                                 "rivetProducerHTXS"         "pTH"             "FLASHggMicroAOD"
+#float                                 "rivetProducerHTXS"         "pTV"             "FLASHggMicroAOD"
+#int                                   "rivetProducerHTXS"         "njets"           "FLASHggMicroAOD"
+#int                                   "rivetProducerHTXS"         "stage0cat"       "FLASHggMicroAOD"
+#int                                   "rivetProducerHTXS"         "stage1cat"       "FLASHggMicroAOD"
+
+HTXSInputTags = cms.PSet(stage0cat = cms.InputTag("rivetProducerHTXS","stage0cat"),
+                         stage1cat = cms.InputTag("rivetProducerHTXS","stage1cat"),
+                         njets     = cms.InputTag("rivetProducerHTXS","njets"),
+                         pTH       = cms.InputTag("rivetProducerHTXS","pTH"),
+                         pTV       = cms.InputTag("rivetProducerHTXS","pTV"))
+
 bDiscriminator74X = cms.vdouble(0.605,0.890)
 bDiscriminator76X = cms.vdouble(0.460,0.800,0.935)
 
@@ -20,7 +32,8 @@ flashggUntagged = cms.EDProducer("FlashggUntaggedTagProducer",
                                  MVAResultTag   = cms.InputTag('flashggDiPhotonMVA'),
                                  GenParticleTag = cms.InputTag( "flashggPrunedGenParticles" ),
                                  Boundaries     = cms.vdouble(-0.398,0.308,0.624,0.907), #,1.000),
-                                 RequireScaledPtCuts = cms.bool(True)
+                                 RequireScaledPtCuts = cms.bool(True),
+                                 HTXSTags       = HTXSInputTags
 )
 
 flashggSigmaMoMpToMTag = cms.EDProducer("FlashggSigmaMpTTagProducer",
@@ -81,7 +94,8 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        LongitudinalImpactParamEE = cms.double(0.822),
                                        useStdLeptonID = cms.bool(True),
                                        useElectronMVARecipe = cms.bool(False),
-                                       useElectronLooseID = cms.bool(True)                                     
+                                       useElectronLooseID = cms.bool(True),
+                                       HTXSTags     = HTXSInputTags                                     
                                        )
 
 flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
@@ -100,7 +114,8 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                SetArbitraryNonGoldMC = cms.bool(False),
                                DropNonGoldData = cms.bool(False),
                                RequireVBFPreselection = cms.bool(True),
-                               GetQCDWeights = cms.bool(False)
+                               GetQCDWeights = cms.bool(False),
+                               HTXSTags     = HTXSInputTags
                                )
 
 
@@ -119,8 +134,8 @@ flashggVHEtTag = cms.EDProducer("FlashggVHEtTagProducer",
                                 metPtThreshold = cms.double(70),
                                 dPhiDiphotonMetThreshold = cms.double(2.1),
                                 diphoMVAThreshold= cms.double(-1.0),
-                                phoIdMVAThreshold= cms.double(-0.9)
-                                #Boundaries=cms.vdouble(0.21,0.6,0.81)
+                                phoIdMVAThreshold= cms.double(-0.9),
+                                HTXSTags     = HTXSInputTags
 )
 
 flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
@@ -169,8 +184,10 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
                                        electronNumOfHitsThreshold = cms.double(1),
                                        useStdLeptonID = cms.bool(True),
                                        useElectronMVARecipe = cms.bool(False),
-                                       useElectronLooseID = cms.bool(True)
+                                       useElectronLooseID = cms.bool(True),
+                                       HTXSTags     = HTXSInputTags
 )
+
 flashggVHLooseTag = cms.EDProducer("FlashggVHLooseTagProducer",
                                    DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                    SystLabel=cms.string(""),
@@ -214,8 +231,10 @@ flashggVHLooseTag = cms.EDProducer("FlashggVHLooseTagProducer",
                                    electronIsoThreshold = cms.double(0.15),
                                    electronNumOfHitsThreshold = cms.double(1),
                                    useElectronMVARecipe = cms.bool(False),
-                                   useElectronLooseID = cms.bool(True)
+                                   useElectronLooseID = cms.bool(True),
+                                   HTXSTags     = HTXSInputTags
 				    )
+
 flashggVHTightTag = cms.EDProducer("FlashggVHTightTagProducer",
                                    DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                    SystLabel=cms.string(""),
@@ -266,7 +285,8 @@ flashggVHTightTag = cms.EDProducer("FlashggVHTightTagProducer",
                                    electronIsoThreshold = cms.double(0.15),
                                    electronNumOfHitsThreshold = cms.double(1),
                                    useElectronMVARecipe = cms.bool(False),
-                                   useElectronLooseID = cms.bool(True)
+                                   useElectronLooseID = cms.bool(True),
+                                   HTXSTags     = HTXSInputTags
 )
 
 flashggVHMetTag = cms.EDProducer("FlashggVHMetTagProducer",
@@ -284,8 +304,8 @@ flashggVHMetTag = cms.EDProducer("FlashggVHMetTagProducer",
                                 metPtThreshold = cms.double(70),
                                 dPhiDiphotonMetThreshold = cms.double(2.1),
                                 diphoMVAThreshold= cms.double(-1.0),
-                                phoIdMVAThreshold= cms.double(-0.9)
-                                #Boundaries=cms.vdouble(0.21,0.6,0.81)                                                                            
+                                phoIdMVAThreshold= cms.double(-0.9),
+                                 HTXSTags     = HTXSInputTags
 )
 
 flashggZHLeptonicTag = cms.EDProducer("FlashggZHLeptonicTagProducer",
@@ -321,7 +341,8 @@ flashggZHLeptonicTag = cms.EDProducer("FlashggZHLeptonicTagProducer",
                                    electronIsoThreshold = cms.double(0.15),
                                    electronNumOfHitsThreshold = cms.double(1),
                                    useElectronMVARecipe = cms.bool(False),
-                                   useElectronLooseID = cms.bool(True)
+                                   useElectronLooseID = cms.bool(True),
+                                      HTXSTags     = HTXSInputTags
 )
 
 flashggWHLeptonicTag = cms.EDProducer("FlashggWHLeptonicTagProducer",
@@ -365,7 +386,8 @@ flashggWHLeptonicTag = cms.EDProducer("FlashggWHLeptonicTagProducer",
                                    electronIsoThreshold = cms.double(0.15),
                                    electronNumOfHitsThreshold = cms.double(1),
                                    useElectronMVARecipe = cms.bool(False),
-                                   useElectronLooseID = cms.bool(True)
+                                   useElectronLooseID = cms.bool(True),
+                                      HTXSTags     = HTXSInputTags
                                     )
 flashggVHLeptonicLooseTag = cms.EDProducer("FlashggVHLeptonicLooseTagProducer",
                                    DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
@@ -411,7 +433,8 @@ flashggVHLeptonicLooseTag = cms.EDProducer("FlashggVHLeptonicLooseTagProducer",
                                    electronIsoThreshold = cms.double(0.15),
                                    electronNumOfHitsThreshold = cms.double(1),
                                    useElectronMVARecipe = cms.bool(False),
-                                   useElectronLooseID = cms.bool(True)
+                                   useElectronLooseID = cms.bool(True),
+                                           HTXSTags     = HTXSInputTags
 )
 
 
@@ -434,7 +457,8 @@ flashggVHHadronicTag = cms.EDProducer("FlashggVHHadronicTagProducer",
                                       dijetMassLowThreshold = cms.double(60.),
                                       dijetMassHighThreshold = cms.double(120.),
                                       cosThetaStarThreshold = cms.double(0.5),
-                                      phoIdMVAThreshold = cms.double(-0.9)
+                                      phoIdMVAThreshold = cms.double(-0.9),
+                                      HTXSTags     = HTXSInputTags
 )
 
 # Tag is for jet studies only, not in default sequence
