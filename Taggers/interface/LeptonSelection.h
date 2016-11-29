@@ -69,12 +69,14 @@ namespace flashgg {
     std::vector<edm::Ptr<Electron> > selectAllElectronsSum16( const std::vector<edm::Ptr<flashgg::Electron> > &ElectronPointers,
                                                               const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers,  double ElectronPtThreshold,
                                                               vector<double> EtaCuts , bool useMVARecipe, bool useLooseID,
-                                                              double elMiniIsoEBThreshold, double elMiniIsoEEThreshold);
+                                                              double elMiniIsoEBThreshold, double elMiniIsoEEThreshold,
+                                                              double TransverseImpactParam_EB, double LongitudinalImpactParam_EB, double TransverseImpactParam_EE, double LongitudinalImpactParam_EE);
 
     std::vector<edm::Ptr<Electron> > selectElectronsSum16( const std::vector<edm::Ptr<flashgg::Electron> > &ElectronPointers, Ptr<flashgg::DiPhotonCandidate> dipho,
                                                            const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers , double ElectronPtThreshold,  vector<double> EtaCuts,
                                                            double deltaRPhoElectronThreshold, double DeltaRTrkElec, double deltaMassElectronZThreshold, 
-                                                           double elMiniIsoEBThreshold, double elMiniIsoEEThreshold);
+                                                           double elMiniIsoEBThreshold, double elMiniIsoEEThreshold,
+                                                           double TransverseImpactParam_EB, double LongitudinalImpactParam_EB, double TransverseImpactParam_EE, double LongitudinalImpactParam_EE);
     
 
     std::vector<edm::Ptr<Electron> > selectElectronsNotMatchingPhotons( const std::vector<edm::Ptr<flashgg::Electron> > &ElectronPointers, const Ptr<flashgg::DiPhotonCandidate> dipho );

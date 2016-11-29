@@ -313,7 +313,8 @@ namespace flashgg {
     std::vector<edm::Ptr<Electron> > selectAllElectronsSum16( const std::vector<edm::Ptr<flashgg::Electron> > &ElectronPointers,
                                                             const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers,  double ElectronPtThreshold,
                                                               vector<double> EtaCuts , bool useMVARecipe, bool useLooseID,
-                                                              double elMiniIsoEBThreshold, double elMiniIsoEEThreshold){
+                                                              double elMiniIsoEBThreshold, double elMiniIsoEEThreshold,
+                                                              double TransverseImpactParam_EB, double LongitudinalImpactParam_EB, double TransverseImpactParam_EE, double LongitudinalImpactParam_EE){
 
 
         assert(EtaCuts.size()==3);
@@ -329,6 +330,20 @@ namespace flashgg {
 
             Ptr<flashgg::Electron> Electron = ElectronPointers[ElectronIndex];
             float Electron_eta = fabs( Electron->superCluster()->eta() );
+
+            double vtx_dz = 1000000.;
+            unsigned int min_dz_vtx = -1;
+            for( unsigned int vtxi = 0; vtxi < vertexPointers.size(); vtxi++ ) {
+                Ptr<reco::Vertex> vtx = vertexPointers[vtxi];
+                if( vtx_dz > fabs( Electron->gsfTrack()->dz( vtx->position() )) ) {
+                    vtx_dz = fabs( Electron->gsfTrack()->dz( vtx->position() ) );
+                    min_dz_vtx = vtxi;
+                }
+            }
+            Ptr<reco::Vertex> best_vtx_elec = vertexPointers[min_dz_vtx];
+
+            float Electron_dxy = fabs( Electron->gsfTrack()->dxy( best_vtx_elec->position()) ) ;
+            float Electron_dz = fabs( Electron->gsfTrack()->dz( best_vtx_elec->position())) ;
 
             if( Electron_eta > EtaCuts[2] || ( Electron_eta > EtaCuts[0] && Electron_eta < EtaCuts[1] ) )  continue;
             if( Electron->pt() < ElectronPtThreshold ) continue;
@@ -347,8 +362,12 @@ namespace flashgg {
 
             if( fabs( Electron->superCluster()->eta() ) <= 1.479 ){
                 if( Electron->fggMiniIsoSumRel() > elMiniIsoEBThreshold ) continue;
+                if( Electron_dxy > TransverseImpactParam_EB ) continue;
+                if( Electron_dz > LongitudinalImpactParam_EB ) continue;
             } else {
                 if( Electron->fggMiniIsoSumRel() > elMiniIsoEEThreshold ) continue;
+                if( Electron_dxy > TransverseImpactParam_EE ) continue;
+                if( Electron_dz> LongitudinalImpactParam_EE ) continue;
             }
 
             goodElectrons.push_back( Electron );
@@ -468,7 +487,8 @@ namespace flashgg {
     std::vector<edm::Ptr<Electron> > selectElectronsSum16( const std::vector<edm::Ptr<flashgg::Electron> > &ElectronPointers, Ptr<flashgg::DiPhotonCandidate> dipho,
                                                       const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers , double ElectronPtThreshold,  vector<double> EtaCuts,
                                                          double deltaRPhoElectronThreshold, double DeltaRTrkElec, double deltaMassElectronZThreshold, 
-                                                           double elMiniIsoEBThreshold, double elMiniIsoEEThreshold){
+                                                           double elMiniIsoEBThreshold, double elMiniIsoEEThreshold,
+                                                           double TransverseImpactParam_EB, double LongitudinalImpactParam_EB, double TransverseImpactParam_EE, double LongitudinalImpactParam_EE){
  
         std::vector<const flashgg::Photon *> photons;        
         photons.push_back( dipho->leadingPhoton() );
@@ -477,7 +497,8 @@ namespace flashgg {
         std::vector<edm::Ptr<flashgg::Electron> > goodElectrons;        
         std::vector<edm::Ptr<flashgg::Electron> > allGoodElectrons=selectAllElectronsSum16( ElectronPointers, vertexPointers , 
                                                                                             ElectronPtThreshold, EtaCuts, true, true,
-                                                                                            elMiniIsoEBThreshold, elMiniIsoEEThreshold);
+                                                                                            elMiniIsoEBThreshold, elMiniIsoEEThreshold,
+                                                                                            TransverseImpactParam_EB, LongitudinalImpactParam_EB, TransverseImpactParam_EE, LongitudinalImpactParam_EE);
         
         for( unsigned int ElectronIndex = 0; ElectronIndex < allGoodElectrons.size(); ElectronIndex++ ) {
             
