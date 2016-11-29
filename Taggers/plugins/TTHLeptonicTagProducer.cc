@@ -84,8 +84,10 @@ namespace flashgg {
         double deltaRPhoElectronThreshold_;
         double deltaMassElectronZThreshold_;
 
-        double TransverseImpactParam_;
-        double LongitudinalImpactParam_;
+        double TransverseImpactParam_EB;
+        double LongitudinalImpactParam_EB;
+        double TransverseImpactParam_EE;
+        double LongitudinalImpactParam_EE;
         vector<double> nonTrigMVAThresholds_;
         vector<double> nonTrigMVAEtaCuts_;
         double electronIsoThreshold_;
@@ -141,8 +143,10 @@ namespace flashgg {
         deltaRPhoElectronThreshold_ = iConfig.getParameter<double>( "deltaRPhoElectronThreshold");
         deltaMassElectronZThreshold_ = iConfig.getParameter<double>( "deltaMassElectronZThreshold");
 
-        TransverseImpactParam_ = iConfig.getParameter<double>( "TransverseImpactParam");
-        LongitudinalImpactParam_ = iConfig.getParameter<double>( "LongitudinalImpactParam");
+        TransverseImpactParam_EB = iConfig.getParameter<double>( "TransverseImpactParamEB");
+        LongitudinalImpactParam_EB = iConfig.getParameter<double>( "LongitudinalImpactParamEB");
+        TransverseImpactParam_EE = iConfig.getParameter<double>( "TransverseImpactParamEE");
+        LongitudinalImpactParam_EE = iConfig.getParameter<double>( "LongitudinalImpactParamEE");
         nonTrigMVAThresholds_ =  iConfig.getParameter<vector<double > >( "nonTrigMVAThresholds");
         nonTrigMVAEtaCuts_ =  iConfig.getParameter<vector<double > >( "nonTrigMVAEtaCuts");
         electronIsoThreshold_ = iConfig.getParameter<double>( "electronIsoThreshold");
@@ -273,8 +277,9 @@ namespace flashgg {
             //                                                         deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_);
             if( !useStdLeptonID_) {
                 goodElectrons= selectElectronsSum16( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_,  electronEtaThresholds_ ,
-                                                                       deltaRPhoElectronThreshold_, DeltaRTrkElec_, deltaMassElectronZThreshold_,
-                                                                       elMiniIsoEBThreshold_, elMiniIsoEEThreshold_);
+                                                     deltaRPhoElectronThreshold_, DeltaRTrkElec_, deltaMassElectronZThreshold_,
+                                                     elMiniIsoEBThreshold_, elMiniIsoEEThreshold_,
+                                                     TransverseImpactParam_EB, LongitudinalImpactParam_EB, TransverseImpactParam_EE, LongitudinalImpactParam_EE);
             } else {
                 goodElectrons = selectStdElectrons(theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_,  electronEtaThresholds_ ,
                                                     useElectronMVARecipe_,useElectronLooseID_,
