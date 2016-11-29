@@ -37,6 +37,8 @@ namespace flashgg {
         virtual float operator()( const ObjectT &obj ) const = 0;
     };
 
+
+
     template<class ObjectT, class FunctorT> class FunctorWrapper : public FunctorTrait<ObjectT>
     {
 
@@ -55,6 +57,31 @@ namespace flashgg {
         std::shared_ptr<FunctorT> func_;
     };
 
+
+    template<class ObjectT> class GlobalVarWrapper : public FunctorTrait<ObjectT>
+    {
+
+    public:
+        GlobalVarWrapper( GlobalVariablesDumper* globalDumper, const std::string & varname  ) // : std::unique_ptr<FunctorT>(func) {};
+        //            : varname_(varname), globalDumper_(globalDumper) {
+        {
+            varname_ = varname;
+            globalDumper_ = globalDumper;
+        };
+
+        virtual ~GlobalVarWrapper() {} ;
+
+        virtual float operator()( const ObjectT &obj ) const { return globalDumper_->getExtraFloat(varname_); };
+
+    private:
+        // FunctorT * func_;
+        std::string varname_;
+        GlobalVariablesDumper * globalDumper_;
+    };
+
+
+
+
     typedef std::tuple<std::string, int, std::vector<double>, int, std::vector<double>, TH1 *> histo_info;
 
     template<class FunctorT, class ObjectT>
@@ -65,10 +92,13 @@ namespace flashgg {
         typedef FunctorT functor_type;
         typedef StepWiseFunctor<ObjectT, FunctorT> stepwise_functor_type;
         typedef MVAComputer<object_type, functor_type> mva_type;
+
+
         typedef FunctorTrait<object_type> trait_type;
         typedef FunctorWrapper<object_type, functor_type> wrapped_functor_type;
         typedef FunctorWrapper<object_type, stepwise_functor_type> wrapped_stepwise_functor_type;
         typedef FunctorWrapper<object_type, mva_type> wrapped_mva_type;
+        typedef GlobalVarWrapper<object_type> wrapped_global_var_type;
 
         CategoryDumper( const std::string &name, const edm::ParameterSet &cfg, GlobalVariablesDumper *dumper = 0 );
         ~CategoryDumper();
@@ -97,18 +127,19 @@ namespace flashgg {
         std::vector<std::string> names_;
         std::vector<std::string> dumpOnly_;
         std::vector<std::tuple<float, std::shared_ptr<trait_type>, int, double, double> > variables_;
+        std::vector<float> variables_pdfWeights_;
         std::vector<histo_info> histograms_;
 
         int n_cand_;
         float weight_;
         RooArgSet rooVars_;
-        RooArgSet rooVars_pdfWeights_;
-        RooArgSet rooVarsBinned_;
+        RooArgSet rooVars_pdfWeights_;        
         RooAbsData *dataset_;
         RooAbsData *dataset_pdfWeights_;
         TTree *tree_;
         GlobalVariablesDumper *globalVarsDumper_;
         std::vector<std::shared_ptr<wrapped_mva_type> > mvas_;
+        std::vector<std::shared_ptr<wrapped_global_var_type> > extraglobalvars_;
         std::vector<std::shared_ptr<wrapped_functor_type> > functors_;
         std::vector<std::shared_ptr<wrapped_stepwise_functor_type> > stepwise_functors_;
         bool hbooked_;
@@ -118,7 +149,6 @@ namespace flashgg {
         int  nAlphaSWeights_;
         int nScaleWeights_;
         bool pdfVarsAdded_;
-        RooWorkspace * ws_;
     };
 
     template<class F, class O>
@@ -159,7 +189,7 @@ namespace flashgg {
         auto variables = cfg.getParameter<vector<edm::ParameterSet> >( "variables" );
         for( auto &var : variables ) {
             auto nbins = var.getUntrackedParameter<int>( "nbins", 0 );
-            auto vmin = var.getUntrackedParameter<double>( "vmin", numeric_limits<double>::min() );
+            auto vmin = var.getUntrackedParameter<double>( "vmin", numeric_limits<double>::lowest() );
             auto vmax = var.getUntrackedParameter<double>( "vmax", numeric_limits<double>::max() );
             if( var.existsAs<edm::ParameterSet>( "expr" ) ) {
                 auto expr = var.getParameter<edm::ParameterSet>( "expr" );
@@ -181,13 +211,30 @@ namespace flashgg {
             for( auto &mva : mvas ) {
                 auto name = mva.getUntrackedParameter<string>( "name" );
                 auto nbins = mva.getUntrackedParameter<int>( "nbins", 0 );
-                auto vmin = mva.getUntrackedParameter<double>( "vmin", numeric_limits<double>::min() );
+                auto vmin = mva.getUntrackedParameter<double>( "vmin", numeric_limits<double>::lowest() );
                 auto vmax = mva.getUntrackedParameter<double>( "vmax", numeric_limits<double>::max() );
                 mvas_.push_back( std::shared_ptr<wrapped_mva_type>( new wrapped_mva_type( new mva_type( mva, globalVarsDumper_ ) ) ) );
                 names_.push_back( name );
                 variables_.push_back( make_tuple( 0., mvas_.back(), nbins, vmin, vmax ) );
             }
         }
+
+
+        //##########
+        auto globalExtraFloatNames = globalVarsDumper_->getExtraFloatNames();
+        for( auto &extraFloatName : globalExtraFloatNames ) {
+            std::cout<<"adding wrapper for extra float variable "<<extraFloatName<<std::endl; 
+//            auto name = mva.getUntrackedParameter<string>( "name" );
+            auto nbins =  100 ;
+            auto vmin =  numeric_limits<double>::lowest();
+            auto vmax =  numeric_limits<double>::max();
+            extraglobalvars_.push_back( std::shared_ptr<wrapped_global_var_type>( new wrapped_global_var_type( globalVarsDumper_ , extraFloatName ) ) );
+            names_.push_back( extraFloatName );
+            variables_.push_back( make_tuple( 0., extraglobalvars_.back(), nbins, vmin, vmax ) );
+            //            variables_.push_back( make_tuple( 0., extraglobalvars_.back()) );
+        }
+        //##########
+
 
         auto histograms = cfg.getParameter<vector<edm::ParameterSet> >( "histograms" );
         for( auto &histo : histograms ) {
@@ -283,60 +330,64 @@ namespace flashgg {
         if( globalVarsDumper_ ) {
             globalVarsDumper_->bookTreeVariables( tree_, replacements );
         }
+        if( dumpPdfWeights_ ) {
+            variables_pdfWeights_.resize(nPdfWeights_+nAlphaSWeights_+nScaleWeights_);
+            if( nPdfWeights_ > 0 ) {
+                tree_->Branch( "pdfWeights", &variables_pdfWeights_[0], Form("pdfWeights[%d]/F",nPdfWeights_) );
+            }
+            if( nAlphaSWeights_ > 0 ) {
+                tree_->Branch( "alphaSWeights", &variables_pdfWeights_[nPdfWeights_], Form("alphaSWeights[%d]/F",nAlphaSWeights_) );
+            }
+            if( nScaleWeights_ > 0 ) {
+                tree_->Branch( "scaleWeights", &variables_pdfWeights_[nPdfWeights_+nAlphaSWeights_], Form("scaleWeights[%d]/F",nScaleWeights_) );
+            }
+        }
     }
     
     template<class F, class O>
     void CategoryDumper<F, O>::compressPdfWeightDatasets( RooWorkspace * ws)
     {
-
-          RooRealVar * mass =  ws->var("CMS_hgg_mass");
-          RooRealVar * weight_central = ws->var("centralObjectWeight");
-          RooRealVar * weight = new RooRealVar("weight","weight",0);
-          RooRealVar * sumW = new RooRealVar("sumW","sumW",0);
-          RooRealVar * numW = new RooRealVar("numW","numW",0);
-          if (dataset_pdfWeights_){
-            RooArgSet args = *(dataset_pdfWeights_->get());
-            TIterator * iter = args.createIterator();
+        const char * weight_central = "centralObjectWeight";
+        RooRealVar * sumW = new RooRealVar("sumW","sumW",0);
+        RooRealVar * numW = new RooRealVar("numW","numW",0);
+        rooVars_pdfWeights_.add(*sumW);
+        rooVars_pdfWeights_.add(*numW);
+        if (dataset_pdfWeights_){
+            bool hasCentralWeight = dataset_pdfWeights_->get()->find(weight_central) != 0;
+            RooArgSet args; args.add( *(dataset_pdfWeights_->get()->selectByName("*Weight*")) );
             sumW->setVal(dataset_pdfWeights_->sumEntries());
             numW->setVal(dataset_pdfWeights_->numEntries());
+            TIterator * iter = args.createIterator();
             RooRealVar *var;
             while((var=(RooRealVar*)iter->Next())) {
-              if (var) {
-                TString datasetname(var->GetName());
-                TString query("mass");
-                if (datasetname.Contains(query)) continue;
-                RooDataSet *data_temp = new RooDataSet("temp","tempt",RooArgSet(*mass,*weight),weight->GetName());
-                for(int i=0; i< dataset_pdfWeights_->numEntries() ; i++){
-                  mass->setVal(dataset_pdfWeights_->get(i)->getRealValue("CMS_hgg_mass"));
-                  float w_nominal =dataset_pdfWeights_->weight();
-                  float w_up = dataset_pdfWeights_->get(i)->getRealValue(var->GetName());
-                  float w_central = dataset_pdfWeights_->get(i)->getRealValue(weight_central->GetName());
-                  if (w_central == 0.) continue;
-                  var->setVal(w_nominal*(w_up/w_central));
-                  weight->setVal( var->getVal());
-                  data_temp->add(RooArgSet(*mass,*weight),var->getVal());
+                double avgwei = 0.;
+                for(int i=0; i< dataset_pdfWeights_->numEntries() ; i++){ // this is rather suboptimal as it loops several times over the dataset
+                    auto * ivars = dataset_pdfWeights_->get(i);
+                    float w_nominal =dataset_pdfWeights_->weight();
+                    float w_up = ivars->getRealValue(var->GetName());
+                    float w_central = ( hasCentralWeight ? ivars->getRealValue(weight_central) : 1. );
+                    if (w_central == 0.) { continue; }
+                    avgwei += w_nominal*(w_up/w_central);
                 }
-                float final_result =data_temp->sumEntries()/dataset_pdfWeights_->sumEntries();
-                dynamic_cast<RooRealVar &>(  rooVars_pdfWeights_[var->GetName()]).setVal(final_result);
-              }
+                avgwei /= sumW->getVal();
+                dynamic_cast<RooRealVar &>( rooVars_pdfWeights_[var->GetName()] ).setVal(avgwei);
             }
-            rooVars_pdfWeights_.add(*sumW);
-            rooVars_pdfWeights_.add(*numW);
             RooDataSet newdset( dataset_pdfWeights_->GetName(), dataset_pdfWeights_->GetName(), rooVars_pdfWeights_, sumW->GetName());
             newdset.add(rooVars_pdfWeights_,sumW->getVal());
             ws->import(newdset);
-          } else {
+            delete dataset_pdfWeights_;
+            dataset_pdfWeights_ = 0;
+        } else {
             std::cout << "[ERROR], no pdfweight dataset to compress!!" << std::endl;
-          }
+        }        
     }
 
     template<class F, class O>
     void CategoryDumper<F, O>::bookRooDataset( RooWorkspace &ws, const char *weightVar, const std::map<std::string, std::string> &replacements )
 {
-    rooVars_.add( *ws.var( weightVar ) );
-    ws_= &ws;
-    RooArgSet allvars0 = ws.allVars();
-    RooArgSet allvars1 = ws_->allVars();
+    if( ! binnedOnly_ ) {
+        rooVars_.add( *ws.var( weightVar ) );
+    }
     RooArgSet  rooVars_pdfWeights0 ;
     if (dumpPdfWeights_){
         for (int i =0; i< nPdfWeights_ ; i++) {
@@ -350,7 +401,7 @@ namespace flashgg {
             rooVars_pdfWeights0.add( *ws.var( Form("scaleWeight_%d",i) ) ); // maybe do both and check we get same result ??
         }
     }
-
+    
     for( size_t iv = 0; iv < names_.size(); ++iv ) {
         auto &name = names_[iv];
         auto &var = variables_[iv];
@@ -369,36 +420,35 @@ namespace flashgg {
         }
         rooVars_.add( rooVar, true );
         rooVars_pdfWeights0.add( rooVar, true );
-        rooVarsBinned_.add( rooVar, true ); //all the same vars except weight
     }
-    // globalVarsDumper_.bookRooVars(ws,rooVars_,replacements); 
-    //rooVars_pdfWeights_ =  *((RooArgSet*) rooVars_pdfWeights0.selectByName("CMS_hgg_mass,central*,pdf*,alpha*")); // ok, maybe not the best way to do this. To be improved. scale is kept in main rooVars_
-    //rooVars_pdfWeights_ =  *((RooArgSet*) rooVars_pdfWeights0.selectByName("CMS_hgg_mass,central*,pdf*,scale*,alpha*")); // ok, maybe not the best way to do this. To be improved.
-    rooVars_pdfWeights_.add(*((RooArgSet*) rooVars_pdfWeights0.selectByName("CMS_hgg_mass")),true);
     rooVars_pdfWeights_.add(*((RooArgSet*) rooVars_pdfWeights0.selectByName("central*")),true);
-    rooVars_pdfWeights_.add(*((RooArgSet*) rooVars_pdfWeights0.selectByName("pdf*,scale*,alpha*")),true); // eveuntally could renove scale... as it might not be useful to collapse it liek other pdf weights
+    rooVars_pdfWeights_.add(*((RooArgSet*) rooVars_pdfWeights0.selectByName("pdf*,scale*,alpha*")),true); // eveuntally could remove scale... as it might not be useful to collapse it like other pdf weights
     rooVars_pdfWeights_.add(*ws.var( weightVar ),true);
-    RooDataSet dset( formatString( name_, replacements ).c_str(), formatString( name_, replacements ).c_str(), rooVars_, weightVar );
-
-    RooDataHist dhist(formatString(name_,replacements).c_str(),formatString(name_,replacements).c_str(),rooVarsBinned_,dset);
+    
+    std::string dsetName = formatString( name_, replacements );
     if( ! binnedOnly_ ) {
+        RooDataSet dset( dsetName.c_str(), dsetName.c_str(), rooVars_, weightVar );
         ws.import( dset );
-       //ws.import( dset_pdfWeights ); can't over-write datasets so only import this one at the end  once it has been collapsed
-        RooDataSet * dset_pdfWeights = new RooDataSet( (formatString( name_, replacements )+"_pdfWeights").c_str(), (formatString( name_, replacements )+"_pdfWeights").c_str(), rooVars_pdfWeights_, weightVar ); // store in separate RooDataSet where we store all PDF weights as one. (because including it as a refular weight is too heavy and causes crashes)
-    // the compressing of the entries in dset_pdfWeights into one event per dataset happens later.
-        dataset_pdfWeights_ = dset_pdfWeights;
-    }
-    if( binnedOnly_ ) {
+    } else {
+        RooDataHist dhist(dsetName.c_str(),dsetName.c_str(),rooVars_);
         ws.import( dhist );
     }
+    dataset_ = ws.data( dsetName.c_str() );
 
-    dataset_ = ws.data( name_.c_str() );
+    if( dumpPdfWeights_ ) {
+        RooDataSet * dset_pdfWeights = new RooDataSet( (dsetName+"_pdfWeights").c_str(), (dsetName+"_pdfWeights").c_str(), rooVars_pdfWeights_, weightVar ); // store in separate RooDataSet where we store all PDF weights as one. (because including it as a refular weight is too heavy and causes crashes)
+        // the compression of the entries in dset_pdfWeights into one event per dataset happens later.
+        dataset_pdfWeights_ = dset_pdfWeights;
+    }
+
 }
+
     template<class F, class O>
 string CategoryDumper<F, O>::GetName( )
 {   
     return name_ ;
 }
+
     template<class F, class O>
 bool CategoryDumper<F, O>::isBinnedOnly( )
 {   
@@ -411,12 +461,15 @@ void CategoryDumper<F, O>::fill( const object_type &obj, double weight, vector<d
     n_cand_ = n_cand;
     weight_ = weight;
     if( dataset_ && (!binnedOnly_) ) {
-        // don't fill RooDataHists with weight variable, only RooDatSets
         dynamic_cast<RooRealVar &>( rooVars_["weight"] ).setVal( weight_ );
-
-        if (dumpPdfWeights_){
-          dynamic_cast<RooRealVar &>( rooVars_pdfWeights_["weight"] ).setVal( weight_ );
-          if ((nPdfWeights_+ nAlphaSWeights_ + nScaleWeights_) != (int) (pdfWeights.size())){ 
+    }
+    if (dumpPdfWeights_){
+        if( tree_ ) {
+            std::copy(pdfWeights.begin(),pdfWeights.end(),variables_pdfWeights_.begin());
+        }
+        if( dataset_pdfWeights_ ) {
+            dynamic_cast<RooRealVar &>( rooVars_pdfWeights_["weight"] ).setVal( weight_ );
+            if ((nPdfWeights_+ nAlphaSWeights_ + nScaleWeights_) != (int) (pdfWeights.size())){ 
                 throw cms::Exception( "Configuration" ) << " Specified number of pdfWeights (" << nPdfWeights_ <<") plus alphaSWeights ("<<nAlphaSWeights_
                                                         <<") plus scaleWeights (" << nScaleWeights_ << ") does not match length of pdfWeights Vector ("
                                                         << pdfWeights.size() << ")." ;
@@ -433,32 +486,28 @@ void CategoryDumper<F, O>::fill( const object_type &obj, double weight, vector<d
             }
         }
     }
+    
     for( size_t ivar = 0; ivar < names_.size(); ++ivar ) {
         auto name = names_[ivar].c_str();
         auto &var = variables_[ivar];
         auto &val = std::get<0>( var );
         val = ( *std::get<1>( var ) )( obj );
         if( dataset_ ) {
-            if (!binnedOnly_)  dynamic_cast<RooRealVar &>( rooVars_[name] ).setVal( val );
+            dynamic_cast<RooRealVar &>( rooVars_[name] ).setVal( val );
             if (dumpPdfWeights_) {
-            if (names_[ivar].compare("CMS_hgg_mass") ==0 || names_[ivar].compare("centralObjectWeight") ==0){ 
-            // hard-coded for now, need to find a better way evenutally...
-                if ( val == 0. ) {
-                    std::cout << " WARNING we have a weight 0 that we're pushing back into rooVars_pdfWeights_[ " << name << " ] " << std::endl;
+                if( rooVars_pdfWeights_.find(name) != 0 ) {
+                    if ( val == 0. ) { std::cout << " WARNING we have a weight 0 that we're pushing back into rooVars_pdfWeights_[ " << name << " ] " << std::endl; }
+                    dynamic_cast<RooRealVar &>( rooVars_pdfWeights_[name] ).setVal( val ); 
                 }
-              dynamic_cast<RooRealVar &>( rooVars_pdfWeights_[name] ).setVal( val ); 
-             }
             }
-            if (binnedOnly_)   dynamic_cast<RooRealVar &>( rooVarsBinned_[name] ).setVal( val );
         }
     }
     if( tree_ ) { tree_->Fill(); }
     if( dataset_ ) {
-        if (!binnedOnly_) {
-            dataset_->add( rooVars_, weight_ );
+        dataset_->add( rooVars_, weight_ );
+        if (dumpPdfWeights_ && dataset_pdfWeights_) {
             dataset_pdfWeights_->add( rooVars_pdfWeights_, weight_ );
         }
-        if (binnedOnly_)  dataset_->add( rooVarsBinned_, weight_ );
     }
     if( hbooked_ ) {
         for( auto &histo : histograms_ ) {

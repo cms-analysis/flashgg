@@ -51,6 +51,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <unordered_map>
 #include <set>
 #include <vector>
 #include <iomanip>
@@ -97,11 +98,14 @@ private :
 
     vector<string> workspaceNames;
 
-    vector<vector<RooDataSet *> > data; //[workspace][dataset(cat)]
+    //    vector<vector<RooDataSet *> > data; //[workspace][dataset(cat)]
+    vector<std::unordered_map<std::string, RooDataSet *> > data; //[workspace][dataset(cat)]
     
-    vector<vector<RooDataHist *> > dataH; //[workspace][dataset(cat)]
+    //    vector<vector<RooDataHist *> > dataH; //[workspace][dataset(cat)]
+    vector<std::unordered_map<std::string, RooDataHist *> > dataH; //[workspace][dataset(cat)]
     
-    vector<vector<RooRealVar *> > vars; //[workspace][dataset(cat)]
+    //    vector<vector<RooRealVar *> > vars; //[workspace][dataset(cat)]
+    vector<std::unordered_map<std::string, RooRealVar *> > vars; //[workspace][dataset(cat)]
 
     vector<TTree *> trees;
 
