@@ -134,7 +134,7 @@ class JobsManager(object):
             
         self.uniqueNames = {}
 
-        self.checkCrossSections()
+        # self.checkCrossSections()
 
     # -------------------------------------------------------------------------------------------------------------------
     def __call__(self):

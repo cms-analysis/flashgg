@@ -158,9 +158,11 @@
 <class name="edm::Ptr<flashgg::Photon>"/>
 <class name="std::vector<flashgg::Photon>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Photon> >"/>
-<class name="flashgg::DiPhotonCandidate" ClassVersion="11">
+<class name="flashgg::DiPhotonCandidate" ClassVersion="13">
   <version ClassVersion="10" checksum="2243573479"/>
   <version ClassVersion="11" checksum="3086156793"/>
+  <version ClassVersion="12" checksum="2290346388"/>
+  <version ClassVersion="13" checksum="226153243"/>
 </class>
 <class name="std::vector<flashgg::DiPhotonCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DiPhotonCandidate> >"/>
@@ -168,9 +170,10 @@
 <class name="edm::Wrapper<edm::Ptr<flashgg::DiPhotonCandidate> >"/>
 <class name="std::vector<edm::Ptr<flashgg::DiPhotonCandidate> >"/>
 <class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::DiPhotonCandidate> > >"/>
-<class name="flashgg::GenDiPhoton" ClassVersion="11">
+<class name="flashgg::GenDiPhoton" ClassVersion="12">
     <version ClassVersion="10" checksum="3743016204"/>
     <version ClassVersion="11" checksum="3762840980"/>
+    <version ClassVersion="12" checksum="618509360"/>
 </class>
 
 <class name="edm::Wrapper<flashgg::DiPhotonMVAResult>"/>
