@@ -319,7 +319,7 @@ for tag in tagList:
           currentVariables = systematicVariables
       
       isBinnedOnly = (systlabel !=  "")
-      if ( customize.doPdfWeights or customize.doSystematics ) and ( customize.datasetName().count("HToGG") or customize.processId.count("h_") or customize.processId.count("vbf_") ) and (systlabel ==  ""):
+      if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") ) and (systlabel ==  ""):
           print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
           nPdfWeights = 60
@@ -401,7 +401,7 @@ process.p = cms.Path(process.dataRequirements*
 
 
 if customize.doFiducial:
-    if ( customize.doPdfWeights or customize.doSystematics ) and ( customize.datasetName().count("HToGG") 
+    if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) 
                                                                    or customize.processId.count("h_") or customize.processId.count("vbf_") ) and (systlabel ==  ""):
           print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
