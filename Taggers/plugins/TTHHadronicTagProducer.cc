@@ -71,6 +71,7 @@ namespace flashgg {
         vector<double> bDiscriminator_;
         double jetsNumberThreshold_;
         double bjetsNumberThreshold_;
+        double bjetsLooseNumberThreshold_;
         string bTag_;
         //leptons
         double leptonPtThreshold_;
@@ -84,8 +85,10 @@ namespace flashgg {
         vector<double>  electronEtaThresholds_;
         double muPFIsoSumRelThreshold_;
         double muMiniIsoSumRelThreshold_;
-        double TransverseImpactParam_;
-        double LongitudinalImpactParam_;
+        double TransverseImpactParam_EB;
+        double LongitudinalImpactParam_EB;
+        double TransverseImpactParam_EE;
+        double LongitudinalImpactParam_EE;
 
         bool useStdLeptonID_;
         bool useElectronMVARecipe_;
@@ -123,6 +126,7 @@ namespace flashgg {
         bDiscriminator_ = iConfig.getParameter<vector<double > >( "bDiscriminator");
         jetsNumberThreshold_ = iConfig.getParameter<int>( "jetsNumberThreshold");
         bjetsNumberThreshold_ = iConfig.getParameter<int>( "bjetsNumberThreshold");
+        bjetsLooseNumberThreshold_ = iConfig.getParameter<int>( "bjetsLooseNumberThreshold");
         bTag_ = iConfig.getParameter<string> ( "bTag");
         muPFIsoSumRelThreshold_ = iConfig.getParameter<double>( "muPFIsoSumRelThreshold");
         muMiniIsoSumRelThreshold_ = iConfig.getParameter<double>( "muMiniIsoSumRelThreshold");
@@ -132,8 +136,10 @@ namespace flashgg {
         elMiniIsoEBThreshold_ = iConfig.getParameter<double>( "elMiniIsoEBThreshold");
         elMiniIsoEEThreshold_ = iConfig.getParameter<double>( "elMiniIsoEEThreshold");
         electronNumOfHitsThreshold_ = iConfig.getParameter<double>( "electronNumOfHitsThreshold");
-        TransverseImpactParam_ = iConfig.getParameter<double>( "TransverseImpactParam");
-        LongitudinalImpactParam_ = iConfig.getParameter<double>( "LongitudinalImpactParam");
+        TransverseImpactParam_EB = iConfig.getParameter<double>( "TransverseImpactParamEB");
+        LongitudinalImpactParam_EB = iConfig.getParameter<double>( "LongitudinalImpactParamEB");
+        TransverseImpactParam_EE = iConfig.getParameter<double>( "TransverseImpactParamEE");
+        LongitudinalImpactParam_EE = iConfig.getParameter<double>( "LongitudinalImpactParamEE");
         electronEtaThresholds_ = iConfig.getParameter<vector<double > >( "electronEtaThresholds");
         useStdLeptonID_=iConfig.getParameter<bool>("useStdLeptonID");
         useElectronMVARecipe_=iConfig.getParameter<bool>("useElectronMVARecipe");
@@ -214,7 +220,8 @@ namespace flashgg {
             //                                       leptonPtThreshold_, electronEtaThresholds_,
             //                                       true, true, elMiniIsoEBThreshold_, elMiniIsoEEThreshold_);
             goodElectrons = selectAllElectronsSum16( theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
-                                                     true, true, elMiniIsoEBThreshold_, elMiniIsoEEThreshold_);
+                                                     true, true, elMiniIsoEBThreshold_, elMiniIsoEEThreshold_,
+                                                     TransverseImpactParam_EB, LongitudinalImpactParam_EB, TransverseImpactParam_EE, LongitudinalImpactParam_EE);
         } else {
             goodElectrons = selectStdAllElectrons(theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
                                                   useElectronMVARecipe_, useElectronLooseID_);
@@ -228,13 +235,20 @@ namespace flashgg {
             int jetcount = 0;
             int njets_btagloose = 0;
             int njets_btagmedium = 0;
+            int njets_btagtight = 0;
             double idmva1 = 0.;
             double idmva2 = 0.;
+            float leadJetPt = 0.;
+            float subLeadJetPt = 0.;
+            float sumJetPt = 0.;
+            float maxBTagVal = -2.;
+            float secondMaxBTagVal = -2.;
 
             unsigned int jetCollectionIndex = diPhotons->ptrAt( diphoIndex )->jetCollectionIndex();
 
             std::vector<edm::Ptr<flashgg::Jet> > JetVect;
             std::vector<edm::Ptr<flashgg::Jet> > BJetVect;
+            std::vector<float> JetBTagVal;
 
             edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( diphoIndex );
 
@@ -260,8 +274,6 @@ namespace flashgg {
             for( unsigned int jetIndex = 0; jetIndex < Jets[jetCollectionIndex]->size() ; jetIndex++ ) {
                 edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( jetIndex );
                 if( fabs( thejet->eta() ) > jetEtaThreshold_ ) { continue; }
-
-                float bDiscriminatorValue = 0;
                 
                 float dRPhoLeadJet = deltaR( thejet->eta(), thejet->phi(), dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi() ) ;
                 float dRPhoSubLeadJet = deltaR( thejet->eta(), thejet->phi(), dipho->subLeadingPhoton()->superCluster()->eta(),
@@ -272,23 +284,49 @@ namespace flashgg {
 
                 jetcount++;
                 JetVect.push_back( thejet );
-
+                
+                float jetPt = thejet->pt();
+                if(jetPt > leadJetPt){
+                    if(leadJetPt > subLeadJetPt) { subLeadJetPt = leadJetPt; }
+                    leadJetPt = jetPt;
+                } else if(jetPt > subLeadJetPt){
+                    subLeadJetPt = jetPt;
+                }
+                sumJetPt += jetPt;
+                
+                float bDiscriminatorValue = -2.;
                 bDiscriminatorValue = thejet->bDiscriminator( bTag_ );
 
+                if(bDiscriminatorValue > maxBTagVal){
+                    if(maxBTagVal > secondMaxBTagVal) { secondMaxBTagVal = maxBTagVal; }
+                    maxBTagVal = bDiscriminatorValue;
+                } else if(bDiscriminatorValue > secondMaxBTagVal){
+                    secondMaxBTagVal = bDiscriminatorValue;
+                }
+                
+                JetBTagVal.push_back( bDiscriminatorValue );
                 if( bDiscriminatorValue > bDiscriminator_[0] ) njets_btagloose++;
                 if( bDiscriminatorValue > bDiscriminator_[1] ){
                     
                     njets_btagmedium++;
-                    JetVect.pop_back();
+                    //JetVect.pop_back();
                     BJetVect.push_back( thejet );
                 }
+                if( bDiscriminatorValue > bDiscriminator_[2] ) njets_btagtight++;
             }
 
-            if( njets_btagmedium >= bjetsNumberThreshold_ && jetcount >= jetsNumberThreshold_ ) {
+            if( njets_btagloose >= bjetsLooseNumberThreshold_ && njets_btagmedium >= bjetsNumberThreshold_ && jetcount >= jetsNumberThreshold_ ) {
                 TTHHadronicTag tthhtags_obj( dipho, mvares, JetVect, BJetVect );
+                tthhtags_obj.setNjet( jetcount );
                 tthhtags_obj.setNBLoose( njets_btagloose );
                 tthhtags_obj.setNBMedium( njets_btagmedium );
+                tthhtags_obj.setNBTight( njets_btagtight );
                 tthhtags_obj.setDiPhotonIndex( diphoIndex );
+                tthhtags_obj.setLeadJetPt( leadJetPt );
+                tthhtags_obj.setSubLeadJetPt( subLeadJetPt );
+                tthhtags_obj.setSumJetPt( sumJetPt );
+                tthhtags_obj.setMaxBTagVal( maxBTagVal );
+                tthhtags_obj.setSecondMaxBTagVal( secondMaxBTagVal );
                 tthhtags_obj.setSystLabel( systLabel_ );
                 for( unsigned num = 0; num < JetVect.size(); num++ ) {
                     tthhtags_obj.includeWeights( *JetVect[num] );

@@ -470,7 +470,7 @@ class WorkNodeJobFactory(object):
         
 
 # -----------------------------------------------------------------------------------------------------
-class LsfMonitor:
+class LsfMonitor(object):
     def __init__(self,jobsqueue,retqueue):
         self.jobsqueue = jobsqueue
         self.retqueue = retqueue
@@ -538,9 +538,13 @@ class LsfMonitor:
 # -----------------------------------------------------------------------------------------------------
 class SGEJob(LsfJob):
     """ a thread to run qsub and wait until it completes """
+    def __init__(self,*args,**kwargs):
+        self.rebootMitigation = (BatchRegistry.getDomain() in ["hep.ph.ic.ac.uk"])
+        
+        super(SGEJob, self).__init__(*args, **kwargs)
 
     def __str__(self):
-        return "SGEJob: [%s] [%s] [%s]" % ( self.lsfQueue, self.jobName, self.jobid )
+        return "SGEJoB: [%s] [%s] [%s]" % ( self.lsfQueue, self.jobName, self.jobid )
 
     def preamble(self):
         ret = ""
@@ -640,19 +644,19 @@ class SGEJob(LsfJob):
         if self.async:
             result = commands.getstatusoutput("qstat")
             checkcount = 0
-            while len(result[1].split("\n")) < 3:
-                print "SGE REBOOT MITIGATION: qstat result seems too short"
-                print "---------------------------------------------------"
-                print result[1]
-                print "---------------------------------------------------"
-                print "... so we wait before trying again"
-                sleep(5.)
-                result = commands.getstatusoutput("qstat")
-                checkcount += 1
-                if checkcount > 12:
-                    break
-                
-#                print "We are in handleOutput and we have the following output:",result
+            if (self.rebootMitigation):
+                while len(result[1].split("\n")) < 3:
+                    print "SGE REBOOT MITIGATION: qstat result seems too short"
+                    print "---------------------------------------------------"
+                    print result[1]
+                    print "---------------------------------------------------"
+                    print "... so we wait before trying again"
+                    sleep(5.)
+                    result = commands.getstatusoutput("qstat")
+                    checkcount += 1
+                    if checkcount > 12:
+                        break
+                    
             self.exitStatus = 0 # assume it is done unless listed
             for line in result[1].split("\n"):
                 if line.startswith(str(self.jobid)):
@@ -751,18 +755,18 @@ class IclustJob(LsfJob):
         if self.async:
             result = commands.getstatusoutput("qstat")
             checkcount = 0
-            while len(result[1].split("\n")) < 3:
-                print "SGE REBOOT MITIGATION: qstat result seems too short"
-                print "---------------------------------------------------"
-                print result[1]
-                print "---------------------------------------------------"
-                print "... so we wait before trying again"
-                sleep(5.)
-                result = commands.getstatusoutput("qstat")
-                checkcount += 1
-                if checkcount > 12:
-                    break
-#                print "We are in handleOutput and we have the following output:",result
+            if (self.rebootMitigation):
+                while len(result[1].split("\n")) < 3:
+                    print "SGE REBOOT MITIGATION: qstat result seems too short"
+                    print "---------------------------------------------------"
+                    print result[1]
+                    print "---------------------------------------------------"
+                    print "... so we wait before trying again"
+                    sleep(5.)
+                    result = commands.getstatusoutput("qstat")
+                    checkcount += 1
+                    if checkcount > 12:
+                        break
             self.exitStatus = 0 # assume it is done unless listed
             for line in result[1].split("\n"):
                 if line.startswith(str(self.jobid)):
@@ -809,20 +813,27 @@ class SGEMonitor(LsfMonitor):
     ###                 jobsmap.pop(jobid)
     ###         sleep(5.)
 
+    def __init__(self,*args,**kwargs):
+        self.rebootMitigation = (BatchRegistry.getDomain() in ["hep.ph.ic.ac.uk"])
+        
+        super(SGEMonitor, self).__init__(*args, **kwargs)
+
+
     def monitor(self):
         status = commands.getstatusoutput("qstat")
         checkcount = 0
-        while len(status[1].split("\n")) < 3:
-            print "SGE REBOOT MITIGATION: qstat result seems too short"
-            print "---------------------------------------------------"
-            print status[1]
-            print "---------------------------------------------------"
-            print "... so we wait before trying again"
-            sleep(5.)
-            status = commands.getstatusoutput("qstat")
-            checkcount += 1
-            if checkcount > 12:
-                break
+        if (self.rebootMitigation):
+            while len(status[1].split("\n")) < 3:
+                print "SGE REBOOT MITIGATION: qstat result seems too short"
+                print "---------------------------------------------------"
+                print status[1]
+                print "---------------------------------------------------"
+                print "... so we wait before trying again"
+                sleep(5.)
+                status = commands.getstatusoutput("qstat")
+                checkcount += 1
+                if checkcount > 12:
+                    break
         jobids = []
         statuses = []
         for line in status[1].split("\n")[2:]:

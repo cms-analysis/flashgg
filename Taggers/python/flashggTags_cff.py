@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 from flashgg.MicroAOD.flashggJets_cfi import flashggBTag, maxJetCollections
 
 bDiscriminator74X = cms.vdouble(0.605,0.890)
-bDiscriminator76X = cms.vdouble(0.460,0.800)
+bDiscriminator76X = cms.vdouble(0.460,0.800,0.935)
 
 flashggUnpackedJets = cms.EDProducer("FlashggVectorVectorJetUnpacker",
                                      JetsTag = cms.InputTag("flashggFinalJets"),
@@ -58,7 +58,8 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        bDiscriminator = bDiscriminator76X, #For CMSSW74X use : bDiscriminator74X
                                        bTag = cms.string(flashggBTag),
                                        jetsNumberThreshold = cms.int32(5),
-                                       bjetsNumberThreshold = cms.int32(1),  
+                                       bjetsNumberThreshold = cms.int32(1),
+				       bjetsLooseNumberThreshold = cms.int32(0),  
                                        dRJetPhoLeadCut =  cms.double(0.4),
                                        dRJetPhoSubleadCut = cms.double(0.4),                          
                                        leptonPtThreshold = cms.double(20),
@@ -74,6 +75,10 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        electronNumOfHitsThreshold = cms.double(1),
                                        TransverseImpactParam = cms.double(0.02),
                                        LongitudinalImpactParam = cms.double(0.2),
+				       TransverseImpactParamEB = cms.double(0.0261),
+                                       LongitudinalImpactParamEB = cms.double(0.41),
+                                       TransverseImpactParamEE = cms.double(0.118),
+                                       LongitudinalImpactParamEE = cms.double(0.822),
                                        useStdLeptonID = cms.bool(True),
                                        useElectronMVARecipe = cms.bool(False),
                                        useElectronLooseID = cms.bool(True)                                     
@@ -148,7 +153,11 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
                                        PuIDCutoffThreshold = cms.double(0.8),
                                        DeltaRTrkElec = cms.double(0.4),
                                        TransverseImpactParam = cms.double(0.02),
-                                       LongitudinalImpactParam = cms.double(0.2),
+                                       LongitudinalImpactParam = cms.double(0.2),    
+                                       TransverseImpactParamEB = cms.double(0.0261),
+                                       LongitudinalImpactParamEB = cms.double(0.41),
+                                       TransverseImpactParamEE = cms.double(0.118),
+                                       LongitudinalImpactParamEE = cms.double(0.822),
                                        deltaRPhoElectronThreshold = cms.double(0.4),
                                        deltaMassElectronZThreshold = cms.double(10.),
                                        electronEtaThresholds=cms.vdouble(1.4442,1.566,2.5),
