@@ -484,6 +484,9 @@ void CategoryDumper<F, O>::fill( const object_type &obj, double weight, vector<d
                 dynamic_cast<RooRealVar &>( rooVars_pdfWeights_[Form("scaleWeight_%d",i)] ).setVal( pdfWeights[i+nPdfWeights_+nAlphaSWeights_] ); // and scale weights stored after that!
                 dynamic_cast<RooRealVar &>( rooVars_[Form("scaleWeight_%d",i)] ).setVal( pdfWeights[i+nPdfWeights_+nAlphaSWeights_] ); // and scale weights stored after that!
             }
+            if ( splitPdfByStage0Cat_ )
+                dynamic_cast<RooRealVar &>( rooVars_pdfWeights_["stage0cat"]).setVal( );
+            }
         }
     }
     

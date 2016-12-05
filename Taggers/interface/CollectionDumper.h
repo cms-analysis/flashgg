@@ -121,6 +121,7 @@ namespace flashgg {
         int nPdfWeights_;
         int nAlphaSWeights_;
         int nScaleWeights_;
+        bool splitPdfByStage0Cat_;
 
         //std::map<std::string, std::vector<dumper_type> > dumpers_; FIXME template key
         std::map< KeyT, std::vector<dumper_type> > dumpers_;
@@ -187,6 +188,7 @@ namespace flashgg {
         dumpHistos_          = cfg.getUntrackedParameter<bool>( "dumpHistos", false );
         classifier_          = cfg.getParameter<edm::ParameterSet>( "classifierCfg" );
         throwOnUnclassified_ = cfg.exists("throwOnUnclassified") ? cfg.getParameter<bool>("throwOnUnclassified") : false;
+        splitPdfByStage0Cat_ = cfg.getUntrackedParameter<bool>( "splitPdfByStage0Cat", true);
 
         if( cfg.getUntrackedParameter<bool>( "quietRooFit", false ) ) {
             RooMsgService::instance().setGlobalKillBelow( RooFit::WARNING );
@@ -277,14 +279,18 @@ namespace flashgg {
             ws_ = fs.make<RooWorkspace>( workspaceName_.c_str(), workspaceName_.c_str() );
             dynamic_cast<RooRealVar *>( ws_->factory( "weight[1.]" ) )->setConstant( false );
             if (dumpPdfWeights_){
-                for( int j=0; j<nPdfWeights_;j++ ) {
-                    dynamic_cast<RooRealVar *>( ws_->factory( Form("pdfWeight_%d[1.]",j)) )->setConstant( false );
-                }
-                for( int j=0; j<nAlphaSWeights_;j++ ) {
-                    dynamic_cast<RooRealVar *>( ws_->factory( Form("alphaSWeight_%d[1.]",j)) )->setConstant( false );
-                }
-                for( int j=0; j<nScaleWeights_;j++ ) {
-                    dynamic_cast<RooRealVar *>( ws_->factory( Form("scaleWeight_%d[1.]",j)) )->setConstant( false );
+                if (splitPdfByStage0Cat_) {
+                    
+                } else {
+                    for( int j=0; j<nPdfWeights_;j++ ) {
+                        dynamic_cast<RooRealVar *>( ws_->factory( Form("pdfWeight_%d[1.]",j)) )->setConstant( false );
+                    }
+                    for( int j=0; j<nAlphaSWeights_;j++ ) {
+                        dynamic_cast<RooRealVar *>( ws_->factory( Form("alphaSWeight_%d[1.]",j)) )->setConstant( false );
+                    }
+                    for( int j=0; j<nScaleWeights_;j++ ) {
+                        dynamic_cast<RooRealVar *>( ws_->factory( Form("scaleWeight_%d[1.]",j)) )->setConstant( false );
+                    }
                 }
             }
             RooRealVar* intLumi = new RooRealVar("IntLumi","IntLumi",intLumi_);
