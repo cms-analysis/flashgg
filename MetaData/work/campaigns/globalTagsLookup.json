@@ -29,6 +29,14 @@
     "Run2016E-PromptReco"    : ["80X_dataRun2_Prompt_v10"],
     "Run2016F-PromptReco"    : ["80X_dataRun2_Prompt_v10"],
     "Run2016G-PromptReco"    : ["80X_dataRun2_Prompt_v10"],
+    "Run2016H-PromptReco"    : ["80X_dataRun2_Prompt_v12"],
+
+    "Run2016B-23Sep2016" : ["80X_dataRun2_2016SeptRepro_v3"],
+    "Run2016C-23Sep2016" : ["80X_dataRun2_2016SeptRepro_v3"],
+    "Run2016D-23Sep2016" : ["80X_dataRun2_2016SeptRepro_v3"],
+    "Run2016E-23Sep2016" : ["80X_dataRun2_2016SeptRepro_v3"],
+    "Run2016F-23Sep2016" : ["80X_dataRun2_2016SeptRepro_v3"],
+    "Run2016G-23Sep2016" : ["80X_dataRun2_2016SeptRepro_v3"],
 
     "RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3"                                 : ["80X_mcRun2_asymptotic_2016_v3"],
     "RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3_ext1"                            : ["80X_mcRun2_asymptotic_2016_v3"],
@@ -57,5 +65,9 @@
     "RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_minus10percentMaterial_80X_mcRun2_asymptotic_v14"         : ["80X_mcRun2_asymptotic_2016_v3"],
     "RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_minus5percentMaterial_80X_mcRun2_asymptotic_v14"          : ["80X_mcRun2_asymptotic_2016_v3"],
     "RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_plus10percentMaterial_80X_mcRun2_asymptotic_v14"          : ["80X_mcRun2_asymptotic_2016_v3"],
-    "RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_plus5percentMaterial_80X_mcRun2_asymptotic_v14"           : ["80X_mcRun2_asymptotic_2016_v3"]
+    "RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_plus5percentMaterial_80X_mcRun2_asymptotic_v14"           : ["80X_mcRun2_asymptotic_2016_v3"],
+    "RunIISpring16MiniAODv2-BS2016_BSandPUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0"                     : ["80X_mcRun2_asymptotic_2016_miniAODv2_v0"],
+    "RunIISpring16MiniAODv2-FlatPU8to37HcalNZSRAW_withHLT_80X_mcRun2_asymptotic_v14_ext1"                       : ["80X_mcRun2_asymptotic_v14"],
+    "RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14_ext1"                           : ["80X_mcRun2_asymptotic_v14"],
+    "RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14_ext3"                           : ["80X_mcRun2_asymptotic_v14"]
 }
