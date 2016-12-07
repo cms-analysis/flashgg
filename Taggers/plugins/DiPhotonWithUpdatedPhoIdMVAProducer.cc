@@ -30,6 +30,8 @@ namespace flashgg {
         bool debug_;
         //        std::vector<TGraph*> corrections_;
         std::vector<std::unique_ptr<TGraph> > corrections_;
+
+        bool useNewPhoId_;
     };
 
     DiPhotonWithUpdatedPhoIdMVAProducer::DiPhotonWithUpdatedPhoIdMVAProducer( const edm::ParameterSet &ps ) :
@@ -37,9 +39,17 @@ namespace flashgg {
         rhoToken_( consumes<double>( ps.getParameter<edm::InputTag>( "rhoFixedGridCollection" ) ) ),
         debug_( ps.getParameter<bool>( "Debug" ) )
     {
+
+
+
+        useNewPhoId_ = ps.getParameter<bool>( "useNewPhoId" );
         phoIdMVAweightfileEB_ = ps.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EB" );
         phoIdMVAweightfileEE_ = ps.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EE" );
-        phoTools_.setupMVA( phoIdMVAweightfileEB_.fullPath(), phoIdMVAweightfileEE_.fullPath() );
+        if(useNewPhoId_){
+            phoIdMVAweightfileEB_ = ps.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EB_new" );
+            phoIdMVAweightfileEE_ = ps.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EE_new" );
+        }
+        phoTools_.setupMVA( phoIdMVAweightfileEB_.fullPath(), phoIdMVAweightfileEE_.fullPath(), useNewPhoId_ );
 
         correctInputs_ = ps.existsAs<edm::FileInPath>("correctionFile") ? true: false;
         if (correctInputs_) {
