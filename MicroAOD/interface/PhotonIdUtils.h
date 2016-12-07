@@ -57,7 +57,7 @@ namespace flashgg {
                                       float, float, float, float, float, float, float, reco::PFCandidate::ParticleType, const reco::Vertex *vtx = 0 );
 
 
-        void               setupMVA( const std::string &, const std::string & );
+        void               setupMVA( const std::string &, const std::string &, bool );
         float              computeMVAWrtVtx( flashgg::Photon &, const edm::Ptr<reco::Vertex> &, const double, const double etaWidth = 0 );
 
         static flashgg::Photon     pho4MomCorrection( edm::Ptr<flashgg::Photon> &, edm::Ptr<reco::Vertex> );
@@ -157,6 +157,7 @@ namespace flashgg {
         float phoIdMva_ScEta_;
         float phoIdMva_rho_;
         float phoIdMva_ESEffSigmaRR_;
+        float phoIdMva_esEnovSCRawEn_;
 
         std::shared_ptr<TMVA::Reader> phoIdMva_EB_;
         std::shared_ptr<TMVA::Reader> phoIdMva_EE_;

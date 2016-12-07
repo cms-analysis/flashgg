@@ -14,6 +14,10 @@ flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                 photonIdMVAweightfile_EB = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_barrel_ICHEPvtx.xml"),
                                 photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_endcap_ICHEPvtx.xml"),
 
+                                useNewPhoId = cms.bool(False),
+                                photonIdMVAweightfile_EB_new = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_barrel_ICHEPvtx_r9s4EtaWshift_wLowMass.xml"),
+                                photonIdMVAweightfile_EE_new = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_endcap_ICHEPvtx_r9s4EtaWshift_wLowMass.xml"),
+
                                 useNonZsLazyTools = cms.bool(True),
                                 recomputeNonZsClusterShapes = cms.bool(False),
                                 addRechitFlags = cms.bool(True),
