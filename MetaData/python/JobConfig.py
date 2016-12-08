@@ -281,10 +281,11 @@ class JobConfig(object):
                             #Using input MC PU or by default the probvalues from cfi file for PU reweighting
                             if pusimu:
                                 puObj.mcPu   =  cms.vdouble(pusimu)
+                                puObj.useTruePu = cms.bool(False)
                             else:
                                 puObj.mcPu   = samplepu.probValue
+                                puObj.useTruePu = cms.bool(True)
                             puObj.dataPu = cms.vdouble(putarget)
-                            puObj.useTruePu = cms.bool(True)
                         
                     
             for name,obj in process.__dict__.iteritems():
