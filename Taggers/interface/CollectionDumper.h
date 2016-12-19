@@ -86,6 +86,7 @@ namespace flashgg {
     protected:
         double eventWeight( const edm::EventBase &event );
         vector<double> pdfWeights( const edm::EventBase &event );
+        int getStage0cat( const edm::EventBase &event );
 
         classifier_type classifier_;
 
@@ -122,6 +123,9 @@ namespace flashgg {
         int nAlphaSWeights_;
         int nScaleWeights_;
         bool splitPdfByStage0Cat_;
+        int stage0cat_;
+        edm::InputTag stage0catTag_;
+        edm::EDGetTokenT<int> stage0catToken_;
 
         //std::map<std::string, std::vector<dumper_type> > dumpers_; FIXME template key
         std::map< KeyT, std::vector<dumper_type> > dumpers_;
@@ -162,6 +166,8 @@ namespace flashgg {
         genInfoToken_( cc.consumes<GenEventInfoProduct>( genInfo_ ) ),
         pdfWeightToken_( cc.consumes<std::vector<flashgg::PDFWeightObject> >( pdfWeight_ ) ),
         dumpGlobalVariables_( cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true ) ),
+        stage0catTag_( cfg.getUntrackedParameter<edm::InputTag>( "stage0catTag", edm::InputTag("rivetProducerHTXS","stage0cat") ) ),
+        stage0catToken_( cc.consumes<int>( stage0catTag_ ) ),
         globalVarsDumper_(0)
     {
         if( dumpGlobalVariables_ ) {
@@ -238,7 +244,7 @@ namespace flashgg {
                 nScaleWeights_ = cat.exists("nScaleWeights") ? cat.getParameter<int>( "nScaleWeights" ) : 0;
             }
             if (dumpPdfWeights_ == false ) {
-		    dumpPdfWeights_ = cat.exists("dumpPdfWeights")? cat.getParameter<bool>( "dumpPdfWeights" ) : false;
+                dumpPdfWeights_ = cat.exists("dumpPdfWeights")? cat.getParameter<bool>( "dumpPdfWeights" ) : false;
             }
             std::string classname = ( cat.exists("className") ? cat.getParameter<std::string>( "className" ) : "" );
             //<------
@@ -279,18 +285,18 @@ namespace flashgg {
             ws_ = fs.make<RooWorkspace>( workspaceName_.c_str(), workspaceName_.c_str() );
             dynamic_cast<RooRealVar *>( ws_->factory( "weight[1.]" ) )->setConstant( false );
             if (dumpPdfWeights_){
-                if (splitPdfByStage0Cat_) {
-                    
-                } else {
-                    for( int j=0; j<nPdfWeights_;j++ ) {
-                        dynamic_cast<RooRealVar *>( ws_->factory( Form("pdfWeight_%d[1.]",j)) )->setConstant( false );
-                    }
-                    for( int j=0; j<nAlphaSWeights_;j++ ) {
-                        dynamic_cast<RooRealVar *>( ws_->factory( Form("alphaSWeight_%d[1.]",j)) )->setConstant( false );
-                    }
-                    for( int j=0; j<nScaleWeights_;j++ ) {
-                        dynamic_cast<RooRealVar *>( ws_->factory( Form("scaleWeight_%d[1.]",j)) )->setConstant( false );
-                    }
+                // Already on default list anyway
+                //                if (splitPdfByStage0Cat_ ) {
+                //                    dynamic_cast<RooRealVar *>( ws_->factory( "stage0cat[1.]") )->setConstant( false );
+                //                }
+                for( int j=0; j<nPdfWeights_;j++ ) {
+                    dynamic_cast<RooRealVar *>( ws_->factory( Form("pdfWeight_%d[1.]",j)) )->setConstant( false );
+                }
+                for( int j=0; j<nAlphaSWeights_;j++ ) {
+                    dynamic_cast<RooRealVar *>( ws_->factory( Form("alphaSWeight_%d[1.]",j)) )->setConstant( false );
+                }
+                for( int j=0; j<nScaleWeights_;j++ ) {
+                    dynamic_cast<RooRealVar *>( ws_->factory( Form("scaleWeight_%d[1.]",j)) )->setConstant( false );
                 }
             }
             RooRealVar* intLumi = new RooRealVar("IntLumi","IntLumi",intLumi_);
@@ -375,7 +381,18 @@ namespace flashgg {
         }
 
     template<class C, class T, class U>
+    int CollectionDumper<C, T, U>::getStage0cat( const edm::EventBase &event ) {
+        edm::Handle<int> stage0cat;
+        const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&event);
+        if (fullEvent != 0) {
+            fullEvent->getByToken(stage0catToken_, stage0cat);
+        } else {
+            event.getByLabel(stage0catTag_, stage0cat);
+        }
+        return (*(stage0cat.product() ) );
+    }
 
+    template<class C, class T, class U>
         vector<double> CollectionDumper<C, T, U>::pdfWeights( const edm::EventBase &event )
         {   
             vector<double> pdfWeights;
@@ -436,11 +453,14 @@ namespace flashgg {
                 // To do this, each PDF weight needs to be divided by the nominal MC weight
                 // which is obtained by dividing through weight_ by the lumiweight...
                 // The Scale Factor is then pdfWeight/nominalMC weight
-                pdfWeights_ =pdfWeights( event );
+                pdfWeights_ = pdfWeights( event );
                 for (unsigned int i = 0; i < pdfWeights_.size() ; i++){
-                pdfWeights_[i]= (pdfWeights_[i] )*(lumiWeight_/weight_); // ie pdfWeight/nominal MC weight
+                    pdfWeights_[i]= (pdfWeights_[i] )*(lumiWeight_/weight_); // ie pdfWeight/nominal MC weight
                 }
-                
+                if ( splitPdfByStage0Cat_ ) {
+                    stage0cat_ = getStage0cat( event );
+                    //                    std::cout << " IN CollectionDumper::analyze set stage0cat to " << stage0cat_ << std::endl;
+                }
             }
 
             int nfilled = maxCandPerEvent_;
@@ -457,7 +477,7 @@ namespace flashgg {
 
                     fillWeight =fillWeight*(tag->centralWeight());
                     }
-                    which->second[isub].fill( cand, fillWeight, pdfWeights_, maxCandPerEvent_ - nfilled );
+                    which->second[isub].fill( cand, fillWeight, pdfWeights_, maxCandPerEvent_ - nfilled, stage0cat_ );
                     --nfilled;
                 } else if( throwOnUnclassified_ ) {
                     throw cms::Exception( "Runtime error" ) << "could not find dumper for category [" << cat.first << "," << cat.second << "]"
