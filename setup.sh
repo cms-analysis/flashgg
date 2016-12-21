@@ -134,6 +134,12 @@ echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
 git cms-addpkg FWCore/GuiBrowsers
 git cms-merge-topic -u sethzenz:for-flashgg-toolbase-8_0_20
 
+echo "Regression recipe, 19 December 2016"
+git cms-merge-topic rafaellopesdesa:Regression80XEgammaAnalysis
+
+echo "EleID recipe, Summer16"
+git cms-merge-topic ikrav:egm_id_80X_v1
+
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Fall15_25nsV2_*.db $CMSSW_BASE/src/flashgg
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV3*.db $CMSSW_BASE/src/flashgg
