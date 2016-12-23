@@ -24,6 +24,10 @@ If everything now looks reasonable, you can build:
  cd $CMSSW_BASE/src
  scram b -j 9
  ```
+Then after building there is one new step:
+ ```
+ source flashgg/afterbuild_setup.sh
+ ```
 And a very basic workflow test:
  ```
  cd $CMSSW_BASE/src/flashgg
