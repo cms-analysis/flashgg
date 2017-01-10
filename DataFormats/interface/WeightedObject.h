@@ -21,6 +21,7 @@ namespace flashgg {
         void setCentralWeight( float val ) { setWeight( central_key, val ); }
         bool hasWeight( string key ) const;
         void includeWeights( const WeightedObject &other, bool usecentralifnotfound = true );
+        void includeWeightsByLabel( const WeightedObject &other, string keyInput, bool usecentralifnotfound = true );
         vector<string>::const_iterator weightListBegin() const { return _labels.begin(); }
         vector<string>::const_iterator weightListEnd() const { return _labels.end(); }
 

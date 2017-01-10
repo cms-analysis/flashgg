@@ -26,6 +26,8 @@
 #include <string>
 #include <utility>
 
+#include "TMVA/Reader.h"
+
 using namespace std;
 using namespace edm;
 
@@ -53,13 +55,17 @@ namespace flashgg {
 
 
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
+        bool useTTHHadronicMVA_;
+        double tthHadMVAThreshold_;
         //---thresholds---
         //---photons
         double MVAThreshold_;
+        double MVATTHHMVAThreshold_;
         double PhoMVAThreshold_;
         double leadPhoPtThreshold_;
         bool   leadPhoUseVariableTh_;
         double leadPhoOverMassThreshold_;
+        double leadPhoOverMassTTHHMVAThreshold_;
         double subleadPhoPtThreshold_;
         bool   subleadPhoUseVariableTh_;
         double subleadPhoOverMassThreshold_;
@@ -72,6 +78,9 @@ namespace flashgg {
         double jetsNumberThreshold_;
         double bjetsNumberThreshold_;
         double bjetsLooseNumberThreshold_;
+        double jetsNumberTTHHMVAThreshold_;
+        double bjetsNumberTTHHMVAThreshold_;
+        double bjetsLooseNumberTTHHMVAThreshold_;
         string bTag_;
         //leptons
         double leptonPtThreshold_;
@@ -94,6 +103,10 @@ namespace flashgg {
         bool useElectronMVARecipe_;
         bool useElectronLooseID_;
 
+        unique_ptr<TMVA::Reader>TThMva_;
+        FileInPath tthMVAweightfile_;
+        string _MVAMethod;
+
     };
 
     TTHHadronicTagProducer::TTHHadronicTagProducer( const ParameterSet &iConfig ) :
@@ -104,11 +117,13 @@ namespace flashgg {
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag>( "MVAResultTag" ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
-        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
+        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
+        _MVAMethod( iConfig.getParameter<string> ( "MVAMethod" ) )
     {
 
 
         MVAThreshold_ = iConfig.getParameter<double>( "MVAThreshold");
+        MVATTHHMVAThreshold_ = iConfig.getParameter<double>( "MVATTHHMVAThreshold");
         PhoMVAThreshold_ = iConfig.getParameter<double>( "PhoMVAThreshold");
 
         leptonPtThreshold_ = iConfig.getParameter<double>( "leptonPtThreshold");
@@ -116,6 +131,7 @@ namespace flashgg {
         leadPhoPtThreshold_ = iConfig.getParameter<double>( "leadPhoPtThreshold");
         leadPhoUseVariableTh_ = iConfig.getParameter<bool>( "leadPhoUseVariableThreshold");
         leadPhoOverMassThreshold_ = iConfig.getParameter<double>( "leadPhoOverMassThreshold");
+        leadPhoOverMassTTHHMVAThreshold_ = iConfig.getParameter<double>( "leadPhoOverMassTTHHMVAThreshold");
         subleadPhoPtThreshold_ = iConfig.getParameter<double>( "subleadPhoPtThreshold");
         subleadPhoUseVariableTh_ = iConfig.getParameter<bool>( "subleadPhoUseVariableThreshold");
         subleadPhoOverMassThreshold_ = iConfig.getParameter<double>( "subleadPhoOverMassThreshold");
@@ -126,8 +142,15 @@ namespace flashgg {
         bDiscriminator_ = iConfig.getParameter<vector<double > >( "bDiscriminator");
         jetsNumberThreshold_ = iConfig.getParameter<int>( "jetsNumberThreshold");
         bjetsNumberThreshold_ = iConfig.getParameter<int>( "bjetsNumberThreshold");
-        bjetsLooseNumberThreshold_ = iConfig.getParameter<int>( "bjetsLooseNumberThreshold");
         bTag_ = iConfig.getParameter<string> ( "bTag");
+
+        useTTHHadronicMVA_ = iConfig.getParameter<bool>( "useTTHHadronicMVA");
+        tthHadMVAThreshold_ =  iConfig.getParameter<double>( "tthHadMVAThreshold");
+        bjetsLooseNumberThreshold_ = iConfig.getParameter<int>( "bjetsLooseNumberThreshold");
+        jetsNumberTTHHMVAThreshold_ = iConfig.getParameter<int>( "jetsNumberTTHHMVAThreshold");
+        bjetsNumberTTHHMVAThreshold_ = iConfig.getParameter<int>( "bjetsNumberTTHHMVAThreshold");
+        bjetsLooseNumberTTHHMVAThreshold_ = iConfig.getParameter<int>( "bjetsLooseNumberTTHHMVAThreshold");
+
         muPFIsoSumRelThreshold_ = iConfig.getParameter<double>( "muPFIsoSumRelThreshold");
         muMiniIsoSumRelThreshold_ = iConfig.getParameter<double>( "muMiniIsoSumRelThreshold");
         nonTrigMVAThresholds_ =  iConfig.getParameter<vector<double > >( "nonTrigMVAThresholds");
@@ -145,6 +168,9 @@ namespace flashgg {
         useElectronMVARecipe_=iConfig.getParameter<bool>("useElectronMVARecipe");
         useElectronLooseID_=iConfig.getParameter<bool>("useElectronLooseID");
         
+
+        tthMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "tthMVAweightfile" );        
+
         for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
             auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
             tokenJets_.push_back(token);
@@ -233,6 +259,7 @@ namespace flashgg {
             if( goodElectrons.size() > 0 ||  goodMuons.size() > 0 )  continue; 
 
             int jetcount = 0;
+            float nJets = 0;
             int njets_btagloose = 0;
             int njets_btagmedium = 0;
             int njets_btagtight = 0;
@@ -241,14 +268,31 @@ namespace flashgg {
             float leadJetPt = 0.;
             float subLeadJetPt = 0.;
             float sumJetPt = 0.;
-            float maxBTagVal = -2.;
-            float secondMaxBTagVal = -2.;
+            float maxBTagVal = -10.;
+            float secondMaxBTagVal = -10.;
+            float tthMvaVal = -999.;
+
+            if (_MVAMethod != ""){
+                TThMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
+                TThMva_->AddVariable( "nJetsTTH", &nJets);
+                TThMva_->AddVariable( "maxBTagVal",&maxBTagVal);
+                TThMva_->AddVariable( "secondMaxBTagVal", &secondMaxBTagVal);
+                TThMva_->AddVariable( "leadJetPt", &leadJetPt);
+
+                TThMva_->BookMVA( _MVAMethod.c_str() , tthMVAweightfile_.fullPath() );
+
+            }
 
             unsigned int jetCollectionIndex = diPhotons->ptrAt( diphoIndex )->jetCollectionIndex();
 
             std::vector<edm::Ptr<flashgg::Jet> > JetVect;
+            JetVect.clear();
             std::vector<edm::Ptr<flashgg::Jet> > BJetVect;
+            BJetVect.clear();
+            std::vector<edm::Ptr<flashgg::Jet> > BJetTTHHMVAVect;
+            BJetTTHHMVAVect.clear();
             std::vector<float> JetBTagVal;
+            JetBTagVal.clear();
 
             edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( diphoIndex );
 
@@ -264,12 +308,21 @@ namespace flashgg {
             double leadPhoPtCut = leadPhoPtThreshold_;
             double subleadPhoPtCut = subleadPhoPtThreshold_;
             if( leadPhoUseVariableTh_ )
-            { leadPhoPtCut = leadPhoOverMassThreshold_ * dipho->mass(); }
+            { 
+                leadPhoPtCut = leadPhoOverMassThreshold_ * dipho->mass(); 
+                if(useTTHHadronicMVA_){
+                    leadPhoPtCut = leadPhoOverMassTTHHMVAThreshold_ * dipho->mass();
+                }
+            }
             if( subleadPhoUseVariableTh_ )
             { subleadPhoPtCut = subleadPhoOverMassThreshold_ * dipho->mass(); }
+            double diphoMVAcut = MVAThreshold_;
+            if(useTTHHadronicMVA_){
+                    diphoMVAcut = MVATTHHMVAThreshold_;
+            }
 
             if( dipho->leadingPhoton()->pt() < leadPhoPtCut || dipho->subLeadingPhoton()->pt() < subleadPhoPtCut ) { continue; }
-            if( mvares->mvaValue() < MVAThreshold_ ) { continue; }
+            if( mvares->mvaValue() < diphoMVAcut ) { continue; }
 
             for( unsigned int jetIndex = 0; jetIndex < Jets[jetCollectionIndex]->size() ; jetIndex++ ) {
                 edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( jetIndex );
@@ -283,6 +336,7 @@ namespace flashgg {
                 if( thejet->pt() < jetPtThreshold_ ) { continue; }
 
                 jetcount++;
+                nJets = jetcount;
                 JetVect.push_back( thejet );
                 
                 float jetPt = thejet->pt();
@@ -298,10 +352,15 @@ namespace flashgg {
                 bDiscriminatorValue = thejet->bDiscriminator( bTag_ );
 
                 if(bDiscriminatorValue > maxBTagVal){
+                    BJetTTHHMVAVect.insert( BJetTTHHMVAVect.begin(), thejet );
+                    if(BJetTTHHMVAVect.size() >= 3){ BJetTTHHMVAVect.pop_back(); }
                     if(maxBTagVal > secondMaxBTagVal) { secondMaxBTagVal = maxBTagVal; }
                     maxBTagVal = bDiscriminatorValue;
+
                 } else if(bDiscriminatorValue > secondMaxBTagVal){
                     secondMaxBTagVal = bDiscriminatorValue;
+                    if(BJetTTHHMVAVect.size() >= 2){BJetTTHHMVAVect.pop_back();} 
+                    BJetTTHHMVAVect.push_back( thejet );
                 }
                 
                 JetBTagVal.push_back( bDiscriminatorValue );
@@ -315,7 +374,40 @@ namespace flashgg {
                 if( bDiscriminatorValue > bDiscriminator_[2] ) njets_btagtight++;
             }
 
-            if( njets_btagloose >= bjetsLooseNumberThreshold_ && njets_btagmedium >= bjetsNumberThreshold_ && jetcount >= jetsNumberThreshold_ ) {
+            if(useTTHHadronicMVA_){
+                BJetVect.clear();
+                BJetVect = BJetTTHHMVAVect;
+
+                 if(njets_btagloose >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium >= bjetsNumberTTHHMVAThreshold_ && jetcount >= jetsNumberTTHHMVAThreshold_ && _MVAMethod != ""){
+
+                     tthMvaVal = TThMva_->EvaluateMVA( _MVAMethod.c_str() );
+                     //                mvares_tth = TThMva_->EvaluateMVA( "BDT" );
+
+                     /*
+                    cout << "input variables : " << endl;
+                    cout << "nJets = " << nJets << endl;
+                    cout << "maxBTagVal = " << maxBTagVal << endl;
+                    cout << "secondMaxBTagVal = " << secondMaxBTagVal << endl;
+                    cout << "leadJetPt = " << leadJetPt << endl;
+
+                    cout << "mva result :" << endl;
+                    cout << "tthMvaVal = " << tthMvaVal  << endl;
+                     */
+                 }
+            }
+
+            bool isTTHHadronicTagged = false;
+            
+            if( !useTTHHadronicMVA_ && njets_btagloose >= bjetsLooseNumberThreshold_ && njets_btagmedium >= bjetsNumberThreshold_ && jetcount >= jetsNumberThreshold_ ) {
+                
+                isTTHHadronicTagged = true;
+            
+            } else if ( useTTHHadronicMVA_ && njets_btagloose >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium >= bjetsNumberTTHHMVAThreshold_ && jetcount >= jetsNumberTTHHMVAThreshold_ && tthMvaVal > tthHadMVAThreshold_ ) {
+                
+                isTTHHadronicTagged = true;
+            }
+
+            if( isTTHHadronicTagged ) {
                 TTHHadronicTag tthhtags_obj( dipho, mvares, JetVect, BJetVect );
                 tthhtags_obj.setNjet( jetcount );
                 tthhtags_obj.setNBLoose( njets_btagloose );
@@ -328,8 +420,16 @@ namespace flashgg {
                 tthhtags_obj.setMaxBTagVal( maxBTagVal );
                 tthhtags_obj.setSecondMaxBTagVal( secondMaxBTagVal );
                 tthhtags_obj.setSystLabel( systLabel_ );
-                for( unsigned num = 0; num < JetVect.size(); num++ ) {
-                    tthhtags_obj.includeWeights( *JetVect[num] );
+                tthhtags_obj.setMVAres(tthMvaVal);
+                if(!useTTHHadronicMVA_){
+                    for( unsigned num = 0; num < JetVect.size(); num++ ) {
+                        tthhtags_obj.includeWeightsByLabel( *JetVect[num] , "JetBTagCutWeight");
+                        //tthhtags_obj.includeWeightsByLabel( *JetVect[num] , "JetBTagReshapeWeight");
+                    }
+                } else {
+                    for( unsigned num = 0; num < BJetTTHHMVAVect.size(); num++ ) {
+                        tthhtags_obj.includeWeightsByLabel( *BJetTTHHMVAVect[num] , "JetBTagReshapeWeight");
+                    }                    
                 }
                 tthhtags_obj.includeWeights( *dipho );
                 tthhtags->push_back( tthhtags_obj );
