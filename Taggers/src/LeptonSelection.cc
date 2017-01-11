@@ -173,91 +173,88 @@ namespace flashgg {
         
         float elfull5x5_sigmaIetaIeta = elec->full5x5_sigmaIetaIeta();
         float eldEtaIn = elec->deltaEtaSuperClusterTrackAtVtx();
-        float eldEtaInSeed = 999.;
-        if(elec->superCluster().isNonnull() && elec->superCluster()->seed().isNonnull()) {eldEtaInSeed = elec->deltaEtaSuperClusterTrackAtVtx() - elec->superCluster()->eta() + elec->superCluster()->seed()->eta();}
         float eldPhiIn = elec->deltaPhiSuperClusterTrackAtVtx();
-        float elhOverE = elec->hadronicOverEm();//hcalOverEcal();
+        float elhOverE = elec->hcalOverEcal();
         float elRelIsoEA = elec->standardHggIso();
         
-        float elooEmooP =999. ;
-        if(fabs(elec->ecalEnergy()) > 0.){
-            float ecal_energy_inverse = 1.0/elec->ecalEnergy();
-            float eSCoverP = elec->eSuperClusterOverP();
-            elooEmooP = abs(1.0 - eSCoverP)*ecal_energy_inverse;
-        }
+        float elooEmooP =-999 ; 
         
         float elNonTrigMVA = elec->nonTrigMVA();
         bool passConversionVeto= elec->passConversionVeto();
         
+        if( elec->ecalEnergy() == 0 ){
+            elooEmooP = 1e30;
+        }else if( !std::isfinite(elec->ecalEnergy())){	    
+            elooEmooP = 1e30;
+        }else{
+            elooEmooP = fabs(1.0/elec->ecalEnergy() - elec->eSuperClusterOverP()/elec->ecalEnergy() );                       
+        }
 
         float elDxy = fabs( elec->gsfTrack()->dxy( best_vtx_elec->position()) ) ;
         float elDz = fabs( elec->gsfTrack()->dz( best_vtx_elec->position())) ;
         int elMissedHits = elec->gsfTrack()->hitPattern().numberOfHits( reco::HitPattern::MISSING_INNER_HITS);
 
-        //values modified for Moriond2017 recommendations
-        //MVA : https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recommended_MVA_recipes_for_2016
-        //CutBased : https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedElectronIdentificationRun2#Working_points_for_2016_data_for
 	    if(isEB){
 
-            if(fabs(eleta) < 0.8 && elNonTrigMVA >= 0.837) doPassMVA90 = true;
-            if(fabs(eleta) >= 0.8 && elNonTrigMVA >= 0.715) doPassMVA90 = true;
+            if(fabs(eleta) < 0.8 && elNonTrigMVA >= 0.913286) doPassMVA90 = true;
+            if(fabs(eleta) >= 0.8 && elNonTrigMVA >= 0.805013) doPassMVA90 = true;
             
-            if(fabs(eleta) < 0.8 && elNonTrigMVA >= 0.941) doPassMVA80 = true;
-            if(fabs(eleta) >= 0.8 && elNonTrigMVA >= 0.899) doPassMVA80 = true;
+            if(fabs(eleta) < 0.8 && elNonTrigMVA >= 0.967083) doPassMVA80 = true;
+            if(fabs(eleta) >= 0.8 && elNonTrigMVA >= 0.929117) doPassMVA80 = true;
 
             if(
-               elfull5x5_sigmaIetaIeta < 0.011
-               && fabs(eldEtaInSeed) < 0.00477
-               && fabs(eldPhiIn) < 0.222
-               && elhOverE < 0.298
-               && elRelIsoEA < 0.0994
-               && fabs(elooEmooP) < 0.241
-               //&& fabs(elDxy) < 0.0261
-               //&& fabs(elDz) < 0.41
-               && elMissedHits <=	1 
+               elfull5x5_sigmaIetaIeta < 0.0103
+               && fabs(eldEtaIn) < 0.0105
+               && fabs(eldPhiIn) < 0.115
+               && elhOverE < 0.104
+               && elRelIsoEA < 0.0893
+               && elooEmooP < 0.102
+               && fabs(elDxy) < 0.0261
+               && fabs(elDz) < 0.41
+               && elMissedHits <=	2 
                && passConversionVeto
                ) doPassLoose = true;
             
             if( 
-               elfull5x5_sigmaIetaIeta < 0.00998
-               && fabs(eldEtaInSeed) < 0.00311
-               && fabs(eldPhiIn) < 0.103
-               && elhOverE < 0.253
-               && elRelIsoEA < 0.0695
-               && fabs(elooEmooP) < 0.134
-               //&& fabs(elDxy) < 0.0261
-               //&& fabs(elDz) < 0.41
-               && elMissedHits <=	1 
+               elfull5x5_sigmaIetaIeta < 0.0101
+               && fabs(eldEtaIn) < 0.0103
+               && fabs(eldPhiIn) < 0.0336
+               && elhOverE < 0.0876
+               && elRelIsoEA < 0.0766
+               && elooEmooP < 0.0174
+               && fabs(elDxy) < 0.0118
+               && fabs(elDz) < 0.373
+               && elMissedHits <=	2 
                && passConversionVeto
                 ) doPassMedium = true;
             
         }else{
 
-	    if(elNonTrigMVA >= 0.357) doPassMVA90 = true;	    
-	    if(elNonTrigMVA >= 0.758) doPassMVA80 = true;
+	    if(elNonTrigMVA >= 0.358969) doPassMVA90 = true;	    
+	    if(elNonTrigMVA >= 0.726311) doPassMVA80 = true;
 
-            if(
-               elfull5x5_sigmaIetaIeta < 0.0314
-               && fabs(eldEtaInSeed) < 0.00868
-               && fabs(eldPhiIn) < 0.213
-               && elhOverE < 0.101
-               && elRelIsoEA < 0.107
-               && fabs(elooEmooP) < 0.14
-               //&& fabs(elDxy) < 0.0261
-               //&& fabs(elDz) < 0.41
+            if( 
+               elfull5x5_sigmaIetaIeta < 0.0301
+               && fabs(eldEtaIn) < 0.00814
+               && fabs(eldPhiIn) < 0.182
+               && elhOverE < 0.0897
+               && elRelIsoEA < 0.121
+               && elooEmooP < 0.126
+               && fabs(elDxy) < 0.118
+               && fabs(elDz) < 0.822
                && elMissedHits <=	1 
                && passConversionVeto
-               ) doPassLoose = true;
+                ) doPassLoose = true;
             
             if( 
-               elfull5x5_sigmaIetaIeta < 0.0298
-               && fabs(eldEtaInSeed) < 0.00609
-               && fabs(eldPhiIn) < 0.045
-               && elhOverE < 0.0878
-               && elRelIsoEA < 0.0821
-               && fabs(elooEmooP) < 0.13
-               //&& fabs(elDxy) < 0.0261
-               //&& fabs(elDz) < 0.41
+               elfull5x5_sigmaIetaIeta < 0.0283
+               && fabs(eldEtaIn) < 0.00733
+               && fabs(eldPhiIn) < 0.114
+               && elhOverE < 0.0678
+               && elRelIsoEA < 0.0678
+               && elooEmooP < 0.0898
+               && fabs(elDxy) < 0.0739
+               && fabs(elDz) < 0.602
                && elMissedHits <=	1 
                && passConversionVeto
                 ) doPassMedium = true;
@@ -294,13 +291,13 @@ namespace flashgg {
             if( Electron_eta > EtaCuts[2] || ( Electron_eta > EtaCuts[0] && Electron_eta < EtaCuts[1] ) )  continue;             
             if( Electron->pt() < ElectronPtThreshold ) continue; 
             
-            vector<bool> IDs=EgammaIDs(Electron, vertexPointers );
-            // vector<bool> IDs;
-            // IDs.clear();
-            // IDs.push_back(Electron->passLooseId());
-            // IDs.push_back(Electron->passMediumId());
-            // IDs.push_back(Electron->passMVAMediumId());
-            // IDs.push_back(Electron->passMVATightId());
+            //vector<bool> IDs=EgammaIDs(Electron, vertexPointers );
+            vector<bool> IDs;
+            IDs.clear();
+            IDs.push_back(Electron->passLooseId());
+            IDs.push_back(Electron->passMediumId());
+            IDs.push_back(Electron->passMVAMediumId());
+            IDs.push_back(Electron->passMVATightId());
             
             if(!IDs[idIndex]) continue;
 
@@ -351,13 +348,13 @@ namespace flashgg {
             if( Electron_eta > EtaCuts[2] || ( Electron_eta > EtaCuts[0] && Electron_eta < EtaCuts[1] ) )  continue;
             if( Electron->pt() < ElectronPtThreshold ) continue;
 
-            vector<bool> IDs=EgammaIDs(Electron, vertexPointers );                                                                                                                           
-            // vector<bool> IDs;
-            // IDs.clear();
-            // IDs.push_back(Electron->passLooseId());
-            // IDs.push_back(Electron->passMediumId());
-            // IDs.push_back(Electron->passMVAMediumId());
-            // IDs.push_back(Electron->passMVATightId());
+            //vector<bool> IDs=EgammaIDs(Electron, vertexPointers );                                                                                                                           
+            vector<bool> IDs;
+            IDs.clear();
+            IDs.push_back(Electron->passLooseId());
+            IDs.push_back(Electron->passMediumId());
+            IDs.push_back(Electron->passMVAMediumId());
+            IDs.push_back(Electron->passMVATightId());
 
             if(!IDs[idIndex]) continue;
 
@@ -365,12 +362,12 @@ namespace flashgg {
 
             if( fabs( Electron->superCluster()->eta() ) <= 1.479 ){
                 if( Electron->fggMiniIsoSumRel() > elMiniIsoEBThreshold ) continue;
-                //if( Electron_dxy > TransverseImpactParam_EB ) continue;
-                //if( Electron_dz > LongitudinalImpactParam_EB ) continue;
+                if( Electron_dxy > TransverseImpactParam_EB ) continue;
+                if( Electron_dz > LongitudinalImpactParam_EB ) continue;
             } else {
                 if( Electron->fggMiniIsoSumRel() > elMiniIsoEEThreshold ) continue;
-                //if( Electron_dxy > TransverseImpactParam_EE ) continue;
-                //if( Electron_dz> LongitudinalImpactParam_EE ) continue;
+                if( Electron_dxy > TransverseImpactParam_EE ) continue;
+                if( Electron_dz> LongitudinalImpactParam_EE ) continue;
             }
 
             goodElectrons.push_back( Electron );
