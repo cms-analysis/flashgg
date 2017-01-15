@@ -244,6 +244,9 @@ class MicroAODCustomize(object):
     def customizeDec2016Regression(self,process):
         if not (process.GlobalTag.globaltag == "80X_mcRun2_asymptotic_2016_TrancheIV_v7" or process.GlobalTag.globaltag == "80X_dataRun2_2016SeptRepro_v6"):
             raise Exception,"Regression application turned on but globalTag has unexpected value %s - see MicroAODCustomize.py" % process.GlobalTag.globaltag
+        
+        from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
+        process = regressionWeights(process)
         process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
         process.p.insert(0,process.regressionApplication)
         process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag("slimmedElectrons")
