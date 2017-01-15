@@ -140,6 +140,8 @@ git cms-merge-topic rafaellopesdesa:Regression80XEgammaAnalysis
 echo "EleID recipe, Summer16"
 git cms-merge-topic ikrav:egm_id_80X_v2
 
+echo "EGM Pho ID recipe, Summer16"
+git cms-merge-topic ikrav:egm_id_80X_v3_photons
 
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Fall15_25nsV2_*.db $CMSSW_BASE/src/flashgg
