@@ -88,6 +88,7 @@ namespace flashgg {
         // Please see Taggers/plugins/TTHLeptonicTagProducer.cc for an easier-to-read code example
         // used to debug this and illustrate why we need this behavior.  
 
+        bool isWeightByLabelFound = false;
         float initialcentralweight = centralWeight();
         float othercentralweightLabel = 1.0;
         for( auto keyIt = other._labels.begin() ; keyIt != other._labels.end() ; keyIt++ ) {
@@ -95,9 +96,13 @@ namespace flashgg {
             if(keyIt->find(keyInput) != std::string::npos && keyIt->find("Central") != std::string::npos ){
                 //std::cout<<"In includeWeightsByLabel central auto keyIt loop 1 : "<< *keyIt <<std::endl;
                 othercentralweightLabel = other.weight( *keyIt );
+                isWeightByLabelFound = true;
             }
         }
 
+        if(!isWeightByLabelFound){
+            std::cout<<"NOTE :  includeWeightsByLabel : LABEL : "<< keyInput << " NOT FOUND LABEL WEIGHT FOR OBJECT" << std::endl;
+        }        
 
         // multiplies weights which are present in this and other
         for( auto keyIt = _labels.begin() ; keyIt != _labels.end() ; keyIt++ ) {
@@ -132,7 +137,7 @@ namespace flashgg {
                     } else {
                         setWeight( *keyIt, other.weight( *keyIt ) );
                     }
-                }
+                } 
             }
         }
 
