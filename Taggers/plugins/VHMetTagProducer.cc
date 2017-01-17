@@ -106,7 +106,6 @@ namespace flashgg {
     
     void VHMetTagProducer::produce( Event &evt, const EventSetup & )
     {
-        
         JetCollectionVector Jets( inputTagJets_.size() );
         for( size_t j = 0; j < inputTagJets_.size(); ++j ) 
             {
@@ -152,20 +151,34 @@ namespace flashgg {
         evt.getByToken( triggerFLASHggMicroAOD_, triggerFLASHggMicroAOD );
         const edm::TriggerNames &triggerNames = evt.triggerNames( *triggerBits );
                 
-        std::vector<std::string> flagList {"Flag_HBHENoiseFilter","Flag_HBHENoiseIsoFilter","Flag_EcalDeadCellTriggerPrimitiveFilter","Flag_goodVertices","Flag_eeBadScFilter","flag_globalTightHalo2016Filter","flag_BadChargedCandidateFilter","flag_BadPFMuonFilter"};
+        std::vector<std::string> flagList {"Flag_HBHENoiseFilter","Flag_HBHENoiseIsoFilter","Flag_EcalDeadCellTriggerPrimitiveFilter","Flag_goodVertices","Flag_eeBadScFilter"};
         for( unsigned int i = 0; i < triggerNames.triggerNames().size(); i++ ) 
             {
                 if(!triggerBits->accept(i))
-                    for(size_t j=0;j<flagList.size();j++)
-                        {
-                            if(flagList[j]==triggerNames.triggerName(i))
-                                {
-                                    passMETfilters=0;
-                                    break;
-                                }
-                        }
+                for(size_t j=0;j<flagList.size();j++)
+                    {
+                        if(flagList[j]==triggerNames.triggerName(i))
+                            {
+                                passMETfilters=0;
+                                break;
+                            }
+                    }
             }
         
+        std::vector<std::string> flashggFlagList {"flag_BadChargedCandidateFilter","flag_BadPFMuonFilter","flag_globalTightHalo2016Filter"};
+        const edm::TriggerNames &flashggtriggerNames = evt.triggerNames( *triggerFLASHggMicroAOD );
+        for( unsigned int i = 0; i < flashggtriggerNames.triggerNames().size(); i++ ) 
+            {
+                if(!triggerFLASHggMicroAOD->accept(i))
+                for(size_t j=0;j<flagList.size();j++)
+                    {
+                        if(flagList[j]==flashggtriggerNames.triggerName(i))
+                            {
+                                passMETfilters=0;
+                                break;
+                            }
+                    }
+            }
         if( ! evt.isRealData() ) 
             {
                 evt.getByToken( genParticleToken_, genParticles );
@@ -223,7 +236,6 @@ namespace flashgg {
         
         assert( diPhotons->size() ==
                 mvaResults->size() ); // We are relying on corresponding sets - update this to give an error/exception
-        
         for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
             edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( candIndex );
             edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( candIndex );
@@ -242,7 +254,7 @@ namespace flashgg {
             if( mvares->result < diphoMVAThreshold_ )          { continue; }
 
             unsigned int jetCollectionIndex = diPhotons->ptrAt( candIndex )->jetCollectionIndex();
-            edm::Ptr<flashgg::Jet> maxJet;
+            //edm::Ptr<flashgg::Jet> maxJet();
             std::vector<edm::Ptr<Jet> > tagJets;
             for( unsigned int jetIndex = 0; jetIndex < Jets[jetCollectionIndex]->size() ; jetIndex++ )
                 {
@@ -253,22 +265,26 @@ namespace flashgg {
                     float dRPhoLeadJet = deltaR( thejet->eta(), thejet->phi(), diPhotons->ptrAt( candIndex )->leadingPhoton()->superCluster()->eta(), diPhotons->ptrAt( candIndex )->leadingPhoton()->superCluster()->phi() ) ;
                     float dRPhoSubLeadJet = deltaR( thejet->eta(), thejet->phi(), diPhotons->ptrAt( candIndex )->subLeadingPhoton()->superCluster()->eta(),diPhotons->ptrAt( candIndex )->subLeadingPhoton()->superCluster()->phi() );
                     if( dRPhoLeadJet < deltaRPhoLeadJet_ || dRPhoSubLeadJet < deltaRPhoSubLeadJet_ ) { continue;}
-                    maxJet = thejet;
+                    //maxJet = thejet;
+                    tagJets.push_back( thejet);
                 }
-
-            //            std::cout << "maxJet: " << maxJet.pt() << " is null? : " << maxJet.isNull() << std::endl;      
-
+            
+            
             VHMetTag tag_obj( dipho, mvares );
             tag_obj.includeWeights( *dipho );
             tag_obj.setDiPhotonIndex( candIndex );
             tag_obj.setSystLabel( systLabel_ );
             tag_obj.setMet( theMET );
-            tag_obj.setJet(maxJet);
+            if(tagJets.size())
+                tag_obj.setJet(tagJets[0]);
             //float newPhi=theMET->corPhi(pat::MET::Type1XY);  //xy-correction is worse | don't use newPhi
             // if(fabs(deltaPhi(newPhi,dipho->phi()))<dPhiDiphotonMetThreshold_)                              
             if(fabs(deltaPhi(theMET->corPhi(),dipho->phi()))<dPhiDiphotonMetThreshold_)   { continue;}
-            if(fabs(deltaPhi(dipho->phi(),maxJet->phi())>deltaPhiJetMetThreshold_)    {continue;}
+            if(tagJets.size())
+                if(fabs(deltaPhi(dipho->phi(),tagJets[0]->phi()))>deltaPhiJetMetThreshold_)    {continue;}
             if(theMET->corPt()< metPtThreshold_ )   {continue;}
+
+            
             
             vhettags->push_back( tag_obj );
             if( ! evt.isRealData() ) 

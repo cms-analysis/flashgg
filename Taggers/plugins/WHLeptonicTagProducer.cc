@@ -215,7 +215,8 @@ namespace flashgg {
         evt.getByToken( triggerFLASHggMicroAOD_, triggerFLASHggMicroAOD );
         const edm::TriggerNames &triggerNames = evt.triggerNames( *triggerBits );
 
-        std::vector<std::string> flagList {"Flag_HBHENoiseFilter","Flag_HBHENoiseIsoFilter","Flag_EcalDeadCellTriggerPrimitiveFilter","Flag_goodVertices","Flag_eeBadScFilter","flag_globalTightHalo2016Filter","flag_BadChargedCandidateFilter","flag_BadPFMuonFilter"};
+
+        std::vector<std::string> flagList {"Flag_HBHENoiseFilter","Flag_HBHENoiseIsoFilter","Flag_EcalDeadCellTriggerPrimitiveFilter","Flag_goodVertices","Flag_eeBadScFilter"};
         for( unsigned int i = 0; i < triggerNames.triggerNames().size(); i++ )
             {
                 if(!triggerBits->accept(i))
@@ -229,6 +230,20 @@ namespace flashgg {
                         }
             }
 
+        std::vector<std::string> flashggFlagList {"flag_BadChargedCandidateFilter","flag_BadPFMuonFilter","flag_globalTightHalo2016Filter"};
+        const edm::TriggerNames &flashggtriggerNames = evt.triggerNames( *triggerFLASHggMicroAOD );
+        for( unsigned int i = 0; i < flashggtriggerNames.triggerNames().size(); i++ )
+            {
+                if(!triggerFLASHggMicroAOD->accept(i))
+                    for(size_t j=0;j<flagList.size();j++)
+                        {
+                            if(flagList[j]==flashggtriggerNames.triggerName(i))
+                                {
+                                    passMETfilters=0;
+                                    break;
+                                }
+                        }
+            }
         
         if( ! evt.isRealData() )
             {
