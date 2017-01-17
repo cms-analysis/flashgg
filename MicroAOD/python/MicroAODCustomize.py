@@ -61,7 +61,7 @@ class MicroAODCustomize(object):
                                'bunchSpacing'
                                )
         self.options.register ('runDec2016Regression',
-                               1,
+                               0,
                                VarParsing.VarParsing.multiplicity.singleton,
                                VarParsing.VarParsing.varType.int,
                                'runDec2016Regression'
@@ -71,6 +71,12 @@ class MicroAODCustomize(object):
                                VarParsing.VarParsing.multiplicity.singleton,
                                VarParsing.VarParsing.varType.int,
                               'runSummer16EleID'
+                              )
+        self.options.register('runSummer16EGMPhoID',
+                              1,
+                               VarParsing.VarParsing.multiplicity.singleton,
+                               VarParsing.VarParsing.varType.int,
+                              'runSummer16EGMPhoID'
                               )
 
         self.parsed_ = False
@@ -167,6 +173,8 @@ class MicroAODCustomize(object):
             self.customizeSummer16EleID(process)
         else:
             self.customizeSpring15EleID(process)
+        if self.runSummer16EGMPhoID:
+            self.customizeSummer16EGMPhoID(process)
             
     # signal specific customization
     def customizeSignal(self,process):
@@ -236,9 +244,14 @@ class MicroAODCustomize(object):
     def customizeDec2016Regression(self,process):
         if not (process.GlobalTag.globaltag == "80X_mcRun2_asymptotic_2016_TrancheIV_v7" or process.GlobalTag.globaltag == "80X_dataRun2_2016SeptRepro_v6"):
             raise Exception,"Regression application turned on but globalTag has unexpected value %s - see MicroAODCustomize.py" % process.GlobalTag.globaltag
+        
+        from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
+        process = regressionWeights(process)
         process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
         process.p.insert(0,process.regressionApplication)
         process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag("slimmedElectrons")
+        process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag("slimmedPhotons")
+        process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag("slimmedPhotons")
 
     def customizeSpring15EleID(self,process):
         from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDElectronIdProducer,setupAllVIDIdsInModule,setupVIDElectronSelection
@@ -266,6 +279,14 @@ class MicroAODCustomize(object):
         process.flashggElectrons.eleTightIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight")
         process.flashggElectrons.eleMVAMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring16-GeneralPurpose-V1-wp90")
         process.flashggElectrons.eleMVATightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring16-GeneralPurpose-V1-wp80")
+
+    def customizeSummer16EGMPhoID(self,process):
+        from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDPhotonIdProducer,setupAllVIDIdsInModule,setupVIDPhotonSelection
+        dataFormat = DataFormat.MiniAOD
+        switchOnVIDPhotonIdProducer(process, DataFormat.MiniAOD)
+        my_id_modules = ['RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Spring16_nonTrig_V1_cff']
+        for idmod in my_id_modules:
+            setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
 
     def customizeDataMuons(self,process):
         process.diPhotonFilter.src = "flashggSelectedMuons"
