@@ -209,7 +209,6 @@ namespace flashgg {
                             }
                     }
             }
-        std::cout << "got gen info" << std::endl;
 
         edm::RefProd<vector<VHTagTruth> > rTagTruth = evt.getRefBeforePut<vector<VHTagTruth> >();
         unsigned int idx = 0;
@@ -225,7 +224,6 @@ namespace flashgg {
         double idmva2 = 0.;
         bool isDiMuon = false;
         bool isDiElectron = false;
-        std::cout << "starting diphotons" << std::endl;
         for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
 
             if(useVertex0only_)
@@ -250,7 +248,6 @@ namespace flashgg {
             idmva2 = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
             if( idmva1 <= PhoMVAThreshold_ || idmva2 <= PhoMVAThreshold_ ) { continue; }
             if( mvares->result < MVAThreshold_ ) { continue; }
-            std::cout << "loading muons/electrons" << std::endl;
             photonSelection = true;
             tagMuonsTemp = selectMuons( theMuons->ptrs(), dipho, vertices->ptrs(), muonEtaThreshold_, leptonPtThreshold_, muPFIsoSumRelThreshold_,
                                            deltaRMuonPhoThreshold_, deltaRMuonPhoThreshold_ );
