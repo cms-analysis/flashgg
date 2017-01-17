@@ -209,7 +209,7 @@ namespace flashgg {
         evt.getByToken( triggerFLASHggMicroAOD_, triggerFLASHggMicroAOD );
         const edm::TriggerNames &triggerNames = evt.triggerNames( *triggerBits );
 
-        std::vector<std::string> flagList {"Flag_HBHENoiseFilter","Flag_HBHENoiseIsoFilter","Flag_EcalDeadCellTriggerPrimitiveFilter","Flag_goodVertices","Flag_eeBadScFilter"};
+        std::vector<std::string> flagList {"Flag_HBHENoiseFilter","Flag_HBHENoiseIsoFilter","Flag_EcalDeadCellTriggerPrimitiveFilter","Flag_goodVertices","Flag_eeBadScFilter","flag_globalTightHalo2016Filter","flag_BadChargedCandidateFilter","flag_BadPFMuonFilter"};
         for( unsigned int i = 0; i < triggerNames.triggerNames().size(); i++ )
             {
                 if(!triggerBits->accept(i))
