@@ -10,8 +10,8 @@ Before you start, **please take note** of these warnings and comments:
 Get everything you need, starting from a clean area:
 
  ```
- cmsrel CMSSW_8_0_22
- cd CMSSW_8_0_22/src
+ cmsrel CMSSW_8_0_25
+ cd CMSSW_8_0_25/src
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src 
