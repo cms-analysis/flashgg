@@ -14,9 +14,12 @@ flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                 photonIdMVAweightfile_EB = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_barrel_ICHEPvtx.xml"),
                                 photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_endcap_ICHEPvtx.xml"),
 
-                                useNewPhoId = cms.bool(False),
-                                photonIdMVAweightfile_EB_new = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_barrel_ICHEPvtx_r9s4EtaWshift_wLowMass.xml"),
-                                photonIdMVAweightfile_EE_new = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_endcap_ICHEPvtx_r9s4EtaWshift_wLowMass.xml"),
+                                useNewPhoId = cms.bool(True),
+                                #photonIdMVAweightfile_EB_new = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_barrel_ICHEPvtx_r9s4EtaWshift_wLowMass.xml"),
+                                #photonIdMVAweightfile_EE_new = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_endcap_ICHEPvtx_r9s4EtaWshift_wLowMass.xml"),
+
+                                photonIdMVAweightfile_EB_new = cms.FileInPath("flashgg/MicroAOD/data/HggPhoId_barrel_Moriond2017_wRhoRew.weights.xml"),
+                                photonIdMVAweightfile_EE_new = cms.FileInPath("flashgg/MicroAOD/data/HggPhoId_endcap_Moriond2017_wRhoRew.weights.xml"),
 
                                 useNonZsLazyTools = cms.bool(True),
                                 recomputeNonZsClusterShapes = cms.bool(False),
@@ -32,7 +35,5 @@ flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
 
 				convTag = cms.InputTag('reducedEgamma','reducedConversions'),
 				beamSpotTag = cms.InputTag('offlineBeamSpot'),
-				elecTag = cms.InputTag("slimmedElectrons"),
-
-                                egmMvaValuesMap = cms.InputTag("photonMVAValueMapProducer:PhotonMVAEstimatorRun2Spring16NonTrigV1Values") 
+				elecTag = cms.InputTag("slimmedElectrons")
                               )

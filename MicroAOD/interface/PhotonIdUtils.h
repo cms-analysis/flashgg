@@ -17,6 +17,7 @@
 
 #include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
 #include "RecoEcal/EgammaCoreTools/interface/EcalClusterLazyTools.h"
+
 /// class EcalRecHitCollection;
 class CaloTopology;
 
@@ -58,7 +59,7 @@ namespace flashgg {
 
 
         void               setupMVA( const std::string &, const std::string &, bool );
-        float              computeMVAWrtVtx( flashgg::Photon &, const edm::Ptr<reco::Vertex> &, const double, const double etaWidth = 0 );
+        float              computeMVAWrtVtx( flashgg::Photon &, const edm::Ptr<reco::Vertex> &, const double, const double etaWidth = 0, const double eA = 0, const std::vector<double> coeff = vector<double>(0,0),const double cut = 0);
 
         static flashgg::Photon     pho4MomCorrection( edm::Ptr<flashgg::Photon> &, edm::Ptr<reco::Vertex> );
 
@@ -152,6 +153,7 @@ namespace flashgg {
         float phoIdMva_covIEtaIPhi_;
         float phoIdMva_S4_;
         float phoIdMva_pfPhoIso03_;
+        float phoIdMva_pfPhoIso03Corr_;
         float phoIdMva_pfChgIso03_;
         float phoIdMva_pfChgIso03worst_;
         float phoIdMva_ScEta_;
