@@ -36,4 +36,6 @@ flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
 				convTag = cms.InputTag('reducedEgamma','reducedConversions'),
 				beamSpotTag = cms.InputTag('offlineBeamSpot'),
 				elecTag = cms.InputTag("slimmedElectrons")
+
+                                egmMvaValuesMap = cms.InputTag("photonMVAValueMapProducer:PhotonMVAEstimatorRun2Spring16NonTrigV1Values") 
                               )
