@@ -144,7 +144,7 @@ namespace flashgg {
 
     // FIXME JM : this will go away when egamma recipes will be directly implemented in flashgg::electrons
     
-    vector<bool> EgammaIDs(const edm::Ptr<flashgg::Electron>& elec, const std::vector<edm::Ptr<reco::Vertex> > &pvPointers ){
+    vector<bool> EgammaIDs(const edm::Ptr<flashgg::Electron>& elec, const std::vector<edm::Ptr<reco::Vertex> > &pvPointers, double rho ){
 
         vector<bool> IDs;
 
@@ -158,26 +158,34 @@ namespace flashgg {
         float eleta=elec->superCluster()->eta();
         if(fabs(eleta) <= 1.479 ) isEB = true;    
         
-        double vtx_dz = 1000000.;
-        unsigned int min_dz_vtx = -1;
+        //if electron dxy and dz cuts are used : 
+        // double vtx_dz = 1000000.;
+        // unsigned int min_dz_vtx = -1;
         
-        for( unsigned int vtxi = 0; vtxi < pvPointers.size(); vtxi++ ) {            
-            Ptr<reco::Vertex> vtx = pvPointers[vtxi];            
-            if( vtx_dz > fabs(elec->gsfTrack()->dz( vtx->position() )) ) {                
-                vtx_dz = fabs( elec->gsfTrack()->dz( vtx->position() ) );
-                min_dz_vtx = vtxi;
-            }
-        }
+        // for( unsigned int vtxi = 0; vtxi < pvPointers.size(); vtxi++ ) {            
+        //     Ptr<reco::Vertex> vtx = pvPointers[vtxi];            
+        //     if( vtx_dz > fabs(elec->gsfTrack()->dz( vtx->position() )) ) {                
+        //         vtx_dz = fabs( elec->gsfTrack()->dz( vtx->position() ) );
+        //         min_dz_vtx = vtxi;
+        //     }
+        // }
         
-        Ptr<reco::Vertex> best_vtx_elec = pvPointers[min_dz_vtx];
+        // Ptr<reco::Vertex> best_vtx_elec = pvPointers[min_dz_vtx];
+
+        // float elDxy = fabs( elec->gsfTrack()->dxy( best_vtx_elec->position()) ) ;
+        // float elDz = fabs( elec->gsfTrack()->dz( best_vtx_elec->position())) ;
         
         float elfull5x5_sigmaIetaIeta = elec->full5x5_sigmaIetaIeta();
-        float eldEtaIn = elec->deltaEtaSuperClusterTrackAtVtx();
+        //float eldEtaIn = elec->deltaEtaSuperClusterTrackAtVtx();
         float eldEtaInSeed = 999.;
-        if(elec->superCluster().isNonnull() && elec->superCluster()->seed().isNonnull()) {eldEtaInSeed = elec->deltaEtaSuperClusterTrackAtVtx() - elec->superCluster()->eta() + elec->superCluster()->seed()->eta();}
+        if(elec->superCluster().isNonnull() && elec->superCluster()->seed().isNonnull()) {
+            eldEtaInSeed = elec->deltaEtaSuperClusterTrackAtVtx() - elec->superCluster()->eta() + elec->superCluster()->seed()->eta();
+            //std::cout<<"In LeptonSelection.cc : for Recalculation of EGAMM IDs, eldEtaInSeed  " << std::endl;
+        }
+
         float eldPhiIn = elec->deltaPhiSuperClusterTrackAtVtx();
         float elhOverE = elec->hadronicOverEm();//hcalOverEcal();
-        float elRelIsoEA = elec->standardHggIso();
+        float elRelIsoEA = elec->standardHggIso();//corrected below
         
         float elooEmooP =999. ;
         if(fabs(elec->ecalEnergy()) > 0.){
@@ -189,10 +197,27 @@ namespace flashgg {
         float elNonTrigMVA = elec->nonTrigMVA();
         bool passConversionVeto= elec->passConversionVeto();
         
-
-        float elDxy = fabs( elec->gsfTrack()->dxy( best_vtx_elec->position()) ) ;
-        float elDz = fabs( elec->gsfTrack()->dz( best_vtx_elec->position())) ;
         int elMissedHits = elec->gsfTrack()->hitPattern().numberOfHits( reco::HitPattern::MISSING_INNER_HITS);
+
+        //for isolation recalculation        
+        float Aeff = 0;
+        //cmssw/RecoEgamma/ElectronIdentification/data/Summer16/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_80X.txt
+        if( fabs(eleta) <= 1.0000 ){
+            Aeff = 0.1703;
+        } else if( fabs(eleta) <= 1.4790 ){
+            Aeff = 0.1715;
+        } else if( fabs(eleta) <= 2.0000 ){
+            Aeff = 0.1213;
+        } else if( fabs(eleta) <= 2.2000 ){
+            Aeff = 0.1230;
+        } else if( fabs(eleta) <= 2.3000 ){
+            Aeff = 0.1635;
+        } else if( fabs(eleta) <= 2.4000 ){
+            Aeff = 0.1937;
+        } else if( fabs(eleta) <= 5.0000 ){
+            Aeff = 0.2393;
+        }
+        elRelIsoEA = ( elec->pfIsolationVariables().sumChargedHadronPt + std::max( 0.0d, elec->pfIsolationVariables().sumNeutralHadronEt + elec->pfIsolationVariables().sumPhotonEt - Aeff*rho) ) / elec->pt() ;
 
         //values modified for Moriond2017 recommendations
         //MVA : https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recommended_MVA_recipes_for_2016
@@ -274,7 +299,8 @@ namespace flashgg {
 
     std::vector<edm::Ptr<Electron> > selectStdAllElectrons( const std::vector<edm::Ptr<flashgg::Electron> > &ElectronPointers,
                                                             const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers,  double ElectronPtThreshold,
-                                                        vector<double> EtaCuts , bool useMVARecipe, bool useLooseID){
+                                                            vector<double> EtaCuts , bool useMVARecipe, bool useLooseID,
+                                                            double rho, bool isData){
                                                          
         
         assert(EtaCuts.size()==3);
@@ -294,13 +320,17 @@ namespace flashgg {
             if( Electron_eta > EtaCuts[2] || ( Electron_eta > EtaCuts[0] && Electron_eta < EtaCuts[1] ) )  continue;             
             if( Electron->pt() < ElectronPtThreshold ) continue; 
             
-            vector<bool> IDs=EgammaIDs(Electron, vertexPointers );
-            // vector<bool> IDs;
-            // IDs.clear();
-            // IDs.push_back(Electron->passLooseId());
-            // IDs.push_back(Electron->passMediumId());
-            // IDs.push_back(Electron->passMVAMediumId());
-            // IDs.push_back(Electron->passMVATightId());
+            //vector<bool> IDs=EgammaIDs(Electron, vertexPointers, rho );
+            vector<bool> IDs;
+            if(!isData){//for MC use the stored Egamma IDs
+                IDs.clear();
+                IDs.push_back(Electron->passLooseId());
+                IDs.push_back(Electron->passMediumId());
+                IDs.push_back(Electron->passMVAMediumId());
+                IDs.push_back(Electron->passMVATightId());
+            } else {//for data use calculated IDs : FIXME saghosh : for data MicroAOD not containing latest egamma ids
+                IDs=EgammaIDs(Electron, vertexPointers, rho );
+            }
             
             if(!IDs[idIndex]) continue;
 
@@ -317,7 +347,8 @@ namespace flashgg {
                                                             const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers,  double ElectronPtThreshold,
                                                               vector<double> EtaCuts , bool useMVARecipe, bool useLooseID,
                                                               double elMiniIsoEBThreshold, double elMiniIsoEEThreshold,
-                                                              double TransverseImpactParam_EB, double LongitudinalImpactParam_EB, double TransverseImpactParam_EE, double LongitudinalImpactParam_EE){
+                                                              double TransverseImpactParam_EB, double LongitudinalImpactParam_EB, double TransverseImpactParam_EE, double LongitudinalImpactParam_EE,
+                                                              double rho, bool isData){
 
 
         assert(EtaCuts.size()==3);
@@ -334,31 +365,36 @@ namespace flashgg {
             Ptr<flashgg::Electron> Electron = ElectronPointers[ElectronIndex];
             float Electron_eta = fabs( Electron->superCluster()->eta() );
 
-            double vtx_dz = 1000000.;
-            unsigned int min_dz_vtx = -1;
-            for( unsigned int vtxi = 0; vtxi < vertexPointers.size(); vtxi++ ) {
-                Ptr<reco::Vertex> vtx = vertexPointers[vtxi];
-                if( vtx_dz > fabs( Electron->gsfTrack()->dz( vtx->position() )) ) {
-                    vtx_dz = fabs( Electron->gsfTrack()->dz( vtx->position() ) );
-                    min_dz_vtx = vtxi;
-                }
-            }
-            Ptr<reco::Vertex> best_vtx_elec = vertexPointers[min_dz_vtx];
+            //if electron dxy and dz cuts are used :
+            // double vtx_dz = 1000000.;
+            // unsigned int min_dz_vtx = -1;
+            // for( unsigned int vtxi = 0; vtxi < vertexPointers.size(); vtxi++ ) {
+            //     Ptr<reco::Vertex> vtx = vertexPointers[vtxi];
+            //     if( vtx_dz > fabs( Electron->gsfTrack()->dz( vtx->position() )) ) {
+            //         vtx_dz = fabs( Electron->gsfTrack()->dz( vtx->position() ) );
+            //         min_dz_vtx = vtxi;
+            //     }
+            // }
+            // Ptr<reco::Vertex> best_vtx_elec = vertexPointers[min_dz_vtx];
 
-            float Electron_dxy = fabs( Electron->gsfTrack()->dxy( best_vtx_elec->position()) ) ;
-            float Electron_dz = fabs( Electron->gsfTrack()->dz( best_vtx_elec->position())) ;
+            // float Electron_dxy = fabs( Electron->gsfTrack()->dxy( best_vtx_elec->position()) ) ;
+            // float Electron_dz = fabs( Electron->gsfTrack()->dz( best_vtx_elec->position())) ;
 
             if( Electron_eta > EtaCuts[2] || ( Electron_eta > EtaCuts[0] && Electron_eta < EtaCuts[1] ) )  continue;
             if( Electron->pt() < ElectronPtThreshold ) continue;
 
-            vector<bool> IDs=EgammaIDs(Electron, vertexPointers );                                                                                                                           
-            // vector<bool> IDs;
-            // IDs.clear();
-            // IDs.push_back(Electron->passLooseId());
-            // IDs.push_back(Electron->passMediumId());
-            // IDs.push_back(Electron->passMVAMediumId());
-            // IDs.push_back(Electron->passMVATightId());
-
+            //vector<bool> IDs=EgammaIDs(Electron, vertexPointers, rho ); 
+            vector<bool> IDs;
+            if(!isData){//for MC use the stored Egamma IDs
+                IDs.clear();
+                IDs.push_back(Electron->passLooseId());
+                IDs.push_back(Electron->passMediumId());
+                IDs.push_back(Electron->passMVAMediumId());
+                IDs.push_back(Electron->passMVATightId());
+            } else {//for data use calculated IDs : FIXME saghosh : for data MicroAOD not containing latest egamma ids
+                IDs=EgammaIDs(Electron, vertexPointers, rho );
+            }
+            
             if(!IDs[idIndex]) continue;
 
             if( Electron->hasMatchedConversion() ) continue;
@@ -467,7 +503,8 @@ namespace flashgg {
     std::vector<edm::Ptr<Electron> > selectStdElectrons( const std::vector<edm::Ptr<flashgg::Electron> > &ElectronPointers, Ptr<flashgg::DiPhotonCandidate> dipho,
                                                       const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers , double ElectronPtThreshold,  vector<double> EtaCuts,
                                                          bool useMVARecipe, bool useLooseID,
-                                                         double deltaRPhoElectronThreshold, double DeltaRTrkElec, double deltaMassElectronZThreshold ){
+                                                         double deltaRPhoElectronThreshold, double DeltaRTrkElec, double deltaMassElectronZThreshold,
+                                                         double rho, bool isData){
  
         std::vector<const flashgg::Photon *> photons;        
         photons.push_back( dipho->leadingPhoton() );
@@ -475,7 +512,8 @@ namespace flashgg {
         
         std::vector<edm::Ptr<flashgg::Electron> > goodElectrons;        
         std::vector<edm::Ptr<flashgg::Electron> > allGoodElectrons=selectStdAllElectrons( ElectronPointers, vertexPointers , 
-                                                                                          ElectronPtThreshold, EtaCuts, useMVARecipe, useLooseID);
+                                                                                          ElectronPtThreshold, EtaCuts, useMVARecipe, useLooseID,
+                                                                                          rho, isData);
         
         for( unsigned int ElectronIndex = 0; ElectronIndex < allGoodElectrons.size(); ElectronIndex++ ) {
             
@@ -491,7 +529,8 @@ namespace flashgg {
                                                       const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers , double ElectronPtThreshold,  vector<double> EtaCuts,
                                                          double deltaRPhoElectronThreshold, double DeltaRTrkElec, double deltaMassElectronZThreshold, 
                                                            double elMiniIsoEBThreshold, double elMiniIsoEEThreshold,
-                                                           double TransverseImpactParam_EB, double LongitudinalImpactParam_EB, double TransverseImpactParam_EE, double LongitudinalImpactParam_EE){
+                                                           double TransverseImpactParam_EB, double LongitudinalImpactParam_EB, double TransverseImpactParam_EE, double LongitudinalImpactParam_EE,
+                                                           double rho, bool isData){
  
         std::vector<const flashgg::Photon *> photons;        
         photons.push_back( dipho->leadingPhoton() );
@@ -501,7 +540,8 @@ namespace flashgg {
         std::vector<edm::Ptr<flashgg::Electron> > allGoodElectrons=selectAllElectronsSum16( ElectronPointers, vertexPointers , 
                                                                                             ElectronPtThreshold, EtaCuts, true, true,
                                                                                             elMiniIsoEBThreshold, elMiniIsoEEThreshold,
-                                                                                            TransverseImpactParam_EB, LongitudinalImpactParam_EB, TransverseImpactParam_EE, LongitudinalImpactParam_EE);
+                                                                                            TransverseImpactParam_EB, LongitudinalImpactParam_EB, TransverseImpactParam_EE, LongitudinalImpactParam_EE,
+                                                                                            rho, isData);
         
         for( unsigned int ElectronIndex = 0; ElectronIndex < allGoodElectrons.size(); ElectronIndex++ ) {
             
