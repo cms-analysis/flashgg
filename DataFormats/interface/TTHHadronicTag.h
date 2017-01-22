@@ -29,6 +29,7 @@ namespace flashgg {
         float sumJetPt() const {return sumJetPt_;}
         float maxBTagVal() const {return maxBTagVal_;}
         float secondMaxBTagVal() const {return secondMaxBTagVal_;}
+        float tthMvaRes() const {return tthMvaRes_;}
         void setNjet( int nb ) { Njet_ = nb; }
         void setNBLoose( int nb ) { Nbtagloose_ = nb; }
         void setNBMedium( int nb ) { Nbtagmedium_ = nb; }
@@ -39,6 +40,7 @@ namespace flashgg {
         void setMaxBTagVal( float dval ) { maxBTagVal_ = dval;}
         void setSecondMaxBTagVal( float dval ) { secondMaxBTagVal_ = dval;}
         void setJetBTagValVec( std::vector<float> vec ) { theJetBTagValVec_ = vec;}
+        void setMVAres(float val) {tthMvaRes_ = val;}
 
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kTTHHadronic; }
 
@@ -55,6 +57,7 @@ namespace flashgg {
         float sumJetPt_;
         float maxBTagVal_;
         float secondMaxBTagVal_;
+        float tthMvaRes_;
 
     };
 }
