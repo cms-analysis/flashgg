@@ -229,6 +229,22 @@ namespace flashgg {
                         }
             }
 
+        std::vector<std::string> flashggFlagList {"flag_BadChargedCandidateFilter","flag_BadPFMuonFilter","flag_globalTightHalo2016Filter"};
+        const edm::TriggerNames &flashggtriggerNames = evt.triggerNames( *triggerFLASHggMicroAOD );
+        for( unsigned int i = 0; i < flashggtriggerNames.triggerNames().size(); i++ )
+            {
+                if(!triggerFLASHggMicroAOD->accept(i))
+                    for(size_t j=0;j<flagList.size();j++)
+                        {
+                            if(flagList[j]==flashggtriggerNames.triggerName(i))
+                                {
+                                    passMETfilters=0;
+                                    break;
+                                }
+                        }
+            }
+
+
         
         if( ! evt.isRealData() )
             {
