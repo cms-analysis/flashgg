@@ -307,6 +307,8 @@ class JobsManager(object):
                 dsetName = dset.lstrip("/").replace("/","_")
                 dsetName = self.getUniqueName(dsetName)
                 outfile = "%s_%s.root" % ( outputPfx, dsetName )
+                if len(outfile) > 255:
+                    outfile = outfile.replace("RunIISpring16DR80X-2_3_0-25ns_","")
                 doutfiles[dsetName] = ( str(outfile),[] )
                 jobargs.extend( ["dataset=%s" % dset, "outputFile=%s" % outfile ] )
                 # add (and replace) per-dataset job arguments
