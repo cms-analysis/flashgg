@@ -1,5 +1,6 @@
 <use name="FWCore/PluginManager"/>
 <use name="CommonTools/Utils"/>
+<use name="CondTools/BTau"/>
 <use name="flashgg/MicroAOD"/>
 <use name="flashgg/DataFormats"/>
 <use name="rootrflx"/>
