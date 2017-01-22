@@ -181,20 +181,13 @@ namespace flashgg {
                                     {
                                         VhasDaughters=1;
                                         dpdgid[0]=genParticles->ptrAt(genLoop)->daughter(0)->pdgId();
-                                        //dpdgid[1]=genParticles->ptrAt(genLoop)->daughter(1)->pdgId();
                                         Vpt=genParticles->ptrAt( genLoop )->pt();
                                         if(fabs(dpdgid[0])==12||fabs(dpdgid[0])==14||fabs(dpdgid[0])==16) //look for neutrino decay of Z
-                                            {
-                                                VhasNeutrinos=1;
-                                            }
+                                            {VhasNeutrinos=1; }
                                         if(fabs(dpdgid[0])==11||fabs(dpdgid[0])==13||fabs(dpdgid[0])==15) //look for lepton decay of Z  
-                                            {
-                                                VhasLeptons=1;
-                                            }
+                                            { VhasLeptons=1; }
                                         if(fabs(dpdgid[0])>0&&fabs(dpdgid[0])<9) //look for quark decay of Z  
-                                            {
-                                                VhasHadrons=1;
-                                            }
+                                            { VhasHadrons=1;}
                                     }
                             }
                         if(fabs(pdgid)==24) //look for W 
@@ -207,19 +200,11 @@ namespace flashgg {
                                         dpdgid[0]=genParticles->ptrAt(genLoop)->daughter(0)->pdgId();
                                         //dpdgid[1]=genParticles->ptrAt(genLoop)->daughter(1)->pdgId();
                                         if(fabs(dpdgid[0])==12||fabs(dpdgid[0])==14||fabs(dpdgid[0])==16) //look for neutrino decay of W
-                                            {
-                                                VhasNeutrinos=1;
-                                                VhasLeptons=1;
-                                            }
+                                            {VhasNeutrinos=1;VhasLeptons=1;}
                                         if(fabs(dpdgid[0])==11||fabs(dpdgid[0])==13||fabs(dpdgid[0])==15) //look for lepton decay of W  
-                                            {
-                                                VhasNeutrinos=1;
-                                                VhasLeptons=1;
-                                            }
+                                            {VhasNeutrinos=1;VhasLeptons=1;}
                                         if(fabs(dpdgid[0])>0&&fabs(dpdgid[0])<9) //look for quark decay of W   
-                                            {
-                                                VhasHadrons=1;
-                                            }
+                                            {VhasHadrons=1;}
 
                                     }
                             }
@@ -230,7 +215,6 @@ namespace flashgg {
                             }
                     }
             }
-        std::cout << "got gen info" << std::endl;
 
         edm::RefProd<vector<VHTagTruth> > rTagTruth = evt.getRefBeforePut<vector<VHTagTruth> >();
         unsigned int idx = 0;
@@ -246,12 +230,11 @@ namespace flashgg {
         double idmva2 = 0.;
         bool isDiMuon = false;
         bool isDiElectron = false;
-        std::cout << "starting diphotons" << std::endl;
         for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
 
             if(useVertex0only_)
                 if(diPhotons->ptrAt(diphoIndex)->vertexIndex()!=0)
-                    continue;
+                    {continue;}
             std::vector<edm::Ptr<flashgg::Muon> > tagMuonsTemp;
             std::vector<edm::Ptr<Electron> > tagElectronsTemp;
             std::vector<edm::Ptr<flashgg::Muon> > tagMuons;
@@ -271,7 +254,6 @@ namespace flashgg {
             idmva2 = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
             if( idmva1 <= PhoMVAThreshold_ || idmva2 <= PhoMVAThreshold_ ) { continue; }
             if( mvares->result < MVAThreshold_ ) { continue; }
-            std::cout << "loading muons/electrons" << std::endl;
             photonSelection = true;
             tagMuonsTemp = selectMuons( theMuons->ptrs(), dipho, vertices->ptrs(), muonEtaThreshold_, leptonPtThreshold_, muPFIsoSumRelThreshold_,
                                            deltaRMuonPhoThreshold_, deltaRMuonPhoThreshold_ );
@@ -318,7 +300,7 @@ namespace flashgg {
                 ZHLeptonicTags_obj.setDiPhotonIndex( diphoIndex );
                 ZHLeptonicTags_obj.setSystLabel( systLabel_ );
                 ZHLeptonicTags->push_back( ZHLeptonicTags_obj );
-                if( ! evt.isRealData() ) {
+                if( ! evt.isRealData() ){
                     VHTagTruth truth_obj;
                     truth_obj.setGenPV( higgsVtx );
                     truth_obj.setAssociatedZ( associatedZ );
@@ -337,7 +319,6 @@ namespace flashgg {
         evt.put( ZHLeptonicTags );
         evt.put( truths );
     }
-
 }
 typedef flashgg::ZHLeptonicTagProducer FlashggZHLeptonicTagProducer;
 DEFINE_FWK_MODULE( FlashggZHLeptonicTagProducer );

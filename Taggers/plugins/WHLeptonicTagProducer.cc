@@ -221,6 +221,7 @@ namespace flashgg {
         evt.getByToken( triggerFLASHggMicroAOD_, triggerFLASHggMicroAOD );
         const edm::TriggerNames &triggerNames = evt.triggerNames( *triggerBits );
 
+
         std::vector<std::string> flagList {"Flag_HBHENoiseFilter","Flag_HBHENoiseIsoFilter","Flag_EcalDeadCellTriggerPrimitiveFilter","Flag_goodVertices","Flag_eeBadScFilter"};
         for( unsigned int i = 0; i < triggerNames.triggerNames().size(); i++ )
             {
@@ -235,6 +236,20 @@ namespace flashgg {
                         }
             }
 
+        std::vector<std::string> flashggFlagList {"flag_BadChargedCandidateFilter","flag_BadPFMuonFilter","flag_globalTightHalo2016Filter"};
+        const edm::TriggerNames &flashggtriggerNames = evt.triggerNames( *triggerFLASHggMicroAOD );
+        for( unsigned int i = 0; i < flashggtriggerNames.triggerNames().size(); i++ )
+            {
+                if(!triggerFLASHggMicroAOD->accept(i))
+                    for(size_t j=0;j<flagList.size();j++)
+                        {
+                            if(flagList[j]==flashggtriggerNames.triggerName(i))
+                                {
+                                    passMETfilters=0;
+                                    break;
+                                }
+                        }
+            }
         
         if( ! evt.isRealData() )
             {
@@ -253,17 +268,11 @@ namespace flashgg {
                                         //dpdgid[1]=genParticles->ptrAt(genLoop)->daughter(1)->pdgId();
                                         Vpt=genParticles->ptrAt( genLoop )->pt();
                                         if(fabs(dpdgid[0])==12||fabs(dpdgid[0])==14||fabs(dpdgid[0])==16) //look for neutrino decay of Z
-                                            {
-                                                VhasNeutrinos=1;
-                                            }
+                                            {VhasNeutrinos=1;}
                                         if(fabs(dpdgid[0])==11||fabs(dpdgid[0])==13||fabs(dpdgid[0])==15) //look for lepton decay of Z  
-                                            {
-                                                VhasLeptons=1;
-                                            }
+                                            {VhasLeptons=1;}
                                         if(fabs(dpdgid[0])>0&&fabs(dpdgid[0])<9) //look for quark decay of Z   
-                                            {
-                                                VhasHadrons=1;
-                                            }
+                                            {VhasHadrons=1;}
                                     }
                             }
                         
@@ -277,19 +286,11 @@ namespace flashgg {
                                         dpdgid[0]=genParticles->ptrAt(genLoop)->daughter(0)->pdgId();
                                         //dpdgid[1]=genParticles->ptrAt(genLoop)->daughter(1)->pdgId();
                                         if(fabs(dpdgid[0])==12||fabs(dpdgid[0])==14||fabs(dpdgid[0])==16) //look for neutrino decay of W
-                                            {
-                                                VhasNeutrinos=1;
-                                                VhasLeptons=1;
-                                            }
+                                            {VhasNeutrinos=1;VhasLeptons=1;}
                                         if(fabs(dpdgid[0])==11||fabs(dpdgid[0])==13||fabs(dpdgid[0])==15) //look for lepton decay of W
-                                            {
-                                                VhasNeutrinos=1;
-                                                VhasLeptons=1;
-                                            }
+                                            {VhasNeutrinos=1;VhasLeptons=1;}
                                         if(fabs(dpdgid[0])>0&&fabs(dpdgid[0])<9) //look for quark decay of W 
-                                            {
-                                                VhasHadrons=1;
-                                            }
+                                            {VhasHadrons=1;}
                                         
                                     }
                             }
@@ -313,13 +314,10 @@ namespace flashgg {
         for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
             hasGoodElec = false;
             hasGoodMuons = false;
-            if(!passMETfilters)
-                {
-                    continue;
-                }
+            if(!passMETfilters) {continue;}
             if(useVertex0only_)
                 if(diPhotons->ptrAt(diphoIndex)->vertexIndex()!=0)
-                    continue;
+                    {continue;}
             unsigned int jetCollectionIndex = diPhotons->ptrAt( diphoIndex )->jetCollectionIndex();
 
             std::vector<edm::Ptr<Jet> > tagJets;
