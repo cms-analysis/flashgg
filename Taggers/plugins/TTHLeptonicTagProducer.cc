@@ -467,7 +467,8 @@ namespace flashgg {
                     && ( ( tagMuons.size() > 0 && TTHLepTagMuon ) || ( tagElectrons.size() > 0 && TTHLepTagElectron ) ) ) {
                 //                std::cout << " TTHLeptonicTagProducer TAGGED " << std::endl;
                 for( unsigned num = 0; num < tagJets.size(); num++ ) {
-                    tthltags_obj.includeWeights( *tagJets.at(num) );
+                    //std::cout << " TTHLeptonicTagProducer including weight for jet : "<<num<<" of "<< tagJets.size() << std::endl;
+                    tthltags_obj.includeWeightsByLabel( *tagJets.at(num), "JetBTagCutWeight");
                 }
                 // if( tagElectrons.size() > 0 && TTHLepTagElectron ) {
                 //     //                    std::cout << "including electron weights" << std::endl; 

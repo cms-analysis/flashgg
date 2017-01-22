@@ -40,6 +40,7 @@ bTagEffBins = cms.PSet(
 
 bDiscriminator74X = cms.double(0.890)
 bDiscriminator76X = cms.double(0.800)
+bDiscriminator80XReReco = cms.double(0.8484)
 from flashgg.MicroAOD.flashggJets_cfi import flashggBTag
 
 RMSShiftBins = cms.PSet(
@@ -105,13 +106,23 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            TextFileSF = cms.string("%s/src/flashgg/Systematics/data/JER/Spring16_25nsV6_MC_SF_AK4PFchs.txt" % environ['CMSSW_BASE'])
                                                            ),
                                                  cms.PSet( MethodName = cms.string("FlashggJetBTagWeight"),
-                                                           Label = cms.string("JetBTagWeight"),
+                                                           Label = cms.string("JetBTagCutWeight"),
                                                            NSigmas = cms.vint32(-1,1),
                                                            OverallRange = cms.string("pt>25.0&&abs(eta)<2.4"),
                                                            BinList = bTagEffBins,
 						 	   bTag = cms.string(flashggBTag),
-						 	   bDiscriminator = bDiscriminator76X, #Medium working point for CSV B tagger, for CMSSW74X use: bDiscriminator74X
+						 	   bDiscriminator = bDiscriminator80XReReco,#bDiscriminator76X
 							   Debug = cms.untracked.bool(False),
+                                                           ApplyCentralValue = cms.bool(True)
+                                                           ),
+						 cms.PSet( MethodName = cms.string("FlashggJetBTagReshapeWeight"),
+                                                           Label = cms.string("JetBTagReshapeWeight"),
+                                                           NSigmas = cms.vint32(-1,1),
+                                                           OverallRange = cms.string("pt>25.0&&abs(eta)<2.4"),
+                                                           BinList = bTagEffBins,
+                                                           bTag = cms.string(flashggBTag),
+                                                           bDiscriminator = bDiscriminator80XReReco,#bDiscriminator76X,
+                                                           Debug = cms.untracked.bool(False),
                                                            ApplyCentralValue = cms.bool(True)
                                                            ),
                                                  cms.PSet( MethodName = cms.string("FlashggJetRMSShift"),
