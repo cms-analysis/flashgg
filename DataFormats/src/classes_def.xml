@@ -76,6 +76,11 @@
 </class>
 <class name="std::vector<flashgg::TTHHadronicTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TTHHadronicTag> >"/>
+<class name="flashgg::THQLeptonicTag" ClassVersion="0">
+  <version ClassVersion="0" checksum="1563519760"/>
+</class>
+<class name="std::vector<flashgg::THQLeptonicTag>"/>
+<class name="edm::Wrapper<std::vector<flashgg::THQLeptonicTag> >"/>
 <class name="flashgg::VHMetTag" ClassVersion="10">
    <version ClassVersion="10" checksum="3643272763"/>
 </class>
