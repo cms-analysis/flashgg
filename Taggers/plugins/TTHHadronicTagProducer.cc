@@ -51,6 +51,7 @@ namespace flashgg {
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
+        EDGetTokenT<double> rhoTag_;
         string systLabel_;
 
 
@@ -131,6 +132,7 @@ namespace flashgg {
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag>( "MVAResultTag" ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
+        rhoTag_( consumes<double>( iConfig.getParameter<InputTag>( "rhoTag" ) ) ),
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
         _MVAMethod( iConfig.getParameter<string> ( "MVAMethod" ) )
     {
@@ -233,6 +235,10 @@ namespace flashgg {
         Handle<View<flashgg::Electron> > theElectrons;
         evt.getByToken( electronToken_, theElectrons );
 
+        edm::Handle<double>  rho;
+        evt.getByToken(rhoTag_,rho);
+        double rho_    = *rho;
+
         Handle<View<reco::Vertex> > vertices;
         evt.getByToken( vertexToken_, vertices );
 
@@ -279,10 +285,12 @@ namespace flashgg {
             //                                       true, true, elMiniIsoEBThreshold_, elMiniIsoEEThreshold_);
             goodElectrons = selectAllElectronsSum16( theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
                                                      true, true, elMiniIsoEBThreshold_, elMiniIsoEEThreshold_,
-                                                     TransverseImpactParam_EB, LongitudinalImpactParam_EB, TransverseImpactParam_EE, LongitudinalImpactParam_EE);
+                                                     TransverseImpactParam_EB, LongitudinalImpactParam_EB, TransverseImpactParam_EE, LongitudinalImpactParam_EE,
+                                                     rho_, evt.isRealData() );
         } else {
             goodElectrons = selectStdAllElectrons(theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
-                                                  useElectronMVARecipe_, useElectronLooseID_);
+                                                  useElectronMVARecipe_, useElectronLooseID_,
+                                                  rho_, evt.isRealData() );
         }
         
         

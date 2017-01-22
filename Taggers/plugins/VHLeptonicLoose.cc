@@ -57,6 +57,7 @@ namespace flashgg {
         EDGetTokenT<View<flashgg::Met> > METToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
+        EDGetTokenT<double> rhoTag_;
         string systLabel_;
         edm::EDGetTokenT<edm::TriggerResults> triggerRECO_;
         edm::EDGetTokenT<edm::TriggerResults> triggerPAT_;
@@ -114,6 +115,7 @@ namespace flashgg {
         METToken_( consumes<View<flashgg::Met> >( iConfig.getParameter<InputTag> ( "METTag" ) ) ),
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
+        rhoTag_( consumes<double>( iConfig.getParameter<InputTag>( "rhoTag" ) ) ),
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
         triggerRECO_( consumes<edm::TriggerResults>(iConfig.getParameter<InputTag>("RECOfilters") ) ),
         triggerPAT_( consumes<edm::TriggerResults>(iConfig.getParameter<InputTag>("PATfilters") ) ),
@@ -178,6 +180,10 @@ namespace flashgg {
 
         Handle<View<flashgg::Electron> > theElectrons;
         evt.getByToken( electronToken_, theElectrons );
+
+        edm::Handle<double>  rho;
+        evt.getByToken(rhoTag_,rho);
+        double rho_    = *rho;
 
         Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
         evt.getByToken( mvaResultToken_, mvaResults );
@@ -340,7 +346,8 @@ namespace flashgg {
             
             tagElectrons = selectStdElectrons( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_,  electronEtaThresholds_,
                                                useElectronMVARecipe_,useElectronLooseID_,
-                                               deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_);
+                                               deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_,
+                                               rho_, evt.isRealData() );
             
 
         
