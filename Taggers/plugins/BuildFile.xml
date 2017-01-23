@@ -8,6 +8,7 @@
 <use   name="PhysicsTools/UtilAlgos"/>
 <use   name="roofit"/>
 <use   name="roottmva"/>
+<use   name="RecoEgamma/EgammaTools"/>
 <!-- Flags CXXFLAGS="-ggdb"/ -->
 <flags   EDM_PLUGIN="1"/>
 </library>

@@ -1,4 +1,3 @@
-
 #include "DataFormats/Common/interface/Handle.h"
 #include "FWCore/Framework/interface/EDProducer.h"
 #include "FWCore/Framework/interface/Event.h"
@@ -9,9 +8,14 @@
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "flashgg/MicroAOD/interface/PhotonIdUtils.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 
 #include "TFile.h"
 #include "TGraph.h"
+
+using namespace std;
+using namespace edm;
+using namespace reco;
 
 namespace flashgg {
 
@@ -32,16 +36,21 @@ namespace flashgg {
         std::vector<std::unique_ptr<TGraph> > corrections_;
 
         bool useNewPhoId_;
+
+        EffectiveAreas _effectiveAreas;
+        vector<double> _phoIsoPtScalingCoeff;
+        double _phoIsoCutoff;
+
     };
 
     DiPhotonWithUpdatedPhoIdMVAProducer::DiPhotonWithUpdatedPhoIdMVAProducer( const edm::ParameterSet &ps ) :
         token_(consumes<edm::View<flashgg::DiPhotonCandidate> >(ps.getParameter<edm::InputTag>("src"))),
         rhoToken_( consumes<double>( ps.getParameter<edm::InputTag>( "rhoFixedGridCollection" ) ) ),
-        debug_( ps.getParameter<bool>( "Debug" ) )
+        debug_( ps.getParameter<bool>( "Debug" ) ),
+        _effectiveAreas((ps.getParameter<edm::FileInPath>("effAreasConfigFile")).fullPath()),
+        _phoIsoPtScalingCoeff(ps.getParameter<std::vector<double >>("phoIsoPtScalingCoeff")),
+        _phoIsoCutoff(ps.getParameter<double>("phoIsoCutoff"))
     {
-
-
-
         useNewPhoId_ = ps.getParameter<bool>( "useNewPhoId" );
         phoIdMVAweightfileEB_ = ps.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EB" );
         phoIdMVAweightfileEE_ = ps.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EE" );
@@ -141,9 +150,13 @@ namespace flashgg {
             if (this->debug_) {
                 std::cout << " Input DiPhoton lead (sublead) MVA: " << obj.leadPhotonId() << " " << obj.subLeadPhotonId() << std::endl;
             }
-            float newleadmva = phoTools_.computeMVAWrtVtx( new_obj->getLeadingPhoton(), new_obj->vtx(), rhoFixedGrd, leadCorrectedEtaWidth );
+
+            double eA_leadPho = _effectiveAreas.getEffectiveArea( abs(new_obj->getLeadingPhoton().superCluster()->eta()) );
+            double eA_subLeadPho = _effectiveAreas.getEffectiveArea( abs(new_obj->getSubLeadingPhoton().superCluster()->eta()) );
+
+            float newleadmva = phoTools_.computeMVAWrtVtx( new_obj->getLeadingPhoton(), new_obj->vtx(), rhoFixedGrd, leadCorrectedEtaWidth, eA_leadPho, _phoIsoPtScalingCoeff, _phoIsoCutoff );
             new_obj->getLeadingPhoton().setPhoIdMvaWrtVtx( new_obj->vtx(), newleadmva);
-            float newsubleadmva = phoTools_.computeMVAWrtVtx( new_obj->getSubLeadingPhoton(), new_obj->vtx(), rhoFixedGrd, subLeadCorrectedEtaWidth );
+            float newsubleadmva = phoTools_.computeMVAWrtVtx( new_obj->getSubLeadingPhoton(), new_obj->vtx(), rhoFixedGrd, subLeadCorrectedEtaWidth, eA_subLeadPho, _phoIsoPtScalingCoeff, _phoIsoCutoff  );
             new_obj->getSubLeadingPhoton().setPhoIdMvaWrtVtx( new_obj->vtx(), newsubleadmva);
             if (this->debug_) {
                 std::cout << " Output DiPhoton lead (sublead) MVA: " << new_obj->leadPhotonId() << " " << new_obj->subLeadPhotonId() << std::endl;
