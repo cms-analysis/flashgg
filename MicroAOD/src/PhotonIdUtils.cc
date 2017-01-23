@@ -301,7 +301,7 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
 map<edm::Ptr<reco::Vertex>, float> PhotonIdUtils::computeMVAWrtAllVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
     flashgg::Photon &photon,
     const std::vector<edm::Ptr<reco::Vertex> > &vertices,
-    const double rho )
+    const double rho, const double correctedEtaWidth, const double eA, const std::vector<double> _phoIsoPtScalingCoeff, const double _phoIsoCutoff )
 
 {
     map<edm::Ptr<reco::Vertex>, float> mvamap;
@@ -309,7 +309,7 @@ map<edm::Ptr<reco::Vertex>, float> PhotonIdUtils::computeMVAWrtAllVtx( /*edm::Pt
 
     for( unsigned int iv = 0; iv < vertices.size(); iv++ ) {
         edm::Ptr<reco::Vertex> vertex = vertices[iv];
-        float mvapervtx = computeMVAWrtVtx( photon, vertex, rho );
+        float mvapervtx = computeMVAWrtVtx( photon, vertex, rho, correctedEtaWidth, eA, _phoIsoPtScalingCoeff, _phoIsoCutoff );
         mvamap.insert( make_pair( vertex, mvapervtx ) );
     }
 
