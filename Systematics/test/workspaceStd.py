@@ -291,11 +291,11 @@ else:
     tagList=[
         ["UntaggedTag",4],
         ["VBFTag",2],
-        #["ZHLeptonicTag",0],
-        #["WHLeptonicTag",0],
-        #["VHLeptonicLooseTag",0],
-        #["VHMetTag",0],
-        #["VHHadronicTag",0],
+        ["ZHLeptonicTag",0],
+        ["WHLeptonicTag",0],
+        ["VHLeptonicLooseTag",0],
+        ["VHMetTag",0],
+        ["VHHadronicTag",0],
         ["TTHHadronicTag",0],
         ["TTHLeptonicTag",0]
         ]
