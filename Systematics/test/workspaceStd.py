@@ -359,10 +359,14 @@ process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 # ee bad supercluster filter on data
 process.load('RecoMET.METFilters.eeBadScFilter_cfi')
 process.eeBadScFilter.EERecHitSource = cms.InputTag("reducedEgamma","reducedEERecHits") # Saved MicroAOD Collection (data only)
+process.load('RecoMET.METFilters.badGlobalMuonTaggersMiniAOD_cff')
+process.badGlobalMuonTagger.muons = cms.InputTag("flashggSelectedMuons")
+process.cloneGlobalMuonTagger.muons = cms.InputTag("flashggSelectedMuons")
 process.dataRequirements = cms.Sequence()
 if customize.processId == "Data":
         process.dataRequirements += process.hltHighLevel
         process.dataRequirements += process.eeBadScFilter
+	process.dataRequirements += noBadGlobalMuons
 
 # Split WH and ZH
 process.genFilter = cms.Sequence()
