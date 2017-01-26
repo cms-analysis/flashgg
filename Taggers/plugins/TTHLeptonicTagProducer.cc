@@ -281,18 +281,18 @@ namespace flashgg {
             //                                                         TransverseImpactParam_, LongitudinalImpactParam_, nonTrigMVAThresholds_, nonTrigMVAEtaCuts_,
             //                                                         electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaThresholds_ ,
             //                                                         deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_);
-            if( !useStdLeptonID_) {
-                goodElectrons= selectElectronsSum16( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_,  electronEtaThresholds_ ,
-                                                     deltaRPhoElectronThreshold_, DeltaRTrkElec_, deltaMassElectronZThreshold_,
-                                                     elMiniIsoEBThreshold_, elMiniIsoEEThreshold_,
-                                                     TransverseImpactParam_EB, LongitudinalImpactParam_EB, TransverseImpactParam_EE, LongitudinalImpactParam_EE,
-                                                     rho_, evt.isRealData() );
-            } else {
+            //if( !useStdLeptonID_) {
+            //goodElectrons= selectElectronsSum16( theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_,  electronEtaThresholds_ ,
+            //                                         deltaRPhoElectronThreshold_, DeltaRTrkElec_, deltaMassElectronZThreshold_,
+            //                                         elMiniIsoEBThreshold_, elMiniIsoEEThreshold_,
+            //                                        TransverseImpactParam_EB, LongitudinalImpactParam_EB, TransverseImpactParam_EE, LongitudinalImpactParam_EE,
+            //                                         rho_, evt.isRealData() );
+            //} else {
                 goodElectrons = selectStdElectrons(theElectrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_,  electronEtaThresholds_ ,
                                                     useElectronMVARecipe_,useElectronLooseID_,
                                                    deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_,
                                                    rho_, evt.isRealData() );
-            }
+                //}
             
 
             hasGoodElec = ( goodElectrons.size() > 0 );
