@@ -949,7 +949,13 @@ Commands:
 
             # follows symbolic links
             if os.path.isdir(fullfname):
-                campaigns.append(fname)
+
+                # insist that there is a 'datasets.json' file in this
+                # directory
+
+                if os.path.exists(os.path.join(fullfname, "datasets.json")):
+
+                    campaigns.append(fname)
 
             
         campaigns.sort()
