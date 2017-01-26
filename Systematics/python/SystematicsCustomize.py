@@ -86,7 +86,7 @@ def modifyTagSequenceForSystematics(process,jetSystematicsInputTags,ZPlusJetMode
 
 def cloneTagSequenceForEachSystematic(process,systlabels=[],phosystlabels=[],metsystlabels=[],jetsystlabels=[],jetSystematicsInputTags=None,ZPlusJetMode=False):
     #process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags,ZPlusJetMode=False):
-    if jetSystematicsInputTags in None:
+    if jetSystematicsInputTags is None:
         raise TypeError
     for systlabel in systlabels:
         if systlabel == "":
