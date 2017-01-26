@@ -27,6 +27,7 @@ config.JobType.maxJobRuntimeMin = 2750
 ## config.JobType.scriptExe = "cmsWrapper.sh"
 config.JobType.pyCfgParams = PYCFG_PARAMS
 config.JobType.sendPythonFolder = True
+config.JobType.sendExternalFolder = True
 
 config.section_("Data")
 config.Data.inputDataset = "DATASET"

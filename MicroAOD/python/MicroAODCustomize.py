@@ -60,7 +60,24 @@ class MicroAODCustomize(object):
                                VarParsing.VarParsing.varType.int,
                                'bunchSpacing'
                                )
-
+        self.options.register ('runDec2016Regression',
+                               0,
+                               VarParsing.VarParsing.multiplicity.singleton,
+                               VarParsing.VarParsing.varType.int,
+                               'runDec2016Regression'
+                               )
+        self.options.register('runSummer16EleID',
+                              1,
+                               VarParsing.VarParsing.multiplicity.singleton,
+                               VarParsing.VarParsing.varType.int,
+                              'runSummer16EleID'
+                              )
+        self.options.register('runSummer16EGMPhoID',
+                              1,
+                               VarParsing.VarParsing.multiplicity.singleton,
+                               VarParsing.VarParsing.varType.int,
+                              'runSummer16EGMPhoID'
+                              )
 
         self.parsed_ = False
 
@@ -150,6 +167,14 @@ class MicroAODCustomize(object):
             self.customize50ns(process)
         else:
             raise Exception,"Only bunchSpacing=25 and bunchSpacing=50 are supported"
+        if self.runDec2016Regression:
+            self.customizeDec2016Regression(process)
+        if self.runSummer16EleID:
+            self.customizeSummer16EleID(process)
+        else:
+            self.customizeSpring15EleID(process)
+        if self.runSummer16EGMPhoID:
+            self.customizeSummer16EGMPhoID(process)
             
     # signal specific customization
     def customizeSignal(self,process):
@@ -215,6 +240,54 @@ class MicroAODCustomize(object):
         process.load("flashgg/MicroAOD/flashggDiPhotonFilter_cfi")
         process.p1 = cms.Path(process.diPhotonFilter) # Do not save events with 0 diphotons
         process.out.SelectEvents = cms.untracked.PSet(SelectEvents=cms.vstring('p1'))
+
+    def customizeDec2016Regression(self,process):
+        if not (process.GlobalTag.globaltag == "80X_mcRun2_asymptotic_2016_TrancheIV_v7" or process.GlobalTag.globaltag == "80X_dataRun2_2016SeptRepro_v6"):
+            raise Exception,"Regression application turned on but globalTag has unexpected value %s - see MicroAODCustomize.py" % process.GlobalTag.globaltag
+        
+        from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
+        process = regressionWeights(process)
+        process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
+        process.p.insert(0,process.regressionApplication)
+        process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag("slimmedElectrons")
+        process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag("slimmedPhotons")
+        process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag("slimmedPhotons")
+
+    def customizeSpring15EleID(self,process):
+        from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDElectronIdProducer,setupAllVIDIdsInModule,setupVIDElectronSelection
+        dataFormat = DataFormat.MiniAOD
+        switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
+        my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff',
+                         'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Spring15_25ns_V1_cff',
+                         'RecoEgamma.ElectronIdentification.Identification.heepElectronID_HEEPV60_cff']
+        for idmod in my_id_modules:
+            setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
+            
+    def customizeSummer16EleID(self,process):
+        from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDElectronIdProducer,setupAllVIDIdsInModule,setupVIDElectronSelection
+        dataFormat = DataFormat.MiniAOD
+        switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
+        my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff',
+                         'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff',
+                         'RecoEgamma.ElectronIdentification.Identification.heepElectronID_HEEPV60_cff']
+        for idmod in my_id_modules:
+            setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
+        process.flashggElectrons.effAreasConfigFile = cms.FileInPath("RecoEgamma/ElectronIdentification/data/Summer16/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_80X.txt")
+        process.flashggElectrons.eleVetoIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto")  
+        process.flashggElectrons.eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose")
+        process.flashggElectrons.eleMediumIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium")
+        process.flashggElectrons.eleTightIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight")
+        process.flashggElectrons.eleMVAMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring16-GeneralPurpose-V1-wp90")
+        process.flashggElectrons.eleMVATightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring16-GeneralPurpose-V1-wp80")
+        process.flashggElectrons.mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values")
+
+    def customizeSummer16EGMPhoID(self,process):
+        from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDPhotonIdProducer,setupAllVIDIdsInModule,setupVIDPhotonSelection
+        dataFormat = DataFormat.MiniAOD
+        switchOnVIDPhotonIdProducer(process, DataFormat.MiniAOD)
+        my_id_modules = ['RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Spring16_nonTrig_V1_cff']
+        for idmod in my_id_modules:
+            setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
 
     def customizeDataMuons(self,process):
         process.diPhotonFilter.src = "flashggSelectedMuons"
