@@ -276,22 +276,22 @@ namespace flashgg {
        
         std::vector<edm::Ptr<Electron> > goodElectrons ;
 
-        if( !useStdLeptonID_) {
+        //if( !useStdLeptonID_) {
              // goodElectrons = selectAllElectrons( theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, 
              //                                     TransverseImpactParam_, LongitudinalImpactParam_, nonTrigMVAThresholds_, nonTrigMVAEtaCuts_,
              //                                     electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaThresholds_ );
             //goodElectrons = selectAllElectronsSum16( theElectrons->ptrs(), vertices->ptrs(), 
             //                                       leptonPtThreshold_, electronEtaThresholds_,
             //                                       true, true, elMiniIsoEBThreshold_, elMiniIsoEEThreshold_);
-            goodElectrons = selectAllElectronsSum16( theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
-                                                     true, true, elMiniIsoEBThreshold_, elMiniIsoEEThreshold_,
-                                                     TransverseImpactParam_EB, LongitudinalImpactParam_EB, TransverseImpactParam_EE, LongitudinalImpactParam_EE,
-                                                     rho_, evt.isRealData() );
-        } else {
+            //goodElectrons = selectAllElectronsSum16( theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
+            //                                         true, true, elMiniIsoEBThreshold_, elMiniIsoEEThreshold_,
+            //                                         TransverseImpactParam_EB, LongitudinalImpactParam_EB, TransverseImpactParam_EE, LongitudinalImpactParam_EE,
+            //                                         rho_, evt.isRealData() );
+        //} else {
             goodElectrons = selectStdAllElectrons(theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
                                                   useElectronMVARecipe_, useElectronLooseID_,
                                                   rho_, evt.isRealData() );
-        }
+            //}
         
         
         for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
@@ -456,8 +456,8 @@ namespace flashgg {
                         //tthhtags_obj.includeWeightsByLabel( *JetVect[num] , "JetBTagReshapeWeight");
                     }
                 } else {
-                    for( unsigned num = 0; num < BJetTTHHMVAVect.size(); num++ ) {
-                        tthhtags_obj.includeWeightsByLabel( *BJetTTHHMVAVect[num] , "JetBTagReshapeWeight");
+                    for( unsigned num = 0; num < JetVect.size(); num++ ) {
+                        tthhtags_obj.includeWeightsByLabel( *JetVect[num] , "JetBTagReshapeWeight");
                     }                    
                 }
                 tthhtags_obj.includeWeights( *dipho );

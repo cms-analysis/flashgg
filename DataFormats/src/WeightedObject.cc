@@ -91,51 +91,76 @@ namespace flashgg {
         bool isWeightByLabelFound = false;
         float initialcentralweight = centralWeight();
         float othercentralweightLabel = 1.0;
+        float othercentralweightObject = 1.0;
         for( auto keyIt = other._labels.begin() ; keyIt != other._labels.end() ; keyIt++ ) {
-            //std::cout<<"In includeWeightsByLabel central auto keyIt loop : "<< *keyIt <<std::endl;
-            if(keyIt->find(keyInput) != std::string::npos && keyIt->find("Central") != std::string::npos ){
-                //std::cout<<"In includeWeightsByLabel central auto keyIt loop 1 : "<< *keyIt <<std::endl;
+
+            if( *keyIt == "Central" ){
+
+                othercentralweightObject = other.weight( *keyIt );
+            } else if(keyIt->find(keyInput) != std::string::npos && keyIt->find("Central") != std::string::npos ){
+
                 othercentralweightLabel = other.weight( *keyIt );
                 isWeightByLabelFound = true;
             }
         }
 
-        if(!isWeightByLabelFound){
+        if(false && !isWeightByLabelFound){
             std::cout<<"NOTE :  includeWeightsByLabel : LABEL : "<< keyInput << " NOT FOUND LABEL WEIGHT FOR OBJECT" << std::endl;
-        }        
+        } 
+
+        float weightAdjustSys = othercentralweightLabel/othercentralweightObject;// non central weights are multiplied by other central weights in object, this factor will undo that extra multiplication       
 
         // multiplies weights which are present in this and other
         for( auto keyIt = _labels.begin() ; keyIt != _labels.end() ; keyIt++ ) {
-            //std::cout<<"In includeWeightsByLabel auto keyIt loop : "<< *keyIt <<std::endl;
-            //if(keyIt == keyInput){            
+
             if( *keyIt == "Central" ) {//multiply central weight with label central weight
-                //std::cout<<"In includeWeightsByLabel auto keyIt loop 1 : "<< *keyIt <<std::endl;
+
                 setWeight( *keyIt, weight( *keyIt ) * othercentralweightLabel );
             } else if( other.hasWeight( *keyIt ) && keyIt->find(keyInput) != std::string::npos ) {//multiply other weights that have the same label, for instance for second jet in event
-                //std::cout<<"In includeWeightsByLabel auto keyIt loop 2 : "<< *keyIt <<std::endl;
-                setWeight( *keyIt, weight( *keyIt ) * other.weight( *keyIt ) );
+
+                if(keyIt->find("Central") != std::string::npos){//centralLabelWeight
+                    setWeight( *keyIt, weight( *keyIt ) * other.weight( *keyIt ) );
+                } else {//systematicLabelWeight
+                    setWeight( *keyIt, weight( *keyIt ) * other.weight( *keyIt ) * weightAdjustSys);
+                }
+               
             } else {// for other weights with different labels
-                //std::cout<<"In includeWeightsByLabel auto keyIt loop 3 : "<< *keyIt <<std::endl;
+
                 if ( usecentralifnotfound ) {
-                    //std::cout<<"In includeWeightsByLabel auto keyIt loop 4 : "<< *keyIt <<std::endl;
                     setWeight( *keyIt, weight( *keyIt ) * othercentralweightLabel );
                 }
             }
         }
+
         //imports weights that are only in other
         for( auto keyIt = other._labels.begin() ; keyIt != other._labels.end() ; keyIt++ ) {
-            //std::cout<<"In includeWeightsByLabel auto keyIt other loop : "<< *keyIt <<std::endl;
+
             if( !hasWeight( *keyIt ) ) {
-                //std::cout<<"In includeWeightsByLabel auto keyIt other loop 1 : "<< *keyIt <<std::endl;
+
                 if(*keyIt == "Central" ) {//multiply central weight with label central weight
-                    //std::cout<<"In includeWeightsByLabel auto keyIt other loop 2 : "<< *keyIt <<std::endl;
+
                     setWeight( *keyIt, othercentralweightLabel );
-                } else if(keyIt->find(keyInput) != std::string::npos ){
-                    //std::cout<<"In includeWeightsByLabel auto keyIt other loop 3 : "<< *keyIt <<std::endl;
-                    if ( usecentralifnotfound ) {
-                        setWeight( *keyIt, initialcentralweight * other.weight( *keyIt ) );
-                    } else {
-                        setWeight( *keyIt, other.weight( *keyIt ) );
+
+                } else if(keyIt->find(keyInput) != std::string::npos ){//weights with that label
+
+                    if(keyIt->find("Central") != std::string::npos){//centralLabelWeight
+
+                        if ( usecentralifnotfound ) {
+                            setWeight( *keyIt, initialcentralweight * other.weight( *keyIt ) );
+                        } else {
+                            setWeight( *keyIt, other.weight( *keyIt ) );
+                        }
+                    } else {//systematicLabelWeight
+                     
+                        if ( usecentralifnotfound ) {
+                     
+                            setWeight( *keyIt, initialcentralweight * other.weight( *keyIt ) * weightAdjustSys );
+                     
+                        } else {
+                     
+                            setWeight( *keyIt, other.weight( *keyIt ) * weightAdjustSys );
+                        }
+
                     }
                 } 
             }
