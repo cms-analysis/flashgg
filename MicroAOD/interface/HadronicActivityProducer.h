@@ -109,19 +109,12 @@ namespace flashgg {
                 if( add ) { out.addDaughter(cand); --count; }
             }
             
+            
             AddFourMomenta addP4;
             addP4.set(out);
-            outPtr->push_back(out);
+        
+            iEvent.put(std::move(outPtr));
         }
-        
-<<<<<<< HEAD
-        AddFourMomenta addP4;
-        addP4.set(out);
-        
-        iEvent.put(std::move(outPtr));
-=======
-        iEvent.put(outPtr);
->>>>>>> 196dcfd... attach composite objects to the tags (jet systs)
     }
 }
 
