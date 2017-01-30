@@ -44,7 +44,6 @@
 </class>
 <class name="std::vector<flashgg::UntaggedTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::UntaggedTag> >"/>
-
 <class name="flashgg::SigmaMpTTag"/>
 <class name="std::vector<flashgg::SigmaMpTTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::SigmaMpTTag> >"/>
