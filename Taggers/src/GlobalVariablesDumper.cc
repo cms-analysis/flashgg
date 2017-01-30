@@ -52,7 +52,11 @@ namespace flashgg {
             //            for(int ipset=0; ipset< extraFloatPSets_.size(); ipset++){
             //  edm::ParameterSet extrafloatPSet=extraFloatPSets_[ipset];
                 edm::ParameterSet extrafloatPSet= extraFloats.getParameter<ParameterSet>(extrafloatPSetName);
+<<<<<<< HEAD
                 //std::cout<<"extrafloatPSetName "<<extrafloatPSetName<<std::endl;
+=======
+                std::cout<<"extrafloatPSetName "<<extrafloatPSetName<<std::endl;
+>>>>>>> e6b1c7d... variable binning for global vars
                 extraFloatNames_.push_back( extrafloatPSetName );;
                 const auto nbins  = extrafloatPSet.existsAs<int >("nbins") ? extrafloatPSet.getParameter<int >("nbins") : 0;
                 const auto vmin   = extrafloatPSet.existsAs<double >("vmin") ? extrafloatPSet.getParameter<double >("vmin") : std::numeric_limits<double>::lowest();
@@ -61,10 +65,17 @@ namespace flashgg {
                 //                const auto vmax   = extrafloatPSet.existsAs<double >("vmax") ? extrafloatPSet.getParameter<double >("vmax") : 999999.;
                 const auto binning =  extrafloatPSet.existsAs<std::vector<double > >("binning") ? extrafloatPSet.getParameter<std::vector<double> >("binning") : std::vector<double >();
 
+<<<<<<< HEAD
                 //std::cout<<"nbins "<<nbins<<std::endl;
                 //std::cout<<"vmin "<<vmin<<std::endl;
                 //std::cout<<"vmax "<<vmax<<std::endl;
                 //std::cout<<"binning size "<<binning.size()<<std::endl;
+=======
+                std::cout<<"nbins "<<nbins<<std::endl;
+                std::cout<<"vmin "<<vmin<<std::endl;
+                std::cout<<"vmax "<<vmax<<std::endl;
+                std::cout<<"binning size "<<binning.size()<<std::endl;
+>>>>>>> e6b1c7d... variable binning for global vars
 
                 extraFloatNBins_.insert( std::pair<std::string,int>(extrafloatPSetName, nbins) );
                 extraFloatVmins_.insert( std::pair<std::string,double>(extrafloatPSetName, vmin ) );
@@ -73,7 +84,11 @@ namespace flashgg {
             //////          }
             //            extraFloatNames_ = extraFloats.getParameterNamesForType<InputTag>();
             //////            for( auto & name : extraFloatNames_ ) {
+<<<<<<< HEAD
                 //std::cout<<"GVD.cc name: "<<extrafloatPSetName<<std::endl;
+=======
+                std::cout<<"GVD.cc name: "<<extrafloatPSetName<<std::endl;
+>>>>>>> e6b1c7d... variable binning for global vars
                 extraFloatTokens_.push_back( cc.consumes<float>(extrafloatPSet.getParameter<InputTag>("src")) );
                 extraDoubleTokens_.push_back( cc.consumes<double>(extrafloatPSet.getParameter<InputTag>("src")) );
                 extraVectorFloatTokens_.push_back( cc.consumes<std::vector<float>>(extrafloatPSet.getParameter<InputTag>("src")) );
@@ -246,11 +261,17 @@ namespace flashgg {
                         assert(0);
                     }
 
+<<<<<<< HEAD
                     //std::cout<<ihandle.product()<<std::endl;
                     // std::cout<< extraFloatNames_[iextra] <<std::endl;
                     if( ihandle->size()  < 1 ) {
                         //std::cout << "NO extra float......... " << extraFloatNames_[iextra] << std::endl;
                         continue; }
+=======
+                    std::cout<<ihandle.product()<<std::endl;
+                    std::cout<< extraFloatNames_[iextra] <<std::endl;
+                    if( ihandle->size()  < 1 ) { std::cout << "NO extra float......... " << extraFloatNames_[iextra] << std::endl; continue; }
+>>>>>>> e6b1c7d... variable binning for global vars
                     extraFloatVariables_[iextra] = (*ihandle)[0];
                 }
             }
