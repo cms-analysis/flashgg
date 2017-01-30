@@ -242,6 +242,16 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
         variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
         variablesToUse.append("leadmva := diPhotonMVA().leadmva")
         variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
+#        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
+        
+    if customize.doSystematics and customize.doFiducial:
+        systematicVariables.extend(fc.getGenVariables(True))
+        systematicVariables.extend(fc.getRecoVariables(True))
+#        systematicVariables.append("genLeadGenIso[1,0.0,100.0] := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
+#        systematicVariables.append("decorrSigmarv[1,0.0,0.10] := diPhotonMVA().decorrSigmarv")
+#        systematicVariables.append("leadmva[2,-1.0,1.0] := diPhotonMVA().leadmva")
+#        systematicVariables.append("subleadmva[2,-1.0,1.0] := diPhotonMVA().subleadmva")
+        
     if customize.doSystematics:
         for direction in ["Up","Down"]:
             phosystlabels.append("MvaShift%s01sigma" % direction)
@@ -312,11 +322,18 @@ print "------------------------------------------------------------"
 #globalVariables.extraFloats.rho = cms.InputTag("rhoFixedGridAll")
 
 #cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags)
+
+
+
+if(customize.doFiducial):
+    fc.bookCompositeObjects(process, customize.processId, process.flashggTagSequence)
 cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags)
+
 
 # Dump an object called NoTag for untagged events in order to track QCD weights
 # Will be broken if it's done for non-central values, so turn this on only for the non-syst tag sorter
-process.flashggTagSorter.CreateNoTag = True # MUST be after tag sequence cloning
+process.flashggTagSorter.CreateNoTag = False # MUST be after tag sequence cloning
+
 
 ###### Dumper section
 
@@ -388,13 +405,6 @@ if customize.options.WeightName :
     #print process.tagsDumper.LHEEventProduct
     process.tagsDumper.LHEWeightName = cms.untracked.string(customize.options.WeightName)
 
-
-if(customize.doFiducial):
-#    if customize.processId == "Data":
-#        fc.addRecoGlobalVariables(process, process.tagsDumper)
-#    else:
-    fc.addObservables(process, process.tagsDumper, customize.processId )
-
 #tagList=[
 #["UntaggedTag",4],
 #["VBFTag",2],
@@ -461,7 +471,7 @@ for tag in tagList:
           else:
               currentVariables = []
       isBinnedOnly = (systlabel !=  "")
-      if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") ) and (systlabel ==  "") and not (customize.processId == "th_125" or customize.processId == "bbh_125" or customize.processId == "thw_125"):
+      if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance") ) and (systlabel ==  "") and not (customize.processId == "th_125" or customize.processId == "bbh_125" or customize.processId == "thw_125"):
           print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
           nPdfWeights = 60
@@ -487,7 +497,15 @@ for tag in tagList:
                            nAlphaSWeights=nAlphaSWeights,
                            nScaleWeights=nScaleWeights,
                            splitPdfByStage0Cat=customize.doHTXS
+                           unbinnedSystematics=True
                            )
+
+if(customize.doFiducial):
+#    if customize.processId == "Data":
+#        fc.addRecoGlobalVariables(process, process.tagsDumper)
+#    else:
+    fc.addObservables(process, process.tagsDumper, customize.processId )
+
 
 # Require standard diphoton trigger
 from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
@@ -589,7 +607,7 @@ if customize.doFiducial:
           nAlphaSWeights = -1
           nScaleWeights = -1
     if not customize.processId == "Data":
-        fc.addGenOnlyAnalysis(process,customize.processId,customize.acceptance,tagList,systlabels,pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights))
+        fc.addGenOnlyAnalysis(process,customize.processId,process.flashggTagSequence,customize.acceptance,tagList,systlabels,pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights))
 
 if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
 process.options.allowUnscheduled = cms.untracked.bool(True)

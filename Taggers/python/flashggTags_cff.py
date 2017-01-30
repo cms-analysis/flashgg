@@ -34,16 +34,28 @@ flashggUntagged = cms.EDProducer("FlashggUntaggedTagProducer",
                                  HTXSTags     = HTXSInputTags
 )
 
-flashggSigmaMoMpToMTag = cms.EDProducer("FlashggSigmaMpTTagProducer",
-#                                 DiPhotonTag=cms.InputTag('flashggDiPhotons'),
-                                 DiPhotonTag    = cms.InputTag('flashggPreselectedDiPhotons'),
-                                 SystLabel      = cms.string(""),
-                                 MVAResultTag   = cms.InputTag('flashggDiPhotonMVA'),
-                                 GenParticleTag = cms.InputTag( "flashggPrunedGenParticles" ),
-                                 BoundariesSigmaMoM  = cms.vdouble(0.,0.00764,0.0109,0.0288), #boundaries have to be provided including lowest and highest
-#                                 BoundariespToM      = cms.vdouble(0.,1.02,1.83,10.0), #,1.000), #boundaries have to be provided including lowest and highest
-                                 RequireScaledPtCuts = cms.bool(True)
-)
+## flashggSigmaMoMpToMTag = cms.EDProducer("FlashggSigmaMpTTagProducer",
+## #                                 DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+##                                  DiPhotonTag    = cms.InputTag('flashggPreselectedDiPhotons'),
+##                                  SystLabel      = cms.string(""),
+##                                  MVAResultTag   = cms.InputTag('flashggDiPhotonMVA'),
+##                                  GenParticleTag = cms.InputTag( "flashggPrunedGenParticles" ),
+##                                  BoundariesSigmaMoM  = cms.vdouble(0.,0.00764,0.0109,0.0288), #boundaries have to be provided including lowest and highest
+## #                                 BoundariespToM      = cms.vdouble(0.,1.02,1.83,10.0), #,1.000), #boundaries have to be provided including lowest and highest
+##                                  RequireScaledPtCuts = cms.bool(True)
+## )
+
+flashggSigmaMoMpToMTag = cms.EDProducer("FlashggSigmaMpTTagPreCleanerProducer",
+                                                  #                                 DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+                                                  DiPhotonTag    = cms.InputTag('flashggPreselectedDiPhotons'),
+                                                  SystLabel      = cms.string(""),
+                                                  MVAResultTag   = cms.InputTag('flashggDiPhotonMVA'),
+                                                  GenParticleTag = cms.InputTag( "flashggPrunedGenParticles" ),
+                                                  BoundariesSigmaMoM  = cms.vdouble(0.,0.00764,0.0109,0.0288), #boundaries have to be provided including lowest and highest
+                                                  #                                 BoundariespToM      = cms.vdouble(0.,1.02,1.83,10.0), #,1.000), #boundaries have to be provided including lowest and highest
+                                                  RequireScaledPtCuts = cms.bool(True),
+                                                  CompositeCandidateTags = cms.PSet()
+                                                  )
 
 
 
