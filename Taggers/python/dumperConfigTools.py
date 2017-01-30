@@ -342,10 +342,7 @@ def addGlobalFloats(process,globalVariables,src,variables):
         varlist[name] = expr[0]
         setattr(globalVariables.extraFloats,name,cms.PSet(src=cms.InputTag(ntproducer,name)))
         if nbins:
-#            print "vmin ",vmin
-#            print "vmax ",vmax
             if vmin is not None and vmax is not None:
-#                print "enter if vmin vamx"
                 setattr(globalVariables.extraFloats,name,cms.PSet(src=cms.InputTag(ntproducer,name),nbins=cms.int32(nbins),vmin=cms.double(vmin),vmax=cms.double(vmax)))
             elif binning:
                 setattr(globalVariables.extraFloats,name,cms.PSet(src=cms.InputTag(ntproducer,name),nbins=cms.int32(nbins),binning=cms.vdouble(binning) ) )
