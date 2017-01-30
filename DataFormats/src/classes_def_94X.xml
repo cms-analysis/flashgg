@@ -51,6 +51,7 @@
 <class name="flashgg::SigmaMpTTag" ClassVersion="0">
   <version ClassVersion="0" checksum="3974770049"/>
 </class>
+<class name="flashgg::SigmaMpTTag"/>
 <class name="std::vector<flashgg::SigmaMpTTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::SigmaMpTTag> >"/>
 
@@ -331,6 +332,7 @@
 <class name="std::vector<edm::Ptr<pat::MET> >"/>
 <class name="edm::Wrapper<std::vector<edm::Ptr<pat::MET> > >"/>
 
+
 <class name="flashgg::DiMuonCandidate" ClassVersion="10">
   <version ClassVersion="10" checksum="1852293607"/>
 </class>
@@ -367,5 +369,5 @@
 <class name="edm::Wrapper<std::vector<flashgg::TagCandidate> >"/>
 <class name="std::vector<flashgg::DiPhotonTagBase*>"/>
 <class name="std::vector<flashgg::TagTruthBase*>"/>
-
+<class name="edm::Ptr<reco::CompositeCandidate>"/>
 </lcgdict>
