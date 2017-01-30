@@ -14,6 +14,7 @@
 #include "RooDataHist.h"
 #include "RooArgSet.h"
 #include "RooRealVar.h"
+#include "RooBinning.h"
 
 #include "CommonTools/Utils/interface/TFileDirectory.h"
 
@@ -126,7 +127,7 @@ namespace flashgg {
         std::string name_;
         std::vector<std::string> names_;
         std::vector<std::string> dumpOnly_;
-        std::vector<std::tuple<float, std::shared_ptr<trait_type>, int, double, double> > variables_;
+        std::vector<std::tuple<float, std::shared_ptr<trait_type>, int, double, double, std::vector<double > > > variables_;
         std::vector<float> variables_pdfWeights_;
         std::vector<histo_info> histograms_;
 
@@ -144,6 +145,7 @@ namespace flashgg {
         std::vector<std::shared_ptr<wrapped_stepwise_functor_type> > stepwise_functors_;
         bool hbooked_;
         bool binnedOnly_;
+        bool unbinnedSystematics_;
         bool dumpPdfWeights_;
         int  nPdfWeights_;
         int  nAlphaSWeights_;
@@ -176,6 +178,10 @@ namespace flashgg {
         if( cfg.existsAs<bool >( "binnedOnly" ) ) {
             binnedOnly_ = cfg.getParameter<bool >( "binnedOnly" );
         }
+        if( cfg.existsAs<bool >( "unbinnedSystematics" ) ) {
+            unbinnedSystematics_ = cfg.getParameter<bool >( "unbinnedSystematics" );
+        }
+
         if( cfg.existsAs<bool >( "dumpPdfWeights" ) ) {
             dumpPdfWeights_ = cfg.getParameter<bool >( "dumpPdfWeights" );
             //            if ( dumpPdfWeights_ ) {
@@ -197,20 +203,29 @@ namespace flashgg {
         auto variables = cfg.getParameter<vector<edm::ParameterSet> >( "variables" );
         for( auto &var : variables ) {
             auto nbins = var.getUntrackedParameter<int>( "nbins", 0 );
-            auto vmin = var.getUntrackedParameter<double>( "vmin", numeric_limits<double>::lowest() );
-            auto vmax = var.getUntrackedParameter<double>( "vmax", numeric_limits<double>::max() );
+            //            auto vmin = var.getUntrackedParameter<double>( "vmin", numeric_limits<double>::lowest() );
+            //            auto vmax = var.getUntrackedParameter<double>( "vmax", numeric_limits<double>::max() );
+            auto vmin = var.getUntrackedParameter<double>( "vmin", -99. );
+            auto vmax = var.getUntrackedParameter<double>( "vmax", 99. );
+            auto binning = var.getUntrackedParameter<std::vector<double > >("binning", std::vector<double >());
+            for(int ib=0; ib<(int)binning.size(); ib++){
+                std::cout<<"binning at ib "<<ib<<" is "<<binning.at(ib)<<std::endl;
+            }
+            //            vector<double > binning;
             if( var.existsAs<edm::ParameterSet>( "expr" ) ) {
                 auto expr = var.getParameter<edm::ParameterSet>( "expr" );
                 auto name = var.getUntrackedParameter<string>( "name" );
                 stepwise_functors_.push_back( std::shared_ptr<wrapped_stepwise_functor_type>( new wrapped_stepwise_functor_type( new stepwise_functor_type( expr ) ) ) );
                 names_.push_back( name );
-                variables_.push_back( make_tuple( 0., stepwise_functors_.back(), nbins, vmin, vmax ) );
+                std::cout<<"pushing back var L199 with name "<<name<<", nbins "<<nbins<<", vmin "<<vmin<<", vmax "<<vmax<<std::endl;
+                variables_.push_back( make_tuple( 0., stepwise_functors_.back(), nbins, vmin, vmax, binning ) );
             } else {
                 auto expr = var.getParameter<string>( "expr" );
                 auto name = var.getUntrackedParameter<string>( "name", expr );
                 functors_.push_back( std::shared_ptr<wrapped_functor_type>( new wrapped_functor_type( new functor_type( expr ) ) ) );
                 names_.push_back( name );
-                variables_.push_back( make_tuple( 0., functors_.back(), nbins, vmin, vmax ) );
+                std::cout<<"pushing back var L206 with name "<<name<<", nbins "<<nbins<<", vmin "<<vmin<<", vmax "<<vmax<<", binning size "<<binning.size()<<std::endl;
+                variables_.push_back( make_tuple( 0., functors_.back(), nbins, vmin, vmax, binning ) );
             }
         }
 
@@ -221,24 +236,32 @@ namespace flashgg {
                 auto nbins = mva.getUntrackedParameter<int>( "nbins", 0 );
                 auto vmin = mva.getUntrackedParameter<double>( "vmin", numeric_limits<double>::lowest() );
                 auto vmax = mva.getUntrackedParameter<double>( "vmax", numeric_limits<double>::max() );
+                vector<double > binning;
                 mvas_.push_back( std::shared_ptr<wrapped_mva_type>( new wrapped_mva_type( new mva_type( mva, globalVarsDumper_ ) ) ) );
                 names_.push_back( name );
-                variables_.push_back( make_tuple( 0., mvas_.back(), nbins, vmin, vmax ) );
+                std::cout<<"pushing back var L220 with name "<<name<<", nbins "<<nbins<<", vmin "<<vmin<<", vmax "<<vmax<<std::endl;
+                variables_.push_back( make_tuple( 0., mvas_.back(), nbins, vmin, vmax, binning ) );
             }
         }
 
 
         //##########
         auto globalExtraFloatNames = globalVarsDumper_->getExtraFloatNames();
+        std::cout<<"size of extra float names "<<globalExtraFloatNames.size()<<std::endl;
         for( auto &extraFloatName : globalExtraFloatNames ) {
             //            std::cout<<"adding wrapper for extra float variable "<<extraFloatName<<std::endl; 
 //            auto name = mva.getUntrackedParameter<string>( "name" );
-            auto nbins =  100 ;
-            auto vmin =  numeric_limits<double>::lowest();
-            auto vmax =  numeric_limits<double>::max();
+
+            std::cout<<"nbins form GVD "<<globalVarsDumper_->getExtraFloatNBin(extraFloatName)<<std::endl;
+            std::cout<<"vmin form GVD "<<globalVarsDumper_->getExtraFloatVmin(extraFloatName)<<std::endl;
+            auto nbins = globalVarsDumper_->getExtraFloatNBin(extraFloatName) ;//100;
+            auto vmin =   globalVarsDumper_->getExtraFloatVmin(extraFloatName) ;//numeric_limits<double>::lowest();
+            auto vmax =   globalVarsDumper_->getExtraFloatVmax(extraFloatName) ;//numeric_limits<double>::max();   
+            auto binning = globalVarsDumper_->getExtraFloatBinning(extraFloatName);
             extraglobalvars_.push_back( std::shared_ptr<wrapped_global_var_type>( new wrapped_global_var_type( globalVarsDumper_ , extraFloatName ) ) );
             names_.push_back( extraFloatName );
-            variables_.push_back( make_tuple( 0., extraglobalvars_.back(), nbins, vmin, vmax ) );
+            std::cout<<"pushing back var L236 with name "<<extraFloatName<<", nbins "<<nbins<<", vmin "<<vmin<<", vmax "<<vmax<<std::endl;
+            variables_.push_back( make_tuple( 0., extraglobalvars_.back(), nbins, vmin, vmax, binning ) );
             //            variables_.push_back( make_tuple( 0., extraglobalvars_.back()) );
         }
         //##########
@@ -459,18 +482,41 @@ namespace flashgg {
         auto &nbins = std::get<2>( var );
         auto &vmin = std::get<3>( var );
         auto &vmax = std::get<4>( var );
-        //        std::cout << " before factory for " << name << std::endl;
+        auto &binning = std::get<5>( var );
+        std::cout<<"Booking dataset for var "<<name<<" with nbins "<<nbins<<", vmin "<<vmin<<", vmax "<<vmax<<", binning size "<<binning.size()<<std::endl;
         RooRealVar &rooVar = dynamic_cast<RooRealVar &>( *ws.factory( Form( "%s[0.]", name.c_str() ) ) );
         //        std::cout << " after factory for " << name << std::endl;
         rooVar.setConstant( false );
         if(binnedOnly_ && (nbins==0)){
-            throw cms::Exception( "Dumper Binning" ) << "One or more variable which is to be dumped in a RooDataHist has not been allocated any binning options. Please specify these in your dumper configuration using the format variable[nBins,min,max] := variable definition ";
+            //            throw cms::Exception( "Dumper Binning" ) << "One or more variable which is to be dumped in a RooDataHist has not been allocated any binning options. Please specify these in your dumper configuration using the format variable[nBins,min,max] := variable definition ";
+            nbins=1;
         }
-        if( nbins >= 0 ) { 
+        if(!unbinnedSystematics_){
+            if( nbins > 0 ) { 
+                rooVar.setBins( nbins );
+            }
+            if(nbins == -1){
+                std::cout<<"temptative setmin to "<<binning.at(0)<<std::endl;
+                rooVar.setMin( binning.at(0)  );
+                std::cout<<"temptative setmax to "<<binning.at(binning.size()-1)<<std::endl;
+                rooVar.setMax( binning.at(binning.size()-1) );
+                //            RooBinning* rooBinning = new RooBinning(int(binning.size()), &binning[0]);
+                //            rooVar.setBinning(*rooBinning);
+                RooBinning* rooBinning = new RooBinning(binning.at(0), binning.at(binning.size()-1));
+                for(int ib =1; ib< (int)binning.size()-1; ib++){
+                    rooBinning->addBoundary(binning.at(ib));
+                    rooBinning->Print();
+                }
+                rooVar.setBinning(*rooBinning);
+                rooVar.Print("v");
+            }
+        }
+        else{
             rooVar.setMin( vmin );
             rooVar.setMax( vmax );
-            rooVar.setBins( nbins );
         }
+        
+
         rooVars_.add( rooVar, true );
         rooVars_pdfWeights0.add( rooVar, true );
     }
@@ -501,12 +547,15 @@ namespace flashgg {
     rooVars_pdfWeights_.add(*ws.var( weightVar ),true);
     
     std::string dsetName = formatString( name_, replacements );
-    if( ! binnedOnly_ ) {
+    if( ! binnedOnly_ || unbinnedSystematics_) {
         RooDataSet dset( dsetName.c_str(), dsetName.c_str(), rooVars_, weightVar );
         ws.import( dset );
     } else {
+        std::cout<<"about to create roodatahist with name "<<dsetName<<std::endl;
         RooDataHist dhist(dsetName.c_str(),dsetName.c_str(),rooVars_);
+        std::cout<<"created. Now about to import into ws"<<std::endl;
         ws.import( dhist );
+        std::cout<<"imported"<<std::endl;
     }
     dataset_ = ws.data( dsetName.c_str() );
 

@@ -57,7 +57,6 @@ namespace flashgg {
         if( tags->size() > 0 ) {
             info = classifier_(tags->at(0));
             weight = tags->at(0).centralWeight();
-            /// cout << "TaggedGenDiPhotonProducer tag " << tags->at(0).categoryNumber() << " " << info.second << endl;
         }
         
         Handle<View<flashgg::GenDiPhoton> > src;
@@ -71,7 +70,6 @@ namespace flashgg {
             newdipho.setCentralWeight(weight);
             if( tags->size()>0 ) { newdipho.setTagObj(tags->ptrAt(0)); }
             diphotons->push_back(newdipho);
-            /// cout << "TaggedGenDiPhotonProducer dipho " << newdipho.categoryNumber() << " " << (int)newdipho << endl;
         }
         
         evt.put( std::move( diphotons ) );
