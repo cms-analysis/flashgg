@@ -37,5 +37,5 @@ flashggVBFDiPhoDiJetMVA = cms.EDProducer('FlashggVBFDiPhoDiJetMVAProducer',
                                          #vbfDiPhoDiJetMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVA_vbf_dijet_dipho_evenbkg_scaledwt50_maxdPhi_Gradient.weights.xml"),
                                          #vbfDiPhoDiJetMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_combinedMVA_Jan2016_rmscut_BDTG.weights.xml"),
                                          #vbfDiPhoDiJetMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_combinedMVA_76x_25_02_15_0.03_BDTG.weights.xml"),
-                                         vbfDiPhoDiJetMVAweightfile = cms.FileInPath("flashgg/Taggers/data/sklearn_combined_moriond17_v1.xml"),
+                                         vbfDiPhoDiJetMVAweightfile = cms.FileInPath("flashgg/Taggers/data/sklearn_combined_moriond17_v2.xml"),
                                          )
