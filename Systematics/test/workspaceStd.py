@@ -43,6 +43,18 @@ elesystlabels = []
 musystlabels = []
 
 from flashgg.MetaData.JobConfig import customize
+customize.options.register('tthTagsOnly',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'tthTagsOnly'
+                           )
+customize.options.register('doMuFilter',
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doMuFilter'
+                           )
 customize.options.register('doFiducial',
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -84,12 +96,16 @@ customize.options.register('dumpWorkspace',
 print "Printing defaults"
 print 'doFiducial '+str(customize.doFiducial)
 print 'acceptance '+str(customize.acceptance)
+print 'tthTagsOnly '+str(customize.tthTagsOnly)
 # import flashgg customization to check if we have signal or background
 from flashgg.MetaData.JobConfig import customize
 customize.parse()
 print "Printing options"
 print 'doFiducial '+str(customize.doFiducial)
 print 'acceptance '+str(customize.acceptance)
+print 'tthTagsOnly '+str(customize.tthTagsOnly)
+print 'doMuFilter '+str(customize.doMuFilter)
+
 
 if customize.doFiducial:
     import flashgg.Systematics.fiducialCrossSectionsCustomize as fc
@@ -133,6 +149,16 @@ if customize.doFiducial:
     process.flashggTagSequence.remove(process.flashggVHHadronicTag)
     process.flashggTagSequence.replace(process.flashggUntagged, process.flashggSigmaMoMpToMTag)
 
+if customize.tthTagsOnly:
+    process.flashggTagSequence.remove(process.flashggVBFTag)
+    process.flashggTagSequence.remove(process.flashggVHMetTag)
+    process.flashggTagSequence.remove(process.flashggWHLeptonicTag)
+    process.flashggTagSequence.remove(process.flashggZHLeptonicTag)
+    process.flashggTagSequence.remove(process.flashggVHLeptonicLooseTag)
+    process.flashggTagSequence.remove(process.flashggVHHadronicTag)
+    process.flashggTagSequence.remove(process.flashggUntagged)
+    process.flashggTagSequence.remove(process.flashggVBFMVA)
+    process.flashggTagSequence.remove(process.flashggVBFDiPhoDiJetMVA)
 
 print 'here we print the tag sequence after'
 print process.flashggTagSequence
@@ -141,7 +167,9 @@ if customize.doFiducial:
     print 'we do fiducial and we change tagsorter'
     process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggSigmaMoMpToMTag')) )
 
-
+if customize.tthTagsOnly:
+    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag')),
+        cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag')) )
 
 print "customize.processId:",customize.processId
 # load appropriate scale and smearing bins here
@@ -232,7 +260,10 @@ from flashgg.MetaData.samples_utils import SamplesManager
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
-"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170114_094103/0000/myMicroAODOutputFile_1.root"
+"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIISpring16DR80X-2_3_0-25ns_Moriond17_MiniAODv2/2_3_0/DoubleEG/RunIISpring16DR80X-2_3_0-25ns_Moriond17_MiniAODv2-2_3_0-v0-Run2016B-23Sep2016-v2/161114_162452/0000/myMicroAODOutputFile_10.root"
+#"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170114_094407/0000/myMicroAODOutputFile_19.root"
+#"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/ttHToGG_M125_13TeV_powheg_pythia8_v2/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170114_093929/0000/myMicroAODOutputFile_1.root"
+#"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170114_094103/0000/myMicroAODOutputFile_1.root"
 #"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2/2_2_0/VBFHToGG_M125_13TeV_amcatnlo_pythia8/RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2-2_2_0-v0-RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14_ext2-v1/160707_150558/0000/myMicroAODOutputFile_25.root"
 #"file:/afs/cern.ch/work/s/sethzenz/fromscratch107/CMSSW_8_0_8_patch1/src/flashgg/myMicroAODOutputFile.root"
 #"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIISpring16DR80X-2_0_0-25ns/2_0_0/VBFHToGG_M-125_13TeV_powheg_pythia8/RunIISpring16DR80X-2_0_0-25ns-2_0_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1/160524_093752/0000/myMicroAODOutputFile_1.root"
@@ -285,12 +316,18 @@ if(customize.doFiducial):
 ##["TTHLeptonicTag",0]
 #]
 
+
 if customize.doFiducial:
     tagList=[["SigmaMpTTag",3]]
+elif customize.tthTagsOnly:
+    tagList=[
+        ["TTHHadronicTag",0],
+        ["TTHLeptonicTag",0]
+        ]
 else:
     tagList=[
         ["UntaggedTag",4],
-        ["VBFTag",2],
+        ["VBFTag",3],
         ["ZHLeptonicTag",0],
         ["WHLeptonicTag",0],
         ["VHLeptonicLooseTag",0],
@@ -367,7 +404,8 @@ process.dataRequirements = cms.Sequence()
 if customize.processId == "Data":
         process.dataRequirements += process.hltHighLevel
         process.dataRequirements += process.eeBadScFilter
-        process.dataRequirements += process.noBadGlobalMuons
+        if customize.doMuFilter:
+            process.dataRequirements += process.noBadGlobalMuons
 
 # Split WH and ZH
 process.genFilter = cms.Sequence()
@@ -489,7 +527,7 @@ process.flashggTagSorter.BlindedSelectionPrintout = True
 #print >> processDumpFile, process.dumpPython()
 
 # set default options if needed
-customize.setDefault("maxEvents",300)
+customize.setDefault("maxEvents",600)
 customize.setDefault("targetLumi",1.00e+3)
 # call the customization
 customize(process)
