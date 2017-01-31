@@ -52,6 +52,7 @@
         "ttHJetToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8"                          : { "xs" : 0.5193,   "br" : 0.002266, "itype":-124300 },
         "ttHJetToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8_v2"                          : { "xs" : 0.5193,   "br" : 0.002266, "itype":-124300 },
         "ttHToGG_M125_13TeV_powheg_pythia8_v2"                                           : { "xs" : 0.5071,   "br" : 0.00227, "itype":-125300 },
+
         "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8"                          : { "xs" : 0.5071,   "br" : 0.00227, "itype":-125300 },
         "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_v2"                          : { "xs" : 0.5071,   "br" : 0.00227, "itype":-125300 },
         "ttHJetToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8"                          : { "xs" : 0.4964,   "br" : 0.00227, "itype":-126300 },

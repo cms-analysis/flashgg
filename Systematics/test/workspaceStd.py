@@ -56,7 +56,7 @@ customize.options.register('acceptance',
                            'acceptance'
                            )
 customize.options.register('doSystematics',
-                           True,
+                           False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doSystematics'
@@ -158,11 +158,20 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
     if customize.doFiducial:
         variablesToUse.extend(fc.getGenVariables(True))
         variablesToUse.extend(fc.getRecoVariables(True))
-        variablesToUse.append("genLeadGenIso := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
-        variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
-        variablesToUse.append("leadmva := diPhotonMVA().leadmva")
-        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
-
+##        variablesToUse.append("genLeadGenIso := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
+##        variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
+##        variablesToUse.append("leadmva := diPhotonMVA().leadmva")
+##        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
+#        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
+        
+    if customize.doSystematics and customize.doFiducial:
+        systematicVariables.extend(fc.getGenVariables(True))
+        systematicVariables.extend(fc.getRecoVariables(True))
+#        systematicVariables.append("genLeadGenIso[1,0.0,100.0] := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
+#        systematicVariables.append("decorrSigmarv[1,0.0,0.10] := diPhotonMVA().decorrSigmarv")
+#        systematicVariables.append("leadmva[2,-1.0,1.0] := diPhotonMVA().leadmva")
+#        systematicVariables.append("subleadmva[2,-1.0,1.0] := diPhotonMVA().subleadmva")
+        
     if customize.doSystematics:
         for direction in ["Up","Down"]:
             phosystlabels.append("MvaShift%s01sigma" % direction)
@@ -216,14 +225,14 @@ print variablesToUse
 print "------------------------------------------------------------"
 
 
-
-
 #from flashgg.Taggers.globalVariables_cff import globalVariables
 #globalVariables.extraFloats.rho = cms.InputTag("rhoFixedGridAll")
 
 #cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags)
-cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags)
 
+if(customize.doFiducial):
+    fc.bookCompositeObjects(process, customize.processId, process.flashggTagSequence)
+cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags)
 
 ###### Dumper section
 
@@ -268,11 +277,6 @@ process.tagsDumper.dumpHistos = False
 process.tagsDumper.quietRooFit = True
 process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
 
-if(customize.doFiducial):
-#    if customize.processId == "Data":
-#        fc.addRecoGlobalVariables(process, process.tagsDumper)
-#    else:
-    fc.addObservables(process, process.tagsDumper, customize.processId )
 
 #tagList=[
 #["UntaggedTag",4],
@@ -320,7 +324,7 @@ for tag in tagList:
           currentVariables = systematicVariables
       
       isBinnedOnly = (systlabel !=  "")
-      if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") ) and (systlabel ==  ""):
+      if ( customize.doPdfWeights or customize.doSystematics ) and ( customize.datasetName().count("HToGG") or customize.processId.count("h_") or customize.processId.count("vbf_")  or customize.processId.count("Acceptance") ) and (systlabel ==  ""):
           print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
           nPdfWeights = 60
@@ -344,8 +348,16 @@ for tag in tagList:
                            dumpPdfWeights=dumpPdfWeights,
                            nPdfWeights=nPdfWeights,
                            nAlphaSWeights=nAlphaSWeights,
-                           nScaleWeights=nScaleWeights
+                           nScaleWeights=nScaleWeights,
+                           unbinnedSystematics=True
                            )
+
+if(customize.doFiducial):
+#    if customize.processId == "Data":
+#        fc.addRecoGlobalVariables(process, process.tagsDumper)
+#    else:
+    fc.addObservables(process, process.tagsDumper, customize.processId )
+
 
 # Require standard diphoton trigger
 from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
@@ -421,7 +433,7 @@ if customize.doFiducial:
           nAlphaSWeights = -1
           nScaleWeights = -1
     if not customize.processId == "Data":
-        fc.addGenOnlyAnalysis(process,customize.processId,customize.acceptance,tagList,systlabels,pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights))
+        fc.addGenOnlyAnalysis(process,customize.processId,process.flashggTagSequence,customize.acceptance,tagList,systlabels,pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights))
 
 if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
 process.options.allowUnscheduled = cms.untracked.bool(True)
