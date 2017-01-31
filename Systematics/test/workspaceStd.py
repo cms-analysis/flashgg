@@ -238,10 +238,10 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
     if customize.doFiducial:
         variablesToUse.extend(fc.getGenVariables(True))
         variablesToUse.extend(fc.getRecoVariables(True))
-        variablesToUse.append("genLeadGenIso := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
-        variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
-        variablesToUse.append("leadmva := diPhotonMVA().leadmva")
-        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
+##        variablesToUse.append("genLeadGenIso := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
+##        variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
+##        variablesToUse.append("leadmva := diPhotonMVA().leadmva")
+##        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
 #        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
         
     if customize.doSystematics and customize.doFiducial:
