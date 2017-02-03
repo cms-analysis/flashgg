@@ -113,7 +113,8 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                # optimisation of Moriond 17 : 3 VBF categories
                                # These boundaries are recalculated after fixing
                                # the problem with the shape of the BDT output
-                               Boundaries=cms.vdouble(0.215,  0.532,  0.865),
+#                               Boundaries=cms.vdouble(0.215,  0.532,  0.865),
+                               Boundaries=cms.vdouble(0.66633615,  0.89334188,  0.95919197),
                                SetArbitraryNonGoldMC = cms.bool(False),
                                DropNonGoldData = cms.bool(False),
                                RequireVBFPreselection = cms.bool(True),
