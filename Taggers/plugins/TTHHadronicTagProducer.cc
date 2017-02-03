@@ -196,7 +196,7 @@ namespace flashgg {
 
         if (_MVAMethod != ""){
             TThMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
-            TThMva_->AddVariable( "nJetsTTH", &nJets_);
+            TThMva_->AddVariable( "nJets", &nJets_);
             TThMva_->AddVariable( "maxBTagVal",&maxBTagVal_);
             TThMva_->AddVariable( "secondMaxBTagVal", &secondMaxBTagVal_);
             TThMva_->AddVariable( "leadJetPt", &leadJetPt_);
