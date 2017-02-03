@@ -304,13 +304,13 @@ flashggVHMetTag = cms.EDProducer("FlashggVHMetTagProducer",
                                  leadPhoOverMassThreshold = cms.double(0.375),
                                  subleadPhoOverMassThreshold = cms.double(0.25),
                                  metPtThreshold = cms.double(70),
-                                 dPhiDiphotonMetThreshold = cms.double(2.1),
-                                 dPhiJetMetThreshold = cms.double(2.7),
+                                 dPhiDiphotonMetThreshold = cms.double(0.0),
+                                 dPhiJetMetThreshold = cms.double(999),
                                  jetPtThreshold = cms.double(50.),
                                  jetEtaThreshold= cms.double(2.4),
                                  deltaRPhoLeadJet = cms.double(0.5),
                                  deltaRPhoSubLeadJet = cms.double(0.5),
-                                 diphoMVAThreshold= cms.double(0.0),
+                                 diphoMVAThreshold= cms.double(0.2),
                                  phoIdMVAThreshold= cms.double(-0.9)
                                  #Boundaries=cms.vdouble(0.21,0.6,0.81)                                                                            
 )
