@@ -231,7 +231,10 @@ namespace flashgg {
             if( idmva1 <= phoIdMVAThreshold_ || idmva2 <= phoIdMVAThreshold_ ) { continue; }
 
             if( mvares->result < diphoMVAThreshold_ ) { continue; }
-
+            
+            // cut on pt_gg / m_gg
+            if( dipho->pt() / dipho->mass() < 1. )   {continue;}
+            
             std::vector<edm::Ptr<flashgg::Jet> > goodJets;
 
             unsigned int jetCollectionIndex = diPhotons->ptrAt( diphoIndex )->jetCollectionIndex();
@@ -260,7 +263,7 @@ namespace flashgg {
             
             // *********************************************************************
             //            std::cout << "-----------------------------------------------------number of jets: " << goodJets.size() << std::endl;
-            if( goodJets.size() <2 ) { continue; }
+            if( goodJets.size() < 2 ) { continue; }
 
             TLorentzVector jetl, jets, dijet, phol, phos, diphoton, vstar;
 

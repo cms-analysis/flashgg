@@ -108,8 +108,11 @@ echo "Setting up QGL..."
 git cms-addpkg RecoJets/JetProducers
 git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-8_0_20
 
-echo "grabbing MET topic updates..."
-git cms-merge-topic cms-met:METRecipe_8020
+echo "grabbing MET topic updates and MET filters..."
+git remote add metCMS https://github.com/cms-met/cmssw
+git fetch --quiet metCMS
+GIT_MERGE_AUTOEDIT=no git merge 7a07643
+git remote remove metCMS
 
 # NO LONGER NEEDED BECAUSE THE BRANCH ABOVE WAS UPDATED (TBC)
 #echo "Cherry-pick for MET JES, including adding and removing met repo"
@@ -117,9 +120,6 @@ git cms-merge-topic cms-met:METRecipe_8020
 #git fetch --quiet metCMS
 #git cherry-pick 246455ec0b031e54df70e2983d30243b058bf45a
 #git remote remove metCMS
-
-echo "Setting up MET filters..."
-git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate
 
 echo "Setting up Bad muon filter..."
 git cms-merge-topic gpetruc:badMuonFilters_80X_v2
