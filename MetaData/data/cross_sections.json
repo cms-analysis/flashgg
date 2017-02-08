@@ -125,7 +125,9 @@
         "GJets_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8" : { "xs" : 9110.0,  "itype" : 5 },
         "GJets_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8" : { "xs" : 2280.0,  "itype" : 6 },
         "GJets_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8" : { "xs" :273.0 , "itype" : 7 },
-        "GJets_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8" : { "xs" :94.5 , "itype" : 8 }
-
+        "GJets_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8" : { "xs" :94.5 , "itype" : 8 },
+        "TTGG_0Jets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8" : { "xs" :0.01731 },
+        "TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8" : { "xs" :3.819 },
+        "TGJets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8" : { "xs" : 2.967 }
 
 }
