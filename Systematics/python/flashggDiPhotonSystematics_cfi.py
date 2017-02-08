@@ -13,7 +13,7 @@ mvaShiftBins = cms.PSet(
 
 # from Arnab via Martina 25/07/2016
 preselBins = cms.PSet(
-    variables = cms.vstring("abs(superCluster.eta)","r9"),
+    variables = cms.vstring("abs(superCluster.eta)","full5x5_r9"),
     bins = cms.VPSet(
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.0 ) , upBounds = cms.vdouble( 1.5, 0.85 ) , values = cms.vdouble( 0.9996 ) , uncertainties = cms.vdouble( 0.0140 )  ) ,
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ), upBounds = cms.vdouble( 1.5, 999. ) , values = cms.vdouble( 1.008 ) , uncertainties = cms.vdouble( 0.0203 )  ) ,
@@ -24,7 +24,7 @@ preselBins = cms.PSet(
 
 # slide 7 of https://indico.cern.ch/event/535800/contributions/2213640/attachments/1295950/1969805/201607ZmmgWith2016data_Update12p9perfb.pdf from the update with 12.9/fb and shower shape correction file v4
 electronVetoBins = cms.PSet(
-    variables = cms.vstring("abs(superCluster.eta)","r9"),
+    variables = cms.vstring("abs(superCluster.eta)","full5x5_r9"),
     bins = cms.VPSet(
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00 ) , upBounds = cms.vdouble( 1.5, 0.85 ) , values = cms.vdouble( 0.9924 ) , uncertainties = cms.vdouble( 0.0045 )  ) ,
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ) , upBounds = cms.vdouble( 1.5, 999. ) , values = cms.vdouble( 0.9960 ) , uncertainties = cms.vdouble( 0.0010 )  ) ,
@@ -34,7 +34,7 @@ electronVetoBins = cms.PSet(
     )
 
 FNUFBins = cms.PSet(
-    variables = cms.vstring("abs(superCluster.eta)","r9"),
+    variables = cms.vstring("abs(superCluster.eta)","full5x5_r9"),
     bins = cms.VPSet(
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00 ) , upBounds = cms.vdouble( 1.5, 0.94 ) , values = cms.vdouble( 0. ) , uncertainties = cms.vdouble(  0.0007 )  ) ,
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.94 ) , upBounds = cms.vdouble( 1.5, 999. ) , values = cms.vdouble( 0. ) , uncertainties = cms.vdouble( -0.0007 )  ) ,
@@ -44,7 +44,7 @@ FNUFBins = cms.PSet(
     )
 
 showerShapeBins = cms.PSet(
-    variables = cms.vstring("abs(superCluster.eta)","r9"),
+    variables = cms.vstring("abs(superCluster.eta)","full5x5_r9"),
     bins = cms.VPSet(
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00 ) , upBounds = cms.vdouble( 1.5, 0.94 ) , values = cms.vdouble( 0. ) , uncertainties = cms.vdouble( 0.00023 )  ) ,
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.94 ) , upBounds = cms.vdouble( 1.5, 999. ) , values = cms.vdouble( 0. ) , uncertainties = cms.vdouble( 0.00024 )  ) ,
@@ -57,7 +57,7 @@ showerShapeBins = cms.PSet(
 #for full 2016 rereco B-G + prompt H dataset.  Trigger scale factors for use without HLT applied in MC
 
 leadTriggerScaleBins = cms.PSet(
-    variables = cms.vstring("r9","abs(superCluster.eta)","pt"),
+    variables = cms.vstring("full5x5_r9","abs(superCluster.eta)","pt"),
     bins = cms.VPSet(
         cms.PSet(lowBounds = cms.vdouble(0.0,0,0), upBounds = cms.vdouble(0.54,1.5,33.3333),    values = cms.vdouble(0.7368125), uncertainties = cms.vdouble(0.005934485,0.005934485)),
         cms.PSet(lowBounds = cms.vdouble(0.0,0,33.3333), upBounds = cms.vdouble(0.54,1.5,35),   values = cms.vdouble(0.803485),  uncertainties = cms.vdouble(0.006875321,0.006875321)),
@@ -121,7 +121,7 @@ leadTriggerScaleBins = cms.PSet(
 
 
 subleadTriggerScaleBins = cms.PSet(
-    variables = cms.vstring("r9","abs(superCluster.eta)","pt"),
+    variables = cms.vstring("full5x5_r9","abs(superCluster.eta)","pt"),
     bins = cms.VPSet(
         cms.PSet(lowBounds = cms.vdouble(0.0,0,0), upBounds = cms.vdouble(0.54,1.5,22.5),      values = cms.vdouble(0.7866918), uncertainties = cms.vdouble(0.01254866,0.01254866)),
         cms.PSet(lowBounds = cms.vdouble(0.0,0,22.5), upBounds = cms.vdouble(0.54,1.5,25),     values = cms.vdouble(0.8080705), uncertainties = cms.vdouble(0.01071845,0.01071845)),
@@ -210,7 +210,7 @@ subleadTriggerScaleBins = cms.PSet(
 
 # from Arnab via Martina 24/07/2016                                                                                                                               
 looseMvaBins = cms.PSet(
-    variables = cms.vstring("abs(superCluster.eta)","r9"),
+    variables = cms.vstring("abs(superCluster.eta)","full5x5_r9"),
     bins = cms.VPSet(
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.0  ) , upBounds = cms.vdouble( 1.5, 0.85  ) , values = cms.vdouble( 0.9932 ) , uncertainties = cms.vdouble( 0.0008 )  ) ,
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ) , upBounds = cms.vdouble( 1.5, 999.0 ) , values = cms.vdouble( 0.9992 ) , uncertainties = cms.vdouble( 0.0008 )  ) ,
@@ -267,7 +267,7 @@ RVBins = cms.PSet(
 # https://twiki.cern.ch/twiki/bin/viewauth/CMS/HggLegacySystematicUncertainties#Upstream_material_electron_to_ph
 # NB these are comparable to other scale uncertainties
 materialBinsRun1 = cms.PSet(
-    variables = cms.vstring("abs(superCluster.eta)","r9"),
+    variables = cms.vstring("abs(superCluster.eta)","full5x5_r9"),
     bins = cms.VPSet(
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.0  ), upBounds = cms.vdouble( 0.8, 0.94  ), values = cms.vdouble( 0. ), uncertainties = cms.vdouble( 0.00035 ) ),
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.94 ), upBounds = cms.vdouble( 0.8, 999.0 ), values = cms.vdouble( 0. ), uncertainties = cms.vdouble( 0.00033 ) ),
@@ -282,7 +282,7 @@ materialBinsRun1 = cms.PSet(
     )
 
 materialBinsICHEP = cms.PSet(
-    variables = cms.vstring("abs(superCluster.eta)","r9"),
+    variables = cms.vstring("abs(superCluster.eta)","full5x5_r9"),
     bins = cms.VPSet(
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.0 ), upBounds = cms.vdouble( 1.5, 0.94 ), values = cms.vdouble( 0. ) , uncertainties = cms.vdouble( 0.00070 ) ),
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.94 ), upBounds = cms.vdouble( 1.5, 999. ), values = cms.vdouble( 0. ), uncertainties = cms.vdouble( 0.00036 ) ),
@@ -310,7 +310,7 @@ MCScaleHighR9EB = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
           Label = cms.string("MCScaleHighR9EB"),
           NSigmas = cms.vint32(-1,1),
-          OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)<1.5"),
+          OverallRange = cms.string("full5x5_r9>0.94&&abs(superCluster.eta)<1.5"),
           BinList = photonScaleUncertBins,
           ApplyCentralValue = cms.bool(False),
           Debug = cms.untracked.bool(False)
@@ -320,7 +320,7 @@ MCScaleLowR9EB = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
           Label = cms.string("MCScaleLowR9EB"),
           NSigmas = cms.vint32(-1,1),
-          OverallRange = cms.string("r9<0.94&&abs(superCluster.eta)<1.5"),
+          OverallRange = cms.string("full5x5_r9<0.94&&abs(superCluster.eta)<1.5"),
           BinList = photonScaleUncertBins,
           ApplyCentralValue = cms.bool(False),
           Debug = cms.untracked.bool(False)
@@ -330,7 +330,7 @@ MCScaleHighR9EE = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
           Label = cms.string("MCScaleHighR9EE"),
           NSigmas = cms.vint32(-1,1),
-          OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)>=1.5"),
+          OverallRange = cms.string("full5x5_r9>0.94&&abs(superCluster.eta)>=1.5"),
           BinList = photonScaleUncertBins,
           ApplyCentralValue = cms.bool(False),
           Debug = cms.untracked.bool(False)
@@ -340,7 +340,7 @@ MCScaleLowR9EE = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
           Label = cms.string("MCScaleLowR9EE"),
           NSigmas = cms.vint32(-1,1),
-          OverallRange = cms.string("r9<0.94&&abs(superCluster.eta)>=1.5"),
+          OverallRange = cms.string("full5x5_r9<0.94&&abs(superCluster.eta)>=1.5"),
           BinList = photonScaleUncertBins,
           ApplyCentralValue = cms.bool(False),
           Debug = cms.untracked.bool(False)
@@ -390,7 +390,7 @@ ShowerShapeHighR9EB = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScal
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
           Label = cms.string("ShowerShapeHighR9EB"),
           NSigmas = cms.vint32(-1,1),
-          OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)<1.5"),
+          OverallRange = cms.string("full5x5_r9>0.94&&abs(superCluster.eta)<1.5"),
           BinList = showerShapeBins,
           ApplyCentralValue = cms.bool(False),
           Debug = cms.untracked.bool(False)
@@ -400,7 +400,7 @@ ShowerShapeHighR9EE = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScal
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
           Label = cms.string("ShowerShapeHighR9EE"),
           NSigmas = cms.vint32(-1,1),
-          OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)>=1.5"),
+          OverallRange = cms.string("full5x5_r9>0.94&&abs(superCluster.eta)>=1.5"),
           BinList = showerShapeBins,
           ApplyCentralValue = cms.bool(False),
           Debug = cms.untracked.bool(False)
@@ -410,7 +410,7 @@ ShowerShapeLowR9EB = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
           Label = cms.string("ShowerShapeLowR9EB"),
           NSigmas = cms.vint32(-1,1),
-          OverallRange = cms.string("r9<=0.94&&abs(superCluster.eta)<1.5"),
+          OverallRange = cms.string("full5x5_r9<=0.94&&abs(superCluster.eta)<1.5"),
           BinList = showerShapeBins,
           ApplyCentralValue = cms.bool(False),
           Debug = cms.untracked.bool(False)
@@ -420,7 +420,7 @@ ShowerShapeLowR9EE = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
           Label = cms.string("ShowerShapeLowR9EE"),
           NSigmas = cms.vint32(-1,1),
-          OverallRange = cms.string("r9<=0.94&&abs(superCluster.eta)>=1.5"),
+          OverallRange = cms.string("full5x5_r9<=0.94&&abs(superCluster.eta)>=1.5"),
           BinList = showerShapeBins,
           ApplyCentralValue = cms.bool(False),
           Debug = cms.untracked.bool(False)
@@ -431,7 +431,7 @@ MCSmearHighR9EE = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearCon
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
           Label = cms.string("MCSmearHighR9EE"),
           NSigmas = cms.vint32(-1,1),
-          OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)>=1.5"),
+          OverallRange = cms.string("full5x5_r9>0.94&&abs(superCluster.eta)>=1.5"),
           BinList = photonSmearBins,
           # has to match the labels embedded in the photon object as
           # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
@@ -446,7 +446,7 @@ MCSmearLowR9EE = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearCons
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
           Label = cms.string("MCSmearLowR9EE"),
           NSigmas = cms.vint32(-1,1),
-          OverallRange = cms.string("r9<0.94&&abs(superCluster.eta)>=1.5"),
+          OverallRange = cms.string("full5x5_r9<0.94&&abs(superCluster.eta)>=1.5"),
           BinList = photonSmearBins,
           # has to match the labels embedded in the photon object as
           # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
@@ -461,7 +461,7 @@ MCSmearHighR9EB = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearCon
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
           Label = cms.string("MCSmearHighR9EB"),
           NSigmas = cms.vint32(-1,1),
-          OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)<1.5"),
+          OverallRange = cms.string("full5x5_r9>0.94&&abs(superCluster.eta)<1.5"),
           BinList = photonSmearBins,
           # has to match the labels embedded in the photon object as
           # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
@@ -476,7 +476,7 @@ MCSmearLowR9EB = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmearCons
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
           Label = cms.string("MCSmearLowR9EB"),
           NSigmas = cms.vint32(-1,1),
-          OverallRange = cms.string("r9<=0.94&&abs(superCluster.eta)<1.5"),
+          OverallRange = cms.string("full5x5_r9<=0.94&&abs(superCluster.eta)<1.5"),
           BinList = photonSmearBins,
           # has to match the labels embedded in the photon object as
           # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
@@ -591,7 +591,7 @@ MCSmearHighR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmea
          CorrectionFile = scalesAndSmearingsPrefix,
          NSigmas = cms.PSet( firstVar = cms.vint32(1,-1,0,0),
                             secondVar = cms.vint32(0,0,1,-1)),
-         OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)>=1.5"),
+         OverallRange = cms.string("full5x5_r9>0.94&&abs(superCluster.eta)>=1.5"),
          BinList = emptyBins,
          # has to match the labels embedded in the photon object as
          # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
@@ -610,7 +610,7 @@ MCSmearLowR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmear
          CorrectionFile = scalesAndSmearingsPrefix,
          NSigmas = cms.PSet( firstVar = cms.vint32(1,-1,0,0),
                             secondVar = cms.vint32(0,0,1,-1)),
-         OverallRange = cms.string("r9<=0.94&&abs(superCluster.eta)>=1.5"),
+         OverallRange = cms.string("full5x5_r9<=0.94&&abs(superCluster.eta)>=1.5"),
          BinList = emptyBins,
          # has to match the labels embedded in the photon object as
          # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
@@ -629,7 +629,7 @@ MCSmearHighR9EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmea
          CorrectionFile = scalesAndSmearingsPrefix,
          NSigmas = cms.PSet( firstVar = cms.vint32(1,-1,0,0),
                                                                                                   secondVar = cms.vint32(0,0,1,-1)),
-         OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)<1.5"),
+         OverallRange = cms.string("full5x5_r9>0.94&&abs(superCluster.eta)<1.5"),
          BinList = emptyBins,
          # has to match the labels embedded in the photon object as
          # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
@@ -648,7 +648,7 @@ MCSmearLowR9EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmear
          CorrectionFile = scalesAndSmearingsPrefix,
          NSigmas = cms.PSet( firstVar = cms.vint32(1,-1,0,0),
                             secondVar = cms.vint32(0,0,1,-1)),
-         OverallRange = cms.string("r9<=0.94&&abs(superCluster.eta)<1.5"),
+         OverallRange = cms.string("full5x5_r9<=0.94&&abs(superCluster.eta)<1.5"),
          BinList = emptyBins,
          # has to match the labels embedded in the photon object as
          # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
@@ -663,7 +663,7 @@ MCScaleHighR9EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScal
          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
          Label = cms.string("MCScaleHighR9EB"),
          NSigmas = cms.vint32(-1,1),
-         OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)<1.5"),
+         OverallRange = cms.string("full5x5_r9>0.94&&abs(superCluster.eta)<1.5"),
          BinList = emptyBins,
          CorrectionFile = scalesAndSmearingsPrefix,
          ApplyCentralValue = cms.bool(False),
@@ -675,7 +675,7 @@ MCScaleLowR9EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale
          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
          Label = cms.string("MCScaleLowR9EB"),
          NSigmas = cms.vint32(-1,1),
-         OverallRange = cms.string("r9<0.94&&abs(superCluster.eta)<1.5"),
+         OverallRange = cms.string("full5x5_r9<0.94&&abs(superCluster.eta)<1.5"),
          BinList = emptyBins,
          CorrectionFile = scalesAndSmearingsPrefix,
          ApplyCentralValue = cms.bool(False),
@@ -687,7 +687,7 @@ MCScaleHighR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScal
          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
          Label = cms.string("MCScaleHighR9EE"),
          NSigmas = cms.vint32(-1,1),
-         OverallRange = cms.string("r9>0.94&&abs(superCluster.eta)>=1.5"),
+         OverallRange = cms.string("full5x5_r9>0.94&&abs(superCluster.eta)>=1.5"),
          BinList = emptyBins,
          CorrectionFile = scalesAndSmearingsPrefix,
          ApplyCentralValue = cms.bool(False),
@@ -699,7 +699,7 @@ MCScaleLowR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale
          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
          Label = cms.string("MCScaleLowR9EE"),
          NSigmas = cms.vint32(-1,1),
-         OverallRange = cms.string("r9<0.94&&abs(superCluster.eta)>=1.5"),
+         OverallRange = cms.string("full5x5_r9<0.94&&abs(superCluster.eta)>=1.5"),
          BinList = emptyBins,
          CorrectionFile = scalesAndSmearingsPrefix,
          ApplyCentralValue = cms.bool(False),
