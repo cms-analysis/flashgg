@@ -140,7 +140,6 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            BinList = bTagEffBins,
 						 	   bTag = cms.string(flashggBTag),
 						 	   bDiscriminator = bDiscriminator80XReReco,#bDiscriminator76X
-                                                           bTagReshapeSystOption = cms.int32(1),#For changing the source of uncertainty
                                                            Debug = cms.untracked.bool(False),
                                                            ApplyCentralValue = cms.bool(True)
                                                            ),
@@ -151,6 +150,7 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            BinList = bTagEffBins,
                                                            bTag = cms.string(flashggBTag),
                                                            bDiscriminator = bDiscriminator80XReReco,#bDiscriminator76X,
+                                                           bTagReshapeSystOption = cms.int32(1),#For changing the source of uncertainty
                                                            Debug = cms.untracked.bool(False),
                                                            ApplyCentralValue = cms.bool(True)
                                                            ),
