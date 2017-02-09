@@ -5,6 +5,7 @@
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 #include "flashgg/DataFormats/interface/WeightedObject.h"
+#include "FWCore/Utilities/interface/EDMException.h"
 
 #include <map>
 #include <string>
@@ -32,6 +33,9 @@ namespace flashgg {
         float egChargedHadronIso() const {return  reco::Photon::chargedHadronIso();}
         float egNeutralHadronIso() const {return  reco::Photon::neutralHadronIso();}
         float egPhotonIso() const {return  reco::Photon::photonIso();}
+
+        float r9() const { throw cms::Exception("Ambiguous R9") << " Please call flashgg::Photon::old_r9 or flashgg::Photon::full5x5_r9"; return -1.; };
+        float old_r9() const { return reco::Photon::r9(); }
 
         void setSipip( float val ) {sipip_ = val;};
         void setSieip( float val ) {sieip_ = val;};
