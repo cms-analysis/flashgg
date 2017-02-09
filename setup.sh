@@ -137,10 +137,7 @@ echo "EGM Pho ID recipe, Summer16"
 git cms-merge-topic ikrav:egm_id_80X_v3_photons
 
 echo "copy databases for local running (consistency with crab)"
-cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Fall15_25nsV2_*.db $CMSSW_BASE/src/flashgg
-cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV3*.db $CMSSW_BASE/src/flashgg
-cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV6*.db $CMSSW_BASE/src/flashgg
-cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV6*.db $CMSSW_BASE/src/flashgg/Systematics/data/JEC
+cp $CMSSW_BASE/src/flashgg/Systematics/data/JEC/Summer16_23Sep2016*db $CMSSW_BASE/src/flashgg/
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_80X.db $CMSSW_BASE/src/flashgg
 
 echo "copy smearing files stored in flashgg into egamma tools"
