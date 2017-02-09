@@ -153,6 +153,8 @@ cp $CMSSW_BASE/src/flashgg/Systematics/data/80X_ichepV2_2016_pho_s* $CMSSW_BASE/
 cp $CMSSW_BASE/src/flashgg/Systematics/data/Winter_2016_reReco_v1_ele_scales.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 cp $CMSSW_BASE/src/flashgg/Systematics/data/Winter_2016_reReco_v1_ele_smearings.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 
+mkdir -p $CMSSW_BASE/src/RecoEgamma/PhotonIdentification/data/Spring16
+cp $CMSSW_BASE/src/flashgg/Taggers/data/effAreaPhotons_cone03_pfPhotons_90percentBased.txt $CMSSW_BASE/src/RecoEgamma/PhotonIdentification/data/Spring16
 
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit
