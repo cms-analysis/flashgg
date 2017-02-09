@@ -104,37 +104,28 @@ fi
 
 cd $CMSSW_BASE/src
 
-echo "Setting up QGL..."
-git cms-addpkg RecoJets/JetProducers
-git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-8_0_20
+echo "EGM Pho ID recipe, Summer16"
+git cms-merge-topic ikrav:egm_id_80X_v3_photons
 
 echo "grabbing MET topic updates..."
 git cms-merge-topic cms-met:METRecipe_8020
 
-echo "Setting up Bad muon filter..."
-git cms-merge-topic gpetruc:badMuonFilters_80X_v2
+echo "Setting up QGL..."
+git cms-addpkg RecoJets/JetProducers
+git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-8_0_26
 
 echo "Setting up TnP tools..."
-git cms-merge-topic -u sethzenz:for-flashgg-egm_tnp-8_0_20
+git cms-merge-topic -u sethzenz:for-flashgg-egm_tnp-8_0_26
 
 echo "Setting up misc egm and weight stuff..."
-git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-weights-8_0_20
+git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-weights-8_0_26
 
 echo "Setting up Higgs Simplified Template Cross Sections..."
-git cms-merge-topic -u sethzenz:rivet_hepmc
+git cms-merge-topic -u sethzenz:rivet_hepmc-8_0_26
 
 echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
 git cms-addpkg FWCore/GuiBrowsers
-git cms-merge-topic -u sethzenz:for-flashgg-toolbase-8_0_20
-
-echo "Regression recipe, 15 January 2016"
-git cms-merge-topic rafaellopesdesa:Regression80XEgammaAnalysis_v2
-
-echo "EleID recipe, Summer16"
-git cms-merge-topic ikrav:egm_id_80X_v2
-
-echo "EGM Pho ID recipe, Summer16"
-git cms-merge-topic ikrav:egm_id_80X_v3_photons
+git cms-merge-topic -u sethzenz:for-flashgg-toolbase-8_0_26
 
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/Systematics/data/JEC/Summer16_23Sep2016*db $CMSSW_BASE/src/flashgg/
@@ -154,5 +145,5 @@ ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_
 
 echo
 echo "Done with setup script! You still need to build!"
-echo "After building, run afterbuild_setup.sh"
+# echo "After building, run afterbuild_setup.sh"
 echo
