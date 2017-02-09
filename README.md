@@ -10,13 +10,22 @@ Before you start, **please take note** of these warnings and comments:
 Get everything you need, starting from a clean area:
 
  ```
- cmsrel CMSSW_8_0_25
- cd CMSSW_8_0_25/src
+ cmsrel CMSSW_8_0_26_patch1
+ cd CMSSW_8_0_26_patch1/src
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src 
  git clone https://github.com/cms-analysis/flashgg flashgg
+ ```
+
+Now you have a choice, between this that gives simple recipes for post-uAOD processing:
+ ```
  source flashgg/setup.sh
+ ```
+
+And this that lets you run uAOD also:
+ ```
+ source setup_includingMicroAOD.sh
  ```
 
 If everything now looks reasonable, you can build:
@@ -24,7 +33,7 @@ If everything now looks reasonable, you can build:
  cd $CMSSW_BASE/src
  scram b -j 9
  ```
-Then after building there is one new step:
+If you are using the microAOD recipe then you should now do:
  ```
  source flashgg/afterbuild_setup.sh
  ```
