@@ -108,9 +108,8 @@ echo "Setting up QGL..."
 git cms-addpkg RecoJets/JetProducers
 git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-8_0_26
 
-# uAOD only
-#echo "grabbing MET topic updates..."
-#git cms-merge-topic cms-met:METRecipe_8020
+echo "grabbing MET topic updates..."
+git cms-merge-topic cms-met:METRecipe_8020
 
 echo "Setting up Bad muon filter..."
 git cms-merge-topic gpetruc:badMuonFilters_80X_v2
@@ -128,17 +127,15 @@ echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
 git cms-addpkg FWCore/GuiBrowsers
 git cms-merge-topic -u sethzenz:for-flashgg-toolbase-8_0_26
 
-# uAOD only
+# MERGED IN?  To check
 #echo "Regression recipe, 15 January 2016"
 #git cms-merge-topic rafaellopesdesa:Regression80XEgammaAnalysis_v2
 
-# uAOD only
-#echo "EleID recipe, Summer16"
-#git cms-merge-topic ikrav:egm_id_80X_v2
+echo "EleID recipe, Summer16"
+git cms-merge-topic ikrav:egm_id_80X_v2
 
-# uAOD only
-#echo "EGM Pho ID recipe, Summer16"
-#git cms-merge-topic ikrav:egm_id_80X_v3_photons
+echo "EGM Pho ID recipe, Summer16"
+git cms-merge-topic ikrav:egm_id_80X_v3_photons
 
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/Systematics/data/JEC/Summer16_23Sep2016*db $CMSSW_BASE/src/flashgg/
@@ -158,4 +155,5 @@ ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_
 
 echo
 echo "Done with setup script! You still need to build!"
+echo "After building, run afterbuild_setup.sh"
 echo
