@@ -10,6 +10,7 @@ from CondCore.DBCommon.CondDBSetup_cfi import *
 import os
 
 flashggBTag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
+flashggBTagsToStore = [ flashggBTag , 'pfCombinedMVAV2BJetTags']
 maxJetCollections = 8
 #qgDatabaseVersion = 'v1' # check https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
 qgDatabaseVersion = '80X'
@@ -83,7 +84,7 @@ def addFlashggPFCHSJets(process,
     pvSource       = cms.InputTag('offlineSlimmedPrimaryVertices'),
     pfCandidates   = cms.InputTag('packedPFCandidates'),
     svSource       = cms.InputTag('slimmedSecondaryVertices'),
-    btagDiscriminators = [ flashggBTag ],
+    btagDiscriminators = flashggBTagsToStore,
     jetCorrections = ('AK4PFchs', JECs, 'None'),
     genJetCollection = cms.InputTag('slimmedGenJets'),
     genParticles     = cms.InputTag('prunedGenParticles'),
@@ -198,7 +199,7 @@ def addFlashggPuppiJets(process,
     pvSource           = cms.InputTag('offlineSlimmedPrimaryVertices'),
     pfCandidates       = cms.InputTag('packedPFCandidates'),
     svSource           = cms.InputTag('slimmedSecondaryVertices'),
-    btagDiscriminators = [ flashggBTag ],
+    btagDiscriminators = flashggBTagsToStore,
     jetCorrections     = ('AK4PFPuppi',['L1FastJet',  'L2Relative', 'L3Absolute'], 'None'),
     genJetCollection   = cms.InputTag('slimmedGenJets'),
     genParticles       = cms.InputTag('prunedGenParticles'),
