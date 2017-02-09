@@ -112,8 +112,9 @@ git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-8_0_26
 #echo "grabbing MET topic updates..."
 #git cms-merge-topic cms-met:METRecipe_8020
 
-echo "Setting up Bad muon filter..."
-git cms-merge-topic gpetruc:badMuonFilters_80X_v2
+echo "Fixing typo in Bad muon filter..."
+git cms-addpkg RecoMET/METFilters
+git cms-merge-topic -u sethzenz:for-flashgg-muonFilter-fix-typo-8_0_26
 
 echo "Setting up TnP tools..."
 git cms-merge-topic -u sethzenz:for-flashgg-egm_tnp-8_0_20
