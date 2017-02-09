@@ -108,11 +108,28 @@ echo "Setting up QGL..."
 git cms-addpkg RecoJets/JetProducers
 git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-8_0_20
 
+#----------
 echo "grabbing MET topic updates and MET filters..."
+
+ORIGBRANCH=`git rev-parse --abbrev-ref HEAD`
+
 git remote add metCMS https://github.com/cms-met/cmssw
 git fetch --quiet metCMS
+git checkout -b merge-attempt2
+
+# add the necessary directories to .git/info/sparse-checkout
+git cms-sparse-checkout merge-attempt2 7a07643
+
+# not sure why we need this in addition to git cms-sparse-checkout
 GIT_MERGE_AUTOEDIT=no git merge 7a07643
+
+git checkout $ORIGBRANCH
+git merge merge-attempt2
+git branch -D merge-attempt2
+
 git remote remove metCMS
+
+#----------
 
 # NO LONGER NEEDED BECAUSE THE BRANCH ABOVE WAS UPDATED (TBC)
 #echo "Cherry-pick for MET JES, including adding and removing met repo"
