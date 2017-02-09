@@ -221,7 +221,7 @@ class MicroAODCustomize(object):
         modules = process.flashggMicroAODGenSequence.moduleNames()
         from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
         runMETs(process,False) #!isMC
-        if "2016G" in customize.datasetName:
+        if "2016G" in customize.datasetName or "2016H" in customize.datasetName:
             from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_Data_G_80X
             setMetCorr(process,multPhiCorr_Data_G_80X)
         else:    
