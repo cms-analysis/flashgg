@@ -13,6 +13,7 @@ from fnmatch import fnmatch
 import commands
 
 import re
+import glob
 
 # -------------------------------------------------------------------------------
 import pwd
@@ -47,7 +48,7 @@ class SamplesManager(object):
                  catalog,
                  cross_sections=["$CMSSW_BASE/src/flashgg/MetaData/data/cross_sections.json"],
                  dbs_instance="prod/phys03",
-                 queue=None, maxThreads=200,force=False,doContinue=False
+                 queue=None, maxThreads=200,force=False,doContinue=False,maxEntriesPerFile=1000,
                  ):
         """
         Constructur:
@@ -61,8 +62,21 @@ class SamplesManager(object):
         for xsecFile in cross_sections:
             fname = shell_expand(xsecFile)
             self.cross_sections_.update( json.loads( open(fname).read() ) )
-            
-        self.catalog_ = shell_expand(catalog)
+        
+        if type(catalog) != list:
+            if "*" in catalog:
+                expanded = glob.glob(shell_expand(catalog))
+                if len(expanded) == 0:
+                    catalog = [ catalog.replace("*","") ]
+                else:
+                    catalog = expanded
+            else:
+                catalog = [catalog]
+        self.catalog_ = []
+        self.src_ = {}
+        for ifile in catalog:
+            self.catalog_.append( shell_expand(ifile) )
+        self.max_entries_per_file_ =  maxEntriesPerFile
 
         self.parallel_ = None
         self.sem_ = Semaphore()
@@ -403,6 +417,10 @@ class SamplesManager(object):
         if writeCatalog:
             self.writeCatalog(catalog)
 
+    def rebuildCatalog(self):
+        content = self.readCatalog()
+        self.writeCatalog(content,rebuild=True)
+
     def reviewCatalog(self, pattern=None):
         datasets,catalog = self.getAllDatasets()
 
@@ -652,31 +670,125 @@ class SamplesManager(object):
         """
         pass
     
-    def readCatalog(self,throw=False,path=None):
-        """
-        Read catalog from JSON file.
-        @throw: thow exception if file does not exists.
-        """
-        if not path:
-            path = self.catalog_
+    def loadCatalogFile(self,throw,path):
         if os.path.exists(path):
             return json.loads( open(path).read() )
         if throw:
             raise Exception("Could not find dataset catalog %s" % ( path ))
         return {}
+
+    def readCatalog(self,throw=False,path=None):
+        """
+        Read catalog from JSON file.
+        @throw: thow exception if file does not exists.
+        """
+        storeSrc=False
+        if not path:
+            path = self.catalog_
+            storeSrc = True
+            self.src_ = {}
+            
+        if type(path) == str:
+            path = [path]
+
+        catalog = {}
+        for ip in path:
+            part = self.loadCatalogFile(throw,ip)
+            if storeSrc:
+                self.src_[ ip ] = part.keys()
+            catalog.update(part)
+        
+        return catalog
     
-    def writeCatalog(self,content):
+    def writeCatalogFile(self,name,part):
+        with open(name,"w+") as fout:
+            fout.write( json.dumps(part,indent=4,sort_keys=True) )
+            fout.close()
+        
+    def sortDatasetFiles(self,content,rebuild):
+        
+        files = set(self.src_.keys())
+        dirname = map(os.path.dirname, files)[0]
+        if rebuild:
+            onefile = os.path.join(dirname,"datasets.json")
+            self.writeCatalogFile( onefile, content )
+            for key in self.src_.keys():
+                os.remove(key)
+            self.src_ = { onefile: content.keys() }
+            files = [onefile]
+        fileIds = map(lambda x: (lambda y: 0 if not y.isdigit() else int(y) )(os.path.basename(x).replace(".json","").rsplit("_")[-1]),  files )
+        maxId = max(fileIds)
+            
+        entriesPerFile = {}
+        entriesPerDataset = {}
+        for dset,info in content.iteritems():
+            entriesPerDataset[dset] = len(info["files"])            
+        for ifile,idatasets in self.src_.iteritems():
+            entriesPerFile[ifile] = sum( map(entriesPerDataset.get,idatasets) )
+        
+        done = False
+        aboveThr = filter(lambda x: entriesPerFile[x]>self.max_entries_per_file_ and len(self.src_[x])>1, files  )
+        belowThr = set(filter(lambda x: entriesPerFile[x]<self.max_entries_per_file_, files  ))
+        if len(aboveThr) > 0:
+            for ifile in aboveThr:
+                entries = 0
+                for idset,dset in enumerate(self.src_[ifile]):
+                    entries += entriesPerDataset.get(dset)
+                    if entries > self.max_entries_per_file_:
+                        break
+                move = self.src_[ifile][idset:]
+                entriesPerFile[ifile] = entries
+                
+                self.src_[ifile] = self.src_[ifile][:idset]
+                
+                for dset in move:
+                    entries = entriesPerDataset.get(dset)
+                    moved = False
+                    for ifile in belowThr:
+                        if entriesPerFile[ifile] + entries < self.max_entries_per_file_:
+                            entriesPerFile[ifile] += entries
+                            self.src_[ ifile  ].append(dset)
+                            if entriesPerFile[ifile] > self.max_entries_per_file_:
+                                belowThr.remove( ifile )
+                            moved = True
+                            break
+                    if not moved:
+                        maxId += 1
+                        newFile = os.path.join(dirname, "datasets_%d.json" % maxId )
+                        self.src_[ newFile ] = [dset]
+                        entriesPerFile[newFile] = entries
+                        if entries < self.max_entries_per_file_:
+                            belowThr.add( newFile )
+
+        self.catalog_ = self.src_.keys()
+
+    def writeCatalog(self,content,rebuild=False):
         """
         Write catalog to JSON file.
         @content: catalog content.
         """
-        if not os.path.exists( os.path.dirname(self.catalog_) ):
-            os.mkdir( os.path.dirname(self.catalog_) )
+        
+        dsets = set(content.keys())
+        # check if new datasets were added since last write and provisionally add them to a file
+        new = dsets - set( reduce(lambda x,y: x+y, self.src_.values(), []) )
+        self.src_[ sorted(self.src_)[-1]  ].extend(list(new))
+        
+        self.sortDatasetFiles(content,rebuild)
+        
+        print ("Catalog will be split into %d files" % len(self.catalog_) )
+        for ifile in self.catalog_:
+            dirname = os.path.dirname(ifile)
+            if not os.path.exists( dirname ):
+                os.mkdir( dirname )
+                
+            part = {}
+            for dset in self.src_[ ifile ]:
+                if dset in dsets:
+                    part[dset] = content[dset]
+                    dsets.remove( dset  )
+            self.writeCatalogFile( ifile, part )
+            
 
-        with open(self.catalog_,"w+") as fout:
-            fout.write( json.dumps(content,indent=4,sort_keys=True) )
-            fout.close()
-    
     def getDatasetMetaData(self,maxEvents,primary,secondary=None,jobId=-1,nJobs=0):
         """
         Extract dataset meta data.
@@ -753,6 +865,7 @@ class SamplesManagerCli(SamplesManager):
                      "catimport [source:]<catalog_name> <wildcard>     imports datasets from another catalog", 
                      "list      [raw|wildcard]                         lists datasets in catalog", 
                      "review                                           review catalog to remove datasets", 
+                     "rebuild                                          rebuild catalog", 
                      "check      [wildcard]                            check duplicate files and errors in datasets and mark bad files",
                      "checkopen  [wildcard]                            as above but just try open file",
                      "checklite  [wildcard]                            check for duplicate files in datasets",
@@ -831,7 +944,7 @@ Commands:
         (options,args) = (self.options,self.args)
         
         print options
-        self.mn = SamplesManager("$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % (options.metaDataSrc,options.campaign),
+        self.mn = SamplesManager("$CMSSW_BASE/src/%s/MetaData/data/%s/datasets*.json" % (options.metaDataSrc,options.campaign),
                                  dbs_instance=options.dbs_instance,
                                  force=options.doForce,
                                  queue=options.queue,maxThreads=options.max_threads,doContinue=options.doContinue)
@@ -861,10 +974,10 @@ Commands:
     def run_catimport(self,src,pattern):
         if ":" in src:
             print src.split(":")
-            src = "$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % tuple(src.split(":"))
+            src = "$CMSSW_BASE/src/%s/MetaData/data/%s/datasets*.json" % tuple(src.split(":"))
         else:
-            src = "$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % ( self.options.metaDataSrc, src )
-        self.mn.importFromCatalog(shell_expand(src),pattern)
+            src = "$CMSSW_BASE/src/%s/MetaData/data/%s/datasets*.json" % ( self.options.metaDataSrc, src )
+        self.mn.importFromCatalog(glob.glob(shell_expand(src)),pattern)
 
     def run_check(self,*args):
         self.mn.checkAllDatasets(*args)
@@ -937,6 +1050,9 @@ Commands:
     
     def run_review(self, pattern=None):
         self.mn.reviewCatalog(pattern)
+
+    def run_rebuild(self):
+        self.mn.rebuildCatalog()
 
     def run_listcampaigns(self,*args):
         # prints a list of all known campaigns
