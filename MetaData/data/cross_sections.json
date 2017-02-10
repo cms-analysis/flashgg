@@ -126,8 +126,14 @@
         "GJets_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8" : { "xs" : 2280.0,  "itype" : 6 },
         "GJets_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8" : { "xs" :273.0 , "itype" : 7 },
         "GJets_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8" : { "xs" :94.5 , "itype" : 8 },
-        "TTGG_0Jets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8" : { "xs" :0.01731 },
-        "TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8" : { "xs" :3.819 },
-        "TGJets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8" : { "xs" : 2.967 }
+        "TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8" : { "xs" : 665 },
+        "TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8" : { "xs" : 3.819 },
+        "TTGG_0Jets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8" : { "xs" : 0.01731 },
+        "TGJets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8" : { "xs" : 2.967 },
+        "THQ_HToGG_13TeV-madgraph-pythia8_TuneCUETP8M1" : { "xs" : 0.07096,   "br" : 0.00227 },
+        "THW_HToGG_13TeV-madgraph-pythia8_TuneCUETP8M1" : { "xs" : 0.01561,   "br" : 0.00227 },
+        "bbHToGG_M-125_4FS_yb2_13TeV_amcatnlo" : { "xs" : 0.534403,   "br" : 0.00227 },
+        "bbHToGG_M-125_4FS_ybyt_13TeV_amcatnlo" : { "xs" : 0.0464028,   "br" : 0.00227 }
+
 
 }

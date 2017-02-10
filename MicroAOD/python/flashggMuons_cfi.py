@@ -11,6 +11,7 @@ flashggMuons = cms.EDProducer('FlashggMuonProducer',
 		muminiso_deadcone_pu = cms.double(0.01),
 		muminiso_deadcone_ph = cms.double(0.01),
 		muminiso_deadcone_nh = cms.double(0.01),
-		muminiso_ptThresh = cms.double(0.5)
+		muminiso_ptThresh = cms.double(0.5),
+		muminiso_ptThresh_phot = cms.double(1.0)
 		)
 
