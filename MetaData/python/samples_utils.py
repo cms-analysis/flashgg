@@ -757,7 +757,8 @@ class SamplesManagerCli(SamplesManager):
                      "checkopen  [wildcard]                            as above but just try open file",
                      "checklite  [wildcard]                            check for duplicate files in datasets",
                      "getlumi    [wildcard|datasets]                   get list of processed lumi sections in dataset",
-                     "overlap    [wildcard|datasets]                   checks overlap between datatasets"
+                     "overlap    [wildcard|datasets]                   checks overlap between datatasets",
+                     "listcampaigns                                    prints the campaign names (takes into account the meta data source option)",
                      ]
         
         parser = OptionParser(
@@ -936,3 +937,27 @@ Commands:
     
     def run_review(self, pattern=None):
         self.mn.reviewCatalog(pattern)
+
+    def run_listcampaigns(self,*args):
+        # prints a list of all known campaigns
+        
+        campaigns = []
+        basedir = os.path.expandvars("$CMSSW_BASE/src/%s/MetaData/data" % self.options.metaDataSrc)
+
+        for fname in os.listdir(basedir):
+            fullfname = os.path.join(basedir, fname)
+
+            # follows symbolic links
+            if os.path.isdir(fullfname):
+
+                # insist that there is a 'datasets.json' file in this
+                # directory
+
+                if os.path.exists(os.path.join(fullfname, "datasets.json")):
+
+                    campaigns.append(fname)
+
+            
+        campaigns.sort()
+        for campaign in campaigns:
+            print campaign
