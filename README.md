@@ -10,8 +10,8 @@ Before you start, **please take note** of these warnings and comments:
 Get everything you need, starting from a clean area:
 
  ```
- cmsrel CMSSW_8_0_22
- cd CMSSW_8_0_22/src
+ cmsrel CMSSW_8_0_26_patch1
+ cd CMSSW_8_0_26_patch1/src
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src 
@@ -23,10 +23,6 @@ If everything now looks reasonable, you can build:
  ```
  cd $CMSSW_BASE/src
  scram b -j 9
- ```
-Then after building there is one new step:
- ```
- source flashgg/afterbuild_setup.sh
  ```
 And a very basic workflow test:
  ```

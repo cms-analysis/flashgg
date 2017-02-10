@@ -1,15 +1,13 @@
 {
     "processes" : {
-        "tth_125"  : [ [ "/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_v2/ferrif-RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2-2_2_0-v0-RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14-v1-2a45e67daf15c7abeea509b3e1c7829c/USER",
+       "tth_125"  : [ [ "/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_v2",
 		       { "args" :["outputFile=output_ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
-	"tth_120"  : [ [ "/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8_v2", 
-		       { "args" :["outputFile=output_ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
-	"tth_123"  : [ "/ttHJetToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8" ],
-        "tth_124"  : [ "/ttHJetToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8" ],
-        "tth_126"  : [ "/ttHJetToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8" ],
-        "tth_127"  : [ "/ttHJetToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8" ],
-        "tth_130"  : [ [ "/ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8_v2",
+       "tth_120"  : [ [ "/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8_v2", 
+                      { "args" :["outputFile=output_ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
+       "tth_130"  : [ [ "/ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8_v2",
                        { "args" :["outputFile=output_ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ]
+
+
      },	
-        "cmdLine" : "campaign=RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2_Workspaces"
+        "cmdLine" : "campaign=RunIISummer16-2_4_1-25ns_Moriond17"
 }

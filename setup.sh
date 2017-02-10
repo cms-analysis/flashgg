@@ -104,48 +104,31 @@ fi
 
 cd $CMSSW_BASE/src
 
-echo "Setting up QGL..."
-git cms-addpkg RecoJets/JetProducers
-git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-8_0_20
+echo "EGM Pho ID recipe, Summer16"
+git cms-merge-topic ikrav:egm_id_80X_v3_photons
 
 echo "grabbing MET topic updates..."
 git cms-merge-topic cms-met:METRecipe_8020
 
-# NO LONGER NEEDED BECAUSE THE BRANCH ABOVE WAS UPDATED (TBC)
-#echo "Cherry-pick for MET JES, including adding and removing met repo"
-#git remote add metCMS https://github.com/cms-met/cmssw
-#git fetch --quiet metCMS
-#git cherry-pick 246455ec0b031e54df70e2983d30243b058bf45a
-#git remote remove metCMS
-
-echo "Setting up MET filters..."
-git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate
+echo "Setting up QGL..."
+git cms-addpkg RecoJets/JetProducers
+git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-8_0_26
 
 echo "Setting up TnP tools..."
-git cms-merge-topic -u sethzenz:for-flashgg-egm_tnp-8_0_20
+git cms-merge-topic -u sethzenz:for-flashgg-egm_tnp-8_0_26
 
 echo "Setting up misc egm and weight stuff..."
-git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-weights-8_0_20
+git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-weights-8_0_26
 
 echo "Setting up Higgs Simplified Template Cross Sections..."
-git cms-merge-topic -u sethzenz:rivet_hepmc
+git cms-merge-topic -u sethzenz:rivet_hepmc-8_0_26
 
 echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
 git cms-addpkg FWCore/GuiBrowsers
-git cms-merge-topic -u sethzenz:for-flashgg-toolbase-8_0_20
-
-echo "Regression recipe, 19 December 2016"
-git cms-merge-topic rafaellopesdesa:Regression80XEgammaAnalysis
-
-echo "EleID recipe, Summer16"
-git cms-merge-topic ikrav:egm_id_80X_v2
-
+git cms-merge-topic -u sethzenz:for-flashgg-toolbase-8_0_26
 
 echo "copy databases for local running (consistency with crab)"
-cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Fall15_25nsV2_*.db $CMSSW_BASE/src/flashgg
-cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV3*.db $CMSSW_BASE/src/flashgg
-cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV6*.db $CMSSW_BASE/src/flashgg
-cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV6*.db $CMSSW_BASE/src/flashgg/Systematics/data/JEC
+cp $CMSSW_BASE/src/flashgg/Systematics/data/JEC/Summer16_23Sep2016*db $CMSSW_BASE/src/flashgg/
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_80X.db $CMSSW_BASE/src/flashgg
 
 echo "copy smearing files stored in flashgg into egamma tools"
@@ -153,11 +136,14 @@ cp $CMSSW_BASE/src/flashgg/Systematics/data/Golden*.dat $CMSSW_BASE/src/EgammaAn
 cp $CMSSW_BASE/src/flashgg/Systematics/data/80X_DCS05July_plus_Golden22_s*.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 cp $CMSSW_BASE/src/flashgg/Systematics/data/80X_ichepV1_2016_pho_s* $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 cp $CMSSW_BASE/src/flashgg/Systematics/data/80X_ichepV2_2016_pho_s* $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
+cp $CMSSW_BASE/src/flashgg/Systematics/data/Winter_2016_reReco_v1_ele_scales.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
+cp $CMSSW_BASE/src/flashgg/Systematics/data/Winter_2016_reReco_v1_ele_smearings.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
+
 
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit
 
 echo
 echo "Done with setup script! You still need to build!"
-echo "After building, run afterbuild_setup.sh"
+# echo "After building, run afterbuild_setup.sh"
 echo

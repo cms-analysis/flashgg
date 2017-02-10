@@ -93,6 +93,31 @@ In fact, it is recommended to set up a new area from scratch and checkout the ta
 
 https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_users  
 
+### SUMMER16 MC
+
+#### 15 Jan regression
+
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISummer16-2_4_2-25ns_Moriond17 -U 1 -L 25 -s campaigns/RunIISummer16-2_4_2-25ns_Moriond17.json -V 2_4_2 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
+cd RunIISummer16-2_4_2-25ns_Moriond17
+echo crabConfig_*.py | xargs -n 1 crab sub
+
+#### old regression
+
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISummer16-2_4_1-25ns_Moriond17 -U 1 -L 25 -s campaigns/RunIISummer16-2_4_1-25ns_Moriond17.json -V 2_4_1 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
+cd RunIISummer16-2_4_1-25ns_Moriond17
+echo crabConfig_*.py | xargs -n 1 crab sub
+
+
+#### broken regression
+
+cd $CMSSW_BASE/src/flashgg/MetaData/work
+./prepareCrabJobs.py -C RunIISummer16-2_4_0-25ns_Moriond17 -U 1 -L 25 -s campaigns/RunIISummer16-2_4_0-25ns_Moriond17.json -V 2_4_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
+cd RunIISummer16-2_4_0-25ns_Moriond17
+echo crabConfig_*.py | xargs -n 1 crab sub
+
+
 ### SRING16 (80x)
 
 #### 80X with DY including PDFs

@@ -3,6 +3,7 @@
 
 //#include "DataFormats/PatCandidates/interface/MET.h"
 #include "flashgg/DataFormats/interface/Met.h"
+#include "flashgg/DataFormats/interface/Jet.h"
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 
 namespace flashgg {
@@ -19,14 +20,17 @@ namespace flashgg {
         VHMetTag *clone() const override { return ( new VHMetTag( *this ) ); }
 
         const edm::Ptr<flashgg::Met> met() const {return theMet_;}
+        const edm::Ptr<flashgg::Jet> jet() const {return theJet_;}
         const edm::Ptr<DiPhotonCandidate> diPhotonCandidate() const { return theDiPhotonCandidate_;}
         void setMet( edm::Ptr<flashgg::Met> );
-
+        void setJet( edm::Ptr<flashgg::Jet> );
+        
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kVHMet; }
 
     private:
         edm::Ptr<DiPhotonCandidate> theDiPhotonCandidate_;
         edm::Ptr<flashgg::Met> theMet_;
+        edm::Ptr<flashgg::Jet> theJet_;
     };
 
 }

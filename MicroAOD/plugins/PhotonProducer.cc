@@ -19,6 +19,9 @@
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
 #include "flashgg/MicroAOD/interface/IsolationAlgoBase.h"
+#include "DataFormats/Common/interface/ValueMap.h"
+
+#include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 
 using namespace std;
 using namespace edm;
@@ -79,6 +82,12 @@ namespace flashgg {
         std::vector<std::unique_ptr<IsolationAlgoBase> > extraIsoAlgos_;
 
         bool useNewPhoId_;
+
+        EffectiveAreas _effectiveAreas;
+        vector<double> _phoIsoPtScalingCoeff;
+        double _phoIsoCutoff;
+
+        edm::EDGetTokenT<edm::ValueMap<float> > egmMvaValuesMapToken_;
     };
 
 
@@ -94,7 +103,11 @@ namespace flashgg {
         rhoToken_( consumes<double>( iConfig.getParameter<edm::InputTag>( "rhoFixedGridCollection" ) ) ),
         electronToken_( consumes<std::vector<pat::Electron> >( iConfig.getParameter<edm::InputTag>( "elecTag") ) ),
         convToken_( consumes<reco::ConversionCollection>( iConfig.getParameter<edm::InputTag>( "convTag" ) ) ),
-        beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getParameter<edm::InputTag>( "beamSpotTag" ) ) )
+        beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getParameter<edm::InputTag>( "beamSpotTag" ) ) ),
+        _effectiveAreas((iConfig.getParameter<edm::FileInPath>("effAreasConfigFile")).fullPath()),
+        _phoIsoPtScalingCoeff(iConfig.getParameter<std::vector<double >>("phoIsoPtScalingCoeff")),
+        _phoIsoCutoff(iConfig.getParameter<double>("phoIsoCutoff")),
+        egmMvaValuesMapToken_( consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("egmMvaValuesMap")) )
     {
 
         //        electronLabel_ = iConfig.getParameter<string>( "elecLabel" );
@@ -102,6 +115,11 @@ namespace flashgg {
 
 
         useNewPhoId_ = iConfig.getParameter<bool>( "useNewPhoId" ); 
+
+        //        _effectiveAreas = iConfig.getParameter<edm::FileInPath>("effAreasConfigFile").fullPath();
+        //_phoIsoPtScalingCoeff = iConfig.getParameter<std::vector<double >>("phoIsoPtScalingCoeff");
+        //_phoIsoCutoff = iConfig.getParameter<double>("phoIsoCutoff");
+        
         phoIdMVAweightfileEB_ = iConfig.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EB" );
         phoIdMVAweightfileEE_ = iConfig.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EE" );
         if(useNewPhoId_){
@@ -177,6 +195,9 @@ namespace flashgg {
 
         const reco::BeamSpot &beamspot = *recoBeamSpotHandle.product();
 
+        edm::Handle<edm::ValueMap<float> > egmMvaValues;
+        evt.getByToken(egmMvaValuesMapToken_,egmMvaValues);
+
         // const PtrVector<pat::Photon>& photonPointers = photons->ptrVector();
         // const PtrVector<pat::PackedCandidate>& pfcandidatePointers = pfcandidates->ptrVector();
         // const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
@@ -196,6 +217,9 @@ namespace flashgg {
 
             Ptr<pat::Photon> pp = photons->ptrAt( i );
             flashgg::Photon fg = flashgg::Photon( *pp );
+
+            double egmMvaValue = (*egmMvaValues)[pp];
+            fg.addUserFloat("EGMPhotonMVA", (float) egmMvaValue);
 
             if( !ConversionTools::hasMatchedPromptElectron( pp->superCluster(), electronHandle, convs, beamspot.position(), lxyMin_, probMin_, nHitsBeforeVtxMax_ ) ) { fg.setPassElectronVeto( true ) ; }
             else { fg.setPassElectronVeto( false ) ;}
@@ -274,7 +298,10 @@ namespace flashgg {
             fg.setpfNeutIso04( pfNeutIso04 );
             fg.setpfNeutIso03( pfNeutIso03 );
 
-            std::map<edm::Ptr<reco::Vertex>, float> mvamap = phoTools_.computeMVAWrtAllVtx( fg, vertices->ptrs(), rhoFixedGrd );
+            double eA_pho = _effectiveAreas.getEffectiveArea( abs(pp->superCluster()->eta()) );
+            double correctedEtaWidth = 0.;
+
+            std::map<edm::Ptr<reco::Vertex>, float> mvamap = phoTools_.computeMVAWrtAllVtx( fg, vertices->ptrs(), rhoFixedGrd, correctedEtaWidth, eA_pho, _phoIsoPtScalingCoeff, _phoIsoCutoff );
             fg.setPhoIdMvaD( mvamap );
 
             // add extra isolations (useful for tuning)
