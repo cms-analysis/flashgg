@@ -155,21 +155,21 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            Debug = cms.untracked.bool(False),
                                                            ApplyCentralValue = cms.bool(True)
                                                            ),
-                                                 cms.PSet( MethodName = cms.string("FlashggJetRMSShift"),
-                                                           Label = cms.string("RMSShift"),
-                                                           NSigmas = cms.vint32(-1,1),
-                                                           OverallRange = cms.string("abs(eta)>2.5&&abs(eta)<4.7&&pt>20."),
-                                                           BinList  = RMSShiftBins,
-                                                           ApplyCentralValue = cms.bool(False),
-                                                           Debug = cms.untracked.bool(False)
-                                                           ),
+#                                                 cms.PSet( MethodName = cms.string("FlashggJetRMSShift"),
+#                                                           Label = cms.string("RMSShift"),
+#                                                           NSigmas = cms.vint32(-1,1),
+#                                                           OverallRange = cms.string("abs(eta)>2.5&&abs(eta)<4.7&&pt>20."),
+#                                                           BinList  = RMSShiftBins,
+#                                                           ApplyCentralValue = cms.bool(False),
+#                                                           Debug = cms.untracked.bool(False)
+#                                                           ),
                                                  cms.PSet( MethodName = cms.string("FlashggJetPUJIDShift"),
                                                            Label = cms.string("PUJIDShift"),
                                                            NSigmas = cms.vint32(-1,1),
                                                            OverallRange = cms.string("abs(eta)<5.0&&pt>20.0"),
                                                            BinList  = PUJIDShiftBins,
                                                            ApplyCentralValue = cms.bool(True),
-                                                           Debug = cms.untracked.bool(True)
+                                                           Debug = cms.untracked.bool(False)
                                                            ),
                                                  cms.PSet( MethodName = cms.string("FlashggJetWeight"),
                                                            Label = cms.string("UnmatchedPUWeight"),
