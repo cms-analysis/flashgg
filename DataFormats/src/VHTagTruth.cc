@@ -34,7 +34,7 @@ VHTagTruth *VHTagTruth::clone() const
     result->setVhasHadrons( VhasHadrons() );
     result->setVhasMissingLeptons( VhasMissingLeptons() );
     result->setVpt( Vpt() );
-    result->setGenPV( genPV() );
+    result->copyBaseInfo( *this );
     return result;
 
 }

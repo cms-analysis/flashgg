@@ -44,6 +44,9 @@ namespace flashgg {
         EDGetTokenT<View<reco::GenParticle> >      genPartToken_;
         EDGetTokenT<View<reco::GenJet> >           genJetToken_;
         edm::EDGetTokenT<vector<flashgg::PDFWeightObject> > WeightToken_;
+        EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
+        EDGetTokenT<float> pTHToken_,pTVToken_;
+
         string systLabel_;
 
         bool dropNonGoldData_;
@@ -70,6 +73,13 @@ namespace flashgg {
     {
         boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
         assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception
+
+        ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
+        stage0catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0cat") );
+        stage1catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1cat") );
+        njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
+        pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
+        pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
         
         produces<vector<VBFTag> >();
         produces<vector<VBFTagTruth> >();
@@ -87,6 +97,13 @@ namespace flashgg {
     
     void VBFTagProducer::produce( Event &evt, const EventSetup & )
     {
+        Handle<int> stage0cat, stage1cat, njets;
+        Handle<float> pTH, pTV;
+        evt.getByToken(stage0catToken_, stage0cat);
+        evt.getByToken(stage1catToken_,stage1cat);
+        evt.getByToken(njetsToken_,njets);
+        evt.getByToken(pTHToken_,pTH);
+        evt.getByToken(pTVToken_,pTV);
 
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
@@ -344,6 +361,16 @@ namespace flashgg {
                 if( index_subsubleadq < std::numeric_limits<unsigned int>::max()) { truth_obj.setSubSubLeadingParton( genParticles->ptrAt( index_subsubleadq ));}
 
                 truth_obj.setGenPV( higgsVtx );
+                if ( stage0cat.isValid() ) {
+                    truth_obj.setHTXSInfo( *( stage0cat.product() ),
+                                           *( stage1cat.product() ),
+                                           *( njets.product() ),
+                                           *( pTH.product() ),
+                                           *( pTV.product() ) );
+                } else {
+                    truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
+                }
+
                 // Yacine: filling tagTruth Tag with 3 jets matchings
                 // the idea is to fill the truth_obj using Jack's 
                 // implementation
