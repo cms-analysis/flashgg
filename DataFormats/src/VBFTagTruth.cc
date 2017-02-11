@@ -41,7 +41,7 @@ VBFTagTruth *VBFTagTruth::clone() const
     result->setPtOrderedGenJets( ptOrderedGenJets() );
     result->setPtOrderedFggJets( ptOrderedFggJets() );
     result->setDiPhoton( diPhoton() );
-    result->setGenPV( genPV() );
+    result->copyBaseInfo( *this );
     return result;
 
 }
