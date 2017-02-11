@@ -525,7 +525,7 @@ TriggerWeight = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
           OverallRange = cms.string("pt<99999"),
           BinList = leadTriggerScaleBins,
           BinList2 = subleadTriggerScaleBins,
-          Debug = cms.untracked.bool(True),
+          Debug = cms.untracked.bool(False),
           ApplyCentralValue = cms.bool(True)
           )
 
