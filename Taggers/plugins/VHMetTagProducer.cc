@@ -51,6 +51,9 @@ namespace flashgg {
         edm::EDGetTokenT<edm::TriggerResults> triggerPAT_;
         edm::EDGetTokenT<edm::TriggerResults> triggerFLASHggMicroAOD_;
 
+        EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
+        EDGetTokenT<float> pTHToken_,pTVToken_;
+
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;        
 
         //configurable selection variables
@@ -98,6 +101,13 @@ namespace flashgg {
             tokenJets_.push_back(token);
         }
         
+        ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
+        stage0catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0cat") );
+        stage1catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1cat") );
+        njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
+        pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
+        pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
+
         produces<vector<VHMetTag> >();
         produces<vector<VHTagTruth> >();
         photonCollection_=iConfig.getParameter<InputTag> ( "DiPhotonTag" );
@@ -106,6 +116,14 @@ namespace flashgg {
     
     void VHMetTagProducer::produce( Event &evt, const EventSetup & )
     {
+        Handle<int> stage0cat, stage1cat, njets;
+        Handle<float> pTH, pTV;
+        evt.getByToken(stage0catToken_, stage0cat);
+        evt.getByToken(stage1catToken_,stage1cat);
+        evt.getByToken(njetsToken_,njets);
+        evt.getByToken(pTHToken_,pTH);
+        evt.getByToken(pTVToken_,pTV);
+
         JetCollectionVector Jets( inputTagJets_.size() );
         for( size_t j = 0; j < inputTagJets_.size(); ++j ) 
             {
@@ -291,6 +309,15 @@ namespace flashgg {
                 {
                     VHTagTruth truth_obj;
                     truth_obj.setGenPV( higgsVtx );
+                    if ( stage0cat.isValid() ) {
+                        truth_obj.setHTXSInfo( *( stage0cat.product() ),
+                                               *( stage1cat.product() ),
+                                               *( njets.product() ),
+                                               *( pTH.product() ),
+                                               *( pTV.product() ) );
+                    } else {
+                        truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
+                    }
                     truth_obj.setAssociatedZ( associatedZ );
                     truth_obj.setAssociatedW( associatedW );
                     truth_obj.setVhasDaughters( VhasDaughters );

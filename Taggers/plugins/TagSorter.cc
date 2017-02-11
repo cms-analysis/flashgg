@@ -280,6 +280,11 @@ namespace flashgg {
                 } else {
                     std::cout << "* Other tag interpretations not stored (config)" << std::endl;
                 }
+                std::cout << "* HTXS Category 0 (1): " << SelectedTagTruth->back().HTXSstage0cat() << " ("
+                          << SelectedTagTruth->back().HTXSstage1cat() << ")" << std::endl;
+                std::cout << "* HTXS njets, pTH, pTV: " << SelectedTagTruth->back().HTXSnjets() << ", "
+                          << SelectedTagTruth->back().HTXSpTH() << ", "
+                          << SelectedTagTruth->back().HTXSpTV() << std::endl;
                 std::cout << "******************************" << std::endl;
             }
         }
