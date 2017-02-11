@@ -4,6 +4,7 @@ import FWCore.ParameterSet.Config as cms
 import FWCore.Utilities.FileUtils as FileUtils
 import FWCore.ParameterSet.VarParsing as VarParsing
 from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariables,minimalHistograms,minimalNonSignalVariables,systematicVariables
+from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariablesHTXS,systematicVariablesHTXS
 import os
 
 # SYSTEMATICS SECTION
@@ -48,6 +49,12 @@ customize.options.register('tthTagsOnly',
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'tthTagsOnly'
+                           )
+customize.options.register('doHTXS',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doHTXS'
                            )
 customize.options.register('doMuFilter',
                            True,
@@ -105,7 +112,6 @@ print 'doFiducial '+str(customize.doFiducial)
 print 'acceptance '+str(customize.acceptance)
 print 'tthTagsOnly '+str(customize.tthTagsOnly)
 print 'doMuFilter '+str(customize.doMuFilter)
-
 
 if customize.doFiducial:
     import flashgg.Systematics.fiducialCrossSectionsCustomize as fc
@@ -182,7 +188,10 @@ useEGMTools(process)
 # Only run systematics for signal events
 if customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance"): # convention: ggh vbf wzh (wh zh) tth
     print "Signal MC, so adding systematics and dZ"
-    variablesToUse = minimalVariables
+    if customize.doHTXS:
+        variablesToUse = minimalVariablesHTXS
+    else:
+        variablesToUse = minimalVariables
     if customize.doFiducial:
         variablesToUse.extend(fc.getGenVariables(True))
         variablesToUse.extend(fc.getRecoVariables(True))
@@ -304,6 +313,7 @@ process.tagsDumper.dumpWorkspace = customize.dumpWorkspace
 process.tagsDumper.dumpHistos = False
 process.tagsDumper.quietRooFit = True
 process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
+process.tagsDumper.splitPdfByStage0Cat = cms.untracked.bool(customize.doHTXS)
 
 if(customize.doFiducial):
 #    if customize.processId == "Data":
@@ -360,7 +370,10 @@ for tag in tagList:
       if systlabel == "":
           currentVariables = variablesToUse
       else:
-          currentVariables = systematicVariables
+          if customize.doHTXS:
+              currentVariables = systematicVariablesHTXS
+          else:    
+              currentVariables = systematicVariables
       
       isBinnedOnly = (systlabel !=  "")
       if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") ) and (systlabel ==  ""):
