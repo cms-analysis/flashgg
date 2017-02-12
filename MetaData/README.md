@@ -93,6 +93,10 @@ In fact, it is recommended to set up a new area from scratch and checkout the ta
 
 https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_users  
 
+### REMINIAOD
+
+./prepareCrabJobs.py -C ReMiniAOD-03Feb2017-2_5_0-test -U 1 -L 25 -s campaigns/ReMiniAOD-03Feb2017-2_5_0-test.json -V 2_5_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask /afs/cern.ch/work/s/sethzenz/fromscratch141/CMSSW_8_0_26_patch1/src/flashgg/MetaData/work/jsons/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt
+
 ### SUMMER16 MC
 
 #### 15 Jan regression
