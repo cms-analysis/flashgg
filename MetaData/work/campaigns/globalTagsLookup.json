@@ -38,6 +38,18 @@
     "Run2016F-23Sep2016" : ["80X_dataRun2_2016SeptRepro_v3"],
     "Run2016G-23Sep2016" : ["80X_dataRun2_2016SeptRepro_v3"],
 
+    "Run2016B-03Feb2017" : ["80X_dataRun2_2016SeptRepro_v7"],
+    "Run2016C-03Feb2017" : ["80X_dataRun2_2016SeptRepro_v7"],
+    "Run2016D-03Feb2017" : ["80X_dataRun2_2016SeptRepro_v7"],
+    "Run2016E-03Feb2017" : ["80X_dataRun2_2016SeptRepro_v7"],
+    "Run2016F-03Feb2017" : ["80X_dataRun2_2016SeptRepro_v7"],
+    "Run2016G-03Feb2017" : ["80X_dataRun2_2016SeptRepro_v7"],
+    "Run2016H-03Feb2017" : ["80X_dataRun2_Prompt_v16"],
+    "Run2016B-03Feb2017_ver1" : ["80X_dataRun2_2016SeptRepro_v7"],
+    "Run2016B-03Feb2017_ver2" : ["80X_dataRun2_2016SeptRepro_v7"],
+
+
+
     "RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3"                                 : ["80X_mcRun2_asymptotic_2016_v3"],
     "RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3_ext1"                            : ["80X_mcRun2_asymptotic_2016_v3"],
     "RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3"                        : ["80X_mcRun2_asymptotic_2016_v3"],
