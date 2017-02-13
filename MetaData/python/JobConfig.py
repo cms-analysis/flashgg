@@ -108,6 +108,12 @@ class JobConfig(object):
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "puTarget")
 
+#Input MC pu for PU reweighting
+        self.options.register ('puSIM',
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "puSIM")
         
         self.parsed = False
         
@@ -196,6 +202,10 @@ class JobConfig(object):
             samplepu = None
             if self.puTarget != "":
                 putarget = map(float, self.puTarget.split(","))
+#Input MC PU for PU reweighting
+            pusimu = None
+            if self.puSIM != "":
+                pusimu = map(float, self.puSIM.split(","))
                 
             processId = self.getProcessId(dsetname)
             self.processId = processId
@@ -274,9 +284,14 @@ class JobConfig(object):
                                 samplepu = self.pu_distribs[matches[0]]
                             puObj.puReWeight = True
                             puObj.puBins = cms.vdouble( map(float, samplepu.probFunctionVariable) )
-                            puObj.mcPu   = samplepu.probValue
+                            #Using input MC PU or by default the probvalues from cfi file for PU reweighting
+                            if pusimu:
+                                puObj.mcPu   =  cms.vdouble(pusimu)
+                                puObj.useTruePu = cms.bool(False)
+                            else:
+                                puObj.mcPu   = samplepu.probValue
+                                puObj.useTruePu = cms.bool(True)
                             puObj.dataPu = cms.vdouble(putarget)
-                            puObj.useTruePu = cms.bool(True)
                         
                     
             for name,obj in process.__dict__.iteritems():
