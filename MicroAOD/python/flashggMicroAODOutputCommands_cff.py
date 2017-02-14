@@ -18,13 +18,13 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep *_offlineBeamSpot_*_*",
                                                      "keep *_TriggerResults_*_*",
                                                      "keep *_eventCount_*_*",
-                                                     "keep *CaloClusters_*_*_*",
+                                                     "keep *CaloClusters_reducedEgamma_*_*",
                                                      "keep *_weightsCount_*_*",
                                                      "keep *_generator_*_*",
                                                      "keep *_slimmedGenJets_*_*",
                                                      "keep *_flashggDiPhotons_*_*", # STILL NEEDED
                                                      "keep *_slimmedAddPileupInfo_*_*", # Was huge in old MiniAod - hopefully better now
-                                                     "keep *GsfElectronCore*_*_*_*", # needed by at least one Tag
+                                                     "keep *GsfElectronCore*_reducedEgamma_*_*", # needed by at least one Tag
 
                                                      "keep *_flashggSelected*_*_*",
                                                      # Drop intermediate collections in favor of selected/final collections
@@ -38,6 +38,8 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
 						     "drop intedmValueMap_electronMVAValueMapProducer_*_*",
 						     "drop floatedmValueMap_photonMVAValueMapProducer_*_*",
                                                      "keep *_selectedPatTrigger_*_*",
+                                                     "keep *_particleFlowEGammaGSFixed_dupECALClusters_*",
+                                                     "keep *_ecalMultiAndGSGlobalRecHitEB_hitsNotReplaced_*"
                                                      )
 
 # Should be included for now for ongoing studies, but to be removed some day
