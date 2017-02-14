@@ -234,7 +234,7 @@ class MicroAODCustomize(object):
                 path.remove( getattr(process,mod))
             print getattr(process,pathName)
         process.out.outputCommands.append("drop *_*Gen*_*_*")
-        process.out.outputCommands.append("keep *_*_*RecHit*_*") # for bad events
+        process.out.outputCommands.append("keep *_reducedEgamma_*RecHit*_*") # for bad events
         delattr(process,"flashggPrunedGenParticles") # will be run due to unscheduled mode unless deleted
         self.customizeHighMassIsolations(process)
         process.load("flashgg/MicroAOD/flashggDiPhotonFilter_cfi")
