@@ -724,7 +724,15 @@ class SamplesManager(object):
         for dset,info in content.iteritems():
             entriesPerDataset[dset] = len(info["files"])            
         for ifile,idatasets in self.src_.iteritems():
-            entriesPerFile[ifile] = sum( map(entriesPerDataset.get,idatasets) )
+            print map(entriesPerDataset.get,idatasets)
+            theMap = map(entriesPerDataset.get,idatasets)
+            theMap = [0 if x==None else x for x in theMap]
+#            for i in range(len(theMap)):
+#                for j in range(len(theMap[i])):
+#                    if theMap[i][j] == None:
+#                        theMap[i][j] = 0
+            print theMap
+            entriesPerFile[ifile] = sum( theMap )
         
         done = False
         aboveThr = filter(lambda x: entriesPerFile[x]>self.max_entries_per_file_ and len(self.src_[x])>1, files  )
@@ -796,7 +804,7 @@ class SamplesManager(object):
         @primary: primary dataset name.
         @secondary: secondary dataset name.
         
-        returns: tuple containing datasetName,cross-section,numberOfEvents,listOfFiles
+        returns: tuple containing datasetName,cross-section,numberOfEvents,listOfFiles,specialPrepend
         
         """
         catalog = self.readCatalog(True)
@@ -809,6 +817,7 @@ class SamplesManager(object):
         allFiles = []
         totEvents = 0.
         totWeights = 0.
+        specialPrepend = ""
         for dataset,info in catalog.iteritems():
             empty,prim,sec,tier=dataset.split("/")
             if prim == primary:
@@ -828,6 +837,7 @@ class SamplesManager(object):
                     allFiles.append(name)
                     if maxEvents > -1 and totEvents > maxEvents:
                         break
+                specialPrepend = info.get("specialPrepend","")    
         if not found:
             raise Exception("No dataset matched the request: /%s/%s" % ( primary, str(secondary) ))
         
@@ -844,7 +854,7 @@ class SamplesManager(object):
         else:
             files = allFiles
 
-        return found,xsec,totEvents,files,maxEvents
+        return found,xsec,totEvents,files,maxEvents,specialPrepend
 
     def getAllDatasets(self):
         catalog = self.readCatalog()
