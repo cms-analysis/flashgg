@@ -587,7 +587,7 @@ class JobsManager(object):
 
         jobConfig = JobConfig(**kwargs)
 
-        sm = SamplesManager("$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % (jobConfig.metaDataSrc, campaign),
+        sm = SamplesManager("$CMSSW_BASE/src/%s/MetaData/data/%s/datasets*.json" % (jobConfig.metaDataSrc, campaign),
                             jobConfig.crossSections,
                             )
 

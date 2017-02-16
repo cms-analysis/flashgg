@@ -1,0 +1,8 @@
+{
+    "cmdLine"  : "campaign=ReMiniAOD-03Feb2017-2_5_X",
+    "processes": {
+	"Data"   : [
+"/DoubleMuon/sethzenz-ReMiniAOD-03Feb2017-2_5_1-2_5_1-v0-Run2016G-03Feb2017-v1-e4f6c342deaaaede78caea1440f29673/USER"
+		   ]
+    }
+}

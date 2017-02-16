@@ -152,6 +152,7 @@ class JobConfig(object):
         isFwlite = False
         hasOutput = False
         hasTFile = False
+        sp_unused = ""
         if hasattr(process,"fwliteInput"):
             isFwlite = True
         if not isFwlite:
@@ -166,7 +167,7 @@ class JobConfig(object):
         if self.dryRun:
             import sys
             if self.dataset and self.dataset != "":
-                name,xsec,totEvents,files,maxEvents = self.dataset
+                name,xsec,totEvents,files,maxEvents,sp_unused = self.dataset
                 if self.getMaxJobs:
                     print "maxJobs:%d" % ( min(len(files),self.nJobs) )                    
                 if len(files) != 0:
@@ -184,7 +185,7 @@ class JobConfig(object):
 
         files = self.inputFiles
         if self.dataset and self.dataset != "":
-            dsetname,xsec,totEvents,files,maxEvents = self.dataset
+            dsetname,xsec,totEvents,files,maxEvents,sp_unused = self.dataset
             if type(xsec) == float:
                 print 
                 print "Error: cross section not found for dataset %s" % dsetname
@@ -370,7 +371,7 @@ class JobConfig(object):
         dataset = None
         if self.dataset != "":
             print "Reading dataset (%s) %s" % ( self.campaign, self.dataset)
-            self.samplesMan = SamplesManager("$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % (self.metaDataSrc, self.campaign),
+            self.samplesMan = SamplesManager("$CMSSW_BASE/src/%s/MetaData/data/%s/datasets*.json" % (self.metaDataSrc, self.campaign),
                                          self.crossSections,
                                          )
             if self.dryRun and self.getMaxJobs:
@@ -384,7 +385,9 @@ class JobConfig(object):
         self.dataset = dataset
         # auto-detect data from xsec = 0
         if self.dataset:
-            name,xsec,totEvents,files,maxEvents = self.dataset            
+            name,xsec,totEvents,files,maxEvents,specialPrepend = self.dataset
+            if len(specialPrepend) > 0 and not self.useAAA:
+                self.filePrepend = specialPrepend
             if type(xsec) != dict or type(xsec.get("xs",None)) != float:
                 print "Warning: you are running on a dataset for which you specified no cross section: \n %s " % name
             else:
