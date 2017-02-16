@@ -17,19 +17,20 @@ customize.setDefault("targetLumi",2.6e+4)
 customize.parse()
 
 if ("data_single" in customize.processId):
-    process.hltFilter.HLTPaths = cms.vstring("HLT_Ele23_WPLoose_Gsf_v*")
+    process.hltFilter.HLTPaths = cms.vstring("HLT_Ele27_WPTight_Gsf_v*")
 #    process.hltFilter.HLTPaths = cms.vstring("HLT_Ele22_eta2p1_WPLoose_Gsf_v*")
 #elif ("data_double" in customize.processId):
 #    process.hltFilter.HLTPaths = cms.vstring("HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelSeedMatch_Mass70_v*")
-#elif ("mc_single" in customize.processId):
-#    process.hltFilter.HLTPaths = cms.vstring("HLT_Ele22_eta2p1_WP75_Gsf_v*")
+elif ("mc_single" in customize.processId):
+    process.hltFilter.HLTPaths = cms.vstring("HLT_Ele27_WPTight_Gsf_v*")
 #elif ("mc_double" in customize.processId):
 #    process.hltFilter.HLTPaths = cms.vstring("HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelSeedMatch_Mass70_v*")
+# process.hltFilter.HLTPaths = cms.vstring("HLT_Ele27_WPTight_Gsf_v*")#for interactive running
 
 process.load('RecoMET.METFilters.eeBadScFilter_cfi')
 process.eeBadScFilter.EERecHitSource = cms.InputTag("reducedEgamma","reducedEERecHits") # Saved MicroAOD Collection (data only)
 process.dataRequirements = cms.Sequence()
-#process.dataRequirements += process.hltHighLevel
+process.dataRequirements += process.hltFilter
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 10000 )
 
@@ -39,14 +40,17 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService")
 
 if ("data" in customize.processId):
-    process.GlobalTag.globaltag = '80X_dataRun2_Prompt_v8'
+    process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v3'
 else:
-    process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_v3'
-#process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_v3' #for interactive running
+    process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v6'
+
+# process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v6' #for interactive running
     
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
     
-process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring('/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIISpring16DR80X-2_0_0-25ns/2_0_0/DYToEE_NNPDF30_13TeV-powheg-pythia8/RunIISpring16DR80X-2_0_0-25ns-2_0_0-v0-RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/160524_084452/0000/myMicroAODOutputFile_1.root'
+#process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring('/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIISpring16DR80X-2_0_0-25ns/2_0_0/DYToEE_NNPDF30_13TeV-powheg-pythia8/RunIISpring16DR80X-2_0_0-25ns-2_0_0-v0-RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/160524_084452/0000/myMicroAODOutputFile_1.root'
+#))
+process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring('/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_HCALDebug_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170114_082421/0000/myMicroAODOutputFile_10.root'
 ))
 
 import flashgg.Taggers.dumperConfigTools as cfgTools
@@ -54,19 +58,30 @@ process.load("flashgg.Taggers.globalVariables_cff")
 process.globalVariables.puReWeight = cms.bool(True)
 if ("data" in customize.processId):
     process.globalVariables.puReWeight = cms.bool(False)
-    process.dataRequirements += process.hltFilter
+#    process.dataRequirements += process.hltFilter
     process.dataRequirements += process.eeBadScFilter
 
+process.load("flashgg.Taggers.flashggPreselectedDiPhotons_cfi")
+process.flashggPreselectedDiPhotons.variables[-1] = "-(passElectronVeto - 1)"
+process.flashggPreselectedDiPhotons.src = cms.InputTag("flashggDiPhotonSystematics")
+
+process.load("flashgg/Taggers/flashggDiPhotonMVA_cfi")
+process.flashggDiPhotonMVA.DiPhotonTag = cms.InputTag("flashggPreselectedDiPhotons")
+
 process.load("flashgg.Taggers.diphotoMVAWithZeeDumper_cff")
+#process.DiPhotonWithZeeMVADumper.src = cms.InputTag("flashggDiPhotonSystematics")
 process.DiPhotonWithZeeMVADumper.dumpHistos = False
-process.DiPhotonWithZeeMVADumper.dumpTrees  =  True
+process.DiPhotonWithZeeMVADumper.dumpTrees  = True
 process.DiPhotonWithZeeMVADumper.dumpGlobalVariables = cms.untracked.bool(True)
 process.DiPhotonWithZeeMVADumper.globalVariables = process.globalVariables
 
 #process.load("flashgg.Taggers.photonDumper_cfi")
 
 process.load("flashgg.Taggers.diphotonDumper_cfi") 
-process.diphotonDumper.src = cms.InputTag("flashggDiPhotonSystematics")
+process.load("flashgg.Taggers.flashggPreselectedDiPhotons_cfi")
+process.diphotonDumper.rho = cms.InputTag("fixedGridRhoAll")
+process.diphotonDumper.src = cms.InputTag("flashggPreselectedDiPhotons")
+#process.diphotonDumper.src = cms.InputTag("flashggDiPhotonSystematics")
 #process.diphotonDumper.src = cms.InputTag("flashggUpdatedIdMVADiPhotons")
 #process.diphotonDumper.src = cms.InputTag("flashggDiPhotons")
 process.diphotonDumper.dumpHistos = False
@@ -84,7 +99,7 @@ cfgTools.addCategories(process.DiPhotonWithZeeMVADumper,
                        [("All","1", 0),],
                        variables=["dipho_mva:=mvaValue"],
                        histograms=["dipho_mva>>dipho_mva(100,-1,1)",]
-)
+                       )
 # split tree, histogram and datasets by process
 process.DiPhotonWithZeeMVADumper.nameTemplate ="zeevalidation_$SQRTS_$LABEL_$SUBCAT"
 
@@ -92,70 +107,48 @@ process.DiPhotonWithZeeMVADumper.nameTemplate ="zeevalidation_$SQRTS_$LABEL_$SUB
 cfgTools.addCategories(process.diphotonDumper,
                        ## categories definition
                        ## cuts are applied in cascade. Events getting to these categories have already failed the "Reject" selection
-                       [("All",
-"""
-(abs(leadingPhoton.superCluster.eta) < 2.5 && abs(subLeadingPhoton.superCluster.eta) < 2.5 && leadingPhoton.hasPixelSeed()==1) &&
-                                        (leadingPhoton.pt > 33) &&
-                                        (leadingPhoton.hadronicOverEm < 0.1) &&
-                                        ((leadingPhoton.full5x5_r9 > 0.5 && leadingPhoton.isEB) || (leadingPhoton.full5x5_r9 > 0.8 && leadingPhoton.isEE)) &&
-                                        ((subLeadingPhoton.full5x5_r9 > 0.5 && subLeadingPhoton.isEB) || (subLeadingPhoton.full5x5_r9 > 0.8 && subLeadingPhoton.isEE)) &&
-                                        ((leadingPhoton.isEB &&
-                                        (leadingPhoton.full5x5_r9>0.85 ||
-                                        (leadingPhoton.full5x5_sigmaIetaIeta < 0.015 && leadingPhoton.pfPhoIso03 < 4.0 && leadingPhoton.trkSumPtHollowConeDR03 < 6.0 ))) ||
-                                        (leadingPhoton.isEE &&
-                                        (leadingPhoton.full5x5_r9>0.9 ||
-                                        (leadingPhoton.full5x5_sigmaIetaIeta < 0.035 && leadingPhoton.pfPhoIso03 < 4.0 && leadingPhoton.trkSumPtHollowConeDR03 < 6.0 )))) &&
-                                        (leadingPhoton.pt > 14 && leadingPhoton.hadTowOverEm()<0.15 &&
-                                        (leadingPhoton.r9()>0.8 || leadingPhoton.chargedHadronIso()<20 || leadingPhoton.chargedHadronIso()<0.3*leadingPhoton.pt())) &&
-
-                         (abs(leadingPhoton.superCluster.eta) < 2.5 && abs(subLeadingPhoton.superCluster.eta) < 2.5 && subLeadingPhoton.hasPixelSeed()==1) &&
-                                          (subLeadingPhoton.pt > 25) && 
-                                          (subLeadingPhoton.hadronicOverEm < 0.1) &&
-                                          ((leadingPhoton.full5x5_r9 > 0.5 && leadingPhoton.isEB) || (leadingPhoton.full5x5_r9 > 0.8 && leadingPhoton.isEE)) &&
-                                          ((subLeadingPhoton.full5x5_r9 > 0.5 && subLeadingPhoton.isEB) || (subLeadingPhoton.full5x5_r9 > 0.8 && subLeadingPhoton.isEE)) &&
-                                          (( subLeadingPhoton.isEB &&
-                                          (subLeadingPhoton.full5x5_r9>0.85 ||
-                                          (subLeadingPhoton.full5x5_sigmaIetaIeta < 0.015 && subLeadingPhoton.pfPhoIso03 < 4.0 && subLeadingPhoton.trkSumPtHollowConeDR03 < 6.0 ))) ||
-                                          (subLeadingPhoton.isEE &&
-                                          (subLeadingPhoton.full5x5_r9>0.9 ||
-                                          (subLeadingPhoton.full5x5_sigmaIetaIeta < 0.035 && subLeadingPhoton.pfPhoIso03 < 6.0 && subLeadingPhoton.trkSumPtHollowConeDR03 < 6.0 )))) &&
-                                          (subLeadingPhoton.pt > 14 && subLeadingPhoton.hadTowOverEm()<0.15 &&
-                                          (subLeadingPhoton.r9()>0.8 || subLeadingPhoton.chargedHadronIso()<20 || subLeadingPhoton.chargedHadronIso()<0.3*subLeadingPhoton.pt()))
-
-""", 0)
+                       [("All","1", 0)
                         #("EB", "abs(superCluster.eta)<1.479", 0),
                         #("EE", "abs(superCluster.eta)>1.566",0)
                         ],
                        variables=["leadPhIso        := leadingPhoton.pfPhoIso03()",
                                   "leadNeuIso       := leadingPhoton.pfNeutIso03()",
-                                  "leadsieie        := leadingPhoton.full5x5_sigmaIetaIeta",
+                                  "leadfull5x5sieie := leadingPhoton.full5x5_sigmaIetaIeta",
+                                  "leadsieie        := leadingPhoton.sigmaIetaIeta",
                                   "leadcovieip      := leadingPhoton.sieip",
+                                  "leadcovipip      := leadingPhoton.sipip",
                                   "leadetawidth     := leadingPhoton.superCluster.etaWidth",
                                   "leadphiwidth     := leadingPhoton.superCluster.phiWidth",
                                   "leads4ratio      := leadingPhoton.s4",
-                                  "leadr9           := leadingPhoton.r9",
+                                  "leadr9           := leadingPhoton.old_r9",
                                   "leadfull5x5r9    := leadingPhoton.full5x5_r9",
+                                  "leadr9_5x5_by_3x3:= leadingPhoton.full5x5_r9/leadingPhoton.old_r9",
                                   "leadPt           := leadingPhoton.et",
                                   "leadEta          := leadingPhoton.eta",
                                   "leadIDMVA        := subLeadingView.phoIdMvaWrtChosenVtx()",
                                   "leadChIsoRv      := leadingView.pfChIso03WrtChosenVtx()",
                                   "leadChIsoWv      := leadingPhoton.pfChgIsoWrtWorstVtx03",
                                   "leadESSigma      := leadingPhoton.esEffSigmaRR",
+                                  "leadesEnovSCRawEn:= leadingPhoton.superCluster.preshowerEnergy()/leadingPhoton.superCluster.rawEnergy()",
                                   "subleadPhIso     := subLeadingPhoton.pfPhoIso03()",
-                                  "subLeadNeuIso    := subLeadingPhoton.pfNeutIso03()",
-                                  "subleadsieie     := subLeadingPhoton.full5x5_sigmaIetaIeta",
+                                  "subleadNeuIso    := subLeadingPhoton.pfNeutIso03()",
+                                  "subleadfull5x5sieie := subLeadingPhoton.full5x5_sigmaIetaIeta",
+                                  "subleadsieie     := subLeadingPhoton.sigmaIetaIeta",
                                   "subleadcovieip   := subLeadingPhoton.sieip",
+                                  "subleadcovipip   := subLeadingPhoton.sipip",
                                   "subleadetawidth  := subLeadingPhoton.superCluster.etaWidth",
                                   "subleadphiwidth  := subLeadingPhoton.superCluster.phiWidth",
                                   "subleads4ratio   := subLeadingPhoton.s4",
-                                  "subleadr9        := subLeadingPhoton.r9",
+                                  "subleadr9        := subLeadingPhoton.old_r9",
                                   "subleadfull5x5r9 := subLeadingPhoton.full5x5_r9",
+                                  "subleadr9_5x5_by_3x3:= subLeadingPhoton.full5x5_r9/subLeadingPhoton.old_r9",
                                   "subleadPt        := subLeadingPhoton.et",
                                   "subleadEta       := subLeadingPhoton.eta",
                                   "subIDMVA         := leadingView.phoIdMvaWrtChosenVtx()",
                                   "subleadChIsoRv   := subLeadingView.pfChIso03WrtChosenVtx()",
                                   "subleadChIsoWv   := subLeadingPhoton.pfChgIsoWrtWorstVtx03",
                                   "subleadESSigma   := subLeadingPhoton.esEffSigmaRR",
+                                  "subleadesEnovSCRawEn:= subLeadingPhoton.superCluster.preshowerEnergy()/subLeadingPhoton.superCluster.rawEnergy()",
                                   "mass[120,60,120] := mass", 
                                   "scEta            := leadingPhoton.superCluster.eta",
                                   "sigmaEoE1        := leadingPhoton.sigEOverE",
@@ -182,7 +175,7 @@ from flashgg.Systematics.SystematicsCustomize import *
 #customize.processId = 'Data' # for test
 
 ## apply shower shape corrections
-doUpdatedIdMVADiPhotons = False # set to True for 76X (for 80X shower shape corrections not yet available)
+doUpdatedIdMVADiPhotons = False # set to True for 80X corrections to be applied
 
 ## load syst producer
 process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
@@ -227,8 +220,8 @@ else:
 ############################
 
 process.load("flashgg.Taggers.flashggUpdatedIdMVADiPhotons_cfi")
-#process.p = cms.Path(process.dataRequirements*process.flashggDiPhotonMVA*process.DiPhotonWithZeeMVADumper*process.diphotonDumper)*process.flashggDiPhotonSystematics
-process.p = cms.Path(process.flashggUpdatedIdMVADiPhotons*process.flashggDiPhotonSystematics*process.dataRequirements*process.diphotonDumper)
+
+process.p = cms.Path(process.flashggUpdatedIdMVADiPhotons*process.flashggDiPhotonSystematics*process.dataRequirements*process.flashggPreselectedDiPhotons*process.flashggDiPhotonMVA*process.DiPhotonWithZeeMVADumper*process.diphotonDumper)
 #process.p = cms.Path(process.dataRequirements*process.diphotonDumper)
 
 
