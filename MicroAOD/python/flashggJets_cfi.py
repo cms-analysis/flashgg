@@ -10,7 +10,7 @@ from CondCore.DBCommon.CondDBSetup_cfi import *
 import os
 
 flashggBTag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
-maxJetCollections = 8
+maxJetCollections = 10
 #qgDatabaseVersion = 'v1' # check https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
 qgDatabaseVersion = '80X'
 
