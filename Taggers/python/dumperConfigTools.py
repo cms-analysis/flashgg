@@ -71,7 +71,7 @@ def parseVariable(expr, name):
         var, bins, vals = expr.lstrip("map(").rstrip(")").split("::")
         bins = [ float(b) for b in bins.split(",") ]
         vals = [ float(v) for v in vals.split(",") ]
-        return name, [var,bins, vals], nbins, vmin, vmax
+        return name, [var,bins, vals], None, None, None
     else:
         return name, [expr], None, None, None
     
