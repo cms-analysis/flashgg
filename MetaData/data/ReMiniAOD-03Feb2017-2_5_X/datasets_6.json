@@ -67802,6 +67802,43 @@
                 "nevents": 13595, 
                 "totEvents": 13595, 
                 "weights": 13595
+            }, 
+            {
+                "bad": false, 
+                "events": 10290, 
+                "lumis": {
+                    "278822": [
+                        191, 
+                        192, 
+                        193, 
+                        997, 
+                        998, 
+                        999, 
+                        1000, 
+                        1001, 
+                        1002, 
+                        1003, 
+                        1004, 
+                        1005, 
+                        1006, 
+                        1007, 
+                        1258, 
+                        1259, 
+                        1260, 
+                        1261, 
+                        1262, 
+                        1263, 
+                        1264, 
+                        1265, 
+                        1266, 
+                        1267, 
+                        1268
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/ReMiniAOD-03Feb2017-2_5_1/2_5_1/DoubleMuon/ReMiniAOD-03Feb2017-2_5_1-2_5_1-v0-Run2016G-03Feb2017-v1/170214_133316/0001/myMicroAODOutputFile_1352.root", 
+                "nevents": 10290, 
+                "totEvents": 10290, 
+                "weights": 10290
             }
         ], 
         "vetted": false
