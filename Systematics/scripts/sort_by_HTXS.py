@@ -28,6 +28,7 @@ wss = {}
 
 for cat in relevantstage0cats:
    wss[cat] = RooWorkspace("cms_hgg_13TeV","cms_hgg_13TeV")
+   getattr(wss[cat],'import')(_ws.var("IntLumi"))
 
 for ds in _data:
    initw = ds.sumEntries()
