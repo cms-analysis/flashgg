@@ -262,6 +262,9 @@ print "------------------------------------------------------------"
 #cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags)
 cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags)
 
+# Dump an object called NoTag for untagged events in order to track QCD weights
+# Will be broken if it's done for non-central values, so turn this on only for the non-syst tag sorter
+process.flashggTagSorter.CreateNoTag = True # MUST be after tag sequence cloning
 
 ###### Dumper section
 
@@ -342,6 +345,7 @@ elif customize.tthTagsOnly:
         ]
 else:
     tagList=[
+        ["NoTag",0],
         ["UntaggedTag",4],
         ["VBFTag",3],
         ["ZHLeptonicTag",0],
@@ -374,7 +378,8 @@ for tag in tagList:
               currentVariables = systematicVariablesHTXS
           else:    
               currentVariables = systematicVariables
-      
+      if tagName == "NoTag":
+          currentVariables = []
       isBinnedOnly = (systlabel !=  "")
       if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") ) and (systlabel ==  ""):
           print "Signal MC central value, so dumping PDF weights"

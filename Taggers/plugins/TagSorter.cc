@@ -15,6 +15,8 @@
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
 #include "flashgg/DataFormats/interface/VBFTag.h"
+#include "flashgg/DataFormats/interface/NoTag.h"
+
 
 #include "TMVA/Reader.h"
 #include "TMath.h"
@@ -68,6 +70,8 @@ namespace flashgg {
         bool storeOtherTagInfo_;
         bool blindedSelectionPrintout_;
 
+        bool createNoTag_;
+
         std::vector<std::tuple<DiPhotonTagBase::tag_t,int,int> > otherTags_; // (type,category,diphoton index)
 
         string tagName(DiPhotonTagBase::tag_t) const;
@@ -88,6 +92,7 @@ namespace flashgg {
         debug_ = iConfig.getUntrackedParameter<bool>( "Debug", false );
         storeOtherTagInfo_ = iConfig.getParameter<bool>( "StoreOtherTagInfo" );
         blindedSelectionPrintout_ = iConfig.getParameter<bool>("BlindedSelectionPrintout");
+        createNoTag_ = iConfig.getParameter<bool>("CreateNoTag");
 
         const auto &vpset = iConfig.getParameterSetVector( "TagPriorityRanges" );
 
@@ -292,6 +297,9 @@ namespace flashgg {
         }
 
         assert( SelectedTag->size() == 1 || SelectedTag->size() == 0 );
+        if (createNoTag_ && SelectedTag->size() == 0) {
+            SelectedTag->push_back(NoTag());
+        }
         evt.put( SelectedTag );
         evt.put( SelectedTagTruth );
     }
