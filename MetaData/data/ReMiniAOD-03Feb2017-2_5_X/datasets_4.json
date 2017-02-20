@@ -29878,6 +29878,192 @@
                 "nevents": 45314, 
                 "totEvents": 45314, 
                 "weights": 45314
+            }, 
+            {
+                "bad": false, 
+                "events": 33695, 
+                "lumis": {
+                    "275913": [
+                        212, 
+                        325
+                    ], 
+                    "275918": [
+                        12
+                    ], 
+                    "275920": [
+                        99, 
+                        120, 
+                        125
+                    ], 
+                    "275923": [
+                        39
+                    ], 
+                    "275931": [
+                        5
+                    ], 
+                    "276092": [
+                        91, 
+                        92, 
+                        125
+                    ], 
+                    "276097": [
+                        87, 
+                        342, 
+                        10
+                    ], 
+                    "276242": [
+                        573, 
+                        576, 
+                        831, 
+                        862, 
+                        1018, 
+                        1211, 
+                        1317, 
+                        1044, 
+                        1272, 
+                        1363, 
+                        1377
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/ReMiniAOD-03Feb2017-2_5_1/2_5_1/SingleElectron/ReMiniAOD-03Feb2017-2_5_1-2_5_1-v0-Run2016C-03Feb2017-v1/170214_121334/0000/myMicroAODOutputFile_204.root", 
+                "nevents": 33695, 
+                "totEvents": 33695, 
+                "weights": 33695
+            }, 
+            {
+                "bad": false, 
+                "events": 37632, 
+                "lumis": {
+                    "276244": [
+                        490, 
+                        551, 
+                        643, 
+                        741, 
+                        888
+                    ], 
+                    "276282": [
+                        988, 
+                        328, 
+                        532, 
+                        777, 
+                        583, 
+                        977, 
+                        620, 
+                        1034, 
+                        623, 
+                        671, 
+                        979, 
+                        1050, 
+                        1005, 
+                        1038, 
+                        1010
+                    ], 
+                    "276283": [
+                        10, 
+                        40, 
+                        159, 
+                        295, 
+                        320
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/ReMiniAOD-03Feb2017-2_5_1/2_5_1/SingleElectron/ReMiniAOD-03Feb2017-2_5_1-2_5_1-v0-Run2016C-03Feb2017-v1/170214_121334/0000/myMicroAODOutputFile_276.root", 
+                "nevents": 37632, 
+                "totEvents": 37632, 
+                "weights": 37632
+            }, 
+            {
+                "bad": false, 
+                "events": 43499, 
+                "lumis": {
+                    "276282": [
+                        269, 
+                        277, 
+                        603, 
+                        611, 
+                        614, 
+                        638, 
+                        639, 
+                        879, 
+                        925, 
+                        994, 
+                        1016, 
+                        144, 
+                        162, 
+                        401, 
+                        308, 
+                        592, 
+                        325, 
+                        330, 
+                        387, 
+                        407, 
+                        398, 
+                        403, 
+                        436
+                    ], 
+                    "276283": [
+                        255, 
+                        471
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/ReMiniAOD-03Feb2017-2_5_1/2_5_1/SingleElectron/ReMiniAOD-03Feb2017-2_5_1-2_5_1-v0-Run2016C-03Feb2017-v1/170214_121334/0000/myMicroAODOutputFile_284.root", 
+                "nevents": 43499, 
+                "totEvents": 43499, 
+                "weights": 43499
+            }, 
+            {
+                "bad": false, 
+                "events": 39626, 
+                "lumis": {
+                    "275772": [
+                        28, 
+                        31
+                    ], 
+                    "275773": [
+                        1
+                    ], 
+                    "275777": [
+                        51
+                    ], 
+                    "275782": [
+                        31
+                    ], 
+                    "275836": [
+                        444
+                    ], 
+                    "275837": [
+                        684
+                    ], 
+                    "275847": [
+                        1160, 
+                        1719, 
+                        2083
+                    ], 
+                    "275890": [
+                        19, 
+                        28, 
+                        59, 
+                        29, 
+                        172, 
+                        72
+                    ], 
+                    "276097": [
+                        140, 
+                        141, 
+                        153, 
+                        152, 
+                        159, 
+                        278, 
+                        335
+                    ], 
+                    "276242": [
+                        1016, 
+                        1190
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/ReMiniAOD-03Feb2017-2_5_1/2_5_1/SingleElectron/ReMiniAOD-03Feb2017-2_5_1-2_5_1-v0-Run2016C-03Feb2017-v1/170214_121334/0000/myMicroAODOutputFile_349.root", 
+                "nevents": 39626, 
+                "totEvents": 39626, 
+                "weights": 39626
             }
         ], 
         "vetted": false
