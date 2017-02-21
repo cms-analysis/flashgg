@@ -1,7 +1,7 @@
 # NB this command is specific to the configuration on lxplus and is not gaurenteed elsewhere
 #outdir="/afs/cern.ch/work/s/sethzenz/ws/" # can't set absolute path on lsf because we're expecting to stage
-queue="long.q"
-useAAA=0
+queue="short.q"
+useAAA=1
 #atIC=0 # only effect is setting eos path
 version="data_differential"
 LM=/mnt/t3nfs01/data01/shome/vtavolar/Flashgg/80forsigmaMdecorr/clean80/CMSSW_8_0_8_patch1/src/flashgg/Systematics/test/Cert_271036-276811_13TeV_PromptReco_Collisions16_JSON.txt
