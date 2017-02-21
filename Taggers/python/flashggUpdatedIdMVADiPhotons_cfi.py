@@ -30,5 +30,8 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
                                               doNon5x5transformation   = cms.bool(False),
                                               non5x5correctionFile     = cms.FileInPath("flashgg/MicroAOD/data/transformation_Moriond17_non5x5_v1.root"),
 
-                                              Debug                    = cms.bool(False)
+                                              Debug                    = cms.bool(False),
+
+                                              doIsoCorrection = cms.bool(True),
+                                              isoCorrectionFile = cms.FileInPath("flashgg/Taggers/data/corrections_hybrid.root")
                                               )
