@@ -136,7 +136,8 @@ if customize.doFiducial:
     fc.isoCut = 10.
     fc.etaCut = 2.5
     matchCut = "leadingPhoton.hasMatchedGenPhoton() && subLeadingPhoton.hasMatchedGenPhoton()"
-    phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >0.320 && subLeadingView().phoIdMvaWrtChosenVtx() >0.320)'
+#    phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >0.320 && subLeadingView().phoIdMvaWrtChosenVtx() >0.320)'#remove it for further studies
+    phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >-1. && subLeadingView().phoIdMvaWrtChosenVtx() >-1.)'
     accCut   = fc.getAccRecoCut()
     
     print process.flashggPreselectedDiPhotons.cut
@@ -155,16 +156,16 @@ if customize.doFiducial:
 
 process.load("flashgg/Taggers/flashggTagSequence_cfi")
 process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
-
+process.load("flashgg/Taggers/flashggTags_cff")
 # needed for 0th vertex from microAOD
 if customize.tthTagsOnly:
     process.flashggDiPhotons.whichVertex = cms.uint32(0)
     process.flashggDiPhotons.useZerothVertexFromMicro = cms.bool(True)
 
-process.load("flashgg/Taggers/flashggTagSequence_cfi")
-print 'here we print the tag sequence before'
 print process.flashggTagSequence
 if customize.doFiducial:
+    process.flashggDiPhotonMVA.sigmaMdecorrFile = cms.FileInPath("flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_Moriond17_Mgg100to180.root") 
+    process.flashggSigmaMoMpToMTag.BoundariesSigmaMoM  = cms.vdouble(0.,0.00866,0.0118,0.0298) ##corrected looking at data distribution
     from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet,massSearchReplaceAnyInputTag
     process.flashggTagSequence.remove(process.flashggVBFTag)
     #process.flashggTagSequence.remove(process.flashggTTHDiLeptonTag)
@@ -240,8 +241,8 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
         variablesToUse.extend(fc.getRecoVariables(True))
 ##        variablesToUse.append("genLeadGenIso := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
 ##        variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
-##        variablesToUse.append("leadmva := diPhotonMVA().leadmva")
-##        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
+        variablesToUse.append("leadmva := diPhotonMVA().leadmva")
+        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
 #        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
         
     if customize.doSystematics and customize.doFiducial:
@@ -249,8 +250,8 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
         systematicVariables.extend(fc.getRecoVariables(True))
 #        systematicVariables.append("genLeadGenIso[1,0.0,100.0] := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
 #        systematicVariables.append("decorrSigmarv[1,0.0,0.10] := diPhotonMVA().decorrSigmarv")
-#        systematicVariables.append("leadmva[2,-1.0,1.0] := diPhotonMVA().leadmva")
-#        systematicVariables.append("subleadmva[2,-1.0,1.0] := diPhotonMVA().subleadmva")
+        systematicVariables.append("leadmva[200,-1.0,1.0] := diPhotonMVA().leadmva")
+        systematicVariables.append("subleadmva[200,-1.0,1.0] := diPhotonMVA().subleadmva")
         
     if customize.doSystematics:
         for direction in ["Up","Down"]:
@@ -304,6 +305,8 @@ elif customize.processId == "Data":
     variablesToUse = minimalNonSignalVariables
     if customize.doFiducial:
         variablesToUse.extend(fc.getRecoVariables(True))
+        variablesToUse.append("leadmva := diPhotonMVA().leadmva")
+        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
     customizeSystematicsForData(process)
 else:
     print "Background MC, so store mgg and central only"
