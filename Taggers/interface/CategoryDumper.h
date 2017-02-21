@@ -243,8 +243,7 @@ namespace flashgg {
         auto globalExtraFloatNames = globalVarsDumper_->getExtraFloatNames();
         for( auto &extraFloatName : globalExtraFloatNames ) {
             //            std::cout<<"adding wrapper for extra float variable "<<extraFloatName<<std::endl; 
-//            auto name = mva.getUntrackedParameter<string>( "name" );
-
+            //            auto name = mva.getUntrackedParameter<string>( "name" );
             auto nbins = globalVarsDumper_->getExtraFloatNBin(extraFloatName) ;//100;
             auto vmin =   globalVarsDumper_->getExtraFloatVmin(extraFloatName) ;//numeric_limits<double>::lowest();
             auto vmax =   globalVarsDumper_->getExtraFloatVmax(extraFloatName) ;//numeric_limits<double>::max();   
