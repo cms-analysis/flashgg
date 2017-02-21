@@ -233,7 +233,7 @@ namespace flashgg {
                 }
             }
 
-            if ( _doIsoCorrection ) {
+            if (not evt.isRealData() and  _doIsoCorrection ) {
                 float lead_iso = new_obj->getLeadingPhoton().pfPhoIso03();
                 float sublead_iso = new_obj->getSubLeadingPhoton().pfPhoIso03();
                 float lead_eta = new_obj->getLeadingPhoton().superCluster()->eta();
