@@ -1,8 +1,8 @@
 # NB this command is specific to the configuration on lxplus and is not gaurenteed elsewhere
 #outdir="/afs/cern.ch/work/s/sethzenz/ws/" # can't set absolute path on lsf because we're expecting to stage
-queue="long.q"
-useAAA=0
+queue="short.q"
+useAAA=1
 #atIC=0 # only effect is setting eos path
-version="data_differential"
-LM=/mnt/t3nfs01/data01/shome/vtavolar/Flashgg/80forsigmaMdecorr/clean80/CMSSW_8_0_8_patch1/src/flashgg/Systematics/test/Cert_271036-276811_13TeV_PromptReco_Collisions16_JSON.txt
-fggRunJobs.py --load data_jobs_differential.json  --no-copy-proxy -d data_jobs_$version -x cmsRun workspaceStd.py maxEvents=-1 -n 200 -q $queue -D -P useAAA=$useAAA  doFiducial=True acceptance=NONE lumiMask=${LM}  puTarget=5.05e+03,2.41e+05,7.83e+05,1.74e+06,2.37e+06,3.41e+06,6.12e+06,2.43e+07,6.78e+07,1.45e+08,2.57e+08,4.06e+08,5.63e+08,7.06e+08,8.41e+08,9.54e+08,1.03e+09,1.06e+09,1.06e+09,1.02e+09,9.47e+08,8.51e+08,7.41e+08,6.19e+08,4.93e+08,3.72e+08,2.67e+08,1.82e+08,1.18e+08,7.18e+07,4.13e+07,2.24e+07,1.15e+07,5.57e+06,2.56e+06,1.12e+06,4.7e+05,1.92e+05,7.78e+04,3.3e+04,1.61e+04,9.87e+03,7.67e+03,6.92e+03,6.66e+03,6.56e+03,6.49e+03,6.4e+03,6.28e+03,6.12e+03
+version="data_differential_moriond17_reminiaod"
+LM=/mnt/t3nfs01/data01/shome/vtavolar/Flashgg/clean8025/CMSSW_8_0_25/src/flashgg/Systematics/test/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+fggRunJobs.py --load jobs_diphoMVA_Moriond17_reMiniAOD_data.json  --no-copy-proxy -d data_jobs_$version -x cmsRun workspaceStd.py maxEvents=-1 -n 200 -q $queue -D -P useAAA=$useAAA  doFiducial=True acceptance=NONE lumiMask=${LM}
