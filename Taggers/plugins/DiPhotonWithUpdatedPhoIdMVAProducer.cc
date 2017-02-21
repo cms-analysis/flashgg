@@ -9,6 +9,7 @@
 #include "flashgg/MicroAOD/interface/PhotonIdUtils.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
+#include "flashgg/Taggers/src/IsolationCorrection.C"
 
 #include "TFile.h"
 #include "TGraph.h"
@@ -43,6 +44,9 @@ namespace flashgg {
         EffectiveAreas _effectiveAreas;
         vector<double> _phoIsoPtScalingCoeff;
         double _phoIsoCutoff;
+
+        bool _doIsoCorrection;
+        unique_ptr<IsolationCorrection> _isoCorrector;
     };
 
     DiPhotonWithUpdatedPhoIdMVAProducer::DiPhotonWithUpdatedPhoIdMVAProducer( const edm::ParameterSet &ps ) :
@@ -51,8 +55,12 @@ namespace flashgg {
         debug_( ps.getParameter<bool>( "Debug" ) ),
         _effectiveAreas((ps.getParameter<edm::FileInPath>("effAreasConfigFile")).fullPath()),
         _phoIsoPtScalingCoeff(ps.getParameter<std::vector<double >>("phoIsoPtScalingCoeff")),
-        _phoIsoCutoff(ps.getParameter<double>("phoIsoCutoff"))
+        _phoIsoCutoff(ps.getParameter<double>("phoIsoCutoff")),
+        _doIsoCorrection(ps.getParameter<bool>("doIsoCorrection"))
     {
+        if (_doIsoCorrection) {
+            _isoCorrector = make_unique<IsolationCorrection>(ps.getParameter<edm::FileInPath>("isoCorrectionFile").fullPath().c_str());
+        }
 
         useNewPhoId_ = ps.getParameter<bool>( "useNewPhoId" );
         phoIdMVAweightfileEB_ = ps.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EB" );
@@ -183,7 +191,6 @@ namespace flashgg {
                     new_obj->getLeadingPhoton().setShowerShapeVariables(non5x5ShowerShapes);
                     new_obj->getLeadingPhoton().setSipip(non5x5corrections_[4]->Eval(new_obj->getLeadingPhoton().sipip()));
                     new_obj->getLeadingPhoton().setSieip(non5x5corrections_[6]->Eval(new_obj->getLeadingPhoton().sieip()));
-
                     if (this->debug_) {
                         std::cout << new_obj->getLeadingPhoton().full5x5_r9() << std::endl;
                         std::cout << new_obj->getLeadingPhoton().old_r9() << std::endl;
@@ -210,7 +217,6 @@ namespace flashgg {
                     new_obj->getLeadingPhoton().setShowerShapeVariables(non5x5ShowerShapes);
                     new_obj->getLeadingPhoton().setSipip(non5x5corrections_[5]->Eval(new_obj->getLeadingPhoton().sipip()));
                     new_obj->getLeadingPhoton().setSieip(non5x5corrections_[7]->Eval(new_obj->getLeadingPhoton().sieip()));
-
                     if (this->debug_) {
                         std::cout << new_obj->getLeadingPhoton().full5x5_r9() << std::endl;
                         std::cout << new_obj->getLeadingPhoton().old_r9() << std::endl;
@@ -224,6 +230,25 @@ namespace flashgg {
                     new_obj->getSubLeadingPhoton().setShowerShapeVariables(non5x5ShowerShapes);
                     new_obj->getSubLeadingPhoton().setSipip(non5x5corrections_[5]->Eval(new_obj->getSubLeadingPhoton().sipip()));
                     new_obj->getSubLeadingPhoton().setSieip(non5x5corrections_[7]->Eval(new_obj->getSubLeadingPhoton().sieip()));
+                }
+            }
+
+            if ( _doIsoCorrection ) {
+                float lead_iso = new_obj->getLeadingPhoton().pfPhoIso03();
+                float sublead_iso = new_obj->getSubLeadingPhoton().pfPhoIso03();
+                float lead_eta = new_obj->getLeadingPhoton().superCluster()->eta();
+                float sublead_eta = new_obj->getSubLeadingPhoton().superCluster()->eta();
+                if (this->debug_) {
+                    std::cout << "Doing Iso correction to lead (sublead) photon with eta,rho,iso: " << lead_eta << ", " << rhoFixedGrd << ", " << lead_iso;
+                    std::cout << " (" << sublead_eta << ", " << rhoFixedGrd << ", " << sublead_iso << ")" << std::endl;
+                }
+                float extra_lead = _isoCorrector->getExtra(fabs(lead_eta),rhoFixedGrd);
+                float extra_sublead = _isoCorrector->getExtra(fabs(sublead_eta),rhoFixedGrd);
+                new_obj->getLeadingPhoton().setpfPhoIso03(lead_iso+extra_lead);
+                new_obj->getSubLeadingPhoton().setpfPhoIso03(sublead_iso+extra_sublead);
+                if (this->debug_) {
+                    std::cout << " Final iso value for lead (sublead) photon: " << new_obj->getLeadingPhoton().pfPhoIso03() << " (" 
+                              << new_obj->getSubLeadingPhoton().pfPhoIso03() << ")" << std::endl;
                 }
             }
 
