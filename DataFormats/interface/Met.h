@@ -19,6 +19,8 @@ namespace flashgg {
         
         void setCorPx(float mPx);
         void setCorPy(float mPy);
+        void setCorPt(float mPt);
+        void setCorPhi(float mPhi);
         float getCorPx() const;
         float getCorPy() const;
         float getCorPhi() const;

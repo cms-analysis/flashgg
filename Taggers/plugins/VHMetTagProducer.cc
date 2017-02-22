@@ -300,7 +300,7 @@ namespace flashgg {
             if(fabs(deltaPhi(theMET->corPhi(),dipho->phi()))<dPhiDiphotonMetThreshold_)   { continue;}
             if(tagJets.size())
                 if(fabs(deltaPhi(dipho->phi(),tagJets[0]->phi()))>deltaPhiJetMetThreshold_)    {continue;}
-            if(theMET->corPt()< metPtThreshold_ )   {continue;}
+            if(theMET->getCorPt()< metPtThreshold_ )   {continue;}
 
             
             
