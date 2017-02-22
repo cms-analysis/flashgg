@@ -187,10 +187,10 @@ namespace flashgg {
                     }
                     reco::Photon::ShowerShape non5x5ShowerShapes = new_obj->getLeadingPhoton().showerShapeVariables();
                     non5x5ShowerShapes.e3x3 = non5x5corrections_[0]->Eval(new_obj->getLeadingPhoton().old_r9())*new_obj->getLeadingPhoton().superCluster()->rawEnergy();
-                    non5x5ShowerShapes.sigmaIetaIeta = non5x5corrections_[2]->Eval(new_obj->getLeadingPhoton().sigmaIetaIeta());
+                    non5x5ShowerShapes.sigmaIetaIeta = non5x5corrections_[2]->Eval(new_obj->getLeadingPhoton().showerShapeVariables().sigmaIetaIeta);
+                    non5x5ShowerShapes.sigmaIphiIphi = non5x5corrections_[4]->Eval(new_obj->getLeadingPhoton().showerShapeVariables().sigmaIphiIphi);
+                    non5x5ShowerShapes.sigmaIetaIphi = non5x5corrections_[6]->Eval(new_obj->getLeadingPhoton().showerShapeVariables().sigmaIetaIphi);
                     new_obj->getLeadingPhoton().setShowerShapeVariables(non5x5ShowerShapes);
-                    new_obj->getLeadingPhoton().setSipip(non5x5corrections_[4]->Eval(new_obj->getLeadingPhoton().sipip()));
-                    new_obj->getLeadingPhoton().setSieip(non5x5corrections_[6]->Eval(new_obj->getLeadingPhoton().sieip()));
                     if (this->debug_) {
                         std::cout << new_obj->getLeadingPhoton().full5x5_r9() << std::endl;
                         std::cout << new_obj->getLeadingPhoton().old_r9() << std::endl;
@@ -200,10 +200,10 @@ namespace flashgg {
                 if (new_obj->getSubLeadingPhoton().isEB()) {
                     reco::Photon::ShowerShape non5x5ShowerShapes = new_obj->getSubLeadingPhoton().showerShapeVariables();
                     non5x5ShowerShapes.e3x3 = non5x5corrections_[0]->Eval(new_obj->getSubLeadingPhoton().old_r9())*new_obj->getSubLeadingPhoton().superCluster()->rawEnergy();
-                    non5x5ShowerShapes.sigmaIetaIeta = non5x5corrections_[2]->Eval(new_obj->getSubLeadingPhoton().sigmaIetaIeta());
+                    non5x5ShowerShapes.sigmaIetaIeta = non5x5corrections_[2]->Eval(new_obj->getSubLeadingPhoton().showerShapeVariables().sigmaIetaIeta);
+                    non5x5ShowerShapes.sigmaIphiIphi = non5x5corrections_[4]->Eval(new_obj->getSubLeadingPhoton().showerShapeVariables().sigmaIphiIphi);
+                    non5x5ShowerShapes.sigmaIetaIphi = non5x5corrections_[6]->Eval(new_obj->getSubLeadingPhoton().showerShapeVariables().sigmaIetaIphi);
                     new_obj->getSubLeadingPhoton().setShowerShapeVariables(non5x5ShowerShapes);
-                    new_obj->getSubLeadingPhoton().setSipip(non5x5corrections_[4]->Eval(new_obj->getSubLeadingPhoton().sipip()));
-                    new_obj->getSubLeadingPhoton().setSieip(non5x5corrections_[6]->Eval(new_obj->getSubLeadingPhoton().sieip()));
                 }
 
                 if (new_obj->getLeadingPhoton().isEE()) {
@@ -213,10 +213,10 @@ namespace flashgg {
                     }
                     reco::Photon::ShowerShape non5x5ShowerShapes = new_obj->getLeadingPhoton().showerShapeVariables();
                     non5x5ShowerShapes.e3x3 = non5x5corrections_[1]->Eval(new_obj->getLeadingPhoton().old_r9())*new_obj->getLeadingPhoton().superCluster()->rawEnergy();
-                    non5x5ShowerShapes.sigmaIetaIeta = non5x5corrections_[3]->Eval(new_obj->getLeadingPhoton().sigmaIetaIeta());
+                    non5x5ShowerShapes.sigmaIetaIeta = non5x5corrections_[3]->Eval(new_obj->getLeadingPhoton().showerShapeVariables().sigmaIetaIeta);
+                    non5x5ShowerShapes.sigmaIphiIphi = non5x5corrections_[5]->Eval(new_obj->getLeadingPhoton().showerShapeVariables().sigmaIphiIphi);
+                    non5x5ShowerShapes.sigmaIetaIphi = non5x5corrections_[7]->Eval(new_obj->getLeadingPhoton().showerShapeVariables().sigmaIetaIphi);
                     new_obj->getLeadingPhoton().setShowerShapeVariables(non5x5ShowerShapes);
-                    new_obj->getLeadingPhoton().setSipip(non5x5corrections_[5]->Eval(new_obj->getLeadingPhoton().sipip()));
-                    new_obj->getLeadingPhoton().setSieip(non5x5corrections_[7]->Eval(new_obj->getLeadingPhoton().sieip()));
                     if (this->debug_) {
                         std::cout << new_obj->getLeadingPhoton().full5x5_r9() << std::endl;
                         std::cout << new_obj->getLeadingPhoton().old_r9() << std::endl;
@@ -226,10 +226,10 @@ namespace flashgg {
                 if (new_obj->getSubLeadingPhoton().isEE()) {
                     reco::Photon::ShowerShape non5x5ShowerShapes = new_obj->getSubLeadingPhoton().showerShapeVariables();
                     non5x5ShowerShapes.e3x3 = non5x5corrections_[1]->Eval(new_obj->getSubLeadingPhoton().old_r9())*new_obj->getSubLeadingPhoton().superCluster()->rawEnergy();
-                    non5x5ShowerShapes.sigmaIetaIeta = non5x5corrections_[3]->Eval(new_obj->getSubLeadingPhoton().sigmaIetaIeta());
+                    non5x5ShowerShapes.sigmaIetaIeta = non5x5corrections_[3]->Eval(new_obj->getSubLeadingPhoton().showerShapeVariables().sigmaIetaIeta);
+                    non5x5ShowerShapes.sigmaIphiIphi = non5x5corrections_[5]->Eval(new_obj->getSubLeadingPhoton().showerShapeVariables().sigmaIphiIphi);
+                    non5x5ShowerShapes.sigmaIetaIphi = non5x5corrections_[7]->Eval(new_obj->getSubLeadingPhoton().showerShapeVariables().sigmaIetaIphi);
                     new_obj->getSubLeadingPhoton().setShowerShapeVariables(non5x5ShowerShapes);
-                    new_obj->getSubLeadingPhoton().setSipip(non5x5corrections_[5]->Eval(new_obj->getSubLeadingPhoton().sipip()));
-                    new_obj->getSubLeadingPhoton().setSieip(non5x5corrections_[7]->Eval(new_obj->getSubLeadingPhoton().sieip()));
                 }
             }
 
@@ -251,12 +251,19 @@ namespace flashgg {
                               << new_obj->getSubLeadingPhoton().pfPhoIso03() << ")" << std::endl;
                 }
             }
-
+            double eA_leadPho = _effectiveAreas.getEffectiveArea( abs(new_obj->getLeadingPhoton().superCluster()->eta()) );
+            double eA_subLeadPho = _effectiveAreas.getEffectiveArea( abs(new_obj->getSubLeadingPhoton().superCluster()->eta()) );
+            
+            float leadpfPhoIso03Corr = phoTools_.computeCorrectPhoIso( new_obj->getLeadingPhoton(), rhoFixedGrd,  eA_leadPho, _phoIsoPtScalingCoeff, _phoIsoCutoff);
+            new_obj->getLeadingPhoton().setpfPhoIso03Corr(leadpfPhoIso03Corr);
+            float subleadpfPhoIso03Corr = phoTools_.computeCorrectPhoIso( new_obj->getSubLeadingPhoton(), rhoFixedGrd,  eA_leadPho, _phoIsoPtScalingCoeff, _phoIsoCutoff);
+            new_obj->getSubLeadingPhoton().setpfPhoIso03Corr(subleadpfPhoIso03Corr);
+            if (this->debug_) {
+                std::cout << "Isolation notcorr (corr) for lead, sublead" << new_obj->getLeadingPhoton().pfPhoIso03() << "," << new_obj->getSubLeadingPhoton().pfPhoIso03() << "(" << new_obj->getLeadingPhoton().pfPhoIso03Corr() << "," << new_obj->getSubLeadingPhoton().pfPhoIso03Corr() << ")" << std::endl;
+            }
             if (this->debug_) {
                 std::cout << " Input DiPhoton lead (sublead) MVA: " << obj.leadPhotonId() << " " << obj.subLeadPhotonId() << std::endl;
             }
-            double eA_leadPho = _effectiveAreas.getEffectiveArea( abs(new_obj->getLeadingPhoton().superCluster()->eta()) );
-            double eA_subLeadPho = _effectiveAreas.getEffectiveArea( abs(new_obj->getSubLeadingPhoton().superCluster()->eta()) );
             
             float newleadmva = phoTools_.computeMVAWrtVtx( new_obj->getLeadingPhoton(), new_obj->vtx(), rhoFixedGrd, leadCorrectedEtaWidth, eA_leadPho, _phoIsoPtScalingCoeff, _phoIsoCutoff );
             new_obj->getLeadingPhoton().setPhoIdMvaWrtVtx( new_obj->vtx(), newleadmva);
