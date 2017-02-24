@@ -371,7 +371,7 @@ namespace flashgg {
             for( unsigned int jetIndex = 0; jetIndex < Jets[jetCollectionIndex]->size() ; jetIndex++ ) {
                 edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( jetIndex );
                 if( fabs( thejet->eta() ) > jetEtaThreshold_ ) { continue; }
-                
+                if(!thejet->passesJetID  ( flashgg::Loose ) ) { continue; }
                 float dRPhoLeadJet = deltaR( thejet->eta(), thejet->phi(), dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi() ) ;
                 float dRPhoSubLeadJet = deltaR( thejet->eta(), thejet->phi(), dipho->subLeadingPhoton()->superCluster()->eta(),
                                                 dipho->subLeadingPhoton()->superCluster()->phi() );

@@ -258,7 +258,7 @@ namespace flashgg {
 
                 edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( ijet );
                 
-                if( !thejet->passesPuJetId( dipho ) )           { continue; }
+                if(!thejet->passesJetID  ( flashgg::Loose ) ) { continue; }
                 if( fabs( thejet->eta() ) > jetEtaThreshold_ )  { continue; }
                 if( thejet->pt() < jetPtThreshold_ )            { continue; }
 

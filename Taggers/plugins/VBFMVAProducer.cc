@@ -241,12 +241,13 @@ namespace flashgg {
                     //std::cout << "VBFTagMVA::DEBUG  making the pujid --> "<< _pujid_wp_pt_bin_1.size() << std::endl;
                     bool pass=false;
                     for (UInt_t eta_bin=0; eta_bin < _pujid_wp_pt_bin_1.size(); eta_bin++ ){
-                        //std::cout << " eta-bin["<< eta_bin<< "] == " << eta_cuts_[eta_bin].first << "  :: "
-                        //          << eta_cuts_[eta_bin].second
-                        //          << " pt1: " << _pujid_wp_pt_bin_1[eta_bin]
-                        //          << " pt2: " << _pujid_wp_pt_bin_2[eta_bin]
-                        //          << " pt3: " << _pujid_wp_pt_bin_3[eta_bin]
-                        //          << std::endl;
+                        //                        std::cout << inputTagJets_[0] 
+                        //        << " eta-bin["<< eta_bin<< "] == " << eta_cuts_[eta_bin].first << "  :: "
+                        //        << eta_cuts_[eta_bin].second
+                        //        << " pt1: " << _pujid_wp_pt_bin_1[eta_bin]
+                        //        << " pt2: " << _pujid_wp_pt_bin_2[eta_bin]
+                        //        << " pt3: " << _pujid_wp_pt_bin_3[eta_bin]
+                        //        << std::endl;
                         if ( fabs( jet->eta() ) >  eta_cuts_[eta_bin].first &&
                              fabs( jet->eta() ) <= eta_cuts_[eta_bin].second){
                             if ( jet->pt() >  20 &&
@@ -261,7 +262,7 @@ namespace flashgg {
                             if (jet->pt() > 100) pass = true;
                         }
                     }
-                    //std::cout << "\t pt="<< jet->pt() << " :eta: "<< jet->eta() << " :mva: "<< jet->puJetIdMVA() << "  pass == " << pass << std::endl;
+                    //                    std::cout << inputTagJets_[0] << " pt="<< jet->pt() << " :eta: "<< jet->eta() << " :mva: "<< jet->puJetIdMVA() << "  pass == " << pass << std::endl;
                     if (!pass) continue;
                 }
                 // within eta 4.7?
