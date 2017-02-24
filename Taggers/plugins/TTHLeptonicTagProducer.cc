@@ -332,7 +332,7 @@ namespace flashgg {
                     for( unsigned int candIndex_outer = 0; candIndex_outer < Jets[jetCollectionIndex]->size() ; candIndex_outer++ ) {
                         edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( candIndex_outer );
 
-                        if( !thejet->passesPuJetId( dipho ) ) { continue; }
+                        if(!thejet->passesJetID  ( flashgg::Loose ) ) { continue; }
 
                         if( fabs( thejet->eta() ) > jetEtaThreshold_ ) { continue; }
 
