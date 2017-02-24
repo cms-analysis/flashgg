@@ -33,5 +33,5 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
                                               Debug                    = cms.bool(False),
 
                                               doIsoCorrection = cms.bool(True),
-                                              isoCorrectionFile = cms.FileInPath("flashgg/Taggers/data/corrections_hybrid.root")
+                                              isoCorrectionFile = cms.FileInPath("flashgg/Taggers/data/pho_iso_corrections_hybrid_moriond17_v3.root")
                                               )
