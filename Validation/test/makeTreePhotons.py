@@ -10,64 +10,64 @@ isMC = False
 
 myoptions['HLTProcessName']        = "HLT"
 
-myoptions['DIPHOTON_COLL']         = "flashggDiPhotons"
+myoptions['DIPHOTON_COLL']         = "flashggUpdatedIdMVADiPhotons"
 myoptions['PHOTON_CUTS']           = "(abs(superCluster.eta)<2.5) && ((superCluster.energy*sin(superCluster.position.theta))>20.0)&& !(1.4442<=abs(superCluster.eta)<=1.566)"
-myoptions['PHOTON_TAG_CUTS']       = "(abs(superCluster.eta)<=2.5) && !(1.4442<=abs(superCluster.eta)<=1.566) && (superCluster.energy*sin(superCluster.position.theta))>30.0"
-myoptions['MAXEVENTS']             = cms.untracked.int32(-1) 
+myoptions['PHOTON_TAG_CUTS']       = "(abs(superCluster.eta)<=2.5) && !(1.4442<=abs(superCluster.eta)<=1.566) && (superCluster.energy*sin(superCluster.position.theta))>40.0"
+myoptions['MAXEVENTS']             = cms.untracked.int32(1000) # later change to "-1" 
 myoptions['useAOD']                = cms.bool(False)
 myoptions['OUTPUTEDMFILENAME']     = 'edmFile.root'
 myoptions['DEBUG']                 = cms.bool(False)
 myoptions['LEADING_PRESELECTION']  = """(abs(leadingPhoton.superCluster.eta) < 2.5 && abs(subLeadingPhoton.superCluster.eta) < 2.5) &&
-                                        (leadingPhoton.pt > 20) &&
-                                        (leadingPhoton.hadronicOverEm < 0.1) &&
+                                        (leadingPhoton.pt > 30) && (leadingPhoton.hadronicOverEm < 0.08) &&
                                         ((leadingPhoton.full5x5_r9 > 0.5 && leadingPhoton.isEB) || (leadingPhoton.full5x5_r9 > 0.8 && leadingPhoton.isEE)) &&
                                         ((subLeadingPhoton.full5x5_r9 > 0.5 && subLeadingPhoton.isEB) || (subLeadingPhoton.full5x5_r9 > 0.8 && subLeadingPhoton.isEE)) &&
-                                        ((leadingPhoton.isEB &&
+                                        ((leadingPhoton.isEB && 
                                         (leadingPhoton.full5x5_r9>0.85 ||
                                         (leadingPhoton.full5x5_sigmaIetaIeta < 0.015 && leadingPhoton.pfPhoIso03 < 4.0 && leadingPhoton.trkSumPtHollowConeDR03 < 6.0 ))) ||
-                                        (leadingPhoton.isEE &&
+                                        (leadingPhoton.isEE && 
                                         (leadingPhoton.full5x5_r9>0.9 ||
                                         (leadingPhoton.full5x5_sigmaIetaIeta < 0.035 && leadingPhoton.pfPhoIso03 < 4.0 && leadingPhoton.trkSumPtHollowConeDR03 < 6.0 )))) &&
                                         (leadingPhoton.pt > 14 && leadingPhoton.hadTowOverEm()<0.15 &&
-                                        (leadingPhoton.r9()>0.8 || leadingPhoton.chargedHadronIso()<20 || leadingPhoton.chargedHadronIso()<0.3*leadingPhoton.pt())) 
+                                        (leadingPhoton.full5x5_r9()>0.8 || leadingPhoton.chargedHadronIso()<20 || leadingPhoton.chargedHadronIso()<0.3*leadingPhoton.pt())) 
 """ 
 
 myoptions['SUBLEADING_PRESELECTION'] = """(abs(leadingPhoton.superCluster.eta) < 2.5 && abs(subLeadingPhoton.superCluster.eta) < 2.5) &&
-                                          (subLeadingPhoton.pt > 20) && 
-                                          (subLeadingPhoton.hadronicOverEm < 0.1) &&
+                                          (subLeadingPhoton.pt > 20) && (subLeadingPhoton.hadronicOverEm < 0.08) &&
                                           ((leadingPhoton.full5x5_r9 > 0.5 && leadingPhoton.isEB) || (leadingPhoton.full5x5_r9 > 0.8 && leadingPhoton.isEE)) &&
                                           ((subLeadingPhoton.full5x5_r9 > 0.5 && subLeadingPhoton.isEB) || (subLeadingPhoton.full5x5_r9 > 0.8 && subLeadingPhoton.isEE)) &&
-                                          (( subLeadingPhoton.isEB &&
+                                          (( subLeadingPhoton.isEB && 
                                           (subLeadingPhoton.full5x5_r9>0.85 ||
                                           (subLeadingPhoton.full5x5_sigmaIetaIeta < 0.015 && subLeadingPhoton.pfPhoIso03 < 4.0 && subLeadingPhoton.trkSumPtHollowConeDR03 < 6.0 ))) ||
-                                          (subLeadingPhoton.isEE &&
+                                          (subLeadingPhoton.isEE && 
                                           (subLeadingPhoton.full5x5_r9>0.9 ||
                                           (subLeadingPhoton.full5x5_sigmaIetaIeta < 0.035 && subLeadingPhoton.pfPhoIso03 < 6.0 && subLeadingPhoton.trkSumPtHollowConeDR03 < 6.0 )))) &&
                                           (subLeadingPhoton.pt > 14 && subLeadingPhoton.hadTowOverEm()<0.15 &&
-                                          (subLeadingPhoton.r9()>0.8 || subLeadingPhoton.chargedHadronIso()<20 || subLeadingPhoton.chargedHadronIso()<0.3*subLeadingPhoton.pt()))
+                                          (subLeadingPhoton.full5x5_r9()>0.8 || subLeadingPhoton.chargedHadronIso()<20 || subLeadingPhoton.chargedHadronIso()<0.3*subLeadingPhoton.pt()))
 """
 
 
 from flashgg.Validation.treeMakerOptionsPhotons_cfi import *
 
 if (isMC):
-    myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIIFall15DR76-1_3_0-25ns_ext1/1_3_1/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/160127_112132/0000/myMicroAODOutputFile_9.root")
+    # myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIIFall15DR76-1_3_0-25ns_ext1/1_3_1/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/160127_112132/0000/myMicroAODOutputFile_9.root")
+
+    myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_HCALDebug_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170114_082421/0000/myMicroAODOutputFile_10.root")
 
     myoptions['OUTPUT_FILE_NAME']      = "TnPTree_mc.root"
-    myoptions['TnPPATHS']              = cms.vstring("HLT_Ele23_WPLoose_Gsf_v*")
-    myoptions['TnPHLTTagFilters']      = cms.vstring("hltEle23WPLooseGsfTrackIsoFilter")
+    myoptions['TnPPATHS']              = cms.vstring("HLT_Ele27_WPTight_Gsf_v*")
+    myoptions['TnPHLTTagFilters']      = cms.vstring("hltEle27WPTightGsfTrackIsoFilter")
     myoptions['TnPHLTProbeFilters']    = cms.vstring()
     myoptions['HLTFILTERTOMEASURE']    = cms.vstring("")
-    myoptions['GLOBALTAG']             = '76X_mcRun2_asymptotic_v12'
+    myoptions['GLOBALTAG']             = '80X_mcRun2_asymptotic_2016_TrancheIV_v6'
     myoptions['EVENTSToPROCESS']       = cms.untracked.VEventRange()
 else:
     myoptions['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIIFall15DR76-1_3_0-25ns_ext1/1_3_1/SingleElectron/RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-Run2015D-16Dec2015-v1/160127_024003/0000/myMicroAODOutputFile_10.root")
     myoptions['OUTPUT_FILE_NAME']      = "TnPTree_data.root"
-    myoptions['TnPPATHS']              = cms.vstring("HLT_Ele23_WPLoose_Gsf_v*")
-    myoptions['TnPHLTTagFilters']      = cms.vstring("hltEle23WPLooseGsfTrackIsoFilter")
+    myoptions['TnPPATHS']              = cms.vstring("HLT_Ele27_WPTight_Gsf_v*")
+    myoptions['TnPHLTTagFilters']      = cms.vstring("hltEle27WPTightGsfTrackIsoFilter")
     myoptions['TnPHLTProbeFilters']    = cms.vstring()
     myoptions['HLTFILTERTOMEASURE']    = cms.vstring("")
-    myoptions['GLOBALTAG']             = '76X_dataRun2_v15'
+    myoptions['GLOBALTAG']             = '80X_dataRun2_2016SeptRepro_v3'
     myoptions['EVENTSToPROCESS']       = cms.untracked.VEventRange()
 
 ###################################################################
@@ -169,12 +169,16 @@ if (not myoptions['DEBUG']):
 ##########################################################################################
 ###### MICROAOD STUFF
 ##########################################################################################
+process.load("flashgg/Taggers/flashggUpdatedIdMVADiPhotons_cfi")
+process.flashggUpdatedIdMVADiPhotons.DiPhotonTag = cms.InputTag('flashggDiPhotons') # To include shower shape corrections
 
 process.load("flashgg/Taggers/flashggDiPhotonMVA_cfi")
-process.flashggDiPhotonMVA.DiPhotonTag = cms.InputTag('flashggDiPhotons')
+# process.flashggDiPhotonMVA.DiPhotonTag = cms.InputTag('flashggDiPhotons')
+process.flashggDiPhotonMVA.DiPhotonTag = cms.InputTag('flashggUpdatedIdMVADiPhotons')
 
 if (isMC):
     process.p = cms.Path(
+        process.flashggUpdatedIdMVADiPhotons +
         process.flashggDiPhotonMVA +
         process.sampleInfo +
         process.hltFilter +
@@ -186,6 +190,7 @@ if (isMC):
         )
 else:
     process.p = cms.Path(
+        process.flashggUpdatedIdMVADiPhotons +
         process.flashggDiPhotonMVA +
         #process.sampleInfo +
         process.hltFilter +
@@ -205,7 +210,7 @@ process.TFileService = cms.Service("TFileService",
 from flashgg.MetaData.JobConfig import JobConfig
 
 customize = JobConfig(crossSections=["$CMSSW_BASE/src/flashgg/MetaData/data/cross_sections.json"])
-customize.setDefault("maxEvents", -1)
+customize.setDefault("maxEvents", 1000)
 customize.setDefault("targetLumi", 1)
 customize(process)
 
