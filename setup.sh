@@ -138,6 +138,9 @@ cp $CMSSW_BASE/src/flashgg/Systematics/data/80X_ichepV1_2016_pho_s* $CMSSW_BASE/
 cp $CMSSW_BASE/src/flashgg/Systematics/data/80X_ichepV2_2016_pho_s* $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 cp $CMSSW_BASE/src/flashgg/Systematics/data/Winter_2016_reReco_v1_ele_scales.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 cp $CMSSW_BASE/src/flashgg/Systematics/data/Winter_2016_reReco_v1_ele_smearings.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
+ cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_scales.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
+ cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_smearings.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
+
 
 
 echo "adding hook for indentation"

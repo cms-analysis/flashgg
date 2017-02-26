@@ -133,8 +133,8 @@
         "TGJets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8" : { "xs" : 2.967 },
         "THQ_HToGG_13TeV-madgraph-pythia8_TuneCUETP8M1" : { "xs" : 0.07096,   "br" : 0.00227 },
         "THW_HToGG_13TeV-madgraph-pythia8_TuneCUETP8M1" : { "xs" : 0.01561,   "br" : 0.00227 },
-        "bbHToGG_M-125_4FS_yb2_13TeV_amcatnlo" : { "xs" : 0.534403,   "br" : 0.00227 },
-        "bbHToGG_M-125_4FS_ybyt_13TeV_amcatnlo" : { "xs" : 0.0464028,   "br" : 0.00227 }
+        "bbHToGG_M-125_4FS_yb2_13TeV_amcatnlo" : { "xs" : 0.532892,   "br" : 0.00227 },
+        "bbHToGG_M-125_4FS_ybyt_13TeV_amcatnlo" : { "xs" : 0.0448916,   "br" : 0.00227 }
 
 
 }

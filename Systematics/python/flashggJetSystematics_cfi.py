@@ -168,7 +168,7 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            NSigmas = cms.vint32(-1,1),
                                                            OverallRange = cms.string("abs(eta)<5.0&&pt>20.0"),
                                                            BinList  = PUJIDShiftBins,
-                                                           ApplyCentralValue = cms.bool(True),
+                                                           ApplyCentralValue = cms.bool(False),
                                                            Debug = cms.untracked.bool(False)
                                                            ),
                                                  cms.PSet( MethodName = cms.string("FlashggJetWeight"),
