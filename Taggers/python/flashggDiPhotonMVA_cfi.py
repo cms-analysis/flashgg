@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
-flashggDiPhotonMVAold = cms.EDProducer('FlashggDiPhotonMVAProducer',
+"""flashggDiPhotonMVAold = cms.EDProducer('FlashggDiPhotonMVAProducer',
                                        DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'), # why doesn't this work?
                                        #                                    DiPhotonTag=cms.InputTag('flashggDiPhotons'),
                                        BeamSpotTag=cms.InputTag('offlineBeamSpot'),
@@ -13,7 +13,7 @@ flashggDiPhotonMVAold = cms.EDProducer('FlashggDiPhotonMVAProducer',
                                        VertexProbParamsNoConv=cms.vdouble(-0.344,-0.091,-0.234,-0.186),
                                        Version=cms.string("old")
                                        )
-
+"""
 flashggDiPhotonMVA = cms.EDProducer('FlashggDiPhotonMVAProducer',
                                     DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'), # why doesn't this work?
                                     #                                    DiPhotonTag=cms.InputTag('flashggDiPhotons'),
