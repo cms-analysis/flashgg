@@ -24,7 +24,7 @@ def setModules(process, options):
                                                  subleadingPreselection = cms.string(options['SUBLEADING_PRESELECTION']),
                                                  vertexSelection = cms.int32(-1), # -1 means take the chosen vertex, otherwise use the index to select 2it
                                                  diPhotonMVATag = cms.InputTag("flashggDiPhotonMVA"),
-                                                 diphotonMVAThreshold = cms.double(-1.0)
+                                                 diphotonMVAThreshold = cms.double(-0.6) #Previous value was -1.0
                                                  )
 
     process.goodPhotonTagL1 = cms.EDProducer("FlashggPhotonL1CandProducer",
@@ -66,7 +66,7 @@ def setModules(process, options):
                                                  input     = cms.InputTag("goodPhotonTags"),
                                                  cut       = cms.string(options['PHOTON_CUTS']),
                                                  selection = cms.InputTag("photonFromDiPhotons:idmva"),
-                                                 id_cut    = cms.double(0.0)
+                                                 id_cut    = cms.double(-0.6)
                                                  )
     
     ###################################################################
@@ -89,12 +89,12 @@ def setModules(process, options):
                                                  isAND       = cms.bool(True)
                                                  )
     
-    process.goodPhotonProbesL1 = cms.EDProducer("FlashggPhotonL1CandProducer",
+    process.goodPhotonProbesL1 = cms.EDProducer("FlashggPhotonL1Stage2CandProducer",
                                                 inputs = cms.InputTag("goodPhotonProbes"),
-                                                isoObjects = cms.InputTag("l1extraParticles:Isolated"),
-                                                nonIsoObjects = cms.InputTag("l1extraParticles:NonIsolated"),
+                                                objects = cms.InputTag("caloStage2Digis:EGamma"),
                                                 minET = cms.double(40),
                                                 dRmatch = cms.double(0.2),
+                                                dRmatchEE = cms.double(0.2),
                                                 isolatedOnly = cms.bool(False)
                                                 )
     

@@ -24,7 +24,7 @@ flashggDiPhotonMVA = cms.EDProducer('FlashggDiPhotonMVAProducer',
                                     diphotonMVAweightfile = cms.FileInPath("flashgg/Taggers/data/Flashgg_DiPhoton_Moriond17.weights.xml"),
                                     
                                     # xml 2015                                    
-#			            VertexProbParamsConv=cms.vdouble(-0.049,-0.241,-0.505,-0.270),
+                                    #            VertexProbParamsConv=cms.vdouble(-0.049,-0.241,-0.505,-0.270),
 #                                   VertexProbParamsNoConv=cms.vdouble(-0.344,-0.091,-0.234,-0.186),
                                     # xml 2016 fix low nvtx
                                     VertexProbParamsConv=cms.vdouble(-0.045,-0.148,-0.328,-0.184),
@@ -32,6 +32,5 @@ flashggDiPhotonMVA = cms.EDProducer('FlashggDiPhotonMVAProducer',
                                     doSigmaMdecorr = cms.bool(True),
 #                                    sigmaMdecorrFile = cms.FileInPath("flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_80x_new.root"),
                                     sigmaMdecorrFile = cms.FileInPath("flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_Mgg40_180.root"),
-				    Version=cms.string("new")
-                                    )
-
+                                        Version=cms.string("new")
+)
