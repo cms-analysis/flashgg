@@ -8,7 +8,7 @@ NoTag::~NoTag() {}
 
 NoTag *NoTag::clone() const
 {
-    NoTag *result = new NoTag();
+    NoTag *result = new NoTag(*this);
     return result;
 }
 // Local Variables:
