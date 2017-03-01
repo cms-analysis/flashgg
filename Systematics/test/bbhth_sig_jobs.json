@@ -1,0 +1,7 @@
+{
+    "processes" : {
+	"th_125" : ["/THQ_HToGG_13TeV-madgraph-pythia8_TuneCUETP8M1","/THW_HToGG_13TeV-madgraph-pythia8_TuneCUETP8M1"],
+	"bbh_125" : ["/bbHToGG_M-125_4FS_yb2_13TeV_amcatnlo","/bbHToGG_M-125_4FS_ybyt_13TeV_amcatnlo"]
+     },	
+        "cmdLine" : "campaign=RunIISummer16-2_4_1-25ns_Moriond17"
+}
