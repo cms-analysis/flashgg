@@ -65,6 +65,9 @@ process.load("flashgg.Taggers.flashggPreselectedDiPhotons_cfi")
 process.flashggPreselectedDiPhotons.variables[-1] = "-(passElectronVeto - 1)"
 process.flashggPreselectedDiPhotons.src = cms.InputTag("flashggDiPhotonSystematics")
 
+process.load("flashgg.Taggers.flashggUpdatedIdMVADiPhotons_cfi")
+process.flashggUpdatedIdMVADiPhotons.doNon5x5transformation = cms.bool(False)
+
 process.load("flashgg/Taggers/flashggDiPhotonMVA_cfi")
 process.flashggDiPhotonMVA.DiPhotonTag = cms.InputTag("flashggPreselectedDiPhotons")
 
@@ -112,42 +115,50 @@ cfgTools.addCategories(process.diphotonDumper,
                         #("EE", "abs(superCluster.eta)>1.566",0)
                         ],
                        variables=["leadPhIso        := leadingPhoton.pfPhoIso03()",
+                                  "leadPhIsoCorr    := leadingPhoton.pfPhoIso03Corr()",
                                   "leadNeuIso       := leadingPhoton.pfNeutIso03()",
+                                  "leadfull5x5r9    := leadingPhoton.full5x5_r9",
                                   "leadfull5x5sieie := leadingPhoton.full5x5_sigmaIetaIeta",
-                                  "leadsieie        := leadingPhoton.sigmaIetaIeta",
-                                  "leadcovieip      := leadingPhoton.sieip",
-                                  "leadcovipip      := leadingPhoton.sipip",
+                                  "leadfull5x5covieip := leadingPhoton.sieip",
+                                  "leadfull5x5covipip := leadingPhoton.sipip",
                                   "leadetawidth     := leadingPhoton.superCluster.etaWidth",
                                   "leadphiwidth     := leadingPhoton.superCluster.phiWidth",
                                   "leads4ratio      := leadingPhoton.s4",
-                                  "leadr9           := leadingPhoton.old_r9",
-                                  "leadfull5x5r9    := leadingPhoton.full5x5_r9",
-                                  "leadr9_5x5_by_3x3:= leadingPhoton.full5x5_r9/leadingPhoton.old_r9",
+                                  "leadoldr9        := leadingPhoton.old_r9",
+                                  "leadoldsieie     := leadingPhoton.sigmaIetaIeta",
+                                  "leadoldcovieip   := leadingPhoton.showerShapeVariables.sigmaIetaIphi",
+                                  "leadoldcovipip   := leadingPhoton.showerShapeVariables.sigmaIphiIphi",
+#                                  "leadr9_5x5_by_3x3:= leadingPhoton.full5x5_r9/leadingPhoton.old_r9",
                                   "leadPt           := leadingPhoton.et",
                                   "leadEta          := leadingPhoton.eta",
                                   "leadIDMVA        := subLeadingView.phoIdMvaWrtChosenVtx()",
                                   "leadChIsoRv      := leadingView.pfChIso03WrtChosenVtx()",
                                   "leadChIsoWv      := leadingPhoton.pfChgIsoWrtWorstVtx03",
                                   "leadESSigma      := leadingPhoton.esEffSigmaRR",
+                                  "leadScRawE       := leadingPhoton.superCluster.rawEnergy()",
                                   "leadesEnovSCRawEn:= leadingPhoton.superCluster.preshowerEnergy()/leadingPhoton.superCluster.rawEnergy()",
                                   "subleadPhIso     := subLeadingPhoton.pfPhoIso03()",
+                                  "subleadPhIsoCorr := subLeadingPhoton.pfPhoIso03Corr()",
                                   "subleadNeuIso    := subLeadingPhoton.pfNeutIso03()",
-                                  "subleadfull5x5sieie := subLeadingPhoton.full5x5_sigmaIetaIeta",
-                                  "subleadsieie     := subLeadingPhoton.sigmaIetaIeta",
-                                  "subleadcovieip   := subLeadingPhoton.sieip",
-                                  "subleadcovipip   := subLeadingPhoton.sipip",
+                                  "subleadfull5x5r9 := subLeadingPhoton.full5x5_r9",
+                                  "subleadfull5x5sieie   := subLeadingPhoton.full5x5_sigmaIetaIeta",
+                                  "subleadfull5x5covieip := subLeadingPhoton.sieip",
+                                  "subleadfull5x5covipip := subLeadingPhoton.sipip",
                                   "subleadetawidth  := subLeadingPhoton.superCluster.etaWidth",
                                   "subleadphiwidth  := subLeadingPhoton.superCluster.phiWidth",
                                   "subleads4ratio   := subLeadingPhoton.s4",
-                                  "subleadr9        := subLeadingPhoton.old_r9",
-                                  "subleadfull5x5r9 := subLeadingPhoton.full5x5_r9",
-                                  "subleadr9_5x5_by_3x3:= subLeadingPhoton.full5x5_r9/subLeadingPhoton.old_r9",
+                                  "subleadoldr9     := subLeadingPhoton.old_r9",
+                                  "subleadoldsieie  := subLeadingPhoton.sigmaIetaIeta",
+                                  "subleadoldcovieip := subLeadingPhoton.showerShapeVariables.sigmaIetaIphi",
+                                  "subleadoldcovipip := subLeadingPhoton.showerShapeVariables.sigmaIphiIphi",
+#                                  "subleadr9_5x5_by_3x3:= subLeadingPhoton.full5x5_r9/subLeadingPhoton.old_r9",
                                   "subleadPt        := subLeadingPhoton.et",
                                   "subleadEta       := subLeadingPhoton.eta",
                                   "subIDMVA         := leadingView.phoIdMvaWrtChosenVtx()",
                                   "subleadChIsoRv   := subLeadingView.pfChIso03WrtChosenVtx()",
                                   "subleadChIsoWv   := subLeadingPhoton.pfChgIsoWrtWorstVtx03",
                                   "subleadESSigma   := subLeadingPhoton.esEffSigmaRR",
+                                  "subleadScRawE    := subLeadingPhoton.superCluster.rawEnergy()",
                                   "subleadesEnovSCRawEn:= subLeadingPhoton.superCluster.preshowerEnergy()/subLeadingPhoton.superCluster.rawEnergy()",
                                   "mass[120,60,120] := mass", 
                                   "scEta            := leadingPhoton.superCluster.eta",
@@ -175,7 +186,7 @@ from flashgg.Systematics.SystematicsCustomize import *
 #customize.processId = 'Data' # for test
 
 ## apply shower shape corrections
-doUpdatedIdMVADiPhotons = False # set to True for 80X corrections to be applied
+doUpdatedIdMVADiPhotons = True # set to True for 80X corrections to be applied
 
 ## load syst producer
 process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
@@ -218,9 +229,6 @@ else:
 ############################
 #    Systematics end       #
 ############################
-
-process.load("flashgg.Taggers.flashggUpdatedIdMVADiPhotons_cfi")
-
 process.p = cms.Path(process.flashggUpdatedIdMVADiPhotons*process.flashggDiPhotonSystematics*process.dataRequirements*process.flashggPreselectedDiPhotons*process.flashggDiPhotonMVA*process.DiPhotonWithZeeMVADumper*process.diphotonDumper)
 #process.p = cms.Path(process.dataRequirements*process.diphotonDumper)
 

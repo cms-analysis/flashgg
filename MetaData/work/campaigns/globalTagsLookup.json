@@ -48,8 +48,6 @@
     "Run2016B-03Feb2017_ver1" : ["80X_dataRun2_2016SeptRepro_v7"],
     "Run2016B-03Feb2017_ver2" : ["80X_dataRun2_2016SeptRepro_v7"],
 
-
-
     "RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3"                                 : ["80X_mcRun2_asymptotic_2016_v3"],
     "RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3_ext1"                            : ["80X_mcRun2_asymptotic_2016_v3"],
     "RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3"                        : ["80X_mcRun2_asymptotic_2016_v3"],
@@ -89,5 +87,8 @@
     "RunIISummer16MiniAODv2-PUMoriond17_plus5percentMaterial_80X_mcRun2_asymptotic_2016_TrancheIV_v6"           : ["80X_mcRun2_asymptotic_2016_TrancheIV_v7"],
     "RunIISummer16MiniAODv2-PUMoriond17_minus5percentMaterial_80X_mcRun2_asymptotic_2016_TrancheIV_v6"          : ["80X_mcRun2_asymptotic_2016_TrancheIV_v7"],
     "RunIISummer16MiniAODv2-PUMoriond17_plus10percentMaterial_80X_mcRun2_asymptotic_2016_TrancheIV_v6"          : ["80X_mcRun2_asymptotic_2016_TrancheIV_v7"],
-    "RunIISummer16MiniAODv2-PUMoriond17_minus10percentMaterial_80X_mcRun2_asymptotic_2016_TrancheIV_v6"         : ["80X_mcRun2_asymptotic_2016_TrancheIV_v7"]
+    "RunIISummer16MiniAODv2-PUMoriond17_minus10percentMaterial_80X_mcRun2_asymptotic_2016_TrancheIV_v6"         : ["80X_mcRun2_asymptotic_2016_TrancheIV_v7"],
+    "RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3" : ["80X_mcRun2_asymptotic_2016_v3"],
+    "RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3" : ["80X_mcRun2_asymptotic_2016_v3"],
+    "Run2016B-PromptReco" : ["80X_dataRun2_Prompt_v8"]
 }

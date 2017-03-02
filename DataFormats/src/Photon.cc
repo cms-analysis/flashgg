@@ -29,6 +29,7 @@ void Photon::ZeroVariables()
     S4_ = 0.;
     pfPhoIso04_ = 0.;
     pfPhoIso03_ = 0.;
+    pfPhoIso03Cor_ = 0.;
     pfChgIsoWrtWorstVtx04_ = 0.;
     pfChgIsoWrtWorstVtx03_ = 0.;
     pfChgIsoWrtChosenVtx02_ = 0.;

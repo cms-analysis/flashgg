@@ -53,6 +53,7 @@ namespace flashgg {
         void setS4( float val ) {S4_ = val;};
         void setpfPhoIso04( float val ) {pfPhoIso04_ = val;};
         void setpfPhoIso03( float val ) {pfPhoIso03_ = val;};
+        void setpfPhoIso03Corr( float val ) {pfPhoIso03Cor_ = val;};
         void setpfNeutIso04( float val ) {pfNeutIso04_ = val;};
         void setpfNeutIso03( float val ) {pfNeutIso03_ = val;};
         void setpfChgIso04( std::map<edm::Ptr<reco::Vertex>, float> valmap ) {  pfChgIso04_ = valmap; }; // concept: pass the pre-computed map when calling this in the producer
@@ -91,6 +92,7 @@ namespace flashgg {
         float const s4() const {return S4_;};
         float const pfPhoIso04() const {return pfPhoIso04_;};
         float const pfPhoIso03() const {return pfPhoIso03_;};
+        float const pfPhoIso03Corr() const {return pfPhoIso03Cor_;};
         float const pfNeutIso04() const {return pfNeutIso04_;};
         float const pfNeutIso03() const {return pfNeutIso03_;};
         std::map<edm::Ptr<reco::Vertex>, float> const pfChgIso04() const {return pfChgIso04_;};
@@ -192,6 +194,7 @@ namespace flashgg {
         float S4_;
         float pfPhoIso04_;
         float pfPhoIso03_;
+        float pfPhoIso03Cor_;
         float pfNeutIso04_;
         float pfNeutIso03_;
         float pfChgIsoWrtWorstVtx04_;
