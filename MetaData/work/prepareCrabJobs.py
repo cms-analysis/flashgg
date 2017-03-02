@@ -261,6 +261,9 @@ if options.createCrabConfig:
             
         jobname = "_".join([flashggVersion, PrimaryDataset, ProcessedDataset])
         orig_jobname = jobname
+        while os.path.isdir("crab_" + jobname):
+            itry += 1
+            jobname = "_".join([flashggVersion, PrimaryDataset, ProcessedDataset, str(itry).zfill(2)])
         if len(jobname) > 97:
             jobname = jobname.replace("TuneCUEP8M1_13TeV-pythia8","13TeV")
         if len(jobname) > 97:

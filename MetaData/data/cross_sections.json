@@ -1,9 +1,9 @@
 {
         "DYJetsToLL_M-50_13TeV-madgraph-pythia8"                        : { "xs" : 4746.0                                },
-	"DYToEE_NNPDF30_13TeV-powheg-pythia8"                           : { "xs" : 1921.8 },
-        "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8"       : { "xs" : 5765.4, "itype":20                    },
-	"DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"        : { "xs" : 5765.4, "itype":20                    },
-	"DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-herwigpp_30M"   : { "xs" : 5765.4, "itype":20                    },
+	"DYToEE_NNPDF30_13TeV-powheg-pythia8"                           : { "xs" : 2008.33 },
+        "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8"       : { "xs" : 6025.0, "itype":20                    },
+	"DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8"        : { "xs" : 6025.0, "itype":20                    },
+	"DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-herwigpp_30M"   : { "xs" : 6025.0, "itype":20                    },
 	"DYJetsToEE_M-50_LTbinned_5To75_5f_LO_13TeV-madgraph_pythia8"     : { "xs" : 8.670e+02, "br" : 1.0, "kf" : 1.0, "itype":20 },
 	"DYJetsToEE_M-50_LTbinned_75To80_5f_LO_13TeV-madgraph_pythia8"    : { "xs" : 1.345e+02, "br" : 1.0, "kf" : 1.0, "itype":21 },
 	"DYJetsToEE_M-50_LTbinned_80To85_5f_LO_13TeV-madgraph_pythia8"    : { "xs" : 1.599e+02, "br" : 1.0, "kf" : 1.0, "itype":22 },

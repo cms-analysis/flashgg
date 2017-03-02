@@ -60,7 +60,7 @@ namespace flashgg {
 
         void               setupMVA( const std::string &, const std::string &, bool );
         float              computeMVAWrtVtx( flashgg::Photon &, const edm::Ptr<reco::Vertex> &, const double, const double etaWidth = 0, const double eA = 0, const std::vector<double> coeff = vector<double>(0,0),const double cut = 0);
-
+        float              computeCorrectPhoIso( flashgg::Photon &, const double, const double eA = 0, const std::vector<double> coeff = vector<double>(0,0), const double cut = 0);
         static flashgg::Photon     pho4MomCorrection( edm::Ptr<flashgg::Photon> &, edm::Ptr<reco::Vertex> );
 
         math::XYZTLorentzVector     pho4MomCorrectionTLVector( edm::Ptr<flashgg::Photon> &, edm::Ptr<reco::Vertex> );
@@ -160,6 +160,8 @@ namespace flashgg {
         float phoIdMva_rho_;
         float phoIdMva_ESEffSigmaRR_;
         float phoIdMva_esEnovSCRawEn_;
+
+        float pfPhoIso03Corr_;
 
         std::shared_ptr<TMVA::Reader> phoIdMva_EB_;
         std::shared_ptr<TMVA::Reader> phoIdMva_EE_;

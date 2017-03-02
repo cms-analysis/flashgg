@@ -298,6 +298,28 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
     return mvavalue;
 }
 
+float PhotonIdUtils::computeCorrectPhoIso(    
+                                          flashgg::Photon &photon,
+                                          const double rho, const double eA, const std::vector<double> _phoIsoPtScalingCoeff, const double _phoIsoCutoff )
+{
+    //pho iso corr in 2016 for endcap
+    pfPhoIso03Corr_ = photon.pfPhoIso03();
+     
+    //    double eA = _effectiveAreas.getEffectiveArea( abs(photon.superCluster()->eta()) );
+    double phoIsoPtScalingCoeffVal = 0;
+    if( photon.isEB() ) 
+        phoIsoPtScalingCoeffVal = _phoIsoPtScalingCoeff.at(0); // barrel case
+    else
+        phoIsoPtScalingCoeffVal =  _phoIsoPtScalingCoeff.at(1); //endcap case
+    
+    double phoIsoCorr = photon.pfPhoIso03() - eA*(rho) - phoIsoPtScalingCoeffVal*photon.pt();
+    
+    pfPhoIso03Corr_ = TMath::Max(phoIsoCorr, _phoIsoCutoff);
+    
+    float pfPhoIso03Corr = pfPhoIso03Corr_;
+    return pfPhoIso03Corr;
+}
+
 map<edm::Ptr<reco::Vertex>, float> PhotonIdUtils::computeMVAWrtAllVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
     flashgg::Photon &photon,
     const std::vector<edm::Ptr<reco::Vertex> > &vertices,

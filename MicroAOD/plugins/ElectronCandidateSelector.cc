@@ -4,6 +4,8 @@
 #include "flashgg/DataFormats/interface/Electron.h"
 
 #include "CommonTools/UtilAlgos/interface/ObjectSelectorStream.h"
+#include "CommonTools/UtilAlgos/interface/SingleElementCollectionSelectorPlusEvent.h"
+
 #include "CommonTools/UtilAlgos/interface/SortCollectionSelector.h"
 
 typedef SingleObjectSelector <
@@ -12,7 +14,19 @@ edm::View<flashgg::Electron>,
     std::vector<flashgg::Electron>
     > ElectronSelector;
 
+
+#include "flashgg/MicroAOD/interface/CutBasedElectronObjectSelector.h"
+typedef ObjectSelectorStream <
+SingleElementCollectionSelectorPlusEvent <
+edm::View<flashgg::Electron>,
+    flashgg::CutBasedElectronObjectSelector,
+    std::vector<flashgg::Electron>
+    >,
+    std::vector<flashgg::Electron> > GenericElectronSelector;
+
 DEFINE_FWK_MODULE( ElectronSelector );
+DEFINE_FWK_MODULE( GenericElectronSelector );
+
 
 // Local Variables:
 // mode:c++
