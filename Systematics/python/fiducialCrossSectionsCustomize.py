@@ -136,7 +136,7 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
         if( not hasattr(process,"filteredRecoJetsEta2p5%d" % icoll) ): 
             setattr(process,"filteredRecoJetsEta2p5%d" % icoll,cms.EDFilter("FlashggJetSelector",
                                                                             src=coll,
-                                                                            cut=cms.string("pt>%f && abs(eta)<2.5" % jetPtCut),
+                                                                            cut=cms.string("pt>%f && abs(eta)<2.5 && passesJetID(Loose)" % jetPtCut),
                                                                             ) )
             recoJets2p5.append("filteredRecoJetsEta2p5%d" % icoll)
             tagSequence.insert(pos, getattr(process,"filteredRecoJetsEta2p5%d" % icoll))
@@ -145,7 +145,7 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
         if( not hasattr(process,"filteredRecoJetsEta4p7%d" % icoll) ): 
             setattr(process,"filteredRecoJetsEta4p7%d" % icoll,cms.EDFilter("FlashggJetSelector",
                                                                             src=coll,
-                                                                            cut=cms.string("pt>%f && abs(eta)<4.7" % jetPtCut),
+                                                                            cut=cms.string("pt>%f && abs(eta)<4.7 && passesJetID(Loose)" % jetPtCut),
                                                                             ) )
 
             recoJets4p7.append("filteredRecoJetsEta4p7%d" % icoll)
@@ -174,7 +174,7 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
         if( not hasattr(process,"filteredGenJetsEta2p5") ): 
             process.filteredGenJetsEta2p5 = cms.EDFilter("GenJetSelector",
                                                          src=cms.InputTag(genJetCollection),
-                                                         cut=cms.string("pt>%f && abs(eta)<2.5" % jetPtCut),
+                                                         cut=cms.string("pt>%f && abs(eta)<2.5 && nCarrying(0.90)>1" % jetPtCut),
                                                          )
             process.flashggGenHadronicActivity2p5 = cms.EDProducer("FlashggGenHadronicActivityProducer",
                                                                    src=cms.InputTag("filteredGenJetsEta2p5"),
@@ -183,7 +183,7 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
         if( not hasattr(process,"filteredGenJetsEta4p7") ): 
             process.filteredGenJetsEta4p7 = cms.EDFilter("GenJetSelector",
                                                          src=cms.InputTag(genJetCollection),
-                                                         cut=cms.string("pt>%f && abs(eta)<4.7" % jetPtCut),
+                                                         cut=cms.string("pt>%f && abs(eta)<4.7 && nCarrying(0.90)>1" % jetPtCut),
                                                      )
 
             process.flashggGenHadronicActivity4p7 = cms.EDProducer("FlashggGenHadronicActivityProducer",
