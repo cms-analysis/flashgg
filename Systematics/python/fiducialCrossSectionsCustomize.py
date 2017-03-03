@@ -272,7 +272,12 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
         
     genVariables  = getGenVariables(False)
     recoVariables = getRecoVariables(False)
-    
+    extravars = ["leadmva := recoTagObj.diPhoton.leadingView.phoIdMvaWrtChosenVtx", "subleadmva := recoTagObj.diPhoton.subLeadingView.phoIdMvaWrtChosenVtx"]
+
+#    return ("diPhoton.leadingPhoton.%s",
+#            "diPhoton.subLeadingPhoton.%s") if isRecoTag else("recoTagObj.diPhoton.leadingPhoton.%s",
+#                                                                  "recoTagObj.diPhoton.subLeadingPhoton.%s")
+
     cfgTools.addCategory(process.genDiphotonDumper,
                          "NoTag", 'isTagged("")',1,
                          variables=genVariables,
@@ -289,7 +294,7 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
             cfgTools.addCategory(process.genDiphotonDumper,
                                  "%s_%d" % ( tagName, isub ), 
                                  'isTagged("%s") && categoryNumber == %d' % (tagName, isub),0,
-                                 variables=genVariables+recoVariables,
+                                 variables=genVariables+recoVariables+extravars,
                                  dumpPdfWeights=dumpPdfWeights,
                                  nPdfWeights=nPdfWeights,
                                  nAlphaSWeights=nAlphaSWeights,
