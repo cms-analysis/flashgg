@@ -219,7 +219,7 @@ def useEGMTools(process):
         process.flashggDiPhotonSystematics.SystMethods.insert(0, isyst)
 
     # remove old smearings
-    for isyst in [ process.MCSmearHighR9EE, process.MCSmearLowR9EE, process.MCSmearHighR9EB, process.MCSmearLowR9EB, process.SigmaEOverESmearing ]:
+    for isyst in [ process.MCSmearHighR9EE, process.MCSmearLowR9EE, process.MCSmearHighR9EB, process.MCSmearLowR9EB, process.SigmaEOverESmearing, process.SigmaEOverEShift ]:
             process.flashggDiPhotonSystematics.SystMethods.remove(isyst)
 
     # add EGM smearings (2D)
@@ -228,4 +228,8 @@ def useEGMTools(process):
             process.MCSmearLowR9EE_EGM,
             process.MCSmearHighR9EB_EGM,
             process.MCSmearLowR9EB_EGM,
-            process.SigmaEOverESmearing_EGM])
+            ])
+    
+    # add sigmaE/E correction and systematics
+    process.flashggDiPhotonSystematics.SystMethods.extend( [process.SigmaEOverESmearing_EGM, process.SigmaEOverEShift] )
+    
