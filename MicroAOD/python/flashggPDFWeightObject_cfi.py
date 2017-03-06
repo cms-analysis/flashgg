@@ -12,5 +12,5 @@ flashggPDFWeightObject = cms.EDProducer('FlashggPDFWeightProducer',
 		nPdfEigWeights = cms.uint32(60),
 		mc2hessianCSV = cms.FileInPath('PhysicsTools/HepMCCandAlgos/data/NNPDF30_lo_as_0130_hessian_60.csv'),
                 LHERunLabel = cms.string("externalLHEProducer"),
-                Debug = cms.bool(True) 
+                Debug = cms.bool(False) 
 	)
