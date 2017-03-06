@@ -74,10 +74,6 @@ namespace flashgg {
 		tag_ = iConfig.getUntrackedParameter<string>( "tag", "initrwgt" );
         isStandardSample_ = iConfig.getUntrackedParameter<bool>("isStandardSample",true);
         isThqSample_ = iConfig.getUntrackedParameter<bool>("isThqSample",false);
-        if (isThqSample_){
-            LHEEventToken_= consumes<LHEEventProduct>( edm::InputTag("source") );
-            runLabel_ = "source";
-        }
         doAlphasWeights_ = iConfig.getUntrackedParameter<bool>("doAlphasWeights",true);
         doScaleWeights_ = iConfig.getUntrackedParameter<bool>("doScaleWeights",true); 
         pdfset_ = iConfig.getUntrackedParameter<string>("pdfset","NNPDF30_lo_as_0130.LHgrid");
