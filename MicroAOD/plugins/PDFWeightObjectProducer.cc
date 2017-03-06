@@ -170,11 +170,6 @@ namespace flashgg {
                 alphas_id_2 = "266400";
             }
 
-            if (pdfidx == 263400) {
-                alphas_id_1 = "263212";
-                alphas_id_2 = "263212";
-            }
-
             cout << "alpha_S min and max id             : " << alphas_id_1 << "   " << alphas_id_2 << endl;
         }
 
