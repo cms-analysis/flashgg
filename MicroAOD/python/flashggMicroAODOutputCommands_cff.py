@@ -28,6 +28,7 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep *GsfElectronCore*_reducedEgamma_*_*", # needed by at least one Tag
 
                                                      "keep *_flashggSelected*_*_*",
+                                                     "keep *_flashggMets*_*_*",
                                                      # Drop intermediate collections in favor of selected/final collections
                                                      "drop *_flashgg*Jet*_*_*",
                                                      "drop *_flashggMuons_*_*",
