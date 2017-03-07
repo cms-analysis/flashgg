@@ -102,11 +102,11 @@ def runMETs(process,isMC):
                              verbose = cms.untracked.bool(False),
                              metTag = cms.InputTag('slimmedMETsEGClean'),
                              )
-            process.flashggMetsEGmuon = cms.EDProducer('FlashggMetProducer',
+            process.flashggMets = cms.EDProducer('FlashggMetProducer',
                              verbose = cms.untracked.bool(False),
                              metTag = cms.InputTag('slimmedMETsFullMETClean'),
                              )
-            process.flashggMets = cms.EDProducer('FlashggMetProducer',
+            process.flashggMetsEGmuon = cms.EDProducer('FlashggMetProducer',
                                          verbose = cms.untracked.bool(False),
                                          metTag = cms.InputTag('slimmedMETsMuEGClean'),
                                          )
@@ -114,7 +114,7 @@ def runMETs(process,isMC):
                              verbose = cms.untracked.bool(False),
                              metTag = cms.InputTag('slimmedMETsUncorrected'),
                              )
-            process.flashggMetSequence = cms.Sequence(process.flashggMetsMuons * process.flashggMetsEG *process.flashggMetsEGmuon*process.flashggMets*process.flashggMetsUncorr)
+            process.flashggMetSequence = cms.Sequence(process.flashggMetsMuons *process.flashggMetsEGmuon*process.flashggMets*process.flashggMetsUncorr)
         
         
 
