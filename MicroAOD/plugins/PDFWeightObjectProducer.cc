@@ -236,7 +236,7 @@ namespace flashgg {
                                 boost::split(strs, strw, boost::is_any_of(" "));
                             }
                             
-                            int pdfindex  = boost::lexical_cast<int>(strs.back());
+                            int pdfindex = stoi(strs.back());
                             //cout << "pdfindex " << pdfindex <<endl;
 
                             if (pdfindex >= boost::lexical_cast<int>(pdfid_1) && pdfindex <= boost::lexical_cast<int>(pdfid_2)){
@@ -329,7 +329,7 @@ namespace flashgg {
             }
             int id_i;
             try {
-                id_i = boost::lexical_cast<int>( LHEEventHandle->weights()[i].id.c_str() );
+                id_i = boost::lexical_cast<int>( LHEEventHandle->weights()[i].id ); //.c_str()
             } catch ( boost::bad_lexical_cast ) {
                 std::cout << "conversion failed" << std::endl;
                 continue;

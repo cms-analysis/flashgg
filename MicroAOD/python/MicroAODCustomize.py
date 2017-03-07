@@ -396,6 +396,7 @@ class MicroAODCustomize(object):
         process.rivetProducerHTXS.ProductionMode = "TH"
         process.flashggPDFWeightObject.LHEEventTag = "source"
         process.flashggPDFWeightObject.LHERunLabel = "source"
+        process.flashggPDFWeightObject.isStandardSample = False
         process.flashggPDFWeightObject.isThqSample = True
         
 
