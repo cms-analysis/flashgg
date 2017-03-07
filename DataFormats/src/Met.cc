@@ -29,6 +29,15 @@ void Met::setCorPy(float mPy)
     corpt = hypotf(corpy,corpx); 
 }
 
+void Met::setCorPt(float mPt)
+{
+    corpt=mPt;
+}
+void Met::setCorPhi(float mPhi)
+{
+    corpy=mPhi;
+}
+
 float Met::getCorPx() const
 {
     return(corpx);

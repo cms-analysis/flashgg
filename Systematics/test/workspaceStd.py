@@ -203,7 +203,10 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
             jetsystlabels.append("JEC%s01sigma" % direction)
             jetsystlabels.append("JER%s01sigma" % direction)
             jetsystlabels.append("PUJIDShift%s01sigma" % direction)
-            #metsystlabels.append("metUncertainty%s01sigma" % direction)
+            metsystlabels.append("metJecUncertainty%s01sigma" % direction)
+            metsystlabels.append("metJerUncertainty%s01sigma" % direction)
+            metsystlabels.append("metPhoUncertainty%s01sigma" % direction)
+            metsystlabels.append("metUncUncertainty%s01sigma" % direction)
             variablesToUse.append("UnmatchedPUWeight%s01sigma[1,-999999.,999999.] := weight(\"UnmatchedPUWeight%s01sigma\")" % (direction,direction))
             variablesToUse.append("MvaLinearSyst%s01sigma[1,-999999.,999999.] := weight(\"MvaLinearSyst%s01sigma\")" % (direction,direction))
             variablesToUse.append("LooseMvaSF%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s01sigma\")" % (direction,direction))
@@ -224,7 +227,7 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
                         phosystlabels.append("MCSmear%s%s%s%s01sigma" % (r9,region,var,direction))
         systlabels += phosystlabels
         systlabels += jetsystlabels
-        #systlabels += metsystlabels
+        systlabels += metsystlabels
     customizeSystematicsForSignal(process)
 elif customize.processId == "Data":
     print "Data, so turn off all shifts and systematics, with some exceptions"
@@ -435,13 +438,11 @@ if (customize.processId.count("qcd") or customize.processId.count("gjet")) and c
     else:
         raise Exception,"Mis-configuration of python for prompt-fake filter"
 
-#process.load("flashgg.MicroAOD.flashggMets_cfi")
 process.p = cms.Path(process.dataRequirements*
                      process.genFilter*
                      process.flashggUpdatedIdMVADiPhotons*
                      process.flashggDiPhotonSystematics*
-                     #process.flashggMets*
-                     #process.flashggMetSystematics*
+                     process.flashggMetSystematics*
                      process.flashggMuonSystematics*process.flashggElectronSystematics*
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                      (process.flashggTagSequence*process.systematicsTagSequences)*
