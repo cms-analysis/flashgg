@@ -47,6 +47,8 @@
     "Run2016H-03Feb2017" : ["80X_dataRun2_Prompt_v16"],
     "Run2016B-03Feb2017_ver1" : ["80X_dataRun2_2016SeptRepro_v7"],
     "Run2016B-03Feb2017_ver2" : ["80X_dataRun2_2016SeptRepro_v7"],
+    "Run2016H-03Feb2017_ver2" : ["80X_dataRun2_Prompt_v16"],
+    "Run2016H-03Feb2017_ver3" : ["80X_dataRun2_Prompt_v16"],
 
     "RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3"                                 : ["80X_mcRun2_asymptotic_2016_v3"],
     "RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3_ext1"                            : ["80X_mcRun2_asymptotic_2016_v3"],
