@@ -581,13 +581,10 @@ SigmaEOverESmearing = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigE
           )
 
 SigmaEOverESmearing_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigEoverESmearingEGMTool"),
-          MethodName = cms.string("FlashggDiPhotonFromPhoton2D"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
           Label = cms.string("SigmaEOverESmearing"),
-          FirstParameterName = cms.string("Rho"),
-          SecondParameterName = cms.string("Phi"),
           CorrectionFile = scalesAndSmearingsPrefixForSigmaEOverE,
-          NSigmas = cms.PSet( firstVar = cms.vint32(),
-                            secondVar = cms.vint32()),
+          NSigmas = cms.vint32(),
           OverallRange = cms.string("1"),
           BinList = emptyBins,
           Debug = cms.untracked.bool(False),
