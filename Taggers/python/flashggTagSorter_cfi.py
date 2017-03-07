@@ -1,4 +1,5 @@
 import FWCore.ParameterSet.Config as cms
+from flashgg.Taggers.flashggTags_cff import HTXSInputTags
 
 flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                   DiPhotonTag = cms.InputTag('flashggPreselectedDiPhotons'),
@@ -27,6 +28,8 @@ flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                   MaxObjectWeightWarning = cms.double(2.),
                                   StoreOtherTagInfo = cms.bool(False),
                                   BlindedSelectionPrintout = cms.bool(False),
-                                  Debug = cms.untracked.bool(False)
+                                  Debug = cms.untracked.bool(False),
+                                  CreateNoTag = cms.bool(False),  # Placeholder for tracking rejected events
+                                  HTXSTags = HTXSInputTags 
                                   )
 
