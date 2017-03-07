@@ -15,6 +15,8 @@
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
 #include "flashgg/DataFormats/interface/VBFTag.h"
+#include "flashgg/DataFormats/interface/NoTag.h"
+
 
 #include "TMVA/Reader.h"
 #include "TMath.h"
@@ -68,6 +70,10 @@ namespace flashgg {
         bool storeOtherTagInfo_;
         bool blindedSelectionPrintout_;
 
+        bool createNoTag_;
+        EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
+        EDGetTokenT<float> pTHToken_,pTVToken_;
+
         std::vector<std::tuple<DiPhotonTagBase::tag_t,int,int> > otherTags_; // (type,category,diphoton index)
 
         string tagName(DiPhotonTagBase::tag_t) const;
@@ -88,6 +94,7 @@ namespace flashgg {
         debug_ = iConfig.getUntrackedParameter<bool>( "Debug", false );
         storeOtherTagInfo_ = iConfig.getParameter<bool>( "StoreOtherTagInfo" );
         blindedSelectionPrintout_ = iConfig.getParameter<bool>("BlindedSelectionPrintout");
+        createNoTag_ = iConfig.getParameter<bool>("CreateNoTag");
 
         const auto &vpset = iConfig.getParameterSetVector( "TagPriorityRanges" );
 
@@ -107,6 +114,13 @@ namespace flashgg {
             }
             TagPriorityRanges.emplace_back( tag.label(), c1, c2, i );
         }
+
+        ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
+        stage0catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0cat") );
+        stage1catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1cat") );
+        njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
+        pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
+        pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
 
         produces<edm::OwnVector<flashgg::DiPhotonTagBase> >();
         produces<edm::OwnVector<flashgg::TagTruthBase> >();
@@ -292,6 +306,39 @@ namespace flashgg {
         }
 
         assert( SelectedTag->size() == 1 || SelectedTag->size() == 0 );
+        if (createNoTag_ && SelectedTag->size() == 0) {
+            SelectedTag->push_back(NoTag());
+            edm::RefProd<edm::OwnVector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<edm::OwnVector<TagTruthBase> >();
+            TagTruthBase truth_obj;
+            Handle<int> stage0cat, stage1cat, njets;
+            Handle<float> pTH, pTV;
+            evt.getByToken(stage0catToken_, stage0cat);
+            evt.getByToken(stage1catToken_,stage1cat);
+            evt.getByToken(njetsToken_,njets);
+            evt.getByToken(pTHToken_,pTH);
+            evt.getByToken(pTVToken_,pTV);
+            if ( stage0cat.isValid() ) {
+                truth_obj.setHTXSInfo( *( stage0cat.product() ),
+                                       *( stage1cat.product() ),
+                                       *( njets.product() ),
+                                       *( pTH.product() ),
+                                       *( pTV.product() ) );
+            } else {
+                truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
+            }
+            SelectedTagTruth->push_back(truth_obj);
+            SelectedTag->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) );
+            if( SelectedTagTruth->size() != 0 && debug_ ) {
+                std::cout << "******************************" << std::endl;
+                std::cout << " TRUTH FOR NO TAG..." << std::endl;
+                std::cout << "* HTXS Category 0 (1): " << SelectedTagTruth->back().HTXSstage0cat() << " ("
+                          << SelectedTagTruth->back().HTXSstage1cat() << ")" << std::endl;
+                std::cout << "* HTXS njets, pTH, pTV: " << SelectedTagTruth->back().HTXSnjets() << ", "
+                          << SelectedTagTruth->back().HTXSpTH() << ", "
+                          << SelectedTagTruth->back().HTXSpTV() << std::endl;
+                std::cout << "******************************" << std::endl;
+            }
+        }
         evt.put( SelectedTag );
         evt.put( SelectedTagTruth );
     }

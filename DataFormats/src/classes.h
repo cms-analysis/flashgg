@@ -7,6 +7,7 @@
 #include "flashgg/DataFormats/interface/GenDiPhoton.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
+#include "flashgg/DataFormats/interface/NoTag.h"
 #include "flashgg/DataFormats/interface/UntaggedTag.h"
 #include "flashgg/DataFormats/interface/SigmaMpTTag.h"
 #include "flashgg/DataFormats/interface/Electron.h"
@@ -181,6 +182,10 @@ namespace  {
         flashgg::DiPhotonTagBase tagbase;
         std::vector<flashgg::DiPhotonTagBase> vec_tagbase;
         edm::Wrapper<std::vector<flashgg::DiPhotonTagBase> > wrp_vec_tagbase;
+
+        flashgg::NoTag nocat;
+        std::vector<flashgg::NoTag> vec_nocat;
+        edm::Wrapper<std::vector<flashgg::NoTag> > wrp_vec_nocat;
 
         flashgg::UntaggedTag untaggedcat;
         std::vector<flashgg::UntaggedTag> vec_untaggedcat;
