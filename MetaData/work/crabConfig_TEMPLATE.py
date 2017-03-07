@@ -24,7 +24,7 @@ config.JobType.inputFiles = ['Summer16_23Sep2016V4_MC.db','Summer16_23Sep2016All
 ## incrase jobs time wall, maximum 2750 minutes (~46 hours)
 config.JobType.maxJobRuntimeMin = 2750
 
-## config.JobType.maxMemoryMB = 3000 # For memory leaks. NB. will block jobs on many sites
+config.JobType.maxMemoryMB = 2500 # For memory leaks. NB. will block jobs on many sites
 ## config.JobType.scriptExe = "cmsWrapper.sh"
 config.JobType.pyCfgParams = PYCFG_PARAMS
 config.JobType.sendPythonFolder = True
