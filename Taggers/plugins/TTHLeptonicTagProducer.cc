@@ -507,13 +507,14 @@ namespace flashgg {
                 if( tagElectrons.size() > 0 && TTHLepTagElectron && tagMuons.size() > 0 && TTHLepTagMuon) {
                     //                    std::cout << "including lepton weights" << std::endl; 
                     if( tagMuons.at(0)->pt() > tagElectrons.at(0)->pt() ) {
-                        tthltags_obj.includeWeights( *tagMuons.at(0) ); 
+                        //tthltags_obj.includeWeights( *tagMuons.at(0) ); 
+                        tthltags_obj.includeWeightsByLabel( *tagMuons.at(0), "MuonMiniIsoWeight");
                     } else {
                         tthltags_obj.includeWeights( *tagElectrons.at(0) );
                     }
                 } else if( tagMuons.size() > 0 && TTHLepTagMuon ) {
                     //                    std::cout << "including muon weights" << std::endl; 
-                    tthltags_obj.includeWeights( *tagMuons.at(0) );
+                    tthltags_obj.includeWeightsByLabel( *tagMuons.at(0), "MuonMiniIsoWeight" );
                 } else if( tagElectrons.size() > 0 && TTHLepTagElectron) {
                     //                    std::cout << "including electron weights" << std::endl; 
                     tthltags_obj.includeWeights( *tagElectrons.at(0) );                    
