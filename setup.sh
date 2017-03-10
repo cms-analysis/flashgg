@@ -127,6 +127,9 @@ echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
 git cms-addpkg FWCore/GuiBrowsers
 git cms-merge-topic -u sethzenz:for-flashgg-toolbase-8_0_26
 
+echo "Importing modifications to EGM tools for gain switch categories and uncertainties..."
+git cms-merge-topic shervin86:Hgg_Gain_v1
+
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/Systematics/data/JEC/Summer16_23Sep2016*db $CMSSW_BASE/src/flashgg/
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_80X.db $CMSSW_BASE/src/flashgg
