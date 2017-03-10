@@ -154,7 +154,7 @@ git cms-merge-topic -u shervin86:Egamma80XMiniAODV2_946_fix
 
 
 echo "Importing modifications to EGM tools for gain switch categories and uncertainties..."
-git cms-merge-topic shervin86:Hgg_Gain_v1
+git cms-merge-topic shervin86:Hgg_Gain_v1 -u
 
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/Systematics/data/JEC/Fall17_17Nov2017*db $CMSSW_BASE/src/flashgg/
