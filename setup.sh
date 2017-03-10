@@ -112,7 +112,7 @@ git cms-merge-topic cms-met:METRecipe_8020 -u
 
 echo "Setting up QGL..."
 git cms-addpkg RecoJets/JetProducers
-Git- Cms--merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-8_0_26
+git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-8_0_26
 
 echo "Setting up TnP tools..."
 git cms-merge-topic -u sethzenz:for-flashgg-egm_tnp-8_0_26
