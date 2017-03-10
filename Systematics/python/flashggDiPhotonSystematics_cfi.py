@@ -694,7 +694,7 @@ MCScaleHighR9EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScal
          BinList = emptyBins,
          CorrectionFile = scalesAndSmearingsPrefix,
          ApplyCentralValue = cms.bool(False),
-         UncertaintyBitMask = cms.string("110"),
+         UncertaintyBitMask = cms.string("011"),#cms.string("110"),
          ExaggerateShiftUp = cms.bool(False),
          Debug = cms.untracked.bool(False)
          )
@@ -707,7 +707,7 @@ MCScaleLowR9EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale
          BinList = emptyBins,
          CorrectionFile = scalesAndSmearingsPrefix,
          ApplyCentralValue = cms.bool(False),
-         UncertaintyBitMask = cms.string("110"),
+         UncertaintyBitMask = cms.string("011"),#cms.string("110"),
          ExaggerateShiftUp = cms.bool(False),
          Debug = cms.untracked.bool(False)
          )
@@ -720,7 +720,7 @@ MCScaleHighR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScal
          BinList = emptyBins,
          CorrectionFile = scalesAndSmearingsPrefix,
          ApplyCentralValue = cms.bool(False),
-         UncertaintyBitMask = cms.string("110"),
+         UncertaintyBitMask = cms.string("011"),#cms.string("110"),
          ExaggerateShiftUp = cms.bool(False),
          Debug = cms.untracked.bool(False)
          )
@@ -733,7 +733,7 @@ MCScaleLowR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale
          BinList = emptyBins,
          CorrectionFile = scalesAndSmearingsPrefix,
          ApplyCentralValue = cms.bool(False),
-         UncertaintyBitMask = cms.string("110"),
+         UncertaintyBitMask = cms.string("011"),#cms.string("110"),
          ExaggerateShiftUp = cms.bool(False),
          Debug = cms.untracked.bool(False)
          )
@@ -747,7 +747,7 @@ MCScaleGain6EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale
          CorrectionFile = scalesAndSmearingsPrefix,
          ApplyCentralValue = cms.bool(False),
          ExaggerateShiftUp = cms.bool(False),
-         UncertaintyBitMask = cms.string("001"), # this should be a bit mask, don't know how to make it in python now
+         UncertaintyBitMask = cms.string("100"),#cms.string("001"), # this should be a bit mask, don't know how to make it in python now
          Debug = cms.untracked.bool(False)
          )
 
@@ -760,7 +760,7 @@ MCScaleGain1EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale
          CorrectionFile = scalesAndSmearingsPrefix,
          ApplyCentralValue = cms.bool(False),
          ExaggerateShiftUp = cms.bool(False),
-         UncertaintyBitMask = cms.string("001"), # this should be a bit mask, don't know how to make it in python now
+         UncertaintyBitMask = cms.string("100"),#cms.string("001"), # this should be a bit mask, don't know how to make it in python now
          Debug = cms.untracked.bool(False)
          )
 

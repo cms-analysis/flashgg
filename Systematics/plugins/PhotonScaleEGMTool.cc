@@ -75,7 +75,7 @@ namespace flashgg {
             if (!applyCentralValue()) shift_val = 1.;
             float scale = shift_val + syst_shift * shift_err;
             if( debug_ ) {
-                std::cout << "  " << shiftLabel( syst_shift ) << ": Photon has pt= " << y.pt() << " eta=" << y.eta()
+                std::cout << "  " << shiftLabel( syst_shift ) << ": Photon has pt= " << y.pt() << " eta=" << y.eta() << " gain=" << gain
                     << " and we apply a multiplicative correction of " << scale << std::endl;
             }
             y.updateEnergy( shiftLabel( syst_shift ), scale * y.energy() );
