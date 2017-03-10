@@ -126,6 +126,8 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                SetArbitraryNonGoldMC = cms.bool(False),
                                DropNonGoldData = cms.bool(False),
                                RequireVBFPreselection = cms.bool(True),
+                               VBFPreselLeadPtMin = cms.double(40.),
+                               VBFPreselSubleadPtMin = cms.double(30.),
                                GetQCDWeights = cms.bool(False),
                                HTXSTags     = HTXSInputTags
                                )
