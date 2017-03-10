@@ -753,7 +753,7 @@ MCScaleGain6EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale
 
 MCScaleGain1EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleEGMTool"),
          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-         Label = cms.string("MCScaleGain6EB"),
+         Label = cms.string("MCScaleGain1EB"),
          NSigmas = cms.vint32(-1,1),
          OverallRange = cms.string("hasSwitchToGain1&&abs(superCluster.eta)<1.5"),
          BinList = emptyBins,
