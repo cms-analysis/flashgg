@@ -58,7 +58,6 @@ flashggSigmaMoMpToMTag = cms.EDProducer("FlashggSigmaMpTTagPreCleanerProducer",
                                         )
 
 
-
 flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                        SystLabel=cms.string(""),
