@@ -31,6 +31,7 @@ flashggDiPhotonMVA = cms.EDProducer('FlashggDiPhotonMVAProducer',
                                     VertexProbParamsNoConv=cms.vdouble(-0.366,-0.126,-0.119,-0.091),
                                     doSigmaMdecorr = cms.bool(True),
 #                                    sigmaMdecorrFile = cms.FileInPath("flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_80x_new.root"),
-                                    sigmaMdecorrFile = cms.FileInPath("flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_Mgg40_180.root"),
+#                                    sigmaMdecorrFile = cms.FileInPath("flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_Mgg40_180.root"),
+                                    sigmaMdecorrFile = cms.FileInPath("flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_Moriond17_Mgg40to180_v2.root"),
                                         Version=cms.string("new")
 )
