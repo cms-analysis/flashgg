@@ -174,7 +174,8 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
         if( not hasattr(process,"filteredGenJetsEta2p5") ): 
             process.filteredGenJetsEta2p5 = cms.EDFilter("GenJetSelector",
                                                          src=cms.InputTag(genJetCollection),
-                                                         cut=cms.string("pt>%f && abs(eta)<2.5 && nCarrying(0.90)>1" % jetPtCut),
+#                                                         cut=cms.string("pt>%f && abs(eta)<2.5 && nCarrying(0.90)>1" % jetPtCut),
+                                                         cut=cms.string("pt>%f && abs(eta)<2.5" % jetPtCut),
                                                          )
             process.flashggGenHadronicActivity2p5 = cms.EDProducer("FlashggGenHadronicActivityProducer",
                                                                    src=cms.InputTag("filteredGenJetsEta2p5"),
@@ -183,7 +184,8 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
         if( not hasattr(process,"filteredGenJetsEta4p7") ): 
             process.filteredGenJetsEta4p7 = cms.EDFilter("GenJetSelector",
                                                          src=cms.InputTag(genJetCollection),
-                                                         cut=cms.string("pt>%f && abs(eta)<4.7 && nCarrying(0.90)>1" % jetPtCut),
+#                                                         cut=cms.string("pt>%f && abs(eta)<4.7 && nCarrying(0.90)>1" % jetPtCut),
+                                                         cut=cms.string("pt>%f && abs(eta)<4.7" % jetPtCut),
                                                      )
 
             process.flashggGenHadronicActivity4p7 = cms.EDProducer("FlashggGenHadronicActivityProducer",
@@ -196,7 +198,7 @@ def getJetKinVariables(pre,post,variables,nmax, getter):
     return reduce(lambda z,w: z+w, 
                   map(lambda x: 
 #                      map(lambda y: ("%sJet%s%s%d := ? numberOfDaughters > %d ? daughter(%d).%s : 0" % (pre,post,y.split("[")[0].capitalize(),x,x,x,y.split("[")[0])), variables),
-                      map(lambda y: ("%sJet%s%s := ? %snumberOfDaughters > %d ? %sdaughter(%d).%s : 0" % (pre,  post,  (str(x)+"[").join(y.capitalize().rsplit("[",1)),  getter,  x,  getter,  x,  y.split("[")[0])),  variables),
+                      map(lambda y: ("%sJet%s%s := ? %snumberOfDaughters > %d ? %sdaughter(%d).%s : -999" % (pre,  post,  (str(x)+"[").join(y.capitalize().rsplit("[",1)),  getter,  x,  getter,  x,  y.split("[")[0])),  variables),
                       xrange(nmax)
                       )
                   )
@@ -209,7 +211,8 @@ def addJetGlobalVariables(process,dumper,src,pre,post,getter=""):
     variables  = [ "%(pre)sNjets%(post)s[-1,(-0.5:0.5:1.5:2.5:3.5:100)]:= %(getter)snumberOfDaughters" % locals() ]
 #    variables  = [ "%sNjets%s:=numberOfDaughters" % (pre,post) ]
 #    variables += getJetKinVariables(pre,post,["pt[667,0.0,10005.0]","eta[50,-5.0,5.0]","rapidity[50,0.0,10.0]"],5)
-    variables += getJetKinVariables(pre,post,["pt[-1,(0.0:40.0:65.0:105.0:200.0:13000.0)]","eta","rapidity"],5, getter)
+    variables += getJetKinVariables(pre,post,["pt[-1,(0.0:40.0:65.0:105.0:200.0:13000.0)]","eta","rapidity","numberOfDaughters[200,-0.5,199.5]"],6, getter)
+#    print variables
 ###    variables += getJetKinVariables(pre,post,["pt","eta","rapidity"],5)
 ###    variables += [ "%sDijetMass%s := ? numberOfDaughters > 1 ? sqrt( (daughter(0).energy+daughter(1).energy)^2 - (daughter(0).px+daughter(1).px)^2 - (daughter(0).py+daughter(1).py)^2 - (daughter(0).pz+daughter(1).pz)^2 ) : 0" % (pre,post) ]
     
