@@ -168,6 +168,8 @@ namespace flashgg {
         void setStatusFlags( int32_t st) { return addUserInt("rechitStatus",st); };
         int32_t statusFlags() { return  (hasUserInt("rechitStatus")?userInt("rechitStatus"):-1); };
         bool checkStatusFlag( rechitSummaryFlags_t ibit) const { return (hasUserInt("rechitStatus")?userInt("rechitStatus")&(0x1<<ibit):0); };
+        inline bool hasSwitchToGain1(void)const{ return checkStatusFlag(kHasSwitchToGain1);};
+        inline bool hasSwitchToGain6(void)const{ return (checkStatusFlag(kHasSwitchToGain1)==false && checkStatusFlag(kHasSwitchToGain6));};
         reco::SuperCluster* getSuperCluster() { return &superCluster_[0];};
 
     private:

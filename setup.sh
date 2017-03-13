@@ -108,7 +108,7 @@ echo "EGM Pho ID recipe, Summer16"
 git cms-merge-topic ikrav:egm_id_80X_v3_photons
 
 echo "grabbing MET topic updates..."
-git cms-merge-topic cms-met:METRecipe_8020
+git cms-merge-topic cms-met:METRecipe_8020 -u
 
 echo "Setting up QGL..."
 git cms-addpkg RecoJets/JetProducers
@@ -127,6 +127,9 @@ echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
 git cms-addpkg FWCore/GuiBrowsers
 git cms-merge-topic -u sethzenz:for-flashgg-toolbase-8_0_26
 
+echo "Importing modifications to EGM tools for gain switch categories and uncertainties..."
+git cms-merge-topic shervin86:Hgg_Gain_v1 -u
+
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/Systematics/data/JEC/Summer16_23Sep2016*db $CMSSW_BASE/src/flashgg/
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_80X.db $CMSSW_BASE/src/flashgg
@@ -138,8 +141,8 @@ cp $CMSSW_BASE/src/flashgg/Systematics/data/80X_ichepV1_2016_pho_s* $CMSSW_BASE/
 cp $CMSSW_BASE/src/flashgg/Systematics/data/80X_ichepV2_2016_pho_s* $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 cp $CMSSW_BASE/src/flashgg/Systematics/data/Winter_2016_reReco_v1_ele_scales.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 cp $CMSSW_BASE/src/flashgg/Systematics/data/Winter_2016_reReco_v1_ele_smearings.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
- cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_scales.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
- cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_smearings.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
+cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_scales.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
+cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_smearings.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 
 
 
