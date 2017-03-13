@@ -122,10 +122,13 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                # These boundaries are recalculated after fixing
                                # the problem with the shape of the BDT output
 #                               Boundaries=cms.vdouble(0.215,  0.532,  0.865),
-                               Boundaries=cms.vdouble(0.66633615,  0.89334188,  0.95919197),
+#                               Boundaries=cms.vdouble(0.66633615,  0.89334188,  0.95919197),
+                               Boundaries=cms.vdouble(0.55889473,  0.9087378 ,  0.97044208),
                                SetArbitraryNonGoldMC = cms.bool(False),
                                DropNonGoldData = cms.bool(False),
                                RequireVBFPreselection = cms.bool(True),
+                               VBFPreselLeadPtMin = cms.double(40.),
+                               VBFPreselSubleadPtMin = cms.double(30.),
                                GetQCDWeights = cms.bool(False),
                                HTXSTags     = HTXSInputTags
                                )

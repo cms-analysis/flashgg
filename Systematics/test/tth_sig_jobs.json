@@ -5,9 +5,15 @@
        "tth_120"  : [ [ "/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8_v2", 
                       { "args" :["outputFile=output_ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
        "tth_130"  : [ [ "/ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8_v2",
-                       { "args" :["outputFile=output_ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ]
-
-
+                       { "args" :["outputFile=output_ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
+       "tth_123"  : [ [ "/ttHJetToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8",
+                       { "args" :["outputFile=output_ttHJetToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
+       "tth_124"  : [ [ "/ttHJetToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8",
+                       { "args" :["outputFile=output_ttHJetToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
+       "tth_126"  : [ [ "/ttHJetToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8",
+                       { "args" :["outputFile=output_ttHJetToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
+       "tth_127"  : [ [ "/ttHJetToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8",
+                       { "args" :["outputFile=output_ttHJetToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ]
      },	
         "cmdLine" : "campaign=RunIISummer16-2_4_1-25ns_Moriond17"
 }
