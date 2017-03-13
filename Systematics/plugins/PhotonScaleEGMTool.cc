@@ -4,7 +4,7 @@
 #include "DataFormats/Common/interface/Handle.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "DataFormats/Common/interface/PtrVector.h"
-#include "EgammaAnalysis/ElectronTools/interface/EnergyScaleCorrection_class.hh"
+#include "EgammaAnalysis/ElectronTools/interface/EnergyScaleCorrection_class.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 
 namespace edm {
@@ -30,6 +30,7 @@ namespace flashgg {
         std::string correctionFile_;
         EnergyScaleCorrection_class scaler_;
         bool exaggerateShiftUp_; // debugging
+        std::bitset<EnergyScaleCorrection_class::scAll> uncBitMask_; 
         bool debug_;
         unsigned run_number_;
     };
@@ -40,6 +41,7 @@ namespace flashgg {
         correctionFile_( conf.getParameter<std::string>( "CorrectionFile" )),
         scaler_(correctionFile_),
         exaggerateShiftUp_( conf.getParameter<bool>( "ExaggerateShiftUp" ) ),
+        uncBitMask_( conf.getParameter<std::string>("UncertaintyBitMask" ) ),
         debug_( conf.getUntrackedParameter<bool>( "Debug", false ) )
     {
         if (applyCentralValue()) scaler_.doScale = true;
@@ -64,13 +66,16 @@ namespace flashgg {
 
     void PhotonScaleEGMTool::applyCorrection( flashgg::Photon &y, int syst_shift )
     {
+        unsigned int gain=12;
+        if(y.hasSwitchToGain1()) gain=1;
+        if(y.hasSwitchToGain6()) gain=6;
         if( overall_range_( y ) ) {
-            auto shift_val = scaler_.ScaleCorrection(run_number_, y.isEB(), y.full5x5_r9(), y.superCluster()->eta(), y.et());
-            auto shift_err = scaler_.ScaleCorrectionUncertainty(run_number_, y.isEB(), y.full5x5_r9(), y.superCluster()->eta(), y.et());
+            auto shift_val = scaler_.ScaleCorrection(run_number_, y.isEB(), y.full5x5_r9(), y.superCluster()->eta(), y.et(), gain);
+            auto shift_err = scaler_.ScaleCorrectionUncertainty(run_number_, y.isEB(), y.full5x5_r9(), y.superCluster()->eta(), y.et(), gain, uncBitMask_);
             if (!applyCentralValue()) shift_val = 1.;
             float scale = shift_val + syst_shift * shift_err;
             if( debug_ ) {
-                std::cout << "  " << shiftLabel( syst_shift ) << ": Photon has pt= " << y.pt() << " eta=" << y.eta()
+                std::cout << "  " << shiftLabel( syst_shift ) << ": Photon has pt= " << y.pt() << " eta=" << y.eta() << " gain=" << gain
                     << " and we apply a multiplicative correction of " << scale << std::endl;
             }
             y.updateEnergy( shiftLabel( syst_shift ), scale * y.energy() );

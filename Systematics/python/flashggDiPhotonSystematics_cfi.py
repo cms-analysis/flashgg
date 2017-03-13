@@ -694,6 +694,7 @@ MCScaleHighR9EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScal
          BinList = emptyBins,
          CorrectionFile = scalesAndSmearingsPrefix,
          ApplyCentralValue = cms.bool(False),
+         UncertaintyBitMask = cms.string("011"),#cms.string("110"),
          ExaggerateShiftUp = cms.bool(False),
          Debug = cms.untracked.bool(False)
          )
@@ -706,6 +707,7 @@ MCScaleLowR9EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale
          BinList = emptyBins,
          CorrectionFile = scalesAndSmearingsPrefix,
          ApplyCentralValue = cms.bool(False),
+         UncertaintyBitMask = cms.string("011"),#cms.string("110"),
          ExaggerateShiftUp = cms.bool(False),
          Debug = cms.untracked.bool(False)
          )
@@ -718,6 +720,7 @@ MCScaleHighR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScal
          BinList = emptyBins,
          CorrectionFile = scalesAndSmearingsPrefix,
          ApplyCentralValue = cms.bool(False),
+         UncertaintyBitMask = cms.string("011"),#cms.string("110"),
          ExaggerateShiftUp = cms.bool(False),
          Debug = cms.untracked.bool(False)
          )
@@ -730,10 +733,36 @@ MCScaleLowR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale
          BinList = emptyBins,
          CorrectionFile = scalesAndSmearingsPrefix,
          ApplyCentralValue = cms.bool(False),
+         UncertaintyBitMask = cms.string("011"),#cms.string("110"),
          ExaggerateShiftUp = cms.bool(False),
          Debug = cms.untracked.bool(False)
          )
 
+MCScaleGain6EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleEGMTool"),
+         MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+         Label = cms.string("MCScaleGain6EB"),
+         NSigmas = cms.vint32(-1,1),
+         OverallRange = cms.string("hasSwitchToGain6&&abs(superCluster.eta)<1.5"),
+         BinList = emptyBins,
+         CorrectionFile = scalesAndSmearingsPrefix,
+         ApplyCentralValue = cms.bool(False),
+         ExaggerateShiftUp = cms.bool(False),
+         UncertaintyBitMask = cms.string("100"),#cms.string("001"), # this should be a bit mask, don't know how to make it in python now
+         Debug = cms.untracked.bool(False)
+         )
+
+MCScaleGain1EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleEGMTool"),
+         MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+         Label = cms.string("MCScaleGain1EB"),
+         NSigmas = cms.vint32(-1,1),
+         OverallRange = cms.string("hasSwitchToGain1&&abs(superCluster.eta)<1.5"),
+         BinList = emptyBins,
+         CorrectionFile = scalesAndSmearingsPrefix,
+         ApplyCentralValue = cms.bool(False),
+         ExaggerateShiftUp = cms.bool(False),
+         UncertaintyBitMask = cms.string("100"),#cms.string("001"), # this should be a bit mask, don't know how to make it in python now
+         Debug = cms.untracked.bool(False)
+         )
 
 flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
 		src = cms.InputTag("flashggUpdatedIdMVADiPhotons"),
@@ -746,6 +775,8 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
                     MCScaleLowR9EB,
                     MCScaleHighR9EE,
                     MCScaleLowR9EE,
+                    MCScaleGain6EB_EGM,
+                    MCScaleGain1EB_EGM,
                     MaterialCentral,
                     MaterialForward,
                     ShowerShapeHighR9EB,
