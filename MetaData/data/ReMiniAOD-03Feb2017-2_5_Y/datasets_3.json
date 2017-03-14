@@ -18801,11 +18801,6 @@
                 "weights": 39467
             }, 
             {
-                "bad": true, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/ReMiniAOD-03Feb2017-2_5_4/2_5_1/DoubleEG/ReMiniAOD-03Feb2017-2_5_4-2_5_1-v0-Run2016C-03Feb2017-v1/170310_111520/0000/myMicroAODOutputFile_496.root", 
-                "nevents": 41860
-            }, 
-            {
                 "bad": false, 
                 "events": 39780, 
                 "lumis": {
@@ -21137,11 +21132,6 @@
                 "nevents": 48297, 
                 "totEvents": 48297, 
                 "weights": 48297
-            }, 
-            {
-                "bad": true, 
-                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/ReMiniAOD-03Feb2017-2_5_4/2_5_1/DoubleEG/ReMiniAOD-03Feb2017-2_5_4-2_5_1-v0-Run2016C-03Feb2017-v1/170310_111520/0000/myMicroAODOutputFile_546.root", 
-                "nevents": 47150
             }, 
             {
                 "bad": false, 
