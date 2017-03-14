@@ -95,6 +95,14 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 ### REMINIAOD with MET update
 
+./prepareCrabJobs.py -C ReMiniAOD-03Feb2017-2_5_5 -U 1 -L 25 -s campaigns/ReMiniAOD-03Feb2017-2_5_5_list2.json -V 2_5_5 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask ${CMSSW_BASE}/src/flashgg/MetaData/work/jsons/DoubleEG_MetFix_missing13Mar.json
+
+./prepareCrabJobs.py -C ReMiniAOD-03Feb2017-2_5_5 -U 1 -L 25 -s campaigns/ReMiniAOD-03Feb2017-2_5_5.json -V 2_5_5 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask ${CMSSW_BASE}/src/flashgg/MetaData/work/jsons/Cert_ReReco_notPrompt.json
+
+Two mistakes in next command:
+a. version is wrong (but ok campaign name is right, no problem)
+b. Used PromptReco json, hence extra submission for 2016B above to catch the extra lumisections
+
 ./prepareCrabJobs.py -C ReMiniAOD-03Feb2017-2_5_4 -U 1 -L 25 -s campaigns/ReMiniAOD-03Feb2017-2_5_4.json -V 2_5_1 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask ${CMSSW_BASE}/src/flashgg/MetaData/work/jsons/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt
 
 ### REMINIAOD
