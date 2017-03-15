@@ -8,7 +8,7 @@ def addCategories(pset,cats,variables,histograms,mvas=None):
 
 # -----------------------------------------------------------------------
 def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mvas=None,classname=None,binnedOnly=None,
-                dumpPdfWeights=None,nPdfWeights=None,nAlphaSWeights=None,nScaleWeights=None,splitPdfByStage0Cat=None):
+#                dumpPdfWeights=None,nPdfWeights=None,nAlphaSWeights=None,nScaleWeights=None,splitPdfByStage0Cat=None):
                 dumpPdfWeights=None,nPdfWeights=None,nAlphaSWeights=None,nScaleWeights=None,splitPdfByStage0Cat=None,unbinnedSystematics=None):
    
     if subcats >= 0:
@@ -82,12 +82,10 @@ def parseVariable(expr, name):
         name,rng = name.replace("]","").split("[")
         rng = rng.split(",")
         nbins = int(rng[0])
-        print "rng[1]"
-        print rng[1]
         if rng[1].startswith("("):
             binning = [float(b) for b in rng[1].lstrip("(").rstrip(")").split(":") ]
-            print "binning in dumperconfigtools is "
-            print binning
+#            print "binning in dumperconfigtools is "
+#            print binning
             return name, [expr], nbins, None, None, binning
         else:
             vmin  = float(rng[1])
@@ -340,14 +338,14 @@ def addGlobalFloats(process,globalVariables,src,variables):
 #        name,expr = getNameExpr(var)
         name0,expr0 = getNameExpr(var)
         name,expr,nbins,vmin,vmax,binning = parseVariable(expr0,name0)
-        print name,expr,nbins,vmin,vmax,binning
+#        print name,expr,nbins,vmin,vmax,binning
         varlist[name] = expr[0]
         setattr(globalVariables.extraFloats,name,cms.PSet(src=cms.InputTag(ntproducer,name)))
         if nbins:
-            print "vmin ",vmin
-            print "vmax ",vmax
+#            print "vmin ",vmin
+#            print "vmax ",vmax
             if vmin is not None and vmax is not None:
-                print "enter if vmin vamx"
+#                print "enter if vmin vamx"
                 setattr(globalVariables.extraFloats,name,cms.PSet(src=cms.InputTag(ntproducer,name),nbins=cms.int32(nbins),vmin=cms.double(vmin),vmax=cms.double(vmax)))
             elif binning:
                 setattr(globalVariables.extraFloats,name,cms.PSet(src=cms.InputTag(ntproducer,name),nbins=cms.int32(nbins),binning=cms.vdouble(binning) ) )

@@ -248,7 +248,9 @@ namespace flashgg {
 
                     //std::cout<<ihandle.product()<<std::endl;
                     // std::cout<< extraFloatNames_[iextra] <<std::endl;
-                    if( ihandle->size()  < 1 ) { std::cout << "NO extra float......... " << extraFloatNames_[iextra] << std::endl; continue; }
+                    if( ihandle->size()  < 1 ) {
+                        //std::cout << "NO extra float......... " << extraFloatNames_[iextra] << std::endl;
+                        continue; }
                     extraFloatVariables_[iextra] = (*ihandle)[0];
                 }
             }
