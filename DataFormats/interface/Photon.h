@@ -69,7 +69,7 @@ namespace flashgg {
         void updateEnergy( std::string key, float val );
         void shiftAllMvaValuesBy( float val );
         void shiftMvaValueBy( float val, edm::Ptr<reco::Vertex> vtx );
-        void shiftSigmaEOverEValueBy( float val );
+        void shiftSigmaEOverEValueBy( float val, float cutoff=0. );
         void smearSigmaEOverEValueBy( float val );
         //    void setSigEOverE(float val) { sigEOverE_ = val; };
 
