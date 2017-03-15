@@ -1,0 +1,33 @@
+{
+    "processes" : {
+    	"InsideAcceptance_120"  :[
+		  [ "/GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8/sethzenz-RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1-53d3ac6d2aa4d9bf300e04bdc8636d58/USER",  { "args" :["acceptance=IN"] } ],
+		  [ "/VBFHToGG_M120_13TeV_amcatnlo_pythia8/sethzenz-RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1-4899ef0a862eed7e22d3c7ad59d6a784/USER",  { "args" :["acceptance=IN"] } ],
+		  [ "/VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8/sethzenz-RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1-91f695d98afd34b3751740a965bf460b/USER", { "args" :["acceptance=IN"] } ],
+		  [ "/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8_v2/sethzenz-RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1-a441a93bb50ffde2d33d432edd33f748/USER", { "args" :["acceptance=IN"] } ]
+	 ],
+
+
+
+    	"InsideAcceptance_125"  :[
+				[ "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/sethzenz-RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1-53d3ac6d2aa4d9bf300e04bdc8636d58/USER", 
+		       { "args" :["acceptance=IN"] } ],
+		       	 	[ "/VBFHToGG_M125_13TeV_amcatnlo_pythia8/sethzenz-RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1-4899ef0a862eed7e22d3c7ad59d6a784/USER",
+		       { "args" :["acceptance=IN"] } ],
+		       	 	[ "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/sethzenz-RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1-91f695d98afd34b3751740a965bf460b/USER", 
+		      { "args" :["acceptance=IN"] } ],
+		      	       [ "/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_v2",
+		       { "args" :["acceptance=IN"] } ]
+	 ],
+
+
+
+    	"InsideAcceptance_130"  :[
+	[ "/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/sethzenz-RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1-53d3ac6d2aa4d9bf300e04bdc8636d58/USER", { "args" :["acceptance=IN"] }  ],
+	[ "/VBFHToGG_M130_13TeV_amcatnlo_pythia8/sethzenz-RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1-4899ef0a862eed7e22d3c7ad59d6a784/USER", { "args" :["acceptance=IN"] } ],
+	[ "/VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8/sethzenz-RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1-91f695d98afd34b3751740a965bf460b/USER", { "args" :["acceptance=IN"] } ],
+	[ "/ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8_v2/sethzenz-RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1-a441a93bb50ffde2d33d432edd33f748/USER", { "args" :["acceptance=IN"] } ]
+	 ]
+     },	
+        "cmdLine" : "campaign=RunIISummer16-2_4_1-25ns_Moriond17"
+}
