@@ -268,10 +268,10 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
             jetsystlabels.append("JEC%s01sigma" % direction)
             jetsystlabels.append("JER%s01sigma" % direction)
             jetsystlabels.append("PUJIDShift%s01sigma" % direction)
-            metsystlabels.append("metJecUncertainty%s01sigma" % direction)
-            metsystlabels.append("metJerUncertainty%s01sigma" % direction)
-            metsystlabels.append("metPhoUncertainty%s01sigma" % direction)
-            metsystlabels.append("metUncUncertainty%s01sigma" % direction)
+###            metsystlabels.append("metJecUncertainty%s01sigma" % direction)
+###            metsystlabels.append("metJerUncertainty%s01sigma" % direction)
+###            metsystlabels.append("metPhoUncertainty%s01sigma" % direction)
+###            metsystlabels.append("metUncUncertainty%s01sigma" % direction)
             variablesToUse.append("UnmatchedPUWeight%s01sigma[1,-999999.,999999.] := weight(\"UnmatchedPUWeight%s01sigma\")" % (direction,direction))
             variablesToUse.append("MvaLinearSyst%s01sigma[1,-999999.,999999.] := weight(\"MvaLinearSyst%s01sigma\")" % (direction,direction))
             variablesToUse.append("LooseMvaSF%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s01sigma\")" % (direction,direction))
@@ -499,7 +499,7 @@ for tag in tagList:
                            nPdfWeights=nPdfWeights,
                            nAlphaSWeights=nAlphaSWeights,
                            nScaleWeights=nScaleWeights,
-                           splitPdfByStage0Cat=customize.doHTXS
+                           splitPdfByStage0Cat=customize.doHTXS,
                            unbinnedSystematics=True
                            )
 
