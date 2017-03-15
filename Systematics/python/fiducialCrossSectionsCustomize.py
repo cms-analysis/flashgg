@@ -192,6 +192,16 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
                                                                    src=cms.InputTag("filteredGenJetsEta4p7"),
                                                                    veto=cms.InputTag(genDiphotons)
                                                                    )
+        if( not hasattr(process,"filteredGenJetsEtaInclusive") ): 
+            process.filteredGenJetsEtaInclusive = cms.EDFilter("GenJetSelector",
+                                                         src=cms.InputTag(genJetCollection),
+#                                                         cut=cms.string("pt>%f && abs(eta)<2.5 && nCarrying(0.90)>1" % jetPtCut),
+                                                         cut=cms.string("pt>%f" % jetPtCut),
+                                                         )
+            process.flashggGenHadronicActivityInclusive = cms.EDProducer("FlashggGenHadronicActivityProducer",
+                                                                   src=cms.InputTag("filteredGenJetsEtaInclusive"),
+                                                                   veto=cms.InputTag(genDiphotons)
+                                                                   )
         
 # ----------------------------------------------------------------------------------------------------------------
 def getJetKinVariables(pre,post,variables,nmax, getter):
@@ -226,6 +236,7 @@ def addJetGlobalVariables(process,dumper,src,pre,post,getter=""):
 def addGenGlobalVariables(process,dumper):    
     addJetGlobalVariables(process,dumper,"flashggGenHadronicActivity2p5","gen","2p5")
     addJetGlobalVariables(process,dumper,"flashggGenHadronicActivity4p7","gen","4p7")
+    addJetGlobalVariables(process,dumper,"flashggGenHadronicActivityInclusive","gen","Inclusive")
 
 # ----------------------------------------------------------------------------------------------------------------
 def addRecoGlobalVariables(process,dumper,tagGetter=""):    
