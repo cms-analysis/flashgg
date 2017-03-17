@@ -609,6 +609,9 @@ if customize.doFiducial:
           nAlphaSWeights = -1
           nScaleWeights = -1
     if not customize.processId == "Data":
+        mH = 125.
+        if "_M" in customize.datasetName():
+            toks = 
         fc.addGenOnlyAnalysis(process,customize.processId,process.flashggTagSequence,customize.acceptance,tagList,systlabels,pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights))
 
 if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
