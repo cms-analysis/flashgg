@@ -455,6 +455,11 @@ if (customize.processId == "th_125" or customize.processId == "bbh_125"):
     process.load("flashgg/Systematics/CentralHiggsFilter_cfi")
     process.genFilter += process.CentralHiggsFilter
 
+#pythia is wrong, check have two photons from hard scatter
+process.penultimateFilter= cms.Sequence()
+process.load("flashgg/Systematics/PythiaFilter_cfi")
+process.penultimateFilter += process.PythiaFilter
+
 # Split out prompt-fake or fake-fake
 process.finalFilter = cms.Sequence()
 if (customize.processId.count("qcd") or customize.processId.count("gjet")) and customize.processId.count("fake"):
@@ -478,6 +483,7 @@ process.p = cms.Path(process.dataRequirements*
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                      (process.flashggTagSequence*process.systematicsTagSequences)*
                      process.flashggSystTagMerger*
+                     process.penultimateFilter*
                      process.finalFilter*
                      process.tagsDumper)
 
