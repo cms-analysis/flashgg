@@ -31,6 +31,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+#include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 
 //
 // class decleration
@@ -49,6 +50,8 @@ class PythiaFilter : public edm::EDFilter {
  private:
   // ----------member data ---------------------------      
   EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
+  EDGetTokenT<vector<pat::PackedGenParticle> > packedGenParticleToken_;
+  bool usePacked_;
 
 };
 #endif
