@@ -9,7 +9,7 @@ class JobConfig(object):
         
         super(JobConfig,self).__init__()
 
-        self.metaDataSrc=kwargs.get("metaDataSrc","flashgg")
+#        self.metaDataSrc=kwargs.get("metaDataSrc","flashgg")
         self.crossSections=kwargs.get("crossSections",["$CMSSW_BASE/src/flashgg/MetaData/data/cross_sections.json"])
         self.tfileOut=kwargs.get("tfileOut",None)
 
@@ -17,6 +17,11 @@ class JobConfig(object):
 
         self.options = VarParsing.VarParsing("analysis")
         ## self.options.setDefault ('maxEvents',100)
+        self.options.register ('metaDataSrc',
+                               'flashgg', # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "metaDataSrc")
         self.options.register ('dataset',
                        "", # default value
                        VarParsing.VarParsing.multiplicity.singleton, # singleton or list
