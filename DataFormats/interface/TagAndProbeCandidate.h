@@ -14,20 +14,22 @@ namespace flashgg {
         TagAndProbeCandidate() {};
         TagAndProbeCandidate( edm::Ptr<flashgg::Photon> tag, edm::Ptr<flashgg::Photon> probe)
             {
-                tag_ = tag;
-                probe_ = probe;
+                tag_ = SinglePhotonView( tag );
+                probe_ = SinglePhotonView( probe );
             };
 
         //---dtor---
         ~TagAndProbeCandidate() {};
 
         //---getters---
-        edm::Ptr<flashgg::Photon> getTag() {return tag_;};
-        edm::Ptr<flashgg::Photon> getProbe() {return probe_;};
+        Photon& getTag() {return tag_.getPhoton();};
+        Photon& getProbe() {return probe_.getPhoton();};
+        SinglePhotonView& getTagView() {return tag_;};
+        SinglePhotonView& getProbeView() {return probe_;};
         
     private:
-        edm::Ptr<flashgg::Photon> tag_;
-        edm::Ptr<flashgg::Photon> probe_;
+        SinglePhotonView tag_;
+        SinglePhotonView probe_;
     };
 }
 
