@@ -342,4 +342,13 @@
 </class>
 <class name="std::vector<flashgg::TagCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TagCandidate> >"/>
+
+<class name="flashgg::TagAndProbeCandidate"/>
+<class name="std::vector<flashgg::TagAndProbeCandidate>"/>
+<class name="edm::Wrapper<std::vector<flashgg::TagAndProbeCandidate> >"/>
+<class name="edm::Ptr<flashgg::TagAndProbeCandidate>"/>
+<class name="edm::Wrapper<edm::Ptr<flashgg::TagAndProbeCandidate> >"/>
+<class name="std::vector<edm::Ptr<flashgg::TagAndProbeCandidate> >"/>
+<class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::TagAndProbeCandidate> > >"/>
+
 </lcgdict>
