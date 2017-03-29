@@ -10,6 +10,9 @@
 #include "flashgg/DataFormats/interface/VHTightTag.h"
 #include "flashgg/DataFormats/interface/VHHadronicTag.h"
 #include "flashgg/DataFormats/interface/ZPlusJetTag.h"
+#include "flashgg/DataFormats/interface/VHLeptonicLooseTag.h"
+#include "flashgg/DataFormats/interface/WHLeptonicTag.h"
+#include "flashgg/DataFormats/interface/ZHLeptonicTag.h"
 
 #include "flashgg/Taggers/interface/CollectionDumper.h"
 
@@ -41,6 +44,15 @@ namespace flashgg {
     typedef CollectionDumper<std::vector<ZPlusJetTag>,
             ZPlusJetTag,
             CutBasedClassifier<ZPlusJetTag> > CutBasedZPlusJetTagDumper;
+    typedef CollectionDumper<std::vector<WHLeptonicTag>,
+            WHLeptonicTag,
+            CutBasedClassifier<WHLeptonicTag> > CutBasedWHLeptonicTagDumper;
+    typedef CollectionDumper<std::vector<VHLeptonicLooseTag>,
+            VHLeptonicLooseTag,
+            CutBasedClassifier<VHLeptonicLooseTag> > CutBasedVHLeptonicLooseTagDumper;
+    typedef CollectionDumper<std::vector<ZHLeptonicTag>,
+            ZHLeptonicTag,
+            CutBasedClassifier<ZHLeptonicTag> > CutBasedZHLeptonicTagDumper;
 }
 
 #endif
