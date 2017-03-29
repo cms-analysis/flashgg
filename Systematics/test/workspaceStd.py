@@ -455,10 +455,10 @@ if (customize.processId == "th_125" or customize.processId == "bbh_125"):
     process.load("flashgg/Systematics/CentralHiggsFilter_cfi")
     process.genFilter += process.CentralHiggsFilter
 
-#pythia is wrong, check have two photons from hard scatter
+#pythia8 has an unanticipated EM showering feature, check have two photons from hard scatter
 process.penultimateFilter= cms.Sequence()
-process.load("flashgg/Systematics/PythiaFilter_cfi")
-process.penultimateFilter += process.PythiaFilter
+#process.load("flashgg/Systematics/HardProcessFinalStateFilter_cfi")
+#process.penultimateFilter += process.HardProcessFinalStateFilter
 
 # Split out prompt-fake or fake-fake
 process.finalFilter = cms.Sequence()
