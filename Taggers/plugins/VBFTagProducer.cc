@@ -57,6 +57,8 @@ namespace flashgg {
         float vbfPreselLeadPtMin_;
         float vbfPreselSubleadPtMin_;
 
+        float vbfPreselPhoIDMVAMin_;
+
         vector<double> boundaries;
 
     };
@@ -74,7 +76,8 @@ namespace flashgg {
         requireVBFPreselection_   ( iConfig.getParameter<bool> ( "RequireVBFPreselection" ) ),
         getQCDWeights_( iConfig.getParameter<bool>( "GetQCDWeights" ) ),
         vbfPreselLeadPtMin_( iConfig.getParameter<double>( "VBFPreselLeadPtMin" ) ),
-        vbfPreselSubleadPtMin_( iConfig.getParameter<double>( "VBFPreselSubleadPtMin" ) )
+        vbfPreselSubleadPtMin_( iConfig.getParameter<double>( "VBFPreselSubleadPtMin" ) ),
+        vbfPreselPhoIDMVAMin_( iConfig.getParameter<double>( "VBFPreselPhoIDMVAMin") )
     {
         boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
         assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception
@@ -558,10 +561,12 @@ namespace flashgg {
                 */
 
                 VBFpresel = ( tag_obj.VBFMVA().dijet_LeadJPt > vbfPreselLeadPtMin_ 
-                                && tag_obj.VBFMVA().dijet_SubJPt > vbfPreselSubleadPtMin_ 
-                                && tag_obj.VBFMVA().leadPho_PToM > (1./3) 
-                                && tag_obj.VBFMVA().sublPho_PToM > (1./4) 
-                                && tag_obj.VBFMVA().dijet_Mjj > 250. );
+                              && tag_obj.VBFMVA().dijet_SubJPt > vbfPreselSubleadPtMin_ 
+                              && tag_obj.diPhoton()->leadPhotonId() > vbfPreselPhoIDMVAMin_
+                              && tag_obj.diPhoton()->subLeadPhotonId() > vbfPreselPhoIDMVAMin_
+                              && tag_obj.VBFMVA().leadPho_PToM > (1./3) 
+                              && tag_obj.VBFMVA().sublPho_PToM > (1./4) 
+                              && tag_obj.VBFMVA().dijet_Mjj > 250. );
 
                 //                std::cout << "  VBFpresel=" << VBFpresel << std::endl;
             }
