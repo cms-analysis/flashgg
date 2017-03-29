@@ -1,22 +1,11 @@
-#ifndef PYTHIAFILTER_h
-#define PYTHIAFILTER_h
+#ifndef HARDPROCESSFINALSTATEFILTER_h
+#define HARDPROCESSFINALSTATEFILTER_h
 
 // -*- C++ -*-
 //
-// Package:    PythiaFilter
-// Class:      PythiaFilter
+// Package:    HardProcessFinalStateFilter
+// Class:      HardProcessFinalStateFilter
 // 
-/* 
- Description: filter events based on the Pythia ProcessID and the Pt_hat
- Implementation: inherits from generic EDFilter
-     
-*/
-//
-// Original Author:  Martina Malberti
-//         Created:  Tue Jan 12 22:57:54 CET 2016
-//
-// Cut-band-based by Seth Zenz
-
 
 // system include files
 #include <memory>
@@ -31,6 +20,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+#include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 
 //
 // class decleration
@@ -39,16 +29,20 @@
 using namespace std;
 using namespace edm;
 
-class PythiaFilter : public edm::EDFilter {
+class HardProcessFinalStateFilter : public edm::EDFilter {
  public:
-  explicit PythiaFilter(const edm::ParameterSet&);
-  ~PythiaFilter();
+  explicit HardProcessFinalStateFilter(const edm::ParameterSet&);
+  ~HardProcessFinalStateFilter();
 
-
+  virtual void endJob() override;
   virtual bool filter(edm::Event&, const edm::EventSetup&);
  private:
   // ----------member data ---------------------------      
   EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
+  EDGetTokenT<GenEventInfoProduct> genInfoToken_;
+
+  int npass,nfail,ntot;
+  float wpass,wfail,wtot;
 
 };
 #endif
