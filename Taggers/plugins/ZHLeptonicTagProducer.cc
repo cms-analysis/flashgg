@@ -283,8 +283,8 @@ namespace flashgg {
             //check for two good muons
             if( tagMuonsTemp.size() >= 2 ) 
                 {
-                    for(uint i=0;i<tagMuonsTemp.size()-1;i++)
-                        for(uint j=1;j<tagMuonsTemp.size();j++)
+                    for(uint i=0;i<tagMuonsTemp.size();i++)
+                        for(uint j=i+1;j<tagMuonsTemp.size();j++)
                             {
                                 math::XYZTLorentzVector leptonPair = tagMuonsTemp[i]->p4()+tagMuonsTemp[j]->p4();
                                 
@@ -299,8 +299,8 @@ namespace flashgg {
             //check for two good electrons
             if( tagElectronsTemp.size() >= 2 ) 
                 {
-                    for(uint i=0;i<tagElectronsTemp.size()-1;i++)
-                        for(uint j=1;j<tagElectronsTemp.size();j++)
+                    for(uint i=0;i<tagElectronsTemp.size();i++)
+                        for(uint j=i+1;j<tagElectronsTemp.size();j++)
                             {
                                 math::XYZTLorentzVector leptonPair = tagElectronsTemp[i]->p4()+tagElectronsTemp[j]->p4();
                                 if( leptonPair.M() < invMassLepHighThreshold_  && leptonPair.M() > invMassLepLowThreshold_ ) 
