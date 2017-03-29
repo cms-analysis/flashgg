@@ -180,8 +180,8 @@ namespace flashgg {
 
         ph.addUserFloat("uncorr_non5x5_r9",ph.old_r9());
         ph.addUserFloat("uncorr_non5x5_sigmaIetaIeta",non5x5ShowerShapes.sigmaIetaIeta);
-        ph.addUserFloat("uncorr_non5x5_sigmaIetaIphi",non5x5ShowerShapes.sigmaIphiIphi);
-        ph.addUserFloat("uncorr_non5x5_sigmaIphiIphi",non5x5ShowerShapes.sigmaIetaIphi);
+        ph.addUserFloat("uncorr_non5x5_sigmaIphiIphi",non5x5ShowerShapes.sigmaIphiIphi);
+        ph.addUserFloat("uncorr_non5x5_sigmaIetaIphi",non5x5ShowerShapes.sigmaIetaIphi);
 
         non5x5ShowerShapes.e3x3          = non5x5corrections_[corr_index+0]->Eval(ph.old_r9())*ph.superCluster()->rawEnergy();
         non5x5ShowerShapes.sigmaIetaIeta = non5x5corrections_[corr_index+1]->Eval(non5x5ShowerShapes.sigmaIetaIeta);
@@ -215,7 +215,7 @@ namespace flashgg {
             new_obj->makePhotonsPersistent();
             // store reco energy for safety
             new_obj->getLeadingPhoton().addUserFloat("reco_E", new_obj->getLeadingPhoton().energy());
-            new_obj->getSubLeadingPhoton().addUserFloat("reco_E", new_obj->getLeadingPhoton().energy());
+            new_obj->getSubLeadingPhoton().addUserFloat("reco_E", new_obj->getSubLeadingPhoton().energy());
             // store reco regression
             float leadE = 0., subleadE = 0.;
             if( reRunRegression_ ) {
@@ -260,7 +260,7 @@ namespace flashgg {
             
             float leadpfPhoIso03Corr = phoTools_.computeCorrectPhoIso( new_obj->getLeadingPhoton(), rhoFixedGrd,  eA_leadPho, _phoIsoPtScalingCoeff, _phoIsoCutoff);
             new_obj->getLeadingPhoton().setpfPhoIso03Corr(leadpfPhoIso03Corr);
-            float subleadpfPhoIso03Corr = phoTools_.computeCorrectPhoIso( new_obj->getSubLeadingPhoton(), rhoFixedGrd,  eA_leadPho, _phoIsoPtScalingCoeff, _phoIsoCutoff);
+            float subleadpfPhoIso03Corr = phoTools_.computeCorrectPhoIso( new_obj->getSubLeadingPhoton(), rhoFixedGrd,  eA_subLeadPho, _phoIsoPtScalingCoeff, _phoIsoCutoff);
             new_obj->getSubLeadingPhoton().setpfPhoIso03Corr(subleadpfPhoIso03Corr);
             if (this->debug_) {
                 std::cout << "Isolation notcorr (corr) for lead, sublead" << new_obj->getLeadingPhoton().pfPhoIso03() << "," << new_obj->getSubLeadingPhoton().pfPhoIso03() << "(" << new_obj->getLeadingPhoton().pfPhoIso03Corr() << "," << new_obj->getSubLeadingPhoton().pfPhoIso03Corr() << ")" << std::endl;
