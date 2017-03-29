@@ -2,7 +2,9 @@
 
 HardProcessFinalStateFilter::HardProcessFinalStateFilter(const edm::ParameterSet& iConfig) :
   genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag>( "genParticleTag" ) ) ),
-  genInfoToken_( consumes<GenEventInfoProduct>( iConfig.getParameter<InputTag>( "genInfoTag" ) ) )
+  packedGenParticleToken_( consumes<vector<pat::PackedGenParticle> >( iConfig.getParameter<InputTag>( "packedGenParticleTag" ) ) ),
+  genInfoToken_( consumes<GenEventInfoProduct>( iConfig.getParameter<InputTag>( "genInfoTag" ) ) ),
+  usePacked_( iConfig.getParameter<bool>( "usePacked" ) )
 {
   npass = 0;
   nfail = 0;
@@ -34,13 +36,25 @@ HardProcessFinalStateFilter::filter(edm::Event& iEvent, const edm::EventSetup& i
   Handle<View<reco::GenParticle> > genParticles;
   iEvent.getByToken( genParticleToken_, genParticles );
   
-  for( unsigned int i = 0 ; i < genParticles->size(); i++ ) {
-    Ptr<reco::GenParticle> gen = genParticles->ptrAt(i);
-    if (gen->status() >= 60) continue; // in aMC@NLO we get extra bosons above here
-    //    if (gen->pdgId() == 25){
-    //      cout << "Higgs found status=" << " " << gen->status() << endl;
-    //    }
-    if( gen->pdgId()==22 && gen->fromHardProcessFinalState() ) numGoodPhotons+=1;
+  if( usePacked_ ) {
+    Handle<vector<pat::PackedGenParticle> > packedGenParticles;
+    iEvent.getByToken( packedGenParticleToken_, packedGenParticles );
+
+    for( auto gen = packedGenParticles->begin(); gen != packedGenParticles->end(); gen++ ) {
+      if (gen->status() >= 60) continue; // in aMC@NLO we get extra bosons above here                                                                                                                                                            
+      if( gen->pdgId()==22 && gen->fromHardProcessFinalState() ) numGoodPhotons+=1;
+    }
+  }
+
+  else {
+    Handle<View<reco::GenParticle> > genParticles;
+    iEvent.getByToken( genParticleToken_, genParticles );
+
+    for( unsigned int i = 0 ; i < genParticles->size(); i++ ) {
+      Ptr<reco::GenParticle> gen = genParticles->ptrAt(i);
+      if (gen->status() >= 60) continue; // in aMC@NLO we get extra bosons above here                                                                                                                                                            
+      if( gen->pdgId()==22 && gen->fromHardProcessFinalState() ) numGoodPhotons+=1;
+    }
   }
 
   float weight = 1.;

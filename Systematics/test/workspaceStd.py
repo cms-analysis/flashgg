@@ -457,8 +457,8 @@ if (customize.processId == "th_125" or customize.processId == "bbh_125"):
 
 #pythia is wrong, check have two photons from hard scatter
 process.penultimateFilter= cms.Sequence()
-process.load("flashgg/Systematics/PythiaFilter_cfi")
-process.penultimateFilter += process.PythiaFilter
+process.load("flashgg/Systematics/HardProcessFinalStateFilter_cfi")
+process.penultimateFilter += process.HardProcessFinalStateFilter
 
 # Split out prompt-fake or fake-fake
 process.finalFilter = cms.Sequence()
