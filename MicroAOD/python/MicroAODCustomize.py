@@ -61,7 +61,7 @@ class MicroAODCustomize(object):
                                'bunchSpacing'
                                )
         self.options.register ('runDec2016Regression',
-                               1,
+                               0,
                                VarParsing.VarParsing.multiplicity.singleton,
                                VarParsing.VarParsing.varType.int,
                                'runDec2016Regression'
