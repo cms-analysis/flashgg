@@ -27,7 +27,7 @@ namespace flashgg {
     {
     public:
         //---typedef
-        typedef StringCutObjectSelector<Photon, true> selector_type;
+        typedef StringCutObjectSelector<const Photon*, true> selector_type;
         
         //---ctors
         TagAndProbeProducer( );
@@ -80,9 +80,9 @@ namespace flashgg {
             auto lead = diphotons[iDP].getLeadingView();
             auto sublead = diphotons[iDP].getSubLeadingView();
 
-            if(tagSelector_(lead.getPhoton()) && probeSelector_(sublead.getPhoton()))
+            if(tagSelector_(lead.photon()) && probeSelector_(sublead.photon()))
                 tnpColl->push_back(TagAndProbeCandidate(lead.originalPhoton(), sublead.originalPhoton()));
-            if(tagSelector_(sublead.getPhoton()) && probeSelector_(lead.getPhoton()))
+            if(tagSelector_(sublead.photon()) && probeSelector_(lead.photon()))
                 tnpColl->push_back(TagAndProbeCandidate(sublead.originalPhoton(), lead.originalPhoton()));
         }
 
