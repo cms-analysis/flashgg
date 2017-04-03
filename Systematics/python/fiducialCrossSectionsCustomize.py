@@ -37,20 +37,33 @@ def recoDiphoPfx(isRecoTag):
 
 # ----------------------------------------------------------------------------------------------------------------
 def diPhoGenVariable(name,  pfx, nbins=None, vmin=None, vmax=None):
-    if nbins:
-        return "gen%s[%i,%f,%f] := %s%s" % ( name.capitalize(), pfx, name, nbins, vmin, vmax )
+    if ":=" in name:
+        name,expr = name.split(":=")
+        name = name.replace(" ","")
     else:
-        return "gen%s := %s%s" % ( name.capitalize(), pfx, name.split("[")[0] )
+        expr = name
+    if "pfx" in expr:
+        expr = expr.format(pfx=pfx)
+        pfx = ""
+    if nbins:
+        return "gen%s[%i,%f,%f] := %s%s" % ( name.capitalize(), pfx, expr, nbins, vmin, vmax )
+    else:
+        return "gen%s := %s%s" % ( name.capitalize(), pfx, expr.split("[")[0] )
 
 # ----------------------------------------------------------------------------------------------------------------
 def diPhoRecoVariable(name, pfx=None, nbins=None, vmin=None, vmax=None):
-    if nbins:
-        return "reco%s[%i,%f,%f] := %s%s" % ( name.capitalize(), pfx, name.split("[")[0], nbins, vmin, vmax )
+    if ":=" in name:
+        name,expr = name.split(":=")
+        name = name.replace(" ","")
     else:
-        print "name %s" % (name)
-        print "name split [ %s" % (name.split("[")[0])
-        print "reco%s := %s%s" % ( name.capitalize(), pfx, name.split("[")[0] )
-        return "reco%s := %s%s" % ( name.capitalize(), pfx, name.split("[")[0] )
+        expr = name
+    if nbins:
+        return "reco%s[%i,%f,%f] := %s%s" % ( name.capitalize(), pfx, expr.split("[")[0], nbins, vmin, vmax )
+    else:
+        ## print "name %s" % (name)
+        ## print "name split [ %s" % (name.split("[")[0])
+        ## print "reco%s := %s%s" % ( name.capitalize(), pfx, name.split("[")[0] )
+        return "reco%s := %s%s" % ( name.capitalize(), pfx, expr.split("[")[0] )
 
 # ----------------------------------------------------------------------------------------------------------------
 def genPhoExpr(isRecoTag):
@@ -75,50 +88,45 @@ def phoRecoVariable(name, expressions):
 
 # ----------------------------------------------------------------------------------------------------------------
 def getGenVariables(isRecoTag=True):
-#    diPhoVariables = ["mass","pt","rapidity"]
-###    diPhoVariables = ["mass", "pt[-1,(0.0:15.0:30.0:45.0:85.0:125.0:200.0:10000.0)]", "pz", "energy"]
-#    diPhoVariables = ["mass", "pt", "pz", "energy"]
-    diPhoVariables = ["pt"]
-###    phoVariables = ["pt","eta","phi"]
-    phoVariables = []
+    diPhoVariables = ["mass","pt", "rapidity := 0.5*log( ( {pfx}energy + {pfx}pz ) / ({pfx}energy - {pfx}pz ) )"] # "rapidity := ? {pfx}pt > 0 ? {pfx}rapidity : 9999."]
+    phoVariables = ["pt","eta","phi"]
     
     pfx = genDiphoPfx(isRecoTag)
     dipho = map(lambda x: diPhoGenVariable(x,pfx), diPhoVariables)
     
     expressions = genPhoExpr(isRecoTag)
-###    legs = reduce(lambda z,w: z+w, (map (lambda x: phoGenVariable(x,expressions), phoVariables) ) )
+    legs = reduce(lambda z,w: z+w, (map (lambda x: phoGenVariable(x,expressions), phoVariables) ) )
+    
+    if isRecoTag:
+        legs.extend( ["genLeadGenIso[-1,(0.0:10.0:13000.0)] := ? diPhoton.leadingPhoton.hasMatchedGenPhoton ? diPhoton.leadingPhoton.userFloat(\"genIso\") : -99",
+                      "genSubleadGenIso[-1,(0.0:10.0:13000.0)] := ? diPhoton.subLeadingPhoton.hasMatchedGenPhoton ? diPhoton.subLeadingPhoton.userFloat(\"genIso\") : -99",
+                      "genLeadFromHardProcess := ? diPhoton.leadingPhoton.hasMatchedGenPhoton ? diPhoton.leadingPhoton.matchedGenPhoton.fromHardProcessFinalState : 0",
+                      "genSubleadFromHardProcess := ? diPhoton.subLeadingPhoton.hasMatchedGenPhoton ? diPhoton.subLeadingPhoton.matchedGenPhoton.fromHardProcessFinalState : 0"
+                      ] )
         
-###    if isRecoTag:
-####        legs.extend( ["genLeadGenIso[-1,(0.0:10.0:13000.0)] := ? diPhoton.leadingPhoton.hasMatchedGenPhoton ? diPhoton.leadingPhoton.userFloat(\"genIso\") : -99",
-####                      "genSubleadGenIso[-1,(0.0:10.0:13000.0)] := ? diPhoton.subLeadingPhoton.hasMatchedGenPhoton ? diPhoton.subLeadingPhoton.userFloat(\"genIso\") : -99"] )
-###        legs.extend( ["genLeadGenIso := ? diPhoton.leadingPhoton.hasMatchedGenPhoton ? diPhoton.leadingPhoton.userFloat(\"genIso\") : -99",
-###                      "genSubleadGenIso := ? diPhoton.subLeadingPhoton.hasMatchedGenPhoton ? diPhoton.subLeadingPhoton.userFloat(\"genIso\") : -99"] )
-###    else:
-####        legs.extend( ["genLeadGenIso[-1,(0.0:10.0:13000.0)] := leadingExtra.genIso",
-####                      "genSubleadGenIso[-1,(0.0:10.0:13000.0)]:= subLeadingExtra.genIso"] )
-###        legs.extend( ["genLeadGenIso := leadingExtra.genIso",
-###                      "genSubleadGenIso:= subLeadingExtra.genIso"] )
+    else:
+        legs.extend( ["genLeadGenIso[-1,(0.0:10.0:13000.0)] := leadingExtra.genIso",
+                      "genSubleadGenIso[-1,(0.0:10.0:13000.0)]:= subLeadingExtra.genIso",
+                      "genLeadFromHardProcess := leadingPhoton.fromHardProcessFinalState",
+                      "genSubleadFromHardProcess := subLeadingPhoton.fromHardProcessFinalState"
+
+                      ] )
         
-    return dipho
-###    return dipho+legs
+    return dipho+legs
 
 # ----------------------------------------------------------------------------------------------------------------
 def getRecoVariables(isRecoTag=True):
-#    diPhoVariables = ["mass","pt[-1,(0.0:15.0:30.0:45.0:85.0:125.0:200.0:10000.0)]","rapidity[-1,(-5.0:-2.5:0.0:2.5:5.0)]"]
-#    diPhoVariables = ["mass","pt[-1,(0.0:15.0:30.0:45.0:85.0:125.0:200.0:10000.0)]","rapidity"]
-    diPhoVariables = ["pt"]
-#    phoVariables = ["pt","eta","phi"]
-    phoVariables = []
+    diPhoVariables = ["mass","pt","rapidity"]
+    phoVariables = ["pt","eta","phi"]
     
-
     pfx = recoDiphoPfx(isRecoTag)
     dipho = map(lambda x: diPhoRecoVariable(x,pfx), diPhoVariables)
     
     expressions = recoPhoExpr(isRecoTag)
-###    legs = reduce(lambda z,w: z+w, (map (lambda x: phoRecoVariable(x,expressions) , phoVariables ) ) )
+    legs = reduce(lambda z,w: z+w, (map (lambda x: phoRecoVariable(x,expressions) , phoVariables ) ) )
     
-    return dipho
-###    return dipho+legs
+    ## return dipho
+    return dipho+legs
 
 # ----------------------------------------------------------------------------------------------------------------
 def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,recoDiphotonTags,genDiphotons,recoJetCollections=None,genJetCollection="slimmedGenJets"):
@@ -246,28 +254,42 @@ def addRecoGlobalVariables(process,dumper,tagGetter=""):
     
     
 # ----------------------------------------------------------------------------------------------------------------
-def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabels,pdfWeights=None,recoJetCollections=None):
+def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabels,pdfWeights=None,recoJetCollections=None,mH=None,filterEvents=True):
     import itertools
     import flashgg.Taggers.dumperConfigTools as cfgTools
     
     accCut = getAccGenCut()
     cut = "1"
-    if acceptance == "IN": cut = accCut
-    elif acceptance == "OUT": cut = "!(%s)" % accCut
-    
-
+    preselCut = "1"
+    if acceptance == "IN":
+        cut = accCut
+    if acceptance == "OUT": 
+        cut = "!(%s)" % (accCut)
+    if acceptance == "IN" or acceptance == "OUT":
+        preselCut = "(leadingPhoton.fromHardProcessFinalState && subLeadingPhoton.fromHardProcessFinalState) || (leadingExtra.genIso < 40. && subLeadingExtra.genIso < 40.) "
+    if mH:
+        cut = "( abs(mass-%f) < 1. ) && (%s)" % (mH, accCut)
+        
     process.load("flashgg.MicroAOD.flashggGenDiPhotonsSequence_cff")
-    process.flashggSelectedGenDiPhotons.cut = cut
-    process.flashggSortedGenDiPhotons.maxNumber = 1
+    process.flashggPreselectedGenDiPhotons = process.flashggSelectedGenDiPhotons.clone(filter = cms.bool(filterEvents), cut=cms.string(preselCut))
+    process.flashggGenDiPhotonsSequence.insert(process.flashggGenDiPhotonsSequence.index(process.flashggSelectedGenDiPhotons),process.flashggPreselectedGenDiPhotons)
+    ## only process events where at least one diphoton candidate is selected
+    if filterEvents:
+        process.genFilter += process.flashggPreselectedGenDiPhotons
 
+    process.flashggSelectedGenDiPhotons.src = "flashggPreselectedGenDiPhotons"
+    process.flashggSelectedGenDiPhotons.cut = cut
+    process.flashggSortedGenDiPhotons.maxNumber = 999
+    
     process.load("flashgg.Taggers.flashggTaggedGenDiphotons_cfi")
     process.flashggTaggedGenDiphotons.src  = "flashggSortedGenDiPhotons"
     process.flashggTaggedGenDiphotons.tags = "flashggTagSorter"
     process.flashggTaggedGenDiphotons.remap = process.tagsDumper.classifierCfg.remap
-## process.flashggTaggedGenDiphotons.tags = "flashggSystTagMerger"
-
+    ## process.flashggTaggedGenDiphotons.tags = "flashggSystTagMerger"
+    
     process.load("flashgg.Taggers.genDiphotonDumper_cfi")
     process.genDiphotonDumper.dumpTrees = True
+    process.genDiphotonDumper.maxCandPerEvent = -1
     process.genDiphotonDumper.dumpWorkspace = False
     process.genDiphotonDumper.src = "flashggTaggedGenDiphotons"
 
@@ -278,7 +300,7 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
     ## bookHadronicActivityProducers(process,processId,"flashggTagSorter","flashggTaggedGenDiphotons",recoJetCollections,genJetCollection="slimmedGenJets")
     bookHadronicActivityProducers(process,processId,tagSequence,"flashggDiPhotonSystematics",process.flashggSigmaMoMpToMTag,"flashggTaggedGenDiphotons",recoJetCollections,genJetCollection="slimmedGenJets") ##FIXME 
     addGenGlobalVariables(process,process.genDiphotonDumper)
-    addRecoGlobalVariables(process,process.genDiphotonDumper,"tag()")
+    addRecoGlobalVariables(process,process.genDiphotonDumper,tagGetter="tag()")
 
     dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights=False,-1,-1,-1 
     if pdfWeights:
@@ -286,11 +308,7 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
         
     genVariables  = getGenVariables(False)
     recoVariables = getRecoVariables(False)
-    extravars = ["leadmva := recoTagObj.diPhoton.leadingView.phoIdMvaWrtChosenVtx", "subleadmva := recoTagObj.diPhoton.subLeadingView.phoIdMvaWrtChosenVtx"]
-
-#    return ("diPhoton.leadingPhoton.%s",
-#            "diPhoton.subLeadingPhoton.%s") if isRecoTag else("recoTagObj.diPhoton.leadingPhoton.%s",
-#                                                                  "recoTagObj.diPhoton.subLeadingPhoton.%s")
+    recoVariables.extend( ["leadmva := recoTagObj.diPhoton.leadingView.phoIdMvaWrtChosenVtx", "subleadmva := recoTagObj.diPhoton.subLeadingView.phoIdMvaWrtChosenVtx"] )
 
     cfgTools.addCategory(process.genDiphotonDumper,
                          "NoTag", 'isTagged("")',1,
@@ -303,12 +321,12 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
 
     for tag in tagList:
         tagName,subCats = tag
-    # need to define all categories explicitely because cut-based classifiers does not look at sub-category number
+        # need to define all categories explicitely because cut-based classifiers does not look at sub-category number
         for isub in xrange(subCats):
             cfgTools.addCategory(process.genDiphotonDumper,
                                  "%s_%d" % ( tagName, isub ), 
                                  'isTagged("%s") && categoryNumber == %d' % (tagName, isub),0,
-                                 variables=genVariables+recoVariables+extravars,
+                                 variables=genVariables+recoVariables,
                                  dumpPdfWeights=dumpPdfWeights,
                                  nPdfWeights=nPdfWeights,
                                  nAlphaSWeights=nAlphaSWeights,
@@ -316,7 +334,7 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
                                  )
             
             
-## process.pfid = cms.Path(process.genFilter*process.flashggGenDiPhotonsSequence*process.flashggTaggedGenDiphotons*process.genDiphotonDumper)
+    ## process.pfid = cms.Path(process.genFilter*process.flashggGenDiPhotonsSequence*process.flashggTaggedGenDiphotons*process.genDiphotonDumper)
     process.pfid = cms.Path(process.genFilter*process.genDiphotonDumper)
     
 

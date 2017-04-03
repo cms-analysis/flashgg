@@ -79,6 +79,12 @@ customize.options.register('acceptance',
                            VarParsing.VarParsing.varType.string,
                            'acceptance'
                            )
+customize.options.register('filterNonAcceptedEvents',
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'filterNonAcceptedEvents'
+                           )
 customize.options.register('doSystematics',
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -609,10 +615,18 @@ if customize.doFiducial:
           nAlphaSWeights = -1
           nScaleWeights = -1
     if not customize.processId == "Data":
-        mH = 125.
-        if "_M" in customize.datasetName():
-            toks = 
-        fc.addGenOnlyAnalysis(process,customize.processId,process.flashggTagSequence,customize.acceptance,tagList,systlabels,pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights))
+        mH = None
+        ldset = customize.datasetName().lower() 
+        if "htogg" in ldset or "tthjettogg" in ldset:
+            try:
+                mH = float(customize.datasetName().split("_M")[1].split("_")[0])
+            except Exception, e:
+                print(e,customize.datasetName())
+                pass
+        fc.addGenOnlyAnalysis(process,customize.processId,process.flashggTagSequence,
+                              customize.acceptance,tagList,systlabels,
+                              pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights),
+                              mH=mH,filterEvents=customize.filterNonAcceptedEvents)
 
 if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
 process.options.allowUnscheduled = cms.untracked.bool(True)
