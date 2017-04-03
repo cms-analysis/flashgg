@@ -12,8 +12,9 @@ namespace flashgg {
     public:
         //---ctors---
         TagAndProbeCandidate() {};
-        TagAndProbeCandidate( edm::Ptr<flashgg::Photon> tag, edm::Ptr<flashgg::Photon> probe)
+        TagAndProbeCandidate( float mass, edm::Ptr<flashgg::Photon> tag, edm::Ptr<flashgg::Photon> probe)
             {
+                mass_ = mass;
                 tag_ = SinglePhotonView( tag );
                 probe_ = SinglePhotonView( probe );
             };
@@ -22,14 +23,16 @@ namespace flashgg {
         ~TagAndProbeCandidate() {};
 
         //---getters---
-        Photon& getTag() {return tag_.getPhoton();};
-        Photon& getProbe() {return probe_.getPhoton();};
-        SinglePhotonView& getTagView() {return tag_;};
-        SinglePhotonView& getProbeView() {return probe_;};
+        const float mass() const {return mass_;};
+        const Photon* getTag() const {return tag_.photon();};
+        const Photon* getProbe() const {return probe_.photon();};
+        const SinglePhotonView& getTagView() const {return tag_;};
+        const SinglePhotonView& getProbeView() const {return probe_;};
         
     private:
-        SinglePhotonView tag_;
-        SinglePhotonView probe_;
+        float mass_;
+        SinglePhotonView tag_;        
+        SinglePhotonView probe_;        
     };
 }
 

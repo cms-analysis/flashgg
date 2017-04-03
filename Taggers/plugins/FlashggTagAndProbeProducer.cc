@@ -77,13 +77,14 @@ namespace flashgg {
         int nDP = maxDiphotons_ == -1 ? diphotons.size() : std::min(int(diphotons.size()), maxDiphotons_);
         for(int iDP=0; iDP<nDP; ++iDP)
         {
+            auto mass = diphotons[iDP].mass();
             auto lead = diphotons[iDP].getLeadingView();
             auto sublead = diphotons[iDP].getSubLeadingView();
 
             if(tagSelector_(*lead.photon()) && probeSelector_(*sublead.photon()))
-                tnpColl->push_back(TagAndProbeCandidate(lead.originalPhoton(), sublead.originalPhoton()));
+                tnpColl->push_back(TagAndProbeCandidate(mass, lead.originalPhoton(), sublead.originalPhoton()));
             if(tagSelector_(*sublead.photon()) && probeSelector_(*lead.photon()))
-                tnpColl->push_back(TagAndProbeCandidate(sublead.originalPhoton(), lead.originalPhoton()));
+                tnpColl->push_back(TagAndProbeCandidate(mass, sublead.originalPhoton(), lead.originalPhoton()));
         }
 
         //---put the colletion in the Event

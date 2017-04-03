@@ -13,11 +13,11 @@ tagAndProbeDumpConfig = cms.PSet(
     categories = cms.VPSet(),
 
     workspaceName = cms.untracked.string("cms_hgg_$SQRTS"),
-    nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$LABEL_$SUBCAT_$SYST"),
+    nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$LABEL_$SUBCAT"),
     
-    dumpHistos = cms.untracked.bool(True),
+    dumpHistos = cms.untracked.bool(False),
     dumpWorkspace = cms.untracked.bool(False),
-    dumpTrees = cms.untracked.bool(False),
+    dumpTrees = cms.untracked.bool(True),
     
     quietRooFit = cms.untracked.bool(False),
     dumpGlobalVariables = cms.untracked.bool(True),
