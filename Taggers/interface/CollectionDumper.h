@@ -474,8 +474,7 @@ namespace flashgg {
                    double fillWeight =weight_;
                    const  WeightedObject* tag = dynamic_cast<const WeightedObject* >( &cand );
                     if ( tag != NULL ){
-
-                    fillWeight =fillWeight*(tag->centralWeight());
+                        fillWeight =fillWeight*(tag->centralWeight());
                     }
                     which->second[isub].fill( cand, fillWeight, pdfWeights_, maxCandPerEvent_ - nfilled, stage0cat_ );
                     --nfilled;
@@ -485,6 +484,10 @@ namespace flashgg {
                         << "please set throwOnUnclassified in the dumper configuration\n";
                 }
                 if( ( maxCandPerEvent_ > 0 )  && nfilled == 0 ) { break; }
+            }
+            
+            if( collection.size() == 0 ) {
+                cout << "No candidate found in " << src_.label()  << " for event " <<  event.id().event() << " " << event.id().luminosityBlock() << " "<< event.id().run() << endl;
             }
         }
 
