@@ -17,6 +17,7 @@
 
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/TagAndProbeCandidate.h"
+#include "flashgg/MicroAOD/interface/CutBasedPhotonViewSelector.h"
 
 using namespace edm;
 using namespace std;
@@ -38,11 +39,20 @@ namespace flashgg {
         void produce( Event &, const EventSetup & ) override;
 
         //---data
-        EDGetTokenT<vector<DiPhotonCandidate> > diphotonsToken_;
-        Handle<vector<DiPhotonCandidate> > diphotonsHandle_;
+        EDGetTokenT<View<DiPhotonCandidate> > diphotonsToken_;
+        Handle<View<DiPhotonCandidate> > diphotonsHandle_;
+
+        //---options
         int maxDiphotons_;
         selector_type tagSelector_;
-        selector_type probeSelector_;        
+        selector_type probeSelector_;
+
+        //---ID selector
+        ConsumesCollector cc_;
+        CutBasedPhotonViewSelector idSelector_;
+
+        //---output TnP collection
+        auto_ptr<vector<TagAndProbeCandidate> > tnpColl_;
     };
 
     //---constructors
@@ -50,15 +60,19 @@ namespace flashgg {
     TagAndProbeProducer::TagAndProbeProducer( ):
         diphotonsToken_(),
         maxDiphotons_(-1),
-        tagSelector_(""),
-        probeSelector_("")
+        tagSelector_("1"),
+        probeSelector_("1"),
+        cc_( consumesCollector() ),
+        idSelector_( ParameterSet(), cc_ )
     {}
     //---standard
     TagAndProbeProducer::TagAndProbeProducer( const ParameterSet & pSet):
-        diphotonsToken_( consumes<vector<DiPhotonCandidate> >( pSet.getParameter<InputTag> ( "diphotonsSrc" ) ) ),
+        diphotonsToken_( consumes<View<DiPhotonCandidate> >( pSet.getParameter<InputTag> ( "diphotonsSrc" ) ) ),
         maxDiphotons_( pSet.getParameter<int> ( "maxDiphotons" ) ),        
         tagSelector_( pSet.getParameter<string> ( "tagSelection" ) ),
-        probeSelector_( pSet.getParameter<string> ( "probeSelection" ) )
+        probeSelector_( pSet.getParameter<string> ( "probeSelection" ) ),
+        cc_( consumesCollector() ),
+        idSelector_( pSet.getParameter<ParameterSet> ( "idSelection" ), cc_ )
     {
         produces<vector<TagAndProbeCandidate> >();
     }
@@ -71,24 +85,40 @@ namespace flashgg {
         auto diphotons = *diphotonsHandle_.product();
 
         //---output collection
-        auto_ptr<vector<TagAndProbeCandidate> > tnpColl( new vector<TagAndProbeCandidate> );
+        tnpColl_ =  auto_ptr<vector<TagAndProbeCandidate> >( new vector<TagAndProbeCandidate> );
         
         //---loop over diphoton candidates (max number specified from config)
         int nDP = maxDiphotons_ == -1 ? diphotons.size() : std::min(int(diphotons.size()), maxDiphotons_);
         for(int iDP=0; iDP<nDP; ++iDP)
         {
-            auto mass = diphotons[iDP].mass();
-            auto lead = diphotons[iDP].getLeadingView();
-            auto sublead = diphotons[iDP].getSubLeadingView();
+            auto diphoPtr = diphotons.ptrAt(iDP);
+            auto lead = diphoPtr->leadingView();
+            auto sublead = diphoPtr->subLeadingView();
 
-            if(tagSelector_(*lead.photon()) && probeSelector_(*sublead.photon()))
-                tnpColl->push_back(TagAndProbeCandidate(mass, lead.originalPhoton(), sublead.originalPhoton()));
-            if(tagSelector_(*sublead.photon()) && probeSelector_(*lead.photon()))
-                tnpColl->push_back(TagAndProbeCandidate(mass, sublead.originalPhoton(), lead.originalPhoton()));
+            //---check which photon is tag/probe (both combination are allowed)
+            //   - TagAndProbeCandidate(diphoPtr, bool leadIsTag)
+            //   - Compute id-selection
+            //   - Single id variable passed/failed status is set by the selector as a UserFloat
+            if(tagSelector_(*lead->photon()) && probeSelector_(*sublead->photon()))
+            {
+                TagAndProbeCandidate cand(diphoPtr, true);
+                auto idResults = idSelector_.computeSelections(*sublead->photon(), event);
+                for(auto& sel : idResults)
+                    cand.addUserFloat("probe_pass_"+sel.first, sel.second);
+                tnpColl_->push_back(cand);
+            }
+            if(tagSelector_(*sublead->photon()) && probeSelector_(*lead->photon()))
+            {
+                TagAndProbeCandidate cand(diphoPtr, false);
+                auto idResults = idSelector_.computeSelections(*lead->photon(), event);
+                for(auto& sel : idResults)
+                    cand.addUserFloat("probe_pass_"+sel.first, sel.second);                
+                tnpColl_->push_back(cand);
+            }
         }
-
+                    
         //---put the colletion in the Event
-        event.put( tnpColl );
+        event.put( tnpColl_ );
     }
 }
 

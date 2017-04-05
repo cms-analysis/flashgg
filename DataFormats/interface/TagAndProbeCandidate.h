@@ -1,38 +1,40 @@
 #ifndef FLASHgg_TagAndProbeCandidate_h
 #define FLASHgg_TagAndProbeCandidate_h
 
+#include "DataFormats/PatCandidates/interface/PATObject.h"
+
 #include "flashgg/DataFormats/interface/WeightedObject.h"
-#include "flashgg/DataFormats/interface/Photon.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/SinglePhotonView.h"
 
 namespace flashgg {
 
-    class TagAndProbeCandidate: public WeightedObject
+    class TagAndProbeCandidate: public pat::PATObject<reco::LeafCandidate> , public WeightedObject
     {
     public:
         //---ctors---
         TagAndProbeCandidate() {};
-        TagAndProbeCandidate( float mass, edm::Ptr<flashgg::Photon> tag, edm::Ptr<flashgg::Photon> probe)
+        TagAndProbeCandidate( edm::Ptr<flashgg::DiPhotonCandidate> dipho, bool leadIsTag)
             {
-                mass_ = mass;
-                tag_ = SinglePhotonView( tag );
-                probe_ = SinglePhotonView( probe );
+                diphoPtr_ = dipho;
+                leadIsTag_ = leadIsTag;
             };
 
         //---dtor---
         ~TagAndProbeCandidate() {};
 
         //---getters---
-        const float mass() const {return mass_;};
-        const Photon* getTag() const {return tag_.photon();};
-        const Photon* getProbe() const {return probe_.photon();};
-        const SinglePhotonView& getTagView() const {return tag_;};
-        const SinglePhotonView& getProbeView() const {return probe_;};
+        const edm::Ptr<DiPhotonCandidate> diPhoton() const { return diphoPtr_; }
+        const Photon*                     getTag() const {return getTagView()->photon();};
+        const Photon*                     getProbe() const {return getProbeView()->photon();};
+        const SinglePhotonView*           getTagView() const
+            {return leadIsTag_ ? diphoPtr_->leadingView() : diphoPtr_->subLeadingView();};
+        const SinglePhotonView*           getProbeView() const
+            {return !leadIsTag_ ? diphoPtr_->leadingView() : diphoPtr_->subLeadingView();};
         
     private:
-        float mass_;
-        SinglePhotonView tag_;        
-        SinglePhotonView probe_;        
+        edm::Ptr<DiPhotonCandidate> diphoPtr_;
+        bool                        leadIsTag_;
     };
 }
 
