@@ -320,6 +320,30 @@ materialBinsICHEP = cms.PSet(
         )
     )
 
+# Moriond17 studies from https://indico.cern.ch/event/628619/contributions/2552389/attachments/1442921/2222173/MaterialStudy_10042017_v2.pdf
+#
+# All numbers for 5% material uncertainty (x10^-3)
+#
+# Category1:CentralBarrelandlowr9 (|eta|<1.0andr9<0.94)     0.455
+# Category2:CentralBarrelandhighr9(|eta|<1.0andr9>0.94)     0.233
+# Category3:OuterBarrelandlowr9 (1.0<|eta|<1.5andr9<0.94)   2.089
+# Category4:OuterBarrelandhighr9 (1.0<|eta|<1.5andr9>0.94)   N/A   (taken to be equal to cat3)
+# Category5:Endcapandlowr9 (|eta|>1.5andr9<0.94)            1.090
+# Category6:Endcapandhighr9 (|eta|>1.5andr9>0.94)           2.377
+
+materialBinsMoriond17 = cms.PSet(
+    variables = cms.vstring("abs(superCluster.eta)","full5x5_r9"),
+    bins = cms.VPSet(
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.0  ), upBounds = cms.vdouble( 1.0, 0.94  ), values = cms.vdouble( 0. ),  uncertainties = cms.vdouble( 0.000455 ) ),
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.94 ), upBounds = cms.vdouble( 1.0, 999.0 ), values = cms.vdouble( 0. ),  uncertainties = cms.vdouble( 0.000233 ) ),
+        cms.PSet( lowBounds = cms.vdouble( 1.0, 0.0  ), upBounds = cms.vdouble( 1.5, 0.94  ), values = cms.vdouble( 0. ),  uncertainties = cms.vdouble( 0.002089 ) ),
+        cms.PSet( lowBounds = cms.vdouble( 1.0, 0.94 ), upBounds = cms.vdouble( 1.5, 999.0 ), values = cms.vdouble( 0. ),  uncertainties = cms.vdouble( 0.002089 ) ),
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.0  ), upBounds = cms.vdouble( 999., 0.94  ), values = cms.vdouble( 0. ), uncertainties = cms.vdouble( 0.001090 ) ),
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.94 ), upBounds = cms.vdouble( 999., 999.0 ), values = cms.vdouble( 0. ), uncertainties = cms.vdouble( 0.002377 ) ),
+
+        )
+    )
+
 emptyBins = cms.PSet(
     variables = cms.vstring("1"),
     bins = cms.VPSet()
@@ -377,12 +401,22 @@ MCScaleLowR9EE = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
           Debug = cms.untracked.bool(False)
           )
 
-MaterialCentral = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
+MaterialCentralBarrel = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
-          Label = cms.string("MaterialCentral"),
+          Label = cms.string("MaterialCentralBarrel"),
           NSigmas = cms.vint32(-1,1),
-          OverallRange = cms.string("abs(superCluster.eta)<1.5"),
-          BinList = materialBinsICHEP,
+          OverallRange = cms.string("abs(superCluster.eta)<1.0"),
+          BinList = materialBinsMoriond17,
+          ApplyCentralValue = cms.bool(False),
+          Debug = cms.untracked.bool(False)
+          )
+
+MaterialOuterBarrel = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("MaterialOuterBarrel"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("abs(superCluster.eta)>=1.0&&abs(superCluster.eta)<1.5"),
+          BinList = materialBinsMoriond17,
           ApplyCentralValue = cms.bool(False),
           Debug = cms.untracked.bool(False)
           )
@@ -392,7 +426,7 @@ MaterialForward = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
           Label = cms.string("MaterialForward"),
           NSigmas = cms.vint32(-1,1),
           OverallRange = cms.string("abs(superCluster.eta)>=1.5"),
-          BinList = materialBinsICHEP,
+          BinList = materialBinsMoriond17,
           ApplyCentralValue = cms.bool(False),
           Debug = cms.untracked.bool(False)
           )
