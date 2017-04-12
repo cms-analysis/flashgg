@@ -27,7 +27,7 @@ If everything now looks reasonable, you can build:
 And a very basic workflow test:
  ```
  cd $CMSSW_BASE/src/flashgg
- cmsRun MicroAOD/test/microAODstd.py
+ cmsRun MicroAOD/test/microAODstd.py processType=sig datasetName=glugluh
  cmsRun Taggers/test/simple_Tag_test.py
  cmsRun Taggers/test/diphotonsDumper_cfg.py
  cmsRun Systematics/test/workspaceStd.py processId=wzh_125
