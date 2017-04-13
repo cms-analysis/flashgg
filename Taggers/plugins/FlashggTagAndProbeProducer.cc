@@ -41,6 +41,8 @@ namespace flashgg {
         //---data
         EDGetTokenT<View<DiPhotonCandidate> > diphotonsToken_;
         Handle<View<DiPhotonCandidate> > diphotonsHandle_;
+        EDGetTokenT<vector<reco::GenParticle> > genPartToken_;
+        Handle<vector<reco::GenParticle> > genPartHandle_;
 
         //---options
         int maxDiphotons_;
@@ -68,6 +70,7 @@ namespace flashgg {
     //---standard
     TagAndProbeProducer::TagAndProbeProducer( const ParameterSet & pSet):
         diphotonsToken_( consumes<View<DiPhotonCandidate> >( pSet.getParameter<InputTag> ( "diphotonsSrc" ) ) ),
+        genPartToken_( consumes<vector<reco::GenParticle> >( pSet.getParameter<InputTag> ( "genParticlesSrc" ) ) ),        
         maxDiphotons_( pSet.getParameter<int> ( "maxDiphotons" ) ),        
         tagSelector_( pSet.getParameter<string> ( "tagSelection" ) ),
         probeSelector_( pSet.getParameter<string> ( "probeSelection" ) ),
@@ -83,10 +86,41 @@ namespace flashgg {
         //---input 
         event.getByToken( diphotonsToken_, diphotonsHandle_ );
         auto diphotons = *diphotonsHandle_.product();
+        vector<reco::GenParticle> genParticles;
+        if( ! event.isRealData() )
+        {
+            event.getByToken( genPartToken_, genPartHandle_ );
+            genParticles = *genPartHandle_.product();
+        }
 
         //---output collection
         tnpColl_ =  auto_ptr<vector<TagAndProbeCandidate> >( new vector<TagAndProbeCandidate> );
-        
+
+        //---search for gen electron and positron
+        bool genEleFound = false;
+        bool genPosFound = false;
+        reco::GenParticle genEle;
+        reco::GenParticle genPos;
+        if( ! event.isRealData() ) {
+            for( auto& gen : genParticles ) {
+                int status = gen.status();
+                int pdgid  = gen.pdgId();
+                if ( abs(pdgid)==11 && status==23 ) {
+                    if ( gen.mother(0) &&
+                         gen.mother(0)->pdgId()==23) {
+                        if (pdgid==11)  {
+                            genPos = gen;
+                            genPosFound = true;
+                        }
+                        if (pdgid==-11) {
+                            genEle = gen;
+                            genEleFound = true;
+                        }
+                    }
+                }
+            }
+        }
+
         //---loop over diphoton candidates (max number specified from config)
         int nDP = maxDiphotons_ == -1 ? diphotons.size() : std::min(int(diphotons.size()), maxDiphotons_);
         for(int iDP=0; iDP<nDP; ++iDP)
@@ -95,16 +129,37 @@ namespace flashgg {
             auto lead = diphoPtr->leadingView();
             auto sublead = diphoPtr->subLeadingView();
 
+            //---gen match (simulation only)
+            float minDR=999;
+            int leadGenMatch=0, subleadGenMatch=0;
+            if(genPosFound && reco::deltaR(genPos, *lead->photon()) < 0.3)
+            {
+                minDR = reco::deltaR(genPos, *lead->photon());
+                leadGenMatch = 1;
+            }
+            if(genEleFound && reco::deltaR(genEle, *lead->photon()) < 0.3 && reco::deltaR(genEle, *lead->photon()) < minDR)
+                leadGenMatch = -1;
+            minDR = 999;
+            if(genPosFound && reco::deltaR(genPos, *lead->photon()) < 0.3)
+            {
+                minDR = reco::deltaR(genPos, *sublead->photon());
+                subleadGenMatch = 1;
+            }
+            if(genEleFound && reco::deltaR(genEle, *sublead->photon()) < 0.3 && reco::deltaR(genEle, *sublead->photon()) < minDR)
+                subleadGenMatch = -1;            
+            
             //---check which photon is tag/probe (both combination are allowed)
             //   - TagAndProbeCandidate(diphoPtr, bool leadIsTag)
             //   - Compute id-selection
-            //   - Single id variable passed/failed status is set by the selector as a UserFloat
+            //   - Single id variable passed/failed status is set by the selector as a UserInt
             if(tagSelector_(*lead->photon()) && probeSelector_(*sublead->photon()))
             {
                 TagAndProbeCandidate cand(diphoPtr, true);
                 auto idResults = idSelector_.computeSelections(*sublead->photon(), event);
                 for(auto& sel : idResults)
-                    cand.addUserFloat("probe_pass_"+sel.first, sel.second);
+                    cand.addUserInt("probe_pass_"+sel.first, sel.second);
+                cand.addUserInt("tagGenMatch", leadGenMatch);
+                cand.addUserInt("probeGenMatch", subleadGenMatch);                
                 tnpColl_->push_back(cand);
             }
             if(tagSelector_(*sublead->photon()) && probeSelector_(*lead->photon()))
@@ -112,7 +167,9 @@ namespace flashgg {
                 TagAndProbeCandidate cand(diphoPtr, false);
                 auto idResults = idSelector_.computeSelections(*lead->photon(), event);
                 for(auto& sel : idResults)
-                    cand.addUserFloat("probe_pass_"+sel.first, sel.second);                
+                    cand.addUserInt("probe_pass_"+sel.first, sel.second);                
+                cand.addUserInt("tagGenMatch", subleadGenMatch);
+                cand.addUserInt("probeGenMatch", leadGenMatch);                
                 tnpColl_->push_back(cand);
             }
         }
