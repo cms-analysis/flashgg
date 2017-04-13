@@ -44,6 +44,7 @@ class HardProcessFinalStateFilter : public edm::EDFilter {
   EDGetTokenT<GenEventInfoProduct> genInfoToken_;
 
   bool usePacked_;
+  bool debug_;
 
   int npass,nfail,ntot;
   float wpass,wfail,wtot;
