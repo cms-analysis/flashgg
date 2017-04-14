@@ -4,7 +4,8 @@ HardProcessFinalStateFilter::HardProcessFinalStateFilter(const edm::ParameterSet
   genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag>( "genParticleTag" ) ) ),
   packedGenParticleToken_( consumes<vector<pat::PackedGenParticle> >( iConfig.getParameter<InputTag>( "packedGenParticleTag" ) ) ),
   genInfoToken_( consumes<GenEventInfoProduct>( iConfig.getParameter<InputTag>( "genInfoTag" ) ) ),
-  usePacked_( iConfig.getParameter<bool>( "usePacked" ) )
+  usePacked_( iConfig.getParameter<bool>( "usePacked" ) ),
+  debug_( iConfig.getParameter<bool>( "debug" ) )
 {
   npass = 0;
   nfail = 0;
@@ -41,7 +42,12 @@ HardProcessFinalStateFilter::filter(edm::Event& iEvent, const edm::EventSetup& i
     iEvent.getByToken( packedGenParticleToken_, packedGenParticles );
 
     for( auto gen = packedGenParticles->begin(); gen != packedGenParticles->end(); gen++ ) {
-      if (gen->status() >= 60) continue; // in aMC@NLO we get extra bosons above here                                                                                                                                                            
+      if (gen->status() >= 60) continue; // in aMC@NLO we get extra bosons above here
+      if (debug_) {
+	std::cout << " HardProcessFinalStateFilter debug id=" << gen->pdgId() << " status=" << gen->status()
+		  << " pt=" << gen->pt() << " eta=" << gen->eta() << " phi=" << gen->phi()
+		  << " fromHardProcessFinalState=" << gen->fromHardProcessFinalState() << std::endl;
+      }
       if( gen->pdgId()==22 && gen->fromHardProcessFinalState() ) numGoodPhotons+=1;
     }
   }
@@ -52,7 +58,12 @@ HardProcessFinalStateFilter::filter(edm::Event& iEvent, const edm::EventSetup& i
 
     for( unsigned int i = 0 ; i < genParticles->size(); i++ ) {
       Ptr<reco::GenParticle> gen = genParticles->ptrAt(i);
-      if (gen->status() >= 60) continue; // in aMC@NLO we get extra bosons above here                                                                                                                                                            
+      if (gen->status() >= 60) continue; // in aMC@NLO we get extra bosons above here
+      if (debug_) {
+	std::cout << " HardProcessFinalStateFilter debug id= " << gen->pdgId() << " status=" << gen->status() 
+		  << " pt=" << gen->pt() << " eta=" << gen->eta() << " phi=" << gen->phi()
+		  << " fromHardProcessFinalState=" << gen->fromHardProcessFinalState()  << std::endl;
+      }
       if( gen->pdgId()==22 && gen->fromHardProcessFinalState() ) numGoodPhotons+=1;
     }
   }
@@ -77,6 +88,10 @@ HardProcessFinalStateFilter::filter(edm::Event& iEvent, const edm::EventSetup& i
   } else {
     nfail += 1;
     wfail += weight;
+  }
+
+  if (debug_) {
+    std::cout << "HardProcessFinalStateFilter debug numGoodPhotons=" << numGoodPhotons << " pass=" << (numGoodPhotons==2) << std::endl;
   }
 
   return (numGoodPhotons==2);
