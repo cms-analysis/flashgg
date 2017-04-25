@@ -266,20 +266,22 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
     if acceptance == "OUT": 
         cut = "!(%s)" % (accCut)
     if acceptance == "IN" or acceptance == "OUT":
-        preselCut = "(leadingPhoton.fromHardProcessFinalState && subLeadingPhoton.fromHardProcessFinalState) || (leadingExtra.genIso < 40. && subLeadingExtra.genIso < 40.) "
-    if mH:
-        cut = "( abs(mass-%f) < 1. ) && (%s)" % (mH, accCut)
-        
+        preselCut = "(leadingPhoton.fromHardProcessFinalState && subLeadingPhoton.fromHardProcessFinalState)"
+    ### if mH:
+    ###     ## cut = "( abs(mass-%f) < 1. ) && (%s)" % (mH, accCut)
+    ###     preselCut = "( abs(mass-%f) < 1. ) && (%s)" % preselCut
+
     process.load("flashgg.MicroAOD.flashggGenDiPhotonsSequence_cff")
-    process.flashggPreselectedGenDiPhotons = process.flashggSelectedGenDiPhotons.clone(filter = cms.bool(filterEvents), cut=cms.string(preselCut))
-    process.flashggGenDiPhotonsSequence.insert(process.flashggGenDiPhotonsSequence.index(process.flashggSelectedGenDiPhotons),process.flashggPreselectedGenDiPhotons)
+    ### process.flashggPreselectedGenDiPhotons = process.flashggSelectedGenDiPhotons.clone(filter = cms.bool(filterEvents), cut=cms.string(preselCut))
+    ### process.flashggGenDiPhotonsSequence.insert(process.flashggGenDiPhotonsSequence.index(process.flashggSelectedGenDiPhotons),process.flashggPreselectedGenDiPhotons)
+    ### process.flashggSelectedGenDiPhotons.src = "flashggPreselectedGenDiPhotons"
+
+    process.flashggSelectedGenDiPhotons.cut = "(%s) && (%s)" % ( preselCut, cut )
+    process.flashggSortedGenDiPhotons.maxNumber = 999
     ## only process events where at least one diphoton candidate is selected
     if filterEvents:
-        process.genFilter += process.flashggPreselectedGenDiPhotons
-
-    process.flashggSelectedGenDiPhotons.src = "flashggPreselectedGenDiPhotons"
-    process.flashggSelectedGenDiPhotons.cut = cut
-    process.flashggSortedGenDiPhotons.maxNumber = 999
+        process.flashggSelectedGenDiPhotons.filter = True
+        process.genFilter += process.flashggSelectedGenDiPhotons
     
     process.load("flashgg.Taggers.flashggTaggedGenDiphotons_cfi")
     process.flashggTaggedGenDiphotons.src  = "flashggSortedGenDiPhotons"
