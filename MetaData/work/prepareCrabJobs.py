@@ -265,6 +265,8 @@ if options.createCrabConfig:
             itry += 1
             jobname = "_".join([flashggVersion, PrimaryDataset, ProcessedDataset, str(itry).zfill(2)])
         if len(jobname) > 97:
+            jobname = jobname.replace("RunIISummer16MiniAODv2-PUMoriond17_qcut19_80X_mcRun2_asymptotic_2016","Moriond17")            
+        if len(jobname) > 97:
             jobname = jobname.replace("TuneCUEP8M1_13TeV-pythia8","13TeV")
         if len(jobname) > 97:
             jobname = jobname.replace("TuneCUETP8M1_13TeV-madgraphMLM-pythia8","13TeV-mg")
