@@ -66,6 +66,12 @@
         "ttHToGG_M125_13TeV_powheg_pythia8_v2"                                           : { "xs" : 0.5071,   "br" : 0.00227, "kf" : 1.06, "itype":-125300 },
         "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8"                          : { "xs" : 0.5071,   "br" : 0.00227, "kf" : 1.06, "itype":-125300 },
         "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_v2"                          : { "xs" : 0.5071,   "br" : 0.00227, "kf" : 1.06, "itype":-125300 },
+
+        "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CUETP8M1Up"                          : { "xs" : 0.5071,   "br" : 0.00227, "kf" : 1.06, "itype":-125300 },
+        "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CUETP8M1Down"                          : { "xs" : 0.5071,   "br" : 0.00227, "kf" : 1.06, "itype":-125300 },
+        "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS"                          : { "xs" : 0.5071,   "br" : 0.00227, "kf" : 1.06, "itype":-125300 },
+        "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_DownPS"                          : { "xs" : 0.5071,   "br" : 0.00227, "kf" : 1.06, "itype":-125300 },
+
         "ttHJetToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8"                          : { "xs" : 0.4964,   "br" : 0.00227, "kf" : 1.06, "itype":-126300 },
         "ttHJetToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8_v2"                          : { "xs" : 0.4964,   "br" : 0.00227, "kf" : 1.06, "itype":-126300 },
         "ttHJetToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8"                          : { "xs" : 0.4851,   "br" : 0.002267, "kf" : 1.06, "itype":-127300 },
@@ -82,6 +88,12 @@
         "VHToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8"                          : { "xs" : 2.373,   "br" : 0.00226, "kf" : 1.06, "itype":-123400 },
         "VHToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8"                          : { "xs" : 2.313,   "br" : 0.00227, "kf" : 1.06, "itype":-124400 },
         "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8"                          : { "xs" : 2.257,   "br" : 0.00227, "kf" : 1.06, "itype":-125400 },
+
+        "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CUETP8M1Up"                          : { "xs" : 2.257,   "br" : 0.00227, "kf" : 1.06, "itype":-125400 },
+        "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CUETP8M1Down"                          : { "xs" : 2.257,   "br" : 0.00227, "kf" : 1.06, "itype":-125400 },
+        "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS"                          : { "xs" : 2.257,   "br" : 0.00227, "kf" : 1.06, "itype":-125400 },
+        "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_DownPS"                          : { "xs" : 2.257,   "br" : 0.00227, "kf" : 1.06, "itype":-125400 },
+
         "VHToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8"                          : { "xs" : 2.202,   "br" : 0.00227, "kf" : 1.06, "itype":-126400 },
         "VHToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8"                          : { "xs" : 2.149,   "br" : 0.00227, "kf" : 1.06, "itype":-127400 },
         "VHToGG_M128_13TeV_amcatnloFXFX_madspin_pythia8"                          : { "xs" : 2.096,   "br" : 0.00226, "kf" : 1.06, "itype":-128400 },
