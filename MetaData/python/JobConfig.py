@@ -182,11 +182,10 @@ class JobConfig(object):
             else:
                 sys.exit(1)
             
-
         files = self.inputFiles
         if self.dataset and self.dataset != "":
             dsetname,xsec,totEvents,files,maxEvents,sp_unused = self.dataset
-            if type(xsec) == float:
+            if type(xsec) == float or xsec == None:
                 print 
                 print "Error: cross section not found for dataset %s" % dsetname
                 print
