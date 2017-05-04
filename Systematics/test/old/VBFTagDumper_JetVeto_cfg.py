@@ -28,12 +28,14 @@ from flashgg.Systematics.SystematicsCustomize import *
 jetSystematicsInputTags = createStandardSystematicsProducers(process)
 
 # Keep an extra category as 'would go elsewhere instead', ignore preselection
-process.flashggVBFTag.Boundaries=cms.vdouble(-999.,0.62, 0.94)
+process.flashggVBFTag.Boundaries=cms.vdouble(-999.,0.553, 0.902, 0.957)
 process.flashggVBFTag.SetArbitraryNonGoldMC = cms.bool(False)
 process.flashggVBFTag.DropNonGoldData = cms.bool(False)
 process.flashggVBFTag.RequireVBFPreselection = cms.bool(False)
 
 modifyTagSequenceForSystematics(process,jetSystematicsInputTags,doJetSystTrees)
+
+useEGMTools(process)
 
 systlabels = [""]
 phosystlabels = []
@@ -45,7 +47,6 @@ musystlabels = []
 from flashgg.MetaData.JobConfig import customize
 customize.parse()
 print "customize.processId:",customize.processId
-process.load("flashgg.Systematics.escales.escale76X_16DecRereco_2015")
 # Only run systematics for signal events
 if customize.processId.count("h_") or customize.processId.count("vbf_"): # convention: ggh vbf wzh (wh zh) tth
     raise Exception,"not really set up for signal or for shifted MCs right now"
@@ -93,8 +94,8 @@ process.source = cms.Source ("PoolSource",
 
 ))
 
-for i in range(1,28):
-    process.source.fileNames += ["root://eoscms.cern.ch//eos/cms//store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIIFall15DR76-1_3_0-25ns_ext1/1_3_1/GluGluHToGG_M-125_13TeV_powheg_pythia8/RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/160130_032602/0000/myMicroAODOutputFile_%i.root" % i]
+for i in range(1,37):
+    process.source.fileNames += ["root://eoscms.cern.ch//eos/cms//store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/GluGluHToGG_M-125_13TeV_powheg_pythia8/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170114_083716/0000/myMicroAODOutputFile_%i.root" % i]
 
 process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string("test.root"))
@@ -185,6 +186,7 @@ process.p = cms.Path(process.dataRequirements*
                      process.genFilter*
                      process.flashggUpdatedIdMVADiPhotons*
                      process.flashggDiPhotonSystematics*
+                     process.flashggMetSystematics*
                      process.flashggMuonSystematics*process.flashggElectronSystematics*
                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                      (process.flashggTagSequence*process.systematicsTagSequences)
