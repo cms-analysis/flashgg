@@ -1,4 +1,4 @@
-v#!/bin/bash
+#!/bin/bash
 
 SETUP_REMOTES=false
 
