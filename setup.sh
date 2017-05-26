@@ -1,4 +1,4 @@
-#!/bin/bash
+v#!/bin/bash
 
 SETUP_REMOTES=false
 
@@ -104,31 +104,42 @@ fi
 
 cd $CMSSW_BASE/src
 
+# Still needed, 8_0_28
 echo "EGM Pho ID recipe, Summer16"
 git cms-merge-topic ikrav:egm_id_80X_v3_photons
 
+# Tag updated for 8_0_28 and may require further investigation
 echo "grabbing MET topic updates..."
-git cms-merge-topic cms-met:METRecipe_8020 -u
+git cms-merge-topic cms-met:METRecipe_8020_for80Xintegration -u
 
+# Straightofrward update for 8_0_28
 echo "Setting up QGL..."
 git cms-addpkg RecoJets/JetProducers
-git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-8_0_26
+git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-8_0_28
 
-echo "Setting up TnP tools..."
-git cms-merge-topic -u sethzenz:for-flashgg-egm_tnp-8_0_26
+# TnP tools removed for 8_0_28, so Validation does not compile
+# To be investigated
+#echo "Setting up TnP tools..."
+#git cms-merge-topic -u sethzenz:for-flashgg-egm_tnp-8_0_26
 
-echo "Setting up misc egm and weight stuff..."
-git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-weights-8_0_26
+echo "Setting up weight stuff..."
+#git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-weights-8_0_28
+git cms-addpkg CommonTools/UtilAlgos
+git cms-merge-topic -u sethzenz:for-flashgg-weightscount-8_0_28
 
+# Updated for 8_0_28, and compiles and runs, but NOT checked by experts
+# Update built from sethzenz:for-flashgg-smearer-conv-weights-8_0_26 and shervin86:Hgg_Gain_v1
+echo "Setting up EGM stuff..."
+git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-8_0_28
+
+# Straightforward update for 8_0_28
 echo "Setting up Higgs Simplified Template Cross Sections..."
-git cms-merge-topic -u sethzenz:rivet_hepmc-8_0_26
+git cms-merge-topic -u sethzenz:rivet_hepmc-8_0_28
 
+# Straightforward update for 8_0_28
 echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
 git cms-addpkg FWCore/GuiBrowsers
-git cms-merge-topic -u sethzenz:for-flashgg-toolbase-8_0_26
-
-echo "Importing modifications to EGM tools for gain switch categories and uncertainties..."
-git cms-merge-topic shervin86:Hgg_Gain_v1 -u
+git cms-merge-topic -u sethzenz:for-flashgg-toolbase-8_0_28
 
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/Systematics/data/JEC/Summer16_23Sep2016*db $CMSSW_BASE/src/flashgg/
