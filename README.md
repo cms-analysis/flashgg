@@ -10,8 +10,8 @@ Before you start, **please take note** of these warnings and comments:
 Get everything you need, starting from a clean area:
 
  ```
- cmsrel CMSSW_8_0_26_patch1
- cd CMSSW_8_0_26_patch1/src
+ cmsrel CMSSW_8_0_28
+ cd CMSSW_8_0_28/src
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src 
@@ -19,10 +19,10 @@ Get everything you need, starting from a clean area:
  source flashgg/setup.sh
  ```
 
-If everything now looks reasonable, you can build:
+If everything now looks reasonable, you can build (note flashgg/Validation does not compile right now):
  ```
  cd $CMSSW_BASE/src
- scram b -j 9
+ SCRAM_IGNORE_PACKAGES="flashgg/Validation" scram b -j 3
  ```
 And a very basic workflow test:
  ```
@@ -30,7 +30,7 @@ And a very basic workflow test:
  cmsRun MicroAOD/test/microAODstd.py processType=sig datasetName=glugluh
  cmsRun Taggers/test/simple_Tag_test.py
  cmsRun Taggers/test/diphotonsDumper_cfg.py
- cmsRun Systematics/test/workspaceStd.py processId=wzh_125
+ cmsRun Systematics/test/workspaceStd.py processId=ggh_125
  ```
 
 These are just some test examples; the first makes MicroAOD from a MiniAOD file accessed via xrootd, 
