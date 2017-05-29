@@ -27708,6 +27708,660 @@
                 "nevents": 23661, 
                 "totEvents": 23661, 
                 "weights": 23661
+            }, 
+            {
+                "bad": false, 
+                "events": 18784, 
+                "lumis": {
+                    "275847": [
+                        1729, 
+                        1730, 
+                        1734, 
+                        1740, 
+                        1745, 
+                        1746, 
+                        1754, 
+                        1757, 
+                        1778, 
+                        1784, 
+                        1823, 
+                        1833, 
+                        1849, 
+                        1855, 
+                        1861, 
+                        1866, 
+                        1870, 
+                        1879, 
+                        1904, 
+                        1937, 
+                        1976, 
+                        2134, 
+                        2144, 
+                        2153, 
+                        2156
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_244.root", 
+                "nevents": 18784, 
+                "totEvents": 18784, 
+                "weights": 18784
+            }, 
+            {
+                "bad": false, 
+                "events": 32744, 
+                "lumis": {
+                    "275913": [
+                        459, 
+                        464, 
+                        469
+                    ], 
+                    "275918": [
+                        135, 
+                        136, 
+                        141, 
+                        143, 
+                        147, 
+                        151, 
+                        152, 
+                        157, 
+                        165, 
+                        171, 
+                        175, 
+                        188, 
+                        218, 
+                        221, 
+                        7, 
+                        11, 
+                        14, 
+                        32, 
+                        124, 
+                        142, 
+                        162, 
+                        163
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_252.root", 
+                "nevents": 32744, 
+                "totEvents": 32744, 
+                "weights": 32744
+            }, 
+            {
+                "bad": false, 
+                "events": 37471, 
+                "lumis": {
+                    "276282": [
+                        852, 
+                        870, 
+                        871, 
+                        875, 
+                        879, 
+                        880, 
+                        883, 
+                        885, 
+                        886, 
+                        890, 
+                        912, 
+                        919, 
+                        955, 
+                        1014, 
+                        1017, 
+                        1023, 
+                        1030, 
+                        1034, 
+                        1039, 
+                        1042, 
+                        1043, 
+                        1044, 
+                        1067
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_295.root", 
+                "nevents": 37471, 
+                "totEvents": 37471, 
+                "weights": 37471
+            }, 
+            {
+                "bad": false, 
+                "events": 33197, 
+                "lumis": {
+                    "275890": [
+                        88, 
+                        95, 
+                        180, 
+                        233, 
+                        283, 
+                        4, 
+                        134, 
+                        171, 
+                        193
+                    ], 
+                    "275912": [
+                        272, 
+                        276
+                    ], 
+                    "275920": [
+                        70, 
+                        124
+                    ], 
+                    "276244": [
+                        367, 
+                        368, 
+                        1159, 
+                        1160, 
+                        1179, 
+                        1180, 
+                        1193, 
+                        1194
+                    ], 
+                    "276283": [
+                        750, 
+                        803, 
+                        833, 
+                        846
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_516.root", 
+                "nevents": 33197, 
+                "totEvents": 33197, 
+                "weights": 33197
+            }, 
+            {
+                "bad": false, 
+                "events": 30393, 
+                "lumis": {
+                    "275890": [
+                        55, 
+                        73, 
+                        92, 
+                        106, 
+                        165
+                    ], 
+                    "275911": [
+                        80
+                    ], 
+                    "275912": [
+                        273
+                    ], 
+                    "275920": [
+                        167
+                    ], 
+                    "276243": [
+                        507, 
+                        524, 
+                        555, 
+                        570, 
+                        601, 
+                        602
+                    ], 
+                    "276244": [
+                        11, 
+                        1123, 
+                        1124, 
+                        1133, 
+                        1134, 
+                        1137, 
+                        1138, 
+                        1175, 
+                        1176
+                    ], 
+                    "276283": [
+                        483, 
+                        737
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_527.root", 
+                "nevents": 30393, 
+                "totEvents": 30393, 
+                "weights": 30393
+            }, 
+            {
+                "bad": false, 
+                "events": 37467, 
+                "lumis": {
+                    "275890": [
+                        127, 
+                        385, 
+                        390, 
+                        415, 
+                        1192, 
+                        1245, 
+                        1247, 
+                        1263, 
+                        1272, 
+                        1298, 
+                        1302, 
+                        1318, 
+                        1329, 
+                        1351, 
+                        1359, 
+                        1375, 
+                        1386, 
+                        1390
+                    ], 
+                    "275920": [
+                        107
+                    ], 
+                    "276097": [
+                        43, 
+                        145, 
+                        154, 
+                        218, 
+                        219, 
+                        248
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_541.root", 
+                "nevents": 37467, 
+                "totEvents": 37467, 
+                "weights": 37467
+            }, 
+            {
+                "bad": false, 
+                "events": 33411, 
+                "lumis": {
+                    "275890": [
+                        842, 
+                        953, 
+                        994, 
+                        999, 
+                        1036, 
+                        1054, 
+                        1056, 
+                        1102, 
+                        1125, 
+                        1158, 
+                        1178, 
+                        1199, 
+                        1207, 
+                        1218, 
+                        1219, 
+                        1222, 
+                        1231, 
+                        1281, 
+                        1287, 
+                        1311, 
+                        1315
+                    ], 
+                    "276283": [
+                        376, 
+                        655, 
+                        895, 
+                        951
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_577.root", 
+                "nevents": 33411, 
+                "totEvents": 33411, 
+                "weights": 33411
+            }, 
+            {
+                "bad": false, 
+                "events": 33457, 
+                "lumis": {
+                    "275890": [
+                        1089, 
+                        1093, 
+                        1184, 
+                        1316
+                    ], 
+                    "276283": [
+                        65, 
+                        550, 
+                        564, 
+                        594, 
+                        622, 
+                        677, 
+                        694, 
+                        712, 
+                        739, 
+                        744, 
+                        762, 
+                        810, 
+                        818, 
+                        826, 
+                        861, 
+                        866, 
+                        867, 
+                        873, 
+                        877, 
+                        879, 
+                        928
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_580.root", 
+                "nevents": 33457, 
+                "totEvents": 33457, 
+                "weights": 33457
+            }, 
+            {
+                "bad": false, 
+                "events": 36852, 
+                "lumis": {
+                    "275890": [
+                        1156, 
+                        1202, 
+                        1205, 
+                        1237, 
+                        1299, 
+                        1310, 
+                        1179
+                    ], 
+                    "275912": [
+                        242, 
+                        249, 
+                        285
+                    ], 
+                    "276283": [
+                        115, 
+                        644, 
+                        30, 
+                        69, 
+                        71, 
+                        81, 
+                        98, 
+                        102, 
+                        117, 
+                        126, 
+                        128, 
+                        133, 
+                        140, 
+                        158, 
+                        164
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_584.root", 
+                "nevents": 36852, 
+                "totEvents": 36852, 
+                "weights": 36852
+            }, 
+            {
+                "bad": false, 
+                "events": 30579, 
+                "lumis": {
+                    "275911": [
+                        64, 
+                        106
+                    ], 
+                    "276092": [
+                        135
+                    ], 
+                    "276097": [
+                        36, 
+                        64, 
+                        253, 
+                        329, 
+                        397, 
+                        402, 
+                        426
+                    ], 
+                    "276244": [
+                        895, 
+                        926, 
+                        942, 
+                        946, 
+                        947, 
+                        965, 
+                        967, 
+                        981, 
+                        988, 
+                        1057, 
+                        1060, 
+                        1061, 
+                        1087, 
+                        1092, 
+                        1095
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_587.root", 
+                "nevents": 30579, 
+                "totEvents": 30579, 
+                "weights": 30579
+            }, 
+            {
+                "bad": false, 
+                "events": 39057, 
+                "lumis": {
+                    "275658": [
+                        7, 
+                        38, 
+                        88, 
+                        233, 
+                        291, 
+                        22, 
+                        174, 
+                        193, 
+                        234
+                    ], 
+                    "275911": [
+                        148, 
+                        222, 
+                        322, 
+                        420, 
+                        166, 
+                        403, 
+                        421
+                    ], 
+                    "275912": [
+                        110
+                    ], 
+                    "275920": [
+                        156, 
+                        255, 
+                        297, 
+                        299, 
+                        308, 
+                        338, 
+                        405, 
+                        458
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_109.root", 
+                "nevents": 39057, 
+                "totEvents": 39057, 
+                "weights": 39057
+            }, 
+            {
+                "bad": false, 
+                "events": 44668, 
+                "lumis": {
+                    "275911": [
+                        69, 
+                        70
+                    ], 
+                    "276092": [
+                        102
+                    ], 
+                    "276097": [
+                        4, 
+                        6, 
+                        9, 
+                        50, 
+                        57, 
+                        134, 
+                        149, 
+                        198, 
+                        207, 
+                        213, 
+                        268, 
+                        269, 
+                        281, 
+                        355, 
+                        367, 
+                        381, 
+                        383, 
+                        407, 
+                        38, 
+                        267, 
+                        308, 
+                        326
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_589.root", 
+                "nevents": 44668, 
+                "totEvents": 44668, 
+                "weights": 44668
+            }, 
+            {
+                "bad": false, 
+                "events": 42597, 
+                "lumis": {
+                    "275774": [
+                        91, 
+                        92, 
+                        101, 
+                        124, 
+                        151, 
+                        153, 
+                        222, 
+                        223, 
+                        236, 
+                        286, 
+                        21, 
+                        34, 
+                        147, 
+                        184, 
+                        213
+                    ], 
+                    "275776": [
+                        32, 
+                        14, 
+                        44, 
+                        51
+                    ], 
+                    "275911": [
+                        97, 
+                        175, 
+                        270, 
+                        297, 
+                        308, 
+                        394
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 42597, 
+                "totEvents": 42597, 
+                "weights": 42597
+            }, 
+            {
+                "bad": false, 
+                "events": 40375, 
+                "lumis": {
+                    "275774": [
+                        100, 
+                        117, 
+                        128, 
+                        156, 
+                        191, 
+                        208, 
+                        217, 
+                        224, 
+                        259, 
+                        281, 
+                        293, 
+                        310, 
+                        311
+                    ], 
+                    "275776": [
+                        8, 
+                        11, 
+                        35, 
+                        4
+                    ], 
+                    "275911": [
+                        65, 
+                        207, 
+                        349, 
+                        413, 
+                        414, 
+                        436, 
+                        218, 
+                        219
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_35.root", 
+                "nevents": 40375, 
+                "totEvents": 40375, 
+                "weights": 40375
+            }, 
+            {
+                "bad": false, 
+                "events": 43037, 
+                "lumis": {
+                    "276242": [
+                        27, 
+                        61, 
+                        143, 
+                        147, 
+                        162, 
+                        166, 
+                        171, 
+                        174, 
+                        200, 
+                        213, 
+                        215, 
+                        218, 
+                        233, 
+                        272, 
+                        307, 
+                        323, 
+                        344, 
+                        367, 
+                        373, 
+                        37, 
+                        202, 
+                        321, 
+                        355, 
+                        449, 
+                        479
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_626.root", 
+                "nevents": 43037, 
+                "totEvents": 43037, 
+                "weights": 43037
+            }, 
+            {
+                "bad": false, 
+                "events": 43271, 
+                "lumis": {
+                    "276092": [
+                        84, 
+                        86, 
+                        139
+                    ], 
+                    "276097": [
+                        137, 
+                        320, 
+                        327, 
+                        340, 
+                        419, 
+                        438, 
+                        456, 
+                        458, 
+                        482, 
+                        488, 
+                        498, 
+                        500, 
+                        501, 
+                        502, 
+                        503, 
+                        133, 
+                        225, 
+                        354, 
+                        388, 
+                        411
+                    ], 
+                    "276244": [
+                        119
+                    ], 
+                    "276283": [
+                        83
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-18Apr2017-2_6_0/2_6_0/SingleElectron/LegacyReReco-18Apr2017-2_6_0-2_6_0-v0-Run2016C-18Apr2017-v1/170526_151510/0000/myMicroAODOutputFile_618.root", 
+                "nevents": 43271, 
+                "totEvents": 43271, 
+                "weights": 43271
             }
         ], 
         "vetted": true
