@@ -93,6 +93,10 @@ In fact, it is recommended to set up a new area from scratch and checkout the ta
 
 https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_users  
 
+### First Legacy ReReco Test
+
+./prepareCrabJobs.py -C LegacyReReco-18Apr2017-2_6_0 -U 1 -L 25 -s campaigns/LegacyReReco-18Apr2017-2_6_0.json -V 2_6_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask jsons/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+
 ### REMINIAOD with MET update
 
 ./prepareCrabJobs.py -C ReMiniAOD-03Feb2017-2_5_5 -U 1 -L 25 -s campaigns/ReMiniAOD-03Feb2017-2_5_5_list2.json -V 2_5_5 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask ${CMSSW_BASE}/src/flashgg/MetaData/work/jsons/DoubleEG_MetFix_missing13Mar.json
