@@ -9,7 +9,6 @@ from CondCore.DBCommon.CondDBSetup_cfi import *
 
 import os
 
-#flashggBTag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
 flashggBTag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
 flashggCMVABTag = 'pfCombinedMVAV2BJetTags'
 
@@ -88,6 +87,8 @@ def addFlashggPFCHSJets(process,
     pvSource       = cms.InputTag('offlineSlimmedPrimaryVertices'),
     pfCandidates   = cms.InputTag('packedPFCandidates'),
     svSource       = cms.InputTag('slimmedSecondaryVertices'),
+    elSource       = cms.InputTag("slimmedElectrons"),
+    muSource       = cms.InputTag("slimmedMuons"),
     btagDiscriminators = [ flashggBTag, flashggCMVABTag ],
     jetCorrections = ('AK4PFchs', JECs, 'None'),
     genJetCollection = cms.InputTag('slimmedGenJets'),
@@ -95,7 +96,7 @@ def addFlashggPFCHSJets(process,
     # jet param
     algo = 'AK', rParam = 0.4,
     #btagInfos =  ['pfImpactParameterTagInfos','pfSecondaryVertexTagInfos'] #Extra btagging info
-    btagInfos =  ['pfImpactParameterTagInfos', 'pfSecondaryVertexTagInfos', 'pfInclusiveSecondaryVertexFinderTagInfos', 'softPFMuonsTagInfos', 'softPFElectronsTagInfos']
+    #btagInfos =  ['pfImpactParameterTagInfos', 'pfSecondaryVertexTagInfos', 'pfInclusiveSecondaryVertexFinderTagInfos', 'softPFMuonsTagInfos', 'softPFElectronsTagInfos']
   )
 
   #Recalculate btagging info
@@ -105,14 +106,6 @@ def addFlashggPFCHSJets(process,
   #process.patJetCorrFactorsAK4PFCHSLeg.primaryVertices = "offlineSlimmedPrimaryVertices"
   getattr(process, 'patJetCorrFactorsAK4PFCHSLeg' + label).primaryVertices = "offlineSlimmedPrimaryVertices"
 
-  #getattr(process, 'softPFElectronsTagInfosAK4PFCHSLeg' + label).jets = cms.InputTag("ak4PFJetsCHS"+ label)
-  getattr(process, 'softPFElectronsTagInfosAK4PFCHSLeg' + label).electrons = cms.InputTag("slimmedElectrons")
-  #getattr(process, 'softPFElectronsTagInfosAK4PFCHSLeg' + label).primaryVertex = cms.InputTag("offlineSlimmedPrimaryVertices")
-  #getattr(process, 'softPFMuonsTagInfosAK4PFCHSLeg' + label).jets = cms.InputTag("ak4PFJetsCHS"+ label)
-  getattr(process, 'softPFMuonsTagInfosAK4PFCHSLeg' + label).muons = cms.InputTag("slimmedMuons")
-  #getattr(process, 'softPFMuonsTagInfosAK4PFCHSLeg' + label).primaryVertex = cms.InputTag("offlineSlimmedPrimaryVertices")
-
-  
   if not hasattr(process,"QGPoolDBESSource"):
     process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
                                             CondDBSetup,
