@@ -42,6 +42,27 @@ namespace flashgg {
 
         void               initialize( );
 
+        /** calculates photon isolation (sum of pt's) from tracks (particle flow candidates).
+
+            @param photon the photon candidate for which the isolation is calculated
+
+            @param vtx the vertex to which tracks taken into account in the isolation value must be associated to
+
+            @param vtxcandmap the list of track to vertex associations
+
+            @param coneSize the size of the (outer) delta R cone around the supercluster direction in which the tracks
+                   are taken into account
+
+            @param coneVetoBarrel the size of the (inner) delta R cone around the supercluster direction
+                   in which tracks are ignored for barrel photons
+
+            @param coneVetoEndcap the size of the (inner) delta R cone around the supercluster direction
+                   in which tracks are ignored for endcap photons
+
+            @param ptMin the minimum pt below which tracks are ignored
+
+            @return the sum of pt of the tracks (particle flow candidates) passing the above criteria
+        */
         float              pfIsoChgWrtVtx( const edm::Ptr<pat::Photon> &photon,
                                            const edm::Ptr<reco::Vertex> vtx,
                                            const flashgg::VertexCandidateMap vtxcandmap,
