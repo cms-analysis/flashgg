@@ -131,13 +131,13 @@ class MicroAODCustomize(object):
             elif "vbf" in customize.datasetName.lower():
                 self.customizeVBF(process)
             elif "thq" in customize.datasetName.lower() or "thw" in customize.datasetName.lower():
-                raise Exception,"TH samples should not currently be classified as signal - see MicroAODCustomize.py"
+                self.customizeTH(process)
             else:
                 raise Exception,"processType=sig but datasetName does not contain recognized production mechanism - see MicroAODCustomize.py"
         if self.processType == "background":
             self.customizeBackground(process)
             if "thq" in customize.datasetName.lower() or "thw" in customize.datasetName.lower():
-                self.customizeTH(process)
+                raise Exception,"TH samples should now be classfied as signal - see MicroAODCustomize.py"
         if self.debug == 1:
             self.customizeDebug(process)
         if self.hlt == 1:
@@ -175,6 +175,7 @@ class MicroAODCustomize(object):
             self.customizeSpring15EleID(process)
         if self.runSummer16EGMPhoID:
             self.customizeSummer16EGMPhoID(process)
+        print "Final customized process:",process.p
             
     # signal specific customization
     def customizeSignal(self,process):
@@ -394,8 +395,13 @@ class MicroAODCustomize(object):
         process.rivetProducerHTXS.ProductionMode = "GGF"
 
     def customizeTH(self,process):
-        # N.B. should not be classified as a signal
         process.out.outputCommands.append("keep *_source_*_LHEFile")
+        process.rivetProducerHTXS.ProductionMode = "TH"
+        process.flashggPDFWeightObject.LHEEventTag = "source"
+        process.flashggPDFWeightObject.LHERunLabel = "source"
+        process.flashggPDFWeightObject.isStandardSample = False
+        process.flashggPDFWeightObject.isThqSample = True
+        
 
     def customizeGlobalTag(self,process):
         process.GlobalTag.globaltag = self.globalTag

@@ -44,6 +44,7 @@ namespace flashgg {
         vector<int> pdf_indices;
         vector<int> alpha_indices;
         vector<int> scale_indices;
+        vector<int> pdfnlo_indices;
         PDFWeightsHelper pdfweightshelper_;//tool from HepMCCandAlgos/interface/PDFWeightsHelper
         unsigned int nPdfEigWeights_;
         edm::FileInPath mc2hessianCSV;
@@ -55,24 +56,32 @@ namespace flashgg {
         string alphas_id_1;
         string alphas_id_2;
         bool isStandardSample_;
+        bool isThqSample_;
         bool doAlphasWeights_;
         bool doScaleWeights_;
         string generatorType ;
+
+        string runLabel_;
+        bool debug_;
 	};
     
 	PDFWeightProducer::PDFWeightProducer( const edm::ParameterSet &iConfig ):
 		LHEEventToken_( consumes<LHEEventProduct>( iConfig.getParameter<InputTag>( "LHEEventTag" ) ) ),
-        srcTokenGen_( consumes<GenEventInfoProduct>( iConfig.getParameter<InputTag>("GenTag") ) )
+        srcTokenGen_( consumes<GenEventInfoProduct>( iConfig.getParameter<InputTag>("GenTag") ) ),
+        runLabel_( iConfig.getParameter<string>("LHERunLabel") ),
+        debug_( iConfig.getParameter<bool>("Debug") )
 	{
-        consumes<LHERunInfoProduct,edm::InRun> (edm::InputTag("externalLHEProducer"));
 		tag_ = iConfig.getUntrackedParameter<string>( "tag", "initrwgt" );
         isStandardSample_ = iConfig.getUntrackedParameter<bool>("isStandardSample",true);
+        isThqSample_ = iConfig.getUntrackedParameter<bool>("isThqSample",false);
         doAlphasWeights_ = iConfig.getUntrackedParameter<bool>("doAlphasWeights",true);
         doScaleWeights_ = iConfig.getUntrackedParameter<bool>("doScaleWeights",true); 
         pdfset_ = iConfig.getUntrackedParameter<string>("pdfset","NNPDF30_lo_as_0130.LHgrid");
         nPdfEigWeights_ = iConfig.getParameter<unsigned int>("nPdfEigWeights");
         mc2hessianCSV = iConfig.getParameter<edm::FileInPath>("mc2hessianCSV");
 
+        consumes<LHERunInfoProduct,edm::InRun> (edm::InputTag(runLabel_));
+        
 		produces<vector<flashgg::PDFWeightObject> >();
 	}
 
@@ -84,12 +93,12 @@ namespace flashgg {
         pdf_indices.clear();
         scale_indices.clear();
         alpha_indices.clear();
-
+        pdfnlo_indices.clear();
 
 		Handle<LHERunInfoProduct> run;
 		typedef vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
         
-        iRun.getByLabel( "externalLHEProducer", run );
+        iRun.getByLabel( runLabel_, run );
 		LHERunInfoProduct myLHERunInfoProduct = *( run.product() );
         
         //--- get info from LHERunInfoProduct
@@ -97,9 +106,11 @@ namespace flashgg {
 		for( headers_const_iterator iter = myLHERunInfoProduct.headers_begin(); iter != myLHERunInfoProduct.headers_end(); iter++ ) {
             
             vector<string> lines = iter->lines();
-            //for (unsigned int iLine = 0; iLine<lines.size(); iLine++) {
-            //    std::cout << lines.at(iLine);
-            //}
+            if (debug_) {
+                for (unsigned int iLine = 0; iLine<lines.size(); iLine++) {
+                    std::cout << lines.at(iLine);
+                }
+            }
             
 			if( ( iter->tag() ).compare( tag_ ) == 0 ) {
 				//cout << iter->tag() << endl;
@@ -154,6 +165,7 @@ namespace flashgg {
                 alphas_id_1 = "265400";
                 alphas_id_2 = "266400";
             }
+
             cout << "alpha_S min and max id             : " << alphas_id_1 << "   " << alphas_id_2 << endl;
         }
 
@@ -173,9 +185,16 @@ namespace flashgg {
         // --- Name of the weightgroup
         string scalevar = "scale_variation";
         string pdfvar   = "PDF_variation";
+        string alphavar;  //only for thq samples
+        string pdfnlovar; //only for thq samples (could be extended to the rest of samples)
         if (!isStandardSample_){
             pdfvar = pdfset_;
             scalevar = "Central scale variation";
+            if (isThqSample_){
+                pdfvar = "NNPDF30_lo_as_0130.LHgrid";
+                alphavar = "NNPDF30_lo_as_0118.LHgrid";
+                pdfnlovar = "NNPDF30_nlo_as_0118.LHgrid";
+            }
         }
 
         // --- Loop over elements to get PDF, alpha_s and scale weights
@@ -202,7 +221,12 @@ namespace flashgg {
                             string strwid  = vs.second.get<std::string>("<xmlattr>.id");
                             string strw    = vs.second.data();
 
-                            int id = stoi(strwid);
+                            int id;
+                            try {
+                                id = boost::lexical_cast<int>(strwid);
+                            } catch (boost::bad_lexical_cast) {
+                                std::cout << "conversion failed" << std::endl;
+                            }
                             vector<string> strs;
 
                             if (isStandardSample_){
@@ -212,23 +236,25 @@ namespace flashgg {
                                 boost::split(strs, strw, boost::is_any_of(" "));
                             }
                             
-                            int pdfindex  = stoi(strs.back());
+                            int pdfindex = stoi(strs.back());
                             //cout << "pdfindex " << pdfindex <<endl;
 
-                            if (pdfindex >= stoi(pdfid_1) && pdfindex <= stoi(pdfid_2)){
+                            if (pdfindex >= boost::lexical_cast<int>(pdfid_1) && pdfindex <= boost::lexical_cast<int>(pdfid_2)){
                                 PDFWeightProducer::pdf_indices.push_back( id );
                             }
                             
                             
-                            if (doAlphasWeights_){
-                                if (pdfindex == stoi(alphas_id_1) || pdfindex == stoi(alphas_id_2)){
+                            if (doAlphasWeights_ && !isThqSample_){
+                                if (pdfindex == boost::lexical_cast<int>(alphas_id_1) || pdfindex == boost::lexical_cast<int>(alphas_id_2)){
                                     PDFWeightProducer::alpha_indices.push_back( id );
                                 }
                             }
                         }
                 }// end loop over PDF weights
 
-
+                if (debug_) {
+                    std::cout << "before Scale weights" << std::endl;
+                }
 
                 // -- Scale weights
                 if ( (weightgroupname1 && weightgroupname1.get() == scalevar)  || ( weightgroupname2 && weightgroupname2.get() == scalevar) ) {               
@@ -237,12 +263,38 @@ namespace flashgg {
                         if (vs.first == "weight") {
                                                 
                             string strwid  = vs.second.get<std::string>("<xmlattr>.id");
-                            int id = stoi(strwid);
+                            int id = boost::lexical_cast<int>(strwid);
                             
                             scale_indices.push_back( id );
                         }
                 }// end loop over scale weights
                 
+                // -- Alpha_s weights                                                                                                                                                                        
+                if ( isThqSample_ && ( (weightgroupname1 && weightgroupname1.get() == alphavar)  || ( weightgroupname2 && weightgroupname2.get() == alphavar) ) ) {
+
+                    BOOST_FOREACH(boost::property_tree::ptree::value_type &vs,subtree)
+                        if (vs.first == "weight") {
+
+                            string strwid  = vs.second.get<std::string>("<xmlattr>.id");
+                            int id = boost::lexical_cast<int>(strwid);
+
+                            PDFWeightProducer::alpha_indices.push_back( id );
+                        }
+                }// end loop over alpha_s weights
+                
+                
+                // -- PDF NLO weights                                                                                                                                                                        
+                if ( isThqSample_ && ( (weightgroupname1 && weightgroupname1.get() == pdfnlovar)  || ( weightgroupname2 && weightgroupname2.get() == pdfnlovar) ) ) {
+
+                    BOOST_FOREACH(boost::property_tree::ptree::value_type &vs,subtree)
+                        if (vs.first == "weight") {
+
+                            string strwid  = vs.second.get<std::string>("<xmlattr>.id");
+                            int id = boost::lexical_cast<int>(strwid);
+
+                            PDFWeightProducer::pdfnlo_indices.push_back( id );
+                        }
+                }// end loop over pdf nlo weights
             }
         }
     }
@@ -272,8 +324,16 @@ namespace flashgg {
 
 
         for( unsigned int i = 0; i < LHEEventHandle->weights().size(); i++) {
-
-			int id_i = stoi( LHEEventHandle->weights()[i].id );
+            if (debug_) {
+                std::cout << i << " " << LHEEventHandle->weights()[i].id << std::endl;
+            }
+            int id_i;
+            try {
+                id_i = boost::lexical_cast<int>( LHEEventHandle->weights()[i].id ); //.c_str()
+            } catch ( boost::bad_lexical_cast ) {
+                std::cout << "conversion failed" << std::endl;
+                continue;
+            }
 			
             // --- Get PDF weights
             for( unsigned int j = 0; j < PDFWeightProducer::pdf_indices.size(); j++ ){
@@ -307,13 +367,28 @@ namespace flashgg {
                     }
                 }
             }
+             
+            // --- Get PDF NLO scale weights
+            if (isThqSample_){ 
+                for( unsigned int k = 0 ; k < PDFWeightProducer::pdfnlo_indices.size() ; k++ ) {
+                    int id_k = PDFWeightProducer::pdfnlo_indices[k];
+                    if ( id_i == id_k ) {
+                        float nloweight = LHEEventHandle->weights()[i].wgt;
+                        uint16_t nloweight_16 = MiniFloatConverter::float32to16( nloweight );
+                        pdfWeight.pdfnlo_weight_container.push_back( nloweight_16 );
+                    }
+                }
+            }
             
 		}// end loop over lhe weights
 
-
-		//cout << "Size of pdf weights    : " << inpdfweights.size() << endl;
-		//cout << "Size of scale weights  : " << PDFWeightProducer::scale_indices.size() << endl;
-		//cout << "Size of alpha_s weights: " << PDFWeightProducer::alpha_indices.size() << endl;
+        if (debug_) {
+            cout << "Size of pdf weights    : " << inpdfweights.size() << endl;
+            cout << "Size of scale weights  : " << PDFWeightProducer::scale_indices.size() << endl;
+            cout << "Size of alpha_s weights: " << PDFWeightProducer::alpha_indices.size() << endl;
+            if (isThqSample_)
+                cout << "Size of pdf nlo weights: " << PDFWeightProducer::pdfnlo_indices.size() << endl;
+        }
         
 		
         // --- Get MCtoHessian PDF weights
