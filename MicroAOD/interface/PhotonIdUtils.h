@@ -67,10 +67,11 @@ namespace flashgg {
                                            const edm::Ptr<reco::Vertex> vtx,
                                            const flashgg::VertexCandidateMap vtxcandmap,
                                            float coneSize, float coneVetoBarrel, float coneVetoEndcap, float ptMin);
-        std::map<edm::Ptr<reco::Vertex>, float> pfIsoChgWrtAllVtx( const edm::Ptr<pat::Photon> &,
-                const std::vector<edm::Ptr<reco::Vertex> > &,
-                const flashgg::VertexCandidateMap,
-                float, float, float, float );
+
+        std::map<edm::Ptr<reco::Vertex>, float> pfIsoChgWrtAllVtx( const edm::Ptr<pat::Photon> &photon,
+                const std::vector<edm::Ptr<reco::Vertex> > &vertices,
+                const flashgg::VertexCandidateMap vtxcandmap,
+                float coneSize, float coneVetoBarrel, float coneVetoEndcap, float ptMin);
 
         float              pfIsoChgWrtWorstVtx( std::map<edm::Ptr<reco::Vertex>, float> & );
 
