@@ -272,6 +272,10 @@ namespace flashgg {
 
             phoTools_.removeOverlappingCandidates( doOverlapRemovalForIsolation_ );
 
+            //                                                                                                                  outer cone size
+            //                                                                                                                       inner (veto) cone size barrel
+            //                                                                                                                             inner (veto) cone size endcap
+            //                                                                                                                                   min track pt
             std::map<edm::Ptr<reco::Vertex>, float> isomap04 = phoTools_.pfIsoChgWrtAllVtx( pp, vertices->ptrs(), vtxToCandMap, 0.4, 0.02, 0.02, 0.1 );
             std::map<edm::Ptr<reco::Vertex>, float> isomap03 = phoTools_.pfIsoChgWrtAllVtx( pp, vertices->ptrs(), vtxToCandMap, 0.3, 0.02, 0.02, 0.1 );
             fg.setpfChgIso04( isomap04 );

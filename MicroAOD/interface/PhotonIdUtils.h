@@ -42,14 +42,38 @@ namespace flashgg {
 
         void               initialize( );
 
-        float              pfIsoChgWrtVtx( const edm::Ptr<pat::Photon> &,
-                                           const edm::Ptr<reco::Vertex>,
-                                           const flashgg::VertexCandidateMap,
-                                           float, float, float, float );
-        std::map<edm::Ptr<reco::Vertex>, float> pfIsoChgWrtAllVtx( const edm::Ptr<pat::Photon> &,
-                const std::vector<edm::Ptr<reco::Vertex> > &,
-                const flashgg::VertexCandidateMap,
-                float, float, float, float );
+        /** calculates photon isolation (sum of pt's) from tracks (particle flow candidates).
+
+            @param photon the photon candidate for which the isolation is calculated
+
+            @param vtx the vertex to which tracks taken into account in the isolation value must be associated to
+
+            @param vtxcandmap the list of track to vertex associations
+
+            @param coneSize the size of the (outer) delta R cone around the supercluster direction in which the tracks
+                   are taken into account
+
+            @param coneVetoBarrel the size of the (inner) delta R cone around the supercluster direction
+                   in which tracks are ignored for barrel photons
+
+            @param coneVetoEndcap the size of the (inner) delta R cone around the supercluster direction
+                   in which tracks are ignored for endcap photons
+
+            @param ptMin the minimum pt below which tracks are ignored
+
+            @return the sum of pt of the tracks (particle flow candidates) passing the above criteria
+        */
+        float              pfIsoChgWrtVtx( const edm::Ptr<pat::Photon> &photon,
+                                           const edm::Ptr<reco::Vertex> vtx,
+                                           const flashgg::VertexCandidateMap vtxcandmap,
+                                           float coneSize, float coneVetoBarrel, float coneVetoEndcap, float ptMin);
+
+        /** calculates the charged particle flow isolation for a single photon with respect to all given
+            vertices. See pfIsoChgWrtVtx(..) for details about the parameters. */
+        std::map<edm::Ptr<reco::Vertex>, float> pfIsoChgWrtAllVtx( const edm::Ptr<pat::Photon> &photon,
+                const std::vector<edm::Ptr<reco::Vertex> > &vertices,
+                const flashgg::VertexCandidateMap vtxcandmap,
+                float coneSize, float coneVetoBarrel, float coneVetoEndcap, float ptMin);
 
         float              pfIsoChgWrtWorstVtx( std::map<edm::Ptr<reco::Vertex>, float> & );
 
