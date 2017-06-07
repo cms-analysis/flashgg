@@ -89,14 +89,14 @@ def addFlashggPFCHSJets(process,
     svSource       = cms.InputTag('slimmedSecondaryVertices'),
     elSource       = cms.InputTag("slimmedElectrons"),
     muSource       = cms.InputTag("slimmedMuons"),
+    runIVF         = True,
     btagDiscriminators = [ flashggBTag, flashggCMVABTag ],
     jetCorrections = ('AK4PFchs', JECs, 'None'),
     genJetCollection = cms.InputTag('slimmedGenJets'),
     genParticles     = cms.InputTag('prunedGenParticles'),
     # jet param
-    algo = 'AK', rParam = 0.4,
-    #btagInfos =  ['pfImpactParameterTagInfos','pfSecondaryVertexTagInfos'] #Extra btagging info
-    #btagInfos =  ['pfImpactParameterTagInfos', 'pfSecondaryVertexTagInfos', 'pfInclusiveSecondaryVertexFinderTagInfos', 'softPFMuonsTagInfos', 'softPFElectronsTagInfos']
+    algo = 'AK', rParam = 0.4
+    #btagInfos =  ['pfImpactParameterTagInfos', 'pfSecondaryVertexTagInfos', 'pfInclusiveSecondaryVertexFinderTagInfos', 'softPFMuonsTagInfos', 'softPFElectronsTagInfos'] #Extra Btagging Info
   )
 
   #Recalculate btagging info
@@ -204,8 +204,11 @@ def addFlashggPuppiJets(process,
     jetSource          = cms.InputTag('ak4PFJetsPuppi' + label),
     pvSource           = cms.InputTag('offlineSlimmedPrimaryVertices'),
     pfCandidates       = cms.InputTag('packedPFCandidates'),
-    svSource           = cms.InputTag('slimmedSecondaryVertices'),
-    btagDiscriminators = [ flashggBTag ],
+    svSource           = cms.InputTag('slimmedSecondaryVertices'),\
+    elSource       = cms.InputTag("slimmedElectrons"),
+    muSource       = cms.InputTag("slimmedMuons"),
+    runIVF         = True,
+    btagDiscriminators = [ flashggBTag, flashggCMVABTag ],
     jetCorrections     = ('AK4PFPuppi',['L1FastJet',  'L2Relative', 'L3Absolute'], 'None'),
     genJetCollection   = cms.InputTag('slimmedGenJets'),
     genParticles       = cms.InputTag('prunedGenParticles'),
