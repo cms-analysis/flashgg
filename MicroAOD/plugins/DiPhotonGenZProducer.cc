@@ -69,7 +69,7 @@ namespace flashgg {
             diPhotonColl->push_back( dipho );
         }
 
-        evt.put( diPhotonColl );
+        evt.put( std::move( diPhotonColl ) );
     }
 }
 

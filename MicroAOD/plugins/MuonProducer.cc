@@ -136,7 +136,7 @@ namespace flashgg {
 
             muColl->push_back( fmu );
         }
-        evt.put( muColl );
+        evt.put( std::move( muColl ) );
     }
 }
 

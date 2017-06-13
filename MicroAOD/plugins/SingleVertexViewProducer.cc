@@ -90,7 +90,7 @@ namespace flashgg {
         //// if( vertexViews->size() != 0 ) {
         //// 	cout << vertexViews->size() << endl;
         //// }
-        evt.put( vertexViews );
+        evt.put( std::move( vertexViews ) );
 
     }
 }

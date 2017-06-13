@@ -88,7 +88,7 @@ namespace flashgg {
             }
         } // end of !useEachTrackOnce_
         std::stable_sort( assoc->begin(), assoc->end(), flashgg::compare_by_vtx() );
-        evt.put( assoc );
+        evt.put( std::move( assoc ) );
     }
 }
 

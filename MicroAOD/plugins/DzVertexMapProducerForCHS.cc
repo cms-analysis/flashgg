@@ -86,7 +86,7 @@ namespace flashgg {
 
         //        flashgg::print_track_count( *assoc, "FlashggDzVertexMapProducerForCHS" );
 
-        evt.put( assoc );
+        evt.put( std::move( assoc ) );
     } // produce method
 } // namespace flashgg
 

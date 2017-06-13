@@ -421,7 +421,7 @@ namespace flashgg {
         
 		PDFWeight->push_back( pdfWeight );
 
-		evt.put( PDFWeight );
+		evt.put( std::move( PDFWeight ) );
         
         /*
         cout << "FINAL pdf_weight_container size " <<pdfWeight.pdf_weight_container.size() << endl;

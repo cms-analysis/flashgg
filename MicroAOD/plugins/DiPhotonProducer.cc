@@ -158,7 +158,7 @@ namespace flashgg {
             }
         }
 
-        evt.put( diPhotonColl );
+        evt.put( std::move( diPhotonColl ) );
     }
 }
 

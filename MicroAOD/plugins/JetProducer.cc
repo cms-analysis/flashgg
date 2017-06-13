@@ -357,7 +357,7 @@ namespace flashgg {
             jetColl->push_back( fjet );
         }
 
-        evt.put( jetColl );
+        evt.put( std::move( jetColl ) );
     }
 }
 

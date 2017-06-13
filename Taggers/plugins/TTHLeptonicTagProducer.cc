@@ -598,8 +598,8 @@ namespace flashgg {
             }
 
         }//diPho loop end !
-        evt.put( tthltags );
-        evt.put( truths );
+        evt.put( std::move( tthltags ) );
+        evt.put( std::move( truths ) );
     }
 
 }

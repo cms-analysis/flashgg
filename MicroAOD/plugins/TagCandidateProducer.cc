@@ -80,7 +80,7 @@ namespace flashgg {
             tagsColl->push_back( tags );
         }
  
-        evt.put( tagsColl );                               
+        evt.put( std::move( tagsColl ) );                               
     }
 }
 

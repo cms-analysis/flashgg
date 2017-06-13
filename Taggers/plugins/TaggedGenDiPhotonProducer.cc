@@ -74,7 +74,7 @@ namespace flashgg {
             /// cout << "TaggedGenDiPhotonProducer dipho " << newdipho.categoryNumber() << " " << (int)newdipho << endl;
         }
         
-        evt.put( diphotons );
+        evt.put( std::move( diphotons ) );
     }
 }
 

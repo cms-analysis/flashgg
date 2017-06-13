@@ -248,7 +248,7 @@ namespace flashgg {
             elecColl->push_back( felec );
            
         }
-        evt.put( elecColl );
+        evt.put( std::move( elecColl ) );
     }
 }
 

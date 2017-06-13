@@ -74,7 +74,7 @@ namespace flashgg {
             }
         }
         
-        evt.put( diphotons );
+        evt.put( std::move( diphotons ) );
     }
 }
 

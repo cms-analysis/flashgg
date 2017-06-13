@@ -339,8 +339,8 @@ namespace flashgg {
                 std::cout << "******************************" << std::endl;
             }
         }
-        evt.put( SelectedTag );
-        evt.put( SelectedTagTruth );
+        evt.put( std::move( SelectedTag ) );
+        evt.put( std::move( SelectedTagTruth ) );
     }
 
     string TagSorter::tagName(DiPhotonTagBase::tag_t tagEnumVal) const {

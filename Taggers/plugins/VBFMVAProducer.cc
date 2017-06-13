@@ -454,7 +454,7 @@ namespace flashgg {
             
             vbf_results->push_back( mvares );
         }
-        evt.put( vbf_results );
+        evt.put( std::move( vbf_results ) );
     }
 }
 

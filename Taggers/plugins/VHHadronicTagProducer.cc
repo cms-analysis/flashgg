@@ -330,8 +330,8 @@ namespace flashgg {
                 vhhadtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<VHTagTruth> >( rTagTruth, idx++ ) ) );
             }
         }
-        evt.put( vhhadtags );
-        evt.put( truths );
+        evt.put( std::move( vhhadtags ) );
+        evt.put( std::move( truths ) );
     }
 
 

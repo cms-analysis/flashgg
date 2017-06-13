@@ -322,7 +322,7 @@ namespace flashgg {
 
             results->push_back( mvares );
         }
-        evt.put( results );
+        evt.put( std::move( results ) );
     }
 }
 

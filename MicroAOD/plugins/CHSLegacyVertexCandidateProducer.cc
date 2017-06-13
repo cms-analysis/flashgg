@@ -123,7 +123,7 @@ namespace flashgg {
 
 
 
-        evt.put( result );
+        evt.put( std::move( result ) );
     }
 }
 typedef flashgg::CHSLegacyVertexCandidateProducer FlashggCHSLegacyVertexCandidateProducer;

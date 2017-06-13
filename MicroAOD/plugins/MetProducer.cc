@@ -46,7 +46,7 @@ namespace flashgg {
                 flashgg::Met fmet = flashgg::Met( *pmet );
                 metColl->push_back(fmet);
             }
-        evt.put(metColl );
+        evt.put( std::move(metColl ) );
     }
 }
 

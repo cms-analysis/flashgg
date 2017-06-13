@@ -140,7 +140,7 @@ namespace flashgg {
                 MuMuGammaColl->push_back( mumugamma );
             }
         }
-        evt.put( MuMuGammaColl );
+        evt.put( std::move( MuMuGammaColl ) );
 
     }
 }

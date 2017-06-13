@@ -536,8 +536,8 @@ namespace flashgg {
                 }
             }
         }
-        evt.put( VHTightTags );
-        evt.put( truths );
+        evt.put( std::move( VHTightTags ) );
+        evt.put( std::move( truths ) );
     }
 
 }

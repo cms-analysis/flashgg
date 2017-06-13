@@ -237,7 +237,7 @@ namespace flashgg {
             
         }// end loop over photons
         
-        evt.put(PhotonJetColl);
+        evt.put( std::move(PhotonJetColl) );
         
     }
 }

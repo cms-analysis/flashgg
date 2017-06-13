@@ -125,7 +125,7 @@ namespace flashgg {
             
             vbfDiPhoDiJet_results->push_back( mvares );
         }
-        evt.put( vbfDiPhoDiJet_results );
+        evt.put( std::move( vbfDiPhoDiJet_results ) );
     }
 }
 

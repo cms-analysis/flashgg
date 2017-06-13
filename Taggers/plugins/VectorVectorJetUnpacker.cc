@@ -67,7 +67,7 @@ namespace flashgg {
             }
             char number[2];
             sprintf( number, "%u", i );
-            evt.put( result, number );
+            evt.put( std::move( result) , number );
         }
     }
 }

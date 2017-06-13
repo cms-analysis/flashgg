@@ -59,7 +59,7 @@ namespace flashgg {
         //// if( photonViews->size() != 0 ) {
         //// 	cout << photonViews->size() << endl;
         //// }
-        evt.put( photonViews );
+        evt.put( std::move( photonViews ) );
 
     }
 }

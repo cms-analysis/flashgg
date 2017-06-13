@@ -287,7 +287,7 @@ namespace flashgg {
             out_obj->push_back(*new_obj);
             delete new_obj;
         }
-        evt.put(out_obj);
+        evt.put( std::move(out_obj) );
     }
 }
 

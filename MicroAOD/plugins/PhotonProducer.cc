@@ -348,7 +348,7 @@ namespace flashgg {
             photonColl->push_back( fg );
         }
 
-        evt.put( photonColl );
+        evt.put( std::move( photonColl ) );
 
         /// orig_collection = 0;
     }

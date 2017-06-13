@@ -162,8 +162,8 @@ namespace flashgg {
             }
         }
 
-        evt.put( tags );
-        //        evt.put( truths );
+        evt.put( std::move( tags ) );
+        //        evt.put( std::move( truths ) );
     }
 }
 

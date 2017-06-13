@@ -471,8 +471,8 @@ namespace flashgg {
                 }
             }
         }
-        evt.put( VHLeptonicLooseTags );
-        evt.put( truths );
+        evt.put( std::move( VHLeptonicLooseTags ) );
+        evt.put( std::move( truths ) );
     }
 
 }

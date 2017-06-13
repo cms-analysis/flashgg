@@ -97,7 +97,7 @@ namespace flashgg {
                 diMuonColl->push_back( dimu );
             }
         }
-        evt.put( diMuonColl );
+        evt.put( std::move( diMuonColl ) );
 
     }
 }

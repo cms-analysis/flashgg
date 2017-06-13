@@ -132,7 +132,7 @@ namespace flashgg {
                                    << std::endl;
 
         if( debug_ ) { std::cout << setw( 13 ) << "-----------------------------" << std::endl; }
-        evt.put( result );
+        evt.put( std::move( result ) );
         eventNb++;
     }
 

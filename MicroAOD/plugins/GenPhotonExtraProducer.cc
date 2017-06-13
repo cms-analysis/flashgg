@@ -66,7 +66,7 @@ namespace flashgg {
             extraColl->push_back( extra );
         }
 
-        evt.put( extraColl );
+        evt.put( std::move( extraColl ) );
 
         /// orig_collection = 0;
     }

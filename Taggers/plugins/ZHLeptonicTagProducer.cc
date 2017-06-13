@@ -350,8 +350,8 @@ namespace flashgg {
                 }
             }
         }
-        evt.put( ZHLeptonicTags );
-        evt.put( truths );
+        evt.put( std::move( ZHLeptonicTags ) );
+        evt.put( std::move( truths ) );
     }
 }
 typedef flashgg::ZHLeptonicTagProducer FlashggZHLeptonicTagProducer;

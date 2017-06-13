@@ -45,7 +45,7 @@ namespace flashgg {
                 computer_.fill( dipho.getSubLeadingPhoton() );
                 output->push_back( dipho );
             }
-            evt.put( output );
+            evt.put( std::move( output ) );
         };
 
     private:

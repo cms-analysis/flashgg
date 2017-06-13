@@ -266,7 +266,7 @@ namespace flashgg {
 
         //		if (trkCounter > trackNumber) { std::cout << " [ISSUE] " << std::endl;}
         std::stable_sort( assoc->begin(), assoc->end(), flashgg::compare_by_vtx() );
-        evt.put( assoc );
+        evt.put( std::move( assoc ) );
 
         cout << trackNumber << "	" << trackNumberMiniAOD << "	" << matchCounter << std::endl;
     }

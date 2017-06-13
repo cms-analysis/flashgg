@@ -442,8 +442,8 @@ namespace flashgg {
                     }
             }
         }
-        evt.put( whleptonictags );
-        evt.put( truths );
+        evt.put( std::move( whleptonictags ) );
+        evt.put( std::move( truths ) );
     }
 
 }

@@ -122,7 +122,7 @@ WeightProducer::produce( edm::Event &iEvent, const edm::EventSetup &iSetup )
 
     }
 
-    iEvent.put( pweight );
+    iEvent.put( std::move( pweight ) );
     return;
 }
 

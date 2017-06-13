@@ -208,11 +208,11 @@ namespace flashgg {
 
         }
 
-        evt.put( scColl, superClusterCollectionName_ );
-        evt.put( photonCoreColl, photonCoreCollectionName_ );
-        evt.put( photonColl, photonCollectionName_ );
-        evt.put( electronCoreColl, electronCoreCollectionName_ );
-        evt.put( electronColl, electronCollectionName_ );
+        evt.put( std::move( scColl) , superClusterCollectionName_ );
+        evt.put( std::move( photonCoreColl) , photonCoreCollectionName_ );
+        evt.put( std::move( photonColl) , photonCollectionName_ );
+        evt.put( std::move( electronCoreColl) , electronCoreCollectionName_ );
+        evt.put( std::move( electronColl) , electronCollectionName_ );
 
         if( debug_ ) {
             std::cout << " We put the photons in, now we check diphoton pt before and after recomputation: " << std::endl;
@@ -223,7 +223,7 @@ namespace flashgg {
             }
         }
 
-        evt.put( diPhotonColl, diPhotonCollectionName_ );
+        evt.put( std::move( diPhotonColl) , diPhotonCollectionName_ );
     }
 }
 
