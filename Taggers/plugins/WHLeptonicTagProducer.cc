@@ -204,7 +204,7 @@ namespace flashgg {
 
         Handle<View<reco::GenParticle> > genParticles;
 
-        std::auto_ptr<vector<WHLeptonicTag> > whleptonictags( new vector<WHLeptonicTag> );
+        std::unique_ptr<vector<WHLeptonicTag> > whleptonictags( new vector<WHLeptonicTag> );
 
         Handle<View<flashgg::Met> > METs;
         evt.getByToken( METToken_, METs );
@@ -214,7 +214,7 @@ namespace flashgg {
 
         assert( diPhotons->size() == mvaResults->size() );
 
-        std::auto_ptr<vector<VHTagTruth> > truths( new vector<VHTagTruth> );
+        std::unique_ptr<vector<VHTagTruth> > truths( new vector<VHTagTruth> );
         Point higgsVtx;
         bool associatedZ=0;
         bool associatedW=0;

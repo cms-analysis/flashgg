@@ -97,8 +97,8 @@ namespace flashgg {
 
         Handle<View<reco::GenParticle> > genParticles;
 
-        std::auto_ptr<vector<UntaggedTag> > tags( new vector<UntaggedTag> );
-        std::auto_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
+        std::unique_ptr<vector<UntaggedTag> > tags( new vector<UntaggedTag> );
+        std::unique_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
 
         Point higgsVtx;
         if( ! evt.isRealData() ) {

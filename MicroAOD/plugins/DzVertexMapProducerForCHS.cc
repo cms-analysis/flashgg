@@ -50,7 +50,7 @@ namespace flashgg {
         evt.getByToken( pfcandidateToken_, pfCandidates );
         // const PtrVector<pat::PackedCandidate>& pfPtrs = pfCandidates->ptrVector();
 
-        std::auto_ptr<VertexCandidateMap> assoc( new VertexCandidateMap );
+        std::unique_ptr<VertexCandidateMap> assoc( new VertexCandidateMap );
 
         // Create empty vector for each vertex in advance
         //    for (unsigned int j = 0 ; j < primaryVertices->size() ; j++) {

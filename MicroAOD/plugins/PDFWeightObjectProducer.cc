@@ -316,7 +316,7 @@ namespace flashgg {
         //cout << "gen weight = " << gen_weight <<endl;
 
 
-		std::auto_ptr<vector<flashgg::PDFWeightObject> > PDFWeight( new vector<flashgg::PDFWeightObject> );
+		std::unique_ptr<vector<flashgg::PDFWeightObject> > PDFWeight( new vector<flashgg::PDFWeightObject> );
 
 		inpdfweights.clear(); 
 

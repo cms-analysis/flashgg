@@ -65,7 +65,7 @@ namespace flashgg {
             assert( found );
         }
 
-        std::auto_ptr<vector<SingleVertexView> > vertexViews( new vector<SingleVertexView> );
+        std::unique_ptr<vector<SingleVertexView> > vertexViews( new vector<SingleVertexView> );
         std::map<float, int> sortViews;
 
         int nCand = maxCandidates_;

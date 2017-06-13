@@ -62,7 +62,7 @@ namespace flashgg {
         
         Handle<View<flashgg::GenDiPhoton> > src;
         evt.getByToken( src_, src );
-        std::auto_ptr<vector<GenDiPhoton> > diphotons( new vector<GenDiPhoton> );
+        std::unique_ptr<vector<GenDiPhoton> > diphotons( new vector<GenDiPhoton> );
         
         for(auto & dipho : *src) {
             GenDiPhoton newdipho = dipho;

@@ -73,12 +73,12 @@ namespace flashgg {
         Handle<View<Electron> > electrons;
         evt.getByToken( electronToken_, electrons );
 
-        auto_ptr<vector<DiPhotonCandidate> > diPhotonColl( new vector<DiPhotonCandidate> );
-        auto_ptr<vector<Photon> > photonColl( new vector<Photon> );
-        auto_ptr<vector<reco::SuperCluster> > scColl( new vector<reco::SuperCluster> );
-        auto_ptr<vector<reco::PhotonCore> > photonCoreColl( new vector<reco::PhotonCore> );
-        auto_ptr<vector<Electron> > electronColl( new vector<Electron> );
-        auto_ptr<vector<reco::GsfElectronCore> > electronCoreColl( new vector<reco::GsfElectronCore> );
+        unique_ptr<vector<DiPhotonCandidate> > diPhotonColl( new vector<DiPhotonCandidate> );
+        unique_ptr<vector<Photon> > photonColl( new vector<Photon> );
+        unique_ptr<vector<reco::SuperCluster> > scColl( new vector<reco::SuperCluster> );
+        unique_ptr<vector<reco::PhotonCore> > photonCoreColl( new vector<reco::PhotonCore> );
+        unique_ptr<vector<Electron> > electronColl( new vector<Electron> );
+        unique_ptr<vector<reco::GsfElectronCore> > electronCoreColl( new vector<reco::GsfElectronCore> );
 
         edm::RefProd<vector<Photon> > rPhoton = evt.getRefBeforePut<vector<Photon> >( photonCollectionName_ );
         edm::RefProd<vector<reco::SuperCluster> > rSuperCluster = evt.getRefBeforePut<vector<reco::SuperCluster> >( superClusterCollectionName_ );

@@ -47,7 +47,7 @@ namespace flashgg {
         evt.getByToken( pfcandidateToken_, pfCandidates );
         //const PtrVector<pat::PackedCandidate>& pfPtrs = pfCandidates->ptrVector();
 
-        std::auto_ptr<VertexCandidateMap> assoc( new VertexCandidateMap );
+        std::unique_ptr<VertexCandidateMap> assoc( new VertexCandidateMap );
 
         if( useEachTrackOnce_ ) {
             // Associate a track to the closest vertex only, and only if dz < maxAllowedDz_

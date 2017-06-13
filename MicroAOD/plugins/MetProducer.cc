@@ -38,7 +38,7 @@ namespace flashgg {
     {
         edm::Handle<edm::View<pat::MET> >  pmets;
         evt.getByToken( metToken_, pmets );
-        std::auto_ptr<vector<flashgg::Met> > metColl( new vector<flashgg::Met> );
+        std::unique_ptr<vector<flashgg::Met> > metColl( new vector<flashgg::Met> );
 
         for( unsigned int metIndex = 0; metIndex < pmets->size(); metIndex++ ) 
             {

@@ -140,7 +140,7 @@ namespace flashgg {
         evt.getByToken(rhoTag_,rho);
         double rho_    = *rho;
 
-        auto_ptr<vector<PhotonJetCandidate> > PhotonJetColl( new vector<PhotonJetCandidate> );
+        unique_ptr<vector<PhotonJetCandidate> > PhotonJetColl( new vector<PhotonJetCandidate> );
 
         // --- Photon selection (min pt, photon id)
         for ( unsigned int i = 0 ; i < photons->size() ; i++ ){

@@ -102,7 +102,7 @@ namespace flashgg {
             }
         }
 
-        std::auto_ptr<vector<pat::PackedCandidate> > result( new vector<pat::PackedCandidate>() );
+        std::unique_ptr<vector<pat::PackedCandidate> > result( new vector<pat::PackedCandidate>() );
 
         for( unsigned int pfCandLoop = 0 ; pfCandLoop < pfCandidates->size() ; pfCandLoop++ ) {
             edm::Ptr<pat::PackedCandidate> cand = pfCandidates->ptrAt( pfCandLoop );

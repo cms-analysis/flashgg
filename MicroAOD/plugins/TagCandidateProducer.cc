@@ -47,7 +47,7 @@ namespace flashgg {
     void TagCandidateProducer::produce( Event &evt, const EventSetup & )
     {
         
-        auto_ptr<std::vector<flashgg::TagCandidate> > tagsColl( new std::vector<flashgg::TagCandidate> );
+        unique_ptr<std::vector<flashgg::TagCandidate> > tagsColl( new std::vector<flashgg::TagCandidate> );
         
         Handle<edm::OwnVector<flashgg::DiPhotonTagBase> > tagSorter;
         evt.getByToken( tagSorterToken_, tagSorter );

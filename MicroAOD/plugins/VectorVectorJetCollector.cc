@@ -43,7 +43,7 @@ namespace flashgg {
 
     void VectorVectorJetCollector::produce( Event &evt, const EventSetup & )
     {
-        auto_ptr<vector<vector<Jet> > > result( new vector<vector<Jet> > );
+        unique_ptr<vector<vector<Jet> > > result( new vector<vector<Jet> > );
 
         size_t output_size = 0;
         JetViewVector Jets( inputTagJets_.size() );
