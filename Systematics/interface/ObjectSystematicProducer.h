@@ -273,7 +273,7 @@ namespace flashgg {
             centralWeights.push_back( obj.centralWeight() );
             centralObjectColl->push_back( obj );
         }
-        evt.put( centralObjectColl ); // put central collection in event
+        evt.put( std::move(centralObjectColl) ); // put central collection in event
 
         //        std::cout << " after producing central" << std::endl;
 
@@ -322,7 +322,7 @@ namespace flashgg {
 
         // Put shifted collections in event
         for( unsigned int ncoll = 0 ; ncoll < total_shifted_collections ; ncoll++ ) {
-            evt.put( all_shifted_collections[ncoll], collectionLabelsNonCentral_[ncoll] );
+            evt.put( std::move(all_shifted_collections[ncoll]), collectionLabelsNonCentral_[ncoll] );
         }
 
         // See note above about array of unique_ptr

@@ -60,7 +60,7 @@ namespace flashgg {
                     out_obj->push_back(o);
             }
         }
-        evt.put(out_obj);
+        evt.put(std::move(out_obj));
     }
 }
 

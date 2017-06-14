@@ -18,6 +18,8 @@
 #include "DataFormats/PatCandidates/interface/libminifloat.h"
 #include "PhysicsTools/HepMCCandAlgos/interface/PDFWeightsHelper.h"
 #include "FWCore/Utilities/interface/EDMException.h"
+#include "FWCore/Framework/interface/Run.h"
+
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
