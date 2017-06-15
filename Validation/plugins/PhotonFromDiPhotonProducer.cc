@@ -50,7 +50,7 @@ namespace flashgg {
         std::vector<bool> preselValues;
         evt.getByToken(diPhotonToken_, diPhotons);
 
-        std::auto_ptr<std::vector<flashgg::Photon> > photonColl(new std::vector<flashgg::Photon>);
+        std::unique_ptr<std::vector<flashgg::Photon> > photonColl(new std::vector<flashgg::Photon>);
 
         // MATTEO FIXME IN THE MICROAOD PRODUCER
         if (!diPhotons.failedToGet()) {
@@ -92,19 +92,19 @@ namespace flashgg {
             
         }
         
-        edm::OrphanHandle<std::vector<flashgg::Photon> > photonCollH = evt.put(photonColl); 
+        edm::OrphanHandle<std::vector<flashgg::Photon> > photonCollH = evt.put( std::move(photonColl) ); 
         
-        std::auto_ptr<edm::ValueMap<float> > idValMap(new edm::ValueMap<float>());
+        std::unique_ptr<edm::ValueMap<float> > idValMap(new edm::ValueMap<float>());
         edm::ValueMap<float>::Filler idFiller(*idValMap);
         idFiller.insert(photonCollH, idValues.begin(), idValues.end());
         idFiller.fill();
-        evt.put(idValMap, "idmva");
+        evt.put( std::move(idValMap) , "idmva");
 
-        std::auto_ptr<edm::ValueMap<bool> > preselValMap(new edm::ValueMap<bool>());
+        std::unique_ptr<edm::ValueMap<bool> > preselValMap(new edm::ValueMap<bool>());
         edm::ValueMap<bool>::Filler preselFiller(*preselValMap);
         preselFiller.insert(photonCollH, preselValues.begin(), preselValues.end());
         preselFiller.fill();
-        evt.put(preselValMap, "preselection");        
+        evt.put( std::move(preselValMap) , "preselection");        
     }
 }
 

@@ -167,7 +167,7 @@ namespace flashgg {
             evt.getByToken( tokenJets_[j], Jets[j] );
         }
         
-        std::auto_ptr<vector<VBFMVAResult> > vbf_results( new vector<VBFMVAResult> );
+        std::unique_ptr<vector<VBFMVAResult> > vbf_results( new vector<VBFMVAResult> );
         for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
             
             flashgg::VBFMVAResult mvares;
@@ -454,7 +454,7 @@ namespace flashgg {
             
             vbf_results->push_back( mvares );
         }
-        evt.put( vbf_results );
+        evt.put( std::move( vbf_results ) );
     }
 }
 

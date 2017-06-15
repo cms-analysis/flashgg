@@ -149,7 +149,7 @@ namespace flashgg {
         evt.getByToken( pfcandidateToken_, pfcandidates );
         const std::vector<edm::Ptr<pat::PackedCandidate> > &pfcands = pfcandidates->ptrs();
 
-        std::auto_ptr<vector<flashgg::Electron> > elecColl( new vector<flashgg::Electron> );
+        std::unique_ptr<vector<flashgg::Electron> > elecColl( new vector<flashgg::Electron> );
 
         for( unsigned int elecIndex = 0; elecIndex < pelectrons->size(); elecIndex++ ) {
             Ptr<pat::Electron> pelec = pelectrons->ptrAt( elecIndex );
@@ -248,7 +248,7 @@ namespace flashgg {
             elecColl->push_back( felec );
            
         }
-        evt.put( elecColl );
+        evt.put( std::move( elecColl ) );
     }
 }
 

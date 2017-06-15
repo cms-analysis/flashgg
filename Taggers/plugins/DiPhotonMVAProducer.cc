@@ -199,8 +199,8 @@ namespace flashgg {
         double dummy[1]={0.};
 
  
-        //    std::auto_ptr<DiPhotonMVAResultMap> assoc(new DiPhotonMVAResultMap);
-        std::auto_ptr<vector<DiPhotonMVAResult> > results( new vector<DiPhotonMVAResult> ); // one per diphoton, always in same order, vector is more efficient than map
+        //    std::unique_ptr<DiPhotonMVAResultMap> assoc(new DiPhotonMVAResultMap);
+        std::unique_ptr<vector<DiPhotonMVAResult> > results( new vector<DiPhotonMVAResult> ); // one per diphoton, always in same order, vector is more efficient than map
 
         for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
             flashgg::DiPhotonMVAResult mvares;
@@ -322,7 +322,7 @@ namespace flashgg {
 
             results->push_back( mvares );
         }
-        evt.put( results );
+        evt.put( std::move( results ) );
     }
 }
 

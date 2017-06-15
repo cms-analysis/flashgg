@@ -69,6 +69,10 @@ namespace flashgg {
         rho_ = *rho;
     }
 
+    bool CutBasedPhotonObjectSelector::operator()( const edm::Ref<edm::View<Photon> > candref, const edm::EventBase &ev ) const {
+        return operator()(*candref,ev);
+    }
+
     bool CutBasedPhotonObjectSelector::operator()( const Photon &cand, const EventBase &ev ) const
     {
         if( ! selector_( cand ) ) { return false; }

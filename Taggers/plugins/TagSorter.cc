@@ -128,8 +128,8 @@ namespace flashgg {
 
     void TagSorter::produce( Event &evt, const EventSetup & )
     {
-        auto_ptr<edm::OwnVector<flashgg::DiPhotonTagBase> > SelectedTag( new edm::OwnVector<flashgg::DiPhotonTagBase> );
-        auto_ptr<edm::OwnVector<flashgg::TagTruthBase> > SelectedTagTruth( new edm::OwnVector<flashgg::TagTruthBase> );
+        unique_ptr<edm::OwnVector<flashgg::DiPhotonTagBase> > SelectedTag( new edm::OwnVector<flashgg::DiPhotonTagBase> );
+        unique_ptr<edm::OwnVector<flashgg::TagTruthBase> > SelectedTagTruth( new edm::OwnVector<flashgg::TagTruthBase> );
 
         // Cache other tags for each event; but do not use the old ones next time
         otherTags_.clear(); 
@@ -339,8 +339,8 @@ namespace flashgg {
                 std::cout << "******************************" << std::endl;
             }
         }
-        evt.put( SelectedTag );
-        evt.put( SelectedTagTruth );
+        evt.put( std::move( SelectedTag ) );
+        evt.put( std::move( SelectedTagTruth ) );
     }
 
     string TagSorter::tagName(DiPhotonTagBase::tag_t tagEnumVal) const {

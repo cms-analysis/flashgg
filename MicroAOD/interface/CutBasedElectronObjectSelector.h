@@ -7,7 +7,7 @@
 
 namespace flashgg {
 
-	typedef CutBasedGenericObjectSelector<flashgg::Electron> CutBasedElectronObjectSelector;
+	typedef CutBasedGenericObjectSelector<edm::View<flashgg::Electron> > CutBasedElectronObjectSelector;
 
 }
 

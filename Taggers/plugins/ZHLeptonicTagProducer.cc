@@ -171,8 +171,8 @@ namespace flashgg {
 
         Handle<View<reco::GenParticle> > genParticles;
 
-        std::auto_ptr<vector<ZHLeptonicTag> > ZHLeptonicTags( new vector<ZHLeptonicTag> );
-        std::auto_ptr<vector<VHTagTruth> > truths( new vector<VHTagTruth> );
+        std::unique_ptr<vector<ZHLeptonicTag> > ZHLeptonicTags( new vector<ZHLeptonicTag> );
+        std::unique_ptr<vector<VHTagTruth> > truths( new vector<VHTagTruth> );
 
         Point higgsVtx;
         bool associatedZ=0;
@@ -350,8 +350,8 @@ namespace flashgg {
                 }
             }
         }
-        evt.put( ZHLeptonicTags );
-        evt.put( truths );
+        evt.put( std::move( ZHLeptonicTags ) );
+        evt.put( std::move( truths ) );
     }
 }
 typedef flashgg::ZHLeptonicTagProducer FlashggZHLeptonicTagProducer;

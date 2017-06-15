@@ -102,7 +102,7 @@ namespace flashgg {
         evt.getByToken( conversionTokenSingleLeg_, conversionsSingleLeg );
         //const PtrVector<reco::Conversion>& conversionPointersSingleLeg = conversionsSingleLeg->ptrVector();
 
-        auto_ptr<vector<DiPhotonCandidate> > diPhotonColl( new vector<DiPhotonCandidate> );
+        unique_ptr<vector<DiPhotonCandidate> > diPhotonColl( new vector<DiPhotonCandidate> );
 //    cout << "evt.id().event()= " << evt.id().event() << "\tevt.isRealData()= " << evt.isRealData() << "\tphotons->size()= " << photons->size() << "\tprimaryVertices->size()= " << primaryVertices->size() << endl;
 
         for( unsigned int i = 0 ; i < photons->size() ; i++ ) {
@@ -158,7 +158,7 @@ namespace flashgg {
             }
         }
 
-        evt.put( diPhotonColl );
+        evt.put( std::move( diPhotonColl ) );
     }
 }
 

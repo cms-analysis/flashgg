@@ -212,8 +212,8 @@ namespace flashgg {
 
         Handle<View<reco::GenParticle> > genParticles;
 
-        std::auto_ptr<vector<VHTightTag> > VHTightTags( new vector<VHTightTag> );
-        std::auto_ptr<vector<VHTagTruth> > truths( new vector<VHTagTruth> );
+        std::unique_ptr<vector<VHTightTag> > VHTightTags( new vector<VHTightTag> );
+        std::unique_ptr<vector<VHTagTruth> > truths( new vector<VHTagTruth> );
 
         Point higgsVtx;
         bool associatedZ=0;
@@ -536,8 +536,8 @@ namespace flashgg {
                 }
             }
         }
-        evt.put( VHTightTags );
-        evt.put( truths );
+        evt.put( std::move( VHTightTags ) );
+        evt.put( std::move( truths ) );
     }
 
 }

@@ -205,7 +205,7 @@ namespace flashgg {
         const double rhoFixedGrd = *( rhoHandle.product() );
         const reco::Vertex *neutVtx = ( useVtx0ForNeutralIso_ ? &vertices->at( 0 ) : 0 );
 
-        auto_ptr<vector<flashgg::Photon> > photonColl( new vector<flashgg::Photon> );
+        unique_ptr<vector<flashgg::Photon> > photonColl( new vector<flashgg::Photon> );
 
         //// // this is hacky and dangerous
         //// const reco::VertexCollection* orig_collection = static_cast<const reco::VertexCollection*>(vertices->product());
@@ -348,7 +348,7 @@ namespace flashgg {
             photonColl->push_back( fg );
         }
 
-        evt.put( photonColl );
+        evt.put( std::move( photonColl ) );
 
         /// orig_collection = 0;
     }

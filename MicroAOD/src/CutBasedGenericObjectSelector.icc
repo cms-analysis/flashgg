@@ -5,8 +5,8 @@ using namespace edm;
 using namespace std;
 
 namespace flashgg {
-    template<class T>
-    CutBasedGenericObjectSelector<T>::CutBasedGenericObjectSelector( const ParameterSet &cfg, edm::ConsumesCollector &cc ) :
+    template<class InputCollection>
+    CutBasedGenericObjectSelector<InputCollection>::CutBasedGenericObjectSelector( const ParameterSet &cfg, edm::ConsumesCollector &cc ) :
         classifier_( cfg ),
         rhoToken_( cc.consumes<double>( cfg.getParameter<InputTag>( "rho" ) ) ),
         selector_( cfg.getParameter<string>( "cut" ) )
@@ -66,8 +66,8 @@ namespace flashgg {
         }
     }
 
-    template<class T>
-    void CutBasedGenericObjectSelector<T>::handle( const EventBase &ev ) const
+    template<class InputCollection>
+    void CutBasedGenericObjectSelector<InputCollection>::handle( const EventBase &ev ) const
     {
         edm::Handle<double> rho;
         const Event *ee = dynamic_cast<const Event *>( &ev );
@@ -76,8 +76,14 @@ namespace flashgg {
         rho_ = *rho;
     }
 
-    template<class T>
-    bool CutBasedGenericObjectSelector<T>::operator()( const T &cand, const EventBase &ev ) const
+    template<class InputCollection>
+    bool CutBasedGenericObjectSelector<InputCollection>::operator()( const Ref<InputCollection> candref, const EventBase &ev ) const
+    {
+        return operator()(*candref,ev);
+    }
+
+    template<class InputCollection>
+    bool CutBasedGenericObjectSelector<InputCollection>::operator()( const CutBasedGenericObjectSelector<InputCollection>::object_type &cand, const EventBase &ev ) const
     {
         if( ! selector_( cand ) ) { return false; }
         handle( ev );
@@ -90,8 +96,8 @@ namespace flashgg {
     }
 
 
-    template<class T>
-    bool CutBasedGenericObjectSelector<T>::passInverted( const T &pho ) const
+    template<class InputCollection>
+    bool CutBasedGenericObjectSelector<InputCollection>::passInverted( const CutBasedGenericObjectSelector<InputCollection>::object_type &pho ) const
     {
         auto cat = classifier_( pho );
         auto isel = selections_.find( cat.first );
@@ -112,8 +118,8 @@ namespace flashgg {
         return true;
     }
 
-    template<class T>
-    bool CutBasedGenericObjectSelector<T>::pass( const T &pho ) const
+    template<class InputCollection>
+    bool CutBasedGenericObjectSelector<InputCollection>::pass( const CutBasedGenericObjectSelector<InputCollection>::object_type &pho ) const
     {
         auto cat = classifier_( pho );
         auto isel = selections_.find( cat.first );

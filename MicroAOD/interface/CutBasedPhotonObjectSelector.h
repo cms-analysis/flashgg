@@ -29,6 +29,7 @@ namespace flashgg {
         CutBasedPhotonObjectSelector( const edm::ParameterSet &config, edm::ConsumesCollector &cc );
 
         bool operator()( const Photon &cand, const edm::EventBase &ev ) const;
+        bool operator()( const edm::Ref<edm::View<Photon> > candref, const edm::EventBase &ev ) const;
 
     protected:
         typedef std::shared_ptr<functor_type> functor_ptr;
