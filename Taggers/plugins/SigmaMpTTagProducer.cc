@@ -102,8 +102,8 @@ namespace flashgg {
 
         Handle<View<reco::GenParticle> > genParticles;
 
-        std::auto_ptr<vector<SigmaMpTTag> > tags( new vector<SigmaMpTTag> );
-        std::auto_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
+        std::unique_ptr<vector<SigmaMpTTag> > tags( new vector<SigmaMpTTag> );
+        std::unique_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
 
         Point higgsVtx;
         if( ! evt.isRealData() ) {
@@ -159,8 +159,8 @@ namespace flashgg {
                 }
             }
         }
-        evt.put( tags );
-        evt.put( truths );
+        evt.put( std::move( tags ) );
+        evt.put( std::move( truths ) );
     }
 }
 

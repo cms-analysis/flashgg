@@ -44,7 +44,7 @@ namespace flashgg {
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
 
-        std::auto_ptr<vector<SinglePhotonView> > photonViews( new vector<SinglePhotonView> );
+        std::unique_ptr<vector<SinglePhotonView> > photonViews( new vector<SinglePhotonView> );
 
         int nCand = maxCandidates_;
         //for(auto & dipho : diPhotons) {
@@ -59,7 +59,7 @@ namespace flashgg {
         //// if( photonViews->size() != 0 ) {
         //// 	cout << photonViews->size() << endl;
         //// }
-        evt.put( photonViews );
+        evt.put( std::move( photonViews ) );
 
     }
 }

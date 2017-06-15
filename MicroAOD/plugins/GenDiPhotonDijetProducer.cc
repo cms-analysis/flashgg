@@ -48,7 +48,7 @@ namespace flashgg {
         Handle<View<reco::GenJet> > jets;
         evt.getByToken( genJetToken_, jets );
 
-        std::auto_ptr<vector<GenDiPhoton> > diphotons( new vector<GenDiPhoton> );
+        std::unique_ptr<vector<GenDiPhoton> > diphotons( new vector<GenDiPhoton> );
         
         std::vector<edm::Ptr<reco::GenJet> > seljets;
         for( size_t ij = 0 ; ij < jets->size() ; ++ij ) {
@@ -74,7 +74,7 @@ namespace flashgg {
             }
         }
         
-        evt.put( diphotons );
+        evt.put( std::move( diphotons ) );
     }
 }
 

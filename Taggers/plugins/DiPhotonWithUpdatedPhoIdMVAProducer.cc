@@ -208,7 +208,7 @@ namespace flashgg {
             }
         }
         
-        auto_ptr<std::vector<flashgg::DiPhotonCandidate> > out_obj( new std::vector<flashgg::DiPhotonCandidate>() );
+        unique_ptr<std::vector<flashgg::DiPhotonCandidate> > out_obj( new std::vector<flashgg::DiPhotonCandidate>() );
 
         for (const auto & obj : *objects) {
             flashgg::DiPhotonCandidate *new_obj = obj.clone();
@@ -287,7 +287,7 @@ namespace flashgg {
             out_obj->push_back(*new_obj);
             delete new_obj;
         }
-        evt.put(out_obj);
+        evt.put( std::move(out_obj) );
     }
 }
 

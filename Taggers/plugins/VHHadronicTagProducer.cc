@@ -147,8 +147,8 @@ namespace flashgg {
 
         Handle<View<reco::GenParticle> > genParticles;
 
-        std::auto_ptr<vector<VHHadronicTag> > vhhadtags( new vector<VHHadronicTag> );
-        std::auto_ptr<vector<VHTagTruth> > truths( new vector<VHTagTruth> );
+        std::unique_ptr<vector<VHHadronicTag> > vhhadtags( new vector<VHHadronicTag> );
+        std::unique_ptr<vector<VHTagTruth> > truths( new vector<VHTagTruth> );
         
         Point higgsVtx;
         bool associatedZ=0;
@@ -330,8 +330,8 @@ namespace flashgg {
                 vhhadtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<VHTagTruth> >( rTagTruth, idx++ ) ) );
             }
         }
-        evt.put( vhhadtags );
-        evt.put( truths );
+        evt.put( std::move( vhhadtags ) );
+        evt.put( std::move( truths ) );
     }
 
 

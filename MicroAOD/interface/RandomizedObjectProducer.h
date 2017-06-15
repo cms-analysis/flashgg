@@ -50,7 +50,7 @@ namespace flashgg {
         evt.getByToken( token_, objects );
 
         CLHEP::HepRandomEngine & engine = rng->getEngine( evt.streamID() );
-        auto_ptr<std::vector<pat_object> > out_obj( new std::vector<pat_object>() );
+        unique_ptr<std::vector<pat_object> > out_obj( new std::vector<pat_object>() );
         CLHEP::RandGauss::shoot(&engine, 0., 1.);
 
         for (const auto & obj : *objects) {
@@ -60,7 +60,7 @@ namespace flashgg {
                     out_obj->push_back(o);
             }
         }
-        evt.put(out_obj);
+        evt.put(std::move(out_obj));
     }
 }
 

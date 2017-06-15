@@ -16,20 +16,23 @@
 #include <map>
 
 namespace flashgg {
-    template<class T>
+    template<class InputCollection>
     class CutBasedGenericObjectSelector
     {
 
     public:
+        typedef typename InputCollection::value_type T;
         typedef T object_type;
         typedef CutBasedClassifier<T> classifier_type;
         typedef StringObjectFunction<T> functor_type;
         typedef StepWiseFunctor<T> stepwise_functor_type;
         typedef StringCutObjectSelector<T, true> selector_type;
+        typedef edm::Ref<InputCollection> ref_type;
 
         CutBasedGenericObjectSelector( const edm::ParameterSet &config, edm::ConsumesCollector &cc );
 
         bool operator()( const object_type &cand, const edm::EventBase &ev ) const;
+        bool operator()( const ref_type candref, const edm::EventBase &ev ) const;
 
     protected:
         typedef std::pair<bool,double> limit_type;

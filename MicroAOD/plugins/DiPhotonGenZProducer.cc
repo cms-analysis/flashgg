@@ -60,7 +60,7 @@ namespace flashgg {
             }
         }
 
-        auto_ptr<vector<DiPhotonCandidate> > diPhotonColl( new vector<DiPhotonCandidate> );
+        unique_ptr<vector<DiPhotonCandidate> > diPhotonColl( new vector<DiPhotonCandidate> );
 
         for( unsigned int i = 0 ; i < diphotons->size() ; i++ ) {
 
@@ -69,7 +69,7 @@ namespace flashgg {
             diPhotonColl->push_back( dipho );
         }
 
-        evt.put( diPhotonColl );
+        evt.put( std::move( diPhotonColl ) );
     }
 }
 

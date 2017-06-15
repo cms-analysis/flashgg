@@ -263,7 +263,7 @@ namespace flashgg {
         
         // Build central collection
         std::vector<float> centralWeights;
-        auto_ptr<output_container<flashgg_object> > centralObjectColl( new output_container<flashgg_object> );
+        unique_ptr<output_container<flashgg_object> > centralObjectColl( new output_container<flashgg_object> );
         for( unsigned int i = 0; i < objects->size(); i++ ) {
             flashgg_object *p_obj = objects->ptrAt( i )->clone();
             flashgg_object obj = *p_obj;
@@ -273,18 +273,18 @@ namespace flashgg {
             centralWeights.push_back( obj.centralWeight() );
             centralObjectColl->push_back( obj );
         }
-        evt.put( centralObjectColl ); // put central collection in event
+        evt.put( std::move(centralObjectColl) ); // put central collection in event
 
         //        std::cout << " after producing central" << std::endl;
 
         // build 2N shifted collections
-        // A dynamically allocated array of auto_ptrs may be a bit "unsafe" to maintain,
+        // A dynamically allocated array of unique_ptrs may be a bit "unsafe" to maintain,
         // although I think I have done it correctly - the delete[] statement below is vital
-        // Problem: vector<auto_ptr> is not allowed
+        // Problem: vector<unique_ptr> is not allowed
         // Possible alternate solutions: map, multimap, vector<unique_ptr> + std::move ??
-        std::auto_ptr<output_container<flashgg_object> > *all_shifted_collections;
+        std::unique_ptr<output_container<flashgg_object> > *all_shifted_collections;
         unsigned int total_shifted_collections = collectionLabelsNonCentral_.size();
-        all_shifted_collections = new std::auto_ptr<output_container<flashgg_object> >[total_shifted_collections];
+        all_shifted_collections = new std::unique_ptr<output_container<flashgg_object> >[total_shifted_collections];
         for( unsigned int ncoll = 0 ; ncoll < total_shifted_collections ; ncoll++ ) {
             all_shifted_collections[ncoll].reset( new output_container<flashgg_object> );
         }
@@ -322,10 +322,10 @@ namespace flashgg {
 
         // Put shifted collections in event
         for( unsigned int ncoll = 0 ; ncoll < total_shifted_collections ; ncoll++ ) {
-            evt.put( all_shifted_collections[ncoll], collectionLabelsNonCentral_[ncoll] );
+            evt.put( std::move(all_shifted_collections[ncoll]), collectionLabelsNonCentral_[ncoll] );
         }
 
-        // See note above about array of auto_ptr
+        // See note above about array of unique_ptr
         delete[] all_shifted_collections;
 
     } // end of event

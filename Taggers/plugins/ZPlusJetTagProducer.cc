@@ -82,8 +82,8 @@ namespace flashgg {
             evt.getByToken( tokenJets_[j], Jets[j] );
         }
        
-        std::auto_ptr<vector<ZPlusJetTag> >      tags  ( new vector<ZPlusJetTag> );
-        //        std::auto_ptr<vector<ZPlusJetTagTruth> > truths( new vector<ZPlusJetTagTruth> );
+        std::unique_ptr<vector<ZPlusJetTag> >      tags  ( new vector<ZPlusJetTag> );
+        //        std::unique_ptr<vector<ZPlusJetTagTruth> > truths( new vector<ZPlusJetTagTruth> );
 
         //        unsigned int idx = 0;
         //        edm::RefProd<vector<ZPlusJetTagTruth> > rTagTruth = evt.getRefBeforePut<vector<ZPlusJetTagTruth> >();
@@ -162,8 +162,8 @@ namespace flashgg {
             }
         }
 
-        evt.put( tags );
-        //        evt.put( truths );
+        evt.put( std::move( tags ) );
+        //        evt.put( std::move( truths ) );
     }
 }
 

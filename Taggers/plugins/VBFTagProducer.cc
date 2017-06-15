@@ -130,8 +130,8 @@ namespace flashgg {
             evt.getByToken( WeightToken_, WeightHandle );
         }
 
-        std::auto_ptr<vector<VBFTag> >      tags  ( new vector<VBFTag> );
-        std::auto_ptr<vector<VBFTagTruth> > truths( new vector<VBFTagTruth> );
+        std::unique_ptr<vector<VBFTag> >      tags  ( new vector<VBFTag> );
+        std::unique_ptr<vector<VBFTagTruth> > truths( new vector<VBFTagTruth> );
 
         unsigned int idx = 0;
         edm::RefProd<vector<VBFTagTruth> > rTagTruth = evt.getRefBeforePut<vector<VBFTagTruth> >();
@@ -581,8 +581,8 @@ namespace flashgg {
             }
         }
 
-        evt.put( tags );
-        evt.put( truths );
+        evt.put( std::move( tags ) );
+        evt.put( std::move( truths ) );
     }
 }
 

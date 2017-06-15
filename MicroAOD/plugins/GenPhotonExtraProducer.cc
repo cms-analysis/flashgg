@@ -55,7 +55,7 @@ namespace flashgg {
         evt.getByToken( genPhotonsToken_, genPhotons );
         evt.getByToken( genParticlesToken_, genParticles );
 
-        auto_ptr<vector<flashgg::GenPhotonExtra> > extraColl( new vector<flashgg::GenPhotonExtra> );
+        unique_ptr<vector<flashgg::GenPhotonExtra> > extraColl( new vector<flashgg::GenPhotonExtra> );
 
         auto genPhotonPointers = genPhotons->ptrs();
         for( auto &genPho : genPhotonPointers ) {
@@ -66,7 +66,7 @@ namespace flashgg {
             extraColl->push_back( extra );
         }
 
-        evt.put( extraColl );
+        evt.put( std::move( extraColl ) );
 
         /// orig_collection = 0;
     }

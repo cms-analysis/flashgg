@@ -59,13 +59,13 @@ void tnp::FlashggSampleInfoTree::endLuminosityBlock(edm::LuminosityBlock const& 
 void tnp::FlashggSampleInfoTree::endLuminosityBlockProduce(edm::LuminosityBlock & theLuminosityBlock, const edm::EventSetup & theSetup) {
   //LogTrace("WeightsCounting") << "endLumi: adding " << weightProcessedInLumi_ << " events" << endl;
   
-  std::auto_ptr<edm::MergeableDouble> numWeightssPtr(new edm::MergeableDouble);
+  std::unique_ptr<edm::MergeableDouble> numWeightssPtr(new edm::MergeableDouble);
   numWeightssPtr->value = sumWeight_;
-  theLuminosityBlock.put(numWeightssPtr, "totalGenWeight");
+  theLuminosityBlock.put( std::move(numWeightssPtr) , "totalGenWeight");
   
-  std::auto_ptr<edm::MergeableDouble> numEventsPtr(new edm::MergeableDouble);
+  std::unique_ptr<edm::MergeableDouble> numEventsPtr(new edm::MergeableDouble);
   numEventsPtr->value = nEvents_;
-  theLuminosityBlock.put(numEventsPtr, "totalEvent");
+  theLuminosityBlock.put( std::move(numEventsPtr) , "totalEvent");
   //return;
   //addTree_->Fill();
   

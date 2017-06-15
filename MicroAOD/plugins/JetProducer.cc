@@ -123,7 +123,7 @@ namespace flashgg {
         evt.getByToken( rhoToken_, rhoHandle);
         double rho = *rhoHandle;
         
-        auto_ptr<vector<flashgg::Jet> > jetColl( new vector<flashgg::Jet> );
+        unique_ptr<vector<flashgg::Jet> > jetColl( new vector<flashgg::Jet> );
 
         if (debug_) {
             for( unsigned int i = 0 ; i < debugJets->size() ; i++ ) {
@@ -357,7 +357,7 @@ namespace flashgg {
             jetColl->push_back( fjet );
         }
 
-        evt.put( jetColl );
+        evt.put( std::move( jetColl ) );
     }
 }
 

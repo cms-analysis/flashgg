@@ -198,7 +198,7 @@ namespace flashgg {
         Handle<View<reco::GenParticle> > genParticles;
 
         //const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
-        std::auto_ptr<vector<VHLooseTag> > vhloosetags( new vector<VHLooseTag> );
+        std::unique_ptr<vector<VHLooseTag> > vhloosetags( new vector<VHLooseTag> );
 
         Handle<View<flashgg::Met> > METs;
         evt.getByToken( METToken_, METs );
@@ -210,7 +210,7 @@ namespace flashgg {
 
         assert( diPhotons->size() == mvaResults->size() );
 
-        std::auto_ptr<vector<VHTagTruth> > truths( new vector<VHTagTruth> );
+        std::unique_ptr<vector<VHTagTruth> > truths( new vector<VHTagTruth> );
         Point higgsVtx;
         bool associatedZ=0;
         bool associatedW=0;
@@ -435,8 +435,8 @@ namespace flashgg {
                     }
             }
         }
-        evt.put( vhloosetags );
-        evt.put( truths );
+        evt.put( std::move( vhloosetags ) );
+        evt.put( std::move( truths ) );
     }
 
 }

@@ -14,6 +14,11 @@ namespace flashgg {
         }
     }
 
+    bool CutBasedDiPhotonObjectSelector::operator()( const edm::Ref<edm::View<DiPhotonCandidate> > candref, const edm::EventBase &ev ) const 
+    {
+        return operator()( *candref,ev );
+    }
+
     bool CutBasedDiPhotonObjectSelector::operator()( const DiPhotonCandidate &cand, const EventBase &ev ) const
     {
         if( ! selector_( cand ) ) { return false; }

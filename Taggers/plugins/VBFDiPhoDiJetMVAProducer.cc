@@ -90,7 +90,7 @@ namespace flashgg {
         evt.getByToken( mvaResultToken_, mvaResults );
 //		const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
         
-        std::auto_ptr<vector<VBFDiPhoDiJetMVAResult> > vbfDiPhoDiJet_results( new vector<VBFDiPhoDiJetMVAResult> );
+        std::unique_ptr<vector<VBFDiPhoDiJetMVAResult> > vbfDiPhoDiJet_results( new vector<VBFDiPhoDiJetMVAResult> );
         // one per diphoton, always in same order, vector is more efficient than map
 
         for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
@@ -125,7 +125,7 @@ namespace flashgg {
             
             vbfDiPhoDiJet_results->push_back( mvares );
         }
-        evt.put( vbfDiPhoDiJet_results );
+        evt.put( std::move( vbfDiPhoDiJet_results ) );
     }
 }
 
