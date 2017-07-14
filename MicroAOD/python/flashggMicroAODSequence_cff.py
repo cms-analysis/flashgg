@@ -35,12 +35,14 @@ weightsCount = cms.EDProducer("WeightsCountProducer",
                               nbinsTruePileup=cms.int32(101),
                               )
 
+flashggPrePhotonSequence80X = cms.Sequence(photonMVAValueMapProducer * egmPhotonIDs)
+
 flashggMicroAODSequence = cms.Sequence( eventCount+weightsCount
                                        +flashggVertexMapUnique+flashggVertexMapNonUnique
                                        +electronMVAValueMapProducer*egmGsfElectronIDs*flashggElectrons*flashggSelectedElectrons
                                        +flashggMuons*flashggSelectedMuons
                                        +flashggMicroAODGenSequence
-                                       +photonMVAValueMapProducer * egmPhotonIDs * flashggPhotons * flashggRandomizedPhotons * flashggDiPhotons
+                                       +flashggPrePhotonSequence80X * flashggPhotons * flashggRandomizedPhotons * flashggDiPhotons
                                        +flashggVertexMapForCHS*flashggFinalJets
                                        +flashggVertexMapForPUPPI*flashggFinalPuppiJets
                                         )
