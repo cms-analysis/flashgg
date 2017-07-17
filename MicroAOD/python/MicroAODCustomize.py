@@ -210,11 +210,12 @@ class MicroAODCustomize(object):
 
     # background specific customization
     def customizeBackground(self,process):
-        from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
-        runMETs(process,True) #isMC
-        from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
-        setMetCorr(process,multPhiCorr_MC_DY_80X)
-        process.p *=process.flashggMetSequence
+        if not os.environ["CMSSW_VERSION"].count("CMSSW_9"):
+            from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
+            runMETs(process,True) #isMC
+            from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
+            setMetCorr(process,multPhiCorr_MC_DY_80X)
+            process.p *=process.flashggMetSequence
         if "sherpa" in self.datasetName:
             process.flashggGenPhotonsExtra.defaultType = 1
             
