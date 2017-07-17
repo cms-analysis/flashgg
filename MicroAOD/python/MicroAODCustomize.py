@@ -134,7 +134,7 @@ class MicroAODCustomize(object):
                 self.customizeTH(process)
             else:
                 raise Exception,"processType=sig but datasetName does not contain recognized production mechanism - see MicroAODCustomize.py"
-        if self.processType == "background":
+        if self.processType == "background" or self.processType == "bkg":
             self.customizeBackground(process)
             if "thq" in customize.datasetName.lower() or "thw" in customize.datasetName.lower():
                 raise Exception,"TH samples should now be classfied as signal - see MicroAODCustomize.py"
