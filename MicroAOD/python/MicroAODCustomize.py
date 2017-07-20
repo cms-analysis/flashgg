@@ -134,7 +134,7 @@ class MicroAODCustomize(object):
                 self.customizeTH(process)
             else:
                 raise Exception,"processType=sig but datasetName does not contain recognized production mechanism - see MicroAODCustomize.py"
-        if self.processType == "background":
+        if self.processType == "background" or self.processType == "bkg":
             self.customizeBackground(process)
             if "thq" in customize.datasetName.lower() or "thw" in customize.datasetName.lower():
                 raise Exception,"TH samples should now be classfied as signal - see MicroAODCustomize.py"
@@ -158,9 +158,6 @@ class MicroAODCustomize(object):
             self.customize76X(process)
         elif os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             self.customize80X(process)
-        elif len(self.globalTag) == 0:
-            self.globalTag = "74X_mcRun2_asymptotic_v4"
-            self.customizeGlobalTag(process)
         if self.bunchSpacing == 25:
             pass #default
         elif self.bunchSpacing == 50:
@@ -175,6 +172,8 @@ class MicroAODCustomize(object):
             self.customizeSpring15EleID(process)
         if self.runSummer16EGMPhoID:
             self.customizeSummer16EGMPhoID(process)
+        if os.environ["CMSSW_VERSION"].count("CMSSW_9_2"):
+            self.customize92X( process ) # Needs to come after egm
         print "Final customized process:",process.p
             
     # signal specific customization
@@ -211,11 +210,12 @@ class MicroAODCustomize(object):
 
     # background specific customization
     def customizeBackground(self,process):
-        from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
-        runMETs(process,True) #isMC
-        from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
-        setMetCorr(process,multPhiCorr_MC_DY_80X)
-        process.p *=process.flashggMetSequence
+        if not os.environ["CMSSW_VERSION"].count("CMSSW_9"):
+            from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
+            runMETs(process,True) #isMC
+            from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
+            setMetCorr(process,multPhiCorr_MC_DY_80X)
+            process.p *=process.flashggMetSequence
         if "sherpa" in self.datasetName:
             process.flashggGenPhotonsExtra.defaultType = 1
             
@@ -228,9 +228,11 @@ class MicroAODCustomize(object):
         if "2016G" in customize.datasetName or "2016H" in customize.datasetName:
             from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_Data_G_80X
             setMetCorr(process,multPhiCorr_Data_G_80X)
-        else:    
+        elif "2016" in customize.datasetName:
             from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_Data_B_80X
             setMetCorr(process,multPhiCorr_Data_B_80X)
+        else:
+            pass
         process.p *=process.flashggMetSequence
         for pathName in process.paths:
             path = getattr(process,pathName)
@@ -465,6 +467,30 @@ class MicroAODCustomize(object):
     def customize80X(self,process):
         pass
 #        delattr(process,"QGPoolDBESSource")
+
+    def customize92X(self,process):
+        print "customize92X"
+        print process.p
+        hack_modifier = cms.Modifier()
+        hack_modifier._setChosen()
+        hack_modifier.toReplaceWith(process.flashggPrePhotonSequence80X,process.egmPhotonIDSequence)
+        process.p.remove(process.flashggFinalJets)
+#        print process.GlobalTag.globaltag
+#        process.egmPhotonIsolationMiniAODTask = cms.Task(process.egmPhotonIsolation)
+#        process.egmPhotonIDTask = cms.Task(process.egmPhotonIDs, process.egmPhotonIsolationMiniAODTask, process.photonIDValueMapProducer, process.photonMVAValueMapProducer, process.photonRegressionValueMapProducer)
+#        process.egmPhotonIdSequence = cms.Sequence(process.egmPhotonIDTask)
+#        print "process.egmPhotonIDTask",process.egmPhotonIDTask
+#        print "process.egmPhotonIDSequence",process.egmPhotonIDSequence
+ #       photonIndex = process.p.index(process.photonMVAValueMapProducer)
+#        photonIndex = 0
+#        process.p.remove(process.photonMVAValueMapProducer)
+#        hack_modifier = cms.Modifier()
+#        hack_modifier._setChosen()
+#        process.p.remove(process.egmPhotonIDs)
+#        print "BEFORE REPLACE %i"%photonIndex,process.p
+#        process.p.insert(0,process.egmPhotonIDSequence)
+#        hack_modifier.toReplaceWith(process.egmPhotonIDs,process.egmPhotonIDSequence) # requires same class type
+#        print "AFTER REPLACE %i"%photonIndex,process.p
 
 # customization object
 customize = MicroAODCustomize()
