@@ -186,6 +186,8 @@ if customize.doFiducial:
     process.flashggTagSequence.remove(process.flashggZHLeptonicTag)
     process.flashggTagSequence.remove(process.flashggVHLeptonicLooseTag)
     process.flashggTagSequence.remove(process.flashggVHHadronicTag)
+    process.flashggTagSequence.remove(process.flashggVBFDiPhoDiJetMVA)
+    process.flashggTagSequence.remove(process.flashggVBFMVA)
     process.flashggTagSequence.replace(process.flashggUntagged, process.flashggSigmaMoMpToMTag)
 
 if customize.tthTagsOnly:
@@ -337,6 +339,8 @@ if(customize.doFiducial):
     fc.bookCompositeObjects(process, customize.processId, process.flashggTagSequence)
 cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags)
 
+print "VRT debug tagsequence"
+print process.flashggTagSequence
 
 # Dump an object called NoTag for untagged events in order to track QCD weights
 # Will be broken if it's done for non-central values, so turn this on only for the non-syst tag sorter
