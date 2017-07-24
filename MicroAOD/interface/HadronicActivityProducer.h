@@ -112,9 +112,11 @@ namespace flashgg {
             
             AddFourMomenta addP4;
             addP4.set(out);
+            outPtr->push_back(out);
         
-            iEvent.put(std::move(outPtr));
         }
+        iEvent.put(std::move(outPtr));
+            
     }
 }
 
