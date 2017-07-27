@@ -133,50 +133,50 @@ def getRecoVariables(isRecoTag=True):
 # ----------------------------------------------------------------------------------------------------------------
 def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,recoDiphotonTags,genDiphotons,recoJetCollections=None,genJetCollection="slimmedGenJets"):
 ##    from flashgg.Systematics.VBFTagDumper_standard_wsys_cfg import mva_wp
-##    mva_wp = {
-##        "none"  : [
-##            [],[],[]
-##            #[-1, -1,  -1, -1],
-##            #[-1, -1,  -1, -1],
-##            #[-1, -1 , -1, -1]
-##            ],
-##        "tight" : [
-##            [0.26, -0.34, -0.24, -0.26],
-##            [0.62, -0.21, -0.07, -0.03],
-##            [0.87, 0.17 , 0.25 ,  0.33]
-##            ],
-##        "medium": [
-##            [-0.49, -0.53, -0.44, -0.42],
-##            [-0.06, -0.42, -0.30, -0.23],
-##            [ 0.56, -0.10,  0.01,  0.13]
-##            ],
-##        "loose" :[
-##            [-0.96, -0.64, -0.56, -0.54],
-##            [-0.92, -0.56, -0.44, -0.39],
-##            [-0.77, -0.31, -0.20, -0.03]
-##            ],
-##        "mixed" :[
-##            [-0.96, -0.34, -0.24, -0.26],
-##            [-0.92, -0.21, -0.07, -0.03],
-##            [-0.77, 0.17 , 0.25 ,  0.33]
-##            #[0.87, 0.17 , 0.25 ,  0.33]
-##            ],
-##        "forward_tight" : [
-##            [-1, -0.34, -0.24, -0.26],
-##            [-1, -0.21, -0.07, -0.03],
-##            [-1, 0.17 , 0.25 ,  0.33]
-##            ],
-##        "forward_medium": [
-##            [-1, -0.53, -0.44, -0.42],
-##            [-1, -0.42, -0.30, -0.23],
-##            [-1, -0.10,  0.01,  0.13]
-##            ],
-##        "forward_loose" :[
-##            [-1, -0.64, -0.56, -0.54],
-##            [-1, -0.56, -0.44, -0.39],
-##            [-1, -0.31, -0.20, -0.03]
-##            ]
-##        }    
+    mva_wp = {
+        "none"  : [
+            [],[],[]
+            #[-1, -1,  -1, -1],
+            #[-1, -1,  -1, -1],
+            #[-1, -1 , -1, -1]
+            ],
+        "tight" : [
+            [0.26, -0.34, -0.24, -0.26],
+            [0.62, -0.21, -0.07, -0.03],
+            [0.87, 0.17 , 0.25 ,  0.33]
+            ],
+        "medium": [
+            [-0.49, -0.53, -0.44, -0.42],
+            [-0.06, -0.42, -0.30, -0.23],
+            [ 0.56, -0.10,  0.01,  0.13]
+            ],
+        "loose" :[
+            [-0.96, -0.64, -0.56, -0.54],
+            [-0.92, -0.56, -0.44, -0.39],
+            [-0.77, -0.31, -0.20, -0.03]
+            ],
+        "mixed" :[
+            [-0.96, -0.34, -0.24, -0.26],
+            [-0.92, -0.21, -0.07, -0.03],
+            [-0.77, 0.17 , 0.25 ,  0.33]
+            #[0.87, 0.17 , 0.25 ,  0.33]
+            ],
+        "forward_tight" : [
+            [-1, -0.34, -0.24, -0.26],
+            [-1, -0.21, -0.07, -0.03],
+            [-1, 0.17 , 0.25 ,  0.33]
+            ],
+        "forward_medium": [
+            [-1, -0.53, -0.44, -0.42],
+            [-1, -0.42, -0.30, -0.23],
+            [-1, -0.10,  0.01,  0.13]
+            ],
+        "forward_loose" :[
+            [-1, -0.64, -0.56, -0.54],
+            [-1, -0.56, -0.44, -0.39],
+            [-1, -0.31, -0.20, -0.03]
+            ]
+        }    
     
     if not recoJetCollections:
         from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
@@ -189,12 +189,19 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
     pos = tagSequence.index(recoDiphotonTags) - 1
     for icoll,coll in enumerate(recoJetCollections):        
         if( not hasattr(process,"filteredRecoJetsEta2p5%d" % icoll) ): 
-            setattr(process,"filteredRecoJetsEta2p5%d" % icoll,cms.EDFilter("FlashggJetSelector",
+            setattr(process,"filteredRecoJetsEta2p5%d" % icoll,cms.EDFilter("FlashggJetCandidateSelector",
                                                                             src=coll,
-##                                                                            cut=cms.string("pt>%f && abs(eta)<2.5 && passesJetID('Loose')" % jetPtCut),
-                                                                            cut=cms.string("pt>%f && abs(eta)<2.5 && passesJetID('Loose') && passesJetPuId('tight')" % jetPtCut),
+             #                                                               cut=cms.string("pt>%f && abs(eta)<2.5 && passesJetID('Loose')" % jetPtCut),
+                                                                      cut=cms.string("pt>0"),
+##                                                                            cut=cms.string("pt>%f && abs(eta)<2.5 && passesJetID('Loose') && passesJetPuId('tight')" % jetPtCut),
+      #                                                                      pujidWpPtBin1=cms.vdouble(mva_wp['tight'][0]),
+      #                                                                      pujidWpPtBin2=cms.vdouble(mva_wp['tight'][1]),
+      #                                                                      pujidWpPtBin3=cms.vdouble(mva_wp['tight'][2]),
+      #                                                                      eta_cuts=cms.vdouble(0.0,2.50,2.75,3.0,10.0)
+                                                                            
                                                                             ) )
-            recoJets2p5.append("filteredRecoJetsEta2p5%d" % icoll)
+#            recoJets2p5.append("filteredRecoJetsEta2p5%d" % icoll)
+            recoJets2p5.append(coll)
             tagSequence.insert(pos, getattr(process,"filteredRecoJetsEta2p5%d" % icoll))
             pos += 1
 
@@ -218,7 +225,8 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
             setattr(process,"filteredRecoJetsEta4p7%d" % icoll,cms.EDFilter("FlashggJetSelector",
                                                                             src=coll,
                                                                             ##                                                                            cut=cms.string("pt>%f && abs(eta)<4.7 && passesJetID('Loose')" % jetPtCut),
-                                                                            cut=cms.string("pt>%f && abs(eta)<4.7 && passesJetID('Loose') && passesJetPuId('tight')" % jetPtCut),
+                                                                            cut=cms.string("pt>0"),
+#                                                                            cut=cms.string("pt>%f && abs(eta)<4.7 && passesJetID('Loose') " % jetPtCut),
                                                                             ) )
 
             recoJets4p7.append("filteredRecoJetsEta4p7%d" % icoll)
