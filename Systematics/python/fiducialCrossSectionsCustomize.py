@@ -344,6 +344,18 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
                                                                    veto=cms.InputTag(genDiphotons)
                                                                    )
         
+
+        if( not hasattr(process,"flashggGenHadronicActivityLeptons") ): 
+#            process.filteredGenJetsEta4p7 = cms.EDFilter("GenJetSelector",
+#                                                         src=cms.InputTag(genJetCollection),
+#                                                         cut=cms.string("pt>%f && abs(eta)<4.7" % jetPtCut),
+#                                                     )
+
+            process.flashggGenHadronicActivityLeptons = cms.EDProducer("FlashggGenHadronicActivityProducer",
+                                                                   src=cms.InputTag("flashggGenLeptonsExtra"),
+                                                                   veto=cms.InputTag(genDiphotons)
+                                                                   )
+        
 # ----------------------------------------------------------------------------------------------------------------
 def getJetKinVariables(pre,post,variables,nmax, getter):
     return reduce(lambda z,w: z+w, 
