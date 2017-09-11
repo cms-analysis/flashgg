@@ -131,8 +131,10 @@ class JobConfig(object):
             from SimGeneral.MixingModule.mix_2016_25ns_Moriond17MC_PoissonOOTPU_cfi import mix as mix_Moriond17
             self.pu_distribs["Summer16"] = mix_Moriond17.input.nbPileupEvents
             self.pu_distribs["PUMoriond17"] = mix_Moriond17.input.nbPileupEvents
+            self.pu_distribs["upgrade2017"] = mix_Moriond17.input.nbPileupEvents
         except Exception:
             print "Failed to load Moriond17 mixing, this is expected in earlier releases"
+
             
     def __getattr__(self,name):
         ## did not manage to inherit from VarParsing, because of some issues in __init__
