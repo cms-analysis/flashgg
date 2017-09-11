@@ -3,13 +3,14 @@
 
 //#include "flashgg/DataFormats/interface/Lepton.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
+#include "DataFormats/Candidate/interface/ShallowCloneCandidate.h"
 #include "DataFormats/Common/interface/Ptr.h"
 
 #include <string>
 
 namespace flashgg {
 
-    class GenLeptonExtra
+    class GenLeptonExtra : public reco::ShallowCloneCandidate
     {
 
     public:
@@ -36,6 +37,7 @@ namespace flashgg {
 
         reco::Particle::LorentzVector dressedP4() const { return dressedP4_; }
         void setDressedP4( reco::Particle::LorentzVector x ) { dressedP4_ = x; }
+        void setP4( reco::Particle::LorentzVector x ) { p4_ = x; }
 
 //        void copyTo( flashgg::Lepton &fg, const std::string &postFix = "" ) const
 //        {
@@ -47,6 +49,7 @@ namespace flashgg {
         float genIso_;
         float genIsoAfterDressing_;
         reco::Particle::LorentzVector dressedP4_;
+        reco::Particle::LorentzVector p4_;
     };
 }
 

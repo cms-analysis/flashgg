@@ -316,8 +316,10 @@
 <class name="std::vector<flashgg::GenPhotonExtra>"/>
 <class name="edm::Wrapper<std::vector<flashgg::GenPhotonExtra> >"/>
 
-<class name="flashgg::GenLeptonExtra" ClassVersion="11">
+<class name="flashgg::GenLeptonExtra" ClassVersion="13">
   <version ClassVersion="11" checksum="4207095900"/>
+  <version ClassVersion="12" checksum="80174587"/>
+  <version ClassVersion="13" checksum="2907967841"/>
 </class>
 <class name="edm::Ptr<flashgg::GenLeptonExtra>"/>
 <class name="std::vector<flashgg::GenLeptonExtra>"/>
