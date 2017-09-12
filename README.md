@@ -19,6 +19,18 @@ Get everything you need, starting from a clean area:
  source flashgg/setup.sh
  ```
 
+For 924, starting from a clean area:
+
+ ```
+ cmsrel CMSSW_9_2_4
+ cd CMSSW_9_2_4/src
+ cmsenv
+ git cms-init
+ cd $CMSSW_BASE/src 
+ git clone https://github.com/cms-analysis/flashgg flashgg
+ source flashgg/setup_9_2_X.sh
+ ```
+
 If everything now looks reasonable, you can build (note flashgg/Validation does not compile right now):
  ```
  cd $CMSSW_BASE/src

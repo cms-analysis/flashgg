@@ -18,15 +18,14 @@ isLEAD=False
 #isLEAD=False
 
 
-#mylist = FileUtils.loadListFromFile ('../../microAOD_Hgg.txt')
-mylist = FileUtils.loadListFromFile ('/afs/cern.ch/user/m/mplaner/flashgg/CMSSW_8_0_8/src/flashgg/microAOD_hlt2016.txt')
-readFiles = cms.untracked.vstring( *mylist)
+#mylist = FileUtils.loadListFromFile ('/afs/cern.ch/user/m/mplaner/flashgg/CMSSW_8_0_8/src/flashgg/microAOD_hlt2016.txt')
+#readFiles = cms.untracked.vstring( *mylist)
 if(isMC):
     options['HLTProcessName']        = "TEST"
 else:
     options['HLTProcessName']        = "HLT"
 
-#options['PHOTON_COLL']           = "slimmedPhotons"
+options['PHOTON_COLL']           = "slimmedPhotons"
 #options['DIPHOTON_COLL']         = "flashggPreselectedDiPhotons"
 options['DIPHOTON_COLL']         = "flashggDiPhotons"
 #options['PHOTON_CUTS']           = ""
@@ -38,7 +37,8 @@ if(isMC):
     options['PAT_TRIG']               = "patTrigger"
 else:
     options['TRIGGER_RES']            = "TriggerResults::HLT"
-    options['PAT_TRIG']               = "selectedPatTrigger"
+    #options['PAT_TRIG']               = "selectedPatTrigger"
+    options['PAT_TRIG']               = "patTriggerUnpacker"
 
 #options['PHOTON_CUTS']           = "(abs(eta)<2.5) && (pt)>15.0)"
 options['PHOTON_CUTS']           = "(abs(eta)<2.5) && (pt>15) && !(1.4442<=abs(superCluster.eta)<=1.566)"
@@ -85,9 +85,9 @@ if (isMC): #isMC
     options['GLOBALTAG']             = 'MCRUN2_74_V9'
     options['EVENTSToPROCESS']       = cms.untracked.VEventRange()
 else: 
-    #options['INPUT_FILE_NAME']       = ("file:myMicroAODOutputFile.root")
+    options['INPUT_FILE_NAME']       = ("file:myMicroAODOutputFile.root")
     #options['INPUT_FILE_NAME']       = ("/store/group/phys_higgs/cmshgg/mplaner/flashgg/2016hltData_v1/V1/SingleElectron/2016hltData_v1-Run2016B-PromptReco-v2/160518_081245/0000/myMicroAODOutputFile_168.root")
-    options['INPUT_FILE_NAME']        = readFiles
+    #options['INPUT_FILE_NAME']        = readFiles
     #                                    )
     #mylist =  FileUtils.loadListFromFile('testFileList.txt')
     #mylist =  FileUtils.loadListFromFile('tempFileList.txt')
@@ -96,24 +96,24 @@ else:
     #options['INPUT_FILE_NAME']       = varOptions.inputFiles
     options['OUTPUT_FILE_NAME']      = "TnPTree_data.root"
     
-    options['TnPPATHS']              = cms.vstring("HLT_Ele23_WPLoose_Gsf_v*")
-    options['TnPHLTTagFilters']      = cms.vstring("hltEle23WPLooseGsfTrackIsoFilter")   
+    options['TnPPATHS']              = cms.vstring("HLT_Ele35_WPTight_Gsf_v*")
+    options['TnPHLTTagFilters']      = cms.vstring("hltEle35WPTightGsfTrackIsoFilter")
     options['TnPHLTProbeFilters']    = cms.vstring()
 
     if(isLEAD):
-        options['TagLeadMatchFilters']    = cms.vstring()  #lead eff only
-        options['HLTFILTERTOMEASURE']    = cms.vstring("hltEG30LIso60CaloId15b35eHE12R9Id50b80eEcalIsoLastFilter", "hltEG30LR9Id85b90eHE12R9Id50b80eR9IdLastFilter")  #lead eff only
-    else:    
-        options['TagLeadMatchFilters']    = cms.vstring("hltEG30LIso60CaloId15b35eHE12R9Id50b80eEcalIsoLastFilter", "hltEG30LR9Id85b90eHE12R9Id50b80eR9IdLastFilter")  #sublead eff only
-        options['HLTFILTERTOMEASURE']    = cms.vstring("hltEG18Iso60CaloId15b35eHE12R9Id50b80eTrackIsoUnseededLastFilter", "hltEG18R9Id85b90eHE12R9Id50b80eR9UnseededLastFilter")  #sublead eff only
+        options['TagLeadMatchFilters']    = cms.vstring()  #lead eff only                                                                                                                            
+        options['HLTFILTERTOMEASURE']    = cms.vstring("hltEG30LIso60CaloId15b35eHE12R9Id50b80eEcalIsoLastFilter", "hltEG30LR9Id85b90eHE12R9Id50b80eR9IdLastFilter")  #lead eff only                 
+    else:
+        options['TagLeadMatchFilters']    = cms.vstring("hltEG30LIso60CaloId15b35eHE12R9Id50b80eEcalIsoLastFilter", "hltEG30LR9Id85b90eHE12R9Id50b80eR9IdLastFilter")  #sublead eff only             
+        options['HLTFILTERTOMEASURE']    = cms.vstring("hltEG22R9Id85b90eHE12R9Id50b80eR9UnseededLastFilter", "hltEG22Iso60CaloId15b35eHE12R9Id50b80eTrackIsoUnseededLastFilter")  #sublead eff only
 
-    options['GLOBALTAG']             = '80X_dataRun2_Prompt_v8'
+    options['GLOBALTAG']             = '92X_dataRun2_Prompt_v4'
     options['EVENTSToPROCESS']       = cms.untracked.VEventRange()
 
 ###################################################################
 
 setModules(process, options)
-from PhysicsTools.TagAndProbe.treeContentPhotons_cfi import *
+from EgammaAnalysis.TnPTreeProducer.egmTreesContent_cff import *
 
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
 process.load("Configuration.Geometry.GeometryRecoDB_cff")
@@ -140,7 +140,7 @@ process.maxEvents = cms.untracked.PSet( input = options['MAXEVENTS'])
 ## ID
 ###################################################################
 
-from PhysicsTools.TagAndProbe.photonIDModules_cfi import *
+from EgammaAnalysis.TnPTreeProducer.egmPhotonIDModules_cff import *
 setIDs(process, options)
 
 ###################################################################
@@ -177,7 +177,13 @@ if(isMC):
         process.goodPhotonsTagHLT 
         )
 else:
+    process.patTriggerUnpacker = cms.EDProducer("PATTriggerObjectStandAloneUnpacker",
+                                                patTriggerObjectsStandAlone = cms.InputTag("slimmedPatTrigger"),
+                                                triggerResults = cms.InputTag('TriggerResults'      , '', 'HLT'),
+                                                unpackFilterLabels = cms.bool(True)
+                                                )
     process.pho_sequence = cms.Sequence(
+        process.patTriggerUnpacker +
         process.photonFromDiPhotons +
         process.goodPhotonTags +
         process.goodPhotonProbes +
@@ -237,6 +243,7 @@ process.PhotonToRECO = cms.EDAnalyzer("TagProbeFitTreeProducer",
                                       checkCharge = cms.bool(False),
                                       )
 
+process.PhotonToRECO.pfMet = cms.InputTag("slimmedMETs")
 process.PhotonToRECOL1 = cms.EDAnalyzer("TagProbeFitTreeProducer",
                                         mcTruthCommonStuff, CommonStuffForPhotonProbe,
                                         tagProbePairs = cms.InputTag("L1RECO"),
@@ -250,7 +257,7 @@ process.PhotonToRECOL1 = cms.EDAnalyzer("TagProbeFitTreeProducer",
                                         pdgId = cms.int32(22),
                                         checkCharge = cms.bool(False),
                                         )
-
+process.PhotonToRECOL1.pfMet = cms.InputTag("slimmedMETs")
 #if(isMC):
 #    process.PhotonToRECO.PUWeightSrc   = cms.InputTag("pileupReweightingProducer","pileupWeights")
 #    process.PhotonToRECOL1.PUWeightSrc   = cms.InputTag("pileupReweightingProducer","pileupWeights")
@@ -292,7 +299,7 @@ if (isMC):
         process.flashggUpdatedIdMVADiPhotons +
         process.flashggDiPhotonMVA +
         process.flashggPreselectedDiPhotons +
-        process.sampleInfo +
+        #process.sampleInfo +
         process.hltFilter +
         process.pho_sequence + 
         process.allTagsAndProbes +
@@ -308,7 +315,7 @@ else:
         process.flashggUpdatedIdMVADiPhotons +
         process.flashggDiPhotonMVA +
         process.flashggPreselectedDiPhotons +
-        process.sampleInfo +
+        #process.sampleInfo +
         process.hltFilter +
         process.pho_sequence + 
         process.allTagsAndProbes +

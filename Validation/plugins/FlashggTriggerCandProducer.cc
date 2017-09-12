@@ -1,4 +1,4 @@
-#include "PhysicsTools/TagAndProbe/plugins/MiniAODTriggerCandProducer.h"
+#include "EgammaAnalysis/TnPTreeProducer/plugins/MiniAODTriggerCandProducer.h"
 #include "flashgg/DataFormats/interface/Photon.h"
 
 #include <DataFormats/Math/interface/deltaR.h>
