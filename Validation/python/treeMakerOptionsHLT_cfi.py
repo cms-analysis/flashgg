@@ -69,8 +69,8 @@ def setModules(process, options):
                                                           )
     
     #probes match to l1                                                                                                                                                                   
-    #process.goodPhotonProbesL1 = cms.EDProducer("FlashggPhotonL1CandProducer",
-    process.goodPhotonProbesL1 = cms.EDProducer("FlashggPhotonL1Stage2CandProducer",
+    process.goodPhotonProbesL1 = cms.EDProducer("FlashggPhotonL1CandProducer",
+    #process.goodPhotonProbesL1 = cms.EDProducer("FlashggPhotonL1Stage2CandProducer",
                                                 inputs = cms.InputTag("goodPhotonProbesPreselection"),
                                                 #isoObjects = cms.InputTag("l1extraParticles:Isolated"),
                                                 #nonIsoObjects = cms.InputTag("l1extraParticles:NonIsolated"),
@@ -79,7 +79,7 @@ def setModules(process, options):
                                                 #minET = cms.double(15), #lead eff only
                                                 minET = cms.double(10), #sublead eff only
                                                 dRmatch = cms.double(0.2), #defined to match L1 online matching to hlt (0.261)
-                                                dRmatchEE = cms.double(0.2), #defined to match L1 online matching to hlt (should probably be tightened for stage2)
+                                                #dRmatchEE = cms.double(0.2), #defined to match L1 online matching to hlt (should probably be tightened for stage2)
                                                 isolatedOnly = cms.bool(False)
                                                 )
 
