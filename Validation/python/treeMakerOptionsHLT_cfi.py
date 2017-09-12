@@ -2,15 +2,15 @@ import FWCore.ParameterSet.Config as cms
 
 def setModules(process, options):
 
-    process.sampleInfo = cms.EDProducer("tnp::FlashggSampleInfoTree",
-                                        )
+    #process.sampleInfo = cms.EDProducer("tnp::FlashggSampleInfoTree",
+    #                                    )
 
     from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
     process.hltFilter = hltHighLevel.clone()
     process.hltFilter.throw = cms.bool(False)
     process.hltFilter.HLTPaths = options['TnPPATHS']
     
-    from PhysicsTools.TagAndProbe.pileupConfiguration_cfi import pileupProducer
+    from EgammaAnalysis.TnPTreeProducer.pileupConfiguration_cfi import pileupProducer
     process.pileupReweightingProducer = pileupProducer.clone()    
 
     ###################################################################
