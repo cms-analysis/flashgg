@@ -50,22 +50,16 @@ namespace flashgg {
         Handle<View<reco::GenJet> > genJets;
         evt.getByToken( genJetsToken_, genJets );
         unique_ptr<vector<flashgg::GenJetExtra> > extraColl( new vector<flashgg::GenJetExtra> );
-
-        //        auto genJetPointers = genJets->ptrs();
-        //        for( auto &genJet : genJetPointers ) {
-        auto genJetPointers = genJets->ptrs();
-        for( auto &genJet : genJetPointers ){
-            //        for(reco::GenParticleCollection::const_iterator genJet = genJets->begin(); genJet != genJets->end(); ++genJet){
-            //            flashgg::GenJetExtra extra( *(edm::Ptr<reco::GenJet>((*genJet))) );
+        
+        for( auto &genJet : *genJets ){
             flashgg::GenJetExtra extra( genJet );
-            /////            extra.setPtr( edm::Ptr<reco::GenJet>( dynamic_cast<reco::GenJet>(*genJet) ) );
             bool hasBottom = false;
-            for(size_t d = 0; d < genJet->numberOfDaughters(); d++){
+            for(size_t d = 0; d < genJet.numberOfDaughters(); d++){
                 std::cout<<"looking at daughter number "<<d<<std::endl;
-                std::cout<<"with pdgid "<<genJet->daughter( d )->pdgId()<<std::endl;
-                for (size_t m = 0; m < genJet->daughter( d )->numberOfMothers(); m++){
-                    if(CandMCTagUtils::hasBottom( *( genJet->daughter( d )->mother(m) ) )  ||  ( std::abs( genJet->daughter( d )->mother(0)->pdgId() ) == 5 )   ){
-                        //                if( std::abs( genJet->daughter( d )->pdgId() ) == 5){
+                std::cout<<"with pdgid "<<genJet.daughter( d )->pdgId()<<std::endl;
+                for (size_t m = 0; m < genJet.daughter( d )->numberOfMothers(); m++){
+                    if(CandMCTagUtils::hasBottom( *( genJet.daughter( d )->mother(m) ) ) ){//  ||  ( std::abs( genJet.daughter( d )->mother(m)->pdgId() ) == 5 )   ){
+                        //                if( std::abs( genJet.daughter( d )->pdgId() ) == 5){
                         hasBottom=true;
                         std::cout<<"found mother of daughter with bottom, setting hasBottom to true and break"<<std::endl;
                         break;

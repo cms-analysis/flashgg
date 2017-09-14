@@ -15,31 +15,13 @@ namespace flashgg {
     {
 
     public:
-        typedef edm::Ptr<reco::GenJet> ptr_type;
-        typedef ptr_type::value_type cand_type;
-        //        typedef Jet::mcMatch_t match_type; //FIXME
-
-        GenJetExtra() {}
-        GenJetExtra( ptr_type ptr ) : ptr_( ptr ) {}
-
-
-        bool operator==( const ptr_type &rhs ) const { return ptr_ == rhs; }
-        bool operator!=( const ptr_type &rhs ) const { return ptr_ != rhs; }
-
-        const cand_type &cand() const { return *ptr_; }
-        ptr_type ptr() const { return ptr_; }
-        void setPtr( ptr_type x ) { ptr_ = x; }
-
+        GenJetExtra(){}
+        GenJetExtra(const reco::GenJet &j) : reco::GenJet(j) {}
+        
         bool hasBottom() const {return hasBottom_;}
         void setHasBottom( bool x ){hasBottom_ = x;}
 
-//        void copyTo( flashgg::Jet &fg, const std::string &postFix = "" ) const
-//        {
-//            fg.addUserFloat( "genIso" + postFix, genIso_ );
-//        }
-
     private:
-        ptr_type ptr_;
         bool hasBottom_;
     };
 }
