@@ -327,6 +327,19 @@
 <class name="edm::Wrapper<flashgg::GenLeptonExtra>"/>
 <class name="edm::Wrapper<std::vector<flashgg::GenLeptonExtra> >"/>
 
+<class name="flashgg::GenJetExtra" ClassVersion="16">
+  <version ClassVersion="11" checksum="4207095900"/>
+  <version ClassVersion="12" checksum="1167676747"/>
+  <version ClassVersion="13" checksum="2667024866"/>
+  <version ClassVersion="14" checksum="1167676747"/>
+  <version ClassVersion="15" checksum="1229256574"/>
+  <version ClassVersion="16" checksum="1167676747"/>
+</class>
+<class name="edm::Ptr<flashgg::GenJetExtra>"/>
+<class name="std::vector<flashgg::GenJetExtra>"/>
+<class name="edm::Wrapper<flashgg::GenJetExtra>"/>
+<class name="edm::Wrapper<std::vector<flashgg::GenJetExtra> >"/>
+
 <class name="std::pair<edm::Ptr<reco::Vertex>,edm::Ptr<pat::PackedCandidate> >"/>
 <class name="std::vector<std::pair<edm::Ptr<reco::Vertex>,edm::Ptr<pat::PackedCandidate> > >"/>
 <class name="edm::Wrapper<std::vector<std::pair<edm::Ptr<reco::Vertex>,edm::Ptr<pat::PackedCandidate> > > >"/>
