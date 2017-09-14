@@ -10,6 +10,8 @@ from CondCore.DBCommon.CondDBSetup_cfi import *
 import os
 
 flashggBTag = 'pfCombinedInclusiveSecondaryVertexV2BJetTags'
+flashggCMVABTag = 'pfCombinedMVAV2BJetTags'
+
 maxJetCollections = 10
 #qgDatabaseVersion = 'v1' # check https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
 qgDatabaseVersion = '80X'
@@ -64,7 +66,9 @@ def addFlashggPFCHSJets(process,
   setattr(process, 'pfNoElectronsCHSLeg' + label,  cms.EDProducer("CandPtrProjector", 
                                                                   src  = cms.InputTag("pfNoMuonCHSLeg" + label), 
                                                                   veto = cms.InputTag("selectedElectrons" + label)))
+ 
   
+ 
   #Import RECO jet producer for ak4 PF and GEN jet
   from RecoJets.JetProducers.ak4PFJets_cfi  import ak4PFJets
   setattr(process, 'ak4PFJetsCHSLeg' + label, ak4PFJets.clone ( src = 'pfNoElectronsCHSLeg' + label, doAreaFastjet = True))
@@ -73,7 +77,7 @@ def addFlashggPFCHSJets(process,
     JECs = ['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual']
   else:
     JECs = ['L1FastJet', 'L2Relative', 'L3Absolute']
-    
+
   # NOTE: this is the 74X recipe for the jet clustering
   addJetCollection(
     process,
@@ -83,13 +87,16 @@ def addFlashggPFCHSJets(process,
     pvSource       = cms.InputTag('offlineSlimmedPrimaryVertices'),
     pfCandidates   = cms.InputTag('packedPFCandidates'),
     svSource       = cms.InputTag('slimmedSecondaryVertices'),
-    btagDiscriminators = [ flashggBTag ],
+    elSource       = cms.InputTag("slimmedElectrons"),
+    muSource       = cms.InputTag("slimmedMuons"),
+    runIVF         = True,
+    btagDiscriminators = [ flashggBTag, flashggCMVABTag ],
     jetCorrections = ('AK4PFchs', JECs, 'None'),
     genJetCollection = cms.InputTag('slimmedGenJets'),
     genParticles     = cms.InputTag('prunedGenParticles'),
     # jet param
-    algo = 'AK', rParam = 0.4,
-    btagInfos =  ['pfImpactParameterTagInfos','pfSecondaryVertexTagInfos'] #Extra btagging info
+    algo = 'AK', rParam = 0.4
+    #btagInfos =  ['pfImpactParameterTagInfos', 'pfSecondaryVertexTagInfos', 'pfInclusiveSecondaryVertexFinderTagInfos', 'softPFMuonsTagInfos', 'softPFElectronsTagInfos'] #Extra Btagging Info
   )
 
   #Recalculate btagging info
@@ -98,7 +105,7 @@ def addFlashggPFCHSJets(process,
   #adjust PV used for Jet Corrections
   #process.patJetCorrFactorsAK4PFCHSLeg.primaryVertices = "offlineSlimmedPrimaryVertices"
   getattr(process, 'patJetCorrFactorsAK4PFCHSLeg' + label).primaryVertices = "offlineSlimmedPrimaryVertices"
-  
+
   if not hasattr(process,"QGPoolDBESSource"):
     process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
                                             CondDBSetup,
@@ -197,8 +204,11 @@ def addFlashggPuppiJets(process,
     jetSource          = cms.InputTag('ak4PFJetsPuppi' + label),
     pvSource           = cms.InputTag('offlineSlimmedPrimaryVertices'),
     pfCandidates       = cms.InputTag('packedPFCandidates'),
-    svSource           = cms.InputTag('slimmedSecondaryVertices'),
-    btagDiscriminators = [ flashggBTag ],
+    svSource           = cms.InputTag('slimmedSecondaryVertices'),\
+    elSource       = cms.InputTag("slimmedElectrons"),
+    muSource       = cms.InputTag("slimmedMuons"),
+    runIVF         = True,
+    btagDiscriminators = [ flashggBTag, flashggCMVABTag ],
     jetCorrections     = ('AK4PFPuppi',['L1FastJet',  'L2Relative', 'L3Absolute'], 'None'),
     genJetCollection   = cms.InputTag('slimmedGenJets'),
     genParticles       = cms.InputTag('prunedGenParticles'),
