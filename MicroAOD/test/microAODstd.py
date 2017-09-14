@@ -38,7 +38,7 @@ elif os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION
 #    process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIIFall17MiniAODv2/THQ_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCP5/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/90000/6E58A5DD-BF43-E811-8946-0023AEEEB538.root"))
 #    process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIIFall17MiniAODv2/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/40000/0866D1A8-1941-E811-B61F-0CC47AF9B2E6.root"))
     process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/data/Run2017F/DoubleEG/MINIAOD/PromptReco-v1/000/305/040/00000/2E5E7E62-29B2-E711-9E47-02163E019D16.root"))
-     
+
 else:
     raise Exception,"The default setup for microAODstd.py does not support releases other than 80X, 92X (being deprecated), and 94X"
 
