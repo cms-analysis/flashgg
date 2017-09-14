@@ -116,6 +116,9 @@ cd $CMSSW_BASE/src
 #echo "grabbing MET topic updates..."
 #git cms-merge-topic cms-met:METRecipe_8020_for80Xintegration -u
 
+echo "grabbing JetMCUtils..."
+git cms-addpkg PhysicsTools/JetMCUtils
+
 # Straightofrward update for 8_0_28
 echo "Setting up QGL..."
 echo "... and setting up weight stuff..."
