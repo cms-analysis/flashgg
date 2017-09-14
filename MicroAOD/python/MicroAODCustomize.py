@@ -182,26 +182,28 @@ class MicroAODCustomize(object):
         from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
         runMETs(process,True) #isMC
         from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
-        setMetCorr(process,multPhiCorr_MC_DY_80X)
+        if not os.environ["CMSSW_VERSION"].count("CMSSW_9_2"):
+            setMetCorr(process,multPhiCorr_MC_DY_80X)
         process.p *=process.flashggMetSequence
         
-        process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
-        process.rivetProducerHTXS = cms.EDProducer('HTXSRivetProducer',
-                                                   HepMCCollection = cms.InputTag('myGenerator','unsmeared'),
-                                                   ProductionMode = cms.string('PRODUCTIONMODENOTSET'),
-                                                   )
-        process.mergedGenParticles = cms.EDProducer("MergedGenParticleProducer",
-                                                    inputPruned = cms.InputTag("prunedGenParticles"),
-                                                    inputPacked = cms.InputTag("packedGenParticles"),
-                                                    )
-        process.myGenerator = cms.EDProducer("GenParticles2HepMCConverterHTXS",
-                                             genParticles = cms.InputTag("mergedGenParticles"),
-                                             genEventInfo = cms.InputTag("generator"),
-                                             )
-        process.p *= process.mergedGenParticles
-        process.p *= process.myGenerator
-        process.p *= process.rivetProducerHTXS
-        process.out.outputCommands.append("keep *_rivetProducerHTXS_*_*")
+        if not os.environ["CMSSW_VERSION"].count("CMSSW_9_2"):
+            process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
+            process.rivetProducerHTXS = cms.EDProducer('HTXSRivetProducer',
+                                                       HepMCCollection = cms.InputTag('myGenerator','unsmeared'),
+                                                       ProductionMode = cms.string('PRODUCTIONMODENOTSET'),
+                                                       )
+            process.mergedGenParticles = cms.EDProducer("MergedGenParticleProducer",
+                                                        inputPruned = cms.InputTag("prunedGenParticles"),
+                                                        inputPacked = cms.InputTag("packedGenParticles"),
+                                                        )
+            process.myGenerator = cms.EDProducer("GenParticles2HepMCConverterHTXS",
+                                                 genParticles = cms.InputTag("mergedGenParticles"),
+                                                 genEventInfo = cms.InputTag("generator"),
+                                                 )
+            process.p *= process.mergedGenParticles
+            process.p *= process.myGenerator
+            process.p *= process.rivetProducerHTXS
+            process.out.outputCommands.append("keep *_rivetProducerHTXS_*_*")
         self.customizePDFs(process)
 
     def customizePDFs(self,process):     
@@ -214,7 +216,8 @@ class MicroAODCustomize(object):
             from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
             runMETs(process,True) #isMC
             from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
-            setMetCorr(process,multPhiCorr_MC_DY_80X)
+            if not os.environ["CMSSW_VERSION"].count("CMSSW_9_2"):
+                setMetCorr(process,multPhiCorr_MC_DY_80X)
             process.p *=process.flashggMetSequence
         if "sherpa" in self.datasetName:
             process.flashggGenPhotonsExtra.defaultType = 1
@@ -385,20 +388,25 @@ class MicroAODCustomize(object):
 #            process.options = cms.untracked.PSet()
 #        process.options.wantSummary = cms.untracked.bool(True)
         process.out.SelectEvents = cms.untracked.PSet(SelectEvents=cms.vstring('p1'))
-        process.rivetProducerHTXS.ProductionMode = "TTH"
+        if not os.environ["CMSSW_VERSION"].count("CMSSW_9_2"):
+            process.rivetProducerHTXS.ProductionMode = "TTH"
 
     def customizeVBF(self,process):
-        process.rivetProducerHTXS.ProductionMode = "VBF"
+        if not os.environ["CMSSW_VERSION"].count("CMSSW_9_2"):
+            process.rivetProducerHTXS.ProductionMode = "VBF"
 
     def customizeVH(self,process):
-        process.rivetProducerHTXS.ProductionMode = "VH"
+        if not os.environ["CMSSW_VERSION"].count("CMSSW_9_2"):
+            process.rivetProducerHTXS.ProductionMode = "VH"
 
     def customizeGGH(self,process):
-        process.rivetProducerHTXS.ProductionMode = "GGF"
+        if not os.environ["CMSSW_VERSION"].count("CMSSW_9_2"):
+            process.rivetProducerHTXS.ProductionMode = "GGF"
 
     def customizeTH(self,process):
         process.out.outputCommands.append("keep *_source_*_LHEFile")
-        process.rivetProducerHTXS.ProductionMode = "TH"
+        if not os.environ["CMSSW_VERSION"].count("CMSSW_9_2"):
+            process.rivetProducerHTXS.ProductionMode = "TH"
         process.flashggPDFWeightObject.LHEEventTag = "source"
         process.flashggPDFWeightObject.LHERunLabel = "source"
         process.flashggPDFWeightObject.isStandardSample = False
@@ -471,26 +479,21 @@ class MicroAODCustomize(object):
     def customize92X(self,process):
         print "customize92X"
         print process.p
+
+        #Hack for EGM
         hack_modifier = cms.Modifier()
         hack_modifier._setChosen()
         hack_modifier.toReplaceWith(process.flashggPrePhotonSequence80X,process.egmPhotonIDSequence)
-        process.p.remove(process.flashggFinalJets)
-#        print process.GlobalTag.globaltag
-#        process.egmPhotonIsolationMiniAODTask = cms.Task(process.egmPhotonIsolation)
-#        process.egmPhotonIDTask = cms.Task(process.egmPhotonIDs, process.egmPhotonIsolationMiniAODTask, process.photonIDValueMapProducer, process.photonMVAValueMapProducer, process.photonRegressionValueMapProducer)
-#        process.egmPhotonIdSequence = cms.Sequence(process.egmPhotonIDTask)
-#        print "process.egmPhotonIDTask",process.egmPhotonIDTask
-#        print "process.egmPhotonIDSequence",process.egmPhotonIDSequence
- #       photonIndex = process.p.index(process.photonMVAValueMapProducer)
-#        photonIndex = 0
-#        process.p.remove(process.photonMVAValueMapProducer)
-#        hack_modifier = cms.Modifier()
-#        hack_modifier._setChosen()
-#        process.p.remove(process.egmPhotonIDs)
-#        print "BEFORE REPLACE %i"%photonIndex,process.p
-#        process.p.insert(0,process.egmPhotonIDSequence)
-#        hack_modifier.toReplaceWith(process.egmPhotonIDs,process.egmPhotonIDSequence) # requires same class type
-#        print "AFTER REPLACE %i"%photonIndex,process.p
+
+        # Hack for Jets
+        process.task = createTaskWithAllProducersAndFilters(process)
+        process.p.associate(process.task)
+
+def createTaskWithAllProducersAndFilters(process):
+   from FWCore.ParameterSet.Config import Task
+   l = [ p for p in process.producers.itervalues()]
+   l.extend( (f for f in process.filters.itervalues()) )
+   return Task(*l)
 
 # customization object
 customize = MicroAODCustomize()
