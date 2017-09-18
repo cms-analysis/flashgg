@@ -107,5 +107,10 @@
     "Run2017B-PromptReco"											: ["92X_dataRun2_Prompt_v5"],
     "Run2017C-PromptReco"											: ["92X_dataRun2_Prompt_v8"],
     "PhaseISpring17MiniAOD-FlatPU28to62_90X_upgrade2017_realistic_v20"						: ["90X_upgrade2017_realistic_v20"],
-    "PhaseISpring17MiniAOD-FlatPU28to62_902_90X_upgrade2017_realistic_v20_ext1"					: ["90X_upgrade2017_realistic_v20"]
+    "PhaseISpring17MiniAOD-FlatPU28to62_902_90X_upgrade2017_realistic_v20_ext1"					: ["90X_upgrade2017_realistic_v20"],
+    "PhaseIFall16MiniAOD-FlatPU28to62HcalNZSRAW_PhaseIFall16_90X_upgrade2017_realistic_v6_C1"                : ["92X_upgrade2017_TSG_For90XSamples_V2"],
+    "PhaseIFall16MiniAOD-FlatPU28to62HcalNZSRAW_PhaseIFall16_HIG066_90X_upgrade2017_realistic_v6_C1"                : ["92X_upgrade2017_TSG_For90XSamples_V2"],
+    "PhaseIFall16MiniAOD-FlatPU28to62HcalNZSRAW_PhaseIFall16_HIG067_90X_upgrade2017_realistic_v6_C1"                : ["92X_upgrade2017_TSG_For90XSamples_V2"],
+    "PhaseIFall16MiniAOD-FlatPU28to62HcalNZSRAW_PhaseIFall16_HIG068_90X_upgrade2017_realistic_v6_C1"                : ["92X_upgrade2017_TSG_For90XSamples_V2"]
+
 }

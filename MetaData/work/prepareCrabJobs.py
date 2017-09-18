@@ -313,9 +313,14 @@ if options.createCrabConfig:
         if len(jobname) > 97:
             jobname = jobname.replace("TrancheIV","T4")
         if len(jobname) > 97:
-                jobname = jobname.replace("PhaseISpring17MiniAOD-FlatPU28to62_90X_upgrade2017_realistic_v20-v1","PhaseISpring17")
+            jobname = jobname.replace("PhaseISpring17MiniAOD-FlatPU28to62_90X_upgrade2017_realistic_v20-v1","PhaseISpring17")
         if len(jobname) > 97:
-                jobname = jobname.replace("PhaseISpring17MiniAOD-FlatPU28to62_902_90X_upgrade2017_realistic_v20_ext1-v1","PhaseISpring17")
+            jobname = jobname.replace("PhaseISpring17MiniAOD-FlatPU28to62_902_90X_upgrade2017_realistic_v20_ext1-v1","PhaseISpring17")
+        if len(jobname) > 97:
+            jobname = jobname.replace("PhaseIFall16MiniAOD-FlatPU28to62HcalNZSRAW_PhaseIFall16_90X_upgrade2017_realistic_v6_C1-v1","PhaseIFall16")
+            jobname = jobname.replace("PhaseIFall16MiniAOD-FlatPU28to62HcalNZSRAW_PhaseIFall16_HIG066_90X_upgrade2017_realistic_v6_C1-v1","PhaseIFall16")
+            jobname = jobname.replace("PhaseIFall16MiniAOD-FlatPU28to62HcalNZSRAW_PhaseIFall16_HIG067_90X_upgrade2017_realistic_v6_C1-v1","PhaseIFall16")
+            jobname = jobname.replace("PhaseIFall16MiniAOD-FlatPU28to62HcalNZSRAW_PhaseIFall16_HIG068_90X_upgrade2017_realistic_v6_C1-v1","PhaseIFall16")
         if len(jobname) > 97:
             print orig_jobname
             print "-->", len(jobname), jobname

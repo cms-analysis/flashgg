@@ -1,0 +1,12 @@
+{
+	"data" : [
+	       ],
+	"sig"  : [
+"/GluGluHToGG_M-125_13TeV_powheg_pythia8/PhaseIFall16MiniAOD-FlatPU28to62HcalNZSRAW_PhaseIFall16_90X_upgrade2017_realistic_v6_C1-v1/MINIAODSIM",
+"/GluGluHToGG_M-60_13TeV_powheg_pythia8/PhaseIFall16MiniAOD-FlatPU28to62HcalNZSRAW_PhaseIFall16_HIG066_90X_upgrade2017_realistic_v6_C1-v1/MINIAODSIM",
+"/GluGluHToGG_M-70_13TeV_powheg_pythia8/PhaseIFall16MiniAOD-FlatPU28to62HcalNZSRAW_PhaseIFall16_HIG067_90X_upgrade2017_realistic_v6_C1-v1/MINIAODSIM",
+"/GluGluHToGG_M-80_13TeV_powheg_pythia8/PhaseIFall16MiniAOD-FlatPU28to62HcalNZSRAW_PhaseIFall16_HIG068_90X_upgrade2017_realistic_v6_C1-v1/MINIAODSIM"
+	       ],
+	"bkg"  : [
+	]
+}
