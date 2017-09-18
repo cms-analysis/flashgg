@@ -93,6 +93,12 @@ In fact, it is recommended to set up a new area from scratch and checkout the ta
 
 https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_users  
 
+### 924 tests
+
+RunIIFall16-2_7_1-test
+
+./prepareCrabJobs.py -C RunIIFall16-2_7_1-test -U 1 -L 25 -s campaigns/RunIIFall16-2_7_1-test.json -V 2_7_1 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
+
 ### First Phase1 Test (9_2_3_patch2)
 
 ./prepareCrabJobs.py -C RunIIPhaseISpring17-GGH-2_7_0-upgrade2017 -U 1 -L 25 -s campaigns/RunIIPhaseISpring17-GGH-2_7_0-upgrade2017.json -V 2_7_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
