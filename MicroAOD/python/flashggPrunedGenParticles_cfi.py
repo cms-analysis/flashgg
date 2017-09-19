@@ -12,6 +12,7 @@ flashggPrunedGenParticles = cms.EDProducer("GenParticlePruner",
                                                          "keep status = 22",
                                                          "keep++ pdgId = 25",
                                                          "++keep pdgId == 22 && status == 1 && (pt > 10 || isPromptFinalState())" # keep gamma above 10 GeV (or all prompt) and its parents
+                                                         "keep++ abs(pdgId) = 5"# keep b quarks
                                                          )
                                     )
 
