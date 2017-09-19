@@ -21,8 +21,21 @@ namespace flashgg {
         bool hasBottom() const {return hasBottom_;}
         void setHasBottom( bool x ){hasBottom_ = x;}
 
+        bool hasBquark() const {return hasBquark_;}
+        void setHasBquark( bool x ){hasBquark_ = x;}
+
+        bool deltaRBquarkGenJet() const {return deltaRBquarkGenjet_;}
+        void setDeltaRBquarkGenjet( double x ){deltaRBquarkGenjet_ = x;}
+
+        bool jetPtOverBquarkPt() const {return jetPtOverBquarkPt_;}
+        void setJetPtOverBquarkPt( double x ){jetPtOverBquarkPt_ = x;}
+
+
     private:
         bool hasBottom_;
+        bool hasBquark_;
+        double deltaRBquarkGenjet_;
+        double jetPtOverBquarkPt_;
     };
 }
 

@@ -1,4 +1,3 @@
-
 #include "FWCore/Framework/interface/EDProducer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
@@ -50,25 +49,57 @@ namespace flashgg {
         Handle<View<reco::GenJet> > genJets;
         evt.getByToken( genJetsToken_, genJets );
         unique_ptr<vector<flashgg::GenJetExtra> > extraColl( new vector<flashgg::GenJetExtra> );
+        std::vector<edm::Ptr<reco::Candidate> > constituents;
         
         for( auto &genJet : *genJets ){
             flashgg::GenJetExtra extra( genJet );
             bool hasBottom = false;
-            for(size_t d = 0; d < genJet.numberOfDaughters(); d++){
-                std::cout<<"looking at daughter number "<<d<<std::endl;
-                std::cout<<"with pdgid "<<genJet.daughter( d )->pdgId()<<std::endl;
-                for (size_t m = 0; m < genJet.daughter( d )->numberOfMothers(); m++){
-                    if(CandMCTagUtils::hasBottom( *( genJet.daughter( d )->mother(m) ) ) ){//  ||  ( std::abs( genJet.daughter( d )->mother(m)->pdgId() ) == 5 )   ){
-                        //                if( std::abs( genJet.daughter( d )->pdgId() ) == 5){
+            bool hasBquark = false;
+            constituents = genJet.getJetConstituents(); 
+
+            //first, look at mother of constituents of jet and look for B hadrons/mesons
+            for(auto &constituent : constituents){
+
+                if (!(constituent.isNonnull()) ) continue;   
+                for (size_t m = 0; m < (*(constituent)).numberOfMothers(); m++){                       int mpdgid =  abs((*(constituent)).mother(m)->pdgId());
+                    if(CandMCTagUtils::hasBottom( *( (*(constituent)).mother(m) ) ) ){                     
                         hasBottom=true;
-                        std::cout<<"found mother of daughter with bottom, setting hasBottom to true and break"<<std::endl;
                         break;
                     } 
                 }
                 if(hasBottom == true) break;
             }
-            std::cout<<"set jet hasbBottom to "<<hasBottom<<std::endl;
             extra.setHasBottom( hasBottom );
+            
+            double dR_jb = 9999.;
+            double jetPtOverBquarkPt = -999.;
+            for(auto &constituent : constituents){
+                if (!(constituent.isNonnull()) ) continue;
+                for (size_t m = 0; m < (*(constituent)).numberOfMothers(); m++){    
+                    int mpdgid =  abs((*(constituent)).mother(m)->pdgId());
+                    if( mpdgid ==5 ){ 
+                        //if it is a bquark, calculate dR wrt the jet...
+                        double thisdR_jb = reco::deltaR(genJet,  *((*(constituent)).mother(m)) );
+                        if(thisdR_jb < dR_jb){
+                            dR_jb = thisdR_jb;
+                            jetPtOverBquarkPt = genJet.pt()/((*(constituent)).mother(m)->pt());
+                            hasBquark = true;
+                        }
+                    } 
+                }
+            }
+            //if there is at least a b quark
+            if(hasBquark){
+                //take the one closest to the jet in dR
+                extra.setHasBquark(true);
+                extra.setDeltaRBquarkGenjet(dR_jb);
+                extra.setJetPtOverBquarkPt(jetPtOverBquarkPt);
+            }
+            else{
+                extra.setHasBquark(false);
+                extra.setDeltaRBquarkGenjet(-999.);
+                extra.setJetPtOverBquarkPt(-999.);
+            }            
             
 
             extraColl->push_back( extra );

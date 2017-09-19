@@ -327,8 +327,10 @@
 <class name="edm::Wrapper<flashgg::GenLeptonExtra>"/>
 <class name="edm::Wrapper<std::vector<flashgg::GenLeptonExtra> >"/>
 
-<class name="flashgg::GenJetExtra" ClassVersion="10">
+<class name="flashgg::GenJetExtra" ClassVersion="12">
   <version ClassVersion="10" checksum="3711320396"/>
+  <version ClassVersion="11" checksum="666745212"/>
+  <version ClassVersion="12" checksum="1876381753"/>
 </class>
 <class name="edm::Ptr<flashgg::GenJetExtra>"/>
 <class name="std::vector<flashgg::GenJetExtra>"/>
