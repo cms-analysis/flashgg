@@ -224,6 +224,7 @@ class MicroAODCustomize(object):
             
     # data specific customization
     def customizeData(self,process):
+        print "CUSTOMIZE DATA"
         ## remove MC-specific modules
         modules = process.flashggMicroAODGenSequence.moduleNames()
         from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
@@ -245,6 +246,15 @@ class MicroAODCustomize(object):
         process.out.outputCommands.append("drop *_*Gen*_*_*")
         process.out.outputCommands.append("keep *_reducedEgamma_*RecHit*_*") # for bad events
         delattr(process,"flashggPrunedGenParticles") # will be run due to unscheduled mode unless deleted
+        delattr(process,"flashggGenPhotons") # will be run due to unscheduled mode unless deleted
+        delattr(process,"flashggGenPhotonsExtra") # will be run due to unscheduled mode unless deleted
+        from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
+        for vtx in range(0,maxJetCollections):
+            getattr(process,"flashggPFCHSJets%i"%vtx).Debug = True
+            delattr(process,"patJetGenJetMatchAK4PFCHSLeg%i"%vtx)
+            delattr(process,"patJetFlavourAssociationAK4PFCHSLeg%i"%vtx)
+            delattr(process,"patJetPartons%i"%vtx)
+            delattr(process,"patJetPartonMatchAK4PFCHSLeg%i"%vtx)
         self.customizeHighMassIsolations(process)
         process.load("flashgg/MicroAOD/flashggDiPhotonFilter_cfi")
         process.p1 = cms.Path(process.diPhotonFilter) # Do not save events with 0 diphotons
