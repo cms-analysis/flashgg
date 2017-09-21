@@ -134,8 +134,19 @@ namespace flashgg {
         }
         
         for( unsigned int i = 0 ; i < jets->size() ; i++ ) {
+
             Ptr<pat::Jet> pjet = jets->ptrAt( i );
             flashgg::Jet fjet = flashgg::Jet( *pjet );
+
+            if (fjet.pt() < 15.) {
+                if (debug_) std::cout << "   .. skipping jet with pt < 15 to avoid rare bug" << std::endl;
+                continue;
+            }
+
+            if (debug_) {
+                std::cout << " Start of jet " << i << " pt=" << fjet.pt() << " eta=" << fjet.eta() << std::endl;
+            }
+
 
             //store btagging userfloats
             if (computeRegVars) {
@@ -311,6 +322,9 @@ namespace flashgg {
                 }
             }
 
+            if (debug_) {
+                std::cout << " Before pushing back jet " << i << " pt=" << fjet.pt() << " eta=" << fjet.eta() << std::endl;
+            }
 
             /*
             for( unsigned int j = 0 ; j < diPhotons->size() ; j++ ) {
@@ -356,6 +370,8 @@ namespace flashgg {
             */
             jetColl->push_back( fjet );
         }
+        
+        if (debug_) std::cout << " before put " << std::endl;
 
         evt.put( std::move( jetColl ) );
     }
