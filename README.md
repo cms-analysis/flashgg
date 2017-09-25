@@ -22,8 +22,8 @@ Get everything you need, starting from a clean area:
 For 924, starting from a clean area:
 
  ```
- cmsrel CMSSW_9_2_4
- cd CMSSW_9_2_4/src
+ cmsrel CMSSW_9_2_8
+ cd CMSSW_9_2_8/src
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src 
@@ -31,10 +31,10 @@ For 924, starting from a clean area:
  source flashgg/setup_9_2_X.sh
  ```
 
-If everything now looks reasonable, you can build (note flashgg/Validation does not compile right now):
+If everything now looks reasonable, you can build:
  ```
  cd $CMSSW_BASE/src
- SCRAM_IGNORE_PACKAGES="flashgg/Validation" scram b -j 3
+ scram b -j 3
  ```
 And a very basic workflow test:
  ```
