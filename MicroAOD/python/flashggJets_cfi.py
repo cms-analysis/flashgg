@@ -139,7 +139,8 @@ def addFlashggPFCHSJets(process,
                                PileupJetIdParameters = full_80x_chs,
                                rho     = cms.InputTag("fixedGridRhoFastjetAll"),
                                JetCollectionIndex = cms.uint32(vertexIndex),
-                               Debug = cms.untracked.bool(False)
+                               Debug = cms.untracked.bool(False),
+                               DoPuJetID = cms.bool(False)
                                )
   setattr( process, 'flashggPFCHSJets'+ label, flashggJets)
 

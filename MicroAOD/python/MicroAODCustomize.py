@@ -251,6 +251,7 @@ class MicroAODCustomize(object):
         from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
         for vtx in range(0,maxJetCollections):
             getattr(process,"flashggPFCHSJets%i"%vtx).Debug = True
+#            getattr(process,"flashggPFCHSJets%i"%vtx).Debug = True
             delattr(process,"patJetGenJetMatchAK4PFCHSLeg%i"%vtx)
             delattr(process,"patJetFlavourAssociationAK4PFCHSLeg%i"%vtx)
             delattr(process,"patJetPartons%i"%vtx)
