@@ -46,6 +46,7 @@ namespace flashgg {
         EDGetTokenT<View<pat::Jet> > jetDebugToken_;
         bool debug_;
         unsigned pudebug_matched_badrms_, pudebug_matched_;
+        bool doPuJetID_;
     };
 
 
@@ -62,7 +63,8 @@ namespace flashgg {
         //GluonTagSrc_  (iConfig.getParameter<edm::InputTag>("GluonTagSrc") )
         rhoToken_( consumes<double>(iConfig.getParameter<edm::InputTag>("rho") ) ),
         jetDebugToken_( consumes<View<pat::Jet> >( iConfig.getUntrackedParameter<InputTag> ( "JetDebugTag",edm::InputTag("slimmedJets") ) ) ),
-        debug_( iConfig.getUntrackedParameter<bool>( "Debug",false ) )
+        debug_( iConfig.getUntrackedParameter<bool>( "Debug",false ) ),
+        doPuJetID_( iConfig.getParameter<bool>( "DoPuJetID") )
         //        usePuppi( iConfig.getUntrackedParameter<bool>( "UsePuppi", false ) )
     {
         pileupJetIdAlgo_.reset( new PileupJetIdAlgo( pileupJetIdParameters_, true ) );
@@ -151,6 +153,8 @@ namespace flashgg {
             //store btagging userfloats
             if (computeRegVars) {
 
+                if (debug_) { std::cout << " start of computeRegVars" << std::endl; }
+
                 int nSecVertices = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->nVertices();
                 float vtxMass = 0, vtxPx = 0, vtxPy = 0, vtxPz = 0, vtx3DVal = 0, vtx3DSig = 0, vtxPosX = 0, vtxPosY = 0, vtxPosZ = 0;
                 int vtxNTracks = 0;
@@ -180,9 +184,14 @@ namespace flashgg {
                 fjet.addUserFloat("vtx3DVal", vtx3DVal);
                 fjet.addUserFloat("vtx3DSig", vtx3DSig);
 
+                if (debug_) { std::cout << " end of computeRegVars" << std::endl; }
+
             }
 
             if (computeSimpleRMS || computeRegVars) {
+
+                if (debug_) { std::cout << " start of computeSimpleRMS || computeRegVars" << std::endl; }
+
                 float leadTrackPt_ = 0, softLepPt = 0, softLepRatio = 0, softLepDr = 0;
                 float sumPtDrSq = 0.;
                 float sumPtSq = 0.;
@@ -207,6 +216,8 @@ namespace flashgg {
                         }
                     }
                 }
+
+                if (debug_) { std::cout << " before set in  computeSimpleRMS || computeRegVars" << std::endl; }
                 
                 if (computeSimpleRMS) {
                     if (sumPtSq == 0.) throw cms::Exception( "NoConstituents" ) << " For jet " << i << " we get sumPtSq of 0!" << std::endl;
@@ -219,6 +230,9 @@ namespace flashgg {
                     fjet.addUserFloat("softLepRatio", softLepRatio);
                     fjet.addUserFloat("softLepDr", softLepDr);
                 }
+
+                if (debug_) { std::cout << " end of computeSimpleRMS || computeRegVars" << std::endl; }
+
             }
             
             //--- Retrieve the q/g likelihood
@@ -226,100 +240,108 @@ namespace flashgg {
             if(qgHandle.isValid()) qgLikelihood = ( *qgHandle )[jets->refAt( i )];;
             fjet.setQGL(qgLikelihood);
 
+            if (debug_) { std::cout << " after setQGL" << std::endl; }
+
             //            if (fjet.pt() > 20.) {
             //                std::cout << "Jet["<< i << "] QGL=" << qgLikelihood << " partonFlavour=" << fjet.partonFlavour() << std::endl;
             //            }
 
-            if ( jetCollectionIndex_ == 0 ) {
-                PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables( pjet.get(), 0., &vertexes[0], vertexes, rho );
-                //                fjet.setPuJetId( primaryVertices->ptrAt( 0 ), lPUJetId );
-                if (debug_ && fjet.pt() > 20) {
-                    std::cout << "[STANDARD] pt=" << fjet.pt() << " eta=" << fjet.eta() 
-                              << " lPUJetId RMS, betaStar, mva: " << lPUJetId.RMS() << " " << lPUJetId.betaStar() << " " << lPUJetId.mva() 
-                              << "; simpleRMS " << fjet.rms() << "; match=" << (bool)(fjet.genJet()) << std::endl;
-                    for( unsigned int i = 0 ; i < debugJets->size() ; i++ ) {
-                        if (fabs(debugJets->ptrAt(i)->pt()-fjet.pt()) < 1. && fabs(debugJets->ptrAt(i)->eta()-fjet.eta()) < 0.1
-                            && fabs(debugJets->ptrAt(i)->phi()-fjet.phi()) < 0.1 ) {
-                            pudebug_matched_++;
-                            if (fabs(debugJets->ptrAt(i)->userFloat("pileupJetId:fullDiscriminant") - lPUJetId.mva()) > 0.02 ) {
-                                std::cout << "* ---------------------------------" << std::endl;
-                                std::cout << "* Matching jet, non-matching PU MVA" << std::endl;
-                                std::cout << "* ---------------------------------" << std::endl;
-                                std::cout << "*   mva=" << lPUJetId.mva() << " (" << 
-                                    debugJets->ptrAt(i)->userFloat("pileupJetId:fullDiscriminant") << ")" << std::endl;
-                                std::cout << "*   pt=" << fjet.pt() << " (" << debugJets->ptrAt(i)->pt() << ")" << std::endl;
-                                std::cout << "*   eta=" << fjet.eta() << " (" << debugJets->ptrAt(i)->eta() << ")" << std::endl;
-                                std::cout << "*   jetPhi=" << lPUJetId.jetPhi() << " (" << debugJets->ptrAt(i)->phi() << ")" << std::endl;
-                                std::cout << "*   jetM=" << lPUJetId.jetM() << std::endl;
-                                std::cout << "*   RMS=" << lPUJetId.RMS() << std::endl;
-                                std::cout << "*   nvtx=" << lPUJetId.nvtx() << std::endl;
-                                std::cout << "*   dR2Mean=" << lPUJetId.dR2Mean()      << std::endl;
-                                std::cout << "*   nParticles=" << lPUJetId.nParticles()      << std::endl;
-                                std::cout << "*   nCharged=" << lPUJetId.nCharged()  << std::endl;
-                                std::cout << "*   majW=" << lPUJetId.majW()  << std::endl;
-                                std::cout << "*   minW=" << lPUJetId.minW() << std::endl;
-                                std::cout << "*   frac01=" << lPUJetId.frac01()   << std::endl;
-                                std::cout << "*   frac02=" << lPUJetId.frac02()       << std::endl;
-                                std::cout << "*   frac03=" << lPUJetId.frac03()    << std::endl;
-                                std::cout << "*   frac04=" << lPUJetId.frac04()    << std::endl;
-                                std::cout << "*   ptD=" << lPUJetId.ptD()    << std::endl;
-                                std::cout << "*   beta=" << lPUJetId.beta()    << std::endl;
-                                std::cout << "*   pull=" << lPUJetId.pull()    << std::endl;
-                                std::cout << "*   jetR=" << lPUJetId.jetR()    << std::endl;
-                                std::cout << "*   jetRchg=" << lPUJetId.jetRchg()    << std::endl;
-                                std::cout << "* ---------------------------------" << std::endl;
-                                pudebug_matched_badrms_++;
-                            } else {
-                                std::cout << "+ ---------------------------------" << std::endl;
-                                std::cout << "+ Matching jet, matching PU MVA" << std::endl;
-                                std::cout << "+ ---------------------------------" << std::endl;
-                                std::cout << "+   mva=" << lPUJetId.mva() << " (" <<
-                                    debugJets->ptrAt(i)->userFloat("pileupJetId:fullDiscriminant") << ")" << std::endl;
-                                std::cout << "+   pt=" << fjet.pt() << " (" << debugJets->ptrAt(i)->pt() << ")" << std::endl;
-                                std::cout << "+   eta=" << fjet.eta() << " (" << debugJets->ptrAt(i)->eta() << ")" << std::endl;
-                                std::cout << "+   jetPhi=" << lPUJetId.jetPhi() << " (" << debugJets->ptrAt(i)->phi() << ")" << std::endl;
-                                std::cout << "+   jetM=" << lPUJetId.jetM() << std::endl;
-                                std::cout << "+   RMS=" << lPUJetId.RMS() << std::endl;
-                                std::cout << "+   nvtx=" << lPUJetId.nvtx() << std::endl;
-                                std::cout << "+   dR2Mean=" << lPUJetId.dR2Mean()      << std::endl;
-                                std::cout << "+   nParticles=" << lPUJetId.nParticles()      << std::endl;
-                                std::cout << "+   nCharged=" << lPUJetId.nCharged()  << std::endl;
-                                std::cout << "+   majW=" << lPUJetId.majW()  << std::endl;
-                                std::cout << "+   minW=" << lPUJetId.minW() << std::endl;
-                                std::cout << "+   frac01=" << lPUJetId.frac01()   << std::endl;
-                                std::cout << "+   frac02=" << lPUJetId.frac02()       << std::endl;
-                                std::cout << "+   frac03=" << lPUJetId.frac03()    << std::endl;
-                                std::cout << "+   frac04=" << lPUJetId.frac04()    << std::endl;
-                                std::cout << "+   ptD=" << lPUJetId.ptD()    << std::endl;
-                                std::cout << "+   beta=" << lPUJetId.beta()    << std::endl;
-                                std::cout << "+   pull=" << lPUJetId.pull()    << std::endl;
-                                std::cout << "+   jetR=" << lPUJetId.jetR()    << std::endl;
-                                std::cout << "+   jetRchg=" << lPUJetId.jetRchg()    << std::endl;
-                                std::cout << "+ ---------------------------------" << std::endl;
+            if ( doPuJetID_ ) {
+                if ( jetCollectionIndex_ == 0 && doPuJetID_ ) {
+                    if (debug_) std::cout << "before computeIdVariables" << std::endl;
+                    PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables( pjet.get(), 0., &vertexes[0], vertexes, rho );
+                    if (debug_) std::cout << "after computeIdVariables" << std::endl;
+                    //                fjet.setPuJetId( primaryVertices->ptrAt( 0 ), lPUJetId );
+                    if (debug_ && fjet.pt() > 20) {
+                        std::cout << "[STANDARD] pt=" << fjet.pt() << " eta=" << fjet.eta() 
+                                  << " lPUJetId RMS, betaStar, mva: " << lPUJetId.RMS() << " " << lPUJetId.betaStar() << " " << lPUJetId.mva() 
+                                  << "; simpleRMS " << fjet.rms() << "; match=" << (bool)(fjet.genJet()) << std::endl;
+                        for( unsigned int i = 0 ; i < debugJets->size() ; i++ ) {
+                            if (fabs(debugJets->ptrAt(i)->pt()-fjet.pt()) < 1. && fabs(debugJets->ptrAt(i)->eta()-fjet.eta()) < 0.1
+                                && fabs(debugJets->ptrAt(i)->phi()-fjet.phi()) < 0.1 ) {
+                                pudebug_matched_++;
+                                if (fabs(debugJets->ptrAt(i)->userFloat("pileupJetId:fullDiscriminant") - lPUJetId.mva()) > 0.02 ) {
+                                    std::cout << "* ---------------------------------" << std::endl;
+                                    std::cout << "* Matching jet, non-matching PU MVA" << std::endl;
+                                    std::cout << "* ---------------------------------" << std::endl;
+                                    std::cout << "*   mva=" << lPUJetId.mva() << " (" << 
+                                        debugJets->ptrAt(i)->userFloat("pileupJetId:fullDiscriminant") << ")" << std::endl;
+                                    std::cout << "*   pt=" << fjet.pt() << " (" << debugJets->ptrAt(i)->pt() << ")" << std::endl;
+                                    std::cout << "*   eta=" << fjet.eta() << " (" << debugJets->ptrAt(i)->eta() << ")" << std::endl;
+                                    std::cout << "*   jetPhi=" << lPUJetId.jetPhi() << " (" << debugJets->ptrAt(i)->phi() << ")" << std::endl;
+                                    std::cout << "*   jetM=" << lPUJetId.jetM() << std::endl;
+                                    std::cout << "*   RMS=" << lPUJetId.RMS() << std::endl;
+                                    std::cout << "*   nvtx=" << lPUJetId.nvtx() << std::endl;
+                                    std::cout << "*   dR2Mean=" << lPUJetId.dR2Mean()      << std::endl;
+                                    std::cout << "*   nParticles=" << lPUJetId.nParticles()      << std::endl;
+                                    std::cout << "*   nCharged=" << lPUJetId.nCharged()  << std::endl;
+                                    std::cout << "*   majW=" << lPUJetId.majW()  << std::endl;
+                                    std::cout << "*   minW=" << lPUJetId.minW() << std::endl;
+                                    std::cout << "*   frac01=" << lPUJetId.frac01()   << std::endl;
+                                    std::cout << "*   frac02=" << lPUJetId.frac02()       << std::endl;
+                                    std::cout << "*   frac03=" << lPUJetId.frac03()    << std::endl;
+                                    std::cout << "*   frac04=" << lPUJetId.frac04()    << std::endl;
+                                    std::cout << "*   ptD=" << lPUJetId.ptD()    << std::endl;
+                                    std::cout << "*   beta=" << lPUJetId.beta()    << std::endl;
+                                    std::cout << "*   pull=" << lPUJetId.pull()    << std::endl;
+                                    std::cout << "*   jetR=" << lPUJetId.jetR()    << std::endl;
+                                    std::cout << "*   jetRchg=" << lPUJetId.jetRchg()    << std::endl;
+                                    std::cout << "* ---------------------------------" << std::endl;
+                                    pudebug_matched_badrms_++;
+                                } else {
+                                    std::cout << "+ ---------------------------------" << std::endl;
+                                    std::cout << "+ Matching jet, matching PU MVA" << std::endl;
+                                    std::cout << "+ ---------------------------------" << std::endl;
+                                    std::cout << "+   mva=" << lPUJetId.mva() << " (" <<
+                                        debugJets->ptrAt(i)->userFloat("pileupJetId:fullDiscriminant") << ")" << std::endl;
+                                    std::cout << "+   pt=" << fjet.pt() << " (" << debugJets->ptrAt(i)->pt() << ")" << std::endl;
+                                    std::cout << "+   eta=" << fjet.eta() << " (" << debugJets->ptrAt(i)->eta() << ")" << std::endl;
+                                    std::cout << "+   jetPhi=" << lPUJetId.jetPhi() << " (" << debugJets->ptrAt(i)->phi() << ")" << std::endl;
+                                    std::cout << "+   jetM=" << lPUJetId.jetM() << std::endl;
+                                    std::cout << "+   RMS=" << lPUJetId.RMS() << std::endl;
+                                    std::cout << "+   nvtx=" << lPUJetId.nvtx() << std::endl;
+                                    std::cout << "+   dR2Mean=" << lPUJetId.dR2Mean()      << std::endl;
+                                    std::cout << "+   nParticles=" << lPUJetId.nParticles()      << std::endl;
+                                    std::cout << "+   nCharged=" << lPUJetId.nCharged()  << std::endl;
+                                    std::cout << "+   majW=" << lPUJetId.majW()  << std::endl;
+                                    std::cout << "+   minW=" << lPUJetId.minW() << std::endl;
+                                    std::cout << "+   frac01=" << lPUJetId.frac01()   << std::endl;
+                                    std::cout << "+   frac02=" << lPUJetId.frac02()       << std::endl;
+                                    std::cout << "+   frac03=" << lPUJetId.frac03()    << std::endl;
+                                    std::cout << "+   frac04=" << lPUJetId.frac04()    << std::endl;
+                                    std::cout << "+   ptD=" << lPUJetId.ptD()    << std::endl;
+                                    std::cout << "+   beta=" << lPUJetId.beta()    << std::endl;
+                                    std::cout << "+   pull=" << lPUJetId.pull()    << std::endl;
+                                    std::cout << "+   jetR=" << lPUJetId.jetR()    << std::endl;
+                                    std::cout << "+   jetRchg=" << lPUJetId.jetRchg()    << std::endl;
+                                    std::cout << "+ ---------------------------------" << std::endl;
+                                }
                             }
                         }
                     }
-                }
-                fjet.setSimpleMVA( lPUJetId.mva() );
-            } else {
-                for( unsigned int j = 0 ; j < diPhotons->size() ; j++ ) {
-                    Ptr<DiPhotonCandidate> diPhoton = diPhotons->ptrAt( j );
-                    if ( diPhoton->jetCollectionIndex() == jetCollectionIndex_ ) {
-                        Ptr<reco::Vertex> vtx = diPhoton->vtx();
-                        PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables( pjet.get(), 0., vtx.get(), vertexes, rho );
-                        if (debug_ && fjet.pt() > 20) {
-                            std::cout << "[NON-STANDARD] pt=" << fjet.pt() << " eta=" << fjet.eta()
-                                      << " lPUJetID RMS, betaStar, mva: " << lPUJetId.RMS() << " " << lPUJetId.betaStar() << " " << lPUJetId.mva()
-                                      << "; simpleRMS " << fjet.rms() << "; match=" << (bool)(fjet.genJet()) << std::endl;
-                            PileupJetIdentifier lPUJetId0 = pileupJetIdAlgo_->computeIdVariables( pjet.get(), 0., &vertexes[0], vertexes, rho );
-                            std::cout << "[NON-S W VTX0] pt=" << fjet.pt() << " eta=" << fjet.eta()
+                    fjet.setSimpleMVA( lPUJetId.mva() );
+                } else {
+                    for( unsigned int j = 0 ; j < diPhotons->size() ; j++ ) {
+                        Ptr<DiPhotonCandidate> diPhoton = diPhotons->ptrAt( j );
+                        if ( diPhoton->jetCollectionIndex() == jetCollectionIndex_ ) {
+                            Ptr<reco::Vertex> vtx = diPhoton->vtx();
+                            PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables( pjet.get(), 0., vtx.get(), vertexes, rho );
+                            if (debug_ && fjet.pt() > 20) {
+                                std::cout << "[NON-STANDARD] pt=" << fjet.pt() << " eta=" << fjet.eta()
+                                          << " lPUJetID RMS, betaStar, mva: " << lPUJetId.RMS() << " " << lPUJetId.betaStar() << " " << lPUJetId.mva()
+                                          << "; simpleRMS " << fjet.rms() << "; match=" << (bool)(fjet.genJet()) << std::endl;
+                                PileupJetIdentifier lPUJetId0 = pileupJetIdAlgo_->computeIdVariables( pjet.get(), 0., &vertexes[0], vertexes, rho );
+                                std::cout << "[NON-S W VTX0] pt=" << fjet.pt() << " eta=" << fjet.eta()
                                       << " lPUJetID RMS, betaStar, mva: " << lPUJetId0.RMS() << " " << lPUJetId0.betaStar() << " " << lPUJetId0.mva()
-                                      << "; simpleRMS " << fjet.rms() << "; match=" << (bool)(fjet.genJet()) << std::endl;
+                                          << "; simpleRMS " << fjet.rms() << "; match=" << (bool)(fjet.genJet()) << std::endl;
+                            }
+                            fjet.setSimpleMVA( lPUJetId.mva() );
+                            break;
                         }
-                        fjet.setSimpleMVA( lPUJetId.mva() );
-                        break;
                     }
                 }
+            } else {
+                fjet.setSimpleMVA ( -999. );
             }
 
             if (debug_) {
