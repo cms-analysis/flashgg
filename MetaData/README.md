@@ -101,6 +101,8 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 ./prepareCrabJobs.py -C RunIIFall17-2_7_4 -U 1 -L 25 -s campaigns/RunIIFall17-2_7_4.json -V 2_7_4 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
 
+./prepareCrabJobs.py -C RunIIFall17-2_7_5 -U 1 -L 25 -s campaigns/RunIIFall17-2_7_5.json -V 2_7_5 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
+
 
 
 ### 924 tests
