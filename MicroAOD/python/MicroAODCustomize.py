@@ -250,7 +250,6 @@ class MicroAODCustomize(object):
         delattr(process,"flashggGenPhotonsExtra") # will be run due to unscheduled mode unless deleted
         from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
         for vtx in range(0,maxJetCollections):
-            getattr(process,"flashggPFCHSJets%i"%vtx).Debug = True
 #            getattr(process,"flashggPFCHSJets%i"%vtx).Debug = True
             delattr(process,"patJetGenJetMatchAK4PFCHSLeg%i"%vtx)
             delattr(process,"patJetFlavourAssociationAK4PFCHSLeg%i"%vtx)
