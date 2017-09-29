@@ -496,6 +496,8 @@ for tag in tagList:
           nAlphaSWeights = -1
           nScaleWeights = -1
       
+      print "count 11"
+
       cfgTools.addCategory(process.tagsDumper,
                            systlabel,
                            classname=tagName,
@@ -544,6 +546,7 @@ if customize.processId == "Data":
 
 # Split WH and ZH
 process.genFilter = cms.Sequence()
+print "count 2"
 if (customize.processId.count("wh") or customize.processId.count("zh")) and not customize.processId.count("wzh"):
     process.load("flashgg/Systematics/VHFilter_cfi")
     process.genFilter += process.VHFilter
@@ -563,6 +566,7 @@ if customize.processId == "th_125": # for this sample the filter removes also H 
 
 # Split out prompt-fake or fake-fake
 process.finalFilter = cms.Sequence()
+print "count 3"
 if (customize.processId.count("qcd") or customize.processId.count("gjet")) and customize.processId.count("fake"):
     process.load("flashgg/Systematics/PromptFakeFilter_cfi")
     process.finalFilter += process.PromptFakeFilter
@@ -605,6 +609,7 @@ else :
                          process.tagsDumper)
 
 if customize.doFiducial:
+    print "count 4"
     if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) 
                                                                    or customize.processId.count("h_") or customize.processId.count("vbf_") ) and (systlabel ==  ""):
           print "Signal MC central value, so dumping PDF weights"
@@ -620,7 +625,9 @@ if customize.doFiducial:
           nScaleWeights = -1
     if not customize.processId == "Data":
         mH = None
-        ldset = customize.datasetName().lower() 
+        ldset=""
+        if customize.datasetName():
+            ldset = customize.datasetName().lower() 
         if "htogg" in ldset or "tthjettogg" in ldset:
             try:
                 mH = float(customize.datasetName().split("_M")[1].split("_")[0])
@@ -639,6 +646,7 @@ print "--- Dumping modules that take diphotons as input: ---"
 mns = process.p.moduleNames()
 for mn in mns:
     module = getattr(process,mn)
+    print "count 5"
     if hasattr(module,"src") and type(module.src) == type(cms.InputTag("")) and module.src.value().count("DiPhoton"):
         print str(module),module.src
     elif hasattr(module,"DiPhotonTag"):
