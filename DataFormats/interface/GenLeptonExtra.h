@@ -35,9 +35,9 @@ namespace flashgg {
         float genIsoAfterDressing() const { return genIsoAfterDressing_; }
         void setGenIsoAfterDressing( float x ) { genIsoAfterDressing_ = x; }
 
-        reco::Particle::LorentzVector dressedP4() const { return dressedP4_; }
-        void setDressedP4( reco::Particle::LorentzVector x ) { dressedP4_ = x; }
-        void setP4( reco::Particle::LorentzVector x ) { p4_ = x; }
+        //        reco::Particle::LorentzVector dressedP4() const { return dressedP4_; }
+        //        void setDressedP4( reco::Particle::LorentzVector x ) { dressedP4_ = x; }
+        //        void setP4( reco::Particle::LorentzVector x ) { p4_ = x; }
 
 //        void copyTo( flashgg::Lepton &fg, const std::string &postFix = "" ) const
 //        {
@@ -48,8 +48,8 @@ namespace flashgg {
         ptr_type ptr_;
         float genIso_;
         float genIsoAfterDressing_;
-        reco::Particle::LorentzVector dressedP4_;
-        reco::Particle::LorentzVector p4_;
+        //        reco::Particle::LorentzVector dressedP4_;
+        //        reco::Particle::LorentzVector p4_;
     };
 }
 

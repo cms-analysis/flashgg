@@ -66,8 +66,8 @@ namespace flashgg {
             extra.setGenIso( PhotonMCUtils::isoSum( *genLep, *genParticles, isoConeSize_ ) );
      //       extra.setFrixioneIso( PhotonMCUtils::frixioneIso( *genLep, *genParticles, isoConeSize_, epsilon0_, n0_ ) );
 
-            extra.setDressedP4( LeptonMCUtils::dressedP4( *genLep, *genParticles, dressingConeSize_) );
-            extra.setP4( genLep->p4() );
+            extra.setP4( LeptonMCUtils::dressedP4( *genLep, *genParticles, dressingConeSize_) );
+            //            extra.setP4( genLep->p4() );
             extra.setGenIsoAfterDressing( LeptonMCUtils::isoSumAfterDressing( *genLep, *genParticles, isoConeSize_, dressingConeSize_) );
 
 
