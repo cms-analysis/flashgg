@@ -25,31 +25,31 @@ class CaloTopology;
 
 
 namespace flashgg {
-
-
+    
+    
     class JetUtils
     {
-
+        
     public:
-
+        
         JetUtils( const edm::ParameterSet &cfg){
-        if( cfg.exists( "pujidWpPtBin1"  )  ){
-            pujidWpPtBin1_ = cfg.getParameter<vector<double> >( "pujidWpPtBin1"  );
-        }
-
-        if( cfg.exists( "pujidWpPtBin2"  )  ){
-            pujidWpPtBin2_ = cfg.getParameter<vector<double> >( "pujidWpPtBin2"  );
-        }
-
-        if( cfg.exists( "pujidWpPtBin3"  )  ){
-            pujidWpPtBin3_ = cfg.getParameter<vector<double> >( "pujidWpPtBin3"  );
-        }
-
-        if( cfg.exists( "eta_cuts"  )  ){
-            eta_cuts_ = cfg.getParameter<vector<double> >( "eta_cuts"  );
-        }
-
-};
+            if( cfg.exists( "pujidWpPtBin1"  )  ){
+                pujidWpPtBin1_ = cfg.getParameter<vector<double> >( "pujidWpPtBin1"  );
+            }
+            
+            if( cfg.exists( "pujidWpPtBin2"  )  ){
+                pujidWpPtBin2_ = cfg.getParameter<vector<double> >( "pujidWpPtBin2"  );
+            }
+            
+            if( cfg.exists( "pujidWpPtBin3"  )  ){
+                pujidWpPtBin3_ = cfg.getParameter<vector<double> >( "pujidWpPtBin3"  );
+            }
+            
+            if( cfg.exists( "eta_cuts"  )  ){
+                eta_cuts_ = cfg.getParameter<vector<double> >( "eta_cuts"  );
+            }
+            
+        };
         ~JetUtils(){};
         
         void  initialize( );
