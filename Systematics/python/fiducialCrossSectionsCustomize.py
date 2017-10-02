@@ -187,6 +187,7 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
     recoJetsBflavor2p5 = cms.VInputTag()
     recoJetsBflavor4p7 = cms.VInputTag()
     recoMet =cms.VInputTag()
+    recoMuons =cms.VInputTag()
     print recoJetCollections
     pos = tagSequence.index(recoDiphotonTags) - 1
 
@@ -202,6 +203,20 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
         recoMet.append("filteredRecoMet")
         tagSequence.insert(pos, getattr(process,"filteredRecoMet"))
         pos += 1
+
+##    from flashgg.Taggers.flashggTags_cff import TTHLeptonicTag
+    if( not hasattr(process,"filteredRecoMuons" ) ): 
+        setattr(process,"filteredRecoMuons",cms.EDFilter("FlashggMuonCandidateSelector",
+                                                         src=cms.InputTag("flashggSelectedMuons"),
+                                                         cut=cms.string("eta < 2.4 && pt > 20"),
+                                                         VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
+                                                         muPFIsoSumRelThreshold = cms.double(0.25), 
+                                                                        ) )
+        recoMuons.append("filteredRecoMuons")
+        tagSequence.insert(pos, getattr(process,"filteredRecoMuons"))
+        pos += 1
+
+
     for icoll,coll in enumerate(recoJetCollections):        
         if( not hasattr(process,"filteredRecoJetsEta2p5%d" % icoll) ): 
             setattr(process,"filteredRecoJetsEta2p5%d" % icoll,cms.EDFilter("FlashggJetCandidateSelector", ##pujetid is applied in FlashggJetCandidateSelector via CutBasedJetObjectSelector.cc
@@ -273,7 +288,7 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
     if( not hasattr(process,"flashggRecoHadronicActivityBflavor2p5") ): 
         process.flashggRecoHadronicActivityBflavor2p5 = cms.EDProducer("FlashggDiPhotonHadronicActivityProducer",
                                                                 src=recoJetsBflavor2p5,
-                                                                veto=cms.InputTag(recoDiphotons)
+                                                                veto=cms.InputTag(recoDiphotons) ##veto also muons!
                                                                 )
         tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivityBflavor2p5"))
         pos += 1
@@ -295,6 +310,14 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
         tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivityMET"))
         pos += 1
 
+    if( not hasattr(process,"flashggRecoHadronicActivityMuons") ): 
+        process.flashggRecoHadronicActivityMuons = cms.EDProducer("FlashggDiPhotonHadronicActivityProducer",
+                                                                src=recoMuons,
+                                                                veto=cms.InputTag(recoDiphotons) 
+                                                                )
+        tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivityMuons"))
+        pos += 1
+
 
   ##  if( not hasattr(process,"flashggRecoHadronicActivityMuons") ): 
   ##      process.flashggRecoHadronicActivityMuons = cms.EDProducer("FlashggDiPhotonHadronicActivityProducer",
@@ -310,6 +333,7 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
     recoDiphotonTags.CompositeCandidateTags.jetsBflavor2p5 = cms.InputTag("flashggRecoHadronicActivityBflavor2p5")
     recoDiphotonTags.CompositeCandidateTags.jetsBflavor4p7 = cms.InputTag("flashggRecoHadronicActivityBflavor4p7")
     recoDiphotonTags.CompositeCandidateTags.met = cms.InputTag("flashggRecoHadronicActivityMET")
+    recoDiphotonTags.CompositeCandidateTags.muons = cms.InputTag("flashggRecoHadronicActivityMuons")
 ##    recoDiphotonTags.CompositeCandidateTags.muons = cms.InputTag("flashggRecoHadronicActivityMuons")
     
     if not processId=="Data":
@@ -472,6 +496,39 @@ def addLeptonGlobalVariables(process,dumper,src,pre,post,getter=""):
     else:
         for cat in dumper.categories:
             cfgTools.addVariables(cat.variables,variables)
+
+
+
+
+# ----------------------------------------------------------------------------------------------------------------
+def addMuonGlobalVariables(process,dumper,src,pre,post,getter=""):    
+    import flashgg.Taggers.dumperConfigTools as cfgTools
+
+    if getter != "": getter += "."
+    variables  = [ "%(pre)sNmuons%(post)s[-1,(-0.5:0.5:1.5:2.5:3.5:100)]:= %(getter)snumberOfDaughters" % locals() ]
+    variables += [ "%(pre)sMuonPt%(post)s0 := ? %(getter)snumberOfDaughters > 0 ? %(getter)sdaughter(0).pt : -999" % locals() ]
+    variables += [ "%(pre)sMuonPt%(post)s1 := ? %(getter)snumberOfDaughters > 1 ? %(getter)sdaughter(1).pt : -999" % locals() ]
+
+    variables += [ "%(pre)sMuonEta%(post)s0 := ? %(getter)snumberOfDaughters > 0 ? %(getter)sdaughter(0).eta : -999" % locals() ]
+    variables += [ "%(pre)sMuonEta%(post)s1 := ? %(getter)snumberOfDaughters > 1 ? %(getter)sdaughter(1).eta : -999" % locals() ]
+
+    variables += [ "%(pre)sMuonPhi%(post)s0 := ? %(getter)snumberOfDaughters > 0 ? %(getter)sdaughter(0).phi : -999" % locals() ]
+    variables += [ "%(pre)sMuonPhi%(post)s1 := ? %(getter)snumberOfDaughters > 1 ? %(getter)sdaughter(1).phi : -999" % locals() ]
+
+#    variables += [ "%(pre)sLeptonPt%(post)s0 := ? %(getter)snumberOfDaughters > 0 ? %(getter)sdaughter(0).cand().p4().pt : -999" % locals() ]
+#    variables += [ "%(pre)sLeptonPt%(post)s1 := ? %(getter)snumberOfDaughters > 1 ? %(getter)sdaughter(1).cand().p4().pt : -999" % locals() ]
+
+###    variables += [ "%(pre)sLepton%(post)s1[-1,(-0.5:0.5:1.5:2.5:3.5:100)]:= ? %(getter)snumberOfDaughters > 1 ? %(getter)sdaughter(1).dressedP4().pt() : -999" % locals() ]
+#    variables += getLeptonKinVariables(pre,post,["dressedP4().pt"],3, getter)
+#    print variables
+###    variables += getLeptonKinVariables(pre,post,["pt","eta","rapidity"],5)
+###    variables += [ "%sDijetMass%s := ? numberOfDaughters > 1 ? sqrt( (daughter(0).energy+daughter(1).energy)^2 - (daughter(0).px+daughter(1).px)^2 - (daughter(0).py+daughter(1).py)^2 - (daughter(0).pz+daughter(1).pz)^2 ) : 0" % (pre,post) ]
+    
+    if src:
+        cfgTools.addGlobalFloats(process,dumper.globalVariables,src,variables)
+    else:
+        for cat in dumper.categories:
+            cfgTools.addVariables(cat.variables,variables)
         
 
 # ----------------------------------------------------------------------------------------------------------------
@@ -526,6 +583,7 @@ def addRecoGlobalVariables(process,dumper,tagGetter=""):
     addJetGlobalVariables(process,dumper,None,"reco","Bflavor4p7","%sgetCompCand('jetsBflavor4p7')" % tagGetter)
 
     addRecoMETGlobalVariables(process,dumper,None,"reco","All","%sgetCompCand('met')" % tagGetter)
+    addMuonGlobalVariables(process,dumper,None,"reco","All","%sgetCompCand('muons')" % tagGetter)
 
 #    addJetGlobalVariables(process,dumper,None,"reco","Muons","%sgetCompCand('muons')" % tagGetter)
     
