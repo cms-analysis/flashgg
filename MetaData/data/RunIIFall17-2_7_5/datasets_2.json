@@ -12024,6 +12024,43 @@
                 "nevents": 10729, 
                 "totEvents": 10729, 
                 "weights": 10729
+            }, 
+            {
+                "bad": false, 
+                "events": 20910, 
+                "lumis": {
+                    "299149": [
+                        80, 
+                        92, 
+                        111, 
+                        114, 
+                        122, 
+                        147, 
+                        205, 
+                        215, 
+                        216, 
+                        217, 
+                        221, 
+                        337, 
+                        462, 
+                        74, 
+                        83, 
+                        84, 
+                        129, 
+                        180, 
+                        244, 
+                        278, 
+                        359, 
+                        377, 
+                        416, 
+                        432, 
+                        438
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-2_7_5/2_7_5/SingleElectron/RunIIFall17-2_7_5-2_7_5-v0-Run2017B-PromptReco-v2/170926_044901/0000/myMicroAODOutputFile_123.root", 
+                "nevents": 20910, 
+                "totEvents": 20910, 
+                "weights": 20910
             }
         ], 
         "vetted": true
