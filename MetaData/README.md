@@ -1,4 +1,4 @@
-v# flashgg/MetaData README
+# flashgg/MetaData README
 
 ## Producing microAODs
 
