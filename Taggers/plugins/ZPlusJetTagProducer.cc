@@ -139,13 +139,14 @@ namespace flashgg {
                 njets++;
             }
 
-            if (njets > 0) {
+            //if (njets > 0) {
                     ZPlusJetTag tag_obj( dipho, mvares, leadingJet, njets );
                     tag_obj.setDiPhotonIndex( candIndex );
                     tag_obj.setSystLabel    ( systLabel_ );
                     tag_obj.setIsGold ( evt.run() );
                     tag_obj.includeWeights( *dipho );
-                    tag_obj.includeWeights( *leadingJet );
+                    if (njets > 0) 
+                        tag_obj.includeWeights( *leadingJet );
                     
                     //truth_obj.setGenPV( higgsVtx );
 
@@ -159,9 +160,8 @@ namespace flashgg {
                     //                    truths->push_back( truth_obj );
                     //                    tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<ZPlusJetTagTruth> >( rTagTruth, idx++ ) ) );
                     //                }
-            }
+                    // }
         }
-
         evt.put( std::move( tags ) );
         //        evt.put( std::move( truths ) );
     }

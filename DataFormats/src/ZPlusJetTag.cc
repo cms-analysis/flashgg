@@ -11,7 +11,7 @@ ZPlusJetTag::~ZPlusJetTag() {}
 ZPlusJetTag::ZPlusJetTag( edm::Ptr<DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvaRes, edm::Ptr<Jet> theJet, unsigned njets) :
     DiPhotonTagBase::DiPhotonTagBase( diPho, mvaRes ) 
 {
-    theJet_ = theJet;
+    if (njets>0) theJet_ = theJet;
     njets_ = njets;
 }
 
