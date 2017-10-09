@@ -121,6 +121,7 @@ git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-8_0_28
 # To be investigated
 #echo "Setting up TnP tools..."
 #git cms-merge-topic -u sethzenz:for-flashgg-egm_tnp-8_0_26
+git clone -b v2017.05.23_legacy80X_prelim https://github.com/cms-analysis/EgammaAnalysis-TnPTreeProducer EgammaAnalysis/TnPTreeProducer
 
 echo "Setting up weight stuff..."
 #git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-weights-8_0_28

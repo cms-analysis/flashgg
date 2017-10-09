@@ -1,0 +1,14 @@
+{
+        "data" : [
+"/SingleElectron/Run2016B-07Aug17_ver1-v1/MINIAOD",
+"/SingleElectron/Run2016D-07Aug17-v1/MINIAOD",
+"/SingleElectron/Run2016E-07Aug17-v1/MINIAOD",
+"/SingleElectron/Run2016F-07Aug17-v1/MINIAOD",
+"/SingleElectron/Run2016G-07Aug17-v1/MINIAOD",
+"/SingleElectron/Run2016H-07Aug17-v1/MINIAOD"
+                ],
+        "sig" : [
+                ],
+        "bkg" : [
+                ]
+}
