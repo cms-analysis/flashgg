@@ -153,7 +153,7 @@ def customizeSystematicsForData(process):
 def customizeVPSetForData(systs, phScaleBins):
     newvpset = cms.VPSet()
     for pset in systs:
-        if pset.Label.value().count("Scale") or pset.Label.value().count("SigmaEOverESmearing"):
+        if (pset.Label.value().count("Scale") or pset.Label.value().count("SigmaEOverESmearing")) and not pset.Label.value().count("Gain"):
             pset.ApplyCentralValue = cms.bool(True) # Turn on central shift for data (it is off for MC)
             if type(pset.NSigmas) == type(cms.vint32()):
                 pset.NSigmas = cms.vint32() # Do not perform shift
