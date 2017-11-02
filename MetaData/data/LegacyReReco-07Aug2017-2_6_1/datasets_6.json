@@ -92128,6 +92128,7 @@
                     ]
                 }, 
                 "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-07Aug2017-2_6_1/2_6_1/SingleElectron/LegacyReReco-07Aug2017-2_6_1-2_6_1-v0-Run2016B-07Aug17_ver2-v2/171018_090928/0001/myMicroAODOutputFile_1413.root", 
+		"nevents":3129,
                 "totEvents": 3129, 
                 "weights": 3129
             }, 
@@ -92248,6 +92249,7 @@
                     ]
                 }, 
                 "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-07Aug2017-2_6_1/2_6_1/SingleElectron/LegacyReReco-07Aug2017-2_6_1-2_6_1-v0-Run2016B-07Aug17_ver2-v2/171018_090928/0001/myMicroAODOutputFile_1566.root", 
+		"nevents":12039,
                 "totEvents": 12039, 
                 "weights": 12039
             }, 
