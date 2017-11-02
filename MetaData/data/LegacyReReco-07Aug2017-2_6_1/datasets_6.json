@@ -91750,7 +91750,7 @@
                     ]
                 }, 
                 "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/LegacyReReco-07Aug2017-2_6_1/2_6_1/SingleElectron/LegacyReReco-07Aug2017-2_6_1-2_6_1-v0-Run2016B-07Aug17_ver2-v2/171018_090928/0000/myMicroAODOutputFile_357.root", 
-		"nevents" 34589,
+		"nevents": 34589,
                 "totEvents": 34589, 
                 "weights": 34589
             }, 
