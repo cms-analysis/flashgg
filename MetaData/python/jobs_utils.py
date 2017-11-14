@@ -187,7 +187,7 @@ class JobsManager(object):
                 jobName,batchId = batchId
             else:
                 jobName=None
-            if ret != 0 and nsub <= self.options.maxResub:
+            if ( ret != 0 or not os.path.exists(outfile) ) and nsub <= self.options.maxResub:
                 if self.options.resubMissing:
                     out = self.parallel.run(cmd,args,jobName=jobName)
                     if self.options.queue and self.options.asyncLsf:

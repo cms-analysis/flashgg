@@ -74,8 +74,14 @@ customize.options.register('acceptance',
                            VarParsing.VarParsing.varType.string,
                            'acceptance'
                            )
-customize.options.register('doSystematics',
+customize.options.register('filterNonAcceptedEvents',
                            True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'filterNonAcceptedEvents'
+                           )
+customize.options.register('doSystematics',
+                           False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doSystematics'
@@ -120,7 +126,8 @@ if customize.doFiducial:
     fc.isoCut = 10.
     fc.etaCut = 2.5
     matchCut = "leadingPhoton.hasMatchedGenPhoton() && subLeadingPhoton.hasMatchedGenPhoton()"
-    phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >0.320 && subLeadingView().phoIdMvaWrtChosenVtx() >0.320)'
+#    phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >0.320 && subLeadingView().phoIdMvaWrtChosenVtx() >0.320)'#remove it for further studies
+    phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >-1. && subLeadingView().phoIdMvaWrtChosenVtx() >-1.)'
     accCut   = fc.getAccRecoCut()
     
     print process.flashggPreselectedDiPhotons.cut
@@ -135,6 +142,14 @@ if customize.doFiducial:
         process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut)[12:-2] +' && '+ str(phoIDcut))
     print "Here we print the preslection cut"
     print process.flashggPreselectedDiPhotons.cut
+
+
+#process.load("flashgg/Taggers/flashggDiPhotonMVA_cfi")
+process.flashggDiPhotonMVA.sigmaMdecorrFile = cms.FileInPath("flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_Moriond17_Mgg100to180.root") 
+#process.flashggDiPhotonMVAold.sigmaMdecorrFile = cms.FileInPath("flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_Moriond17_Mgg100to180.root") 
+process.load("flashgg/Taggers/flashggTags_cff")
+#process.flashggSigmaMoMpToMTag.BoundariesSigmaMoM  = cms.vdouble(0.,0.00764,0.0109,0.0288) ##original set from optimisation on MC
+process.flashggSigmaMoMpToMTag.BoundariesSigmaMoM  = cms.vdouble(0.,0.00866,0.0118,0.0298) ##corrected looking at data distribution
 
 process.load("flashgg/Taggers/flashggTagSequence_cfi")
 print 'here we print the tag sequence before'
@@ -153,6 +168,8 @@ if customize.doFiducial:
     process.flashggTagSequence.remove(process.flashggZHLeptonicTag)
     process.flashggTagSequence.remove(process.flashggVHLeptonicLooseTag)
     process.flashggTagSequence.remove(process.flashggVHHadronicTag)
+    process.flashggTagSequence.remove(process.flashggVBFDiPhoDiJetMVA)
+    process.flashggTagSequence.remove(process.flashggVBFMVA)
     process.flashggTagSequence.replace(process.flashggUntagged, process.flashggSigmaMoMpToMTag)
 
 if customize.tthTagsOnly:
@@ -195,11 +212,20 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
     if customize.doFiducial:
         variablesToUse.extend(fc.getGenVariables(True))
         variablesToUse.extend(fc.getRecoVariables(True))
-        variablesToUse.append("genLeadGenIso := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
-        variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
+##        variablesToUse.append("genLeadGenIso := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
+##        variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
         variablesToUse.append("leadmva := diPhotonMVA().leadmva")
         variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
-
+#        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
+        
+    if customize.doSystematics and customize.doFiducial:
+        systematicVariables.extend(fc.getGenVariables(True))
+        systematicVariables.extend(fc.getRecoVariables(True))
+#        systematicVariables.append("genLeadGenIso[1,0.0,100.0] := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
+#        systematicVariables.append("decorrSigmarv[1,0.0,0.10] := diPhotonMVA().decorrSigmarv")
+        systematicVariables.append("leadmva[200,-1.0,1.0] := diPhotonMVA().leadmva")
+        systematicVariables.append("subleadmva[200,-1.0,1.0] := diPhotonMVA().subleadmva")
+        
     if customize.doSystematics:
         for direction in ["Up","Down"]:
             phosystlabels.append("MvaShift%s01sigma" % direction)
@@ -215,10 +241,10 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
             jetsystlabels.append("JEC%s01sigma" % direction)
             jetsystlabels.append("JER%s01sigma" % direction)
             jetsystlabels.append("PUJIDShift%s01sigma" % direction)
-            metsystlabels.append("metJecUncertainty%s01sigma" % direction)
-            metsystlabels.append("metJerUncertainty%s01sigma" % direction)
-            metsystlabels.append("metPhoUncertainty%s01sigma" % direction)
-            metsystlabels.append("metUncUncertainty%s01sigma" % direction)
+###            metsystlabels.append("metJecUncertainty%s01sigma" % direction)
+###            metsystlabels.append("metJerUncertainty%s01sigma" % direction)
+###            metsystlabels.append("metPhoUncertainty%s01sigma" % direction)
+###            metsystlabels.append("metUncUncertainty%s01sigma" % direction)
             variablesToUse.append("UnmatchedPUWeight%s01sigma[1,-999999.,999999.] := weight(\"UnmatchedPUWeight%s01sigma\")" % (direction,direction))
             variablesToUse.append("MvaLinearSyst%s01sigma[1,-999999.,999999.] := weight(\"MvaLinearSyst%s01sigma\")" % (direction,direction))
             variablesToUse.append("LooseMvaSF%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s01sigma\")" % (direction,direction))
@@ -248,6 +274,8 @@ elif customize.processId == "Data":
     variablesToUse = minimalNonSignalVariables
     if customize.doFiducial:
         variablesToUse.extend(fc.getRecoVariables(True))
+        variablesToUse.append("leadmva := diPhotonMVA().leadmva")
+        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
     customizeSystematicsForData(process)
 else:
     print "Background MC, so store mgg and central only"
@@ -262,17 +290,24 @@ print variablesToUse
 print "------------------------------------------------------------"
 
 
-
-
 #from flashgg.Taggers.globalVariables_cff import globalVariables
 #globalVariables.extraFloats.rho = cms.InputTag("rhoFixedGridAll")
 
 #cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags)
+
+
+
+if(customize.doFiducial):
+    fc.bookCompositeObjects(process, customize.processId, process.flashggTagSequence)
 cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags)
+
+print "VRT debug tagsequence"
+print process.flashggTagSequence
 
 # Dump an object called NoTag for untagged events in order to track QCD weights
 # Will be broken if it's done for non-central values, so turn this on only for the non-syst tag sorter
-process.flashggTagSorter.CreateNoTag = True # MUST be after tag sequence cloning
+process.flashggTagSorter.CreateNoTag = False # MUST be after tag sequence cloning
+
 
 ###### Dumper section
 
@@ -283,7 +318,6 @@ process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
 #"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/THQ_HToGG_13TeV-madgraph-pythia8_TuneCUETP8M1/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170114_100016/0000/myMicroAODOutputFile_9.root"
 #"root://eoscms.cern.ch//eos/cms//store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/bbHToGG_M-125_4FS_ybyt_13TeV_amcatnlo/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170114_095140/0000/myMicroAODOutputFile_9.root"
-#"root://eoscms.cern.ch//eos/cms//store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/bbHToGG_M-125_4FS_yb2_13TeV_amcatnlo/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170114_095013/0000/myMicroAODOutputFile_1.root"
 "root://eoscms.cern.ch//eos/cms//store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/170113_234241/0000/myMicroAODOutputFile_1.root"
 #"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/ReMiniAOD-03Feb2017-2_5_0-test/2_5_0/DoubleEG/ReMiniAOD-03Feb2017-2_5_0-test-2_5_0-v0-Run2016G-03Feb2017-v1/170210_054444/0000/myMicroAODOutputFile_264.root"
 #"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/VBFHToGG_M-125_13TeV_powheg_pythia8/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170114_092754/0000/myMicroAODOutputFile_10.root"
@@ -329,11 +363,6 @@ process.tagsDumper.quietRooFit = True
 process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
 process.tagsDumper.splitPdfByStage0Cat = cms.untracked.bool(customize.doHTXS)
 
-if(customize.doFiducial):
-#    if customize.processId == "Data":
-#        fc.addRecoGlobalVariables(process, process.tagsDumper)
-#    else:
-    fc.addObservables(process, process.tagsDumper, customize.processId )
 
 #tagList=[
 #["UntaggedTag",4],
@@ -395,7 +424,7 @@ for tag in tagList:
           else:
               currentVariables = []
       isBinnedOnly = (systlabel !=  "")
-      if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") ) and (systlabel ==  "") and not (customize.processId == "th_125" or customize.processId == "bbh_125"):
+      if ( customize.doPdfWeights or customize.doSystematics ) and ( customize.datasetName().count("HToGG") or customize.processId.count("h_") or customize.processId.count("vbf_")  or customize.processId.count("Acceptance") ) and (systlabel ==  ""):
           print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
           nPdfWeights = 60
@@ -420,8 +449,16 @@ for tag in tagList:
                            nPdfWeights=nPdfWeights,
                            nAlphaSWeights=nAlphaSWeights,
                            nScaleWeights=nScaleWeights,
-                           splitPdfByStage0Cat=customize.doHTXS
+                           splitPdfByStage0Cat=customize.doHTXS,
+                           unbinnedSystematics=True
                            )
+
+if(customize.doFiducial):
+#    if customize.processId == "Data":
+#        fc.addRecoGlobalVariables(process, process.tagsDumper)
+#    else:
+    fc.addObservables(process, process.tagsDumper, customize.processId )
+
 
 # Require standard diphoton trigger
 from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
@@ -508,7 +545,18 @@ if customize.doFiducial:
           nAlphaSWeights = -1
           nScaleWeights = -1
     if not customize.processId == "Data":
-        fc.addGenOnlyAnalysis(process,customize.processId,customize.acceptance,tagList,systlabels,pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights))
+        mH = None
+        ldset = customize.datasetName().lower() 
+        if "htogg" in ldset or "tthjettogg" in ldset:
+            try:
+                mH = float(customize.datasetName().split("_M")[1].split("_")[0])
+            except Exception, e:
+                print(e,customize.datasetName())
+                pass
+        fc.addGenOnlyAnalysis(process,customize.processId,process.flashggTagSequence,
+                              customize.acceptance,tagList,systlabels,
+                              pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights),
+                              mH=mH,filterEvents=customize.filterNonAcceptedEvents)
 
 if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
 process.options.allowUnscheduled = cms.untracked.bool(True)

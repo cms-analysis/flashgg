@@ -1,0 +1,12 @@
+{
+"variables": [
+	     ["recoNjets2p5", "", [-0.5,0.5,1.5,2.5,3.5,100.0],[]] ],
+
+"procs": ["Data_13TeV"],
+
+"cats": ["SigmaMpTTag_0",
+       "SigmaMpTTag_1", 
+       "SigmaMpTTag_2"]
+
+
+}

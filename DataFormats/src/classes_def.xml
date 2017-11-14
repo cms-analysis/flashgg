@@ -44,12 +44,7 @@
 </class>
 <class name="std::vector<flashgg::UntaggedTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::UntaggedTag> >"/>
-<class name="flashgg::NoTag"/>
-<class name="std::vector<flashgg::NoTag>"/>
-<class name="edm::Wrapper<std::vector<flashgg::NoTag> >"/>
-<class name="flashgg::SigmaMpTTag" ClassVersion="0">
-  <version ClassVersion="0" checksum="3974770049"/>
-</class>
+<class name="flashgg::SigmaMpTTag"/>
 <class name="std::vector<flashgg::SigmaMpTTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::SigmaMpTTag> >"/>
 
@@ -234,7 +229,9 @@
 </class>
 <class name="std::pair<edm::Ptr<reco::Vertex>,flashgg::MinimalPileupJetIdentifier>"/>
 <class name="std::map<edm::Ptr<reco::Vertex>,flashgg::MinimalPileupJetIdentifier>"/>
-<class name="flashgg::Jet" ClassVersion="13">
+<class name="flashgg::Jet" ClassVersion="15">
+ <version ClassVersion="15" checksum="1865176066"/>
+ <version ClassVersion="14" checksum="3303906194"/>
  <version ClassVersion="13" checksum="2175929989"/>
   <version ClassVersion="12" checksum="1532368094"/>
   <version ClassVersion="11" checksum="3459570589"/>
@@ -309,6 +306,7 @@
 <class name="std::vector<edm::Ptr<pat::MET> >"/>
 <class name="edm::Wrapper<std::vector<edm::Ptr<pat::MET> > >"/>
 
+
 <class name="flashgg::DiMuonCandidate" ClassVersion="10">
   <version ClassVersion="10" checksum="1852293607"/>
 </class>
@@ -343,4 +341,6 @@
 </class>
 <class name="std::vector<flashgg::TagCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TagCandidate> >"/>
+
+<class name="edm::Ptr<reco::CompositeCandidate>"/>
 </lcgdict>
