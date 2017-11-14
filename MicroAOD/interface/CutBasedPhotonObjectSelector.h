@@ -14,6 +14,7 @@
 
 #include <tuple>
 #include <vector>
+#include <unordered_map>
 #include <map>
 
 namespace flashgg {
@@ -30,7 +31,8 @@ namespace flashgg {
 
         bool operator()( const Photon &cand, const edm::EventBase &ev ) const;
         bool operator()( const edm::Ref<edm::View<Photon> > candref, const edm::EventBase &ev ) const;
-
+        const std::unordered_map<std::string, bool>& computeSelections( const Photon &pho, const edm::Event &ev );
+        
     protected:
         typedef std::shared_ptr<functor_type> functor_ptr;
         typedef std::shared_ptr<stepwise_functor_type> stepwise_functor_ptr;
@@ -45,6 +47,8 @@ namespace flashgg {
         // std::map<std::string, std::vector<std::tuple<functor_type, functor_type, functor_type> > >  selections_
         std::map<std::string, std::vector<std::tuple<functor_ptr , functor_ptr, stepwise_functor_ptr > > >  selections_;
         std::vector<int> ignoreCuts_, invertCuts_, applyCuts_;
+        std::vector<string> cutsNames_;
+        std::unordered_map<std::string, bool> cutsResults_;
 
     private:
         edm::EDGetTokenT<double> rhoToken_;
