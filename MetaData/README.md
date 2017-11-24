@@ -114,6 +114,11 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 ./prepareCrabJobs.py -C RunIIFall17-2_7_5 -U 1 -L 25 -s campaigns/RunIIFall17-2_7_5.json -V 2_7_5 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
 
+#### adding extra trigger info
+
+./prepareCrabJobs.py -C RunIIFall17-2_7_6 -U 1 -L 25 -s campaigns/RunIIFall17-2_7_6_DoubleEG.json -V 2_7_6 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask jsons/ToRun_DoubleEG_Nov23.json
+
+./prepareCrabJobs.py -C RunIIFall17-2_7_6 -U 1 -L 25 -s campaigns/RunIIFall17-2_7_6_SingleElectron.json -V 2_7_6 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask jsons/ToRun_SingleElectron_Nov23.json
 
 
 ### 924 tests
