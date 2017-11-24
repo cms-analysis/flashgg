@@ -63,4 +63,5 @@ microAODHLTOutputCommand = cms.untracked.vstring("keep *_l1extraParticles_Isolat
                                                  "keep *_caloStage2Digis_EGamma_*",
                                                  "keep *_TriggerResults_*_HLT",
                                                  "keep *_slimmedPatTrigger_*_*",
+                                                 "keep *_patTrigger_*_*"
                                                  )
