@@ -18,7 +18,7 @@ then
   echo "CMSSW area appears to have extra files already. Start over and check README carefully."
   echo "You can remove this condition from the setup script if you wish, but proceed with caution!"
   echo
-  return 1
+#  return 1
 fi
 
 echo
@@ -117,7 +117,7 @@ cd $CMSSW_BASE/src
 # Straightofrward update for 8_0_28
 echo "Setting up QGL..."
 git cms-addpkg RecoJets/JetProducers
-git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-9_2_0
+git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-9_4_0
 
 # TnP tools removed for 8_0_28, so Validation does not compile
 # To be investigated
@@ -128,12 +128,12 @@ git clone -b v2017.05.23_legacy80X_prelim https://github.com/cms-analysis/Egamma
 echo "Setting up weight stuff..."
 #git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-weights-9_2_0 #oops, does not exist
 git cms-addpkg CommonTools/UtilAlgos
-git cms-merge-topic -u sethzenz:for-flashgg-weightscount-9_2_0
+git cms-merge-topic -u sethzenz:for-flashgg-weightscount-9_4_0
 
 # Updated for 8_0_28, and compiles and runs, but NOT checked by experts
 # Update built from sethzenz:for-flashgg-smearer-conv-weights-8_0_26 and shervin86:Hgg_Gain_v1
 echo "Setting up EGM stuff..."
-git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-9_2_0
+git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-9_4_0
 
 # Straightforward update for 8_0_28
 # Temporarily removed from 9_2_0
@@ -143,7 +143,7 @@ git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-9_2_0
 # Straightforward update for 8_0_28
 echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
 git cms-addpkg FWCore/GuiBrowsers #temp-by hand
-git cms-merge-topic -u sethzenz:for-flashgg-toolbase-9_2_0
+git cms-merge-topic -u sethzenz:for-flashgg-toolbase-9_4_0
 
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/Systematics/data/JEC/Summer16_23Sep2016*db $CMSSW_BASE/src/flashgg/
