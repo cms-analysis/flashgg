@@ -159,8 +159,8 @@ echo "copy smearing files stored in flashgg into egamma tools"
 #cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_scales.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 #cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_smearings.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 
-echo "copying over updated classdef for release 9"
-mv $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_92X.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
+echo "linking classdef for release 9"
+ln -s $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_92X.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
 
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit

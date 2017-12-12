@@ -123,9 +123,10 @@ git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-9_4_0
 # To be investigated
 echo "Setting up TnP tools, including temporary perl hack for 94X..."
 #git cms-merge-topic -u sethzenz:for-flashgg-egm_tnp-8_0_26
-#git clone -b v2017.05.23_legacy80X_prelim https://github.com/cms-analysis/EgammaAnalysis-TnPTreeProducer EgammaAnalysis/TnPTreeProducer
-git clone -b v2017.12.04_92X_prelim  https://github.com/lsoffi/EgammaAnalysis-TnPTreeProducer.git EgammaAnalysis/TnPTreeProducer
+git clone -b v2017.05.23_legacy80X_prelim https://github.com/cms-analysis/EgammaAnalysis-TnPTreeProducer EgammaAnalysis/TnPTreeProducer
+#git clone -b v2017.12.04_92X_prelim  https://github.com/lsoffi/EgammaAnalysis-TnPTreeProducer.git EgammaAnalysis/TnPTreeProducer
 perl -p -i.bak -e 's/numberOfHits/numberOfAllHits/g' $CMSSW_BASE/src/EgammaAnalysis/TnPTreeProducer/plugins/ElectronVariableHelper.h
+perl -p -i.bak -e 's/#include <iostream>/#include <iostream>\n#include <numeric>/g' $CMSSW_BASE/src/EgammaAnalysis/TnPTreeProducer/plugins/PileupWeightProducer.cc
 
 echo "Setting up weight stuff..."
 #git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-weights-9_2_0 #oops, does not exist
@@ -161,8 +162,8 @@ echo "copy smearing files stored in flashgg into egamma tools"
 #cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_scales.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 #cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_smearings.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 
-echo "copying over updated classdef for release 9"
-mv $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_92X.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
+echo "linking classdef for release 94X"
+mv $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_940.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
 
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit
