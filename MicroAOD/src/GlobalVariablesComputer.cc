@@ -1,8 +1,7 @@
 #include "flashgg/MicroAOD/interface/GlobalVariablesComputer.h"
-
 #include "FWCore/Framework/interface/Event.h"
-
 #include "DataFormats/VertexReco/interface/Vertex.h"
+#include <numeric>
 
 using namespace edm;
 using namespace reco;

@@ -121,9 +121,11 @@ git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-9_4_0
 
 # TnP tools removed for 8_0_28, so Validation does not compile
 # To be investigated
-#echo "Setting up TnP tools..."
+echo "Setting up TnP tools, including temporary perl hack for 94X..."
 #git cms-merge-topic -u sethzenz:for-flashgg-egm_tnp-8_0_26
-git clone -b v2017.05.23_legacy80X_prelim https://github.com/cms-analysis/EgammaAnalysis-TnPTreeProducer EgammaAnalysis/TnPTreeProducer
+#git clone -b v2017.05.23_legacy80X_prelim https://github.com/cms-analysis/EgammaAnalysis-TnPTreeProducer EgammaAnalysis/TnPTreeProducer
+git clone -b v2017.12.04_92X_prelim  https://github.com/lsoffi/EgammaAnalysis-TnPTreeProducer.git EgammaAnalysis/TnPTreeProducer
+perl -p -i.bak -e 's/numberOfHits/numberOfAllHits/g' $CMSSW_BASE/src/EgammaAnalysis/TnPTreeProducer/plugins/ElectronVariableHelper.h
 
 echo "Setting up weight stuff..."
 #git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-weights-9_2_0 #oops, does not exist
