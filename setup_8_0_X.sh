@@ -156,10 +156,11 @@ cp $CMSSW_BASE/src/flashgg/Systematics/data/Winter_2016_reReco_v1_ele_smearings.
 cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_scales.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_smearings.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 
-
-
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit
+
+echo "linking classdef for release 8"
+ln -s $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_80X.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
 
 echo
 echo "Done with setup script! You still need to build!"
