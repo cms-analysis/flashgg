@@ -41,6 +41,7 @@
 #include "flashgg/DataFormats/interface/PDFWeightObject.h"
 #include "flashgg/DataFormats/interface/ZPlusJetTag.h"
 #include "flashgg/DataFormats/interface/TagCandidate.h"
+#include "flashgg/DataFormats/interface/TagAndProbeCandidate.h" //spigazzi
 
 #include <vector>
 #include <map>
@@ -302,6 +303,17 @@ namespace  {
         edm::Wrapper<flashgg::TagCandidate>                      wrp_tags;
         std::vector<flashgg::TagCandidate>                       vec_tags;
         edm::Wrapper<std::vector<flashgg::TagCandidate> >    wrp_vec_tags;
+
+        //---TagAndProbe candidate
+        flashgg::TagAndProbeCandidate                                          fgg_tnp;
+        edm::Wrapper<flashgg::TagAndProbeCandidate>                            wrp_fgg_tnp;
+        std::vector<flashgg::TagAndProbeCandidate>                             vec_fgg_tnp;
+        edm::Wrapper<std::vector<flashgg::TagAndProbeCandidate> >              wrp_vec_fgg_tnp;
+        edm::Ptr<flashgg::TagAndProbeCandidate>                                ptr_fgg_tnp;
+        edm::Wrapper<edm::Ptr<flashgg::TagAndProbeCandidate> >                 wrp_ptr_fgg_tnp;
+        std::vector<edm::Ptr<flashgg::TagAndProbeCandidate> >                  vec_ptr_fgg_tnp;
+        edm::Wrapper<std::vector<edm::Ptr<flashgg::TagAndProbeCandidate> > >   wrp_vec_ptr_fgg_tnp;
+
     };
 }
 // Local Variables:
