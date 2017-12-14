@@ -128,6 +128,10 @@ git clone -b v2017.05.23_legacy80X_prelim https://github.com/cms-analysis/Egamma
 perl -p -i.bak -e 's/numberOfHits/numberOfAllHits/g' $CMSSW_BASE/src/EgammaAnalysis/TnPTreeProducer/plugins/ElectronVariableHelper.h
 perl -p -i.bak -e 's/#include <iostream>/#include <iostream>\n#include <numeric>/g' $CMSSW_BASE/src/EgammaAnalysis/TnPTreeProducer/plugins/PileupWeightProducer.cc
 
+echo "Temporary perl hack for LeptonSelection (to keep repo compatibility with 80X), due to CMSSW function name change"
+perl -p -i.bak -e 's/numberOfHits/numberOfAllHits/g' $CMSSW_BASE/src/flashgg/Taggers/src/LeptonSelection.cc
+
+
 echo "Setting up weight stuff..."
 #git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-weights-9_2_0 #oops, does not exist
 git cms-addpkg CommonTools/UtilAlgos
@@ -163,7 +167,7 @@ echo "copy smearing files stored in flashgg into egamma tools"
 #cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_smearings.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 
 echo "linking classdef for release 94X"
-mv $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_940.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
+ln -s $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_940.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
 
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit
