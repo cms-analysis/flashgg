@@ -38,7 +38,7 @@ config.Data.unitsPerJob = UNITSPERJOB
 config.Data.publication = True
 config.Data.publishDBS = 'phys03'
 config.Data.outputDatasetTag = 'FLASHGG_VERSION-PROCESSED_DSET'
-config.Data.outLFNDirBase = "/store/group/phys_exotica/diphoton/spigazzi/"
+config.Data.outLFNDirBase = "OUTLFN"
 
 config.section_("Site")
 config.Site.storageSite = "OUTSITE"
