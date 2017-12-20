@@ -210,7 +210,8 @@ namespace flashgg {
                 std::vector<float> emEnergies(ncone_boundaries+1,0.); 
                 std::vector<float> neEnergies(ncone_boundaries+1,0.); 
                 std::vector<float> muEnergies(ncone_boundaries+1,0.);
-                
+                int numDaug03 = 0;
+
                 for ( unsigned k = 0; k < fjet.numberOfSourceCandidatePtrs(); ++k ) {
                     reco::CandidatePtr pfJetConstituent = fjet.sourceCandidatePtr(k);
                     
@@ -222,6 +223,7 @@ namespace flashgg {
                     sumPtDrSq += candPt*candPt*candDr*candDr;
                     sumPtSq += candPt*candPt;
 
+                    if( candPt > 0.3 ) { ++numDaug03; }
                     if(lPack->charge() != 0 && candPt > leadTrackPt_) leadTrackPt_ = candPt;
 
                     if(abs(lPack->pdgId()) == 11 || abs(lPack->pdgId()) == 13) {
@@ -266,8 +268,9 @@ namespace flashgg {
                     fjet.addUserFloat("softLepPt", softLepPt);
                     fjet.addUserFloat("softLepRatio", softLepRatio);
                     fjet.addUserFloat("softLepDr", softLepDr);
-                    fjet.addUserFloat("softLepPtRel", softLepPtRel);
-                    
+                    fjet.addUserFloat("softLepPtRel", softLepPtRel); 
+                    fjet.addUserInt("numDaug03", numDaug03);
+                   
                     /// for(size_t icone = 0; icone < ncone_boundaries+1; ++icone) {
                     ///     std::cout << "icone " << icone << " " << emEnergies[icone] << " " << muEnergies[icone] << " " << chEnergies[icone] << " " << neEnergies[icone] << std::endl;
                     /// }
