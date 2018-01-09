@@ -172,7 +172,7 @@ class MicroAODCustomize(object):
             self.customizeSpring15EleID(process)
         if self.runSummer16EGMPhoID:
             self.customizeSummer16EGMPhoID(process)
-        if os.environ["CMSSW_VERSION"].count("CMSSW_9_2"):
+        if os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
             self.customize92X( process ) # Needs to come after egm
         print "Final customized process:",process.p
             
