@@ -137,12 +137,15 @@ def addFlashggPFCHSJets(process,
                                VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                                qgVariablesInputTag   = cms.InputTag('QGTaggerPFCHS'+label, 'qgLikelihood'),
                                ComputeSimpleRMS = cms.bool(True),
-                               ComputeRegVars = cms.bool(True),
                                PileupJetIdParameters = full_80x_chs,
                                rho     = cms.InputTag("fixedGridRhoFastjetAll"),
                                JetCollectionIndex = cms.uint32(vertexIndex),
                                Debug = cms.untracked.bool(False),
-                               DoPuJetID = cms.bool(False)
+                               DoPuJetID = cms.bool(False),
+                               ComputeRegVars = cms.bool(True),
+                               MinPtForEneSum = cms.double(0.),
+                               MaxEtaForEneSum = cms.double(2.5),
+                               NJetsForEneSum = cms.uint32(0),
                                )
   setattr( process, 'flashggPFCHSJets'+ label, flashggJets)
 
