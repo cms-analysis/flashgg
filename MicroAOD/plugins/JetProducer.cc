@@ -47,6 +47,8 @@ namespace flashgg {
         bool debug_;
         unsigned pudebug_matched_badrms_, pudebug_matched_;
         bool doPuJetID_;
+        float minPtForEneSum_, maxEtaForEneSum_;
+        unsigned int nJetsForEneSum_;
     };
 
 
@@ -64,7 +66,10 @@ namespace flashgg {
         rhoToken_( consumes<double>(iConfig.getParameter<edm::InputTag>("rho") ) ),
         jetDebugToken_( consumes<View<pat::Jet> >( iConfig.getUntrackedParameter<InputTag> ( "JetDebugTag",edm::InputTag("slimmedJets") ) ) ),
         debug_( iConfig.getUntrackedParameter<bool>( "Debug",false ) ),
-        doPuJetID_( iConfig.getParameter<bool>( "DoPuJetID") )
+        doPuJetID_( iConfig.getParameter<bool>( "DoPuJetID") ),
+        minPtForEneSum_( iConfig.getParameter<double>("MinPtForEneSum") ),
+        maxEtaForEneSum_( iConfig.getParameter<double>("MaxEtaForEneSum") ),
+        nJetsForEneSum_( iConfig.getParameter<unsigned int>("NJetsForEneSum") )
         //        usePuppi( iConfig.getUntrackedParameter<bool>( "UsePuppi", false ) )
     {
         pileupJetIdAlgo_.reset( new PileupJetIdAlgo( pileupJetIdParameters_, true ) );
@@ -152,7 +157,6 @@ namespace flashgg {
 
             //store btagging userfloats
             if (computeRegVars) {
-
                 if (debug_) { std::cout << " start of computeRegVars" << std::endl; }
 
                 int nSecVertices = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->nVertices();
@@ -171,6 +175,9 @@ namespace flashgg {
                     vtx3DVal = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->flightDistance(0).value();
                     vtx3DSig = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->flightDistance(0).significance();
                 }
+
+                
+                
 
                 fjet.addUserFloat("nSecVertices", nSecVertices);
                 fjet.addUserFloat("vtxNTracks", vtxNTracks);
@@ -195,6 +202,16 @@ namespace flashgg {
                 float leadTrackPt_ = 0, softLepPt = 0, softLepRatio = 0, softLepDr = 0;
                 float sumPtDrSq = 0.;
                 float sumPtSq = 0.;
+                float softLepPtRel = 0.;
+                
+                float cone_boundaries[] = { 0.05, 0.1, 0.2, 0.3 }; // hardcoded boundaries: should be made configurable
+                size_t ncone_boundaries = sizeof(cone_boundaries)/sizeof(float);
+                std::vector<float> chEnergies(ncone_boundaries+1,0.);
+                std::vector<float> emEnergies(ncone_boundaries+1,0.); 
+                std::vector<float> neEnergies(ncone_boundaries+1,0.); 
+                std::vector<float> muEnergies(ncone_boundaries+1,0.);
+                int numDaug03 = 0;
+
                 for ( unsigned k = 0; k < fjet.numberOfSourceCandidatePtrs(); ++k ) {
                     reco::CandidatePtr pfJetConstituent = fjet.sourceCandidatePtr(k);
                     
@@ -206,6 +223,7 @@ namespace flashgg {
                     sumPtDrSq += candPt*candPt*candDr*candDr;
                     sumPtSq += candPt*candPt;
 
+                    if( candPt > 0.3 ) { ++numDaug03; }
                     if(lPack->charge() != 0 && candPt > leadTrackPt_) leadTrackPt_ = candPt;
 
                     if(abs(lPack->pdgId()) == 11 || abs(lPack->pdgId()) == 13) {
@@ -213,10 +231,31 @@ namespace flashgg {
                             softLepPt = candPt;
                             softLepRatio = candPt/pjet->pt();
                             softLepDr = candDr;
+                            softLepPtRel = ( pjet->px()*lPack->px() + pjet->py()*lPack->py() + pjet->pz()*lPack->pz() ) / pjet->p();
+                            softLepPtRel = sqrt( lPack->p()*lPack->p() - softLepPtRel*softLepPtRel );
                         }
                     }
+                    
+                    int pdgid = abs(lPack->pdgId());
+                    size_t icone = std::lower_bound(&cone_boundaries[0],&cone_boundaries[ncone_boundaries],candDr) - &cone_boundaries[0];
+                    float candEnergy = kcand->energy();
+                    // std::cout << "pdgId " << pdgid << " candDr " << candDr << " icone " << icone << " " << candEnergy << std::endl; 
+                    if( pdgid == 22 || pdgid == 11 ) {
+                        // std::cout << " fill EM" << std::endl;
+                        emEnergies[icone] += candEnergy;
+                    } else if ( pdgid == 13 ) { 
+                        // std::cout << " fill mu" << std::endl;
+                        muEnergies[icone] += candEnergy;
+                    } else if ( lPack-> charge() != 0 ) {
+                        // std::cout << " fill ch" << std::endl;
+                        chEnergies[icone] += candEnergy;
+                    } else {
+                        // std::cout << " fill ne" << std::endl;
+                        neEnergies[icone] += candEnergy;
+                    }
                 }
-
+                
+                
                 if (debug_) { std::cout << " before set in  computeSimpleRMS || computeRegVars" << std::endl; }
                 
                 if (computeSimpleRMS) {
@@ -229,6 +268,20 @@ namespace flashgg {
                     fjet.addUserFloat("softLepPt", softLepPt);
                     fjet.addUserFloat("softLepRatio", softLepRatio);
                     fjet.addUserFloat("softLepDr", softLepDr);
+                    fjet.addUserFloat("softLepPtRel", softLepPtRel); 
+                    fjet.addUserInt("numDaug03", numDaug03);
+                   
+                    /// for(size_t icone = 0; icone < ncone_boundaries+1; ++icone) {
+                    ///     std::cout << "icone " << icone << " " << emEnergies[icone] << " " << muEnergies[icone] << " " << chEnergies[icone] << " " << neEnergies[icone] << std::endl;
+                    /// }
+                    
+                    if( fjet.pt() > minPtForEneSum_ && abs(fjet.eta()) < maxEtaForEneSum_ && ( nJetsForEneSum_ == 0 || i <= nJetsForEneSum_ ) ) {
+                        /// std::cout << "saving cones " << std::endl;
+                        fjet.setChEnergies(chEnergies);
+                        fjet.setEmEnergies(emEnergies);
+                        fjet.setNeEnergies(neEnergies);
+                        fjet.setMuEnergies(muEnergies);
+                    }
                 }
 
                 if (debug_) { std::cout << " end of computeSimpleRMS || computeRegVars" << std::endl; }
