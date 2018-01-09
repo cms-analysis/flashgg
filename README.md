@@ -36,7 +36,7 @@ Recently deprecated:
  git cms-init
  cd $CMSSW_BASE/src
  git clone https://github.com/cms-analysis/flashgg flashgg
- source flashgg/setup_9_4_0.sh
+ source flashgg/setup_9_4_X.sh
  ```
 
 If everything now looks reasonable, you can build:
