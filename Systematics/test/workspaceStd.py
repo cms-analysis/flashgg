@@ -12,6 +12,8 @@ dropVBFInNonGold = False  # for 2015 only!
 
 process = cms.Process("FLASHggSyst")
 
+
+
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
@@ -73,6 +75,18 @@ customize.options.register('doFiducial',
                            VarParsing.VarParsing.varType.bool,
                            'doFiducial'
                            )
+customize.options.register('doBJetsAndMET',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doBJetsAndMET'
+                           )
+customize.options.register('doJets',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doJets'
+                           )
 customize.options.register('acceptance',
                            'NONE',
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -131,6 +145,8 @@ from flashgg.MetaData.JobConfig import customize
 customize.parse()
 print "Printing options"
 print 'doFiducial '+str(customize.doFiducial)
+print 'doBJetsAndMET '+str(customize.doBJetsAndMET)
+print 'doJets '+str(customize.doJets)
 print 'acceptance '+str(customize.acceptance)
 print 'tthTagsOnly '+str(customize.tthTagsOnly)
 print 'doMuFilter '+str(customize.doMuFilter)
@@ -141,6 +157,8 @@ if customize.doFiducial:
     fc.subLeadCut = 1./4.
     fc.isoCut = 10.
     fc.etaCut = 2.5
+    fc.doBJetsAndMET = customize.doBJetsAndMET
+    fc.doJets = customize.doJets
     matchCut = "leadingPhoton.hasMatchedGenPhoton() && subLeadingPhoton.hasMatchedGenPhoton()"
 #    phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >0.320 && subLeadingView().phoIdMvaWrtChosenVtx() >0.320)'#remove it for further studies
     phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >-1. && subLeadingView().phoIdMvaWrtChosenVtx() >-1.)'
@@ -275,10 +293,11 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
             jetsystlabels.append("JEC%s01sigma" % direction)
             jetsystlabels.append("JER%s01sigma" % direction)
             jetsystlabels.append("PUJIDShift%s01sigma" % direction)
-###            metsystlabels.append("metJecUncertainty%s01sigma" % direction)
-###            metsystlabels.append("metJerUncertainty%s01sigma" % direction)
-###            metsystlabels.append("metPhoUncertainty%s01sigma" % direction)
-###            metsystlabels.append("metUncUncertainty%s01sigma" % direction)
+            if customize.doBJetsAndMET:
+                metsystlabels.append("metJecUncertainty%s01sigma" % direction)
+                metsystlabels.append("metJerUncertainty%s01sigma" % direction)
+                metsystlabels.append("metPhoUncertainty%s01sigma" % direction)
+                metsystlabels.append("metUncUncertainty%s01sigma" % direction)
             variablesToUse.append("UnmatchedPUWeight%s01sigma[1,-999999.,999999.] := weight(\"UnmatchedPUWeight%s01sigma\")" % (direction,direction))
             variablesToUse.append("MvaLinearSyst%s01sigma[1,-999999.,999999.] := weight(\"MvaLinearSyst%s01sigma\")" % (direction,direction))
             variablesToUse.append("LooseMvaSF%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s01sigma\")" % (direction,direction))
@@ -334,6 +353,7 @@ print "------------------------------------------------------------"
 #cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags)
 
 
+print "here"
 
 if(customize.doFiducial):
     fc.bookCompositeObjects(process, customize.processId, process.flashggTagSequence)
@@ -458,6 +478,19 @@ definedSysts=set()
 process.tagsDumper.NNLOPSWeightFile=cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root")
 process.tagsDumper.reweighGGHforNNLOPS = cms.untracked.bool(bool(customize.processId.count("ggh")))
 process.tagsDumper.classifierCfg.remap=cms.untracked.VPSet()
+if ( customize.datasetName() and customize.datasetName().count("GluGlu") and customize.datasetName().count("amcatnlo")):
+    print "Gluon fusion amcatnlo: read NNLOPS reweighting file"
+    process.tagsDumper.dumpNNLOPSweight = cms.untracked.bool(True)
+    process.tagsDumper.NNLOPSWeight=cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root")
+    
+elif ( customize.datasetName() and (customize.datasetName().count("HToGG") or customize.processId.count("h_") or customize.processId.count("vbf_")  or customize.processId.count("Acceptance"))):
+    print "Other signal: dump NNLOPS weights, but set them to 1"
+    process.tagsDumper.dumpNNLOPSweight = cms.untracked.bool(True)
+    process.tagsDumper.NNLOPSWeight=cms.double(1.0)
+else:
+    print "Data or background: no NNLOPS weights"
+    process.tagsDumper.dumpNNLOPSweight = cms.untracked.bool(False)
+
 for tag in tagList: 
   tagName=tag[0]
   tagCats=tag[1]
@@ -495,6 +528,7 @@ for tag in tagList:
           nPdfWeights = -1
           nAlphaSWeights = -1
           nScaleWeights = -1
+
       
       print "count 11"
 
@@ -634,8 +668,11 @@ if customize.doFiducial:
             except Exception, e:
                 print(e,customize.datasetName())
                 pass
+        NNLOPSreweight=False
+        if ( customize.datasetName() and customize.datasetName().count("GluGlu") and customize.datasetName().count("amcatnlo")):
+            NNLOPSreweight=True
         fc.addGenOnlyAnalysis(process,customize.processId,process.flashggTagSequence,
-                              customize.acceptance,tagList,systlabels,
+                              customize.acceptance,tagList,systlabels,NNLOPSreweight,
                               pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights),
                               mH=mH,filterEvents=customize.filterNonAcceptedEvents)
 

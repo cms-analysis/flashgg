@@ -32,6 +32,8 @@ namespace flashgg {
         double getExtraFloatVmax(std::string extrafloatname);
         std::vector<double > getExtraFloatBinning(std::string varname);
         void setProcessIndex(int processIndex) {processIndex_= processIndex;}
+        void bookNNLOPSweight(bool x);
+        void setNNLOPSweight(double NNLOPSweight);
 
 
     private:
@@ -45,6 +47,8 @@ namespace flashgg {
         bool dumpLumiFactor_;
         double lumiFactor_;
         int processIndex_;
+        bool dumpNNLOPSweight_;
+        double NNLOPSweight_;
 
         std::vector<edm::EDGetTokenT<float>> extraFloatTokens_;
         std::vector<edm::EDGetTokenT<std::vector<float>>> extraVectorFloatTokens_;

@@ -6,6 +6,9 @@ isoCut = 10.
 etaCut = 2.5
 jetPtCut = 30.
 
+doBJetsAndMET=False
+doJets=False
+
 # ----------------------------------------------------------------------------------------------------------------
 def getAccRecoCut():
     return "(leadingPhoton.userFloat(\"genIso\") < %(iso)f && subLeadingPhoton.userFloat(\"genIso\") < %(iso)f && abs(leadingPhoton.matchedGenPhoton.eta) <%(eta)f && abs(subLeadingPhoton.matchedGenPhoton.eta) <%(eta)f && leadingPhoton.matchedGenPhoton.pt / genP4.mass > %(lead)f && subLeadingPhoton.matchedGenPhoton.pt / genP4.mass > %(sub)f)" % {
@@ -181,170 +184,183 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
         from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
         recoJetCollections = UnpackedJetCollectionVInputTag
 
-    
-    recoJets2p5 = cms.VInputTag()
-    recoJets4p7 = cms.VInputTag()
-    recoJetsBflavor2p5 = cms.VInputTag()
-    recoJetsBflavor4p7 = cms.VInputTag()
-    recoMet =cms.VInputTag()
-    recoMuons =cms.VInputTag()
-    recoElectrons =cms.VInputTag()
+    if doJets:
+        recoJets2p5 = cms.VInputTag()
+        recoJets4p7 = cms.VInputTag()
+    if doBJetsAndMET:
+#        recoJetsBflavorMedium2p5 = cms.VInputTag()
+        recoJetsBflavorTight2p5 = cms.VInputTag()
+        recoMet =cms.VInputTag()
+        recoMuons =cms.VInputTag()
+        recoElectrons =cms.VInputTag()
     print recoJetCollections
     pos = tagSequence.index(recoDiphotonTags) - 1
-
-    if( not hasattr(process,"filteredRecoMet" ) ): 
-        setattr(process,"filteredRecoMet",cms.EDFilter("FlashggMetCandidateSelector",
-                                                       src=cms.InputTag("flashggMets"),
-                                                       cut=cms.string("1"),
-                                                       MetFiltersFlags=cms.vstring("Flag_HBHENoiseFilter","Flag_HBHENoiseIsoFilter","Flag_EcalDeadCellTriggerPrimitiveFilter","Flag_goodVertices","Flag_eeBadScFilter"),
-                                                       RECOfilters= cms.InputTag('TriggerResults::RECO'),
-                                                       PATfilters= cms.InputTag('TriggerResults::PAT')
-                                                                        
-                                                                        ) )
-        recoMet.append("filteredRecoMet")
-        tagSequence.insert(pos, getattr(process,"filteredRecoMet"))
-        pos += 1
-
-##    from flashgg.Taggers.flashggTags_cff import TTHLeptonicTag
-    if( not hasattr(process,"filteredRecoMuons" ) ): 
-        setattr(process,"filteredRecoMuons",cms.EDFilter("FlashggMuonCandidateSelector",
-                                                         src=cms.InputTag("flashggSelectedMuons"),
-                                                         cut=cms.string("eta < 2.4 && pt > 20"),
-                                                         VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
-                                                         muPFIsoSumRelThreshold = cms.double(0.25), 
-                                                                        ) )
-        recoMuons.append("filteredRecoMuons")
-        tagSequence.insert(pos, getattr(process,"filteredRecoMuons"))
-        pos += 1
-
-####electrons
-    if( not hasattr(process,"filteredRecoElectrons" ) ): 
-        setattr(process,"filteredRecoElectrons",cms.EDFilter("FlashggElectronCandidateSelector",
-                                                             src=cms.InputTag("flashggSelectedElectrons"),
-                                                             DiphotonTag=cms.InputTag("flashggPreselectedDiPhotons"),
-                                                             cut=cms.string("1"),###eta < 2.4 && pt > 20"),
-                                                             ElectronPtThreshold = cms.double(20.),
-                                                             ElectronEtaCuts = cms.vdouble(1.4442,1.566,2.5),
-                                                             useMVARecipe = cms.bool(False),
-                                                             useLooseID = cms.bool(True),
-                                                             deltaRPhoElectronThreshold = cms.double(0.35),
-                                                             deltaRTrkElec = cms.double(0.35),
-                                                             deltaMassElectronZThreshold = cms.double(5.0)
-
-                                                                        ) )
-        recoElectrons.append("filteredRecoElectrons")
-        tagSequence.insert(pos, getattr(process,"filteredRecoElectrons"))
-        pos += 1
+    
+    if doBJetsAndMET:
+        if( not hasattr(process,"filteredRecoMet" ) ): 
+            setattr(process,"filteredRecoMet",cms.EDFilter("FlashggMetCandidateSelector",
+                                                           src=cms.InputTag("flashggMets"),
+                                                           cut=cms.string("1"),
+                                                           MetFiltersFlags=cms.vstring("Flag_HBHENoiseFilter","Flag_HBHENoiseIsoFilter","Flag_EcalDeadCellTriggerPrimitiveFilter","Flag_goodVertices","Flag_eeBadScFilter"),
+                                                           RECOfilters= cms.InputTag('TriggerResults::RECO'),
+                                                           PATfilters= cms.InputTag('TriggerResults::PAT')
+                                                                            
+                                                                            ) )
+            recoMet.append("filteredRecoMet")
+            tagSequence.insert(pos, getattr(process,"filteredRecoMet"))
+            pos += 1
+    
+    ##    from flashgg.Taggers.flashggTags_cff import TTHLeptonicTag
+        if( not hasattr(process,"filteredRecoMuons" ) ): 
+            setattr(process,"filteredRecoMuons",cms.EDFilter("FlashggMuonCandidateSelector",
+                                                             src=cms.InputTag("flashggSelectedMuons"),
+                                                             cut=cms.string("abs(eta) < 2.4 && pt > 20"),
+                                                             VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
+                                                             muPFIsoSumRelThreshold = cms.double(0.25), 
+                                                                            ) )
+            recoMuons.append("filteredRecoMuons")
+            tagSequence.insert(pos, getattr(process,"filteredRecoMuons"))
+            pos += 1
+    
+    ####electrons
+        if( not hasattr(process,"filteredRecoElectrons" ) ): 
+            setattr(process,"filteredRecoElectrons",cms.EDFilter("FlashggElectronCandidateSelector",
+                                                                 src=cms.InputTag("flashggSelectedElectrons"),
+                                                                 DiphotonTag=cms.InputTag("flashggPreselectedDiPhotons"),
+                                                                 cut=cms.string("1"),###eta < 2.4 && pt > 20"),
+                                                                 ElectronPtThreshold = cms.double(20.),
+                                                                 ElectronEtaCuts = cms.vdouble(1.4442,1.566,2.4),
+                                                                 useMVARecipe = cms.bool(False),
+                                                                 useLooseID = cms.bool(True),
+                                                                 deltaRPhoElectronThreshold = cms.double(0.35),
+                                                                 deltaRTrkElec = cms.double(0.35),
+                                                                 deltaMassElectronZThreshold = cms.double(5.0)
+    
+                                                                            ) )
+            recoElectrons.append("filteredRecoElectrons")
+            tagSequence.insert(pos, getattr(process,"filteredRecoElectrons"))
+            pos += 1
 
 
     for icoll,coll in enumerate(recoJetCollections):        
-        if( not hasattr(process,"filteredRecoJetsEta2p5%d" % icoll) ): 
-            setattr(process,"filteredRecoJetsEta2p5%d" % icoll,cms.EDFilter("FlashggJetCandidateSelector", ##pujetid is applied in FlashggJetCandidateSelector via CutBasedJetObjectSelector.cc
-                                                                            src=coll,
-                                                                            cut=cms.string("pt>%f && abs(eta)<2.5 && passesJetID('Loose')" % jetPtCut),
-                                                                            
-                                                                            ) )
-            recoJets2p5.append("filteredRecoJetsEta2p5%d" % icoll)
-#            recoJets2p5.append(coll)
-            tagSequence.insert(pos, getattr(process,"filteredRecoJetsEta2p5%d" % icoll))
-            pos += 1
-
-
-        if( not hasattr(process,"filteredRecoJetsEta4p7%d" % icoll) ): 
-            setattr(process,"filteredRecoJetsEta4p7%d" % icoll,cms.EDFilter("FlashggJetCandidateSelector",
-                                                                            src=coll,
-                                                                            cut=cms.string("pt>%f && abs(eta)<4.7 && passesJetID('Loose') " % jetPtCut),
-
-                                                                            ) )
-
-            recoJets4p7.append("filteredRecoJetsEta4p7%d" % icoll)
-            tagSequence.insert(pos, getattr(process,"filteredRecoJetsEta4p7%d" % icoll))
-            pos += 1
+        if doJets:
+    	    if( not hasattr(process,"filteredRecoJetsEta2p5%d" % icoll) ): 
+    	        setattr(process,"filteredRecoJetsEta2p5%d" % icoll,cms.EDFilter("FlashggJetCandidateSelector", ##pujetid is applied in FlashggJetCandidateSelector via CutBasedJetObjectSelector.cc
+    	                                                                        src=coll,
+    	                                                                        cut=cms.string("pt>%f && abs(eta)<2.5 && passesJetID('Loose')" % jetPtCut),
+    	                                                                        
+    	                                                                        ) )
+    	        recoJets2p5.append("filteredRecoJetsEta2p5%d" % icoll)
+#   	         recoJets2p5.append(coll)
+    	        tagSequence.insert(pos, getattr(process,"filteredRecoJetsEta2p5%d" % icoll))
+    	        pos += 1
+    	
+    	
+    	    if( not hasattr(process,"filteredRecoJetsEta4p7%d" % icoll) ): 
+    	        setattr(process,"filteredRecoJetsEta4p7%d" % icoll,cms.EDFilter("FlashggJetCandidateSelector",
+    	                                                                        src=coll,
+    	                                                                        cut=cms.string("pt>%f && abs(eta)<4.7 && passesJetID('Loose') " % jetPtCut),
+    	
+    	                                                                        ) )
+    	
+    	        recoJets4p7.append("filteredRecoJetsEta4p7%d" % icoll)
+    	        tagSequence.insert(pos, getattr(process,"filteredRecoJetsEta4p7%d" % icoll))
+    	        pos += 1
 
         ###Btag reco, bflavor jets
-        from flashgg.MicroAOD.flashggJets_cfi import flashggBTag
-        from flashgg.Taggers.flashggTags_cff import bDiscriminator80XReReco
-        if( not hasattr(process,"filteredRecoJetsBflavorEta2p5%d" % icoll) ): 
-            setattr(process,"filteredRecoJetsBflavorEta2p5%d" % icoll,cms.EDFilter("FlashggJetCandidateSelector",
-                                                                                    src=coll,
-                                                                                    cut=cms.string("pt>%f && abs(eta)<2.5 && passesJetID('Loose') && bDiscriminator( '%s' ) > %f " % (jetPtCut, flashggBTag, bDiscriminator80XReReco[1])),
+        if doBJetsAndMET:
+        	from flashgg.MicroAOD.flashggJets_cfi import flashggBTag
+        	from flashgg.Taggers.flashggTags_cff import bDiscriminator80XReReco
+##        	if( not hasattr(process,"filteredRecoJetsBflavorMediumEta2p5%d" % icoll) ): 
+##        	    setattr(process,"filteredRecoJetsBflavorMediumEta2p5%d" % icoll,cms.EDFilter("FlashggJetCandidateSelector",
+##        	                                                                            src=coll,
+##        	                                                                            cut=cms.string("pt>%f && abs(eta)<2.5 && passesJetID('Loose') && bDiscriminator( '%s' ) > %f " % (jetPtCut, flashggBTag, bDiscriminator80XReReco[1])),
+##        	
+##        	
+##        	                                                                            ) )
+##        	    
+##        	    recoJetsBflavorMedium2p5.append("filteredRecoJetsBflavorMediumEta2p5%d" % icoll)
+##        	    tagSequence.insert(pos, getattr(process,"filteredRecoJetsBflavorMediumEta2p5%d" % icoll))
+##        	    pos += 1
+        	
+        	
+        	
+        	
+#####Tig	ht b-jets
+        	if( not hasattr(process,"filteredRecoJetsBflavorTightEta2p5%d" % icoll) ): 
+        	    setattr(process,"filteredRecoJetsBflavorTightEta2p5%d" % icoll,cms.EDFilter("FlashggJetCandidateSelector",
+        	                                                                            src=coll,
+        	                                                                            cut=cms.string("pt>%f && abs(eta)<2.5 && passesJetID('Loose') && bDiscriminator( '%s' ) > %f " % (jetPtCut, flashggBTag, bDiscriminator80XReReco[2])),
+        	
+        	
+        	                                                                            ) )
+        	    
+        	    recoJetsBflavorTight2p5.append("filteredRecoJetsBflavorTightEta2p5%d" % icoll)
+        	    tagSequence.insert(pos, getattr(process,"filteredRecoJetsBflavorTightEta2p5%d" % icoll))
+        	    pos += 1
 
-
-                                                                                    ) )
             
-            recoJetsBflavor2p5.append("filteredRecoJetsBflavorEta2p5%d" % icoll)
-            tagSequence.insert(pos, getattr(process,"filteredRecoJetsBflavorEta2p5%d" % icoll))
+##standard jets
+    if doJets:
+	    if( not hasattr(process,"flashggRecoHadronicActivity2p5") ): 
+	        process.flashggRecoHadronicActivity2p5 = cms.EDProducer("FlashggDiPhotonHadronicActivityProducer",
+	                                                                src=recoJets2p5,
+	                                                                veto=cms.InputTag(recoDiphotons)
+	                                                                )
+	        tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivity2p5"))
+	        pos += 1
+	    if( not hasattr(process,"flashggRecoHadronicActivity4p7") ): 
+	        process.flashggRecoHadronicActivity4p7 = cms.EDProducer("FlashggDiPhotonHadronicActivityProducer",
+	                                                                src=recoJets4p7,
+	                                                                veto=cms.InputTag(recoDiphotons)
+	                                                                )
+	        tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivity4p7"))
+	        pos += 1
+
+    if doBJetsAndMET:
+#	    if( not hasattr(process,"flashggRecoHadronicActivityBflavorMedium2p5") ): 
+#	        process.flashggRecoHadronicActivityBflavorMedium2p5 = cms.EDProducer("FlashggDiPhotonHadronicActivityProducer",
+#	                                                                src=recoJetsBflavorMedium2p5,
+#	                                                                veto=cms.InputTag(recoDiphotons) ##veto also muons!
+#	                                                                )
+#	        tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivityBflavorMedium2p5"))
+#	        pos += 1
+	
+	
+	
+	    if( not hasattr(process,"flashggRecoHadronicActivityBflavorTight2p5") ): 
+	        process.flashggRecoHadronicActivityBflavorTight2p5 = cms.EDProducer("FlashggDiPhotonHadronicActivityProducer",
+	                                                                src=recoJetsBflavorTight2p5,
+	                                                                veto=cms.InputTag(recoDiphotons) ##veto also muons!
+	                                                                )
+	        tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivityBflavorTight2p5"))
+	        pos += 1
+
+
+    if doBJetsAndMET:
+        if( not hasattr(process,"flashggRecoHadronicActivityMET") ): 
+            process.flashggRecoHadronicActivityMET = cms.EDProducer("FlashggDiPhotonHadronicActivityProducer",
+                                                                    src=recoMet,
+                                                                    veto=cms.InputTag(recoDiphotons)
+                                                                    )
+            tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivityMET"))
             pos += 1
-
-
-
-        if( not hasattr(process,"filteredRecoJetsBflavorEta4p7%d" % icoll) ): 
-            setattr(process,"filteredRecoJetsBflavorEta4p7%d" % icoll,cms.EDFilter("FlashggJetCandidateSelector",
-                                                                                   src=coll,
-                                                                                   cut=cms.string("pt>%f && abs(eta)<4.7 && passesJetID('Loose') && bDiscriminator( '%s' ) > %f " % (jetPtCut, flashggBTag, bDiscriminator80XReReco[1])),
-
-                                                                                    ) )
-            
-            recoJetsBflavor4p7.append("filteredRecoJetsBflavorEta4p7%d" % icoll)
-            tagSequence.insert(pos, getattr(process,"filteredRecoJetsBflavorEta4p7%d" % icoll))
+    if doBJetsAndMET:
+        if( not hasattr(process,"flashggRecoHadronicActivityMuons") ): 
+            process.flashggRecoHadronicActivityMuons = cms.EDProducer("FlashggDiPhotonHadronicActivityProducer",
+                                                                    src=recoMuons,
+                                                                    veto=cms.InputTag(recoDiphotons) 
+                                                                    )
+            tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivityMuons"))
             pos += 1
-            
-
-    if( not hasattr(process,"flashggRecoHadronicActivity2p5") ): 
-        process.flashggRecoHadronicActivity2p5 = cms.EDProducer("FlashggDiPhotonHadronicActivityProducer",
-                                                                src=recoJets2p5,
-                                                                veto=cms.InputTag(recoDiphotons)
-                                                                )
-        tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivity2p5"))
-        pos += 1
-    if( not hasattr(process,"flashggRecoHadronicActivity4p7") ): 
-        process.flashggRecoHadronicActivity4p7 = cms.EDProducer("FlashggDiPhotonHadronicActivityProducer",
-                                                                src=recoJets4p7,
-                                                                veto=cms.InputTag(recoDiphotons)
-                                                                )
-        tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivity4p7"))
-        pos += 1
-
-    if( not hasattr(process,"flashggRecoHadronicActivityBflavor2p5") ): 
-        process.flashggRecoHadronicActivityBflavor2p5 = cms.EDProducer("FlashggDiPhotonHadronicActivityProducer",
-                                                                src=recoJetsBflavor2p5,
-                                                                veto=cms.InputTag(recoDiphotons) ##veto also muons!
-                                                                )
-        tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivityBflavor2p5"))
-        pos += 1
-
-    if( not hasattr(process,"flashggRecoHadronicActivityBflavor4p7") ): 
-        process.flashggRecoHadronicActivityBflavor4p7 = cms.EDProducer("FlashggDiPhotonHadronicActivityProducer",
-                                                                src=recoJetsBflavor4p7,
-                                                                veto=cms.InputTag(recoDiphotons)
-                                                                )
-        tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivityBflavor4p7"))
-        pos += 1
-
-
-    if( not hasattr(process,"flashggRecoHadronicActivityMET") ): 
-        process.flashggRecoHadronicActivityMET = cms.EDProducer("FlashggDiPhotonHadronicActivityProducer",
-                                                                src=recoMet,
-                                                                veto=cms.InputTag(recoDiphotons)
-                                                                )
-        tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivityMET"))
-        pos += 1
-
-    if( not hasattr(process,"flashggRecoHadronicActivityMuons") ): 
-        process.flashggRecoHadronicActivityMuons = cms.EDProducer("FlashggDiPhotonHadronicActivityProducer",
-                                                                src=recoMuons,
-                                                                veto=cms.InputTag(recoDiphotons) 
-                                                                )
-        tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivityMuons"))
-        pos += 1
-
-    if( not hasattr(process,"flashggRecoHadronicActivityElectrons") ): 
-        process.flashggRecoHadronicActivityElectrons = cms.EDProducer("FlashggDiPhotonHadronicActivityProducer",
-                                                                src=recoElectrons,
-                                                                veto=cms.InputTag(recoDiphotons) 
-                                                                )
-        tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivityElectrons"))
-        pos += 1
+    
+        if( not hasattr(process,"flashggRecoHadronicActivityElectrons") ): 
+            process.flashggRecoHadronicActivityElectrons = cms.EDProducer("FlashggDiPhotonHadronicActivityProducer",
+                                                                    src=recoElectrons,
+                                                                    veto=cms.InputTag(recoDiphotons) 
+                                                                    )
+            tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivityElectrons"))
+            pos += 1
 
 
   ##  if( not hasattr(process,"flashggRecoHadronicActivityMuons") ): 
@@ -355,99 +371,87 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
   ##      tagSequence.insert(pos, getattr(process,"flashggRecoHadronicActivityMuons"))
   ##      pos += 1
 
-
-    recoDiphotonTags.CompositeCandidateTags.jets2p5 = cms.InputTag("flashggRecoHadronicActivity2p5")
-    recoDiphotonTags.CompositeCandidateTags.jets4p7 = cms.InputTag("flashggRecoHadronicActivity4p7")
-    recoDiphotonTags.CompositeCandidateTags.jetsBflavor2p5 = cms.InputTag("flashggRecoHadronicActivityBflavor2p5")
-    recoDiphotonTags.CompositeCandidateTags.jetsBflavor4p7 = cms.InputTag("flashggRecoHadronicActivityBflavor4p7")
-    recoDiphotonTags.CompositeCandidateTags.met = cms.InputTag("flashggRecoHadronicActivityMET")
-    recoDiphotonTags.CompositeCandidateTags.muons = cms.InputTag("flashggRecoHadronicActivityMuons")
-    recoDiphotonTags.CompositeCandidateTags.electrons = cms.InputTag("flashggRecoHadronicActivityElectrons")
+    if doJets:
+        recoDiphotonTags.CompositeCandidateTags.jets2p5 = cms.InputTag("flashggRecoHadronicActivity2p5")
+        recoDiphotonTags.CompositeCandidateTags.jets4p7 = cms.InputTag("flashggRecoHadronicActivity4p7")
+    if doBJetsAndMET:
+##        recoDiphotonTags.CompositeCandidateTags.jetsBflavorMedium2p5 = cms.InputTag("flashggRecoHadronicActivityBflavorMedium2p5")
+        recoDiphotonTags.CompositeCandidateTags.jetsBflavorTight2p5 = cms.InputTag("flashggRecoHadronicActivityBflavorTight2p5")
+    if doBJetsAndMET:
+        recoDiphotonTags.CompositeCandidateTags.met = cms.InputTag("flashggRecoHadronicActivityMET")
+        recoDiphotonTags.CompositeCandidateTags.muons = cms.InputTag("flashggRecoHadronicActivityMuons")
+        recoDiphotonTags.CompositeCandidateTags.electrons = cms.InputTag("flashggRecoHadronicActivityElectrons")
 ##    recoDiphotonTags.CompositeCandidateTags.muons = cms.InputTag("flashggRecoHadronicActivityMuons")
     
     if not processId=="Data":
-        if( not hasattr(process,"filteredGenJetsEta2p5") ): 
-            process.filteredGenJetsEta2p5 = cms.EDFilter("GenJetSelector",
-                                                         src=cms.InputTag(genJetCollection),
-                                                         cut=cms.string("pt>%f && abs(eta)<2.5 && numberOfDaughters > 5" % jetPtCut),
-                                                         )
+        if doJets:
+	        if( not hasattr(process,"filteredGenJetsEta2p5") ): 
+	            process.filteredGenJetsEta2p5 = cms.EDFilter("GenJetSelector",
+	                                                         src=cms.InputTag(genJetCollection),
+	                                                         cut=cms.string("pt>%f && abs(eta)<2.5 && numberOfDaughters > 5" % jetPtCut),
+	                                                         )
+	
+	            process.flashggGenHadronicActivity2p5 = cms.EDProducer("FlashggGenHadronicActivityProducer",
+	                                                                   src=cms.InputTag("filteredGenJetsEta2p5"),
+	                                                                   veto=cms.InputTag(genDiphotons)
+	                                                                   )
+	        if( not hasattr(process,"filteredGenJetsEta4p7") ): 
+	            process.filteredGenJetsEta4p7 = cms.EDFilter("GenJetSelector",
+	                                                         src=cms.InputTag(genJetCollection),
+	                                                         cut=cms.string("pt>%f && abs(eta)<4.7 && numberOfDaughters > 5" % jetPtCut),
+	                                                     )
+	
+	            process.flashggGenHadronicActivity4p7 = cms.EDProducer("FlashggGenHadronicActivityProducer",
+	                                                                   src=cms.InputTag("filteredGenJetsEta4p7"),
+	                                                                   veto=cms.InputTag(genDiphotons)
+	                                                                   )
+        if doBJetsAndMET:
+        	if( not hasattr(process,"filteredGenJetsBflavorEta2p5") ): 
+        	   process.filteredGenJetsBflavorEta2p5 = cms.EDFilter("GenJetSelector",
+        	                                                       src=cms.InputTag(genBJetCollection),
+##      	                                                         cut=cms.string("cand.pt>%f && abs(cand.eta)<2.5 && cand.numberOfDaughters > 5" % jetPtCut),
+        	                                                       cut=cms.string("pt>%f && abs(eta)<2.5 && numberOfDaughters > 5 && (hasBottom==1 || (hasBquark==1 && deltaRBquarkGenJet<0.15 && jetPtOverBquarkPt > 0.5))" % jetPtCut),
+#       	                                                        cut=cms.string("pt>%f && abs(eta)<2.5 && numberOfDaughters > 5" % jetPtCut),
+##      	                                                         cut=cms.string("pt>%f && abs(eta)<2.5 && numberOfDaughters > 5 && hasBottom == 1" % jetPtCut),
+##      	                                                         cut=cms.string("hasBottom == 1"),
+        	                                            )
+        	    
+        	   process.flashggGenHadronicActivityBflavor2p5 = cms.EDProducer("FlashggGenHadronicActivityProducer",
+        	                                                                 src=cms.InputTag("filteredGenJetsBflavorEta2p5"),
+        	                                                                 veto=cms.InputTag(genDiphotons)
+        	                                                                 )
 
-            process.flashggGenHadronicActivity2p5 = cms.EDProducer("FlashggGenHadronicActivityProducer",
-                                                                   src=cms.InputTag("filteredGenJetsEta2p5"),
-                                                                   veto=cms.InputTag(genDiphotons)
-                                                                   )
-        if( not hasattr(process,"filteredGenJetsEta4p7") ): 
-            process.filteredGenJetsEta4p7 = cms.EDFilter("GenJetSelector",
-                                                         src=cms.InputTag(genJetCollection),
-                                                         cut=cms.string("pt>%f && abs(eta)<4.7 && numberOfDaughters > 5" % jetPtCut),
-                                                     )
-
-            process.flashggGenHadronicActivity4p7 = cms.EDProducer("FlashggGenHadronicActivityProducer",
-                                                                   src=cms.InputTag("filteredGenJetsEta4p7"),
-                                                                   veto=cms.InputTag(genDiphotons)
-                                                                   )
-
-        if( not hasattr(process,"filteredGenJetsBflavorEta4p7") ): 
-           process.filteredGenJetsBflavorEta4p7 = cms.EDFilter("GenJetSelector",
-                                                               src=cms.InputTag(genBJetCollection),
-####                                                               cut=cms.string("cand.pt>%f && abs(cand.eta)<4.7 && cand.numberOfDaughters > 5" % jetPtCut),
-##                                                               cut=cms.string("cand.pt>%f && abs(cand.eta)<4.7 && cand.numberOfDaughters > 5 && hasBottom == 1" % jetPtCut),
-                                                               cut=cms.string("pt>%f && abs(eta)<4.7 && numberOfDaughters > 5 && (hasBottom==1 || (hasBquark==1 && deltaRBquarkGenJet<0.15 && jetPtOverBquarkPt > 0.5))" % jetPtCut),
-##                                                               cut=cms.string("pt>5  && hasBottom == 1" ),
-##                                                               cut=cms.string("hasBottom == 1"),
-                                                    )
-            
-           process.flashggGenHadronicActivityBflavor4p7 = cms.EDProducer("FlashggGenHadronicActivityProducer",
-                                                                         src=cms.InputTag("filteredGenJetsBflavorEta4p7"),
-                                                                         veto=cms.InputTag(genDiphotons)
-                                                                         )
-
-        if( not hasattr(process,"filteredGenJetsBflavorEta2p5") ): 
-           process.filteredGenJetsBflavorEta2p5 = cms.EDFilter("GenJetSelector",
-                                                               src=cms.InputTag(genBJetCollection),
-##                                                               cut=cms.string("cand.pt>%f && abs(cand.eta)<2.5 && cand.numberOfDaughters > 5" % jetPtCut),
-                                                               cut=cms.string("pt>%f && abs(eta)<2.5 && numberOfDaughters > 5 && (hasBottom==1 || (hasBquark==1 && deltaRBquarkGenJet<0.15 && jetPtOverBquarkPt > 0.5))" % jetPtCut),
-#                                                               cut=cms.string("pt>%f && abs(eta)<2.5 && numberOfDaughters > 5" % jetPtCut),
-##                                                               cut=cms.string("pt>%f && abs(eta)<2.5 && numberOfDaughters > 5 && hasBottom == 1" % jetPtCut),
-##                                                               cut=cms.string("hasBottom == 1"),
-                                                    )
-            
-           process.flashggGenHadronicActivityBflavor2p5 = cms.EDProducer("FlashggGenHadronicActivityProducer",
-                                                                         src=cms.InputTag("filteredGenJetsBflavorEta2p5"),
-                                                                         veto=cms.InputTag(genDiphotons)
-                                                                         )
-
-
-        if( not hasattr(process,"flashggGenHadronicActivityMET") ): 
-            process.flashggGenHadronicActivityMET = cms.EDProducer("FlashggGenHadronicActivityProducer",
-                                                                   src=cms.InputTag("flashggMets"),
-                                                                   veto=cms.InputTag(genDiphotons)
-                                                                   )
+        if doBJetsAndMET:
+            if( not hasattr(process,"flashggGenHadronicActivityMET") ): 
+                process.flashggGenHadronicActivityMET = cms.EDProducer("FlashggGenHadronicActivityProducer",
+                                                                       src=cms.InputTag("flashggMets"),
+                                                                       veto=cms.InputTag(genDiphotons)
+                                                                       )
            
 
-        if( not hasattr(process,"filteredGenJetsEtaInclusive") ): 
-            process.filteredGenJetsEtaInclusive = cms.EDFilter("GenJetSelector",
-                                                         src=cms.InputTag(genJetCollection),
-#                                                         cut=cms.string("pt>%f && abs(eta)<2.5 && nCarrying(0.90)>1" % jetPtCut),
-###                                                         cut=cms.string("pt>%f && numberOfDaughters > 5" % jetPtCut),
-                                                         cut=cms.string("1"),
-                                                         )
-            process.flashggGenHadronicActivityInclusive = cms.EDProducer("FlashggGenHadronicActivityProducer",
-                                                                   src=cms.InputTag("filteredGenJetsEtaInclusive"),
-                                                                   veto=cms.InputTag(genDiphotons)
-                                                                   )
-        
-
-        if( not hasattr(process,"flashggGenHadronicActivityLeptons") ): 
-#            process.filteredGenJetsEta4p7 = cms.EDFilter("GenJetSelector",
+#        if( not hasattr(process,"filteredGenJetsEtaInclusive") ): 
+#            process.filteredGenJetsEtaInclusive = cms.EDFilter("GenJetSelector",
 #                                                         src=cms.InputTag(genJetCollection),
-#                                                         cut=cms.string("pt>%f && abs(eta)<4.7" % jetPtCut),
-#                                                     )
-
-            process.flashggGenHadronicActivityLeptons = cms.EDProducer("FlashggGenHadronicActivityProducer",
-                                                                   src=cms.InputTag("flashggGenLeptonsExtra"),
-                                                                   veto=cms.InputTag(genDiphotons)
-                                                                   )
+##                                                         cut=cms.string("pt>%f && abs(eta)<2.5 && nCarrying(0.90)>1" % jetPtCut),
+####                                                         cut=cms.string("pt>%f && numberOfDaughters > 5" % jetPtCut),
+#                                                         cut=cms.string("1"),
+#                                                         )
+#            process.flashggGenHadronicActivityInclusive = cms.EDProducer("FlashggGenHadronicActivityProducer",
+#                                                                   src=cms.InputTag("filteredGenJetsEtaInclusive"),
+#                                                                   veto=cms.InputTag(genDiphotons)
+#                                                                   )
+        
+        if doBJetsAndMET:
+            if( not hasattr(process,"flashggGenHadronicActivityLeptons2p4") ): 
+                process.filteredGenLeptonsEta2p4 = cms.EDFilter("GenLeptonExtraSelector",
+                                                             src=cms.InputTag("flashggGenLeptonsExtra"),
+                                                             cut=cms.string("pt>20 && abs(eta)<2.4"),
+                                                         )
+            
+                process.flashggGenHadronicActivityLeptons2p4 = cms.EDProducer("FlashggGenHadronicActivityProducer",
+                                                                       src=cms.InputTag("filteredGenLeptonsEta2p4"),
+                                                                       veto=cms.InputTag(genDiphotons)
+                                                                       )
         
 # ----------------------------------------------------------------------------------------------------------------
 def getJetKinVariables(pre,post,variables,nmax, getter):
@@ -697,32 +701,37 @@ def addRecoMETGlobalVariables(process,dumper,src,pre,post,getter=""):
 
 # ----------------------------------------------------------------------------------------------------------------
 def addGenGlobalVariables(process,dumper):   
-    addJetGlobalVariables(process,dumper,"flashggGenHadronicActivity2p5","gen","2p5")
-    addJetGlobalVariables(process,dumper,"flashggGenHadronicActivity4p7","gen","4p7")
-    addBflavorJetGlobalVariables(process,dumper,"flashggGenHadronicActivityBflavor2p5","gen","Bflavor2p5")
-    addBflavorJetGlobalVariables(process,dumper,"flashggGenHadronicActivityBflavor4p7","gen","Bflavor4p7")
-    addJetGlobalVariables(process,dumper,"flashggGenHadronicActivityInclusive","gen","Inclusive")
+    if doJets:
+        addJetGlobalVariables(process,dumper,"flashggGenHadronicActivity2p5","gen","2p5")
+        addJetGlobalVariables(process,dumper,"flashggGenHadronicActivity4p7","gen","4p7")
+    if doBJetsAndMET:
+        addBflavorJetGlobalVariables(process,dumper,"flashggGenHadronicActivityBflavor2p5","gen","Bflavor2p5")
+#    addJetGlobalVariables(process,dumper,"flashggGenHadronicActivityInclusive","gen","Inclusive")
 
-    addLeptonGlobalVariables(process,dumper,"flashggGenHadronicActivityLeptons","gen","all")
-    addMETGlobalVariables(process,dumper,"flashggMets","gen","all")
+        addLeptonGlobalVariables(process,dumper,"flashggGenHadronicActivityLeptons2p4","gen","2p4")
+    if doBJetsAndMET:
+        addMETGlobalVariables(process,dumper,"flashggMets","gen","all")
 
 # ----------------------------------------------------------------------------------------------------------------
 def addRecoGlobalVariables(process,dumper,tagGetter=""):    
     if tagGetter != "": tagGetter += "."
-    addJetGlobalVariables(process,dumper,None,"reco","2p5","%sgetCompCand('jets2p5')" % tagGetter)
-    addJetGlobalVariables(process,dumper,None,"reco","4p7","%sgetCompCand('jets4p7')" % tagGetter)
-    addJetGlobalVariables(process,dumper,None,"reco","Bflavor2p5","%sgetCompCand('jetsBflavor2p5')" % tagGetter)
-    addJetGlobalVariables(process,dumper,None,"reco","Bflavor4p7","%sgetCompCand('jetsBflavor4p7')" % tagGetter)
+    if doJets:
+        addJetGlobalVariables(process,dumper,None,"reco","2p5","%sgetCompCand('jets2p5')" % tagGetter)
+        addJetGlobalVariables(process,dumper,None,"reco","4p7","%sgetCompCand('jets4p7')" % tagGetter)
+    if doBJetsAndMET:
+##        addJetGlobalVariables(process,dumper,None,"reco","BflavorMedium2p5","%sgetCompCand('jetsBflavorMedium2p5')" % tagGetter)
+        addJetGlobalVariables(process,dumper,None,"reco","BflavorTight2p5","%sgetCompCand('jetsBflavorTight2p5')" % tagGetter)
 
-    addRecoMETGlobalVariables(process,dumper,None,"reco","All","%sgetCompCand('met')" % tagGetter)
-    addMuonGlobalVariables(process,dumper,None,"reco","All","%sgetCompCand('muons')" % tagGetter)
-    addElectronGlobalVariables(process,dumper,None,"reco","All","%sgetCompCand('electrons')" % tagGetter)
+    if doBJetsAndMET:
+        addRecoMETGlobalVariables(process,dumper,None,"reco","All","%sgetCompCand('met')" % tagGetter)
+        addMuonGlobalVariables(process,dumper,None,"reco","All","%sgetCompCand('muons')" % tagGetter)
+        addElectronGlobalVariables(process,dumper,None,"reco","All","%sgetCompCand('electrons')" % tagGetter)
 
 #    addJetGlobalVariables(process,dumper,None,"reco","Muons","%sgetCompCand('muons')" % tagGetter)
     
     
 # ----------------------------------------------------------------------------------------------------------------
-def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabels,pdfWeights=None,recoJetCollections=None,mH=None,filterEvents=True):
+def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabels,NNLOPSreweight=False,pdfWeights=None,recoJetCollections=None,mH=None,filterEvents=True):
     import itertools
     import flashgg.Taggers.dumperConfigTools as cfgTools
     
@@ -776,6 +785,15 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
     if pdfWeights:
         dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights=pdfWeights
         
+    if NNLOPSreweight:
+        print "GenDiphotonDumper: Gluon fusion amcatnlo: read NNLOPS reweighting file"
+        process.genDiphotonDumper.dumpNNLOPSweight = cms.untracked.bool(True)
+        process.genDiphotonDumper.NNLOPSWeight=cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root")
+    else:
+        print "GenDiphotonDumper: NOT gluon fusion amcatnlo: set NNLOPS weights to 1."
+        process.genDiphotonDumper.dumpNNLOPSweight = cms.untracked.bool(True)
+        process.genDiphotonDumper.NNLOPSWeight=cms.double(1.0)
+
     genVariables  = getGenVariables(False)
     recoVariables = getRecoVariables(False)
     recoVariables.extend( ["leadmva := recoTagObj.diPhoton.leadingView.phoIdMvaWrtChosenVtx", "subleadmva := recoTagObj.diPhoton.subLeadingView.phoIdMvaWrtChosenVtx"] )
