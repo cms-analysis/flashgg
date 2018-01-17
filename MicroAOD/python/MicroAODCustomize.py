@@ -182,11 +182,11 @@ class MicroAODCustomize(object):
         from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
         runMETs(process,True) #isMC
         from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
-        if not os.environ["CMSSW_VERSION"].count("CMSSW_9_2"):
+        if not (os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4")):
             setMetCorr(process,multPhiCorr_MC_DY_80X)
         process.p *=process.flashggMetSequence
         
-        if not os.environ["CMSSW_VERSION"].count("CMSSW_9_2"):
+        if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
             process.rivetProducerHTXS = cms.EDProducer('HTXSRivetProducer',
                                                        HepMCCollection = cms.InputTag('myGenerator','unsmeared'),
@@ -204,6 +204,30 @@ class MicroAODCustomize(object):
             process.p *= process.myGenerator
             process.p *= process.rivetProducerHTXS
             process.out.outputCommands.append("keep *_rivetProducerHTXS_*_*")
+
+        if os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
+            raise Exception,"Debugging ongoing for HTXS in CMSSW 9"
+            process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
+            process.rivetProducerHTXS = cms.EDProducer('HTXSRivetProducer',
+                                                       HepMCCollection = cms.InputTag('myGenerator','unsmeared'),
+                                                       LHERunInfo = cms.InputTag('externalLHEProducer'),
+                                                       ProductionMode = cms.string('AUTO'),
+                                                       )
+
+            process.mergedGenParticles = cms.EDProducer("MergedGenParticleProducer",
+                                                        inputPruned = cms.InputTag("prunedGenParticles"),
+                                                        inputPacked = cms.InputTag("packedGenParticles"),
+                                                        )
+            process.myGenerator = cms.EDProducer("GenParticles2HepMCConverter",
+                                                 genParticles = cms.InputTag("mergedGenParticles"),
+                                                 genEventInfo = cms.InputTag("generator"),
+                                                 signalParticlePdgIds = cms.vint32(25), ## for the Higgs analysis
+                                                 )
+            process.p *= process.mergedGenParticles
+            process.p *= process.myGenerator
+            process.p *= process.rivetProducerHTXS
+            process.out.outputCommands.append('keep *_*_*_runRivetAnalysis')
+
         self.customizePDFs(process)
 
     def customizePDFs(self,process):     
@@ -399,24 +423,26 @@ class MicroAODCustomize(object):
 #            process.options = cms.untracked.PSet()
 #        process.options.wantSummary = cms.untracked.bool(True)
         process.out.SelectEvents = cms.untracked.PSet(SelectEvents=cms.vstring('p1'))
-        if not os.environ["CMSSW_VERSION"].count("CMSSW_9_2"):
+        if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             process.rivetProducerHTXS.ProductionMode = "TTH"
 
     def customizeVBF(self,process):
-        if not os.environ["CMSSW_VERSION"].count("CMSSW_9_2"):
+        if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             process.rivetProducerHTXS.ProductionMode = "VBF"
 
     def customizeVH(self,process):
-        if not os.environ["CMSSW_VERSION"].count("CMSSW_9_2"):
+        if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             process.rivetProducerHTXS.ProductionMode = "VH"
 
     def customizeGGH(self,process):
-        if not os.environ["CMSSW_VERSION"].count("CMSSW_9_2"):
+        process.rivetProducerHTXS.ProductionMode = "GGF"
+        print "testing set process.rivetProducerHTXS.ProductionMode to",process.rivetProducerHTXS.ProductionMode
+        if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             process.rivetProducerHTXS.ProductionMode = "GGF"
 
     def customizeTH(self,process):
         process.out.outputCommands.append("keep *_source_*_LHEFile")
-        if not os.environ["CMSSW_VERSION"].count("CMSSW_9_2"):
+        if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             process.rivetProducerHTXS.ProductionMode = "TH"
         process.flashggPDFWeightObject.LHEEventTag = "source"
         process.flashggPDFWeightObject.LHERunLabel = "source"
