@@ -9,8 +9,11 @@ Before you start, **please take note** of these warnings and comments:
 
 Currently three releases are supported:
 * 8_0_28 for Legacy 2016 processing
-* 9_4_0_patch1, version for 2017 v2 processing, recipe still being developed
-* 9_2_8, latest working version for 2017 processing (will be replaced when 9_4_0 works)
+* 9_4_2, version for 2017 v2 processing, recipe still being developed
+
+Recently deprecated:
+
+* 9_2_8
 
 80X: Get everything you need, starting from a clean area:
 
@@ -24,28 +27,16 @@ Currently three releases are supported:
  source flashgg/setup_8_0_X.sh
  ```
 
-92X: Get everything you need, starting from a clean area:
-
- ```
- cmsrel CMSSW_9_2_8
- cd CMSSW_9_2_8/src
- cmsenv
- git cms-init
- cd $CMSSW_BASE/src 
- git clone https://github.com/cms-analysis/flashgg flashgg
- source flashgg/setup_9_2_X.sh
- ```
-
 94X: Get everything you need, starting from a clean area:
 
  ```
- cmsrel CMSSW_9_4_0_patch1
- cd CMSSW_9_4_0_patch1/src
+ cmsrel CMSSW_9_4_2
+ cd CMSSW_9_4_2/src
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src
  git clone https://github.com/cms-analysis/flashgg flashgg
- source flashgg/setup_9_4_0.sh
+ source flashgg/setup_9_4_X.sh
  ```
 
 If everything now looks reasonable, you can build:
