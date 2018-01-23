@@ -105,6 +105,10 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 ./prepareCrabJobs.py -C LegacyReReco-07Aug2017-2_6_1 -U 1 -L 25 -s campaigns/LegacyReReco-07Aug2017-2_6_1_list4.json -V 2_6_1 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask jsons/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
 
+### 942 tests
+
+./prepareCrabJobs.py -C RunIIFall17-2_7_7 -U 1 -L 25 -s campaigns/RunIIFall17-2_7_7.json -V 2_7_7 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask jsons/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt
+
 
 ### 928 tests
 
