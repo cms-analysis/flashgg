@@ -226,6 +226,9 @@ namespace  {
         edm::OwnVector<flashgg::TagTruthBase, edm::ClonePolicy<flashgg::TagTruthBase> > ownvec_truthbase;
         edm::Wrapper<edm::OwnVector<flashgg::TagTruthBase, edm::ClonePolicy<flashgg::TagTruthBase> > > wrp_ownvec_truthbase;
 
+        std::vector<flashgg::DiPhotonTagBase*> vec_ptr_tagbase;
+        std::vector<flashgg::TagTruthBase*> vec_ptr_truthbase;
+
         flashgg::VBFTagTruth vbftt;
         std::vector<flashgg::VBFTagTruth> vec_vbftt;
         edm::Wrapper<std::vector<flashgg::VBFTagTruth> > wrp_vec_vbftt;
