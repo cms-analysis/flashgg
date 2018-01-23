@@ -7,7 +7,7 @@ Before you start, **please take note** of these warnings and comments:
 * **N.B.** You can ignore "error: addinfo_cache" lines. 
 * **N.B.** This is to set up the latest area in a self-consistent way. If you want a particular flashgg version corresponding to other samples, please see https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_users
 
-Currently three releases are supported:
+Currently two releases are supported:
 * 8_0_28 for Legacy 2016 processing
 * 9_4_2, version for 2017 v2 processing, recipe still being developed
 
