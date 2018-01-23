@@ -350,4 +350,7 @@
 </class>
 <class name="std::vector<flashgg::TagCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TagCandidate> >"/>
+<class name="std::vector<flashgg::DiPhotonTagBase*>"/>
+<class name="std::vector<flashgg::TagTruthBase*>"/>
+
 </lcgdict>
