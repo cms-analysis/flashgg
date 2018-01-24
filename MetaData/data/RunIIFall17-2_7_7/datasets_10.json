@@ -97261,6 +97261,166 @@
                 "nevents": 17633, 
                 "totEvents": 17633, 
                 "weights": 17633
+            }, 
+            {
+                "bad": false, 
+                "events": 33543, 
+                "lumis": {
+                    "305045": [
+                        8, 
+                        9, 
+                        31, 
+                        32, 
+                        33, 
+                        34, 
+                        35, 
+                        36, 
+                        137, 
+                        138, 
+                        139, 
+                        143, 
+                        144, 
+                        145, 
+                        185, 
+                        186, 
+                        187, 
+                        194, 
+                        195, 
+                        391, 
+                        392, 
+                        393, 
+                        394, 
+                        652, 
+                        653
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-2_7_7/2_7_7/DoubleEG/RunIIFall17-2_7_7-2_7_7-v0-Run2017F-17Nov2017-v1/180117_112749/0001/myMicroAODOutputFile_1680.root", 
+                "nevents": 33543, 
+                "totEvents": 33543, 
+                "weights": 33543
+            }, 
+            {
+                "bad": false, 
+                "events": 37128, 
+                "lumis": {
+                    "305589": [
+                        441, 
+                        442, 
+                        443, 
+                        447, 
+                        448, 
+                        449
+                    ], 
+                    "306125": [
+                        1664, 
+                        1665
+                    ], 
+                    "306135": [
+                        367, 
+                        368, 
+                        413, 
+                        414, 
+                        419, 
+                        420, 
+                        425, 
+                        426, 
+                        445, 
+                        446, 
+                        465, 
+                        466
+                    ], 
+                    "306138": [
+                        52, 
+                        53, 
+                        54
+                    ], 
+                    "306153": [
+                        152, 
+                        153
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-2_7_7/2_7_7/DoubleEG/RunIIFall17-2_7_7-2_7_7-v0-Run2017F-17Nov2017-v1/180117_112749/0001/myMicroAODOutputFile_1717.root", 
+                "nevents": 37128, 
+                "totEvents": 37128, 
+                "weights": 37128
+            }, 
+            {
+                "bad": false, 
+                "events": 12066, 
+                "lumis": {
+                    "306171": [
+                        109, 
+                        119, 
+                        120, 
+                        121, 
+                        122, 
+                        123, 
+                        128, 
+                        129, 
+                        130, 
+                        131, 
+                        146, 
+                        147, 
+                        148, 
+                        149, 
+                        150, 
+                        151, 
+                        152, 
+                        160, 
+                        153, 
+                        154, 
+                        155, 
+                        156, 
+                        157, 
+                        158, 
+                        159
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-2_7_7/2_7_7/DoubleEG/RunIIFall17-2_7_7-2_7_7-v0-Run2017F-17Nov2017-v1/180117_112749/0001/myMicroAODOutputFile_1736.root", 
+                "nevents": 12066, 
+                "totEvents": 12066, 
+                "weights": 12066
+            }, 
+            {
+                "bad": false, 
+                "events": 38443, 
+                "lumis": {
+                    "306135": [
+                        118, 
+                        119, 
+                        121, 
+                        122, 
+                        123, 
+                        124, 
+                        125, 
+                        190, 
+                        191, 
+                        215, 
+                        536
+                    ], 
+                    "306138": [
+                        99, 
+                        100, 
+                        107
+                    ], 
+                    "306154": [
+                        777, 
+                        778, 
+                        782, 
+                        783, 
+                        784, 
+                        793, 
+                        794, 
+                        795, 
+                        833, 
+                        1003, 
+                        1004
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-2_7_7/2_7_7/DoubleEG/RunIIFall17-2_7_7-2_7_7-v0-Run2017F-17Nov2017-v1/180117_112749/0001/myMicroAODOutputFile_1752.root", 
+                "nevents": 38443, 
+                "totEvents": 38443, 
+                "weights": 38443
             }
         ], 
         "vetted": true
