@@ -206,7 +206,7 @@ class MicroAODCustomize(object):
             process.out.outputCommands.append("keep *_rivetProducerHTXS_*_*")
 
         if os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
-            raise Exception,"Debugging ongoing for HTXS in CMSSW 9"
+            #raise Exception,"Debugging ongoing for HTXS in CMSSW 9"
             process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
             process.rivetProducerHTXS = cms.EDProducer('HTXSRivetProducer',
                                                        HepMCCollection = cms.InputTag('myGenerator','unsmeared'),

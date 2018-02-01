@@ -38,6 +38,18 @@ namespace flashgg {
         float puJetIdMVA() const { return simpleMVA_; }
         Jet *clone() const { return ( new Jet( *this ) ); }
         
+        void  setDeepCSVbb(const float deepcsvbb=-99) {deepcsvbb_ = deepcsvbb;}
+        float DeepCSVbb () const {return deepcsvbb_;}
+        
+        void  setDeepCSVb(const float deepcsvb=-99) {deepcsvb_ = deepcsvb;}
+        float DeepCSVb () const {return deepcsvb_;}
+        
+        void  setDeepCSVc(const float deepcsvc=-99) {deepcsvc_ = deepcsvc;}
+        float DeepCSVc () const {return deepcsvc_;}
+        
+        void  setDeepCSVudsg(const float deepcsvudsg=-99) {deepcsvudsg_ = deepcsvudsg;}
+        float DeepCSVudsg () const {return deepcsvudsg_;}
+        
         void  setQGL(const float qglikelihood=-99) {qglikelihood_ = qglikelihood;}
         float QGL () const {return qglikelihood_;}
         
@@ -57,6 +69,10 @@ namespace flashgg {
 
     private:
         std::map<edm::Ptr<reco::Vertex>, MinimalPileupJetIdentifier> puJetId_;
+        float deepcsvbb_;
+        float deepcsvb_;
+        float deepcsvc_;
+        float deepcsvudsg_;
         float qglikelihood_;
         float simpleRMS_; // simpler storage for PFCHS where this is not vertex-dependent
         float simpleMVA_;

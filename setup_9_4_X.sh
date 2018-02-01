@@ -35,6 +35,7 @@ git config merge.renamelimit 2000
 if ${SETUP_REMOTES} ; then
   echo "Setting up remotes listed in setup script..."
   cd $CMSSW_BASE/src/flashgg
+  git remote add dmajumder https://github.com/dmajumder/flashgg
   git remote add abeschi https://github.com/abeschi/flashgg
   git remote add andreh7 https://github.com/andreh7/flashgg
   git remote add andreypz https://github.com/andreypz/flashgg
