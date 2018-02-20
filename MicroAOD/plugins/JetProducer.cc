@@ -154,12 +154,6 @@ namespace flashgg {
                 std::cout << " Start of jet " << i << " pt=" << fjet.pt() << " eta=" << fjet.eta() << std::endl;
             }
 
-            //// Store DeepCSV tagger
-            fjet.setDeepCSVbb(pjet->bDiscriminator("pfDeepCSVJetTags:probbb"));
-            fjet.setDeepCSVb(pjet->bDiscriminator("pfDeepCSVJetTags:probb"));
-            fjet.setDeepCSVc(pjet->bDiscriminator("pfDeepCSVJetTags:probc"));
-            fjet.setDeepCSVudsg(pjet->bDiscriminator("pfDeepCSVJetTags:probudsg"));
-
             //store btagging userfloats
             if (computeRegVars) {
                 if (debug_) { std::cout << " start of computeRegVars" << std::endl; }
