@@ -18,6 +18,8 @@
 #include "CommonTools/Utils/interface/StringObjectFunction.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
+#include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
+
 
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/ConsumesCollector.h"
@@ -90,11 +92,14 @@ namespace flashgg {
 
         classifier_type classifier_;
 
-        edm::InputTag src_, genInfo_, pdfWeight_;
+        edm::InputTag src_, genInfo_, pdfWeight_ , lheEvent_;
 
         edm::EDGetTokenT<collection_type> srcToken_;
         edm::EDGetTokenT<GenEventInfoProduct> genInfoToken_;
         edm::EDGetTokenT<std::vector<flashgg::PDFWeightObject> > pdfWeightToken_;
+        edm::EDGetTokenT< LHEEventProduct > lheEventToken_;
+        std::string LHEWeightName;
+        int LHEWeightIndex;
 
         std::string processId_;
         int processIndex_;
@@ -146,6 +151,7 @@ namespace flashgg {
         src_( cfg.getParameter<edm::InputTag>( "src" ) ),
         genInfo_( cfg.getParameter<edm::InputTag>( "generatorInfo" ) ),
         pdfWeight_( cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject", edm::InputTag("flashggPDFWeightObject") ) ),
+        lheEvent_( cfg.getUntrackedParameter<edm::InputTag>("LHEEventProduct", edm::InputTag("externalLHEProducer") ) ),
         dumpGlobalVariables_( cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true ) ),
         globalVarsDumper_(0)
     {
@@ -162,9 +168,11 @@ namespace flashgg {
         src_( cfg.getParameter<edm::InputTag>( "src" ) ),
         genInfo_( cfg.getParameter<edm::InputTag>( "generatorInfo" ) ),
         pdfWeight_( cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject", edm::InputTag("flashggPDFWeightObject") ) ),
+        lheEvent_( cfg.getUntrackedParameter<edm::InputTag>("LHEEventProduct", edm::InputTag("externalLHEProducer") ) ),
         srcToken_( cc.consumes<collection_type>( src_ ) ),
         genInfoToken_( cc.consumes<GenEventInfoProduct>( genInfo_ ) ),
         pdfWeightToken_( cc.consumes<std::vector<flashgg::PDFWeightObject> >( pdfWeight_ ) ),
+        lheEventToken_( cc.consumes<LHEEventProduct>( lheEvent_ ) ),
         dumpGlobalVariables_( cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true ) ),
         stage0catTag_( cfg.getUntrackedParameter<edm::InputTag>( "stage0catTag", edm::InputTag("rivetProducerHTXS","stage0cat") ) ),
         stage0catToken_( cc.consumes<int>( stage0catTag_ ) ),
@@ -179,6 +187,8 @@ namespace flashgg {
     template<class C, class T, class U>
     void CollectionDumper<C, T, U>::_init( const edm::ParameterSet &cfg, TFileDirectory &fs )
     {
+        LHEWeightName = cfg.getUntrackedParameter<std::string>( "LHEWeightName", "" );
+        LHEWeightIndex = -1;
 
         processId_           = cfg.getParameter<std::string>( "processId" );
         processIndex_        = cfg.exists("processIndex") ? cfg.getParameter<int>("processIndex") : 999;
@@ -364,6 +374,26 @@ namespace flashgg {
                 }
 
                 weight = lumiWeight_;
+
+                if( LHEWeightName != ""){
+                    edm::Handle<LHEEventProduct> product_lhe;
+                    if (fullEvent != 0) {
+                        fullEvent->getByToken(lheEventToken_, product_lhe);
+                    } else {
+                        event.getByLabel(lheEvent_,product_lhe);
+                    }
+                    if( LHEWeightIndex < 0 ){
+                        for(uint wgt_id = 0 ; wgt_id < product_lhe->weights().size() ; wgt_id++){
+                            auto wgt = product_lhe->weights()[wgt_id] ;
+                            if( wgt.id == LHEWeightName ){
+                                LHEWeightIndex = wgt_id ;
+                            }
+                        }
+                        std::cout << "Lumi Weight : " << lumiWeight_ << "; LHEWeightIndex: " << LHEWeightIndex << "; LHEWeightName: " << LHEWeightName << std::endl;
+                    }
+                    if( LHEWeightIndex > -1 )
+                        weight *= ( product_lhe->weights()[LHEWeightIndex].wgt/product_lhe->originalXWGTUP () );
+                }
 
                 if( genInfo.isValid() ) {
                     const auto &weights = genInfo->weights();
