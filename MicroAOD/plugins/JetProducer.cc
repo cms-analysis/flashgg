@@ -154,7 +154,6 @@ namespace flashgg {
                 std::cout << " Start of jet " << i << " pt=" << fjet.pt() << " eta=" << fjet.eta() << std::endl;
             }
 
-
             //store btagging userfloats
             if (computeRegVars) {
                 if (debug_) { std::cout << " start of computeRegVars" << std::endl; }
