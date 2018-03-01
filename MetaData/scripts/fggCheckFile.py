@@ -35,12 +35,12 @@ def main(args):
 
     weights_included = {}
     LHE_Branch_Name = ""
-    if len(args) >2 and events.GetEntriesFast() > 0:
-        weights_to_include_str = args[2]
+    if len(args) >4 and events.GetEntriesFast() > 0:
+        weights_to_include_str = args[4]
         weights_to_include_names = weights_to_include_str.split( "," )
 
 
-        LHE_Branch_Name = args[3]
+        LHE_Branch_Name = args[5]
 
         events.GetEntry(0)
         weightNames = getattr( events , LHE_Branch_Name ).weights()

@@ -501,13 +501,13 @@ class SamplesManager(object):
 
         weights_to_load = ""
         LHE_Branch_Name = ""
-        print dsetName.split('/')[1]
+        #print dsetName.split('/')[1]
         if dsetName.split('/')[1] in self.cross_sections_:
             xsec = self.cross_sections_[ dsetName.split('/')[1] ]
             if "weights" in xsec :
                 weights_to_load = xsec["weights"]
                 LHE_Branch_Name = xsec["LHESourceName"]
-            print "following weights will be loaded" , weights_to_load
+            #print "following weights will be loaded" , weights_to_load
 
         fName = fileName
         tmp = ".tmp%s_%d.json"%(sha256(dsetName).hexdigest(),ifile)
@@ -523,10 +523,10 @@ class SamplesManager(object):
         if self.just_open_:
             ret,out = self.parallel_.run("fggOpenFile.py",[fName,tmp,dsetName,str(ifile)],interactive=True)[2]
         elif self.queue_:
-            self.parallel_.run("fggCheckFile.py",[fName,tmp,weights_to_load,LHE_Branch_Name],interactive=False)
+            self.parallel_.run("fggCheckFile.py",[fName,tmp,dsetName,str(ifile),weights_to_load,LHE_Branch_Name],interactive=False)
             return
         else:
-            ret,out = self.parallel_.run("fggCheckFile.py",[fName,tmp,weights_to_load,LHE_Branch_Name],interactive=True)[2]
+            ret,out = self.parallel_.run("fggCheckFile.py",[fName,tmp,dsetName,str(ifile),weights_to_load,LHE_Branch_Name],interactive=True)[2]
 
         if ret != 0:
             print "ERROR checking %s" % fName
