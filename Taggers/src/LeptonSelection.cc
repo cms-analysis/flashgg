@@ -197,7 +197,7 @@ namespace flashgg {
         float elNonTrigMVA = elec->nonTrigMVA();
         bool passConversionVeto= elec->passConversionVeto();
         
-        int elMissedHits = elec->gsfTrack()->hitPattern().numberOfHits( reco::HitPattern::MISSING_INNER_HITS);
+        int elMissedHits = elec->gsfTrack()->hitPattern().numberOfAllHits( reco::HitPattern::MISSING_INNER_HITS);
 
         //for isolation recalculation        
         float Aeff = 0;
@@ -457,7 +457,7 @@ namespace flashgg {
             
             if( Electron->standardHggIso() > IsoThreshold ) continue; 
 
-            if( Electron->gsfTrack()->hitPattern().numberOfHits( reco::HitPattern::MISSING_INNER_HITS ) > NumOfMissingHitsThreshold ) { continue; }
+            if( Electron->gsfTrack()->hitPattern().numberOfAllHits( reco::HitPattern::MISSING_INNER_HITS ) > NumOfMissingHitsThreshold ) { continue; }
             //std::cout << "[DEBUG] passed  missing hits cut." << std::endl;
 
             if( Electron->hasMatchedConversion() ) continue; 

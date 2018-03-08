@@ -143,6 +143,10 @@ git cms-merge-topic -u sethzenz:for-flashgg-weightscount-9_4_0
 echo "Setting up EGM stuff..."
 git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-9_4_0
 
+#EGM IDs
+git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP    
+git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
+
 # Straightforward update for 8_0_28
 # Temporarily removed from 9_2_0
 #echo "Setting up Higgs Simplified Template Cross Sections..."
