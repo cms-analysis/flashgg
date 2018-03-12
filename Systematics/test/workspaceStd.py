@@ -23,6 +23,8 @@ elif os.environ["CMSSW_VERSION"].count("CMSSW_7_4"):
     process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v4' 
 elif os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
     process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_miniAODv2'
+elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
+    process.GlobalTag.globaltag = '94X_mc2017_realistic_v12'
 else:
     raise Exception,"Could not find a sensible CMSSW_VERSION for default globaltag"
 
@@ -328,6 +330,14 @@ process.tagsDumper.dumpHistos = False
 process.tagsDumper.quietRooFit = True
 process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
 process.tagsDumper.splitPdfByStage0Cat = cms.untracked.bool(customize.doHTXS)
+
+if customize.options.WeightName :
+    lheProduct = customize.dataset[1]["LHESourceName"].split("_")
+    #print lheProduct
+    process.tagsDumper.LHEEventProduct = cms.untracked.InputTag( str(lheProduct[1]) , str(lheProduct[2]) , str(lheProduct[3]) )
+    #print process.tagsDumper.LHEEventProduct
+    process.tagsDumper.LHEWeightName = cms.untracked.string(customize.options.WeightName)
+
 
 if(customize.doFiducial):
 #    if customize.processId == "Data":
