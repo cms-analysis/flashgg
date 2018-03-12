@@ -112,6 +112,11 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "puTarget")
+        self.options.register ('WeightName', # for THQ/THW samples the LHE weight should be mentioned
+                               None, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "WeightName")
 
         
         self.parsed = False
@@ -381,9 +386,9 @@ class JobConfig(object):
                                          self.crossSections,
                                          )
             if self.dryRun and self.getMaxJobs:
-                dataset = self.samplesMan.getDatasetMetaData(self.maxEvents,self.dataset,jobId=-1,nJobs=self.nJobs)
+                dataset = self.samplesMan.getDatasetMetaData(self.maxEvents,self.dataset,jobId=-1,nJobs=self.nJobs,weightName=self.WeightName)
             else:
-                dataset = self.samplesMan.getDatasetMetaData(self.maxEvents,self.dataset,jobId=self.jobId,nJobs=self.nJobs)
+                dataset = self.samplesMan.getDatasetMetaData(self.maxEvents,self.dataset,jobId=self.jobId,nJobs=self.nJobs,weightName=self.WeightName)
             if not dataset: 
                 print "Could not find dataset %s in campaing %s/%s" % (self.dataset,self.metaDataSrc,self.campaing)
                 sys.exit(-1)

@@ -1,4 +1,4 @@
-import os
+import os, json
 import FWCore.ParameterSet.Config as cms
 import FWCore.ParameterSet.VarParsing as VarParsing
 class MicroAODCustomize(object):
@@ -441,7 +441,23 @@ class MicroAODCustomize(object):
             process.rivetProducerHTXS.ProductionMode = "GGF"
 
     def customizeTH(self,process):
-        process.out.outputCommands.append("keep *_source_*_LHEFile")
+        cross_sections=["$CMSSW_BASE/src/flashgg/MetaData/data/cross_sections.json"]
+        cross_sections_ = {}
+        LHESourceName = None
+        for xsecFile in cross_sections:
+            fname = os.path.expanduser( os.path.expandvars(xsecFile) )
+            cross_sections_.update( json.loads( open(fname).read() ) )
+        dsName = customize.datasetName.split("/")[1]
+        if dsName in cross_sections_.keys() :
+            xsec_info = cross_sections_[dsName]
+            if "LHESourceName" in xsec_info.keys() :
+                LHESourceName = str( xsec_info["LHESourceName"] )
+
+        if LHESourceName :
+            print "the LHESource %s is set to be kept for dataset %s" % (LHESourceName , dsName)
+            process.out.outputCommands.append("keep %s" % (LHESourceName) ) #*_source_*_LHEFile")
+        else :
+            print "for TH sample of %s, no LHESource is found to be kept" % (dsName)
         if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             process.rivetProducerHTXS.ProductionMode = "TH"
         process.flashggPDFWeightObject.LHEEventTag = "source"
