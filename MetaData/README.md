@@ -109,6 +109,11 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 ./prepareCrabJobs.py -C RunIIFall17-2_7_7 -U 1 -L 25 -s campaigns/RunIIFall17-2_7_7.json -V 2_7_7 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask jsons/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt
 
+#### signal
+
+./prepareCrabJobs.py -C RunIIFall17-2_8_0 -U 1 -L 25 -s campaigns/RunIIFall17-2_8_0.json -V 2_8_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
+
+./prepareCrabJobs.py -C RunIIFall17-2_8_0 -U 1 -L 25 -s campaigns/RunIIFall17-2_8_0_part2.json -V 2_8_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
 
 ### 928 tests
 

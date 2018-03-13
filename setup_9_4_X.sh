@@ -149,11 +149,6 @@ git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP
 git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
 
 # Straightforward update for 8_0_28
-# Temporarily removed from 9_2_0
-#echo "Setting up Higgs Simplified Template Cross Sections..."
-#git cms-merge-topic -u sethzenz:rivet_hepmc-8_0_28
-
-# Straightforward update for 8_0_28
 echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
 git cms-addpkg FWCore/GuiBrowsers #temp-by hand
 git cms-merge-topic -u sethzenz:for-flashgg-toolbase-9_4_0
@@ -171,6 +166,9 @@ echo "copy smearing files stored in flashgg into egamma tools"
 #cp $CMSSW_BASE/src/flashgg/Systematics/data/Winter_2016_reReco_v1_ele_smearings.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 #cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_scales.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 #cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_smearings.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
+
+echo "Simplified template cross section tools"
+git cms-merge-topic -u sethzenz:for-flashgg-rivet-9_4_2
 
 echo "linking classdef for release 94X"
 ln -s $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_94X.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
