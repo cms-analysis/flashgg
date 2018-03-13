@@ -162,6 +162,9 @@ ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_
 echo "linking classdef for release 8"
 ln -s $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_80X.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
 
+echo "Temporary perl hack for LeptonSelection (to keep repo compatibility with 94X), due to CMSSW function name change"
+perl -p -i.bak -e 's/numberOfAllHits/numberOfHits/g' $CMSSW_BASE/src/flashgg/Taggers/src/LeptonSelection.cc
+
 echo
 echo "Done with setup script! You still need to build!"
 # echo "After building, run afterbuild_setup.sh"

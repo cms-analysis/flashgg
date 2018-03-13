@@ -44,6 +44,12 @@ If everything now looks reasonable, you can build:
  cd $CMSSW_BASE/src
  scram b -j 3
  ```
+
+In 94X after building you need to run:
+ ```
+ source flashgg/afterbuild_9_4_X.sh
+ ```
+
 And a very basic workflow test:
  ```
  cd $CMSSW_BASE/src/flashgg
