@@ -168,6 +168,11 @@ namespace flashgg {
                 alphas_id_2 = "266400";
             }
 
+            if (pdfidx == 306000){
+                alphas_id_1 = "306101";
+                alphas_id_2 = "306102";
+            }
+                
             cout << "alpha_S min and max id             : " << alphas_id_1 << "   " << alphas_id_2 << endl;
         }
 
@@ -189,6 +194,11 @@ namespace flashgg {
         string pdfvar   = "PDF_variation";
         string alphavar;  //only for thq samples
         string pdfnlovar; //only for thq samples (could be extended to the rest of samples)
+
+        if (pdfidx == 306000) { // 2017??
+            pdfvar = "PDF_variation NNPDF31_nnlo_hessian_pdfas";
+        }
+
         if (!isStandardSample_){
             pdfvar = pdfset_;
             scalevar = "Central scale variation";
@@ -202,7 +212,7 @@ namespace flashgg {
         // --- Loop over elements to get PDF, alpha_s and scale weights
         BOOST_FOREACH( boost::property_tree::ptree::value_type const& v, pt.get_child("") ) {
             
-            if (v.first == "weightgroup"){
+            if (v.first == "weightgroup" || v.first == "uknown"){
                 //std::cout << "First data: " << v.first.data() << std::endl;
                 
                 boost::property_tree::ptree subtree = (boost::property_tree::ptree) v.second ;
@@ -210,15 +220,17 @@ namespace flashgg {
                 boost::optional<std::string> weightgroupname1 = v.second.get_optional<std::string>("<xmlattr>.name");
                 boost::optional<std::string> weightgroupname2 = v.second.get_optional<std::string>("<xmlattr>.type");
                 
-                //if (weightgroupname1) cout <<  weightgroupname1.get() <<endl;
-                //if (weightgroupname2) cout <<  weightgroupname2.get() <<endl;
+                if (debug_) {
+                    if (weightgroupname1) cout <<  weightgroupname1.get() <<endl;
+                    if (weightgroupname2) cout <<  weightgroupname2.get() <<endl;
+                }
 
                 // -- PDFs + alpha_s weights
                 if ( (weightgroupname1 && weightgroupname1.get() == pdfvar)  || (weightgroupname2 && weightgroupname2.get() == pdfvar)) {               
                                     
                     BOOST_FOREACH(boost::property_tree::ptree::value_type &vs,subtree)
                         if (vs.first == "weight") {
-                            //cout << vs.first <<  "   " << vs.second.get<std::string>("<xmlattr>.id")  << "  " << vs.second.data()<< endl;
+                            if (debug_) std::cout << "SCZ " << vs.first <<  "   " << vs.second.get<std::string>("<xmlattr>.id")  << "  " << vs.second.data()<< endl;
                             
                             string strwid  = vs.second.get<std::string>("<xmlattr>.id");
                             string strw    = vs.second.data();
@@ -239,7 +251,7 @@ namespace flashgg {
                             }
                             
                             int pdfindex = stoi(strs.back());
-                            //cout << "pdfindex " << pdfindex <<endl;
+                            if (debug_) cout << "pdfindex " << pdfindex <<endl;
 
                             if (pdfindex >= boost::lexical_cast<int>(pdfid_1) && pdfindex <= boost::lexical_cast<int>(pdfid_2)){
                                 PDFWeightProducer::pdf_indices.push_back( id );
@@ -299,6 +311,31 @@ namespace flashgg {
                 }// end loop over pdf nlo weights
             }
         }
+
+        if (debug_) {
+            std::cout << "pdf_indices:";
+            for( unsigned int j = 0; j < PDFWeightProducer::pdf_indices.size(); j++ ){
+                int id_j = PDFWeightProducer::pdf_indices[j];
+                std::cout << " " << id_j;
+            }
+            std::cout <<std::endl;
+
+            std::cout << "alpha_indices:";
+            for( unsigned int j = 0; j < PDFWeightProducer::alpha_indices.size(); j++ ){
+                int id_j = PDFWeightProducer::alpha_indices[j];
+                std::cout << " " << id_j;
+            }
+            std::cout <<std::endl;
+
+            std::cout << "scale_indices:";
+            for( unsigned int j = 0; j < PDFWeightProducer::scale_indices.size(); j++ ){
+                int id_j = PDFWeightProducer::scale_indices[j];
+                std::cout << " " << id_j;
+            }
+            std::cout <<std::endl;
+        }
+
+
     }
 
 
@@ -457,3 +494,5 @@ DEFINE_FWK_MODULE( FlashggPDFWeightProducer );
 // c-basic-offset:4
 // End:
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
+
+//  LocalWords:  endl
