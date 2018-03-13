@@ -144,7 +144,7 @@ class MicroAODCustomize(object):
                 self.customizeVBF(process)
             elif "thq" in customize.datasetName.lower() or "thw" in customize.datasetName.lower():
                 self.customizeTH(process)
-            else:
+            elif os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
                 raise Exception,"processType=sig but datasetName does not contain recognized production mechanism - see MicroAODCustomize.py"
         if self.processType == "background" or self.processType == "bkg":
             self.customizeBackground(process)
