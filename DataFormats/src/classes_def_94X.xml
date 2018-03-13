@@ -264,7 +264,8 @@
 <class name="edm::Wrapper<std::vector<flashgg::Jet> >"/>
 <class name="std::vector<std::vector<flashgg::Jet> >"/>
 <class name="edm::Wrapper<std::vector<std::vector<flashgg::Jet> > >"/>
-<class name="flashgg::Electron" ClassVersion="16">
+<class name="flashgg::Electron" ClassVersion="17">
+  <version ClassVersion="17" checksum="3364980247"/>
  <version ClassVersion="16" checksum="2461262684"/>
  <version ClassVersion="15" checksum="467802190"/>
  <version ClassVersion="14" checksum="1838216375"/>
