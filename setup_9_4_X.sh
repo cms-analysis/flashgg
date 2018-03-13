@@ -58,6 +58,7 @@ if ${SETUP_REMOTES} ; then
   git remote add ffede https://github.com/ffede/flashgg
   git remote add forthommel https://github.com/forthommel/flashgg
   git remote add fravera https://github.com/fravera/flashgg
+  git remote add gkrintir https://github.com/fravera/flashgg-1
   git remote add GiuseppeFasanella https://github.com/GiuseppeFasanella/flashgg
   git remote add gourangakole https://github.com/gourangakole/flashgg
   git remote add hbakhshi https://github.com/hbakhshi/flashgg
@@ -179,5 +180,5 @@ ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_
 
 echo
 echo "Done with setup script! You still need to build!"
-# echo "After building, run afterbuild_setup.sh"
+echo "After building, run afterbuild_9_4_X.sh"
 echo
