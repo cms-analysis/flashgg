@@ -27,8 +27,6 @@ class MuonSF_JSONReader :
                         pt_from = float( pt_values.group("From" ) )
                         pt_to = float( pt_values.group("To" ) )
 
-                        if pt_to == 120.0 :
-                            pt_to = float('inf')
                         sf_value = self.Info[sub_branch_name][eta_region][pt_region]["value"]
                         sf_error = self.Info[sub_branch_name][eta_region][pt_region]["error"]
                         
@@ -112,7 +110,10 @@ def SetupMuonScaleFactors( process , id_name , iso_name ):
         else :
             raise NameError("%s id for muon is not valid" % id_name )
 
-        iso_full_name = "%sIso_DEN_%sID" % (iso_name , id_name )
+        Extention = ""
+        if id_name in ["Tight" , "HighPt"]:
+            Extention = "andIPCut"
+        iso_full_name = "%sIso_DEN_%sID%s" % (iso_name , id_name , Extention)
         if iso_full_name in MUON_ISO_ScaleFactors.keys() :
             process.flashggMuonSystematics.SystMethods.append( MUON_ISO_ScaleFactors[iso_full_name].GetPSet("Muon" + iso_name  + "ISOWeight") )
         else :
