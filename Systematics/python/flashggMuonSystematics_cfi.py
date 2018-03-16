@@ -40,7 +40,16 @@ class MuonSF_JSONReader :
                                 uncertainties = cms.vdouble( sf_error , sf_error )
                                 )
                             )
-                        pt_bins[ pt_from ] = self.binInfo.bins[-1]
+                        self.binInfo.bins.append( 
+                            cms.PSet(
+                                lowBounds = cms.vdouble( -1*eta_to , pt_from ) ,
+                                upBounds = cms.vdouble( -1*eta_from , pt_to ) ,
+                                values = cms.vdouble( sf_value ) ,
+                                uncertainties = cms.vdouble( sf_error , sf_error )
+                                )
+                            )
+
+                        pt_bins[ pt_from ] = [ self.binInfo.bins[-1], self.binInfo.bins[-2] ]
                     else :
                         print pt_region, "of sf" , sf_name , "from file", file_name , "can not be interpreted correctly"
                 min_pt = sorted( pt_bins.keys() )[0]
@@ -52,7 +61,16 @@ class MuonSF_JSONReader :
                         uncertainties = cms.vdouble( 0.00 , 0.00 )
                         )
                     )
-                pt_bins[ sorted(pt_bins.keys())[-1] ].upBounds[1] = float( 'inf' )
+                self.binInfo.bins.append( 
+                    cms.PSet(
+                        lowBounds = cms.vdouble( -1*eta_to , 0.00 ) ,
+                        upBounds = cms.vdouble( -1*eta_from , min_pt ) ,
+                        values = cms.vdouble( 1.00 ) ,
+                        uncertainties = cms.vdouble( 0.00 , 0.00 )
+                        )
+                    )
+                pt_bins[ sorted(pt_bins.keys())[-1] ][0].upBounds[1] = float( 'inf' )
+                pt_bins[ sorted(pt_bins.keys())[-1] ][1].upBounds[1] = float( 'inf' )
             else:
                 print eta_region, "of sf" , sf_name , "from file", file_name , "can not be interpreted correctly"
 
@@ -84,14 +102,25 @@ flashggMuonSystematics = cms.EDProducer('FlashggMuonEffSystematicProducer',
 					SystMethods = cms.VPSet()
                                         )
 
-if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
-    import flashgg.Systematics.flashggMuonSystematics2016_cfi as muons2016
-    flashggMuonSystematics.SystMethods.append( muons2016.PSetMuonWeight2016 )
-    flashggMuonSystematics.SystMethods.append( muons2016.PSetMuonMiniIsoWeight2016 )
-elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
-    for iso in MUON_ISO_ScaleFactors :
-        if iso == "LooseRelIso_DEN_LooseID" :
-            flashggMuonSystematics.SystMethods.append( MUON_ISO_ScaleFactors[iso].GetPSet(iso) )
-    for id in MUON_ID_ScaleFactors :
-        if id == "Loose" :
-            flashggMuonSystematics.SystMethods.append( MUON_ID_ScaleFactors[id].GetPSet(id) )
+import exceptions
+def SetupMuonScaleFactors( process , id_name , iso_name ):
+
+
+    if os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
+        if id_name in MUON_ID_ScaleFactors.keys():
+            process.flashggMuonSystematics.SystMethods.append( MUON_ID_ScaleFactors[id_name].GetPSet("Muon" + id_name + "IDWeight") )
+        else :
+            raise NameError("%s id for muon is not valid" % id_name )
+
+        iso_full_name = "%sIso_DEN_%sID" % (iso_name , id_name )
+        if iso_full_name in MUON_ISO_ScaleFactors.keys() :
+            process.flashggMuonSystematics.SystMethods.append( MUON_ISO_ScaleFactors[iso_full_name].GetPSet("Muon" + iso_name  + "ISOWeight") )
+        else :
+            raise NameError("%s iso for muon is not valid" % iso_full_name )
+
+    elif os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
+        import flashgg.Systematics.flashggMuonSystematics2016_cfi as muons2016
+        process.flashggMuonSystematics.SystMethods.append( muons2016.PSetMuonWeight2016 )
+        process.flashggMuonSystematics.SystMethods.append( muons2016.PSetMuonMiniIsoWeight2016 )
+        
+            
