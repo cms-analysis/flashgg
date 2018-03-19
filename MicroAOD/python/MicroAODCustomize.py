@@ -390,6 +390,8 @@ class MicroAODCustomize(object):
         process.diPhotonFilter.src = "flashggSelectedMuons"
         process.diPhotonFilter.minNumber = 2
         process.flashggDiPhotonFilterSequence.remove(process.diPhotonSelector)
+        process.flashggDiPhotonFilterSequence.remove(process.diPhotonFilter)
+        process.flashggMuonFilterSequence += process.diPhotonFilter
 
     def customizeHighMassIsolations(self,process):
         # for isolation cones
