@@ -61,7 +61,7 @@ namespace flashgg {
         DiPhotonTagBase::tag_t otherTagType( unsigned i ) const { return otherTagTypes_[i]; }
         int otherTagCategory( unsigned i ) const { return otherTagCategories_[i]; }
         int otherTagDiPhotonIndex ( unsigned i ) const { return otherTagIndices_[i]; }
-    private:
+    protected:
         DiPhotonMVAResult mva_result_;
         int category_number_;
         int diPhotonIndex_;
