@@ -13,17 +13,9 @@ if usePrivateSQlite:
 
 #============================================Apply MET correction and syst.=================================================#
 
-def runMETs(process,isMC):
-    #================================ Get the most recent JEC ==================================================================#
-    # Setup the private SQLite -- Ripped from PhysicsTools/PatAlgos/test/corMETFromMiniAOD.py
-    era = "Summer16_23Sep2016"
-    if isMC : 
-        era += "V4_MC"
-    else :
-        era += "AllV4_DATA"
+def runMETs(process,era):
         
     dBFile = os.path.expandvars(era+".db")
-    
     print dBFile
     if usePrivateSQlite:
         process.jec = cms.ESSource("PoolDBESSource",
@@ -44,7 +36,9 @@ def runMETs(process,isMC):
                                    )
         process.es_prefer_jec = cms.ESPrefer("PoolDBESSource",'jec')
 #===========================================================================================================================#
-        
+    isMC = False
+    if 'MC' in dBFile:
+        isMC = True
         ##only corrects JEC/JER uncertainties for the baseline collection; means only muon corrected and EG/Muon corrected MET collections are guaranteed to have the correct JEC uncertainties.
         runMetCorAndUncFromMiniAOD(process, metType="PF",
                                    recoMetFromPFCs=False,
@@ -52,14 +46,14 @@ def runMETs(process,isMC):
                                    isData=(not isMC),
                                    )
 
-        if isMC:
+        if isMC or os.environ["CMSSW_VERSION"].count("CMSSW_9"):
              process.flashggMets = cms.EDProducer('FlashggMetProducer',
                                          verbose = cms.untracked.bool(False),
                                          metTag = cms.InputTag('slimmedMETs'),
                                          )
              process.flashggMetSequence = cms.Sequence(process.flashggMets)
         
-        if not isMC:
+        if not isMC and os.environ["CMSSW_VERSION"].count("CMSSW_8_0_28"):
             corMETFromMuonAndEG(process, 
                                 pfCandCollection="", #not needed
                                 electronCollection="slimmedElectronsBeforeGSFix",
