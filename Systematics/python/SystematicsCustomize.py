@@ -52,12 +52,15 @@ def printSystematicVPSet(vpsetlist):
             print 57*"-"
 
 
-def createStandardSystematicsProducers(process):
+def createStandardSystematicsProducers(process, MUON_ID="Loose" , MUON_ISO="LooseRel"):
     process.load("flashgg/Taggers/flashggTagSequence_cfi")
     process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
     process.load("flashgg.Systematics.flashggMuonSystematics_cfi")
     process.load("flashgg.Systematics.flashggElectronSystematics_cfi")
     process.load("flashgg.Systematics.flashggMetSystematics_cfi")
+
+    import flashgg.Systematics.flashggMuonSystematics_cfi as muon_sf
+    muon_sf.SetupMuonScaleFactors( process , MUON_ID , MUON_ISO )
     
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
     from flashgg.Systematics.flashggJetSystematics_cfi import createJetSystematics
