@@ -298,7 +298,9 @@ class MicroAODCustomize(object):
             delattr(process,"patJetPartonMatchAK4PFCHSLeg%i"%vtx)
         self.customizeHighMassIsolations(process)
         process.load("flashgg/MicroAOD/flashggDiPhotonFilter_cfi")
-        process.p1 = cms.Path(process.diPhotonFilter) # Do not save events with 0 diphotons
+        process.flashggDiPhotonFilterSequence += process.diPhotonSelector
+        process.flashggDiPhotonFilterSequence += process.diPhotonFilter # Do not continue running events with 0 diphotons passing pt cuts
+        process.p1 = cms.Path(process.diPhotonFilter) # Do not save events with 0 diphotons passing pt cuts
         process.out.SelectEvents = cms.untracked.PSet(SelectEvents=cms.vstring('p1'))
 
     def customizeDec2016Regression(self,process):
@@ -387,6 +389,9 @@ class MicroAODCustomize(object):
     def customizeDataMuons(self,process):
         process.diPhotonFilter.src = "flashggSelectedMuons"
         process.diPhotonFilter.minNumber = 2
+        process.flashggDiPhotonFilterSequence.remove(process.diPhotonSelector)
+        process.flashggDiPhotonFilterSequence.remove(process.diPhotonFilter)
+        process.flashggMuonFilterSequence += process.diPhotonFilter
 
     def customizeHighMassIsolations(self,process):
         # for isolation cones
