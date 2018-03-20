@@ -54,6 +54,18 @@ customize.options.register('tthTagsOnly',
                            VarParsing.VarParsing.varType.bool,
                            'tthTagsOnly'
                            )
+customize.options.register('doubleHTagsOnly',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doubleHTagsOnly'
+                           )
+customize.options.register('doDoubleHTag',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doDoubleHTag'
+                           )
 customize.options.register('doHTXS',
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -170,12 +182,21 @@ if customize.tthTagsOnly:
     process.flashggTagSequence.remove(process.flashggVBFMVA)
     process.flashggTagSequence.remove(process.flashggVBFDiPhoDiJetMVA)
 
+if customize.doDoubleHTag:
+    import flashgg.Systematics.doubleHCustomize as hhc
+    hhc.customizeTagSequence(  customize, process )
+    minimalVariables += hhc.variablesToDump(customize)
+   
+
 print 'here we print the tag sequence after'
 print process.flashggTagSequence
 
 if customize.doFiducial:
     print 'we do fiducial and we change tagsorter'
     process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggSigmaMoMpToMTag')) )
+
+if customize.doubleHTagsOnly:
+    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggDoubleHTag')) )
 
 if customize.tthTagsOnly:
     process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag')),
@@ -190,7 +211,11 @@ print "customize.processId:",customize.processId
 useEGMTools(process)
 
 # Only run systematics for signal events
-if customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance"): # convention: ggh vbf wzh (wh zh) tth
+# convention: ggh vbf wzh (wh zh) tth
+signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","hh_","Acceptance"]
+is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
+#if customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance") or customize.processId.count("hh_"): 
+if is_signal:
     print "Signal MC, so adding systematics and dZ"
     if customize.doHTXS:
         variablesToUse = minimalVariablesHTXS
@@ -203,7 +228,7 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
         variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
         variablesToUse.append("leadmva := diPhotonMVA().leadmva")
         variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
-
+    
     if customize.doSystematics:
         for direction in ["Up","Down"]:
             phosystlabels.append("MvaShift%s01sigma" % direction)
@@ -370,6 +395,8 @@ elif customize.tthTagsOnly:
         ["TTHHadronicTag",0],
         ["TTHLeptonicTag",0]
         ]
+elif customize.doubleHTagsOnly:
+    tagList = hhc.tagList(customize,process)
 else:
     tagList=[
         ["NoTag",0],
