@@ -7,12 +7,15 @@ def tagList(customize,process):
     return [ ["DoubleHTag",6] ]
 
 
-def customizeTagSequence(customize,process)
+def customizeTagSequence(customize,process):
     process.load("flashgg.Taggers.flashggDoubleHTag_cff")
 
     ## customize here (regression, kin-fit, MVA...)
-    
-    process.flashggTagSequence.extend( process.flashggDoubleHTagSequence )
+    ## process.flashggTagSequence += process.flashggDoubleHTagSequence
+    pos = process.flashggTagSequence.index(process.flashggTagSorter) - 1 
+    process.flashggTagSequence.insert( pos, process.flashggDoubleHTagSequence )
+    ## for step in process.flashggDoubleHTagSequence:
+    ##     process.flashggTagSequence.append(step)
 
     if customize.doubleHTagsOnly:
         process.flashggTagSequence.remove(process.flashggVBFTag)

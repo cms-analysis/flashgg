@@ -75,12 +75,13 @@ namespace flashgg {
 
     int DoubleHTagProducer::chooseCategory( float mva, float mx )
     {
+        return 0;
         //// // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
         //// int n;
         //// for( n = 0 ; n < ( int )boundaries.size() ; n++ ) {
         ////     if( ( double )mvavalue > boundaries[boundaries.size() - n - 1] ) { return n; }
         //// }
-        return -1; // Does not pass, object will not be produced
+        //// return -1; // Does not pass, object will not be produced
     }
 
     void DoubleHTagProducer::produce( Event &evt, const EventSetup & )
@@ -167,12 +168,12 @@ namespace flashgg {
             tag_obj.includeWeights( *leadJet );
             tag_obj.includeWeights( *subleadJet );
 
+            tags->push_back( tag_obj );
+            
             // link mc-truth
             if( ! evt.isRealData() ) {
                 tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                
             }
-            
-            tags->push_back( tag_obj );
         }
 
         evt.put( std::move( truths ) );
