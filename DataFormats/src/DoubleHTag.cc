@@ -8,10 +8,12 @@ DoubleHTag::DoubleHTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.)
 
 DoubleHTag::~DoubleHTag() {}
 
-DoubleHTag::DoubleHTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<reco::Candidate> leadJet, edm::Ptr<reco::Candidate> subleadJet )
-    : mva_(-.2), leadJet_(leadJet), subleadJet_(subleadJet) 
+DoubleHTag::DoubleHTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<flashgg::Jet> leadJet, edm::Ptr<flashgg::Jet> subleadJet )
+    : mva_(-.2), MX_(0.), leadJet_(leadJet), subleadJet_(subleadJet) 
 {
     dipho_ = diPho;
+    dijet_ = leadJet_->p4() + subleadJet->p4();
+    this->setP4( dijet_ + dipho_->p4() );
 }
 
 DoubleHTag *DoubleHTag::clone() const
