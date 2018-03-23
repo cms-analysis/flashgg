@@ -151,7 +151,7 @@ git cms-merge-topic -u sethzenz:for-flashgg-toolbase-9_4_0
 
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/Systematics/data/JEC/Fall17_17Nov2017*db $CMSSW_BASE/src/flashgg/
-cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_80X.db $CMSSW_BASE/src/flashgg
+cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_cmssw8020_v2.db $CMSSW_BASE/src/flashgg
 
 echo "copy smearing files stored in flashgg into egamma tools"
 #cp $CMSSW_BASE/src/flashgg/Systematics/data/Golden*.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
