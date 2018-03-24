@@ -43,7 +43,7 @@ namespace flashgg {
         bool computeSimpleRMS, computeRegVars;
         unsigned jetCollectionIndex_;
         EDGetTokenT<double> rhoToken_;
-        EDGetTokenT<View<pat::Jet> > jetDebugToken_;
+        EDGetTokenT<View<pat::Jet> > miniaodJetToken_;
         bool debug_;
         unsigned pudebug_matched_badrms_, pudebug_matched_;
         bool doPuJetID_;
@@ -64,7 +64,7 @@ namespace flashgg {
         jetCollectionIndex_( iConfig.getParameter<unsigned> ( "JetCollectionIndex" ) ),
         //GluonTagSrc_  (iConfig.getParameter<edm::InputTag>("GluonTagSrc") )
         rhoToken_( consumes<double>(iConfig.getParameter<edm::InputTag>("rho") ) ),
-        jetDebugToken_( consumes<View<pat::Jet> >( iConfig.getUntrackedParameter<InputTag> ( "JetDebugTag",edm::InputTag("slimmedJets") ) ) ),
+        miniaodJetToken_( consumes<View<pat::Jet> >( iConfig.getParameter<InputTag> ( "MiniAodJetTag" ) ) ),
         debug_( iConfig.getUntrackedParameter<bool>( "Debug",false ) ),
         doPuJetID_( iConfig.getParameter<bool>( "DoPuJetID") ),
         minPtForEneSum_( iConfig.getParameter<double>("MinPtForEneSum") ),
@@ -96,10 +96,8 @@ namespace flashgg {
         evt.getByToken( jetToken_, jets );
         // const PtrVector<pat::Jet>& jetPointers = jets->ptrVector();
 
-        Handle<View<pat::Jet> > debugJets;
-        if (debug_) {
-            evt.getByToken( jetDebugToken_, debugJets );
-        }
+        Handle<View<pat::Jet> > miniaodJets;
+        evt.getByToken( miniaodJetToken_, miniaodJets );
         
         // input DiPhoton candidates
         Handle<View<DiPhotonCandidate> > diPhotons;
@@ -133,9 +131,9 @@ namespace flashgg {
         unique_ptr<vector<flashgg::Jet> > jetColl( new vector<flashgg::Jet> );
 
         if (debug_) {
-            for( unsigned int i = 0 ; i < debugJets->size() ; i++ ) {
-                if (debugJets->ptrAt(i)->pt() > 20 ) {
-                    std::cout << " DEBUG JET pt eta mva " << debugJets->ptrAt(i)->pt() << " " << debugJets->ptrAt(i)->eta() << " " << debugJets->ptrAt(i)->userFloat("pileupJetId:fullDiscriminant") << std::endl;
+            for( unsigned int i = 0 ; i < miniaodJets->size() ; i++ ) {
+                if (miniaodJets->ptrAt(i)->pt() > 20 ) {
+                    std::cout << " DEBUG JET pt eta mva " << miniaodJets->ptrAt(i)->pt() << " " << miniaodJets->ptrAt(i)->eta() << " " << miniaodJets->ptrAt(i)->userFloat("pileupJetId:fullDiscriminant") << std::endl;
                 }
             }
         }
@@ -150,9 +148,45 @@ namespace flashgg {
                 continue;
             }
 
+            // Copy over userFloats, userInts, and bDiscriminators from MINIAOD jet collection to 0th vertex
+            if (jetCollectionIndex_ == 0) {
+                bool matched = false;
+                for( unsigned int j = 0 ; j < miniaodJets->size() ; j++ ) {
+                    if (reco::deltaR(miniaodJets->ptrAt(j)->eta(),miniaodJets->ptrAt(j)->phi(),fjet.eta(),fjet.phi()) < 0.1) {
+                        matched = true;
+                        std::cout << " Matched 0th vertex jet " << i << "  to MINIAOD jet " << j << std::endl;
+                        for (auto x = miniaodJets->ptrAt(j)->userFloatNames().begin() ; x != miniaodJets->ptrAt(j)->userFloatNames().end() ; x++) {
+                            //                            std::cout << "    UserFloat " << *x << " has value " << miniaodJets->ptrAt(j)->userFloat(*x) << std::endl;
+                            fjet.addUserFloat(string("mini_")+(*x),miniaodJets->ptrAt(j)->userFloat(*x));
+                        }
+                        for (auto x = miniaodJets->ptrAt(j)->userIntNames().begin() ; x != miniaodJets->ptrAt(j)->userIntNames().end() ; x++) {
+                            //                            std::cout << "    UserInt " << *x << " has value " << miniaodJets->ptrAt(j)->userInt(*x) << std::endl;
+                            fjet.addUserInt(string("mini_")+(*x),miniaodJets->ptrAt(j)->userInt(*x));
+                        }
+                        for (auto x = miniaodJets->ptrAt(j)->getPairDiscri().begin() ; x != miniaodJets->ptrAt(j)->getPairDiscri().end() ; x++) {
+                            //                            std::cout << "    bDiscriminator " << x->first << " has value " << x->second << std::endl;
+                            fjet.addBDiscriminatorPair(std::make_pair(string("mini_")+(x->first),x->second));
+                        }
+                    }
+                }
+                if (!matched) {
+                    std::cout << " NO MATCH for 0th vertex jet " << i << " pt,eta is " << fjet.correctedP4("Uncorrected").pt() << " " << fjet.eta() << std::endl;
+                }
+            }
+            
             if (debug_) {
                 std::cout << " Start of jet " << i << " pt=" << fjet.pt() << " eta=" << fjet.eta() << std::endl;
+                for (auto x = fjet.userFloatNames().begin() ; x != fjet.userFloatNames().end() ; x++) {
+                    std::cout << "    UserFloat " << *x << " has value " << fjet.userFloat(*x) << std::endl;                                                                         
+                }
+                for (auto x = fjet.userIntNames().begin() ; x != fjet.userIntNames().end() ; x++) {
+                    std::cout << "    UserInt " << *x << " has value " << fjet.userInt(*x) << std::endl;                                                                             
+                }
+                for (auto x = fjet.getPairDiscri().begin() ; x != fjet.getPairDiscri().end() ; x++) {
+                    std::cout << "    bDiscriminator " << x->first << " has value " << x->second << std::endl;                                                                                         
+                }
             }
+
 
             //store btagging userfloats
             if (computeRegVars) {
@@ -292,11 +326,13 @@ namespace flashgg {
             if(qgHandle.isValid()) qgLikelihood = ( *qgHandle )[jets->refAt( i )];;
             fjet.setQGL(qgLikelihood);
 
-            if (debug_) { std::cout << " after setQGL" << std::endl; }
+            if (debug_) { 
+                std::cout << " after setQGL" << std::endl;
 
-            //            if (fjet.pt() > 20.) {
-            //                std::cout << "Jet["<< i << "] QGL=" << qgLikelihood << " partonFlavour=" << fjet.partonFlavour() << std::endl;
-            //            }
+                if (fjet.pt() > 20.) {
+                    std::cout << "Jet["<< i << "] QGL=" << qgLikelihood << " partonFlavour=" << fjet.partonFlavour() << std::endl;
+                }
+            }
 
             if ( doPuJetID_ ) {
                 if ( jetCollectionIndex_ == 0 && doPuJetID_ ) {
@@ -308,19 +344,20 @@ namespace flashgg {
                         std::cout << "[STANDARD] pt=" << fjet.pt() << " eta=" << fjet.eta() 
                                   << " lPUJetId RMS, betaStar, mva: " << lPUJetId.RMS() << " " << lPUJetId.betaStar() << " " << lPUJetId.mva() 
                                   << "; simpleRMS " << fjet.rms() << "; match=" << (bool)(fjet.genJet()) << std::endl;
-                        for( unsigned int i = 0 ; i < debugJets->size() ; i++ ) {
-                            if (fabs(debugJets->ptrAt(i)->pt()-fjet.pt()) < 1. && fabs(debugJets->ptrAt(i)->eta()-fjet.eta()) < 0.1
-                                && fabs(debugJets->ptrAt(i)->phi()-fjet.phi()) < 0.1 ) {
+                        for( unsigned int i = 0 ; i < miniaodJets->size() ; i++ ) {
+                            if (fabs(miniaodJets->ptrAt(i)->pt()-fjet.pt()) < 1. && fabs(miniaodJets->ptrAt(i)->eta()-fjet.eta()) < 0.1
+                                && fabs(miniaodJets->ptrAt(i)->phi()-fjet.phi()) < 0.1 ) {
                                 pudebug_matched_++;
-                                if (fabs(debugJets->ptrAt(i)->userFloat("pileupJetId:fullDiscriminant") - lPUJetId.mva()) > 0.02 ) {
+                                if (fabs(miniaodJets->ptrAt(i)->userFloat("pileupJetId:fullDiscriminant") - lPUJetId.mva()) > 0.02 ) {
                                     std::cout << "* ---------------------------------" << std::endl;
                                     std::cout << "* Matching jet, non-matching PU MVA" << std::endl;
                                     std::cout << "* ---------------------------------" << std::endl;
                                     std::cout << "*   mva=" << lPUJetId.mva() << " (" << 
-                                        debugJets->ptrAt(i)->userFloat("pileupJetId:fullDiscriminant") << ")" << std::endl;
-                                    std::cout << "*   pt=" << fjet.pt() << " (" << debugJets->ptrAt(i)->pt() << ")" << std::endl;
-                                    std::cout << "*   eta=" << fjet.eta() << " (" << debugJets->ptrAt(i)->eta() << ")" << std::endl;
-                                    std::cout << "*   jetPhi=" << lPUJetId.jetPhi() << " (" << debugJets->ptrAt(i)->phi() << ")" << std::endl;
+                                        miniaodJets->ptrAt(i)->userFloat("pileupJetId:fullDiscriminant") << ")" << std::endl;
+                                    std::cout << "*   pt=" << fjet.pt() << " (" << miniaodJets->ptrAt(i)->pt() << ")" << std::endl;
+                                    std::cout << "*   rawPt" << fjet.correctedP4("Uncorrected").pt() << " (" << miniaodJets->ptrAt(i)->correctedP4("Uncorrected").pt() << ")" << std::endl;
+                                    std::cout << "*   eta=" << fjet.eta() << " (" << miniaodJets->ptrAt(i)->eta() << ")" << std::endl;
+                                    std::cout << "*   jetPhi=" << lPUJetId.jetPhi() << " (" << miniaodJets->ptrAt(i)->phi() << ")" << std::endl;
                                     std::cout << "*   jetM=" << lPUJetId.jetM() << std::endl;
                                     std::cout << "*   RMS=" << lPUJetId.RMS() << std::endl;
                                     std::cout << "*   nvtx=" << lPUJetId.nvtx() << std::endl;
@@ -345,10 +382,10 @@ namespace flashgg {
                                     std::cout << "+ Matching jet, matching PU MVA" << std::endl;
                                     std::cout << "+ ---------------------------------" << std::endl;
                                     std::cout << "+   mva=" << lPUJetId.mva() << " (" <<
-                                        debugJets->ptrAt(i)->userFloat("pileupJetId:fullDiscriminant") << ")" << std::endl;
-                                    std::cout << "+   pt=" << fjet.pt() << " (" << debugJets->ptrAt(i)->pt() << ")" << std::endl;
-                                    std::cout << "+   eta=" << fjet.eta() << " (" << debugJets->ptrAt(i)->eta() << ")" << std::endl;
-                                    std::cout << "+   jetPhi=" << lPUJetId.jetPhi() << " (" << debugJets->ptrAt(i)->phi() << ")" << std::endl;
+                                        miniaodJets->ptrAt(i)->userFloat("pileupJetId:fullDiscriminant") << ")" << std::endl;
+                                    std::cout << "+   pt=" << fjet.pt() << " (" << miniaodJets->ptrAt(i)->pt() << ")" << std::endl;
+                                    std::cout << "+   eta=" << fjet.eta() << " (" << miniaodJets->ptrAt(i)->eta() << ")" << std::endl;
+                                    std::cout << "+   jetPhi=" << lPUJetId.jetPhi() << " (" << miniaodJets->ptrAt(i)->phi() << ")" << std::endl;
                                     std::cout << "+   jetM=" << lPUJetId.jetM() << std::endl;
                                     std::cout << "+   RMS=" << lPUJetId.RMS() << std::endl;
                                     std::cout << "+   nvtx=" << lPUJetId.nvtx() << std::endl;
