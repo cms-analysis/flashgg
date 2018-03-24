@@ -144,7 +144,13 @@ class JobConfig(object):
             self.pu_distribs["upgrade2017"] = mix_Moriond17.input.nbPileupEvents
         except Exception:
             print "Failed to load Moriond17 mixing, this is expected in earlier releases"
-
+            
+        try:
+            #from flashgg.MetaData.mix_2017MCv2_DYJetsToLL import mix as mix_94X_mc2017
+            from flashgg.MetaData.mix_2017MCv2_GJet_Combined import mix as mix_94X_mc2017
+            self.pu_distribs["94X_mc2017"] = mix_94X_mc2017.input.nbPileupEvents
+        except Exception:
+            print "Failed to load 94X_mc2017 mixing"
             
     def __getattr__(self,name):
         ## did not manage to inherit from VarParsing, because of some issues in __init__

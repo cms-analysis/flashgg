@@ -21,33 +21,18 @@ process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string("test.root")
 )
 
-process.load("flashgg.Taggers.flashggUpdatedIdMVADiPhotons_cfi") 
+process.load("flashgg.Taggers.flashggUpdatedIdMVADiPhotons_cfi") ## import module to apply corrections on photons
 process.flashggUpdatedIdMVADiPhotons.reRunRegression = cms.bool(False)
 process.flashggUpdatedIdMVADiPhotons.doNon5x5transformation = cms.bool(False)
 process.flashggUpdatedIdMVADiPhotons.do5x5correction = cms.bool(False)
 process.flashggUpdatedIdMVADiPhotons.doIsoCorrection = cms.bool(False)
 
-from flashgg.Taggers.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
-process.kinPreselDiPhotons = flashggPreselectedDiPhotons.clone(
-src = cms.InputTag("flashggUpdatedIdMVADiPhotons"),
-cut=cms.string(
-        "mass > 95"
-        " && leadingPhoton.pt > 18 && subLeadingPhoton.pt > 18"
-        " && abs(leadingPhoton.superCluster.eta)<2.5 && abs(subLeadingPhoton.superCluster.eta)<2.5 "
-        " && ( abs(leadingPhoton.superCluster.eta)<1.4442 || abs(leadingPhoton.superCluster.eta)>1.566)"
-        " && ( abs(subLeadingPhoton.superCluster.eta)<1.4442 || abs(subLeadingPhoton.superCluster.eta)>1.566)"
-        " && (leadingPhoton.pt > 14 && leadingPhoton.hadTowOverEm < 0.15 && (leadingPhoton.full5x5_r9>0.8 || leadingPhoton.chargedHadronIso<20 || leadingPhoton.chargedHadronIso<(0.3*leadingPhoton.pt)))"
-        " && (subLeadingPhoton.pt > 14 && subLeadingPhoton.hadTowOverEm < 0.15 && (subLeadingPhoton.full5x5_r9>0.8 || subLeadingPhoton.chargedHadronIso<20 || subLeadingPhoton.chargedHadronIso<(0.3*subLeadingPhoton.pt)))"
-        )
-)
-
-
 process.flashggSinglePhotonViews = cms.EDProducer("FlashggSinglePhotonViewProducer",
-                                                  DiPhotonTag=cms.InputTag('kinPreselDiPhotons'),                                         
+                                                  DiPhotonTag=cms.InputTag('flashggUpdatedIdMVADiPhotons'),                                         
                                                   maxCandidates = cms.int32(1)
                                                   )
 
-process.load("flashgg.Taggers.photonViewDumper_cfi") ##  import diphotonDumper 
+process.load("flashgg.Taggers.photonViewDumper_cfi") ##  import photonDumper 
 import flashgg.Taggers.dumperConfigTools as cfgTools
 
 process.photonViewDumper.src = "flashggSinglePhotonViews"
@@ -74,7 +59,6 @@ variables=["pt                     := photon.pt",
            "trkSumPtHollowConeDR03 := photon.trkSumPtHollowConeDR03",
            "hadTowOverEm           := photon.hadTowOverEm",
            "idMVA                  := phoIdMvaWrtChosenVtx",
-           #"genIso                 := photon.userFloat('genIso')", 
            "eTrue                  := ? photon.hasMatchedGenPhoton ? photon.matchedGenPhoton.energy : 0",
            "sigmaIetaIeta          := photon.full5x5_sigmaIetaIeta",
            "r9                     := photon.full5x5_r9", 
@@ -84,6 +68,7 @@ variables=["pt                     := photon.pt",
            "esEnergy               := photon.superCluster.preshowerEnergy",
            "esEnergyOverRawE       := photon.superCluster.preshowerEnergy/photon.superCluster.rawEnergy"
            #"rho                    := global.rho",
+           #"genIso                 := photon.userFloat('genIso')", 
            #"esEnergyPlane1         := photon.esEnergyPlane1",
            #"esEnergyPlane2         := photon.esEnergyPlane2",
            #"e1x3                   := photon.e1x3",
@@ -96,10 +81,10 @@ histograms=["r9>>r9(110,0,1.1)",
             "scEta>>scEta(100,-2.5,2.5)"
             ]
 
-## define categories and associated objects to dump
+## define categories and associated objects to be rejected
 cfgTools.addCategory(process.photonViewDumper,
                      "Reject",
-                     "abs(photon.superCluster.eta)>=1.4442&&abs(photon.superCluster.eta)<=1.566||abs(photon.superCluster.eta)>=2.5",
+                     "abs(photon.superCluster.eta)>=1.4442&&abs(photon.superCluster.eta)<=1.566||abs(photon.superCluster.eta)>=2.5||photon.pt<15",
                      -1 ## if nSubcat is -1 do not store anythings
                      )
 
@@ -119,7 +104,6 @@ cfgTools.addCategories(process.photonViewDumper,
                        )
 
 process.p1 = cms.Path(process.flashggUpdatedIdMVADiPhotons*
-                      process.kinPreselDiPhotons*
                       process.flashggSinglePhotonViews*
                       process.photonViewDumper
                       )
