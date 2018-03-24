@@ -19,7 +19,7 @@ config.JobType.psetName = "PSET"
 #config.JobType.inputFiles   = [ os.environ['CMSSW_BASE'] + '/src/'+ 'flashgg/MetaData/data/PY8_RunIISpring15DR74_bx50_MC.db' ]
 #config.JobType.inputFiles = ['Fall15_25nsV2_MC.db','Fall15_25nsV2_DATA.db']
 #config.JobType.inputFiles = ['Spring16_25nsV6_MC.db','Spring16_25nsV6_DATA.db','QGL_80X.db']
-config.JobType.inputFiles = ['Summer16_23Sep2016V4_MC.db','Summer16_23Sep2016AllV4_DATA.db','QGL_80X.db']
+config.JobType.inputFiles = ['Summer16_23Sep2016V4_MC.db','Summer16_23Sep2016AllV4_DATA.db','QGL_cmssw8020_v2.db']
 
 ## incrase jobs time wall, maximum 2750 minutes (~46 hours)
 config.JobType.maxJobRuntimeMin = 2750

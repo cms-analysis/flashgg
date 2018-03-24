@@ -9,7 +9,6 @@
 <use   name="RecoEgamma/EgammaTools"/>
 <use   name="roofit"/>
 <use   name="roottmva"/>
-<use   name="RecoEgamma/EgammaTools"/>
 <use   name="CommonTools/CandAlgos"/>
 <!-- Flags CXXFLAGS="-ggdb"/ -->
 <flags   EDM_PLUGIN="1"/>
