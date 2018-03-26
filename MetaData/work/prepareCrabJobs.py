@@ -328,6 +328,12 @@ if options.createCrabConfig:
         if len(jobname) > 97:
             jobname = jobname.replace("RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1","94Xv10")
         if len(jobname) > 97:
+            jobname = jobname.replace("RunIIFall17MiniAOD-94X_mc2017_realistic_v10","94Xv10")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIIFall17MiniAOD-94X_mc2017_realistic_v11","94Xv11")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIIFall17MiniAOD-PU2017_94X_mc2017_realistic_v11","PU2017_94Xv11")
+        if len(jobname) > 97:
             print orig_jobname
             print "-->", len(jobname), jobname
             raise Exception,"jobname remains too long, additional hacks needed in prepareCrabJobs.py"
