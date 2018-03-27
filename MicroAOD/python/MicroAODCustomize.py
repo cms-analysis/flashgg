@@ -223,7 +223,7 @@ class MicroAODCustomize(object):
             process.p *= process.mergedGenParticles
             process.p *= process.myGenerator
             process.p *= process.rivetProducerHTXS
-            process.out.outputCommands.append("keep *_rivetProducerHTXS_*_*")
+            process.out.outputCommands.append('keep *_HTXSRivetProducer_*_*')
 
         if os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
             #raise Exception,"Debugging ongoing for HTXS in CMSSW 9"
@@ -246,7 +246,10 @@ class MicroAODCustomize(object):
             process.p *= process.mergedGenParticles
             process.p *= process.myGenerator
             process.p *= process.rivetProducerHTXS
-            process.out.outputCommands.append('keep *_*_*_runRivetAnalysis')
+            process.out.outputCommands.append('keep *_rivetProducerHTXS_*_*')
+#            process.out.outputCommands.append('keep *_*_*_FLASHggMicroAOD')
+#            process.out.outputCommands.append('drop *_*Jets*_*_*')
+
 
         self.customizePDFs(process)
 

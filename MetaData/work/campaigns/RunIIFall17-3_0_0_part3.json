@@ -1,0 +1,11 @@
+{
+	"data" : [
+	       ],
+	"sig"  : [
+	       ],
+	"bkg"  : [
+"/DiPhotonJetsBox_M40_80-Sherpa/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v3/MINIAODSIM",
+"/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v3/MINIAODSIM"
+
+	]
+}
