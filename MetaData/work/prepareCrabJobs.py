@@ -239,9 +239,11 @@ if options.createCrabConfig:
     Popen(['cp', '-p', options.parameterSet, './'])
     rel = os.environ.get('CMSSW_BASE')
     print rel
-    Popen(['cp', '-p', rel+'/src/flashgg/Systematics/data/JEC/Summer16_23Sep2016V4_MC.db', './'])
-    Popen(['cp', '-p', rel+'/src/flashgg/Systematics/data/JEC/Summer16_23Sep2016AllV4_DATA.db', './'])
-    Popen(['cp', '-p', rel+'/src/flashgg/MicroAOD/data/QGL_80X.db', './'])
+#../../../Fall17_17Nov2017BCDEF_V6_DATA.db  ../../../Fall17_17Nov2017_V6_MC.db  ../../../QGL_cmssw8020_v2.db
+
+    Popen(['cp', '-p', rel+'/src/flashgg/Fall17_17Nov2017BCDEF_V6_DATA.db', './']) # Count on local copy from setup
+    Popen(['cp', '-p', rel+'/src/flashgg/QGL_cmssw8020_v2.db', './']) # Count on local copy from setup
+    Popen(['cp', '-p', rel+'/src/flashgg/Fall17_17Nov2017_V6_MC.db', './']) # Count on local copy from setup                                                                                                                          
     print ("Storing options into config.json")
     cfg = open("config.json","w+")
     cfg.write( dumpCfg(options) )
@@ -325,6 +327,14 @@ if options.createCrabConfig:
             jobname = jobname.replace("PhaseIFall16MiniAOD-FlatPU28to62HcalNZSRAW_PhaseIFall16_HIG068_90X_upgrade2017_realistic_v6_C1-v1","PhaseIFall16")
         if len(jobname) > 97:
             jobname = jobname.replace("RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1","94Xv10")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIIFall17MiniAOD-94X_mc2017_realistic_v10","94Xv10")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIIFall17MiniAOD-94X_mc2017_realistic_v11","94Xv11")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIIFall17MiniAOD-PU2017_94X_mc2017_realistic_v11","PU2017_94Xv11")
+        if len(jobname) > 97:
+            jobname = jobname.replace("RunIIFall17MiniAOD-1core_94X_mc2017_realistic_v10","1core_94Xv10")
         if len(jobname) > 97:
             print orig_jobname
             print "-->", len(jobname), jobname

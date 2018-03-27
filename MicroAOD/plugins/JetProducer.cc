@@ -154,7 +154,10 @@ namespace flashgg {
                 for( unsigned int j = 0 ; j < miniaodJets->size() ; j++ ) {
                     if (reco::deltaR(miniaodJets->ptrAt(j)->eta(),miniaodJets->ptrAt(j)->phi(),fjet.eta(),fjet.phi()) < 0.1) {
                         matched = true;
-                        std::cout << " Matched 0th vertex jet " << i << "  to MINIAOD jet " << j << std::endl;
+                        if (debug_) {
+                            std::cout << " Matched 0th vertex jet " << i << " (ptRaw=" << fjet.correctedP4("Uncorrected").pt() <<  ")  to MINIAOD jet " << j 
+                                      << " (ptRaw=" << miniaodJets->ptrAt(j)->correctedP4("Uncorrected").pt() <<  ")" << std::endl;
+                        }
                         for (auto x = miniaodJets->ptrAt(j)->userFloatNames().begin() ; x != miniaodJets->ptrAt(j)->userFloatNames().end() ; x++) {
                             //                            std::cout << "    UserFloat " << *x << " has value " << miniaodJets->ptrAt(j)->userFloat(*x) << std::endl;
                             fjet.addUserFloat(string("mini_")+(*x),miniaodJets->ptrAt(j)->userFloat(*x));
@@ -170,7 +173,7 @@ namespace flashgg {
                     }
                 }
                 if (!matched) {
-                    std::cout << " NO MATCH for 0th vertex jet " << i << " pt,eta is " << fjet.correctedP4("Uncorrected").pt() << " " << fjet.eta() << std::endl;
+                    std::cout << " NO MATCH for 0th vertex jet " << i << " ptRaw,eta is " << fjet.correctedP4("Uncorrected").pt() << " " << fjet.eta() << std::endl;
                 }
             }
             
