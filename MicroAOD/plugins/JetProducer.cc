@@ -262,7 +262,7 @@ namespace flashgg {
                 std::vector<float> muEnergies(ncone_boundaries+1,0.);
                 int numDaug03 = 0;
 
-                float softLepPdgId=0;
+                int softLepPdgId=0;
 
 
                 for ( unsigned k = 0; k < fjet.numberOfSourceCandidatePtrs(); ++k ) {
@@ -328,7 +328,7 @@ namespace flashgg {
                     fjet.addUserFloat("softLepDr", softLepDr);
                     fjet.addUserFloat("softLepPtRel", softLepPtRel); 
                     fjet.addUserFloat("softLepPtRelInv", softLepPtRelInv); 
-                    fjet.addUserFloat("softLepPdgId", softLepPdgId); 
+                    fjet.addUserInt("softLepPdgId", softLepPdgId); 
                     fjet.addUserInt("numDaug03", numDaug03);
 
                     //                    for(size_t icone = 0; icone < ncone_boundaries+1; ++icone) {
