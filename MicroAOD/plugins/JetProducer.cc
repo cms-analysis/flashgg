@@ -198,6 +198,8 @@ namespace flashgg {
                 int nSecVertices = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->nVertices();
                 float vtxMass = 0, vtxPx = 0, vtxPy = 0, vtxPz = 0, vtx3DVal = 0, vtx3DSig = 0, vtxPosX = 0, vtxPosY = 0, vtxPosZ = 0;
                 int vtxNTracks = 0;
+                float ptD=0.;
+
 
                 if(nSecVertices > 0){
                     vtxNTracks = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).numberOfSourceCandidatePtrs();
@@ -210,6 +212,7 @@ namespace flashgg {
                     vtxPosZ = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).vertex().z();
                     vtx3DVal = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->flightDistance(0).value();
                     vtx3DSig = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->flightDistance(0).significance();
+
                 }
 
                 
@@ -227,6 +230,28 @@ namespace flashgg {
                 fjet.addUserFloat("vtx3DVal", vtx3DVal);
                 fjet.addUserFloat("vtx3DSig", vtx3DSig);
 
+
+                float                chHEF = pjet->chargedHadronEnergyFraction();
+                std::cout<<"chHEF"<<chHEF<<std::endl;
+                float                chEmEF = pjet->chargedEmEnergyFraction();
+                std::cout<<chEmEF<<std::endl;
+                //                fjet.addUserFloat("chEmEF", chEmEF);                    
+
+                //ptD of the jet
+                float sumWeight=0;
+                float sumPt=0;
+                for(const auto & d : pjet->daughterPtrVector()){
+                    sumWeight+=(d->pt())*(d->pt());
+                    sumPt+=d->pt();
+                }
+                ptD = (sumWeight > 0 ? sqrt(sumWeight)/sumPt : 0);
+                fjet.addUserFloat("ptD", ptD);                    
+                std::cout<<"ptD"<<ptD<<std::endl;                
+
+                float                mass = pjet->mass();
+                std::cout<<"jet_mass:"<<mass<<std::endl;
+                    //                fjet.addUserFloat("mass", mass);                    
+
                 if (debug_) { std::cout << " end of computeRegVars" << std::endl; }
 
             }
@@ -239,14 +264,18 @@ namespace flashgg {
                 float sumPtDrSq = 0.;
                 float sumPtSq = 0.;
                 float softLepPtRel = 0.;
-                
-                float cone_boundaries[] = { 0.05, 0.1, 0.2, 0.3 }; // hardcoded boundaries: should be made configurable
+                float softLepPtRelInv=0.;
+
+                float cone_boundaries[] = { 0.05, 0.1, 0.2, 0.3, 0.4 }; // hardcoded boundaries: should be made configurable
                 size_t ncone_boundaries = sizeof(cone_boundaries)/sizeof(float);
                 std::vector<float> chEnergies(ncone_boundaries+1,0.);
                 std::vector<float> emEnergies(ncone_boundaries+1,0.); 
                 std::vector<float> neEnergies(ncone_boundaries+1,0.); 
                 std::vector<float> muEnergies(ncone_boundaries+1,0.);
                 int numDaug03 = 0;
+
+                float softLepPdgId=0;
+
 
                 for ( unsigned k = 0; k < fjet.numberOfSourceCandidatePtrs(); ++k ) {
                     reco::CandidatePtr pfJetConstituent = fjet.sourceCandidatePtr(k);
@@ -269,6 +298,12 @@ namespace flashgg {
                             softLepDr = candDr;
                             softLepPtRel = ( pjet->px()*lPack->px() + pjet->py()*lPack->py() + pjet->pz()*lPack->pz() ) / pjet->p();
                             softLepPtRel = sqrt( lPack->p()*lPack->p() - softLepPtRel*softLepPtRel );
+
+                            softLepPtRelInv = ( pjet->px()*lPack->px() + pjet->py()*lPack->py() + pjet->pz()*lPack->pz() ) / lPack->p();
+                            softLepPtRelInv = sqrt( pjet->p()*pjet->p() - softLepPtRelInv*softLepPtRelInv );
+
+                            softLepPdgId = lPack->pdgId();
+                            std::cout<<"softLepPdgId:"<<softLepPdgId<<std::endl;
                         }
                     }
                     
@@ -305,11 +340,12 @@ namespace flashgg {
                     fjet.addUserFloat("softLepRatio", softLepRatio);
                     fjet.addUserFloat("softLepDr", softLepDr);
                     fjet.addUserFloat("softLepPtRel", softLepPtRel); 
+                    fjet.addUserFloat("softLepPdgId", softLepPdgId); 
                     fjet.addUserInt("numDaug03", numDaug03);
-                   
-                    /// for(size_t icone = 0; icone < ncone_boundaries+1; ++icone) {
-                    ///     std::cout << "icone " << icone << " " << emEnergies[icone] << " " << muEnergies[icone] << " " << chEnergies[icone] << " " << neEnergies[icone] << std::endl;
-                    /// }
+
+                    for(size_t icone = 0; icone < ncone_boundaries+1; ++icone) {
+                         std::cout << "icone " << icone << " " << emEnergies[icone] << " " << muEnergies[icone] << " " << chEnergies[icone] << " " << neEnergies[icone] << std::endl;
+                    }
                     
                     if( fjet.pt() > minPtForEneSum_ && abs(fjet.eta()) < maxEtaForEneSum_ && ( nJetsForEneSum_ == 0 || i <= nJetsForEneSum_ ) ) {
                         /// std::cout << "saving cones " << std::endl;
