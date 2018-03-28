@@ -200,7 +200,6 @@ namespace flashgg {
                 int vtxNTracks = 0;
                 float ptD=0.;
 
-
                 if(nSecVertices > 0){
                     vtxNTracks = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).numberOfSourceCandidatePtrs();
                     vtxMass = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).p4().mass();
@@ -212,7 +211,6 @@ namespace flashgg {
                     vtxPosZ = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).vertex().z();
                     vtx3DVal = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->flightDistance(0).value();
                     vtx3DSig = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->flightDistance(0).significance();
-
                 }
 
                 
@@ -231,12 +229,6 @@ namespace flashgg {
                 fjet.addUserFloat("vtx3DSig", vtx3DSig);
 
 
-                float                chHEF = pjet->chargedHadronEnergyFraction();
-                std::cout<<"chHEF"<<chHEF<<std::endl;
-                float                chEmEF = pjet->chargedEmEnergyFraction();
-                std::cout<<chEmEF<<std::endl;
-                //                fjet.addUserFloat("chEmEF", chEmEF);                    
-
                 //ptD of the jet
                 float sumWeight=0;
                 float sumPt=0;
@@ -246,11 +238,7 @@ namespace flashgg {
                 }
                 ptD = (sumWeight > 0 ? sqrt(sumWeight)/sumPt : 0);
                 fjet.addUserFloat("ptD", ptD);                    
-                std::cout<<"ptD"<<ptD<<std::endl;                
 
-                float                mass = pjet->mass();
-                std::cout<<"jet_mass:"<<mass<<std::endl;
-                    //                fjet.addUserFloat("mass", mass);                    
 
                 if (debug_) { std::cout << " end of computeRegVars" << std::endl; }
 
@@ -303,7 +291,6 @@ namespace flashgg {
                             softLepPtRelInv = sqrt( pjet->p()*pjet->p() - softLepPtRelInv*softLepPtRelInv );
 
                             softLepPdgId = lPack->pdgId();
-                            std::cout<<"softLepPdgId:"<<softLepPdgId<<std::endl;
                         }
                     }
                     
@@ -340,12 +327,13 @@ namespace flashgg {
                     fjet.addUserFloat("softLepRatio", softLepRatio);
                     fjet.addUserFloat("softLepDr", softLepDr);
                     fjet.addUserFloat("softLepPtRel", softLepPtRel); 
+                    fjet.addUserFloat("softLepPtRelInv", softLepPtRelInv); 
                     fjet.addUserFloat("softLepPdgId", softLepPdgId); 
                     fjet.addUserInt("numDaug03", numDaug03);
 
-                    for(size_t icone = 0; icone < ncone_boundaries+1; ++icone) {
-                         std::cout << "icone " << icone << " " << emEnergies[icone] << " " << muEnergies[icone] << " " << chEnergies[icone] << " " << neEnergies[icone] << std::endl;
-                    }
+                    //                    for(size_t icone = 0; icone < ncone_boundaries+1; ++icone) {
+                    //                         std::cout << "icone " << icone << " " << emEnergies[icone] << " " << muEnergies[icone] << " " << chEnergies[icone] << " " << neEnergies[icone] << std::endl;
+                    //                    }
                     
                     if( fjet.pt() > minPtForEneSum_ && abs(fjet.eta()) < maxEtaForEneSum_ && ( nJetsForEneSum_ == 0 || i <= nJetsForEneSum_ ) ) {
                         /// std::cout << "saving cones " << std::endl;
