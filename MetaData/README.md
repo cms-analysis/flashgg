@@ -101,6 +101,7 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 ./prepareCrabJobs.py -C RunIIFall17-3_0_0 -U 1 -L 25 -s campaigns/RunIIFall17-3_0_0_part3.json -V 3_0_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask jsons/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt
 ./prepareCrabJobs.py -C RunIIFall17-3_0_0 -U 1 -L 25 -s campaigns/RunIIFall17-3_0_0_part4.json -V 3_0_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask jsons/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt
 ./prepareCrabJobs.py -C RunIIFall17-3_0_0 -U 1 -L 25 -s campaigns/RunIIFall17-3_0_0_part5.json -V 3_0_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask jsons/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt
+./prepareCrabJobs.py -C RunIIFall17-3_0_0 -U 1 -L 25 -s campaigns/RunIIFall17-3_0_0_part6.json -V 3_0_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask jsons/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt
 
 ### Aug Legacy
  

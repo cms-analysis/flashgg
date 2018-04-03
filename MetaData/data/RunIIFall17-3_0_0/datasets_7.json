@@ -3215,6 +3215,14 @@
                 "nevents": 43936, 
                 "totEvents": 43936, 
                 "weights": 310622.9375
+            }, 
+            {
+                "bad": false, 
+                "events": 55824, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_0_0/3_0_0/TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/RunIIFall17-3_0_0-3_0_0-v0-RunIIFall17MiniAOD-PU2017_94X_mc2017_realistic_v11_ext1-v1/180325_204818/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 55824, 
+                "totEvents": 55824, 
+                "weights": 398418.09375
             }
         ], 
         "vetted": true
