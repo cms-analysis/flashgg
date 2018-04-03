@@ -128,6 +128,7 @@
     "RunIIFall17MiniAOD-94X_mc2017_realistic_v10" : ["94X_mc2017_realistic_v14"],
     "RunIIFall17MiniAOD-94X_mc2017_realistic_v11" : ["94X_mc2017_realistic_v14"],
     "RunIIFall17MiniAOD-PU2017_94X_mc2017_realistic_v11_ext1" : ["94X_mc2017_realistic_v14"],
+    "RunIIFall17MiniAOD-PU2017_94X_mc2017_realistic_v11" : ["94X_mc2017_realistic_v14"],
     "RunIIFall17MiniAOD-1core_94X_mc2017_realistic_v10_ext1" : ["94X_mc2017_realistic_v14"],
     "Run2017A-17Nov2017" : ["94X_dataRun2_ReReco_EOY17_v2"],
     "Run2017B-17Nov2017" : ["94X_dataRun2_ReReco_EOY17_v2"],
