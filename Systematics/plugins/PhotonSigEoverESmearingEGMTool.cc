@@ -6,7 +6,7 @@
 #include "flashgg/DataFormats/interface/Photon.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 #include "FWCore/Framework/interface/Event.h"
-#include "EgammaAnalysis/ElectronTools/interface/EnergyScaleCorrection_class.h"
+#include "RecoEgamma/EgammaTools/interface/EnergyScaleCorrection.h"
 
 namespace flashgg {
     
@@ -23,7 +23,7 @@ namespace flashgg {
         
     private:
         selector_type overall_range_;
-        EnergyScaleCorrection_class scaler_;
+        EnergyScaleCorrection scaler_;
         bool exaggerateShiftUp_; // debugging
         unsigned run_number_;
         bool debug_;
@@ -65,7 +65,7 @@ namespace flashgg {
             
             // the combination of central value + NSigma * sigma is already
             // computed by getSmearingSigma(...)
-            auto sigma = scaler_.getSmearingSigma(run_number_, y.isEB(), y.full5x5_r9(), y.superCluster()->eta(), y.et(), gain, 0., 0.); // never apply systematic shift
+            auto sigma = scaler_.smearingSigma(run_number_, y.et(), y.superCluster()->eta(), y.full5x5_r9(), gain, 0, 0);// never apply systematic shift
 
             if( debug_ ) { 
                 std::cout << "  " << shiftLabel( syst_shift ) << ": Photon has pt= " << y.pt() << " eta=" << y.superCluster()->eta() << " full5x5_r9=" << y.full5x5_r9()
