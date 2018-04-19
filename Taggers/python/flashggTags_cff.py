@@ -1,9 +1,10 @@
 import FWCore.ParameterSet.Config as cms
-from flashgg.MicroAOD.flashggJets_cfi import flashggBTag, maxJetCollections
+from flashgg.MicroAOD.flashggJets_cfi import flashggBTag, flashggDeepCSV, maxJetCollections
 
 bDiscriminator74X = cms.vdouble(0.605,0.890)
 bDiscriminator76X = cms.vdouble(0.460,0.800,0.935)
 bDiscriminator80XReReco = cms.vdouble(0.5426,0.8484,0.9535)
+bDiscriminator94X= cms.vdouble(0.1522,0.4941,0.8001)
 
 flashggUnpackedJets = cms.EDProducer("FlashggVectorVectorJetUnpacker",
                                      JetsTag = cms.InputTag("flashggFinalJets"),
@@ -67,8 +68,10 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        inputTagJets= UnpackedJetCollectionVInputTag, 
                                        jetPtThreshold = cms.double(25.),
                                        jetEtaThreshold = cms.double(2.4),
-                                       bDiscriminator = bDiscriminator80XReReco, #bDiscriminator76X
-                                       bTag = cms.string(flashggBTag),
+#                                       bDiscriminator = bDiscriminator80XReReco, #bDiscriminator76X
+#                                       bTag = cms.string(flashggBTag),
+                                       bDiscriminator = bDiscriminator94X,
+                                       bTag = cms.string(flashggDeepCSV),
                                        jetsNumberThreshold = cms.int32(5),
                                        bjetsNumberThreshold = cms.int32(1),
 				       bjetsLooseNumberThreshold = cms.int32(0),
@@ -180,8 +183,10 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
                                        jetEtaThreshold= cms.double(2.4),
                                        deltaRJetLeadPhoThreshold = cms.double(0.4),
                                        deltaRJetSubLeadPhoThreshold = cms.double(0.4),
-                                       bDiscriminator = bDiscriminator80XReReco, #bDiscriminator76X,
-                                       bTag = cms.string(flashggBTag),
+#                                       bDiscriminator = bDiscriminator80XReReco, #bDiscriminator76X,
+#                                       bTag = cms.string(flashggBTag),
+                                       bDiscriminator = bDiscriminator94X,
+                                       bTag = cms.string(flashggDeepCSV),
                                        muPFIsoSumRelThreshold = cms.double(0.25), 
 				       muMiniIsoSumRelThreshold = cms.double(0.06),
                                        PuIDCutoffThreshold = cms.double(0.8),
