@@ -15,6 +15,7 @@ flashggDeepCSVb = 'pfDeepCSVJetTags:probb'
 flashggDeepCSVbb = 'pfDeepCSVJetTags:probbb'
 flashggDeepCSVc  = 'pfDeepCSVJetTags:probc'
 flashggDeepCSVudsg = 'pfDeepCSVJetTags:probudsg'
+flashggDeepCSV= 'pfDeepCSV'
 
 maxJetCollections = 12
 #qgDatabaseVersion = 'v1' # check https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
@@ -105,7 +106,7 @@ def addFlashggPFCHSJets(process,
     elSource       = cms.InputTag("slimmedElectrons"),
     muSource       = cms.InputTag("slimmedMuons"),
     runIVF         = True,
-    btagDiscriminators = [ flashggBTag, flashggCMVABTag , flashggDeepCSVb, flashggDeepCSVbb, flashggDeepCSVc, flashggDeepCSVudsg, ],
+    btagDiscriminators = [ flashggBTag, flashggCMVABTag , flashggDeepCSVb, flashggDeepCSVbb, flashggDeepCSVc, flashggDeepCSVudsg ],
     jetCorrections = ('AK4PFchs', JECs, 'None'),
     genJetCollection = cms.InputTag('slimmedGenJets'),
     genParticles     = cms.InputTag('prunedGenParticles'),

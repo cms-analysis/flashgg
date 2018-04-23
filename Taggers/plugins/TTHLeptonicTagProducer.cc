@@ -351,7 +351,8 @@ namespace flashgg {
                         
                         muonJets.push_back( thejet );
 
-                        bDiscriminatorValue = thejet->bDiscriminator( bTag_.c_str() );
+                        if(bTag_ == "pfDeepCSV") bDiscriminatorValue = thejet->bDiscriminator("pfDeepCSVJetTags:probb")+thejet->bDiscriminator("pfDeepCSVJetTags:probbb") ;
+                        else  bDiscriminatorValue = thejet->bDiscriminator( bTag_ );
 
                         if( bDiscriminatorValue > bDiscriminator_[1] ) {
                             deltaRMuonBJetcount++;
@@ -432,7 +433,8 @@ namespace flashgg {
                         
                         ElectronJets.push_back( thejet );
                     
-                        bDiscriminatorValue = thejet->bDiscriminator( bTag_.c_str() );
+                        if(bTag_ == "pfDeepCSV") bDiscriminatorValue = thejet->bDiscriminator("pfDeepCSVJetTags:probb")+thejet->bDiscriminator("pfDeepCSVJetTags:probbb") ;
+                        else  bDiscriminatorValue = thejet->bDiscriminator( bTag_ );
                     
                         if( bDiscriminatorValue > bDiscriminator_[1] ) {
                             deltaRElectronBJetcount++;
