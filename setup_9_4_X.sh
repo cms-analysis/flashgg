@@ -138,7 +138,8 @@ git cms-merge-topic -u sethzenz:for-flashgg-weightscount-9_4_0
 # Updated for 8_0_28, and compiles and runs, but NOT checked by experts
 # Update built from sethzenz:for-flashgg-smearer-conv-weights-8_0_26 and shervin86:Hgg_Gain_v1
 echo "Setting up EGM stuff..."
-git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-9_4_0
+git cms-merge-topic -u shervin86:for-flashgg-smearer-conv-9_4_5
+git apply  flashgg/EnergyScaleCorrection.patch
 
 #EGM IDs
 git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP    

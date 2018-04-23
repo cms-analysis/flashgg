@@ -16,6 +16,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
+process.load('Configuration.StandardSequences.GeometryRecoDB_cff') ## please double check
 from Configuration.AlCa.GlobalTag import GlobalTag
 if os.environ["CMSSW_VERSION"].count("CMSSW_7_6"):
     process.GlobalTag.globaltag = '76X_mcRun2_asymptotic_v12'
@@ -23,8 +24,11 @@ elif os.environ["CMSSW_VERSION"].count("CMSSW_7_4"):
     process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v4' 
 elif os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
     process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_miniAODv2'
+elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
+     process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v12')
 else:
     raise Exception,"Could not find a sensible CMSSW_VERSION for default globaltag"
+print "[INFO] Global Tag: ",process.GlobalTag.globaltag
 
 process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string("test.root")

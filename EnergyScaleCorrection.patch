@@ -1,0 +1,39 @@
+diff --git a/RecoEgamma/EgammaTools/src/EnergyScaleCorrection.cc b/RecoEgamma/EgammaTools/src/EnergyScaleCorrection.cc
+index 0c5f594afd5..45ed832295b 100644
+--- a/RecoEgamma/EgammaTools/src/EnergyScaleCorrection.cc
++++ b/RecoEgamma/EgammaTools/src/EnergyScaleCorrection.cc
+@@ -75,7 +75,7 @@ const EnergyScaleCorrection::ScaleCorrection*
+ EnergyScaleCorrection::getScaleCorr(unsigned int runnr, double et, double eta, double r9,
+ 				    unsigned int gainSeed) const
+ {
+-
++	eta=fabs(eta);
+   // buld the category based on the values of the object
+   CorrectionCategory category(runnr, et, eta, r9, gainSeed);
+   auto result = std::equal_range(scales_.begin(),scales_.end(),category,Sorter<CorrectionCategory,ScaleCorrection>()); 
+@@ -101,7 +101,7 @@ const EnergyScaleCorrection::SmearCorrection*
+ EnergyScaleCorrection::getSmearCorr(unsigned int runnr, double et, double eta, double r9,
+ 				    unsigned int gainSeed) const
+ {
+-
++	eta=fabs(eta);
+   // buld the category based on the values of the object
+   CorrectionCategory category(runnr, et, eta, r9, gainSeed);
+   auto result = std::equal_range(smearings_.begin(),smearings_.end(),category,Sorter<CorrectionCategory,SmearCorrection>()); 
+@@ -415,11 +415,11 @@ bool EnergyScaleCorrection::CorrectionCategory::operator<(const  EnergyScaleCorr
+ 
+ std::ostream&  EnergyScaleCorrection::CorrectionCategory::print(std::ostream &os)const
+ {
+-  os <<  runMin_ << " " << runMax_
+-     << "\t" << etaMin_ << " " << etaMax_
+-     << "\t" << r9Min_ << " " << r9Max_
+-     << "\t" << etMin_ << " " << etMax_
+-     << "\t" << gain_;    
++	os <<  "run: [" << runMin_ << " " << runMax_ << "]"
++	   << "\teta: [" << etaMin_ << " " << etaMax_<< "]"
++     << "\tR9: [" << r9Min_ << " " << r9Max_<< "]"
++     << "\tEt: [" << etMin_ << " " << etMax_<< "]"
++     << "\tgain: " << gain_;    
+   return os;
+ }
+ 
