@@ -12,5 +12,8 @@ cd $SCRAM_ARCH/
 git clone https://github.com/lsoffi/RecoEgamma-ElectronIdentification.git data/RecoEgamma/ElectronIdentification/data
 cd data/RecoEgamma/ElectronIdentification/data
 git checkout CMSSW_9_4_0_pre3_TnP
+# scales and smearings
+cd $CMSSW_BASE/external/$SCRAM_ARCH/
+git clone https://github.com/ECALELFS/ScalesSmearings.git data/RecoEgamma/ScalesSmearings/data
 # Go back to the src/
 cd $CMSSW_BASE/src
