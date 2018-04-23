@@ -1,13 +1,15 @@
 #ifndef flashgg_DoubleHTag
 #define flashgg_DoubleHTag
 
+#include "TLorentzVector.h"
+
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "DataFormats/Candidate/interface/LeafCandidate.h"
 
 namespace flashgg {
 
-    class DoubleHTag: public DiPhotonTagBase, reco::LeafCandidate
+    class DoubleHTag: public DiPhotonTagBase, public reco::LeafCandidate
     {
     public:
         DoubleHTag();
@@ -21,12 +23,16 @@ namespace flashgg {
         double MVA() const { return mva_; }
         void setMX(double x) { MX_ = x; }
         double MX() const { return MX_; }
+        double diphotonPtOverM() const {return diPhoton()->pt()/mass(); }
+        double dijetPtOverM() const {return diPhoton()->pt()/mass(); }
 
         const flashgg::Jet & leadJet() const { return *leadJet_; } 
         const flashgg::Jet & subleadJet() const { return *subleadJet_; } 
         
         const LorentzVector & dijet() const { return dijet_; }
-        
+
+        float getCosThetaStar_CS(float ebeam) const;
+
     private:
         double mva_, MX_;
         edm::Ptr<flashgg::Jet> leadJet_, subleadJet_;

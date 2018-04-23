@@ -153,9 +153,12 @@ namespace flashgg {
             tag_obj.setDiPhotonIndex( candIndex );
             tag_obj.setSystLabel( systLabel_ );
             
+            std::cout<<"mass:";
+            std::cout<<tag_obj.mass()<<std::endl;
             // compute extra variables here
             tag_obj.setMX( tag_obj.dijet().mass() + tag_obj.diPhoton()->mass() - 250. );
 
+            //            std::cout<<tag_obj.getCosThetaStar_CS(tag_obj.diPhoton()->p4(),tag_obj.dijet(),6500)<<std::endl;
             // eval MVA discriminant
             double mva = mvaComputer_(tag_obj);
             // FIXME: flattening ?

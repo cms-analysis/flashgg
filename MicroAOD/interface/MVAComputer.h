@@ -105,6 +105,7 @@ namespace flashgg {
         if( ! reader_ ) { bookMVA(); }
         for( size_t ivar = 0; ivar < functors_.size(); ++ivar ) {
             values_[ivar] = functors_[ivar]( obj );
+            std::cout<<"ivar:"<<ivar<<" "<<values_[ivar]<<std::endl;
         }
         return ( regression_ ? reader_->EvaluateRegression(0, classifier_.c_str() ) : reader_->EvaluateMVA( classifier_.c_str() ) );
     }
