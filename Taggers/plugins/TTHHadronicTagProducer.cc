@@ -392,8 +392,10 @@ namespace flashgg {
                 }
                 sumJetPt_ += jetPt;
                 
+
                 float bDiscriminatorValue = -2.;
-                bDiscriminatorValue = thejet->bDiscriminator( bTag_ );
+                if(bTag_ == "pfDeepCSV") bDiscriminatorValue = thejet->bDiscriminator("pfDeepCSVJetTags:probb")+thejet->bDiscriminator("pfDeepCSVJetTags:probbb") ;
+                else  bDiscriminatorValue = thejet->bDiscriminator( bTag_ );
 
                 if(bDiscriminatorValue > maxBTagVal_){
                     BJetTTHHMVAVect.insert( BJetTTHHMVAVect.begin(), thejet );
