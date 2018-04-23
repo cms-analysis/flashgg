@@ -20,7 +20,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    MXBoundaries   = cms.vdouble(-1e+9, 1e+9), # .. and MX
                                    MVAConfig = cms.PSet(variables=cms.VPSet(), # variables are added below
                                                         classifier=cms.string("BDT::bdt"), # classifier name
-                                                        weights=cms.FileInPath("bbggTools/data/MVA2017/allMC_resWeighting_F_noDR_minDRGJet_edited.weights.xml"), # path to TMVA weights
+                                                        weights=cms.FileInPath("flashgg/bbggTools/data/MVA2017/allMC_resWeighting_F_noDR_minDRGJet_edited.weights.xml"), # path to TMVA weights
                                                         regression=cms.bool(False), # this is not a regression
                                                         ),
                                   ) 
