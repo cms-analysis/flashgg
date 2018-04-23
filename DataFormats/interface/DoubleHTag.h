@@ -32,6 +32,8 @@ namespace flashgg {
         const LorentzVector & dijet() const { return dijet_; }
 
         float getCosThetaStar_CS(float ebeam) const;
+        std::vector<float> CosThetaAngles() const;
+        float HelicityCosTheta( TLorentzVector Booster, TLorentzVector Boosted) const;
 
     private:
         double mva_, MX_;

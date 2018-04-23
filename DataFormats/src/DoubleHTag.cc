@@ -48,6 +48,36 @@ float DoubleHTag::getCosThetaStar_CS(float ebeam) const {
 }
 
 
+std::vector<float> DoubleHTag::CosThetaAngles() const {
+
+    std::vector<float> helicityThetas;
+
+    TLorentzVector BoostedHgg(0,0,0,0);
+    BoostedHgg.SetPxPyPzE(diPhoton()->px(),diPhoton()->py(),diPhoton()->pz(),diPhoton()->energy()) ;
+    TLorentzVector BoostedLeadingPhoton(0,0,0,0);
+    BoostedLeadingPhoton.SetPxPyPzE(diPhoton()->leadingPhoton()->px(),diPhoton()->leadingPhoton()->py(),diPhoton()->leadingPhoton()->pz(),diPhoton()->leadingPhoton()->energy()) ;
+    
+    helicityThetas.push_back( HelicityCosTheta(BoostedHgg, BoostedLeadingPhoton));
+    
+    TLorentzVector BoostedHbb(0,0,0,0);
+    BoostedHbb.SetPxPyPzE(dijet().px(),dijet().py(),dijet().pz(),dijet().energy()) ;
+    TLorentzVector BoostedLeadingJet(0,0,0,0);
+    BoostedLeadingJet.SetPxPyPzE(leadJet().px(),leadJet().py(),leadJet().pz(),leadJet().energy()) ;
+
+    helicityThetas.push_back( HelicityCosTheta(BoostedHbb, BoostedLeadingJet));
+
+    return helicityThetas;
+
+}
+
+
+float DoubleHTag::HelicityCosTheta( TLorentzVector Booster, TLorentzVector Boosted) const
+{
+    TVector3 BoostVector = Booster.BoostVector();
+    Boosted.Boost( -BoostVector.x(), -BoostVector.y(), -BoostVector.z() );
+    return Boosted.CosTheta();
+}
+
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

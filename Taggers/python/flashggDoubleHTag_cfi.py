@@ -30,8 +30,8 @@ cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,
                       ["leadingJet_bDis := leadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",#FIXME make the btag type configurable?
                        "subleadingJet_bDis := subleadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",
                        "fabs(CosThetaStar_CS) := abs(getCosThetaStar_CS(6500))",#FIXME get energy from somewhere?
-                       "fabs(CosTheta_bb) := 0.8",
-                       "fabs(CosTheta_gg) := 0.8",
+                       "fabs(CosTheta_bb) := abs(CosThetaAngles()[1])",
+                       "fabs(CosTheta_gg) := abs(CosThetaAngles()[0])",
 #                       "diphotonCandidate.Pt()/(diHiggsCandidate.M()) := diPhoton.pt / p4.mass",
                        "diphotonCandidate.Pt()/(diHiggsCandidate.M()) := diphotonPtOverM()",
                        "dijetCandidate.Pt()/(diHiggsCandidate.M()) := dijetPtOverM()",
