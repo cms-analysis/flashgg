@@ -38,7 +38,7 @@ namespace flashgg {
         
         MuonUtils( const edm::ParameterSet &cfg){
             if( cfg.exists( "MuonFiltersFlags"  )  ){
-                muPFIsoSumRelThreshold_ = cfg.getParameter<double>( "muPFIsoSumRelThreshold"  );
+                muPFIsoSumRelThreshold_ = cfg.getParameter<double>( "MuonFiltersFlags"  );
             }
         };
         ~MuonUtils(){};
