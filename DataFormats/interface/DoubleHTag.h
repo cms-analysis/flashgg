@@ -6,6 +6,7 @@
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "DataFormats/Candidate/interface/LeafCandidate.h"
+#include "DataFormats/Math/interface/deltaR.h"
 
 namespace flashgg {
 
@@ -34,6 +35,7 @@ namespace flashgg {
         float getCosThetaStar_CS(float ebeam) const;
         std::vector<float> CosThetaAngles() const;
         float HelicityCosTheta( TLorentzVector Booster, TLorentzVector Boosted) const;
+        float getPhoJetMinDr() const;
 
     private:
         double mva_, MX_;

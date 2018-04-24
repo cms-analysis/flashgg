@@ -32,7 +32,6 @@ cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,
                        "fabs(CosThetaStar_CS) := abs(getCosThetaStar_CS(6500))",#FIXME get energy from somewhere?
                        "fabs(CosTheta_bb) := abs(CosThetaAngles()[1])",
                        "fabs(CosTheta_gg) := abs(CosThetaAngles()[0])",
-#                       "diphotonCandidate.Pt()/(diHiggsCandidate.M()) := diPhoton.pt / p4.mass",
                        "diphotonCandidate.Pt()/(diHiggsCandidate.M()) := diphotonPtOverM()",
                        "dijetCandidate.Pt()/(diHiggsCandidate.M()) := dijetPtOverM()",
                        "customLeadingPhotonIDMVA := diPhoton.leadingView.phoIdMvaWrtChosenVtx",
@@ -40,7 +39,7 @@ cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,
                        "leadingPhotonSigOverE := diPhoton.leadingPhoton.sigEOverE",
                        "subleadingPhotonSigOverE := diPhoton.subLeadingPhoton.sigEOverE",
                        "sigmaMOverMDecorr := sqrt(0.5*(diPhoton.leadingPhoton.sigEOverE*diPhoton.leadingPhoton.sigEOverE + diPhoton.subLeadingPhoton.sigEOverE*diPhoton.subLeadingPhoton.sigEOverE))",
-                       "PhoJetMinDr := 0.4",
+                       "PhoJetMinDr := getPhoJetMinDr()",
                        ]
 
                       ## [ "leadPtOverM := diPhoton.leadingPhoton.pt / diphoton.mass", 

@@ -49,6 +49,8 @@ float DoubleHTag::getCosThetaStar_CS(float ebeam) const {
 
 
 std::vector<float> DoubleHTag::CosThetaAngles() const {
+    //helicityThetas[0] = cosTheta_gg
+    //helicityThetas[1] = cosTheta_bb
 
     std::vector<float> helicityThetas;
 
@@ -76,6 +78,12 @@ float DoubleHTag::HelicityCosTheta( TLorentzVector Booster, TLorentzVector Boost
     TVector3 BoostVector = Booster.BoostVector();
     Boosted.Boost( -BoostVector.x(), -BoostVector.y(), -BoostVector.z() );
     return Boosted.CosTheta();
+}
+
+float DoubleHTag::getPhoJetMinDr() const
+{
+    float PhoJetMinDr = min( min( deltaR( diPhoton()->leadingPhoton()->p4(), leadJet().p4() ), deltaR( diPhoton()->leadingPhoton()->p4(), subleadJet().p4() ) ), min( deltaR( diPhoton()->subLeadingPhoton()->p4(), leadJet().p4() ), deltaR( diPhoton()->subLeadingPhoton()->p4(), subleadJet().p4() ) ) );
+    return PhoJetMinDr;
 }
 
 // Local Variables:
