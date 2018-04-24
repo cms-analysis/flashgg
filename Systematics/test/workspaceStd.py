@@ -268,6 +268,10 @@ if customize.processId.count("h_") or customize.processId.count("vbf_") or custo
 ##        variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
         variablesToUse.append("leadmva := diPhotonMVA().leadmva")
         variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
+        variablesToUse.append("sigmarv := diPhotonMVA().sigmarv")
+        variablesToUse.append("sigmawv := diPhotonMVA().sigmawv")
+        variablesToUse.append("vtxprob := diPhotonMVA().vtxprob")
+        variablesToUse.append("CosPhi := diPhotonMVA().CosPhi")
 #        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
         
     if customize.doSystematics and customize.doFiducial:
@@ -428,6 +432,7 @@ process.tagsDumper.dumpWorkspace = customize.dumpWorkspace
 process.tagsDumper.dumpHistos = False
 process.tagsDumper.quietRooFit = True
 process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
+print "doHTXS ",customize.doHTXS
 process.tagsDumper.splitPdfByStage0Cat = cms.untracked.bool(customize.doHTXS)
 
 if customize.options.WeightName :
@@ -478,10 +483,15 @@ definedSysts=set()
 process.tagsDumper.NNLOPSWeightFile=cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root")
 process.tagsDumper.reweighGGHforNNLOPS = cms.untracked.bool(bool(customize.processId.count("ggh")))
 process.tagsDumper.classifierCfg.remap=cms.untracked.VPSet()
-if ( customize.datasetName() and customize.datasetName().count("GluGlu") and customize.datasetName().count("amcatnlo")):
+#if ( customize.datasetName() and customize.datasetName().count("GluGlu") and customize.datasetName().count("amcatnlo")):
+if ( customize.datasetName() and customize.datasetName().count("GluGlu") ):
     print "Gluon fusion amcatnlo: read NNLOPS reweighting file"
     process.tagsDumper.dumpNNLOPSweight = cms.untracked.bool(True)
     process.tagsDumper.NNLOPSWeight=cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root")
+    if  customize.datasetName().count("amcatnlo"):
+        process.tagsDumper.generatorToBeReweightedToNNLOPS = cms.string("mcatnlo")
+    elif  customize.datasetName().count("powheg"):
+        process.tagsDumper.generatorToBeReweightedToNNLOPS = cms.string("powheg")
     
 elif ( customize.datasetName() and (customize.datasetName().count("HToGG") or customize.processId.count("h_") or customize.processId.count("vbf_")  or customize.processId.count("Acceptance"))):
     print "Other signal: dump NNLOPS weights, but set them to 1"
@@ -516,7 +526,7 @@ for tag in tagList:
           else:
               currentVariables = []
       isBinnedOnly = (systlabel !=  "")
-      if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance") ) and (systlabel ==  "") and not (customize.processId == "th_125" or customize.processId == "bbh_125" or customize.processId == "thw_125"):
+      if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance") ) and (systlabel ==  "") and not (customize.processId == "th_125" or customize.processId == "bbh_125" or customize.processId == "thw_125") and not (customize.datasetName() and customize.datasetName().count("DiPho")):
           print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
           nPdfWeights = 60
@@ -644,19 +654,19 @@ else :
 
 if customize.doFiducial:
     print "count 4"
-    if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) 
-                                                                   or customize.processId.count("h_") or customize.processId.count("vbf_") ) and (systlabel ==  ""):
-          print "Signal MC central value, so dumping PDF weights"
-          dumpPdfWeights = True
-          nPdfWeights = 60
-          nAlphaSWeights = 2
-          nScaleWeights = 9
+    if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_")  or customize.processId.count("Acceptance") ) and not ( (customize.datasetName() and customize.datasetName().count("DiPho")) ):
+##    if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG"))  or customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance")) and (systlabel ==  ""):
+        print "Signal MC central value, so dumping PDF weights"
+        dumpPdfWeights = True
+        nPdfWeights = 60
+        nAlphaSWeights = 2
+        nScaleWeights = 9
     else:
-          print "Data, background MC, or non-central value, or no systematics: no PDF weights"
-          dumpPdfWeights = False
-          nPdfWeights = -1
-          nAlphaSWeights = -1
-          nScaleWeights = -1
+        print "Data, background MC, or non-central value, or no systematics: no PDF weights"
+        dumpPdfWeights = False
+        nPdfWeights = -1
+        nAlphaSWeights = -1
+        nScaleWeights = -1
     if not customize.processId == "Data":
         mH = None
         ldset=""
@@ -669,13 +679,24 @@ if customize.doFiducial:
                 print(e,customize.datasetName())
                 pass
         NNLOPSreweight=False
-        if ( customize.datasetName() and customize.datasetName().count("GluGlu") and customize.datasetName().count("amcatnlo")):
+        genToReweight=None
+        if ( customize.datasetName() and customize.datasetName().count("GluGlu") ):
+            print "datasetName contains GluGlu --> NNLOPSrewwight is True"
             NNLOPSreweight=True
+            if customize.datasetName().count("amcatnlo"):
+#                print "datasetName contains amcatnlo --> gen to be reweighted is amcatnlo"
+                genToReweight = "amcatnlo"
+            if customize.datasetName().count("powheg"):
+#                print "datasetName contains powheg --> gen to be reweighted is powheg"
+                genToReweight = "powheg"
+        print 'pdfWeights in worspaceStd'
         fc.addGenOnlyAnalysis(process,customize.processId,process.flashggTagSequence,
-                              customize.acceptance,tagList,systlabels,NNLOPSreweight,
+                              customize.acceptance,tagList,systlabels,NNLOPSreweight,genToReweight,
                               pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights),
                               mH=mH,filterEvents=customize.filterNonAcceptedEvents)
-
+        pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights),
+        print pdfWeights
+        
 if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
 process.options.allowUnscheduled = cms.untracked.bool(True)
 
