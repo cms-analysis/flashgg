@@ -1,4 +1,5 @@
 minimalVariables = ["CMS_hgg_mass[160,100,180]:=diPhoton().mass",
+                    "sigmaMoM_decorr:=diPhotonMVA().decorrSigmarv",
                     "dZ[40,-20.,20.]:=(tagTruth().genPV().z-diPhoton().vtx().z)", # store actual value
                                                                                #when doing systematics, variables need to have a binning
                                                                                #specified, otherwise the rooDataHist end up empty.
@@ -7,7 +8,9 @@ minimalVariables = ["CMS_hgg_mass[160,100,180]:=diPhoton().mass",
 
 minimalHistograms = []
 
-minimalNonSignalVariables = ["CMS_hgg_mass[160,100,180]:=diPhoton().mass"]#,"centralObjectWeight[1,-999999.,999999.] := centralWeight"]
+minimalNonSignalVariables = ["CMS_hgg_mass[160,100,180]:=diPhoton().mass",
+                             "sigmaRV:=diPhotonMVA().sigmarv",
+                             "sigmaMoM_decorr:=diPhotonMVA().decorrSigmarv"]#,"centralObjectWeight[1,-999999.,999999.] := centralWeight"]
 
 minimalVariablesHTXS = minimalVariables+["stage0cat[72,9.5,81.5] := tagTruth().HTXSstage0cat"]
 
