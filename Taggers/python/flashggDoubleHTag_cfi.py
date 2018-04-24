@@ -16,8 +16,8 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    MinSubleadPhoPt   = cms.double(0.25),
                                    ScalingPtCuts = cms.bool(True),
 
-                                   MVABoundaries  = cms.vdouble(-10, 10.), # category boundaries for MVA
-                                   MXBoundaries   = cms.vdouble(-1e+9, 1e+9), # .. and MX
+                                   MVABoundaries  = cms.vdouble(-10, 0.4), # category boundaries for MVA
+                                   MXBoundaries   = cms.vdouble(200, 300), # .. and MX
                                    MVAConfig = cms.PSet(variables=cms.VPSet(), # variables are added below
                                                         classifier=cms.string("BDT::bdt"), # classifier name
                                                         weights=cms.FileInPath("flashgg/bbggTools/data/MVA2017/allMC_resWeighting_F_noDR_minDRGJet_edited.weights.xml"), # path to TMVA weights

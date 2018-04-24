@@ -73,15 +73,43 @@ namespace flashgg {
         produces<vector<TagTruthBase> >();
     }
 
-    int DoubleHTagProducer::chooseCategory( float mva, float mx )
+    int DoubleHTagProducer::chooseCategory( float mvavalue, float mxvalue)
     {
-        return 0;
-        //// // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
-        //// int n;
-        //// for( n = 0 ; n < ( int )boundaries.size() ; n++ ) {
-        ////     if( ( double )mvavalue > boundaries[boundaries.size() - n - 1] ) { return n; }
-        //// }
-        //// return -1; // Does not pass, object will not be produced
+        //// should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
+        //this is for mva, implement mva mx 
+        int mvaCat=-1;
+        for( int n = 0 ; n < ( int )mvaBoundaries_.size() ; n++ ) {
+            if( ( double )mvavalue > mvaBoundaries_[mvaBoundaries_.size() - n - 1] ) {
+                mvaCat = n;
+                break;
+            }
+        }
+
+        if (mvaCat==-1) return -1;// Does not pass, object will not be produced
+
+        int mxCat=-1;
+        for( int n = 0 ; n < ( int )mxBoundaries_.size() ; n++ ) {
+            if( ( double )mxvalue > mxBoundaries_[mxBoundaries_.size() - n - 1] ) {
+                mxCat = n;
+                break;
+            }
+        }
+
+        if (mxCat==-1) return -1;// Does not pass, object will not be produced
+
+        int cat=-1;
+        cat = mvaCat*mxBoundaries_.size()+mxCat;
+
+        //the schema is like this:
+        //            "cat0 := MXbin0 * MVAcat0",
+        //            "cat1 := MXbin1 * MVAcat0",
+        //            "cat2 := MXbin2 * MVAcat0",
+        //            "cat3 := MXbin0 * MVAcat1",
+        //            "cat4 := MXbin1 * MVAcat1",
+        // [.................................]
+
+        return cat;
+
     }
 
     void DoubleHTagProducer::produce( Event &evt, const EventSetup & )
@@ -153,8 +181,6 @@ namespace flashgg {
             tag_obj.setDiPhotonIndex( candIndex );
             tag_obj.setSystLabel( systLabel_ );
             
-            std::cout<<"mass:";
-            std::cout<<tag_obj.mass()<<std::endl;
             // compute extra variables here
             tag_obj.setMX( tag_obj.dijet().mass() + tag_obj.diPhoton()->mass() - 250. );
 
@@ -166,16 +192,17 @@ namespace flashgg {
             
             // choose category and propagate weights
             int catnum = chooseCategory( tag_obj.MVA(), tag_obj.MX() );
+            std::cout<<"cat:"<<catnum<<" "<<tag_obj.MVA()<<" "<<tag_obj.MX()<<std::endl;
             tag_obj.setCategoryNumber( catnum );
             tag_obj.includeWeights( *dipho );
             tag_obj.includeWeights( *leadJet );
             tag_obj.includeWeights( *subleadJet );
 
-            tags->push_back( tag_obj );
-            
-            // link mc-truth
-            if( ! evt.isRealData() ) {
-                tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                
+            if (catnum>-1){
+                tags->push_back( tag_obj );
+                // link mc-truth
+                if( ! evt.isRealData() ) {
+                    tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                   }
             }
         }
 
