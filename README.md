@@ -17,6 +17,8 @@ Recently deprecated:
 
 80X: Get everything you need, starting from a clean area:
 
+* **WARNING** (24 April) this does not currently compile, due to increasing divergence of code with 94X.  A new branch will be provided within 1 week.
+
  ```
  cmsrel CMSSW_8_0_28
  cd CMSSW_8_0_28/src
@@ -30,8 +32,8 @@ Recently deprecated:
 94X: Get everything you need, starting from a clean area:
 
  ```
- cmsrel CMSSW_9_4_4
- cd CMSSW_9_4_4/src
+ cmsrel CMSSW_9_4_5_cand1
+ cd CMSSW_9_4_5_cand1/src
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src
@@ -56,7 +58,7 @@ And a very basic workflow test:
  cmsRun MicroAOD/test/microAODstd.py processType=sig datasetName=glugluh # or processType=data depending on input file
  cmsRun Taggers/test/simple_Tag_test.py
  cmsRun Taggers/test/diphotonsDumper_cfg.py
- cmsRun Systematics/test/workspaceStd.py processId=ggh_125
+ cmsRun Systematics/test/workspaceStd.py processId=ggh_125 doHTXS=1
  ```
 
 These are just some test examples; the first makes MicroAOD from a MiniAOD file accessed via xrootd, 
