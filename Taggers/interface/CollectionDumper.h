@@ -156,7 +156,7 @@ namespace flashgg {
         //        correctionFile_ = conf.getParameter<edm::FileInPath>("CorrectionFile")
         edm::FileInPath NNLOPSWeightFile_;
         std::vector<std::unique_ptr<TGraph> > NNLOPSWeights_;
-
+        std::string generatorToBeReweightedToNNLOPS_;        
         //std::map<std::string, std::vector<dumper_type> > dumpers_; FIXME template key
         std::map< KeyT, std::vector<dumper_type> > dumpers_;
         RooWorkspace *ws_;
@@ -384,13 +384,24 @@ namespace flashgg {
             
             else{
                 NNLOPSWeightFile_ = cfg.getParameter<edm::FileInPath>( "NNLOPSWeight" );
-            
-                std::cout<<"NNLOPSWeightFile_ "<<NNLOPSWeightFile_<<std::endl;
+                if ( cfg.exists("generatorToBeReweightedToNNLOPS") ){
+                    generatorToBeReweightedToNNLOPS_ = cfg.getParameter<std::string>( "generatorToBeReweightedToNNLOPS" );
+                }
+                else{
+                    generatorToBeReweightedToNNLOPS_ = "mcatnlo";
+                }
+                //                std::cout<<"NNLOPSWeightFile_ "<<NNLOPSWeightFile_<<std::endl;
+                //                std::cout<<"generatorToBeReweightedToNNLOPS_ "<<generatorToBeReweightedToNNLOPS_<<std::endl;
                 TFile* f = TFile::Open(NNLOPSWeightFile_.fullPath().c_str());
-                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_0jet"))->Clone() );
-                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_1jet"))->Clone() );
-                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_2jet"))->Clone() );
-                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_3jet"))->Clone() );
+//                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_0jet"))->Clone() );
+//                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_1jet"))->Clone() );
+//                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_2jet"))->Clone() );
+//                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_3jet"))->Clone() );
+                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get( Form("gr_NNLOPSratio_pt_%s_0jet", generatorToBeReweightedToNNLOPS_.c_str()) ))->Clone() );
+                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get( Form("gr_NNLOPSratio_pt_%s_1jet", generatorToBeReweightedToNNLOPS_.c_str()) ))->Clone() );
+                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get( Form("gr_NNLOPSratio_pt_%s_2jet", generatorToBeReweightedToNNLOPS_.c_str()) ))->Clone() );
+                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get( Form("gr_NNLOPSratio_pt_%s_3jet", generatorToBeReweightedToNNLOPS_.c_str()) ))->Clone() );
+                std::cout << "NNLOPSWeights_.size() = " << NNLOPSWeights_.size() << std::endl;
             }
 
         }
