@@ -55,12 +55,12 @@ namespace flashgg {
         double minPhotEEHoE_;
         double minPhotEBsietaieta_;
         double minPhotEEsietaieta_;
-        double minPhotEBChgIso_;
-        double minPhotEEChgIso_;
-        double minPhotEBNeuIso_;
-        double minPhotEENeuIso_;
-        double minPhotEBPhoIso_;
-        double minPhotEEPhoIso_;
+        vector<double> PhotEBChgIsoParams_;
+        vector<double> PhotEEChgIsoParams_;
+        vector<double> PhotEBNeuIsoParams_;
+        vector<double> PhotEENeuIsoParams_;
+        vector<double> PhotEBPhoIsoParams_;
+        vector<double> PhotEEPhoIsoParams_;
 
         //https://indico.cern.ch/event/370513/contribution/1/attachments/1183744/1715032/SP15_25_4th_final.pdf
         int iphotIsolnAreaValN_;
@@ -90,12 +90,12 @@ namespace flashgg {
         minPhotEEHoE_ = iConfig.getParameter<double>( "minPhotEEHoE" );
         minPhotEBsietaieta_ = iConfig.getParameter<double>( "minPhotEBsietaieta" );
         minPhotEEsietaieta_ = iConfig.getParameter<double>( "minPhotEEsietaieta" );
-        minPhotEBChgIso_ = iConfig.getParameter<double>( "minPhotEBChgIso" );
-        minPhotEEChgIso_ = iConfig.getParameter<double>( "minPhotEEChgIso" );
-        minPhotEBNeuIso_ = iConfig.getParameter<double>( "minPhotEBNeuIso" );
-        minPhotEENeuIso_ = iConfig.getParameter<double>( "minPhotEENeuIso" );
-        minPhotEBPhoIso_ = iConfig.getParameter<double>( "minPhotEBPhoIso" );
-        minPhotEEPhoIso_ = iConfig.getParameter<double>( "minPhotEEPhoIso" );
+        PhotEBChgIsoParams_ = iConfig.getParameter<vector<double>>( "PhotEBChgIsoParams" );
+        PhotEEChgIsoParams_ = iConfig.getParameter<vector<double>>( "PhotEEChgIsoParams" );
+        PhotEBNeuIsoParams_ = iConfig.getParameter<vector<double>>( "PhotEBNeuIsoParams" );
+        PhotEENeuIsoParams_ = iConfig.getParameter<vector<double>>( "PhotEENeuIsoParams" );
+        PhotEBPhoIsoParams_ = iConfig.getParameter<vector<double>>( "PhotEBPhoIsoParams" );
+        PhotEEPhoIsoParams_ = iConfig.getParameter<vector<double>>( "PhotEEPhoIsoParams" );
         iphotIsolnAreaValN_ = iConfig.getParameter<int>( "iphotIsolnAreaValN" );
         photIsolnEAreaVal_ = iConfig.getParameter<vector<double>>( "photIsolnEAreaVal" );
         photIsolnEAreaChgHad_ = iConfig.getParameter<vector<double>>( "photIsolnEAreaChgHad" );
@@ -161,21 +161,21 @@ namespace flashgg {
                 if ( photon->hadronicOverEm() > minPhotEBHoE_ )  continue;
                 if ( photon->full5x5_sigmaIetaIeta() > minPhotEBsietaieta_) continue;
                 double photChargedHadronIso_ = max(photon->chargedHadronIso() - rho_*photIsolnEAreaChgHad_[iphotEA_], 0.);
-                if (photChargedHadronIso_ > minPhotEBChgIso_ ) continue;
+                if ( photChargedHadronIso_ > PhotEBChgIsoParams_[0] ) continue;
                 double photNeutralHadronIso_ = max(photon->neutralHadronIso() - rho_*photIsolnEAreaNeuHad_[iphotEA_], 0.);
-                if (photNeutralHadronIso_ - 0.014*photPt_ - 0.000019*photPt_*photPt_ > minPhotEBNeuIso_ ) continue;
+                if ( photNeutralHadronIso_ > PhotEBNeuIsoParams_[0] + PhotEBNeuIsoParams_[1]*photPt_ + PhotEBNeuIsoParams_[2]*photPt_*photPt_ ) continue;
                 double photPhotonIso_ = max(photon->photonIso() - rho_*photIsolnEAreaPhot_[iphotEA_], 0.);
-                if (photPhotonIso_ - 0.0053*photPt_ > minPhotEBPhoIso_ ) continue;
+                if ( photPhotonIso_ > PhotEBPhoIsoParams_[0] + PhotEBPhoIsoParams_[1]*photPt_) continue;
             }
             if ( photon->isEE() ){
                 if ( photon->hadronicOverEm() > minPhotEEHoE_ )  continue;
                 if ( photon->full5x5_sigmaIetaIeta() > minPhotEEsietaieta_ ) continue;
                 double photChargedHadronIso_ = max(photon->chargedHadronIso() - rho_*photIsolnEAreaChgHad_[iphotEA_], 0.);
-                if (photChargedHadronIso_ > minPhotEEChgIso_ ) continue;
+                if ( photChargedHadronIso_ > PhotEEChgIsoParams_[0] ) continue;
                 double photNeutralHadronIso_ = max(photon->neutralHadronIso() - rho_*photIsolnEAreaNeuHad_[iphotEA_], 0.);
-                if (photNeutralHadronIso_ - 0.0139*photPt_ - 0.000025*photPt_*photPt_ > minPhotEENeuIso_ ) continue;
+                if ( photNeutralHadronIso_ > PhotEENeuIsoParams_[0] + PhotEENeuIsoParams_[1]*photPt_ + PhotEENeuIsoParams_[2]*photPt_*photPt_ ) continue;
                 double photPhotonIso_ = max(photon->photonIso() - rho_*photIsolnEAreaPhot_[iphotEA_], 0.);
-                if (photPhotonIso_ - 0.0034*photPt_ > minPhotEEPhoIso_ ) continue;
+                if ( photPhotonIso_ > PhotEEPhoIsoParams_[0] + PhotEEPhoIsoParams_[1]*photPt_) continue;
             }
                         
             // -- loop over jets

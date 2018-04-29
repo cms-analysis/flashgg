@@ -10,6 +10,7 @@
 #include "DataFormats/Common/interface/PtrVector.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
+#include "DataFormats/PatCandidates/interface/Muon.h"
 #include "flashgg/DataFormats/interface/VertexCandidateMap.h"
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
 
@@ -49,11 +50,18 @@ namespace flashgg {
                                                //					  const Parameters_Selector_Type&,
                                                //                                          const float&
                                              )  = 0;
-
+        virtual  edm::Ptr<reco::Vertex> select( const edm::Ptr<pat::Muon> &, const edm::Ptr<pat::Muon> &, const std::vector<edm::Ptr<reco::Vertex> > &,
+                                                const VertexCandidateMap &vertexCandidateMap,
+                                                const math::XYZPoint &
+                                                ) = 0 ;
         const std::string &name() const { return _selectorName; };
 
         virtual void writeInfoFromLastSelectionTo( flashgg::DiPhotonCandidate & ) = 0;
         virtual void writeInfoFromLastSelectionTo( flashgg::PhotonJetCandidate & ) = 0;
+        virtual void getInfoFromLastSelection( std::vector<float> & ) = 0;
+        virtual void getInfoFromLastSelectionForVtxIdx( std::vector<float> &, unsigned int ) = 0;
+        virtual int getSortedIndexFromLastSelection( unsigned int ) = 0;
+
 
     private:
         const std::string _selectorName;

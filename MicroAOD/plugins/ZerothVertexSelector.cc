@@ -36,9 +36,16 @@ namespace flashgg {
                                       //  const Parameters_Selector_Type&,                                                                                                                         
                                       //  const float&                                                                                                                                             
                                       ) override;
-
+        edm::Ptr<reco::Vertex> select( const edm::Ptr<pat::Muon> &, const edm::Ptr<pat::Muon> &, const std::vector<edm::Ptr<reco::Vertex> > &,
+                                       const VertexCandidateMap &vertexCandidateMap,
+                                       const math::XYZPoint &
+                                       ) override;
+        
         void writeInfoFromLastSelectionTo( flashgg::DiPhotonCandidate & ) override;
         void writeInfoFromLastSelectionTo( flashgg::PhotonJetCandidate & ) override;
+        void getInfoFromLastSelection( std::vector<float> & ) override;
+        void getInfoFromLastSelectionForVtxIdx( std::vector<float> &, unsigned int ) override;
+        int getSortedIndexFromLastSelection( unsigned int ) override;
 
     private:
         unsigned int _whichVertex; // set this variable to something non-zero to make this stupid selector both stupider and poorly-named
@@ -75,6 +82,18 @@ namespace flashgg {
         return vtxs[_whichVertex];
     }
 
+    edm::Ptr<reco::Vertex> ZerothVertexSelector::select( const edm::Ptr<pat::Muon> &g1,
+                                                         const edm::Ptr<pat::Muon> &g2,
+                                                         const std::vector<edm::Ptr<reco::Vertex> > &vtxs,
+                                                         const VertexCandidateMap &vertexCandidateMap,
+                                                         const math::XYZPoint &beamSpot
+                                                         //						      const Parameters_Selector_Type& param,
+                                                         //                                                      const float& beamsig
+                                                       )
+    {
+        return vtxs[_whichVertex];
+    }
+
     void ZerothVertexSelector::writeInfoFromLastSelectionTo( flashgg::DiPhotonCandidate &dipho )
     {
         // No need to store anything if we're just taking the zeroth vertex
@@ -84,6 +103,17 @@ namespace flashgg {
     {
         // No need to store anything if we're just taking the zeroth vertex
     }
+
+    void ZerothVertexSelector::getInfoFromLastSelection( std::vector<float> &info )
+    {
+        // No need to store anything if we're just taking the zeroth vertex
+    } 
+    
+    void ZerothVertexSelector::getInfoFromLastSelectionForVtxIdx( std::vector<float> &info, unsigned int iVertex )
+    {
+        // No need to store anything if we're just taking the zeroth vertex
+    }
+    int ZerothVertexSelector::getSortedIndexFromLastSelection( unsigned int ){ return -1;}
 
 }
 
