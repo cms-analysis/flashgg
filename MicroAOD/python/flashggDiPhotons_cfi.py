@@ -34,7 +34,7 @@ flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                   pureGeomConvMatching    = cms.bool(True),
                                   dRexclude               = cms.double(0.05),
 
-                                  is2017                  = cms.bool(True),
+                                  is2017                  = cms.bool(True), ## 2017 : True, 2016 : False
                                   #diphoton vtx in 2017
                                   ##vtxId and vtxProb 2017 with single leg
                                   vertexIdMVAweightfile_2017   = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2017.xml"),
