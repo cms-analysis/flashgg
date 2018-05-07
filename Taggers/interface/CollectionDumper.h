@@ -34,6 +34,8 @@
 #include "flashgg/MicroAOD/interface/CutAndClassBasedClassifier.h"
 #include "flashgg/Taggers/interface/GlobalVariablesDumper.h"
 #include "flashgg/DataFormats/interface/PDFWeightObject.h"
+#include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
+
 
 #include "FWCore/Utilities/interface/Exception.h"
 
@@ -131,6 +133,8 @@ namespace flashgg {
         int stage0cat_;
         edm::InputTag stage0catTag_;
         edm::EDGetTokenT<int> stage0catToken_;
+        edm::InputTag newHTXSTag_;
+        edm::EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;  
 
         //std::map<std::string, std::vector<dumper_type> > dumpers_; FIXME template key
         std::map< KeyT, std::vector<dumper_type> > dumpers_;
@@ -176,6 +180,8 @@ namespace flashgg {
         dumpGlobalVariables_( cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true ) ),
         stage0catTag_( cfg.getUntrackedParameter<edm::InputTag>( "stage0catTag", edm::InputTag("rivetProducerHTXS","stage0cat") ) ),
         stage0catToken_( cc.consumes<int>( stage0catTag_ ) ),
+        newHTXSTag_( cfg.getUntrackedParameter<edm::InputTag>( "classificationObj", edm::InputTag("rivetProducerHTXS","HiggsClassification") ) ),
+        newHTXSToken_( cc.consumes<HTXS::HiggsClassification>( newHTXSTag_ ) ),
         globalVarsDumper_(0)
     {
         if( dumpGlobalVariables_ ) {
@@ -419,7 +425,17 @@ namespace flashgg {
         } else {
             event.getByLabel(stage0catTag_, stage0cat);
         }
-        return (*(stage0cat.product() ) );
+        if ( stage0cat.isValid() ) {
+            return (*(stage0cat.product() ) );
+        } else {
+            edm::Handle<HTXS::HiggsClassification> htxsClassification;
+            if (fullEvent != 0) {
+                fullEvent->getByToken(newHTXSToken_,htxsClassification);
+            } else {
+                event.getByLabel(newHTXSTag_,htxsClassification);
+            }
+            return( htxsClassification->stage0_cat );
+        }
     }
 
     template<class C, class T, class U>

@@ -15,11 +15,13 @@ UnpackedJetCollectionVInputTag = cms.VInputTag()
 for i in range(0,maxJetCollections):
     UnpackedJetCollectionVInputTag.append(cms.InputTag('flashggUnpackedJets',str(i)))
 
-HTXSInputTags = cms.PSet(stage0cat = cms.InputTag("rivetProducerHTXS","stage0cat"),
-                         stage1cat = cms.InputTag("rivetProducerHTXS","stage1cat"),
-                         njets     = cms.InputTag("rivetProducerHTXS","njets"),
-                         pTH       = cms.InputTag("rivetProducerHTXS","pTH"),
-                         pTV       = cms.InputTag("rivetProducerHTXS","pTV"))
+HTXSInputTags = cms.PSet(stage0cat = cms.InputTag("rivetProducerHTXS","stage0cat"), #2016
+                         stage1cat = cms.InputTag("rivetProducerHTXS","stage1cat"), #2016
+                         njets     = cms.InputTag("rivetProducerHTXS","njets"), #2016
+                         pTH       = cms.InputTag("rivetProducerHTXS","pTH"), #2016
+                         pTV       = cms.InputTag("rivetProducerHTXS","pTV"), #2016
+                         ClassificationObj = cms.InputTag("rivetProducerHTXS","HiggsClassification") # 2017
+                         )
 
 flashggUntagged = cms.EDProducer("FlashggUntaggedTagProducer",
 #                                 DiPhotonTag=cms.InputTag('flashggDiPhotons'),
