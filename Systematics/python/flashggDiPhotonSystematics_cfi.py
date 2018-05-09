@@ -631,7 +631,7 @@ SigmaEOverESmearing_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhoton
           NSigmas = cms.vint32(),
           OverallRange = cms.string("1"),
           BinList = emptyBins,
-          Debug = cms.untracked.bool(True),
+          Debug = cms.untracked.bool(False),
           ExaggerateShiftUp = cms.bool(False),
           ApplyCentralValue = cms.bool(True)
           )
@@ -668,7 +668,7 @@ MCSmearHighR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmea
          # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
          #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
          RandomLabel = cms.string("rnd_g_E"),
-         Debug = cms.untracked.bool(True),
+         Debug = cms.untracked.bool(False),
          ExaggerateShiftUp = cms.bool(False),
          ApplyCentralValue = cms.bool(True)
          )
@@ -687,7 +687,7 @@ MCSmearLowR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmear
          # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
          #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
          RandomLabel = cms.string("rnd_g_E"),
-         Debug = cms.untracked.bool(True),
+         Debug = cms.untracked.bool(False),
          ExaggerateShiftUp = cms.bool(False),
          ApplyCentralValue = cms.bool(True)
          )
@@ -706,7 +706,7 @@ MCSmearHighR9EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmea
          # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
          #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
          RandomLabel = cms.string("rnd_g_E"),
-         Debug = cms.untracked.bool(True),
+         Debug = cms.untracked.bool(False),
          ExaggerateShiftUp = cms.bool(False),
          ApplyCentralValue = cms.bool(True)
          )
@@ -725,7 +725,7 @@ MCSmearLowR9EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSmear
          # defined e.g. in flashgg/MicroAOD/python/flashggRandomizedPerPhotonDiPhotonProducer_cff.py
          #           or in flashgg/MicroAOD/python/flashggRandomizedPhotonProducer_cff.py (if at MicroAOD prod.)
          RandomLabel = cms.string("rnd_g_E"),
-         Debug = cms.untracked.bool(True),
+         Debug = cms.untracked.bool(False),
          ExaggerateShiftUp = cms.bool(False),
          ApplyCentralValue = cms.bool(True)
          )
@@ -740,7 +740,7 @@ MCScaleHighR9EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScal
          ApplyCentralValue = cms.bool(False),
          UncertaintyBitMask = cms.string("011"),#cms.string("110"),
          ExaggerateShiftUp = cms.bool(False),
-         Debug = cms.untracked.bool(True)
+         Debug = cms.untracked.bool(False)
          )
 
 MCScaleLowR9EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleEGMTool"),
@@ -753,7 +753,7 @@ MCScaleLowR9EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale
          ApplyCentralValue = cms.bool(False),
          UncertaintyBitMask = cms.string("011"),#cms.string("110"),
          ExaggerateShiftUp = cms.bool(False),
-         Debug = cms.untracked.bool(True)
+         Debug = cms.untracked.bool(False)
          )
 
 MCScaleHighR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleEGMTool"),
@@ -766,7 +766,7 @@ MCScaleHighR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScal
          ApplyCentralValue = cms.bool(False),
          UncertaintyBitMask = cms.string("011"),#cms.string("110"),
          ExaggerateShiftUp = cms.bool(False),
-         Debug = cms.untracked.bool(True)
+         Debug = cms.untracked.bool(False)
          )
 
 MCScaleLowR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleEGMTool"),
@@ -779,7 +779,7 @@ MCScaleLowR9EE_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale
          ApplyCentralValue = cms.bool(False),
          UncertaintyBitMask = cms.string("011"),#cms.string("110"),
          ExaggerateShiftUp = cms.bool(False),
-         Debug = cms.untracked.bool(True)
+         Debug = cms.untracked.bool(False)
          )
 
 MCScaleGain6EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleEGMTool"),
@@ -792,7 +792,7 @@ MCScaleGain6EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale
          ApplyCentralValue = cms.bool(False),
          ExaggerateShiftUp = cms.bool(False),
          UncertaintyBitMask = cms.string("100"),#cms.string("001"), # this should be a bit mask, don't know how to make it in python now
-         Debug = cms.untracked.bool(True)
+         Debug = cms.untracked.bool(False)
          )
 
 MCScaleGain1EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScaleEGMTool"),
@@ -805,7 +805,7 @@ MCScaleGain1EB_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale
          ApplyCentralValue = cms.bool(False),
          ExaggerateShiftUp = cms.bool(False),
          UncertaintyBitMask = cms.string("100"),#cms.string("001"), # this should be a bit mask, don't know how to make it in python now
-         Debug = cms.untracked.bool(True)
+         Debug = cms.untracked.bool(False)
          )
 
 flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
