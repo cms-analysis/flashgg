@@ -19,6 +19,7 @@
 
 #include <vector>
 #include <algorithm>
+#include "TGraph.h"
 
 using namespace std;
 using namespace edm;
@@ -42,12 +43,15 @@ namespace flashgg {
         string systLabel_;
 
         double minLeadPhoPt_, minSubleadPhoPt_;
-        bool scalingPtCuts_;
+        bool scalingPtCuts_, doMVAFlattening_;
         double vetoConeSize_;         
 
         flashgg::MVAComputer<DoubleHTag> mvaComputer_;
         vector<double> mvaBoundaries_, mxBoundaries_;
 
+        edm::FileInPath MVAFlatteningFileName_;
+        TFile * MVAFlatteningFile_;
+        TGraph * MVAFlatteningCumulative_;
     };
 
     DoubleHTagProducer::DoubleHTagProducer( const ParameterSet &iConfig ) :
@@ -66,8 +70,18 @@ namespace flashgg {
         auto jetTags = iConfig.getParameter<std::vector<edm::InputTag> > ( "JetTags" ); 
         for( auto & tag : jetTags ) { jetTokens_.push_back( consumes<edm::View<flashgg::Jet> >( tag ) ); }
         
-        /// assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception
+        assert(is_sorted(mvaBoundaries_.begin(), mvaBoundaries_.end()) && "mva boundaries are not in ascending order (we count on that for categorization)");
+        assert(is_sorted(mxBoundaries_.begin(), mxBoundaries_.end()) && "mx boundaries are not in ascending order (we count on that for categorization)");
         
+        doMVAFlattening_ = iConfig.getParameter<bool>("doMVAFlattening"); 
+        //MVAFlatteningFile_ = iConfig.getParameter<edm::FileInPath>("MVAFlatteningFile");
+        
+        if(doMVAFlattening_){
+            MVAFlatteningFileName_=iConfig.getUntrackedParameter<edm::FileInPath>("MVAFlatteningFileName");
+            MVAFlatteningFile_ = new TFile((MVAFlatteningFileName_.fullPath()).c_str(),"READ");
+            MVAFlatteningCumulative_ = (TGraph*)MVAFlatteningFile_->Get("cumulativeGraph"); 
+        }
+
         // SigmaMpTTag
         produces<vector<DoubleHTag> >();
         produces<vector<TagTruthBase> >();
@@ -76,7 +90,7 @@ namespace flashgg {
     int DoubleHTagProducer::chooseCategory( float mvavalue, float mxvalue)
     {
         //// should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
-        //this is for mva, implement mva mx 
+        //this is for mva, then you have mx
         int mvaCat=-1;
         for( int n = 0 ; n < ( int )mvaBoundaries_.size() ; n++ ) {
             if( ( double )mvavalue > mvaBoundaries_[mvaBoundaries_.size() - n - 1] ) {
@@ -114,6 +128,7 @@ namespace flashgg {
 
     void DoubleHTagProducer::produce( Event &evt, const EventSetup & )
     {
+        std::cout<<"starting producer"<<std::endl;
         // read diphotons
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
@@ -186,8 +201,13 @@ namespace flashgg {
 
             //            std::cout<<tag_obj.getCosThetaStar_CS(tag_obj.diPhoton()->p4(),tag_obj.dijet(),6500)<<std::endl;
             // eval MVA discriminant
+            std::cout<<"before computer"<<std::endl;
             double mva = mvaComputer_(tag_obj);
-            // FIXME: flattening ?
+            std::cout<<"mva"<<std::endl;
+            if(doMVAFlattening_){
+                mva = MVAFlatteningCumulative_->Eval(mva);
+            }
+
             tag_obj.setMVA( mva );
             
             // choose category and propagate weights
@@ -205,9 +225,10 @@ namespace flashgg {
                     tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                   }
             }
         }
-
+        std::cout<<"done"<<std::endl;
         evt.put( std::move( truths ) );
         evt.put( std::move( tags ) );
+        std::cout<<"done"<<std::endl;
     }
 }
 
