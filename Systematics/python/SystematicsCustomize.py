@@ -17,6 +17,17 @@ def printSystematicInfo(process):
     vpsetlist +=[process.flashggMetSystematics.SystMethods]
     printSystematicVPSet(vpsetlist2D)
 
+def turnOnAllSystematicsDebug(process):
+    vpsetlist = [process.flashggDiPhotonSystematics.SystMethods, process.flashggMuonSystematics.SystMethods, process.flashggElectronSystematics.SystMethods]
+    vpsetlist += [process.flashggJetSystematics0.SystMethods]
+    vpsetlist += [process.flashggDiPhotonSystematics.SystMethods2D, process.flashggMuonSystematics.SystMethods2D, process.flashggElectronSystematics.SystMethods2D]
+    vpsetlist += [process.flashggJetSystematics0.SystMethods2D]
+    vpsetlist += [process.flashggMetSystematics.SystMethods]
+    for vpset in vpsetlist:
+        for pset in vpset:
+            pset.Debug = True
+
+
 def printSystematicVPSet(vpsetlist):
     for vpset in vpsetlist:
         for pset in vpset:
