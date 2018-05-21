@@ -27,7 +27,7 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
                                               ## Shower shape correction (5x5)
                                               do5x5correction          = cms.bool(True), ## Turn this off to remove 5x5 shower shape corrections
                                               # correctionFile           = cms.FileInPath("flashgg/MicroAOD/data/transformation5x5_Legacy2016_v1.root"), ## for Legacy2016 
-                                              correctionFile           = cms.FileInPath("flashgg/MicroAOD/data/transformation5x5_ReReco2017_v1.root"),  ## for Rereco2017
+                                              correctionFile           = cms.FileInPath("flashgg/MicroAOD/data/transformation5x5_ReReco2017_v2.root"),  ## for Rereco2017
 
                                               # To apply correction for non5x5 r9, sieie, sipip, sieip set this variable True. Default value False.
 
