@@ -45,7 +45,18 @@ namespace flashgg {
         double minLeadPhoPt_, minSubleadPhoPt_;
         bool scalingPtCuts_, doMVAFlattening_;
         double vetoConeSize_;         
+        unsigned int doSigmaMDecorr_;
+        edm::FileInPath sigmaMDecorrFile_;
 
+        DecorrTransform* transfEBEB_;
+        DecorrTransform* transfNotEBEB_;
+
+
+        double minJetPt_;
+        double maxJetEta_;
+        vector<double>mjjBoundaries_;
+        std::string bTagType_;
+        
         flashgg::MVAComputer<DoubleHTag> mvaComputer_;
         vector<double> mvaBoundaries_, mxBoundaries_;
 
@@ -62,8 +73,12 @@ namespace flashgg {
         minSubleadPhoPt_( iConfig.getParameter<double> ( "MinSubleadPhoPt" ) ),
         scalingPtCuts_( iConfig.getParameter<bool> ( "ScalingPtCuts" ) ),
         vetoConeSize_( iConfig.getParameter<double> ( "VetoConeSize" ) ),
+        minJetPt_( iConfig.getParameter<double> ( "MinJetPt" ) ),
+        maxJetEta_( iConfig.getParameter<double> ( "MaxJetEta" ) ),
+        bTagType_( iConfig.getUntrackedParameter<std::string>( "BTagType") ),
         mvaComputer_( iConfig.getParameter<edm::ParameterSet>("MVAConfig") )
     {
+        mjjBoundaries_ = iConfig.getParameter<vector<double > >( "MJJBoundaries" ); 
         mvaBoundaries_ = iConfig.getParameter<vector<double > >( "MVABoundaries" );
         mxBoundaries_ = iConfig.getParameter<vector<double > >( "MXBoundaries" );
 
@@ -82,6 +97,25 @@ namespace flashgg {
             MVAFlatteningCumulative_ = (TGraph*)MVAFlatteningFile_->Get("cumulativeGraph"); 
         }
 
+        doSigmaMDecorr_ = iConfig.getUntrackedParameter<unsigned int>("DoSigmaMDecorr");
+        if(doSigmaMDecorr_){
+            sigmaMDecorrFile_ = iConfig.getUntrackedParameter<edm::FileInPath>("SigmaMDecorrFile");
+            TFile* f_decorr = new TFile((sigmaMDecorrFile_.fullPath()).c_str(), "READ");
+            TH2D* h_decorrEBEB_ = (TH2D*)f_decorr->Get("hist_sigmaM_M_EBEB"); 
+            TH2D* h_decorrNotEBEB_ = (TH2D*)f_decorr->Get("hist_sigmaM_M_notEBEB");
+
+            if(h_decorrEBEB_ && h_decorrNotEBEB_){
+                transfEBEB_ = new DecorrTransform(h_decorrEBEB_ , 125., 1, 0);
+                transfNotEBEB_ = new DecorrTransform(h_decorrNotEBEB_ , 125., 1, 0);
+                
+            } else {
+                throw cms::Exception( "Configuration" ) << "The file "<<sigmaMDecorrFile_.fullPath()<<" provided for sigmaM/M decorrelation does not contain the expected histograms."<<std::endl;
+            }
+
+
+        }
+
+
         // SigmaMpTTag
         produces<vector<DoubleHTag> >();
         produces<vector<TagTruthBase> >();
@@ -91,6 +125,8 @@ namespace flashgg {
     {
         //// should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
         //this is for mva, then you have mx
+        //FIXME dummy test
+        return 0;
         int mvaCat=-1;
         for( int n = 0 ; n < ( int )mvaBoundaries_.size() ; n++ ) {
             if( ( double )mvavalue > mvaBoundaries_[mvaBoundaries_.size() - n - 1] ) {
@@ -98,6 +134,8 @@ namespace flashgg {
                 break;
             }
         }
+
+        std::cout<<" cat:"<<mvaCat<<" mva:"<<mvavalue<<std::endl;
 
         if (mvaCat==-1) return -1;// Does not pass, object will not be produced
 
@@ -108,6 +146,8 @@ namespace flashgg {
                 break;
             }
         }
+
+        std::cout<<" cat:"<<mxCat<<" mx:"<<mxvalue<<std::endl;
 
         if (mxCat==-1) return -1;// Does not pass, object will not be produced
 
@@ -128,7 +168,6 @@ namespace flashgg {
 
     void DoubleHTagProducer::produce( Event &evt, const EventSetup & )
     {
-        std::cout<<"starting producer"<<std::endl;
         // read diphotons
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
@@ -179,31 +218,51 @@ namespace flashgg {
             edm::Handle<edm::View<flashgg::Jet> > jets;
             evt.getByToken( jetTokens_[vtx], jets);
             
-            // photon-jet cross-cleaning
+            // photon-jet cross-cleaning and pt/eta/btag cuts for jets
             std::vector<edm::Ptr<flashgg::Jet> > cleaned_jets;
-            for( size_t ijet=0; ijet < jets->size(); ++ijet ) {
+            for( size_t ijet=0; ijet < jets->size(); ++ijet ) {//jets are ordered in pt
                 auto jet = jets->ptrAt(ijet);
+                if (jet->pt()<minJetPt_ || fabs(jet->eta())>maxJetEta_)continue;
+                if (jet->bDiscriminator(bTagType_)<0) continue;//FIXME make it configurable
                 if( reco::deltaR( *jet, *(dipho->leadingPhoton()) ) > vetoConeSize_ && reco::deltaR( *jet, *(dipho->subLeadingPhoton()) ) > vetoConeSize_ ) {
                     cleaned_jets.push_back( jet );
                 }
             }
             if( cleaned_jets.size() < 2 ) { continue; }
-            auto & leadJet = cleaned_jets[0];
-            auto & subleadJet = cleaned_jets[1];
+            //dijet pair selection. Do pair according to pt and choose the pair with highest b-tag
+            double sumbtag_ref = -999;
+            edm::Ptr<flashgg::Jet>  jet1, jet2;
+            for( size_t ijet=0; ijet < cleaned_jets.size()-1;++ijet){
+                auto jet_1 = cleaned_jets[ijet];
+                auto jet_2 = cleaned_jets[ijet+1];
+                double sumbtag = jet_1->bDiscriminator(bTagType_) + jet_2->bDiscriminator(bTagType_);//FIXME make it configurable
+                if (sumbtag > sumbtag_ref) {
+                    sumbtag_ref = sumbtag;
+                    jet1 = jet_1;
+                    jet2 = jet_2;
+                }
+                
+            }
+            
+            auto & leadJet = jet1; 
+            auto & subleadJet = jet2; 
 
             // prepare tag object
             DoubleHTag tag_obj( dipho, leadJet, subleadJet );
             tag_obj.setDiPhotonIndex( candIndex );
             tag_obj.setSystLabel( systLabel_ );
             
-            // compute extra variables here
-            tag_obj.setMX( tag_obj.dijet().mass() + tag_obj.diPhoton()->mass() - 250. );
+            if (tag_obj.dijet().mass()<mjjBoundaries_[0] || tag_obj.dijet().mass()>mjjBoundaries_[1]) continue;
 
-            //            std::cout<<tag_obj.getCosThetaStar_CS(tag_obj.diPhoton()->p4(),tag_obj.dijet(),6500)<<std::endl;
+            // compute extra variables here
+            tag_obj.setMX( tag_obj.p4().mass() - tag_obj.dijet().mass() - tag_obj.diPhoton()->mass() + 250. );
+            
+            if(doSigmaMDecorr_){
+                tag_obj.setSigmaMDecorrTransf(transfEBEB_,transfNotEBEB_);
+            }
+            
             // eval MVA discriminant
-            std::cout<<"before computer"<<std::endl;
             double mva = mvaComputer_(tag_obj);
-            std::cout<<"mva"<<std::endl;
             if(doMVAFlattening_){
                 mva = MVAFlatteningCumulative_->Eval(mva);
             }
@@ -222,13 +281,12 @@ namespace flashgg {
                 tags->push_back( tag_obj );
                 // link mc-truth
                 if( ! evt.isRealData() ) {
-                    tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                   }
+                    tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                 
+                }
             }
         }
-        std::cout<<"done"<<std::endl;
         evt.put( std::move( truths ) );
         evt.put( std::move( tags ) );
-        std::cout<<"done"<<std::endl;
     }
 }
 

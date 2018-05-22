@@ -8,6 +8,8 @@
 #include "DataFormats/Candidate/interface/LeafCandidate.h"
 #include "DataFormats/Math/interface/deltaR.h"
 
+#include "flashgg/Taggers/interface/FunctionHelpers.h"
+
 namespace flashgg {
 
     class DoubleHTag: public DiPhotonTagBase, public reco::LeafCandidate
@@ -25,7 +27,7 @@ namespace flashgg {
         void setMX(double x) { MX_ = x; }
         double MX() const { return MX_; }
         double diphotonPtOverM() const {return diPhoton()->pt()/mass(); }
-        double dijetPtOverM() const {return diPhoton()->pt()/mass(); }
+        double dijetPtOverM() const {return dijet().pt()/mass(); }
 
         const flashgg::Jet & leadJet() const { return *leadJet_; } 
         const flashgg::Jet & subleadJet() const { return *subleadJet_; } 
@@ -36,13 +38,16 @@ namespace flashgg {
         std::vector<float> CosThetaAngles() const;
         float HelicityCosTheta( TLorentzVector Booster, TLorentzVector Boosted) const;
         float getPhoJetMinDr() const;
-
+        float getSigmaMDecorr() const;
+        void  setSigmaMDecorrTransf( DecorrTransform* transfEBEB, DecorrTransform* transfNotEBEB){ transfEBEB_= transfEBEB; transfNotEBEB_=transfNotEBEB;}
+        
     private:
         double mva_, MX_;
         edm::Ptr<flashgg::Jet> leadJet_, subleadJet_;
         LorentzVector dijet_;
+        DecorrTransform* transfEBEB_;
+        DecorrTransform* transfNotEBEB_;
         
-
     };
 }
 

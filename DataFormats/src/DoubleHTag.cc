@@ -43,6 +43,7 @@ float DoubleHTag::getCosThetaStar_CS(float ebeam) const {
 
     TVector3 CSaxis = p1.Vect().Unit() - p2.Vect().Unit();
     CSaxis.Unit();
+    
 
     return cos(   CSaxis.Angle( h_1.Vect().Unit() )    );
 }
@@ -83,7 +84,29 @@ float DoubleHTag::HelicityCosTheta( TLorentzVector Booster, TLorentzVector Boost
 float DoubleHTag::getPhoJetMinDr() const
 {
     float PhoJetMinDr = min( min( deltaR( diPhoton()->leadingPhoton()->p4(), leadJet().p4() ), deltaR( diPhoton()->leadingPhoton()->p4(), subleadJet().p4() ) ), min( deltaR( diPhoton()->subLeadingPhoton()->p4(), leadJet().p4() ), deltaR( diPhoton()->subLeadingPhoton()->p4(), subleadJet().p4() ) ) );
+    
     return PhoJetMinDr;
+}
+
+float DoubleHTag::getSigmaMDecorr() const
+{
+    double mass_sigma[2]={0.,0.};
+    double dummy[1]={0.};
+    mass_sigma[0]=diPhoton()->mass();
+    mass_sigma[1]=sqrt(0.5*(diPhoton()->leadingPhoton()->sigEOverE()*diPhoton()->leadingPhoton()->sigEOverE() + diPhoton()->subLeadingPhoton()->sigEOverE()*diPhoton()->subLeadingPhoton()->sigEOverE()));
+
+    float sigmaMOverMDecorr=-99;
+
+    //splitting EBEB and !EBEB, using cuts as in preselection
+    if(abs(diPhoton()->leadingPhoton()->superCluster()->eta())<1.4442 && abs(diPhoton()->subLeadingPhoton()->superCluster()->eta())<1.4442){
+        sigmaMOverMDecorr = (*transfEBEB_)(mass_sigma,dummy);
+    }
+    else{
+        sigmaMOverMDecorr = (*transfNotEBEB_)(mass_sigma,dummy);
+    }
+
+    return sigmaMOverMDecorr;
+
 }
 
 // Local Variables:
