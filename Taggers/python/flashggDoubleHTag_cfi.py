@@ -48,7 +48,6 @@ cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,
                        "customSubLeadingPhotonIDMVA := diPhoton.subLeadingView.phoIdMvaWrtChosenVtx",
                        "leadingPhotonSigOverE := diPhoton.leadingPhoton.sigEOverE",
                        "subleadingPhotonSigOverE := diPhoton.subLeadingPhoton.sigEOverE",
-#                       "sigmaMOverMDecorr := sqrt(0.5*(diPhoton.leadingPhoton.sigEOverE*diPhoton.leadingPhoton.sigEOverE + diPhoton.subLeadingPhoton.sigEOverE*diPhoton.subLeadingPhoton.sigEOverE))",
                        "sigmaMOverMDecorr := getSigmaMDecorr()",
                        "PhoJetMinDr := getPhoJetMinDr()",
                        ]

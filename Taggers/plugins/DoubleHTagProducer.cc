@@ -135,7 +135,6 @@ namespace flashgg {
             }
         }
 
-        std::cout<<" cat:"<<mvaCat<<" mva:"<<mvavalue<<std::endl;
 
         if (mvaCat==-1) return -1;// Does not pass, object will not be produced
 
@@ -147,7 +146,6 @@ namespace flashgg {
             }
         }
 
-        std::cout<<" cat:"<<mxCat<<" mx:"<<mxvalue<<std::endl;
 
         if (mxCat==-1) return -1;// Does not pass, object will not be produced
 
@@ -271,7 +269,6 @@ namespace flashgg {
             
             // choose category and propagate weights
             int catnum = chooseCategory( tag_obj.MVA(), tag_obj.MX() );
-            std::cout<<"cat:"<<catnum<<" "<<tag_obj.MVA()<<" "<<tag_obj.MX()<<std::endl;
             tag_obj.setCategoryNumber( catnum );
             tag_obj.includeWeights( *dipho );
             tag_obj.includeWeights( *leadJet );

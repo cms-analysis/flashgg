@@ -93,8 +93,7 @@ float DoubleHTag::getSigmaMDecorr() const
     double mass_sigma[2]={0.,0.};
     double dummy[1]={0.};
     mass_sigma[0]=diPhoton()->mass();
-    mass_sigma[1]=sqrt(0.5*(diPhoton()->leadingPhoton()->sigEOverE()*diPhoton()->leadingPhoton()->sigEOverE() + diPhoton()->subLeadingPhoton()->sigEOverE()*diPhoton()->subLeadingPhoton()->sigEOverE()));
-
+    mass_sigma[1] = 0.5*sqrt((diPhoton()->leadingPhoton()->sigEOverE()*diPhoton()->leadingPhoton()->sigEOverE() + diPhoton()->subLeadingPhoton()->sigEOverE()*diPhoton()->subLeadingPhoton()->sigEOverE()));
     float sigmaMOverMDecorr=-99;
 
     //splitting EBEB and !EBEB, using cuts as in preselection
@@ -104,8 +103,9 @@ float DoubleHTag::getSigmaMDecorr() const
     else{
         sigmaMOverMDecorr = (*transfNotEBEB_)(mass_sigma,dummy);
     }
+    return mass_sigma[1];
 
-    return sigmaMOverMDecorr;
+    //    return sigmaMOverMDecorr;
 
 }
 
