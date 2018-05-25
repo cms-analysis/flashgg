@@ -265,7 +265,6 @@ def createJECESource(process):
           #tag    = cms.string('JetCorrectorParametersCollection_Summer16_23Sep2016V4_MC_AK4PFchs'),
           tag    = cms.string('JetCorrectorParametersCollection_Fall17_17Nov2017_V6_MC_AK4PFchs'),       
           label  = cms.untracked.string("AK4PFchs")
-          label  = cms.untracked.string("AK4PFchs")
           )),
                                #connect = cms.string('sqlite_file:%s/Spring16_25nsV6_MC.db' % datadir)
                                #connect = cms.string('sqlite_file:%s/Summer16_23Sep2016V4_MC.db' % datadir)
@@ -299,8 +298,7 @@ def createJERESource(process):
           #tag    = cms.string('JR_Spring16_25nsV6_MC_SF_AK4PFchs'),
           #tag    = cms.string('JR_Spring16_25nsV10_MC_SF_AK4PFchs'),
           #          tag    = cms.string('JR_Summer16_23Sep2016V4_MC_SF_AK4PFchs'),
-          tag    = cms.string('JR_Fall17_17Nov2017_V6_MC_SF_AK4PFchs'),
-          
+          tag    = cms.string('JR_Fall17_17Nov2017_V6_MC_SF_AK4PFchs'),          
           label  = cms.untracked.string('AK4PFchs')
           ),
         ),
