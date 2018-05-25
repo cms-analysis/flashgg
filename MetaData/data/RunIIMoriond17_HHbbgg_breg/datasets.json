@@ -1,0 +1,39 @@
+{
+    "/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/micheli-RunIIMoriond17_HHbbgg_breg-1-v1-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1-6d8415083387f8318d1915af9ec80430/USER": {
+        "files": [
+            {
+                "bad": false, 
+                "events": 19600, 
+                "name": "/store/user/micheli/HHbbgg/MicroAod/RunIIMoriond17_HHbbgg_breg_v2/1/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIMoriond17_HHbbgg_breg-1-v1-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180412_131554/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 19600, 
+                "totEvents": 19600, 
+                "weights": 19600.0
+            }, 
+            {
+                "bad": false, 
+                "events": 15200, 
+                "name": "/store/user/micheli/HHbbgg/MicroAod/RunIIMoriond17_HHbbgg_breg_v2/1/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIMoriond17_HHbbgg_breg-1-v1-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180412_131554/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 15200, 
+                "totEvents": 15200, 
+                "weights": 15200.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2400, 
+                "name": "/store/user/micheli/HHbbgg/MicroAod/RunIIMoriond17_HHbbgg_breg_v2/1/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIMoriond17_HHbbgg_breg-1-v1-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180412_131554/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 2400, 
+                "totEvents": 2400, 
+                "weights": 2400.0
+            }, 
+            {
+                "bad": false, 
+                "events": 12800, 
+                "name": "/store/user/micheli/HHbbgg/MicroAod/RunIIMoriond17_HHbbgg_breg_v2/1/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIMoriond17_HHbbgg_breg-1-v1-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180412_131554/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 12800, 
+                "totEvents": 12800, 
+                "weights": 12800.0
+            }
+        ], 
+        "vetted": true
+    }
+}
