@@ -153,6 +153,15 @@ if customize.doFiducial:
     print "Here we print the preslection cut"
     print process.flashggPreselectedDiPhotons.cut
 
+
+process.load("flashgg/Taggers/flashggTagSequence_cfi")
+process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
+
+# needed for 0th vertex from microAOD
+if customize.tthTagsOnly:
+    process.flashggDiPhotons.whichVertex = cms.uint32(0)
+    process.flashggDiPhotons.useZerothVertexFromMicro = cms.bool(True)
+
 process.load("flashgg/Taggers/flashggTagSequence_cfi")
 print 'here we print the tag sequence before'
 print process.flashggTagSequence
@@ -193,6 +202,17 @@ if customize.doFiducial:
 if customize.tthTagsOnly:
     process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag')),
         cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag')) )
+
+    print "customize.processId:",customize.processId
+    print "Removing FracRV from syst" # needed for 0th vertex from microAOD
+    
+    newvpset = cms.VPSet()
+    for pset in process.flashggDiPhotonSystematics.SystMethods:
+        if not pset.Label.value().count("FracRVWeight")and not pset.Label.value().count("FracRVNvtxWeight") :
+            print  pset.Label.value()
+            newvpset += [pset]
+
+            process.flashggDiPhotonSystematics.SystMethods = newvpset
 
 print "customize.processId:",customize.processId
 # load appropriate scale and smearing bins here
@@ -509,19 +529,34 @@ if (customize.processId.count("qcd") or customize.processId.count("gjet")) and c
     else:
         raise Exception,"Mis-configuration of python for prompt-fake filter"
 
-process.p = cms.Path(process.dataRequirements*
-                     process.genFilter*
-                     process.flashggUpdatedIdMVADiPhotons*
-                     process.flashggDiPhotonSystematics*
-                     process.flashggMetSystematics*
-                     process.flashggMuonSystematics*process.flashggElectronSystematics*
-                     (process.flashggUnpackedJets*process.jetSystematicsSequence)*
-                     (process.flashggTagSequence*process.systematicsTagSequences)*
-                     process.flashggSystTagMerger*
-                     process.penultimateFilter*
-                     process.finalFilter*
-                     process.tagsDumper)
 
+if customize.tthTagsOnly:
+    process.p = cms.Path(process.dataRequirements*
+                         process.genFilter*
+                         process.flashggDiPhotons* # needed for 0th vertex from microAOD
+                         process.flashggUpdatedIdMVADiPhotons*
+                         process.flashggDiPhotonSystematics*
+                         process.flashggMetSystematics*
+                         process.flashggMuonSystematics*process.flashggElectronSystematics*
+                         (process.flashggUnpackedJets*process.jetSystematicsSequence)*
+                         (process.flashggTagSequence*process.systematicsTagSequences)*
+                         process.flashggSystTagMerger*
+                         process.penultimateFilter*
+                         process.finalFilter*
+                         process.tagsDumper)
+else :
+    process.p = cms.Path(process.dataRequirements*
+                         process.genFilter*
+                         process.flashggUpdatedIdMVADiPhotons*
+                         process.flashggDiPhotonSystematics*
+                         process.flashggMetSystematics*
+                         process.flashggMuonSystematics*process.flashggElectronSystematics*
+                         (process.flashggUnpackedJets*process.jetSystematicsSequence)*
+                         (process.flashggTagSequence*process.systematicsTagSequences)*
+                         process.flashggSystTagMerger*
+                         process.penultimateFilter*
+                         process.finalFilter*
+                         process.tagsDumper)
 
 if customize.doFiducial:
     if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) 
