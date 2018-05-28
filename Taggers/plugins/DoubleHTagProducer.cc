@@ -43,10 +43,12 @@ namespace flashgg {
         string systLabel_;
 
         double minLeadPhoPt_, minSubleadPhoPt_;
-        bool scalingPtCuts_, doMVAFlattening_;
+        bool scalingPtCuts_, doPhotonId_, doMVAFlattening_;
+        double photonIDCut_;
         double vetoConeSize_;         
         unsigned int doSigmaMDecorr_;
         edm::FileInPath sigmaMDecorrFile_;
+        std::vector<int> photonElectronVeto_;
 
         DecorrTransform* transfEBEB_;
         DecorrTransform* transfNotEBEB_;
@@ -56,7 +58,9 @@ namespace flashgg {
         double maxJetEta_;
         vector<double>mjjBoundaries_;
         std::string bTagType_;
-        
+        bool       useJetID_;
+        string     JetIDLevel_;        
+
         flashgg::MVAComputer<DoubleHTag> mvaComputer_;
         vector<double> mvaBoundaries_, mxBoundaries_;
 
@@ -76,6 +80,8 @@ namespace flashgg {
         minJetPt_( iConfig.getParameter<double> ( "MinJetPt" ) ),
         maxJetEta_( iConfig.getParameter<double> ( "MaxJetEta" ) ),
         bTagType_( iConfig.getUntrackedParameter<std::string>( "BTagType") ),
+        useJetID_( iConfig.getParameter<bool>   ( "UseJetID"     ) ),
+        JetIDLevel_( iConfig.getParameter<string> ( "JetIDLevel"   ) ),
         mvaComputer_( iConfig.getParameter<edm::ParameterSet>("MVAConfig") )
     {
         mjjBoundaries_ = iConfig.getParameter<vector<double > >( "MJJBoundaries" ); 
@@ -87,9 +93,11 @@ namespace flashgg {
         
         assert(is_sorted(mvaBoundaries_.begin(), mvaBoundaries_.end()) && "mva boundaries are not in ascending order (we count on that for categorization)");
         assert(is_sorted(mxBoundaries_.begin(), mxBoundaries_.end()) && "mx boundaries are not in ascending order (we count on that for categorization)");
+        doPhotonId_ = iConfig.getUntrackedParameter<bool>("ApplyEGMPhotonID");        
+        photonIDCut_ = iConfig.getParameter<double>("PhotonIDCut");
         
         doMVAFlattening_ = iConfig.getParameter<bool>("doMVAFlattening"); 
-        //MVAFlatteningFile_ = iConfig.getParameter<edm::FileInPath>("MVAFlatteningFile");
+        photonElectronVeto_=iConfig.getUntrackedParameter<std::vector<int > >("PhotonElectronVeto");
         
         if(doMVAFlattening_){
             MVAFlatteningFileName_=iConfig.getUntrackedParameter<edm::FileInPath>("MVAFlatteningFileName");
@@ -207,6 +215,16 @@ namespace flashgg {
                 subleadPt /= dipho->mass();
             }
             if( leadPt <= minLeadPhoPt_ || subleadPt <= minSubleadPhoPt_ ) { continue; }
+            //apply egm photon id with given working point
+            if(doPhotonId_){
+                if(leadPho.userFloat("EGMPhotonMVA")<photonIDCut_ || subleadPho.userFloat("EGMPhotonMVA")<photonIDCut_){
+                    continue;
+                }
+            }
+            //electron veto
+            if(leadPho.passElectronVeto()<photonElectronVeto_[0] || subleadPho.passElectronVeto()<photonElectronVeto_[1]){
+                continue;
+            }
             
             
             // find vertex associated to diphoton object
@@ -216,12 +234,16 @@ namespace flashgg {
             edm::Handle<edm::View<flashgg::Jet> > jets;
             evt.getByToken( jetTokens_[vtx], jets);
             
-            // photon-jet cross-cleaning and pt/eta/btag cuts for jets
+            // photon-jet cross-cleaning and pt/eta/btag/jetid cuts for jets
             std::vector<edm::Ptr<flashgg::Jet> > cleaned_jets;
             for( size_t ijet=0; ijet < jets->size(); ++ijet ) {//jets are ordered in pt
                 auto jet = jets->ptrAt(ijet);
                 if (jet->pt()<minJetPt_ || fabs(jet->eta())>maxJetEta_)continue;
-                if (jet->bDiscriminator(bTagType_)<0) continue;//FIXME make it configurable
+                if (jet->bDiscriminator(bTagType_)<0) continue;//FIXME threshold might not be 0?
+                if( useJetID_ ){
+                    if( JetIDLevel_ == "Loose" && !jet->passesJetID  ( flashgg::Loose ) ) continue;
+                    if( JetIDLevel_ == "Tight" && !jet->passesJetID  ( flashgg::Tight ) ) continue;
+                }
                 if( reco::deltaR( *jet, *(dipho->leadingPhoton()) ) > vetoConeSize_ && reco::deltaR( *jet, *(dipho->subLeadingPhoton()) ) > vetoConeSize_ ) {
                     cleaned_jets.push_back( jet );
                 }
@@ -233,7 +255,7 @@ namespace flashgg {
             for( size_t ijet=0; ijet < cleaned_jets.size()-1;++ijet){
                 auto jet_1 = cleaned_jets[ijet];
                 auto jet_2 = cleaned_jets[ijet+1];
-                double sumbtag = jet_1->bDiscriminator(bTagType_) + jet_2->bDiscriminator(bTagType_);//FIXME make it configurable
+                double sumbtag = jet_1->bDiscriminator(bTagType_) + jet_2->bDiscriminator(bTagType_);
                 if (sumbtag > sumbtag_ref) {
                     sumbtag_ref = sumbtag;
                     jet1 = jet_1;

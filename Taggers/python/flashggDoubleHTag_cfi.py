@@ -17,12 +17,16 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    ScalingPtCuts = cms.bool(True),
                                    DoSigmaMDecorr =cms.untracked.uint32(1),#transformation of sigmaM/M
                                    SigmaMDecorrFile = cms.untracked.FileInPath("flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_Mgg40_180.root"),
-
+                                   ApplyEGMPhotonID = cms.untracked.bool(True),
+                                   PhotonIDCut = cms.double(0.2),#this is loose id for 2016
+                                   PhotonElectronVeto =cms.untracked.vint32(1, 1), #0: Pho1, 1: Pho2
 
                                    MinJetPt   = cms.double(20.),
                                    MaxJetEta   = cms.double(2.5),
                                    MJJBoundaries = cms.vdouble(70.,180.),
                                    BTagType = cms.untracked.string('pfCombinedInclusiveSecondaryVertexV2BJetTags'), #string for btag algorithm
+                                   UseJetID = cms.bool(True),
+                                   JetIDLevel = cms.string('Loose'),
 
                                    MVABoundaries  = cms.vdouble(0.271,0.543, 0.740), # category boundaries for MVA
                                    MXBoundaries   = cms.vdouble(250., 341.4, 426.1, 544.), # .. and MX
