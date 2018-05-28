@@ -66,6 +66,12 @@ customize.options.register('doDoubleHTag',
                            VarParsing.VarParsing.varType.bool,
                            'doDoubleHTag'
                            )
+customize.options.register('doBJetRegression',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doBJetRegression'
+                           )
 customize.options.register('doHTXS',
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -181,6 +187,8 @@ if customize.tthTagsOnly:
     process.flashggTagSequence.remove(process.flashggUntagged)
     process.flashggTagSequence.remove(process.flashggVBFMVA)
     process.flashggTagSequence.remove(process.flashggVBFDiPhoDiJetMVA)
+
+
 
 if customize.doDoubleHTag:
     import flashgg.Systematics.doubleHCustomize as hhc
@@ -397,6 +405,8 @@ elif customize.tthTagsOnly:
         ]
 elif customize.doubleHTagsOnly:
     tagList = hhc.tagList(customize,process)
+    print "taglist is:"
+    print tagList
 else:
     tagList=[
         ["NoTag",0],
@@ -534,6 +544,34 @@ process.p = cms.Path(process.dataRequirements*
                      process.penultimateFilter*
                      process.finalFilter*
                      process.tagsDumper)
+
+if customize.doBJetRegression:
+    bregProducers = []
+    bregJets = []
+    
+    from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
+    recoJetCollections = UnpackedJetCollectionVInputTag
+
+
+    
+    for icoll,coll in enumerate(recoJetCollections):
+        print "doing icoll "+str(icoll)
+        producer =   cms.EDProducer('flashggbRegressionProducer80',
+                                    JetTag=coll,
+                                    rhoFixedGridCollection = cms.InputTag('fixedGridRhoFastjetAll'),
+                                    bRegressionWeightfile= cms.untracked.string(os.environ["CMSSW_BASE"]+"/src/flashgg/MetaData/data/DNN_models/model-18"),
+                                    y_mean = cms.untracked.double(1.0454729795455933),#check MetaData/data/DNN_models/config.json
+                                    y_std = cms.untracked.double( 0.31628304719924927)
+                                    )
+        setattr(process,"bRegProducer%d" %icoll,producer)
+        bregProducers.append(producer)
+        bregJets.append("bRegProducer%d" %icoll)
+            
+    process.bregProducers = cms.Sequence(reduce(lambda x,y: x+y, bregProducers))
+#    process.bbggtree.inputTagJets=cms.VInputTag(bregJets)
+    process.p.replace(process.jetSystematicsSequence,process.jetSystematicsSequence*process.flashggUnpackedJets+process.bregProducers)
+
+
 
 
 if customize.doFiducial:
