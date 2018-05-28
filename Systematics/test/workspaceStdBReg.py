@@ -556,11 +556,11 @@ if customize.doBJetRegression:
     
     for icoll,coll in enumerate(recoJetCollections):
         print "doing icoll "+str(icoll)
-        producer =   cms.EDProducer('flashggbRegressionProducer',
+        producer =   cms.EDProducer('flashggbRegressionProducer80',
                                     JetTag=coll,
                                     rhoFixedGridCollection = cms.InputTag('fixedGridRhoFastjetAll'),
-                                    bRegressionWeightfile= cms.untracked.string("/afs/cern.ch/work/m/micheli/flashgg_20180323/CMSSW_8_0_28/src/flashgg/MetaData/data/DNN_models/model-18"),
-                                    y_mean = cms.untracked.double(1.0454729795455933),#check /afs/cern.ch/work/m/micheli/CMSSW_8_0_28/src/flashgg/MetaData/data/DNN_models/config.json                                                       
+                                    bRegressionWeightfile= cms.untracked.string(os.environ["CMSSW_BASE"]+"/src/flashgg/MetaData/data/DNN_models/model-18"),
+                                    y_mean = cms.untracked.double(1.0454729795455933),#check MetaData/data/DNN_models/config.json
                                     y_std = cms.untracked.double( 0.31628304719924927)
                                     )
         setattr(process,"bRegProducer%d" %icoll,producer)
