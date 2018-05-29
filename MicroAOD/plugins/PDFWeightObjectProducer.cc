@@ -271,7 +271,7 @@ namespace flashgg {
                 }
 
                 // -- Scale weights
-                if ( (weightgroupname1 && weightgroupname1.get() == scalevar)  || ( weightgroupname2 && weightgroupname2.get() == scalevar) ) {               
+                if ( (weightgroupname1 && weightgroupname1.get().substr(0,scalevar.length()) == scalevar)  || ( weightgroupname2 && weightgroupname2.get().substr(0,scalevar.length()) == scalevar) ) {               
                     
                     BOOST_FOREACH(boost::property_tree::ptree::value_type &vs,subtree)
                         if (vs.first == "weight") {
@@ -397,11 +397,14 @@ namespace flashgg {
             
             // --- Get qcd scale weights
             if (doScaleWeights_ ){ 
+                //                std::cout << "We want to do scale weights! scale_indices size is " << PDFWeightProducer::scale_indices.size() << std::endl;
                 for( unsigned int k = 0 ; k < PDFWeightProducer::scale_indices.size() ; k++ ) {
                     int id_k = PDFWeightProducer::scale_indices[k];
+                    //                    std::cout << k << " " << id_k << " " << id_i << std::endl;
                     if ( id_i == id_k ) {
                         float scale = LHEEventHandle->weights()[i].wgt;
                         uint16_t scale_16 = MiniFloatConverter::float32to16( scale );
+                        //                        std::cout << " Filling scale " << std::endl;
                         pdfWeight.qcd_scale_container.push_back( scale_16 );
                     }
                 }
@@ -428,6 +431,10 @@ namespace flashgg {
             if (isThqSample_)
                 cout << "Size of pdf nlo weights: " << PDFWeightProducer::pdfnlo_indices.size() << endl;
         }
+
+        assert(inpdfweights.size() > 0);
+        assert(PDFWeightProducer::scale_indices.size() == 9);
+        assert(PDFWeightProducer::alpha_indices.size() == 2);
         
 		
         // --- Get MCtoHessian PDF weights
