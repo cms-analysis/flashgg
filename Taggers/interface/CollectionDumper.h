@@ -418,6 +418,7 @@ namespace flashgg {
 
     template<class C, class T, class U>
     int CollectionDumper<C, T, U>::getStage0cat( const edm::EventBase &event ) {
+        //        std::cout << "In getStage0cat" << std::endl;
         edm::Handle<int> stage0cat;
         const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&event);
         if (fullEvent != 0) {
@@ -426,6 +427,7 @@ namespace flashgg {
             event.getByLabel(stage0catTag_, stage0cat);
         }
         if ( stage0cat.isValid() ) {
+            //            std::cout << "In getStage0cat first attempt valid" << std::endl;
             return (*(stage0cat.product() ) );
         } else {
             edm::Handle<HTXS::HiggsClassification> htxsClassification;
@@ -434,6 +436,7 @@ namespace flashgg {
             } else {
                 event.getByLabel(newHTXSTag_,htxsClassification);
             }
+            //            std::cout << " Tried to get an htxsClassification but it returns " << htxsClassification->stage0_cat << std::endl;
             return( htxsClassification->stage0_cat );
         }
     }
@@ -462,16 +465,23 @@ namespace flashgg {
 
                 for( unsigned int j=0; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
                     pdfWeights.push_back(uncompressed[j]);
+                    //                    std::cout << "pdfWeights " << j<< " " << uncompressed[j] << std::endl;
                 }
                 for( unsigned int j=0; j<(*WeightHandle)[weight_index].alpha_s_container.size();j++ ) {
                     pdfWeights.push_back(uncompressed_alpha_s[j]);
+                    //                    std::cout << "alpha_s " << j << " " << uncompressed_alpha_s[j] << std::endl;
                 }
-                for( unsigned int j=0; j<(*WeightHandle)[weight_index].qcd_scale_container.size();j++ ) {
-                    pdfWeights.push_back(uncompressed_scale[j]);
+                if ( (*WeightHandle)[weight_index].qcd_scale_container.size() == 0 ) {
+                    //                    std::cout << " QCD scale weight workaround, putting in 9 dummies " << std::endl;
+                    for ( unsigned int j = 0 ; j < 9 ; j++ ) {
+                        pdfWeights.push_back(0.); // should never be used in case this workaround is in place
+                    }
+                } else {
+                    for( unsigned int j=0; j<(*WeightHandle)[weight_index].qcd_scale_container.size();j++ ) {
+                        pdfWeights.push_back(uncompressed_scale[j]);
+                    }
                 }
             }
-
-
             return pdfWeights;
         }
         
