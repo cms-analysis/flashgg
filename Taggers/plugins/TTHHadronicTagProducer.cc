@@ -20,6 +20,8 @@
 
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
+#include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
+
 
 #include <vector>
 #include <algorithm>
@@ -52,6 +54,7 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
         EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
+        EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
         EDGetTokenT<float> pTHToken_,pTVToken_;
         EDGetTokenT<double> rhoTag_;
         string systLabel_;
@@ -144,6 +147,8 @@ namespace flashgg {
         njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
         pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
         pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
+        newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
+
 
         MVAThreshold_ = iConfig.getParameter<double>( "MVAThreshold");
         MVATTHHMVAThreshold_ = iConfig.getParameter<double>( "MVATTHHMVAThreshold");
@@ -231,6 +236,9 @@ namespace flashgg {
         evt.getByToken(njetsToken_,njets);
         evt.getByToken(pTHToken_,pTH);
         evt.getByToken(pTVToken_,pTV);
+        Handle<HTXS::HiggsClassification> htxsClassification;
+        evt.getByToken(newHTXSToken_,htxsClassification);
+
 
         //Handle<View<flashgg::Jet> > theJets;
         //evt.getByToken( thejetToken_, theJets );
@@ -488,6 +496,13 @@ namespace flashgg {
                                                *( njets.product() ),
                                                *( pTH.product() ),
                                                *( pTV.product() ) );
+                    } else if ( htxsClassification.isValid() ) {
+                        truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
+                                               htxsClassification->stage1_cat_pTjet30GeV,
+                                               htxsClassification->jets30.size(),
+                                               htxsClassification->p4decay_higgs.pt(),
+                                               htxsClassification->p4decay_V.pt() );
+
                     } else {
                         truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
                     }

@@ -34,6 +34,8 @@
 #include "flashgg/MicroAOD/interface/CutAndClassBasedClassifier.h"
 #include "flashgg/Taggers/interface/GlobalVariablesDumper.h"
 #include "flashgg/DataFormats/interface/PDFWeightObject.h"
+#include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
+
 
 #include "FWCore/Utilities/interface/Exception.h"
 
@@ -131,6 +133,8 @@ namespace flashgg {
         int stage0cat_;
         edm::InputTag stage0catTag_;
         edm::EDGetTokenT<int> stage0catToken_;
+        edm::InputTag newHTXSTag_;
+        edm::EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;  
 
         //std::map<std::string, std::vector<dumper_type> > dumpers_; FIXME template key
         std::map< KeyT, std::vector<dumper_type> > dumpers_;
@@ -176,6 +180,8 @@ namespace flashgg {
         dumpGlobalVariables_( cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true ) ),
         stage0catTag_( cfg.getUntrackedParameter<edm::InputTag>( "stage0catTag", edm::InputTag("rivetProducerHTXS","stage0cat") ) ),
         stage0catToken_( cc.consumes<int>( stage0catTag_ ) ),
+        newHTXSTag_( cfg.getUntrackedParameter<edm::InputTag>( "classificationObj", edm::InputTag("rivetProducerHTXS","HiggsClassification") ) ),
+        newHTXSToken_( cc.consumes<HTXS::HiggsClassification>( newHTXSTag_ ) ),
         globalVarsDumper_(0)
     {
         if( dumpGlobalVariables_ ) {
@@ -412,6 +418,7 @@ namespace flashgg {
 
     template<class C, class T, class U>
     int CollectionDumper<C, T, U>::getStage0cat( const edm::EventBase &event ) {
+        //        std::cout << "In getStage0cat" << std::endl;
         edm::Handle<int> stage0cat;
         const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&event);
         if (fullEvent != 0) {
@@ -419,7 +426,19 @@ namespace flashgg {
         } else {
             event.getByLabel(stage0catTag_, stage0cat);
         }
-        return (*(stage0cat.product() ) );
+        if ( stage0cat.isValid() ) {
+            //            std::cout << "In getStage0cat first attempt valid" << std::endl;
+            return (*(stage0cat.product() ) );
+        } else {
+            edm::Handle<HTXS::HiggsClassification> htxsClassification;
+            if (fullEvent != 0) {
+                fullEvent->getByToken(newHTXSToken_,htxsClassification);
+            } else {
+                event.getByLabel(newHTXSTag_,htxsClassification);
+            }
+            //            std::cout << " Tried to get an htxsClassification but it returns " << htxsClassification->stage0_cat << std::endl;
+            return( htxsClassification->stage0_cat );
+        }
     }
 
     template<class C, class T, class U>
@@ -446,16 +465,23 @@ namespace flashgg {
 
                 for( unsigned int j=0; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
                     pdfWeights.push_back(uncompressed[j]);
+                    //                    std::cout << "pdfWeights " << j<< " " << uncompressed[j] << std::endl;
                 }
                 for( unsigned int j=0; j<(*WeightHandle)[weight_index].alpha_s_container.size();j++ ) {
                     pdfWeights.push_back(uncompressed_alpha_s[j]);
+                    //                    std::cout << "alpha_s " << j << " " << uncompressed_alpha_s[j] << std::endl;
                 }
-                for( unsigned int j=0; j<(*WeightHandle)[weight_index].qcd_scale_container.size();j++ ) {
-                    pdfWeights.push_back(uncompressed_scale[j]);
+                if ( (*WeightHandle)[weight_index].qcd_scale_container.size() == 0 ) {
+                    //                    std::cout << " QCD scale weight workaround, putting in 9 dummies " << std::endl;
+                    for ( unsigned int j = 0 ; j < 9 ; j++ ) {
+                        pdfWeights.push_back(0.); // should never be used in case this workaround is in place
+                    }
+                } else {
+                    for( unsigned int j=0; j<(*WeightHandle)[weight_index].qcd_scale_container.size();j++ ) {
+                        pdfWeights.push_back(uncompressed_scale[j]);
+                    }
                 }
             }
-
-
             return pdfWeights;
         }
         
