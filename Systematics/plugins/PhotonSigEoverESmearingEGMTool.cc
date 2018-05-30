@@ -66,11 +66,6 @@ namespace flashgg {
             // computed by getSmearingSigma(...)
             auto sigma = scaler_.smearingSigma(run_number_, y.et(), y.superCluster()->eta(), y.full5x5_r9(), gain, 0, 0);// never apply systematic shift
 
-            if ( sigma < 0. || sigma > 1. ) {
-                //                throw cms::Exception("SmearingLogic") << " sigmaEOverE is going to be smeared by " << sigma << " which sounds implausible (allowed: 0-1)";
-                sigma = 0.;
-            }
-
             if( debug_ ) { 
                 std::cout << "  " << shiftLabel( syst_shift ) << ": Photon has pt= " << y.pt() << " eta=" << y.superCluster()->eta() << " full5x5_r9=" << y.full5x5_r9()
                     << " and we apply a sigmaEoverE smearing of " << sigma << std::endl;

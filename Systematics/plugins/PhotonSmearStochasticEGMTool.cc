@@ -79,11 +79,6 @@ namespace flashgg {
             // the combination of central value + NSigma * sigma is already
             // computed by getSmearingSigma(...)
             auto sigma = scaler_.smearingSigma(run_number_, y.et(), y.superCluster()->eta(), y.full5x5_r9(), gain, ((float)syst_shift.first), ((float)syst_shift.second));
-
-            if ( sigma < 0. || sigma > 1. ) {
-                //                throw cms::Exception("SmearingLogic") << " sigmaEOverE is going to be smeared by " << sigma << " which sounds implausible (allowed: 0-1)";                                                                 
-                sigma = 0.;
-            }
             
             if (!y.hasUserFloat(random_label_)) {
                 throw cms::Exception("Missing embedded random number") << "Could not find key " << random_label_ << " for random numbers embedded in the photon object, please make sure to read the appropriate version of MicroAOD and/or access the correct label and/or run the PerPhotonDiPhoton randomizer on-the-fly";
