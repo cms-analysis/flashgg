@@ -32,8 +32,8 @@ Recently deprecated:
 94X: Get everything you need, starting from a clean area:
 
  ```
- cmsrel CMSSW_9_4_6_patch1
- cd CMSSW_9_4_6_patch1/src
+ cmsrel CMSSW_9_4_5_cand1
+ cd CMSSW_9_4_5_cand1/src
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src
