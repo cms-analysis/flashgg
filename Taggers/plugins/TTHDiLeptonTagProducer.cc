@@ -336,7 +336,7 @@ namespace flashgg {
                     if( bDiscriminatorValue > bDiscriminator_[2] ) njets_btagtight_++;
                 }
 
-                if(njet_ >= jetsNumberThreshold_ && (njets_btagmedium_ >= bjetsNumberThreshold_ || njets_btagloose_ >= bjetsLooseNumberThreshold_) && LeadingJetPt>leadingJetPtThreshold_ )
+                if(njet_ >= jetsNumberThreshold_ && njets_btagmedium_ >= bjetsNumberThreshold_ && LeadingJetPt>leadingJetPtThreshold_ )
                 {
                     passDiLeptonSelections = true;
                     tagMuons.push_back(MuonsPairs[vSize].first);
@@ -389,7 +389,7 @@ namespace flashgg {
                         if( bDiscriminatorValue > bDiscriminator_[2] ) njets_btagtight_++;
                     }
 
-                if(njet_ >= jetsNumberThreshold_ && (njets_btagmedium_ >= bjetsNumberThreshold_ || njets_btagloose_ >= bjetsLooseNumberThreshold_) && LeadingJetPt>leadingJetPtThreshold_ )
+                if(njet_ >= jetsNumberThreshold_ && njets_btagmedium_ >= bjetsNumberThreshold_ && LeadingJetPt>leadingJetPtThreshold_ )
                     {
                         passDiLeptonSelections = true;
                         tagElectrons.push_back(ElePairs[vSize].first);
@@ -442,7 +442,7 @@ namespace flashgg {
                         if( bDiscriminatorValue > bDiscriminator_[2] ) njets_btagtight_++;
                     }
 
-               if(njet_ >= jetsNumberThreshold_ && (njets_btagmedium_ >= bjetsNumberThreshold_ || njets_btagloose_ >= bjetsLooseNumberThreshold_) && LeadingJetPt>leadingJetPtThreshold_ )
+               if(njet_ >= jetsNumberThreshold_ && njets_btagmedium_ >= bjetsNumberThreshold_ && LeadingJetPt>leadingJetPtThreshold_ )
                     {
                         passDiLeptonSelections = true;
                         tagMuons.push_back(MixedPairs[vSize].first);
