@@ -176,12 +176,11 @@ def createJetSystematicsForTag(process,jetInputTag):
                                                            rho = cms.InputTag('fixedGridRhoAll'),
                                                            Debug = cms.untracked.bool(False),
                                                            ApplyCentralValue = cms.bool(True),
-                                                           UseTextFiles = cms.bool(True),
+                                                           UseTextFiles = cms.bool(False),
                                                            #TextFileResolution = cms.string("%s/src/flashgg/Systematics/data/JER/Spring16_25nsV6_MC_PtResolution_AK4PFchs.txt" % environ['CMSSW_BASE']),
                                                            #TextFileSF = cms.string("%s/src/flashgg/Systematics/data/JER/Spring16_25nsV6_MC_SF_AK4PFchs.txt" % environ['CMSSW_BASE'])
-                                                           ####FIXME: do these txt files need to be updated as well?  They were out of data with respect to the .db files.
-                                                           TextFileResolution = cms.string("%s/src/flashgg/Systematics/data/JER/Spring16_25nsV10_MC_PtResolution_AK4PFchs.txt" % environ['CMSSW_BASE']),
-                                                           TextFileSF = cms.string("%s/src/flashgg/Systematics/data/JER/Spring16_25nsV10_MC_SF_AK4PFchs.txt" % environ['CMSSW_BASE'])
+                                                           TextFileResolution = cms.string("notused"),
+                                                           TextFileSF = cms.string("notused")
                                                            ),
                                                  cms.PSet( MethodName = cms.string("FlashggJetBTagWeight"),
                                                            Label = cms.string("JetBTagCutWeight"),
