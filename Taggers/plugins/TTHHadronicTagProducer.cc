@@ -575,7 +575,7 @@ namespace flashgg {
                     tthMvaVal_ = TThMva_->EvaluateMVA( _MVAMethod.c_str() );
 
                     //cout << "mva result :" << endl;
-                    cout << "tthMvaVal_ = " << tthMvaVal_  << " "<< boundaries[0]<<" "<< boundaries[1]<< endl;
+                    //cout << "tthMvaVal_ = " << tthMvaVal_  << " "<< boundaries[0]<<" "<< boundaries[1]<< endl;
                      
                      
                  }
@@ -592,10 +592,10 @@ namespace flashgg {
                 //&& tthMvaVal_ >= tthHadMVAThresholdMin_  && tthMvaVal_ < tthHadMVAThresholdMax_ ) {
                 
                 catnum = chooseCategory( tthMvaVal_ );                
-                cout<<" catNum="<<catnum<<endl;
+                //                cout<<" catNum="<<catnum<<endl;
                 if(catnum>=0){
                     isTTHHadronicTagged = true;
-                    cout<<" TAGGED "<< endl;
+                    //                    cout<<" TAGGED "<< endl;
                 }
             }
             
@@ -630,7 +630,7 @@ namespace flashgg {
                 }
                 tthhtags_obj.includeWeights( *dipho );
                 
-                cout<<" BEFORE TO PUSH BACK TAG "<< endl;
+                //                cout<<" BEFORE TO PUSH BACK TAG "<< endl;
 
                 if(tthhtags_obj.categoryNumber() >= 0)    
                     { 
