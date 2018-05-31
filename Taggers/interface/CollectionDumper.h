@@ -474,7 +474,6 @@ namespace flashgg {
             } else {
                 event.getByLabel(newHTXSTag_,htxsClassification);
             }
-            //            std::cout << " Tried to get an htxsClassification but it returns " << htxsClassification->stage0_cat << std::endl;
             return( htxsClassification->stage0_cat );
         }
     }
@@ -488,7 +487,17 @@ namespace flashgg {
         } else {
             event.getByLabel(stxsNJetTag_, stxsNJet);
         }
-        return (*(stxsNJet.product() ) );
+        if (stxsNJet.isValid()) {
+            return (*(stxsNJet.product() ) );
+        } else {
+            edm::Handle<HTXS::HiggsClassification> htxsClassification;
+            if (fullEvent != 0) {
+                fullEvent->getByToken(newHTXSToken_,htxsClassification);
+            } else {
+                event.getByLabel(newHTXSTag_,htxsClassification);
+            }
+            return htxsClassification->jets30.size();
+        }
     }
 
     template<class C, class T, class U>
@@ -500,7 +509,17 @@ namespace flashgg {
         } else {
             event.getByLabel(stxsPtHTag_, stxsPtH);
         }
-        return (*(stxsPtH.product() ) );
+        if (stxsPtH.isValid()) {
+            return (*(stxsPtH.product() ) );
+        } else {
+            edm::Handle<HTXS::HiggsClassification> htxsClassification;
+            if (fullEvent != 0) {
+                fullEvent->getByToken(newHTXSToken_,htxsClassification);
+            } else {
+                event.getByLabel(newHTXSTag_,htxsClassification);
+            }
+            return htxsClassification->p4decay_higgs.pt();
+        }
     }
 
 
@@ -589,7 +608,7 @@ namespace flashgg {
                         if ( stxsNJet_ == 2) extraweight = NNLOPSWeights_[2]->Eval(min(stxsPtH_,float(800.0)));
                         if ( stxsNJet_ >= 3) extraweight = NNLOPSWeights_[3]->Eval(min(stxsPtH_,float(925.0)));
                         weight_ *= extraweight;
-                        //                    std::cout << " IN CollectionDumper::analyze extraweight = " << extraweight << " so adjusted weight is " << weight_ << std::endl;
+                        // std::cout << " IN CollectionDumper::analyze extraweight = " << extraweight << " so adjusted weight is " << weight_ << std::endl;
                     }
 
                 }
