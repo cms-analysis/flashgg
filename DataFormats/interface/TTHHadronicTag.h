@@ -29,6 +29,8 @@ namespace flashgg {
         float sumJetPt() const {return sumJetPt_;}
         float maxBTagVal() const {return maxBTagVal_;}
         float secondMaxBTagVal() const {return secondMaxBTagVal_;}
+        float thirdMaxBTagVal() const {return thirdMaxBTagVal_;}
+        float fourthMaxBTagVal() const {return fourthMaxBTagVal_;}
         float tthMvaRes() const {return tthMvaRes_;}
         void setNjet( int nb ) { Njet_ = nb; }
         void setNBLoose( int nb ) { Nbtagloose_ = nb; }
@@ -39,6 +41,8 @@ namespace flashgg {
         void setSumJetPt( float dval ) { sumJetPt_ = dval;}
         void setMaxBTagVal( float dval ) { maxBTagVal_ = dval;}
         void setSecondMaxBTagVal( float dval ) { secondMaxBTagVal_ = dval;}
+        void setThirdMaxBTagVal( float dval ) { thirdMaxBTagVal_ = dval;}
+        void setFourthMaxBTagVal( float dval ) { fourthMaxBTagVal_ = dval;}
         void setJetBTagValVec( std::vector<float> vec ) { theJetBTagValVec_ = vec;}
         void setMVAres(float val) {tthMvaRes_ = val;}
 
@@ -57,7 +61,10 @@ namespace flashgg {
         float sumJetPt_;
         float maxBTagVal_;
         float secondMaxBTagVal_;
+        float thirdMaxBTagVal_;
+        float fourthMaxBTagVal_;
         float tthMvaRes_;
+        
 
     };
 }
