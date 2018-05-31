@@ -163,8 +163,7 @@ if customize.doFiducial:
     from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet,massSearchReplaceAnyInputTag
     process.flashggTagSequence.remove(process.flashggVBFTag)
     process.flashggTagSequence.remove(process.flashggTTHLeptonicTag)
-    process.flashggTagSequence.remove(process.flashggTTHHadronicTTag)
-    process.flashggTagSequence.remove(process.flashggTTHHadronicLTag)
+    process.flashggTagSequence.remove(process.flashggTTHHadronicTag)
     #haven't tested VH tags with fiducial cross-section measurement yet
     process.flashggTagSequence.remove(process.flashggVHEtTag)
     process.flashggTagSequence.remove(process.flashggVHLooseTag)
@@ -223,10 +222,11 @@ process.flashggTTHLeptonicTag.bLoosejetsNumberThreshold = cms.double(0.)
 process.flashggUntagged.Boundaries     = cms.vdouble(-1.)
 
 if customize.tthTagsOnly:
-    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag')),
-                                                                cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTTag')),
-                                                                cms.PSet(TagName = cms.InputTag('flashggTTHHadronicLTag')),
-                                                                cms.PSet(TagName = cms.InputTag('flashggUntagged')) )
+    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     
+        cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag')),
+        cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag')),
+        cms.PSet(TagName = cms.InputTag('flashggUntagged')) 
+        )
 
     print "customize.processId:",customize.processId
     print "Removing FracRV from syst"
@@ -590,7 +590,7 @@ process.tagsDumper.src = "flashggSystTagMerger"
 #process.tagsDumper.src = "flashggTagSystematics"
 #process.tagsDumper.processId = "test"
 process.tagsDumper.dumpTrees = True
-process.tagsDumper.dumpWorkspace = True
+process.tagsDumper.dumpWorkspace = False
 process.tagsDumper.dumpHistos = False
 process.tagsDumper.quietRooFit = False
 process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
@@ -615,8 +615,7 @@ if customize.doFiducial:
 elif customize.tthTagsOnly:
     tagList=[
         ["UntaggedTag",0],
-        ["TTHHadronicLTag",0],
-        ["TTHHadronicTTag",0],
+        ["TTHHadronicTag",2],
         ["TTHLeptonicTag",0]
         ]
 else:
@@ -629,7 +628,7 @@ else:
         ["VHLeptonicLooseTag",0],
         ["VHMetTag",0],
         ["VHHadronicTag",0],
-        ["TTHHadronicTTag",0],
+        ["TTHHadronicTag",2],
         ["TTHLeptonicTag",0]
         ]
 
@@ -646,12 +645,7 @@ for tag in tagList:
 		variablesToUse = minimalNonSignalVariables+ttHLeptonic_variables
 	else:
 		variablesToUse = minimalVariables+ttHLeptonic_variables
-  elif tagName == "TTHHadronicTTag":
-        if customize.processId == "Data":
-                variablesToUse = minimalNonSignalVariables+ttHHadronic_variables
-        else:
-                variablesToUse = minimalVariables+ttHHadronic_variables
-  elif tagName == "TTHHadronicLooseTag":
+  elif tagName == "TTHHadronicTag":
         if customize.processId == "Data":
                 variablesToUse = minimalNonSignalVariables+ttHHadronic_variables
         else:
