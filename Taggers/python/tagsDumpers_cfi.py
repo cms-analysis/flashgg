@@ -16,6 +16,7 @@ def createTagDumper (tagName):
 dict = {'UntaggedTag': 'untagged',
         'VBFTag': 'vbfh',                
         'TTHLeptonicTag': 'tth',
+        'TTHDiLeptonTag': 'tth',
         'TTHHadronicTag': 'tth',
         'VHLooseTag': 'vh',
         'VHTightTag': 'vh',

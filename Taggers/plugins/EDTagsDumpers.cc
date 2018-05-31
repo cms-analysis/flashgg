@@ -6,6 +6,7 @@
 typedef edm::AnalyzerWrapper<flashgg::CutBasedUntaggedTagDumper> CutBasedUntaggedTagDumper;
 typedef edm::AnalyzerWrapper<flashgg::CutBasedVBFTagDumper> CutBasedVBFTagDumper;
 typedef edm::AnalyzerWrapper<flashgg::CutBasedTTHLeptonicTagDumper> CutBasedTTHLeptonicTagDumper;
+typedef edm::AnalyzerWrapper<flashgg::CutBasedTTHDiLeptonTagDumper> CutBasedTTHDiLeptonTagDumper;
 typedef edm::AnalyzerWrapper<flashgg::CutBasedTTHHadronicTagDumper> CutBasedTTHHadronicTagDumper;
 typedef edm::AnalyzerWrapper<flashgg::CutBasedVHLooseTagDumper> CutBasedVHLooseTagDumper;
 typedef edm::AnalyzerWrapper<flashgg::CutBasedVHTightTagDumper> CutBasedVHTightTagDumper;
@@ -17,6 +18,7 @@ typedef edm::AnalyzerWrapper<flashgg::CutBasedZHLeptonicTagDumper> CutBasedZHLep
 
 DEFINE_FWK_MODULE( CutBasedUntaggedTagDumper );
 DEFINE_FWK_MODULE( CutBasedVBFTagDumper );
+DEFINE_FWK_MODULE( CutBasedTTHDiLeptonTagDumper );
 DEFINE_FWK_MODULE( CutBasedTTHLeptonicTagDumper );
 DEFINE_FWK_MODULE( CutBasedTTHHadronicTagDumper );
 DEFINE_FWK_MODULE( CutBasedVHLooseTagDumper );
