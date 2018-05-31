@@ -44,6 +44,7 @@ namespace flashgg {
         TTHHadronicTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
+        int  chooseCategory( float );
 
         std::vector<edm::EDGetTokenT<View<flashgg::Jet> > > tokenJets_;
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
@@ -61,8 +62,6 @@ namespace flashgg {
 
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
         bool useTTHHadronicMVA_;
-        double tthHadMVAThresholdMin_;
-        double tthHadMVAThresholdMax_;
         //---thresholds---
         //---photons
         double MVAThreshold_;
@@ -146,6 +145,8 @@ namespace flashgg {
         
         float tthMvaVal_;
 
+        vector<double> boundaries;
+
     };
 
     TTHHadronicTagProducer::TTHHadronicTagProducer( const ParameterSet &iConfig ) :
@@ -160,6 +161,9 @@ namespace flashgg {
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
         _MVAMethod( iConfig.getParameter<string> ( "MVAMethod" ) )
     {
+        boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
+        assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // 
+
         ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
         stage0catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0cat") );
         stage1catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1cat") );
@@ -190,8 +194,6 @@ namespace flashgg {
         bTag_ = iConfig.getParameter<string> ( "bTag");
 
         useTTHHadronicMVA_ = iConfig.getParameter<bool>( "useTTHHadronicMVA");
-        tthHadMVAThresholdMin_ =  iConfig.getParameter<double>( "tthHadMVAThresholdMin");
-        tthHadMVAThresholdMax_ =  iConfig.getParameter<double>( "tthHadMVAThresholdMax");
         bjetsLooseNumberThreshold_ = iConfig.getParameter<int>( "bjetsLooseNumberThreshold");
         jetsNumberTTHHMVAThreshold_ = iConfig.getParameter<int>( "jetsNumberTTHHMVAThreshold");
         bjetsNumberTTHHMVAThreshold_ = iConfig.getParameter<int>( "bjetsNumberTTHHMVAThreshold");
@@ -276,6 +278,16 @@ namespace flashgg {
 
         produces<vector<TTHHadronicTag> >();
         produces<vector<TagTruthBase> >();
+    }
+
+    int TTHHadronicTagProducer::chooseCategory( float tthmvavalue )
+    {
+        // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
+        int n;
+        for( n = 0 ; n < ( int )boundaries.size() ; n++ ) {
+            if( ( double )tthmvavalue > boundaries[boundaries.size() - n - 1] ) { return n; }
+        }
+        return -1; // Does not pass, object will not be produced
     }
 
     void TTHHadronicTagProducer::produce( Event &evt, const EventSetup & )
@@ -563,26 +575,34 @@ namespace flashgg {
                     tthMvaVal_ = TThMva_->EvaluateMVA( _MVAMethod.c_str() );
 
                     //cout << "mva result :" << endl;
-                    cout << "tthMvaVal_ = " << tthMvaVal_  << " "<< tthHadMVAThresholdMin_<<" "<<tthHadMVAThresholdMax_ <<endl;
+                    cout << "tthMvaVal_ = " << tthMvaVal_  << " "<< boundaries[0]<<" "<< boundaries[1]<< endl;
                      
                      
                  }
             }
 
             bool isTTHHadronicTagged = false;
-            
+            int catnum =-1;
             if( !useTTHHadronicMVA_ && njets_btagloose_ >= bjetsLooseNumberThreshold_ && njets_btagmedium_ >= bjetsNumberThreshold_ && jetcount_ >= jetsNumberThreshold_ ) {
-                
-                isTTHHadronicTagged = true;
-            
-            } else if ( useTTHHadronicMVA_  && njets_btagloose_ >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium_ >= bjetsNumberTTHHMVAThreshold_ && jetcount_ >= jetsNumberTTHHMVAThreshold_ && tthMvaVal_ >= tthHadMVAThresholdMin_  && tthMvaVal_ < tthHadMVAThresholdMax_ ) {
-                
-                isTTHHadronicTagged = true;
-                cout<<" TAGGED "<< endl;
-            }
 
+                catnum=0;
+                isTTHHadronicTagged = true;
+                
+            } else if ( useTTHHadronicMVA_  && njets_btagloose_ >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium_ >= bjetsNumberTTHHMVAThreshold_ && jetcount_ >= jetsNumberTTHHMVAThreshold_ ) {
+                //&& tthMvaVal_ >= tthHadMVAThresholdMin_  && tthMvaVal_ < tthHadMVAThresholdMax_ ) {
+                
+                catnum = chooseCategory( tthMvaVal_ );                
+                cout<<" catNum="<<catnum<<endl;
+                if(catnum>=0){
+                    isTTHHadronicTagged = true;
+                    cout<<" TAGGED "<< endl;
+                }
+            }
+            
             if( isTTHHadronicTagged ) {
+
                 TTHHadronicTag tthhtags_obj( dipho, mvares, JetVect, BJetVect );
+                tthhtags_obj.setCategoryNumber(catnum  );
                 tthhtags_obj.setNjet( jetcount_ );
                 tthhtags_obj.setNBLoose( njets_btagloose_ );
                 tthhtags_obj.setNBMedium( njets_btagmedium_ );
@@ -609,23 +629,29 @@ namespace flashgg {
                     }                    
                 }
                 tthhtags_obj.includeWeights( *dipho );
-                tthhtags->push_back( tthhtags_obj );
-                if( ! evt.isRealData() ) {
-                    TagTruthBase truth_obj;
-                    truth_obj.setGenPV( higgsVtx );
-                    if ( stage0cat.isValid() ) {
-                        truth_obj.setHTXSInfo( *( stage0cat.product() ),
-                                               *( stage1cat.product() ),
-                                               *( njets.product() ),
-                                               *( pTH.product() ),
-                                               *( pTV.product() ) );
-                    } else {
-                        truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
+                
+                cout<<" BEFORE TO PUSH BACK TAG "<< endl;
+
+                if(tthhtags_obj.categoryNumber() >= 0)    
+                    { 
+                        tthhtags->push_back( tthhtags_obj );
+                        if( ! evt.isRealData() ) {
+                            TagTruthBase truth_obj;
+                            truth_obj.setGenPV( higgsVtx );
+                            if ( stage0cat.isValid() ) {
+                                truth_obj.setHTXSInfo( *( stage0cat.product() ),
+                                                       *( stage1cat.product() ),
+                                                       *( njets.product() ),
+                                                       *( pTH.product() ),
+                                                       *( pTV.product() ) );
+                            } else {
+                                truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
+                            }
+                            //truth_obj.setGenJets(genJetVect);
+                            truths->push_back( truth_obj );
+                            tthhtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
+                        }
                     }
-                    //truth_obj.setGenJets(genJetVect);
-                    truths->push_back( truth_obj );
-                    tthhtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
-                }
                 // count++;
             }
         }
