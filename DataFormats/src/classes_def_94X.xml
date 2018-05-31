@@ -12,7 +12,8 @@
 <class name="edm::Ptr<flashgg::PDFWeightObject>"/>
 <class name="std::vector<flashgg::PDFWeightObject>"/>
 <class name="edm::Wrapper<std::vector<flashgg::PDFWeightObject> >"/>
-<class name="flashgg::DiPhotonMVAResult" ClassVersion="11">
+<class name="flashgg::DiPhotonMVAResult" ClassVersion="12">
+ <version ClassVersion="12" checksum="3655353171"/>
   <version ClassVersion="11" checksum="1225448115"/>
 </class>
 <class name="std::vector<flashgg::DiPhotonMVAResult>"/>
@@ -69,6 +70,12 @@
 <class name="std::vector<flashgg::TTHLeptonicTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TTHLeptonicTag> >"/>
 <class name="std::vector<pat::Muon>"/>
+<class name="flashgg::TTHDiLeptonTag" ClassVersion="13">
+ <version ClassVersion="13" checksum="3773849427"/>
+ <version ClassVersion="12" checksum="2341601757"/>
+</class>
+<class name="std::vector<flashgg::TTHDiLeptonTag>"/>
+<class name="edm::Wrapper<std::vector<flashgg::TTHDiLeptonTag> >"/>
 <class name="flashgg::TTHHadronicTag" ClassVersion="14">
  <version ClassVersion="14" checksum="3454620804"/>
  <version ClassVersion="13" checksum="3956710497"/>
