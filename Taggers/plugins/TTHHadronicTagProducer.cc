@@ -563,7 +563,7 @@ namespace flashgg {
                     tthMvaVal_ = TThMva_->EvaluateMVA( _MVAMethod.c_str() );
 
                     //cout << "mva result :" << endl;
-                    //cout << "tthMvaVal_ = " << tthMvaVal_  << endl;
+                    cout << "tthMvaVal_ = " << tthMvaVal_  << " "<< tthHadMVAThresholdMin_<<" "<<tthHadMVAThresholdMax_ <<endl;
                      
                      
                  }
@@ -578,6 +578,7 @@ namespace flashgg {
             } else if ( useTTHHadronicMVA_  && njets_btagloose_ >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium_ >= bjetsNumberTTHHMVAThreshold_ && jetcount_ >= jetsNumberTTHHMVAThreshold_ && tthMvaVal_ >= tthHadMVAThresholdMin_  && tthMvaVal_ < tthHadMVAThresholdMax_ ) {
                 
                 isTTHHadronicTagged = true;
+                cout<<" TAGGED "<< endl;
             }
 
             if( isTTHHadronicTagged ) {
