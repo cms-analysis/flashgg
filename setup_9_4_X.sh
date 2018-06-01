@@ -118,8 +118,13 @@ cd $CMSSW_BASE/src
 
 # Straightofrward update for 8_0_28
 echo "Setting up QGL..."
+echo "... and setting up weight stuff..."
 git cms-addpkg RecoJets/JetProducers
-git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-9_4_0
+git cms-addpkg CommonTools/UtilAlgos
+# Straightforward update for 8_0_28
+echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
+git cms-addpkg FWCore/GuiBrowsers #temp-by hand
+git cms-merge-topic -u shervin86:for-flashgg-QGL-vertexIndex-9_4_6
 
 # TnP tools removed for 8_0_28, so Validation does not compile
 # To be investigated
@@ -130,25 +135,20 @@ echo "Temporary perl hack for LeptonSelection (to keep repo compatibility with 8
 perl -p -i.bak -e 's/numberOfHits/numberOfAllHits/g' $CMSSW_BASE/src/flashgg/Taggers/src/LeptonSelection.cc
 
 
-echo "Setting up weight stuff..."
-#git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-weights-9_2_0 #oops, does not exist
-git cms-addpkg CommonTools/UtilAlgos
-git cms-merge-topic -u sethzenz:for-flashgg-weightscount-9_4_0
-
 # Updated for 8_0_28, and compiles and runs, but NOT checked by experts
 # Update built from sethzenz:for-flashgg-smearer-conv-weights-8_0_26 and shervin86:Hgg_Gain_v1
 echo "Setting up EGM stuff..."
-git cms-merge-topic -u shervin86:for-flashgg-smearer-conv-9_4_5
-git apply  flashgg/EnergyScaleCorrection.patch
+#git cms-merge-topic -u shervin86:for-flashgg-smearer-conv-9_4_5
+#git apply  flashgg/EnergyScaleCorrection.patch
 
 #EGM IDs
-git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP    
-git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
+#git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP    
+#git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
 
-# Straightforward update for 8_0_28
-echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
-git cms-addpkg FWCore/GuiBrowsers #temp-by hand
-git cms-merge-topic -u sethzenz:for-flashgg-toolbase-9_4_0
+git cms-merge-topic cms-egamma:EgammaPostRecoTools_940 #just adds in an extra file to have a setup function to make things easier
+git cms-merge-topic cms-egamma:Egamma80XMiniAODV2_946 #adds the c++ changes necessary to enable 2016 scale & smearing corrections
+git cms-merge-topic shervin86:Egamma80XMiniAODV2_946_fix
+
 
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/Systematics/data/JEC/Fall17_17Nov2017*db $CMSSW_BASE/src/flashgg/
