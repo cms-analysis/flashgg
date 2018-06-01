@@ -12,10 +12,15 @@
 
 #include "flashgg/DataFormats/interface/SinglePhotonView.h"
 
+#include "flashgg/Taggers/interface/FunctionHelpers.h"
+
+#include "TFile.h"
+
 #include "TMVA/Reader.h"
 #include "TMath.h"
 #include "TVector3.h"
 #include "TLorentzVector.h"
+#include "TH2D.h"
 
 using namespace std;
 using namespace edm;
@@ -36,6 +41,10 @@ namespace flashgg {
 
         unique_ptr<TMVA::Reader>DiphotonMva_;
         FileInPath diphotonMVAweightfile_;
+        FileInPath sigmaMdecorrFile_;
+
+        TH2D* h_decorrEBEB_;
+        TH2D* h_decorrNotEBEB_;
 
         float sigmarv_;
         float sigmawv_;
@@ -47,9 +56,13 @@ namespace flashgg {
         float CosPhi_;
         float leadmva_;
         float subleadmva_;
-        
+        float sigmarv_decorr_;
+
+        bool doDecorr_;
+
         float mass_;
-        
+        DecorrTransform* transfEBEB_;
+        DecorrTransform* transfNotEBEB_;
         float nConv_;
         float vtxProbMVA_;
         vector<double> vertex_prob_params_conv;
@@ -66,6 +79,8 @@ namespace flashgg {
         vertex_prob_params_noConv = iConfig.getParameter<vector<double>>( "VertexProbParamsNoConv" );
         BeamSig_fromConf_ = iConfig.getParameter<double>( "BeamSpotSigma" );
         diphotonMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "diphotonMVAweightfile" );
+        sigmaMdecorrFile_ = iConfig.getParameter<edm::FileInPath>( "sigmaMdecorrFile" );
+        doDecorr_ = iConfig.getParameter<bool>( "doSigmaMdecorr" );
 
         Version_ = iConfig.getParameter<string>( "Version" );
 
@@ -81,6 +96,7 @@ namespace flashgg {
         CosPhi_ = 0.;
         leadmva_ = 0.;
         subleadmva_ = 0.;
+        sigmarv_decorr_=0.;
         
         mass_=0;                
 
@@ -117,11 +133,35 @@ namespace flashgg {
             DiphotonMva_->AddVariable( "CosPhi", &CosPhi_ );
             DiphotonMva_->AddVariable( "vtxprob", &vtxprob_ );
 
-            //            DiphotonMva_->AddSpectator("Signal_wei", &weightSig_       );
+            //            DiphotonMva_->AddSpectator("sigmarv_decorr", &sigmarv_decorr_       );
             //            DiphotonMva_->AddSpectator("Background_wei", &weightBkg_           );            
             DiphotonMva_->BookMVA( "BDT", diphotonMVAweightfile_.fullPath() );
             //            std::cout << "finished reading mva" << std::endl;
         }
+
+        if(doDecorr_){
+            //            std::cout<<"sigmaMdecorrFile is set, so we open the file"<<std::endl;
+            TFile* f_decorr = new TFile((sigmaMdecorrFile_.fullPath()).c_str(), "READ");
+//            h_decorrEBEB_ = (TH2D*)((TH2D*)f_decorr->Get("hist_sigmaM_M_EBEB"))->Clone("h_decorrEBEB_");         
+//            h_decorrNotEBEB_ = (TH2D*)((TH2D*)f_decorr->Get("hist_sigmaM_M_notEBEB"))->Clone("h_decorrNotEBEB_");
+            h_decorrEBEB_ = (TH2D*)f_decorr->Get("hist_sigmaM_M_EBEB");         
+            h_decorrNotEBEB_ = (TH2D*)f_decorr->Get("hist_sigmaM_M_notEBEB");
+            //            h_decorr_ = (TH2D*)f_decorr->Get("h_decorr");
+            //            std::cout<<"histo found"<<std::endl;
+            //            h_decorr_->Print();
+            //            std::cout<<h_decorrEBEB_<<" "<<h_decorrNotEBEB_<<std::endl;
+            if(h_decorrEBEB_ && h_decorrNotEBEB_){
+                transfEBEB_ = new DecorrTransform(h_decorrEBEB_ , 125., 1, 0);
+                transfNotEBEB_ = new DecorrTransform(h_decorrNotEBEB_ , 125., 1, 0);
+            }
+            else {
+                throw cms::Exception( "Configuration" ) << "The file "<<sigmaMdecorrFile_.fullPath()<<" provided for sigmaM/M decorrelation does not contain the expected histograms."<<std::endl;
+            }
+        }
+        //        DecorrTransform transf(h_decorr_ , 125., 1, 0);
+        transfEBEB_ = new DecorrTransform(h_decorrEBEB_ , 125., 1, 0);
+        transfNotEBEB_ = new DecorrTransform(h_decorrNotEBEB_ , 125., 1, 0);
+        //        std::cout<<"transformation created"<<std::endl;
         produces<vector<DiPhotonMVAResult> >(); // one per diphoton, always in same order, vector is more efficient than map
     }
 
@@ -145,9 +185,22 @@ namespace flashgg {
             beamsig = BeamSig_fromConf_;
         }
 
+ //       if(sigmaMdecorrFile_.fullPath()!=""){
+ //           std::cout<<"sigmaMdecorrFile is set, so we open the file"<<std::endl;
+ //           TFile* f_decorr = new TFile((sigmaMdecorrFile_.fullPath()).c_str(), "READ");
+ //           h_decorr_ = (TH2D*)((TH2D*)f_decorr->Get("hist_sigmaM_M"))->Clone("h_decorr_");
+ //           //            h_decorr_ = (TH2D*)f_decorr->Get("h_decorr");
+ //           std::cout<<"histo found"<<std::endl;
+ //           h_decorr_->Print();
+ //       }
+/////        DecorrTransform transf(h_decorr_ , 125., 1, 0);
+/////        std::cout<<"transformation created"<<std::endl;
+        double mass_sigma[2]={0.,0.};
+        double dummy[1]={0.};
 
-        //    std::auto_ptr<DiPhotonMVAResultMap> assoc(new DiPhotonMVAResultMap);
-        std::auto_ptr<vector<DiPhotonMVAResult> > results( new vector<DiPhotonMVAResult> ); // one per diphoton, always in same order, vector is more efficient than map
+ 
+        //    std::unique_ptr<DiPhotonMVAResultMap> assoc(new DiPhotonMVAResultMap);
+        std::unique_ptr<vector<DiPhotonMVAResult> > results( new vector<DiPhotonMVAResult> ); // one per diphoton, always in same order, vector is more efficient than map
 
         for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
             flashgg::DiPhotonMVAResult mvares;
@@ -217,6 +270,26 @@ namespace flashgg {
             sigmarv_        = .5 * sqrt( ( g1->sigEOverE() ) * ( g1->sigEOverE() ) + ( g2->sigEOverE() ) * ( g2->sigEOverE() ) );
             sigmawv_        = MassResolutionWrongVtx;
             CosPhi_         = TMath::Cos( deltaPhi( g1->phi(), g2->phi() ) );
+            //            std::cout<<"mass "<<diPhotons->ptrAt( candIndex )->mass()<<std::endl;
+            //            std::cout<<"sigmarv "<<sigmarv_<<std::endl;
+            if(doDecorr_){
+                //                std::cout<<"sigmaMdecorrFile is set, so we evaluate the transf"<<std::endl;
+                mass_sigma[0]=diPhotons->ptrAt( candIndex )->mass();
+                mass_sigma[1]=sigmarv_;
+                
+                //splitting EBEB and !EBEB, using cuts as in preselection
+                if(abs(g1->superCluster()->eta())<1.4442 && abs(g2->superCluster()->eta())<1.4442){
+                    sigmarv_decorr_ = (*transfEBEB_)(mass_sigma,dummy);
+                }
+                else{
+                    sigmarv_decorr_ = (*transfNotEBEB_)(mass_sigma,dummy);
+                }
+                //                sigmarv_decorr_ = (*transf_)(mass_sigma,dummy);
+                //                std::cout<<"transf evaluated, sigmarv_decorr = "<<sigmarv_decorr_<<std::endl;
+                //                delete x;
+                //                delete p;
+            }
+
 
             vtxProbMVA_ = diPhotons->ptrAt( candIndex )->vtxProbMVA();
             nConv_ = diPhotons->ptrAt( candIndex )->nConv();
@@ -242,13 +315,14 @@ namespace flashgg {
             mvares.leadeta = leadeta_;
             mvares.subleadeta = subleadeta_;
             mvares.sigmarv = sigmarv_;
+            mvares.decorrSigmarv = sigmarv_decorr_;
             mvares.sigmawv = sigmawv_;
             mvares.CosPhi = CosPhi_;
             mvares.vtxprob = vtxprob_;
 
             results->push_back( mvares );
         }
-        evt.put( results );
+        evt.put( std::move( results ) );
     }
 }
 

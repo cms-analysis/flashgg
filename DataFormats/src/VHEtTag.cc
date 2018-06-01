@@ -14,7 +14,7 @@ VHEtTag::VHEtTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<DiPhotonM
 VHEtTag::VHEtTag( edm::Ptr<DiPhotonCandidate> dipho, DiPhotonMVAResult mvares ) :
     DiPhotonTagBase::DiPhotonTagBase( dipho, mvares ) {}
 
-void VHEtTag::setMet( edm::Ptr<pat::MET> met )
+void VHEtTag::setMet( edm::Ptr<flashgg::Met> met )
 {
     theMet_ = met;
 }

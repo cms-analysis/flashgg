@@ -1,0 +1,17 @@
+{
+    "cmdLine"  : "campaign=ReMiniAOD-03Feb2017-2_5_Y",
+    "processes": {
+	"Data"   : [
+"/DoubleEG/sethzenz-ReMiniAOD-03Feb2017-2_5_4-2_5_1-v0-Run2016B-03Feb2017_ver2-v2-a56cd34be537fa6f2c9a0e455e52bfcd/USER",
+"/DoubleEG/sethzenz-ReMiniAOD-03Feb2017-2_5_4-2_5_1-v0-Run2016C-03Feb2017-v1-a56cd34be537fa6f2c9a0e455e52bfcd/USER",
+"/DoubleEG/sethzenz-ReMiniAOD-03Feb2017-2_5_4-2_5_1-v0-Run2016D-03Feb2017-v1-a56cd34be537fa6f2c9a0e455e52bfcd/USER",
+"/DoubleEG/sethzenz-ReMiniAOD-03Feb2017-2_5_4-2_5_1-v0-Run2016E-03Feb2017-v1-a56cd34be537fa6f2c9a0e455e52bfcd/USER",
+"/DoubleEG/sethzenz-ReMiniAOD-03Feb2017-2_5_4-2_5_1-v0-Run2016F-03Feb2017-v1-a56cd34be537fa6f2c9a0e455e52bfcd/USER",
+"/DoubleEG/sethzenz-ReMiniAOD-03Feb2017-2_5_4-2_5_1-v0-Run2016G-03Feb2017-v1-b445e20eddb612afa0076163dede615e/USER",
+"/DoubleEG/sethzenz-ReMiniAOD-03Feb2017-2_5_4-2_5_1-v0-Run2016H-03Feb2017_ver2-v1-6641814fa0affc4e30f35b89f3ef055c/USER",
+"/DoubleEG/sethzenz-ReMiniAOD-03Feb2017-2_5_4-2_5_1-v0-Run2016H-03Feb2017_ver3-v1-6641814fa0affc4e30f35b89f3ef055c/USER",
+"/DoubleEG/sethzenz-ReMiniAOD-03Feb2017-2_5_5-2_5_5-v0-Run2016B-03Feb2017_ver2-v2-a56cd34be537fa6f2c9a0e455e52bfcd/USER",
+"/DoubleEG/sethzenz-ReMiniAOD-03Feb2017-2_5_5-2_5_5-v0-Run2016C-03Feb2017-v1-a56cd34be537fa6f2c9a0e455e52bfcd/USER"
+		   ]
+    }
+}

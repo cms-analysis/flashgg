@@ -2,6 +2,7 @@
 
 import FWCore.ParameterSet.Config as cms
 import FWCore.Utilities.FileUtils as FileUtils
+import os
 
 process = cms.Process("Analysis")
 
@@ -13,6 +14,21 @@ process.source = cms.Source("PoolSource",
 )
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
+
+process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
+process.load('Configuration.StandardSequences.GeometryRecoDB_cff') ## please double check
+from Configuration.AlCa.GlobalTag import GlobalTag
+if os.environ["CMSSW_VERSION"].count("CMSSW_7_6"):
+    process.GlobalTag.globaltag = '76X_mcRun2_asymptotic_v12'
+elif os.environ["CMSSW_VERSION"].count("CMSSW_7_4"):
+    process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v4' 
+elif os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
+    process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_miniAODv2'
+elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
+     process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v12')
+else:
+    raise Exception,"Could not find a sensible CMSSW_VERSION for default globaltag"
+print "[INFO] Global Tag: ",process.GlobalTag.globaltag
 
 process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string("test.root")
@@ -57,9 +73,9 @@ cfgTools.addCategories(process.diphotonDumper,
                        ## categories definition
                        ## cuts are applied in cascade. Events getting to these categories have already failed the "Reject" selection
                        [("EBHighR9","max(abs(leadingPhoton.superCluster.eta),abs(leadingPhoton.superCluster.eta))<1.4442"
-                         "&& min(leadingPhoton.r9,subLeadingPhoton.r9)>0.94",0), ## EB high R9
+                         "&& min(leadingPhoton.full5x5_r9,subLeadingPhoton.full5x5_r9)>0.94",0), ## EB high R9
                         ("EBLowR9","max(abs(leadingPhoton.superCluster.eta),abs(leadingPhoton.superCluster.eta))<1.4442",0), ## remaining EB is low R9
-                        ("EEHighR9","min(leadingPhoton.r9,subLeadingPhoton.r9)>0.94",0), ## then EE high R9
+                        ("EEHighR9","min(leadingPhoton.full5x5_r9,subLeadingPhoton.full5x5_r9)>0.94",0), ## then EE high R9
                         ("EELowR9","1",0), ## evereything elese is EE low R9
                         ],
                        ## variables to be dumped in trees/datasets. Same variables for all categories
@@ -67,7 +83,7 @@ cfgTools.addCategories(process.diphotonDumper,
                        variables=["CMS_hgg_mass[320,100,180]:=mass", 
                                   "leadPt                   :=leadingPhoton.pt",
                                   "subleadPt                :=subLeadingPhoton.pt",
-                                  "minR9                    :=min(leadingPhoton.r9,subLeadingPhoton.r9)",
+                                  "minR9                    :=min(leadingPhoton.full5x5_r9,subLeadingPhoton.full5x5_r9)",
                                   "maxEta                   :=max(abs(leadingPhoton.superCluster.eta),abs(leadingPhoton.superCluster.eta))",
                                   "leadIDMVA                :=leadingView.phoIdMvaWrtChosenVtx",
                                   "subleadIDMVA             :=subLeadingView.phoIdMvaWrtChosenVtx",

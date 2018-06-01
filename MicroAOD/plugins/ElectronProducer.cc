@@ -39,11 +39,16 @@ namespace flashgg {
         edm::EDGetTokenT<reco::ConversionCollection> convToken_;
         edm::EDGetTokenT<reco::BeamSpot> beamSpotToken_;
         edm::EDGetTokenT<edm::ValueMap<float> > mvaValuesMapToken_;  
+        edm::EDGetTokenT<edm::ValueMap<float> > mvaNoIsoValuesMapToken_;
         edm::EDGetTokenT<double> rhoToken_;
 
         EffectiveAreas effectiveAreas_;
+        edm::EDGetTokenT<edm::ValueMap<bool> > eleMVALooseIdMapToken_;
         edm::EDGetTokenT<edm::ValueMap<bool> > eleMVAMediumIdMapToken_;
         edm::EDGetTokenT<edm::ValueMap<bool> > eleMVATightIdMapToken_;
+        edm::EDGetTokenT<edm::ValueMap<bool> > eleMVALooseNoIsoIdMapToken_;
+        edm::EDGetTokenT<edm::ValueMap<bool> > eleMVAMediumNoIsoIdMapToken_;
+        edm::EDGetTokenT<edm::ValueMap<bool> > eleMVATightNoIsoIdMapToken_;
 
         edm::EDGetTokenT<edm::ValueMap<bool> > eleLooseIdMapToken_;
         edm::EDGetTokenT<edm::ValueMap<bool> > eleMediumIdMapToken_;
@@ -71,10 +76,15 @@ namespace flashgg {
         convToken_( consumes<reco::ConversionCollection>( iConfig.getParameter<InputTag>( "convTag" ) ) ),
         beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getParameter<InputTag>( "beamSpotTag" ) ) ),
         mvaValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaValuesMap" ) ) ),
+        mvaNoIsoValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaNoIsoValuesMap" ) ) ),
         rhoToken_(consumes<double>(iConfig.getParameter <edm::InputTag>("rhoFixedGridCollection"))),
         effectiveAreas_((iConfig.getParameter<edm::FileInPath>("effAreasConfigFile")).fullPath()),
+        eleMVALooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVALooseIdMap"))),
         eleMVAMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVAMediumIdMap"))),
         eleMVATightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVATightIdMap"))),
+        eleMVALooseNoIsoIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVALooseNoIsoIdMap"))),
+        eleMVAMediumNoIsoIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVAMediumNoIsoIdMap"))),
+        eleMVATightNoIsoIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVATightNoIsoIdMap"))),
         eleLooseIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleLooseIdMap"))),
         eleMediumIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMediumIdMap"))),
         eleTightIdMapToken_(consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTightIdMap"))),
@@ -130,11 +140,19 @@ namespace flashgg {
         edm::Handle<edm::ValueMap<float> > mvaValues;
         evt.getByToken(mvaValuesMapToken_,mvaValues);
 
-        
+        edm::Handle<edm::ValueMap<bool> > looseMVA_wp;
         edm::Handle<edm::ValueMap<bool> > mediumMVA_wp;
         edm::Handle<edm::ValueMap<bool> > tightMVA_wp; 
+        evt.getByToken(eleMVAMediumIdMapToken_,looseMVA_wp);
         evt.getByToken(eleMVAMediumIdMapToken_,mediumMVA_wp);
         evt.getByToken(eleMVATightIdMapToken_,tightMVA_wp);
+        
+        edm::Handle<edm::ValueMap<bool> > loosenoisoMVA_wp;
+        edm::Handle<edm::ValueMap<bool> > mediumnoisoMVA_wp;
+        edm::Handle<edm::ValueMap<bool> > tightnoisoMVA_wp; 
+        evt.getByToken(eleMVAMediumNoIsoIdMapToken_,loosenoisoMVA_wp);
+        evt.getByToken(eleMVAMediumNoIsoIdMapToken_,mediumnoisoMVA_wp);
+        evt.getByToken(eleMVATightNoIsoIdMapToken_,tightnoisoMVA_wp);
 
         edm::Handle<edm::ValueMap<bool> > loose_wp;
         edm::Handle<edm::ValueMap<bool> > medium_wp;
@@ -149,7 +167,7 @@ namespace flashgg {
         evt.getByToken( pfcandidateToken_, pfcandidates );
         const std::vector<edm::Ptr<pat::PackedCandidate> > &pfcands = pfcandidates->ptrs();
 
-        std::auto_ptr<vector<flashgg::Electron> > elecColl( new vector<flashgg::Electron> );
+        std::unique_ptr<vector<flashgg::Electron> > elecColl( new vector<flashgg::Electron> );
 
         for( unsigned int elecIndex = 0; elecIndex < pelectrons->size(); elecIndex++ ) {
             Ptr<pat::Electron> pelec = pelectrons->ptrAt( elecIndex );
@@ -172,8 +190,13 @@ namespace flashgg {
 
             felec.setHasMatchedConversion( ConversionTools::hasMatchedConversion( *pelec, convs, vertexPoint ) );
 
+            bool passMVALooseId = (*looseMVA_wp)[pelec];
             bool passMVAMediumId = (*mediumMVA_wp)[pelec];
             bool passMVATightId = (*tightMVA_wp)[pelec];
+
+            bool passMVALooseNoIsoId = (*loosenoisoMVA_wp)[pelec];
+            bool passMVAMediumNoIsoId = (*mediumnoisoMVA_wp)[pelec];
+            bool passMVATightNoIsoId = (*tightnoisoMVA_wp)[pelec];
 
             bool passLooseId = (*loose_wp)[pelec];
             bool passMediumId = (*medium_wp)[pelec];
@@ -183,6 +206,10 @@ namespace flashgg {
           
             felec.setPassMVATightId(passMVATightId);
             felec.setPassMVAMediumId(passMVAMediumId);
+            felec.setPassMVALooseId(passMVALooseId);
+            felec.setPassMVATightNoIsoId(passMVATightNoIsoId);
+            felec.setPassMVAMediumNoIsoId(passMVAMediumNoIsoId);
+            felec.setPassMVALooseNoIsoId(passMVALooseNoIsoId);
             felec.setPassTightId(passTightId);
             felec.setPassMediumId(passMediumId);
             felec.setPassLooseId(passLooseId);
@@ -248,7 +275,7 @@ namespace flashgg {
             elecColl->push_back( felec );
            
         }
-        evt.put( elecColl );
+        evt.put( std::move( elecColl ) );
     }
 }
 

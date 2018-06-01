@@ -1,7 +1,8 @@
 #ifndef FLASHgg_VHEtTag_h
 #define FLASHgg_VHEtTag_h
 
-#include "DataFormats/PatCandidates/interface/MET.h"
+//#include "DataFormats/PatCandidates/interface/MET.h"
+#include "flashgg/DataFormats/interface/Met.h"
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 
 namespace flashgg {
@@ -17,15 +18,15 @@ namespace flashgg {
 
         VHEtTag *clone() const override { return ( new VHEtTag( *this ) ); }
 
-        const edm::Ptr<pat::MET> met() const {return theMet_;}
+        const edm::Ptr<flashgg::Met> met() const {return theMet_;}
         const edm::Ptr<DiPhotonCandidate> diPhotonCandidate() const { return theDiPhotonCandidate_;}
-        void setMet( edm::Ptr<pat::MET> );
+        void setMet( edm::Ptr<flashgg::Met> );
 
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kVHEt; }
 
     private:
         edm::Ptr<DiPhotonCandidate> theDiPhotonCandidate_;
-        edm::Ptr<pat::MET> theMet_;
+        edm::Ptr<flashgg::Met> theMet_;
     };
 
 }

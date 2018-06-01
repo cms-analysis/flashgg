@@ -7,6 +7,11 @@ import FWCore.ParameterSet.Config as cms
 #from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased_new as pu_jetid
 from PhysicsTools.PatAlgos.tools.jetTools        import addJetCollection
 from flashgg.MicroAOD.flashggJets_cfi            import flashggBTag
+from flashgg.MicroAOD.flashggJets_cfi            import flashggCMVABTag
+from flashgg.MicroAOD.flashggJets_cfi            import flashggDeepCSVb
+from flashgg.MicroAOD.flashggJets_cfi            import flashggDeepCSVbb
+from flashgg.MicroAOD.flashggJets_cfi            import flashggDeepCSVc
+from flashgg.MicroAOD.flashggJets_cfi            import flashggDeepCSVudsg
 
 def addFlashggPF(process, doQGTagging =  True, label ='', debug = False):
   
@@ -23,7 +28,10 @@ def addFlashggPF(process, doQGTagging =  True, label ='', debug = False):
     pvSource           = cms.InputTag('offlineSlimmedPrimaryVertices'),
     pfCandidates       = cms.InputTag('packedPFCandidates'),
     svSource           = cms.InputTag('slimmedSecondaryVertices'),
-    btagDiscriminators = [ flashggBTag ],
+    elSource       = cms.InputTag("slimmedElectrons"),
+    muSource       = cms.InputTag("slimmedMuons"),
+    runIVF         = True,
+    btagDiscriminators = [ flashggBTag, flashggCMVABTag , flashggDeepCSVb, flashggDeepCSVbb, flashggDeepCSVc, flashggDeepCSVudsg, ],
     jetCorrections     = ('AK4PFchs', ['L1FastJet', 'L2Relative', 'L3Absolute'], 'None'),
     genJetCollection   = cms.InputTag('slimmedGenJets'),
     genParticles       = cms.InputTag('prunedGenParticles'),
@@ -94,7 +102,10 @@ def addStandardPuppiJets(process,
     pvSource           = cms.InputTag('offlineSlimmedPrimaryVertices'),
     pfCandidates       = cms.InputTag('packedPFCandidates'),
     svSource           = cms.InputTag('slimmedSecondaryVertices'),
-    btagDiscriminators = [ flashggBTag ],
+    elSource       = cms.InputTag("slimmedElectrons"),
+    muSource       = cms.InputTag("slimmedMuons"),
+    runIVF         = True,
+    btagDiscriminators = [ flashggBTag, flashggCMVABTag , flashggDeepCSVb, flashggDeepCSVbb, flashggDeepCSVc, flashggDeepCSVudsg, ],
     jetCorrections     = ('AK4PFchs',['L1FastJet',  'L2Relative', 'L3Absolute'], 'None'),
     genJetCollection   = cms.InputTag('slimmedGenJets'),
     genParticles       = cms.InputTag('prunedGenParticles'),

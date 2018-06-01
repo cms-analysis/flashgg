@@ -25,10 +25,10 @@ GenDiPhoton::GenDiPhoton( edm::Ptr<flashgg::GenPhotonExtra> photon1, edm::Ptr<fl
 
 void GenDiPhoton::computeP4AndOrder()
 {
-    if( leadingPhoton().pt() < subLeadingPhoton().pt() ) {
+    if( leadingPhoton()->pt() < subLeadingPhoton()->pt() ) {
         std::swap( leadingPhoton_, subLeadingPhoton_ );
     }
-    this->setP4( leadingPhoton().p4() + subLeadingPhoton().p4() );
+    this->setP4( leadingPhoton()->p4() + subLeadingPhoton()->p4() );
 }
 
 GenDiPhoton::LorentzVector GenDiPhoton::dijet() const

@@ -104,7 +104,7 @@ namespace flashgg {
         void setJetCollectionIndex( unsigned int val ) { jetCollectionIndex_ = val; }
         unsigned int jetCollectionIndex() const { return jetCollectionIndex_; }
 
-        LorentzVector genP4() const; 
+        const LorentzVector& genP4() const; 
 
         DiPhotonCandidate *clone() const { return ( new DiPhotonCandidate( *this ) ); }
 
@@ -144,6 +144,8 @@ namespace flashgg {
         unsigned int jetCollectionIndex_; // index for which jet collection corresponds to the vertex choice in this diphoton
 
         Point genPV_;
+
+        mutable std::vector<LorentzVector> genP4_;
     };
 
 

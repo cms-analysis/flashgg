@@ -2,15 +2,15 @@ import FWCore.ParameterSet.Config as cms
 
 def setModules(process, options):
 
-    process.sampleInfo = cms.EDProducer("tnp::FlashggSampleInfoTree",
-                                        )
+    #process.sampleInfo = cms.EDProducer("tnp::FlashggSampleInfoTree",
+    #                                    )
 
     from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
     process.hltFilter = hltHighLevel.clone()
     process.hltFilter.throw = cms.bool(False)
     process.hltFilter.HLTPaths = options['TnPPATHS']
     
-    from PhysicsTools.TagAndProbe.pileupConfiguration_cfi import pileupProducer
+    from EgammaAnalysis.TnPTreeProducer.pileupConfiguration_cfi import pileupProducer
     process.pileupReweightingProducer = pileupProducer.clone()    
 
     ###################################################################
@@ -69,8 +69,8 @@ def setModules(process, options):
                                                           )
     
     #probes match to l1                                                                                                                                                                   
-    #process.goodPhotonProbesL1 = cms.EDProducer("FlashggPhotonL1CandProducer",
-    process.goodPhotonProbesL1 = cms.EDProducer("FlashggPhotonL1Stage2CandProducer",
+    process.goodPhotonProbesL1 = cms.EDProducer("FlashggPhotonL1CandProducer",
+    #process.goodPhotonProbesL1 = cms.EDProducer("FlashggPhotonL1Stage2CandProducer",
                                                 inputs = cms.InputTag("goodPhotonProbesPreselection"),
                                                 #isoObjects = cms.InputTag("l1extraParticles:Isolated"),
                                                 #nonIsoObjects = cms.InputTag("l1extraParticles:NonIsolated"),
@@ -79,7 +79,7 @@ def setModules(process, options):
                                                 #minET = cms.double(15), #lead eff only
                                                 minET = cms.double(10), #sublead eff only
                                                 dRmatch = cms.double(0.2), #defined to match L1 online matching to hlt (0.261)
-                                                dRmatchEE = cms.double(0.2), #defined to match L1 online matching to hlt (should probably be tightened for stage2)
+                                                #dRmatchEE = cms.double(0.2), #defined to match L1 online matching to hlt (should probably be tightened for stage2)
                                                 isolatedOnly = cms.bool(False)
                                                 )
 

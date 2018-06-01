@@ -6,8 +6,10 @@
 <use   name="FWCore/Utilities"/>
 <use   name="CommonTools/Utils"/>
 <use   name="PhysicsTools/UtilAlgos"/>
+<use   name="RecoEgamma/EgammaTools"/>
 <use   name="roofit"/>
 <use   name="roottmva"/>
+<use   name="CommonTools/CandAlgos"/>
 <!-- Flags CXXFLAGS="-ggdb"/ -->
 <flags   EDM_PLUGIN="1"/>
 </library>

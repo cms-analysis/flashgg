@@ -37,7 +37,7 @@ namespace flashgg {
         {
             Handle<View<flashgg::DiPhotonCandidate> > input;
             evt.getByToken( srcToken_, input );
-            auto_ptr<vector<DiPhotonCandidate> > output( new vector<DiPhotonCandidate> );
+            unique_ptr<vector<DiPhotonCandidate> > output( new vector<DiPhotonCandidate> );
             computer_.update( evt );
             for( auto dipho : *input ) {
                 dipho.makePhotonsPersistent();
@@ -45,7 +45,7 @@ namespace flashgg {
                 computer_.fill( dipho.getSubLeadingPhoton() );
                 output->push_back( dipho );
             }
-            evt.put( output );
+            evt.put( std::move( output ) );
         };
 
     private:

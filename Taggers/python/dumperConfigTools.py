@@ -8,7 +8,7 @@ def addCategories(pset,cats,variables,histograms,mvas=None):
 
 # -----------------------------------------------------------------------
 def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mvas=None,classname=None,binnedOnly=None,
-                dumpPdfWeights=None,nPdfWeights=None,nAlphaSWeights=None,nScaleWeights=None):
+                dumpPdfWeights=None,nPdfWeights=None,nAlphaSWeights=None,nScaleWeights=None,splitPdfByStage0Cat=None):
     
    
     if subcats >= 0:
@@ -23,6 +23,7 @@ def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mv
         if nPdfWeights: catDef.nPdfWeights=cms.int32(nPdfWeights)
         if nAlphaSWeights: catDef.nAlphaSWeights=cms.int32(nAlphaSWeights)
         if nScaleWeights: catDef.nScaleWeights=cms.int32(nScaleWeights)
+        if splitPdfByStage0Cat is not None: catDef.splitPdfByStage0Cat=cms.bool(splitPdfByStage0Cat)
         
 
         addVariables( catDef.variables, variables )
@@ -39,9 +40,10 @@ def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mv
             cb.name = cms.untracked.string(label)
         pset.classifierCfg.categories.append(cb)
 
-   
+
 # -----------------------------------------------------------------------
-def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
+def getNameExpr(expr,name=None):
+    
     if ":=" in expr:
         toks=[ v.rstrip(" ").lstrip(" ") for v in expr.split(":=") ]
         ##print toks
@@ -51,26 +53,46 @@ def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
         
     if not name:
         name = expr.replace(".","_").replace("get","")
+    
+    return name,expr
+   
+
+def parseVariable(expr, name):
+    name,expr = getNameExpr(expr,name)
+    
     if name.endswith("]"):
         name,rng = name.replace("]","").split("[")
         rng = rng.split(",")
         nbins = int(rng[0])
         vmin  = float(rng[1])
         vmax  = float(rng[2])
-    
+        return name, [expr], nbins, vmin, vmax
+        
     if "map(" in  expr:
         var, bins, vals = expr.lstrip("map(").rstrip(")").split("::")
         bins = [ float(b) for b in bins.split(",") ]
         vals = [ float(v) for v in vals.split(",") ]
+        return name, [var,bins, vals], None, None, None
+    else:
+        return name, [expr], None, None, None
+    
+
+# -----------------------------------------------------------------------
+def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
+
+
+    name, expr1, nbins, vmin, vmax = parseVariable(expr, name)
+    
+    if len(expr1)>1:
         pset = cms.PSet(
             expr  = cms.PSet(
-                var = cms.string(var), bins = cms.vdouble(bins), vals = cms.vdouble(vals)
+                var = cms.string(expr1[0]), bins = cms.vdouble(expr1[1]), vals = cms.vdouble(expr1[2])
                 ),
             name  = cms.untracked.string(name),
             )        
     else:
         pset = cms.PSet(
-            expr  = cms.string(expr),
+            expr  = cms.string(expr1[0]),
             name  = cms.untracked.string(name),
             )
     if nbins:
@@ -78,6 +100,37 @@ def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
         pset.vmin = cms.untracked.double(vmin)
         pset.vmax = cms.untracked.double(vmax)
     vpset.append(pset)
+
+
+#    name,expr = getNameExpr(expr,name)
+#    
+#    if name.endswith("]"):
+#        name,rng = name.replace("]","").split("[")
+#        rng = rng.split(",")
+#        nbins = int(rng[0])
+#        vmin  = float(rng[1])
+#        vmax  = float(rng[2])
+#    
+#    if "map(" in  expr:
+#        var, bins, vals = expr.lstrip("map(").rstrip(")").split("::")
+#        bins = [ float(b) for b in bins.split(",") ]
+#        vals = [ float(v) for v in vals.split(",") ]
+#        pset = cms.PSet(
+#            expr  = cms.PSet(
+#                var = cms.string(var), bins = cms.vdouble(bins), vals = cms.vdouble(vals)
+#                ),
+#            name  = cms.untracked.string(name),
+#            )        
+#    else:
+#        pset = cms.PSet(
+#            expr  = cms.string(expr),
+#            name  = cms.untracked.string(name),
+#            )
+#    if nbins:
+#        pset.nbins = cms.untracked.int32(nbins)
+#        pset.vmin = cms.untracked.double(vmin)
+#        pset.vmax = cms.untracked.double(vmax)
+#    vpset.append(pset)
     
     
 # -----------------------------------------------------------------------
@@ -239,3 +292,32 @@ def mkVarList(inp):
             
     return ret
 
+
+# -----------------------------------------------------------------------
+def addGlobalFloats(process,globalVariables,src,variables):
+    
+    ntproducer = "%sNtpProducer" % src
+    if not hasattr(process,ntproducer):
+        setattr(process,ntproducer,cms.EDProducer(
+                "CandViewNtpProducer", 
+                src = cms.InputTag(src), lazyParser = cms.untracked.bool(True),
+                variables = cms.VPSet()
+                )
+            )
+    
+    varlist = {}
+    for var in variables:
+        name,expr = getNameExpr(var)
+        varlist[name] = expr
+        setattr(globalVariables.extraFloats,name,cms.InputTag(ntproducer,name))
+    
+    bookedVars = []
+    for ivar in getattr(process,ntproducer).variables:
+        bookedName = ivar.tag.value() 
+        bookedExpr = ivar.quantity.value()
+        if bookedName in varlist:
+            assert( bookedExpr == varlist[bookedName] )
+            bookedVars.append( bookedName )
+
+    for name,expr in filter(lambda x: x[0] not in bookedVars, varlist.iteritems()):
+        getattr(process,ntproducer).variables.append( cms.PSet(tag=cms.untracked.string(name),quantity=cms.untracked.string(expr)) )

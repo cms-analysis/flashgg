@@ -29,6 +29,7 @@ void Photon::ZeroVariables()
     S4_ = 0.;
     pfPhoIso04_ = 0.;
     pfPhoIso03_ = 0.;
+    pfPhoIso03Cor_ = 0.;
     pfChgIsoWrtWorstVtx04_ = 0.;
     pfChgIsoWrtWorstVtx03_ = 0.;
     pfChgIsoWrtChosenVtx02_ = 0.;
@@ -282,25 +283,25 @@ void Photon::shiftMvaValueBy( float val, edm::Ptr<reco::Vertex> vtx ) {
 
 //sigmaEOverE systematycs
 void Photon::shiftSigmaEOverEValueBy( float val ) {
-    const LorentzVector pho_p4 = p4(regression_type);
-    float energyError = getCorrectedEnergyError(regression_type);
-    setP4(regression_type, pho_p4, energyError*(1.+val), false);
+    const LorentzVector pho_p4 = p4(getCandidateP4type());
+    float energyError = getCorrectedEnergyError(getCandidateP4type());
+    setP4(getCandidateP4type(), pho_p4, energyError*(1.+val), false);
 }
 
 
 //sigmaEOverE systematycs
 void Photon::smearSigmaEOverEValueBy( float val ) {
-    const LorentzVector pho_p4 = p4(regression_type);
-    float energyError = getCorrectedEnergyError(regression_type);
-    float energy = getCorrectedEnergy(regression_type);
+    const LorentzVector pho_p4 = p4(getCandidateP4type());
+    float energyError = getCorrectedEnergyError(getCandidateP4type());
+    float energy = getCorrectedEnergy(getCandidateP4type());
     energyError = sqrt( energyError*energyError + val*val*energy*energy );
-    setP4(regression_type, pho_p4, energyError, false);
+    setP4(getCandidateP4type(), pho_p4, energyError, false);
 }
 
 
 
 //void Photon::setSigEOverE(){
-//        sigEOverE_ = getCorrectedEnergyError( regression_type ) / getCorrectedEnergy( regression_type ) ;
+//        sigEOverE_ = getCorrectedEnergyError( getCandidateP4type() ) / getCorrectedEnergy( getCandidateP4type() ) ;
 //}
     
 
@@ -309,7 +310,7 @@ void Photon::smearSigmaEOverEValueBy( float val ) {
 float const Photon::sigEOverE() const
 {
     // Use uncertainty and error stored from reco because we want this fraction to be constant
-    return ( getCorrectedEnergyError( regression_type ) / getCorrectedEnergy( regression_type ) );
+    return ( getCorrectedEnergyError( getCandidateP4type() ) / getCorrectedEnergy( getCandidateP4type() ) );
 }
 // Local Variables:
 // mode:c++

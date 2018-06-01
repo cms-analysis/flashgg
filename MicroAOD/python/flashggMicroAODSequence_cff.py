@@ -14,10 +14,12 @@ from flashgg.MicroAOD.flashggMicroAODGenSequence_cff import *
 
 from PhysicsTools.SelectorUtils.centralIDRegistry import central_id_registry
 from RecoEgamma.ElectronIdentification.ElectronMVAValueMapProducer_cfi import *
+from RecoEgamma.PhotonIdentification.PhotonIDValueMapProducer_cfi import *
+from RecoEgamma.PhotonIdentification.PhotonMVAValueMapProducer_cfi import *
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 
-
 from RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cfi import *
+from RecoEgamma.PhotonIdentification.egmPhotonIDs_cfi import *
 
 eventCount = cms.EDProducer("EventCountProducer")
 weightsCount = cms.EDProducer("WeightsCountProducer",
@@ -33,12 +35,19 @@ weightsCount = cms.EDProducer("WeightsCountProducer",
                               nbinsTruePileup=cms.int32(101),
                               )
 
-flashggMicroAODSequence = cms.Sequence(eventCount+weightsCount
+flashggPrePhotonSequence80X = cms.Sequence(photonMVAValueMapProducer * egmPhotonIDs)
+
+flashggDiPhotonFilterSequence = cms.Sequence()
+flashggMuonFilterSequence = cms.Sequence()
+
+flashggMicroAODSequence = cms.Sequence( eventCount+weightsCount
                                        +flashggVertexMapUnique+flashggVertexMapNonUnique
+                                       +flashggMicroAODGenSequence
+                                       +flashggPrePhotonSequence80X * flashggPhotons * flashggRandomizedPhotons * flashggDiPhotons
+                                       +flashggDiPhotonFilterSequence
                                        +electronMVAValueMapProducer*egmGsfElectronIDs*flashggElectrons*flashggSelectedElectrons
                                        +flashggMuons*flashggSelectedMuons
-                                       +flashggMicroAODGenSequence
-                                       +flashggPhotons * flashggRandomizedPhotons * flashggDiPhotons
+                                       +flashggMuonFilterSequence
                                        +flashggVertexMapForCHS*flashggFinalJets
                                        +flashggVertexMapForPUPPI*flashggFinalPuppiJets
-                                       )
+                                        )

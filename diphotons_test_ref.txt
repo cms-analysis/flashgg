@@ -1,0 +1,27 @@
+[INFO] Global Tag:  cms.string('94X_mc2017_realistic_v12')
+Warning in <TInterpreter::ReadRootmapFile>: class  edm::Ptr<pat::PackedGenParticle> found in libDataFormatsPatCandidates.so  is already in libflashggDataFormats.so 
+30-May-2018 20:02:30 CEST  Initiating request to open file file:myMicroAODOutputFile.root
+30-May-2018 20:02:31 CEST  Successfully opened file file:myMicroAODOutputFile.root
+here diphotonDumper/histograms
+Begin processing the 1st record. Run 1, Event 202129, LumiSection 65 at 30-May-2018 20:02:43.430 CEST
+30-May-2018 20:02:47 CEST  Closed file file:myMicroAODOutputFile.root
+
+=============================================
+
+MessageLogger Summary
+
+ type     category        sev    module        subroutine        count    total
+ ---- -------------------- -- ---------------- ----------------  -----    -----
+    1 fileAction           -s file_close                             1        1
+    2 fileAction           -s file_open                              2        2
+
+ type    category    Examples: run/evt        run/evt          run/evt
+ ---- -------------------- ---------------- ---------------- ----------------
+    1 fileAction           PostGlobalEndRun                  
+    2 fileAction           pre-events       pre-events       
+
+Severity    # Occurrences   Total Occurrences
+--------    -------------   -----------------
+System                  3                   3
+
+dropped waiting message count 0

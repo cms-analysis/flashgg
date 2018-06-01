@@ -6,14 +6,17 @@
 #include "Geometry/CaloTopology/interface/CaloTopology.h"
 #include "RecoEcal/EgammaCoreTools/interface/EcalClusterTools.h"
 
+#include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 /// #include <tuple>
 
 using namespace std;
+using namespace reco;
 using namespace flashgg;
 
-PhotonIdUtils::PhotonIdUtils( OverlapRemovalAlgo *algo ) :
+PhotonIdUtils::PhotonIdUtils( OverlapRemovalAlgo *algo) :
     overlapAlgo_( algo ), removeOverlappingCandidates_( true ), deltaPhiRotation_( 0. )
 {
+
 }
 
 PhotonIdUtils::~PhotonIdUtils()
@@ -202,10 +205,10 @@ float PhotonIdUtils::pfCaloIso( const edm::Ptr<pat::Photon> &photon,
 - decide what to do with EE and EB
 */
 
-void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfilenameEE )
+void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfilenameEE, bool useNewPhoId, bool is2017 )
 {
 
-    // **** bdt 2015 EB ****
+    // **** BDT 2017 EB ****
 
     string mvamethod = "BDT";
 
@@ -225,7 +228,7 @@ void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfile
     phoIdMva_EB_->AddVariable( "rho",                  &phoIdMva_rho_ );
     phoIdMva_EB_->BookMVA( mvamethod.c_str(), xmlfilenameEB );
 
-    // **** bdt 2015 EE ****
+    // **** BDT 2017 EE ****
 
     phoIdMva_EE_ = make_shared<TMVA::Reader>( "!Color:Silent" );
 
@@ -236,20 +239,28 @@ void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfile
     phoIdMva_EE_->AddVariable( "phiWidth",        &phoIdMva_PhiWidth_ );
     phoIdMva_EE_->AddVariable( "covIEtaIPhi", &phoIdMva_covIEtaIPhi_ );
     phoIdMva_EE_->AddVariable( "s4",     &phoIdMva_S4_ );
-    phoIdMva_EE_->AddVariable( "phoIso03",    &phoIdMva_pfPhoIso03_ );
+    if (is2017)
+        phoIdMva_EE_->AddVariable( "phoIso03",    &phoIdMva_pfPhoIso03_ );
+    else if (useNewPhoId)
+        phoIdMva_EE_->AddVariable( "isoPhoCorrMax2p5",    &phoIdMva_pfPhoIso03Corr_ );
     phoIdMva_EE_->AddVariable( "chgIsoWrtChosenVtx",   &phoIdMva_pfChgIso03_ );
     phoIdMva_EE_->AddVariable( "chgIsoWrtWorstVtx", &phoIdMva_pfChgIso03worst_ );
     phoIdMva_EE_->AddVariable( "scEta",             &phoIdMva_ScEta_ );
     phoIdMva_EE_->AddVariable( "rho",                  &phoIdMva_rho_ );
     phoIdMva_EE_->AddVariable( "esEffSigmaRR",   &phoIdMva_ESEffSigmaRR_ );
+    if(is2017) 
+        phoIdMva_EE_->AddVariable( "esEnergyOverRawE",   &phoIdMva_esEnovSCRawEn_ );
+    else if(useNewPhoId) 
+        phoIdMva_EE_->AddVariable( "esEnergy/SCRawE",   &phoIdMva_esEnovSCRawEn_ );
     phoIdMva_EE_->BookMVA( mvamethod.c_str(), xmlfilenameEE );
+
 }
 
 
 float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
     flashgg::Photon &photon,
     const edm::Ptr<reco::Vertex> &vtx,
-    const double rho, const double correctedEtaWidth)
+    const double rho, const double correctedEtaWidth,  const double eA, const std::vector<double> _phoIsoPtScalingCoeff, const double _phoIsoCutoff )
 {
 
     phoIdMva_SCRawE_          = photon.superCluster()->rawEnergy();
@@ -263,13 +274,28 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
     phoIdMva_PhiWidth_        = photon.superCluster()->phiWidth();
     phoIdMva_covIEtaIPhi_     = photon.sieip();
     phoIdMva_pfPhoIso03_      = photon.pfPhoIso03();
+
+    //pho iso corr in 2016 for endcap
+    phoIdMva_pfPhoIso03Corr_ = photon.pfPhoIso03();
+
+    //    double eA = _effectiveAreas.getEffectiveArea( abs(photon.superCluster()->eta()) );
+    double phoIsoPtScalingCoeffVal = 0;
+    if( photon.isEB() ) 
+        phoIsoPtScalingCoeffVal = _phoIsoPtScalingCoeff.at(0); // barrel case
+    else
+        phoIsoPtScalingCoeffVal =  _phoIsoPtScalingCoeff.at(1); //endcap case
+    
+    double phoIsoCorr = photon.pfPhoIso03() - eA*(rho) - phoIsoPtScalingCoeffVal*photon.pt();
+    
+    phoIdMva_pfPhoIso03Corr_ = TMath::Max(phoIsoCorr, _phoIsoCutoff);
+    
     phoIdMva_pfChgIso03_      = photon.pfChgIso03WrtVtx( vtx );
     phoIdMva_pfChgIso03worst_ = photon.pfChgIsoWrtWorstVtx03();
     phoIdMva_ScEta_           = photon.superCluster()->eta();
     phoIdMva_rho_             = rho; // we don't want to add the event-based rho as flashgg::photon member
     phoIdMva_ESEffSigmaRR_    = photon.esEffSigmaRR();
-
-
+    phoIdMva_esEnovSCRawEn_   = photon.superCluster()->preshowerEnergy()/photon.superCluster()->rawEnergy();
+        
     if( photon.isEB() )      { phoIdMva = phoIdMva_EB_; }
     else if( photon.isEE() ) { phoIdMva = phoIdMva_EE_; }
 
@@ -277,10 +303,32 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
     return mvavalue;
 }
 
+float PhotonIdUtils::computeCorrectPhoIso(    
+                                          flashgg::Photon &photon,
+                                          const double rho, const double eA, const std::vector<double> _phoIsoPtScalingCoeff, const double _phoIsoCutoff )
+{
+    //pho iso corr in 2016 for endcap
+    pfPhoIso03Corr_ = photon.pfPhoIso03();
+     
+    //    double eA = _effectiveAreas.getEffectiveArea( abs(photon.superCluster()->eta()) );
+    double phoIsoPtScalingCoeffVal = 0;
+    if( photon.isEB() ) 
+        phoIsoPtScalingCoeffVal = _phoIsoPtScalingCoeff.at(0); // barrel case
+    else
+        phoIsoPtScalingCoeffVal =  _phoIsoPtScalingCoeff.at(1); //endcap case
+    
+    double phoIsoCorr = photon.pfPhoIso03() - eA*(rho) - phoIsoPtScalingCoeffVal*photon.pt();
+    
+    pfPhoIso03Corr_ = TMath::Max(phoIsoCorr, _phoIsoCutoff);
+    
+    float pfPhoIso03Corr = pfPhoIso03Corr_;
+    return pfPhoIso03Corr;
+}
+
 map<edm::Ptr<reco::Vertex>, float> PhotonIdUtils::computeMVAWrtAllVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
     flashgg::Photon &photon,
     const std::vector<edm::Ptr<reco::Vertex> > &vertices,
-    const double rho )
+    const double rho, const double correctedEtaWidth, const double eA, const std::vector<double> _phoIsoPtScalingCoeff, const double _phoIsoCutoff )
 
 {
     map<edm::Ptr<reco::Vertex>, float> mvamap;
@@ -288,7 +336,7 @@ map<edm::Ptr<reco::Vertex>, float> PhotonIdUtils::computeMVAWrtAllVtx( /*edm::Pt
 
     for( unsigned int iv = 0; iv < vertices.size(); iv++ ) {
         edm::Ptr<reco::Vertex> vertex = vertices[iv];
-        float mvapervtx = computeMVAWrtVtx( photon, vertex, rho );
+        float mvapervtx = computeMVAWrtVtx( photon, vertex, rho, correctedEtaWidth, eA, _phoIsoPtScalingCoeff, _phoIsoCutoff );
         mvamap.insert( make_pair( vertex, mvapervtx ) );
     }
 

@@ -76,21 +76,23 @@ void WorkspaceCombiner::GetWorkspaces( TDirectoryFile *tdfile )
             RooArgSet allVars = work->allVars();
             TIterator *vIter = allVars.createIterator();
             std::cout << " made allData" << std::endl;
-            vector<RooDataSet *> allDataClone;
-            vector<RooDataHist *> allDataHistClone;
-            vector<RooRealVar *> allVarClone;
+            std::unordered_map<string, RooDataSet *> allDataClone;
+            std::unordered_map<string, RooDataHist *> allDataHistClone;
+            std::unordered_map<string, RooRealVar *> allVarClone;
             std::cout << " about to iterate over allData " << std::endl;
             for( std::list<RooAbsData *>::iterator it = allData.begin(); it != allData.end(); ++it ) {
                 RooDataSet *dataset = dynamic_cast<RooDataSet *>( *it );
                 if (dataset) {
-                  allDataClone.push_back( ( RooDataSet * )dataset->Clone() );
+                    //                  allDataClone.push_back( ( RooDataSet * )dataset->Clone() );
+                    allDataClone[std::string(dataset->GetName())] = ( ( RooDataSet * )dataset->Clone() );
                   std::cout << "pushing back dataset " << *dataset << std::endl;
                  }
             }
             for( std::list<RooAbsData *>::iterator it = allData.begin(); it != allData.end(); ++it ) {
                 RooDataHist *datahist = dynamic_cast<RooDataHist *>( *it );
                 if (datahist) {
-                  allDataHistClone.push_back( ( RooDataHist * )datahist->Clone() );
+                    //                  allDataHistClone.push_back( ( RooDataHist * )datahist->Clone() );
+                    allDataHistClone[std::string(datahist->GetName())] = ( ( RooDataHist * )datahist->Clone() );
                   std::cout << "pushing back dataHIST " << *datahist << std::endl;
 
                 }
@@ -98,7 +100,8 @@ void WorkspaceCombiner::GetWorkspaces( TDirectoryFile *tdfile )
             RooRealVar * datavar;
             while((datavar=(RooRealVar*)vIter->Next())) {
                 if (datavar) {
-                allVarClone.push_back( ( RooRealVar * )datavar->Clone() );
+                    //                allVarClone.push_back( ( RooRealVar * )datavar->Clone() );
+                    allVarClone[std::string(datavar->GetName())] = ( ( RooRealVar * )datavar->Clone() );
                  std::cout << "pushing back dataVAR " << datavar->GetName() << std::endl;
                 }
             }
@@ -137,17 +140,17 @@ void WorkspaceCombiner::GetWorkspaces( TDirectoryFile *tdfile )
 
 void WorkspaceCombiner::MergeWorkspaces()
 {
-
+    
     for( unsigned int f = 1; f < inputFileNames.size(); f++ ) {
-
+        
         std::cout << " MergeWorkspaces f=" << f << std::endl;
-
+        
         TFile *file = TFile::Open( inputFileNames[f].c_str() );
-
+        
         cout << endl << "Combining Current File " << f << " / " << inputFileNames.size() << " - " << inputFileNames[f] << endl << endl;
-
+        
         file->cd();
-
+        
         cout << endl << "before workspaceNames loop" << endl << endl;
         for( unsigned int w = 0; w < workspaceNames.size(); w++ ) {
             std::cout << "   " << workspaceNames[w] << " " << workspacePaths[w]  << std::endl;
@@ -161,69 +164,86 @@ void WorkspaceCombiner::MergeWorkspaces()
             std::list<RooAbsData *> allData = work->allData();
             //loop over datasets and datahists from file under consideration.
             for( std::list<RooAbsData *>::iterator it = allData.begin(); it != allData.end(); ++it ) {
-                unsigned int d = 0;
+                //                unsigned int d = 0;
                 RooDataSet *dataset = dynamic_cast<RooDataSet *>( *it );
                 RooDataHist *datahist = dynamic_cast<RooDataHist *>( *it );
                 if ( dataset) std::cout << "   Dataset name: " << dataset->GetName() << std::endl;
                 if ( datahist) std::cout << "   DataHIST name: " << datahist->GetName() << std::endl;
-
+                
                 // loop through datasets
                 if (dataset){
-                for( d = 0 ; d < data[w].size() ; d++ ) {
-                    if( data[w][d]->GetName() == dataset->GetName() ) {
-                    //lC    if (dataset) 
-                        data[w][d]->append( *dataset );
-                        break;
+                    if( data[w].find(std::string(dataset->GetName())) != data[w].end() ) {
+                        
+                        //                    for( d = 0 ; d < data[w].size() ; d++ ) {
+                        //                        if( data[w][d]->GetName() == dataset->GetName() ) {
+                        //lC    if (dataset) 
+                        data[w][std::string(dataset->GetName())]->append( *dataset );
+                        //                            break;
+                        //                        }
                     }
-                }
-                if( d == data[w].size() ) { // no match
-                  data[w].push_back( ( RooDataSet * )dataset->Clone() );
-                }
+                    //                    if( d == data[w].size() ) { // no match
+                    else{
+                        //                        data[w].push_back( ( RooDataSet * )dataset->Clone() );
+                        //                        std::map<std::string, RooDataSet *> temp_map;
+                        //                        temp_map[dataset->GetName()] = ( RooDataSet * )dataset->Clone();
+                        //                        data[w].push_back(  );
+                        data[w].insert( std::pair<string, RooDataSet *>(std::string(dataset->GetName()),( RooDataSet * )dataset->Clone() )  );
+                    }
                 }
                 /// do the same for dataHists
-            if (datahist){
-                for( d = 0 ; d < dataH[w].size() ; d++ ) {
-                    if( dataH[w][d]->GetName() == datahist->GetName() ) {
-                        if (datahist) dataH[w][d]->add( *datahist );
-                        break;
+                if (datahist){
+                    if( dataH[w].find( std::string(datahist->GetName()) ) != dataH[w].end() ) {
+                        
+                        //                    for( d = 0 ; d < dataH[w].size() ; d++ ) {
+                        //                        if( dataH[w][d]->GetName() == datahist->GetName() ) {
+                        dataH[w][std::string(datahist->GetName())]->add( *datahist );
+                        //                            break;
+                        //                        }
                     }
+                    //                    if( d == dataH[w].size() ) { // no match
+                    else{
+                        //                        std::map<std::string, RooDataHist *> temp_map;
+                        //                        temp_map[datahist->GetName()] = ( RooDataHist * )datahist->Clone();
+                        dataH[w].insert( std::pair<string, RooDataHist*>(std::string(datahist->GetName()), ( RooDataHist * )datahist->Clone()) );
+                    }
+                    
                 }
-                if( d == dataH[w].size() ) { // no match
-                  dataH[w].push_back( ( RooDataHist * )datahist->Clone() );
-                }
-
-               }
-            //loop over RooRealVars (eg IntLumi) file under consideration.
-            //now do the same for RooRealVars
-            RooArgSet allVars = work->allVars();
-            TIterator *vIter = allVars.createIterator();
-            RooRealVar * datavar;
-            while((datavar=(RooRealVar*)vIter->Next())) {
-                if (datavar) {
-                    std::cout << "considering dataVAR " << datavar->GetName() << " w " << w <<" vars size " <<vars.size() << std::endl;
-                    for( d = 0 ; d < vars[w].size() ; d++ ) {
-                        if( vars[w][d]->GetName() == datavar->GetName() ) {
-                            assert(vars[w][d]->getVal() == datavar->getVal() );
-                            break;
+                //loop over RooRealVars (eg IntLumi) file under consideration.
+                //now do the same for RooRealVars
+                RooArgSet allVars = work->allVars();
+                TIterator *vIter = allVars.createIterator();
+                RooRealVar * datavar;
+                while((datavar=(RooRealVar*)vIter->Next())) {
+                    if (datavar) {
+                        std::cout << "considering dataVAR " << datavar->GetName() << " w " << w <<" vars size " <<vars.size() << std::endl;
+                        if( vars[w].find( std::string(datavar->GetName()) ) !=  vars[w].end() ) {
+                            //       for( d = 0 ; d < vars[w].size() ; d++ ) {
+                            //           if( vars[w][d]->GetName() == datavar->GetName() ) {
+                            //////                            assert(vars[w][std::string(datavar->GetName())]->getVal() == datavar->getVal() );
+                            std::cout<<"found var"<<std::endl;
+                            //                            break;
+                            //                        }
+                        }
+                        //                        if( d == vars[w].size() ) { // no match
+                        else{
+                            //                            std::map<std::string, RooRealVar *> temp_map;
+                            //                            temp_map[datavar->GetName()] = ( RooRealVar * )datavar->Clone();
+                            vars[w].insert( std::pair<string, RooRealVar* >(std::string(datavar->GetName()), ( RooRealVar * )datavar->Clone()) );
                         }
                     }
-                    if( d == vars[w].size() ) { // no match
-                        vars[w].push_back( ( RooRealVar * )datavar->Clone() );
-                    }
                 }
+                
+                
             }
-            
-
         }
+        cout << endl << "after workspaceNames loop" << endl << endl;
+        
+        
+        file->Close();
+        
+        cout << endl << "Finished Combining File - " << inputFileNames[f] << endl << endl;
+        
     }
-    cout << endl << "after workspaceNames loop" << endl << endl;
-
-
-    file->Close();
-
-    cout << endl << "Finished Combining File - " << inputFileNames[f] << endl << endl;
-
-}
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -309,38 +329,42 @@ void WorkspaceCombiner::Save( bool doTreesAndHistograms )
         RooWorkspace *outputws = new RooWorkspace();
         outputws->SetName( workspaceNames[w].c_str() );
         // import datasets into workspace
-        for( unsigned int d = 0; d < data[w].size(); d++ ) {
-            RooDataSet *already_there = ( RooDataSet * ) outputws->data( data[w][d]->GetName() );
+        //        for( unsigned int d = 0; d < data[w].size(); d++ ) {
+        for(std::unordered_map<std::string, RooDataSet *>::iterator m_it = data[w].begin(); m_it != data[w].end(); m_it++){
+            //            RooDataSet *already_there = ( RooDataSet * ) outputws->data( data[w][d]->GetName() );
+            RooDataSet *already_there = ( RooDataSet * ) outputws->data( (m_it->first).c_str() );
             if( already_there ) {
-                std::cout << " doing an append of " << data[w][d]->GetName() << " in WorkspaceCombiner::Save" << std::endl;
-                already_there->append( *data[w][d] );
+                std::cout << " doing an append of " << m_it->first << " in WorkspaceCombiner::Save" << std::endl;
+                already_there->append( *(m_it->second) );
             } else {
-                std::cout << " doing an explicit import of " << data[w][d]->GetName() << " in WorkspaceCombiner::Save" << std::endl;
-                outputws->import( *data[w][d] );
+                std::cout << " doing an explicit import of " << m_it->first << " in WorkspaceCombiner::Save" << std::endl;
+                outputws->import( *(m_it->second) );
             }
             //data[w][d]->Print();
         }
         // import datahists into workspace
-        for( unsigned int d = 0; d < dataH[w].size(); d++ ) {
-            RooDataHist *already_there = ( RooDataHist * ) outputws->data( dataH[w][d]->GetName() );
+        //        for( unsigned int d = 0; d < dataH[w].size(); d++ ) {
+        for(std::unordered_map<std::string, RooDataHist *>::iterator m_it = dataH[w].begin(); m_it != dataH[w].end(); m_it++){
+            RooDataHist *already_there = ( RooDataHist * ) outputws->data( (m_it->first).c_str() );
             if( already_there ) {
                 //  std::cout << " doing an add of dataHIST" << dataH[w][d]->GetName() << " in WorkspaceCombiner::Save" << std::endl;
-                already_there->add( *dataH[w][d] );
+                already_there->add( *(m_it->second) );
             } else {
                 // std::cout << " doing an explicit import of dataHIST " << dataH[w][d]->GetName() << " in WorkspaceCombiner::Save" << std::endl;
-                outputws->import( *dataH[w][d] );
+                outputws->import( *(m_it->second) );
             }
             //data[w][d]->Print();
         }
         // import roorealvars into workspace
-        for( unsigned int d = 0; d < vars[w].size(); d++ ) {
-            RooRealVar *already_there = ( RooRealVar * ) outputws->var( vars[w][d]->GetName() );
+        //        for( unsigned int d = 0; d < vars[w].size(); d++ ) {
+        for(std::unordered_map<std::string, RooRealVar *>::iterator m_it = vars[w].begin(); m_it != vars[w].end(); m_it++){
+            RooRealVar *already_there = ( RooRealVar * ) outputws->var( (m_it->first).c_str() );
             if( already_there ) {
                 //  std::cout << " doing an add of dataHIST" << dataH[w][d]->GetName() << " in WorkspaceCombiner::Save" << std::endl;
                //assert(already_there->getVal() == (vars[w][d])->getVal());
             } else {
                 // std::cout << " doing an explicit import of dataHIST " << dataH[w][d]->GetName() << " in WorkspaceCombiner::Save" << std::endl;
-                outputws->import( *vars[w][d] );
+                outputws->import( *(m_it->second) );
             }
             //data[w][d]->Print();
         }

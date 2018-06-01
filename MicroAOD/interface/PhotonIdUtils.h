@@ -17,6 +17,7 @@
 
 #include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
 #include "RecoEcal/EgammaCoreTools/interface/EcalClusterLazyTools.h"
+
 /// class EcalRecHitCollection;
 class CaloTopology;
 
@@ -41,14 +42,38 @@ namespace flashgg {
 
         void               initialize( );
 
-        float              pfIsoChgWrtVtx( const edm::Ptr<pat::Photon> &,
-                                           const edm::Ptr<reco::Vertex>,
-                                           const flashgg::VertexCandidateMap,
-                                           float, float, float, float );
-        std::map<edm::Ptr<reco::Vertex>, float> pfIsoChgWrtAllVtx( const edm::Ptr<pat::Photon> &,
-                const std::vector<edm::Ptr<reco::Vertex> > &,
-                const flashgg::VertexCandidateMap,
-                float, float, float, float );
+        /** calculates photon isolation (sum of pt's) from tracks (particle flow candidates).
+
+            @param photon the photon candidate for which the isolation is calculated
+
+            @param vtx the vertex to which tracks taken into account in the isolation value must be associated to
+
+            @param vtxcandmap the list of track to vertex associations
+
+            @param coneSize the size of the (outer) delta R cone around the supercluster direction in which the tracks
+                   are taken into account
+
+            @param coneVetoBarrel the size of the (inner) delta R cone around the supercluster direction
+                   in which tracks are ignored for barrel photons
+
+            @param coneVetoEndcap the size of the (inner) delta R cone around the supercluster direction
+                   in which tracks are ignored for endcap photons
+
+            @param ptMin the minimum pt below which tracks are ignored
+
+            @return the sum of pt of the tracks (particle flow candidates) passing the above criteria
+        */
+        float              pfIsoChgWrtVtx( const edm::Ptr<pat::Photon> &photon,
+                                           const edm::Ptr<reco::Vertex> vtx,
+                                           const flashgg::VertexCandidateMap vtxcandmap,
+                                           float coneSize, float coneVetoBarrel, float coneVetoEndcap, float ptMin);
+
+        /** calculates the charged particle flow isolation for a single photon with respect to all given
+            vertices. See pfIsoChgWrtVtx(..) for details about the parameters. */
+        std::map<edm::Ptr<reco::Vertex>, float> pfIsoChgWrtAllVtx( const edm::Ptr<pat::Photon> &photon,
+                const std::vector<edm::Ptr<reco::Vertex> > &vertices,
+                const flashgg::VertexCandidateMap vtxcandmap,
+                float coneSize, float coneVetoBarrel, float coneVetoEndcap, float ptMin);
 
         float              pfIsoChgWrtWorstVtx( std::map<edm::Ptr<reco::Vertex>, float> & );
 
@@ -57,16 +82,16 @@ namespace flashgg {
                                       float, float, float, float, float, float, float, reco::PFCandidate::ParticleType, const reco::Vertex *vtx = 0 );
 
 
-        void               setupMVA( const std::string &, const std::string & );
-        float              computeMVAWrtVtx( flashgg::Photon &, const edm::Ptr<reco::Vertex> &, const double, const double etaWidth = 0 );
-
+        void               setupMVA( const std::string &, const std::string &, bool , bool);
+        float              computeMVAWrtVtx( flashgg::Photon &, const edm::Ptr<reco::Vertex> &, const double, const double etaWidth = 0, const double eA = 0, const std::vector<double> coeff = vector<double>(0,0),const double cut = 0);
+        float              computeCorrectPhoIso( flashgg::Photon &, const double, const double eA = 0, const std::vector<double> coeff = vector<double>(0,0), const double cut = 0);
         static flashgg::Photon     pho4MomCorrection( edm::Ptr<flashgg::Photon> &, edm::Ptr<reco::Vertex> );
 
         math::XYZTLorentzVector     pho4MomCorrectionTLVector( edm::Ptr<flashgg::Photon> &, edm::Ptr<reco::Vertex> );
 
         static bool vetoPackedCand( const pat::Photon &photon, const edm::Ptr<pat::PackedCandidate> &pfcand );
 
-        std::map<edm::Ptr<reco::Vertex>, float> computeMVAWrtAllVtx( flashgg::Photon &, const std::vector<edm::Ptr<reco::Vertex> > &, const double);
+        std::map<edm::Ptr<reco::Vertex>, float> computeMVAWrtAllVtx( flashgg::Photon &, const std::vector<edm::Ptr<reco::Vertex> > &, const double, const double etaWidth = 0, const double eA = 0, const std::vector<double> coeff = vector<double>(0,0), const double cut = 0);
 
         std::shared_ptr<TMVA::Reader> phoIdMva;
 
@@ -152,11 +177,15 @@ namespace flashgg {
         float phoIdMva_covIEtaIPhi_;
         float phoIdMva_S4_;
         float phoIdMva_pfPhoIso03_;
+        float phoIdMva_pfPhoIso03Corr_;
         float phoIdMva_pfChgIso03_;
         float phoIdMva_pfChgIso03worst_;
         float phoIdMva_ScEta_;
         float phoIdMva_rho_;
         float phoIdMva_ESEffSigmaRR_;
+        float phoIdMva_esEnovSCRawEn_;
+
+        float pfPhoIso03Corr_;
 
         std::shared_ptr<TMVA::Reader> phoIdMva_EB_;
         std::shared_ptr<TMVA::Reader> phoIdMva_EE_;

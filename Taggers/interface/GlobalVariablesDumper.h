@@ -25,7 +25,12 @@ namespace flashgg {
         
         void dumpLumiFactor(double lumiFactor);
 
+        std::vector<std::string> getExtraFloatNames();
+        float getExtraFloat(std::string varname);
+
+
         void setProcessIndex(int processIndex) {processIndex_= processIndex;}
+
 
     private:
 
@@ -41,6 +46,9 @@ namespace flashgg {
 
         std::vector<edm::EDGetTokenT<float>> extraFloatTokens_;
         std::vector<edm::EDGetTokenT<std::vector<float>>> extraVectorFloatTokens_;
+
+        std::vector<edm::EDGetTokenT<double>> extraDoubleTokens_;
+
         std::vector<edm::InputTag> extraFloatTags_;
         std::vector<std::string> extraFloatNames_;
         std::vector<float> extraFloatVariables_;

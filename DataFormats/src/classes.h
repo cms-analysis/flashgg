@@ -7,32 +7,42 @@
 #include "flashgg/DataFormats/interface/GenDiPhoton.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
+#include "flashgg/DataFormats/interface/NoTag.h"
 #include "flashgg/DataFormats/interface/UntaggedTag.h"
+#include "flashgg/DataFormats/interface/SigmaMpTTag.h"
 #include "flashgg/DataFormats/interface/Electron.h"
 #include "flashgg/DataFormats/interface/Muon.h"
 #include "flashgg/DataFormats/interface/GenPhotonExtra.h"
 #include "flashgg/DataFormats/interface/Jet.h"
+#include "flashgg/DataFormats/interface/Met.h"
 #include "flashgg/DataFormats/interface/Photon.h"
 #include "flashgg/DataFormats/interface/SinglePhotonView.h"
 #include "flashgg/DataFormats/interface/SingleVertexView.h"
 #include "flashgg/DataFormats/interface/TTHHadronicTag.h"
 #include "flashgg/DataFormats/interface/TTHLeptonicTag.h"
+#include "flashgg/DataFormats/interface/TTHDiLeptonTag.h"
 #include "flashgg/DataFormats/interface/VBFDiPhoDiJetMVAResult.h"
 #include "flashgg/DataFormats/interface/VBFMVAResult.h"
 #include "flashgg/DataFormats/interface/VBFTag.h"
 #include "flashgg/DataFormats/interface/VHHadronicTag.h"
 #include "flashgg/DataFormats/interface/VHLooseTag.h"
 #include "flashgg/DataFormats/interface/VHTightTag.h"
+#include "flashgg/DataFormats/interface/WHLeptonicTag.h"
+#include "flashgg/DataFormats/interface/ZHLeptonicTag.h"
+#include "flashgg/DataFormats/interface/VHLeptonicLooseTag.h"
+#include "flashgg/DataFormats/interface/VHMetTag.h"
 #include "flashgg/DataFormats/interface/VHEtTag.h"
 #include "flashgg/DataFormats/interface/DiMuonCandidate.h"   //JTao
 #include "flashgg/DataFormats/interface/MuMuGammaCandidate.h"   //JTao
 #include "flashgg/DataFormats/interface/PhotonJetCandidate.h" //Martina
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "flashgg/DataFormats/interface/VBFTagTruth.h"
+#include "flashgg/DataFormats/interface/VHTagTruth.h" //mplaner
 #include "flashgg/DataFormats/interface/WeightedObject.h"
 #include "flashgg/DataFormats/interface/PDFWeightObject.h"
 #include "flashgg/DataFormats/interface/ZPlusJetTag.h"
 #include "flashgg/DataFormats/interface/TagCandidate.h"
+#include "flashgg/DataFormats/interface/TagAndProbeCandidate.h" //spigazzi
 
 #include <vector>
 #include <map>
@@ -175,9 +185,17 @@ namespace  {
         std::vector<flashgg::DiPhotonTagBase> vec_tagbase;
         edm::Wrapper<std::vector<flashgg::DiPhotonTagBase> > wrp_vec_tagbase;
 
+        flashgg::NoTag nocat;
+        std::vector<flashgg::NoTag> vec_nocat;
+        edm::Wrapper<std::vector<flashgg::NoTag> > wrp_vec_nocat;
+
         flashgg::UntaggedTag untaggedcat;
         std::vector<flashgg::UntaggedTag> vec_untaggedcat;
         edm::Wrapper<std::vector<flashgg::UntaggedTag> > wrp_vec_untaggedcat;
+
+        flashgg::SigmaMpTTag sigmamptcat;
+        std::vector<flashgg::SigmaMpTTag> vec_sigmamptcat;
+        edm::Wrapper<std::vector<flashgg::SigmaMpTTag> > wrp_vec_sigmamptcat;
 
         flashgg::VBFTag vbf_cat;
         std::vector<flashgg::VBFTag> vec_vbf_cat;
@@ -186,6 +204,10 @@ namespace  {
         flashgg::TTHLeptonicTag tthl;
         std::vector<flashgg::TTHLeptonicTag> vec_tthl;
         edm::Wrapper<std::vector<flashgg::TTHLeptonicTag> > wrp_vec_tthl;
+
+        flashgg::TTHDiLeptonTag tthd;
+        std::vector<flashgg::TTHDiLeptonTag> vec_tthd;
+        edm::Wrapper<std::vector<flashgg::TTHDiLeptonTag> > wrp_vec_tthd;
 
         edm::Ptr<reco::GenParticle> ptr_genp;
 
@@ -209,9 +231,16 @@ namespace  {
         edm::OwnVector<flashgg::TagTruthBase, edm::ClonePolicy<flashgg::TagTruthBase> > ownvec_truthbase;
         edm::Wrapper<edm::OwnVector<flashgg::TagTruthBase, edm::ClonePolicy<flashgg::TagTruthBase> > > wrp_ownvec_truthbase;
 
+        std::vector<flashgg::DiPhotonTagBase*> vec_ptr_tagbase;
+        std::vector<flashgg::TagTruthBase*> vec_ptr_truthbase;
+
         flashgg::VBFTagTruth vbftt;
         std::vector<flashgg::VBFTagTruth> vec_vbftt;
         edm::Wrapper<std::vector<flashgg::VBFTagTruth> > wrp_vec_vbftt;
+
+        flashgg::VHTagTruth vhtt;
+        std::vector<flashgg::VHTagTruth> vec_vhtt;
+        edm::Wrapper<std::vector<flashgg::VHTagTruth> > wrp_vec_vhtt;
 
         flashgg::VHLooseTag vhl;
         std::vector<flashgg::VHLooseTag> vec_vhl;
@@ -227,6 +256,24 @@ namespace  {
         std::vector<flashgg::VHHadronicTag> vec_vhhad;
         edm::Wrapper<std::vector<flashgg::VHHadronicTag> > wrp_vec_vhhad;
 
+        flashgg::VHMetTag vhmet;
+        std::vector<flashgg::VHMetTag> vec_vhmet;
+        edm::Wrapper<std::vector<flashgg::VHMetTag> > wrp_vec_vhmet;
+
+        flashgg::ZHLeptonicTag zht;
+        std::vector<flashgg::ZHLeptonicTag> vec_zht;
+        edm::Wrapper<std::vector<flashgg::ZHLeptonicTag> > wrp_vec_zht;
+        
+        flashgg::VHLeptonicLooseTag vhll;
+        std::vector<flashgg::VHLeptonicLooseTag> vec_vhll;
+        edm::Wrapper<std::vector<flashgg::VHLeptonicLooseTag> > wrp_vec_vhll;
+
+        flashgg::WHLeptonicTag whl;
+        std::vector<flashgg::WHLeptonicTag> vec_whl;
+        edm::Wrapper<std::vector<flashgg::WHLeptonicTag> > wrp_vec_whl;
+        edm::Ptr<pat::Electron> ptr_elec_whl;
+        edm::Ptr<pat::Muon> ptr_muon_whl;
+        
         flashgg::VHEtTag vhet;
         std::vector<flashgg::VHEtTag> vec_vhet;
         edm::Wrapper<std::vector<flashgg::VHEtTag> > wrp_vec_vhet;
@@ -264,6 +311,17 @@ namespace  {
         edm::Wrapper<flashgg::TagCandidate>                      wrp_tags;
         std::vector<flashgg::TagCandidate>                       vec_tags;
         edm::Wrapper<std::vector<flashgg::TagCandidate> >    wrp_vec_tags;
+
+        //---TagAndProbe candidate
+        flashgg::TagAndProbeCandidate                                          fgg_tnp;
+        edm::Wrapper<flashgg::TagAndProbeCandidate>                            wrp_fgg_tnp;
+        std::vector<flashgg::TagAndProbeCandidate>                             vec_fgg_tnp;
+        edm::Wrapper<std::vector<flashgg::TagAndProbeCandidate> >              wrp_vec_fgg_tnp;
+        edm::Ptr<flashgg::TagAndProbeCandidate>                                ptr_fgg_tnp;
+        edm::Wrapper<edm::Ptr<flashgg::TagAndProbeCandidate> >                 wrp_ptr_fgg_tnp;
+        std::vector<edm::Ptr<flashgg::TagAndProbeCandidate> >                  vec_ptr_fgg_tnp;
+        edm::Wrapper<std::vector<edm::Ptr<flashgg::TagAndProbeCandidate> > >   wrp_vec_ptr_fgg_tnp;
+
     };
 }
 // Local Variables:

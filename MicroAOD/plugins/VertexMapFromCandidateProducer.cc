@@ -52,7 +52,7 @@ namespace flashgg {
         Handle<View<pat::PackedCandidate> > pfCandidates;
         evt.getByToken( pfcandidateToken_, pfCandidates );
 
-        std::auto_ptr<VertexCandidateMap> assoc( new VertexCandidateMap );
+        std::unique_ptr<VertexCandidateMap> assoc( new VertexCandidateMap );
 
         for( unsigned int i = 0 ; i < pfCandidates->size() ; i++ ) {
             Ptr<pat::PackedCandidate> cand = pfCandidates->ptrAt( i );
@@ -91,7 +91,7 @@ namespace flashgg {
 
         //        flashgg::print_track_count( *assoc, "FlashggVertexMapFromCandidateProducer" );
 
-        evt.put( assoc );
+        evt.put( std::move( assoc ) );
     } // produce method
 } // namespace flashgg
 

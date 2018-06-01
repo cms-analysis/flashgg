@@ -154,6 +154,9 @@ namespace flashgg {
             if( CorrToShift == Corrections_.at( ncorr ) ) {
                 Corrections_.at( ncorr )->applyCorrection( y, syst_shift );
             } else if( Corrections_.at( ncorr )->makesWeight() ) {
+                //                std::cout << " Setting weight for " << Corrections_.at( ncorr )->shiftLabel( 0 ) <<
+                //                    " to " << Corrections_.at( ncorr )->makeWeight( y, param_var( 0 ) ) << std::endl;
+                y.setWeight( Corrections_.at( ncorr )->shiftLabel( 0 ), Corrections_.at( ncorr )->makeWeight( y, param_var( 0 ) ) ); // use very carefully, n.b. not scaled
                 theWeight *= Corrections_.at( ncorr )->makeWeight( y, param_var( 0 ) );
             } else {
                 Corrections_.at( ncorr )->applyCorrection( y, param_var( 0 ) );
@@ -163,6 +166,7 @@ namespace flashgg {
         for( unsigned int ncorr = 0; ncorr < Corrections2D_.size(); ncorr++ ) {
             //            std::cout << " 2d ncorr=" << ncorr << "/" << Corrections2D_.size() << std::endl;
             if( Corrections2D_.at( ncorr )->makesWeight() ) {
+                y.setWeight( Corrections2D_.at( ncorr )->shiftLabel( PAIR_ZERO ), Corrections2D_.at( ncorr )->makeWeight( y, PAIR_ZERO ) ); // use very carefully, n.b. not scaled
                 theWeight *= Corrections2D_.at( ncorr )->makeWeight( y, PAIR_ZERO );
                 //                std::cout << " 2d changed the weight to" << theWeight << std::endl;
                 //                std::cout << "    " << Corrections2D_.at( ncorr )->shiftLabel( PAIR_ZERO ) << std::endl;
@@ -192,6 +196,9 @@ namespace flashgg {
         //        std::cout << "2d before 1d" << std::endl;
         for( unsigned int ncorr = 0; ncorr < Corrections_.size(); ncorr++ ) {
             if( Corrections_.at( ncorr )->makesWeight() ) {
+                //                std::cout << " Setting weight for " << Corrections_.at( ncorr )->shiftLabel( 0 ) << 
+                //                    " to " << Corrections_.at( ncorr )->makeWeight( y, param_var( 0 ) ) << std::endl;
+                y.setWeight( Corrections_.at( ncorr )->shiftLabel( 0 ), Corrections_.at( ncorr )->makeWeight( y, param_var( 0 ) ) ); // use very carefully, n.b. not scaled
                 theWeight *= Corrections_.at( ncorr )->makeWeight( y, param_var( 0 ) );
             } else {
                 Corrections_.at( ncorr )->applyCorrection( y, param_var( 0 ) );
@@ -202,6 +209,8 @@ namespace flashgg {
             if( CorrToShift == Corrections2D_.at( ncorr ) ) {
                 Corrections2D_.at( ncorr )->applyCorrection( y, syst_shift );
             } else if( Corrections2D_.at( ncorr )->makesWeight() ) {
+                y.setWeight( Corrections2D_.at( ncorr )->shiftLabel( PAIR_ZERO ),
+                             Corrections2D_.at( ncorr )->makeWeight( y, PAIR_ZERO ) ); // use very carefully, n.b. not scaled        
                 theWeight *= Corrections2D_.at( ncorr )->makeWeight( y, PAIR_ZERO );
             } else {
                 Corrections2D_.at( ncorr )->applyCorrection( y, PAIR_ZERO );
@@ -254,7 +263,7 @@ namespace flashgg {
         
         // Build central collection
         std::vector<float> centralWeights;
-        auto_ptr<output_container<flashgg_object> > centralObjectColl( new output_container<flashgg_object> );
+        unique_ptr<output_container<flashgg_object> > centralObjectColl( new output_container<flashgg_object> );
         for( unsigned int i = 0; i < objects->size(); i++ ) {
             flashgg_object *p_obj = objects->ptrAt( i )->clone();
             flashgg_object obj = *p_obj;
@@ -264,18 +273,18 @@ namespace flashgg {
             centralWeights.push_back( obj.centralWeight() );
             centralObjectColl->push_back( obj );
         }
-        evt.put( centralObjectColl ); // put central collection in event
+        evt.put( std::move(centralObjectColl) ); // put central collection in event
 
         //        std::cout << " after producing central" << std::endl;
 
         // build 2N shifted collections
-        // A dynamically allocated array of auto_ptrs may be a bit "unsafe" to maintain,
+        // A dynamically allocated array of unique_ptrs may be a bit "unsafe" to maintain,
         // although I think I have done it correctly - the delete[] statement below is vital
-        // Problem: vector<auto_ptr> is not allowed
+        // Problem: vector<unique_ptr> is not allowed
         // Possible alternate solutions: map, multimap, vector<unique_ptr> + std::move ??
-        std::auto_ptr<output_container<flashgg_object> > *all_shifted_collections;
+        std::unique_ptr<output_container<flashgg_object> > *all_shifted_collections;
         unsigned int total_shifted_collections = collectionLabelsNonCentral_.size();
-        all_shifted_collections = new std::auto_ptr<output_container<flashgg_object> >[total_shifted_collections];
+        all_shifted_collections = new std::unique_ptr<output_container<flashgg_object> >[total_shifted_collections];
         for( unsigned int ncoll = 0 ; ncoll < total_shifted_collections ; ncoll++ ) {
             all_shifted_collections[ncoll].reset( new output_container<flashgg_object> );
         }
@@ -313,10 +322,10 @@ namespace flashgg {
 
         // Put shifted collections in event
         for( unsigned int ncoll = 0 ; ncoll < total_shifted_collections ; ncoll++ ) {
-            evt.put( all_shifted_collections[ncoll], collectionLabelsNonCentral_[ncoll] );
+            evt.put( std::move(all_shifted_collections[ncoll]), collectionLabelsNonCentral_[ncoll] );
         }
 
-        // See note above about array of auto_ptr
+        // See note above about array of unique_ptr
         delete[] all_shifted_collections;
 
     } // end of event

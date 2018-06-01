@@ -13,12 +13,12 @@ namespace flashgg {
     public:
         VBFTag();
         ~VBFTag();
-
+        
         VBFTag *clone() const override { return ( new VBFTag( *this ) ); }
-
+        
         VBFTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult>, edm::Ptr<VBFDiPhoDiJetMVAResult> );
         VBFTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult, VBFDiPhoDiJetMVAResult );
-
+        
         const VBFDiPhoDiJetMVAResult VBFDiPhoDiJetMVA() const;
         const VBFMVAResult VBFMVA() const ;
         const reco::Candidate::LorentzVector leadingJet() const; //needs to be validated
@@ -28,6 +28,13 @@ namespace flashgg {
         const edm::Ptr<flashgg::Jet> leadingJet_ptr() const; //needs to be validated
         const edm::Ptr<flashgg::Jet> subLeadingJet_ptr() const; //needs to be validated
         const edm::Ptr<flashgg::Jet> subSubLeadingJet_ptr() const; //needs to be validated // 3rd Jet needed for VBF studies
+
+        const bool leadingJet_match()       const { return hasValidVBFDiJet() ? (leadingJet_ptr()->genJet()!=0)      : false;}
+        const bool subLeadingJet_match()    const { return hasValidVBFDiJet() ? (subLeadingJet_ptr()->genJet()!=0)   : false;}
+        const bool subSubLeadingJet_match() const { return hasValidVBFDiJet() ? (subSubLeadingJet_ptr()->genJet()!=0): false;}
+
+        const float leading_pujidMVA   () const { return  hasValidVBFDiJet() ? vbfDiPhoDiJet_mva_result_.vbfMvaResult.leadJet_ptr->puJetIdMVA() : -9999.;}
+        const float subleading_pujidMVA() const { return  hasValidVBFDiJet() ? vbfDiPhoDiJet_mva_result_.vbfMvaResult.subleadJet_ptr->puJetIdMVA() : -9999.;}
         
         const float leading_rms   () const { return  hasValidVBFDiJet() ? vbfDiPhoDiJet_mva_result_.vbfMvaResult.leadJet_ptr->rms() : -9999.;}
         const float subLeading_rms() const { return  hasValidVBFDiJet() ? vbfDiPhoDiJet_mva_result_.vbfMvaResult.subleadJet_ptr->rms() : -9999.;}
@@ -55,8 +62,28 @@ namespace flashgg {
         const bool hasValidVBFTriJet() const; 
 
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kVBF; }
+
+        float alphaUp() const { return alphaUp_; }
+        float alphaDown() const { return alphaDown_; }
+        float scaleUp(unsigned i) const { return scaleUp_[i]; }
+        float scaleDown(unsigned i) const { return scaleDown_[i]; }
+        float pdf(unsigned i) const { return pdf_[i]; }
+
+        void setAlphaUp(float val) { alphaUp_ = val; }
+        void setAlphaDown(float val) { alphaDown_ = val; }
+        void setScaleUp(unsigned i, float val) { scaleUp_[i] = val; }
+        void setScaleDown(unsigned i, float val) { scaleDown_[i] = val; }
+        void setPdf(unsigned i, float val) { pdf_[i] = val; }
+
     private:
         VBFDiPhoDiJetMVAResult vbfDiPhoDiJet_mva_result_;
+
+        float alphaUp_;
+        float alphaDown_;
+        float scaleUp_[3];
+        float scaleDown_[3];
+        float pdf_[60];
+
     };
 
 }

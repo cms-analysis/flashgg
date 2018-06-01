@@ -28,6 +28,7 @@ namespace flashgg {
         CutBasedDiPhotonObjectSelector( const edm::ParameterSet &config, edm::ConsumesCollector &cc );
 
         bool operator()( const DiPhotonCandidate &cand, const edm::EventBase &ev ) const;
+        bool operator()( const edm::Ref<edm::View<DiPhotonCandidate> > candref, const edm::EventBase &ev ) const;
 
     private:
         selector_type selector_;

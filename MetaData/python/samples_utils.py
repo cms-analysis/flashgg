@@ -1,8 +1,10 @@
 from optpars_utils import *
 
-from das_client import get_data as das_query
+from Utilities.General.cmssw_das_client import get_data as das_query
 
 from pprint import pprint
+
+from hashlib import sha256
 
 import os,json,fcntl,sys
 from parallel  import *
@@ -11,6 +13,7 @@ from fnmatch import fnmatch
 import commands
 
 import re
+import glob
 
 # -------------------------------------------------------------------------------
 import pwd
@@ -45,7 +48,7 @@ class SamplesManager(object):
                  catalog,
                  cross_sections=["$CMSSW_BASE/src/flashgg/MetaData/data/cross_sections.json"],
                  dbs_instance="prod/phys03",
-                 queue=None, maxThreads=200,force=False,doContinue=False
+                 queue=None, maxThreads=200,force=False,doContinue=False,maxEntriesPerFile=1000,
                  ):
         """
         Constructur:
@@ -59,8 +62,21 @@ class SamplesManager(object):
         for xsecFile in cross_sections:
             fname = shell_expand(xsecFile)
             self.cross_sections_.update( json.loads( open(fname).read() ) )
-            
-        self.catalog_ = shell_expand(catalog)
+        
+        if type(catalog) != list:
+            if "*" in catalog:
+                expanded = glob.glob(shell_expand(catalog))
+                if len(expanded) == 0:
+                    catalog = [ catalog.replace("*","") ]
+                else:
+                    catalog = expanded
+            else:
+                catalog = [catalog]
+        self.catalog_ = []
+        self.src_ = {}
+        for ifile in catalog:
+            self.catalog_.append( shell_expand(ifile) )
+        self.max_entries_per_file_ =  maxEntriesPerFile
 
         self.parallel_ = None
         self.sem_ = Semaphore()
@@ -117,7 +133,8 @@ class SamplesManager(object):
             if "*" in dataset:
                 # response = das_query("https://cmsweb.cern.ch","dataset dataset=%s | grep dataset.name" % dataset, 0, 0, False, self.dbs_instance_, ckey=x509(), cert=x509())
                 # response = das_query("https://cmsweb.cern.ch","dataset dataset=%s instance=%s | grep dataset.name" % (dataset, self.dbs_instance_), 0, 0, False, ckey=x509(), cert=x509())
-                response = das_query("https://cmsweb.cern.ch","dataset dataset=%s instance=%s | grep dataset.name" % (dataset, self.dbs_instance_), 0, 0, False)
+                # response = das_query("https://cmsweb.cern.ch","dataset dataset=%s instance=%s | grep dataset.name" % (dataset, self.dbs_instance_), 0, 0, False, ckey=x509(), cert=x509())
+                response = das_query("dataset dataset=%s instance=%s | grep dataset.name" % (dataset, self.dbs_instance_))
                 ## print response
                 for d in response["data"]:
                     ## print d
@@ -143,7 +160,8 @@ class SamplesManager(object):
         @dsetName: dataset name
         """
         ## response = das_query("https://cmsweb.cern.ch","file dataset=%s | grep file.name,file.nevents" % dsetName, 0, 0, False, self.dbs_instance_, ckey=x509(), cert=x509())
-        response = das_query("https://cmsweb.cern.ch","file dataset=%s instance=%s | grep file.name,file.nevents" % (dsetName,self.dbs_instance_), 0, 0, False, )
+        ## response = das_query("https://cmsweb.cern.ch","file dataset=%s instance=%s | grep file.name,file.nevents" % (dsetName,self.dbs_instance_), 0, 0, False, ckey=x509(), cert=x509())
+        response = das_query("file dataset=%s instance=%s | grep file.name,file.nevents" % (dsetName,self.dbs_instance_))
         
         files=[]
         for d in response["data"]:
@@ -401,13 +419,19 @@ class SamplesManager(object):
         if writeCatalog:
             self.writeCatalog(catalog)
 
-    def reviewCatalog(self):
+    def rebuildCatalog(self):
+        content = self.readCatalog()
+        self.writeCatalog(content,rebuild=True)
+
+    def reviewCatalog(self, pattern=None):
         datasets,catalog = self.getAllDatasets()
 
         primaries = {}
         keepAll = False
         dataregex = re.compile("Run[0-9]+[A-Z]")
         for d in datasets:
+            if pattern and not fnmatch(d, pattern):
+                continue
             if not keepAll:
                 reply = ask_user("keep this dataset (yes/no/all)?\n %s\n" % d, ["y","n","a"])
                 if reply == "n":
@@ -476,8 +500,19 @@ class SamplesManager(object):
         Check if file is valid.
         @fileName: file name
         """
+
+        weights_to_load = ""
+        LHE_Branch_Name = ""
+        #print dsetName.split('/')[1]
+        if dsetName.split('/')[1] in self.cross_sections_:
+            xsec = self.cross_sections_[ dsetName.split('/')[1] ]
+            if "weights" in xsec :
+                weights_to_load = xsec["weights"]
+                LHE_Branch_Name = xsec["LHESourceName"]
+            #print "following weights will be loaded" , weights_to_load
+
         fName = fileName
-        tmp = ".tmp%s_%d.json"%(dsetName.replace("/","_"),ifile)
+        tmp = ".tmp%s_%d.json"%(sha256(dsetName).hexdigest(),ifile)
         if self.continue_:
             if os.path.exists(tmp):
                 print "%s already exists" % tmp
@@ -490,10 +525,10 @@ class SamplesManager(object):
         if self.just_open_:
             ret,out = self.parallel_.run("fggOpenFile.py",[fName,tmp,dsetName,str(ifile)],interactive=True)[2]
         elif self.queue_:
-            self.parallel_.run("fggCheckFile.py",[fName,tmp,dsetName,str(ifile)],interactive=False)
+            self.parallel_.run("fggCheckFile.py",[fName,tmp,dsetName,str(ifile),weights_to_load,LHE_Branch_Name],interactive=False)
             return
         else:
-            ret,out = self.parallel_.run("fggCheckFile.py",[fName,tmp,dsetName,str(ifile)],interactive=True)[2]
+            ret,out = self.parallel_.run("fggCheckFile.py",[fName,tmp,dsetName,str(ifile),weights_to_load,LHE_Branch_Name],interactive=True)[2]
 
         if ret != 0:
             print "ERROR checking %s" % fName
@@ -648,42 +683,145 @@ class SamplesManager(object):
         """
         pass
     
-    def readCatalog(self,throw=False,path=None):
-        """
-        Read catalog from JSON file.
-        @throw: thow exception if file does not exists.
-        """
-        if not path:
-            path = self.catalog_
+    def loadCatalogFile(self,throw,path):
         if os.path.exists(path):
             return json.loads( open(path).read() )
         if throw:
             raise Exception("Could not find dataset catalog %s" % ( path ))
         return {}
+
+    def readCatalog(self,throw=False,path=None):
+        """
+        Read catalog from JSON file.
+        @throw: thow exception if file does not exists.
+        """
+        storeSrc=False
+        if not path:
+            path = self.catalog_
+            storeSrc = True
+            self.src_ = {}
+            
+        if type(path) == str:
+            path = [path]
+
+        catalog = {}
+        for ip in path:
+            part = self.loadCatalogFile(throw,ip)
+            if storeSrc:
+                self.src_[ ip ] = part.keys()
+            catalog.update(part)
+        
+        return catalog
     
-    def writeCatalog(self,content):
+    def writeCatalogFile(self,name,part):
+        with open(name,"w+") as fout:
+            fout.write( json.dumps(part,indent=4,sort_keys=True) )
+            fout.close()
+        
+    def sortDatasetFiles(self,content,rebuild):
+        
+        files = set(self.src_.keys())
+        dirname = map(os.path.dirname, files)[0]
+        if rebuild:
+            onefile = os.path.join(dirname,"datasets.json")
+            self.writeCatalogFile( onefile, content )
+            for key in self.src_.keys():
+                os.remove(key)
+            self.src_ = { onefile: content.keys() }
+            files = [onefile]
+        fileIds = map(lambda x: (lambda y: 0 if not y.isdigit() else int(y) )(os.path.basename(x).replace(".json","").rsplit("_")[-1]),  files )
+        maxId = max(fileIds)
+            
+        entriesPerFile = {}
+        entriesPerDataset = {}
+        for dset,info in content.iteritems():
+            entriesPerDataset[dset] = len(info["files"])            
+        for ifile,idatasets in self.src_.iteritems():
+            print map(entriesPerDataset.get,idatasets)
+            theMap = map(entriesPerDataset.get,idatasets)
+            theMap = [0 if x==None else x for x in theMap]
+#            for i in range(len(theMap)):
+#                for j in range(len(theMap[i])):
+#                    if theMap[i][j] == None:
+#                        theMap[i][j] = 0
+            print theMap
+            entriesPerFile[ifile] = sum( theMap )
+        
+        done = False
+        aboveThr = filter(lambda x: entriesPerFile[x]>self.max_entries_per_file_ and len(self.src_[x])>1, files  )
+        belowThr = set(filter(lambda x: entriesPerFile[x]<self.max_entries_per_file_, files  ))
+        if len(aboveThr) > 0:
+            for ifile in aboveThr:
+                entries = 0
+                for idset,dset in enumerate(self.src_[ifile]):
+                    entries += entriesPerDataset.get(dset)
+                    if entries > self.max_entries_per_file_:
+                        break
+                move = self.src_[ifile][idset:]
+                entriesPerFile[ifile] = entries
+                
+                self.src_[ifile] = self.src_[ifile][:idset]
+                
+                for dset in move:
+                    entries = entriesPerDataset.get(dset)
+                    moved = False
+                    for ifile in belowThr:
+                        if entriesPerFile[ifile] + entries < self.max_entries_per_file_:
+                            entriesPerFile[ifile] += entries
+                            self.src_[ ifile  ].append(dset)
+                            if entriesPerFile[ifile] > self.max_entries_per_file_:
+                                belowThr.remove( ifile )
+                            moved = True
+                            break
+                    if not moved:
+                        maxId += 1
+                        newFile = os.path.join(dirname, "datasets_%d.json" % maxId )
+                        self.src_[ newFile ] = [dset]
+                        entriesPerFile[newFile] = entries
+                        if entries < self.max_entries_per_file_:
+                            belowThr.add( newFile )
+
+        self.catalog_ = self.src_.keys()
+
+    def writeCatalog(self,content,rebuild=False):
         """
         Write catalog to JSON file.
         @content: catalog content.
         """
-        if not os.path.exists( os.path.dirname(self.catalog_) ):
-            os.mkdir( os.path.dirname(self.catalog_) )
+        
+        dsets = set(content.keys())
+        # check if new datasets were added since last write and provisionally add them to a file
+        new = dsets - set( reduce(lambda x,y: x+y, self.src_.values(), []) )
+        self.src_[ sorted(self.src_)[-1]  ].extend(list(new))
+        
+        self.sortDatasetFiles(content,rebuild)
+        
+        print ("Catalog will be split into %d files" % len(self.catalog_) )
+        for ifile in self.catalog_:
+            dirname = os.path.dirname(ifile)
+            if not os.path.exists( dirname ):
+                os.mkdir( dirname )
+                
+            part = {}
+            for dset in self.src_[ ifile ]:
+                if dset in dsets:
+                    part[dset] = content[dset]
+                    dsets.remove( dset  )
+            self.writeCatalogFile( ifile, part )
+            
 
-        with open(self.catalog_,"w+") as fout:
-            fout.write( json.dumps(content,indent=4,sort_keys=True) )
-            fout.close()
-    
-    def getDatasetMetaData(self,maxEvents,primary,secondary=None,jobId=-1,nJobs=0):
+    def getDatasetMetaData(self,maxEvents,primary,secondary=None,jobId=-1,nJobs=0,weightName=None):
         """
         Extract dataset meta data.
         @maxEvents: maximum number of events to read.
         @primary: primary dataset name.
         @secondary: secondary dataset name.
         
-        returns: tuple containing datasetName,cross-section,numberOfEvents,listOfFiles
+        returns: tuple containing datasetName,cross-section,numberOfEvents,listOfFiles,specialPrepend
         
         """
         catalog = self.readCatalog(True)
+        print primary
         primary = primary.lstrip("/")
         if "/" in primary:
             primary,secondary,tier = primary.split("/")
@@ -692,6 +830,7 @@ class SamplesManager(object):
         allFiles = []
         totEvents = 0.
         totWeights = 0.
+        specialPrepend = ""
         for dataset,info in catalog.iteritems():
             empty,prim,sec,tier=dataset.split("/")
             if prim == primary:
@@ -702,15 +841,25 @@ class SamplesManager(object):
                 found = dataset
                 if prim in self.cross_sections_:
                     xsec = self.cross_sections_[prim]
+                if "weights" in xsec and weightName:
+                    if weightName not in xsec["weights"].split(","):
+                        print weightName, " is not available in ", primary 
+                        weightName = None
+                else :
+                    weightName = None
                 for fil in info["files"]:
                     if fil.get("bad",False):
                         continue
                     nev, name = fil["nevents"], fil["name"]
                     totEvents += nev
-                    totWeights += fil.get("weights",0.)
+                    if weightName :
+                        totWeights += fil.get(weightName,0.)
+                    else:
+                        totWeights += fil.get("weights",0.)
                     allFiles.append(name)
                     if maxEvents > -1 and totEvents > maxEvents:
                         break
+                specialPrepend = info.get("specialPrepend","")    
         if not found:
             raise Exception("No dataset matched the request: /%s/%s" % ( primary, str(secondary) ))
         
@@ -727,7 +876,7 @@ class SamplesManager(object):
         else:
             files = allFiles
 
-        return found,xsec,totEvents,files,maxEvents
+        return found,xsec,totEvents,files,maxEvents,specialPrepend
 
     def getAllDatasets(self):
         catalog = self.readCatalog()
@@ -748,11 +897,13 @@ class SamplesManagerCli(SamplesManager):
                      "catimport [source:]<catalog_name> <wildcard>     imports datasets from another catalog", 
                      "list      [raw|wildcard]                         lists datasets in catalog", 
                      "review                                           review catalog to remove datasets", 
+                     "rebuild                                          rebuild catalog", 
                      "check      [wildcard]                            check duplicate files and errors in datasets and mark bad files",
                      "checkopen  [wildcard]                            as above but just try open file",
                      "checklite  [wildcard]                            check for duplicate files in datasets",
                      "getlumi    [wildcard|datasets]                   get list of processed lumi sections in dataset",
-                     "overlap    [wildcard|datasets]                   checks overlap between datatasets"
+                     "overlap    [wildcard|datasets]                   checks overlap between datatasets",
+                     "listcampaigns                                    prints the campaign names (takes into account the meta data source option)",
                      ]
         
         parser = OptionParser(
@@ -825,7 +976,7 @@ Commands:
         (options,args) = (self.options,self.args)
         
         print options
-        self.mn = SamplesManager("$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % (options.metaDataSrc,options.campaign),
+        self.mn = SamplesManager("$CMSSW_BASE/src/%s/MetaData/data/%s/datasets*.json" % (options.metaDataSrc,options.campaign),
                                  dbs_instance=options.dbs_instance,
                                  force=options.doForce,
                                  queue=options.queue,maxThreads=options.max_threads,doContinue=options.doContinue)
@@ -855,10 +1006,10 @@ Commands:
     def run_catimport(self,src,pattern):
         if ":" in src:
             print src.split(":")
-            src = "$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % tuple(src.split(":"))
+            src = "$CMSSW_BASE/src/%s/MetaData/data/%s/datasets*.json" % tuple(src.split(":"))
         else:
-            src = "$CMSSW_BASE/src/%s/MetaData/data/%s/datasets.json" % ( self.options.metaDataSrc, src )
-        self.mn.importFromCatalog(shell_expand(src),pattern)
+            src = "$CMSSW_BASE/src/%s/MetaData/data/%s/datasets*.json" % ( self.options.metaDataSrc, src )
+        self.mn.importFromCatalog(glob.glob(shell_expand(src)),pattern)
 
     def run_check(self,*args):
         self.mn.checkAllDatasets(*args)
@@ -929,5 +1080,32 @@ Commands:
     def run_clear(self):
         self.mn.clearCatalog()
     
-    def run_review(self):
-        self.mn.reviewCatalog()
+    def run_review(self, pattern=None):
+        self.mn.reviewCatalog(pattern)
+
+    def run_rebuild(self):
+        self.mn.rebuildCatalog()
+
+    def run_listcampaigns(self,*args):
+        # prints a list of all known campaigns
+        
+        campaigns = []
+        basedir = os.path.expandvars("$CMSSW_BASE/src/%s/MetaData/data" % self.options.metaDataSrc)
+
+        for fname in os.listdir(basedir):
+            fullfname = os.path.join(basedir, fname)
+
+            # follows symbolic links
+            if os.path.isdir(fullfname):
+
+                # insist that there is a 'datasets.json' file in this
+                # directory
+
+                if os.path.exists(os.path.join(fullfname, "datasets.json")):
+
+                    campaigns.append(fname)
+
+            
+        campaigns.sort()
+        for campaign in campaigns:
+            print campaign

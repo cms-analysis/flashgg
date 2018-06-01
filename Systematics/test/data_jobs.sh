@@ -1,2 +1,4 @@
-# NB this command is specific to the configuration at IC and is not gaurenteed elsewhere
-fggRunJobs.py --load data_jobs.json -d /vols/cms/szenz/data_jobs_003 -x cmsRun workspaceStd.py maxEvents=-1 -n 500 -q hepmedium.q -D -P useAAA=1 --no-use-tarball lumiMask=/home/hep/szenz/fromscratch25/CMSSW_8_0_8/src/flashgg/MetaData/work/jsons/Cert_271036-274421_13TeV_PromptReco_Collisions16_JSON.txt
+queue="8nh"
+LM=${CMSSW_BASE}/src/flashgg/MetaData/work/jsons/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+version="916"
+fggRunJobs.py --load DoubleEG_ReMiniAOD_2_5_Y.json -d data_jobs_${version} -x cmsRun workspaceStd.py maxEvents=-1 -n 100 -q ${queue} -D -P useAAA=0 doFiducial=False tthTagsOnly=False lumiMask=${LM}

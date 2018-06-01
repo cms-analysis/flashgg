@@ -15,6 +15,15 @@ VBFTag::VBFTag( edm::Ptr<DiPhotonCandidate> dipho, DiPhotonMVAResult mvares, VBF
     DiPhotonTagBase::DiPhotonTagBase( dipho, mvares )
 {
     vbfDiPhoDiJet_mva_result_ = vbfDiPhoDiJet_mvaRes;
+    alphaUp_ = 0.;
+    alphaDown_ = 0.;
+    for (unsigned i = 0 ; i < 3 ; i++) {
+        scaleUp_[i] = 0.;
+        scaleDown_[i] = 0.;
+    }
+    for (unsigned i = 0 ; i < 60 ; i++) {
+        pdf_[i] = 0.;
+    }
 }
 
 

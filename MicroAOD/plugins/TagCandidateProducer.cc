@@ -6,6 +6,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/EDMException.h"
 #include "FWCore/Common/interface/TriggerNames.h"
+#include "DataFormats/Common/interface/TriggerResults.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "DataFormats/Common/interface/Handle.h"
 
@@ -47,7 +48,7 @@ namespace flashgg {
     void TagCandidateProducer::produce( Event &evt, const EventSetup & )
     {
         
-        auto_ptr<std::vector<flashgg::TagCandidate> > tagsColl( new std::vector<flashgg::TagCandidate> );
+        unique_ptr<std::vector<flashgg::TagCandidate> > tagsColl( new std::vector<flashgg::TagCandidate> );
         
         Handle<edm::OwnVector<flashgg::DiPhotonTagBase> > tagSorter;
         evt.getByToken( tagSorterToken_, tagSorter );
@@ -80,7 +81,7 @@ namespace flashgg {
             tagsColl->push_back( tags );
         }
  
-        evt.put( tagsColl );                               
+        evt.put( std::move( tagsColl ) );                               
     }
 }
 

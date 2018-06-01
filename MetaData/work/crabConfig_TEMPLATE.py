@@ -16,16 +16,16 @@ config.JobType.pluginName = "Analysis"
 config.JobType.psetName = "PSET"
 
 ## to include local file in the sendbox, this will put the file in the directory where cmsRun runs
-#config.JobType.inputFiles   = [ os.environ['CMSSW_BASE'] + '/src/'+ 'flashgg/MetaData/data/PY8_RunIISpring15DR74_bx50_MC.db' ]
-config.JobType.inputFiles = ['Fall15_25nsV2_MC.db','Fall15_25nsV2_DATA.db']
+config.JobType.inputFiles = ['Fall17_17Nov2017BCDEF_V6_DATA.db','Fall17_17Nov2017_V6_MC.db','QGL_cmssw8020_v2.db']
 
 ## incrase jobs time wall, maximum 2750 minutes (~46 hours)
 config.JobType.maxJobRuntimeMin = 2750
 
-## config.JobType.maxMemoryMB = 3000 # For memory leaks. NB. will block jobs on many sites
+config.JobType.maxMemoryMB = 2500 # For memory leaks. NB. will block jobs on many sites
 ## config.JobType.scriptExe = "cmsWrapper.sh"
 config.JobType.pyCfgParams = PYCFG_PARAMS
 config.JobType.sendPythonFolder = True
+config.JobType.sendExternalFolder = True
 
 config.section_("Data")
 config.Data.inputDataset = "DATASET"

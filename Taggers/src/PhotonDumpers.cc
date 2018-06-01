@@ -16,6 +16,7 @@ namespace flashgg {
         PLUGGABLE_ANALYZER( DiPhotonTagDumper );
     }
 }
+
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

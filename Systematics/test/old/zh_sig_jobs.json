@@ -1,0 +1,8 @@
+{
+    "processes" : {
+        "zh_125"  : [ "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1-5ea88bd70abed14168848bf06a0c993b/USER" ],
+        "zh_120"  : [ "/VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1-5ea88bd70abed14168848bf06a0c993b/USER" ],
+        "zh_130"  : [ "/VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8/ferrif-RunIISpring16DR80X-2_1_0-25ns_ICHEP16-2_1_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1-5ea88bd70abed14168848bf06a0c993b/USER" ]
+     },	
+        "cmdLine" : "campaign=RunIISpring16DR80X-2_1_0-25ns_ICHEP16"
+}

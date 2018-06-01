@@ -1,0 +1,51 @@
+ ##################################################################### 
+ # WARNING: the module CondCore.DBCommon.CondDBSetup is deprecated.  # 
+ # Please import CondCore.CondDB.CondDB_cfi                          # 
+ ##################################################################### 
+Warning in <TInterpreter::ReadRootmapFile>: class  edm::Ptr<pat::PackedGenParticle> found in libDataFormatsPatCandidates.so  is already in libflashggDataFormats.so 
+30-May-2018 20:01:49 CEST  Initiating request to open file file:myMicroAODOutputFile.root
+30-May-2018 20:01:51 CEST  Successfully opened file file:myMicroAODOutputFile.root
+Begin processing the 1st record. Run 1, Event 202129, LumiSection 65 at 30-May-2018 20:02:15.268 CEST
+[NO TAG]
+Begin processing the 2nd record. Run 1, Event 202133, LumiSection 65 at 30-May-2018 20:02:18.716 CEST
+[NO TAG]
+Begin processing the 3rd record. Run 1, Event 202184, LumiSection 65 at 30-May-2018 20:02:18.739 CEST
+[UNTAGGED] category 1 mass=122.384, systLabel 
+	[UNTAGGED TRUTH]: genPV=(-0.0245793,0.0686747,-3.70364)
+Begin processing the 4th record. Run 1, Event 202148, LumiSection 65 at 30-May-2018 20:02:18.774 CEST
+[UNTAGGED] category 2 mass=125.374, systLabel 
+	[UNTAGGED TRUTH]: genPV=(-0.0245608,0.0687103,-2.99687)
+Begin processing the 5th record. Run 1, Event 202149, LumiSection 65 at 30-May-2018 20:02:18.787 CEST
+[NO TAG]
+Begin processing the 6th record. Run 1, Event 202172, LumiSection 65 at 30-May-2018 20:02:18.807 CEST
+[NO TAG]
+Begin processing the 7th record. Run 1, Event 202143, LumiSection 65 at 30-May-2018 20:02:18.814 CEST
+[NO TAG]
+Begin processing the 8th record. Run 1, Event 202153, LumiSection 65 at 30-May-2018 20:02:18.824 CEST
+[UNTAGGED] category 2 mass=125.555, systLabel 
+	[UNTAGGED TRUTH]: genPV=(-0.0255896,0.068269,-1.90435)
+Begin processing the 9th record. Run 1, Event 202157, LumiSection 65 at 30-May-2018 20:02:18.834 CEST
+[NO TAG]
+Begin processing the 10th record. Run 1, Event 202146, LumiSection 65 at 30-May-2018 20:02:18.845 CEST
+[NO TAG]
+30-May-2018 20:02:18 CEST  Closed file file:myMicroAODOutputFile.root
+
+=============================================
+
+MessageLogger Summary
+
+ type     category        sev    module        subroutine        count    total
+ ---- -------------------- -- ---------------- ----------------  -----    -----
+    1 fileAction           -s file_close                             1        1
+    2 fileAction           -s file_open                              2        2
+
+ type    category    Examples: run/evt        run/evt          run/evt
+ ---- -------------------- ---------------- ---------------- ----------------
+    1 fileAction           PostGlobalEndRun                  
+    2 fileAction           pre-events       pre-events       
+
+Severity    # Occurrences   Total Occurrences
+--------    -------------   -----------------
+System                  3                   3
+
+dropped waiting message count 0

@@ -4,26 +4,34 @@
 #include "DataFormats/Common/interface/PtrVector.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
-#include "flashgg/Systematics/interface/BTagCalibrationStandalone.h"
+#include "CondFormats/BTauObjects/interface/BTagCalibration.h"
+#include "CondTools/BTau/interface/BTagCalibrationReader.h"
 
 // setup calibration readers
 std::string CMSSW_BASE(getenv("CMSSW_BASE"));
+
 std::string CSVfilename = CMSSW_BASE + std::string("/src/flashgg/Systematics/data/CSVv2.csv");
-FlashggBTagCalibration calib("CSVv2", CSVfilename);
+BTagCalibration calib_CSV("CSVv2", CSVfilename);
 
-FlashggBTagCalibrationReader readerBC(&calib,               // calibration instance
-                               FlashggBTagEntry::OP_MEDIUM,  // operating point
-                               "mujets",               // measurement type
-                               "central");           // systematics type
-FlashggBTagCalibrationReader readerBC_up(&calib, FlashggBTagEntry::OP_MEDIUM, "mujets", "up");  // sys up
-FlashggBTagCalibrationReader readerBC_do(&calib, FlashggBTagEntry::OP_MEDIUM, "mujets", "down");  // sys down
+std::string DeepCSVfilename = CMSSW_BASE + std::string("/src/flashgg/Systematics/data/DeepCSV_94XSF_V2_B_F.csv");
+BTagCalibration calib_DeepCSV("DeepCSV",  DeepCSVfilename); 
 
-FlashggBTagCalibrationReader readerUDSG(&calib,               // calibration instance
-                             FlashggBTagEntry::OP_MEDIUM,  // operating point
-                             "comb",               // measurement type
-                             "central");           // systematics type
-FlashggBTagCalibrationReader readerUDSG_up(&calib, FlashggBTagEntry::OP_MEDIUM, "comb", "up");  // sys up
-FlashggBTagCalibrationReader readerUDSG_do(&calib, FlashggBTagEntry::OP_MEDIUM, "comb", "down");  // sys down
+
+BTagCalibration calib;
+
+//For medium working point
+
+BTagCalibrationReader readerMedB(BTagEntry::OP_MEDIUM, "central", {"up", "down"}); //readerMedB.load(calib, BTagEntry::FLAV_B, "comb"); 
+
+BTagCalibrationReader readerMedC(BTagEntry::OP_MEDIUM, "central", {"up", "down"}); //readerMedC.load(calib, BTagEntry::FLAV_C, "comb");   // operating point
+                               // "central",               // central sys type
+                               // {"up", "down"});        // other systematics type
+BTagCalibrationReader readerMedUDSG(BTagEntry::OP_MEDIUM,  "central", {"up", "down"}); //readerMedUDSG.load(calib, BTagEntry::FLAV_UDSG, "comb");  // operating point
+                               // "central",               // central sys type
+                               // {"up", "down"});        // other systematics type
+
+bool isloaded = false;
+
 
 namespace flashgg {
 
@@ -43,6 +51,7 @@ namespace flashgg {
         bool debug_;
         std::string bTag_;
         double bDiscriminator_;
+        bool btagSFreshape_;
     };
 
     JetBTagWeight::JetBTagWeight( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer * gv ) : 
@@ -50,9 +59,20 @@ namespace flashgg {
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),        
         debug_( conf.getUntrackedParameter<bool>( "Debug", false ) ),
         bTag_( conf.getParameter<std::string>("bTag") ),
-        bDiscriminator_( conf.getParameter<double>("bDiscriminator") )
+        bDiscriminator_( conf.getParameter<double>("bDiscriminator") ),
+        btagSFreshape_ ( conf.getUntrackedParameter<bool>( "btagSFreshape", false ) )
     {
+
+
         this->setMakesWeight( true );
+
+        if(bTag_=="pfDeepCSV"){
+            calib=calib_DeepCSV; 
+            if(debug_) cout<< "Using DeepCSV"<< endl;
+        }else{
+            calib=calib_CSV; 
+        }
+
     }
 
     std::string JetBTagWeight::shiftLabel( int syst_value ) const
@@ -73,6 +93,24 @@ namespace flashgg {
 
         if( this->debug_ ) {
             std::cout<<"In JetBTagProducer "<<std::endl;
+        }
+
+        //bool isloaded = false;
+
+        if(!isloaded){
+
+        readerMedB.load(calib,                // calibration instance
+                        BTagEntry::FLAV_B,    // btag flavour
+                        "comb");               // measurement type
+
+        readerMedC.load(calib,                // calibration instance
+                        BTagEntry::FLAV_C,    // btag flavour
+                        "comb");               // measurement type
+
+        readerMedUDSG.load(calib,                // calibration instance
+                           BTagEntry::FLAV_UDSG,    // btag flavour
+                           "incl");               // measurement type
+         isloaded = true;
         }
 
         float theWeight = 1.;
@@ -106,104 +144,149 @@ namespace flashgg {
             //obtaining scale factors
 
             //https://twiki.cern.ch/twiki/bin/view/CMS/BTagCalibration
-            float MaxBJetPt = 669.99, MaxLJetPt = 999.99;
-            float MinBJetPt = 30.01, MinLJetPt = 20.01;
             float JetPt = obj.pt();
             float JetEta = obj.eta();
             int JetFlav = obj.hadronFlavour();
             bool JetBTagStatus = false;
-            if(obj.bDiscriminator(bTag_.c_str()) > bDiscriminator_ ) JetBTagStatus = true;
-            bool DoubleUncertainty = false;
+            float JetBDiscriminator;
+        
+            if(bTag_=="pfDeepCSV") JetBDiscriminator = obj.bDiscriminator("pfDeepCSVJetTags:probb")+ obj.bDiscriminator("pfDeepCSVJetTags:probbb"); 
+            else JetBDiscriminator= obj.bDiscriminator(bTag_.c_str());
 
-            if(JetFlav == 5 || JetFlav == 4){ // for b and c jets
-                if(JetPt>MaxBJetPt)  {
-                    JetPt = MaxBJetPt; 
-                    DoubleUncertainty = true;
-                }  
-                if(JetPt<MinBJetPt)  {
-                    JetPt = MinBJetPt;   
-                    DoubleUncertainty = true;
-                }
-            } else { // for light jets
-                if(JetPt>MaxLJetPt)  {
-                    JetPt = MaxLJetPt; 
-                    DoubleUncertainty = true;
-                } 
-                if(JetPt<MinLJetPt)  {
-                    JetPt = MinLJetPt;   
-                    DoubleUncertainty = true;
-                }
-            }
+            if(JetBDiscriminator > bDiscriminator_ ) JetBTagStatus = true;
+
 
             if( this->debug_ ) {
                 std::cout << " In JetBTagWeight before calib reader: " << shiftLabel( syst_shift ) << ": Object has pt= " << obj.pt() << " eta=" << obj.eta() << " flavour=" << obj.hadronFlavour()
-                          << " efficiency of " << eff_central << " values for scale factors : "<< JetPt <<" "<< DoubleUncertainty <<" "<< JetEta <<" "<<JetFlav 
-                          << " BTag Values : "<< obj.bDiscriminator(bTag_.c_str()) <<" "<< bDiscriminator_<<" "<<JetBTagStatus<<std::endl;
+                          << " efficiency of " << eff_central << " values for scale factors : "<< JetPt <<" "<< JetEta <<" "<<JetFlav 
+                          << " BTag Values : "<< JetBDiscriminator <<" "<< bDiscriminator_<<" "<<JetBTagStatus<<std::endl;
             }
 
             //get scale factors from calib reader
             double jet_scalefactor = 1.0;
             double jet_scalefactor_up =  1.0;
             double jet_scalefactor_do =  1.0;
-            if(JetFlav == 5){// b jets
-                jet_scalefactor = readerBC.eval(FlashggBTagEntry::FLAV_B, JetEta, JetPt); 
-                jet_scalefactor_up =  readerBC_up.eval(FlashggBTagEntry::FLAV_B, JetEta, JetPt); 
-                jet_scalefactor_do =  readerBC_do.eval(FlashggBTagEntry::FLAV_B, JetEta, JetPt);
-            } else if(JetFlav == 4){// c jets
-                jet_scalefactor = readerBC.eval(FlashggBTagEntry::FLAV_C, JetEta, JetPt); 
-                jet_scalefactor_up =  readerBC_up.eval(FlashggBTagEntry::FLAV_C, JetEta, JetPt); 
-                jet_scalefactor_do =  readerBC_do.eval(FlashggBTagEntry::FLAV_C, JetEta, JetPt);
-            } else {// light jets
-                jet_scalefactor = readerUDSG.eval(FlashggBTagEntry::FLAV_UDSG, JetEta, JetPt); 
-                jet_scalefactor_up =  readerUDSG_up.eval(FlashggBTagEntry::FLAV_UDSG, JetEta, JetPt); 
-                jet_scalefactor_do =  readerUDSG_do.eval(FlashggBTagEntry::FLAV_UDSG, JetEta, JetPt);
-            }
 
-            if( this->debug_ ) {
-                std::cout << " In JetBTagWeight after obtaining SF: " << shiftLabel( syst_shift ) << ": Object has pt= " << obj.pt() << " eta=" << obj.eta() << " flavour=" << obj.hadronFlavour()
-                          << " efficiency of " << eff_central << " scale factors : "<< jet_scalefactor <<" "<< jet_scalefactor_up <<" "<< jet_scalefactor_do << std::endl;
-            }
+            // if(!btagSFreshape_){ //for medium WP
 
-            if (DoubleUncertainty) {
-                jet_scalefactor_up = 2*(jet_scalefactor_up - jet_scalefactor) + jet_scalefactor; 
-                jet_scalefactor_do = 2*(jet_scalefactor_do - jet_scalefactor) + jet_scalefactor; 
-            }
-           
-            if ( syst_shift < 0 ){
-                jet_scalefactor_do = abs(syst_shift) * (jet_scalefactor_do - jet_scalefactor) + jet_scalefactor;
-            }
-            if ( syst_shift > 0 ){
-                jet_scalefactor_up = abs(syst_shift) * (jet_scalefactor_up - jet_scalefactor) + jet_scalefactor;
-            }
+                if(JetFlav == 5){// b jets
+                    jet_scalefactor = readerMedB.eval_auto_bounds("central", BTagEntry::FLAV_B, JetEta, JetPt); 
+                    jet_scalefactor_up = readerMedB.eval_auto_bounds("up", BTagEntry::FLAV_B, JetEta, JetPt);
+                    jet_scalefactor_do = readerMedB.eval_auto_bounds("down", BTagEntry::FLAV_B, JetEta, JetPt);
+                } else if(JetFlav == 4){// c jets
+                    jet_scalefactor = readerMedC.eval_auto_bounds("central", BTagEntry::FLAV_C, JetEta, JetPt); 
+                    jet_scalefactor_up = readerMedC.eval_auto_bounds("up", BTagEntry::FLAV_C, JetEta, JetPt);
+                    jet_scalefactor_do = readerMedC.eval_auto_bounds("down", BTagEntry::FLAV_C, JetEta, JetPt);
+                } else {// light jets
+                    jet_scalefactor = readerMedUDSG.eval_auto_bounds("central", BTagEntry::FLAV_UDSG, JetEta, JetPt); 
+                    jet_scalefactor_up =  readerMedUDSG.eval_auto_bounds("up", BTagEntry::FLAV_UDSG, JetEta, JetPt); 
+                    jet_scalefactor_do =  readerMedUDSG.eval_auto_bounds("down", BTagEntry::FLAV_UDSG, JetEta, JetPt);
+                }
+                
+                if( this->debug_ ) {
+                    std::cout << " In JetBTagWeight after obtaining SF: " << shiftLabel( syst_shift ) << " SF type : " << btagSFreshape_  << ": Object has pt= " << obj.pt() << " eta=" << obj.eta() << " flavour=" << obj.hadronFlavour()
+                              << " efficiency of " << eff_central << " scale factors : "<< jet_scalefactor <<" "<< jet_scalefactor_up <<" "<< jet_scalefactor_do << std::endl;
+                }
+                
+                if ( syst_shift < 0 ){
+                    jet_scalefactor_do = abs(syst_shift) * (jet_scalefactor_do - jet_scalefactor) + jet_scalefactor;
+                }
+                if ( syst_shift > 0 ){
+                    jet_scalefactor_up = abs(syst_shift) * (jet_scalefactor_up - jet_scalefactor) + jet_scalefactor;
+                }
+                
+                if( this->debug_ ) {
+                    std::cout << " In JetBTagWeight : " << shiftLabel( syst_shift ) << " SF type : " << btagSFreshape_ << " : Object has pt= " << obj.pt() << " eta=" << obj.eta() << " flavour=" << obj.hadronFlavour()
+                              << " efficiency of " << eff_central << " scale factors : "<< jet_scalefactor <<" "<< jet_scalefactor_up <<" "<< jet_scalefactor_do << std::endl;
+                }
+                
+                //calculating the weights
+                //https://twiki.cern.ch/twiki/bin/viewauth/CMS/BTagSFMethods#1a_Event_reweighting_using_scale
+                double p_mc = 1.0;
+                double p_data = 1.0;
+                double p_data_down = 1.0;
+                double p_data_up = 1.0;
+                if(JetBTagStatus){
+                    p_mc = eff_central;
+                    p_data = jet_scalefactor * eff_central;
+                    p_data_down = jet_scalefactor_do * eff_central;
+                    p_data_up = jet_scalefactor_up * eff_central;
+                } else {
+                    p_mc = 1.0 - eff_central;
+                    p_data = 1.0 - (jet_scalefactor * eff_central);
+                    p_data_down = 1.0 - (jet_scalefactor_do * eff_central);
+                    p_data_up = 1.0 - (jet_scalefactor_up * eff_central);
+                }
+                
+                if(fabs(p_mc) > 1e-10){
+                    central = p_data / p_mc ;
+                    errdown = p_data_down / p_mc ;
+                    errup = p_data_up / p_mc ;
+                }
 
-            if( this->debug_ ) {
-                std::cout << " In JetBTagWeight : " << shiftLabel( syst_shift ) << ": Object has pt= " << obj.pt() << " eta=" << obj.eta() << " flavour=" << obj.hadronFlavour()
-                          << " efficiency of " << eff_central << " scale factors : "<< jet_scalefactor <<" "<< jet_scalefactor_up <<" "<< jet_scalefactor_do << std::endl;
-            }
+            // } else { // Reshaping SFs : https://twiki.cern.ch/twiki/bin/view/CMS/BTagShapeCalibration#Using_csv_files_and_BTagCalibrat
+            //     if( JetBDiscriminator < 0.0 ) JetBDiscriminator = -0.05;
+            //     if( JetBDiscriminator > 1.0 ) JetBDiscriminator = 1.0;
 
-            //calculating the weights
-            //https://twiki.cern.ch/twiki/bin/viewauth/CMS/BTagSFMethods#1a_Event_reweighting_using_scale
-            double p_mc = 1.0;
-            double p_data = 1.0;
-            double p_data_down = 1.0;
-            double p_data_up = 1.0;
-            if(JetBTagStatus){
-                p_mc = eff_central;
-                p_data = jet_scalefactor * eff_central;
-                p_data_down = jet_scalefactor_do * eff_central;
-                p_data_up = jet_scalefactor_up * eff_central;
-            } else {
-                p_mc = 1.0 - eff_central;
-                p_data = 1.0 - (jet_scalefactor * eff_central);
-                p_data_down = 1.0 - (jet_scalefactor_do * eff_central);
-                p_data_up = 1.0 - (jet_scalefactor_up * eff_central);
-            }
+            //     if(JetFlav == 5){// b jets
+            //         jet_scalefactor = readerShapeB.eval_auto_bounds("central", BTagEntry::FLAV_B, JetEta, JetPt, JetBDiscriminator); 
+            //         jet_scalefactor_up = 
+            //             readerShapeB.eval_auto_bounds("up_jes", BTagEntry::FLAV_B, JetEta, JetPt, JetBDiscriminator)
+            //             * readerShapeB.eval_auto_bounds("up_lf", BTagEntry::FLAV_B, JetEta, JetPt, JetBDiscriminator)
+            //             * readerShapeB.eval_auto_bounds("up_hfstats1", BTagEntry::FLAV_B, JetEta, JetPt, JetBDiscriminator)
+            //             * readerShapeB.eval_auto_bounds("up_hfstats2", BTagEntry::FLAV_B, JetEta, JetPt, JetBDiscriminator);
+            //         jet_scalefactor_do = 
+            //             readerShapeB.eval_auto_bounds("down_jes", BTagEntry::FLAV_B, JetEta, JetPt, JetBDiscriminator)
+            //             * readerShapeB.eval_auto_bounds("down_lf", BTagEntry::FLAV_B, JetEta, JetPt, JetBDiscriminator)
+            //             * readerShapeB.eval_auto_bounds("down_hfstats1", BTagEntry::FLAV_B, JetEta, JetPt, JetBDiscriminator)
+            //             * readerShapeB.eval_auto_bounds("down_hfstats2", BTagEntry::FLAV_B, JetEta, JetPt, JetBDiscriminator);
+            //     } else if(JetFlav == 4){// c jets
+            //         jet_scalefactor = readerShapeC.eval_auto_bounds("central", BTagEntry::FLAV_C, JetEta, JetPt, JetBDiscriminator); 
+            //         jet_scalefactor_up = 
+            //             readerShapeC.eval_auto_bounds("up_jes", BTagEntry::FLAV_C, JetEta, JetPt, JetBDiscriminator)
+            //             * readerShapeC.eval_auto_bounds("up_cferr1", BTagEntry::FLAV_C, JetEta, JetPt, JetBDiscriminator)
+            //             * readerShapeC.eval_auto_bounds("up_cferr2", BTagEntry::FLAV_C, JetEta, JetPt, JetBDiscriminator);
+            //         jet_scalefactor_do =  
+            //             readerShapeC.eval_auto_bounds("down_jes", BTagEntry::FLAV_C, JetEta, JetPt, JetBDiscriminator)
+            //             * readerShapeC.eval_auto_bounds("down_cferr1", BTagEntry::FLAV_C, JetEta, JetPt, JetBDiscriminator)
+            //             * readerShapeC.eval_auto_bounds("down_cferr2", BTagEntry::FLAV_C, JetEta, JetPt, JetBDiscriminator);
+            //     } else {// light jets
+            //         jet_scalefactor = readerShapeUDSG.eval_auto_bounds("central", BTagEntry::FLAV_UDSG, JetEta, JetPt, JetBDiscriminator); 
+            //         jet_scalefactor_up =  
+            //             readerShapeUDSG.eval_auto_bounds("up_jes", BTagEntry::FLAV_UDSG, JetEta, JetPt, JetBDiscriminator)
+            //             * readerShapeUDSG.eval_auto_bounds("up_hf", BTagEntry::FLAV_UDSG, JetEta, JetPt, JetBDiscriminator)
+            //             * readerShapeUDSG.eval_auto_bounds("up_lfstats1", BTagEntry::FLAV_UDSG, JetEta, JetPt, JetBDiscriminator)
+            //             * readerShapeUDSG.eval_auto_bounds("up_lfstats2", BTagEntry::FLAV_UDSG, JetEta, JetPt, JetBDiscriminator) ; 
+            //         jet_scalefactor_do =   
+            //             readerShapeUDSG.eval_auto_bounds("down_jes", BTagEntry::FLAV_UDSG, JetEta, JetPt, JetBDiscriminator)
+            //             * readerShapeUDSG.eval_auto_bounds("down_hf", BTagEntry::FLAV_UDSG, JetEta, JetPt, JetBDiscriminator)
+            //             * readerShapeUDSG.eval_auto_bounds("down_lfstats1", BTagEntry::FLAV_UDSG, JetEta, JetPt, JetBDiscriminator)
+            //             * readerShapeUDSG.eval_auto_bounds("down_lfstats2", BTagEntry::FLAV_UDSG, JetEta, JetPt, JetBDiscriminator) ; 
+            //     }
+                
+            //     if( this->debug_ ) {
+            //         std::cout << " In JetBTagWeight after obtaining SF: " << shiftLabel( syst_shift ) << " SF type : " << btagSFreshape_  << ": Object has pt= " << obj.pt() << " eta=" << obj.eta() << " flavour=" << obj.hadronFlavour()
+            //                   << " efficiency of " << eff_central << " scale factors : "<< jet_scalefactor <<" "<< jet_scalefactor_up <<" "<< jet_scalefactor_do << std::endl;
+            //     }
+                
+            //     if ( syst_shift < 0 ){
+            //         jet_scalefactor_do = abs(syst_shift) * (jet_scalefactor_do - jet_scalefactor) + jet_scalefactor;
+            //     }
+            //     if ( syst_shift > 0 ){
+            //         jet_scalefactor_up = abs(syst_shift) * (jet_scalefactor_up - jet_scalefactor) + jet_scalefactor;
+            //     }
+                
+            //     if( this->debug_ ) {
+            //         std::cout << " In JetBTagWeight : " << shiftLabel( syst_shift ) << " SF type : " << btagSFreshape_ << " : Object has pt= " << obj.pt() << " eta=" << obj.eta() << " flavour=" << obj.hadronFlavour()
+            //                   << " efficiency of " << eff_central << " scale factors : "<< jet_scalefactor <<" "<< jet_scalefactor_up <<" "<< jet_scalefactor_do << std::endl;
+            //     }
+               
+            //     central = jet_scalefactor ;
+            //     errdown = jet_scalefactor_do ;
+            //     errup = jet_scalefactor_up ;
+                
 
-            if(fabs(p_mc) > 1e-10){
-                central = p_data / p_mc ;
-                errdown = p_data_down / p_mc ;
-                errup = p_data_up / p_mc ;
-            }
+            // } // Reshaping SFs
          
 
             theWeight = central;
@@ -211,7 +294,7 @@ namespace flashgg {
             if ( syst_shift > 0 ) theWeight = errup;
 
             if( this->debug_ ) {
-                std::cout << " In JetBTagWeight : " << shiftLabel( syst_shift ) << ": Object has pt= " << obj.pt() << " eta=" << obj.eta() << " flavour=" << obj.hadronFlavour()
+                std::cout << " In JetBTagWeight : " << shiftLabel( syst_shift ) << " SF type : " << btagSFreshape_ <<  " : Object has pt= " << obj.pt() << " eta=" << obj.eta() << " flavour=" << obj.hadronFlavour()
                           << " and we apply a weight of " << theWeight << std::endl;
             }
         }

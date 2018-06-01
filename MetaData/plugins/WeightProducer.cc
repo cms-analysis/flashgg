@@ -81,7 +81,7 @@ WeightProducer::produce( edm::Event &iEvent, const edm::EventSetup &iSetup )
 {
     edm::Handle<GenEventInfoProduct> genInfo;
     edm::Handle<std::vector<PileupSummaryInfo> > puInfo;
-    auto_ptr<double> pweight( new double( 1. ) );
+    unique_ptr<double> pweight( new double( 1. ) );
 
     if( ! iEvent.isRealData() ) {
         ( *pweight ) = lumiWeight_;
@@ -122,7 +122,7 @@ WeightProducer::produce( edm::Event &iEvent, const edm::EventSetup &iSetup )
 
     }
 
-    iEvent.put( pweight );
+    iEvent.put( std::move( pweight ) );
     return;
 }
 

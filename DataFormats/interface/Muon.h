@@ -26,10 +26,30 @@ namespace flashgg {
         float fggMiniIsoSumRel() const {return fggMiniIsoSumRel_;}
         void setFggMiniIsoSumRel( float val ) {fggMiniIsoSumRel_ = val;};
 
+        float fggMiniIsoCharged() const {return fggMiniIsoCharged_;}
+        void setFggMiniIsoCharged( float val ) {fggMiniIsoCharged_ = val;};
+
+        float fggMiniIsoNeutrals() const {return fggMiniIsoNeutrals_;}
+        void setFggMiniIsoNeutrals( float val ) {fggMiniIsoNeutrals_ = val;};
+
+        float fggMiniIsoPhotons() const {return fggMiniIsoPhotons_;}
+        void setFggMiniIsoPhotons( float val ) {fggMiniIsoPhotons_ = val;};
+
+        float fggMiniIsoPhotons2() const {return fggMiniIsoPhotons2_;}
+        void setFggMiniIsoPhotons2( float val ) {fggMiniIsoPhotons2_ = val;};
+
+        float fggMiniIsoPUCharged() const {return fggMiniIsoPUCharged_;}
+        void setFggMiniIsoPUCharged( float val ) {fggMiniIsoPUCharged_ = val;};
+
     private:
         float fggPFIsoSumRelR04_;
         float fggTrkIsoSumRelR03_;
         float fggMiniIsoSumRel_;
+        float fggMiniIsoCharged_;
+        float fggMiniIsoNeutrals_;
+        float fggMiniIsoPhotons_;
+        float fggMiniIsoPhotons2_;
+        float fggMiniIsoPUCharged_;
     };
 }
 

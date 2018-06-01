@@ -34,6 +34,7 @@ namespace flashgg {
         double muminiso_deadcone_ph_ = 0.01;
         double muminiso_deadcone_nh_ = 0.01;
         double muminiso_ptThresh_ = 0.5;
+        double muminiso_ptThresh_phot_ = 1.0;
 
     };
 
@@ -50,6 +51,7 @@ namespace flashgg {
         muminiso_deadcone_ph_ = iConfig.getParameter<double>( "muminiso_deadcone_ph" );
         muminiso_deadcone_nh_ = iConfig.getParameter<double>( "muminiso_deadcone_nh" );
         muminiso_ptThresh_ = iConfig.getParameter<double>( "muminiso_ptThresh" );
+        muminiso_ptThresh_phot_ = iConfig.getParameter<double>( "muminiso_ptThresh_phot" );
 
         produces<vector<flashgg::Muon> >();
     }
@@ -66,7 +68,7 @@ namespace flashgg {
 
         //        std::cout << "calling produce function " << std::endl;
 
-        std::auto_ptr<vector<flashgg::Muon> > muColl( new vector<flashgg::Muon> );
+        std::unique_ptr<vector<flashgg::Muon> > muColl( new vector<flashgg::Muon> );
 
         for( unsigned int muIndex = 0; muIndex < pmuons->size(); muIndex++ ) {
             Ptr<pat::Muon> pmu = pmuons->ptrAt( muIndex );//retain the same index as patMuon;
@@ -81,7 +83,7 @@ namespace flashgg {
             //MiniIsolation : https://twiki.cern.ch/twiki/bin/view/CMS/MiniIsolationSUSY
             float fggMiniIsoSumRel_ = 99999.;
             double iso_nh_(0.); double iso_ch_(0.); 
-            double iso_ph_(0.); double iso_pu_(0.);
+            double iso_ph_(0.); double iso_pu_(0.); double iso_ph2_(0.); 
             double par_pt_ =  pmu->pt();
             if(par_pt_ > 5.){
                 double r_iso_ = max(muminiso_r_min_,min(muminiso_r_max_, muminiso_kt_scale_/par_pt_ ));
@@ -100,6 +102,9 @@ namespace flashgg {
                             if (abs(pfc->pdgId())==22) {
                                 if(dr_ < muminiso_deadcone_ph_) continue;
                                 iso_ph_ += pfc->pt();
+                                if(pfc->pt()>muminiso_ptThresh_phot_) {
+                                    iso_ph2_ += pfc->pt();
+                                }
                                 /////////// NEUTRAL HADRONS ////////////
                             } else if (abs(pfc->pdgId())==130) {
                                 if(dr_ < muminiso_deadcone_nh_) continue;
@@ -123,10 +128,15 @@ namespace flashgg {
                 fggMiniIsoSumRel_ = ( iso_ch_ + max( 0., iso_nh_ + iso_ph_ - 0.5 * iso_pu_) ) / par_pt_ ;
             }
             fmu.setFggMiniIsoSumRel( fggMiniIsoSumRel_ );
-            
+            fmu.setFggMiniIsoCharged( iso_ch_ );
+            fmu.setFggMiniIsoNeutrals( iso_nh_ );
+            fmu.setFggMiniIsoPhotons( iso_ph_ );
+            fmu.setFggMiniIsoPUCharged( iso_pu_ );
+            fmu.setFggMiniIsoPhotons2( iso_ph2_ );
+
             muColl->push_back( fmu );
         }
-        evt.put( muColl );
+        evt.put( std::move( muColl ) );
     }
 }
 

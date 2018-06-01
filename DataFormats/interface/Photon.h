@@ -5,6 +5,7 @@
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 #include "flashgg/DataFormats/interface/WeightedObject.h"
+#include "FWCore/Utilities/interface/EDMException.h"
 
 #include <map>
 #include <string>
@@ -33,6 +34,9 @@ namespace flashgg {
         float egNeutralHadronIso() const {return  reco::Photon::neutralHadronIso();}
         float egPhotonIso() const {return  reco::Photon::photonIso();}
 
+        float r9() const { throw cms::Exception("Ambiguous R9") << " Please call flashgg::Photon::old_r9 or flashgg::Photon::full5x5_r9"; return -1.; };
+        float old_r9() const { return reco::Photon::r9(); }
+
         void setSipip( float val ) {sipip_ = val;};
         void setSieip( float val ) {sieip_ = val;};
         void setE2nd( float val ) {e2nd_ = val;};
@@ -49,6 +53,7 @@ namespace flashgg {
         void setS4( float val ) {S4_ = val;};
         void setpfPhoIso04( float val ) {pfPhoIso04_ = val;};
         void setpfPhoIso03( float val ) {pfPhoIso03_ = val;};
+        void setpfPhoIso03Corr( float val ) {pfPhoIso03Cor_ = val;};
         void setpfNeutIso04( float val ) {pfNeutIso04_ = val;};
         void setpfNeutIso03( float val ) {pfNeutIso03_ = val;};
         void setpfChgIso04( std::map<edm::Ptr<reco::Vertex>, float> valmap ) {  pfChgIso04_ = valmap; }; // concept: pass the pre-computed map when calling this in the producer
@@ -87,6 +92,7 @@ namespace flashgg {
         float const s4() const {return S4_;};
         float const pfPhoIso04() const {return pfPhoIso04_;};
         float const pfPhoIso03() const {return pfPhoIso03_;};
+        float const pfPhoIso03Corr() const {return pfPhoIso03Cor_;};
         float const pfNeutIso04() const {return pfNeutIso04_;};
         float const pfNeutIso03() const {return pfNeutIso03_;};
         std::map<edm::Ptr<reco::Vertex>, float> const pfChgIso04() const {return pfChgIso04_;};
@@ -162,6 +168,9 @@ namespace flashgg {
         void setStatusFlags( int32_t st) { return addUserInt("rechitStatus",st); };
         int32_t statusFlags() { return  (hasUserInt("rechitStatus")?userInt("rechitStatus"):-1); };
         bool checkStatusFlag( rechitSummaryFlags_t ibit) const { return (hasUserInt("rechitStatus")?userInt("rechitStatus")&(0x1<<ibit):0); };
+        inline bool hasSwitchToGain1(void)const{ return checkStatusFlag(kHasSwitchToGain1);};
+        inline bool hasSwitchToGain6(void)const{ return (checkStatusFlag(kHasSwitchToGain1)==false && checkStatusFlag(kHasSwitchToGain6));};
+        reco::SuperCluster* getSuperCluster() { return &superCluster_[0];};
 
     private:
         void setEnergyAtStep( std::string key, float val ); // updateEnergy should be used from outside the class to access this
@@ -171,8 +180,8 @@ namespace flashgg {
 
         float sipip_;
         float sieip_;
-        //        float zernike20_;
-        //        float zernike42_;
+        //float zernike20_;
+        //float zernike42_;
         float e2nd_;
         float e2x5right_;
         float e2x5left_;
@@ -187,6 +196,7 @@ namespace flashgg {
         float S4_;
         float pfPhoIso04_;
         float pfPhoIso03_;
+        float pfPhoIso03Cor_;
         float pfNeutIso04_;
         float pfNeutIso03_;
         float pfChgIsoWrtWorstVtx04_;

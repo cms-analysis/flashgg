@@ -1,0 +1,21 @@
+{
+	"data" : [
+"/SingleElectron/Run2017B-17Nov2017-v1/MINIAOD",
+"/SingleElectron/Run2017D-17Nov2017-v1/MINIAOD",
+"/SingleElectron/Run2017F-17Nov2017-v1/MINIAOD",
+"/DoubleEG/Run2017B-17Nov2017-v1/MINIAOD",
+"/DoubleEG/Run2017C-17Nov2017-v1/MINIAOD",
+"/DoubleEG/Run2017D-17Nov2017-v1/MINIAOD",
+"/DoubleEG/Run2017E-17Nov2017-v1/MINIAOD",
+"/DoubleEG/Run2017F-17Nov2017-v1/MINIAOD"
+	       ],
+	"sig"  : [
+
+	       ],
+	"bkg"  : [
+	"/GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM",
+	"/GJet_Pt-20toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM",
+	"/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM",
+	"/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM"
+	]
+}

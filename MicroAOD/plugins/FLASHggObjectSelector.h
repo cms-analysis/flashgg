@@ -5,6 +5,7 @@
 #include "flashgg/DataFormats/interface/Muon.h"
 #include "flashgg/DataFormats/interface/Photon.h"
 #include "flashgg/DataFormats/interface/Jet.h"
+#include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 
 #include "CommonTools/UtilAlgos/interface/StringCutObjectSelector.h"
 #include "CommonTools/UtilAlgos/interface/SingleObjectSelector.h"
@@ -33,6 +34,12 @@ namespace flashgg {
     std::vector<Jet>,
         StringCutObjectSelector<Jet>
         > FLASHggJetSelector;
+
+    typedef SingleObjectSelector <
+        std::vector<DiPhotonCandidate>,
+        StringCutObjectSelector<DiPhotonCandidate>
+        > FLASHggDiPhotonSelector;
+    
 
 }
 

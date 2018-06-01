@@ -1,0 +1,18 @@
+{
+	"data" : [
+	"/SingleElectron/Run2017A-PromptReco-v2/MINIAOD",
+	"/SingleElectron/Run2017A-PromptReco-v3/MINIAOD",
+	"/SingleElectron/Run2017B-PromptReco-v1/MINIAOD",
+	"/SingleElectron/Run2017B-PromptReco-v2/MINIAOD",
+	"/SingleElectron/Run2017C-PromptReco-v1/MINIAOD",
+	"/SingleElectron/Run2017C-PromptReco-v2/MINIAOD",
+	"/SingleElectron/Run2017C-PromptReco-v3/MINIAOD",
+	"/SingleElectron/Run2017D-PromptReco-v1/MINIAOD"
+	       ],
+	"sig"  : [
+	       ],
+	"bkg"  : [
+	"/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer17MiniAOD-92X_upgrade2017_realistic_v10_ext1-v2/MINIAODSIM",
+	"/GJet_DoubleEMEnriched_13TeV_pythia8/RunIISummer17MiniAOD-92X_upgrade2017_realistic_v10-v3/MINIAODSIM"
+	]
+}

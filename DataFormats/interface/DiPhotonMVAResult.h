@@ -20,7 +20,10 @@ namespace flashgg {
         float leadmva;
         float leadeta;
         float subleadeta;
+        float leadSigmaEoE;
+        float subleadSigmaEoE;
         float sigmarv;
+        float decorrSigmarv;
         float sigmawv;
         float CosPhi;
         float vtxprob;

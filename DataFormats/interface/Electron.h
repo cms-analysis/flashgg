@@ -30,6 +30,18 @@ namespace flashgg {
         bool passMVAMediumId( ) const {return passMVAMediumId_ ;}
         void setPassMVAMediumId( bool val ) { passMVAMediumId_ = val;}
 
+        bool passMVALooseId( ) const {return passMVALooseId_ ;}
+        void setPassMVALooseId( bool val ) { passMVALooseId_ = val;}
+
+        bool passMVATightNoIsoId( ) const {return passMVATightNoIsoId_ ;}
+        void setPassMVATightNoIsoId( bool val ) { passMVATightNoIsoId_ = val;}
+        
+        bool passMVAMediumNoIsoId( ) const {return passMVAMediumNoIsoId_ ;}
+        void setPassMVAMediumNoIsoId( bool val ) { passMVAMediumNoIsoId_ = val;}
+
+        bool passMVALooseNoIsoId( ) const {return passMVALooseNoIsoId_ ;}
+        void setPassMVALooseNoIsoId( bool val ) { passMVALooseNoIsoId_ = val;}
+
         bool passTightId( ) const {return passTightId_ ;}
         void setPassTightId( bool val ) { passTightId_ = val;}
         
@@ -53,6 +65,10 @@ namespace flashgg {
         bool hasMatchedConversion_;
         bool passMVATightId_;
         bool passMVAMediumId_;
+        bool passMVALooseId_;
+        bool passMVATightNoIsoId_;
+        bool passMVAMediumNoIsoId_;
+        bool passMVALooseNoIsoId_;
         bool passTightId_;
         bool passMediumId_;
         bool passLooseId_;

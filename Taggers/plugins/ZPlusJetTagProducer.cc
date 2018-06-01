@@ -82,8 +82,8 @@ namespace flashgg {
             evt.getByToken( tokenJets_[j], Jets[j] );
         }
        
-        std::auto_ptr<vector<ZPlusJetTag> >      tags  ( new vector<ZPlusJetTag> );
-        //        std::auto_ptr<vector<ZPlusJetTagTruth> > truths( new vector<ZPlusJetTagTruth> );
+        std::unique_ptr<vector<ZPlusJetTag> >      tags  ( new vector<ZPlusJetTag> );
+        //        std::unique_ptr<vector<ZPlusJetTagTruth> > truths( new vector<ZPlusJetTagTruth> );
 
         //        unsigned int idx = 0;
         //        edm::RefProd<vector<ZPlusJetTagTruth> > rTagTruth = evt.getRefBeforePut<vector<ZPlusJetTagTruth> >();
@@ -120,7 +120,7 @@ namespace flashgg {
 
             for( unsigned jetLoop = 0; jetLoop < Jets[candIndex]->size() ; jetLoop++ ) {
                 Ptr<flashgg::Jet> jet  = Jets[candIndex]->ptrAt( jetLoop );
-
+                //                if(!jet->passesJetID  ( flashgg::Loose ) ) { continue; }
                 if (jet->pt() < 20.) continue;
 
                 // close to lead photon?
@@ -139,12 +139,14 @@ namespace flashgg {
                 njets++;
             }
 
-            if (njets > 0) {
+            //if (njets > 0) {
                     ZPlusJetTag tag_obj( dipho, mvares, leadingJet, njets );
                     tag_obj.setDiPhotonIndex( candIndex );
                     tag_obj.setSystLabel    ( systLabel_ );
                     tag_obj.setIsGold ( evt.run() );
                     tag_obj.includeWeights( *dipho );
+                    if (njets > 0) 
+                        tag_obj.includeWeights( *leadingJet );
                     
                     //truth_obj.setGenPV( higgsVtx );
 
@@ -158,11 +160,10 @@ namespace flashgg {
                     //                    truths->push_back( truth_obj );
                     //                    tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<ZPlusJetTagTruth> >( rTagTruth, idx++ ) ) );
                     //                }
-            }
+                    // }
         }
-
-        evt.put( tags );
-        //        evt.put( truths );
+        evt.put( std::move( tags ) );
+        //        evt.put( std::move( truths ) );
     }
 }
 

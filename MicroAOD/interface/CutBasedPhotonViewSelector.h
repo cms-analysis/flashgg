@@ -26,7 +26,7 @@ namespace flashgg {
         CutBasedPhotonViewSelector( const edm::ParameterSet &config, edm::ConsumesCollector &cc );
 
         bool operator()( const SinglePhotonView &cand, const edm::EventBase &ev ) const;
-
+        bool operator()( const edm::Ref<edm::View<SinglePhotonView> > candref, const edm::EventBase &ev ) const;
     };
 
 }

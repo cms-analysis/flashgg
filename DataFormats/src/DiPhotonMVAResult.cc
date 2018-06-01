@@ -11,6 +11,7 @@ namespace flashgg {
         leadeta( -9999. ),
         subleadeta( -9999. ),
         sigmarv( -9999. ),
+        decorrSigmarv( -9999. ),
         sigmawv( -9999. ),
         CosPhi( -9999. ),
         vtxprob( -9999. ),

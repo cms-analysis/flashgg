@@ -10,13 +10,19 @@ namespace flashgg {
     class DiPhotonTagBase : public WeightedObject
     {
     public:
-        enum tag_t { kUndefined = 0, kUntagged, kVBF, kTTHHadronic, kTTHLeptonic, kVHTight, kVHLoose, kVHHadronic, kVHEt };
+        enum tag_t { kUndefined = 0, kUntagged, kVBF, kTTHHadronic, kTTHLeptonic, kTTHDiLepton, kVHTight, kVHLoose, kVHHadronic, kVHEt,  kZHLeptonic, kWHLeptonic, kVHLeptonicLoose, kVHMet };
 
         DiPhotonTagBase();
         virtual ~DiPhotonTagBase(); 
         DiPhotonTagBase( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult );
         DiPhotonTagBase( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult> );
         const edm::Ptr<DiPhotonCandidate> diPhoton() const { return dipho_; }
+
+        const flashgg::Photon *leadingPhoton() const { return dipho_->leadingPhoton(); }
+        const flashgg::Photon *subLeadingPhoton() const { return dipho_->subLeadingPhoton(); }
+        const flashgg::SinglePhotonView *leadingView() const { return dipho_->leadingView(); }
+        const flashgg::SinglePhotonView *subLeadingView() const { return dipho_->subLeadingView(); }
+
         const DiPhotonMVAResult diPhotonMVA() const { return mva_result_; }
         int diPhotonIndex() const {return diPhotonIndex_;}
         void setDiPhotonIndex( int i ) { diPhotonIndex_ = i; }

@@ -22,22 +22,22 @@ namespace flashgg {
         edm::Ptr<Jet> jet() const { return theJet_; }
         unsigned nJets() const { return njets_; }
 
-        const float jetPt() const { return theJet_->pt(); }
-        const float jetEta() const { return theJet_->eta(); }
-        const float jetPhi() const { return theJet_->phi(); }
+        const float jetPt() const { if (njets_>0) {return theJet_->pt();} else return -999;}
+        const float jetEta() const { if (njets_>0) {return theJet_->eta();} else return -999; }
+        const float jetPhi() const { if (njets_>0) {return theJet_->phi();} else return -999; }
 
-        const float jet_HFHadronEnergyFraction() const { return theJet_->HFHadronEnergyFraction(); }
-        const float jet_HFHadronEnergy() const { return theJet_->HFHadronEnergy(); }
-        const float jet_HFHadronMultiplicity() const { return theJet_->HFHadronMultiplicity(); }
-        const float jet_HFEMEnergyFraction() const { return theJet_->HFEMEnergyFraction(); }
-        const float jet_HFEMEnergy() const { return theJet_->HFEMEnergy(); }
-        const float jet_HFEMMultiplicity() const { return theJet_->HFEMMultiplicity(); }
+        const float jet_HFHadronEnergyFraction() const { if (njets_>0) {return theJet_->HFHadronEnergyFraction();} else return -999; }
+        const float jet_HFHadronEnergy() const { if (njets_>0) {return theJet_->HFHadronEnergy();} else return -999; }
+        const float jet_HFHadronMultiplicity() const { if (njets_>0) {return theJet_->HFHadronMultiplicity();} else return -999; }
+        const float jet_HFEMEnergyFraction() const { if (njets_>0) {return theJet_->HFEMEnergyFraction();} else return -999; }
+        const float jet_HFEMEnergy() const { if (njets_>0) {return theJet_->HFEMEnergy();} else return -999; }
+        const float jet_HFEMMultiplicity() const { if (njets_>0) {return theJet_->HFEMMultiplicity();} else return -999; }
  
-        const float jet_rms() const { return theJet_->rms(); }
-        const float jet_QGL() const { return theJet_->QGL(); }
-        const float jet_rawPt() const { return theJet_->correctedJet("Uncorrected").pt(); }
+        const float jet_rms() const { if (njets_>0) {return theJet_->rms();} else return -999; }
+        const float jet_QGL() const { if (njets_>0) {return theJet_->QGL();} else return -999; }
+        const float jet_rawPt() const { if (njets_>0) {return theJet_->correctedJet("Uncorrected").pt();} else return -999; }
 
-        const bool jet_match() const { return (theJet_->genJet() != 0); }
+        const bool jet_match() const { if (njets_>0) { return (theJet_->genJet() != 0);} else return -999; }
 
         edm::Ptr<DiPhotonCandidate> theZ() const { return diPhoton(); }
         const float zMass() const { return diPhoton()->mass(); }
@@ -45,7 +45,7 @@ namespace flashgg {
         const float zEta() const { return diPhoton()->eta(); }
         const float zPhi() const { return diPhoton()->phi(); }
 
-        const float deltaPhiZJet() const { return deltaPhi( diPhoton()->phi(), theJet_->phi() ) ; } // not the absolute value
+        const float deltaPhiZJet() const { if (njets_>0) { return deltaPhi( diPhoton()->phi(), theJet_->phi() ) ;} else return -999; } // not the absolute value
 
         const int smartIndex() const { return diPhoton()->jetCollectionIndex(); }
 

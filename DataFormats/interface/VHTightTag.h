@@ -4,7 +4,7 @@
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "flashgg/DataFormats/interface/Jet.h"
-#include "DataFormats/PatCandidates/interface/MET.h"
+#include "flashgg/DataFormats/interface/Met.h"
 #include "flashgg/DataFormats/interface/Electron.h"
 #include "flashgg/DataFormats/interface/Muon.h"
 
@@ -19,15 +19,15 @@ namespace flashgg {
         ~VHTightTag();
 
         VHTightTag *clone() const override { return ( new VHTightTag( *this ) ); }
-
+        
         const std::vector<edm::Ptr<Muon> > muons() const { return Muons_;}
         const std::vector<edm::Ptr<flashgg::Electron> > electrons() const {return Electrons_;}
         const std::vector<edm::Ptr<Jet> > jets() const { return Jets_;}
-        const std::vector<edm::Ptr<pat::MET> > met() const { return MET_;}
-
+        const edm::Ptr<flashgg::Met>  met() const { return MET_;}
+        
         void setJets( std::vector<edm::Ptr<Jet> > Jets ) { Jets_ = Jets; }
         void setMuons( std::vector<edm::Ptr<Muon> > Muons ) {Muons_ = Muons;}
-        void setMET( std::vector<edm::Ptr<pat::MET> > MET ) {MET_ = MET;}
+        void setMET( edm::Ptr<flashgg::Met> MET ) {MET_ = MET;}
         void setElectrons( std::vector<edm::Ptr<Electron> > Electrons ) {Electrons_ = Electrons;}
 
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kVHTight; }
@@ -36,7 +36,7 @@ namespace flashgg {
         std::vector<edm::Ptr<Muon> > Muons_;
         std::vector<edm::Ptr<Electron> > Electrons_;
         std::vector<edm::Ptr<Jet> > Jets_;
-        std::vector<edm::Ptr<pat::MET> > MET_;
+        edm::Ptr<flashgg::Met> MET_;
     };
 }
 

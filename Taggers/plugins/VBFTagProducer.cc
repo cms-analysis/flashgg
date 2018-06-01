@@ -1,3 +1,4 @@
+
 #include "FWCore/Framework/interface/EDProducer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
@@ -14,6 +15,9 @@
 #include "flashgg/DataFormats/interface/VBFTagTruth.h"
 
 #include "DataFormats/Common/interface/RefToPtr.h"
+
+#include "flashgg/DataFormats/interface/PDFWeightObject.h"
+#include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
 
 #include <vector>
 #include <algorithm>
@@ -41,11 +45,22 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonMVAResult> >      mvaResultToken_;
         EDGetTokenT<View<reco::GenParticle> >      genPartToken_;
         EDGetTokenT<View<reco::GenJet> >           genJetToken_;
+        edm::EDGetTokenT<vector<flashgg::PDFWeightObject> > WeightToken_;
+        EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
+        EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
+        EDGetTokenT<float> pTHToken_,pTVToken_;
+
         string systLabel_;
 
         bool dropNonGoldData_;
         bool setArbitraryNonGoldMC_;
         bool requireVBFPreselection_;
+        bool getQCDWeights_;
+
+        float vbfPreselLeadPtMin_;
+        float vbfPreselSubleadPtMin_;
+
+        float vbfPreselPhoIDMVAMin_;
 
         vector<double> boundaries;
 
@@ -57,13 +72,27 @@ namespace flashgg {
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
         genPartToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         genJetToken_ ( consumes<View<reco::GenJet> >( iConfig.getParameter<InputTag> ( "GenJetTag" ) ) ),
+        WeightToken_( consumes<vector<flashgg::PDFWeightObject> >( iConfig.getUntrackedParameter<InputTag>( "WeightTag", InputTag( "flashggPDFWeightObject" ) ) ) ),
         systLabel_   ( iConfig.getParameter<string> ( "SystLabel" ) ),
         dropNonGoldData_   ( iConfig.getParameter<bool> ( "DropNonGoldData" ) ),
         setArbitraryNonGoldMC_   ( iConfig.getParameter<bool> ( "SetArbitraryNonGoldMC" ) ),
-        requireVBFPreselection_   ( iConfig.getParameter<bool> ( "RequireVBFPreselection" ) )
+        requireVBFPreselection_   ( iConfig.getParameter<bool> ( "RequireVBFPreselection" ) ),
+        getQCDWeights_( iConfig.getParameter<bool>( "GetQCDWeights" ) ),
+        vbfPreselLeadPtMin_( iConfig.getParameter<double>( "VBFPreselLeadPtMin" ) ),
+        vbfPreselSubleadPtMin_( iConfig.getParameter<double>( "VBFPreselSubleadPtMin" ) ),
+        vbfPreselPhoIDMVAMin_( iConfig.getParameter<double>( "VBFPreselPhoIDMVAMin") )
     {
         boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
         assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception
+
+        ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
+        stage0catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0cat") );
+        stage1catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1cat") );
+        njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
+        pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
+        pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
+        newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
+
         
         produces<vector<VBFTag> >();
         produces<vector<VBFTagTruth> >();
@@ -81,6 +110,16 @@ namespace flashgg {
     
     void VBFTagProducer::produce( Event &evt, const EventSetup & )
     {
+        Handle<int> stage0cat, stage1cat, njets;
+        Handle<float> pTH, pTV;
+        evt.getByToken(stage0catToken_, stage0cat);
+        evt.getByToken(stage1catToken_,stage1cat);
+        evt.getByToken(njetsToken_,njets);
+        evt.getByToken(pTHToken_,pTH);
+        evt.getByToken(pTVToken_,pTV);
+        Handle<HTXS::HiggsClassification> htxsClassification;
+        evt.getByToken(newHTXSToken_,htxsClassification);
+
 
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
@@ -94,8 +133,13 @@ namespace flashgg {
         Handle<View<reco::GenParticle> > genParticles;
         Handle<View<reco::GenJet> > genJets;
         
-        std::auto_ptr<vector<VBFTag> >      tags  ( new vector<VBFTag> );
-        std::auto_ptr<vector<VBFTagTruth> > truths( new vector<VBFTagTruth> );
+        Handle<vector<flashgg::PDFWeightObject> > WeightHandle;
+        if (getQCDWeights_) {
+            evt.getByToken( WeightToken_, WeightHandle );
+        }
+
+        std::unique_ptr<vector<VBFTag> >      tags  ( new vector<VBFTag> );
+        std::unique_ptr<vector<VBFTagTruth> > truths( new vector<VBFTagTruth> );
 
         unsigned int idx = 0;
         edm::RefProd<vector<VBFTagTruth> > rTagTruth = evt.getRefBeforePut<vector<VBFTagTruth> >();
@@ -152,6 +196,96 @@ namespace flashgg {
             tag_obj.setSystLabel    ( systLabel_ );
 
             tag_obj.includeWeights( *dipho );
+            if ( tag_obj.VBFMVA().dijet_Mjj > 0. ) {
+
+                // We don't want to include all the jet weights because btag weights are not relevant
+                // tag_obj.includeWeights( *(tag_obj.VBFMVA().leadJet_ptr) );
+                // tag_obj.includeWeights( *(tag_obj.VBFMVA().subleadJet_ptr) );
+
+                // So we do some tricky surgery instead, to get only the UnmatchedPUWeight
+                float tagcorig = tag_obj.centralWeight();
+                float j1corig = tag_obj.VBFMVA().leadJet_ptr->centralWeight();
+                float j2corig = tag_obj.VBFMVA().subleadJet_ptr->centralWeight();
+                float j1cadjust = tag_obj.VBFMVA().leadJet_ptr->weight("UnmatchedPUWeightCentral"); // stored without scaling to overall central
+                float j2cadjust = tag_obj.VBFMVA().subleadJet_ptr->weight("UnmatchedPUWeightCentral"); // stored without scaling to overall central
+                float j1upadjust = 1.;
+                float j2upadjust = 1.;
+                float j1downadjust = 1.;
+                float j2downadjust = 1.;
+                if (tag_obj.VBFMVA().leadJet_ptr->hasWeight("UnmatchedPUWeightUp01sigma") ) {
+                    j1upadjust = tag_obj.VBFMVA().leadJet_ptr->weight("UnmatchedPUWeightUp01sigma")  / j1corig;
+                    j1downadjust = tag_obj.VBFMVA().leadJet_ptr->weight("UnmatchedPUWeightDown01sigma") / j1corig;
+                }
+                if (tag_obj.VBFMVA().leadJet_ptr->hasWeight("UnmatchedPUWeightUp01sigma") ) {
+                    j2upadjust = tag_obj.VBFMVA().subleadJet_ptr->weight("UnmatchedPUWeightUp01sigma") / j2corig;
+                    j2downadjust = tag_obj.VBFMVA().subleadJet_ptr->weight("UnmatchedPUWeightDown01sigma") / j2corig;
+                }
+                if (false && systLabel_ == "") {
+                    std::cout << "tagcorig j1cadjust j2cadjust j1upadjust j2upadjust j1downadjust j2downadjust ";
+                    std::cout << tagcorig << " " << j1cadjust << " "<< j2cadjust << " "<< j1upadjust << " "<< j2upadjust << " "<< j1downadjust << " "<< j2downadjust << std::endl;
+                }
+                for (auto it = tag_obj.weightListBegin() ; it != tag_obj.weightListEnd(); it++) {
+                    tag_obj.setWeight(*it,tag_obj.weight(*it) * j1cadjust * j2cadjust); 
+                }
+                if (tag_obj.VBFMVA().leadJet_ptr->hasWeight("UnmatchedPUWeightUp01sigma") ) {
+                    tag_obj.setWeight("UnmatchedPUWeightUp01sigma", tag_obj.centralWeight() * j1upadjust * j2upadjust );
+                    tag_obj.setWeight("UnmatchedPUWeightDown01sigma", tag_obj.centralWeight() * j1downadjust * j2downadjust );
+                }
+
+                if (false && systLabel_ == "") {
+                    for (auto it = tag_obj.weightListBegin() ; it != tag_obj.weightListEnd(); it++) {
+                        std::cout << "SCZ Weight Debug " << *it << " " << tag_obj.weight(*it) << std::endl;
+                        
+                    }
+                }
+            }
+            
+            if ( getQCDWeights_ ) {
+                for( unsigned int weight_index = 0; weight_index < (*WeightHandle).size(); weight_index++ ){
+                    vector<uint16_t> compressed_weights = (*WeightHandle)[weight_index].pdf_weight_container;
+                    std::vector<float> uncompressed = (*WeightHandle)[weight_index].uncompress( compressed_weights );
+                    vector<uint16_t> compressed_alpha = (*WeightHandle)[weight_index].alpha_s_container;
+                    std::vector<float> uncompressed_alpha = (*WeightHandle)[weight_index].uncompress( compressed_alpha );
+                    vector<uint16_t> compressed_scale = (*WeightHandle)[weight_index].qcd_scale_container;
+                    std::vector<float> uncompressed_scale = (*WeightHandle)[weight_index].uncompress( compressed_scale );
+
+                    for( unsigned int j=1; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
+                        //                        cout << "compresed weight " << j << " " << " " << (*WeightHandle)[weight_index].pdf_weight_container[j] << endl;
+                        //                        cout << "uncompressed weight " << j << " " << uncompressed[j] << endl;
+                        tag_obj.setPdf(j-1,uncompressed[j]/uncompressed[0]);
+                    }
+                    //                    for( unsigned int j=0; j<(*WeightHandle)[weight_index].alpha_s_container.size();j++ ) {
+                        //                        cout << "compressed variation " << (*WeightHandle)[weight_index].alpha_s_container[j] << endl;
+                        //                        cout << "uncompressed variation " << j << " " << uncompressed_alpha[j] << endl;
+                    //                    }
+                    tag_obj.setAlphaUp(uncompressed_alpha[0]/uncompressed[0]);
+                    tag_obj.setAlphaDown(uncompressed_alpha[1]/uncompressed[0]);
+                    tag_obj.setScaleUp(0,uncompressed_scale[1]/uncompressed_scale[0]);
+                    tag_obj.setScaleDown(0,uncompressed_scale[2]/uncompressed_scale[0]);
+                    tag_obj.setScaleUp(1,uncompressed_scale[3]/uncompressed_scale[0]);
+                    tag_obj.setScaleDown(1,uncompressed_scale[6]/uncompressed_scale[0]);
+                    tag_obj.setScaleUp(2,uncompressed_scale[4]/uncompressed_scale[0]);
+                    tag_obj.setScaleDown(2,uncompressed_scale[8]/uncompressed_scale[0]);
+
+                    //                    for( unsigned int j=0; j<(*WeightHandle)[weight_index].qcd_scale_container.size();j++ ) {
+                        //                        cout << "compressed scale " << (*WeightHandle)[weight_index].qcd_scale_container[j] << endl;
+                        //                        cout << "uncompressed scale " << j << " " << uncompressed_scale[j] << endl;
+                    //                    }
+
+                    //                    std::cout << "Alpha Up: " << tag_obj.alphaUp() << std::endl;
+                    //                    std::cout << "Alpha Down: " << tag_obj.alphaDown() <<std::endl;
+
+                    //                    for ( unsigned int j = 0 ; j < 3 ; j++) {
+                        //                        std::cout << "Scale Up [" << j << "]: " << tag_obj.scaleUp(j) << std::endl;
+                        //                        std::cout << "Scale Down [" << j  << "]: " << tag_obj.scaleDown(j) << std::endl;
+                    //                    }
+                    
+                    
+
+                }
+
+            }
+
 
             if ( evt.isRealData() ) {
                 tag_obj.setIsGold ( evt.run() );
@@ -243,6 +377,23 @@ namespace flashgg {
                 if( index_subsubleadq < std::numeric_limits<unsigned int>::max()) { truth_obj.setSubSubLeadingParton( genParticles->ptrAt( index_subsubleadq ));}
 
                 truth_obj.setGenPV( higgsVtx );
+                if ( stage0cat.isValid() ) {
+                    truth_obj.setHTXSInfo( *( stage0cat.product() ),
+                                           *( stage1cat.product() ),
+                                           *( njets.product() ),
+                                           *( pTH.product() ),
+                                           *( pTV.product() ) );
+                } else if ( htxsClassification.isValid() ) {
+                    truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
+                                           htxsClassification->stage1_cat_pTjet30GeV,
+                                           htxsClassification->jets30.size(),
+                                           htxsClassification->p4decay_higgs.pt(),
+                                           htxsClassification->p4decay_V.pt() );
+
+                } else {
+                    truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
+                }
+
                 // Yacine: filling tagTruth Tag with 3 jets matchings
                 // the idea is to fill the truth_obj using Jack's 
                 // implementation
@@ -415,6 +566,7 @@ namespace flashgg {
 
             bool VBFpresel = 1;
             if ( requireVBFPreselection_ ) {
+
                 /*
                 std::cout << "  Requiring VBF Preselection... dijet_LeadJPt=" << tag_obj.VBFMVA().dijet_LeadJPt
                           << " dijet_SubJPt=" << tag_obj.VBFMVA().dijet_SubJPt
@@ -423,11 +575,13 @@ namespace flashgg {
                           << " dijet_Mjj=" << tag_obj.VBFMVA().dijet_Mjj << std::endl;
                 */
 
-                VBFpresel = ( tag_obj.VBFMVA().dijet_LeadJPt > 30. 
-                                && tag_obj.VBFMVA().dijet_SubJPt > 20. 
-                                && tag_obj.VBFMVA().leadPho_PToM > (1./3) 
-                                && tag_obj.VBFMVA().sublPho_PToM > (1./4) 
-                                && tag_obj.VBFMVA().dijet_Mjj > 250. );
+                VBFpresel = ( tag_obj.VBFMVA().dijet_LeadJPt > vbfPreselLeadPtMin_ 
+                              && tag_obj.VBFMVA().dijet_SubJPt > vbfPreselSubleadPtMin_ 
+                              && tag_obj.diPhoton()->leadPhotonId() > vbfPreselPhoIDMVAMin_
+                              && tag_obj.diPhoton()->subLeadPhotonId() > vbfPreselPhoIDMVAMin_
+                              && tag_obj.VBFMVA().leadPho_PToM > (1./3) 
+                              && tag_obj.VBFMVA().sublPho_PToM > (1./4) 
+                              && tag_obj.VBFMVA().dijet_Mjj > 250. );
 
                 //                std::cout << "  VBFpresel=" << VBFpresel << std::endl;
             }
@@ -442,8 +596,8 @@ namespace flashgg {
             }
         }
 
-        evt.put( tags );
-        evt.put( truths );
+        evt.put( std::move( tags ) );
+        evt.put( std::move( truths ) );
     }
 }
 

@@ -7,6 +7,7 @@ DEFINE_FWK_MODULE( FLASHggPhotonSelector );
 DEFINE_FWK_MODULE( FLASHggMuonSelector );
 DEFINE_FWK_MODULE( FLASHggElectronSelector );
 DEFINE_FWK_MODULE( FLASHggJetSelector );
+DEFINE_FWK_MODULE( FLASHggDiPhotonSelector );
 
 // Local Variables:
 // mode:c++

@@ -1,0 +1,21 @@
+{
+    "processes" : {
+    		"ggh_UEUp" : ["/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_CUETP8M1Up"],
+		"ggh_PSUp" : ["/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_UpPS"],
+		"vbf_UEUp" : ["/VBFHToGG_M125_13TeV_amcatnlo_pythia8_CUETP8M1Up"],
+		"vbf_PSUp" : ["/VBFHToGG_M125_13TeV_amcatnlo_pythia8_UpPS"],
+		"ggh_UEDown" : ["/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_CUETP8M1Down"],
+		"ggh_PSDown" : ["/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS"],
+		"vbf_UEDown" : ["/VBFHToGG_M125_13TeV_amcatnlo_pythia8_CUETP8M1Down"],
+		"vbf_PSDown" : ["/VBFHToGG_M125_13TeV_amcatnlo_pythia8_DownPS"],
+                "tth_UEUp" : ["/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CUETP8M1Up"],
+                "tth_PSUp" : ["/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS"],
+                "zh_UEUp" : ["/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CUETP8M1Up"],
+                "zh_PSUp" : ["/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS"],
+                "tth_UEDown" : ["/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CUETP8M1Down"],
+                "tth_PSDown" : ["/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_DownPS"],
+                "zh_UEDown" : ["/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CUETP8M1Down"],
+                "zh_PSDown" : ["/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_DownPS"]
+     },	
+        "cmdLine" : "campaign=RunIISummer16-2_4_1-25ns_Moriond17"
+}

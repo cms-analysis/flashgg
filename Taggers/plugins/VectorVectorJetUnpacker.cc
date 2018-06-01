@@ -34,9 +34,12 @@ namespace flashgg {
         jetsToken_( consumes<View<vector<flashgg::Jet> > >( iConfig.getParameter<InputTag>( "JetsTag" ) ) ),
         nCollections_( iConfig.getParameter<unsigned int>( "NCollections" ) )
     {
-        if( nCollections_ > 9 ) {
-            throw cms::Exception( "Configuration" ) << " Number of jet collections more than 1 digit long is unreasonable";
+        if( nCollections_ > 99 ) {
+            throw cms::Exception( "Configuration" ) << " Number of jet collections more than 2 digits long is extremely unreasonable";
             // We never needed more than 3 in tests; 5 should be safe. 10 would be bonkers
+            // Update from two years later: we finally needed more than 8 for this file/event:
+            // /store/data/Run2016E/DoubleEG/MINIAOD/03Feb2017-v1/80000/CA5635A7-ACEA-E611-B569-002590D9D8D4.root
+            // [0] Processing run: 277127 lumi: 809 event: 1511130886
         }
         for( unsigned int i = 0 ; i < nCollections_ ; i++ ) {
             char number[2];
@@ -56,7 +59,7 @@ namespace flashgg {
         }
 
         for( unsigned int i = 0 ; i < nCollections_ ; i++ ) {
-            auto_ptr<vector<Jet> > result( new vector<Jet> );
+            unique_ptr<vector<Jet> > result( new vector<Jet> );
             if( theJets->size() > i ) {
                 for( unsigned int j = 0 ; j < theJets->at( i ).size() ; j++ ) {
                     result->push_back( theJets->at( i )[j] );
@@ -64,7 +67,7 @@ namespace flashgg {
             }
             char number[2];
             sprintf( number, "%u", i );
-            evt.put( result, number );
+            evt.put( std::move( result) , number );
         }
     }
 }

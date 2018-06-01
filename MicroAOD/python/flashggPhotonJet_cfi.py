@@ -32,7 +32,8 @@ flashggPhotonJet = cms.EDProducer('FlashggPhotonJetProducer',
                                   vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_SL_2016.xml"),
 
                                   useSingleLeg=cms.bool(True),
-					
+                                  useZerothVertexFromMicro = cms.bool(False),
+
                                   minJetPt = cms.double(30.),
                                   maxJetEta = cms.double(2.5),
 				  minPhotonPt = cms.double(55.),

@@ -1,0 +1,36 @@
+{
+    "processes" : {
+
+
+    	"InsideAcceptance_125"  :[
+				[ "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/ferrif-RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2-2_2_0-v0-RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14-v1-9d6acec11aa5264fedffe5a321afb429/USER",
+				{ "args" :["outputFile=output_GluGluToHToGG_M125_amcatnloFXFX_pythia8"] } ],
+		       	 	[ "/VBFHToGG_M125_13TeV_amcatnlo_pythia8/ferrif-RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2-2_2_0-v0-RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14_ext2-v1-9d6acec11aa5264fedffe5a321afb429/USER",
+				{ "args" :["outputFile=output_VBFHToGG_M125_13TeV_amcatnlo_pythia8"] } ],
+				"/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8",
+				"/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_v2"
+
+	 ]
+    },
+    "_processes" : {
+
+
+    	"InsideAcceptance_120"  :[
+				"/GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8",
+		       	 	"/VBFHToGG_M120_13TeV_amcatnlo_pythia8",
+				"/VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8",
+				"/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8_v2"
+
+	 ],
+
+    	"InsideAcceptance_130"  :[
+				"/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8",
+		       	 	"/VBFHToGG_M130_13TeV_amcatnlo_pythia8",
+				"/VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8",
+		      	        "/ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8_v2"
+
+	 ]
+
+     },	
+        "cmdLine" : "campaign=RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2_Workspaces doFiducial=True acceptance=IN"
+}

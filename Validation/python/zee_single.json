@@ -1,12 +1,15 @@
 {
     "processes" : {
         "data_single" : [ 
-	"/SingleElectron/ferrif-RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-Run2015D-16Dec2015-v1-5edb826a5c37da64e53f7a0f39c62a72/USER",
-	"/SingleElectron/sethzenz-RunIIFall15DR76-1_3_0-25ns-1_3_0-v0-Run2015C_25ns-16Dec2015-v1-b7e5c192bb12d549953ce69d2b654ac8/USER"
-        ],
+	      "/SingleElectron/musella-EXOSpring16_v1_p3-diphotons_80_v1-v0-Run2016B-PromptReco-v1-ea408274daa18c6402a808da38fd2b89/USER",
+	      "/SingleElectron/musella-EXOSpring16_v1_p3-diphotons_80_v1-v0-Run2016B-PromptReco-v2-ea408274daa18c6402a808da38fd2b89/USER",
+	      "/SingleElectron/musella-EXOSpring16_v1_p5-Moriond16WSFinal-70-ga303087-v0-Run2016B-PromptReco-v2-5c50ce53d80a6fec7ad55686b342f79d/USER",
+	      "/SingleElectron/musella-EXOSpring16_v1_p8-Moriond16WSFinal-106-ga327d4a-v0-Run2016B-PromptReco-v2-a5f1c0c964d9d1f7d2e18cd5bbce5233/USER",
+	      "/SingleElectron/spigazzi-EXOSpring16_v1_p6-Moriond16WSFinal-74-g8fd901f-v0-Run2016B-PromptReco-v2-5c50ce53d80a6fec7ad55686b342f79d/USER"
+			],
 	"mc_single" : [
-	"/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/ferrif-RunIIFall15DR76-1_3_0-25ns_ext1-1_3_1-v0-RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1-9dd966127498bcac8c2a422833c3836e/USER"
+	      "/DYToEE_NNPDF30_13TeV-powheg-pythia8/ferrif-RunIISpring16DR80X-2_0_0-25ns-2_0_0-v0-RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1-ab7f7a5fb9fbc4628a618ccc220a1e9e/USER"
 	]
      },
-     "cmdLine" : "campaign=RunIIFall15DR76 targetLumi=2.6e+3 puTarget=1.34e+05,6.34e+05,8.42e+05,1.23e+06,2.01e+06,4.24e+06,1.26e+07,4.88e+07,1.56e+08,3.07e+08,4.17e+08,4.48e+08,4.04e+08,3.05e+08,1.89e+08,9.64e+07,4.19e+07,1.71e+07,7.85e+06,4.2e+06,2.18e+06,9.43e+05,3.22e+05,8.9e+04,2.16e+04,5.43e+03,1.6e+03,551,206,80.1,31.2,11.9,4.38,1.54,0.518,0.165,0.0501,0.0144,0.00394,0.00102,0.000251,5.87e-05,1.3e-05,2.74e-06,5.47e-07,1.04e-07,1.86e-08,3.18e-09,5.16e-10,9.35e-11"	
+     "cmdLine" : "campaign=RunIISpring16DR80X-2_0_0-25ns lumiMask=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/Cert_271036-274443_13TeV_PromptReco_Collisions16_JSON.txt targetLumi=1.82e+03 puTarget=2.18e+03,2.4e+04,7e+04,1.98e+05,3.61e+05,6.19e+05,1.29e+06,9e+06,2.33e+07,3.11e+07,4.09e+07,5.77e+07,8.37e+07,1.16e+08,1.51e+08,1.84e+08,2.06e+08,2.11e+08,2.01e+08,1.82e+08,1.56e+08,1.28e+08,9.8e+07,7.05e+07,4.72e+07,2.94e+07,1.71e+07,9.23e+06,4.68e+06,2.24e+06,1.02e+06,4.36e+05,1.78e+05,6.87e+04,2.51e+04,8.62e+03,2.79e+03,851,244,66.2,17.1,4.25,1.04,0.257,0.0658,0.0178,0.00504,0.00146,0.000424,0.000121"
 }

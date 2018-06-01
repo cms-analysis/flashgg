@@ -18,6 +18,8 @@
 #include "CommonTools/Utils/interface/StringObjectFunction.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
+#include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
+
 
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/ConsumesCollector.h"
@@ -32,6 +34,8 @@
 #include "flashgg/MicroAOD/interface/CutAndClassBasedClassifier.h"
 #include "flashgg/Taggers/interface/GlobalVariablesDumper.h"
 #include "flashgg/DataFormats/interface/PDFWeightObject.h"
+#include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
+
 
 #include "FWCore/Utilities/interface/Exception.h"
 
@@ -86,14 +90,18 @@ namespace flashgg {
     protected:
         double eventWeight( const edm::EventBase &event );
         vector<double> pdfWeights( const edm::EventBase &event );
+        int getStage0cat( const edm::EventBase &event );
 
         classifier_type classifier_;
 
-        edm::InputTag src_, genInfo_, pdfWeight_;
+        edm::InputTag src_, genInfo_, pdfWeight_ , lheEvent_;
 
         edm::EDGetTokenT<collection_type> srcToken_;
         edm::EDGetTokenT<GenEventInfoProduct> genInfoToken_;
         edm::EDGetTokenT<std::vector<flashgg::PDFWeightObject> > pdfWeightToken_;
+        edm::EDGetTokenT< LHEEventProduct > lheEventToken_;
+        std::string LHEWeightName;
+        int LHEWeightIndex;
 
         std::string processId_;
         int processIndex_;
@@ -121,6 +129,12 @@ namespace flashgg {
         int nPdfWeights_;
         int nAlphaSWeights_;
         int nScaleWeights_;
+        bool splitPdfByStage0Cat_;
+        int stage0cat_;
+        edm::InputTag stage0catTag_;
+        edm::EDGetTokenT<int> stage0catToken_;
+        edm::InputTag newHTXSTag_;
+        edm::EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;  
 
         //std::map<std::string, std::vector<dumper_type> > dumpers_; FIXME template key
         std::map< KeyT, std::vector<dumper_type> > dumpers_;
@@ -141,6 +155,7 @@ namespace flashgg {
         src_( cfg.getParameter<edm::InputTag>( "src" ) ),
         genInfo_( cfg.getParameter<edm::InputTag>( "generatorInfo" ) ),
         pdfWeight_( cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject", edm::InputTag("flashggPDFWeightObject") ) ),
+        lheEvent_( cfg.getUntrackedParameter<edm::InputTag>("LHEEventProduct", edm::InputTag("externalLHEProducer") ) ),
         dumpGlobalVariables_( cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true ) ),
         globalVarsDumper_(0)
     {
@@ -157,10 +172,16 @@ namespace flashgg {
         src_( cfg.getParameter<edm::InputTag>( "src" ) ),
         genInfo_( cfg.getParameter<edm::InputTag>( "generatorInfo" ) ),
         pdfWeight_( cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject", edm::InputTag("flashggPDFWeightObject") ) ),
+        lheEvent_( cfg.getUntrackedParameter<edm::InputTag>("LHEEventProduct", edm::InputTag("externalLHEProducer") ) ),
         srcToken_( cc.consumes<collection_type>( src_ ) ),
         genInfoToken_( cc.consumes<GenEventInfoProduct>( genInfo_ ) ),
         pdfWeightToken_( cc.consumes<std::vector<flashgg::PDFWeightObject> >( pdfWeight_ ) ),
+        lheEventToken_( cc.consumes<LHEEventProduct>( lheEvent_ ) ),
         dumpGlobalVariables_( cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true ) ),
+        stage0catTag_( cfg.getUntrackedParameter<edm::InputTag>( "stage0catTag", edm::InputTag("rivetProducerHTXS","stage0cat") ) ),
+        stage0catToken_( cc.consumes<int>( stage0catTag_ ) ),
+        newHTXSTag_( cfg.getUntrackedParameter<edm::InputTag>( "classificationObj", edm::InputTag("rivetProducerHTXS","HiggsClassification") ) ),
+        newHTXSToken_( cc.consumes<HTXS::HiggsClassification>( newHTXSTag_ ) ),
         globalVarsDumper_(0)
     {
         if( dumpGlobalVariables_ ) {
@@ -172,6 +193,8 @@ namespace flashgg {
     template<class C, class T, class U>
     void CollectionDumper<C, T, U>::_init( const edm::ParameterSet &cfg, TFileDirectory &fs )
     {
+        LHEWeightName = cfg.getUntrackedParameter<std::string>( "LHEWeightName", "" );
+        LHEWeightIndex = -1;
 
         processId_           = cfg.getParameter<std::string>( "processId" );
         processIndex_        = cfg.exists("processIndex") ? cfg.getParameter<int>("processIndex") : 999;
@@ -187,6 +210,7 @@ namespace flashgg {
         dumpHistos_          = cfg.getUntrackedParameter<bool>( "dumpHistos", false );
         classifier_          = cfg.getParameter<edm::ParameterSet>( "classifierCfg" );
         throwOnUnclassified_ = cfg.exists("throwOnUnclassified") ? cfg.getParameter<bool>("throwOnUnclassified") : false;
+        splitPdfByStage0Cat_ = cfg.getUntrackedParameter<bool>( "splitPdfByStage0Cat", false);
 
         if( cfg.getUntrackedParameter<bool>( "quietRooFit", false ) ) {
             RooMsgService::instance().setGlobalKillBelow( RooFit::WARNING );
@@ -236,7 +260,7 @@ namespace flashgg {
                 nScaleWeights_ = cat.exists("nScaleWeights") ? cat.getParameter<int>( "nScaleWeights" ) : 0;
             }
             if (dumpPdfWeights_ == false ) {
-		    dumpPdfWeights_ = cat.exists("dumpPdfWeights")? cat.getParameter<bool>( "dumpPdfWeights" ) : false;
+                dumpPdfWeights_ = cat.exists("dumpPdfWeights")? cat.getParameter<bool>( "dumpPdfWeights" ) : false;
             }
             std::string classname = ( cat.exists("className") ? cat.getParameter<std::string>( "className" ) : "" );
             //<------
@@ -277,6 +301,10 @@ namespace flashgg {
             ws_ = fs.make<RooWorkspace>( workspaceName_.c_str(), workspaceName_.c_str() );
             dynamic_cast<RooRealVar *>( ws_->factory( "weight[1.]" ) )->setConstant( false );
             if (dumpPdfWeights_){
+                // Already on default list anyway
+                //                if (splitPdfByStage0Cat_ ) {
+                //                    dynamic_cast<RooRealVar *>( ws_->factory( "stage0cat[1.]") )->setConstant( false );
+                //                }
                 for( int j=0; j<nPdfWeights_;j++ ) {
                     dynamic_cast<RooRealVar *>( ws_->factory( Form("pdfWeight_%d[1.]",j)) )->setConstant( false );
                 }
@@ -353,6 +381,26 @@ namespace flashgg {
 
                 weight = lumiWeight_;
 
+                if( LHEWeightName != ""){
+                    edm::Handle<LHEEventProduct> product_lhe;
+                    if (fullEvent != 0) {
+                        fullEvent->getByToken(lheEventToken_, product_lhe);
+                    } else {
+                        event.getByLabel(lheEvent_,product_lhe);
+                    }
+                    if( LHEWeightIndex < 0 ){
+                        for(uint wgt_id = 0 ; wgt_id < product_lhe->weights().size() ; wgt_id++){
+                            auto wgt = product_lhe->weights()[wgt_id] ;
+                            if( wgt.id == LHEWeightName ){
+                                LHEWeightIndex = wgt_id ;
+                            }
+                        }
+                        std::cout << "Lumi Weight : " << lumiWeight_ << "; LHEWeightIndex: " << LHEWeightIndex << "; LHEWeightName: " << LHEWeightName << std::endl;
+                    }
+                    if( LHEWeightIndex > -1 )
+                        weight *= ( product_lhe->weights()[LHEWeightIndex].wgt/product_lhe->originalXWGTUP () );
+                }
+
                 if( genInfo.isValid() ) {
                     const auto &weights = genInfo->weights();
                     // FIXME store alternative/all weight-sets
@@ -369,7 +417,31 @@ namespace flashgg {
         }
 
     template<class C, class T, class U>
+    int CollectionDumper<C, T, U>::getStage0cat( const edm::EventBase &event ) {
+        //        std::cout << "In getStage0cat" << std::endl;
+        edm::Handle<int> stage0cat;
+        const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&event);
+        if (fullEvent != 0) {
+            fullEvent->getByToken(stage0catToken_, stage0cat);
+        } else {
+            event.getByLabel(stage0catTag_, stage0cat);
+        }
+        if ( stage0cat.isValid() ) {
+            //            std::cout << "In getStage0cat first attempt valid" << std::endl;
+            return (*(stage0cat.product() ) );
+        } else {
+            edm::Handle<HTXS::HiggsClassification> htxsClassification;
+            if (fullEvent != 0) {
+                fullEvent->getByToken(newHTXSToken_,htxsClassification);
+            } else {
+                event.getByLabel(newHTXSTag_,htxsClassification);
+            }
+            //            std::cout << " Tried to get an htxsClassification but it returns " << htxsClassification->stage0_cat << std::endl;
+            return( htxsClassification->stage0_cat );
+        }
+    }
 
+    template<class C, class T, class U>
         vector<double> CollectionDumper<C, T, U>::pdfWeights( const edm::EventBase &event )
         {   
             vector<double> pdfWeights;
@@ -393,16 +465,23 @@ namespace flashgg {
 
                 for( unsigned int j=0; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
                     pdfWeights.push_back(uncompressed[j]);
+                    //                    std::cout << "pdfWeights " << j<< " " << uncompressed[j] << std::endl;
                 }
                 for( unsigned int j=0; j<(*WeightHandle)[weight_index].alpha_s_container.size();j++ ) {
                     pdfWeights.push_back(uncompressed_alpha_s[j]);
+                    //                    std::cout << "alpha_s " << j << " " << uncompressed_alpha_s[j] << std::endl;
                 }
-                for( unsigned int j=0; j<(*WeightHandle)[weight_index].qcd_scale_container.size();j++ ) {
-                    pdfWeights.push_back(uncompressed_scale[j]);
+                if ( (*WeightHandle)[weight_index].qcd_scale_container.size() == 0 ) {
+                    //                    std::cout << " QCD scale weight workaround, putting in 9 dummies " << std::endl;
+                    for ( unsigned int j = 0 ; j < 9 ; j++ ) {
+                        pdfWeights.push_back(0.); // should never be used in case this workaround is in place
+                    }
+                } else {
+                    for( unsigned int j=0; j<(*WeightHandle)[weight_index].qcd_scale_container.size();j++ ) {
+                        pdfWeights.push_back(uncompressed_scale[j]);
+                    }
                 }
             }
-
-
             return pdfWeights;
         }
         
@@ -430,11 +509,14 @@ namespace flashgg {
                 // To do this, each PDF weight needs to be divided by the nominal MC weight
                 // which is obtained by dividing through weight_ by the lumiweight...
                 // The Scale Factor is then pdfWeight/nominalMC weight
-                pdfWeights_ =pdfWeights( event );
+                pdfWeights_ = pdfWeights( event );
                 for (unsigned int i = 0; i < pdfWeights_.size() ; i++){
-                pdfWeights_[i]= (pdfWeights_[i] )*(lumiWeight_/weight_); // ie pdfWeight/nominal MC weight
+                    pdfWeights_[i]= (pdfWeights_[i] )*(lumiWeight_/weight_); // ie pdfWeight/nominal MC weight
                 }
-                
+                if ( splitPdfByStage0Cat_ ) {
+                    stage0cat_ = getStage0cat( event );
+                    //                    std::cout << " IN CollectionDumper::analyze set stage0cat to " << stage0cat_ << std::endl;
+                }
             }
 
             int nfilled = maxCandPerEvent_;
@@ -451,7 +533,7 @@ namespace flashgg {
 
                     fillWeight =fillWeight*(tag->centralWeight());
                     }
-                    which->second[isub].fill( cand, fillWeight, pdfWeights_, maxCandPerEvent_ - nfilled );
+                    which->second[isub].fill( cand, fillWeight, pdfWeights_, maxCandPerEvent_ - nfilled, stage0cat_ );
                     --nfilled;
                 } else if( throwOnUnclassified_ ) {
                     throw cms::Exception( "Runtime error" ) << "could not find dumper for category [" << cat.first << "," << cat.second << "]"

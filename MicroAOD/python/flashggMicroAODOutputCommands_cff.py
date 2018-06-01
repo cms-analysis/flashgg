@@ -13,21 +13,22 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep recoGenParticles_flashggPrunedGenParticles_*_*", # this line, and preceding, drop unneded association object
                                                      "keep recoVertexs_offlineSlimmedPrimaryVertices_*_*", # leave out floatedmValueMap_offlineSlimmedPrimaryVertices__PAT
                                                      "keep *_reducedEgamma_reducedSuperClusters_*",
+                                                     "keep *CaloClusters_reducedEgamma_*_*",
                                                      "keep *_reducedEgamma_*PhotonCores_*",
-                                                     "keep *_slimmedMETs_*_*",
-                                                     "keep *_slimmedMETsNoHF_*_*",
                                                      "keep *_*Rho*_*_*",
                                                      "keep *_offlineBeamSpot_*_*",
                                                      "keep *_TriggerResults_*_*",
                                                      "keep *_eventCount_*_*",
+                                                     "keep *CaloClusters_reducedEgamma_*_*",
                                                      "keep *_weightsCount_*_*",
                                                      "keep *_generator_*_*",
                                                      "keep *_slimmedGenJets_*_*",
                                                      "keep *_flashggDiPhotons_*_*", # STILL NEEDED
                                                      "keep *_slimmedAddPileupInfo_*_*", # Was huge in old MiniAod - hopefully better now
-                                                     "keep *GsfElectronCore*_*_*_*", # needed by at least one Tag
-
+                                                     "keep *GsfElectronCore*_reducedEgamma_*_*", # needed by at least one Tag
+                                                     
                                                      "keep *_flashggSelected*_*_*",
+                                                     "keep *_flashggMets*_*_*",
                                                      # Drop intermediate collections in favor of selected/final collections
                                                      "drop *_flashgg*Jet*_*_*",
                                                      "drop *_flashggMuons_*_*",
@@ -37,7 +38,11 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep *_flashggFinalPuppiJets_*_*",
 						     "drop floatedmValueMap_electronMVAValueMapProducer_*_*",
 						     "drop intedmValueMap_electronMVAValueMapProducer_*_*",
+						     "drop floatedmValueMap_photonMVAValueMapProducer_*_*",
                                                      "keep *_selectedPatTrigger_*_*",
+                                                     "keep *_particleFlowEGammaGSFixed_dupECALClusters_*",
+                                                     "keep *_ecalMultiAndGSGlobalRecHitEB_hitsNotReplaced_*",
+#                                                     "keep *_slimmedJets_*_*"
                                                      )
 
 # Should be included for now for ongoing studies, but to be removed some day
@@ -58,4 +63,6 @@ microAODHLTOutputCommand = cms.untracked.vstring("keep *_l1extraParticles_Isolat
                                                  "keep *_selectedPatTrigger_*_*",
                                                  "keep *_caloStage2Digis_EGamma_*",
                                                  "keep *_TriggerResults_*_HLT",
+                                                 "keep *_slimmedPatTrigger_*_*",
+                                                 "keep *_patTrigger_*_*"
                                                  )

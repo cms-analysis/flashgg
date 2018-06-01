@@ -43,7 +43,7 @@ namespace flashgg {
         Handle<View<flashgg::GenPhotonExtra> > photons;
         evt.getByToken( genPhotonToken_, photons );
 
-        std::auto_ptr<vector<GenDiPhoton> > diphotons( new vector<GenDiPhoton> );
+        std::unique_ptr<vector<GenDiPhoton> > diphotons( new vector<GenDiPhoton> );
 
         for( size_t ii = 0 ; ii < photons->size() ; ++ii ) {
             auto pi = photons->ptrAt( ii );
@@ -53,7 +53,7 @@ namespace flashgg {
             }
         }
         
-        evt.put( diphotons );
+        evt.put( std::move( diphotons ) );
     }
 }
 

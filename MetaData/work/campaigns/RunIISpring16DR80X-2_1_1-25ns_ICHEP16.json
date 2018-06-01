@@ -1,0 +1,13 @@
+{
+    "data" : [
+                "/DoubleEG/Run2016B-PromptReco-v1/MINIAOD",
+                "/DoubleEG/Run2016B-PromptReco-v2/MINIAOD",
+                "/SingleElectron/Run2016B-PromptReco-v1/MINIAOD",
+                "/SingleElectron/Run2016B-PromptReco-v2/MINIAOD"
+	      ],
+    "sig"  : [
+	      ],
+    "bkg"  : [
+    	         "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring16MiniAODv2-PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM"
+    	      ]
+}

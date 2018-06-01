@@ -48,6 +48,7 @@ namespace flashgg {
             extraFloatNames_ = extraFloats.getParameterNamesForType<InputTag>();
             for( auto & name : extraFloatNames_ ) {
                 extraFloatTokens_.push_back( cc.consumes<float>(extraFloats.getParameter<InputTag>(name)) );
+                extraDoubleTokens_.push_back( cc.consumes<double>(extraFloats.getParameter<InputTag>(name)) );
                 extraVectorFloatTokens_.push_back( cc.consumes<std::vector<float>>(extraFloats.getParameter<InputTag>(name)) );
             }
         }
@@ -101,10 +102,26 @@ namespace flashgg {
             tree->Branch( bit.first.c_str(), &bit.second, ( bit.first + "/O" ).c_str() );
         }
         if( dumpLumiFactor_ ) { tree->Branch( "lumiFactor", &lumiFactor_ ); }
-        for( size_t iextra = 0; iextra<extraFloatNames_.size(); ++iextra ) {
-            tree->Branch( extraFloatNames_[iextra].c_str(), &extraFloatVariables_[iextra] );
-        }
+        //        for( size_t iextra = 0; iextra<extraFloatNames_.size(); ++iextra ) {
+        //            tree->Branch( extraFloatNames_[iextra].c_str(), &extraFloatVariables_[iextra] );
+        //        }
     }
+
+
+    std::vector<std::string> GlobalVariablesDumper::getExtraFloatNames(){
+        return extraFloatNames_;
+    }
+
+    float GlobalVariablesDumper::getExtraFloat(std::string varname){
+        for( size_t iextra = 0; iextra<extraFloatNames_.size(); ++iextra ) {
+            if(extraFloatNames_[iextra] == varname){
+                return extraFloatVariables_[iextra];
+            } 
+        }
+        return -9999.;
+
+    }
+    
 
     void GlobalVariablesDumper::fill( const EventBase &evt )
     {
@@ -142,16 +159,25 @@ namespace flashgg {
                 }
                 extraFloatVariables_[iextra] = *ihandle;
             } catch (...) {
-                Handle<std::vector<float> > ihandle; 
-                if( fullEvent ) { 
-                    fullEvent->getByToken( extraVectorFloatTokens_[iextra], ihandle );
-                } else {
-                    evt.getByLabel( extraFloatTags_[iextra], ihandle );
+                try{
+                    Handle<double> ihandle; 
+                    if( fullEvent ) { 
+                        fullEvent->getByToken( extraDoubleTokens_[iextra], ihandle );
+                    } else {
+                        evt.getByLabel( extraFloatTags_[iextra], ihandle );
+                    }
+                    extraFloatVariables_[iextra] = *ihandle;
+                } catch (...) {
+                    Handle<std::vector<float> > ihandle; 
+                    if( fullEvent ) { 
+                        fullEvent->getByToken( extraVectorFloatTokens_[iextra], ihandle );
+                    } else {
+                        evt.getByLabel( extraFloatTags_[iextra], ihandle );
+                    }
+                    // assert( ihandle->size() == 1 );
+                    if( ihandle->size()  < 1 ) { std::cout << "NO extra float......... " << extraFloatTags_[iextra].label() << std::endl; continue; }
+                    extraFloatVariables_[iextra] = (*ihandle)[0];
                 }
-                // assert( ihandle->size() == 1 );
-                if( ihandle->size()  < 1 ) { std::cout << "NO extra float......... " << extraFloatTags_[iextra].label() << std::endl; continue; }
-                extraFloatVariables_[iextra] = (*ihandle)[0];
-
             }
         }
     }

@@ -47,7 +47,7 @@ namespace flashgg {
         evt.getByToken( pfcandidateToken_, pfCandidates );
         //const PtrVector<pat::PackedCandidate>& pfPtrs = pfCandidates->ptrVector();
 
-        std::auto_ptr<VertexCandidateMap> assoc( new VertexCandidateMap );
+        std::unique_ptr<VertexCandidateMap> assoc( new VertexCandidateMap );
 
         if( useEachTrackOnce_ ) {
             // Associate a track to the closest vertex only, and only if dz < maxAllowedDz_
@@ -88,7 +88,7 @@ namespace flashgg {
             }
         } // end of !useEachTrackOnce_
         std::stable_sort( assoc->begin(), assoc->end(), flashgg::compare_by_vtx() );
-        evt.put( assoc );
+        evt.put( std::move( assoc ) );
     }
 }
 

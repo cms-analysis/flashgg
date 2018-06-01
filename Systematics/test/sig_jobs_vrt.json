@@ -1,0 +1,20 @@
+{
+    "processes" : {
+        "ggh_120"  : [ "/GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8" ],
+        "ggh_125"  : [ "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8" ],
+	"ggh_130" : [ "/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8" ],
+	"wh_120" : [ "/VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8" ],
+        "wh_125" : [ "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8" ],
+        "wh_130" : [ "/VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8" ],
+	"zh_120" : [ "/VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8" ],
+        "zh_125" : [ "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8" ],
+        "zh_130" : [ "/VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8" ],
+	"vbf_120" : [ "/VBFHToGG_M120_13TeV_amcatnlo_pythia8" ],
+        "vbf_125" : [ "/VBFHToGG_M125_13TeV_amcatnlo_pythia8" ],
+        "vbf_130" : [ "/VBFHToGG_M130_13TeV_amcatnlo_pythia8" ],
+        "tth_120" : [ "/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8" ],
+        "tth_125" : [ "/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8" ],
+        "tth_130" : [ "/ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8" ]
+     },	
+        "cmdLine" : "campaign=RunIIFall15DR76-1_3_0-25ns_ext1_Workspaces"
+}

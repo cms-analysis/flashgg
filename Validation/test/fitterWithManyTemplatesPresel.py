@@ -1,10 +1,10 @@
 import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.VarParsing import VarParsing
-#import flashgg.Validation.commonFitPreselEB as common
-import flashgg.Validation.commonFitPreselEE as common
+import flashgg.Validation.commonFitPreselEB as common
+#import flashgg.Validation.commonFitPreselEE as common
+#import flashgg.Validation.commonFitPreselBkgSystEE as common
 #import flashgg.Validation.parametricTemplates as common
-#import flashgg.Validation.commonFitPreselBkgSyst as common
-
+#import flashgg.Validation.commonFitPreselBkgSystEB as common
 
 options = VarParsing('analysis')
 options.register(
@@ -81,10 +81,10 @@ else:
 #specifies the binning of parameters
 EfficiencyBins = cms.PSet(
     #probe_Pho_et = cms.vdouble(20. ,40. ,60. ,100.),
-    #probe_Pho_r9 = cms.vdouble(0. ,.85 ,1.),
-    #probe_sc_abseta = cms.vdouble(0.0, 1.479)#, 2.5),
-    probe_Pho_r9 = cms.vdouble(0. ,.90 ,1.),
-    probe_sc_abseta = cms.vdouble(1.479, 2.5),
+    probe_Pho_r9 = cms.vdouble(0. ,.85 ,1.),
+    probe_sc_abseta = cms.vdouble(0.0, 1.479),
+    #probe_Pho_r9 = cms.vdouble(0. ,.90 ,1.),
+    #probe_sc_abseta = cms.vdouble(1.479, 2.5),
     )
 
 DataBinningSpecification = cms.PSet(
@@ -92,8 +92,10 @@ DataBinningSpecification = cms.PSet(
     BinnedVariables = cms.PSet(EfficiencyBins),
     BinToPDFmap = cms.vstring(
         "tight_20p0To40p0_0p0To1p5", 
-        "*r9_bin0*abseta_bin0*","passingPresel_0p0To0p9_1p479To2p5",
-        "*r9_bin1*abseta_bin0*","passingPresel_0p9To1p0_1p479To2p5",
+        "*r9_bin0*abseta_bin0*","passingPresel_0p0To0p85_0p0To1p479",
+        "*r9_bin1*abseta_bin0*","passingPresel_0p85To1p0_0p0To1p479",
+        #"*r9_bin0*abseta_bin0*","passingPresel_0p0To0p9_1p479To2p5",
+        #"*r9_bin1*abseta_bin0*","passingPresel_0p9To1p0_1p479To2p5",
         )
     )
 

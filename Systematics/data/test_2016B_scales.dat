@@ -1,8 +1,26 @@
-absEta_0_1-lowR9	runNumber	272806	999999	0.9932	0.0002 0.0001 0.0002 
-absEta_0_1-highR9	runNumber	272806	999999	0.9934	0.0002 0.0001 0.0002 
-absEta_1_1.4442-lowR9	runNumber	272806	999999	0.9903	0.0002 0.0001 0.0006 
-absEta_1_1.4442-highR9	runNumber	272806	999999	0.9868	0.0009 0.0004 0.0005 
-absEta_1.566_2-lowR9	runNumber	272806	999999	0.9939	0.0005 0.0002 0.0007 
-absEta_1.566_2-highR9	runNumber	272806	999999	0.9919	0.0001 0.0004 0.0009 
-absEta_2_2.5-highR9	runNumber	272806	999999	0.9937	0.0007 0.0002 0.0005 
-absEta_2_2.5-lowR9	runNumber	272806	999999	0.9911	0.0005 0.0003 0.0013 
+absEta_0_1-highR9	runNumber	1	2	1.0000	0.0006 0 0
+absEta_0_1-highR9	runNumber	3	273157	1.0000	0.0006 0 0
+absEta_0_1-lowR9	runNumber	1	2	1.0000	0.0006 0 0
+absEta_0_1-lowR9	runNumber	3	273157	1.0000	0.0006 0 0
+absEta_0_1-highR9	runNumber	273158	999999	0.99268	0.0006 0 0
+absEta_0_1-lowR9	runNumber	273158	999999	0.99267	0.0006 0 0
+absEta_1_1.4442-highR9	runNumber	1	2	1.0000	0.0006 0 0
+absEta_1_1.4442-highR9	runNumber	3	273157	1.0000	0.0006 0 0
+absEta_1_1.4442-lowR9	runNumber	1	2	1.0000	0.0006 0 0
+absEta_1_1.4442-lowR9	runNumber	3	273157	1.0000	0.0006 0 0
+absEta_1_1.4442-highR9	runNumber	273158	999999	0.98636	0.0028 0 0
+absEta_1_1.4442-lowR9	runNumber	273158	999999	0.98991	0.0028 0 0
+absEta_1.566_2-highR9	runNumber	1	2	1.0000	0.0006 0 0
+absEta_1.566_2-highR9	runNumber	3	273157	1.0000	0.0006 0 0
+absEta_1.566_2-lowR9	runNumber	1	2	1.0000	0.0006 0 0
+absEta_1.566_2-lowR9	runNumber	3	273157	1.0000	0.0006 0 0
+absEta_1.566_2-highR9	runNumber	273158	999999	0.99309	0.0035 0 0
+absEta_1.566_2-lowR9	runNumber	273158	999999	0.99734	0.0035 0 0
+absEta_2_2.5-highR9	runNumber	1	2	1.0000	0.0006 0 0
+absEta_2_2.5-highR9	runNumber	3	273157	1.0000	0.0006 0 0
+absEta_2_2.5-lowR9	runNumber	1	2	1.0000	0.0006 0 0
+absEta_2_2.5-lowR9	runNumber	3	273157	1.0000	0.0006 0 0
+absEta_2_2.5-highR9	runNumber	273158	999999	0.99255	0.0030 0 0
+absEta_2_2.5-lowR9	runNumber	273158	999999	0.99537	0.0030 0 0
+
+
