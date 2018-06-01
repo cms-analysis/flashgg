@@ -405,7 +405,7 @@ if customize.doFiducial:
     tagList=[["SigmaMpTTag",3]]
 elif customize.tthTagsOnly:
     tagList=[
-        ["TTHHadronicTag",0],
+        ["TTHHadronicTag",2],
         ["TTHLeptonicTag",0],
         ["TTHDiLeptonTag",0]
         ]
@@ -419,7 +419,7 @@ else:
         ["VHLeptonicLooseTag",0],
         ["VHMetTag",0],
         ["VHHadronicTag",0],
-        ["TTHHadronicTag",0],
+        ["TTHHadronicTag",2],
         ["TTHLeptonicTag",0],
         ["TTHDiLeptonTag",0]
         ]
