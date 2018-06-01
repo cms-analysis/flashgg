@@ -83,8 +83,7 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        bjetsNumberTTHHMVAThreshold = cms.int32(0),
                                        bjetsLooseNumberTTHHMVAThreshold = cms.int32(0),  
                                        secondMaxBTagTTHHMVAThreshold = cms.double(0.0),  
-				       tthHadMVAThresholdMin = cms.double(0.65), 
-				       tthHadMVAThresholdMax = cms.double(999.0),
+                                       Boundaries = cms.vdouble( 0.54, 0.68 ),
                                        dRJetPhoLeadCut =  cms.double(0.4),
                                        dRJetPhoSubleadCut = cms.double(0.4),                          
                                        leptonPtThreshold = cms.double(20),
@@ -109,6 +108,9 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        useElectronLooseID = cms.bool(True),
                                        HTXSTags     = HTXSInputTags                                     
                                        )
+
+
+
 
 flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
