@@ -54,7 +54,7 @@ namespace flashgg {
 
         dnn::tf::Graph NNgraph_;
         std::vector<float> NNvectorVar_; 
-        //add vector of mva for eache jet
+        //add vector of mva for each jet
 
         //mva variables
         float Jet_pt ;
@@ -117,7 +117,7 @@ namespace flashgg {
 
 
         
-        NNgraph_ = *(new dnn::tf::Graph(bRegressionWeightfileName_.c_str())); //FIXME make this configurable, for variables for breg check this PR https://github.com/cms-analysis/flashgg/pull/968 REMEMBER TO ADD THE LAST CONE!
+        NNgraph_ = *(new dnn::tf::Graph(bRegressionWeightfileName_.c_str())); 
         Jet_pt = 0.;
         Jet_eta = 0.;
         rho = 0.;
@@ -153,7 +153,7 @@ namespace flashgg {
         Jet_energyRing_dR2_mu_Jet_e = 0.;
         Jet_energyRing_dR3_mu_Jet_e = 0.;
         Jet_energyRing_dR4_mu_Jet_e = 0.;
-        Jet_chHEF = 0.;//implement from here
+        Jet_chHEF = 0.;
         Jet_chEmEF = 0.;
         Jet_leptonPtRelInv = 0.;
         isEle = 0.;
@@ -392,7 +392,7 @@ namespace flashgg {
         NNvectorVar_.push_back(Jet_vtx3dL) ;
         NNvectorVar_.push_back(Jet_vtxNtrk) ;
         NNvectorVar_.push_back(Jet_vtx3deL) ;
-        NNvectorVar_.push_back(Jet_numDaughters_pt03) ;//this variable has changed order, in bdt it was last, check why
+        NNvectorVar_.push_back(Jet_numDaughters_pt03) ;
         NNvectorVar_.push_back(Jet_energyRing_dR0_em_Jet_e) ;//15
         NNvectorVar_.push_back(Jet_energyRing_dR1_em_Jet_e) ;
         NNvectorVar_.push_back(Jet_energyRing_dR2_em_Jet_e) ;
