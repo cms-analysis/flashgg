@@ -195,9 +195,9 @@ namespace flashgg {
         string alphavar;  //only for thq samples
         string pdfnlovar; //only for thq samples (could be extended to the rest of samples)
 
-        if (pdfidx == 306000) { // 2017??
-            pdfvar = "PDF_variation NNPDF31_nnlo_hessian_pdfas";
-        }
+        //        if (pdfidx == 306000) { // 2017?? -  not for reminiaod it seems
+        //            pdfvar = "PDF_variation NNPDF31_nnlo_hessian_pdfas";
+        //        }
 
         if (!isStandardSample_){
             pdfvar = pdfset_;
@@ -221,12 +221,15 @@ namespace flashgg {
                 boost::optional<std::string> weightgroupname2 = v.second.get_optional<std::string>("<xmlattr>.type");
                 
                 if (debug_) {
+                    std::cout << "weightgroupname1 and weightgroupname2 are:" << std::endl;
                     if (weightgroupname1) cout <<  weightgroupname1.get() <<endl;
                     if (weightgroupname2) cout <<  weightgroupname2.get() <<endl;
                 }
 
+                std::cout << " before pdf weights, pdfvar is " << pdfvar << std::endl;
+
                 // -- PDFs + alpha_s weights
-                if ( (weightgroupname1 && weightgroupname1.get() == pdfvar)  || (weightgroupname2 && weightgroupname2.get() == pdfvar)) {               
+                if ( (weightgroupname1 && weightgroupname1.get().substr(0,pdfvar.length()) == pdfvar) || (weightgroupname2 && weightgroupname2.get().substr(0,pdfvar.length()) == pdfvar)) {
                                     
                     BOOST_FOREACH(boost::property_tree::ptree::value_type &vs,subtree)
                         if (vs.first == "weight") {
