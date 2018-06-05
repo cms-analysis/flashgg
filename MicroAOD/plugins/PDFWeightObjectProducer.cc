@@ -432,9 +432,11 @@ namespace flashgg {
                 cout << "Size of pdf nlo weights: " << PDFWeightProducer::pdfnlo_indices.size() << endl;
         }
 
-        assert(inpdfweights.size() > 0);
-        assert(PDFWeightProducer::scale_indices.size() == 9);
-        assert(PDFWeightProducer::alpha_indices.size() == 2);
+        if (!isThqSample_){
+            assert(inpdfweights.size() > 0);
+            assert(PDFWeightProducer::scale_indices.size() == 9);
+            assert(PDFWeightProducer::alpha_indices.size() == 2);
+        }
         
 		
         // --- Get MCtoHessian PDF weights
