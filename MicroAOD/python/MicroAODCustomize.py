@@ -194,7 +194,7 @@ class MicroAODCustomize(object):
             
     # signal specific customization
     def customizeSignal(self,process):
-        print "custommizeSignal"
+        print "customizeSignal"
         process.flashggGenPhotonsExtra.defaultType = 1
         from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
         if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
@@ -253,6 +253,7 @@ class MicroAODCustomize(object):
 
 
         self.customizePDFs(process)
+        self.customizeHLT(process)
 
     def customizePDFs(self,process):     
         process.load("flashgg/MicroAOD/flashggPDFWeightObject_cfi")
