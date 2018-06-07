@@ -39,8 +39,9 @@ namespace flashgg {
         float HelicityCosTheta( TLorentzVector Booster, TLorentzVector Boosted) const;
         float getPhoJetMinDr() const;
         float getSigmaMDecorr() const;
+        float getSigmaMOverMJets() const;
         void  setSigmaMDecorrTransf( DecorrTransform* transfEBEB, DecorrTransform* transfNotEBEB){ transfEBEB_= transfEBEB; transfNotEBEB_=transfNotEBEB;}
-        
+
     private:
         double mva_, MX_;
         edm::Ptr<flashgg::Jet> leadJet_, subleadJet_;

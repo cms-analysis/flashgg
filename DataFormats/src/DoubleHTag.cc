@@ -95,8 +95,7 @@ float DoubleHTag::getSigmaMDecorr() const
     mass_sigma[0]=diPhoton()->mass();
     mass_sigma[1] = 0.5*sqrt((diPhoton()->leadingPhoton()->sigEOverE()*diPhoton()->leadingPhoton()->sigEOverE() + diPhoton()->subLeadingPhoton()->sigEOverE()*diPhoton()->subLeadingPhoton()->sigEOverE()));
     float sigmaMOverMDecorr=-99;
-    return mass_sigma[1];
-    //splitting EBEB and !EBEB, using cuts as in preselection
+    //Splitting EBEB and !EBEB, using cuts as in preselection
     if(abs(diPhoton()->leadingPhoton()->superCluster()->eta())<1.4442 && abs(diPhoton()->subLeadingPhoton()->superCluster()->eta())<1.4442){
         sigmaMOverMDecorr = (*transfEBEB_)(mass_sigma,dummy);
     }
@@ -105,6 +104,19 @@ float DoubleHTag::getSigmaMDecorr() const
     }
     return sigmaMOverMDecorr;
 }
+
+float DoubleHTag::getSigmaMOverMJets() const
+{
+    float dijetSigmaMOverM = 1./pow(dijet().M(),2)*sqrt(
+                                                        pow(leadJet().userFloat("bRegNNResolution"),2)*pow(pow(leadJet().p4().M(),2) + leadJet().p4().Dot(subleadJet().p4()) ,2)  + 
+                                                        pow(subleadJet().userFloat("bRegNNResolution"),2)*pow( pow(subleadJet().p4().M(),2) + subleadJet().p4().Dot(leadJet().p4()),2) );                                     
+
+    return dijetSigmaMOverM;
+
+}
+
+
+
 
 // Local Variables:
 // mode:c++

@@ -98,7 +98,7 @@ namespace flashgg {
         
         doMVAFlattening_ = iConfig.getParameter<bool>("doMVAFlattening"); 
         photonElectronVeto_=iConfig.getUntrackedParameter<std::vector<int > >("PhotonElectronVeto");
-        
+        //needed for HHbbgg MVA
         if(doMVAFlattening_){
             MVAFlatteningFileName_=iConfig.getUntrackedParameter<edm::FileInPath>("MVAFlatteningFileName");
             MVAFlatteningFile_ = new TFile((MVAFlatteningFileName_.fullPath()).c_str(),"READ");
@@ -119,12 +119,15 @@ namespace flashgg {
             } else {
                 throw cms::Exception( "Configuration" ) << "The file "<<sigmaMDecorrFile_.fullPath()<<" provided for sigmaM/M decorrelation does not contain the expected histograms."<<std::endl;
             }
-
-
         }
 
+        //needed for ttH MVA
+//        METToken_( consumes<View<flashgg::Met> >( iConfig.getParameter<InputTag> ( "METTag" ) ) );
+//        electronToken_ = consumes<edm::View<flashgg::Electron> >( iConfig.getParameter<edm::InputTag> ( "ElectronTag" ) );
+//        muonToken_ = consumes<edm::View<flashgg::Muon> >( iConfig.getParameter<edm::InputTag>( "MuonTag" ) );
 
-        // SigmaMpTTag
+
+
         produces<vector<DoubleHTag> >();
         produces<vector<TagTruthBase> >();
     }
