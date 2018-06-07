@@ -17,7 +17,7 @@ def variablesToDump(customize):
              "sigmaMJets := getSigmaMOverMJets()",
              "PhoJetMinDr := getPhoJetMinDr()",#up to here input variables to MVA
              "HHbbggMVA := MVA()",
-             "HHbbggMX := MX()",
+             "MX := MX()",
              "category := categoryNumber()",
 
              "leadingPhoton_pt := diPhoton.leadingPhoton.pt",
