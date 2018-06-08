@@ -295,6 +295,9 @@ else:
     variablesToUse = minimalNonSignalVariables
     customizeSystematicsForBackground(process)
 
+if customize.doubleHTagsOnly:
+    variablesToUse = minimalVariables
+
 print "--- Systematics  with independent collections ---"
 print systlabels
 print "-------------------------------------------------"
@@ -501,7 +504,8 @@ if customize.processId == "Data":
 
 # Split WH and ZH
 process.genFilter = cms.Sequence()
-if (customize.processId.count("wh") or customize.processId.count("zh")) and not customize.processId.count("wzh"):
+if ((customize.processId.count("wh") or customize.processId.count("zh")) and not (customize.processId.count("powheg"))) and not customize.processId.count("wzh") :
+    print "enabling vh filter!!!!!"
     process.load("flashgg/Systematics/VHFilter_cfi")
     process.genFilter += process.VHFilter
     process.VHFilter.chooseW = bool(customize.processId.count("wh"))
