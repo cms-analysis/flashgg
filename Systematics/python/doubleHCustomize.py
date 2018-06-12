@@ -18,6 +18,18 @@ def variablesToDump(customize):
              "PhoJetMinDr := getPhoJetMinDr()",#up to here input variables to MVA
              "HHbbggMVA := MVA()",
              "MX := MX()",
+             "Mjj := dijet().M()",
+             "dijet_pt := dijet().pt",
+             "dijet_eta := dijet().eta",
+             "dijet_phi := dijet().phi",
+             "diphoton_pt := diPhoton.pt",
+             "diphoton_eta := diPhoton.eta",
+             "diphoton_phi := diPhoton.phi",
+ 
+             "diHiggs_pt := getdiHiggsP4().pt()",
+             "diHiggs_mass := getdiHiggsP4().M()",
+             "diHiggs_eta :=  getdiHiggsP4().eta()",
+             "diHiggs_phi := getdiHiggsP4().phi()",
              "category := categoryNumber()",
 
              "leadingPhoton_pt := diPhoton.leadingPhoton.pt",
@@ -30,14 +42,17 @@ def variablesToDump(customize):
              "leadingJet_pt := leadJet().pt",
              "leadingJet_eta := leadJet().eta",
              "leadingJet_phi := leadJet().phi",
+             "leadingJet_mass := leadJet().p4().M()",
              "leadingJet_bRegNNCorr := leadJet().userFloat('bRegNNCorr')",
              "leadingJet_bRegNNResolution := leadJet().userFloat('bRegNNResolution')",
 
              "subleadingJet_pt := subleadJet().pt",
              "subleadingJet_eta := subleadJet().eta",
              "subleadingJet_phi := subleadJet().phi",
+             "subleadingJet_mass := subleadJet().p4().M()",
              "subleadingJet_bRegNNCorr := subleadJet().userFloat('bRegNNCorr')",
              "subleadingJet_bRegNNResolution := subleadJet().userFloat('bRegNNResolution')",
+
 
              "ttHMVA_MET := 0",# these variables are needed for ttH killer MVA, which has to be implemented in the producer with another mvaComputer
              "ttHMVA_njets := 0",
