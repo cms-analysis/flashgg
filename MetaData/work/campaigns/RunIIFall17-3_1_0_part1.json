@@ -1,0 +1,11 @@
+{
+	"data" : [
+	       ],
+	"sig"  : [
+
+"/THQ_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCP5/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM",
+"/THW_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCP5/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM"
+	       ],
+	"bkg"  : [
+	]
+}
