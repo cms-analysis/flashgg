@@ -180,8 +180,6 @@ namespace flashgg {
             Ptr<flashgg::Jet> pjet = jets->ptrAt( i );
             flashgg::Jet fjet = flashgg::Jet( *pjet );
 
-            //            if (fjet.pt()<15. || fabs(fjet.eta())>2.5) continue;
-
 
             //variables needed for regression
             //you need to take uncorrected jet for variables
@@ -301,8 +299,14 @@ namespace flashgg {
             bRegNN = EvaluateNN();
             NNvectorVar_.clear();
 
-            fjet.addUserFloat("bRegNNCorr", bRegNN[0]*y_std_+y_mean_);
-            fjet.addUserFloat("bRegNNResolution",0.5*(bRegNN[2]-bRegNN[1])*y_std_);
+            if (fjet.pt()<20) {//b-jet regression should not be applied to low-pt jets since not trained. just set a correction of 1
+                float corr=1., res=0.2;
+                fjet.addUserFloat("bRegNNCorr", corr);
+                fjet.addUserFloat("bRegNNResolution",res);
+            }else{
+                fjet.addUserFloat("bRegNNCorr", bRegNN[0]*y_std_+y_mean_);
+                fjet.addUserFloat("bRegNNResolution",0.5*(bRegNN[2]-bRegNN[1])*y_std_);
+            }
 
             TLorentzVector jetCorrected;
             jetCorrected.SetPtEtaPhiE(fjet.pt()*fjet.userFloat("bRegNNCorr"),fjet.eta(),fjet.phi(),fjet.p4().e()*fjet.userFloat("bRegNNCorr"));
