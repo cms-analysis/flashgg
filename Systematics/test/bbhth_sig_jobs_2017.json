@@ -1,0 +1,6 @@
+{
+    "processes" : {
+	"th_125" : ["/THQ_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCP5","/THW_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCP5"]
+     },	
+        "cmdLine" : "campaign=RunIIFall17-3_0_X"
+}

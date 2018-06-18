@@ -19,13 +19,17 @@
 #include "DataFormats/Math/interface/deltaR.h"
 
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
+
 #include "DataFormats/Common/interface/RefToPtr.h"
+#include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
+
 
 #include <vector>
 #include <algorithm>
 #include <string>
 #include <utility>
 
+#include "TMath.h"
 #include "TMVA/Reader.h"
 
 using namespace std;
@@ -42,6 +46,7 @@ namespace flashgg {
         TTHHadronicTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
+        int  chooseCategory( float );
 
         std::vector<edm::EDGetTokenT<View<flashgg::Jet> > > tokenJets_;
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
@@ -52,6 +57,7 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
         EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
+        EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
         EDGetTokenT<float> pTHToken_,pTVToken_;
         EDGetTokenT<double> rhoTag_;
         string systLabel_;
@@ -59,7 +65,7 @@ namespace flashgg {
 
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
         bool useTTHHadronicMVA_;
-        double tthHadMVAThreshold_;
+
         //---thresholds---
         //---photons
         double MVAThreshold_;
@@ -84,6 +90,7 @@ namespace flashgg {
         double jetsNumberTTHHMVAThreshold_;
         double bjetsNumberTTHHMVAThreshold_;
         double bjetsLooseNumberTTHHMVAThreshold_;
+        double secondMaxBTagTTHHMVAThreshold_;
         string bTag_;
         //leptons
         double leptonPtThreshold_;
@@ -118,11 +125,31 @@ namespace flashgg {
         double idmva1_;
         double idmva2_;
         float leadJetPt_;
+        float leadJetBTag_;
         float subLeadJetPt_;
         float sumJetPt_;
         float maxBTagVal_;
         float secondMaxBTagVal_;
+        float thirdMaxBTagVal_;
+        float fourthMaxBTagVal_;
+
+        float mindRPhoLeadJet_;
+        float maxdRPhoLeadJet_;
+
+        float minPhoID_;
+        float maxPhoID_;
+        float pho1_ptoM_;
+        float pho2_ptoM_;
+        float pho1_sceta_;
+        float pho2_sceta_;
+        float diPhoY_;
+        float diPhoPtoM_;
+        float diPhoCosPhi_;
+        float nbloose_;
+        
         float tthMvaVal_;
+
+        vector<double> boundaries;
 
     };
 
@@ -138,12 +165,17 @@ namespace flashgg {
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
         _MVAMethod( iConfig.getParameter<string> ( "MVAMethod" ) )
     {
+        boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
+        assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // 
+
         ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
         stage0catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0cat") );
         stage1catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1cat") );
         njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
         pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
         pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
+        newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
+
 
         MVAThreshold_ = iConfig.getParameter<double>( "MVAThreshold");
         MVATTHHMVAThreshold_ = iConfig.getParameter<double>( "MVATTHHMVAThreshold");
@@ -168,11 +200,12 @@ namespace flashgg {
         bTag_ = iConfig.getParameter<string> ( "bTag");
 
         useTTHHadronicMVA_ = iConfig.getParameter<bool>( "useTTHHadronicMVA");
-        tthHadMVAThreshold_ =  iConfig.getParameter<double>( "tthHadMVAThreshold");
+
         bjetsLooseNumberThreshold_ = iConfig.getParameter<int>( "bjetsLooseNumberThreshold");
         jetsNumberTTHHMVAThreshold_ = iConfig.getParameter<int>( "jetsNumberTTHHMVAThreshold");
         bjetsNumberTTHHMVAThreshold_ = iConfig.getParameter<int>( "bjetsNumberTTHHMVAThreshold");
         bjetsLooseNumberTTHHMVAThreshold_ = iConfig.getParameter<int>( "bjetsLooseNumberTTHHMVAThreshold");
+        secondMaxBTagTTHHMVAThreshold_ = iConfig.getParameter<double>( "secondMaxBTagTTHHMVAThreshold");
 
         muPFIsoSumRelThreshold_ = iConfig.getParameter<double>( "muPFIsoSumRelThreshold");
         muMiniIsoSumRelThreshold_ = iConfig.getParameter<double>( "muMiniIsoSumRelThreshold");
@@ -190,24 +223,57 @@ namespace flashgg {
         useStdLeptonID_=iConfig.getParameter<bool>("useStdLeptonID");
         useElectronMVARecipe_=iConfig.getParameter<bool>("useElectronMVARecipe");
         useElectronLooseID_=iConfig.getParameter<bool>("useElectronLooseID");
-        
 
         tthMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "tthMVAweightfile" ); 
 
         nJets_ = 0;
         leadJetPt_ = 0.;
+        leadJetBTag_ = -999.;
         subLeadJetPt_ = 0.;
         sumJetPt_ = 0.;
+
         maxBTagVal_ = -999.;
         secondMaxBTagVal_ = -999.;
+        thirdMaxBTagVal_ = -999.;
+        fourthMaxBTagVal_ = -999.;
+        mindRPhoLeadJet_ = -999;
+        maxdRPhoLeadJet_= -999;
+
+        minPhoID_= -999.;
+        maxPhoID_= -999.;
+        pho1_ptoM_= -999.;
+        pho2_ptoM_= -999.;
+        pho1_sceta_= -999.;
+        pho2_sceta_= -999.;
+        diPhoY_= -999.;
+        diPhoPtoM_= -999.;
+        diPhoCosPhi_= -999.;
+        nbloose_=-999;
 
         if (_MVAMethod != ""){
             TThMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
+
+            TThMva_->AddVariable( "leadJetPt", &leadJetPt_);
             TThMva_->AddVariable( "nJets", &nJets_);
+            TThMva_->AddVariable( "sumJetPt", &sumJetPt_);
             TThMva_->AddVariable( "maxBTagVal",&maxBTagVal_);
             TThMva_->AddVariable( "secondMaxBTagVal", &secondMaxBTagVal_);
-            TThMva_->AddVariable( "leadJetPt", &leadJetPt_);
-        
+            TThMva_->AddVariable( "pho1_ptoM", &pho1_ptoM_);
+            TThMva_->AddVariable( "pho2_ptoM", &pho2_ptoM_);
+            TThMva_->AddVariable( "pho1_sceta", &pho1_sceta_);
+            TThMva_->AddVariable( "pho2_sceta", &pho2_sceta_);
+            TThMva_->AddVariable( "diPhoY", &diPhoY_);
+            TThMva_->AddVariable( "diPhoCosPhi", &diPhoCosPhi_);      
+            TThMva_->AddVariable( "minPhoID", &minPhoID_);
+            TThMva_->AddVariable( "maxPhoID", &maxPhoID_);
+            TThMva_->AddVariable( "diPhoPtoM", &diPhoPtoM_);     
+            TThMva_->AddVariable( "mindRPhoLeadJet", &mindRPhoLeadJet_);
+            TThMva_->AddVariable( "maxdRPhoLeadJet", &maxdRPhoLeadJet_);
+            TThMva_->AddVariable( "nJetsBl", &nbloose_);          
+            //TThMva_->AddVariable( "leadJetBTag", &leadJetBTag_);         
+            //TThMva_->AddVariable( "thirdMaxBTagVal", &thirdMaxBTagVal_);          
+
+
             TThMva_->BookMVA( _MVAMethod.c_str() , tthMVAweightfile_.fullPath() );
         
         }       
@@ -221,6 +287,16 @@ namespace flashgg {
         produces<vector<TagTruthBase> >();
     }
 
+    int TTHHadronicTagProducer::chooseCategory( float tthmvavalue )
+    {
+        // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
+        int n;
+        for( n = 0 ; n < ( int )boundaries.size() ; n++ ) {
+            if( ( double )tthmvavalue > boundaries[boundaries.size() - n - 1] ) { return n; }
+        }
+        return -1; // Does not pass, object will not be produced
+    }
+
     void TTHHadronicTagProducer::produce( Event &evt, const EventSetup & )
     {
 
@@ -231,6 +307,9 @@ namespace flashgg {
         evt.getByToken(njetsToken_,njets);
         evt.getByToken(pTHToken_,pTH);
         evt.getByToken(pTVToken_,pTV);
+        Handle<HTXS::HiggsClassification> htxsClassification;
+        evt.getByToken(newHTXSToken_,htxsClassification);
+
 
         //Handle<View<flashgg::Jet> > theJets;
         //evt.getByToken( thejetToken_, theJets );
@@ -269,15 +348,32 @@ namespace flashgg {
         Point higgsVtx;
         if( ! evt.isRealData() ) {
             evt.getByToken( genParticleToken_, genParticles );
+            /*
             for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
                 int pdgid = genParticles->ptrAt( genLoop )->pdgId();
+                if( pdgid == 25 ){
+                    cout << "Higgs found " <<endl;
+                    if ( genParticles->ptrAt( genLoop )->numberOfDaughters() == 2 ){ 
+                        const reco::Candidate * d1 =  genParticles->ptrAt( genLoop )->daughter( 0 );
+                        const reco::Candidate * d2 =  genParticles->ptrAt( genLoop )->daughter( 1 );
+                        cout << "Higgs with status = " <<  genParticles->ptrAt( genLoop )->status() << " has two daughters with pdgId: " << endl;
+                        cout << "d1 pdgId = " << d1->pdgId() << "   d2 pdgId = "<< d2->pdgId() <<endl;
+                    }
+                }
+            }
+            */
+                //if (d1->pdgId()!=22 || d2->pdgId()!=22) continue;
+                
+            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+                int pdgid = genParticles->ptrAt( genLoop )->pdgId();
+                
                 if( pdgid == 25 || pdgid == 22 ) {
-                    higgsVtx = genParticles->ptrAt( genLoop )->vertex();
+                    higgsVtx = genParticles->ptrAt( genLoop )->vertex();           
                     break;
                 }
             }
         }
-
+        
         edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
         unsigned int idx = 0;
 
@@ -291,22 +387,9 @@ namespace flashgg {
        
         std::vector<edm::Ptr<Electron> > goodElectrons ;
 
-        //if( !useStdLeptonID_) {
-             // goodElectrons = selectAllElectrons( theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, 
-             //                                     TransverseImpactParam_, LongitudinalImpactParam_, nonTrigMVAThresholds_, nonTrigMVAEtaCuts_,
-             //                                     electronIsoThreshold_, electronNumOfHitsThreshold_, electronEtaThresholds_ );
-            //goodElectrons = selectAllElectronsSum16( theElectrons->ptrs(), vertices->ptrs(), 
-            //                                       leptonPtThreshold_, electronEtaThresholds_,
-            //                                       true, true, elMiniIsoEBThreshold_, elMiniIsoEEThreshold_);
-            //goodElectrons = selectAllElectronsSum16( theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
-            //                                         true, true, elMiniIsoEBThreshold_, elMiniIsoEEThreshold_,
-            //                                         TransverseImpactParam_EB, LongitudinalImpactParam_EB, TransverseImpactParam_EE, LongitudinalImpactParam_EE,
-            //                                         rho_, evt.isRealData() );
-        //} else {
-            goodElectrons = selectStdAllElectrons(theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
-                                                  useElectronMVARecipe_, useElectronLooseID_,
-                                                  rho_, evt.isRealData() );
-            //}
+        goodElectrons = selectStdAllElectrons(theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
+                                              useElectronMVARecipe_, useElectronLooseID_,
+                                              rho_, evt.isRealData() );
         
         
         for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
@@ -315,16 +398,20 @@ namespace flashgg {
 
             jetcount_ = 0;
             nJets_ = 0;
+
             njets_btagloose_ = 0;
             njets_btagmedium_ = 0;
             njets_btagtight_ = 0;
             idmva1_ = -999.;
             idmva2_ = -999.;
             leadJetPt_ = 0.;
+            leadJetBTag_ = -999.;
             subLeadJetPt_ = 0.;
             sumJetPt_ = 0.;
             maxBTagVal_ = -999.;
             secondMaxBTagVal_ = -999.;
+            thirdMaxBTagVal_ = -999.;
+            fourthMaxBTagVal_ = -999.;
             tthMvaVal_ = -999.;
 
             unsigned int jetCollectionIndex = diPhotons->ptrAt( diphoIndex )->jetCollectionIndex();
@@ -335,18 +422,22 @@ namespace flashgg {
             BJetVect.clear();
             std::vector<edm::Ptr<flashgg::Jet> > BJetTTHHMVAVect;
             BJetTTHHMVAVect.clear();
+            
+            std::vector<edm::Ptr<reco::GenJet> > genJetVect;
+            genJetVect.clear();
+
             std::vector<float> JetBTagVal;
             JetBTagVal.clear();
 
             edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( diphoIndex );
-
+        
             idmva1_ = dipho->leadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
             idmva2_ = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
 
             if( idmva1_ <= PhoMVAThreshold_ || idmva2_ <= PhoMVAThreshold_ ) { continue; }
 
             edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );
-
+        
             if( !dipho->leadingPhoton()->passElectronVeto() || !dipho->subLeadingPhoton()->passElectronVeto() ) { continue; }
 
             double leadPhoPtCut = leadPhoPtThreshold_;
@@ -383,78 +474,144 @@ namespace flashgg {
                 nJets_ = jetcount_;
                 JetVect.push_back( thejet );
                 
-                float jetPt = thejet->pt();
-                if(jetPt > leadJetPt_){
-                    if(leadJetPt_ > subLeadJetPt_) { subLeadJetPt_ = leadJetPt_; }
-                    leadJetPt_ = jetPt;
-                } else if(jetPt > subLeadJetPt_){
-                    subLeadJetPt_ = jetPt;
-                }
-                sumJetPt_ += jetPt;
-                
+                //genJetVect.push_back( thejet->genJet());
+                //cout<<"TTH Jet "<< jetcount_<<" Pt:"<<thejet->pt()<<" genPt:"<<thejet->genJet()->pt()<<" hflav: "<<thejet->hadronFlavour()<<" pFlav:"<<thejet->partonFlavour()<< endl;
 
                 float bDiscriminatorValue = -2.;
                 if(bTag_ == "pfDeepCSV") bDiscriminatorValue = thejet->bDiscriminator("pfDeepCSVJetTags:probb")+thejet->bDiscriminator("pfDeepCSVJetTags:probbb") ;
                 else  bDiscriminatorValue = thejet->bDiscriminator( bTag_ );
 
-                if(bDiscriminatorValue > maxBTagVal_){
+                
+
+                float jetPt = thejet->pt();
+                if(jetPt > leadJetPt_){
+                    if(leadJetPt_ > subLeadJetPt_) { subLeadJetPt_ = leadJetPt_; }
+                    leadJetPt_ = jetPt;
+                    leadJetBTag_=  bDiscriminatorValue;
+                } else if(jetPt > subLeadJetPt_){
+                    subLeadJetPt_ = jetPt;
+                }
+                sumJetPt_ += jetPt;
+                
+                
+                if(bDiscriminatorValue > maxBTagVal_){ 
+
                     BJetTTHHMVAVect.insert( BJetTTHHMVAVect.begin(), thejet );
                     if(BJetTTHHMVAVect.size() >= 3){ BJetTTHHMVAVect.pop_back(); }
+                    
+                    if(thirdMaxBTagVal_>fourthMaxBTagVal_) { fourthMaxBTagVal_= thirdMaxBTagVal_;}
+                    if(secondMaxBTagVal_>thirdMaxBTagVal_){ thirdMaxBTagVal_= secondMaxBTagVal_; }
                     if(maxBTagVal_ > secondMaxBTagVal_) { secondMaxBTagVal_ = maxBTagVal_; }
+
                     maxBTagVal_ = bDiscriminatorValue;
 
                 } else if(bDiscriminatorValue > secondMaxBTagVal_){
-                    secondMaxBTagVal_ = bDiscriminatorValue;
+
                     if(BJetTTHHMVAVect.size() >= 2){BJetTTHHMVAVect.pop_back();} 
                     BJetTTHHMVAVect.push_back( thejet );
+
+                    if(thirdMaxBTagVal_>fourthMaxBTagVal_) { fourthMaxBTagVal_= thirdMaxBTagVal_;}
+                    if(secondMaxBTagVal_>thirdMaxBTagVal_) { thirdMaxBTagVal_= secondMaxBTagVal_;}
+                    secondMaxBTagVal_ = bDiscriminatorValue;
+
+                }else if(bDiscriminatorValue > thirdMaxBTagVal_){
+
+                    if(thirdMaxBTagVal_>fourthMaxBTagVal_) { fourthMaxBTagVal_= thirdMaxBTagVal_;}
+                    thirdMaxBTagVal_ = bDiscriminatorValue;
+
+                }else if(bDiscriminatorValue > fourthMaxBTagVal_){
+                   fourthMaxBTagVal_ = bDiscriminatorValue;
                 }
-                
+
                 JetBTagVal.push_back( bDiscriminatorValue );
+
                 if( bDiscriminatorValue > bDiscriminator_[0] ) njets_btagloose_++;
                 if( bDiscriminatorValue > bDiscriminator_[1] ){
                     
                     njets_btagmedium_++;
-                    //JetVect.pop_back();
                     BJetVect.push_back( thejet );
                 }
                 if( bDiscriminatorValue > bDiscriminator_[2] ) njets_btagtight_++;
             }
-
+        
             if(useTTHHadronicMVA_){
+
                 BJetVect.clear();
                 BJetVect = BJetTTHHMVAVect;
 
-                 if(njets_btagloose_ >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium_ >= bjetsNumberTTHHMVAThreshold_ && jetcount_ >= jetsNumberTTHHMVAThreshold_ && _MVAMethod != ""){
+                if(JetVect.size()>1) mindRPhoLeadJet_=TMath::Min(deltaR( dipho->leadingPhoton()->eta(),dipho->leadingPhoton()->phi(), JetVect[0]->eta(),JetVect[0]->phi()) ,
+                                                                deltaR( dipho->leadingPhoton()->eta(),dipho->leadingPhoton()->phi(), JetVect[1]->eta(),JetVect[1]->phi()));
+                if(JetVect.size()>1) maxdRPhoLeadJet_=TMath::Max(deltaR( dipho->leadingPhoton()->eta(),dipho->leadingPhoton()->phi(), JetVect[0]->eta(),JetVect[0]->phi()) ,
+                                                                deltaR( dipho->leadingPhoton()->eta(),dipho->leadingPhoton()->phi(), JetVect[1]->eta(),JetVect[1]->phi()));
 
-                     tthMvaVal_ = TThMva_->EvaluateMVA( _MVAMethod.c_str() );
-                     //                mvares_tth = TThMva_->EvaluateMVA( "BDT" );
+                minPhoID_=TMath::Min( idmva1_, idmva2_);
+                maxPhoID_=TMath::Max( idmva1_, idmva2_);
+                pho1_ptoM_= dipho->leadingPhoton()->pt()/dipho->mass();
+                pho2_ptoM_= dipho->subLeadingPhoton()->pt()/dipho->mass();
 
-                     /*
+                pho1_sceta_= dipho->leadingPhoton()->superCluster()->eta();
+                pho2_sceta_= dipho->subLeadingPhoton()->superCluster()->eta();
+
+                diPhoY_= dipho->rapidity();
+                diPhoPtoM_= dipho->pt()/dipho->mass();
+                diPhoCosPhi_=  TMath::Cos( deltaPhi( dipho->leadingPhoton()->phi(), dipho->subLeadingPhoton()->phi() ) );
+                nbloose_=float(njets_btagloose_);
+
+                if(secondMaxBTagVal_ >= secondMaxBTagTTHHMVAThreshold_ && njets_btagloose_ >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium_ >= bjetsNumberTTHHMVAThreshold_ && jetcount_ >= jetsNumberTTHHMVAThreshold_ && _MVAMethod != ""){
+                    
+                    /*
                     cout << "input variables : " << endl;
-                    cout << "nJets_ = " << nJets_ << endl;
+                    cout << "nJets_ = " << nJets_ <<" jetcount"<< jetcount_<< endl;
                     cout << "maxBTagVal_ = " << maxBTagVal_ << endl;
                     cout << "secondMaxBTagVal_ = " << secondMaxBTagVal_ << endl;
+                    cout << "thirdMaxBTagVal_ = " << thirdMaxBTagVal_ << endl;
                     cout << "leadJetPt_ = " << leadJetPt_ << endl;
+                    cout << "leadJetBTag_ = " << leadJetBTag_ << endl;
+                    cout << "sumJetPt_ = " << sumJetPt_ << endl;
+                    cout << "minPhoID_ = " << minPhoID_ << endl;
+                    cout << "maxPhoID_ = " << maxPhoID_ << endl;
+                    cout << "mindRPhoLeadJet_ = " << mindRPhoLeadJet_ << endl;
+                    cout << "maxdRPhoLeadJet_ = " << maxdRPhoLeadJet_ << endl;
+                    cout << "pho1_ptoM_ = " << pho1_ptoM_ << endl;
+                    cout << "pho2_ptoM_ = " << pho2_ptoM_ << endl;
+                    cout << "pho1_sceta_ = " << pho1_sceta_ << endl;
+                    cout << "pho2_sceta_ = " << pho2_sceta_ << endl;
+                    cout << "diPhoY_ = " << diPhoY_ << endl;
+                    cout << "diPhoCosPhi_ = " << diPhoCosPhi_ << endl;
+                    cout << "diPhoPtoM_ = " << diPhoPtoM_ << endl;
+                    cout << "nBLoose_ = " << njets_btagloose_ << " "<<nbloose_<<endl;
+                    */
+                    tthMvaVal_ = TThMva_->EvaluateMVA( _MVAMethod.c_str() );
 
-                    cout << "mva result :" << endl;
-                    cout << "tthMvaVal_ = " << tthMvaVal_  << endl;
-                     */
+                    //cout << "mva result :" << endl;
+                    //cout << "tthMvaVal_ = " << tthMvaVal_  << endl;
+                    //cout << "tthMvaVal_ = " << tthMvaVal_  << " "<< boundaries[0]<<" "<< boundaries[1]<< endl;
+                     
                  }
             }
 
             bool isTTHHadronicTagged = false;
-            
+            int catnum =-1;
             if( !useTTHHadronicMVA_ && njets_btagloose_ >= bjetsLooseNumberThreshold_ && njets_btagmedium_ >= bjetsNumberThreshold_ && jetcount_ >= jetsNumberThreshold_ ) {
-                
-                isTTHHadronicTagged = true;
-            
-            } else if ( useTTHHadronicMVA_ && njets_btagloose_ >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium_ >= bjetsNumberTTHHMVAThreshold_ && jetcount_ >= jetsNumberTTHHMVAThreshold_ && tthMvaVal_ > tthHadMVAThreshold_ ) {
-                
-                isTTHHadronicTagged = true;
-            }
 
+                catnum=0;
+                isTTHHadronicTagged = true;
+                
+            } else if ( useTTHHadronicMVA_  && njets_btagloose_ >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium_ >= bjetsNumberTTHHMVAThreshold_ && jetcount_ >= jetsNumberTTHHMVAThreshold_ ) {
+                //&& tthMvaVal_ >= tthHadMVAThresholdMin_  && tthMvaVal_ < tthHadMVAThresholdMax_ ) {
+                
+                catnum = chooseCategory( tthMvaVal_ );                
+                //                cout<<" catNum="<<catnum<<endl;
+                if(catnum>=0){
+                    isTTHHadronicTagged = true;
+                    //                    cout<<" TAGGED "<< endl;
+                }
+            }
+            
             if( isTTHHadronicTagged ) {
+
                 TTHHadronicTag tthhtags_obj( dipho, mvares, JetVect, BJetVect );
+                tthhtags_obj.setCategoryNumber(catnum  );
                 tthhtags_obj.setNjet( jetcount_ );
                 tthhtags_obj.setNBLoose( njets_btagloose_ );
                 tthhtags_obj.setNBMedium( njets_btagmedium_ );
@@ -465,8 +622,11 @@ namespace flashgg {
                 tthhtags_obj.setSumJetPt( sumJetPt_ );
                 tthhtags_obj.setMaxBTagVal( maxBTagVal_ );
                 tthhtags_obj.setSecondMaxBTagVal( secondMaxBTagVal_ );
+                tthhtags_obj.setThirdMaxBTagVal( thirdMaxBTagVal_ );
+                tthhtags_obj.setFourthMaxBTagVal( fourthMaxBTagVal_ );
                 tthhtags_obj.setSystLabel( systLabel_ );
                 tthhtags_obj.setMVAres(tthMvaVal_);
+
                 if(!useTTHHadronicMVA_){
                     for( unsigned num = 0; num < JetVect.size(); num++ ) {
                         tthhtags_obj.includeWeightsByLabel( *JetVect[num] , "JetBTagCutWeight");
@@ -478,6 +638,7 @@ namespace flashgg {
                     }                    
                 }
                 tthhtags_obj.includeWeights( *dipho );
+
                 tthhtags->push_back( tthhtags_obj );
                 if( ! evt.isRealData() ) {
                     TagTruthBase truth_obj;
@@ -488,9 +649,17 @@ namespace flashgg {
                                                *( njets.product() ),
                                                *( pTH.product() ),
                                                *( pTV.product() ) );
+                    } else if ( htxsClassification.isValid() ) {
+                        truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
+                                               htxsClassification->stage1_cat_pTjet30GeV,
+                                               htxsClassification->jets30.size(),
+                                               htxsClassification->p4decay_higgs.pt(),
+                                               htxsClassification->p4decay_V.pt() );
+
                     } else {
                         truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
                     }
+                    //truth_obj.setGenJets(genJetVect);
                     truths->push_back( truth_obj );
                     tthhtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
                 }

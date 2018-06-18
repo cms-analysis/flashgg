@@ -391,6 +391,8 @@ void PhotonIdUtils::recomputeNonZsClusterShapes( reco::Photon &pho, noZS::EcalCl
     showerShape.maxEnergyXtal =  maxXtal;
     showerShape.sigmaIetaIeta =  sqrt( locCov[0] );
     showerShape.sigmaEtaEta =  sqrt( cov[0] );
+    showerShape.sigmaIetaIphi =  sqrt( locCov[1] );
+    showerShape.sigmaIphiIphi =  sqrt( locCov[2] );
 
     pho.full5x5_setShowerShapeVariables( showerShape );
 
@@ -424,7 +426,8 @@ void PhotonIdUtils::recomputeNonZsClusterShapes( reco::Photon &pho, const EcalRe
     showerShape.e5x5 = e5x5;
     showerShape.maxEnergyXtal =  maxXtal;
     showerShape.sigmaIetaIeta =  sqrt( locCov[0] );
-
+    showerShape.sigmaIetaIphi =  sqrt( locCov[1] );
+    showerShape.sigmaIphiIphi =  sqrt( locCov[2] );
     pho.full5x5_setShowerShapeVariables( showerShape );
 }
 

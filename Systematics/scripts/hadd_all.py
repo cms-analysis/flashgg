@@ -57,12 +57,12 @@ for fnr in filelist.keys():
         mediumlist = []    
         for i in range(len(subres)):
             mediumfile = fnr.replace("_%i","intermediate%i"%i)
+            mediumlist.append(mediumfile)
             if access(mediumfile,F_OK):
                 print "skipping",mediumfile
                 continue
             cmd = "hadd_workspaces %s %s" % (mediumfile," ".join(fnr%fnn for fnn in subres[i]))
             printAndExec(cmd)
-            mediumlist.append(mediumfile)
         cmd = "hadd_workspaces %s %s" % (bigfile," ".join(mediumlist))    
         printAndExec(cmd)
     else:    

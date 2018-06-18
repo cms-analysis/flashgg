@@ -1,9 +1,10 @@
 [INFO] Global Tag:  cms.string('94X_mc2017_realistic_v12')
-10-May-2018 18:12:53 CEST  Initiating request to open file file:myMicroAODOutputFile.root
-10-May-2018 18:12:54 CEST  Successfully opened file file:myMicroAODOutputFile.root
+Warning in <TInterpreter::ReadRootmapFile>: class  edm::Ptr<pat::PackedGenParticle> found in libDataFormatsPatCandidates.so  is already in libflashggDataFormats.so 
+05-Jun-2018 21:43:51 CEST  Initiating request to open file file:myMicroAODOutputFile.root
+05-Jun-2018 21:43:53 CEST  Successfully opened file file:myMicroAODOutputFile.root
 here diphotonDumper/histograms
-Begin processing the 1st record. Run 1, Event 202129, LumiSection 65 at 10-May-2018 18:13:06.727 CEST
-10-May-2018 18:13:10 CEST  Closed file file:myMicroAODOutputFile.root
+Begin processing the 1st record. Run 1, Event 53204, LumiSection 58 at 05-Jun-2018 21:44:03.747 CEST
+05-Jun-2018 21:44:03 CEST  Closed file file:myMicroAODOutputFile.root
 
 =============================================
 

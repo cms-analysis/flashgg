@@ -7,7 +7,7 @@ cmsRun Taggers/test/simple_Tag_test.py >& simpleTag_test_auto_$NOW.txt
 echo "diphotonsDumper test (output diphotons_test_auto_$NOW.txt)"
 cmsRun Taggers/test/diphotonsDumper_cfg.py >& diphotons_test_auto_$NOW.txt
 echo "workspaceStd test (output workspace_test_auto_$NOW.txt)"
-cmsRun Systematics/test/workspaceStd.py processId=test doHTXS=1 verboseTagDump=1 verboseSystDump=1  >& workspace_test_auto_$NOW.txt
+cmsRun Systematics/test/workspaceStd.py processId=ggh_125 doHTXS=1 verboseTagDump=1 verboseSystDump=1  >& workspace_test_auto_$NOW.txt
 echo "diffing and writing to diff_summary_$NOW.txt"
 diff uAOD_test_auto_$NOW.txt uAOD_test_ref.txt > diff_summary_$NOW.txt
 diff simpleTag_test_auto_$NOW.txt simpleTag_test_ref.txt >> diff_summary_$NOW.txt
