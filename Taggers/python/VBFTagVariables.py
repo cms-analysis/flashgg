@@ -24,7 +24,16 @@ dipho_variables=[
     "dipho_subleadIDMVA     := diPhoton.subLeadingView.phoIdMvaWrtChosenVtx",
     "dipho_lead_elveto      := diPhoton.leadingPhoton.passElectronVeto",
     "dipho_sublead_elveto   := diPhoton.subLeadingPhoton.passElectronVeto",
-    "isGold := isGold"
+    "result           := diPhotonMVA.result",
+    "dipho_PToM             := diPhoton.pt/diPhoton.mass",
+    "sigmarv                := diPhotonMVA.sigmarv",
+    "sigmarvDecorr          := diPhotonMVA.decorrSigmarv",
+    "sigmawv                := diPhotonMVA.sigmawv",
+    "CosPhi                 := diPhotonMVA.CosPhi",
+    "vtxprob                := diPhotonMVA.vtxprob",
+    "pt                     := diPhoton.pt",
+    "leadSCeta              := diPhoton.leadingPhoton.superCluster.eta",
+    "subleadSCeta           := diPhoton.subLeadingPhoton.superCluster.eta"
     ]
 
 dijet_variables=[
