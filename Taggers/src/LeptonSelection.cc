@@ -113,7 +113,7 @@ namespace flashgg {
 
             if( !muon::isTightMuon( *muon, *best_vtx ) ) continue; 
             
-            double muMiniIsoSumRel = -1; //muon->fggMiniIsoSumRel();
+            double muMiniIsoSumRel = muon->fggMiniIsoSumRel();
 
             if( muMiniIsoSumRel > muMiniIsoSumRelThreshold ) continue; 
             
