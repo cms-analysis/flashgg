@@ -93,7 +93,7 @@ In fact, it is recommended to set up a new area from scratch and checkout the ta
 
 https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_users  
 
-### Rerun on v2 (3_1_0
+### Rerun on v2 (3_1_0)
 
 ./prepareCrabJobs.py -C RunIIFall17-3_1_0 -U 1 -L 25 -s campaigns/RunIIFall17-3_1_0_part0.json -V 3_1_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask /afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/ReReco/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt
 
@@ -107,6 +107,7 @@ https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_u
 
 ./prepareCrabJobs.py -C RunIIFall17-3_1_0 -U 1 -L 25 -s campaigns/RunIIFall17-3_1_0_part5.json -V 3_1_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
 
+./prepareCrabJobs.py -C RunIIFall17-3_1_0 -U 1 -L 25 -s campaigns/RunIIFall17-3_1_0_part6.json -V 3_1_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
 
 ### First real 2017??? (3_0_0)
 
