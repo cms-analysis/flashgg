@@ -194,6 +194,8 @@
 	"DiPhotonJetsBox_M40_80-Sherpa" : { "xs" : 303.2, "itype":10 },
 	"DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa" : { "xs" : 84.4, "itype":10 },
 	"DiPhotonJets_MGG-80toInf_13TeV_amcatnloFXFX_pythia8" : { "xs" : 135.1 },
+   "DiPhotonJetsBox2BJets_MGG-80toInf_13TeV-Sherpa" : {"xs" : 0.494},
+   "DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-Sherpa" : {"xs" : 0.8674276},
         "QCD_Pt-30to40_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8" : {"xs" : 22110.0 , "br" : 1.0,"itype":30 },
         "QCD_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8" : {"xs" : 113400.0 , "br" : 1.0,"itype":32 },
         "QCD_Pt-30toInf_DoubleEMEnriched_MGG-40to80_TuneCUETP8M1_13TeV_Pythia8" : {"xs" : 260500.0 , "br" : 1.0,"itype":31 },      
