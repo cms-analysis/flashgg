@@ -79,8 +79,8 @@ bool Jet::passesJetID( JetIDLevel level) const
     int   CHM      = this->chargedMultiplicity();
     int   NumNeutralParticles = this->neutralMultiplicity();
     
-    std::cout  << "DEBUG:: eta= " << eta << " NHF=" << NHF << " NEMF=" << NEMF << " CHF=" << CHF << " CEMF=" << CEMF 
-               << " NumConst=" << NumConst << " CHM=" << CHM << " NumNeutralParticles=" << NumNeutralParticles << std::endl;
+    //    std::cout  << "DEBUG:: eta= " << eta << " NHF=" << NHF << " NEMF=" << NEMF << " CHF=" << CHF << " CEMF=" << CEMF 
+    //               << " NumConst=" << NumConst << " CHM=" << CHM << " NumNeutralParticles=" << NumNeutralParticles << std::endl;
     
     bool jetID_barrel_loose  =  (NHF<0.99 && NEMF<0.99 && NumConst>1) && ((fabs(eta)<=2.4 && CHF>0 && CHM>0 && CEMF<0.99) || fabs(eta)>2.4) && fabs(eta)<=2.7;
     bool jetID_barrel_tight  =  (NHF<0.90 && NEMF<0.90 && NumConst>1) && ((fabs(eta)<=2.4 && CHF>0 && CHM>0 && CEMF<0.99) || fabs(eta)>2.4) && fabs(eta)<=2.7;
