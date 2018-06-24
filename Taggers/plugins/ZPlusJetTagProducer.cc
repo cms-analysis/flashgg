@@ -120,7 +120,7 @@ namespace flashgg {
 
             for( unsigned jetLoop = 0; jetLoop < Jets[candIndex]->size() ; jetLoop++ ) {
                 Ptr<flashgg::Jet> jet  = Jets[candIndex]->ptrAt( jetLoop );
-                //                if(!jet->passesJetID  ( flashgg::Loose ) ) { continue; }
+                //                if(!jet->passesJetID  ( flashgg::Tight2017 ) ) { continue; }
                 if (jet->pt() < 20.) continue;
 
                 // close to lead photon?

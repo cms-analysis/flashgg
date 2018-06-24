@@ -300,7 +300,7 @@ namespace flashgg {
                     edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( jetIndex );
 
                     if( fabs( thejet->eta() ) > jetEtaThreshold_ ) { continue; }
-                    if(!thejet->passesJetID  ( flashgg::Loose ) ) { continue; }
+                    if(!thejet->passesJetID  ( flashgg::Tight2017 ) ) { continue; }
                     if( thejet->pt() < jetPtThreshold_ ) { continue; }
 
                     float dRPhoLeadJet = deltaR( thejet->eta(), thejet->phi(), dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi() ) ;
@@ -352,7 +352,7 @@ namespace flashgg {
                     edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( jetIndex );
 
                     if( fabs( thejet->eta() ) > jetEtaThreshold_ ) { continue; }
-                    if(!thejet->passesJetID  ( flashgg::Loose ) ) { continue; }
+                    if(!thejet->passesJetID  ( flashgg::Tight2017 ) ) { continue; }
                     if( thejet->pt() < jetPtThreshold_ ) { continue; }
 
                     float dRPhoLeadJet = deltaR( thejet->eta(), thejet->phi(), dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi() ) ;
