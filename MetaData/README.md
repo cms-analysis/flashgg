@@ -748,8 +748,8 @@ Importing /GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6/sethzenz-HggPhys1
    At any time, the catalog content can be inspected by the `list` command.
 
    *Note*: By default the `import` command imports all datasets matching the pattern `/*/*<campaing>-<fgg_version>*/*`. This can be changed explicitely specifying the patterns to be imported, e.g.:
-   `fggManangeSamples.py -C <campaing>_50ns /*/*<campaign>*50ns*/*`
-   `fggManangeSamples.py -C <campaing>_20ns /*/*<campaign>*20ns*/*`
+   `fggManangeSamples.py -C <campaing>_50ns -S /*/*<campaign>*50ns*/*`
+   `fggManangeSamples.py -C <campaing>_20ns -S /*/*<campaign>*20ns*/*`
    
    *Note 2*: Datasets that are submitted or finish at a later stage can be imported in arleady existing catalogs.
    If a datataset with the same name already exists, the list of files will be merged (the `review` and `check` steps need to be re-run`).
