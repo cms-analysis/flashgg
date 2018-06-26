@@ -658,7 +658,7 @@ namespace flashgg {
 
                 if(secondMaxBTagVal_ >= secondMaxBTagTTHHMVAThreshold_ && njets_btagloose_ >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium_ >= bjetsNumberTTHHMVAThreshold_ && jetcount_ >= jetsNumberTTHHMVAThreshold_ && _MVAMethod != ""){
                     
-                    
+                    /*
                     cout << "input variables : " << endl;
                     cout << "nJets_ = " << nJets_ <<" jetcount"<< jetcount_<< endl;
                     cout << "maxBTagVal_ = " << maxBTagVal_ << endl;
@@ -699,14 +699,14 @@ namespace flashgg {
                     cout << "jetPt_4_ = " <<jetPt_4_ << endl;
                     cout << "jetEta_4_ = " <<jetEta_4_ << endl;
                     cout << "jetPhi_4_ = " <<jetPhi_4_ << endl;
-                    
+                    */
                     
 
 
                     tthMvaVal_ = TThMva_->EvaluateMVA( _MVAMethod.c_str() );
 
                     //cout << "mva result :" << endl;
-                    cout << "tthMvaVal_ = " << tthMvaVal_  << endl;
+                    //cout << "tthMvaVal_ = " << tthMvaVal_  << endl;
                     //cout << "tthMvaVal_ = " << tthMvaVal_  << " "<< boundaries[0]<<" "<< boundaries[1]<< endl;
                      
                  }
