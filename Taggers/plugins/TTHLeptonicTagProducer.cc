@@ -153,7 +153,7 @@ namespace flashgg {
 
         MuonEtaCut_ = iConfig.getParameter<double>( "MuonEtaCut");
         MuonPtCut_ = iConfig.getParameter<double>( "MuonPtCut");
-        MuonIsoCut_ = iConfig.getParameter<double>( "MuonMiniIsoCut");
+        MuonIsoCut_ = iConfig.getParameter<double>( "MuonIsoCut");
         MuonPhotonDrCut_ = iConfig.getParameter<double>( "MuonPhotonDrCut");
  
         EleEtaCuts_ = iConfig.getParameter<std::vector<double>>( "EleEtaCuts");
@@ -193,12 +193,12 @@ namespace flashgg {
         DiphotonMva_->AddVariable( "dipho_sublead_PSV", &subleadPSV_ );
         DiphotonMva_->AddVariable( "nJets", &nJets_ );
         DiphotonMva_->AddVariable( "nJets_bTagMedium", &nJets_bTagMedium_ );
-        DiphotonMva_->AddVariable( "jet_pt1", &jet_pt1_ );
-        DiphotonMva_->AddVariable( "jet_pt2", &jet_pt2_ );
-        DiphotonMva_->AddVariable( "jet_pt3", &jet_pt3_ );
-        DiphotonMva_->AddVariable( "jet_eta1", &jet_eta1_ );
-        DiphotonMva_->AddVariable( "jet_eta2", &jet_eta2_ );
-        DiphotonMva_->AddVariable( "jet_eta3", &jet_eta3_ );
+        DiphotonMva_->AddVariable( "jet1_pt", &jet_pt1_ );
+        DiphotonMva_->AddVariable( "jet2_pt", &jet_pt2_ );
+        DiphotonMva_->AddVariable( "jet3_pt", &jet_pt3_ );
+        DiphotonMva_->AddVariable( "jet1_eta", &jet_eta1_ );
+        DiphotonMva_->AddVariable( "jet2_eta", &jet_eta2_ );
+        DiphotonMva_->AddVariable( "jet3_eta", &jet_eta3_ );
         DiphotonMva_->AddVariable( "bTag1", &bTag1_ );
         DiphotonMva_->AddVariable( "bTag2", &bTag2_ );
         DiphotonMva_->AddVariable( "MetPt", &MetPt_ );
@@ -319,7 +319,7 @@ namespace flashgg {
 
             std::vector<edm::Ptr<flashgg::Muon> >     Muons;
             std::vector<edm::Ptr<flashgg::Electron> > Electrons;
-            
+
             if(theMuons->size()>0)
                 Muons = selectMuons(theMuons->ptrs(), dipho, vertices->ptrs(), MuonPtCut_, MuonEtaCut_, MuonIsoCut_, MuonPhotonDrCut_);
             if(theElectrons->size()>0)
@@ -328,7 +328,7 @@ namespace flashgg {
             if( (Muons.size() + Electrons.size()) == 0) continue;
 
  
-           int njet_ = 0;
+            int njet_ = 0;
             int njets_btagloose_ = 0;
             int njets_btagmedium_ = 0;
             int njets_btagtight_ = 0;
@@ -349,7 +349,7 @@ namespace flashgg {
                 if( dRPhoLeadJet < deltaRJetLeadPhoThreshold_ || dRPhoSubLeadJet < deltaRJetSubLeadPhoThreshold_ ) { continue; }
 
                 bool passDrLeptons = 1;                
-                    
+
                 for( unsigned int muonIndex = 0; muonIndex < Muons.size(); muonIndex++ )
                 {
                     Ptr<flashgg::Muon> muon = Muons[muonIndex];
@@ -391,7 +391,6 @@ namespace flashgg {
                 }
                  
             }
-
 
             if(njet_ < jetsNumberThreshold_ || njets_btagmedium_ < bjetsNumberThreshold_) continue;
  
@@ -494,12 +493,10 @@ namespace flashgg {
                 lepton_leadEta_ = Electrons[leadEleIndex]->eta();
             }
 
-
             float mvaValue = DiphotonMva_-> EvaluateMVA( "BDT" );
             int catNumber = -1;
             if(mvaValue>MVAThreshold_[0]) catNumber = 0;
             else if(mvaValue>MVAThreshold_[1] && mvaValue<MVAThreshold_[0]) catNumber = 1;
-
 
             if(catNumber!=-1)
             {
@@ -525,6 +522,7 @@ namespace flashgg {
                 tthltags_obj.setElectrons( Electrons );
                 tthltags_obj.setDiPhotonIndex( diphoIndex );
                 tthltags_obj.setSystLabel( systLabel_ );
+                tthltags_obj.setMvaRes(mvaValue);
                 tthltags->push_back( tthltags_obj );
  
                 if( ! evt.isRealData() )
@@ -551,7 +549,6 @@ namespace flashgg {
                     tthltags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
                 }
             }
- 
         }//diPho loop end !
         evt.put( std::move( tthltags ) );
         evt.put( std::move( truths ) );
