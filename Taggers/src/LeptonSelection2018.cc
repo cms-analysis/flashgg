@@ -22,27 +22,27 @@ namespace flashgg {
         if( fabs(Ele[l1]->eta()) > EleEtaCuts[2] || ( fabs(Ele[l1]->eta()) > EleEtaCuts[0] && fabs(Ele[l1]->eta()) < EleEtaCuts[1] ) ) continue; 
         if( Ele[l1]->hasMatchedConversion() ) continue; 
 
-        float dRPhoLeadEle = deltaR( Ele[l1]->eta(), Ele[l1]->phi(), dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi() ) ;
-        float dRPhoSubLeadEle = deltaR( Ele[l1]->eta(), Ele[l1]->phi(), dipho->subLeadingPhoton()->superCluster()->eta(), dipho->subLeadingPhoton()->superCluster()->phi() ); 
+        float dRPhoLeadEle = deltaR( Ele[l1]->eta(), Ele[l1]->phi(), dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi() ) ;
+        float dRPhoSubLeadEle = deltaR( Ele[l1]->eta(), Ele[l1]->phi(), dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi() ); 
         if( dRPhoLeadEle < ElePhotonDrCut || dRPhoSubLeadEle < ElePhotonDrCut) continue;
-        float dRPhoLeadEleSC = deltaR( Ele[l1]->superCluster()->eta(), Ele[l1]->superCluster()->phi(), dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi() ) ;
-        float dRPhoSubLeadEleSC = deltaR( Ele[l1]->superCluster()->eta(), Ele[l1]->superCluster()->phi(), dipho->subLeadingPhoton()->superCluster()->eta(), dipho->subLeadingPhoton()->superCluster()->phi() ); 
-        if( dRPhoLeadEleSC < ElePhotonDrCut || dRPhoSubLeadEleSC < ElePhotonDrCut) continue;
+        //float dRPhoLeadEleSC = deltaR( Ele[l1]->superCluster()->eta(), Ele[l1]->superCluster()->phi(), dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi() ) ;
+        //float dRPhoSubLeadEleSC = deltaR( Ele[l1]->superCluster()->eta(), Ele[l1]->superCluster()->phi(), dipho->subLeadingPhoton()->superCluster()->eta(), dipho->subLeadingPhoton()->superCluster()->phi() ); 
+        //if( dRPhoLeadEleSC < ElePhotonDrCut || dRPhoSubLeadEleSC < ElePhotonDrCut) continue;
 
-        TLorentzVector Electron, ElectronSC;
+        TLorentzVector Electron;
         Electron.SetPtEtaPhiE(Ele[l1]->pt(), Ele[l1]->eta(), Ele[l1]->phi(), Ele[l1]->energy());
-        ElectronSC.SetXYZT(Ele[l1]->superCluster()->position().x(), Ele[l1]->superCluster()->position().y(), Ele[l1]->superCluster()->position().z(), Ele[l1]->ecalEnergy()); 
+        //ElectronSC.SetXYZT(Ele[l1]->superCluster()->position().x(), Ele[l1]->superCluster()->position().y(), Ele[l1]->superCluster()->position().z(), Ele[l1]->ecalEnergy()); 
         TLorentzVector Ph1, Ph2;
-        Ph1.SetPtEtaPhiE(dipho->leadingPhoton()->pt(), dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi(), dipho->leadingPhoton()->energy());
-        Ph2.SetPtEtaPhiE(dipho->subLeadingPhoton()->pt(), dipho->subLeadingPhoton()->superCluster()->eta(), dipho->subLeadingPhoton()->superCluster()->phi(), dipho->subLeadingPhoton()->energy());         
+        Ph1.SetPtEtaPhiE(dipho->leadingPhoton()->pt(), dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi(), dipho->leadingPhoton()->energy());
+        Ph2.SetPtEtaPhiE(dipho->subLeadingPhoton()->pt(), dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi(), dipho->subLeadingPhoton()->energy());         
 
         if( fabs((Electron+Ph1).M() - 91.187) < ElePhotonZMassCut) continue;
         if( fabs((Electron+Ph2).M() - 91.187) < ElePhotonZMassCut) continue;
-        if( fabs((ElectronSC+Ph1).M() - 91.187) < ElePhotonZMassCut) continue;
-        if( fabs((ElectronSC+Ph2).M() - 91.187) < ElePhotonZMassCut) continue;
+        //if( fabs((ElectronSC+Ph1).M() - 91.187) < ElePhotonZMassCut) continue;
+        //if( fabs((ElectronSC+Ph2).M() - 91.187) < ElePhotonZMassCut) continue;
  
-        float TrkElecSCDeltaR = sqrt( Ele[l1]->deltaEtaSuperClusterTrackAtVtx() * Ele[l1]->deltaEtaSuperClusterTrackAtVtx() + Ele[l1]->deltaPhiSuperClusterTrackAtVtx() * Ele[l1]->deltaPhiSuperClusterTrackAtVtx() );
-        if( TrkElecSCDeltaR > DeltaRTrkEle ) continue;
+        //float TrkElecSCDeltaR = sqrt( Ele[l1]->deltaEtaSuperClusterTrackAtVtx() * Ele[l1]->deltaEtaSuperClusterTrackAtVtx() + Ele[l1]->deltaPhiSuperClusterTrackAtVtx() * Ele[l1]->deltaPhiSuperClusterTrackAtVtx() );
+        //if( TrkElecSCDeltaR > DeltaRTrkEle ) continue;
         
         output.push_back(Ele[l1]);
     }
@@ -59,24 +59,14 @@ namespace flashgg {
         if(Muons[l1]->pt()<MuonPtCut) continue;
         if(fabs(Muons[l1]->eta()) > MuonEtaCut) continue;
         if( !Muons[l1]->innerTrack() ) continue; 
-        if(Muons[l1] -> fggMiniIsoSumRel() > MuonMiniIsoCut) continue;
+        if( !Muons[l1]->isMediumMuon() ) continue; 
 
-        int vtxInd = 0;
-        double dzmin = 9999;
-        for( unsigned int i = 0 ; i < vtx.size(); i++ )
-        {
-            Ptr<reco::Vertex> Vtx = vtx[i];
-            if( fabs( Muons[l1]->innerTrack()->vz() - Vtx->position().z() ) < dzmin )
-            {
-                dzmin = fabs( Muons[l1]->innerTrack()->vz() - Vtx->position().z() );
-                vtxInd = i;
-            }
-        }
+        float Iso = Muons[l1]->pfIsolationR04().sumChargedHadronPt + max(0., Muons[l1]->pfIsolationR04().sumNeutralHadronEt + Muons[l1]->pfIsolationR04().sumPhotonEt - 0.5*Muons[l1]->pfIsolationR04().sumPUPt);
 
-        if( !Muons[l1]->isTightMuon(*vtx[vtxInd] ) ) continue; 
+        if(Iso/Muons[l1]->pt() > MuonMiniIsoCut) continue;
 
-        float dRPhoLeadMuon = deltaR( Muons[l1]->eta(), Muons[l1]->phi(), dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi() ) ;
-        float dRPhoSubLeadMuon = deltaR( Muons[l1]->eta(), Muons[l1]->phi(), dipho->subLeadingPhoton()->superCluster()->eta(), dipho->subLeadingPhoton()->superCluster()->phi() ) ;
+        float dRPhoLeadMuon = deltaR( Muons[l1]->eta(), Muons[l1]->phi(), dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi() ) ;
+        float dRPhoSubLeadMuon = deltaR( Muons[l1]->eta(), Muons[l1]->phi(), dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi() ) ;
         if( dRPhoLeadMuon < MuonPhotonDrCut || dRPhoSubLeadMuon < MuonPhotonDrCut ) continue; 
 
         output.push_back(Muons[l1]);
