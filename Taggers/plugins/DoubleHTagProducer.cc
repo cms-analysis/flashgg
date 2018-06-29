@@ -231,8 +231,9 @@ namespace flashgg {
             
             
             // find vertex associated to diphoton object
-            size_t vtx = (size_t)dipho->vertexIndex();
-            if( vtx >= jetTokens_.size() ) { vtx = 0; }
+            size_t vtx = (size_t)dipho->jetCollectionIndex();
+           // size_t vtx = (size_t)dipho->vertexIndex();
+           // if( vtx >= jetTokens_.size() ) { vtx = 0; }
             // and read corresponding jet collection
             edm::Handle<edm::View<flashgg::Jet> > jets;
             evt.getByToken( jetTokens_[vtx], jets);
@@ -254,19 +255,25 @@ namespace flashgg {
             if( cleaned_jets.size() < 2 ) { continue; }
             //dijet pair selection. Do pair according to pt and choose the pair with highest b-tag
             double sumbtag_ref = -999;
+            bool hasDijet = false;
             edm::Ptr<flashgg::Jet>  jet1, jet2;
             for( size_t ijet=0; ijet < cleaned_jets.size()-1;++ijet){
                 auto jet_1 = cleaned_jets[ijet];
-                auto jet_2 = cleaned_jets[ijet+1];
-                double sumbtag = jet_1->bDiscriminator(bTagType_) + jet_2->bDiscriminator(bTagType_);
-                if (sumbtag > sumbtag_ref) {
-                    sumbtag_ref = sumbtag;
-                    jet1 = jet_1;
-                    jet2 = jet_2;
+                for( size_t kjet=ijet+1; kjet < cleaned_jets.size();++kjet){
+                    auto jet_2 = cleaned_jets[kjet];
+                    auto dijet_mass = (jet_1->p4()+jet_2->p4()).mass(); 
+                    if (dijet_mass<mjjBoundaries_[0] || dijet_mass>mjjBoundaries_[1]) continue;
+                    double sumbtag = jet_1->bDiscriminator(bTagType_) + jet_2->bDiscriminator(bTagType_);
+                    if (sumbtag > sumbtag_ref) {
+                        hasDijet = true;
+                        sumbtag_ref = sumbtag;
+                        jet1 = jet_1;
+                        jet2 = jet_2;
+                    }
                 }
-                
             }
-            
+            if (!hasDijet) continue;             
+ 
             auto & leadJet = jet1; 
             auto & subleadJet = jet2; 
 

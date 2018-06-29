@@ -12,7 +12,7 @@ DoubleHTag::DoubleHTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<fla
     : mva_(-.2), MX_(0.), leadJet_(leadJet), subleadJet_(subleadJet) 
 {
     dipho_ = diPho;
-    dijet_ = leadJet_->p4() + subleadJet->p4();
+    dijet_ = leadJet_->p4() + subleadJet_->p4();
     this->setP4( dijet_ + dipho_->p4() );
 }
 
