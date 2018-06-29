@@ -231,8 +231,9 @@ namespace flashgg {
             
             
             // find vertex associated to diphoton object
-            size_t vtx = (size_t)dipho->vertexIndex();
-            if( vtx >= jetTokens_.size() ) { vtx = 0; }
+            size_t vtx = (size_t)dipho->jetCollectionIndex();
+           // size_t vtx = (size_t)dipho->vertexIndex();
+           // if( vtx >= jetTokens_.size() ) { vtx = 0; }
             // and read corresponding jet collection
             edm::Handle<edm::View<flashgg::Jet> > jets;
             evt.getByToken( jetTokens_[vtx], jets);

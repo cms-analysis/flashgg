@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 def variablesToDump(customize):
-    return [ "leadingJet_bDis := leadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",#FIXME make the btag type configurable?
+    variables = [ "leadingJet_bDis := leadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",#FIXME make the btag type configurable?
              "subleadingJet_bDis := subleadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",
              "absCosThetaStar_CS := abs(getCosThetaStar_CS(6500))",#FIXME get energy from somewhere?
              "absCosTheta_bb := abs(CosThetaAngles()[1])",
@@ -14,7 +14,6 @@ def variablesToDump(customize):
              "subleadingPhotonSigOverE := diPhoton.subLeadingPhoton.sigEOverE",
              "sigmaMOverM := sqrt(0.5*(diPhoton.leadingPhoton.sigEOverE*diPhoton.leadingPhoton.sigEOverE + diPhoton.subLeadingPhoton.sigEOverE*diPhoton.subLeadingPhoton.sigEOverE))",
              "sigmaMOverMDecorr := getSigmaMDecorr()",
-             "sigmaMJets := getSigmaMOverMJets()",
              "PhoJetMinDr := getPhoJetMinDr()",#up to here input variables to MVA
              "HHbbggMVA := MVA()",
              "MX := MX()",
@@ -43,15 +42,11 @@ def variablesToDump(customize):
              "leadingJet_eta := leadJet().eta",
              "leadingJet_phi := leadJet().phi",
              "leadingJet_mass := leadJet().p4().M()",
-             "leadingJet_bRegNNCorr := leadJet().userFloat('bRegNNCorr')",
-             "leadingJet_bRegNNResolution := leadJet().userFloat('bRegNNResolution')",
 
              "subleadingJet_pt := subleadJet().pt",
              "subleadingJet_eta := subleadJet().eta",
              "subleadingJet_phi := subleadJet().phi",
              "subleadingJet_mass := subleadJet().p4().M()",
-             "subleadingJet_bRegNNCorr := subleadJet().userFloat('bRegNNCorr')",
-             "subleadingJet_bRegNNResolution := subleadJet().userFloat('bRegNNResolution')",
 
 
              "ttHMVA_MET := 0",# these variables are needed for ttH killer MVA, which has to be implemented in the producer with another mvaComputer
@@ -68,9 +63,16 @@ def variablesToDump(customize):
              "ttHMVA_leadingElectron :=0 ",
              "ttHMVA_subleadingElectron :=0 ",
              "ttHMVA_nelecs :=0 ",
-             "ttHHHbggMVA := 0"
-             
-]
+             "ttHHHbggMVA := 0",
+    ]
+    if customize.doBJetRegression : variables +=[
+             "leadingJet_bRegNNCorr := leadJet().userFloat('bRegNNCorr')",
+             "leadingJet_bRegNNResolution := leadJet().userFloat('bRegNNResolution')",
+             "subleadingJet_bRegNNCorr := subleadJet().userFloat('bRegNNCorr')",
+             "subleadingJet_bRegNNResolution := subleadJet().userFloat('bRegNNResolution')",
+             "sigmaMJets := getSigmaMOverMJets()"
+    ]
+    return variables
 
 def tagList(customize,process):
     return [ ["DoubleHTag",12] ]#12 is the number of categories?
@@ -79,7 +81,7 @@ def tagList(customize,process):
 def customizeTagSequence(customize,process):
     process.load("flashgg.Taggers.flashggDoubleHTag_cff")
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
-    process.flashggDoubleHTag.JetTags = cms.VInputTag( ["bRegProducer%d" % icoll for icoll,coll in enumerate(UnpackedJetCollectionVInputTag) ] )
+    if customize.doBJetRegression : process.flashggDoubleHTag.JetTags = cms.VInputTag( ["bRegProducer%d" % icoll for icoll,coll in enumerate(UnpackedJetCollectionVInputTag) ] )
     ## customize here (regression, kin-fit, MVA...)
     ## process.flashggTagSequence += process.flashggDoubleHTagSequence
 #    pos = process.flashggTagSequence.index(process.flashggTagSorter) - 1 

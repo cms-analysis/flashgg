@@ -23,7 +23,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
 
                                    MinJetPt   = cms.double(20.),
                                    MaxJetEta   = cms.double(2.5),
-                                   MJJBoundaries = cms.vdouble(70.,180.),
+                                   MJJBoundaries = cms.vdouble(70.,190.),
                                    BTagType = cms.untracked.string('pfCombinedInclusiveSecondaryVertexV2BJetTags'), #string for btag algorithm
                                    UseJetID = cms.bool(True),
                                    JetIDLevel = cms.string('Loose'),
