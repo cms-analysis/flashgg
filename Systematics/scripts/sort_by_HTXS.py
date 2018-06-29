@@ -45,7 +45,7 @@ for ds in _data:
       getattr(wss[cat],'import')(newds)
       print "  ENDING DATASET for category %i (%s):"%(cat,stage0catnum2name[cat]),newds.GetName(),"weight:",newds.sumEntries()
       sumfinw += newds.sumEntries()
-   if initw != sumfinw:
+   if (initw == 0. and abs(sumfinw) > 0.0001) or (initw > 0. and abs((initw - sumfinw)/initw) > 0.001):
       if len(relevantstage0cats)==1:
          # debugging/testing
          print " DISAGREEMENT IN DATASET SUMWEIGHTS BEFORE AND AFTER:",initw,sumfinw

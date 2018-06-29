@@ -1,0 +1,12 @@
+{
+    "cmdLine"  : "campaign=RunIIFall17-3_0_X",
+    "processes": {
+	"Data"   : [
+"/DoubleEG/sethzenz-RunIIFall17-3_0_0-3_0_0-v0-Run2017D-17Nov2017-v1-a18f46d96a188391b5acca7d030a860e/USER",
+"/DoubleEG/sethzenz-RunIIFall17-3_0_1-3_0_1-v0-Run2017B-17Nov2017-v1-a18f46d96a188391b5acca7d030a860e/USER",
+"/DoubleEG/sethzenz-RunIIFall17-3_0_1-3_0_1-v0-Run2017C-17Nov2017-v1-a18f46d96a188391b5acca7d030a860e/USER",
+"/DoubleEG/sethzenz-RunIIFall17-3_0_1-3_0_1-v0-Run2017E-17Nov2017-v1-a18f46d96a188391b5acca7d030a860e/USER",
+"/DoubleEG/sethzenz-RunIIFall17-3_0_1-3_0_1-v0-Run2017F-17Nov2017-v1-a18f46d96a188391b5acca7d030a860e/USER"
+		   ]
+    }
+}

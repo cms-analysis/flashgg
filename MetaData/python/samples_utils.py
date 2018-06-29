@@ -960,6 +960,11 @@ Commands:
                             default=20,
                             help="Maximum number of threads to use. default: %default",
                             ),
+                make_option("-S","--Dataset",
+                            dest="dataset",action="store",type="string",
+                            default=None,
+                            help="",
+                            ),
                 make_option("-v","--verbose",
                             action="store_true", dest="verbose",
                             default=False,
@@ -994,9 +999,9 @@ Commands:
             method()
             
     def run_import(self,*args):
-        if len(args)>0:
-            print args
-            self.mn.importFromDAS(list(args))
+        if self.options.dataset :
+            print self.options.dataset
+            self.mn.importFromDAS([self.options.dataset])
         else:
             self.mn.importFromDAS(["/*/*%s-%s*/USER" % (self.options.campaign,self.options.flashggVersion)])
     

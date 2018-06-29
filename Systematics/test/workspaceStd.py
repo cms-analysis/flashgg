@@ -405,6 +405,7 @@ if customize.doFiducial:
     tagList=[["SigmaMpTTag",3]]
 elif customize.tthTagsOnly:
     tagList=[
+        ["NoTag",0],
         ["TTHHadronicTag",2],
         ["TTHLeptonicTag",0],
         ["TTHDiLeptonTag",0]
@@ -425,6 +426,8 @@ else:
         ]
 
 definedSysts=set()
+process.tagsDumper.NNLOPSWeightFile=cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root")
+process.tagsDumper.reweighGGHforNNLOPS = cms.untracked.bool(bool(customize.processId.count("ggh")))
 process.tagsDumper.classifierCfg.remap=cms.untracked.VPSet()
 for tag in tagList: 
   tagName=tag[0]

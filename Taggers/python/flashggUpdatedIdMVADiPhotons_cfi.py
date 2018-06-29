@@ -31,12 +31,12 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
 
                                               # To apply correction for non5x5 r9, sieie, sipip, sieip set this variable True. Default value False.
 
-                                              doNon5x5transformation   = cms.bool(True), ## Turn this off to remove non5x5 corrections
+                                              doNon5x5transformation   = cms.bool(False), ## Turn this off to remove non5x5 corrections
                                               non5x5correctionFile     = cms.FileInPath("flashgg/MicroAOD/data/transformation_Moriond17_non5x5_v2.root"),
 
                                               Debug                    = cms.bool(False),
                                               
-                                              reRunRegression = cms.bool(True),
+                                              reRunRegression = cms.bool(False),
                                               reRunRegressionOnData = cms.bool(False),
                                               keepInitialEnergy = cms.bool(True),
                                               regressionConfig = regressionModifier.clone(manualBunchSpacing = cms.int32(25),              

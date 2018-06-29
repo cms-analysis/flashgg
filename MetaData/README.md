@@ -93,6 +93,22 @@ In fact, it is recommended to set up a new area from scratch and checkout the ta
 
 https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_users  
 
+### Rerun on v2 (3_1_0)
+
+./prepareCrabJobs.py -C RunIIFall17-3_1_0 -U 1 -L 25 -s campaigns/RunIIFall17-3_1_0_part0.json -V 3_1_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask /afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/ReReco/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt
+
+./prepareCrabJobs.py -C RunIIFall17-3_1_0 -U 1 -L 25 -s campaigns/RunIIFall17-3_1_0_part1.json -V 3_1_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask /afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/ReReco/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt
+
+./prepareCrabJobs.py -C RunIIFall17-3_1_0 -U 1 -L 25 -s campaigns/RunIIFall17-3_1_0_part2.json -V 3_1_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask /afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/ReReco/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt
+
+./prepareCrabJobs.py -C RunIIFall17-3_1_0 -U 1 -L 25 -s campaigns/RunIIFall17-3_1_0_part3.json -V 3_1_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py 
+
+./prepareCrabJobs.py -C RunIIFall17-3_1_0 -U 1 -L 25 -s campaigns/RunIIFall17-3_1_0_part4.json -V 3_1_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask /afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/ReReco/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt
+
+./prepareCrabJobs.py -C RunIIFall17-3_1_0 -U 1 -L 25 -s campaigns/RunIIFall17-3_1_0_part5.json -V 3_1_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
+
+./prepareCrabJobs.py -C RunIIFall17-3_1_0 -U 1 -L 25 -s campaigns/RunIIFall17-3_1_0_part6.json -V 3_1_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py
+
 ### First real 2017??? (3_0_0)
 
 ./prepareCrabJobs.py -C RunIIFall17-3_0_0 -U 1 -L 25 -s campaigns/RunIIFall17-3_0_0_part0.json -V 3_0_0 -p ${CMSSW_BASE}/src/flashgg/MicroAOD/test/microAODstd.py --lumiMask jsons/Cert_294927-306462_13TeV_PromptReco_Collisions17_JSON.txt
@@ -732,8 +748,8 @@ Importing /GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6/sethzenz-HggPhys1
    At any time, the catalog content can be inspected by the `list` command.
 
    *Note*: By default the `import` command imports all datasets matching the pattern `/*/*<campaing>-<fgg_version>*/*`. This can be changed explicitely specifying the patterns to be imported, e.g.:
-   `fggManangeSamples.py -C <campaing>_50ns /*/*<campaign>*50ns*/*`
-   `fggManangeSamples.py -C <campaing>_20ns /*/*<campaign>*20ns*/*`
+   `fggManangeSamples.py -C <campaing>_50ns -S /*/*<campaign>*50ns*/*`
+   `fggManangeSamples.py -C <campaing>_20ns -S /*/*<campaign>*20ns*/*`
    
    *Note 2*: Datasets that are submitted or finish at a later stage can be imported in arleady existing catalogs.
    If a datataset with the same name already exists, the list of files will be merged (the `review` and `check` steps need to be re-run`).
