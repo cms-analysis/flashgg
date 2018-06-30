@@ -11,7 +11,7 @@ mvaShiftBins = cms.PSet(
                      )
     )
 
-# from Arnab via Martina 10/03/2017
+# PR 1045
 preselBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)","full5x5_r9"),
     bins = cms.VPSet(
@@ -22,16 +22,17 @@ preselBins = cms.PSet(
         )
     )
 
-# JTao: slide 11 of https://indico.cern.ch/event/605406/contributions/2487608/attachments/1417110/2170077/201702ZmmgEVetoPhotonValidations.pdf from the update with 2016 full 35.9/fb data and the final showershpae correction
+# JTao: Common AN AN-18-105
 electronVetoBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)","full5x5_r9"),
     bins = cms.VPSet(
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00 ) , upBounds = cms.vdouble( 1.5, 0.85 ) , values = cms.vdouble( 0.9945 ) , uncertainties = cms.vdouble( 0.0023 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ) , upBounds = cms.vdouble( 1.5, 999. ) , values = cms.vdouble( 0.9958 ) , uncertainties = cms.vdouble( 0.0006 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00 ) , upBounds = cms.vdouble( 6.0, 0.90 ) , values = cms.vdouble( 0.9777 ) , uncertainties = cms.vdouble( 0.0065 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90 ) , upBounds = cms.vdouble( 6.0, 999. ) , values = cms.vdouble( 0.9924 ) , uncertainties = cms.vdouble( 0.0017 )  ) 
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00 ) , upBounds = cms.vdouble( 1.5, 0.85 ) , values = cms.vdouble( 0.9863 ) , uncertainties = cms.vdouble( 0.0022 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ) , upBounds = cms.vdouble( 1.5, 999. ) , values = cms.vdouble( 0.9926 ) , uncertainties = cms.vdouble( 0.0006 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00 ) , upBounds = cms.vdouble( 6.0, 0.90 ) , values = cms.vdouble( 0.9765 ) , uncertainties = cms.vdouble( 0.0073 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90 ) , upBounds = cms.vdouble( 6.0, 999. ) , values = cms.vdouble( 0.9855 ) , uncertainties = cms.vdouble( 0.0018 )  )
         )
     )
+
 
 FNUFBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)","full5x5_r9"),
