@@ -201,6 +201,7 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
 				       ElePhotonZMassCut = cms.double(5),
 				       DeltaRTrkEle = cms.double(0.35),
 				       UseCutBasedDiphoId = cms.bool(False),
+				       debug = cms.bool(False),
 				       CutBasedDiphoId = cms.vdouble(0.4,0.3,0.0,-0.5,2.0,2.5),    # pT/m lead, pT/m sublead, leadIdMVA, subleadIdMVA, DeltaEta, DeltaPhi
                                        HTXSTags     = HTXSInputTags
 

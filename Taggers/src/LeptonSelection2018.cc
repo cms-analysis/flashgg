@@ -10,7 +10,7 @@ namespace flashgg {
 
 
 
-    std::vector<edm::Ptr<flashgg::Electron> > selectElectrons( const std::vector<edm::Ptr<flashgg::Electron> > Ele, Ptr<flashgg::DiPhotonCandidate> dipho, double ElePtCut, std::vector<double> EleEtaCuts, double ElePhotonDrCut, double ElePhotonZMassCut, double DeltaRTrkEle)
+    std::vector<edm::Ptr<flashgg::Electron> > selectElectrons( const std::vector<edm::Ptr<flashgg::Electron> > Ele, Ptr<flashgg::DiPhotonCandidate> dipho, double ElePtCut, std::vector<double> EleEtaCuts, double ElePhotonDrCut, double ElePhotonZMassCut, double DeltaRTrkEle, bool debug_)
 {
     assert(EleEtaCuts.size()==3);
     std::vector<edm::Ptr<flashgg::Electron> > output;
@@ -45,12 +45,15 @@ namespace flashgg {
         //if( TrkElecSCDeltaR > DeltaRTrkEle ) continue;
         
         output.push_back(Ele[l1]);
+
+        if(debug_)
+            cout << "Selected electron with pT = " << Ele[l1]->pt() << ", eta = " << Ele[l1]->eta() << ", DR with photons = " <<  dRPhoLeadEle << " and " << dRPhoSubLeadEle << ", DMass with Z = " << fabs((Electron+Ph1).M() - 91.187) << " and " <<  fabs((Electron+Ph2).M() - 91.187) << endl;
     }
 
      return output;
 }
     
-    std::vector<edm::Ptr<flashgg::Muon    > > selectMuons( const std::vector<edm::Ptr<flashgg::Muon> > Muons, Ptr<flashgg::DiPhotonCandidate> dipho, const std::vector<edm::Ptr<reco::Vertex>> vtx, double MuonPtCut, double MuonEtaCut, double MuonMiniIsoCut, double MuonPhotonDrCut)
+    std::vector<edm::Ptr<flashgg::Muon    > > selectMuons( const std::vector<edm::Ptr<flashgg::Muon> > Muons, Ptr<flashgg::DiPhotonCandidate> dipho, const std::vector<edm::Ptr<reco::Vertex>> vtx, double MuonPtCut, double MuonEtaCut, double MuonMiniIsoCut, double MuonPhotonDrCut, bool debug_)
 {
      std::vector<edm::Ptr<flashgg::Muon> > output;
 
@@ -70,6 +73,10 @@ namespace flashgg {
         if( dRPhoLeadMuon < MuonPhotonDrCut || dRPhoSubLeadMuon < MuonPhotonDrCut ) continue; 
 
         output.push_back(Muons[l1]);
+
+        if(debug_)
+            cout << "Selected muon with pT = " << Muons[l1]->pt() << ", eta = " << Muons[l1]->eta() << ", DR with photons = " <<  dRPhoLeadMuon << " and " << dRPhoSubLeadMuon << ", Iso= " << Iso/Muons[l1]->pt() << endl;
+
     }
 
      return output;
