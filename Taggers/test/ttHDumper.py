@@ -137,32 +137,6 @@ cfgTools.addCategories(process.TTHLeptonicDumper,
 
 
 
-
-process.TTHHadronicDumper = createTagDumper("TTHHadronicTag")
-#process.load("flashgg.Taggers.tthDumper_cfi")
-#process.flashggMuMuGamma.PhotonTag=cms.InputTag('flashggUpdatedIdMVAPhotons')
-process.TTHHadronicDumper.dumpTrees = True
-process.TTHHadronicDumper.dumpHistos = False
-process.TTHHadronicDumper.dumpWorkspace = False
-process.TTHHadronicDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
-
-#from PhysicsTools.PatAlgos.tools.helpers import massSearchReplaceAnyInputTag
-#massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggDiPhotons"),cms.InputTag("flashggPreselectedDiPhotons"))
-
-variables_hadronic = var.hadronic_variables + var.dipho_variables
-
-cfgTools.addCategories(process.TTHHadronicDumper,
-                       ## categories definition  
-			[	("all","1",0)
-			],
-			variables = variables_hadronic,
-			histograms = []
-                     )
-
-
-
-
-
 process.finalFilter = cms.Sequence()
 if (customize.processId.count("qcd") or customize.processId.count("gjet")) and customize.processId.count("fake"):
     process.load("flashgg/Systematics/PromptFakeFilter_cfi")
@@ -205,8 +179,7 @@ process.p1 = cms.Path(process.dataRequirements*
                      (process.flashggTagSequence*process.systematicsTagSequences)*
                      process.flashggSystTagMerger*
                      process.finalFilter*
-		     process.TTHLeptonicDumper*
-		     process.TTHHadronicDumper)
+		     process.TTHLeptonicDumper)
 
 
 print process.p1

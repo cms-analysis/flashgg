@@ -47,7 +47,7 @@ namespace flashgg {
         output.push_back(Ele[l1]);
 
         if(debug_)
-            cout << "Selected electron with pT = " << Ele[l1]->pt() << ", eta = " << Ele[l1]->eta() << ", DR with photons = " <<  dRPhoLeadEle << " and " << dRPhoSubLeadEle << ", DMass with Z = " << fabs((Electron+Ph1).M() - 91.187) << " and " <<  fabs((Electron+Ph2).M() - 91.187) << endl;
+            cout << "Selected electron with pT = " << Ele[l1]->pt() << ", eta = " << Ele[l1]->eta() << ", DR with photons = " <<  dRPhoLeadEle << " and " << dRPhoSubLeadEle << ", DMass with Z = " << fabs((Electron+Ph1).M() - 91.187) << " and " <<  fabs((Electron+Ph2).M() - 91.187) << " , Ele pass MVAMediumId " << Ele[l1]->passMVAMediumId() <<  endl;
     }
 
      return output;
@@ -75,7 +75,7 @@ namespace flashgg {
         output.push_back(Muons[l1]);
 
         if(debug_)
-            cout << "Selected muon with pT = " << Muons[l1]->pt() << ", eta = " << Muons[l1]->eta() << ", DR with photons = " <<  dRPhoLeadMuon << " and " << dRPhoSubLeadMuon << ", Iso= " << Iso/Muons[l1]->pt() << endl;
+            cout << "Selected muon with pT = " << Muons[l1]->pt() << ", eta = " << Muons[l1]->eta() << ", DR with photons = " <<  dRPhoLeadMuon << " and " << dRPhoSubLeadMuon << ", Iso= " << Iso/Muons[l1]->pt() << " , Muon pass MediumId " << Muons[l1]->isMediumMuon() << endl;
 
     }
 

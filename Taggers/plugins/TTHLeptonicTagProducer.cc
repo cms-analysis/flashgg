@@ -515,6 +515,7 @@ namespace flashgg {
                 cout << "Number of jets " << nJets_ << endl;
                 cout << "Number of b-jets " << nJets_bTagMedium_  << endl;
                 cout << "Pt of the three leading jets " << jet_pt1_ << " " << jet_pt2_ << " " << jet_pt3_ << endl;
+                cout << "Eta of the three leading jets " << jet_eta1_ << " " << jet_eta2_ << " " << jet_eta3_ << endl;
                 cout << "Two highest bTag scores " << bTag1_ << " " << bTag2_ << endl;
                 cout << "MetPt " << MetPt_ << endl;
                 cout << "Lepton pT and Eta " << lepton_leadPt_ << " " << lepton_leadEta_ << endl;

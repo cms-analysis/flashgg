@@ -27,12 +27,7 @@ dipho_variables=[
     "dipho_subleadIDMVA     := diPhoton.subLeadingView.phoIdMvaWrtChosenVtx",
     "dipho_lead_elveto      := diPhoton.leadingPhoton.passElectronVeto",
     "dipho_sublead_elveto   := diPhoton.subLeadingPhoton.passElectronVeto",
-    "dipho_mva              := diPhotonMVAForTTH.result",
-    "dipho_cosDeltaphi      := diPhotonMVAMVAForTTH.CosPhi",
-    "dipho_deltaphi         := acos(diPhotonMVAMVAForTTH.CosPhi)",
-    "dipho_sigmaRV          := diPhotonMVAMVAForTTH.sigmarv",
-    "dipho_sigmaWV          := diPhotonMVAMVAForTTH.sigmawv",
-    "dipho_vtxProb          := diPhotonMVAMVAForTTH.vtxprob"
+    "mva                    := mvaRes",
     ]
 
 
@@ -221,10 +216,10 @@ generic_variables=[
 	"jet_bdiscriminantDeep9 :=  ? jets.size()>8 ? jets[8].bDiscriminator('pfDeepCSVJetTags:probb') + jets[8].bDiscriminator('pfDeepCSVJetTags:probbb') : -100",
 #	"MetPt                  :=  MetPt ",
 #	"MetPhi                 :=  MetPhi ",
-	"nJets                  :=  jets.size()",
-        "nJets_bTagLoose        :=  nBLoose()",
-        "nJets_bTagMedium       :=  nBMedium()",
-        "nJets_bTagTight        :=  nBTight()"
+#	"nJets                  :=  jets.size()",
+#        "nJets_bTagLoose        :=  nBLoose()",
+#        "nJets_bTagMedium       :=  nBMedium()",
+#        "nJets_bTagTight        :=  nBTight()"
 ]
 
 
