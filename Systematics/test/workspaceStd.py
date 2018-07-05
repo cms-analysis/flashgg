@@ -168,7 +168,7 @@ if customize.doFiducial:
     process.flashggTagSequence.remove(process.flashggVBFTag)
     process.flashggTagSequence.remove(process.flashggTTHLeptonicTag)
     process.flashggTagSequence.remove(process.flashggTTHHadronicTag)
-    process.flashggTagSequence.remove(process.flashggTTHDiLeptonTag)
+   # process.flashggTagSequence.remove(process.flashggTTHeptonTag)
      #haven't tested VH tags with fiducial cross-section measurement yet
     process.flashggTagSequence.remove(process.flashggVHEtTag)
     process.flashggTagSequence.remove(process.flashggVHLooseTag)
@@ -407,8 +407,8 @@ elif customize.tthTagsOnly:
     tagList=[
         ["NoTag",0],
         ["TTHHadronicTag",2],
-        ["TTHLeptonicTag",0],
-        ["TTHDiLeptonTag",0]
+        ["TTHLeptonicTag",2],
+#        ["TTHDiLeptonTag",0]
         ]
 else:
     tagList=[
@@ -421,8 +421,8 @@ else:
         ["VHMetTag",0],
         ["VHHadronicTag",0],
         ["TTHHadronicTag",2],
-        ["TTHLeptonicTag",0],
-        ["TTHDiLeptonTag",0]
+        ["TTHLeptonicTag",2],
+#        ["TTHDiLeptonTag",0]
         ]
 
 definedSysts=set()
