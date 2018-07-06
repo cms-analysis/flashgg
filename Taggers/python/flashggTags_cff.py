@@ -47,6 +47,9 @@ flashggSigmaMoMpToMTag = cms.EDProducer("FlashggSigmaMpTTagProducer",
 
 
 
+
+
+
 flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                        SystLabel=cms.string(""),
@@ -54,9 +57,11 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        ElectronTag=cms.InputTag('flashggSelectedElectrons'),
                                        MuonTag=cms.InputTag('flashggSelectedMuons'),
                                        VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
+                                       METTag=cms.InputTag('flashggMets'),
                                        GenParticleTag=cms.InputTag( 'flashggPrunedGenParticles' ),  
                                        rhoTag = cms.InputTag('fixedGridRhoFastjetAll'),
-                                       tthMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_tth_hadronic_2017Data_17vars_v0.weights.xml"),
+#                                       tthMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_tth_hadronic_2017Data_35vars_v0.weights.xml"),
+                                       tthMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_tth_hadronic_2017Data_30vars_v0.weights.xml"),
                                        MVAMethod = cms.string("BDT"),
                                        leadPhoOverMassThreshold = cms.double(0.5),
                                        leadPhoPtThreshold = cms.double(20),  
@@ -83,7 +88,8 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        bjetsNumberTTHHMVAThreshold = cms.int32(0),
                                        bjetsLooseNumberTTHHMVAThreshold = cms.int32(0),  
                                        secondMaxBTagTTHHMVAThreshold = cms.double(0.0),  
-                                       Boundaries = cms.vdouble( 0.54, 0.68 ),
+#                                       Boundaries = cms.vdouble( 0.29, 0.36, 0.43 ),
+                                       Boundaries = cms.vdouble( 0.38, 0.48, 0.56 ),
                                        dRJetPhoLeadCut =  cms.double(0.4),
                                        dRJetPhoSubleadCut = cms.double(0.4),                          
                                        leptonPtThreshold = cms.double(20),
@@ -104,7 +110,7 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        TransverseImpactParamEE = cms.double(0.118),
                                        LongitudinalImpactParamEE = cms.double(0.822),
                                        useStdLeptonID = cms.bool(False),
-                                       useElectronMVARecipe = cms.bool(False),
+                                       useElectronMVARecipe = cms.bool(True),
                                        useElectronLooseID = cms.bool(True),
                                        HTXSTags     = HTXSInputTags                                     
                                        )
