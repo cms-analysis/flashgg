@@ -15,6 +15,7 @@
 #include "flashgg/DataFormats/interface/Electron.h"
 #include "flashgg/DataFormats/interface/Muon.h"
 #include "flashgg/Taggers/interface/LeptonSelection.h"
+#include "flashgg/DataFormats/interface/Met.h"
 
 #include "DataFormats/Math/interface/deltaR.h"
 
@@ -55,6 +56,7 @@ namespace flashgg {
         EDGetTokenT<View<flashgg::Muon> > muonToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
+        EDGetTokenT<View<flashgg::Met> > METToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
         EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
         EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
@@ -146,10 +148,13 @@ namespace flashgg {
         float pho2_sigmaEOverE_;
         float pho1_scphi_;
         float pho2_scphi_;
+        float pho1_hasPixelSeed_;
+        float pho2_hasPixelSeed_;
         float diPhoY_;
         float diPhoPtoM_;
         float diPhoCosPhi_;
         float nbloose_;
+
 
         float btag_1_;
         float jetPt_1_;
@@ -167,7 +172,9 @@ namespace flashgg {
         float jetPt_4_;
         float jetEta_4_;
         float jetPhi_4_;
-
+      
+      float MET_;
+      
         float tthMvaVal_;
 
         vector<double> boundaries;
@@ -181,6 +188,7 @@ namespace flashgg {
         muonToken_( consumes<View<flashgg::Muon> >( iConfig.getParameter<InputTag>( "MuonTag" ) ) ),
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag>( "MVAResultTag" ) ) ),
+        METToken_( consumes<View<flashgg::Met> >( iConfig.getParameter<InputTag> ( "METTag" ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         rhoTag_( consumes<double>( iConfig.getParameter<InputTag>( "rhoTag" ) ) ),
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
@@ -270,6 +278,9 @@ namespace flashgg {
         pho2_scphi_= -999.;
         pho1_sigmaEOverE_= -999.;
         pho2_sigmaEOverE_= -999.;
+	pho1_hasPixelSeed_=-999;
+        pho2_hasPixelSeed_=-999;
+
         diPhoY_= -999.;
         diPhoPtoM_= -999.;
         diPhoCosPhi_= -999.;
@@ -292,6 +303,7 @@ namespace flashgg {
         jetEta_4_=-6;
         jetPhi_4_=-6;
                 
+	MET_=-1;
 
         if (_MVAMethod != ""){
             TThMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
@@ -307,12 +319,9 @@ namespace flashgg {
             TThMva_->AddVariable( "pho1_scphi", &pho1_scphi_);
             TThMva_->AddVariable( "pho2_scphi", &pho2_scphi_);
             TThMva_->AddVariable( "diPhoY", &diPhoY_);
-            TThMva_->AddVariable( "diPhoCosPhi", &diPhoCosPhi_);       
             TThMva_->AddVariable( "minPhoID", &minPhoID_);
             TThMva_->AddVariable( "maxPhoID", &maxPhoID_);
-            TThMva_->AddVariable( "diPhoPtoM", &diPhoPtoM_);     
-            TThMva_->AddVariable( "nJetsBl", &nbloose_);          
-
+            TThMva_->AddVariable( "diPhoPtoM", &diPhoPtoM_);  
             TThMva_->AddVariable( "btag_1", &btag_1_);       
             TThMva_->AddVariable( "btag_2", &btag_2_);     
             TThMva_->AddVariable( "btag_3", &btag_3_);   
@@ -324,16 +333,11 @@ namespace flashgg {
             TThMva_->AddVariable( "jetEta_1", &jetEta_1_);   
             TThMva_->AddVariable( "jetEta_2", &jetEta_2_);   
             TThMva_->AddVariable( "jetEta_3", &jetEta_3_);   
-            TThMva_->AddVariable( "jetEta_4", &jetEta_4_);    
-            TThMva_->AddVariable( "jetPhi_1", &jetPhi_1_);                       
-            TThMva_->AddVariable( "jetPhi_2", &jetPhi_2_);                                
-            TThMva_->AddVariable( "jetPhi_3", &jetPhi_3_);                           
-            TThMva_->AddVariable( "jetPhi_4", &jetPhi_4_);       
-  
-            TThMva_->AddVariable( "pho1_sigmaEOverE", &pho1_sigmaEOverE_);
-            TThMva_->AddVariable( "pho2_sigmaEOverE", &pho2_sigmaEOverE_);
+            TThMva_->AddVariable( "jetEta_4", &jetEta_4_);       
+	    TThMva_->AddVariable( "pho1_hasPixelSeed",&pho1_hasPixelSeed_);
+	    TThMva_->AddVariable( "pho2_hasPixelSeed",&pho2_hasPixelSeed_);
             TThMva_->AddVariable( "thirdMaxBTagVal", &thirdMaxBTagVal_);          
-
+	    TThMva_->AddVariable( "MET",&MET_);
 
             TThMva_->BookMVA( _MVAMethod.c_str() , tthMVAweightfile_.fullPath() );
         
@@ -400,6 +404,9 @@ namespace flashgg {
         Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
         evt.getByToken( mvaResultToken_, mvaResults );
         // const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
+
+        Handle<View<flashgg::Met> > METs;
+        evt.getByToken( METToken_, METs );
 
         Handle<View<reco::GenParticle> > genParticles;
 
@@ -488,6 +495,9 @@ namespace flashgg {
 	    pho2_sceta_= -999.;
 	    pho1_scphi_= -999.;
 	    pho2_scphi_= -999.;
+	    pho1_hasPixelSeed_=-999;
+	    pho2_hasPixelSeed_=-999;
+
 	    pho1_sigmaEOverE_= -999.;
 	    pho2_sigmaEOverE_= -999.;
 	    diPhoY_= -999.;
@@ -512,6 +522,7 @@ namespace flashgg {
 	    jetEta_4_=-6;
 	    jetPhi_4_=-6;
                 
+	    MET_=-1;
 	    
             tthMvaVal_ = -999.;
 
@@ -636,6 +647,9 @@ namespace flashgg {
                 if( bDiscriminatorValue > bDiscriminator_[2] ) njets_btagtight_++;
             }
         
+            if( METs->size() != 1 ) { std::cout << "WARNING - #MET is not 1" << std::endl;}
+            Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
+
             if(useTTHHadronicMVA_){
 
                 BJetVect.clear();
@@ -650,11 +664,12 @@ namespace flashgg {
                 maxPhoID_=TMath::Max( idmva1_, idmva2_);
                 pho1_ptoM_= dipho->leadingPhoton()->pt()/dipho->mass();
                 pho2_ptoM_= dipho->subLeadingPhoton()->pt()/dipho->mass();
-
                 pho1_sceta_= dipho->leadingPhoton()->superCluster()->eta();
                 pho2_sceta_= dipho->subLeadingPhoton()->superCluster()->eta();
                 pho1_scphi_= dipho->leadingPhoton()->superCluster()->phi();
                 pho2_scphi_= dipho->subLeadingPhoton()->superCluster()->phi();
+                pho1_hasPixelSeed_= dipho->leadingPhoton()->hasPixelSeed();
+                pho2_hasPixelSeed_= dipho->subLeadingPhoton()->hasPixelSeed();
 
                 pho1_sigmaEOverE_= dipho->leadingPhoton()->sigEOverE();
                 pho2_sigmaEOverE_= dipho->subLeadingPhoton()->sigEOverE();
@@ -663,6 +678,7 @@ namespace flashgg {
                 diPhoPtoM_= dipho->pt()/dipho->mass();
                 diPhoCosPhi_=  TMath::Cos( deltaPhi( dipho->leadingPhoton()->phi(), dipho->subLeadingPhoton()->phi() ) );
                 nbloose_=float(njets_btagloose_);
+		MET_ = theMET->getCorPt();
 
                 if(JetVect.size()>0){
                     if(bTag_ == "pfDeepCSV") btag_1_=JetVect[0]->bDiscriminator("pfDeepCSVJetTags:probb")+JetVect[0]->bDiscriminator("pfDeepCSVJetTags:probbb") ;
@@ -699,15 +715,17 @@ namespace flashgg {
 
                 if(secondMaxBTagVal_ >= secondMaxBTagTTHHMVAThreshold_ && njets_btagloose_ >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium_ >= bjetsNumberTTHHMVAThreshold_ && jetcount_ >= jetsNumberTTHHMVAThreshold_ && _MVAMethod != ""){
                     
-                    /*
+                    
                     cout << "input variables : " << endl;
+
                     cout << "nJets_ = " << nJets_ <<" jetcount"<< jetcount_<< endl;
-                    cout << "maxBTagVal_ = " << maxBTagVal_ << endl;
+		    cout << "sumJetPt_ = " << sumJetPt_ << endl;                    
+		    cout << "maxBTagVal_ = " << maxBTagVal_ << endl;
                     cout << "secondMaxBTagVal_ = " << secondMaxBTagVal_ << endl;
                     cout << "thirdMaxBTagVal_ = " << thirdMaxBTagVal_ << endl;
                     //                    cout << "leadJetPt_ = " << leadJetPt_ << endl;
                     //                    cout << "leadJetBTag_ = " << leadJetBTag_ << endl;
-                    cout << "sumJetPt_ = " << sumJetPt_ << endl;
+                    
                     cout << "minPhoID_ = " << minPhoID_ << endl;
                     cout << "maxPhoID_ = " << maxPhoID_ << endl;
                     //                    cout << "mindRPhoLeadJet_ = " << mindRPhoLeadJet_ << endl;
@@ -718,36 +736,39 @@ namespace flashgg {
                     cout << "pho2_sceta_ = " << pho2_sceta_ << endl;
                     cout << "pho1_scphi_ = " << pho1_scphi_ << endl;
                     cout << "pho2_scphi_ = " << pho2_scphi_ << endl;
-                    cout << "pho1_sigmaEoE_ = " << pho1_sigmaEOverE_ << endl;
-                    cout << "pho2_sigmaEoE_ = " << pho2_sigmaEOverE_ << endl;
+                    cout << "pho1_hasPixelSeed_ = " << pho1_hasPixelSeed_ << endl;
+                    cout << "pho2_hasPixelSeed_ = " << pho2_hasPixelSeed_ << endl;
+		    //                    cout << "pho1_sigmaEoE_ = " << pho1_sigmaEOverE_ << endl;
+		    //                    cout << "pho2_sigmaEoE_ = " << pho2_sigmaEOverE_ << endl;
                     cout << "diPhoY_ = " << diPhoY_ << endl;
-                    cout << "diPhoCosPhi_ = " << diPhoCosPhi_ << endl;
+                    //cout << "diPhoCosPhi_ = " << diPhoCosPhi_ << endl;
                     cout << "diPhoPtoM_ = " << diPhoPtoM_ << endl;
-                    cout << "nBLoose_ = " << njets_btagloose_ << " "<<nbloose_<<endl;
+		    //                    cout << "nBLoose_ = " << njets_btagloose_ << " "<<nbloose_<<endl;
                     cout << "btag_1_ = " <<btag_1_ << endl;
                     cout << "jetPt_1_ = " <<jetPt_1_ << endl;
                     cout << "jetEta_1_ = " <<jetEta_1_ << endl;
-                    cout << "jetPhi_1_ = " <<jetPhi_1_ << endl;
+		    //                    cout << "jetPhi_1_ = " <<jetPhi_1_ << endl;
                     cout << "btag_2_ = " <<btag_2_ << endl;
                     cout << "jetPt_2_ = " <<jetPt_2_ << endl;
                     cout << "jetEta_2_ = " <<jetEta_2_ << endl;
-                    cout << "jetPhi_2_ = " <<jetPhi_2_ << endl;
+		    //                    cout << "jetPhi_2_ = " <<jetPhi_2_ << endl;
                     cout << "btag_3_ = " <<btag_3_ << endl;
                     cout << "jetPt_3_ = " <<jetPt_3_ << endl;
                     cout << "jetEta_3_ = " <<jetEta_3_ << endl;
-                    cout << "jetPhi_3_ = " <<jetPhi_3_ << endl;
+		    //                    cout << "jetPhi_3_ = " <<jetPhi_3_ << endl;
                     cout << "btag_4_ = " <<btag_4_ << endl;
                     cout << "jetPt_4_ = " <<jetPt_4_ << endl;
                     cout << "jetEta_4_ = " <<jetEta_4_ << endl;
-                    cout << "jetPhi_4_ = " <<jetPhi_4_ << endl;
-                    */
+		    //                    cout << "jetPhi_4_ = " <<jetPhi_4_ << endl;
+                    cout << "MET_ = " <<MET_ << endl;
+                    
                     
 
 
                     tthMvaVal_ = TThMva_->EvaluateMVA( _MVAMethod.c_str() );
 
                     //cout << "mva result :" << endl;
-                    //cout << "tthMvaVal_ = " << tthMvaVal_  << endl;
+                    cout << "tthMvaVal_ = " << tthMvaVal_  << endl;
                     //cout << "tthMvaVal_ = " << tthMvaVal_  << " "<< boundaries[0]<<" "<< boundaries[1]<< endl;
                      
                  }
@@ -789,6 +810,7 @@ namespace flashgg {
                 tthhtags_obj.setFourthMaxBTagVal( fourthMaxBTagVal_ );
                 tthhtags_obj.setSystLabel( systLabel_ );
                 tthhtags_obj.setMVAres(tthMvaVal_);
+                tthhtags_obj.setMET( theMET );
 
                 if(!useTTHHadronicMVA_){
                     for( unsigned num = 0; num < JetVect.size(); num++ ) {

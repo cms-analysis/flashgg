@@ -14,7 +14,7 @@ std::string CMSSW_BASE_Reshape(getenv("CMSSW_BASE"));
 std::string CSVfilename_Reshape = CMSSW_BASE_Reshape + std::string("/src/flashgg/Systematics/data/CSVv2.csv");
 BTagCalibration calib_ReshapeCSV("CSVv2", CSVfilename_Reshape);
 
-std::string DeepCSVfilename_Reshape = CMSSW_BASE_Reshape + std::string("/src/flashgg/Systematics/data/DeepCSV_94XSF_V2_B_F.csv");
+std::string DeepCSVfilename_Reshape = CMSSW_BASE_Reshape + std::string("/src/flashgg/Systematics/data/DeepCSV_94XSF_V3_B_F.csv");
 BTagCalibration calib_ReshapeDeepCSV("DeepCSV",  DeepCSVfilename_Reshape); 
 
 BTagCalibration calib_Reshape;
