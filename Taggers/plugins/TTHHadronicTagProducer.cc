@@ -14,7 +14,7 @@
 #include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
 #include "flashgg/DataFormats/interface/Electron.h"
 #include "flashgg/DataFormats/interface/Muon.h"
-#include "flashgg/Taggers/interface/LeptonSelection.h"
+#include "flashgg/Taggers/interface/LeptonSelection2018.h"
 
 #include "DataFormats/Math/interface/deltaR.h"
 
@@ -93,25 +93,18 @@ namespace flashgg {
         double secondMaxBTagTTHHMVAThreshold_;
         string bTag_;
         //leptons
-        double leptonPtThreshold_;
-        double muonEtaThreshold_;
-        vector<double> nonTrigMVAThresholds_;
-        vector<double> nonTrigMVAEtaCuts_;
-        double electronIsoThreshold_;
-        double elMiniIsoEBThreshold_;
-        double elMiniIsoEEThreshold_;
-        double electronNumOfHitsThreshold_;
-        vector<double>  electronEtaThresholds_;
-        double muPFIsoSumRelThreshold_;
-        double muMiniIsoSumRelThreshold_;
-        double TransverseImpactParam_EB;
-        double LongitudinalImpactParam_EB;
-        double TransverseImpactParam_EE;
-        double LongitudinalImpactParam_EE;
 
-        bool useStdLeptonID_;
-        bool useElectronMVARecipe_;
-        bool useElectronLooseID_;
+        double MuonEtaCut_;
+        double MuonPtCut_;
+        double MuonIsoCut_;
+        double MuonPhotonDrCut_;
+
+        double ElePtCut_;
+        std::vector<double> EleEtaCuts_;
+        double ElePhotonDrCut_;
+        double ElePhotonZMassCut_;
+        double DeltaRTrkEle_;
+        bool debug_;
 
         unique_ptr<TMVA::Reader>TThMva_;
         FileInPath tthMVAweightfile_;
@@ -181,8 +174,6 @@ namespace flashgg {
         MVATTHHMVAThreshold_ = iConfig.getParameter<double>( "MVATTHHMVAThreshold");
         PhoMVAThreshold_ = iConfig.getParameter<double>( "PhoMVAThreshold");
 
-        leptonPtThreshold_ = iConfig.getParameter<double>( "leptonPtThreshold");
-        muonEtaThreshold_ = iConfig.getParameter<double>( "muonEtaThreshold");
         leadPhoPtThreshold_ = iConfig.getParameter<double>( "leadPhoPtThreshold");
         leadPhoUseVariableTh_ = iConfig.getParameter<bool>( "leadPhoUseVariableThreshold");
         leadPhoOverMassThreshold_ = iConfig.getParameter<double>( "leadPhoOverMassThreshold");
@@ -199,6 +190,19 @@ namespace flashgg {
         bjetsNumberThreshold_ = iConfig.getParameter<int>( "bjetsNumberThreshold");
         bTag_ = iConfig.getParameter<string> ( "bTag");
 
+        MuonEtaCut_ = iConfig.getParameter<double>( "MuonEtaCut");
+        MuonPtCut_ = iConfig.getParameter<double>( "MuonPtCut");
+        MuonIsoCut_ = iConfig.getParameter<double>( "MuonIsoCut");
+        MuonPhotonDrCut_ = iConfig.getParameter<double>( "MuonPhotonDrCut");
+ 
+        EleEtaCuts_ = iConfig.getParameter<std::vector<double>>( "EleEtaCuts");
+        ElePtCut_ = iConfig.getParameter<double>( "ElePtCut");
+        ElePhotonDrCut_ = iConfig.getParameter<double>( "ElePhotonDrCut");
+        ElePhotonZMassCut_ = iConfig.getParameter<double>( "ElePhotonZMassCut");
+        DeltaRTrkEle_ = iConfig.getParameter<double>( "DeltaRTrkEle");
+
+        debug_ = iConfig.getParameter<bool>( "debug" );
+
         useTTHHadronicMVA_ = iConfig.getParameter<bool>( "useTTHHadronicMVA");
 
         bjetsLooseNumberThreshold_ = iConfig.getParameter<int>( "bjetsLooseNumberThreshold");
@@ -207,23 +211,7 @@ namespace flashgg {
         bjetsLooseNumberTTHHMVAThreshold_ = iConfig.getParameter<int>( "bjetsLooseNumberTTHHMVAThreshold");
         secondMaxBTagTTHHMVAThreshold_ = iConfig.getParameter<double>( "secondMaxBTagTTHHMVAThreshold");
 
-        muPFIsoSumRelThreshold_ = iConfig.getParameter<double>( "muPFIsoSumRelThreshold");
-        muMiniIsoSumRelThreshold_ = iConfig.getParameter<double>( "muMiniIsoSumRelThreshold");
-        nonTrigMVAThresholds_ =  iConfig.getParameter<vector<double > >( "nonTrigMVAThresholds");
-        nonTrigMVAEtaCuts_ =  iConfig.getParameter<vector<double > >( "nonTrigMVAEtaCuts");
-        electronIsoThreshold_ = iConfig.getParameter<double>( "electronIsoThreshold");
-        elMiniIsoEBThreshold_ = iConfig.getParameter<double>( "elMiniIsoEBThreshold");
-        elMiniIsoEEThreshold_ = iConfig.getParameter<double>( "elMiniIsoEEThreshold");
-        electronNumOfHitsThreshold_ = iConfig.getParameter<double>( "electronNumOfHitsThreshold");
-        TransverseImpactParam_EB = iConfig.getParameter<double>( "TransverseImpactParamEB");
-        LongitudinalImpactParam_EB = iConfig.getParameter<double>( "LongitudinalImpactParamEB");
-        TransverseImpactParam_EE = iConfig.getParameter<double>( "TransverseImpactParamEE");
-        LongitudinalImpactParam_EE = iConfig.getParameter<double>( "LongitudinalImpactParamEE");
-        electronEtaThresholds_ = iConfig.getParameter<vector<double > >( "electronEtaThresholds");
-        useStdLeptonID_=iConfig.getParameter<bool>("useStdLeptonID");
-        useElectronMVARecipe_=iConfig.getParameter<bool>("useElectronMVARecipe");
-        useElectronLooseID_=iConfig.getParameter<bool>("useElectronLooseID");
-
+  
         tthMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "tthMVAweightfile" ); 
 
         nJets_ = 0;
@@ -376,25 +364,21 @@ namespace flashgg {
         
         edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
         unsigned int idx = 0;
-
-        std::vector<edm::Ptr<flashgg::Muon> > goodMuons;
-        if( !useStdLeptonID_) {
-            goodMuons = selectAllMuonsSum16( theMuons->ptrs(), vertices->ptrs(), muonEtaThreshold_ , leptonPtThreshold_, muMiniIsoSumRelThreshold_ );
-        } else {
-            goodMuons = selectAllMuons( theMuons->ptrs(), vertices->ptrs(), muonEtaThreshold_ , leptonPtThreshold_, muPFIsoSumRelThreshold_ );
-        }
-        
-       
-        std::vector<edm::Ptr<Electron> > goodElectrons ;
-
-        goodElectrons = selectStdAllElectrons(theElectrons->ptrs(), vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
-                                              useElectronMVARecipe_, useElectronLooseID_,
-                                              rho_, evt.isRealData() );
         
         
         for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
 
-            if( goodElectrons.size() > 0 ||  goodMuons.size() > 0 )  continue; 
+            edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( diphoIndex );
+
+            std::vector<edm::Ptr<flashgg::Muon> >     Muons;
+            std::vector<edm::Ptr<flashgg::Electron> > Electrons;
+
+            if(theMuons->size()>0)
+                Muons = selectMuons(theMuons->ptrs(), dipho, vertices->ptrs(), MuonPtCut_, MuonEtaCut_, MuonIsoCut_, MuonPhotonDrCut_, debug_);
+            if(theElectrons->size()>0)
+                Electrons = selectElectrons(theElectrons->ptrs(), dipho, ElePtCut_, EleEtaCuts_, ElePhotonDrCut_, ElePhotonZMassCut_, DeltaRTrkEle_, debug_);
+
+            if( (Muons.size() + Electrons.size()) != 0) continue;
 
             jetcount_ = 0;
             nJets_ = 0;
@@ -428,8 +412,6 @@ namespace flashgg {
 
             std::vector<float> JetBTagVal;
             JetBTagVal.clear();
-
-            edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( diphoIndex );
         
             idmva1_ = dipho->leadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
             idmva2_ = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
