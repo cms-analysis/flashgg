@@ -71,7 +71,8 @@
 <class name="std::vector<flashgg::TTHLeptonicTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TTHLeptonicTag> >"/>
 <class name="std::vector<pat::Muon>"/>
-<class name="flashgg::TTHDiLeptonTag" ClassVersion="13">
+<class name="flashgg::TTHDiLeptonTag" ClassVersion="14">
+ <version ClassVersion="14" checksum="4003252239"/>
  <version ClassVersion="13" checksum="3773849427"/>
  <version ClassVersion="12" checksum="2341601757"/>
 </class>
