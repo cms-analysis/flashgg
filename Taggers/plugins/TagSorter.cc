@@ -215,7 +215,7 @@ namespace flashgg {
                 }
                 if (centralObjectWeight < minObjectWeightWarning || centralObjectWeight > maxObjectWeightWarning) {
                     std::cout << "WARNING Tag centralWeight=" << centralObjectWeight << " outside of bound ["
-                              << minObjectWeightException << "," << maxObjectWeightException
+                              << minObjectWeightWarning << "," << maxObjectWeightWarning
                               << "] - " << tpr->name << " chosen_i=" << chosen_i << " - consider investigating!" << std::endl;
                 }
 
