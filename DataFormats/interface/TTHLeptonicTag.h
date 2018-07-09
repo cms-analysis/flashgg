@@ -31,11 +31,15 @@ namespace flashgg {
 
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kTTHLeptonic; }
 
-    private:
+        void setMvaRes(float mvaRes) {mvaRes_ = mvaRes;}
+        float mvaRes() const {return mvaRes_;}
+
+        private:
         std::vector<edm::Ptr<Muon> > Muons_;
         std::vector<edm::Ptr<Electron> > Electrons_;
         std::vector<edm::Ptr<Jet> > Jets_;
         std::vector<edm::Ptr<Jet> > BJets_;
+        float mvaRes_;
     };
 }
 
