@@ -23,41 +23,23 @@ namespace flashgg {
         const std::vector<edm::Ptr<flashgg::Electron> > electrons() const {return Electrons_;}
         const std::vector<edm::Ptr<Jet> > jets() const { return Jets_;}
         const std::vector<edm::Ptr<Jet> > bJets() const { return BJets_;}
-        float MetPt() const {return MetPt_;}
-        float MetPhi() const {return MetPhi_;}
-
 
         void setJets( std::vector<edm::Ptr<Jet> > Jets ) { Jets_ = Jets; }
         void setBJets( std::vector<edm::Ptr<Jet> > BJets )  { BJets_ = BJets;}
         void setMuons( std::vector<edm::Ptr<Muon> > Muons ) {Muons_ = Muons;}
         void setElectrons( std::vector<edm::Ptr<Electron> > Electrons ) {Electrons_ = Electrons;}
-        void setMetPt(float metPt) {MetPt_ = (float)metPt;}
-        void setMetPhi(float metPhi) {MetPhi_ = (float)metPhi;}
 
-        void setNjet( int nb ){ Njet_ = nb; }
-        void setNBLoose( int nb ) { Nbtagloose_ = nb; }
-        void setNBMedium( int nb ) { Nbtagmedium_ = nb; }
-        void setNBTight( int nb ) { Nbtagtight_ = nb; }
+        DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kTTHLeptonic; }
 
-        int nJet() const {return Njet_;}
-        int nBLoose() const {return Nbtagloose_;}
-        int nBMedium() const {return Nbtagmedium_;}
-        int nBTight() const {return Nbtagtight_;}
+        void setMvaRes(float mvaRes) {mvaRes_ = mvaRes;}
+        float mvaRes() const {return mvaRes_;}
 
-
-        DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kTTHDiLepton; }
-
-    private:
+        private:
         std::vector<edm::Ptr<Muon> > Muons_;
         std::vector<edm::Ptr<Electron> > Electrons_;
         std::vector<edm::Ptr<Jet> > Jets_;
         std::vector<edm::Ptr<Jet> > BJets_;
-        float MetPt_;
-        float MetPhi_;
-        int Njet_;
-        int Nbtagloose_;
-        int Nbtagmedium_;
-        int Nbtagtight_;
+        float mvaRes_;
      };
 }
 
