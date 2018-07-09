@@ -361,6 +361,7 @@ scalesAndSmearingsPrefixForSigmaEOverE = cms.string("RecoEgamma/ScalesSmearings/
 
 
 
+
 MCScaleHighR9EB = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
           Label = cms.string("MCScaleHighR9EB"),
