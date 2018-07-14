@@ -171,10 +171,15 @@ echo "Simplified template cross section tools"
 git cms-merge-topic -u ArnabPurohit:for-flashgg-rivet-9_4_2
 
 echo "linking classdef for release 94X"
-ln -s $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_94X.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
+#ln -s $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_94X.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
+ln -s $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_101X.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
 
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit
+
+if [ -d "$CMSSW_BASE/src/PhysicsTools/PythonAnalysis" ]; then
+  rm -r $CMSSW_BASE/src/PhysicsTools/PythonAnalysis
+fi
 
 echo
 echo "Done with setup script! You still need to build!"
