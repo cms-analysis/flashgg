@@ -61,7 +61,7 @@ In 94X after building you need to run:
  cd $CMSSW_BASE/src
 For the time being it is not in the flashgg master branch so you need to clone it as,
  git clone -b flashgg_for_10_1_1 https://github.com/ArnabPurohit/flashgg flashgg
- source flashgg/setup_10_1_1.sh
+ source flashgg/setup_10_1_X.sh
  ```
 
 If everything now looks reasonable, you can build:
