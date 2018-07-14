@@ -59,7 +59,8 @@ In 94X after building you need to run:
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src
- git clone https://github.com/cms-analysis/flashgg flashgg
+For the time being it is not in the flashgg master branch so you need to clone it as,
+ git clone -b flashgg_for_10_1_1 https://github.com/ArnabPurohit/flashgg flashgg
  source flashgg/setup_10_1_1.sh
  ```
 
