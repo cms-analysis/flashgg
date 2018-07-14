@@ -51,6 +51,24 @@ In 94X after building you need to run:
  ```
  source flashgg/afterbuild_9_4_X.sh
  ```
+101X: Get everything you need, starting from a clean area:
+
+ ```
+ cmsrel CMSSW_10_1_1
+ cd CMSSW_10_1_1/src
+ cmsenv
+ git cms-init
+ cd $CMSSW_BASE/src
+ git clone https://github.com/cms-analysis/flashgg flashgg
+ source flashgg/setup_10_1_1.sh
+ ```
+
+If everything now looks reasonable, you can build:
+ ```
+ cd $CMSSW_BASE/src
+ scram b -j 3
+ ```
+
 
 And a very basic workflow test:
  ```
