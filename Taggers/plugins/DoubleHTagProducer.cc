@@ -43,7 +43,7 @@ namespace flashgg {
         string systLabel_;
 
         double minLeadPhoPt_, minSubleadPhoPt_;
-        bool scalingPtCuts_, doPhotonId_, doMVAFlattening_;
+        bool scalingPtCuts_, doPhotonId_, doMVAFlattening_, doCategorization_;
         double photonIDCut_;
         double vetoConeSize_;         
         unsigned int doSigmaMDecorr_;
@@ -97,6 +97,7 @@ namespace flashgg {
         photonIDCut_ = iConfig.getParameter<double>("PhotonIDCut");
         
         doMVAFlattening_ = iConfig.getParameter<bool>("doMVAFlattening"); 
+        doCategorization_ = iConfig.getParameter<bool>("doCategorization"); 
         photonElectronVeto_=iConfig.getUntrackedParameter<std::vector<int > >("PhotonElectronVeto");
         //needed for HHbbgg MVA
         if(doMVAFlattening_){
@@ -136,11 +137,12 @@ namespace flashgg {
     {
         //// should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
         //this is for mva, then you have mx
-        //FIXME dummy test
-        return 0;
+        if (!doCategorization_) {
+             return 0;
+        }
         int mvaCat=-1;
-        for( int n = 0 ; n < ( int )mvaBoundaries_.size() ; n++ ) {
-            if( ( double )mvavalue > mvaBoundaries_[mvaBoundaries_.size() - n - 1] ) {
+        for( int n = 0 ; n < ( int )mvaBoundaries_.size()-1 ; n++ ) {
+            if( (( double )mvavalue > mvaBoundaries_[mvaBoundaries_.size() - 1 -n - 1]) && (( double )mvavalue <= mvaBoundaries_[mvaBoundaries_.size() - 1 - n ]) ) {
                 mvaCat = n;
                 break;
             }
@@ -150,8 +152,8 @@ namespace flashgg {
         if (mvaCat==-1) return -1;// Does not pass, object will not be produced
 
         int mxCat=-1;
-        for( int n = 0 ; n < ( int )mxBoundaries_.size() ; n++ ) {
-            if( ( double )mxvalue > mxBoundaries_[mxBoundaries_.size() - n - 1] ) {
+        for( int n = 0 ; n < ( int )mxBoundaries_.size()-1 ; n++ ) {
+            if( (( double )mxvalue > mxBoundaries_[n]) && ((double)mxvalue <= mxBoundaries_[n+1] ) ) {
                 mxCat = n;
                 break;
             }
@@ -161,7 +163,7 @@ namespace flashgg {
         if (mxCat==-1) return -1;// Does not pass, object will not be produced
 
         int cat=-1;
-        cat = mvaCat*mxBoundaries_.size()+mxCat;
+        cat = mvaCat*(mxBoundaries_.size()-1)+mxCat;
 
         //the schema is like this:
         //            "cat0 := MXbin0 * MVAcat0",
@@ -231,9 +233,9 @@ namespace flashgg {
             
             
             // find vertex associated to diphoton object
-           // size_t vtx = (size_t)dipho->jetCollectionIndex();
-            size_t vtx = (size_t)dipho->vertexIndex();
-            if( vtx >= jetTokens_.size() ) { vtx = 0; }
+            size_t vtx = (size_t)dipho->jetCollectionIndex();
+           // size_t vtx = (size_t)dipho->vertexIndex();
+          //  if( vtx >= jetTokens_.size() ) { vtx = 0; }
             // and read corresponding jet collection
             edm::Handle<edm::View<flashgg::Jet> > jets;
             evt.getByToken( jetTokens_[vtx], jets);
