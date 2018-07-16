@@ -57,6 +57,8 @@ namespace flashgg {
         double minJetPt_;
         double maxJetEta_;
         vector<double>mjjBoundaries_;
+        vector<double>mjjBoundariesLower_;
+        vector<double>mjjBoundariesUpper_;
         std::string bTagType_;
         bool       useJetID_;
         string     JetIDLevel_;        
@@ -87,6 +89,8 @@ namespace flashgg {
         mjjBoundaries_ = iConfig.getParameter<vector<double > >( "MJJBoundaries" ); 
         mvaBoundaries_ = iConfig.getParameter<vector<double > >( "MVABoundaries" );
         mxBoundaries_ = iConfig.getParameter<vector<double > >( "MXBoundaries" );
+        mjjBoundariesLower_ = iConfig.getParameter<vector<double > >( "MJJBoundariesLower" ); 
+        mjjBoundariesUpper_ = iConfig.getParameter<vector<double > >( "MJJBoundariesUpper" ); 
 
         auto jetTags = iConfig.getParameter<std::vector<edm::InputTag> > ( "JetTags" ); 
         for( auto & tag : jetTags ) { jetTokens_.push_back( consumes<edm::View<flashgg::Jet> >( tag ) ); }
@@ -309,6 +313,9 @@ namespace flashgg {
             tag_obj.includeWeights( *subleadJet );
 
             if (catnum>-1){
+                if (doCategorization_) {
+                   if (tag_obj.dijet().mass()<mjjBoundariesLower_[catnum] || tag_obj.dijet().mass()>mjjBoundariesUpper_[catnum]) continue;
+                }
                 tags->push_back( tag_obj );
                 // link mc-truth
                 if( ! evt.isRealData() ) {

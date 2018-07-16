@@ -30,13 +30,15 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
 
                                    MVABoundaries  = cms.vdouble(0.28,0.47, 0.63,1.01), # category boundaries for MVA
                                    MXBoundaries   = cms.vdouble(250., 310., 391., 547.,2000.), # .. and MX
+                                   MJJBoundariesLower = cms.vdouble(95.,95.,95.,97.,95.,95.,100.,99.,108.,95.,95.,95.), #for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
+                                   MJJBoundariesUpper = cms.vdouble(155.,150.,153.,146.,151.,154.,147.,150.,148.,155.,155.,155.), #for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
                                    MVAConfig = cms.PSet(variables=cms.VPSet(), # variables are added below
                                                         classifier=cms.string("BDT::bdt"), # classifier name
                                                         weights=cms.FileInPath("flashgg/MetaData/data/HHTagger/training_with_27_06_2018_newcode_v2.weights.xml"), # path to TMVA weights
                                                         regression=cms.bool(False), # this is not a regression
                                                         ),
                                    doMVAFlattening=cms.bool(True),#do transformation of cumulative to make it flat
-                                   doCategorization=cms.bool(False),#do categorization based on MVA x MX or only fill first tree with all events
+                                   doCategorization=cms.bool(True),#do categorization based on MVA x MX or only fill first tree with all events
                                    MVAFlatteningFileName=cms.untracked.FileInPath("flashgg/MetaData/data/HHTagger/cumulativeTransformation_output_GluGluToHHTo2B2G_node_SM_13TeV-madgraph.root")#FIXME, this should be optional, is it?
                                   ) 
 
