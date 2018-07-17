@@ -1,5 +1,5 @@
 minimalVariables = ["CMS_hgg_mass[160,100,180]:=diPhoton().mass",
-         #           "dZ[40,-20.,20.]:=(tagTruth().genPV().z-diPhoton().vtx().z)", # store actual value
+                    "dZ[40,-20.,20.]:=(tagTruth().genPV().z-diPhoton().vtx().z)", # store actual value
                                                                                #when doing systematics, variables need to have a binning
                                                                                #specified, otherwise the rooDataHist end up empty.
             								       #an assert in the code prevents you from doing this.

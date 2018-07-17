@@ -300,6 +300,8 @@ else:
 
 if customize.doubleHTagsOnly:
     variablesToUse = minimalVariables
+    if customize.processId == "Data":
+        variablesToUse = minimalNonSignalVariables
 
 print "--- Systematics  with independent collections ---"
 print systlabels

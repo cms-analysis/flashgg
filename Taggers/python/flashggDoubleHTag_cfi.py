@@ -28,10 +28,10 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    UseJetID = cms.bool(True),
                                    JetIDLevel = cms.string('Loose'),
 
-                                   MVABoundaries  = cms.vdouble(0.28,0.47, 0.63,1.01), # category boundaries for MVA
-                                   MXBoundaries   = cms.vdouble(250., 310., 391., 547.,2000.), # .. and MX
-                                   MJJBoundariesLower = cms.vdouble(95.,95.,95.,97.,95.,95.,100.,99.,108.,95.,95.,95.), #for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
-                                   MJJBoundariesUpper = cms.vdouble(155.,150.,153.,146.,151.,154.,147.,150.,148.,155.,155.,155.), #for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
+                                   MVABoundaries  = cms.vdouble(0.28,0.47, 0.63), # category boundaries for MVA
+                                   MXBoundaries   = cms.vdouble(250., 310., 391., 547.), # .. and MX
+                                   MJJBoundariesLower = cms.vdouble(97.,95.,95.,95.,99.,100.,95.,95.,95.,95.,95.,108.), #for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
+                                   MJJBoundariesUpper = cms.vdouble(146.,153.,150.,155.,150.,147.,154.,151.,155.,155.,155.,148.), #for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
                                    MVAConfig = cms.PSet(variables=cms.VPSet(), # variables are added below
                                                         classifier=cms.string("BDT::bdt"), # classifier name
                                                         weights=cms.FileInPath("flashgg/MetaData/data/HHTagger/training_with_27_06_2018_newcode_v2.weights.xml"), # path to TMVA weights
