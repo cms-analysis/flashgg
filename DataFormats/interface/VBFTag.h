@@ -61,6 +61,8 @@ namespace flashgg {
         };
         const bool hasValidVBFTriJet() const; 
 
+        const float ptHjj() const;
+
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kVBF; }
 
         float alphaUp() const { return alphaUp_; }
