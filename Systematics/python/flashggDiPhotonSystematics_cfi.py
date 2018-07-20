@@ -34,6 +34,41 @@ electronVetoBins = cms.PSet(
     )
 
 
+# JMalcles - based on JTao SF + ttH efficiencies. calculated to preserve nTot ttH. 
+
+leadPixelSeedBins = cms.PSet(
+    variables = cms.vstring("abs(superCluster.eta)","full5x5_r9", "hasPixelSeed"),
+    bins = cms.VPSet(
+        # No Pixel Seed
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00, -0.1 ) , upBounds = cms.vdouble( 1.5, 0.85 , 0.1) , values = cms.vdouble(0.978 ) , uncertainties = cms.vdouble( -0.00401807 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85, -0.1 ) , upBounds = cms.vdouble( 1.5, 999. , 0.1) , values = cms.vdouble(0.9824) , uncertainties = cms.vdouble( -0.00200421 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00, -0.1 ) , upBounds = cms.vdouble( 6.0, 0.90 , 0.1) , values = cms.vdouble(0.9168 ) , uncertainties = cms.vdouble( -0.0224756 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90 ,-0.1) , upBounds = cms.vdouble( 6.0, 999., 0.1) , values = cms.vdouble( 0.9403 ) , uncertainties = cms.vdouble(  -0.00631264  )  ),        
+        # Yes Pixel Seed
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00 ,0.9) , upBounds = cms.vdouble( 1.5, 0.85, 1.1 ) , values = cms.vdouble( 1.08876 ) , uncertainties = cms.vdouble( 0.0162106 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ,0.9) , upBounds = cms.vdouble( 1.5, 999., 1.1 ) , values = cms.vdouble( 1.5961) , uncertainties = cms.vdouble( 0.0678807 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00 ,0.9) , upBounds = cms.vdouble( 6.0, 0.90, 1.1 ) , values = cms.vdouble( 1.09763 ) , uncertainties = cms.vdouble( 0.0263745 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90 ,0.9) , upBounds = cms.vdouble( 6.0, 999., 1.1 ) , values = cms.vdouble( 1.20264 ) , uncertainties = cms.vdouble(  0.0214274 )  )
+        )
+    )
+
+
+subleadPixelSeedBins = cms.PSet(
+    variables = cms.vstring("abs(superCluster.eta)","full5x5_r9", "hasPixelSeed"),
+    bins = cms.VPSet(
+        # No Pixel Seed
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00, -0.1 ) , upBounds = cms.vdouble( 1.5, 0.85 , 0.1) , values = cms.vdouble( 0.978  ) , uncertainties = cms.vdouble(  -0.00415083)  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85, -0.1 ) , upBounds = cms.vdouble( 1.5, 999. , 0.1) , values = cms.vdouble( 0.9824 ) , uncertainties = cms.vdouble( -0.00280026 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00, -0.1 ) , upBounds = cms.vdouble( 6.0, 0.90 , 0.1) , values = cms.vdouble( 0.9168 ) , uncertainties = cms.vdouble( -0.0225538  )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90 ,-0.1) , upBounds = cms.vdouble( 6.0, 999., 0.1) , values = cms.vdouble( 0.9403 ) , uncertainties = cms.vdouble( -0.00655045 )  ),        
+        # Yes Pixel Seed
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00 ,0.9) , upBounds = cms.vdouble( 1.5, 0.85, 1.1 ) , values = cms.vdouble( 1.13196) , uncertainties = cms.vdouble( 0.0248967 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ,0.9) , upBounds = cms.vdouble( 1.5, 999., 1.1 ) , values = cms.vdouble( 1.61512 ) , uncertainties = cms.vdouble(  0.0978689 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00 ,0.9) , upBounds = cms.vdouble( 6.0, 0.90, 1.1 ) , values = cms.vdouble( 1.10623 ) , uncertainties = cms.vdouble(  0.0287957 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90 ,0.9) , upBounds = cms.vdouble( 6.0, 999., 1.1 ) , values = cms.vdouble( 1.20311 ) , uncertainties = cms.vdouble(  0.0222861 )  )
+        )
+    )
+
 FNUFBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)","full5x5_r9"),
     bins = cms.VPSet(
@@ -354,8 +389,10 @@ emptySigma = cms.PSet(
 #scalesAndSmearingsPrefixForSigmaEOverE = cms.string("EgammaAnalysis/ElectronTools/data/Golden22June")
 ##scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/Winter_2016_reReco_v1_ele")
 ##scalesAndSmearingsPrefixForSigmaEOverE = cms.string("EgammaAnalysis/ElectronTools/data/Winter_2016_reReco_v1_ele")
-scalesAndSmearingsPrefix = cms.string("RecoEgamma/ScalesSmearings/data/Run2017_17Nov2017_v1_ele_unc")
-scalesAndSmearingsPrefixForSigmaEOverE = cms.string("RecoEgamma/ScalesSmearings/data/Run2017_17Nov2017_v1_ele_unc")
+#scalesAndSmearingsPrefix = cms.string("RecoEgamma/ScalesSmearings/data/Run2017_17Nov2017_v1_ele_unc")
+#scalesAndSmearingsPrefixForSigmaEOverE = cms.string("RecoEgamma/ScalesSmearings/data/Run2017_17Nov2017_v1_ele_unc")
+scalesAndSmearingsPrefix = cms.string("flashgg/Systematics/data/Run2017_17Nov2017_v1_ele_unc")
+scalesAndSmearingsPrefixForSigmaEOverE = cms.string("flashgg/Systematics/data/Run2017_17Nov2017_v1_ele_unc")
 #scalesAndSmearingsPrefix = cms.string("flashgg/Systematics/data/Moriond17_74x_pho")
 #scalesAndSmearingsPrefixForSigmaEOverE = cms.string("flashgg/Systematics/data/Winter_2016_reReco_v1_ele")
 
@@ -591,6 +628,17 @@ TriggerWeight = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
           OverallRange = cms.string("pt<99999"),
           BinList = leadTriggerScaleBins,
           BinList2 = subleadTriggerScaleBins,
+          Debug = cms.untracked.bool(False),
+          ApplyCentralValue = cms.bool(True)
+          )
+
+PixelSeedWeight = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("PixelSeedWeight"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("pt<99999"),
+          BinList = leadPixelSeedBins,
+          BinList2 = subleadPixelSeedBins,
           Debug = cms.untracked.bool(False),
           ApplyCentralValue = cms.bool(True)
           )
