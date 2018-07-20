@@ -385,16 +385,16 @@ emptySigma = cms.PSet(
     secondVar = cms.vint32()
 )
 
+
 #scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/80X_ichepV2_2016_pho")
 #scalesAndSmearingsPrefixForSigmaEOverE = cms.string("EgammaAnalysis/ElectronTools/data/Golden22June")
 ##scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/Winter_2016_reReco_v1_ele")
 ##scalesAndSmearingsPrefixForSigmaEOverE = cms.string("EgammaAnalysis/ElectronTools/data/Winter_2016_reReco_v1_ele")
-#scalesAndSmearingsPrefix = cms.string("RecoEgamma/ScalesSmearings/data/Run2017_17Nov2017_v1_ele_unc")
-#scalesAndSmearingsPrefixForSigmaEOverE = cms.string("RecoEgamma/ScalesSmearings/data/Run2017_17Nov2017_v1_ele_unc")
-scalesAndSmearingsPrefix = cms.string("flashgg/Systematics/data/Run2017_17Nov2017_v1_ele_unc")
-scalesAndSmearingsPrefixForSigmaEOverE = cms.string("flashgg/Systematics/data/Run2017_17Nov2017_v1_ele_unc")
+scalesAndSmearingsPrefix = cms.string("RecoEgamma/ScalesSmearings/data/Run2017_17Nov2017_v1_ele_unc")
+scalesAndSmearingsPrefixForSigmaEOverE = cms.string("RecoEgamma/ScalesSmearings/data/Run2017_17Nov2017_v1_ele_unc")
 #scalesAndSmearingsPrefix = cms.string("flashgg/Systematics/data/Moriond17_74x_pho")
 #scalesAndSmearingsPrefixForSigmaEOverE = cms.string("flashgg/Systematics/data/Winter_2016_reReco_v1_ele")
+
 
 
 
