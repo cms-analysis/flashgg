@@ -168,7 +168,7 @@ echo "copy smearing files stored in flashgg into egamma tools"
 
 echo "Simplified template cross section tools"
 #git cms-merge-topic -u sethzenz:for-flashgg-rivet-9_4_2
-git cms-merge-topic -u ArnabPurohit:for-flashgg-rivet-9_4_2
+#git cms-merge-topic -u ArnabPurohit:for-flashgg-rivet-9_4_2
 
 echo "linking classdef for release 94X"
 #ln -s $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_94X.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
