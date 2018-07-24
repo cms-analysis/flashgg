@@ -11,7 +11,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 10 ) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 1000 ) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 import os
@@ -36,7 +36,9 @@ elif os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION
 #    process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIIFall17MiniAODv2/THQ_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCP5/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/90000/6E58A5DD-BF43-E811-8946-0023AEEEB538.root"))
     process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIIFall17MiniAODv2/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/40000/0866D1A8-1941-E811-B61F-0CC47AF9B2E6.root"))
 
-
+elif os.environ["CMSSW_VERSION"].count("CMSSW_10_1"):
+    process.GlobalTag = GlobalTag(process.GlobalTag,'101X_dataRun2_Prompt_v11','')
+    process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/data/Run2018B/DoubleMuon/MINIAOD/PromptReco-v1/000/317/080/00000/4E78B565-8464-E811-BF54-02163E01A0FC.root"))
 else:
     raise Exception,"The default setup for microAODstd.py does not support releases other than 80X, 92X (being deprecated), and 94X"
 
