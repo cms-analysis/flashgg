@@ -188,7 +188,7 @@ class MicroAODCustomize(object):
             self.customizeSummer16EGMPhoID(process)
         else:
             self.customizeFall17EGMPhoID(process)
-        if os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
+        if os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_1"):
             self.customize92X( process ) # Needs to come after egm
         print "Final customized process:",process.p
             
@@ -199,11 +199,11 @@ class MicroAODCustomize(object):
         from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
         if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             era="Summer16_23Sep2016V4_MC"
-        elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
+        elif (os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_1")):
             era="Fall17_17Nov2017_V6_MC"
         runMETs(process,era) 
         from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
-        if not (os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4")):
+        if not (os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_1")):
             setMetCorr(process,multPhiCorr_MC_DY_80X)
         process.p *=process.flashggMetSequence
         
@@ -226,7 +226,7 @@ class MicroAODCustomize(object):
             process.p *= process.rivetProducerHTXS
             process.out.outputCommands.append('keep *_HTXSRivetProducer_*_*')
 
-        if os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
+        if ( os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_1")):
             #raise Exception,"Debugging ongoing for HTXS in CMSSW 9"
             process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
             process.rivetProducerHTXS = cms.EDProducer('HTXSRivetProducer',
@@ -264,11 +264,11 @@ class MicroAODCustomize(object):
         from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
         if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             era="Summer16_23Sep2016V4_MC"
-        elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
+        elif (os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_1")):
             era="Fall17_17Nov2017_V6_MC"
         runMETs(process,era) 
         from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
-        if not (os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4")):
+        if not (os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_1")):
             setMetCorr(process,multPhiCorr_MC_DY_80X)
         process.p *=process.flashggMetSequence
         if "sherpa" in self.datasetName:
@@ -282,7 +282,7 @@ class MicroAODCustomize(object):
         from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
         if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             era="Summer16_23Sep2016AllV4_DATA"
-        elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
+        elif (os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_1")):
             era="Fall17_17Nov2017BCDEF_V6_DATA"
         runMETs(process,era)
         if "2016G" in customize.datasetName or "2016H" in customize.datasetName:
