@@ -47,7 +47,7 @@ def runMETs(process,era):
                                isData=(not isMC),
                                )
 
-    if isMC or os.environ["CMSSW_VERSION"].count("CMSSW_9"):
+    if isMC or os.environ["CMSSW_VERSION"].count("CMSSW_9") or os.environ["CMSSW_VERSION"].count("CMSSW_10"):
         process.flashggMets = cms.EDProducer('FlashggMetProducer',
                                              verbose = cms.untracked.bool(False),
                                              metTag = cms.InputTag('slimmedMETs'),
