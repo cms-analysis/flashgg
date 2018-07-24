@@ -171,7 +171,7 @@
 <class name="edm::Ptr<reco::Vertex>"/> 
 <class name="std::vector<edm::Ptr<reco::Vertex> >"/> 
 <class name="flashgg::Photon" ClassVersion="13">
-  <version ClassVersion="13" checksum="1109558243"/>
+ <version ClassVersion="13" checksum="1109558243"/>
  <version ClassVersion="12" checksum="1503356172"/>
    <version ClassVersion="10" checksum="563539605"/>
   <version ClassVersion="11" checksum="3279104383"/>
@@ -277,7 +277,7 @@
 <class name="std::vector<std::vector<flashgg::Jet> >"/>
 <class name="edm::Wrapper<std::vector<std::vector<flashgg::Jet> > >"/>
 <class name="flashgg::Electron" ClassVersion="18">
-  <version ClassVersion="18" checksum="1251302428"/>
+ <version ClassVersion="18" checksum="1251302428"/>
   <version ClassVersion="17" checksum="3364980247"/>
  <version ClassVersion="16" checksum="2461262684"/>
  <version ClassVersion="15" checksum="467802190"/>
@@ -291,7 +291,7 @@
 <class name="std::vector<flashgg::Electron>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Electron> >"/>
 <class name="flashgg::Muon" ClassVersion="17">
-  <version ClassVersion="17" checksum="851705294"/>
+ <version ClassVersion="17" checksum="851705294"/>
   <version ClassVersion="16" checksum="3256886890"/>
  <version ClassVersion="15" checksum="301792663"/>
  <version ClassVersion="14" checksum="3026555456"/>
