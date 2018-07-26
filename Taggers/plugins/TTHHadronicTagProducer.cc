@@ -706,8 +706,12 @@ namespace flashgg {
 
 
                 if(JetVect.size()>0){
-                    if(bTag_ == "pfDeepCSV") btag_1_=JetVect[0]->bDiscriminator("pfDeepCSVJetTags:probb")+JetVect[0]->bDiscriminator("pfDeepCSVJetTags:probbb") ;
-                    else  btag_1_ = JetVect[0]->bDiscriminator( bTag_ );
+                    if(bTag_ == "pfDeepCSV") { btag_1_=JetVect[0]->bDiscriminator("pfDeepCSVJetTags:probb")+JetVect[0]->bDiscriminator("pfDeepCSVJetTags:probbb") ;
+			//cout << "using addition of prob b and bb" << endl;
+		    }
+                    else  { btag_1_ = JetVect[0]->bDiscriminator( bTag_ );
+			//cout << "using bTag_" << endl; 
+		    }
                     jetPt_1_=JetVect[0]->pt();
                     jetEta_1_=JetVect[0]->eta();
                     jetPhi_1_=JetVect[0]->phi();
