@@ -33,6 +33,10 @@
 
 #include "TMath.h"
 #include "TMVA/Reader.h"
+#include "TRandom.h"
+
+TRandom* myRandHadronic = new TRandom();
+
 
 using namespace std;
 using namespace edm;
@@ -832,6 +836,159 @@ namespace flashgg {
                 tthhtags_obj.setSystLabel( systLabel_ );
                 tthhtags_obj.setMVAres(tthMvaVal_);
                 tthhtags_obj.setMET( theMET );
+
+		tthhtags_obj.setDiphoMVARes(mvares->mvaValue());
+		tthhtags_obj.setRand(myRandHadronic->Rndm());
+		
+                tthhtags_obj.setMetPt((float)theMET->pt());
+                tthhtags_obj.setMetPhi((float)theMET->phi());
+			
+		// Gen lepton info
+                if( ! evt.isRealData() ) {
+                    evt.getByToken( genParticleToken_, genParticles );
+                    int nGoodEls(0), nGoodMus(0), nGoodElsFromTau(0), nGoodMusFromTau(0), nGoodTaus(0);
+                    cout << "Number of gen particles: " << genParticles->size() << endl;
+                    for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+                        int pdgid = genParticles->ptrAt( genLoop )->pdgId();
+                        double pt = genParticles->ptrAt( genLoop )->p4().pt();
+                        int status = genParticles->ptrAt( genLoop )->status();
+                        bool isPromptFinalState = genParticles->ptrAt( genLoop )->isPromptFinalState();
+                        bool isPromptDecayed = genParticles->ptrAt( genLoop )->isPromptDecayed();
+                        bool isDirectPromptTauDecayProductFinalState = genParticles->ptrAt( genLoop )->isDirectPromptTauDecayProductFinalState();
+                        if (pt < 20) continue;
+                        if (abs(pdgid) == 11 || abs(pdgid) == 13 || abs(pdgid) == 15) {
+                            cout << "Found a gen lepton/tau with pT > 20" << endl;
+                            cout << "pdgid: " << pdgid << endl;
+                            cout << "pt: " << pt << endl;
+                            cout << "status: " << status << endl;
+                            cout << "isPromptFinalState: " << isPromptFinalState << endl;
+                            cout << "isPromptDecayed: " << isPromptDecayed << endl;
+                            cout << "isDirectPromptTauDecayProductFinalState: " << isDirectPromptTauDecayProductFinalState << endl;
+                        }
+                        if (abs(pdgid) == 11 && status == 1 && (isPromptFinalState || isDirectPromptTauDecayProductFinalState)) {
+                            nGoodEls++;
+                            if (isDirectPromptTauDecayProductFinalState)
+                                nGoodElsFromTau++;
+                        } 
+                        else if (abs(pdgid) == 13 && status == 1 && (isPromptFinalState || isDirectPromptTauDecayProductFinalState)) {
+                            nGoodMus++;
+                            if (isDirectPromptTauDecayProductFinalState)
+                                nGoodMusFromTau++;
+                        }
+                        if (abs(pdgid) == 15 && status == 2 && isPromptDecayed) {
+                            nGoodTaus++;
+                        }
+                    } // end gen loop
+                    bool lead_photon_is_electron(false), sublead_photon_is_electron(false);
+                    double lead_photon_eta = dipho->leadingPhoton()->eta();
+                    double lead_photon_phi = dipho->leadingPhoton()->phi();
+                    double sublead_photon_eta = dipho->subLeadingPhoton()->eta();
+                    double sublead_photon_phi = dipho->subLeadingPhoton()->phi();
+                    //double sublead_photon_eta = dipho->subLeadingPhoton()->superCluster()->eta(); // should use subLeadingPhoton()->eta() instead. Not sure why they use supercluster in jet dR matching ...
+                    //double sublead_photon_phi = dipho->subLeadingPhoton()->superCluster()->phi();
+                    for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+                        int pdgid = genParticles->ptrAt( genLoop )->pdgId();
+                        if (abs(pdgid) != 11) continue;
+                        if (genParticles->ptrAt( genLoop )->p4().pt() < 15) continue;
+                        if (!genParticles->ptrAt( genLoop )->isPromptFinalState()) continue;
+                        double electron_eta = genParticles->ptrAt( genLoop )->p4().eta();
+                        double electron_phi = genParticles->ptrAt( genLoop )->p4().phi();
+
+                        cout << "Found an electron with pT: " << genParticles->ptrAt( genLoop )->p4().pt() << endl;
+
+
+                        double deltaR_lead = sqrt( pow(electron_eta - lead_photon_eta, 2) + pow(electron_phi - lead_photon_phi, 2));
+                        double deltaR_sublead = sqrt( pow(electron_eta - sublead_photon_eta, 2) + pow(electron_phi - sublead_photon_phi, 2));
+
+                        cout << "Delta R with leading photon: " << deltaR_lead << endl;
+                        cout << "Delta R with subleading photon: " << deltaR_sublead << endl;
+
+                        const double deltaR_thresh = 0.1;
+                        if (deltaR_lead < deltaR_thresh)
+                            lead_photon_is_electron = true;
+                        if (deltaR_sublead < deltaR_thresh)
+                            sublead_photon_is_electron = true;
+
+                    } // end gen loop
+
+                    int lead_photon_type;
+                    if (dipho->leadingPhoton()->genMatchType() != 1) { // fake
+                        if (!lead_photon_is_electron)
+                            lead_photon_type = 3;   // fake
+                        else
+                            lead_photon_type = 2;   // fake from  electron 
+                    }
+                    else
+                        lead_photon_type = 1; // prompt
+                    int sublead_photon_type;
+                    if (dipho->subLeadingPhoton()->genMatchType() != 1) { // fake
+                        if (!sublead_photon_is_electron)
+                            sublead_photon_type = 3;   // fake
+                        else
+                            sublead_photon_type = 2;   // fake from  electron 
+                    }
+                    else
+                        sublead_photon_type = 1; // prompt
+
+                    // Do our own gen-matching
+                    double lead_photon_closest_match = dipho->leadingPhoton()->genMatchType() == 1 ? sqrt( pow(lead_photon_eta - dipho->leadingPhoton()->matchedGenPhoton()->eta(), 2) + pow(lead_photon_phi - dipho->leadingPhoton()->matchedGenPhoton()->phi(), 2)) : 999;
+                    double sublead_photon_closest_match = dipho->subLeadingPhoton()->genMatchType() == 1 ? sqrt( pow(sublead_photon_eta - dipho->subLeadingPhoton()->matchedGenPhoton()->eta(), 2) + pow(sublead_photon_phi - dipho->subLeadingPhoton()->matchedGenPhoton()->phi(), 2)) : 999;
+
+                    double lead_photon_closest_match_pt = dipho->leadingPhoton()->genMatchType() == 1 ? dipho->leadingPhoton()->pt() : -1;
+                    double sublead_photon_closest_match_pt = dipho->subLeadingPhoton()->genMatchType() == 1 ? dipho->subLeadingPhoton()->pt() : -1;
+                    for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+                        int pdgid = genParticles->ptrAt( genLoop )->pdgId();
+                        if (abs(pdgid) != 22) continue;
+                        if (genParticles->ptrAt( genLoop )->p4().pt() < 10) continue;
+                        if (!genParticles->ptrAt( genLoop )->isPromptFinalState()) continue;
+                        double gen_photon_candidate_eta = genParticles->ptrAt( genLoop )->p4().eta();
+                        double gen_photon_candidate_phi = genParticles->ptrAt( genLoop )->p4().phi();
+
+                        double deltaR_lead = sqrt( pow(gen_photon_candidate_eta - lead_photon_eta, 2) + pow(gen_photon_candidate_phi - lead_photon_phi, 2));
+                        double deltaR_sublead = sqrt( pow(gen_photon_candidate_eta - sublead_photon_eta, 2) + pow(gen_photon_candidate_phi - sublead_photon_phi, 2));
+
+                        if (deltaR_lead < lead_photon_closest_match) {   
+                            lead_photon_closest_match = deltaR_lead;
+                            lead_photon_closest_match_pt = genParticles->ptrAt( genLoop )->p4().pt();
+                        }
+                        if (deltaR_sublead < sublead_photon_closest_match) {
+                            sublead_photon_closest_match = deltaR_sublead;
+                            sublead_photon_closest_match_pt = genParticles->ptrAt( genLoop )->p4().pt();
+                        }
+                    } // end gen loop
+                    string lead_fake = dipho->leadingPhoton()->genMatchType() == 1 ? "prompt" : "fake";
+                    //cout << "Leading photon is " << lead_fake << ". Closest match:" << lead_photon_closest_match << endl;
+
+                    string sublead_fake = dipho->subLeadingPhoton()->genMatchType() == 1 ? "prompt" : "fake";
+                    //cout << "Subleading photon is " << sublead_fake << ". Closest match:" << sublead_photon_closest_match << endl;
+
+
+                    tthhtags_obj.setnGoodEls(nGoodEls);
+                    tthhtags_obj.setnGoodElsFromTau(nGoodElsFromTau);
+                    tthhtags_obj.setnGoodMus(nGoodMus);
+                    tthhtags_obj.setnGoodMusFromTau(nGoodMusFromTau);
+                    tthhtags_obj.setnGoodTaus(nGoodTaus);
+                    tthhtags_obj.setLeadPhotonType(lead_photon_type);
+                    tthhtags_obj.setSubleadPhotonType(sublead_photon_type); 
+                    tthhtags_obj.setLeadPhotonClosestDeltaR(lead_photon_closest_match);
+                    tthhtags_obj.setSubleadPhotonClosestDeltaR(sublead_photon_closest_match);
+                    tthhtags_obj.setLeadPhotonClosestPt(lead_photon_closest_match_pt);
+                    tthhtags_obj.setSubleadPhotonClosestPt(sublead_photon_closest_match_pt);
+                }
+                else {
+                    tthhtags_obj.setnGoodEls(-1);
+                    tthhtags_obj.setnGoodElsFromTau(-1);
+                    tthhtags_obj.setnGoodMus(-1);
+                    tthhtags_obj.setnGoodMusFromTau(-1);
+                    tthhtags_obj.setnGoodTaus(-1);
+                    tthhtags_obj.setLeadPhotonType(-1);
+                    tthhtags_obj.setSubleadPhotonType(-1);
+                    tthhtags_obj.setLeadPhotonClosestDeltaR(-1);
+                    tthhtags_obj.setSubleadPhotonClosestDeltaR(-1);
+                    tthhtags_obj.setLeadPhotonClosestPt(-1);
+                    tthhtags_obj.setSubleadPhotonClosestPt(-1);
+                }	
+
 
                 if(!useTTHHadronicMVA_){
                     for( unsigned num = 0; num < JetVect.size(); num++ ) {
