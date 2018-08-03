@@ -52,6 +52,10 @@ from flashgg.Systematics.SystematicsCustomize import *
 jetSystematicsInputTags = createStandardSystematicsProducers(process , MUON_ID=MUON_ID , MUON_ISO=MUON_ISO)
 modifyTagSequenceForSystematics(process,jetSystematicsInputTags)
 
+# Use 0th vertex from microAOD
+process.flashggDiPhotons.whichVertex = cms.uint32(0)
+process.flashggDiPhotons.useZerothVertexFromMicro = cms.bool(True)
+
 # Require standard diphoton trigger
 from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
 process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring("HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v*",
@@ -69,8 +73,6 @@ process.eeBadScFilter.EERecHitSource = cms.InputTag("reducedEgamma","reducedEERe
 #process.cloneGlobalMuonTaggerMAOD.muons = cms.InputTag("flashggSelectedMuons")
 process.dataRequirements = cms.Sequence()
 
-#print('Process ID: %s' % customize.processId)
-#if customize.processId == "Data":
 if "DoubleEG" in fileNames[0]:
         print('Adding HLT and filter requirements')
         process.dataRequirements += process.hltHighLevel
@@ -96,48 +98,6 @@ else:
   customizeSystematicsForBackground(process)
 
 printSystematicInfo(process)
-
-#if "ttH" in fileNames[0]:
-#  customizeSystematicsForSignal(process)
-#elif "DoubleEG" in fileNames[0]:
-#  customizeSystematicsForData(process)
-#else:
-#  customizeSystematicsForBackground(process):
-
-# For debugging
-switchToUnPreselected = False
-switchToFinal = False
-switchToPuppi = False
-switchToReadOld = False
-assert(not switchToUnPreselected or not switchToFinal)
-assert(not switchToReadOld or not switchToUnPreselected)
-assert(not switchToReadOld or not switchToFinal)
-
-if switchToReadOld:
-    from PhysicsTools.PatAlgos.tools.helpers import massSearchReplaceAnyInputTag
-    massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggPreselectedDiPhotons"),cms.InputTag("flashggDiPhotonsWithAddedDz"))
-    process.flashggDiPhotonsWithAddedDz = cms.EDProducer('FlashggDiPhotonGenZProducer',
-                                                 DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
-                                                 GenParticleTag=cms.InputTag( "flashggPrunedGenParticles" ))
-    process.flashggNewPreselectedDiPhotons = cms.Sequence(process.flashggPreselectedDiPhotons*process.flashggDiPhotonsWithAddedDz)
-    process.flashggTagSequence.replace(process.flashggPreselectedDiPhotons,process.flashggNewPreselectedDiPhotons)
-    process.source.fileNames=cms.untracked.vstring("root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-BetaV7-25ns/Spring15BetaV7/GluGluHToGG_M-125_13TeV_powheg_pythia8/RunIISpring15-ReMiniAOD-BetaV7-25ns-Spring15BetaV7-v0-RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/151021_152108/0000/myMicroAODOutputFile_2.root")
-    print process.flashggTagSequence
-
-if switchToUnPreselected:
-    from PhysicsTools.PatAlgos.tools.helpers import massSearchReplaceAnyInputTag
-    massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggPreselectedDiPhotons"),cms.InputTag("flashggDiPhotons"))
-
-if switchToFinal:
-    from flashgg.MicroAOD.flashggFinalEGamma_cfi import flashggFinalEGamma
-    from PhysicsTools.PatAlgos.tools.helpers import massSearchReplaceAnyInputTag
-    massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggPreselectedDiPhotons"),cms.InputTag("flashggFinalEGamma",flashggFinalEGamma.DiPhotonCollectionName.value()))
-
-if switchToPuppi:
-    process.flashggUnpackedJets.JetsTag = cms.InputTag("flashggFinalPuppiJets")
-
-
-from flashgg.Taggers.flashggTagOutputCommands_cff import tagDefaultOutputCommand
 
 
 # Consider ttH Leptonic first, then ttH Hadronic (forgetting about dilepton for now, can do that in babeies)
@@ -488,6 +448,7 @@ cfgTools.addCategories(process.tthHadronicTagDumper,
 )
 
 process.p = cms.Path(process.dataRequirements*
+		     process.flashggDiPhotons* # needed for 0th vertex from microAOD
                      process.flashggUpdatedIdMVADiPhotons*
                      process.flashggDiPhotonSystematics*
                      process.flashggMetSystematics*
