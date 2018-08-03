@@ -53,8 +53,17 @@ jetSystematicsInputTags = createStandardSystematicsProducers(process , MUON_ID=M
 modifyTagSequenceForSystematics(process,jetSystematicsInputTags)
 
 # Use 0th vertex from microAOD
+process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
 process.flashggDiPhotons.whichVertex = cms.uint32(0)
 process.flashggDiPhotons.useZerothVertexFromMicro = cms.bool(True)
+
+# remove from systematics
+newvpset = cms.VPSet()
+for pset in process.flashggDiPhotonSystematics.SystMethods:
+    if not pset.Label.value().count("FracRVWeight") and not pset.Label.value().count("FracRVNvtxWeight") :
+	newvpset += [pset]
+
+	process.flashggDiPhotonSystematics.SystMethods = newvpset
 
 # Require standard diphoton trigger
 from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
