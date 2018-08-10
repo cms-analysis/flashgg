@@ -332,7 +332,7 @@ namespace flashgg {
             if(theElectrons->size()>0)
                 Electrons = selectElectrons(theElectrons->ptrs(), dipho, ElePtCut_, EleEtaCuts_, ElePhotonDrCut_, ElePhotonZMassCut_, DeltaRTrkEle_, debug_);
 
-            if( (Muons.size() + Electrons.size())!=1) continue;
+            if( (Muons.size() + Electrons.size()) < 1) continue;
  
             int njet_ = 0;
             int njets_btagloose_ = 0;
