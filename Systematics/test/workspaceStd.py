@@ -201,7 +201,7 @@ if customize.doFiducial:
     process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggSigmaMoMpToMTag')) )
 
 if customize.tthTagsOnly:
-    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(   #cms.PSet(TagName = cms.InputTag('flashggTTHDiLeptonTag')),
+    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(   cms.PSet(TagName = cms.InputTag('flashggTTHDiLeptonTag')),
         cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag')),
         cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag')) )
 
@@ -324,6 +324,8 @@ from flashgg.MetaData.samples_utils import SamplesManager
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
+#"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_0/3_1_0/DoubleEG/RunIIFall17-3_1_0-3_1_0-v0-Run2017F-31Mar2018-v1/180611_135216/0001/myMicroAODOutputFile_1382.root",
+#"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_0/3_1_0/DoubleEG/RunIIFall17-3_1_0-3_1_0-v0-Run2017F-31Mar2018-v1/180611_135216/0000/myMicroAODOutputFile_685.root"
 #"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_0_0/3_0_0/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/RunIIFall17-3_0_0-3_0_0-v0-RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/180325_164819/0000/myMicroAODOutputFile_1.root"
 #"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/THQ_HToGG_13TeV-madgraph-pythia8_TuneCUETP8M1/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170114_100016/0000/myMicroAODOutputFile_9.root"
 #"root://eoscms.cern.ch//eos/cms//store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/bbHToGG_M-125_4FS_ybyt_13TeV_amcatnlo/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170114_095140/0000/myMicroAODOutputFile_9.root"
