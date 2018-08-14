@@ -29,7 +29,7 @@ namespace flashgg {
         void setMuons( std::vector<edm::Ptr<Muon> > Muons ) {Muons_ = Muons;}
         void setElectrons( std::vector<edm::Ptr<Electron> > Electrons ) {Electrons_ = Electrons;}
 
-        DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kTTHLeptonic; }
+        DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kTTHDiLepton; }
 
         void setMvaRes(float mvaRes) {mvaRes_ = mvaRes;}
         float mvaRes() const {return mvaRes_;}
