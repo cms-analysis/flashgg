@@ -43,7 +43,6 @@ def runMETs(process,isMC):
 #===========================================================================================================================#
         
         
-        
         runMetCorAndUncFromMiniAOD(process, metType="PF",
                                    jetCollUnskimmed="slimmedJets",
                                    electronColl="slimmedElectrons",
@@ -51,8 +50,10 @@ def runMETs(process,isMC):
                                    muonColl="slimmedMuons",
                                    tauColl="slimmedTaus",
                                    reclusterJets = False,
+                            	   fixEE2017 = True,
                                    pfCandColl = "packedPFCandidates",
-                                   postfix="",
+				   # will produce new MET collection: slimmedMETsModifiedMET
+                                   postfix="ModifiedMET",
                                    isData=(not isMC),
                                    )
         
