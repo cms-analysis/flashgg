@@ -59,7 +59,7 @@ def runMETs(process,era):
                                              verbose = cms.untracked.bool(False),
                                              metTag = cms.InputTag('slimmedMETsModifiedMET'),
                                              )
-       process.flashggMetSequence = cms.Sequence(process.flashggMets)
+       process.flashggMetSequence = cms.Sequence(process.fullPatMetSequenceModifiedMET*process.flashggMets)
              
     if not isMC and os.environ["CMSSW_VERSION"].count("CMSSW_8_0_28"):
         corMETFromMuonAndEG(process, 
