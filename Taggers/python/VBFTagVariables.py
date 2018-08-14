@@ -91,7 +91,8 @@ dijet_variables=[
     "jet2_HFEMEnergy := subleading_HFEMEnergy",
     "jet2_HFHadronMultiplicity := subleading_HFHadronMultiplicity",
     "jet2_HFEMMultiplicity := subleading_HFEMMultiplicity",
-    "dijet_nj := VBFMVA.n_rec_jets"
+    "dijet_nj := VBFMVA.n_rec_jets",
+    "dipho_dijet_ptHjj := ptHjj"
 ]
 
 truth_variables=[

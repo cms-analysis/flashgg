@@ -26,7 +26,8 @@ flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
                                #vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_dijetMVA_Jan2016_rmscut_BDTG.weights.xml"),
                                #vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_dijetMVA_76x_24_02_15_BDTG.weights.xml"),
                                #vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVA_classification_dijet-mva-80x-ICHEP-v04.weights.xml"),
-                               vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/sklearn_training_moriond17_v8.xml"),
+#                               vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/sklearn_training_moriond17_v8.xml"),
+                               vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/dijet-2017-10Jul.xml")
 )
 # Legacy DiPhoDiJet MVA
 flashggVBFDiPhoDiJetMVA = cms.EDProducer('FlashggVBFDiPhoDiJetMVAProducer',
