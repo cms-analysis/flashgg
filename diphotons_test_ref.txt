@@ -1,5 +1,5 @@
 [INFO] Global Tag:  cms.string('94X_mc2017_realistic_v12')
-/afs/cern.ch/work/s/sethzenz/fromscratch197/CMSSW_9_4_6/src/flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310
+/afs/cern.ch/work/s/sethzenz/fromscratch205/CMSSW_9_4_6/src/flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310
 mix_2017MC_DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8.py
 mix_2017MC_DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8.py mix_2017MC_DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8
 mix_2017MC_GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8.py
@@ -115,9 +115,6 @@ mix_2017MC_VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_PSWeights.py
 mix_2017MC_VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_PSWeights.py mix_2017MC_VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_PSWeights
 mix_2017MC_VHToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8.py
 mix_2017MC_VHToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8.py mix_2017MC_VHToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8
-mix_2017MC_ttHToGG_M125_13TeV_powheg_pythia8.py
-mix_2017MC_ttHToGG_M125_13TeV_powheg_pythia8.py mix_2017MC_ttHToGG_M125_13TeV_powheg_pythia8
-__init__.pyc
 mix_2017MC_VHToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8.py
 mix_2017MC_VHToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8.py mix_2017MC_VHToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8
 mix_2017MC_VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8.py
@@ -188,10 +185,12 @@ mix_2017MC_ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8.py
 mix_2017MC_ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8.py mix_2017MC_ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8
 mix_2017MC_ttHJetToGG_M90_13TeV_amcatnloFXFX_madspin_pythia8.py
 mix_2017MC_ttHJetToGG_M90_13TeV_amcatnloFXFX_madspin_pythia8.py mix_2017MC_ttHJetToGG_M90_13TeV_amcatnloFXFX_madspin_pythia8
-Info_2017_miniaodv2_310.log
-mix_2017MC_DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8.pyc
 mix_2017MC_ttHJetToGG_M95_13TeV_amcatnloFXFX_madspin_pythia8.py
 mix_2017MC_ttHJetToGG_M95_13TeV_amcatnloFXFX_madspin_pythia8.py mix_2017MC_ttHJetToGG_M95_13TeV_amcatnloFXFX_madspin_pythia8
+mix_2017MC_ttHToGG_M125_13TeV_powheg_pythia8.py
+mix_2017MC_ttHToGG_M125_13TeV_powheg_pythia8.py mix_2017MC_ttHToGG_M125_13TeV_powheg_pythia8
+__init__.pyc
+mix_2017MC_DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8.pyc
 mix_2017MC_GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8.pyc
 mix_2017MC_GJet_Pt-20toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8.pyc
 mix_2017MC_GJets_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8.pyc
@@ -286,11 +285,11 @@ mix_2017MC_ttHJetToGG_M90_13TeV_amcatnloFXFX_madspin_pythia8.pyc
 mix_2017MC_ttHJetToGG_M95_13TeV_amcatnloFXFX_madspin_pythia8.pyc
 mix_2017MC_ttHToGG_M125_13TeV_powheg_pythia8.pyc
 Warning in <TInterpreter::ReadRootmapFile>: class  edm::Ptr<pat::PackedGenParticle> found in libDataFormatsPatCandidates.so  is already in libflashggDataFormats.so 
-09-Jul-2018 21:07:43 CEST  Initiating request to open file file:myMicroAODOutputFile.root
-09-Jul-2018 21:07:44 CEST  Successfully opened file file:myMicroAODOutputFile.root
+14-Aug-2018 17:28:51 CEST  Initiating request to open file file:myMicroAODOutputFile.root
+14-Aug-2018 17:28:53 CEST  Successfully opened file file:myMicroAODOutputFile.root
 here diphotonDumper/histograms
-Begin processing the 1st record. Run 1, Event 53204, LumiSection 58 at 09-Jul-2018 21:07:53.824 CEST
-09-Jul-2018 21:07:54 CEST  Closed file file:myMicroAODOutputFile.root
+Begin processing the 1st record. Run 1, Event 53204, LumiSection 58 at 14-Aug-2018 17:29:04.190 CEST
+14-Aug-2018 17:29:04 CEST  Closed file file:myMicroAODOutputFile.root
 
 =============================================
 
