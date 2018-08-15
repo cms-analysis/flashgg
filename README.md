@@ -9,7 +9,7 @@ Before you start, **please take note** of these warnings and comments:
 
 Currently two releases are supported:
 * 8_0_28 for Legacy 2016 processing
-* 9_4_4, version for 2017 v2 processing, recipe still being developed
+* 9_4_9, version for 2017 v2 processing and met corrections, recipe still being developed
 
 Recently deprecated:
 
@@ -32,8 +32,8 @@ Recently deprecated:
 94X: Get everything you need, starting from a clean area:
 
  ```
- cmsrel CMSSW_9_4_6
- cd CMSSW_9_4_6/src
+ cmsrel CMSSW_9_4_9
+ cd CMSSW_9_4_9/src
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src
