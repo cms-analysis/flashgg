@@ -135,7 +135,7 @@ echo "Temporary perl hack for LeptonSelection (to keep repo compatibility with 8
 perl -p -i.bak -e 's/numberOfHits/numberOfAllHits/g' $CMSSW_BASE/src/flashgg/Taggers/src/LeptonSelection.cc
 
 #MET discrepancy mitigation
-git cms-merge-topic kpedro88:METFixEE2017_949
+git cms-merge-topic -u kpedro88:METFixEE2017_949
 
 
 # Updated for 8_0_28, and compiles and runs, but NOT checked by experts
@@ -148,9 +148,9 @@ echo "Setting up EGM stuff..."
 #git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP    
 #git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
 
-git cms-merge-topic cms-egamma:EgammaPostRecoTools_940 #just adds in an extra file to have a setup function to make things easier
-git cms-merge-topic sethzenz:Egamma80XMiniAODV2_949 #adds the c++ changes necessary to enable 2016 scale & smearing corrections
-git cms-merge-topic shervin86:Egamma80XMiniAODV2_946_fix
+git cms-merge-topic -u cms-egamma:EgammaPostRecoTools_940 #just adds in an extra file to have a setup function to make things easier
+git cms-merge-topic -u sethzenz:Egamma80XMiniAODV2_949 #adds the c++ changes necessary to enable 2016 scale & smearing corrections
+git cms-merge-topic -u shervin86:Egamma80XMiniAODV2_946_fix
 
 
 echo "copy databases for local running (consistency with crab)"
