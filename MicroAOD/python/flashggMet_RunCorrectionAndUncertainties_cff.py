@@ -48,11 +48,18 @@ def runMETs(process,era):
                                )
 
     if isMC or os.environ["CMSSW_VERSION"].count("CMSSW_9"):
-        process.flashggMets = cms.EDProducer('FlashggMetProducer',
+
+       runMetCorAndUncFromMiniAOD(process,
+                            isData=(not isMC),
+                            fixEE2017 = True,
+                            # will produce new MET collection: slimmedMETsModifiedMET
+                            postfix = "ModifiedMET",
+                            )
+       process.flashggMets = cms.EDProducer('FlashggMetProducer',
                                              verbose = cms.untracked.bool(False),
-                                             metTag = cms.InputTag('slimmedMETs'),
+                                             metTag = cms.InputTag('slimmedMETsModifiedMET'),
                                              )
-        process.flashggMetSequence = cms.Sequence(process.flashggMets)
+       process.flashggMetSequence = cms.Sequence(process.fullPatMetSequenceModifiedMET*process.flashggMets)
              
     if not isMC and os.environ["CMSSW_VERSION"].count("CMSSW_8_0_28"):
         corMETFromMuonAndEG(process, 
@@ -65,7 +72,7 @@ def runMETs(process,era):
                             muCorrection=False,
                             eGCorrection=True,
                             runOnMiniAOD=True,
-                            postfix="FullMETClean"
+                            postfix="FullMETClean",
                             )
         
         process.slimmedMETsFullMETClean = process.slimmedMETs.clone()
@@ -91,7 +98,7 @@ def runMETs(process,era):
             process.patPFMetT1UnclusteredEnDownFullMETClean+process.slimmedMETsFullMETClean)
         process.flashggMets = cms.EDProducer('FlashggMetProducer',
                                              verbose = cms.untracked.bool(False),
-                                             metTag = cms.InputTag('slimmedMETs'),
+                                             metTag = cms.InputTag('slimmedMETsModifiedMET'),
                                              )
 #            process.flashggMetsMuons = cms.EDProducer('FlashggMetProducer',
 #                             verbose = cms.untracked.bool(False),
