@@ -1,5 +1,5 @@
 [INFO] Global Tag:  cms.string('94X_mc2017_realistic_v12')
-/afs/cern.ch/work/s/sethzenz/fromscratch205/CMSSW_9_4_6/src/flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310
+/afs/cern.ch/work/s/sethzenz/fromscratch206/CMSSW_9_4_9/src/flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310
 mix_2017MC_DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8.py
 mix_2017MC_DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8.py mix_2017MC_DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8
 mix_2017MC_GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8.py
@@ -285,11 +285,11 @@ mix_2017MC_ttHJetToGG_M90_13TeV_amcatnloFXFX_madspin_pythia8.pyc
 mix_2017MC_ttHJetToGG_M95_13TeV_amcatnloFXFX_madspin_pythia8.pyc
 mix_2017MC_ttHToGG_M125_13TeV_powheg_pythia8.pyc
 Warning in <TInterpreter::ReadRootmapFile>: class  edm::Ptr<pat::PackedGenParticle> found in libDataFormatsPatCandidates.so  is already in libflashggDataFormats.so 
-14-Aug-2018 17:28:51 CEST  Initiating request to open file file:myMicroAODOutputFile.root
-14-Aug-2018 17:28:53 CEST  Successfully opened file file:myMicroAODOutputFile.root
+15-Aug-2018 12:05:17 CEST  Initiating request to open file file:myMicroAODOutputFile.root
+15-Aug-2018 12:05:19 CEST  Successfully opened file file:myMicroAODOutputFile.root
 here diphotonDumper/histograms
-Begin processing the 1st record. Run 1, Event 53204, LumiSection 58 at 14-Aug-2018 17:29:04.190 CEST
-14-Aug-2018 17:29:04 CEST  Closed file file:myMicroAODOutputFile.root
+Begin processing the 1st record. Run 1, Event 53204, LumiSection 58 at 15-Aug-2018 12:05:46.012 CEST
+15-Aug-2018 12:05:46 CEST  Closed file file:myMicroAODOutputFile.root
 
 =============================================
 
