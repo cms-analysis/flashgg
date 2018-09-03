@@ -530,7 +530,7 @@
                 "weights": 9384.298828125
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/GluGluHToGG_M105_13TeV_amcatnloFXFX_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-bb3ce3a7883249660e68d150a2fbef9a/USER": {
         "files": [
@@ -551,7 +551,7 @@
                 "weights": 9386893.0
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/GluGluHToGG_M123_13TeV_amcatnloFXFX_pythia8/sethzenz-RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-bb3ce3a7883249660e68d150a2fbef9a/USER": {
         "files": [
@@ -636,7 +636,7 @@
                 "weights": 8081802.0
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/GluGluHToGG_M126_13TeV_amcatnloFXFX_pythia8/sethzenz-RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-bb3ce3a7883249660e68d150a2fbef9a/USER": {
         "files": [
@@ -721,7 +721,7 @@
                 "weights": 6325507.5
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/QCD_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/sethzenz-RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-dfb4aebb0a34a36b04b8bd8eb2ddfe46/USER": {
         "files": [
@@ -2790,7 +2790,7 @@
                 "weights": 93181.0
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/sethzenz-RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-dfb4aebb0a34a36b04b8bd8eb2ddfe46/USER": {
         "files": [
@@ -3555,7 +3555,7 @@
                 "weights": 510712.8125
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M-125_13TeV_powheg_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -3752,7 +3752,7 @@
                 "weights": 362684.5
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M100_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -3797,7 +3797,7 @@
                 "weights": 305171.84375
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M105_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -3842,7 +3842,7 @@
                 "weights": 225822.03125
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M110_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -3895,7 +3895,7 @@
                 "weights": 225717.8125
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M115_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -4020,7 +4020,7 @@
                 "weights": 113919.015625
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M115_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v1-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -4145,7 +4145,7 @@
                 "weights": 55007.08984375
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M120_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -4270,7 +4270,7 @@
                 "weights": 221338.25
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M123_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -4347,7 +4347,7 @@
                 "weights": 284092.90625
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M124_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -4424,7 +4424,7 @@
                 "weights": 377817.96875
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M125_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -4653,7 +4653,7 @@
                 "weights": 277982.6875
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M125_13TeV_amcatnlo_pythia8_CP5Down/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -4690,7 +4690,7 @@
                 "weights": 4453.34765625
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M125_13TeV_amcatnlo_pythia8_PSWeights/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -4823,7 +4823,7 @@
                 "weights": 282702.71875
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M126_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -4900,7 +4900,7 @@
                 "weights": 265534.1875
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M127_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -4961,7 +4961,7 @@
                 "weights": 286253.3125
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M130_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -5078,7 +5078,7 @@
                 "weights": 370453.375
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M60_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -5107,7 +5107,7 @@
                 "weights": 408211.25
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M65_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -5152,7 +5152,7 @@
                 "weights": 472400.28125
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M70_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -5181,7 +5181,7 @@
                 "weights": 582364.5
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M75_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -5234,7 +5234,7 @@
                 "weights": 370193.71875
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M80_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -5255,7 +5255,7 @@
                 "weights": 542618.25
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M85_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -5308,7 +5308,7 @@
                 "weights": 331391.40625
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M85_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v1-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -5361,7 +5361,7 @@
                 "weights": 128394.703125
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M90_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -5382,7 +5382,7 @@
                 "weights": 268166.65625
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M95_13TeV_amcatnlo_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c2370618895cdda75cb734cbbe9e7b2/USER": {
         "files": [
@@ -5427,7 +5427,7 @@
                 "weights": 239203.953125
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VHToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-042e544057588adaee2f06de8954ff07/USER": {
         "files": [
@@ -5496,7 +5496,7 @@
                 "weights": 1066415.375
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VHToGG_M115_13TeV_amcatnloFXFX_madspin_pythia8/sethzenz-RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-042e544057588adaee2f06de8954ff07/USER": {
         "files": [
@@ -5693,7 +5693,7 @@
                 "weights": 43012.54296875
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CP5Down/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2-042e544057588adaee2f06de8954ff07/USER": {
         "files": [
@@ -5722,7 +5722,7 @@
                 "weights": 14984.544921875
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CP5Up/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2-042e544057588adaee2f06de8954ff07/USER": {
         "files": [
@@ -5759,7 +5759,7 @@
                 "weights": 30599.892578125
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/sethzenz-RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-6a727f257a984f9b93ec84d5e8acd977/USER": {
         "files": [
@@ -5844,7 +5844,7 @@
                 "weights": 73048.3359375
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-6a727f257a984f9b93ec84d5e8acd977/USER": {
         "files": [
@@ -5921,7 +5921,7 @@
                 "weights": 75951.4140625
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/ttHJetToGG_M115_13TeV_amcatnloFXFX_madspin_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-6a727f257a984f9b93ec84d5e8acd977/USER": {
         "files": [
@@ -6126,7 +6126,7 @@
                 "weights": 38837.28125
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/ttHJetToGG_M115_13TeV_amcatnloFXFX_madspin_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v1-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-6a727f257a984f9b93ec84d5e8acd977/USER": {
         "files": [
@@ -6331,7 +6331,7 @@
                 "weights": 17013.017578125
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CP5Down/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2-6a727f257a984f9b93ec84d5e8acd977/USER": {
         "files": [
@@ -6368,7 +6368,7 @@
                 "weights": 3735.98583984375
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/ttHJetToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8/sethzenz-RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-6a727f257a984f9b93ec84d5e8acd977/USER": {
         "files": [
@@ -6437,7 +6437,7 @@
                 "weights": 45841.859375
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/ttZJets_TuneCP5_13TeV_madgraphMLM_pythia8/sethzenz-RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-dfb4aebb0a34a36b04b8bd8eb2ddfe46/USER": {
         "files": [
@@ -6826,6 +6826,6 @@
                 "weights": 47947.0
             }
         ], 
-        "vetted": true
+        "vetted": false
     }
 }

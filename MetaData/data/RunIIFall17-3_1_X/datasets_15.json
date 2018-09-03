@@ -2442,7 +2442,7 @@
                 "weights": 1691173632.0
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/sethzenz-RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-dfb4aebb0a34a36b04b8bd8eb2ddfe46/USER": {
         "files": [
@@ -4119,7 +4119,7 @@
                 "weights": 98969.0
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/GJets_HT-200To400_TuneCP5_13TeV-madgraphMLM-pythia8/sethzenz-RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-dfb4aebb0a34a36b04b8bd8eb2ddfe46/USER": {
         "files": [
@@ -6692,6 +6692,6 @@
                 "weights": 71027.0
             }
         ], 
-        "vetted": true
+        "vetted": false
     }
 }

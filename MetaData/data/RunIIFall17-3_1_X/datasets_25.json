@@ -6328,8 +6328,40 @@
                 "nevents": 84400, 
                 "totEvents": 84400, 
                 "weights": 36532.50390625
+            }, 
+            {
+                "bad": false, 
+                "events": 90800, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_1/3_1_1/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa/RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180828_081414/0000/myMicroAODOutputFile_520.root", 
+                "nevents": 90800, 
+                "totEvents": 90800, 
+                "weights": 39221.59765625
+            }, 
+            {
+                "bad": false, 
+                "events": 94200, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_1/3_1_1/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa/RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180828_081414/0000/myMicroAODOutputFile_478.root", 
+                "nevents": 94200, 
+                "totEvents": 94200, 
+                "weights": 40907.79296875
+            }, 
+            {
+                "bad": false, 
+                "events": 79999, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_1/3_1_1/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa/RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180828_081414/0000/myMicroAODOutputFile_633.root", 
+                "nevents": 79999, 
+                "totEvents": 79999, 
+                "weights": 34558.8046875
+            }, 
+            {
+                "bad": false, 
+                "events": 98200, 
+                "name": "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_1/3_1_1/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa/RunIIFall17-3_1_1-3_1_1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180828_081414/0000/myMicroAODOutputFile_662.root", 
+                "nevents": 98200, 
+                "totEvents": 98200, 
+                "weights": 42365.10546875
             }
         ], 
-        "vetted": true
+        "vetted": false
     }
 }
