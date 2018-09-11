@@ -15,6 +15,7 @@ dropVBFInNonGold = False
 
 process = cms.Process("FLASHggTag")
 process.load("FWCore.MessageService.MessageLogger_cfi")
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
@@ -42,6 +43,7 @@ fileNames = sys.argv[2]
 fileNames = fileNames.replace('/hadoop','file:/hadoop')
 fileNames = fileNames.split(",")
 process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring(fileNames))
+#process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring("/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_2_0/3_2_0/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/RunIIFall17-3_2_0-3_2_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/180817_102411/0000/myMicroAODOutputFile_7.root"))
 
 
 ### Systematics ###
@@ -354,6 +356,31 @@ cfgTools.addCategories(process.tthLeptonicTagDumper,
                         "jet_energy13  := ?(jets.size>12)? jets.at(12).energy : -1",
                         "jet_energy14  := ?(jets.size>13)? jets.at(13).energy : -1",
                         "jet_energy15  := ?(jets.size>14)? jets.at(14).energy : -1",
+                        "lead_PhoGenPt := leadPhoGenPt",
+                        "lead_PhoGenEta := leadPhoGenEta",
+                        "lead_PhoGenPhi := leadPhoGenPhi",
+                        "lead_Prompt := leadPrompt",
+                        "lead_Mad := leadMad",
+                        "lead_Pythia := leadPythia",
+                        "lead_SimpleMomID := leadSimpleMomID",
+                        "lead_SimpleMomStatus := leadSimpleMomStatus",
+                        "lead_MomID := leadMomID",
+                        "lead_MomMomID := leadMomMomID",
+                        "lead_PassFrix := leadPassFrix",
+                        "lead_SmallestDr := leadSmallestDr",
+                        "sublead_PhoGenPt := subleadPhoGenPt",
+                        "sublead_PhoGenEta := subleadPhoGenEta",
+                        "sublead_PhoGenPhi := subleadPhoGenPhi",
+                        "sublead_Prompt := subleadPrompt",
+                        "sublead_Mad := subleadMad",
+                        "sublead_Pythia := subleadPythia",
+                        "sublead_SimpleMomID := subleadSimpleMomID",
+                        "sublead_SimpleMomStatus := subleadSimpleMomStatus",
+                        "sublead_MomID := subleadMomID",
+                        "sublead_MomMomID := subleadMomMomID",
+                        "sublead_PassFrix := subleadPassFrix",
+                        "sublead_SmallestDr := subleadSmallestDr",
+
 
 
                    ],
