@@ -38,7 +38,8 @@ elif os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION
 
 elif os.environ["CMSSW_VERSION"].count("CMSSW_10_1"):
     process.GlobalTag = GlobalTag(process.GlobalTag,'101X_dataRun2_Prompt_v11','')
-    process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/data/Run2018B/DoubleMuon/MINIAOD/PromptReco-v1/000/317/080/00000/4E78B565-8464-E811-BF54-02163E01A0FC.root"))
+#    process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/data/Run2018B/DoubleMuon/MINIAOD/PromptReco-v1/000/317/080/00000/4E78B565-8464-E811-BF54-02163E01A0FC.root"))
+    process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/data/Run2018C/EGamma/MINIAOD/PromptReco-v3/000/320/369/00000/608827B1-7192-E811-B9F7-FA163E3A29EC.root"))
 else:
     raise Exception,"The default setup for microAODstd.py does not support releases other than 80X, 92X (being deprecated), and 94X"
 
@@ -125,7 +126,7 @@ process.e = cms.EndPath(process.out)
 from flashgg.MicroAOD.MicroAODCustomize import customize
 customize(process)
 
-if "DY" in customize.datasetName or "SingleElectron" in customize.datasetName or "DoubleEG" in customize.datasetName:
+if "DY" in customize.datasetName or "SingleElectron" in customize.datasetName or "DoubleEG" in customize.datasetName or "EGamma" in customize.datasetName:
   customize.customizeHLT(process)
 
 #open('dump.py', 'w').write(process.dumpPython())

@@ -3,34 +3,15 @@
  # Please import CondCore.CondDB.CondDB_cfi                          # 
  ##################################################################### 
 Warning in <TInterpreter::ReadRootmapFile>: class  edm::Ptr<pat::PackedGenParticle> found in libDataFormatsPatCandidates.so  is already in libflashggDataFormats.so 
-09-Jul-2018 21:07:18 CEST  Initiating request to open file file:myMicroAODOutputFile.root
-09-Jul-2018 21:07:20 CEST  Successfully opened file file:myMicroAODOutputFile.root
-Begin processing the 1st record. Run 1, Event 53204, LumiSection 58 at 09-Jul-2018 21:07:33.398 CEST
-[UNTAGGED] category 1 mass=121.272, systLabel 
-	[UNTAGGED TRUTH]: genPV=(-0.0243185,0.069567,0.687737)
-Begin processing the 2nd record. Run 1, Event 53205, LumiSection 58 at 09-Jul-2018 21:07:33.502 CEST
+12-Sep-2018 17:11:16 CEST  Initiating request to open file file:myMicroAODOutputFile.root
+12-Sep-2018 17:11:18 CEST  Successfully opened file file:myMicroAODOutputFile.root
+Begin processing the 1st record. Run 320369, Event 602519, LumiSection 53 on stream 0 at 12-Sep-2018 17:11:34.207 CEST
 [NO TAG]
-Begin processing the 3rd record. Run 1, Event 53203, LumiSection 58 at 09-Jul-2018 21:07:33.511 CEST
+Begin processing the 2nd record. Run 320369, Event 1669911, LumiSection 146 on stream 0 at 12-Sep-2018 17:11:34.394 CEST
 [NO TAG]
-Begin processing the 4th record. Run 1, Event 53206, LumiSection 58 at 09-Jul-2018 21:07:33.520 CEST
-[UNTAGGED] category 1 mass=122.669, systLabel 
-	[UNTAGGED TRUTH]: genPV=(-0.025178,0.0695381,-0.270614)
-Begin processing the 5th record. Run 1, Event 53208, LumiSection 58 at 09-Jul-2018 21:07:33.543 CEST
-[UNTAGGED] category 2 mass=125.157, systLabel 
-	[UNTAGGED TRUTH]: genPV=(-0.023948,0.0684956,0.807966)
-Begin processing the 6th record. Run 1, Event 53207, LumiSection 58 at 09-Jul-2018 21:07:33.556 CEST
+Begin processing the 3rd record. Run 320369, Event 1698094, LumiSection 148 on stream 0 at 12-Sep-2018 17:11:34.455 CEST
 [NO TAG]
-Begin processing the 7th record. Run 1, Event 53212, LumiSection 58 at 09-Jul-2018 21:07:33.563 CEST
-[UNTAGGED] category 3 mass=126.202, systLabel 
-	[UNTAGGED TRUTH]: genPV=(-0.0249422,0.0667327,1.57199)
-Begin processing the 8th record. Run 1, Event 53211, LumiSection 58 at 09-Jul-2018 21:07:33.573 CEST
-[NO TAG]
-Begin processing the 9th record. Run 1, Event 53209, LumiSection 58 at 09-Jul-2018 21:07:33.579 CEST
-[NO TAG]
-Begin processing the 10th record. Run 1, Event 53223, LumiSection 58 at 09-Jul-2018 21:07:33.584 CEST
-[UNTAGGED] category 2 mass=124.395, systLabel 
-	[UNTAGGED TRUTH]: genPV=(-0.0241996,0.0698694,3.73591)
-09-Jul-2018 21:07:33 CEST  Closed file file:myMicroAODOutputFile.root
+12-Sep-2018 17:11:34 CEST  Closed file file:myMicroAODOutputFile.root
 
 =============================================
 
