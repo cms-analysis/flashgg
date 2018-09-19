@@ -10,7 +10,7 @@
 
 int main( int argc, char *argv[] )
 {
-    bool doTreesAndHistograms = false;
+    bool doTreesAndHistograms = true;
 
     std::vector<string> input;
     std::string outputfile = argv[1];
