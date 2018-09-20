@@ -1,6 +1,9 @@
 import os, json
 import FWCore.ParameterSet.Config as cms
 import FWCore.ParameterSet.VarParsing as VarParsing
+
+from flashggTriggerFilter import getMicroAODHLTFilter
+
 class MicroAODCustomize(object):
 
     def __init__(self,*args,**kwargs):
@@ -89,6 +92,12 @@ class MicroAODCustomize(object):
                                VarParsing.VarParsing.multiplicity.singleton,
                                VarParsing.VarParsing.varType.int,
                               'runFall17EGMPhoID'
+                              )
+        self.options.register('addMicroAODHLTFilter',
+                              True,
+                               VarParsing.VarParsing.multiplicity.singleton,
+                               VarParsing.VarParsing.varType.bool,
+                              'addMicroAODHLTFilter'
                               )
 
         self.parsed_ = False
@@ -188,6 +197,7 @@ class MicroAODCustomize(object):
             self.customizeSummer16EGMPhoID(process)
         else:
             self.customizeFall17EGMPhoID(process)
+
         if os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
             self.customize92X( process ) # Needs to come after egm
         print "Final customized process:",process.p
@@ -293,7 +303,8 @@ class MicroAODCustomize(object):
             setMetCorr(process,multPhiCorr_Data_B_80X)
         else:
             pass
-        process.p *=process.flashggMetSequence
+
+        process.p *= process.flashggMetSequence
         for pathName in process.paths:
             path = getattr(process,pathName)
             for mod in modules:
@@ -318,6 +329,13 @@ class MicroAODCustomize(object):
         process.flashggDiPhotonFilterSequence += process.diPhotonFilter # Do not continue running events with 0 diphotons passing pt cuts
         process.p1 = cms.Path(process.diPhotonFilter) # Do not save events with 0 diphotons passing pt cuts
         process.out.SelectEvents = cms.untracked.PSet(SelectEvents=cms.vstring('p1'))
+
+        ###---Add HLT filter as first step of MicroAOD sequence
+        if self.addMicroAODHLTFilter:
+            process.triggerFilterModule = getMicroAODHLTFilter(customize.datasetName)
+            if process.triggerFilterModule:
+                process.p = cms.Path(process.triggerFilterModule*process.p._seq)
+                process.p1 = cms.Path(process.triggerFilterModule*process.p1._seq)
 
     def customizeDec2016Regression(self,process):
         if not (process.GlobalTag.globaltag == "80X_mcRun2_asymptotic_2016_TrancheIV_v7" or process.GlobalTag.globaltag == "80X_dataRun2_2016SeptRepro_v6"):
