@@ -14,6 +14,7 @@ ZVariablesToStore = cms.PSet(
 
 ProbeVariablesToStore = cms.PSet(
     probe_Pho_eta    = cms.string("eta"),
+    probe_Pho_phi    = cms.string("phi"),
     probe_Pho_abseta = cms.string("abs(eta)"),
     probe_Pho_et     = cms.string("et"),
     probe_Pho_pt     = cms.string("pt"),
@@ -24,6 +25,7 @@ ProbeVariablesToStore = cms.PSet(
     probe_sc_rawe    = cms.string("superCluster.rawEnergy"),
     probe_sc_et      = cms.string("superCluster.energy*sin(superCluster.position.theta)"),    
     probe_sc_eta     = cms.string("superCluster.eta"),
+    probe_sc_phi     = cms.string("superCluster.phi"),
     probe_sc_abseta  = cms.string("abs(superCluster.eta)"),
     
     #id based
@@ -39,6 +41,7 @@ ProbeVariablesToStore = cms.PSet(
     probe_Pho_sigmaEoE      = cms.string("sigEOverE"),
     probe_Pho_etawidth      = cms.string("superCluster.etaWidth"),
     probe_Pho_phiwidth      = cms.string("superCluster.phiWidth"),
+    probe_Pho_esE           = cms.string("superCluster.preshowerEnergy()"),
     #probe_Pho_trackFbrem() 
     
     #probe_Pho_e1x5          = cms.string("e1x5"),
@@ -54,7 +57,7 @@ ProbeVariablesToStore = cms.PSet(
     #iso
     #probe_Pho_chIso       = cms.InputTag("photonIDValueMapProducer:phoChargedIsolation"),
     probe_Pho_chIso       = cms.string("pfChgIso03WrtVtx0"),
-    #probe_Pho_chIsoRv     = cms.string("pfChIso03WrtChosenVtx"),
+    probe_Pho_chIsoRv     = cms.string("pfChgIsoWrtChosenVtx03"),
     probe_Pho_chIsoWv     = cms.string("pfChgIsoWrtWorstVtx03"),
     #probe_Pho_chIso2      = cms.string("egChargedHadronIso"),
     probe_Pho_neuIso03    = cms.string("pfNeutIso03()"),
@@ -68,6 +71,7 @@ ProbeVariablesToStore = cms.PSet(
 
 TagVariablesToStore = cms.PSet(
     Pho_eta    = cms.string("eta"),
+    Pho_phi    = cms.string("phi"),
     Pho_abseta = cms.string("abs(eta)"),
     Pho_pt     = cms.string("pt"),
     Pho_et     = cms.string("et"),
@@ -77,6 +81,7 @@ TagVariablesToStore = cms.PSet(
     Pho_sc_energy     = cms.string("superCluster.energy"),
     Pho_sc_et         = cms.string("superCluster.energy*sin(superCluster.position.theta)"),    
     Pho_sc_eta        = cms.string("superCluster.eta"),
+    Pho_sc_phi        = cms.string("superCluster.phi"),
     Pho_sc_abseta     = cms.string("abs(superCluster.eta)"),
     Pho_mva           = cms.InputTag("photonFromDiPhotons:idmva"),
     Pho_full5x5_r9    = cms.string("full5x5_r9"),
@@ -87,6 +92,10 @@ TagVariablesToStore = cms.PSet(
     Pho_etawidth      = cms.string("superCluster.etaWidth"),
     Pho_phiwidth      = cms.string("superCluster.phiWidth"),
     Pho_hoe           = cms.string("hadronicOverEm"),
+    #Pho_chIsoRv     = cms.string("pfChgIsoWrtChosenVtx03"),
+    Pho_chIso       = cms.string("pfChgIso03WrtVtx0"),
+    #Pho_eSCoverP    = cms.string("eSuperClusterOverP"),
+    #Pho_ecal_energy = cms.string("ecalEnergy"),
     )
 
 CommonStuffForPhotonProbe = cms.PSet(

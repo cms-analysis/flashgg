@@ -21,7 +21,9 @@ namespace flashgg {
         void produce(edm::Event &, const edm::EventSetup &) override;
         edm::EDGetTokenT<edm::View<flashgg::DiPhotonCandidate> > diPhotonToken_;
         edm::EDGetTokenT<edm::View<DiPhotonMVAResult> > diPhotonMVAToken_;
-        StringCutObjectSelector<flashgg::Photon> candSelector_;
+        //StringCutObjectSelector<flashgg::Photon> candSelector_;
+        StringCutObjectSelector<flashgg::Photon> leadingCandSelector_;
+        StringCutObjectSelector<flashgg::Photon> subleadingCandSelector_;
         StringCutObjectSelector<flashgg::DiPhotonCandidate> leadingPreselection_;
         StringCutObjectSelector<flashgg::DiPhotonCandidate> subleadingPreselection_;
         int vtx_;
@@ -31,7 +33,9 @@ namespace flashgg {
     PhotonFromDiPhotonProducer::PhotonFromDiPhotonProducer(const edm::ParameterSet &iConfig) :
         diPhotonToken_(consumes<edm::View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<edm::InputTag> ("src"))),        
         diPhotonMVAToken_( consumes<edm::View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<edm::InputTag> ( "diPhotonMVATag" ) ) ),
-        candSelector_(iConfig.getParameter<std::string>("cut")),
+        //candSelector_(iConfig.getParameter<std::string>("cut")),
+        leadingCandSelector_(iConfig.getParameter<std::string>("leadingcut")),
+        subleadingCandSelector_(iConfig.getParameter<std::string>("subleadingcut")),
         leadingPreselection_(iConfig.getParameter<std::string>("leadingPreselection")),
         subleadingPreselection_(iConfig.getParameter<std::string>("subleadingPreselection")),
         vtx_(iConfig.getParameter<int>("vertexSelection")),
@@ -65,7 +69,8 @@ namespace flashgg {
                 if ((vtx_ == -1) || (diphoton->vertexIndex() == vtx_)) {
                     const flashgg::SinglePhotonView leading = *(diphoton->leadingView());
                     const flashgg::SinglePhotonView subLeading = *(diphoton->subLeadingView());
-                    if (candSelector_(*(leading.photon())) && candSelector_(*(subLeading.photon()))) { 
+                    if (leadingCandSelector_(*(leading.photon())) && subleadingCandSelector_(*(subLeading.photon()))) { 
+                    //if (candSelector_(*(leading.photon())) && candSelector_(*(subLeading.photon()))) { 
                         //&& (leading.photon()->hasPixelSeed()>0) && (subLeading.photon()->hasPixelSeed()>0)) {
                         preselValues.push_back(leadingPreselection_(*diphoton));
                         preselValues.push_back(subleadingPreselection_(*diphoton));
