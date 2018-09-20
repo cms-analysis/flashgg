@@ -18,12 +18,14 @@ def setModules(process, options):
     
     process.photonFromDiPhotons = cms.EDProducer("FlashggPhotonFromDiPhotonProducer",
                                                  src = cms.InputTag(options['DIPHOTON_COLL']),
-                                                 cut = cms.string(options['PHOTON_CUTS']),
+                                                 #cut = cms.string(options['PHOTON_CUTS']),
+                                                 leadingcut = cms.string(options['LEADING_PHOTON_CUTS']),
+                                                 subleadingcut = cms.string(options['SUBLEADING_PHOTON_CUTS']),
                                                  leadingPreselection = cms.string(options['LEADING_PRESELECTION']),
                                                  subleadingPreselection = cms.string(options['SUBLEADING_PRESELECTION']),
                                                  vertexSelection = cms.int32(-1), # -1 means take the chosen vertex, otherwise use the index to select 2it
                                                  diPhotonMVATag = cms.InputTag("flashggDiPhotonMVA"),
-                                                 diphotonMVAThreshold = cms.double(-0.6) #Previous value was -1.0
+                                                 diphotonMVAThreshold = cms.double(-1.0) #Previous value was -0.6
                                                  )
 
     process.goodPhotonTagL1 = cms.EDProducer("FlashggPhotonL1CandProducer",
@@ -43,6 +45,8 @@ def setModules(process, options):
     process.goodPhotonProbes = cms.EDFilter("FlashggPhotonRefSelector",
                                             src = cms.InputTag("photonFromDiPhotons"),
                                             cut = cms.string(options['PHOTON_CUTS'])
+                                            #leadingcut = cms.string(options['LEADING_PHOTON_CUTS']),
+                                            #subleadingcut = cms.string(options['SUBLEADING_PHOTON_CUTS'])
                                             )
     
     ###################################################################
@@ -50,6 +54,8 @@ def setModules(process, options):
     process.goodPhotonProbesPreselection = cms.EDProducer("FlashggPhotonSelectorByValueMap",
                                                           input     = cms.InputTag("goodPhotonProbes"),
                                                           cut       = cms.string(options['PHOTON_CUTS']),
+                                                          #leadingcut = cms.string(options['LEADING_PHOTON_CUTS']),
+                                                          #subleadingcut = cms.string(options['SUBLEADING_PHOTON_CUTS']),
                                                           selection = cms.InputTag("photonFromDiPhotons:preselection"),
                                                           id_cut    = cms.bool(True)
                                                           )
@@ -57,6 +63,8 @@ def setModules(process, options):
     process.goodPhotonProbesIDMVA = cms.EDProducer("FlashggPhotonSelectorByDoubleValueMap",
                                                    input     = cms.InputTag("goodPhotonProbes"),
                                                    cut       = cms.string(options['PHOTON_CUTS']),
+                                                   #leadingcut = cms.string(options['LEADING_PHOTON_CUTS']),
+                                                   #subleadingcut = cms.string(options['SUBLEADING_PHOTON_CUTS']),
                                                    selection = cms.InputTag("photonFromDiPhotons:idmva"),
                                                    id_cut    = cms.double(-0.9)
                                                    )
@@ -64,6 +72,8 @@ def setModules(process, options):
     process.goodPhotonTagsIDMVA = cms.EDProducer("FlashggPhotonSelectorByDoubleValueMap",
                                                  input     = cms.InputTag("goodPhotonTags"),
                                                  cut       = cms.string(options['PHOTON_CUTS']),
+                                                 #leadingcut = cms.string(options['LEADING_PHOTON_CUTS']),
+                                                 #subleadingcut = cms.string(options['SUBLEADING_PHOTON_CUTS']),
                                                  selection = cms.InputTag("photonFromDiPhotons:idmva"),
                                                  id_cut    = cms.double(-0.6)
                                                  )
