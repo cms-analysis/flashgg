@@ -1,6 +1,9 @@
 import os, json
 import FWCore.ParameterSet.Config as cms
 import FWCore.ParameterSet.VarParsing as VarParsing
+
+from flashggTriggerFilter import getMicroAODHLTFilter
+
 class MicroAODCustomize(object):
 
     def __init__(self,*args,**kwargs):
@@ -89,6 +92,12 @@ class MicroAODCustomize(object):
                                VarParsing.VarParsing.multiplicity.singleton,
                                VarParsing.VarParsing.varType.int,
                               'runFall17EGMPhoID'
+                              )
+        self.options.register('addMicroAODHLTFilter',
+                              True,
+                               VarParsing.VarParsing.multiplicity.singleton,
+                               VarParsing.VarParsing.varType.bool,
+                              'addMicroAODHLTFilter'
                               )
 
         self.parsed_ = False
@@ -188,7 +197,7 @@ class MicroAODCustomize(object):
             self.customizeSummer16EGMPhoID(process)
         else:
             self.customizeFall17EGMPhoID(process)
-        if os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_1"):
+        if os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_2"):
             self.customize92X( process ) # Needs to come after egm
         print "Final customized process:",process.p
             
@@ -199,11 +208,11 @@ class MicroAODCustomize(object):
         from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
         if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             era="Summer16_23Sep2016V4_MC"
-        elif (os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_1")):
+        elif (os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_2")):
             era="Fall17_17Nov2017_V6_MC"
         runMETs(process,era) 
         from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
-        if not (os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_1")):
+        if not (os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_2")):
             setMetCorr(process,multPhiCorr_MC_DY_80X)
         process.p *=process.flashggMetSequence
         
@@ -226,7 +235,7 @@ class MicroAODCustomize(object):
             process.p *= process.rivetProducerHTXS
             process.out.outputCommands.append('keep *_HTXSRivetProducer_*_*')
 
-        if ( os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_1")):
+        if ( os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_2")):
             #raise Exception,"Debugging ongoing for HTXS in CMSSW 9"
             process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
             process.rivetProducerHTXS = cms.EDProducer('HTXSRivetProducer',
@@ -264,11 +273,11 @@ class MicroAODCustomize(object):
         from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
         if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             era="Summer16_23Sep2016V4_MC"
-        elif (os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_1")):
+        elif (os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_2")):
             era="Fall17_17Nov2017_V6_MC"
         runMETs(process,era) 
         from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
-        if not (os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_1")):
+        if not (os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_2")):
             setMetCorr(process,multPhiCorr_MC_DY_80X)
         process.p *=process.flashggMetSequence
         if "sherpa" in self.datasetName:
@@ -282,7 +291,7 @@ class MicroAODCustomize(object):
         from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
         if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             era="Summer16_23Sep2016AllV4_DATA"
-        elif (os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_1")):
+        elif (os.environ["CMSSW_VERSION"].count("CMSSW_9_4") or os.environ["CMSSW_VERSION"].count("CMSSW_10_2")):
             era="Fall17_17Nov2017BCDEF_V6_DATA"
         runMETs(process,era)
         if "2016G" in customize.datasetName or "2016H" in customize.datasetName:
@@ -293,7 +302,8 @@ class MicroAODCustomize(object):
             setMetCorr(process,multPhiCorr_Data_B_80X)
         else:
             pass
-        process.p *=process.flashggMetSequence
+
+        process.p *= process.flashggMetSequence
         for pathName in process.paths:
             path = getattr(process,pathName)
             for mod in modules:
@@ -318,6 +328,13 @@ class MicroAODCustomize(object):
         process.flashggDiPhotonFilterSequence += process.diPhotonFilter # Do not continue running events with 0 diphotons passing pt cuts
         process.p1 = cms.Path(process.diPhotonFilter) # Do not save events with 0 diphotons passing pt cuts
         process.out.SelectEvents = cms.untracked.PSet(SelectEvents=cms.vstring('p1'))
+
+        ###---Add HLT filter as first step of MicroAOD sequence
+        if self.addMicroAODHLTFilter:
+            process.triggerFilterModule = getMicroAODHLTFilter(customize.datasetName)
+            if process.triggerFilterModule:
+                process.p = cms.Path(process.triggerFilterModule*process.p._seq)
+                process.p1 = cms.Path(process.triggerFilterModule*process.p1._seq)
 
     def customizeDec2016Regression(self,process):
         if not (process.GlobalTag.globaltag == "80X_mcRun2_asymptotic_2016_TrancheIV_v7" or process.GlobalTag.globaltag == "80X_dataRun2_2016SeptRepro_v6"):
