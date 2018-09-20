@@ -368,7 +368,7 @@ void WorkspaceCombiner::Save( bool doTreesAndHistograms )
             }
             //data[w][d]->Print();
         }
-        if( outfile->GetDirectory( workspacePaths[w].c_str() ) == false ) { outfile->mkdir( workspacePaths[w].c_str() ); }
+        if( outfile->GetDirectory( workspacePaths[w].c_str() ) == NULL ) { outfile->mkdir( workspacePaths[w].c_str() ); }
         outfile->cd( workspacePaths[w].c_str() );
         std::cout << " ABOUT TO WRITE OUTPUT WORKSPACE" << std::endl;
         outputws->Write();
@@ -382,14 +382,14 @@ void WorkspaceCombiner::Save( bool doTreesAndHistograms )
 
     if( doTreesAndHistograms ) {
         for( unsigned int t = 0; t < trees.size(); t++ ) {
-            if( outfile->GetDirectory( treePaths[t].c_str() ) == false ) { outfile->mkdir( treePaths[t].c_str() ); }
+            if( outfile->GetDirectory( treePaths[t].c_str() ) == NULL ) { outfile->mkdir( treePaths[t].c_str() ); }
             outfile->cd( treePaths[t].c_str() );
             trees[t]->CloneTree()->Write();
             //trees[t]->CloneTree()->Print();
         }
 
         for( unsigned int h = 0; h < histos.size(); h++ ) {
-            if( outfile->GetDirectory( histoPaths[h].c_str() ) == false ) { outfile->mkdir( histoPaths[h].c_str() ); }
+            if( outfile->GetDirectory( histoPaths[h].c_str() ) == NULL ) { outfile->mkdir( histoPaths[h].c_str() ); }
             outfile->cd( histoPaths[h].c_str() );
             histos[h]->Write();
             //histos[h]->Print();
