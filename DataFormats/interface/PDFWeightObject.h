@@ -1,7 +1,7 @@
 #ifndef FLASHgg_PDFWeightObject_h
 #define FLASHgg_PDFWeightObject_h
 
-#include "DataFormats/PatCandidates/interface/libminifloat.h"
+#include "DataFormats/Math/interface/libminifloat.h"
 #include <vector>
 
 using namespace std;
