@@ -19,6 +19,7 @@ def variablesToDump(customize):
              "sigmaMOverMDecorr := getSigmaMDecorr()",
              "PhoJetMinDr := getPhoJetMinDr()",#up to here input variables to MVA
              "HHbbggMVA := MVA()",
+            # "HHbbggMVAprob0 := MVAprob()[0]",
              "MX := MX()",
              "Mjj := dijet().M()",
              "dijet_pt := dijet().pt",

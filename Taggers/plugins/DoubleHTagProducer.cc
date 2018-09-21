@@ -65,6 +65,7 @@ namespace flashgg {
 
         flashgg::MVAComputer<DoubleHTag> mvaComputer_;
         vector<double> mvaBoundaries_, mxBoundaries_;
+        int multiclassSignalIdx_;
 
         edm::FileInPath MVAFlatteningFileName_;
         TFile * MVAFlatteningFile_;
@@ -91,6 +92,7 @@ namespace flashgg {
         mxBoundaries_ = iConfig.getParameter<vector<double > >( "MXBoundaries" );
         mjjBoundariesLower_ = iConfig.getParameter<vector<double > >( "MJJBoundariesLower" ); 
         mjjBoundariesUpper_ = iConfig.getParameter<vector<double > >( "MJJBoundariesUpper" ); 
+        multiclassSignalIdx_ = (iConfig.getParameter<edm::ParameterSet>("MVAConfig")).getParameter<int>("multiclassSignalIdx"); 
 
         auto jetTags = iConfig.getParameter<std::vector<edm::InputTag> > ( "JetTags" ); 
         for( auto & tag : jetTags ) { jetTokens_.push_back( consumes<edm::View<flashgg::Jet> >( tag ) ); }
@@ -298,12 +300,14 @@ namespace flashgg {
             }
             
             // eval MVA discriminant
-            double mva = mvaComputer_(tag_obj);
+            std::vector<float> mva_vector = mvaComputer_.predict_prob(tag_obj);
+            double mva = mva_vector[multiclassSignalIdx_];
             if(doMVAFlattening_){
                 mva = MVAFlatteningCumulative_->Eval(mva);
             }
 
             tag_obj.setMVA( mva );
+            //tag_obj.setMVAprob( mva_vector );
             
             // choose category and propagate weights
             int catnum = chooseCategory( tag_obj.MVA(), tag_obj.MX() );
