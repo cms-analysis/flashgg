@@ -117,15 +117,15 @@ cd $CMSSW_BASE/src
 #git cms-merge-topic cms-met:METRecipe_8020_for80Xintegration -u
 
 # Straightofrward update for 8_0_28
-echo "Setting up QGL..."
-echo "... and setting up weight stuff..."
-git cms-addpkg RecoJets/JetProducers
-git cms-addpkg CommonTools/UtilAlgos
-# Straightforward update for 8_0_28
-echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
-git cms-addpkg DataFormats/Common
-git cms-addpkg FWCore/GuiBrowsers #temp-by hand
-git cms-merge-topic -u ArnabPurohit:for-flashgg-QGL-vertexIndex-10_1_1
+# echo "Setting up QGL..."
+# echo "... and setting up weight stuff..."
+# git cms-addpkg RecoJets/JetProducers
+# git cms-addpkg CommonTools/UtilAlgos
+# # Straightforward update for 8_0_28
+# echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
+# git cms-addpkg DataFormats/Common
+# git cms-addpkg FWCore/GuiBrowsers #temp-by hand
+# git cms-merge-topic -u ArnabPurohit:for-flashgg-QGL-vertexIndex-10_1_1
 
 # TnP tools removed for 8_0_28, so Validation does not compile
 # To be investigated
