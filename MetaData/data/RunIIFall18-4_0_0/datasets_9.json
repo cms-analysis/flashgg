@@ -1,0 +1,711 @@
+{
+    "/EGamma/spigazzi-RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1-1eb3753884125f7efeebd837cf910288/USER": {
+        "files": [
+            {
+                "bad": false, 
+                "events": 21812, 
+                "lumis": {
+                    "317683": [
+                        116, 
+                        140, 
+                        180, 
+                        186, 
+                        189, 
+                        199, 
+                        247, 
+                        270, 
+                        273, 
+                        279
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 21812, 
+                "totEvents": 21812, 
+                "weights": 21812
+            }, 
+            {
+                "bad": false, 
+                "events": 20802, 
+                "lumis": {
+                    "317683": [
+                        268, 
+                        283, 
+                        284, 
+                        287, 
+                        295, 
+                        300, 
+                        310, 
+                        311, 
+                        354, 
+                        355
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 20802, 
+                "totEvents": 20802, 
+                "weights": 20802
+            }, 
+            {
+                "bad": false, 
+                "events": 22250, 
+                "lumis": {
+                    "317683": [
+                        122, 
+                        123, 
+                        124, 
+                        126, 
+                        150, 
+                        158, 
+                        274, 
+                        326, 
+                        339, 
+                        340
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 22250, 
+                "totEvents": 22250, 
+                "weights": 22250
+            }, 
+            {
+                "bad": false, 
+                "events": 19967, 
+                "lumis": {
+                    "317683": [
+                        337, 
+                        348, 
+                        356, 
+                        357, 
+                        363, 
+                        370, 
+                        377, 
+                        387, 
+                        400, 
+                        385
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_31.root", 
+                "nevents": 19967, 
+                "totEvents": 19967, 
+                "weights": 19967
+            }, 
+            {
+                "bad": false, 
+                "events": 21543, 
+                "lumis": {
+                    "317683": [
+                        277, 
+                        240, 
+                        241, 
+                        249, 
+                        258, 
+                        260, 
+                        266, 
+                        267, 
+                        269, 
+                        272
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 21543, 
+                "totEvents": 21543, 
+                "weights": 21543
+            }, 
+            {
+                "bad": false, 
+                "events": 21140, 
+                "lumis": {
+                    "317683": [
+                        83, 
+                        84, 
+                        351, 
+                        359, 
+                        360, 
+                        364, 
+                        394, 
+                        395, 
+                        100, 
+                        102
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 21140, 
+                "totEvents": 21140, 
+                "weights": 21140
+            }, 
+            {
+                "bad": false, 
+                "events": 21684, 
+                "lumis": {
+                    "317683": [
+                        190, 
+                        204, 
+                        206, 
+                        211, 
+                        235, 
+                        236, 
+                        237, 
+                        252, 
+                        253, 
+                        261
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 21684, 
+                "totEvents": 21684, 
+                "weights": 21684
+            }, 
+            {
+                "bad": false, 
+                "events": 21377, 
+                "lumis": {
+                    "317683": [
+                        108, 
+                        195, 
+                        231, 
+                        275, 
+                        299, 
+                        301, 
+                        307, 
+                        316, 
+                        327, 
+                        335
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 21377, 
+                "totEvents": 21377, 
+                "weights": 21377
+            }, 
+            {
+                "bad": false, 
+                "events": 20353, 
+                "lumis": {
+                    "317683": [
+                        282, 
+                        286, 
+                        292, 
+                        303, 
+                        308, 
+                        329, 
+                        332, 
+                        334, 
+                        346, 
+                        322
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 20353, 
+                "totEvents": 20353, 
+                "weights": 20353
+            }, 
+            {
+                "bad": false, 
+                "events": 20531, 
+                "lumis": {
+                    "317683": [
+                        291, 
+                        312, 
+                        313, 
+                        315, 
+                        330, 
+                        331, 
+                        343, 
+                        349, 
+                        366, 
+                        388
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_29.root", 
+                "nevents": 20531, 
+                "totEvents": 20531, 
+                "weights": 20531
+            }, 
+            {
+                "bad": false, 
+                "events": 21933, 
+                "lumis": {
+                    "317683": [
+                        168, 
+                        172, 
+                        173, 
+                        176, 
+                        182, 
+                        187, 
+                        202, 
+                        205, 
+                        228, 
+                        229
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 21933, 
+                "totEvents": 21933, 
+                "weights": 21933
+            }, 
+            {
+                "bad": false, 
+                "events": 21147, 
+                "lumis": {
+                    "317683": [
+                        125, 
+                        278, 
+                        280, 
+                        281, 
+                        319, 
+                        345, 
+                        129, 
+                        298, 
+                        302, 
+                        328
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 21147, 
+                "totEvents": 21147, 
+                "weights": 21147
+            }, 
+            {
+                "bad": false, 
+                "events": 22210, 
+                "lumis": {
+                    "317683": [
+                        94, 
+                        95, 
+                        101, 
+                        103, 
+                        104, 
+                        99, 
+                        133, 
+                        264, 
+                        320, 
+                        361
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 22210, 
+                "totEvents": 22210, 
+                "weights": 22210
+            }, 
+            {
+                "bad": false, 
+                "events": 9226, 
+                "lumis": {
+                    "317683": [
+                        218, 
+                        219, 
+                        220, 
+                        221, 
+                        224, 
+                        225, 
+                        226, 
+                        371, 
+                        372, 
+                        384
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 9226, 
+                "totEvents": 9226, 
+                "weights": 9226
+            }, 
+            {
+                "bad": false, 
+                "events": 23128, 
+                "lumis": {
+                    "317683": [
+                        91, 
+                        110, 
+                        118, 
+                        121, 
+                        157, 
+                        174, 
+                        185, 
+                        96, 
+                        97, 
+                        98
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 23128, 
+                "totEvents": 23128, 
+                "weights": 23128
+            }, 
+            {
+                "bad": false, 
+                "events": 21889, 
+                "lumis": {
+                    "317683": [
+                        127, 
+                        155, 
+                        156, 
+                        128, 
+                        148, 
+                        242, 
+                        306, 
+                        323, 
+                        333, 
+                        352
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 21889, 
+                "totEvents": 21889, 
+                "weights": 21889
+            }, 
+            {
+                "bad": false, 
+                "events": 19640, 
+                "lumis": {
+                    "317683": [
+                        314, 
+                        336, 
+                        338, 
+                        367, 
+                        369, 
+                        374, 
+                        379, 
+                        382, 
+                        383, 
+                        386
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_30.root", 
+                "nevents": 19640, 
+                "totEvents": 19640, 
+                "weights": 19640
+            }, 
+            {
+                "bad": false, 
+                "events": 22964, 
+                "lumis": {
+                    "317683": [
+                        119, 
+                        151, 
+                        154, 
+                        178, 
+                        181, 
+                        106, 
+                        115, 
+                        161, 
+                        162, 
+                        179
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 22964, 
+                "totEvents": 22964, 
+                "weights": 22964
+            }, 
+            {
+                "bad": false, 
+                "events": 21738, 
+                "lumis": {
+                    "317683": [
+                        85, 
+                        86, 
+                        89, 
+                        90, 
+                        92, 
+                        93, 
+                        402, 
+                        87, 
+                        391, 
+                        397
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 21738, 
+                "totEvents": 21738, 
+                "weights": 21738
+            }, 
+            {
+                "bad": false, 
+                "events": 23083, 
+                "lumis": {
+                    "317683": [
+                        109, 
+                        113, 
+                        114, 
+                        117, 
+                        120, 
+                        143, 
+                        144, 
+                        145, 
+                        149, 
+                        159
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 23083, 
+                "totEvents": 23083, 
+                "weights": 23083
+            }, 
+            {
+                "bad": false, 
+                "events": 22128, 
+                "lumis": {
+                    "317683": [
+                        297, 
+                        325, 
+                        344, 
+                        105, 
+                        111, 
+                        142, 
+                        146, 
+                        160, 
+                        183, 
+                        194
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 22128, 
+                "totEvents": 22128, 
+                "weights": 22128
+            }, 
+            {
+                "bad": false, 
+                "events": 22212, 
+                "lumis": {
+                    "317683": [
+                        136, 
+                        137, 
+                        138, 
+                        139, 
+                        188, 
+                        255, 
+                        276, 
+                        169, 
+                        294, 
+                        321
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 22212, 
+                "totEvents": 22212, 
+                "weights": 22212
+            }, 
+            {
+                "bad": false, 
+                "events": 21083, 
+                "lumis": {
+                    "317683": [
+                        317, 
+                        347, 
+                        381, 
+                        399, 
+                        401, 
+                        163, 
+                        164, 
+                        192, 
+                        203, 
+                        238
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 21083, 
+                "totEvents": 21083, 
+                "weights": 21083
+            }, 
+            {
+                "bad": false, 
+                "events": 19726, 
+                "lumis": {
+                    "317683": [
+                        362, 
+                        365, 
+                        373, 
+                        378, 
+                        380, 
+                        390, 
+                        392, 
+                        393, 
+                        396, 
+                        398
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_32.root", 
+                "nevents": 19726, 
+                "totEvents": 19726, 
+                "weights": 19726
+            }, 
+            {
+                "bad": false, 
+                "events": 22486, 
+                "lumis": {
+                    "317683": [
+                        112, 
+                        147, 
+                        152, 
+                        153, 
+                        165, 
+                        171, 
+                        184, 
+                        107, 
+                        166, 
+                        262
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 22486, 
+                "totEvents": 22486, 
+                "weights": 22486
+            }, 
+            {
+                "bad": false, 
+                "events": 21226, 
+                "lumis": {
+                    "317683": [
+                        250, 
+                        251, 
+                        254, 
+                        285, 
+                        263, 
+                        265, 
+                        288, 
+                        289, 
+                        290, 
+                        296
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 21226, 
+                "totEvents": 21226, 
+                "weights": 21226
+            }, 
+            {
+                "bad": false, 
+                "events": 21802, 
+                "lumis": {
+                    "317683": [
+                        304, 
+                        305, 
+                        309, 
+                        318, 
+                        342, 
+                        130, 
+                        131, 
+                        132, 
+                        134, 
+                        135
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 21802, 
+                "totEvents": 21802, 
+                "weights": 21802
+            }, 
+            {
+                "bad": false, 
+                "events": 12494, 
+                "lumis": {
+                    "317683": [
+                        88, 
+                        214, 
+                        209, 
+                        213, 
+                        215, 
+                        222, 
+                        376, 
+                        389, 
+                        227, 
+                        358
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 12494, 
+                "totEvents": 12494, 
+                "weights": 12494
+            }, 
+            {
+                "bad": false, 
+                "events": 22368, 
+                "lumis": {
+                    "317683": [
+                        141, 
+                        175, 
+                        177, 
+                        243, 
+                        244, 
+                        167, 
+                        170, 
+                        193, 
+                        200, 
+                        201
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 22368, 
+                "totEvents": 22368, 
+                "weights": 22368
+            }, 
+            {
+                "bad": false, 
+                "events": 19799, 
+                "lumis": {
+                    "317683": [
+                        217, 
+                        246, 
+                        248, 
+                        271, 
+                        198, 
+                        210, 
+                        324, 
+                        341, 
+                        368, 
+                        375
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 19799, 
+                "totEvents": 19799, 
+                "weights": 19799
+            }, 
+            {
+                "bad": false, 
+                "events": 21477, 
+                "lumis": {
+                    "317683": [
+                        191, 
+                        196, 
+                        197, 
+                        232, 
+                        233, 
+                        234, 
+                        239, 
+                        245, 
+                        257, 
+                        259
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 21477, 
+                "totEvents": 21477, 
+                "weights": 21477
+            }, 
+            {
+                "bad": false, 
+                "events": 20841, 
+                "lumis": {
+                    "317683": [
+                        216, 
+                        223, 
+                        350, 
+                        207, 
+                        208, 
+                        212, 
+                        230, 
+                        256, 
+                        293, 
+                        353
+                    ]
+                }, 
+                "name": "/store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall18-4_0_0/prod-uAOD-300-93-g37ed35fa/EGamma/RunIIFall18-4_0_0-prod-uAOD-300-93-g37ed35fa-v0-Run2018B-06Jul2018-v1/180920_172005/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 20841, 
+                "totEvents": 20841, 
+                "weights": 20841
+            }
+        ], 
+        "vetted": true
+    }
+}
