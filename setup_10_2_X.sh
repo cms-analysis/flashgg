@@ -119,13 +119,15 @@ cd $CMSSW_BASE/src
 # Straightofrward update for 8_0_28
 # echo "Setting up QGL..."
 # echo "... and setting up weight stuff..."
-# git cms-addpkg RecoJets/JetProducers
-# git cms-addpkg CommonTools/UtilAlgos
+git cms-addpkg RecoJets/JetProducers
+git cms-addpkg CommonTools/UtilAlgos
 # # Straightforward update for 8_0_28
 # echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
-# git cms-addpkg DataFormats/Common
-# git cms-addpkg FWCore/GuiBrowsers #temp-by hand
+git cms-addpkg DataFormats/Common
+git cms-addpkg FWCore/GuiBrowsers #temp-by hand
 # git cms-merge-topic -u ArnabPurohit:for-flashgg-QGL-vertexIndex-10_1_1
+git cherry-pick 602bbd96dceba02a84009e9b40817a5f820023da
+git cherry-pick ef94f6055da10c0c3b6cf660a27d50fb323f46f0
 
 # TnP tools removed for 8_0_28, so Validation does not compile
 # To be investigated
@@ -135,7 +137,6 @@ git clone -b v2018.05.11_10_1_X_prelim https://github.com/lsoffi/EgammaAnalysis-
 
 echo "Temporary perl hack for LeptonSelection (to keep repo compatibility with 80X), due to CMSSW function name change"
 perl -p -i.bak -e 's/numberOfHits/numberOfAllHits/g' $CMSSW_BASE/src/flashgg/Taggers/src/LeptonSelection.cc
-
 
 # Updated for 8_0_28, and compiles and runs, but NOT checked by experts
 # Update built from sethzenz:for-flashgg-smearer-conv-weights-8_0_26 and shervin86:Hgg_Gain_v1
@@ -166,13 +167,8 @@ echo "copy smearing files stored in flashgg into egamma tools"
 #cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_scales.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 #cp $CMSSW_BASE/src/flashgg/Systematics/data/Moriond17_74x_pho_smearings.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
 
-echo "Simplified template cross section tools"
-#git cms-merge-topic -u sethzenz:for-flashgg-rivet-9_4_2
-#git cms-merge-topic -u ArnabPurohit:for-flashgg-rivet-9_4_2
-
 echo "linking classdef for release 94X"
-#ln -s $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_94X.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
-ln -s $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_101X.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
+ln -s $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_102X.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
 
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit
