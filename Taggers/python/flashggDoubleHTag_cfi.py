@@ -34,14 +34,15 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    MJJBoundariesUpper = cms.vdouble(146.,153.,150.,155.,150.,147.,154.,151.,155.,155.,155.,148.), #for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
                                    MVAConfig = cms.PSet(variables=cms.VPSet(), # variables are added below
                                                         classifier=cms.string("BDT::bdt"), # classifier name
-                                                        weights=cms.FileInPath("flashgg/MetaData/data/HHTagger/training_with_27_06_2018_fixed.weights.xml"), # path to TMVA weights
+                                                        weights=cms.FileInPath("flashgg/Taggers/data/HHTagger/training_with_27_06_2018_fixed.weights.xml"), # path to TMVA weights
                                                         regression=cms.bool(False), # this is not a regression
                                                         multiclass=cms.bool(True), # this is multiclass 
                                                         multiclassSignalIdx=cms.int32(2), # this is multiclass index for Signal
                                                         ),
                                    doMVAFlattening=cms.bool(True),#do transformation of cumulative to make it flat
-                                   doCategorization=cms.bool(False),#do categorization based on MVA x MX or only fill first tree with all events
-                                   MVAFlatteningFileName=cms.untracked.FileInPath("flashgg/MetaData/data/HHTagger/cumulativeTransformation_20180628_newcode_data.root")#FIXME, this should be optional, is it?
+                                   doCategorization=cms.bool(True),#do categorization based on MVA x MX or only fill first tree with all events
+                                   MVAFlatteningFileName=cms.untracked.FileInPath("flashgg/Taggers/data/HHTagger/cumulativeTransformation_20180628_newcode_data.root")#FIXME, this should be optional, is it? 
+                                   ## 
                                   ) 
 
 cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,
