@@ -109,7 +109,7 @@ customize.options.register('doPdfWeights',
                            'doPdfWeights'
                            )
 customize.options.register('dumpTrees',
-                           True,
+                           False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'dumpTrees'
@@ -571,7 +571,7 @@ if customize.doBJetRegression:
         producer =   cms.EDProducer('flashggbRegressionProducer80',
                                     JetTag=coll,
                                     rhoFixedGridCollection = cms.InputTag('fixedGridRhoFastjetAll'),
-                                    bRegressionWeightfile= cms.untracked.string(os.environ["CMSSW_BASE"]+"/src/flashgg/MetaData/data/DNN_models/model-18"),
+                                    bRegressionWeightfile= cms.untracked.string(os.environ["CMSSW_BASE"]+"/src/flashgg/Taggers/data/DNN_models/model-18"),
                                     y_mean = cms.untracked.double(1.0454729795455933),#check MetaData/data/DNN_models/config.json
                                     y_std = cms.untracked.double( 0.31628304719924927)
                                     )
