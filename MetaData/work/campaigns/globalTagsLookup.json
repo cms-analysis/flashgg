@@ -152,9 +152,6 @@
     "Run2018B-PromptReco" : ["102X_dataRun2_Prompt_v6"],
     "Run2018C-PromptReco" : ["102X_dataRun2_Prompt_v6"],
     "Run2018D-PromptReco" : ["102X_dataRun2_Prompt_v6"],
-    "Run2018A-22May2018" : ["101X_dataRun2_Prompt_forTrackingStudies"],
-    "Run2018A-22Jun2018" : ["101X_dataRun2_Prompt_forECALReReco"],
-    "Run2018B-06Jul2018" : ["101X_dataRun2_Prompt_EgammaRepro_v1"],
     "RunIIFall18MiniAOD-102X_upgrade2018_realistic_v12" : ["102X_upgrade2018_realistic_v12"]
 
 }
