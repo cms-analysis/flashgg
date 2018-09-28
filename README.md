@@ -7,67 +7,30 @@ Before you start, **please take note** of these warnings and comments:
 * **N.B.** You can ignore "error: addinfo_cache" lines. 
 * **N.B.** This is to set up the latest area in a self-consistent way. If you want a particular flashgg version corresponding to other samples, please see https://twiki.cern.ch/twiki/bin/viewauth/CMS/FLASHggFramework#Instructions_for_users
 
-Currently two releases are supported:
-* 8_0_28 for Legacy 2016 processing
-* 9_4_4, version for 2017 v2 processing, recipe still being developed
+Currently three releases are supported:
+* 8_0_28 for Legacy 2016 processing.
+* 9_4_9, version for 2017 v2 processing, recipe still being developed.
+* 10_2_1, version for 2018 processing.
 
-Recently deprecated:
+* **N.B.** For 8_0_28 and 9_4_9 check instruction in the flashgg master branch
 
-* 9_2_8
-
-80X: Get everything you need, starting from a clean area:
-
-* **WARNING** (24 April) this does not currently compile, due to increasing divergence of code with 94X.  A new branch will be provided within 1 week.
+102X: Get everything you need, starting from a clean area:
 
  ```
- cmsrel CMSSW_8_0_28
- cd CMSSW_8_0_28/src
- cmsenv
- git cms-init
- cd $CMSSW_BASE/src 
- git clone https://github.com/cms-analysis/flashgg flashgg
- source flashgg/setup_8_0_X.sh
- ```
-
-94X: Get everything you need, starting from a clean area:
-
- ```
- cmsrel CMSSW_9_4_6
- cd CMSSW_9_4_6/src
- cmsenv
- git cms-init
- cd $CMSSW_BASE/src
- git clone https://github.com/cms-analysis/flashgg flashgg
- source flashgg/setup_9_4_X.sh
- ```
-
-If everything now looks reasonable, you can build:
- ```
- cd $CMSSW_BASE/src
- scram b -j 3
- ```
-
-In 94X after building you need to run:
- ```
- source flashgg/afterbuild_9_4_X.sh
- ```
-101X: Get everything you need, starting from a clean area:
-
- ```
- cmsrel CMSSW_10_1_1
- cd CMSSW_10_1_1/src
+ cmsrel CMSSW_10_2_1
+ cd CMSSW_10_2_1/src
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src
 For the time being it is not in the flashgg master branch so you need to clone it as,
- git clone -b flashgg_for_10_1_1 https://github.com/ArnabPurohit/flashgg flashgg
- source flashgg/setup_10_1_X.sh
+ git clone -b CMSSW_10_2_X https://github.com/cms-analysis/flashgg flashgg
+ source flashgg/setup_10_2_X.sh
  ```
 
 If everything now looks reasonable, you can build:
  ```
  cd $CMSSW_BASE/src
- scram b -j 3
+ scram b -j 4
  ```
 
 
