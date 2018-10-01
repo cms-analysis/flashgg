@@ -9,5 +9,5 @@
             "/DoubleEG/micheli-LegacyReReco-20180629-1-v0-Run2016C-07Aug17-v1-1c55d90ef8d167aeabdd451cf78cd3e6/USER"
         ]
    },
-	"cmdLine" : "campaign=LegacyReReco-20180629 targetLumi=36.3e+3 processId=Data processType=data lumiMask=/afs/cern.ch/work/n/nchernya/ETH/CMSSW_8_0_28/src/flashgg/MetaData/work/jsons/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+	"cmdLine" : "campaign=LegacyReReco-20180629 targetLumi=36.3e+3 processId=Data processType=data lumiMask=~/CMSSW_8_0_28/src/flashgg/MetaData/work/jsons/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
 }

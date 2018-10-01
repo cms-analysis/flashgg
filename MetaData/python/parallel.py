@@ -553,6 +553,7 @@ class SGEJob(LsfJob):
         if mydomain == "psi.ch":
             ret += "mkdir -p /scratch/$(whoami)/sgejob-$JOB_ID\n"
             ret += "cd /scratch/$(whoami)/sgejob-$JOB_ID\n"
+            ret += "source $VO_CMS_SW_DIR/cmsset_default.sh"
         if mydomain == "hep.ph.ic.ac.uk":
             ret += "mkdir -p $TMP/sgejob-$JOB_ID\n"
             ret += "cd $TMP/sgejob-$JOB_ID\n"

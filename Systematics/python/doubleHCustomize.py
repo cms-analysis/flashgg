@@ -6,6 +6,8 @@ def variablesToDump(customize):
     ]
     variables = [ "leadingJet_bDis := leadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",#FIXME make the btag type configurable?
              "subleadingJet_bDis := subleadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",
+             "leadingJet_DeepCSV := leadJet().bDiscriminator('pfDeepCSVJetTags:probb')+leadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",#FIXME make the btag type configurable?
+             "subleadingJet_DeepCSV := subleadJet().bDiscriminator('pfDeepCSVJetTags:probb')+subleadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",
              "absCosThetaStar_CS := abs(getCosThetaStar_CS(6500))",#FIXME get energy from somewhere?
              "absCosTheta_bb := abs(CosThetaAngles()[1])",
              "absCosTheta_gg := abs(CosThetaAngles()[0])",
@@ -46,11 +48,15 @@ def variablesToDump(customize):
              "leadingJet_eta := leadJet().eta",
              "leadingJet_phi := leadJet().phi",
              "leadingJet_mass := leadJet().p4().M()",
+             "leadingJet_hflav := leadJet().hadronFlavour()",
+             "leadingJet_pflav := leadJet().partonFlavour()",
 
              "subleadingJet_pt := subleadJet().pt",
              "subleadingJet_eta := subleadJet().eta",
              "subleadingJet_phi := subleadJet().phi",
              "subleadingJet_mass := subleadJet().p4().M()",
+             "subleadingJet_hflav := subleadJet().hadronFlavour()",
+             "subleadingJet_pflav := subleadJet().partonFlavour()",
 
 
              "ttHMVA_MET := 0",# these variables are needed for ttH killer MVA, which has to be implemented in the producer with another mvaComputer
