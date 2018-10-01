@@ -86,15 +86,11 @@ def tagList(customize,process):
 def customizeTagSequence(customize,process):
     process.load("flashgg.Taggers.flashggDoubleHTag_cff")
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
-    if customize.doBJetRegression : process.flashggDoubleHTag.JetTags = cms.VInputTag( ["bRegProducer%d" % icoll for icoll,coll in enumerate(UnpackedJetCollectionVInputTag) ] )
-    ## customize here (regression, kin-fit, MVA...)
-    ## process.flashggTagSequence += process.flashggDoubleHTagSequence
-#    pos = process.flashggTagSequence.index(process.flashggTagSorter) - 1 
-#    pos = process.flashggTagSequence.index(process.flashggTagSorter) -1  
-#    process.flashggTagSequence.insert( pos, process.flashggDoubleHTagSequence )
-    ## for step in process.flashggDoubleHTagSequence:
-    ##     process.flashggTagSequence.append(step)
 
+    ## customize here (regression, kin-fit, MVA...)
+    if customize.doBJetRegression : process.flashggDoubleHTag.JetTags = cms.VInputTag( ["bRegProducer%d" % icoll for icoll,coll in enumerate(UnpackedJetCollectionVInputTag) ] )
+    
+    ## remove single Higgs tags
     if customize.doubleHTagsOnly:
         process.flashggTagSequence.remove(process.flashggVBFTag)
         process.flashggTagSequence.remove(process.flashggTTHLeptonicTag)
@@ -110,8 +106,70 @@ def customizeTagSequence(customize,process):
         process.flashggTagSequence.remove(process.flashggVBFMVA)
         process.flashggTagSequence.remove(process.flashggVBFDiPhoDiJetMVA)
 
-
         process.flashggTagSequence.replace(process.flashggUntagged, process.flashggDoubleHTagSequence)   
 
+def addGenAnalysis(customize,process,tagList):
+    if customize.processId == "Data": 
+        return 
+    
+    import flashgg.Taggers.dumperConfigTools as cfgTools
+    ## load gen-level bbgg 
+    process.load( "flashgg.MicroAOD.flashggGenDiPhotonDiBJetsSequence_cff" )
+        
+    ## match gen-level to reco tag
+    process.load("flashgg.Taggers.flashggTaggedGenDiphotons_cfi")
+    process.flashggTaggedGenDiphotons.src  = "flashggSelectedGenDiPhotonDiBJets"
+    process.flashggTaggedGenDiphotons.tags = "flashggTagSorter"
+    process.flashggTaggedGenDiphotons.remap = process.tagsDumper.classifierCfg.remap
+    
+    ## prepare gen-level dumper
+    process.load("flashgg.Taggers.genDiphotonDumper_cfi")
+    process.genDiphotonDumper.dumpTrees = True
+    process.genDiphotonDumper.dumpWorkspace = False
+    process.genDiphotonDumper.src = "flashggTaggedGenDiphotons"
+            
+    from flashgg.Taggers.globalVariables_cff import globalVariables
+    process.genDiphotonDumper.dumpGlobalVariables = True
+    process.genDiphotonDumper.globalVariables = globalVariables
+    
+    genVariables = ["mgg := mass",
+                    "mbb := dijet.mass",
+                    
+                    "leadPho_px := leadingPhoton.px",
+                    "leadPho_py := leadingPhoton.py",
+                    "leadPho_pz := leadingPhoton.pz",
+                    "leadPho_e  := leadingPhoton.energy",
+                    "subleadPho_px := subLeadingPhoton.px",
+                    "subleadPho_py := subLeadingPhoton.py",
+                    "subleadPho_pz := subLeadingPhoton.pz",
+                    "subleadPho_e  := subLeadingPhoton.energy",
+                    
+                    "leadJet_px := leadingJet.px",
+                    "leadJet_py := leadingJet.py",
+                    "leadJet_pz := leadingJet.pz",
+                    "leadJet_e  := leadingJet.energy",
+                    "subleadJet_px := subLeadingJet.px",
+                    "subleadJet_py := subLeadingJet.py",
+                    "subleadJet_pz := subLeadingJet.pz",
+                    "subleadJet_e  := subLeadingJet.energy",
+                    
+                    ]
+    
+    ## define categories for gen-level dumper
+    cfgTools.addCategory(process.genDiphotonDumper,  ## events with not reco-level tag
+                         "NoTag", 'isTagged("flashggNoTag")',1,
+                         variables=genVariables,
+                         )
+    ## tagList = tagList(customize,process)
+    
+    for tag in tagList: ## tagged events
+        tagName,subCats = tag
+        # need to define all categories explicitely because cut-based classifiers does not look at sub-category number
+        for isub in xrange(subCats):
+            cfgTools.addCategory(process.genDiphotonDumper,
+                                 "%s_%d" % ( tagName, isub ), 
+                                 'isTagged("%s") && categoryNumber == %d' % (tagName, isub),0,
+                                 variables=genVariables##+recoVariables
+                                 )
 
-
+    process.genp = cms.Path(process.flashggGenDiPhotonDiBJetsSequence*process.flashggTaggedGenDiphotons*process.genDiphotonDumper)
