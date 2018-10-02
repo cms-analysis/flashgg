@@ -1,0 +1,15 @@
+{
+    "processes" : {
+        "DoubleEG" : [
+            "/DoubleEG/micheli-ReMiniAOD2016-DeepCSV-bRegression-prod-uAOD-300-11-g22a116d-v0-Run2016B-03Feb2017_ver2-v2-2b041be6125ec2be4bd16e5d7d6c47e9/USER",
+            "/DoubleEG/micheli-ReMiniAOD2016-DeepCSV-bRegression-prod-uAOD-300-11-g22a116d-v0-Run2016C-03Feb2017-v1-2b041be6125ec2be4bd16e5d7d6c47e9/USER",
+            "/DoubleEG/micheli-ReMiniAOD2016-DeepCSV-bRegression-prod-uAOD-300-11-g22a116d-v0-Run2016D-03Feb2017-v1-2b041be6125ec2be4bd16e5d7d6c47e9/USER",
+            "/DoubleEG/micheli-ReMiniAOD2016-DeepCSV-bRegression-prod-uAOD-300-11-g22a116d-v0-Run2016E-03Feb2017-v1-2b041be6125ec2be4bd16e5d7d6c47e9/USER",
+            "/DoubleEG/micheli-ReMiniAOD2016-DeepCSV-bRegression-prod-uAOD-300-11-g22a116d-v0-Run2016F-03Feb2017-v1-2b041be6125ec2be4bd16e5d7d6c47e9/USER",
+            "/DoubleEG/micheli-ReMiniAOD2016-DeepCSV-bRegression-prod-uAOD-300-11-g22a116d-v0-Run2016G-03Feb2017-v1-677673b8fbf4dfb9df59e6cc83f2e4ef/USER",
+            "/DoubleEG/micheli-ReMiniAOD2016-DeepCSV-bRegression-prod-uAOD-300-11-g22a116d-v0-Run2016H-03Feb2017_ver2-v1-51bf6221d3e1b7cbdcdef62aa002ceaa/USER",
+            "/DoubleEG/micheli-ReMiniAOD2016-DeepCSV-bRegression-prod-uAOD-300-11-g22a116d-v0-Run2016H-03Feb2017_ver3-v1-51bf6221d3e1b7cbdcdef62aa002ceaa/USER"
+        ]
+   },
+	"cmdLine" : "campaign=ReMiniAOD2016-DeepCSV-bRegression_2 targetLumi=35.9e+3 processId=Data processType=data lumiMask=~/CMSSW_8_0_28/src/flashgg/MetaData/work/jsons/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+}
