@@ -24,7 +24,8 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    MinJetPt   = cms.double(20.),
                                    MaxJetEta   = cms.double(2.5),
                                    MJJBoundaries = cms.vdouble(70.,190.),
-                                   BTagType = cms.untracked.string('pfCombinedInclusiveSecondaryVertexV2BJetTags'), #string for btag algorithm
+                                  # BTagType = cms.untracked.string('pfCombinedInclusiveSecondaryVertexV2BJetTags'), #string for btag algorithm
+                                   BTagType = cms.untracked.string('pfDeepCSVJetTags:probb'), #string for btag algorithm
                                    UseJetID = cms.bool(True),
                                    JetIDLevel = cms.string('Loose'),
 
@@ -39,10 +40,10 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                                         multiclass=cms.bool(True), # this is multiclass 
                                                         multiclassSignalIdx=cms.int32(2), # this is multiclass index for Signal
                                                         ),
+
                                    doMVAFlattening=cms.bool(True),#do transformation of cumulative to make it flat
                                    doCategorization=cms.bool(True),#do categorization based on MVA x MX or only fill first tree with all events
                                    MVAFlatteningFileName=cms.untracked.FileInPath("flashgg/Taggers/data/HHTagger/cumulativeTransformation_20180628_newcode_data.root")#FIXME, this should be optional, is it? 
-                                   ## 
                                   ) 
 
 cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,

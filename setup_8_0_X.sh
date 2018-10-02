@@ -13,23 +13,23 @@ then
 fi
 
 NFILES=`ls -1 ${CMSSW_BASE}/src | wc -l`
-if [ ! ${NFILES} = "1" ]
-then
-  echo "CMSSW area appears to have extra files already. Start over and check README carefully."
-  echo "You can remove this condition from the setup script if you wish, but proceed with caution!"
-  echo
-  return 1
-fi
+#if [ ! ${NFILES} = "1" ]
+#then
+#  echo "CMSSW area appears to have extra files already. Start over and check README carefully."
+#  echo "You can remove this condition from the setup script if you wish, but proceed with caution!"
+#  echo
+#  return 1
+#fi
 
 echo
 echo "You should have checked out from cms-analysis/flashgg. Renaming this to upstream for convenience of existing developers..."
 cd $CMSSW_BASE/src/flashgg
-git remote rename origin upstream
-git remote set-url --push upstream DISALLOWED
-GITHUBUSERNAME=`git config user.github`
-echo "Setting up a new origin repo, assuming your fork name is ${GITHUBUSERNAME} - check this!"
-git remote add origin git@github.com:${GITHUBUSERNAME}/flashgg.git
-git config branch.master.remote origin
+#git remote rename origin upstream
+#git remote set-url --push upstream DISALLOWED
+#GITHUBUSERNAME=`git config user.github`
+#echo "Setting up a new origin repo, assuming your fork name is ${GITHUBUSERNAME} - check this!"
+#git remote add origin git@github.com:${GITHUBUSERNAME}/flashgg.git
+#git config branch.master.remote origin
 git config merge.renamelimit 2000
 
 if ${SETUP_REMOTES} ; then
