@@ -366,7 +366,7 @@ class WorkNodeJob(object):
 
         # get specific epilogue needed by the runner
         # this can be used, for example, to propagate $retval by touching a file
-        script += self.runner.epilogue(self.stage_cmd,self.stage_dest)+"\n"
+        script += self.runner.epilogue("cp -pv",os.path.abspath(self.job_outdir))+"\n"
 
         script += 'exit $retval\n'
         script += '\n'
@@ -551,6 +551,7 @@ class SGEJob(LsfJob):
         mydomain = BatchRegistry.getDomain()
         # domain-specific configuration
         if mydomain == "psi.ch":
+            ret += "source $VO_CMS_SW_DIR/cmsset_default.sh\n"
             ret += "mkdir -p /scratch/$(whoami)/sgejob-$JOB_ID\n"
             ret += "cd /scratch/$(whoami)/sgejob-$JOB_ID\n"
             ret += "source $VO_CMS_SW_DIR/cmsset_default.sh"
@@ -634,7 +635,7 @@ class SGEJob(LsfJob):
                 if line.startswith("Your job"):
                     self.jobid = int(line.split(" ")[2])
                     break
-
+            
         if self.async:
             return self.exitStatus, (out,(self.jobName,self.jobid))
 
@@ -819,7 +820,6 @@ class SGEMonitor(LsfMonitor):
         
         super(SGEMonitor, self).__init__(*args, **kwargs)
 
-
     def monitor(self):
         status = commands.getstatusoutput("qstat")
         checkcount = 0
@@ -845,6 +845,7 @@ class SGEMonitor(LsfMonitor):
             #                print type(jobid),type(jobids[0])
             #                print
             #                print jobs
+
         for jobid in self.jobsmap.keys():
             if not jobids.count(jobid):
                 # i.e. job is no longer on the list, and hence done
@@ -892,7 +893,7 @@ class Wrap:
     
 # -----------------------------------------------------------------------------------------------------
 class Parallel:
-    def __init__(self,ncpu,lsfQueue=None,lsfJobName="job",asyncLsf=False,maxThreads=500,jobDriver=None,batchSystem="lsf"):
+    def __init__(self,ncpu,lsfQueue=None,lsfJobName="job",asyncLsf=False,maxThreads=500,jobDriver=None,batchSystem="auto"):
         self.returned = Queue()
 	self.njobs = 0
         self.JobDriver=jobDriver

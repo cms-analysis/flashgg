@@ -34,6 +34,8 @@ namespace flashgg {
         bool operator <( const GenDiPhoton &b ) const { return ( sumPt() < b.sumPt() ); }
         bool operator >( const GenDiPhoton &b ) const { return ( sumPt() > b.sumPt() ); }
 
+        float sumHt() const { return  sumPt() + leadingJet().pt() + subLeadingJet().pt(); }
+        
         LorentzVector dijet() const; 
         
         void setTag(const std::string & tag) { tag_ = tag; }

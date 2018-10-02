@@ -71,7 +71,7 @@ namespace flashgg {
             newdipho.setCentralWeight(weight);
             if( tags->size()>0 ) { newdipho.setTagObj(tags->ptrAt(0)); }
             diphotons->push_back(newdipho);
-            /// cout << "TaggedGenDiPhotonProducer dipho " << newdipho.categoryNumber() << " " << (int)newdipho << endl;
+            /// cout << "TaggedGenDiPhotonProducer dipho " << newdipho.categoryNumber() << " " << (int)newdipho << " "  << newdipho.tag() << endl;
         }
         
         evt.put( std::move( diphotons ) );

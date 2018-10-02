@@ -66,6 +66,12 @@ customize.options.register('doDoubleHTag',
                            VarParsing.VarParsing.varType.bool,
                            'doDoubleHTag'
                            )
+customize.options.register('doDoubleHGenAnalysis',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doDoubleHGenAnalysis'
+                           )
 customize.options.register('doBJetRegression',
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -602,6 +608,9 @@ if customize.doFiducial:
           nScaleWeights = -1
     if not customize.processId == "Data":
         fc.addGenOnlyAnalysis(process,customize.processId,customize.acceptance,tagList,systlabels,pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights))
+
+if customize.doDoubleHGenAnalysis:
+    hhc.addGenAnalysis(customize,process,tagList)
 
 if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
 process.options.allowUnscheduled = cms.untracked.bool(True)

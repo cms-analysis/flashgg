@@ -49,6 +49,7 @@ class SamplesManager(object):
                  cross_sections=["$CMSSW_BASE/src/flashgg/MetaData/data/cross_sections.json"],
                  dbs_instance="prod/phys03",
                  queue=None, maxThreads=200,force=False,doContinue=False,maxEntriesPerFile=1000,
+                 copyProxy=True
                  ):
         """
         Constructur:
@@ -89,6 +90,7 @@ class SamplesManager(object):
         self.force_ = force
         self.continue_ = doContinue
         self.just_open_ = False
+        self.copyProxy_ = copyProxy
 
     def importFromCatalog(self,src,pattern):
         print "importing datasets from catalog %s" % src
@@ -255,7 +257,7 @@ class SamplesManager(object):
         catalog = self.readCatalog()
         
         self.just_open_ = justOpen
-        factory = WorkNodeJobFactory(os.getcwd(),stage_patterns=[".tmp*.json"],job_outdir=".fgg")
+        factory = WorkNodeJobFactory(os.getcwd(),stage_patterns=[".tmp*.json"],job_outdir=".fgg",copy_proxy=self.copyProxy_)
         self.parallel_ = Parallel(50,self.queue_,maxThreads=self.maxThreads_,asyncLsf=True,lsfJobName=".fgg/job",jobDriver=factory)
         ## self.parallel_ = Parallel(1,self.queue_)
         
@@ -548,6 +550,10 @@ class SamplesManager(object):
         return dsetName,int(ifile),fileName,ret,out
     
     def handleJobOutput(self,job,jobargs,ret):
+        
+        ## print( "handleJobOutput" )
+        ## print(job)
+        ## print(jobargs)
         
         jobargs = jobargs[0].split(" ")[1:]
 
@@ -958,6 +964,9 @@ Commands:
                             default=20,
                             help="Maximum number of threads to use. default: %default",
                             ),
+                make_option("--no-copy-proxy",dest="copy_proxy",action="store_false",
+                            default=True,help="Do not try to copy the grid proxy to the worker nodes."
+                            ),
                 make_option("-v","--verbose",
                             action="store_true", dest="verbose",
                             default=False,
@@ -977,7 +986,8 @@ Commands:
         self.mn = SamplesManager("$CMSSW_BASE/src/%s/MetaData/data/%s/datasets*.json" % (options.metaDataSrc,options.campaign),
                                  dbs_instance=options.dbs_instance,
                                  force=options.doForce,
-                                 queue=options.queue,maxThreads=options.max_threads,doContinue=options.doContinue)
+                                 queue=options.queue,maxThreads=options.max_threads,doContinue=options.doContinue,
+                                 copyProxy=options.copy_proxy)
         
         ## pprint( mn.cross_sections_ )
         if len(args) == 0:
