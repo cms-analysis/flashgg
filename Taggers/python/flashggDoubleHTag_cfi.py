@@ -29,13 +29,13 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    UseJetID = cms.bool(True),
                                    JetIDLevel = cms.string('Loose'),
 
-                                   MVABoundaries  = cms.vdouble(0.28,0.47, 0.63), # category boundaries for MVA
-                                   MXBoundaries   = cms.vdouble(250., 310., 391., 547.), # .. and MX
-                                   MJJBoundariesLower = cms.vdouble(97.,95.,95.,95.,99.,100.,95.,95.,95.,95.,95.,108.), #for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
-                                   MJJBoundariesUpper = cms.vdouble(146.,153.,150.,155.,150.,147.,154.,151.,155.,155.,155.,148.), #for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
+                                   MVABoundaries  = cms.vdouble(0.29,0.441, 0.724), # category boundaries for MVA
+                                   MXBoundaries   = cms.vdouble(250., 354., 478., 560.), # .. and MX
+                                   MJJBoundariesLower = cms.vdouble(98.0,95.0,97.0,96.0,95.0,95.0,95.0,95.0,95.0,95.0,95.0,95.0),#for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
+                                   MJJBoundariesUpper = cms.vdouble(150.0,150.0,143.0,150.0,150.0,150.0,150.0,145.0,155.0,142.0,146.0,152.0),#for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
                                    MVAConfig = cms.PSet(variables=cms.VPSet(), # variables are added below
                                                         classifier=cms.string("BDT::bdt"), # classifier name
-                                                        weights=cms.FileInPath("flashgg/Taggers/data/HHTagger/training_with_27_06_2018_fixed.weights.xml"), # path to TMVA weights
+                                                        weights=cms.FileInPath("flashgg/Taggers/data/HHTagger/training_with_01_10_2018_deepCSV.weights.xml"), # path to TMVA weights
                                                         regression=cms.bool(False), # this is not a regression
                                                         multiclass=cms.bool(True), # this is multiclass 
                                                         multiclassSignalIdx=cms.int32(2), # this is multiclass index for Signal
@@ -43,13 +43,15 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
 
                                    doMVAFlattening=cms.bool(True),#do transformation of cumulative to make it flat
                                    doCategorization=cms.bool(True),#do categorization based on MVA x MX or only fill first tree with all events
-                                   MVAFlatteningFileName=cms.untracked.FileInPath("flashgg/Taggers/data/HHTagger/cumulativeTransformation_20180628_newcode_data.root")#FIXME, this should be optional, is it? 
+                                   MVAFlatteningFileName=cms.untracked.FileInPath("flashgg/Taggers/data/HHTagger/cumulativeTransformation_20181001_DeepCSV.root")#FIXME, this should be optional, is it? 
                                   ) 
 
 cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,
                       # here the syntax is VarNameInTMVA := expression
-                      ["leadingJet_bDis := leadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",#FIXME make the btag type configurable?
-                       "subleadingJet_bDis := subleadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",
+                      [#"leadingJet_bDis := leadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",#FIXME make the btag type configurable?
+                       #"subleadingJet_bDis := subleadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",
+                       "leadingJet_DeepCSV := leadJet().bDiscriminator('pfDeepCSVJetTags:probb')+leadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",#FIXME make the btag type configurable?
+                       "subleadingJet_DeepCSV := subleadJet().bDiscriminator('pfDeepCSVJetTags:probb')+subleadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",
                        "absCosThetaStar_CS := abs(getCosThetaStar_CS(6500))",#FIXME get energy from somewhere?
                        "absCosTheta_bb := abs(CosThetaAngles()[1])",
                        "absCosTheta_gg := abs(CosThetaAngles()[0])",
