@@ -60,6 +60,12 @@ customize.options.register('doubleHTagsOnly',
                            VarParsing.VarParsing.varType.bool,
                            'doubleHTagsOnly'
                            )
+customize.options.register('doubleHReweightTarget',
+                           None,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.int,
+                           'doubleHReweightTarget'
+                           )
 customize.options.register('doDoubleHTag',
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
