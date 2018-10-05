@@ -666,7 +666,8 @@ class SGEJob(LsfJob):
                     break
             if self.exitStatus == 0:
                 logdir = os.path.abspath(os.path.dirname(self.jobName))
-                if os.path.isfile('%s/%s.sh.fail' % (logdir,self.jobName.split("/")[-1])) and not os.path.isfile('%s/%s.sh.done' % (logdir,self.jobName.split("/")[-1])):
+                ## if os.path.isfile('%s/%s.sh.fail' % (logdir,self.jobName.split("/")[-1])) and not os.path.isfile('%s/%s.sh.done' % (logdir,self.jobName.split("/")[-1])):
+                if not os.path.isfile('%s/%s.sh.done' % (logdir,self.jobName.split("/")[-1])):
                     self.exitStatus = 1
 
         output = ""
