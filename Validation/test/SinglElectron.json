@@ -1,0 +1,12 @@
+{
+    "processes" : {
+        "data_single" : [ 
+		      	"/SingleElectron/sethzenz-RunIIFall17-3_1_0-3_1_0-v0-Run2017F-31Mar2018-v1-aa3a4880c1f02b5f7421114b3c220c90/USER",
+			"/SingleElectron/sethzenz-RunIIFall17-3_1_0-3_1_0-v0-Run2017D-31Mar2018-v1-aa3a4880c1f02b5f7421114b3c220c90/USER",
+			"/SingleElectron/sethzenz-RunIIFall17-3_1_0-3_1_0-v0-Run2017C-31Mar2018-v1-aa3a4880c1f02b5f7421114b3c220c90/USER",
+			"/SingleElectron/sethzenz-RunIIFall17-3_1_0-3_1_0-v0-Run2017B-31Mar2018-v1-aa3a4880c1f02b5f7421114b3c220c90/USER",
+			"/SingleElectron/sethzenz-RunIIFall17-3_1_0-3_1_0-v0-Run2017E-31Mar2018-v1-aa3a4880c1f02b5f7421114b3c220c90/USER"
+    			]
+     },
+     "cmdLine" : "campaign=RunIIFall17-3_1_0 lumiMask=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/ReReco/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON.txt"
+}

@@ -12,7 +12,7 @@ process.hltFilter.throw = cms.bool(False)
 
 from flashgg.MetaData.JobConfig import  JobConfig
 customize = JobConfig(crossSections=["$CMSSW_BASE/src/flashgg/MetaData/data/cross_sections.json"])
-customize.setDefault("maxEvents",-1)
+customize.setDefault("maxEvents",10000)
 customize.setDefault("targetLumi",1.0e+4)
 customize.parse()
 
@@ -44,8 +44,9 @@ print "GlobalTag : ", process.GlobalTag.globaltag
     
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
     
-process.source = cms.Source ("PoolSource",fileNames = cms.untracked.vstring(#'/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-2_7_7/2_7_7/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17-2_7_7-2_7_7-v0-RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/180117_115847/0000/myMicroAODOutputFile_10.root'
-'/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_0/3_1_0/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/180605_201701/0000/myMicroAODOutputFile_28.root'
+process.source = cms.Source ("PoolSource",
+                             #fileNames = cms.untracked.vstring('/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-2_7_7/2_7_7/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17-2_7_7-2_7_7-v0-RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/180117_115847/0000/myMicroAODOutputFile_10.root'
+                             fileNames = cms.untracked.vstring('/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_0/3_1_0/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/180605_201701/0000/myMicroAODOutputFile_99.root'
 ))
 
 import flashgg.Taggers.dumperConfigTools as cfgTools
@@ -83,11 +84,32 @@ process.DiPhotonWithZeeMVADumper.dumpGlobalVariables = cms.untracked.bool(True)
 process.DiPhotonWithZeeMVADumper.globalVariables = process.globalVariables
 
 process.load("flashgg.Taggers.diphotonDumper_cfi") 
+process.load("flashgg.Taggers.FlashggTagAndProbeProducer_cfi")
+process.load("flashgg.Taggers.tagAndProbeDumper_cfi")    
+from flashgg.Taggers.FlashggTagAndProbeProducer_cfi import flashggTagAndProbe
+
+process.flashggTagAndProbe = flashggTagAndProbe
+#process.flashggTagAndProbe.diphotonsSrc = "kinDiPhotons"
+print process.hltFilter
+process.flashggTagAndProbe.diphotonsSrc = "flashggPreselectedDiPhotons"
+process.flashggTagAndProbe.tagSelection = " pt > 40 && (?hasUserCand('eleMatch')?userCand('eleMatch').passTightId:0) && hasPixelSeed && egChargedHadronIso < 20 && egChargedHadronIso/pt < 0.3" 
+process.flashggTagAndProbe.probeSelection = "egChargedHadronIso < 20 && egChargedHadronIso/pt < 0.3"
+process.flashggTagAndProbe.idSelection = cms.PSet(
+    rho = process.flashggPreselectedDiPhotons.rho,
+    cut = process.flashggPreselectedDiPhotons.cut,
+    variables = process.flashggPreselectedDiPhotons.variables,
+    categories = process.flashggPreselectedDiPhotons.categories
+    )
+
+from flashgg.Taggers.tagAndProbeDumper_cfi import tagAndProbeDumper
+tagAndProbeDumper.dumpTrees = True
+
+
 process.diphotonDumper.rho = cms.InputTag("fixedGridRhoAll")
 process.diphotonDumper.src = cms.InputTag("flashggPreselectedDiPhotons")
 #process.diphotonDumper.src = cms.InputTag("flashggPreselectedDiPhotonsLowMass")
 process.diphotonDumper.dumpHistos = False
-process.diphotonDumper.dumpTrees  =  True
+process.diphotonDumper.dumpTrees  =  False
 process.diphotonDumper.dumpGlobalVariables = cms.untracked.bool(True)
 process.diphotonDumper.globalVariables = process.globalVariables
 
@@ -104,12 +126,16 @@ cfgTools.addCategories(process.DiPhotonWithZeeMVADumper,
                        )
 # split tree, histogram and datasets by process
 process.DiPhotonWithZeeMVADumper.nameTemplate ="zeevalidation_$SQRTS_$LABEL_$SUBCAT"
+process.tagAndProbeDumper.nameTemplate ="zeevalidation_$SQRTS_$LABEL_$SUBCAT"
 
 
-cfgTools.addCategories(process.diphotonDumper,
+#cfgTools.addCategories(process.diphotonDumper,
+cfgTools.addCategories(process.tagAndProbeDumper,
                        ## categories definition
                        ## cuts are applied in cascade. Events getting to these categories have already failed the "Reject" selection
-                       [("All","1", 0)
+                       [
+        ("Reject", "diPhoton.mass < 50 || diPhoton.mass > 130", -1),
+        ("All","1", 0)
                         #("EB", "abs(superCluster.eta)<1.479", 0),
                         #("EE", "abs(superCluster.eta)>1.566",0)
                         ],
@@ -220,7 +246,7 @@ else:
         pset.ApplyCentralValue = cms.bool(False) # no central value
         if ( pset.Label.value().count("MCSmear") or pset.Label.value().count("SigmaEOverESmearing")):
             pset.ApplyCentralValue = cms.bool(True)
-        newvpset+= [pset]
+    newvpset+= [pset]
     process.flashggDiPhotonSystematics.SystMethods = newvpset        
     ##syst (2D) : smearings with EGMTool
     vpset2D   = process.flashggDiPhotonSystematics.SystMethods2D
@@ -229,15 +255,14 @@ else:
         pset.NSigmas = cms.PSet( firstVar = cms.vint32(), secondVar = cms.vint32() ) # only central value, no up/down syst shifts (2D case)
         if ( pset.Label.value().count("MCSmear") or pset.Label.value().count("SigmaEOverESmearing")):
             pset.ApplyCentralValue = cms.bool(True)
-        newvpset2D+= [pset]
+            newvpset2D+= [pset]
     process.flashggDiPhotonSystematics.SystMethods2D = newvpset2D       
-printSystematicInfo(process)
-turnOnAllSystematicsDebug(process)
 ############################
 #    Systematics end       #
 ############################
-
-process.p = cms.Path(process.flashggUpdatedIdMVADiPhotons*process.flashggDiPhotonSystematics*process.dataRequirements*process.flashggPreselectedDiPhotons*process.flashggDiPhotonMVA*process.DiPhotonWithZeeMVADumper*process.diphotonDumper)
+#tnp_sequence = cms.Sequence(flashggTagAndProbe+tagAndProbeDumper)
+#process.p = cms.Path(tnp_sequence)
+process.p = cms.Path(process.flashggUpdatedIdMVADiPhotons*process.dataRequirements*process.flashggPreselectedDiPhotons*process.flashggDiPhotonMVA*process.DiPhotonWithZeeMVADumper*flashggTagAndProbe+tagAndProbeDumper)##process.diphotonDumper)
 #process.p = cms.Path(process.dataRequirements*process.flashggPreselectedDiPhotons*process.flashggDiPhotonMVA*process.DiPhotonWithZeeMVADumper*process.diphotonDumper)
 
 customize(process)

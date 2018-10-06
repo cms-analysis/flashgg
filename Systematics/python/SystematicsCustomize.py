@@ -1,10 +1,11 @@
 import FWCore.ParameterSet.Config as cms
 
 def printSystematicInfo(process):
-    vpsetlist = [process.flashggDiPhotonSystematics.SystMethods, process.flashggMuonSystematics.SystMethods, process.flashggElectronSystematics.SystMethods]
+    #vpsetlist = [process.flashggDiPhotonSystematics.SystMethods, process.flashggMuonSystematics.SystMethods, process.flashggElectronSystematics.SystMethods]
+    vpsetlist = [process.flashggDiPhotonSystematics.SystMethods]
 #    from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
 #    vpsetlist += [getattr(process,"flashggJetSystematics%i"%i).SystMethods for i in range(len(UnpackedJetCollectionVInputTag))]
-    vpsetlist += [process.flashggJetSystematics0.SystMethods]
+    #vpsetlist += [process.flashggJetSystematics0.SystMethods]
     print (14*"-"+" DUMPING SYSTEMATIC OVERVIEW "+14*"-")
     print "%20s %15s %20s" % ("Systematic","Central value?","Systematic shifts?")
     print 57*"-"
@@ -12,17 +13,19 @@ def printSystematicInfo(process):
     print (13*"-"+" DUMPING 2D SYSTEMATIC OVERVIEW "+12*"-")
     print "%20s %15s %20s" % ("Systematic","Central value?","Systematic shifts?")
     print 57*"-"
-    vpsetlist2D  = [process.flashggDiPhotonSystematics.SystMethods2D, process.flashggMuonSystematics.SystMethods2D, process.flashggElectronSystematics.SystMethods2D]
-    vpsetlist2D += [process.flashggJetSystematics0.SystMethods2D]
-    vpsetlist +=[process.flashggMetSystematics.SystMethods]
+#    vpsetlist2D  = [process.flashggDiPhotonSystematics.SystMethods2D, process.flashggMuonSystematics.SystMethods2D, process.flashggElectronSystematics.SystMethods2D]
+    vpsetlist2D  = [process.flashggDiPhotonSystematics.SystMethods2D]
+    #vpsetlist2D += [process.flashggJetSystematics0.SystMethods2D]
+    #vpsetlist +=[process.flashggMetSystematics.SystMethods]
     printSystematicVPSet(vpsetlist2D)
 
 def turnOnAllSystematicsDebug(process):
-    vpsetlist = [process.flashggDiPhotonSystematics.SystMethods, process.flashggMuonSystematics.SystMethods, process.flashggElectronSystematics.SystMethods]
-    vpsetlist += [process.flashggJetSystematics0.SystMethods]
-    vpsetlist += [process.flashggDiPhotonSystematics.SystMethods2D, process.flashggMuonSystematics.SystMethods2D, process.flashggElectronSystematics.SystMethods2D]
-    vpsetlist += [process.flashggJetSystematics0.SystMethods2D]
-    vpsetlist += [process.flashggMetSystematics.SystMethods]
+    #vpsetlist = [process.flashggDiPhotonSystematics.SystMethods, process.flashggMuonSystematics.SystMethods, process.flashggElectronSystematics.SystMethods]
+    vpsetlist = [process.flashggDiPhotonSystematics.SystMethods]
+    #vpsetlist += [process.flashggJetSystematics0.SystMethods]
+    #vpsetlist += [process.flashggDiPhotonSystematics.SystMethods2D, process.flashggMuonSystematics.SystMethods2D, process.flashggElectronSystematics.SystMethods2D]
+    #vpsetlist += [process.flashggJetSystematics0.SystMethods2D]
+    #vpsetlist += [process.flashggMetSystematics.SystMethods]
     for vpset in vpsetlist:
         for pset in vpset:
             pset.Debug = True

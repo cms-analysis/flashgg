@@ -8,6 +8,8 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
 
                                               photonIdMVAweightfile_EB = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_barrel_ICHEPvtx.xml"),
                                               photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_endcap_ICHEPvtx.xml"),
+                                              #photonIdMVAweightfile_EB = cms.FileInPath("flashgg/MicroAOD/data/PhoId_94X_barrel_woCorr_RunIIFall17_3_0_X_MCv2_Lowmass_M55_BDT.weights.xml"),
+                                              #photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/PhotonID_94X_endcap_woCorr_RunIIFall17_3_0_X_MCv2_Lowmass_M55_BDT.weights.xml"),
 
                                               useNewPhoId = cms.bool(True),
                                               is2017 = cms.bool(True), ## Turn this to "False" for 2016 analysis
@@ -22,7 +24,9 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
                                               ## For 2017 ReReco
                                               effAreasConfigFile = cms.FileInPath("RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_TrueVtx.txt"),
                                               photonIdMVAweightfile_EB_2017 = cms.FileInPath("flashgg/MicroAOD/data/HggPhoId_94X_barrel_BDT_v2.weights.xml"),
+                                              #photonIdMVAweightfile_EB_2017 = cms.FileInPath("flashgg/MicroAOD/data/PhoId_94X_barrel_woCorr_RunIIFall17_3_0_X_MCv2_Lowmass_M55_BDT.weights.xml"),
                                               photonIdMVAweightfile_EE_2017 = cms.FileInPath("flashgg/MicroAOD/data/HggPhoId_94X_endcap_BDT_v2.weights.xml"),
+                                              #photonIdMVAweightfile_EE_2017 = cms.FileInPath("flashgg/MicroAOD/data/PhotonID_94X_endcap_woCorr_RunIIFall17_3_0_X_MCv2_Lowmass_M55_BDT.weights.xml"),
 
                                               ## Shower shape correction (5x5)
                                               do5x5correction          = cms.bool(True), ## Turn this off to remove 5x5 shower shape corrections
