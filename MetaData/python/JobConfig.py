@@ -350,6 +350,12 @@ class JobConfig(object):
                     target = target.__sub__(lumisToSkip)                    
                 process.source.lumisToProcess = target.getVLuminosityBlockRange()
 
+                # workaround for https://github.com/cms-sw/cmssw/issues/23774
+                # until https://github.com/cms-sw/cmssw/pull/24168 becomes effective (CMSSW 10_3_X ?)
+                #
+                # convert unicode LS ranges to string objects, otherwise process.dumpPython() fails
+                process.source.lumisToProcess = [ str(part) for part in process.source.lumisToProcess ]
+
             if isdata:    
                 print process.source.lumisToProcess
             
