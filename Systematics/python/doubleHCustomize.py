@@ -96,10 +96,10 @@ def customizeTagSequence(customize,process):
     ## customize here (regression, kin-fit, MVA...)
     if customize.doBJetRegression : process.flashggDoubleHTag.JetTags = cms.VInputTag( ["bRegProducer%d" % icoll for icoll,coll in enumerate(UnpackedJetCollectionVInputTag) ] )
 
-    ## if customize.doubleHReweightTarget != -1:
-    ##    process.load("flashgg.Taggers.flashggDoubleHReweight_cfi")
-    ##    process.flashggDoubleHReweight.targetNode = customize.doubleHReweightTarget
-    ##    process.targsDumper.reweight  =  cms.InputTag("flashggDoubleHReweight")
+    if customize.doubleHReweightTarget != -1:
+        process.load("flashgg.Taggers.flashggDoubleHReweight_cfi")
+        process.flashggDoubleHReweight.targetNode = customize.doubleHReweightTarget
+        process.tagsDumper.reweight  =  cms.InputTag("flashggDoubleHReweight")
 
     ## remove single Higgs tags
     if customize.doubleHTagsOnly:
