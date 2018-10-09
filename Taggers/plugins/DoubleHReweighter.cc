@@ -145,7 +145,7 @@ namespace flashgg {
                 std::vector<float> NRWeights; //we will use this in the future when we would like to save all weights
                 for (unsigned int n=0; n<NUM_benchmarks; n++) 
                     NRWeights.push_back(getWeight(NUM_gridsize+n, gen_mHH, gen_cosTheta));
-                float NRWeight_target =  NRWeights[NUM_gridsize-2+targetNode_]; //In our convention nodes start from node_2 and go up to node_13, therefore shift -2
+                float NRWeight_target =  NRWeights[-2+targetNode_]; //In our convention nodes start from node_2 and go up to node_13, therefore shift -2
                 ( *final_weight ) = NRWeight_target;
             }
         } 

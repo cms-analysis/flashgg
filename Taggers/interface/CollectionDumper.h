@@ -183,7 +183,7 @@ namespace flashgg {
         if( dumpGlobalVariables_ ) {
            doReweight_ = cfg.exists("reweight");
           if( doReweight_ ) {
-               reweightToken_( cc.consumes<float>(cfg.getParameter<edm::InputTag>("reweight" )) );
+               reweightToken_ = cc.consumes<float>(cfg.getParameter<edm::InputTag>("reweight" )) ;
           }
             globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ), std::forward<edm::ConsumesCollector>(cc) );
         }
