@@ -14,12 +14,13 @@
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
 
-#include "flashgg/MicroAOD/interface/MVAComputer.h"
+#include "TLorentzVector.h"
 
 
 #include <vector>
 #include <algorithm>
-#include "TGraph.h"
+#include "TH2F.h"
+#include "TFile.h"
 
 using namespace std;
 using namespace edm;
@@ -30,307 +31,130 @@ namespace flashgg {
     {
 
     public:
-        typedef math::XYZPoint Point;
-
         DoubleHReweighter( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
-        int chooseCategory( float mva, float mx );
-        
-        EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
-        std::vector<edm::EDGetTokenT<edm::View<flashgg::Jet> > > jetTokens_;
+        float getWeight( int targetNode,float gen_mHH, float gen_cosTheta);
+        float getCosThetaStar_CS(TLorentzVector h1, TLorentzVector h2, float ebeam);
+
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
-        string systLabel_;
+        int targetNode_;
+        edm::FileInPath fullGridWeightsFile_;
+        edm::FileInPath benchmarksWeightsFile_;
+        const unsigned int NUM_benchmarks = 12; // number of becnhmarks for reweighting
+        const unsigned int NUM_gridsize = 1507; // size of the grid used for reweighting
+        std::vector<TH2F*> hists_fullgrid;
+        TFile* f_fullgrid_ ;
+        TFile* f_benchmarks_ ;
 
-        double minLeadPhoPt_, minSubleadPhoPt_;
-        bool scalingPtCuts_, doPhotonId_, doMVAFlattening_, doCategorization_;
-        double photonIDCut_;
-        double vetoConeSize_;         
-        unsigned int doSigmaMDecorr_;
-        edm::FileInPath sigmaMDecorrFile_;
-        std::vector<int> photonElectronVeto_;
-
-        DecorrTransform* transfEBEB_;
-        DecorrTransform* transfNotEBEB_;
-
-
-        double minJetPt_;
-        double maxJetEta_;
-        vector<double>mjjBoundaries_;
-        vector<double>mjjBoundariesLower_;
-        vector<double>mjjBoundariesUpper_;
-        std::string bTagType_;
-        bool       useJetID_;
-        string     JetIDLevel_;        
-
-        flashgg::MVAComputer<DoubleHTag> mvaComputer_;
-        vector<double> mvaBoundaries_, mxBoundaries_;
-        int multiclassSignalIdx_;
-
-        edm::FileInPath MVAFlatteningFileName_;
-        TFile * MVAFlatteningFile_;
-        TGraph * MVAFlatteningCumulative_;
     };
 
     DoubleHReweighter::DoubleHReweighter( const ParameterSet &iConfig ) :
-        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
-        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
-        minLeadPhoPt_( iConfig.getParameter<double> ( "MinLeadPhoPt" ) ),
-        minSubleadPhoPt_( iConfig.getParameter<double> ( "MinSubleadPhoPt" ) ),
-        scalingPtCuts_( iConfig.getParameter<bool> ( "ScalingPtCuts" ) ),
-        vetoConeSize_( iConfig.getParameter<double> ( "VetoConeSize" ) ),
-        minJetPt_( iConfig.getParameter<double> ( "MinJetPt" ) ),
-        maxJetEta_( iConfig.getParameter<double> ( "MaxJetEta" ) ),
-        bTagType_( iConfig.getUntrackedParameter<std::string>( "BTagType") ),
-        useJetID_( iConfig.getParameter<bool>   ( "UseJetID"     ) ),
-        JetIDLevel_( iConfig.getParameter<string> ( "JetIDLevel"   ) ),
-        mvaComputer_( iConfig.getParameter<edm::ParameterSet>("MVAConfig") )
+        targetNode_( iConfig.getParameter<int> ( "targetNode" ) ),
+        fullGridWeightsFile_(iConfig.getUntrackedParameter<edm::FileInPath>("fullGridWeightsFile")),
+        benchmarksWeightsFile_(iConfig.getUntrackedParameter<edm::FileInPath>("benchmarksWeightsFile"))
     {
-        mjjBoundaries_ = iConfig.getParameter<vector<double > >( "MJJBoundaries" ); 
-        mvaBoundaries_ = iConfig.getParameter<vector<double > >( "MVABoundaries" );
-        mxBoundaries_ = iConfig.getParameter<vector<double > >( "MXBoundaries" );
-        mjjBoundariesLower_ = iConfig.getParameter<vector<double > >( "MJJBoundariesLower" ); 
-        mjjBoundariesUpper_ = iConfig.getParameter<vector<double > >( "MJJBoundariesUpper" ); 
-        multiclassSignalIdx_ = (iConfig.getParameter<edm::ParameterSet>("MVAConfig")).getParameter<int>("multiclassSignalIdx"); 
+        //Get the taget node from the config file
+        //also write in the config file the path and name for the root files needed for the reweighting
 
-        auto jetTags = iConfig.getParameter<std::vector<edm::InputTag> > ( "JetTags" ); 
-        for( auto & tag : jetTags ) { jetTokens_.push_back( consumes<edm::View<flashgg::Jet> >( tag ) ); }
-        
-        assert(is_sorted(mvaBoundaries_.begin(), mvaBoundaries_.end()) && "mva boundaries are not in ascending order (we count on that for categorization)");
-        assert(is_sorted(mxBoundaries_.begin(), mxBoundaries_.end()) && "mx boundaries are not in ascending order (we count on that for categorization)");
-        doPhotonId_ = iConfig.getUntrackedParameter<bool>("ApplyEGMPhotonID");        
-        photonIDCut_ = iConfig.getParameter<double>("PhotonIDCut");
-        
-        doMVAFlattening_ = iConfig.getParameter<bool>("doMVAFlattening"); 
-        doCategorization_ = iConfig.getParameter<bool>("doCategorization"); 
-        photonElectronVeto_=iConfig.getUntrackedParameter<std::vector<int > >("PhotonElectronVeto");
-        //needed for HHbbgg MVA
-        if(doMVAFlattening_){
-            MVAFlatteningFileName_=iConfig.getUntrackedParameter<edm::FileInPath>("MVAFlatteningFileName");
-            MVAFlatteningFile_ = new TFile((MVAFlatteningFileName_.fullPath()).c_str(),"READ");
-            MVAFlatteningCumulative_ = (TGraph*)MVAFlatteningFile_->Get("cumulativeGraph"); 
-        }
-
-        doSigmaMDecorr_ = iConfig.getUntrackedParameter<unsigned int>("DoSigmaMDecorr");
-        if(doSigmaMDecorr_){
-            sigmaMDecorrFile_ = iConfig.getUntrackedParameter<edm::FileInPath>("SigmaMDecorrFile");
-            TFile* f_decorr = new TFile((sigmaMDecorrFile_.fullPath()).c_str(), "READ");
-            TH2D* h_decorrEBEB_ = (TH2D*)f_decorr->Get("hist_sigmaM_M_EBEB"); 
-            TH2D* h_decorrNotEBEB_ = (TH2D*)f_decorr->Get("hist_sigmaM_M_notEBEB");
-
-            if(h_decorrEBEB_ && h_decorrNotEBEB_){
-                transfEBEB_ = new DecorrTransform(h_decorrEBEB_ , 125., 1, 0);
-                transfNotEBEB_ = new DecorrTransform(h_decorrNotEBEB_ , 125., 1, 0);
-                
-            } else {
-                throw cms::Exception( "Configuration" ) << "The file "<<sigmaMDecorrFile_.fullPath()<<" provided for sigmaM/M decorrelation does not contain the expected histograms."<<std::endl;
+            f_fullgrid_ = new TFile((fullGridWeightsFile_.fullPath()).c_str(), "READ");
+            f_benchmarks_ = new TFile((benchmarksWeightsFile_.fullPath()).c_str(), "READ");
+            
+            for (unsigned int n=0; n<NUM_gridsize; n++){
+                hists_fullgrid.push_back((TH2F*)f_fullgrid_->Get(Form("point_%i_weights",n)));
+                if (!(hists_fullgrid[n])) throw cms::Exception( "Configuration" ) << "The file "<<fullGridWeightsFile_.fullPath()<<" provided for reweighting full grid does not contain the expected histograms."<<std::endl;
             }
+            for (unsigned int n=0; n<NUM_benchmarks; n++){
+                hists_fullgrid.push_back((TH2F*)f_benchmarks_->Get(Form("point_%i_weights",n)));
+                if (!(hists_fullgrid[n])) throw cms::Exception( "Configuration" ) << "The file "<<benchmarksWeightsFile_.fullPath()<<" provided for reweighting benchmarks does not contain the expected histograms."<<std::endl;
+            }
+
+        produces<float>();
+    }
+    
+
+    float DoubleHReweighter::getWeight( int targetNode,float gen_mHH, float gen_cosTheta)
+    {
+        float w = 0.;
+          // The points do not exist in the input file provided by Alexandra (and wont ever be added)
+        if (targetNode==324 || targetNode==910 || targetNode==985 || targetNode==990)  w=0;
+        else 
+        {
+            unsigned int binNum = hists_fullgrid[targetNode]->FindBin(gen_mHH, fabs(gen_cosTheta));
+            w = hists_fullgrid[targetNode]->GetBinContent(binNum);
         }
-
-        //needed for ttH MVA
-//        METToken_( consumes<View<flashgg::Met> >( iConfig.getParameter<InputTag> ( "METTag" ) ) );
-//        electronToken_ = consumes<edm::View<flashgg::Electron> >( iConfig.getParameter<edm::InputTag> ( "ElectronTag" ) );
-//        muonToken_ = consumes<edm::View<flashgg::Muon> >( iConfig.getParameter<edm::InputTag>( "MuonTag" ) );
-
-
-
-        produces<vector<DoubleHTag> >();
-        produces<vector<TagTruthBase> >();
+  
+    return w;
     }
 
-    int DoubleHReweighter::chooseCategory( float mvavalue, float mxvalue)
+    
+    float DoubleHReweighter::getCosThetaStar_CS(TLorentzVector h1, TLorentzVector h2, float ebeam)
     {
-        //// should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
-        //this is for mva, then you have mx
-        if (!doCategorization_) {
-             return 0;
-        }
-        int mvaCat=-1;
-        for( int n = 0 ; n < ( int )mvaBoundaries_.size() ; n++ ) {
-            if( ( double )mvavalue > mvaBoundaries_[mvaBoundaries_.size() - n - 1] ) {
-                mvaCat = n;
-                break;
-            }
-        }
+    // cos theta star angle in the Collins Soper frame
+    // Copied directly from here: https://github.com/ResonantHbbHgg/Selection/blob/master/selection.h#L3367-L3385
+        TLorentzVector p1, p2;
+        p1.SetPxPyPzE(0, 0,  ebeam, ebeam);
+        p2.SetPxPyPzE(0, 0, -ebeam, ebeam);
 
+        TLorentzVector hh;
+        hh = h1 + h2;
 
-        if (mvaCat==-1) return -1;// Does not pass, object will not be produced
+        TVector3 boost = - hh.BoostVector();
+        p1.Boost(boost);
+        p2.Boost(boost);
+        h1.Boost(boost);
 
-        int mxCat=-1;
-        for( int n = 0 ; n < ( int )mxBoundaries_.size() ; n++ ) {
-            if( ( double )mxvalue > mxBoundaries_[mxBoundaries_.size() - n - 1] ) {
-                mxCat = n;
-                break;
-            }
-        }
+        TVector3 CSaxis = p1.Vect().Unit() - p2.Vect().Unit();
+        CSaxis.Unit();
 
-
-        if (mxCat==-1) return -1;// Does not pass, object will not be produced
-
-        int cat=-1;
-        cat = mvaCat*mxBoundaries_.size()+mxCat;
-
-        //the schema is like this: (different from HHbbgg_ETH)
-        //            "cat0 := MXbin0 * MVAcat0",   #High MX, High MVA
-        //            "cat1 := MXbin1 * MVAcat0",   #High but lower MX , High MVA
-        //            "cat2 := MXbin2 * MVAcat0",
-        //            "cat3 := MXbin0 * MVAcat1",
-        //            "cat4 := MXbin1 * MVAcat1",
-        // [.................................]
-
-        return cat;
-
+        return cos(   CSaxis.Angle( h1.Vect().Unit() )    );
     }
+
+
 
     void DoubleHReweighter::produce( Event &evt, const EventSetup & )
     {
-        // read diphotons
-        Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
-        evt.getByToken( diPhotonToken_, diPhotons );
 
         // prepare output
-        std::unique_ptr<vector<DoubleHTag> > tags( new vector<DoubleHTag> );
-        std::unique_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
-        edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
-        
-        // MC truth
-        TagTruthBase truth_obj;
-        if( ! evt.isRealData() ) {
-            Handle<View<reco::GenParticle> > genParticles;
-            evt.getByToken( genParticleToken_, genParticles );
-            Point higgsVtx(0.,0.,0.);
-            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
-                int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-                if( pdgid == 25 || pdgid == 22 ) {
-                    higgsVtx = genParticles->ptrAt( genLoop )->vertex();
-                    break;
-                }
-            }
-            truth_obj.setGenPV( higgsVtx );
-            truths->push_back( truth_obj );
+      //  std::unique_ptr<vector<float> > final_weight( new vector<float> );
+        std::unique_ptr<float>  final_weight( new float(0.) );
+        std::vector<edm::Ptr<reco::GenParticle> > selHiggses;
+        Handle<View<reco::GenParticle> > genParticles;
+        evt.getByToken( genParticleToken_, genParticles );
+        for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+            edm::Ptr<reco::GenParticle> genPar = genParticles->ptrAt(genLoop);
+            if (genPar->pdgId()==25 && genPar->isHardProcess()){
+                if (selHiggses.size()==0) selHiggses.push_back(genPar);
+                if (selHiggses.size()==1) selHiggses.push_back(genPar);
+                if (selHiggses.size()==2) break; 
+            }   
         }
-
-        // loop over diphotons
-        for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
-            edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( candIndex );
-            
-            // kinematic cuts on diphotons
-            auto & leadPho = *(dipho->leadingPhoton());
-            auto & subleadPho = *(dipho->subLeadingPhoton());
-            
-            double leadPt = leadPho.pt();
-            double subleadPt = subleadPho.pt();
-            if( scalingPtCuts_ ) {
-                leadPt /= dipho->mass();
-                subleadPt /= dipho->mass();
+       
+        if (selHiggses.size()==2){
+            TLorentzVector H1,H2;
+            H1.SetPtEtaPhiE(selHiggses[0]->p4().pt(),selHiggses[0]->p4().eta(),selHiggses[0]->p4().phi(),selHiggses[0]->p4().energy());
+            H2.SetPtEtaPhiE(selHiggses[1]->p4().pt(),selHiggses[1]->p4().eta(),selHiggses[1]->p4().phi(),selHiggses[1]->p4().energy());
+            float gen_mHH  = (H1+H2).M();
+            // histograms are provided only up to gen_mHH < 1800 GeV
+            if (gen_mHH<1800) {
+                float gen_cosTheta = getCosThetaStar_CS(H1,H2,6500.);   //beam energy 6500
+                // Now, lets fill in the weigts for the 12 benchmarks.
+                std::vector<float> NRWeights; //we will use this in the future when we would like to save all weights
+                for (unsigned int n=0; n<NUM_benchmarks; n++) 
+                    NRWeights.push_back(getWeight(NUM_gridsize+n, gen_mHH, gen_cosTheta));
+                float NRWeight_target =  NRWeights[NUM_gridsize-2+targetNode_]; //In our convention nodes start from node_2 and go up to node_13, therefore shift -2
+                ( *final_weight ) = NRWeight_target;
             }
-            if( leadPt <= minLeadPhoPt_ || subleadPt <= minSubleadPhoPt_ ) { continue; }
-            //apply egm photon id with given working point
-            if(doPhotonId_){
-                if(leadPho.userFloat("EGMPhotonMVA")<photonIDCut_ || subleadPho.userFloat("EGMPhotonMVA")<photonIDCut_){
-                    continue;
-                }
-            }
-            //electron veto
-            if(leadPho.passElectronVeto()<photonElectronVeto_[0] || subleadPho.passElectronVeto()<photonElectronVeto_[1]){
-                continue;
-            }
-            
-            
-            // find vertex associated to diphoton object
-            size_t vtx = (size_t)dipho->jetCollectionIndex();
-           // size_t vtx = (size_t)dipho->vertexIndex();
-          //  if( vtx >= jetTokens_.size() ) { vtx = 0; }
-            // and read corresponding jet collection
-            edm::Handle<edm::View<flashgg::Jet> > jets;
-            evt.getByToken( jetTokens_[vtx], jets);
-            
-            // photon-jet cross-cleaning and pt/eta/btag/jetid cuts for jets
-            std::vector<edm::Ptr<flashgg::Jet> > cleaned_jets;
-            for( size_t ijet=0; ijet < jets->size(); ++ijet ) {//jets are ordered in pt
-                auto jet = jets->ptrAt(ijet);
-                if (jet->pt()<minJetPt_ || fabs(jet->eta())>maxJetEta_)continue;
-                if (jet->bDiscriminator(bTagType_)<0) continue;//FIXME threshold might not be 0?
-                if( useJetID_ ){
-                    if( JetIDLevel_ == "Loose" && !jet->passesJetID  ( flashgg::Loose ) ) continue;
-                    if( JetIDLevel_ == "Tight" && !jet->passesJetID  ( flashgg::Tight ) ) continue;
-                }
-                if( reco::deltaR( *jet, *(dipho->leadingPhoton()) ) > vetoConeSize_ && reco::deltaR( *jet, *(dipho->subLeadingPhoton()) ) > vetoConeSize_ ) {
-                    cleaned_jets.push_back( jet );
-                }
-            }
-            if( cleaned_jets.size() < 2 ) { continue; }
-            //dijet pair selection. Do pair according to pt and choose the pair with highest b-tag
-            double sumbtag_ref = -999;
-            bool hasDijet = false;
-            edm::Ptr<flashgg::Jet>  jet1, jet2;
-            for( size_t ijet=0; ijet < cleaned_jets.size()-1;++ijet){
-                auto jet_1 = cleaned_jets[ijet];
-                for( size_t kjet=ijet+1; kjet < cleaned_jets.size();++kjet){
-                    auto jet_2 = cleaned_jets[kjet];
-                    auto dijet_mass = (jet_1->p4()+jet_2->p4()).mass(); 
-                    if (dijet_mass<mjjBoundaries_[0] || dijet_mass>mjjBoundaries_[1]) continue;
-                    double sumbtag = jet_1->bDiscriminator(bTagType_) + jet_2->bDiscriminator(bTagType_);
-                    if (sumbtag > sumbtag_ref) {
-                        hasDijet = true;
-                        sumbtag_ref = sumbtag;
-                        jet1 = jet_1;
-                        jet2 = jet_2;
-                    }
-                }
-            }
-            if (!hasDijet) continue;             
- 
-            auto & leadJet = jet1; 
-            auto & subleadJet = jet2; 
-
-            // prepare tag object
-            DoubleHTag tag_obj( dipho, leadJet, subleadJet );
-            tag_obj.setDiPhotonIndex( candIndex );
-            tag_obj.setSystLabel( systLabel_ );
-            
-            if (tag_obj.dijet().mass()<mjjBoundaries_[0] || tag_obj.dijet().mass()>mjjBoundaries_[1]) continue;
-
-            // compute extra variables here
-            tag_obj.setMX( tag_obj.p4().mass() - tag_obj.dijet().mass() - tag_obj.diPhoton()->mass() + 250. );
-            
-            if(doSigmaMDecorr_){
-                tag_obj.setSigmaMDecorrTransf(transfEBEB_,transfNotEBEB_);
-            }
-            
-            // eval MVA discriminant
-            std::vector<float> mva_vector = mvaComputer_.predict_prob(tag_obj);
-            double mva = mva_vector[multiclassSignalIdx_];
-            if(doMVAFlattening_){
-                mva = MVAFlatteningCumulative_->Eval(mva);
-            }
-
-            tag_obj.setMVA( mva );
-            //tag_obj.setMVAprob( mva_vector );
-            
-            // choose category and propagate weights
-            int catnum = chooseCategory( tag_obj.MVA(), tag_obj.MX() );
-            tag_obj.setCategoryNumber( catnum );
-            tag_obj.includeWeights( *dipho );
-            tag_obj.includeWeights( *leadJet );
-            tag_obj.includeWeights( *subleadJet );
-
-            if (catnum>-1){
-                if (doCategorization_) {
-                   if (tag_obj.dijet().mass()<mjjBoundariesLower_[catnum] || tag_obj.dijet().mass()>mjjBoundariesUpper_[catnum]) continue;
-                }
-                tags->push_back( tag_obj );
-                // link mc-truth
-                if( ! evt.isRealData() ) {
-                    tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                 
-                }
-            }
-        }
-        evt.put( std::move( truths ) );
-        evt.put( std::move( tags ) );
+        } 
+        evt.put( std::move( final_weight ) );
+     //   for ....
+    //    evt.put( std::move( final_weight ,number) );
     }
 }
+
+
+
 
 typedef flashgg::DoubleHReweighter FlashggDoubleHReweighter;
 DEFINE_FWK_MODULE( FlashggDoubleHReweighter );

@@ -100,7 +100,7 @@ namespace flashgg {
         edm::EDGetTokenT< LHEEventProduct > lheEventToken_;
         std::string LHEWeightName;
         int LHEWeightIndex;
-        edm::EDGetTokenT<double> reweightToken_;
+        edm::InputTag reweightTag_;
         bool doReweight_;
 
         std::string processId_;
@@ -214,7 +214,7 @@ namespace flashgg {
 	    
         doReweight_ = cfg.exists("reweight");
         if( doReweight_ ) {
-            reweightToken_ = cfg.getParameter<edm::InputTag>("reweight");
+            reweightTag_ = cfg.getParameter<edm::InputTag>("reweight");
         }
 
         nPdfWeights_=0;
@@ -412,7 +412,7 @@ namespace flashgg {
                 
                 if( doReweight_ ) {
                     edm::Handle<double> reweight;
-                    event.getByToken(reweightToken_,reweight);
+                    fullEvent->getByLabel(reweightTag_,reweight);
                     weight *= *reweight;
                 }
 
