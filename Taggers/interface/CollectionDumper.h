@@ -100,7 +100,7 @@ namespace flashgg {
         edm::EDGetTokenT< LHEEventProduct > lheEventToken_;
         std::string LHEWeightName;
         int LHEWeightIndex;
-        edm::InputTag reweightTag_;
+        edm::EDGetTokenT<float> reweightToken_;
         bool doReweight_;
 
         std::string processId_;
@@ -181,6 +181,10 @@ namespace flashgg {
         globalVarsDumper_(0)
     {
         if( dumpGlobalVariables_ ) {
+           doReweight_ = cfg.exists("reweight");
+          if( doReweight_ ) {
+               reweightToken_( cc.consumes<float>(cfg.getParameter<edm::InputTag>("reweight" )) );
+          }
             globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ), std::forward<edm::ConsumesCollector>(cc) );
         }
         _init(cfg, fs);
@@ -212,10 +216,10 @@ namespace flashgg {
             RooMsgService::instance().setGlobalKillBelow( RooFit::WARNING );
         }
 	    
-        doReweight_ = cfg.exists("reweight");
-        if( doReweight_ ) {
-            reweightTag_ = cfg.getParameter<edm::InputTag>("reweight");
-        }
+    //    doReweight_ = cfg.exists("reweight");
+     //   if( doReweight_ ) {
+     //       reweightToken_(consumes<double>(cfg.getParameter<edm::InputTag>("reweight" )) );
+     //   }
 
         nPdfWeights_=0;
         nAlphaSWeights_=0;
@@ -411,8 +415,8 @@ namespace flashgg {
                 }
                 
                 if( doReweight_ ) {
-                    edm::Handle<double> reweight;
-                    fullEvent->getByLabel(reweightTag_,reweight);
+                    edm::Handle<float> reweight;
+                    fullEvent->getByToken(reweightToken_,reweight);
                     weight *= *reweight;
                 }
 

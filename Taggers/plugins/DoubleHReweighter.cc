@@ -62,12 +62,14 @@ namespace flashgg {
             f_benchmarks_ = new TFile((benchmarksWeightsFile_.fullPath()).c_str(), "READ");
             
             for (unsigned int n=0; n<NUM_gridsize; n++){
-                hists_fullgrid.push_back((TH2F*)f_fullgrid_->Get(Form("point_%i_weights",n)));
+               // The points do not exist in the input file provided by Alexandra (and wont ever be added)
+                if (n==324 || n==910 || n==985 || n==990)  hists_fullgrid.push_back((TH2F*)f_fullgrid_->Get("point_0_weights"));
+                else hists_fullgrid.push_back((TH2F*)f_fullgrid_->Get(Form("point_%i_weights",n)));
                 if (!(hists_fullgrid[n])) throw cms::Exception( "Configuration" ) << "The file "<<fullGridWeightsFile_.fullPath()<<" provided for reweighting full grid does not contain the expected histograms."<<std::endl;
             }
             for (unsigned int n=0; n<NUM_benchmarks; n++){
                 hists_fullgrid.push_back((TH2F*)f_benchmarks_->Get(Form("point_%i_weights",n)));
-                if (!(hists_fullgrid[n])) throw cms::Exception( "Configuration" ) << "The file "<<benchmarksWeightsFile_.fullPath()<<" provided for reweighting benchmarks does not contain the expected histograms."<<std::endl;
+                if (!(hists_fullgrid[NUM_gridsize+n])) throw cms::Exception( "Configuration" ) << "The file "<<benchmarksWeightsFile_.fullPath()<<" provided for reweighting benchmarks does not contain the expected histograms."<<std::endl;
             }
 
         produces<float>();

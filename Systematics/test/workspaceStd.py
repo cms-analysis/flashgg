@@ -174,6 +174,7 @@ if customize.doFiducial:
     print process.flashggPreselectedDiPhotons.cut
 
 process.load("flashgg/Taggers/flashggTagSequence_cfi")
+process.load("flashgg.Taggers.diphotonTagDumper_cfi") ##  import diphotonTagDumper 
 print 'here we print the tag sequence before'
 print process.flashggTagSequence
 if customize.doFiducial:
@@ -379,7 +380,6 @@ process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string("test.root"))
 
 process.extraDumpers = cms.Sequence()
-process.load("flashgg.Taggers.diphotonTagDumper_cfi") ##  import diphotonTagDumper 
 import flashgg.Taggers.dumperConfigTools as cfgTools
 
 
