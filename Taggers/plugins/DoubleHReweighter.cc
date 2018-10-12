@@ -126,10 +126,9 @@ namespace flashgg {
         evt.getByToken( genParticleToken_, genParticles );
         for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
             edm::Ptr<reco::GenParticle> genPar = genParticles->ptrAt(genLoop);
+            if (selHiggses.size()>1) break;
             if (genPar->pdgId()==25 && genPar->isHardProcess()){
-                if (selHiggses.size()==0) selHiggses.push_back(genPar);
-                if (selHiggses.size()==1) selHiggses.push_back(genPar);
-                if (selHiggses.size()==2) break; 
+                selHiggses.push_back(genPar);
             }   
         }
        
