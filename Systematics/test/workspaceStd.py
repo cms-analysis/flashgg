@@ -174,7 +174,7 @@ if customize.doFiducial:
     print process.flashggPreselectedDiPhotons.cut
 
 process.load("flashgg/Taggers/flashggTagSequence_cfi")
-process.load("flashgg.Taggers.diphotonTagDumper_cfi") ##  import diphotonTagDumper 
+#process.load("flashgg.Taggers.diphotonTagDumper_cfi") ##  import diphotonTagDumper 
 print 'here we print the tag sequence before'
 print process.flashggTagSequence
 if customize.doFiducial:
@@ -381,6 +381,7 @@ process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string("test.root"))
 
 process.extraDumpers = cms.Sequence()
+process.load("flashgg.Taggers.diphotonTagDumper_cfi") ##  import diphotonTagDumper 
 import flashgg.Taggers.dumperConfigTools as cfgTools
 
 
@@ -630,8 +631,12 @@ if customize.doFiducial:
     if not customize.processId == "Data":
         fc.addGenOnlyAnalysis(process,customize.processId,customize.acceptance,tagList,systlabels,pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights))
 
+if customize.doubleHReweightTarget>0:
+    hhc.addNodesReweighting(customize,process)
+
 if customize.doDoubleHGenAnalysis:
     hhc.addGenAnalysis(customize,process,tagList)
+
 
 if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
 process.options.allowUnscheduled = cms.untracked.bool(True)
