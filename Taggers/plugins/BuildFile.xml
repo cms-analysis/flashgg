@@ -9,10 +9,17 @@
 <use   name="RecoEgamma/EgammaTools"/>
 <use   name="roofit"/>
 <use   name="roottmva"/>
-<use   name="RecoEgamma/EgammaTools"/>
 <use   name="CommonTools/CandAlgos"/>
-<use name="DNN/Base" />
-<use name="DNN/Tensorflow" /> 
+<release name="CMSSW_8">
+  <flags CXXFLAGS="-DCMSSW8"/>
+  <use name="DNN/Base" />
+  <use name="DNN/Tensorflow" /> 
+</release>
+<release name="CMSSW_9">
+  <flags CXXFLAGS="-DCMSSW9"/>
+  <use name="DNN/TensorFlow" />
+  <use name="tensorflow-cc" />
+</release>
 <!-- Flags CXXFLAGS="-ggdb"/ -->
 <flags   EDM_PLUGIN="1"/>
 </library>

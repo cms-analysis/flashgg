@@ -373,7 +373,8 @@ process.source = cms.Source ("PoolSource",
 #"root://cms-xrd-global.cern.ch//store/user/micheli/HHbbgg/MicroAod/RunIIMoriond17_HHbbgg_breg_extra4/1/GluGluToHHTo2B2G_node_box_13TeV-madgraph/RunIIMoriond17_HHbbgg_breg_extra4-1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180528_185053/0000/myMicroAODOutputFile_1.root"
 #"root://xrootd-cms.infn.it//store/user/micheli/HHbbgg/MicroAod/RunIIMoriond17_HHbbgg_breg_v2/1/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIMoriond17_HHbbgg_breg-1-v1-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180412_131554/0000/myMicroAODOutputFile_1.root"
 #"root://xrootd-cms.infn.it//store/group/phys_higgs/cmshgg/micheli/flashgg/LegacyReReco-20180629/1/DoubleEG/LegacyReReco-20180629-1-v0-Run2016E-07Aug17-v1/180629_143351/0000/myMicroAODOutputFile_44.root"
-"root://xrootd-cms.infn.it//store/group/phys_higgs/cmshgg/micheli/flashgg/LegacyReReco-20180629/1/DoubleEG/LegacyReReco-20180629-1-v0-Run2016E-07Aug17-v1/180629_143351/0000/myMicroAODOutputFile_247.root"
+#"root://xrootd-cms.infn.it//store/group/phys_higgs/cmshgg/micheli/flashgg/LegacyReReco-20180629/1/DoubleEG/LegacyReReco-20180629-1-v0-Run2016E-07Aug17-v1/180629_143351/0000/myMicroAODOutputFile_247.root"
+"root://cms-xrd-global.cern.ch//store/user/micheli/HHbbgg/MicroAod/RunIIMoriond17_HHbbgg_breg_extra4/1/GluGluToHHTo2B2G_node_13_13TeV-madgraph/RunIIMoriond17_HHbbgg_breg_extra4-1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180528_183109/0000/myMicroAODOutputFile_1.root"
 ))
 
 process.TFileService = cms.Service("TFileService",
@@ -569,7 +570,17 @@ process.p = cms.Path(process.dataRequirements*
                      process.finalFilter*
                      process.tagsDumper)
 
+
 if customize.doBJetRegression:
+    if os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
+        bRegFile= str(os.environ["CMSSW_BASE"])+'/src/flashgg/Taggers/data/DNN_models/breg_training_2017.pb'
+        bReg_y_mean = 1.0610932111740112
+        bReg_y_std = 0.39077115058898926 
+    elif  os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):  
+        bRegFile= str(os.environ["CMSSW_BASE"])+'/src/flashgg/Taggers/data/DNN_models/model-18'
+        bReg_y_mean = 1.0454729795455933
+        bReg_y_std = 0.31628304719924927
+
     bregProducers = []
     bregJets = []
     
@@ -577,16 +588,20 @@ if customize.doBJetRegression:
     recoJetCollections = UnpackedJetCollectionVInputTag
 
 
-    
     for icoll,coll in enumerate(recoJetCollections):
         print "doing icoll "+str(icoll)
-        producer =   cms.EDProducer('flashggbRegressionProducer80',
+
+        print "using b-regression for jets", str(bRegFile)
+
+        producer =   cms.EDProducer('flashggbRegressionProducer',
                                     JetTag=coll,
                                     rhoFixedGridCollection = cms.InputTag('fixedGridRhoFastjetAll'),
-                                    bRegressionWeightfile= cms.untracked.string(os.environ["CMSSW_BASE"]+"/src/flashgg/Taggers/data/DNN_models/model-18"),
-                                    y_mean = cms.untracked.double(1.0454729795455933),#check MetaData/data/DNN_models/config.json
-                                    y_std = cms.untracked.double( 0.31628304719924927)
+                                    bRegressionWeightfile = cms.untracked.string(str(bRegFile)),
+                                    y_mean = cms.untracked.double(bReg_y_mean),
+                                    y_std = cms.untracked.double(bReg_y_std) 
                                     )
+
+
         setattr(process,"bRegProducer%d" %icoll,producer)
         bregProducers.append(producer)
         bregJets.append("bRegProducer%d" %icoll)
