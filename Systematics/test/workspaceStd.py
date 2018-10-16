@@ -174,7 +174,6 @@ if customize.doFiducial:
     print process.flashggPreselectedDiPhotons.cut
 
 process.load("flashgg/Taggers/flashggTagSequence_cfi")
-#process.load("flashgg.Taggers.diphotonTagDumper_cfi") ##  import diphotonTagDumper 
 print 'here we print the tag sequence before'
 print process.flashggTagSequence
 if customize.doFiducial:

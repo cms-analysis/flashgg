@@ -150,6 +150,10 @@ def addGenAnalysis(customize,process,tagList):
     from flashgg.Taggers.globalVariables_cff import globalVariables
     process.genDiphotonDumper.dumpGlobalVariables = True
     process.genDiphotonDumper.globalVariables = globalVariables
+    if customize.doubleHReweightTarget != -1:
+        process.load("flashgg.Taggers.flashggDoubleHReweight_cfi")
+        process.flashggDoubleHReweight.targetNode = customize.doubleHReweightTarget
+        process.genDiphotonDumper.reweight  =  cms.InputTag("flashggDoubleHReweight")
     
     genVariables = ["mgg := mass",
                     "mbb := dijet.mass",

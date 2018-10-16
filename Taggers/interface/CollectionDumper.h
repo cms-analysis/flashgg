@@ -216,11 +216,6 @@ namespace flashgg {
             RooMsgService::instance().setGlobalKillBelow( RooFit::WARNING );
         }
 	    
-    //    doReweight_ = cfg.exists("reweight");
-     //   if( doReweight_ ) {
-     //       reweightToken_(consumes<double>(cfg.getParameter<edm::InputTag>("reweight" )) );
-     //   }
-
         nPdfWeights_=0;
         nAlphaSWeights_=0;
         nScaleWeights_=0;
