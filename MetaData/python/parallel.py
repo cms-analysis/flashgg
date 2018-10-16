@@ -401,7 +401,7 @@ class WorkNodeJobFactory(object):
         
     # ------------------------------------------------------------------------------------------------
     def mkTarball(self,tarball=None,
-                  tarball_entries=["python","lib","bin"],tarball_patterns={"src/*":"data"},
+                  tarball_entries=["python","lib","bin","flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310"],tarball_patterns={"src/*":"data"},
                   tarball_transform=None):
         
         self.tarball = tarball

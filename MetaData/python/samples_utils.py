@@ -1,6 +1,6 @@
 from optpars_utils import *
 
-from das_client import get_data as das_query
+from Utilities.General.cmssw_das_client import get_data as das_query
 
 from pprint import pprint
 
@@ -135,7 +135,8 @@ class SamplesManager(object):
             if "*" in dataset:
                 # response = das_query("https://cmsweb.cern.ch","dataset dataset=%s | grep dataset.name" % dataset, 0, 0, False, self.dbs_instance_, ckey=x509(), cert=x509())
                 # response = das_query("https://cmsweb.cern.ch","dataset dataset=%s instance=%s | grep dataset.name" % (dataset, self.dbs_instance_), 0, 0, False, ckey=x509(), cert=x509())
-                response = das_query("https://cmsweb.cern.ch","dataset dataset=%s instance=%s | grep dataset.name" % (dataset, self.dbs_instance_), 0, 0, False, ckey=x509(), cert=x509())
+                # response = das_query("https://cmsweb.cern.ch","dataset dataset=%s instance=%s | grep dataset.name" % (dataset, self.dbs_instance_), 0, 0, False, ckey=x509(), cert=x509())
+                response = das_query("dataset dataset=%s instance=%s | grep dataset.name" % (dataset, self.dbs_instance_))
                 ## print response
                 for d in response["data"]:
                     ## print d
@@ -161,7 +162,8 @@ class SamplesManager(object):
         @dsetName: dataset name
         """
         ## response = das_query("https://cmsweb.cern.ch","file dataset=%s | grep file.name,file.nevents" % dsetName, 0, 0, False, self.dbs_instance_, ckey=x509(), cert=x509())
-        response = das_query("https://cmsweb.cern.ch","file dataset=%s instance=%s | grep file.name,file.nevents" % (dsetName,self.dbs_instance_), 0, 0, False, ckey=x509(), cert=x509())
+        ## response = das_query("https://cmsweb.cern.ch","file dataset=%s instance=%s | grep file.name,file.nevents" % (dsetName,self.dbs_instance_), 0, 0, False, ckey=x509(), cert=x509())
+        response = das_query("file dataset=%s instance=%s | grep file.name,file.nevents" % (dsetName,self.dbs_instance_))
         
         files=[]
         for d in response["data"]:
@@ -964,8 +966,10 @@ Commands:
                             default=20,
                             help="Maximum number of threads to use. default: %default",
                             ),
-                make_option("--no-copy-proxy",dest="copy_proxy",action="store_false",
-                            default=True,help="Do not try to copy the grid proxy to the worker nodes."
+                make_option("-S","--Dataset",
+                            dest="dataset",action="store",type="string",
+                            default=None,
+                            help="",
                             ),
                 make_option("-v","--verbose",
                             action="store_true", dest="verbose",
@@ -1002,9 +1006,9 @@ Commands:
             method()
             
     def run_import(self,*args):
-        if len(args)>0:
-            print args
-            self.mn.importFromDAS(list(args))
+        if self.options.dataset :
+            print self.options.dataset
+            self.mn.importFromDAS([self.options.dataset])
         else:
             self.mn.importFromDAS(["/*/*%s-%s*/USER" % (self.options.campaign,self.options.flashggVersion)])
     

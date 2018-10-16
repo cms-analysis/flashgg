@@ -1,0 +1,11 @@
+{
+	"data" : [
+	       ],
+	"sig"  : [
+"/GluGluHToGG_M70_13TeV_amcatnloFXFX_pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM",
+"/VBFHToGG_M70_13TeV_amcatnlo_pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v11-v1/MINIAODSIM",
+"/VHToGG_M70_13TeV_amcatnloFXFX_madspin_pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v11-v1/MINIAODSIM"
+	       ],
+	"bkg"  : [
+	]
+}

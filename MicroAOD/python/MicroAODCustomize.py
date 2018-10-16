@@ -194,6 +194,7 @@ class MicroAODCustomize(object):
             
     # signal specific customization
     def customizeSignal(self,process):
+        print "customizeSignal"
         process.flashggGenPhotonsExtra.defaultType = 1
         from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
         if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
@@ -223,7 +224,7 @@ class MicroAODCustomize(object):
             process.p *= process.mergedGenParticles
             process.p *= process.myGenerator
             process.p *= process.rivetProducerHTXS
-            process.out.outputCommands.append("keep *_rivetProducerHTXS_*_*")
+            process.out.outputCommands.append('keep *_HTXSRivetProducer_*_*')
 
         if os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
             #raise Exception,"Debugging ongoing for HTXS in CMSSW 9"
@@ -246,9 +247,13 @@ class MicroAODCustomize(object):
             process.p *= process.mergedGenParticles
             process.p *= process.myGenerator
             process.p *= process.rivetProducerHTXS
-            process.out.outputCommands.append('keep *_*_*_runRivetAnalysis')
+            process.out.outputCommands.append('keep *_rivetProducerHTXS_*_*')
+#            process.out.outputCommands.append('keep *_*_*_FLASHggMicroAOD')
+#            process.out.outputCommands.append('drop *_*Jets*_*_*')
+
 
         self.customizePDFs(process)
+        self.customizeHLT(process)
 
     def customizePDFs(self,process):     
         process.load("flashgg/MicroAOD/flashggPDFWeightObject_cfi")
@@ -508,13 +513,17 @@ class MicroAODCustomize(object):
             process.rivetProducerHTXS.ProductionMode = "GGF"
 
     def customizeTH(self,process):
+        print "customizeTH"
         cross_sections=["$CMSSW_BASE/src/flashgg/MetaData/data/cross_sections.json"]
         cross_sections_ = {}
         LHESourceName = None
         for xsecFile in cross_sections:
             fname = os.path.expanduser( os.path.expandvars(xsecFile) )
             cross_sections_.update( json.loads( open(fname).read() ) )
-        dsName = customize.datasetName.split("/")[1]
+        if customize.datasetName.count("/"):
+            dsName = customize.datasetName.split("/")[1]
+        else:
+            dsName = customize.datasetName
         if dsName in cross_sections_.keys() :
             xsec_info = cross_sections_[dsName]
             if "LHESourceName" in xsec_info.keys() :
@@ -527,8 +536,8 @@ class MicroAODCustomize(object):
             print "for TH sample of %s, no LHESource is found to be kept" % (dsName)
         if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             process.rivetProducerHTXS.ProductionMode = "TH"
-        process.flashggPDFWeightObject.LHEEventTag = "source"
-        process.flashggPDFWeightObject.LHERunLabel = "source"
+#        process.flashggPDFWeightObject.LHEEventTag = "source"
+#        process.flashggPDFWeightObject.LHERunLabel = "source"
         process.flashggPDFWeightObject.isStandardSample = False
         process.flashggPDFWeightObject.isThqSample = True
         

@@ -9,8 +9,15 @@
 
 // setup calibration readers
 std::string CMSSW_BASE(getenv("CMSSW_BASE"));
+
 std::string CSVfilename = CMSSW_BASE + std::string("/src/flashgg/Systematics/data/CSVv2.csv");
-BTagCalibration calib("CSVv2", CSVfilename);
+BTagCalibration calib_CSV("CSVv2", CSVfilename);
+
+std::string DeepCSVfilename = CMSSW_BASE + std::string("/src/flashgg/Systematics/data/DeepCSV_94XSF_V3_B_F.csv");
+BTagCalibration calib_DeepCSV("DeepCSV",  DeepCSVfilename); 
+
+
+BTagCalibration calib;
 
 //For medium working point
 
@@ -19,7 +26,6 @@ BTagCalibrationReader readerMedB(BTagEntry::OP_MEDIUM, "central", {"up", "down"}
 BTagCalibrationReader readerMedC(BTagEntry::OP_MEDIUM, "central", {"up", "down"}); //readerMedC.load(calib, BTagEntry::FLAV_C, "comb");   // operating point
                                // "central",               // central sys type
                                // {"up", "down"});        // other systematics type
-
 BTagCalibrationReader readerMedUDSG(BTagEntry::OP_MEDIUM,  "central", {"up", "down"}); //readerMedUDSG.load(calib, BTagEntry::FLAV_UDSG, "comb");  // operating point
                                // "central",               // central sys type
                                // {"up", "down"});        // other systematics type
@@ -56,21 +62,16 @@ namespace flashgg {
         bDiscriminator_( conf.getParameter<double>("bDiscriminator") ),
         btagSFreshape_ ( conf.getUntrackedParameter<bool>( "btagSFreshape", false ) )
     {
+
+
         this->setMakesWeight( true );
 
-
-
-        // readerMedB.load(calib,                // calibration instance
-        //                 BTagEntry::FLAV_B,    // btag flavour
-        //                 "comb");               // measurement type
-
-        // readerMedC.load(calib,                // calibration instance
-        //                 BTagEntry::FLAV_C,    // btag flavour
-        //                 "comb");               // measurement type
-
-        // readerMedUDSG.load(calib,                // calibration instance
-        //                    BTagEntry::FLAV_UDSG,    // btag flavour
-        //                    "incl");               // measurement type
+        if(bTag_=="pfDeepCSV"){
+            calib=calib_DeepCSV; 
+            if(debug_) cout<< "Using DeepCSV"<< endl;
+        }else{
+            calib=calib_CSV; 
+        }
 
     }
 
@@ -147,14 +148,18 @@ namespace flashgg {
             float JetEta = obj.eta();
             int JetFlav = obj.hadronFlavour();
             bool JetBTagStatus = false;
-            float JetBDiscriminator = obj.bDiscriminator(bTag_.c_str());
+            float JetBDiscriminator;
+        
+            if(bTag_=="pfDeepCSV") JetBDiscriminator = obj.bDiscriminator("pfDeepCSVJetTags:probb")+ obj.bDiscriminator("pfDeepCSVJetTags:probbb"); 
+            else JetBDiscriminator= obj.bDiscriminator(bTag_.c_str());
+
             if(JetBDiscriminator > bDiscriminator_ ) JetBTagStatus = true;
 
 
             if( this->debug_ ) {
                 std::cout << " In JetBTagWeight before calib reader: " << shiftLabel( syst_shift ) << ": Object has pt= " << obj.pt() << " eta=" << obj.eta() << " flavour=" << obj.hadronFlavour()
                           << " efficiency of " << eff_central << " values for scale factors : "<< JetPt <<" "<< JetEta <<" "<<JetFlav 
-                          << " BTag Values : "<< obj.bDiscriminator(bTag_.c_str()) <<" "<< bDiscriminator_<<" "<<JetBTagStatus<<std::endl;
+                          << " BTag Values : "<< JetBDiscriminator <<" "<< bDiscriminator_<<" "<<JetBTagStatus<<std::endl;
             }
 
             //get scale factors from calib reader

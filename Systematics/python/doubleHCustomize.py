@@ -122,7 +122,9 @@ def customizeTagSequence(customize,process):
 
 def addNodesReweighting(customize,process):
     if customize.doubleHReweightTarget != -1:
-        process.load("flashgg.Taggers.flashggDoubleHReweight_cfi")
+        from flashgg.Taggers.flashggDoubleHReweight_cfi import flashggDoubleHReweight
+        process.flashggDoubleHReweight = flashggDoubleHReweight
+        process.p.replace(process.tagsDumper, process.flashggDoubleHReweight*process.tagsDumper)
         process.flashggDoubleHReweight.targetNode = customize.doubleHReweightTarget
         process.tagsDumper.reweight  =  cms.InputTag("flashggDoubleHReweight")
     
@@ -151,8 +153,6 @@ def addGenAnalysis(customize,process,tagList):
     process.genDiphotonDumper.dumpGlobalVariables = True
     process.genDiphotonDumper.globalVariables = globalVariables
     if customize.doubleHReweightTarget != -1:
-        process.load("flashgg.Taggers.flashggDoubleHReweight_cfi")
-        process.flashggDoubleHReweight.targetNode = customize.doubleHReweightTarget
         process.genDiphotonDumper.reweight  =  cms.InputTag("flashggDoubleHReweight")
     
     genVariables = ["mgg := mass",

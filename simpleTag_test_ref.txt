@@ -1,0 +1,53 @@
+ ##################################################################### 
+ # WARNING: the module CondCore.DBCommon.CondDBSetup is deprecated.  # 
+ # Please import CondCore.CondDB.CondDB_cfi                          # 
+ ##################################################################### 
+Warning in <TInterpreter::ReadRootmapFile>: class  edm::Ptr<pat::PackedGenParticle> found in libDataFormatsPatCandidates.so  is already in libflashggDataFormats.so 
+15-Aug-2018 12:04:41 CEST  Initiating request to open file file:myMicroAODOutputFile.root
+15-Aug-2018 12:04:45 CEST  Successfully opened file file:myMicroAODOutputFile.root
+Begin processing the 1st record. Run 1, Event 53204, LumiSection 58 at 15-Aug-2018 12:05:01.959 CEST
+[UNTAGGED] category 1 mass=121.272, systLabel 
+	[UNTAGGED TRUTH]: genPV=(-0.0243185,0.069567,0.687737)
+Begin processing the 2nd record. Run 1, Event 53205, LumiSection 58 at 15-Aug-2018 12:05:02.162 CEST
+[NO TAG]
+Begin processing the 3rd record. Run 1, Event 53203, LumiSection 58 at 15-Aug-2018 12:05:02.171 CEST
+[NO TAG]
+Begin processing the 4th record. Run 1, Event 53206, LumiSection 58 at 15-Aug-2018 12:05:02.180 CEST
+[UNTAGGED] category 1 mass=122.669, systLabel 
+	[UNTAGGED TRUTH]: genPV=(-0.025178,0.0695381,-0.270614)
+Begin processing the 5th record. Run 1, Event 53208, LumiSection 58 at 15-Aug-2018 12:05:02.204 CEST
+[UNTAGGED] category 2 mass=125.157, systLabel 
+	[UNTAGGED TRUTH]: genPV=(-0.023948,0.0684956,0.807966)
+Begin processing the 6th record. Run 1, Event 53207, LumiSection 58 at 15-Aug-2018 12:05:02.219 CEST
+[NO TAG]
+Begin processing the 7th record. Run 1, Event 53212, LumiSection 58 at 15-Aug-2018 12:05:02.229 CEST
+[UNTAGGED] category 3 mass=126.202, systLabel 
+	[UNTAGGED TRUTH]: genPV=(-0.0249422,0.0667327,1.57199)
+Begin processing the 8th record. Run 1, Event 53211, LumiSection 58 at 15-Aug-2018 12:05:02.245 CEST
+[NO TAG]
+Begin processing the 9th record. Run 1, Event 53209, LumiSection 58 at 15-Aug-2018 12:05:02.257 CEST
+[NO TAG]
+Begin processing the 10th record. Run 1, Event 53223, LumiSection 58 at 15-Aug-2018 12:05:02.267 CEST
+[UNTAGGED] category 2 mass=124.395, systLabel 
+	[UNTAGGED TRUTH]: genPV=(-0.0241996,0.0698694,3.73591)
+15-Aug-2018 12:05:02 CEST  Closed file file:myMicroAODOutputFile.root
+
+=============================================
+
+MessageLogger Summary
+
+ type     category        sev    module        subroutine        count    total
+ ---- -------------------- -- ---------------- ----------------  -----    -----
+    1 fileAction           -s file_close                             1        1
+    2 fileAction           -s file_open                              2        2
+
+ type    category    Examples: run/evt        run/evt          run/evt
+ ---- -------------------- ---------------- ---------------- ----------------
+    1 fileAction           PostGlobalEndRun                  
+    2 fileAction           pre-events       pre-events       
+
+Severity    # Occurrences   Total Occurrences
+--------    -------------   -----------------
+System                  3                   3
+
+dropped waiting message count 0

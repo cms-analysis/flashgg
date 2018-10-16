@@ -12,7 +12,8 @@
 <class name="edm::Ptr<flashgg::PDFWeightObject>"/>
 <class name="std::vector<flashgg::PDFWeightObject>"/>
 <class name="edm::Wrapper<std::vector<flashgg::PDFWeightObject> >"/>
-<class name="flashgg::DiPhotonMVAResult" ClassVersion="11">
+<class name="flashgg::DiPhotonMVAResult" ClassVersion="12">
+ <version ClassVersion="12" checksum="3655353171"/>
   <version ClassVersion="11" checksum="1225448115"/>
 </class>
 <class name="std::vector<flashgg::DiPhotonMVAResult>"/>
@@ -61,7 +62,8 @@
 </class>
 <class name="std::vector<flashgg::VBFTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::VBFTag> >"/>
-<class name="flashgg::TTHLeptonicTag" ClassVersion="12">
+<class name="flashgg::TTHLeptonicTag" ClassVersion="13">
+ <version ClassVersion="13" checksum="464700754"/>
  <version ClassVersion="12" checksum="1015665249"/>
  <version ClassVersion="11" checksum="2848650298"/>
   <version ClassVersion="10" checksum="727624063"/>
@@ -69,7 +71,16 @@
 <class name="std::vector<flashgg::TTHLeptonicTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TTHLeptonicTag> >"/>
 <class name="std::vector<pat::Muon>"/>
-<class name="flashgg::TTHHadronicTag" ClassVersion="14">
+<class name="flashgg::TTHDiLeptonTag" ClassVersion="14">
+ <version ClassVersion="14" checksum="4003252239"/>
+ <version ClassVersion="13" checksum="3773849427"/>
+ <version ClassVersion="12" checksum="2341601757"/>
+</class>
+<class name="std::vector<flashgg::TTHDiLeptonTag>"/>
+<class name="edm::Wrapper<std::vector<flashgg::TTHDiLeptonTag> >"/>
+<class name="flashgg::TTHHadronicTag" ClassVersion="16">
+ <version ClassVersion="16" checksum="2479971496"/>
+ <version ClassVersion="15" checksum="705798933"/>
  <version ClassVersion="14" checksum="3454620804"/>
  <version ClassVersion="13" checksum="3956710497"/>
  <version ClassVersion="12" checksum="3228179576"/>
@@ -355,5 +366,12 @@
 <class name="edm::Wrapper<std::vector<flashgg::TagCandidate> >"/>
 <class name="std::vector<flashgg::DiPhotonTagBase*>"/>
 <class name="std::vector<flashgg::TagTruthBase*>"/>
+
+<class name="flashgg::DoubleHTag" ClassVersion="11">
+  <version ClassVersion="10" checksum="2099650607"/>
+  <version ClassVersion="11" checksum="2809364010"/>
+</class>
+<class name="std::vector<flashgg::DoubleHTag>"/>
+<class name="edm::Wrapper<std::vector<flashgg::DoubleHTag> >"/>
 
 </lcgdict>

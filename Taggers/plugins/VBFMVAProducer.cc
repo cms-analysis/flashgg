@@ -219,8 +219,9 @@ namespace flashgg {
                 //if (jet->puJetId(diPhotons[candIndex]) <  PuIDCutoff) {continue;}
                 if( _usePuJetID && !jet->passesPuJetId(diPhotons->ptrAt( candIndex ))){ continue;}
                 if( _useJetID ){
-                    if( _JetIDLevel == "Loose" && !jet->passesJetID  ( flashgg::Loose ) ) continue;
+                    if( _JetIDLevel == "Loose" && !jet->passesJetID  ( flashgg::Tight2017 ) ) continue;
                     if( _JetIDLevel == "Tight" && !jet->passesJetID  ( flashgg::Tight ) ) continue;
+                    if( _JetIDLevel == "Tight2017" && !jet->passesJetID (flashgg::Tight2017 ) ) continue;
                 }
                 // rms cuts over 2.5 
                 if( fabs( jet->eta() ) > 2.5 && jet->rms() > _rmsforwardCut ){ 

@@ -17,6 +17,7 @@
 #include "flashgg/DataFormats/interface/VBFTag.h"
 #include "flashgg/DataFormats/interface/NoTag.h"
 
+#include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
 
 #include "TMVA/Reader.h"
 #include "TMath.h"
@@ -73,6 +74,7 @@ namespace flashgg {
         bool createNoTag_;
         EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
         EDGetTokenT<float> pTHToken_,pTVToken_;
+        EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
 
         std::vector<std::tuple<DiPhotonTagBase::tag_t,int,int> > otherTags_; // (type,category,diphoton index)
 
@@ -121,6 +123,7 @@ namespace flashgg {
         njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
         pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
         pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
+        newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
 
         produces<edm::OwnVector<flashgg::DiPhotonTagBase> >();
         produces<edm::OwnVector<flashgg::TagTruthBase> >();
@@ -212,7 +215,7 @@ namespace flashgg {
                 }
                 if (centralObjectWeight < minObjectWeightWarning || centralObjectWeight > maxObjectWeightWarning) {
                     std::cout << "WARNING Tag centralWeight=" << centralObjectWeight << " outside of bound ["
-                              << minObjectWeightException << "," << maxObjectWeightException
+                              << minObjectWeightWarning << "," << maxObjectWeightWarning
                               << "] - " << tpr->name << " chosen_i=" << chosen_i << " - consider investigating!" << std::endl;
                 }
 
@@ -317,12 +320,20 @@ namespace flashgg {
             evt.getByToken(njetsToken_,njets);
             evt.getByToken(pTHToken_,pTH);
             evt.getByToken(pTVToken_,pTV);
+            Handle<HTXS::HiggsClassification> htxsClassification;
+            evt.getByToken(newHTXSToken_,htxsClassification);
             if ( stage0cat.isValid() ) {
                 truth_obj.setHTXSInfo( *( stage0cat.product() ),
                                        *( stage1cat.product() ),
                                        *( njets.product() ),
                                        *( pTH.product() ),
                                        *( pTV.product() ) );
+            } else if ( htxsClassification.isValid() ) {
+                truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
+                                       htxsClassification->stage1_cat_pTjet30GeV,
+                                       htxsClassification->jets30.size(),
+                                       htxsClassification->p4decay_higgs.pt(),
+                                       htxsClassification->p4decay_V.pt() );
             } else {
                 truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
             }
@@ -355,6 +366,8 @@ namespace flashgg {
             return string("TTHHadronic");
         case DiPhotonTagBase::tag_t::kTTHLeptonic:
             return string("TTHLeptonic");
+        case DiPhotonTagBase::tag_t::kTTHDiLepton:
+            return string("TTHDiLepton");
         case DiPhotonTagBase::tag_t::kVHTight:
             return string("VHTight");
         case DiPhotonTagBase::tag_t::kVHLoose:

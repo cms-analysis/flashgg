@@ -6,7 +6,7 @@
 #include "flashgg/DataFormats/interface/Photon.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 #include "FWCore/Framework/interface/Event.h"
-#include "EgammaAnalysis/ElectronTools/interface/EnergyScaleCorrection_class.h"
+#include "RecoEgamma/EgammaTools/interface/EnergyScaleCorrection.h"
 
 namespace flashgg {
     
@@ -29,7 +29,7 @@ namespace flashgg {
         const std::string label1_;
         const std::string label2_;
         std::string random_label_;
-        EnergyScaleCorrection_class scaler_;
+        EnergyScaleCorrection scaler_;
         bool exaggerateShiftUp_; // debugging
         unsigned run_number_;
         bool debug_;
@@ -50,7 +50,6 @@ namespace flashgg {
         debug_( conf.getUntrackedParameter<bool>("Debug", false) )
     {
         if (!applyCentralValue()) throw cms::Exception("SmearingLogic") << "If we do not apply central smearing we cannot scale down the smearing";
-        else scaler_.doSmearings = true;
     }
     
     std::string PhotonSmearStochasticEGMTool::shiftLabel( std::pair<int, int> syst_value ) const
@@ -79,7 +78,11 @@ namespace flashgg {
             
             // the combination of central value + NSigma * sigma is already
             // computed by getSmearingSigma(...)
-            auto sigma = scaler_.getSmearingSigma(run_number_, y.isEB(), y.full5x5_r9(), y.superCluster()->eta(), y.et(), gain, ((float)syst_shift.first), ((float)syst_shift.second));
+            auto sigma = scaler_.smearingSigma(run_number_, y.et(), y.superCluster()->eta(), y.full5x5_r9(), gain, ((float)syst_shift.first), ((float)syst_shift.second));
+
+            if ( sigma < 0. || sigma > 1. ) {
+                throw cms::Exception("SmearingLogic") << " sigmaEOverE is going to be smeared by " << sigma << " which sounds implausible (allowed: 0-1)";                                                                 
+            }
             
             if (!y.hasUserFloat(random_label_)) {
                 throw cms::Exception("Missing embedded random number") << "Could not find key " << random_label_ << " for random numbers embedded in the photon object, please make sure to read the appropriate version of MicroAOD and/or access the correct label and/or run the PerPhotonDiPhoton randomizer on-the-fly";

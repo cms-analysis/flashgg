@@ -13,7 +13,7 @@ flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
                                UseJetID    = cms.bool(True),
                                merge3rdJet = cms.bool(False),
                                thirdJetDRCut = cms.double(1.8),
-                               JetIDLevel    = cms.string("Tight"),
+                               JetIDLevel    = cms.string("Tight2017"),
                                # changes loose to another working point, or comment if you want to disable pujid
                                pujidWpPtBin1 = cms.vdouble([0.69, -0.35, -0.26, -0.21]), # cms.vdouble(pujid.loose[0]),
                                pujidWpPtBin2 = cms.vdouble([0.86, -0.1 , -0.05, -0.01]), # cms.vdouble(pujid.loose[1]),
@@ -26,7 +26,8 @@ flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
                                #vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_dijetMVA_Jan2016_rmscut_BDTG.weights.xml"),
                                #vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_dijetMVA_76x_24_02_15_BDTG.weights.xml"),
                                #vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVA_classification_dijet-mva-80x-ICHEP-v04.weights.xml"),
-                               vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/sklearn_training_moriond17_v8.xml"),
+#                               vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/sklearn_training_moriond17_v8.xml"),
+                               vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/dijet-2017-10Jul.xml")
 )
 # Legacy DiPhoDiJet MVA
 flashggVBFDiPhoDiJetMVA = cms.EDProducer('FlashggVBFDiPhoDiJetMVAProducer',

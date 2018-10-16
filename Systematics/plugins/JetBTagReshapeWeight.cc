@@ -8,9 +8,16 @@
 #include "CondTools/BTau/interface/BTagCalibrationReader.h"
 
 // setup calibration readers
+
 std::string CMSSW_BASE_Reshape(getenv("CMSSW_BASE"));
+
 std::string CSVfilename_Reshape = CMSSW_BASE_Reshape + std::string("/src/flashgg/Systematics/data/CSVv2.csv");
-BTagCalibration calib_Reshape("CSVv2", CSVfilename_Reshape);
+BTagCalibration calib_ReshapeCSV("CSVv2", CSVfilename_Reshape);
+
+std::string DeepCSVfilename_Reshape = CMSSW_BASE_Reshape + std::string("/src/flashgg/Systematics/data/DeepCSV_94XSF_V3_B_F.csv");
+BTagCalibration calib_ReshapeDeepCSV("DeepCSV",  DeepCSVfilename_Reshape); 
+
+BTagCalibration calib_Reshape;
 
 //For reshaping BTag shape
 
@@ -45,7 +52,6 @@ namespace flashgg {
         selector_type overall_range_;
         bool debug_;
         std::string bTag_;
-        double bDiscriminator_;
         bool btagSFreshape_;
         int bTagReshapeSystOption_;
     };
@@ -55,12 +61,16 @@ namespace flashgg {
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),        
         debug_( conf.getUntrackedParameter<bool>( "Debug", false ) ),
         bTag_( conf.getParameter<std::string>("bTag") ),
-        bDiscriminator_( conf.getParameter<double>("bDiscriminator") ),
+
         btagSFreshape_ ( conf.getUntrackedParameter<bool>( "btagSFreshape", false ) )
     {
         this->setMakesWeight( true );
-        bTagReshapeSystOption_ = conf.getParameter<int>( "bTagReshapeSystOption");
-        
+        bTagReshapeSystOption_ = conf.getParameter<int>( "bTagReshapeSystOption"); 
+        if(bTag_=="pfDeepCSV"){ // JM 
+            calib_Reshape=calib_ReshapeDeepCSV; 
+        }else{
+            calib_Reshape=calib_ReshapeCSV; 
+        }
     }
 
     std::string JetBTagReshapeWeight::shiftLabel( int syst_value ) const
@@ -100,6 +110,7 @@ namespace flashgg {
         }
 
         float theWeight = 1.;
+
         if( overall_range_( obj ) ) {
             
             if( this->debug_ ) {
@@ -108,40 +119,24 @@ namespace flashgg {
 
             float central = 1., errup = 1., errdown = 1.;
 
-            //obtaining efficiencies
-            auto val_err = binContents( obj );
-            float eff_central = 1.;//, eff_errup = 0., eff_errdown = 0.;
-            if( val_err.first.size() == 1 && val_err.second.size() == 1 ) { // symmetric
-                eff_central = val_err.first[0];  
-                //eff_errup = eff_errdown = val_err.second[0]; 
-            } else if ( val_err.first.size() == 1 && val_err.second.size() == 2 ) { // asymmetric
-                eff_central = val_err.first[0];
-                //eff_errup = val_err.second[0];
-                //eff_errdown = val_err.second[1];
-            } else {
-                throw cms::Exception("BadConfig") << " We do not recognize the bin format or this object is not in any bin";
-            }
-            
-            if( this->debug_ ) {
-                std::cout << " In JetBTagReshapeWeight after obtaining efficiency : " << shiftLabel( syst_shift ) << ": Object has pt= " << obj.pt() << " eta=" << obj.eta() << " flavour=" << obj.hadronFlavour()
-                          << " efficiency of " << eff_central << std::endl;
-            }
 
             //obtaining scale factors
 
             //https://twiki.cern.ch/twiki/bin/view/CMS/BTagCalibration
+
             float JetPt = obj.pt();
             float JetEta = fabs(obj.eta());
             int JetFlav = obj.hadronFlavour();
-            bool JetBTagStatus = false;
-            float JetBDiscriminator = obj.bDiscriminator(bTag_.c_str());
-            if(JetBDiscriminator > bDiscriminator_ ) JetBTagStatus = true;
+            float JetBDiscriminator;
+
+            if(bTag_=="pfDeepCSV") JetBDiscriminator = obj.bDiscriminator("pfDeepCSVJetTags:probb")+ obj.bDiscriminator("pfDeepCSVJetTags:probbb"); //JM
+            else JetBDiscriminator= obj.bDiscriminator(bTag_.c_str());
 
 
             if( this->debug_ ) {
                 std::cout << " In JetBTagReshapeWeight before calib reader: " << shiftLabel( syst_shift ) << ": Object has pt= " << obj.pt() << " eta=" << obj.eta() << " flavour=" << obj.hadronFlavour()
-                          << " efficiency of " << eff_central << " values for scale factors : "<< JetPt <<" "<< JetEta <<" "<<JetFlav 
-                          << " BTag Values : "<< obj.bDiscriminator(bTag_.c_str()) <<" "<< bDiscriminator_<<" "<<JetBTagStatus<<std::endl;
+                          << " values for scale factors : "<< JetPt <<" "<< JetEta <<" "<<JetFlav 
+                          << " BTag Values : "<< obj.bDiscriminator(bTag_.c_str()) <<endl;
             }
 
             //get scale factors from calib reader
@@ -225,7 +220,7 @@ namespace flashgg {
             
             if( this->debug_ ) {
                 std::cout << " In JetBTagReshapeWeight after obtaining SF: " << shiftLabel( syst_shift ) << " SF type : " << btagSFreshape_  << ": Object has pt= " << obj.pt() << " eta=" << obj.eta() << " flavour=" << obj.hadronFlavour()
-                          << " efficiency of " << eff_central << " scale factors : "<< jet_scalefactor <<" "<< jet_scalefactor_up <<" "<< jet_scalefactor_do << std::endl;
+                           << " scale factors : "<< jet_scalefactor <<" "<< jet_scalefactor_up <<" "<< jet_scalefactor_do << std::endl;
             }
             
             if ( syst_shift < 0 ){
@@ -237,14 +232,13 @@ namespace flashgg {
             
             if( this->debug_ ) {
                 std::cout << " In JetBTagReshapeWeight : " << shiftLabel( syst_shift ) << " SF type : " << btagSFreshape_ << " : Object has pt= " << obj.pt() << " eta=" << obj.eta() << " flavour=" << obj.hadronFlavour()
-                          << " efficiency of " << eff_central << " scale factors : "<< jet_scalefactor <<" "<< jet_scalefactor_up <<" "<< jet_scalefactor_do << std::endl;
+                          << " scale factors : "<< jet_scalefactor <<" "<< jet_scalefactor_up <<" "<< jet_scalefactor_do << std::endl;
             }
             
             central = jet_scalefactor ;
             errdown = jet_scalefactor_do ;
             errup = jet_scalefactor_up ;
-            
-            
+                        
             theWeight = central;
             if ( syst_shift < 0 ) theWeight = errdown;
             if ( syst_shift > 0 ) theWeight = errup;

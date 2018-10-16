@@ -39,59 +39,67 @@ def runMETs(process,era):
     isMC = False
     if 'MC' in dBFile:
         isMC = True
-        ##only corrects JEC/JER uncertainties for the baseline collection; means only muon corrected and EG/Muon corrected MET collections are guaranteed to have the correct JEC uncertainties.
-        runMetCorAndUncFromMiniAOD(process, metType="PF",
-                                   recoMetFromPFCs=False,
-                                   postfix="",
-                                   isData=(not isMC),
-                                   )
 
-        if isMC or os.environ["CMSSW_VERSION"].count("CMSSW_9"):
-             process.flashggMets = cms.EDProducer('FlashggMetProducer',
-                                         verbose = cms.untracked.bool(False),
-                                         metTag = cms.InputTag('slimmedMETs'),
-                                         )
-             process.flashggMetSequence = cms.Sequence(process.flashggMets)
+    ##only corrects JEC/JER uncertainties for the baseline collection; means only muon corrected and EG/Muon corrected MET collections are guaranteed to have the correct JEC uncertainties.
+    runMetCorAndUncFromMiniAOD(process, metType="PF",
+                               recoMetFromPFCs=False,
+                               postfix="",
+                               isData=(not isMC),
+                               )
+
+    if isMC or os.environ["CMSSW_VERSION"].count("CMSSW_9"):
+
+       runMetCorAndUncFromMiniAOD(process,
+                            isData=(not isMC),
+                            fixEE2017 = True,
+                            # will produce new MET collection: slimmedMETsModifiedMET
+                            postfix = "ModifiedMET",
+                            )
+       process.flashggMets = cms.EDProducer('FlashggMetProducer',
+                                             verbose = cms.untracked.bool(False),
+                                             metTag = cms.InputTag('slimmedMETsModifiedMET'),
+                                             )
+       process.flashggMetSequence = cms.Sequence(process.fullPatMetSequenceModifiedMET*process.flashggMets)
+             
+    if not isMC and os.environ["CMSSW_VERSION"].count("CMSSW_8_0_28"):
+        corMETFromMuonAndEG(process, 
+                            pfCandCollection="", #not needed
+                            electronCollection="slimmedElectronsBeforeGSFix",
+                            photonCollection="slimmedPhotonsBeforeGSFix",
+                            corElectronCollection="slimmedElectrons",
+                            corPhotonCollection="slimmedPhotons",
+                            allMETEGCorrected=True,
+                            muCorrection=False,
+                            eGCorrection=True,
+                            runOnMiniAOD=True,
+                            postfix="FullMETClean",
+                            )
         
-        if not isMC and os.environ["CMSSW_VERSION"].count("CMSSW_8_0_28"):
-            corMETFromMuonAndEG(process, 
-                                pfCandCollection="", #not needed
-                                electronCollection="slimmedElectronsBeforeGSFix",
-                                photonCollection="slimmedPhotonsBeforeGSFix",
-                                corElectronCollection="slimmedElectrons",
-                                corPhotonCollection="slimmedPhotons",
-                                allMETEGCorrected=True,
-                                muCorrection=False,
-                                eGCorrection=True,
-                                runOnMiniAOD=True,
-                                postfix="FullMETClean"
-                                )
-            
-            process.slimmedMETsFullMETClean = process.slimmedMETs.clone()
-            process.slimmedMETsFullMETClean.src = cms.InputTag("patPFMetT1FullMETClean")
-            process.slimmedMETsFullMETClean.rawVariation =  cms.InputTag("patPFMetRawFullMETClean")
-            process.slimmedMETsFullMETClean.t1Uncertainties = cms.InputTag("patPFMetT1%sFullMETClean")
-            del process.slimmedMETsFullMETClean.caloMET
-            
-            process.egcorrMET = cms.Sequence(
-                process.cleanedPhotonsFullMETClean+process.cleanedCorPhotonsFullMETClean+
-                process.matchedPhotonsFullMETClean + process.matchedElectronsFullMETClean +
-                process.corMETPhotonFullMETClean+process.corMETElectronFullMETClean+
-                process.patPFMetT1FullMETClean+process.patPFMetRawFullMETClean+
-                process.patPFMetT1SmearFullMETClean+process.patPFMetT1TxyFullMETClean+
-                process.patPFMetTxyFullMETClean+process.patPFMetT1JetEnUpFullMETClean+
-                process.patPFMetT1JetResUpFullMETClean+process.patPFMetT1SmearJetResUpFullMETClean+
-                process.patPFMetT1ElectronEnUpFullMETClean+process.patPFMetT1PhotonEnUpFullMETClean+
-                process.patPFMetT1MuonEnUpFullMETClean+process.patPFMetT1TauEnUpFullMETClean+
-                process.patPFMetT1UnclusteredEnUpFullMETClean+process.patPFMetT1JetEnDownFullMETClean+
-                process.patPFMetT1JetResDownFullMETClean+process.patPFMetT1SmearJetResDownFullMETClean+
-                process.patPFMetT1ElectronEnDownFullMETClean+process.patPFMetT1PhotonEnDownFullMETClean+
-                process.patPFMetT1MuonEnDownFullMETClean+process.patPFMetT1TauEnDownFullMETClean+
-                process.patPFMetT1UnclusteredEnDownFullMETClean+process.slimmedMETsFullMETClean)
-            process.flashggMets = cms.EDProducer('FlashggMetProducer',
-                             verbose = cms.untracked.bool(False),
-                             metTag = cms.InputTag('slimmedMETs'),
-                             )
+        process.slimmedMETsFullMETClean = process.slimmedMETs.clone()
+        process.slimmedMETsFullMETClean.src = cms.InputTag("patPFMetT1FullMETClean")
+        process.slimmedMETsFullMETClean.rawVariation =  cms.InputTag("patPFMetRawFullMETClean")
+        process.slimmedMETsFullMETClean.t1Uncertainties = cms.InputTag("patPFMetT1%sFullMETClean")
+        del process.slimmedMETsFullMETClean.caloMET
+        
+        process.egcorrMET = cms.Sequence(
+            process.cleanedPhotonsFullMETClean+process.cleanedCorPhotonsFullMETClean+
+            process.matchedPhotonsFullMETClean + process.matchedElectronsFullMETClean +
+            process.corMETPhotonFullMETClean+process.corMETElectronFullMETClean+
+            process.patPFMetT1FullMETClean+process.patPFMetRawFullMETClean+
+            process.patPFMetT1SmearFullMETClean+process.patPFMetT1TxyFullMETClean+
+            process.patPFMetTxyFullMETClean+process.patPFMetT1JetEnUpFullMETClean+
+            process.patPFMetT1JetResUpFullMETClean+process.patPFMetT1SmearJetResUpFullMETClean+
+            process.patPFMetT1ElectronEnUpFullMETClean+process.patPFMetT1PhotonEnUpFullMETClean+
+            process.patPFMetT1MuonEnUpFullMETClean+process.patPFMetT1TauEnUpFullMETClean+
+            process.patPFMetT1UnclusteredEnUpFullMETClean+process.patPFMetT1JetEnDownFullMETClean+
+            process.patPFMetT1JetResDownFullMETClean+process.patPFMetT1SmearJetResDownFullMETClean+
+            process.patPFMetT1ElectronEnDownFullMETClean+process.patPFMetT1PhotonEnDownFullMETClean+
+            process.patPFMetT1MuonEnDownFullMETClean+process.patPFMetT1TauEnDownFullMETClean+
+            process.patPFMetT1UnclusteredEnDownFullMETClean+process.slimmedMETsFullMETClean)
+        process.flashggMets = cms.EDProducer('FlashggMetProducer',
+                                             verbose = cms.untracked.bool(False),
+                                             metTag = cms.InputTag('slimmedMETsModifiedMET'),
+                                             )
 #            process.flashggMetsMuons = cms.EDProducer('FlashggMetProducer',
 #                             verbose = cms.untracked.bool(False),
 #                             metTag = cms.InputTag('slimmedMETs'),
@@ -113,7 +121,7 @@ def runMETs(process,era):
 #                             metTag = cms.InputTag('slimmedMETsUncorrected'),
 #                             )
 #            process.flashggMetSequence = cms.Sequence(process.flashggMetsMuons *process.flashggMetsEGmuon*process.flashggMets*process.flashggMetsUncorr)
-            process.flashggMetSequence = cms.Sequence(process.flashggMets)       
+        process.flashggMetSequence = cms.Sequence(process.flashggMets)       
         
 
         

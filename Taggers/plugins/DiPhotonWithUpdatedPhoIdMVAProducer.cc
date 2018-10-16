@@ -42,15 +42,16 @@ namespace flashgg {
         edm::FileInPath phoIdMVAweightfileEB_, phoIdMVAweightfileEE_, correctionFile_, non5x5correctionFile_;
         shared_ptr<ModifyObjectValueBase> regress_;
         bool reRunRegression_, reRunRegressionOnData_;
-        bool correctInputs_;
         bool debug_;
         //        std::vector<TGraph*> corrections_;
+        bool correctInputs_;
         std::vector<std::unique_ptr<TGraph> > corrections_;
 
         bool doNon5x5transformation_;
         std::vector<std::unique_ptr<TGraph> > non5x5corrections_;
 
         bool useNewPhoId_;
+        bool is2017_;
 
         EffectiveAreas _effectiveAreas;
         vector<double> _phoIsoPtScalingCoeff;
@@ -66,6 +67,8 @@ namespace flashgg {
         rhoToken_( consumes<double>( ps.getParameter<edm::InputTag>( "rhoFixedGridCollection" ) ) ),
         regress_(0),
         debug_( ps.getParameter<bool>( "Debug" ) ),
+        correctInputs_(ps.getParameter<bool>("do5x5correction")),
+        doNon5x5transformation_(ps.getParameter<bool>("doNon5x5transformation")),
         _effectiveAreas((ps.getParameter<edm::FileInPath>("effAreasConfigFile")).fullPath()),
         _phoIsoPtScalingCoeff(ps.getParameter<std::vector<double >>("phoIsoPtScalingCoeff")),
         _phoIsoCutoff(ps.getParameter<double>("phoIsoCutoff")),
@@ -77,15 +80,21 @@ namespace flashgg {
         }
 
         useNewPhoId_ = ps.getParameter<bool>( "useNewPhoId" );
+        is2017_ = ps.getParameter<bool>( "is2017" );
+
         phoIdMVAweightfileEB_ = ps.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EB" );
         phoIdMVAweightfileEE_ = ps.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EE" );
-        if(useNewPhoId_){
+        if(is2017_){
+            phoIdMVAweightfileEB_ = ps.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EB_2017" );
+            phoIdMVAweightfileEE_ = ps.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EE_2017" );
+        }
+        else if(useNewPhoId_){
             phoIdMVAweightfileEB_ = ps.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EB_new" );
             phoIdMVAweightfileEE_ = ps.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EE_new" );
         }
-        phoTools_.setupMVA( phoIdMVAweightfileEB_.fullPath(), phoIdMVAweightfileEE_.fullPath(), useNewPhoId_ );
+        phoTools_.setupMVA( phoIdMVAweightfileEB_.fullPath(), phoIdMVAweightfileEE_.fullPath(), useNewPhoId_ , is2017_);
 
-        correctInputs_ = ps.existsAs<edm::FileInPath>("correctionFile") ? true: false;
+        correctInputs_ = ps.getParameter<bool>("do5x5correction");
         if (correctInputs_) {
             correctionFile_ = ps.getParameter<edm::FileInPath>( "correctionFile" );
             TFile* f = TFile::Open(correctionFile_.fullPath().c_str());
@@ -100,7 +109,7 @@ namespace flashgg {
             f->Close();
         }
 
-        doNon5x5transformation_ =ps.getParameter<bool>( "doNon5x5transformation" );
+        doNon5x5transformation_ = ps.getParameter<bool>( "doNon5x5transformation" );
         if (doNon5x5transformation_) {
             non5x5correctionFile_ = ps.getParameter<edm::FileInPath>( "non5x5correctionFile" );
             TFile* non5x5_f = TFile::Open(non5x5correctionFile_.fullPath().c_str());
@@ -120,7 +129,7 @@ namespace flashgg {
         if( reRunRegression_ ) {
             reRunRegressionOnData_ = ps.getParameter<bool>("reRunRegressionOnData");
             // regress_ = new EGExtraInfoModifierFromDB(ps.getParameter<edm::ParameterSet>("regressionConfig"));
-            regress_.reset(ModifyObjectValueFactory::get()->create( "EGExtraInfoModifierFromDB", ps.getParameter<edm::ParameterSet>("regressionConfig") )); 
+            regress_.reset(ModifyObjectValueFactory::get()->create( "EGRegressionModifierV2", ps.getParameter<edm::ParameterSet>("regressionConfig") )); 
             regress_->setConsumes(sumes);
         }
 

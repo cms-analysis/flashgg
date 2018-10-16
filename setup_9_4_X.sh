@@ -118,44 +118,44 @@ cd $CMSSW_BASE/src
 
 # Straightofrward update for 8_0_28
 echo "Setting up QGL..."
+echo "... and setting up weight stuff..."
 git cms-addpkg RecoJets/JetProducers
-git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-9_4_0
+git cms-addpkg CommonTools/UtilAlgos
+# Straightforward update for 8_0_28
+echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
+git cms-addpkg FWCore/GuiBrowsers #temp-by hand
+git cms-merge-topic -u shervin86:for-flashgg-QGL-vertexIndex-9_4_6
 
 # TnP tools removed for 8_0_28, so Validation does not compile
 # To be investigated
-echo "Setting up TnP tools, including temporary perl hack for 94X..."
-#git cms-merge-topic -u sethzenz:for-flashgg-egm_tnp-8_0_26
-git clone -b v2017.05.23_legacy80X_prelim https://github.com/cms-analysis/EgammaAnalysis-TnPTreeProducer EgammaAnalysis/TnPTreeProducer
-#git clone -b v2017.12.04_92X_prelim  https://github.com/lsoffi/EgammaAnalysis-TnPTreeProducer.git EgammaAnalysis/TnPTreeProducer
-perl -p -i.bak -e 's/numberOfHits/numberOfAllHits/g' $CMSSW_BASE/src/EgammaAnalysis/TnPTreeProducer/plugins/ElectronVariableHelper.h
-perl -p -i.bak -e 's/#include <iostream>/#include <iostream>\n#include <numeric>/g' $CMSSW_BASE/src/EgammaAnalysis/TnPTreeProducer/plugins/PileupWeightProducer.cc
+echo "Setting up TnP tools for 94X..."
+git clone -b CMSSW_9_4_X https://github.com/cms-analysis/EgammaAnalysis-TnPTreeProducer.git EgammaAnalysis/TnPTreeProducer
 
 echo "Temporary perl hack for LeptonSelection (to keep repo compatibility with 80X), due to CMSSW function name change"
 perl -p -i.bak -e 's/numberOfHits/numberOfAllHits/g' $CMSSW_BASE/src/flashgg/Taggers/src/LeptonSelection.cc
 
+#MET discrepancy mitigation
+git cms-merge-topic -u kpedro88:METFixEE2017_949
 
-echo "Setting up weight stuff..."
-#git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-weights-9_2_0 #oops, does not exist
-git cms-addpkg CommonTools/UtilAlgos
-git cms-merge-topic -u sethzenz:for-flashgg-weightscount-9_4_0
 
 # Updated for 8_0_28, and compiles and runs, but NOT checked by experts
 # Update built from sethzenz:for-flashgg-smearer-conv-weights-8_0_26 and shervin86:Hgg_Gain_v1
 echo "Setting up EGM stuff..."
-git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-9_4_0
+#git cms-merge-topic -u shervin86:for-flashgg-smearer-conv-9_4_5
+#git apply  flashgg/EnergyScaleCorrection.patch
 
 #EGM IDs
-git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP    
-git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
+#git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP    
+#git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
 
-# Straightforward update for 8_0_28
-echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
-git cms-addpkg FWCore/GuiBrowsers #temp-by hand
-git cms-merge-topic -u sethzenz:for-flashgg-toolbase-9_4_0
+git cms-merge-topic -u cms-egamma:EgammaPostRecoTools_940 #just adds in an extra file to have a setup function to make things easier
+git cms-merge-topic -u sethzenz:Egamma80XMiniAODV2_949 #adds the c++ changes necessary to enable 2016 scale & smearing corrections
+git cms-merge-topic -u shervin86:Egamma80XMiniAODV2_946_fix
+
 
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/Systematics/data/JEC/Fall17_17Nov2017*db $CMSSW_BASE/src/flashgg/
-cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_80X.db $CMSSW_BASE/src/flashgg
+cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_cmssw8020_v2.db $CMSSW_BASE/src/flashgg
 
 echo "copy smearing files stored in flashgg into egamma tools"
 #cp $CMSSW_BASE/src/flashgg/Systematics/data/Golden*.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data

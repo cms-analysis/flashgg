@@ -205,10 +205,10 @@ float PhotonIdUtils::pfCaloIso( const edm::Ptr<pat::Photon> &photon,
 - decide what to do with EE and EB
 */
 
-void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfilenameEE, bool useNewPhoId )
+void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfilenameEE, bool useNewPhoId, bool is2017 )
 {
 
-    // **** bdt 2015 EB ****
+    // **** BDT 2017 EB ****
 
     string mvamethod = "BDT";
 
@@ -228,7 +228,7 @@ void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfile
     phoIdMva_EB_->AddVariable( "rho",                  &phoIdMva_rho_ );
     phoIdMva_EB_->BookMVA( mvamethod.c_str(), xmlfilenameEB );
 
-    // **** bdt 2015 EE ****
+    // **** BDT 2017 EE ****
 
     phoIdMva_EE_ = make_shared<TMVA::Reader>( "!Color:Silent" );
 
@@ -239,14 +239,19 @@ void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfile
     phoIdMva_EE_->AddVariable( "phiWidth",        &phoIdMva_PhiWidth_ );
     phoIdMva_EE_->AddVariable( "covIEtaIPhi", &phoIdMva_covIEtaIPhi_ );
     phoIdMva_EE_->AddVariable( "s4",     &phoIdMva_S4_ );
-    //    phoIdMva_EE_->AddVariable( "phoIso03",    &phoIdMva_pfPhoIso03_ );
-    phoIdMva_EE_->AddVariable( "isoPhoCorrMax2p5",    &phoIdMva_pfPhoIso03Corr_ );
+    if (is2017)
+        phoIdMva_EE_->AddVariable( "phoIso03",    &phoIdMva_pfPhoIso03_ );
+    else if (useNewPhoId)
+        phoIdMva_EE_->AddVariable( "isoPhoCorrMax2p5",    &phoIdMva_pfPhoIso03Corr_ );
     phoIdMva_EE_->AddVariable( "chgIsoWrtChosenVtx",   &phoIdMva_pfChgIso03_ );
     phoIdMva_EE_->AddVariable( "chgIsoWrtWorstVtx", &phoIdMva_pfChgIso03worst_ );
     phoIdMva_EE_->AddVariable( "scEta",             &phoIdMva_ScEta_ );
     phoIdMva_EE_->AddVariable( "rho",                  &phoIdMva_rho_ );
     phoIdMva_EE_->AddVariable( "esEffSigmaRR",   &phoIdMva_ESEffSigmaRR_ );
-    if(useNewPhoId) phoIdMva_EE_->AddVariable( "esEnergy/SCRawE",   &phoIdMva_esEnovSCRawEn_ );
+    if(is2017) 
+        phoIdMva_EE_->AddVariable( "esEnergyOverRawE",   &phoIdMva_esEnovSCRawEn_ );
+    else if(useNewPhoId) 
+        phoIdMva_EE_->AddVariable( "esEnergy/SCRawE",   &phoIdMva_esEnovSCRawEn_ );
     phoIdMva_EE_->BookMVA( mvamethod.c_str(), xmlfilenameEE );
 
 }
@@ -276,7 +281,7 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
     //    double eA = _effectiveAreas.getEffectiveArea( abs(photon.superCluster()->eta()) );
     double phoIsoPtScalingCoeffVal = 0;
     if( photon.isEB() ) 
-    phoIsoPtScalingCoeffVal = _phoIsoPtScalingCoeff.at(0); // barrel case
+        phoIsoPtScalingCoeffVal = _phoIsoPtScalingCoeff.at(0); // barrel case
     else
         phoIsoPtScalingCoeffVal =  _phoIsoPtScalingCoeff.at(1); //endcap case
     
@@ -386,6 +391,8 @@ void PhotonIdUtils::recomputeNonZsClusterShapes( reco::Photon &pho, noZS::EcalCl
     showerShape.maxEnergyXtal =  maxXtal;
     showerShape.sigmaIetaIeta =  sqrt( locCov[0] );
     showerShape.sigmaEtaEta =  sqrt( cov[0] );
+    showerShape.sigmaIetaIphi =  sqrt( locCov[1] );
+    showerShape.sigmaIphiIphi =  sqrt( locCov[2] );
 
     pho.full5x5_setShowerShapeVariables( showerShape );
 
@@ -419,7 +426,8 @@ void PhotonIdUtils::recomputeNonZsClusterShapes( reco::Photon &pho, const EcalRe
     showerShape.e5x5 = e5x5;
     showerShape.maxEnergyXtal =  maxXtal;
     showerShape.sigmaIetaIeta =  sqrt( locCov[0] );
-
+    showerShape.sigmaIetaIphi =  sqrt( locCov[1] );
+    showerShape.sigmaIphiIphi =  sqrt( locCov[2] );
     pho.full5x5_setShowerShapeVariables( showerShape );
 }
 

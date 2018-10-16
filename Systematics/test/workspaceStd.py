@@ -31,8 +31,9 @@ else:
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 
-MUON_ID = "Tight" #["Tight", "Medium" , "Loose", "Soft", "HighPt", "MediumPrompt", "TrkHighPt"]
+MUON_ID = "Medium" #["Tight", "Medium" , "Loose", "Soft", "HighPt", "MediumPrompt", "TrkHighPt"]
 MUON_ISO = "LooseRel" #{ LooseID : ["LooseRel"],MediumID:["LooseRel", "TightRel"] , TrkHighPtID:["LooseRelTk", "TightRelTk"], TightIDandIPCut:["LooseRel", "TightRel"], HighPtIDandIPCut:["LooseRelTk", "TightRelTk"] }
+
 from flashgg.Systematics.SystematicsCustomize import *
 jetSystematicsInputTags = createStandardSystematicsProducers(process , MUON_ID=MUON_ID , MUON_ISO=MUON_ISO)
 if dropVBFInNonGold:
@@ -132,7 +133,18 @@ customize.options.register('dumpWorkspace',
                            VarParsing.VarParsing.varType.bool,
                            'dumpWorkspace'
                            )
-
+customize.options.register('verboseTagDump',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'verboseTagDump'
+                           )
+customize.options.register('verboseSystDump',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'verboseSystDump'
+                           )
 
 print "Printing defaults"
 print 'doFiducial '+str(customize.doFiducial)
@@ -173,15 +185,26 @@ if customize.doFiducial:
     print "Here we print the preslection cut"
     print process.flashggPreselectedDiPhotons.cut
 
+
+process.load("flashgg/Taggers/flashggTagSequence_cfi")
+process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
+
+# needed for 0th vertex from microAOD
+if customize.tthTagsOnly:
+    process.flashggDiPhotons.whichVertex = cms.uint32(0)
+    process.flashggDiPhotons.useZerothVertexFromMicro = cms.bool(True)
+
 process.load("flashgg/Taggers/flashggTagSequence_cfi")
 print 'here we print the tag sequence before'
 print process.flashggTagSequence
 if customize.doFiducial:
     from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet,massSearchReplaceAnyInputTag
     process.flashggTagSequence.remove(process.flashggVBFTag)
+    process.flashggTagSequence.remove(process.flashggTTHDiLeptonTag)
     process.flashggTagSequence.remove(process.flashggTTHLeptonicTag)
     process.flashggTagSequence.remove(process.flashggTTHHadronicTag)
-    #haven't tested VH tags with fiducial cross-section measurement yet
+   # process.flashggTagSequence.remove(process.flashggTTHeptonTag)
+     #haven't tested VH tags with fiducial cross-section measurement yet
     process.flashggTagSequence.remove(process.flashggVHEtTag)
     process.flashggTagSequence.remove(process.flashggVHLooseTag)
     process.flashggTagSequence.remove(process.flashggVHTightTag)
@@ -222,8 +245,23 @@ if customize.doubleHTagsOnly:
     process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggDoubleHTag')) )
 
 if customize.tthTagsOnly:
-    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag')),
+    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(   cms.PSet(TagName = cms.InputTag('flashggTTHDiLeptonTag')),
+        cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag')),
         cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag')) )
+
+    print "customize.processId:",customize.processId
+
+    print "Removing FracRV from syst and adding  PixelSeed"
+    
+    newvpset = cms.VPSet()
+    for pset in process.flashggDiPhotonSystematics.SystMethods:
+        if not pset.Label.value().count("FracRVWeight")and not pset.Label.value().count("FracRVNvtxWeight") :
+            print  pset.Label.value()
+            newvpset += [pset]
+    from flashgg.Systematics.flashggDiPhotonSystematics_cfi import PixelSeedWeight
+    newvpset += [ PixelSeedWeight ]
+    
+    process.flashggDiPhotonSystematics.SystMethods = newvpset
 
 print "customize.processId:",customize.processId
 # load appropriate scale and smearing bins here
@@ -342,6 +380,9 @@ from flashgg.MetaData.samples_utils import SamplesManager
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
+#"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_0/3_1_0/DoubleEG/RunIIFall17-3_1_0-3_1_0-v0-Run2017F-31Mar2018-v1/180611_135216/0001/myMicroAODOutputFile_1382.root",
+#"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_0/3_1_0/DoubleEG/RunIIFall17-3_1_0-3_1_0-v0-Run2017F-31Mar2018-v1/180611_135216/0000/myMicroAODOutputFile_685.root"
+#"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_0_0/3_0_0/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/RunIIFall17-3_0_0-3_0_0-v0-RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/180325_164819/0000/myMicroAODOutputFile_1.root"
 #"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/THQ_HToGG_13TeV-madgraph-pythia8_TuneCUETP8M1/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170114_100016/0000/myMicroAODOutputFile_9.root"
 #"root://eoscms.cern.ch//eos/cms//store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/bbHToGG_M-125_4FS_ybyt_13TeV_amcatnlo/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170114_095140/0000/myMicroAODOutputFile_9.root"
 #"root://eoscms.cern.ch//eos/cms//store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISummer16-2_4_1-25ns_Moriond17/2_4_1/bbHToGG_M-125_4FS_yb2_13TeV_amcatnlo/RunIISummer16-2_4_1-25ns_Moriond17-2_4_1-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/170114_095013/0000/myMicroAODOutputFile_1.root"
@@ -357,7 +398,11 @@ process.source = cms.Source ("PoolSource",
 #"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2/2_2_0/VBFHToGG_M125_13TeV_amcatnlo_pythia8/RunIISpring16DR80X-2_2_0-25ns_ICHEP16_MiniAODv2-2_2_0-v0-RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14_ext2-v1/160707_150558/0000/myMicroAODOutputFile_25.root"
 #"file:/afs/cern.ch/work/s/sethzenz/fromscratch107/CMSSW_8_0_8_patch1/src/flashgg/myMicroAODOutputFile.root"
 #"root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/ferriff/flashgg/RunIISpring16DR80X-2_0_0-25ns/2_0_0/VBFHToGG_M-125_13TeV_powheg_pythia8/RunIISpring16DR80X-2_0_0-25ns-2_0_0-v0-RunIISpring16MiniAODv1-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_v3-v1/160524_093752/0000/myMicroAODOutputFile_1.root"
-        #"file:myMicroAODOutputFile.root"
+#	  "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_0_0/3_0_0/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIIFall17-3_0_0-3_0_0-v0-RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/180325_144315/0000/myMicroAODOutputFile_1.root"
+#         "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_0_0/3_0_0/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/RunIIFall17-3_0_0-3_0_0-v0-RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/180325_204512/0000/myMicroAODOutputFile_1.root"
+#         "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_0_1/3_0_1/GluGluHToGG_M-70_13TeV_powheg_pythia8/RunIIFall17-3_0_1-3_0_1-v0-RunIISummer17MiniAOD-NZSFlatPU28to62_92X_upgrade2017_realistic_v10-v1/180405_124501/0000/myMicroAODOutputFile_19.root"
+#         "/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_0_1/3_0_1/DoubleEG/RunIIFall17-3_0_1-3_0_1-v0-Run2017F-17Nov2017-v1/180331_074338/0000/myMicroAODOutputFile_1.root"
+        "file:myMicroAODOutputFile.root"
         #        "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-1_1_0-25ns/1_1_0/VBFHToGG_M-125_13TeV_powheg_pythia8/RunIISpring15-ReMiniAOD-1_1_0-25ns-1_1_0-v0-RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/160105_224017/0000/myMicroAODOutputFile_1.root"
 #        "root://eoscms.cern.ch//eos/cms//store/group/phys_higgs/cmshgg/szenz/flashgg/RunIISpring15-ReReco74X-Rerun-1_1_0-25ns/1_2_0/DoubleEG/RunIISpring15-ReReco74X-Rerun-1_1_0-25ns-1_2_0-v0-Run2015D-04Dec2015-v2/160117_214114/0000/myMicroAODOutputFile_10.root"
 #        "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIISpring15-ReMiniAOD-1_1_0-25ns/1_1_0/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIISpring15-ReMiniAOD-1_1_0-25ns-1_1_0-v0-RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/160105_224456/0000/myMicroAODOutputFile_2.root"
@@ -425,8 +470,10 @@ if customize.doFiducial:
     tagList=[["SigmaMpTTag",3]]
 elif customize.tthTagsOnly:
     tagList=[
-        ["TTHHadronicTag",0],
-        ["TTHLeptonicTag",0]
+        ["NoTag",0],
+        ["TTHHadronicTag",3],
+        ["TTHLeptonicTag",2],
+        ["TTHDiLeptonTag",0]
         ]
 elif customize.doubleHTagsOnly:
     tagList = hhc.tagList(customize,process)
@@ -442,11 +489,14 @@ else:
         ["VHLeptonicLooseTag",0],
         ["VHMetTag",0],
         ["VHHadronicTag",0],
-        ["TTHHadronicTag",0],
-        ["TTHLeptonicTag",0]
+        ["TTHHadronicTag",3],
+        ["TTHLeptonicTag",2],
+        ["TTHDiLeptonTag",0]
         ]
 
 definedSysts=set()
+process.tagsDumper.NNLOPSWeightFile=cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root")
+process.tagsDumper.reweighGGHforNNLOPS = cms.untracked.bool(bool(customize.processId.count("ggh")))
 process.tagsDumper.classifierCfg.remap=cms.untracked.VPSet()
 for tag in tagList: 
   tagName=tag[0]
@@ -502,7 +552,7 @@ for tag in tagList:
 
 # Require standard diphoton trigger
 from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
-process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring("HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v*",
+process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring("HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v*",
 #                                                                "HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55_v1",
 #                                                                "HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55_v1"
                                                                 ))
@@ -557,19 +607,34 @@ if (customize.processId.count("qcd") or customize.processId.count("gjet")) and c
     else:
         raise Exception,"Mis-configuration of python for prompt-fake filter"
 
-process.p = cms.Path(process.dataRequirements*
-                     process.genFilter*
-                     process.flashggUpdatedIdMVADiPhotons*
-                     process.flashggDiPhotonSystematics*
-                     process.flashggMetSystematics*
-                     process.flashggMuonSystematics*process.flashggElectronSystematics*
-                     (process.flashggUnpackedJets*process.jetSystematicsSequence)*
-                     (process.flashggTagSequence*process.systematicsTagSequences)*
-                     process.flashggSystTagMerger*
-                     process.penultimateFilter*
-                     process.finalFilter*
-                     process.tagsDumper)
 
+if customize.tthTagsOnly:
+    process.p = cms.Path(process.dataRequirements*
+                         process.genFilter*
+                         process.flashggDiPhotons* # needed for 0th vertex from microAOD
+                         process.flashggUpdatedIdMVADiPhotons*
+                         process.flashggDiPhotonSystematics*
+                         process.flashggMetSystematics*
+                         process.flashggMuonSystematics*process.flashggElectronSystematics*
+                         (process.flashggUnpackedJets*process.jetSystematicsSequence)*
+                         (process.flashggTagSequence*process.systematicsTagSequences)*
+                         process.flashggSystTagMerger*
+                         process.penultimateFilter*
+                         process.finalFilter*
+                         process.tagsDumper)
+else :
+    process.p = cms.Path(process.dataRequirements*
+                         process.genFilter*
+                         process.flashggUpdatedIdMVADiPhotons*
+                         process.flashggDiPhotonSystematics*
+                         process.flashggMetSystematics*
+                         process.flashggMuonSystematics*process.flashggElectronSystematics*
+                         (process.flashggUnpackedJets*process.jetSystematicsSequence)*
+                         (process.flashggTagSequence*process.systematicsTagSequences)*
+                         process.flashggSystTagMerger*
+                         process.penultimateFilter*
+                         process.finalFilter*
+                         process.tagsDumper)
 
 if customize.doBJetRegression:
     if os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
@@ -675,16 +740,26 @@ process.flashggTagSorter.BlindedSelectionPrintout = True
 ## Dump merged tags to screen ##
 ################################
 
-#process.load("flashgg/Taggers/flashggTagTester_cfi")
-#process.flashggTagTester.TagSorter = cms.InputTag("flashggSystTagMerger")
-#process.flashggTagTester.ExpectMultiples = cms.untracked.bool(True)
-#process.p += process.flashggTagTester
+if customize.verboseTagDump:
+    # crashes right now, dunno why - 02 May 2018
+    pass
+#    process.load("flashgg/Taggers/flashggTagTester_cfi")
+#    process.flashggTagTester.TagSorter = cms.InputTag("flashggSystTagMerger")
+#    process.flashggTagTester.ExpectMultiples = cms.untracked.bool(True)
+#    process.p += process.flashggTagTester
 
 ############################################
 ## Additional details on tag sorter steps ##
 ############################################
 
-#process.flashggTagSorter.Debug = True
+if customize.verboseTagDump:
+    process.flashggUpdatedIdMVADiPhotons.Debug = True
+    process.flashggTagSorter.Debug = True
+    customize.maxEvents = 10
+                           
+if customize.verboseSystDump:
+    turnOnAllSystematicsDebug(process)
+    customize.maxEVents = 10
 
 ##############
 ## Dump EDM ##

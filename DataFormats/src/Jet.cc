@@ -79,12 +79,18 @@ bool Jet::passesJetID( JetIDLevel level) const
     int   CHM      = this->chargedMultiplicity();
     int   NumNeutralParticles = this->neutralMultiplicity();
     
-    //std::cout  << "DEBUG:: eta= " << eta << " NHF=" << NHF << std::endl;
+    //    std::cout  << "DEBUG:: eta= " << eta << " NHF=" << NHF << " NEMF=" << NEMF << " CHF=" << CHF << " CEMF=" << CEMF 
+    //               << " NumConst=" << NumConst << " CHM=" << CHM << " NumNeutralParticles=" << NumNeutralParticles << std::endl;
     
     bool jetID_barrel_loose  =  (NHF<0.99 && NEMF<0.99 && NumConst>1) && ((fabs(eta)<=2.4 && CHF>0 && CHM>0 && CEMF<0.99) || fabs(eta)>2.4) && fabs(eta)<=2.7;
     bool jetID_barrel_tight  =  (NHF<0.90 && NEMF<0.90 && NumConst>1) && ((fabs(eta)<=2.4 && CHF>0 && CHM>0 && CEMF<0.99) || fabs(eta)>2.4) && fabs(eta)<=2.7;
     bool jetID_transition      =  (NEMF>0.01 && NHF<0.98 && NumNeutralParticles>2 && fabs(eta)>2.7 && fabs(eta)<3.0);
     bool jetID_forward      =  (NEMF<0.90 && NumNeutralParticles >10 && fabs(eta)>3.0 );
+    
+    bool jetID_2017_27 = (NHF < 0.9 && NEMF < 0.9 && NumConst > 1);
+    bool jetID_2017_24 = jetID_2017_27 && (CHF > 0. && CHM > 0 );
+    bool jetID_2017_30 = (NEMF > 0.02 && NEMF < 0.99 && NumNeutralParticles > 2);
+    bool jetID_2017_forward = (NEMF < 0.9 && NHF > 0.02 && NumNeutralParticles > 10);
     
     switch(level){
     case Loose:
@@ -100,6 +106,13 @@ bool Jet::passesJetID( JetIDLevel level) const
             if(fabs(eta)<=3.0 ) return jetID_transition;
             if(fabs(eta)> 3.0 ) return jetID_forward;
         }break;
+    case Tight2017:
+        {
+            if(fabs(eta)<2.4 ) return jetID_2017_24;
+            if(fabs(eta)<2.7 ) return jetID_2017_27;
+            if(fabs(eta)<3.0 ) return jetID_2017_30;
+            return jetID_2017_forward;
+        } break;
     default:
         {
             std::cout << "error:: wrong level !!" << std::endl;

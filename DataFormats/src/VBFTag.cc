@@ -73,6 +73,13 @@ const bool VBFTag::hasValidVBFTriJet() const
     return vbfDiPhoDiJet_mva_result_.vbfMvaResult.hasValidVBFTriJet;
 }
 
+const float VBFTag::ptHjj() const {
+    if (! hasValidVBFDiJet() ) { 
+        return -1.;
+    }
+    return (leadingJet_ptr()->p4() + subLeadingJet_ptr()->p4() + diPhoton()->p4()).pt();
+}
+
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

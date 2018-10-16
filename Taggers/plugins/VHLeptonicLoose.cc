@@ -24,6 +24,8 @@
 #include "flashgg/DataFormats/interface/VHTagTruth.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
 
+#include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
+
 #include <vector>
 #include <algorithm>
 #include <string>
@@ -58,6 +60,7 @@ namespace flashgg {
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
         EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
+        EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
         EDGetTokenT<float> pTHToken_,pTVToken_;
         EDGetTokenT<double> rhoTag_;
         string systLabel_;
@@ -163,6 +166,8 @@ namespace flashgg {
         njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
         pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
         pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
+        newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
+
         
         for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
             auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
@@ -181,6 +186,9 @@ namespace flashgg {
         evt.getByToken(njetsToken_,njets);
         evt.getByToken(pTHToken_,pTH);
         evt.getByToken(pTVToken_,pTV);
+        Handle<HTXS::HiggsClassification> htxsClassification;
+        evt.getByToken(newHTXSToken_,htxsClassification);
+
 
         JetCollectionVector Jets( inputTagJets_.size() );
         for( size_t j = 0; j < inputTagJets_.size(); ++j ) {
@@ -405,7 +413,7 @@ namespace flashgg {
                 {
                     bool keepJet=true;
                     edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( candIndex_outer );
-                    if(!thejet->passesJetID  ( flashgg::Loose ) ) { keepJet=false; }
+                    if(!thejet->passesJetID  ( flashgg::Tight2017 ) ) { keepJet=false; }
                     if( fabs( thejet->eta() ) > jetEtaThreshold_ ) { keepJet=false; }
                     if( thejet->pt() < jetPtThreshold_ ) { keepJet=false; }
                     float dRPhoLeadJet = deltaR( thejet->eta(), thejet->phi(), dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi() ) ;
@@ -455,6 +463,13 @@ namespace flashgg {
                                                *( njets.product() ),
                                                *( pTH.product() ),
                                                *( pTV.product() ) );
+                    } else if ( htxsClassification.isValid() ) {
+                        truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
+                                               htxsClassification->stage1_cat_pTjet30GeV,
+                                               htxsClassification->jets30.size(),
+                                               htxsClassification->p4decay_higgs.pt(),
+                                               htxsClassification->p4decay_V.pt() );
+
                     } else {
                         truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
                     }
