@@ -207,17 +207,18 @@ if customize.tthTagsOnly:
 
     print "customize.processId:",customize.processId
 
-    print "Removing FracRV from syst and adding  PixelSeed"
+    print "Removing FracRVNvtxWeight from syst and adding  PixelSeed"
     
     newvpset = cms.VPSet()
     for pset in process.flashggDiPhotonSystematics.SystMethods:
-        if not pset.Label.value().count("FracRVWeight")and not pset.Label.value().count("FracRVNvtxWeight") :
+        if not pset.Label.value().count("FracRVNvtxWeight") :
             print  pset.Label.value()
             newvpset += [pset]
     from flashgg.Systematics.flashggDiPhotonSystematics_cfi import PixelSeedWeight
     newvpset += [ PixelSeedWeight ]
     
     process.flashggDiPhotonSystematics.SystMethods = newvpset
+   
 
 print "customize.processId:",customize.processId
 # load appropriate scale and smearing bins here
