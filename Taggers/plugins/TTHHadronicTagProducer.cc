@@ -24,6 +24,8 @@
 
 #include "DataFormats/Common/interface/RefToPtr.h"
 #include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
+#include "FWCore/Common/interface/TriggerNames.h"
+#include "DataFormats/Common/interface/TriggerResults.h"
 
 
 #include <vector>
@@ -63,11 +65,13 @@ namespace flashgg {
         EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
         EDGetTokenT<float> pTHToken_,pTVToken_;
         EDGetTokenT<double> rhoTag_;
+        EDGetTokenT<edm::TriggerResults> triggerRECO_;
         string systLabel_;
 
 
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
         bool useTTHHadronicMVA_;
+        bool applyMETfilters_;
 
         //---thresholds---
         //---photons
@@ -94,7 +98,8 @@ namespace flashgg {
         double bjetsNumberTTHHMVAThreshold_;
         double bjetsLooseNumberTTHHMVAThreshold_;
         double secondMaxBTagTTHHMVAThreshold_;
-        string bTag_;
+      string bTag_;
+
         //leptons
 
         double MuonEtaCut_;
@@ -184,6 +189,7 @@ namespace flashgg {
         METToken_( consumes<View<flashgg::Met> >( iConfig.getParameter<InputTag> ( "METTag" ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         rhoTag_( consumes<double>( iConfig.getParameter<InputTag>( "rhoTag" ) ) ),
+	triggerRECO_( consumes<edm::TriggerResults>(iConfig.getParameter<InputTag>("RECOfilters") ) ),
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
         _MVAMethod( iConfig.getParameter<string> ( "MVAMethod" ) )
     {
@@ -218,7 +224,6 @@ namespace flashgg {
         jetsNumberThreshold_ = iConfig.getParameter<int>( "jetsNumberThreshold");
         bjetsNumberThreshold_ = iConfig.getParameter<int>( "bjetsNumberThreshold");
         bTag_ = iConfig.getParameter<string> ( "bTag");
-
         MuonEtaCut_ = iConfig.getParameter<double>( "MuonEtaCut");
         MuonPtCut_ = iConfig.getParameter<double>( "MuonPtCut");
         MuonIsoCut_ = iConfig.getParameter<double>( "MuonIsoCut");
@@ -233,7 +238,7 @@ namespace flashgg {
         debug_ = iConfig.getParameter<bool>( "debug" );
 
         useTTHHadronicMVA_ = iConfig.getParameter<bool>( "useTTHHadronicMVA");
-
+	applyMETfilters_   = iConfig.getParameter<bool>( "applyMETfilters");
         bjetsLooseNumberThreshold_ = iConfig.getParameter<int>( "bjetsLooseNumberThreshold");
         jetsNumberTTHHMVAThreshold_ = iConfig.getParameter<int>( "jetsNumberTTHHMVAThreshold");
         bjetsNumberTTHHMVAThreshold_ = iConfig.getParameter<int>( "bjetsNumberTTHHMVAThreshold");
@@ -401,6 +406,31 @@ namespace flashgg {
         Handle<View<flashgg::Met> > METs;
         evt.getByToken( METToken_, METs );
 
+	//Get trigger results relevant to MET filters
+        bool passMETfilters = 1;
+        edm::Handle<edm::TriggerResults> triggerBits;
+        evt.getByToken( triggerRECO_, triggerBits );
+        const edm::TriggerNames &triggerNames = evt.triggerNames( *triggerBits );
+        std::vector<std::string> flagList = {"Flag_goodVertices", "Flag_globalTightHalo2016Filter", "Flag_HBHENoiseFilter", "Flag_HBHENoieIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter", "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter","Flag_eeBadScFilter", "Flag_ecalBadCalibFilter"};
+        if( ! evt.isRealData() ) {
+	  flagList = {"Flag_goodVertices", "Flag_globalTightHalo2016Filter", "Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter", "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter", "Flag_ecalBadCalibFilter"};
+        }
+        for( unsigned int i = 0; i < triggerNames.triggerNames().size(); i++ )
+	  {
+	    if(!triggerBits->accept(i)) {
+	      for(size_t j=0;j<flagList.size();j++)
+		{
+		  if(flagList[j]==triggerNames.triggerName(i))
+		    {
+		      passMETfilters=0;
+		      break;
+		    }
+		}
+	    }
+	  }
+	
+    
+
         Handle<View<reco::GenParticle> > genParticles;
 
         std::unique_ptr<vector<TTHHadronicTag> > tthhtags( new vector<TTHHadronicTag> );
@@ -442,6 +472,8 @@ namespace flashgg {
         for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
 
             edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( diphoIndex );
+
+	    if(!passMETfilters && applyMETfilters_) continue;
 
             std::vector<edm::Ptr<flashgg::Muon> >     Muons;
             std::vector<edm::Ptr<flashgg::Electron> > Electrons;
@@ -538,8 +570,6 @@ namespace flashgg {
 
             edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );
         
-            if( !dipho->leadingPhoton()->passElectronVeto() || !dipho->subLeadingPhoton()->passElectronVeto() ) { continue; }
-
             double leadPhoPtCut = leadPhoPtThreshold_;
             double subleadPhoPtCut = subleadPhoPtThreshold_;
             if( leadPhoUseVariableTh_ )
@@ -737,7 +767,8 @@ namespace flashgg {
                 if(secondMaxBTagVal_ >= secondMaxBTagTTHHMVAThreshold_ && njets_btagloose_ >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium_ >= bjetsNumberTTHHMVAThreshold_ && jetcount_ >= jetsNumberTTHHMVAThreshold_ && _MVAMethod != ""){
                     
 		  if(debug_){
-                    cout << "input variables : " << endl;
+                    cout << "TTHHadronicTag -- input MVA variables : " << endl;
+                    cout << "----------------------------------------" << endl;
 
                     cout << "nJets_ = " << nJets_ <<" jetcount"<< jetcount_<< endl;
 		    cout << "sumJetPt_ = " << sumJetPt_ << endl;                    
@@ -785,11 +816,12 @@ namespace flashgg {
                     cout << "jetEta_4_ = " <<jetEta_4_ << endl;
 		    //                    cout << "jetPhi_4_ = " <<jetPhi_4_ << endl;
                     cout << "MET_ = " <<MET_ << endl;
+                    cout << "---------------------------------------" << endl;
 		  }
 		  tthMvaVal_ = TThMva_->EvaluateMVA( _MVAMethod.c_str() );
 
                     //cout << "mva result :" << endl;
-                  if(debug_)  cout << "tthMvaVal_ = " << tthMvaVal_  << endl;
+                  if(debug_)  cout << " TTHHadronicTag -- output MVA value = " << tthMvaVal_  << endl;
                     //cout << "tthMvaVal_ = " << tthMvaVal_  << " "<< boundaries[0]<<" "<< boundaries[1]<< endl;
                      
                  }
