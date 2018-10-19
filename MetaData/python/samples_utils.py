@@ -971,6 +971,9 @@ Commands:
                             default=None,
                             help="",
                             ),
+                make_option("--no-copy-proxy",dest="copy_proxy",action="store_false",
+                            default=True,help="Do not try to copy the grid proxy to the worker nodes."
+                            ),
                 make_option("-v","--verbose",
                             action="store_true", dest="verbose",
                             default=False,

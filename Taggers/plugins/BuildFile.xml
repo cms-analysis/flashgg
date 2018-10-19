@@ -17,8 +17,7 @@
 </release>
 <release name="CMSSW_9">
   <flags CXXFLAGS="-DCMSSW9"/>
-  <use name="DNN/TensorFlow" />
-  <use name="tensorflow-cc" />
+  <use name="PhysicsTools/TensorFlow" />
 </release>
 <!-- Flags CXXFLAGS="-ggdb"/ -->
 <flags   EDM_PLUGIN="1"/>

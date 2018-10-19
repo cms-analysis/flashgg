@@ -21,9 +21,9 @@
 #include <string>
 #include <vector>
 
-#ifdef CMSSW_9
-   #include "DNN/TensorFlow/interface/TensorFlow.h"
-#elif CMSSW_8
+#ifdef CMSSW9
+   #include "PhysicsTools/TensorFlow/interface/TensorFlow.h"
+#elif CMSSW8
    #include "DNN/Tensorflow/interface/Graph.h"
    #include "DNN/Tensorflow/interface/Tensor.h"
 #endif
@@ -51,14 +51,15 @@ namespace flashgg {
         void produce( Event &, const EventSetup & ) override;
         //        std::vector<edm::InputTag> inputTagJets_;
         edm::InputTag inputTagJets_;
-        EDGetTokenT<View<flashgg::Jet> > jetToken_;
         edm::EDGetTokenT<double> rhoToken_;        
         string bRegressionWeightfileName_;
-        double y_mean_,y_std_;
+        double y_mean_;
+        double y_std_;
+        EDGetTokenT<View<flashgg::Jet> > jetToken_;
 
-        #ifdef CMSSW_9
+        #ifdef CMSSW9
            tensorflow::Session* session;
-        #elif CMSSW_8
+        #elif CMSSW8
            dnn::tf::Graph NNgraph_;
         #endif
         std::vector<float> NNvectorVar_; 
@@ -114,26 +115,27 @@ namespace flashgg {
 
 
     bRegressionProducer::bRegressionProducer( const ParameterSet &iConfig ) :
-        //     inputTagJets_( iConfig.getParameter<std::vector<edm::InputTag> >( "JetTag" )) {
-        #ifdef CMSSW_9
+        inputTagJets_( iConfig.getParameter<edm::InputTag>( "JetTag" )) ,
+        rhoToken_( consumes<double>(iConfig.getParameter<edm::InputTag>( "rhoFixedGridCollection" ) ) ),
+        #ifdef CMSSW9
            bRegressionWeightfileName_( iConfig.getUntrackedParameter<std::string>("bRegressionWeightfile_2017")),
            y_mean_(iConfig.getUntrackedParameter<double>("y_mean_2017")),
            y_std_(iConfig.getUntrackedParameter<double>("y_std_2017"))
-        #elif CMSSW_8
+        #elif CMSSW8
            bRegressionWeightfileName_( iConfig.getUntrackedParameter<std::string>("bRegressionWeightfile")),
            y_mean_(iConfig.getUntrackedParameter<double>("y_mean")),
            y_std_(iConfig.getUntrackedParameter<double>("y_std"))
         #endif 
-        inputTagJets_( iConfig.getParameter<edm::InputTag>( "JetTag" )) ,
-        rhoToken_( consumes<double>(iConfig.getParameter<edm::InputTag>( "rhoFixedGridCollection" ) ) )
     {
         jetToken_= consumes<View<flashgg::Jet> >(inputTagJets_);
 
 
-        #ifdef CMSSW_9
+        #ifdef CMSSW9
            tensorflow::GraphDef* graphDef= tensorflow::loadGraphDef(bRegressionWeightfileName_.c_str());
+           session = tensorflow::createSession(graphDef);
+
            
-        #elif CMSSW_8
+        #elif CMSSW8
            NNgraph_ = *(new dnn::tf::Graph(bRegressionWeightfileName_.c_str()));
         #endif 
 
@@ -460,7 +462,7 @@ namespace flashgg {
     std::vector<float> bRegressionProducer::EvaluateNN(){
         unsigned int shape=NNvectorVar_.size();
         std::vector<float> correction(3);//3 outputs, first value is mean and then other 2 quantiles
-        #ifdef CMSSW_9
+        #ifdef CMSSW9
            tensorflow::Tensor input(tensorflow::DT_FLOAT, {1,shape});
            for (unsigned int i = 0; i < NNvectorVar_.size(); i++){
                input.matrix<float>()(0,i) =  float(NNvectorVar_[i]);
@@ -470,12 +472,12 @@ namespace flashgg {
            correction[0] = outputs[0].matrix<float>()(0, 0);
            correction[1] = outputs[0].matrix<float>()(0, 1);
            correction[2] = outputs[0].matrix<float>()(0, 2);
-        #elif CMSSW_8
+        #elif CMSSW8
            dnn::tf::Shape xShape[] = { 1, shape };
            dnn::tf::Tensor* x = NNgraph_.defineInput(new dnn::tf::Tensor("ffwd_inp:0", 2, xShape));
            dnn::tf::Tensor* y = NNgraph_.defineOutput(new dnn::tf::Tensor("ffwd_out/BiasAdd:0"));
            for (int i = 0; i < x->getShape(1); i++){
-               //            std::cout<<"i:"<<i<<" x:"<<NNvectorVar_[i]<<std::endl;
+                          // std::cout<<"i:"<<i<<" x:"<<NNvectorVar_[i]<<std::endl;
                x->setValue<float>(0, i, NNvectorVar_[i]);
            }
            NNgraph_.eval();

@@ -401,11 +401,12 @@ class WorkNodeJobFactory(object):
         
     # ------------------------------------------------------------------------------------------------
     def mkTarball(self,tarball=None,
-                  tarball_entries=["python","lib","bin","flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310"],tarball_patterns={"src/*":"data"},
+                  tarball_entries=["python","lib","bin","external","flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310"],tarball_patterns={"src/*":"data"},
                   tarball_transform=None):
         
         self.tarball = tarball
         content=tarball_entries
+
         for folder,pattern in tarball_patterns.iteritems():
             stat,out = commands.getstatusoutput("cd $CMSSW_BASE; find %s -name %s" % ( folder, pattern ) )
             ## print out
