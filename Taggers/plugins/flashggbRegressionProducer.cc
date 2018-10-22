@@ -242,7 +242,9 @@ namespace flashgg {
                 Jet_vtx3dL = std::max(float(0.),fjet.userFloat("vtx3DVal"));
                 Jet_vtxNtrk = std::max(float(0.),fjet.userFloat("vtxNTracks"));
                 Jet_vtx3deL = std::max(float(0.),fjet.userFloat("vtx3DSig"));
-                if (Jet_vtx3deL!=0.) Jet_vtx3deL = Jet_vtx3dL/Jet_vtx3deL ;
+                #ifdef CMSSW9
+                    if (Jet_vtx3deL!=0.) Jet_vtx3deL = Jet_vtx3dL/Jet_vtx3deL ;
+                #endif         
             }
             if (fjet.emEnergies().size()>0){//since in order to save space we save this info only if the candidate has a minimum pt or eta
                 Jet_energyRing_dR0_em_Jet_e = fjet.emEnergies()[0]/fjet.correctedJet("Uncorrected").energy();//remember to divide by jet energy
