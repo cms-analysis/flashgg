@@ -17,8 +17,8 @@ flashggbRegressionProducer= cms.EDProducer('flashggbRegressionProducer',
                                            y_mean = cms.untracked.double(1.0454729795455933),
                                            y_std =cms.untracked.double( 0.31628304719924927),
                                            #For now had to implement it like this, will unfo later when flashgg new method is ready
-                                           bRegressionWeightfile_2017= cms.untracked.string(os.environ["CMSSW_BASE"]+"/src/flashgg/Taggers/data/DNN_models/breg_training_2017.pb"), 
-                                           y_mean_2017 = cms.untracked.double(1.0610932111740112), 
-                                           y_std_2017 =cms.untracked.double(0.39077115058898926) 
+                                           bRegressionWeightfile_2017= cms.untracked.string(os.environ["CMSSW_BASE"]+"/src/flashgg/Taggers/data/DNN_models/breg_training_2017_updated.pb"), 
+                                           y_mean_2017 = cms.untracked.double(1.0596693754196167), 
+                                           y_std_2017 =cms.untracked.double(0.28492164611816406) 
                                            )
 

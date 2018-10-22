@@ -242,6 +242,7 @@ namespace flashgg {
                 Jet_vtx3dL = std::max(float(0.),fjet.userFloat("vtx3DVal"));
                 Jet_vtxNtrk = std::max(float(0.),fjet.userFloat("vtxNTracks"));
                 Jet_vtx3deL = std::max(float(0.),fjet.userFloat("vtx3DSig"));
+                if (Jet_vtx3deL!=0.) Jet_vtx3deL = Jet_vtx3dL/Jet_vtx3deL ;
             }
             if (fjet.emEnergies().size()>0){//since in order to save space we save this info only if the candidate has a minimum pt or eta
                 Jet_energyRing_dR0_em_Jet_e = fjet.emEnergies()[0]/fjet.correctedJet("Uncorrected").energy();//remember to divide by jet energy
@@ -285,6 +286,7 @@ namespace flashgg {
                 cout<<"Jet_vtx3dL :"<<Jet_vtx3dL <<endl;
                 cout<<"Jet_vtxNtrk :"<<Jet_vtxNtrk <<endl;
                 cout<<"Jet_vtx3deL :"<<Jet_vtx3deL <<endl;
+                cout<<"Jet_numDaughters_pt03 :"<<Jet_numDaughters_pt03 <<endl;
                 cout<<"Jet_energyRing_dR0_em_Jet_e :"<<Jet_energyRing_dR0_em_Jet_e <<endl;
                 cout<<"Jet_energyRing_dR1_em_Jet_e :"<<Jet_energyRing_dR1_em_Jet_e <<endl;
                 cout<<"Jet_energyRing_dR2_em_Jet_e :"<<Jet_energyRing_dR2_em_Jet_e <<endl;
@@ -305,7 +307,6 @@ namespace flashgg {
                 cout<<"Jet_energyRing_dR2_mu_Jet_e :"<<Jet_energyRing_dR2_mu_Jet_e <<endl;
                 cout<<"Jet_energyRing_dR3_mu_Jet_e :"<<Jet_energyRing_dR3_mu_Jet_e <<endl;
                 cout<<"Jet_energyRing_dR4_mu_Jet_e :"<<Jet_energyRing_dR4_mu_Jet_e <<endl;
-                cout<<"Jet_numDaughters_pt03 :"<<Jet_numDaughters_pt03 <<endl;
                 cout<<"Jet_chHEF:"<<Jet_chHEF<<endl;
                 cout<<"Jet_chEmEF:"<<Jet_chEmEF<<endl;
                 cout<<"Jet_leptonPtRelInv:"<<Jet_leptonPtRelInv<<endl;
@@ -315,7 +316,6 @@ namespace flashgg {
                 cout<<"Jet_mass:"<<Jet_mass<<endl;
                 cout<<"Jet_withPtd:"<<Jet_withPtd<<endl;
             }
-
             SetNNVectorVar();
             bRegNN = EvaluateNN();
             NNvectorVar_.clear();
@@ -456,6 +456,10 @@ namespace flashgg {
         NNvectorVar_.push_back(Jet_mass);
         NNvectorVar_.push_back(Jet_withPtd);
 
+        if(debug){
+            for (unsigned int i=0;i<NNvectorVar_.size();i++)
+                std::cout<<NNvectorVar_[i]<<" , ";
+        }
 
     }
     
