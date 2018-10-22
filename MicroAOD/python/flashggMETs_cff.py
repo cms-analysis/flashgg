@@ -51,6 +51,7 @@ def runMETs(process,isMC):
                                    tauColl="slimmedTaus",
                                    reclusterJets = False,
                             	   fixEE2017 = True,
+                                   fixEE2017Params = {'userawPt': True, 'PtThreshold':50.0, 'MinEtaThreshold':2.65, 'MaxEtaThreshold': 3.139},
                                    pfCandColl = "packedPFCandidates",
 				   # will produce new MET collection: slimmedMETsModifiedMET
                                    postfix="ModifiedMET",

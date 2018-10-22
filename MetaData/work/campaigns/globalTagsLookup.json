@@ -146,5 +146,6 @@
     "Run2017C-31Mar2018" : ["94X_dataRun2_ReReco_EOY17_v2"],
     "Run2017D-31Mar2018" : ["94X_dataRun2_ReReco_EOY17_v2"],
     "Run2017E-31Mar2018" : ["94X_dataRun2_ReReco_EOY17_v2"],
-    "Run2017F-31Mar2018" : ["94X_dataRun2_ReReco_EOY17_v2"]
+    "Run2017F-31Mar2018" : ["94X_dataRun2_ReReco_EOY17_v2"],
+    "Run2017F-09May2018" : ["94X_dataRun2_ReReco_EOY17_v6"]
 }

@@ -48,18 +48,24 @@ def runMETs(process,era):
                                )
 
     if isMC or os.environ["CMSSW_VERSION"].count("CMSSW_9"):
-
-       runMetCorAndUncFromMiniAOD(process,
-                            isData=(not isMC),
-                            fixEE2017 = True,
-                            # will produce new MET collection: slimmedMETsModifiedMET
-                            postfix = "ModifiedMET",
-                            )
-       process.flashggMets = cms.EDProducer('FlashggMetProducer',
-                                             verbose = cms.untracked.bool(False),
-                                             metTag = cms.InputTag('slimmedMETsModifiedMET'),
+        ###---Run both uncorrected and corrected MET (recipe v2) for 2017
+        runMetCorAndUncFromMiniAOD(process,
+                                   isData=(not isMC),
+                                   fixEE2017 = True,
+                                   fixEE2017Params = {'userawPt': True, 'PtThreshold':50.0, 'MinEtaThreshold':2.65, 'MaxEtaThreshold': 3.139},
+                                   # will produce new MET collection: slimmedMETsModifiedMET
+                                   postfix = "ModifiedMET",
+                               )
+        process.flashggMetsStd = cms.EDProducer('FlashggMetProducer',
+                                                verbose = cms.untracked.bool(False),
+                                                metTag = cms.InputTag('slimmedMETs'),
+                                            )
+        process.flashggMetsCorr = cms.EDProducer('FlashggMetProducer',
+                                                 verbose = cms.untracked.bool(False),
+                                                 metTag = cms.InputTag('slimmedMETsModifiedMET'),
                                              )
-       process.flashggMetSequence = cms.Sequence(process.fullPatMetSequenceModifiedMET*process.flashggMets)
+        process.flashggMetSequence = cms.Sequence(process.fullPatMetSequence*process.flashggMetsStd*
+                                                  process.fullPatMetSequenceModifiedMET*process.flashggMetsCorr)
              
     if not isMC and os.environ["CMSSW_VERSION"].count("CMSSW_8_0_28"):
         corMETFromMuonAndEG(process, 

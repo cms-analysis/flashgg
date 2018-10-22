@@ -309,6 +309,9 @@ if options.createCrabConfig:
             ("RunIISummer17MiniAOD-NZSFlatPU28to62_92X_upgrade2017_realistic_v10","FlatPU_92Xv10"),
             ("RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14","PU2017_94Xv14"),
             ("RunIIFall17MiniAODv2-PU2017_12Apr2018_1core_94X_mc2017_realistic_v14","1core_94Xv1"),
+            ("_ext1-v1",""),
+            ("DoubleEMEnriched", "DEMEn"),
+            ("TuneCP5_13TeV_Pythia8", "TCP5_13T_P8")
             ]
 
         for orig, replacement in replacements:
