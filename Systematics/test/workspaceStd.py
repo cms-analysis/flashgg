@@ -195,7 +195,7 @@ if customize.tthTagsOnly:
 
 print 'here we print the tag sequence after'
 print process.flashggTagSequence
-customize.processId = "tth_125"
+
 if customize.doFiducial:
     print 'we do fiducial and we change tagsorter'
     process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggSigmaMoMpToMTag')) )
