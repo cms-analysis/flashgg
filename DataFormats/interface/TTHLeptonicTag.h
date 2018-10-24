@@ -30,7 +30,6 @@ namespace flashgg {
         const std::vector<double>  leptonsEta() const { return lepEta_;}
         const std::vector<int>  leptonsType() const { return lepType_;}
         
-
         void setJets( std::vector<edm::Ptr<Jet> > Jets ) { Jets_ = Jets; }
         void setBJets( std::vector<edm::Ptr<Jet> > BJets )  { BJets_ = BJets;}
         void setMuons( std::vector<edm::Ptr<Muon> > Muons ) {Muons_ = Muons;}

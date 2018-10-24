@@ -49,7 +49,7 @@ namespace flashgg {
         TTHLeptonicTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
-        int  chooseCategory( float );
+        int  chooseCategory( float , bool);
 
         struct Sorter {
             bool operator()( const std::pair<unsigned int, float>  pair1, const std::pair<unsigned int,float>  pair2 )
@@ -244,12 +244,18 @@ namespace flashgg {
         produces<vector<TagTruthBase> >();
     }
 
-    int TTHLeptonicTagProducer::chooseCategory( float tthmvavalue )
+    int TTHLeptonicTagProducer::chooseCategory( float tthmvavalue, bool debug)
     {
         // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
         int n;
         for( n = 0 ; n < ( int )MVAThreshold_.size() ; n++ ) {
             if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { return n; }
+        }
+
+        if(debug)
+        {   cout << "Checking class, thresholds: ";
+            for(unsigned int i=0; i<MVAThreshold_.size(); ++i)
+                cout << MVAThreshold_[i] << " ";
         }
         return -1; // Does not pass, object will not be produced
     }
@@ -356,6 +362,10 @@ namespace flashgg {
             }
 
             if(!passDiphotonSelection) continue;
+
+            if(debug_)
+                cout << "Passed photon selection, checking leptons: " << idmva1 << " " << idmva2 << endl;
+ 
 
             std::vector<edm::Ptr<flashgg::Muon> >     Muons;
             std::vector<edm::Ptr<flashgg::Electron> > Electrons;
@@ -684,11 +694,21 @@ namespace flashgg {
             float mvaValue = DiphotonMva_-> EvaluateMVA( "BDT" );
             int catNumber = -1;
 
+            if(debug_)
+                cout << "I'm going to check selections, mva value: " << mvaValue << endl;
             if(lepPt.size()>1 && njet_ >= DiLeptonJetThreshold_ && njets_btagmedium_ >= DiLeptonbJetThreshold_ && mvaValue > DiLeptonMVAThreshold_ ) // Check DiLepton selection and assigne to purest cat
-                catNumber = 0;
+            {    catNumber = 0;
+                 if(debug_)
+                    cout << "DiLepton event with: " << njet_ << "jets, (threshold " << DiLeptonJetThreshold_ << ") " << njets_btagmedium_ << " bjets, (threshold " << DiLeptonbJetThreshold_  << ")" << mvaValue << " mva (threshold " << DiLeptonMVAThreshold_ << endl;
+ 
+            }
             
             else if(lepPt.size()==1 && njet_ >= jetsNumberThreshold_ && njets_btagmedium_ >= bjetsNumberThreshold_) // Check single lepton selections
-                catNumber = chooseCategory( mvaValue );  
+            {    catNumber = chooseCategory( mvaValue, debug_ );  
+               if(debug_)
+                    cout << "Single lepton event with: "<< njet_ << " jets, (threshold " << DiLeptonJetThreshold_ << ") " << njets_btagmedium_ << " bjets, (threshold " << DiLeptonbJetThreshold_  << ")" << mvaValue << " mva (thresholds "  << endl;
+ 
+            }
 
             if(debug_)
             { 
