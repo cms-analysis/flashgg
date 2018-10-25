@@ -651,7 +651,7 @@ namespace flashgg {
 
             if( theMet_ -> size() != 1 )
                 std::cout << "WARNING number of MET is not equal to 1" << std::endl;
-             MetPt_ = theMet_->ptrAt( 0 ) -> pt();
+             MetPt_ = theMet_->ptrAt( 0 ) -> getCorPt();
 
             int leadMuIndex = 0;
             float leadMuPt = -1;
@@ -748,6 +748,8 @@ namespace flashgg {
 
                 tthltags_obj.includeWeights( *dipho );
                 tthltags_obj.setJets( tagJets );
+                tthltags_obj.setBJets( tagBJets );
+                tthltags_obj.setMetPt(  MetPt_ );
                 tthltags_obj.setMuons( Muons );
                 tthltags_obj.setElectrons( Electrons );
                 tthltags_obj.setDiPhotonIndex( diphoIndex );
