@@ -49,7 +49,7 @@ namespace flashgg {
         TTHLeptonicTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
-        int  chooseCategory( float );
+        int  chooseCategory( float , bool);
 
         struct Sorter {
             bool operator()( const std::pair<unsigned int, float>  pair1, const std::pair<unsigned int,float>  pair2 )
@@ -95,6 +95,12 @@ namespace flashgg {
         double ElePhotonDrCut_;
         double ElePhotonZMassCut_;
         double DeltaRTrkEle_;
+
+        double LeptonsZMassCut_;
+
+        double DiLeptonJetThreshold_;
+        double DiLeptonbJetThreshold_;
+        double DiLeptonMVAThreshold_;
 
         double leadPhoOverMassThreshold_;
         double subleadPhoOverMassThreshold_;
@@ -177,6 +183,12 @@ namespace flashgg {
         ElePhotonZMassCut_ = iConfig.getParameter<double>( "ElePhotonZMassCut");
         DeltaRTrkEle_ = iConfig.getParameter<double>( "DeltaRTrkEle");
 
+        LeptonsZMassCut_ = iConfig.getParameter<double>( "LeptonsZMassCut");
+
+        DiLeptonJetThreshold_ = iConfig.getParameter<double>( "DiLeptonJetThreshold");
+        DiLeptonbJetThreshold_ = iConfig.getParameter<double>( "DiLeptonbJetThreshold");
+        DiLeptonMVAThreshold_ = iConfig.getParameter<double>( "DiLeptonMVAThreshold");
+
         deltaRJetLeadPhoThreshold_ = iConfig.getParameter<double>( "deltaRJetLeadPhoThreshold");
         deltaRJetSubLeadPhoThreshold_ = iConfig.getParameter<double>( "deltaRJetSubLeadPhoThreshold");
 
@@ -232,12 +244,18 @@ namespace flashgg {
         produces<vector<TagTruthBase> >();
     }
 
-    int TTHLeptonicTagProducer::chooseCategory( float tthmvavalue )
+    int TTHLeptonicTagProducer::chooseCategory( float tthmvavalue, bool debug)
     {
         // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
         int n;
         for( n = 0 ; n < ( int )MVAThreshold_.size() ; n++ ) {
             if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { return n; }
+        }
+
+        if(debug)
+        {   cout << "Checking class, thresholds: ";
+            for(unsigned int i=0; i<MVAThreshold_.size(); ++i)
+                cout << MVAThreshold_[i] << " ";
         }
         return -1; // Does not pass, object will not be produced
     }
@@ -345,6 +363,10 @@ namespace flashgg {
 
             if(!passDiphotonSelection) continue;
 
+            if(debug_)
+                cout << "Passed photon selection, checking leptons: " << idmva1 << " " << idmva2 << endl;
+ 
+
             std::vector<edm::Ptr<flashgg::Muon> >     Muons;
             std::vector<edm::Ptr<flashgg::Electron> > Electrons;
 
@@ -358,9 +380,85 @@ namespace flashgg {
                 Muons = selectMuons(theMuons->ptrs(), dipho, vertices->ptrs(), MuonPtCut_, MuonEtaCut_, MuonIsoCut_, MuonPhotonDrCut_, debug_);
             if(theElectrons->size()>0)
                 Electrons = selectElectrons(theElectrons->ptrs(), dipho, ElePtCut_, EleEtaCuts_, ElePhotonDrCut_, ElePhotonZMassCut_, DeltaRTrkEle_, debug_);
-
-            if( (Muons.size() + Electrons.size()) < (unsigned) MinNLep_ || (Muons.size() + Electrons.size()) > (unsigned) MaxNLep_) continue;
  
+            //If 2 same flavour leptons are found remove the pairs with mass compatible with a Z boson
+
+            if(Muons.size()>=2)
+            {
+                std::vector<edm::Ptr<flashgg::Muon>> Muons_0;
+                Muons_0 = Muons;
+                std::vector<int> badIndexes;
+
+                for(unsigned int i=0; i<Muons_0.size(); ++i)
+                {
+                    for(unsigned int j=i+1; j<Muons_0.size(); ++j)
+                    {
+                        TLorentzVector l1, l2;
+                        l1.SetPtEtaPhiE(Muons_0[i]->pt(), Muons_0[i]->eta(), Muons_0[i]->phi(), Muons_0[i]->energy());
+                        l2.SetPtEtaPhiE(Muons_0[j]->pt(), Muons_0[j]->eta(), Muons_0[j]->phi(), Muons_0[j]->energy());
+
+                        if(fabs((l1+l2).M() - 91.187) < LeptonsZMassCut_)
+                        {
+                            badIndexes.push_back(i);
+                            badIndexes.push_back(j);
+                        }
+                    }
+                }
+
+                if(badIndexes.size()!=0)
+                {
+                    Muons.clear();
+                    for(unsigned int i=0; i<Muons_0.size(); ++i)
+                    {
+                       bool isBad = false;
+                       for(unsigned int j=0; j<badIndexes.size(); ++j)
+                       {
+                          if(badIndexes[j]==(int)i)
+                               isBad = true;
+                      }
+                      if(!isBad) Muons.push_back(Muons_0[i]);
+                    }
+                }
+            }        
+
+            if(Electrons.size()>=2)
+            {
+                std::vector<int> badIndexes;
+                std::vector<edm::Ptr<flashgg::Electron> > Electrons_0;
+                Electrons_0 = Electrons;
+                for(unsigned int i=0; i<Electrons_0.size(); ++i)
+                {
+                    for(unsigned int j=i+1; j<Electrons_0.size(); ++j)
+                    {
+                        TLorentzVector l1, l2;
+                        l1.SetPtEtaPhiE(Electrons_0[i]->pt(), Electrons_0[i]->eta(), Electrons_0[i]->phi(), Electrons_0[i]->energy());
+                        l2.SetPtEtaPhiE(Electrons_0[j]->pt(), Electrons_0[j]->eta(), Electrons_0[j]->phi(), Electrons_0[j]->energy());
+
+                        if(fabs((l1+l2).M() - 91.187) < LeptonsZMassCut_)
+                        {
+                            badIndexes.push_back(i);
+                            badIndexes.push_back(j);
+                        }
+                    }
+                }
+                if(badIndexes.size()!=0)
+                {
+                    Electrons.clear();
+
+                    for(unsigned int i=0; i<Electrons_0.size(); ++i)
+                    {
+                         bool isBad = false;
+                         for(unsigned int j=0; j<badIndexes.size(); ++j)
+                         {
+                             if(badIndexes[j]==(int)i)
+                                 isBad = true;
+                         }
+                         if(!isBad) Electrons.push_back(Electrons_0[i]);
+                    }
+                 }
+             }        
+
+            if( (Muons.size() + Electrons.size()) < (unsigned) MinNLep_) continue;
             // Fill lepton vectors            
             // ===================
             
@@ -480,11 +578,8 @@ namespace flashgg {
 
                     if( bDiscriminatorValue > bDiscriminator_[1] )
                         tagBJets.push_back( thejet );
-                }
-                 
+                }       
             }
-
-            if(njet_ < jetsNumberThreshold_ || njets_btagmedium_ < bjetsNumberThreshold_) continue;
  
             if(debug_)
                 cout << "Jets after selections " << njet_ << ", bJets " << njets_btagmedium_ << endl;
@@ -556,7 +651,7 @@ namespace flashgg {
 
             if( theMet_ -> size() != 1 )
                 std::cout << "WARNING number of MET is not equal to 1" << std::endl;
-             MetPt_ = theMet_->ptrAt( 0 ) -> pt();
+             MetPt_ = theMet_->ptrAt( 0 ) -> getCorPt();
 
             int leadMuIndex = 0;
             float leadMuPt = -1;
@@ -598,7 +693,22 @@ namespace flashgg {
 
             float mvaValue = DiphotonMva_-> EvaluateMVA( "BDT" );
             int catNumber = -1;
-            catNumber = chooseCategory( mvaValue );  
+
+            if(debug_)
+                cout << "I'm going to check selections, mva value: " << mvaValue << endl;
+            if(lepPt.size()>1 && njet_ >= DiLeptonJetThreshold_ && njets_btagmedium_ >= DiLeptonbJetThreshold_ && mvaValue > DiLeptonMVAThreshold_ ) // Check DiLepton selection and assigne to purest cat
+            {    catNumber = 0;
+                 if(debug_)
+                    cout << "DiLepton event with: " << njet_ << "jets, (threshold " << DiLeptonJetThreshold_ << ") " << njets_btagmedium_ << " bjets, (threshold " << DiLeptonbJetThreshold_  << ")" << mvaValue << " mva (threshold " << DiLeptonMVAThreshold_ << endl;
+ 
+            }
+            
+            else if(lepPt.size()==1 && njet_ >= jetsNumberThreshold_ && njets_btagmedium_ >= bjetsNumberThreshold_) // Check single lepton selections
+            {    catNumber = chooseCategory( mvaValue, debug_ );  
+               if(debug_)
+                    cout << "Single lepton event with: "<< njet_ << " jets, (threshold " << DiLeptonJetThreshold_ << ") " << njets_btagmedium_ << " bjets, (threshold " << DiLeptonbJetThreshold_  << ")" << mvaValue << " mva (thresholds "  << endl;
+ 
+            }
 
             if(debug_)
             { 
@@ -628,9 +738,7 @@ namespace flashgg {
                 for( unsigned int i = 0; i < tagJets.size(); ++i )
                 {
                     tthltags_obj.includeWeightsByLabel( *tagJets[i] , "JetBTagReshapeWeight");
-                    tthltags_obj.includeWeightsByLabel( *tagJets[i] , "JetBTagCutWeight");
                 }
-
 
                 for( unsigned int i = 0; i < Muons.size(); ++i )
                     tthltags_obj.includeWeights( *Muons.at(i));
@@ -640,6 +748,8 @@ namespace flashgg {
 
                 tthltags_obj.includeWeights( *dipho );
                 tthltags_obj.setJets( tagJets );
+                tthltags_obj.setBJets( tagBJets );
+                tthltags_obj.setMetPt(  MetPt_ );
                 tthltags_obj.setMuons( Muons );
                 tthltags_obj.setElectrons( Electrons );
                 tthltags_obj.setDiPhotonIndex( diphoIndex );
