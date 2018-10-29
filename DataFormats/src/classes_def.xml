@@ -157,8 +157,8 @@
 <class name="edm::Wrapper<std::vector<flashgg::VHHadronicTag> >"/>
 <class name="edm::Ptr<flashgg::DiPhotonTagBase>"/>
 <class name="edm::Wrapper<edm::Ptr<flashgg::DiPhotonTagBase> >"/>
-<class name="edm::Ptr<reco::Vertex>"/> 
-<class name="std::vector<edm::Ptr<reco::Vertex> >"/> 
+<class name="edm::Ptr<reco::Vertex>"/>
+<class name="std::vector<edm::Ptr<reco::Vertex> >"/>
 <class name="flashgg::Photon" ClassVersion="11">
    <version ClassVersion="10" checksum="563539605"/>
   <version ClassVersion="11" checksum="3279104383"/>
@@ -342,4 +342,12 @@
 </class>
 <class name="std::vector<flashgg::TagCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TagCandidate> >"/>
+
+<class name="flashgg::H4GCandidate" ClassVersion="13">
+  <version ClassVersion="12" checksum="618148466"/>
+  <version ClassVersion="11" checksum="2809364010"/>
+  <version ClassVersion="13" checksum="618148466"/>
+</class>
+<class name="std::vector<flashgg::H4GCandidate>"/>
+<class name="edm::Wrapper<std::vector<flashgg::H4GCandidate> >"/>
 </lcgdict>
