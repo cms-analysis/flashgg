@@ -664,6 +664,16 @@ LooseMvaSF = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
           ApplyCentralValue = cms.bool(True)
           )
 
+TightMvaSF = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonWeight"),
+          MethodName = cms.string("FlashggDiPhotonFromPhoton"),
+          Label = cms.string("TightMvaSF"),
+          NSigmas = cms.vint32(-1,1),
+          OverallRange = cms.string("1"),
+          BinList = tightMvaBins,
+          Debug = cms.untracked.bool(False),
+          ApplyCentralValue = cms.bool(True)
+          )
+
 SigmaEOverEShift = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigEOverEShift"),
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
           Label = cms.string("SigmaEOverEShift"),
