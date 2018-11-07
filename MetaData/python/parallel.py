@@ -3,6 +3,8 @@ from Queue import Queue
 import commands
 import subprocess
 import os,sys
+import getpass
+import copy
 
 from threading import Thread, Semaphore
 import threading 
@@ -18,7 +20,7 @@ class BatchRegistry:
     proxy  = None
     autoprint  = True
     domains_map = {
-        "cern.ch"          : "lsf",
+        "cern.ch"          : "htcondor",
         "psi.ch"           : "sge",
         "hep.ph.ic.ac.uk"  : "sge",
         "irfu.ext"         : "iclust",
@@ -29,6 +31,7 @@ class BatchRegistry:
     def getRunner(batchSystem):
         if batchSystem == "auto": batchSystem = BatchRegistry.getBatchSystem()        
         if batchSystem == "lsf" : return LsfJob
+        elif batchSystem == "htcondor": return HTCondorJob
         elif batchSystem == "sge": return SGEJob
         elif batchSystem == "iclust": return IclustJob
         else:
@@ -52,6 +55,7 @@ class BatchRegistry:
     def getMonitor(batchSystem):
         if batchSystem == "auto": batchSystem = BatchRegistry.getBatchSystem(BatchRegistry.getDomain())        
         if batchSystem == "lsf" : return LsfMonitor
+        elif batchSystem == "htcondor": return HTCondorMonitor
         elif batchSystem == "sge": return SGEMonitor
         elif batchSystem == "iclust": return IclustMonitor
         else:
@@ -94,8 +98,468 @@ class BatchRegistry:
                 raise Exception,"Unable to voms proxy:\n%s" % out
             BatchRegistry.proxy = "%s:%s" % ( BatchRegistry.getHost(), out.strip("\n") )
         return BatchRegistry.proxy
+            
+# -----------------------------------------------------------------------------------------------------
+class WorkNodeJob(object):
     
+    nwarnings = 1
+    
+    #----------------------------------------
+    def __init__(self,*args,**kwargs):
         
+        
+        self.runner          = kwargs.pop("runner",LsfJob)
+        self.stage_dest      = kwargs.pop("stage_dest")
+        self.stage_cmd       = kwargs.pop("stage_cmd")
+        self.stage_patterns  = kwargs.pop("stage_patterns")
+        self.tarball         = kwargs.pop("tarball",None)
+        self.job_outdir      = kwargs.pop("job_outdir",None)
+        self.copy_proxy      = kwargs.pop("copy_proxy",True)
+
+        self.runner = self.runner(*args,**kwargs)
+        
+    def __getattr__(self,name):
+        ## return runner attributes
+        if hasattr(self.runner,name):
+            return getattr(self.runner,name)
+            
+        ## raise AttributeError, "No attribute %s in runner instance %s" % (name,str(self.runner))
+        return object.__getattr__(name)
+           
+    def __str__(self):
+        return "WorkNodeJob: [%s]" % ( self.runner )
+
+    #----------------------------------------
+    def __call__(self,cmd):
+        
+        self.cmd = cmd
+        script = ""
+        script += "#!/bin/bash\n"
+        
+        # get specific preamble needed by the runner
+        #     this commands are expected to bring the process to the job working directory in the worker node
+        script += self.runner.preamble()+"\n"
+        
+        # copy grid proxy over
+        if self.copy_proxy and self.runner.copyProxy():
+            try:
+                proxy = BatchRegistry.getProxy()
+                script += "scp -p %s .\n" % proxy
+                proxyname = os.path.basename(proxy.split(":")[1])
+                script += "export X509_USER_PROXY=$PWD/%s\n" % proxyname
+                if WorkNodeJob.nwarnings > 0:
+                    WorkNodeJob.nwarnings -= 1
+                    print 
+                    print
+                    print "WARNING: We are counting fact that the jobs will be able to scp the follwing file: %s" % proxy
+                    print "         Please make sure that ssh is properly configured."
+                    print "         Alternatively, you can copy the proxy to your home folder, set the variable X509_USER_PROXY accordingly and run with the --no-copy-proxy"
+                    print 
+            except Exception, e:
+                if WorkNodeJob.nwarnings > 0:
+                    WorkNodeJob.nwarnings -= 1
+                    print "WARNING: I could not find a valid grid proxy. This may cause problems if the jobs will read the input through AAA."
+                    print e
+        else:
+            try:
+                proxy = BatchRegistry.getProxy()
+                proxyname = proxy.split(":")[1]
+                script += "export X509_USER_PROXY=%s\n" % proxyname
+                if WorkNodeJob.nwarnings > 0:
+                    WorkNodeJob.nwarnings -= 1
+                    print 
+                    print
+                    print "WARNING: We are counting on the path for this proxy being visible to the remote jobs:",proxyname
+                    print 
+            except Exception, e:
+                if WorkNodeJob.nwarnings > 0:
+                    WorkNodeJob.nwarnings -= 1
+                    print "WARNING: I could not find a valid grid proxy. This may cause problems if the jobs will read the input through AAA."
+                    print e
+
+
+                
+        # set-up CMSSW
+        script += "WD=$PWD\n"
+        script += "echo\n"
+        script += "echo\n"
+        script += "echo\n"
+        if not self.tarball:
+            script += "cd " + os.environ['CMSSW_BASE']+"\n"
+        else:
+            script += "source $VO_CMS_SW_DIR/cmsset_default.sh\n"
+            script += "export SCRAM_ARCH=%s\n" % os.environ['SCRAM_ARCH']
+            script += "scram project CMSSW %s\n" % os.environ['CMSSW_VERSION']
+            script += "cd %s\n" % os.environ['CMSSW_VERSION']
+            script += "tar zxf %s\n" % self.tarball            
+            script += "scram b\n"
+            
+        script += "eval $(scram runtime -sh)"+"\n"
+        script += "cd $WD\n"
+        
+        if self.job_outdir:
+            script += "mkdir %s\n" % self.job_outdir
+
+        script += 'echo "ls $X509_USER_PROXY"\n'
+        script += 'ls $X509_USER_PROXY\n'
+            
+        # the user command
+        script += cmd+"\n"
+        script += 'retval=$?\n'
+        
+        if self.tarball and self.job_outdir:
+            script += 'cd %s\n' % self.job_outdir
+            script += 'echo\n'
+            script += 'echo\n'
+            script += 'echo "Job finished with exit code ${retval}"\n'
+            script += 'echo "Files in ouput folder"\n'
+            script += 'ls -ltr\n'
+        # stage out files
+        script += 'if [[ $retval == 0 ]]; then\n'
+        script += '    errors=""\n'
+        script += '    for file in $(find -name %s); do\n' % " -or -name ".join(self.stage_patterns)
+        script += '        %s $file %s\n' % ( self.stage_cmd, self.stage_dest )
+        script += '        if [[ $? != 0 ]]; then\n'
+        script += '            errors="$errors $file($?)"\n'
+        script += '        fi\n'
+        script += '    done\n'
+        script += '    if [[ -n "$errors" ]]; then\n'
+        script += '       echo "Errors while staging files"\n'
+        script += '       echo "$errors"\n'
+        script += '       exit -2\n'
+        script += '    fi\n'
+        script += 'fi\n'        
+
+        # get specific epilogue needed by the runner
+        # this can be used, for example, to propagate $retval by touching a file
+        script += self.runner.epilogue(self.stage_cmd,self.stage_dest)+"\n"
+
+        script += 'exit $retval\n'
+        script += '\n'
+        
+        return self.runner.run(script)
+
+
+# -----------------------------------------------------------------------------------------------------
+class WorkNodeJobFactory(object):
+    
+    # ------------------------------------------------------------------------------------------------
+    def __init__(self,stage_dest,
+                 stage_cmd="cp -pv",stage_patterns=["'*.root'","'*.xml'"],job_outdir=None,runner=None,batchSystem="auto",copy_proxy=True):
+        
+        if not runner:
+            self.runner = BatchRegistry.getRunner(batchSystem)
+            
+        self.stage_dest = stage_dest
+        self.stage_cmd  = stage_cmd
+        self.stage_patterns  = stage_patterns
+        self.tarball = None
+        self.job_outdir      = job_outdir
+        self.copy_proxy      = copy_proxy
+
+    # ------------------------------------------------------------------------------------------------
+    def stageDest(self,dest):
+        self.stage_dest = dest
+
+    # ------------------------------------------------------------------------------------------------
+    def setTarball(self,tarball):
+        self.tarball = tarball
+        
+    # ------------------------------------------------------------------------------------------------
+    def mkTarball(self,tarball=None,
+                  tarball_entries=["python","lib","bin","flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310"],tarball_patterns={"src/*":"data"},
+                  tarball_transform=None):
+        
+        self.tarball = tarball
+        content=tarball_entries
+        for folder,pattern in tarball_patterns.iteritems():
+            stat,out = commands.getstatusoutput("cd $CMSSW_BASE; find %s -name %s" % ( folder, pattern ) )
+            ## print out
+            if stat != 0:
+                print "error (%d) finding files to create job tarball" % stat
+                print "folder : %s"
+                print "pattern: %s"
+                print out
+                sys.exit(stat)
+            content.extend( [f for f in out.split("\n") if f != ""] )                
+        args = []
+        if tarball_transform:
+            args.extend( ["--transform",tarball_transform] )
+        args.extend(["-h","--show-transformed","-zvcf",tarball])
+        args.extend(content)
+        print 
+        print "Preparing tarball with the following content:"
+        print "\n".join(content)
+        print
+        stat,out =  commands.getstatusoutput("cd $CMSSW_BASE; tar %s" % " ".join(args) )
+
+        if stat != 0:
+            print "error (%d) creating job tarball"
+            print "CMSSW_BASE: %s" % os.environ["CMSSW_BASE"]
+            print "args: %s" % " ".join(args)
+            print out
+    
+
+    #----------------------------------------
+    def getStageCmd(self):
+        
+        stage_cmd = self.stage_cmd
+        if stage_cmd != "guess":
+            return stage_cmd
+
+        if self.stage_dest.startswith("/store"):
+            stage_cmd = "cmsStage"
+        elif self.stage_dest.startswith("root://"):
+            stage_cmd = "xrdcp"
+        elif self.stage_dest.startswith("rsync") or "@" in self.stage_dest or "::" in self.stage_dest:
+            stage_cmd = "rsync -av"
+        else:
+            stage_cmd = "cp -pv"
+
+        return stage_cmd
+            
+    #----------------------------------------
+    def __call__(self,*args,**kwargs):
+        
+        stage_cmd = self.getStageCmd()
+            
+        kwargs["runner"]         = self.runner
+        kwargs["stage_dest"]     = self.stage_dest
+        kwargs["stage_cmd"]      = stage_cmd
+        kwargs["stage_patterns"] = self.stage_patterns
+        kwargs["tarball"]        = self.tarball
+        kwargs["job_outdir"]     = self.job_outdir
+        kwargs["copy_proxy"]     = self.copy_proxy
+        
+        return WorkNodeJob(*args,**kwargs)
+
+# -----------------------------------------------------------------------------------------------------
+class HTCondorJob(object):
+    """ a thread to run condor_submit and wait until it completes """
+
+    #----------------------------------------
+    def __init__(self, htcondorQueue, jobName="", async=True, replacesJob=None):
+        """ 
+        @param cmd is the command to be executed inside the bsub script. Some CMSSW specific wrapper
+        code will be added
+        """
+        
+        # super(LsfJob,self).__init()
+        
+        self.htcondorQueue = htcondorQueue
+        self.jobName = jobName
+        self.cfgName = jobName+".sub"
+        self.execName = jobName+".sh"        
+        self.jobid = None
+        self.cmd = None
+        self.replacesJob = replacesJob
+
+        if async != True:
+            print "HTCondorJob: synchronous job processing is not supported by for HTCondor jobs ... running async jobs instead"
+
+        self.async = True
+        
+    def __str__(self):
+        return "HTCondorJob: [%s] [%s] [%s]" % ( self.htcondorQueue, self.cfgName, self.jobid )
+        
+    def setJobId(self,jobid):
+        self.jobid = jobid
+        
+    #----------------------------------------
+    def preamble(self):
+        # fix to ensure AAA redirecting works properly on lxplus/lxbatch
+        # see https://hypernews.cern.ch/HyperNews/CMS/get/wanaccess/448/1/1.html
+        return "export XRD_NETWORKSTACK=IPv4"
+
+    #----------------------------------------
+    def epilogue(self,cmd,dest):
+        return ""
+
+    def copyProxy(self):
+        return True
+
+    #----------------------------------------
+    def run(self,script):
+                    
+        logdir = os.path.dirname(self.jobName)
+        if not os.path.exists(logdir):
+            os.mkdir(logdir)
+                
+        with open(self.execName, "w+") as fout:
+            fout.write(script)
+            fout.close()        
+
+        with open(self.cfgName, "w+") as fout:
+            fout.write('+JobFlavour = "'+self.htcondorQueue+'"\n\n')
+            fout.write('executable  = '+self.execName+'\n')
+            #fout.write('arguments   = $(ProcId)\n')
+            fout.write('output      = '+self.jobName+'.out\n')
+            fout.write('error       = '+self.jobName+'.err\n')
+            fout.write('log         = '+self.jobName+'_htc.log\n\n')
+            fout.write('max_retries = 1\n')
+            fout.write('queue 1\n')
+            fout.close()        
+
+        import subprocess
+        htc = subprocess.Popen("condor_submit "+self.cfgName,
+                               shell=True, # bufsize=bufsize,
+                               stdin=subprocess.PIPE,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE,
+                               close_fds=True)
+            
+        out,err = htc.communicate()
+
+        self.exitStatus = htc.returncode
+        
+        if self.exitStatus != 0:
+            print "error running job", self.jobName, self.exitStatus
+            print out
+            print err
+        else:
+            self.jobid = None
+            for line in out.split("\n"):
+                if "cluster" in line:
+                    self.jobid = int(line.replace(".", "").split()[-1])
+                    break
+            
+        if self.async:
+            return self.exitStatus, (out,(self.jobName,self.jobid))
+
+        return self.handleOutput()
+
+    #----------------------------------------
+    def __call__(self,cmd):
+        
+        self.cmd = cmd
+        script = ""
+        script += "#!/bin/bash\n"
+        
+        script += "cd " + os.environ['CMSSW_BASE']+"\n"
+        script += "eval `scram runtime -sh`"+"\n"
+        script += "cd " + os.getcwd()+"\n"
+        
+        if os.environ.get('X509_USER_PROXY',None):
+            script += "export X509_USER_PROXY=%s\n" % os.environ['X509_USER_PROXY']
+                    
+        # the user command
+        script += cmd+"\n"
+        
+        return self.run(script)
+        
+    
+    #----------------------------------------
+    def handleOutput(self):
+        ## print "handleOutput"
+        if self.async:
+            self.exitStatus = -1
+            ###---get job exit code from either condor_history or the logfile
+            status, log = commands.getstatusoutput("condor_history %s -long -attributes ExitCode" % self.jobid )
+            if status == 0 and len(log) > 0:
+                msg = log.split("\n")[0].replace("=", "").split()[-1]
+                if msg == "0":
+                    self.exitStatus = 0                    
+                else:
+                    self.exitStatus = -1
+            else:
+                with open(self.jobName+".out") as log:
+                    lines = log.readlines()
+                    for line in lines:
+                        if "Job finished with exit code" in line:
+                            exit_code = line.split()[-1]
+                            if exit_code == "0":
+                                self.exitStatus = 0                    
+                            else:
+                                self.exitStatus = -1                                
+                
+        ###---collect both the stdout and stderr
+        output = ""
+        if self.jobName:
+            output += "STDOUT:\n"
+            try:
+                with open("%s.out" % self.jobName) as lf:
+                    output = lf.read()
+                    lf.close()
+                    output += "%s.out\n" % self.jobName
+            except:
+                output = "%s.out\n" % self.jobName
+            output += "STDERR:\n"
+            try:
+                with open("%s.err" % self.jobName) as lf:
+                    output = lf.read()
+                    lf.close()
+                    output += "%s.err\n" % self.jobName
+            except:
+                output+= "%s.err\n" % self.jobName
+        
+        return self.exitStatus, output
+
+# -----------------------------------------------------------------------------------------------------
+class HTCondorMonitor(object):
+    def __init__(self,jobsqueue,retqueue):
+        self.jobsqueue = jobsqueue
+        self.retqueue = retqueue
+        self.stop = False
+
+    def __call__(self):
+        self.jobsmap = {}
+        self.jobids = {}
+        self.clonesMap = {}
+
+        while not self.stop:
+            if not self.jobsqueue.empty():
+                job = self.jobsqueue.get()
+                if job.jobid == None:
+                    print "INTERNAL ERROR: job id not set %s" % job
+                    self.retqueue.put( (job, [job.cmd], job.handleOutput()) )
+                else:
+                    self.jobsmap[str(job.jobid)] = job
+                    self.jobids[job.jobName] = job.jobid
+                    
+                    if job.replacesJob:
+                        if not job.replacesJob in clonesMap:
+                            self.clonesMap[job.replacesJob] = [jobids[job.replacesJob]]                        
+                        self.clonesMap[job.replacesJob].append(job.jobid)
+            
+            self.monitor()
+            sleep(0.1)
+
+
+    def cancel(self,jobid):
+        commands.getstatusoutput("condor_rm %d" % jobid)
+        
+    def monitor(self):
+        if len(self.jobsmap.keys())==0:
+            return
+        current_jobs = copy.deepcopy(self.jobsmap)
+        for jobid, job in current_jobs.iteritems():
+            status, log = commands.getstatusoutput("condor_wait %s %s -status -wait 0.01" % (job.jobName+"_htc.log", jobid) )
+            if status == 0:
+                msg = log.split("\n")[-2].split()[-1]
+                if msg in ["completed", "aborted"]:
+                    self.jobFinished(jobid, msg)
+                
+    def jobFinished(self,jobid,status):
+        if not jobid in self.jobsmap:
+            print "%s not found: %s" % ( jobid, " ".join(self.jobsmap.keys()) )
+            return
+        htcJob = self.jobsmap[jobid]
+        try:
+            self.retqueue.put( (htcJob, [htcJob.cmd], htcJob.handleOutput()) )
+        except Exception, e:
+            print "Error getting output of %s " % htcJob
+            print jobid, status
+            print e
+                    
+        ancestor = htcJob.replacesJob if htcJob.replacesJob else htcJob.jobName
+        if ancestor in self.clonesMap:
+            for clone in self.clonesMap[ancestor]:
+                if clone != jobid:
+                    self.cancel(clone)
+                self.jobsmap.pop(clone)
+                        
+        self.jobsmap.pop(jobid)
+    
 # -----------------------------------------------------------------------------------------------------
 class LsfJob(object):
     """ a thread to run bsub and wait until it completes """
@@ -231,244 +695,8 @@ class LsfJob(object):
             except:
                 output = "%s.log" % self.jobName
         
-        return self.exitStatus, output
-
-# -----------------------------------------------------------------------------------------------------
-class WorkNodeJob(object):
+        return self.exitStatus, output        
     
-    nwarnings = 1
-    
-    #----------------------------------------
-    def __init__(self,*args,**kwargs):
-        
-        
-        self.runner          = kwargs.pop("runner",LsfJob)
-        self.stage_dest      = kwargs.pop("stage_dest")
-        self.stage_cmd       = kwargs.pop("stage_cmd")
-        self.stage_patterns  = kwargs.pop("stage_patterns")
-        self.tarball         = kwargs.pop("tarball",None)
-        self.job_outdir      = kwargs.pop("job_outdir",None)
-        self.copy_proxy      = kwargs.pop("copy_proxy",True)
-
-        self.runner = self.runner(*args,**kwargs)
-        
-    def __getattr__(self,name):
-        ## return runner attributes
-        if hasattr(self.runner,name):
-            return getattr(self.runner,name)
-            
-        ## raise AttributeError, "No attribute %s in runner instance %s" % (name,str(self.runner))
-        return object.__getattr__(name)
-           
-    def __str__(self):
-        return "WorkNodeJob: [%s]" % ( self.runner )
-
-    #----------------------------------------
-    def __call__(self,cmd):
-        
-        self.cmd = cmd
-        script = ""
-        script += "#!/bin/bash\n"
-        
-        # get specific preamble needed by the runner
-        #     this commands are expected to bring the process to the job working directory in the worker node
-        script += self.runner.preamble()+"\n"
-        
-        # copy grid proxy over
-        if self.copy_proxy and self.runner.copyProxy():
-            try:
-                proxy = BatchRegistry.getProxy()
-                script += "scp -p %s .\n" % proxy
-                proxyname = os.path.basename(proxy.split(":")[1])
-                script += "export X509_USER_PROXY=$PWD/%s\n" % proxyname
-                if WorkNodeJob.nwarnings > 0:
-                    WorkNodeJob.nwarnings -= 1
-                    print 
-                    print
-                    print "WARNING: We are counting fact that the jobs will be able to scp the follwing file: %s" % proxy
-                    print "         Please make sure that ssh is properly configured."
-                    print "         Alternatively, you can copy the proxy to your home folder, set the variable X509_USER_PROXY accordingly and run with the --no-copy-proxy"
-                    print 
-            except Exception, e:
-                if WorkNodeJob.nwarnings > 0:
-                    WorkNodeJob.nwarnings -= 1
-                    print "WARNING: I could not find a valid grid proxy. This may cause problems if the jobs will read the input through AAA."
-                    print e
-        else:
-            try:
-                proxy = BatchRegistry.getProxy()
-                proxyname = proxy.split(":")[1]
-                script += "export X509_USER_PROXY=%s\n" % proxyname
-                if WorkNodeJob.nwarnings > 0:
-                    WorkNodeJob.nwarnings -= 1
-                    print 
-                    print
-                    print "WARNING: We are counting on the path for this proxy being visible to the remote jobs:",proxyname
-                    print 
-            except Exception, e:
-                if WorkNodeJob.nwarnings > 0:
-                    WorkNodeJob.nwarnings -= 1
-                    print "WARNING: I could not find a valid grid proxy. This may cause problems if the jobs will read the input through AAA."
-                    print e
-
-
-                
-        # set-up CMSSW
-        script += "WD=$PWD\n"
-        script += "echo\n"
-        script += "echo\n"
-        script += "echo\n"
-        if not self.tarball:
-            script += "cd " + os.environ['CMSSW_BASE']+"\n"
-        else:
-            script += "source $VO_CMS_SW_DIR/cmsset_default.sh\n"
-            script += "export SCRAM_ARCH=%s\n" % os.environ['SCRAM_ARCH']
-            script += "scram project CMSSW %s\n" % os.environ['CMSSW_VERSION']
-            script += "cd %s\n" % os.environ['CMSSW_VERSION']
-            script += "tar zxf %s\n" % self.tarball            
-            script += "scram b\n"
-            
-        script += "eval $(scram runtime -sh)"+"\n"
-        script += "cd $WD\n"
-        
-        if self.job_outdir:
-            script += "mkdir %s\n" % self.job_outdir
-
-        script += 'echo "ls $X509_USER_PROXY"\n'
-        script += 'ls $X509_USER_PROXY\n'
-            
-        # the user command
-        script += cmd+"\n"
-        script += 'retval=$?\n'
-        
-        if self.tarball and self.job_outdir:
-            script += 'cd %s\n' % self.job_outdir
-            script += 'echo\n'
-            script += 'echo\n'
-            script += 'echo "Job finished with exit code $?"\n'
-            script += 'echo "Files in ouput folder"\n'
-            script += 'ls -ltr\n'
-        # stage out files
-        script += 'if [[ $retval == 0 ]]; then\n'
-        script += '    errors=""\n'
-        script += '    for file in $(find -name %s); do\n' % " -or -name ".join(self.stage_patterns)
-        script += '        %s $file %s\n' % ( self.stage_cmd, self.stage_dest )
-        script += '        if [[ $? != 0 ]]; then\n'
-        script += '            errors="$errors $file($?)"\n'
-        script += '        fi\n'
-        script += '    done\n'
-        script += '    if [[ -n "$errors" ]]; then\n'
-        script += '       echo "Errors while staging files"\n'
-        script += '       echo "$errors"\n'
-        script += '       exit -2\n'
-        script += '    fi\n'
-        script += 'fi\n'        
-
-        # get specific epilogue needed by the runner
-        # this can be used, for example, to propagate $retval by touching a file
-        script += self.runner.epilogue(self.stage_cmd,self.stage_dest)+"\n"
-
-        script += 'exit $retval\n'
-        script += '\n'
-        
-        return self.runner.run(script)
-
-
-# -----------------------------------------------------------------------------------------------------
-class WorkNodeJobFactory(object):
-    
-    # ------------------------------------------------------------------------------------------------
-    def __init__(self,stage_dest,
-                 stage_cmd="cp -pv",stage_patterns=["'*.root'","'*.xml'"],job_outdir=None,runner=None,batchSystem="auto",copy_proxy=True):
-        
-        if not runner:
-            self.runner = BatchRegistry.getRunner(batchSystem)
-            
-        self.stage_dest = stage_dest
-        self.stage_cmd  = stage_cmd
-        self.stage_patterns  = stage_patterns
-        self.tarball = None
-        self.job_outdir      = job_outdir
-        self.copy_proxy      = copy_proxy
-
-    # ------------------------------------------------------------------------------------------------
-    def stageDest(self,dest):
-        self.stage_dest = dest
-
-    # ------------------------------------------------------------------------------------------------
-    def setTarball(self,tarball):
-        self.tarball = tarball
-        
-    # ------------------------------------------------------------------------------------------------
-    def mkTarball(self,tarball=None,
-                  tarball_entries=["python","lib","bin","flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310"],tarball_patterns={"src/*":"data"},
-                  tarball_transform=None):
-        
-        self.tarball = tarball
-        content=tarball_entries
-        for folder,pattern in tarball_patterns.iteritems():
-            stat,out = commands.getstatusoutput("cd $CMSSW_BASE; find %s -name %s" % ( folder, pattern ) )
-            ## print out
-            if stat != 0:
-                print "error (%d) finding files to create job tarball" % stat
-                print "folder : %s"
-                print "pattern: %s"
-                print out
-                sys.exit(stat)
-            content.extend( [f for f in out.split("\n") if f != ""] )                
-        args = []
-        if tarball_transform:
-            args.extend( ["--transform",tarball_transform] )
-        args.extend(["-h","--show-transformed","-zvcf",tarball])
-        args.extend(content)
-        print 
-        print "Preparing tarball with the following content:"
-        print "\n".join(content)
-        print
-        stat,out =  commands.getstatusoutput("cd $CMSSW_BASE; tar %s" % " ".join(args) )
-
-        if stat != 0:
-            print "error (%d) creating job tarball"
-            print "CMSSW_BASE: %s" % os.environ["CMSSW_BASE"]
-            print "args: %s" % " ".join(args)
-            print out
-    
-
-    #----------------------------------------
-    def getStageCmd(self):
-        
-        stage_cmd = self.stage_cmd
-        if stage_cmd != "guess":
-            return stage_cmd
-
-        if self.stage_dest.startswith("/store"):
-            stage_cmd = "cmsStage"
-        elif self.stage_dest.startswith("root://"):
-            stage_cmd = "xrdcp"
-        elif self.stage_dest.startswith("rsync") or "@" in self.stage_dest or "::" in self.stage_dest:
-            stage_cmd = "rsync -av"
-        else:
-            stage_cmd = "cp -pv"
-
-        return stage_cmd
-            
-    #----------------------------------------
-    def __call__(self,*args,**kwargs):
-        
-        stage_cmd = self.getStageCmd()
-            
-        kwargs["runner"]         = self.runner
-        kwargs["stage_dest"]     = self.stage_dest
-        kwargs["stage_cmd"]      = stage_cmd
-        kwargs["stage_patterns"] = self.stage_patterns
-        kwargs["tarball"]        = self.tarball
-        kwargs["job_outdir"]     = self.job_outdir
-        kwargs["copy_proxy"]     = self.copy_proxy
-        
-        return WorkNodeJob(*args,**kwargs)
-
-        
-
 # -----------------------------------------------------------------------------------------------------
 class LsfMonitor(object):
     def __init__(self,jobsqueue,retqueue):
@@ -891,7 +1119,7 @@ class Wrap:
     
 # -----------------------------------------------------------------------------------------------------
 class Parallel:
-    def __init__(self,ncpu,lsfQueue=None,lsfJobName="job",asyncLsf=False,maxThreads=500,jobDriver=None,batchSystem="lsf"):
+    def __init__(self,ncpu,lsfQueue=None,lsfJobName="job",asyncLsf=False,maxThreads=500,jobDriver=None,batchSystem="htcondor"):
         self.returned = Queue()
 	self.njobs = 0
         self.JobDriver=jobDriver
