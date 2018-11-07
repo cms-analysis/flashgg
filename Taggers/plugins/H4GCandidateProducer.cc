@@ -130,7 +130,6 @@ namespace flashgg {
       math::XYZPoint BSPoint;
       if( recoBeamSpotHandle.isValid() ) {
         BSPoint = recoBeamSpotHandle->position();
-        //      beamsig = recoBeamSpotHandle->sigmaZ();
       }
 
       //---output collection
@@ -154,7 +153,6 @@ namespace flashgg {
         vertex_diphoton = diphotons->ptrAt( dpIndex )->vtx();
         flashgg::DiPhotonCandidate * thisDPPointer = const_cast<flashgg::DiPhotonCandidate *>(thisDPPtr.get());
         atLeastOneDiphoPass |= idSelector_(*thisDPPointer, event);
-        cout << atLeastOneDiphoPass << endl;
       }
       int n_photons = -999;
 
@@ -197,7 +195,6 @@ namespace flashgg {
       {
         for( unsigned int dpIndex = 0; dpIndex < diphotons->size(); dpIndex++ )
         {
-          cout << " pushing back " << endl;
           edm::Ptr<flashgg::DiPhotonCandidate> thisDPPtr = diphotons->ptrAt( dpIndex );
           diPhoPtrs.push_back(thisDPPtr);
         }
