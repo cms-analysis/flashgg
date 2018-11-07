@@ -34,9 +34,9 @@ namespace flashgg {
     const reco::GenParticle::Point & genVertex() const { return genVertex_;  };
     const math::XYZPoint &BSPoint() const { return BSPoint_; };
     const std::vector <edm::Ptr<flashgg::DiPhotonCandidate>> &diPhoPtrs() const { return diPhoPtrs_; };
+    const float BS_factor_0Vtx() const { return BS_factor_0Vtx_; };
+    const float BS_factor_HggVtx() const { return BS_factor_HggVtx_; };
     const std::vector<flashgg::Photon> phoP4Corrected() const { return phoP4Corrected_; };
-    const std::vector<float> logSumPt2() const { return logSumPt2_; };
-    const float vtx_diphoton_z() const { return vtx_diphoton_z_; };
     const float pho1_MVA() const { return pho1_MVA_; };
     const float pho2_MVA() const { return pho2_MVA_; };
     const float pho3_MVA() const { return pho3_MVA_; };
@@ -71,9 +71,9 @@ namespace flashgg {
     reco::GenParticle::Point genVertex_;
     math::XYZPoint BSPoint_;
     std::vector <edm::Ptr<flashgg::DiPhotonCandidate>> diPhoPtrs_;
+    float BS_factor_0Vtx_;
+    float BS_factor_HggVtx_;
     std::vector<flashgg::Photon> phoP4Corrected_;
-    std::vector<float> logSumPt2_;
-    float vtx_diphoton_z_;
     float pho1_MVA_;
     float pho2_MVA_;
     float pho3_MVA_;

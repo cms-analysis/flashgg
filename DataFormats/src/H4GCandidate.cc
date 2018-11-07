@@ -9,9 +9,9 @@ phoVector_ (),
 Vertices_(),
 // vertex_ (),
 vertex_diphoton_(),
+BS_factor_0Vtx_(),
+BS_factor_HggVtx_(),
 phoP4Corrected_ (),
-logSumPt2_(),
-vtx_diphoton_z_(),
 pho1_MVA_ (),
 pho2_MVA_ (),
 pho3_MVA_ (),
@@ -36,48 +36,64 @@ tp_ ()
 {}
 
   H4GCandidate::~H4GCandidate() {}
-  // H4GCandidate::H4GCandidate( std::vector<flashgg::Photon> phoVector, edm::Ptr<reco::Vertex> vertex, edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex):
-  // phoVector_(phoVector), vertex_(vertex), vertex_diphoton_(vertex_diphoton), genVertex_(genVertex)
   H4GCandidate::H4GCandidate( std::vector<flashgg::Photon> phoVector, std::vector<edm::Ptr<reco::Vertex>> Vertices, edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex, math::XYZPoint BSPoint, std::vector <edm::Ptr<flashgg::DiPhotonCandidate>> diPhoPtrs):
   phoVector_(phoVector), Vertices_(Vertices), vertex_diphoton_(vertex_diphoton), genVertex_(genVertex), BSPoint_(BSPoint), diPhoPtrs_(diPhoPtrs)
   {
-    //variables for vertex study
-    int n_diphoPtr = diPhoPtrs_.size();
-    std::vector<float> logSumPt2_;
-    for (int d = 0; d < n_diphoPtr; d++)
-    {
-      edm::Ptr<flashgg::DiPhotonCandidate> tmp_diphoPtr = diPhoPtrs_[d];
-      // cout << tmp_diphoPtr->logSumPt2() << endl;
-      logSumPt2_.push_back(tmp_diphoPtr->logSumPt2());
-    }
 
-    float vtx_diphoton_z_ = vertex_diphoton_->z();
+
     float vtx_X = Vertices_[0]->x();
     float vtx_Y = Vertices_[0]->y();
     float vtx_Z = Vertices_[0]->z();
+
+    //--Beam spot reweighting (https://github.com/cms-analysis/flashggFinalFit/blob/e60d53e19ac4f20e7ce187f0a34e483b4fc2a60e/Signal/test/SignalFit.cpp)
+    float mcBeamSpotWidth_=5.14; //cm
+    float dataBeamSpotWidth_=3.5; //cm
+
+    float dZ_HggVtx = genVertex_.z() - vertex_diphoton_->z();
+    float dZ_0Vtx = genVertex.z() - vtx_Z;
+
+    float BS_factor_HggVtx_ =1.0;
+    float BS_factor_0Vtx_ =1.0;
+
+    if (fabs(dZ_HggVtx) < 0.1 ){
+      BS_factor_HggVtx_ =1;
+    } else {
+      double mcBeamSpot=TMath::Gaus(dZ_HggVtx,0,TMath::Sqrt(2)*mcBeamSpotWidth_,true);
+      double dataBeamSpot=TMath::Gaus(dZ_HggVtx,0,TMath::Sqrt(2)*dataBeamSpotWidth_,true);
+      BS_factor_HggVtx_ = dataBeamSpot/mcBeamSpot;
+    }
+
+    if (fabs(dZ_0Vtx) < 0.1 ){
+      BS_factor_0Vtx_ =1;
+    } else {
+      double mcBeamSpot=TMath::Gaus(dZ_0Vtx,0,TMath::Sqrt(2)*mcBeamSpotWidth_,true);
+      double dataBeamSpot=TMath::Gaus(dZ_0Vtx,0,TMath::Sqrt(2)*dataBeamSpotWidth_,true);
+      BS_factor_0Vtx_ = dataBeamSpot/mcBeamSpot;
+    }
+    cout << BS_factor_HggVtx_ << "  " << BS_factor_0Vtx_ << endl;
     // float vtx_X = vertex_->x();
     // float vtx_Y = vertex_->y();
     // float vtx_Z = vertex_->z();
     math::XYZVector vtx_Pos( vtx_X, vtx_Y, vtx_Z );
     if (phoVector_.size() > 0)
     {
-    for( int p = 0; p < (int) phoVector_.size(); p++ )
-    {
-      float sc_X = phoVector_[p].superCluster()->x();
-      float sc_Y = phoVector_[p].superCluster()->y();
-      float sc_Z = phoVector_[p].superCluster()->z();
-      math::XYZVector sc_Pos( sc_X, sc_Y, sc_Z );
-      math::XYZVector direction = sc_Pos - vtx_Pos;
-      math::XYZVector pho = ( direction.Unit() ) * ( phoVector_[p].energy() );
-      math::XYZTLorentzVector corrected_p4( pho.x(), pho.y(), pho.z(), phoVector_[p].energy() );
-      phoVector_[p].setP4(corrected_p4);
-      phoP4Corrected_.push_back(phoVector_[p]);
+      for( int p = 0; p < (int) phoVector_.size(); p++ )
+      {
+        float sc_X = phoVector_[p].superCluster()->x();
+        float sc_Y = phoVector_[p].superCluster()->y();
+        float sc_Z = phoVector_[p].superCluster()->z();
+        math::XYZVector sc_Pos( sc_X, sc_Y, sc_Z );
+        math::XYZVector direction = sc_Pos - vtx_Pos;
+        math::XYZVector pho = ( direction.Unit() ) * ( phoVector_[p].energy() );
+        math::XYZTLorentzVector corrected_p4( pho.x(), pho.y(), pho.z(), phoVector_[p].energy() );
+        phoVector_[p].setP4(corrected_p4);
+        phoP4Corrected_.push_back(phoVector_[p]);
+      }
     }
-  }
-  pho1_MVA_ = phoP4Corrected_.size() > 0 ? phoP4Corrected_[0].phoIdMvaDWrtVtx(Vertices_[0]) : -999;
-  pho2_MVA_ = phoP4Corrected_.size() > 0 ? phoP4Corrected_[1].phoIdMvaDWrtVtx(Vertices_[0]) : -999;
-  pho3_MVA_ = phoP4Corrected_.size() > 2 ? phoP4Corrected_[2].phoIdMvaDWrtVtx(Vertices_[0]) : -999;
-  pho4_MVA_ = phoP4Corrected_.size() > 3 ? phoP4Corrected_[3].phoIdMvaDWrtVtx(Vertices_[0]) : -999;
+    pho1_MVA_ = phoP4Corrected_.size() > 0 ? phoP4Corrected_[0].phoIdMvaDWrtVtx(Vertices_[0]) : -999;
+    pho2_MVA_ = phoP4Corrected_.size() > 0 ? phoP4Corrected_[1].phoIdMvaDWrtVtx(Vertices_[0]) : -999;
+    pho3_MVA_ = phoP4Corrected_.size() > 2 ? phoP4Corrected_[2].phoIdMvaDWrtVtx(Vertices_[0]) : -999;
+    pho4_MVA_ = phoP4Corrected_.size() > 3 ? phoP4Corrected_[3].phoIdMvaDWrtVtx(Vertices_[0]) : -999;
 
     float minDM = 1000000;
     if (phoP4Corrected_.size() > 3)
