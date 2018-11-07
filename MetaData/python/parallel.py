@@ -153,7 +153,7 @@ class LsfJob(object):
         bsubCmd = " ".join(bsubCmdParts)
         
         import subprocess
-        lsf = subprocess.Popen(bsubCmd, shell=True, # bufsize=bufsize,
+        lsf = subprocess.Popen(bsubCmd, shell=True, # bufsize=bufsize, #AP
                                stdin=subprocess.PIPE,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE,
@@ -163,25 +163,24 @@ class LsfJob(object):
             fout.write(script)
             fout.close()        
         
-        out,err = lsf.communicate(script)
-        
+        out,err = lsf.communicate(script) #AP
         # wait for the job to complete
         ## self.exitStatus = lsf.wait()
-        self.exitStatus = lsf.returncode
+        self.exitStatus = lsf.returncode #AP
         
         if self.exitStatus != 0:
             print "error running job",self.jobName, self.exitStatus
-            print out
-            print err
+            print out #AP
+            print err #AP
         else:
             self.jobid = None
-            for line in out.split("\n"):
-                if line.startswith("Job <"):
-                    self.jobid = int(line.split("<",1)[1].split(">",1)[0])
-                    break
+            for line in out.split("\n"):#AP
+                if line.startswith("Job <"):#AP
+                    self.jobid = int(line.split("<",1)[1].split(">",1)[0])#AP
+                    break #AP
             
         if self.async:
-            return self.exitStatus, (out,(self.jobName,self.jobid))
+            return self.exitStatus, (out,(self.jobName,self.jobid)) #AP
 
         return self.handleOutput()
 
