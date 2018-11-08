@@ -311,7 +311,8 @@ if options.createCrabConfig:
             ("RunIIFall17MiniAODv2-PU2017_12Apr2018_1core_94X_mc2017_realistic_v14","1core_94Xv1"),
             ("_ext1-v1",""),
             ("DoubleEMEnriched", "DEMEn"),
-            ("TuneCP5_13TeV_Pythia8", "TCP5_13T_P8")
+            ("TuneCP5_13TeV_Pythia8", "TCP5_13T_P8"),
+            ("madspin", "")
             ]
 
         for orig, replacement in replacements:
