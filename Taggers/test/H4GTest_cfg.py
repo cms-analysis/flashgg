@@ -1,13 +1,12 @@
 import FWCore.ParameterSet.Config as cms
 
-from flashgg.Taggers.flashggH4GCandidate_cfi import FlashggH4GCandidate
+#from flashgg.Taggers.flashggH4GCandidate_cfi import FlashggH4GCandidate
+from flashgg.Taggers.flashggH4GCandidate_cfi import H4GCandidate
+#from flashgg.Taggers.flashggH4GTag_cfi import H4GCandidate
 from flashgg.Taggers.flashggPreselectedDiPhotons_LowMass_cfi import flashggPreselectedDiPhotonsLowMass
 import flashgg.Taggers.dumperConfigTools as cfgTools
 
-
-
 process = cms.Process("FLASHggH4GTest")
-
 
 ###---H4G candidates production
 process.FlashggH4GCandidate = FlashggH4GCandidate.clone()
