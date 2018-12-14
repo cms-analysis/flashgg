@@ -78,11 +78,8 @@ namespace flashgg {
     template <class T, class V>
     void HadronicActivityProducerExtra<T,V>::produce(edm::StreamID, edm::Event& iEvent, const edm::EventSetup& iSetup) const {
         
-        std::auto_ptr<std::vector<reco::CompositeCandidate> > outPtr(new std::vector<reco::CompositeCandidate>);
-        
-        //auto & out = outPtr->at(0);
+        std::unique_ptr<std::vector<reco::CompositeCandidate> > outPtr(new std::vector<reco::CompositeCandidate>);
 
-        
         edm::Handle<T> veto;
         if( veto_ )  {
             iEvent.getByToken( vetoToken_,  veto);
@@ -115,7 +112,7 @@ namespace flashgg {
             outPtr->push_back(out);
         }
         
-        iEvent.put(outPtr);
+        iEvent.put(std::move(outPtr));
     }
 }
 

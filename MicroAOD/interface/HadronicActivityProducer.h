@@ -79,9 +79,6 @@ namespace flashgg {
         
         std::unique_ptr<std::vector<reco::CompositeCandidate> > outPtr(new std::vector<reco::CompositeCandidate>(1));
        
-        //auto & out = outPtr->at(0);
-
-        
         edm::Handle<T> veto;
         if( veto_ )  {
             iEvent.getByToken( vetoToken_,  veto);
@@ -113,9 +110,6 @@ namespace flashgg {
             addP4.set(out);
             outPtr->push_back(out);
         }
-        
-        AddFourMomenta addP4;
-        addP4.set(out);
         
         iEvent.put(std::move(outPtr));
     }

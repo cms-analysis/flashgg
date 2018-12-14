@@ -155,10 +155,6 @@ git cms-merge-topic -u cms-egamma:EgammaPostRecoTools_940 #just adds in an extra
 git cms-merge-topic -u sethzenz:Egamma80XMiniAODV2_949 #adds the c++ changes necessary to enable 2016 scale & smearing corrections
 git cms-merge-topic -u shervin86:Egamma80XMiniAODV2_946_fix
 
-
-echo "Importing modifications to EGM tools for gain switch categories and uncertainties..."
-git cms-merge-topic shervin86:Hgg_Gain_v1 -u
-
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/Systematics/data/JEC/Fall17_17Nov2017*db $CMSSW_BASE/src/flashgg/
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_cmssw8020_v2.db $CMSSW_BASE/src/flashgg

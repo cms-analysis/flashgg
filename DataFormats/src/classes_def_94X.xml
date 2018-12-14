@@ -58,7 +58,8 @@
 </class>
 <class name="std::vector<flashgg::VBFTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::VBFTag> >"/>
-<class name="flashgg::TTHLeptonicTag" ClassVersion="14">
+<class name="flashgg::TTHLeptonicTag" ClassVersion="15">
+ <version ClassVersion="15" checksum="105280085"/>
  <version ClassVersion="14" checksum="3809643530"/>
  <version ClassVersion="13" checksum="464700754"/>
  <version ClassVersion="12" checksum="1015665249"/>
@@ -242,7 +243,8 @@
 </class>
 <class name="std::pair<edm::Ptr<reco::Vertex>,flashgg::MinimalPileupJetIdentifier>"/>
 <class name="std::map<edm::Ptr<reco::Vertex>,flashgg::MinimalPileupJetIdentifier>"/>
-<class name="flashgg::Jet" ClassVersion="16">
+<class name="flashgg::Jet" ClassVersion="17">
+ <version ClassVersion="17" checksum="4133240562"/>
  <version ClassVersion="16" checksum="2400716629"/>
  <version ClassVersion="15" checksum="2594200045"/>
   <version ClassVersion="14" checksum="2400716629"/>

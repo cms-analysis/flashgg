@@ -708,7 +708,10 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
     ###     preselCut = "( abs(mass-%f) < 1. ) && (%s)" % preselCut
 
     process.load("flashgg.MicroAOD.flashggGenDiPhotonsSequence_cff")
-    ### process.flashggPreselectedGenDiPhotons = process.flashggSelectedGenDiPhotons.clone(filter = cms.bool(filterEvents), cut=cms.string(preselCut))
+    from flashgg.MicroAOD.flashggGenDiPhotons_cfi import flashggGenDiPhotons
+    process.flashggGenDiPhotons = flashggGenDiPhotons.clone()
+    process.p.insert(0, process.flashggGenDiPhotons+process.flashggSelectedGenDiPhotons+process.flashggSortedGenDiPhotons)
+    ###process.flashggPreselectedGenDiPhotons = process.flashggSelectedGenDiPhotons.clone(filter = cms.bool(filterEvents), cut=cms.string(preselCut))
     ### process.flashggGenDiPhotonsSequence.insert(process.flashggGenDiPhotonsSequence.index(process.flashggSelectedGenDiPhotons),process.flashggPreselectedGenDiPhotons)
     ### process.flashggSelectedGenDiPhotons.src = "flashggPreselectedGenDiPhotons"
 
@@ -724,7 +727,8 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
     process.flashggTaggedGenDiphotons.tags = "flashggTagSorter"
     process.flashggTaggedGenDiphotons.remap = process.tagsDumper.classifierCfg.remap
     ## process.flashggTaggedGenDiphotons.tags = "flashggSystTagMerger"
-    
+    process.p += process.flashggTaggedGenDiphotons
+        
     process.load("flashgg.Taggers.genDiphotonDumper_cfi")
     process.genDiphotonDumper.dumpTrees = True
     process.genDiphotonDumper.maxCandPerEvent = -1
