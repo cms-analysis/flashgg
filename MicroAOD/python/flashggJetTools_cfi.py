@@ -26,7 +26,8 @@ def loadLocalJECDBfile(process,
                              tag    = cms.string(tag),
                              label  = cms.untracked.string(label)
                          )),
-                         connect = cms.string('sqlite_file:%s' % dbfile)
+                         #connect = cms.string('sqlite_file:%s' % dbfile)
+			 connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS')
                      ))
     
     setattr(process,  'es_prefer_jec' + label,

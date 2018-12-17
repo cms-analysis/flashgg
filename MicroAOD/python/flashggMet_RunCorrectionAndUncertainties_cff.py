@@ -20,7 +20,8 @@ def runMETs(process,era):
     if usePrivateSQlite:
         process.jec = cms.ESSource("PoolDBESSource",
                                    CondDBSetup,
-                                   connect = cms.string("sqlite_file:"+dBFile),
+                                   #connect = cms.string("sqlite_file:"+dBFile),
+				   connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS'),
                                    toGet =  cms.VPSet(
                 cms.PSet(
                     record = cms.string("JetCorrectionsRecord"),
