@@ -29,15 +29,16 @@ elif os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION
 
      
 #    process.GlobalTag = GlobalTag(process.GlobalTag,'94X_mc2017_realistic_v14','')
-    process.GlobalTag = GlobalTag(process.GlobalTag,'92X_dataRun2_Prompt_v11','')
+#    process.GlobalTag = GlobalTag(process.GlobalTag,'92X_dataRun2_Prompt_v11','')
+    process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v17','')
 #    process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring('/store/mc/RunIISpring16MiniAODv2/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUgenV6_pythia8/MINIAODSIM/PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14-v1/10000/2C7F3153-393B-E611-9323-0CC47AA98A3A.root'))
 #    process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring('/store/mc/RunIISummer16MiniAODv2/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/024E4FA3-8BBC-E611-8E3D-00266CFFBE88.root'))
     #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring('root://eoscms.cern.ch//eos/cms/store/mc/RunIIFall17MiniAOD/GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/40000/4A2ACB0A-1BD9-E711-AF54-141877410316.root'))
 #    process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring('root://eoscms.cern.ch//eos/cms/store/mc/RunIIFall17MiniAOD/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/MINIAODSIM/94X_mc2017_realistic_v10-v1/00000/2E0E165D-8E05-E811-909C-FA163E80AE1F.root'))
 #    process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring('file:/afs/cern.ch/user/s/sethzenz/work/public/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_94X_mc2017_realistic_v10-v1.root'))
 #    process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIIFall17MiniAODv2/THQ_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCP5/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/90000/6E58A5DD-BF43-E811-8946-0023AEEEB538.root"))
-#    process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIIFall17MiniAODv2/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/40000/0866D1A8-1941-E811-B61F-0CC47AF9B2E6.root"))
-    process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/data/Run2017F/DoubleEG/MINIAOD/PromptReco-v1/000/305/040/00000/2E5E7E62-29B2-E711-9E47-02163E019D16.root"))
+    process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/mc/RunIIFall17MiniAODv2/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/40000/0866D1A8-1941-E811-B61F-0CC47AF9B2E6.root"))
+    #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/data/Run2017F/DoubleEG/MINIAOD/PromptReco-v1/000/305/040/00000/2E5E7E62-29B2-E711-9E47-02163E019D16.root"))
      
 else:
     raise Exception,"The default setup for microAODstd.py does not support releases other than 80X, 92X (being deprecated), and 94X"

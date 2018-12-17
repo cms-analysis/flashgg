@@ -24,7 +24,7 @@ elif os.environ["CMSSW_VERSION"].count("CMSSW_7_4"):
 elif os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
     process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_miniAODv2'
 elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
-    process.GlobalTag.globaltag = '94X_mc2017_realistic_v12'
+    process.GlobalTag.globaltag = '94X_mc2017_realistic_v17'
 else:
     raise Exception,"Could not find a sensible CMSSW_VERSION for default globaltag"
 

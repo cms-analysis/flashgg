@@ -210,7 +210,7 @@ class MicroAODCustomize(object):
         if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             era="Summer16_23Sep2016V4_MC"
         elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
-            era="Fall17_17Nov2017_V6_MC"
+            era="Fall17_17Nov2017_V32_94X_MC"
         runMETs(process,era) 
         from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
         if not (os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4")):
@@ -275,7 +275,7 @@ class MicroAODCustomize(object):
         if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             era="Summer16_23Sep2016V4_MC"
         elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
-            era="Fall17_17Nov2017_V6_MC"
+            era="Fall17_17Nov2017_V32_94X_MC"
         runMETs(process,era) 
         from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
         if not (os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4")):
@@ -293,7 +293,7 @@ class MicroAODCustomize(object):
         if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
             era="Summer16_23Sep2016AllV4_DATA"
         elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
-            era="Fall17_17Nov2017BCDEF_V6_DATA"
+            era="Fall17_17Nov2017_V32_94X_DATA"
         runMETs(process,era)
         if "2016G" in customize.datasetName or "2016H" in customize.datasetName:
             from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_Data_G_80X
