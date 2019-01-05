@@ -213,15 +213,15 @@ sc_xtal_information MiniAODFootprintRemoval::getSCXtalInfo( reco::SuperClusterRe
         if( crystals.at( i ).subdetId() != EcalBarrel && crystals.at( i ).subdetId() != EcalEndcap ) { continue; }
         bool isbarrel = ( crystals.at( i ).subdetId() == EcalBarrel );
 
-        CaloCellGeometry *cellGeometry = NULL;
+        const CaloCellGeometry *cellGeometry = NULL;
         EBDetId ebDetId;
         EEDetId eeDetId;
         if( isbarrel ) {
             ebDetId = crystals.at( i );
-            cellGeometry = ( CaloCellGeometry * )( barrelGeometry->getGeometry( ebDetId ) );
+            cellGeometry = ( barrelGeometry->getGeometry( ebDetId ) ).get();
         } else {
             eeDetId = crystals.at( i );
-            cellGeometry = ( CaloCellGeometry * )( endcapGeometry->getGeometry( eeDetId ) );
+            cellGeometry = ( endcapGeometry->getGeometry( eeDetId ) ).get();
         }
         TVector3 xtal_position( cellGeometry->getPosition().x(), cellGeometry->getPosition().y(), cellGeometry->getPosition().z() );
 
