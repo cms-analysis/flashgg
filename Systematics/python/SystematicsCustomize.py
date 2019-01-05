@@ -70,6 +70,10 @@ def createStandardSystematicsProducers(process, MUON_ID="Loose" , MUON_ISO="Loos
     process.load("flashgg.Systematics.flashggElectronSystematics_cfi")
     process.load("flashgg.Systematics.flashggMetSystematics_cfi")
 
+
+    import flashgg.Systematics.flashggDiPhotonSystematics_cfi as diPhotons_syst
+    diPhotons_syst.SetupDiPhotonSystematics( process )
+
     import flashgg.Systematics.flashggMuonSystematics_cfi as muon_sf
     muon_sf.SetupMuonScaleFactors( process , MUON_ID , MUON_ISO )
     
@@ -199,8 +203,8 @@ def customizeLeptonSystematicsForData(process):
 def customizeJetSystematicsForData(process):
     # By default remove the systematic entirely
     # For JEC, re-do central value in case the global tag has been updated
-    process.jec.toGet[0].tag = cms.string(process.jec.toGet[0].tag.value().replace("MC","DATA"))
-    process.jec.connect = cms.string(process.jec.connect.value().replace("MC","DATA"))
+  #  process.jec.toGet[0].tag = cms.string(process.jec.toGet[0].tag.value().replace("MC","DATA"))
+  #  process.jec.connect = cms.string(process.jec.connect.value().replace("MC","DATA"))
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
     jetsystprodlist = [getattr(process,"flashggJetSystematics%i"%i) for i in range(len(UnpackedJetCollectionVInputTag))]
     for systprod in jetsystprodlist:
@@ -222,10 +226,10 @@ def customizeJetSystematicsForData(process):
 #    process.jec.connect = cms.string('sqlite_file:%s/src/flashgg/Systematics/data/JEC/Summer16_23Sep2016AllV4_DATA.db' % environ['CMSSW_BASE'])
 #    process.jec.toGet[0].tag = cms.string('JetCorrectorParametersCollection_Summer16_23Sep2016AllV4_DATA_AK4PFchs')
 
-     # Update this hack for 2017 data
-    from os import environ
-    process.jec.connect = cms.string('sqlite_file:%s/src/flashgg/Systematics/data/JEC/Fall17_17Nov2017BCDEF_V6_DATA.db' % environ['CMSSW_BASE'])
-    process.jec.toGet[0].tag = cms.string('JetCorrectorParametersCollection_Fall17_17Nov2017BCDEF_V6_DATA_AK4PFchs')
+#     # Update this hack for 2017 data
+#    from os import environ
+#    process.jec.connect = cms.string('sqlite_file:%s/src/flashgg/Systematics/data/JEC/Fall17_17Nov2017BCDEF_V6_DATA.db' % environ['CMSSW_BASE'])
+#    process.jec.toGet[0].tag = cms.string('JetCorrectorParametersCollection_Fall17_17Nov2017BCDEF_V6_DATA_AK4PFchs')
 
 def useEGMTools(process):
     # remove old scales

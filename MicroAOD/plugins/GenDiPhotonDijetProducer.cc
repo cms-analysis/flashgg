@@ -31,12 +31,19 @@ namespace flashgg {
 
         EDGetTokenT<View<GenPhotonExtra> > genPhotonToken_;
         EDGetTokenT<View<reco::GenJet> > genJetToken_;
+        
+        bool overlapRemoval_;
+
     };
 
     GenDiPhotonDiJetProducer::GenDiPhotonDiJetProducer( const ParameterSet &iConfig ) :
         genPhotonToken_( consumes<View<flashgg::GenPhotonExtra> >( iConfig.getParameter<InputTag> ( "src" ) ) ),
-        genJetToken_( consumes<View<reco::GenJet> >( iConfig.getParameter<InputTag> ( "jets" ) ) )
+        genJetToken_( consumes<View<reco::GenJet> >( iConfig.getParameter<InputTag> ( "jets" ) ) ),
+        overlapRemoval_(false)
     {
+        if( iConfig.exists("overlapRemoval") ) { 
+            overlapRemoval_ = iConfig.getParameter<bool>("overlapRemoval");
+        }
         produces<vector<GenDiPhoton> >(); // one per diphoton, always in same order, vector is more efficient than map
     }
     
@@ -49,26 +56,21 @@ namespace flashgg {
         evt.getByToken( genJetToken_, jets );
 
         std::unique_ptr<vector<GenDiPhoton> > diphotons( new vector<GenDiPhoton> );
-        
-        std::vector<edm::Ptr<reco::GenJet> > seljets;
-        for( size_t ij = 0 ; ij < jets->size() ; ++ij ) {
-            auto jet = jets->ptrAt( ij );
-            // if( fabs(jet->eta()) > 5. ) { continue; }
-            bool overlap = false;
-            for(auto & pho : *photons) { 
-                overlap = reco::deltaR(*jet,pho.cand()) < 0.3;
-                if( overlap ) { break; }
-            }
-            if( ! overlap ) { seljets.push_back(jet); }
-        }
-        
-        if( seljets.size() >= 2 ) { 
-            auto jet0 = seljets[0], jet1 = seljets[1];
-            
-            for( size_t ii = 0 ; ii < photons->size() ; ++ii ) {
-                auto pi = photons->ptrAt( ii );
-                for( size_t jj = ii + 1 ; jj < photons->size() ; ++jj ) {
-                    auto pj = photons->ptrAt( jj );                
+        for( size_t ii = 0 ; ii < photons->size() ; ++ii ) {
+            auto pi = photons->ptrAt( ii );
+            for( size_t jj = ii + 1 ; jj < photons->size() ; ++jj ) {
+                auto pj = photons->ptrAt( jj );
+                std::vector<edm::Ptr<reco::GenJet> > seljets;
+                for( size_t ij = 0 ; ij < jets->size() ; ++ij ) {
+                    auto jet = jets->ptrAt( ij );
+                    if( ! overlapRemoval_ || 
+                        ( reco::deltaR(*jet,pi->cand()) > 0.3 
+                          && reco::deltaR(*jet,pj->cand()) > 0.3 ) ) {
+                        seljets.push_back(jet);
+                    }
+                }
+                if( seljets.size() >= 2 ) { 
+                    auto jet0 = seljets[0], jet1 = seljets[1];
                     diphotons->push_back(GenDiPhoton(pi,pj,jet0,jet1));
                 }
             }

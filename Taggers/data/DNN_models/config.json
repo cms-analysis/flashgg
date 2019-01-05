@@ -1,0 +1,62 @@
+{
+    "Nontrainable_params": 8022,
+    "y_std": 0.31628304719924927,
+    "options": {
+        "out_dir": "/scratch/snx3000/nchernya/bregression/NN_output/2018-03-27_job23_rawJetsJECtarget_us_plus_pisa_final2016",
+        "x_val": false,
+        "features": "Jet_pt,Jet_eta,rho,Jet_mt,Jet_leadTrackPt,Jet_leptonPtRel,Jet_leptonDeltaR,Jet_neHEF,Jet_neEmEF,Jet_vtxPt,Jet_vtxMass,Jet_vtx3dL,Jet_vtxNtrk,Jet_vtx3deL,Jet_numDaughters_pt03,Jet_energyRing_dR0_em_Jet_rawEnergy,Jet_energyRing_dR1_em_Jet_rawEnergy,Jet_energyRing_dR2_em_Jet_rawEnergy,Jet_energyRing_dR3_em_Jet_rawEnergy,Jet_energyRing_dR4_em_Jet_rawEnergy,Jet_energyRing_dR0_neut_Jet_rawEnergy,Jet_energyRing_dR1_neut_Jet_rawEnergy,Jet_energyRing_dR2_neut_Jet_rawEnergy,Jet_energyRing_dR3_neut_Jet_rawEnergy,Jet_energyRing_dR4_neut_Jet_rawEnergy,Jet_energyRing_dR0_ch_Jet_rawEnergy,Jet_energyRing_dR1_ch_Jet_rawEnergy,Jet_energyRing_dR2_ch_Jet_rawEnergy,Jet_energyRing_dR3_ch_Jet_rawEnergy,Jet_energyRing_dR4_ch_Jet_rawEnergy,Jet_energyRing_dR0_mu_Jet_rawEnergy,Jet_energyRing_dR1_mu_Jet_rawEnergy,Jet_energyRing_dR2_mu_Jet_rawEnergy,Jet_energyRing_dR3_mu_Jet_rawEnergy,Jet_energyRing_dR4_mu_Jet_rawEnergy,Jet_chHEF,Jet_chEmEF,Jet_leptonPtRelInv,isEle,isMu,isOther,Jet_mass,Jet_withPtd",
+        "inp_files": "ttbar_full_jobs_RegressionPerJet_heppy_energyRings_forTraining_con020_morevar.hd5,ttbar_full_jobs_RegressionPerJet_heppy_energyRings_forTraining_con2040_morevar.hd5,ttbar_full_jobs_RegressionPerJet_heppy_energyRings_forTraining_con4060_morevar.hd5,ttbar_full_jobs_RegressionPerJet_heppy_energyRings_forTraining_con6080_morevar.hd5,ttbar_full_jobs_RegressionPerJet_heppy_energyRings_forTraining_con80100_morevar.hd5,ttbar_full_jobs_RegressionPerJet_heppy_energyRings_forTraining_con100110_morevar.hd5,ttbar_full_jobs_RegressionPerJet_heppy_energyRings_forTraining_con110120_morevar.hd5,ttbar_full_jobs_RegressionPerJet_heppy_energyRings_forTraining_con120130_morevar.hd5",
+        "hparams": "/scratch/snx3000/nchernya/bregression/json/2018-02-23_22_43_00/hparameters_23.json",
+        "nkfolds": 5,
+        "loss": "HybridLoss",
+        "inp_dir": "/scratch/snx3000/nchernya/bregression/ttbar_data_full_7_morevar/",
+        "seed": 98543,
+        "inp_file_valid": "ttbar_full_RegressionPerJet_heppy_energyRings_validation_morevar.hd5",
+        "epochs": 10,
+        "batch_size": 1024,
+        "normalize_target": true
+    },
+    "y_mean": 1.0454729795455933,
+    "Trainable_params": 2837721,
+    "fit_kwargs": {
+        "epochs": 10,
+        "steps_per_epoch": 101147
+    },
+    "model_params": {
+        "optimizer_params": {
+            "lr": 0.001
+        },
+        "loss_params": {},
+        "save_best_only": true,
+        "non_neg": false,
+        "input_shape": [
+            43
+        ],
+        "loss": "HybridLoss",
+        "output_shape": null,
+        "dropout": 0.1,
+        "layers": [
+            1024,
+            1024,
+            1024,
+            512,
+            256,
+            128
+        ],
+        "name": "ffwd",
+        "monitor_dir": "/scratch/snx3000/nchernya/bregression/NN_output/2018-03-27_job23_rawJetsJECtarget_us_plus_pisa_final2016",
+        "do_bn0": true,
+        "activations": [
+            "lrelu",
+            "lrelu",
+            "lrelu",
+            "lrelu",
+            "lrelu",
+            "lrelu"
+        ],
+        "const_output_biases": null,
+        "batch_norm": true,
+        "valid_frac": null,
+        "optimizer": "Adam"
+    }
+}

@@ -1,8 +1,28 @@
 import FWCore.ParameterSet.Config as cms
+import os
+import flashgg.Systematics.settings as settings
 from os import environ
 
 #https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideBTagMCTools#Hadron_parton_based_jet_flavour
 #B Tag MC efficiencies
+
+####Setting JEC and JER
+JetCorrectorParametersCollection_version = "JetCorrectorParametersCollection_Summer16_23Sep2016V4_MC_AK4PFchs"    
+JR_PtResolution_version = "JR_Summer16_23Sep2016V4_MC_PtResolution_AK4PFchs"
+JR_SF_version = "JR_Summer16_23Sep2016V4_MC_SF_AK4PFchs"
+year = settings.year
+process_type = settings.process_type
+if year == "2016":
+   JetCorrectorParametersCollection_version = "JetCorrectorParametersCollection_Summer16_23Sep2016V4_MC_AK4PFchs"
+   if process_type == 'Data' : JetCorrectorParametersCollection_version = "JetCorrectorParametersCollection_Summer16_23Sep2016AllV4_DATA_AK4PFchs"
+   JR_PtResolution_version = "JR_Summer16_23Sep2016V4_MC_PtResolution_AK4PFchs"
+   JR_SF_version = "JR_Summer16_23Sep2016V4_MC_SF_AK4PFchs"
+elif year == "2017":
+   JetCorrectorParametersCollection_version = "JetCorrectorParametersCollection_Fall17_17Nov2017_V6_MC_AK4PFchs"
+   if process_type == 'Data' : JetCorrectorParametersCollection_version = "JetCorrectorParametersCollection_Fall17_17Nov2017BCDEF_V6_DATA_AK4PFchs"
+   JR_PtResolution_version = "JR_Fall17_17Nov2017_V6_MC_PtResolution_AK4PFchs"
+   JR_SF_version = "JR_Fall17_17Nov2017_V6_MC_SF_AK4PFchs"
+
 bTagEffBins2016 = cms.PSet(
       variables = cms.vstring("hadronFlavour","abs(eta)","pt"),
       bins = cms.VPSet(
@@ -262,12 +282,14 @@ def createJECESource(process):
           record = cms.string('JetCorrectionsRecord'),
           #tag    = cms.string('JetCorrectorParametersCollection_Spring16_25nsV6_MC_AK4PFchs'),
           #tag    = cms.string('JetCorrectorParametersCollection_Summer16_23Sep2016V4_MC_AK4PFchs'),
-          tag    = cms.string('JetCorrectorParametersCollection_Fall17_17Nov2017_V6_MC_AK4PFchs'),       
+         # tag    = cms.string('JetCorrectorParametersCollection_Fall17_17Nov2017_V6_MC_AK4PFchs'),       
+          tag    = cms.string(JetCorrectorParametersCollection_version),       
           label  = cms.untracked.string("AK4PFchs")
           )),
                                #connect = cms.string('sqlite_file:%s/Spring16_25nsV6_MC.db' % datadir)
                                #connect = cms.string('sqlite_file:%s/Summer16_23Sep2016V4_MC.db' % datadir)
-                               connect = cms.string('sqlite_file:%s/Fall17_17Nov2017_V6_MC.db' % datadir)
+                              # connect = cms.string('sqlite_file:%s/Fall17_17Nov2017_V6_MC.db' % datadir)
+                               connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS')
                                )                               
     process.es_prefer_jec = cms.ESPrefer('PoolDBESSource', 'jec')
 
@@ -287,7 +309,8 @@ def createJERESource(process):
           #tag    = cms.string('JR_Spring16_25nsV6_MC_PtResolution_AK4PFchs'),
           #tag    = cms.string('JR_Spring16_25nsV10_MC_PtResolution_AK4PFchs'),
 #          tag    = cms.string('JR_Summer16_23Sep2016V4_MC_PtResolution_AK4PFchs'),
-          tag    = cms.string('JR_Fall17_17Nov2017_V6_MC_PtResolution_AK4PFchs'),
+#          tag    = cms.string('JR_Fall17_17Nov2017_V6_MC_PtResolution_AK4PFchs'),
+          tag    = cms.string(JR_PtResolution_version),       
           label  = cms.untracked.string('AK4PFchs_pt')
           ),
         
@@ -296,8 +319,9 @@ def createJERESource(process):
           record = cms.string('JetResolutionScaleFactorRcd'),
           #tag    = cms.string('JR_Spring16_25nsV6_MC_SF_AK4PFchs'),
           #tag    = cms.string('JR_Spring16_25nsV10_MC_SF_AK4PFchs'),
-          #          tag    = cms.string('JR_Summer16_23Sep2016V4_MC_SF_AK4PFchs'),
-          tag    = cms.string('JR_Fall17_17Nov2017_V6_MC_SF_AK4PFchs'),          
+#          tag    = cms.string('JR_Summer16_23Sep2016V4_MC_SF_AK4PFchs'),
+#                    tag    = cms.string('JR_Fall17_17Nov2017_V6_MC_SF_AK4PFchs'),          
+          tag    = cms.string(JR_SF_version),       
           label  = cms.untracked.string('AK4PFchs')
           ),
         ),
@@ -306,7 +330,8 @@ def createJERESource(process):
 # JR_Summer15_25nsV6_MC_PtResolution_AK4PFchs   Run       JME::JetResolutionObject  any              -1             2016-02-05 20:59:34.064554  New Tag      
                                #connect = cms.string('sqlite_file:%s/Spring16_25nsV6_MC.db' % datadir)
 #                               connect = cms.string('sqlite_file:%s/Summer16_23Sep2016V4_MC.db' % datadir)
-                               connect = cms.string('sqlite_file:%s/Fall17_17Nov2017_V6_MC.db' % datadir) 
+                               #connect = cms.string('sqlite_file:%s/Fall17_17Nov2017_V6_MC.db' % datadir) 
+                               connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS')
                                )
     process.es_prefer_jer = cms.ESPrefer('PoolDBESSource', 'jer')
 
