@@ -366,7 +366,7 @@ class WorkNodeJob(object):
 
         # get specific epilogue needed by the runner
         # this can be used, for example, to propagate $retval by touching a file
-        script += self.runner.epilogue(self.stage_cmd,self.stage_dest)+"\n"
+        script += self.runner.epilogue("cp -pv",os.path.abspath(self.job_outdir))+"\n"
 
         script += 'exit $retval\n'
         script += '\n'
@@ -401,11 +401,12 @@ class WorkNodeJobFactory(object):
         
     # ------------------------------------------------------------------------------------------------
     def mkTarball(self,tarball=None,
-                  tarball_entries=["python","lib","bin","flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310"],tarball_patterns={"src/*":"data"},
+                  tarball_entries=["python","lib","bin","external","flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310"],tarball_patterns={"src/*":"data"},
                   tarball_transform=None):
         
         self.tarball = tarball
         content=tarball_entries
+
         for folder,pattern in tarball_patterns.iteritems():
             stat,out = commands.getstatusoutput("cd $CMSSW_BASE; find %s -name %s" % ( folder, pattern ) )
             ## print out
@@ -551,8 +552,10 @@ class SGEJob(LsfJob):
         mydomain = BatchRegistry.getDomain()
         # domain-specific configuration
         if mydomain == "psi.ch":
+            ret += "source $VO_CMS_SW_DIR/cmsset_default.sh\n"
             ret += "mkdir -p /scratch/$(whoami)/sgejob-$JOB_ID\n"
             ret += "cd /scratch/$(whoami)/sgejob-$JOB_ID\n"
+            ret += "source $VO_CMS_SW_DIR/cmsset_default.sh"
         if mydomain == "hep.ph.ic.ac.uk":
             ret += "mkdir -p $TMP/sgejob-$JOB_ID\n"
             ret += "cd $TMP/sgejob-$JOB_ID\n"
@@ -633,7 +636,7 @@ class SGEJob(LsfJob):
                 if line.startswith("Your job"):
                     self.jobid = int(line.split(" ")[2])
                     break
-
+            
         if self.async:
             return self.exitStatus, (out,(self.jobName,self.jobid))
 
@@ -664,7 +667,8 @@ class SGEJob(LsfJob):
                     break
             if self.exitStatus == 0:
                 logdir = os.path.abspath(os.path.dirname(self.jobName))
-                if os.path.isfile('%s/%s.sh.fail' % (logdir,self.jobName.split("/")[-1])) and not os.path.isfile('%s/%s.sh.done' % (logdir,self.jobName.split("/")[-1])):
+                ## if os.path.isfile('%s/%s.sh.fail' % (logdir,self.jobName.split("/")[-1])) and not os.path.isfile('%s/%s.sh.done' % (logdir,self.jobName.split("/")[-1])):
+                if not os.path.isfile('%s/%s.sh.done' % (logdir,self.jobName.split("/")[-1])):
                     self.exitStatus = 1
 
         output = ""
@@ -818,7 +822,6 @@ class SGEMonitor(LsfMonitor):
         
         super(SGEMonitor, self).__init__(*args, **kwargs)
 
-
     def monitor(self):
         status = commands.getstatusoutput("qstat")
         checkcount = 0
@@ -844,6 +847,7 @@ class SGEMonitor(LsfMonitor):
             #                print type(jobid),type(jobids[0])
             #                print
             #                print jobs
+
         for jobid in self.jobsmap.keys():
             if not jobids.count(jobid):
                 # i.e. job is no longer on the list, and hence done
@@ -891,7 +895,7 @@ class Wrap:
     
 # -----------------------------------------------------------------------------------------------------
 class Parallel:
-    def __init__(self,ncpu,lsfQueue=None,lsfJobName="job",asyncLsf=False,maxThreads=500,jobDriver=None,batchSystem="lsf"):
+    def __init__(self,ncpu,lsfQueue=None,lsfJobName="job",asyncLsf=False,maxThreads=500,jobDriver=None,batchSystem="auto"):
         self.returned = Queue()
 	self.njobs = 0
         self.JobDriver=jobDriver

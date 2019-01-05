@@ -28,6 +28,7 @@ namespace flashgg {
         ~MVAComputer();
 
         float operator()( const object_type &obj ) const;
+        std::vector<float> predict_prob( const object_type &obj ) const;
 
     private:
         void bookMVA() const;
@@ -36,6 +37,7 @@ namespace flashgg {
         GlobalVariablesComputer *global_;
 
         bool regression_;
+        bool multiclass_;
         std::string classifier_, weights_;
         std::vector<std::tuple<std::string, int> > variables_;
         mutable std::vector<float> values_;
@@ -47,6 +49,7 @@ namespace flashgg {
         reader_( 0 ),
         global_( global ),
         regression_( cfg.exists("regression") ? cfg.getParameter<bool>("regression") : false ),
+        multiclass_( cfg.exists("multiclass") ? cfg.getParameter<bool>("multiclass") : false ),
         classifier_( cfg.getParameter<std::string>( "classifier" ) )
     {
         using namespace std;
@@ -102,12 +105,24 @@ namespace flashgg {
     template<class F, class O>
     float MVAComputer<F, O>::operator()( const object_type &obj ) const
     {
+        assert (multiclass_==false);
         if( ! reader_ ) { bookMVA(); }
         for( size_t ivar = 0; ivar < functors_.size(); ++ivar ) {
             values_[ivar] = functors_[ivar]( obj );
         }
         return ( regression_ ? reader_->EvaluateRegression(0, classifier_.c_str() ) : reader_->EvaluateMVA( classifier_.c_str() ) );
     }
+    template<class F, class O>
+    std::vector<float> MVAComputer<F, O>::predict_prob( const object_type &obj ) const
+    {
+        assert (multiclass_==true);
+        if( ! reader_ ) { bookMVA(); }
+        for( size_t ivar = 0; ivar < functors_.size(); ++ivar ) {
+            values_[ivar] = functors_[ivar]( obj );
+        }
+        return reader_->EvaluateMulticlass(classifier_.c_str());
+    }
+
 
 }
 

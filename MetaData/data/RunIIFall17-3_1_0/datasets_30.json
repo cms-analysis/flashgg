@@ -1,0 +1,135 @@
+{
+    "/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/lata-RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2-a50795faeee409c56cdc488b288532ac/USER": {
+        "files": [
+            {
+                "bad": false, 
+                "events": 1000, 
+                "name": "/store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 1000, 
+                "totEvents": 1000, 
+                "weights": 1000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 13000, 
+                "name": "/store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 13000, 
+                "totEvents": 13000, 
+                "weights": 13000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 5000, 
+                "name": "/store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 5000, 
+                "totEvents": 5000, 
+                "weights": 5000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 5000, 
+                "name": "/store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 5000, 
+                "totEvents": 5000, 
+                "weights": 4998.0
+            }, 
+            {
+                "bad": false, 
+                "events": 15000, 
+                "name": "/store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 15000, 
+                "totEvents": 15000, 
+                "weights": 15000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 24998.0
+            }, 
+            {
+                "bad": false, 
+                "events": 23000, 
+                "name": "/store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 23000, 
+                "totEvents": 23000, 
+                "weights": 22998.0
+            }, 
+            {
+                "bad": false, 
+                "events": 33000, 
+                "name": "/store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 33000, 
+                "totEvents": 33000, 
+                "weights": 32998.0
+            }, 
+            {
+                "bad": false, 
+                "events": 26000, 
+                "name": "/store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 26000, 
+                "totEvents": 26000, 
+                "weights": 25994.0
+            }, 
+            {
+                "bad": false, 
+                "events": 20000, 
+                "name": "/store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 20000, 
+                "totEvents": 20000, 
+                "weights": 20000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 15000, 
+                "name": "/store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 15000, 
+                "totEvents": 15000, 
+                "weights": 14998.0
+            }, 
+            {
+                "bad": false, 
+                "events": 13000, 
+                "name": "/store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 13000, 
+                "totEvents": 13000, 
+                "weights": 13000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 31000, 
+                "name": "/store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 31000, 
+                "totEvents": 31000, 
+                "weights": 31000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 57000, 
+                "name": "/store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 57000, 
+                "totEvents": 57000, 
+                "weights": 56996.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 24996.0
+            }, 
+            {
+                "bad": false, 
+                "events": 62000, 
+                "name": "/store/group/phys_higgs/HiggsExo/HH_bbgg/RunIIFall17-3_1_0/3_1_0/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/RunIIFall17-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180830_190720/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 62000, 
+                "totEvents": 62000, 
+                "weights": 62000.0
+            }
+        ], 
+        "vetted": true
+    }
+}

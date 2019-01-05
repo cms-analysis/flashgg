@@ -112,6 +112,11 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "puTarget")
+        self.options.register ('PUyear',
+                               "2016", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "PUyear")
         self.options.register ('WeightName', # for THQ/THW samples the LHE weight should be mentioned
                                None, # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -152,6 +157,8 @@ class JobConfig(object):
         except Exception:
             print "Failed to load 94X_mc2017 mixing"
             
+        self.pu_distribs_hack_2017 = {  }
+
         try:
             import importlib
             from os import listdir,environ
@@ -165,7 +172,7 @@ class JobConfig(object):
                     print fn,mn
                     m = importlib.import_module("flashgg.MetaData.%s.%s" % (mixdir,mn))
                     kn = mn.replace("mix_2017MC_","")
-                    self.pu_distribs[kn] = m.mix.input.nbPileupEvents
+                    self.pu_distribs_hack_2017[kn] = m.mix.input.nbPileupEvents
         except Exception,e:
             print "failed to load hacky 94X mixing by dataset"
             raise e
@@ -292,12 +299,15 @@ class JobConfig(object):
                             if not samplepu:
 #                                print dsetname
 #                                print self.pu_distribs.keys()
-                                hack2017 = True
+#                                hack2017 = True
                                 found_hack2017 = False
-                                if hack2017:
+#                                if hack2017:
+                                if self.options.PUyear=="2017":
                                     print dsetname.split("/")[1]
-                                    print self.pu_distribs.keys()
-                                    matches = filter(lambda x: x == dsetname.split("/")[1],self.pu_distribs.keys())
+                                   # print self.pu_distribs.keys()
+                                    print self.pu_distribs_hack_2017.keys()
+                                   # matches = filter(lambda x: x == dsetname.split("/")[1],self.pu_distribs.keys())
+                                    matches = filter(lambda x: x == dsetname.split("/")[1],self.pu_distribs_hack_2017.keys())
                                     if len(matches) == 1:
                                         found_hack2017 = True
                                         print "FOUND HACK2017 PILEUP DISTRIBUTION WITH KEY:",matches[0]
@@ -319,7 +329,8 @@ class JobConfig(object):
                                     if len(matches) != 1:
                                         raise Exception("Could not determine sample pu distribution for reweighting. Possible matches are [%s]. Selected [%s]\n dataset: %s" % 
                                                         ( ",".join(self.pu_distribs.keys()), ",".join(matches), dsetname ) )
-                                samplepu = self.pu_distribs[matches[0]]
+                                if self.options.PUyear=="2017": samplepu = self.pu_distribs_hack_2017[matches[0]]
+                                else : samplepu = self.pu_distribs[matches[0]]
                             puObj.puReWeight = True
                             puObj.puBins = cms.vdouble( map(float, samplepu.probFunctionVariable) )
                             puObj.mcPu   = samplepu.probValue
@@ -410,7 +421,8 @@ class JobConfig(object):
             self.readProcessIdMap(self.options.processIdMap)
         
         if self.useAAA:
-            self.filePrepend = "root://xrootd-cms.infn.it/"
+       #     self.filePrepend = "root://xrootd-cms.infn.it/"
+            self.filePrepend = "root://cms-xrd-global.cern.ch/"
         elif self.useEOS:
             self.filePrepend = "root://eoscms.cern.ch//eos/cms"
         

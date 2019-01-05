@@ -1,0 +1,39 @@
+{
+    "/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/micheli-HHbbgg_Signal_SM_20181120-1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2-36d24ab2b1bdce9fc3412fbb0eb04dd1/USER": {
+        "files": [
+            {
+                "bad": false, 
+                "events": 47000, 
+                "name": "/store/user/micheli/HHbbgg/MicroAod/HHbbgg_Signal_SM_20181120/1/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/HHbbgg_Signal_SM_20181120-1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/181120_113738/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 47000, 
+                "totEvents": 47000, 
+                "weights": 46998.0
+            }, 
+            {
+                "bad": false, 
+                "events": 53000, 
+                "name": "/store/user/micheli/HHbbgg/MicroAod/HHbbgg_Signal_SM_20181120/1/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/HHbbgg_Signal_SM_20181120-1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/181120_113738/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 53000, 
+                "totEvents": 53000, 
+                "weights": 52996.0
+            }, 
+            {
+                "bad": false, 
+                "events": 63000, 
+                "name": "/store/user/micheli/HHbbgg/MicroAod/HHbbgg_Signal_SM_20181120/1/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/HHbbgg_Signal_SM_20181120-1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/181120_113738/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 63000, 
+                "totEvents": 63000, 
+                "weights": 62994.0
+            }, 
+            {
+                "bad": false, 
+                "events": 56000, 
+                "name": "/store/user/micheli/HHbbgg/MicroAod/HHbbgg_Signal_SM_20181120/1/GluGluToHHTo2B2G_node_SM_13TeV-madgraph/HHbbgg_Signal_SM_20181120-1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/181120_113738/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 56000, 
+                "totEvents": 56000, 
+                "weights": 55998.0
+            }
+        ], 
+        "vetted": true
+    }
+}
