@@ -38,7 +38,7 @@ namespace flashgg {
         edm::InputTag qgVariablesInputTag;
         edm::EDGetTokenT<edm::ValueMap<float> > qgToken;
         unique_ptr<PileupJetIdAlgo>  pileupJetIdAlgo_;
-        ParameterSet pileupJetIdParameters_;
+        PileupJetIdAlgo::AlgoGBRForestsAndConstants* algoGBRForestsAndConstants_;
         bool usePuppi;
         bool computeSimpleRMS, computeRegVars;
         unsigned jetCollectionIndex_;
@@ -58,7 +58,6 @@ namespace flashgg {
         vertexToken_  ( consumes<reco::VertexCollection>( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTag" ) )),
         qgVariablesInputTag( iConfig.getParameter<edm::InputTag>( "qgVariablesInputTag" ) ),
-        pileupJetIdParameters_( iConfig.getParameter<ParameterSet>( "PileupJetIdParameters" ) ),
         computeSimpleRMS( iConfig.getParameter<bool>( "ComputeSimpleRMS" ) ),
         computeRegVars( iConfig.getParameter<bool>( "ComputeRegVars" ) ),
         jetCollectionIndex_( iConfig.getParameter<unsigned> ( "JetCollectionIndex" ) ),
@@ -72,7 +71,9 @@ namespace flashgg {
         nJetsForEneSum_( iConfig.getParameter<unsigned int>("NJetsForEneSum") )
         //        usePuppi( iConfig.getUntrackedParameter<bool>( "UsePuppi", false ) )
     {
-        pileupJetIdAlgo_.reset( new PileupJetIdAlgo( pileupJetIdParameters_, true ) );
+        auto pileupJetIdParameters = iConfig.getParameter<ParameterSet>( "PileupJetIdParameters" );
+        algoGBRForestsAndConstants_ = new PileupJetIdAlgo::AlgoGBRForestsAndConstants(pileupJetIdParameters, true);
+        pileupJetIdAlgo_.reset( new PileupJetIdAlgo( algoGBRForestsAndConstants_ ) );
         //qgToken_ = consumes<edm::ValueMap<float> >(edm::InputTag("GluonTagSrc", "qgLikelihood"));
         qgToken  = consumes<edm::ValueMap<float>>( edm::InputTag( qgVariablesInputTag.label(), "qgLikelihood" ) );
         
