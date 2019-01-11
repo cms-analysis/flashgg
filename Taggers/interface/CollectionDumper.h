@@ -444,9 +444,9 @@ namespace flashgg {
             } else {
                 event.getByLabel(genInfo_,genInfo);
             }
-
+            
             weight = lumiWeight_;
-
+            
             if( LHEWeightName != ""){
                 edm::Handle<LHEEventProduct> product_lhe;
                 if (fullEvent != 0) {
@@ -466,7 +466,7 @@ namespace flashgg {
                 if( LHEWeightIndex > -1 )
                     weight *= ( product_lhe->weights()[LHEWeightIndex].wgt/product_lhe->originalXWGTUP () );
             }
-
+            
             if( genInfo.isValid() ) {
                 const auto &weights = genInfo->weights();
                 // FIXME store alternative/all weight-sets
@@ -474,7 +474,7 @@ namespace flashgg {
                     weight *= weights[0];
                 }
             }
-                
+            
             if( globalVarsDumper_ && globalVarsDumper_->puReWeight() ) {
                 if (globalVarsDumper_->cache().puweight > 999999. || globalVarsDumper_->cache().puweight < -999999.) {
                     weight = 0.;
@@ -488,11 +488,7 @@ namespace flashgg {
                 }
             }
         }
-            
-        if( globalVarsDumper_ && globalVarsDumper_->puReWeight() ) {
-            weight *= globalVarsDumper_->cache().puweight;
-        }
-
+        
         return weight;
     }
 
