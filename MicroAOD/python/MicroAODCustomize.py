@@ -89,8 +89,6 @@ class MicroAODCustomize(object):
                               'addMicroAODHLTFilter'
                               )
 
-        self.parsed_ = False
-
     def __getattr__(self,name):
         ## did not manage to inherit from VarParsing, because of some issues in __init__
         ## this allows to use VarParsing methods on JobConfig
@@ -108,10 +106,7 @@ class MicroAODCustomize(object):
         pass 
 
     def parse(self):
-        if self.parsed_:
-            return
         self.options.parseArguments()
-        self.parsed_ = True
 
     # process customization
     def customize(self,process):
@@ -316,7 +311,7 @@ class MicroAODCustomize(object):
 
         ###---Add HLT filter as first step of MicroAOD sequence
         if self.addMicroAODHLTFilter:
-            process.triggerFilterModule = getMicroAODHLTFilter(customize.datasetName)
+            process.triggerFilterModule = getMicroAODHLTFilter(customize.datasetName, self.metaConditions)
             if process.triggerFilterModule:
                 process.p = cms.Path(process.triggerFilterModule*process.p._seq)
                 process.p1 = cms.Path(process.triggerFilterModule*process.p1._seq)
@@ -365,8 +360,7 @@ class MicroAODCustomize(object):
         from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDElectronIdProducer,setupAllVIDIdsInModule,setupVIDElectronSelection
         dataFormat = DataFormat.MiniAOD
         switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
-        my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_noIso_V1_cff',
-                         'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_iso_V1_cff',
+        my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_iso_V1_cff',
                          'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Fall17_94X_V1_cff',
                          'RecoEgamma.ElectronIdentification.Identification.heepElectronID_HEEPV70_cff']
         for idmod in my_id_modules:
@@ -379,11 +373,11 @@ class MicroAODCustomize(object):
         process.flashggElectrons.eleMVALooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wpLoose")
         process.flashggElectrons.eleMVAMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp90")
         process.flashggElectrons.eleMVATightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp80")
-        process.flashggElectrons.eleMVALooseNoIsoIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wpLoose")
-        process.flashggElectrons.eleMVAMediumNoIsoIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp90")
-        process.flashggElectrons.eleMVATightNoIsoIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp80")
+        # process.flashggElectrons.eleMVALooseNoIsoIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wpLoose")
+        # process.flashggElectrons.eleMVAMediumNoIsoIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp90")
+        # process.flashggElectrons.eleMVATightNoIsoIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp80")
         process.flashggElectrons.mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Values")
-        process.flashggElectrons.mvaNoIsoValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Values")
+        # process.flashggElectrons.mvaNoIsoValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Values")
 
     def customizeSummer16EGMPhoID(self,process):
         from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDPhotonIdProducer,setupAllVIDIdsInModule,setupVIDPhotonSelection
@@ -602,6 +596,13 @@ class MicroAODCustomize(object):
         process.task = createTaskWithAllProducersAndFilters(process)
         process.p.associate(process.task)
 
+    def rereunEcalBadCalibFilter(self, process):
+        """
+        Rerun the ECAL bad calib filter (EE high eta noise)
+        ---NOT THE FINAL RECIPE---
+        """
+        
+        
 def createTaskWithAllProducersAndFilters(process):
    from FWCore.ParameterSet.Config import Task
    l = [ p for p in process.producers.itervalues()]
