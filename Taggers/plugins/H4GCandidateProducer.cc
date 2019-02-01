@@ -8,6 +8,8 @@
 #include "FWCore/Utilities/interface/EDMException.h"
 
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/SinglePhotonView.h"
+#include "flashgg/DataFormats/interface/Photon.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "flashgg/MicroAOD/interface/VertexSelectorBase.h"
@@ -16,10 +18,10 @@
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
 #include "DataFormats/Math/interface/deltaR.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 
 #include "flashgg/MicroAOD/interface/CutBasedDiPhotonObjectSelector.h"
-
-
 
 #include <vector>
 #include <algorithm>
@@ -53,6 +55,9 @@ namespace flashgg {
     EDGetTokenT<View<reco::Vertex> > vertexToken_;
     Handle<View<reco::Vertex> > vertex;
 
+    EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
+    Handle<View<reco::GenParticle> > genParticle;
+
     //---ID selector
     ConsumesCollector cc_;
     CutBasedDiPhotonObjectSelector idSelector_;
@@ -66,6 +71,7 @@ namespace flashgg {
   H4GCandidateProducer::H4GCandidateProducer( ):
   photonToken_(),
   diphotonToken_(),
+  genParticleToken_(),
   cc_( consumesCollector() ),
   idSelector_( ParameterSet(), cc_ )
 
@@ -76,6 +82,8 @@ namespace flashgg {
     photonToken_( consumes<View<Photon> >( pSet.getParameter<InputTag> ( "PhotonTag" ) ) ),
     diphotonToken_( consumes<View<DiPhotonCandidate> >( pSet.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
     vertexToken_( consumes<View<reco::Vertex> >( pSet.getParameter<InputTag> ( "VertexTag" ) ) ),
+    genParticleToken_( consumes<View<reco::GenParticle> >( pSet.getParameter<InputTag> ( "GenParticleTag" ) ) ),
+
     cc_( consumesCollector() ),
     idSelector_( pSet.getParameter<ParameterSet> ( "idSelection" ), cc_ )
 
@@ -88,79 +96,47 @@ namespace flashgg {
       event.getByToken( photonToken_, photons );
       event.getByToken( diphotonToken_, diphotons );
       event.getByToken( vertexToken_, vertex );
+      event.getByToken( genParticleToken_, genParticle );
 
       //---output collection
       std::unique_ptr<vector<H4GCandidate> > H4GColl_( new vector<H4GCandidate> );
-      std::vector<edm::Ptr<Photon>> phoVec;
-
-
-
-      flashgg::Photon pho1 ;
-      flashgg::Photon pho2 ;
-      flashgg::Photon pho3 ;
-      flashgg::Photon pho4 ;
 
       edm::Ptr<reco::Vertex> vertex_zero = vertex->ptrAt(0);
+      reco::GenParticle::Point genVertex;
+
       //---at least one diphoton should pass the low mass hgg pre-selection
       bool atLeastOneDiphoPass = false;
-      for(auto& dipho : *diphotons.product())
+      std::vector<const flashgg::Photon*> phosTemp;
+      for( unsigned int dpIndex = 0; dpIndex < diphotons->size(); dpIndex++ )
       {
-        atLeastOneDiphoPass |= idSelector_(dipho, event);
+        edm::Ptr<flashgg::DiPhotonCandidate> thisDPPtr = diphotons->ptrAt( dpIndex );
+        flashgg::DiPhotonCandidate * thisDPPointer = const_cast<flashgg::DiPhotonCandidate *>(thisDPPtr.get());
+        atLeastOneDiphoPass |= idSelector_(*thisDPPointer, event);
       }
-
       int n_photons = photons->size();
-
-
-      std::vector<edm::Ptr<flashgg::Photon>> phoVector;
-      std::vector<flashgg::Photon> photonCollection;
+      std::vector<flashgg::Photon> phoVector;
       if (atLeastOneDiphoPass)
       {
         for( int phoIndex = 0; phoIndex < n_photons; phoIndex++ )
         {
           edm::Ptr<flashgg::Photon> pho = photons->ptrAt( phoIndex );
-          phoVector.push_back(pho);
+          flashgg::Photon * thisPPointer = const_cast<flashgg::Photon *>(pho.get());
+          phoVector.push_back(*thisPPointer);
         }
-        /////////////
-        // Photons //
-        /////////////
-
-        //Prepare reference collection
-        for( unsigned int pIndex = 0; pIndex < phoVector.size(); pIndex++ )
+        if (! event.isRealData() )
         {
-          edm::Ptr<flashgg::Photon> thisPPtr = phoVector[ pIndex ];
-          flashgg::Photon * thisPPointer = const_cast<flashgg::Photon *>(thisPPtr.get());
-          photonCollection.push_back(*thisPPointer);
+          for( auto &part : *genParticle ) {
+            if( part.pdgId() != 2212 || part.vertex().z() != 0. ) 
+            {
+              genVertex = part.vertex();
+            }
         }
-        if (n_photons == 2){
-          pho1 = photonCollection[0];
-          pho2 = photonCollection[1];
-          H4GCandidate h4g_2pho(pho1, pho2, vertex_zero);
-          H4GColl_->push_back(h4g_2pho);
-        }
-        else if (n_photons == 3){
-          pho1 = photonCollection[0];
-          pho2 = photonCollection[1];
-          pho3 = photonCollection[2];
-          H4GCandidate h4g_3pho(pho1, pho2, pho3, vertex_zero);
-          H4GColl_->push_back(h4g_3pho);
-        }
-        else if (n_photons > 3){
-          pho1 = photonCollection[0];
-          pho2 = photonCollection[1];
-          pho3 = photonCollection[2];
-          pho4 = photonCollection[3];
-          H4GCandidate h4g_4pho(pho1, pho2, pho3, pho4, vertex_zero);
-          H4GColl_->push_back(h4g_4pho);
-        }
-
+      }
+        H4GCandidate h4g(phoVector, vertex_zero, genVertex);
+        H4GColl_->push_back(h4g);
       }
       event.put( std::move(H4GColl_) );
     }
-
   }
-
-
-
-
   typedef flashgg::H4GCandidateProducer FlashggH4GCandidateProducer;
   DEFINE_FWK_MODULE( FlashggH4GCandidateProducer );

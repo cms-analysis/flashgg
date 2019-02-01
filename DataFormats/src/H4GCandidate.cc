@@ -1,36 +1,17 @@
 #include "TLorentzVector.h"
 #include "DataFormats/Math/interface/LorentzVector.h"
+#include "flashgg/DataFormats/interface/Photon.h"
 #include "flashgg/DataFormats/interface/H4GCandidate.h"
 
 using namespace flashgg;
-
 H4GCandidate::H4GCandidate():
-pho1_ (),
-pho2_ (),
-pho3_ (),
-pho4_(),
-pho12_ (),
-pho13_ (),
-pho14_ (),
-pho23_ (),
-pho24_ (),
-pho34_ (),
-pho1_r9_ (-9999.),
-pho2_r9_ (-9999.),
-pho3_r9_ (-9999.),
-pho4_r9_ (-9999.),
-pho1_full5x5_r9_ (-9999.),
-pho2_full5x5_r9_ (-9999.),
-pho3_full5x5_r9_ (-9999.),
-pho4_full5x5_r9_ (-9999.),
-pho1_EGMVA_ (-9999.),
-pho2_EGMVA_ (-9999.),
-pho3_EGMVA_ (-9999.),
-pho4_EGMVA_ (-9999.),
-pho1_MVA_ (-9999.),
-pho2_MVA_ (-9999.),
-pho3_MVA_ (-9999.),
-pho4_MVA_ (-9999.),
+phoVector_ (),
+vertex_ (),
+phoP4Corrected_ (),
+pho1_MVA_ (),
+pho2_MVA_ (),
+pho3_MVA_ (),
+pho4_MVA_ (),
 dp1_ (),
 dp2_ (),
 dp1_pho1_ (),
@@ -41,91 +22,117 @@ dp1_ipho1_ (),
 dp1_ipho2_ (),
 dp2_ipho1_ (),
 dp2_ipho2_ (),
+pho12_ (),
+pho13_ (),
+pho14_ (),
+pho23_ (),
+pho24_ (),
+pho34_ (),
 tp_ ()
-
-
 {}
 
-H4GCandidate::~H4GCandidate() {}
+  H4GCandidate::~H4GCandidate() {}
 
-//-----------constructors--------------------------------------------------------
-//---4  photons constructor
-H4GCandidate::H4GCandidate( flashgg::Photon pho1, flashgg::Photon pho2, flashgg::Photon pho3, flashgg::Photon pho4, edm::Ptr<reco::Vertex> vertex):
-pho1_(pho1), pho2_(pho2), pho3_(pho3), pho4_(pho4), vertex_(vertex)
-{
-  n_photons = 4;
-  phoVec_.push_back(pho1_);phoVec_.push_back(pho2_); phoVec_.push_back(pho3_); phoVec_.push_back(pho4_);
-  pho12_ = pho1_.p4() + pho2_.p4();
-  pho13_ = pho1_.p4() + pho3_.p4();
-  pho14_ = pho1_.p4() + pho4_.p4();
-  pho23_ = pho2_.p4() + pho3_.p4();
-  pho24_ = pho2_.p4() + pho4_.p4();
-  pho34_ = pho3_.p4() + pho4_.p4();
-  pho1_r9_ = pho1_.old_r9();
-  pho2_r9_ = pho2_.old_r9();
-  pho3_r9_ = pho3_.old_r9();
-  pho4_r9_ = pho4_.old_r9();
-  pho1_full5x5_r9_ = pho1_.full5x5_r9();
-  pho2_full5x5_r9_ = pho2_.full5x5_r9();
-  pho3_full5x5_r9_ = pho3_.full5x5_r9();
-  pho4_full5x5_r9_ = pho4_.full5x5_r9();
-  pho1_EGMVA_ = pho1_.userFloat("EGMPhotonMVA");
-  pho2_EGMVA_ = pho2_.userFloat("EGMPhotonMVA");
-  pho3_EGMVA_ = pho3_.userFloat("EGMPhotonMVA");
-  pho4_EGMVA_ = pho4_.userFloat("EGMPhotonMVA");
-  pho1_MVA_ = pho1_.phoIdMvaDWrtVtx(vertex_);
-  pho2_MVA_ = pho2_.phoIdMvaDWrtVtx(vertex_);
-  pho3_MVA_ = pho3_.phoIdMvaDWrtVtx(vertex_);
-  pho4_MVA_ = pho4_.phoIdMvaDWrtVtx(vertex_);
-  float minDM = 1000000;
-  for (int i1=0; i1 < (int) phoVec_.size(); i1++)
+  H4GCandidate::H4GCandidate( std::vector<flashgg::Photon> phoVector, edm::Ptr<reco::Vertex> vertex, reco::GenParticle::Point genVertex):
+  phoVector_(phoVector), vertex_(vertex)
   {
-    flashgg::Photon pho1 = phoVec_[i1];
-    for (int i2=0; i2 < (int) phoVec_.size(); i2++)
+    float vtx_X = vertex_->x();
+    float vtx_Y = vertex_->y();
+    float vtx_Z = vertex_->z();
+    math::XYZVector vtx_Pos( vtx_X, vtx_Y, vtx_Z );
+    if (phoVector_.size() > 0)
     {
-      if (i2 <= i1 ){continue;}
-      flashgg::Photon pho2 = phoVec_[i2];
-      for (int i3=0; i3 < (int) phoVec_.size(); i3++)
+    for( int p = 0; p < (int) phoVector_.size(); p++ )
+    {
+      float sc_X = phoVector_[p].superCluster()->x();
+      float sc_Y = phoVector_[p].superCluster()->y();
+      float sc_Z = phoVector_[p].superCluster()->z();
+      math::XYZVector sc_Pos( sc_X, sc_Y, sc_Z );
+      math::XYZVector direction = sc_Pos - vtx_Pos;
+      math::XYZVector pho = ( direction.Unit() ) * ( phoVector_[p].energy() );
+      math::XYZTLorentzVector corrected_p4( pho.x(), pho.y(), pho.z(), phoVector_[p].energy() );
+      phoVector_[p].setP4(corrected_p4);
+      phoP4Corrected_.push_back(phoVector_[p]);
+    }
+  }
+  pho1_MVA_ = phoP4Corrected_.size() > 0 ? phoP4Corrected_[0].phoIdMvaDWrtVtx(vertex_) : -999;
+  pho2_MVA_ = phoP4Corrected_.size() > 0 ? phoP4Corrected_[1].phoIdMvaDWrtVtx(vertex_) : -999;
+  pho3_MVA_ = phoP4Corrected_.size() > 2 ? phoP4Corrected_[2].phoIdMvaDWrtVtx(vertex_) : -999;
+  pho4_MVA_ = phoP4Corrected_.size() > 3 ? phoP4Corrected_[3].phoIdMvaDWrtVtx(vertex_) : -999;
+
+    float minDM = 1000000;
+    if (phoP4Corrected_.size() > 3)
+    {
+      for (int i1=0; i1 < (int) phoP4Corrected_.size(); i1++)
       {
-        if (i3 == i2 || i3 == i1){continue;}
-        flashgg::Photon pho3 = phoVec_[i3];
-        for (int i4=0; i4 < (int) phoVec_.size(); i4++)
+        flashgg::Photon pho1 = phoP4Corrected_[i1];
+        for (int i2=0; i2 < (int) phoP4Corrected_.size(); i2++)
         {
-          if (i4 <= i3){continue;}
-          if (i4 == i1 || i4 == i2){continue;}
-          flashgg::Photon pho4 = phoVec_[i4];
-          auto dipho1 = pho1.p4() + pho2.p4();
-          auto dipho2 = pho3.p4() + pho4.p4();
-          float deltaM = fabs( dipho1.mass() - dipho2.mass());
-          if (deltaM < minDM){
-            minDM = deltaM;
-            dp1_pho1_ = pho1.p4();
-            dp1_ipho1_ = i1;
-            dp1_pho2_ = pho2.p4();
-            dp1_ipho2_ = i2;
-            dp2_pho1_ = pho3.p4();
-            dp2_ipho1_ = i3;
-            dp2_pho2_ = pho4.p4();
-            dp2_ipho2_ = i4;
-            if ((pho1.pt() + pho2.pt()) > (pho3.pt() + pho4.pt()) )
+          if (i2 <= i1 ){continue;}
+          flashgg::Photon pho2 = phoP4Corrected_[i2];
+          for (int i3=0; i3 < (int) phoP4Corrected_.size(); i3++)
+          {
+            if (i3 == i2 || i3 == i1){continue;}
+            flashgg::Photon pho3 = phoP4Corrected_[i3];
+            for (int i4=0; i4 < (int) phoP4Corrected_.size(); i4++)
             {
-              dp1_ = dipho1;
-              dp2_ = dipho2;
-            }
-            else if ((pho1.pt() + pho2.pt()) < (pho3.pt() + pho4.pt()) )
-            {
-              dp1_ = dipho2;
-              dp2_ = dipho1;
+              if (i4 <= i3){continue;}
+              if (i4 == i1 || i4 == i2){continue;}
+              flashgg::Photon pho4 = phoP4Corrected_[i4];
+              auto dipho1 = pho1.p4() + pho2.p4();
+              auto dipho2 = pho3.p4() + pho4.p4();
+              float deltaM = fabs( dipho1.mass() - dipho2.mass());
+              if (deltaM < minDM){
+                minDM = deltaM;
+                dp1_pho1_ = pho1.p4();
+                dp1_ipho1_ = i1;
+                dp1_pho2_ = pho2.p4();
+                dp1_ipho2_ = i2;
+                dp2_pho1_ = pho3.p4();
+                dp2_ipho1_ = i3;
+                dp2_pho2_ = pho4.p4();
+                dp2_ipho2_ = i4;
+                if ((pho1.pt() + pho2.pt()) > (pho3.pt() + pho4.pt()) )
+                {
+                  dp1_ = dipho1;
+                  dp2_ = dipho2;
+                }
+                else if ((pho1.pt() + pho2.pt()) < (pho3.pt() + pho4.pt()) )
+                {
+                  dp1_ = dipho2;
+                  dp2_ = dipho1;
+                }
+              }
             }
           }
         }
       }
     }
+    if (phoP4Corrected_.size() == 2)
+    {
+      tp_ = phoP4Corrected_[0].p4() + phoP4Corrected_[1].p4();
+      pho12_ = phoP4Corrected_[0].p4() + phoP4Corrected_[1].p4();
+    }
+    else if (phoP4Corrected_.size() == 3)
+    {
+      tp_ = phoP4Corrected_[0].p4() + phoP4Corrected_[1].p4() + phoP4Corrected_[2].p4();
+      pho12_ = phoP4Corrected_[0].p4() + phoP4Corrected_[1].p4();
+      pho13_ = phoP4Corrected_[0].p4() + phoP4Corrected_[2].p4();
+      pho23_ = phoP4Corrected_[1].p4() + phoP4Corrected_[2].p4();
+    }
+    else if (phoP4Corrected_.size() > 3 )
+    {
+      tp_ = phoP4Corrected_[0].p4() + phoP4Corrected_[1].p4() + phoP4Corrected_[2].p4() + phoP4Corrected_[3].p4();
+      pho12_ = phoP4Corrected_[0].p4() + phoP4Corrected_[1].p4();
+      pho13_ = phoP4Corrected_[0].p4() + phoP4Corrected_[2].p4();
+      pho14_ = phoP4Corrected_[0].p4() + phoP4Corrected_[3].p4();
+      pho23_ = phoP4Corrected_[1].p4() + phoP4Corrected_[2].p4();
+      pho24_ = phoP4Corrected_[1].p4() + phoP4Corrected_[3].p4();
+      pho34_ = phoP4Corrected_[2].p4() + phoP4Corrected_[3].p4();
+    }
   }
-  tp_ = pho1_.p4() + pho2_.p4() + pho3_.p4() + pho4_.p4();
-}
 
-float H4GCandidate::getCosThetaStar_CS(float ebeam) const {
+  float H4GCandidate::getCosThetaStar_CS(float ebeam) const {
     TLorentzVector p1, p2;
     p1.SetPxPyPzE(0, 0,  ebeam, ebeam);
     p2.SetPxPyPzE(0, 0, -ebeam, ebeam);
@@ -145,13 +152,9 @@ float H4GCandidate::getCosThetaStar_CS(float ebeam) const {
     TVector3 CSaxis = p1.Vect().Unit() - p2.Vect().Unit();
     CSaxis.Unit();
 
-
     return cos(   CSaxis.Angle( a_1.Vect().Unit() )    );
-}
-std::vector<float> H4GCandidate::CosThetaAngles() const {
-    //helicityThetas[0] = cosTheta_gg
-    //helicityThetas[1] = cosTheta_bb
-
+  }
+  std::vector<float> H4GCandidate::CosThetaAngles() const {
     std::vector<float> helicityThetas;
 
     TLorentzVector Boosted_a1(0,0,0,0);
@@ -170,50 +173,11 @@ std::vector<float> H4GCandidate::CosThetaAngles() const {
 
     return helicityThetas;
 
-}
+  }
 
-float H4GCandidate::HelicityCosTheta( TLorentzVector Booster, TLorentzVector Boosted) const
-{
+  float H4GCandidate::HelicityCosTheta( TLorentzVector Booster, TLorentzVector Boosted) const
+  {
     TVector3 BoostVector = Booster.BoostVector();
     Boosted.Boost( -BoostVector.x(), -BoostVector.y(), -BoostVector.z() );
     return Boosted.CosTheta();
-}
-
-//---3  photons constructor
-H4GCandidate::H4GCandidate( flashgg::Photon pho1, flashgg::Photon pho2, flashgg::Photon pho3, edm::Ptr<reco::Vertex> vertex):
-pho1_(pho1), pho2_(pho2), pho3_(pho3), vertex_(vertex)
-{
-  n_photons = 3;
-  pho12_ = pho1_.p4() + pho2_.p4();
-  pho13_ = pho1_.p4() + pho3_.p4();
-  pho23_ = pho2_.p4() + pho3_.p4();
-  pho1_r9_ = pho1.old_r9();
-  pho2_r9_ = pho2.old_r9();
-  pho3_r9_ = pho3.old_r9();
-  pho1_full5x5_r9_ = pho1_.full5x5_r9();
-  pho2_full5x5_r9_ = pho2_.full5x5_r9();
-  pho3_full5x5_r9_ = pho3_.full5x5_r9();
-  pho1_EGMVA_ = pho1_.userFloat("EGMPhotonMVA");
-  pho2_EGMVA_ = pho2_.userFloat("EGMPhotonMVA");
-  pho3_EGMVA_ = pho3_.userFloat("EGMPhotonMVA");
-  pho1_MVA_ = pho1_.phoIdMvaDWrtVtx(vertex_);
-  pho2_MVA_ = pho2_.phoIdMvaDWrtVtx(vertex_);
-  pho3_MVA_ = pho3_.phoIdMvaDWrtVtx(vertex_);
-  tp_ = pho1_.p4() + pho2_.p4() + pho3_.p4();
-}
-//---2  photons constructor
-H4GCandidate::H4GCandidate( flashgg::Photon pho1, flashgg::Photon pho2, edm::Ptr<reco::Vertex> vertex):
-pho1_(pho1), pho2_(pho2), vertex_(vertex)
-{
-  n_photons = 2;
-  pho12_ = pho1_.p4() + pho2_.p4();
-  pho1_r9_ = pho1.old_r9();
-  pho2_r9_ = pho2.old_r9();
-  pho1_full5x5_r9_ = pho1_.full5x5_r9();
-  pho2_full5x5_r9_ = pho2_.full5x5_r9();
-  pho1_EGMVA_ = pho1_.userFloat("EGMPhotonMVA");
-  pho2_EGMVA_ = pho2_.userFloat("EGMPhotonMVA");
-  pho1_MVA_ = pho1_.phoIdMvaDWrtVtx(vertex_);
-  pho2_MVA_ = pho2_.phoIdMvaDWrtVtx(vertex_);
-  tp_ = pho1_.p4() + pho2_.p4();
-}
+  }

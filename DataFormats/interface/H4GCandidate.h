@@ -6,6 +6,7 @@
 
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/Photon.h"
+#include "flashgg/DataFormats/interface/SinglePhotonView.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "DataFormats/Candidate/interface/LeafCandidate.h"
 #include "DataFormats/Math/interface/deltaR.h"
@@ -19,44 +20,20 @@ namespace flashgg {
   public:
     //---ctors---
     H4GCandidate() ;
-    H4GCandidate( flashgg::Photon pho1, flashgg::Photon pho2, flashgg::Photon pho3, flashgg::Photon pho4, edm::Ptr<reco::Vertex> vertex);
-    H4GCandidate( flashgg::Photon pho1, flashgg::Photon pho2, flashgg::Photon pho3, edm::Ptr<reco::Vertex> vertex);
-    H4GCandidate( flashgg::Photon pho1, flashgg::Photon pho2, edm::Ptr<reco::Vertex> vertex);
+    H4GCandidate( std::vector<flashgg::Photon> phoVector, edm::Ptr<reco::Vertex> vertex, reco::GenParticle::Point genVertex);
 
     //---dtor---
     ~H4GCandidate();
 
     //---utils---
-    // const int& h4g_npho() const { return n_photons; };
-    const bool is4Photons() const { return n_photons==4; };
-    const bool is3Photons() const { return n_photons==3; };
-    const bool is2Photons() const { return n_photons==2; };
-    const flashgg::Photon& h4gPho1() const { return pho1_; };
-    const flashgg::Photon& h4gPho2() const { return pho2_; };
-    const flashgg::Photon& h4gPho3() const { return pho3_; };
-    const flashgg::Photon& h4gPho4() const { return pho4_; };
-    const reco::Candidate::LorentzVector& h4gPho12() const { return pho12_; };
-    const reco::Candidate::LorentzVector& h4gPho13() const { return pho13_; };
-    const reco::Candidate::LorentzVector& h4gPho14() const { return pho14_; };
-    const reco::Candidate::LorentzVector& h4gPho23() const { return pho23_; };
-    const reco::Candidate::LorentzVector& h4gPho24() const { return pho24_; };
-    const reco::Candidate::LorentzVector& h4gPho34() const { return pho34_; };
-    const float& h4gPho1_r9() const { return pho1_r9_; };
-    const float& h4gPho2_r9() const { return pho2_r9_; };
-    const float& h4gPho3_r9() const { return pho3_r9_; };
-    const float& h4gPho4_r9() const { return pho4_r9_; };
-    const float& h4gPho1_full5x5_r9() const { return pho1_full5x5_r9_; };
-    const float& h4gPho2_full5x5_r9() const { return pho2_full5x5_r9_; };
-    const float& h4gPho3_full5x5_r9() const { return pho3_full5x5_r9_; };
-    const float& h4gPho4_full5x5_r9() const { return pho4_full5x5_r9_; };
-    const float& h4gPho1_EGMVA() const { return pho1_EGMVA_; };
-    const float& h4gPho2_EGMVA() const { return pho2_EGMVA_; };
-    const float& h4gPho3_EGMVA() const { return pho3_EGMVA_; };
-    const float& h4gPho4_EGMVA() const { return pho4_EGMVA_; };
-    const float& h4gPho1_MVA() const { return pho1_MVA_; };
-    const float& h4gPho2_MVA() const { return pho2_MVA_; };
-    const float& h4gPho3_MVA() const { return pho3_MVA_; };
-    const float& h4gPho4_MVA() const { return pho4_MVA_; };
+    const std::vector<flashgg::Photon> phoVector() const { return phoVector_; };
+    const edm::Ptr<reco::Vertex> & vertex() const { return vertex_;  };
+    const reco::GenParticle::Point & genVertex() const { return genVertex_;  };
+    const std::vector<flashgg::Photon> phoP4Corrected() const { return phoP4Corrected_; };
+    const float pho1_MVA() const { return pho1_MVA_; };
+    const float pho2_MVA() const { return pho2_MVA_; };
+    const float pho3_MVA() const { return pho3_MVA_; };
+    const float pho4_MVA() const { return pho4_MVA_; };
     const reco::Candidate::LorentzVector& h4gDiPho1() const { return dp1_; };
     const reco::Candidate::LorentzVector& h4gDiPho2() const { return dp2_; };
     const reco::Candidate::LorentzVector& h4gDiPho1_Pho1() const { return dp1_pho1_; };
@@ -67,38 +44,23 @@ namespace flashgg {
     const int& h4gDiPho1_iPho2() const { return dp1_ipho2_; };
     const int& h4gDiPho2_iPho1() const { return dp2_ipho1_; };
     const int& h4gDiPho2_iPho2() const { return dp2_ipho2_; };
+    const reco::Candidate::LorentzVector& h4gPho12() const { return pho12_; };
+    const reco::Candidate::LorentzVector& h4gPho13() const { return pho13_; };
+    const reco::Candidate::LorentzVector& h4gPho14() const { return pho14_; };
+    const reco::Candidate::LorentzVector& h4gPho23() const { return pho23_; };
+    const reco::Candidate::LorentzVector& h4gPho24() const { return pho24_; };
+    const reco::Candidate::LorentzVector& h4gPho34() const { return pho34_; };
     const reco::Candidate::LorentzVector& h4gFourVect() const { return tp_; };
     float getCosThetaStar_CS(float ebeam) const;
     std::vector<float> CosThetaAngles() const;
     float HelicityCosTheta( TLorentzVector Booster, TLorentzVector Boosted) const;
 
-
   private:
-    int n_photons;
-    flashgg::Photon            pho1_;
-    flashgg::Photon            pho2_;
-    flashgg::Photon            pho3_;
-    flashgg::Photon            pho4_;
-    std::vector<flashgg::Photon> phoVec_;
+
+    std::vector<flashgg::Photon> phoVector_;
     edm::Ptr<reco::Vertex>               vertex_;
-    reco::Candidate::LorentzVector pho12_;
-    reco::Candidate::LorentzVector pho13_;
-    reco::Candidate::LorentzVector pho14_;
-    reco::Candidate::LorentzVector pho23_;
-    reco::Candidate::LorentzVector pho24_;
-    reco::Candidate::LorentzVector pho34_;
-    float pho1_r9_;
-    float pho2_r9_;
-    float pho3_r9_;
-    float pho4_r9_;
-    float pho1_full5x5_r9_;
-    float pho2_full5x5_r9_;
-    float pho3_full5x5_r9_;
-    float pho4_full5x5_r9_;
-    float pho1_EGMVA_;
-    float pho2_EGMVA_;
-    float pho3_EGMVA_;
-    float pho4_EGMVA_;
+    reco::GenParticle::Point genVertex_;
+    std::vector<flashgg::Photon> phoP4Corrected_;
     float pho1_MVA_;
     float pho2_MVA_;
     float pho3_MVA_;
@@ -113,6 +75,12 @@ namespace flashgg {
     int dp1_ipho2_;
     int dp2_ipho1_;
     int dp2_ipho2_;
+    reco::Candidate::LorentzVector pho12_;
+    reco::Candidate::LorentzVector pho13_;
+    reco::Candidate::LorentzVector pho14_;
+    reco::Candidate::LorentzVector pho23_;
+    reco::Candidate::LorentzVector pho24_;
+    reco::Candidate::LorentzVector pho34_;
     reco::Candidate::LorentzVector tp_;
 
   };
