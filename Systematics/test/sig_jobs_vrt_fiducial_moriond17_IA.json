@@ -42,5 +42,5 @@
 				    { "args" :["acceptance=IN","doSystematics=False","outputFile=output_ttHJetToGG_M130_IA.root", "processIndex=14"] } ]
 	 ]
      },	
-        "cmdLine" : "campaign=RunIISummer16-2_4_1-25ns_Moriond17"
+        "cmdLine" : "campaign=RunIISummer16-2_4_4-25ns_Moriond17"
 }

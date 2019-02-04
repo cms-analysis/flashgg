@@ -36,7 +36,7 @@ metUncSmear = cms.PSet( MethodName = cms.string("FlashggMetUncSmear"),
                      )
 
 flashggMetSystematics = cms.EDProducer('FlashggMetSmearSystematicProducer',
-                                          src = cms.InputTag("flashggMetsCorr"),
+                                          src = cms.InputTag("flashggMets"),
                                           SystMethods2D = cms.VPSet(),
                                           SystMethods = cms.VPSet(metJecSmear,
                                                                   metJerSmear,

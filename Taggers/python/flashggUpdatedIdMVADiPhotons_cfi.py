@@ -10,7 +10,7 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
                                               photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_endcap_ICHEPvtx.xml"),
 
                                               useNewPhoId = cms.bool(True),
-                                              is2017 = cms.bool(True), ## Turn this to "False" for 2016 analysis
+                                              is2017 = cms.bool(False), ## Turn this to "False" for 2016 analysis
 
                                               ## For 2016 Legacy ReReco
                                               # effAreasConfigFile = cms.FileInPath("RecoEgamma/PhotonIdentification/data/Spring16/effAreaPhotons_cone03_pfPhotons_90percentBased.txt"),
@@ -27,11 +27,11 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
                                               ## Shower shape correction (5x5)
                                               do5x5correction          = cms.bool(True), ## Turn this off to remove 5x5 shower shape corrections
                                               # correctionFile           = cms.FileInPath("flashgg/MicroAOD/data/transformation5x5_Legacy2016_v1.root"), ## for Legacy2016 
-                                              correctionFile           = cms.FileInPath("flashgg/MicroAOD/data/transformation5x5_ReReco2017_v2.root"),  ## for Rereco2017
+                                              correctionFile           = cms.FileInPath("flashgg/MicroAOD/data/transformation_Moriond17_AfterPreApr_v1.root"),  ## for Rereco2017
 
                                               # To apply correction for non5x5 r9, sieie, sipip, sieip set this variable True. Default value False.
 
-                                              doNon5x5transformation   = cms.bool(False), ## Turn this off to remove non5x5 corrections
+                                              doNon5x5transformation   = cms.bool(True), ## Turn this off to remove non5x5 corrections
                                               non5x5correctionFile     = cms.FileInPath("flashgg/MicroAOD/data/transformation_Moriond17_non5x5_v2.root"),
 
                                               Debug                    = cms.bool(False),
@@ -71,6 +71,6 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
                                               ##      ),
                                               ## ),
                                               
-                                              doIsoCorrection = cms.bool(False), ## Turned off for Rereco2017. Turn this on for Legacy2016.
-                                              isoCorrectionFile = cms.FileInPath("flashgg/Taggers/data/pho_iso_corrections_hybrid_Legacy2016_v1.root") ## for Legacy2016
+                                              doIsoCorrection = cms.bool(True), ## Turned off for Rereco2017. Turn this on for Legacy2016.
+                                              isoCorrectionFile = cms.FileInPath("flashgg/Taggers/data/pho_iso_corrections_hybrid_moriond17_v3.root") ## for Legacy2016
                                               )
