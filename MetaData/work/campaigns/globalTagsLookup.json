@@ -135,6 +135,7 @@
     "RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14" : ["94X_mc2017_realistic_v14"],
     "RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1" : ["94X_mc2017_realistic_v14"],
     "RunIIFall17MiniAODv2-PU2017_12Apr2018_1core_94X_mc2017_realistic_v14_ext1" : ["94X_mc2017_realistic_v14"],
+    "RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14" : ["94X_mc2017_realistic_v14"],
     "Run2017A-17Nov2017" : ["94X_dataRun2_ReReco_EOY17_v2"],
     "Run2017B-17Nov2017" : ["94X_dataRun2_ReReco_EOY17_v2"],
     "Run2017C-17Nov2017" : ["94X_dataRun2_ReReco_EOY17_v2"],
