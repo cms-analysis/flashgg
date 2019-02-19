@@ -63,7 +63,7 @@ def printSystematicVPSet(vpsetlist):
             print 57*"-"
 
 
-def createStandardSystematicsProducers(process, MUON_ID="Loose" , MUON_ISO="LooseRel"):
+def createStandardSystematicsProducers(process, MUON_ID="Loose", MUON_ISO="LooseRel"):
     process.load("flashgg/Taggers/flashggTagSequence_cfi")
     process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
     process.load("flashgg.Systematics.flashggMuonSystematics_cfi")
