@@ -29,5 +29,14 @@
         [
             "HLT_Ele*_WPTight_Gsf_v*"
         ]
+    },
+    "MUON_ID" : "Medium",
+    "MUON_ISO" : "LooseRel",
+    "bRegression" :
+    {
+        "weightFile" : "/src/flashgg/Taggers/data/DNN_models/breg_training_2017_updated.pb",
+        "y_mean" : 1.0596693754196167,
+        "y_std" : 0.28492164611816406,
+        "useOld_year" : 1
     }
 }
