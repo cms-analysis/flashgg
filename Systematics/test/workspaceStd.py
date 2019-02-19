@@ -6,7 +6,7 @@ import FWCore.ParameterSet.VarParsing as VarParsing
 from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariables,minimalHistograms,minimalNonSignalVariables,systematicVariables
 from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariablesHTXS,systematicVariablesHTXS
 import os
-import flashgg.Systematics.settings as settings
+from flashgg.MetaData.MetaConditionsReader import *
 
 # SYSTEMATICS SECTION
 dropVBFInNonGold = False  # for 2015 only!
@@ -17,20 +17,6 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
-from Configuration.AlCa.GlobalTag import GlobalTag
-if os.environ["CMSSW_VERSION"].count("CMSSW_7_6"):
-    process.GlobalTag.globaltag = '76X_mcRun2_asymptotic_v12'
-elif os.environ["CMSSW_VERSION"].count("CMSSW_7_4"):
-    process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v4' 
-elif os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
-    process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_miniAODv2'
-elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
-    process.GlobalTag.globaltag = '94X_mc2017_realistic_v12'
-elif os.environ["CMSSW_VERSION"].count("CMSSW_10_1"):
-    process.GlobalTag = GlobalTag(process.GlobalTag,'101X_dataRun2_Prompt_v11','')
-else:
-    raise Exception,"Could not find a sensible CMSSW_VERSION for default globaltag"
-
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 
@@ -60,12 +46,6 @@ customize.options.register('doubleHReweightTarget',
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.int,
                            'doubleHReweightTarget'
-                           )
-customize.options.register('year',
-                           '2016',
-                           VarParsing.VarParsing.multiplicity.singleton,
-                           VarParsing.VarParsing.varType.string,
-                           'year'
                            )
 customize.options.register('doDoubleHTag',
                            False,
@@ -147,7 +127,6 @@ customize.options.register('verboseSystDump',
                            )
 
 
-
 print "Printing defaults"
 print 'doFiducial '+str(customize.doFiducial)
 print 'acceptance '+str(customize.acceptance)
@@ -158,26 +137,17 @@ from flashgg.MetaData.JobConfig import customize
 customize.setDefault("maxEvents",-1)
 customize.setDefault("targetLumi",1.00e+3)
 customize.parse()
+metaConditions = MetaConditionsReader(self.conditionsJSON)
 
-process_type = 'Sim'
-if customize.processId == 'Data' : process_type = customize.processId
-settings.init(customize.year,process_type)
-year = settings.year
-process_type = settings.process_type
-if year == "2016" and process_type != "Data":
-    process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
-elif year == "2016" and process_type == "Data":
-    process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
-elif year == "2017" and process_type != "Data":  
-    process.GlobalTag.globaltag = '94X_mc2017_realistic_v14'
-elif year == "2017" and process_type == "Data":  
-    process.GlobalTag.globaltag = '94X_dataRun2_ReReco_EOY17_v6'
-
-MUON_ID = "Medium" #["Tight", "Medium" , "Loose", "Soft", "HighPt", "MediumPrompt", "TrkHighPt"]
-MUON_ISO = "LooseRel" #{ LooseID : ["LooseRel"],MediumID:["LooseRel", "TightRel"] , TrkHighPtID:["LooseRelTk", "TightRelTk"], TightIDandIPCut:["LooseRel", "TightRel"], HighPtIDandIPCut:["LooseRelTk", "TightRelTk"] }
+### Global Tag
+from Configuration.AlCa.GlobalTag import GlobalTag
+if processId == "Data":
+    process.GlobalTag.globaltag = metaConditions['globaltags']['data']
+else:
+    process.GlobalTag.globaltag = metaConditions['globaltags']['MC']
 
 from flashgg.Systematics.SystematicsCustomize import *
-jetSystematicsInputTags = createStandardSystematicsProducers(process , MUON_ID=MUON_ID , MUON_ISO=MUON_ISO)
+jetSystematicsInputTags = createStandardSystematicsProducers(process , MUON_ID=metaConditions["MUON_ID"] , MUON_ISO=metaConditions["MUON_ISO"])
 if dropVBFInNonGold:
     process.flashggVBFTag.SetArbitraryNonGoldMC = True
     process.flashggVBFTag.DropNonGoldData = True
@@ -253,13 +223,10 @@ if customize.tthTagsOnly:
     process.flashggTagSequence.remove(process.flashggVBFMVA)
     process.flashggTagSequence.remove(process.flashggVBFDiPhoDiJetMVA)
 
-
-
 if customize.doDoubleHTag:
-    import flashgg.Systematics.doubleHCustomize as hhc
-    hhc.customizeTagSequence(  customize, process )
-    minimalVariables += hhc.variablesToDump(customize)
-    print "saving variables:", minimalVariables
+    import flashgg.Systematics.doubleHCustomize 
+    hhBBGGCustomizer = flashgg.Systematics.doubleHCustomize.doubleHCustomize(customize, metaConditions)
+    minimalVariables += hhBBGGCustomizer.variablesToDump()
 
 print 'here we print the tag sequence after'
 print process.flashggTagSequence
