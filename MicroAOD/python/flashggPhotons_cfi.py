@@ -15,7 +15,7 @@ flashggPhotons = cms.EDProducer('FlashggPhotonProducer',
                                 photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_endcap_ICHEPvtx.xml"),
 
                                 useNewPhoId = cms.bool(True),
-                                is2017 = cms.bool(True),
+                                is2017 = cms.bool(False),
 
                                 ## For 2016 Legacy ReReco
                                 # effAreasConfigFile = cms.FileInPath("RecoEgamma/PhotonIdentification/data/Spring16/effAreaPhotons_cone03_pfPhotons_90percentBased.txt"),

@@ -3,7 +3,7 @@ import FWCore.ParameterSet.Config as cms
 import FWCore.ParameterSet.VarParsing as VarParsing
 
 from flashggTriggerFilter import getMicroAODHLTFilter
-from flashgg.MicroAOD.ConditionsLoader import *
+from flashgg.MetaData.MetaConditionsReader import *
 
 class MicroAODCustomize(object):
 
@@ -112,7 +112,7 @@ class MicroAODCustomize(object):
     def customize(self,process):
         self.parse()
 
-        self.metaConditions = loadConditions(self.conditionsJSON)
+        self.metaConditions = MetaConditionsReader(self.conditionsJSON)
 
         if self.puppi == 0:
             self.customizePFCHS(process)
@@ -155,12 +155,11 @@ class MicroAODCustomize(object):
             self.customizeMuMuGamma(process)
         if "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8" in customize.datasetName:
             self.customizePDFs(process)
-        if "globalTags" in self.metaConditions.keys():
-            if self.processType == 'data':
-                self.globalTag = self.metaConditions["globalTags"]["data"]
-            else:
-                self.globalTag = self.metaConditions["globalTags"]["MC"]
-            self.customizeGlobalTag(process)
+        if self.processType == 'data':
+            self.globalTag = self.metaConditions["globalTags"]["data"]
+        else:
+            self.globalTag = self.metaConditions["globalTags"]["MC"]
+        self.customizeGlobalTag(process)
         if len(self.fileNames) >0:
             self.customizeFileNames(process)
         if self.timing == 1:
@@ -174,15 +173,15 @@ class MicroAODCustomize(object):
         if self.runDec2016Regression:
             self.customizeDec2016Regression(process)
         if self.runEGMEleID:
-            if 'eleIdVersion' in self.metaConditions.keys():
-                getattr(self, 'customize'+self.metaConditions['eleIdVersion'])(process)            
-            else:
-                raise Exception, "runEGMEleID set to True but no eleIdVersion specified in conditions json file"
+            #if 'eleIdVersion' in self.metaConditions.keys():
+            getattr(self, 'customize'+self.metaConditions['eleIdVersion'])(process)            
+            # else:
+            #     raise Exception, "runEGMEleID set to True but no eleIdVersion specified in conditions json file"
         if self.runEGMPhoID:
-            if 'phoIdVersion' in self.metaConditions.keys():
-                getattr(self, 'customize'+self.metaConditions['phoIdVersion'])(process)            
-            else:
-                raise Exception, "runEGMPhoID set to True but no phoIdVersion specified in conditions json file"
+            #if 'phoIdVersion' in self.metaConditions.keys():
+            getattr(self, 'customize'+self.metaConditions['phoIdVersion'])(process)            
+            # else:
+            #     raise Exception, "runEGMPhoID set to True but no phoIdVersion specified in conditions json file"
             # check if ok for 2016
             self.insertEGMSequence( process ) 
         print "Final customized process:",process.p

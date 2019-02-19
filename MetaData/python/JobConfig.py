@@ -22,86 +22,91 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "metaDataSrc")
+        self.options.register ('conditionsJSONs',
+                                "", # default value
+                               VarParsing.VarParsing.multiplicity.list, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "conditionsJSONs")        
         self.options.register ('dataset',
-                       "", # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.string,          # string, int, or float
-                       "dataset")
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "dataset")
         self.options.register ('processId',
-                       "", # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.string,          # string, int, or float
-                       "processId")
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "processId")
         self.options.register ('processIdMap',
-                       "", # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.string,          # string, int, or float
-                       "processIdMap")
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "processIdMap")
         self.options.register ('processIndex',
-                       None, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.int,          # string, int, or float
-                       "processIndex")
+                               None, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.int,          # string, int, or float
+                               "processIndex")
         self.options.register ('secondaryDatasetInProcId',
-                       False, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.bool,          # string, int, or float
-                       "secondaryDatasetInProcId")
+                               False, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "secondaryDatasetInProcId")
         self.options.register ('campaign',
-                       "", # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.string,          # string, int, or float
-                       "campaign")
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "campaign")
         self.options.register ('useAAA',
-                       False, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.bool,          # string, int, or float
-                       "useAAA")
+                               False, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "useAAA")
         self.options.register ('useEOS',
-                       True, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.bool,          # string, int, or float
-                       "useEOS")
+                               True, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "useEOS")
         self.options.register ('targetLumi',
-                       1.e+3, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.float,          # string, int, or float
-                       "targetLumi")
+                               1.e+3, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.float,          # string, int, or float
+                               "targetLumi")
         self.options.register ('nJobs',
-                       0, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.int,          # string, int, or float
-                       "nJobs")
+                               0, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.int,          # string, int, or float
+                               "nJobs")
         self.options.register ('jobId',
                                -1, # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.int,          # string, int, or float
                                "jobId")
         self.options.register ('lastAttempt',
-                       False, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.bool,          # string, int, or float
-                       "lastAttempt")
+                               False, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "lastAttempt")
         self.options.register ('lumiMask',
-                       "", # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.string,          # string, int, or float
-                       "lumiMask")
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "lumiMask")
         self.options.register ('dryRun',
-                       False, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.bool,          # string, int, or float
-                       "dryRun")
+                               False, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "dryRun")
         self.options.register ('dumpPython',
-                       "", # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.string,          # string, int, or float
-                       "dumpPython")
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "dumpPython")
         self.options.register ('getMaxJobs',
-                       False, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.bool,          # string, int, or float
-                       "getMaxJobs")
+                               False, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "getMaxJobs")
         self.options.register ('processType',
                                "", # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
