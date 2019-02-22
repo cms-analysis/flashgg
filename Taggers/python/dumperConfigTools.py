@@ -332,7 +332,11 @@ def addGlobalFloats(process,globalVariables,src,variables,tagSequence):
                 variables = cms.VPSet()
                 )
             )
-        tagSequence.insert(tagSequence.index(getattr(process,src))+1,getattr(process,ntproducer))
+        if hasattr(process,src):
+            tagSequence.insert(tagSequence.index(getattr(process,src))+1,getattr(process,ntproducer))
+        else:
+            dummySequence=cms.Sequence(getattr(process,ntproducer))
+            tagSequence+=dummySequence
             
             
     varlist = {}

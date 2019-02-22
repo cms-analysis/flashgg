@@ -392,8 +392,8 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
                                                                        src=cms.InputTag("flashggMets"),
                                                                        veto=cms.InputTag(genDiphotons)
                                                                        )
-            tagSequence.insert(genPos, getattr(process,"flashggGenHadronicActivityMET"))
-            genPos += 1
+                tagSequence.insert(genPos, getattr(process,"flashggGenHadronicActivityMET"))
+                genPos += 1
 
         if( not hasattr(process,"filteredGenJetsEtaInclusive") ): 
             process.filteredGenJetsEtaInclusive = cms.EDFilter("GenJetSelector",
@@ -821,7 +821,7 @@ def bookCompositeObjects(process,processId,tagSequence,recoJetCollections=None):
 
 def addObservables(process, dumper, processId, tagSequence, recoJetCollections=None):
     addRecoGlobalVariables(process,dumper,tagSequence)
-    if (not processId=="Data"): 
+    if not processId=="Data":
         addGenGlobalVariables(process,dumper,tagSequence)
     
 ###def extraReplacementsHook(newseq,systlabel,systtype):
