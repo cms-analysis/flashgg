@@ -359,6 +359,31 @@ print "------------------------------------------------------------"
 
 print "here"
 
+if customize.doFiducial:
+    tagList=[["SigmaMpTTag",3]]
+elif customize.tthTagsOnly:
+    tagList=[
+        ["NoTag",0],
+        ["TTHHadronicTag",3],
+#       ["TTHDiLeptonTag",0],
+        ["TTHLeptonicTag",2]
+
+        ]
+else:
+    tagList=[
+        ["NoTag",0],
+        ["UntaggedTag",4],
+        ["VBFTag",3],
+        ["ZHLeptonicTag",0],
+        ["WHLeptonicTag",0],
+        ["VHLeptonicLooseTag",0],
+        ["VHMetTag",0],
+        ["VHHadronicTag",0],
+        ["TTHHadronicTag",3],
+ #      ["TTHDiLeptonTag",0],
+        ["TTHLeptonicTag",2]
+        ]
+
 if(customize.doFiducial):
     fc.bookCompositeObjects(process, customize.processId, process.flashggTagSequence)
 cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags)
@@ -454,30 +479,6 @@ if customize.options.WeightName :
 #]
 
 
-if customize.doFiducial:
-    tagList=[["SigmaMpTTag",3]]
-elif customize.tthTagsOnly:
-    tagList=[
-        ["NoTag",0],
-        ["TTHHadronicTag",3],
-#       ["TTHDiLeptonTag",0],
-        ["TTHLeptonicTag",2]
-
-        ]
-else:
-    tagList=[
-        ["NoTag",0],
-        ["UntaggedTag",4],
-        ["VBFTag",3],
-        ["ZHLeptonicTag",0],
-        ["WHLeptonicTag",0],
-        ["VHLeptonicLooseTag",0],
-        ["VHMetTag",0],
-        ["VHHadronicTag",0],
-        ["TTHHadronicTag",3],
- #      ["TTHDiLeptonTag",0],
-        ["TTHLeptonicTag",2]
-        ]
 
 definedSysts=set()
 process.tagsDumper.NNLOPSWeightFile=cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root")
@@ -558,16 +559,12 @@ for tag in tagList:
                            unbinnedSystematics=True
                            )
 
-if(customize.doFiducial):
-#    if customize.processId == "Data":
-#        fc.addRecoGlobalVariables(process, process.tagsDumper)
-#    else:
-    fc.addObservables(process, process.tagsDumper, customize.processId )
-
 
 # Require standard diphoton trigger
 from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
-process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring("HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v*",
+process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring("HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v*",
+
+#                                                                "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v*",
 #                                                                "HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55_v1",
 #                                                                "HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55_v1"
                                                                 ))
@@ -684,10 +681,10 @@ if customize.doFiducial:
             print "datasetName contains GluGlu --> NNLOPSrewwight is True"
             NNLOPSreweight=True
             if customize.datasetName().count("amcatnlo"):
-#                print "datasetName contains amcatnlo --> gen to be reweighted is amcatnlo"
+            #                print "datasetName contains amcatnlo --> gen to be reweighted is amcatnlo"
                 genToReweight = "amcatnlo"
             if customize.datasetName().count("powheg"):
-#                print "datasetName contains powheg --> gen to be reweighted is powheg"
+            #                print "datasetName contains powheg --> gen to be reweighted is powheg"
                 genToReweight = "powheg"
         print 'pdfWeights in worspaceStd'
         fc.addGenOnlyAnalysis(process,customize.processId,process.flashggTagSequence,
@@ -696,6 +693,13 @@ if customize.doFiducial:
                               mH=mH,filterEvents=customize.filterNonAcceptedEvents)
         pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights),
         print pdfWeights
+
+
+if(customize.doFiducial):
+    fc.addObservables(process, process.tagsDumper, customize.processId , process.flashggTagSequence)
+
+print "TR tagSequence debug"
+print process.flashggTagSequence
         
 if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
 process.options.allowUnscheduled = cms.untracked.bool(True)

@@ -322,7 +322,7 @@ def mkVarList(inp):
 
 
 # -----------------------------------------------------------------------
-def addGlobalFloats(process,globalVariables,src,variables):
+def addGlobalFloats(process,globalVariables,src,variables,tagSequence):
     
     ntproducer = "%sNtpProducer" % src
     if not hasattr(process,ntproducer):
@@ -332,7 +332,9 @@ def addGlobalFloats(process,globalVariables,src,variables):
                 variables = cms.VPSet()
                 )
             )
-    
+        tagSequence.insert(tagSequence.index(getattr(process,src))+1,getattr(process,ntproducer))
+            
+            
     varlist = {}
     for var in variables:
 #        name,expr = getNameExpr(var)
