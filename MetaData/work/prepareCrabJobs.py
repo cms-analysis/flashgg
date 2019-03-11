@@ -310,6 +310,7 @@ if options.createCrabConfig:
             ("RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14","PU2017_94Xv14"),
             ("RunIIFall17MiniAODv2-PU2017_12Apr2018_1core_94X_mc2017_realistic_v14","1core_94Xv1"),
             ("RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v2","newpmx_94Xv2"),
+            ("RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3", "PU2017_94Xv1"),
             ("_ext1-v1",""),
             ("DoubleEMEnriched", "DEMEn"),
             ("TuneCP5_13TeV_Pythia8", "TCP5_13T_P8"),
