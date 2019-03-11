@@ -1,6 +1,10 @@
 import os, json
 import FWCore.ParameterSet.Config as cms
 import FWCore.ParameterSet.VarParsing as VarParsing
+
+from flashggTriggerFilter import getMicroAODHLTFilter
+from flashgg.MetaData.MetaConditionsReader import *
+
 class MicroAODCustomize(object):
 
     def __init__(self,*args,**kwargs):
@@ -8,7 +12,12 @@ class MicroAODCustomize(object):
         super(MicroAODCustomize,self).__init__()
     
         self.options = VarParsing.VarParsing()
-        
+
+        self.options.register ('conditionsJSON',
+                                "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "conditionsJSON")        
         self.options.register ('fileNames',
                                 "", # default value
                                VarParsing.VarParsing.multiplicity.list, # singleton or list
@@ -39,11 +48,6 @@ class MicroAODCustomize(object):
                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                               VarParsing.VarParsing.varType.int,          # string, int, or float
                               "muMuGamma")
-        self.options.register ('globalTag',
-                               "", # default value
-                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                               VarParsing.VarParsing.varType.string,          # string, int, or float
-                               "globalTag")
         self.options.register ('timing',
                                0,
                               VarParsing.VarParsing.multiplicity.singleton,
@@ -61,37 +65,29 @@ class MicroAODCustomize(object):
                                'bunchSpacing'
                                )
         self.options.register ('runDec2016Regression',
-                               0,
+                               False,
                                VarParsing.VarParsing.multiplicity.singleton,
-                               VarParsing.VarParsing.varType.int,
+                               VarParsing.VarParsing.varType.bool,
                                'runDec2016Regression'
                                )
-        self.options.register('runSummer16EleID',
-                              0,
-                               VarParsing.VarParsing.multiplicity.singleton,
-                               VarParsing.VarParsing.varType.int,
-                              'runSummer16EleID'
+        self.options.register('runEGMEleID',
+                              True,
+                              VarParsing.VarParsing.multiplicity.singleton,
+                              VarParsing.VarParsing.varType.bool,
+                              'runEGMEleID'
                               )
-        self.options.register('runSummer16EGMPhoID',
-                              0,
+        self.options.register('runEGMPhoID',
+                              True,
                                VarParsing.VarParsing.multiplicity.singleton,
-                               VarParsing.VarParsing.varType.int,
-                              'runSummer16EGMPhoID'
+                               VarParsing.VarParsing.varType.bool,
+                              'runEGMPhoID'
                               )
-        self.options.register('runFall17EleID',
-                              1,
+        self.options.register('addMicroAODHLTFilter',
+                              True,
                                VarParsing.VarParsing.multiplicity.singleton,
-                               VarParsing.VarParsing.varType.int,
-                              'runFall17EleID'
+                               VarParsing.VarParsing.varType.bool,
+                              'addMicroAODHLTFilter'
                               )
-        self.options.register('runFall17EGMPhoID',
-                              1,
-                               VarParsing.VarParsing.multiplicity.singleton,
-                               VarParsing.VarParsing.varType.int,
-                              'runFall17EGMPhoID'
-                              )
-
-        self.parsed_ = False
 
     def __getattr__(self,name):
         ## did not manage to inherit from VarParsing, because of some issues in __init__
@@ -110,15 +106,17 @@ class MicroAODCustomize(object):
         pass 
 
     def parse(self):
-        if self.parsed_:
-            return
         self.options.parseArguments()
-        self.parsed_ = True
 
     # process customization
     def customize(self,process):
         self.parse()
 
+        self.metaConditions = MetaConditionsReader(self.conditionsJSON)
+
+        self.customizePhotons(process)
+        self.customizeDiPhotons(process)
+        
         if self.puppi == 0:
             self.customizePFCHS(process)
             self.customizeRemovePuppi(process)
@@ -144,7 +142,7 @@ class MicroAODCustomize(object):
                 self.customizeVBF(process)
             elif "thq" in customize.datasetName.lower() or "thw" in customize.datasetName.lower():
                 self.customizeTH(process)
-            elif os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
+            else:
                 raise Exception,"processType=sig but datasetName does not contain recognized production mechanism - see MicroAODCustomize.py"
         if self.processType == "background" or self.processType == "bkg":
             self.customizeBackground(process)
@@ -160,97 +158,90 @@ class MicroAODCustomize(object):
             self.customizeMuMuGamma(process)
         if "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8" in customize.datasetName:
             self.customizePDFs(process)
-        if len(self.globalTag) >0:
-            self.customizeGlobalTag(process)
+        if self.processType == 'data':
+            self.globalTag = self.metaConditions["globalTags"]["data"]
+        else:
+            self.globalTag = self.metaConditions["globalTags"]["MC"]
+        self.customizeGlobalTag(process)
         if len(self.fileNames) >0:
             self.customizeFileNames(process)
         if self.timing == 1:
             self.customizeTiming(process)
-        if os.environ["CMSSW_VERSION"].count("CMSSW_7_6"):
-            self.customize76X(process)
-        elif os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
-            self.customize80X(process)
         if self.bunchSpacing == 25:
             pass #default
         elif self.bunchSpacing == 50:
             self.customize50ns(process)
         else:
-            raise Exception,"Only bunchSpacing=25 and bunchSpacing=50 are supported"
+            raise Exception, "Only bunchSpacing=25 and bunchSpacing=50 are supported"
         if self.runDec2016Regression:
             self.customizeDec2016Regression(process)
-        if self.runSummer16EleID:
-            self.customizeSummer16EleID(process)
-        elif self.runFall17EleID:
-            self.customizeFall17EleID(process)
-        else:
-            self.customizeSpring15EleID(process)
-        if self.runSummer16EGMPhoID:
-            self.customizeSummer16EGMPhoID(process)
-        else:
-            self.customizeFall17EGMPhoID(process)
-        if os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
-            self.customize92X( process ) # Needs to come after egm
+        if self.runEGMEleID:
+            #if 'eleIdVersion' in self.metaConditions.keys():
+            getattr(self, 'customize'+self.metaConditions['eleIdVersion'])(process)            
+            # else:
+            #     raise Exception, "runEGMEleID set to True but no eleIdVersion specified in conditions json file"
+        if self.runEGMPhoID:
+            #if 'phoIdVersion' in self.metaConditions.keys():
+            getattr(self, 'customize'+self.metaConditions['phoIdVersion'])(process)            
+            # else:
+            #     raise Exception, "runEGMPhoID set to True but no phoIdVersion specified in conditions json file"
+            # check if ok for 2016
+            self.insertEGMSequence( process ) 
         print "Final customized process:",process.p
             
     # signal specific customization
     def customizeSignal(self,process):
         print "customizeSignal"
         process.flashggGenPhotonsExtra.defaultType = 1
-        from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
-        if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
-            era="Summer16_23Sep2016V4_MC"
-        elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
-            era="Fall17_17Nov2017_V6_MC"
-        runMETs(process,era) 
-        from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
-        if not (os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4")):
-            setMetCorr(process,multPhiCorr_MC_DY_80X)
+        import flashgg.MicroAOD.flashggMETs_cff
+        runMETs = getattr(flashgg.MicroAOD.flashggMETs_cff, self.metaConditions["flashggMETsFunction"])
+        runMETs(process, self.options)
+        if "flashggMETsCorrections" in self.metaConditions.keys() and self.metaConditions["flashggMETsCorrections"] != "":
+            setMetCorr = getattr(flashgg.MicroAOD.flashggMETs_cff.setMetCorr, self.metaConditions["flashggMETsCorrections"])
+            setMetCorr(process)
+            
         process.p *=process.flashggMetSequence
         
-        if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
-            process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
-            process.rivetProducerHTXS = cms.EDProducer('HTXSRivetProducer',
-                                                       HepMCCollection = cms.InputTag('myGenerator','unsmeared'),
-                                                       ProductionMode = cms.string('PRODUCTIONMODENOTSET'),
-                                                       )
-            process.mergedGenParticles = cms.EDProducer("MergedGenParticleProducer",
-                                                        inputPruned = cms.InputTag("prunedGenParticles"),
-                                                        inputPacked = cms.InputTag("packedGenParticles"),
-                                                        )
-            process.myGenerator = cms.EDProducer("GenParticles2HepMCConverterHTXS",
-                                                 genParticles = cms.InputTag("mergedGenParticles"),
-                                                 genEventInfo = cms.InputTag("generator"),
-                                                 )
-            process.p *= process.mergedGenParticles
-            process.p *= process.myGenerator
-            process.p *= process.rivetProducerHTXS
-            process.out.outputCommands.append('keep *_HTXSRivetProducer_*_*')
+        # if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
+        #     process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
+        #     process.rivetProducerHTXS = cms.EDProducer('HTXSRivetProducer',
+        #                                                HepMCCollection = cms.InputTag('myGenerator','unsmeared'),
+        #                                                ProductionMode = cms.string('PRODUCTIONMODENOTSET'),
+        #                                                )
+        #     process.mergedGenParticles = cms.EDProducer("MergedGenParticleProducer",
+        #                                                 inputPruned = cms.InputTag("prunedGenParticles"),
+        #                                                 inputPacked = cms.InputTag("packedGenParticles"),
+        #                                                 )
+        #     process.myGenerator = cms.EDProducer("GenParticles2HepMCConverterHTXS",
+        #                                          genParticles = cms.InputTag("mergedGenParticles"),
+        #                                          genEventInfo = cms.InputTag("generator"),
+        #                                          )
+        #     process.p *= process.mergedGenParticles
+        #     process.p *= process.myGenerator
+        #     process.p *= process.rivetProducerHTXS
+        #     process.out.outputCommands.append('keep *_HTXSRivetProducer_*_*')
 
-        if os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
-            #raise Exception,"Debugging ongoing for HTXS in CMSSW 9"
-            process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
-            process.rivetProducerHTXS = cms.EDProducer('HTXSRivetProducer',
-                                                       HepMCCollection = cms.InputTag('myGenerator','unsmeared'),
-                                                       LHERunInfo = cms.InputTag('externalLHEProducer'),
-                                                       ProductionMode = cms.string('AUTO'),
-                                                       )
+        #raise Exception,"Debugging ongoing for HTXS in CMSSW 9"
+        process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
+        process.rivetProducerHTXS = cms.EDProducer('HTXSRivetProducer',
+                                                   HepMCCollection = cms.InputTag('myGenerator','unsmeared'),
+                                                   LHERunInfo = cms.InputTag('externalLHEProducer'),
+                                                   ProductionMode = cms.string('AUTO'),
+        )
 
-            process.mergedGenParticles = cms.EDProducer("MergedGenParticleProducer",
-                                                        inputPruned = cms.InputTag("prunedGenParticles"),
-                                                        inputPacked = cms.InputTag("packedGenParticles"),
-                                                        )
-            process.myGenerator = cms.EDProducer("GenParticles2HepMCConverter",
-                                                 genParticles = cms.InputTag("mergedGenParticles"),
-                                                 genEventInfo = cms.InputTag("generator"),
-                                                 signalParticlePdgIds = cms.vint32(25), ## for the Higgs analysis
-                                                 )
-            process.p *= process.mergedGenParticles
-            process.p *= process.myGenerator
-            process.p *= process.rivetProducerHTXS
-            process.out.outputCommands.append('keep *_rivetProducerHTXS_*_*')
-#            process.out.outputCommands.append('keep *_*_*_FLASHggMicroAOD')
-#            process.out.outputCommands.append('drop *_*Jets*_*_*')
-
+        process.mergedGenParticles = cms.EDProducer("MergedGenParticleProducer",
+                                                    inputPruned = cms.InputTag("prunedGenParticles"),
+                                                    inputPacked = cms.InputTag("packedGenParticles"),
+        )
+        process.myGenerator = cms.EDProducer("GenParticles2HepMCConverter",
+                                             genParticles = cms.InputTag("mergedGenParticles"),
+                                             genEventInfo = cms.InputTag("generator"),
+                                             signalParticlePdgIds = cms.vint32(25), ## for the Higgs analysis
+        )
+        process.p *= process.mergedGenParticles
+        process.p *= process.myGenerator
+        process.p *= process.rivetProducerHTXS
+        process.out.outputCommands.append('keep *_rivetProducerHTXS_*_*')
 
         self.customizePDFs(process)
         self.customizeHLT(process)
@@ -261,16 +252,14 @@ class MicroAODCustomize(object):
 
     # background specific customization
     def customizeBackground(self,process):
-        from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
-        if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
-            era="Summer16_23Sep2016V4_MC"
-        elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
-            era="Fall17_17Nov2017_V6_MC"
-        runMETs(process,era) 
-        from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_MC_DY_80X
-        if not (os.environ["CMSSW_VERSION"].count("CMSSW_9_2") or os.environ["CMSSW_VERSION"].count("CMSSW_9_4")):
-            setMetCorr(process,multPhiCorr_MC_DY_80X)
+        import flashgg.MicroAOD.flashggMETs_cff
+        runMETs = getattr(flashgg.MicroAOD.flashggMETs_cff, self.metaConditions["flashggMETsFunction"])
+        runMETs(process, self.options)
+        if "flashggMETsCorrections" in self.metaConditions.keys() and self.metaConditions["flashggMETsCorrections"] != "":
+            setMetCorr = getattr(flashgg.MicroAOD.flashggMETs_cff.setMetCorr, self.metaConditions["flashggMETsCorrections"])
+            setMetCorr(process)
         process.p *=process.flashggMetSequence
+
         if "sherpa" in self.datasetName:
             process.flashggGenPhotonsExtra.defaultType = 1
             
@@ -279,21 +268,15 @@ class MicroAODCustomize(object):
         print "CUSTOMIZE DATA"
         ## remove MC-specific modules
         modules = process.flashggMicroAODGenSequence.moduleNames()
-        from flashgg.MicroAOD.flashggMet_RunCorrectionAndUncertainties_cff import runMETs,setMetCorr
-        if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
-            era="Summer16_23Sep2016AllV4_DATA"
-        elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
-            era="Fall17_17Nov2017BCDEF_V6_DATA"
-        runMETs(process,era)
-        if "2016G" in customize.datasetName or "2016H" in customize.datasetName:
-            from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_Data_G_80X
-            setMetCorr(process,multPhiCorr_Data_G_80X)
-        elif "2016" in customize.datasetName:
-            from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_Data_B_80X
-            setMetCorr(process,multPhiCorr_Data_B_80X)
-        else:
-            pass
+        import flashgg.MicroAOD.flashggMETs_cff
+        runMETs = getattr(flashgg.MicroAOD.flashggMETs_cff, self.metaConditions["flashggMETsFunction"])
+        runMETs(process, self.options)
+        if "flashggMETsCorrections" in self.metaConditions.keys() and self.metaConditions["flashggMETsCorrections"] != "":
+            setMetCorr = getattr(flashgg.MicroAOD.flashggMETs_cff.setMetCorr, self.metaConditions["flashggMETsCorrections"])
+            setMetCorr(process)
+            
         process.p *=process.flashggMetSequence
+
         for pathName in process.paths:
             path = getattr(process,pathName)
             for mod in modules:
@@ -319,6 +302,13 @@ class MicroAODCustomize(object):
         process.p1 = cms.Path(process.diPhotonFilter) # Do not save events with 0 diphotons passing pt cuts
         process.out.SelectEvents = cms.untracked.PSet(SelectEvents=cms.vstring('p1'))
 
+        ###---Add HLT filter as first step of MicroAOD sequence
+        if self.addMicroAODHLTFilter:
+            process.triggerFilterModule = getMicroAODHLTFilter(customize.datasetName, self.metaConditions)
+            if process.triggerFilterModule:
+                process.p = cms.Path(process.triggerFilterModule*process.p._seq)
+                process.p1 = cms.Path(process.triggerFilterModule*process.p1._seq)
+
     def customizeDec2016Regression(self,process):
         if not (process.GlobalTag.globaltag == "80X_mcRun2_asymptotic_2016_TrancheIV_v7" or process.GlobalTag.globaltag == "80X_dataRun2_2016SeptRepro_v6"):
             raise Exception,"Regression application turned on but globalTag has unexpected value %s - see MicroAODCustomize.py" % process.GlobalTag.globaltag
@@ -341,7 +331,7 @@ class MicroAODCustomize(object):
         for idmod in my_id_modules:
             setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
             
-    def customizeSummer16EleID(self,process):
+    def customizeSummer16EGMEleID(self,process):
         from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDElectronIdProducer,setupAllVIDIdsInModule,setupVIDElectronSelection
         dataFormat = DataFormat.MiniAOD
         switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
@@ -359,17 +349,16 @@ class MicroAODCustomize(object):
         process.flashggElectrons.eleMVATightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring16-GeneralPurpose-V1-wp80")
         process.flashggElectrons.mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values")
 
-    def customizeFall17EleID(self,process):
+    def customizeFall17EGMEleID(self,process):
         from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDElectronIdProducer,setupAllVIDIdsInModule,setupVIDElectronSelection
         dataFormat = DataFormat.MiniAOD
         switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
-        my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_noIso_V1_cff',
-                         'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_iso_V1_cff',
+        my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_iso_V1_cff',
                          'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Fall17_94X_V1_cff',
                          'RecoEgamma.ElectronIdentification.Identification.heepElectronID_HEEPV70_cff']
         for idmod in my_id_modules:
             setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
-        process.flashggElectrons.effAreasConfigFile = cms.FileInPath("RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_92X.txt")
+        process.flashggElectrons.effAreasConfigFile = cms.FileInPath("RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt")
         process.flashggElectrons.eleVetoIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-veto")  
         process.flashggElectrons.eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-loose")
         process.flashggElectrons.eleMediumIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-medium")
@@ -377,11 +366,11 @@ class MicroAODCustomize(object):
         process.flashggElectrons.eleMVALooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wpLoose")
         process.flashggElectrons.eleMVAMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp90")
         process.flashggElectrons.eleMVATightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp80")
-        process.flashggElectrons.eleMVALooseNoIsoIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wpLoose")
-        process.flashggElectrons.eleMVAMediumNoIsoIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp90")
-        process.flashggElectrons.eleMVATightNoIsoIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp80")
+        # process.flashggElectrons.eleMVALooseNoIsoIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wpLoose")
+        # process.flashggElectrons.eleMVAMediumNoIsoIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp90")
+        # process.flashggElectrons.eleMVATightNoIsoIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp80")
         process.flashggElectrons.mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Values")
-        process.flashggElectrons.mvaNoIsoValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Values")
+        # process.flashggElectrons.mvaNoIsoValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Values")
 
     def customizeSummer16EGMPhoID(self,process):
         from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDPhotonIdProducer,setupAllVIDIdsInModule,setupVIDPhotonSelection
@@ -490,27 +479,17 @@ class MicroAODCustomize(object):
 
     def customizeTTH(self,process):
         process.load("flashgg/MicroAOD/ttHGGFilter_cfi")
-        process.p1 = cms.Path(process.ttHGGFilter)
-#        if not hasattr(process,"options"):
-#            process.options = cms.untracked.PSet()
-#        process.options.wantSummary = cms.untracked.bool(True)
-        process.out.SelectEvents = cms.untracked.PSet(SelectEvents=cms.vstring('p1'))
-        if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
-            process.rivetProducerHTXS.ProductionMode = "TTH"
+        process.ttHFilter = cms.Path(process.ttHGGFilter)
+        process.out.SelectEvents = cms.untracked.PSet(SelectEvents=cms.vstring('ttHFilter'))
 
     def customizeVBF(self,process):
-        if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
-            process.rivetProducerHTXS.ProductionMode = "VBF"
+        process.rivetProducerHTXS.ProductionMode = "VBF"
 
     def customizeVH(self,process):
-        if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
-            process.rivetProducerHTXS.ProductionMode = "VH"
+        process.rivetProducerHTXS.ProductionMode = "VH"
 
     def customizeGGH(self,process):
         process.rivetProducerHTXS.ProductionMode = "GGF"
-        print "testing set process.rivetProducerHTXS.ProductionMode to",process.rivetProducerHTXS.ProductionMode
-        if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
-            process.rivetProducerHTXS.ProductionMode = "GGF"
 
     def customizeTH(self,process):
         print "customizeTH"
@@ -534,16 +513,29 @@ class MicroAODCustomize(object):
             process.out.outputCommands.append("keep %s" % (LHESourceName) ) #*_source_*_LHEFile")
         else :
             print "for TH sample of %s, no LHESource is found to be kept" % (dsName)
-        if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
-            process.rivetProducerHTXS.ProductionMode = "TH"
+        # process.rivetProducerHTXS.ProductionMode = "TH"
 #        process.flashggPDFWeightObject.LHEEventTag = "source"
 #        process.flashggPDFWeightObject.LHERunLabel = "source"
         process.flashggPDFWeightObject.isStandardSample = False
         process.flashggPDFWeightObject.isThqSample = True
-        
 
+    def customizePhotons(self, process):
+        for opt, value in self.metaConditions["flashggPhotons"].items():
+            if isinstance(value, unicode):
+                setattr(process.flashggPhotons, opt, str(value))
+            else:
+                setattr(process.flashggPhotons, opt, value)
+
+    def customizeDiPhotons(self, process):
+        for opt, value in self.metaConditions["flashggDiPhotons"].items():
+            if isinstance(value, unicode):
+                setattr(process.flashggDiPhotons, opt, str(value))
+            else:
+                setattr(process.flashggDiPhotons, opt, value)
+                
     def customizeGlobalTag(self,process):
-        process.GlobalTag.globaltag = self.globalTag
+        from Configuration.AlCa.GlobalTag import GlobalTag
+        process.GlobalTag = GlobalTag(process.GlobalTag, self.globalTag, '')
 
     def customizeFileNames(self,process):
         process.source.fileNames = cms.untracked.vstring(self.fileNames)
@@ -598,15 +590,8 @@ class MicroAODCustomize(object):
         process.flashggPhotons.photonIdMVAweightfile_EB = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_Spring15_50ns_barrel.xml")
         process.flashggPhotons.photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_Spring15_50ns_endcap.xml")
 
-    def customize76X(self,process):
-        delattr(process,"QGPoolDBESSource")
-
-    def customize80X(self,process):
-        pass
-#        delattr(process,"QGPoolDBESSource")
-
-    def customize92X(self,process):
-        print "customize92X"
+    def insertEGMSequence(self,process):
+        print "Replace flashggPrePhotonSequence80X with egmPhotonIDSequence"
         print process.p
 
         #Hack for EGM
@@ -618,6 +603,13 @@ class MicroAODCustomize(object):
         process.task = createTaskWithAllProducersAndFilters(process)
         process.p.associate(process.task)
 
+    def rereunEcalBadCalibFilter(self, process):
+        """
+        Rerun the ECAL bad calib filter (EE high eta noise)
+        ---NOT THE FINAL RECIPE---
+        """
+        
+        
 def createTaskWithAllProducersAndFilters(process):
    from FWCore.ParameterSet.Config import Task
    l = [ p for p in process.producers.itervalues()]

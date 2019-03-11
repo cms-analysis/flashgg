@@ -15,7 +15,7 @@
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/LHERunInfoProduct.h"
-#include "DataFormats/PatCandidates/interface/libminifloat.h"
+#include "DataFormats/Math/interface/libminifloat.h"
 #include "PhysicsTools/HepMCCandAlgos/interface/PDFWeightsHelper.h"
 #include "FWCore/Utilities/interface/EDMException.h"
 #include "FWCore/Framework/interface/Run.h"
