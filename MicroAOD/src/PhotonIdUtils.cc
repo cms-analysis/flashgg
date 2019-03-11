@@ -241,7 +241,7 @@ void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfile
     phoIdMva_EE_->AddVariable( "s4",     &phoIdMva_S4_ );
     if (is2017)
         phoIdMva_EE_->AddVariable( "phoIso03",    &phoIdMva_pfPhoIso03_ );
-    else if (useNewPhoId)
+    else
         phoIdMva_EE_->AddVariable( "isoPhoCorrMax2p5",    &phoIdMva_pfPhoIso03Corr_ );
     phoIdMva_EE_->AddVariable( "chgIsoWrtChosenVtx",   &phoIdMva_pfChgIso03_ );
     phoIdMva_EE_->AddVariable( "chgIsoWrtWorstVtx", &phoIdMva_pfChgIso03worst_ );
@@ -250,7 +250,7 @@ void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfile
     phoIdMva_EE_->AddVariable( "esEffSigmaRR",   &phoIdMva_ESEffSigmaRR_ );
     if(is2017) 
         phoIdMva_EE_->AddVariable( "esEnergyOverRawE",   &phoIdMva_esEnovSCRawEn_ );
-    else if(useNewPhoId) 
+    else
         phoIdMva_EE_->AddVariable( "esEnergy/SCRawE",   &phoIdMva_esEnovSCRawEn_ );
     phoIdMva_EE_->BookMVA( mvamethod.c_str(), xmlfilenameEE );
 

@@ -1,0 +1,19 @@
+{
+    "data" :
+    [
+        "/SingleElectron/Run2017B-17Nov2017-v1/MINIAOD",
+        "/SingleElectron/Run2017C-17Nov2017-v1/MINIAOD",
+        "/SingleElectron/Run2017D-17Nov2017-v1/MINIAOD",
+        "/SingleElectron/Run2017E-17Nov2017-v1/MINIAOD",
+        "/SingleElectron/Run2017F-17Nov2017-v1/MINIAOD"
+    ],
+    "sig" :
+    [
+        "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM",
+        "/GluGluHToGG_M90_13TeV_amcatnloFXFX_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM"
+    ],
+    "bkg" :
+    [
+        "/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM"
+    ]
+}

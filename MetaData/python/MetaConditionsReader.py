@@ -4,7 +4,7 @@ import jsonschema
 
 class MetaConditionsReader(collections.MutableMapping):
 
-    def __init__(self, json_file_name):
+    def __init__(self, json_file_names):
         """
         Define required fields as a jsonschema (https://json-schema.org/understanding-json-schema/reference/object.html)
         """
@@ -41,9 +41,14 @@ class MetaConditionsReader(collections.MutableMapping):
 
         makeRequired(self.required_fields)
                     
-        if json_file_name != '':
-            with open(json_file_name) as json_file:
-                self.store = json.load(json_file)
+        if len(json_file_names) > 0:
+            if isinstance(json_file_names, basestring):
+                with open(os.path.expandvars(json_file_names)) as json_file:
+                    self.store = json.load(json_file)
+            else:
+                for json_file_name in json_file_names:
+                    with open(os.path.expandvars(json_file_name)) as json_file:
+                        self.store.update(json.load(json_file))
         else:
             raise Exception, ">>> MetaConditionsReader: JSON file name is an empty string."
 

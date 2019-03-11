@@ -1,0 +1,62 @@
+{
+    "globalTags" :
+    {
+        "data" : "94X_dataRun2_v10",
+        "MC" : "94X_mcRun2_asymptotic_v3"
+    },
+
+    "flashggMETsFunction" : "runMETs2016",
+    "eleIdVersion" : "Fall17EGMEleID",
+    "phoIdVersion" : "Fall17EGMPhoID",
+
+    "flashggPhotons" :
+    {
+        "photonIdMVAweightfile_EB" : "flashgg/MicroAOD/data/HggPhoId_barrel_Moriond2017_wRhoRew.weights.xml",
+        "photonIdMVAweightfile_EE" : "flashgg/MicroAOD/data/HggPhoId_endcap_Moriond2017_wRhoRew.weights.xml",
+        "effAreasConfigFile" : "RecoEgamma/PhotonIdentification/data/Spring16/effAreaPhotons_cone03_pfPhotons_90percentBased.txt",
+        "is2017" : false
+    },
+
+    "flashggDiPhotons" :
+    {
+        "vertexIdMVAweightfile" : "flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml",
+        "vertexProbMVAweightfile" : "flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_SL_2016.xml"
+    },
+
+    "TriggerPaths" :
+    {
+        ".*DoubleEG.*" :
+        [
+            "HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v*",
+            "HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95_v*",
+            "HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_PixelVeto_Mass55_v*",
+            "HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_NoPixelVeto_Mass55_v*",
+            "HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto_Mass55_v*",
+            "HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto_v*"
+        ]
+    },
+    
+    "MUON_ID" : "Medium",
+    "MUON_ISO" : "LooseRel",
+
+    "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2016_cfi",
+    
+    "JetCorrectorParametersCollection_version" :
+    {
+        "data" : "JetCorrectorParametersCollection_Summer16_23Sep2016V4_DATA_AK4PFchs",
+        "MC" : "JetCorrectorParametersCollection_Summer16_23Sep2016V4_MC_AK4PFchs"
+    },
+    "JR_PtResolution_version" : "JR_Summer16_23Sep2016V4_MC_PtResolution_AK4PFchs",
+    "JR_SF_version" : "JR_Summer16_23Sep2016V4_MC_SF_AK4PFchs",
+
+    "bTagEffBins" : "bTagEffBins2016",
+    "bDiscriminatorValue" : 0.8484,
+    
+    "bRegression" :
+    {
+        "weightFile" : "/src/flashgg/Taggers/data/DNN_models/breg_training_2017_updated.pb",
+        "y_mean" : 1.0596693754196167,
+        "y_std" : 0.28492164611816406,
+        "useOld_year" : 1
+    }
+}

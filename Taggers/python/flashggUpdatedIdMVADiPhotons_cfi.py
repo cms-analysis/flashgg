@@ -3,12 +3,6 @@ import FWCore.ParameterSet.Config as cms
 from RecoEgamma.EgammaTools.regressionModifier_cfi import regressionModifier 
 
 import flashgg.Systematics.settings as settings
-year = settings.year
-if year == "2016":
-   photon_is2017 = cms.bool(False) 
-elif year == "2017":
-   photon_is2017 = cms.bool(True) 
-
 
 flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMVAProducer",
                                               src                      = cms.InputTag("flashggDiPhotons"),
@@ -18,10 +12,10 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
                                               photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_endcap_ICHEPvtx.xml"),
 
                                               useNewPhoId = cms.bool(True),
-                                              is2017 = photon_is2017, ## Turn this to "False" for 2016 analysis
+                                              is2017 = cms.bool(False), ## Turn this to "False" for 2016 analysis
 
                                               ## For 2016 Legacy ReReco
-                                               effAreasConfigFile = cms.FileInPath("RecoEgamma/PhotonIdentification/data/Spring16/effAreaPhotons_cone03_pfPhotons_90percentBased.txt"),
+                                              effAreasConfigFile = cms.FileInPath("RecoEgamma/PhotonIdentification/data/Spring16/effAreaPhotons_cone03_pfPhotons_90percentBased.txt"),
                                               phoIsoPtScalingCoeff = cms.vdouble(0.0053,0.0034),
                                               phoIsoCutoff = cms.double(2.5),
                                               photonIdMVAweightfile_EB_new = cms.FileInPath("flashgg/MicroAOD/data/HggPhoId_barrel_Moriond2017_wRhoRew.weights.xml"),

@@ -114,6 +114,9 @@ class MicroAODCustomize(object):
 
         self.metaConditions = MetaConditionsReader(self.conditionsJSON)
 
+        self.customizePhotons(process)
+        self.customizeDiPhotons(process)
+        
         if self.puppi == 0:
             self.customizePFCHS(process)
             self.customizeRemovePuppi(process)
@@ -273,15 +276,6 @@ class MicroAODCustomize(object):
             setMetCorr(process)
             
         process.p *=process.flashggMetSequence
-
-        # if "2016G" in customize.datasetName or "2016H" in customize.datasetName:
-        #     from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_Data_G_80X
-        #     setMetCorr(process,multPhiCorr_Data_G_80X)
-        # elif "2016" in customize.datasetName:
-        #     from flashgg.MicroAOD.METcorr_multPhiCorr_80X_sumPt_cfi import multPhiCorr_Data_B_80X
-        #     setMetCorr(process,multPhiCorr_Data_B_80X)
-        # else:
-        #     pass
 
         for pathName in process.paths:
             path = getattr(process,pathName)
@@ -524,7 +518,21 @@ class MicroAODCustomize(object):
 #        process.flashggPDFWeightObject.LHERunLabel = "source"
         process.flashggPDFWeightObject.isStandardSample = False
         process.flashggPDFWeightObject.isThqSample = True
-        
+
+    def customizePhotons(self, process):
+        for opt, value in self.metaConditions["flashggPhotons"].items():
+            if isinstance(value, unicode):
+                setattr(process.flashggPhotons, opt, str(value))
+            else:
+                setattr(process.flashggPhotons, opt, value)
+
+    def customizeDiPhotons(self, process):
+        for opt, value in self.metaConditions["flashggDiPhotons"].items():
+            if isinstance(value, unicode):
+                setattr(process.flashggDiPhotons, opt, str(value))
+            else:
+                setattr(process.flashggDiPhotons, opt, value)
+                
     def customizeGlobalTag(self,process):
         from Configuration.AlCa.GlobalTag import GlobalTag
         process.GlobalTag = GlobalTag(process.GlobalTag, self.globalTag, '')

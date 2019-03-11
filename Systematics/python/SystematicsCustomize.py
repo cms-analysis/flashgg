@@ -63,23 +63,26 @@ def printSystematicVPSet(vpsetlist):
             print 57*"-"
 
 
-def createStandardSystematicsProducers(process, MUON_ID="Loose", MUON_ISO="LooseRel"):
+def createStandardSystematicsProducers(process, options):
     process.load("flashgg/Taggers/flashggTagSequence_cfi")
     process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
     process.load("flashgg.Systematics.flashggMuonSystematics_cfi")
     process.load("flashgg.Systematics.flashggElectronSystematics_cfi")
     process.load("flashgg.Systematics.flashggMetSystematics_cfi")
 
-
+    from flashgg.Taggers.flashggTagSequence_cfi import *
+    process.flashggTagSequence = flashggPrepareTagSequence(options.metaConditions)
+    
     import flashgg.Systematics.flashggDiPhotonSystematics_cfi as diPhotons_syst
-    diPhotons_syst.SetupDiPhotonSystematics( process )
+    diPhotons_syst.setupDiPhotonSystematics( process, options )
 
     import flashgg.Systematics.flashggMuonSystematics_cfi as muon_sf
-    muon_sf.SetupMuonScaleFactors( process , MUON_ID , MUON_ISO )
+    muon_sf.SetupMuonScaleFactors( process , options.metaConditions["MUON_ID"], options.metaConditions["MUON_ISO"] )
     
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
-    from flashgg.Systematics.flashggJetSystematics_cfi import createJetSystematics
-    jetSystematicsInputTags = createJetSystematics(process,UnpackedJetCollectionVInputTag)
+    from flashgg.Systematics.flashggJetSystematics_cfi import jetSystematicsCustomize
+    jetSystematics = jetSystematicsCustomize(process, options)
+    jetSystematicsInputTags = jetSystematics.createJetSystematics(UnpackedJetCollectionVInputTag)
     return jetSystematicsInputTags
 
 def modifyTagSequenceForSystematics(process,jetSystematicsInputTags,ZPlusJetMode=False):

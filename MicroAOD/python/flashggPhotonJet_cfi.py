@@ -12,21 +12,6 @@ flashggPhotonJet = cms.EDProducer('FlashggPhotonJetProducer',
                                   rhoTag = cms.InputTag( "fixedGridRhoFastjetAll" ),
 				  beamSpotTag = cms.InputTag( "offlineBeamSpot" ),
 
-                                  ##Parameters for Legacy Vertex Selector                                                
-                                  #vtxId 2012
-                                  #vertexIdMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/2013FinalPaper_VertexID_BDTCat_conversions.weights.xml"),
-                                  #vxtProb2012
-                                  #vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTvtxprob2012.weights.xml"),
-
-                                  #vtxId and vtxProb 2015 no single leg
-                                  #useSingleLeg=cms.untracked.bool(False),
-                                  #vertexIdMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_noSL_2015.xml"),
-                                  #vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_noSL_2015.xml"),
-
-                                  #vtxId and vtxProb 2015 with single leg
-                                  #vertexIdMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2015.xml"),
-                                  #vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_SL_2015.xml"),
-
                                   #vtxId and vtxProb 2016 with single leg
                                   vertexIdMVAweightfile   = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml"),
                                   vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_SL_2016.xml"),

@@ -81,7 +81,6 @@ namespace flashgg {
         std::vector<CaloIsoParams> extraCaloIsolations_;
         std::vector<std::unique_ptr<IsolationAlgoBase> > extraIsoAlgos_;
 
-        bool useNewPhoId_;
         bool is2017_;
 
         EffectiveAreas _effectiveAreas;
@@ -110,32 +109,11 @@ namespace flashgg {
         _phoIsoCutoff(iConfig.getParameter<double>("phoIsoCutoff")),
         egmMvaValuesMapToken_( consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("egmMvaValuesMap")) )
     {
-
-        //        electronLabel_ = iConfig.getParameter<string>( "elecLabel" );
-        //        rhoFixedGrid_  = iConfig.getParameter<edm::InputTag>( "rhoFixedGridCollection" );
-
-
-        useNewPhoId_ = iConfig.getParameter<bool>( "useNewPhoId" ); 
         is2017_ = iConfig.getParameter<bool>( "is2017" );
-        
-        //        _effectiveAreas = iConfig.getParameter<edm::FileInPath>("effAreasConfigFile").fullPath();
-        //_phoIsoPtScalingCoeff = iConfig.getParameter<std::vector<double >>("phoIsoPtScalingCoeff");
-        //_phoIsoCutoff = iConfig.getParameter<double>("phoIsoCutoff");
         
         phoIdMVAweightfileEB_ = iConfig.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EB" );
         phoIdMVAweightfileEE_ = iConfig.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EE" );
-
-        if(is2017_){ // For 2017 photon id mva
-            phoIdMVAweightfileEB_ = iConfig.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EB_2017" );
-            phoIdMVAweightfileEE_ = iConfig.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EE_2017" );
-        } 
-        else if(useNewPhoId_){ // For 2016 legacy photon id mva
-            phoIdMVAweightfileEB_ = iConfig.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EB_new" );
-            phoIdMVAweightfileEE_ = iConfig.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EE_new" );
-        }
-        phoTools_.setupMVA( phoIdMVAweightfileEB_.fullPath(), phoIdMVAweightfileEE_.fullPath(), useNewPhoId_, is2017_);
-
-        //    regressionWeightFile_ = iConfig.getParameter<edm::FileInPath>("regressionWeightFile");
+        phoTools_.setupMVA( phoIdMVAweightfileEB_.fullPath(), phoIdMVAweightfileEE_.fullPath(), true, is2017_);
 
         doOverlapRemovalForIsolation_ = iConfig.getParameter<bool>( "doOverlapRemovalForIsolation" );
         useVtx0ForNeutralIso_ = iConfig.getParameter<bool>( "useVtx0ForNeutralIso" );
