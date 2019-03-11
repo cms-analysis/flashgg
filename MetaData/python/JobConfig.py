@@ -22,11 +22,11 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "metaDataSrc")
-        self.options.register ('conditionsJSONs',
+        self.options.register ('metaConditions',
                                 "", # default value
                                VarParsing.VarParsing.multiplicity.list, # singleton or list
                                VarParsing.VarParsing.varType.string,          # string, int, or float
-                               "conditionsJSONs")        
+                               "metaConditions")        
         self.options.register ('dataset',
                                "", # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -162,25 +162,25 @@ class JobConfig(object):
         except Exception:
             print "Failed to load 94X_mc2017 mixing"
             
-        self.pu_distribs_hack_2017 = {  }
+        #self.pu_distribs_hack_2017 = {  }
 
-        try:
-            import importlib
-            from os import listdir,environ
-            mixdir = "PU_MixFiles_2017_miniaodv2_310"
-            thedir = "%s/src/flashgg/MetaData/python/%s" % (environ['CMSSW_BASE'],mixdir)
-            print thedir
-            for fn in listdir(thedir):
-                print fn
-                if fn.startswith("mix_2017MC_") and fn.endswith(".py"):
-                    mn = fn[:-3]
-                    print fn,mn
-                    m = importlib.import_module("flashgg.MetaData.%s.%s" % (mixdir,mn))
-                    kn = mn.replace("mix_2017MC_","")
-                    self.pu_distribs_hack_2017[kn] = m.mix.input.nbPileupEvents
-        except Exception,e:
-            print "failed to load hacky 94X mixing by dataset"
-            raise e
+        # try:
+        #     import importlib
+        #     from os import listdir,environ
+        #     mixdir = "PU_MixFiles_2017_miniaodv2_310"
+        #     thedir = "%s/src/flashgg/MetaData/python/%s" % (environ['CMSSW_BASE'],mixdir)
+        #     print thedir
+        #     for fn in listdir(thedir):
+        #         print fn
+        #         if fn.startswith("mix_2017MC_") and fn.endswith(".py"):
+        #             mn = fn[:-3]
+        #             print fn,mn
+        #             m = importlib.import_module("flashgg.MetaData.%s.%s" % (mixdir,mn))
+        #             kn = mn.replace("mix_2017MC_","")
+        #             self.pu_distribs_hack_2017[kn] = m.mix.input.nbPileupEvents
+        # except Exception,e:
+        #     print "failed to load hacky 94X mixing by dataset"
+        #     raise e
             
     def __getattr__(self,name):
         ## did not manage to inherit from VarParsing, because of some issues in __init__
@@ -305,37 +305,38 @@ class JobConfig(object):
 #                                print dsetname
 #                                print self.pu_distribs.keys()
 #                                hack2017 = True
-                                found_hack2017 = False
+#                                found_hack2017 = False
 #                                if hack2017:
-                                if self.options.PUyear=="2017":
-                                    print dsetname.split("/")[1]
-                                   # print self.pu_distribs.keys()
-                                    print self.pu_distribs_hack_2017.keys()
-                                   # matches = filter(lambda x: x == dsetname.split("/")[1],self.pu_distribs.keys())
-                                    matches = filter(lambda x: x == dsetname.split("/")[1],self.pu_distribs_hack_2017.keys())
-                                    if len(matches) == 1:
-                                        found_hack2017 = True
-                                        print "FOUND HACK2017 PILEUP DISTRIBUTION WITH KEY:",matches[0]
-                                if not found_hack2017:
-                                    matches = filter(lambda x: x in dsetname, self.pu_distribs.keys() )
-                                    print matches
-                                    if len(matches) > 1:
-                                        print "Multiple matches, check if they're all the same"
-                                        allsame = True
-                                        for i in range(1,len(matches)):
-                                            if self.pu_distribs[matches[0]] != self.pu_distribs[matches[i]]:
-                                                allsame = False
-                                        if allsame:
-                                            print "They're all the same so we just take the 0th one:",matches[0]
-                                            matches = [matches[0]]
-                                        else:
-                                            print "Not all the same... so we return to the old behavior and take an exact match, otherwise leave empty..."
-                                            matches = filter(lambda x: x == dsetname, matches)
-                                    if len(matches) != 1:
-                                        raise Exception("Could not determine sample pu distribution for reweighting. Possible matches are [%s]. Selected [%s]\n dataset: %s" % 
+                                # if self.options.PUyear=="2017":
+                                #     print dsetname.split("/")[1]
+                                #    # print self.pu_distribs.keys()
+                                #     print self.pu_distribs_hack_2017.keys()
+                                #    # matches = filter(lambda x: x == dsetname.split("/")[1],self.pu_distribs.keys())
+                                #     matches = filter(lambda x: x == dsetname.split("/")[1],self.pu_distribs_hack_2017.keys())
+                                #     if len(matches) == 1:
+                                #         found_hack2017 = True
+                                #         print "FOUND HACK2017 PILEUP DISTRIBUTION WITH KEY:",matches[0]
+                                # if not found_hack2017:
+                                matches = filter(lambda x: x in dsetname, self.pu_distribs.keys() )
+                                print matches
+                                if len(matches) > 1:
+                                    print "Multiple matches, check if they're all the same"
+                                    allsame = True
+                                    for i in range(1,len(matches)):
+                                        if self.pu_distribs[matches[0]] != self.pu_distribs[matches[i]]:
+                                            allsame = False
+                                    if allsame:
+                                        print "They're all the same so we just take the 0th one:",matches[0]
+                                        matches = [matches[0]]
+                                    else:
+                                        print "Not all the same... so we return to the old behavior and take an exact match, otherwise leave empty..."
+                                        matches = filter(lambda x: x == dsetname, matches)
+                                if len(matches) != 1:
+                                    raise Exception("Could not determine sample pu distribution for reweighting. Possible matches are [%s]. Selected [%s]\n dataset: %s" % 
                                                         ( ",".join(self.pu_distribs.keys()), ",".join(matches), dsetname ) )
-                                if self.options.PUyear=="2017": samplepu = self.pu_distribs_hack_2017[matches[0]]
-                                else : samplepu = self.pu_distribs[matches[0]]
+                                # if self.options.PUyear=="2017": samplepu = self.pu_distribs_hack_2017[matches[0]]
+                                # else :
+                            samplepu = self.pu_distribs[matches[0]]
                             puObj.puReWeight = True
                             puObj.puBins = cms.vdouble( map(float, samplepu.probFunctionVariable) )
                             puObj.mcPu   = samplepu.probValue

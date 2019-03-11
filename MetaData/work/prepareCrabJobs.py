@@ -30,6 +30,11 @@ parser = OptionParser(option_list=[
                     default="../../MicroAOD/test/microAODstd.py", # FIXME should move it to production eventually
                     help="CMSSW parameter set. default: %default", 
                     ),
+        make_option("--meta-conditions",
+                    action="store", dest="metaConditions", type="string",
+                    default="", # FIXME should move it to production eventually
+                    help="FLASHgg meta conditions file. default: %default", 
+                    ),
         make_option("-t","--crabTemplate",
                     action="store", dest="crabTemplate", type="string",
                     default="crabConfig_TEMPLATE.py", 
@@ -110,11 +115,6 @@ parser = OptionParser(option_list=[
                     action="store_true", dest="verbose",
                     default=False,
                     help="default: %default"),
-        make_option("--gt","--globalTags",
-                    dest="globalTags",
-                    action="store",type="string",
-                    default="campaigns/globalTagsLookup.json",
-                    help="List of global tags to be used for data and MC. Default: %default"),
         
         # include additional parameters for cmsRun, such as the parameters from microAODCustomize
         # the default here is puppi=0 (as an example) see microAODCustomize_cfg.py for more detail
@@ -224,11 +224,6 @@ if options.createCrabConfig:
     print ("\nCreating CRAB configurations in %s" % options.campaign)
     print ("--------------------------------------------------------")
 
-    # get the globaltag json
-    globalTagPath = options.globalTags
-    gtJson = json.load(open(globalTagPath,'r'))
-    print "GLOBAL TAGS:",options.globalTags
-
     if not options.task_dir:
         options.task_dir = options.campaign
     if not os.path.isdir(options.task_dir):
@@ -309,15 +304,18 @@ if options.createCrabConfig:
             ("RunIISummer17MiniAOD-NZSFlatPU28to62_92X_upgrade2017_realistic_v10","FlatPU_92Xv10"),
             ("RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14","PU2017_94Xv14"),
             ("RunIIFall17MiniAODv2-PU2017_12Apr2018_1core_94X_mc2017_realistic_v14","1core_94Xv1"),
-            ]
+            ("RunIIFall18MiniAOD-102X_upgrade2018_realistic_v12-v1","Fall18_102X"),
+            ("RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1", "Summer16"),
+            ("RunIISummer16MiniAODv3-BS2016_BSandPUSummer16_94X_mcRun2_asymptotic_v3-v1", "Summer16"),
+            ("RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v1", "Summer16"),
+            ("RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1", "Autumn18")
+        ]
 
         for orig, replacement in replacements:
             if len(jobname) <= 97:
                 break
             jobname = jobname.replace(orig, replacement)
 
-        if len(jobname) > 97:
-            jobname = jobname.replace("RunIIFall18MiniAOD-102X_upgrade2018_realistic_v12-v1","Fall18_102X")
         if len(jobname) > 97:
             print orig_jobname
             print "-->", len(jobname), jobname
@@ -358,18 +356,7 @@ if options.createCrabConfig:
         # apprend extra parameters
         if options.extraPyCfgParam:
             replacements["PYCFG_PARAMS"].extend(map( lambda x: '"%s"' % x, options.extraPyCfgParam.split(" ") ))
-            
-        # associate the processedLabel to the globaltag from the json filex
-        if gtJson.get(processedLabel,None):
-            globalTag = gtJson[processedLabel]
-            # print ProcessedDataset, globalTag
-            replacements["PYCFG_PARAMS"].append(str("globalTag=%s" % globalTag[0])) 
-        else:
-            print 
-            print "WARNING: you did not associate any global tag to %s" % processedLabel
-            print "         therefore global tag customization will not work for %s" % sample
-            print 
-            
+                        
         # specific replacements for data and MC
         if sample in data:
             replacements["SPLITTING"]   = "LumiBased"
@@ -383,6 +370,9 @@ if options.createCrabConfig:
             ## Extra options for background samples
             replacements["PYCFG_PARAMS"].append("processType=background")
 
+        # add the meta conditions
+        replacements["PYCFG_PARAMS"].append("conditionsJSON="+options.metaConditions)
+            
         replacements["PYCFG_PARAMS"] = str(replacements["PYCFG_PARAMS"])
         
         # open output file
