@@ -69,9 +69,12 @@ namespace flashgg {
         if(y.hasSwitchToGain1()) gain=1;
         if(y.hasSwitchToGain6()) gain=6;
         if( overall_range_( y ) ) {
-            auto shift_val = scaler_.scaleCorr(run_number_, y.et(), y.superCluster()->eta(), y.full5x5_r9(), gain);
-            auto shift_err = scaler_.scaleCorrUncert(run_number_, y.et(), y.superCluster()->eta(), y.full5x5_r9(), gain);            
-            if (!applyCentralValue()) shift_val = 1.;
+            float shift_val = 1., shift_err=0.;
+            if(applyCentralValue())
+            {
+                shift_val = scaler_.scaleCorr(run_number_, y.et(), y.superCluster()->eta(), y.full5x5_r9(), gain);
+                shift_err = scaler_.scaleCorrUncert(run_number_, y.et(), y.superCluster()->eta(), y.full5x5_r9(), gain);
+            }
             float scale = shift_val + syst_shift * shift_err;
             if( debug_ ) {
                 std::cout << "  " << shiftLabel( syst_shift ) << ": Photon has pt= " << y.pt() << " eta=" << y.eta() << " gain=" << gain

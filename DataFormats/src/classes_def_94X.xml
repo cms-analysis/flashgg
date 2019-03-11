@@ -368,4 +368,12 @@
 <class name="std::vector<flashgg::DiPhotonTagBase*>"/>
 <class name="std::vector<flashgg::TagTruthBase*>"/>
 
+<class name="flashgg::DoubleHTag" ClassVersion="12">
+ <version ClassVersion="12" checksum="1782830055"/>
+  <version ClassVersion="10" checksum="2099650607"/>
+  <version ClassVersion="11" checksum="2809364010"/>
+</class>
+<class name="std::vector<flashgg::DoubleHTag>"/>
+<class name="edm::Wrapper<std::vector<flashgg::DoubleHTag> >"/>
+
 </lcgdict>

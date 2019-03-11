@@ -37,8 +37,24 @@ edm::View<flashgg::GenDiPhoton>,
     std::vector<flashgg::GenDiPhoton>
     > GenDiPhotonSorter;
 
+
+class greaterByHt
+{ 
+public: 
+    bool operator()(const flashgg::GenDiPhoton& a, const flashgg::GenDiPhoton& b) const { return a.sumHt() > b.sumHt(); }
+};
+
+typedef ObjectSelector <
+SortCollectionSelector <
+edm::View<flashgg::GenDiPhoton>,
+    greaterByHt
+    >,
+    std::vector<flashgg::GenDiPhoton>
+    > GenDiPhotonDiJetSorter;
+
 DEFINE_FWK_MODULE( GenDiPhotonSelector );
 DEFINE_FWK_MODULE( GenDiPhotonSorter );
+DEFINE_FWK_MODULE( GenDiPhotonDiJetSorter );
 
 // Local Variables:
 // mode:c++

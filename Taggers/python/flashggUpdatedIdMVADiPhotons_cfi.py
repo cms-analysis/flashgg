@@ -2,6 +2,8 @@ import FWCore.ParameterSet.Config as cms
 
 from RecoEgamma.EgammaTools.regressionModifier_cfi import regressionModifier 
 
+import flashgg.Systematics.settings as settings
+
 flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMVAProducer",
                                               src                      = cms.InputTag("flashggDiPhotons"),
                                               rhoFixedGridCollection   = cms.InputTag('fixedGridRhoAll'),
@@ -10,22 +12,22 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
                                               photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_80X_endcap_ICHEPvtx.xml"),
 
                                               useNewPhoId = cms.bool(True),
-                                              is2017 = cms.bool(True), ## Turn this to "False" for 2016 analysis
+                                              is2017 = cms.bool(False), ## Turn this to "False" for 2016 analysis
 
                                               ## For 2016 Legacy ReReco
-                                              # effAreasConfigFile = cms.FileInPath("RecoEgamma/PhotonIdentification/data/Spring16/effAreaPhotons_cone03_pfPhotons_90percentBased.txt"),
+                                              effAreasConfigFile = cms.FileInPath("RecoEgamma/PhotonIdentification/data/Spring16/effAreaPhotons_cone03_pfPhotons_90percentBased.txt"),
                                               phoIsoPtScalingCoeff = cms.vdouble(0.0053,0.0034),
                                               phoIsoCutoff = cms.double(2.5),
                                               photonIdMVAweightfile_EB_new = cms.FileInPath("flashgg/MicroAOD/data/HggPhoId_barrel_Moriond2017_wRhoRew.weights.xml"),
                                               photonIdMVAweightfile_EE_new = cms.FileInPath("flashgg/MicroAOD/data/HggPhoId_endcap_Moriond2017_wRhoRew.weights.xml"),
 
                                               ## For 2017 ReReco
-                                              effAreasConfigFile = cms.FileInPath("RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_TrueVtx.txt"),
+                                             # effAreasConfigFile = cms.FileInPath("RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_TrueVtx.txt"),  #for 2017 it is not used at all
                                               photonIdMVAweightfile_EB_2017 = cms.FileInPath("flashgg/MicroAOD/data/HggPhoId_94X_barrel_BDT_v2.weights.xml"),
                                               photonIdMVAweightfile_EE_2017 = cms.FileInPath("flashgg/MicroAOD/data/HggPhoId_94X_endcap_BDT_v2.weights.xml"),
 
                                               ## Shower shape correction (5x5)
-                                              do5x5correction          = cms.bool(True), ## Turn this off to remove 5x5 shower shape corrections
+                                              do5x5correction          = cms.bool(False), ## Turn this off to remove 5x5 shower shape corrections
                                               # correctionFile           = cms.FileInPath("flashgg/MicroAOD/data/transformation5x5_Legacy2016_v1.root"), ## for Legacy2016 
                                               correctionFile           = cms.FileInPath("flashgg/MicroAOD/data/transformation5x5_ReReco2017_v2.root"),  ## for Rereco2017
 

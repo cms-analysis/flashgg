@@ -22,86 +22,91 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "metaDataSrc")
+        self.options.register ('metaConditions',
+                                "", # default value
+                               VarParsing.VarParsing.multiplicity.list, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "metaConditions")        
         self.options.register ('dataset',
-                       "", # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.string,          # string, int, or float
-                       "dataset")
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "dataset")
         self.options.register ('processId',
-                       "", # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.string,          # string, int, or float
-                       "processId")
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "processId")
         self.options.register ('processIdMap',
-                       "", # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.string,          # string, int, or float
-                       "processIdMap")
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "processIdMap")
         self.options.register ('processIndex',
-                       None, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.int,          # string, int, or float
-                       "processIndex")
+                               None, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.int,          # string, int, or float
+                               "processIndex")
         self.options.register ('secondaryDatasetInProcId',
-                       False, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.bool,          # string, int, or float
-                       "secondaryDatasetInProcId")
+                               False, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "secondaryDatasetInProcId")
         self.options.register ('campaign',
-                       "", # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.string,          # string, int, or float
-                       "campaign")
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "campaign")
         self.options.register ('useAAA',
-                       False, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.bool,          # string, int, or float
-                       "useAAA")
+                               False, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "useAAA")
         self.options.register ('useEOS',
-                       True, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.bool,          # string, int, or float
-                       "useEOS")
+                               True, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "useEOS")
         self.options.register ('targetLumi',
-                       1.e+3, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.float,          # string, int, or float
-                       "targetLumi")
+                               1.e+3, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.float,          # string, int, or float
+                               "targetLumi")
         self.options.register ('nJobs',
-                       0, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.int,          # string, int, or float
-                       "nJobs")
+                               0, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.int,          # string, int, or float
+                               "nJobs")
         self.options.register ('jobId',
                                -1, # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.int,          # string, int, or float
                                "jobId")
         self.options.register ('lastAttempt',
-                       False, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.bool,          # string, int, or float
-                       "lastAttempt")
+                               False, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "lastAttempt")
         self.options.register ('lumiMask',
-                       "", # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.string,          # string, int, or float
-                       "lumiMask")
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "lumiMask")
         self.options.register ('dryRun',
-                       False, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.bool,          # string, int, or float
-                       "dryRun")
+                               False, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "dryRun")
         self.options.register ('dumpPython',
-                       "", # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.string,          # string, int, or float
-                       "dumpPython")
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "dumpPython")
         self.options.register ('getMaxJobs',
-                       False, # default value
-                       VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                       VarParsing.VarParsing.varType.bool,          # string, int, or float
-                       "getMaxJobs")
+                               False, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "getMaxJobs")
         self.options.register ('processType',
                                "", # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -112,6 +117,11 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "puTarget")
+        self.options.register ('PUyear',
+                               "2016", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "PUyear")
         self.options.register ('WeightName', # for THQ/THW samples the LHE weight should be mentioned
                                None, # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -152,23 +162,25 @@ class JobConfig(object):
         except Exception:
             print "Failed to load 94X_mc2017 mixing"
             
-        try:
-            import importlib
-            from os import listdir,environ
-            mixdir = "PU_MixFiles_2017_miniaodv2_310"
-            thedir = "%s/src/flashgg/MetaData/python/%s" % (environ['CMSSW_BASE'],mixdir)
-            print thedir
-            for fn in listdir(thedir):
-                print fn
-                if fn.startswith("mix_2017MC_") and fn.endswith(".py"):
-                    mn = fn[:-3]
-                    print fn,mn
-                    m = importlib.import_module("flashgg.MetaData.%s.%s" % (mixdir,mn))
-                    kn = mn.replace("mix_2017MC_","")
-                    self.pu_distribs[kn] = m.mix.input.nbPileupEvents
-        except Exception,e:
-            print "failed to load hacky 94X mixing by dataset"
-            raise e
+        #self.pu_distribs_hack_2017 = {  }
+
+        # try:
+        #     import importlib
+        #     from os import listdir,environ
+        #     mixdir = "PU_MixFiles_2017_miniaodv2_310"
+        #     thedir = "%s/src/flashgg/MetaData/python/%s" % (environ['CMSSW_BASE'],mixdir)
+        #     print thedir
+        #     for fn in listdir(thedir):
+        #         print fn
+        #         if fn.startswith("mix_2017MC_") and fn.endswith(".py"):
+        #             mn = fn[:-3]
+        #             print fn,mn
+        #             m = importlib.import_module("flashgg.MetaData.%s.%s" % (mixdir,mn))
+        #             kn = mn.replace("mix_2017MC_","")
+        #             self.pu_distribs_hack_2017[kn] = m.mix.input.nbPileupEvents
+        # except Exception,e:
+        #     print "failed to load hacky 94X mixing by dataset"
+        #     raise e
             
     def __getattr__(self,name):
         ## did not manage to inherit from VarParsing, because of some issues in __init__
@@ -292,34 +304,39 @@ class JobConfig(object):
                             if not samplepu:
 #                                print dsetname
 #                                print self.pu_distribs.keys()
-                                hack2017 = True
-                                found_hack2017 = False
-                                if hack2017:
-                                    print dsetname.split("/")[1]
-                                    print self.pu_distribs.keys()
-                                    matches = filter(lambda x: x == dsetname.split("/")[1],self.pu_distribs.keys())
-                                    if len(matches) == 1:
-                                        found_hack2017 = True
-                                        print "FOUND HACK2017 PILEUP DISTRIBUTION WITH KEY:",matches[0]
-                                if not found_hack2017:
-                                    matches = filter(lambda x: x in dsetname, self.pu_distribs.keys() )
-                                    print matches
-                                    if len(matches) > 1:
-                                        print "Multiple matches, check if they're all the same"
-                                        allsame = True
-                                        for i in range(1,len(matches)):
-                                            if self.pu_distribs[matches[0]] != self.pu_distribs[matches[i]]:
-                                                allsame = False
-                                        if allsame:
-                                            print "They're all the same so we just take the 0th one:",matches[0]
-                                            matches = [matches[0]]
-                                        else:
-                                            print "Not all the same... so we return to the old behavior and take an exact match, otherwise leave empty..."
-                                            matches = filter(lambda x: x == dsetname, matches)
-                                    if len(matches) != 1:
-                                        raise Exception("Could not determine sample pu distribution for reweighting. Possible matches are [%s]. Selected [%s]\n dataset: %s" % 
+#                                hack2017 = True
+#                                found_hack2017 = False
+#                                if hack2017:
+                                # if self.options.PUyear=="2017":
+                                #     print dsetname.split("/")[1]
+                                #    # print self.pu_distribs.keys()
+                                #     print self.pu_distribs_hack_2017.keys()
+                                #    # matches = filter(lambda x: x == dsetname.split("/")[1],self.pu_distribs.keys())
+                                #     matches = filter(lambda x: x == dsetname.split("/")[1],self.pu_distribs_hack_2017.keys())
+                                #     if len(matches) == 1:
+                                #         found_hack2017 = True
+                                #         print "FOUND HACK2017 PILEUP DISTRIBUTION WITH KEY:",matches[0]
+                                # if not found_hack2017:
+                                matches = filter(lambda x: x in dsetname, self.pu_distribs.keys() )
+                                print matches
+                                if len(matches) > 1:
+                                    print "Multiple matches, check if they're all the same"
+                                    allsame = True
+                                    for i in range(1,len(matches)):
+                                        if self.pu_distribs[matches[0]] != self.pu_distribs[matches[i]]:
+                                            allsame = False
+                                    if allsame:
+                                        print "They're all the same so we just take the 0th one:",matches[0]
+                                        matches = [matches[0]]
+                                    else:
+                                        print "Not all the same... so we return to the old behavior and take an exact match, otherwise leave empty..."
+                                        matches = filter(lambda x: x == dsetname, matches)
+                                if len(matches) != 1:
+                                    raise Exception("Could not determine sample pu distribution for reweighting. Possible matches are [%s]. Selected [%s]\n dataset: %s" % 
                                                         ( ",".join(self.pu_distribs.keys()), ",".join(matches), dsetname ) )
-                                samplepu = self.pu_distribs[matches[0]]
+                                # if self.options.PUyear=="2017": samplepu = self.pu_distribs_hack_2017[matches[0]]
+                                # else :
+                            samplepu = self.pu_distribs[matches[0]]
                             puObj.puReWeight = True
                             puObj.puBins = cms.vdouble( map(float, samplepu.probFunctionVariable) )
                             puObj.mcPu   = samplepu.probValue
@@ -410,7 +427,8 @@ class JobConfig(object):
             self.readProcessIdMap(self.options.processIdMap)
         
         if self.useAAA:
-            self.filePrepend = "root://xrootd-cms.infn.it/"
+       #     self.filePrepend = "root://xrootd-cms.infn.it/"
+            self.filePrepend = "root://cms-xrd-global.cern.ch/"
         elif self.useEOS:
             self.filePrepend = "root://eoscms.cern.ch//eos/cms"
         
