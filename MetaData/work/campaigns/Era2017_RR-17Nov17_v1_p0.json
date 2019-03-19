@@ -1,11 +1,11 @@
 {
     "data" :
     [
-        "/SingleElectron/Run2017B-17Nov2017-v1/MINIAOD",
-        "/SingleElectron/Run2017C-17Nov2017-v1/MINIAOD",
-        "/SingleElectron/Run2017D-17Nov2017-v1/MINIAOD",
-        "/SingleElectron/Run2017E-17Nov2017-v1/MINIAOD",
-        "/SingleElectron/Run2017F-17Nov2017-v1/MINIAOD"
+        "/DoubleEG/Run2017B-31Mar2018-v1/MINIAOD",
+        "/DoubleEG/Run2017C-31Mar2018-v1/MINIAOD",
+        "/DoubleEG/Run2017D-31Mar2018-v1/MINIAOD",
+        "/DoubleEG/Run2017E-31Mar2018-v1/MINIAOD",
+        "/DoubleEG/Run2017F-31Mar2018-v1/MINIAOD"
     ],
     "sig" :
     [
