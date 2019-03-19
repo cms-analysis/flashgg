@@ -1,3 +1,5 @@
+##--inherited from the low mass Hgg analysis
+
 import FWCore.ParameterSet.Config as cms
 
 phoEffArea=cms.PSet( var=cms.string("abs(superCluster.eta)"), bins=cms.vdouble(0.,0.9,1.5,2,2.2,3), vals=cms.vdouble(0.16544,0.16544,0.13212,0.13212,0.13212) )
