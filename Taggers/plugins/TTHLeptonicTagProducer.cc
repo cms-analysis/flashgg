@@ -51,6 +51,12 @@ namespace flashgg {
         void produce( Event &, const EventSetup & ) override;
         int  chooseCategory( float );
 
+        const  reco::GenParticle* motherID(const reco::GenParticle* gp);
+        bool PassFrixione(Handle<View<reco::GenParticle> > genParticles, const reco::GenParticle* gp, int nBinsForFrix, double cone_frix);
+        vector<int> IsPromptAfterOverlapRemove(Handle<View<reco::GenParticle> > genParticles, const edm::Ptr<reco::GenParticle> genPho);
+        int  GenPhoIndex(Handle<View<reco::GenParticle> > genParticles, const flashgg::Photon* pho, int usedIndex);
+        double NearestDr(Handle<View<reco::GenParticle> > genParticles, const reco::GenParticle* gp);
+
         struct Sorter {
             bool operator()( const std::pair<unsigned int, float>  pair1, const std::pair<unsigned int,float>  pair2 )
             {
@@ -138,6 +144,159 @@ namespace flashgg {
         float lepton_leadPt_;
         float lepton_leadEta_;
     };
+
+    const reco::GenParticle* TTHLeptonicTagProducer::motherID(const reco::GenParticle* gp)
+    {
+        const reco::GenParticle* mom_lead = gp;
+        //cout << "in id: " << gp->pdgId() << endl;
+        while( mom_lead->numberOfMothers() > 0 ) {
+             for(uint j = 0; j < mom_lead->numberOfMothers(); ++j) {
+                 mom_lead = dynamic_cast<const reco::GenParticle*>( mom_lead->mother(j) );
+                 //cout << j << "th id: " << mom_lead->pdgId() << ", gpid: " << gp->pdgId() << endl;
+                 if( mom_lead->pdgId() != gp->pdgId() )
+                     return mom_lead; 
+                     //break;
+                }
+             }
+
+        return mom_lead;
+    }
+
+    bool TTHLeptonicTagProducer::PassFrixione(Handle<View<reco::GenParticle> > genParticles, const reco::GenParticle* gp, int nBinsForFrix, double cone_frix)
+    {
+
+        bool passFrix = true;
+
+        double pho_et = gp->p4().Et();
+        double pho_eta = gp->p4().eta();
+        double pho_phi = gp->p4().phi();
+        const double initConeFrix = 1E-10;
+        double ets[nBinsForFrix] = {};
+   
+        for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ )
+           {
+           int status = genParticles->ptrAt( genLoop )->status();
+           if (!(status >= 21 && status <=24)) continue;
+           int pdgid = genParticles->ptrAt( genLoop )->pdgId();
+           if (!(abs(pdgid) == 11 || abs(pdgid) == 13 || abs(pdgid) == 15 || abs(pdgid) < 10 || abs(pdgid) == 21) ) continue; 
+           double et = genParticles->ptrAt( genLoop )->p4().Et();
+           double eta = genParticles->ptrAt( genLoop )->p4().eta();
+           double phi = genParticles->ptrAt( genLoop )->p4().phi();
+           double dR = deltaR(pho_eta,pho_phi,eta,phi); 
+           for (int j = 0; j < nBinsForFrix; j++) { 
+               double cone_var = (initConeFrix + j*cone_frix/nBinsForFrix);
+               if (dR < cone_var && cone_var < cone_frix) ets[j] += et/(1-cos(cone_var) )*(1-cos(cone_frix) );
+               }
+           }
+
+           for (int k = 0; k < nBinsForFrix; k++) {
+               if (ets[k] > pho_et) {
+                  passFrix = false; break;
+                  }
+           }
+
+        return passFrix;
+    }
+
+
+    double TTHLeptonicTagProducer::NearestDr(Handle<View<reco::GenParticle> > genParticles, const reco::GenParticle* gp)
+    {
+
+        double nearDr = 999;
+
+        double pho_eta = gp->p4().eta();
+        double pho_phi = gp->p4().phi();
+
+        for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ )
+           {
+           int status = genParticles->ptrAt( genLoop )->status();
+           if (!(status >= 21 && status <=24)) continue;
+           int pdgid = genParticles->ptrAt( genLoop )->pdgId();
+           if (!(abs(pdgid) == 11 || abs(pdgid) == 13 || abs(pdgid) == 15 || abs(pdgid) < 10 || abs(pdgid) == 21) ) continue;
+           double eta = genParticles->ptrAt( genLoop )->p4().eta();
+           double phi = genParticles->ptrAt( genLoop )->p4().phi();
+           double dR = deltaR(pho_eta,pho_phi,eta,phi);
+           if (dR < nearDr) {
+              nearDr = dR;
+              }
+           }
+
+        return nearDr;
+    }
+
+
+    vector<int> TTHLeptonicTagProducer::IsPromptAfterOverlapRemove(Handle<View<reco::GenParticle> > genParticles, const edm::Ptr<reco::GenParticle> genPho)
+    {
+
+        vector<int> flags;
+        bool isPromptAfterOverlapRemove = false;
+
+        int simplemotherID = -1;
+        int simplemotherStatus = -1;
+        if (genPho->numberOfMothers() > 0) {
+            simplemotherID = genPho->mother(0)->pdgId();
+            simplemotherStatus = genPho->mother(0)->status();
+        }
+        const reco::GenParticle* mom = motherID(&(*genPho));
+        const reco::GenParticle* mommom = motherID(mom);
+        bool isMad = false;
+        if (simplemotherID == 22 && simplemotherStatus >= 21 && simplemotherStatus <= 24) isMad = true;
+        bool isFromWb = false;
+        if (abs(mom->pdgId()) == 24 || abs(mommom->pdgId()) == 24 || (abs(mom->pdgId()) == 5 && abs(mommom->pdgId()) == 6) ) isFromWb = true;
+        bool isFromQuark = false;
+        if (abs(mom->pdgId()) == 21 || abs(mommom->pdgId()) == 21 || (abs(mom->pdgId()) <= 6 && abs(mommom->pdgId()) != 6 && abs(mommom->pdgId()) != 24 ) ) isFromQuark = true;
+        bool isFromProton = false;
+        if (abs(mom->pdgId()) == 2212) isFromProton = true;
+        bool failFrix = !PassFrixione(genParticles, &(*genPho), 100, 0.05);
+        bool isPythia = false;
+        if (!isMad && genPho->isPromptFinalState() && ( isFromWb || (isFromQuark && failFrix) || isFromProton) ) isPythia = true;
+        if (isMad || isPythia) isPromptAfterOverlapRemove = true;
+        flags.push_back(isPromptAfterOverlapRemove ? 1 : 0);
+        flags.push_back(isMad ? 1 : 0);
+        flags.push_back(isPythia ? 1 : 0);
+        flags.push_back((!failFrix) ? 1 : 0);
+        flags.push_back(simplemotherID);
+        flags.push_back(simplemotherStatus);
+        flags.push_back(abs(mom->pdgId()));
+        flags.push_back(abs(mommom->pdgId()));
+        return flags;
+
+    }
+
+
+    int TTHLeptonicTagProducer::GenPhoIndex(Handle<View<reco::GenParticle> > genParticles, const flashgg::Photon* pho, int usedIndex)
+    {
+        double maxDr = 0.2;
+        double ptDiffMax = 99e15;
+        int index = -1;
+                
+        for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+            int pdgid = genParticles->ptrAt( genLoop )->pdgId();
+            if (pho->genMatchType() != 1) continue;
+            if (int(genLoop) == usedIndex) continue;
+            if (abs(pdgid) != 22) continue;
+            if (genParticles->ptrAt( genLoop )->p4().pt() < 10) continue;
+            if (!genParticles->ptrAt( genLoop )->isPromptFinalState()) continue;
+
+            double gen_photon_candidate_pt = genParticles->ptrAt( genLoop )->p4().pt();
+            double gen_photon_candidate_eta = genParticles->ptrAt( genLoop )->p4().eta();
+            double gen_photon_candidate_phi = genParticles->ptrAt( genLoop )->p4().phi();
+            double deltaR_ = deltaR(gen_photon_candidate_eta, gen_photon_candidate_phi, pho->p4().eta(), pho->p4().phi());
+
+            if (deltaR_ > maxDr) continue;
+
+            double ptdiff = abs(gen_photon_candidate_pt - pho->p4().pt());
+            if (ptdiff < ptDiffMax) {
+                ptDiffMax = ptdiff;
+                index = genLoop;
+            }
+            
+        } // end gen loop
+
+        return index;
+    }
+
+
 
     TTHLeptonicTagProducer::TTHLeptonicTagProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
@@ -651,6 +810,26 @@ namespace flashgg {
                 tthltags_obj.setLepPhi( lepPhi );
                 tthltags_obj.setLepType( lepType );
 
+                tthltags_obj.setLeadPrompt(-999);
+                tthltags_obj.setLeadMad(-999);
+                tthltags_obj.setLeadPythia(-999);
+                tthltags_obj.setLeadPassFrix(-999);
+                tthltags_obj.setLeadSimpleMomID(-999);
+                tthltags_obj.setLeadSimpleMomStatus(-999);
+                tthltags_obj.setLeadMomID(-999);
+                tthltags_obj.setLeadMomMomID(-999);
+                tthltags_obj.setLeadSmallestDr(-999);
+
+                tthltags_obj.setSubleadPrompt(-999);
+                tthltags_obj.setSubleadMad(-999);
+                tthltags_obj.setSubleadPythia(-999);
+                tthltags_obj.setSubleadPassFrix(-999);
+                tthltags_obj.setSubleadSimpleMomID(-999);
+                tthltags_obj.setSubleadSimpleMomStatus(-999);
+                tthltags_obj.setSubleadMomID(-999);
+                tthltags_obj.setSubleadMomMomID(-999);
+                tthltags_obj.setSubleadSmallestDr(-999);
+                            
                 tthltags->push_back( tthltags_obj );
  
                 if( ! evt.isRealData() )
@@ -675,6 +854,42 @@ namespace flashgg {
                     }
                     truths->push_back( truth_obj );
                     tthltags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
+
+                    int gp_lead_index = GenPhoIndex(genParticles, dipho->leadingPhoton(), -1);
+                    int gp_sublead_index = GenPhoIndex(genParticles, dipho->subLeadingPhoton(), gp_lead_index);
+                    vector<int> leadFlags; leadFlags.clear();
+                    vector<int> subleadFlags; subleadFlags.clear();
+
+                    if (gp_lead_index != -1) {
+                       const edm::Ptr<reco::GenParticle> gp_lead = genParticles->ptrAt(gp_lead_index);                
+                       leadFlags = IsPromptAfterOverlapRemove(genParticles, gp_lead);
+                       tthltags->back().setLeadPrompt(leadFlags[0]);
+                       tthltags->back().setLeadMad(leadFlags[1]);
+                       tthltags->back().setLeadPythia(leadFlags[2]);
+                       tthltags->back().setLeadPassFrix(leadFlags[3]);
+                       tthltags->back().setLeadSimpleMomID(leadFlags[4]);
+                       tthltags->back().setLeadSimpleMomStatus(leadFlags[5]);
+                       tthltags->back().setLeadMomID(leadFlags[6]);
+                       tthltags->back().setLeadMomMomID(leadFlags[7]);
+                       tthltags->back().setLeadSmallestDr(NearestDr(genParticles, &(*gp_lead)));
+
+                       cout << "leadPrompt: " << leadFlags[0] << endl;
+                       } 
+
+                   if (gp_sublead_index != -1) {
+                       const edm::Ptr<reco::GenParticle> gp_sublead = genParticles->ptrAt(gp_sublead_index);
+                       subleadFlags = IsPromptAfterOverlapRemove(genParticles, gp_sublead);
+                       tthltags->back().setSubleadPrompt(subleadFlags[0]);
+                       tthltags->back().setSubleadMad(subleadFlags[1]);
+                       tthltags->back().setSubleadPythia(subleadFlags[2]);
+                       tthltags->back().setSubleadPassFrix(subleadFlags[3]);
+                       tthltags->back().setSubleadSimpleMomID(subleadFlags[4]);
+                       tthltags->back().setSubleadSimpleMomStatus(subleadFlags[5]);
+                       tthltags->back().setSubleadMomID(subleadFlags[6]);
+                       tthltags->back().setSubleadMomMomID(subleadFlags[7]);
+                       tthltags->back().setSubleadSmallestDr(NearestDr(genParticles, &(*gp_sublead)));
+                       }
+
                 }
             }
         }//diPho loop end !
