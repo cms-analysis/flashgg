@@ -199,7 +199,7 @@ namespace flashgg {
                 int nSecVertices = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->nVertices();
                 float vtxMass = 0, vtxPx = 0, vtxPy = 0, vtxPz = 0, vtx3DVal = 0, vtx3DSig = 0, vtxPosX = 0, vtxPosY = 0, vtxPosZ = 0;
                 int vtxNTracks = 0;
-                float ptD=0.;
+                //float ptD=0.;
 
                 if(nSecVertices > 0){
                     vtxNTracks = pjet->tagInfoCandSecondaryVertex("pfSecondaryVertex")->secondaryVertex(0).numberOfSourceCandidatePtrs();
@@ -229,17 +229,56 @@ namespace flashgg {
                 fjet.addUserFloat("vtx3DVal", vtx3DVal);
                 fjet.addUserFloat("vtx3DSig", vtx3DSig);
 
+                float ptD(0.0), totalMult(0.0), axis1(0.0), axis2(0.0);
+                float sum_dEta(0.0), sum_dPhi(0.0), sum_dEta2(0.0), sum_dPhi2(0.0), sum_dEta_dPhi(0.0), sum_weight(0.0), sum_pt(0.0);
 
-                //ptD of the jet
-                float sumWeight=0;
-                float sumPt=0;
-                for(const auto & d : pjet->daughterPtrVector()){
-                    sumWeight+=(d->pt())*(d->pt());
-                    sumPt+=d->pt();
+                for(const auto & d : pjet->getJetConstituentsQuick()){
+                    if (d->charge()) { // charged particles
+                        auto p = dynamic_cast<const pat::PackedCandidate*>(d);
+                        if (!p) std::cout << "ERROR: QGTagging variables cannot be computed for these jets!" << std::endl;
+                        if (!(p->fromPV() > 1 && p->trackHighPurity())) continue;
+                        ++totalMult;
+                    }   else { // neutral particles
+                        if (d->pt() < 1.0) continue;
+                        ++totalMult;
+                    } // charged, neutral particles
+
+                    float dEta   = d->eta() - pjet->eta();
+                    float dPhi   = reco::deltaPhi(d->phi(), pjet->phi());
+                    float pT = d->pt();
+                    float weight = pT*pT;
+
+                    sum_dEta      += dEta      * weight;
+                    sum_dPhi      += dPhi      * weight;
+                    sum_dEta2     += dEta*dEta * weight;
+                    sum_dEta_dPhi += dEta*dPhi * weight;
+                    sum_dPhi2     += dPhi*dPhi * weight;
+                    sum_weight     += pT*pT; //(d->pt())*(d->pt());
+                    sum_pt         += pT; //d->pt();
+
                 }
-                ptD = (sumWeight > 0 ? sqrt(sumWeight)/sumPt : 0);
-                fjet.addUserFloat("ptD", ptD);                    
 
+                // calculate axis2 and ptD
+                if (sum_weight > 0) {
+                    ptD = sqrt(sum_weight)/sum_pt;
+                    float ave_dEta  = sum_dEta  / sum_weight;
+                    float ave_dPhi  = sum_dPhi  / sum_weight;
+                    float ave_dEta2 = sum_dEta2 / sum_weight;
+                    float ave_dPhi2 = sum_dPhi2 / sum_weight;
+                    float a = ave_dEta2 - ave_dEta*ave_dEta;
+                    float b = ave_dPhi2 - ave_dPhi*ave_dPhi;
+                    float c = -(sum_dEta_dPhi/sum_weight - ave_dEta*ave_dPhi);
+                    float delta = sqrt(fabs( (a-b)*(a-b) + 4*c*c ));
+                    if(a+b-delta > 0) axis2 = sqrt(0.5*(a+b-delta));
+                    else              axis2 = 0.0;
+                    if(a+b+delta > 0) axis1 = sqrt(0.5*(a+b+delta));
+                    else              axis1 = 0.0;
+                }
+                
+                fjet.addUserFloat("ptD", ptD);                    
+                fjet.addUserFloat("totalMult", totalMult);                    
+                fjet.addUserFloat("axis1", axis1);                    
+                fjet.addUserFloat("axis2", axis2);                    
 
                 if (debug_) { std::cout << " end of computeRegVars" << std::endl; }
 
