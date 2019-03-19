@@ -69,10 +69,10 @@ flashggPreselectedDiPhotonsLowMass = cms.EDFilter(
     cut = cms.string(
         "    (leadingPhoton.full5x5_r9>0.8||leadingPhoton.egChargedHadronIso<20||leadingPhoton.egChargedHadronIso/leadingPhoton.pt<0.3)"
         " && (subLeadingPhoton.full5x5_r9>0.8||subLeadingPhoton.egChargedHadronIso<20||subLeadingPhoton.egChargedHadronIso/subLeadingPhoton.pt<0.3)"
-#        " && (leadingPhoton.hadronicOverEm < 0.08 && subLeadingPhoton.hadronicOverEm < 0.08)"
+       " && (leadingPhoton.hadronicOverEm < 0.08 && subLeadingPhoton.hadronicOverEm < 0.08)"
         " && ( ((abs(leadingPhoton.superCluster.eta) < 1.4442 && leadingPhoton.hadronicOverEm < 0.07)||(abs(leadingPhoton.superCluster.eta) > 1.566 && leadingPhoton.hadronicOverEm < 0.035)) && ((abs(subLeadingPhoton.superCluster.eta) < 1.4442 &&  subLeadingPhoton.hadronicOverEm < 0.07)||(abs(subLeadingPhoton.superCluster.eta) > 1.566 && subLeadingPhoton.hadronicOverEm < 0.035) ) )" #tighter H/E
-        #" && ( ((abs(leadingPhoton.superCluster.eta) < 1.4442) ||(abs(leadingPhoton.superCluster.eta) > 1.566))&& ((abs(subLeadingPhoton.superCluster.eta) < 1.4442 )||(abs(subLeadingPhoton.superCluster.eta) > 1.566 ) ) )" #no tighter H/E. FIXME!!!
-                     #" && (leadingPhoton.pt > 10.0 && subLeadingPhoton.pt > 10.0)"  # pTs
+        " && ( ((abs(leadingPhoton.superCluster.eta) < 1.4442) ||(abs(leadingPhoton.superCluster.eta) > 1.566))&& ((abs(subLeadingPhoton.superCluster.eta) < 1.4442 )||(abs(subLeadingPhoton.superCluster.eta) > 1.566 ) ) )" #no tighter H/E. FIXME!!!
+        " && (leadingPhoton.pt > 30.0 && subLeadingPhoton.pt > 20.0)"  # pTs
         " && (abs(leadingPhoton.superCluster.eta) < 2.5 && abs(subLeadingPhoton.superCluster.eta) < 2.5)"
         " && (abs(leadingPhoton.superCluster.eta) < 1.4442 || abs(leadingPhoton.superCluster.eta) > 1.566 )"
         " && (abs(subLeadingPhoton.superCluster.eta) < 1.4442 || abs(subLeadingPhoton.superCluster.eta) > 1.566)"
@@ -81,10 +81,10 @@ flashggPreselectedDiPhotonsLowMass = cms.EDFilter(
         "   || (abs(leadingPhoton.superCluster.eta) > 1.566 && leadingPhoton.full5x5_r9>0.90 && abs(subLeadingPhoton.superCluster.eta) < 1.4442 && subLeadingPhoton.full5x5_r9>0.85 )"   #EE-EB with R9
         "   || (abs(leadingPhoton.superCluster.eta) > 1.566 && leadingPhoton.full5x5_r9>0.90 && abs(subLeadingPhoton.superCluster.eta) > 1.566 && subLeadingPhoton.full5x5_r9>0.90 ) )" #EE-EE with R9
                      " && mass > 55" ##### Change mass cut if needed
-                     #    " && (leadingPhoton.pt > 0.47*mass && subLeadingPhoton.pt > 0.28*mass)"  #Scaled pTs
+                     " && (leadingPhoton.pt > 0.47*mass && subLeadingPhoton.pt > 0.28*mass)"  #Scaled pTs
                      " && (!leadingPhoton.hasPixelSeed) && (!subLeadingPhoton.hasPixelSeed)"  #E-veto
-                     #" && (leadPhotonId > -0.5 && subLeadPhotonId > -0.5)"  #Photon ID MVA
-#        " && (leadingPhoton.passElectronVeto) && (subLeadingPhoton.passElectronVeto)"
+                     " && (leadPhotonId > -0.9 && subLeadPhotonId > -0.9)"  #Photon ID MVA
+       # " && (leadingPhoton.passElectronVeto) && (subLeadingPhoton.passElectronVeto)"
         ),
     variables = rediscoveryHLTvariables,
     categories = rediscoveryHLTcutsV1
