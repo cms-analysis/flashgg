@@ -1,0 +1,23 @@
+{
+    "data" :
+    [
+        "/DoubleEG/Run2016B-17Jul2018_ver1-v1/MINIAOD",
+        "/DoubleEG/Run2016B-17Jul2018_ver2-v1/MINIAOD",
+        "/DoubleEG/Run2016C-17Jul2018-v1/MINIAOD",
+        "/DoubleEG/Run2016D-17Jul2018-v1/MINIAOD",
+        "/DoubleEG/Run2016E-17Jul2018-v1/MINIAOD",
+        "/DoubleEG/Run2016F-17Jul2018-v1/MINIAOD",
+        "/DoubleEG/Run2016G-17Jul2018-v1/MINIAOD",
+        "/DoubleEG/Run2016H-17Jul2018-v1/MINIAOD"
+    ],
+    "sig" :
+    [
+        "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/RunIISummer16MiniAODv3-BS2016_BSandPUSummer16_94X_mcRun2_asymptotic_v3-v1/MINIAODSIM",
+        "/GluGluHToGG_M90_13TeV_amcatnloFXFX_pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/MINIAODSIM"
+    ],
+    "bkg" :
+    [
+        "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v1/MINIAODSIM"
+    ]
+}
+        
