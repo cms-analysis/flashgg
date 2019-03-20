@@ -26,6 +26,8 @@ sigma = fitResultPtr.GetParams()[2]
 name_root_file_with_workspace = "w_signal_"+ str(mass) +".root"
 
 root_file_with_workspace = ROOT.TFile (name_root_file_with_workspace, "RECREATE")
+root_file_with_workspace.mkdir("tagsDumper")
+root_file_with_workspace.cd("tagsDumper")
 
 w = ROOT.RooWorkspace("cms_h4g_13TeV_4photons")
 IntLumi = 1000.0
