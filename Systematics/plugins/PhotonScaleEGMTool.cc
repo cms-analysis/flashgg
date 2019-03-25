@@ -70,7 +70,7 @@ namespace flashgg {
         if(y.hasSwitchToGain6()) gain=6;
         if( overall_range_( y ) ) {
             auto shift_val = scaler_.scaleCorr(run_number_, y.et(), y.superCluster()->eta(), y.full5x5_r9(), gain);
-            auto shift_err = scaler_.scaleCorrUncert(run_number_, y.et(), y.superCluster()->eta(), y.full5x5_r9(), gain);            
+            auto shift_err = scaler_.scaleCorrUncert(run_number_, y.et(), y.superCluster()->eta(), y.full5x5_r9(), gain, uncBitMask_);            
             if (!applyCentralValue()) shift_val = 1.;
             float scale = shift_val + syst_shift * shift_err;
             if( debug_ ) {
