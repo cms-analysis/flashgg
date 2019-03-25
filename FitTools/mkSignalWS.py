@@ -29,7 +29,8 @@ root_file_with_workspace = ROOT.TFile (name_root_file_with_workspace, "RECREATE"
 root_file_with_workspace.mkdir("tagsDumper")
 root_file_with_workspace.cd("tagsDumper")
 
-w = ROOT.RooWorkspace("cms_h4g_13TeV_4photons")
+# w = ROOT.RooWorkspace("cms_h4g_13TeV_4photons")
+w = ROOT.RooWorkspace("cms_h4g_13TeV")
 IntLumi = 1000.0
 
 w.factory("weight[0,7e+06]")
@@ -45,8 +46,9 @@ wsVars.add(w.var("IntLumi"))
 wsVars.add(w.var("avg_dp_mass"))
 wsVars.add(w.var("tp_mass"))
 
-data_RooDataSet = ROOT.RooDataSet( "Data_13TeV_4photons", "Data_13TeV_4photons", chain, wsVars )
+# data_RooDataSet = ROOT.RooDataSet( "Data_13TeV_4photons", "Data_13TeV_4photons", chain, wsVars )
 
+data_RooDataSet = ROOT.RooDataSet( "h4g_13TeV_4photons", "h4g_13TeV_4photons", chain, wsVars )
 data_reduced_RooDataSet = data_RooDataSet.reduce("avg_dp_mass >"+ str (mean - 2*sigma) + " && avg_dp_mass <"+ str (mean + 2*sigma) )
 
 getattr(w,'import')(data_reduced_RooDataSet)
