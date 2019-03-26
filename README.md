@@ -15,7 +15,7 @@ Supported releases:
  git cms-init
  cd $CMSSW_BASE/src 
  git clone -b dev_legacy_runII https://github.com/cms-analysis/flashgg 
- source flashgg/setup_10_2_X.sh
+ source flashgg/setup_flashgg.sh
  ```
 
 If everything now looks reasonable, you can build:

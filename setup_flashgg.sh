@@ -106,16 +106,6 @@ fi
 
 cd $CMSSW_BASE/src
 
-# Still needed, 8_0_28
-# Temporarily removed, 9_2_0
-#echo "EGM Pho ID recipe, Summer16"
-#git cms-merge-topic ikrav:egm_id_80X_v3_photons
-
-# Tag updated for 8_0_28 and may require further investigation
-# Temporarily removed, 9_2_0
-#echo "grabbing MET topic updates..."
-#git cms-merge-topic cms-met:METRecipe_8020_for80Xintegration -u
-
 # Straightofrward update for 8_0_28
 # echo "Setting up QGL..."
 # echo "... and setting up weight stuff..."
@@ -138,31 +128,11 @@ echo "Setting up TnP tools for 10_1_X..."
 #git clone -b CMSSW_9_4_X https://github.com/cms-analysis/EgammaAnalysis-TnPTreeProducer.git EgammaAnalysis/TnPTreeProducer
 git clone -b v2018.05.11_10_1_X_prelim https://github.com/lsoffi/EgammaAnalysis-TnPTreeProducer EgammaAnalysis/TnPTreeProducer
 
-echo "Temporary perl hack for LeptonSelection (to keep repo compatibility with 80X), due to CMSSW function name change"
-perl -p -i.bak -e 's/numberOfHits/numberOfAllHits/g' $CMSSW_BASE/src/flashgg/Taggers/src/LeptonSelection.cc
-
 #MET discrepancy mitigation
 git cms-merge-topic cms-met:METFixEE2017_949_v2_backport_to_102X 
 
-# Updated for 8_0_28, and compiles and runs, but NOT checked by experts
-# Update built from sethzenz:for-flashgg-smearer-conv-weights-8_0_26 and shervin86:Hgg_Gain_v1
-echo "Setting up EGM stuff..."
-#git cms-merge-topic -u shervin86:for-flashgg-smearer-conv-9_4_5
-#git apply  flashgg/EnergyScaleCorrection.patch
-
-#EGM IDs
-#git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP    
-#git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
-
-echo "copy databases for local running (consistency with crab)"
-cp $CMSSW_BASE/src/flashgg/Systematics/data/JEC/Fall17_17Nov2017*db $CMSSW_BASE/src/flashgg/
-cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_cmssw8020_v2.db $CMSSW_BASE/src/flashgg
-
 echo "copy smearing files stored in flashgg into egamma tools"
 git clone https://github.com/ECALELFS/ScalesSmearings.git $CMSSW_BASE/src/RecoEgamma/ScalesSmearings/data
-
-echo "linking classdef for release 102X"
-ln -s $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def_102X.xml $CMSSW_BASE/src/flashgg/DataFormats/src/classes_def.xml
 
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit
@@ -170,6 +140,12 @@ ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_
 if [ -d "$CMSSW_BASE/src/PhysicsTools/PythonAnalysis" ]; then
   rm -r $CMSSW_BASE/src/PhysicsTools/PythonAnalysis
 fi
+
+echo "setting up XGBoost interface"
+cd $CMSSW_BASE/src
+git clone https://github.com/simonepigazzini/XGBoostCMSSW.git
+cp XGBoostCMSSW/XGBoostInterface/toolbox/*xml $CMSSW_BASE/config/toolbox/$SCRAM_ARCH/tools/selected/
+scram setup rabit xgboost
 
 echo
 echo "Done with setup script! You still need to build!"
