@@ -1027,13 +1027,13 @@ Commands:
         self.mn.importFromCatalog(glob.glob(shell_expand(src)),pattern)
 
     def run_check(self,*args):
-        self.mn.checkAllDatasets(*args)
+        self.mn.checkAllDatasets(*args,match=self.options.dataset)
 
     def run_checklite(self,*args):
-        self.mn.checkAllDatasets(*args,light=True)
+        self.mn.checkAllDatasets(*args,match=self.options.dataset,light=True)
 
     def run_checkopen(self,*args):
-        self.mn.checkAllDatasets(*args,justOpen=True)
+        self.mn.checkAllDatasets(*args,match=self.options.dataset,justOpen=True)
     
     def run_getlumi(self,*args):
         self.mn.getLumiList(*args)
