@@ -2,15 +2,19 @@ import FWCore.ParameterSet.Config as cms
 import os
 
 from flashgg.Taggers.flashggH4GCandidate_cfi import FlashggH4GCandidate
+# from flashgg.Taggers.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
 from flashgg.Taggers.flashggPreselectedDiPhotons_LowMass_cfi import flashggPreselectedDiPhotonsLowMass
 import flashgg.Taggers.dumperConfigTools as cfgTools
 
 process = cms.Process("FLASHggH4GTest")
 
-
 ###---H4G candidates production
 process.FlashggH4GCandidate = FlashggH4GCandidate.clone()
 process.FlashggH4GCandidate.idSelection = cms.PSet(
+         # rho = flashggPreselectedDiPhotons.rho,
+         # cut = flashggPreselectedDiPhotons.cut,
+         # variables = flashggPreselectedDiPhotons.variables,
+         # categories = flashggPreselectedDiPhotons.categories
         rho = flashggPreselectedDiPhotonsLowMass.rho,
         cut = flashggPreselectedDiPhotonsLowMass.cut,
         variables = flashggPreselectedDiPhotonsLowMass.variables,
@@ -23,17 +27,18 @@ all_variables = var.pho_variables + var.dipho_variables + var.tp_variables
 from flashgg.Taggers.h4gCandidateDumper_cfi import h4gCandidateDumper
 process.h4gCandidateDumper = h4gCandidateDumper.clone()
 process.h4gCandidateDumper.dumpTrees = True
-process.h4gCandidateDumper.dumpWorkspace = False
+process.h4gCandidateDumper.dumpWorkspace = True
 
 cfgTools.addCategories(process.h4gCandidateDumper,
                         [
                             ("Reject", "", -1),
-                            ("4photons","phoVector.size() > 3", 0),
+                            # ("All","phoVector.size() > 0",0),
+                            ("4photons","phoVector.size() > 3 && phoP4Corrected[0].pt() > 30 && phoP4Corrected[1].pt() > 20 && phoP4Corrected[2].pt() > 10 && phoP4Corrected[3].pt() > 10 && abs(phoP4Corrected[0].eta()) < 2.5 && abs(phoP4Corrected[1].eta()) < 2.5 && abs(phoP4Corrected[2].eta()) < 2.5 && abs(phoP4Corrected[3].eta()) < 2.5 && pho1_MVA > -0.9 && pho2_MVA > -0.9 && pho3_MVA > -0.9 && pho4_MVA > -0.9 && h4gFourVect.mass() > 100 && h4gFourVect.mass() < 180", 0),
                             ("3photons","phoVector.size() == 3", 0),
                             ("2photons","phoVector.size() == 2", 0)
                         ],
-
                         variables = all_variables,
+                        # variables = var.ws_variables,
                         histograms=[]
                         )
 
@@ -70,6 +75,8 @@ customize.setDefault("maxEvents",-1)
 # Require low mass diphoton triggers
 from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
 process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring(
+                                                              # "HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v*",
+                                                              # "HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90",
                                                               "HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55_v*",
                                                               "HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55_v*"
                                                                ))
@@ -84,8 +91,8 @@ process.load("Configuration.Geometry.GeometryECALHCAL_cff")
 process.eeBadScFilter.EERecHitSource = cms.InputTag("reducedEgamma","reducedEERecHits") # Saved MicroAOD Collection (data only)
 
 process.dataRequirements = cms.Sequence()
-
 process.dataRequirements += process.hltHighLevel
+
 if customize.processId == "Data":
    # process.dataRequirements += process.hltHighLevel
    process.dataRequirements += process.eeBadScFilter
