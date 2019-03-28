@@ -109,7 +109,6 @@ cd $CMSSW_BASE/src
 # Straightofrward update for 8_0_28
 # echo "Setting up QGL..."
 # echo "... and setting up weight stuff..."
-git cms-addpkg RecoEgamma/EgammaTools
 git cms-addpkg RecoJets/JetProducers
 git cms-addpkg CommonTools/UtilAlgos
 # # Straightforward update for 8_0_28
@@ -132,7 +131,7 @@ git clone -b v2018.05.11_10_1_X_prelim https://github.com/lsoffi/EgammaAnalysis-
 git cms-merge-topic cms-met:METFixEE2017_949_v2_backport_to_102X 
 
 echo "copy smearing files stored in flashgg into egamma tools"
-git clone https://github.com/ECALELFS/ScalesSmearings.git $CMSSW_BASE/src/RecoEgamma/ScalesSmearings/data
+git clone https://github.com/ECALELFS/ScalesSmearings.git $CMSSW_BASE/src/EgammaAnalysis/ScalesSmearings/data
 
 echo "adding hook for indentation"
 ln -s $CMSSW_BASE/src/flashgg/Validation/scripts/flashgg_indent_check.sh $CMSSW_BASE/src/flashgg/.git/hooks/pre-commit
