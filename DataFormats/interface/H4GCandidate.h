@@ -20,7 +20,7 @@ namespace flashgg {
   public:
     //---ctors---
     H4GCandidate() ;
-    H4GCandidate( std::vector<flashgg::Photon> phoVector, edm::Ptr<reco::Vertex> vertex, reco::GenParticle::Point genVertex);
+    H4GCandidate( std::vector<flashgg::Photon> phoVector, edm::Ptr<reco::Vertex> vertex, edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex);
 
     //---dtor---
     ~H4GCandidate();
@@ -28,6 +28,7 @@ namespace flashgg {
     //---utils---
     const std::vector<flashgg::Photon> phoVector() const { return phoVector_; };
     const edm::Ptr<reco::Vertex> & vertex() const { return vertex_;  };
+    const edm::Ptr<reco::Vertex> & vertex_diphoton() const { return vertex_diphoton_;  };
     const reco::GenParticle::Point & genVertex() const { return genVertex_;  };
     const std::vector<flashgg::Photon> phoP4Corrected() const { return phoP4Corrected_; };
     const float pho1_MVA() const { return pho1_MVA_; };
@@ -59,6 +60,7 @@ namespace flashgg {
 
     std::vector<flashgg::Photon> phoVector_;
     edm::Ptr<reco::Vertex>               vertex_;
+    edm::Ptr<reco::Vertex>               vertex_diphoton_;
     reco::GenParticle::Point genVertex_;
     std::vector<flashgg::Photon> phoP4Corrected_;
     float pho1_MVA_;

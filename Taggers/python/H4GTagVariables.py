@@ -1,3 +1,6 @@
+test_variables = [
+"test                    := n_photons"
+]
 pho_variables = [
       "npho                    := phoVector.size()",
       "pho1_pt                 := phoP4Corrected[0].pt()",
@@ -56,7 +59,8 @@ pho_variables = [
       "pho23_m                 := h4gPho23.mass",
       "pho24_m                 := h4gPho24.mass",
       "pho34_m                 := h4gPho34.mass",
-      "dZ                      := genVertex.z() - vertex.z()"
+      "dZ                      := genVertex.z() - vertex.z()",
+      "dZ_prime                := genVertex.z() - vertex_diphoton.z()"
     ]
 
 dipho_variables = [
@@ -97,5 +101,5 @@ ws_variables = [
    "dp1_mass                := h4gDiPho1.mass() ",
    "dp2_mass                := h4gDiPho2.mass() ",
    "avg_dp_mass             := (h4gDiPho1.mass()+h4gDiPho2.mass())/2",
-   "dZ                      := 0"
+   "dZ                      := genVertex.z() - vertex.z()"
 ]

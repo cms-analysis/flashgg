@@ -7,6 +7,7 @@ using namespace flashgg;
 H4GCandidate::H4GCandidate():
 phoVector_ (),
 vertex_ (),
+vertex_diphoton_(),
 phoP4Corrected_ (),
 pho1_MVA_ (),
 pho2_MVA_ (),
@@ -33,8 +34,8 @@ tp_ ()
 
   H4GCandidate::~H4GCandidate() {}
 
-  H4GCandidate::H4GCandidate( std::vector<flashgg::Photon> phoVector, edm::Ptr<reco::Vertex> vertex, reco::GenParticle::Point genVertex):
-  phoVector_(phoVector), vertex_(vertex)
+  H4GCandidate::H4GCandidate( std::vector<flashgg::Photon> phoVector, edm::Ptr<reco::Vertex> vertex, edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex):
+  phoVector_(phoVector), vertex_(vertex), vertex_diphoton_(vertex_diphoton)
   {
     float vtx_X = vertex_->x();
     float vtx_Y = vertex_->y();
@@ -151,7 +152,6 @@ tp_ ()
 
     TVector3 CSaxis = p1.Vect().Unit() - p2.Vect().Unit();
     CSaxis.Unit();
-
     return cos(   CSaxis.Angle( a_1.Vect().Unit() )    );
   }
   std::vector<float> H4GCandidate::CosThetaAngles() const {
@@ -172,7 +172,6 @@ tp_ ()
     helicityThetas.push_back( HelicityCosTheta(Boosted_a2, BoostedLeadingPhoton_a2));
 
     return helicityThetas;
-
   }
 
   float H4GCandidate::HelicityCosTheta( TLorentzVector Booster, TLorentzVector Boosted) const
