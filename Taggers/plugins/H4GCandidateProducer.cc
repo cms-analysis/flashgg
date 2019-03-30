@@ -124,11 +124,14 @@ namespace flashgg {
 
       //---output collection
       std::unique_ptr<vector<H4GCandidate> > H4GColl_( new vector<H4GCandidate> );
-
-      edm::Ptr<reco::Vertex> vertex_zero = vertex->ptrAt(0);
+      std::vector <edm::Ptr<reco::Vertex> > Vertices; // Collection of vertices
+      for( int v = 0; v < (int) vertex->size(); v++ )
+      {
+        edm::Ptr<reco::Vertex> vtx = vertex->ptrAt( v );
+        Vertices.push_back(vtx);
+      }
       reco::GenParticle::Point genVertex;
       edm::Ptr<reco::Vertex> vertex_diphoton;
-      // cout << " gen vertex X position" << "  " << vertex_zero->x() << endl;
       //---at least one diphoton should pass the low mass hgg pre-selection
       bool atLeastOneDiphoPass = false;
       std::vector<const flashgg::Photon*> phosTemp;
@@ -136,8 +139,6 @@ namespace flashgg {
       {
         edm::Ptr<flashgg::DiPhotonCandidate> thisDPPtr = diphotons->ptrAt( dpIndex );
         vertex_diphoton = diphotons->ptrAt( dpIndex )->vtx();
-
-        // cout << "pointer " << diphotons->ptrAt( dpIndex )->vtx().x() << endl;
         flashgg::DiPhotonCandidate * thisDPPointer = const_cast<flashgg::DiPhotonCandidate *>(thisDPPtr.get());
         atLeastOneDiphoPass |= idSelector_(*thisDPPointer, event);
       }
@@ -200,7 +201,7 @@ namespace flashgg {
               }
             }
           }
-          H4GCandidate h4g(phoVector, vertex_zero, vertex_diphoton, genVertex);
+          H4GCandidate h4g(phoVector, Vertices, vertex_diphoton, genVertex);
           H4GColl_->push_back(h4g);
         }
         event.put( std::move(H4GColl_) );

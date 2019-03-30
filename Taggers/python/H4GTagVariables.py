@@ -59,8 +59,24 @@ pho_variables = [
       "pho23_m                 := h4gPho23.mass",
       "pho24_m                 := h4gPho24.mass",
       "pho34_m                 := h4gPho34.mass",
-      "dZ                      := genVertex.z() - vertex.z()",
-      "dZ_prime                := genVertex.z() - vertex_diphoton.z()"
+      # "dZ                      := genVertex.z() - vertex.z()",
+      # "dZ_prime                := genVertex.z() - vertex_diphoton.z()",
+      "dZ                      := genVertex.z() - Vertices[0].z()",
+      # "Vtx_dipho_x             := vertex_diphoton.x()",
+      # "Vtx_dipho_y             := vertex_diphoton.y()",
+      # "Vtx_dipho_z             := vertex_diphoton.z()",
+      "Vtx_x                   := Vertices[0].x()",
+      "Vtx_y                   := Vertices[0].y()",
+      "Vtx_z                   := Vertices[0].z()",
+      "n_vertices              := Vertices.size()",
+      "genvertex_x             := genVertex.x()",
+      "genvertex_y             := genVertex.y()",
+      "genvertex_z             := genVertex.z()"
+      # "gen_X                   := genVtx_x",
+      # "gen_Y                   := genVtx_y",
+      # "gen_Z                   := genVtx_z"
+      # "n_vertices              := Vertices.size()",
+      # "test                    := genVertex.z() - Vertices[0].z()"
     ]
 
 dipho_variables = [

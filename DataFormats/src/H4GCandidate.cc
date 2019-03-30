@@ -6,7 +6,8 @@
 using namespace flashgg;
 H4GCandidate::H4GCandidate():
 phoVector_ (),
-vertex_ (),
+Vertices_(),
+// vertex_ (),
 vertex_diphoton_(),
 phoP4Corrected_ (),
 pho1_MVA_ (),
@@ -33,13 +34,17 @@ tp_ ()
 {}
 
   H4GCandidate::~H4GCandidate() {}
-
-  H4GCandidate::H4GCandidate( std::vector<flashgg::Photon> phoVector, edm::Ptr<reco::Vertex> vertex, edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex):
-  phoVector_(phoVector), vertex_(vertex), vertex_diphoton_(vertex_diphoton)
+  // H4GCandidate::H4GCandidate( std::vector<flashgg::Photon> phoVector, edm::Ptr<reco::Vertex> vertex, edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex):
+  // phoVector_(phoVector), vertex_(vertex), vertex_diphoton_(vertex_diphoton), genVertex_(genVertex)
+  H4GCandidate::H4GCandidate( std::vector<flashgg::Photon> phoVector, std::vector<edm::Ptr<reco::Vertex>> Vertices, edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex):
+  phoVector_(phoVector), Vertices_(Vertices), genVertex_(genVertex)
   {
-    float vtx_X = vertex_->x();
-    float vtx_Y = vertex_->y();
-    float vtx_Z = vertex_->z();
+    float vtx_X = Vertices_[0]->x();
+    float vtx_Y = Vertices_[0]->y();
+    float vtx_Z = Vertices_[0]->z();
+    // float vtx_X = vertex_->x();
+    // float vtx_Y = vertex_->y();
+    // float vtx_Z = vertex_->z();
     math::XYZVector vtx_Pos( vtx_X, vtx_Y, vtx_Z );
     if (phoVector_.size() > 0)
     {
@@ -56,10 +61,10 @@ tp_ ()
       phoP4Corrected_.push_back(phoVector_[p]);
     }
   }
-  pho1_MVA_ = phoP4Corrected_.size() > 0 ? phoP4Corrected_[0].phoIdMvaDWrtVtx(vertex_) : -999;
-  pho2_MVA_ = phoP4Corrected_.size() > 0 ? phoP4Corrected_[1].phoIdMvaDWrtVtx(vertex_) : -999;
-  pho3_MVA_ = phoP4Corrected_.size() > 2 ? phoP4Corrected_[2].phoIdMvaDWrtVtx(vertex_) : -999;
-  pho4_MVA_ = phoP4Corrected_.size() > 3 ? phoP4Corrected_[3].phoIdMvaDWrtVtx(vertex_) : -999;
+  pho1_MVA_ = phoP4Corrected_.size() > 0 ? phoP4Corrected_[0].phoIdMvaDWrtVtx(Vertices_[0]) : -999;
+  pho2_MVA_ = phoP4Corrected_.size() > 0 ? phoP4Corrected_[1].phoIdMvaDWrtVtx(Vertices_[0]) : -999;
+  pho3_MVA_ = phoP4Corrected_.size() > 2 ? phoP4Corrected_[2].phoIdMvaDWrtVtx(Vertices_[0]) : -999;
+  pho4_MVA_ = phoP4Corrected_.size() > 3 ? phoP4Corrected_[3].phoIdMvaDWrtVtx(Vertices_[0]) : -999;
 
     float minDM = 1000000;
     if (phoP4Corrected_.size() > 3)

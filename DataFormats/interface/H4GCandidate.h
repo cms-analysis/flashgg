@@ -20,14 +20,16 @@ namespace flashgg {
   public:
     //---ctors---
     H4GCandidate() ;
-    H4GCandidate( std::vector<flashgg::Photon> phoVector, edm::Ptr<reco::Vertex> vertex, edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex);
+    H4GCandidate( std::vector<flashgg::Photon> phoVector, std::vector<edm::Ptr<reco::Vertex>> Vertices,edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex);
+    // H4GCandidate( std::vector<flashgg::Photon> phoVector, edm::Ptr<reco::Vertex> vertex, edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex);
 
     //---dtor---
     ~H4GCandidate();
 
     //---utils---
     const std::vector<flashgg::Photon> phoVector() const { return phoVector_; };
-    const edm::Ptr<reco::Vertex> & vertex() const { return vertex_;  };
+    const std::vector< edm::Ptr<reco::Vertex> >Vertices() const { return Vertices_; };
+    // const edm::Ptr<reco::Vertex> & vertex() const { return vertex_;  };
     const edm::Ptr<reco::Vertex> & vertex_diphoton() const { return vertex_diphoton_;  };
     const reco::GenParticle::Point & genVertex() const { return genVertex_;  };
     const std::vector<flashgg::Photon> phoP4Corrected() const { return phoP4Corrected_; };
@@ -59,7 +61,8 @@ namespace flashgg {
   private:
 
     std::vector<flashgg::Photon> phoVector_;
-    edm::Ptr<reco::Vertex>               vertex_;
+    std::vector<edm::Ptr<reco::Vertex>> Vertices_;
+    // edm::Ptr<reco::Vertex>               vertex_;
     edm::Ptr<reco::Vertex>               vertex_diphoton_;
     reco::GenParticle::Point genVertex_;
     std::vector<flashgg::Photon> phoP4Corrected_;
