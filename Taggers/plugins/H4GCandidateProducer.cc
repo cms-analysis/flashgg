@@ -20,6 +20,7 @@
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
 #include "DataFormats/Math/interface/deltaR.h"
+#include "DataFormats/BeamSpot/interface/BeamSpot.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
@@ -74,6 +75,8 @@ namespace flashgg {
     EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
     Handle<View<reco::GenParticle> > genParticle;
 
+    EDGetTokenT<View<reco::BeamSpot> > beamSpotToken_;
+    Handle<View<reco::BeamSpot> > beamSpot;
 
     //---ID selector
     ConsumesCollector cc_;
@@ -92,6 +95,7 @@ namespace flashgg {
   photonToken_(),
   diphotonToken_(),
   genParticleToken_(),
+  beamSpotToken_(),
   cc_( consumesCollector() ),
   idSelector_( ParameterSet(), cc_ )
   {}
@@ -101,6 +105,7 @@ namespace flashgg {
     diphotonToken_( consumes<View<DiPhotonCandidate> >( pSet.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
     vertexToken_( consumes<View<reco::Vertex> >( pSet.getParameter<InputTag> ( "VertexTag" ) ) ),
     genParticleToken_( consumes<View<reco::GenParticle> >( pSet.getParameter<InputTag> ( "GenParticleTag" ) ) ),
+    beamSpotToken_( consumes<View<reco::BeamSpot> >( pSet.getParameter<InputTag> ( "BeamSpotTag" ) ) ),
 
     cc_( consumesCollector() ),
     idSelector_( pSet.getParameter<ParameterSet> ( "idSelection" ), cc_ )
@@ -121,6 +126,7 @@ namespace flashgg {
       event.getByToken( diphotonToken_, diphotons );
       event.getByToken( vertexToken_, vertex );
       event.getByToken( genParticleToken_, genParticle );
+      event.getByToken( beamSpotToken_, beamSpot );
 
       //---output collection
       std::unique_ptr<vector<H4GCandidate> > H4GColl_( new vector<H4GCandidate> );
@@ -131,6 +137,7 @@ namespace flashgg {
         Vertices.push_back(vtx);
       }
       reco::GenParticle::Point genVertex;
+      math::XYZPoint BS_vtx;
       edm::Ptr<reco::Vertex> vertex_diphoton;
       //---at least one diphoton should pass the low mass hgg pre-selection
       bool atLeastOneDiphoPass = false;
@@ -192,6 +199,12 @@ namespace flashgg {
             flashgg::Photon * thisPPointer = const_cast<flashgg::Photon *>(pho.get());
             phoVector.push_back(*thisPPointer);
           }
+          if( beamSpot.isValid() ) {
+            BS_vtx = beamSpot->position();
+            // cout << " x position " << beamSpot.x() << endl;
+            // vertexPoint = recoBeamSpotHandle->position();
+            //      beamsig = recoBeamSpotHandle->sigmaZ();
+        }
           if (! event.isRealData() )
           {
             for( auto &part : *genParticle ) {
