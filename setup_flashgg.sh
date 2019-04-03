@@ -109,17 +109,27 @@ cd $CMSSW_BASE/src
 # Straightofrward update for 8_0_28
 # echo "Setting up QGL..."
 # echo "... and setting up weight stuff..."
-git cms-addpkg RecoJets/JetProducers
-git cms-addpkg CommonTools/UtilAlgos
+#git cms-addpkg RecoJets/JetProducers
+#git cms-addpkg CommonTools/UtilAlgos
 # # Straightforward update for 8_0_28
 # echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
-git cms-addpkg DataFormats/Common
-git cms-addpkg FWCore/GuiBrowsers #temp-by hand
+#git cms-addpkg DataFormats/Common
+#git cms-addpkg FWCore/GuiBrowsers #temp-by hand
 # git cms-merge-topic -u ArnabPurohit:for-flashgg-QGL-vertexIndex-10_1_1
 git remote add ArnabPurohit https://github.com/ArnabPurohit/cmssw.git
 git fetch ArnabPurohit
 git cherry-pick 602bbd96dceba02a84009e9b40817a5f820023da
 git cherry-pick ef94f6055da10c0c3b6cf660a27d50fb323f46f0
+
+# EGamma post reco tools for energy scales and smearings
+echo "Settinga up Scales and Smearings form EGM"
+git cms-merge-topic cms-egamma:EgammaPostRecoTools
+git clone git@github.com:cms-egamma/EgammaAnalysis-ElectronTools.git 
+cd EgammaAnalysis/ElectronTools/data
+git checkout ScalesSmearing2018_Dev
+cd $CMSSW_BASE/src
+git cms-merge-topic cms-egamma:EgammaPostRecoTools_dev
+git apply flashgg/EnergyScaleCorrection.patch
 
 # TnP tools removed for 8_0_28, so Validation does not compile
 # To be investigated
