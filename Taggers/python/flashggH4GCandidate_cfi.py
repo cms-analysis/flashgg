@@ -8,6 +8,6 @@ FlashggH4GCandidate = cms.EDProducer("FlashggH4GCandidateProducer",
                                      DiPhotonTag            = cms.InputTag('flashggDiPhotons'),
                                      VertexTag              = cms.InputTag('offlineSlimmedPrimaryVertices'),
                                      GenParticleTag         = cms.InputTag('flashggPrunedGenParticles'),
-                                     BeamSpotTag            = cms.InputTag('offlineBeamSpot')
+                                     beamSpotTag            = cms.InputTag('offlineBeamSpot')
                                      )
 flashggH4GTagSequence = cms.Sequence( flashggH4GTag )
