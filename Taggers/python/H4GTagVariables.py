@@ -59,23 +59,35 @@ pho_variables = [
       "pho23_m                 := h4gPho23.mass",
       "pho24_m                 := h4gPho24.mass",
       "pho34_m                 := h4gPho34.mass",
-      # "dZ                      := genVertex.z() - vertex.z()",
-      # "dZ_prime_check          := genVertex.z() - vtx_diphoton_z",
-      "dZ_prime                := genVertex.z() - vertex_diphoton.z()",
-      "dZ                      := genVertex.z() - Vertices[0].z()",
-      # "Vtx_dipho_x             := vertex_diphoton.x()",
-      # "Vtx_dipho_y             := vertex_diphoton.y()",
-      # "Vtx_dipho_z             := vertex_diphoton.z()",
+      "n_vertices              := Vertices.size()",
       "Vtx_x                   := Vertices[0].x()",
       "Vtx_y                   := Vertices[0].y()",
       "Vtx_z                   := Vertices[0].z()",
-      "n_vertices              := Vertices.size()",
+      "Vtx_hgg_x               := vertex_diphoton.x()",
+      "Vtx_hgg_y               := vertex_diphoton.y()",
+      "Vtx_hgg_z               := vertex_diphoton.z()",
       "genvertex_x             := genVertex.x()",
       "genvertex_y             := genVertex.y()",
       "genvertex_z             := genVertex.z()",
+      "dZ_hggVtx               := genVertex.z() - vertex_diphoton.z()",
+      "dZ_zeroVtx              := genVertex.z() - Vertices[0].z()",
       "BS_x                    := BSPoint.x()",
       "BS_y                    := BSPoint.y()",
-      "BS_z                    := BSPoint.z()"
+      "BS_z                    := BSPoint.z()",
+      "dZ_BS_zeroVtx           := BSPoint.z() - Vertices[0].z()",
+      "dZ_BS_hggVtx            := BSPoint.z() - vertex_diphoton.z()",
+      "dZ_sigmaZ               := BSPoint.sigmaZ()"
+      # "dZ                      := genVertex.z() - vertex.z()",
+      # "dZ_prime_check          := genVertex.z() - vtx_diphoton_z",
+      # "Vtx_dipho_x             := vertex_diphoton.x()",
+      # "Vtx_dipho_y             := vertex_diphoton.y()",
+      # "Vtx_dipho_z             := vertex_diphoton.z()",
+
+
+
+
+
+
 
       # "gen_X                   := genVtx_x",
       # "gen_Y                   := genVtx_y",
