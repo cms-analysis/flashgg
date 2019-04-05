@@ -10,6 +10,7 @@ Vertices_(),
 // vertex_ (),
 vertex_diphoton_(),
 phoP4Corrected_ (),
+logSumPt2_(),
 vtx_diphoton_z_(),
 pho1_MVA_ (),
 pho2_MVA_ (),
@@ -37,9 +38,19 @@ tp_ ()
   H4GCandidate::~H4GCandidate() {}
   // H4GCandidate::H4GCandidate( std::vector<flashgg::Photon> phoVector, edm::Ptr<reco::Vertex> vertex, edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex):
   // phoVector_(phoVector), vertex_(vertex), vertex_diphoton_(vertex_diphoton), genVertex_(genVertex)
-  H4GCandidate::H4GCandidate( std::vector<flashgg::Photon> phoVector, std::vector<edm::Ptr<reco::Vertex>> Vertices, edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex, math::XYZPoint BSPoint):
-  phoVector_(phoVector), Vertices_(Vertices), vertex_diphoton_(vertex_diphoton), genVertex_(genVertex), BSPoint_(BSPoint)
+  H4GCandidate::H4GCandidate( std::vector<flashgg::Photon> phoVector, std::vector<edm::Ptr<reco::Vertex>> Vertices, edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex, math::XYZPoint BSPoint, std::vector <edm::Ptr<flashgg::DiPhotonCandidate>> diPhoPtrs):
+  phoVector_(phoVector), Vertices_(Vertices), vertex_diphoton_(vertex_diphoton), genVertex_(genVertex), BSPoint_(BSPoint), diPhoPtrs_(diPhoPtrs)
   {
+    //variables for vertex study
+    int n_diphoPtr = diPhoPtrs_.size();
+    std::vector<float> logSumPt2_;
+    for (int d = 0; d < n_diphoPtr; d++)
+    {
+      edm::Ptr<flashgg::DiPhotonCandidate> tmp_diphoPtr = diPhoPtrs_[d];
+      // cout << tmp_diphoPtr->logSumPt2() << endl;
+      logSumPt2_.push_back(tmp_diphoPtr->logSumPt2());
+    }
+
     float vtx_diphoton_z_ = vertex_diphoton_->z();
     float vtx_X = Vertices_[0]->x();
     float vtx_Y = Vertices_[0]->y();

@@ -34,7 +34,6 @@
 #include "TTree.h"
 
 
-
 using namespace std;
 using namespace edm;
 
@@ -50,16 +49,17 @@ namespace flashgg {
     H4GCandidateProducer();
     H4GCandidateProducer( const ParameterSet & );
 
-    //Out tree elements:
+    // //Out tree elements:
     edm::Service<TFileService> fs;
-    TH1F* cutFlow;
-    TH1F* presel_pho;
-    TH1F* pho_presel;
-    TH1F* phoHisto;
+    // TH1F* cutFlow;
+    // TH1F* presel_pho;
+    // TH1F* pho_presel;
+    // TH1F* phoHisto;
+
 
   private:
-    edm::Service<TFileService> fs_;
-    double genTotalWeight;
+    // edm::Service<TFileService> fs_;
+    // double genTotalWeight;
 
     void produce( Event &, const EventSetup & ) override;
 
@@ -85,9 +85,9 @@ namespace flashgg {
     //----output collection
     auto_ptr<vector<H4GCandidate> > H4GColl_;
 
-    //--for cut FLow
-    edm::InputTag genInfo_;
-    edm::EDGetTokenT<GenEventInfoProduct> genInfoToken_;
+    // //--for cut FLow
+    // edm::InputTag genInfo_;
+    // edm::EDGetTokenT<GenEventInfoProduct> genInfoToken_;
 
   };
   //---constructors
@@ -110,12 +110,12 @@ namespace flashgg {
     idSelector_( pSet.getParameter<ParameterSet> ( "idSelection" ), cc_ )
 
     {
-      genInfo_ = pSet.getUntrackedParameter<edm::InputTag>( "genInfo", edm::InputTag("generator") );
-      genInfoToken_ = consumes<GenEventInfoProduct>( genInfo_ );
-      cutFlow = fs->make<TH1F> ("cutFlow","Cut FLow",10,0,10);
-      presel_pho = fs->make<TH1F> ("presel_pho","",10,0,10);
-      pho_presel = fs->make<TH1F> ("pho_presel","",10,0,10);
-      phoHisto = fs->make<TH1F>("N_photons","N_photons",15,0.,15);
+      // genInfo_ = pSet.getUntrackedParameter<edm::InputTag>( "genInfo", edm::InputTag("generator") );
+      // genInfoToken_ = consumes<GenEventInfoProduct>( genInfo_ );
+      // cutFlow = fs->make<TH1F> ("cutFlow","Cut FLow",10,0,10);
+      // presel_pho = fs->make<TH1F> ("presel_pho","",10,0,10);
+      // pho_presel = fs->make<TH1F> ("pho_presel","",10,0,10);
+      // phoHisto = fs->make<TH1F>("N_photons","N_photons",15,0.,15);
 
       produces<vector<H4GCandidate> > ();
     }
@@ -147,56 +147,65 @@ namespace flashgg {
       //---at least one diphoton should pass the low mass hgg pre-selection
       bool atLeastOneDiphoPass = false;
       std::vector<const flashgg::Photon*> phosTemp;
+      std::vector <edm::Ptr<flashgg::DiPhotonCandidate>> diPhoPtrs;
       for( unsigned int dpIndex = 0; dpIndex < diphotons->size(); dpIndex++ )
       {
         edm::Ptr<flashgg::DiPhotonCandidate> thisDPPtr = diphotons->ptrAt( dpIndex );
         vertex_diphoton = diphotons->ptrAt( dpIndex )->vtx();
         flashgg::DiPhotonCandidate * thisDPPointer = const_cast<flashgg::DiPhotonCandidate *>(thisDPPtr.get());
         atLeastOneDiphoPass |= idSelector_(*thisDPPointer, event);
+        cout << atLeastOneDiphoPass << endl;
       }
       int n_photons = -999;
 
-      Handle<GenEventInfoProduct> genInfo;
-      if( ! event.isRealData() ) {
-        event.getByToken(genInfoToken_, genInfo);
-        genTotalWeight = genInfo->weight();
-      } else {
-        genTotalWeight = 1;
-      }
+      // Handle<GenEventInfoProduct> genInfo;
+      // if( ! event.isRealData() ) {
+      //   event.getByToken(genInfoToken_, genInfo);
+      //   genTotalWeight = genInfo->weight();
+      // } else {
+      //   genTotalWeight = 1;
+      // }
       n_photons = photons->size();
-      cutFlow->Fill(0.0,genTotalWeight);
-      presel_pho->Fill(0.0,genTotalWeight);
-      pho_presel->Fill(0.0,genTotalWeight);
+      // cutFlow->Fill(0.0,genTotalWeight);
+      // presel_pho->Fill(0.0,genTotalWeight);
+      // pho_presel->Fill(0.0,genTotalWeight);
+      //
+      // phoHisto->Fill(n_photons);
 
-      phoHisto->Fill(n_photons);
+      // if(atLeastOneDiphoPass)
+      // {
+      //   presel_pho->Fill(1.0,genTotalWeight);
+      //   if(n_photons > 3)
+      //   {
+      //     presel_pho->Fill(2.0,genTotalWeight);
+      //   }
+      // }
 
-      if(atLeastOneDiphoPass)
-      {
-        presel_pho->Fill(1.0,genTotalWeight);
-        if(n_photons > 3)
-        {
-          presel_pho->Fill(2.0,genTotalWeight);
-        }
-      }
-
-      if(n_photons > 3)
-      {
-        pho_presel->Fill(1.0,genTotalWeight);
-        if(atLeastOneDiphoPass)
-        {
-          pho_presel->Fill(2.0,genTotalWeight);
-        }
-      }
+      // if(n_photons > 3)
+      // {
+      //   pho_presel->Fill(1.0,genTotalWeight);
+      //   if(atLeastOneDiphoPass)
+      //   {
+      //     pho_presel->Fill(2.0,genTotalWeight);
+      //   }
+      // }
 
 
       std::vector<flashgg::Photon> phoVector;
+
       if (atLeastOneDiphoPass)
       {
-        cutFlow->Fill(1.0,genTotalWeight);
-        if (n_photons == 2) {cutFlow->Fill(2.0,genTotalWeight);}
-        if (n_photons == 3) {cutFlow->Fill(3.0,genTotalWeight);}
-        if (n_photons == 4) {cutFlow->Fill(4.0,genTotalWeight);}
-        if (n_photons > 3) {cutFlow->Fill(5.0,genTotalWeight);}
+        for( unsigned int dpIndex = 0; dpIndex < diphotons->size(); dpIndex++ )
+        {
+          cout << " pushing back " << endl;
+          edm::Ptr<flashgg::DiPhotonCandidate> thisDPPtr = diphotons->ptrAt( dpIndex );
+          diPhoPtrs.push_back(thisDPPtr);
+        }
+        // cutFlow->Fill(1.0,genTotalWeight);
+        // if (n_photons == 2) {cutFlow->Fill(2.0,genTotalWeight);}
+        // if (n_photons == 3) {cutFlow->Fill(3.0,genTotalWeight);}
+        // if (n_photons == 4) {cutFlow->Fill(4.0,genTotalWeight);}
+        // if (n_photons > 3) {cutFlow->Fill(5.0,genTotalWeight);}
         for( int phoIndex = 0; phoIndex < n_photons; phoIndex++ )
         {
           edm::Ptr<flashgg::Photon> pho = photons->ptrAt( phoIndex );
@@ -212,7 +221,7 @@ namespace flashgg {
             }
           }
         }
-        H4GCandidate h4g(phoVector, Vertices, vertex_diphoton, genVertex, BSPoint );
+        H4GCandidate h4g(phoVector, Vertices, vertex_diphoton, genVertex, BSPoint, diPhoPtrs );
         H4GColl_->push_back(h4g);
       }
       event.put( std::move(H4GColl_) );
