@@ -57,19 +57,19 @@ tp_ ()
     if (fabs(dZ_HggVtx) < 0.1 ){
       BS_factor_HggVtx_ =1;
     } else {
-      double mcBeamSpot=TMath::Gaus(dZ_HggVtx,0,TMath::Sqrt(2)*mcBeamSpotWidth_,true);
-      double dataBeamSpot=TMath::Gaus(dZ_HggVtx,0,TMath::Sqrt(2)*dataBeamSpotWidth_,true);
-      BS_factor_HggVtx_ = dataBeamSpot/mcBeamSpot;
+      double mcBeamSpot_HggVtx=TMath::Gaus(dZ_HggVtx,0,TMath::Sqrt(2)*mcBeamSpotWidth_,true);
+      double dataBeamSpot_HggVtx=TMath::Gaus(dZ_HggVtx,0,TMath::Sqrt(2)*dataBeamSpotWidth_,true);
+      BS_factor_HggVtx_ = dataBeamSpot_HggVtx/mcBeamSpot_HggVtx;
     }
 
     if (fabs(dZ_0Vtx) < 0.1 ){
       BS_factor_0Vtx_ =1;
     } else {
-      double mcBeamSpot=TMath::Gaus(dZ_0Vtx,0,TMath::Sqrt(2)*mcBeamSpotWidth_,true);
-      double dataBeamSpot=TMath::Gaus(dZ_0Vtx,0,TMath::Sqrt(2)*dataBeamSpotWidth_,true);
-      BS_factor_0Vtx_ = dataBeamSpot/mcBeamSpot;
+      double mcBeamSpot_0Vtx=TMath::Gaus(dZ_0Vtx,0,TMath::Sqrt(2)*mcBeamSpotWidth_,true);
+      double dataBeamSpot_0Vtx=TMath::Gaus(dZ_0Vtx,0,TMath::Sqrt(2)*dataBeamSpotWidth_,true);
+      BS_factor_0Vtx_ = dataBeamSpot_0Vtx/mcBeamSpot_0Vtx;
     }
-    cout << BS_factor_HggVtx_ << "  " << BS_factor_0Vtx_ << endl;
+    // cout << BS_factor_HggVtx_ << "  " << BS_factor_0Vtx_ << endl;
     // float vtx_X = vertex_->x();
     // float vtx_Y = vertex_->y();
     // float vtx_Z = vertex_->z();
