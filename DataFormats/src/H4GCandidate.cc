@@ -8,6 +8,7 @@ H4GCandidate::H4GCandidate():
 phoVector_ (),
 Vertices_(),
 // vertex_ (),
+
 vertex_diphoton_ (),
 BS_factor_0Vtx_ (),
 BS_factor_HggVtx_(),
@@ -52,8 +53,6 @@ tp_ ()
     float dZ_HggVtx = genVertex_.z() - vertex_diphoton_->z();
     float dZ_0Vtx = genVertex.z() - vtx_Z;
 
-    // float BS_factor_HggVtx_ =1.0;
-    // float BS_factor_0Vtx_ =1.0;
 
     if (fabs(dZ_HggVtx) < 0.1 ){
       BS_factor_HggVtx_ =1;

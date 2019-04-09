@@ -343,7 +343,14 @@
 <class name="std::vector<flashgg::TagCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TagCandidate> >"/>
 
-<class name="flashgg::H4GCandidate" ClassVersion="13">
+<class name="flashgg::H4GCandidate" ClassVersion="20">
+ <version ClassVersion="20" checksum="1422330009"/>
+ <version ClassVersion="19" checksum="1622604587"/>
+ <version ClassVersion="18" checksum="2233171026"/>
+ <version ClassVersion="17" checksum="4188988069"/>
+ <version ClassVersion="16" checksum="3229234578"/>
+ <version ClassVersion="15" checksum="710284345"/>
+ <version ClassVersion="14" checksum="3233005951"/>
   <version ClassVersion="12" checksum="618148466"/>
   <version ClassVersion="11" checksum="2809364010"/>
   <version ClassVersion="13" checksum="618148466"/>

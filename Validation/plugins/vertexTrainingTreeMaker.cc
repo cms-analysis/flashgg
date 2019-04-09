@@ -116,7 +116,7 @@ private:
 
     //edm::EDGetTokenT<View<reco::Conversion> > conversionToken_;
     edm::EDGetTokenT<reco::BeamSpot > beamSpotToken_;
-    edm::EDGetTokenT<VertexCandidateMap> vertexCandidateMapTokenDz_;
+    // edm::EDGetTokenT<VertexCandidateMap> vertexCandidateMapTokenDz_;
     edm::EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
 
 
@@ -143,8 +143,9 @@ vertexTrainingTreeMaker::vertexTrainingTreeMaker( const edm::ParameterSet &iConf
     vertexToken_( consumes<View<reco::Vertex> >( iConfig.getUntrackedParameter<InputTag> ( "VertexTag", InputTag( "offlineSlimmedPrimaryVertices" ) ) ) ),
     //  conversionToken_(consumes<View<reco::Conversion> >(iConfig.getUntrackedParameter<InputTag>("ConversionTag",InputTag("reducedConversions")))),
     beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getUntrackedParameter<InputTag>( "BeamSpotTag", InputTag( "offlineBeamSpot" ) ) ) ),
-    vertexCandidateMapTokenDz_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTagDz" ) ) ),
-    genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getUntrackedParameter<InputTag> ( "GenParticleTag", InputTag( "prunedGenParticles" ) ) ) )
+    // vertexCandidateMapTokenDz_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTagDz" ) ) ),
+    // genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getUntrackedParameter<InputTag> ( "GenParticleTag", InputTag( "prunedGenParticles" ) ) ) )
+    genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getUntrackedParameter<InputTag> ( "GenParticleTag", InputTag( "flashggPrunedGenParticles" ) ) ) )
 {
 
 }
@@ -196,9 +197,9 @@ vertexTrainingTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetu
         cout << " WARNING NO VALID BEAM SPOT: this should not happen!" << endl;
     }
 
-    Handle<VertexCandidateMap> vertexCandidateMapDz;
-
-    iEvent.getByToken( vertexCandidateMapTokenDz_, vertexCandidateMapDz );
+    // Handle<VertexCandidateMap> vertexCandidateMapDz;
+    //
+    // iEvent.getByToken( vertexCandidateMapTokenDz_, vertexCandidateMapDz );
 
     Handle<View<reco::GenParticle> > genParticles;
     iEvent.getByToken( genParticleToken_, genParticles );
@@ -214,7 +215,8 @@ vertexTrainingTreeMaker::analyze( const edm::Event &iEvent, const edm::EventSetu
 
     for( unsigned int genLoop = 0 ; genLoop < genParticlesPtrs.size(); genLoop++ ) {
 
-        if( genParticlesPtrs[genLoop]->pdgId() == 25 ) {
+        // if( genParticlesPtrs[genLoop]->pdgId() == 25 ) {
+        if( genParticlesPtrs[genLoop]->pdgId() == 35 ) { //--higgs is 35 for h->aa->4gamma
             genInfo.genVertexZ = genParticlesPtrs[genLoop]->vz();
             genInfo.genHiggsPt = genParticlesPtrs[genLoop]->pt();
 
@@ -403,7 +405,8 @@ int vertexTrainingTreeMaker::mcTruthVertexIndex( const std::vector<edm::Ptr<reco
 
     for( unsigned int genLoop = 0 ; genLoop < genParticles.size(); genLoop++ ) {
 
-        if( fabs( genParticles[genLoop]->pdgId() ) < 10 || fabs( genParticles[genLoop]->pdgId() ) == 25 ) {
+        // if( fabs( genParticles[genLoop]->pdgId() ) < 10 || fabs( genParticles[genLoop]->pdgId() ) == 25 ) {
+        if( fabs( genParticles[genLoop]->pdgId() ) < 10 || fabs( genParticles[genLoop]->pdgId() ) == 35 ) {
             hardVertex.SetCoordinates( genParticles[genLoop]->vx(), genParticles[genLoop]->vy(), genParticles[genLoop]->vz() );
             break;
         }
@@ -435,4 +438,3 @@ DEFINE_FWK_MODULE( vertexTrainingTreeMaker );
 // c-basic-offset:4
 // End:
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
-
