@@ -1,0 +1,39 @@
+{
+    "/SUSYGluGluToHToAA_AToGG_M-0p1_TuneCUETP8M1_13TeV_pythia8/twamorka-Jan_26_2016-v0-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1-e53e79ff1b409a45b36d8704083758dd/USER": {
+        "files": [
+            {
+                "bad": false, 
+                "events": 18694, 
+                "name": "/store/group/phys_higgs/HiggsExo/H4Gamma/MicroAOD/Jan_26_2016/v0/SUSYGluGluToHToAA_AToGG_M-0p1_TuneCUETP8M1_13TeV_pythia8/Jan_26_2016-v0-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180126_084624/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 18694, 
+                "totEvents": 18694, 
+                "weights": 18694.0
+            }, 
+            {
+                "bad": false, 
+                "events": 21570, 
+                "name": "/store/group/phys_higgs/HiggsExo/H4Gamma/MicroAOD/Jan_26_2016/v0/SUSYGluGluToHToAA_AToGG_M-0p1_TuneCUETP8M1_13TeV_pythia8/Jan_26_2016-v0-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180126_084624/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 21570, 
+                "totEvents": 21570, 
+                "weights": 21570.0
+            }, 
+            {
+                "bad": false, 
+                "events": 45297, 
+                "name": "/store/group/phys_higgs/HiggsExo/H4Gamma/MicroAOD/Jan_26_2016/v0/SUSYGluGluToHToAA_AToGG_M-0p1_TuneCUETP8M1_13TeV_pythia8/Jan_26_2016-v0-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180126_084624/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 45297, 
+                "totEvents": 45297, 
+                "weights": 45297.0
+            }, 
+            {
+                "bad": false, 
+                "events": 114439, 
+                "name": "/store/group/phys_higgs/HiggsExo/H4Gamma/MicroAOD/Jan_26_2016/v0/SUSYGluGluToHToAA_AToGG_M-0p1_TuneCUETP8M1_13TeV_pythia8/Jan_26_2016-v0-v0-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/180126_084624/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 114439, 
+                "totEvents": 114439, 
+                "weights": 114439.0
+            }
+        ], 
+        "vetted": true
+    }
+}
