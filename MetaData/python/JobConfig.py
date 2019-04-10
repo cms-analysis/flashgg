@@ -428,10 +428,10 @@ class JobConfig(object):
             if self.dryRun and self.getMaxJobs:
                 print " HERE 1"
 
-                dataset = self.samplesMan.getDatasetMetaData(self.maxEvents,self.dataset,jobId=-1,nJobs=self.nJobs)#,weightName=self.WeightName)
+                dataset = self.samplesMan.getDatasetMetaData(self.maxEvents,self.dataset,jobId=-1,nJobs=self.nJobs,weightName=self.WeightName)
             else:
                 print " HERE 2"
-                dataset = self.samplesMan.getDatasetMetaData(self.maxEvents,self.dataset,jobId=self.jobId,nJobs=self.nJobs)#,weightName=self.WeightName)
+                dataset = self.samplesMan.getDatasetMetaData(self.maxEvents,self.dataset,jobId=self.jobId,nJobs=self.nJobs,weightName=self.WeightName)
             if not dataset:
                 print "Could not find dataset %s in campaing %s/%s" % (self.dataset,self.metaDataSrc,self.campaing)
                 sys.exit(-1)
