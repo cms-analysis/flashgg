@@ -51,12 +51,22 @@
 
     "bTagEffBins" : "bTagEffBins2016",
     "bDiscriminatorValue" : 0.8484,
-    
+
+    "mc2hessianCSV":"PhysicsTools/HepMCCandAlgos/data/NNPDF30_lo_as_0130_hessian_60.csv",
+
     "bRegression" :
     {
-        "weightFile" : "/src/flashgg/Taggers/data/DNN_models/breg_training_2017_updated.pb",
-        "y_mean" : 1.0596693754196167,
+        "weightFile" : "/src/flashgg/Taggers/data/DNN_models/model-18.pb",
+        "y_mean" : 1.0454729795455933,
         "y_std" : 0.28492164611816406,
-        "useOld_year" : 1
+        "year" : 2016
+    },
+
+    "doubleHTag":
+    {
+	"jetPUID" : "Loose",
+	"weightsFile" : "flashgg/Taggers/data/HHTagger/training_with_10_12_2018_commonTraining_2016.weights.xml",
+	"MVAscalingValue" :1.0
     }
+
 }

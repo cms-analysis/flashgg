@@ -49,12 +49,20 @@
 
     "bTagEffBins" : "bTagEffBins2017",
     "bDiscriminatorValue" : 0.4941,
+
+    "PDF" : "NNPDF31_nnlo_as_0118_nf_4",
     
     "bRegression" :
     {
         "weightFile" : "/src/flashgg/Taggers/data/DNN_models/breg_training_2017_updated.pb",
         "y_mean" : 1.0596693754196167,
         "y_std" : 0.28492164611816406,
-        "useOld_year" : 1
+        "year" : 2017
+    },
+    "doubleHTag":
+    {
+	"jetPUID" : "Tight2017",
+	"weightsFile" : "flashgg/Taggers/data/HHTagger/training_with_10_12_2018_commonTraining_2017.weights.xml",
+	"MVAscalingValue" :1.011026
     }
 }
