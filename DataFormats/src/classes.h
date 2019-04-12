@@ -153,8 +153,6 @@ namespace  {
         edm::Wrapper<std::vector<flashgg::Electron> >               wrp_vec_fgg_ele;
         std::vector<reco::Conversion>					  vec_rec_con;
 
-
-        edm::Ptr<pat::PackedGenParticle>                                     ptr_pat_pak_cand;
         flashgg::GenPhotonExtra                                                   fgg_pho_xtra;
         edm::Ptr<flashgg::GenPhotonExtra>                                     ptr_fgg_pho_xtra;
         edm::Wrapper<flashgg::GenPhotonExtra>                                 wrp_fgg_pho_xtra;

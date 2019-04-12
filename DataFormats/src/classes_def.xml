@@ -316,7 +316,6 @@
 <class name="edm::Wrapper<edm::OwnVector<flashgg::TagTruthBase, edm::ClonePolicy<flashgg::TagTruthBase> > >" />
 <!-- <class pattern="edm::Ref<edm::OwnVector<flashgg::TagTruthBase, edm::ClonePolicy<flashgg::TagTruthBase> >,* >" /> -->
 <class name="edm::Ptr<flashgg::TagTruthBase>"/>
-<class name="edm::Ptr<pat::PackedGenParticle>"/>
 <class name="flashgg::GenPhotonExtra" ClassVersion="10">
   <version ClassVersion="10" checksum="3440189854"/>
 </class>
