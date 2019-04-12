@@ -129,8 +129,7 @@ namespace flashgg {
         if( reRunRegression_ ) {
             reRunRegressionOnData_ = ps.getParameter<bool>("reRunRegressionOnData");
             // regress_ = new EGExtraInfoModifierFromDB(ps.getParameter<edm::ParameterSet>("regressionConfig"));
-            regress_.reset(ModifyObjectValueFactory::get()->create( "EGRegressionModifierV2", ps.getParameter<edm::ParameterSet>("regressionConfig") )); 
-            regress_->setConsumes(sumes);
+            regress_.reset(ModifyObjectValueFactory::get()->create( "EGRegressionModifierV2", ps.getParameter<edm::ParameterSet>("regressionConfig"), sumes )); 
         }
 
         produces<std::vector<flashgg::DiPhotonCandidate> >();
