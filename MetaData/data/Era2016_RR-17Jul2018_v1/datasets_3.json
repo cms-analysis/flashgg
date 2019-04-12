@@ -554,9 +554,28 @@
                 "weights": 4619
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 4481, 
+                "lumis": {
+                    "276543": [
+                        599
+                    ], 
+                    "276808": [
+                        288, 
+                        289, 
+                        679, 
+                        681, 
+                        682, 
+                        719, 
+                        720, 
+                        749, 
+                        750
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0000/myMicroAODOutputFile_112.root", 
-                "nevents": 4481
+                "nevents": 4481, 
+                "totEvents": 4481, 
+                "weights": 4481
             }, 
             {
                 "bad": false, 
@@ -1365,9 +1384,30 @@
                 "weights": 3979
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 3778, 
+                "lumis": {
+                    "276363": [
+                        721, 
+                        722
+                    ], 
+                    "276437": [
+                        788, 
+                        789, 
+                        790, 
+                        935, 
+                        937, 
+                        938
+                    ], 
+                    "276543": [
+                        386, 
+                        387
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0000/myMicroAODOutputFile_205.root", 
-                "nevents": 3778
+                "nevents": 3778, 
+                "totEvents": 3778, 
+                "weights": 3778
             }, 
             {
                 "bad": false, 
@@ -1754,9 +1794,30 @@
                 "weights": 4485
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 4518, 
+                "lumis": {
+                    "276317": [
+                        126, 
+                        127, 
+                        128
+                    ], 
+                    "276501": [
+                        1280, 
+                        1483
+                    ], 
+                    "276775": [
+                        168, 
+                        202, 
+                        203, 
+                        204, 
+                        810
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0000/myMicroAODOutputFile_211.root", 
-                "nevents": 4518
+                "nevents": 4518, 
+                "totEvents": 4518, 
+                "weights": 4518
             }, 
             {
                 "bad": false, 
@@ -7833,9 +7894,28 @@
                 "weights": 2252
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 3149, 
+                "lumis": {
+                    "276587": [
+                        473, 
+                        507, 
+                        508, 
+                        509
+                    ], 
+                    "276655": [
+                        950, 
+                        951, 
+                        953, 
+                        1014, 
+                        1015, 
+                        1016
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0000/myMicroAODOutputFile_336.root", 
-                "nevents": 3149
+                "nevents": 3149, 
+                "totEvents": 3149, 
+                "weights": 3149
             }, 
             {
                 "bad": false, 
@@ -10424,9 +10504,26 @@
                 "weights": 4096
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 4001, 
+                "lumis": {
+                    "276501": [
+                        295, 
+                        297, 
+                        298, 
+                        390, 
+                        391, 
+                        392, 
+                        393, 
+                        808, 
+                        809, 
+                        450
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0000/myMicroAODOutputFile_526.root", 
-                "nevents": 4001
+                "nevents": 4001, 
+                "totEvents": 4001, 
+                "weights": 4001
             }, 
             {
                 "bad": false, 
@@ -12195,9 +12292,28 @@
                 "weights": 4262
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 2991, 
+                "lumis": {
+                    "276501": [
+                        451, 
+                        453, 
+                        753, 
+                        754, 
+                        548, 
+                        550, 
+                        1179, 
+                        1180, 
+                        1181
+                    ], 
+                    "276525": [
+                        523
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0000/myMicroAODOutputFile_491.root", 
-                "nevents": 2991
+                "nevents": 2991, 
+                "totEvents": 2991, 
+                "weights": 2991
             }, 
             {
                 "bad": false, 
@@ -34933,9 +35049,28 @@
                 "weights": 3315
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 2675, 
+                "lumis": {
+                    "276363": [
+                        982, 
+                        983, 
+                        984, 
+                        1268, 
+                        1081, 
+                        1082, 
+                        1083, 
+                        1482
+                    ], 
+                    "276384": [
+                        432, 
+                        433
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0000/myMicroAODOutputFile_447.root", 
-                "nevents": 2675
+                "nevents": 2675, 
+                "totEvents": 2675, 
+                "weights": 2675
             }, 
             {
                 "bad": false, 
@@ -35146,9 +35281,28 @@
                 "weights": 4664
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 2817, 
+                "lumis": {
+                    "276363": [
+                        230, 
+                        231, 
+                        234
+                    ], 
+                    "276384": [
+                        374, 
+                        375, 
+                        376, 
+                        598, 
+                        599, 
+                        601, 
+                        602
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0000/myMicroAODOutputFile_437.root", 
-                "nevents": 2817
+                "nevents": 2817, 
+                "totEvents": 2817, 
+                "weights": 2817
             }, 
             {
                 "bad": false, 
@@ -40501,9 +40655,26 @@
                 "weights": 3943
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 4021, 
+                "lumis": {
+                    "276525": [
+                        736, 
+                        737, 
+                        738, 
+                        1230, 
+                        1231, 
+                        1232, 
+                        1233, 
+                        1229, 
+                        1234, 
+                        1235
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0002/myMicroAODOutputFile_2337.root", 
-                "nevents": 4021
+                "nevents": 4021, 
+                "totEvents": 4021, 
+                "weights": 4021
             }, 
             {
                 "bad": false, 
@@ -41254,9 +41425,28 @@
                 "weights": 3406
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 3205, 
+                "lumis": {
+                    "276525": [
+                        1151, 
+                        1386, 
+                        1402
+                    ], 
+                    "276776": [
+                        1302, 
+                        1287, 
+                        1288, 
+                        1289, 
+                        1290, 
+                        1459, 
+                        1461
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0002/myMicroAODOutputFile_2332.root", 
-                "nevents": 3205
+                "nevents": 3205, 
+                "totEvents": 3205, 
+                "weights": 3205
             }, 
             {
                 "bad": false, 
@@ -41537,9 +41727,26 @@
                 "weights": 3832
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 3931, 
+                "lumis": {
+                    "276543": [
+                        443, 
+                        444, 
+                        447, 
+                        449, 
+                        450, 
+                        473, 
+                        474, 
+                        475, 
+                        476, 
+                        477
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0002/myMicroAODOutputFile_2105.root", 
-                "nevents": 3931
+                "nevents": 3931, 
+                "totEvents": 3931, 
+                "weights": 3931
             }, 
             {
                 "bad": false, 
@@ -41632,9 +41839,28 @@
                 "weights": 3205
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 4009, 
+                "lumis": {
+                    "276501": [
+                        1372, 
+                        1373, 
+                        1374, 
+                        1375, 
+                        1081
+                    ], 
+                    "276775": [
+                        496, 
+                        516, 
+                        517, 
+                        518, 
+                        1232
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0002/myMicroAODOutputFile_2097.root", 
-                "nevents": 4009
+                "nevents": 4009, 
+                "totEvents": 4009, 
+                "weights": 4009
             }, 
             {
                 "bad": false, 
@@ -43557,9 +43783,26 @@
                 "weights": 3734
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 3812, 
+                "lumis": {
+                    "276501": [
+                        219, 
+                        813, 
+                        814, 
+                        796, 
+                        797, 
+                        804, 
+                        1047, 
+                        1050, 
+                        1051, 
+                        1052
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0002/myMicroAODOutputFile_2007.root", 
-                "nevents": 3812
+                "nevents": 3812, 
+                "totEvents": 3812, 
+                "weights": 3812
             }, 
             {
                 "bad": false, 
@@ -46374,9 +46617,26 @@
                 "weights": 4259
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 4918, 
+                "lumis": {
+                    "276808": [
+                        268, 
+                        275, 
+                        276, 
+                        277, 
+                        278, 
+                        279, 
+                        280, 
+                        536, 
+                        537, 
+                        538
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0001/myMicroAODOutputFile_1830.root", 
-                "nevents": 4918
+                "nevents": 4918, 
+                "totEvents": 4918, 
+                "weights": 4918
             }, 
             {
                 "bad": false, 
@@ -47353,9 +47613,26 @@
                 "weights": 3336
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 3744, 
+                "lumis": {
+                    "276525": [
+                        895, 
+                        889, 
+                        890, 
+                        891, 
+                        926, 
+                        1421, 
+                        1424, 
+                        2422, 
+                        2424, 
+                        2459
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0002/myMicroAODOutputFile_2383.root", 
-                "nevents": 3744
+                "nevents": 3744, 
+                "totEvents": 3744, 
+                "weights": 3744
             }, 
             {
                 "bad": false, 
@@ -49796,9 +50073,28 @@
                 "weights": 3087
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 3461, 
+                "lumis": {
+                    "276794": [
+                        376, 
+                        377, 
+                        378, 
+                        382, 
+                        383, 
+                        251, 
+                        252
+                    ], 
+                    "276807": [
+                        77, 
+                        78, 
+                        147
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0002/myMicroAODOutputFile_2127.root", 
-                "nevents": 3461
+                "nevents": 3461, 
+                "totEvents": 3461, 
+                "weights": 3461
             }, 
             {
                 "bad": false, 
@@ -50107,9 +50403,26 @@
                 "weights": 3409
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 3627, 
+                "lumis": {
+                    "276525": [
+                        1242, 
+                        1426, 
+                        1427, 
+                        1428, 
+                        1322, 
+                        1323, 
+                        1324, 
+                        1325, 
+                        2139, 
+                        1354
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0002/myMicroAODOutputFile_2150.root", 
-                "nevents": 3627
+                "nevents": 3627, 
+                "totEvents": 3627, 
+                "weights": 3627
             }, 
             {
                 "bad": false, 
@@ -51932,9 +52245,30 @@
                 "weights": 4343
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 3239, 
+                "lumis": {
+                    "276527": [
+                        22, 
+                        23
+                    ], 
+                    "276543": [
+                        655, 
+                        656, 
+                        657, 
+                        658
+                    ], 
+                    "276544": [
+                        111, 
+                        112, 
+                        160, 
+                        161
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0000/myMicroAODOutputFile_867.root", 
-                "nevents": 3239
+                "nevents": 3239, 
+                "totEvents": 3239, 
+                "weights": 3239
             }, 
             {
                 "bad": false, 
@@ -54383,9 +54717,26 @@
                 "weights": 3557
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 3817, 
+                "lumis": {
+                    "276525": [
+                        1014, 
+                        1016, 
+                        1780, 
+                        1781, 
+                        1788, 
+                        1789, 
+                        1790, 
+                        826, 
+                        827, 
+                        828
+                    ]
+                }, 
                 "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v1/legacyRun2TestV1/DoubleEG/Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-Run2016D-17Jul2018-v1/190319_104225/0002/myMicroAODOutputFile_2353.root", 
-                "nevents": 3817
+                "nevents": 3817, 
+                "totEvents": 3817, 
+                "weights": 3817
             }, 
             {
                 "bad": false, 

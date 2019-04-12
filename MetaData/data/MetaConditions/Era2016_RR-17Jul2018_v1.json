@@ -43,8 +43,8 @@
     
     "JetCorrectorParametersCollection_version" :
     {
-        "data" : "JetCorrectorParametersCollection_Summer16_23Sep2016V4_DATA_AK4PFchs",
-        "MC" : "JetCorrectorParametersCollection_Summer16_23Sep2016V4_MC_AK4PFchs"
+        "data" : "JetCorrectorParametersCollection_Sum16_07Aug2017V11_and_Fall17_17Nov2017V6_DATA_AK4PFchs",
+        "MC" : "JetCorrectorParametersCollection_Summer16_07Aug2017_V11_MC_AK4PFchs"
     },
     "JR_PtResolution_version" : "JR_Summer16_23Sep2016V4_MC_PtResolution_AK4PFchs",
     "JR_SF_version" : "JR_Summer16_23Sep2016V4_MC_SF_AK4PFchs",
