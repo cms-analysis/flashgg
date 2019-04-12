@@ -189,7 +189,7 @@ namespace flashgg {
         
             felec.setStandardHggIso( pelec_egiso );
 
-            felec.setHasMatchedConversion( ConversionTools::hasMatchedConversion( *pelec, convs, vertexPoint ) );
+            felec.setHasMatchedConversion( ConversionTools::hasMatchedConversion( *pelec->superCluster(), *convs.product(), vertexPoint ) );
 
             // bool passMVALooseId = (*looseMVA_wp)[pelec];
             bool passMVAMediumId = (*mediumMVA_wp)[pelec];
