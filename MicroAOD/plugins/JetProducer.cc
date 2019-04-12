@@ -404,7 +404,7 @@ namespace flashgg {
             if ( doPuJetID_ ) {
                 if ( jetCollectionIndex_ == 0 && doPuJetID_ ) {
                     if (debug_) std::cout << "before computeIdVariables" << std::endl;
-                    PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables( pjet.get(), 0., &vertexes[0], vertexes, rho );
+                    PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables( pjet.get(), 0., &vertexes[0], vertexes, rho, false );
                     if (debug_) std::cout << "after computeIdVariables" << std::endl;
                     //                fjet.setPuJetId( primaryVertices->ptrAt( 0 ), lPUJetId );
                     if (debug_ && fjet.pt() > 20) {
@@ -481,12 +481,12 @@ namespace flashgg {
                         Ptr<DiPhotonCandidate> diPhoton = diPhotons->ptrAt( j );
                         if ( diPhoton->jetCollectionIndex() == jetCollectionIndex_ ) {
                             Ptr<reco::Vertex> vtx = diPhoton->vtx();
-                            PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables( pjet.get(), 0., vtx.get(), vertexes, rho );
+                            PileupJetIdentifier lPUJetId = pileupJetIdAlgo_->computeIdVariables( pjet.get(), 0., vtx.get(), vertexes, rho, false );
                             if (debug_ && fjet.pt() > 20) {
                                 std::cout << "[NON-STANDARD] pt=" << fjet.pt() << " eta=" << fjet.eta()
                                           << " lPUJetID RMS, betaStar, mva: " << lPUJetId.RMS() << " " << lPUJetId.betaStar() << " " << lPUJetId.mva()
                                           << "; simpleRMS " << fjet.rms() << "; match=" << (bool)(fjet.genJet()) << std::endl;
-                                PileupJetIdentifier lPUJetId0 = pileupJetIdAlgo_->computeIdVariables( pjet.get(), 0., &vertexes[0], vertexes, rho );
+                                PileupJetIdentifier lPUJetId0 = pileupJetIdAlgo_->computeIdVariables( pjet.get(), 0., &vertexes[0], vertexes, rho, false );
                                 std::cout << "[NON-S W VTX0] pt=" << fjet.pt() << " eta=" << fjet.eta()
                                       << " lPUJetID RMS, betaStar, mva: " << lPUJetId0.RMS() << " " << lPUJetId0.betaStar() << " " << lPUJetId0.mva()
                                           << "; simpleRMS " << fjet.rms() << "; match=" << (bool)(fjet.genJet()) << std::endl;
