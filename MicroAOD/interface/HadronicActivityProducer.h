@@ -77,7 +77,7 @@ namespace flashgg {
     template <class T, class V>
     void HadronicActivityProducer<T,V>::produce(edm::StreamID, edm::Event& iEvent, const edm::EventSetup& iSetup) const {
         
-        std::unique_ptr<std::vector<reco::CompositeCandidate> > outPtr(new std::vector<reco::CompositeCandidate>(1));
+        std::unique_ptr<std::vector<reco::CompositeCandidate> > outPtr(new std::vector<reco::CompositeCandidate>);
        
         edm::Handle<T> veto;
         if( veto_ )  {

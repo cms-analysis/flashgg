@@ -16,7 +16,7 @@ process = cms.Process("FLASHggSyst")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load("Configuration.StandardSequences.GeometryDB_cff")
-process.load("Configuration.StandardSequences.MagneticField_cff")
+#process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
 if os.environ["CMSSW_VERSION"].count("CMSSW_7_6"):
@@ -30,7 +30,6 @@ elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
 else:
     raise Exception,"Could not find a sensible CMSSW_VERSION for default globaltag"
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 MUON_ID = "Medium" #["Tight", "Medium" , "Loose", "Soft", "HighPt", "MediumPrompt", "TrkHighPt"]
@@ -150,6 +149,8 @@ print 'doJets '+str(customize.doJets)
 print 'acceptance '+str(customize.acceptance)
 print 'tthTagsOnly '+str(customize.tthTagsOnly)
 print 'doMuFilter '+str(customize.doMuFilter)
+
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(customize.maxEvents) )
 
 if customize.doFiducial:
     import flashgg.Systematics.fiducialCrossSectionsCustomize as fc
@@ -621,34 +622,6 @@ if (customize.processId.count("qcd") or customize.processId.count("gjet")) and c
         raise Exception,"Mis-configuration of python for prompt-fake filter"
 
 
-if customize.tthTagsOnly:
-    process.p = cms.Path(process.dataRequirements*
-                         process.genFilter*
-                         process.flashggDiPhotons* # needed for 0th vertex from microAOD
-                         process.flashggUpdatedIdMVADiPhotons*
-                         process.flashggDiPhotonSystematics*
-                         process.flashggMetSystematics*
-                         process.flashggMuonSystematics*process.flashggElectronSystematics*
-                         (process.flashggUnpackedJets*process.jetSystematicsSequence)*
-                         (process.flashggTagSequence*process.systematicsTagSequences)*
-                         process.flashggSystTagMerger*
-                         process.penultimateFilter*
-                         process.finalFilter*
-                         process.tagsDumper)
-else :
-    process.p = cms.Path(process.dataRequirements*
-                         process.genFilter*
-                         process.flashggUpdatedIdMVADiPhotons*
-                         process.flashggDiPhotonSystematics*
-                         process.flashggMetSystematics*
-                         process.flashggMuonSystematics*process.flashggElectronSystematics*
-                         (process.flashggUnpackedJets*process.jetSystematicsSequence)*
-                         (process.flashggTagSequence*process.systematicsTagSequences)*
-                         process.flashggSystTagMerger*
-                         process.penultimateFilter*
-                         process.finalFilter*
-                         process.tagsDumper)
-
 if customize.doFiducial:
     print "count 4"
     if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_")  or customize.processId.count("Acceptance") ) and not ( (customize.datasetName() and customize.datasetName().count("DiPho")) ):
@@ -694,12 +667,51 @@ if customize.doFiducial:
         pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights),
         print pdfWeights
 
-
+# if customize.tthTagsOnly:
+#     process.p = cms.Path(process.dataRequirements*
+#                          process.genFilter*
+#                          process.flashggDiPhotons* # needed for 0th vertex from microAOD
+#                          process.flashggUpdatedIdMVADiPhotons*
+#                          process.flashggDiPhotonSystematics*
+#                          process.flashggMetSystematics*
+#                          process.flashggMuonSystematics*process.flashggElectronSystematics*
+#                          (process.flashggUnpackedJets*process.jetSystematicsSequence)*
+#                          (process.flashggTagSequence*process.systematicsTagSequences)*
+#                          process.flashggSystTagMerger*
+#                          process.penultimateFilter*
+#                          process.finalFilter*
+#                          process.tagsDumper)
+if not customize.processId=="Data" :
+    process.p = cms.Path(process.dataRequirements*
+                         process.genFilter*
+                         process.flashggUpdatedIdMVADiPhotons*
+                         process.flashggDiPhotonSystematics*
+                         process.flashggMetSystematics*
+                         process.flashggMuonSystematics*process.flashggElectronSystematics*
+                         (process.flashggUnpackedJets*process.jetSystematicsSequence)*
+                         (process.flashggTagSequence*process.systematicsTagSequences)*
+                         process.genSequence*
+                         process.genDiphotonDumper*
+                         process.flashggSystTagMerger*
+                         process.penultimateFilter*
+                         process.finalFilter*
+                         process.tagsDumper)
+else:
+    process.p = cms.Path(process.dataRequirements*
+                         process.genFilter*
+                         process.flashggUpdatedIdMVADiPhotons*
+                         process.flashggDiPhotonSystematics*
+                         process.flashggMetSystematics*
+                         process.flashggMuonSystematics*process.flashggElectronSystematics*
+                         (process.flashggUnpackedJets*process.jetSystematicsSequence)*
+                         (process.flashggTagSequence*process.systematicsTagSequences)*
+                         process.flashggSystTagMerger*
+                         process.penultimateFilter*
+                         process.finalFilter*
+                         process.tagsDumper)
+    
 if(customize.doFiducial):
     fc.addObservables(process, process.tagsDumper, customize.processId , process.flashggTagSequence)
-
-print "TR tagSequence debug"
-print process.flashggTagSequence
         
 if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
 process.options.allowUnscheduled = cms.untracked.bool(True)
@@ -781,4 +793,5 @@ if customize.verboseSystDump:
 customize.setDefault("maxEvents",1000)
 customize.setDefault("targetLumi",1.00e+3)
 # call the customization
+
 customize(process)

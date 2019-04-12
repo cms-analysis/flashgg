@@ -339,34 +339,34 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
         recoDiphotonTags.CompositeCandidateTags.electrons = cms.InputTag("flashggRecoHadronicActivityElectrons")
 ##    recoDiphotonTags.CompositeCandidateTags.muons = cms.InputTag("flashggRecoHadronicActivityMuons")
 
-    if (not processId=="Data") and hasattr(process,genDiphotons):
-        genPos = tagSequence.index(getattr(process,genDiphotons))+1
-        if doJets: 
-	    if( not hasattr(process,"filteredGenJetsEta2p5") ):
+    if (not processId=="Data") and hasattr(process,"genSequence"):
+        genPos = process.genSequence.index(getattr(process,genDiphotons))+1
+        if doJets:
+            if( not hasattr(process,"filteredGenJetsEta2p5") ):
 	        process.filteredGenJetsEta2p5 = cms.EDFilter("GenJetSelector",
 	                                                     src=cms.InputTag(genJetCollection),
 	                                                     cut=cms.string("pt>%f && abs(eta)<2.5 && numberOfDaughters > 5" % jetPtCut),
 	        )
-                tagSequence.insert(genPos, getattr(process,"filteredGenJetsEta2p5"))
+                process.genSequence.insert(genPos, getattr(process,"filteredGenJetsEta2p5"))
                 genPos += 1
 	        process.flashggGenHadronicActivity2p5 = cms.EDProducer("FlashggGenHadronicActivityProducer",
 	                                                               src=cms.InputTag("filteredGenJetsEta2p5"),
 	                                                               veto=cms.InputTag(genDiphotons)
 	        )
-                tagSequence.insert(genPos, getattr(process,"flashggGenHadronicActivity2p5"))
+                process.genSequence.insert(genPos, getattr(process,"flashggGenHadronicActivity2p5"))
                 genPos += 1
 	    if( not hasattr(process,"filteredGenJetsEta4p7") ): 
 	        process.filteredGenJetsEta4p7 = cms.EDFilter("GenJetSelector",
 	                                                     src=cms.InputTag(genJetCollection),
 	                                                     cut=cms.string("pt>%f && abs(eta)<4.7 && numberOfDaughters > 5" % jetPtCut),
 	        )
-	        tagSequence.insert(genPos, getattr(process,"filteredGenJetsEta4p7"))
+	        process.genSequence.insert(genPos, getattr(process,"filteredGenJetsEta4p7"))
                 genPos += 1
 	        process.flashggGenHadronicActivity4p7 = cms.EDProducer("FlashggGenHadronicActivityProducer",
 	                                                                   src=cms.InputTag("filteredGenJetsEta4p7"),
 	                                                                   veto=cms.InputTag(genDiphotons)
 	                                                                   )
-                tagSequence.insert(genPos, getattr(process,"flashggGenHadronicActivity4p7"))
+                process.genSequence.insert(genPos, getattr(process,"flashggGenHadronicActivity4p7"))
                 genPos += 1
         if doBJetsAndMET:
         	if( not hasattr(process,"filteredGenJetsBflavorEta2p5") ): 
@@ -378,13 +378,13 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
 ##      	                                                         cut=cms.string("pt>%f && abs(eta)<2.5 && numberOfDaughters > 5 && hasBottom == 1" % jetPtCut),
 ##      	                                                         cut=cms.string("hasBottom == 1"),
         	                                            )
-        	   tagSequence.insert(genPos, getattr(process,"filteredGenJetsBflavorEta2p5"))
+        	   process.genSequence.insert(genPos, getattr(process,"filteredGenJetsBflavorEta2p5"))
                    genPos += 1
         	   process.flashggGenHadronicActivityBflavor2p5 = cms.EDProducer("FlashggGenHadronicActivityProducer",
         	                                                                 src=cms.InputTag("filteredGenJetsBflavorEta2p5"),
         	                                                                 veto=cms.InputTag(genDiphotons)
         	                                                                 )
-                   tagSequence.insert(genPos, getattr(process,"flashggGenHadronicActivityBflavor2p5"))
+                   process.genSequence.insert(genPos, getattr(process,"flashggGenHadronicActivityBflavor2p5"))
                    genPos += 1
         if doBJetsAndMET:
             if( not hasattr(process,"flashggGenHadronicActivityMET") ): 
@@ -392,7 +392,7 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
                                                                        src=cms.InputTag("flashggMets"),
                                                                        veto=cms.InputTag(genDiphotons)
                                                                        )
-                tagSequence.insert(genPos, getattr(process,"flashggGenHadronicActivityMET"))
+                process.genSequence.insert(genPos, getattr(process,"flashggGenHadronicActivityMET"))
                 genPos += 1
 
         if( not hasattr(process,"filteredGenJetsEtaInclusive") ): 
@@ -402,13 +402,13 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
 ###                                                         cut=cms.string("pt>%f && numberOfDaughters > 5" % jetPtCut),
                                                          cut=cms.string("1"),
                                                          )
-            tagSequence.insert(genPos, getattr(process,"filteredGenJetsEtaInclusive"))
+            process.genSequence.insert(genPos, getattr(process,"filteredGenJetsEtaInclusive"))
             genPos += 1
             process.flashggGenHadronicActivityInclusive = cms.EDProducer("FlashggGenHadronicActivityProducer",
                                                                    src=cms.InputTag("filteredGenJetsEtaInclusive"),
                                                                    veto=cms.InputTag(genDiphotons)
                                                                    )
-            tagSequence.insert(genPos, getattr(process,"flashggGenHadronicActivityInclusive"))
+            process.genSequence.insert(genPos, getattr(process,"flashggGenHadronicActivityInclusive"))
             genPos += 1
         if doBJetsAndMET:
             if( not hasattr(process,"flashggGenHadronicActivityLeptons2p4") ): 
@@ -416,13 +416,13 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
                                                              src=cms.InputTag("flashggGenLeptonsExtra"),
                                                              cut=cms.string("pt>20 && abs(eta)<2.4"),
                                                          )
-                tagSequence.insert(genPos, getattr(process,"filteredGenLeptonsEta2p4"))
+                process.genSequence.insert(genPos, getattr(process,"filteredGenLeptonsEta2p4"))
                 genPos += 1            
                 process.flashggGenHadronicActivityLeptons2p4 = cms.EDProducer("FlashggGenHadronicActivityProducer",
                                                                        src=cms.InputTag("filteredGenLeptonsEta2p4"),
                                                                        veto=cms.InputTag(genDiphotons)
                                                                        )
-                tagSequence.insert(genPos, getattr(process,"flashggGenHadronicActivityLeptons2p4"))
+                process.genSequence.insert(genPos, getattr(process,"flashggGenHadronicActivityLeptons2p4"))
                 genPos += 1
         
 # ----------------------------------------------------------------------------------------------------------------
@@ -672,7 +672,7 @@ def addRecoMETGlobalVariables(process,dumper,src,pre,post,tagSequence,getter="")
             cfgTools.addVariables(cat.variables,variables)
 
 # ----------------------------------------------------------------------------------------------------------------
-def addGenGlobalVariables(process,dumper,tagSequence):   
+def addGenGlobalVariables(process,dumper,tagSequence):
     if doJets:
         addJetGlobalVariables(process,dumper,"flashggGenHadronicActivity2p5","gen","2p5",tagSequence)
         addJetGlobalVariables(process,dumper,"flashggGenHadronicActivity4p7","gen","4p7",tagSequence)
@@ -727,7 +727,7 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
     process.load("flashgg.MicroAOD.flashggGenDiPhotonsSequence_cff")
     from flashgg.MicroAOD.flashggGenDiPhotons_cfi import flashggGenDiPhotons
     process.flashggGenDiPhotons = flashggGenDiPhotons.clone()
-    process.p.insert(0, process.flashggGenDiPhotons+process.flashggSelectedGenDiPhotons+process.flashggSortedGenDiPhotons)
+    #process.p.insert(0, process.flashggGenDiPhotons+process.flashggSelectedGenDiPhotons+process.flashggSortedGenDiPhotons)
     #tagSequence.insert(tagSequence.index(process.flashggSigmaMoMpToMTag)+1,getattr(process,"flashggGenDiPhotons")+getattr(process,"flashggSelectedGenDiPhotons")+getattr(process,"flashggSortedGenDiPhotons"))
     ###process.flashggPreselectedGenDiPhotons = process.flashggSelectedGenDiPhotons.clone(filter = cms.bool(filterEvents), cut=cms.string(preselCut))
     ### process.flashggGenDiPhotonsSequence.insert(process.flashggGenDiPhotonsSequence.index(process.flashggSelectedGenDiPhotons),process.flashggPreselectedGenDiPhotons)
@@ -738,15 +738,15 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
     ## only process events where at least one diphoton candidate is selected
     if filterEvents:
         process.flashggSelectedGenDiPhotons.filter = True
-        process.genFilter += process.flashggSelectedGenDiPhotons
+        process.genFilter += process.flashggGenDiPhotons+process.flashggSelectedGenDiPhotons+process.flashggSortedGenDiPhotons
     
     process.load("flashgg.Taggers.flashggTaggedGenDiphotons_cfi")
     process.flashggTaggedGenDiphotons.src  = "flashggSortedGenDiPhotons"
     process.flashggTaggedGenDiphotons.tags = "flashggTagSorter"
     process.flashggTaggedGenDiphotons.remap = process.tagsDumper.classifierCfg.remap
     ## process.flashggTaggedGenDiphotons.tags = "flashggSystTagMerger"
-    process.p += process.flashggTaggedGenDiphotons
-    tagSequence.insert(tagSequence.index(getattr(process,"flashggTagSorter"))+1,getattr(process,"flashggTaggedGenDiphotons"))
+    ##process.p += process.flashggTaggedGenDiphotons
+    ##tagSequence.insert(tagSequence.index(getattr(process,"flashggTagSorter"))+1,getattr(process,"flashggTaggedGenDiphotons"))
     
     process.load("flashgg.Taggers.genDiphotonDumper_cfi")
     process.genDiphotonDumper.dumpTrees = True
@@ -757,11 +757,15 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
     from flashgg.Taggers.globalVariables_cff import globalVariables
     process.genDiphotonDumper.dumpGlobalVariables = True
     process.genDiphotonDumper.globalVariables = globalVariables
+
+    process.genSequence = cms.Sequence(process.flashggTaggedGenDiphotons)
     
     ## bookHadronicActivityProducers(process,processId,"flashggTagSorter","flashggTaggedGenDiphotons",recoJetCollections,genJetCollection="slimmedGenJets")
     bookHadronicActivityProducers(process,processId,tagSequence,"flashggDiPhotonSystematics",process.flashggSigmaMoMpToMTag,"flashggTaggedGenDiphotons",recoJetCollections,genJetCollection="slimmedGenJets") ##FIXME 
-    addGenGlobalVariables(process,process.genDiphotonDumper,tagSequence)
+    addGenGlobalVariables(process,process.genDiphotonDumper,process.genSequence)
     addRecoGlobalVariables(process,process.genDiphotonDumper,tagSequence,tagGetter="tag()")
+
+    #process.p.insert(process.p.index(tagSequence)+1,getattr(process,"genSequence"))
     
     dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights=False,-1,-1,-1 
     if pdfWeights:

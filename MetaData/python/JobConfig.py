@@ -226,7 +226,7 @@ class JobConfig(object):
                 print "Error: cross section not found for dataset %s" % dsetname
                 print
                 
-            self.maxEvents = int(maxEvents)
+            self.options.maxEvents = int(maxEvents)
             
             putarget = None
             samplepu = None
@@ -370,11 +370,11 @@ class JobConfig(object):
  
         ## fwlite
         if isFwlite:
-            process.fwliteInput.maxEvents = self.maxEvents
+            process.fwliteInput.maxEvents = self.options.maxEvents
             process.fwliteOutput.fileName = self.outputFile
         ## full framework
         else:
-            process.maxEvents.input = self.maxEvents
+            process.maxEvents.input = self.options.maxEvents
             
             if hasOutput:
                 process.out.fileName = self.outputFile
@@ -420,9 +420,9 @@ class JobConfig(object):
                                          self.crossSections,
                                          )
             if self.dryRun and self.getMaxJobs:
-                dataset = self.samplesMan.getDatasetMetaData(self.maxEvents,self.dataset,jobId=-1,nJobs=self.nJobs,weightName=self.WeightName)
+                dataset = self.samplesMan.getDatasetMetaData(self.options.maxEvents,self.dataset,jobId=-1,nJobs=self.nJobs,weightName=self.WeightName)
             else:
-                dataset = self.samplesMan.getDatasetMetaData(self.maxEvents,self.dataset,jobId=self.jobId,nJobs=self.nJobs,weightName=self.WeightName)
+                dataset = self.samplesMan.getDatasetMetaData(self.options.maxEvents,self.dataset,jobId=self.jobId,nJobs=self.nJobs,weightName=self.WeightName)
             if not dataset: 
                 print "Could not find dataset %s in campaing %s/%s" % (self.dataset,self.metaDataSrc,self.campaing)
                 sys.exit(-1)
