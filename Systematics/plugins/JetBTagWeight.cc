@@ -7,18 +7,6 @@
 #include "CondFormats/BTauObjects/interface/BTagCalibration.h"
 #include "CondTools/BTau/interface/BTagCalibrationReader.h"
 
-// setup calibration readers
-std::string CMSSW_BASE(getenv("CMSSW_BASE"));
-
-std::string CSVfilename = CMSSW_BASE + std::string("/src/flashgg/Systematics/data/CSVv2.csv");
-BTagCalibration calib_CSV("CSVv2", CSVfilename);
-
-std::string DeepCSVfilename = CMSSW_BASE + std::string("/src/flashgg/Systematics/data/DeepCSV_94XSF_V3_B_F.csv");
-BTagCalibration calib_DeepCSV("DeepCSV",  DeepCSVfilename); 
-
-
-BTagCalibration calib;
-
 //For medium working point
 
 BTagCalibrationReader readerMedB(BTagEntry::OP_MEDIUM, "central", {"up", "down"}); //readerMedB.load(calib, BTagEntry::FLAV_B, "comb"); 
@@ -52,6 +40,7 @@ namespace flashgg {
         std::string bTag_;
         double bDiscriminator_;
         bool btagSFreshape_;
+        BTagCalibration calibReshape_;
     };
 
     JetBTagWeight::JetBTagWeight( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer * gv ) : 
@@ -66,13 +55,8 @@ namespace flashgg {
 
         this->setMakesWeight( true );
 
-        if(bTag_=="pfDeepCSV"){
-            calib=calib_DeepCSV; 
-            if(debug_) cout<< "Using DeepCSV"<< endl;
-        }else{
-            calib=calib_CSV; 
-        }
-
+        std::string btag_algo = bTag_=="pfDeepCSV" ? "DeepCSV" : "CSVv2";
+        calibReshape_ = BTagCalibration(btag_algo, conf.getParameter<std::string>("bTagCalibrationFile"));
     }
 
     std::string JetBTagWeight::shiftLabel( int syst_value ) const
@@ -99,15 +83,15 @@ namespace flashgg {
 
         if(!isloaded){
 
-        readerMedB.load(calib,                // calibration instance
+        readerMedB.load(calibReshape_,                // calibration instance
                         BTagEntry::FLAV_B,    // btag flavour
                         "comb");               // measurement type
 
-        readerMedC.load(calib,                // calibration instance
+        readerMedC.load(calibReshape_,                // calibration instance
                         BTagEntry::FLAV_C,    // btag flavour
                         "comb");               // measurement type
 
-        readerMedUDSG.load(calib,                // calibration instance
+        readerMedUDSG.load(calibReshape_,                // calibration instance
                            BTagEntry::FLAV_UDSG,    // btag flavour
                            "incl");               // measurement type
          isloaded = true;

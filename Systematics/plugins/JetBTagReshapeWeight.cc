@@ -7,18 +7,6 @@
 #include "CondFormats/BTauObjects/interface/BTagCalibration.h"
 #include "CondTools/BTau/interface/BTagCalibrationReader.h"
 
-// setup calibration readers
-
-std::string CMSSW_BASE_Reshape(getenv("CMSSW_BASE"));
-
-std::string CSVfilename_Reshape = CMSSW_BASE_Reshape + std::string("/src/flashgg/Systematics/data/CSVv2.csv");
-BTagCalibration calib_ReshapeCSV("CSVv2", CSVfilename_Reshape);
-
-std::string DeepCSVfilename_Reshape = CMSSW_BASE_Reshape + std::string("/src/flashgg/Systematics/data/DeepCSV_94XSF_V3_B_F.csv");
-BTagCalibration calib_ReshapeDeepCSV("DeepCSV",  DeepCSVfilename_Reshape); 
-
-BTagCalibration calib_Reshape;
-
 //For reshaping BTag shape
 
 BTagCalibrationReader readerShapeB(BTagEntry::OP_RESHAPING,  // operating point
@@ -54,6 +42,7 @@ namespace flashgg {
         std::string bTag_;
         bool btagSFreshape_;
         int bTagReshapeSystOption_;
+        BTagCalibration calibReshape_;
     };
 
     JetBTagReshapeWeight::JetBTagReshapeWeight( const edm::ParameterSet &conf, edm::ConsumesCollector && iC, const GlobalVariablesComputer * gv ) : 
@@ -66,11 +55,8 @@ namespace flashgg {
     {
         this->setMakesWeight( true );
         bTagReshapeSystOption_ = conf.getParameter<int>( "bTagReshapeSystOption"); 
-        if(bTag_=="pfDeepCSV"){ // JM 
-            calib_Reshape=calib_ReshapeDeepCSV; 
-        }else{
-            calib_Reshape=calib_ReshapeCSV; 
-        }
+        std::string btag_algo = bTag_=="pfDeepCSV" ? "DeepCSV" : "CSVv2";
+        calibReshape_ = BTagCalibration(btag_algo, conf.getParameter<std::string>("bTagCalibrationFile"));
     }
 
     std::string JetBTagReshapeWeight::shiftLabel( int syst_value ) const
@@ -95,15 +81,15 @@ namespace flashgg {
 
 
         if(!isloadedReshape){
-        readerShapeB.load(calib_Reshape,                // calibration instance
+        readerShapeB.load(calibReshape_,                // calibration instance
                           BTagEntry::FLAV_B,    // btag flavour
                           "iterativefit");               // measurement type
 
-        readerShapeC.load(calib_Reshape,                // calibration instance
+        readerShapeC.load(calibReshape_,                // calibration instance
                          BTagEntry::FLAV_C,    // btag flavour
                          "iterativefit");               // measurement type
         
-        readerShapeUDSG.load(calib_Reshape,                // calibration instance
+        readerShapeUDSG.load(calibReshape_,                // calibration instance
                              BTagEntry::FLAV_UDSG,    // btag flavour
                              "iterativefit");               // measurement type
         isloadedReshape = true;

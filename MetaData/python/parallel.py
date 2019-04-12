@@ -394,6 +394,7 @@ class HTCondorJob(object):
             fout.write('+JobFlavour = "'+self.htcondorQueue+'"\n\n')
             fout.write('executable  = '+self.execName+'\n')
             #fout.write('arguments   = $(ProcId)\n')
+            #fout.write('input       = '+BatchRegistry.getProxy().split(":")[1]+'\n')
             fout.write('output      = '+self.jobName+'.out\n')
             fout.write('error       = '+self.jobName+'.err\n')
             fout.write('log         = '+self.jobName+'_htc.log\n\n')
