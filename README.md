@@ -6,16 +6,17 @@ Before you start, **please take note** of these warnings and comments:
 * **N.B.** You can ignore "error: addinfo_cache" lines. 
 
 Supported releases:
-* 10_2_9
+* 10_5_0
+* 10_2_9 ( deprecated, no GRID access)
 
  ```
- cmsrel CMSSW_10_2_9
- cd CMSSW_10_2_9/src
+ cmsrel CMSSW_10_5_0
+ cd CMSSW_10_5_0/src
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src 
  git clone -b dev_legacy_runII https://github.com/cms-analysis/flashgg 
- source flashgg/setup_10_2_X.sh
+ source flashgg/setup_flashgg.sh
  ```
 
 If everything now looks reasonable, you can build:
@@ -24,7 +25,18 @@ If everything now looks reasonable, you can build:
  scram b -j 4
  ```
 
-And a very basic workflow test:
+Examples to run on RunII legacy test campaign:
+ ```
+ cd Systematics/test
+ voms-proxy-init -voms cms --valid 168:00
+ cp /tmp/MYPROXY ~/
+ export X509_USER_PROXY=~/MYPROXY
+ fggRunJobs.py --load legacy_runII_v1_YEAR.json -d test_legacy_YEAR workspaceStd.py -n 300 -q workday --no-copy-proxy
+ ```
+
+**Note: 2018 workflow is just a skepleton, only scales and smearings are known to be correct.**
+
+And a very basic workflow test (for reference, this is not supposed to give paper-grade results):
  ```
  cd $CMSSW_BASE/src/flashgg
  cmsRun MicroAOD/test/microAODstd.py processType=sig datasetName=glugluh # or processType=data depending on input file

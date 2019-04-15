@@ -9,14 +9,12 @@ class JobConfig(object):
         
         super(JobConfig,self).__init__()
 
-#        self.metaDataSrc=kwargs.get("metaDataSrc","flashgg")
         self.crossSections=kwargs.get("crossSections",["$CMSSW_BASE/src/flashgg/MetaData/data/cross_sections.json"])
         self.tfileOut=kwargs.get("tfileOut",None)
 
         self.processIdMap = {}
 
         self.options = VarParsing.VarParsing("analysis")
-        ## self.options.setDefault ('maxEvents',100)
         self.options.register ('metaDataSrc',
                                'flashgg', # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -117,20 +115,13 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "puTarget")
-        self.options.register ('PUyear',
-                               "2016", # default value
-                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                               VarParsing.VarParsing.varType.string,          # string, int, or float
-                               "PUyear")
         self.options.register ('WeightName', # for THQ/THW samples the LHE weight should be mentioned
                                None, # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "WeightName")
-
         
-        self.parsed = False
-        
+        self.parsed = False        
         
         from SimGeneral.MixingModule.mix_2015_25ns_Startup_PoissonOOTPU_cfi import mix as mix_2015_25ns
         from SimGeneral.MixingModule.mix_2015_50ns_Startup_PoissonOOTPU_cfi import mix as mix_2015_50ns
@@ -238,7 +229,7 @@ class JobConfig(object):
                 print "Error: cross section not found for dataset %s" % dsetname
                 print
                 
-            self.maxEvents = int(maxEvents)
+            self.options.maxEvents = int(maxEvents)
             
             putarget = None
             samplepu = None
@@ -367,7 +358,6 @@ class JobConfig(object):
                     target = target.__sub__(lumisToSkip)                    
                 process.source.lumisToProcess = target.getVLuminosityBlockRange()
 
-            if isdata:    
                 print process.source.lumisToProcess
             
         flist = []
@@ -388,11 +378,11 @@ class JobConfig(object):
  
         ## fwlite
         if isFwlite:
-            process.fwliteInput.maxEvents = self.maxEvents
+            process.fwliteInput.maxEvents = self.options.maxEvents
             process.fwliteOutput.fileName = self.outputFile
         ## full framework
         else:
-            process.maxEvents.input = self.maxEvents
+            process.maxEvents.input = self.options.maxEvents
             
             if hasOutput:
                 process.out.fileName = self.outputFile
@@ -440,9 +430,9 @@ class JobConfig(object):
                                          self.crossSections,
                                          )
             if self.dryRun and self.getMaxJobs:
-                dataset = self.samplesMan.getDatasetMetaData(self.maxEvents,self.dataset,jobId=-1,nJobs=self.nJobs,weightName=self.WeightName)
+                dataset = self.samplesMan.getDatasetMetaData(self.options.maxEvents,self.dataset,jobId=-1,nJobs=self.nJobs,weightName=self.WeightName)
             else:
-                dataset = self.samplesMan.getDatasetMetaData(self.maxEvents,self.dataset,jobId=self.jobId,nJobs=self.nJobs,weightName=self.WeightName)
+                dataset = self.samplesMan.getDatasetMetaData(self.options.maxEvents,self.dataset,jobId=self.jobId,nJobs=self.nJobs,weightName=self.WeightName)
             if not dataset: 
                 print "Could not find dataset %s in campaing %s/%s" % (self.dataset,self.metaDataSrc,self.campaing)
                 sys.exit(-1)

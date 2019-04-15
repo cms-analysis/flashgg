@@ -36,10 +36,12 @@
         ]
     },
 
+    "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2017_cfi",
+
     "JetCorrectorParametersCollection_version" :
     {
-        "data" : "JetCorrectorParametersCollection_Summer16_23Sep2016AllV4_DATA_AK4PFchs",
-        "MC" : "JetCorrectorParametersCollection_Summer16_23Sep2016AllV4_MC_AK4PFchs"
+        "data" : "JetCorrectorParametersCollection_Fall17_17Nov2017BCDEF_V6_DATA_AK4PFchs",
+        "MC" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_94X_MC_AK4PFchs"
     },
     "JR_PtResolution_version" : "JR_Fall17_17Nov2017_V6_MC_PtResolution_AK4PFchs",
     "JR_SF_version" : "JR_Fall17_17Nov2017_V6_MC_SF_AK4PFchs",
@@ -49,6 +51,7 @@
 
     "bTagEffBins" : "bTagEffBins2017",
     "bDiscriminatorValue" : 0.4941,
+    "bTagCalibrationFile" : "flashgg/Systematics/data/DeepCSV_94XSF_V3_B_F.csv",
 
     "PDF" : "NNPDF31_nnlo_as_0118_nf_4",
     

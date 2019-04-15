@@ -354,12 +354,9 @@ emptySigma = cms.PSet(
     secondVar = cms.vint32()
 )
 
-#scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/80X_ichepV2_2016_pho")
-#scalesAndSmearingsPrefixForSigmaEOverE = cms.string("EgammaAnalysis/ElectronTools/data/Golden22June")
-##scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/Winter_2016_reReco_v1_ele")
-##scalesAndSmearingsPrefixForSigmaEOverE = cms.string("EgammaAnalysis/ElectronTools/data/Winter_2016_reReco_v1_ele")
-scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/Legacy2016_07Aug2017_pho_unc")
-scalesAndSmearingsPrefixForSigmaEOverE = cms.string("EgammaAnalysis/ElectronTools/data/Legacy2016_07Aug2017_pho_unc")
+scalesAndSmearingsPrefix = cms.string("EgammaAnalysis/ElectronTools/data/ScalesSmearings/Legacy2016_07Aug2017_FineEtaR9_v3_ele_unc")
+#scalesAndSmearingsPrefixForSigmaEOverE = scalesAndSmearingsPrefix
+#cms.string("EgammaAnalysis/ElectronTools/data/ScalesSmearings/Legacy2016_07Aug2017_pho_unc")
 
 MCScaleHighR9EB = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonScale"),
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
@@ -627,7 +624,7 @@ SigmaEOverESmearing = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigE
 SigmaEOverESmearing_EGM = cms.PSet( PhotonMethodName = cms.string("FlashggPhotonSigEoverESmearingEGMTool"),
           MethodName = cms.string("FlashggDiPhotonFromPhoton"),
           Label = cms.string("SigmaEOverESmearing"),
-          CorrectionFile = scalesAndSmearingsPrefixForSigmaEOverE,
+          CorrectionFile = scalesAndSmearingsPrefix,
           NSigmas = cms.vint32(),
           OverallRange = cms.string("1"),
           BinList = emptyBins,

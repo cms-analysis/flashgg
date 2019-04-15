@@ -578,7 +578,7 @@ class MicroAODCustomize(object):
         from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
         for vtx in range(0,maxJetCollections):
             addFlashggPuppiJets (process     = process,                                                                                           \
-                                     vertexIndex = vtx,
+                                 vertexIndex = vtx,
                                  debug       = False,
                                  label = '' + str(vtx))
 

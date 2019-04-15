@@ -16,7 +16,7 @@ config.JobType.pluginName = "Analysis"
 config.JobType.psetName = "PSET"
 
 ## to include local file in the sendbox, this will put the file in the directory where cmsRun runs
-config.JobType.inputFiles = ['Fall17_17Nov2017BCDEF_V6_DATA.db','Fall17_17Nov2017_V6_MC.db','QGL_cmssw8020_v2.db']
+config.JobType.inputFiles = []
 
 ## incrase jobs time wall, maximum 2750 minutes (~46 hours)
 config.JobType.maxJobRuntimeMin = 2750

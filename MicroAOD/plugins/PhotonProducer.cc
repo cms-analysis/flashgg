@@ -206,8 +206,13 @@ namespace flashgg {
             double egmMvaValue = (*egmMvaValues)[pp];
             fg.addUserFloat("EGMPhotonMVA", (float) egmMvaValue);
 
-            if( !ConversionTools::hasMatchedPromptElectron( pp->superCluster(), electronHandle, convs, beamspot.position(), lxyMin_, probMin_, nHitsBeforeVtxMax_ ) ) { fg.setPassElectronVeto( true ) ; }
-            else { fg.setPassElectronVeto( false ) ;}
+            std::vector<reco::GsfElectron> gsf_electrons;
+            for(auto& ele : *electronHandle.product())
+                gsf_electrons.push_back(reco::GsfElectron(ele.core()));
+            if( !ConversionTools::hasMatchedPromptElectron( pp->superCluster(), gsf_electrons, *convs.product(), beamspot.position(), lxyMin_, probMin_, nHitsBeforeVtxMax_ ) ) 
+                fg.setPassElectronVeto( true ) ; 
+            else 
+                fg.setPassElectronVeto( false ) ;
 
             // Gen matching
             if( ! evt.isRealData() ) {
