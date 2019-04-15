@@ -339,7 +339,7 @@ class HTCondorJob(object):
     """ a thread to run condor_submit and wait until it completes """
 
     #----------------------------------------
-    def __init__(self, htcondorQueue, jobName="", async=True, replacesJob=None):
+    def __init__(self, htcondorQueue, jobName="", async=True, replacesJob=None, copy_proxy=False):
         """ 
         @param cmd is the command to be executed inside the bsub script. Some CMSSW specific wrapper
         code will be added
@@ -354,6 +354,7 @@ class HTCondorJob(object):
         self.jobid = None
         self.cmd = None
         self.replacesJob = replacesJob
+        self.copy_proxy = copy_proxy
 
         if async != True:
             print "HTCondorJob: synchronous job processing is not supported by for HTCondor jobs ... running async jobs instead"
@@ -394,7 +395,8 @@ class HTCondorJob(object):
             fout.write('+JobFlavour = "'+self.htcondorQueue+'"\n\n')
             fout.write('executable  = '+self.execName+'\n')
             #fout.write('arguments   = $(ProcId)\n')
-            #fout.write('input       = '+BatchRegistry.getProxy().split(":")[1]+'\n')
+            if self.copy_proxy:
+                fout.write('input       = '+BatchRegistry.getProxy().split(":")[1]+'\n')
             fout.write('output      = '+self.jobName+'.out\n')
             fout.write('error       = '+self.jobName+'.err\n')
             fout.write('log         = '+self.jobName+'_htc.log\n\n')
