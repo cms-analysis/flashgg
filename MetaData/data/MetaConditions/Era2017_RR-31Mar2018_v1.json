@@ -36,6 +36,8 @@
         ]
     },
 
+    "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2017_cfi",
+
     "JetCorrectorParametersCollection_version" :
     {
         "data" : "JetCorrectorParametersCollection_Fall17_17Nov2017BCDEF_V6_DATA_AK4PFchs",
@@ -49,6 +51,7 @@
 
     "bTagEffBins" : "bTagEffBins2017",
     "bDiscriminatorValue" : 0.4941,
+    "bTagCalibrationFile" : "flashgg/Systematics/data/DeepCSV_94XSF_V3_B_F.csv",
 
     "PDF" : "NNPDF31_nnlo_as_0118_nf_4",
     

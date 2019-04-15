@@ -51,8 +51,9 @@
 
     "bTagEffBins" : "bTagEffBins2016",
     "bDiscriminatorValue" : 0.8484,
+    "bTagCalibrationFile" : "flashgg/Systematics/data/DeepCSV_94XSF_V3_B_F.csv",
 
-    "mc2hessianCSV":"PhysicsTools/HepMCCandAlgos/data/NNPDF30_lo_as_0130_hessian_60.csv",
+    "mc2hessianCSV" : "PhysicsTools/HepMCCandAlgos/data/NNPDF30_lo_as_0130_hessian_60.csv",
 
     "bRegression" :
     {

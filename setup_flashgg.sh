@@ -47,6 +47,7 @@ git cms-merge-topic -u simonepigazzini:topic_flashgg_10_5_0_qgtagger
 
 # EGamma post reco tools for energy scales and smearings
 echo "Settinga up Scales and Smearings form EGM"
+git cms-addpkg RecoEgamma/EgammaTools
 git clone https://github.com/cms-egamma/EgammaAnalysis-ElectronTools.git EgammaAnalysis/ElectronTools/data
 cd EgammaAnalysis/ElectronTools/data
 git checkout ScalesSmearing2018_Dev
@@ -70,7 +71,8 @@ echo "setting up XGBoost interface"
 cd $CMSSW_BASE/src
 git clone https://github.com/simonepigazzini/XGBoostCMSSW.git
 cp XGBoostCMSSW/XGBoostInterface/toolbox/*xml $CMSSW_BASE/config/toolbox/$SCRAM_ARCH/tools/selected/
-scram setup rabit xgboost
+scram setup rabit
+scram setup xgboost
 
 echo
 echo "Done with setup script! You still need to build!"
