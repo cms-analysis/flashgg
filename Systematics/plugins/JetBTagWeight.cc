@@ -56,7 +56,7 @@ namespace flashgg {
         this->setMakesWeight( true );
 
         std::string btag_algo = bTag_=="pfDeepCSV" ? "DeepCSV" : "CSVv2";
-        calibReshape_ = BTagCalibration(btag_algo, conf.getParameter<std::string>("bTagCalibrationFile"));
+        calibReshape_ = BTagCalibration(btag_algo, conf.getParameter<edm::FileInPath>("bTagCalibrationFile").fullPath());
     }
 
     std::string JetBTagWeight::shiftLabel( int syst_value ) const
