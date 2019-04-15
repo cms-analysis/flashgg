@@ -196,7 +196,8 @@ class jetSystematicsCustomize:
                                                                OverallRange = cms.string("pt>25.0&&abs(eta)<2.4"),
                                                                BinList = getattr(self, self.metaConditions['bTagEffBins']),
                                                                #bTag = cms.string(flashggBTag),
-                                                               bTag = cms.string(flashggDeepCSV), 
+                                                               bTag = cms.string(flashggDeepCSV),
+                                                               bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagCalibrationFile'])),
                                                                bDiscriminator = cms.double(self.metaConditions['bDiscriminatorValue']),
                                                                Debug = cms.untracked.bool(False),
                                                                ApplyCentralValue = cms.bool(True)
@@ -208,6 +209,7 @@ class jetSystematicsCustomize:
                                                                BinList = getattr(self, self.metaConditions['bTagEffBins']),
                                                                #                                                          bTag = cms.string(flashggBTag),
                                                                bTag = cms.string(flashggDeepCSV), 
+                                                               bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagCalibrationFile'])),
                                                                bTagReshapeSystOption = cms.int32(1),#For changing the source of uncertainty
                                                                Debug = cms.untracked.bool(False),
                                                                ApplyCentralValue = cms.bool(True)
