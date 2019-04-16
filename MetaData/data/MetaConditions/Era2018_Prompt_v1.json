@@ -45,6 +45,8 @@
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
 
+    "Ele_ID_eff_bin" : "binInfo2018",
+
     "bRegression" :
     {
         "weightFile" : "/src/flashgg/Taggers/data/DNN_models/breg_training_2017_updated.pb",

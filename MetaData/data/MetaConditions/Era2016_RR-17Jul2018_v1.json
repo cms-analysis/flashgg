@@ -37,6 +37,8 @@
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
 
+    "Ele_ID_eff_bin" : "binInfo2016",
+
     "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2016_cfi",
     
     "JetCorrectorParametersCollection_version" :

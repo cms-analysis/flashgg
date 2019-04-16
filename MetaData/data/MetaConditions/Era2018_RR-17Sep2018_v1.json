@@ -45,6 +45,8 @@
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
 
+    "Ele_ID_eff_bin" : "binInfo2018",
+
     "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2018_cfi",
 
     "bRegression" :

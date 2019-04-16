@@ -34,9 +34,6 @@
         ]
     },
 
-    "MUON_ID" : "Medium",
-    "MUON_ISO" : "LooseRel",
-
     "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2017_cfi",
 
     "JetCorrectorParametersCollection_version" :
@@ -47,6 +44,11 @@
 
     "JR_PtResolution_version" : "JR_Fall17_17Nov2017_V6_MC_PtResolution_AK4PFchs",
     "JR_SF_version" : "JR_Fall17_17Nov2017_V6_MC_SF_AK4PFchs",
+
+    "MUON_ID" : "Medium",
+    "MUON_ISO" : "LooseRel",
+
+    "Ele_ID_eff_bin" : "binInfo2017",
 
     "bTagEffBins" : "bTagEffBins2017",
     "bDiscriminatorValue" : 0.4941,
