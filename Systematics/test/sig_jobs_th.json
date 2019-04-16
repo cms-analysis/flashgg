@@ -1,7 +1,0 @@
-{
-    "processes" : {
-        "thq_125_SM"  : [ [ "/THQ_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCP5", { "args" :["outputFile=output_THQ_M125_SM.root" , "WeightName=rwgt_12" , "doSystematics=False" , "doPdfWeights=False" ] } ] ],
-        "thw_125_SM"  : [ [ "/THW_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCP5", { "args" :["outputFile=output_THW_M125_SM.root" , "WeightName=rwgt_12", "doSystematics=False" , "doPdfWeights=False"] } ] ]
-     },	
-        "cmdLine" : "campaign=RunIIFall17-3_1_0"
-}
