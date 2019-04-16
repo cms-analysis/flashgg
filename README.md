@@ -1,6 +1,8 @@
 flashgg
 =======
 
+## Latest with dev_legacy_runII: 16/04/19
+
 Before you start, **please take note** of these warnings and comments:
 * **N.B.** The setup script will check out many packages and take a while!
 * **N.B.** You can ignore "error: addinfo_cache" lines. 
