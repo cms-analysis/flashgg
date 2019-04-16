@@ -9,7 +9,7 @@ process = cms.Process("Analysis")
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.source = cms.Source("PoolSource",
                             fileNames=cms.untracked.vstring(
-        "file:myMicroAODOutputFile.root"        
+        "file:/afs/cern.ch/work/j/jlangfor/hgg/stxs/1p1/CMSSW_10_2_9/src/flashgg/myMicroAODOutputFile.root"        
         )
 )
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
