@@ -60,8 +60,6 @@ namespace flashgg {
         EDGetTokenT<View<flashgg::Met> > METToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
-        //EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
-        //EDGetTokenT<float> pTHToken_,pTVToken_;
         EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
         EDGetTokenT<double> rhoTag_;
         string systLabel_;
@@ -160,11 +158,6 @@ namespace flashgg {
         useElectronLooseID_=iConfig.getParameter<bool>("useElectronLooseID");
         
         ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
-        //stage0catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0cat") );
-        //stage1catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1cat") );
-        //njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
-        //pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
-        //pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
         newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
 
 
@@ -178,14 +171,6 @@ namespace flashgg {
 
     void WHLeptonicTagProducer::produce( Event &evt, const EventSetup & )
     {
-        //Handle<int> stage0cat, stage1cat, njets;
-        //Handle<float> pTH, pTV;
-        //evt.getByToken(stage0catToken_, stage0cat);
-        //evt.getByToken(stage1catToken_,stage1cat);
-        //evt.getByToken(njetsToken_,njets);
-        //evt.getByToken(pTHToken_,pTH);
-        //evt.getByToken(pTVToken_,pTV);
-
         Handle<HTXS::HiggsClassification> htxsClassification;
         evt.getByToken(newHTXSToken_,htxsClassification);
 
@@ -429,13 +414,6 @@ namespace flashgg {
                     {
                         VHTagTruth truth_obj;
                         truth_obj.setGenPV( higgsVtx );
-                        //if ( stage0cat.isValid() ) {
-                        //    truth_obj.setHTXSInfo( *( stage0cat.product() ),
-                        //                           *( stage1cat.product() ),
-                        //                           *( njets.product() ),
-                        //                           *( pTH.product() ),
-                        //                           *( pTV.product() ) );
-                        //} else if ( htxsClassification.isValid() ) {
                         if ( htxsClassification.isValid() ) {
                             truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
                                                    htxsClassification->stage1_1_cat_pTjet30GeV,

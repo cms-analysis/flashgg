@@ -170,7 +170,7 @@ from flashgg.MetaData.samples_utils import SamplesManager
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
-"file:/afs/cern.ch/work/j/jlangfor/hgg/stxs/1p1/CMSSW_10_5_0/src/flashgg/myMicroAODOutputFile.root"
+"file:/afs/cern.ch/work/j/jlangfor/public/hgg/stxs/1p1/test_microAOD/vbf_2016_microAOD.root"
                              )
 )
 
