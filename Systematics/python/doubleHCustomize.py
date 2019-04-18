@@ -6,12 +6,10 @@ class DoubleHCustomize():
     """
     
     def __init__(self, process, customize, metaConditions):
-        print "straring firstt part"
         self.process = process
         self.customize = customize
         self.metaConditions = metaConditions
         self.tagList = [ ["DoubleHTag",12] ]
-        print "done first part"
         self.customizeTagSequence()
 
     def variablesToDump(self):
@@ -93,23 +91,22 @@ class DoubleHCustomize():
             return var_workspace
 
     def customizeTagSequence(self):
-        print "starting to import"
         self.process.load("flashgg.Taggers.flashggDoubleHTag_cff")
-        print "done load"
         from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
-        print "import done"
 
         ## customize meta conditions
-        print self.metaConditions["doubleHTag"]["jetPUID"]
         self.process.flashggDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetPUID"]))
-#        self.process.flashggDoubleHTag.MVAConfig.weights=cms.FileInPath("%s"%self.metaConditions["doubleHTag"]["weightsFile"]) 
         self.process.flashggDoubleHTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["doubleHTag"]["weightsFile"]))  
-        print self.metaConditions["doubleHTag"]["MVAscalingValue"]
         self.process.flashggDoubleHTag.MVAscaling = cms.double(self.metaConditions["doubleHTag"]["MVAscalingValue"])
 
         ## customize here (regression, kin-fit, MVA...)
-        if self.customize.doBJetRegression : self.process.flashggDoubleHTag.JetTags = cms.VInputTag( ["bRegProducer%d" % icoll for icoll,coll in enumerate(UnpackedJetCollectionVInputTag) ] )
-        
+        if self.customize.doBJetRegression : 
+            jetTagsSystematics = cms.VInputTag()
+            for icoll,coll in enumerate(UnpackedJetCollectionVInputTag):
+                jetTagsSystematics.append(cms.InputTag("bRegProducer", str(icoll)))
+            getattr(self.process, "flashggDoubleHTag").JetTags = jetTagsSystematics
+
+
         
 
        # if customize.doubleHReweightTarget != -1:

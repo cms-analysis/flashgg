@@ -597,30 +597,37 @@ else :
 if customize.doBJetRegression:
 
     bregProducers = []
-    bregJets = []
+    doubleHTagProducers = []
     
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
     from flashgg.Taggers.flashggbRegressionProducer_cfi import flashggbRegressionProducer
     recoJetCollections = UnpackedJetCollectionVInputTag
+    from flashgg.Taggers.flashggDoubleHTag_cfi import flashggDoubleHTag
 
-
+    jetsysts = cms.vstring()
+    jetnames = cms.vstring()
+    for jetsyst in [systlabels[0]]+jetsystlabels:
+        jetsysts.append(jetsyst)
     for icoll,coll in enumerate(recoJetCollections):
-        print "doing icoll "+str(icoll)
-        producer = flashggbRegressionProducer.clone(JetTag = coll)
-        producer.bRegressionWeightfile = cms.untracked.string(str(customize.metaConditions['bRegression']['weightFile']))
-        producer.y_mean = customize.metaConditions['bRegression']['y_mean']
-        producer.y_mean = customize.metaConditions['bRegression']['y_std']
-        producer.year = cms.untracked.string(str(customize.metaConditions['bRegression']['year']))
+        jetnames.append(coll.moduleLabel)
+    producer = flashggbRegressionProducer.clone(JetSuffixes = jetsysts)
+    producer.JetNames = jetnames
+    producer.bRegressionWeightfile = cms.untracked.string(str(os.environ["CMSSW_BASE"]+customize.metaConditions['bRegression']['weightFile']))
+    producer.y_mean = customize.metaConditions['bRegression']['y_mean']
+    producer.y_mean = customize.metaConditions['bRegression']['y_std']
+    producer.year = cms.untracked.string(str(customize.metaConditions['bRegression']['year']))
 
-        setattr(process,"bRegProducer%d" %icoll,producer)
-        bregProducers.append(producer)
-        bregJets.append("bRegProducer%d" %icoll)
-            
+    setattr(process,"bRegProducer",producer)
+    bregProducers.append(producer)
     process.bregProducers = cms.Sequence(reduce(lambda x,y: x+y, bregProducers))
-#    process.bbggtree.inputTagJets=cms.VInputTag(bregJets)
     process.p.replace(process.jetSystematicsSequence,process.jetSystematicsSequence*process.flashggUnpackedJets+process.bregProducers)
-
-
+        
+    if jetsystlabels!=[]:
+        for jetsyst in [systlabels[0]]+jetsystlabels:
+            jetTagsSystematics = cms.VInputTag()
+            for icoll,coll in enumerate(recoJetCollections):
+                jetTagsSystematics.append(cms.InputTag("bRegProducer",str(jetsyst)+str(icoll)))
+            getattr(process, "flashggDoubleHTag"+jetsyst).JetTags = jetTagsSystematics
 
 
 if customize.doFiducial:
@@ -721,6 +728,5 @@ if customize.verboseSystDump:
 #print process.dumpPython()
 #processDumpFile = open('processDump.py', 'w')
 #print >> processDumpFile, process.dumpPython()
-print "daje"
 # call the customization
 customize(process)

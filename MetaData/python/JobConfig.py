@@ -223,9 +223,6 @@ class JobConfig(object):
         
                 
         files = self.inputFiles
-        print "mega daje " 
-        print files
-        print self.dataset
         if self.dataset and self.dataset != "":
             dsetname,xsec,totEvents,files,maxEvents,sp_unused = self.dataset
             if type(xsec) == float or xsec == None:
@@ -234,7 +231,6 @@ class JobConfig(object):
                 print
                 
             self.options.maxEvents = int(maxEvents)
-            print "xsec"
             putarget = None
             samplepu = None
             if self.puTarget != "":
@@ -337,7 +333,6 @@ class JobConfig(object):
                             puObj.mcPu   = samplepu.probValue
                             puObj.dataPu = cms.vdouble(putarget)
                             puObj.useTruePu = cms.bool(True)
-                            print "supermegadaje"
                     
             for name,obj in process.__dict__.iteritems():
                 if hasattr(obj,"processId"):
@@ -365,8 +360,6 @@ class JobConfig(object):
                 print process.source.lumisToProcess
             
         flist = []
-        print "ricco "
-        print files
         for f in files:
             if len(f.split(":",1))>1:
                 flist.append(str(f))
@@ -409,7 +402,6 @@ class JobConfig(object):
             pyout = open("%s.gz" % self.dumpPython,"w+")
             pyout.write( process.dumpPython() )
             pyout.close()
-        print "done customize"
 
     # parse command line and do post-processing
     def parse(self):
