@@ -127,8 +127,8 @@ binInfo2017 = cms.PSet(
      cms.PSet( lowBounds = cms.vdouble( -2 , 20 ) , upBounds = cms.vdouble( -1.566, 35 ) , values = cms.vdouble(0.941 ) , uncertainties = cms.vdouble(0.0225 ) ),
      cms.PSet( lowBounds = cms.vdouble( -2 , 35 ) , upBounds = cms.vdouble( -1.566, 50 ) , values = cms.vdouble(0.959 ) , uncertainties = cms.vdouble(0.0069  ) ),
      cms.PSet( lowBounds = cms.vdouble( -2 , 50 ) , upBounds = cms.vdouble( -1.566, 100 ) , values = cms.vdouble(0.966) , uncertainties = cms.vdouble(0.0053  ) ),
-     cms.PSet( lowBounds = cms.vdouble( -2 , 100 ) , upBounds = cms.vdouble( -1.566, 200 ) , values = cms.vdoubl(0.973) , uncertainties = cms.vdouble(0.06   ) ),
-     cms.PSet( lowBounds = cms.vdouble( -2 , 200 ) , upBounds = cms.vdouble( -1.566, 500 ) , values = cms.vdoubl(0.995) , uncertainties = cms.vdouble(0.0637 ) ),
+     cms.PSet( lowBounds = cms.vdouble( -2 , 100 ) , upBounds = cms.vdouble( -1.566, 200 ) , values = cms.vdouble(0.973) , uncertainties = cms.vdouble(0.06   ) ),
+     cms.PSet( lowBounds = cms.vdouble( -2 , 200 ) , upBounds = cms.vdouble( -1.566, 500 ) , values = cms.vdouble(0.995) , uncertainties = cms.vdouble(0.0637 ) ),
      cms.PSet( lowBounds = cms.vdouble( -2 , 500 ) , upBounds = cms.vdouble( -1.566, 99999999 ) , values = cms.vdouble(0.995  ) , uncertainties = cms.vdouble(0.0637  ) ),
 
      cms.PSet( lowBounds = cms.vdouble( -1.566 , 0 ) , upBounds = cms.vdouble( -1.444, 10 ) , values = cms.vdouble( 1 ) , uncertainties = cms.vdouble(1  ) ),

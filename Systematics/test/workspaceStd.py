@@ -225,8 +225,8 @@ if customize.tthTagsOnly:
 
 if customize.doDoubleHTag:
     import flashgg.Systematics.doubleHCustomize 
-    hhBBGGCustomizer = flashgg.Systematics.doubleHCustomize.doubleHCustomize(customize, customize.metaConditions)
-    minimalVariables += hhBBGGCustomizer.variablesToDump()
+    hhc = flashgg.Systematics.doubleHCustomize.DoubleHCustomize(process, customize, customize.metaConditions)
+    minimalVariables += hhc.variablesToDump()
 
 print 'here we print the tag sequence after'
 print process.flashggTagSequence
@@ -433,7 +433,7 @@ elif customize.tthTagsOnly:
         ["TTHDiLeptonTag",0]
         ]
 elif customize.doubleHTagsOnly:
-    tagList = hhc.tagList(customize,process)
+    tagList = hhc.tagList
     print "taglist is:"
     print tagList
 else:
@@ -606,12 +606,11 @@ if customize.doBJetRegression:
 
     for icoll,coll in enumerate(recoJetCollections):
         print "doing icoll "+str(icoll)
-
         producer = flashggbRegressionProducer.clone(JetTag = coll)
-        producer.bRegressionWeightfile = customize.metaConditions['bRegression']['weightFile']
+        producer.bRegressionWeightfile = cms.untracked.string(str(customize.metaConditions['bRegression']['weightFile']))
         producer.y_mean = customize.metaConditions['bRegression']['y_mean']
         producer.y_mean = customize.metaConditions['bRegression']['y_std']
-        producer.year = customize.metaConditions['bRegression']['year']        
+        producer.year = cms.untracked.string(str(customize.metaConditions['bRegression']['year']))
 
         setattr(process,"bRegProducer%d" %icoll,producer)
         bregProducers.append(producer)
@@ -722,6 +721,6 @@ if customize.verboseSystDump:
 #print process.dumpPython()
 #processDumpFile = open('processDump.py', 'w')
 #print >> processDumpFile, process.dumpPython()
-
+print "daje"
 # call the customization
 customize(process)
