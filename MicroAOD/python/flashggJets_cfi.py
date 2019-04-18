@@ -18,11 +18,7 @@ flashggDeepCSVudsg = 'pfDeepCSVJetTags:probudsg'
 flashggDeepCSV= 'pfDeepCSV'
 
 maxJetCollections = 12
-#qgDatabaseVersion = 'v1' # check https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
-if os.environ["CMSSW_VERSION"].count("CMSSW_9") or os.environ["CMSSW_VERSION"].count("CMSSW_10"):
-  qgDatabaseVersion = 'cmssw8020_v2'
-else:
-  qgDatabaseVersion = '80X'
+qgDatabaseVersion = 'AK4chs_94X'
 
 def addFlashggPFCHSJets(process, 
                         isData,
@@ -132,10 +128,10 @@ def addFlashggPFCHSJets(process,
   
   for type in ['AK4PFchs']:#,'AK4PFchs_antib']:
     process.QGPoolDBESSource.toGet.extend(cms.VPSet(cms.PSet(
-          record = cms.string('QGLikelihoodRcd'),
-          tag    = cms.string('QGLikelihoodObject_'+qgDatabaseVersion+'_'+type),
-          label  = cms.untracked.string('QGL_'+type)
-          )))
+      record = cms.string('QGLikelihoodRcd'),
+      tag    = cms.string('QGLikelihoodObject_v1_AK4'),
+      label  = cms.untracked.string('QGL_'+type)
+    )))
   
   from RecoJets.JetProducers.QGTagger_cfi import QGTagger
   setattr( process, 'QGTaggerPFCHS' + label,  
