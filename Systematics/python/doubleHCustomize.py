@@ -107,8 +107,6 @@ class DoubleHCustomize():
             getattr(self.process, "flashggDoubleHTag").JetTags = jetTagsSystematics
 
 
-        
-
        # if customize.doubleHReweightTarget != -1:
        #     self.process.load("flashgg.Taggers.flashggDoubleHReweight_cfi")
        #     self.process.flashggDoubleHReweight.targetNode = customize.doubleHReweightTarget

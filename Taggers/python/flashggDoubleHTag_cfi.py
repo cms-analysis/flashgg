@@ -14,6 +14,7 @@ jetPUID = 'Loose'
 weightsFile="flashgg/Taggers/data/HHTagger/training_with_10_12_2018_commonTraining_2016.weights.xml"# path to TMVA weights
 MVAscalingValue=1.#scale MVA output before the cumulative transformation for 2017(2016 kept unchanged for simplicity, we will probably change that once we have all 3 years.)
 
+
 flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'), # diphoton collection (will be replaced by systematics machinery at run time)
                                    JetTags= UnpackedJetCollectionVInputTag, # one jet per vertex

@@ -614,7 +614,7 @@ if customize.doBJetRegression:
     producer.JetNames = jetnames
     producer.bRegressionWeightfile = cms.untracked.string(str(os.environ["CMSSW_BASE"]+customize.metaConditions['bRegression']['weightFile']))
     producer.y_mean = customize.metaConditions['bRegression']['y_mean']
-    producer.y_mean = customize.metaConditions['bRegression']['y_std']
+    producer.y_std = customize.metaConditions['bRegression']['y_std']
     producer.year = cms.untracked.string(str(customize.metaConditions['bRegression']['year']))
 
     setattr(process,"bRegProducer",producer)
