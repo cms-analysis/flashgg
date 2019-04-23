@@ -112,8 +112,15 @@ class DoubleHCustomize():
         process.load("flashgg.Taggers.flashggDoubleHTag_cff")
         from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
 
+        ## customize meta conditions
+        process.flashggDoubleHTag.JetIDLevel=cms.string(self.metaConditions["doubleHTag"]["jetPUID"])
+        process.flashggDoubleHTag.MVAConfig.weights=cms.FileInPath("%s"%self.metaConditions["doubleHTag"]["weightsFile"]) 
+        process.flashggDoubleHTag.MVAscaling = cms.double(self.metaConditions["doubleHTag"]["MVAscalingValue"])
+
         ## customize here (regression, kin-fit, MVA...)
         if self.customize.doBJetRegression : process.flashggDoubleHTag.JetTags = cms.VInputTag( ["bRegProducer%d" % icoll for icoll,coll in enumerate(UnpackedJetCollectionVInputTag) ] )
+        
+        
 
        # if customize.doubleHReweightTarget != -1:
        #     process.load("flashgg.Taggers.flashggDoubleHReweight_cfi")
