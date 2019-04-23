@@ -67,7 +67,7 @@
     {
 	"jetPUID" : "Loose",
 	"weightsFile" : "flashgg/Taggers/data/HHTagger/training_with_10_12_2018_commonTraining_2016.weights.xml",
-	"MVAscalingValue" :1.0
+	"MVAscalingValue" : 1.0
     }
 
 }
