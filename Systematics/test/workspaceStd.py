@@ -608,6 +608,10 @@ if customize.doBJetRegression:
         print "doing icoll "+str(icoll)
 
         producer = flashggbRegressionProducer.clone(JetTag = coll)
+        producer.bRegressionWeightfile = customize.metaConditions['bRegression']['weightFile']
+        producer.y_mean = customize.metaConditions['bRegression']['y_mean']
+        producer.y_mean = customize.metaConditions['bRegression']['y_std']
+        producer.year = customize.metaConditions['bRegression']['year']        
 
         setattr(process,"bRegProducer%d" %icoll,producer)
         bregProducers.append(producer)

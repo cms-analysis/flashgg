@@ -6,8 +6,6 @@
     },
 
     "flashggMETsFunction" : "runMETs2017",
-    "eleIdVersion" : "Fall17EGMEleID",
-    "phoIdVersion" : "Fall17EGMPhoID",
 
     "flashggPhotons" :
     {
@@ -43,18 +41,19 @@
         "data" : "JetCorrectorParametersCollection_Fall17_17Nov2017BCDEF_V6_DATA_AK4PFchs",
         "MC" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_94X_MC_AK4PFchs"
     },
+
     "JR_PtResolution_version" : "JR_Fall17_17Nov2017_V6_MC_PtResolution_AK4PFchs",
     "JR_SF_version" : "JR_Fall17_17Nov2017_V6_MC_SF_AK4PFchs",
-    
+
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
+
+    "Ele_ID_eff_bin" : "binInfo2017",
 
     "bTagEffBins" : "bTagEffBins2017",
     "bDiscriminatorValue" : 0.4941,
     "bTagCalibrationFile" : "flashgg/Systematics/data/DeepCSV_94XSF_V3_B_F.csv",
 
-    "PDF" : "NNPDF31_nnlo_as_0118_nf_4",
-    
     "bRegression" :
     {
         "weightFile" : "/src/flashgg/Taggers/data/DNN_models/breg_training_2017_updated.pb",
@@ -62,6 +61,7 @@
         "y_std" : 0.28492164611816406,
         "year" : 2017
     },
+
     "doubleHTag":
     {
 	"jetPUID" : "Tight2017",
