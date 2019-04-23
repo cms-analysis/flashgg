@@ -39,7 +39,9 @@ Examples to run on RunII legacy test campaign:
 And a very basic workflow test (for reference, this is not supposed to give paper-grade results):
  ```
  cd $CMSSW_BASE/src/flashgg
- cmsRun MicroAOD/test/microAODstd.py processType=sig datasetName=glugluh # or processType=data depending on input file
+ cmsRun MicroAOD/test/microAODstd.py processType=sig year=2017 datasetName=glugluh conditionsJSON=MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json 
+ # processType=data depending on input file
+ #with year=2017 or year=2016 it will rerun the DeepJet b-tagger for year=2018 it won't rerun
  cmsRun Taggers/test/simple_Tag_test.py
  cmsRun Taggers/test/diphotonsDumper_cfg.py
  cmsRun Systematics/test/workspaceStd.py processId=ggh_125 doHTXS=1
