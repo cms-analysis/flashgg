@@ -220,7 +220,8 @@ class JobConfig(object):
                     ## sys.exit(0)
             else:
                 sys.exit(1)
-            
+        
+                
         files = self.inputFiles
         if self.dataset and self.dataset != "":
             dsetname,xsec,totEvents,files,maxEvents,sp_unused = self.dataset
@@ -230,7 +231,6 @@ class JobConfig(object):
                 print
                 
             self.options.maxEvents = int(maxEvents)
-            
             putarget = None
             samplepu = None
             if self.puTarget != "":
@@ -333,7 +333,6 @@ class JobConfig(object):
                             puObj.mcPu   = samplepu.probValue
                             puObj.dataPu = cms.vdouble(putarget)
                             puObj.useTruePu = cms.bool(True)
-                        
                     
             for name,obj in process.__dict__.iteritems():
                 if hasattr(obj,"processId"):
