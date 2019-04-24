@@ -20,7 +20,7 @@ namespace flashgg {
   public:
     //---ctors---
     H4GCandidate() ;
-    H4GCandidate( std::vector<flashgg::Photon> phoVector, std::vector<edm::Ptr<reco::Vertex>> Vertices,edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex, math::XYZPoint BSPoint, std::vector <edm::Ptr<flashgg::DiPhotonCandidate>> diPhoPtrs);
+    H4GCandidate( std::vector<flashgg::Photon> phoVector, std::vector<edm::Ptr<reco::Vertex>> Vertices,std::vector<edm::Ptr<reco::Vertex>> slim_Vertices,edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex, math::XYZPoint BSPoint, std::vector <edm::Ptr<flashgg::DiPhotonCandidate>> diPhoPtrs);
     // H4GCandidate( std::vector<flashgg::Photon> phoVector, edm::Ptr<reco::Vertex> vertex, edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex);
 
     //---dtor---
@@ -29,13 +29,17 @@ namespace flashgg {
     //---utils---
     const std::vector<flashgg::Photon> phoVector() const { return phoVector_; };
     const std::vector< edm::Ptr<reco::Vertex> >Vertices() const { return Vertices_; };
+    const std::vector< edm::Ptr<reco::Vertex> >slim_Vertices() const { return slim_Vertices_; };
+
     // const edm::Ptr<reco::Vertex> & vertex() const { return vertex_;  };
+    const edm::Ptr<reco::Vertex> & Vertex_random() const { return Vertex_random_;  };
     const edm::Ptr<reco::Vertex> & vertex_diphoton() const { return vertex_diphoton_;  };
     const reco::GenParticle::Point & genVertex() const { return genVertex_;  };
     const math::XYZPoint &BSPoint() const { return BSPoint_; };
     const std::vector <edm::Ptr<flashgg::DiPhotonCandidate>> &diPhoPtrs() const { return diPhoPtrs_; };
     const float BS_factor_0Vtx() const { return BS_factor_0Vtx_; };
     const float BS_factor_HggVtx() const { return BS_factor_HggVtx_; };
+    const float BS_factor_RandomVtx() const { return BS_factor_RandomVtx_; };
     const std::vector<flashgg::Photon> phoP4Corrected() const { return phoP4Corrected_; };
     const float pho1_MVA() const { return pho1_MVA_; };
     const float pho2_MVA() const { return pho2_MVA_; };
@@ -66,13 +70,17 @@ namespace flashgg {
 
     std::vector<flashgg::Photon> phoVector_;
     std::vector<edm::Ptr<reco::Vertex>> Vertices_;
+    std::vector<edm::Ptr<reco::Vertex>> slim_Vertices_;
+
     // edm::Ptr<reco::Vertex>               vertex_;
+    edm::Ptr<reco::Vertex>               Vertex_random_;
     edm::Ptr<reco::Vertex>               vertex_diphoton_;
     reco::GenParticle::Point genVertex_;
     math::XYZPoint BSPoint_;
     std::vector <edm::Ptr<flashgg::DiPhotonCandidate>> diPhoPtrs_;
     float BS_factor_0Vtx_;
     float BS_factor_HggVtx_;
+    float BS_factor_RandomVtx_;
     std::vector<flashgg::Photon> phoP4Corrected_;
     float pho1_MVA_;
     float pho2_MVA_;

@@ -7,11 +7,13 @@ using namespace flashgg;
 H4GCandidate::H4GCandidate():
 phoVector_ (),
 Vertices_(),
+Vertex_random_(),
 // vertex_ (),
 
 vertex_diphoton_ (),
 BS_factor_0Vtx_ (),
 BS_factor_HggVtx_(),
+BS_factor_RandomVtx_ (),
 phoP4Corrected_ (),
 pho1_MVA_ (),
 pho2_MVA_ (),
@@ -37,14 +39,19 @@ tp_ ()
 {}
 
   H4GCandidate::~H4GCandidate() {}
-  H4GCandidate::H4GCandidate( std::vector<flashgg::Photon> phoVector, std::vector<edm::Ptr<reco::Vertex>> Vertices, edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex, math::XYZPoint BSPoint, std::vector <edm::Ptr<flashgg::DiPhotonCandidate>> diPhoPtrs):
-  phoVector_(phoVector), Vertices_(Vertices), vertex_diphoton_(vertex_diphoton), genVertex_(genVertex), BSPoint_(BSPoint), diPhoPtrs_(diPhoPtrs)
+  H4GCandidate::H4GCandidate( std::vector<flashgg::Photon> phoVector, std::vector<edm::Ptr<reco::Vertex>> Vertices, std::vector<edm::Ptr<reco::Vertex>> slim_Vertices, edm::Ptr<reco::Vertex> vertex_diphoton, reco::GenParticle::Point genVertex, math::XYZPoint BSPoint, std::vector <edm::Ptr<flashgg::DiPhotonCandidate>> diPhoPtrs):
+  phoVector_(phoVector), Vertices_(Vertices), slim_Vertices_(slim_Vertices),vertex_diphoton_(vertex_diphoton), genVertex_(genVertex), BSPoint_(BSPoint), diPhoPtrs_(diPhoPtrs)
   {
 
+    int random_vtx = rand() % slim_Vertices_.size();
 
-    float vtx_X = Vertices_[0]->x();
-    float vtx_Y = Vertices_[0]->y();
-    float vtx_Z = Vertices_[0]->z();
+    // float vtx_X = Vertices_[0]->x();
+    // float vtx_Y = Vertices_[0]->y();
+    // float vtx_Z = Vertices_[0]->z();
+    Vertex_random_ = slim_Vertices_[random_vtx];
+    float vtx_X = slim_Vertices_[random_vtx]->x();
+    float vtx_Y = slim_Vertices_[random_vtx]->y();
+    float vtx_Z = slim_Vertices_[random_vtx]->z();
 
     //--Beam spot reweighting (https://github.com/cms-analysis/flashggFinalFit/blob/e60d53e19ac4f20e7ce187f0a34e483b4fc2a60e/Signal/test/SignalFit.cpp)
     float mcBeamSpotWidth_=5.14; //cm
@@ -52,6 +59,7 @@ tp_ ()
 
     float dZ_HggVtx = genVertex_.z() - vertex_diphoton_->z();
     float dZ_0Vtx = genVertex.z() - vtx_Z;
+    float dZ_RandomVtx = genVertex.z() - Vertex_random_->z();
 
 
     if (fabs(dZ_HggVtx) < 0.1 ){
@@ -69,6 +77,15 @@ tp_ ()
       double dataBeamSpot_0Vtx=TMath::Gaus(dZ_0Vtx,0,TMath::Sqrt(2)*dataBeamSpotWidth_,true);
       BS_factor_0Vtx_ = dataBeamSpot_0Vtx/mcBeamSpot_0Vtx;
     }
+
+    if (fabs(dZ_RandomVtx) < 0.1 ){
+      BS_factor_RandomVtx_ =1;
+    } else {
+      double mcBeamSpot_RandomVtx=TMath::Gaus(dZ_RandomVtx,0,TMath::Sqrt(2)*mcBeamSpotWidth_,true);
+      double dataBeamSpot_RandomVtx=TMath::Gaus(dZ_RandomVtx,0,TMath::Sqrt(2)*dataBeamSpotWidth_,true);
+      BS_factor_RandomVtx_ = dataBeamSpot_RandomVtx/mcBeamSpot_RandomVtx;
+    }
+
     // cout << BS_factor_HggVtx_ << "  " << BS_factor_0Vtx_ << endl;
     // float vtx_X = vertex_->x();
     // float vtx_Y = vertex_->y();
