@@ -33,9 +33,10 @@ namespace flashgg {
                                       const std::vector<edm::Ptr<reco::Conversion> > &,
                                       const math::XYZPoint &,
                                        bool
-                                      //  const Parameters_Selector_Type&,                                                                                                                         
-                                      //  const float&                                                                                                                                             
+                                      //  const Parameters_Selector_Type&,
+                                      //  const float&
                                       ) override;
+
 
         void writeInfoFromLastSelectionTo( flashgg::DiPhotonCandidate & ) override;
         void writeInfoFromLastSelectionTo( flashgg::PhotonJetCandidate & ) override;
@@ -75,6 +76,7 @@ namespace flashgg {
         return vtxs[_whichVertex];
     }
 
+
     void ZerothVertexSelector::writeInfoFromLastSelectionTo( flashgg::DiPhotonCandidate &dipho )
     {
         // No need to store anything if we're just taking the zeroth vertex
@@ -84,6 +86,12 @@ namespace flashgg {
     {
         // No need to store anything if we're just taking the zeroth vertex
     }
+
+    // void ZerothVertexSelector::writeInfoFromLastSelectionTo( flashgg::FourPhotonCandidate &dipho )
+    // {
+    //     // No need to store anything if we're just taking the zeroth vertex
+    // }
+
 
 }
 
@@ -97,4 +105,3 @@ DEFINE_EDM_PLUGIN( FlashggVertexSelectorFactory,
 // c-basic-offset:4
 // End:
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
-

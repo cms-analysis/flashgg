@@ -50,6 +50,7 @@ namespace flashgg {
                                                //                                          const float&
                                              )  = 0;
 
+
         const std::string &name() const { return _selectorName; };
 
         virtual void writeInfoFromLastSelectionTo( flashgg::DiPhotonCandidate & ) = 0;
@@ -73,4 +74,3 @@ typedef edmplugin::PluginFactory< flashgg::VertexSelectorBase* ( const edm::Para
 // c-basic-offset:4
 // End:
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
-

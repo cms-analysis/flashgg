@@ -510,14 +510,14 @@ namespace flashgg {
         int selected_conversion_index = -1;
 
         if( (g->hasConversionTracks() && !pureGeomConvMatching) || pureGeomConvMatching){
-            
+
             for( unsigned int i = 0; i < conversionsVector.size(); i++ ) {
                 edm::Ptr<reco::Conversion> conv = conversionsVector[i];
                 if( conv->nTracks() == 2 ) {
                     if( !conv->isConverted() ) { continue; }
                     if( conv->refittedPair4Momentum().pt() < 10. ) { continue; }
                     if( TMath::Prob( conv->conversionVertex().chi2(), conv->conversionVertex().ndof() ) < 1e-6 ) { continue; }
-                    
+
                     TVector3 VtxtoSC;
                     VtxtoSC.SetXYZ( g->superCluster()->position().x() - conv->conversionVertex().x(),
                                     g->superCluster()->position().y() - conv->conversionVertex().y(),
@@ -551,14 +551,14 @@ namespace flashgg {
                         float oneLegTrack_X = conv->tracksPin()[0].x();
                         float oneLegTrack_Y = conv->tracksPin()[0].y();
                         float oneLegTrack_Z = conv->tracksPin()[0].z();
-                        
+
                         RefPairMo.SetXYZ( oneLegTrack_X, oneLegTrack_Y, oneLegTrack_Z );
                         double dR = 0;
                         dR = VtxtoSC.DeltaR( RefPairMo );
                         if( dR < mindR ) {
                             mindR = dR;
                             selected_conversion_index = j;
-                        }                        
+                        }
                     }
                 }
                 if( mindR < 0.1 ) {
@@ -568,7 +568,7 @@ namespace flashgg {
                 }
             }
         }
-        
+
         if( mindR < 0.1 )
             {return result;}
         else {
@@ -753,13 +753,13 @@ namespace flashgg {
             second_max_mva_value = sorter[1].second;
             second_selected_vertex_index = sorter[1].first;
         } else{
-            second_max_mva_value = -2; 
+            second_max_mva_value = -2;
         }
         if( sorter.size() > 2 ) {
             third_max_mva_value = sorter[2].second;
             third_selected_vertex_index = sorter[2].first;
         }else{
-            third_max_mva_value = -2 ; 
+            third_max_mva_value = -2 ;
         }
 
         for( unsigned int jj = 0; jj < sorter.size(); jj++ ) {
@@ -782,13 +782,13 @@ namespace flashgg {
         nVert_    = vtxs.size();
         MVA0_     = max_mva_value;
         MVA1_     = second_max_mva_value;
-        dZ1_      = vtxs[selected_vertex_index]->position().z() - vtxs[second_selected_vertex_index]->position().z(); 
+        dZ1_      = vtxs[selected_vertex_index]->position().z() - vtxs[second_selected_vertex_index]->position().z();
         MVA2_     = third_max_mva_value;
         dZ2_      = vtxs[selected_vertex_index]->position().z() - vtxs[third_selected_vertex_index]->position().z();
-       
-        if( sorter.size() < 2 ) dZ1_=100; 
+
+        if( sorter.size() < 2 ) dZ1_=100;
         if( sorter.size() < 3 ) dZ2_=100;
-        
+
 
         vtxprobmva_ = VertexProbMva_->EvaluateMVA( "BDT" );
 
@@ -819,13 +819,13 @@ namespace flashgg {
 
         int IndexMatchedConversionLeadPhoton = -1;
         int IndexMatchedConversionTrailPhoton = -1;
-    
+
         std::vector<int> vIndexMatchedConversionLeadPhoton;
         std::vector<int> vIndexMatchedConversionTrailPhoton;
-        
-        float nConvLegs_LeadPhoton = 0;   
+
+        float nConvLegs_LeadPhoton = 0;
         float nConvLegs_TrailPhoton = 0;
-        
+
         if( conversionsVector.size() > 0 ) {
             if( (g1->hasConversionTracks() && !pureGeomConvMatching) || pureGeomConvMatching ) {
                 vIndexMatchedConversionLeadPhoton = IndexMatchedConversion( g1, conversionsVector, conversionsVectorSingleLeg, useSingleLeg );
@@ -882,7 +882,7 @@ namespace flashgg {
 
             for( auto pair_iter = mapRange.first ; pair_iter != mapRange.second ; pair_iter++ ) {
                 const edm::Ptr<pat::PackedCandidate> cand = pair_iter->second;
-                
+
                 TVector3 tk;
                 TVector2 tkXY;
                 double dr1 = 0;
@@ -918,7 +918,7 @@ namespace flashgg {
             float pull_conv = 999;
 
             if( nConv != 0 ) {
-                
+
                 const edm::Ptr<flashgg::Photon> &dummyg2 = g1;
 
                 zconv = zFromConvPair( g1, dummyg2, IndexMatchedConversionLeadPhoton, IndexMatchedConversionTrailPhoton, nConvLegs_LeadPhoton, nConvLegs_TrailPhoton,
@@ -1001,10 +1001,6 @@ namespace flashgg {
         return vtxs[selected_vertex_index];
 
     }
-
-
-        
-
 
     void LegacyVertexSelector::writeInfoFromLastSelectionTo( flashgg::DiPhotonCandidate &dipho )
     {
