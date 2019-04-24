@@ -24,7 +24,6 @@
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticleFwd.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
-
 #include "flashgg/MicroAOD/interface/CutBasedDiPhotonObjectSelector.h"
 
 #include <vector>
@@ -78,6 +77,7 @@ namespace flashgg {
     EDGetTokenT<reco::BeamSpot>  beamSpotToken_;
     Handle<reco::BeamSpot>  recoBeamSpotHandle;
 
+
     //---ID selector
     ConsumesCollector cc_;
     CutBasedDiPhotonObjectSelector idSelector_;
@@ -106,6 +106,7 @@ namespace flashgg {
     vertexToken_( consumes<View<reco::Vertex> >( pSet.getParameter<InputTag> ( "VertexTag" ) ) ),
     genParticleToken_( consumes<View<reco::GenParticle> >( pSet.getParameter<InputTag> ( "GenParticleTag" ) ) ),
     beamSpotToken_( consumes<reco::BeamSpot> ( pSet.getParameter<InputTag> ( "beamSpotTag" ) ) ),
+
     cc_( consumesCollector() ),
     idSelector_( pSet.getParameter<ParameterSet> ( "idSelection" ), cc_ )
 
@@ -136,11 +137,8 @@ namespace flashgg {
       std::unique_ptr<vector<H4GCandidate> > H4GColl_( new vector<H4GCandidate> );
 
       std::vector <edm::Ptr<reco::Vertex> > Vertices; // Collection of vertices
-      for( int v = 0; v < (int) vertex->size(); v++ )
-      {
-        edm::Ptr<reco::Vertex> vtx = vertex->ptrAt( v );
-        Vertices.push_back(vtx);
-      }
+      std::vector <edm::Ptr<reco::Vertex> > slim_Vertices;
+
       reco::GenParticle::Point genVertex;
       edm::Ptr<reco::Vertex> vertex_diphoton;
       //---at least one diphoton should pass the low mass hgg pre-selection
@@ -218,11 +216,30 @@ namespace flashgg {
             }
           }
         }
-        H4GCandidate h4g(phoVector, Vertices, vertex_diphoton, genVertex, BSPoint, diPhoPtrs );
+        for( int v = 0; v < (int) vertex->size(); v++ )
+        {
+          edm::Ptr<reco::Vertex> vtx = vertex->ptrAt( v );
+          Vertices.push_back(vtx);
+          if (fabs(genVertex.z() - vertex_diphoton->z()) > 1 ){
+            if (fabs(genVertex.z() - vtx->z()) < 1)
+            {
+              slim_Vertices.push_back(vtx);
+            }
+            else{
+              slim_Vertices.push_back(vertex->ptrAt( 0 ));
+            }
+          }
+          else {
+            slim_Vertices.push_back(vertex_diphoton);
+          }
+        }
+
+        H4GCandidate h4g(phoVector, Vertices, slim_Vertices, vertex_diphoton, genVertex, BSPoint, diPhoPtrs );
         H4GColl_->push_back(h4g);
       }
       event.put( std::move(H4GColl_) );
     }
   }
+
   typedef flashgg::H4GCandidateProducer FlashggH4GCandidateProducer;
   DEFINE_FWK_MODULE( FlashggH4GCandidateProducer );
