@@ -41,7 +41,6 @@ And a very basic workflow test (for reference, this is not supposed to give pape
  cd $CMSSW_BASE/src/flashgg
 cmsRun MicroAOD/test/microAODstd.py processType=sig year=2017 datasetName=glugluh conditionsJSON=MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json 
  #processType=data/bkg/sig, depending on input file
- #with year=2017 or year=2016 it will rerun the DeepJet b-tagger, for year=2018 it won't rerun
  #conditionsJSON= add appropriate JSON file for 2016, 2017 or 2018 from MetaData/data/MetaConditions/
  
  cmsRun Taggers/test/simple_Tag_test.py
