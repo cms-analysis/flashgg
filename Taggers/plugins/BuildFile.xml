@@ -10,15 +10,7 @@
 <use   name="roofit"/>
 <use   name="roottmva"/>
 <use   name="CommonTools/CandAlgos"/>
-<release name="CMSSW_8">
-  <flags CXXFLAGS="-DCMSSW8"/>
-  <use name="DNN/Base" />
-  <use name="DNN/Tensorflow" /> 
-</release>
-<release name="CMSSW_9">
-  <flags CXXFLAGS="-DCMSSW9"/>
-  <use name="PhysicsTools/TensorFlow" />
-</release>
+<use   name="PhysicsTools/TensorFlow" />
 <Flags CXXFLAGS="-ggdb"/>
 <flags   EDM_PLUGIN="1"/>
 </library>

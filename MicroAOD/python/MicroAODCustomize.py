@@ -178,15 +178,15 @@ class MicroAODCustomize(object):
         if self.runDec2016Regression:
             self.customizeDec2016Regression(process)
         if self.runEGMEleID:
-            #if 'eleIdVersion' in self.metaConditions.keys():
-            getattr(self, 'customize'+self.metaConditions['eleIdVersion'])(process)            
-            # else:
-            #     raise Exception, "runEGMEleID set to True but no eleIdVersion specified in conditions json file"
+            if 'eleIdVersion' in self.metaConditions.keys():
+                getattr(self, 'customize'+self.metaConditions['eleIdVersion'])(process)            
+            else:
+                getattr(self,'customizeRunIIEleID')(process)
         if self.runEGMPhoID:
-            #if 'phoIdVersion' in self.metaConditions.keys():
-            getattr(self, 'customize'+self.metaConditions['phoIdVersion'])(process)            
-            # else:
-            #     raise Exception, "runEGMPhoID set to True but no phoIdVersion specified in conditions json file"
+            if 'phoIdVersion' in self.metaConditions.keys():
+                getattr(self, 'customize'+self.metaConditions['phoIdVersion'])(process)            
+            else:
+                getattr(self,'customizeRunIIEGMPhoID')(process)
             # check if ok for 2016
             self.insertEGMSequence( process ) 
         print "Final customized process:",process.p
@@ -326,6 +326,37 @@ class MicroAODCustomize(object):
         process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag("slimmedPhotons")
         process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag("slimmedPhotons")
 
+    # For the whole RunII use the V2 ID, as explained here  https://indico.cern.ch/event/777545/contributions/3234587/attachments/1766655/2868714/micheli_EG_cmsweek_20181206_4.pdf
+    # Methods for customizing single years, are kept below
+    def customizeRunIIEleID(self, process):
+        from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDElectronIdProducer,setupAllVIDIdsInModule,setupVIDElectronSelection
+        dataFormat = DataFormat.MiniAOD
+        switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
+        my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_iso_V2_cff',
+                         'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Fall17_94X_V2_cff',
+                         'RecoEgamma.ElectronIdentification.Identification.heepElectronID_HEEPV70_cff'] 
+        for idmod in my_id_modules:
+            setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
+        process.flashggElectrons.eleVetoIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V2-veto")  
+        process.flashggElectrons.eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V2-loose")
+        process.flashggElectrons.eleMediumIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V2-medium")
+        process.flashggElectrons.eleTightIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V2-tight")
+        process.flashggElectrons.eleMVALooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V2-wpLoose")
+        process.flashggElectrons.eleMVAMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V2-wp90")
+        process.flashggElectrons.eleMVATightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V2-wp80")
+        process.flashggElectrons.mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV2Values")
+        process.flashggElectrons.effAreasConfigFile = cms.FileInPath("RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt")#check what this file is used for
+
+    def customizeRunIIEGMPhoID(self,process):
+        from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDPhotonIdProducer,setupAllVIDIdsInModule,setupVIDPhotonSelection
+        dataFormat = DataFormat.MiniAOD
+        switchOnVIDPhotonIdProducer(process, DataFormat.MiniAOD)
+        my_id_modules = ['RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Fall17_94X_V2_cff']
+        for idmod in my_id_modules:
+            setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
+        process.flashggPhotons.effAreasConfigFile = cms.FileInPath("RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_TrueVtx.txt")#check what this file is used for
+        process.flashggPhotons.egmMvaValuesMap = cms.InputTag("photonMVAValueMapProducer:PhotonMVAEstimatorRunIIFall17v2Values")
+
     def customizeSpring15EleID(self,process):
         from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDElectronIdProducer,setupAllVIDIdsInModule,setupVIDElectronSelection
         dataFormat = DataFormat.MiniAOD
@@ -336,6 +367,7 @@ class MicroAODCustomize(object):
         for idmod in my_id_modules:
             setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
             
+        
     def customizeSummer16EGMEleID(self,process):
         from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDElectronIdProducer,setupAllVIDIdsInModule,setupVIDElectronSelection
         dataFormat = DataFormat.MiniAOD

@@ -8,24 +8,11 @@ import flashgg.Taggers.PUJID_wps as pujid
 from flashgg.Taggers.globalVariables_cff import globalVariables
 
 import flashgg.Systematics.settings as settings
-year = settings.year
 #default values first
 year_norm = 0
 jetPUID = 'Loose'
 weightsFile="flashgg/Taggers/data/HHTagger/training_with_10_12_2018_commonTraining_2016.weights.xml"# path to TMVA weights
-MVAscalingValue=cms.double(1.)#scale MVA output before the cumulative transformation for 2017(2016 kept unchanged for simplicity, we will probably change that once we have all 3 years.)
-
-if year == "2016":
-    year_norm = 0
-    jetPUID = 'Loose'
-    weightsFile="flashgg/Taggers/data/HHTagger/training_with_10_12_2018_commonTraining_2016.weights.xml", 
-    MVAscalingValue=1.
-elif year == "2017":
-    year_norm = 1
-    jetPUID = 'Tight2017'
-    weightsFile="flashgg/Taggers/data/HHTagger/training_with_10_12_2018_commonTraining_2017.weights.xml", 
-    MVAscalingValue=1.011026
-
+MVAscalingValue=1.#scale MVA output before the cumulative transformation for 2017(2016 kept unchanged for simplicity, we will probably change that once we have all 3 years.)
 
 
 flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",

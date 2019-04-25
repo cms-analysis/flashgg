@@ -7,8 +7,6 @@
 
     "flashggMETsFunction" : "runMETs2016",
     "DeepJet" : "read",
-    "eleIdVersion" : "Fall17EGMEleID",
-    "phoIdVersion" : "Fall17EGMPhoID",
 
     "flashggPhotons" :
     {
@@ -47,6 +45,8 @@
     
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
+
+    "Ele_ID_eff_bin" : "binInfo2018",
 
     "bRegression" :
     {

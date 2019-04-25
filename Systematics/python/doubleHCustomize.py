@@ -5,12 +5,11 @@ class DoubleHCustomize():
     HH->bbgg process customizaton class
     """
     
-    def __init__(self, customize, metaConditions):
-
+    def __init__(self, process, customize, metaConditions):
+        self.process = process
         self.customize = customize
         self.metaConditions = metaConditions
         self.tagList = [ ["DoubleHTag",12] ]
-
         self.customizeTagSequence()
 
     def variablesToDump(self):
@@ -78,23 +77,6 @@ class DoubleHCustomize():
             "subleadingJet_mass := subleadJet().p4().M()",
             "subleadingJet_hflav := subleadJet().hadronFlavour()",
             "subleadingJet_pflav := subleadJet().partonFlavour()",
-#
-#
-#             "ttHMVA_MET := 0",# these variables are needed for ttH killer MVA, which has to be implemented in the producer with another mvaComputer
-#             "ttHMVA_njets := 0",
-#             "ttHMVA_Xtt0 :=0 ",
-#             "ttHMVA_Xtt1 :=0 ",
-#             "ttHMVA_MjjW0 :=0 ",
-#             "ttHMVA_MjjW1 :=0 ",
-#             "ttHMVA_Mjjbt0 :=0 ",
-#             "ttHMVA_Mjjbt1 :=0 ",
-#             "ttHMVA_leadingMuon :=0 ",
-#             "ttHMVA_subleadingMuon :=0 ",
-#             "ttHMVA_nmus :=0 ",
-#             "ttHMVA_leadingElectron :=0 ",
-#             "ttHMVA_subleadingElectron :=0 ",
-#             "ttHMVA_nelecs :=0 ",
-#             "ttHHHbggMVA := 0",
         ]
         if self.customize.doBJetRegression : variables +=[
                 "leadingJet_bRegNNCorr := leadJet().userFloat('bRegNNCorr')",
@@ -109,43 +91,54 @@ class DoubleHCustomize():
             return var_workspace
 
     def customizeTagSequence(self):
-        process.load("flashgg.Taggers.flashggDoubleHTag_cff")
+        self.process.load("flashgg.Taggers.flashggDoubleHTag_cff")
         from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
 
+        ## customize meta conditions
+        self.process.flashggDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetPUID"]))
+        self.process.flashggDoubleHTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["doubleHTag"]["weightsFile"]))  
+        self.process.flashggDoubleHTag.MVAscaling = cms.double(self.metaConditions["doubleHTag"]["MVAscalingValue"])
+
         ## customize here (regression, kin-fit, MVA...)
-        if self.customize.doBJetRegression : process.flashggDoubleHTag.JetTags = cms.VInputTag( ["bRegProducer%d" % icoll for icoll,coll in enumerate(UnpackedJetCollectionVInputTag) ] )
+        if self.customize.doBJetRegression : 
+            jetTagsSystematics = cms.VInputTag()
+            for icoll,coll in enumerate(UnpackedJetCollectionVInputTag):
+                jetTagsSystematics.append(cms.InputTag("bRegProducer", str(icoll)))
+            getattr(self.process, "flashggDoubleHTag").JetTags = jetTagsSystematics
+
 
        # if customize.doubleHReweightTarget != -1:
-       #     process.load("flashgg.Taggers.flashggDoubleHReweight_cfi")
-       #     process.flashggDoubleHReweight.targetNode = customize.doubleHReweightTarget
-       #     process.tagsDumper.reweight  =  cms.InputTag("flashggDoubleHReweight")
+       #     self.process.load("flashgg.Taggers.flashggDoubleHReweight_cfi")
+       #     self.process.flashggDoubleHReweight.targetNode = customize.doubleHReweightTarget
+       #     self.process.tagsDumper.reweight  =  cms.InputTag("flashggDoubleHReweight")
 
         ## remove single Higgs tags
 
         if self.customize.doubleHTagsOnly:
-            process.flashggTagSequence.remove(process.flashggVBFTag)
-            process.flashggTagSequence.remove(process.flashggTTHLeptonicTag)
-            process.flashggTagSequence.remove(process.flashggTTHHadronicTag)
-            process.flashggTagSequence.remove(process.flashggVHEtTag)
-            process.flashggTagSequence.remove(process.flashggVHLooseTag)
-            process.flashggTagSequence.remove(process.flashggVHTightTag)
-            process.flashggTagSequence.remove(process.flashggVHMetTag)
-            process.flashggTagSequence.remove(process.flashggWHLeptonicTag)
-            process.flashggTagSequence.remove(process.flashggZHLeptonicTag)
-            process.flashggTagSequence.remove(process.flashggVHLeptonicLooseTag)
-            process.flashggTagSequence.remove(process.flashggVHHadronicTag)
-            process.flashggTagSequence.remove(process.flashggVBFMVA)
-            process.flashggTagSequence.remove(process.flashggVBFDiPhoDiJetMVA)
+            self.process.flashggTagSequence.remove(self.process.flashggVBFTag)
+            self.process.flashggTagSequence.remove(self.process.flashggTTHLeptonicTag)
+            self.process.flashggTagSequence.remove(self.process.flashggTTHHadronicTag)
+            self.process.flashggTagSequence.remove(self.process.flashggVHEtTag)
+            self.process.flashggTagSequence.remove(self.process.flashggVHLooseTag)
+            self.process.flashggTagSequence.remove(self.process.flashggVHTightTag)
+            self.process.flashggTagSequence.remove(self.process.flashggVHMetTag)
+            self.process.flashggTagSequence.remove(self.process.flashggWHLeptonicTag)
+            self.process.flashggTagSequence.remove(self.process.flashggZHLeptonicTag)
+            self.process.flashggTagSequence.remove(self.process.flashggVHLeptonicLooseTag)
+            self.process.flashggTagSequence.remove(self.process.flashggVHHadronicTag)
+            self.process.flashggTagSequence.remove(self.process.flashggVBFMVA)
+            self.process.flashggTagSequence.remove(self.process.flashggVBFDiPhoDiJetMVA)
+            self.process.flashggTagSequence.remove(self.process.flashggTTHDiLeptonTag)
 
-            process.flashggTagSequence.replace(process.flashggUntagged, process.flashggDoubleHTagSequence)   
+            self.process.flashggTagSequence.replace(self.process.flashggUntagged, self.process.flashggDoubleHTagSequence)   
 
     def addNodesReweighting(self):
         if self.customize.doubleHReweightTarget != -1:
             from flashgg.Taggers.flashggDoubleHReweight_cfi import flashggDoubleHReweight
-            process.flashggDoubleHReweight = flashggDoubleHReweight
-            process.p.replace(process.tagsDumper, process.flashggDoubleHReweight*process.tagsDumper)
-            process.flashggDoubleHReweight.targetNode = self.customize.doubleHReweightTarget
-            process.tagsDumper.reweight  =  cms.InputTag("flashggDoubleHReweight")
+            self.process.flashggDoubleHReweight = flashggDoubleHReweight
+            self.process.p.replace(self.process.tagsDumper, self.process.flashggDoubleHReweight*self.process.tagsDumper)
+            self.process.flashggDoubleHReweight.targetNode = self.customize.doubleHReweightTarget
+            self.process.tagsDumper.reweight  =  cms.InputTag("flashggDoubleHReweight")
 
 
     def addGenAnalysis(self):
@@ -154,25 +147,25 @@ class DoubleHCustomize():
 
         import flashgg.Taggers.dumperConfigTools as cfgTools
         ## load gen-level bbgg 
-        process.load( "flashgg.MicroAOD.flashggGenDiPhotonDiBJetsSequence_cff" )
+        self.process.load( "flashgg.MicroAOD.flashggGenDiPhotonDiBJetsSequence_cff" )
 
         ## match gen-level to reco tag
-        process.load("flashgg.Taggers.flashggTaggedGenDiphotons_cfi")
-        process.flashggTaggedGenDiphotons.src  = "flashggSelectedGenDiPhotonDiBJets"
-        process.flashggTaggedGenDiphotons.tags = "flashggTagSorter"
-        process.flashggTaggedGenDiphotons.remap = process.tagsDumper.classifierCfg.remap
+        self.process.load("flashgg.Taggers.flashggTaggedGenDiphotons_cfi")
+        self.process.flashggTaggedGenDiphotons.src  = "flashggSelectedGenDiPhotonDiBJets"
+        self.process.flashggTaggedGenDiphotons.tags = "flashggTagSorter"
+        self.process.flashggTaggedGenDiphotons.remap = self.process.tagsDumper.classifierCfg.remap
 
         ## prepare gen-level dumper
-        process.load("flashgg.Taggers.genDiphotonDumper_cfi")
-        process.genDiphotonDumper.dumpTrees = True
-        process.genDiphotonDumper.dumpWorkspace = False
-        process.genDiphotonDumper.src = "flashggTaggedGenDiphotons"
+        self.process.load("flashgg.Taggers.genDiphotonDumper_cfi")
+        self.process.genDiphotonDumper.dumpTrees = True
+        self.process.genDiphotonDumper.dumpWorkspace = False
+        self.process.genDiphotonDumper.src = "flashggTaggedGenDiphotons"
 
         from flashgg.Taggers.globalVariables_cff import globalVariables
-        process.genDiphotonDumper.dumpGlobalVariables = True
-        process.genDiphotonDumper.globalVariables = globalVariables
+        self.process.genDiphotonDumper.dumpGlobalVariables = True
+        self.process.genDiphotonDumper.globalVariables = globalVariables
         if self.customize.doubleHReweightTarget != -1:
-            process.genDiphotonDumper.reweight  =  cms.InputTag("flashggDoubleHReweight")
+            self.process.genDiphotonDumper.reweight  =  cms.InputTag("flashggDoubleHReweight")
 
         genVariables = ["mgg := mass",
                         "mbb := dijet.mass",
@@ -200,7 +193,7 @@ class DoubleHCustomize():
                         ]
 
         ## define categories for gen-level dumper
-        cfgTools.addCategory(process.genDiphotonDumper,  ## events with not reco-level tag
+        cfgTools.addCategory(self.process.genDiphotonDumper,  ## events with not reco-level tag
                              "NoTag", 'isTagged("flashggNoTag")',1,
                              variables=genVariables,
                              )
@@ -209,10 +202,10 @@ class DoubleHCustomize():
             tagName,subCats = tag
             # need to define all categories explicitely because cut-based classifiers does not look at sub-category number
             for isub in xrange(subCats):
-                cfgTools.addCategory(process.genDiphotonDumper,
+                cfgTools.addCategory(self.process.genDiphotonDumper,
                                      "%s_%d" % ( tagName, isub ), 
                                      'isTagged("%s") && categoryNumber == %d' % (tagName, isub),0,
                                      variables=genVariables##+recoVariables
                                      )
 
-        process.genp = cms.Path(process.flashggGenDiPhotonDiBJetsSequence*process.flashggTaggedGenDiphotons*process.genDiphotonDumper)
+        self.process.genp = cms.Path(self.process.flashggGenDiPhotonDiBJetsSequence*self.process.flashggTaggedGenDiphotons*self.process.genDiphotonDumper)

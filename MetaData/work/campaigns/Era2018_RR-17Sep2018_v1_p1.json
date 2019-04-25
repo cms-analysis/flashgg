@@ -1,0 +1,13 @@
+{
+    "data" :
+    [
+        "/EGamma/Run2018D-PromptReco-v1/MINIAOD",
+        "/EGamma/Run2018D-PromptReco-v2/MINIAOD"
+    ],
+    "sig" :
+    [
+    ],
+    "bkg" :
+    [
+    ]
+}
