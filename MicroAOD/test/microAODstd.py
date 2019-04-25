@@ -82,7 +82,7 @@ process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
 #process.weightsCount.pileupInfo = "addPileupInfo"
 
 from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand
-process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutput.root'),
+process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile.root'),
                                outputCommands = microAODDefaultOutputCommand
                                )
 
