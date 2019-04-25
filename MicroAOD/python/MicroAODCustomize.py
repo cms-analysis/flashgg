@@ -82,12 +82,6 @@ class MicroAODCustomize(object):
                                VarParsing.VarParsing.varType.bool,
                               'runEGMPhoID'
                               )
-	self.options.register ('year',
-                               2018,
-                               VarParsing.VarParsing.multiplicity.singleton,
-                               VarParsing.VarParsing.varType.int,
-                               'year'
-                               )
         self.options.register('addMicroAODHLTFilter',
                               True,
                                VarParsing.VarParsing.multiplicity.singleton,
@@ -570,7 +564,7 @@ class MicroAODCustomize(object):
         from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
         for vtx in range(0,maxJetCollections):
             addFlashggPFCHSJets (process = process,
-                                 year = self.year,
+                                 DeepJet = self.metaConditions['DeepJet'],
                                  isData=(self.processType == "data"),
                                  vertexIndex =vtx,
                                  #doQGTagging = True,

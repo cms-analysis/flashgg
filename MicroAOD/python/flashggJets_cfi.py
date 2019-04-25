@@ -33,7 +33,7 @@ else:
   qgDatabaseVersion = '80X'
 
 def addFlashggPFCHSJets(process,
-			year, 
+			DeepJet, 
                         isData,
                         vertexIndex = 0, 
                         #doQGTagging = True, 
@@ -131,7 +131,7 @@ def addFlashggPFCHSJets(process,
   #process.patJetCorrFactorsAK4PFCHSLeg.primaryVertices = "offlineSlimmedPrimaryVertices"
   getattr(process, 'patJetCorrFactorsAK4PFCHSLeg' + label).primaryVertices = "offlineSlimmedPrimaryVertices"
 
-  if year != 2018:
+  if DeepJet == "rerun":
     from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
     updateJetCollection(
       process,
