@@ -6,6 +6,7 @@
     },
 
     "flashggMETsFunction" : "runMETs2017",
+    "DeepJet" : "rerun",
     "eleIdVersion" : "Fall17EGMEleID",
     "phoIdVersion" : "Fall17EGMPhoID",
 
