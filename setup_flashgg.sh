@@ -45,10 +45,13 @@ cd $CMSSW_BASE/src
 echo "QGTagger for flashgg..."
 git cms-merge-topic -u simonepigazzini:topic_flashgg_10_5_0_qgtagger
 
-# EGamma post reco tools for energy scales and smearings
-echo "Settinga up Scales and Smearings form EGM"
+# For rerunning DeepJet b-tagger with new training 
+echo "Setting up DeepJet with new tarining from BTV"
 git cms-addpkg RecoBTag/TensorFlow
 git cherry-pick 94ceae257f846998c357fcad408986cc8a039152
+
+# EGamma post reco tools for energy scales and smearings
+echo "Settinga up Scales and Smearings form EGM"
 git cms-addpkg RecoEgamma/EgammaTools
 git clone https://github.com/cms-egamma/EgammaAnalysis-ElectronTools.git EgammaAnalysis/ElectronTools/data
 cd EgammaAnalysis/ElectronTools/data
