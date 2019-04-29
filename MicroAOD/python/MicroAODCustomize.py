@@ -523,7 +523,8 @@ class MicroAODCustomize(object):
         process.rivetProducerHTXS.ProductionMode = "VBF"
 
     def customizeVH(self,process):
-        process.rivetProducerHTXS.ProductionMode = "VH"
+        # from CMSSW_10_5_0 VH is apparently no longer supported, one should specify either ZH or WH, using auto instead
+        process.rivetProducerHTXS.ProductionMode = "AUTO" 
 
     def customizeGGH(self,process):
         process.rivetProducerHTXS.ProductionMode = "GGF"
