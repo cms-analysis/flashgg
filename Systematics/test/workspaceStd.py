@@ -151,6 +151,8 @@ print 'tthTagsOnly '+str(customize.tthTagsOnly)
 print 'doMuFilter '+str(customize.doMuFilter)
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(customize.maxEvents) )
+print "maxEvents: ", str(process.maxEvents)
+print "maxEvents: ", str(customize.maxEvents)
 
 if customize.doFiducial:
     import flashgg.Systematics.fiducialCrossSectionsCustomize as fc
@@ -794,4 +796,5 @@ customize.setDefault("maxEvents",1000)
 customize.setDefault("targetLumi",1.00e+3)
 # call the customization
 
-customize(process)
+customize(process) 
+print process.maxEvents
