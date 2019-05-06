@@ -49,7 +49,7 @@ namespace flashgg {
         vector<int> pdfnlo_indices;
         PDFWeightsHelper pdfweightshelper_;//tool from HepMCCandAlgos/interface/PDFWeightsHelper
         unsigned int nPdfEigWeights_;
-        edm::FileInPath mc2hessianCSV;
+        string mc2hessianCSV_;
         std::vector<double> inpdfweights;
         float gen_weight;
         string pdfid_1;
@@ -80,7 +80,7 @@ namespace flashgg {
 		tag_ = iConfig.getUntrackedParameter<string>( "tag", "initrwgt" );
         doScaleWeights_ = iConfig.getUntrackedParameter<bool>("doScaleWeights",true); 
         nPdfEigWeights_ = iConfig.getParameter<unsigned int>("nPdfEigWeights");
-        mc2hessianCSV = iConfig.getUntrackedParameter<edm::FileInPath>("mc2hessianCSV");
+        mc2hessianCSV_ = iConfig.getUntrackedParameter<string>("mc2hessianCSV");
         std::vector<std::string> parameterNames = PDFmap_.getParameterNames();
         for ( std::vector<std::string>::iterator iter = parameterNames.begin();iter != parameterNames.end(); ++iter ){
             PDFmapString_[*iter]=PDFmap_.getUntrackedParameter<unsigned int>(*iter);
@@ -470,20 +470,21 @@ namespace flashgg {
         assert(inpdfweights.size() > 0);
         if(doScaleWeights_)assert(PDFWeightProducer::scale_indices.size() == 9);
         if(doAlphasWeights_)assert(PDFWeightProducer::alpha_indices.size() == 2);
-        
-        
 		
         // --- Get MCtoHessian PDF weights
-        if(isStandardSample_ && mc2hessianCSV.fullPath().find("flashggPDFWeightObject_cfi.py")==std::string::npos){
-                if(isStandardSample_) pdfweightshelper_.Init(PDFWeightProducer::pdf_indices.size(),nPdfEigWeights_,mc2hessianCSV);
-            }
+        if(isStandardSample_ && mc2hessianCSV_ != "")
+        {
+            edm::FileInPath mc2hessianCSVFile(mc2hessianCSV_);
+            pdfweightshelper_.Init(PDFWeightProducer::pdf_indices.size(),nPdfEigWeights_,mc2hessianCSVFile);
+        }
         
         std::vector<double> outpdfweights(nPdfEigWeights_);
         
         //        double nomlheweight = LHEEventHandle->weights()[0].wgt;//ok, but not-safe to access the vector, see line below
         double nomlheweight = LHEEventHandle->originalXWGTUP();
         
-        if(isStandardSample_)pdfweightshelper_.DoMC2Hessian(nomlheweight,inpdfweights.data(),outpdfweights.data());
+        if(isStandardSample_)
+            pdfweightshelper_.DoMC2Hessian(nomlheweight,inpdfweights.data(),outpdfweights.data());
         
         for (unsigned int iwgt=0; iwgt<nPdfEigWeights_; ++iwgt) {
             
