@@ -15,11 +15,9 @@
 
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/MicroAOD/interface/PhotonIdUtils.h"
+#include "flashgg/MicroAOD/interface/MVAComputer.h"
 
-#include "XGBoostCMSSW/XGBoostInterface/interface/XGBComputer.h"
-
-#include "TFile.h"
-#include "TGraph.h"
+#include "TFormula.h"
 
 using namespace std;
 using namespace edm;
@@ -47,27 +45,46 @@ namespace flashgg {
 
         //---photon id        
         PhotonIdUtils phoTools_;
-        //vector<StringObjectFunction<flashgg::Photon, true> > showerShapes_;
-        XGBComputer::mva_variables correctionVars_;
-        map<string, XGBComputer> corrections_;
+        ConsumesCollector cc_;
+        GlobalVariablesComputer globalVariablesComputer_;
+        map<string, MVAComputer<Photon, StringObjectFunction<Photon, true>, true> > correctionsEB_;
+        map<string, TFormula> correctionScalingsEB_;
+        map<string, MVAComputer<Photon, StringObjectFunction<Photon, true>, true> > correctionsEE_;
+        map<string, TFormula> correctionScalingsEE_;
+        // static list of variables to be corrected
+        static vector<string> showerShapes_;
 
         //---energy regression
         shared_ptr<ModifyObjectValueBase> regress_;
         bool reRunRegression_;
-        bool correctInputs_;
+        bool correctInputs_;        
     };
+    
+    vector<string> DifferentialPhoIdInputsCorrector::showerShapes_ = {"r9", "s4", "sieie", "sieip", "etaWidth", "phiWidth"};
 
     DifferentialPhoIdInputsCorrector::DifferentialPhoIdInputsCorrector( const edm::ParameterSet &pSet ) :
         diphoToken_(consumes<edm::View<flashgg::DiPhotonCandidate> >(pSet.getParameter<edm::InputTag>("diphotonSrc"))),
         rhoToken_( consumes<double>( pSet.getParameter<edm::InputTag>( "rhoFixedGridCollection" ) ) ),
+        cc_( consumesCollector() ),
+        globalVariablesComputer_(pSet.getParameter<edm::ParameterSet>("globalVariables"), cc_),
         regress_(0)
     {
-        edm::ConsumesCollector cc(consumesCollector());
         reRunRegression_ = pSet.getParameter<bool>("reRunRegression");
         if( reRunRegression_ ) 
-            regress_.reset(ModifyObjectValueFactory::get()->create( "EGRegressionModifierV2", pSet.getParameter<edm::ParameterSet>("regressionConfig"), cc )); 
-        
-        corrections_["R9"] = XGBComputer(&correctionVars_, pSet.getParameter<edm::FileInPath>("r9_corrector_weights").fullPath());
+            regress_.reset(ModifyObjectValueFactory::get()->create( "EGRegressionModifierV2", pSet.getParameter<edm::ParameterSet>("regressionConfig"), cc_ )); 
+
+        for(auto& ss_var : showerShapes_)
+        {
+            //---EB
+            auto xgb_config = pSet.getParameter<edm::ParameterSet>(ss_var+"_corrector_config_EB"); 
+            correctionsEB_[ss_var] = MVAComputer<Photon, StringObjectFunction<Photon, true>, true>(xgb_config, &globalVariablesComputer_);
+            correctionScalingsEB_[ss_var] = TFormula("", xgb_config.getParameter<string>("regr_output_scaling").c_str());
+
+            //---EE
+            xgb_config = pSet.getParameter<edm::ParameterSet>(ss_var+"_corrector_config_EE"); 
+            correctionsEE_[ss_var] = MVAComputer<Photon, StringObjectFunction<Photon, true>, true>(xgb_config, &globalVariablesComputer_);
+            correctionScalingsEE_[ss_var] = TFormula("", xgb_config.getParameter<string>("regr_output_scaling").c_str());
+        }
 
         produces<std::vector<flashgg::DiPhotonCandidate> >();
     }
@@ -94,21 +111,45 @@ namespace flashgg {
     {
         reco::Photon::ShowerShape correctedShowerShapes = pho.full5x5_showerShapeVariables();
         pho.addUserFloat("uncorr_r9", pho.full5x5_r9());
-        pho.addUserFloat("uncorr_etaWidth", pho.superCluster()->etaWidth());
-        pho.addUserFloat("uncorr_etaWidth", pho.superCluster()->etaWidth());
         pho.addUserFloat("uncorr_s4", pho.s4());
-        pho.addUserFloat("uncorr_sigmaIetaIeta", pho.full5x5_sigmaIetaIeta());
+        pho.addUserFloat("uncorr_sieie", pho.full5x5_sigmaIetaIeta());
+        pho.addUserFloat("uncorr_sieip", pho.sieip());
+        pho.addUserFloat("uncorr_etaWidth", pho.superCluster()->etaWidth());
+        pho.addUserFloat("uncorr_phiWidth", pho.superCluster()->phiWidth());
 
-        //---Compute corrections
-        // R9 (store it inside e3x3)
-        //correctedShowerShapes.e3x3 = corrections_["R9"]()*pho.superCluster()->rawEnergy();
+        //---Compute corrections 
+        const auto* corrections = std::abs(pho.superCluster()->eta())<1.5 ? &correctionsEB_ : &correctionsEE_;
+        const auto* correctionScalings = std::abs(pho.superCluster()->eta())<1.5 ? &correctionScalingsEB_ : &correctionScalingsEE_;
+        // R9 (store it inside e3x3)        
+        auto corr = corrections->at("r9")(pho);
+        correctedShowerShapes.e3x3 = (pho.full5x5_r9()+correctionScalings->at("r9").Eval(corrections->at("r9")(pho)[0]))*pho.superCluster()->rawEnergy();
+        pho.addUserFloat("r9_correction", corr[0]);
+        // S4 (store it inside e3x3)        
+        auto s4_corr = (pho.s4()+correctionScalings->at("s4").Eval(corrections->at("s4")(pho)[0]));
+        pho.addUserFloat("s4_correction", corrections->at("s4")(pho)[0]);
         // SiEiE
-        //correctedShowerShapes.sigmaIetaIeta = corrections_["sieie"]();
+        correctedShowerShapes.sigmaIetaIeta = pho.full5x5_sigmaIetaIeta()+correctionScalings->at("sieie").Eval(corrections->at("sieie")(pho)[0]);
+        pho.addUserFloat("sieie_correction", corrections->at("sieie")(pho)[0]);
+        // SiEiP
+        auto sieip_corr = (pho.sieip()+correctionScalings->at("sieip").Eval(corrections->at("sieip")(pho)[0]));
+        pho.addUserFloat("sieip_correction", corrections->at("sieip")(pho)[0]);
+        // etaWidth
+        pho.addUserFloat("etaWidth", (pho.superCluster()->etaWidth()+correctionScalings->at("etaWidth").Eval(corrections->at("etaWidth")(pho)[0])));
+        pho.addUserFloat("etaWidth_correction", corrections->at("etaWidth")(pho)[0]);
+        // phiWidth
+        pho.addUserFloat("phiWidth", (pho.superCluster()->phiWidth()+correctionScalings->at("phiWidth").Eval(corrections->at("phiWidth")(pho)[0])));
+        pho.addUserFloat("phiWidth_correction", corrections->at("phiWidth")(pho)[0]);
         
+        //---set shower shapes
+        pho.setS4(s4_corr);
+        pho.setSieip(sieip_corr);
+        pho.full5x5_setShowerShapeVariables(correctedShowerShapes);        
     }
 
     void DifferentialPhoIdInputsCorrector::produce( edm::Event &evt, const edm::EventSetup & es)
     {
+        globalVariablesComputer_.update(evt);
+
         edm::Handle<edm::View<flashgg::DiPhotonCandidate> > orig_diphotons;
         evt.getByToken( diphoToken_, orig_diphotons );
 

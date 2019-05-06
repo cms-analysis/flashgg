@@ -49,7 +49,7 @@ namespace flashgg {
         virtual ~FunctorWrapper() {} ; //delete func_; };
 
         virtual float operator()( const ObjectT &obj ) const { return ( *func_ )( obj ); };
-
+        
         std::shared_ptr<FunctorT> ptr() { return func_; };
 
     private:
@@ -57,6 +57,23 @@ namespace flashgg {
         std::shared_ptr<FunctorT> func_;
     };
 
+    template<class ObjectT, class FunctorT> class FunctorMVAWrapper : public FunctorTrait<ObjectT>
+    {
+
+    public:
+        FunctorMVAWrapper( FunctorT *func = 0 ) // : std::unique_ptr<FunctorT>(func) {};
+            : func_( func ) {};
+
+        virtual ~FunctorMVAWrapper() {} ; //delete func_; };
+
+        virtual float operator()( const ObjectT &obj ) const { return ( *func_ )( obj )[0]; };
+        
+        std::shared_ptr<FunctorT> ptr() { return func_; };
+
+    private:
+        // FunctorT * func_;
+        std::shared_ptr<FunctorT> func_;
+    };
 
     template<class ObjectT> class GlobalVarWrapper : public FunctorTrait<ObjectT>
     {
@@ -97,7 +114,7 @@ namespace flashgg {
         typedef FunctorTrait<object_type> trait_type;
         typedef FunctorWrapper<object_type, functor_type> wrapped_functor_type;
         typedef FunctorWrapper<object_type, stepwise_functor_type> wrapped_stepwise_functor_type;
-        typedef FunctorWrapper<object_type, mva_type> wrapped_mva_type;
+        typedef FunctorMVAWrapper<object_type, mva_type> wrapped_mva_type;
         typedef GlobalVarWrapper<object_type> wrapped_global_var_type;
 
         CategoryDumper( const std::string &name, const edm::ParameterSet &cfg, GlobalVariablesDumper *dumper = 0 );
