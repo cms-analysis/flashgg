@@ -1,7 +1,7 @@
 
 #include "flashgg/Validation/interface/TagAndProbeDumper.h"
 
-#include "flashgg/Validation/interface/PluggableAnalyzer.h"
+#include "flashgg/Taggers/interface/PluggableAnalyzer.h"
 
 namespace flashgg {
     // typedef AnalyzerFactoryImpl<DiPhotonDumper,"DiPhotonDumper"> DiPhotonDumperFactory;
