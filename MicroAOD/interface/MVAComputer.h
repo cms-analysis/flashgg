@@ -83,9 +83,9 @@ namespace flashgg {
     template<class F, class O, bool useXGB>
     MVAComputer<F, O, useXGB>::~MVAComputer()
     {
-        if( reader_ ) {
-            delete reader_;
-        }
+        // if( reader_ ) {
+        //     delete reader_;
+        // }
     }
 
     template<class F, class O, bool useXGB>
@@ -120,7 +120,6 @@ namespace flashgg {
             xgbComputer_ = XGBComputer(&xgbVars_, weights_);    
         else
             reader_->BookMVA( classifier_, weights_ );
-
     }
 
     template<class F, class O, bool useXGB>
@@ -155,7 +154,7 @@ namespace flashgg {
                 else       
                 {
                     std::vector<float> result;
-                    result.push_back(regression_ ? reader_->EvaluateRegression(0, classifier_.c_str() ) : reader_->EvaluateMVA( classifier_.c_str() ));
+                    result.push_back(regression_ ? reader_->EvaluateRegression(0, classifier_.c_str()) : reader_->EvaluateMVA( classifier_.c_str() ));
                     return result;
                 }
             }
