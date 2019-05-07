@@ -34,21 +34,24 @@ for var in corrections_summary.keys():
         setattr(flashggDifferentialPhoIdInputsCorrection, var+'_corrector_config_'+subdet, 
                 cms.PSet(
                     variables = cms.VPSet(),
+                    # classifier = cms.string("BDT"),
+                    # regression = cms.bool(True),
+                    # multiclass = cms.bool(False),
                     weights = cms.FileInPath(str("flashgg/Taggers/data/PhoIdInputsCorrections/weights_finalRegressor_%s_%s.xgb" % (subdet, var))),
                     regr_output_scaling = cms.string('x[0]*(%f)+(%f)' % (corrections_summary[var][subdet]['scale'], corrections_summary[var][subdet]['center']))
                 )
             )        
         xgb_config = getattr(flashggDifferentialPhoIdInputsCorrection, var+'_corrector_config_'+subdet)
         cfgTools.addVariables(xgb_config.variables,
-                              ['pt',
-                               'eta := superCluster.eta',
-                               'phi',
-                               'rho := global.rho',
-                               'sieip',
-                               's4',
-                               'full5x5_r9',
-                               'phiWidth := superCluster.phiWidth',
-                               'sieie := full5x5_sigmaIetaIeta',
-                               'etaWidth := superCluster.etaWidth'
+                              ['f0 := pt',
+                               'f1 := superCluster.eta',
+                               'f2 := phi',
+                               'f3 := global.rho',
+                               'f4 := sieip',
+                               'f5 := s4',
+                               'f6 := full5x5_r9',
+                               'f7 := superCluster.phiWidth',
+                               'f8 := full5x5_sigmaIetaIeta',
+                               'f9 := superCluster.etaWidth'
                            ]
         )                        
