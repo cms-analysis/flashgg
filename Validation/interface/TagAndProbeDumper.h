@@ -3,7 +3,7 @@
 
 #include "flashgg/DataFormats/interface/TagAndProbeCandidate.h"
 
-#include "flashgg/Taggers/interface/CollectionDumper.h"
+#include "flashgg/Validation/interface/CollectionDumper.h"
 
 namespace flashgg
 {
