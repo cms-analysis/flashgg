@@ -26,7 +26,7 @@ import json
 import os
 
 corrections_summary = {}
-with open(os.path.expandvars('$CMSSW_BASE/src/flashgg/Taggers/data/PhoIdInputsCorrections/corrections_summary.json')) as json_file:
+with open(os.path.expandvars('$CMSSW_BASE/src/flashgg/Taggers/data/PhoIdInputsCorrections/corrections_summary_2017.json')) as json_file:
     corrections_summary = json.load(json_file)
 
 for var in corrections_summary.keys():
@@ -34,10 +34,7 @@ for var in corrections_summary.keys():
         setattr(flashggDifferentialPhoIdInputsCorrection, var+'_corrector_config_'+subdet, 
                 cms.PSet(
                     variables = cms.VPSet(),
-                    # classifier = cms.string("BDT"),
-                    # regression = cms.bool(True),
-                    # multiclass = cms.bool(False),
-                    weights = cms.FileInPath(str("flashgg/Taggers/data/PhoIdInputsCorrections/weights_finalRegressor_%s_%s.xgb" % (subdet, var))),
+                    weights = cms.FileInPath(str(corrections_summary[var][subdet]['weights'])),
                     regr_output_scaling = cms.string('x[0]*(%f)+(%f)' % (corrections_summary[var][subdet]['scale'], corrections_summary[var][subdet]['center']))
                 )
             )        
