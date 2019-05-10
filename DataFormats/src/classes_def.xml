@@ -379,4 +379,23 @@
 <class name="std::vector<flashgg::DoubleHTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DoubleHTag> >"/>
 
+<class name="flashgg::TagAndProbeCandidate"/>
+<class name="std::vector<flashgg::TagAndProbeCandidate>"/>
+<class name="edm::Wrapper<std::vector<flashgg::TagAndProbeCandidate> >"/>
+<class name="edm::Ptr<flashgg::TagAndProbeCandidate>"/>
+<class name="edm::Wrapper<edm::Ptr<flashgg::TagAndProbeCandidate> >"/>
+<class name="std::vector<edm::Ptr<flashgg::TagAndProbeCandidate> >"/>
+<class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::TagAndProbeCandidate> > >"/>
+<class name="edm::reftobase::BaseHolder<flashgg::TagAndProbeCandidate>"/>
+<class name="edm::RefToBase<flashgg::TagAndProbeCandidate>"/>
+<class name="edm::reftobase::IndirectHolder<flashgg::TagAndProbeCandidate>" />
+<class name="edm::RefToBaseProd<flashgg::TagAndProbeCandidate>" />
+<class name="edm::RefToBaseVector<flashgg::TagAndProbeCandidate>" />
+<class name="edm::Wrapper<edm::RefToBaseVector<flashgg::TagAndProbeCandidate> >" />
+<class name="edm::reftobase::BaseVectorHolder<flashgg::TagAndProbeCandidate>" />
+<class name="edm::Ref<std::vector<flashgg::TagAndProbeCandidate>,flashgg::TagAndProbeCandidate,edm::refhelper::FindUsingAdvance<std::vector<flashgg::TagAndProbeCandidate>,flashgg::TagAndProbeCandidate> >"/>
+<class name="edm::RefProd<std::vector<flashgg::TagAndProbeCandidate> >"/>
+<class name="edm::RefVector<std::vector<flashgg::TagAndProbeCandidate>,flashgg::TagAndProbeCandidate,edm::refhelper::FindUsingAdvance<std::vector<flashgg::TagAndProbeCandidate>,flashgg::TagAndProbeCandidate> >"/>
+<class name="edm::Wrapper<edm::RefVector<std::vector<flashgg::TagAndProbeCandidate>,flashgg::TagAndProbeCandidate,edm::refhelper::FindUsingAdvance<std::vector<flashgg::TagAndProbeCandidate>,flashgg::TagAndProbeCandidate> > >"/>
+
 </lcgdict>
