@@ -1,0 +1,9 @@
+{
+    "processes" : {
+	    "DYJetsToLL_amcatnloFXFX" : [
+	"/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/spigazzi-Era2018_RR-17Sep2018_v1-legacyRun2TestV1-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-82b372907a378e076c495c38b3da69a4/USER"	
+                ]
+	    },
+    
+    "cmdLine" : "metaDataSrc=flashgg campaign=Era2018_RR-17Sep2018_v1 trigger=HLT_Ele32_WPTight_Gsf_v* lumiMask=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/ReReco/Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt"
+}
