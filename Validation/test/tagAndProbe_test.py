@@ -1,4 +1,8 @@
 #!/usr/bin/env cmsRun
+"""
+This is a cmsRun configuration file to run the Zee tag and probe algorithm. It needs to be run within the flashgg framework
+"""
+
 import importlib
 
 import FWCore.ParameterSet.Config as cms
@@ -25,6 +29,9 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load(
     "Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
 
+# ------------------------------------------------------------------------------------------------------
+# Process Customization
+
 from flashgg.MetaData.JobConfig import customize
 customize.options.register("trigger",
                            "",  # default value
@@ -50,6 +57,9 @@ else:
 process.maxEvents = cms.untracked.PSet(input=cms.untracked.int32(-1))
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(1000)
 
+# ----------------------------------------------------------------------------------------------------
+# Load modules
+
 process.load("flashgg.MicroAOD.flashggDiPhotons_cfi")
 process.load("flashgg.Validation.FlashggTagAndProbeProducer_cfi")
 process.load("flashgg.Validation.tagAndProbeDumper_cfi")
@@ -57,14 +67,12 @@ process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
 process.load("flashgg.Taggers.flashggUpdatedIdMVADiPhotons_cfi")
 
 from flashgg.Validation.FlashggTagAndProbeProducer_cfi import flashggTagAndProbe
-
+from flashgg.Systematics.flashggDiPhotonSystematics_cfi import flashggDiPhotonSystematics
 import flashgg.Taggers.dumperConfigTools as cfgTools
 import flashgg.Validation.tagAndProbeDumperConfig as dumpCfg
 
-from flashgg.Systematics.flashggDiPhotonSystematics_cfi import flashggDiPhotonSystematics
-
-variables = dumpCfg.getDefaultConfig()
-dumpCfg.addRegressionInput(variables)
+# ----------------------------------------------------------------------------------------------------
+# Get Trigger paths
 
 matchTriggerPaths = []
 dataTriggers = customize.options.trigger.split(",")
@@ -74,12 +82,17 @@ matchTriggerPaths = "&& ".join(
 print(matchTriggerPaths)
 dumpBits = list(strippedNames)
 
+# ----------------------------------------------------------------------------------------------------
+# Do electron ID
+
 from flashgg.MicroAOD.flashggLeptonSelectors_cff import flashggSelectedElectrons
 process.flashggIdentifiedElectrons = flashggSelectedElectrons.clone(
     src=cms.InputTag("flashggSelectedElectrons"),
     cut=cms.string("passTightId")
 )
 
+# ----------------------------------------------------------------------------------------------------
+# Do HLT matching and electron matching
 
 systModules = cms.VPSet(
     cms.PSet(PhotonMethodName=cms.string("FlashggPhotonHLTMatch"),
@@ -104,8 +117,9 @@ variables.extend(["leadEleMatch    := leadingPhoton.hasUserCand('eleMatch')",
                   "subleadEleMatch := subLeadingPhoton.hasUserCand('eleMatch')"
                   ])
 
-# Only EGM tools working atm. photonSmearBins and photonScaleUncertBins missing in flashggDiPhotonSystematics2018_cfi.py
-# EGM not working due to missing NSigmas somewhere
+# ----------------------------------------------------------------------------------------------------
+# Do scale and smearing corrections
+
 sysmodule = importlib.import_module(
     "flashgg.Systematics."+customize.metaConditions["flashggDiPhotonSystematics"])
 systModules.append(sysmodule.MCScaleHighR9EB_EGM)
@@ -120,15 +134,23 @@ systModules2D.append(sysmodule.MCSmearLowR9EE_EGM)
 systModules2D.append(sysmodule.MCSmearHighR9EB_EGM)
 systModules2D.append(sysmodule.MCSmearLowR9EB_EGM)
 
+# ----------------------------------------------------------------------------------------------------
+# Add HLT matching, electron matching and scale and smearing correction to
+# flashggDiPhotonSystematics as extra modules
+
 process.flashggDiPhotonSystematics = flashggDiPhotonSystematics
 process.flashggDiPhotonSystematics.SystMethods = systModules
 process.flashggDiPhotonSystematics.SystMethods2D = systModules2D
+
+# ----------------------------------------------------------------------------------------------------
+# Configure FlashggTagAndProbe Producer
 
 process.flashggTagAndProbe = flashggTagAndProbe
 process.flashggTagAndProbe.diphotonsSrc = cms.InputTag(
     "flashggDiPhotonSystematics")
 process.flashggTagAndProbe.tagSelection = "{} && pt > 40 && (?hasUserCand('eleMatch')?userCand('eleMatch').passTightId:0) && hasPixelSeed && egChargedHadronIso < 20 && egChargedHadronIso/pt < 0.3".format(
     matchTriggerPaths)
+
 process.flashggTagAndProbe.probeSelection = "egChargedHadronIso < 20 && egChargedHadronIso/pt < 0.3"
 process.flashggTagAndProbe.idSelection = cms.PSet(
     rho=cms.InputTag("fixedGridRhoAll"),
@@ -136,6 +158,12 @@ process.flashggTagAndProbe.idSelection = cms.PSet(
         "(full5x5_r9>0.8||egChargedHadronIso<20||egChargedHadronIso/pt<0.3) && egChargedHadronIso < 15"),
     variables=cms.vstring(),
     categories=cms.VPSet(cms.PSet(cut=cms.string("1"), selection=cms.VPSet(cms.VPSet()))))
+
+# ----------------------------------------------------------------------------------------------------
+# Configure tagAndProbeDumper
+
+variables = dumpCfg.getDefaultConfig()
+dumpCfg.addRegressionInput(variables)
 
 from flashgg.Validation.tagAndProbeDumper_cfi import tagAndProbeDumper
 tagAndProbeDumper.dumpTrees = True
@@ -152,6 +180,10 @@ cfgTools.addCategories(tagAndProbeDumper,
                        histograms=[]
                        )
 tnp_sequence = cms.Sequence(flashggTagAndProbe+tagAndProbeDumper)
+
+# ----------------------------------------------------------------------------------------------------
+# Schedule process
+
 process.p = cms.Path(process.flashggUpdatedIdMVADiPhotons *
                      process.flashggIdentifiedElectrons*process.flashggDiPhotonSystematics*tnp_sequence)
 
