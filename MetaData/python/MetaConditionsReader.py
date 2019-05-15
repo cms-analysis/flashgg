@@ -26,6 +26,7 @@ class MetaConditionsReader(collections.MutableMapping):
                     }
                 },
                 "flashggMETsFunction": {"type": "string"},
+	            	"DeepJet": {"type": "string"},
             },
             "additionalProperties" : True
         }

@@ -2,7 +2,6 @@
 # twiki source : https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD2015#Advanced_topics_re_clustering_ev
 
 import FWCore.ParameterSet.Config as cms
-
 #from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased_new as pu_jetid
 from PhysicsTools.PatAlgos.tools.jetTools        import addJetCollection
 from CondCore.DBCommon.CondDBSetup_cfi import *
@@ -17,10 +16,20 @@ flashggDeepCSVc  = 'pfDeepCSVJetTags:probc'
 flashggDeepCSVudsg = 'pfDeepCSVJetTags:probudsg'
 flashggDeepCSV= 'pfDeepCSV'
 
+# DeepJet discriminators
+flashggDeepFlavourb = 'pfDeepFlavourJetTags:probb'
+flashggDeepFlavourbb = 'pfDeepFlavourJetTags:probbb'
+flashggDeepFlavourc  = 'pfDeepFlavourJetTags:probc'
+flashggDeepFlavouruds = 'pfDeepFlavourJetTags:probuds'
+flashggDeepFlavourg  = 'pfDeepFlavourJetTags:probg'
+flashggDeepFlavourlepb = 'pfDeepFlavourJetTags:problepb'
+flashggDeepFlavour = 'pfDeepFlavour'
+
 maxJetCollections = 12
 qgDatabaseVersion = 'AK4chs_94X'
 
-def addFlashggPFCHSJets(process, 
+def addFlashggPFCHSJets(process,
+			DeepJet, 
                         isData,
                         vertexIndex = 0, 
                         #doQGTagging = True, 
@@ -118,6 +127,19 @@ def addFlashggPFCHSJets(process,
   #process.patJetCorrFactorsAK4PFCHSLeg.primaryVertices = "offlineSlimmedPrimaryVertices"
   getattr(process, 'patJetCorrFactorsAK4PFCHSLeg' + label).primaryVertices = "offlineSlimmedPrimaryVertices"
 
+  if DeepJet == "rerun":
+    from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
+    updateJetCollection(
+      process,
+      jetSource = cms.InputTag("slimmedJets"),
+      pvSource = cms.InputTag('offlineSlimmedPrimaryVertices'),
+      svSource = cms.InputTag('slimmedSecondaryVertices'),
+      btagDiscriminators = [flashggDeepFlavourb, flashggDeepFlavourbb, flashggDeepFlavourc, flashggDeepFlavouruds,flashggDeepFlavourlepb, flashggDeepFlavourg,],
+      jetCorrections = ('AK4PFchs', JECs, 'None'),
+     )
+    miniaodJets="selectedUpdatedPatJets"
+  else: miniaodJets="slimmedJets"
+
   if not hasattr(process,"QGPoolDBESSource"):
     process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
                                             CondDBSetup,
@@ -161,7 +183,7 @@ def addFlashggPFCHSJets(process,
                                MinPtForEneSum = cms.double(0.),
                                MaxEtaForEneSum = cms.double(2.5),
                                NJetsForEneSum = cms.uint32(0),
-                               MiniAodJetTag = cms.InputTag("slimmedJets")
+                               MiniAodJetTag = cms.InputTag(miniaodJets)
                                )
   setattr( process, 'flashggPFCHSJets'+ label, flashggJets)
 
