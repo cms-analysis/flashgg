@@ -22,14 +22,14 @@ preselBins = cms.PSet(
         )
     )
 
-# JTao: slide 11 of https://indico.cern.ch/event/605406/contributions/2487608/attachments/1417110/2170077/201702ZmmgEVetoPhotonValidations.pdf from the update with 2016 full 35.9/fb data and the final showershpae correction
+# JTao: slide 2 of https://indico.cern.ch/event/762183/contributions/3181242/attachments/1736403/2823204/201810_2016Legacy_e-veto_etc.pdf with 2016 legacy data samples, small changes on teh SFs wrt previous results with 2016 rereco data samples 
 electronVetoBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)","full5x5_r9"),
     bins = cms.VPSet(
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00 ) , upBounds = cms.vdouble( 1.5, 0.85 ) , values = cms.vdouble( 0.9945 ) , uncertainties = cms.vdouble( 0.0023 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ) , upBounds = cms.vdouble( 1.5, 999. ) , values = cms.vdouble( 0.9958 ) , uncertainties = cms.vdouble( 0.0006 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00 ) , upBounds = cms.vdouble( 6.0, 0.90 ) , values = cms.vdouble( 0.9777 ) , uncertainties = cms.vdouble( 0.0065 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90 ) , upBounds = cms.vdouble( 6.0, 999. ) , values = cms.vdouble( 0.9924 ) , uncertainties = cms.vdouble( 0.0017 )  ) 
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00 ) , upBounds = cms.vdouble( 1.5, 0.85 ) , values = cms.vdouble( 0.9939 ) , uncertainties = cms.vdouble( 0.0023 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ) , upBounds = cms.vdouble( 1.5, 999. ) , values = cms.vdouble( 0.9955 ) , uncertainties = cms.vdouble( 0.0006 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00 ) , upBounds = cms.vdouble( 6.0, 0.90 ) , values = cms.vdouble( 0.9709 ) , uncertainties = cms.vdouble( 0.0068 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90 ) , upBounds = cms.vdouble( 6.0, 999. ) , values = cms.vdouble( 0.9916 ) , uncertainties = cms.vdouble( 0.0017 )  ) 
         )
     )
 
