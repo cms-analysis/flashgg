@@ -26,6 +26,7 @@ namespace flashgg {
         };
 
         GlobalVariablesComputer( const edm::ParameterSet &cfg );
+        GlobalVariablesComputer( const edm::ParameterSet &cfg, edm::ConsumesCollector &cc );
         GlobalVariablesComputer( const edm::ParameterSet &cfg, edm::ConsumesCollector &&cc );
 
         void update( const edm::EventBase &event );

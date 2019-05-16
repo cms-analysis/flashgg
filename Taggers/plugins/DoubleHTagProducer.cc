@@ -122,7 +122,7 @@ namespace flashgg {
         std::vector<double> HLF_VectorVar_;
         std::vector<std::vector<double>> PL_VectorVar_;
         std::vector<double> x_mean_, x_std_, list_mean_, list_std_;
-        string ttHWeightfileName_ ;
+        FileInPath ttHWeightfileName_ ;
         tensorflow::GraphDef* graphDef_ttH;
         tensorflow::Session* session_ttH;
 
@@ -246,22 +246,13 @@ namespace flashgg {
             vertexToken_ = consumes<edm::View<reco::Vertex> >( iConfig.getParameter<edm::InputTag> ("VertexTag") );
             rhoToken_ = consumes<double>( iConfig.getParameter<edm::InputTag>( "rhoTag" ) );
             
-#ifdef CMSSW9
-            ttHWeightfileName_ = iConfig.getUntrackedParameter<std::string>("ttHWeightfile2017");
-            ttHScoreThreshold = iConfig.getParameter<double>("ttHScoreThreshold2017");
-            x_mean_ = iConfig.getParameter<std::vector<double>> ("mean2017");
-            x_std_ = iConfig.getParameter<std::vector<double>> ("std2017");
-            list_mean_ = iConfig.getParameter<std::vector<double>> ("listmean2017");
-            list_std_ = iConfig.getParameter<std::vector<double>> ("liststd2017");
-#elif CMSSW8
-            ttHWeightfileName_ = iConfig.getUntrackedParameter<std::string>("ttHWeightfile2016");
-            ttHScoreThreshold = iConfig.getParameter<double>("ttHScoreThreshold2016");
-            x_mean_ = iConfig.getParameter<std::vector<double>> ("mean2016");
-            x_std_ = iConfig.getParameter<std::vector<double>> ("std2016");
-            list_mean_ = iConfig.getParameter<std::vector<double>> ("listmean2016");
-            list_std_ = iConfig.getParameter<std::vector<double>> ("liststd2016");
-#endif
-            graphDef_ttH = tensorflow::loadGraphDef((ttHWeightfileName_).c_str());
+            ttHWeightfileName_ = iConfig.getUntrackedParameter<FileInPath>("ttHWeightfile");
+            ttHScoreThreshold = iConfig.getParameter<double>("ttHScoreThreshold");
+            x_mean_ = iConfig.getParameter<std::vector<double>> ("ttHKiller_mean");
+            x_std_ = iConfig.getParameter<std::vector<double>> ("ttHKiller_std");
+            list_mean_ = iConfig.getParameter<std::vector<double>> ("ttHKiller_listmean");
+            list_std_ = iConfig.getParameter<std::vector<double>> ("ttHKiller_liststd");
+            graphDef_ttH = tensorflow::loadGraphDef((ttHWeightfileName_.fullPath()).c_str());
             session_ttH = tensorflow::createSession(graphDef_ttH);
         }
 
@@ -876,11 +867,7 @@ namespace flashgg {
         }
         std::vector<tensorflow::Tensor> outputs;
 
-#ifdef CMSSW9
         tensorflow::run(session_ttH, { {"input_1:0", PLinput}, {"input_2:0", HLFinput} }, { "dense_4/Sigmoid" }, &outputs);
-#elif CMSSW8
-        tensorflow::run(session_ttH, { {"input_608:0", HLFinput}, {"input_607:0", PLinput} }, { "dense_835/Sigmoid:0" }, &outputs);
-#endif
         //std::cout << "EvaluateNN result: " << outputs[0].matrix<float>()(0, 0) << std::endl;
         float NNscore = outputs[0].matrix<float>()(0, 0);
         return NNscore;

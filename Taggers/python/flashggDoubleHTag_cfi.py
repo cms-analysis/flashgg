@@ -8,13 +8,35 @@ import flashgg.Taggers.PUJID_wps as pujid
 from flashgg.Taggers.globalVariables_cff import globalVariables
 import flashgg.Taggers.flashggDoubleHReweight_cfi as reweight_settings
 from flashgg.Taggers.flashggDoubleHReweight_cfi import flashggDoubleHReweight
+from flashgg.MicroAOD.flashggJets_cfi import  maxJetCollections
+
 
 
 #default values first
 year_norm = 0
-jetPUID = 'Loose'
+jetID = 'Loose'
 weightsFile="flashgg/Taggers/data/HHTagger/training_with_10_12_2018_commonTraining_2016.weights.xml"# path to TMVA weights
 MVAscalingValue=1.#scale MVA output before the cumulative transformation for 2017(2016 kept unchanged for simplicity, we will probably change that once we have all 3 years.)
+MVAFlatteningFileName="flashgg/Taggers/data/HHTagger/cumulativeTransformation_20190321_2016_2017.root"
+ttHWeightfile="flashgg/Taggers/data/ttHKiller/2017model.pb"
+
+ttHKiller_mean = cms.vdouble(2.86329618e+02,  7.08058280e+01,  1.51705583e-01,  2.01783465e-03,
+ 2.97495115e-03,  1.27818958e+00,  5.00813342e+00,  1.09232817e+01,
+1.98370734e+02,  6.75976357e+01,  3.79198017e+01,  6.48033320e+01,
+ 3.71474043e+01,  1.32235881e+02,  1.23636325e-02, -1.90268192e-02,
+ -4.32500136e-03, -3.56787374e-02, -3.77824101e-03, -1.47459903e-02,
+ 8.49414658e-03,  2.54511156e-03, -2.81678797e-03,  1.50134999e-03,
+5.15499904e-01,  4.89883682e-01)
+
+ttHKiller_std = cms.vdouble(2.10155580e+02, 5.75043629e+01, 1.90354344e+00, 1.85750063e+00,
+ 1.82667164e+00, 5.86412476e-01, 1.61136045e+00, 2.30744881e+01,
+ 3.77189642e+02, 5.30695227e+01, 2.44528358e+01, 5.03981834e+01,
+ 2.43547708e+01, 1.01677139e+02, 1.10120412e+00, 1.17757987e+00,
+1.08501127e+00, 1.12699494e+00, 1.35765654e+00, 1.79804818e+00,
+1.80435878e+00, 1.81725954e+00, 1.78700277e+00, 1.81540181e+00,
+2.90404729e-01, 2.85301766e-01)
+ttHKiller_listmean = cms.vdouble(9.77379993e+01, -2.75249574e-03,  6.81701973e-02)
+ttHKiller_liststd = cms.vdouble(85.75455047,  1.31191137,  1.85627069)
 
 
 flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
@@ -42,7 +64,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                  #c  BTagType = cms.untracked.string('pfDeepCSVJetTags:probb'), #string for btag algorithm
                                    BTagType = cms.vstring('pfDeepCSVJetTags:probb','pfDeepCSVJetTags:probbb'), #string for btag algorithm
                                    UseJetID = cms.bool(True),
-                                   JetIDLevel = cms.string(jetPUID),
+                                   JetIDLevel = cms.string(jetID),
 
                                    #MVABoundaries  = cms.vdouble(0.29,0.441, 0.724), # category boundaries for MVA w/o Mjj
                                    #MXBoundaries   = cms.vdouble(250., 354., 478., 560.), # .. and MX w/o Mjj
@@ -64,13 +86,13 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    MVAscaling=cms.double(MVAscalingValue),
                                    doCategorization=cms.bool(False),#do categorization based on MVA x MX or only fill first tree with all events
                                    #MVAFlatteningFileName=cms.untracked.FileInPath("flashgg/Taggers/data/HHTagger/cumulativeTransformation_20181210_common_2016_2017.root"),#for BDT w/o Mjj
-                                   MVAFlatteningFileName=cms.untracked.FileInPath("flashgg/Taggers/data/HHTagger/cumulativeTransformation_20190321_2016_2017.root"),#FIXME, this should be optional, is it?
+                                   MVAFlatteningFileName=cms.untracked.FileInPath("%s"%MVAFlatteningFileName),#FIXME, this should be optional, is it?
                                    globalVariables=globalVariables,
                                    doReweight = flashggDoubleHReweight.doReweight,
                                    reweight_producer = cms.string(reweight_settings.reweight_producer),
                                    reweight_names = cms.vstring(reweight_settings.reweight_names),
 
-                                   dottHTagger=cms.bool(True), #whether to do ttH killer. 
+                                   dottHTagger=cms.bool(False), #whether to do ttH killer. 
 
                                    ElectronTag=cms.InputTag('flashggSelectedElectrons'),
                                    MuonTag=cms.InputTag('flashggSelectedMuons'),
@@ -86,50 +108,13 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    useElectronMVARecipe = cms.bool(False),
                                    useElectronLooseID = cms.bool(True),
                                    electronEtaThresholds=cms.vdouble(1.4442,1.566,2.5),
-                                   ttHWeightfile2016 = cms.untracked.string(os.environ["CMSSW_BASE"]+"/src/flashgg/Taggers/data/ttHKiller/2017model.pb"), # for now
-                                   ttHWeightfile2017 = cms.untracked.string(os.environ["CMSSW_BASE"]+"/src/flashgg/Taggers/data/ttHKiller/2017model.pb"), 
-
-                                   ttHScoreThreshold2016 = cms.double(0.21), #to be updated
-                                   ttHScoreThreshold2017 = cms.double(0.21), #to be updated
-
+                                   ttHWeightfile = cms.untracked.FileInPath("%s"%ttHWeightfile), # for now
+                                   ttHScoreThreshold = cms.double(0.0), #to be updated
                                    # For standardization
-                                   mean2017 = cms.vdouble(2.86329618e+02,  7.08058280e+01,  1.51705583e-01,  2.01783465e-03,
-                                             2.97495115e-03,  1.27818958e+00,  5.00813342e+00,  1.09232817e+01,
-                                               1.98370734e+02,  6.75976357e+01,  3.79198017e+01,  6.48033320e+01,
-                                                 3.71474043e+01,  1.32235881e+02,  1.23636325e-02, -1.90268192e-02,
-                                                  -4.32500136e-03, -3.56787374e-02, -3.77824101e-03, -1.47459903e-02,
-                                                    8.49414658e-03,  2.54511156e-03, -2.81678797e-03,  1.50134999e-03,
-                                                      5.15499904e-01,  4.89883682e-01),
-
-                                   std2017 = cms.vdouble(2.10155580e+02, 5.75043629e+01, 1.90354344e+00, 1.85750063e+00,
-                                        1.82667164e+00, 5.86412476e-01, 1.61136045e+00, 2.30744881e+01,
-                                         3.77189642e+02, 5.30695227e+01, 2.44528358e+01, 5.03981834e+01,
-                                          2.43547708e+01, 1.01677139e+02, 1.10120412e+00, 1.17757987e+00,
-                                           1.08501127e+00, 1.12699494e+00, 1.35765654e+00, 1.79804818e+00,
-                                            1.80435878e+00, 1.81725954e+00, 1.78700277e+00, 1.81540181e+00,
-                                             2.90404729e-01, 2.85301766e-01),
-
-                                   listmean2017 = cms.vdouble(9.77379993e+01, -2.75249574e-03,  6.81701973e-02),
-                                   liststd2017 = cms.vdouble(85.75455047,  1.31191137,  1.85627069),
-
-                                   mean2016 = cms.vdouble(2.86329618e+02,  7.08058280e+01,  1.51705583e-01,  2.01783465e-03,
-                                             2.97495115e-03,  1.27818958e+00,  5.00813342e+00,  1.09232817e+01,
-                                               1.98370734e+02,  6.75976357e+01,  3.79198017e+01,  6.48033320e+01,
-                                                 3.71474043e+01,  1.32235881e+02,  1.23636325e-02, -1.90268192e-02,
-                                                  -4.32500136e-03, -3.56787374e-02, -3.77824101e-03, -1.47459903e-02,
-                                                    8.49414658e-03,  2.54511156e-03, -2.81678797e-03,  1.50134999e-03,
-                                                      5.15499904e-01,  4.89883682e-01),
-
-                                   std2016 = cms.vdouble(2.10155580e+02, 5.75043629e+01, 1.90354344e+00, 1.85750063e+00,
-                                        1.82667164e+00, 5.86412476e-01, 1.61136045e+00, 2.30744881e+01,
-                                         3.77189642e+02, 5.30695227e+01, 2.44528358e+01, 5.03981834e+01,
-                                          2.43547708e+01, 1.01677139e+02, 1.10120412e+00, 1.17757987e+00,
-                                           1.08501127e+00, 1.12699494e+00, 1.35765654e+00, 1.79804818e+00,
-                                            1.80435878e+00, 1.81725954e+00, 1.78700277e+00, 1.81540181e+00,
-                                             2.90404729e-01, 2.85301766e-01),
-
-                                   listmean2016 = cms.vdouble(9.77379993e+01, -2.75249574e-03,  6.81701973e-02),
-                                   liststd2016 = cms.vdouble(85.75455047,  1.31191137,  1.85627069)
+                                   ttHKiller_mean = ttHKiller_mean,
+                                   ttHKiller_std = ttHKiller_std,
+                                   ttHKiller_listmean = ttHKiller_listmean, 
+                                   ttHKiller_liststd = ttHKiller_liststd 
                                   ) 
 
 cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,

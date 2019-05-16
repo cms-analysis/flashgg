@@ -53,6 +53,12 @@ customize.options.register('doDoubleHTag',
                            VarParsing.VarParsing.varType.bool,
                            'doDoubleHTag'
                            )
+customize.options.register('doDoubleHttHKiller',
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doDoubleHttHKiller'
+                           )
 customize.options.register('ttHKillerInputVariables',
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -598,7 +604,7 @@ else :
                          process.tagsDumper)
 
 if customize.doubleHTagsOnly: 
-    hhc.doubleHTagMerger(customize,process,systlabels)
+    hhc.doubleHTagMerger(systlabels)
 
 
 if customize.doBJetRegression:

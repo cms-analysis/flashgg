@@ -16,7 +16,6 @@ class DoubleHCustomize():
         var_workspace = [
 #             "Mjj := dijet().M()"
             "eventNumber := eventNumber()",
-            "ttHScore := ttHScore()",
             "MX := MX()",
             "HHbbggMVA := MVA()"
         ]
@@ -92,7 +91,7 @@ class DoubleHCustomize():
                 "subleadingJet_bRegNNResolution := subleadJet().userFloat('bRegNNResolution')",
                 "sigmaMJets := getSigmaMOverMJets()"
         ]
-        if customize.doubleHReweight > 0: 
+        if self.customize.doubleHReweight > 0: 
             for num in range(0,12):  #12 benchmarks + 1 SM
                  variables += ["benchmark_reweight_%d := getBenchmarkReweight(%d)"%(num,num)]
                  var_workspace += ["benchmark_reweight_%d := getBenchmarkReweight(%d)"%(num,num)]
@@ -103,7 +102,7 @@ class DoubleHCustomize():
             var_workspace += ["benchmark_reweight_box := getBenchmarkReweight(13)"]
             var_workspace += ["benchmark_reweight_2017fake := getBenchmarkReweight(14)"]
 
-        if customize.ttHKillerInputVariables : variables += [
+        if self.customize.ttHKillerInputVariables : variables += [
             "ttH_sumET := sumET()",
             "ttH_MET := MET()",
             "ttH_phiMET := phiMET()",
@@ -136,13 +135,16 @@ class DoubleHCustomize():
             "ttH_etajet2 := etajet2()",
             "ttH_phijet1 := phijet1()",
             "ttH_phijet2 := phijet2()",
-            #"ttHScore := ttHScore()",
             ]
     
     
-        if customize.doDoubleHttHKiller : variables +=[
-            "ttHScore := ttHScore()",
-           ]
+        if self.customize.doDoubleHttHKiller : 
+             variables +=[
+               "ttHScore := ttHScore()",
+             ]
+             var_workspace +=[
+               "ttHScore := ttHScore()",
+             ]
 
         if self.customize.dumpWorkspace == False :
             return variables
@@ -150,7 +152,7 @@ class DoubleHCustomize():
             return var_workspace
 
 
-    def variablesToDumpData(customize):
+    def variablesToDumpData():
         variables = [
            #  "leadingJet_DeepCSV := leadJet().bDiscriminator('pfDeepCSVJetTags:probb')+leadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",#FIXME make the btag type configurable?
            #  "subleadingJet_DeepCSV := subleadJet().bDiscriminator('pfDeepCSVJetTags:probb')+subleadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",
@@ -173,8 +175,10 @@ class DoubleHCustomize():
              "MX := MX()",
            #  "Mjj := dijet().M()",
            #  "eventNumber := eventNumber()",
-            "ttHScore := ttHScore()"
              ]
+        if self.customize.doDoubleHttHKiller : variables +=[
+            "ttHScore := ttHScore()",
+           ]
         return variables
 
 
@@ -183,9 +187,16 @@ class DoubleHCustomize():
         self.process.load("flashgg.Taggers.flashggDoubleHTag_cff")
 
         ## customize meta conditions
-        self.process.flashggDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetPUID"]))
+        self.process.flashggDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))
         self.process.flashggDoubleHTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["doubleHTag"]["weightsFile"]))  
         self.process.flashggDoubleHTag.MVAscaling = cms.double(self.metaConditions["doubleHTag"]["MVAscalingValue"])
+        self.process.flashggDoubleHTag.MVAFlatteningFileName = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["MVAFlatteningFileName"]))
+        self.process.flashggDoubleHTag.dottHTagger = cms.bool(self.customize.doDoubleHttHKiller)
+        self.process.flashggDoubleHTag.ttHWeightfile = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["ttHWeightfile"]))
+        self.process.flashggDoubleHTag.ttHKiller_mean = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_mean"])
+        self.process.flashggDoubleHTag.ttHKiller_std = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_std"])
+        self.process.flashggDoubleHTag.ttHKiller_listmean = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_listmean"])
+        self.process.flashggDoubleHTag.ttHKiller_liststd = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_liststd"])
 
         ## remove single Higgs tags
 
@@ -218,11 +229,11 @@ class DoubleHCustomize():
 
 
     def addNodesReweighting(self):
-        if customize.doubleHReweight > 0 :
+        if self.customize.doubleHReweight > 0 :
             from flashgg.Taggers.flashggDoubleHReweight_cfi import flashggDoubleHReweight
             self.process.flashggDoubleHReweight = flashggDoubleHReweight
             self.process.p.replace(self.process.flashggDoubleHTag, self.process.flashggDoubleHReweight*self.process.flashggDoubleHTag)
-            self.process.flashggDoubleHReweight.doReweight = customize.doubleHReweight
+            self.process.flashggDoubleHReweight.doReweight = self.customize.doubleHReweight
 
 
     def addGenAnalysis(self):
@@ -273,7 +284,7 @@ class DoubleHCustomize():
                         "subleadJet_e  := subLeadingJet.energy",
 
                         ]
-        if customize.doubleHReweight > 0: 
+        if self.customize.doubleHReweight > 0: 
              for num in range(0,12):
                    genVariables += ["benchmark_reweight_%d := getHHbbggBenchmarkReweight(%d)"%(num,num)]
              genVariables += ["benchmark_reweight_SM := getHHbbggBenchmarkReweight(12)"]
