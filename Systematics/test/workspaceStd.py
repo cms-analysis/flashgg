@@ -14,8 +14,8 @@ dropVBFInNonGold = False  # for 2015 only!
 process = cms.Process("FLASHggSyst")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.load("Configuration.StandardSequences.GeometryDB_cff")
-process.load("Configuration.StandardSequences.MagneticField_cff")
+#process.load("Configuration.StandardSequences.GeometryDB_cff")
+#process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
@@ -36,22 +36,28 @@ customize.options.register('tthTagsOnly',
                            'tthTagsOnly'
                            )
 customize.options.register('doubleHTagsOnly',
-                           False,
+                           True,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doubleHTagsOnly'
                            )
-customize.options.register('doubleHReweightTarget',
+customize.options.register('doubleHReweight',
                            -1,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.int,
-                           'doubleHReweightTarget'
+                           'doubleHReweight'
                            )
 customize.options.register('doDoubleHTag',
-                           False,
+                           True,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doDoubleHTag'
+                           )
+customize.options.register('ttHKillerInputVariables',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'ttHKillerInputVariables'
                            )
 customize.options.register('doDoubleHGenAnalysis',
                            False,
@@ -60,7 +66,7 @@ customize.options.register('doDoubleHGenAnalysis',
                            'doDoubleHGenAnalysis'
                            )
 customize.options.register('doBJetRegression',
-                           False,
+                           True,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doBJetRegression'
@@ -90,25 +96,25 @@ customize.options.register('acceptance',
                            'acceptance'
                            )
 customize.options.register('doSystematics',
-                           True,
+                           False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doSystematics'
                            )
 customize.options.register('doPdfWeights',
-                           True,
+                           False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doPdfWeights'
                            )
 customize.options.register('dumpTrees',
-                           False,
+                           True,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'dumpTrees'
                            )
 customize.options.register('dumpWorkspace',
-                           True,
+                           False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'dumpWorkspace'
@@ -235,9 +241,6 @@ if customize.doFiducial:
     print 'we do fiducial and we change tagsorter'
     process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggSigmaMoMpToMTag')) )
 
-if customize.doubleHTagsOnly:
-    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggDoubleHTag')) )
-
 if customize.tthTagsOnly:
     process.flashggTagSorter.TagPriorityRanges = cms.VPSet(   cms.PSet(TagName = cms.InputTag('flashggTTHDiLeptonTag')),
         cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag')),
@@ -268,7 +271,7 @@ useEGMTools(process)
 
 # Only run systematics for signal events
 # convention: ggh vbf wzh (wh zh) tth
-signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","Acceptance"]
+signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance"]
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 #if customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance") or customize.processId.count("hh_"): 
 if is_signal:
@@ -594,6 +597,10 @@ else :
                          process.finalFilter*
                          process.tagsDumper)
 
+if customize.doubleHTagsOnly: 
+    hhc.doubleHTagMerger(customize,process,systlabels)
+
+
 if customize.doBJetRegression:
 
     bregProducers = []
@@ -621,13 +628,11 @@ if customize.doBJetRegression:
     bregProducers.append(producer)
     process.bregProducers = cms.Sequence(reduce(lambda x,y: x+y, bregProducers))
     process.p.replace(process.jetSystematicsSequence,process.jetSystematicsSequence*process.flashggUnpackedJets+process.bregProducers)
-        
-    if jetsystlabels!=[]:
-        for jetsyst in [systlabels[0]]+jetsystlabels:
-            jetTagsSystematics = cms.VInputTag()
-            for icoll,coll in enumerate(recoJetCollections):
-                jetTagsSystematics.append(cms.InputTag("bRegProducer",str(jetsyst)+str(icoll)))
-            getattr(process, "flashggDoubleHTag"+jetsyst).JetTags = jetTagsSystematics
+    
+   
+    if len(systlabels)>1 :
+        getattr(process, "flashggDoubleHTag").JetsSuffixes = cms.vstring([systlabels[0]]+jetsystlabels)
+        getattr(process, "flashggDoubleHTag").DiPhotonSuffixes = cms.vstring([systlabels[0]]+phosystlabels)
 
 
 if customize.doFiducial:
@@ -647,11 +652,11 @@ if customize.doFiducial:
     if not customize.processId == "Data":
         fc.addGenOnlyAnalysis(process,customize.processId,customize.acceptance,tagList,systlabels,pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights))
 
-if customize.doubleHReweightTarget>0:
-    hhc.addNodesReweighting(customize,process)
+if customize.doubleHReweight>0:
+    hhc.addNodesReweighting()
 
 if customize.doDoubleHGenAnalysis:
-    hhc.addGenAnalysis(customize,process,tagList)
+    hhc.addGenAnalysis()
 
 
 if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
