@@ -59,7 +59,7 @@ namespace flashgg {
     DoubleHReweighter::DoubleHReweighter( const ParameterSet &iConfig ) :
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         doReweight_( iConfig.getParameter<int> ( "doReweight" ) ),
-        weightsFile_(iConfig.getParameter<edm::FileInPath>("weightsFile")),
+        weightsFile_(iConfig.getUntrackedParameter<edm::FileInPath>("weightsFile")),
         NCOEFFSA_(iConfig.getParameter<unsigned int>( "NCOEFFSA" )),
         A_13TeV_SM_(iConfig.getParameter< vector<double>>("A_13TeV_SM")),
         benchmarks_map_(iConfig.getParameter<edm::ParameterSet>("benchmarks_map"))

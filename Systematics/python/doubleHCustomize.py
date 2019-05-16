@@ -228,6 +228,22 @@ class DoubleHCustomize():
         #print 'from loop after:',process.flashggSystTagMerger.src
 
 
+    def doubleHTagRunSequence(self,systlabels,jetsystlabels,phosystlabels):
+       if self.customize.doubleHTagsOnly: 
+          self.doubleHTagMerger(systlabels)
+
+       if len(systlabels)>1 :
+          getattr(self.process, "flashggDoubleHTag").JetsSuffixes = cms.vstring([systlabels[0]]+jetsystlabels)
+          getattr(self.process, "flashggDoubleHTag").DiPhotonSuffixes = cms.vstring([systlabels[0]]+phosystlabels)
+
+       if self.customize.doubleHReweight>0:
+          self.addNodesReweighting()
+    
+       if self.customize.doDoubleHGenAnalysis:
+          self.addGenAnalysis()
+
+
+
     def addNodesReweighting(self):
         if self.customize.doubleHReweight > 0 :
             from flashgg.Taggers.flashggDoubleHReweight_cfi import flashggDoubleHReweight

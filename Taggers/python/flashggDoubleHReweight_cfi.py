@@ -1,12 +1,12 @@
 import FWCore.ParameterSet.Config as cms
 
 #default values first
-weightsFile = "flashgg/Taggers/data/HHTagger/HHreweight_2016nodes_04022018.root "
+weightsFile = "flashgg/Taggers/data/HHTagger/HHreweight_2016nodes_04022018.root"
 
 flashggDoubleHReweight = cms.EDProducer("FlashggDoubleHReweighter",
                                         GenParticleTag = cms.InputTag( "flashggPrunedGenParticles" ), # to compute MC-truth info
                                         doReweight = cms.int32(-1),  #it is only used to specify if reweighting has to be done : targetNode >  0 - yes 
-                                        weightsFile = cms.FileInPath("%s"%weightsFile), 
+                                        weightsFile = cms.untracked.FileInPath("%s"%weightsFile), 
                                         NCOEFFSA = cms.uint32(15), 
                                         A_13TeV_SM = cms.vdouble(2.09078, 10.1517, 0.282307, 0.101205, 1.33191, -8.51168, -1.37309, 2.82636, 1.45767, -4.91761, -0.675197, 1.86189, 0.321422, -0.836276, -0.568156),# coefficients of 15 operators for SM point
                                         benchmarks_map = cms.PSet( #values of kl,k5,c2,cg,c2g for 12 benchmarks and SM as 13th, box as 14th, wrong 2017 as 15th element in list (as in arxic 1507.02245 v4).
