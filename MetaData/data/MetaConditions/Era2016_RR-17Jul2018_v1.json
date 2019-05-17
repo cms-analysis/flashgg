@@ -51,8 +51,22 @@
     "JR_SF_version" : "JR_Summer16_23Sep2016V4_MC_SF_AK4PFchs",
 
     "bTagEffBins" : "bTagEffBins2016",
-    "bDiscriminatorValue" : 0.8484,
-    "bTagCalibrationFile" : "flashgg/Systematics/data/DeepCSV_94XSF_V3_B_F.csv",
+    
+    "bTagger" : "pfCSVv2",  
+
+    "bDiscriminatorValue_pfCSVv2" : 0.8484,
+    "bTagCalibrationFile_Reshape_pfCSVv2" : "flashgg/Systematics/data/CSVv2.csv",
+    "bTagCalibrationFile_WPCut_pfCSVv2" : "flashgg/Systematics/data/CSVv2.csv",
+
+    "bDiscriminatorValue_pfDeepCSV" : 0.6321,
+    "bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_2016LegacySF_V1.csv",
+    "bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_2016LegacySF_WP_V1.csv",
+
+    "bDiscriminatorValue_pfDeepJet" : 0.3093,
+    "bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/DeepJet_2016LegacySF_V1.csv",
+    "bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/DeepJet_2016LegacySF_WP_V1.csv",
+
+    "eta" : 2.4,
 
     "mc2hessianCSV" : "PhysicsTools/HepMCCandAlgos/data/NNPDF30_lo_as_0130_hessian_60.csv",
 

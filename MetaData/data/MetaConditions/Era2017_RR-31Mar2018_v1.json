@@ -52,8 +52,20 @@
     "Ele_ID_eff_bin" : "binInfo2017",
 
     "bTagEffBins" : "bTagEffBins2017",
-    "bDiscriminatorValue" : 0.4941,
-    "bTagCalibrationFile" : "flashgg/Systematics/data/DeepCSV_94XSF_V3_B_F.csv",
+
+    "bTagger" : "pfDeepJet",
+
+    "bDiscriminatorValue_pfCSVv2" : 0.8838,
+
+    "bDiscriminatorValue_pfDeepCSV" : 0.4941,
+    "bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_94XSF_V4_B_F.csv",
+    "bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_94XSF_WP_V4_B_F.csv",
+
+    "bDiscriminatorValue_pfDeepJet" : 0.3033,
+    "bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/DeepFlavour_94XSF_V2_B_F.csv",
+    "bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/DeepFlavour_94XSF_WP_V2_B_F.csv",
+
+    "eta" : 2.5,
 
     "bRegression" :
     {
