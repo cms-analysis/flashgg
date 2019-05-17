@@ -2,6 +2,7 @@ Systematics
 ============
 
 1. b-Tagging:
+
 --> For b-tag systematics, the SF are provided by BTV for |eta| < 2.4 for year 2016 and |eta| < 2.5 for year 2017 and 2018. The
 eta value is read from MetaData/data/MetaConditions/Era_year.json
 
