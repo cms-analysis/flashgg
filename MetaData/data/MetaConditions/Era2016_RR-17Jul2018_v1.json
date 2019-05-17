@@ -52,7 +52,7 @@
 
     "bTagEffBins" : "bTagEffBins2016",
     
-    "bTagger" : "pfCSVv2",  
+    "bTagger" : "pfDeepJet",  
 
     "bDiscriminatorValue_pfCSVv2" : 0.8484,
     "bTagCalibrationFile_Reshape_pfCSVv2" : "flashgg/Systematics/data/CSVv2.csv",

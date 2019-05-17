@@ -49,6 +49,10 @@
     "Ele_ID_eff_bin" : "binInfo2018",
 
     "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2018_cfi",
+     
+    "bTagEffBins" : "bTagEffBins2017",
+
+    "bTagger" : "pfDeepJet",
 
     "bDiscriminatorValue_pfDeepCSV" : 0.4184,
     "bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_102XSF_V1.csv",
