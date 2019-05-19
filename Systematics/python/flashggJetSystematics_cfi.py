@@ -214,7 +214,7 @@ class jetSystematicsCustomize:
                                                                bTag = cms.string(str(bTagger)), 
                                                                bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagCalibrationFile_Reshape_'+ str(bTagger)])),
                                                                bTagReshapeSystOption = cms.int32(1),#For changing the source of uncertainty
-                                                               Debug = cms.untracked.bool(True),
+                                                               Debug = cms.untracked.bool(False),
                                                                ApplyCentralValue = cms.bool(True)
                                                             ),
                                                      cms.PSet( MethodName = cms.string("FlashggJetPUJIDShift"),
