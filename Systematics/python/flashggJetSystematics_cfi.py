@@ -1,9 +1,6 @@
 import os
 import FWCore.ParameterSet.Config as cms
 import flashgg.Systematics.settings as settings
-from flashgg.MicroAOD.flashggJets_cfi import flashggBTag
-from flashgg.MicroAOD.flashggJets_cfi import flashggDeepCSV 
-from flashgg.MicroAOD.flashggJets_cfi import flashggDeepJet
 
 #https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideBTagMCTools#Hadron_parton_based_jet_flavour
 #B Tag MC efficiencies
@@ -214,7 +211,7 @@ class jetSystematicsCustomize:
                                                                bTag = cms.string(str(bTagger)), 
                                                                bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagCalibrationFile_Reshape_'+ str(bTagger)])),
                                                                bTagReshapeSystOption = cms.int32(1),#For changing the source of uncertainty
-                                                               Debug = cms.untracked.bool(True),
+                                                               Debug = cms.untracked.bool(False),
                                                                ApplyCentralValue = cms.bool(True)
                                                             ),
                                                      cms.PSet( MethodName = cms.string("FlashggJetPUJIDShift"),

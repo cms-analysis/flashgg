@@ -55,8 +55,6 @@
 
     "bTagger" : "pfDeepJet",
 
-    "bDiscriminatorValue_pfCSVv2" : 0.8838,
-
     "bDiscriminatorValue_pfDeepCSV" : 0.4941,
     "bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_94XSF_V4_B_F.csv",
     "bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_94XSF_WP_V4_B_F.csv",
