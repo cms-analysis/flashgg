@@ -152,6 +152,21 @@ class DoubleHCustomize():
             return var_workspace
 
 
+    def systematicVariables(self):
+      systematicVariables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass","Mjj[120,70,190]:=dijet().M()","HHbbggMVA[100,0,1.]:=MVA()","MX[300,250,5000]:=MX()"]
+      
+      if self.customize.doubleHReweight > 0: 
+         for num in range(0,12):  #12 benchmarks
+            systematicVariables += ["benchmark_reweight_%d[100,0,200] := getBenchmarkReweight(%d)"%(num,num)]
+         systematicVariables+= ["benchmark_reweight_SM[100,0,200] := getBenchmarkReweight(12)"]
+         systematicVariables+= ["benchmark_reweight_box[100,0,200] := getBenchmarkReweight(13)"]
+
+      if self.customize.doDoubleHttHKiller : 
+             systematicVariables +=["ttHScore := ttHScore()"]
+
+      return systematicVariables
+
+
     def variablesToDumpData():
         variables = [
            #  "leadingJet_DeepCSV := leadJet().bDiscriminator('pfDeepCSVJetTags:probb')+leadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",#FIXME make the btag type configurable?
@@ -222,7 +237,7 @@ class DoubleHCustomize():
         self.process.p.replace(self.process.flashggSystTagMerger,self.process.flashggDoubleHTagSequence*self.process.flashggTagSorter*self.process.flashggSystTagMerger)
         for systlabel in systlabels:
            if systlabel!='':
-             self.process.p.remove(getatt(self.process,'flashggTagSorter'+systlabel))
+             self.process.p.remove(getattr(self.process,'flashggTagSorter'+systlabel))
              self.process.p.replace(self.process.flashggSystTagMerger,getattr(self.process, 'flashggTagSorter'+systlabel)*self.process.flashggSystTagMerger)
            setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggDoubleHTag', systlabel)) ))
         #print 'from loop after:',process.flashggSystTagMerger.src

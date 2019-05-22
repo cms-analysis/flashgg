@@ -58,9 +58,9 @@
 
     "bRegression" :
     {
-        "weightFile" : "/src/flashgg/Taggers/data/DNN_models/model-18.pb",
-        "y_mean" : 1.0454729795455933,
-        "y_std" : 0.31628304719924927,
+        "weightFile" : "/src/flashgg/Taggers/data/DNN_models/breg_training_2016_Legacy_JECv11.pb",
+        "y_mean" : 1.047176718711853,
+        "y_std" : 0.31976690888404846,
         "year" : 2016
     },
 

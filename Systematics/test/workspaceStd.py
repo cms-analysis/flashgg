@@ -239,6 +239,7 @@ if customize.doDoubleHTag:
     import flashgg.Systematics.doubleHCustomize 
     hhc = flashgg.Systematics.doubleHCustomize.DoubleHCustomize(process, customize, customize.metaConditions)
     minimalVariables += hhc.variablesToDump()
+    systematicVariables = hhc.systematicVariables()
 
 print 'here we print the tag sequence after'
 print process.flashggTagSequence
@@ -603,8 +604,6 @@ else :
                          process.finalFilter*
                          process.tagsDumper)
 
-#if customize.doubleHTagsOnly: 
-#    hhc.doubleHTagMerger(systlabels)
 
 
 if customize.doBJetRegression:
