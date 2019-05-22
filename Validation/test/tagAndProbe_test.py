@@ -113,9 +113,6 @@ systModules = cms.VPSet(
              electronsSrc=cms.InputTag("flashggIdentifiedElectrons"),
              )
 )
-variables.extend(["leadEleMatch    := leadingPhoton.hasUserCand('eleMatch')",
-                  "subleadEleMatch := subLeadingPhoton.hasUserCand('eleMatch')"
-                  ])
 
 # ----------------------------------------------------------------------------------------------------
 # Do scale and smearing corrections
@@ -162,8 +159,13 @@ process.flashggTagAndProbe.idSelection = cms.PSet(
 # ----------------------------------------------------------------------------------------------------
 # Configure tagAndProbeDumper
 
-variables = dumpCfg.getDefaultConfig()
+variables = dumpCfg.getDefaultConfig(trackAllCorrections=False)
+variables.extend(["leadEleMatch    := leadingPhoton.hasUserCand('eleMatch')",
+                  "subleadEleMatch := subLeadingPhoton.hasUserCand('eleMatch')"
+                  ])
 dumpCfg.addRegressionInput(variables)
+variables = dumpCfg.getTnPVariables(variables)
+print(variables)
 
 from flashgg.Validation.tagAndProbeDumper_cfi import tagAndProbeDumper
 tagAndProbeDumper.dumpTrees = True
@@ -176,7 +178,7 @@ cfgTools.addCategories(tagAndProbeDumper,
                            # ("EEHighR9", "abs(getProbe.superCluster.eta)>1.566 && getProbe.full5x5_r9>0.94", 0),
                            # ("EELowR9", "abs(getProbe.superCluster.eta)>1.566 && getProbe.full5x5_r9<=0.94", 0)
                        ],
-                       variables=dumpCfg.getTnPVariables(variables),
+                       variables=variables,
                        histograms=[]
                        )
 tnp_sequence = cms.Sequence(flashggTagAndProbe+tagAndProbeDumper)
