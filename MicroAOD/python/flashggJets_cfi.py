@@ -92,7 +92,7 @@ def addFlashggPFCHSJets(process,
     process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
                                             CondDBSetup,
                                             toGet = cms.VPSet(),
-                                            connect = cms.string('sqlite:QGL_'+qgDatabaseVersion+'.db') 
+                                            connect = cms.string('sqlite:MicroAOD/data/QGL_'+qgDatabaseVersion+'.db') 
                                             )
     process.es_prefer_qg = cms.ESPrefer('PoolDBESSource','QGPoolDBESSource')
   
