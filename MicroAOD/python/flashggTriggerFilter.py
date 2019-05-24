@@ -12,7 +12,8 @@ def getMicroAODHLTFilter(datasetName, options):
         triggerConditions = cms.vstring()
         for trg in trgs:
             triggerConditions.append(str(trg))
-        if re.search(tag, datasetName):
+        #if re.search(tag, datasetName):
+        if tag.count(datasetName):
             print 'Only events from these path will be processed: '
             print triggerConditions
             triggerSelectionModule = cms.EDFilter("TriggerResultsFilter",
