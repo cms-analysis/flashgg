@@ -1,12 +1,12 @@
 {
     "processes" : {
 	    "Data" : [
-		    "/EGamma/spigazzi-Era2018_RR-17Sep2018_v1-legacyRun2TestV1-v0-Run2018A-17Sep2018-v2-eba3fb395212c0e15b568742c2a3e772/USER",
-		    "/EGamma/spigazzi-Era2018_RR-17Sep2018_v1-legacyRun2TestV1-v0-Run2018B-17Sep2018-v1-eba3fb395212c0e15b568742c2a3e772/USER",
-		    "/EGamma/spigazzi-Era2018_RR-17Sep2018_v1-legacyRun2TestV1-v0-Run2018C-17Sep2018-v1-eba3fb395212c0e15b568742c2a3e772/USER",
-		    "/EGamma/spigazzi-Era2018_RR-17Sep2018_v1-legacyRun2TestV1-v0-Run2018D-PromptReco-v2-558a136765565bbd79dc72f8ea4f3c3d/USER"
+		["/EGamma/spigazzi-Era2018_RR-17Sep2018_v1-legacyRun2TestV1-v0-Run2018A-17Sep2018-v2-eba3fb395212c0e15b568742c2a3e772/USER",{"args" : ["metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json"]}],
+		["/EGamma/spigazzi-Era2018_RR-17Sep2018_v1-legacyRun2TestV1-v0-Run2018B-17Sep2018-v1-eba3fb395212c0e15b568742c2a3e772/USER",{"args" : ["metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json"]}],
+		["/EGamma/spigazzi-Era2018_RR-17Sep2018_v1-legacyRun2TestV1-v0-Run2018C-17Sep2018-v1-eba3fb395212c0e15b568742c2a3e772/USER",{"args" : ["metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json"]}],
+		["/EGamma/spigazzi-Era2018_RR-17Sep2018_v1-legacyRun2TestV1-v0-Run2018D-PromptReco-v2-558a136765565bbd79dc72f8ea4f3c3d/USER", {"args" : ["metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json"]}]
                 ]
 	    },
     
-    "cmdLine" : "metaDataSrc=flashgg campaign=Era2018_RR-17Sep2018_v1 trigger=HLT_Ele32_WPTight_Gsf_v* lumiMask=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/ReReco/Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json"
+    "cmdLine" : "metaDataSrc=flashgg campaign=Era2018_RR-17Sep2018_v1 trigger=HLT_Ele32_WPTight_Gsf_v* lumiMask=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/ReReco/Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt"
 }

@@ -64,7 +64,6 @@ process.load("flashgg.MicroAOD.flashggDiPhotons_cfi")
 process.load("flashgg.Validation.FlashggTagAndProbeProducer_cfi")
 process.load("flashgg.Validation.tagAndProbeDumper_cfi")
 process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
-process.load("flashgg.Taggers.flashggUpdatedIdMVADiPhotons_cfi")
 
 from flashgg.Validation.FlashggTagAndProbeProducer_cfi import flashggTagAndProbe
 from flashgg.Systematics.flashggDiPhotonSystematics_cfi import flashggDiPhotonSystematics
@@ -92,9 +91,42 @@ process.flashggIdentifiedElectrons = flashggSelectedElectrons.clone(
 )
 
 # ----------------------------------------------------------------------------------------------------
+# Do scale and smearing corrections
+
+sysmodule = importlib.import_module(
+    "flashgg.Systematics."+customize.metaConditions["flashggDiPhotonSystematics"])
+systModules2D = cms.VPSet()
+systModules = cms.VPSet()
+
+if customize.processId == "Data":
+    systModules.append(sysmodule.MCScaleHighR9EB_EGM)
+    systModules.append(sysmodule.MCScaleLowR9EB_EGM)
+    systModules.append(sysmodule.MCScaleHighR9EE_EGM)
+    systModules.append(sysmodule.MCScaleLowR9EE_EGM)
+    # systModules.append(sysmodule.MCScaleGain6EB_EGM)
+    # systModules.append(sysmodule.MCScaleGain1EB_EGM)
+
+    for module in systModules:
+        module.ApplyCentralValue = cms.bool(True)
+
+else:
+    systModules.append(sysmodule.MCScaleHighR9EB_EGM)
+    systModules.append(sysmodule.MCScaleLowR9EB_EGM)
+    systModules.append(sysmodule.MCScaleHighR9EE_EGM)
+    systModules.append(sysmodule.MCScaleLowR9EE_EGM)
+
+    systModules2D.append(sysmodule.MCSmearHighR9EE_EGM)
+    systModules2D.append(sysmodule.MCSmearLowR9EE_EGM)
+    systModules2D.append(sysmodule.MCSmearHighR9EB_EGM)
+    systModules2D.append(sysmodule.MCSmearLowR9EB_EGM)
+
+    for module in systModules:
+        module.ApplyCentralValue = cms.bool(False)
+
+# ----------------------------------------------------------------------------------------------------
 # Do HLT matching and electron matching
 
-systModules = cms.VPSet(
+systModules.append(
     cms.PSet(PhotonMethodName=cms.string("FlashggPhotonHLTMatch"),
              MethodName=cms.string("FlashggDiPhotonFromPhoton"),
              Label=cms.string("hltMatch"),
@@ -104,32 +136,15 @@ systModules = cms.VPSet(
              trgObjectsSrc=cms.InputTag("slimmedPatTrigger"),
              pathNames=cms.vstring(dumpBits),
              deltaRmax=cms.double(0.3),
-             ),
+             ))
+systModules.append(
     cms.PSet(PhotonMethodName=cms.string("FlashggPhotonEleMatch"),
              MethodName=cms.string("FlashggDiPhotonFromPhoton"),
              Label=cms.string("eleMatch"),
              NSigmas=cms.vint32(),
              ApplyCentralValue=cms.bool(True),
              electronsSrc=cms.InputTag("flashggIdentifiedElectrons"),
-             )
-)
-
-# ----------------------------------------------------------------------------------------------------
-# Do scale and smearing corrections
-
-sysmodule = importlib.import_module(
-    "flashgg.Systematics."+customize.metaConditions["flashggDiPhotonSystematics"])
-systModules.append(sysmodule.MCScaleHighR9EB_EGM)
-systModules.append(sysmodule.MCScaleLowR9EB_EGM)
-systModules.append(sysmodule.MCScaleHighR9EE_EGM)
-systModules.append(sysmodule.MCScaleLowR9EE_EGM)
-systModules.append(sysmodule.MCScaleGain6EB_EGM)
-systModules.append(sysmodule.MCScaleGain1EB_EGM)
-systModules2D = cms.VPSet()
-systModules2D.append(sysmodule.MCSmearHighR9EE_EGM)
-systModules2D.append(sysmodule.MCSmearLowR9EE_EGM)
-systModules2D.append(sysmodule.MCSmearHighR9EB_EGM)
-systModules2D.append(sysmodule.MCSmearLowR9EB_EGM)
+             ))
 
 # ----------------------------------------------------------------------------------------------------
 # Add HLT matching, electron matching and scale and smearing correction to
@@ -138,6 +153,7 @@ systModules2D.append(sysmodule.MCSmearLowR9EB_EGM)
 process.flashggDiPhotonSystematics = flashggDiPhotonSystematics
 process.flashggDiPhotonSystematics.SystMethods = systModules
 process.flashggDiPhotonSystematics.SystMethods2D = systModules2D
+process.flashggDiPhotonSystematics.src = "flashggDiPhotons"
 
 # ----------------------------------------------------------------------------------------------------
 # Configure FlashggTagAndProbe Producer
@@ -186,7 +202,8 @@ tnp_sequence = cms.Sequence(flashggTagAndProbe+tagAndProbeDumper)
 # ----------------------------------------------------------------------------------------------------
 # Schedule process
 
-process.p = cms.Path(process.flashggUpdatedIdMVADiPhotons *
-                     process.flashggIdentifiedElectrons*process.flashggDiPhotonSystematics*tnp_sequence)
+process.p = cms.Path(process.flashggIdentifiedElectrons *
+                     process.flashggDiPhotonSystematics*tnp_sequence)
+
 
 customize(process)
