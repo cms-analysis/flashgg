@@ -102,7 +102,7 @@ class DoubleHCustomize():
             var_workspace += ["benchmark_reweight_box := getBenchmarkReweight(13)"]
             var_workspace += ["benchmark_reweight_2017fake := getBenchmarkReweight(14)"]
 
-        if self.customize.ttHKillerInputVariables : variables += [
+        if self.customize.ttHKillerSaveInputVariables : variables += [
             "ttH_sumET := sumET()",
             "ttH_MET := MET()",
             "ttH_phiMET := phiMET()",
@@ -134,7 +134,7 @@ class DoubleHCustomize():
             "ttH_etajet1 := etajet1()",
             "ttH_etajet2 := etajet2()",
             "ttH_phijet1 := phijet1()",
-            "ttH_phijet2 := phijet2()",
+            "ttH_phijet2 := phijet2()"
             ]
     
     
@@ -263,8 +263,9 @@ class DoubleHCustomize():
         if self.customize.doubleHReweight > 0 :
             from flashgg.Taggers.flashggDoubleHReweight_cfi import flashggDoubleHReweight
             self.process.flashggDoubleHReweight = flashggDoubleHReweight
-            self.process.p.replace(self.process.flashggDoubleHTag, self.process.flashggDoubleHReweight*self.process.flashggDoubleHTag)
             self.process.flashggDoubleHReweight.doReweight = self.customize.doubleHReweight
+            self.process.flashggDoubleHReweight.weightsFile = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["NodesReweightingFileName"]))
+            self.process.p.replace(self.process.flashggDoubleHTag, self.process.flashggDoubleHReweight*self.process.flashggDoubleHTag)
 
 
     def addGenAnalysis(self):

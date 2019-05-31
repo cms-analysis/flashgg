@@ -59,11 +59,11 @@ customize.options.register('doDoubleHttHKiller',
                            VarParsing.VarParsing.varType.bool,
                            'doDoubleHttHKiller'
                            )
-customize.options.register('ttHKillerInputVariables',
+customize.options.register('ttHKillerSaveInputVariables',
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
-                           'ttHKillerInputVariables'
+                           'ttHKillerSaveInputVariables'
                            )
 customize.options.register('doDoubleHGenAnalysis',
                            False,

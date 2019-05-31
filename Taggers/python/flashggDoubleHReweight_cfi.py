@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 #default values first
-weightsFile = "flashgg/Taggers/data/HHTagger/HHreweight_2016nodes_04022018.root"
+weightsFile = ""
 
 flashggDoubleHReweight = cms.EDProducer("FlashggDoubleHReweighter",
                                         GenParticleTag = cms.InputTag( "flashggPrunedGenParticles" ), # to compute MC-truth info

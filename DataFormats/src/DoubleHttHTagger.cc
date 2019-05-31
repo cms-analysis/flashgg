@@ -160,6 +160,3 @@ std::vector<edm::Ptr<flashgg::Muon> > DoubleHttHTagger::filterMuons( const std::
 }
 
 
-std::vector<float> DoubleHttHTagger::getVariableValues() const{
-    return varValues;
-}
