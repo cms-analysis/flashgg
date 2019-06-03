@@ -645,6 +645,12 @@ namespace flashgg {
                 tag_obj.phidipho_ = ttHVars["phidipho"];
                 tag_obj.fabs_CosThetaStar_CS_ = ttHVars["fabs_CosThetaStar_CS"];
                 tag_obj.fabs_CosTheta_bb_ = ttHVars["fabs_CosTheta_bb"];
+                tag_obj.ptjet1_ = ttHVars["ptjet1"];
+                tag_obj.ptjet2_ = ttHVars["ptjet2"];
+                tag_obj.etajet1_ = ttHVars["etajet1"];
+                tag_obj.etajet2_ = ttHVars["etajet2"];
+                tag_obj.phijet1_ = ttHVars["phijet1"];
+                tag_obj.phijet2_ = ttHVars["phijet2"];
                 
                 StandardizeHLF();
                 

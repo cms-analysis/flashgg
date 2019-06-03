@@ -55,8 +55,6 @@ namespace flashgg {
                                                                       flashgg::DiPhotonCandidate dipho, 
                                                                       LorentzVector leadingJet, LorentzVector subleadingJet,
                                                                       double dRPhoLeptonThreshold, double dRJetLeptonThreshold);
-        std::vector<float> varValues;
-        std::vector<float> getVariableValues() const;
 
     private:
         double mva_;
