@@ -48,19 +48,23 @@
 
     "Ele_ID_eff_bin" : "binInfo2018",
 
-    "bTagEffBins" : "bTagEffBins2017",
+    "bTagSystematics" :
+    {
 
-    "bTagger" : "pfDeepJet",
+	"bTagEffBins" : "bTagEffBins2017",
 
-    "bDiscriminatorValue_pfDeepCSV" : 0.4184,
-    "bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_102XSF_V1.csv",
-    "bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_102XSF_WP_V1.csv",
+	"bTagger" : "pfDeepJet",
 
-    "bDiscriminatorValue_pfDeepJet" : 0.2770,
-    "bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/DeepJet_102XSF_V1.csv",
-    "bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/DeepJet_102XSF_V1.csv",
+	"bDiscriminatorValue_pfDeepCSV" : 0.4184,
+	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_102XSF_V1.csv",
+	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_102XSF_WP_V1.csv",
 
-    "eta" : 2.5,
+	"bDiscriminatorValue_pfDeepJet" : 0.2770,
+	"bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/DeepJet_102XSF_V1.csv",
+	"bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/DeepJet_102XSF_V1.csv",
+
+	"eta" : 2.5
+    },
 
     "bRegression" :
     {

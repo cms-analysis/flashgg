@@ -163,8 +163,8 @@ class jetSystematicsCustomize:
    def createJetSystematicsForTag(self, jetInputTag):
       num = jetInputTag.productInstanceLabel
       newName = 'flashggJetSystematics'+num
-      bTagger = self.metaConditions['bTagger']
-      eta = self.metaConditions['eta'] 
+      bTagger = self.metaConditions['bTagSystematics']['bTagger']
+      eta = self.metaConditions['bTagSystematics']['eta'] 
       setattr(self.process, newName,
               cms.EDProducer('FlashggJetSystematicProducer',
                              src = jetInputTag,
@@ -194,11 +194,11 @@ class jetSystematicsCustomize:
                                                                Label = cms.string("JetBTagCutWeight"),
                                                                NSigmas = cms.vint32(-1,1),
                                                                OverallRange = cms.string("pt>25.0&&abs(eta)<" + str(eta)),
-                                                               BinList = getattr(self, self.metaConditions['bTagEffBins']),
+                                                               BinList = getattr(self, self.metaConditions['bTagSystematics']['bTagEffBins']),
                                                                #bTag = cms.string(flashggBTag),
                                                                bTag = cms.string(str(bTagger)),
-                                                               bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagCalibrationFile_WPCut_'+ str(bTagger)])),
-                                                               bDiscriminator = cms.double(self.metaConditions['bDiscriminatorValue_'+ str(bTagger)]),
+                                                               bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagSystematics']['bTagCalibrationFile_WPCut_'+ str(bTagger)])),
+                                                               bDiscriminator = cms.double(self.metaConditions['bTagSystematics']['bDiscriminatorValue_'+ str(bTagger)]),
                                                                Debug = cms.untracked.bool(False),
                                                                ApplyCentralValue = cms.bool(True)
                                                             ),
@@ -206,10 +206,10 @@ class jetSystematicsCustomize:
                                                                Label = cms.string("JetBTagReshapeWeight"),
                                                                NSigmas = cms.vint32(-1,1),
                                                                OverallRange = cms.string("pt>25.0&&abs(eta)<" + str(eta)),
-                                                               BinList = getattr(self, self.metaConditions['bTagEffBins']),
+                                                               BinList = getattr(self, self.metaConditions['bTagSystematics']['bTagEffBins']),
                                                                #                                                          bTag = cms.string(flashggBTag),
                                                                bTag = cms.string(str(bTagger)), 
-                                                               bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagCalibrationFile_Reshape_'+ str(bTagger)])),
+                                                               bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagSystematics']['bTagCalibrationFile_Reshape_'+ str(bTagger)])),
                                                                bTagReshapeSystOption = cms.int32(1),#For changing the source of uncertainty
                                                                Debug = cms.untracked.bool(False),
                                                                ApplyCentralValue = cms.bool(True)
