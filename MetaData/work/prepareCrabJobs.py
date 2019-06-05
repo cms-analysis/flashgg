@@ -234,11 +234,9 @@ if options.createCrabConfig:
     Popen(['cp', '-p', options.parameterSet, './'])
     rel = os.environ.get('CMSSW_BASE')
     print rel
-#../../../Fall17_17Nov2017BCDEF_V6_DATA.db  ../../../Fall17_17Nov2017_V6_MC.db  ../../../QGL_cmssw8020_v2.db
 
-    Popen(['cp', '-p', rel+'/src/flashgg/Fall17_17Nov2017BCDEF_V6_DATA.db', './']) # Count on local copy from setup
-    Popen(['cp', '-p', rel+'/src/flashgg/QGL_cmssw8020_v2.db', './']) # Count on local copy from setup
-    Popen(['cp', '-p', rel+'/src/flashgg/Fall17_17Nov2017_V6_MC.db', './']) # Count on local copy from setup                                                                                                                          
+    Popen(['cp', '-p', rel+'/src/flashgg/MicroAOD/data/QGL_AK4chs_94X.db', './']) # Count on local copy from setup
+
     print ("Storing options into config.json")
     cfg = open("config.json","w+")
     cfg.write( dumpCfg(options) )
@@ -307,6 +305,7 @@ if options.createCrabConfig:
             ("RunIIFall18MiniAOD-102X_upgrade2018_realistic_v12-v1","Fall18_102X"),
             ("RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1", "Summer16"),
             ("RunIISummer16MiniAODv3-BS2016_BSandPUSummer16_94X_mcRun2_asymptotic_v3-v1", "Summer16"),
+            ("RunIISummer16MiniAODv3-BS2016_BSandPUSummer16_94X_mcRun2_asymptotic_v3_ext1-v1", "Summer16"),
             ("RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v1", "Summer16"),
             ("RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1", "Autumn18")
         ]

@@ -6,8 +6,7 @@
     },
 
     "flashggMETsFunction" : "runMETs2016",
-    "eleIdVersion" : "Fall17EGMEleID",
-    "phoIdVersion" : "Fall17EGMPhoID",
+    "DeepJet" : "rerun",
 
     "flashggPhotons" :
     {
@@ -39,6 +38,8 @@
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
 
+    "Ele_ID_eff_bin" : "binInfo2016",
+
     "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2016_cfi",
     
     "JetCorrectorParametersCollection_version" :
@@ -67,7 +68,7 @@
     {
 	"jetPUID" : "Loose",
 	"weightsFile" : "flashgg/Taggers/data/HHTagger/training_with_10_12_2018_commonTraining_2016.weights.xml",
-	"MVAscalingValue" :1.0
+	"MVAscalingValue" : 1.0
     }
 
 }

@@ -1,0 +1,14 @@
+{
+    "data" :
+    [
+    ],
+    "sig" :
+    [
+        "/VBFHToGG_M125_13TeV_amcatnlo_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM",
+        "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM",
+        "/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM"
+    ],
+    "bkg" :
+    [
+    ]
+}

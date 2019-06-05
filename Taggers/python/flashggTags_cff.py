@@ -1,3 +1,4 @@
+
 import FWCore.ParameterSet.Config as cms
 from flashgg.MicroAOD.flashggJets_cfi import flashggBTag, flashggDeepCSV, maxJetCollections
 
@@ -190,7 +191,7 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
                                        bDiscriminator = bDiscriminator94X, #bDiscriminator76X,
                                        bTag = cms.string(flashggDeepCSV),
                                        MinNLep = cms.int32(1),
-                                       MaxNLep = cms.int32(1),
+                                       MaxNLep = cms.int32(10),
 				       MuonEtaCut = cms.double(2.4),
 				       MuonPtCut = cms.double(5),
 				       MuonIsoCut = cms.double(0.25),
@@ -199,12 +200,16 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
 				       ElePtCut = cms.double(10),
 				       ElePhotonDrCut = cms.double(0.2),
 				       ElePhotonZMassCut = cms.double(5),
+				       LeptonsZMassCut = cms.double(5),
+				       DiLeptonJetThreshold = cms.double(1),
+				       DiLeptonbJetThreshold = cms.double(1),
+				       DiLeptonMVAThreshold = cms.double(0.5),
 				       DeltaRTrkEle = cms.double(0.35),
 				       UseCutBasedDiphoId = cms.bool(False),
+				       SplitDiLeptEv = cms.bool(True),
 				       debug = cms.bool(False),
 				       CutBasedDiphoId = cms.vdouble(0.4,0.3,0.0,-0.5,2.0,2.5),    # pT/m lead, pT/m sublead, leadIdMVA, subleadIdMVA, DeltaEta, DeltaPhi
                                        HTXSTags     = HTXSInputTags
-
 )
 
 flashggTTHDiLeptonTag = cms.EDProducer("FlashggTTHDiLeptonTagProducer",

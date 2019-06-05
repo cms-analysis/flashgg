@@ -2,7 +2,6 @@
 # twiki source : https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD2015#Advanced_topics_re_clustering_ev
 
 import FWCore.ParameterSet.Config as cms
-
 #from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased_new as pu_jetid
 from PhysicsTools.PatAlgos.tools.jetTools        import addJetCollection
 from CondCore.DBCommon.CondDBSetup_cfi import *
@@ -17,14 +16,20 @@ flashggDeepCSVc  = 'pfDeepCSVJetTags:probc'
 flashggDeepCSVudsg = 'pfDeepCSVJetTags:probudsg'
 flashggDeepCSV= 'pfDeepCSV'
 
-maxJetCollections = 12
-#qgDatabaseVersion = 'v1' # check https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
-if os.environ["CMSSW_VERSION"].count("CMSSW_9") or os.environ["CMSSW_VERSION"].count("CMSSW_10"):
-  qgDatabaseVersion = 'cmssw8020_v2'
-else:
-  qgDatabaseVersion = '80X'
+# DeepJet discriminators
+flashggDeepFlavourb = 'pfDeepFlavourJetTags:probb'
+flashggDeepFlavourbb = 'pfDeepFlavourJetTags:probbb'
+flashggDeepFlavourc  = 'pfDeepFlavourJetTags:probc'
+flashggDeepFlavouruds = 'pfDeepFlavourJetTags:probuds'
+flashggDeepFlavourg  = 'pfDeepFlavourJetTags:probg'
+flashggDeepFlavourlepb = 'pfDeepFlavourJetTags:problepb'
+flashggDeepFlavour = 'pfDeepFlavour'
 
-def addFlashggPFCHSJets(process, 
+maxJetCollections = 12
+qgDatabaseVersion = 'AK4chs_94X'
+
+def addFlashggPFCHSJets(process,
+			DeepJet, 
                         isData,
                         vertexIndex = 0, 
                         #doQGTagging = True, 
@@ -32,69 +37,17 @@ def addFlashggPFCHSJets(process,
                         debug = False):
 
 
-  if os.environ["CMSSW_VERSION"].count("CMSSW_9"): # Currently editing the line below
-    setattr(process,'pfCHSLeg' + label,cms.EDFilter("CandPtrSelector", src = cms.InputTag("packedPFCandidates"), cut = cms.string("fromPV(%i)"%vertexIndex)))
-  else:
-    setattr(process, 'selectedMuons' + label, cms.EDFilter("CandPtrSelector", 
-                                                           src = cms.InputTag("slimmedMuons"), 
-                                                           cut = cms.string('''abs(eta)<2.5 && pt>10. &&
-                                                         (pfIsolationR04().sumChargedHadronPt+
-                                                         max(0.,pfIsolationR04().sumNeutralHadronEt+
-                                                         pfIsolationR04().sumPhotonEt-
-                                                         0.50*pfIsolationR04().sumPUPt))/pt < 0.20 && 
-                                                         (isPFMuon && (isGlobalMuon || isTrackerMuon) )''')))
-  
-    setattr(process, 'selectedElectrons' + label, cms.EDFilter("CandPtrSelector", 
-                                                               src = cms.InputTag("slimmedElectrons"), 
-                                                               cut = cms.string('''abs(eta)<2.5 && pt>20. &&
-                                                             gsfTrack.isAvailable() &&
-                                                             gsfTrack.hitPattern().numberOfLostHits(\'MISSING_INNER_HITS\') < 2 &&
-                                                             (pfIsolationVariables().sumChargedHadronPt+
-                                                             max(0.,pfIsolationVariables().sumNeutralHadronEt+
-                                                             pfIsolationVariables().sumPhotonEt-
-                                                             0.5*pfIsolationVariables().sumPUPt))/pt < 0.15''')))
-  
-    # Simple producer which just removes the Candidates which
-    # don't come from the legacy vertex according to the Flashgg Vertex Map
-    setattr(process,'flashggCHSLegacyVertexCandidates' + label,
-            cms.EDProducer('FlashggMultiCHSLegacyVertexCandProducer',
-                           PFCandidatesTag       = cms.InputTag('packedPFCandidates'),
-                           DiPhotonTag           = cms.InputTag('flashggDiPhotons'),
-                           VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
-                           VertexTag             = cms.InputTag('offlineSlimmedPrimaryVertices'),
-                           vertexIndex           = cms.uint32(vertexIndex),
-                           debug                 = cms.untracked.bool(debug)
-                           )
-            )
-  
-    setattr(process, 'pfCHSLeg' + label, cms.EDFilter("CandPtrSelector", 
-                                                      src = cms.InputTag('flashggCHSLegacyVertexCandidates' + label), 
-                                                      cut = cms.string('')))
-  
-  # then remove the previously selected muons
-    setattr(process, 'pfNoMuonCHSLeg' + label,  cms.EDProducer("CandPtrProjector", 
-                                                               src  = cms.InputTag("pfCHSLeg" + label), 
-                                                               veto = cms.InputTag("selectedMuons" + label)))
-    # then remove the previously selected electrons
-    setattr(process, 'pfNoElectronsCHSLeg' + label,  cms.EDProducer("CandPtrProjector", 
-                                                                    src  = cms.InputTag("pfNoMuonCHSLeg" + label), 
-                                                                    veto = cms.InputTag("selectedElectrons" + label)))
- 
-  
- 
+  setattr(process,'pfCHSLeg' + label,cms.EDFilter("CandPtrSelector", src = cms.InputTag("packedPFCandidates"), cut = cms.string("fromPV(%i)"%vertexIndex)))
   #Import RECO jet producer for ak4 PF and GEN jet
   from RecoJets.JetProducers.ak4PFJets_cfi  import ak4PFJets
-  if os.environ["CMSSW_VERSION"].count("CMSSW_9"):
-    setattr(process, 'ak4PFJetsCHSLeg' + label, ak4PFJets.clone ( src = 'pfCHSLeg' + label, doAreaFastjet = True))
-  else:  
-    setattr(process, 'ak4PFJetsCHSLeg' + label, ak4PFJets.clone ( src = 'pfNoElectronsCHSLeg' + label, doAreaFastjet = True))
+  setattr(process, 'ak4PFJetsCHSLeg' + label, ak4PFJets.clone ( src = 'pfCHSLeg' + label, doAreaFastjet = True))
 
   if isData:
     JECs = ['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual']
   else:
     JECs = ['L1FastJet', 'L2Relative', 'L3Absolute']
 
-  # NOTE: this is the 74X recipe for the jet clustering
+  # NOTE: this is the 74X recipe for the jet clustering - has been confirmed to give reasonable results in 10X
   addJetCollection(
     process,
     postfix        = label,
@@ -122,32 +75,41 @@ def addFlashggPFCHSJets(process,
   #process.patJetCorrFactorsAK4PFCHSLeg.primaryVertices = "offlineSlimmedPrimaryVertices"
   getattr(process, 'patJetCorrFactorsAK4PFCHSLeg' + label).primaryVertices = "offlineSlimmedPrimaryVertices"
 
+  if DeepJet == "rerun":
+    from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
+    updateJetCollection(
+      process,
+      jetSource = cms.InputTag("slimmedJets"),
+      pvSource = cms.InputTag('offlineSlimmedPrimaryVertices'),
+      svSource = cms.InputTag('slimmedSecondaryVertices'),
+      btagDiscriminators = [flashggDeepFlavourb, flashggDeepFlavourbb, flashggDeepFlavourc, flashggDeepFlavouruds,flashggDeepFlavourlepb, flashggDeepFlavourg,],
+      jetCorrections = ('AK4PFchs', JECs, 'None'),
+     )
+    miniaodJets="selectedUpdatedPatJets"
+  else: miniaodJets="slimmedJets"
+
   if not hasattr(process,"QGPoolDBESSource"):
     process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
                                             CondDBSetup,
                                             toGet = cms.VPSet(),
-                                            connect = cms.string('sqlite:QGL_'+qgDatabaseVersion+'.db') 
+                                            connect = cms.string('sqlite:MicroAOD/data/QGL_'+qgDatabaseVersion+'.db') 
                                             )
     process.es_prefer_qg = cms.ESPrefer('PoolDBESSource','QGPoolDBESSource')
   
   for type in ['AK4PFchs']:#,'AK4PFchs_antib']:
     process.QGPoolDBESSource.toGet.extend(cms.VPSet(cms.PSet(
-          record = cms.string('QGLikelihoodRcd'),
-          tag    = cms.string('QGLikelihoodObject_'+qgDatabaseVersion+'_'+type),
-          label  = cms.untracked.string('QGL_'+type)
-          )))
+      record = cms.string('QGLikelihoodRcd'),
+      tag    = cms.string('QGLikelihoodObject_v1_AK4'),
+      label  = cms.untracked.string('QGL_'+type)
+    )))
   
   from RecoJets.JetProducers.QGTagger_cfi import QGTagger
   setattr( process, 'QGTaggerPFCHS' + label,  
            QGTagger.clone( srcJets   = 'patJetsAK4PFCHSLeg' + label ,jetsLabel = 'QGL_AK4PFchs', vertexIndex = cms.uint32(vertexIndex),
                            srcVertexCollection = 'offlineSlimmedPrimaryVertices'))
 
-  from RecoJets.JetProducers.PileupJetIDParams_cfi import full_80x_chs
   from RecoJets.JetProducers.PileupJetIDParams_cfi import full_81x_chs
-  if os.environ["CMSSW_VERSION"].count("CMSSW_9"):
-    pujidparam = full_81x_chs
-  if os.environ["CMSSW_VERSION"].count("CMSSW_8"):
-    pujidparam = full_80x_chs
+  pujidparam = full_81x_chs
   
   flashggJets = cms.EDProducer('FlashggJetProducer',
                                DiPhotonTag = cms.InputTag('flashggDiPhotons'),
@@ -156,7 +118,7 @@ def addFlashggPFCHSJets(process,
                                VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                                qgVariablesInputTag   = cms.InputTag('QGTaggerPFCHS'+label, 'qgLikelihood'),
                                ComputeSimpleRMS = cms.bool(True),
-                               PileupJetIdParameters = full_81x_chs,
+                               PileupJetIdParameters = pujidparam,
                                rho     = cms.InputTag("fixedGridRhoFastjetAll"),
                                JetCollectionIndex = cms.uint32(vertexIndex),
                                Debug = cms.untracked.bool(debug),
@@ -165,7 +127,7 @@ def addFlashggPFCHSJets(process,
                                MinPtForEneSum = cms.double(0.),
                                MaxEtaForEneSum = cms.double(2.5),
                                NJetsForEneSum = cms.uint32(0),
-                               MiniAodJetTag = cms.InputTag("slimmedJets")
+                               MiniAodJetTag = cms.InputTag(miniaodJets)
                                )
   setattr( process, 'flashggPFCHSJets'+ label, flashggJets)
 
