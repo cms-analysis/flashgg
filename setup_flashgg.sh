@@ -53,11 +53,13 @@ git cherry-pick 94ceae257f846998c357fcad408986cc8a039152
 # EGamma post reco tools for energy scales and smearings
 echo "Settinga up Scales and Smearings form EGM"
 git cms-addpkg RecoEgamma/EgammaTools
-git clone https://github.com/cms-egamma/EgammaAnalysis-ElectronTools.git EgammaAnalysis/ElectronTools/data
+git clone https://github.com/cms-data/EgammaAnalysis-ElectronTools.git EgammaAnalysis/ElectronTools/data
 cd EgammaAnalysis/ElectronTools/data
-git checkout ScalesSmearing2018_Dev
 cd $CMSSW_BASE/src
 git apply flashgg/EnergyScaleCorrection.patch
+
+# QGL db file 
+cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_AK4chs_94X.db $CMSSW_BASE/src/flashgg/MicroAOD/
 
 # TnP tools removed for 8_0_28, so Validation does not compile
 # To be investigated
