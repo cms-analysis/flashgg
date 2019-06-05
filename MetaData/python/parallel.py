@@ -382,7 +382,8 @@ class HTCondorJob(object):
 
     #----------------------------------------
     def run(self,script):
-                    
+                
+        njobs = 1
         logdir = os.path.dirname(self.jobName)
         if not os.path.exists(logdir):
             os.mkdir(logdir)
@@ -393,7 +394,9 @@ class HTCondorJob(object):
 
         with open(self.cfgName, "w+") as fout:
             fout.write('+JobFlavour = "'+self.htcondorQueue+'"\n\n')
+            fout.write('+OnExitHold = ExitStatus != 0 \n\n')
             fout.write('executable  = '+self.execName+'\n')
+            fout.write('arguments   = $(ProcId)\n')
             #fout.write('arguments   = $(ProcId)\n')
             if self.copy_proxy:
                 fout.write('input       = '+BatchRegistry.getProxy().split(":")[1]+'\n')
@@ -401,7 +404,9 @@ class HTCondorJob(object):
             fout.write('error       = '+self.jobName+'.err\n')
             fout.write('log         = '+self.jobName+'_htc.log\n\n')
             fout.write('max_retries = 1\n')
-            fout.write('queue 1\n')
+            if 'nJobs=' in script:
+                njobs = script[script.find('nJobs=')+len('nJobs='):script.find(' ', script.find('nJobs='))]
+            fout.write('queue '+njobs+' \n')
             fout.close()        
 
         import subprocess
@@ -421,12 +426,14 @@ class HTCondorJob(object):
             print out
             print err
         else:
-            self.jobid = None
+            self.jobid = []
             for line in out.split("\n"):
                 if "cluster" in line:
-                    self.jobid = int(line.replace(".", "").split()[-1])
+                    clusterid = line.split()[-1]
                     break
-            
+            for ijob in range(int(njobs)):
+                self.jobid.append(clusterid+str(ijob))
+
         if self.async:
             return self.exitStatus, (out,(self.jobName,self.jobid))
 
@@ -517,7 +524,8 @@ class HTCondorMonitor(object):
                     print "INTERNAL ERROR: job id not set %s" % job
                     self.retqueue.put( (job, [job.cmd], job.handleOutput()) )
                 else:
-                    self.jobsmap[str(job.jobid)] = job
+                    for jobid in job.jobid:
+                        self.jobsmap[jobid] = job
                     self.jobids[job.jobName] = job.jobid
                     
                     if job.replacesJob:
@@ -526,7 +534,7 @@ class HTCondorMonitor(object):
                         self.clonesMap[job.replacesJob].append(job.jobid)
             
             self.monitor()
-            sleep(0.1)
+            sleep(10)
 
 
     def cancel(self,jobid):

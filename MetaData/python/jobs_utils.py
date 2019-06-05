@@ -134,6 +134,7 @@ class JobsManager(object):
             
         self.uniqueNames = {}
 
+        self.options.batchSystem = BatchRegistry.getBatchSystem()
         # self.checkCrossSections()
 
     # -------------------------------------------------------------------------------------------------------------------
@@ -352,21 +353,37 @@ class JobsManager(object):
                         print out
                     hadd = self.getHadd(out,outfile)
                     print " now submitting jobs",
-                    for ijob in range(maxJobs):
-                        ## FIXME allow specific job selection
-                        iargs = jobargs+shell_args("nJobs=%d jobId=%d" % (maxJobs, ijob))
-                        dnjobs += 1 
-                        batchId = -1
+                    #---HTCondor cluster submission
+                    if self.options.batchSystem == 'htcondor':
+                        iargs = jobargs+shell_args("nJobs=%d jobId=${1}" % maxJobs)
+                        dnjobs = maxJobs
                         if not options.dry_run:
                             ret,out = parallel.run(job,iargs)[-1]
                             if self.options.queue and self.options.asyncLsf:
                                 batchId = out[1]
-                            print ".",
-                        output = hadd.replace(".root","_%d.root" % ijob)
-                        outfiles.append( output )
-                        doutfiles[dsetName][1].append( outfiles[-1] )
-                        poutfiles[name][1].append( outfiles[-1] )
-                        jobs.append( (job,iargs,output,0,-1,batchId) )
+                        for ijob in range(maxJobs):
+                            output = hadd.replace(".root","_%d.root" % ijob)
+                            outfiles.append( output )
+                            doutfiles[dsetName][1].append( outfiles[-1] )
+                            poutfiles[name][1].append( outfiles[-1] )
+                            jobs.append( (job,iargs,output,0,-1,batchId) )
+                    #---Other batch system single jobs submission
+                    else:
+                        for ijob in range(maxJobs):
+                            ## FIXME allow specific job selection                                                        
+                            iargs = jobargs+shell_args("nJobs=%d jobId=%d" % (maxJobs, ijob))
+                            dnjobs += 1 
+                            batchId = -1
+                            if not options.dry_run:
+                                ret,out = parallel.run(job,iargs)[-1]
+                                if self.options.queue and self.options.asyncLsf:
+                                    batchId = out[1]
+                                print ".",
+                            output = hadd.replace(".root","_%d.root" % ijob)
+                            outfiles.append( output )
+                            doutfiles[dsetName][1].append( outfiles[-1] )
+                            poutfiles[name][1].append( outfiles[-1] )
+                            jobs.append( (job,iargs,output,0,-1,batchId) )
                     print "\n %d jobs submitted" % dnjobs                
                 else:
                     ret,out = parallel.run("python %s" % pyjob,jobargs+shell_args("dryRun=1 dumpPython=%s.py" % os.path.join(options.outputDir,dsetName)),interactive=True)[2]
