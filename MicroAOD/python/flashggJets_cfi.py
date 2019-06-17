@@ -37,69 +37,17 @@ def addFlashggPFCHSJets(process,
                         debug = False):
 
 
-  if os.environ["CMSSW_VERSION"].count("CMSSW_9"): # Currently editing the line below
-    setattr(process,'pfCHSLeg' + label,cms.EDFilter("CandPtrSelector", src = cms.InputTag("packedPFCandidates"), cut = cms.string("fromPV(%i)"%vertexIndex)))
-  else:
-    setattr(process, 'selectedMuons' + label, cms.EDFilter("CandPtrSelector", 
-                                                           src = cms.InputTag("slimmedMuons"), 
-                                                           cut = cms.string('''abs(eta)<2.5 && pt>10. &&
-                                                         (pfIsolationR04().sumChargedHadronPt+
-                                                         max(0.,pfIsolationR04().sumNeutralHadronEt+
-                                                         pfIsolationR04().sumPhotonEt-
-                                                         0.50*pfIsolationR04().sumPUPt))/pt < 0.20 && 
-                                                         (isPFMuon && (isGlobalMuon || isTrackerMuon) )''')))
-  
-    setattr(process, 'selectedElectrons' + label, cms.EDFilter("CandPtrSelector", 
-                                                               src = cms.InputTag("slimmedElectrons"), 
-                                                               cut = cms.string('''abs(eta)<2.5 && pt>20. &&
-                                                             gsfTrack.isAvailable() &&
-                                                             gsfTrack.hitPattern().numberOfLostHits(\'MISSING_INNER_HITS\') < 2 &&
-                                                             (pfIsolationVariables().sumChargedHadronPt+
-                                                             max(0.,pfIsolationVariables().sumNeutralHadronEt+
-                                                             pfIsolationVariables().sumPhotonEt-
-                                                             0.5*pfIsolationVariables().sumPUPt))/pt < 0.15''')))
-  
-    # Simple producer which just removes the Candidates which
-    # don't come from the legacy vertex according to the Flashgg Vertex Map
-    setattr(process,'flashggCHSLegacyVertexCandidates' + label,
-            cms.EDProducer('FlashggMultiCHSLegacyVertexCandProducer',
-                           PFCandidatesTag       = cms.InputTag('packedPFCandidates'),
-                           DiPhotonTag           = cms.InputTag('flashggDiPhotons'),
-                           VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
-                           VertexTag             = cms.InputTag('offlineSlimmedPrimaryVertices'),
-                           vertexIndex           = cms.uint32(vertexIndex),
-                           debug                 = cms.untracked.bool(debug)
-                           )
-            )
-  
-    setattr(process, 'pfCHSLeg' + label, cms.EDFilter("CandPtrSelector", 
-                                                      src = cms.InputTag('flashggCHSLegacyVertexCandidates' + label), 
-                                                      cut = cms.string('')))
-  
-  # then remove the previously selected muons
-    setattr(process, 'pfNoMuonCHSLeg' + label,  cms.EDProducer("CandPtrProjector", 
-                                                               src  = cms.InputTag("pfCHSLeg" + label), 
-                                                               veto = cms.InputTag("selectedMuons" + label)))
-    # then remove the previously selected electrons
-    setattr(process, 'pfNoElectronsCHSLeg' + label,  cms.EDProducer("CandPtrProjector", 
-                                                                    src  = cms.InputTag("pfNoMuonCHSLeg" + label), 
-                                                                    veto = cms.InputTag("selectedElectrons" + label)))
- 
-  
- 
+  setattr(process,'pfCHSLeg' + label,cms.EDFilter("CandPtrSelector", src = cms.InputTag("packedPFCandidates"), cut = cms.string("fromPV(%i)"%vertexIndex)))
   #Import RECO jet producer for ak4 PF and GEN jet
   from RecoJets.JetProducers.ak4PFJets_cfi  import ak4PFJets
-  if os.environ["CMSSW_VERSION"].count("CMSSW_9"):
-    setattr(process, 'ak4PFJetsCHSLeg' + label, ak4PFJets.clone ( src = 'pfCHSLeg' + label, doAreaFastjet = True))
-  else:  
-    setattr(process, 'ak4PFJetsCHSLeg' + label, ak4PFJets.clone ( src = 'pfNoElectronsCHSLeg' + label, doAreaFastjet = True))
+  setattr(process, 'ak4PFJetsCHSLeg' + label, ak4PFJets.clone ( src = 'pfCHSLeg' + label, doAreaFastjet = True))
 
   if isData:
     JECs = ['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual']
   else:
     JECs = ['L1FastJet', 'L2Relative', 'L3Absolute']
 
-  # NOTE: this is the 74X recipe for the jet clustering
+  # NOTE: this is the 74X recipe for the jet clustering - has been confirmed to give reasonable results in 10X
   addJetCollection(
     process,
     postfix        = label,
@@ -160,12 +108,8 @@ def addFlashggPFCHSJets(process,
            QGTagger.clone( srcJets   = 'patJetsAK4PFCHSLeg' + label ,jetsLabel = 'QGL_AK4PFchs', vertexIndex = cms.uint32(vertexIndex),
                            srcVertexCollection = 'offlineSlimmedPrimaryVertices'))
 
-  from RecoJets.JetProducers.PileupJetIDParams_cfi import full_80x_chs
   from RecoJets.JetProducers.PileupJetIDParams_cfi import full_81x_chs
-  if os.environ["CMSSW_VERSION"].count("CMSSW_9"):
-    pujidparam = full_81x_chs
-  if os.environ["CMSSW_VERSION"].count("CMSSW_8"):
-    pujidparam = full_80x_chs
+  pujidparam = full_81x_chs
   
   flashggJets = cms.EDProducer('FlashggJetProducer',
                                DiPhotonTag = cms.InputTag('flashggDiPhotons'),
@@ -174,7 +118,7 @@ def addFlashggPFCHSJets(process,
                                VertexCandidateMapTag = cms.InputTag("flashggVertexMapForCHS"),
                                qgVariablesInputTag   = cms.InputTag('QGTaggerPFCHS'+label, 'qgLikelihood'),
                                ComputeSimpleRMS = cms.bool(True),
-                               PileupJetIdParameters = full_81x_chs,
+                               PileupJetIdParameters = pujidparam,
                                rho     = cms.InputTag("fixedGridRhoFastjetAll"),
                                JetCollectionIndex = cms.uint32(vertexIndex),
                                Debug = cms.untracked.bool(debug),
