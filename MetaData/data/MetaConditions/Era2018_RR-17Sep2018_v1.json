@@ -52,9 +52,9 @@
 
     "bRegression" :
     {
-        "weightFile" : "/src/flashgg/Taggers/data/DNN_models/breg_training_2017_updated.pb",
-        "y_mean" : 1.0596693754196167,
-        "y_std" : 0.28492164611816406,
-        "useOld_year" : 1
+        "weightFile" : "/src/flashgg/Taggers/data/DNN_models/breg_training_2018_v8.pb",
+        "y_mean" : 1.0545977354049683,
+        "y_std" : 0.27912887930870056,
+        "year" : 2018
     }
 }
