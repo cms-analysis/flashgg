@@ -41,17 +41,29 @@ customize.options.register('doubleHTagsOnly',
                            VarParsing.VarParsing.varType.bool,
                            'doubleHTagsOnly'
                            )
-customize.options.register('doubleHReweightTarget',
+customize.options.register('doubleHReweight',
                            -1,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.int,
-                           'doubleHReweightTarget'
+                           'doubleHReweight'
                            )
 customize.options.register('doDoubleHTag',
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doDoubleHTag'
+                           )
+customize.options.register('doDoubleHttHKiller',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doDoubleHttHKiller'
+                           )
+customize.options.register('ttHKillerSaveInputVariables',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'ttHKillerSaveInputVariables'
                            )
 customize.options.register('doDoubleHGenAnalysis',
                            False,
@@ -227,6 +239,7 @@ if customize.doDoubleHTag:
     import flashgg.Systematics.doubleHCustomize 
     hhc = flashgg.Systematics.doubleHCustomize.DoubleHCustomize(process, customize, customize.metaConditions)
     minimalVariables += hhc.variablesToDump()
+    systematicVariables = hhc.systematicVariables()
 
 print 'here we print the tag sequence after'
 print process.flashggTagSequence
@@ -234,9 +247,6 @@ print process.flashggTagSequence
 if customize.doFiducial:
     print 'we do fiducial and we change tagsorter'
     process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggSigmaMoMpToMTag')) )
-
-if customize.doubleHTagsOnly:
-    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggDoubleHTag')) )
 
 if customize.tthTagsOnly:
     process.flashggTagSorter.TagPriorityRanges = cms.VPSet(   cms.PSet(TagName = cms.InputTag('flashggTTHDiLeptonTag')),
@@ -268,7 +278,7 @@ useEGMTools(process)
 
 # Only run systematics for signal events
 # convention: ggh vbf wzh (wh zh) tth
-signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","Acceptance"]
+signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance"]
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 #if customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance") or customize.processId.count("hh_"): 
 if is_signal:
@@ -594,6 +604,8 @@ else :
                          process.finalFilter*
                          process.tagsDumper)
 
+
+
 if customize.doBJetRegression:
 
     bregProducers = []
@@ -602,7 +614,6 @@ if customize.doBJetRegression:
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
     from flashgg.Taggers.flashggbRegressionProducer_cfi import flashggbRegressionProducer
     recoJetCollections = UnpackedJetCollectionVInputTag
-    from flashgg.Taggers.flashggDoubleHTag_cfi import flashggDoubleHTag
 
     jetsysts = cms.vstring()
     jetnames = cms.vstring()
@@ -621,14 +632,11 @@ if customize.doBJetRegression:
     bregProducers.append(producer)
     process.bregProducers = cms.Sequence(reduce(lambda x,y: x+y, bregProducers))
     process.p.replace(process.jetSystematicsSequence,process.jetSystematicsSequence*process.flashggUnpackedJets+process.bregProducers)
-        
-    if jetsystlabels!=[]:
-        for jetsyst in [systlabels[0]]+jetsystlabels:
-            jetTagsSystematics = cms.VInputTag()
-            for icoll,coll in enumerate(recoJetCollections):
-                jetTagsSystematics.append(cms.InputTag("bRegProducer",str(jetsyst)+str(icoll)))
-            getattr(process, "flashggDoubleHTag"+jetsyst).JetTags = jetTagsSystematics
-
+    
+ 
+if customize.doDoubleHTag:
+    hhc.doubleHTagRunSequence(systlabels,jetsystlabels,phosystlabels)
+  
 
 if customize.doFiducial:
     if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) 
@@ -646,12 +654,6 @@ if customize.doFiducial:
           nScaleWeights = -1
     if not customize.processId == "Data":
         fc.addGenOnlyAnalysis(process,customize.processId,customize.acceptance,tagList,systlabels,pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights))
-
-if customize.doubleHReweightTarget>0:
-    hhc.addNodesReweighting(customize,process)
-
-if customize.doDoubleHGenAnalysis:
-    hhc.addGenAnalysis(customize,process,tagList)
 
 
 if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
