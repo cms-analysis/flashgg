@@ -60,7 +60,7 @@ parser = OptionParser(option_list=[
                     ),
         make_option("-U","--unitsPerJob",
                     action="store", dest="unitsPerJob", type="int",
-                    default=1,
+                    default=25000,
                     help="default: %default", 
                     ),
         make_option("-L","--lumisPerJob",
@@ -300,14 +300,16 @@ if options.createCrabConfig:
             ("RunIIFall17MiniAOD-PU2017_94X_mc2017_realistic_v11","PU2017_94Xv11"),
             ("RunIIFall17MiniAOD-1core_94X_mc2017_realistic_v10","1core_94Xv10"),
             ("RunIISummer17MiniAOD-NZSFlatPU28to62_92X_upgrade2017_realistic_v10","FlatPU_92Xv10"),
-            ("RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14","PU2017_94Xv14"),
-            ("RunIIFall17MiniAODv2-PU2017_12Apr2018_1core_94X_mc2017_realistic_v14","1core_94Xv1"),
+            ("RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14","Fall17"),
+            ("RunIIFall17MiniAODv2-PU2017_12Apr2018_1core_94X_mc2017_realistic_v14","Fall17"),
             ("RunIIFall18MiniAOD-102X_upgrade2018_realistic_v12-v1","Fall18_102X"),
             ("RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1", "Summer16"),
             ("RunIISummer16MiniAODv3-BS2016_BSandPUSummer16_94X_mcRun2_asymptotic_v3-v1", "Summer16"),
             ("RunIISummer16MiniAODv3-BS2016_BSandPUSummer16_94X_mcRun2_asymptotic_v3_ext1-v1", "Summer16"),
             ("RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v1", "Summer16"),
-            ("RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1", "Autumn18")
+            ("RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1", "Autumn18"),
+            ("RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3", "Summer16"),
+            ("RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15", "Fall18")
         ]
 
         for orig, replacement in replacements:
@@ -340,7 +342,7 @@ if options.createCrabConfig:
                         "UNITSPERJOB"     : str(options.unitsPerJob),
                         "FLASHGG_VERSION" : "%s-%s-v%d" % (options.campaign,flashggVersion, itry),
                         "PROCESSED_DSET"  : label,
-                        "SPLITTING"       : "FileBased",
+                        "SPLITTING"       : "EventAwareLumiBased",
                         "OUTLFN"          : "%s/%s/%s" % (options.outputPath,options.campaign,flashggVersion),
                         "OUTSITE"         : options.outputSite,
                         "PYCFG_PARAMS"    : [str("datasetName=%s" % sample)]

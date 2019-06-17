@@ -55,11 +55,6 @@ cd EgammaAnalysis/ElectronTools/data
 cd $CMSSW_BASE/src
 git apply flashgg/EnergyScaleCorrection.patch
 
-# For rerunning DeepJet b-tagger with new training 
-echo "Setting up DeepJet with new tarining from BTV"
-git cms-addpkg RecoBTag/TensorFlow
-git cherry-pick 94ceae257f846998c357fcad408986cc8a039152
-
 # TnP tools removed for 8_0_28, so Validation does not compile
 # To be investigated
 #echo "Setting up TnP tools for 10_1_X..."

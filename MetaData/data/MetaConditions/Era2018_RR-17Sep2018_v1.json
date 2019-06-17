@@ -2,7 +2,7 @@
     "globalTags" :
     {
         "data" : "102X_dataRun2_Sep2018Rereco_v1",
-        "MC" : "102X_upgrade2018_realistic_v12"
+        "MC" : "102X_upgrade2018_realistic_v15"
     },
 
     "flashggMETsFunction" : "runMETs2016",
@@ -26,12 +26,10 @@
     {
         ".*EGamma.*2018.*" :
         [
-            "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v*",
-            "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95_v*",
-            "HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_PixelVeto_Mass55_v*",
-            "HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_NoPixelVeto_Mass55_v*",
-            "HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto_Mass55_v*",
-            "HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto_v*",
+            "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90*",
+            "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95*",
+            "HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto_Mass55*",
+            "HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto*",
             "HLT_Ele*_WPTight_Gsf_v*"
         ],        
         ".*DoubleMuon.*2018.*" :
