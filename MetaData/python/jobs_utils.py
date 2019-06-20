@@ -91,7 +91,7 @@ class JobsManager(object):
                             action="store_true", dest="verbose",
                             default=False,
                             help="default: %default"),
-                make_option("-m","--max-resubmissions",dest="maxResub", type="int",default=3),
+                make_option("-m","--max-resubmissions",dest="maxResub", type="int",default=2),
                 make_option("-N","--ncpu",dest="ncpu", type="int",default=cpu_count()),
                 make_option("-H","--hadd",dest="hadd",default=False, action="store_true",
                             help="hadd output files when all jobs are finished."
@@ -134,6 +134,8 @@ class JobsManager(object):
             
         self.uniqueNames = {}
 
+        if self.options.batchSystem == 'auto':
+            self.options.batchSystem = BatchRegistry.getBatchSystem()
         # self.checkCrossSections()
 
     # -------------------------------------------------------------------------------------------------------------------
@@ -152,6 +154,9 @@ class JobsManager(object):
                                  asyncLsf=self.options.asyncLsf,jobDriver=self.jobFactory,batchSystem=self.options.batchSystem)
         
         self.jobs = None
+        self.failedJobIds = {}
+        self.nFailedJobs = 0
+
         if self.options.cont:
             if self.options.asyncLsf:
                 self.loadLsfMon()
@@ -181,21 +186,30 @@ class JobsManager(object):
                 self.jobFactory.stageDest( os.path.abspath(self.options.outputDir) )
 
         self.parallel.setJobId(task_config.get("last_job_id",1))
+        resub = False
         for job in jobs:
+            self.failedJobIds[len(self.failedJobIds)] = []
             cmd, args, outfile, nsub, ret, batchId = job
             if type(batchId) == tuple or type(batchId) == list:
                 jobName,batchId = batchId
             else:
                 jobName=None
-            if ret != 0 and nsub <= self.options.maxResub:
-                if self.options.resubMissing:
-                    out = self.parallel.run(cmd,args,jobName=jobName)
-                    if self.options.queue and self.options.asyncLsf:
-                        job[5] = out[-1][1][1]
-                    self.storeTaskConfig(task_config)
+            if ret != 0 or (self.options.batchSystem == 'htcondor' and len(job[5][1])>0):
+                if nsub <= self.options.maxResub:
+                    resub = True
+                    if self.options.resubMissing:
+                        out = self.parallel.run(cmd,args,jobName=jobName)
+                        if self.options.queue and self.options.asyncLsf:
+                            job[5] = out[-1][1][1]
+                        self.storeTaskConfig(task_config)
+                    else:
+                        self.parallel.addJob(cmd,args,batchId,jobName)
                 else:
-                    self.parallel.addJob(cmd,args,batchId,jobName)
-
+                    print("Not all jobs ended successfully but the --max-resubmissions option prevent further processing")
+                    print("If you wish to resubmit the failed jobs please specify --max-resubmissions M with M greater than %d" % self.options.maxResub)
+                        
+        if not resub:
+            print("All jobs successfully processed")
 
     # -------------------------------------------------------------------------------------------------------------------
 
@@ -293,6 +307,7 @@ class JobsManager(object):
                     continue
 
                 #----------
+                self.failedJobIds[len(self.failedJobIds)] = []
 
                 job = args[0]
                 if self.options.jobExe:
@@ -352,21 +367,38 @@ class JobsManager(object):
                         print out
                     hadd = self.getHadd(out,outfile)
                     print " now submitting jobs",
-                    for ijob in range(maxJobs):
-                        ## FIXME allow specific job selection
-                        iargs = jobargs+shell_args("nJobs=%d jobId=%d" % (maxJobs, ijob))
-                        dnjobs += 1 
-                        batchId = -1
+                    #---HTCondor cluster submission
+                    if self.options.batchSystem == 'htcondor':
+                        iargs = jobargs+shell_args("nJobs=%d jobId=${jobIdsMap[${1}]} resubMap=%s" % (maxJobs, ','.join([str(x) for x in range(maxJobs)])))
+                        dnjobs = maxJobs
                         if not options.dry_run:
                             ret,out = parallel.run(job,iargs)[-1]
                             if self.options.queue and self.options.asyncLsf:
                                 batchId = out[1]
-                            print ".",
-                        output = hadd.replace(".root","_%d.root" % ijob)
-                        outfiles.append( output )
-                        doutfiles[dsetName][1].append( outfiles[-1] )
-                        poutfiles[name][1].append( outfiles[-1] )
+                        output = []
+                        for ijob in range(maxJobs):
+                            output.append(hadd.replace(".root","_%d.root" % ijob))
+                            outfiles.append( output )
+                            doutfiles[dsetName][1].append( outfiles[-1] )
+                            poutfiles[name][1].append( outfiles[-1] )
                         jobs.append( (job,iargs,output,0,-1,batchId) )
+                    #---Other batch system single jobs submission
+                    else:
+                        for ijob in range(maxJobs):
+                            ## FIXME allow specific job selection                                                        
+                            iargs = jobargs+shell_args("nJobs=%d jobId=%d" % (maxJobs, ijob))
+                            dnjobs += 1 
+                            batchId = -1
+                            if not options.dry_run:
+                                ret,out = parallel.run(job,iargs)[-1]
+                                if self.options.queue and self.options.asyncLsf:
+                                    batchId = out[1]
+                                print ".",
+                            output = hadd.replace(".root","_%d.root" % ijob)
+                            outfiles.append( output )
+                            doutfiles[dsetName][1].append( outfiles[-1] )
+                            poutfiles[name][1].append( outfiles[-1] )
+                            jobs.append( (job,iargs,output,0,-1,batchId) )
                     print "\n %d jobs submitted" % dnjobs                
                 else:
                     ret,out = parallel.run("python %s" % pyjob,jobargs+shell_args("dryRun=1 dumpPython=%s.py" % os.path.join(options.outputDir,dsetName)),interactive=True)[2]
@@ -431,9 +463,23 @@ class JobsManager(object):
             return
 
         if not options.dry_run:
-            ## FIXME: job resubmission
-            returns = self.wait(parallel,self)
-            
+            returns = self.wait(parallel, self)
+            while self.nFailedJobs > 0:
+                for i, failed in self.failedJobIds.items():
+                    if len(failed) > 0:
+                        ijob = task_config['jobs'][i]
+                        inam, iargs = ijob[0:2]
+                        for ir, arg in enumerate(iargs):
+                            if 'resubMap' in arg:
+                                iargs[ir] = 'resubMap='+','.join([str(id) for id in failed])
+                        out = self.parallel.run(inam, iargs, jobName=ijob[5][0])
+                        if self.options.queue and self.options.asyncLsf:
+                            ijob[5] = out[-1][1][1]
+                        self.storeTaskConfig(self.task_config)                    
+                
+                self.nFailedJobs = 0
+                self.wait(parallel, self)
+                    
         if options.hadd:
             print "All jobs finished. Merging output."
             p = Parallel(options.ncpu)
@@ -477,7 +523,7 @@ class JobsManager(object):
         jobargs = shell_args(" ".join(jobargs))
         job = jobargs[0]
         jobargs = jobargs[1:]
-        for ijob in self.task_config["jobs"]:
+        for i,ijob in enumerate(self.task_config["jobs"]):
             inam,iargs = ijob[0:2]
             if inam == job and iargs == jobargs:
                 ijob[4] = ret[0]
@@ -485,20 +531,36 @@ class JobsManager(object):
                     print ""
                     print "Job failed. Number of resubmissions: %d / %d. " % (ijob[3], self.maxResub),
                     if ijob[3] < self.maxResub:
-                        print "Resubmitting."
-                        ijob[3] += 1
-                        if ijob[3] == self.maxResub:
-                            iargs.append("lastAttempt=1")                        
-                        jobName = ijob[5][0] if self.options.queue else None
-                        out = self.parallel.run(inam,iargs,jobName=jobName)
-                        if self.options.queue and self.options.asyncLsf:
-                            ijob[5] = out[-1][1][1]
+                        if self.options.batchSystem == 'htcondor':                    
+                            print "Collecting failed job for future resubmission."
+                            ijob[3] += 1
+                            if ijob[3] == self.maxResub and "lastAttempt=1" not in iargs:
+                                iargs.append("lastAttempt=1")   
+                            #---HTCondor exit code is 0 for success jobId+1 in case of failure
+                            self.failedJobIds[i].append(ret[0]-1)
+                            self.nFailedJobs += 1
                             self.storeTaskConfig(self.task_config)
-                        print "------------"
-                        return 1
+                            #---return 0 since the job is not currently running, although it will be resubmitted later
+                            return 0
+                        else:
+                            print "Resubmitting."
+                            ijob[3] += 1
+                            if ijob[3] == self.maxResub:
+                                iargs.append("lastAttempt=1")                        
+                            jobName = ijob[5][0] if self.options.queue else None                        
+                            out = self.parallel.run(inam,iargs,jobName=jobName)
+                            if self.options.queue and self.options.asyncLsf:
+                                ijob[5] = out[-1][1][1]
+                                self.storeTaskConfig(self.task_config)
+                            print "------------"
+                            return 1
                     else:
                         print "Giving up."
-                        
+                #---HTCondor remove jobid from the jobid list sotred in the task_config json 
+                #   (do not rely on return value stored in ijob[4] for HTC)                
+                elif self.options.batchSystem == 'htcondor' and ret[2] in ijob[5][1]:
+                    ijob[5][1].remove(ret[2])
+        
         self.storeTaskConfig(self.task_config)
         print "------------"
         return 0
@@ -525,14 +587,25 @@ class JobsManager(object):
         
         status = {}
         for job in jobs:
-            cmd, args, outfile, nsub, ret, batchId = job
-            status[outfile] = (nsub,ret,batchId)
+            cmd, args, outfiles, nsub, ret, batchId = job
+            if isinstance(outfiles, list):    
+                for i,outfile in enumerate(outfiles):
+                    status[outfile] = (nsub,ret,batchId[i])
+            else:
+                status[outfiles] = (nsub,ret,batchId)
             
         for proc,out in procs.iteritems():
             outfile,outfiles = out
+            unpacked_outfiles = []
+            for outfile in outfiles:
+                if isinstance(outfile, list):
+                    for of in outfile:
+                        unpacked_outfiles.append(of)
+                else:
+                    unpacked_outfiles.append(outfile)
             finished = []
             missing  = {}
-            for jfile in outfiles:
+            for jfile in unpacked_outfiles:                
                 nsub,ret,batchId = status[jfile]
                 if ret != 0:
                     if not nsub in missing:
@@ -541,7 +614,7 @@ class JobsManager(object):
                 else:
                     finished.append(jfile)
             print "----------"
-            print "process:           %s " % outfile.replace(".root","")
+            print "process:           %s " % proc
             print "njobs:             %d " % len(outfiles)
             print "finished:          %d " % len(finished)
             for nsub,lst in missing.iteritems():
