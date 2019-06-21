@@ -228,6 +228,8 @@ if customize.doDoubleHTag:
     hhc = flashgg.Systematics.doubleHCustomize.DoubleHCustomize(process, customize, customize.metaConditions)
     minimalVariables += hhc.variablesToDump()
 
+
+process.flashggTHQLeptonicTag.processId = cms.string(str(customize.processId)) #11Jun
 print 'here we print the tag sequence after'
 print process.flashggTagSequence
 
@@ -411,6 +413,13 @@ if(customize.doFiducial):
 #    else:
     fc.addObservables(process, process.tagsDumper, customize.processId )
 
+import flashgg.Taggers.THQLeptonicTagVariables as var
+if customize.processId.count("Data"):
+     variablesToUse= var.vtx_variables + var.vtx_truth_variables + var.dipho_variables + var.photon_variables + var.lepton_variables + var.jet_variables + var.thqmva_variables + var.dr_variable + var.thqmva_variables + var.theoweight_variables + var.theoctcvweight_variables
+else:
+    variablesToUse = minimalVariables + var.vtx_variables + var.dipho_variables
+#    variablesToUse= var.vtx_variables + var.vtx_truth_variables + var.dipho_variables + var.photon_variables + defaultVariables + var.lepton_variables + var.jet_variables + var.thqmva_variables + var.dr_variable + var.theoweight_variables
+
 #tagList=[
 #["UntaggedTag",4],
 #["VBFTag",2],
@@ -448,6 +457,7 @@ else:
         ["VHHadronicTag",0],
         ["TTHHadronicTag",3],
         ["TTHLeptonicTag",2],
+	["THQLeptonicTag",0],
         ["TTHDiLeptonTag",0]
         ]
 
