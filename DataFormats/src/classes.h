@@ -44,6 +44,7 @@
 #include "flashgg/DataFormats/interface/TagCandidate.h"
 #include "flashgg/DataFormats/interface/TagAndProbeCandidate.h" //spigazzi
 #include "flashgg/DataFormats/interface/DoubleHTag.h"
+#include "flashgg/DataFormats/interface/HHWWggCandidate.h"
 
 #include <vector>
 #include <map>
@@ -324,6 +325,11 @@ namespace  {
         edm::Wrapper<edm::Ptr<flashgg::TagAndProbeCandidate> >                 wrp_ptr_fgg_tnp;
         std::vector<edm::Ptr<flashgg::TagAndProbeCandidate> >                  vec_ptr_fgg_tnp;
         edm::Wrapper<std::vector<edm::Ptr<flashgg::TagAndProbeCandidate> > >   wrp_vec_ptr_fgg_tnp;
+
+        //---HHWWggCandidate
+        flashgg::HHWWggCandidate HHWWgg;
+        std::vector<flashgg::HHWWggCandidate> vec_HHWWgg;
+        edm::Wrapper<std::vector<flashgg::HHWWggCandidate> > wrp_vec_HHWWgg;
 
     };
 }
