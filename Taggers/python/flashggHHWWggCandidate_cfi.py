@@ -8,7 +8,8 @@ from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
 # Clone these params into _cfg 
 FlashggHHWWggCandidate = cms.EDProducer("FlashggHHWWggCandidateProducer", 
                                      PhotonTag              = cms.InputTag('flashggRandomizedPhotons'),
-                                     DiPhotonTag            = cms.InputTag('flashggDiPhotons'),
+                                     DiPhotonTag            = cms.InputTag('flashggPreselectedDiPhotons'),
+                                     #DiPhotonTag            = cms.InputTag('flashggDiPhotons'),
                                      #DiPhotonTag            = cms.InputTag('flashggPreselectedDiPhotons'),
                                      VertexTag              = cms.InputTag('offlineSlimmedPrimaryVertices'),
                                      GenParticleTag         = cms.InputTag('flashggPrunedGenParticles'),

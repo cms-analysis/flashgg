@@ -29,7 +29,7 @@ HHWWgg_variables = [
     "Good_electrons                      := Cut_Variables[6]",
     "Good_muons                          := Cut_Variables[7]",
     "Good_leptons                        := Cut_Variables[8]",
-    "PS_dipho_tag                        := Cut_Variables[9]",
+    "PS_dipho_tag                        := Cut_Variables[9]", 
     "passMETfilters                      := Cut_Variables[11]",
     # "j_mass                              := Cut_Variables[10]",
 

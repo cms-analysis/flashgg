@@ -59,7 +59,8 @@ namespace flashgg {
     HHWWggCandidateProducer( const ParameterSet & );
 
     //---Outtree 
-    edm::Service<TFileService> fs;  
+    edm::Service<TFileService> fs;
+    TH1F* ndpho; 
     // TH1F* cutFlow;
     // TH1F* WTags;
 
@@ -185,6 +186,7 @@ namespace flashgg {
     {
       genInfo_ = pSet.getUntrackedParameter<edm::InputTag>( "genInfo", edm::InputTag("generator") );
       genInfoToken_ = consumes<GenEventInfoProduct>( genInfo_ );
+      ndpho = fs->make<TH1F> ("ndpho","ndpho",10,0,10);
       // cutFlow = fs->make<TH1F> ("cutFlow","Cut Flow",10,0,10);
       // WTags = fs->make<TH1F> ("WTags","W Tags",4,0,4);
 
@@ -250,7 +252,7 @@ namespace flashgg {
       double FLW_Tag = 0.; // Fully-Leptonic W Tag
       double FHW_Tag = 0.; // Fully-Hadronic W Tag 
       bool PS_dipho_tag = 0; // preselected diphoton 
-      bool Pass_PS = 0; // Preselected Diphoton (may also pass SLW_tag)
+      // bool Pass_PS = 0; // Preselected Diphoton (may also pass SLW_tag)
 
       //---output collection
       std::unique_ptr<vector<HHWWggCandidate> > HHWWggColl_( new vector<HHWWggCandidate> );
@@ -329,7 +331,7 @@ namespace flashgg {
       double idmva1 = 0.;
       double idmva2 = 0.;
       bool checked_first = false; 
-      Pass_PS = false;
+      // Pass_PS = false;
       bool one_FH_dr = false;
       bool one_FL_dr = false;
       float dr_ll = 0;
@@ -337,21 +339,35 @@ namespace flashgg {
 
       // Check if event passes W taggers 
       for( unsigned int diphoIndex = 0; diphoIndex < diphotons->size(); diphoIndex++ ) {
+        // cout << "checked_first = " << checked_first << endl;
+        // cout << "PS_dipho_tag = " << PS_dipho_tag << endl;
         if (checked_first) continue; // If already checked highest pT preselected diphoton, continue 
+        checked_first = true; 
         // Diphoton 
         edm::Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( diphoIndex ); 
         edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );   
 
+        // l_eta = dipho->leadingPhoton()->superCluster()->eta();
+        // l_r9 = dipho->leadingPhoton()->full5x5_r9();
+        // sl_eta = dipho->leadingPhoton()->superCluster()->eta();
+        // sl_r9 = dipho->leadingPhoton()->full5x5_r9();
         // Check that diphoton is preselected 
-        flashgg::DiPhotonCandidate * DPPointer = const_cast<flashgg::DiPhotonCandidate *>(dipho.get());
-        Pass_PS |= idSelector_(*DPPointer, event);
+        // flashgg::DiPhotonCandidate * DPPointer = const_cast<flashgg::DiPhotonCandidate *>(dipho.get());
+        //Pass_PS |= idSelector_(*DPPointer, event);
 
-        if (!Pass_PS) continue;
+        //if (!Pass_PS) continue;
 
-        else if ( Pass_PS ){ 
-          PS_dipho_tag = true;
-          checked_first = true;
-        }
+        // else if ( Pass_PS ){ 
+        //   // abs(dipho->leadingPhoton()->superCluster()->eta()) > 1.4;
+        //   // (dipho->leadingPhoton()->full5x5_r9()) < 0.9;
+        //   // abs(dipho->subLeadingPhoton()->superCluster()->eta());
+        //   // (dipho->subLeadingPhoton()->full5x5_r9())< 0.9;
+        //   //if ((abs(dipho->leadingPhoton()->superCluster()->eta()) > 1.4) && ((dipho->leadingPhoton()->full5x5_r9()) < 0.9) && (abs(dipho->subLeadingPhoton()->superCluster()->eta())) && ((dipho->subLeadingPhoton()->full5x5_r9())< 0.9))
+        //   //{
+        //   PS_dipho_tag = true;
+        //   checked_first = true;
+        //   //}
+        // }
 
         hasGoodElec = false;
         hasGoodMuons = false;
@@ -549,13 +565,14 @@ namespace flashgg {
       } // Diphoton loop 
 
           // Diphotons
-          Pass_PS = false;
+          // Pass_PS = false;
           for( int diphoIndex = 0; diphoIndex < n_diphotons; diphoIndex++ )
           {
             edm::Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( diphoIndex );
             flashgg::DiPhotonCandidate * thisDPPointer = const_cast<flashgg::DiPhotonCandidate *>(dipho.get());
-            Pass_PS |= idSelector_(*thisDPPointer, event);
-            if ( Pass_PS ) diphoVector.push_back(*thisDPPointer);                     
+            diphoVector.push_back(*thisDPPointer);
+            //Pass_PS |= idSelector_(*thisDPPointer, event);
+            //if ( Pass_PS ) diphoVector.push_back(*thisDPPointer);                     
           }
 
           // Photons   
@@ -636,7 +653,7 @@ namespace flashgg {
             }
             // If the particle has a mother 
             if (gen->mother(0) != 0){
-              int pid = gen->pdgId();
+              int pid = gen->pdgId(); 
               int pmotid = gen->mother(0)->pdgId();   
 
               if ( ( abs(pid) == 5) && (abs(pmotid) == 24) ) cout << "***B quark Found!***" << endl;           
@@ -689,6 +706,9 @@ namespace flashgg {
         Cut_Variables[10] = j_mass;
         Cut_Variables[11] = (double)passMETfilters;
 
+        if (n_diphotons > 0) ndpho->Fill(1.0);
+        // ndpho->Fill(n_diphotons);
+
         // int e_thres = 1; 
         // if (n_photons >= 2) Cut_Results[1] = 1.0;
         // if (n_good_electrons >= e_thres) Cut_Results[2] = 1.0;
@@ -721,7 +741,7 @@ namespace flashgg {
         // }
 
         // Create HHWWggCandidate Object 
-        HHWWggCandidate HHWWgg(diphoVector, phoVector, electronVector, muonVector, theMET_, genParticlesVector, tagJets_, Cut_Results, Cut_Variables);
+        HHWWggCandidate HHWWgg(diphoVector_, phoVector, electronVector, muonVector, theMET_, genParticlesVector, tagJets_, Cut_Results, Cut_Variables);
         HHWWggColl_->push_back(HHWWgg);
 
       event.put( std::move(HHWWggColl_) );

@@ -1,7 +1,6 @@
 import FWCore.ParameterSet.Config as cms  # imports our CMS-specific Python classes and functions
 import os # python module for os dependent functionality 
 from flashgg.Taggers.flashggHHWWggCandidate_cfi import FlashggHHWWggCandidate # flashggHHWWggCandidate parameters 
-#from flashgg.Taggers.flashggPreselectedDiPhotons_LowMass_cfi import flashggPreselectedDiPhotonsLowMass
 from flashgg.Taggers.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
 import flashgg.Taggers.dumperConfigTools as cfgTools
 
@@ -11,11 +10,14 @@ process.flashggUnpackedJets = flashggUnpackedJets
 
 from flashgg.Taggers.flashggDiPhotonMVA_cfi import flashggDiPhotonMVA
 process.flashggDiPhotonMVA = flashggDiPhotonMVA 
-process.flashggDiPhotonMVA.DiPhotonTag = "flashggDiPhotons"
 
+from flashgg.Taggers.flashggUpdatedIdMVADiPhotons_cfi import flashggUpdatedIdMVADiPhotons
+process.flashggUpdatedIdMVADiPhotons = flashggUpdatedIdMVADiPhotons
+
+#process.flashggDiPhotonMVA.DiPhotonTag = "flashggDiPhotons" 
+process.flashggDiPhotonMVA.DiPhotonTag = "flashggPreselectedDiPhotons"
 ###---HHWWgg candidates production
 process.FlashggHHWWggCandidate = FlashggHHWWggCandidate.clone() # clone flashgg HHWWggCandidate parameters here 
-
 
 process.FlashggHHWWggCandidate.idSelection = cms.PSet(
         # rho = flashggPreselectedDiPhotonsLowMass.rho,
@@ -23,12 +25,14 @@ process.FlashggHHWWggCandidate.idSelection = cms.PSet(
         # variables = flashggPreselectedDiPhotonsLowMass.variables,
         # categories = flashggPreselectedDiPhotonsLowMass.categories
         rho = flashggPreselectedDiPhotons.rho,
-        cut = flashggPreselectedDiPhotons.cut, # diphoton preselection cuts. I guess somehow applied to FlashggHHWWggCandidate 
+        cut = flashggPreselectedDiPhotons.cut, # diphoton preselection cuts. Become part of Idselector definition  
         variables = flashggPreselectedDiPhotons.variables,
         categories = flashggPreselectedDiPhotons.categories
         )
 
-# process.PreselDiPhotons = flashggPreselectedDiPhotons.clone(
+process.flashggPreselectedDiPhotons = flashggPreselectedDiPhotons
+process.flashggPreselectedDiPhotons.src = "flashggDiPhotons"
+
 # cut=cms.string(
 #         "    (leadingPhoton.full5x5_r9>0.8||leadingPhoton.egChargedHadronIso<20||leadingPhoton.egChargedHadronIso/leadingPhoton.pt<0.3)"
 #         " && (subLeadingPhoton.full5x5_r9>0.8||subLeadingPhoton.egChargedHadronIso<20||subLeadingPhoton.egChargedHadronIso/subLeadingPhoton.pt<0.3)"
@@ -90,11 +94,10 @@ process.source = cms.Source ("PoolSource",
 #"file:myMicroAODOutputFile_lnulnugg_8Apr2019.root" # FL X1250
 #"file:myMicroAODOutputFile_qqqqgg_8Apr2019.root" # FH  X1250
 #"file:myMicroAODOutputFile_ggF_X250_WWgg_lnulnugg_crabtest_2.root" # FL X250
-"file:myMicroAODOutputFile_ggF_X250_WWgg_qqlnugg_crabtest_2.root" # SL X250
+#"file:myMicroAODOutputFile_ggF_X250_WWgg_qqlnugg_crabtest_2.root" # SL X250
 #"file:myMicroAODOutputFile_ggF_X250_WWgg_qqqqgg_crabtest.root" # FH X250
 #"file:/eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_0/3_1_0/GluGluHToGG_M-125_13TeV_powheg_pythia8/RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/180609_081728/0000/myMicroAODOutputFile_4.root"
-# "root://cms-xrd-global.cern.ch//store/group/phys_higgs/cmshgg/spigazzi/flashgg/RunIIFall17-3_2_0/RunIIFall17-3_2_0/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/RunIIFall17-3_2_0-RunIIFall17-3_2_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/181008_111719/0000/myMicroAODOutputFile_7.root"
-#"root://cms-xrd-global.cern.ch//store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v1/legacyRun2TestV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/Era2017_RR-31Mar2018_v1-legacyRun2TestV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/190319_112256/0000/myMicroAODOutputFile_9.root"
+"root://cms-xrd-global.cern.ch//store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v1/legacyRun2TestV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/Era2017_RR-31Mar2018_v1-legacyRun2TestV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/190319_112256/0000/myMicroAODOutputFile_9.root"
 ))
 
 
@@ -171,8 +174,15 @@ if customize.processId == "Data":
 # if customize.PURW == False:
 # 	process.HHWWggCandidateDumper.puTarget = cms.vdouble()
 
-process.path = cms.Path(process.flashggDiPhotonMVA*process.flashggUnpackedJets*process.dataRequirements*process.FlashggHHWWggCandidate*process.HHWWggCandidateDumper)
-#process.path = cms.Path(process.flashggDiPhotonMVA*process.PreselDiPhotons*process.flashggUnpackedJets*process.dataRequirements*process.FlashggHHWWggCandidate*process.HHWWggCandidateDumper)
+#process.path = cms.Path(process.flashggDiPhotonMVA*process.flashggUnpackedJets*process.dataRequirements*process.FlashggHHWWggCandidate*process.HHWWggCandidateDumper)
+process.path = cms.Path(process.flashggUpdatedIdMVADiPhotons
+                        *process.flashggPreselectedDiPhotons
+                        *process.flashggDiPhotonMVA
+                        *process.flashggUnpackedJets
+                        *process.dataRequirements
+                        *process.FlashggHHWWggCandidate
+                        *process.HHWWggCandidateDumper
+                        )
 
 # process.path = cms.Path(process.FlashggHHWWggCandidate+process.HHWWggCandidateDumper)
 #process.e = cms.EndPath(process.out)

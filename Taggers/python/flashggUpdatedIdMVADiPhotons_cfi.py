@@ -74,5 +74,5 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
                                               ## ),
                                               
                                               doIsoCorrection = cms.bool(False), ## Turned off for Rereco2017. Turn this on for Legacy2016.
-                                              isoCorrectionFile = cms.FileInPath("flashgg/Taggers/data/pho_iso_corrections_hybrid_Legacy2016_v1.root") ## for Legacy2016
+                                              #isoCorrectionFile = cms.FileInPath("flashgg/Taggers/data/pho_iso_corrections_hybrid_Legacy2016_v1.root") ## for Legacy2016
                                               )
