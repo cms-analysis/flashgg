@@ -1,7 +1,7 @@
 {
     "globalTags" :
     {
-        "data" : "94X_dataRun2_v6",
+        "data" : "94X_dataRun2_v11",
         "MC" : "94X_mc2017_realistic_v17"
     },
 
@@ -52,12 +52,10 @@
 
     "JetCorrectorParametersCollection_version" :
     {
-        "data" : "JetCorrectorParametersCollection_Fall17_17Nov2017BCDEF_V6_DATA_AK4PFchs",
-        "MC" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_94X_MC_AK4PFchs"
+        "data" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_DATA_AK4PFchs",
+        "MC" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_MC_AK4PFchs"
     },
 
-    "JR_PtResolution_version" : "JR_Fall17_17Nov2017_V6_MC_PtResolution_AK4PFchs",
-    "JR_SF_version" : "JR_Fall17_17Nov2017_V6_MC_SF_AK4PFchs",
 
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",

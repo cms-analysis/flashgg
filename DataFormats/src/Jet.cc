@@ -91,6 +91,13 @@ bool Jet::passesJetID( JetIDLevel level) const
     bool jetID_2017_24 = jetID_2017_27 && (CHF > 0. && CHM > 0 );
     bool jetID_2017_30 = (NEMF > 0.02 && NEMF < 0.99 && NumNeutralParticles > 2);
     bool jetID_2017_forward = (NEMF < 0.9 && NHF > 0.02 && NumNeutralParticles > 10);
+
+    bool jetID_2018_26 = (NHF < 0.9 && NEMF < 0.9 && NumConst > 1 && CHM > 0 && CHF > 0.);
+    bool jetID_2018_27 = (NHF < 0.9 && NEMF < 0.99 && CHM > 0);
+    bool jetID_2018_30 = (NEMF > 0.02 && NEMF < 0.99 && NumNeutralParticles > 2);
+    bool jetID_2018_forward = (NEMF < 0.9 && NHF > 0.02 && NumNeutralParticles > 10);
+
+
     
     switch(level){
     case Loose:
@@ -108,10 +115,17 @@ bool Jet::passesJetID( JetIDLevel level) const
         }break;
     case Tight2017:
         {
-            if(fabs(eta)<2.4 ) return jetID_2017_24;
-            if(fabs(eta)<2.7 ) return jetID_2017_27;
-            if(fabs(eta)<3.0 ) return jetID_2017_30;
+            if(fabs(eta)<=2.4 ) return jetID_2017_24;
+            if(fabs(eta)<=2.7 ) return jetID_2017_27;
+            if(fabs(eta)<=3.0 ) return jetID_2017_30;
             return jetID_2017_forward;
+        } break;
+    case Tight2018:
+        {
+            if(fabs(eta)<=2.6 ) return jetID_2018_26;
+            if(fabs(eta)<=2.7 ) return jetID_2018_27;
+            if(fabs(eta)<=3.0 ) return jetID_2018_30;
+            return jetID_2018_forward;
         } break;
     default:
         {
