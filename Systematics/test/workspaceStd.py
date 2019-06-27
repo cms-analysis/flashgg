@@ -17,7 +17,7 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 
 
@@ -134,7 +134,7 @@ print 'tthTagsOnly '+str(customize.tthTagsOnly)
 # import flashgg customization to check if we have signal or background
 from flashgg.MetaData.JobConfig import customize
 # set default options if needed
-customize.setDefault("maxEvents",-1)
+customize.setDefault("maxEvents",10000)
 customize.setDefault("targetLumi",1.00e+3)
 customize.parse()
 customize.metaConditions = MetaConditionsReader(customize.metaConditions)
@@ -228,8 +228,8 @@ if customize.doDoubleHTag:
     hhc = flashgg.Systematics.doubleHCustomize.DoubleHCustomize(process, customize, customize.metaConditions)
     minimalVariables += hhc.variablesToDump()
 
+process.flashggTHQLeptonicTag.processId = cms.string(str(customize.processId))
 
-process.flashggTHQLeptonicTag.processId = cms.string(str(customize.processId)) #11Jun
 print 'here we print the tag sequence after'
 print process.flashggTagSequence
 
@@ -412,14 +412,12 @@ if(customize.doFiducial):
 #        fc.addRecoGlobalVariables(process, process.tagsDumper)
 #    else:
     fc.addObservables(process, process.tagsDumper, customize.processId )
-
-import flashgg.Taggers.THQLeptonicTagVariables as var
-if customize.processId.count("Data"):
-     variablesToUse= var.vtx_variables + var.vtx_truth_variables + var.dipho_variables + var.photon_variables + var.lepton_variables + var.jet_variables + var.thqmva_variables + var.dr_variable + var.thqmva_variables + var.theoweight_variables + var.theoctcvweight_variables
-else:
-    variablesToUse = minimalVariables + var.vtx_variables + var.dipho_variables
-#    variablesToUse= var.vtx_variables + var.vtx_truth_variables + var.dipho_variables + var.photon_variables + defaultVariables + var.lepton_variables + var.jet_variables + var.thqmva_variables + var.dr_variable + var.theoweight_variables
-
+if customize.processId == "tHq":
+   import flashgg.Taggers.THQLeptonicTagVariables as var
+   variablesToUse = minimalVariables + var.vtx_variables + var.dipho_variables
+#   variablesToUse= var.vtx_variables + var.vtx_truth_variables + var.dipho_variables + var.photon_variables + var.lepton_variables + var.jet_variables + var.thqmva_variables + var.dr_variable + var.theoweight_variables 
+#    variablesToUse = minimalVariables + var.vtx_variables + var.dipho_variables
+    
 #tagList=[
 #["UntaggedTag",4],
 #["VBFTag",2],

@@ -11,7 +11,6 @@
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/THQLeptonicTag.h"
-//#include "flashgg/DataFormats/interface/THQLeptonicMVAResult.h"
 #include "flashgg/DataFormats/interface/Electron.h"
 #include "flashgg/DataFormats/interface/Muon.h"
 #include "flashgg/DataFormats/interface/Photon.h"
@@ -1666,7 +1665,6 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
             TightBJetVect_PtSorted.clear();
             centraljet.clear();
             forwardjet.clear();
-//        }//end of taggedevent loop
     }//diPho loop end !
     evt.put( std::move( thqltags ) );
     evt.put( std::move( truths ) );
