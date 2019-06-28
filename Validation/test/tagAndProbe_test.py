@@ -175,10 +175,7 @@ process.flashggTagAndProbe.idSelection = cms.PSet(
 # ----------------------------------------------------------------------------------------------------
 # Configure tagAndProbeDumper
 
-variables = dumpCfg.getDefaultConfig()
-variables.extend(["tagEleMatch := getTag.hasUserCand('eleMatch')",
-                  "probeEleMatch := getProbe.hasUserCand('eleMatch')"
-                  ])
+variables = dumpCfg.getCustomConfig('complete')
 print(variables)
 
 from flashgg.Validation.tagAndProbeDumper_cfi import tagAndProbeDumper
