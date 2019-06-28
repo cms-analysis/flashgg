@@ -12,13 +12,13 @@ def makeOneLegInputs(label, obj, inputs):
             name = name[0].capitalize()+name[1:]
         name = "%s%s" % (label, name)
         expr = "%s.%s" % (obj,   expr)
-        ## print expr[14]
+        # print expr[14]
         out.append("%s := %s" % (name, expr))
         print out[-1]
     return out
 
 
-def getDefaultConfig():
+def getDefaultConfig(trackClIsoCorrections=True):
 
     diEleVars = ["mass := diPhoton.mass",
                  "pt := diPhoton.pt",
@@ -29,8 +29,8 @@ def getDefaultConfig():
                  "genMass := diPhoton.genP4.mass",
                  "mass_5x5 := diPhoton.mass*sqrt(getTag.full5x5_e5x5*getProbe.full5x5_e5x5/(getTag.p4.energy*getProbe.p4.energy))",
                  "deltaEta := abs( getTag.eta - getProbe.eta )",
-                 "codDeltaPhi := cos( getTag.phi - getProbe.phi )",
-                 "minR9 := min(getTag.full5x5_r9 - getProbe.full5x5_r9)",
+                 "cosDeltaPhi := cos( getTag.phi - getProbe.phi )",
+                 "minR9 := min(getTag.full5x5_r9,getProbe.full5x5_r9)",
                  "maxEta := max(abs(getTag.superCluster.eta),abs(getProbe.superCluster.eta))"]
 
     singleEleVars = [("energyAtStep('initial')", "InitialEnergy"),
@@ -40,7 +40,7 @@ def getDefaultConfig():
                      ("full5x5_e5x5", "5x5_Energy"),
                      ("pt", "Pt"),
                      ("eta", "Eta"),
-                     ("full_5x5_r9", "R9"),
+                     ("full5x5_r9", "R9"),
                      ("superCluster.eta", "ScEta"),
                      ("phi", "Phi"),
                      ("pfPhoIso03", "PhoIso03"),
@@ -57,6 +57,9 @@ def getDefaultConfig():
                      ("sigEOverE", "sigEOverE"),
                      ("checkStatusFlag('kSaturated')", "IsSat"),
                      ("checkStatusFlag('kWeird')", "IsWeird"),
+                     ("esEffSigmaRR", "sigmaRR"),
+                     ("superCluster.etaWidth", "etaWidth"),
+                     ("superCluster.phiWidth", "phiWidth"),
                      "full5x5_e1x5",
                      "full5x5_e2x5",
                      "full5x5_e3x3",
@@ -76,9 +79,10 @@ def getDefaultConfig():
                      "e1x3",
                      "s4"]
 
-    singleEleViewVars = [("pfChIso03WrtChosenVertex", "ChIso03")]
+    singleEleViewVars = [("pfChIso03WrtChosenVtx", "ChIso03")]
 
-    genVars = ["tagGenPt := ?getTag.hasMatchedGenPhoton?getTag.matchedGenPhoton.pt:0",
+    genVars = ["genMass := diPhoton.genP4.mass",
+               "tagGenPt := ?getTag.hasMatchedGenPhoton?getTag.matchedGenPhoton.pt:0",
                "tagMatchType := getTag.genMatchType",
                "tagGenIso := ?getTag.hasUserFloat('genIso')?getTag.userFloat('genIso'):0",
                "probeGenPt := ?getProbe.hasMatchedGenPhoton?getProbe.matchedGenPhoton.pt:0",
@@ -93,31 +97,15 @@ def getDefaultConfig():
         "probe", "getProbeView", singleEleViewVars))
     variables.extend(genVars)
 
+    if trackClIsoCorrections:
+        variables += ["probeUncorrR9              := ? getProbe.hasUserFloat('uncorr_r9') ? getProbe.userFloat('uncorr_r9') : -999.",
+                      "probeUncorrEtaWidth        := ? getProbe.hasUserFloat('uncorr_etaWidth') ? getProbe.userFloat('uncorr_etaWidth') : -999.",
+                      "probeUncorrS4              := ? getProbe.hasUserFloat('uncorr_s4') ? getProbe.userFloat('uncorr_s4') : -999.",
+                      "probeUncorrPhiWidth        := ? getProbe.hasUserFloat('uncorr_phiWidth') ? getProbe.userFloat('uncorr_phiWidth') : -999.",
+                      "probeUncorrSigmaIeIe       := ? getProbe.hasUserFloat('uncorr_sieie') ? getProbe.userFloat('uncorr_sieie') : -999",
+                      "probeUncorrCovarianceIeIp  := ? getProbe.hasUserFloat('uncorr_sieip') ? getProbe.userFloat('uncorr_sieip') : -999",
+                      "probeUncorrPhoIso          := ? getProbe.hasUserFloat('uncorr_phoIso') ? getProbe.userFloat('uncorr_phoIso') : -999",
+                      "probeUncorrChIso           := ? getProbe.hasUserFloat('uncorr_chIso') ? getProbe.userFloat('uncorr_chIso') : -999",
+                      "probeUncorrChIsoWorst      := ? getProbe.hasUserFloat('uncorr_chIsoWorst') ? getProbe.userFloat('uncorr_chIsoWorst') : -999"]
+
     return variables
-
-    # if trackAllCorrections:
-    #     variables += [
-    #         #"leadRecoEreg              := leadingPhoton.userFloat('reco_regr_E')",
-    #         #"leadRecoSigEOverE     := leadingPhoton.userFloat('reco_regr_E_err') / leadingPhoton.userFloat('reco_regr_E')",
-    #         #"subleadRecoEreg           := subLeadingPhoton.userFloat('reco_regr_E')",
-    #         #"subleadRecoSigEOverE  := subLeadingPhoton.userFloat('reco_regr_E_err') / subLeadingPhoton.userFloat('reco_regr_E')",
-
-    #         #"leadAfterSSTrEreg              := leadingPhoton.userFloat('afterShShTransf_regr_E')",
-    #         #"leadAfterSSTrSigEOverE     := leadingPhoton.userFloat('afterShShTransf_regr_E_err') / leadingPhoton.userFloat('afterShShTransf_regr_E')",
-    #         #"subleadAfterSSTrEreg           := subLeadingPhoton.userFloat('afterShShTransf_regr_E')",
-    #         #"subleadAfterSSTrSigEOverE  := subLeadingPhoton.userFloat('afterShShTransf_regr_E_err') / subLeadingPhoton.userFloat('afterShShTransf_regr_E')",
-
-    #         #"leadUnsmearedSigmaEoE      := leadingPhoton.userFloat('unsmearedSigmaEoE')",
-    #         #"subleadUnsmearedSigmaEoE      := subLeadingPhoton.userFloat('unsmearedSigmaEoE')",
-
-    #         "leadUncorrR9              := ? leadingPhoton.hasUserFloat('uncorr_r9') ? leadingPhoton.userFloat('uncorr_r9') : -1.",
-    #         "leadUncorrEtaWidth        := ? leadingPhoton.hasUserFloat('uncorr_etaWidth') ? leadingPhoton.userFloat('uncorr_etaWidth') : -1.",
-    #         "leadUncorrS4              := ? leadingPhoton.hasUserFloat('uncorr_s4') ? leadingPhoton.userFloat('uncorr_s4') : -1.",
-
-    #         "subleadUncorrR9              := ? subLeadingPhoton.hasUserFloat('uncorr_r9') ? subLeadingPhoton.userFloat('uncorr_r9') : -1.",
-    #         "subleadUncorrEtaWidth        := ? subLeadingPhoton.hasUserFloat('uncorr_etaWidth') ? subLeadingPhoton.userFloat('uncorr_etaWidth') : -1.",
-    #         "subleadUncorrS4              := ? subLeadingPhoton.hasUserFloat('uncorr_s4') ? subLeadingPhoton.userFloat('uncorr_s4') : -1.",
-
-    #         ### "leadPhoIsoEA :=  map( abs(leadingPhoton.superCluster.eta) :: 0.,0.9,1.5,2.0,2.2,3. :: 0.21,0.2,0.14,0.22,0.31 )",
-    #         ### "subleadPhoIsoEA :=  map( abs(subLeadingPhoton.superCluster.eta) :: 0.,0.9,1.5,2.0,2.2,3. :: 0.21,0.2,0.14,0.22,0.31 )",
-    #     ]
