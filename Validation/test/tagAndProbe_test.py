@@ -175,12 +175,10 @@ process.flashggTagAndProbe.idSelection = cms.PSet(
 # ----------------------------------------------------------------------------------------------------
 # Configure tagAndProbeDumper
 
-variables = dumpCfg.getDefaultConfig(trackAllCorrections=False)
-variables.extend(["leadEleMatch    := leadingPhoton.hasUserCand('eleMatch')",
-                  "subleadEleMatch := subLeadingPhoton.hasUserCand('eleMatch')"
+variables = dumpCfg.getDefaultConfig()
+variables.extend(["tagEleMatch := getTag.hasUserCand('eleMatch')",
+                  "probeEleMatch := getProbe.hasUserCand('eleMatch')"
                   ])
-dumpCfg.addRegressionInput(variables)
-variables = dumpCfg.getTnPVariables(variables)
 print(variables)
 
 from flashgg.Validation.tagAndProbeDumper_cfi import tagAndProbeDumper
