@@ -94,10 +94,10 @@ process.source = cms.Source ("PoolSource",
 #"file:myMicroAODOutputFile_lnulnugg_8Apr2019.root" # FL X1250
 #"file:myMicroAODOutputFile_qqqqgg_8Apr2019.root" # FH  X1250
 #"file:myMicroAODOutputFile_ggF_X250_WWgg_lnulnugg_crabtest_2.root" # FL X250
-#"file:myMicroAODOutputFile_ggF_X250_WWgg_qqlnugg_crabtest_2.root" # SL X250
+"file:myMicroAODOutputFile_ggF_X250_WWgg_qqlnugg_crabtest_2.root" # SL X250
 #"file:myMicroAODOutputFile_ggF_X250_WWgg_qqqqgg_crabtest.root" # FH X250
 #"file:/eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_0/3_1_0/GluGluHToGG_M-125_13TeV_powheg_pythia8/RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/180609_081728/0000/myMicroAODOutputFile_4.root"
-"root://cms-xrd-global.cern.ch//store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v1/legacyRun2TestV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/Era2017_RR-31Mar2018_v1-legacyRun2TestV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/190319_112256/0000/myMicroAODOutputFile_9.root"
+#"root://cms-xrd-global.cern.ch//store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v1/legacyRun2TestV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/Era2017_RR-31Mar2018_v1-legacyRun2TestV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/190319_112256/0000/myMicroAODOutputFile_9.root"
 ))
 
 
@@ -175,8 +175,8 @@ if customize.processId == "Data":
 # 	process.HHWWggCandidateDumper.puTarget = cms.vdouble()
 
 #process.path = cms.Path(process.flashggDiPhotonMVA*process.flashggUnpackedJets*process.dataRequirements*process.FlashggHHWWggCandidate*process.HHWWggCandidateDumper)
-process.path = cms.Path(process.flashggUpdatedIdMVADiPhotons
-                        *process.flashggPreselectedDiPhotons
+process.path = cms.Path(#process.flashggUpdatedIdMVADiPhotons
+                        process.flashggPreselectedDiPhotons
                         *process.flashggDiPhotonMVA
                         *process.flashggUnpackedJets
                         *process.dataRequirements

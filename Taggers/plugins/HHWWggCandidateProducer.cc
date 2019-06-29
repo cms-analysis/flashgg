@@ -60,7 +60,7 @@ namespace flashgg {
 
     //---Outtree 
     edm::Service<TFileService> fs;
-    TH1F* ndpho; 
+    TH1F* vars; 
     // TH1F* cutFlow;
     // TH1F* WTags;
 
@@ -186,7 +186,7 @@ namespace flashgg {
     {
       genInfo_ = pSet.getUntrackedParameter<edm::InputTag>( "genInfo", edm::InputTag("generator") );
       genInfoToken_ = consumes<GenEventInfoProduct>( genInfo_ );
-      ndpho = fs->make<TH1F> ("ndpho","ndpho",10,0,10);
+      vars = fs->make<TH1F> ("vars","vars",10,0,10);
       // cutFlow = fs->make<TH1F> ("cutFlow","Cut Flow",10,0,10);
       // WTags = fs->make<TH1F> ("WTags","W Tags",4,0,4);
 
@@ -327,10 +327,10 @@ namespace flashgg {
                       }
           }
 
-      // bool photonSelection = false;
+      bool photonSelection = false;
       double idmva1 = 0.;
       double idmva2 = 0.;
-      bool checked_first = false; 
+      // bool checked_first = false; 
       // Pass_PS = false;
       bool one_FH_dr = false;
       bool one_FL_dr = false;
@@ -338,11 +338,13 @@ namespace flashgg {
       double j_mass = 0.0;     
 
       // Check if event passes W taggers 
-      for( unsigned int diphoIndex = 0; diphoIndex < diphotons->size(); diphoIndex++ ) {
+      // for( unsigned int diphoIndex = 0; diphoIndex < diphotons->size(); diphoIndex++ ) { // look at all diphotons 
+      if (diphotons->size() > 0){
+      for( unsigned int diphoIndex = 0; diphoIndex < 1; diphoIndex++ ) { // only look at highest pt dipho
         // cout << "checked_first = " << checked_first << endl;
         // cout << "PS_dipho_tag = " << PS_dipho_tag << endl;
-        if (checked_first) continue; // If already checked highest pT preselected diphoton, continue 
-        checked_first = true; 
+        // if (checked_first) continue; // If already checked highest pT preselected diphoton, continue 
+        // checked_first = true; 
         // Diphoton 
         edm::Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( diphoIndex ); 
         edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );   
@@ -391,10 +393,10 @@ namespace flashgg {
 
         // Diphoton MVA 
         if( mvares->result < MVAThreshold_ ) { continue; }
-        // photonSelection = true;
+        photonSelection = true;
 
         // Electrons 
-        std::vector<edm::Ptr<Electron> > goodElectrons = selectStdElectrons( electrons->ptrs(), dipho,vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
+        std::vector<edm::Ptr<Electron> > goodElectrons = selectStdElectrons( electrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
                                                                           useElectronMVARecipe_,useElectronLooseID_,
                                                                           deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_,
                                                                           rho_, event.isRealData() );
@@ -563,6 +565,7 @@ namespace flashgg {
         //}
 
       } // Diphoton loop 
+    } // if at least 1 PS diphoton 
 
           // Diphotons
           // Pass_PS = false;
@@ -640,7 +643,7 @@ namespace flashgg {
 
         // vector to store genparticles in 
         vector<reco::GenParticle> genParticlesVector;
-
+        // float higgs_eta = -99;
         // If MC event 
         if (! event.isRealData() ){
           // For each gen particle in event 
@@ -649,6 +652,10 @@ namespace flashgg {
             if (gen->pdgId() == 25){ // add higgs' to genvector 
               // cout << "Found Higgs" << endl;
               reco::GenParticle * thisGENPointer = const_cast<reco::GenParticle *>(gen.get());
+              if (gen->daughter(0)->pdgId() == 22){
+                // cout << "higgs eta = " << gen->eta() << endl;
+                // higgs_eta = gen->eta();
+              }
               genParticlesVector.push_back(*thisGENPointer);
             }
             // If the particle has a mother 
@@ -666,7 +673,7 @@ namespace flashgg {
                 if ( (abs(pid) == abs(vec_id)) && (abs(pmotid) == abs(vec_mid))){ 
                   //cout << "Found " << abs(pid) << " from " << abs(pmotid) << endl;
                   reco::GenParticle * thisGENPointer = const_cast<reco::GenParticle *>(gen.get());
-                  genParticlesVector.push_back(*thisGENPointer);
+                  genParticlesVector.push_back(*thisGENPointer);                
                 }
               }
             }
@@ -706,8 +713,20 @@ namespace flashgg {
         Cut_Variables[10] = j_mass;
         Cut_Variables[11] = (double)passMETfilters;
 
-        if (n_diphotons > 0) ndpho->Fill(1.0);
+        // if (n_diphotons > 0) vars->Fill(1.0);
+        // if (n_photons > 1) vars->Fill(2.0);
+        // if ( ( abs(higgs_eta) < 2.5 ) ) vars->Fill(3.0);
+
+        //if ( (n_diphotons > 0) && (n_photons > 1) && (abs(higgs_eta) < 2.5)) vars->Fill(1.0); // number of events that passed cuts and have a preselected diphoton. numerator.
+        //if ( (n_photons > 1) && (abs(higgs_eta) < 2.5)) vars->Fill(2.0); // number of events that passed cuts. Denominator 
+        // cout << "photonSelection = " << photonSelection << endl;
+        if ( (d_n_good_leptons >= 1) && (n_diphotons > 0) && (photonSelection) ) vars->Fill(1.0); // numerator
+        if ( (n_diphotons > 0) && (photonSelection)) vars->Fill(2.0); // denominator 
+
         // ndpho->Fill(n_diphotons);
+
+        // numerator equals number of events with at least 0 diphotons (after cuts)
+        // denominator equals number of events that pass cuts 
 
         // int e_thres = 1; 
         // if (n_photons >= 2) Cut_Results[1] = 1.0;

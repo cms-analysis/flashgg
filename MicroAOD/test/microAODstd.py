@@ -49,6 +49,7 @@ for i in range(len(abe_files)):
     tmp_path += abe_files[i]
     #tmp_path = tmp_path[-8:]
     abe_files[i] = tmp_path
+    if i == 3: break 
 #print 'abe_files = ',abe_files 
 # for i in range(1):
 # # for i in range(3):
@@ -120,7 +121,7 @@ process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
 #process.weightsCount.pileupInfo = "addPileupInfo"
 
 from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand
-process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile_ggF_X250_WWgg_qqlnugg_crabtest_2.root'),
+process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile_ggF_X250_WWgg_qqlnugg_smallsampletest.root'),
                                outputCommands = microAODDefaultOutputCommand
                                )
 
