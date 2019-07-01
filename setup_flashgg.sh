@@ -75,6 +75,9 @@ cp XGBoostCMSSW/XGBoostInterface/toolbox/*xml $CMSSW_BASE/config/toolbox/$SCRAM_
 scram setup rabit
 scram setup xgboost
 
+# HTCondor python API
+pip install --user htcondor
+
 # Grab xml file for top-tagger BDT from ttH MultiLepton analysis (too large to store in Github)
 pushd flashgg/Taggers/data/
 wget "http://uaf-8.t2.ucsd.edu/~sjmay/ttH/resTop_xgb_csv_order_deepCTag.xml"
