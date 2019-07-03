@@ -563,7 +563,7 @@ class SamplesManager(object):
         tmp = jobargs[1]
         dsetName = jobargs[2]
         ifile = jobargs[3]
-        ret,out =ret
+        ret,out = ret
 
         self.outcomes.append( (None,None,self.readJobOutput(tmp,ret,out,dsetName,fileName,ifile))) 
         return 0

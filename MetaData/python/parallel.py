@@ -581,7 +581,7 @@ class HTCondorMonitor(object):
                 job = self.jobsqueue.get()
                 if job.jobid == None:
                     print "INTERNAL ERROR: job id not set %s" % job
-                    self.retqueue.put( (job, [job.cmd], job.handleOutput()) )
+                    self.retqueue.put( (job, [job.cmd], job.handleOutput(job.jobid)) )
                 else:
                     for jobid in job.jobid:
                         self.jobsmap[jobid] = job
@@ -1329,7 +1329,7 @@ class Parallel:
                 except:
                     pass
             if handler:
-                nleft += handler.handleJobOutput(job, jobargs, ret)
+                nleft += handler.handleJobOutput(job, jobargs, ret if len(ret)==2 else (ret[0], ret[1]))
             else:
                 returns.append( (job,jobargs,ret) )
             nleft -= 1 
