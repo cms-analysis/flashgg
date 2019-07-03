@@ -247,6 +247,7 @@ namespace flashgg {
             rhoToken_ = consumes<double>( iConfig.getParameter<edm::InputTag>( "rhoTag" ) );
             
             ttHWeightfileName_ = iConfig.getUntrackedParameter<FileInPath>("ttHWeightfile");
+            std::cout << "README*************\nttHWeightFilename is " << (ttHWeightfileName_.fullPath()).c_str() << std::endl;
             ttHScoreThreshold = iConfig.getParameter<double>("ttHScoreThreshold");
             x_mean_ = iConfig.getParameter<std::vector<double>> ("ttHKiller_mean");
             x_std_ = iConfig.getParameter<std::vector<double>> ("ttHKiller_std");
@@ -497,9 +498,9 @@ namespace flashgg {
             if (dottHTagger_) 
             {
                 HLF_VectorVar_.resize(9);  // High-level features. 9 at the moment
-                PL_VectorVar_.resize(6);
-                for (int i = 0; i < 6; i++)
-                    PL_VectorVar_[i].resize(7); // List of particles. 6 objects. Each object has 7 attributes.
+                PL_VectorVar_.resize(8);
+                for (int i = 0; i < 8; i++)
+                    PL_VectorVar_[i].resize(7); // List of particles. 8 objects. Each object has 7 attributes.
 
                 float sumEt=0.,njets=0.;
                 njets = cleaned_jets.size();
@@ -723,47 +724,31 @@ namespace flashgg {
                 PL_VectorVar_[5][4] = 0; // isMuon
                 PL_VectorVar_[5][5] = 0; // isDiPho
                 PL_VectorVar_[5][6] = (isclose(ttHVars["MET"],0)) ? 0 : 1; // isMET
-//
-//                // 6: leading jet
-//                PL_VectorVar_[6][0] = ttHVars["ptjet1"];
-//                PL_VectorVar_[6][1] = ttHVars["etajet1"];
-//                PL_VectorVar_[6][2] = ttHVars["phijet1"];
-//                PL_VectorVar_[6][3] = 0; //isEle
-//                PL_VectorVar_[6][4] = 0; // isMuon
-//                PL_VectorVar_[6][5] = 0; // isDiPho
-//                PL_VectorVar_[6][6] = 0; // isMET 
-//
-//                // 7: subleading jet
-//                PL_VectorVar_[7][0] = ttHVars["ptjet2"];
-//                PL_VectorVar_[7][1] = ttHVars["etajet2"];
-//                PL_VectorVar_[7][2] = ttHVars["phijet2"];
-//                PL_VectorVar_[7][3] = 0; //isEle
-//                PL_VectorVar_[7][4] = 0; // isMuon
-//                PL_VectorVar_[7][5] = 0; // isDiPho
-//                PL_VectorVar_[7][6] = 0; // isMET
-//
+
+                // 6: leading jet
+                PL_VectorVar_[6][0] = ttHVars["ptjet1"];
+                PL_VectorVar_[6][1] = ttHVars["etajet1"];
+                PL_VectorVar_[6][2] = ttHVars["phijet1"];
+                PL_VectorVar_[6][3] = 0; //isEle
+                PL_VectorVar_[6][4] = 0; // isMuon
+                PL_VectorVar_[6][5] = 0; // isDiPho
+                PL_VectorVar_[6][6] = 0; // isMET 
+
+                // 7: subleading jet
+                PL_VectorVar_[7][0] = ttHVars["ptjet2"];
+                PL_VectorVar_[7][1] = ttHVars["etajet2"];
+                PL_VectorVar_[7][2] = ttHVars["phijet2"];
+                PL_VectorVar_[7][3] = 0; //isEle
+                PL_VectorVar_[7][4] = 0; // isMuon
+                PL_VectorVar_[7][5] = 0; // isDiPho
+                PL_VectorVar_[7][6] = 0; // isMET
+
                 // Sort by pT
                 std::sort(PL_VectorVar_.rbegin(), PL_VectorVar_.rend()); 
 
                 StandardizeParticleList();
 
                 float ttHScore = EvaluateNN();
-                //std::cout << "ttH score = " << ttHScore << std::endl;
-                
-//                for (unsigned int i = 0; i < 6; i++)
-//                {
-//                    if (isclose(PL_VectorVar_[i][5],1)) // diphoton
-//                    {
-//                        tag_obj.ptdipho_ = PL_VectorVar_[i][0];
-//                        tag_obj.etadipho_ = PL_VectorVar_[i][1];
-//                        tag_obj.phidipho_ = PL_VectorVar_[i][2];
-//                    }
-//                    else if (isclose(PL_VectorVar_[i][6],1)) // MET
-//                    {
-//                        tag_obj.MET_ = PL_VectorVar_[i][0];
-//                        tag_obj.phiMET_ = PL_VectorVar_[i][2];
-//                    }
-//                }
                 if (ttHScore < ttHScoreThreshold) continue;
                 
                 tag_obj.ttHScore_ = ttHScore;
@@ -808,29 +793,12 @@ namespace flashgg {
     {
         // Standardize the HLF inputs. NOTE: We don't standardize pt, eta, phi of physics object here.
         ttHVars["sumET"] = (ttHVars["sumET"] - x_mean_[0])/x_std_[0];
-        // ttHVars["MET"] = (ttHVars["MET"] - x_mean_[1])/x_std_[1];
-        // ttHVars["phiMET"] = (ttHVars["phiMET"] - x_mean_[2])/x_std_[2];
         ttHVars["dPhi1"] = (ttHVars["dPhi1"] - x_mean_[3])/x_std_[3];
         ttHVars["dPhi2"] = (ttHVars["dPhi2"] - x_mean_[4])/x_std_[4];
         ttHVars["PhoJetMinDr"] = (ttHVars["PhoJetMinDr"] - x_mean_[5])/x_std_[5];
         ttHVars["njets"] = (ttHVars["njets"] - x_mean_[6])/x_std_[6];
         ttHVars["Xtt0"] = (ttHVars["Xtt0"] - x_mean_[7])/x_std_[7];
         ttHVars["Xtt1"] = (ttHVars["Xtt1"] - x_mean_[8])/x_std_[8];
-        //ttHVars["pte1"] = (ttHVars["pte1"] - x_mean_[9])/x_std_[9];
-        //ttHVars["pte2"] = (ttHVars["pte2"] - x_mean_[10])/x_std_[10];
-        //ttHVars["ptmu1"] = (ttHVars["ptmu1"] - x_mean_[11])/x_std_[11];
-        //ttHVars["ptmu2"] = (ttHVars["ptmu2"] - x_mean_[12])/x_std_[12];
-        //ttHVars["ptdipho"] = (ttHVars["ptdipho"] - x_mean_[13])/x_std_[13];
-        // ttHVars["etae1"] = (ttHVars["etae1"] - x_mean_[14])/x_std_[14];
-        //ttHVars["etae2"] = (ttHVars["etae2"] - x_mean_[15])/x_std_[15];
-        // ttHVars["etamu1"] = (ttHVars["etamu1"] - x_mean_[16])/x_std_[16];
-        // ttHVars["etamu2"] = (ttHVars["etamu2"] - x_mean_[17])/x_std_[17];
-        //ttHVars["etadipho"] = (ttHVars["etadipho"] - x_mean_[18])/x_std_[18];
-        //ttHVars["phie1"] = (ttHVars["phie1"] - x_mean_[19])/x_std_[19];
-        // ttHVars["phie2"] = (ttHVars["phie2"] - x_mean_[20])/x_std_[20];
-        // ttHVars["phimu1"] = (ttHVars["phimu1"] - x_mean_[21])/x_std_[21];
-        // ttHVars["phimu2"] = (ttHVars["phimu2"] - x_mean_[22])/x_std_[22];
-        // ttHVars["phidipho"] = (ttHVars["phidipho"] - x_mean_[23])/x_std_[23];
         ttHVars["fabs_CosThetaStar_CS"] = (ttHVars["fabs_CosThetaStar_CS"] - x_mean_[24])/x_std_[24];
         ttHVars["fabs_CosTheta_bb"] = (ttHVars["fabs_CosTheta_bb"] - x_mean_[25])/x_std_[25];
     }
@@ -838,7 +806,7 @@ namespace flashgg {
     void DoubleHTagProducer::StandardizeParticleList()
     {
         // Standardize pt, eta, phi of physics objects
-        for (unsigned int i = 0; i < 6; i++) // 6 objects
+        for (unsigned int i = 0; i < 8; i++) // 8 objects
         {
             if (!isclose(PL_VectorVar_[i][0],0)) // only standardize object that exists (non-zero pt)
             for (unsigned int j = 0; j < 3; j++) // pt, eta, phi for each objects
