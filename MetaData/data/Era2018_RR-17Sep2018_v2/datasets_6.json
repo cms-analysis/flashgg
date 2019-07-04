@@ -10387,6 +10387,118 @@
                 "nevents": 18990, 
                 "totEvents": 18990, 
                 "weights": 18990
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_388.root", 
+                "nevents": 30287
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_858.root", 
+                "nevents": 18936
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_859.root", 
+                "nevents": 14054
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 23222
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_416.root", 
+                "nevents": 24343
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_612.root", 
+                "nevents": 25497
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_259.root", 
+                "nevents": 24476
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_80.root", 
+                "nevents": 26101
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_933.root", 
+                "nevents": 19796
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_183.root", 
+                "nevents": 32829
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0001/myMicroAODOutputFile_1144.root", 
+                "nevents": 16045
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0001/myMicroAODOutputFile_1134.root", 
+                "nevents": 19779
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_511.root", 
+                "nevents": 24857
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0001/myMicroAODOutputFile_1229.root", 
+                "nevents": 16461
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0001/myMicroAODOutputFile_1067.root", 
+                "nevents": 15918
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0001/myMicroAODOutputFile_1131.root", 
+                "nevents": 18994
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0001/myMicroAODOutputFile_1186.root", 
+                "nevents": 17702
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0001/myMicroAODOutputFile_1146.root", 
+                "nevents": 17654
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0001/myMicroAODOutputFile_1263.root", 
+                "nevents": 11868
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0001/myMicroAODOutputFile_1268.root", 
+                "nevents": 12273
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_689.root", 
+                "nevents": 30467
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_679.root", 
+                "nevents": 26895
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0001/myMicroAODOutputFile_1130.root", 
+                "nevents": 18822
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_48.root", 
+                "nevents": 28006
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_384.root", 
+                "nevents": 30076
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 18645
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 18856
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1/190610_103632/0000/myMicroAODOutputFile_601.root", 
+                "nevents": 22720
             }
         ], 
         "vetted": true
