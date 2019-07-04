@@ -1241,7 +1241,7 @@ class Parallel:
         while threading.activeCount() > self.maxThreads:
             sleep(0.05)
         
-        ret = (None,(None,None))
+        ret = (None,(None,(None,(None,None))))
         if not ( self.lsfQueue and  self.asyncLsf ):
             thread = Thread(None,wrap)
             thread.start()

@@ -368,9 +368,10 @@ class JobsManager(object):
                     hadd = self.getHadd(out,outfile)
                     print " now submitting jobs",
                     #---HTCondor cluster submission
-                    if self.options.batchSystem == 'htcondor':
+                    if self.options.batchSystem == 'htcondor' and self.options.queue:
                         iargs = jobargs+shell_args("nJobs=%d jobId=${jobIdsMap[${1}]} resubMap=%s" % (maxJobs, ','.join([str(x) for x in range(maxJobs)])))
                         dnjobs = maxJobs
+                        batchId = -1
                         if not options.dry_run:
                             ret,out = parallel.run(job,iargs)[-1]
                             if self.options.queue and self.options.asyncLsf:
@@ -531,7 +532,7 @@ class JobsManager(object):
                     print ""
                     print "Job failed. Number of resubmissions: %d / %d. " % (ijob[3], self.maxResub),
                     if ijob[3] < self.maxResub:
-                        if self.options.batchSystem == 'htcondor':                    
+                        if self.options.batchSystem == 'htcondor' and self.options.queue:                    
                             print "Collecting failed job for future resubmission."
                             ijob[3] += 1
                             if ijob[3] == self.maxResub and "lastAttempt=1" not in iargs:
@@ -558,7 +559,7 @@ class JobsManager(object):
                         print "Giving up."
                 #---HTCondor remove jobid from the jobid list sotred in the task_config json 
                 #   (do not rely on return value stored in ijob[4] for HTC)                
-                elif self.options.batchSystem == 'htcondor' and ret[2] in ijob[5][1]:
+                elif self.options.batchSystem == 'htcondor' and self.options.queue and ret[2] in ijob[5][1]:
                     ijob[5][1].remove(ret[2])
         
         self.storeTaskConfig(self.task_config)
