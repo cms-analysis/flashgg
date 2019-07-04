@@ -17,7 +17,7 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 
 
@@ -134,7 +134,7 @@ print 'tthTagsOnly '+str(customize.tthTagsOnly)
 # import flashgg customization to check if we have signal or background
 from flashgg.MetaData.JobConfig import customize
 # set default options if needed
-customize.setDefault("maxEvents",10000)
+customize.setDefault("maxEvents",-1)
 customize.setDefault("targetLumi",1.00e+3)
 customize.parse()
 customize.metaConditions = MetaConditionsReader(customize.metaConditions)
@@ -415,9 +415,7 @@ if(customize.doFiducial):
 if customize.processId == "tHq":
    import flashgg.Taggers.THQLeptonicTagVariables as var
    variablesToUse = minimalVariables + var.vtx_variables + var.dipho_variables
-#   variablesToUse= var.vtx_variables + var.vtx_truth_variables + var.dipho_variables + var.photon_variables + var.lepton_variables + var.jet_variables + var.thqmva_variables + var.dr_variable + var.theoweight_variables 
-#    variablesToUse = minimalVariables + var.vtx_variables + var.dipho_variables
-    
+   
 #tagList=[
 #["UntaggedTag",4],
 #["VBFTag",2],
