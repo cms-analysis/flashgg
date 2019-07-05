@@ -1329,7 +1329,7 @@ class Parallel:
                 except:
                     pass
             if handler:
-                nleft += handler.handleJobOutput(job, jobargs, ret if len(ret)==2 else (ret[0], ret[1]))
+                nleft += handler.handleJobOutput(job, jobargs, ret)
             else:
                 returns.append( (job,jobargs,ret) )
             nleft -= 1 
