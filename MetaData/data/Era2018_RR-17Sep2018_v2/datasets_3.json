@@ -2216,6 +2216,70 @@
                 "nevents": 24434, 
                 "totEvents": 24434, 
                 "weights": 24434.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24351, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/190610_104523/0000/myMicroAODOutputFile_91.root", 
+                "nevents": 24351, 
+                "totEvents": 24351, 
+                "weights": 24351.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24693, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/190610_104523/0000/myMicroAODOutputFile_90.root", 
+                "nevents": 24693, 
+                "totEvents": 24693, 
+                "weights": 24693.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24690, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/190610_104523/0000/myMicroAODOutputFile_86.root", 
+                "nevents": 24690, 
+                "totEvents": 24690, 
+                "weights": 24690.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24452, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/190610_104523/0000/myMicroAODOutputFile_314.root", 
+                "nevents": 24452, 
+                "totEvents": 24452, 
+                "weights": 24452.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24293, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/190610_104523/0000/myMicroAODOutputFile_311.root", 
+                "nevents": 24293, 
+                "totEvents": 24293, 
+                "weights": 24293.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24696, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/190610_104523/0000/myMicroAODOutputFile_310.root", 
+                "nevents": 24696, 
+                "totEvents": 24696, 
+                "weights": 24696.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24684, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/190610_104523/0000/myMicroAODOutputFile_357.root", 
+                "nevents": 24684, 
+                "totEvents": 24684, 
+                "weights": 24684.0
+            }, 
+            {
+                "bad": false, 
+                "events": 18386, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/190610_104523/0000/myMicroAODOutputFile_416.root", 
+                "nevents": 18386, 
+                "totEvents": 18386, 
+                "weights": 18386.0
             }
         ], 
         "vetted": true

@@ -134,7 +134,7 @@ class MicroAODCustomize(object):
             self.customizeSignal(process)
             if "tth" in customize.datasetName.lower():
                 self.customizeTTH(process)
-            elif "vh" in customize.datasetName.lower():
+            elif "vh" in customize.datasetName.lower() or "wmh" in customize.datasetName.lower() or "wph" in customize.datasetName.lower() or "wh" in customize.datasetName.lower() or "zh" in customize.datasetName.lower():
                 self.customizeVH(process)
             elif "ggh" in customize.datasetName.lower() or "glugluh" in customize.datasetName.lower():
                 self.customizeGGH(process)
