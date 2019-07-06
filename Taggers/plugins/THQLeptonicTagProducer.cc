@@ -1672,4 +1672,10 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
 }
 typedef flashgg::THQLeptonicTagProducer FlashggTHQLeptonicTagProducer;
 DEFINE_FWK_MODULE( FlashggTHQLeptonicTagProducer );
-
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
