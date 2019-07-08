@@ -247,7 +247,6 @@ namespace flashgg {
             rhoToken_ = consumes<double>( iConfig.getParameter<edm::InputTag>( "rhoTag" ) );
             
             ttHWeightfileName_ = iConfig.getUntrackedParameter<FileInPath>("ttHWeightfile");
-            std::cout << "README*************\nttHWeightFilename is " << (ttHWeightfileName_.fullPath()).c_str() << std::endl;
             ttHScoreThreshold = iConfig.getParameter<double>("ttHScoreThreshold");
             x_mean_ = iConfig.getParameter<std::vector<double>> ("ttHKiller_mean");
             x_std_ = iConfig.getParameter<std::vector<double>> ("ttHKiller_std");
