@@ -94,7 +94,7 @@
 	"weightsFile" : "flashgg/Taggers/data/HHTagger/training_with_19_03_2019_trainingMjj_year1.weights.xml",
 	"MVAFlatteningFileName" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20190321_2016_2017.root",
 	"MVAscalingValue" :1.02309,
-	"NodesReweightingFileName" : "flashgg/Taggers/data/HHTagger/HHreweight_2017nodes_04022018.root",
+	"NodesReweightingFileName" : "flashgg/Taggers/data/HHTagger/HHreweight_2017nodes_08072019.root",
 	"ttHWeightfile" : "flashgg/Taggers/data/ttHKiller/Keras2017_converted_allnode.pb",
 	"ttHKiller_mean" : [  3.22491144e+02,   7.22919780e+01,   1.49387571e-01,   4.94052483e-03,
           5.10246425e-04,   1.38947662e+00,   5.31453078e+00,   7.45455854e+00,
