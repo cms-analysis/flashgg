@@ -23,6 +23,9 @@ set proxy (voms-proxy-info -p)
 cp $proxy ~/
 set -x X509_USER_PROXY ~/x509up_u68758 
 
+bass source /cvmfs/cms.cern.ch/crab3/crab.sh
+bass eval `scramv1 runtime -sh`
+
 #---Moving into specified directory to prevent multiple instances of this script
 #   to write into the same .fgg/, which is used by fggManageSamples.py as temporary directory.
 cd $_flag_d
@@ -46,7 +49,7 @@ while true
             string match -e -r "failed.*\%" $line
             if test $status -eq 0
                 echo "Resubmitting ..."
-                crab resubmit $task
+                crab resubmit --maxjobruntime=1315 $task
             end
         end
         #-Import dataset into campaign catalogue and check files.

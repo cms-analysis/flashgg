@@ -10,14 +10,23 @@ namespace flashgg {
 
 
 
-    std::vector<edm::Ptr<flashgg::Electron> > selectElectrons( const std::vector<edm::Ptr<flashgg::Electron> > Ele, Ptr<flashgg::DiPhotonCandidate> dipho, double ElePtCut, std::vector<double> EleEtaCuts, double ElePhotonDrCut, double ElePhotonZMassCut, double DeltaRTrkEle, bool debug_)
+    std::vector<edm::Ptr<flashgg::Electron> > selectElectrons( const std::vector<edm::Ptr<flashgg::Electron> > Ele, Ptr<flashgg::DiPhotonCandidate> dipho, double ElePtCut, std::vector<double> EleEtaCuts, double ElePhotonDrCut, double ElePhotonZMassCut, double DeltaRTrkEle, bool debug_, int id)
 {
     assert(EleEtaCuts.size()==3);
     std::vector<edm::Ptr<flashgg::Electron> > output;
 
     for(unsigned int l1=0; l1<Ele.size(); ++l1)
     {
-        if(!Ele[l1]->passMVAMediumId()) continue;
+        if (id == 1) {
+            if(!Ele[l1]->passMVALooseId()) continue;
+        }
+        else if (id == 2) {
+          if(!Ele[l1]->passMVAMediumId()) continue;
+        }
+        else if (id == 3) {
+          if (!Ele[l1]->passMVATightId()) continue;
+        }
+
         if( Ele[l1]->pt()<ElePtCut) continue;
         if( fabs(Ele[l1]->eta()) > EleEtaCuts[2] || ( fabs(Ele[l1]->eta()) > EleEtaCuts[0] && fabs(Ele[l1]->eta()) < EleEtaCuts[1] ) ) continue; 
         if( Ele[l1]->hasMatchedConversion() ) continue; 
@@ -53,7 +62,7 @@ namespace flashgg {
      return output;
 }
     
-    std::vector<edm::Ptr<flashgg::Muon    > > selectMuons( const std::vector<edm::Ptr<flashgg::Muon> > Muons, Ptr<flashgg::DiPhotonCandidate> dipho, const std::vector<edm::Ptr<reco::Vertex>> vtx, double MuonPtCut, double MuonEtaCut, double MuonMiniIsoCut, double MuonPhotonDrCut, bool debug_)
+    std::vector<edm::Ptr<flashgg::Muon    > > selectMuons( const std::vector<edm::Ptr<flashgg::Muon> > Muons, Ptr<flashgg::DiPhotonCandidate> dipho, const std::vector<edm::Ptr<reco::Vertex>> vtx, double MuonPtCut, double MuonEtaCut, double MuonMiniIsoCut, double MuonPhotonDrCut, bool debug_, int id)
 {
      std::vector<edm::Ptr<flashgg::Muon> > output;
 
@@ -62,7 +71,16 @@ namespace flashgg {
         if(Muons[l1]->pt()<MuonPtCut) continue;
         if(fabs(Muons[l1]->eta()) > MuonEtaCut) continue;
         if( !Muons[l1]->innerTrack() ) continue; 
-        if( !Muons[l1]->isMediumMuon() ) continue; 
+
+        if (id == 1) {
+            if( !Muons[l1]->isLooseMuon() ) continue;
+        }
+        else if (id == 2) {
+            if( !Muons[l1]->isMediumMuon() ) continue; 
+        }
+        else if (id == 3) {
+            if( !Muons[l1]->isTightMuon(*vtx[0]) ) continue;
+        }
 
         float Iso = Muons[l1]->pfIsolationR04().sumChargedHadronPt + max(0., Muons[l1]->pfIsolationR04().sumNeutralHadronEt + Muons[l1]->pfIsolationR04().sumPhotonEt - 0.5*Muons[l1]->pfIsolationR04().sumPUPt);
 
