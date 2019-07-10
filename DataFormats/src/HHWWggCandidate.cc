@@ -55,9 +55,14 @@ dr_2_ (),
 merged_qs_ (),
 qone_matches_ (),
 qtwo_matches_ (),
-hgg_p4_ (), // Need absence of comma on last variable 
+hgg_p4_ (), 
 l_genpho_ (),
-sl_genpho_ ()
+sl_genpho_ (),
+SL_mT_WW_ (),
+FL_mT_WW_ (),
+FH_m_WW_ ()
+
+// leading_lepton_ () // Need absence of comma on last variable 
 
 {}
 
@@ -502,12 +507,18 @@ sl_genpho_ ()
 
     } 
 
+    float elec_pt = -99, muon_pt = -99;
+    // reco::Candidate::LorentzVector leading_lepton_; 
+
     // Leading/subleading electrons
     if (electronVector_.size() > 0){
       flashgg::Electron l_elec = electronVector_[0];
       auto l_elec_4vec = l_elec.p4();
       auto leading_elec = l_elec_4vec;
       leading_elec_ = leading_elec;
+      // if (muonVector_.size() == 0){
+      //   leading_lepton_ = leading_elec;
+      // }
     }
     
     if (electronVector_.size() > 1){    
@@ -522,6 +533,9 @@ sl_genpho_ ()
       auto l_muon_4vec = l_muon.p4();
       auto leading_muon = l_muon_4vec;
       leading_muon_ = leading_muon;
+      // if (electronVector_.size() == 0){
+      //   leading_lepton_ = leading_muon;
+      // }
     }
 
     if (muonVector_.size() > 1){
@@ -530,5 +544,183 @@ sl_genpho_ ()
       auto subleading_muon = sl_muon_4vec;
       subleading_muon_ = subleading_muon;   
     }
+
+    float SL_mT_WW = 0;
+    float SL_mT_W = 0;
+    float FL_mT_WW = 0;
+
+    // WW transverse mass 
+    if (METVector_.size() == 1)
+    {
+
+      // SL 
+      
+      // MET 
+      flashgg::Met met__ = METVector_[0];
+      auto met_ = met__.p4();
+      MET_fourvec_ = met_;
+
+      // Two Jets
+      if (JVSize >= 2){
+        auto j0 = JetVector_[0].p4();
+        auto j1 = JetVector_[1].p4();
+        auto dij = j0 + j1;
+        float dij_m = dij.M();
+        // cout << "dijet mass = " << dij_m << endl;
+
+        // if (abs(dij_m - 80.379) < 5.){
+
+          reco::Candidate::LorentzVector leading_lepton_; 
+          if ( (electronVector_.size() > 0) && (muonVector_.size() == 0) ){
+            flashgg::Electron l_elec = electronVector_[0];
+            auto l_elec_4vec = l_elec.p4();
+            auto leading_elec = l_elec_4vec;
+            leading_elec_ = leading_elec;
+            leading_lepton_ = leading_elec_;
+            auto WW = met_ + leading_lepton_ + j0 + j1;
+            auto W = met_ + leading_lepton_;
+            SL_mT_WW = WW.Mt();
+            SL_mT_WW_ = SL_mT_WW;  
+            SL_mT_W = W.Mt();
+            SL_mT_W_ = SL_mT_W;
+            
+          }
+
+          else if ( (muonVector_.size() > 0) && (electronVector_.size() == 0) ){
+            flashgg::Muon l_muon = muonVector_[0];
+            auto l_muon_4vec = l_muon.p4();
+            auto leading_muon = l_muon_4vec;
+            leading_muon_ = leading_muon;
+            leading_lepton_ = leading_muon_;
+            auto WW = met_ + leading_lepton_ + j0 + j1;
+            auto W = met_ + leading_lepton_;
+            SL_mT_WW = WW.Mt();
+            SL_mT_WW_ = SL_mT_WW;  
+            SL_mT_W = W.Mt();
+            SL_mT_W_ = SL_mT_W;
+          }
+
+          else if ( (muonVector_.size() > 0) && (electronVector_.size() > 0) ){
+            flashgg::Electron l_elec = electronVector_[0];
+            auto l_elec_4vec = l_elec.p4();
+            auto leading_elec = l_elec_4vec;
+            leading_elec_ = leading_elec;
+            flashgg::Muon l_muon = muonVector_[0];
+            auto l_muon_4vec = l_muon.p4();
+            auto leading_muon = l_muon_4vec;
+            leading_muon_ = leading_muon;
+            elec_pt = l_elec_4vec.pt();
+            muon_pt = l_muon_4vec.pt();
+            if (elec_pt > muon_pt){
+              leading_lepton_ = leading_elec_;
+              auto WW = met_ + leading_lepton_ + j0 + j1;
+              auto W = met_ + leading_lepton_;
+            SL_mT_WW = WW.Mt();
+            SL_mT_WW_ = SL_mT_WW;  
+            SL_mT_W = W.Mt();
+            SL_mT_W_ = SL_mT_W;
+            }
+            else if (muon_pt > elec_pt){
+              leading_lepton_ = leading_muon_;
+              auto WW = met_ + leading_lepton_ + j0 + j1;
+              auto W = met_ + leading_lepton_;
+            SL_mT_WW = WW.Mt();
+            SL_mT_WW_ = SL_mT_WW;  
+            SL_mT_W = W.Mt();
+            SL_mT_W_ = SL_mT_W;
+            }
+
+          }
+
+        // }
+      
+      }
+
+
+
+      // FL 
+
+      // // Two Jets
+      // if (JVSize >= 2){
+      //   auto j0 = JetVector_[0].p4();
+      //   auto j1 = JetVector_[1].p4();
+      //   auto dij = j0 + j1;
+      //   float dij_m = dij.M();
+      //   cout << "dijet mass = " << dij_m << endl;
+
+        // if (abs(dij_m - 80.379) < 5.){
+
+          reco::Candidate::LorentzVector leading_lepton_; 
+          reco::Candidate::LorentzVector subleading_lepton_; 
+          if ( (electronVector_.size() >= 2) && (muonVector_.size() == 0) ){
+            flashgg::Electron l_elec = electronVector_[0];
+            flashgg::Electron sl_elec = electronVector_[1];
+            auto l_elec_4vec = l_elec.p4();
+            auto sl_elec_4vec = sl_elec.p4();
+            auto leading_elec = l_elec_4vec;
+            auto subleading_elec = sl_elec_4vec;
+            leading_elec_ = leading_elec;
+            subleading_elec_ = subleading_elec;
+            leading_lepton_ = leading_elec_;
+            subleading_lepton_ = subleading_elec_;
+            auto WW = met_ + leading_lepton_ + subleading_lepton_;
+            FL_mT_WW = WW.Mt();
+            FL_mT_WW_ = FL_mT_WW;  
+          }
+
+          else if ( (muonVector_.size() >= 2) && (electronVector_.size() == 0) ){
+            flashgg::Muon l_muon = muonVector_[0];
+            flashgg::Muon sl_muon = muonVector_[1];
+            auto l_muon_4vec = l_muon.p4();
+            auto sl_muon_4vec = sl_muon.p4();
+            auto leading_muon = l_muon_4vec;
+            auto subleading_muon = sl_muon_4vec;
+            leading_muon_ = leading_muon;
+            subleading_muon_ = subleading_muon;
+            leading_lepton_ = leading_muon_;
+            subleading_lepton_ = subleading_muon_;
+            auto WW = met_ + leading_lepton_ + subleading_lepton_;
+            FL_mT_WW = WW.Mt();
+            FL_mT_WW_ = FL_mT_WW;  
+          }
+
+          else if ( (muonVector_.size() > 0) && (electronVector_.size() > 0) ){
+            // flashgg::Electron l_elec = electronVector_[0];
+            // auto l_elec_4vec = l_elec.p4();
+            // auto leading_elec = l_elec_4vec;
+            // leading_elec_ = leading_elec;
+            // flashgg::Muon l_muon = muonVector_[0];
+            // auto l_muon_4vec = l_muon.p4();
+            // auto leading_muon = l_muon_4vec;
+            // leading_muon_ = leading_muon;
+            // elec_pt = l_elec_4vec.pt();
+            // muon_pt = l_muon_4vec.pt();
+            // if (elec_pt > muon_pt){
+            //   leading_lepton_ = leading_elec_;
+            //   auto WW = met_ + leading_lepton_ + j0 + j1;
+            //   SL_mT_WW = WW.Mt();
+            //   SL_mT_WW_ = SL_mT_WW;  
+            // }
+            // else if (muon_pt > elec_pt){
+            //   leading_lepton_ = leading_muon_;
+            //   auto WW = met_ + leading_lepton_ + j0 + j1;
+            //   SL_mT_WW = WW.Mt();
+            //   SL_mT_WW_ = SL_mT_WW;  
+            // }
+
+          }
+
+        // }
+      
+      // }
+
+
+
+      // cout << "SL_mT_WW = " << SL_mT_WW << endl;
+      // auto WW = met_ + leading_lepton_;
+      // SL_mT_WW = W.Mt();
+      // SL_mT_WW_ = SL_mT_WW;
+
+    }     
 
   } //end 

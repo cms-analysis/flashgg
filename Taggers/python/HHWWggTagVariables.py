@@ -76,7 +76,7 @@ HHWWgg_variables = [
 
     # Quarks 
     "m_qq                                := ? m_qq() != 0 ? m_qq() : -99",
-    "mdq_invmass                         := MatchingDiQuark.mass()",
+    "mdq_invmass                         := ? MatchingDiQuark.mass() != 0 ? MatchingDiQuark.mass() : -99",
     "nmdq_invmass                        := NonMatchingDiQuark.mass()",
     "dr_1jet_and_q1                      := ? dr_1() != 0 ? dr_1() : -99",
     "dr_1jet_and_q2                      := ? dr_2() != 0 ? dr_2() : -99",
@@ -87,6 +87,12 @@ HHWWgg_variables = [
     #---------------------------------------------------------------------------------------------------#
 
     ## RECO Variables
+
+    # WW 
+    "SL_mT_WW                            := ? SL_mT_WW != 0 ? SL_mT_WW() : -99",
+    "FL_mT_WW                            := ? FL_mT_WW != 0 ? FL_mT_WW() : -99",
+    "SL_mT_W                             := ? SL_mT_W != 0 ? SL_mT_W() : -99",
+    # "FH_m_WW                             := ? FH_m_WW != 0 ? FH_m_WW() : -99",
 
     # Photons 
     "n_photons                           := phoVector.size()",
@@ -167,6 +173,10 @@ HHWWgg_variables = [
         "lsl_dij_mass                    := ? lsl_dij.mass() !=0 ? lsl_dij.mass() : -99 ", # dijet made from leading and subleading jets 
 
     # MET 
-    "MET                                 := MET_fourvec.pt()",
+    "MET                                 := ? MET_fourvec.pt() !=0 ? MET_fourvec.pt() : -99",
+    "METpx                                 := ? MET_fourvec.px() !=0 ? MET_fourvec.px() : -99",
+    "METpy                                 := ? MET_fourvec.py() !=0 ? MET_fourvec.py() : -99",
+    "METpz                                 := ? MET_fourvec.pz() !=0 ? MET_fourvec.pz() : -99",
+    "MET_E                                 := ? MET_fourvec.E() !=0 ? MET_fourvec.E() : -99",
 
 ]

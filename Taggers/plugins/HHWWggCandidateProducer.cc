@@ -60,8 +60,8 @@ namespace flashgg {
 
     //---Outtree 
     edm::Service<TFileService> fs;
-    TH1F* vars; 
-    // TH1F* cutFlow;
+    // TH1F* vars; 
+    TH1F* cutFlow;
     // TH1F* WTags;
 
   private:
@@ -186,9 +186,9 @@ namespace flashgg {
     {
       genInfo_ = pSet.getUntrackedParameter<edm::InputTag>( "genInfo", edm::InputTag("generator") );
       genInfoToken_ = consumes<GenEventInfoProduct>( genInfo_ );
-      vars = fs->make<TH1F> ("vars","vars",10,0,10);
-      // cutFlow = fs->make<TH1F> ("cutFlow","Cut Flow",10,0,10);
-      // WTags = fs->make<TH1F> ("WTags","W Tags",4,0,4);
+      // vars = fs->make<TH1F> ("vars","vars",10,0,10);
+      cutFlow = fs->make<TH1F> ("cutFlow","Cut Flow",10,0,10);
+      // WTags = fs->make<TH1F> ("WTags","W Tags",3,0,3);
 
       leptonPtThreshold_ = pSet.getParameter<double>( "leptonPtThreshold");
       muonEtaThreshold_ = pSet.getParameter<double>( "muonEtaThreshold");
@@ -327,7 +327,7 @@ namespace flashgg {
                       }
           }
 
-      bool photonSelection = false;
+      // bool photonSelection = false;
       double idmva1 = 0.;
       double idmva2 = 0.;
       // bool checked_first = false; 
@@ -389,11 +389,11 @@ namespace flashgg {
         // leading/subleading photon MVA
         idmva1 = dipho->leadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
         idmva2 = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
-        if( idmva1 <= PhoMVAThreshold_ || idmva2 <= PhoMVAThreshold_ ) { continue; }
+        if( idmva1 <= PhoMVAThreshold_ || idmva2 <= PhoMVAThreshold_ ) { continue; } // isn't this already applied in preselection? 
 
         // Diphoton MVA 
         if( mvares->result < MVAThreshold_ ) { continue; }
-        photonSelection = true;
+        // photonSelection = true;
 
         // Electrons 
         std::vector<edm::Ptr<Electron> > goodElectrons = selectStdElectrons( electrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
@@ -720,8 +720,15 @@ namespace flashgg {
         //if ( (n_diphotons > 0) && (n_photons > 1) && (abs(higgs_eta) < 2.5)) vars->Fill(1.0); // number of events that passed cuts and have a preselected diphoton. numerator.
         //if ( (n_photons > 1) && (abs(higgs_eta) < 2.5)) vars->Fill(2.0); // number of events that passed cuts. Denominator 
         // cout << "photonSelection = " << photonSelection << endl;
-        if ( (d_n_good_leptons >= 1) && (n_diphotons > 0) && (photonSelection) ) vars->Fill(1.0); // numerator
-        if ( (n_diphotons > 0) && (photonSelection)) vars->Fill(2.0); // denominator 
+        // if ( (d_n_good_leptons >= 1) && (n_diphotons > 0) && (photonSelection) ) vars->Fill(1.0); // numerator
+        // if ( (n_diphotons > 0) && (photonSelection)) vars->Fill(2.0); // denominator 
+        
+        if (diphotons->size() > 0) cutFlow->Fill(0.0); // Passed PS 
+        if (SLW_Tag == 1.0) cutFlow->Fill(1.0); 
+        if (FLW_Tag == 1.0) cutFlow->Fill(2.0);
+        if (FHW_Tag == 1.0) cutFlow->Fill(3.0);
+
+
 
         // ndpho->Fill(n_diphotons);
 

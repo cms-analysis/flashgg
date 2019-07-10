@@ -85,6 +85,11 @@ namespace flashgg {
     const reco::Candidate::LorentzVector& hgg_p4() const { return hgg_p4_; }; 
     const reco::Candidate::LorentzVector& l_genpho() const { return l_genpho_; }; 
     const reco::Candidate::LorentzVector& sl_genpho() const { return sl_genpho_; }; 
+    // const reco::Candidate::LorentzVector& leading_lepton() const { return leading_lepton_; }; 
+    const float SL_mT_WW() const { return SL_mT_WW_; };
+    const float FL_mT_WW() const { return FL_mT_WW_; };
+    const float FH_m_WW() const { return FH_m_WW_; };   
+    const float SL_mT_W() const { return SL_mT_W_; };   
   private:
 
     std::vector<flashgg::DiPhotonCandidate> diphoVector_;
@@ -132,8 +137,12 @@ namespace flashgg {
     reco::Candidate::LorentzVector hgg_p4_;
     reco::Candidate::LorentzVector l_genpho_;
     reco::Candidate::LorentzVector sl_genpho_;
+    // reco::Candidate::LorentzVector leading_lepton_;
+    float SL_mT_WW_;
+    float FL_mT_WW_;
+    float FH_m_WW_;
+    float SL_mT_W_;
     
-
   };
   typedef std::vector<HHWWggCandidate> HHWWggCandidateCollection; // define new type: vector of HHWWggCandidates 
 
