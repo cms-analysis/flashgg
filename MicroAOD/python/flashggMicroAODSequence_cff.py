@@ -9,6 +9,9 @@ from flashgg.MicroAOD.flashggJets_cfi import flashggFinalJets,flashggFinalPuppiJ
 from flashgg.MicroAOD.flashggElectrons_cfi import flashggElectrons
 from flashgg.MicroAOD.flashggMuons_cfi import flashggMuons
 
+from flashgg.MicroAOD.flashggRandomizedElectronProducer_cff import flashggRandomizedElectrons
+from flashgg.MicroAOD.flashggRandomizedMuonProducer_cff import flashggRandomizedMuons
+
 from flashgg.MicroAOD.flashggLeptonSelectors_cff import flashggSelectedMuons,flashggSelectedElectrons
 from flashgg.MicroAOD.flashggMicroAODGenSequence_cff import *
 
@@ -39,14 +42,15 @@ flashggPrePhotonSequence80X = cms.Sequence(photonMVAValueMapProducer * egmPhoton
 flashggDiPhotonFilterSequence = cms.Sequence()
 flashggMuonFilterSequence = cms.Sequence()
 
+
 flashggMicroAODSequence = cms.Sequence( eventCount+weightsCount
                                        +flashggVertexMapUnique+flashggVertexMapNonUnique
                                        +flashggMicroAODGenSequence
                                        +flashggPrePhotonSequence80X * flashggPhotons * flashggRandomizedPhotons * flashggDiPhotons
                                        +flashggDiPhotonFilterSequence
-                                       +electronMVAValueMapProducer*egmGsfElectronIDs*flashggElectrons*flashggSelectedElectrons
-                                       +flashggMuons*flashggSelectedMuons
+                                       +electronMVAValueMapProducer*egmGsfElectronIDs*flashggElectrons*flashggRandomizedElectrons*flashggSelectedElectrons
+                                       +flashggMuons*flashggRandomizedMuons*flashggSelectedMuons
                                        +flashggMuonFilterSequence
                                        +flashggVertexMapForCHS*flashggFinalJets
                                        +flashggVertexMapForPUPPI*flashggFinalPuppiJets
-                                        )
+)

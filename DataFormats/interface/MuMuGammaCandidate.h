@@ -5,13 +5,14 @@
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 
+#include "flashgg/DataFormats/interface/WeightedObject.h"
 #include "flashgg/DataFormats/interface/DiMuonCandidate.h"
 #include "flashgg/DataFormats/interface/Photon.h"
 
 //-----------J. Tao from IHEP-Beijing--------------
 
 namespace flashgg {
-    class MuMuGammaCandidate : public reco::CompositeCandidate
+    class MuMuGammaCandidate : public reco::CompositeCandidate, public WeightedObject
     {
     public:
         MuMuGammaCandidate();

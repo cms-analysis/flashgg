@@ -44,6 +44,8 @@
 #include "flashgg/DataFormats/interface/TagCandidate.h"
 #include "flashgg/DataFormats/interface/TagAndProbeCandidate.h" //spigazzi
 #include "flashgg/DataFormats/interface/DoubleHTag.h"
+#include "flashgg/DataFormats/interface/DiElectronCandidate.h" // martina
+#include "flashgg/DataFormats/interface/EleEleGammaCandidate.h" // martina
 
 #include <vector>
 #include <map>
@@ -325,6 +327,26 @@ namespace  {
         std::vector<edm::Ptr<flashgg::TagAndProbeCandidate> >                  vec_ptr_fgg_tnp;
         edm::Wrapper<std::vector<edm::Ptr<flashgg::TagAndProbeCandidate> > >   wrp_vec_ptr_fgg_tnp;
 
+
+
+        //----------- DiElectron and EleEleGammaCandidate
+        flashgg::DiElectronCandidate                                        fgg_die;
+        edm::Wrapper<flashgg::DiElectronCandidate>                      wrp_fgg_die;
+        std::vector<flashgg::DiElectronCandidate>                       vec_fgg_die;
+        edm::Wrapper<std::vector<flashgg::DiElectronCandidate> >    wrp_vec_fgg_die;
+        edm::Ptr<flashgg::DiElectronCandidate>                          ptr_fgg_die;
+        edm::Wrapper<edm::Ptr<flashgg::DiElectronCandidate> >       wrp_ptr_fgg_die;
+        std::vector<edm::Ptr<flashgg::DiElectronCandidate> >        vec_ptr_fgg_die;
+        edm::Wrapper<std::vector<edm::Ptr<flashgg::DiElectronCandidate> > >   wrp_vec_ptr_fgg_die;
+        flashgg::EleEleGammaCandidate                                        fgg_eeg;
+        edm::Wrapper<flashgg::EleEleGammaCandidate>                      wrp_fgg_eeg;
+        std::vector<flashgg::EleEleGammaCandidate>                       vec_fgg_eeg;
+        edm::Wrapper<std::vector<flashgg::EleEleGammaCandidate> >    wrp_vec_fgg_eeg;
+        edm::Ptr<flashgg::EleEleGammaCandidate>                          ptr_fgg_eeg;
+        edm::Wrapper<edm::Ptr<flashgg::EleEleGammaCandidate> >       wrp_ptr_fgg_eeg;
+        std::vector<edm::Ptr<flashgg::EleEleGammaCandidate> >        vec_ptr_fgg_eeg;
+        edm::Wrapper<std::vector<edm::Ptr<flashgg::EleEleGammaCandidate> > >   wrp_vec_ptr_fgg_eeg;
+        //-------------------------
     };
 }
 // Local Variables:

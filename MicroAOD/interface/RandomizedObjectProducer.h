@@ -12,6 +12,7 @@
 #include "FWCore/Utilities/interface/RandomNumberGenerator.h"
 #include "CLHEP/Random/RandomEngine.h"
 #include "CLHEP/Random/RandGauss.h"
+#include "CLHEP/Random/RandFlat.h"
 
 namespace flashgg {
 
@@ -26,17 +27,20 @@ namespace flashgg {
         edm::EDGetTokenT<edm::View<pat_object> > token_;
         std::vector<std::string> labels_;
         //std::string pdf_; // only gaussians with mean 0 and width 1 for the time being
-
+        std::string pdf_;
+        
     };
 
     template <typename pat_object>
     RandomizedObjectProducer<pat_object>::RandomizedObjectProducer( const edm::ParameterSet &ps ) :
         token_(consumes<edm::View<pat_object> >(ps.getParameter<edm::InputTag>("src"))),
-        labels_(ps.getParameter<std::vector<std::string> >("labels"))
+        labels_(ps.getParameter<std::vector<std::string> >("labels")),
+        pdf_(ps.getParameter<std::string>("pdf"))    
         //prefix_(ps.getParameter<std::string>("pdf")
     {
         produces<std::vector<pat_object> >();
     }
+
 
     template <typename pat_object>
     void RandomizedObjectProducer<pat_object>::produce( edm::Event &evt, const edm::EventSetup & )
@@ -51,15 +55,32 @@ namespace flashgg {
 
         CLHEP::HepRandomEngine & engine = rng->getEngine( evt.streamID() );
         unique_ptr<std::vector<pat_object> > out_obj( new std::vector<pat_object>() );
-        CLHEP::RandGauss::shoot(&engine, 0., 1.);
-
-        for (const auto & obj : *objects) {
-            auto o = obj;
-            for (auto l : labels_) {
+  
+        if (pdf_.empty() or pdf_ == "gaus"){
+            CLHEP::RandGauss::shoot(&engine, 0., 1.);
+            
+            for (const auto & obj : *objects) {
+                auto o = obj;
+                for (auto l : labels_) {
                     o.addUserFloat(l, CLHEP::RandGauss::shoot(&engine, 0., 1.));
                     out_obj->push_back(o);
+                }
             }
         }
+
+        if (pdf_ == "uniform"){
+            CLHEP::RandFlat::shoot(&engine, 0., 1.);
+
+            for (const auto & obj : *objects) {
+                auto o = obj;
+                for (auto l : labels_) {
+                    o.addUserFloat(l, CLHEP::RandFlat::shoot(&engine, 0., 1.));
+                    out_obj->push_back(o);
+                }
+            }
+        }
+
+
         evt.put(std::move(out_obj));
     }
 }

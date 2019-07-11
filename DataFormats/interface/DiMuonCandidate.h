@@ -2,22 +2,24 @@
 #define FLASHgg_DiMuonCandidate_h
 
 #include "DataFormats/Candidate/interface/CompositeCandidate.h"
-#include "DataFormats/PatCandidates/interface/Muon.h"
+//#include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
+#include "flashgg/DataFormats/interface/WeightedObject.h"
+#include "flashgg/DataFormats/interface/Muon.h"
 
 //-----------J. Tao from IHEP-Beijing--------------
 
 namespace flashgg {
-    class DiMuonCandidate : public reco::CompositeCandidate
+    class DiMuonCandidate : public reco::CompositeCandidate, public WeightedObject
     {
     public:
         DiMuonCandidate();
-        DiMuonCandidate( edm::Ptr<pat::Muon>, edm::Ptr<pat::Muon> );
-        DiMuonCandidate( const pat::Muon &, const pat::Muon & );
+        DiMuonCandidate( edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Muon> );
+        DiMuonCandidate( const flashgg::Muon &, const flashgg::Muon & );
         ~DiMuonCandidate();
 
-        const pat::Muon *leadingMuon() const;
-        const pat::Muon *subleadingMuon() const;
+        const flashgg::Muon *leadingMuon() const;
+        const flashgg::Muon *subleadingMuon() const;
 
         bool IsOSDiMuPair() const { return IsOSDiMuPair_; }
         void setIsOSDiMuPair( bool val ) { IsOSDiMuPair_ = val;}

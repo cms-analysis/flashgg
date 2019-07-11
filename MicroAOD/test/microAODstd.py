@@ -18,7 +18,9 @@ import os
 ### 2016
 process.GlobalTag = GlobalTag(process.GlobalTag, '', '')
 process.source = cms.Source("PoolSource",
-                             fileNames=cms.untracked.vstring("/store/mc/RunIISummer16MiniAODv3/VBFHToGG_M125_13TeV_amcatnlo_pythia8_v2/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3-v1/50000/38128C3C-892D-E911-AC8E-008CFA0087C4.root"))
+                             fileNames=cms.untracked.vstring(
+                                 "/store/mc/RunIISummer16MiniAODv3/GluGluHToZG_M-120_13TeV_powheg_pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v2/50000/6442D271-D766-E911-B738-90B11C443C9E.root"))
+                                 #"/store/mc/RunIISummer16MiniAODv3/VBFHToGG_M125_13TeV_amcatnlo_pythia8_v2/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3-v1/50000/38128C3C-892D-E911-AC8E-008CFA0087C4.root"))
 #    process.GlobalTag = GlobalTag(process.GlobalTag,'80X_dataRun2_2016LegacyRepro_v4','')
 #    process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/data/Run2016B/SingleElectron/MINIAOD/07Aug17_ver1-v1/110000/0248293E-578B-E711-A639-44A842CFC9D9.root"))
 
@@ -42,6 +44,13 @@ process.source = cms.Source("PoolSource",
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService")
 process.RandomNumberGeneratorService.flashggRandomizedPhotons = cms.PSet(
           initialSeed = cms.untracked.uint32(16253245)
+        )
+process.RandomNumberGeneratorService.flashggRandomizedElectrons = cms.PSet(
+          initialSeed = cms.untracked.uint32(13579246)
+        )
+
+process.RandomNumberGeneratorService.flashggRandomizedMuons = cms.PSet(
+          initialSeed = cms.untracked.uint32(19876543)
         )
 
 #process.GlobalTag = GlobalTag(process.GlobalTag,'92X_upgrade2017_realistic_v10','')
@@ -119,7 +128,7 @@ process.e = cms.EndPath(process.out)
 from flashgg.MicroAOD.MicroAODCustomize import customize
 customize(process)
 
-if "DY" in customize.datasetName or "SingleElectron" in customize.datasetName or "DoubleEG" in customize.datasetName or "EGamma" in customize.datasetName:
+if "DY" in customize.datasetName or "SingleElectron" in customize.datasetName or "DoubleEG" in customize.datasetName or "EGamma" in customize.datasetName or "SingleMuon" in customize.datasetName:
     customize.customizeHLT(process)
 
 #open('dump.py', 'w').write(process.dumpPython())

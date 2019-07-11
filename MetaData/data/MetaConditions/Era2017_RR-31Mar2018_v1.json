@@ -33,7 +33,8 @@
             "HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_NoPixelVeto_Mass55*",
             "HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_PixelVeto_Mass55*",
             "HLT_Diphoton30_18_PVrealAND_R9Id_AND_IsoCaloId_AND_HE_R9Id_PixelVeto_Mass55*",
-            "HLT_Diphoton30_18_PVrealAND_R9Id_AND_IsoCaloId_AND_HE_R9Id_NoPixelVeto_Mass55*"
+            "HLT_Diphoton30_18_PVrealAND_R9Id_AND_IsoCaloId_AND_HE_R9Id_NoPixelVeto_Mass55*",
+	    "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v*"
         ],
         ".*SingleEle.*" :
         [
@@ -41,10 +42,17 @@
         ],
         ".*DoubleMuon.*" :
         [
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v*",
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v*",
             "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*",
             "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v*"
+	],
+        ".*SingleMuon.*" :
+        [
+            "HLT_IsoMu24*",
+            "HLT_IsoMu27*"
+        ],
+        ".*MuonEG.*" :
+        [
+            "HLT_Mu17_Photon30_IsoCaloId_v*"
         ]
     },
 

@@ -28,12 +28,33 @@
         [
             "HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90*",
             "HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55*",
-            "HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55*"
+            "HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55*",
+	    "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL*",
+	    "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ*"
         ],
         ".*SingleEle.*" :
         [
             "HLT_Ele27_WPTight_Gsf*"
-        ]
+        ],
+        ".*DoubleMuon.*" :
+        [
+	    "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ*", 
+	    "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL*",
+	    "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ*", 
+	    "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL*",        
+	    "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v*", 
+	    "HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v*"
+        ],
+	".*SingleMuon.*" :
+	[
+	    "HLT_IsoMu24*",
+	    "HLT_IsoTkMu24_v*"
+	],
+	".*MuonEG.*" :
+	[
+	    "HLT_Mu17_Photon30_CaloIdL_L1ISO*"
+	]
+	
     },
     
     "MUON_ID" : "Medium",

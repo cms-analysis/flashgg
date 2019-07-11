@@ -84,8 +84,8 @@ namespace flashgg {
                 mumugamma.setVertex( pvx );
                 //====================
                 bool passFSRZmmg2012 = 0;
-                const pat::Muon *muon_lead = dimuon->leadingMuon();
-                const pat::Muon *muon_sublead = dimuon->subleadingMuon();
+                const flashgg::Muon *muon_lead = dimuon->leadingMuon();
+                const flashgg::Muon *muon_sublead = dimuon->subleadingMuon();
                 reco::MuonPFIsolation  leadmuIso04 = muon_lead->pfIsolationR04();
                 reco::MuonPFIsolation  subleadmuIso04 = muon_sublead->pfIsolationR04();
                 double DeltaR1 = reco::deltaR( photon_corr.eta(), photon_corr.phi(), muon_lead->eta(), muon_lead->phi() );
