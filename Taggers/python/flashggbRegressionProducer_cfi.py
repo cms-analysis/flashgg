@@ -5,7 +5,6 @@ from flashgg.Taggers.flashggTags_cff import flashggUnpackedJets
 from flashgg.MicroAOD.flashggJets_cfi import  maxJetCollections
 
 import os
-import flashgg.Systematics.settings as settings
 
 bRegressionWeightfile_str = cms.untracked.string(os.environ["CMSSW_BASE"]+"/src/flashgg/Taggers/data/DNN_models/model-18.pb")
 y_mean_str = cms.untracked.double(1.0454729795455933)

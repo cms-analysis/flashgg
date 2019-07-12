@@ -107,8 +107,6 @@ namespace flashgg {
         edm::EDGetTokenT< LHEEventProduct > lheEventToken_;
         std::string LHEWeightName;
         int LHEWeightIndex;
-        edm::EDGetTokenT<float> reweightToken_;
-        bool doReweight_;
 
         std::string processId_;
         int processIndex_;
@@ -211,10 +209,6 @@ namespace flashgg {
         globalVarsDumper_(0)
     {
         if( dumpGlobalVariables_ ) {
-           doReweight_ = cfg.exists("reweight");
-          if( doReweight_ ) {
-               reweightToken_ = cc.consumes<float>(cfg.getParameter<edm::InputTag>("reweight" )) ;
-          }
             globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ), std::forward<edm::ConsumesCollector>(cc) );
         }
         _init(cfg, fs);
@@ -453,11 +447,6 @@ namespace flashgg {
                     }
                 }
                 
-                if( doReweight_ ) {
-                    edm::Handle<float> reweight;
-                    fullEvent->getByToken(reweightToken_,reweight);
-                    weight *= *reweight;
-                }
 
                 if( globalVarsDumper_ && globalVarsDumper_->puReWeight() ) {
                     if (globalVarsDumper_->cache().puweight > 999999. || globalVarsDumper_->cache().puweight < -999999.) {

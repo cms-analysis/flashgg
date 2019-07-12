@@ -26,12 +26,10 @@
     {
         ".*EGamma.*2018.*" :
         [
-            "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v*",
-            "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95_v*",
-            "HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_PixelVeto_Mass55_v*",
-            "HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_NoPixelVeto_Mass55_v*",
-            "HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto_Mass55_v*",
-            "HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto_v*",
+            "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90*",
+            "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95*",
+            "HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto_Mass55*",
+            "HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto*",
             "HLT_Ele*_WPTight_Gsf_v*"
         ],        
         ".*DoubleMuon.*2018.*" :
@@ -47,6 +45,24 @@
     "MUON_ISO" : "LooseRel",
 
     "Ele_ID_eff_bin" : "binInfo2018",
+
+    "bTagSystematics" :
+    {
+
+	"bTagEffBins" : "bTagEffBins2017",
+
+	"bTagger" : "pfDeepJet",
+
+	"bDiscriminatorValue_pfDeepCSV" : 0.4184,
+	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_102XSF_V1.csv",
+	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_102XSF_WP_V1.csv",
+
+	"bDiscriminatorValue_pfDeepJet" : 0.2770,
+	"bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/DeepJet_102XSF_V1.csv",
+	"bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/DeepJet_102XSF_V1.csv",
+
+	"eta" : 2.5
+    },
 
     "bRegression" :
     {

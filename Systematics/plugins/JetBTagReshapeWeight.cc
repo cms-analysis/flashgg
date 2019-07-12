@@ -55,7 +55,8 @@ namespace flashgg {
     {
         this->setMakesWeight( true );
         bTagReshapeSystOption_ = conf.getParameter<int>( "bTagReshapeSystOption"); 
-        std::string btag_algo = bTag_=="pfDeepCSV" ? "DeepCSV" : "CSVv2";
+        // std::string btag_algo = bTag_=="pfDeepJet" ? "DeepJet" : "pfDeepCSV" ? "DeepCSV" : "CSVv2";  //// DeepJet =  DeepFlavour
+        std::string btag_algo = bTag_=="pfDeepJet" ? "DeepJet" : "DeepCSV" ;
         calibReshape_ = BTagCalibration(btag_algo, conf.getParameter<edm::FileInPath>("bTagCalibrationFile").fullPath());
     }
 
@@ -76,7 +77,7 @@ namespace flashgg {
     {
 
         if( this->debug_ ) {
-            std::cout<<"In JetBTagReshapeProducer "<<std::endl;
+            std::cout<<"In JetBTagReshapeProducer and syst_shift="<<  syst_shift <<std::endl;
         }
 
 
@@ -115,14 +116,14 @@ namespace flashgg {
             int JetFlav = obj.hadronFlavour();
             float JetBDiscriminator;
 
-            if(bTag_=="pfDeepCSV") JetBDiscriminator = obj.bDiscriminator("pfDeepCSVJetTags:probb")+ obj.bDiscriminator("pfDeepCSVJetTags:probbb"); //JM
-            else JetBDiscriminator= obj.bDiscriminator(bTag_.c_str());
-
+            if(bTag_=="pfDeepJet") JetBDiscriminator = obj.bDiscriminator("mini_pfDeepFlavourJetTags:probb")+ obj.bDiscriminator("mini_pfDeepFlavourJetTags:probbb")+ obj.bDiscriminator("mini_pfDeepFlavourJetTags:problepb"); 
+            else JetBDiscriminator = obj.bDiscriminator("pfDeepCSVJetTags:probb")+ obj.bDiscriminator("pfDeepCSVJetTags:probbb"); //JM
+            //   else JetBDiscriminator= obj.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
 
             if( this->debug_ ) {
                 std::cout << " In JetBTagReshapeWeight before calib reader: " << shiftLabel( syst_shift ) << ": Object has pt= " << obj.pt() << " eta=" << obj.eta() << " flavour=" << obj.hadronFlavour()
                           << " values for scale factors : "<< JetPt <<" "<< JetEta <<" "<<JetFlav 
-                          << " BTag Values : "<< obj.bDiscriminator(bTag_.c_str()) <<endl;
+                          << " b-tagger = " << bTag_<< " BTag Values : "<< JetBDiscriminator <<endl;
             }
 
             //get scale factors from calib reader

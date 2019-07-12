@@ -1,8 +1,6 @@
 import os
 import FWCore.ParameterSet.Config as cms
 import flashgg.Systematics.settings as settings
-from flashgg.MicroAOD.flashggJets_cfi import flashggBTag
-from flashgg.MicroAOD.flashggJets_cfi import flashggDeepCSV
 
 #https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideBTagMCTools#Hadron_parton_based_jet_flavour
 #B Tag MC efficiencies
@@ -165,6 +163,8 @@ class jetSystematicsCustomize:
    def createJetSystematicsForTag(self, jetInputTag):
       num = jetInputTag.productInstanceLabel
       newName = 'flashggJetSystematics'+num
+      bTagger = self.metaConditions['bTagSystematics']['bTagger']
+      eta = self.metaConditions['bTagSystematics']['eta'] 
       setattr(self.process, newName,
               cms.EDProducer('FlashggJetSystematicProducer',
                              src = jetInputTag,
@@ -193,23 +193,23 @@ class jetSystematicsCustomize:
                                                      cms.PSet( MethodName = cms.string("FlashggJetBTagWeight"),
                                                                Label = cms.string("JetBTagCutWeight"),
                                                                NSigmas = cms.vint32(-1,1),
-                                                               OverallRange = cms.string("pt>25.0&&abs(eta)<2.4"),
-                                                               BinList = getattr(self, self.metaConditions['bTagEffBins']),
+                                                               OverallRange = cms.string("pt>25.0&&abs(eta)<" + str(eta)),
+                                                               BinList = getattr(self, self.metaConditions['bTagSystematics']['bTagEffBins']),
                                                                #bTag = cms.string(flashggBTag),
-                                                               bTag = cms.string(flashggDeepCSV),
-                                                               bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagCalibrationFile'])),
-                                                               bDiscriminator = cms.double(self.metaConditions['bDiscriminatorValue']),
+                                                               bTag = cms.string(str(bTagger)),
+                                                               bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagSystematics']['bTagCalibrationFile_WPCut_'+ str(bTagger)])),
+                                                               bDiscriminator = cms.double(self.metaConditions['bTagSystematics']['bDiscriminatorValue_'+ str(bTagger)]),
                                                                Debug = cms.untracked.bool(False),
                                                                ApplyCentralValue = cms.bool(True)
                                                             ),
                                                      cms.PSet( MethodName = cms.string("FlashggJetBTagReshapeWeight"),
                                                                Label = cms.string("JetBTagReshapeWeight"),
                                                                NSigmas = cms.vint32(-1,1),
-                                                               OverallRange = cms.string("pt>25.0&&abs(eta)<2.4"),
-                                                               BinList = getattr(self, self.metaConditions['bTagEffBins']),
+                                                               OverallRange = cms.string("pt>25.0&&abs(eta)<" + str(eta)),
+                                                               BinList = getattr(self, self.metaConditions['bTagSystematics']['bTagEffBins']),
                                                                #                                                          bTag = cms.string(flashggBTag),
-                                                               bTag = cms.string(flashggDeepCSV), 
-                                                               bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagCalibrationFile'])),
+                                                               bTag = cms.string(str(bTagger)), 
+                                                               bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagSystematics']['bTagCalibrationFile_Reshape_'+ str(bTagger)])),
                                                                bTagReshapeSystOption = cms.int32(1),#For changing the source of uncertainty
                                                                Debug = cms.untracked.bool(False),
                                                                ApplyCentralValue = cms.bool(True)

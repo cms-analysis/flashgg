@@ -42,13 +42,10 @@ fi
 
 cd $CMSSW_BASE/src
 
+# QGL
 echo "QGTagger for flashgg..."
 git cms-merge-topic -u simonepigazzini:topic_flashgg_10_5_0_qgtagger
-
-# For rerunning DeepJet b-tagger with new training 
-echo "Setting up DeepJet with new tarining from BTV"
-git cms-addpkg RecoBTag/TensorFlow
-git cherry-pick 94ceae257f846998c357fcad408986cc8a039152
+cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_AK4chs_94X.db $CMSSW_BASE/src/flashgg/MicroAOD/
 
 # EGamma post reco tools for energy scales and smearings
 echo "Settinga up Scales and Smearings form EGM"
@@ -57,9 +54,6 @@ git clone https://github.com/cms-data/EgammaAnalysis-ElectronTools.git EgammaAna
 cd EgammaAnalysis/ElectronTools/data
 cd $CMSSW_BASE/src
 git apply flashgg/EnergyScaleCorrection.patch
-
-# QGL db file 
-cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_AK4chs_94X.db $CMSSW_BASE/src/flashgg/MicroAOD/
 
 # TnP tools removed for 8_0_28, so Validation does not compile
 # To be investigated
@@ -80,6 +74,14 @@ git clone https://github.com/simonepigazzini/XGBoostCMSSW.git
 cp XGBoostCMSSW/XGBoostInterface/toolbox/*xml $CMSSW_BASE/config/toolbox/$SCRAM_ARCH/tools/selected/
 scram setup rabit
 scram setup xgboost
+
+# HTCondor python API
+pip install --user htcondor
+
+# Grab xml file for top-tagger BDT from ttH MultiLepton analysis (too large to store in Github)
+pushd flashgg/Taggers/data/
+wget "http://uaf-8.t2.ucsd.edu/~sjmay/ttH/resTop_xgb_csv_order_deepCTag.xml"
+popd
 
 echo
 echo "Done with setup script! You still need to build!"

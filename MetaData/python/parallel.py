@@ -6,6 +6,8 @@ import os,sys
 import getpass
 import copy
 
+import htcondor
+
 from threading import Thread, Semaphore
 import threading 
 from multiprocessing import cpu_count
@@ -131,8 +133,9 @@ class WorkNodeJob(object):
 
     #----------------------------------------
     def __call__(self,cmd):
-        
+
         self.cmd = cmd
+        runner_kwargs = {}
         script = ""
         script += "#!/bin/bash\n"
         
@@ -203,9 +206,29 @@ class WorkNodeJob(object):
         script += 'echo "ls $X509_USER_PROXY"\n'
         script += 'ls $X509_USER_PROXY\n'
             
-        # the user command
+        ###---The user command
+        ###
+        ###   HTCondor: In order to deal with failed jobs the original jobIds of the failed jobs
+        ###   are stored in dummy cmd line option in job_utils.py.
+        ###   before submitting a new task the dummy options, if present, is stripped from 
+        ###   the cmd line and added to the script properly
+        htc = False
+        if 'resubMap=' in cmd:            
+            htc = True
+            resubMap = cmd[cmd.find('resubMap='):cmd.find(' ', cmd.find('resubMap=')) if cmd.find(' ', cmd.find('resubMap='))>0 else len(cmd)]       
+            cmd = cmd.replace(resubMap, '')
+            resubMap = resubMap.replace('resubMap=', '')
+            script += 'declare -a jobIdsMap=('+resubMap.replace(',', ' ')+')\n'
+            runner_kwargs['njobs'] = len(resubMap.split(','))
+
         script += cmd+"\n"
+        # HTCondor: return value is 0 if cmd runs successfully, otherwise retval is set to the jobId in order
+        # to keep track of failed jobs. To avoid overlaps with the success code the retval is set to jobId+1
         script += 'retval=$?\n'
+        if htc:
+            script += 'if [[ $retval != 0 ]]; then\n'
+            script += '    retval=$(( ${jobIdsMap[${1}]} + 1 )) \n'
+            script += 'fi \n'
         
         if self.tarball and self.job_outdir:
             script += 'cd %s\n' % self.job_outdir
@@ -237,7 +260,7 @@ class WorkNodeJob(object):
         script += 'exit $retval\n'
         script += '\n'
         
-        return self.runner.run(script)
+        return self.runner.run(script, **runner_kwargs)
 
 
 # -----------------------------------------------------------------------------------------------------
@@ -362,7 +385,7 @@ class HTCondorJob(object):
         self.async = True
         
     def __str__(self):
-        return "HTCondorJob: [%s] [%s] [%s]" % ( self.htcondorQueue, self.cfgName, self.jobid )
+        return "HTCondorJob: [%s] [%s]" % ( self.htcondorQueue, self.cfgName)
         
     def setJobId(self,jobid):
         self.jobid = jobid
@@ -381,8 +404,8 @@ class HTCondorJob(object):
         return True
 
     #----------------------------------------
-    def run(self,script):
-                    
+    def run(self, script, njobs=1):
+                
         logdir = os.path.dirname(self.jobName)
         if not os.path.exists(logdir):
             os.mkdir(logdir)
@@ -393,15 +416,18 @@ class HTCondorJob(object):
 
         with open(self.cfgName, "w+") as fout:
             fout.write('+JobFlavour = "'+self.htcondorQueue+'"\n\n')
+            fout.write('+OnExitHold = ExitStatus != 0 \n\n')
+            fout.write('periodic_release =  (NumJobStarts < 4) && ((CurrentTime - EnteredCurrentStatus) > 60) \n\n')
             fout.write('executable  = '+self.execName+'\n')
+            fout.write('arguments   = $(ProcId)\n')
             #fout.write('arguments   = $(ProcId)\n')
             if self.copy_proxy:
                 fout.write('input       = '+BatchRegistry.getProxy().split(":")[1]+'\n')
-            fout.write('output      = '+self.jobName+'.out\n')
-            fout.write('error       = '+self.jobName+'.err\n')
+            fout.write('output      = '+self.jobName+'_$(ClusterId).$(ProcId).out\n')
+            fout.write('error       = '+self.jobName+'_$(ClusterId).$(ProcId).err\n')
             fout.write('log         = '+self.jobName+'_htc.log\n\n')
             fout.write('max_retries = 1\n')
-            fout.write('queue 1\n')
+            fout.write('queue '+str(njobs)+' \n')
             fout.close()        
 
         import subprocess
@@ -421,12 +447,14 @@ class HTCondorJob(object):
             print out
             print err
         else:
-            self.jobid = None
+            self.jobid = []
             for line in out.split("\n"):
                 if "cluster" in line:
-                    self.jobid = int(line.replace(".", "").split()[-1])
+                    clusterid = line.split()[-1]
                     break
-            
+            for ijob in range(int(njobs)):
+                self.jobid.append(clusterid+str(ijob))
+
         if self.async:
             return self.exitStatus, (out,(self.jobName,self.jobid))
 
@@ -435,7 +463,6 @@ class HTCondorJob(object):
     #----------------------------------------
     def __call__(self,cmd):
         
-        self.cmd = cmd
         script = ""
         script += "#!/bin/bash\n"
         
@@ -445,58 +472,97 @@ class HTCondorJob(object):
         
         if os.environ.get('X509_USER_PROXY',None):
             script += "export X509_USER_PROXY=%s\n" % os.environ['X509_USER_PROXY']
-                    
-        # the user command
+
+        ###---In order to deal with failed jobs the original jobIds of the failed jobs
+        ###   are stored in dummy cmd line option in job_utils.py.
+        ###   before submitting a new task the dummy options, if present, is stripped from 
+        ###   the cmd line and added to the script properly
+        # if 'resubMap=' in cmd:     
+        #     resubMap = cmd[cmd.find('resubMap='):cmd.find(' ', cmd.find('resubMap=')) if cmd.find(' ', cmd.find('resubMap='))>0 else len(cmd)]       
+        #     cmd = cmd.replace(resubMap, '')
+        #     resubMap = resubMap.replace('resubMap=', '')
+        #     script += 'declare -a jobIdsMap=('+resubMap.replace(',', ' ')+')\n'
+        # else:
+        #     if 'nJobs=' in cmd:
+        #         njobs = cmd[cmd.find('nJobs=')+len('nJobs='):cmd.find(' ', cmd.find('nJobs='))]
+        #         resubMap = ' '.join([str(x) for x in range(int(njobs))])
+        #         script += 'declare -a jobIdsMap=('+resubMap.replace(',', ' ')+')\n'
+        #     else:
+        #         script += 'declare -a jobIdsMap=(0)\n'
+
+        self.cmd = cmd
+        
+        #---the user command
         script += cmd+"\n"
         
         return self.run(script)
         
     
     #----------------------------------------
-    def handleOutput(self):
-        ## print "handleOutput"
+    def handleOutput(self, jobid):
         if self.async:
             self.exitStatus = -1
-            ###---get job exit code from either condor_history or the logfile
-            status, log = commands.getstatusoutput("condor_history %s -long -attributes ExitCode" % self.jobid )
-            if status == 0 and len(log) > 0:
-                msg = log.split("\n")[0].replace("=", "").split()[-1]
-                if msg == "0":
-                    self.exitStatus = 0                    
-                else:
-                    self.exitStatus = -1
-            else:
-                with open(self.jobName+".out") as log:
-                    lines = log.readlines()
+            evt_list = []       
+            jel = htcondor.JobEventLog(str(self.jobName+"_htc.log"))         
+            for event in jel.events(stop_after=0):
+                evt_jobid_str = str(event.cluster)+'.'+str(event.proc)
+                if evt_jobid_str == jobid:
+                    evt_list.append(event)
+            jel.close()
+
+            #---Normal exit
+            if evt_list[-1].type is htcondor.JobEventType.JOB_TERMINATED:                    
+                self.exitStatus = evt_list[-1]["ReturnValue"]
+            #---Job killed by user
+            elif evt_list[-1].type is htcondor.JobEventType.JOB_ABORTED:
+                with open(self.execName, "r") as fin:
+                    lines = fin.readlines()
+                    jobIdsMap = []
                     for line in lines:
-                        if "Job finished with exit code" in line:
-                            exit_code = line.split()[-1]
-                            if exit_code == "0":
-                                self.exitStatus = 0                    
-                            else:
-                                self.exitStatus = -1                                
+                        if 'jobIdsMap=' in line:
+                            jobIdsMap = [int(x) for x in line[line.find('(')+1:line.find(')')].split()]
+                self.exitStatus = jobIdsMap[evt_list[-1].proc] if len(jobIdsMap)>0 else -1
+
+            ###---get job exit code from either condor_history or the logfile
+            # status, log = commands.getstatusoutput("condor_history %s -long -attributes ExitCode" % self.jobid )
+            # if status == 0 and len(log) > 0:
+            #     msg = log.split("\n")[0].replace("=", "").split()[-1]
+            #     if msg == "0":
+            #         self.exitStatus = 0                    
+            #     else:
+            #         self.exitStatus = -1
+            # else:
+            #     with open(self.jobName+".out") as log:
+            #         lines = log.readlines()
+            #         for line in lines:
+            #             if "Job finished with exit code" in line:
+            #                 exit_code = line.split()[-1]
+            #                 if exit_code == "0":
+            #                     self.exitStatus = 0                    
+            #                 else:
+            #                     self.exitStatus = -1                                
                 
         ###---collect both the stdout and stderr
         output = ""
         if self.jobName:
             output += "STDOUT:\n"
             try:
-                with open("%s.out" % self.jobName) as lf:
+                with open("%s_%s.out" % (self.jobName, jobid)) as lf:
                     output = lf.read()
                     lf.close()
-                    output += "%s.out\n" % self.jobName
+                    output += "%s_%s.out\n" % (self.jobName, jobid)
             except:
-                output = "%s.out\n" % self.jobName
+                output = "%s_%s.out\n" % (self.jobName, jobid)
             output += "STDERR:\n"
             try:
-                with open("%s.err" % self.jobName) as lf:
+                with open("%s_%s.err" % (self.jobName, jobid)) as lf:
                     output = lf.read()
                     lf.close()
-                    output += "%s.err\n" % self.jobName
+                    output += "%s_%s.err\n" % (self.jobName, jobid)
             except:
-                output+= "%s.err\n" % self.jobName
+                output+= "%s_%s.err\n" % (self.jobName, jobid)
         
-        return self.exitStatus, output
+        return self.exitStatus, output, jobid
 
 # -----------------------------------------------------------------------------------------------------
 class HTCondorMonitor(object):
@@ -515,9 +581,10 @@ class HTCondorMonitor(object):
                 job = self.jobsqueue.get()
                 if job.jobid == None:
                     print "INTERNAL ERROR: job id not set %s" % job
-                    self.retqueue.put( (job, [job.cmd], job.handleOutput()) )
+                    self.retqueue.put( (job, [job.cmd], job.handleOutput(job.jobid)) )
                 else:
-                    self.jobsmap[str(job.jobid)] = job
+                    for jobid in job.jobid:
+                        self.jobsmap[jobid] = job
                     self.jobids[job.jobName] = job.jobid
                     
                     if job.replacesJob:
@@ -535,21 +602,29 @@ class HTCondorMonitor(object):
     def monitor(self):
         if len(self.jobsmap.keys())==0:
             return
-        current_jobs = copy.deepcopy(self.jobsmap)
+            
+        current_jobs = copy.deepcopy(self.jobsmap)        
+        evt_list = {}
         for jobid, job in current_jobs.iteritems():
-            status, log = commands.getstatusoutput("condor_wait %s %s -status -wait 0.01" % (job.jobName+"_htc.log", jobid) )
-            if status == 0:
-                msg = log.split("\n")[-2].split()[-1]
-                if msg in ["completed", "aborted"]:
-                    self.jobFinished(jobid, msg)
-                
+            evt_list[jobid] = []
+            jel = htcondor.JobEventLog(str(job.jobName+"_htc.log"))
+            for event in jel.events(stop_after=0):
+                evt_jobid_str = str(event.cluster)+'.'+str(event.proc)
+                if evt_jobid_str == jobid:
+                    evt_list[jobid].append(event)                    
+            jel.close()
+
+        for jobid, events in evt_list.iteritems():
+            if len(events)>0 and (events[-1].type is htcondor.JobEventType.JOB_TERMINATED or events[-1].type is htcondor.JobEventType.JOB_ABORTED):
+                self.jobFinished(jobid, events[-1])
+
     def jobFinished(self,jobid,status):
         if not jobid in self.jobsmap:
             print "%s not found: %s" % ( jobid, " ".join(self.jobsmap.keys()) )
             return
         htcJob = self.jobsmap[jobid]
         try:
-            self.retqueue.put( (htcJob, [htcJob.cmd], htcJob.handleOutput()) )
+            self.retqueue.put( (htcJob, [htcJob.cmd], htcJob.handleOutput(jobid)) )
         except Exception, e:
             print "Error getting output of %s " % htcJob
             print jobid, status
@@ -784,8 +859,10 @@ class SGEJob(LsfJob):
         # domain-specific configuration
         if mydomain == "psi.ch":
             ret += "source $VO_CMS_SW_DIR/cmsset_default.sh\n"
-            ret += "mkdir -p /scratch/$(whoami)/sgejob-$JOB_ID\n"
-            ret += "cd /scratch/$(whoami)/sgejob-$JOB_ID\n"
+            ret += "export WORKDIR=$TMPDIR/sgejob-$JOB_ID\n"
+            ret += "mkdir -p $WORKDIR\n"
+            ret += "cd $WORKDIR\n"
+            ret += 'echo "Current directory is $WORKDIR"\n'
             ret += "source $VO_CMS_SW_DIR/cmsset_default.sh"
         if mydomain == "hep.ph.ic.ac.uk":
             ret += "mkdir -p $TMP/sgejob-$JOB_ID\n"
@@ -1164,16 +1241,15 @@ class Parallel:
         while threading.activeCount() > self.maxThreads:
             sleep(0.05)
         
-        ret = (None,(None,None))
+        ret = (None,(None,(None,(None,None))))
         if not ( self.lsfQueue and  self.asyncLsf ):
             thread = Thread(None,wrap)
             thread.start()
         else:
             ret = wrap(interactive=True)
             
-            
         self.sem.acquire()
-	self.njobs += 1
+	self.njobs += len(ret[-1][-1][-1][-1]) if isinstance(ret[-1][-1][-1][-1], list) else 1
         self.sem.release()
         
         return ret
@@ -1189,7 +1265,7 @@ class Parallel:
         self.lsfJobs.put(job)
 
         self.sem.acquire()
-	self.njobs += 1
+	self.njobs += len(batchId) if isinstance(batchId, list) else 1
         self.sem.release()
         
     def currJobId(self):

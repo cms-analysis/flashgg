@@ -48,6 +48,9 @@ namespace flashgg {
         void setCategoryNumber(int cat) { cat_ = cat; }
         int categoryNumber() const { return cat_; }
         operator int() const { return categoryNumber(); }
+
+        void setHHbbggBenchmarkReweight(std::vector<float> x) { HHbbgg_benchmark_reweights_ = x; }
+        float getHHbbggBenchmarkReweight(int targetNode) const { return HHbbgg_benchmark_reweights_[targetNode]; }
         
     private:
         void computeP4AndOrder();
@@ -57,6 +60,8 @@ namespace flashgg {
         
         edm::Ptr<reco::GenJet> leadingJet_;
         edm::Ptr<reco::GenJet> subLeadingJet_;
+        vector<float> HHbbgg_benchmark_reweights_;
+
         
         int cat_;
         std::string tag_;

@@ -23,7 +23,7 @@ flashggDeepFlavourc  = 'pfDeepFlavourJetTags:probc'
 flashggDeepFlavouruds = 'pfDeepFlavourJetTags:probuds'
 flashggDeepFlavourg  = 'pfDeepFlavourJetTags:probg'
 flashggDeepFlavourlepb = 'pfDeepFlavourJetTags:problepb'
-flashggDeepFlavour = 'pfDeepFlavour'
+flashggDeepJet = 'pfDeepJet'
 
 maxJetCollections = 12
 qgDatabaseVersion = 'AK4chs_94X'
@@ -92,7 +92,7 @@ def addFlashggPFCHSJets(process,
     process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
                                             CondDBSetup,
                                             toGet = cms.VPSet(),
-                                            connect = cms.string('sqlite:MicroAOD/data/QGL_'+qgDatabaseVersion+'.db') 
+                                            connect = cms.string('sqlite:QGL_'+qgDatabaseVersion+'.db') 
                                             )
     process.es_prefer_qg = cms.ESPrefer('PoolDBESSource','QGPoolDBESSource')
   
