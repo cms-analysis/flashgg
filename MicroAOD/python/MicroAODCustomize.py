@@ -559,8 +559,8 @@ class MicroAODCustomize(object):
         # process.rivetProducerHTXS.ProductionMode = "TH"
 #        process.flashggPDFWeightObject.LHEEventTag = "source"
 #        process.flashggPDFWeightObject.LHERunLabel = "source"
-        process.flashggPDFWeightObject.isStandardSample = False
-        process.flashggPDFWeightObject.isThqSample = True
+        # process.flashggPDFWeightObject.isStandardSample = False
+        # process.flashggPDFWeightObject.isThqSample = True
 
     def customizePhotons(self, process):
         for opt, value in self.metaConditions["flashggPhotons"].items():
