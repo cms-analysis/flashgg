@@ -39,6 +39,13 @@ customize.options.register("trigger",
                            VarParsing.VarParsing.varType.string,          # string, int, or float
                            "trigger")
 
+customize.options.register("doPhoIdInputsCorrections",
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           "doPhoIdInputsCorrections"
+                           )
+
 
 customize.setDefault("maxEvents", 10000)
 customize.setDefault("targetLumi", 1.e+3)
@@ -64,11 +71,28 @@ process.load("flashgg.MicroAOD.flashggDiPhotons_cfi")
 process.load("flashgg.Validation.FlashggTagAndProbeProducer_cfi")
 process.load("flashgg.Validation.tagAndProbeDumper_cfi")
 process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
+process.load("flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi")
 
 from flashgg.Validation.FlashggTagAndProbeProducer_cfi import flashggTagAndProbe
 from flashgg.Systematics.flashggDiPhotonSystematics_cfi import flashggDiPhotonSystematics
 import flashgg.Taggers.dumperConfigTools as cfgTools
 import flashgg.Validation.tagAndProbeDumperConfig as dumpCfg
+from flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi import *
+
+# ----------------------------------------------------------------------------------------------------
+# Run shower shape and isolation corrections
+
+if customize.options.doPhoIdInputsCorrections:
+    process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
+                                                       flashggDifferentialPhoIdInputsCorrection=cms.PSet(
+                                                           initialSeed=cms.untracked.uint32(
+                                                               90)
+                                                       )
+                                                       )
+
+    process.flashggDifferentialPhoIdInputsCorrection = flashggDifferentialPhoIdInputsCorrection.clone()
+    # process.flashggDifferentialPhoIdInputsCorrection.reRunRegression = True
+
 
 # ----------------------------------------------------------------------------------------------------
 # Get Trigger paths
@@ -153,7 +177,10 @@ systModules.append(
 process.flashggDiPhotonSystematics = flashggDiPhotonSystematics
 process.flashggDiPhotonSystematics.SystMethods = systModules
 process.flashggDiPhotonSystematics.SystMethods2D = systModules2D
-process.flashggDiPhotonSystematics.src = "flashggDiPhotons"
+if customize.options.doPhoIdInputsCorrections:
+    process.flashggDiPhotonSystematics.src = "flashggDifferentialPhoIdInputsCorrection"
+else:
+    process.flashggDiPhotonSystematics.src = "flashggDiPhotons"
 
 # ----------------------------------------------------------------------------------------------------
 # Configure FlashggTagAndProbe Producer
@@ -200,5 +227,9 @@ tnp_sequence = cms.Sequence(flashggTagAndProbe+tagAndProbeDumper)
 process.p = cms.Path(process.flashggIdentifiedElectrons *
                      process.flashggDiPhotonSystematics*tnp_sequence)
 
+if customize.options.doPhoIdInputsCorrections:
+    process.p = cms.Path(
+        process.flashggDifferentialPhoIdInputsCorrection * process.flashggIdentifiedElectrons *
+        process.flashggDiPhotonSystematics*tnp_sequence)
 
 customize(process)
