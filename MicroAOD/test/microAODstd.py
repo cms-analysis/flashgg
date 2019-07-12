@@ -103,7 +103,7 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
 #process.flag_BadChargedCandidateFilter = cms.Path(process.BadChargedCandidateFilter)
 #process.flag_BadPFMuonFilter = cms.Path(process.BadPFMuonFilter)
 
-# Except for this filter, which must be applied on miniAOD directly.
+# Except for this filter, which must be applied on miniAOD directly. Applied ONLY for 2017/2018
 # Here we follow the recipe from:  https://twiki.cern.ch/twiki/bin/view/CMS/MissingETOptionalFiltersRun2#Analysis_Recommendations_for_ana
 process.load('RecoMET.METFilters.ecalBadCalibFilter_cfi')
 
@@ -127,7 +127,7 @@ process.ecalBadCalibReducedMINIAODFilter = cms.EDFilter(
     debug = cms.bool(False)
 )
 
-process.p = cms.Path(process.ecalBadCalibReducedMINIAODFilter*process.flashggMicroAODSequence)
+process.p = cms.Path(process.flashggMicroAODSequence)
 process.e = cms.EndPath(process.out)
 
 # Uncomment these lines to run the example commissioning module and send its output to root
@@ -146,5 +146,8 @@ customize(process)
 
 if "DY" in customize.datasetName or "SingleElectron" in customize.datasetName or "DoubleEG" in customize.datasetName or "EGamma" in customize.datasetName:
     customize.customizeHLT(process)
+
+if "Era2017" in customize.options.conditionsJSON or "Era2018" in customize.options.conditionsJSON:
+    process.p += process.ecalBadCalibReducedMINIAODFilter
 
 #open('dump.py', 'w').write(process.dumpPython())
