@@ -10,7 +10,6 @@
 <use   name="flashgg/DataFormats"/>
 <use   name="flashgg/MicroAOD"/>
 <use   name="RecoJets/JetProducers"/>
-<use   name="EgammaAnalysis/ElectronTools"/>
 <use   name="DataFormats/EgammaCandidates"/>
 <use   name="RecoEgamma/EgammaTools"/>
 <use   name="roottmva"/>

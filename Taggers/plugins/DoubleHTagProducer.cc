@@ -478,7 +478,7 @@ namespace flashgg {
 
 
             // eval MVA discriminant
-            std::vector<float> mva_vector = mvaComputer_.predict_prob(tag_obj);
+            std::vector<float> mva_vector = mvaComputer_(tag_obj);
             double mva = mva_vector[multiclassSignalIdx_];
             if(doMVAFlattening_){
                 double mvaScaled = mva/(mva*(1.-MVAscaling_)+MVAscaling_);
