@@ -108352,6 +108352,46 @@
                 "nevents": 37998, 
                 "totEvents": 37998, 
                 "weights": 37998
+            }, 
+            {
+                "bad": false, 
+                "events": 48264, 
+                "lumis": {
+                    "315713": [
+                        68, 
+                        75, 
+                        89, 
+                        90, 
+                        120, 
+                        144, 
+                        96, 
+                        150, 
+                        110
+                    ], 
+                    "315721": [
+                        139
+                    ], 
+                    "315764": [
+                        78, 
+                        215
+                    ], 
+                    "315770": [
+                        40, 
+                        65, 
+                        74, 
+                        123, 
+                        221, 
+                        222
+                    ], 
+                    "315784": [
+                        98, 
+                        102
+                    ]
+                }, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018A-17Sep2018-v2/190610_103420/0001/myMicroAODOutputFile_1527.root", 
+                "nevents": 48264, 
+                "totEvents": 48264, 
+                "weights": 48264
             }
         ], 
         "vetted": true
