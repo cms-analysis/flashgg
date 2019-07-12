@@ -1,5 +1,5 @@
 
-#include "flashgg/Taggers/interface/TagAndProbeDumper.h"
+#include "flashgg/Validation/interface/TagAndProbeDumper.h"
 
 #include "flashgg/Taggers/interface/PluggableAnalyzer.h"
 

@@ -173,7 +173,6 @@ namespace flashgg {
                 tnpColl_->push_back(cand);
             }
         }
-                    
         //---put the colletion in the Event
         event.put( std::move(tnpColl_) );
     }

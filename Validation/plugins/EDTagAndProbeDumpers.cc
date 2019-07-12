@@ -1,7 +1,7 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "PhysicsTools/UtilAlgos/interface/EDAnalyzerWrapper.h"
 
-#include "flashgg/Taggers/interface/TagAndProbeDumper.h"
+#include "flashgg/Validation/interface/TagAndProbeDumper.h"
 
 typedef edm::AnalyzerWrapper<flashgg::TagAndProbeDumper> TagAndProbeDumper;
 typedef edm::AnalyzerWrapper<flashgg::CutBasedTagAndProbeDumper> CutBasedTagAndProbeDumper;
