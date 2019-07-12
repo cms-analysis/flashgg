@@ -98,15 +98,15 @@ def getConfig(extended=False, dumpShowerShapes=False, dumpClusterShapes=False, d
                   "tagMatchType := getTag.genMatchType",
                   "tagGenIso := ?getTag.hasUserFloat('genIso')?getTag.userFloat('genIso'):0", ]
 
-    probeUncorrClIsos = ["probeUncorrR9              := ? getProbe.hasUserFloat('uncorr_r9') ? getProbe.userFloat('uncorr_r9') : -999.",
-                         "probeUncorrEtaWidth        := ? getProbe.hasUserFloat('uncorr_etaWidth') ? getProbe.userFloat('uncorr_etaWidth') : -999.",
-                         "probeUncorrS4              := ? getProbe.hasUserFloat('uncorr_s4') ? getProbe.userFloat('uncorr_s4') : -999.",
-                         "probeUncorrPhiWidth        := ? getProbe.hasUserFloat('uncorr_phiWidth') ? getProbe.userFloat('uncorr_phiWidth') : -999.",
-                         "probeUncorrSigmaIeIe       := ? getProbe.hasUserFloat('uncorr_sieie') ? getProbe.userFloat('uncorr_sieie') : -999",
-                         "probeUncorrCovarianceIeIp  := ? getProbe.hasUserFloat('uncorr_sieip') ? getProbe.userFloat('uncorr_sieip') : -999",
-                         "probeUncorrPhoIso          := ? getProbe.hasUserFloat('uncorr_phoIso') ? getProbe.userFloat('uncorr_phoIso') : -999",
-                         "probeUncorrChIso           := ? getProbe.hasUserFloat('uncorr_chIso') ? getProbe.userFloat('uncorr_chIso') : -999",
-                         "probeUncorrChIsoWorst      := ? getProbe.hasUserFloat('uncorr_chIsoWorst') ? getProbe.userFloat('uncorr_chIsoWorst') : -999"]
+    probeUncorrClIsos = ["probeR9_uncorr              := ? getProbe.hasUserFloat('uncorr_r9') ? getProbe.userFloat('uncorr_r9') : -999.",
+                         "probeEtaWidth_uncorr        := ? getProbe.hasUserFloat('uncorr_etaWidth') ? getProbe.userFloat('uncorr_etaWidth') : -999.",
+                         "probeS4_uncorr              := ? getProbe.hasUserFloat('uncorr_s4') ? getProbe.userFloat('uncorr_s4') : -999.",
+                         "probePhiWidth_uncorr        := ? getProbe.hasUserFloat('uncorr_phiWidth') ? getProbe.userFloat('uncorr_phiWidth') : -999.",
+                         "probeSigmaIeIe_uncorr       := ? getProbe.hasUserFloat('uncorr_sieie') ? getProbe.userFloat('uncorr_sieie') : -999",
+                         "probeCovarianceIeIp_uncorr  := ? getProbe.hasUserFloat('uncorr_sieip') ? getProbe.userFloat('uncorr_sieip') : -999",
+                         "probePhoIso_uncorr          := ? getProbe.hasUserFloat('uncorr_phoIso') ? getProbe.userFloat('uncorr_phoIso') : -999",
+                         "probeChIso_uncorr           := ? getProbe.hasUserFloat('uncorr_chIso') ? getProbe.userFloat('uncorr_chIso') : -999",
+                         "probeChIsoWorst_uncorr      := ? getProbe.hasUserFloat('uncorr_chIsoWorst') ? getProbe.userFloat('uncorr_chIsoWorst') : -999"]
 
     singleEleVars = minSingleEleVars
     singleEleViewVars = minSingleEleViewVars
