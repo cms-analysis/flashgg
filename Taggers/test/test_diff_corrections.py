@@ -15,7 +15,13 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
 
 process.source = cms.Source ("PoolSource",
                              #fileNames = cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v1/legacyRun2TestV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/Era2017_RR-31Mar2018_v1-legacyRun2TestV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/190319_112256/0000/myMicroAODOutputFile_9.root")
-                             fileNames = cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v1/legacyRun2TestV1/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2017_RR-31Mar2018_v1-legacyRun2TestV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/190319_111412/0000/myMicroAODOutputFile_68.root")
+                             fileNames = cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v2/legacyRun2FullV1/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/190606_094541/0000/myMicroAODOutputFile_851.root")
+)
+
+process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
+    flashggDifferentialPhoIdInputsCorrection = cms.PSet(
+        initialSeed = cms.untracked.uint32(90)
+    )
 )
 
 from flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi import *
@@ -41,17 +47,19 @@ cfgTools.addCategories(process.dumper,
                            'leadEta := leadingPhoton.superCluster().eta',
                            'leadPhi := leadingPhoton.phi',
                            'leadR9 := leadingPhoton.full5x5_r9',
-                           'leadR9_uncorr := leadingPhoton.userFloat("uncorr_r9")',
+                           'leadR9_uncorr := ? leadingPhoton.hasUserFloat("uncorr_r9")>0 ? leadingPhoton.userFloat("uncorr_r9") : -1.',
                            'leadS4 := leadingPhoton.s4',
-                           'leadS4_uncorr := leadingPhoton.userFloat("uncorr_s4")',
+                           'leadS4_uncorr := ? leadingPhoton.hasUserFloat("uncorr_s4")>0 ? leadingPhoton.userFloat("uncorr_s4") : -1',
                            'leadSieie := leadingPhoton.full5x5_sigmaIetaIeta',
-                           'leadSieie_uncorr := leadingPhoton.userFloat("uncorr_sieie")',
+                           'leadSieie_uncorr := ? leadingPhoton.hasUserFloat("uncorr_sieie")>0 ? leadingPhoton.userFloat("uncorr_sieie") : -1',
                            'leadSieip := leadingPhoton.sieip',
-                           'leadSieip_uncorr := leadingPhoton.userFloat("uncorr_sieip")',
-                           'leadEtaWidth := leadingPhoton.userFloat("etaWidth")',
-                           'leadEtaWidth_uncorr := leadingPhoton.userFloat("uncorr_etaWidth")',
-                           'leadPhiWidth := leadingPhoton.userFloat("phiWidth")',
-                           'leadPhiWidth_uncorr := leadingPhoton.userFloat("uncorr_phiWidth")',
+                           'leadSieip_uncorr := ? leadingPhoton.hasUserFloat("uncorr_sieip")>0 ? leadingPhoton.userFloat("uncorr_sieip") : -1',
+                           'leadEtaWidth := ? leadingPhoton.hasUserFloat("etaWidth")>0 ? leadingPhoton.userFloat("etaWidth") : -1',
+                           'leadEtaWidth_uncorr := ? leadingPhoton.hasUserFloat("uncorr_etaWidth")>0 ? leadingPhoton.userFloat("uncorr_etaWidth") : -1',
+                           'leadPhiWidth := ? leadingPhoton.hasUserFloat("phiWidth")>0 ? leadingPhoton.userFloat("phiWidth") : -1',
+                           'leadPhiWidth_uncorr := ? leadingPhoton.hasUserFloat("uncorr_phiWidth")>0 ? leadingPhoton.userFloat("uncorr_phiWidth") : -1',
+                           'leadPhoIso := leadingPhoton.pfPhoIso03',
+                           'leadPhoIso_uncorr := ? leadingPhoton.hasUserFloat("uncorr_pfPhoIso03")>0 ? leadingPhoton.userFloat("uncorr_pfPhoIso03") : -1',
                            'subleadEnergy := subLeadingPhoton.p4.energy',
                            'subleadInitialEnergy := subLeadingPhoton.energyAtStep("initial")',
                            'subleadEnergy_corr := subLeadingPhoton.userFloat("afterDiffCorr_regr_E")',
@@ -61,17 +69,19 @@ cfgTools.addCategories(process.dumper,
                            'subleadEta := subLeadingPhoton.superCluster().eta',
                            'subleadPhi := subLeadingPhoton.phi',
                            'subleadR9 := subLeadingPhoton.full5x5_r9',
-                           'subleadR9_uncorr := subLeadingPhoton.userFloat("uncorr_r9")',
+                           'subleadR9_uncorr := ? subLeadingPhoton.hasUserFloat("uncorr_r9")>0 ? subLeadingPhoton.userFloat("uncorr_r9") : -1',
                            'subleadS4 := subLeadingPhoton.s4',
-                           'subleadS4_uncorr := subLeadingPhoton.userFloat("uncorr_s4")',
+                           'subleadS4_uncorr := ? subLeadingPhoton.hasUserFloat("uncorr_s4")>0 ? subLeadingPhoton.userFloat("uncorr_s4") : -1',
                            'subleadSieie := subLeadingPhoton.full5x5_sigmaIetaIeta',
-                           'subleadSieie_uncorr := subLeadingPhoton.userFloat("uncorr_sieie")',
+                           'subleadSieie_uncorr := ? subLeadingPhoton.hasUserFloat("uncorr_sieie")>0 ? subLeadingPhoton.userFloat("uncorr_sieie") : -1',
                            'subleadSieip := subLeadingPhoton.sieip',
-                           'subleadSieip_uncorr := subLeadingPhoton.userFloat("uncorr_sieip")',
-                           'subleadEtaWidth := subLeadingPhoton.userFloat("etaWidth")',
-                           'subleadEtaWidth_uncorr := subLeadingPhoton.userFloat("uncorr_etaWidth")',
-                           'subleadPhiWidth := subLeadingPhoton.userFloat("phiWidth")',
-                           'subleadPhiWidth_uncorr := subLeadingPhoton.userFloat("uncorr_phiWidth")',
+                           'subleadSieip_uncorr := ? subLeadingPhoton.hasUserFloat("uncorr_sieip")>0 ? subLeadingPhoton.userFloat("uncorr_sieip") : -1',
+                           'subleadEtaWidth := ? subLeadingPhoton.hasUserFloat("etaWidth")>0 ? subLeadingPhoton.userFloat("etaWidth") : -1',
+                           'subleadEtaWidth_uncorr := ? subLeadingPhoton.hasUserFloat("uncorr_etaWidth")>0 ? subLeadingPhoton.userFloat("uncorr_etaWidth") : -1',
+                           'subleadPhiWidth := ? subLeadingPhoton.hasUserFloat("phiWidth")>0 ? subLeadingPhoton.userFloat("phiWidth") : -1',
+                           'subleadPhiWidth_uncorr := ? subLeadingPhoton.hasUserFloat("uncorr_phiWidth")>0 ? subLeadingPhoton.userFloat("uncorr_phiWidth") : -1',
+                           'subleadPhoIso := subLeadingPhoton.pfPhoIso03',
+                           'subleadPhoIso_uncorr := ? subLeadingPhoton.hasUserFloat("uncorr_pfPhoIso03")>0 ? subLeadingPhoton.userFloat("uncorr_pfPhoIso03") : -1'
                        ],
                        histograms=[]
 )
