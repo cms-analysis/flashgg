@@ -487,14 +487,36 @@ class SamplesManager(object):
             if not skip:
                 dstFiles.append( fil )
         
+    def getParentInfo(self, dset_type, dsetName):
+        parent_n_info = 'nlumis' if dset_type=='data' else 'nevents'
+        parent_dset = das_query("parent dataset=%s instance=prod/phys03" % dsetName)['data'][0]['parent'][0]['name']
+        parent_info = das_query("dataset dataset=%s instance=prod/phys03" % parent_dset)
+        try:
+            parent_info = parent_info['data'][-1]['dataset'][0][parent_n_info]
+        except KeyError:
+            parent_info = None
+        
+        return parent_info
+
     def addToDataset(self,catalog,dsetName,files):
         if dsetName in catalog:
             if self.force_:
                 catalog[ dsetName ]["files"]  = files
             else:
                 self.mergeDataset(catalog[ dsetName ],{ "files" : files })
+            #---Recover missing info
+            if "dset_type" not in catalog[ dsetName ] or not catalog[ dsetName ]["dset_type"]:
+                dset_type = das_query("datatype dataset=%s instance=prod/phys03" % dsetName)
+                catalog[ dsetName ]["dset_type"] = dset_type['data'][0]['datatype'][0]['data_type'] if 'data' in dset_type else None
+            if ("parent_n_units" not in catalog[ dsetName ] or catalog[ dsetName ]["parent_n_units"]) and catalog[ dsetName ]["dset_type"] != None:
+                catalog[ dsetName ]["parent_n_units"] = self.getParentInfo(catalog[ dsetName ]["dset_type"], dsetName)
         else:
-            catalog[ dsetName ] = { "files" : files }
+            #---First import
+            dset_type = das_query("datatype dataset=%s instance=prod/phys03" % dsetName)
+            dset_type = dset_type['data'][0]['datatype'][0]['data_type'] if 'data' in dset_type else None
+            parent_info = self.getParentInfo(dset_type, dsetName) if dset_type else None
+
+            catalog[ dsetName ] = { "files" : files, "parent_n_units" : parent_info, "dset_type" : dset_type }
             
 
     def checkFile(self,fileName,dsetName,ifile):
@@ -531,7 +553,7 @@ class SamplesManager(object):
             return
         else:
             ret,out = self.parallel_.run("fggCheckFile.py",[fName,tmp,dsetName,str(ifile),weights_to_load,LHE_Branch_Name],interactive=True)[2]
-
+            
         if ret != 0:
             print "ERROR checking %s" % fName
             print out
@@ -563,7 +585,10 @@ class SamplesManager(object):
         tmp = jobargs[1]
         dsetName = jobargs[2]
         ifile = jobargs[3]
-        ret,out = ret
+        if len(ret) == 2:
+            ret,out = ret
+        elif len(ret) == 3:
+            ret,out,jid = ret
 
         self.outcomes.append( (None,None,self.readJobOutput(tmp,ret,out,dsetName,fileName,ifile))) 
         return 0
@@ -1049,28 +1074,30 @@ Commands:
             return
         if what:
             datasets = [ d for d in datasets if d==what or fnmatch(d,what) ]
-        maxSec = 50
+        maxSec = 45
         halfSec = maxSec / 2
         firstHalf = halfSec - 1
         secondHalf = maxSec - halfSec - 1
         slim_datasets = []
         for d in datasets:
             empty,prim,sec,tier = d.split("/")
-            if not self.options.verbose and len(sec) > maxSec:
-                sec = sec[0:firstHalf]+".."+sec[-secondHalf:-1]
-            slim_datasets.append("/%s/%s/%s" % ( prim, sec, tier ) )
+            if not self.options.verbose and len(sec) > maxSec and catalog[d]['dset_type'] == "data":
+                sec = sec[sec.find("Run201"):sec.find("Run201")+8]
+                slim_datasets.append("/%s/..%s.." % ( prim, sec ) )
+            else:
+                slim_datasets.append("/%s" % prim )
         ## datasets = slim_datasets
         ## largest = max( [len(d) for d in datasets] )
         totev = 0.
         totwei = 0.
         totfiles = 0
-        largest = max( [50]+[len(d) for d in slim_datasets] )
+        largest = max( [45]+[len(d) for d in slim_datasets] )
         print
         print "Datasets in catalog:"
-        print "-"*(largest+37)
-        print "Name".ljust(largest), ("N events").rjust(11), ("N good").rjust(7), ("N bad" ).rjust(7), ("Avg"   ).rjust(7)
-        print "    ".ljust(largest), (""        ).rjust(11), ("files" ).rjust(7), ("files" ).rjust(7), ("weight").rjust(7)
-        print "-"*(largest+37)
+        print "-"*(largest+48)
+        print "Name".ljust(largest), ("N events").rjust(10), ("N parent").rjust(10), ("N good").rjust(7), ("N bad" ).rjust(7), ("Avg"   ).rjust(7)
+        print "    ".ljust(largest), ("or lumis").rjust(10), ("").rjust(10), ("files" ).rjust(7), ("files" ).rjust(7), ("weight").rjust(7)
+        print "-"*(largest+48)
         for d,n in zip(datasets,slim_datasets):
             nevents = 0.
             weights = 0.
@@ -1079,9 +1106,13 @@ Commands:
                 if fil.get("bad",False):
                     nfiles -= 1
                     continue
-                nevents += fil.get("nevents",0.)
+                if catalog[d]["dset_type"] == "mc":
+                    nevents += fil.get("nevents",0.)
+                else:
+                    nevents += 0. if "lumis" not in fil else sum(len(fil["lumis"][r]) for r in fil["lumis"].keys())
                 weights += fil.get("weights",0.)
-            print n.ljust(largest), ("%d" % int(nevents)).rjust(11), ("%d" % nfiles).rjust(7),
+            parent_n_units = catalog[d]["parent_n_units"] if catalog[d]["parent_n_units"] else -1.
+            print n.ljust(largest), ("%d" % int(nevents)).rjust(11), ("%d" % int(parent_n_units)).rjust(11), ("%d" % nfiles).rjust(7),
             print ("%d" % (len(catalog[d]["files"]) - nfiles )).rjust(7),
             if weights != 0.: print ("%1.2g" % ( weights/nevents ) ).rjust(7),
             else: print " ".rjust(7),
@@ -1089,7 +1120,7 @@ Commands:
             totev += nevents
             totwei += weights
             totfiles += nfiles
-        print "-"*(largest+37)
+        print "-"*(largest+48)
         print "total".rjust(largest), ("%d" % int(totev)).rjust(11), ("%d" % totfiles).rjust(7)
         
     def run_clear(self):
