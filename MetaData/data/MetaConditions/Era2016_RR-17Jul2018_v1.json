@@ -8,6 +8,7 @@
     "flashggMETsFunction" : "runMETs2016",
     "flashggMetFilters" :
     {
+        "rerun_ecal_calib_filter" : false,
         "data" :
         [
             "Flag_goodVertices",
