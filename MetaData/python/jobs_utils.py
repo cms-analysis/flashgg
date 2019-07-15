@@ -260,7 +260,7 @@ class JobsManager(object):
         if options.useTarball:
             apset = os.path.abspath(pset)
             self.jobFactory.mkTarball("%s/sandbox.tgz" % os.path.abspath(options.outputDir),
-                                      tarball_entries=[apset,"python","lib","bin","src/flashgg/MetaData/python"],tarball_patterns={"src/*":"data", "external/*":"data"},
+                                      tarball_entries=[apset,"python","lib","bin","src/flashgg/MetaData/python"],tarball_patterns=[("src/*","data"), ("external/*","data"), ("src/*","toolbox")],
                                       tarball_transform="'s,%s,pset.py,'" % (apset.lstrip("/"))
                                       )
             if not options.queue:
