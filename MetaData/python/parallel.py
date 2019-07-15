@@ -187,6 +187,7 @@ class WorkNodeJob(object):
         script += "echo\n"
         script += "echo\n"
         script += "echo\n"
+        
         if not self.tarball:
             script += "cd " + os.environ['CMSSW_BASE']+"\n"
         else:
@@ -194,7 +195,10 @@ class WorkNodeJob(object):
             script += "export SCRAM_ARCH=%s\n" % os.environ['SCRAM_ARCH']
             script += "scram project CMSSW %s\n" % os.environ['CMSSW_VERSION']
             script += "cd %s\n" % os.environ['CMSSW_VERSION']
-            script += "tar zxf %s\n" % self.tarball            
+            script += "tar zxf %s\n" % self.tarball
+            script += "cp src/XGBoostCMSSW/XGBoostInterface/toolbox/*xml config/toolbox/$SCRAM_ARCH/tools/selected/\n"
+            script += "scram setup rabit\n"
+            script += "scram setup xgboost\n"
             script += "scram b\n"
             
         script += "eval $(scram runtime -sh)"+"\n"
@@ -290,13 +294,13 @@ class WorkNodeJobFactory(object):
         
     # ------------------------------------------------------------------------------------------------
     def mkTarball(self,tarball=None,
-                  tarball_entries=["python","lib","bin","external","flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310"],tarball_patterns={"src/*":"data"},
+                  tarball_entries=["python","lib","bin","external","flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310"],tarball_patterns=[("src/*","data")],
                   tarball_transform=None):
         
         self.tarball = tarball
         content=tarball_entries
 
-        for folder,pattern in tarball_patterns.iteritems():
+        for folder,pattern in tarball_patterns:
             stat,out = commands.getstatusoutput("cd $CMSSW_BASE; find %s -name %s" % ( folder, pattern ) )
             ## print out
             if stat != 0:
