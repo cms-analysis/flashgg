@@ -325,6 +325,7 @@
         "vetted": true
     }, 
     "/GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2-fd1bbca0499161eb81400b47608e6cd0/USER": {
+        "dset_type": "mc", 
         "files": [
             {
                 "bad": false, 
@@ -4815,9 +4816,11 @@
                 "weights": 24892.0
             }
         ], 
+        "parent_n_units": 14305123, 
         "vetted": true
     }, 
     "/GluGluToHHTo2B2G_node_11_TuneCP5_PSWeights_13TeV-madgraph-pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-aafeb0fd1fe14c3ba60b6ca9b8ba7695/USER": {
+        "dset_type": "mc", 
         "files": [
             {
                 "bad": false, 
@@ -4940,9 +4943,11 @@
                 "weights": 24991.705078125
             }
         ], 
+        "parent_n_units": null, 
         "vetted": true
     }, 
     "/GluGluToHHTo2B2G_node_12_TuneCP5_PSWeights_13TeV-madgraph-pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-aafeb0fd1fe14c3ba60b6ca9b8ba7695/USER": {
+        "dset_type": "mc", 
         "files": [
             {
                 "bad": false, 
@@ -5073,9 +5078,11 @@
                 "weights": 24993.623046875
             }
         ], 
+        "parent_n_units": null, 
         "vetted": true
     }, 
     "/GluGluToHHTo2B2G_node_4_TuneCP5_PSWeights_13TeV-madgraph-pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-aafeb0fd1fe14c3ba60b6ca9b8ba7695/USER": {
+        "dset_type": "mc", 
         "files": [
             {
                 "bad": false, 
@@ -5238,6 +5245,7 @@
                 "weights": 19994.447265625
             }
         ], 
+        "parent_n_units": 306000, 
         "vetted": true
     }, 
     "/GluGluToHHTo2B2G_node_5_TuneCP5_PSWeights_13TeV-madgraph-pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-aafeb0fd1fe14c3ba60b6ca9b8ba7695/USER": {
@@ -5499,6 +5507,7 @@
         "vetted": true
     }, 
     "/GluGluToHHTo2B2G_node_9_TuneCP5_PSWeights_13TeV-madgraph-pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-aafeb0fd1fe14c3ba60b6ca9b8ba7695/USER": {
+        "dset_type": "mc", 
         "files": [
             {
                 "bad": false, 
@@ -5629,6 +5638,7 @@
                 "weights": 24995.728515625
             }
         ], 
+        "parent_n_units": 400000, 
         "vetted": true
     }
 }

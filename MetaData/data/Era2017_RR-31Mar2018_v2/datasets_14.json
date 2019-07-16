@@ -1,5 +1,6 @@
 {
     "/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2-4d2010f8ba2360fb4de1038d4a1ef29e/USER": {
+        "dset_type": "mc", 
         "files": [
             {
                 "bad": false, 
@@ -25874,6 +25875,7 @@
                 "weights": 24779.0
             }
         ], 
+        "parent_n_units": null, 
         "vetted": true
     }
 }

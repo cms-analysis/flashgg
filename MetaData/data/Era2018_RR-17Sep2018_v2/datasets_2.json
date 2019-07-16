@@ -1,5 +1,6 @@
 {
     "/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018A-17Sep2018-v2-e35808f23b4776d10c777cb2c9d2f07a/USER": {
+        "dset_type": "data", 
         "files": [
             {
                 "bad": false, 
@@ -108394,6 +108395,7 @@
                 "weights": 48264
             }
         ], 
+        "parent_n_units": 60817, 
         "vetted": true
     }
 }

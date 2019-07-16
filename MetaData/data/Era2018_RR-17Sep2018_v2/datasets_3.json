@@ -1,5 +1,6 @@
 {
     "/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-fd1bbca0499161eb81400b47608e6cd0/USER": {
+        "dset_type": "mc", 
         "files": [
             {
                 "bad": false, 
@@ -3250,9 +3251,11 @@
                 "weights": 24847.0
             }
         ], 
+        "parent_n_units": null, 
         "vetted": true
     }, 
     "/GluGluToHHTo2B2G_node_8_TuneCP5_PSWeights_13TeV-madgraph-pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-aafeb0fd1fe14c3ba60b6ca9b8ba7695/USER": {
+        "dset_type": "mc", 
         "files": [
             {
                 "bad": false, 
@@ -3383,9 +3386,11 @@
                 "weights": 24993.43359375
             }
         ], 
+        "parent_n_units": 400000, 
         "vetted": true
     }, 
     "/GluGluToHHTo2B2G_node_SM_TuneCP5_PSWeights_13TeV-madgraph-pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-aafeb0fd1fe14c3ba60b6ca9b8ba7695/USER": {
+        "dset_type": "mc", 
         "files": [
             {
                 "bad": false, 
@@ -3516,6 +3521,7 @@
                 "weights": 24989.75390625
             }
         ], 
+        "parent_n_units": 400000, 
         "vetted": true
     }
 }

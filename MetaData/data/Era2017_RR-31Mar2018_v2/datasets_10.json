@@ -1,5 +1,6 @@
 {
     "/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017B-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER": {
+        "dset_type": "data", 
         "files": [
             {
                 "bad": false, 
@@ -43483,6 +43484,7 @@
                 "weights": 18336
             }
         ], 
+        "parent_n_units": null, 
         "vetted": true
     }
 }

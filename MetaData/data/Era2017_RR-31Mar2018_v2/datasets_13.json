@@ -1,5 +1,6 @@
 {
     "/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-5b2b79b8ddf5ad4ee56082ab5a4bdf45/USER": {
+        "dset_type": "mc", 
         "files": [
             {
                 "bad": false, 
@@ -8890,6 +8891,7 @@
                 "weights": 412372960.0
             }
         ], 
+        "parent_n_units": 27413121, 
         "vetted": true
     }
 }

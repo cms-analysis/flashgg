@@ -1,5 +1,6 @@
 {
     "/GJet_Pt-20toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2-fd1bbca0499161eb81400b47608e6cd0/USER": {
+        "dset_type": "mc", 
         "files": [
             {
                 "bad": false, 
@@ -1978,6 +1979,7 @@
                 "weights": 24307.0
             }
         ], 
+        "parent_n_units": null, 
         "vetted": true
     }
 }

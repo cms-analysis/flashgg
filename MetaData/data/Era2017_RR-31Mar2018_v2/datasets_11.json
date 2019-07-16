@@ -1,5 +1,6 @@
 {
     "/SingleElectron/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017B-31Mar2018-v1-87acd39288f132a9f28591441f0166ef/USER": {
+        "dset_type": "data", 
         "files": [
             {
                 "bad": false, 
@@ -42367,6 +42368,7 @@
                 "weights": 6150
             }
         ], 
+        "parent_n_units": 26448, 
         "vetted": true
     }
 }
