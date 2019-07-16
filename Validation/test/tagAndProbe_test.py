@@ -82,7 +82,7 @@ from flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi import *
 # ----------------------------------------------------------------------------------------------------
 # Run shower shape and isolation corrections
 
-if customize.options.doPhoIdInputsCorrections:
+if customize.options.doPhoIdInputsCorrections and not customize.processId == "Data":
     process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
                                                        flashggDifferentialPhoIdInputsCorrection=cms.PSet(
                                                            initialSeed=cms.untracked.uint32(
