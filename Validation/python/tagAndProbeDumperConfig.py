@@ -104,9 +104,9 @@ def getConfig(extended=False, dumpShowerShapes=False, dumpClusterShapes=False, d
                          "probePhiWidth_uncorr        := ? getProbe.hasUserFloat('uncorr_phiWidth') ? getProbe.userFloat('uncorr_phiWidth') : -999.",
                          "probeSigmaIeIe_uncorr       := ? getProbe.hasUserFloat('uncorr_sieie') ? getProbe.userFloat('uncorr_sieie') : -999",
                          "probeCovarianceIeIp_uncorr  := ? getProbe.hasUserFloat('uncorr_sieip') ? getProbe.userFloat('uncorr_sieip') : -999",
-                         "probePhoIso_uncorr          := ? getProbe.hasUserFloat('uncorr_phoIso') ? getProbe.userFloat('uncorr_phoIso') : -999",
-                         "probeChIso_uncorr           := ? getProbe.hasUserFloat('uncorr_chIso') ? getProbe.userFloat('uncorr_chIso') : -999",
-                         "probeChIsoWorst_uncorr      := ? getProbe.hasUserFloat('uncorr_chIsoWorst') ? getProbe.userFloat('uncorr_chIsoWorst') : -999"]
+                         "probePhoIso_uncorr          := ? getProbe.hasUserFloat('uncorr_pfPhoIso03') ? getProbe.userFloat('uncorr_pfPhoIso03') : -999",
+                         "probeChIso03_uncorr           := ? getProbe.hasUserFloat('uncorr_pfChIso03') ? getProbe.userFloat('uncorr_pfChIso03') : -999",
+                         "probeChIso03worst_uncorr      := ? getProbe.hasUserFloat('uncorr_pfChIsoWorst03') ? getProbe.userFloat('uncorr_pfChIsoWorst03') : -999"]
 
     singleEleVars = minSingleEleVars
     singleEleViewVars = minSingleEleViewVars
