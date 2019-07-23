@@ -32,7 +32,8 @@
             "HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto*",
             "HLT_Ele*_WPTight_Gsf_v*",
             "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v*",
-            "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v*"
+            "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v*",
+	    "HLT_TriplePhoton_20_20_20*"
         ],        
         ".*DoubleMuon.*2018.*" :
         [

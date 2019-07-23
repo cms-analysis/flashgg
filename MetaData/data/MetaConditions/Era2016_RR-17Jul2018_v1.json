@@ -30,7 +30,8 @@
             "HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55*",
             "HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55*",
 	    "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL*",
-	    "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ*"
+	    "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ*",
+	    "HLT_Ele27_WPTight_Gsf*"
         ],
         ".*SingleEle.*" :
         [
