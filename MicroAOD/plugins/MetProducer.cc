@@ -26,11 +26,13 @@ namespace flashgg {
         void produce( edm::Event &, const edm::EventSetup & );
 
         edm::EDGetTokenT<edm::View<pat::MET> > metToken_;
+        edm::EDGetTokenT<bool> ecalBadCalibFilterUpdate_token;
     };
 
     MetProducer::MetProducer( const edm::ParameterSet &iConfig ):
         metToken_( consumes<edm::View<pat::MET> >( iConfig.getParameter<edm::InputTag>( "metTag" ) ) )
     {
+        ecalBadCalibFilterUpdate_token = consumes<bool> (edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
         produces<vector<flashgg::Met> >();
     }
 
@@ -40,10 +42,16 @@ namespace flashgg {
         evt.getByToken( metToken_, pmets );
         std::unique_ptr<vector<flashgg::Met> > metColl( new vector<flashgg::Met> );
 
+        // Check if event passes ecalBadCalibFilter
+        edm::Handle<bool> passecalBadCalibFilterUpdate;
+        evt.getByToken(ecalBadCalibFilterUpdate_token, passecalBadCalibFilterUpdate);
+        bool _passecalBadCalibFilterUpdate = (*passecalBadCalibFilterUpdate);
+
         for( unsigned int metIndex = 0; metIndex < pmets->size(); metIndex++ ) 
             {
                 edm::Ptr<pat::MET> pmet = pmets->ptrAt( metIndex );
                 flashgg::Met fmet = flashgg::Met( *pmet );
+                fmet.setPassEcalBadCalibFilter(_passecalBadCalibFilterUpdate);
                 metColl->push_back(fmet);
             }
         evt.put( std::move(metColl ) );

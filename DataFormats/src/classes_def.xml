@@ -261,9 +261,10 @@
 <class name="std::vector<flashgg::Jet>"/>
 <class name="edm::Ptr<flashgg::Jet>"/>
 
-<class name="flashgg::Met" ClassVersion="11">
+<class name="flashgg::Met" ClassVersion="12">
   <version ClassVersion="10" checksum="2272826605"/>
   <version ClassVersion="11" checksum="1231550995"/>
+  <version ClassVersion="12" checksum="597961085"/>
 </class>
 <class name="std::vector<flashgg::Met>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Met> >"/>
