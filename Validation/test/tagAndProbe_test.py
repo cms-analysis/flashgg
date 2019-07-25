@@ -91,6 +91,7 @@ if customize.options.doPhoIdInputsCorrections and not customize.processId == "Da
                                                        )
 
     process.flashggDifferentialPhoIdInputsCorrection = flashggDifferentialPhoIdInputsCorrection.clone()
+    process.flashggDifferentialPhoIdInputsCorrection.correctIsolations = False
     # process.flashggDifferentialPhoIdInputsCorrection.reRunRegression = True
 
 

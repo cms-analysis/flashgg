@@ -48,7 +48,9 @@ for var in corrections_summary['shower_shapes'].keys():
                 cms.PSet(
                     variables = cms.VPSet(),
                     weights = cms.FileInPath(str(ss_summary['weights'])),
-                    regr_output_scaling = cms.string('x[0]*(%f)+(%f)' % (ss_summary['scale'], ss_summary['center']))
+                    regr_output_scaling = cms.string('x[0]*(%f)+(%f)' % (ss_summary['scale'], ss_summary['center'])),
+                    regression = cms.bool(True),
+                    classifier = cms.string('BDTG_{}_{}'.format(var, subdet))
                 )
             )        
         xgb_config = getattr(flashggDifferentialPhoIdInputsCorrection, var+'_corrector_config_'+subdet)
