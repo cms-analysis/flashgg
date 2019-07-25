@@ -108,6 +108,9 @@ def getConfig(extended=False, dumpShowerShapes=False, dumpClusterShapes=False, d
                          "probeChIso03_uncorr           := ? getProbe.hasUserFloat('uncorr_pfChIso03') ? getProbe.userFloat('uncorr_pfChIso03') : -999",
                          "probeChIso03worst_uncorr      := ? getProbe.hasUserFloat('uncorr_pfChIsoWorst03') ? getProbe.userFloat('uncorr_pfChIsoWorst03') : -999"]
 
+    probeCorrClVars = ["probePhiWidth_corr := ? getProbe.hasUserFloat('phiWidth') ? getProbe.userFloat('phiWidth') : -999",
+                       "probeEtaWidth_corr := ? getProbe.hasUserFloat('etaWidth') ? getProbe.userFloat('etaWidth') : -999"]
+
     singleEleVars = minSingleEleVars
     singleEleViewVars = minSingleEleViewVars
     if extended:
@@ -136,7 +139,7 @@ def getConfig(extended=False, dumpShowerShapes=False, dumpClusterShapes=False, d
         variables.extend(tagGenVars)
 
     if trackClIsoCorrections:
-        variables.extend(probeUncorrClIsos)
+        variables.extend(probeUncorrClIsos + probeCorrClVars)
 
     return variables
 

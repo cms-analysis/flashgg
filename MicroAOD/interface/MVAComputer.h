@@ -76,7 +76,7 @@ namespace flashgg {
                 variables_.push_back( std::make_tuple( name, functors_.size() - 1 ) );
             }
         }
-
+        
         bookMVA();
     }
 
