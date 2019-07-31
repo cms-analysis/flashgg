@@ -438,8 +438,8 @@ if customize.doFiducial:
 elif customize.tthTagsOnly:
     tagList=[
         ["NoTag",0],
-        ["TTHHadronicTag",3],
-        ["TTHLeptonicTag",2],
+        ["TTHHadronicTag",4],
+        ["TTHLeptonicTag",4],
         ["TTHDiLeptonTag",0]
         ]
 elif customize.doubleHTagsOnly:
@@ -456,8 +456,8 @@ else:
         ["VHLeptonicLooseTag",0],
         ["VHMetTag",0],
         ["VHHadronicTag",0],
-        ["TTHHadronicTag",3],
-        ["TTHLeptonicTag",2],
+        ["TTHHadronicTag",4],
+        ["TTHLeptonicTag",4],
         ["TTHDiLeptonTag",0]
         ]
 
