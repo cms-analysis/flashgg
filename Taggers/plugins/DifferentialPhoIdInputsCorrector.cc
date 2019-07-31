@@ -27,7 +27,8 @@ using namespace edm;
 using namespace reco;
 
 namespace flashgg {
-
+    const bool useXGB = false;
+    
     class DifferentialPhoIdInputsCorrector : public edm::EDProducer
     {
     public:
@@ -38,7 +39,7 @@ namespace flashgg {
         void updatePhotonRegressions(flashgg::DiPhotonCandidate* dipho);
 
     private:
-        void correctPhoton( flashgg::Photon& ph, CLHEP::HepRandomEngine& engine );
+        void correctPhoton( flashgg::Photon& ph, CLHEP::HepRandomEngine& engine, double rhoFixedGrid );
         void storeRegression(flashgg::Photon & cand, const std::string & label);
 
         //---inputs
@@ -51,12 +52,13 @@ namespace flashgg {
         GlobalVariablesComputer globalVariablesComputer_;
         bool correctShowerShapes_;
         bool correctIsolations_;
-        map<string, MVAComputer<Photon, StringObjectFunction<Photon, true>, false> > correctionsEB_;
+        map<string, MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB> > correctionsEB_;
         map<string, TFormula> correctionScalingsEB_;
-        map<string, MVAComputer<Photon, StringObjectFunction<Photon, true>, false> > correctionsEE_;
+        map<string, MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB> > correctionsEE_;
         map<string, TFormula> correctionScalingsEE_;
         // static list of variables to be corrected
         static vector<string> showerShapes_;
+        std::string weights_;
 
         EffectiveAreas effectiveAreas_;
         vector<double> phoIsoPtScalingCoeff_;
@@ -65,9 +67,27 @@ namespace flashgg {
         //---energy regression
         shared_ptr<ModifyObjectValueBase> regress_;
         bool reRunRegression_;
+
+        TMVA::Reader* r9_reader_EB;
+        TMVA::Reader* r9_reader_EE;
+        
+        struct qRC_input{
+                float r9_input_pt;
+                float r9_input_ScEta;
+                float r9_input_phi;
+                float r9_input_rho;
+                float r9_input_sieip;
+                float r9_input_s4;
+                float r9_input_r9;
+                float r9_input_phiWidth;
+                float r9_input_sieie;
+                float r9_input_etaWidth;
+            };
+
+        qRC_input r9_input;
     };
     
-    vector<string> DifferentialPhoIdInputsCorrector::showerShapes_ = {"r9", "s4", "sieie", "sieip", "etaWidth", "phiWidth"};
+    vector<string> DifferentialPhoIdInputsCorrector::showerShapes_ = {"r9"}; // , "s4", "sieie", "sieip", "etaWidth", "phiWidth"};
 
     DifferentialPhoIdInputsCorrector::DifferentialPhoIdInputsCorrector( const edm::ParameterSet &pSet ) :
         diphoToken_(consumes<edm::View<flashgg::DiPhotonCandidate> >(pSet.getParameter<edm::InputTag>("diphotonSrc"))),
@@ -96,14 +116,75 @@ namespace flashgg {
             {
                 //---EB
                 auto xgb_config = pSet.getParameter<edm::ParameterSet>(ss_var+"_corrector_config_EB"); 
-                correctionsEB_[ss_var] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(xgb_config, &globalVariablesComputer_);
+                correctionsEB_[ss_var] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(xgb_config, &globalVariablesComputer_);
                 correctionScalingsEB_[ss_var] = TFormula("", xgb_config.getParameter<string>("regr_output_scaling").c_str());
 
                 //---EE
                 xgb_config = pSet.getParameter<edm::ParameterSet>(ss_var+"_corrector_config_EE"); 
-                correctionsEE_[ss_var] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(xgb_config, &globalVariablesComputer_);
+                correctionsEE_[ss_var] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(xgb_config, &globalVariablesComputer_);
                 correctionScalingsEE_[ss_var] = TFormula("", xgb_config.getParameter<string>("regr_output_scaling").c_str());
             }
+
+            //----------------------------------------TEST----------------------------------------------------------------------------
+            
+            
+            r9_reader_EB = new TMVA::Reader( "!Color:Silent" );
+
+            std::cout << "r9 Reader EB" << std::endl;
+            r9_reader_EB->AddVariable("f0", &r9_input.r9_input_pt);
+            std::cout << (float*)&r9_input.r9_input_pt << std::endl;
+            r9_reader_EB->AddVariable("f1", &r9_input.r9_input_ScEta);
+            std::cout << (float*)&r9_input.r9_input_ScEta << std::endl;
+            r9_reader_EB->AddVariable("f2", &r9_input.r9_input_phi);
+            std::cout << (float*)&r9_input.r9_input_phi << std::endl;
+            r9_reader_EB->AddVariable("f3", &r9_input.r9_input_rho);
+            std::cout << (float*)&r9_input.r9_input_rho << std::endl;
+            r9_reader_EB->AddVariable("f4", &r9_input.r9_input_sieip);
+            std::cout << (float*)&r9_input.r9_input_sieip << std::endl;
+            r9_reader_EB->AddVariable("f5", &r9_input.r9_input_s4);
+            std::cout << (float*)&r9_input.r9_input_s4 << std::endl;
+            r9_reader_EB->AddVariable("f6", &r9_input.r9_input_r9);
+            std::cout << (float*)&r9_input.r9_input_r9 << std::endl;
+            r9_reader_EB->AddVariable("f7", &r9_input.r9_input_phiWidth);
+            std::cout << (float*)&r9_input.r9_input_phiWidth << std::endl;
+            r9_reader_EB->AddVariable("f8", &r9_input.r9_input_sieie);
+            std::cout << (float*)&r9_input.r9_input_sieie << std::endl;
+            r9_reader_EB->AddVariable("f9", &r9_input.r9_input_etaWidth);
+            std::cout << (float*)&r9_input.r9_input_etaWidth << std::endl;
+
+            auto xgb_config_r9_EB = pSet.getParameter<edm::ParameterSet>("r9_corrector_config_EB");
+            weights_ = xgb_config_r9_EB.getParameter<edm::FileInPath>( "weights" ).fullPath();
+            r9_reader_EB->BookMVA( "BDTG_r9_EB", weights_);
+
+            r9_reader_EE = new TMVA::Reader( "!Color:Silent" );
+
+            std::cout << "r9 Reader EE" << std::endl;
+            r9_reader_EE->AddVariable("f0", &r9_input.r9_input_pt);
+            std::cout << (float*)&r9_input.r9_input_pt << std::endl;
+            r9_reader_EE->AddVariable("f1", &r9_input.r9_input_ScEta);
+            std::cout << (float*)&r9_input.r9_input_ScEta << std::endl;
+            r9_reader_EE->AddVariable("f2", &r9_input.r9_input_phi);
+            std::cout << (float*)&r9_input.r9_input_phi << std::endl;
+            r9_reader_EE->AddVariable("f3", &r9_input.r9_input_rho);
+            std::cout << (float*)&r9_input.r9_input_rho << std::endl;
+            r9_reader_EE->AddVariable("f4", &r9_input.r9_input_sieip);
+            std::cout << (float*)&r9_input.r9_input_sieip << std::endl;
+            r9_reader_EE->AddVariable("f5", &r9_input.r9_input_s4);
+            std::cout << (float*)&r9_input.r9_input_s4 << std::endl;
+            r9_reader_EE->AddVariable("f6", &r9_input.r9_input_r9);
+            std::cout << (float*)&r9_input.r9_input_r9 << std::endl;
+            r9_reader_EE->AddVariable("f7", &r9_input.r9_input_phiWidth);
+            std::cout << (float*)&r9_input.r9_input_phiWidth << std::endl;
+            r9_reader_EE->AddVariable("f8", &r9_input.r9_input_sieie);
+            std::cout << (float*)&r9_input.r9_input_sieie << std::endl;
+            r9_reader_EE->AddVariable("f9", &r9_input.r9_input_etaWidth);
+            std::cout << (float*)&r9_input.r9_input_etaWidth << std::endl;
+
+            auto xgb_config_r9_EE = pSet.getParameter<edm::ParameterSet>("r9_corrector_config_EE");
+            weights_ = xgb_config_r9_EE.getParameter<edm::FileInPath>( "weights" ).fullPath();
+            r9_reader_EE->BookMVA( "BDTG_r9_EE", weights_);
+
+            //-------------------------------------------TEST---------------------------------------------------------------------------
         }
 
         //---Load isolation corrections
@@ -112,38 +193,38 @@ namespace flashgg {
             //---EB
             // pho iso
             auto iso_config = pSet.getParameter<edm::ParameterSet>("phoIso_corrector_config_EB"); 
-            correctionsEB_["phoIsoClfData"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEB_["phoIsoClfData"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("clf_data"), 
                 &globalVariablesComputer_);
-            correctionsEB_["phoIsoClfMC"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEB_["phoIsoClfMC"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("clf_mc"), 
                 &globalVariablesComputer_);
-            correctionsEB_["phoIsoPeak2Tail"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEB_["phoIsoPeak2Tail"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("peak2tail"), 
                 &globalVariablesComputer_);
-            correctionsEB_["phoIsoMorphing"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEB_["phoIsoMorphing"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("morphing"), 
                 &globalVariablesComputer_);
             correctionScalingsEB_["phoIsoMorphing"] = TFormula("", iso_config.getParameter<edm::ParameterSet>("morphing").getParameter<string>("regr_output_scaling").c_str());
             // ch iso
             iso_config = pSet.getParameter<edm::ParameterSet>("chIso_corrector_config_EB"); 
-            correctionsEB_["chIsoClfData"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEB_["chIsoClfData"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("clf_data"), 
                 &globalVariablesComputer_);
-            correctionsEB_["chIsoClfMC"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEB_["chIsoClfMC"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("clf_mc"), 
                 &globalVariablesComputer_);
-            correctionsEB_["chIsoPeak2Tail"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEB_["chIsoPeak2Tail"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("chIso_peak2tail"), 
                 &globalVariablesComputer_);
-            correctionsEB_["chIsoMorphing"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEB_["chIsoMorphing"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("chIso_morphing"), 
                 &globalVariablesComputer_);
             correctionScalingsEB_["chIsoMorphing"] = TFormula("", iso_config.getParameter<edm::ParameterSet>("chIso_morphing").getParameter<string>("regr_output_scaling").c_str());            
-            correctionsEB_["chIsoWorstPeak2Tail"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEB_["chIsoWorstPeak2Tail"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("chIsoWorst_peak2tail"), 
                 &globalVariablesComputer_);
-            correctionsEB_["chIsoWorstMorphing"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEB_["chIsoWorstMorphing"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("chIsoWorst_morphing"), 
                 &globalVariablesComputer_);
             correctionScalingsEB_["chIsoWorstMorphing"] = TFormula("", iso_config.getParameter<edm::ParameterSet>("chIsoWorst_morphing").getParameter<string>("regr_output_scaling").c_str());            
@@ -151,38 +232,38 @@ namespace flashgg {
             //---EE
             // pho iso
             iso_config = pSet.getParameter<edm::ParameterSet>("phoIso_corrector_config_EE"); 
-            correctionsEE_["phoIsoClfData"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEE_["phoIsoClfData"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("clf_data"), 
                 &globalVariablesComputer_);
-            correctionsEE_["phoIsoClfMC"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEE_["phoIsoClfMC"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("clf_mc"), 
                 &globalVariablesComputer_);
-            correctionsEE_["phoIsoPeak2Tail"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEE_["phoIsoPeak2Tail"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("peak2tail"), 
                 &globalVariablesComputer_);
-            correctionsEE_["phoIsoMorphing"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEE_["phoIsoMorphing"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("morphing"), 
                 &globalVariablesComputer_);
             correctionScalingsEE_["phoIsoMorphing"] = TFormula("", iso_config.getParameter<edm::ParameterSet>("morphing").getParameter<string>("regr_output_scaling").c_str());
             // ch iso
             iso_config = pSet.getParameter<edm::ParameterSet>("chIso_corrector_config_EE"); 
-            correctionsEE_["chIsoClfData"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEE_["chIsoClfData"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("clf_data"), 
                 &globalVariablesComputer_);
-            correctionsEE_["chIsoClfMC"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEE_["chIsoClfMC"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("clf_mc"), 
                 &globalVariablesComputer_);
-            correctionsEE_["chIsoPeak2Tail"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEE_["chIsoPeak2Tail"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("chIso_peak2tail"), 
                 &globalVariablesComputer_);
-            correctionsEE_["chIsoMorphing"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEE_["chIsoMorphing"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("chIso_morphing"), 
                 &globalVariablesComputer_);
             correctionScalingsEE_["chIsoMorphing"] = TFormula("", iso_config.getParameter<edm::ParameterSet>("chIso_morphing").getParameter<string>("regr_output_scaling").c_str());            
-            correctionsEE_["chIsoWorstPeak2Tail"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEE_["chIsoWorstPeak2Tail"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("chIsoWorst_peak2tail"), 
                 &globalVariablesComputer_);
-            correctionsEE_["chIsoWorstMorphing"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, false>(
+            correctionsEE_["chIsoWorstMorphing"] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(
                 iso_config.getParameter<edm::ParameterSet>("chIsoWorst_morphing"), 
                 &globalVariablesComputer_);
             correctionScalingsEE_["chIsoWorstMorphing"] = TFormula("", iso_config.getParameter<edm::ParameterSet>("chIsoWorst_morphing").getParameter<string>("regr_output_scaling").c_str());            
@@ -209,7 +290,7 @@ namespace flashgg {
         ph.addUserFloat(label + "_regr_E_err", ph.energyCorrections().regression2EnergyError);
     }
 
-    void DifferentialPhoIdInputsCorrector::correctPhoton( flashgg::Photon & pho, CLHEP::HepRandomEngine& engine ) 
+    void DifferentialPhoIdInputsCorrector::correctPhoton( flashgg::Photon & pho, CLHEP::HepRandomEngine& engine, double rhoFixedGrid ) 
     {
         const auto* corrections = std::abs(pho.superCluster()->eta())<1.5 ? &correctionsEB_ : &correctionsEE_;
         const auto* correctionScalings = std::abs(pho.superCluster()->eta())<1.5 ? &correctionScalingsEB_ : &correctionScalingsEE_;
@@ -224,23 +305,54 @@ namespace flashgg {
             pho.addUserFloat("uncorr_etaWidth", pho.superCluster()->etaWidth());
             pho.addUserFloat("uncorr_phiWidth", pho.superCluster()->phiWidth());
 
-            //---Compute corrections 
+            //---Compute corrections
             // R9 (store it inside e3x3)        
             correctedShowerShapes.e3x3 = (pho.full5x5_r9()+correctionScalings->at("r9").Eval(corrections->at("r9")(pho)[0]))*pho.superCluster()->rawEnergy();
+
+            //--------------------------------------------TEST----------------------------------------------------------------------
+            std::string clf_ = std::abs(pho.superCluster()->eta())<1.5 ? "BDTG_r9_EB" : "BDTG_r9_EE";
+            TMVA::Reader* reader_r9 = std::abs(pho.superCluster()->eta())<1.5 ? r9_reader_EB : r9_reader_EE;
+
+            r9_input.r9_input_pt = pho.pt();
+            r9_input.r9_input_ScEta = pho.superCluster()->eta();
+            r9_input.r9_input_phi = pho.phi();
+            r9_input.r9_input_rho = rhoFixedGrid;
+            r9_input.r9_input_sieip = pho.sieip();
+            r9_input.r9_input_s4 = pho.s4();
+            r9_input.r9_input_r9 = pho.full5x5_r9();
+            r9_input.r9_input_phiWidth = pho.superCluster()->phiWidth();
+            r9_input.r9_input_sieie = pho.full5x5_sigmaIetaIeta();
+            r9_input.r9_input_etaWidth = pho.superCluster()->etaWidth();
+
+            std::vector<float> result_ = reader_r9->EvaluateRegression(clf_.c_str());
+            std::cout << r9_input.r9_input_pt << "Adress: " << (float*)&r9_input.r9_input_pt << std::endl
+                      << r9_input.r9_input_ScEta << "Adress: " << (float*)&r9_input.r9_input_ScEta << std::endl
+                      << r9_input.r9_input_phi << "Adress: " << (float*)&r9_input.r9_input_phi << std::endl
+                      << r9_input.r9_input_rho << "Adress: " << (float*)&r9_input.r9_input_rho << std::endl
+                      << r9_input.r9_input_sieip << "Adress: " << (float*)&r9_input.r9_input_sieip << std::endl
+                      << r9_input.r9_input_s4 << "Adress: " << (float*)&r9_input.r9_input_s4 << std::endl
+                      << r9_input.r9_input_r9 << "Adress: " << (float*)&r9_input.r9_input_r9 << std::endl
+                      << r9_input.r9_input_phiWidth << "Adress: " << (float*)&r9_input.r9_input_phiWidth << std::endl
+                      << r9_input.r9_input_sieie << "Adress: " << (float*)&r9_input.r9_input_sieie << std::endl
+                      << r9_input.r9_input_etaWidth << "Adress: " << (float*)&r9_input.r9_input_etaWidth << std::endl
+                      << "Result: " << result_[0] << std::endl;
+            correctedShowerShapes.e3x3 = (pho.full5x5_r9()+correctionScalings->at("r9").Eval(result_[0]))*pho.superCluster()->rawEnergy();
+            //--------------------------------------------TEST----------------------------------------------------------------------
+                                          
             // S4
-            auto s4_corr = pho.s4()+correctionScalings->at("s4").Eval(corrections->at("s4")(pho)[0]);
-            // SiEiE
-            correctedShowerShapes.sigmaIetaIeta = pho.full5x5_sigmaIetaIeta()+correctionScalings->at("sieie").Eval(corrections->at("sieie")(pho)[0]);
-            // SiEiP
-            auto sieip_corr = pho.sieip()+correctionScalings->at("sieip").Eval(corrections->at("sieip")(pho)[0]);
-            // etaWidth
-            pho.addUserFloat("etaWidth", (pho.superCluster()->etaWidth()+correctionScalings->at("etaWidth").Eval(corrections->at("etaWidth")(pho)[0])));
-            // phiWidth
-            pho.addUserFloat("phiWidth", (pho.superCluster()->phiWidth()+correctionScalings->at("phiWidth").Eval(corrections->at("phiWidth")(pho)[0])));
+            // auto s4_corr = pho.s4()+correctionScalings->at("s4").Eval(corrections->at("s4")(pho)[0]);
+            // // SiEiE
+            // correctedShowerShapes.sigmaIetaIeta = pho.full5x5_sigmaIetaIeta()+correctionScalings->at("sieie").Eval(corrections->at("sieie")(pho)[0]);
+            // // SiEiP
+            // auto sieip_corr = pho.sieip()+correctionScalings->at("sieip").Eval(corrections->at("sieip")(pho)[0]);
+            // // etaWidth
+            // pho.addUserFloat("etaWidth", (pho.superCluster()->etaWidth()+correctionScalings->at("etaWidth").Eval(corrections->at("etaWidth")(pho)[0])));
+            // // phiWidth
+            // pho.addUserFloat("phiWidth", (pho.superCluster()->phiWidth()+correctionScalings->at("phiWidth").Eval(corrections->at("phiWidth")(pho)[0])));
         
-            //---set shower shapes
-            pho.setS4(s4_corr);
-            pho.setSieip(sieip_corr);
+            // //---set shower shapes
+            // pho.setS4(s4_corr);
+            // pho.setSieip(sieip_corr);
             pho.full5x5_setShowerShapeVariables(correctedShowerShapes);        
         }
 
@@ -408,8 +520,8 @@ namespace flashgg {
             dipho->getSubLeadingPhoton().setpfChgIsoWrtChosenVtx03(dipho->subLeadingView()->pfChIso03WrtChosenVtx());
 
             //---compute corrections
-            correctPhoton(dipho->getLeadingPhoton(), engine);
-            correctPhoton(dipho->getSubLeadingPhoton(), engine);
+            correctPhoton(dipho->getLeadingPhoton(), engine, rhoFixedGrd);
+            correctPhoton(dipho->getSubLeadingPhoton(), engine, rhoFixedGrd);
 
             auto leadChgIsos = dipho->getLeadingPhoton().pfChgIso03();
             leadChgIsos[dipho->vtx()] = dipho->getLeadingPhoton().pfChgIsoWrtChosenVtx03();
