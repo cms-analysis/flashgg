@@ -241,6 +241,8 @@ if customize.doDoubleHTag:
     minimalVariables += hhc.variablesToDump()
     systematicVariables = hhc.systematicVariables()
 
+process.flashggTHQLeptonicTag.processId = cms.string(str(customize.processId))
+
 print 'here we print the tag sequence after'
 print process.flashggTagSequence
 
@@ -420,7 +422,10 @@ if(customize.doFiducial):
 #        fc.addRecoGlobalVariables(process, process.tagsDumper)
 #    else:
     fc.addObservables(process, process.tagsDumper, customize.processId )
-
+if customize.processId == "tHq":
+   import flashgg.Taggers.THQLeptonicTagVariables as var
+   variablesToUse = minimalVariables + var.vtx_variables + var.dipho_variables
+   
 #tagList=[
 #["UntaggedTag",4],
 #["VBFTag",2],
@@ -458,6 +463,7 @@ else:
         ["VHHadronicTag",0],
         ["TTHHadronicTag",4],
         ["TTHLeptonicTag",4],
+	["THQLeptonicTag",0],
         ["TTHDiLeptonTag",0]
         ]
 
