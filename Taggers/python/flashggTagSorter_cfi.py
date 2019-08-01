@@ -8,6 +8,7 @@ flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                   TagPriorityRanges = cms.VPSet(
 #        cms.PSet(TagName = cms.InputTag('flashggTTHDiLeptonTag')), 
         cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag')), 
+	cms.PSet(TagName = cms.InputTag('flashggTHQLeptonicTag')),
 #        cms.PSet(TagName = cms.InputTag('flashggVHTightTag')),
 #        cms.PSet(TagName = cms.InputTag('flashggVHLooseTag')),
         cms.PSet(TagName = cms.InputTag('flashggZHLeptonicTag')),
