@@ -68,7 +68,6 @@ namespace flashgg {
             auto expr = var.getParameter<string>( "expr" );
             auto name = var.getUntrackedParameter<string>( "name", expr );
             auto pos = expr.find( "global." );
-            std::cout << name << " " << expr << std::endl;
             if( pos == 0 ) {
                 assert( global != 0 );
                 variables_.push_back( std::make_tuple( name + "::" + expr.substr( 7 ), -1 ) );
@@ -77,9 +76,6 @@ namespace flashgg {
                 variables_.push_back( std::make_tuple( name, functors_.size() - 1 ) );
             }
         }
-        // for( size_t i = 0; i < values_.size(); ++i ){
-        //     std::cout << "Value: " << values_[i] << ", Adress: " << (float*)&values_[i] << std::endl;
-        // }
     }
 
     template<class F, class O, bool useXGB>
@@ -116,11 +112,6 @@ namespace flashgg {
                 else
                     reader_->AddVariable( vname, &values_[i] );
             }
-
-
-            //---------------------------------------------------------------debug------------------------------------------------
-            // std::cout << i << "Name: " << std::get<0>(xgbVars_[xgbVars_.size()-1]) << ", Values: " << std::get<1>(xgbVars_[xgbVars_.size()-1])  << ", Adress: " << (float*)&std::get<1>(xgbVars_[xgbVars_.size()-1]) << std::endl;
-            //---------------------------------------------------------------debug------------------------------------------------
         }
         
         if( useXGB )
@@ -156,41 +147,25 @@ namespace flashgg {
                         std::get<1>(xgbVars_[ivar]) = global_->valueOf( gname );
                 }
         }
+
+        std::vector<float> result;
         
         if( !useXGB )
-            {
-                if(multiclass_==true)
-                    return reader_->EvaluateMulticlass(classifier_.c_str());
-                else       
-                {
-                    std::vector<float> result;
-                    for( size_t ivar = 0; ivar < variables_.size(); ++ivar ){
-                        std::cout << "In operator, variable " << std::get<0>(variables_[ivar]) <<  ": " << values_[ivar]  << ", Adress: " << (float*)&values_[ivar] << std::endl;
-                    }
-                    std::cout << "rho: " << global_->valueOf("rho") << std::endl;
-                    if(regression_)
-                        result = reader_->EvaluateRegression( classifier_.c_str() );
-                    else
-                        result.push_back(reader_->EvaluateMVA( classifier_.c_str() ));
-                    
-                    if(regression_==true)
-                        std::cout << classifier_.c_str() << ", Regression Result: " << result[0] << std::endl;
-                    else
-                        std::cout << classifier_.c_str() << ", MVA Result: " << result[0] << std::endl;
-                   
-                    return result;
-                }
-            }
+        {
+            if(multiclass_)
+                result = reader_->EvaluateMulticlass( classifier_.c_str() );
+            else if(regression_)
+                result = reader_->EvaluateRegression( classifier_.c_str() );
+            else
+                result.push_back(reader_->EvaluateMVA( classifier_.c_str() ));
+        }
         else
         {
             xgbComputer_.SetVariables(&xgbVars_);
-            // for( size_t idx=0; idx<xgbVars_.size(); ++idx){
-            //     std::cout << std::get<0>(xgbVars_[idx]) << ": " << std::get<1>(xgbVars_[idx])<< std::endl;}
-            auto resultXGB = xgbComputer_();
-            // for(auto &resXGB : resultXGB)
-            //     std::cout << classifier_.c_str() << ", Result: " << resXGB << std::endl;
-            return resultXGB;
+            result = xgbComputer_();
         }
+        
+        return result;
     }
 }
 
