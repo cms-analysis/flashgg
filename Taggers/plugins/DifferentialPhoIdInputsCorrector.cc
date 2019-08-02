@@ -253,9 +253,9 @@ namespace flashgg {
             //---Photon isolation
             pho.addUserFloat("uncorr_pfPhoIso03", pho.pfPhoIso03());
 
-            // peak to tail shift (and viceversa)
-            auto p_peak_data = corrections->at("phoIsoClfData")(pho)[0];
-            auto p_peak_mc = corrections->at("phoIsoClfMC")(pho)[0];
+            // peak to tail shift (and viceversa), TMVA_pred=2*xgboost_pred-1, value stored in trees from xgboost is xgboost_pred-0.5 (=base_score)
+            auto p_peak_data = ((corrections->at("phoIsoClfData")(pho)[0]+1.)/2.)+0.5;
+            auto p_peak_mc = ((corrections->at("phoIsoClfMC")(pho)[0]+1.)/2.)+0.5;
             auto p_tail_data = 1 - p_peak_data;
             auto p_tail_mc = 1 - p_peak_mc;
             auto migration_rnd_value = engine.flat();
