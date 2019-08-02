@@ -111,6 +111,9 @@ class JobsManager(object):
                 make_option("-R","--resubmit-missing",dest="resubMissing",default=False, action="store_true",
                             help="resubmit unfinished jobs upon continue."
                             ),
+                make_option("--resubmit-ids",dest="resubmit_ids", default="", type="string",
+                            help="Specify list of job ids to be resubmitted"
+                            ),
                 make_option("-b","--batch-system",dest="batchSystem",type="string",
                             default="auto",help="Batch system name. Currently supported: sge lsf, default: %default"
                             ),
@@ -198,6 +201,11 @@ class JobsManager(object):
                 if nsub <= self.options.maxResub:
                     resub = True
                     if self.options.resubMissing:
+                        if self.options.batchSystem == 'htcondor' and self.options.resubmit_ids != "":
+                            for i,arg in enumerate(args):
+                                if 'resubMap' in arg:
+                                    args[i] = 'resubMap='+self.options.resubmit_ids
+                            print('Forced resubmission: jobs %s will be resubmitted' % self.options.resubmit_ids)
                         out = self.parallel.run(cmd,args,jobName=jobName)
                         if self.options.queue and self.options.asyncLsf:
                             job[5] = out[-1][1][1]
