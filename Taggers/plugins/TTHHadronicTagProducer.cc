@@ -55,13 +55,17 @@ namespace flashgg {
         int  chooseCategory( float );
 
         std::vector<edm::EDGetTokenT<View<flashgg::Jet> > > tokenJets_;
+        std::vector<std::vector<edm::EDGetTokenT<edm::View<flashgg::Jet>>>> jetTokens_;
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
+        std::vector<edm::EDGetTokenT<edm::View<DiPhotonCandidate>>> diPhotonTokens_;
+        std::vector<edm::EDGetTokenT<edm::View<DiPhotonMVAResult>>> mvaResultTokens_;
         std::vector<edm::InputTag> inputTagJets_;
         EDGetTokenT<View<Electron> > electronToken_;
         EDGetTokenT<View<flashgg::Muon> > muonToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<flashgg::Met> > METToken_;
+        std::vector<edm::EDGetTokenT<edm::View<flashgg::Met>>> metTokens_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
         EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
         EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
@@ -100,7 +104,7 @@ namespace flashgg {
         double bjetsNumberTTHHMVAThreshold_;
         double bjetsLooseNumberTTHHMVAThreshold_;
         double secondMaxBTagTTHHMVAThreshold_;
-      string bTag_;
+        string bTag_;
 
         //leptons
 
@@ -119,11 +123,11 @@ namespace flashgg {
         unique_ptr<TMVA::Reader>TThMva_;
         FileInPath tthMVAweightfile_;
         string _MVAMethod;
-	FileInPath topTaggerXMLfile_;
-	FileInPath tthVsDiphoDNNfile_;
-	FileInPath tthVsttGGDNNfile_;
-	unique_ptr<TMVA::Reader>TThMva_RunII_;
-	FileInPath tthMVA_RunII_weightfile_;
+        FileInPath topTaggerXMLfile_;
+        FileInPath tthVsDiphoDNNfile_;
+        FileInPath tthVsttGGDNNfile_;
+        unique_ptr<TMVA::Reader>TThMva_RunII_;
+        FileInPath tthMVA_RunII_weightfile_;
 
         int jetcount_;
         float nJets_;
@@ -181,32 +185,51 @@ namespace flashgg {
         float MET_;
       
         float tthMvaVal_;
-	float tthMvaVal_RunII_;
-	
-	float maxBTagVal_noBB_;
-	float secondMaxBTagVal_noBB_;
+        float tthMvaVal_RunII_;
+        
+        float maxBTagVal_noBB_;
+        float secondMaxBTagVal_noBB_;
 
-	float pho1_eta_;
-	float pho2_eta_;
+        float pho1_eta_;
+        float pho2_eta_;
 
-	float diPhoDeltaR_;
-	float btag_noBB_1_;
-	float btag_noBB_2_;
-	float btag_noBB_3_;
-	float btag_noBB_4_;
+        float diPhoDeltaR_;
+        float btag_noBB_1_;
+        float btag_noBB_2_;
+        float btag_noBB_3_;
+        float btag_noBB_4_;
 
-	float ht_;
-	float helicity_angle_;
-	float top_tag_score_;
+        float ht_;
+        float helicity_angle_;
+        float top_tag_score_;
 
-	float dnn_score_0_;
-	float dnn_score_1_;
+        float dnn_score_0_;
+        float dnn_score_1_;
 
         vector<double> boundaries;
 
-	BDT_resolvedTopTagger *topTagger;
-	DNN_Helper* dnn_dipho;
-	DNN_Helper* dnn_ttGG;
+        BDT_resolvedTopTagger *topTagger;
+        DNN_Helper* dnn_dipho;
+        DNN_Helper* dnn_ttGG;
+
+        bool modifySystematicsWorkflow;
+        std::vector<std::string> systematicsLabels;
+
+        std::string inputDiPhotonName_;
+        std::vector<std::string> inputDiPhotonSuffixes_;
+
+        std::string inputMVAResultName_;
+
+        std::string nominalJetsName_;
+        std::string systematicsJetsName_;
+        std::vector<std::string> inputJetsSuffixes_;
+        unsigned int inputJetsCollSize_;
+
+        std::string nominalMetName_;
+        std::string systematicsMetName_;
+        std::vector<std::string> inputMetSuffixes_;
+
+        bool useLargeMVAs;
 
     };
 
@@ -220,10 +243,86 @@ namespace flashgg {
         METToken_( consumes<View<flashgg::Met> >( iConfig.getParameter<InputTag> ( "METTag" ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         rhoTag_( consumes<double>( iConfig.getParameter<InputTag>( "rhoTag" ) ) ),
-	triggerRECO_( consumes<edm::TriggerResults>(iConfig.getParameter<InputTag>("RECOfilters") ) ),
+	    triggerRECO_( consumes<edm::TriggerResults>(iConfig.getParameter<InputTag>("RECOfilters") ) ),
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
         _MVAMethod( iConfig.getParameter<string> ( "MVAMethod" ) )
     {
+        systematicsLabels.push_back("");
+        modifySystematicsWorkflow = iConfig.getParameter<bool> ( "ModifySystematicsWorkflow" );
+
+        useLargeMVAs = iConfig.getParameter<bool> ( "UseLargeMVAs" );
+
+        // Get diphoton candidates corresponding to each systematic
+        inputDiPhotonName_= iConfig.getParameter<std::string>( "DiPhotonName" );
+        inputDiPhotonSuffixes_= iConfig.getParameter<std::vector<std::string> > ( "DiPhotonSuffixes" );
+        std::vector<edm::InputTag>  diPhotonTags;
+
+        inputMVAResultName_ = iConfig.getParameter<std::string>( "MVAResultName" );
+        std::vector<edm::InputTag>  mvaResultTags;
+
+        diPhotonTags.push_back(edm::InputTag(inputDiPhotonName_)); // nominal diphotons
+        mvaResultTags.push_back(edm::InputTag(inputMVAResultName_)); // nominal mva results
+
+        for (auto & suffix : inputDiPhotonSuffixes_) {
+            systematicsLabels.push_back(suffix);
+            std::string inputName = inputDiPhotonName_;
+            inputName.append(suffix);
+            diPhotonTags.push_back(edm::InputTag(inputName));
+
+            std::string mvaName = inputMVAResultName_;
+            mvaName.append(suffix);
+            mvaResultTags.push_back(edm::InputTag(mvaName));
+        }
+
+        for (auto & tag : diPhotonTags)
+            diPhotonTokens_.push_back(consumes<edm::View<flashgg::DiPhotonCandidate>>(tag));
+
+        for (auto & tag : mvaResultTags)
+            mvaResultTokens_.push_back(consumes<edm::View<flashgg::DiPhotonMVAResult>>(tag));
+
+        // Get jet collections corresponding to each systematic
+        nominalJetsName_ = iConfig.getParameter<std::string> ( "JetsName" );
+        systematicsJetsName_ = iConfig.getParameter<std::string> ( "SystematicsJetsName" );
+        inputJetsCollSize_= iConfig.getParameter<unsigned int> ( "JetsCollSize" );
+        inputJetsSuffixes_= iConfig.getParameter<std::vector<std::string> > ( "JetsSuffixes" );
+        std::vector<std::vector<edm::InputTag>>  jetTags;
+
+        jetTags.push_back(std::vector<edm::InputTag>(0));
+        for (unsigned int i = 0; i < inputJetsCollSize_ ; i++) {
+            jetTags[0].push_back(edm::InputTag(nominalJetsName_,std::to_string(i))); // nominal jets
+        }
+
+        for (auto & suffix : inputJetsSuffixes_) {
+            systematicsLabels.push_back(suffix);
+            jetTags.push_back(std::vector<edm::InputTag>(0));
+            int suffix_idx = jetTags.size() - 1;
+            for (unsigned int i = 0; i < inputJetsCollSize_ ; i++) {
+                std::string jetsName = systematicsJetsName_;
+                jetsName.append(std::to_string(i));
+                jetTags[suffix_idx].push_back(edm::InputTag(jetsName,suffix));
+            }
+        }
+
+        for (unsigned int i = 0; i < jetTags.size(); i++) {
+            jetTokens_.push_back(std::vector<edm::EDGetTokenT<edm::View<flashgg::Jet>>>(0));
+            for (auto & tag : jetTags[i])
+                jetTokens_[i].push_back(consumes<edm::View<flashgg::Jet>>(tag));
+        }
+
+        // Get MET corresponding to each systematic
+        nominalMetName_ = iConfig.getParameter<std::string> ( "MetName" );
+        systematicsMetName_ = iConfig.getParameter<std::string> ( "SystematicsMetName" );
+        inputMetSuffixes_ = iConfig.getParameter<std::vector<std::string>> ( "MetSuffixes" );
+        std::vector<edm::InputTag> metTags;
+        metTags.push_back(edm::InputTag(nominalMetName_)); // nominal MET
+        for (auto & suffix : inputMetSuffixes_) {
+            systematicsLabels.push_back(suffix);
+            metTags.push_back(edm::InputTag(systematicsMetName_, suffix));
+        }
+
+        for (auto & tag : metTags)
+           metTokens_.push_back(consumes<edm::View<flashgg::Met>>(tag)); 
+
         boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
         assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // 
 
@@ -269,7 +368,7 @@ namespace flashgg {
         debug_ = iConfig.getParameter<bool>( "debug" );
 
         useTTHHadronicMVA_ = iConfig.getParameter<bool>( "useTTHHadronicMVA");
-	applyMETfilters_   = iConfig.getParameter<bool>( "applyMETfilters");
+        applyMETfilters_   = iConfig.getParameter<bool>( "applyMETfilters");
         bjetsLooseNumberThreshold_ = iConfig.getParameter<int>( "bjetsLooseNumberThreshold");
         jetsNumberTTHHMVAThreshold_ = iConfig.getParameter<int>( "jetsNumberTTHHMVAThreshold");
         bjetsNumberTTHHMVAThreshold_ = iConfig.getParameter<int>( "bjetsNumberTTHHMVAThreshold");
@@ -277,10 +376,10 @@ namespace flashgg {
         secondMaxBTagTTHHMVAThreshold_ = iConfig.getParameter<double>( "secondMaxBTagTTHHMVAThreshold");
 
         tthMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "tthMVAweightfile" ); 
-	topTaggerXMLfile_ = iConfig.getParameter<edm::FileInPath>( "topTaggerXMLfile" );
-	tthVsDiphoDNNfile_ = iConfig.getParameter<edm::FileInPath>( "tthVsDiphoDNNfile" );
-	tthVsttGGDNNfile_ = iConfig.getParameter<edm::FileInPath>( "tthVsttGGDNNfile" );
-	tthMVA_RunII_weightfile_ = iConfig.getParameter<edm::FileInPath>( "tthMVA_RunII_weightfile" );
+        topTaggerXMLfile_ = iConfig.getParameter<edm::FileInPath>( "topTaggerXMLfile" );
+        tthVsDiphoDNNfile_ = iConfig.getParameter<edm::FileInPath>( "tthVsDiphoDNNfile" );
+        tthVsttGGDNNfile_ = iConfig.getParameter<edm::FileInPath>( "tthVsttGGDNNfile" );
+        tthMVA_RunII_weightfile_ = iConfig.getParameter<edm::FileInPath>( "tthMVA_RunII_weightfile" );
 
         nJets_ = 0;
         leadJetPt_ = 0.;
@@ -307,7 +406,7 @@ namespace flashgg {
         pho1_sigmaEOverE_= -999.;
         pho2_sigmaEOverE_= -999.;
 
-	pho1_hasPixelSeed_=-999;
+        pho1_hasPixelSeed_=-999;
         pho2_hasPixelSeed_=-999;
 
         diPhoY_= -999.;
@@ -332,27 +431,27 @@ namespace flashgg {
         jetEta_4_=-6;
         jetPhi_4_=-6;
                 
-	MET_=-1;
+        MET_=-1;
 
-	maxBTagVal_noBB_ = -3.;
-	secondMaxBTagVal_noBB_ = -3.; 
+        maxBTagVal_noBB_ = -3.;
+        secondMaxBTagVal_noBB_ = -3.; 
 
-	pho1_eta_ = -999.;
-	pho2_eta_ = -999.;
+        pho1_eta_ = -999.;
+        pho2_eta_ = -999.;
 
-	diPhoDeltaR_ = -999.;
-	
-	btag_noBB_1_ = -1;
-	btag_noBB_2_ = -1;
-	btag_noBB_3_ = -1;
-	btag_noBB_4_ = -1;
+        diPhoDeltaR_ = -999.;
+        
+        btag_noBB_1_ = -1;
+        btag_noBB_2_ = -1;
+        btag_noBB_3_ = -1;
+        btag_noBB_4_ = -1;
 
-	ht_ = 0.;
-	helicity_angle_ = -999.;
+        ht_ = 0.;
+        helicity_angle_ = -999.;
 
-	top_tag_score_ = -999.;
-	dnn_score_0_ = -999.;
-	dnn_score_1_ = -999.;
+        top_tag_score_ = -999.;
+        dnn_score_0_ = -999.;
+        dnn_score_1_ = -999.;
 
         if (_MVAMethod != ""){
             TThMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
@@ -386,71 +485,81 @@ namespace flashgg {
             TThMva_->AddVariable( "jetEta_3", &jetEta_3_);   
 
             TThMva_->AddVariable( "jetEta_4", &jetEta_4_);       
-	    TThMva_->AddVariable( "pho1_hasPixelSeed",&pho1_hasPixelSeed_);
-	    TThMva_->AddVariable( "pho2_hasPixelSeed",&pho2_hasPixelSeed_);
+            TThMva_->AddVariable( "pho1_hasPixelSeed",&pho1_hasPixelSeed_);
+            TThMva_->AddVariable( "pho2_hasPixelSeed",&pho2_hasPixelSeed_);
             TThMva_->AddVariable( "thirdMaxBTagVal", &thirdMaxBTagVal_);          
-	    TThMva_->AddVariable( "MET",&MET_);
+            TThMva_->AddVariable( "MET",&MET_);
 
             TThMva_->BookMVA( _MVAMethod.c_str() , tthMVAweightfile_.fullPath() );
 
-	    TThMva_RunII_.reset( new TMVA::Reader( "!Color:Silent" ) );
- 
- 	    TThMva_RunII_->AddVariable("maxIDMVA_", &maxPhoID_);
- 	    TThMva_RunII_->AddVariable("minIDMVA_", &minPhoID_);
- 	    TThMva_RunII_->AddVariable("max2_btag_", &secondMaxBTagVal_noBB_);
- 	    TThMva_RunII_->AddVariable("max1_btag_", &maxBTagVal_noBB_);
- 	    TThMva_RunII_->AddVariable("dipho_delta_R", &diPhoDeltaR_);
- 	    TThMva_RunII_->AddVariable("njets_", &nJets_);
- 	    TThMva_RunII_->AddVariable("ht_", &ht_);
- 	    TThMva_RunII_->AddVariable("leadptoM_", &pho1_ptoM_);
- 	    TThMva_RunII_->AddVariable("subleadptoM_", &pho2_ptoM_);
- 	    TThMva_RunII_->AddVariable("lead_eta_", &pho1_eta_);
- 	    TThMva_RunII_->AddVariable("sublead_eta_", &pho2_eta_);
- 
- 	    TThMva_RunII_->AddVariable("jet1_pt_", &jetPt_1_);
- 	    TThMva_RunII_->AddVariable("jet1_eta_", &jetEta_1_);
- 	    TThMva_RunII_->AddVariable("jet1_btag_", &btag_noBB_1_);
- 	    TThMva_RunII_->AddVariable("jet2_pt_", &jetPt_2_);
- 	    TThMva_RunII_->AddVariable("jet2_eta_", &jetEta_2_);
- 	    TThMva_RunII_->AddVariable("jet2_btag_", &btag_noBB_2_);
- 	    TThMva_RunII_->AddVariable("jet3_pt_", &jetPt_3_);
- 	    TThMva_RunII_->AddVariable("jet3_eta_", &jetEta_3_);
- 	    TThMva_RunII_->AddVariable("jet3_btag_", &btag_noBB_3_);
- 	    TThMva_RunII_->AddVariable("jet4_pt_", &jetPt_4_);
- 	    TThMva_RunII_->AddVariable("jet4_eta_", &jetEta_4_);
- 	    TThMva_RunII_->AddVariable("jet4_btag_", &btag_noBB_4_);
- 
- 	    TThMva_RunII_->AddVariable("leadPSV_", &pho1_hasPixelSeed_);
- 	    TThMva_RunII_->AddVariable("subleadPSV_", &pho2_hasPixelSeed_);
- 
- 	    TThMva_RunII_->AddVariable("dipho_cosphi_", &diPhoCosPhi_);
- 	    TThMva_RunII_->AddVariable("dipho_rapidity_", &diPhoY_);
- 	    TThMva_RunII_->AddVariable("met_", &MET_);
- 
- 	    TThMva_RunII_->AddVariable("dipho_pt_over_mass_", &diPhoPtoM_);
- 
- 	    TThMva_RunII_->AddVariable("helicity_angle_", &helicity_angle_);
- 	    TThMva_RunII_->AddVariable("top_tag_score_", &top_tag_score_);
- 	    TThMva_RunII_->AddVariable("dnn_score_0", &dnn_score_0_);
+            TThMva_RunII_.reset( new TMVA::Reader( "!Color:Silent" ) );
+     
+            TThMva_RunII_->AddVariable("maxIDMVA_", &maxPhoID_);
+            TThMva_RunII_->AddVariable("minIDMVA_", &minPhoID_);
+            TThMva_RunII_->AddVariable("max2_btag_", &secondMaxBTagVal_noBB_);
+            TThMva_RunII_->AddVariable("max1_btag_", &maxBTagVal_noBB_);
+            TThMva_RunII_->AddVariable("dipho_delta_R", &diPhoDeltaR_);
+            TThMva_RunII_->AddVariable("njets_", &nJets_);
+            TThMva_RunII_->AddVariable("ht_", &ht_);
+            TThMva_RunII_->AddVariable("leadptoM_", &pho1_ptoM_);
+            TThMva_RunII_->AddVariable("subleadptoM_", &pho2_ptoM_);
+            TThMva_RunII_->AddVariable("lead_eta_", &pho1_eta_);
+            TThMva_RunII_->AddVariable("sublead_eta_", &pho2_eta_);
+     
+            TThMva_RunII_->AddVariable("jet1_pt_", &jetPt_1_);
+            TThMva_RunII_->AddVariable("jet1_eta_", &jetEta_1_);
+            TThMva_RunII_->AddVariable("jet1_btag_", &btag_noBB_1_);
+            TThMva_RunII_->AddVariable("jet2_pt_", &jetPt_2_);
+            TThMva_RunII_->AddVariable("jet2_eta_", &jetEta_2_);
+            TThMva_RunII_->AddVariable("jet2_btag_", &btag_noBB_2_);
+            TThMva_RunII_->AddVariable("jet3_pt_", &jetPt_3_);
+            TThMva_RunII_->AddVariable("jet3_eta_", &jetEta_3_);
+            TThMva_RunII_->AddVariable("jet3_btag_", &btag_noBB_3_);
+            TThMva_RunII_->AddVariable("jet4_pt_", &jetPt_4_);
+            TThMva_RunII_->AddVariable("jet4_eta_", &jetEta_4_);
+            TThMva_RunII_->AddVariable("jet4_btag_", &btag_noBB_4_);
+     
+            TThMva_RunII_->AddVariable("leadPSV_", &pho1_hasPixelSeed_);
+            TThMva_RunII_->AddVariable("subleadPSV_", &pho2_hasPixelSeed_);
+     
+            TThMva_RunII_->AddVariable("dipho_cosphi_", &diPhoCosPhi_);
+            TThMva_RunII_->AddVariable("dipho_rapidity_", &diPhoY_);
+            TThMva_RunII_->AddVariable("met_", &MET_);
+     
+            TThMva_RunII_->AddVariable("dipho_pt_over_mass_", &diPhoPtoM_);
+     
+            TThMva_RunII_->AddVariable("helicity_angle_", &helicity_angle_);
+            TThMva_RunII_->AddVariable("top_tag_score_", &top_tag_score_);
+            TThMva_RunII_->AddVariable("dnn_score_0", &dnn_score_0_);
             TThMva_RunII_->AddVariable("dnn_score_1", &dnn_score_1_);
 
- 	    TThMva_RunII_->BookMVA(_MVAMethod.c_str(), tthMVA_RunII_weightfile_.fullPath()); 
+            TThMva_RunII_->BookMVA(_MVAMethod.c_str(), tthMVA_RunII_weightfile_.fullPath()); 
         
         }       
 
-	topTagger = new BDT_resolvedTopTagger(topTaggerXMLfile_.fullPath());
-	dnn_dipho = new DNN_Helper(tthVsDiphoDNNfile_.fullPath());
-	dnn_ttGG  = new DNN_Helper(tthVsttGGDNNfile_.fullPath());
+        if (useLargeMVAs) {
+            topTagger = new BDT_resolvedTopTagger(topTaggerXMLfile_.fullPath());
 
-	dnn_dipho->SetInputShapes(18, 8, 8);
-	dnn_ttGG->SetInputShapes(18, 8, 8);
+            dnn_dipho = new DNN_Helper(tthVsDiphoDNNfile_.fullPath());
+            dnn_ttGG  = new DNN_Helper(tthVsttGGDNNfile_.fullPath());
+
+            dnn_dipho->SetInputShapes(18, 8, 8);
+            dnn_ttGG->SetInputShapes(18, 8, 8);
+        }
 
         for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
             auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
             tokenJets_.push_back(token);
         }
 
-        produces<vector<TTHHadronicTag> >();
+        if (modifySystematicsWorkflow) {
+            for (auto & syst_name : systematicsLabels)
+                produces<vector<TTHHadronicTag>>(syst_name);
+        }
+
+        else {
+            produces<vector<TTHHadronicTag> >();
+        }
         produces<vector<TagTruthBase> >();
     }
 
@@ -481,14 +590,16 @@ namespace flashgg {
         //Handle<View<flashgg::Jet> > theJets;
         //evt.getByToken( thejetToken_, theJets );
         // const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
-        JetCollectionVector Jets( inputTagJets_.size() );
-        for( size_t j = 0; j < inputTagJets_.size(); ++j ) {
-            evt.getByToken( tokenJets_[j], Jets[j] );
+        JetCollectionVector Jets(inputJetsCollSize_);
+        if (!modifySystematicsWorkflow) {
+            for( size_t j = 0; j < inputTagJets_.size(); ++j ) {
+                evt.getByToken( tokenJets_[j], Jets[j] );
+            }
         }
 
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
-        evt.getByToken( diPhotonToken_, diPhotons );
-        // const PtrVector<flashgg::DiPhotonCandidate>& diPhotonPointers = diPhotons->ptrVector();
+        if (!modifySystematicsWorkflow)
+            evt.getByToken( diPhotonToken_, diPhotons );
 
         Handle<View<flashgg::Muon> > theMuons;
         evt.getByToken( muonToken_, theMuons );
@@ -504,23 +615,25 @@ namespace flashgg {
         evt.getByToken( vertexToken_, vertices );
 
         Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
-        evt.getByToken( mvaResultToken_, mvaResults );
+        if (!modifySystematicsWorkflow)
+            evt.getByToken( mvaResultToken_, mvaResults );
         // const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
 
         Handle<View<flashgg::Met> > METs;
-        evt.getByToken( METToken_, METs );
+        if (!modifySystematicsWorkflow)
+            evt.getByToken( METToken_, METs );
 
-	//Get trigger results relevant to MET filters
+	    //Get trigger results relevant to MET filters
         bool passMETfilters = 1;
         edm::Handle<edm::TriggerResults> triggerBits;
         evt.getByToken( triggerRECO_, triggerBits );
         const edm::TriggerNames &triggerNames = evt.triggerNames( *triggerBits );
         std::vector<std::string> flagList = {"Flag_goodVertices", "Flag_globalTightHalo2016Filter", "Flag_HBHENoiseFilter", "Flag_HBHENoieIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter", "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter","Flag_eeBadScFilter", "Flag_ecalBadCalibFilter"};
         if( ! evt.isRealData() ) {
-	  flagList = {"Flag_goodVertices", "Flag_globalTightHalo2016Filter", "Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter", "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter", "Flag_ecalBadCalibFilter"};
+          flagList = {"Flag_goodVertices", "Flag_globalTightHalo2016Filter", "Flag_HBHENoiseFilter", "Flag_HBHENoiseIsoFilter", "Flag_EcalDeadCellTriggerPrimitiveFilter", "Flag_BadPFMuonFilter", "Flag_BadChargedCandidateFilter", "Flag_ecalBadCalibFilter"};
         }
         for( unsigned int i = 0; i < triggerNames.triggerNames().size(); i++ )
-	  {
+      {
 	    if(!triggerBits->accept(i)) {
 	      for(size_t j=0;j<flagList.size();j++)
 		{
@@ -537,7 +650,7 @@ namespace flashgg {
 
         Handle<View<reco::GenParticle> > genParticles;
 
-        std::unique_ptr<vector<TTHHadronicTag> > tthhtags( new vector<TTHHadronicTag> );
+        //std::unique_ptr<vector<TTHHadronicTag> > tthhtags( new vector<TTHHadronicTag> );
         std::unique_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
 
         Point higgsVtx;
@@ -572,552 +685,626 @@ namespace flashgg {
         edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
         unsigned int idx = 0;
         
-        
-        for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
+        // Here we loop over all systematics (DiPhoton, Jets, Met), with the following logic:
+        // idx = 0:                                                                     Nominal DiPhoton | Nominal Jets | Nominal Met
+        // 0 < idx <= # DiPho Systs:                                                    SystVar DiPhoton | Nominal Jets | Nominal Met
+        // # DiPho Systs < idx <= # DiPho Systs + Jet Systs:                            Nominal DiPhoton | SystVar Jets | Nominal Met
+        // # Jet Systs + # DiPho Systs < idx <= # DiPho Systs + Jet Systs + Met Systs:  Nominal DiPhoton | Nominal Jets | SystVar Met
+        if (!modifySystematicsWorkflow)
+            systematicsLabels = {""};
 
-            edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( diphoIndex );
+        //cout << "Looping over " << systematicsLabels.size() << "systematics variations" << endl;
+        //cout << inputDiPhotonSuffixes_.size() << "for diphotons, " << inputJetsSuffixes_.size() << " for jets, and " << inputMetSuffixes_.size() << " for met" << endl;
+        for (unsigned int syst_idx = 0; syst_idx < systematicsLabels.size(); syst_idx++) {
 
-	    if(!passMETfilters && applyMETfilters_) continue;
+            bool vary_dipho = ((syst_idx > 0) && (syst_idx <= inputDiPhotonSuffixes_.size()));
+            bool vary_jets  = ((syst_idx > inputDiPhotonSuffixes_.size()) && (syst_idx <= (inputJetsSuffixes_.size() + inputDiPhotonSuffixes_.size())));
+            bool vary_met   = (syst_idx > (inputJetsSuffixes_.size() + inputDiPhotonSuffixes_.size()));
 
-            std::vector<edm::Ptr<flashgg::Muon> >     Muons;
-            std::vector<edm::Ptr<flashgg::Electron> > Electrons;
+            /*
+            cout << "Syst idx: " << syst_idx << ", " << systematicsLabels[syst_idx] << endl;
+            std::string vary_dipho_s = vary_dipho ? "No" : "Yes";
+            std::string vary_jets_s = vary_jets ? "No" : "Yes";
+            std::string vary_met_s = vary_met ? "No" : "Yes";
+            cout << "Taking nominal dipho: " << vary_dipho_s << endl;
+            cout << "Taking nominal jets:  " << vary_jets_s << endl;
+            cout << "Taking nominal met:   " << vary_met_s << endl;
+            if (vary_dipho)
+                cout << "Choosing this diphoton systematic: " << inputDiPhotonSuffixes_[syst_idx-1] << endl;
+            if (vary_jets)
+                cout << "Choosing this jet systematic: " << inputJetsSuffixes_[syst_idx - (1 + inputDiPhotonSuffixes_.size())] << endl;
+            if (vary_met)
+                cout << "Choosing this met systematic: " << inputMetSuffixes_[syst_idx - (1 + inputJetsSuffixes_.size() + inputDiPhotonSuffixes_.size())] << endl; 
+            */
 
-            if(theMuons->size()>0)
-                Muons = selectMuons(theMuons->ptrs(), dipho, vertices->ptrs(), MuonPtCut_, MuonEtaCut_, MuonIsoCut_, MuonPhotonDrCut_, debug_);
-            if(theElectrons->size()>0)
-                Electrons = selectElectrons(theElectrons->ptrs(), dipho, ElePtCut_, EleEtaCuts_, ElePhotonDrCut_, ElePhotonZMassCut_, DeltaRTrkEle_, debug_);
+            // Select appropriate diphotons
+            //Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
+            if (modifySystematicsWorkflow) {
+                if (vary_dipho) {
+                    evt.getByToken(diPhotonTokens_[syst_idx - 1], diPhotons);
+                    evt.getByToken(mvaResultTokens_[syst_idx - 1], mvaResults);
+                }
+                else {
+                    evt.getByToken(diPhotonTokens_[0], diPhotons);
+                    evt.getByToken(mvaResultTokens_[0], mvaResults);
+                }
+                // Select appropriate MET
+                //Handle<View<flashgg::Met> > METs;
+                if (vary_met) {
+                    int met_syst_idx = syst_idx - (1 + inputJetsSuffixes_.size() + inputDiPhotonSuffixes_.size());
+                    evt.getByToken(metTokens_[met_syst_idx], METs);
+                }
+                else
+                    evt.getByToken(metTokens_[0], METs);
+            }
 
-            if( (Muons.size() + Electrons.size()) != 0) continue;
+            std::unique_ptr<vector<TTHHadronicTag> > tthhtags( new vector<TTHHadronicTag> );
 
-            jetcount_ = 0;
+            assert( diPhotons->size() == mvaResults->size() );
 
-            nJets_ = 0;
-            njets_btagloose_ = 0;
-            njets_btagmedium_ = 0;
-            njets_btagtight_ = 0;
+            for(unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
 
-            idmva1_ = -999.;
-            idmva2_ = -999.;
+                edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( diphoIndex );
 
-            leadJetPt_ = 0.;
-            leadJetBTag_ = -1.;
-            subLeadJetPt_ = 0.;
-            sumJetPt_ = 0.;
+                if(!passMETfilters && applyMETfilters_) continue;
 
-            maxBTagVal_ = -3.;
-            secondMaxBTagVal_ = -3.;
-            thirdMaxBTagVal_ = -3.;
-            fourthMaxBTagVal_ = -3.;
-	    
-	    mindRPhoLeadJet_ = -999;
-	    maxdRPhoLeadJet_= -999;
-	    
-	    minPhoID_= -999.;
-	    maxPhoID_= -999.;
-	    pho1_ptoM_= -999.;
-	    pho2_ptoM_= -999.;
-	    pho1_sceta_= -999.;
-	    pho2_sceta_= -999.;
-	    pho1_scphi_= -999.;
-	    pho2_scphi_= -999.;
-	    pho1_hasPixelSeed_=-999;
-	    pho2_hasPixelSeed_=-999;
+                std::vector<edm::Ptr<flashgg::Muon> >     Muons;
+                std::vector<edm::Ptr<flashgg::Electron> > Electrons;
 
-	    pho1_sigmaEOverE_= -999.;
-	    pho2_sigmaEOverE_= -999.;
-	    diPhoY_= -999.;
-	    diPhoPtoM_= -999.;
-	    diPhoCosPhi_= -999.;
-	    nbloose_=-999;
+                if(theMuons->size()>0)
+                    Muons = selectMuons(theMuons->ptrs(), dipho, vertices->ptrs(), MuonPtCut_, MuonEtaCut_, MuonIsoCut_, MuonPhotonDrCut_, debug_);
+                if(theElectrons->size()>0)
+                    Electrons = selectElectrons(theElectrons->ptrs(), dipho, ElePtCut_, EleEtaCuts_, ElePhotonDrCut_, ElePhotonZMassCut_, DeltaRTrkEle_, debug_);
 
-	    btag_1_=-999;
-	    jetPt_1_=-999;
-	    jetEta_1_=-999;
-	    jetPhi_1_=-999;
-	    btag_2_=-999;
-	    jetPt_2_=-999;
-	    jetEta_2_=-999;
-	    jetPhi_2_=-999;
-	    btag_3_=-999;
-	    jetPt_3_=-999;
-	    jetEta_3_=-999;
-	    jetPhi_3_=-999;
-	    btag_4_=-999;
-	    jetPt_4_=-999;
-	    jetEta_4_=-999;
-	    jetPhi_4_=-999;
-                
-	    MET_=-1;
-	    
-            tthMvaVal_ = -999.;
+                if( (Muons.size() + Electrons.size()) != 0) continue;
 
-	    maxBTagVal_noBB_ = -3.;
-	    secondMaxBTagVal_noBB_ = -3.;
+                jetcount_ = 0;
 
-	    diPhoDeltaR_ = -999.;
+                nJets_ = 0;
+                njets_btagloose_ = 0;
+                njets_btagmedium_ = 0;
+                njets_btagtight_ = 0;
 
-	    ht_ = 0.;
-	    helicity_angle_ = -999.;
-	    top_tag_score_ = -999.;
-	    dnn_score_0_ = -999.;
-	    dnn_score_1_ = -999.;
-	    tthMvaVal_RunII_ = -999.;
+                idmva1_ = -999.;
+                idmva2_ = -999.;
 
-            unsigned int jetCollectionIndex = diPhotons->ptrAt( diphoIndex )->jetCollectionIndex();
+                leadJetPt_ = 0.;
+                leadJetBTag_ = -1.;
+                subLeadJetPt_ = 0.;
+                sumJetPt_ = 0.;
 
-            std::vector<edm::Ptr<flashgg::Jet> > JetVect;
-            JetVect.clear();
-            std::vector<edm::Ptr<flashgg::Jet> > BJetVect;
-            BJetVect.clear();
-            std::vector<edm::Ptr<flashgg::Jet> > BJetTTHHMVAVect;
-            BJetTTHHMVAVect.clear();
+                maxBTagVal_ = -3.;
+                secondMaxBTagVal_ = -3.;
+                thirdMaxBTagVal_ = -3.;
+                fourthMaxBTagVal_ = -3.;
             
-            std::vector<edm::Ptr<reco::GenJet> > genJetVect;
-            genJetVect.clear();
-
-            std::vector<float> JetBTagVal;
-            JetBTagVal.clear();
-        
-            idmva1_ = dipho->leadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
-            idmva2_ = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
-
-            if( idmva1_ <= PhoMVAThreshold_ || idmva2_ <= PhoMVAThreshold_ ) { continue; }
-
-            edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );
-        
-            double leadPhoPtCut = leadPhoPtThreshold_;
-            double subleadPhoPtCut = subleadPhoPtThreshold_;
-            if( leadPhoUseVariableTh_ )
-            { 
-                leadPhoPtCut = leadPhoOverMassThreshold_ * dipho->mass(); 
-                if(useTTHHadronicMVA_){
-                    leadPhoPtCut = leadPhoOverMassTTHHMVAThreshold_ * dipho->mass();
-                }
-            }
-            if( subleadPhoUseVariableTh_ )
-            { subleadPhoPtCut = subleadPhoOverMassThreshold_ * dipho->mass(); }
-            double diphoMVAcut = MVAThreshold_;
-            if(useTTHHadronicMVA_){
-                    diphoMVAcut = MVATTHHMVAThreshold_;
-            }
-
-            if( dipho->leadingPhoton()->pt() < leadPhoPtCut || dipho->subLeadingPhoton()->pt() < subleadPhoPtCut ) { continue; }
-            if( mvares->mvaValue() < diphoMVAcut ) { continue; }
-
-            for( unsigned int jetIndex = 0; jetIndex < Jets[jetCollectionIndex]->size() ; jetIndex++ ) {
-                edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( jetIndex );
-                if( fabs( thejet->eta() ) > jetEtaThreshold_ ) { continue; }
-                if(!thejet->passesJetID  ( flashgg::Tight2017 ) ) { continue; }
-                float dRPhoLeadJet = deltaR( thejet->eta(), thejet->phi(), dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi() ) ;
-                float dRPhoSubLeadJet = deltaR( thejet->eta(), thejet->phi(), dipho->subLeadingPhoton()->superCluster()->eta(),
-                                                dipho->subLeadingPhoton()->superCluster()->phi() );
-
-                if( dRPhoLeadJet < dRJetPhoLeadCut_ || dRPhoSubLeadJet < dRJetPhoSubleadCut_ ) { continue; }
-                if( thejet->pt() < jetPtThreshold_ ) { continue; }
-
-                jetcount_++;
-                nJets_ = jetcount_;
-                JetVect.push_back( thejet );
-
-		ht_ += thejet->pt();
+                mindRPhoLeadJet_ = -999;
+                maxdRPhoLeadJet_= -999;
                 
-                //genJetVect.push_back( thejet->genJet());
-                //cout<<"TTH Jet "<< jetcount_<<" Pt:"<<thejet->pt()<<" genPt:"<<thejet->genJet()->pt()<<" hflav: "<<thejet->hadronFlavour()<<" pFlav:"<<thejet->partonFlavour()<< endl;
+                minPhoID_= -999.;
+                maxPhoID_= -999.;
+                pho1_ptoM_= -999.;
+                pho2_ptoM_= -999.;
+                pho1_sceta_= -999.;
+                pho2_sceta_= -999.;
+                pho1_scphi_= -999.;
+                pho2_scphi_= -999.;
+                pho1_hasPixelSeed_=-999;
+                pho2_hasPixelSeed_=-999;
 
-                float bDiscriminatorValue = -2.;
-                if(bTag_ == "pfDeepCSV") bDiscriminatorValue = thejet->bDiscriminator("pfDeepCSVJetTags:probb")+thejet->bDiscriminator("pfDeepCSVJetTags:probbb") ;
-                else  bDiscriminatorValue = thejet->bDiscriminator( bTag_ );
+                pho1_sigmaEOverE_= -999.;
+                pho2_sigmaEOverE_= -999.;
+                diPhoY_= -999.;
+                diPhoPtoM_= -999.;
+                diPhoCosPhi_= -999.;
+                nbloose_=-999;
 
-		float bDiscriminatorValue_noBB = -2;
- 		if(bTag_ == "pfDeepCSV") bDiscriminatorValue_noBB = thejet->bDiscriminator("pfDeepCSVJetTags:probb");
- 		else  bDiscriminatorValue_noBB = thejet->bDiscriminator( bTag_ );
- 
- 		bool eval_top_tagger = true;
- 
- 		if (eval_top_tagger) {
- 		  float cvsl = thejet->bDiscriminator("pfDeepCSVJetTags:probc") + thejet->bDiscriminator("pfDeepCSVJetTags:probudsg") ;
- 		  float cvsb = thejet->bDiscriminator("pfDeepCSVJetTags:probc") + thejet->bDiscriminator("pfDeepCSVJetTags:probb")+thejet->bDiscriminator("pfDeepCSVJetTags:probbb") ;
- 		  float ptD = thejet->userFloat("ptD") ;
- 		  float axis1 = thejet->userFloat("axis1") ;
- 		  int mult = thejet->userFloat("totalMult") ;
- 
- 		  topTagger->addJet(thejet->pt(), thejet->eta(), thejet->phi(), thejet->mass(), bDiscriminatorValue, cvsl, cvsb, ptD, axis1, mult);           
- 		}                
+                btag_1_=-999;
+                jetPt_1_=-999;
+                jetEta_1_=-999;
+                jetPhi_1_=-999;
+                btag_2_=-999;
+                jetPt_2_=-999;
+                jetEta_2_=-999;
+                jetPhi_2_=-999;
+                btag_3_=-999;
+                jetPt_3_=-999;
+                jetEta_3_=-999;
+                jetPhi_3_=-999;
+                btag_4_=-999;
+                jetPt_4_=-999;
+                jetEta_4_=-999;
+                jetPhi_4_=-999;
+                        
+                MET_=-1;
+            
+                tthMvaVal_ = -999.;
 
+                maxBTagVal_noBB_ = -3.;
+                secondMaxBTagVal_noBB_ = -3.;
 
-                float jetPt = thejet->pt();
-                if(jetPt > leadJetPt_){
-                    if(leadJetPt_ > subLeadJetPt_) { subLeadJetPt_ = leadJetPt_; }
-                    leadJetPt_ = jetPt;
-                    leadJetBTag_=  bDiscriminatorValue;
-                } else if(jetPt > subLeadJetPt_){
-                    subLeadJetPt_ = jetPt;
-                }
-                sumJetPt_ += jetPt;
-                
-		if(bDiscriminatorValue_noBB > maxBTagVal_noBB_){
-                     if(maxBTagVal_noBB_ > secondMaxBTagVal_noBB_) { secondMaxBTagVal_noBB_ = maxBTagVal_noBB_; }
-                     maxBTagVal_noBB_ = bDiscriminatorValue_noBB;
- 
-                } else if(bDiscriminatorValue_noBB > secondMaxBTagVal_noBB_){
-                     secondMaxBTagVal_noBB_ = bDiscriminatorValue_noBB;
-                }
-                
-                if(bDiscriminatorValue > maxBTagVal_){ 
+                diPhoDeltaR_ = -999.;
 
-                    BJetTTHHMVAVect.insert( BJetTTHHMVAVect.begin(), thejet );
-                    if(BJetTTHHMVAVect.size() >= 3){ BJetTTHHMVAVect.pop_back(); }
-                    
-                    if(thirdMaxBTagVal_>fourthMaxBTagVal_) { fourthMaxBTagVal_= thirdMaxBTagVal_;}
-                    if(secondMaxBTagVal_>thirdMaxBTagVal_){ thirdMaxBTagVal_= secondMaxBTagVal_; }
-                    if(maxBTagVal_ > secondMaxBTagVal_) { secondMaxBTagVal_ = maxBTagVal_; }
+                ht_ = 0.;
+                helicity_angle_ = -999.;
+                top_tag_score_ = -999.;
+                dnn_score_0_ = -999.;
+                dnn_score_1_ = -999.;
+                tthMvaVal_RunII_ = -999.;
 
-                    maxBTagVal_ = bDiscriminatorValue;
+                unsigned int jetCollectionIndex = diPhotons->ptrAt( diphoIndex )->jetCollectionIndex();
 
-                } else if(bDiscriminatorValue > secondMaxBTagVal_){
-
-                    if(BJetTTHHMVAVect.size() >= 2){BJetTTHHMVAVect.pop_back();} 
-                    BJetTTHHMVAVect.push_back( thejet );
-
-                    if(thirdMaxBTagVal_>fourthMaxBTagVal_) { fourthMaxBTagVal_= thirdMaxBTagVal_;}
-                    if(secondMaxBTagVal_>thirdMaxBTagVal_) { thirdMaxBTagVal_= secondMaxBTagVal_;}
-                    secondMaxBTagVal_ = bDiscriminatorValue;
-
-                }else if(bDiscriminatorValue > thirdMaxBTagVal_){
-
-                    if(thirdMaxBTagVal_>fourthMaxBTagVal_) { fourthMaxBTagVal_= thirdMaxBTagVal_;}
-                    thirdMaxBTagVal_ = bDiscriminatorValue;
-
-                }else if(bDiscriminatorValue > fourthMaxBTagVal_){
-                   fourthMaxBTagVal_ = bDiscriminatorValue;
-                }
-
-                JetBTagVal.push_back( bDiscriminatorValue );
-
-                if( bDiscriminatorValue > bDiscriminator_[0] ) njets_btagloose_++;
-                if( bDiscriminatorValue > bDiscriminator_[1] ){
-                    
-                    njets_btagmedium_++;
-                    BJetVect.push_back( thejet );
-                }
-                if( bDiscriminatorValue > bDiscriminator_[2] ) njets_btagtight_++;
-            }
-
-	    vector<float> mvaEval = topTagger->EvalMVA();
-	    topTagger->clear();
-        
-            if( METs->size() != 1 ) { std::cout << "WARNING - #MET is not 1" << std::endl;}
-            Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
-
-            if(useTTHHadronicMVA_){
-
+                std::vector<edm::Ptr<flashgg::Jet> > JetVect;
+                JetVect.clear();
+                std::vector<edm::Ptr<flashgg::Jet> > BJetVect;
                 BJetVect.clear();
-                BJetVect = BJetTTHHMVAVect;
-
-                if(JetVect.size()>1) mindRPhoLeadJet_=TMath::Min(deltaR( dipho->leadingPhoton()->eta(),dipho->leadingPhoton()->phi(), JetVect[0]->eta(),JetVect[0]->phi()) ,
-                                                                deltaR( dipho->leadingPhoton()->eta(),dipho->leadingPhoton()->phi(), JetVect[1]->eta(),JetVect[1]->phi()));
-                if(JetVect.size()>1) maxdRPhoLeadJet_=TMath::Max(deltaR( dipho->leadingPhoton()->eta(),dipho->leadingPhoton()->phi(), JetVect[0]->eta(),JetVect[0]->phi()) ,
-                                                                deltaR( dipho->leadingPhoton()->eta(),dipho->leadingPhoton()->phi(), JetVect[1]->eta(),JetVect[1]->phi()));
-
-                minPhoID_=TMath::Min( idmva1_, idmva2_);
-                maxPhoID_=TMath::Max( idmva1_, idmva2_);
-                pho1_ptoM_= dipho->leadingPhoton()->pt()/dipho->mass();
-                pho2_ptoM_= dipho->subLeadingPhoton()->pt()/dipho->mass();
-                pho1_sceta_= dipho->leadingPhoton()->superCluster()->eta();
-                pho2_sceta_= dipho->subLeadingPhoton()->superCluster()->eta();
-                pho1_scphi_= dipho->leadingPhoton()->superCluster()->phi();
-                pho2_scphi_= dipho->subLeadingPhoton()->superCluster()->phi();
-
-                pho1_hasPixelSeed_= dipho->leadingPhoton()->hasPixelSeed();
-                pho2_hasPixelSeed_= dipho->subLeadingPhoton()->hasPixelSeed();
-
-                pho1_sigmaEOverE_= dipho->leadingPhoton()->sigEOverE();
-                pho2_sigmaEOverE_= dipho->subLeadingPhoton()->sigEOverE();
-
-                diPhoY_= dipho->rapidity();
-                diPhoPtoM_= dipho->pt()/dipho->mass();
-		diPhoCosPhi_=  abs(TMath::Cos( deltaPhi( dipho->leadingPhoton()->phi(), dipho->subLeadingPhoton()->phi() ) ));
-                nbloose_=float(njets_btagloose_);
-		MET_ = theMET->getCorPt();
-
-		pho1_eta_= dipho->leadingPhoton()->eta();
-		pho2_eta_= dipho->subLeadingPhoton()->eta();
-
-		diPhoDeltaR_ = deltaR( dipho->leadingPhoton()->eta(),dipho->leadingPhoton()->phi(), dipho->subLeadingPhoton()->eta(),dipho->subLeadingPhoton()->phi());
-
-
-                if(JetVect.size()>0){
-                    if(bTag_ == "pfDeepCSV") btag_1_=JetVect[0]->bDiscriminator("pfDeepCSVJetTags:probb")+JetVect[0]->bDiscriminator("pfDeepCSVJetTags:probbb") ;
-                    else  btag_1_ = JetVect[0]->bDiscriminator( bTag_ );
-		    if(bTag_ == "pfDeepCSV") btag_noBB_1_=JetVect[0]->bDiscriminator("pfDeepCSVJetTags:probb");
-                    else  btag_noBB_1_ = JetVect[0]->bDiscriminator( bTag_ );
-                    jetPt_1_=JetVect[0]->pt();
-                    jetEta_1_=JetVect[0]->eta();
-                    jetPhi_1_=JetVect[0]->phi();
-                }
-
-                if(JetVect.size()>1){
-                    if(bTag_ == "pfDeepCSV") btag_2_=JetVect[1]->bDiscriminator("pfDeepCSVJetTags:probb")+JetVect[1]->bDiscriminator("pfDeepCSVJetTags:probbb") ;
-                    else  btag_2_ = JetVect[1]->bDiscriminator( bTag_ );
-		    if(bTag_ == "pfDeepCSV") btag_noBB_2_=JetVect[1]->bDiscriminator("pfDeepCSVJetTags:probb");
-                    else  btag_noBB_2_ = JetVect[1]->bDiscriminator( bTag_ );
-                    jetPt_2_=JetVect[1]->pt();
-                    jetEta_2_=JetVect[1]->eta();
-                    jetPhi_2_=JetVect[1]->phi();
-                }
-
-                if(JetVect.size()>2){
-                    if(bTag_ == "pfDeepCSV") btag_3_=JetVect[2]->bDiscriminator("pfDeepCSVJetTags:probb")+JetVect[2]->bDiscriminator("pfDeepCSVJetTags:probbb") ;
-                    else  btag_3_ = JetVect[2]->bDiscriminator( bTag_ );
-		    if(bTag_ == "pfDeepCSV") btag_noBB_3_=JetVect[2]->bDiscriminator("pfDeepCSVJetTags:probb");
-                    else  btag_noBB_3_ = JetVect[2]->bDiscriminator( bTag_ );
-                    jetPt_3_=JetVect[2]->pt();
-                    jetEta_3_=JetVect[2]->eta();
-                    jetPhi_3_=JetVect[2]->phi();
-                }
-                if(JetVect.size()>3){
-                    if(bTag_ == "pfDeepCSV") btag_4_=JetVect[3]->bDiscriminator("pfDeepCSVJetTags:probb")+JetVect[3]->bDiscriminator("pfDeepCSVJetTags:probbb") ;
-                    else  btag_4_ = JetVect[3]->bDiscriminator( bTag_ );
-		    if(bTag_ == "pfDeepCSV") btag_noBB_4_=JetVect[3]->bDiscriminator("pfDeepCSVJetTags:probb");
-                    else  btag_noBB_4_ = JetVect[3]->bDiscriminator( bTag_ );	    
-                    jetPt_4_=JetVect[3]->pt();
-                    jetEta_4_=JetVect[3]->eta();
-                    jetPhi_4_=JetVect[3]->phi();
-                }
-
-
-                if(secondMaxBTagVal_ >= secondMaxBTagTTHHMVAThreshold_ && njets_btagloose_ >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium_ >= bjetsNumberTTHHMVAThreshold_ && jetcount_ >= jetsNumberTTHHMVAThreshold_ && _MVAMethod != ""){
-                    
-		  if(debug_){
-                    cout << "TTHHadronicTag -- input MVA variables : " << endl;
-                    cout << "----------------------------------------" << endl;
-
-                    cout << "nJets_ = " << nJets_ <<" jetcount"<< jetcount_<< endl;
-		    cout << "sumJetPt_ = " << sumJetPt_ << endl;                    
-		    cout << "maxBTagVal_ = " << maxBTagVal_ << endl;
-                    cout << "secondMaxBTagVal_ = " << secondMaxBTagVal_ << endl;
-                    cout << "thirdMaxBTagVal_ = " << thirdMaxBTagVal_ << endl;
-                    //                    cout << "leadJetPt_ = " << leadJetPt_ << endl;
-                    //                    cout << "leadJetBTag_ = " << leadJetBTag_ << endl;
-
-                    cout << "minPhoID_ = " << minPhoID_ << endl;
-                    cout << "maxPhoID_ = " << maxPhoID_ << endl;
-                    //                    cout << "mindRPhoLeadJet_ = " << mindRPhoLeadJet_ << endl;
-                    //                    cout << "maxdRPhoLeadJet_ = " << maxdRPhoLeadJet_ << endl;
-                    cout << "pho1_ptoM_ = " << pho1_ptoM_ << endl;
-                    cout << "pho2_ptoM_ = " << pho2_ptoM_ << endl;
-                    cout << "pho1_sceta_ = " << pho1_sceta_ << endl;
-                    cout << "pho2_sceta_ = " << pho2_sceta_ << endl;
-                    cout << "pho1_scphi_ = " << pho1_scphi_ << endl;
-                    cout << "pho2_scphi_ = " << pho2_scphi_ << endl;
-
-                    cout << "pho1_hasPixelSeed_ = " << pho1_hasPixelSeed_ << endl;
-                    cout << "pho2_hasPixelSeed_ = " << pho2_hasPixelSeed_ << endl;
-		    //                    cout << "pho1_sigmaEoE_ = " << pho1_sigmaEOverE_ << endl;
-		    //                    cout << "pho2_sigmaEoE_ = " << pho2_sigmaEOverE_ << endl;
-
-                    cout << "diPhoY_ = " << diPhoY_ << endl;
-                    //cout << "diPhoCosPhi_ = " << diPhoCosPhi_ << endl;
-                    cout << "diPhoPtoM_ = " << diPhoPtoM_ << endl;
-
-		    //                    cout << "nBLoose_ = " << njets_btagloose_ << " "<<nbloose_<<endl;
-                    cout << "btag_1_ = " <<btag_1_ << endl;
-                    cout << "jetPt_1_ = " <<jetPt_1_ << endl;
-                    cout << "jetEta_1_ = " <<jetEta_1_ << endl;
-		    //                    cout << "jetPhi_1_ = " <<jetPhi_1_ << endl;
-                    cout << "btag_2_ = " <<btag_2_ << endl;
-                    cout << "jetPt_2_ = " <<jetPt_2_ << endl;
-                    cout << "jetEta_2_ = " <<jetEta_2_ << endl;
-		    //                    cout << "jetPhi_2_ = " <<jetPhi_2_ << endl;
-                    cout << "btag_3_ = " <<btag_3_ << endl;
-                    cout << "jetPt_3_ = " <<jetPt_3_ << endl;
-                    cout << "jetEta_3_ = " <<jetEta_3_ << endl;
-		    //                    cout << "jetPhi_3_ = " <<jetPhi_3_ << endl;
-                    cout << "btag_4_ = " <<btag_4_ << endl;
-                    cout << "jetPt_4_ = " <<jetPt_4_ << endl;
-                    cout << "jetEta_4_ = " <<jetEta_4_ << endl;
-		    //                    cout << "jetPhi_4_ = " <<jetPhi_4_ << endl;
-                    cout << "MET_ = " <<MET_ << endl;
-                    cout << "---------------------------------------" << endl;
-		  }
-		  tthMvaVal_ = TThMva_->EvaluateMVA( _MVAMethod.c_str() );
-
-                    //cout << "mva result :" << endl;
-                  if(debug_)  cout << " TTHHadronicTag -- output MVA value = " << tthMvaVal_  << endl;
-                    //cout << "tthMvaVal_ = " << tthMvaVal_  << " "<< boundaries[0]<<" "<< boundaries[1]<< endl;
-                     
-                 }
-            }
-
-	    if(useTTHHadronicMVA_) {
-              std::vector<double> global_features;
-              global_features.resize(18);
-              global_features[0] = dipho->leadingPhoton()->eta();
-              global_features[1] = dipho->subLeadingPhoton()->eta();
-              global_features[2] = dipho->leadingPhoton()->phi();
-              global_features[3] = dipho->subLeadingPhoton()->phi();
-              global_features[4] = pho1_ptoM_;
-              global_features[5] = pho2_ptoM_;
-              global_features[6] = maxPhoID_;
-              global_features[7] = minPhoID_;
-              global_features[8] = log((float)theMET->pt());
-              global_features[9] = (float)theMET->phi();
-              global_features[10] = pho1_hasPixelSeed_;
-              global_features[11] = pho2_hasPixelSeed_;
-              global_features[12] = diPhoY_;
-              global_features[13] = diPhoPtoM_;
-              global_features[14] = diPhoDeltaR_;
-              global_features[15] = maxBTagVal_noBB_;
-              global_features[16] = secondMaxBTagVal_noBB_;
-              global_features[17] = nJets_;
-
-              dnn_dipho->SetInputs(JetVect, global_features);
-              float dnn_score_dipho = dnn_dipho->EvaluateDNN();
-
-              dnn_ttGG->SetInputs(JetVect, global_features);
-              float dnn_score_ttGG = dnn_ttGG->EvaluateDNN();
-
-              TLorentzVector pho1, pho2;
-              pho1.SetPtEtaPhiE(dipho->leadingPhoton()->pt(), dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi(), dipho->leadingPhoton()->energy());
-              pho2.SetPtEtaPhiE(dipho->subLeadingPhoton()->pt(), dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi(), dipho->subLeadingPhoton()->energy());
-              helicity_angle_ = helicity(pho1, pho2);
-
-              top_tag_score_ = mvaEval.size() > 0 ? (mvaEval[0] != - 99 ? mvaEval[0] : -1) : - 1;
-              dnn_score_0_ = dnn_score_dipho;
-              dnn_score_1_ = dnn_score_ttGG;
-
-              tthMvaVal_RunII_ = convert_tmva_to_prob(TThMva_RunII_->EvaluateMVA( _MVAMethod.c_str() ));
-	      if (debug_) {
-                cout << "TTH Hadronic Tag -- input MVA variables for Run II MVA: " << endl;
-                cout << "--------------------------------------------------------" << endl;
-                cout << "maxIDMVA_: " << maxPhoID_ << endl;
-                cout << "minIDMVA_: " << minPhoID_ << endl;
-                cout << "max1_btag_: " << maxBTagVal_noBB_ << endl;
-                cout << "max2_btag_: " << secondMaxBTagVal_noBB_ << endl;
-                cout << "dipho_delta_R_: " << diPhoDeltaR_ << endl;
-
-                cout << "njets_: " << nJets_ << endl;
-                cout << "ht_: " << ht_ << endl;
-                cout << "leadptoM_: " << pho1_ptoM_ << endl;
-                cout << "subleadptoM_: " << pho2_ptoM_ << endl;
-                cout << "lead_eta_: " << pho1_eta_ << endl;
-                cout << "sublead_eta_: " << pho2_eta_ << endl;
-
-                cout << "jet1_pt_: " << jetPt_1_ << endl;
-                cout << "jet1_eta_: " << jetEta_1_ << endl;
-                cout << "jet1_btag_: " << btag_noBB_1_ << endl;
-                cout << "jet2_pt_: " << jetPt_2_ << endl;
-                cout << "jet2_eta_: " << jetEta_2_ << endl;
-                cout << "jet2_btag_: " << btag_noBB_2_ << endl;
-                cout << "jet3_pt_: " << jetPt_3_ << endl;
-                cout << "jet3_eta_: " << jetEta_3_ << endl;
-                cout << "jet3_btag_: " << btag_noBB_3_ << endl;
-                cout << "jet4_pt_: " << jetPt_4_ << endl;
-                cout << "jet4_eta_: " << jetEta_4_ << endl;
-                cout << "jet4_btag_: " << btag_noBB_4_ << endl;
-
-                cout << "leadPSV_: " << pho1_hasPixelSeed_ << endl;
-                cout << "subleadPSV_: " << pho2_hasPixelSeed_ << endl;
-
-                cout << "dipho_cosphi_: " << diPhoCosPhi_ << endl;
-                cout << "dipho_rapidity_: " << diPhoY_ << endl;
-                cout << "met_: " << MET_ << endl;
-                cout << "dipho_pt_over_mass_: " << diPhoPtoM_ << endl;
-                cout << "helicity_angle_: " << helicity_angle_ << endl;
-                cout << "top_tag_score_: " << top_tag_score_ << endl;
-
-                cout << "DNN Score 0: " << dnn_score_0_ << endl;
-                cout << "DNN Score 1: " << dnn_score_1_ << endl;
-                cout << endl;
-                cout << "BDT Score: " << tthMvaVal_RunII_ << endl;
-              }
-
-              global_features.clear();
-
-            }
-
-	    tthMvaVal_ = tthMvaVal_RunII_; // use Run II MVA
-
-            bool isTTHHadronicTagged = false;
-            int catnum =-1;
-            if( !useTTHHadronicMVA_ && njets_btagloose_ >= bjetsLooseNumberThreshold_ && njets_btagmedium_ >= bjetsNumberThreshold_ && jetcount_ >= jetsNumberThreshold_ ) {
-
-                catnum=0;
-                isTTHHadronicTagged = true;
+                std::vector<edm::Ptr<flashgg::Jet> > BJetTTHHMVAVect;
+                BJetTTHHMVAVect.clear();
                 
-            } else if ( useTTHHadronicMVA_  && njets_btagloose_ >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium_ >= bjetsNumberTTHHMVAThreshold_ && jetcount_ >= jetsNumberTTHHMVAThreshold_ ) {
-                //&& tthMvaVal_ >= tthHadMVAThresholdMin_  && tthMvaVal_ < tthHadMVAThresholdMax_ ) {
-                
-                catnum = chooseCategory( tthMvaVal_ );                
-                //                cout<<" catNum="<<catnum<<endl;
-                if(catnum>=0){
-                    isTTHHadronicTagged = true;
-                    //                    cout<<" TAGGED "<< endl;
-                }
-            }
+                std::vector<edm::Ptr<reco::GenJet> > genJetVect;
+                genJetVect.clear();
+
+                std::vector<float> JetBTagVal;
+                JetBTagVal.clear();
             
-            if( isTTHHadronicTagged ) {
+                idmva1_ = dipho->leadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
+                idmva2_ = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
 
-                TTHHadronicTag tthhtags_obj( dipho, mvares, JetVect, BJetVect );
-                tthhtags_obj.setCategoryNumber(catnum  );
-                tthhtags_obj.setNjet( jetcount_ );
-                tthhtags_obj.setNBLoose( njets_btagloose_ );
-                tthhtags_obj.setNBMedium( njets_btagmedium_ );
-                tthhtags_obj.setNBTight( njets_btagtight_ );
-                tthhtags_obj.setDiPhotonIndex( diphoIndex );
-                tthhtags_obj.setLeadJetPt( leadJetPt_ );
-                tthhtags_obj.setSubLeadJetPt( subLeadJetPt_ );
-                tthhtags_obj.setSumJetPt( sumJetPt_ );
-                tthhtags_obj.setMaxBTagVal( maxBTagVal_ );
-                tthhtags_obj.setSecondMaxBTagVal( secondMaxBTagVal_ );
-                tthhtags_obj.setThirdMaxBTagVal( thirdMaxBTagVal_ );
-                tthhtags_obj.setFourthMaxBTagVal( fourthMaxBTagVal_ );
-                tthhtags_obj.setSystLabel( systLabel_ );
-                tthhtags_obj.setMVAres(tthMvaVal_);
-                tthhtags_obj.setMET( theMET );
+                if( idmva1_ <= PhoMVAThreshold_ || idmva2_ <= PhoMVAThreshold_ ) { continue; }
 
-                if(!useTTHHadronicMVA_){
-                    for( unsigned num = 0; num < JetVect.size(); num++ ) {
-                        tthhtags_obj.includeWeightsByLabel( *JetVect[num] , "JetBTagCutWeight");
-                        //tthhtags_obj.includeWeightsByLabel( *JetVect[num] , "JetBTagReshapeWeight");
+                edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );
+            
+                double leadPhoPtCut = leadPhoPtThreshold_;
+                double subleadPhoPtCut = subleadPhoPtThreshold_;
+                if( leadPhoUseVariableTh_ )
+                { 
+                    leadPhoPtCut = leadPhoOverMassThreshold_ * dipho->mass(); 
+                    if(useTTHHadronicMVA_){
+                        leadPhoPtCut = leadPhoOverMassTTHHMVAThreshold_ * dipho->mass();
                     }
-                } else {
-                    for( unsigned num = 0; num < JetVect.size(); num++ ) {
-                        tthhtags_obj.includeWeightsByLabel( *JetVect[num] , "JetBTagReshapeWeight");
-                    }                    
                 }
-                tthhtags_obj.includeWeights( *dipho );
+                if( subleadPhoUseVariableTh_ )
+                { subleadPhoPtCut = subleadPhoOverMassThreshold_ * dipho->mass(); }
+                double diphoMVAcut = MVAThreshold_;
+                if(useTTHHadronicMVA_){
+                        diphoMVAcut = MVATTHHMVAThreshold_;
+                }
 
-                tthhtags->push_back( tthhtags_obj );
-                if( ! evt.isRealData() ) {
-                    TagTruthBase truth_obj;
-                    truth_obj.setGenPV( higgsVtx );
-                    if ( stage0cat.isValid() ) {
-                        truth_obj.setHTXSInfo( *( stage0cat.product() ),
-                                               *( stage1cat.product() ),
-                                               *( njets.product() ),
-                                               *( pTH.product() ),
-                                               *( pTV.product() ) );
-                    } else if ( htxsClassification.isValid() ) {
-                        truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
-                                               htxsClassification->stage1_cat_pTjet30GeV,
-                                               htxsClassification->jets30.size(),
-                                               htxsClassification->p4decay_higgs.pt(),
-                                               htxsClassification->p4decay_V.pt() );
+                if( dipho->leadingPhoton()->pt() < leadPhoPtCut || dipho->subLeadingPhoton()->pt() < subleadPhoPtCut ) { continue; }
+                if( mvares->mvaValue() < diphoMVAcut ) { continue; }
 
+                //JetCollectionVector Jets(inputJetsCollSize_);
+                if (modifySystematicsWorkflow) {
+                    int jet_syst_idx;
+                    if (vary_jets)
+                        jet_syst_idx = syst_idx - (1 + inputDiPhotonSuffixes_.size());
+                    else
+                        jet_syst_idx = 0;
+
+                    for (unsigned int i = 0; i < inputJetsCollSize_; i++)
+                        evt.getByToken(jetTokens_[jet_syst_idx][i], Jets[i]);
+                }
+
+
+                for( unsigned int jetIndex = 0; jetIndex < Jets[jetCollectionIndex]->size() ; jetIndex++ ) {
+                    edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( jetIndex );
+                    if( fabs( thejet->eta() ) > jetEtaThreshold_ ) { continue; }
+                    if(!thejet->passesJetID  ( flashgg::Tight2017 ) ) { continue; }
+                    float dRPhoLeadJet = deltaR( thejet->eta(), thejet->phi(), dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi() ) ;
+                    float dRPhoSubLeadJet = deltaR( thejet->eta(), thejet->phi(), dipho->subLeadingPhoton()->superCluster()->eta(),
+                                                    dipho->subLeadingPhoton()->superCluster()->phi() );
+
+                    if( dRPhoLeadJet < dRJetPhoLeadCut_ || dRPhoSubLeadJet < dRJetPhoSubleadCut_ ) { continue; }
+                    if( thejet->pt() < jetPtThreshold_ ) { continue; }
+
+                    jetcount_++;
+                    nJets_ = jetcount_;
+                    JetVect.push_back( thejet );
+
+                    ht_ += thejet->pt();
+                    
+                    //genJetVect.push_back( thejet->genJet());
+                    //cout<<"TTH Jet "<< jetcount_<<" Pt:"<<thejet->pt()<<" genPt:"<<thejet->genJet()->pt()<<" hflav: "<<thejet->hadronFlavour()<<" pFlav:"<<thejet->partonFlavour()<< endl;
+
+                    float bDiscriminatorValue = -2.;
+                    if(bTag_ == "pfDeepCSV") bDiscriminatorValue = thejet->bDiscriminator("pfDeepCSVJetTags:probb")+thejet->bDiscriminator("pfDeepCSVJetTags:probbb") ;
+                    else  bDiscriminatorValue = thejet->bDiscriminator( bTag_ );
+
+                    float bDiscriminatorValue_noBB = -2;
+                    if(bTag_ == "pfDeepCSV") bDiscriminatorValue_noBB = thejet->bDiscriminator("pfDeepCSVJetTags:probb");
+                    else  bDiscriminatorValue_noBB = thejet->bDiscriminator( bTag_ );
+             
+                    if (useLargeMVAs) {
+                      float cvsl = thejet->bDiscriminator("pfDeepCSVJetTags:probc") + thejet->bDiscriminator("pfDeepCSVJetTags:probudsg") ;
+                      float cvsb = thejet->bDiscriminator("pfDeepCSVJetTags:probc") + thejet->bDiscriminator("pfDeepCSVJetTags:probb")+thejet->bDiscriminator("pfDeepCSVJetTags:probbb") ;
+                      float ptD = thejet->userFloat("ptD") ;
+                      float axis1 = thejet->userFloat("axis1") ;
+                      int mult = thejet->userFloat("totalMult") ;
+             
+                      topTagger->addJet(thejet->pt(), thejet->eta(), thejet->phi(), thejet->mass(), bDiscriminatorValue, cvsl, cvsb, ptD, axis1, mult);           
+                    }                
+
+
+                    float jetPt = thejet->pt();
+                    if(jetPt > leadJetPt_){
+                        if(leadJetPt_ > subLeadJetPt_) { subLeadJetPt_ = leadJetPt_; }
+                        leadJetPt_ = jetPt;
+                        leadJetBTag_=  bDiscriminatorValue;
+                    } else if(jetPt > subLeadJetPt_){
+                        subLeadJetPt_ = jetPt;
+                    }
+                    sumJetPt_ += jetPt;
+                    
+                    if(bDiscriminatorValue_noBB > maxBTagVal_noBB_){
+                         if(maxBTagVal_noBB_ > secondMaxBTagVal_noBB_) { secondMaxBTagVal_noBB_ = maxBTagVal_noBB_; }
+                         maxBTagVal_noBB_ = bDiscriminatorValue_noBB;
+     
+                    } else if(bDiscriminatorValue_noBB > secondMaxBTagVal_noBB_){
+                         secondMaxBTagVal_noBB_ = bDiscriminatorValue_noBB;
+                    }
+                    
+                    if(bDiscriminatorValue > maxBTagVal_){ 
+
+                        BJetTTHHMVAVect.insert( BJetTTHHMVAVect.begin(), thejet );
+                        if(BJetTTHHMVAVect.size() >= 3){ BJetTTHHMVAVect.pop_back(); }
+                        
+                        if(thirdMaxBTagVal_>fourthMaxBTagVal_) { fourthMaxBTagVal_= thirdMaxBTagVal_;}
+                        if(secondMaxBTagVal_>thirdMaxBTagVal_){ thirdMaxBTagVal_= secondMaxBTagVal_; }
+                        if(maxBTagVal_ > secondMaxBTagVal_) { secondMaxBTagVal_ = maxBTagVal_; }
+
+                        maxBTagVal_ = bDiscriminatorValue;
+
+                    } else if(bDiscriminatorValue > secondMaxBTagVal_){
+
+                        if(BJetTTHHMVAVect.size() >= 2){BJetTTHHMVAVect.pop_back();} 
+                        BJetTTHHMVAVect.push_back( thejet );
+
+                        if(thirdMaxBTagVal_>fourthMaxBTagVal_) { fourthMaxBTagVal_= thirdMaxBTagVal_;}
+                        if(secondMaxBTagVal_>thirdMaxBTagVal_) { thirdMaxBTagVal_= secondMaxBTagVal_;}
+                        secondMaxBTagVal_ = bDiscriminatorValue;
+
+                    }else if(bDiscriminatorValue > thirdMaxBTagVal_){
+
+                        if(thirdMaxBTagVal_>fourthMaxBTagVal_) { fourthMaxBTagVal_= thirdMaxBTagVal_;}
+                        thirdMaxBTagVal_ = bDiscriminatorValue;
+
+                    }else if(bDiscriminatorValue > fourthMaxBTagVal_){
+                       fourthMaxBTagVal_ = bDiscriminatorValue;
+                    }
+
+                    JetBTagVal.push_back( bDiscriminatorValue );
+
+                    if( bDiscriminatorValue > bDiscriminator_[0] ) njets_btagloose_++;
+                    if( bDiscriminatorValue > bDiscriminator_[1] ){
+                        
+                        njets_btagmedium_++;
+                        BJetVect.push_back( thejet );
+                    }
+                    if( bDiscriminatorValue > bDiscriminator_[2] ) njets_btagtight_++;
+                }
+
+                vector<float> mvaEval; 
+                if (useLargeMVAs) {
+                    mvaEval = topTagger->EvalMVA();
+                    topTagger->clear();
+                }
+
+                if( METs->size() != 1 ) { std::cout << "WARNING - #MET is not 1" << std::endl;}
+                Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
+                
+                if(useTTHHadronicMVA_){
+
+                    BJetVect.clear();
+                    BJetVect = BJetTTHHMVAVect;
+
+                    if(JetVect.size()>1) mindRPhoLeadJet_=TMath::Min(deltaR( dipho->leadingPhoton()->eta(),dipho->leadingPhoton()->phi(), JetVect[0]->eta(),JetVect[0]->phi()) ,
+                                                                    deltaR( dipho->leadingPhoton()->eta(),dipho->leadingPhoton()->phi(), JetVect[1]->eta(),JetVect[1]->phi()));
+                    if(JetVect.size()>1) maxdRPhoLeadJet_=TMath::Max(deltaR( dipho->leadingPhoton()->eta(),dipho->leadingPhoton()->phi(), JetVect[0]->eta(),JetVect[0]->phi()) ,
+                                                                    deltaR( dipho->leadingPhoton()->eta(),dipho->leadingPhoton()->phi(), JetVect[1]->eta(),JetVect[1]->phi()));
+
+                    minPhoID_=TMath::Min( idmva1_, idmva2_);
+                    maxPhoID_=TMath::Max( idmva1_, idmva2_);
+                    pho1_ptoM_= dipho->leadingPhoton()->pt()/dipho->mass();
+                    pho2_ptoM_= dipho->subLeadingPhoton()->pt()/dipho->mass();
+                    pho1_sceta_= dipho->leadingPhoton()->superCluster()->eta();
+                    pho2_sceta_= dipho->subLeadingPhoton()->superCluster()->eta();
+                    pho1_scphi_= dipho->leadingPhoton()->superCluster()->phi();
+                    pho2_scphi_= dipho->subLeadingPhoton()->superCluster()->phi();
+
+                    pho1_hasPixelSeed_= dipho->leadingPhoton()->hasPixelSeed();
+                    pho2_hasPixelSeed_= dipho->subLeadingPhoton()->hasPixelSeed();
+
+                    pho1_sigmaEOverE_= dipho->leadingPhoton()->sigEOverE();
+                    pho2_sigmaEOverE_= dipho->subLeadingPhoton()->sigEOverE();
+
+                    diPhoY_= dipho->rapidity();
+                    diPhoPtoM_= dipho->pt()/dipho->mass();
+                    diPhoCosPhi_=  abs(TMath::Cos( deltaPhi( dipho->leadingPhoton()->phi(), dipho->subLeadingPhoton()->phi() ) ));
+                    nbloose_=float(njets_btagloose_);
+                    MET_ = theMET->getCorPt();
+
+                    pho1_eta_= dipho->leadingPhoton()->eta();
+                    pho2_eta_= dipho->subLeadingPhoton()->eta();
+
+                    diPhoDeltaR_ = deltaR( dipho->leadingPhoton()->eta(),dipho->leadingPhoton()->phi(), dipho->subLeadingPhoton()->eta(),dipho->subLeadingPhoton()->phi());
+
+
+                    if(JetVect.size()>0){
+                        if(bTag_ == "pfDeepCSV") btag_1_=JetVect[0]->bDiscriminator("pfDeepCSVJetTags:probb")+JetVect[0]->bDiscriminator("pfDeepCSVJetTags:probbb") ;
+                        else  btag_1_ = JetVect[0]->bDiscriminator( bTag_ );
+                        if(bTag_ == "pfDeepCSV") btag_noBB_1_=JetVect[0]->bDiscriminator("pfDeepCSVJetTags:probb");
+                        else  btag_noBB_1_ = JetVect[0]->bDiscriminator( bTag_ );
+                        jetPt_1_=JetVect[0]->pt();
+                        jetEta_1_=JetVect[0]->eta();
+                        jetPhi_1_=JetVect[0]->phi();
+                    }
+
+                    if(JetVect.size()>1){
+                        if(bTag_ == "pfDeepCSV") btag_2_=JetVect[1]->bDiscriminator("pfDeepCSVJetTags:probb")+JetVect[1]->bDiscriminator("pfDeepCSVJetTags:probbb") ;
+                        else  btag_2_ = JetVect[1]->bDiscriminator( bTag_ );
+                        if(bTag_ == "pfDeepCSV") btag_noBB_2_=JetVect[1]->bDiscriminator("pfDeepCSVJetTags:probb");
+                        else  btag_noBB_2_ = JetVect[1]->bDiscriminator( bTag_ );
+                        jetPt_2_=JetVect[1]->pt();
+                        jetEta_2_=JetVect[1]->eta();
+                        jetPhi_2_=JetVect[1]->phi();
+                    }
+
+                    if(JetVect.size()>2){
+                        if(bTag_ == "pfDeepCSV") btag_3_=JetVect[2]->bDiscriminator("pfDeepCSVJetTags:probb")+JetVect[2]->bDiscriminator("pfDeepCSVJetTags:probbb") ;
+                        else  btag_3_ = JetVect[2]->bDiscriminator( bTag_ );
+                        if(bTag_ == "pfDeepCSV") btag_noBB_3_=JetVect[2]->bDiscriminator("pfDeepCSVJetTags:probb");
+                        else  btag_noBB_3_ = JetVect[2]->bDiscriminator( bTag_ );
+                        jetPt_3_=JetVect[2]->pt();
+                        jetEta_3_=JetVect[2]->eta();
+                        jetPhi_3_=JetVect[2]->phi();
+                    }
+                    if(JetVect.size()>3){
+                        if(bTag_ == "pfDeepCSV") btag_4_=JetVect[3]->bDiscriminator("pfDeepCSVJetTags:probb")+JetVect[3]->bDiscriminator("pfDeepCSVJetTags:probbb") ;
+                        else  btag_4_ = JetVect[3]->bDiscriminator( bTag_ );
+                        if(bTag_ == "pfDeepCSV") btag_noBB_4_=JetVect[3]->bDiscriminator("pfDeepCSVJetTags:probb");
+                        else  btag_noBB_4_ = JetVect[3]->bDiscriminator( bTag_ );	    
+                        jetPt_4_=JetVect[3]->pt();
+                        jetEta_4_=JetVect[3]->eta();
+                        jetPhi_4_=JetVect[3]->phi();
+                    }
+
+
+                    if(secondMaxBTagVal_ >= secondMaxBTagTTHHMVAThreshold_ && njets_btagloose_ >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium_ >= bjetsNumberTTHHMVAThreshold_ && jetcount_ >= jetsNumberTTHHMVAThreshold_ && _MVAMethod != ""){
+                        
+                      if(debug_){
+                        cout << "TTHHadronicTag -- input MVA variables : " << endl;
+                        cout << "----------------------------------------" << endl;
+
+                        cout << "nJets_ = " << nJets_ <<" jetcount"<< jetcount_<< endl;
+                        cout << "sumJetPt_ = " << sumJetPt_ << endl;                    
+                        cout << "maxBTagVal_ = " << maxBTagVal_ << endl;
+                        cout << "secondMaxBTagVal_ = " << secondMaxBTagVal_ << endl;
+                        cout << "thirdMaxBTagVal_ = " << thirdMaxBTagVal_ << endl;
+                        //                    cout << "leadJetPt_ = " << leadJetPt_ << endl;
+                        //                    cout << "leadJetBTag_ = " << leadJetBTag_ << endl;
+
+                        cout << "minPhoID_ = " << minPhoID_ << endl;
+                        cout << "maxPhoID_ = " << maxPhoID_ << endl;
+                        //                    cout << "mindRPhoLeadJet_ = " << mindRPhoLeadJet_ << endl;
+                        //                    cout << "maxdRPhoLeadJet_ = " << maxdRPhoLeadJet_ << endl;
+                        cout << "pho1_ptoM_ = " << pho1_ptoM_ << endl;
+                        cout << "pho2_ptoM_ = " << pho2_ptoM_ << endl;
+                        cout << "pho1_sceta_ = " << pho1_sceta_ << endl;
+                        cout << "pho2_sceta_ = " << pho2_sceta_ << endl;
+                        cout << "pho1_scphi_ = " << pho1_scphi_ << endl;
+                        cout << "pho2_scphi_ = " << pho2_scphi_ << endl;
+
+                        cout << "pho1_hasPixelSeed_ = " << pho1_hasPixelSeed_ << endl;
+                        cout << "pho2_hasPixelSeed_ = " << pho2_hasPixelSeed_ << endl;
+                //                    cout << "pho1_sigmaEoE_ = " << pho1_sigmaEOverE_ << endl;
+                //                    cout << "pho2_sigmaEoE_ = " << pho2_sigmaEOverE_ << endl;
+
+                        cout << "diPhoY_ = " << diPhoY_ << endl;
+                        //cout << "diPhoCosPhi_ = " << diPhoCosPhi_ << endl;
+                        cout << "diPhoPtoM_ = " << diPhoPtoM_ << endl;
+
+                //                    cout << "nBLoose_ = " << njets_btagloose_ << " "<<nbloose_<<endl;
+                        cout << "btag_1_ = " <<btag_1_ << endl;
+                        cout << "jetPt_1_ = " <<jetPt_1_ << endl;
+                        cout << "jetEta_1_ = " <<jetEta_1_ << endl;
+                //                    cout << "jetPhi_1_ = " <<jetPhi_1_ << endl;
+                        cout << "btag_2_ = " <<btag_2_ << endl;
+                        cout << "jetPt_2_ = " <<jetPt_2_ << endl;
+                        cout << "jetEta_2_ = " <<jetEta_2_ << endl;
+                //                    cout << "jetPhi_2_ = " <<jetPhi_2_ << endl;
+                        cout << "btag_3_ = " <<btag_3_ << endl;
+                        cout << "jetPt_3_ = " <<jetPt_3_ << endl;
+                        cout << "jetEta_3_ = " <<jetEta_3_ << endl;
+                //                    cout << "jetPhi_3_ = " <<jetPhi_3_ << endl;
+                        cout << "btag_4_ = " <<btag_4_ << endl;
+                        cout << "jetPt_4_ = " <<jetPt_4_ << endl;
+                        cout << "jetEta_4_ = " <<jetEta_4_ << endl;
+                //                    cout << "jetPhi_4_ = " <<jetPhi_4_ << endl;
+                        cout << "MET_ = " <<MET_ << endl;
+                        cout << "---------------------------------------" << endl;
+                      }
+                      tthMvaVal_ = TThMva_->EvaluateMVA( _MVAMethod.c_str() );
+
+                        //cout << "mva result :" << endl;
+                      if(debug_)  cout << " TTHHadronicTag -- output MVA value = " << tthMvaVal_  << endl;
+                        //cout << "tthMvaVal_ = " << tthMvaVal_  << " "<< boundaries[0]<<" "<< boundaries[1]<< endl;
+                         
+                     }
+                }
+
+                if(useTTHHadronicMVA_) {
+                  std::vector<double> global_features;
+                  global_features.resize(18);
+                  global_features[0] = dipho->leadingPhoton()->eta();
+                  global_features[1] = dipho->subLeadingPhoton()->eta();
+                  global_features[2] = dipho->leadingPhoton()->phi();
+                  global_features[3] = dipho->subLeadingPhoton()->phi();
+                  global_features[4] = pho1_ptoM_;
+                  global_features[5] = pho2_ptoM_;
+                  global_features[6] = maxPhoID_;
+                  global_features[7] = minPhoID_;
+                  global_features[8] = log((float)theMET->pt());
+                  global_features[9] = (float)theMET->phi();
+                  global_features[10] = pho1_hasPixelSeed_;
+                  global_features[11] = pho2_hasPixelSeed_;
+                  global_features[12] = diPhoY_;
+                  global_features[13] = diPhoPtoM_;
+                  global_features[14] = diPhoDeltaR_;
+                  global_features[15] = maxBTagVal_noBB_;
+                  global_features[16] = secondMaxBTagVal_noBB_;
+                  global_features[17] = nJets_;
+
+                  float dnn_score_dipho(0.5), dnn_score_ttGG(0.5);
+                  if (useLargeMVAs) {
+                      dnn_dipho->SetInputs(JetVect, global_features);
+                      dnn_score_dipho = dnn_dipho->EvaluateDNN();
+
+                      dnn_ttGG->SetInputs(JetVect, global_features);
+                      dnn_score_ttGG = dnn_ttGG->EvaluateDNN();
+                  }
+
+
+                  TLorentzVector pho1, pho2;
+                  pho1.SetPtEtaPhiE(dipho->leadingPhoton()->pt(), dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi(), dipho->leadingPhoton()->energy());
+                  pho2.SetPtEtaPhiE(dipho->subLeadingPhoton()->pt(), dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi(), dipho->subLeadingPhoton()->energy());
+                  helicity_angle_ = helicity(pho1, pho2);
+
+                  top_tag_score_ = mvaEval.size() > 0 ? (mvaEval[0] != - 99 ? mvaEval[0] : -1) : - 1;
+                  dnn_score_0_ = dnn_score_dipho;
+                  dnn_score_1_ = dnn_score_ttGG;
+
+                  tthMvaVal_RunII_ = convert_tmva_to_prob(TThMva_RunII_->EvaluateMVA( _MVAMethod.c_str() ));
+                  if (debug_) {
+                    cout << "TTH Hadronic Tag -- input MVA variables for Run II MVA: " << endl;
+                    cout << "--------------------------------------------------------" << endl;
+                    cout << "maxIDMVA_: " << maxPhoID_ << endl;
+                    cout << "minIDMVA_: " << minPhoID_ << endl;
+                    cout << "max1_btag_: " << maxBTagVal_noBB_ << endl;
+                    cout << "max2_btag_: " << secondMaxBTagVal_noBB_ << endl;
+                    cout << "dipho_delta_R_: " << diPhoDeltaR_ << endl;
+
+                    cout << "njets_: " << nJets_ << endl;
+                    cout << "ht_: " << ht_ << endl;
+                    cout << "leadptoM_: " << pho1_ptoM_ << endl;
+                    cout << "subleadptoM_: " << pho2_ptoM_ << endl;
+                    cout << "lead_eta_: " << pho1_eta_ << endl;
+                    cout << "sublead_eta_: " << pho2_eta_ << endl;
+
+                    cout << "jet1_pt_: " << jetPt_1_ << endl;
+                    cout << "jet1_eta_: " << jetEta_1_ << endl;
+                    cout << "jet1_btag_: " << btag_noBB_1_ << endl;
+                    cout << "jet2_pt_: " << jetPt_2_ << endl;
+                    cout << "jet2_eta_: " << jetEta_2_ << endl;
+                    cout << "jet2_btag_: " << btag_noBB_2_ << endl;
+                    cout << "jet3_pt_: " << jetPt_3_ << endl;
+                    cout << "jet3_eta_: " << jetEta_3_ << endl;
+                    cout << "jet3_btag_: " << btag_noBB_3_ << endl;
+                    cout << "jet4_pt_: " << jetPt_4_ << endl;
+                    cout << "jet4_eta_: " << jetEta_4_ << endl;
+                    cout << "jet4_btag_: " << btag_noBB_4_ << endl;
+
+                    cout << "leadPSV_: " << pho1_hasPixelSeed_ << endl;
+                    cout << "subleadPSV_: " << pho2_hasPixelSeed_ << endl;
+
+                    cout << "dipho_cosphi_: " << diPhoCosPhi_ << endl;
+                    cout << "dipho_rapidity_: " << diPhoY_ << endl;
+                    cout << "met_: " << MET_ << endl;
+                    cout << "dipho_pt_over_mass_: " << diPhoPtoM_ << endl;
+                    cout << "helicity_angle_: " << helicity_angle_ << endl;
+                    cout << "top_tag_score_: " << top_tag_score_ << endl;
+
+                    cout << "DNN Score 0: " << dnn_score_0_ << endl;
+                    cout << "DNN Score 1: " << dnn_score_1_ << endl;
+                    cout << endl;
+                    cout << "BDT Score: " << tthMvaVal_RunII_ << endl;
+                  }
+
+                  global_features.clear();
+
+                }
+
+                tthMvaVal_ = tthMvaVal_RunII_; // use Run II MVA
+
+                bool isTTHHadronicTagged = false;
+                int catnum =-1;
+                if( !useTTHHadronicMVA_ && njets_btagloose_ >= bjetsLooseNumberThreshold_ && njets_btagmedium_ >= bjetsNumberThreshold_ && jetcount_ >= jetsNumberThreshold_ ) {
+
+                    catnum=0;
+                    isTTHHadronicTagged = true;
+                    
+                } else if ( useTTHHadronicMVA_  && njets_btagloose_ >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium_ >= bjetsNumberTTHHMVAThreshold_ && jetcount_ >= jetsNumberTTHHMVAThreshold_ ) {
+                    //&& tthMvaVal_ >= tthHadMVAThresholdMin_  && tthMvaVal_ < tthHadMVAThresholdMax_ ) 
+                    
+                    catnum = chooseCategory( tthMvaVal_ );                
+                    //                cout<<" catNum="<<catnum<<endl;
+                    if(catnum>=0){
+                        isTTHHadronicTagged = true;
+                        //                    cout<<" TAGGED "<< endl;
+                    }
+                }
+                
+                if( isTTHHadronicTagged ) {
+
+                    TTHHadronicTag tthhtags_obj( dipho, mvares, JetVect, BJetVect );
+                    tthhtags_obj.setCategoryNumber(catnum  );
+                    tthhtags_obj.setNjet( jetcount_ );
+                    tthhtags_obj.setNBLoose( njets_btagloose_ );
+                    tthhtags_obj.setNBMedium( njets_btagmedium_ );
+                    tthhtags_obj.setNBTight( njets_btagtight_ );
+                    tthhtags_obj.setDiPhotonIndex( diphoIndex );
+                    tthhtags_obj.setLeadJetPt( leadJetPt_ );
+                    tthhtags_obj.setSubLeadJetPt( subLeadJetPt_ );
+                    tthhtags_obj.setSumJetPt( sumJetPt_ );
+                    tthhtags_obj.setMaxBTagVal( maxBTagVal_ );
+                    tthhtags_obj.setSecondMaxBTagVal( secondMaxBTagVal_ );
+                    tthhtags_obj.setThirdMaxBTagVal( thirdMaxBTagVal_ );
+                    tthhtags_obj.setFourthMaxBTagVal( fourthMaxBTagVal_ );
+                    std::string syst_label = modifySystematicsWorkflow ? systematicsLabels[syst_idx] : systLabel_;
+                    tthhtags_obj.setSystLabel( syst_label ); 
+                    tthhtags_obj.setMVAres(tthMvaVal_);
+                    tthhtags_obj.setMET( theMET );
+
+                    if(!useTTHHadronicMVA_){
+                        for( unsigned num = 0; num < JetVect.size(); num++ ) {
+                            tthhtags_obj.includeWeightsByLabel( *JetVect[num] , "JetBTagCutWeight");
+                            //tthhtags_obj.includeWeightsByLabel( *JetVect[num] , "JetBTagReshapeWeight");
+                        }
                     } else {
-                        truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
+                        for( unsigned num = 0; num < JetVect.size(); num++ ) {
+                            tthhtags_obj.includeWeightsByLabel( *JetVect[num] , "JetBTagReshapeWeight");
+                        }                    
                     }
-                    //truth_obj.setGenJets(genJetVect);
-                    truths->push_back( truth_obj );
-                    tthhtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
+                    tthhtags_obj.includeWeights( *dipho );
+
+                    tthhtags->push_back( tthhtags_obj );
+                    if( ! evt.isRealData() ) {
+                        TagTruthBase truth_obj;
+                        truth_obj.setGenPV( higgsVtx );
+                        if ( stage0cat.isValid() ) {
+                            truth_obj.setHTXSInfo( *( stage0cat.product() ),
+                                                   *( stage1cat.product() ),
+                                                   *( njets.product() ),
+                                                   *( pTH.product() ),
+                                                   *( pTV.product() ) );
+                        } else if ( htxsClassification.isValid() ) {
+                            truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
+                                                   htxsClassification->stage1_cat_pTjet30GeV,
+                                                   htxsClassification->jets30.size(),
+                                                   htxsClassification->p4decay_higgs.pt(),
+                                                   htxsClassification->p4decay_V.pt() );
+
+                        } else {
+                            truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
+                        }
+                        //truth_obj.setGenJets(genJetVect);
+                        truths->push_back( truth_obj );
+                        tthhtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
+                    }
                 }
-                // count++;
             }
+        evt.put( std::move( tthhtags ), systematicsLabels[syst_idx] );
         }
-        evt.put( std::move( tthhtags ) );
-        evt.put( std::move( truths ) );
-        // cout << "tagged events = " << count << endl;
+    evt.put( std::move( truths ) );
     }
 }
 typedef flashgg::TTHHadronicTagProducer FlashggTTHHadronicTagProducer;
