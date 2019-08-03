@@ -77,24 +77,24 @@ for subdet in ['EB', 'EE']:
                 clf_data = cms.PSet(
                     variables = cms.VPSet(),
                     weights = cms.FileInPath(str(iso_summary['peak_tail_clfs']['weights_data'])),
-                    classifier = cms.string('BDTG_{}_{}_p0t_data'.format(var, subdet))
+                    classifier = cms.string('BDTG_{}_{}_p0t_data'.format("phoIso", subdet))
                 ),
                 clf_mc = cms.PSet(
                     variables = cms.VPSet(),
                     weights = cms.FileInPath(str(iso_summary['peak_tail_clfs']['weights_mc'])),
-                    classifier = cms.string('BDTG_{}_{}_p0t_mc'.format(var, subdet))
+                    classifier = cms.string('BDTG_{}_{}_p0t_mc'.format("phoIso", subdet))
                 ),
                 peak2tail = cms.PSet(
                     variables = cms.VPSet(),
                     weights = cms.FileInPath(str(iso_summary['peak2tail']['weights'])),
                     regression = cms.bool(True),
-                    classifier = cms.string('BDTG_{}_{}_p2t'.format(var, subdet))
+                    classifier = cms.string('BDTG_{}_{}_p2t'.format("phoIso", subdet))
                 ),
                 morphing = cms.PSet(
                     variables = cms.VPSet(),
                     weights = cms.FileInPath(str(iso_summary['morphing']['weights'])),
                     regression = cms.bool(True),
-                    classifier = cms.string('BDTG_{}_{}'.format(var, subdet)),
+                    classifier = cms.string('BDTG_{}_{}'.format("phoIso", subdet)),
                     regr_output_scaling = cms.string('x[0]*(%f)+(%f)' % (iso_summary['morphing']['scale'], iso_summary['morphing']['center']))
                 )
             )
@@ -113,39 +113,39 @@ for subdet in ['EB', 'EE']:
                     variables = cms.VPSet(),
                     weights = cms.FileInPath(str(iso_summary['peak_tail_clfs']['weights_data'])),
                     multiclass = cms.bool(True),
-                    classifier = cms.string('BDTG_{}_{}_3Cat_data'.format(var, subdet))
+                    classifier = cms.string('BDTG_{}_{}_3Cat_data'.format("chIso", subdet))
                 ),
                 clf_mc = cms.PSet(
                     variables = cms.VPSet(),
                     weights = cms.FileInPath(str(iso_summary['peak_tail_clfs']['weights_mc'])),
                     multiclass = cms.bool(True),
-                    classifier = cms.string('BDTG_{}_{}_3Cat_mc'.format(var, subdet))
+                    classifier = cms.string('BDTG_{}_{}_3Cat_mc'.format("chIso", subdet))
                 ),
                 chIso_peak2tail = cms.PSet(
                     variables = cms.VPSet(),
                     weights = cms.FileInPath(str(iso_summary['chIso_peak2tail']['weights'])),
-                    regression = cms.bool(True)
-                    classifier = cms.string('BDTG_{}_{}_p2t'.format(var, subdet))
+                    regression = cms.bool(True),
+                    classifier = cms.string('BDTG_{}_{}_p2t'.format("chIso", subdet))
                 ),
                 chIso_morphing = cms.PSet(
                     variables = cms.VPSet(),
                     weights = cms.FileInPath(str(iso_summary['chIso_morphing']['weights'])),
-                    classifier = cms.string('BDTG_{}_{}'.format(var, subdet)),
-                    regression = xms.bool(True)
+                    classifier = cms.string('BDTG_{}_{}'.format("chIso", subdet)),
+                    regression = cms.bool(True),
                     regr_output_scaling = cms.string('x[0]*(%f)+(%f)' % (iso_summary['chIso_morphing']['scale'], 
                                                                          iso_summary['chIso_morphing']['center']))
                 ),
                 chIsoWorst_peak2tail = cms.PSet(
                     variables = cms.VPSet(),
                     weights = cms.FileInPath(str(iso_summary['chIsoWorst_peak2tail']['weights'])),
-                    regression = cms.bool(True)
-                    classifier = cms.string('BDTG_{}_{}_p2t'.format(var, subdet))
+                    regression = cms.bool(True),
+                    classifier = cms.string('BDTG_{}_{}_p2t'.format("chIsoWorst", subdet))
                 ),
                 chIsoWorst_morphing = cms.PSet(
                     variables = cms.VPSet(),
                     weights = cms.FileInPath(str(iso_summary['chIsoWorst_morphing']['weights'])),
-                    classifier = cms.string('BDTG_{}_{}'.format(var, subdet))
-                    regression = cms.bool(True)
+                    classifier = cms.string('BDTG_{}_{}'.format("chIsoWorst", subdet)),
+                    regression = cms.bool(True),
                     regr_output_scaling = cms.string('x[0]*(%f)+(%f)' % (iso_summary['chIsoWorst_morphing']['scale'], 
                                                                          iso_summary['chIsoWorst_morphing']['center']))
                 )
