@@ -3,7 +3,7 @@ import importlib
 import FWCore.ParameterSet.Config as cms
 
 flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
-		src = cms.InputTag("flashggUpdatedIdMVADiPhotons"),
+                src = cms.InputTag("flashggUpdatedIdMVADiPhotons"),
                 SystMethods2D = cms.VPSet(),
                 SystMethods = cms.VPSet()
 )

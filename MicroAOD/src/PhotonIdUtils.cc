@@ -260,18 +260,15 @@ void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfile
 float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
     flashgg::Photon &photon,
     const edm::Ptr<reco::Vertex> &vtx,
-    const double rho, const double correctedEtaWidth,  const double eA, const std::vector<double> _phoIsoPtScalingCoeff, const double _phoIsoCutoff )
+    const double rho, const double eA, const std::vector<double> _phoIsoPtScalingCoeff, const double _phoIsoCutoff )
 {
 
     phoIdMva_SCRawE_          = photon.superCluster()->rawEnergy();
     phoIdMva_R9_              = photon.full5x5_r9();
     phoIdMva_S4_              = photon.s4();
     phoIdMva_covIEtaIEta_     = photon.full5x5_sigmaIetaIeta();
-    if (correctedEtaWidth == 0.)
-        phoIdMva_EtaWidth_        = photon.superCluster()->etaWidth();
-    else
-        phoIdMva_EtaWidth_        = correctedEtaWidth;
-    phoIdMva_PhiWidth_        = photon.superCluster()->phiWidth();
+    phoIdMva_EtaWidth_        = photon.hasUserFloat("etaWidth") ? photon.userFloat("etaWidth") : photon.superCluster()->etaWidth();
+    phoIdMva_PhiWidth_        = photon.hasUserFloat("phiWidth") ? photon.userFloat("phiWidth") : photon.superCluster()->phiWidth();
     phoIdMva_covIEtaIPhi_     = photon.sieip();
     phoIdMva_pfPhoIso03_      = photon.pfPhoIso03();
 
@@ -328,7 +325,7 @@ float PhotonIdUtils::computeCorrectPhoIso(
 map<edm::Ptr<reco::Vertex>, float> PhotonIdUtils::computeMVAWrtAllVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
     flashgg::Photon &photon,
     const std::vector<edm::Ptr<reco::Vertex> > &vertices,
-    const double rho, const double correctedEtaWidth, const double eA, const std::vector<double> _phoIsoPtScalingCoeff, const double _phoIsoCutoff )
+    const double rho, const double eA, const std::vector<double> _phoIsoPtScalingCoeff, const double _phoIsoCutoff )
 
 {
     map<edm::Ptr<reco::Vertex>, float> mvamap;
@@ -336,7 +333,7 @@ map<edm::Ptr<reco::Vertex>, float> PhotonIdUtils::computeMVAWrtAllVtx( /*edm::Pt
 
     for( unsigned int iv = 0; iv < vertices.size(); iv++ ) {
         edm::Ptr<reco::Vertex> vertex = vertices[iv];
-        float mvapervtx = computeMVAWrtVtx( photon, vertex, rho, correctedEtaWidth, eA, _phoIsoPtScalingCoeff, _phoIsoCutoff );
+        float mvapervtx = computeMVAWrtVtx( photon, vertex, rho, eA, _phoIsoPtScalingCoeff, _phoIsoCutoff );
         mvamap.insert( make_pair( vertex, mvapervtx ) );
     }
 

@@ -68,7 +68,7 @@ namespace flashgg {
                     pho.addUserFloat( std::get<0>( toFill_[imva] ), std::get<1>( toFill_[imva] ) );
                 } else {
                     // otherwise evaluate the MVA
-                    pho.addUserFloat( std::get<0>( toFill_[imva] ), ( *isel->second[imva] )( pho ) );
+                    pho.addUserFloat( std::get<0>( toFill_[imva] ), ( *isel->second[imva] )( pho )[0] );
                 }
             }
         } else {

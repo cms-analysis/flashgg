@@ -10,7 +10,8 @@
 <use   name="roofit"/>
 <use   name="roottmva"/>
 <use   name="CommonTools/CandAlgos"/>
-<use   name="PhysicsTools/TensorFlow" />
+<use   name="PhysicsTools/TensorFlow"/>
+<use   name="XGBoostCMSSW/XGBoostInterface"/>
 <Flags CXXFLAGS="-ggdb"/>
 <flags   EDM_PLUGIN="1"/>
 </library>
