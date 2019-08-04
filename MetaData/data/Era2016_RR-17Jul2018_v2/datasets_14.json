@@ -172,7 +172,7 @@
             }
         ], 
         "parent_n_units": null, 
-        "vetted": false
+        "vetted": true
     }, 
     "/GluGluHToGG_M75_13TeV_amcatnloFXFX_pythia8/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2-6512204af72ea57fbfefdf0db0649ffe/USER": {
         "dset_type": "mc", 
@@ -259,7 +259,7 @@
             }
         ], 
         "parent_n_units": 424383, 
-        "vetted": false
+        "vetted": true
     }, 
     "/SingleElectron/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016C-17Jul2018-v1-db30e4011d9f1e7e37aee2e41519d339/USER": {
         "dset_type": "data", 
@@ -32995,8 +32995,8 @@
                 "weights": 9611
             }
         ], 
-        "parent_n_units": 18769, 
-        "vetted": false
+        "parent_n_units": null, 
+        "vetted": true
     }, 
     "/VBFHToGG_M124_13TeV_amcatnlo_pythia8/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2-42666aea495bdc3a36d796ff9c4bc819/USER": {
         "dset_type": "mc", 
@@ -33099,7 +33099,7 @@
             }
         ], 
         "parent_n_units": null, 
-        "vetted": false
+        "vetted": true
     }, 
     "/VBFHToGG_M125_13TeV_amcatnlo_pythia8/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v2-42666aea495bdc3a36d796ff9c4bc819/USER": {
         "dset_type": "mc", 
@@ -33713,8 +33713,8 @@
                 "weights": 93685.4609375
             }
         ], 
-        "parent_n_units": 1999200, 
-        "vetted": false
+        "parent_n_units": null, 
+        "vetted": true
     }, 
     "/VBFHToGG_M60_13TeV_amcatnlo_pythia8/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2-42666aea495bdc3a36d796ff9c4bc819/USER": {
         "dset_type": "mc", 
@@ -33817,6 +33817,6 @@
             }
         ], 
         "parent_n_units": 296451, 
-        "vetted": false
+        "vetted": true
     }
 }
