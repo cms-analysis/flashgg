@@ -425,7 +425,7 @@ class HTCondorJob(object):
                 fout.write('input       = '+BatchRegistry.getProxy().split(":")[1]+'\n')
             fout.write('output      = '+self.jobName+'_$(ClusterId).$(ProcId).out\n')
             fout.write('error       = '+self.jobName+'_$(ClusterId).$(ProcId).err\n')
-            fout.write('log         = '+self.jobName+'_htc.log\n\n')
+            fout.write('log         = '+self.jobName+'_$(ClusterId).$(ProcId)_htc.log\n\n')
             fout.write('max_retries = 1\n')
             fout.write('queue '+str(njobs)+' \n')
             fout.close()        
@@ -500,10 +500,10 @@ class HTCondorJob(object):
     
     #----------------------------------------
     def handleOutput(self, jobid):
-        if self.async:
-            self.exitStatus = -1
+        self.exitStatus = -1
+        if self.async and jobid:
             evt_list = []       
-            jel = htcondor.JobEventLog(str(self.jobName+"_htc.log"))         
+            jel = htcondor.JobEventLog(str(self.jobName+"_"+jobid+"_htc.log"))         
             for event in jel.events(stop_after=0):
                 evt_jobid_str = str(event.cluster)+'.'+str(event.proc)
                 if evt_jobid_str == jobid:
@@ -607,7 +607,7 @@ class HTCondorMonitor(object):
         evt_list = {}
         for jobid, job in current_jobs.iteritems():
             evt_list[jobid] = []
-            jel = htcondor.JobEventLog(str(job.jobName+"_htc.log"))
+            jel = htcondor.JobEventLog(str(job.jobName+"_"+jobid+"_htc.log"))
             for event in jel.events(stop_after=0):
                 evt_jobid_str = str(event.cluster)+'.'+str(event.proc)
                 if evt_jobid_str == jobid:
