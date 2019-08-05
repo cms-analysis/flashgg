@@ -157,6 +157,10 @@ def modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystl
         process.p.remove(getattr(process, 'flashggTagSorter' + systlabel))
         process.p.replace(process.flashggSystTagMerger, getattr(process, 'flashggTagSorter' + systlabel) * process.flashggSystTagMerger) 
 
+def allowLargettHMVAs(process):
+    for tag in ["flashggTTHLeptonicTag", "flashggTTHHadronicTag"]:
+        getattr(process, tag).UseLargeMVAs = cms.bool(True) # enable memory-intensive MVAs
+
 def customizeSystematicsForMC(process):
     customizePhotonSystematicsForMC(process)
 

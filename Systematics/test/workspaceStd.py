@@ -239,6 +239,10 @@ if customize.tthTagsOnly:
     process.flashggTagSequence.remove(process.flashggTTHDiLeptonTag)
     process.flashggTagSequence.remove(process.flashggTHQLeptonicTag)
 
+else:
+    if not customize.doSystematics: # allow memory-intensive ttH MVAs if we are not running systematics
+        allowLargettHMVAs(process)
+
 if customize.doDoubleHTag:
     import flashgg.Systematics.doubleHCustomize 
     hhc = flashgg.Systematics.doubleHCustomize.DoubleHCustomize(process, customize, customize.metaConditions)
