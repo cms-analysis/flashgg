@@ -39,7 +39,8 @@
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
 
-    "Ele_ID_eff_bin" : "binInfo2016",
+    "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_eleIDSFs_2016LegacyReReco.json",
+    "Ele_ID_version" : "cutBasedElectronID-Fall17-94X-V2-medium",
 
     "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2016_cfi",
     

@@ -78,8 +78,11 @@ def createStandardSystematicsProducers(process, options):
 
     import flashgg.Systematics.flashggMuonSystematics_cfi as muon_sf
     muon_sf.SetupMuonScaleFactors( process , options.metaConditions["MUON_ID"], options.metaConditions["MUON_ISO"] )
-    
-    setattr( process.flashggElectronSystematics.SystMethods,"BinList",str("process.flashggElectronSystematics."+options.metaConditions["Ele_ID_eff_bin"]))
+   
+    from   flashgg.Systematics.flashggElectronSystematics_cfi import EleSF_JSONReader
+    binInfoEle = EleSF_JSONReader(options.metaConditions["Ele_ID_SF_FileName"],options.metaConditions["Ele_ID_version"])
+
+    setattr(process.flashggElectronSystematics.SystMethods,"BinList",binInfoEle)
 
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
     from flashgg.Systematics.flashggJetSystematics_cfi import jetSystematicsCustomize
