@@ -40,7 +40,7 @@
     "MUON_ISO" : "LooseRel",
 
     "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_eleIDSFs_2016LegacyReReco.json",
-    "Ele_ID_version" : "cutBasedElectronID-Fall17-94X-V2-medium",
+    "Ele_ID_version" : "mvaEleID-Fall17-iso-V2-wp90",
 
     "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2016_cfi",
     

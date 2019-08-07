@@ -144,12 +144,12 @@ binInfo2016 = cms.PSet(
 
 
 
-
+#setting up id scale factors
 flashggElectronSystematics = cms.EDProducer('FlashggElectronEffSystematicProducer',
                                             src = cms.InputTag("flashggSelectedElectrons"),
                                             SystMethods2D = cms.VPSet(),
                                             SystMethods = cms.VPSet(cms.PSet( MethodName = cms.string("FlashggElectronWeight"),
-                                                                              Label = cms.string("ElectronWeight"),
+                                                                              Label = cms.string("ElectronIDWeight"),
                                                                               NSigmas = cms.vint32(-1,1),
                                                                               OverallRange = cms.string("abs(eta)<2.5"),
                                                                               BinList = binInfo2016,
@@ -158,3 +158,13 @@ flashggElectronSystematics = cms.EDProducer('FlashggElectronEffSystematicProduce
                                                                               )	
                                                                     )
                                             )
+
+flashggElectronSystematics.SystMethods.append(cms.PSet( MethodName = cms.string("FlashggElectronWeight"),
+                                                        Label = cms.string("ElectronRecoWeight"),
+                                                        NSigmas = cms.vint32(-1,1),
+                                                        OverallRange = cms.string("abs(eta)<2.5"),
+                                                        BinList = binInfo2016,
+                                                        Debug = cms.untracked.bool(False),
+                                                        ApplyCentralValue = cms.bool(True)
+                                                    )	
+                                          )
