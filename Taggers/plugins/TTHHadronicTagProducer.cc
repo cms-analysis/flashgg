@@ -289,7 +289,7 @@ namespace flashgg {
 
         jetTags.push_back(std::vector<edm::InputTag>(0));
         for (unsigned int i = 0; i < inputJetsCollSize_ ; i++) {
-            jetTags[0].push_back(edm::InputTag(nominalJetsName_,std::to_string(i))); // nominal jets
+            jetTags[0].push_back(inputTagJets_[i]);  // nominal jets
         }
 
         for (auto & suffix : inputJetsSuffixes_) {
@@ -721,8 +721,8 @@ namespace flashgg {
             //Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
             if (modifySystematicsWorkflow) {
                 if (vary_dipho) {
-                    evt.getByToken(diPhotonTokens_[syst_idx - 1], diPhotons);
-                    evt.getByToken(mvaResultTokens_[syst_idx - 1], mvaResults);
+                    evt.getByToken(diPhotonTokens_[syst_idx], diPhotons);
+                    evt.getByToken(mvaResultTokens_[syst_idx], mvaResults);
                 }
                 else {
                     evt.getByToken(diPhotonTokens_[0], diPhotons);
@@ -731,7 +731,7 @@ namespace flashgg {
                 // Select appropriate MET
                 //Handle<View<flashgg::Met> > METs;
                 if (vary_met) {
-                    int met_syst_idx = syst_idx - (1 + inputJetsSuffixes_.size() + inputDiPhotonSuffixes_.size());
+                    int met_syst_idx = syst_idx - (inputJetsSuffixes_.size() + inputDiPhotonSuffixes_.size());
                     evt.getByToken(metTokens_[met_syst_idx], METs);
                 }
                 else
@@ -877,7 +877,7 @@ namespace flashgg {
                 if (modifySystematicsWorkflow) {
                     int jet_syst_idx;
                     if (vary_jets)
-                        jet_syst_idx = syst_idx - (1 + inputDiPhotonSuffixes_.size());
+                        jet_syst_idx = syst_idx - (inputDiPhotonSuffixes_.size());
                     else
                         jet_syst_idx = 0;
 

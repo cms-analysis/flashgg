@@ -156,6 +156,7 @@ def modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystl
             continue
         process.p.remove(getattr(process, 'flashggTagSorter' + systlabel))
         process.p.replace(process.flashggSystTagMerger, getattr(process, 'flashggTagSorter' + systlabel) * process.flashggSystTagMerger) 
+    setattr(getattr(process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag', systlabel)), cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag', systlabel)) ))
 
 def allowLargettHMVAs(process):
     for tag in ["flashggTTHLeptonicTag", "flashggTTHHadronicTag"]:
