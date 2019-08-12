@@ -283,3 +283,21 @@ def useEGMTools(process):
     # add sigmaE/E correction and systematics
     process.flashggDiPhotonSystematics.SystMethods.extend( [process.SigmaEOverESmearing_EGM, process.SigmaEOverEShift] )
 
+def runRivetSequence(process, options):
+    process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
+    process.rivetProducerHTXS = cms.EDProducer('HTXSRivetProducer',
+                                               HepMCCollection = cms.InputTag('myGenerator','unsmeared'),
+                                               LHERunInfo = cms.InputTag('externalLHEProducer'),
+                                               ProductionMode = cms.string('AUTO'),
+    )
+    
+    process.mergedGenParticles = cms.EDProducer("MergedGenParticleProducer",
+                                                inputPruned = cms.InputTag("prunedGenParticles"),
+                                                inputPacked = cms.InputTag("packedGenParticles"),
+                                            )
+    process.myGenerator = cms.EDProducer("GenParticles2HepMCConverter",
+                                         genParticles = cms.InputTag("mergedGenParticles"),
+                                         genEventInfo = cms.InputTag("generator"),
+                                         signalParticlePdgIds = cms.vint32(25), ## for the Higgs analysis
+                                     )
+    process.p.insert(0, process.mergedGenParticles*process.myGenerator*process.rivetProducerHTXS)

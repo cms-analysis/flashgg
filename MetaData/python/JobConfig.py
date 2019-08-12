@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.VarParsing as VarParsing
 from flashgg.MetaData.samples_utils import SamplesManager
 import FWCore.ParameterSet.Config as cms
-
+from Utilities.General.cmssw_das_client import get_data as das_query
 
 class JobConfig(object):
     
@@ -65,6 +65,11 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.bool,          # string, int, or float
                                "useEOS")
+        self.options.register ('useParentDataset',
+                               False, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "useParentDataset")
         self.options.register ('targetLumi',
                                1.e+3, # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -365,11 +370,16 @@ class JobConfig(object):
                 print process.source.lumisToProcess
             
         flist = []
+        sflist = []
         for f in files:
             if len(f.split(":",1))>1:
                 flist.append(str(f))
             else:
                 flist.append(str("%s%s" % (self.filePrepend,f)))
+            if self.options.useParentDataset:
+                parent_files = das_query("parent file=%s instance=prod/phys03" % f)['data'][0]['parent']
+                for parent_f in parent_files:
+                    sflist.append(str(parent_f['name']))
         if len(flist) > 0:
             ## fwlite
             if isFwlite:
@@ -379,6 +389,8 @@ class JobConfig(object):
             else:
                 ## process.source.fileNames.extend([ str("%s%s" % (self.filePrepend,f)) for f in  files])
                 process.source.fileNames = flist
+                if self.options.useParentDataset and len(sflist) > 0:
+                    process.source.secondaryFileNames = cms.untracked.vstring(sflist)
  
         ## fwlite
         if isFwlite:
