@@ -63,6 +63,8 @@
     "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_eleIDSFs_2017.json",
     "Ele_ID_version" : "mvaEleID-Fall17-iso-V2-wp90",
 
+    "Ele_reco_SF_FileName" : "flashgg/Systematics/data/2017_reco-eff.json",
+
     "bTagSystematics" :
     {
 
