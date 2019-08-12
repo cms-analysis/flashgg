@@ -234,6 +234,14 @@ if customize.tthTagsOnly:
     process.flashggTagSequence.remove(process.flashggUntagged)
     process.flashggTagSequence.remove(process.flashggVBFMVA)
     process.flashggTagSequence.remove(process.flashggVBFDiPhoDiJetMVA)
+    process.flashggTagSequence.remove(process.flashggTTHHadronicTag) # Remove ttH tags as well, as we add these in later manually (with modified systematics worfklow)
+    process.flashggTagSequence.remove(process.flashggTTHLeptonicTag)
+    process.flashggTagSequence.remove(process.flashggTTHDiLeptonTag)
+    process.flashggTagSequence.remove(process.flashggTHQLeptonicTag)
+
+else:
+    if not customize.doSystematics: # allow memory-intensive ttH MVAs if we are not running systematics
+        allowLargettHMVAs(process)
 
 if customize.doDoubleHTag:
     import flashgg.Systematics.doubleHCustomize 
@@ -251,9 +259,10 @@ if customize.doFiducial:
     process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggSigmaMoMpToMTag')) )
 
 if customize.tthTagsOnly:
-    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(   cms.PSet(TagName = cms.InputTag('flashggTTHDiLeptonTag')),
+    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(   
         cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag')),
-        cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag')) )
+        cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag')) 
+    )
 
     print "customize.processId:",customize.processId
 
@@ -264,8 +273,8 @@ if customize.tthTagsOnly:
         if not pset.Label.value().count("FracRVNvtxWeight") :
             print  pset.Label.value()
             newvpset += [pset]
-    from flashgg.Systematics.flashggDiPhotonSystematics_cfi import PixelSeedWeight
-    newvpset += [ PixelSeedWeight ]
+    #from flashgg.Systematics.flashggDiPhotonSystematics_cfi import PixelSeedWeight #FIXME: this does not currently work, so comment it out for now
+    #newvpset += [ PixelSeedWeight ]
     
     process.flashggDiPhotonSystematics.SystMethods = newvpset
    
@@ -331,7 +340,7 @@ if is_signal:
             elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
                 variablesToUse.append("MuonIDWeight%s01sigma[1,-999999.,999999.] := weight(\"Muon%sIDWeight%s01sigma\")" % (direction,MUON_ID,direction))
                 variablesToUse.append("MuonIsoWeight%s01sigma[1,-999999.,999999.] := weight(\"Muon%sISOWeight%s01sigma\")" % (direction,MUON_ISO,direction))
-	    variablesToUse.append("JetBTagCutWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagCutWeight%s01sigma\")" % (direction,direction))
+            variablesToUse.append("JetBTagCutWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagCutWeight%s01sigma\")" % (direction,direction))
             variablesToUse.append("JetBTagReshapeWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagReshapeWeight%s01sigma\")" % (direction,direction))
             for r9 in ["HighR9","LowR9"]:
                 for region in ["EB","EE"]:
@@ -366,9 +375,6 @@ print "-------------------------------------------------"
 print "--- Variables to be dumped, including systematic weights ---"
 print variablesToUse
 print "------------------------------------------------------------"
-
-
-
 
 #from flashgg.Taggers.globalVariables_cff import globalVariables
 #globalVariables.extraFloats.rho = cms.InputTag("rhoFixedGridAll")
@@ -422,10 +428,11 @@ if(customize.doFiducial):
 #        fc.addRecoGlobalVariables(process, process.tagsDumper)
 #    else:
     fc.addObservables(process, process.tagsDumper, customize.processId )
+
 if customize.processId == "tHq":
-   import flashgg.Taggers.THQLeptonicTagVariables as var
-   variablesToUse = minimalVariables + var.vtx_variables + var.dipho_variables
-   
+    import flashgg.Taggers.THQLeptonicTagVariables as var
+    variablesToUse = minimalVariables + var.vtx_variables + var.dipho_variables
+
 #tagList=[
 #["UntaggedTag",4],
 #["VBFTag",2],
@@ -463,7 +470,7 @@ else:
         ["VHHadronicTag",0],
         ["TTHHadronicTag",4],
         ["TTHLeptonicTag",4],
-	["THQLeptonicTag",0],
+        ["THQLeptonicTag",0],
         ["TTHDiLeptonTag",0]
         ]
 
@@ -581,7 +588,6 @@ if (customize.processId.count("qcd") or customize.processId.count("gjet")) and c
     else:
         raise Exception,"Mis-configuration of python for prompt-fake filter"
 
-
 if customize.tthTagsOnly:
     process.p = cms.Path(process.dataRequirements*
                          process.genFilter*
@@ -596,6 +602,9 @@ if customize.tthTagsOnly:
                          process.penultimateFilter*
                          process.finalFilter*
                          process.tagsDumper)
+    # Now, we put the ttH tags back in the sequence with modified systematics workflow
+    modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystlabels, jetsystlabels)
+
 else :
     process.p = cms.Path(process.dataRequirements*
                          process.genFilter*
@@ -609,8 +618,6 @@ else :
                          process.penultimateFilter*
                          process.finalFilter*
                          process.tagsDumper)
-
-
 
 if customize.doBJetRegression:
 
@@ -639,7 +646,7 @@ if customize.doBJetRegression:
     process.bregProducers = cms.Sequence(reduce(lambda x,y: x+y, bregProducers))
     process.p.replace(process.jetSystematicsSequence,process.jetSystematicsSequence*process.flashggUnpackedJets+process.bregProducers)
     
- 
+
 if customize.doDoubleHTag:
     hhc.doubleHTagRunSequence(systlabels,jetsystlabels,phosystlabels)
   
@@ -679,6 +686,10 @@ printSystematicInfo(process)
 # Detailed tag interpretation information printout (blinded)
 process.flashggTagSorter.StoreOtherTagInfo = True
 process.flashggTagSorter.BlindedSelectionPrintout = True
+
+### Rerun microAOD sequence on top of microAODs using the parent dataset
+runRivetSequence(process, customize.metaConditions)
+
 
 #### BELOW HERE IS MOSTLY DEBUGGING STUFF
 
