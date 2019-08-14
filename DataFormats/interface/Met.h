@@ -16,21 +16,24 @@ namespace flashgg {
         ~Met();
 
         Met *clone() const { return ( new Met( *this ) ); }
-        
+
         void setCorPx(float mPx);
         void setCorPy(float mPy);
         void setCorPt(float mPt);
         void setCorPhi(float mPhi);
+        void setPassEcalBadCalibFilter(bool mPass);
         float getCorPx() const;
         float getCorPy() const;
         float getCorPhi() const;
         float getCorPt() const;
-        
+        bool getPassEcalBadCalibFilter() const;
+
     private:
         float corpx;
         float corpy;
         float corphi;
         float corpt;
+        bool passEcalBadCalibFilter;
     };
 }
 

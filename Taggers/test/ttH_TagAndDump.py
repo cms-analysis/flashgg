@@ -152,6 +152,17 @@ if ISDATA:
 
 process.genFilter = cms.Sequence()
 
+# Met Filters
+process.load('flashgg/Systematics/flashggMetFilters_cfi')
+if ISDATA:
+    metFilterSelector = "data" 
+else:
+    metFilterSelector = "mc"
+process.flashggMetFilters.requiredFilterNames = cms.untracked.vstring([filter.encode("ascii") for filter in metaConditions["flashggMetFilters"][metFilterSelector]])
+#process.flashggMetFilters.requiredFilterNames = cms.vstring(metaConditions["flashggMetFilters"]["data"])
+#else:
+#    process.flashggMetFilters.requiredFilterNames = cms.vstring(metaConditions["flashggMetFilters"]["mc"])
+
 process.load("flashgg/Taggers/flashggTagSequence_cfi")
 process.load("flashgg/Taggers/flashggTagTester_cfi")
 
@@ -492,6 +503,7 @@ cfgTools.addCategories(process.tthHadronicTagDumper,
 )
 
 process.p = cms.Path(process.dataRequirements*
+                         process.flashggMetFilters*
                          #process.genFilter* # revisit later, this looks like it's only needed for other signal modes than ttH
                          process.flashggDiPhotons* # needed for 0th vertex from microAOD
                          process.flashggUpdatedIdMVADiPhotons*
@@ -500,8 +512,8 @@ process.p = cms.Path(process.dataRequirements*
                          process.flashggMuonSystematics*process.flashggElectronSystematics*
                          (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                          (process.flashggTagSequence*process.systematicsTagSequences)*
-			 process.flashggSystTagMerger*
-			 process.flashggTagSequence*
+			             process.flashggSystTagMerger*
+			             process.flashggTagSequence*
                          process.flashggTagTester*
-		         (process.tthLeptonicTagDumper
+		                 (process.tthLeptonicTagDumper
                           +process.tthHadronicTagDumper))
