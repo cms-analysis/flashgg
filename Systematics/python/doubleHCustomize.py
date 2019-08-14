@@ -233,6 +233,8 @@ class DoubleHCustomize():
             self.process.flashggTagSequence.remove(self.process.flashggVBFDiPhoDiJetMVA)
             self.process.flashggTagSequence.remove(self.process.flashggTTHDiLeptonTag)
             self.process.flashggTagSequence.remove(self.process.flashggUntagged)
+            self.process.flashggTagSequence.remove(self.process.flashggUntagged)
+            self.process.flashggTagSequence.remove(self.process.flashggTHQLeptonicTag)
  
     def doubleHTagMerger(self,systlabels=[]):
         self.process.p.remove(self.process.flashggTagSorter)
