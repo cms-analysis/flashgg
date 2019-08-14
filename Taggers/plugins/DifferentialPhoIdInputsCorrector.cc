@@ -39,7 +39,7 @@ namespace flashgg {
         void updatePhotonRegressions(flashgg::DiPhotonCandidate* dipho);
 
     private:
-        void correctPhoton( flashgg::Photon& ph, CLHEP::HepRandomEngine& engine, double rhoFixedGrid );
+        void correctPhoton(flashgg::Photon& ph, CLHEP::HepRandomEngine& engine, double rho);
         void storeRegression(flashgg::Photon & cand, const std::string & label);
 
         //---inputs
@@ -213,7 +213,7 @@ namespace flashgg {
         ph.addUserFloat(label + "_regr_E_err", ph.energyCorrections().regression2EnergyError);
     }
 
-    void DifferentialPhoIdInputsCorrector::correctPhoton( flashgg::Photon & pho, CLHEP::HepRandomEngine& engine, double rhoFixedGrid ) 
+    void DifferentialPhoIdInputsCorrector::correctPhoton( flashgg::Photon & pho, CLHEP::HepRandomEngine& engine, double rho) 
     {
         const auto* corrections = std::abs(pho.superCluster()->eta())<1.5 ? &correctionsEB_ : &correctionsEE_;
         const auto* correctionScalings = std::abs(pho.superCluster()->eta())<1.5 ? &correctionScalingsEB_ : &correctionScalingsEE_;
@@ -268,12 +268,29 @@ namespace flashgg {
                 pho.addUserFloat("peak2tail_rnd", engine.flat()*(0.99-0.01)+0.01);
                 pho.setpfPhoIso03(corrections->at("phoIsoPeak2Tail")(pho)[0]);
             }
-            else if(pho.pfPhoIso03() > 0 && p_peak_data > p_peak_mc && migration_rnd_value > p_move_to_peak)
+            else if(pho.pfPhoIso03() > 0 && p_peak_data > p_peak_mc && migration_rnd_value <= p_move_to_peak)
                 pho.setpfPhoIso03(0.);
 
             // tail morphing
             if(pho.pfPhoIso03() > 0)
                 pho.setpfPhoIso03(pho.pfPhoIso03()+correctionScalings->at("phoIsoMorphing").Eval(corrections->at("phoIsoMorphing")(pho)[0]));
+            //---------------------------------------DEBUG---------------------------------------
+            std::cout << "pt: " << pho.pt() << std::endl;
+            std::cout << "scEta: " << pho.superCluster()->eta() << std::endl;
+            std::cout << "phi: " << pho.phi() << std::endl;
+            std::cout << "rho: " << rho << std::endl;
+            std::cout << "Uncorr phoIso" << pho.userFloat("uncorr_pfPhoIso03") << std::endl;
+            std::cout << "Corr phoIso" << pho.pfPhoIso03() << std::endl;
+            std::cout << "migration rnd: " << migration_rnd_value << std::endl;
+            if(pho.hasUserFloat("peak2tail_rnd"))
+            {
+                std::cout << "peak2tail rnd: " << pho.userFloat("peak2tail_rnd") << std::endl;
+                std::cout << "Peak2Tail: " << corrections->at("phoIsoPeak2Tail")(pho)[0] << std::endl;
+            }
+            std::cout << "Morphing: " << corrections->at("phoIsoMorphing")(pho)[0] << std::endl;
+            std::cout << "Clf data: " << corrections->at("phoIsoClfData")(pho)[0] << std::endl;
+            std::cout << "Clf mc: " << corrections->at("phoIsoClfMC")(pho)[0] << std::endl;
+            //---------------------------------------DEBUG---------------------------------------
 
             //---Charge isolations
             // ----------------+-------------------------+
@@ -327,7 +344,7 @@ namespace flashgg {
                 }
             }
             // 01
-            else if(pho.pfChgIsoWrtChosenVtx03() == 0 && pho.pfChgIsoWrtWorstVtx03() > 0 && p_01_mc > p_01_data && migration_rnd_value <= get_w(p_01_data, p_01_mc))
+            else if(pho.pfChgIsoWrtChosenVtx03() == 0. && pho.pfChgIsoWrtWorstVtx03() > 0. && p_01_mc > p_01_data && migration_rnd_value <= get_w(p_01_data, p_01_mc))
             {
                 // 01->00
                 if(p_00_mc < p_00_data && p_11_mc > p_11_data)
@@ -349,7 +366,7 @@ namespace flashgg {
                 }
             }
             // 11
-            else if(pho.pfChgIsoWrtChosenVtx03() > 0 && pho.pfChgIsoWrtWorstVtx03() > 0 && p_11_mc > p_11_data && migration_rnd_value <= get_w(p_11_data, p_11_mc))
+            else if(pho.pfChgIsoWrtChosenVtx03() > 0. && pho.pfChgIsoWrtWorstVtx03() > 0. && p_11_mc > p_11_data && migration_rnd_value <= get_w(p_11_data, p_11_mc))
             {
                 // 11->00
                 if(p_00_mc < p_00_data && p_01_mc > p_01_data)
@@ -375,9 +392,9 @@ namespace flashgg {
             }
 
             // tail morphing
-            if(pho.pfChgIsoWrtChosenVtx03() > 0)
+            if(pho.pfChgIsoWrtChosenVtx03() > 0.)
                 pho.setpfChgIsoWrtChosenVtx03(pho.pfChgIsoWrtChosenVtx03()+correctionScalings->at("chIsoMorphing").Eval(corrections->at("chIsoMorphing")(pho)[0]));
-            if(pho.pfChgIsoWrtWorstVtx03() > 0)
+            if(pho.pfChgIsoWrtWorstVtx03() > 0.)
                 pho.setpfChgIsoWrtWorstVtx03(pho.pfChgIsoWrtWorstVtx03()+correctionScalings->at("chIsoWorstMorphing").Eval(corrections->at("chIsoWorstMorphing")(pho)[0]));
 
         }                    
