@@ -6,6 +6,30 @@
     },
 
     "flashggMETsFunction" : "runMETs2016",
+    "flashggMetFilters" :
+    {
+        "rerun_ecal_calib_filter" : true,
+        "data" :
+        [
+            "Flag_goodVertices",
+            "Flag_globalSuperTightHalo2016Filter",
+            "Flag_HBHENoiseFilter",
+            "Flag_HBHENoiseIsoFilter",
+            "Flag_EcalDeadCellTriggerPrimitiveFilter",
+            "Flag_BadPFMuonFilter",
+            "Flag_eeBadScFilter"
+        ],
+        "mc" :
+        [
+            "Flag_goodVertices",
+            "Flag_globalSuperTightHalo2016Filter",
+            "Flag_HBHENoiseFilter",
+            "Flag_HBHENoiseIsoFilter",
+            "Flag_EcalDeadCellTriggerPrimitiveFilter",
+            "Flag_BadPFMuonFilter"
+        ]
+    },    
+
     "DeepJet" : "read",
 
     "flashggPhotons" :
@@ -46,8 +70,10 @@
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
 
-    "Ele_ID_eff_bin" : "binInfo2018",
+    "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_eleIDSFs_2018.json",
+    "Ele_ID_version" : "mvaEleID-Fall17-iso-V2-wp90",
 
+    "Ele_reco_SF_FileName" : "flashgg/Systematics/data/2018_reco-eff.json",
 
     "bTagSystematics" :
     {

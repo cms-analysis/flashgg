@@ -538,19 +538,9 @@ process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring(hlt_paths))
 
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
-# ee bad supercluster filter on data
-process.load('RecoMET.METFilters.eeBadScFilter_cfi')
-process.eeBadScFilter.EERecHitSource = cms.InputTag("reducedEgamma","reducedEERecHits") # Saved MicroAOD Collection (data only)
-# Bad Muon filter LOADS WRONG IN 8_0_28, FIX LATER
-#process.load('RecoMET.METFilters.badGlobalMuonTaggersMiniAOD_cff')
-#process.badGlobalMuonTaggerMAOD.muons = cms.InputTag("flashggSelectedMuons")
-#process.cloneGlobalMuonTaggerMAOD.muons = cms.InputTag("flashggSelectedMuons")
 process.dataRequirements = cms.Sequence()
 if customize.processId == "Data":
         process.dataRequirements += process.hltHighLevel
-        process.dataRequirements += process.eeBadScFilter
-#        if customize.doMuFilter:
-#            process.dataRequirements += process.noBadGlobalMuonsMAOD
 
 # Split WH and ZH
 process.genFilter = cms.Sequence()
@@ -586,8 +576,19 @@ if (customize.processId.count("qcd") or customize.processId.count("gjet")) and c
     else:
         raise Exception,"Mis-configuration of python for prompt-fake filter"
 
+# Met Filters
+process.load('flashgg/Systematics/flashggMetFilters_cfi')
+
+if customize.processId == "Data":
+    metFilterSelector = "data"
+else:
+    metFilterSelector = "mc"
+
+process.flashggMetFilters.requiredFilterNames = cms.untracked.vstring([filter.encode("ascii") for filter in customize.metaConditions["flashggMetFilters"][metFilterSelector]])
+
 if customize.tthTagsOnly:
     process.p = cms.Path(process.dataRequirements*
+                         process.flashggMetFilters*
                          process.genFilter*
                          process.flashggDiPhotons* # needed for 0th vertex from microAOD
                          process.flashggUpdatedIdMVADiPhotons*
@@ -605,6 +606,7 @@ if customize.tthTagsOnly:
 
 else :
     process.p = cms.Path(process.dataRequirements*
+                         process.flashggMetFilters*
                          process.genFilter*
                          process.flashggUpdatedIdMVADiPhotons*
                          process.flashggDiPhotonSystematics*
