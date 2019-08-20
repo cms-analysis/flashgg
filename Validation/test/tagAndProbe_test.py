@@ -77,20 +77,15 @@ from flashgg.Validation.FlashggTagAndProbeProducer_cfi import flashggTagAndProbe
 from flashgg.Systematics.flashggDiPhotonSystematics_cfi import flashggDiPhotonSystematics
 import flashgg.Taggers.dumperConfigTools as cfgTools
 import flashgg.Validation.tagAndProbeDumperConfig as dumpCfg
-from flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi import *
+import flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi as phoIdInp_Corr
 
 # ----------------------------------------------------------------------------------------------------
 # Run shower shape and isolation corrections
 
 if customize.options.doPhoIdInputsCorrections and not customize.processId == "Data":
-    process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
-                                                       flashggDifferentialPhoIdInputsCorrection=cms.PSet(
-                                                           initialSeed=cms.untracked.uint32(
-                                                               90)
-                                                       )
-                                                       )
-
-    process.flashggDifferentialPhoIdInputsCorrection = flashggDifferentialPhoIdInputsCorrection.clone()
+    
+    phoIdInp_Corr.setup_flashggDifferentialPhoIdInputsCorrection( process, customize.metaConditions )
+    # process.flashggDifferentialPhoIdInputsCorrection = flashggDifferentialPhoIdInputsCorrection.clone()
     # process.flashggDifferentialPhoIdInputsCorrection.correctIsolations = False
     # process.flashggDifferentialPhoIdInputsCorrection.reRunRegression = True
 
@@ -178,7 +173,7 @@ systModules.append(
 process.flashggDiPhotonSystematics = flashggDiPhotonSystematics
 process.flashggDiPhotonSystematics.SystMethods = systModules
 process.flashggDiPhotonSystematics.SystMethods2D = systModules2D
-if customize.options.doPhoIdInputsCorrections:
+if customize.options.doPhoIdInputsCorrections and not customize.processId == "Data":
     process.flashggDiPhotonSystematics.src = "flashggDifferentialPhoIdInputsCorrection"
 else:
     process.flashggDiPhotonSystematics.src = "flashggDiPhotons"

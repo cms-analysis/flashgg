@@ -89,7 +89,7 @@ namespace flashgg {
 
         phoTools_.setupMVA( pSet.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EB" ).fullPath(), 
                             pSet.getParameter<edm::FileInPath>( "photonIdMVAweightfile_EE" ).fullPath(), 
-                            true , true );
+                            true , pSet.getParameter<bool>("is2017") );
 
         //---Load shower shapes corrections
         if(correctShowerShapes_)
@@ -102,7 +102,7 @@ namespace flashgg {
                 correctionScalingsEB_[ss_var] = TFormula("", xgb_config.getParameter<string>("regr_output_scaling").c_str());
 
                 //---EE
-                xgb_config = pSet.getParameter<edm::ParameterSet>(ss_var+"_corrector_config_EE"); 
+                xgb_config = pSet.getParameter<edm::ParameterSet>(ss_var+"_corrector_config_EE");
                 correctionsEE_[ss_var] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(xgb_config, &globalVariablesComputer_);
                 correctionScalingsEE_[ss_var] = TFormula("", xgb_config.getParameter<string>("regr_output_scaling").c_str());
             }
@@ -253,9 +253,9 @@ namespace flashgg {
             //---Photon isolation
             pho.addUserFloat("uncorr_pfPhoIso03", pho.pfPhoIso03());
 
-            // peak to tail shift (and viceversa), TMVA_pred=2*xgboost_pred-1, value stored in trees from xgboost is xgboost_pred-0.5 (=base_score)
-            auto p_peak_data = ((corrections->at("phoIsoClfData")(pho)[0]+1.)/2.)+0.5;
-            auto p_peak_mc = ((corrections->at("phoIsoClfMC")(pho)[0]+1.)/2.)+0.5;
+            // peak to tail shift (and viceversa), with conversion from TMVA value [-1,1] to probability [0,1]
+            auto p_peak_data = 1./(1.+sqrt(2./(1.+corrections->at("phoIsoClfData")(pho)[0])-1.));
+            auto p_peak_mc =  1./(1.+sqrt(2./(1.+corrections->at("phoIsoClfMC")(pho)[0])-1.));
             auto p_tail_data = 1 - p_peak_data;
             auto p_tail_mc = 1 - p_peak_mc;
             auto migration_rnd_value = engine.flat();
@@ -272,25 +272,10 @@ namespace flashgg {
                 pho.setpfPhoIso03(0.);
 
             // tail morphing
-            if(pho.pfPhoIso03() > 0)
-                pho.setpfPhoIso03(pho.pfPhoIso03()+correctionScalings->at("phoIsoMorphing").Eval(corrections->at("phoIsoMorphing")(pho)[0]));
-            //---------------------------------------DEBUG---------------------------------------
-            std::cout << "pt: " << pho.pt() << std::endl;
-            std::cout << "scEta: " << pho.superCluster()->eta() << std::endl;
-            std::cout << "phi: " << pho.phi() << std::endl;
-            std::cout << "rho: " << rho << std::endl;
-            std::cout << "Uncorr phoIso" << pho.userFloat("uncorr_pfPhoIso03") << std::endl;
-            std::cout << "Corr phoIso" << pho.pfPhoIso03() << std::endl;
-            std::cout << "migration rnd: " << migration_rnd_value << std::endl;
-            if(pho.hasUserFloat("peak2tail_rnd"))
-            {
-                std::cout << "peak2tail rnd: " << pho.userFloat("peak2tail_rnd") << std::endl;
-                std::cout << "Peak2Tail: " << corrections->at("phoIsoPeak2Tail")(pho)[0] << std::endl;
-            }
-            std::cout << "Morphing: " << corrections->at("phoIsoMorphing")(pho)[0] << std::endl;
-            std::cout << "Clf data: " << corrections->at("phoIsoClfData")(pho)[0] << std::endl;
-            std::cout << "Clf mc: " << corrections->at("phoIsoClfMC")(pho)[0] << std::endl;
-            //---------------------------------------DEBUG---------------------------------------
+            if(pho.pfPhoIso03() > 0.)
+                {
+                    pho.setpfPhoIso03(pho.pfPhoIso03()+correctionScalings->at("phoIsoMorphing").Eval(corrections->at("phoIsoMorphing")(pho)[0]));
+                }
 
             //---Charge isolations
             // ----------------+-------------------------+
