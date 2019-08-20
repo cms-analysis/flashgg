@@ -38,7 +38,6 @@ class EleSF_JSONReader :
 
                     if pt_to == 500.0:
                         #extend the extremes to prevent any crashes
-                        print("extending")
                         self.binInfo.bins.append(
                             cms.PSet(
                                 lowBounds = cms.vdouble( eta_from , pt_to ) ,
@@ -58,7 +57,7 @@ class EleSF_JSONReader :
         #SFs valid only from 10GeV, eta 2.5, bins extended to extremes to prevent any crashes 
         self.binInfo.bins.append(
             cms.PSet(
-                lowBounds = cms.vdouble( -6.0000 , 0.00000 ) ,
+                lowBounds = cms.vdouble( -10.0000 , 0.00000 ) ,
                 upBounds = cms.vdouble( -2.5 , 99999.0000 ) ,
                 values = cms.vdouble( 1.0 ) ,
                 uncertainties = cms.vdouble(0.0)
@@ -67,7 +66,14 @@ class EleSF_JSONReader :
         
         self.binInfo.bins.append(
             cms.PSet( lowBounds = cms.vdouble( 2.5000, 0.0000 ) , 
-                      upBounds = cms.vdouble( 6.0000, 999999999.0000 ) , 
+                      upBounds = cms.vdouble( 10.0000, 999999999.0000 ) , 
+                      values = cms.vdouble(  1.0 ) ,
+                      uncertainties = cms.vdouble( 0.001 ) )
+        )
+
+        self.binInfo.bins.append(
+            cms.PSet( lowBounds = cms.vdouble( -10, 0.0000 ) , 
+                      upBounds = cms.vdouble( 10.0000, 10.0000 ) , 
                       values = cms.vdouble(  1.0 ) ,
                       uncertainties = cms.vdouble( 0.001 ) )
         )
