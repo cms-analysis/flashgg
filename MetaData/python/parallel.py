@@ -504,8 +504,8 @@ class HTCondorJob(object):
     
     #----------------------------------------
     def handleOutput(self, jobid):
-        if self.async:
-            self.exitStatus = -1
+        self.exitStatus = -1
+        if self.async and jobid:
             evt_list = []       
             jel = htcondor.JobEventLog(str(self.jobName+"_"+jobid+"_htc.log"))
             for event in jel.events(stop_after=0):

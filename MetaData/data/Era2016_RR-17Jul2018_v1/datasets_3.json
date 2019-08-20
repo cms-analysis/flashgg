@@ -6802,7 +6802,7 @@
                 "weights": 2117409664.0
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/spigazzi-Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-RunIISummer16MiniAODv3-BS2016_BSandPUSummer16_94X_mcRun2_asymptotic_v3-v1-7640bdda3f80239b383a8f6a9bb259b5/USER": {
         "files": [
@@ -6839,7 +6839,7 @@
                 "weights": 1515133.0
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/GluGluHToGG_M90_13TeV_amcatnloFXFX_pythia8/spigazzi-Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-7640bdda3f80239b383a8f6a9bb259b5/USER": {
         "files": [
@@ -6852,7 +6852,7 @@
                 "weights": 17982396.0
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M125_13TeV_amcatnlo_pythia8/spigazzi-Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-RunIISummer16MiniAODv3-BS2016_BSandPUSummer16_94X_mcRun2_asymptotic_v3_ext1-v1-1c731fdc4285f0a71042fbdbaedb5ce5/USER": {
         "files": [
@@ -6873,7 +6873,7 @@
                 "weights": 560468.4375
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/spigazzi-Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-RunIISummer16MiniAODv3-BS2016_BSandPUSummer16_94X_mcRun2_asymptotic_v3-v1-5384bafa8f7371b3abb140bcc378fded/USER": {
         "files": [
@@ -6902,7 +6902,7 @@
                 "weights": 770742.125
             }
         ], 
-        "vetted": true
+        "vetted": false
     }, 
     "/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_v2/spigazzi-Era2016_RR-17Jul2018_v1-legacyRun2TestV1-v0-RunIISummer16MiniAODv3-BS2016_BSandPUSummer16_94X_mcRun2_asymptotic_v3-v1-2fc21714f42bcd01314fa04f73d24ef9/USER": {
         "files": [
@@ -6931,6 +6931,6 @@
                 "weights": 147915.28125
             }
         ], 
-        "vetted": true
+        "vetted": false
     }
 }

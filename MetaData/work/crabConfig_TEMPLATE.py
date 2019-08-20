@@ -19,9 +19,9 @@ config.JobType.psetName = "PSET"
 config.JobType.inputFiles = ['QGL_AK4chs_94X.db']
 
 ## incrase jobs time wall, maximum 2750 minutes (~46 hours)
-config.JobType.maxJobRuntimeMin = 2750
+#config.JobType.maxJobRuntimeMin = 2750
 
-config.JobType.maxMemoryMB = 2500 # For memory leaks. NB. will block jobs on many sites
+#config.JobType.maxMemoryMB = 2500 # For memory leaks. NB. will block jobs on many sites
 ## config.JobType.scriptExe = "cmsWrapper.sh"
 config.JobType.pyCfgParams = PYCFG_PARAMS
 config.JobType.sendPythonFolder = True
