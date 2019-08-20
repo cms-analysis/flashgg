@@ -579,7 +579,7 @@ if customize.processId == "Data":
 else:
     metFilterSelector = "mc"
 
-process.flashggMetFilters.requiredFilterNames = cms.untracked.vstring([filter.encode("ascii") for filter in metaConditions["flashggMetFilters"][metFilterSelector]])
+process.flashggMetFilters.requiredFilterNames = cms.untracked.vstring([filter.encode("ascii") for filter in customize.metaConditions["flashggMetFilters"][metFilterSelector]])
 
 if customize.tthTagsOnly:
     process.p = cms.Path(process.dataRequirements*
