@@ -14,6 +14,7 @@ namespace flashgg {
         PLUGGABLE_ANALYZER( CutBasedSinglePhotonViewDumper );
         PLUGGABLE_ANALYZER( CutBasedSingleVertexViewDumper );
         PLUGGABLE_ANALYZER( DiPhotonTagDumper );
+        PLUGGABLE_ANALYZER( Stage1DiPhotonTagDumper );
     }
 }
 

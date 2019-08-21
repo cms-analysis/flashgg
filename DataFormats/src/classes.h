@@ -46,6 +46,7 @@
 #include "flashgg/DataFormats/interface/TagCandidate.h"
 #include "flashgg/DataFormats/interface/TagAndProbeCandidate.h" //spigazzi
 #include "flashgg/DataFormats/interface/DoubleHTag.h"
+#include "flashgg/DataFormats/interface/StageOneTag.h"
 
 #include <vector>
 #include <map>
@@ -218,6 +219,10 @@ namespace  {
         std::vector<flashgg::DoubleHTag> vec_hh;
         edm::Wrapper<std::vector<flashgg::DoubleHTag> > wrp_vec_hh;
 
+        flashgg::StageOneTag stageone;
+        std::vector<flashgg::StageOneTag> vec_stageone;
+        edm::Wrapper<std::vector<flashgg::StageOneTag> > wrp_vec_stageone;
+
         flashgg::TTHDiLeptonTag tthd;
         std::vector<flashgg::TTHDiLeptonTag> vec_tthd;
         edm::Wrapper<std::vector<flashgg::TTHDiLeptonTag> > wrp_vec_tthd;
@@ -243,6 +248,9 @@ namespace  {
 
         edm::OwnVector<flashgg::TagTruthBase, edm::ClonePolicy<flashgg::TagTruthBase> > ownvec_truthbase;
         edm::Wrapper<edm::OwnVector<flashgg::TagTruthBase, edm::ClonePolicy<flashgg::TagTruthBase> > > wrp_ownvec_truthbase;
+
+        edm::OwnVector<flashgg::StageOneTag, edm::ClonePolicy<flashgg::StageOneTag> > ownvec_stageone;
+        edm::Wrapper<edm::OwnVector<flashgg::StageOneTag, edm::ClonePolicy<flashgg::StageOneTag> > > wrp_ownvec_stageone;
 
         std::vector<flashgg::DiPhotonTagBase*> vec_ptr_tagbase;
         std::vector<flashgg::TagTruthBase*> vec_ptr_truthbase;
