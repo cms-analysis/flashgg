@@ -78,8 +78,15 @@ def createStandardSystematicsProducers(process, options):
 
     import flashgg.Systematics.flashggMuonSystematics_cfi as muon_sf
     muon_sf.SetupMuonScaleFactors( process , options.metaConditions["MUON_ID"], options.metaConditions["MUON_ISO"] )
-    
-    setattr( process.flashggElectronSystematics.SystMethods,"BinList",str("process.flashggElectronSystematics."+options.metaConditions["Ele_ID_eff_bin"]))
+   
+    #scale factors for electron ID
+    from   flashgg.Systematics.flashggElectronSystematics_cfi import EleSF_JSONReader
+    binInfoEle = EleSF_JSONReader(options.metaConditions["Ele_ID_SF_FileName"],options.metaConditions["Ele_ID_version"]).getBinInfo()
+    process.flashggElectronSystematics.SystMethods[0].BinList = binInfoEle
+
+    #scale factors for electron reconstruction
+    binInfoEleReco =  EleSF_JSONReader(options.metaConditions["Ele_reco_SF_FileName"],"reco-eff").getBinInfo()
+    process.flashggElectronSystematics.SystMethods[1].BinList = binInfoEleReco
 
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
     from flashgg.Systematics.flashggJetSystematics_cfi import jetSystematicsCustomize
@@ -156,7 +163,7 @@ def modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystl
             continue
         process.p.remove(getattr(process, 'flashggTagSorter' + systlabel))
         process.p.replace(process.flashggSystTagMerger, getattr(process, 'flashggTagSorter' + systlabel) * process.flashggSystTagMerger) 
-    setattr(getattr(process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag', systlabel)), cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag', systlabel)) ))
+        setattr(getattr(process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag', systlabel)), cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag', systlabel)) ))
 
 def allowLargettHMVAs(process):
     for tag in ["flashggTTHLeptonicTag", "flashggTTHHadronicTag"]:
