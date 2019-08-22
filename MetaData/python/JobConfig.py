@@ -71,7 +71,7 @@ class JobConfig(object):
                                VarParsing.VarParsing.varType.bool,          # string, int, or float
                                "useParentDataset")
         self.options.register ('secondaryDataset',
-                               False, # default value
+                               "", # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.string,         # string, int, or float
                                "secondaryDataset")
