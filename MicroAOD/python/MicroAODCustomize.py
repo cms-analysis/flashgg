@@ -647,12 +647,6 @@ class MicroAODCustomize(object):
         process.task = createTaskWithAllProducersAndFilters(process)
         process.p.associate(process.task)
 
-    def rereunEcalBadCalibFilter(self, process):
-        """
-        Rerun the ECAL bad calib filter (EE high eta noise)
-        ---NOT THE FINAL RECIPE---
-        """
-        
         
 def createTaskWithAllProducersAndFilters(process):
    from FWCore.ParameterSet.Config import Task
