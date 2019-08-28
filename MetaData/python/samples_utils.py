@@ -512,7 +512,7 @@ class SamplesManager(object):
             if "dset_type" not in catalog[ dsetName ] or not catalog[ dsetName ]["dset_type"]:
                 dset_type = das_query("datatype dataset=%s instance=prod/phys03" % dsetName)
                 catalog[ dsetName ]["dset_type"] = dset_type['data'][0]['datatype'][0]['data_type'] if 'data' in dset_type else None
-            if ("parent_n_units" not in catalog[ dsetName ] or catalog[ dsetName ]["parent_n_units"])==None and catalog[ dsetName ]["dset_type"] != None:
+            if ("parent_n_units" not in catalog[ dsetName ] or catalog[ dsetName ]["parent_n_units"]==None) and catalog[ dsetName ]["dset_type"] != None:
                 catalog[ dsetName ]["parent_n_units"] = self.getParentInfo(catalog[ dsetName ]["dset_type"], dsetName)
         else:
             #---First import
