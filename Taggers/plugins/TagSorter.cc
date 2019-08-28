@@ -366,6 +366,8 @@ namespace flashgg {
             return string("TTHHadronic");
         case DiPhotonTagBase::tag_t::kTTHLeptonic:
             return string("TTHLeptonic");
+        case DiPhotonTagBase::tag_t::kTHQLeptonic:
+            return string("THQLeptonic");
         case DiPhotonTagBase::tag_t::kTTHDiLepton:
             return string("TTHDiLepton");
         case DiPhotonTagBase::tag_t::kVHTight:

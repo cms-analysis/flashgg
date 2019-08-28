@@ -296,9 +296,8 @@ namespace flashgg {
             fg.setpfNeutIso03( pfNeutIso03 );
 
             double eA_pho = _effectiveAreas.getEffectiveArea( abs(pp->superCluster()->eta()) );
-            double correctedEtaWidth = 0.;
 
-            std::map<edm::Ptr<reco::Vertex>, float> mvamap = phoTools_.computeMVAWrtAllVtx( fg, vertices->ptrs(), rhoFixedGrd, correctedEtaWidth, eA_pho, _phoIsoPtScalingCoeff, _phoIsoCutoff );
+            std::map<edm::Ptr<reco::Vertex>, float> mvamap = phoTools_.computeMVAWrtAllVtx( fg, vertices->ptrs(), rhoFixedGrd, eA_pho, _phoIsoPtScalingCoeff, _phoIsoCutoff );
             fg.setPhoIdMvaD( mvamap );
 
             // add extra isolations (useful for tuning)
