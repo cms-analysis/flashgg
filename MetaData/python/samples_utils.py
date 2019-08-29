@@ -494,7 +494,11 @@ class SamplesManager(object):
         try:
             parent_info = parent_info['data'][-1]['dataset'][0][parent_n_info]
         except KeyError:
-            parent_info = None
+            try:
+                parent_info = das_query("dataset dataset=%s" % parent_dset)
+                parent_info = parent_info['data'][-1]['dataset'][0][parent_n_info]
+            except KeyError:
+                parent_info = None
         
         return parent_info
 
@@ -508,7 +512,7 @@ class SamplesManager(object):
             if "dset_type" not in catalog[ dsetName ] or not catalog[ dsetName ]["dset_type"]:
                 dset_type = das_query("datatype dataset=%s instance=prod/phys03" % dsetName)
                 catalog[ dsetName ]["dset_type"] = dset_type['data'][0]['datatype'][0]['data_type'] if 'data' in dset_type else None
-            if ("parent_n_units" not in catalog[ dsetName ] or catalog[ dsetName ]["parent_n_units"]) and catalog[ dsetName ]["dset_type"] != None:
+            if ("parent_n_units" not in catalog[ dsetName ] or catalog[ dsetName ]["parent_n_units"]==None) and catalog[ dsetName ]["dset_type"] != None:
                 catalog[ dsetName ]["parent_n_units"] = self.getParentInfo(catalog[ dsetName ]["dset_type"], dsetName)
         else:
             #---First import
