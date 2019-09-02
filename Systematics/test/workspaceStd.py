@@ -689,6 +689,8 @@ process.flashggTagSorter.BlindedSelectionPrintout = True
 
 ### Rerun microAOD sequence on top of microAODs using the parent dataset
 if customize.useParentDataset:
+    if is_signal:
+        recalculatePDFWeights(process, customize.metaConditions)
     runRivetSequence(process, customize.metaConditions)
 
 
