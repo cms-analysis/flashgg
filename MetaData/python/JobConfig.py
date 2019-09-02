@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.VarParsing as VarParsing
 from flashgg.MetaData.samples_utils import SamplesManager
 import FWCore.ParameterSet.Config as cms
-
+from Utilities.General.cmssw_das_client import get_data as das_query
 
 class JobConfig(object):
     
@@ -65,6 +65,16 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.bool,          # string, int, or float
                                "useEOS")
+        self.options.register ('useParentDataset',
+                               False, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "useParentDataset")
+        self.options.register ('secondaryDataset',
+                               "", # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,         # string, int, or float
+                               "secondaryDataset")
         self.options.register ('targetLumi',
                                1.e+3, # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -192,6 +202,10 @@ class JobConfig(object):
     # process customization
     def customize(self,process):
         self.parse()
+
+        # keep useParent and secondaryDataset as exclusive options for the moment
+        if self.options.useParentDataset and self.options.secondaryDataset != "":
+            raise Exception("useParentDataset cannot be set together with a secondaryDataset")
 
         isFwlite = False
         hasOutput = False
@@ -365,11 +379,34 @@ class JobConfig(object):
                 print process.source.lumisToProcess
             
         flist = []
+        sflist = []
+        
+        # get the runs and lumis contained in each file of the secondary dataset
+        if self.options.secondaryDataset:
+            secondary_files = [fdata['file'][0]['name'] for fdata in das_query("file dataset=%s instance=prod/phys03" % self.options.secondaryDataset)['data']]
+            runs_and_lumis = {}
+            for s in secondary_files:
+                runs_and_lumis[str(s)] = {lumi['run_number'] : lumi['lumi_section_num'] for lumi in das_query("lumi file=%s instance=prod/phys03" % s)['data'][0]['lumi']}
+
         for f in files:
             if len(f.split(":",1))>1:
                 flist.append(str(f))
             else:
                 flist.append(str("%s%s" % (self.filePrepend,f)))
+            # keep useParent and secondaryDataset as exclusive options for the moment
+            if self.options.useParentDataset:
+                parent_files = das_query("parent file=%s instance=prod/phys03" % f)['data'][0]['parent']
+                for parent_f in parent_files:
+                    sflist.append('root://cms-xrd-global.cern.ch/'+str(parent_f['name']) if 'root://' not in str(parent_f['name']) else str(parent_f['name']))
+            elif self.options.secondaryDataset != "":
+                # match primary file to the corresponding secondary file(s)
+                f_runs_and_lumis = {lumi['run_number'] : lumi['lumi_section_num'] for lumi in das_query("lumi file=%s instance=prod/phys03" % f)['data'][0]['lumi']}
+                for s_name, s_runs_and_lumis in runs_and_lumis.items():
+                    matched_runs = set(f_runs_and_lumis.keys()).intersection(s_runs_and_lumis.keys())
+                    for run in matched_runs:                        
+                        if any(lumi in f_runs_and_lumis[run] for lumi in s_runs_and_lumis[run]):
+                            sflist.append(s_name)
+                
         if len(flist) > 0:
             ## fwlite
             if isFwlite:
@@ -379,6 +416,8 @@ class JobConfig(object):
             else:
                 ## process.source.fileNames.extend([ str("%s%s" % (self.filePrepend,f)) for f in  files])
                 process.source.fileNames = flist
+                if len(sflist) > 0:
+                    process.source.secondaryFileNames = cms.untracked.vstring(sflist)
  
         ## fwlite
         if isFwlite:
