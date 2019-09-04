@@ -61,7 +61,7 @@ namespace flashgg {
     //---Outtree 
     edm::Service<TFileService> fs;
     // TH1F* vars; 
-    TH1F* cutFlow;
+    // TH1F* cutFlow;
     // TH1F* WTags;
 
   private:
@@ -187,7 +187,7 @@ namespace flashgg {
       genInfo_ = pSet.getUntrackedParameter<edm::InputTag>( "genInfo", edm::InputTag("generator") );
       genInfoToken_ = consumes<GenEventInfoProduct>( genInfo_ );
       // vars = fs->make<TH1F> ("vars","vars",10,0,10);
-      cutFlow = fs->make<TH1F> ("cutFlow","Cut Flow",10,0,10);
+      // cutFlow = fs->make<TH1F> ("cutFlow","Cut Flow",10,0,10);
       // WTags = fs->make<TH1F> ("WTags","W Tags",3,0,3);
 
       leptonPtThreshold_ = pSet.getParameter<double>( "leptonPtThreshold");
@@ -246,27 +246,33 @@ namespace flashgg {
       double rho_    = *rho;
 
       // Set cut booleans
-      std::vector<double> Cut_Results = {1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}; // Cut_Results[i] = 1: Event Passed Cut i 
-      std::vector<double> Cut_Variables = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}; // Cut_Results[i] = 1: Event Passed Cut i 
+      // std::vector<double> Cut_Results = {1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}; // Cut_Results[i] = 1: Event Passed Cut i 
+      std::vector<double> Cut_Variables(20,0.0); // Cut_Results[i] = 1.0: Event Passed Cut i 
+
+      // Cut Variables 
+      double has_PS_Dipho = 0, pass_METfilters = 0, dipho_vertex_is_zero = 0, pass_leadPhoOverMassThreshold = 0, pass_subleadPhoOverMassThreshold = 0,
+        pass_LeadPhoton_MVA = 0, pass_SubLeadPhoton_MVA = 0, pass_dipho_MVA = 0, number_passed_jetid = 0;
+
       double SLW_Tag = 0.; // Semi-Leptonic W Tag  
       double FLW_Tag = 0.; // Fully-Leptonic W Tag
       double FHW_Tag = 0.; // Fully-Hadronic W Tag 
-      bool PS_dipho_tag = 0; // preselected diphoton 
+      // bool PS_dipho_tag = 0; // preselected diphoton 
       // bool Pass_PS = 0; // Preselected Diphoton (may also pass SLW_tag)
 
       //---output collection
       std::unique_ptr<vector<HHWWggCandidate> > HHWWggColl_( new vector<HHWWggCandidate> );
       //edm::Ptr<reco::Vertex> vertex_zero = vertex->ptrAt(0);
       //reco::GenParticle::Point genVertex;
-      int n_electrons = electrons->size();
-      int n_muons = muons->size();
-      int n_photons = photons->size();
-      int n_diphotons = diphotons->size();
+      // int n_electrons = electrons->size();
+      // int n_muons = muons->size();
+      // int n_photons = photons->size();
+      // int n_diphotons = diphotons->size();
       int n_METs = METs->size(); // Should be 1, but using as a way to obtain met four vector 
       int n_good_electrons = 0;
       int n_good_muons = 0;
       int n_good_leptons = 0;
       int n_good_jets = 0;
+      double dipho_MVA = -99, lead_pho_MVA = -99, sublead_pho_MVA = -99;
       std::vector<flashgg::Photon> phoVector;
       std::vector<flashgg::DiPhotonCandidate> diphoVector;
       std::vector<flashgg::Electron> electronVector;
@@ -334,13 +340,17 @@ namespace flashgg {
       // Pass_PS = false;
       bool one_FH_dr = false;
       bool one_FL_dr = false;
+      double num_FL_dr = 0;
+      double num_FH_dr = 0;
       float dr_ll = 0;
-      double j_mass = 0.0;     
+      // double j_mass = 0.0;     
 
       // Check if event passes W taggers 
       // for( unsigned int diphoIndex = 0; diphoIndex < diphotons->size(); diphoIndex++ ) { // look at all diphotons 
       if (diphotons->size() > 0){
       for( unsigned int diphoIndex = 0; diphoIndex < 1; diphoIndex++ ) { // only look at highest pt dipho
+        has_PS_Dipho = 1;
+
         // cout << "checked_first = " << checked_first << endl;
         // cout << "PS_dipho_tag = " << PS_dipho_tag << endl;
         // if (checked_first) continue; // If already checked highest pT preselected diphoton, continue 
@@ -375,24 +385,49 @@ namespace flashgg {
         hasGoodMuons = false;
 
         // Check MET Filters
-        //if(!passMETfilters) {continue;}
+        if(passMETfilters){
+          pass_METfilters = 1;
+        }
+
+        if(diphotons->ptrAt(diphoIndex)->vertexIndex()==0){
+          dipho_vertex_is_zero = 1;
+        }
 
         // Check if useVertex0only_
-        if(useVertex0only_) // If only 0th vertex of diphotons is used, continue on all other vertex indices 
-            if(diphotons->ptrAt(diphoIndex)->vertexIndex()!=0)
-                {continue;}     
+        // if(useVertex0only_) // If only 0th vertex of diphotons is used, continue on all other vertex indices 
+        //     if(diphotons->ptrAt(diphoIndex)->vertexIndex()==0){
+        //       dipho_vertex_is_zero = 1;
+        //     }
+                     
 
         // leading/subleading photon pt 
-        if( dipho->leadingPhoton()->pt() < ( dipho->mass() )*leadPhoOverMassThreshold_ ) { continue; }
-        if( dipho->subLeadingPhoton()->pt() < ( dipho->mass() )*subleadPhoOverMassThreshold_ ) { continue; }
+        if( dipho->leadingPhoton()->pt() > ( dipho->mass() )*leadPhoOverMassThreshold_ ){ 
+            pass_leadPhoOverMassThreshold = 1;
+          }
+        if( dipho->subLeadingPhoton()->pt() > ( dipho->mass() )*subleadPhoOverMassThreshold_ ) { 
+            pass_subleadPhoOverMassThreshold = 1;
+          }
 
         // leading/subleading photon MVA
         idmva1 = dipho->leadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
         idmva2 = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
-        if( idmva1 <= PhoMVAThreshold_ || idmva2 <= PhoMVAThreshold_ ) { continue; } // isn't this already applied in preselection? 
+        lead_pho_MVA = idmva1;
+        sublead_pho_MVA = idmva2;
+        if (idmva1 > PhoMVAThreshold_) pass_LeadPhoton_MVA = 1;
+        if (idmva2 > PhoMVAThreshold_) pass_SubLeadPhoton_MVA = 1;
+
+        // if( idmva1 <= PhoMVAThreshold_ || idmva2 <= PhoMVAThreshold_ ) {
+        //     pass_LeadPhoton_MVA = 1;
+        //     // continue; 
+        //    } // isn't this already applied in preselection? 
 
         // Diphoton MVA 
-        if( mvares->result < MVAThreshold_ ) { continue; }
+        if ( mvares->result >= MVAThreshold_ ){
+          pass_dipho_MVA = 1;
+        }
+        // if( mvares->result < MVAThreshold_ ) { continue; }
+        dipho_MVA = mvares->result; 
+        // cout << "diphomva = " << mvares->result << endl;
         // photonSelection = true;
 
         // Electrons 
@@ -423,7 +458,8 @@ namespace flashgg {
               dr_ll = deltaR(electron->eta(), electron->phi(), muon->eta(), muon->phi()); 
               if (dr_ll > 0.4){ 
                 one_FL_dr = true;
-                break;
+                num_FL_dr += 1.0;
+                // break;
               }
             }
           }
@@ -437,7 +473,8 @@ namespace flashgg {
               dr_ll = deltaR(electroni->eta(), electroni->phi(), electronj->eta(), electronj->phi()); 
               if (dr_ll > 0.4){ 
                 one_FL_dr = true;
-                break;
+                num_FL_dr += 1.0;
+                // break;
               }
             }
           }
@@ -451,7 +488,8 @@ namespace flashgg {
               dr_ll = deltaR(muoni->eta(), muoni->phi(), muonj->eta(), muonj->phi()); 
               if (dr_ll > 0.4){ 
                 one_FL_dr = true;
-                break;
+                num_FL_dr += 1.0;
+                // break;
               }
             }
           }
@@ -468,7 +506,10 @@ namespace flashgg {
             {
                 bool keepJet=true;
                 edm::Ptr<flashgg::Jet> thejet = Jets_->ptrAt( candIndex_outer );
-                if(!thejet->passesJetID  ( flashgg::Tight2017 ) ) { continue; }
+                // if(!thejet->passesJetID  ( flashgg::Tight2017 ) ) { continue; }
+                if(thejet->passesJetID  ( flashgg::Tight2017 ) ) {
+                    number_passed_jetid += 1;
+                  }
                 if( fabs( thejet->eta() ) > jetEtaThreshold_ ) { keepJet=false; }
 
                 if( thejet->pt() < jetPtThreshold_ ) { keepJet=false; }
@@ -497,11 +538,11 @@ namespace flashgg {
             }
 
         n_good_jets = tagJets.size();
-        if (n_good_jets == 1){
-          edm::Ptr<flashgg::Jet> theOnejet = tagJets[0];
-          j_mass = theOnejet->mass(); 
-          // cout << "pt = " << theOnejet->pt() << endl;      
-        }
+        // if (n_good_jets == 1){
+        //   edm::Ptr<flashgg::Jet> theOnejet = tagJets[0];
+        //   j_mass = theOnejet->mass(); 
+        //   // cout << "pt = " << theOnejet->pt() << endl;      
+        // }
 
         // FH: Require at least one delta r pair with dr > 0.4 
         float dr_jj = 0;
@@ -514,7 +555,8 @@ namespace flashgg {
               dr_jj = deltaR(jeti->eta(), jeti->phi(), jetj->eta(), jetj->phi()); 
               if (dr_jj > 0.4){ 
                 one_FH_dr = true;
-                break; 
+                num_FH_dr += 1.0;
+                // break; 
               } 
             }
           }
@@ -562,57 +604,8 @@ namespace flashgg {
         flashgg::DiPhotonCandidate * thisDPPointer = const_cast<flashgg::DiPhotonCandidate *>(dipho_.get());
         diphoVector_.push_back(*thisDPPointer);
 
-        //}
-
       } // Diphoton loop 
     } // if at least 1 PS diphoton 
-
-          // Diphotons
-          // Pass_PS = false;
-          for( int diphoIndex = 0; diphoIndex < n_diphotons; diphoIndex++ )
-          {
-            edm::Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( diphoIndex );
-            flashgg::DiPhotonCandidate * thisDPPointer = const_cast<flashgg::DiPhotonCandidate *>(dipho.get());
-            diphoVector.push_back(*thisDPPointer);
-            //Pass_PS |= idSelector_(*thisDPPointer, event);
-            //if ( Pass_PS ) diphoVector.push_back(*thisDPPointer);                     
-          }
-
-          // Photons   
-          for( int phoIndex = 0; phoIndex < n_photons; phoIndex++ )
-          {
-            edm::Ptr<flashgg::Photon> pho = photons->ptrAt( phoIndex );
-            flashgg::Photon * thisPPointer = const_cast<flashgg::Photon *>(pho.get());
-            phoVector.push_back(*thisPPointer);
-          }
-
-          // Electrons
-          for( int electronIndex = 0; electronIndex < n_electrons; electronIndex++ )
-          {
-            edm::Ptr<flashgg::Electron> elec = electrons->ptrAt( electronIndex );
-            flashgg::Electron * thisElecPointer = const_cast<flashgg::Electron *>(elec.get());
-            //if ( elec->pt() >= leptonPtThreshold_) lep_thres_cut = 1; // check lepton pt cut 
-            electronVector.push_back(*thisElecPointer);
-          }
-
-          // Muons 
-          for( int muonIndex = 0; muonIndex < n_muons; muonIndex++ )
-          {
-            edm::Ptr<flashgg::Muon> mlep = muons->ptrAt( muonIndex );
-            flashgg::Muon * thisMuonPointer = const_cast<flashgg::Muon *>(mlep.get());
-            //if ( mlep->pt() >= leptonPtThreshold_) lep_thres_cut = 1; // check lepton pt cut 
-            muonVector.push_back(*thisMuonPointer); 
-          }
-
-          // MET
-          // Store MET as one element in MET vector 
-          if( METs->size() != 1 ) { std::cout << "WARNING - #MET is not 1" << std::endl;}
-          for( int METIndex = 0; METIndex < n_METs; METIndex++ )
-          {
-            edm::Ptr<flashgg::Met> m_entry = METs->ptrAt( METIndex );
-            flashgg::Met * thisMETPointer = const_cast<flashgg::Met *>(m_entry.get());
-            METVector.push_back(*thisMETPointer);
-          }
 
         // } // Done saving all objects 
 
@@ -686,36 +679,24 @@ namespace flashgg {
         double d_n_good_muons = (double)n_good_muons;
         double d_n_good_leptons = (double)n_good_leptons;
 
-        // for (unsigned int i = 0; i < 3; i++){
-        //   if (i == 0) WTags->Fill(i,SLW_Tag);
-        //   if (i == 1) WTags->Fill(i,FLW_Tag);
-        //   if (i == 2) WTags->Fill(i,FHW_Tag);
-        //   if (i == 3){
-        //     if (one_FL_dr == 1) WTags->Fill(i,1.0);
-        //   }
-        //   if (i == 4){
-        //     if (one_FH_dr == 1) WTags->Fill(i,1.0);
-        //   }
-        // }
-
-        if (SLW_Tag == 1.0) Cut_Variables[0] = 1.0;
-        if (FLW_Tag == 1.0) Cut_Variables[1] = 1.0;
-        if (FHW_Tag == 1.0) Cut_Variables[2] = 1.0;
-        if (one_FL_dr == true) Cut_Variables[3] = 1.0;
-        if (one_FH_dr == true) Cut_Variables[4] = 1.0;
-        // cout << "passMETfilters: " << (double)passMETfilters << endl;
-        // cout << "(double)PS_dipho_tag" << (double)PS_dipho_tag << endl;
-        Cut_Variables[5] = d_n_good_jets; 
-        Cut_Variables[6] = d_n_good_electrons; 
-        Cut_Variables[7] = d_n_good_muons; 
-        Cut_Variables[8] = d_n_good_leptons; 
-        Cut_Variables[9] = (double)PS_dipho_tag;
-        Cut_Variables[10] = j_mass;
-        Cut_Variables[11] = (double)passMETfilters;
-
-        // if (n_diphotons > 0) vars->Fill(1.0);
-        // if (n_photons > 1) vars->Fill(2.0);
-        // if ( ( abs(higgs_eta) < 2.5 ) ) vars->Fill(3.0);
+        Cut_Variables[0] = has_PS_Dipho;
+        Cut_Variables[1] = pass_METfilters;
+        Cut_Variables[2] = dipho_vertex_is_zero;
+        Cut_Variables[3] = pass_leadPhoOverMassThreshold;
+        Cut_Variables[4] = pass_subleadPhoOverMassThreshold;
+        Cut_Variables[5] = pass_LeadPhoton_MVA;
+        Cut_Variables[6] = pass_SubLeadPhoton_MVA;
+        Cut_Variables[7] = pass_dipho_MVA;
+        Cut_Variables[8] = number_passed_jetid;   
+        Cut_Variables[9] = d_n_good_leptons;   
+        Cut_Variables[10] = d_n_good_electrons;   
+        Cut_Variables[11] = d_n_good_muons;   
+        Cut_Variables[12] = d_n_good_jets;   
+        Cut_Variables[13] = num_FL_dr;   
+        Cut_Variables[14] = num_FH_dr;  
+        Cut_Variables[15] = SLW_Tag;   
+        Cut_Variables[16] = FLW_Tag;   
+        Cut_Variables[17] = FHW_Tag;   
 
         //if ( (n_diphotons > 0) && (n_photons > 1) && (abs(higgs_eta) < 2.5)) vars->Fill(1.0); // number of events that passed cuts and have a preselected diphoton. numerator.
         //if ( (n_photons > 1) && (abs(higgs_eta) < 2.5)) vars->Fill(2.0); // number of events that passed cuts. Denominator 
@@ -723,12 +704,11 @@ namespace flashgg {
         // if ( (d_n_good_leptons >= 1) && (n_diphotons > 0) && (photonSelection) ) vars->Fill(1.0); // numerator
         // if ( (n_diphotons > 0) && (photonSelection)) vars->Fill(2.0); // denominator 
         
-        if (diphotons->size() > 0) cutFlow->Fill(0.0); // Passed PS 
-        if (SLW_Tag == 1.0) cutFlow->Fill(1.0); 
-        if (FLW_Tag == 1.0) cutFlow->Fill(2.0);
-        if (FHW_Tag == 1.0) cutFlow->Fill(3.0);
-
-
+        // if (diphotons->size() > 0) cutFlow->Fill(0.0); // Passed PS 
+        // if (SLW_Tag == 1.0) cutFlow->Fill(1.0); 
+        // if (FLW_Tag == 1.0) cutFlow->Fill(2.0);
+        // if (FHW_Tag == 1.0) cutFlow->Fill(3.0);
+        // if (photonSelection) cutFlow->Fill(4.0);
 
         // ndpho->Fill(n_diphotons);
 
@@ -767,7 +747,8 @@ namespace flashgg {
         // }
 
         // Create HHWWggCandidate Object 
-        HHWWggCandidate HHWWgg(diphoVector_, phoVector, electronVector, muonVector, theMET_, genParticlesVector, tagJets_, Cut_Results, Cut_Variables);
+        // HHWWggCandidate HHWWgg(diphoVector_, phoVector, electronVector, muonVector, theMET_, genParticlesVector, tagJets_, Cut_Results, Cut_Variables, dipho_MVA);
+        HHWWggCandidate HHWWgg(diphoVector_, goodElectrons_, goodMuons_, theMET_, genParticlesVector, tagJets_, Cut_Variables, dipho_MVA, lead_pho_MVA, sublead_pho_MVA);
         HHWWggColl_->push_back(HHWWgg);
 
       event.put( std::move(HHWWggColl_) );

@@ -29,16 +29,16 @@ namespace flashgg {
     //---ctors--- 
     // when constructor overloading, each must have different number or specific types of input variables 
     HHWWggCandidate() ;
-    HHWWggCandidate(std::vector<flashgg::DiPhotonCandidate> diphoVector, std::vector<flashgg::Photon> phoVector,
+    HHWWggCandidate(std::vector<flashgg::DiPhotonCandidate> diphoVector,
                     std::vector<flashgg::Electron> electronVector, std::vector<flashgg::Muon> muonVector, std::vector<flashgg::Met> METVector,
-                    std::vector<reco::GenParticle> GenParticlesVector, std::vector<flashgg::Jet> JetVector, std::vector<double> Cut_Results, std::vector<double> Cut_Variables);     
+                    std::vector<reco::GenParticle> GenParticlesVector, std::vector<flashgg::Jet> JetVector,
+                    std::vector<double> Cut_Variables, double dipho_MVA, double lead_pho_MVA, double sublead_pho_MVA);     
     
     //---dtor---
     ~HHWWggCandidate();
 
     //---utils---
     const std::vector<flashgg::DiPhotonCandidate> diphoVector() const { return diphoVector_; };
-    const std::vector<flashgg::Photon> phoVector() const { return phoVector_; };
     const std::vector<flashgg::Electron> electronVector() const {return electronVector_;} 
     const std::vector<flashgg::Muon> muonVector() const {return muonVector_;}
     const std::vector<flashgg::Met> METVector() const {return METVector_;}
@@ -73,7 +73,6 @@ namespace flashgg {
     bool test() const { return test_; };
     bool SLW_tag() const { return SLW_tag_; }; 
     bool Pass_PS() const { return Pass_PS_; }; 
-    const std::vector<double> Cut_Results() const { return Cut_Results_; };
     const std::vector<double> Cut_Variables() const { return Cut_Variables_; };
     const reco::Candidate::LorentzVector& lsl_dij() const { return lsl_dij_; };
     const float m_qq() const {return m_qq_;};
@@ -90,10 +89,12 @@ namespace flashgg {
     const float FL_mT_WW() const { return FL_mT_WW_; };
     const float FH_m_WW() const { return FH_m_WW_; };   
     const float SL_mT_W() const { return SL_mT_W_; };   
+    const float dipho_MVA() const {return dipho_MVA_;};
+    const float lead_pho_MVA() const {return lead_pho_MVA_;};
+    const float sublead_pho_MVA() const {return sublead_pho_MVA_;};
   private:
 
     std::vector<flashgg::DiPhotonCandidate> diphoVector_;
-    std::vector<flashgg::Photon> phoVector_;
     std::vector<flashgg::Electron> electronVector_;
     std::vector<flashgg::Muon> muonVector_;
     std::vector<flashgg::Met> METVector_;
@@ -125,7 +126,6 @@ namespace flashgg {
     bool test_;
     bool SLW_tag_;
     bool Pass_PS_;
-    std::vector<double> Cut_Results_;
     std::vector<double> Cut_Variables_;
     reco::Candidate::LorentzVector lsl_dij_;
     float m_qq_;
@@ -142,6 +142,9 @@ namespace flashgg {
     float FL_mT_WW_;
     float FH_m_WW_;
     float SL_mT_W_;
+    float dipho_MVA_;
+    float lead_pho_MVA_;
+    float sublead_pho_MVA_;
     
   };
   typedef std::vector<HHWWggCandidate> HHWWggCandidateCollection; // define new type: vector of HHWWggCandidates 

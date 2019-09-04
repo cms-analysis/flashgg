@@ -237,7 +237,9 @@
         "GJets_HT-400To600_TuneCP5_13TeV-madgraphMLM-pythia8" : { "xs" :257.7 , "itype" : 7 },
         "GJets_HT-600ToInf_TuneCP5_13TeV-madgraphMLM-pythia8" : { "xs" :85.4 , "itype" : 8 },
         "TTJets_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8" : { "xs" : 830 },
-        "TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8" : { "xs" : 665 },
+        "TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8" : { "xs" : 665 }, 
+        "TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8" : { "xs" : 722.8},
+        "TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8" : {"xs" : 4.078},
         "TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8" : { "xs" : 3.819 },
         "TTGG_0Jets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8" : { "xs" : 0.01731 },
         "TTGG_0Jets_TuneCP5_13TeV_amcatnlo_madspin_pythia8" : { "xs" : 0.01687 },
@@ -250,10 +252,14 @@
 	"WGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8"        : {"xs" : 489.0, "br" : 1.0 },
 	"ZZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8"             : {"xs" : 3.38, "br" : 1.0},
 	"WZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8"             : {"xs" : 5.52, "br" : 1.0},
-	"WW_TuneCUETP8M1_13TeV-pythia8"                           : {"xs" : 63.21, "br" : 1.0},
+        "WW_TuneCUETP8M1_13TeV-pythia8"                           : {"xs" : 63.21, "br" : 1.0},
+        "WW_TuneCP5_13TeV-pythia8"                           : {"xs" : 75.8, "br" : 1.0},     
+        "WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8"       : {"xs" : 52940.0 },     
         "TTTo2L2Nu_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8" : {"xs" : 87.31, "br" : 1.0},
 	"GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8"  : { "xs" : 232.9, "br" : 1.0, "kf" : 1.0, "itype":1 },
 	"GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8" : { "xs" : 878.1,  "br" : 1.0,   "kf" : 1.0, "itype":2 },
 	"GJet_Pt-20toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8"  : { "xs" : 3186.0, "br" : 1.0, "kf" : 1.0, "itype":3 },
-	"DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8"  : { "xs" : 5765.4, "itype":20 }
+        "DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8"  : { "xs" : 5765.4, "itype":20 }
+        
+
 }

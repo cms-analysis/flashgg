@@ -14,7 +14,6 @@
 using namespace flashgg; // makes flashgg sub members visible 
 HHWWggCandidate::HHWWggCandidate():
 diphoVector_ (),
-phoVector_ (),
 electronVector_ (),
 muonVector_ (),
 METVector_ (),
@@ -46,7 +45,6 @@ gen_subleading_muon_ (),
 test_ (),
 SLW_tag_ (),
 Pass_PS_ (),
-Cut_Results_ (),
 Cut_Variables_ (),
 lsl_dij_ (), 
 m_qq_ (),
@@ -60,7 +58,10 @@ l_genpho_ (),
 sl_genpho_ (),
 SL_mT_WW_ (),
 FL_mT_WW_ (),
-FH_m_WW_ ()
+FH_m_WW_ (),
+dipho_MVA_ (),
+lead_pho_MVA_ (),
+sublead_pho_MVA_ ()
 
 // leading_lepton_ () // Need absence of comma on last variable 
 
@@ -68,11 +69,11 @@ FH_m_WW_ ()
 
   HHWWggCandidate::~HHWWggCandidate() {}
   
-  HHWWggCandidate::HHWWggCandidate( std::vector<flashgg::DiPhotonCandidate> diphoVector, std::vector<flashgg::Photon> phoVector, std::vector<flashgg::Electron> electronVector, 
+  HHWWggCandidate::HHWWggCandidate( std::vector<flashgg::DiPhotonCandidate> diphoVector, std::vector<flashgg::Electron> electronVector, 
                                     std::vector<flashgg::Muon> muonVector, std::vector<flashgg::Met> METVector, std::vector<reco::GenParticle> GenParticlesVector,
-                                    std::vector<flashgg::Jet> JetVector, std::vector<double> Cut_Results, std::vector<double> Cut_Variables):
-  diphoVector_(diphoVector), phoVector_(phoVector), electronVector_(electronVector), muonVector_(muonVector), METVector_(METVector), GenParticlesVector_(GenParticlesVector), 
-  JetVector_(JetVector), Cut_Results_(Cut_Results), Cut_Variables_(Cut_Variables)
+                                    std::vector<flashgg::Jet> JetVector, std::vector<double> Cut_Variables, double dipho_MVA, double lead_pho_MVA, double sublead_pho_MVA):
+  diphoVector_(diphoVector), electronVector_(electronVector), muonVector_(muonVector), METVector_(METVector), GenParticlesVector_(GenParticlesVector), 
+  JetVector_(JetVector), Cut_Variables_(Cut_Variables), dipho_MVA_(dipho_MVA), lead_pho_MVA_(lead_pho_MVA), sublead_pho_MVA_(sublead_pho_MVA)
 
   {
 
@@ -132,6 +133,9 @@ FH_m_WW_ ()
 
     // Now that we have gen quark vector, we use it to match to jets 
     unsigned int JVSize = JetVector_.size(), QVSize = quarkVector.size();
+
+    
+
     float qone_matches__ = 0;
     float qtwo_matches__ = 0;
     float merged_qs__ = 0;
@@ -474,25 +478,23 @@ FH_m_WW_ ()
     // double tmp_dp_pt = 0, max_dp_pt = -99; // temporary diphoton pt 
     //bool test = 0;
 
+
+
     // First diphoton has highest pt 
     if (diphoVector_.size() > 0){
       flashgg::DiPhotonCandidate dipho_ = diphoVector_[0];
+      dipho_.makePhotonsPersistent();
       auto dipho = dipho_.p4();
       leading_dpho_ = dipho;
-    }
 
-    //-- Photons
-
-    // Leading/subleading photons are indices 0 and 1 in photon vector 
-    if (phoVector_.size() > 0){
-      flashgg::Photon lead_pho_ = phoVector_[0];
-      auto l_pho_ = lead_pho_.p4();
-      leading_pho_ = l_pho_;
-    }
-    if (phoVector_.size() > 1){
-      flashgg::Photon sublead_pho_ = phoVector_[1];
-      auto sl_pho_ = sublead_pho_.p4();
+      // Get photons 
+      flashgg::Photon leading_photon = dipho_.getLeadingPhoton();
+      flashgg::Photon subleading_photon = dipho_.getSubLeadingPhoton();
+      auto l_pho_ = leading_photon.p4();
+      auto sl_pho_ = subleading_photon.p4();
+      leading_pho_ = l_pho_; 
       sub_leading_pho_ = sl_pho_;
+
     }
 
     // MET 
@@ -501,6 +503,8 @@ FH_m_WW_ ()
       flashgg::Met met__ = METVector_[0];
       auto met_ = met__.p4();
       MET_fourvec_ = met_;
+
+      theMETcorpt_ = met__.getCorPt();
 
       //auto W = met_ + elec1;
       //W1_TM_ = W.Mt();

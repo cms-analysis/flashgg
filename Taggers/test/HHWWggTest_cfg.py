@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms  # imports our CMS-specific Python classes and functions
 import os # python module for os dependent functionality 
-from flashgg.Taggers.flashggHHWWggCandidate_cfi import FlashggHHWWggCandidate # flashggHHWWggCandidate parameters 
+from flashgg.Taggers.flashggHHWWggCandidate_cfi import FlashggHHWWggCandidate # cut parameters 
 from flashgg.Taggers.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
 import flashgg.Taggers.dumperConfigTools as cfgTools
 
@@ -86,13 +86,16 @@ cfgTools.addCategories(process.HHWWggCandidateDumper,
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
+
+# "file:/eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_0/3_1_0/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa/RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180706_100515/0000/myMicroAODOutputFile_384.root"
+
 ## X250                       
-"file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X250_WWgg_qqlnu.root" # SL      
+# "file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X250_WWgg_qqlnu.root" # SL      
 # "file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X250_WWgg_lnulnu.root" # FL      
 # "file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X250_WWgg_qqqq.root" # FH
 
 ## X1250
-# "file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X1250_WWgg_qqlnu.root" # SL 
+"file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X1250_WWgg_qqlnu.root" # SL 
 # "file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X1250_WWgg_lnulnu.root" # FL
 # "file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X1250_WWgg_qqqq.root" # FH 
 ))

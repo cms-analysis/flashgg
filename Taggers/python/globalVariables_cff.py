@@ -10,5 +10,5 @@ globalVariables = cms.PSet(
     mcPu=cms.vdouble(),
     puInfo=cms.InputTag("slimmedAddPileupInfo"),
     extraFloats=cms.PSet(),
-    )
+    )   
 
