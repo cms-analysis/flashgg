@@ -38712,9 +38712,1649 @@
                 "nevents": 5414, 
                 "totEvents": 5414, 
                 "weights": 5414
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_357.root", 
+                "nevents": 9237
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_271.root", 
+                "nevents": 8454
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_401.root", 
+                "nevents": 6383
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_292.root", 
+                "nevents": 7363
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_255.root", 
+                "nevents": 7905
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_103.root", 
+                "nevents": 7710
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_289.root", 
+                "nevents": 7035
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_362.root", 
+                "nevents": 8249
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_347.root", 
+                "nevents": 8446
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_321.root", 
+                "nevents": 7801
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_375.root", 
+                "nevents": 7873
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_190.root", 
+                "nevents": 6995
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_243.root", 
+                "nevents": 7964
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_262.root", 
+                "nevents": 6860
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_351.root", 
+                "nevents": 7967
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_245.root", 
+                "nevents": 7818
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_332.root", 
+                "nevents": 8548
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_386.root", 
+                "nevents": 8034
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_253.root", 
+                "nevents": 6988
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_267.root", 
+                "nevents": 6652
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_365.root", 
+                "nevents": 7769
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_320.root", 
+                "nevents": 7795
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_316.root", 
+                "nevents": 6719
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_306.root", 
+                "nevents": 7722
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_312.root", 
+                "nevents": 7868
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 8224
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_236.root", 
+                "nevents": 9273
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_234.root", 
+                "nevents": 8447
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_390.root", 
+                "nevents": 7620
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_286.root", 
+                "nevents": 7325
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_297.root", 
+                "nevents": 8679
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_291.root", 
+                "nevents": 7264
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_403.root", 
+                "nevents": 6517
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_313.root", 
+                "nevents": 6407
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_325.root", 
+                "nevents": 7032
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_348.root", 
+                "nevents": 7729
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_307.root", 
+                "nevents": 7945
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_287.root", 
+                "nevents": 8202
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_394.root", 
+                "nevents": 6203
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_303.root", 
+                "nevents": 6335
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_343.root", 
+                "nevents": 7578
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_350.root", 
+                "nevents": 8192
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_340.root", 
+                "nevents": 7411
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_322.root", 
+                "nevents": 6917
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_247.root", 
+                "nevents": 7654
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_373.root", 
+                "nevents": 6746
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_109.root", 
+                "nevents": 6684
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_393.root", 
+                "nevents": 6867
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_318.root", 
+                "nevents": 6140
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_308.root", 
+                "nevents": 7305
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_281.root", 
+                "nevents": 6002
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_282.root", 
+                "nevents": 6754
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_276.root", 
+                "nevents": 8632
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_333.root", 
+                "nevents": 9817
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_342.root", 
+                "nevents": 7427
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_374.root", 
+                "nevents": 8120
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_344.root", 
+                "nevents": 8431
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_229.root", 
+                "nevents": 9193
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_201.root", 
+                "nevents": 5626
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_215.root", 
+                "nevents": 8331
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_212.root", 
+                "nevents": 8008
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_341.root", 
+                "nevents": 7948
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_360.root", 
+                "nevents": 8298
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_231.root", 
+                "nevents": 7578
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_387.root", 
+                "nevents": 7462
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_272.root", 
+                "nevents": 5542
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_158.root", 
+                "nevents": 6924
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_60.root", 
+                "nevents": 7786
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_258.root", 
+                "nevents": 7098
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_378.root", 
+                "nevents": 8378
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_309.root", 
+                "nevents": 6757
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_409.root", 
+                "nevents": 7680
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_337.root", 
+                "nevents": 8462
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_359.root", 
+                "nevents": 7681
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_383.root", 
+                "nevents": 7464
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_392.root", 
+                "nevents": 8891
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 6491
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_275.root", 
+                "nevents": 7642
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_116.root", 
+                "nevents": 7648
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_72.root", 
+                "nevents": 8313
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_265.root", 
+                "nevents": 6432
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_274.root", 
+                "nevents": 6391
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_288.root", 
+                "nevents": 6834
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_408.root", 
+                "nevents": 5866
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_179.root", 
+                "nevents": 6795
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_226.root", 
+                "nevents": 9013
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_389.root", 
+                "nevents": 6904
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_349.root", 
+                "nevents": 7529
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_63.root", 
+                "nevents": 8501
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_129.root", 
+                "nevents": 7134
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_173.root", 
+                "nevents": 5365
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_161.root", 
+                "nevents": 5374
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_172.root", 
+                "nevents": 6115
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_196.root", 
+                "nevents": 9799
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_241.root", 
+                "nevents": 7648
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_273.root", 
+                "nevents": 7008
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_270.root", 
+                "nevents": 6863
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_396.root", 
+                "nevents": 5145
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_209.root", 
+                "nevents": 8859
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_317.root", 
+                "nevents": 7128
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_149.root", 
+                "nevents": 8132
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_264.root", 
+                "nevents": 6876
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_410.root", 
+                "nevents": 5837
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_125.root", 
+                "nevents": 7954
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_87.root", 
+                "nevents": 8365
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_65.root", 
+                "nevents": 7449
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_110.root", 
+                "nevents": 8119
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_105.root", 
+                "nevents": 6753
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_84.root", 
+                "nevents": 8344
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_150.root", 
+                "nevents": 7784
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_157.root", 
+                "nevents": 7768
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_159.root", 
+                "nevents": 8216
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_85.root", 
+                "nevents": 7611
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_213.root", 
+                "nevents": 8470
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_132.root", 
+                "nevents": 6201
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_174.root", 
+                "nevents": 5409
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_223.root", 
+                "nevents": 7808
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_324.root", 
+                "nevents": 5863
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_399.root", 
+                "nevents": 8356
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_211.root", 
+                "nevents": 6791
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_162.root", 
+                "nevents": 5583
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_151.root", 
+                "nevents": 5438
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_135.root", 
+                "nevents": 7333
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_155.root", 
+                "nevents": 5995
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_169.root", 
+                "nevents": 6052
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_153.root", 
+                "nevents": 8988
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_203.root", 
+                "nevents": 8324
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_141.root", 
+                "nevents": 7705
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_156.root", 
+                "nevents": 6924
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_205.root", 
+                "nevents": 7230
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_184.root", 
+                "nevents": 4935
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_108.root", 
+                "nevents": 7766
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_71.root", 
+                "nevents": 7825
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_115.root", 
+                "nevents": 7560
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_90.root", 
+                "nevents": 7817
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_104.root", 
+                "nevents": 7489
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_79.root", 
+                "nevents": 8322
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_118.root", 
+                "nevents": 6216
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_97.root", 
+                "nevents": 8261
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_82.root", 
+                "nevents": 8025
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_35.root", 
+                "nevents": 8024
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_75.root", 
+                "nevents": 7990
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_78.root", 
+                "nevents": 7946
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_121.root", 
+                "nevents": 6613
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_83.root", 
+                "nevents": 7749
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_89.root", 
+                "nevents": 7774
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_114.root", 
+                "nevents": 7101
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_120.root", 
+                "nevents": 7203
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_178.root", 
+                "nevents": 6012
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_88.root", 
+                "nevents": 7541
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_95.root", 
+                "nevents": 7124
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_73.root", 
+                "nevents": 7441
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_93.root", 
+                "nevents": 7548
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_94.root", 
+                "nevents": 7445
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_112.root", 
+                "nevents": 6764
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_102.root", 
+                "nevents": 6877
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_41.root", 
+                "nevents": 8097
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_91.root", 
+                "nevents": 7243
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_66.root", 
+                "nevents": 6460
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_98.root", 
+                "nevents": 7256
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_77.root", 
+                "nevents": 7021
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_86.root", 
+                "nevents": 7962
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_81.root", 
+                "nevents": 7096
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_57.root", 
+                "nevents": 7152
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_92.root", 
+                "nevents": 6980
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_76.root", 
+                "nevents": 6734
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_117.root", 
+                "nevents": 6245
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_106.root", 
+                "nevents": 6147
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_80.root", 
+                "nevents": 7355
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_96.root", 
+                "nevents": 6531
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_99.root", 
+                "nevents": 6843
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_29.root", 
+                "nevents": 8281
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_100.root", 
+                "nevents": 6571
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_58.root", 
+                "nevents": 6056
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_101.root", 
+                "nevents": 6874
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_74.root", 
+                "nevents": 6001
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_50.root", 
+                "nevents": 8955
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_46.root", 
+                "nevents": 9060
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_49.root", 
+                "nevents": 8783
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 8318
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_45.root", 
+                "nevents": 8620
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_30.root", 
+                "nevents": 7434
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_43.root", 
+                "nevents": 8493
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_31.root", 
+                "nevents": 7128
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 7831
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 7905
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_52.root", 
+                "nevents": 8307
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_40.root", 
+                "nevents": 6549
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 9024
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_54.root", 
+                "nevents": 8328
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_55.root", 
+                "nevents": 8283
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_44.root", 
+                "nevents": 8255
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 7866
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 7480
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 8549
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_42.root", 
+                "nevents": 7586
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_53.root", 
+                "nevents": 6938
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_210.root", 
+                "nevents": 9230
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_352.root", 
+                "nevents": 7721
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_246.root", 
+                "nevents": 7911
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_369.root", 
+                "nevents": 6014
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_384.root", 
+                "nevents": 5914
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 8402
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_36.root", 
+                "nevents": 7051
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_56.root", 
+                "nevents": 7347
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 7122
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_38.root", 
+                "nevents": 6910
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_51.root", 
+                "nevents": 7248
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_48.root", 
+                "nevents": 7305
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 7424
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_39.root", 
+                "nevents": 6983
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_32.root", 
+                "nevents": 6712
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 6773
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 6897
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 6732
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_47.root", 
+                "nevents": 6647
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_37.root", 
+                "nevents": 6342
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 7067
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_34.root", 
+                "nevents": 5938
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 6396
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 6490
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 6239
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 6277
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 7089
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 5852
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_33.root", 
+                "nevents": 5492
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 6076
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_301.root", 
+                "nevents": 8447
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_154.root", 
+                "nevents": 6459
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_176.root", 
+                "nevents": 7024
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_68.root", 
+                "nevents": 8169
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_128.root", 
+                "nevents": 5937
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_67.root", 
+                "nevents": 8166
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_127.root", 
+                "nevents": 5979
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_70.root", 
+                "nevents": 8840
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_113.root", 
+                "nevents": 7042
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_192.root", 
+                "nevents": 8538
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_237.root", 
+                "nevents": 7420
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_298.root", 
+                "nevents": 5905
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_197.root", 
+                "nevents": 9188
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_220.root", 
+                "nevents": 8693
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_235.root", 
+                "nevents": 8348
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_216.root", 
+                "nevents": 9791
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_181.root", 
+                "nevents": 7218
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_145.root", 
+                "nevents": 7749
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_214.root", 
+                "nevents": 7356
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_252.root", 
+                "nevents": 7194
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_277.root", 
+                "nevents": 7206
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_244.root", 
+                "nevents": 7629
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_388.root", 
+                "nevents": 6366
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_326.root", 
+                "nevents": 7568
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_335.root", 
+                "nevents": 7729
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_323.root", 
+                "nevents": 5858
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_146.root", 
+                "nevents": 8345
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_405.root", 
+                "nevents": 5887
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_327.root", 
+                "nevents": 7006
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_59.root", 
+                "nevents": 8616
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_147.root", 
+                "nevents": 6872
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_224.root", 
+                "nevents": 7610
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_334.root", 
+                "nevents": 7049
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_358.root", 
+                "nevents": 8657
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_368.root", 
+                "nevents": 8170
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_187.root", 
+                "nevents": 7158
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_206.root", 
+                "nevents": 7179
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_140.root", 
+                "nevents": 7048
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_188.root", 
+                "nevents": 7216
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_217.root", 
+                "nevents": 4946
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_122.root", 
+                "nevents": 8862
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_134.root", 
+                "nevents": 7256
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_126.root", 
+                "nevents": 7001
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_299.root", 
+                "nevents": 6543
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_219.root", 
+                "nevents": 8282
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_61.root", 
+                "nevents": 7044
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_227.root", 
+                "nevents": 7168
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_191.root", 
+                "nevents": 6001
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_171.root", 
+                "nevents": 5818
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_152.root", 
+                "nevents": 6084
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_166.root", 
+                "nevents": 6089
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_278.root", 
+                "nevents": 7624
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_397.root", 
+                "nevents": 7443
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_111.root", 
+                "nevents": 8125
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_404.root", 
+                "nevents": 7603
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_381.root", 
+                "nevents": 8112
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_257.root", 
+                "nevents": 8062
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_131.root", 
+                "nevents": 6460
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_138.root", 
+                "nevents": 4972
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_144.root", 
+                "nevents": 7492
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_167.root", 
+                "nevents": 6395
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_170.root", 
+                "nevents": 5841
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_123.root", 
+                "nevents": 8607
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_163.root", 
+                "nevents": 5523
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_185.root", 
+                "nevents": 6259
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_137.root", 
+                "nevents": 6295
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_175.root", 
+                "nevents": 6736
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_124.root", 
+                "nevents": 6864
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_331.root", 
+                "nevents": 7242
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_311.root", 
+                "nevents": 6567
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_198.root", 
+                "nevents": 6836
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_136.root", 
+                "nevents": 8497
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_130.root", 
+                "nevents": 6738
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_119.root", 
+                "nevents": 7093
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_69.root", 
+                "nevents": 8249
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_218.root", 
+                "nevents": 7476
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_177.root", 
+                "nevents": 7577
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_329.root", 
+                "nevents": 6775
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_296.root", 
+                "nevents": 7824
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_194.root", 
+                "nevents": 9956
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_280.root", 
+                "nevents": 7927
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_354.root", 
+                "nevents": 7051
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_367.root", 
+                "nevents": 6498
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_204.root", 
+                "nevents": 7748
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_107.root", 
+                "nevents": 7779
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_164.root", 
+                "nevents": 5728
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_142.root", 
+                "nevents": 6132
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_165.root", 
+                "nevents": 5639
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_238.root", 
+                "nevents": 6888
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_148.root", 
+                "nevents": 6760
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_180.root", 
+                "nevents": 9014
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_193.root", 
+                "nevents": 8512
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_202.root", 
+                "nevents": 8054
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_189.root", 
+                "nevents": 8025
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_250.root", 
+                "nevents": 7532
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_248.root", 
+                "nevents": 7583
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_228.root", 
+                "nevents": 8377
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_338.root", 
+                "nevents": 6272
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_371.root", 
+                "nevents": 5585
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_310.root", 
+                "nevents": 6154
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_345.root", 
+                "nevents": 5410
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_207.root", 
+                "nevents": 6833
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_225.root", 
+                "nevents": 7864
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_199.root", 
+                "nevents": 8730
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_242.root", 
+                "nevents": 7276
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_283.root", 
+                "nevents": 5589
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_208.root", 
+                "nevents": 9043
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_302.root", 
+                "nevents": 6299
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_64.root", 
+                "nevents": 8893
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_139.root", 
+                "nevents": 5267
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_143.root", 
+                "nevents": 5317
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_186.root", 
+                "nevents": 5668
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_239.root", 
+                "nevents": 8160
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_304.root", 
+                "nevents": 6579
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_406.root", 
+                "nevents": 5357
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_249.root", 
+                "nevents": 7352
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_232.root", 
+                "nevents": 8246
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_222.root", 
+                "nevents": 9783
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_379.root", 
+                "nevents": 6558
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_259.root", 
+                "nevents": 7568
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_285.root", 
+                "nevents": 8484
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 7773
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_260.root", 
+                "nevents": 7417
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_266.root", 
+                "nevents": 7376
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_407.root", 
+                "nevents": 7949
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_366.root", 
+                "nevents": 7809
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_315.root", 
+                "nevents": 6241
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_294.root", 
+                "nevents": 7318
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_330.root", 
+                "nevents": 8340
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_336.root", 
+                "nevents": 8687
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_328.root", 
+                "nevents": 7262
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_395.root", 
+                "nevents": 7897
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_361.root", 
+                "nevents": 7702
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_346.root", 
+                "nevents": 8692
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_284.root", 
+                "nevents": 6754
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_376.root", 
+                "nevents": 6562
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_382.root", 
+                "nevents": 7640
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_240.root", 
+                "nevents": 7374
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_402.root", 
+                "nevents": 7488
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_293.root", 
+                "nevents": 6951
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_385.root", 
+                "nevents": 8279
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_363.root", 
+                "nevents": 8144
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_263.root", 
+                "nevents": 5491
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 6610
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_370.root", 
+                "nevents": 7504
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_391.root", 
+                "nevents": 7523
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_279.root", 
+                "nevents": 7266
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_269.root", 
+                "nevents": 7479
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 7402
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_380.root", 
+                "nevents": 7859
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_305.root", 
+                "nevents": 8530
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_398.root", 
+                "nevents": 8157
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_268.root", 
+                "nevents": 7533
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 6899
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_300.root", 
+                "nevents": 6871
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_355.root", 
+                "nevents": 7307
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_251.root", 
+                "nevents": 6646
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_195.root", 
+                "nevents": 10115
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_230.root", 
+                "nevents": 9149
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_261.root", 
+                "nevents": 7944
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_339.root", 
+                "nevents": 7525
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_356.root", 
+                "nevents": 8173
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_133.root", 
+                "nevents": 7153
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_182.root", 
+                "nevents": 6782
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_295.root", 
+                "nevents": 7097
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_353.root", 
+                "nevents": 9208
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_377.root", 
+                "nevents": 7964
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_233.root", 
+                "nevents": 7039
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_256.root", 
+                "nevents": 8104
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_314.root", 
+                "nevents": 6918
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_62.root", 
+                "nevents": 7634
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_364.root", 
+                "nevents": 8313
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_290.root", 
+                "nevents": 6941
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_319.root", 
+                "nevents": 6735
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_400.root", 
+                "nevents": 8191
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_372.root", 
+                "nevents": 8878
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_183.root", 
+                "nevents": 7493
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_221.root", 
+                "nevents": 7095
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_254.root", 
+                "nevents": 8212
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_168.root", 
+                "nevents": 5472
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_160.root", 
+                "nevents": 5520
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_200.root", 
+                "nevents": 9611
+            }, 
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/SingleElectron/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1/190903_125244/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 7998
             }
         ], 
         "parent_n_units": 30238, 
-        "vetted": true
+        "vetted": false
     }
 }
