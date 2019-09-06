@@ -187,6 +187,7 @@ class WorkNodeJob(object):
         script += "echo\n"
         script += "echo\n"
         script += "echo\n"
+        
         if not self.tarball:
             script += "cd " + os.environ['CMSSW_BASE']+"\n"
         else:
@@ -194,7 +195,10 @@ class WorkNodeJob(object):
             script += "export SCRAM_ARCH=%s\n" % os.environ['SCRAM_ARCH']
             script += "scram project CMSSW %s\n" % os.environ['CMSSW_VERSION']
             script += "cd %s\n" % os.environ['CMSSW_VERSION']
-            script += "tar zxf %s\n" % self.tarball            
+            script += "tar zxf %s\n" % self.tarball
+            script += "cp src/XGBoostCMSSW/XGBoostInterface/toolbox/*xml config/toolbox/$SCRAM_ARCH/tools/selected/\n"
+            script += "scram setup rabit\n"
+            script += "scram setup xgboost\n"
             script += "scram b\n"
             
         script += "eval $(scram runtime -sh)"+"\n"
@@ -290,13 +294,13 @@ class WorkNodeJobFactory(object):
         
     # ------------------------------------------------------------------------------------------------
     def mkTarball(self,tarball=None,
-                  tarball_entries=["python","lib","bin","external","flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310"],tarball_patterns={"src/*":"data"},
+                  tarball_entries=["python","lib","bin","external","flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310"],tarball_patterns=[("src/*","data")],
                   tarball_transform=None):
         
         self.tarball = tarball
         content=tarball_entries
 
-        for folder,pattern in tarball_patterns.iteritems():
+        for folder,pattern in tarball_patterns:
             stat,out = commands.getstatusoutput("cd $CMSSW_BASE; find %s -name %s" % ( folder, pattern ) )
             ## print out
             if stat != 0:
@@ -425,7 +429,7 @@ class HTCondorJob(object):
                 fout.write('input       = '+BatchRegistry.getProxy().split(":")[1]+'\n')
             fout.write('output      = '+self.jobName+'_$(ClusterId).$(ProcId).out\n')
             fout.write('error       = '+self.jobName+'_$(ClusterId).$(ProcId).err\n')
-            fout.write('log         = '+self.jobName+'_htc.log\n\n')
+            fout.write('log         = '+self.jobName+'_$(ClusterId).$(ProcId)_htc.log\n\n')
             fout.write('max_retries = 1\n')
             fout.write('queue '+str(njobs)+' \n')
             fout.close()        
@@ -500,10 +504,10 @@ class HTCondorJob(object):
     
     #----------------------------------------
     def handleOutput(self, jobid):
-        if self.async:
-            self.exitStatus = -1
+        self.exitStatus = -1
+        if self.async and jobid:
             evt_list = []       
-            jel = htcondor.JobEventLog(str(self.jobName+"_htc.log"))         
+            jel = htcondor.JobEventLog(str(self.jobName+"_"+jobid+"_htc.log"))
             for event in jel.events(stop_after=0):
                 evt_jobid_str = str(event.cluster)+'.'+str(event.proc)
                 if evt_jobid_str == jobid:
@@ -607,7 +611,7 @@ class HTCondorMonitor(object):
         evt_list = {}
         for jobid, job in current_jobs.iteritems():
             evt_list[jobid] = []
-            jel = htcondor.JobEventLog(str(job.jobName+"_htc.log"))
+            jel = htcondor.JobEventLog(str(job.jobName+"_"+jobid+"_htc.log"))
             for event in jel.events(stop_after=0):
                 evt_jobid_str = str(event.cluster)+'.'+str(event.proc)
                 if evt_jobid_str == jobid:

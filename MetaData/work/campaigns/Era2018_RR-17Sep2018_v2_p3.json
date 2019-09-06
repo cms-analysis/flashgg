@@ -1,0 +1,15 @@
+{
+    "data" :
+    [
+        "/DoubleMuon/Run2018A-17Sep2018-v2/MINIAOD",
+        "/DoubleMuon/Run2018B-17Sep2018-v1/MINIAOD",
+        "/DoubleMuon/Run2018C-17Sep2018-v1/MINIAOD",
+        "/DoubleMuon/Run2018D-PromptReco-v2/MINIAOD"
+    ],
+    "sig" :
+    [
+    ],
+    "bkg" :
+    [
+    ]
+}

@@ -234,12 +234,22 @@ if customize.tthTagsOnly:
     process.flashggTagSequence.remove(process.flashggUntagged)
     process.flashggTagSequence.remove(process.flashggVBFMVA)
     process.flashggTagSequence.remove(process.flashggVBFDiPhoDiJetMVA)
+    process.flashggTagSequence.remove(process.flashggTTHHadronicTag) # Remove ttH tags as well, as we add these in later manually (with modified systematics worfklow)
+    process.flashggTagSequence.remove(process.flashggTTHLeptonicTag)
+    process.flashggTagSequence.remove(process.flashggTTHDiLeptonTag)
+    process.flashggTagSequence.remove(process.flashggTHQLeptonicTag)
+
+else:
+    if not customize.doSystematics: # allow memory-intensive ttH MVAs if we are not running systematics
+        allowLargettHMVAs(process)
 
 if customize.doDoubleHTag:
     import flashgg.Systematics.doubleHCustomize 
     hhc = flashgg.Systematics.doubleHCustomize.DoubleHCustomize(process, customize, customize.metaConditions)
     minimalVariables += hhc.variablesToDump()
     systematicVariables = hhc.systematicVariables()
+
+process.flashggTHQLeptonicTag.processId = cms.string(str(customize.processId))
 
 print 'here we print the tag sequence after'
 print process.flashggTagSequence
@@ -249,9 +259,10 @@ if customize.doFiducial:
     process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggSigmaMoMpToMTag')) )
 
 if customize.tthTagsOnly:
-    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(   cms.PSet(TagName = cms.InputTag('flashggTTHDiLeptonTag')),
+    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(   
         cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag')),
-        cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag')) )
+        cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag')) 
+    )
 
     print "customize.processId:",customize.processId
 
@@ -262,8 +273,8 @@ if customize.tthTagsOnly:
         if not pset.Label.value().count("FracRVNvtxWeight") :
             print  pset.Label.value()
             newvpset += [pset]
-    from flashgg.Systematics.flashggDiPhotonSystematics_cfi import PixelSeedWeight
-    newvpset += [ PixelSeedWeight ]
+    #from flashgg.Systematics.flashggDiPhotonSystematics_cfi import PixelSeedWeight #FIXME: this does not currently work, so comment it out for now
+    #newvpset += [ PixelSeedWeight ]
     
     process.flashggDiPhotonSystematics.SystMethods = newvpset
    
@@ -329,7 +340,7 @@ if is_signal:
             elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
                 variablesToUse.append("MuonIDWeight%s01sigma[1,-999999.,999999.] := weight(\"Muon%sIDWeight%s01sigma\")" % (direction,MUON_ID,direction))
                 variablesToUse.append("MuonIsoWeight%s01sigma[1,-999999.,999999.] := weight(\"Muon%sISOWeight%s01sigma\")" % (direction,MUON_ISO,direction))
-	    variablesToUse.append("JetBTagCutWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagCutWeight%s01sigma\")" % (direction,direction))
+            variablesToUse.append("JetBTagCutWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagCutWeight%s01sigma\")" % (direction,direction))
             variablesToUse.append("JetBTagReshapeWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagReshapeWeight%s01sigma\")" % (direction,direction))
             for r9 in ["HighR9","LowR9"]:
                 for region in ["EB","EE"]:
@@ -364,9 +375,6 @@ print "-------------------------------------------------"
 print "--- Variables to be dumped, including systematic weights ---"
 print variablesToUse
 print "------------------------------------------------------------"
-
-
-
 
 #from flashgg.Taggers.globalVariables_cff import globalVariables
 #globalVariables.extraFloats.rho = cms.InputTag("rhoFixedGridAll")
@@ -421,6 +429,10 @@ if(customize.doFiducial):
 #    else:
     fc.addObservables(process, process.tagsDumper, customize.processId )
 
+if customize.processId == "tHq":
+    import flashgg.Taggers.THQLeptonicTagVariables as var
+    variablesToUse = minimalVariables + var.vtx_variables + var.dipho_variables
+
 #tagList=[
 #["UntaggedTag",4],
 #["VBFTag",2],
@@ -437,10 +449,8 @@ if customize.doFiducial:
     tagList=[["SigmaMpTTag",3]]
 elif customize.tthTagsOnly:
     tagList=[
-        ["NoTag",0],
-        ["TTHHadronicTag",3],
-        ["TTHLeptonicTag",2],
-        ["TTHDiLeptonTag",0]
+        ["TTHHadronicTag",4],
+        ["TTHLeptonicTag",4]
         ]
 elif customize.doubleHTagsOnly:
     tagList = hhc.tagList
@@ -456,8 +466,9 @@ else:
         ["VHLeptonicLooseTag",0],
         ["VHMetTag",0],
         ["VHHadronicTag",0],
-        ["TTHHadronicTag",3],
-        ["TTHLeptonicTag",2],
+        ["TTHHadronicTag",4],
+        ["TTHLeptonicTag",4],
+        ["THQLeptonicTag",0],
         ["TTHDiLeptonTag",0]
         ]
 
@@ -527,19 +538,9 @@ process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring(hlt_paths))
 
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
-# ee bad supercluster filter on data
-process.load('RecoMET.METFilters.eeBadScFilter_cfi')
-process.eeBadScFilter.EERecHitSource = cms.InputTag("reducedEgamma","reducedEERecHits") # Saved MicroAOD Collection (data only)
-# Bad Muon filter LOADS WRONG IN 8_0_28, FIX LATER
-#process.load('RecoMET.METFilters.badGlobalMuonTaggersMiniAOD_cff')
-#process.badGlobalMuonTaggerMAOD.muons = cms.InputTag("flashggSelectedMuons")
-#process.cloneGlobalMuonTaggerMAOD.muons = cms.InputTag("flashggSelectedMuons")
 process.dataRequirements = cms.Sequence()
 if customize.processId == "Data":
         process.dataRequirements += process.hltHighLevel
-        process.dataRequirements += process.eeBadScFilter
-#        if customize.doMuFilter:
-#            process.dataRequirements += process.noBadGlobalMuonsMAOD
 
 # Split WH and ZH
 process.genFilter = cms.Sequence()
@@ -575,9 +576,19 @@ if (customize.processId.count("qcd") or customize.processId.count("gjet")) and c
     else:
         raise Exception,"Mis-configuration of python for prompt-fake filter"
 
+# Met Filters
+process.load('flashgg/Systematics/flashggMetFilters_cfi')
+
+if customize.processId == "Data":
+    metFilterSelector = "data"
+else:
+    metFilterSelector = "mc"
+
+process.flashggMetFilters.requiredFilterNames = cms.untracked.vstring([filter.encode("ascii") for filter in customize.metaConditions["flashggMetFilters"][metFilterSelector]])
 
 if customize.tthTagsOnly:
     process.p = cms.Path(process.dataRequirements*
+                         process.flashggMetFilters*
                          process.genFilter*
                          process.flashggDiPhotons* # needed for 0th vertex from microAOD
                          process.flashggUpdatedIdMVADiPhotons*
@@ -590,8 +601,12 @@ if customize.tthTagsOnly:
                          process.penultimateFilter*
                          process.finalFilter*
                          process.tagsDumper)
+    # Now, we put the ttH tags back in the sequence with modified systematics workflow
+    modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystlabels, jetsystlabels)
+
 else :
     process.p = cms.Path(process.dataRequirements*
+                         process.flashggMetFilters*
                          process.genFilter*
                          process.flashggUpdatedIdMVADiPhotons*
                          process.flashggDiPhotonSystematics*
@@ -603,8 +618,6 @@ else :
                          process.penultimateFilter*
                          process.finalFilter*
                          process.tagsDumper)
-
-
 
 if customize.doBJetRegression:
 
@@ -633,7 +646,7 @@ if customize.doBJetRegression:
     process.bregProducers = cms.Sequence(reduce(lambda x,y: x+y, bregProducers))
     process.p.replace(process.jetSystematicsSequence,process.jetSystematicsSequence*process.flashggUnpackedJets+process.bregProducers)
     
- 
+
 if customize.doDoubleHTag:
     hhc.doubleHTagRunSequence(systlabels,jetsystlabels,phosystlabels)
   
@@ -673,6 +686,11 @@ printSystematicInfo(process)
 # Detailed tag interpretation information printout (blinded)
 process.flashggTagSorter.StoreOtherTagInfo = True
 process.flashggTagSorter.BlindedSelectionPrintout = True
+
+### Rerun microAOD sequence on top of microAODs using the parent dataset
+if customize.useParentDataset:
+    runRivetSequence(process, customize.metaConditions)
+
 
 #### BELOW HERE IS MOSTLY DEBUGGING STUFF
 

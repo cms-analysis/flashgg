@@ -128,19 +128,6 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
 # All jets are now handled in MicroAODCustomize.py
 # Switch from PFCHS to PUPPI with puppi=1 argument (both if puppi=2)
 
-process.load('RecoMET.METFilters.BadChargedCandidateFilter_cfi')
-process.load('RecoMET.METFilters.globalTightHalo2016Filter_cfi')
-process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
-
-process.BadChargedCandidateFilter.muons = cms.InputTag("slimmedMuons")
-process.BadChargedCandidateFilter.PFCandidates = cms.InputTag("packedPFCandidates")
-process.BadPFMuonFilter.muons = cms.InputTag("slimmedMuons")
-process.BadPFMuonFilter.PFCandidates = cms.InputTag("packedPFCandidates")
-
-process.flag_globalTightHalo2016Filter = cms.Path(process.globalTightHalo2016Filter)
-process.flag_BadChargedCandidateFilter = cms.Path(process.BadChargedCandidateFilter)
-process.flag_BadPFMuonFilter = cms.Path(process.BadPFMuonFilter)
-
 process.p = cms.Path(process.flashggMicroAODSequence)
 process.e = cms.EndPath(process.out)
 

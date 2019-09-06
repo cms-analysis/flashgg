@@ -206,13 +206,8 @@ namespace flashgg {
             double egmMvaValue = (*egmMvaValues)[pp];
             fg.addUserFloat("EGMPhotonMVA", (float) egmMvaValue);
 
-            std::vector<reco::GsfElectron> gsf_electrons;
-            for(auto& ele : *electronHandle.product())
-                gsf_electrons.push_back(reco::GsfElectron(ele.core()));
-            if( !ConversionTools::hasMatchedPromptElectron( pp->superCluster(), gsf_electrons, *convs.product(), beamspot.position(), lxyMin_, probMin_, nHitsBeforeVtxMax_ ) ) 
-                fg.setPassElectronVeto( true ) ; 
-            else 
-                fg.setPassElectronVeto( false ) ;
+            // Get electron veto flag value from miniAOD PAT photons
+            fg.setPassElectronVeto(pp->passElectronVeto());
 
             // Gen matching
             if( ! evt.isRealData() ) {
@@ -293,9 +288,8 @@ namespace flashgg {
             fg.setpfNeutIso03( pfNeutIso03 );
 
             double eA_pho = _effectiveAreas.getEffectiveArea( abs(pp->superCluster()->eta()) );
-            double correctedEtaWidth = 0.;
 
-            std::map<edm::Ptr<reco::Vertex>, float> mvamap = phoTools_.computeMVAWrtAllVtx( fg, vertices->ptrs(), rhoFixedGrd, correctedEtaWidth, eA_pho, _phoIsoPtScalingCoeff, _phoIsoCutoff );
+            std::map<edm::Ptr<reco::Vertex>, float> mvamap = phoTools_.computeMVAWrtAllVtx( fg, vertices->ptrs(), rhoFixedGrd, eA_pho, _phoIsoPtScalingCoeff, _phoIsoCutoff );
             fg.setPhoIdMvaD( mvamap );
 
             // add extra isolations (useful for tuning)

@@ -26,23 +26,6 @@ namespace flashgg {
         _init(cfg);
     }
 
-    GlobalVariablesComputer::GlobalVariablesComputer( const edm::ParameterSet &cfg, edm::ConsumesCollector &&cc ) :
-        doRho_( cfg.exists("rho") ),
-        doVtx_( cfg.exists("vertexes") ),
-        getPu_( cfg.exists("puInfo") )
-    {
-        if( getPu_ ) {
-            puInfoToken_ = cc.consumes<std::vector<PileupSummaryInfo> >( cfg.getParameter<edm::InputTag>("puInfo") );
-        }
-        if( doRho_ ) {
-            rhoToken_ = cc.consumes<double>( cfg.getParameter<edm::InputTag>( "rho" ) );
-        }
-        if( doVtx_ ) {
-            vtxToken_ = cc.consumes<VertexCollection>( cfg.getParameter<edm::InputTag>( "vertexes" ) );
-        }
-        _init(cfg);
-    }
-
     GlobalVariablesComputer::GlobalVariablesComputer( const edm::ParameterSet &cfg, edm::ConsumesCollector &cc ) :
         doRho_( cfg.exists("rho") ),
         doVtx_( cfg.exists("vertexes") ),
@@ -52,6 +35,23 @@ namespace flashgg {
             puInfoToken_ = cc.consumes<std::vector<PileupSummaryInfo> >( cfg.getParameter<edm::InputTag>("puInfo") );
         }
         if( doRho_ ) { 
+            rhoToken_ = cc.consumes<double>( cfg.getParameter<edm::InputTag>( "rho" ) );
+        }
+        if( doVtx_ ) {
+            vtxToken_ = cc.consumes<VertexCollection>( cfg.getParameter<edm::InputTag>( "vertexes" ) );
+        }
+        _init(cfg);
+    }
+
+    GlobalVariablesComputer::GlobalVariablesComputer( const edm::ParameterSet &cfg, edm::ConsumesCollector &&cc ) :
+        doRho_( cfg.exists("rho") ),
+        doVtx_( cfg.exists("vertexes") ),
+        getPu_( cfg.exists("puInfo") )
+    {
+        if( getPu_ ) {
+            puInfoToken_ = cc.consumes<std::vector<PileupSummaryInfo> >( cfg.getParameter<edm::InputTag>("puInfo") );
+        }
+        if( doRho_ ) {
             rhoToken_ = cc.consumes<double>( cfg.getParameter<edm::InputTag>( "rho" ) );
         }
         if( doVtx_ ) {
@@ -71,7 +71,12 @@ namespace flashgg {
                 puWeight_ = cfg.getParameter<std::vector<double> >("dataPu");
                 auto mcpu = cfg.getParameter<std::vector<double> >("mcPu");
 
-                assert( puWeight_.size() == mcpu.size() );
+                if( puWeight_.size() != mcpu.size() )
+                {
+                    std::ostringstream msg;
+                    msg << "PU weight size: " << puWeight_.size() << " \n MC PU size: " << mcpu.size();
+                    throw std::logic_error(msg.str());
+                }
                 if ( puWeight_.size() != puBins_.size()-1 ) {
                     puBins_.resize(puWeight_.size()+1);
                     for (unsigned int i=0; i<puBins_.size(); ++i)
