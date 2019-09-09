@@ -81,13 +81,14 @@ def getConfig(extended=False, dumpShowerShapes=False, dumpClusterShapes=False, d
                               "e1x3"]
 
     singleElePfIsos = [("pfPhoIso03", "PhoIso03"),
-                       ("pfChgIsoWrtWorstVtx03", "ChIso03worst")]
+                       ("pfChgIsoWrtWorstVtx03", "ChIso03worst"),
+                       ("pfChgIsoWrtChosenVtx03","ChIso03")]
 
     singleEleEgIsos = [("egChargedHadronIso", "ChIso"),
                        ("egPhotonIso", "PhoIso"),
                        ("egNeutralHadronIso", "NeutIso")]
 
-    singleEleViewPfIso = [("pfChIso03WrtChosenVtx", "ChIso03")]
+    # singleEleViewPfIso = [("pfChIso03WrtChosenVtx", "ChIso03")]
 
     genVars = ["genMass := diPhoton.genP4.mass",
                "probeGenPt := ?getProbe.hasMatchedGenPhoton?getProbe.matchedGenPhoton.pt:0",
@@ -121,7 +122,7 @@ def getConfig(extended=False, dumpShowerShapes=False, dumpClusterShapes=False, d
         singleEleVars.extend(singleEleClusterShapes)
     if dumpPfIsos:
         singleEleVars.extend(singleElePfIsos)
-        singleEleViewVars.extend(singleEleViewPfIso)
+        # singleEleViewVars.extend(singleEleViewPfIso)
     if dumpEgIsos:
         singleEleVars.extend(singleEleEgIsos)
 

@@ -254,10 +254,10 @@ namespace flashgg {
             pho.addUserFloat("uncorr_pfPhoIso03", pho.pfPhoIso03());
 
             // peak to tail shift (and viceversa), with conversion from TMVA value [-1,1] to probability [0,1]
-            auto p_peak_data = 1./(1.+sqrt(2./(1.+corrections->at("phoIsoClfData")(pho)[0])-1.));
-            auto p_peak_mc =  1./(1.+sqrt(2./(1.+corrections->at("phoIsoClfMC")(pho)[0])-1.));
-            auto p_tail_data = 1 - p_peak_data;
-            auto p_tail_mc = 1 - p_peak_mc;
+            auto p_tail_data = 1./(1.+sqrt(2./(1.+corrections->at("phoIsoClfData")(pho)[0])-1.));
+            auto p_tail_mc =  1./(1.+sqrt(2./(1.+corrections->at("phoIsoClfMC")(pho)[0])-1.));
+            auto p_peak_data = 1 - p_tail_data;
+            auto p_peak_mc = 1 - p_tail_mc;
             auto migration_rnd_value = engine.flat();
             
             double p_move_to_tail = (p_tail_data-p_tail_mc)/p_peak_mc;

@@ -71,19 +71,19 @@ process.load("flashgg.MicroAOD.flashggDiPhotons_cfi")
 process.load("flashgg.Validation.FlashggTagAndProbeProducer_cfi")
 process.load("flashgg.Validation.tagAndProbeDumper_cfi")
 process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
-process.load("flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi")
 
 from flashgg.Validation.FlashggTagAndProbeProducer_cfi import flashggTagAndProbe
 from flashgg.Systematics.flashggDiPhotonSystematics_cfi import flashggDiPhotonSystematics
 import flashgg.Taggers.dumperConfigTools as cfgTools
 import flashgg.Validation.tagAndProbeDumperConfig as dumpCfg
-import flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi as phoIdInp_Corr
 
 # ----------------------------------------------------------------------------------------------------
 # Run shower shape and isolation corrections
 
 if customize.options.doPhoIdInputsCorrections and not customize.processId == "Data":
     
+    process.load("flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi")
+    import flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi as phoIdInp_Corr
     phoIdInp_Corr.setup_flashggDifferentialPhoIdInputsCorrection( process, customize.metaConditions )
     # process.flashggDifferentialPhoIdInputsCorrection = flashggDifferentialPhoIdInputsCorrection.clone()
     # process.flashggDifferentialPhoIdInputsCorrection.correctIsolations = False
@@ -220,12 +220,13 @@ tnp_sequence = cms.Sequence(flashggTagAndProbe+tagAndProbeDumper)
 # ----------------------------------------------------------------------------------------------------
 # Schedule process
 
-process.p = cms.Path(process.flashggIdentifiedElectrons *
-                     process.flashggDiPhotonSystematics*tnp_sequence)
 
-if customize.options.doPhoIdInputsCorrections:
+if customize.options.doPhoIdInputsCorrections and not customize.processId == "Data":
     process.p = cms.Path(
         process.flashggDifferentialPhoIdInputsCorrection * process.flashggIdentifiedElectrons *
         process.flashggDiPhotonSystematics*tnp_sequence)
+else:
+    process.p = cms.Path(process.flashggIdentifiedElectrons *
+                         process.flashggDiPhotonSystematics*tnp_sequence)
 
 customize(process)
