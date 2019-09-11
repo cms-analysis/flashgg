@@ -6,6 +6,30 @@
     },
 
     "flashggMETsFunction" : "runMETs2016",
+    "flashggMetFilters" :
+    {
+        "rerun_ecal_calib_filter" : true,
+        "data" :
+        [
+            "Flag_goodVertices",
+            "Flag_globalSuperTightHalo2016Filter",
+            "Flag_HBHENoiseFilter",
+            "Flag_HBHENoiseIsoFilter",
+            "Flag_EcalDeadCellTriggerPrimitiveFilter",
+            "Flag_BadPFMuonFilter",
+            "Flag_eeBadScFilter"
+        ],
+        "mc" :
+        [
+            "Flag_goodVertices",
+            "Flag_globalSuperTightHalo2016Filter",
+            "Flag_HBHENoiseFilter",
+            "Flag_HBHENoiseIsoFilter",
+            "Flag_EcalDeadCellTriggerPrimitiveFilter",
+            "Flag_BadPFMuonFilter"
+        ]
+    }, 
+
     "DeepJet" : "read",
 
     "flashggPhotons" :

@@ -38,6 +38,11 @@ void Met::setCorPhi(float mPhi)
     corpy=mPhi;
 }
 
+void Met::setPassEcalBadCalibFilter(bool mPass)
+{
+    passEcalBadCalibFilter = mPass;
+}
+
 float Met::getCorPx() const
 {
     return(corpx);
@@ -55,7 +60,10 @@ float Met::getCorPt() const
     return(corpt);
 }
 
-
+bool Met::getPassEcalBadCalibFilter() const
+{
+    return(passEcalBadCalibFilter);
+}
 
 // Local Variables:
 // mode:c++

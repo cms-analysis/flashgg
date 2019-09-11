@@ -134,7 +134,7 @@ class MicroAODCustomize(object):
             self.customizeSignal(process)
             if "tth" in customize.datasetName.lower():
                 self.customizeTTH(process)
-            elif "vh" in customize.datasetName.lower():
+            elif "vh" in customize.datasetName.lower() or "wmh" in customize.datasetName.lower() or "wph" in customize.datasetName.lower() or "wh" in customize.datasetName.lower() or "zh" in customize.datasetName.lower():
                 self.customizeVH(process)
             elif "ggh" in customize.datasetName.lower() or "glugluh" in customize.datasetName.lower():
                 self.customizeGGH(process)
@@ -559,8 +559,8 @@ class MicroAODCustomize(object):
         # process.rivetProducerHTXS.ProductionMode = "TH"
 #        process.flashggPDFWeightObject.LHEEventTag = "source"
 #        process.flashggPDFWeightObject.LHERunLabel = "source"
-        process.flashggPDFWeightObject.isStandardSample = False
-        process.flashggPDFWeightObject.isThqSample = True
+        # process.flashggPDFWeightObject.isStandardSample = False
+        # process.flashggPDFWeightObject.isThqSample = True
 
     def customizePhotons(self, process):
         for opt, value in self.metaConditions["flashggPhotons"].items():
@@ -647,12 +647,6 @@ class MicroAODCustomize(object):
         process.task = createTaskWithAllProducersAndFilters(process)
         process.p.associate(process.task)
 
-    def rereunEcalBadCalibFilter(self, process):
-        """
-        Rerun the ECAL bad calib filter (EE high eta noise)
-        ---NOT THE FINAL RECIPE---
-        """
-        
         
 def createTaskWithAllProducersAndFilters(process):
    from FWCore.ParameterSet.Config import Task

@@ -206,13 +206,8 @@ namespace flashgg {
             double egmMvaValue = (*egmMvaValues)[pp];
             fg.addUserFloat("EGMPhotonMVA", (float) egmMvaValue);
 
-            std::vector<reco::GsfElectron> gsf_electrons;
-            for(auto& ele : *electronHandle.product())
-                gsf_electrons.push_back(reco::GsfElectron(ele.core()));
-            if( !ConversionTools::hasMatchedPromptElectron( pp->superCluster(), gsf_electrons, *convs.product(), beamspot.position(), lxyMin_, probMin_, nHitsBeforeVtxMax_ ) ) 
-                fg.setPassElectronVeto( true ) ; 
-            else 
-                fg.setPassElectronVeto( false ) ;
+            // Get electron veto flag value from miniAOD PAT photons
+            fg.setPassElectronVeto(pp->passElectronVeto());
 
             // Gen matching
             if( ! evt.isRealData() ) {

@@ -78,8 +78,15 @@ def createStandardSystematicsProducers(process, options):
 
     import flashgg.Systematics.flashggMuonSystematics_cfi as muon_sf
     muon_sf.SetupMuonScaleFactors( process , options.metaConditions["MUON_ID"], options.metaConditions["MUON_ISO"] )
-    
-    setattr( process.flashggElectronSystematics.SystMethods,"BinList",str("process.flashggElectronSystematics."+options.metaConditions["Ele_ID_eff_bin"]))
+   
+    #scale factors for electron ID
+    from   flashgg.Systematics.flashggElectronSystematics_cfi import EleSF_JSONReader
+    binInfoEle = EleSF_JSONReader(options.metaConditions["Ele_ID_SF_FileName"],options.metaConditions["Ele_ID_version"]).getBinInfo()
+    process.flashggElectronSystematics.SystMethods[0].BinList = binInfoEle
+
+    #scale factors for electron reconstruction
+    binInfoEleReco =  EleSF_JSONReader(options.metaConditions["Ele_reco_SF_FileName"],"reco-eff").getBinInfo()
+    process.flashggElectronSystematics.SystMethods[1].BinList = binInfoEleReco
 
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
     from flashgg.Systematics.flashggJetSystematics_cfi import jetSystematicsCustomize
@@ -135,6 +142,32 @@ def cloneTagSequenceForEachSystematic(process,systlabels=[],phosystlabels=[],met
         else:
             process.flashggSystTagMerger.src.append(cms.InputTag("flashggTagSorter" + systlabel))
 
+# ttH tags use large BDTs and DNNs that take up lots of memory and cause crashes with normal workflow
+# This function modifies the workflow so that systematic variations are evaluated in a single instance of the tagger, rather than individual instances for each variation
+def modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystlabels, jetsystlabels):
+    # Set lists of systematics for each tag
+    for tag in ["flashggTTHLeptonicTag", "flashggTTHHadronicTag"]:
+        getattr(process, tag).DiPhotonSuffixes = cms.vstring(phosystlabels)
+        getattr(process, tag).JetsSuffixes = cms.vstring(jetsystlabels)
+        getattr(process, tag).MetSuffixes = cms.vstring(metsystlabels)
+
+        getattr(process, tag).ModifySystematicsWorkflow = cms.bool(True)
+        getattr(process, tag).UseLargeMVAs = cms.bool(True) # enable memory-intensive MVAs
+
+    # Run cms.Sequence(process.flashggTTHLeptonicTag + process.flashggTTHHadronicTag) once at the beginning, put tag sorters for each systematic afterwards, and finally flashggSystTagMerger at the very end
+    process.p.remove(process.flashggTagSorter)
+    process.p.replace(process.flashggSystTagMerger, cms.Sequence(process.flashggTTHLeptonicTag + process.flashggTTHHadronicTag)*process.flashggTagSorter*process.flashggSystTagMerger)
+
+    for systlabel in systlabels:
+        if systlabel == "":
+            continue
+        process.p.remove(getattr(process, 'flashggTagSorter' + systlabel))
+        process.p.replace(process.flashggSystTagMerger, getattr(process, 'flashggTagSorter' + systlabel) * process.flashggSystTagMerger) 
+        setattr(getattr(process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag', systlabel)), cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag', systlabel)) ))
+
+def allowLargettHMVAs(process):
+    for tag in ["flashggTTHLeptonicTag", "flashggTTHHadronicTag"]:
+        getattr(process, tag).UseLargeMVAs = cms.bool(True) # enable memory-intensive MVAs
 
 def customizeSystematicsForMC(process):
     customizePhotonSystematicsForMC(process)
@@ -249,4 +282,22 @@ def useEGMTools(process):
     
     # add sigmaE/E correction and systematics
     process.flashggDiPhotonSystematics.SystMethods.extend( [process.SigmaEOverESmearing_EGM, process.SigmaEOverEShift] )
+
+def runRivetSequence(process, options):
+    process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
+    process.rivetProducerHTXS = cms.EDProducer('HTXSRivetProducer',
+                                               HepMCCollection = cms.InputTag('myGenerator','unsmeared'),
+                                               LHERunInfo = cms.InputTag('externalLHEProducer'),
+                                               ProductionMode = cms.string('AUTO'),
+    )
     
+    process.mergedGenParticles = cms.EDProducer("MergedGenParticleProducer",
+                                                inputPruned = cms.InputTag("prunedGenParticles"),
+                                                inputPacked = cms.InputTag("packedGenParticles"),
+                                            )
+    process.myGenerator = cms.EDProducer("GenParticles2HepMCConverter",
+                                         genParticles = cms.InputTag("mergedGenParticles"),
+                                         genEventInfo = cms.InputTag("generator"),
+                                         signalParticlePdgIds = cms.vint32(25), ## for the Higgs analysis
+                                     )
+    process.p.insert(0, process.mergedGenParticles*process.myGenerator*process.rivetProducerHTXS)

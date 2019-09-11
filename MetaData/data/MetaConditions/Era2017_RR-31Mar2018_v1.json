@@ -6,6 +6,30 @@
     },
 
     "flashggMETsFunction" : "runMETs2017",
+    "flashggMetFilters" :
+    {
+        "rerun_ecal_calib_filter" : true,
+        "data" : 
+        [
+            "Flag_goodVertices", 
+            "Flag_globalSuperTightHalo2016Filter", 
+            "Flag_HBHENoiseFilter", 
+            "Flag_HBHENoiseIsoFilter", 
+            "Flag_EcalDeadCellTriggerPrimitiveFilter",
+            "Flag_BadPFMuonFilter", 
+            "Flag_eeBadScFilter"
+        ],
+        "mc" : 
+        [
+            "Flag_goodVertices",
+            "Flag_globalSuperTightHalo2016Filter",
+            "Flag_HBHENoiseFilter",
+            "Flag_HBHENoiseIsoFilter",
+            "Flag_EcalDeadCellTriggerPrimitiveFilter",
+            "Flag_BadPFMuonFilter"
+        ]
+    },
+
     "DeepJet" : "rerun",
 
     "flashggPhotons" :
@@ -60,7 +84,10 @@
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
 
-    "Ele_ID_eff_bin" : "binInfo2017",
+    "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_eleIDSFs_2017.json",
+    "Ele_ID_version" : "mvaEleID-Fall17-iso-V2-wp90",
+
+    "Ele_reco_SF_FileName" : "flashgg/Systematics/data/2017_reco-eff.json",
 
     "bTagSystematics" :
     {
@@ -97,21 +124,21 @@
 	"NodesReweightingFileName" : "flashgg/Taggers/data/HHTagger/HHreweight_2017nodes_08072019.root",
 	"ttHWeightfile" : "flashgg/Taggers/data/ttHKiller/Keras2017_converted_allnode.pb",
 	"ttHKiller_mean" : [  3.22491144e+02,   7.22919780e+01,   1.49387571e-01,   4.94052483e-03,
-          5.10246425e-04,   1.38947662e+00,   5.31453078e+00,   7.45455854e+00,
-            1.35956692e+02,   7.06566234e+01,   3.71319449e+01,   6.74400372e+01,
-            3.78045958e+01,   1.73739779e+02,   2.44105199e-02,   8.74739133e-02,
-                 -1.06521292e-02,  -8.08607645e-02,  -5.39241839e-03,  -3.57037140e-02,
-                  1.59510158e-01,   2.73751540e-02,   1.89251401e-02,  -4.07854484e-03,
-                       4.75087259e-01,   4.65906361e-01,   1.23640841e+02,   5.92089022e+01,
-                       -8.63826805e-03,  -4.54561747e-03,  -2.04075881e-02,   5.20315820e-03], 
+                              5.10246425e-04,   1.38947662e+00,   5.31453078e+00,   7.45455854e+00,
+                              1.35956692e+02,   7.06566234e+01,   3.71319449e+01,   6.74400372e+01,
+                              3.78045958e+01,   1.73739779e+02,   2.44105199e-02,   8.74739133e-02,
+                              -1.06521292e-02,  -8.08607645e-02,  -5.39241839e-03,  -3.57037140e-02,
+                              1.59510158e-01,   2.73751540e-02,   1.89251401e-02,  -4.07854484e-03,
+                              4.75087259e-01,   4.65906361e-01,   1.23640841e+02,   5.92089022e+01,
+                              -8.63826805e-03,  -4.54561747e-03,  -2.04075881e-02,   5.20315820e-03], 
 	"ttHKiller_std" : [  2.23688125e+02,   6.14480046e+01,   1.89750669e+00,   1.84765326e+00,
                              1.81706814e+00,   6.16140431e-01,   1.57790173e+00,   1.21559976e+01,
-                               3.18350560e+02,   5.51059043e+01,   2.27778847e+01,   5.34930606e+01,
-                               2.33020848e+01,   1.13925303e+02,   1.07162645e+00,   1.11756573e+00,
-                                     1.06602334e+00,   1.05170943e+00,   1.03730169e+00,   1.79671005e+00,
-                                     1.76463679e+00,   1.81416114e+00,   1.72905029e+00,   1.81772461e+00,
-                                           2.79300773e-01,   2.82007646e-01,   6.50499362e+01,   3.08319388e+01,
-                                           9.72514714e-01,   1.09188163e+00,   1.80664926e+00,   1.80460847e+00],
+                             3.18350560e+02,   5.51059043e+01,   2.27778847e+01,   5.34930606e+01,
+                             2.33020848e+01,   1.13925303e+02,   1.07162645e+00,   1.11756573e+00,
+                             1.06602334e+00,   1.05170943e+00,   1.03730169e+00,   1.79671005e+00,
+                             1.76463679e+00,   1.81416114e+00,   1.72905029e+00,   1.81772461e+00,
+                             2.79300773e-01,   2.82007646e-01,   6.50499362e+01,   3.08319388e+01,
+                             9.72514714e-01,   1.09188163e+00,   1.80664926e+00,   1.80460847e+00],
 	"ttHKiller_listmean" : [  1.04960120e+02,  -5.49804481e-03,   3.08285275e-02],
 	"ttHKiller_liststd" : [ 85.77034272,   1.03762195,   1.83170033]
     },
