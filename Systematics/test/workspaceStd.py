@@ -31,6 +31,7 @@ else:
     raise Exception,"Could not find a sensible CMSSW_VERSION for default globaltag"
 
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 
 MUON_ID = "Medium" #["Tight", "Medium" , "Loose", "Soft", "HighPt", "MediumPrompt", "TrkHighPt"]
 MUON_ISO = "LooseRel" #{ LooseID : ["LooseRel"],MediumID:["LooseRel", "TightRel"] , TrkHighPtID:["LooseRelTk", "TightRelTk"], TightIDandIPCut:["LooseRel", "TightRel"], HighPtIDandIPCut:["LooseRelTk", "TightRelTk"] }
@@ -150,7 +151,7 @@ print 'acceptance '+str(customize.acceptance)
 print 'tthTagsOnly '+str(customize.tthTagsOnly)
 print 'doMuFilter '+str(customize.doMuFilter)
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(customize.maxEvents) )
+#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(customize.maxEvents) )
 print "maxEvents: ", str(process.maxEvents)
 print "maxEvents: ", str(customize.maxEvents)
 
