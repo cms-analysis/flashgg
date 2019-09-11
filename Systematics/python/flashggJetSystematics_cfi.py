@@ -252,8 +252,9 @@ class jetSystematicsCustomize:
       if 'JetCorrectorParametersCollection_version' not in self.metaConditions.keys():
          return
       
-      self.process.load("CondCore.DBCommon.CondDBCommon_cfi")
-      self.process.load("CondCore.DBCommon.CondDBSetup_cfi")
+      # self.process.load("CondCore.DBCommon.CondDBCommon_cfi")
+      # self.process.load("CondCore.DBCommon.CondDBSetup_cfi")
+      self.process.load("CondCore.CondDB.CondDB_cfi")
       self.process.jec = cms.ESSource("PoolDBESSource",
                                       DBParameters = cms.PSet(
                                          messageLevel = cms.untracked.int32(0)
@@ -275,7 +276,8 @@ class jetSystematicsCustomize:
       
       self.process.load('Configuration.StandardSequences.Services_cff')
       self.process.load("JetMETCorrections.Modules.JetResolutionESProducer_cfi")
-      from CondCore.DBCommon.CondDBSetup_cfi import CondDBSetup
+      # from CondCore.DBCommon.CondDBSetup_cfi import CondDBSetup
+      from CondCore.CondDB.CondDB_cfi import CondDBSetup
          
       self.process.jer = cms.ESSource("PoolDBESSource",
                                       CondDBSetup,

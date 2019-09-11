@@ -39,6 +39,13 @@ customize.options.register("trigger",
                            VarParsing.VarParsing.varType.string,          # string, int, or float
                            "trigger")
 
+customize.options.register("doPhoIdInputsCorrections",
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           "doPhoIdInputsCorrections"
+                           )
+
 
 customize.setDefault("maxEvents", 10000)
 customize.setDefault("targetLumi", 1.e+3)
@@ -69,6 +76,19 @@ from flashgg.Validation.FlashggTagAndProbeProducer_cfi import flashggTagAndProbe
 from flashgg.Systematics.flashggDiPhotonSystematics_cfi import flashggDiPhotonSystematics
 import flashgg.Taggers.dumperConfigTools as cfgTools
 import flashgg.Validation.tagAndProbeDumperConfig as dumpCfg
+
+# ----------------------------------------------------------------------------------------------------
+# Run shower shape and isolation corrections
+
+if customize.options.doPhoIdInputsCorrections and not customize.processId == "Data":
+    
+    process.load("flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi")
+    import flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi as phoIdInp_Corr
+    phoIdInp_Corr.setup_flashggDifferentialPhoIdInputsCorrection( process, customize.metaConditions )
+    # process.flashggDifferentialPhoIdInputsCorrection = flashggDifferentialPhoIdInputsCorrection.clone()
+    # process.flashggDifferentialPhoIdInputsCorrection.correctIsolations = False
+    # process.flashggDifferentialPhoIdInputsCorrection.reRunRegression = True
+
 
 # ----------------------------------------------------------------------------------------------------
 # Get Trigger paths
@@ -153,7 +173,10 @@ systModules.append(
 process.flashggDiPhotonSystematics = flashggDiPhotonSystematics
 process.flashggDiPhotonSystematics.SystMethods = systModules
 process.flashggDiPhotonSystematics.SystMethods2D = systModules2D
-process.flashggDiPhotonSystematics.src = "flashggDiPhotons"
+if customize.options.doPhoIdInputsCorrections and not customize.processId == "Data":
+    process.flashggDiPhotonSystematics.src = "flashggDifferentialPhoIdInputsCorrection"
+else:
+    process.flashggDiPhotonSystematics.src = "flashggDiPhotons"
 
 # ----------------------------------------------------------------------------------------------------
 # Configure FlashggTagAndProbe Producer
@@ -197,8 +220,13 @@ tnp_sequence = cms.Sequence(flashggTagAndProbe+tagAndProbeDumper)
 # ----------------------------------------------------------------------------------------------------
 # Schedule process
 
-process.p = cms.Path(process.flashggIdentifiedElectrons *
-                     process.flashggDiPhotonSystematics*tnp_sequence)
 
+if customize.options.doPhoIdInputsCorrections and not customize.processId == "Data":
+    process.p = cms.Path(
+        process.flashggDifferentialPhoIdInputsCorrection * process.flashggIdentifiedElectrons *
+        process.flashggDiPhotonSystematics*tnp_sequence)
+else:
+    process.p = cms.Path(process.flashggIdentifiedElectrons *
+                         process.flashggDiPhotonSystematics*tnp_sequence)
 
 customize(process)

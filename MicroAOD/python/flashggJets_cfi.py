@@ -3,8 +3,9 @@
 
 import FWCore.ParameterSet.Config as cms
 #from RecoJets.JetProducers.PileupJetIDParams_cfi import cutbased_new as pu_jetid
-from PhysicsTools.PatAlgos.tools.jetTools        import addJetCollection
-from CondCore.DBCommon.CondDBSetup_cfi import *
+from PhysicsTools.PatAlgos.tools.jetTools import addJetCollection
+# from CondCore.DBCommon.CondDBSetup_cfi import *
+from CondCore.CondDB.CondDB_cfi import *
 
 import os
 

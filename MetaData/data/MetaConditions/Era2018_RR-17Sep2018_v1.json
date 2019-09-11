@@ -125,5 +125,20 @@
                              9.72514714e-01,   1.09188163e+00,   1.80664926e+00,   1.80460847e+00],
 	"ttHKiller_listmean" : [  1.04960120e+02,  -5.49804481e-03,   3.08285275e-02],
 	"ttHKiller_liststd" : [ 85.77034272,   1.03762195,   1.83170033] 
+    },
+
+    "PhoIdInputCorrections":
+    {
+	"corrections_summary" : "flashgg/Taggers/data/PhoIdInputsCorrections/corrections_summary_2018.json",
+	"SS_variables" : ["f0 := pt",
+                          "f1 := superCluster.eta",
+                          "f2 := phi",
+                          "f3 := global.rho",
+                          "f4 := sieip",
+                          "f5 := s4",
+                          "f6 := full5x5_r9",
+                          "f7 := superCluster.phiWidth",
+                          "f8 := full5x5_sigmaIetaIeta",
+                          "f9 := superCluster.etaWidth"]
     }
 }
