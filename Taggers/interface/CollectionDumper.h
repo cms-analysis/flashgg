@@ -6,6 +6,8 @@
 
 #include "TH1.h"
 #include "TTree.h"
+#include "TFile.h"
+#include "TGraph.h"
 #include "CommonTools/Utils/interface/TFileDirectory.h"
 
 //#include "FWCore/Framework/interface/ConsumesCollector.h""
@@ -121,12 +123,14 @@ namespace flashgg {
         bool dumpWorkspace_;
         std::string workspaceName_;
         bool dumpHistos_, dumpGlobalVariables_;
-
+        bool dumpNNLOPSweight_;
+        
         std::map< KeyT, bool> hasSubcat_;
         bool throwOnUnclassified_;
         
         // event weight
         float weight_;
+        float NNLOPSweight_;
         vector<double> pdfWeights_;
         int pdfWeightSize_;
         bool pdfWeightHistosBooked_;
@@ -152,7 +156,7 @@ namespace flashgg {
         //        correctionFile_ = conf.getParameter<edm::FileInPath>("CorrectionFile")
         edm::FileInPath NNLOPSWeightFile_;
         std::vector<std::unique_ptr<TGraph> > NNLOPSWeights_;
-
+        std::string generatorToBeReweightedToNNLOPS_;        
         //std::map<std::string, std::vector<dumper_type> > dumpers_; FIXME template key
         std::map< KeyT, std::vector<dumper_type> > dumpers_;
         RooWorkspace *ws_;
@@ -177,6 +181,8 @@ namespace flashgg {
         pdfWeight_( cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject", edm::InputTag("flashggPDFWeightObject") ) ),
         lheEvent_( cfg.getUntrackedParameter<edm::InputTag>("LHEEventProduct", edm::InputTag("externalLHEProducer") ) ),
         dumpGlobalVariables_( cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true ) ),
+        dumpNNLOPSweight_( cfg.getUntrackedParameter<bool>( "dumpNNLOPSweight", false ) ),
+        
         globalVarsDumper_(0)
     {
         if( dumpGlobalVariables_ ) {
@@ -235,6 +241,7 @@ namespace flashgg {
         classifier_          = cfg.getParameter<edm::ParameterSet>( "classifierCfg" );
         throwOnUnclassified_ = cfg.exists("throwOnUnclassified") ? cfg.getParameter<bool>("throwOnUnclassified") : false;
         splitPdfByStage0Cat_ = cfg.getUntrackedParameter<bool>( "splitPdfByStage0Cat", false);
+        dumpNNLOPSweight_    = cfg.getUntrackedParameter<bool>( "dumpNNLOPSweight", false ) ;
 
         reweighGGHforNNLOPS_ = cfg.getUntrackedParameter<bool>( "reweighGGHforNNLOPS", false);
         if (reweighGGHforNNLOPS_) {
@@ -257,6 +264,7 @@ namespace flashgg {
         nameTemplate_ = formatString( nameTemplate_, replacements );
 
         if( dumpGlobalVariables_ ) {
+            globalVarsDumper_->bookNNLOPSweight(dumpNNLOPSweight_);
             if( splitLumiWeight_ ) {
                 globalVarsDumper_->dumpLumiFactor(lumiWeight_);
                 lumiWeight_ = 1.;
@@ -367,84 +375,103 @@ namespace flashgg {
                 }
             }
         }
-        if (splitPdfByStage0Cat_ && dumpPdfWeights_) {
-            NNLOPSWeightFile_ = cfg.getParameter<edm::FileInPath>( "NNLOPSWeightFile" );
-            TFile* f = TFile::Open(NNLOPSWeightFile_.fullPath().c_str());
-            NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_0jet"))->Clone() );
-            NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_1jet"))->Clone() );
-            NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_2jet"))->Clone() );
-            NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_3jet"))->Clone() );
-            std::cout << "NNLOPSWeights_.size() = " << NNLOPSWeights_.size() << std::endl;
+        
+        if ((splitPdfByStage0Cat_ && dumpPdfWeights_) || dumpNNLOPSweight_) {
+            //        if(dumpPdfWeights_) {
+            if(cfg.existsAs<double>( "NNLOPSWeight" )){
+                NNLOPSweight_ = cfg.getParameter<double>( "NNLOPSWeight" );
+            }
+            
+            else{
+                NNLOPSWeightFile_ = cfg.getParameter<edm::FileInPath>( "NNLOPSWeight" );
+                if ( cfg.exists("generatorToBeReweightedToNNLOPS") ){
+                    generatorToBeReweightedToNNLOPS_ = cfg.getParameter<std::string>( "generatorToBeReweightedToNNLOPS" );
+                }
+                else{
+                    generatorToBeReweightedToNNLOPS_ = "mcatnlo";
+                }
+                //                std::cout<<"NNLOPSWeightFile_ "<<NNLOPSWeightFile_<<std::endl;
+                //                std::cout<<"generatorToBeReweightedToNNLOPS_ "<<generatorToBeReweightedToNNLOPS_<<std::endl;
+                TFile* f = TFile::Open(NNLOPSWeightFile_.fullPath().c_str());
+//                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_0jet"))->Clone() );
+//                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_1jet"))->Clone() );
+//                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_2jet"))->Clone() );
+//                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_3jet"))->Clone() );
+                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get( Form("gr_NNLOPSratio_pt_%s_0jet", generatorToBeReweightedToNNLOPS_.c_str()) ))->Clone() );
+                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get( Form("gr_NNLOPSratio_pt_%s_1jet", generatorToBeReweightedToNNLOPS_.c_str()) ))->Clone() );
+                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get( Form("gr_NNLOPSratio_pt_%s_2jet", generatorToBeReweightedToNNLOPS_.c_str()) ))->Clone() );
+                NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get( Form("gr_NNLOPSratio_pt_%s_3jet", generatorToBeReweightedToNNLOPS_.c_str()) ))->Clone() );
+                std::cout << "NNLOPSWeights_.size() = " << NNLOPSWeights_.size() << std::endl;
+            }
+
         }
     }
-
     //// template<class C, class T, class U>
     //// CollectionDumper<C,T,U>::~CollectionDumper()
     //// {
     //// }
-
+    
     template<class C, class T, class U>
-        void CollectionDumper<C, T, U>::beginJob()
-        {
-        }
-
+    void CollectionDumper<C, T, U>::beginJob()
+    {
+    }
+    
     template<class C, class T, class U>
-        void CollectionDumper<C, T, U>::endJob()
-        {
-         if(dumpPdfWeights_){
-          for (auto &dumper: dumpers_){
-            for (unsigned int i =0; i < dumper.second.size() ; i++){
-              if (dumper.second[i].isBinnedOnly()) continue;
-              else {
-                if (ws_ != NULL) dumper.second[i].compressPdfWeightDatasets(ws_); 
-              }
+    void CollectionDumper<C, T, U>::endJob()
+    {
+        if(dumpPdfWeights_){
+            for (auto &dumper: dumpers_){
+                for (unsigned int i =0; i < dumper.second.size() ; i++){
+                    if (dumper.second[i].isBinnedOnly()) continue;
+                    else {
+                        if (ws_ != NULL) dumper.second[i].compressPdfWeightDatasets(ws_); 
+                    }
+                }
             }
-           }
-          }
         }
-         
-
+    }
+    
+    
     template<class C, class T, class U>
-        double CollectionDumper<C, T, U>::eventWeight( const edm::EventBase &event )
-        {
-            double weight = 1.;
-            if( ! event.isRealData() ) {
-                edm::Handle<GenEventInfoProduct> genInfo;
-                const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&event);
+    double CollectionDumper<C, T, U>::eventWeight( const edm::EventBase &event )
+    {
+        double weight = 1.;
+        if( ! event.isRealData() ) {
+            edm::Handle<GenEventInfoProduct> genInfo;
+            const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&event);
+            if (fullEvent != 0) {
+                fullEvent->getByToken(genInfoToken_, genInfo);
+            } else {
+                event.getByLabel(genInfo_,genInfo);
+            }
+            
+            weight = lumiWeight_;
+            
+            if( LHEWeightName != ""){
+                edm::Handle<LHEEventProduct> product_lhe;
                 if (fullEvent != 0) {
-                    fullEvent->getByToken(genInfoToken_, genInfo);
+                    fullEvent->getByToken(lheEventToken_, product_lhe);
                 } else {
-                    event.getByLabel(genInfo_,genInfo);
+                    event.getByLabel(lheEvent_,product_lhe);
                 }
-
-                weight = lumiWeight_;
-
-                if( LHEWeightName != ""){
-                    edm::Handle<LHEEventProduct> product_lhe;
-                    if (fullEvent != 0) {
-                        fullEvent->getByToken(lheEventToken_, product_lhe);
-                    } else {
-                        event.getByLabel(lheEvent_,product_lhe);
-                    }
-                    if( LHEWeightIndex < 0 ){
-                        for(uint wgt_id = 0 ; wgt_id < product_lhe->weights().size() ; wgt_id++){
-                            auto wgt = product_lhe->weights()[wgt_id] ;
-                            if( wgt.id == LHEWeightName ){
-                                LHEWeightIndex = wgt_id ;
-                            }
+                if( LHEWeightIndex < 0 ){
+                    for(uint wgt_id = 0 ; wgt_id < product_lhe->weights().size() ; wgt_id++){
+                        auto wgt = product_lhe->weights()[wgt_id] ;
+                        if( wgt.id == LHEWeightName ){
+                            LHEWeightIndex = wgt_id ;
                         }
-                        std::cout << "Lumi Weight : " << lumiWeight_ << "; LHEWeightIndex: " << LHEWeightIndex << "; LHEWeightName: " << LHEWeightName << std::endl;
                     }
-                    if( LHEWeightIndex > -1 )
-                        weight *= ( product_lhe->weights()[LHEWeightIndex].wgt/product_lhe->originalXWGTUP () );
+                    std::cout << "Lumi Weight : " << lumiWeight_ << "; LHEWeightIndex: " << LHEWeightIndex << "; LHEWeightName: " << LHEWeightName << std::endl;
                 }
-
-                if( genInfo.isValid() ) {
-                    const auto &weights = genInfo->weights();
-                    // FIXME store alternative/all weight-sets
-                    if( ! weights.empty() ) {
-                        weight *= weights[0];
-                    }
+                if( LHEWeightIndex > -1 )
+                    weight *= ( product_lhe->weights()[LHEWeightIndex].wgt/product_lhe->originalXWGTUP () );
+            }
+            
+            if( genInfo.isValid() ) {
+                const auto &weights = genInfo->weights();
+                // FIXME store alternative/all weight-sets
+                if( ! weights.empty() ) {
+                    weight *= weights[0];
                 }
                 
 
@@ -460,11 +487,15 @@ namespace flashgg {
                     } else {
                         weight *= globalVarsDumper_->cache().puweight;
                     }
+
                 }
             }
-            return weight;
         }
+        
+        return weight;
+    }
 
+    
     template<class C, class T, class U>
     int CollectionDumper<C, T, U>::getStage0cat( const edm::EventBase &event ) {
         //        std::cout << "In getStage0cat" << std::endl;
@@ -510,7 +541,7 @@ namespace flashgg {
             return htxsClassification->jets30.size();
         }
     }
-
+    
     template<class C, class T, class U>
     float CollectionDumper<C, T, U>::getStxsPtH( const edm::EventBase &event ) {
         edm::Handle<float> stxsPtH;
@@ -533,125 +564,125 @@ namespace flashgg {
         }
     }
 
-
     template<class C, class T, class U>
-        vector<double> CollectionDumper<C, T, U>::pdfWeights( const edm::EventBase &event )
-        {   
-            vector<double> pdfWeights;
-            edm::Handle<vector<flashgg::PDFWeightObject> > WeightHandle;
-            const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&event);
-            if (fullEvent != 0) {
-                fullEvent->getByToken(pdfWeightToken_, WeightHandle);
+    vector<double> CollectionDumper<C, T, U>::pdfWeights( const edm::EventBase &event )
+    {   
+        vector<double> pdfWeights;
+        edm::Handle<vector<flashgg::PDFWeightObject> > WeightHandle;
+        const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&event);
+        if (fullEvent != 0) {
+            fullEvent->getByToken(pdfWeightToken_, WeightHandle);
+        } else {
+            event.getByLabel(pdfWeight_, WeightHandle);
+        }
+
+        for( unsigned int weight_index = 0; weight_index < (*WeightHandle).size(); weight_index++ ){
+
+            vector<uint16_t> compressed_weights = (*WeightHandle)[weight_index].pdf_weight_container; 
+            vector<uint16_t> compressed_alpha_s_weights = (*WeightHandle)[weight_index].alpha_s_container; 
+            vector<uint16_t> compressed_scale_weights = (*WeightHandle)[weight_index].qcd_scale_container;
+
+            std::vector<float> uncompressed = (*WeightHandle)[weight_index].uncompress( compressed_weights );
+            std::vector<float> uncompressed_alpha_s = (*WeightHandle)[weight_index].uncompress( compressed_alpha_s_weights );
+            std::vector<float> uncompressed_scale = (*WeightHandle)[weight_index].uncompress( compressed_scale_weights );
+
+            for( unsigned int j=0; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
+                pdfWeights.push_back(uncompressed[j]);
+                //                    std::cout << "pdfWeights " << j<< " " << uncompressed[j] << std::endl;
+            }
+            for( unsigned int j=0; j<(*WeightHandle)[weight_index].alpha_s_container.size();j++ ) {
+                pdfWeights.push_back(uncompressed_alpha_s[j]);
+                //                    std::cout << "alpha_s " << j << " " << uncompressed_alpha_s[j] << std::endl;
+            }
+            if ( (*WeightHandle)[weight_index].qcd_scale_container.size() == 0 ) {
+                //                    std::cout << " QCD scale weight workaround, putting in 9 dummies " << std::endl;
+                for ( unsigned int j = 0 ; j < 9 ; j++ ) {
+                    pdfWeights.push_back(0.); // should never be used in case this workaround is in place
+                }
             } else {
-                event.getByLabel(pdfWeight_, WeightHandle);
-            }
-
-            for( unsigned int weight_index = 0; weight_index < (*WeightHandle).size(); weight_index++ ){
-
-                vector<uint16_t> compressed_weights = (*WeightHandle)[weight_index].pdf_weight_container; 
-                vector<uint16_t> compressed_alpha_s_weights = (*WeightHandle)[weight_index].alpha_s_container; 
-                vector<uint16_t> compressed_scale_weights = (*WeightHandle)[weight_index].qcd_scale_container;
-
-                std::vector<float> uncompressed = (*WeightHandle)[weight_index].uncompress( compressed_weights );
-                std::vector<float> uncompressed_alpha_s = (*WeightHandle)[weight_index].uncompress( compressed_alpha_s_weights );
-                std::vector<float> uncompressed_scale = (*WeightHandle)[weight_index].uncompress( compressed_scale_weights );
-
-                for( unsigned int j=0; j<(*WeightHandle)[weight_index].pdf_weight_container.size();j++ ) {
-                    pdfWeights.push_back(uncompressed[j]);
-                    //                    std::cout << "pdfWeights " << j<< " " << uncompressed[j] << std::endl;
-                }
-                for( unsigned int j=0; j<(*WeightHandle)[weight_index].alpha_s_container.size();j++ ) {
-                    pdfWeights.push_back(uncompressed_alpha_s[j]);
-                    //                    std::cout << "alpha_s " << j << " " << uncompressed_alpha_s[j] << std::endl;
-                }
-                if ( (*WeightHandle)[weight_index].qcd_scale_container.size() == 0 ) {
-                    //                    std::cout << " QCD scale weight workaround, putting in 9 dummies " << std::endl;
-                    for ( unsigned int j = 0 ; j < 9 ; j++ ) {
-                        pdfWeights.push_back(0.); // should never be used in case this workaround is in place
-                    }
-                } else {
-                    for( unsigned int j=0; j<(*WeightHandle)[weight_index].qcd_scale_container.size();j++ ) {
-                        pdfWeights.push_back(uncompressed_scale[j]);
-                    }
+                for( unsigned int j=0; j<(*WeightHandle)[weight_index].qcd_scale_container.size();j++ ) {
+                    pdfWeights.push_back(uncompressed_scale[j]);
                 }
             }
-            return pdfWeights;
+        }
+        return pdfWeights;
+    }    
+    
+    template<class C, class T, class U>
+    void CollectionDumper<C, T, U>::analyze( const edm::EventBase &event )
+    {
+        edm::Handle<collection_type> collectionH;
+        
+        const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&event);
+        if (fullEvent != 0) {
+            fullEvent->getByToken(srcToken_, collectionH);
+        } else {
+            event.getByLabel(src_,collectionH);
+        }
+        const auto & collection = *collectionH;
+        
+        if( globalVarsDumper_ ) { globalVarsDumper_->fill( event ); }
+        
+        weight_ = eventWeight( event );
+        if( dumpPdfWeights_){
+            
+            // want pdfWeights_ to be scale factors rather than akternative weights.
+            // To do this, each PDF weight needs to be divided by the nominal MC weight
+            // which is obtained by dividing through weight_ by the lumiweight...
+            // The Scale Factor is then pdfWeight/nominalMC weight
+            pdfWeights_ = pdfWeights( event );
+            for (unsigned int i = 0; i < pdfWeights_.size() ; i++){
+                pdfWeights_[i]= (pdfWeights_[i] )*(lumiWeight_/weight_); // ie pdfWeight/nominal MC weight
+            }
+        }
+        if ( splitPdfByStage0Cat_  || dumpNNLOPSweight_) {
+            stage0cat_ = getStage0cat( event );
+            stxsNJet_ = getStxsNJet( event );
+            stxsPtH_ = getStxsPtH( event );
+            float extraweight = 1.;
+            if (NNLOPSWeights_.size()==4){
+                    
+                if ( stxsNJet_ == 0) extraweight = NNLOPSWeights_[0]->Eval(min(stxsPtH_,float(125.0)));
+                if ( stxsNJet_ == 1) extraweight = NNLOPSWeights_[1]->Eval(min(stxsPtH_,float(625.0)));
+                if ( stxsNJet_ == 2) extraweight = NNLOPSWeights_[2]->Eval(min(stxsPtH_,float(800.0)));
+                if ( stxsNJet_ >= 3) extraweight = NNLOPSWeights_[3]->Eval(min(stxsPtH_,float(925.0)));
+            }
+            NNLOPSweight_ = extraweight;
+            //            std::cout << "NNLOPS " << stage0cat_ << " " << stxsNJet_ << " " << stxsPtH_ << " " << extraweight << " " << weight_ << endl;
+            //                    std::cout << " IN CollectionDumper::analyze extraweight = " << extraweight << " so adjusted weight is " << weight_ << std::endl;
+            globalVarsDumper_->setNNLOPSweight(NNLOPSweight_);                
         }
         
-
-
-    template<class C, class T, class U>
-        void CollectionDumper<C, T, U>::analyze( const edm::EventBase &event )
-        {
-            edm::Handle<collection_type> collectionH;
-
-            const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&event);
-            if (fullEvent != 0) {
-                fullEvent->getByToken(srcToken_, collectionH);
-            } else {
-                event.getByLabel(src_,collectionH);
-            }
-            const auto & collection = *collectionH;
-
-            if( globalVarsDumper_ ) { globalVarsDumper_->fill( event ); }
-
-            weight_ = eventWeight( event );
-            //            std::cout << " IN CollectionDumper::analyze initial weight is " << weight_ << " dump=" << dumpPdfWeights_ << " split=" << splitPdfByStage0Cat_ << std::endl;
-            if( dumpPdfWeights_){
-                
-                // want pdfWeights_ to be scale factors rather than akternative weights.
-                // To do this, each PDF weight needs to be divided by the nominal MC weight
-                // which is obtained by dividing through weight_ by the lumiweight...
-                // The Scale Factor is then pdfWeight/nominalMC weight
-                pdfWeights_ = pdfWeights( event );
-                for (unsigned int i = 0; i < pdfWeights_.size() ; i++){
-                    pdfWeights_[i]= (pdfWeights_[i] )*(lumiWeight_/weight_); // ie pdfWeight/nominal MC weight
-                }
-                if ( splitPdfByStage0Cat_ ) {
-                    stage0cat_ = getStage0cat( event );
-                    stxsNJet_ = getStxsNJet( event );
-                    stxsPtH_ = getStxsPtH( event );
-                    //                    std::cout << " IN CollectionDumper::analyze set stage0cat to " << stage0cat_ << " and stxsNjet_ to " << stxsNJet_ << " and stxsPtH_ to " << stxsPtH_ << std::endl;
-                    if (reweighGGHforNNLOPS_) {
-                        float extraweight = 1.;
-                        if ( stxsNJet_ == 0) extraweight = NNLOPSWeights_[0]->Eval(min(stxsPtH_,float(125.0)));
-                        if ( stxsNJet_ == 1) extraweight = NNLOPSWeights_[1]->Eval(min(stxsPtH_,float(625.0)));
-                        if ( stxsNJet_ == 2) extraweight = NNLOPSWeights_[2]->Eval(min(stxsPtH_,float(800.0)));
-                        if ( stxsNJet_ >= 3) extraweight = NNLOPSWeights_[3]->Eval(min(stxsPtH_,float(925.0)));
-                        weight_ *= extraweight;
-                        // std::cout << " IN CollectionDumper::analyze extraweight = " << extraweight << " so adjusted weight is " << weight_ << std::endl;
-                    }
-
-                }
-            }
-
-            int nfilled = maxCandPerEvent_;
-
-            for( auto &cand : collection ) {
-                auto cat = classifier_( cand );
-                auto which = dumpers_.find( cat.first );
-
-                if( which != dumpers_.end() ) {
-                    int isub = ( hasSubcat_[cat.first] ? cat.second : 0 );
-                   double fillWeight =weight_;
-                   const  WeightedObject* tag = dynamic_cast<const WeightedObject* >( &cand );
-                    if ( tag != NULL ){
-
+        
+        int nfilled = maxCandPerEvent_;
+        
+        for( auto &cand : collection ) {
+            auto cat = classifier_( cand );
+            auto which = dumpers_.find( cat.first );
+            
+            if( which != dumpers_.end() ) {
+                int isub = ( hasSubcat_[cat.first] ? cat.second : 0 );
+                double fillWeight =weight_;
+                const  WeightedObject* tag = dynamic_cast<const WeightedObject* >( &cand );
+                if ( tag != NULL ){
                     fillWeight =fillWeight*(tag->centralWeight());
-                    }
-                    which->second[isub].fill( cand, fillWeight, pdfWeights_, maxCandPerEvent_ - nfilled, stage0cat_ );
-                    --nfilled;
-                } else if( throwOnUnclassified_ ) {
-                    throw cms::Exception( "Runtime error" ) << "could not find dumper for category [" << cat.first << "," << cat.second << "]"
-                        << "If you want to allow this (eg because you don't want to dump some of the candidates in the collection)\n"
-                        << "please set throwOnUnclassified in the dumper configuration\n";
                 }
-                if( ( maxCandPerEvent_ > 0 )  && nfilled == 0 ) { break; }
+                which->second[isub].fill( cand, fillWeight, pdfWeights_, maxCandPerEvent_ - nfilled, stage0cat_ );
+                --nfilled;
+            } else if( throwOnUnclassified_ ) {
+                throw cms::Exception( "Runtime error" ) << "could not find dumper for category [" << cat.first << "," << cat.second << "]"
+                                                        << "If you want to allow this (eg because you don't want to dump some of the candidates in the collection)\n"
+                                                        << "please set throwOnUnclassified in the dumper configuration\n";
             }
+            if( ( maxCandPerEvent_ > 0 )  && nfilled == 0 ) { break; }
         }
-
+            
+        if( collection.size() == 0 ) {
+            cout << "No candidate found in " << src_.label()  << " for event " <<  event.id().event() << " " << event.id().luminosityBlock() << " "<< event.id().run() << endl;
+        }
+    }
 }
-
+    
 #endif // flashgg_CollectionDumper_h
 // Local Variables:
 // mode:c++

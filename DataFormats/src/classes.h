@@ -13,6 +13,8 @@
 #include "flashgg/DataFormats/interface/Electron.h"
 #include "flashgg/DataFormats/interface/Muon.h"
 #include "flashgg/DataFormats/interface/GenPhotonExtra.h"
+#include "flashgg/DataFormats/interface/GenLeptonExtra.h"
+#include "flashgg/DataFormats/interface/GenJetExtra.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "flashgg/DataFormats/interface/Met.h"
 #include "flashgg/DataFormats/interface/Photon.h"
@@ -160,6 +162,12 @@ namespace  {
         edm::Wrapper<flashgg::GenPhotonExtra>                                 wrp_fgg_pho_xtra;
         std::vector<flashgg::GenPhotonExtra>                                  vec_fgg_pho_xtra;
         edm::Wrapper<std::vector<flashgg::GenPhotonExtra> >               wrp_vec_fgg_pho_xtra;
+
+        flashgg::GenLeptonExtra                                                   fgg_lep_xtra;
+        edm::Ptr<flashgg::GenLeptonExtra>                                     ptr_fgg_lep_xtra;
+        std::vector<flashgg::GenLeptonExtra>                                  vec_fgg_lep_xtra;
+        edm::Wrapper<flashgg::GenLeptonExtra>                                 wrp_fgg_lep_xtra;
+        edm::Wrapper<std::vector<flashgg::GenLeptonExtra> >               wrp_vec_fgg_lep_xtra;
 
         flashgg::DiPhotonMVAResult res;
         //  edm::Wrapper<flashgg::DiPhotonMVAResult> wrp_res;

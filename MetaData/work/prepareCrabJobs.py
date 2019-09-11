@@ -334,7 +334,6 @@ if options.createCrabConfig:
         while os.path.isdir("crab_" + jobname):
             itry += 1
             jobname = jobname0+"_%s" % ( str(itry).zfill(2) )
-            
         # Actually create the config file: copy the template and replace things where appropriate
         crabConfigFile = "crabConfig_" + jobname + ".py"
         print "Preparing crab for processing ", PrimaryDataset, "\n      -> ", crabConfigFile

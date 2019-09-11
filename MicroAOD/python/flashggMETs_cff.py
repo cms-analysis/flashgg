@@ -99,7 +99,6 @@ def runMETs2017(process, options):
                                          metTag = cms.InputTag('slimmedMETs'),
     )
     process.flashggMetSequence = cms.Sequence(process.fullPatMetSequence*process.flashggMets)
-
         
 #===========================================================================================================================#
 

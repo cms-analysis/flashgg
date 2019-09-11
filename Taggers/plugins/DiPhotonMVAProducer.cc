@@ -115,6 +115,7 @@ namespace flashgg {
             DiphotonMva_->AddVariable( "TMath::Cos(ph1.phi-ph2.phi)", &CosPhi_ );
             DiphotonMva_->AddVariable( "ph1.idmva", &leadmva_ );
             DiphotonMva_->AddVariable( "ph2.idmva", &subleadmva_ );
+            //            std::cout<<"BDT, old, is booked reading weight file "<<diphotonMVAweightfile_.fullPath()<<std::endl;
             DiphotonMva_->BookMVA( "BDT", diphotonMVAweightfile_.fullPath() );
             //            std::cout << "finished reading mva" << std::endl;
         }
@@ -135,6 +136,7 @@ namespace flashgg {
 
             //            DiphotonMva_->AddSpectator("sigmarv_decorr", &sigmarv_decorr_       );
             //            DiphotonMva_->AddSpectator("Background_wei", &weightBkg_           );            
+            //            std::cout<<"BDT, new, is booked reading weight file "<<diphotonMVAweightfile_.fullPath()<<std::endl;
             DiphotonMva_->BookMVA( "BDT", diphotonMVAweightfile_.fullPath() );
             //            std::cout << "finished reading mva" << std::endl;
         }
