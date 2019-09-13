@@ -48,8 +48,6 @@ namespace flashgg {
         int subleadMomMomID() const { return sublead_motherMotherID_; }
         int subleadPassFrix() const { return sublead_passFrix_; }
         double subleadSmallestDr() const { return sublead_smallestDr_; }
-
-        const float& metPt() const { return metPt_; }
         
         void setJets( std::vector<edm::Ptr<Jet> > Jets ) { Jets_ = Jets; }
         void setBJets( std::vector<edm::Ptr<Jet> > BJets )  { BJets_ = BJets;}
@@ -60,7 +58,6 @@ namespace flashgg {
         void setLepEta( std::vector<double> lepEta ) { lepEta_ = lepEta; }
         void setLepPhi( std::vector<double> lepPhi ) { lepPhi_ = lepPhi; }
         void setLepType( std::vector<int> lepType ) { lepType_ = lepType; }
-        void setMetPt( float& metPt ) { metPt_ = metPt; }
 
         void setLeadPrompt(int leadPrompt) { leadPrompt_ = leadPrompt; }
         void setSubleadPrompt(int subleadPrompt) { subleadPrompt_ = subleadPrompt; }
