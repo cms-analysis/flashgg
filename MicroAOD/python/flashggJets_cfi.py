@@ -91,7 +91,7 @@ def addFlashggPFCHSJets(process,
 
   if not hasattr(process,"QGPoolDBESSource"):
     process.QGPoolDBESSource = cms.ESSource("PoolDBESSource",
-                                            CondDBSetup,
+                                            #CondDB,
                                             toGet = cms.VPSet(),
                                             connect = cms.string('sqlite:QGL_'+qgDatabaseVersion+'.db') 
                                             )
