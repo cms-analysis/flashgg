@@ -8,7 +8,7 @@
 #include "flashgg/DataFormats/interface/VertexCandidateMap.h"
 #include "flashgg/MicroAOD/interface/PhotonMCUtils.h"
 #include "PhysicsTools/JetMCUtils/interface/CandMCTag.h"
-#include "PhysicsTools/CandUtils/interface/pdgIdUtils.h"
+#include "CommonTools/CandUtils/interface/pdgIdUtils.h"
 //#include "flashgg/MicroAOD/interface/JetMCUtils.h"
 
 

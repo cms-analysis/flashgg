@@ -509,11 +509,11 @@ if customize.options.WeightName :
     process.tagsDumper.LHEWeightName = cms.untracked.string(customize.options.WeightName)
 
 
-if(customize.doFiducial):
-#    if customize.processId == "Data":
-#        fc.addRecoGlobalVariables(process, process.tagsDumper)
-#    else:
-    fc.addObservables(process, process.tagsDumper, customize.processId )
+# if(customize.doFiducial):
+# #    if customize.processId == "Data":
+# #        fc.addRecoGlobalVariables(process, process.tagsDumper)
+# #    else:
+#     fc.addObservables(process, process.tagsDumper, customize.processId )
 
 if customize.processId == "tHq":
     import flashgg.Taggers.THQLeptonicTagVariables as var
@@ -842,11 +842,9 @@ if customize.doDoubleHTag:
 #     if not customize.processId == "Data":
 #         fc.addGenOnlyAnalysis(process,customize.processId,customize.acceptance,tagList,systlabels,pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights))
 
-    
 if(customize.doFiducial):
-    fc.addObservables(process, process.tagsDumper, customize.processId , process.flashggTagSequence)
+        fc.addObservables(process, process.tagsDumper, customize.processId , process.flashggTagSequence)
         
->>>>>>> topic_mergeDifferentials_pigaz
 if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
 process.options.allowUnscheduled = cms.untracked.bool(True)
 
