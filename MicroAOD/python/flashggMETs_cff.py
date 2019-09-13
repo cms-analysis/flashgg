@@ -7,7 +7,8 @@ from os import environ
 usePrivateSQlite=True
 
 if usePrivateSQlite:
-    from CondCore.DBCommon.CondDBSetup_cfi import *
+    # from CondCore.DBCommon.CondDBSetup_cfi import *
+    from CondCore.CondDB.CondDB_cfi import CondDB as CondDBSetup
     import os
 
 # Store a flag in the flashgg MET to tell us if the event passes the ecalBadCalibFilter

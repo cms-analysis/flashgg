@@ -76,8 +76,6 @@ namespace flashgg {
                 variables_.push_back( std::make_tuple( name, functors_.size() - 1 ) );
             }
         }
-
-        bookMVA();
     }
 
     template<class F, class O, bool useXGB>
@@ -94,28 +92,28 @@ namespace flashgg {
         if( !useXGB )
             {
                 if( reader_ ) { return; }
-                reader_ = new TMVA::Reader( "!Color" );
+                reader_ = new TMVA::Reader( "!Color:Silent" );
             }
-        values_.resize( functors_.size(), 0. );
-        for( auto &var : variables_ ) {
-            auto &name = std::get<0>( var );
-            auto ivar = std::get<1>( var );
-            if( ivar >= 0 ) {
+        
+        values_.resize( variables_.size(), 0. );
+        for( size_t i = 0; i<variables_.size(); ++i ) {
+            auto &name = std::get<0>( variables_[i] );
+            auto pos = name.find( "::" );
+            auto vname = name.substr( 0, pos );
+            if( pos == name.npos ) {
                 if( useXGB )
-                    xgbVars_.push_back(std::make_tuple(name, values_[ivar]));
+                    xgbVars_.push_back(std::make_tuple(name, 0. ));
                 else
-                    reader_->AddVariable( name, &values_[ivar] );
-            } else {
-                assert( global_ != 0 );
-                auto pos = name.find( "::" );
-                auto vname = name.substr( 0, pos );
-                auto gname = name.substr( pos + 2 );
+                    reader_->AddVariable( name, &values_[i] );
+            }
+            else {
                 if( useXGB )
-                    xgbVars_.push_back(std::make_tuple(vname, global_->valueOf( gname )));
+                    xgbVars_.push_back(std::make_tuple(vname, 0. ));
                 else
-                    reader_->AddVariable( vname, global_->addressOf( gname ) );
+                    reader_->AddVariable( vname, &values_[i] );
             }
         }
+        
         if( useXGB )
             xgbComputer_ = XGBComputer(&xgbVars_, weights_);    
         else
@@ -125,6 +123,9 @@ namespace flashgg {
     template<class F, class O, bool useXGB>
     std::vector<float> MVAComputer<F, O, useXGB>::operator()( const object_type &obj ) const
     {
+        if( ! reader_ && values_.size()==0 )
+            bookMVA(); 
+        
         for( size_t ivar = 0; ivar < variables_.size(); ++ivar ) {
             auto fvar = std::get<1>(variables_[ivar]);
             if(fvar >= 0)
@@ -136,33 +137,35 @@ namespace flashgg {
                     if( useXGB )
                         std::get<1>(xgbVars_[ivar]) = values_[ivar];
                 }
-            else if( useXGB )
+            else
                 {
                     auto name = std::get<0>(variables_[ivar]);
                     auto pos = name.find( "::" );
-                    auto vname = name.substr( 0, pos );
                     auto gname = name.substr( pos + 2 );
-                    std::get<1>(xgbVars_[ivar]) = global_->valueOf( gname );
+                    values_[ivar] = global_->valueOf( gname );
+                    if( useXGB )
+                        std::get<1>(xgbVars_[ivar]) = global_->valueOf( gname );
                 }
         }
 
+        std::vector<float> result;
+        
         if( !useXGB )
-            {
-                if( ! reader_ ) { bookMVA(); }
-                if(multiclass_==true)
-                    return reader_->EvaluateMulticlass(classifier_.c_str());
-                else       
-                {
-                    std::vector<float> result;
-                    result.push_back(regression_ ? reader_->EvaluateRegression(0, classifier_.c_str()) : reader_->EvaluateMVA( classifier_.c_str() ));
-                    return result;
-                }
-            }
+        {
+            if(multiclass_)
+                result = reader_->EvaluateMulticlass( classifier_.c_str() );
+            else if(regression_)
+                result = reader_->EvaluateRegression( classifier_.c_str() );
+            else
+                result.push_back(reader_->EvaluateMVA( classifier_.c_str() ));
+        }
         else
         {
             xgbComputer_.SetVariables(&xgbVars_);
-            return xgbComputer_();
+            result = xgbComputer_();
         }
+        
+        return result;
     }
 }
 

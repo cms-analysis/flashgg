@@ -81,13 +81,14 @@ def getConfig(extended=False, dumpShowerShapes=False, dumpClusterShapes=False, d
                               "e1x3"]
 
     singleElePfIsos = [("pfPhoIso03", "PhoIso03"),
-                       ("pfChgIsoWrtWorstVtx03", "ChIso03worst")]
+                       ("pfChgIsoWrtWorstVtx03", "ChIso03worst"),
+                       ("pfChgIsoWrtChosenVtx03","ChIso03")]
 
     singleEleEgIsos = [("egChargedHadronIso", "ChIso"),
                        ("egPhotonIso", "PhoIso"),
                        ("egNeutralHadronIso", "NeutIso")]
 
-    singleEleViewPfIso = [("pfChIso03WrtChosenVtx", "ChIso03")]
+    # singleEleViewPfIso = [("pfChIso03WrtChosenVtx", "ChIso03")]
 
     genVars = ["genMass := diPhoton.genP4.mass",
                "probeGenPt := ?getProbe.hasMatchedGenPhoton?getProbe.matchedGenPhoton.pt:0",
@@ -98,15 +99,18 @@ def getConfig(extended=False, dumpShowerShapes=False, dumpClusterShapes=False, d
                   "tagMatchType := getTag.genMatchType",
                   "tagGenIso := ?getTag.hasUserFloat('genIso')?getTag.userFloat('genIso'):0", ]
 
-    probeUncorrClIsos = ["probeUncorrR9              := ? getProbe.hasUserFloat('uncorr_r9') ? getProbe.userFloat('uncorr_r9') : -999.",
-                         "probeUncorrEtaWidth        := ? getProbe.hasUserFloat('uncorr_etaWidth') ? getProbe.userFloat('uncorr_etaWidth') : -999.",
-                         "probeUncorrS4              := ? getProbe.hasUserFloat('uncorr_s4') ? getProbe.userFloat('uncorr_s4') : -999.",
-                         "probeUncorrPhiWidth        := ? getProbe.hasUserFloat('uncorr_phiWidth') ? getProbe.userFloat('uncorr_phiWidth') : -999.",
-                         "probeUncorrSigmaIeIe       := ? getProbe.hasUserFloat('uncorr_sieie') ? getProbe.userFloat('uncorr_sieie') : -999",
-                         "probeUncorrCovarianceIeIp  := ? getProbe.hasUserFloat('uncorr_sieip') ? getProbe.userFloat('uncorr_sieip') : -999",
-                         "probeUncorrPhoIso          := ? getProbe.hasUserFloat('uncorr_phoIso') ? getProbe.userFloat('uncorr_phoIso') : -999",
-                         "probeUncorrChIso           := ? getProbe.hasUserFloat('uncorr_chIso') ? getProbe.userFloat('uncorr_chIso') : -999",
-                         "probeUncorrChIsoWorst      := ? getProbe.hasUserFloat('uncorr_chIsoWorst') ? getProbe.userFloat('uncorr_chIsoWorst') : -999"]
+    probeUncorrClIsos = ["probeR9_uncorr              := ? getProbe.hasUserFloat('uncorr_r9') ? getProbe.userFloat('uncorr_r9') : -999.",
+                         "probeEtaWidth_uncorr        := ? getProbe.hasUserFloat('uncorr_etaWidth') ? getProbe.userFloat('uncorr_etaWidth') : -999.",
+                         "probeS4_uncorr              := ? getProbe.hasUserFloat('uncorr_s4') ? getProbe.userFloat('uncorr_s4') : -999.",
+                         "probePhiWidth_uncorr        := ? getProbe.hasUserFloat('uncorr_phiWidth') ? getProbe.userFloat('uncorr_phiWidth') : -999.",
+                         "probeSigmaIeIe_uncorr       := ? getProbe.hasUserFloat('uncorr_sieie') ? getProbe.userFloat('uncorr_sieie') : -999",
+                         "probeCovarianceIeIp_uncorr  := ? getProbe.hasUserFloat('uncorr_sieip') ? getProbe.userFloat('uncorr_sieip') : -999",
+                         "probePhoIso_uncorr          := ? getProbe.hasUserFloat('uncorr_pfPhoIso03') ? getProbe.userFloat('uncorr_pfPhoIso03') : -999",
+                         "probeChIso03_uncorr           := ? getProbe.hasUserFloat('uncorr_pfChIso03') ? getProbe.userFloat('uncorr_pfChIso03') : -999",
+                         "probeChIso03worst_uncorr      := ? getProbe.hasUserFloat('uncorr_pfChIsoWorst03') ? getProbe.userFloat('uncorr_pfChIsoWorst03') : -999"]
+
+    probeCorrClVars = ["probePhiWidth_corr := ? getProbe.hasUserFloat('phiWidth') ? getProbe.userFloat('phiWidth') : -999",
+                       "probeEtaWidth_corr := ? getProbe.hasUserFloat('etaWidth') ? getProbe.userFloat('etaWidth') : -999"]
 
     singleEleVars = minSingleEleVars
     singleEleViewVars = minSingleEleViewVars
@@ -118,7 +122,7 @@ def getConfig(extended=False, dumpShowerShapes=False, dumpClusterShapes=False, d
         singleEleVars.extend(singleEleClusterShapes)
     if dumpPfIsos:
         singleEleVars.extend(singleElePfIsos)
-        singleEleViewVars.extend(singleEleViewPfIso)
+        # singleEleViewVars.extend(singleEleViewPfIso)
     if dumpEgIsos:
         singleEleVars.extend(singleEleEgIsos)
 
@@ -136,7 +140,7 @@ def getConfig(extended=False, dumpShowerShapes=False, dumpClusterShapes=False, d
         variables.extend(tagGenVars)
 
     if trackClIsoCorrections:
-        variables.extend(probeUncorrClIsos)
+        variables.extend(probeUncorrClIsos + probeCorrClVars)
 
     return variables
 

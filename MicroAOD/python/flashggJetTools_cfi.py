@@ -13,8 +13,9 @@ def loadLocalJECDBfile(process,
     #===================================================
     #print ':: dbfile == ', dbfile
     
-    process.load("CondCore.DBCommon.CondDBCommon_cfi")
-    process.load("CondCore.DBCommon.CondDBSetup_cfi")
+    # process.load("CondCore.DBCommon.CondDBCommon_cfi")
+    # process.load("CondCore.DBCommon.CondDBSetup_cfi")
+    process.load("CondCore.CondDB.CondDB_cfi")
     setattr(process, 'jec' + label,
             cms.ESSource("PoolDBESSource",
                          DBParameters = cms.PSet(
