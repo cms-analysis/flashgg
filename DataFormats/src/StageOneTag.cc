@@ -15,22 +15,18 @@ StageOneTag::StageOneTag( edm::Ptr<DiPhotonCandidate> dipho, DiPhotonMVAResult m
     DiPhotonTagBase::DiPhotonTagBase( dipho, mvares ) {
 }
 
-StageOneTag::StageOneTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvaRes, edm::Ptr<VBFDiPhoDiJetMVAResult> vbfDiPhoDiJet_mvaRes ) :
-    StageOneTag::StageOneTag( diPho, *mvaRes, *vbfDiPhoDiJet_mvaRes ) {}
+StageOneTag::StageOneTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<DiPhotonMVAResult> mvaRes, edm::Ptr<VBFMVAResult> vbf_mvaRes ) :
+    StageOneTag::StageOneTag( diPho, *mvaRes, *vbf_mvaRes ) {}
 
-StageOneTag::StageOneTag( edm::Ptr<DiPhotonCandidate> dipho, DiPhotonMVAResult mvares, VBFDiPhoDiJetMVAResult vbfDiPhoDiJet_mvaRes ) :
+StageOneTag::StageOneTag( edm::Ptr<DiPhotonCandidate> dipho, DiPhotonMVAResult mvares, VBFMVAResult vbf_mvaRes ) :
     StageOneTag::StageOneTag( dipho, mvares )
 {
-    vbfDiPhoDiJet_mva_result_ = vbfDiPhoDiJet_mvaRes;
+    vbfmva_result_ = vbf_mvaRes;
 }
 
-const VBFDiPhoDiJetMVAResult StageOneTag::VBFDiPhoDiJetMVA() const
-{
-    return vbfDiPhoDiJet_mva_result_;
-}
 const VBFMVAResult StageOneTag::VBFMVA() const
 {
-    return vbfDiPhoDiJet_mva_result_.vbfMvaResult;
+    return vbfmva_result_;
 }
 
 void StageOneTag::computeStage1Kinematics( const edm::Ptr<flashgg::Jet> j0, const edm::Ptr<flashgg::Jet> j1, float ptV, float lepeta1, float lepphi1, float lepeta2, float lepphi2 ) {
@@ -39,8 +35,7 @@ void StageOneTag::computeStage1Kinematics( const edm::Ptr<flashgg::Jet> j0, cons
     unsigned int nJ = 0;
     float mjj = 0.;
     float ptHjj = 0.;
-    float mvaScore = this->diPhotonMVA().mvaValue(); //FIXME for compilation
-    //float mvaScore = this->diPhotonMVA().xgbMvaValue(); // modified to give the xgboost score
+    float mvaScore = this->diPhotonMVA().mvaValue();
     mvaScore = 1. / ( 1. + exp( 0.5*log( 2./(mvaScore+1.) - 1 ) ) ); //invert this: https://github.com/jpata/mlglue/blob/master/mlglue/tree.py#L400-L409
     float dijetScore = this->VBFMVA().VBFMVAValue();
     float leadMvaScore = this->diPhotonMVA().leadmva;

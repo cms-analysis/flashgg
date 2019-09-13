@@ -1,4 +1,5 @@
 import FWCore.ParameterSet.Config as cms
+from flashgg.MicroAOD.flashggJets_cfi import flashggUnpackedJets
 from flashgg.Taggers.flashggDiPhotonMVA_cfi import flashggDiPhotonMVA
 from flashgg.Taggers.flashggVBFMVA_cff import flashggVBFMVA,flashggVBFDiPhoDiJetMVA
 from flashgg.Taggers.flashggTags_cff import *

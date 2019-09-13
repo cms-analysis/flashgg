@@ -83,6 +83,12 @@ customize.options.register('doHTXS',
                            VarParsing.VarParsing.varType.bool,
                            'doHTXS'
                            )
+customize.options.register('doStageOne',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doStageOne'
+                           )
 customize.options.register('doMuFilter',
                            True,
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -249,10 +255,19 @@ if customize.doDoubleHTag:
     minimalVariables += hhc.variablesToDump()
     systematicVariables = hhc.systematicVariables()
 
+if customize.doStageOne:
+    assert (not customize.doHTXS)
+    from flashgg.Systematics.stageOneCustomize import StageOneCustomize
+    soc = StageOneCustomize(process, customize, customize.metaConditions)
+    minimalVariables = soc.variablesToDump()
+    systematicVariables = soc.systematicVariables()
+
 process.flashggTHQLeptonicTag.processId = cms.string(str(customize.processId))
 
 print 'here we print the tag sequence after'
+print 'ED DEBUG 1'
 print process.flashggTagSequence
+print 'ED DEBUG 2'
 
 if customize.doFiducial:
     print 'we do fiducial and we change tagsorter'
@@ -380,11 +395,14 @@ print "------------------------------------------------------------"
 #globalVariables.extraFloats.rho = cms.InputTag("rhoFixedGridAll")
 
 #cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags)
+print 'ED DEBUG 3'
 cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags)
+print 'ED DEBUG 4'
 
 # Dump an object called NoTag for untagged events in order to track QCD weights
 # Will be broken if it's done for non-central values, so turn this on only for the non-syst tag sorter
 process.flashggTagSorter.CreateNoTag = True # MUST be after tag sequence cloning
+print 'ED DEBUG 5'
 
 ###### Dumper section
 
@@ -393,7 +411,7 @@ from flashgg.MetaData.samples_utils import SamplesManager
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
-                                 "/store/user/spigazzi/flashgg/Era2016_RR-07Aug17_v1/legacyRun2TestV1/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/Era2016_RR-07Aug17_v1-legacyRun2TestV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v1/190228_142907/0000/myMicroAODOutputFile_610.root"
+                                 "root://cms02.lcg.cscs.ch:1094//store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v2/190708_140500/0000/myMicroAODOutputFile_16.root"
                              ))
 
 process.TFileService = cms.Service("TFileService",
@@ -414,6 +432,7 @@ process.tagsDumper.dumpHistos = False
 process.tagsDumper.quietRooFit = True
 process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
 process.tagsDumper.splitPdfByStage0Cat = cms.untracked.bool(customize.doHTXS)
+print 'ED DEBUG 6'
 
 if customize.options.WeightName :
     lheProduct = customize.dataset[1]["LHESourceName"].split("_")
@@ -456,6 +475,11 @@ elif customize.doubleHTagsOnly:
     tagList = hhc.tagList
     print "taglist is:"
     print tagList
+elif customize.doStageOne:
+    print 'ED DEBUG 7'
+    tagList = soc.tagList
+    soc.customizeTagDumper()
+    print 'ED DEBUG 8'
 else:
     tagList=[
         ["NoTag",0],
@@ -472,6 +496,7 @@ else:
         ["TTHDiLeptonTag",0]
         ]
 
+print 'ED DEBUG 9'
 definedSysts=set()
 process.tagsDumper.NNLOPSWeightFile=cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root")
 process.tagsDumper.reweighGGHforNNLOPS = cms.untracked.bool(bool(customize.processId.count("ggh")))
@@ -497,7 +522,7 @@ for tag in tagList:
               currentVariables = systematicVariables
       if tagName == "NoTag":
           if customize.doHTXS:
-              currentVariables = ["stage0cat[72,9.5,81.5] := tagTruth().HTXSstage0cat"]
+              currentVariables = ["stage0bin[72,9.5,81.5] := tagTruth().HTXSstage0bin"]
           else:
               currentVariables = []
       isBinnedOnly = (systlabel !=  "")
@@ -525,16 +550,25 @@ for tag in tagList:
                            nPdfWeights=nPdfWeights,
                            nAlphaSWeights=nAlphaSWeights,
                            nScaleWeights=nScaleWeights,
-                           splitPdfByStage0Cat=customize.doHTXS
+                           splitPdfByStage0Cat=customize.doHTXS,
+                           splitPdfByStage1Cat=customize.doStageOne
                            )
+print 'ED DEBUG 10'
 
 # Require standard diphoton trigger
 from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
 hlt_paths = []
+print 'ED DEBUG 11'
+print customize.metaConditions["TriggerPaths"]
 for dset in customize.metaConditions["TriggerPaths"]:
+    print 'ED DEBUG 11a loop'
+    print customize.datasetName()
+    print 'ED DEBUG 11aa loop'
     if dset in customize.datasetName():
+        print 'ED DEBUG 11b loop'
         hlt_paths.extend(customize.metaConditions["TriggerPaths"][dset])
 process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring(hlt_paths))
+print 'ED DEBUG 11c'
 
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
@@ -584,6 +618,7 @@ if customize.processId == "Data":
 else:
     metFilterSelector = "mc"
 
+print 'ED DEBUG 12'
 process.flashggMetFilters.requiredFilterNames = cms.untracked.vstring([filter.encode("ascii") for filter in customize.metaConditions["flashggMetFilters"][metFilterSelector]])
 
 if customize.tthTagsOnly:
@@ -672,6 +707,7 @@ if customize.doFiducial:
 if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
 process.options.allowUnscheduled = cms.untracked.bool(True)
 
+print 'ED DEBUG 14'
 print "--- Dumping modules that take diphotons as input: ---"
 mns = process.p.moduleNames()
 for mn in mns:
@@ -682,6 +718,7 @@ for mn in mns:
         print str(module),module.DiPhotonTag
 print
 printSystematicInfo(process)
+print 'ED DEBUG 15'
 
 # Detailed tag interpretation information printout (blinded)
 process.flashggTagSorter.StoreOtherTagInfo = True

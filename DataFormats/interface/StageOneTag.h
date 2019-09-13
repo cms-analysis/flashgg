@@ -2,7 +2,8 @@
 #define FLASHgg_StageOneTag_h
 
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
-#include "flashgg/DataFormats/interface/VBFDiPhoDiJetMVAResult.h"
+#include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
+#include "flashgg/DataFormats/interface/VBFMVAResult.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 
 namespace flashgg {
@@ -21,8 +22,8 @@ namespace flashgg {
 
         StageOneTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult> );
         StageOneTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult );
-        StageOneTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult>, edm::Ptr<VBFDiPhoDiJetMVAResult> );
-        StageOneTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult, VBFDiPhoDiJetMVAResult );
+        StageOneTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult>, edm::Ptr<VBFMVAResult> );
+        StageOneTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult, VBFMVAResult );
 
         StageOneTag *clone() const override { return ( new StageOneTag( *this ) ); }
 
@@ -35,13 +36,12 @@ namespace flashgg {
         string stage1KinematicLabel() const;
         void setStage1recoTag( const int tag ) { stage1recoTag_ = tag; }
 
-        const VBFDiPhoDiJetMVAResult VBFDiPhoDiJetMVA() const;
         const VBFMVAResult VBFMVA() const ;
 
 
     private:
         int stage1recoTag_;
-        VBFDiPhoDiJetMVAResult vbfDiPhoDiJet_mva_result_;
+        VBFMVAResult vbfmva_result_;
 
     };
 
