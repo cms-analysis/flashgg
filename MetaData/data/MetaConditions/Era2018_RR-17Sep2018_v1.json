@@ -73,7 +73,7 @@
     "MUON_ID_JSON_FileName_LowPt" : "flashgg/Systematics/data/Muon2018_RunABCD_SF_ID_lowPt.json",
     "MUON_ISO_JSON_FileName" : "flashgg/Systematics/data/Muon2018_RunABCD_SF_ISO.json",
 
-    "MUON_ID_RefTracks" :  "TrackerMuons",
+    "MUON_ID_RefTracks" : "TrackerMuons",
     "MUON_ID_RefTracks_LowPt" : "genTracks",
 
 

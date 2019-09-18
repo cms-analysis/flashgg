@@ -82,9 +82,11 @@
 
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
+
     "MUON_ID_JSON_FileName" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ID.json",
     "MUON_ID_JSON_FileName_LowPt" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ID_lowPt.json",
     "MUON_ISO_JSON_FileName" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ISO.json",
+
     "MUON_ID_RefTracks" :  "genTracks",
     "MUON_ID_RefTracks_LowPt" : "genTracks",
 
