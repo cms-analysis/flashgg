@@ -1,3 +1,6 @@
+#ciao
+
+
 #!/bin/bash
 
 SETUP_REMOTES=false
