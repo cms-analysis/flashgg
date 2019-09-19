@@ -218,6 +218,8 @@ namespace flashgg {
         const auto* corrections = std::abs(pho.superCluster()->eta())<1.5 ? &correctionsEB_ : &correctionsEE_;
         const auto* correctionScalings = std::abs(pho.superCluster()->eta())<1.5 ? &correctionScalingsEB_ : &correctionScalingsEE_;
 
+        if(!(std::isnan(pho.full5x5_r9()) || std::isnan(pho.s4()) || std::isnan(pho.full5x5_sigmaIetaIeta()) || std::isnan(pho.sieip()) || std::isnan(pho.superCluster()->etaWidth()) || std::isnan(pho.superCluster()->phiWidth()) || std::isnan(pho.pfPhoIso03()) || std::isnan(pho.pfChgIsoWrtChosenVtx03()) || std::isnan(pho.pfChgIsoWrtWorstVtx03()) || std::isinf(pho.full5x5_r9()) || std::isinf(pho.s4()) || std::isinf(pho.full5x5_sigmaIetaIeta()) || std::isinf(pho.sieip()) || std::isinf(pho.superCluster()->etaWidth()) || std::isinf(pho.superCluster()->phiWidth()) || std::isinf(pho.pfPhoIso03()) || std::isinf(pho.pfChgIsoWrtChosenVtx03()) || std::isinf(pho.pfChgIsoWrtWorstVtx03())))
+        {
         if(correctShowerShapes_)
         {
             reco::Photon::ShowerShape correctedShowerShapes = pho.full5x5_showerShapeVariables();
@@ -385,7 +387,8 @@ namespace flashgg {
             if(pho.pfChgIsoWrtWorstVtx03() > 0.)
                 pho.setpfChgIsoWrtWorstVtx03(pho.pfChgIsoWrtWorstVtx03()+correctionScalings->at("chIsoWorstMorphing").Eval(corrections->at("chIsoWorstMorphing")(pho)[0]));
 
-        }                    
+        }
+        }
     }
 
     void DifferentialPhoIdInputsCorrector::produce( edm::Event &evt, const edm::EventSetup & es)
