@@ -56,12 +56,12 @@ class JobConfig(object):
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "campaign")
         self.options.register ('useAAA',
-                               False, # default value
+                               True, # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.bool,          # string, int, or float
                                "useAAA")
         self.options.register ('useEOS',
-                               True, # default value
+                               False, # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.bool,          # string, int, or float
                                "useEOS")
