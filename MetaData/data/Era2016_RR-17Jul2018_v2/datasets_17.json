@@ -1,624 +1,304 @@
 {
-    "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2-6512204af72ea57fbfefdf0db0649ffe/USER": {
+    "/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2-6512204af72ea57fbfefdf0db0649ffe/USER": {
         "dset_type": "mc", 
         "files": [
             {
                 "bad": false, 
-                "events": 24960, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_6.root", 
-                "nevents": 24960, 
-                "totEvents": 24960, 
-                "weights": 2691265.75
+                "events": 24652, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24652, 
+                "totEvents": 24652, 
+                "weights": 8813550.0
             }, 
             {
                 "bad": false, 
-                "events": 24874, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_8.root", 
-                "nevents": 24874, 
-                "totEvents": 24874, 
-                "weights": 2690468.25
+                "events": 25183, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 25183, 
+                "totEvents": 25183, 
+                "weights": 9023972.0
+            }, 
+            {
+                "bad": false, 
+                "events": 1365, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 1365, 
+                "totEvents": 1365, 
+                "weights": 504014.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24823, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24823, 
+                "totEvents": 24823, 
+                "weights": 8963746.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24959, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 24959, 
+                "totEvents": 24959, 
+                "weights": 8928421.0
             }, 
             {
                 "bad": false, 
                 "events": 24773, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_19.root", 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_7.root", 
                 "nevents": 24773, 
                 "totEvents": 24773, 
-                "weights": 2705025.5
+                "weights": 9048763.0
             }, 
             {
                 "bad": false, 
-                "events": 25362, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_25.root", 
-                "nevents": 25362, 
-                "totEvents": 25362, 
-                "weights": 2742714.5
+                "events": 25031, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 25031, 
+                "totEvents": 25031, 
+                "weights": 8965846.0
             }, 
             {
                 "bad": false, 
-                "events": 15593, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_58.root", 
-                "nevents": 15593, 
-                "totEvents": 15593, 
-                "weights": 1707167.0
+                "events": 24629, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 24629, 
+                "totEvents": 24629, 
+                "weights": 8878186.0
             }, 
             {
                 "bad": false, 
-                "events": 25062, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_12.root", 
-                "nevents": 25062, 
-                "totEvents": 25062, 
-                "weights": 2712403.25
+                "events": 24868, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24868, 
+                "totEvents": 24868, 
+                "weights": 8932494.0
             }, 
             {
                 "bad": false, 
-                "events": 25091, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_13.root", 
-                "nevents": 25091, 
-                "totEvents": 25091, 
-                "weights": 2748098.25
+                "events": 24784, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24784, 
+                "totEvents": 24784, 
+                "weights": 8900859.0
             }, 
             {
                 "bad": false, 
-                "events": 25044, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_26.root", 
-                "nevents": 25044, 
-                "totEvents": 25044, 
-                "weights": 2701635.75
+                "events": 24861, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24861, 
+                "totEvents": 24861, 
+                "weights": 8910298.0
             }, 
             {
                 "bad": false, 
-                "events": 24746, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_33.root", 
-                "nevents": 24746, 
-                "totEvents": 24746, 
-                "weights": 2616287.5
-            }, 
-            {
-                "bad": false, 
-                "events": 25021, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_18.root", 
-                "nevents": 25021, 
-                "totEvents": 25021, 
-                "weights": 2731348.5
-            }, 
-            {
-                "bad": false, 
-                "events": 24808, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_28.root", 
-                "nevents": 24808, 
-                "totEvents": 24808, 
-                "weights": 2668134.25
-            }, 
-            {
-                "bad": false, 
-                "events": 24925, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_17.root", 
-                "nevents": 24925, 
-                "totEvents": 24925, 
-                "weights": 2682292.0
-            }, 
-            {
-                "bad": false, 
-                "events": 24797, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_9.root", 
-                "nevents": 24797, 
-                "totEvents": 24797, 
-                "weights": 2708215.75
-            }, 
-            {
-                "bad": false, 
-                "events": 24726, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_31.root", 
-                "nevents": 24726, 
-                "totEvents": 24726, 
-                "weights": 2676510.0
+                "events": 24826, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 24826, 
+                "totEvents": 24826, 
+                "weights": 8846685.0
             }, 
             {
                 "bad": false, 
                 "events": 24914, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_30.root", 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_8.root", 
                 "nevents": 24914, 
                 "totEvents": 24914, 
-                "weights": 2692462.25
+                "weights": 8908795.0
             }, 
             {
                 "bad": false, 
-                "events": 24772, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_23.root", 
-                "nevents": 24772, 
-                "totEvents": 24772, 
-                "weights": 2717987.25
+                "events": 24925, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 24925, 
+                "totEvents": 24925, 
+                "weights": 8905792.0
             }, 
             {
                 "bad": false, 
-                "events": 24700, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_24.root", 
-                "nevents": 24700, 
-                "totEvents": 24700, 
-                "weights": 2665342.5
+                "events": 24805, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 24805, 
+                "totEvents": 24805, 
+                "weights": 8905254.0
             }, 
             {
                 "bad": false, 
-                "events": 24938, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_15.root", 
-                "nevents": 24938, 
-                "totEvents": 24938, 
-                "weights": 2713201.75
+                "events": 24985, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24985, 
+                "totEvents": 24985, 
+                "weights": 8938709.0
             }, 
             {
                 "bad": false, 
-                "events": 24537, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_16.root", 
-                "nevents": 24537, 
-                "totEvents": 24537, 
-                "weights": 2657166.75
+                "events": 25136, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25136, 
+                "totEvents": 25136, 
+                "weights": 8946898.0
             }, 
             {
                 "bad": false, 
-                "events": 24764, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_20.root", 
-                "nevents": 24764, 
-                "totEvents": 24764, 
-                "weights": 2674116.75
-            }, 
-            {
-                "bad": false, 
-                "events": 24505, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_22.root", 
-                "nevents": 24505, 
-                "totEvents": 24505, 
-                "weights": 2610105.5
-            }, 
-            {
-                "bad": false, 
-                "events": 24769, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_7.root", 
-                "nevents": 24769, 
-                "totEvents": 24769, 
-                "weights": 2721376.75
-            }, 
-            {
-                "bad": false, 
-                "events": 24655, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_27.root", 
-                "nevents": 24655, 
-                "totEvents": 24655, 
-                "weights": 2675512.5
-            }, 
-            {
-                "bad": false, 
-                "events": 24581, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_11.root", 
-                "nevents": 24581, 
-                "totEvents": 24581, 
-                "weights": 2626457.0
-            }, 
-            {
-                "bad": false, 
-                "events": 24771, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_32.root", 
-                "nevents": 24771, 
-                "totEvents": 24771, 
-                "weights": 2712204.0
-            }, 
-            {
-                "bad": false, 
-                "events": 24654, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_14.root", 
-                "nevents": 24654, 
-                "totEvents": 24654, 
-                "weights": 2711206.5
-            }, 
-            {
-                "bad": false, 
-                "events": 24706, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_10.root", 
-                "nevents": 24706, 
-                "totEvents": 24706, 
-                "weights": 2658961.25
-            }, 
-            {
-                "bad": false, 
-                "events": 24593, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_29.root", 
-                "nevents": 24593, 
-                "totEvents": 24593, 
-                "weights": 2674315.25
-            }, 
-            {
-                "bad": false, 
-                "events": 24956, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_45.root", 
-                "nevents": 24956, 
-                "totEvents": 24956, 
-                "weights": 2650984.5
-            }, 
-            {
-                "bad": false, 
-                "events": 24835, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_34.root", 
-                "nevents": 24835, 
-                "totEvents": 24835, 
-                "weights": 2697447.5
-            }, 
-            {
-                "bad": false, 
-                "events": 24831, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_53.root", 
-                "nevents": 24831, 
-                "totEvents": 24831, 
-                "weights": 2710210.5
-            }, 
-            {
-                "bad": false, 
-                "events": 24695, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_57.root", 
-                "nevents": 24695, 
-                "totEvents": 24695, 
-                "weights": 2671923.5
-            }, 
-            {
-                "bad": false, 
-                "events": 24840, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_46.root", 
-                "nevents": 24840, 
-                "totEvents": 24840, 
-                "weights": 2672520.75
-            }, 
-            {
-                "bad": false, 
-                "events": 24876, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_42.root", 
-                "nevents": 24876, 
-                "totEvents": 24876, 
-                "weights": 2674116.75
-            }, 
-            {
-                "bad": false, 
-                "events": 24717, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_35.root", 
-                "nevents": 24717, 
-                "totEvents": 24717, 
-                "weights": 2659559.0
-            }, 
-            {
-                "bad": false, 
-                "events": 24923, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_39.root", 
-                "nevents": 24923, 
-                "totEvents": 24923, 
-                "weights": 2749693.5
-            }, 
-            {
-                "bad": false, 
-                "events": 24705, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_52.root", 
-                "nevents": 24705, 
-                "totEvents": 24705, 
-                "weights": 2621272.25
-            }, 
-            {
-                "bad": false, 
-                "events": 24748, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_41.root", 
-                "nevents": 24748, 
-                "totEvents": 24748, 
-                "weights": 2707219.25
-            }, 
-            {
-                "bad": false, 
-                "events": 25235, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_54.root", 
-                "nevents": 25235, 
-                "totEvents": 25235, 
-                "weights": 2751289.25
-            }, 
-            {
-                "bad": false, 
-                "events": 24851, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_56.root", 
-                "nevents": 24851, 
-                "totEvents": 24851, 
-                "weights": 2671125.0
-            }, 
-            {
-                "bad": false, 
-                "events": 24833, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_50.root", 
-                "nevents": 24833, 
-                "totEvents": 24833, 
-                "weights": 2703031.5
-            }, 
-            {
-                "bad": false, 
-                "events": 24679, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_51.root", 
-                "nevents": 24679, 
-                "totEvents": 24679, 
-                "weights": 2659559.75
-            }, 
-            {
-                "bad": false, 
-                "events": 24743, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_47.root", 
-                "nevents": 24743, 
-                "totEvents": 24743, 
-                "weights": 2666339.0
-            }, 
-            {
-                "bad": false, 
-                "events": 24488, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_21.root", 
-                "nevents": 24488, 
-                "totEvents": 24488, 
-                "weights": 2649388.75
-            }, 
-            {
-                "bad": false, 
-                "events": 24631, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_43.root", 
-                "nevents": 24631, 
-                "totEvents": 24631, 
-                "weights": 2695452.75
-            }, 
-            {
-                "bad": false, 
-                "events": 24773, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_36.root", 
-                "nevents": 24773, 
-                "totEvents": 24773, 
-                "weights": 2669130.5
-            }, 
-            {
-                "bad": false, 
-                "events": 24848, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_49.root", 
-                "nevents": 24848, 
-                "totEvents": 24848, 
-                "weights": 2707617.75
-            }, 
-            {
-                "bad": false, 
-                "events": 24562, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_44.root", 
-                "nevents": 24562, 
-                "totEvents": 24562, 
-                "weights": 2683688.5
-            }, 
-            {
-                "bad": false, 
-                "events": 24864, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_48.root", 
-                "nevents": 24864, 
-                "totEvents": 24864, 
-                "weights": 2680099.25
-            }, 
-            {
-                "bad": false, 
-                "events": 24883, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_55.root", 
-                "nevents": 24883, 
-                "totEvents": 24883, 
-                "weights": 2668333.25
-            }, 
-            {
-                "bad": false, 
-                "events": 24834, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_37.root", 
-                "nevents": 24834, 
-                "totEvents": 24834, 
-                "weights": 2684885.0
-            }, 
-            {
-                "bad": false, 
-                "events": 25044, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_38.root", 
-                "nevents": 25044, 
-                "totEvents": 25044, 
-                "weights": 2743113.0
-            }, 
-            {
-                "bad": false, 
-                "events": 24847, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_1.root", 
-                "nevents": 24847, 
-                "totEvents": 24847, 
-                "weights": 2663548.0
-            }, 
-            {
-                "bad": false, 
-                "events": 24532, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_2.root", 
-                "nevents": 24532, 
-                "totEvents": 24532, 
-                "weights": 2654175.25
-            }, 
-            {
-                "bad": false, 
-                "events": 25139, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_40.root", 
-                "nevents": 25139, 
-                "totEvents": 25139, 
-                "weights": 2740122.25
-            }, 
-            {
-                "bad": false, 
-                "events": 24916, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_4.root", 
-                "nevents": 24916, 
-                "totEvents": 24916, 
-                "weights": 2712403.0
-            }, 
-            {
-                "bad": false, 
-                "events": 24737, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_3.root", 
-                "nevents": 24737, 
-                "totEvents": 24737, 
-                "weights": 2685482.75
-            }, 
-            {
-                "bad": false, 
-                "events": 24800, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_140232/0000/myMicroAODOutputFile_5.root", 
-                "nevents": 24800, 
-                "totEvents": 24800, 
-                "weights": 2711605.75
+                "events": 25090, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M65_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_142011/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 25090, 
+                "totEvents": 25090, 
+                "weights": 9031034.0
             }
         ], 
-        "parent_n_units": 1430006, 
+        "parent_n_units": 424609, 
         "vetted": true
     }, 
-    "/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2-6512204af72ea57fbfefdf0db0649ffe/USER": {
+    "/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2-6512204af72ea57fbfefdf0db0649ffe/USER": {
         "dset_type": "mc", 
         "files": [
             {
                 "bad": false, 
-                "events": 9647, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_18.root", 
-                "nevents": 9647, 
-                "totEvents": 9647, 
-                "weights": 988125.875
+                "events": 24280, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24280, 
+                "totEvents": 24280, 
+                "weights": 5556702.5
             }, 
             {
                 "bad": false, 
-                "events": 25026, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_10.root", 
-                "nevents": 25026, 
-                "totEvents": 25026, 
-                "weights": 2528446.25
+                "events": 25376, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 25376, 
+                "totEvents": 25376, 
+                "weights": 5827872.0
             }, 
             {
                 "bad": false, 
-                "events": 25248, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_13.root", 
-                "nevents": 25248, 
-                "totEvents": 25248, 
-                "weights": 2548842.25
+                "events": 24620, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 24620, 
+                "totEvents": 24620, 
+                "weights": 5639108.5
             }, 
             {
                 "bad": false, 
-                "events": 24813, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_8.root", 
-                "nevents": 24813, 
-                "totEvents": 24813, 
-                "weights": 2520842.75
+                "events": 24942, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24942, 
+                "totEvents": 24942, 
+                "weights": 5741800.5
             }, 
             {
                 "bad": false, 
-                "events": 24715, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_15.root", 
-                "nevents": 24715, 
-                "totEvents": 24715, 
-                "weights": 2471521.0
+                "events": 25039, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25039, 
+                "totEvents": 25039, 
+                "weights": 5679744.5
             }, 
             {
                 "bad": false, 
-                "events": 24724, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_1.root", 
-                "nevents": 24724, 
-                "totEvents": 24724, 
-                "weights": 2544021.0
+                "events": 25021, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 25021, 
+                "totEvents": 25021, 
+                "weights": 5765459.0
             }, 
             {
                 "bad": false, 
-                "events": 24886, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_17.root", 
-                "nevents": 24886, 
-                "totEvents": 24886, 
-                "weights": 2539941.25
+                "events": 24856, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 24856, 
+                "totEvents": 24856, 
+                "weights": 5649562.0
             }, 
             {
                 "bad": false, 
-                "events": 24890, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_6.root", 
-                "nevents": 24890, 
-                "totEvents": 24890, 
-                "weights": 2536234.0
+                "events": 25054, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 25054, 
+                "totEvents": 25054, 
+                "weights": 5695480.0
             }, 
             {
                 "bad": false, 
-                "events": 25069, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_9.root", 
-                "nevents": 25069, 
-                "totEvents": 25069, 
-                "weights": 2516393.0
+                "events": 24646, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24646, 
+                "totEvents": 24646, 
+                "weights": 5552816.0
             }, 
             {
                 "bad": false, 
-                "events": 24694, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_4.root", 
-                "nevents": 24694, 
-                "totEvents": 24694, 
-                "weights": 2448342.0
+                "events": 25071, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 25071, 
+                "totEvents": 25071, 
+                "weights": 5798820.5
             }, 
             {
                 "bad": false, 
-                "events": 24935, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_12.root", 
-                "nevents": 24935, 
-                "totEvents": 24935, 
-                "weights": 2515650.5
+                "events": 25418, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 25418, 
+                "totEvents": 25418, 
+                "weights": 5745109.0
             }, 
             {
                 "bad": false, 
-                "events": 25012, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_2.root", 
-                "nevents": 25012, 
-                "totEvents": 25012, 
-                "weights": 2575914.0
+                "events": 24572, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 24572, 
+                "totEvents": 24572, 
+                "weights": 5571183.0
             }, 
             {
                 "bad": false, 
-                "events": 24753, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_11.root", 
-                "nevents": 24753, 
-                "totEvents": 24753, 
-                "weights": 2484500.0
+                "events": 25148, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 25148, 
+                "totEvents": 25148, 
+                "weights": 5760366.5
             }, 
             {
                 "bad": false, 
-                "events": 25268, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_3.root", 
-                "nevents": 25268, 
-                "totEvents": 25268, 
-                "weights": 2562564.0
+                "events": 24792, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24792, 
+                "totEvents": 24792, 
+                "weights": 5654872.0
             }, 
             {
                 "bad": false, 
-                "events": 24825, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_16.root", 
-                "nevents": 24825, 
-                "totEvents": 24825, 
-                "weights": 2558298.5
+                "events": 24887, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24887, 
+                "totEvents": 24887, 
+                "weights": 5663661.0
             }, 
             {
                 "bad": false, 
-                "events": 24746, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_7.root", 
-                "nevents": 24746, 
-                "totEvents": 24746, 
-                "weights": 2527332.5
+                "events": 1556, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 1556, 
+                "totEvents": 1556, 
+                "weights": 362922.0625
             }, 
             {
                 "bad": false, 
-                "events": 24853, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_5.root", 
-                "nevents": 24853, 
-                "totEvents": 24853, 
-                "weights": 2517134.75
+                "events": 25197, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25197, 
+                "totEvents": 25197, 
+                "weights": 5720208.5
             }, 
             {
                 "bad": false, 
-                "events": 24899, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_141519/0000/myMicroAODOutputFile_14.root", 
-                "nevents": 24899, 
-                "totEvents": 24899, 
-                "weights": 2549769.5
+                "events": 24847, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M85_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_143026/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 24847, 
+                "totEvents": 24847, 
+                "weights": 5749329.5
             }
         ], 
-        "parent_n_units": 433003, 
+        "parent_n_units": 425322, 
         "vetted": true
     }, 
     "/SingleElectron/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016F-17Jul2018-v1-db30e4011d9f1e7e37aee2e41519d339/USER": {
@@ -33267,147 +32947,408 @@
         "parent_n_units": 19441, 
         "vetted": true
     }, 
-    "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2-b8a5b6287120fce79bb02069cbed82a0/USER": {
+    "/VBFHToGG_M100_13TeV_amcatnlo_pythia8/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-42666aea495bdc3a36d796ff9c4bc819/USER": {
         "dset_type": "mc", 
         "files": [
             {
                 "bad": false, 
-                "events": 25942, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_081638/0000/myMicroAODOutputFile_15.root", 
-                "nevents": 25942, 
-                "totEvents": 25942, 
-                "weights": 173655.78125
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M100_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/190708_150228/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 119784.890625
             }, 
             {
                 "bad": false, 
-                "events": 8595, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_081638/0000/myMicroAODOutputFile_20.root", 
-                "nevents": 8595, 
-                "totEvents": 8595, 
-                "weights": 58179.83203125
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M100_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/190708_150228/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 119189.4140625
             }, 
             {
                 "bad": false, 
-                "events": 25150, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_081638/0000/myMicroAODOutputFile_17.root", 
-                "nevents": 25150, 
-                "totEvents": 25150, 
-                "weights": 168169.4375
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M100_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/190708_150228/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 120913.140625
             }, 
             {
                 "bad": false, 
-                "events": 24843, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_081638/0000/myMicroAODOutputFile_18.root", 
-                "nevents": 24843, 
-                "totEvents": 24843, 
-                "weights": 168226.8125
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M100_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/190708_150228/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 118186.5078125
             }, 
             {
                 "bad": false, 
-                "events": 24648, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_081638/0000/myMicroAODOutputFile_11.root", 
-                "nevents": 24648, 
-                "totEvents": 24648, 
-                "weights": 168192.421875
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M100_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/190708_150228/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 119440.1328125
             }, 
             {
                 "bad": false, 
-                "events": 24844, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_081638/0000/myMicroAODOutputFile_16.root", 
-                "nevents": 24844, 
-                "totEvents": 24844, 
-                "weights": 165277.125
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M100_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/190708_150228/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 116744.8125
             }, 
             {
                 "bad": false, 
-                "events": 25532, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_081638/0000/myMicroAODOutputFile_7.root", 
-                "nevents": 25532, 
-                "totEvents": 25532, 
-                "weights": 173196.578125
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M100_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/190708_150228/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 118970.0078125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M100_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/190708_150228/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 119126.7265625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M100_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/190708_150228/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 116744.765625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M100_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/190708_150228/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 115115.0703125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M100_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/190708_150228/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 118813.296875
+            }, 
+            {
+                "bad": false, 
+                "events": 24400, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M100_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/190708_150228/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 24400, 
+                "totEvents": 24400, 
+                "weights": 117685.0234375
+            }
+        ], 
+        "parent_n_units": 299400, 
+        "vetted": true
+    }, 
+    "/VBFHToGG_M60_13TeV_amcatnlo_pythia8/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2-42666aea495bdc3a36d796ff9c4bc819/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 24936, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M60_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_154129/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24936, 
+                "totEvents": 24936, 
+                "weights": 165805.03125
+            }, 
+            {
+                "bad": false, 
+                "events": 24657, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M60_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_154129/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24657, 
+                "totEvents": 24657, 
+                "weights": 170803.546875
+            }, 
+            {
+                "bad": false, 
+                "events": 25029, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M60_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_154129/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25029, 
+                "totEvents": 25029, 
+                "weights": 165910.15625
+            }, 
+            {
+                "bad": false, 
+                "events": 24099, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M60_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_154129/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24099, 
+                "totEvents": 24099, 
+                "weights": 159830.328125
+            }, 
+            {
+                "bad": false, 
+                "events": 23085, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M60_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_154129/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 23085, 
+                "totEvents": 23085, 
+                "weights": 149417.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25122, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M60_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_154129/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 25122, 
+                "totEvents": 25122, 
+                "weights": 173712.203125
+            }, 
+            {
+                "bad": false, 
+                "events": 25494, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M60_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_154129/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25494, 
+                "totEvents": 25494, 
+                "weights": 173492.53125
+            }, 
+            {
+                "bad": false, 
+                "events": 25122, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M60_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_154129/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 25122, 
+                "totEvents": 25122, 
+                "weights": 167520.609375
             }, 
             {
                 "bad": false, 
                 "events": 24750, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_081638/0000/myMicroAODOutputFile_10.root", 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M60_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_154129/0000/myMicroAODOutputFile_10.root", 
                 "nevents": 24750, 
                 "totEvents": 24750, 
-                "weights": 166310.03125
+                "weights": 165408.90625
             }, 
             {
                 "bad": false, 
-                "events": 25603, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_081638/0000/myMicroAODOutputFile_6.root", 
-                "nevents": 25603, 
-                "totEvents": 25603, 
-                "weights": 175365.90625
+                "events": 24843, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M60_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_154129/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 24843, 
+                "totEvents": 24843, 
+                "weights": 166907.421875
             }, 
             {
                 "bad": false, 
-                "events": 24616, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_081638/0000/myMicroAODOutputFile_13.root", 
-                "nevents": 24616, 
-                "totEvents": 24616, 
-                "weights": 165690.265625
+                "events": 24564, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M60_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_154129/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 24564, 
+                "totEvents": 24564, 
+                "weights": 163180.671875
             }, 
             {
                 "bad": false, 
-                "events": 24916, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_081638/0000/myMicroAODOutputFile_5.root", 
-                "nevents": 24916, 
-                "totEvents": 24916, 
-                "weights": 166516.65625
-            }, 
-            {
-                "bad": false, 
-                "events": 24224, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_081638/0000/myMicroAODOutputFile_12.root", 
-                "nevents": 24224, 
-                "totEvents": 24224, 
-                "weights": 161099.25
-            }, 
-            {
-                "bad": false, 
-                "events": 24473, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_081638/0000/myMicroAODOutputFile_1.root", 
-                "nevents": 24473, 
-                "totEvents": 24473, 
-                "weights": 163475.109375
-            }, 
-            {
-                "bad": false, 
-                "events": 25311, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_081638/0000/myMicroAODOutputFile_9.root", 
-                "nevents": 25311, 
-                "totEvents": 25311, 
-                "weights": 168318.703125
-            }, 
-            {
-                "bad": false, 
-                "events": 24735, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_081638/0000/myMicroAODOutputFile_8.root", 
-                "nevents": 24735, 
-                "totEvents": 24735, 
-                "weights": 168846.609375
-            }, 
-            {
-                "bad": false, 
-                "events": 24814, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_081638/0000/myMicroAODOutputFile_19.root", 
-                "nevents": 24814, 
-                "totEvents": 24814, 
-                "weights": 167021.640625
-            }, 
-            {
-                "bad": false, 
-                "events": 25248, 
-                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_081638/0000/myMicroAODOutputFile_14.root", 
-                "nevents": 25248, 
-                "totEvents": 25248, 
-                "weights": 168582.59375
+                "events": 24750, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M60_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190708_154129/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24750, 
+                "totEvents": 24750, 
+                "weights": 163125.96875
             }
         ], 
-        "parent_n_units": 482652, 
+        "parent_n_units": 296451, 
+        "vetted": true
+    }, 
+    "/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2-b8a5b6287120fce79bb02069cbed82a0/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 23946, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 23946, 
+                "totEvents": 23946, 
+                "weights": 1162531.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24747, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 24747, 
+                "totEvents": 24747, 
+                "weights": 1192295.25
+            }, 
+            {
+                "bad": false, 
+                "events": 25059, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 25059, 
+                "totEvents": 25059, 
+                "weights": 1216321.25
+            }, 
+            {
+                "bad": false, 
+                "events": 25418, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 25418, 
+                "totEvents": 25418, 
+                "weights": 1248904.875
+            }, 
+            {
+                "bad": false, 
+                "events": 24561, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24561, 
+                "totEvents": 24561, 
+                "weights": 1209448.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24241, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 24241, 
+                "totEvents": 24241, 
+                "weights": 1171978.875
+            }, 
+            {
+                "bad": false, 
+                "events": 25569, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 25569, 
+                "totEvents": 25569, 
+                "weights": 1243552.625
+            }, 
+            {
+                "bad": false, 
+                "events": 25513, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 25513, 
+                "totEvents": 25513, 
+                "weights": 1252839.125
+            }, 
+            {
+                "bad": false, 
+                "events": 24628, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 24628, 
+                "totEvents": 24628, 
+                "weights": 1219239.375
+            }, 
+            {
+                "bad": false, 
+                "events": 24987, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 24987, 
+                "totEvents": 24987, 
+                "weights": 1215896.125
+            }, 
+            {
+                "bad": false, 
+                "events": 24071, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 24071, 
+                "totEvents": 24071, 
+                "weights": 1173676.375
+            }, 
+            {
+                "bad": false, 
+                "events": 25267, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 25267, 
+                "totEvents": 25267, 
+                "weights": 1235159.375
+            }, 
+            {
+                "bad": false, 
+                "events": 25298, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 25298, 
+                "totEvents": 25298, 
+                "weights": 1239735.0
+            }, 
+            {
+                "bad": false, 
+                "events": 9738, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 9738, 
+                "totEvents": 9738, 
+                "weights": 475044.78125
+            }, 
+            {
+                "bad": false, 
+                "events": 25877, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 25877, 
+                "totEvents": 25877, 
+                "weights": 1262266.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24025, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24025, 
+                "totEvents": 24025, 
+                "weights": 1165080.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25085, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 25085, 
+                "totEvents": 25085, 
+                "weights": 1228300.625
+            }, 
+            {
+                "bad": false, 
+                "events": 25595, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 25595, 
+                "totEvents": 25595, 
+                "weights": 1258300.375
+            }, 
+            {
+                "bad": false, 
+                "events": 24831, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VHToGG_M60_13TeV_amcatnloFXFX_madspin_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_063922/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 24831, 
+                "totEvents": 24831, 
+                "weights": 1223444.5
+            }
+        ], 
+        "parent_n_units": 558031, 
+        "vetted": true
+    }, 
+    "/WminusH_HToGG_WToAll_M120_13TeV_powheg_pythia8/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2-b8a5b6287120fce79bb02069cbed82a0/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 24440, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/WminusH_HToGG_WToAll_M120_13TeV_powheg_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_065347/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24440, 
+                "totEvents": 24440, 
+                "weights": 14814.181640625
+            }, 
+            {
+                "bad": false, 
+                "events": 25088, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/WminusH_HToGG_WToAll_M120_13TeV_powheg_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_065347/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25088, 
+                "totEvents": 25088, 
+                "weights": 15282.7578125
+            }, 
+            {
+                "bad": false, 
+                "events": 1096, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/WminusH_HToGG_WToAll_M120_13TeV_powheg_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_065347/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 1096, 
+                "totEvents": 1096, 
+                "weights": 668.1055908203125
+            }, 
+            {
+                "bad": false, 
+                "events": 25440, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/WminusH_HToGG_WToAll_M120_13TeV_powheg_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_065347/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25440, 
+                "totEvents": 25440, 
+                "weights": 15446.24609375
+            }
+        ], 
+        "parent_n_units": 200000, 
         "vetted": true
     }
 }

@@ -1,0 +1,14 @@
+{
+    "data" :
+    [],
+    "sig" :
+    [
+        "/bbHToGG_M-120_4FS_yb2_13TeV_amcatnlo/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM",
+        "/bbHToGG_M-125_4FS_yb2_13TeV_amcatnlo/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM",
+        "/bbHToGG_M-125_4FS_ybyt_TuneCP5_13TeV-amcatnlo-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM",
+        "/bbHToGG_M-130_4FS_yb2_13TeV_amcatnlo/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM"
+    ],
+    "bkg" :
+    []
+}
+        
