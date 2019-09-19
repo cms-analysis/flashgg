@@ -220,174 +220,174 @@ namespace flashgg {
 
         if(!(std::isnan(pho.full5x5_r9()) || std::isnan(pho.s4()) || std::isnan(pho.full5x5_sigmaIetaIeta()) || std::isnan(pho.sieip()) || std::isnan(pho.superCluster()->etaWidth()) || std::isnan(pho.superCluster()->phiWidth()) || std::isnan(pho.pfPhoIso03()) || std::isnan(pho.pfChgIsoWrtChosenVtx03()) || std::isnan(pho.pfChgIsoWrtWorstVtx03()) || std::isinf(pho.full5x5_r9()) || std::isinf(pho.s4()) || std::isinf(pho.full5x5_sigmaIetaIeta()) || std::isinf(pho.sieip()) || std::isinf(pho.superCluster()->etaWidth()) || std::isinf(pho.superCluster()->phiWidth()) || std::isinf(pho.pfPhoIso03()) || std::isinf(pho.pfChgIsoWrtChosenVtx03()) || std::isinf(pho.pfChgIsoWrtWorstVtx03())))
         {
-        if(correctShowerShapes_)
-        {
-            reco::Photon::ShowerShape correctedShowerShapes = pho.full5x5_showerShapeVariables();
-            pho.addUserFloat("uncorr_r9", pho.full5x5_r9());
-            pho.addUserFloat("uncorr_s4", pho.s4());
-            pho.addUserFloat("uncorr_sieie", pho.full5x5_sigmaIetaIeta());
-            pho.addUserFloat("uncorr_sieip", pho.sieip());
-            pho.addUserFloat("uncorr_etaWidth", pho.superCluster()->etaWidth());
-            pho.addUserFloat("uncorr_phiWidth", pho.superCluster()->phiWidth());
-
-            //---Compute corrections
-            // R9 (store it inside e3x3)        
-            correctedShowerShapes.e3x3 = (pho.full5x5_r9()+correctionScalings->at("r9").Eval(corrections->at("r9")(pho)[0]))*pho.superCluster()->rawEnergy();                            
-            //S4
-            auto s4_corr = pho.s4()+correctionScalings->at("s4").Eval(corrections->at("s4")(pho)[0]);
-            // SiEiE
-            correctedShowerShapes.sigmaIetaIeta = pho.full5x5_sigmaIetaIeta()+correctionScalings->at("sieie").Eval(corrections->at("sieie")(pho)[0]);
-            // SiEiP
-            auto sieip_corr = pho.sieip()+correctionScalings->at("sieip").Eval(corrections->at("sieip")(pho)[0]);
-            // etaWidth
-            pho.addUserFloat("etaWidth", (pho.superCluster()->etaWidth()+correctionScalings->at("etaWidth").Eval(corrections->at("etaWidth")(pho)[0])));
-            // phiWidth
-            pho.addUserFloat("phiWidth", (pho.superCluster()->phiWidth()+correctionScalings->at("phiWidth").Eval(corrections->at("phiWidth")(pho)[0])));
-        
-            //---set shower shapes
-            pho.setS4(s4_corr);
-            pho.setSieip(sieip_corr);
-            pho.full5x5_setShowerShapeVariables(correctedShowerShapes);        
-        }
-
-        if(correctIsolations_)
-        {
-            //---Photon isolation
-            pho.addUserFloat("uncorr_pfPhoIso03", pho.pfPhoIso03());
-
-            // peak to tail shift (and viceversa), with conversion from TMVA value [-1,1] to probability [0,1]
-            auto p_tail_data = 1./(1.+sqrt(2./(1.+corrections->at("phoIsoClfData")(pho)[0])-1.));
-            auto p_tail_mc =  1./(1.+sqrt(2./(1.+corrections->at("phoIsoClfMC")(pho)[0])-1.));
-            auto p_peak_data = 1 - p_tail_data;
-            auto p_peak_mc = 1 - p_tail_mc;
-            auto migration_rnd_value = engine.flat();
-            
-            double p_move_to_tail = (p_tail_data-p_tail_mc)/p_peak_mc;
-            double p_move_to_peak = (p_peak_data-p_peak_mc)/p_tail_mc;
-            
-            if(pho.pfPhoIso03() == 0 && p_tail_data > p_tail_mc && migration_rnd_value < p_move_to_tail)
+            if(correctShowerShapes_)
             {
-                pho.addUserFloat("peak2tail_rnd", engine.flat()*(0.99-0.01)+0.01);
-                pho.setpfPhoIso03(corrections->at("phoIsoPeak2Tail")(pho)[0]);
-            }
-            else if(pho.pfPhoIso03() > 0 && p_peak_data > p_peak_mc && migration_rnd_value <= p_move_to_peak)
-                pho.setpfPhoIso03(0.);
+                reco::Photon::ShowerShape correctedShowerShapes = pho.full5x5_showerShapeVariables();
+                pho.addUserFloat("uncorr_r9", pho.full5x5_r9());
+                pho.addUserFloat("uncorr_s4", pho.s4());
+                pho.addUserFloat("uncorr_sieie", pho.full5x5_sigmaIetaIeta());
+                pho.addUserFloat("uncorr_sieip", pho.sieip());
+                pho.addUserFloat("uncorr_etaWidth", pho.superCluster()->etaWidth());
+                pho.addUserFloat("uncorr_phiWidth", pho.superCluster()->phiWidth());
 
-            // tail morphing
-            if(pho.pfPhoIso03() > 0.)
+                //---Compute corrections
+                // R9 (store it inside e3x3)        
+                correctedShowerShapes.e3x3 = (pho.full5x5_r9()+correctionScalings->at("r9").Eval(corrections->at("r9")(pho)[0]))*pho.superCluster()->rawEnergy();                            
+                //S4
+                auto s4_corr = pho.s4()+correctionScalings->at("s4").Eval(corrections->at("s4")(pho)[0]);
+                // SiEiE
+                correctedShowerShapes.sigmaIetaIeta = pho.full5x5_sigmaIetaIeta()+correctionScalings->at("sieie").Eval(corrections->at("sieie")(pho)[0]);
+                // SiEiP
+                auto sieip_corr = pho.sieip()+correctionScalings->at("sieip").Eval(corrections->at("sieip")(pho)[0]);
+                // etaWidth
+                pho.addUserFloat("etaWidth", (pho.superCluster()->etaWidth()+correctionScalings->at("etaWidth").Eval(corrections->at("etaWidth")(pho)[0])));
+                // phiWidth
+                pho.addUserFloat("phiWidth", (pho.superCluster()->phiWidth()+correctionScalings->at("phiWidth").Eval(corrections->at("phiWidth")(pho)[0])));
+        
+                //---set shower shapes
+                pho.setS4(s4_corr);
+                pho.setSieip(sieip_corr);
+                pho.full5x5_setShowerShapeVariables(correctedShowerShapes);        
+            }
+
+            if(correctIsolations_)
+            {
+                //---Photon isolation
+                pho.addUserFloat("uncorr_pfPhoIso03", pho.pfPhoIso03());
+
+                // peak to tail shift (and viceversa), with conversion from TMVA value [-1,1] to probability [0,1]
+                auto p_tail_data = 1./(1.+sqrt(2./(1.+corrections->at("phoIsoClfData")(pho)[0])-1.));
+                auto p_tail_mc =  1./(1.+sqrt(2./(1.+corrections->at("phoIsoClfMC")(pho)[0])-1.));
+                auto p_peak_data = 1 - p_tail_data;
+                auto p_peak_mc = 1 - p_tail_mc;
+                auto migration_rnd_value = engine.flat();
+            
+                double p_move_to_tail = (p_tail_data-p_tail_mc)/p_peak_mc;
+                double p_move_to_peak = (p_peak_data-p_peak_mc)/p_tail_mc;
+            
+                if(pho.pfPhoIso03() == 0 && p_tail_data > p_tail_mc && migration_rnd_value < p_move_to_tail)
+                {
+                    pho.addUserFloat("peak2tail_rnd", engine.flat()*(0.99-0.01)+0.01);
+                    pho.setpfPhoIso03(corrections->at("phoIsoPeak2Tail")(pho)[0]);
+                }
+                else if(pho.pfPhoIso03() > 0 && p_peak_data > p_peak_mc && migration_rnd_value <= p_move_to_peak)
+                    pho.setpfPhoIso03(0.);
+
+                // tail morphing
+                if(pho.pfPhoIso03() > 0.)
                 {
                     pho.setpfPhoIso03(pho.pfPhoIso03()+correctionScalings->at("phoIsoMorphing").Eval(corrections->at("phoIsoMorphing")(pho)[0]));
                 }
-            //Make sure pfPhoIso03Corr is same as pfPhoIso03
-            pho.setpfPhoIso03Corr(pho.pfPhoIso03());
+                //Make sure pfPhoIso03Corr is same as pfPhoIso03
+                pho.setpfPhoIso03Corr(pho.pfPhoIso03());
 
                 
-            //---Charge isolations
-            // ----------------+-------------------------+
-            // ChIsoWorst tail | 01         | 11         |
-            // ChIsoWorst peak | 00         | X          |
-            // ----------------+-------------------------+
-            //                 | ChIso peak | ChIso tail |
-            //                 +-------------------------+
-            // ChIsoWorst < ChIso is impossible given the definition of the two
-            pho.addUserFloat("uncorr_pfChIso03", pho.pfChgIsoWrtChosenVtx03());
-            pho.addUserFloat("uncorr_pfChIsoWorst03", pho.pfChgIsoWrtWorstVtx03());
+                //---Charge isolations
+                // ----------------+-------------------------+
+                // ChIsoWorst tail | 01         | 11         |
+                // ChIsoWorst peak | 00         | X          |
+                // ----------------+-------------------------+
+                //                 | ChIso peak | ChIso tail |
+                //                 +-------------------------+
+                // ChIsoWorst < ChIso is impossible given the definition of the two
+                pho.addUserFloat("uncorr_pfChIso03", pho.pfChgIsoWrtChosenVtx03());
+                pho.addUserFloat("uncorr_pfChIsoWorst03", pho.pfChgIsoWrtWorstVtx03());
             
-            auto p_00_data = corrections->at("chIsoClfData")(pho)[0];
-            auto p_01_data = corrections->at("chIsoClfData")(pho)[1];
-            auto p_11_data = corrections->at("chIsoClfData")(pho)[2];
-            auto p_00_mc = corrections->at("chIsoClfMC")(pho)[0];
-            auto p_01_mc = corrections->at("chIsoClfMC")(pho)[1];
-            auto p_11_mc = corrections->at("chIsoClfMC")(pho)[2];
-            migration_rnd_value = engine.flat();
+                auto p_00_data = corrections->at("chIsoClfData")(pho)[0];
+                auto p_01_data = corrections->at("chIsoClfData")(pho)[1];
+                auto p_11_data = corrections->at("chIsoClfData")(pho)[2];
+                auto p_00_mc = corrections->at("chIsoClfMC")(pho)[0];
+                auto p_01_mc = corrections->at("chIsoClfMC")(pho)[1];
+                auto p_11_mc = corrections->at("chIsoClfMC")(pho)[2];
+                migration_rnd_value = engine.flat();
 
-            pho.addUserFloat("peak2tail_chIso_rnd", engine.flat()*(0.99-0.01)+0.01);
-            pho.addUserFloat("peak2tail_chIsoWorst_rnd", engine.flat()*(0.99-0.01)+0.01);
+                pho.addUserFloat("peak2tail_chIso_rnd", engine.flat()*(0.99-0.01)+0.01);
+                pho.addUserFloat("peak2tail_chIsoWorst_rnd", engine.flat()*(0.99-0.01)+0.01);
             
-            //---often used functions
-            auto get_w = [](float p_data, float p_mc){ return 1-p_data/p_mc; };
-            auto get_z = [](float p_mc_1, float p_data_1, float p_mc_2, float p_data_2){ return (p_data_1-p_mc_1)/(p_mc_2-p_data_2); };                    
+                //---often used functions
+                auto get_w = [](float p_data, float p_mc){ return 1-p_data/p_mc; };
+                auto get_z = [](float p_mc_1, float p_data_1, float p_mc_2, float p_data_2){ return (p_data_1-p_mc_1)/(p_mc_2-p_data_2); };                    
             
-            // 00
-            if(pho.pfChgIsoWrtChosenVtx03() == 0 && pho.pfChgIsoWrtWorstVtx03() == 0 && p_00_mc > p_00_data && migration_rnd_value <= get_w(p_00_data, p_00_mc))
-            {
-                // 00->01
-                if(p_01_mc < p_01_data && p_11_mc > p_11_data)
-                    pho.setpfChgIsoWrtWorstVtx03(corrections->at("chIsoWorstPeak2Tail")(pho)[0]);
-                // 00->11
-                else if(p_01_mc > p_01_data && p_11_mc < p_11_data)
+                // 00
+                if(pho.pfChgIsoWrtChosenVtx03() == 0 && pho.pfChgIsoWrtWorstVtx03() == 0 && p_00_mc > p_00_data && migration_rnd_value <= get_w(p_00_data, p_00_mc))
                 {
-                    pho.setpfChgIsoWrtChosenVtx03(corrections->at("chIsoPeak2Tail")(pho)[0]);
-                    pho.setpfChgIsoWrtWorstVtx03(corrections->at("chIsoWorstPeak2Tail")(pho)[0]);
-                }
-                // 00->either 
-                else if(p_01_mc < p_01_data && p_11_mc < p_11_data)
-                {
-                    migration_rnd_value = engine.flat();
-                    if(migration_rnd_value <= get_z(p_01_mc, p_01_data, p_00_mc, p_00_data))
+                    // 00->01
+                    if(p_01_mc < p_01_data && p_11_mc > p_11_data)
                         pho.setpfChgIsoWrtWorstVtx03(corrections->at("chIsoWorstPeak2Tail")(pho)[0]);
-                    else
+                    // 00->11
+                    else if(p_01_mc > p_01_data && p_11_mc < p_11_data)
                     {
-                    pho.setpfChgIsoWrtChosenVtx03(corrections->at("chIsoPeak2Tail")(pho)[0]);
-                    pho.setpfChgIsoWrtWorstVtx03(corrections->at("chIsoWorstPeak2Tail")(pho)[0]);
-                    }                   
-                }
-            }
-            // 01
-            else if(pho.pfChgIsoWrtChosenVtx03() == 0. && pho.pfChgIsoWrtWorstVtx03() > 0. && p_01_mc > p_01_data && migration_rnd_value <= get_w(p_01_data, p_01_mc))
-            {
-                // 01->00
-                if(p_00_mc < p_00_data && p_11_mc > p_11_data)
-                {
-                    pho.setpfChgIsoWrtChosenVtx03(0.);
-                    pho.setpfChgIsoWrtWorstVtx03(0.);
-                }
-                // 01->11
-                else if(p_00_mc>p_00_data && p_11_mc<p_11_data)
-                    pho.setpfChgIsoWrtChosenVtx03(corrections->at("chIsoPeak2Tail")(pho)[0]);
-                // 01->either
-                else if(p_00_mc < p_00_data && p_11_mc < p_11_data)
-                {
-                    migration_rnd_value = engine.flat();
-                    if(migration_rnd_value <= get_z(p_00_mc, p_00_data, p_01_mc, p_01_data))
-                        pho.setpfChgIsoWrtWorstVtx03(0.);
-                    else
                         pho.setpfChgIsoWrtChosenVtx03(corrections->at("chIsoPeak2Tail")(pho)[0]);
+                        pho.setpfChgIsoWrtWorstVtx03(corrections->at("chIsoWorstPeak2Tail")(pho)[0]);
+                    }
+                    // 00->either 
+                    else if(p_01_mc < p_01_data && p_11_mc < p_11_data)
+                    {
+                        migration_rnd_value = engine.flat();
+                        if(migration_rnd_value <= get_z(p_01_mc, p_01_data, p_00_mc, p_00_data))
+                            pho.setpfChgIsoWrtWorstVtx03(corrections->at("chIsoWorstPeak2Tail")(pho)[0]);
+                        else
+                        {
+                            pho.setpfChgIsoWrtChosenVtx03(corrections->at("chIsoPeak2Tail")(pho)[0]);
+                            pho.setpfChgIsoWrtWorstVtx03(corrections->at("chIsoWorstPeak2Tail")(pho)[0]);
+                        }                   
+                    }
                 }
-            }
-            // 11
-            else if(pho.pfChgIsoWrtChosenVtx03() > 0. && pho.pfChgIsoWrtWorstVtx03() > 0. && p_11_mc > p_11_data && migration_rnd_value <= get_w(p_11_data, p_11_mc))
-            {
-                // 11->00
-                if(p_00_mc < p_00_data && p_01_mc > p_01_data)
+                // 01
+                else if(pho.pfChgIsoWrtChosenVtx03() == 0. && pho.pfChgIsoWrtWorstVtx03() > 0. && p_01_mc > p_01_data && migration_rnd_value <= get_w(p_01_data, p_01_mc))
                 {
-                    pho.setpfChgIsoWrtChosenVtx03(0.);
-                    pho.setpfChgIsoWrtWorstVtx03(0.);
-                }
-                // 11->01
-                else if(p_00_mc > p_00_data && p_01_mc < p_01_data)
-                    pho.setpfChgIsoWrtChosenVtx03(0.);
-                // 11->either
-                else if(p_00_mc < p_00_data && p_01_mc < p_01_data)
-                {
-                    migration_rnd_value = engine.flat();
-                    if(migration_rnd_value <= get_z(p_00_mc, p_00_data, p_11_mc, p_11_data))
+                    // 01->00
+                    if(p_00_mc < p_00_data && p_11_mc > p_11_data)
                     {
                         pho.setpfChgIsoWrtChosenVtx03(0.);
                         pho.setpfChgIsoWrtWorstVtx03(0.);
                     }
-                    else
-                        pho.setpfChgIsoWrtChosenVtx03(0.);
+                    // 01->11
+                    else if(p_00_mc>p_00_data && p_11_mc<p_11_data)
+                        pho.setpfChgIsoWrtChosenVtx03(corrections->at("chIsoPeak2Tail")(pho)[0]);
+                    // 01->either
+                    else if(p_00_mc < p_00_data && p_11_mc < p_11_data)
+                    {
+                        migration_rnd_value = engine.flat();
+                        if(migration_rnd_value <= get_z(p_00_mc, p_00_data, p_01_mc, p_01_data))
+                            pho.setpfChgIsoWrtWorstVtx03(0.);
+                        else
+                            pho.setpfChgIsoWrtChosenVtx03(corrections->at("chIsoPeak2Tail")(pho)[0]);
+                    }
                 }
+                // 11
+                else if(pho.pfChgIsoWrtChosenVtx03() > 0. && pho.pfChgIsoWrtWorstVtx03() > 0. && p_11_mc > p_11_data && migration_rnd_value <= get_w(p_11_data, p_11_mc))
+                {
+                    // 11->00
+                    if(p_00_mc < p_00_data && p_01_mc > p_01_data)
+                    {
+                        pho.setpfChgIsoWrtChosenVtx03(0.);
+                        pho.setpfChgIsoWrtWorstVtx03(0.);
+                    }
+                    // 11->01
+                    else if(p_00_mc > p_00_data && p_01_mc < p_01_data)
+                        pho.setpfChgIsoWrtChosenVtx03(0.);
+                    // 11->either
+                    else if(p_00_mc < p_00_data && p_01_mc < p_01_data)
+                    {
+                        migration_rnd_value = engine.flat();
+                        if(migration_rnd_value <= get_z(p_00_mc, p_00_data, p_11_mc, p_11_data))
+                        {
+                            pho.setpfChgIsoWrtChosenVtx03(0.);
+                            pho.setpfChgIsoWrtWorstVtx03(0.);
+                        }
+                        else
+                            pho.setpfChgIsoWrtChosenVtx03(0.);
+                    }
+                }
+
+                // tail morphing
+                if(pho.pfChgIsoWrtChosenVtx03() > 0.)
+                    pho.setpfChgIsoWrtChosenVtx03(pho.pfChgIsoWrtChosenVtx03()+correctionScalings->at("chIsoMorphing").Eval(corrections->at("chIsoMorphing")(pho)[0]));
+                if(pho.pfChgIsoWrtWorstVtx03() > 0.)
+                    pho.setpfChgIsoWrtWorstVtx03(pho.pfChgIsoWrtWorstVtx03()+correctionScalings->at("chIsoWorstMorphing").Eval(corrections->at("chIsoWorstMorphing")(pho)[0]));
+
             }
-
-            // tail morphing
-            if(pho.pfChgIsoWrtChosenVtx03() > 0.)
-                pho.setpfChgIsoWrtChosenVtx03(pho.pfChgIsoWrtChosenVtx03()+correctionScalings->at("chIsoMorphing").Eval(corrections->at("chIsoMorphing")(pho)[0]));
-            if(pho.pfChgIsoWrtWorstVtx03() > 0.)
-                pho.setpfChgIsoWrtWorstVtx03(pho.pfChgIsoWrtWorstVtx03()+correctionScalings->at("chIsoWorstMorphing").Eval(corrections->at("chIsoWorstMorphing")(pho)[0]));
-
-        }
         }
     }
 
