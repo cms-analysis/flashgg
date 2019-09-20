@@ -122,7 +122,9 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        ElePhotonZMassCut = cms.double(5),
                                        DeltaRTrkEle = cms.double(0.),
                                        debug = cms.bool(False),
-                                       HTXSTags     = HTXSInputTags                                     
+                                       HTXSTags     = HTXSInputTags,
+                                       PrefireProbability = cms.InputTag("flashggPrefireWeight","prefireProbability"),
+                                       applyPrefireProbability = cms.bool(False)
                                        )
 
 

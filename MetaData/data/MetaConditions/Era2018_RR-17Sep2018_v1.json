@@ -140,5 +140,10 @@
                           "f7 := superCluster.phiWidth",
                           "f8 := full5x5_sigmaIetaIeta",
                           "f9 := superCluster.etaWidth"]
+    },
+
+    "L1Prefiring" :
+    {
+        "apply" : false,
     }
 }

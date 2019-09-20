@@ -301,3 +301,20 @@ def runRivetSequence(process, options):
                                          signalParticlePdgIds = cms.vint32(25), ## for the Higgs analysis
                                      )
     process.p.insert(0, process.mergedGenParticles*process.myGenerator*process.rivetProducerHTXS)
+
+def customizeForL1Prefiring(process, options):
+    print "You selected to apply L1 pre-firing. We will apply if it is an appropriate year."
+    applyPrefireProbability = options["L1Prefiring"]["apply"]
+    for tagger in ["flashggTTHHadronicTag"]:
+        getattr(process, tagger).applyPrefireProbability = cms.bool(applyPrefireProbability)
+
+    if applyPrefireProbability:
+        print "Applying L1 pre-firing"
+        getattr(process, "flashggPrefireWeight").photonFileName = options["L1Prefiring"]["photonFileName"].encode("ascii")
+        getattr(process, "flashggPrefireWeight").photonHistName = cms.untracked.string(options["L1Prefiring"]["photonHistName"].encode("ascii"))
+        getattr(process, "flashggPrefireWeight").jetFileName = options["L1Prefiring"]["jetFileName"].encode("ascii")
+        getattr(process, "flashggPrefireWeight").jetHistName = cms.untracked.string(options["L1Prefiring"]["jetHistName"].encode("ascii"))
+    else:
+        print "Not applying L1 pre-firing"
+        process.flashggTagSequence.remove(process.flashggPrefireWeight)
+

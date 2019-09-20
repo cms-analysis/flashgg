@@ -74,6 +74,8 @@ namespace flashgg {
         EDGetTokenT<edm::TriggerResults> triggerRECO_;
         string systLabel_;
 
+        EDGetTokenT<double> prefireToken_;
+        bool applyPrefireProbability_;
 
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
         bool useTTHHadronicMVA_;
@@ -245,6 +247,7 @@ namespace flashgg {
         rhoTag_( consumes<double>( iConfig.getParameter<InputTag>( "rhoTag" ) ) ),
 	    triggerRECO_( consumes<edm::TriggerResults>(iConfig.getParameter<InputTag>("RECOfilters") ) ),
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
+        prefireToken_ ( consumes<double>( iConfig.getParameter<InputTag> ( "PrefireProbability" ) ) ),
         _MVAMethod( iConfig.getParameter<string> ( "MVAMethod" ) )
     {
         systematicsLabels.push_back("");
@@ -322,6 +325,8 @@ namespace flashgg {
 
         for (auto & tag : metTags)
            metTokens_.push_back(consumes<edm::View<flashgg::Met>>(tag)); 
+
+        applyPrefireProbability_ = iConfig.getParameter<bool>( "applyPrefireProbability" );
 
         boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
         assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // 
@@ -622,6 +627,9 @@ namespace flashgg {
         Handle<View<flashgg::Met> > METs;
         if (!modifySystematicsWorkflow)
             evt.getByToken( METToken_, METs );
+
+        Handle<double> prefireProb;
+        evt.getByToken( prefireToken_, prefireProb );
 
 	    //Get trigger results relevant to MET filters
         bool passMETfilters = 1;
@@ -1275,6 +1283,8 @@ namespace flashgg {
                         }                    
                     }
                     tthhtags_obj.includeWeights( *dipho );
+                    if (applyPrefireProbability_)
+                        tthhtags_obj.setWeight("prefireProbability", *(prefireProb.product())); // add the prefire probability
 
                     tthhtags->push_back( tthhtags_obj );
                     if( ! evt.isRealData() ) {

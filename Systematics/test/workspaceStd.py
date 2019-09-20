@@ -137,6 +137,12 @@ customize.options.register('verboseSystDump',
                            VarParsing.VarParsing.varType.bool,
                            'verboseSystDump'
                            )
+customize.options.register('doL1Prefiring',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doL1Prefiring'
+                           )
 
 
 print "Printing defaults"
@@ -305,7 +311,14 @@ if is_signal:
         variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
         variablesToUse.append("leadmva := diPhotonMVA().leadmva")
         variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
-    
+
+    if customize.doL1Prefiring:
+        customizeForL1Prefiring(process, customize.metaConditions)
+        variablesToUse.append("prefireProbability := weight(\"prefireProbability\")")
+    else:
+        process.flashggTagSequence.remove(process.flashggPrefireWeight)
+
+
     if customize.doSystematics:
         for direction in ["Up","Down"]:
             phosystlabels.append("MvaShift%s01sigma" % direction)
@@ -749,3 +762,4 @@ if customize.verboseSystDump:
 #print >> processDumpFile, process.dumpPython()
 # call the customization
 customize(process)
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
