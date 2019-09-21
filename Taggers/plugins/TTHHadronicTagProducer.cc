@@ -1283,8 +1283,11 @@ namespace flashgg {
                         }                    
                     }
                     tthhtags_obj.includeWeights( *dipho );
-                    if (applyPrefireProbability_)
+                    if (applyPrefireProbability_) {
                         tthhtags_obj.setWeight("prefireProbability", *(prefireProb.product())); // add the prefire probability
+                        if (!evt.isRealData())
+                            tthhtags_obj.setCentralWeight(tthhtags_obj.centralWeight() * (1. - *(prefireProb.product())) );
+                    }
 
                     tthhtags->push_back( tthhtags_obj );
                     if( ! evt.isRealData() ) {

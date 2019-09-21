@@ -244,7 +244,9 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
                                        SplitDiLeptEv = cms.bool(True),
                                        debug = cms.bool(False),
                                        CutBasedDiphoId = cms.vdouble(0.4,0.3,0.0,-0.5,2.0,2.5),    # pT/m lead, pT/m sublead, leadIdMVA, subleadIdMVA, DeltaEta, DeltaPhi
-                                       HTXSTags     = HTXSInputTags
+                                       HTXSTags     = HTXSInputTags,
+                                       PrefireProbability = cms.InputTag("flashggPrefireWeight","prefireProbability"),
+                                       applyPrefireProbability = cms.bool(False)
 )
 
 flashggTHQLeptonicTag = cms.EDProducer("FlashggTHQLeptonicTagProducer",
