@@ -110,7 +110,7 @@ namespace flashgg {
         if (1. - prefireProd < 0.) {
             throw cms::Exception("Negative probablility found");
         }
-        std::cout << "ED DEBUG: prefire probability for this event is " << 1. - prefireProd << std::endl;
+        //std::cout << "ED DEBUG: prefire probability for this event is " << 1. - prefireProd << std::endl;
         std::unique_ptr<double> prefireProbability = std::make_unique<double>(1. - prefireProd);
         evt.put( std::move(prefireProbability), "prefireProbability" );
     }
