@@ -762,4 +762,3 @@ if customize.verboseSystDump:
 #print >> processDumpFile, process.dumpPython()
 # call the customization
 customize(process)
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
