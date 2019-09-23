@@ -311,7 +311,7 @@ def recalculatePDFWeights(process, options):
                                                     tag = cms.untracked.string("initrwgt"),
                                                     doScaleWeights  = cms.untracked.bool(True),
                                                     nPdfEigWeights = cms.uint32(60),
-                                                    mc2hessianCSV = cms.untracked.string(""),
+                                                    mc2hessianCSV = cms.untracked.string(options["mc2hessianCSV"].encode("ascii")),
                                                     LHERunLabel = cms.string("externalLHEProducer"),
                                                     Debug = cms.bool(False),
                                                     PDFmap = cms.PSet(#see here https://lhapdf.hepforge.org/pdfsets.html to update the map if needed
@@ -319,8 +319,6 @@ def recalculatePDFWeights(process, options):
                                                         NNPDF31_nnlo_as_0118_nf_4 = cms.untracked.uint32(320900)
                                                     )
                                                 ) 
-    setattr(process.flashggPDFWeightObject, "mc2hessianCSV", "PhysicsTools/HepMCCandAlgos/data/NNPDF30_lo_as_0130_hessian_60.csv")
-    #process.p *= process.flashggPDFWeightObject
     process.p.insert(0, process.flashggPDFWeightObject)
 
     

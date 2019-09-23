@@ -107,6 +107,8 @@
 	"eta" : 2.5
     },
 
+    "mc2hessianCSV" : "PhysicsTools/HepMCCandAlgos/data/NNPDF30_lo_as_0130_hessian_60.csv",
+
     "bRegression" :
     {
         "weightFile" : "/src/flashgg/Taggers/data/DNN_models/breg_training_2017_JECv32.pb",
