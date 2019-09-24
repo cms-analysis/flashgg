@@ -77,12 +77,3 @@ class StageOneCustomize():
 
         ## set the stage one tag merging
         self.process.flashggSystTagMerger = cms.EDProducer("StageOneTagMerger",src=cms.VInputTag("flashggTagSorter"))
-
-
-    def customizeTagDumper(self):
-        ## configure the stage one dumper
-        #self.process.load("flashgg.Taggers.stageOneDiphotonTagDumper_cfi")
-        #self.process.tagsDumper.className = "StageOneDiPhotonTagDumper" 
-        self.process.tagsDumper.splitPdfByStageOneCat = cms.untracked.bool(self.customize.doStageOne)
-
-

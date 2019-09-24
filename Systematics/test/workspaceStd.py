@@ -414,30 +414,9 @@ process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string("test.root"))
 
 process.extraDumpers = cms.Sequence()
-if customize.doStageOne:
-    process.load("flashgg.Taggers.stageOneDiphotonTagDumper_cfi")
-    process.tagsDumper.className = "StageOneDiPhotonTagDumper" 
-else:
-    process.load("flashgg.Taggers.diphotonTagDumper_cfi") ##  import diphotonTagDumper 
-    process.tagsDumper.className = "DiPhotonTagDumper"
 
-process.tagsDumper.src = "flashggSystTagMerger"
-#process.tagsDumper.src = "flashggTagSystematics"
-process.tagsDumper.processId = "test"
-process.tagsDumper.dumpTrees = customize.dumpTrees
-process.tagsDumper.dumpWorkspace = customize.dumpWorkspace
-process.tagsDumper.dumpHistos = False
-process.tagsDumper.quietRooFit = True
-process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
-process.tagsDumper.splitPdfByStage0Cat = cms.untracked.bool(customize.doHTXS)
-
-if customize.options.WeightName :
-    lheProduct = customize.dataset[1]["LHESourceName"].split("_")
-    #print lheProduct
-    process.tagsDumper.LHEEventProduct = cms.untracked.InputTag( str(lheProduct[1]) , str(lheProduct[2]) , str(lheProduct[3]) )
-    #print process.tagsDumper.LHEEventProduct
-    process.tagsDumper.LHEWeightName = cms.untracked.string(customize.options.WeightName)
-
+from flashgg.Taggers.TagsDumperCustomize import customizeTagsDumper
+customizeTagsDumper(process, customize) ## move all the default tags dumper configuration to this function
 
 if(customize.doFiducial):
 #    if customize.processId == "Data":
@@ -474,7 +453,6 @@ elif customize.doubleHTagsOnly:
     print tagList
 elif customize.doStageOne:
     tagList = soc.tagList
-    soc.customizeTagDumper()
 else:
     tagList=[
         ["NoTag",0],
@@ -492,8 +470,6 @@ else:
         ]
 
 definedSysts=set()
-process.tagsDumper.NNLOPSWeightFile=cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root")
-process.tagsDumper.reweighGGHforNNLOPS = cms.untracked.bool(bool(customize.processId.count("ggh")))
 process.tagsDumper.classifierCfg.remap=cms.untracked.VPSet()
 import flashgg.Taggers.dumperConfigTools as cfgTools
 for tag in tagList: 
