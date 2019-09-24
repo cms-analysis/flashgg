@@ -34,6 +34,7 @@ namespace flashgg {
     private:
         void produce( Event &, const EventSetup & ) override;
         int  chooseCategory( float );
+        int computeStage1Kinematics( const StageOneTag );
 
         EDGetTokenT<View<DiPhotonCandidate> >      diPhotonToken_;
         EDGetTokenT<View<VBFMVAResult> >           vbfMvaResultToken_;
@@ -185,7 +186,8 @@ namespace flashgg {
                 }
             }
             
-            stage1tag_obj.computeStage1Kinematics( vbf_mvares->leadJet_ptr, vbf_mvares->subleadJet_ptr );
+            int chosenTag = computeStage1Kinematics( stage1tag_obj ); // choose category
+            stage1tag_obj.setStage1recoTag( chosenTag ); // set the category in the object
             TagTruthBase truth1_obj;
             if( ! evt.isRealData() ) {
                 truth1_obj.setGenPV( higgsVtx );
@@ -220,6 +222,192 @@ namespace flashgg {
         evt.put( std::move( stage1tags ), "stageone" );
         evt.put ( std::move( stage1truths ), "stageone" );
     }
+
+    int StageOneCombinedTagProducer::computeStage1Kinematics( const StageOneTag tag_obj ) 
+    {
+        int chosenTag_ = stage1recoTag::LOGICERROR;
+        float ptH = tag_obj.diPhoton()->pt();
+        unsigned int nJ = 0;
+        float mjj = 0.;
+        float ptHjj = 0.;
+        float mvaScore = tag_obj.diPhotonMVA().transformedMvaValue(); // maps output score from TMVA back to XGBoost original
+        float dijetScore = tag_obj.VBFMVA().VBFMVAValue();
+        float leadMvaScore = tag_obj.diPhotonMVA().leadmva;
+        float subleadMvaScore = tag_obj.diPhotonMVA().subleadmva;
+        float leadPToM = tag_obj.diPhotonMVA().leadptom;
+        float subleadPToM = tag_obj.diPhotonMVA().subleadptom;
+        edm::Ptr<flashgg::Jet> j0 = tag_obj.VBFMVA().leadJet_ptr; 
+        edm::Ptr<flashgg::Jet> j1 = tag_obj.VBFMVA().subleadJet_ptr;
+        
+        if ( !j0.isNull() ) {
+            if ( j0->pt() > 30. ) { nJ += 1; }
+        }
+        if ( !j1.isNull() ) {
+            if ( j1->pt() > 30. ) { nJ += 1; }
+        }
+
+        if ( nJ >= 2 ) {
+            mjj = ( j0->p4() + j1->p4() ).mass();
+            ptHjj = ( j0->p4() + j1->p4() + tag_obj.diPhoton()->p4() ).pt();
+        }
+        // have now added two categories for each RECO tag, using the moment diphoton MVA, with boundaries currently hard-coded below..
+        if (nJ == 0) {
+            if (mvaScore > 0.851) {
+                chosenTag_ = stage1recoTag::RECO_0J_Tag0;
+            }
+            else if (mvaScore > 0.796) {
+                chosenTag_ = stage1recoTag::RECO_0J_Tag1;
+            }
+            else if (mvaScore > 0.586) {
+                chosenTag_ = stage1recoTag::RECO_0J_Tag2;
+            }
+            else { 
+                chosenTag_ = stage1recoTag::NOTAG;
+            }
+        } else if ( nJ == 1 ) {
+            if ( ptH > 200 ) {
+                if (mvaScore > 0.917) {
+                    chosenTag_ = stage1recoTag::RECO_1J_PTH_GT200;
+                }
+                else { 
+                    chosenTag_ = stage1recoTag::NOTAG;
+                }
+            } else if ( ptH > 120. ) {
+                if (mvaScore > 0.908) {
+                    chosenTag_ = stage1recoTag::RECO_1J_PTH_120_200_Tag0;
+                }
+                else if (mvaScore > 0.810) {
+                    chosenTag_ = stage1recoTag::RECO_1J_PTH_120_200_Tag1;
+                }
+                else { 
+                    chosenTag_ = stage1recoTag::NOTAG;
+                }
+            } else if ( ptH > 60. ) {
+                if (mvaScore > 0.866) {
+                    chosenTag_ = stage1recoTag::RECO_1J_PTH_60_120_Tag0;
+                }
+                else if (mvaScore > 0.749) {
+                    chosenTag_ = stage1recoTag::RECO_1J_PTH_60_120_Tag1;
+                }
+                else { 
+                    chosenTag_ = stage1recoTag::NOTAG;
+                }
+            } else {
+                if (mvaScore > 0.832) {
+                    chosenTag_ = stage1recoTag::RECO_1J_PTH_0_60_Tag0;
+                }
+                else if (mvaScore > 0.718) {
+                    chosenTag_ = stage1recoTag::RECO_1J_PTH_0_60_Tag1;
+                }
+                else { 
+                    chosenTag_ = stage1recoTag::NOTAG;
+                }
+            }
+        } else { // 2 jets
+            bool reProcess = false;
+            if ( mjj > 400. && j0->p4().pt() > 40. && j1->p4().pt() > 30. && leadMvaScore > -0.2 && subleadMvaScore > -0.2 ) { //cuts optimised using data-driven dijet BDT plus new diphoton BDT
+                if ( j0->p4().pt() > 200. ) {
+                    if (dijetScore > -0.412 && mvaScore > 0.728) {
+                        chosenTag_ = stage1recoTag::RECO_VBFTOPO_BSM;
+                    }
+                    else { 
+                        reProcess = true;
+                    }
+                }
+                else if ( ptHjj > 0. && ptHjj < 25.) {
+                    if (dijetScore > 0.120 && mvaScore > 0.623) {
+                        chosenTag_ = stage1recoTag::RECO_VBFTOPO_JET3VETO_Tag0;
+                    }
+                    else if (dijetScore > -0.890 && mvaScore > 0.720) {
+                        chosenTag_ = stage1recoTag::RECO_VBFTOPO_JET3VETO_Tag1;
+                    }
+                    else { 
+                        reProcess = true;
+                    }
+                } else if ( ptHjj > 25. ) {
+                    if (dijetScore > 0.481 && mvaScore > 0.607) {
+                        chosenTag_ = stage1recoTag::RECO_VBFTOPO_JET3_Tag0;
+                    }
+                    else if (dijetScore > -0.844 && mvaScore > 0.739) {
+                        chosenTag_ = stage1recoTag::RECO_VBFTOPO_JET3_Tag1;
+                    }
+                    else { 
+                        reProcess = true;
+                    }
+                }
+            }
+            else if ( mjj > 250. && j0->p4().pt() > 40. && j1->p4().pt() > 30. && leadMvaScore > -0.2 && subleadMvaScore > -0.2 ) { //cuts optimised using data-driven dijet BDT plus new diphoton BDT
+                if ( j0->p4().pt() > 200. ) {
+                    if (dijetScore > -0.412 && mvaScore > 0.728) {
+                        chosenTag_ = stage1recoTag::RECO_VBFTOPO_BSM;
+                    }
+                    else { 
+                        reProcess = true;
+                    }
+                }
+                else if (dijetScore > -0.737 && mvaScore > 0.768) {
+                    chosenTag_ = stage1recoTag::RECO_VBFTOPO_REST;
+                }
+                else { 
+                    reProcess = true;
+                }
+            }
+            else {
+               reProcess = true;
+            }
+            if ( reProcess ) {
+                if ( ptH > 200 ) {
+                    if (mvaScore > 0.938) {
+                        chosenTag_ = stage1recoTag::RECO_GE2J_PTH_GT200_Tag0;
+                    }
+                    else if (mvaScore > 0.865) {
+                        chosenTag_ = stage1recoTag::RECO_GE2J_PTH_GT200_Tag1;
+                    }
+                    else { 
+                        chosenTag_ = stage1recoTag::NOTAG;
+                    }
+                } else if ( ptH > 120. ) {
+                    if (mvaScore > 0.910) {
+                        chosenTag_ = stage1recoTag::RECO_GE2J_PTH_120_200_Tag0;
+                    }
+                    else if (mvaScore > 0.811) {
+                        chosenTag_ = stage1recoTag::RECO_GE2J_PTH_120_200_Tag1;
+                    }
+                    else { 
+                        chosenTag_ = stage1recoTag::NOTAG;
+                    }
+                } else if ( ptH > 60. ) {
+                    if (mvaScore > 0.869) {
+                        chosenTag_ = stage1recoTag::RECO_GE2J_PTH_60_120_Tag0;
+                    }
+                    else if (mvaScore > 0.757) {
+                        chosenTag_ = stage1recoTag::RECO_GE2J_PTH_60_120_Tag1;
+                    }
+                    else { 
+                        chosenTag_ = stage1recoTag::NOTAG;
+                    }
+                } else {
+                    if (mvaScore > 0.833) {
+                        chosenTag_ = stage1recoTag::RECO_GE2J_PTH_0_60_Tag0;
+                    }
+                    else if (mvaScore > 0.709) {
+                        chosenTag_ = stage1recoTag::RECO_GE2J_PTH_0_60_Tag1;
+                    }
+                    else { 
+                        chosenTag_ = stage1recoTag::NOTAG;
+                    }
+                }
+            }
+        }
+        // reject events not passing the scaled pT cuts
+        if ( leadPToM < 1./3. || subleadPToM < 1./4. ) {
+            chosenTag_ = stage1recoTag::NOTAG;
+        }
+        
+        //finally pass back the chosen tag
+        return chosenTag_;
+    }
+
 }
 
 typedef flashgg::StageOneCombinedTagProducer FlashggStageOneCombinedTagProducer;

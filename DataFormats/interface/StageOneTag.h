@@ -31,8 +31,6 @@ namespace flashgg {
 
         int stage1recoEnum() const { return stage1recoTag_; }
 
-        void computeStage1Kinematics( const edm::Handle<edm::View<flashgg::Jet> > & jets, float ptV = -1., float lepphi1 = -999., float lepeta1 = -999., float lepphi2 = -999., float lepeta2 = -999. );
-        void computeStage1Kinematics( const edm::Ptr<flashgg::Jet> j0, const edm::Ptr<flashgg::Jet> j1, float ptV = -1., float lepphi1 = -999., float lepeta1 = -999., float lepphi2 = -999., float lepeta2 = -999. );
         string stage1KinematicLabel() const;
         void setStage1recoTag( const int tag ) { stage1recoTag_ = tag; }
 
