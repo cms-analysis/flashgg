@@ -31,9 +31,9 @@
 
 #include "flashgg/MicroAOD/interface/CutBasedClassifier.h"
 #include "flashgg/MicroAOD/interface/ClassNameClassifier.h"
-#include "flashgg/MicroAOD/interface/Stage1NameClassifier.h"
+#include "flashgg/MicroAOD/interface/StageOneNameClassifier.h"
 #include "flashgg/MicroAOD/interface/CutAndClassBasedClassifier.h"
-#include "flashgg/MicroAOD/interface/Stage1BasedClassifier.h"
+#include "flashgg/MicroAOD/interface/StageOneBasedClassifier.h"
 #include "flashgg/Taggers/interface/GlobalVariablesDumper.h"
 #include "flashgg/DataFormats/interface/PDFWeightObject.h"
 #include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"

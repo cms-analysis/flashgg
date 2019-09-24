@@ -1,5 +1,5 @@
-#ifndef flashgg_Stage1BasedClassifier_h
-#define flashgg_Stage1BasedClassifier_h
+#ifndef flashgg_StageOneBasedClassifier_h
+#define flashgg_StageOneBasedClassifier_h
 
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 
@@ -7,14 +7,14 @@
 
 namespace flashgg {
     template <class T>
-    class Stage1BasedClassifier : private CutBasedClassifier<T>, private Stage1NameClassifier<T>
+    class StageOneBasedClassifier : private CutBasedClassifier<T>, private StageOneNameClassifier<T>
     {
     public:
         typedef StringCutObjectSelector<T, true> functor_type;
 
-        Stage1BasedClassifier( const edm::ParameterSet &cfg ) : 
+        StageOneBasedClassifier( const edm::ParameterSet &cfg ) : 
             CutBasedClassifier<T>(cfg),
-            Stage1NameClassifier<T>(cfg)
+            StageOneNameClassifier<T>(cfg)
         {
         }
 
@@ -22,7 +22,7 @@ namespace flashgg {
         {
             auto cutbased = CutBasedClassifier<T>::operator()(obj);
             
-            auto stage1based = Stage1NameClassifier<T>::operator()(obj);
+            auto stage1based = StageOneNameClassifier<T>::operator()(obj);
             
             std::string cat = stage1based.first;
             if( ! cutbased.first.empty() ) {
@@ -33,7 +33,7 @@ namespace flashgg {
     };
 }
 
-#endif // flashgg_Stage1BasedClassifier_h
+#endif // flashgg_StageOneBasedClassifier_h
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

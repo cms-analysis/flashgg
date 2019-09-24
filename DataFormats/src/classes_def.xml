@@ -138,6 +138,10 @@
 <class name="std::vector<edm::Ptr<flashgg::Jet> >"/>
 <class name="edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> >" />
 <class name="edm::Wrapper<edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> > >" />
+
+<class name="edm::OwnVector<flashgg::StageOneTag, edm::ClonePolicy<flashgg::StageOneTag> >" />
+<class name="edm::Wrapper<edm::OwnVector<flashgg::StageOneTag, edm::ClonePolicy<flashgg::StageOneTag> > >" />
+
 <class name="flashgg::VBFTagTruth" ClassVersion="13">
  <version ClassVersion="13" checksum="3465927303"/>
  <version ClassVersion="12" checksum="2475891424"/>
@@ -384,6 +388,12 @@
 <class name="edm::Wrapper<std::vector<flashgg::TagCandidate> >"/>
 <class name="std::vector<flashgg::DiPhotonTagBase*>"/>
 <class name="std::vector<flashgg::TagTruthBase*>"/>
+
+<class name="flashgg::StageOneTag" ClassVersion="0">
+</class>
+<class name="std::vector<flashgg::StageOneTag>"/>
+<class name="std::vector<flashgg::StageOneTag*>"/>
+<class name="edm::Wrapper<std::vector<flashgg::StageOneTag> >"/>
 
 <class name="flashgg::DoubleHTag" ClassVersion="13">
  <version ClassVersion="13" checksum="1264868891"/>

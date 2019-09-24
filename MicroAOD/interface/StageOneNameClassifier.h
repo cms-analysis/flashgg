@@ -1,5 +1,5 @@
-#ifndef flashgg_Stage1NameClassifier_h
-#define flashgg_Stage1NameClassifier_h
+#ifndef flashgg_StageOneNameClassifier_h
+#define flashgg_StageOneNameClassifier_h
 
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 
@@ -13,10 +13,10 @@
 namespace flashgg {
 
     template <class T>
-    class Stage1NameClassifier
+    class StageOneNameClassifier
     {
     public:
-        Stage1NameClassifier( const edm::ParameterSet &cfg )
+        StageOneNameClassifier( const edm::ParameterSet &cfg )
         {
             auto remap = cfg.getUntrackedParameter<std::vector<edm::ParameterSet> >( "remap", std::vector<edm::ParameterSet>() );
             for( auto &rm : remap ) {

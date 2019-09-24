@@ -57,7 +57,7 @@ namespace flashgg {
 
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         std::vector<edm::EDGetTokenT<View<flashgg::DiPhotonTagBase> > > TagList_;
-        std::vector<edm::EDGetTokenT<View<flashgg::StageOneTag> > > Stage1TagList_;
+        std::vector<edm::EDGetTokenT<View<flashgg::StageOneTag> > > StageOneTagList_;
         std::vector<TagPriorityRange> TagPriorityRanges;
 
         double massCutUpper;
@@ -78,8 +78,8 @@ namespace flashgg {
         EDGetTokenT<float> pTHToken_,pTVToken_;
         EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
 
-        bool doStage1RecoTags_;
-        bool stage1Printout_;
+        bool doStageOneRecoTags_;
+        bool stageOnePrintout_;
 
         std::vector<std::tuple<DiPhotonTagBase::tag_t,int,int> > otherTags_; // (type,category,diphoton index)
 
@@ -102,8 +102,8 @@ namespace flashgg {
         storeOtherTagInfo_ = iConfig.getParameter<bool>( "StoreOtherTagInfo" );
         blindedSelectionPrintout_ = iConfig.getParameter<bool>("BlindedSelectionPrintout");
         createNoTag_ = iConfig.getParameter<bool>("CreateNoTag");
-        doStage1RecoTags_ = iConfig.getParameter<bool>("DoStage1RecoTags");
-        stage1Printout_ = iConfig.getParameter<bool>("Stage1Printout");
+        doStageOneRecoTags_ = iConfig.getParameter<bool>("DoStageOneRecoTags");
+        stageOnePrintout_ = iConfig.getParameter<bool>("StageOnePrintout");
 
         const auto &vpset = iConfig.getParameterSetVector( "TagPriorityRanges" );
 
@@ -121,8 +121,8 @@ namespace flashgg {
             if( i == TagList_.size() ) {
                 labels.push_back( tag.label() );
                 TagList_.push_back( consumes<View<flashgg::DiPhotonTagBase> >( tag ) );
-                if ( doStage1RecoTags_ ) {
-                    Stage1TagList_.push_back( consumes<View<flashgg::StageOneTag> >( stage1tag ) );
+                if ( doStageOneRecoTags_ ) {
+                    StageOneTagList_.push_back( consumes<View<flashgg::StageOneTag> >( stage1tag ) );
                 }
             }
             TagPriorityRanges.emplace_back( tag.label(), c1, c2, i );
@@ -136,7 +136,7 @@ namespace flashgg {
         pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
         newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
 
-        if (doStage1RecoTags_) {
+        if (doStageOneRecoTags_) {
             produces<edm::OwnVector<flashgg::StageOneTag> >();
         } else {
             produces<edm::OwnVector<flashgg::DiPhotonTagBase> >();
@@ -171,9 +171,9 @@ namespace flashgg {
             Handle<View<flashgg::DiPhotonTagBase> > TagVectorEntry;
             evt.getByToken( TagList_[tpr->collIndex], TagVectorEntry );
 
-            Handle<View<flashgg::StageOneTag> > Stage1TagVectorEntry;
-            if (doStage1RecoTags_ ) {
-                evt.getByToken( Stage1TagList_[tpr->collIndex], Stage1TagVectorEntry ); 
+            Handle<View<flashgg::StageOneTag> > StageOneTagVectorEntry;
+            if (doStageOneRecoTags_ ) {
+                evt.getByToken( StageOneTagList_[tpr->collIndex], StageOneTagVectorEntry ); 
             }
 
             edm::RefProd<edm::OwnVector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<edm::OwnVector<TagTruthBase> >();
@@ -250,14 +250,14 @@ namespace flashgg {
 
 
                 SelectedTag->push_back( *TagVectorEntry->ptrAt( chosen_i ) );
-                if (doStage1RecoTags_) {
-                    SelectedStageOne->push_back( *Stage1TagVectorEntry->ptrAt( chosen_i ) );
+                if (doStageOneRecoTags_) {
+                    SelectedStageOne->push_back( *StageOneTagVectorEntry->ptrAt( chosen_i ) );
                 }
                 edm::Ptr<TagTruthBase> truth = TagVectorEntry->ptrAt( chosen_i )->tagTruth();
                 if( truth.isNonnull() ) {
                     SelectedTagTruth->push_back( *truth );
                     SelectedTag->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) ); // Normally this 0 would be the index number
-                    if (doStage1RecoTags_) {
+                    if (doStageOneRecoTags_) {
                         SelectedStageOne->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) );
                     }
                 }
@@ -343,7 +343,7 @@ namespace flashgg {
             }
         }
 
-        if ( stage1Printout_ ) {
+        if ( stageOnePrintout_ ) {
             if (SelectedTag->size() == 1) {
                 float mass = SelectedTag->back().diPhoton()->mass();
                 int cat = SelectedTag->back().categoryNumber();
@@ -418,7 +418,7 @@ namespace flashgg {
                 std::cout << "******************************" << std::endl;
             }
         }
-        if ( doStage1RecoTags_ ) {
+        if ( doStageOneRecoTags_ ) {
             evt.put( std::move ( SelectedStageOne ) );
         } else {
             evt.put( std::move( SelectedTag ) );

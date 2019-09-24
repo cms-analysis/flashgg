@@ -1,8 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 from flashgg.MicroAOD.flashggJets_cfi import UnpackedJetCollectionVInputTag
 
-HTXSInputTags = cms.PSet(stage0cat = cms.InputTag("rivetProducerHTXS","stage0cat"), #2016
-                         stage1cat = cms.InputTag("rivetProducerHTXS","stage1cat"), #2016
+HTXSInputTags = cms.PSet(stage0bin = cms.InputTag("rivetProducerHTXS","stage0bin"), #2016
+                         stage1bin = cms.InputTag("rivetProducerHTXS","stage1bin"), #2016
                          njets     = cms.InputTag("rivetProducerHTXS","njets"), #2016
                          pTH       = cms.InputTag("rivetProducerHTXS","pTH"), #2016
                          pTV       = cms.InputTag("rivetProducerHTXS","pTV"), #2016

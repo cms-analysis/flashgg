@@ -39,7 +39,7 @@ namespace flashgg {
             CutAndClassBasedClassifier<DiPhotonTagBase> > DiPhotonTagDumper;
     typedef CollectionDumper<edm::OwnVector<StageOneTag>,
             StageOneTag,
-            Stage1BasedClassifier<StageOneTag> > Stage1DiPhotonTagDumper;
+            StageOneBasedClassifier<StageOneTag> > StageOneDiPhotonTagDumper;
 
     //// namespace fwlite {
     //// 	typedef ::fwlite::AnalyzerWrapper<DiPhotonDumper> DiPhotonDumper;

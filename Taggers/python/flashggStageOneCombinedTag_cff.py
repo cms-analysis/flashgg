@@ -1,5 +1,5 @@
 import FWCore.ParameterSet.Config as cms
 
-from flashggStageOneTag_cfi import flashggStageOneTag
+from flashggStageOneCombinedTag_cfi import flashggStageOneCombinedTag
 
-flashggStageOneTagSequence = cms.Sequence( flashggStageOneTag )
+flashggStageOneTagSequence = cms.Sequence( flashggStageOneCombinedTag )
