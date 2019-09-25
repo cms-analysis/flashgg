@@ -15,8 +15,7 @@ class StageOneCustomize():
             ["RECO_1J_PTH_120_200_Tag0",0], ["RECO_1J_PTH_120_200_Tag1",0], ["RECO_1J_PTH_GT200",0], 
             ["RECO_GE2J_PTH_0_60_Tag0",0], ["RECO_GE2J_PTH_0_60_Tag1",0], ["RECO_GE2J_PTH_60_120_Tag0",0], ["RECO_GE2J_PTH_60_120_Tag1",0], 
             ["RECO_GE2J_PTH_120_200_Tag0",0], ["RECO_GE2J_PTH_120_200_Tag1",0], ["RECO_GE2J_PTH_GT200_Tag0",0], ["RECO_GE2J_PTH_GT200_Tag1",0], 
-            ["RECO_VBFTOPO_JET3VETO_Tag0",0], ["RECO_VBFTOPO_JET3VETO_Tag1",0], ["RECO_VBFTOPO_JET3_Tag0",0], ["RECO_VBFTOPO_JET3_Tag1",0], ["RECO_VBFTOPO_REST",0], ["RECO_VBFTOPO_BSM",0],
-            ["RECO_TTH_LEP",0], ["RECO_TTH_HAD",0] 
+            ["RECO_VBFTOPO_JET3VETO_Tag0",0], ["RECO_VBFTOPO_JET3VETO_Tag1",0], ["RECO_VBFTOPO_JET3_Tag0",0], ["RECO_VBFTOPO_JET3_Tag1",0], ["RECO_VBFTOPO_REST",0], ["RECO_VBFTOPO_BSM",0]
         ]
         if self.customize.processId == "Data": 
             self.tagList.pop(1) ## remove NoTag for data
@@ -66,8 +65,9 @@ class StageOneCustomize():
         self.process.flashggTagSequence.remove(self.process.flashggVBFTag)
         self.process.flashggTagSequence.replace(self.process.flashggUntagged,self.process.flashggStageOneCombinedTag)
 
-        ## customize meta conditions - need to add all the category thresholds here eventually
-        #self.process.flashggDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))
+        ## customize from meta conditions - category thresholds set here
+        self.process.flashggStageOneCombinedTag.rawDiphoBounds = cms.vdouble( self.metaConditions["stageOneCombinedTag"]["rawDiphoBounds"] )
+        self.process.flashggStageOneCombinedTag.rawDijetBounds = cms.vdouble( self.metaConditions["stageOneCombinedTag"]["rawDijetBounds"] )
 
         ## set tag priorities, stage 1 sorting
         self.process.flashggTagSorter.TagPriorityRanges = cms.VPSet(
