@@ -85,7 +85,7 @@
         "weightFile" : "flashgg/Taggers/data/dijetModel2017.xml"
     },
 
-    "stageOneCombinedTag" :  #FIXME need updating to 2017 version
+    "stageOneCombinedTag" :
     {  
         "rawDiphoBounds" : [
                              0.843, 0.759, 0.597,
