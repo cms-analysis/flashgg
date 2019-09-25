@@ -125,6 +125,8 @@ void DNN_Helper::Preprocess() {
     
     for (unsigned int i = 0; i < object_features_.size(); i++) {
         for (unsigned int j = 0; j < object_features_[i].size(); j++) {
+            if (object_features_[i][j] == pad_value)
+                continue;
             object_features_[i][j] += -(preprocess_scheme_object_features_mean_[j]);
             object_features_[i][j] *= 1./preprocess_scheme_object_features_stddev_[j];
         }
@@ -211,6 +213,8 @@ void DNN_Helper::SetInputs(std::vector<edm::Ptr<flashgg::Jet>> jets, std::vector
         object_features_unordered[i].resize(length_object_);
 
     for (unsigned int i = 0; i < jets.size(); i++) {
+        if (debug_)
+            cout << "Filling jet " << i << endl;
         object_features_unordered[i][0] = log(jets[i]->pt());
         object_features_unordered[i][1] = jets[i]->eta();
         object_features_unordered[i][2] = jets[i]->phi();
@@ -223,6 +227,8 @@ void DNN_Helper::SetInputs(std::vector<edm::Ptr<flashgg::Jet>> jets, std::vector
     }
 
     for (unsigned int i = jets.size(); i < jets.size() + electrons.size(); i++) {
+         if (debug_)
+            cout << "Filling electron " << i << endl;
         unsigned int j = i - jets.size();
         object_features_unordered[i][0] = log(electrons[j]->pt());
         object_features_unordered[i][1] = electrons[j]->eta();
@@ -236,6 +242,8 @@ void DNN_Helper::SetInputs(std::vector<edm::Ptr<flashgg::Jet>> jets, std::vector
     }
 
     for (unsigned int i = jets.size() + electrons.size(); i < jets.size() + electrons.size() + muons.size(); i++) {
+         if (debug_)
+            cout << "Filling muon " << i << endl;
         unsigned int j = i - (jets.size() + electrons.size());
         object_features_unordered[i][0] = log(muons[j]->pt());
         object_features_unordered[i][1] = muons[j]->eta();
@@ -247,6 +255,9 @@ void DNN_Helper::SetInputs(std::vector<edm::Ptr<flashgg::Jet>> jets, std::vector
         object_features_unordered[i][7] = -2;
         object_features_unordered[i][8] = 0; // 0 for muons
     }
+
+    if (debug_)
+        cout << "Just finished filling objects, should have filled " << jets.size() + electrons.size() + muons.size() << " objects." << endl;
 
     // Third, order jets by pT
     std::vector<std::pair<unsigned int, double> > pt_ordering;
