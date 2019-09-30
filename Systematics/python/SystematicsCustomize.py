@@ -302,9 +302,11 @@ def runRivetSequence(process, options):
                                      )
     process.p.insert(0, process.mergedGenParticles*process.myGenerator*process.rivetProducerHTXS)
 
-def customizeForL1Prefiring(process, options):
-    print "You selected to apply L1 pre-firing. We will apply if it is an appropriate year (2016 or 2017)."
+def customizeForL1Prefiring(process, options, processId):
+    print "You selected to apply L1 pre-firing. We will apply if it is an appropriate year (2016 or 2017) and an appropriate sample (only MC, not data)"
     applyPrefireProbability = options["L1Prefiring"]["apply"]
+    if processId == "Data":
+        applyPrefireProbability = False
     for tagger in ["flashggTTHHadronicTag", "flashggTTHLeptonicTag"]:
         getattr(process, tagger).applyPrefireProbability = cms.bool(applyPrefireProbability)
 
