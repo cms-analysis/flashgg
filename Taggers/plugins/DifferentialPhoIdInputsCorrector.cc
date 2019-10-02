@@ -416,13 +416,13 @@ namespace flashgg {
             flashgg::DiPhotonCandidate *dipho = orig_dipho.clone();
             dipho->makePhotonsPersistent();
 
-            if( !evt.isRealData() ) {
-                //---store ChIso wrt chosen vertex into the actual photon objects
-                dipho->getLeadingPhoton().setpfChgIsoWrtChosenVtx03(dipho->leadingView()->pfChIso03WrtChosenVtx());
-                dipho->getSubLeadingPhoton().setpfChgIsoWrtChosenVtx03(dipho->subLeadingView()->pfChIso03WrtChosenVtx());
+            //---store ChIso wrt chosen vertex into the actual photon objects
+            dipho->getLeadingPhoton().setpfChgIsoWrtChosenVtx03(dipho->leadingView()->pfChIso03WrtChosenVtx());
+            dipho->getSubLeadingPhoton().setpfChgIsoWrtChosenVtx03(dipho->subLeadingView()->pfChIso03WrtChosenVtx());
 
+            if( !evt.isRealData() ) {
+                
                 //---compute corrections
-            
                 correctPhoton(dipho->getLeadingPhoton(), engine, rhoFixedGrd);
                 correctPhoton(dipho->getSubLeadingPhoton(), engine, rhoFixedGrd);
 
