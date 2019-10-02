@@ -70,6 +70,11 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.bool,          # string, int, or float
                                "useParentDataset")
+        self.options.register ('recalculatePDFWeights',
+                               False, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "recalculatePDFWeights")
         self.options.register ('secondaryDataset',
                                "", # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
