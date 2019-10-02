@@ -80,9 +80,15 @@
         "MC" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_MC_AK4PFchs"
     },
 
-
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
+
+    "MUON_ID_JSON_FileName" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ID.json",
+    "MUON_ID_JSON_FileName_LowPt" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ID_lowPt.json",
+    "MUON_ISO_JSON_FileName" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ISO.json",
+
+    "MUON_ID_RefTracks" :  "genTracks",
+    "MUON_ID_RefTracks_LowPt" : "genTracks",
 
     "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_eleIDSFs_2017.json",
     "Ele_ID_version" : "mvaEleID-Fall17-iso-V2-wp90",
