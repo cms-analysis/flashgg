@@ -402,9 +402,10 @@ class JobConfig(object):
                 flist.append(str("%s%s" % (self.filePrepend,f)))
             # keep useParent and secondaryDataset as exclusive options for the moment
             if self.options.useParentDataset:
-                parent_files = das_query("parent file=%s instance=prod/phys03" % f, cmd='dasgoclient --dasmaps=./')['data'][0]['parent']
+                parent_files = das_query("parent file=%s instance=prod/phys03" % f, cmd='dasgoclient --dasmaps=./')['data']
                 for parent_f in parent_files:
-                    sflist.append('root://cms-xrd-global.cern.ch/'+str(parent_f['name']) if 'root://' not in str(parent_f['name']) else str(parent_f['name']))
+                    parent_f_name = str(parent_f['parent'][0]['name'])
+                    sflist.append('root://cms-xrd-global.cern.ch/'+parent_f_name if 'root://' not in parent_f_name else parent_f_name)
             elif self.options.secondaryDataset != "":
                 # match primary file to the corresponding secondary file(s)
                 f_runs_and_lumis = {lumi['run_number'] : lumi['lumi_section_num'] for lumi in das_query("lumi file=%s instance=prod/phys03" % f,
