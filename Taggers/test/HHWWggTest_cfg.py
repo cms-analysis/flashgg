@@ -20,10 +20,6 @@ process.flashggDiPhotonMVA.DiPhotonTag = "flashggPreselectedDiPhotons"
 process.FlashggHHWWggCandidate = FlashggHHWWggCandidate.clone() # clone flashgg HHWWggCandidate parameters here 
 
 process.FlashggHHWWggCandidate.idSelection = cms.PSet(
-        # rho = flashggPreselectedDiPhotonsLowMass.rho,
-        # cut = flashggPreselectedDiPhotonsLowMass.cut,
-        # variables = flashggPreselectedDiPhotonsLowMass.variables,
-        # categories = flashggPreselectedDiPhotonsLowMass.categories
         rho = flashggPreselectedDiPhotons.rho,
         cut = flashggPreselectedDiPhotons.cut, # diphoton preselection cuts. Become part of Idselector definition  
         variables = flashggPreselectedDiPhotons.variables,
@@ -54,7 +50,7 @@ all_variables = var.HHWWgg_variables # add variable lists together
 from flashgg.Taggers.HHWWggCandidateDumper_cfi import HHWWggCandidateDumper
 process.HHWWggCandidateDumper = HHWWggCandidateDumper.clone() # clone parameters from HHWWggCandidateDumpConfig_cff (className, src, ...)
 process.HHWWggCandidateDumper.dumpTrees = True # Needs to be set to true here. Default in _cff is false 
-process.HHWWggCandidateDumper.dumpWorkspace = False
+process.HHWWggCandidateDumper.dumpWorkspace = True # Workspace 
 
 # Create histograms 
 
@@ -90,12 +86,12 @@ process.source = cms.Source ("PoolSource",
 # "file:/eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_0/3_1_0/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa/RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180706_100515/0000/myMicroAODOutputFile_384.root"
 
 ## X250                       
-# "file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X250_WWgg_qqlnu.root" # SL      
+"file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X250_WWgg_qqlnu.root" # SL      
 # "file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X250_WWgg_lnulnu.root" # FL      
 # "file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X250_WWgg_qqqq.root" # FH
 
 ## X1250
-"file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X1250_WWgg_qqlnu.root" # SL 
+# "file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X1250_WWgg_qqlnu.root" # SL 
 # "file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X1250_WWgg_lnulnu.root" # FL
 # "file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X1250_WWgg_qqqq.root" # FH 
 ))

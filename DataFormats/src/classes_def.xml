@@ -261,7 +261,8 @@
 <class name="std::vector<flashgg::Jet>"/>
 <class name="edm::Ptr<flashgg::Jet>"/>
 
-<class name="flashgg::Met" ClassVersion="11">
+<class name="flashgg::Met" ClassVersion="12">
+ <version ClassVersion="12" checksum="597961085"/>
   <version ClassVersion="10" checksum="2272826605"/>
   <version ClassVersion="11" checksum="1231550995"/>
 </class>
@@ -381,7 +382,11 @@
 <class name="std::vector<flashgg::DoubleHTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DoubleHTag> >"/>
 
-<class name="flashgg::HHWWggCandidate" ClassVersion="64">
+<class name="flashgg::HHWWggCandidate" ClassVersion="68">
+ <version ClassVersion="68" checksum="2535311606"/>
+ <version ClassVersion="67" checksum="3533206953"/>
+ <version ClassVersion="66" checksum="3002741877"/>
+ <version ClassVersion="65" checksum="3912420990"/>
  <version ClassVersion="64" checksum="714275698"/>
  <version ClassVersion="63" checksum="4007218540"/>
  <version ClassVersion="62" checksum="4146703818"/>

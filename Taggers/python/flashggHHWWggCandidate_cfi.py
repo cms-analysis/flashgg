@@ -15,8 +15,8 @@ FlashggHHWWggCandidate = cms.EDProducer("FlashggHHWWggCandidateProducer",
                                      ElectronTag            = cms.InputTag('flashggSelectedElectrons'),
                                      #METTag                 = cms.InputTag('slimmedMETs'),
                                      MuonTag                = cms.InputTag('flashggSelectedMuons'),
-                                     #METTag                 = cms.InputTag('flashggMets'),
-                                     METTag                 = cms.InputTag('flashggMetsCorr'), # RunIIFall17-3-2-0 contains these and NOT flashggMets
+                                     METTag                 = cms.InputTag('flashggMets'),
+                                    #  METTag                 = cms.InputTag('flashggMetsCorr'), # RunIIFall17-3-2-0 contains these and NOT flashggMets
                                      
                                      #JetTag                 = cms.InputTag('flashggJets'),
                                      JetTags                = UnpackedJetCollectionVInputTag, 

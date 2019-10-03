@@ -32,7 +32,7 @@ namespace flashgg {
     HHWWggCandidate(std::vector<flashgg::DiPhotonCandidate> diphoVector,
                     std::vector<flashgg::Electron> electronVector, std::vector<flashgg::Muon> muonVector, std::vector<flashgg::Met> METVector,
                     std::vector<reco::GenParticle> GenParticlesVector, std::vector<flashgg::Jet> JetVector,
-                    std::vector<double> Cut_Variables, double dipho_MVA, double lead_pho_MVA, double sublead_pho_MVA);     
+                    std::vector<double> Vertex_Variables, std::vector<double> Cut_Variables, double dipho_MVA, double lead_pho_Hgg_MVA, double sublead_pho_Hgg_MVA);     
     
     //---dtor---
     ~HHWWggCandidate();
@@ -53,45 +53,22 @@ namespace flashgg {
     const reco::Candidate::LorentzVector& subleading_elec() const { return subleading_elec_; };
     const reco::Candidate::LorentzVector& leading_muon() const { return leading_muon_; };
     const reco::Candidate::LorentzVector& subleading_muon() const { return subleading_muon_; };
-    const reco::Candidate::LorentzVector& muon1() const { return muon1_; };
-    const reco::Candidate::LorentzVector& HHWWggDiPho1() const { return dp1_; };
-    const reco::Candidate::LorentzVector& HHWWggDiPho2() const { return dp2_; };
-    const reco::Candidate::LorentzVector& HHWWggFourVect() const { return tp_; };     
-    const reco::Candidate::LorentzVector& MatchingDiJet() const { return mdij_; }; 
-    const reco::Candidate::LorentzVector& NonMatchingDiJet() const { return nmdij_; }; 
-    const reco::Candidate::LorentzVector& MatchingDiQuark() const { return mdiq_; }; 
-    const reco::Candidate::LorentzVector& NonMatchingDiQuark() const { return nmdiq_; }; 
     //float getCosThetaStar_CS(float ebeam) const;
     //std::vector<float> CosThetaAngles() const;
     //float HelicityCosTheta( TLorentzVector Booster, TLorentzVector Boosted) const;
     const float theMETcorpt() const { return theMETcorpt_; };
-    const float W1_TM() const { return W1_TM_; };
     const reco::Candidate::LorentzVector& gen_leading_elec() const { return gen_leading_elec_; };
     const reco::Candidate::LorentzVector& gen_subleading_elec() const { return gen_subleading_elec_; };
     const reco::Candidate::LorentzVector& gen_leading_muon() const { return gen_leading_muon_; };
     const reco::Candidate::LorentzVector& gen_subleading_muon() const { return gen_subleading_muon_; };
-    bool test() const { return test_; };
-    bool SLW_tag() const { return SLW_tag_; }; 
-    bool Pass_PS() const { return Pass_PS_; }; 
+    const std::vector<double> Vertex_Variables() const { return Vertex_Variables_; };
     const std::vector<double> Cut_Variables() const { return Cut_Variables_; };
-    const reco::Candidate::LorentzVector& lsl_dij() const { return lsl_dij_; };
-    const float m_qq() const {return m_qq_;};
-    const float dr_1() const {return dr_1_;};
-    const float dr_2() const {return dr_2_;};
-    const float merged_qs() const {return merged_qs_;};
-    const float qone_matches() const {return qone_matches_;};
-    const float qtwo_matches() const {return qtwo_matches_;};
-    const reco::Candidate::LorentzVector& hgg_p4() const { return hgg_p4_; }; 
-    const reco::Candidate::LorentzVector& l_genpho() const { return l_genpho_; }; 
-    const reco::Candidate::LorentzVector& sl_genpho() const { return sl_genpho_; }; 
     // const reco::Candidate::LorentzVector& leading_lepton() const { return leading_lepton_; }; 
-    const float SL_mT_WW() const { return SL_mT_WW_; };
-    const float FL_mT_WW() const { return FL_mT_WW_; };
-    const float FH_m_WW() const { return FH_m_WW_; };   
-    const float SL_mT_W() const { return SL_mT_W_; };   
     const float dipho_MVA() const {return dipho_MVA_;};
-    const float lead_pho_MVA() const {return lead_pho_MVA_;};
-    const float sublead_pho_MVA() const {return sublead_pho_MVA_;};
+    const float lead_pho_Hgg_MVA() const {return lead_pho_Hgg_MVA_;};
+    const float sublead_pho_Hgg_MVA() const {return sublead_pho_Hgg_MVA_;};
+    const float lead_pho_EG_MVA() const {return lead_pho_EG_MVA_;};
+    const float sublead_pho_EG_MVA() const {return sublead_pho_EG_MVA_;};
   private:
 
     std::vector<flashgg::DiPhotonCandidate> diphoVector_;
@@ -109,42 +86,19 @@ namespace flashgg {
     reco::Candidate::LorentzVector subleading_elec_;
     reco::Candidate::LorentzVector leading_muon_;
     reco::Candidate::LorentzVector subleading_muon_;
-    reco::Candidate::LorentzVector muon1_;
-    reco::Candidate::LorentzVector dp1_;
-    reco::Candidate::LorentzVector dp2_;
-    reco::Candidate::LorentzVector tp_;
-    reco::Candidate::LorentzVector mdij_;
-    reco::Candidate::LorentzVector nmdij_;
-    reco::Candidate::LorentzVector mdiq_;
-    reco::Candidate::LorentzVector nmdiq_;
     float theMETcorpt_;
-    float W1_TM_;
     reco::Candidate::LorentzVector gen_leading_elec_;
     reco::Candidate::LorentzVector gen_subleading_elec_;
     reco::Candidate::LorentzVector gen_leading_muon_;
     reco::Candidate::LorentzVector gen_subleading_muon_;
-    bool test_;
-    bool SLW_tag_;
-    bool Pass_PS_;
+    std::vector<double> Vertex_Variables_;
     std::vector<double> Cut_Variables_;
-    reco::Candidate::LorentzVector lsl_dij_;
-    float m_qq_;
-    float dr_1_;
-    float dr_2_;
-    float merged_qs_;
-    float qone_matches_;
-    float qtwo_matches_;
-    reco::Candidate::LorentzVector hgg_p4_;
-    reco::Candidate::LorentzVector l_genpho_;
-    reco::Candidate::LorentzVector sl_genpho_;
     // reco::Candidate::LorentzVector leading_lepton_;
-    float SL_mT_WW_;
-    float FL_mT_WW_;
-    float FH_m_WW_;
-    float SL_mT_W_;
     float dipho_MVA_;
-    float lead_pho_MVA_;
-    float sublead_pho_MVA_;
+    float lead_pho_Hgg_MVA_;
+    float sublead_pho_Hgg_MVA_;
+    float lead_pho_EG_MVA_;
+    float sublead_pho_EG_MVA_;
     
   };
   typedef std::vector<HHWWggCandidate> HHWWggCandidateCollection; // define new type: vector of HHWWggCandidates 
