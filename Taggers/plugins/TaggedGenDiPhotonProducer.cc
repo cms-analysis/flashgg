@@ -67,10 +67,6 @@ namespace flashgg {
         if( tags.isValid() && tags->size() > 0 ) {
             info = classifier_(tags->at(0));
             weight = tags->at(0).centralWeight();
-<<<<<<< HEAD
-=======
-            /// cout << "TaggedGenDiPhotonProducer tag " << tags.at(0).categoryNumber() << " " << info.second << endl;
->>>>>>> chernyavskaya/HHbbgg_fullRun2_legacyV1prod
         }
         
         Handle<View<flashgg::GenDiPhoton> > src;
