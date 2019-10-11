@@ -57,8 +57,8 @@ def getConfig(extended=False, dumpShowerShapes=False, dumpClusterShapes=False, d
     singleEleShowerShapes = [("full5x5_sigmaIetaIeta", "SigmaIeIe"),
                              ("sipip", "CovarianceIpIp"),
                              ("sieip", "CovarianceIeIp"),
-                             ("superCluster.etaWidth", "etaWidth"),
-                             ("superCluster.phiWidth", "phiWidth"),
+                             ("superCluster.etaWidth", "etaWidth_Sc"),
+                             ("superCluster.phiWidth", "phiWidth_Sc"),
                              ("full5x5_r9", "R9"),
                              "s4"]
 
@@ -99,18 +99,19 @@ def getConfig(extended=False, dumpShowerShapes=False, dumpClusterShapes=False, d
                   "tagMatchType := getTag.genMatchType",
                   "tagGenIso := ?getTag.hasUserFloat('genIso')?getTag.userFloat('genIso'):0", ]
 
-    probeUncorrClIsos = ["probeR9_uncorr              := ? getProbe.hasUserFloat('uncorr_r9') ? getProbe.userFloat('uncorr_r9') : -999.",
-                         "probeEtaWidth_uncorr        := ? getProbe.hasUserFloat('uncorr_etaWidth') ? getProbe.userFloat('uncorr_etaWidth') : -999.",
-                         "probeS4_uncorr              := ? getProbe.hasUserFloat('uncorr_s4') ? getProbe.userFloat('uncorr_s4') : -999.",
-                         "probePhiWidth_uncorr        := ? getProbe.hasUserFloat('uncorr_phiWidth') ? getProbe.userFloat('uncorr_phiWidth') : -999.",
-                         "probeSigmaIeIe_uncorr       := ? getProbe.hasUserFloat('uncorr_sieie') ? getProbe.userFloat('uncorr_sieie') : -999",
-                         "probeCovarianceIeIp_uncorr  := ? getProbe.hasUserFloat('uncorr_sieip') ? getProbe.userFloat('uncorr_sieip') : -999",
-                         "probePhoIso_uncorr          := ? getProbe.hasUserFloat('uncorr_pfPhoIso03') ? getProbe.userFloat('uncorr_pfPhoIso03') : -999",
+    probeUncorrClIsos = ["probeR9_uncorr                := ? getProbe.hasUserFloat('uncorr_r9') ? getProbe.userFloat('uncorr_r9') : -999.",
+                         "probeEtaWidth_uncorr          := ? getProbe.hasUserFloat('uncorr_etaWidth') ? getProbe.userFloat('uncorr_etaWidth') : -999.",
+                         "probeS4_uncorr                := ? getProbe.hasUserFloat('uncorr_s4') ? getProbe.userFloat('uncorr_s4') : -999.",
+                         "probePhiWidth_uncorr          := ? getProbe.hasUserFloat('uncorr_phiWidth') ? getProbe.userFloat('uncorr_phiWidth') : -999.",
+                         "probeSigmaIeIe_uncorr         := ? getProbe.hasUserFloat('uncorr_sieie') ? getProbe.userFloat('uncorr_sieie') : -999",
+                         "probeCovarianceIeIp_uncorr    := ? getProbe.hasUserFloat('uncorr_sieip') ? getProbe.userFloat('uncorr_sieip') : -999",
+                         "probePhoIso_uncorr            := ? getProbe.hasUserFloat('uncorr_pfPhoIso03') ? getProbe.userFloat('uncorr_pfPhoIso03') : -999",
                          "probeChIso03_uncorr           := ? getProbe.hasUserFloat('uncorr_pfChIso03') ? getProbe.userFloat('uncorr_pfChIso03') : -999",
-                         "probeChIso03worst_uncorr      := ? getProbe.hasUserFloat('uncorr_pfChIsoWorst03') ? getProbe.userFloat('uncorr_pfChIsoWorst03') : -999"]
+                         "probeChIso03worst_uncorr      := ? getProbe.hasUserFloat('uncorr_pfChIsoWorst03') ? getProbe.userFloat('uncorr_pfChIsoWorst03') : -999",
+                         "probePhoIdMVA_uncorr          := ? getProbe.hasUserFloat('original_phoId') ? getProbe.userFloat('original_phoId') : -999" ]
 
-    probeCorrClVars = ["probePhiWidth_corr := ? getProbe.hasUserFloat('phiWidth') ? getProbe.userFloat('phiWidth') : -999",
-                       "probeEtaWidth_corr := ? getProbe.hasUserFloat('etaWidth') ? getProbe.userFloat('etaWidth') : -999"]
+    probeCorrClVars = ["probePhiWidth := ? getProbe.hasUserFloat('phiWidth') ? getProbe.userFloat('phiWidth') : -999",
+                       "probeEtaWidth := ? getProbe.hasUserFloat('etaWidth') ? getProbe.userFloat('etaWidth') : -999"]
 
     singleEleVars = minSingleEleVars
     singleEleViewVars = minSingleEleViewVars

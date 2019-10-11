@@ -766,7 +766,8 @@ if not customize.processId=="Data" :
     process.p = cms.Path(process.dataRequirements*
                          process.flashggMetFilters*
                          process.genFilter*
-                         process.flashggUpdatedIdMVADiPhotons*
+                         process.flashggDiPhotons* # needed for 0th vertex from microAOD
+                         process.flashggDifferentialPhoIdInputsCorrection*
                          process.flashggDiPhotonSystematics*
                          process.flashggMetSystematics*
                          process.flashggMuonSystematics*process.flashggElectronSystematics*
@@ -782,7 +783,7 @@ else:
     process.p = cms.Path(process.dataRequirements*
                          process.flashggMetFilters*
                          process.genFilter*
-                         process.flashggUpdatedIdMVADiPhotons*
+                         process.flashggDifferentialPhoIdInputsCorrection*
                          process.flashggDiPhotonSystematics*
                          process.flashggMetSystematics*
                          process.flashggMuonSystematics*process.flashggElectronSystematics*
@@ -867,7 +868,8 @@ process.flashggTagSorter.BlindedSelectionPrintout = True
 ### Rerun microAOD sequence on top of microAODs using the parent dataset
 if customize.useParentDataset:
     runRivetSequence(process, customize.metaConditions)
-
+    if customize.recalculatePDFWeights and is_signal and not customize.processId.count("bbh"):
+        recalculatePDFWeights(process, customize.metaConditions)
 
 #### BELOW HERE IS MOSTLY DEBUGGING STUFF
 
@@ -902,7 +904,6 @@ if customize.verboseTagDump:
 ############################################
 
 if customize.verboseTagDump:
-    process.flashggUpdatedIdMVADiPhotons.Debug = True
     process.flashggTagSorter.Debug = True
     customize.maxEvents = 10
                            

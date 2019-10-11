@@ -80,7 +80,7 @@ import flashgg.Validation.tagAndProbeDumperConfig as dumpCfg
 # ----------------------------------------------------------------------------------------------------
 # Run shower shape and isolation corrections
 
-if customize.options.doPhoIdInputsCorrections and not customize.processId == "Data":
+if customize.options.doPhoIdInputsCorrections:
     
     process.load("flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi")
     import flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi as phoIdInp_Corr
@@ -173,7 +173,7 @@ systModules.append(
 process.flashggDiPhotonSystematics = flashggDiPhotonSystematics
 process.flashggDiPhotonSystematics.SystMethods = systModules
 process.flashggDiPhotonSystematics.SystMethods2D = systModules2D
-if customize.options.doPhoIdInputsCorrections and not customize.processId == "Data":
+if customize.options.doPhoIdInputsCorrections:
     process.flashggDiPhotonSystematics.src = "flashggDifferentialPhoIdInputsCorrection"
 else:
     process.flashggDiPhotonSystematics.src = "flashggDiPhotons"
@@ -221,7 +221,7 @@ tnp_sequence = cms.Sequence(flashggTagAndProbe+tagAndProbeDumper)
 # Schedule process
 
 
-if customize.options.doPhoIdInputsCorrections and not customize.processId == "Data":
+if customize.options.doPhoIdInputsCorrections:
     process.p = cms.Path(
         process.flashggDifferentialPhoIdInputsCorrection * process.flashggIdentifiedElectrons *
         process.flashggDiPhotonSystematics*tnp_sequence)
