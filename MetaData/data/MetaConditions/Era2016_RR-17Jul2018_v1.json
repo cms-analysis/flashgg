@@ -107,9 +107,9 @@
 
     "bRegression" :
     {
-        "weightFile" : "/src/flashgg/Taggers/data/DNN_models/breg_training_2016_Legacy_JECv11.pb",
-        "y_mean" : 1.047176718711853,
-        "y_std" : 0.31976690888404846,
+        "weightFile" : "/src/flashgg/Taggers/data/DNN_models/breg_training_2016_JECv11_Oct_2019.pb",
+        "y_mean" : 1.04588,
+        "y_std" : 0.2685356,
         "year" : 2016
     },
 
@@ -119,7 +119,7 @@
 	"weightsFile" : "flashgg/Taggers/data/HHTagger/training_with_19_03_2019_trainingMjj_year0.weights.xml",
 	"MVAFlatteningFileName" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20190321_2016_2017.root",
 	"MVAscalingValue" : 1.0,
-	"NodesReweightingFileName" : "flashgg/Taggers/data/HHTagger/HHreweight_2016nodes_08072019.root",
+	"NodesReweightingFileName" : "flashgg/Taggers/data/HHTagger/HHreweight_2016nodes_18092019.root",
         "ttHWeightfile" : "flashgg/Taggers/data/ttHKiller/Keras2017_converted_allnode.pb",
         "ttHKiller_mean" : [  3.22491144e+02,   7.22919780e+01,   1.49387571e-01,   4.94052483e-03,
                               5.10246425e-04,   1.38947662e+00,   5.31453078e+00,   7.45455854e+00,
