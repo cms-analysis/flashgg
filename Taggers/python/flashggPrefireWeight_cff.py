@@ -9,5 +9,6 @@ flashggPrefireWeight = cms.EDProducer('FlashggPrefireWeightProducer',
                                photonFileName = cms.FileInPath("flashgg/Taggers/data/L1prefiring_photonpt_2017BtoF.root"),
                                photonHistName = cms.untracked.string(""),
                                jetFileName = cms.FileInPath("flashgg/Taggers/data/L1prefiring_jetpt_2017BtoF.root"),
-                               jetHistName = cms.untracked.string("")
+                               jetHistName = cms.untracked.string(""),
+                               applyToCentral = cms.bool(False)
 )

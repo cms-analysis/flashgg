@@ -33,6 +33,8 @@ namespace flashgg {
 
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
 
+        bool applyToCentral_;
+
         std::vector<edm::EDGetTokenT<View<flashgg::Jet> > > tokenJets_;
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         std::vector<edm::InputTag> inputTagJets_;
@@ -52,7 +54,7 @@ namespace flashgg {
             auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
             tokenJets_.push_back(token);
         }
-        produces<double>("prefireProbability");
+        produces<std::vector<flashgg::DiPhotonCandidate> >();
 
         photonFileName_ = iConfig.getParameter<edm::FileInPath>( "photonFileName" );
         TFile* photonFile = TFile::Open(photonFileName_.fullPath().c_str());
@@ -67,6 +69,8 @@ namespace flashgg {
         jetHist_ = (TH2F*)((TH2F*) jetFile->Get(jetHistName_.c_str()))->Clone();
         jetFile->Close();
         delete jetFile;
+
+        applyToCentral_ = iConfig.getParameter<bool>("applyToCentral");
     }
 
     double PrefireWeightProducer::getProb( TH2F* hist, double eta, double pt )
@@ -84,7 +88,7 @@ namespace flashgg {
             evt.getByToken( tokenJets_[j], Jets[j] );
         }
 
-        double prefireProd = 1.;
+        unique_ptr<std::vector<flashgg::DiPhotonCandidate> > updatedDiphotons( new std::vector<flashgg::DiPhotonCandidate>() );
         for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
 
             edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt(candIndex);
@@ -92,6 +96,7 @@ namespace flashgg {
             // calculate the prefire probability as
             // 1 - product_over_jets( 1 - p(jet_prefires) )
 
+            double prefireProd = 1.;
             unsigned int jetCollectionIndex = diPhotons->ptrAt( candIndex )->jetCollectionIndex();
             for( UInt_t jetLoop = 0; jetLoop < Jets[jetCollectionIndex]->size() ; jetLoop++ ) {
                 Ptr<flashgg::Jet> jet  = Jets[jetCollectionIndex]->ptrAt( jetLoop );
@@ -105,14 +110,22 @@ namespace flashgg {
                 else { objProb = getProb(jetHist_, jet->eta(), jet->pt()); }
                 prefireProd *= 1. - objProb;
             }
+      
+            double prefireProbability = 1. - prefireProd;
+            if (prefireProbability < 0.) {
+                throw cms::Exception("Negative probablility found");
+            }
+            flashgg::DiPhotonCandidate *updatedDipho = dipho->clone();
+            updatedDipho->setWeight("prefireProbability", prefireProbability);
+            if (applyToCentral_) {
+                double newCentralWeight = updatedDipho->centralWeight() * (1. - prefireProbability);
+                updatedDipho->setCentralWeight( newCentralWeight );
+            }
+            updatedDiphotons->push_back(*updatedDipho);
+            delete updatedDipho;
         }
 
-        if (1. - prefireProd < 0.) {
-            throw cms::Exception("Negative probablility found");
-        }
-        //std::cout << "ED DEBUG: prefire probability for this event is " << 1. - prefireProd << std::endl;
-        std::unique_ptr<double> prefireProbability = std::make_unique<double>(1. - prefireProd);
-        evt.put( std::move(prefireProbability), "prefireProbability" );
+        evt.put( std::move(updatedDiphotons) );
     }
 }
 
