@@ -137,12 +137,6 @@ customize.options.register('verboseSystDump',
                            VarParsing.VarParsing.varType.bool,
                            'verboseSystDump'
                            )
-customize.options.register('doL1Prefiring',
-                           False,
-                           VarParsing.VarParsing.multiplicity.singleton,
-                           VarParsing.VarParsing.varType.bool,
-                           'doL1Prefiring'
-                           )
 
 
 print "Printing defaults"
@@ -298,10 +292,7 @@ useEGMTools(process)
 signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance"]
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 
-if customize.doL1Prefiring:
-    customizeForL1Prefiring(process, customize.metaConditions, customize.processId)
-else:
-    process.flashggTagSequence.remove(process.flashggPrefireWeight)
+customizeForL1Prefiring(process, customize.metaConditions, customize.processId)
 
 #if customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance") or customize.processId.count("hh_"): 
 if is_signal:
@@ -317,9 +308,6 @@ if is_signal:
         variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
         variablesToUse.append("leadmva := diPhotonMVA().leadmva")
         variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
-
-    if customize.doL1Prefiring:
-        variablesToUse.append("prefireProbability := weight(\"prefireProbability\")")
 
     if customize.doSystematics:
         for direction in ["Up","Down"]:
@@ -408,7 +396,8 @@ from flashgg.MetaData.samples_utils import SamplesManager
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
-                                 "/store/user/spigazzi/flashgg/Era2016_RR-07Aug17_v1/legacyRun2TestV1/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/Era2016_RR-07Aug17_v1-legacyRun2TestV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v1/190228_142907/0000/myMicroAODOutputFile_610.root"
+                                 #"/store/user/spigazzi/flashgg/Era2016_RR-07Aug17_v1/legacyRun2TestV1/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/Era2016_RR-07Aug17_v1-legacyRun2TestV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v1/190228_142907/0000/myMicroAODOutputFile_610.root"
+                                 "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/190710_161758/0000/myMicroAODOutputFile_3.root"
                              ))
 
 process.TFileService = cms.Service("TFileService",

@@ -22,10 +22,10 @@ using namespace edm;
 
 namespace flashgg {
 
-    class PrefireWeightProducer : public EDProducer
+    class PrefireDiPhotonProducer : public EDProducer
     {
     public:
-        PrefireWeightProducer( const ParameterSet & );
+        PrefireDiPhotonProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
 
@@ -33,6 +33,7 @@ namespace flashgg {
 
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
 
+        bool isRelevant_;
         bool applyToCentral_;
 
         std::vector<edm::EDGetTokenT<View<flashgg::Jet> > > tokenJets_;
@@ -46,7 +47,7 @@ namespace flashgg {
         TH2F* jetHist_;
     };
 
-    PrefireWeightProducer::PrefireWeightProducer( const ParameterSet &iConfig ) :
+    PrefireDiPhotonProducer::PrefireDiPhotonProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         inputTagJets_ ( iConfig.getParameter<std::vector<edm::InputTag> >( "inputTagJets" ) )
     {
@@ -56,29 +57,34 @@ namespace flashgg {
         }
         produces<std::vector<flashgg::DiPhotonCandidate> >();
 
-        photonFileName_ = iConfig.getParameter<edm::FileInPath>( "photonFileName" );
-        TFile* photonFile = TFile::Open(photonFileName_.fullPath().c_str());
-        photonHistName_ = iConfig.getUntrackedParameter<std::string>("photonHistName");
-        photonHist_ = (TH2F*)((TH2F*) photonFile->Get(photonHistName_.c_str()))->Clone();
-        photonFile->Close();
-        delete photonFile;
+        isRelevant_ = iConfig.getParameter<bool>("isRelevant"); // used to skip all this for 2018
 
-        jetFileName_  = iConfig.getParameter<edm::FileInPath>( "jetFileName" );
-        TFile* jetFile = TFile::Open(jetFileName_.fullPath().c_str());
-        jetHistName_ = iConfig.getUntrackedParameter<std::string>("jetHistName");
-        jetHist_ = (TH2F*)((TH2F*) jetFile->Get(jetHistName_.c_str()))->Clone();
-        jetFile->Close();
-        delete jetFile;
+        if (isRelevant_) {
+            applyToCentral_ = iConfig.getParameter<bool>("applyToCentral");
 
-        applyToCentral_ = iConfig.getParameter<bool>("applyToCentral");
+            photonFileName_ = iConfig.getParameter<edm::FileInPath>( "photonFileName" );
+            TFile* photonFile = TFile::Open(photonFileName_.fullPath().c_str());
+            photonHistName_ = iConfig.getUntrackedParameter<std::string>("photonHistName");
+            photonHist_ = (TH2F*)((TH2F*) photonFile->Get(photonHistName_.c_str()))->Clone();
+            photonFile->Close();
+            delete photonFile;
+
+            jetFileName_  = iConfig.getParameter<edm::FileInPath>( "jetFileName" );
+            TFile* jetFile = TFile::Open(jetFileName_.fullPath().c_str());
+            jetHistName_ = iConfig.getUntrackedParameter<std::string>("jetHistName");
+            jetHist_ = (TH2F*)((TH2F*) jetFile->Get(jetHistName_.c_str()))->Clone();
+            jetFile->Close();
+            delete jetFile;
+        }
+
     }
 
-    double PrefireWeightProducer::getProb( TH2F* hist, double eta, double pt )
+    double PrefireDiPhotonProducer::getProb( TH2F* hist, double eta, double pt )
     {
         return hist->GetBinContent( hist->FindBin(eta, pt) );
     }
 
-    void PrefireWeightProducer::produce( Event &evt, const EventSetup & )
+    void PrefireDiPhotonProducer::produce( Event &evt, const EventSetup & )
     {
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
@@ -97,18 +103,21 @@ namespace flashgg {
             // 1 - product_over_jets( 1 - p(jet_prefires) )
 
             double prefireProd = 1.;
-            unsigned int jetCollectionIndex = diPhotons->ptrAt( candIndex )->jetCollectionIndex();
-            for( UInt_t jetLoop = 0; jetLoop < Jets[jetCollectionIndex]->size() ; jetLoop++ ) {
-                Ptr<flashgg::Jet> jet  = Jets[jetCollectionIndex]->ptrAt( jetLoop );
-                // check if the jet overlaps with one of the photons
-                // if so use the photon probability map, else use the jet one
-                bool nearLead  = deltaR( dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi(), jet->eta(), jet->phi() ) < 0.4;
-                bool nearSublead = deltaR( dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi(), jet->eta(), jet->phi() ) < 0.4;
-                double objProb = -1.;
-                if (nearLead) { objProb = getProb(photonHist_, dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->pt()); }
-                else if (nearSublead) { objProb = getProb(photonHist_, dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->pt()); }
-                else { objProb = getProb(jetHist_, jet->eta(), jet->pt()); }
-                prefireProd *= 1. - objProb;
+           
+            if (isRelevant_) {
+                unsigned int jetCollectionIndex = diPhotons->ptrAt( candIndex )->jetCollectionIndex();
+                for( UInt_t jetLoop = 0; jetLoop < Jets[jetCollectionIndex]->size() ; jetLoop++ ) {
+                    Ptr<flashgg::Jet> jet  = Jets[jetCollectionIndex]->ptrAt( jetLoop );
+                    // check if the jet overlaps with one of the photons
+                    // if so use the photon probability map, else use the jet one
+                    bool nearLead  = deltaR( dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi(), jet->eta(), jet->phi() ) < 0.4;
+                    bool nearSublead = deltaR( dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi(), jet->eta(), jet->phi() ) < 0.4;
+                    double objProb = -1.;
+                    if (nearLead) { objProb = getProb(photonHist_, dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->pt()); }
+                    else if (nearSublead) { objProb = getProb(photonHist_, dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->pt()); }
+                    else { objProb = getProb(jetHist_, jet->eta(), jet->pt()); }
+                    prefireProd *= 1. - objProb;
+                }
             }
       
             double prefireProbability = 1. - prefireProd;
@@ -129,8 +138,8 @@ namespace flashgg {
     }
 }
 
-typedef flashgg::PrefireWeightProducer FlashggPrefireWeightProducer;
-DEFINE_FWK_MODULE( FlashggPrefireWeightProducer );
+typedef flashgg::PrefireDiPhotonProducer FlashggPrefireDiPhotonProducer;
+DEFINE_FWK_MODULE( FlashggPrefireDiPhotonProducer );
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil
