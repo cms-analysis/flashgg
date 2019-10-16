@@ -121,8 +121,8 @@ namespace flashgg {
             }
       
             double prefireProbability = 1. - prefireProd;
-            if (prefireProbability < 0.) {
-                throw cms::Exception("Negative probablility found");
+            if (prefireProbability < 0. || prefireProbability > 1.) {
+                throw cms::Exception("Unphysical probablility found");
             }
             flashgg::DiPhotonCandidate *updatedDipho = dipho->clone();
             updatedDipho->setWeight("prefireProbability", prefireProbability);
