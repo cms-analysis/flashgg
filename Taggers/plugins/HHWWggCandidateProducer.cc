@@ -61,7 +61,7 @@ namespace flashgg {
     //---Outtree 
     edm::Service<TFileService> fs;
     
-    // TH1F* vars; 
+    TH1F* indexes; 
     // TH1F* cutFlow;
     // TH1F* WTags;
 
@@ -187,6 +187,7 @@ namespace flashgg {
     {
       genInfo_ = pSet.getUntrackedParameter<edm::InputTag>( "genInfo", edm::InputTag("generator") );
       genInfoToken_ = consumes<GenEventInfoProduct>( genInfo_ );
+      indexes = fs->make<TH1F> ("indexes","indexes",5,0,5);
       // vars = fs->make<TH1F> ("vars","vars",10,0,10);
       // cutFlow = fs->make<TH1F> ("cutFlow","Cut Flow",10,0,10);
       // WTags = fs->make<TH1F> ("WTags","W Tags",3,0,3);
@@ -253,7 +254,7 @@ namespace flashgg {
       // Cut Variables 
       // double has_PS_Dipho = 0, pass_METfilters = 0, dipho_vertex_is_zero = 0, pass_leadPhoOverMassThreshold = 0, pass_subleadPhoOverMassThreshold = 0,
       //   pass_LeadPhoton_MVA = 0, pass_SubLeadPhoton_MVA = 0, pass_dipho_MVA = 0, number_passed_jetid = 0;
-      double dipho_vertex_is_zero = -999;
+      // double dipho_vertex_is_zero = -999;
       // double SLW_Tag = 0.; // Semi-Leptonic W Tag  
       // double FLW_Tag = 0.; // Fully-Leptonic W Tag
       // double FHW_Tag = 0.; // Fully-Hadronic W Tag 
@@ -267,23 +268,24 @@ namespace flashgg {
       int n_good_leptons = 0;
       int n_good_jets = 0;
       double dipho_MVA = -99, lead_pho_Hgg_MVA = -99, sublead_pho_Hgg_MVA = -99;
+      double CMS_hgg_mass = -99;
 
       // Saved Objects after selections
       std::vector<flashgg::Jet> tagJets_;
       std::vector<flashgg::Muon> goodMuons_;
       std::vector<flashgg::Electron> goodElectrons_; 
       std::vector<flashgg::Met> theMET_;
-      std::vector<flashgg::DiPhotonCandidate> diphoVector_; // diphoton from W tagged events  
+      std::vector<flashgg::DiPhotonCandidate> diphoVector_;
       reco::GenParticle::Point genVertex;
 
 //-----------------------------------------------------------------------------------------------------------
 
       // Vertex variables
       double gen_vertex_z = -999;
-      double hgg_vertex_z = -999;
+      // double hgg_vertex_z = -999;
       double zero_vertex_z = -999;
       double vertex_diff_zeroeth = -999;
-      double vertex_diff_hgg = -999;
+      // double vertex_diff_hgg = -999;
       double num_vertices = -999;
 
       int diphoton_vertex_index;
@@ -365,24 +367,114 @@ namespace flashgg {
       double num_FL_dr = 0;
       double num_FH_dr = 0;
       float dr_ll = 0;
+      // int n_ps_dpho = diphotons->size(); // number of preselected diphotons in event 
 
-      // double j_mass = 0.0;     
-
-      // Check if event passes W taggers 
       // for( unsigned int diphoIndex = 0; diphoIndex < diphotons->size(); diphoIndex++ ) { // look at all diphotons 
-      if (diphotons->size() > 0){
-      for( unsigned int diphoIndex = 0; diphoIndex < diphotons->size(); diphoIndex++ ) { // only look at highest pt dipho
-        // has_PS_Dipho = 1;
+
+      // If there is one diphoton, and its vertex is not the zeroeth, recompute photon quantities relative to zeroeth vertex 
+      // Then create recomputed diphoton object 
+
+      // flashgg::Photon* lpho;
+      // flashgg::Photon* slpho;
+      // edm::Ptr<flashgg::Photon>
+      // edm::Ptr<flashgg::Photon>
+      
+      // if ( (n_ps_dpho == 1)){
+      //   edm::Ptr<flashgg::DiPhotonCandidate> unCorr_diphoton = diphotons->ptrAt( 0 );
+      //   // cout << "photons->size() = " << photons->size() << endl;
+
+      //   cout << "++++++++++++++++++++++++++++++++++++" << endl;
+      //   for (unsigned int i = 0; i < photons->size(); i++){
+      //     edm::Ptr<flashgg::Photon> pton = photons->ptrAt(i);
+      //     // cout << "photons->ptrAt(" << i << ") = " << pton << endl;
+      //   }
+      //   cout << "++++++++++++++++++++++++++++++++++++" << endl;
+
+      //   // edm::Ptr<flashgg::Photon> a = photons->ptrAt(0);
         
-        // cout << "checked_first = " << checked_first << endl;
-        // cout << "PS_dipho_tag = " << PS_dipho_tag << endl;
-        // if (checked_first) continue; // If already checked highest pT preselected diphoton, continue 
-        // checked_first = true; 
-        // Diphoton 
+
+
+      //   diphoton_vertex_index = unCorr_diphoton->vertexIndex();      
+      //   if (diphoton_vertex_index != 0){
+      //     float vtx_X = zero_vertex->x();
+      //     float vtx_Y = zero_vertex->y();
+      //     float vtx_Z = zero_vertex->z();
+      //     math::XYZVector zero_vtx_Pos( vtx_X, vtx_Y, vtx_Z );
+          
+      //     const flashgg::Photon* lpho_c = unCorr_diphoton->leadingPhoton();
+      //     const flashgg::Photon* slpho_c = unCorr_diphoton->subLeadingPhoton();
+      //     cout << "lpho_c = " << lpho_c << endl;
+      //     cout << "slpho_c = " << slpho_c << endl;
+      //     lpho = lpho_c->clone();
+      //     slpho = slpho_c->clone();
+
+      //     float lpho_sc_X = lpho->superCluster()->x();
+      //     float lpho_sc_Y = lpho->superCluster()->y();
+      //     float lpho_sc_Z = lpho->superCluster()->z();
+
+      //     float slpho_sc_X = slpho->superCluster()->x();
+      //     float slpho_sc_Y = slpho->superCluster()->y();
+      //     float slpho_sc_Z = slpho->superCluster()->z();
+
+      //     math::XYZVector lpho_sc_Pos( lpho_sc_X, lpho_sc_Y, lpho_sc_Z );
+      //     math::XYZVector slpho_sc_Pos( slpho_sc_X, slpho_sc_Y, slpho_sc_Z );
+
+      //     math::XYZVector ldirection = lpho_sc_Pos - zero_vtx_Pos;
+      //     math::XYZVector sldirection = slpho_sc_Pos - zero_vtx_Pos;
+
+      //     math::XYZVector lpho_dir = ( ldirection.Unit() ) * ( lpho->energy() );
+      //     math::XYZVector slpho_dir = ( sldirection.Unit() ) * ( slpho->energy() );
+
+      //     math::XYZTLorentzVector l_corrected_p4( lpho_dir.x(), lpho_dir.y(), lpho_dir.z(), lpho->energy() );
+      //     math::XYZTLorentzVector sl_corrected_p4( slpho_dir.x(), slpho_dir.y(), slpho_dir.z(), slpho->energy() );
+
+      //     lpho->setP4(l_corrected_p4);
+      //     slpho->setP4(sl_corrected_p4);
+
+
+      //     // lpho->phoIdMvaDWrtVtx(0); // leading photon Hgg MVA 
+
+      //     // After reconstructing with respect to 0th vertex, should it be checked again if this passes preselection? 
+      //   }
+      // }
+      // edm::Ptr<flashgg::Photon> originalPhoton()
+
+      // flashgg::SinglePhotonView a();
+
+      // edm::Ptr<flashgg::Photon> lpho_Ptr = lpho->originalPhoton();
+      // edm::Ptr<flashgg::Photon> slpho_Ptr = slpho->originalPhoton();
+
+      // edm::Ptr<flashgg::DiPhotonCandidate> Corrdiphoton(lpho_Ptr, slpho_Ptr, zero_vertex);
+
+      // if (diphotons->size() > 1){
+      //   cout << "more than 1 diphoton" << endl;
+      //   cout << diphotons->size() << " Diphotons" << endl;
+      // }
+
+      for( unsigned int diphoIndex = 0; diphoIndex < diphotons->size(); diphoIndex++ ) { // only look at highest pt dipho
+        edm::Ptr<flashgg::DiPhotonCandidate> dipho_ = diphotons->ptrAt( diphoIndex );
+        diphoton_vertex_index = dipho_->vertexIndex();
+        // cout << "vertex index = " << diphoton_vertex_index << endl;
+        indexes->Fill(diphoton_vertex_index);
+        // if (diphoton_vertex_index != 0){
+        //   cout << "********************************************" << endl;
+        //   cout << "********************************************" << endl;
+        //   cout << "********************************************" << endl;
+        //   cout << "diphoton vertex index not 0." << endl;
+        //   cout << "Index: " << diphoton_vertex_index << endl;
+        //   cout << "********************************************" << endl;
+        //   cout << "********************************************" << endl;
+        //   cout << "********************************************" << endl;
+        // }
+      }
+
+      if (diphotons->size() > 0){
+      for( unsigned int diphoIndex = 0; diphoIndex < 1; diphoIndex++ ) { // only look at highest pt dipho
+        // edm::Ptr<flashgg::DiPhotonCandidate> dipho = Corrdiphoton; 
         edm::Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( diphoIndex ); 
         edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );    
         diphoton_vertex = dipho->vtx();        
-        diphoton_vertex_index = dipho->vertexIndex();
+        // diphoton_vertex_index = dipho->vertexIndex();
         // if (diphoton_vertex_index != 0){
         //   cout << "********************************************" << endl;
         //   cout << "diphoton vertex index not 0." << endl;
@@ -395,7 +487,6 @@ namespace flashgg {
         // sl_r9 = dipho->leadingPhoton()->full5x5_r9();
         // Check that diphoton is preselected 
         // flashgg::DiPhotonCandidate * DPPointer = const_cast<flashgg::DiPhotonCandidate *>(dipho.get());
-        edm::Ptr<flashgg::DiPhotonCandidate> dipho_initial = dipho;
 
         // Pass_PS |= idSelector_(*initialDPPointer, event);
         // if (Pass_PS == 0){
@@ -426,9 +517,9 @@ namespace flashgg {
         //   pass_METfilters = 1;
         // }
 
-        if(diphotons->ptrAt(diphoIndex)->vertexIndex()==0){
-          dipho_vertex_is_zero = 1;
-        }
+        // if(diphotons->ptrAt(diphoIndex)->vertexIndex()==0){
+        //   dipho_vertex_is_zero = 1;
+        // }
 
         // Check if useVertex0only_
         // if(useVertex0only_) // If only 0th vertex of diphotons is used, continue on all other vertex indices 
@@ -646,12 +737,12 @@ namespace flashgg {
       // Compare diphoton vertex to gen vertex
       
       if (! event.isRealData()){
-        hgg_vertex_z = diphoton_vertex->z();
+        // hgg_vertex_z = diphoton_vertex->z();
         zero_vertex_z = zero_vertex->z();
         // cout << "hello" << endl;
         // cout << "genVertex.z() = " << genVertex.z() << endl;
         // cout << "diphoton_vertex->z() = " << diphoton_vertex->z() << endl;
-        vertex_diff_hgg = fabs(gen_vertex_z - hgg_vertex_z);
+        // vertex_diff_hgg = fabs(gen_vertex_z - hgg_vertex_z);
         vertex_diff_zeroeth = fabs(gen_vertex_z - zero_vertex_z);
         // cout << "vertex difference Hgg = " << vertex_diff_hgg << endl;
         // cout << "vertex difference Zero = " << vertex_diff_zeroeth << endl;
@@ -732,12 +823,12 @@ namespace flashgg {
         double d_n_good_leptons = (double)n_good_leptons;
 
         Vertex_Variables[0] = gen_vertex_z; // Gen vertex z 
-        Vertex_Variables[1] = hgg_vertex_z; // Hgg vertex z 
-        Vertex_Variables[2] = zero_vertex_z; // Zeroeth vertex z 
-        Vertex_Variables[3] = vertex_diff_hgg; // fabs(genvertex z - hgg vertex z ) 
-        Vertex_Variables[4] = vertex_diff_zeroeth; // fabs(genvertex z - zero vertex z ) 
-        Vertex_Variables[5] = dipho_vertex_is_zero; // 
-        Vertex_Variables[6] = num_vertices;
+        // Vertex_Variables[1] = hgg_vertex_z; // Hgg vertex z 
+        Vertex_Variables[1] = zero_vertex_z; // Zeroeth vertex z 
+        // Vertex_Variables[3] = vertex_diff_hgg; // fabs(genvertex z - hgg vertex z ) 
+        Vertex_Variables[2] = vertex_diff_zeroeth; // fabs(genvertex z - zero vertex z ) 
+        // Vertex_Variables[4] = dipho_vertex_is_zero; // 
+        Vertex_Variables[3] = num_vertices;
 
         // Cut_Variables[0] = has_PS_Dipho;
         // Cut_Variables[1] = pass_METfilters;
@@ -807,11 +898,16 @@ namespace flashgg {
         // }
 
         // Create HHWWggCandidate Object 
-        HHWWggCandidate HHWWgg(diphoVector_, goodElectrons_, goodMuons_, theMET_, genParticlesVector, tagJets_, Vertex_Variables, Cut_Variables, dipho_MVA, lead_pho_Hgg_MVA, sublead_pho_Hgg_MVA);
+        HHWWggCandidate HHWWgg(diphoVector_, goodElectrons_, goodMuons_, theMET_, genParticlesVector, tagJets_, 
+          Vertex_Variables, Cut_Variables, dipho_MVA, lead_pho_Hgg_MVA, sublead_pho_Hgg_MVA, CMS_hgg_mass, vertex_diff_zeroeth);
+        
         HHWWggColl_->push_back(HHWWgg);
 
       event.put( std::move(HHWWggColl_) );
     }
+
+
+
   }
   typedef flashgg::HHWWggCandidateProducer FlashggHHWWggCandidateProducer;
   DEFINE_FWK_MODULE( FlashggHHWWggCandidateProducer );

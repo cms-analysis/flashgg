@@ -396,6 +396,7 @@ class JobConfig(object):
             # keep useParent and secondaryDataset as exclusive options for the moment
             if self.options.useParentDataset:
                 parent_files = das_query("parent file=%s instance=prod/phys03" % f)['data'][0]['parent']
+                print("***************************************************parent_files = ",parent_files)
                 for parent_f in parent_files:
                     sflist.append('root://cms-xrd-global.cern.ch/'+str(parent_f['name']) if 'root://' not in str(parent_f['name']) else str(parent_f['name']))
             elif self.options.secondaryDataset != "":

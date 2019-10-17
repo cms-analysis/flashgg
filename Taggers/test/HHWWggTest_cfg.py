@@ -27,7 +27,6 @@ process.FlashggHHWWggCandidate.idSelection = cms.PSet(
         )
 
 process.flashggPreselectedDiPhotons = flashggPreselectedDiPhotons
-process.flashggPreselectedDiPhotons.src = "flashggDiPhotons"
 
 # cut=cms.string(
 #         "    (leadingPhoton.full5x5_r9>0.8||leadingPhoton.egChargedHadronIso<20||leadingPhoton.egChargedHadronIso/leadingPhoton.pt<0.3)"
@@ -49,18 +48,19 @@ all_variables = var.HHWWgg_variables # add variable lists together
 
 from flashgg.Taggers.HHWWggCandidateDumper_cfi import HHWWggCandidateDumper
 process.HHWWggCandidateDumper = HHWWggCandidateDumper.clone() # clone parameters from HHWWggCandidateDumpConfig_cff (className, src, ...)
-process.HHWWggCandidateDumper.dumpTrees = True # Needs to be set to true here. Default in _cff is false 
+process.HHWWggCandidateDumper.dumpTrees = True # Trees 
 process.HHWWggCandidateDumper.dumpWorkspace = True # Workspace 
 
 # Create histograms 
 
 cfgTools.addCategories(process.HHWWggCandidateDumper,
                         [
-                          ("All_HLT_Events","1",0),
-                          #("All_HLT_Events","Cut_Results[0]",0), # All events that passed HLT 
-                          #("Remaining","1",0), # Remaining events 
-                            # cut 1
-                            # rest of events 
+                          # Signal Categories
+                          ("SL","CMS_hgg_mass!=-99",0),
+
+                          # Data
+                          # ("All_HLT_Events","1",0), # All events that passed HLT 
+
                         ],
 
                         variables = all_variables, 
@@ -82,8 +82,6 @@ cfgTools.addCategories(process.HHWWggCandidateDumper,
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
-
-# "file:/eos/cms/store/group/phys_higgs/cmshgg/sethzenz/flashgg/RunIIFall17-3_1_0/3_1_0/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa/RunIIFall17-3_1_0-3_1_0-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/180706_100515/0000/myMicroAODOutputFile_384.root"
 
 ## X250                       
 "file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X250_WWgg_qqlnu.root" # SL      
@@ -155,7 +153,7 @@ process.eeBadScFilter.EERecHitSource = cms.InputTag("reducedEgamma","reducedEERe
 
 process.dataRequirements = cms.Sequence()
 
-print'customize.processId = ',customize.processId
+# print'customize.processId = ',customize.processId
 if customize.processId == "Data":
    process.dataRequirements += process.hltHighLevel # HLT 
    process.dataRequirements += process.eeBadScFilter
@@ -170,7 +168,32 @@ if customize.processId == "Data":
 # if customize.PURW == False:
 # 	process.HHWWggCandidateDumper.puTarget = cms.vdouble()
 
-process.path = cms.Path(process.flashggPreselectedDiPhotons
+# process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
+# from flashgg.MicroAOD.flashggDiPhotons_cfi import flashggDiPhotons
+# process.flashggDiPhotons = flashggDiPhotons 
+# process.flashggDiPhotons = flashggDiPhotons 
+# process.flashggDiPhotons.whichVertex = cms.uint32(0)
+# process.flashggDiPhotons.useZerothVertexFromMicro = cms.bool(True)
+
+# process.flashggDiPhotonsVtx0 = flashggDiPhotonsLite.clone(VertexSelectorName="FlashggZerothVertexSelector",whichVertex=cms.uint32(0))
+# process.flashggDiPhotonsVtx0 = flashggDiPhotons.clone(VertexSelectorName="FlashggZerothVertexSelector",whichVertex=cms.uint32(0))
+
+# process.flashggPreselectedDiPhotons.src("flashggDiPhotonsVtx0")
+# process.flashggPreselectedDiPhotons.src = "flashggDiPhotons"
+
+
+from flashgg.MicroAOD.flashggDiPhotons_cfi import flashggDiPhotons
+process.flashggDiPhotonsVtx0 = flashggDiPhotons.clone(useZerothVertexFromMicro = cms.bool(True), whichVertex=cms.uint32(0),
+                                                      vertexProbMVAweightfile = "flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml",
+                                                      vertexIdMVAweightfile = "flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml"
+)
+
+process.flashggPreselectedDiPhotons.src = "flashggDiPhotonsVtx0" # Only use zeroth vertex diphotons, order by pt 
+# process.flashggPreselectedDiPhotons.src = "flashggDiPhotons" # don't require 0th vertex 
+
+
+process.path = cms.Path(process.flashggDiPhotonsVtx0
+                        *process.flashggPreselectedDiPhotons
                         *process.flashggDiPhotonMVA
                         *process.flashggUnpackedJets
                         *process.dataRequirements
@@ -178,7 +201,6 @@ process.path = cms.Path(process.flashggPreselectedDiPhotons
                         *process.HHWWggCandidateDumper
                         )
 
-# process.path = cms.Path(process.FlashggHHWWggCandidate+process.HHWWggCandidateDumper)
 #process.e = cms.EndPath(process.out)
 
 # customize(process) 

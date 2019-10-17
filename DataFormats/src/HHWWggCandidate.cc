@@ -40,7 +40,13 @@ dipho_MVA_ (),
 lead_pho_Hgg_MVA_ (),
 sublead_pho_Hgg_MVA_ (),
 lead_pho_EG_MVA_ (),
-sublead_pho_EG_MVA_ ()
+sublead_pho_EG_MVA_ (),
+lead_pho_passElectronVeto_ (),
+sublead_pho_passElectronVeto_ (),
+lead_pho_hasPixelSeed_ (),
+sublead_pho_hasPixelSeed_ (),
+CMS_hgg_mass_ (),
+dZ_ ()
 // Need absence of comma on last variable 
 
 {}
@@ -49,9 +55,9 @@ sublead_pho_EG_MVA_ ()
   
   HHWWggCandidate::HHWWggCandidate( std::vector<flashgg::DiPhotonCandidate> diphoVector, std::vector<flashgg::Electron> electronVector, 
                                     std::vector<flashgg::Muon> muonVector, std::vector<flashgg::Met> METVector, std::vector<reco::GenParticle> GenParticlesVector,
-                                    std::vector<flashgg::Jet> JetVector, std::vector<double> Vertex_Variables, std::vector<double> Cut_Variables, double dipho_MVA, double lead_pho_Hgg_MVA, double sublead_pho_Hgg_MVA):
+                                    std::vector<flashgg::Jet> JetVector, std::vector<double> Vertex_Variables, std::vector<double> Cut_Variables, double dipho_MVA, double lead_pho_Hgg_MVA, double sublead_pho_Hgg_MVA, double CMS_hgg_mass, double dZ):
   diphoVector_(diphoVector), electronVector_(electronVector), muonVector_(muonVector), METVector_(METVector), GenParticlesVector_(GenParticlesVector), 
-  JetVector_(JetVector), Vertex_Variables_(Vertex_Variables), Cut_Variables_(Cut_Variables), dipho_MVA_(dipho_MVA), lead_pho_Hgg_MVA_(lead_pho_Hgg_MVA), sublead_pho_Hgg_MVA_(sublead_pho_Hgg_MVA)
+  JetVector_(JetVector), Vertex_Variables_(Vertex_Variables), Cut_Variables_(Cut_Variables), dipho_MVA_(dipho_MVA), lead_pho_Hgg_MVA_(lead_pho_Hgg_MVA), sublead_pho_Hgg_MVA_(sublead_pho_Hgg_MVA), CMS_hgg_mass_(CMS_hgg_mass), dZ_ (dZ)
 
   {
 
@@ -477,14 +483,12 @@ sublead_pho_EG_MVA_ ()
     // double tmp_dp_pt = 0, max_dp_pt = -99; // temporary diphoton pt 
     //bool test = 0;
 
-
-    double dipho_zero_vtx = Vertex_Variables[5];
     // First diphoton has highest pt 
     if (diphoVector_.size() > 0){
       flashgg::DiPhotonCandidate dipho_ = diphoVector_[0];
-      if (!dipho_zero_vtx){
-        cout << "Diphoton vertex is not zero. Need to recompute" << endl; 
-      }
+      // if (!dipho_zero_vtx){
+      //   cout << "Diphoton vertex is not zero. Need to recompute" << endl; 
+      // }
       dipho_.makePhotonsPersistent();
       auto dipho = dipho_.p4();
       leading_dpho_ = dipho;
@@ -492,10 +496,80 @@ sublead_pho_EG_MVA_ ()
       // Get photons 
       flashgg::Photon leading_photon = dipho_.getLeadingPhoton();
       flashgg::Photon subleading_photon = dipho_.getSubLeadingPhoton();
+
+      // Get EG MVA scores, passelectronveto, haspixelseed 
+      lead_pho_EG_MVA_ = leading_photon.userFloat("PhotonMVAEstimatorRunIIFall17v1p1Values"); // v1p1 = 1.1 ? Better than 1.0 ?
+      sublead_pho_EG_MVA_ = subleading_photon.userFloat("PhotonMVAEstimatorRunIIFall17v1p1Values");
+      lead_pho_passElectronVeto_ = leading_photon.passElectronVeto();
+      sublead_pho_passElectronVeto_ = subleading_photon.passElectronVeto();
+      lead_pho_hasPixelSeed_ = leading_photon.hasPixelSeed();
+      sublead_pho_hasPixelSeed_= subleading_photon.hasPixelSeed();
+
       auto l_pho_ = leading_photon.p4();
       auto sl_pho_ = subleading_photon.p4();
       leading_pho_ = l_pho_; 
       sub_leading_pho_ = sl_pho_;
+
+      CMS_hgg_mass_ = dipho.mass();
+
+      //----------------------------------------------------------------------------------------------------------------------------
+
+      // For fggfinalfit, adding selections here because don't know how to filter workspace after dumper has run
+      // Should turn this off if not creating a workspace 
+
+      // bool pass_selections = 0;
+      // bool lead_pass_TightPhoID = 0, sublead_pass_TightPhoID = 0; 
+
+      // double n_good_electrons = electronVector_.size();
+      // double n_good_muons = muonVector_.size();
+      // double n_good_leptons = n_good_electrons + n_good_muons;
+      // double n_good_jets = JetVector_.size();
+      // double leading_pho_eta = l_pho_.eta(), sub_leading_pho_eta = sl_pho_.eta();
+
+      // if (n_good_leptons == 1){
+      //   if (n_good_jets >= 2 ){
+      //     // leading photon 
+      //     // EB 
+      //     if (( abs(leading_pho_eta) > 0) && ( abs(leading_pho_eta) < 1.4442)){
+      //       if (lead_pho_EG_MVA_ > 0.42) lead_pass_TightPhoID = 1; 
+      //     }
+
+      //     // EE 
+      //     else if (( abs(leading_pho_eta) > 1.566) && ( abs(leading_pho_eta) < 2.5)){
+      //       if (lead_pho_EG_MVA_ > 0.14) lead_pass_TightPhoID = 1;
+      //     }
+
+      //     // SubLeading Photon
+      //     // EB 
+      //     if (( abs(sub_leading_pho_eta) > 0) && ( abs(sub_leading_pho_eta) < 1.4442)){
+      //       if (sublead_pho_EG_MVA_ > 0.42) sublead_pass_TightPhoID = 1; 
+      //     }
+
+      //     // EE 
+      //     else if (( abs(sub_leading_pho_eta) > 1.566) && ( abs(sub_leading_pho_eta) < 2.5)){
+      //       if (sublead_pho_EG_MVA_ > 0.14) sublead_pass_TightPhoID = 1;
+      //     }
+
+      //     if (lead_pass_TightPhoID && sublead_pass_TightPhoID){
+            
+      //       if  ((dipho.mass() > 118) && (dipho.mass() < 132)){
+      //         pass_selections = 1;
+      //       }
+
+
+      //     }
+
+      //   }
+      // }
+
+      // if (pass_selections){
+      //   CMS_hgg_mass_ = dipho.mass();
+      // }
+      // else {
+      //   CMS_hgg_mass_ = -99; 
+      //   dZ_ = -999;
+      // }
+      //----------------------------------------------------------------------------------------------------------------------------
 
       //-- Photon Object Checks
 
@@ -582,7 +656,7 @@ sublead_pho_EG_MVA_ ()
 
     } 
 
-    float elec_pt = -99, muon_pt = -99;
+    // float elec_pt = -99, muon_pt = -99;
     // reco::Candidate::LorentzVector leading_lepton_; 
 
     // Leading/subleading electrons

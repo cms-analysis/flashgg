@@ -20,12 +20,13 @@ HHWWgg_variables = [
     #                                                                                                                   #
 
     "Gen_Vertex_Z                         := Vertex_Variables[0]",
-    "Hgg_Vertex_Z                         := Vertex_Variables[1]",
-    "Zero_Vertex_Z                        := Vertex_Variables[2]",
-    "dZ_Gen_Hgg                           := Vertex_Variables[3]",
-    "dZ_Gen_Zero                          := Vertex_Variables[4]",
-    "Hgg_Vtx_isZero                       := Vertex_Variables[5]",
-    "num_vertices                         := Vertex_Variables[6]",
+    "Zero_Vertex_Z                        := Vertex_Variables[1]",
+    # "dZ                                   := Vertex_Variables[2]",
+    "dZ                                   := dZ()",
+    "num_vertices                         := Vertex_Variables[3]",
+    # "Hgg_Vertex_Z                         := Vertex_Variables[1]",
+    # "dZ_Gen_Hgg                           := Vertex_Variables[3]",
+    # "Hgg_Vtx_isZero                       := Vertex_Variables[4]",
 
     #                                                                                                                   #
     #                                                                                                                   #
@@ -69,21 +70,33 @@ HHWWgg_variables = [
     # "FH_m_WW                             := ? FH_m_WW != 0 ? FH_m_WW() : -99",
 
     # Photons 
+
+    # Leading Photon 
     "leading_pho_pt                      := ? leading_pho.pt() != 0 ? leading_pho.pt() : - 99",
     "leading_pho_eta                     := ? leading_pho.eta() != 0 ? leading_pho.eta() : - 99",
     "leading_pho_phi                     := ? leading_pho.phi() != 0 ? leading_pho.phi() : - 99", # is it a problem to cut at 0 for eta and phi which could be 0?
     "leading_pho_E                       := ? leading_pho.E() != 0 ? leading_pho.E() : - 99",
-    "leading_pho_Hgg_MVA                 := lead_pho_Hgg_MVA()",
+    "leading_pho_Hgg_MVA                 := ? lead_pho_Hgg_MVA() != 0 ? lead_pho_Hgg_MVA() : -999",
+    "leading_pho_EG_MVA                  := ? lead_pho_EG_MVA() != 0 ? lead_pho_EG_MVA() : -999",
+    "lead_pho_passElectronVeto           := ? lead_pho_passElectronVeto() != 0 ? lead_pho_passElectronVeto() : -999",
+    "lead_pho_hasPixelSeed               := ? lead_pho_hasPixelSeed() != 0 ? lead_pho_hasPixelSeed() : -999",
+
+    # Subleading Photon 
     "sub_leading_pho_pt                  := ? sub_leading_pho.pt() != 0 ? sub_leading_pho.pt() : -99 ",
     "sub_leading_pho_eta                 := ? sub_leading_pho.eta() != 0 ? sub_leading_pho.eta() : -99",
     "sub_leading_pho_phi                 := ? sub_leading_pho.phi() != 0 ? sub_leading_pho.phi() : -99",
     "sub_leading_pho_E                   := ? sub_leading_pho.E() != 0 ? sub_leading_pho.E() : -99",
-    "subleading_pho_Hgg_MVA              := sublead_pho_Hgg_MVA()",
+    "subleading_pho_Hgg_MVA              := ? sublead_pho_Hgg_MVA() != 0 ? sublead_pho_Hgg_MVA() : -999",
+    "subleading_pho_EG_MVA               := ? sublead_pho_EG_MVA() != 0 ? sublead_pho_EG_MVA() : -999",
+    "sublead_pho_passElectronVeto        := ? sublead_pho_passElectronVeto() != 0 ? sublead_pho_passElectronVeto() : -999",
+    "sublead_pho_hasPixelSeed            := ? sublead_pho_hasPixelSeed() != 0 ? sublead_pho_hasPixelSeed() : -999",
 
     # DiPhoton(s)
     "n_dipho                             := diphoVector.size()",
     "dipho_MVA                           := dipho_MVA()", 
-    "leading_dpho_mass                   := ? leading_dpho.mass() != 0 ? leading_dpho.mass() : -99 ", 
+    # "CMS_hgg_mass                        := ? leading_dpho.mass() != 0 ? leading_dpho.mass() : -99 ", 
+    "CMS_hgg_mass                        := CMS_hgg_mass() ", # for cuts within HHWWggCandidate.cc before workspace 
+    # "CMS_hgg_mass                        := leading_dpho.mass()", 
     "leading_dpho_pt                     := ? leading_dpho.pt() != 0 ? leading_dpho.pt() : -99",
     "leading_dpho_eta                    := ? leading_dpho.eta() != 0 ? leading_dpho.eta() : -99",
     "leading_dpho_phi                    := ? leading_dpho.phi() != 0 ? leading_dpho.phi() : -99",
