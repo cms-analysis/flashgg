@@ -34,8 +34,8 @@
 
     "flashggPhotons" :
     {
-        "photonIdMVAweightfile_EB" : "flashgg/MicroAOD/data/HggPhoId_94X_barrel_BDT_woisocorr.weights.xml",
-        "photonIdMVAweightfile_EE" : "flashgg/MicroAOD/data/HggPhoId_94X_endcap_BDT_woisocorr.weights.xml",
+        "photonIdMVAweightfile_EB" : "flashgg/MicroAOD/data/HggPhoId_94X_barrel_BDT_v2.weights.xml",
+        "photonIdMVAweightfile_EE" : "flashgg/MicroAOD/data/HggPhoId_94X_endcap_BDT_v2.weights.xml",
         "effAreasConfigFile" : "RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_TrueVtx.txt",
         "is2017" : true
     },
@@ -80,9 +80,15 @@
         "MC" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_MC_AK4PFchs"
     },
 
-
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
+
+    "MUON_ID_JSON_FileName" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ID.json",
+    "MUON_ID_JSON_FileName_LowPt" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ID_lowPt.json",
+    "MUON_ISO_JSON_FileName" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ISO.json",
+
+    "MUON_ID_RefTracks" :  "genTracks",
+    "MUON_ID_RefTracks_LowPt" : "genTracks",
 
     "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_eleIDSFs_2017.json",
     "Ele_ID_version" : "mvaEleID-Fall17-iso-V2-wp90",
@@ -106,6 +112,8 @@
 
 	"eta" : 2.5
     },
+
+    "mc2hessianCSV" : "PhysicsTools/HepMCCandAlgos/data/NNPDF30_lo_as_0130_hessian_60.csv",
 
     "bRegression" :
     {

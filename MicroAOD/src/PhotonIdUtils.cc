@@ -239,10 +239,11 @@ void PhotonIdUtils::setupMVA( const string &xmlfilenameEB, const string &xmlfile
     phoIdMva_EE_->AddVariable( "phiWidth",        &phoIdMva_PhiWidth_ );
     phoIdMva_EE_->AddVariable( "covIEtaIPhi", &phoIdMva_covIEtaIPhi_ );
     phoIdMva_EE_->AddVariable( "s4",     &phoIdMva_S4_ );
+    //-----Variable names in MVA weight file different for 2016, make sure same value gets picked up
     if (is2017)
         phoIdMva_EE_->AddVariable( "phoIso03",    &phoIdMva_pfPhoIso03_ );
     else
-        phoIdMva_EE_->AddVariable( "isoPhoCorrMax2p5",    &phoIdMva_pfPhoIso03Corr_ );
+        phoIdMva_EE_->AddVariable( "isoPhoCorrMax2p5",    &phoIdMva_pfPhoIso03_ );
     phoIdMva_EE_->AddVariable( "chgIsoWrtChosenVtx",   &phoIdMva_pfChgIso03_ );
     phoIdMva_EE_->AddVariable( "chgIsoWrtWorstVtx", &phoIdMva_pfChgIso03worst_ );
     phoIdMva_EE_->AddVariable( "scEta",             &phoIdMva_ScEta_ );

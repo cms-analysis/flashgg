@@ -59,14 +59,15 @@ namespace flashgg {
     {
         Handle<View<flashgg::DiPhotonTagBase> > tags;
         evt.getByToken( tags_, tags );
-        assert( tags->size() < 2 );
+        if(tags.isValid())
+            assert( tags->size() < 2 );
 
         double weight = 1.;
         std::pair<std::string,int> info("",0);
-        if( tags->size() > 0 ) {
+        if( tags.isValid() && tags->size() > 0 ) {
             info = classifier_(tags->at(0));
             weight = tags->at(0).centralWeight();
-            /// cout << "TaggedGenDiPhotonProducer tag " << tags->at(0).categoryNumber() << " " << info.second << endl;
+            /// cout << "TaggedGenDiPhotonProducer tag " << tags.at(0).categoryNumber() << " " << info.second << endl;
         }
         
         Handle<View<flashgg::GenDiPhoton> > src;
@@ -78,15 +79,16 @@ namespace flashgg {
             newdipho.setTag(info.first);
             newdipho.setCategoryNumber(info.second);
             newdipho.setCentralWeight(weight);
-            if( tags->size()>0 ) { newdipho.setTagObj(tags->ptrAt(0)); }
+            if( tags.isValid() && tags->size()>0 ) { newdipho.setTagObj(tags->ptrAt(0)); }
             //read reweighting
             vector<float> reweight_values;
             if (doReweight_>0) 
             {
                for (auto & reweight_token : HHbbgg_reweights_){
-                 edm::Handle<float> reweight_hadle;
-                 evt.getByToken(reweight_token, reweight_hadle);
-                 reweight_values.push_back(*reweight_hadle);
+                 edm::Handle<float> reweight_handle;
+                 evt.getByToken(reweight_token, reweight_handle);
+                 if(reweight_handle.isValid())
+                    reweight_values.push_back(*reweight_handle);
                }
                newdipho.setHHbbggBenchmarkReweight( reweight_values );
             }

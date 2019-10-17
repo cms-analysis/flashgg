@@ -209,7 +209,11 @@ class WorkNodeJob(object):
 
         script += 'echo "ls $X509_USER_PROXY"\n'
         script += 'ls $X509_USER_PROXY\n'
-            
+        
+        ###---dasmaps: allow jobs to use dasgoclient
+        script += 'mkdir .dasmaps \n'
+        script += 'mv das_maps_dbs_prod.js .dasmaps/ \n\n'
+
         ###---The user command
         ###
         ###   HTCondor: In order to deal with failed jobs the original jobIds of the failed jobs
@@ -421,18 +425,19 @@ class HTCondorJob(object):
             fout.close()        
 
         with open(self.cfgName, "w+") as fout:
-            fout.write('+JobFlavour = "'+self.htcondorQueue+'"\n\n')
-            fout.write('+OnExitHold = ExitStatus != 0 \n\n')
+            fout.write('+JobFlavour   = "'+self.htcondorQueue+'"\n\n')
+            fout.write('+OnExitHold   = ExitStatus != 0 \n\n')
             fout.write('periodic_release =  (NumJobStarts < 4) && ((CurrentTime - EnteredCurrentStatus) > 60) \n\n')
-            fout.write('executable  = '+self.execName+'\n')
-            fout.write('arguments   = $(ProcId)\n')
+            fout.write('input         = %s/.dasmaps/das_maps_dbs_prod.js \n' % os.environ['HOME'])
+            fout.write('executable    = '+self.execName+'\n')
+            fout.write('arguments     = $(ProcId)\n')
             #fout.write('arguments   = $(ProcId)\n')
             if self.copy_proxy:
                 fout.write('input       = '+BatchRegistry.getProxy().split(":")[1]+'\n')
-            fout.write('output      = '+self.jobName+'_$(ClusterId).$(ProcId).out\n')
-            fout.write('error       = '+self.jobName+'_$(ClusterId).$(ProcId).err\n')
-            fout.write('log         = '+self.jobName+'_$(ClusterId).$(ProcId)_htc.log\n\n')
-            fout.write('max_retries = 1\n')
+            fout.write('output        = '+self.jobName+'_$(ClusterId).$(ProcId).out\n')
+            fout.write('error         = '+self.jobName+'_$(ClusterId).$(ProcId).err\n')
+            fout.write('log           = '+self.jobName+'_$(ClusterId).$(ProcId)_htc.log\n\n')
+            fout.write('max_retries   = 1\n')
             fout.write('queue '+str(njobs)+' \n')
             fout.close()        
 

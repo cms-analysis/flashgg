@@ -56,12 +56,12 @@ class JobConfig(object):
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "campaign")
         self.options.register ('useAAA',
-                               False, # default value
+                               True, # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.bool,          # string, int, or float
                                "useAAA")
         self.options.register ('useEOS',
-                               True, # default value
+                               False, # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.bool,          # string, int, or float
                                "useEOS")
@@ -70,6 +70,11 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.bool,          # string, int, or float
                                "useParentDataset")
+        self.options.register ('recalculatePDFWeights',
+                               False, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "recalculatePDFWeights")
         self.options.register ('secondaryDataset',
                                "", # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -383,10 +388,12 @@ class JobConfig(object):
         
         # get the runs and lumis contained in each file of the secondary dataset
         if self.options.secondaryDataset:
-            secondary_files = [fdata['file'][0]['name'] for fdata in das_query("file dataset=%s instance=prod/phys03" % self.options.secondaryDataset)['data']]
+            secondary_files = [fdata['file'][0]['name'] for fdata in das_query("file dataset=%s instance=prod/phys03" % self.options.secondaryDataset, 
+                                                                               cmd='dasgoclient --dasmaps=./')['data']]
             runs_and_lumis = {}
             for s in secondary_files:
-                runs_and_lumis[str(s)] = {lumi['run_number'] : lumi['lumi_section_num'] for lumi in das_query("lumi file=%s instance=prod/phys03" % s)['data'][0]['lumi']}
+                runs_and_lumis[str(s)] = {lumi['run_number'] : lumi['lumi_section_num'] for lumi in das_query("lumi file=%s instance=prod/phys03" % s,
+                                                                                                              cmd='dasgoclient --dasmaps=./')['data'][0]['lumi']}
 
         for f in files:
             if len(f.split(":",1))>1:
@@ -395,13 +402,14 @@ class JobConfig(object):
                 flist.append(str("%s%s" % (self.filePrepend,f)))
             # keep useParent and secondaryDataset as exclusive options for the moment
             if self.options.useParentDataset:
-                parent_files = das_query("parent file=%s instance=prod/phys03" % f)['data'][0]['parent']
-                print("***************************************************parent_files = ",parent_files)
+                parent_files = das_query("parent file=%s instance=prod/phys03" % f, cmd='dasgoclient --dasmaps=./')['data']
                 for parent_f in parent_files:
-                    sflist.append('root://cms-xrd-global.cern.ch/'+str(parent_f['name']) if 'root://' not in str(parent_f['name']) else str(parent_f['name']))
+                    parent_f_name = str(parent_f['parent'][0]['name'])
+                    sflist.append('root://cms-xrd-global.cern.ch/'+parent_f_name if 'root://' not in parent_f_name else parent_f_name)
             elif self.options.secondaryDataset != "":
                 # match primary file to the corresponding secondary file(s)
-                f_runs_and_lumis = {lumi['run_number'] : lumi['lumi_section_num'] for lumi in das_query("lumi file=%s instance=prod/phys03" % f)['data'][0]['lumi']}
+                f_runs_and_lumis = {lumi['run_number'] : lumi['lumi_section_num'] for lumi in das_query("lumi file=%s instance=prod/phys03" % f,
+                                                                                                        cmd='dasgoclient --dasmaps=./')['data'][0]['lumi']}
                 for s_name, s_runs_and_lumis in runs_and_lumis.items():
                     matched_runs = set(f_runs_and_lumis.keys()).intersection(s_runs_and_lumis.keys())
                     for run in matched_runs:                        

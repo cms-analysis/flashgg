@@ -263,6 +263,7 @@ if options.createCrabConfig:
 
         # list of (original, replacement) to bring dataset name to 97 characters or less
         replacements = [
+            ("backup_", ""),
             ("RunIISummer16MiniAODv2-PUMoriond17_qcut19_80X_mcRun2_asymptotic_2016","Moriond17"),
             ("TuneCUEP8M1_13TeV-pythia8","13TeV"),
             ("TuneCUETP8M1_13TeV-madgraphMLM-pythia8","13TeV-mg"),
