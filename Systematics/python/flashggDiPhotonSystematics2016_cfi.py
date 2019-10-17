@@ -22,14 +22,14 @@ preselBins = cms.PSet(
         )
     )
 
-# JTao: slide 2 of https://indico.cern.ch/event/762183/contributions/3181242/attachments/1736403/2823204/201810_2016Legacy_e-veto_etc.pdf with 2016 legacy data samples, small changes on teh SFs wrt previous results with 2016 rereco data samples 
+# JTao: slide 40 of https://indico.cern.ch/event/850506/contributions/3606914/attachments/1927946/3192290/201910_Zmmg_RhoBugFixed.pdf with 2016 legacy data and MC samples, with new shower-shape and isolation corrections applied and photon PT > 20 GeV 
 electronVetoBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)","full5x5_r9"),
     bins = cms.VPSet(
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00 ) , upBounds = cms.vdouble( 1.5, 0.85 ) , values = cms.vdouble( 0.9939 ) , uncertainties = cms.vdouble( 0.0023 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ) , upBounds = cms.vdouble( 1.5, 999. ) , values = cms.vdouble( 0.9955 ) , uncertainties = cms.vdouble( 0.0006 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00 ) , upBounds = cms.vdouble( 6.0, 0.90 ) , values = cms.vdouble( 0.9709 ) , uncertainties = cms.vdouble( 0.0068 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90 ) , upBounds = cms.vdouble( 6.0, 999. ) , values = cms.vdouble( 0.9916 ) , uncertainties = cms.vdouble( 0.0017 )  ) 
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00 ) , upBounds = cms.vdouble( 1.5, 0.85 ) , values = cms.vdouble( 0.9973 ) , uncertainties = cms.vdouble( 0.0024 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ) , upBounds = cms.vdouble( 1.5, 999. ) , values = cms.vdouble( 0.9963 ) , uncertainties = cms.vdouble( 0.0006 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00 ) , upBounds = cms.vdouble( 6.0, 0.90 ) , values = cms.vdouble( 0.9700 ) , uncertainties = cms.vdouble( 0.0075 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90 ) , upBounds = cms.vdouble( 6.0, 999. ) , values = cms.vdouble( 0.9909 ) , uncertainties = cms.vdouble( 0.0018 )  ) 
         )
     )
 
