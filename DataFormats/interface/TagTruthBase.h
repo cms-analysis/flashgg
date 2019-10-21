@@ -2,12 +2,13 @@
 #define FLASHgg_TagTruthBase_h
 
 #include "DataFormats/Math/interface/Point3D.h"
+#include "flashgg/DataFormats/interface/WeightedObject.h"
 #include <vector>
 #include <map>
 
 namespace flashgg {
 
-    class TagTruthBase
+    class TagTruthBase : public WeightedObject
     {
     public:
 
