@@ -24,6 +24,7 @@ HHWWgg_variables = [
     # "dZ                                   := Vertex_Variables[2]",
     "dZ                                   := dZ()",
     "num_vertices                         := Vertex_Variables[3]",
+    # "dZ_Hgg_Vertex                        := Vertex_Variables[4]",
     # "Hgg_Vertex_Z                         := Vertex_Variables[1]",
     # "dZ_Gen_Hgg                           := Vertex_Variables[3]",
     # "Hgg_Vtx_isZero                       := Vertex_Variables[4]",
@@ -261,4 +262,9 @@ HHWWgg_variables = [
     #                                                                                                                   #
     #                                                                                                                   #   
     #-------------------------------------------------------------------------------------------------------------------#
+]
+
+fit_variables = [
+    "dZ                                  := dZ()",
+    "CMS_hgg_mass                        := CMS_hgg_mass() ", # for cuts within HHWWggCandidate.cc before workspace 
 ]

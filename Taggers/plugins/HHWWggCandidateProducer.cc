@@ -825,10 +825,10 @@ namespace flashgg {
         Vertex_Variables[0] = gen_vertex_z; // Gen vertex z 
         // Vertex_Variables[1] = hgg_vertex_z; // Hgg vertex z 
         Vertex_Variables[1] = zero_vertex_z; // Zeroeth vertex z 
-        // Vertex_Variables[3] = vertex_diff_hgg; // fabs(genvertex z - hgg vertex z ) 
         Vertex_Variables[2] = vertex_diff_zeroeth; // fabs(genvertex z - zero vertex z ) 
         // Vertex_Variables[4] = dipho_vertex_is_zero; // 
         Vertex_Variables[3] = num_vertices;
+        // Vertex_Variables[4] = vertex_diff_hgg; // fabs(genvertex z - hgg vertex z ) 
 
         // Cut_Variables[0] = has_PS_Dipho;
         // Cut_Variables[1] = pass_METfilters;

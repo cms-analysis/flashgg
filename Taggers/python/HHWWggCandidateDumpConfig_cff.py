@@ -13,7 +13,9 @@ HHWWggCandidateDumpConfig = cms.PSet(
     categories = cms.VPSet(),
 
     workspaceName = cms.untracked.string("cms_HHWWgg_$SQRTS"),
-    nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$LABEL_$SUBCAT"),
+    # workspaceName = cms.untracked.string("tagsDumper/cms_HHWWgg_$SQRTS"), # Don't know how to put workspace in "tagsDumper"
+    nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$LABEL_$SUBCAT"), # For anything besides Signal 
+    # nameTemplate = cms.untracked.string("ggF_125_$SQRTS_$LABEL_$SUBCAT"), # hardcoding SL name for now because don't know how to set $ variables 
 
     dumpHistos = cms.untracked.bool(False),
     dumpWorkspace = cms.untracked.bool(False),

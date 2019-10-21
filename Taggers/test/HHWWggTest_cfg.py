@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms  # imports our CMS-specific Python clas
 import os # python module for os dependent functionality 
 from flashgg.Taggers.flashggHHWWggCandidate_cfi import FlashggHHWWggCandidate # cut parameters 
 from flashgg.Taggers.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
-import flashgg.Taggers.dumperConfigTools as cfgTools
+import flashgg.Taggers.dumperConfigTools as cfgTools 
 
 process = cms.Process("FLASHggHHWWggTest") # Process name. Can't use HH_WWgg because '_' is a non-alphanumeric character
 from flashgg.Taggers.flashggTags_cff import flashggUnpackedJets
@@ -45,6 +45,7 @@ process.flashggPreselectedDiPhotons = flashggPreselectedDiPhotons
 import flashgg.Taggers.HHWWggTagVariables as var # python file of lists of strings 
 #all_variables = var.pho_variables + var.dipho_variables + var.tp_variables + var.abe_variables # add variable lists together 
 all_variables = var.HHWWgg_variables # add variable lists together 
+fit_variables = var.fit_variables
 
 from flashgg.Taggers.HHWWggCandidateDumper_cfi import HHWWggCandidateDumper
 process.HHWWggCandidateDumper = HHWWggCandidateDumper.clone() # clone parameters from HHWWggCandidateDumpConfig_cff (className, src, ...)
@@ -56,7 +57,9 @@ process.HHWWggCandidateDumper.dumpWorkspace = True # Workspace
 cfgTools.addCategories(process.HHWWggCandidateDumper,
                         [
                           # Signal Categories
-                          ("SL","CMS_hgg_mass!=-99",0),
+                          ("SL","(CMS_hgg_mass!=-99) && (CMS_hgg_mass>=100) && (CMS_hgg_mass<=180)",0), # for background model 
+                          # ("SL","(CMS_hgg_mass!=-99)",0),
+                          # ("SL","(CMS_hgg_mass!=-99) && (CMS_hgg_mass>=115) && (CMS_hgg_mass<=135)",0), # for signal model 
 
                           # Data
                           # ("All_HLT_Events","1",0), # All events that passed HLT 
@@ -64,6 +67,7 @@ cfgTools.addCategories(process.HHWWggCandidateDumper,
                         ],
 
                         variables = all_variables, 
+                        # variables = fit_variables, 
                         histograms=[]
                         )
 
@@ -82,6 +86,9 @@ cfgTools.addCategories(process.HHWWggCandidateDumper,
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
+
+# One data microaod 
+# "root://cms-xrd-global.cern.ch//store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v2/legacyRun2FullV1/DoubleEG/Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017C-31Mar2018-v1/190606_095024/0000/myMicroAODOutputFile_333.root"
 
 ## X250                       
 "file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X250_WWgg_qqlnu.root" # SL      
@@ -168,38 +175,38 @@ if customize.processId == "Data":
 # if customize.PURW == False:
 # 	process.HHWWggCandidateDumper.puTarget = cms.vdouble()
 
-# process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
-# from flashgg.MicroAOD.flashggDiPhotons_cfi import flashggDiPhotons
-# process.flashggDiPhotons = flashggDiPhotons 
-# process.flashggDiPhotons = flashggDiPhotons 
-# process.flashggDiPhotons.whichVertex = cms.uint32(0)
-# process.flashggDiPhotons.useZerothVertexFromMicro = cms.bool(True)
-
-# process.flashggDiPhotonsVtx0 = flashggDiPhotonsLite.clone(VertexSelectorName="FlashggZerothVertexSelector",whichVertex=cms.uint32(0))
-# process.flashggDiPhotonsVtx0 = flashggDiPhotons.clone(VertexSelectorName="FlashggZerothVertexSelector",whichVertex=cms.uint32(0))
-
-# process.flashggPreselectedDiPhotons.src("flashggDiPhotonsVtx0")
-# process.flashggPreselectedDiPhotons.src = "flashggDiPhotons"
 
 
-from flashgg.MicroAOD.flashggDiPhotons_cfi import flashggDiPhotons
-process.flashggDiPhotonsVtx0 = flashggDiPhotons.clone(useZerothVertexFromMicro = cms.bool(True), whichVertex=cms.uint32(0),
-                                                      vertexProbMVAweightfile = "flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml",
-                                                      vertexIdMVAweightfile = "flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml"
-)
+## Choose to require zeroeth vertex for all diphotons or not 
+ 
+zero_vtx = 1
 
-process.flashggPreselectedDiPhotons.src = "flashggDiPhotonsVtx0" # Only use zeroth vertex diphotons, order by pt 
-# process.flashggPreselectedDiPhotons.src = "flashggDiPhotons" # don't require 0th vertex 
+if zero_vtx:
+  from flashgg.MicroAOD.flashggDiPhotons_cfi import flashggDiPhotons
+  process.flashggDiPhotonsVtx0 = flashggDiPhotons.clone(useZerothVertexFromMicro = cms.bool(True), whichVertex=cms.uint32(0),
+                                                        vertexProbMVAweightfile = "flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml",
+                                                        vertexIdMVAweightfile = "flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml"
+  )
 
+  process.flashggPreselectedDiPhotons.src = "flashggDiPhotonsVtx0" # Only use zeroth vertex diphotons, order by pt 
+  process.path = cms.Path(process.flashggDiPhotonsVtx0
+                          *process.flashggPreselectedDiPhotons
+                          *process.flashggDiPhotonMVA
+                          *process.flashggUnpackedJets
+                          *process.dataRequirements
+                          *process.FlashggHHWWggCandidate
+                          *process.HHWWggCandidateDumper
+                          )
 
-process.path = cms.Path(process.flashggDiPhotonsVtx0
-                        *process.flashggPreselectedDiPhotons
-                        *process.flashggDiPhotonMVA
-                        *process.flashggUnpackedJets
-                        *process.dataRequirements
-                        *process.FlashggHHWWggCandidate
-                        *process.HHWWggCandidateDumper
-                        )
+else:
+  process.flashggPreselectedDiPhotons.src = "flashggDiPhotons" # don't require 0th vertex 
+  process.path = cms.Path(process.flashggPreselectedDiPhotons
+                          *process.flashggDiPhotonMVA
+                          *process.flashggUnpackedJets
+                          *process.dataRequirements
+                          *process.FlashggHHWWggCandidate
+                          *process.HHWWggCandidateDumper
+                          )
 
 #process.e = cms.EndPath(process.out)
 

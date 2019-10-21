@@ -17,6 +17,7 @@ flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
 
                                   useSingleLeg            = cms.bool(True),
                                   useZerothVertexFromMicro = cms.bool(False),
+                                #   whichVertex              = cms.   uint32(0),
 
                                   nVtxSaveInfo            = cms.untracked.uint32(3),
                                   trackHighPurity         = cms.bool(False),
@@ -49,3 +50,16 @@ flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                   singlelegsigma2Tec      = cms.double(1.56638),
                                   MaxJetCollections       = cms.uint32(maxJetCollections)
                               )
+
+# flashggDiPhotonsLite = cms.EDProducer('FlashggDiPhotonProducer',
+#                                       PhotonTag              = cms.InputTag('flashggRandomizedPhotons'),
+#                                       VertexTag              = cms.InputTag('offlineSlimmedPrimaryVertices'),
+#                                       VertexSelectorName     = cms.string("FlashggLegacyVertexSelector"),
+#                                       VertexCandidateMapTag  = cms.InputTag("flashggVertexMapUnique"),
+#                                       ConversionTag          = cms.InputTag("reducedEgamma","reducedConversions"),
+#                                       ConversionTagSingleLeg = cms.InputTag("reducedEgamma","reducedSingleLegConversions"),
+#                                       beamSpotTag            = cms.InputTag( "offlineBeamSpot" ),
+#                                       GenParticleTag         = cms.InputTag( "flashggPrunedGenParticles" ),
+#                                       MaxJetCollections      = cms.uint32(maxJetCollections),
+#                                       reProcess              = cms.bool(True)
+#                                       )

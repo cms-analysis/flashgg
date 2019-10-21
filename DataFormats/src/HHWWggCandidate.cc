@@ -498,7 +498,7 @@ dZ_ ()
       flashgg::Photon subleading_photon = dipho_.getSubLeadingPhoton();
 
       // Get EG MVA scores, passelectronveto, haspixelseed 
-      lead_pho_EG_MVA_ = leading_photon.userFloat("PhotonMVAEstimatorRunIIFall17v1p1Values"); // v1p1 = 1.1 ? Better than 1.0 ?
+      lead_pho_EG_MVA_ = leading_photon.userFloat("PhotonMVAEstimatorRunIIFall17v1p1Values"); // v1p1 = 1.1. Not sure what this is, EG group recommends v2 for 2017 EOY 
       sublead_pho_EG_MVA_ = subleading_photon.userFloat("PhotonMVAEstimatorRunIIFall17v1p1Values");
       lead_pho_passElectronVeto_ = leading_photon.passElectronVeto();
       sublead_pho_passElectronVeto_ = subleading_photon.passElectronVeto();
@@ -517,58 +517,78 @@ dZ_ ()
       // For fggfinalfit, adding selections here because don't know how to filter workspace after dumper has run
       // Should turn this off if not creating a workspace 
 
-      // bool pass_selections = 0;
-      // bool lead_pass_TightPhoID = 0, sublead_pass_TightPhoID = 0; 
+      bool pass_selections = 0;
+      bool lead_pass_TightPhoID = 0, sublead_pass_TightPhoID = 0; 
 
-      // double n_good_electrons = electronVector_.size();
-      // double n_good_muons = muonVector_.size();
-      // double n_good_leptons = n_good_electrons + n_good_muons;
-      // double n_good_jets = JetVector_.size();
-      // double leading_pho_eta = l_pho_.eta(), sub_leading_pho_eta = sl_pho_.eta();
+      double n_good_electrons = electronVector_.size();
+      double n_good_muons = muonVector_.size();
+      double n_good_leptons = n_good_electrons + n_good_muons;
+      double n_good_jets = JetVector_.size();
+      double leading_pho_eta = l_pho_.eta(), sub_leading_pho_eta = sl_pho_.eta();
 
-      // if (n_good_leptons == 1){
-      //   if (n_good_jets >= 2 ){
-      //     // leading photon 
-      //     // EB 
-      //     if (( abs(leading_pho_eta) > 0) && ( abs(leading_pho_eta) < 1.4442)){
-      //       if (lead_pho_EG_MVA_ > 0.42) lead_pass_TightPhoID = 1; 
-      //     }
+      // cout << "lead_pho_Hgg_MVA_ = " << lead_pho_Hgg_MVA_ << endl;
+      // cout << "sublead_pho_Hgg_MVA_ = " << sublead_pho_Hgg_MVA_ << endl;
 
-      //     // EE 
-      //     else if (( abs(leading_pho_eta) > 1.566) && ( abs(leading_pho_eta) < 2.5)){
-      //       if (lead_pho_EG_MVA_ > 0.14) lead_pass_TightPhoID = 1;
-      //     }
+      // UsingJanuary 2016 Photon MVA ID training working points for bbgg 
 
-      //     // SubLeading Photon
-      //     // EB 
-      //     if (( abs(sub_leading_pho_eta) > 0) && ( abs(sub_leading_pho_eta) < 1.4442)){
-      //       if (sublead_pho_EG_MVA_ > 0.42) sublead_pass_TightPhoID = 1; 
-      //     }
+      if (n_good_leptons == 1){
+        // cout << "passed cut 1" << endl;
+        if (n_good_jets >= 2 ){
+        // cout << "passed cut 2" << endl;
 
-      //     // EE 
-      //     else if (( abs(sub_leading_pho_eta) > 1.566) && ( abs(sub_leading_pho_eta) < 2.5)){
-      //       if (sublead_pho_EG_MVA_ > 0.14) sublead_pass_TightPhoID = 1;
-      //     }
+          // leading photon 
+          // EB 
+          if (( abs(leading_pho_eta) > 0) && ( abs(leading_pho_eta) < 1.4442)){
+            // if (lead_pho_EG_MVA_ > 0.42) lead_pass_TightPhoID = 1; 
+            if (lead_pho_Hgg_MVA_ > 0.07) lead_pass_TightPhoID = 1; 
+          }
 
-      //     if (lead_pass_TightPhoID && sublead_pass_TightPhoID){
+          // EE 
+          else if (( abs(leading_pho_eta) > 1.566) && ( abs(leading_pho_eta) < 2.5)){
+            // if (lead_pho_EG_MVA_ > 0.14) lead_pass_TightPhoID = 1;
+            if (lead_pho_Hgg_MVA_ > -0.03) lead_pass_TightPhoID = 1;
+          }
+
+          // SubLeading Photon
+          // EB 
+          if (( abs(sub_leading_pho_eta) > 0) && ( abs(sub_leading_pho_eta) < 1.4442)){
+            // if (sublead_pho_EG_MVA_ > 0.42) sublead_pass_TightPhoID = 1; 
+            if (sublead_pho_Hgg_MVA_ > 0.07) sublead_pass_TightPhoID = 1; 
+          }
+
+          // EE 
+          else if (( abs(sub_leading_pho_eta) > 1.566) && ( abs(sub_leading_pho_eta) < 2.5)){
+            // if (sublead_pho_EG_MVA_ > 0.14) sublead_pass_TightPhoID = 1;
+            if (sublead_pho_Hgg_MVA_ > -0.03) sublead_pass_TightPhoID = 1;
+          }
+
+          // cout << "lead_pass_TightPhoID: " << lead_pass_TightPhoID << endl;
+          // cout << "sublead_pass_TightPhoID: " << sublead_pass_TightPhoID << endl;
+
+
+
+          if (lead_pass_TightPhoID && sublead_pass_TightPhoID){
             
-      //       if  ((dipho.mass() > 118) && (dipho.mass() < 132)){
-      //         pass_selections = 1;
-      //       }
+            // mass window for fitting 
+            if  ((dipho.mass() > 100.) && (dipho.mass() < 180.)){
+              // cout << "passed final cut" << endl;
+              pass_selections = 1;
+            }
 
 
-      //     }
+          }
 
-      //   }
-      // }
+        }
+      }
 
-      // if (pass_selections){
-      //   CMS_hgg_mass_ = dipho.mass();
-      // }
-      // else {
-      //   CMS_hgg_mass_ = -99; 
-      //   dZ_ = -999;
-      // }
+      if (pass_selections){
+        // cout << "event passed selections" << endl;
+        CMS_hgg_mass_ = dipho.mass();
+      }
+      else {
+        CMS_hgg_mass_ = -99; 
+        dZ_ = -999;
+      }
       //----------------------------------------------------------------------------------------------------------------------------
 
       //-- Photon Object Checks
