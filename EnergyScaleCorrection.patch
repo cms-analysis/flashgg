@@ -1,8 +1,18 @@
+From e560d494c2b06fdba5f2aa1fcb5642f8a59f2c68 Mon Sep 17 00:00:00 2001
+From: Thomas Reitenspiess <thomas.reitenspiess@cern.ch>
+Date: Fri, 18 Oct 2019 10:54:57 +0200
+Subject: [PATCH] Patch for EgammaTools/src/EnergyScaleCorrection.cc to improve
+ speed when reading scales and smearings files and fabs(eta) bugfix
+
+---
+ RecoEgamma/EgammaTools/src/EnergyScaleCorrection.cc | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
 diff --git a/RecoEgamma/EgammaTools/src/EnergyScaleCorrection.cc b/RecoEgamma/EgammaTools/src/EnergyScaleCorrection.cc
-index 0c5f594afd5..91b51d3230e 100644
+index dd41135e5e4..f6e38c09264 100644
 --- a/RecoEgamma/EgammaTools/src/EnergyScaleCorrection.cc
 +++ b/RecoEgamma/EgammaTools/src/EnergyScaleCorrection.cc
-@@ -66,7 +66,7 @@ float EnergyScaleCorrection::smearingSigma(int runnr, double et, double eta, dou
+@@ -67,7 +67,7 @@ float EnergyScaleCorrection::smearingSigma(int runnr, double et, double eta, dou
  {
    const SmearCorrection* smearCorr = getSmearCorr(runnr,et,eta,r9,gainSeed);
  						  
@@ -11,7 +21,7 @@ index 0c5f594afd5..91b51d3230e 100644
    else return kDefaultSmearVal_;
  }
  
-@@ -75,7 +75,7 @@ const EnergyScaleCorrection::ScaleCorrection*
+@@ -76,7 +76,7 @@ const EnergyScaleCorrection::ScaleCorrection*
  EnergyScaleCorrection::getScaleCorr(unsigned int runnr, double et, double eta, double r9,
  				    unsigned int gainSeed) const
  {
@@ -20,7 +30,7 @@ index 0c5f594afd5..91b51d3230e 100644
    // buld the category based on the values of the object
    CorrectionCategory category(runnr, et, eta, r9, gainSeed);
    auto result = std::equal_range(scales_.begin(),scales_.end(),category,Sorter<CorrectionCategory,ScaleCorrection>()); 
-@@ -101,7 +101,7 @@ const EnergyScaleCorrection::SmearCorrection*
+@@ -102,7 +102,7 @@ const EnergyScaleCorrection::SmearCorrection*
  EnergyScaleCorrection::getSmearCorr(unsigned int runnr, double et, double eta, double r9,
  				    unsigned int gainSeed) const
  {
@@ -29,3 +39,41 @@ index 0c5f594afd5..91b51d3230e 100644
    // buld the category based on the values of the object
    CorrectionCategory category(runnr, et, eta, r9, gainSeed);
    auto result = std::equal_range(smearings_.begin(),smearings_.end(),category,Sorter<CorrectionCategory,SmearCorrection>()); 
+@@ -138,8 +138,6 @@ void EnergyScaleCorrection::addScale(const std::string& category, int runMin, in
+   
+   ScaleCorrection corr(energyScale,energyScaleErrStat,energyScaleErrSyst,energyScaleErrGain);
+   scales_.push_back({cat,corr});
+-  std::sort(scales_.begin(),scales_.end(),Sorter<CorrectionCategory,ScaleCorrection>()); 
+-  
+ }
+ 
+ void EnergyScaleCorrection::addSmearing(const std::string& category,int runMin, int runMax,
+@@ -157,7 +155,6 @@ void EnergyScaleCorrection::addSmearing(const std::string& category,int runMin,
+   
+   SmearCorrection corr(rho,errRho,phi,errPhi,eMean,errEMean);
+   smearings_.push_back({cat,corr});
+-  std::sort(smearings_.begin(),smearings_.end(),Sorter<CorrectionCategory,SmearCorrection>());
+ }
+ 
+ 
+@@ -189,6 +186,8 @@ void EnergyScaleCorrection::readScalesFromFile(const std::string& filename)
+     addScale(category, runMin, runMax, energyScale, energyScaleErrStat, energyScaleErrSyst, energyScaleErrGain);
+   }
+   
++  std::sort(scales_.begin(),scales_.end(),Sorter<CorrectionCategory,ScaleCorrection>());
++
+   file.close();  
+   return;
+ }
+@@ -252,7 +251,8 @@ void EnergyScaleCorrection::readSmearingsFromFile(const std::string& filename)
+ 
+   }
+   
++  std::sort(smearings_.begin(),smearings_.end(),Sorter<CorrectionCategory,SmearCorrection>());
++
+   file.close();
+   return;
+ }
+-- 
+2.19.0
+
