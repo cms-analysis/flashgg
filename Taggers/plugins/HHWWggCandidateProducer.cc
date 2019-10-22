@@ -78,6 +78,9 @@ namespace flashgg {
     EDGetTokenT<View<DiPhotonCandidate> > diphotonToken_;
     Handle<View<flashgg::DiPhotonCandidate> > diphotons;
 
+    EDGetTokenT<View<DiPhotonCandidate> > diphotonToken2_;
+    Handle<View<flashgg::DiPhotonCandidate> > diphotons2;
+
     EDGetTokenT<View<reco::Vertex> > vertexToken_;
     Handle<View<reco::Vertex> > vertex;
 
@@ -158,6 +161,7 @@ namespace flashgg {
   HHWWggCandidateProducer::HHWWggCandidateProducer( ):
   photonToken_(),
   diphotonToken_(),
+  diphotonToken2_(),
   genParticleToken_(),
   electronToken_(),
   muonToken_(),
@@ -171,6 +175,7 @@ namespace flashgg {
     HHWWggCandidateProducer::HHWWggCandidateProducer( const ParameterSet & pSet):
     photonToken_( consumes<View<Photon> >( pSet.getParameter<InputTag> ( "PhotonTag" ) ) ),
     diphotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( pSet.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
+    diphotonToken2_( consumes<View<flashgg::DiPhotonCandidate> >( pSet.getParameter<InputTag> ( "DiPhotonTag2" ) ) ),
     vertexToken_( consumes<View<reco::Vertex> >( pSet.getParameter<InputTag> ( "VertexTag" ) ) ),
     genParticleToken_( consumes<View<reco::GenParticle> >( pSet.getParameter<InputTag> ( "GenParticleTag" ) ) ),
     electronToken_( consumes<View<Electron> >( pSet.getParameter<InputTag> ( "ElectronTag" ) ) ), 
@@ -236,6 +241,7 @@ namespace flashgg {
       // Get particle objects
       event.getByToken( photonToken_, photons );
       event.getByToken( diphotonToken_, diphotons );
+      event.getByToken( diphotonToken2_, diphotons2 );
       event.getByToken( genParticleToken_, genParticle );
       event.getByToken( electronToken_, electrons );
       event.getByToken( muonToken_, muons );
@@ -473,6 +479,24 @@ namespace flashgg {
         // edm::Ptr<flashgg::DiPhotonCandidate> dipho = Corrdiphoton; 
         edm::Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( diphoIndex ); 
         edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );    
+
+        cout << "dipho energy1 = " << dipho.genP4().E() << endl; 
+
+        if (diphotons2->size() > 0){
+        edm::Ptr<flashgg::DiPhotonCandidate> dipho2 = diphotons2->ptrAt( diphoIndex ); 
+        cout << "dipho energy2 = " << dipho2.genP4().E() << endl; 
+          if ( dipho->genP4().E() != dipho2->genP4().E()){
+            
+            // cout << "*****************************************************************************************" << endl;
+            // cout << "dipho energy1 = " << dipho->genP4().E() << endl; 
+            // cout << "dipho energy2 = " << dipho2->genP4().E() << endl; 
+          }
+        }
+
+
+
+        // edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );    
+
         diphoton_vertex = dipho->vtx();        
         // diphoton_vertex_index = dipho->vertexIndex();
         // if (diphoton_vertex_index != 0){

@@ -8,7 +8,10 @@ from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
 # Clone these params into _cfg 
 FlashggHHWWggCandidate = cms.EDProducer("FlashggHHWWggCandidateProducer", 
                                      PhotonTag              = cms.InputTag('flashggRandomizedPhotons'),
+                                    #  DiPhotonTag            = cms.InputTag('flashggDiPhotonSystematics'),
                                      DiPhotonTag            = cms.InputTag('flashggPreselectedDiPhotons'),
+                                     DiPhotonTag2           = cms.InputTag('flashggDiPhotonSystematics'),
+                                     
                                      #DiPhotonTag            = cms.InputTag('flashggDiPhotons'),
                                      VertexTag              = cms.InputTag('offlineSlimmedPrimaryVertices'),
                                      GenParticleTag         = cms.InputTag('flashggPrunedGenParticles'),
@@ -53,13 +56,6 @@ FlashggHHWWggCandidate = cms.EDProducer("FlashggHHWWggCandidateProducer",
                                      rhoTag = cms.InputTag('fixedGridRhoFastjetAll'),
                                      RECOfilters = cms.InputTag('TriggerResults::RECO'),
                                      PATfilters = cms.InputTag('TriggerResults::PAT'),
-                                     FLASHfilters = cms.InputTag('TriggerResults::FLASHggMicroAOD'),
-                                     # Testing Cut efficiencies 
-                                    #  deltaRMuonPhoThreshold = cms.double(0.001),  
-                                    #  deltaMassElectronZThreshold = cms.double(0.001),
-                                    #  deltaRPhoElectronThreshold = cms.double(0.001), 
-                                    #  muPFIsoSumRelThreshold = cms.double(0.25),
-                                    #  useElectronMVARecipe = cms.bool(True),
-                                    #  useElectronLooseID = cms.bool(False),                                    
+                                     FLASHfilters = cms.InputTag('TriggerResults::FLASHggMicroAOD'),                                 
                                      )
 flashggHHWWggTagSequence = cms.Sequence( flashggHHWWggTag ) # not used 

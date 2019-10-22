@@ -1,8 +1,10 @@
+import importlib
 import FWCore.ParameterSet.Config as cms  # imports our CMS-specific Python classes and functions
 import os # python module for os dependent functionality 
 from flashgg.Taggers.flashggHHWWggCandidate_cfi import FlashggHHWWggCandidate # cut parameters 
 from flashgg.Taggers.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
 import flashgg.Taggers.dumperConfigTools as cfgTools 
+from flashgg.MetaData.MetaConditionsReader import *
 
 process = cms.Process("FLASHggHHWWggTest") # Process name. Can't use HH_WWgg because '_' is a non-alphanumeric character
 from flashgg.Taggers.flashggTags_cff import flashggUnpackedJets
@@ -13,6 +15,8 @@ process.flashggDiPhotonMVA = flashggDiPhotonMVA
 
 from flashgg.Taggers.flashggUpdatedIdMVADiPhotons_cfi import flashggUpdatedIdMVADiPhotons
 process.flashggUpdatedIdMVADiPhotons = flashggUpdatedIdMVADiPhotons
+
+from flashgg.Systematics.flashggDiPhotonSystematics_cfi import flashggDiPhotonSystematics
 
 #process.flashggDiPhotonMVA.DiPhotonTag = "flashggDiPhotons" 
 process.flashggDiPhotonMVA.DiPhotonTag = "flashggPreselectedDiPhotons"
@@ -28,24 +32,12 @@ process.FlashggHHWWggCandidate.idSelection = cms.PSet(
 
 process.flashggPreselectedDiPhotons = flashggPreselectedDiPhotons
 
-# cut=cms.string(
-#         "    (leadingPhoton.full5x5_r9>0.8||leadingPhoton.egChargedHadronIso<20||leadingPhoton.egChargedHadronIso/leadingPhoton.pt<0.3)"
-#         " && (subLeadingPhoton.full5x5_r9>0.8||subLeadingPhoton.egChargedHadronIso<20||subLeadingPhoton.egChargedHadronIso/subLeadingPhoton.pt<0.3)"
-#         " && (leadingPhoton.hadronicOverEm < 0.08 && subLeadingPhoton.hadronicOverEm < 0.08)"
-#         " && (leadingPhoton.pt >35.0 && subLeadingPhoton.pt > 25.0)"
-#         " && (abs(leadingPhoton.superCluster.eta) < 2.5 && abs(subLeadingPhoton.superCluster.eta) < 2.5)"
-#         " && (abs(leadingPhoton.superCluster.eta) < 1.4442 || abs(leadingPhoton.superCluster.eta) > 1.566)"
-#         " && (abs(subLeadingPhoton.superCluster.eta) < 1.4442 || abs(subLeadingPhoton.superCluster.eta) > 1.566)"
-#         " && (leadPhotonId > -0.9 && subLeadPhotonId > -0.9)"
-#         )
-#                                                               )
-# process.FlashggHHWWggCandidate.src = "PreselDiPhotons"
-
 ###--- get the variables
 import flashgg.Taggers.HHWWggTagVariables as var # python file of lists of strings 
 #all_variables = var.pho_variables + var.dipho_variables + var.tp_variables + var.abe_variables # add variable lists together 
-all_variables = var.HHWWgg_variables # add variable lists together 
-fit_variables = var.fit_variables
+# all_variables = var.HHWWgg_variables # add variable lists together 
+# fit_variables = var.fit_Variables
+Reco_Variables = var.Reco_Variables
 
 from flashgg.Taggers.HHWWggCandidateDumper_cfi import HHWWggCandidateDumper
 process.HHWWggCandidateDumper = HHWWggCandidateDumper.clone() # clone parameters from HHWWggCandidateDumpConfig_cff (className, src, ...)
@@ -57,16 +49,17 @@ process.HHWWggCandidateDumper.dumpWorkspace = True # Workspace
 cfgTools.addCategories(process.HHWWggCandidateDumper,
                         [
                           # Signal Categories
-                          ("SL","(CMS_hgg_mass!=-99) && (CMS_hgg_mass>=100) && (CMS_hgg_mass<=180)",0), # for background model 
+                          # ("SL","(CMS_hgg_mass!=-99) && (CMS_hgg_mass>=100) && (CMS_hgg_mass<=180)",0), # for background model 
                           # ("SL","(CMS_hgg_mass!=-99)",0),
-                          # ("SL","(CMS_hgg_mass!=-99) && (CMS_hgg_mass>=115) && (CMS_hgg_mass<=135)",0), # for signal model 
+                          ("SL","(CMS_hgg_mass!=-99) && (CMS_hgg_mass>=115) && (CMS_hgg_mass<=135)",0), # for signal model 
 
                           # Data
                           # ("All_HLT_Events","1",0), # All events that passed HLT 
 
                         ],
 
-                        variables = all_variables, 
+                        # variables = all_variables, 
+                        variables = Reco_Variables,
                         # variables = fit_variables, 
                         histograms=[]
                         )
@@ -118,6 +111,16 @@ customize.setDefault("maxEvents",1000)
 
 # import FWCore.ParameterSet.VarParsing as VarParsing
 customize(process)
+# print'customize.metaConditions = ',customize.metaConditions
+customize.metaConditions = MetaConditionsReader(customize.metaConditions)
+
+# if customize.processId == "Data":
+#     process.GlobalTag.globaltag = str(
+#         customize.metaConditions['globalTags']['data'])
+# else:
+#     process.GlobalTag.globaltag = str(
+#         customize.metaConditions['globalTags']['MC'])
+
 # if customize.inputFiles:
 #     inputFile = customize.inputFiles
 #
@@ -165,6 +168,52 @@ if customize.processId == "Data":
    process.dataRequirements += process.hltHighLevel # HLT 
    process.dataRequirements += process.eeBadScFilter
 
+# Do scale and smearing corrections
+
+  # process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
+process.load("flashgg.Systematics."+customize.metaConditions["flashggDiPhotonSystematics"])
+
+sysmodule = importlib.import_module(
+    "flashgg.Systematics."+customize.metaConditions["flashggDiPhotonSystematics"])
+systModules2D = cms.VPSet()
+systModules = cms.VPSet()
+
+if customize.processId == "Data":
+    print'Data'
+    systModules.append(sysmodule.MCScaleHighR9EB_EGM)
+    systModules.append(sysmodule.MCScaleLowR9EB_EGM)
+    systModules.append(sysmodule.MCScaleHighR9EE_EGM)
+    systModules.append(sysmodule.MCScaleLowR9EE_EGM)
+    # systModules.append(sysmodule.MCScaleGain6EB_EGM)
+    # systModules.append(sysmodule.MCScaleGain1EB_EGM)
+
+    for module in systModules:
+        module.ApplyCentralValue = cms.bool(True)
+
+else:
+    print'Not Data'
+    systModules.append(sysmodule.MCScaleHighR9EB_EGM)
+    systModules.append(sysmodule.MCScaleLowR9EB_EGM)
+    systModules.append(sysmodule.MCScaleHighR9EE_EGM)
+    systModules.append(sysmodule.MCScaleLowR9EE_EGM)
+
+    systModules2D.append(sysmodule.MCSmearHighR9EE_EGM)
+    systModules2D.append(sysmodule.MCSmearLowR9EE_EGM)
+    systModules2D.append(sysmodule.MCSmearHighR9EB_EGM)
+    systModules2D.append(sysmodule.MCSmearLowR9EB_EGM)
+
+    for module in systModules:
+        module.ApplyCentralValue = cms.bool(False)
+
+
+
+process.flashggDiPhotonSystematics = flashggDiPhotonSystematics
+process.flashggDiPhotonSystematics.src = "flashggPreselectedDiPhotons"
+process.flashggDiPhotonSystematics.SystMethods = systModules
+process.flashggDiPhotonSystematics.SystMethods2D = systModules2D
+
+# process.FlashggHHWWggCandidate.DiPhotonTag = "flashggDiPhotonSystematics"
+
 # customize.register('puTarget',
 #                    " ",
 #                    VarParsing.VarParsing.multiplicity.singleton,
@@ -174,8 +223,6 @@ if customize.processId == "Data":
 # process.HHWWggCandidateDumper.puReWeight=cms.bool( bool(customize.PURW) )
 # if customize.PURW == False:
 # 	process.HHWWggCandidateDumper.puTarget = cms.vdouble()
-
-
 
 ## Choose to require zeroeth vertex for all diphotons or not 
  
@@ -194,6 +241,7 @@ if zero_vtx:
                           *process.flashggDiPhotonMVA
                           *process.flashggUnpackedJets
                           *process.dataRequirements
+                          *process.flashggDiPhotonSystematics
                           *process.FlashggHHWWggCandidate
                           *process.HHWWggCandidateDumper
                           )
@@ -204,6 +252,7 @@ else:
                           *process.flashggDiPhotonMVA
                           *process.flashggUnpackedJets
                           *process.dataRequirements
+                          *process.flashggDiPhotonSystematics
                           *process.FlashggHHWWggCandidate
                           *process.HHWWggCandidateDumper
                           )

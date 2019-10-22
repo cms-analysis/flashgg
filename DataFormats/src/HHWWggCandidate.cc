@@ -20,7 +20,8 @@ muonVector_ (),
 METVector_ (),
 GenParticlesVector_ (),
 JetVector_ (),
-phoP4Corrected_ (),
+// Leading_Photon_ (),
+// Subleading_Photon_ (),
 MET_fourvec_ (),
 leading_dpho_ (),
 leading_pho_ (),
@@ -46,7 +47,9 @@ sublead_pho_passElectronVeto_ (),
 lead_pho_hasPixelSeed_ (),
 sublead_pho_hasPixelSeed_ (),
 CMS_hgg_mass_ (),
-dZ_ ()
+dZ_ (),
+LeadPhoInitEnergy_ (),
+SubLeadPhoInitEnergy_ ()
 // Need absence of comma on last variable 
 
 {}
@@ -483,6 +486,9 @@ dZ_ ()
     // double tmp_dp_pt = 0, max_dp_pt = -99; // temporary diphoton pt 
     //bool test = 0;
 
+    LeadPhoInitEnergy_ = -99;
+    SubLeadPhoInitEnergy_ = -99; 
+
     // First diphoton has highest pt 
     if (diphoVector_.size() > 0){
       flashgg::DiPhotonCandidate dipho_ = diphoVector_[0];
@@ -504,6 +510,8 @@ dZ_ ()
       sublead_pho_passElectronVeto_ = subleading_photon.passElectronVeto();
       lead_pho_hasPixelSeed_ = leading_photon.hasPixelSeed();
       sublead_pho_hasPixelSeed_= subleading_photon.hasPixelSeed();
+      LeadPhoInitEnergy_ = leading_photon.energyAtStep("initial");
+      SubLeadPhoInitEnergy_ = subleading_photon.energyAtStep("initial");
 
       auto l_pho_ = leading_photon.p4();
       auto sl_pho_ = subleading_photon.p4();
@@ -569,7 +577,7 @@ dZ_ ()
 
           if (lead_pass_TightPhoID && sublead_pass_TightPhoID){
             
-            // mass window for fitting 
+            // mass window for fitting background
             if  ((dipho.mass() > 100.) && (dipho.mass() < 180.)){
               // cout << "passed final cut" << endl;
               pass_selections = 1;

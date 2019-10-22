@@ -9,66 +9,20 @@
 # In this file, you can call it with: 
 # CosThetaAngles()[1]   
 
-HHWWgg_variables = [
-
-    # One entry per event 
-    # Plot from header file utils 
-    # Variable names can't have dashes '-'
-
-    #---------------------------------------------------Vertex Variables------------------------------------------------#
-    #                                                                                                                   #
-    #                                                                                                                   #
-
-    "Gen_Vertex_Z                         := Vertex_Variables[0]",
-    "Zero_Vertex_Z                        := Vertex_Variables[1]",
-    # "dZ                                   := Vertex_Variables[2]",
-    "dZ                                   := dZ()",
-    "num_vertices                         := Vertex_Variables[3]",
-    # "dZ_Hgg_Vertex                        := Vertex_Variables[4]",
-    # "Hgg_Vertex_Z                         := Vertex_Variables[1]",
-    # "dZ_Gen_Hgg                           := Vertex_Variables[3]",
-    # "Hgg_Vtx_isZero                       := Vertex_Variables[4]",
-
-    #                                                                                                                   #
-    #                                                                                                                   #
-    #-------------------------------------------------------------------------------------------------------------------#
-
-    #---------------------------------------------------Misc Variables--------------------------------------------------#
-    #                                                                                                                   #
-    #                                                                                                                   #
-    
-    # "has_PS_Dipho                        := Cut_Variables[0]",
-    # "pass_METfilters                     := Cut_Variables[1]", 
-    # "dipho_vertex_is_zero                := Cut_Variables[2]",
-    # "pass_leadPhoOverMassThreshold       := Cut_Variables[3]",
-    # "pass_subleadPhoOverMassThreshold    := Cut_Variables[4]",
-    # "pass_LeadPhoton_MVA                 := Cut_Variables[5]",
-    # "pass_SubLeadPhoton_MVA              := Cut_Variables[6]",
-    # "pass_dipho_MVA                      := Cut_Variables[7]",
-    # "number_passed_jetid                 := Cut_Variables[8]",
-    "d_n_good_leptons                    := Cut_Variables[0]",
-    "d_n_good_electrons                  := Cut_Variables[1]",
-    "d_n_good_muons                      := Cut_Variables[2]",
-    "d_n_good_jets                       := Cut_Variables[3]",
-    # "num_FL_dr                           := Cut_Variables[13]", 
-    # "num_FH_dr                           := Cut_Variables[14]",
-    # "SLW_Tag                             := Cut_Variables[15]",
-    # "FLW_Tag                             := Cut_Variables[16]",
-    # "FHW_Tag                             := Cut_Variables[17]",
-
-    #                                                                                                                   #
-    #                                                                                                                   #
-    #-------------------------------------------------------------------------------------------------------------------#
-
-    #---------------------------------------------------RECO Variables--------------------------------------------------#
-    #                                                                                                                   #
-    #                                                                                                                   #
-
+Reco_Variables = [
     # WW 
     # "SL_mT_WW                            := ? SL_mT_WW != 0 ? SL_mT_WW() : -99",
     # "FL_mT_WW                            := ? FL_mT_WW != 0 ? FL_mT_WW() : -99",
     # "SL_mT_W                             := ? SL_mT_W != 0 ? SL_mT_W() : -99",
     # "FH_m_WW                             := ? FH_m_WW != 0 ? FH_m_WW() : -99",
+
+
+    # To check diphotonsystematics
+    "leading_pho_initE                   := ? LeadPhoInitEnergy !=0 ? LeadPhoInitEnergy : -99",
+    "subleading_pho_initE                := ? SubLeadPhoInitEnergy !=0 ? SubLeadPhoInitEnergy : -99",
+    # "LP_final_init_E_Diff                := LeadPhoInitEnergy - leading_pho.E();",       
+    # "SLP_final_init_E_Diff               := SubLeadPhoInitEnergy - sub_leading_pho.E();",
+    
 
     # Photons 
 
@@ -205,15 +159,33 @@ HHWWgg_variables = [
     "MET_py                              := ? MET_fourvec.py() !=0 ? MET_fourvec.py() : -99",
     "MET_pz                              := ? MET_fourvec.pz() !=0 ? MET_fourvec.pz() : -99",
     "MET_E                               := ? MET_fourvec.E() !=0 ? MET_fourvec.E() : -99",
+]
 
-    #                                                                                                                   #
-    #                                                                                                                   #
-    #-------------------------------------------------------------------------------------------------------------------#
+Vertex_Variables = [
+    "Gen_Vertex_Z                         := Vertex_Variables[0]",
+    "Zero_Vertex_Z                        := Vertex_Variables[1]",
+    # "dZ                                   := Vertex_Variables[2]",
+    "dZ                                   := dZ()",
+    "num_vertices                         := Vertex_Variables[3]",
+    # "dZ_Hgg_Vertex                        := Vertex_Variables[4]",
+    # "Hgg_Vertex_Z                         := Vertex_Variables[1]",
+    # "dZ_Gen_Hgg                           := Vertex_Variables[3]",
+    # "Hgg_Vtx_isZero                       := Vertex_Variables[4]",  
+]
 
-    #---------------------------------------------------GEN Variables---------------------------------------------------#
-    #                                                                                                                   #
-    #                                                                                                                   #
+Misc_Variables = [
+    "d_n_good_leptons                    := Cut_Variables[0]",
+    "d_n_good_electrons                  := Cut_Variables[1]",
+    "d_n_good_muons                      := Cut_Variables[2]",
+    "d_n_good_jets                       := Cut_Variables[3]",    
+]
 
+fit_Variables = [
+    "dZ                                  := dZ()",
+    "CMS_hgg_mass                        := CMS_hgg_mass() ", # for cuts within HHWWggCandidate.cc before workspace 
+]
+
+GEN_Variables = [
     # # Higgs
     # "Higgs_gg_pt                         := ? hgg_p4.pt() != 0 ? hgg_p4.pt() : -99 ",
     # "Higgs_gg_eta                        := ? hgg_p4.eta() != 0 ? hgg_p4.eta() : -99 ",
@@ -258,13 +230,4 @@ HHWWgg_variables = [
     # "merged_qs_into_jet                  := ? merged_qs() != 0 ? merged_qs() : -99",
     # "qone_matches                        := ? qone_matches() != 0 ? qone_matches() : -99",
     # "qtwo_matches                        := ? qtwo_matches() != 0 ? qtwo_matches() : -99",
-
-    #                                                                                                                   #
-    #                                                                                                                   #   
-    #-------------------------------------------------------------------------------------------------------------------#
-]
-
-fit_variables = [
-    "dZ                                  := dZ()",
-    "CMS_hgg_mass                        := CMS_hgg_mass() ", # for cuts within HHWWggCandidate.cc before workspace 
 ]

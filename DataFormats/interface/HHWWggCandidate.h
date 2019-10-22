@@ -44,7 +44,8 @@ namespace flashgg {
     const std::vector<flashgg::Met> METVector() const {return METVector_;}
     const std::vector<reco::GenParticle> GenParticlesVector() const {return GenParticlesVector_;}
     const std::vector<flashgg::Jet> JetVector() const {return JetVector_;}
-    const std::vector<flashgg::Photon> phoP4Corrected() const { return phoP4Corrected_; };
+    // const std::vector<flashgg::Photon> Leading_Photon() const { return Leading_Photon_; };
+    // const std::vector<flashgg::Photon> Subleading_Photon() const { return Subleading_Photon_; };
     const reco::Candidate::LorentzVector& MET_fourvec() const { return MET_fourvec_; };
     const reco::Candidate::LorentzVector& leading_dpho() const { return leading_dpho_; };
     const reco::Candidate::LorentzVector& leading_pho() const { return leading_pho_; };
@@ -75,6 +76,8 @@ namespace flashgg {
     const float sublead_pho_hasPixelSeed() const {return sublead_pho_hasPixelSeed_;};
     const float CMS_hgg_mass() const {return CMS_hgg_mass_;};
     const float dZ() const {return dZ_;};
+    const float LeadPhoInitEnergy() const {return LeadPhoInitEnergy_;};
+    const float SubLeadPhoInitEnergy() const {return SubLeadPhoInitEnergy_;};
 
   private:
 
@@ -84,7 +87,8 @@ namespace flashgg {
     std::vector<flashgg::Met> METVector_;
     std::vector<reco::GenParticle> GenParticlesVector_;
     std::vector<flashgg::Jet> JetVector_;
-    std::vector<flashgg::Photon> phoP4Corrected_;
+    // std::vector<flashgg::Photon> Leading_Photon_;
+    // std::vector<flashgg::Photon> Subleading_Photon_;
     reco::Candidate::LorentzVector MET_fourvec_;
     reco::Candidate::LorentzVector leading_dpho_;
     reco::Candidate::LorentzVector leading_pho_;
@@ -112,6 +116,8 @@ namespace flashgg {
     float sublead_pho_hasPixelSeed_;
     float CMS_hgg_mass_;
     float dZ_;
+    float LeadPhoInitEnergy_;
+    float SubLeadPhoInitEnergy_;
     
   };
   typedef std::vector<HHWWggCandidate> HHWWggCandidateCollection; // define new type: vector of HHWWggCandidates 
