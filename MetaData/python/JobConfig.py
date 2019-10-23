@@ -254,7 +254,6 @@ class JobConfig(object):
                 print "Error: cross section not found for dataset %s" % dsetname
                 print
                 
-            self.options.maxEvents = int(maxEvents)
             putarget = None
             samplepu = None
             if self.puTarget != "":
