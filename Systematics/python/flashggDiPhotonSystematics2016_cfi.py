@@ -33,6 +33,54 @@ electronVetoBins = cms.PSet(
         )
     )
 
+
+# JMalcles - based on JTao SF + ttH efficiencies. calculated to preserve nTot ttH.
+# Initial SF taken from: https://indico.cern.ch/event/850506/contributions/3606914/attachments/1927946/3192290/201910_Zmmg_RhoBugFixed.pdf
+
+leadPixelSeedBins = cms.PSet(
+    variables = cms.vstring("abs(superCluster.eta)","full5x5_r9", "hasPixelSeed"),
+    bins = cms.VPSet(
+    
+     # No Pixel Seed                                                                                                                                                                        
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85, -0.1 ) , upBounds = cms.vdouble( 1.5, 999. , 0.1) , values = cms.vdouble(0.989 ) , uncertainties = cms.vdouble( -0.007 )  ),
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00, -0.1 ) , upBounds = cms.vdouble( 1.5, 0.85 , 0.1) , values = cms.vdouble(1.007 ) , uncertainties = cms.vdouble( -0.007 )  ),
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90, -0.1 ) , upBounds = cms.vdouble( 6.0, 999.,  0.1) , values = cms.vdouble(0.966 ) , uncertainties = cms.vdouble( -0.01  )  ),
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00, -0.1 ) , upBounds = cms.vdouble( 6.0, 0.90 , 0.1) , values = cms.vdouble(0.979 ) , uncertainties = cms.vdouble( -0.03  )  ),
+        
+        # Yes Pixel Seed                                                                                                                                                                       
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85, 0.9 ) , upBounds = cms.vdouble( 1.5, 999., 1.1 ) , values = cms.vdouble( 1.434 ) , uncertainties = cms.vdouble( 0.20  )  ),
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00, 0.9 ) , upBounds = cms.vdouble( 1.5, 0.85, 1.1 ) , values = cms.vdouble( 0.979 ) , uncertainties = cms.vdouble( 0.02  )  ),   
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90, 0.9 ) , upBounds = cms.vdouble( 6.0, 999., 1.1 ) , values = cms.vdouble( 1.176 ) , uncertainties = cms.vdouble( 0.06  )  ),
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00, 0.9 ) , upBounds = cms.vdouble( 6.0, 0.90, 1.1 ) , values = cms.vdouble( 1.046 ) , uncertainties = cms.vdouble( 0.07  )  ) 
+        )
+    )
+
+subleadPixelSeedBins = cms.PSet(
+    variables = cms.vstring("abs(superCluster.eta)","full5x5_r9", "hasPixelSeed"),
+    bins = cms.VPSet(
+
+     # No Pixel Seed                                                                                                                                                                                
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85, -0.1 ) , upBounds = cms.vdouble( 1.5, 999. , 0.1) , values = cms.vdouble(0.989 ) , uncertainties = cms.vdouble( -0.007 )  ),
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00, -0.1 ) , upBounds = cms.vdouble( 1.5, 0.85 , 0.1) , values = cms.vdouble(1.007 ) , uncertainties = cms.vdouble( -0.007 )  ),
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90, -0.1 ) , upBounds = cms.vdouble( 6.0, 999.,  0.1) , values = cms.vdouble(0.966 ) , uncertainties = cms.vdouble( -0.01  )  ),
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00, -0.1 ) , upBounds = cms.vdouble( 6.0, 0.90 , 0.1) , values = cms.vdouble(0.979 ) , uncertainties = cms.vdouble( -0.03  )  ),
+
+        # Yes Pixel Seed                                                                                                                                                                            
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85, 0.9 ) , upBounds = cms.vdouble( 1.5, 999., 1.1 ) , values = cms.vdouble( 1.434 ) , uncertainties = cms.vdouble( 0.20  )  ),
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00, 0.9 ) , upBounds = cms.vdouble( 1.5, 0.85, 1.1 ) , values = cms.vdouble( 0.979 ) , uncertainties = cms.vdouble( 0.02  )  ),
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90, 0.9 ) , upBounds = cms.vdouble( 6.0, 999., 1.1 ) , values = cms.vdouble( 1.176 ) , uncertainties = cms.vdouble( 0.06  )  ),
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00, 0.9 ) , upBounds = cms.vdouble( 6.0, 0.90, 1.1 ) , values = cms.vdouble( 1.046 ) , uncertainties = cms.vdouble( 0.07  )  )
+        )
+    )
+
+
+
+
+
+
+
+
+
 FNUFBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)","full5x5_r9"),
     bins = cms.VPSet(
