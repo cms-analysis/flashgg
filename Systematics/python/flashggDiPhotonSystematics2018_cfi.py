@@ -59,13 +59,15 @@ subleadPixelSeedBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)","full5x5_r9", "hasPixelSeed"),
     bins = cms.VPSet(
 
-     # No Pixel Seed                                                                                                                                                                                
+     # No Pixel Seed                                                                                                                                                         
+        
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85, -0.1 ) , upBounds = cms.vdouble( 1.5, 999. , 0.1) , values = cms.vdouble(0.975 ) , uncertainties = cms.vdouble( -0.011 )  ),
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00, -0.1 ) , upBounds = cms.vdouble( 1.5, 0.85 , 0.1) , values = cms.vdouble(0.989 ) , uncertainties = cms.vdouble( -0.006 )  ),
         cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90, -0.1 ) , upBounds = cms.vdouble( 6.0, 999.,  0.1) , values = cms.vdouble(0.916 ) , uncertainties = cms.vdouble( -0.015  )  ),
         cms.PSet( lowBounds = cms.vdouble( 1.5, 0.00, -0.1 ) , upBounds = cms.vdouble( 6.0, 0.90 , 0.1) , values = cms.vdouble(0.897 ) , uncertainties = cms.vdouble( -0.041  )  ),
 
-        # Yes Pixel Seed                                                                                                                                                                            
+        # Yes Pixel Seed                                                                                                                                                      
+        
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85, 0.9 ) , upBounds = cms.vdouble( 1.5, 999., 1.1 ) , values = cms.vdouble( 1.871 ) , uncertainties = cms.vdouble( 0.380  )  ),
         cms.PSet( lowBounds = cms.vdouble( 0.0, 0.00, 0.9 ) , upBounds = cms.vdouble( 1.5, 0.85, 1.1 ) , values = cms.vdouble( 1.047 ) , uncertainties = cms.vdouble( 0.037  )  ),
         cms.PSet( lowBounds = cms.vdouble( 1.5, 0.90, 0.9 ) , upBounds = cms.vdouble( 6.0, 999., 1.1 ) , values = cms.vdouble( 1.261 ) , uncertainties = cms.vdouble( 0.047  )  ),
