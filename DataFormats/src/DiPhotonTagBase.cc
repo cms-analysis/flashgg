@@ -76,12 +76,10 @@ void DiPhotonTagBase::setIsGold( int runNumber ) {
     if ( runNumber == 258443 ) { isGold_ = 0; }
 }
 
-float DiPhotonTagBase::getTheoryWeight(std::string key, bool centralise) const
+float DiPhotonTagBase::getTheoryWeight(std::string key) const
 {
     float theoryWeight = truth_->weight(key);
-    if ( centralise ) {
-        theoryWeight *= this->centralWeight();
-    }
+    theoryWeight *= this->centralWeight();
     return theoryWeight;
 }
 
