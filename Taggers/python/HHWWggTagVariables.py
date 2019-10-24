@@ -10,48 +10,39 @@
 # CosThetaAngles()[1]   
 
 Reco_Variables = [
-    # WW 
-    # "SL_mT_WW                            := ? SL_mT_WW != 0 ? SL_mT_WW() : -99",
-    # "FL_mT_WW                            := ? FL_mT_WW != 0 ? FL_mT_WW() : -99",
-    # "SL_mT_W                             := ? SL_mT_W != 0 ? SL_mT_W() : -99",
-    # "FH_m_WW                             := ? FH_m_WW != 0 ? FH_m_WW() : -99",
-
-
-    # To check diphotonsystematics
-    "leading_pho_initE                   := ? LeadPhoInitEnergy !=0 ? LeadPhoInitEnergy : -99",
-    "subleading_pho_initE                := ? SubLeadPhoInitEnergy !=0 ? SubLeadPhoInitEnergy : -99",
-    # "LP_final_init_E_Diff                := LeadPhoInitEnergy - leading_pho.E();",       
-    # "SLP_final_init_E_Diff               := SubLeadPhoInitEnergy - sub_leading_pho.E();",
-    
-
-    # Photons 
 
     # Leading Photon 
-    "leading_pho_pt                      := ? leading_pho.pt() != 0 ? leading_pho.pt() : - 99",
-    "leading_pho_eta                     := ? leading_pho.eta() != 0 ? leading_pho.eta() : - 99",
-    "leading_pho_phi                     := ? leading_pho.phi() != 0 ? leading_pho.phi() : - 99", # is it a problem to cut at 0 for eta and phi which could be 0?
-    "leading_pho_E                       := ? leading_pho.E() != 0 ? leading_pho.E() : - 99",
-    "leading_pho_Hgg_MVA                 := ? lead_pho_Hgg_MVA() != 0 ? lead_pho_Hgg_MVA() : -999",
-    "leading_pho_EG_MVA                  := ? lead_pho_EG_MVA() != 0 ? lead_pho_EG_MVA() : -999",
-    "lead_pho_passElectronVeto           := ? lead_pho_passElectronVeto() != 0 ? lead_pho_passElectronVeto() : -999",
-    "lead_pho_hasPixelSeed               := ? lead_pho_hasPixelSeed() != 0 ? lead_pho_hasPixelSeed() : -999",
+    # lp = Leading Photon 
+    "lp_pt                               := Leading_Photon.p4().pt()",
+    "lp_eta                              := Leading_Photon.p4().eta()",
+    "lp_SC_eta                           := Leading_Photon.superCluster().eta()",
+    "lp_phi                              := Leading_Photon.p4().phi()",
+    "lp_E                                := Leading_Photon.p4().E()",
+    "lp_initE                            := Leading_Photon.energyAtStep('initial')",
+    "lp_r9                               := Leading_Photon.old_r9()",
+    "lp_full5x5_r9                       := Leading_Photon.full5x5_r9()",
+    "lp_Hgg_MVA                          := lp_Hgg_MVA()",
+    "lp_passElectronVeto                 := Leading_Photon.passElectronVeto()",
+    "lp_hasPixelSeed                     := Leading_Photon.hasPixelSeed",
 
-    # Subleading Photon 
-    "sub_leading_pho_pt                  := ? sub_leading_pho.pt() != 0 ? sub_leading_pho.pt() : -99 ",
-    "sub_leading_pho_eta                 := ? sub_leading_pho.eta() != 0 ? sub_leading_pho.eta() : -99",
-    "sub_leading_pho_phi                 := ? sub_leading_pho.phi() != 0 ? sub_leading_pho.phi() : -99",
-    "sub_leading_pho_E                   := ? sub_leading_pho.E() != 0 ? sub_leading_pho.E() : -99",
-    "subleading_pho_Hgg_MVA              := ? sublead_pho_Hgg_MVA() != 0 ? sublead_pho_Hgg_MVA() : -999",
-    "subleading_pho_EG_MVA               := ? sublead_pho_EG_MVA() != 0 ? sublead_pho_EG_MVA() : -999",
-    "sublead_pho_passElectronVeto        := ? sublead_pho_passElectronVeto() != 0 ? sublead_pho_passElectronVeto() : -999",
-    "sublead_pho_hasPixelSeed            := ? sublead_pho_hasPixelSeed() != 0 ? sublead_pho_hasPixelSeed() : -999",
+    # Subleading Photon
+    # slp = Subleading Photon 
+    "slp_pt                              := Subleading_Photon.p4().pt()",
+    "slp_eta                             := Subleading_Photon.p4().eta()",
+    "slp_SC_eta                          := Subleading_Photon.superCluster().eta()",
+    "slp_phi                             := Subleading_Photon.p4().phi()",
+    "slp_E                               := Subleading_Photon.p4().E()",
+    "slp_initE                           := Subleading_Photon.energyAtStep('initial')",
+    "slp_r9                              := Subleading_Photon.old_r9()",
+    "slp_full5x5_5x5r9                   := Subleading_Photon.full5x5_r9()",
+    "slp_Hgg_MVA                         := slp_Hgg_MVA()",
+    "slp_passElectronVeto                := Subleading_Photon.passElectronVeto()",
+    "slp_hasPixelSeed                    := Subleading_Photon.hasPixelSeed",   
 
     # DiPhoton(s)
     "n_dipho                             := diphoVector.size()",
     "dipho_MVA                           := dipho_MVA()", 
-    # "CMS_hgg_mass                        := ? leading_dpho.mass() != 0 ? leading_dpho.mass() : -99 ", 
     "CMS_hgg_mass                        := CMS_hgg_mass() ", # for cuts within HHWWggCandidate.cc before workspace 
-    # "CMS_hgg_mass                        := leading_dpho.mass()", 
     "leading_dpho_pt                     := ? leading_dpho.pt() != 0 ? leading_dpho.pt() : -99",
     "leading_dpho_eta                    := ? leading_dpho.eta() != 0 ? leading_dpho.eta() : -99",
     "leading_dpho_phi                    := ? leading_dpho.phi() != 0 ? leading_dpho.phi() : -99",
@@ -147,7 +138,6 @@ Reco_Variables = [
         "jet9_E                          := ? JetVector.size() >= 10 ? JetVector[9].p4().E() : -99 ",
         "jet9_PUID                       := ? JetVector.size() >= 10 ? JetVector[9].puJetIdMVA() : -99 ",
 
-
         # "lsl_dij_mass                    := ? lsl_dij.mass() !=0 ? lsl_dij.mass() : -99 ", # dijet made from leading and subleading jets 
 
     # MET 
@@ -159,6 +149,12 @@ Reco_Variables = [
     "MET_py                              := ? MET_fourvec.py() !=0 ? MET_fourvec.py() : -99",
     "MET_pz                              := ? MET_fourvec.pz() !=0 ? MET_fourvec.pz() : -99",
     "MET_E                               := ? MET_fourvec.E() !=0 ? MET_fourvec.E() : -99",
+
+    "d_n_good_leptons                    := Cut_Variables[0]",
+    "d_n_good_electrons                  := Cut_Variables[1]",
+    "d_n_good_muons                      := Cut_Variables[2]",
+    "d_n_good_jets                       := Cut_Variables[3]", 
+
 ]
 
 Vertex_Variables = [
@@ -173,61 +169,61 @@ Vertex_Variables = [
     # "Hgg_Vtx_isZero                       := Vertex_Variables[4]",  
 ]
 
-Misc_Variables = [
-    "d_n_good_leptons                    := Cut_Variables[0]",
-    "d_n_good_electrons                  := Cut_Variables[1]",
-    "d_n_good_muons                      := Cut_Variables[2]",
-    "d_n_good_jets                       := Cut_Variables[3]",    
-]
+# Misc_Variables = [
+#     "d_n_good_leptons                    := Cut_Variables[0]",
+#     "d_n_good_electrons                  := Cut_Variables[1]",
+#     "d_n_good_muons                      := Cut_Variables[2]",
+#     "d_n_good_jets                       := Cut_Variables[3]",    
+# ]
 
-fit_Variables = [
+Fit_Variables = [
     "dZ                                  := dZ()",
     "CMS_hgg_mass                        := CMS_hgg_mass() ", # for cuts within HHWWggCandidate.cc before workspace 
 ]
 
-GEN_Variables = [
-    # # Higgs
-    # "Higgs_gg_pt                         := ? hgg_p4.pt() != 0 ? hgg_p4.pt() : -99 ",
-    # "Higgs_gg_eta                        := ? hgg_p4.eta() != 0 ? hgg_p4.eta() : -99 ",
-    # "Higgs_gg_phi                        := ? hgg_p4.phi() != 0 ? hgg_p4.phi() : -99 ",
-    # "Higgs_gg_M                          := ? hgg_p4.M() != 0 ? hgg_p4.M() : -99 ",
-    # "Higgs_gg_E                          := ? hgg_p4.E() != 0 ? hgg_p4.E() : -99 ",
+# GEN_Variables = [
+#     # # Higgs
+#     # "Higgs_gg_pt                         := ? hgg_p4.pt() != 0 ? hgg_p4.pt() : -99 ",
+#     # "Higgs_gg_eta                        := ? hgg_p4.eta() != 0 ? hgg_p4.eta() : -99 ",
+#     # "Higgs_gg_phi                        := ? hgg_p4.phi() != 0 ? hgg_p4.phi() : -99 ",
+#     # "Higgs_gg_M                          := ? hgg_p4.M() != 0 ? hgg_p4.M() : -99 ",
+#     # "Higgs_gg_E                          := ? hgg_p4.E() != 0 ? hgg_p4.E() : -99 ",
 
-    # # Photons
-    # "leading_genpho_pt                   := ? l_genpho.pt() != 0 ? l_genpho.pt() : -99 ",
-    # "subleading_genpho_pt                := ? sl_genpho.pt() != 0 ? sl_genpho.pt() : -99 ",
+#     # # Photons
+#     # "leading_genpho_pt                   := ? l_genpho.pt() != 0 ? l_genpho.pt() : -99 ",
+#     # "subleading_genpho_pt                := ? sl_genpho.pt() != 0 ? sl_genpho.pt() : -99 ",
 
-    # # Electrons 
-    # # Set to -99 if there's no value 
-    # "gen_leading_elec_pt                 := ? gen_leading_elec.pt() != 0 ? gen_leading_elec.pt() : -99 ",
-    # "gen_leading_elec_eta                := ? gen_leading_elec.eta() != 0 ? gen_leading_elec.eta() : -99 ",
-    # "gen_leading_elec_phi                := ? gen_leading_elec.phi() != 0 ? gen_leading_elec.phi() : -99 ",
-    # "gen_leading_elec_E                  := ? gen_leading_elec.E() != 0 ? gen_leading_elec.E() : -99 ",
+#     # # Electrons 
+#     # # Set to -99 if there's no value 
+#     # "gen_leading_elec_pt                 := ? gen_leading_elec.pt() != 0 ? gen_leading_elec.pt() : -99 ",
+#     # "gen_leading_elec_eta                := ? gen_leading_elec.eta() != 0 ? gen_leading_elec.eta() : -99 ",
+#     # "gen_leading_elec_phi                := ? gen_leading_elec.phi() != 0 ? gen_leading_elec.phi() : -99 ",
+#     # "gen_leading_elec_E                  := ? gen_leading_elec.E() != 0 ? gen_leading_elec.E() : -99 ",
 
-    # "gen_subleading_elec_pt              := ? gen_subleading_elec.pt() != 0 ? gen_subleading_elec.pt() : -99 ",
-    # "gen_subleading_elec_eta             := ? gen_subleading_elec.eta() != 0 ? gen_subleading_elec.eta() : -99 ",
-    # "gen_subleading_elec_phi             := ? gen_subleading_elec.phi() != 0 ? gen_subleading_elec.phi() : -99 ",
-    # "gen_subleading_elec_E               := ? gen_subleading_elec.E() != 0 ? gen_subleading_elec.E() : -99 ",
+#     # "gen_subleading_elec_pt              := ? gen_subleading_elec.pt() != 0 ? gen_subleading_elec.pt() : -99 ",
+#     # "gen_subleading_elec_eta             := ? gen_subleading_elec.eta() != 0 ? gen_subleading_elec.eta() : -99 ",
+#     # "gen_subleading_elec_phi             := ? gen_subleading_elec.phi() != 0 ? gen_subleading_elec.phi() : -99 ",
+#     # "gen_subleading_elec_E               := ? gen_subleading_elec.E() != 0 ? gen_subleading_elec.E() : -99 ",
 
-    # # Muons 
-    # # Set to -99 if there's no value 
-    # "gen_leading_muon_pt                 := ? gen_leading_muon.pt() != 0 ? gen_leading_muon.pt() : -99 ",
-    # "gen_leading_muon_eta                := ? gen_leading_muon.eta() != 0 ? gen_leading_muon.eta() : -99 ",
-    # "gen_leading_muon_phi                := ? gen_leading_muon.phi() != 0 ? gen_leading_muon.phi() : -99 ",
-    # "gen_leading_muon_E                  := ? gen_leading_muon.E() != 0 ? gen_leading_muon.E() : -99 ",
+#     # # Muons 
+#     # # Set to -99 if there's no value 
+#     # "gen_leading_muon_pt                 := ? gen_leading_muon.pt() != 0 ? gen_leading_muon.pt() : -99 ",
+#     # "gen_leading_muon_eta                := ? gen_leading_muon.eta() != 0 ? gen_leading_muon.eta() : -99 ",
+#     # "gen_leading_muon_phi                := ? gen_leading_muon.phi() != 0 ? gen_leading_muon.phi() : -99 ",
+#     # "gen_leading_muon_E                  := ? gen_leading_muon.E() != 0 ? gen_leading_muon.E() : -99 ",
 
-    # "gen_subleading_muon_pt              := ? gen_subleading_muon.pt() != 0 ? gen_subleading_muon.pt() : -99 ",
-    # "gen_subleading_muon_eta             := ? gen_subleading_muon.eta() != 0 ? gen_subleading_muon.eta() : -99 ",
-    # "gen_subleading_muon_phi             := ? gen_subleading_muon.phi() != 0 ? gen_subleading_muon.phi() : -99 ",
-    # "gen_subleading_muon_E               := ? gen_subleading_muon.E() != 0 ? gen_subleading_muon.E() : -99 ",
+#     # "gen_subleading_muon_pt              := ? gen_subleading_muon.pt() != 0 ? gen_subleading_muon.pt() : -99 ",
+#     # "gen_subleading_muon_eta             := ? gen_subleading_muon.eta() != 0 ? gen_subleading_muon.eta() : -99 ",
+#     # "gen_subleading_muon_phi             := ? gen_subleading_muon.phi() != 0 ? gen_subleading_muon.phi() : -99 ",
+#     # "gen_subleading_muon_E               := ? gen_subleading_muon.E() != 0 ? gen_subleading_muon.E() : -99 ",
 
-    # # Quarks 
-    # "m_qq                                := ? m_qq() != 0 ? m_qq() : -99",
-    # "mdq_invmass                         := ? MatchingDiQuark.mass() != 0 ? MatchingDiQuark.mass() : -99",
-    # "nmdq_invmass                        := NonMatchingDiQuark.mass()",
-    # "dr_1jet_and_q1                      := ? dr_1() != 0 ? dr_1() : -99",
-    # "dr_1jet_and_q2                      := ? dr_2() != 0 ? dr_2() : -99",
-    # "merged_qs_into_jet                  := ? merged_qs() != 0 ? merged_qs() : -99",
-    # "qone_matches                        := ? qone_matches() != 0 ? qone_matches() : -99",
-    # "qtwo_matches                        := ? qtwo_matches() != 0 ? qtwo_matches() : -99",
-]
+#     # # Quarks 
+#     # "m_qq                                := ? m_qq() != 0 ? m_qq() : -99",
+#     # "mdq_invmass                         := ? MatchingDiQuark.mass() != 0 ? MatchingDiQuark.mass() : -99",
+#     # "nmdq_invmass                        := NonMatchingDiQuark.mass()",
+#     # "dr_1jet_and_q1                      := ? dr_1() != 0 ? dr_1() : -99",
+#     # "dr_1jet_and_q2                      := ? dr_2() != 0 ? dr_2() : -99",
+#     # "merged_qs_into_jet                  := ? merged_qs() != 0 ? merged_qs() : -99",
+#     # "qone_matches                        := ? qone_matches() != 0 ? qone_matches() : -99",
+#     # "qtwo_matches                        := ? qtwo_matches() != 0 ? qtwo_matches() : -99",
+# ]

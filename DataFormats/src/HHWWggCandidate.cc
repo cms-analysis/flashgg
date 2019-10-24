@@ -20,12 +20,10 @@ muonVector_ (),
 METVector_ (),
 GenParticlesVector_ (),
 JetVector_ (),
-// Leading_Photon_ (),
-// Subleading_Photon_ (),
+Leading_Photon_ (),
+Subleading_Photon_ (),
 MET_fourvec_ (),
 leading_dpho_ (),
-leading_pho_ (),
-sub_leading_pho_ (),
 leading_elec_(),
 subleading_elec_(),
 leading_muon_(),
@@ -38,18 +36,14 @@ gen_subleading_muon_ (),
 Vertex_Variables_ (),
 Cut_Variables_ (),
 dipho_MVA_ (),
-lead_pho_Hgg_MVA_ (),
-sublead_pho_Hgg_MVA_ (),
-lead_pho_EG_MVA_ (),
-sublead_pho_EG_MVA_ (),
-lead_pho_passElectronVeto_ (),
-sublead_pho_passElectronVeto_ (),
-lead_pho_hasPixelSeed_ (),
-sublead_pho_hasPixelSeed_ (),
+// lead_pho_passElectronVeto_ (),
+// sublead_pho_passElectronVeto_ (),
+// lead_pho_hasPixelSeed_ (),
+// sublead_pho_hasPixelSeed_ (),
 CMS_hgg_mass_ (),
 dZ_ (),
-LeadPhoInitEnergy_ (),
-SubLeadPhoInitEnergy_ ()
+lp_Hgg_MVA_ (),
+slp_Hgg_MVA_ ()
 // Need absence of comma on last variable 
 
 {}
@@ -58,9 +52,9 @@ SubLeadPhoInitEnergy_ ()
   
   HHWWggCandidate::HHWWggCandidate( std::vector<flashgg::DiPhotonCandidate> diphoVector, std::vector<flashgg::Electron> electronVector, 
                                     std::vector<flashgg::Muon> muonVector, std::vector<flashgg::Met> METVector, std::vector<reco::GenParticle> GenParticlesVector,
-                                    std::vector<flashgg::Jet> JetVector, std::vector<double> Vertex_Variables, std::vector<double> Cut_Variables, double dipho_MVA, double lead_pho_Hgg_MVA, double sublead_pho_Hgg_MVA, double CMS_hgg_mass, double dZ):
+                                    std::vector<flashgg::Jet> JetVector, std::vector<double> Vertex_Variables, std::vector<double> Cut_Variables, double dipho_MVA, double CMS_hgg_mass, double dZ):
   diphoVector_(diphoVector), electronVector_(electronVector), muonVector_(muonVector), METVector_(METVector), GenParticlesVector_(GenParticlesVector), 
-  JetVector_(JetVector), Vertex_Variables_(Vertex_Variables), Cut_Variables_(Cut_Variables), dipho_MVA_(dipho_MVA), lead_pho_Hgg_MVA_(lead_pho_Hgg_MVA), sublead_pho_Hgg_MVA_(sublead_pho_Hgg_MVA), CMS_hgg_mass_(CMS_hgg_mass), dZ_ (dZ)
+  JetVector_(JetVector), Vertex_Variables_(Vertex_Variables), Cut_Variables_(Cut_Variables), dipho_MVA_(dipho_MVA), CMS_hgg_mass_(CMS_hgg_mass), dZ_ (dZ)
 
   {
 
@@ -486,8 +480,8 @@ SubLeadPhoInitEnergy_ ()
     // double tmp_dp_pt = 0, max_dp_pt = -99; // temporary diphoton pt 
     //bool test = 0;
 
-    LeadPhoInitEnergy_ = -99;
-    SubLeadPhoInitEnergy_ = -99; 
+    // LeadPhoInitEnergy_ = -99;
+    // SubLeadPhoInitEnergy_ = -99; 
 
     // First diphoton has highest pt 
     if (diphoVector_.size() > 0){
@@ -503,20 +497,29 @@ SubLeadPhoInitEnergy_ ()
       flashgg::Photon leading_photon = dipho_.getLeadingPhoton();
       flashgg::Photon subleading_photon = dipho_.getSubLeadingPhoton();
 
-      // Get EG MVA scores, passelectronveto, haspixelseed 
-      lead_pho_EG_MVA_ = leading_photon.userFloat("PhotonMVAEstimatorRunIIFall17v1p1Values"); // v1p1 = 1.1. Not sure what this is, EG group recommends v2 for 2017 EOY 
-      sublead_pho_EG_MVA_ = subleading_photon.userFloat("PhotonMVAEstimatorRunIIFall17v1p1Values");
-      lead_pho_passElectronVeto_ = leading_photon.passElectronVeto();
-      sublead_pho_passElectronVeto_ = subleading_photon.passElectronVeto();
-      lead_pho_hasPixelSeed_ = leading_photon.hasPixelSeed();
-      sublead_pho_hasPixelSeed_= subleading_photon.hasPixelSeed();
-      LeadPhoInitEnergy_ = leading_photon.energyAtStep("initial");
-      SubLeadPhoInitEnergy_ = subleading_photon.energyAtStep("initial");
+      // Save as dumper objects 
+      Leading_Photon_ = leading_photon;
+      Subleading_Photon_ = subleading_photon;
 
-      auto l_pho_ = leading_photon.p4();
-      auto sl_pho_ = subleading_photon.p4();
-      leading_pho_ = l_pho_; 
-      sub_leading_pho_ = sl_pho_;
+      // float lead_pho_Hgg_MVA = leading_photon.phoIdMvaDWrtVtx( dipho_.vtx() ); // Should be photon hgg MVA wrt to 0th vertex
+      // float sublead_pho_Hgg_MVA = subleading_photon.phoIdMvaDWrtVtx( dipho_.vtx() ); // Should be Photon hgg MVA wrt to 0th vertex
+
+      lp_Hgg_MVA_ = leading_photon.phoIdMvaDWrtVtx( dipho_.vtx() ); // Should be photon hgg MVA wrt to 0th vertex
+      slp_Hgg_MVA_ = subleading_photon.phoIdMvaDWrtVtx( dipho_.vtx() ); // Should be Photon hgg MVA wrt to 0th vertex
+
+      // Get EG MVA scores, passelectronveto, haspixelseed 
+      // lead_pho_EG_MVA_ = leading_photon.userFloat("PhotonMVAEstimatorRunIIFall17v1p1Values"); // v1p1 = 1.1. Not sure what this is, EG group recommends v2 for 2017 EOY 
+      // sublead_pho_EG_MVA_ = subleading_photon.userFloat("PhotonMVAEstimatorRunIIFall17v1p1Values");
+      // lead_pho_passElectronVeto_ = leading_photon.passElectronVeto();
+      // sublead_pho_passElectronVeto_ = subleading_photon.passElectronVeto();
+      // lead_pho_hasPixelSeed_ = leading_photon.hasPixelSeed();
+      // sublead_pho_hasPixelSeed_= subleading_photon.hasPixelSeed();
+
+      // cout << "l_pho_SC_R9 = " << leading_photon.old_r9();
+      // cout << "l_pho_SC_5x5 = " << leading_photon.full5x5_r9();
+
+      // l_pho_SC_eta_ = leading_photon.superCluster()->eta();
+      // sl_pho_SC_eta_ = subleading_photon.superCluster()->eta();
 
       CMS_hgg_mass_ = dipho.mass();
 
@@ -532,54 +535,43 @@ SubLeadPhoInitEnergy_ ()
       double n_good_muons = muonVector_.size();
       double n_good_leptons = n_good_electrons + n_good_muons;
       double n_good_jets = JetVector_.size();
-      double leading_pho_eta = l_pho_.eta(), sub_leading_pho_eta = sl_pho_.eta();
+      double leading_pho_eta = leading_photon.p4().eta(), sub_leading_pho_eta = subleading_photon.p4().eta();
 
-      // cout << "lead_pho_Hgg_MVA_ = " << lead_pho_Hgg_MVA_ << endl;
-      // cout << "sublead_pho_Hgg_MVA_ = " << sublead_pho_Hgg_MVA_ << endl;
-
-      // UsingJanuary 2016 Photon MVA ID training working points for bbgg 
+      // Using January 2016 Photon MVA ID training working points for bbgg 
 
       if (n_good_leptons == 1){
-        // cout << "passed cut 1" << endl;
         if (n_good_jets >= 2 ){
-        // cout << "passed cut 2" << endl;
 
           // leading photon 
           // EB 
           if (( abs(leading_pho_eta) > 0) && ( abs(leading_pho_eta) < 1.4442)){
             // if (lead_pho_EG_MVA_ > 0.42) lead_pass_TightPhoID = 1; 
-            if (lead_pho_Hgg_MVA_ > 0.07) lead_pass_TightPhoID = 1; 
+            if (lp_Hgg_MVA_ > 0.07) lead_pass_TightPhoID = 1; 
           }
 
           // EE 
           else if (( abs(leading_pho_eta) > 1.566) && ( abs(leading_pho_eta) < 2.5)){
             // if (lead_pho_EG_MVA_ > 0.14) lead_pass_TightPhoID = 1;
-            if (lead_pho_Hgg_MVA_ > -0.03) lead_pass_TightPhoID = 1;
+            if (lp_Hgg_MVA_ > -0.03) lead_pass_TightPhoID = 1;
           }
 
           // SubLeading Photon
           // EB 
           if (( abs(sub_leading_pho_eta) > 0) && ( abs(sub_leading_pho_eta) < 1.4442)){
             // if (sublead_pho_EG_MVA_ > 0.42) sublead_pass_TightPhoID = 1; 
-            if (sublead_pho_Hgg_MVA_ > 0.07) sublead_pass_TightPhoID = 1; 
+            if (slp_Hgg_MVA_ > 0.07) sublead_pass_TightPhoID = 1; 
           }
 
           // EE 
           else if (( abs(sub_leading_pho_eta) > 1.566) && ( abs(sub_leading_pho_eta) < 2.5)){
             // if (sublead_pho_EG_MVA_ > 0.14) sublead_pass_TightPhoID = 1;
-            if (sublead_pho_Hgg_MVA_ > -0.03) sublead_pass_TightPhoID = 1;
+            if (slp_Hgg_MVA_ > -0.03) sublead_pass_TightPhoID = 1;
           }
-
-          // cout << "lead_pass_TightPhoID: " << lead_pass_TightPhoID << endl;
-          // cout << "sublead_pass_TightPhoID: " << sublead_pass_TightPhoID << endl;
-
-
 
           if (lead_pass_TightPhoID && sublead_pass_TightPhoID){
             
             // mass window for fitting background
             if  ((dipho.mass() > 100.) && (dipho.mass() < 180.)){
-              // cout << "passed final cut" << endl;
               pass_selections = 1;
             }
 
@@ -590,7 +582,6 @@ SubLeadPhoInitEnergy_ ()
       }
 
       if (pass_selections){
-        // cout << "event passed selections" << endl;
         CMS_hgg_mass_ = dipho.mass();
       }
       else {
@@ -599,74 +590,8 @@ SubLeadPhoInitEnergy_ ()
       }
       //----------------------------------------------------------------------------------------------------------------------------
 
-      //-- Photon Object Checks
-
-      // cout << "supercluster eta: " << leading_photon.superCluster()->eta() << endl;
-
-      // // Check etas 
-      // auto l_pho_eta = l_pho_.eta();
-      // auto sl_pho_eta = sl_pho_.eta();
-
-      // // Check pts 
-      // auto l_pho_pt = l_pho_.pt();
-      // auto sl_pho_pt = sl_pho_.pt();
-
-      // // cout << "supercluster eta: " << leading_photon.superCluster()->eta() << endl;
-      // auto l_pho_SC_eta = leading_photon.superCluster()->eta();
-      // auto sl_pho_SC_eta = subleading_photon.superCluster()->eta();
-
-      // cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl;
-      // cout << "photon EG ID 1:" << leading_photon.userFloat("PhotonMVAEstimatorRunIIFall17v1Values") << endl;
-      // cout << "Conversionsafeelectronveto:" << leading_photon.passElectronVeto() << endl;
-      // cout << "hasPixelSeed :" << leading_photon.hasPixelSeed() << endl;
-      // // cout << "photon EG ID 2:" << leading_photon.userFloat("PhotonMVAEstimatorRunIIFall17v1p1Values") << endl;
-      // cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl;
-
-// Requested UserFloat PhotonMVAEstimatorRunIIFall17v2Values is not available! Possible UserFloats are:
-// EGMPhotonMVA PhotonMVAEstimatorRun2Spring15NonTrig25nsV2p1Values PhotonMVAEstimatorRun2Spring15NonTrig50nsV2p1Values PhotonMVAEstimatorRun2Spring16NonTrigV1Values PhotonMVAEstimatorRunIIFall17v1Values PhotonMVAEstimatorRunIIFall17v1p1Values ecalEnergyErrPostCorr ecalEnergyErrPreCorr ecalEnergyPostCorr ecalEnergyPreCorr energyScaleDown energyScaleGainDown energyScaleGainUp energyScaleStatDown energyScaleStatUp energyScaleSystDown energyScaleSystUp energyScaleUp energyScaleValue energySigmaDown energySigmaPhiDown energySigmaPhiUp energySigmaRhoDown energySigmaRhoUp energySigmaUp energySigmaValue energySmearNrSigma genIso phoChargedIsolation phoNeutralHadronIsolation phoPhotonIsolation phoWorstChargedIsolation rnd_g_E
-
-
-      // if (l_pho_eta != l_pho_SC_eta){
-      //   cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl;
-      //   cout << "Leading Photon eta and SC eta don't match:" << endl;
-      //   cout << "Leading Photon eta: " << l_pho_eta << endl;
-      //   cout << "Leading Photon SC eta:" << l_pho_SC_eta << endl;
-      //   cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl;
-      // }
-
-      // if (sl_pho_eta != sl_pho_SC_eta){
-      //   cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl;
-      //   cout << "Subleading Photon eta and SC eta don't match:" << endl;
-      //   cout << "Subleading Photon eta: " << sl_pho_eta << endl;
-      //   cout << "Subleading Photon SC eta:" << sl_pho_SC_eta << endl;
-      //   cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl;
-      // }
-
-      // if (l_pho_pt <= 35.0 ){
-      //   cout << "***************************************************************************************" << endl;
-      //   cout << "leading photon pt: " << l_pho_pt << endl;
-      //   cout << "***************************************************************************************" << endl;
-      // }
-
-      // if ( sl_pho_pt <= 25.0 ){
-      //   cout << "***************************************************************************************" << endl;
-      //   cout << "subleading photon pt: " << sl_pho_pt << endl;
-      //   cout << "***************************************************************************************" << endl;
-      // }      
-
-      // if ( ( (abs(l_pho_eta) > 1.4442) && (abs(l_pho_eta) < 1.566) ) ||  (abs(l_pho_eta) > 2.5)   ){
-      //   cout << "***************************************************************************************" << endl;
-      //   cout << "leading photon eta: " << l_pho_eta << endl;
-      //   cout << "***************************************************************************************" << endl;
-      // }
-
-      // if ( ( (abs(sl_pho_eta) > 1.4442) && (abs(sl_pho_eta) < 1.566) ) || (abs(sl_pho_eta) > 2.5)  ){
-      //   cout << "***************************************************************************************" << endl;
-      //   cout << "subleading photon eta: " << sl_pho_eta << endl;
-      //   cout << "***************************************************************************************" << endl;
-      // }
-
-    //-- End Photon Object Checks
+    // Requested UserFloat PhotonMVAEstimatorRunIIFall17v2Values is not available! Possible UserFloats are:
+    // EGMPhotonMVA PhotonMVAEstimatorRun2Spring15NonTrig25nsV2p1Values PhotonMVAEstimatorRun2Spring15NonTrig50nsV2p1Values PhotonMVAEstimatorRun2Spring16NonTrigV1Values PhotonMVAEstimatorRunIIFall17v1Values PhotonMVAEstimatorRunIIFall17v1p1Values ecalEnergyErrPostCorr ecalEnergyErrPreCorr ecalEnergyPostCorr ecalEnergyPreCorr energyScaleDown energyScaleGainDown energyScaleGainUp energyScaleStatDown energyScaleStatUp energyScaleSystDown energyScaleSystUp energyScaleUp energyScaleValue energySigmaDown energySigmaPhiDown energySigmaPhiUp energySigmaRhoDown energySigmaRhoUp energySigmaUp energySigmaValue energySmearNrSigma genIso phoChargedIsolation phoNeutralHadronIsolation phoPhotonIsolation phoWorstChargedIsolation rnd_g_E
 
     }
 

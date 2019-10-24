@@ -36,7 +36,7 @@ process.flashggPreselectedDiPhotons = flashggPreselectedDiPhotons
 import flashgg.Taggers.HHWWggTagVariables as var # python file of lists of strings 
 #all_variables = var.pho_variables + var.dipho_variables + var.tp_variables + var.abe_variables # add variable lists together 
 # all_variables = var.HHWWgg_variables # add variable lists together 
-# fit_variables = var.fit_Variables
+Fit_Variables = var.Fit_Variables
 Reco_Variables = var.Reco_Variables
 
 from flashgg.Taggers.HHWWggCandidateDumper_cfi import HHWWggCandidateDumper
@@ -52,31 +52,20 @@ cfgTools.addCategories(process.HHWWggCandidateDumper,
                           # ("SL","(CMS_hgg_mass!=-99) && (CMS_hgg_mass>=100) && (CMS_hgg_mass<=180)",0), # for background model 
                           # ("SL","(CMS_hgg_mass!=-99)",0),
                           ("SL","(CMS_hgg_mass!=-99) && (CMS_hgg_mass>=115) && (CMS_hgg_mass<=135)",0), # for signal model 
-
+                          # ("SL","1",0), # for signal model 
+                          
                           # Data
                           # ("All_HLT_Events","1",0), # All events that passed HLT 
 
                         ],
 
                         # variables = all_variables, 
-                        variables = Reco_Variables,
-                        # variables = fit_variables, 
+                        # variables = Reco_Variables,
+                        variables = Fit_Variables, 
                         histograms=[]
                         )
 
-# process.source = cms.Source ("PoolSource",
-#                              fileNames = cms.untracked.vstring(
-# "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/HiggsExo/HHWWggamma/MicroAOD/HHWWgg_Jun7/v0/SUSYGluGluToHToAA_AToGG_M-60_TuneCUETP8M1_13TeV_pythia8/Test_jun7-R2S16MAODv2-PUM17_GT/170607_180035/0000/myMicroAODOutputFile_1.root"
-# ))
-
-# input file. MicroAOD 
-
-# process.source = cms.Source ("PoolSource",
-#                              fileNames = cms.untracked.vstring(
-# #"file:myMicroAODOutputFile.root" 
-# "root://eoscms.cern.ch//eos/cms/store/group/phys_higgs/HiggsExo/H4Gamma/MicroAOD/H4G_Jun7/v0/SUSYGluGluToHToAA_AToGG_M-60_TuneCUETP8M1_13TeV_pythia8/Test_jun7-R2S16MAODv2-PUM17_GT/170607_180035/0000/myMicroAODOutputFile_1.root"
-# ))
-
+# Input file 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
 
@@ -170,8 +159,8 @@ if customize.processId == "Data":
 
 # Do scale and smearing corrections
 
-  # process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
-process.load("flashgg.Systematics."+customize.metaConditions["flashggDiPhotonSystematics"])
+# process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
+# process.load("flashgg.Systematics."+customize.metaConditions["flashggDiPhotonSystematics"])
 
 sysmodule = importlib.import_module(
     "flashgg.Systematics."+customize.metaConditions["flashggDiPhotonSystematics"])
@@ -204,8 +193,6 @@ else:
 
     for module in systModules:
         module.ApplyCentralValue = cms.bool(False)
-
-
 
 process.flashggDiPhotonSystematics = flashggDiPhotonSystematics
 process.flashggDiPhotonSystematics.src = "flashggPreselectedDiPhotons"
@@ -256,7 +243,3 @@ else:
                           *process.FlashggHHWWggCandidate
                           *process.HHWWggCandidateDumper
                           )
-
-#process.e = cms.EndPath(process.out)
-
-# customize(process) 

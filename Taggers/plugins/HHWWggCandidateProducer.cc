@@ -62,6 +62,7 @@ namespace flashgg {
     edm::Service<TFileService> fs;
     
     TH1F* indexes; 
+    // TH1F* gen_weights; 
     // TH1F* cutFlow;
     // TH1F* WTags;
 
@@ -78,8 +79,8 @@ namespace flashgg {
     EDGetTokenT<View<DiPhotonCandidate> > diphotonToken_;
     Handle<View<flashgg::DiPhotonCandidate> > diphotons;
 
-    EDGetTokenT<View<DiPhotonCandidate> > diphotonToken2_;
-    Handle<View<flashgg::DiPhotonCandidate> > diphotons2;
+    // EDGetTokenT<View<DiPhotonCandidate> > diphotonToken2_;
+    // Handle<View<flashgg::DiPhotonCandidate> > diphotons2;
 
     EDGetTokenT<View<reco::Vertex> > vertexToken_;
     Handle<View<reco::Vertex> > vertex;
@@ -161,7 +162,6 @@ namespace flashgg {
   HHWWggCandidateProducer::HHWWggCandidateProducer( ):
   photonToken_(),
   diphotonToken_(),
-  diphotonToken2_(),
   genParticleToken_(),
   electronToken_(),
   muonToken_(),
@@ -175,7 +175,6 @@ namespace flashgg {
     HHWWggCandidateProducer::HHWWggCandidateProducer( const ParameterSet & pSet):
     photonToken_( consumes<View<Photon> >( pSet.getParameter<InputTag> ( "PhotonTag" ) ) ),
     diphotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( pSet.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
-    diphotonToken2_( consumes<View<flashgg::DiPhotonCandidate> >( pSet.getParameter<InputTag> ( "DiPhotonTag2" ) ) ),
     vertexToken_( consumes<View<reco::Vertex> >( pSet.getParameter<InputTag> ( "VertexTag" ) ) ),
     genParticleToken_( consumes<View<reco::GenParticle> >( pSet.getParameter<InputTag> ( "GenParticleTag" ) ) ),
     electronToken_( consumes<View<Electron> >( pSet.getParameter<InputTag> ( "ElectronTag" ) ) ), 
@@ -193,6 +192,8 @@ namespace flashgg {
       genInfo_ = pSet.getUntrackedParameter<edm::InputTag>( "genInfo", edm::InputTag("generator") );
       genInfoToken_ = consumes<GenEventInfoProduct>( genInfo_ );
       indexes = fs->make<TH1F> ("indexes","indexes",5,0,5);
+
+      // gen_weights = fs->make<TH1F> ("gen_weights","gen_weights",1000,-2,2);
       // vars = fs->make<TH1F> ("vars","vars",10,0,10);
       // cutFlow = fs->make<TH1F> ("cutFlow","Cut Flow",10,0,10);
       // WTags = fs->make<TH1F> ("WTags","W Tags",3,0,3);
@@ -238,10 +239,10 @@ namespace flashgg {
     void HHWWggCandidateProducer::produce( Event &event, const EventSetup & )
     {
 
+
       // Get particle objects
       event.getByToken( photonToken_, photons );
       event.getByToken( diphotonToken_, diphotons );
-      event.getByToken( diphotonToken2_, diphotons2 );
       event.getByToken( genParticleToken_, genParticle );
       event.getByToken( electronToken_, electrons );
       event.getByToken( muonToken_, muons );
@@ -364,8 +365,8 @@ namespace flashgg {
           }
 
       // bool photonSelection = false;
-      double idmva1 = 0.;
-      double idmva2 = 0.;
+      // double idmva1 = 0.;
+      // double idmva2 = 0.;
       // bool checked_first = false; 
       // Pass_PS = false;
       // bool one_FH_dr = false;
@@ -480,18 +481,21 @@ namespace flashgg {
         edm::Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( diphoIndex ); 
         edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );    
 
-        cout << "dipho energy1 = " << dipho.genP4().E() << endl; 
+        // cout << "dipho energy1 = " << dipho->genP4().E() << endl; 
 
-        if (diphotons2->size() > 0){
-        edm::Ptr<flashgg::DiPhotonCandidate> dipho2 = diphotons2->ptrAt( diphoIndex ); 
-        cout << "dipho energy2 = " << dipho2.genP4().E() << endl; 
-          if ( dipho->genP4().E() != dipho2->genP4().E()){
-            
-            // cout << "*****************************************************************************************" << endl;
-            // cout << "dipho energy1 = " << dipho->genP4().E() << endl; 
-            // cout << "dipho energy2 = " << dipho2->genP4().E() << endl; 
-          }
-        }
+        // if (diphotons2->size() > 0){
+        // edm::Ptr<flashgg::DiPhotonCandidate> dipho2 = diphotons2->ptrAt( diphoIndex ); 
+        // // cout << "dipho energy2 = " << dipho2->genP4().E() << endl; 
+        //   if ( dipho->genP4().mass() != dipho2->genP4().mass()){
+
+        //     cout << "****************************************************************************************************************************************" << endl;
+        //     cout << "different invariant masses" << endl;
+        //     cout << "****************************************************************************************************************************************" << endl;
+        //     cout << "****************************************************************************************************************************************" << endl;
+        //     cout << "dipho mass1 = " << dipho->genP4().mass() << endl; 
+        //     cout << "dipho mass2 = " << dipho2->genP4().mass() << endl; 
+        //   }
+        // }
 
 
 
@@ -561,10 +565,10 @@ namespace flashgg {
         //   }
 
         // leading/subleading photon MVA
-        idmva1 = dipho->leadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() ); // can choose the Hgg MVA score with respect to a vertex 
-        idmva2 = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() ); // 
-        lead_pho_Hgg_MVA = idmva1;
-        sublead_pho_Hgg_MVA = idmva2;
+        // idmva1 = dipho->leadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() ); // can choose the Hgg MVA score with respect to a vertex 
+        // idmva2 = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() ); // 
+        // lead_pho_Hgg_MVA = idmva1;
+        // sublead_pho_Hgg_MVA = idmva2;
         // if (idmva1 > PhoMVAThreshold_) pass_LeadPhoton_MVA = 1;
         // if (idmva2 > PhoMVAThreshold_) pass_SubLeadPhoton_MVA = 1;
 
@@ -909,6 +913,25 @@ namespace flashgg {
         //   }
         // }
 
+
+        // Attempt to get GEN weights from GEN MICROAOD 
+
+        // edm::Handle<GenEventInfoProduct> genEvtInfo;
+        // if( ! event.isRealData() ) {
+        //     event.getByToken(genInfoToken_, genEvtInfo);
+        //     genTotalWeight = genEvtInfo->weight();
+        //     gen_weights->Fill(genTotalWeight);
+            
+        // } else {
+        //     genTotalWeight = 1;
+        // }
+
+
+        // if (genTotalWeight != 1){
+        //   cout << "GEN TOTAL WEIGHT DOES NOT EQUAL ONE" << endl;
+        //   cout << "it is: " << genTotalWeight << endl;
+        // }
+
         // // MC 
         // if (!event.isRealData()){
         //   Handle<GenEventInfoProduct> genInfo;
@@ -921,9 +944,10 @@ namespace flashgg {
         //   }
         // }
 
+
         // Create HHWWggCandidate Object 
         HHWWggCandidate HHWWgg(diphoVector_, goodElectrons_, goodMuons_, theMET_, genParticlesVector, tagJets_, 
-          Vertex_Variables, Cut_Variables, dipho_MVA, lead_pho_Hgg_MVA, sublead_pho_Hgg_MVA, CMS_hgg_mass, vertex_diff_zeroeth);
+          Vertex_Variables, Cut_Variables, dipho_MVA, CMS_hgg_mass, vertex_diff_zeroeth);
         
         HHWWggColl_->push_back(HHWWgg);
 
