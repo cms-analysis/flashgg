@@ -39,3 +39,10 @@ def setupDiPhotonSystematics( process, options ):
    flashggDiPhotonSystematics.SystMethods.append(sysmodule.SigmaEOverESmearing)
    flashggDiPhotonSystematics.SystMethods.append(sysmodule.FracRVWeight)
    flashggDiPhotonSystematics.SystMethods.append(sysmodule.FracRVNvtxWeight)
+
+
+def addPixelSeedWeightToDiPhotonSystematics( process, options ):
+   process.load("flashgg.Systematics."+options.metaConditions["flashggDiPhotonSystematics"])
+   sysmodule = importlib.import_module("flashgg.Systematics."+options.metaConditions["flashggDiPhotonSystematics"])
+   flashggDiPhotonSystematics.SystMethods.append(sysmodule.PixelSeedWeight)
+
