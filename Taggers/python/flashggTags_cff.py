@@ -1,5 +1,5 @@
 import FWCore.ParameterSet.Config as cms
-from flashgg.MicroAOD.flashggJets_cfi import flashggBTag, flashggDeepCSV, UnpackedJetCollectionVInputTag
+from flashgg.MicroAOD.flashggJets_cfi import flashggBTag, flashggDeepCSV, UnpackedJetCollectionVInputTag, maxJetCollections
 from flashgg.Taggers.flashggStageOneCombinedTag_cfi import HTXSInputTags
 
 bDiscriminator74X = cms.vdouble(0.605,0.890)
