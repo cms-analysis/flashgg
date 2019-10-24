@@ -28,6 +28,7 @@ namespace flashgg {
         float HTXSpTH() const { return pTH_; }
         float HTXSpTV() const { return pTV_; }
         void setHTXSInfo( int stage0bin, int stage1bin, int njets, float pTH, float pTV );
+        void setGluonFusionWeights( int , float , int );
         void copyBaseInfo( const TagTruthBase &b );
         virtual TagTruthBase *clone() const;
 

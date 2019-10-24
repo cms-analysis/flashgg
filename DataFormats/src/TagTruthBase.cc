@@ -1,4 +1,5 @@
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
+#include "flashgg/Systematics/interface/GluonFusionTheoryWeights.h"
 #include "FWCore/Utilities/interface/Exception.h"
 
 using namespace flashgg;
@@ -20,6 +21,8 @@ void TagTruthBase::setHTXSInfo( int stage0bin, int stage1bin, int njets, float p
     njets_ = njets;
     pTH_ = pTH;
     pTV_ = pTV;
+
+    setGluonFusionWeights( njets, pTH, stage1bin );
 
     stage0map_[0]  = 0;  // unknown
     stage0map_[10] = -1; //GG2H_FWD
@@ -105,6 +108,33 @@ int TagTruthBase::HTXSstage1orderedBin() const {
     else {
         throw cms::Exception( "Missing Data" ) << "Could not find value (in the TagTruthBase) for the STXS process: " << stage1bin_ << "\n";;
     }
+}
+
+//in order to set the ggH weights, use suggested code (in header file)
+// order: THU_ggH_Mu, THU_ggH_Res, THU_ggH_Mig01, THU_ggH_Mig12, THU_ggH_VBF2j, THU_ggH_VBF3j, THU_ggH_PT60, THU_ggH_PT120, THU_ggH_qmtop
+void TagTruthBase::setGluonFusionWeights( int njets, float pTH, int stage1bin )
+{
+    std::vector<float> theWeightsUp  = qcd_ggF_uncertSF_2017( njets, pTH, stage1bin, 1. );
+    this->setWeight("THU_ggH_MuUp01sigma", theWeightsUp[0]);
+    this->setWeight("THU_ggH_ResUp01sigma", theWeightsUp[1]);
+    this->setWeight("THU_ggH_Mig01Up01sigma", theWeightsUp[2]);
+    this->setWeight("THU_ggH_Mig12Up01sigma", theWeightsUp[3]);
+    this->setWeight("THU_ggH_VBF2jUp01sigma", theWeightsUp[4]);
+    this->setWeight("THU_ggH_VBF3jUp01sigma", theWeightsUp[5]);
+    this->setWeight("THU_ggH_PT60Up01sigma", theWeightsUp[6]);
+    this->setWeight("THU_ggH_PT120Up01sigma", theWeightsUp[7]);
+    this->setWeight("THU_ggH_qmtopUp01sigma", theWeightsUp[8]);
+
+    std::vector<float> theWeightsDown = qcd_ggF_uncertSF_2017( njets, pTH, stage1bin, -1. );
+    this->setWeight("THU_ggH_MuDown01sigma", theWeightsDown[0]);
+    this->setWeight("THU_ggH_ResDown01sigma", theWeightsDown[1]);
+    this->setWeight("THU_ggH_Mig01Down01sigma", theWeightsDown[2]);
+    this->setWeight("THU_ggH_Mig12Down01sigma", theWeightsDown[3]);
+    this->setWeight("THU_ggH_VBF2jDown01sigma", theWeightsDown[4]);
+    this->setWeight("THU_ggH_VBF3jDown01sigma", theWeightsDown[5]);
+    this->setWeight("THU_ggH_PT60Down01sigma", theWeightsDown[6]);
+    this->setWeight("THU_ggH_PT120Down01sigma", theWeightsDown[7]);
+    this->setWeight("THU_ggH_qmtopDown01sigma", theWeightsDown[8]);
 }
 
 // Local Variables:
