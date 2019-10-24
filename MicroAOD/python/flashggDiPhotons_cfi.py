@@ -12,8 +12,8 @@ flashggDiPhotons = cms.EDProducer('FlashggDiPhotonProducer',
                                   GenParticleTag         = cms.InputTag( "flashggPrunedGenParticles" ),
 
                                   ##Parameters for Legacy Vertex Selector                                                
-                                  vertexIdMVAweightfile   = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml"),
-                                  vertexProbMVAweightfile = cms.FileInPath("flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_SL_2016.xml"),
+                                  vertexIdMVAweightfile   = cms.FileInPath(""),
+                                  vertexProbMVAweightfile = cms.FileInPath(""),
 
                                   useSingleLeg            = cms.bool(True),
                                   useZerothVertexFromMicro = cms.bool(False),
