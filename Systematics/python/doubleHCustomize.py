@@ -14,10 +14,12 @@ class DoubleHCustomize():
 
     def variablesToDump(self):
         var_workspace = [
-#             "Mjj := dijet().M()"
+            "Mjj := dijet().M()",
             "eventNumber := eventNumber()",
             "MX := MX()",
-            "HHbbggMVA := MVA()"
+            "HHbbggMVA := MVA()",
+            "genMhh := genMhh()",
+            "genAbsCosThetaStar_CS := abs(genCosThetaStar_CS())"
         ]
         variables = [
             "leadingJet_bDis := leadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",#FIXME make the btag type configurable?
@@ -49,6 +51,7 @@ class DoubleHCustomize():
             # "HHbbggMVAprob0 := MVAprob()[0]",
             "MX := MX()",
             "genMhh := genMhh()",
+            "genAbsCosThetaStar_CS := abs(genCosThetaStar_CS())",
             "Mjj := dijet().M()",
             "dijet_pt := dijet().pt",
             "dijet_eta := dijet().eta",
@@ -148,14 +151,15 @@ class DoubleHCustomize():
                "ttHScore := ttHScore()",
              ]
 
-        if self.customize.dumpWorkspace == False :
-            return variables
-        else :
-            return var_workspace
+        return var_workspace ##Only temp fix 
+       # if self.customize.dumpWorkspace == False :
+       #     return variables
+       # else :
+       #     return var_workspace
 
 
     def systematicVariables(self):
-      systematicVariables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass","Mjj[120,70,190]:=dijet().M()","HHbbggMVA[100,0,1.]:=MVA()","MX[300,250,5000]:=MX()"]
+      systematicVariables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass","Mjj[120,70,190]:=dijet().M()","HHbbggMVA[100,0,1.]:=MVA()","MX[300,250,5000]:=MX()","eventNumber[40,0.,1000000.]:=eventNumber()","genMhh[300,250,5000]:=genMhh()","genAbsCosThetaStar_CS[100,0,1]:=abs(genCosThetaStar_CS())"]
       
       if self.customize.doubleHReweight > 0: 
          for num in range(0,12):  #12 benchmarks
@@ -164,7 +168,7 @@ class DoubleHCustomize():
          systematicVariables+= ["benchmark_reweight_box[100,0,200] := getBenchmarkReweight(13)"]
 
       if self.customize.doDoubleHttHKiller : 
-             systematicVariables +=["ttHScore := ttHScore()"]
+             systematicVariables +=["ttHScore[100,0,1.]:=ttHScore()"]
 
       return systematicVariables
 
@@ -299,6 +303,7 @@ class DoubleHCustomize():
         genVariables = ["mgg := mass",
                         "mbb := dijet.mass",
                         "mhh := sqrt( pow(energy+dijet.energy,2) - pow(px+dijet.px,2) - pow(py+dijet.py,2) - pow(pz+dijet.pz,2))",                    
+                        "absCosThetaStar_CS := abs(HHbbggCosThetaStar_CS)",                    
 
 
                         "leadPho_px := leadingPhoton.px",
