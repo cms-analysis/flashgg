@@ -2,7 +2,16 @@ import os
 import subprocess
 from optparse import OptionParser
 import fileinput
+import ROOT
+from ROOT import TFile, TTree
 
+def files_to_remove(files,dir):
+  filelist_to_remove = []
+  for file in files:
+    tfile = TFile.Open(dir+'/'+file);
+    if (tfile.IsZombie()):
+      filelist_to_remove.append(file)
+  return filelist_to_remove
 
 def list_files(file_name):
   with open(file_name) as f:
@@ -35,10 +44,15 @@ def find_runJobs(missing,dir):
   return runJobs_dict    
 
 
-def submit_missing(runJobs_dict,dir):
+def submit_missing(runJobs_dict,dir,resubmit=True):
   for cluster in runJobs_dict.keys():
-    bashCommand = "condor_submit %s/%s_mis.sub"%(dir,cluster,dir,cluster)
-    os.system(bashCommand)
+    bashCommand = "condor_submit %s/%s_mis.sub"%(dir,cluster)
+    if resubmit : 
+       print 'Resubmitting now!'
+       #os.system(bashCommand)
+    else : 
+      print 'Ready to resubmit, please set resubmit to True if you are ready : '
+      print bashCommand
 
 
 def prepare_runJobs_missing(runJobs_dict,dir):
@@ -51,7 +65,7 @@ def prepare_runJobs_missing(runJobs_dict,dir):
     jobs_to_run = jobs_to_run[:-1]
     for line in fileinput.input("%s/%s_mis.sub"%(dir,cluster), inplace=True):
       if "= $(ProcId)" in line : print line.replace("= $(ProcId)", "= $(JobId)"),
-      elif  "queue" in line : print (line.strip() + " JobId in %s"%jobs_to_run),
+      elif  "queue" in line : print ("queue 1 JobId in %s"%jobs_to_run),
       else : print line,
 
 
@@ -64,6 +78,8 @@ def main():
                   help="directory")
   parser.add_option("-i", "--input", dest="input",default="all_root.txt",
                   help="input file with all root files present")
+  parser.add_option("-r", "--resubmit", action="store_false",  dest="resubmit",default=True,
+                  help="resubmit")
 
   (options, args) = parser.parse_args()
 
@@ -72,13 +88,14 @@ def main():
 
   full_output =  list_files(options.dir+"/task_config.json")
   present_output =  list_files(options.dir+"/"+options.input)
-  not_finished = list(set(full_output) - set(present_output))
-  print "Missing files : ",len(not_finished)
-#  print not_finished
+  corrupted_files = files_to_remove(present_output,options.dir)
+  not_finished = list(set(full_output) - set(present_output) - set(corrupted_files))
+  print 'Number of missing files : ',len(not_finished)
   runJobs_dict =   find_runJobs(not_finished,options.dir)
+  print 'runJobs to be resubmitted : ',runJobs_dict
   prepare_runJobs_missing(runJobs_dict,options.dir)
   print 'Submitting missing jobs : '
-  submit_missing(runJobs_dict,options.dir)
+  submit_missing(runJobs_dict,options.dir,options.resubmit)
 
 
 
