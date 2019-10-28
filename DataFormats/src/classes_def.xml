@@ -333,6 +333,28 @@
 <class name="edm::Ptr<flashgg::GenPhotonExtra>"/>
 <class name="std::vector<flashgg::GenPhotonExtra>"/>
 <class name="edm::Wrapper<std::vector<flashgg::GenPhotonExtra> >"/>
+
+<class name="flashgg::GenLeptonExtra" ClassVersion="14">
+  <version ClassVersion="11" checksum="4207095900"/>
+  <version ClassVersion="12" checksum="80174587"/>
+  <version ClassVersion="13" checksum="2907967841"/>
+  <version ClassVersion="14" checksum="1497975631"/>
+</class>
+<class name="edm::Ptr<flashgg::GenLeptonExtra>"/>
+<class name="std::vector<flashgg::GenLeptonExtra>"/>
+<class name="edm::Wrapper<flashgg::GenLeptonExtra>"/>
+<class name="edm::Wrapper<std::vector<flashgg::GenLeptonExtra> >"/>
+
+<class name="flashgg::GenJetExtra" ClassVersion="12">
+  <version ClassVersion="10" checksum="3711320396"/>
+  <version ClassVersion="11" checksum="666745212"/>
+  <version ClassVersion="12" checksum="1876381753"/>
+</class>
+<class name="edm::Ptr<flashgg::GenJetExtra>"/>
+<class name="std::vector<flashgg::GenJetExtra>"/>
+<class name="edm::Wrapper<flashgg::GenJetExtra>"/>
+<class name="edm::Wrapper<std::vector<flashgg::GenJetExtra> >"/>
+
 <class name="std::pair<edm::Ptr<reco::Vertex>,edm::Ptr<pat::PackedCandidate> >"/>
 <class name="std::vector<std::pair<edm::Ptr<reco::Vertex>,edm::Ptr<pat::PackedCandidate> > >"/>
 <class name="edm::Wrapper<std::vector<std::pair<edm::Ptr<reco::Vertex>,edm::Ptr<pat::PackedCandidate> > > >"/>

@@ -8,6 +8,28 @@ jetPtCut = 30.
 
 doBJetsAndMET=False
 doJets=False
+# ----------------------------------------------------------------------------------------------------------------
+def setupTagSequenceForFiducial(process, options):
+    from flashgg.Taggers.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
+    from flashgg.Taggers.flashggDiPhotonMVA_cfi import flashggDiPhotonMVA
+    from flashgg.Taggers.flashggTags_cff import flashggSigmaMoMpToMTag, flashggUnpackedJets
+    from flashgg.Taggers.flashggTagSorter_cfi import flashggTagSorter
+    from flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi import flashggDifferentialPhoIdInputsCorrection, setup_flashggDifferentialPhoIdInputsCorrection
+
+    process.load("flashgg.Taggers.flashggTagSequence_cfi")
+    
+    setup_flashggDifferentialPhoIdInputsCorrection(process, options.metaConditions)
+    flashggPreselectedDiPhotons.src = "flashggDifferentialPhoIdInputsCorrection"
+
+    flashggTagSequence = cms.Sequence( flashggDifferentialPhoIdInputsCorrection
+                                       * flashggPreselectedDiPhotons
+                                       * flashggDiPhotonMVA
+                                       * flashggUnpackedJets
+                                       * flashggSigmaMoMpToMTag
+                                       * flashggTagSorter
+    )
+    
+    return flashggTagSequence
 
 # ----------------------------------------------------------------------------------------------------------------
 def getAccRecoCut():
@@ -369,23 +391,29 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
                 process.genSequence.insert(genPos, getattr(process,"flashggGenHadronicActivity4p7"))
                 genPos += 1
         if doBJetsAndMET:
-        	if( not hasattr(process,"filteredGenJetsBflavorEta2p5") ): 
-        	   process.filteredGenJetsBflavorEta2p5 = cms.EDFilter("GenJetSelector",
-        	                                                       src=cms.InputTag(genBJetCollection),
-##      	                                                         cut=cms.string("cand.pt>%f && abs(cand.eta)<2.5 && cand.numberOfDaughters > 5" % jetPtCut),
-        	                                                       cut=cms.string("pt>%f && abs(eta)<2.5 && numberOfDaughters > 5 && (hasBottom==1 || (hasBquark==1 && deltaRBquarkGenJet<0.15 && jetPtOverBquarkPt > 0.5))" % jetPtCut),
-#       	                                                        cut=cms.string("pt>%f && abs(eta)<2.5 && numberOfDaughters > 5" % jetPtCut),
-##      	                                                         cut=cms.string("pt>%f && abs(eta)<2.5 && numberOfDaughters > 5 && hasBottom == 1" % jetPtCut),
-##      	                                                         cut=cms.string("hasBottom == 1"),
+            if genBJetCollection == "flashggGenJetsExtra" and not hasattr(process,"flashggGenJetsExtra"):
+                process.load("flashgg.MicroAOD.flashggGenJetsExtra_cfi")
+                process.genSequence.insert(genPos, getattr(process,"flashggGenJetsExtra"))
+                genPos += 1
+                
+            if( not hasattr(process,"filteredGenJetsBflavorEta2p5") ): 
+        	process.filteredGenJetsBflavorEta2p5 = cms.EDFilter("GenJetSelector",
+        	                                                    src=cms.InputTag(genBJetCollection),
+                                                                    ##      	                                                         cut=cms.string("cand.pt>%f && abs(cand.eta)<2.5 && cand.numberOfDaughters > 5" % jetPtCut),
+        	                                                    cut=cms.string("pt>%f && abs(eta)<2.5 && numberOfDaughters > 5 && (hasBottom==1 || (hasBquark==1 && deltaRBquarkGenJet<0.15 && jetPtOverBquarkPt > 0.5))" % jetPtCut),
+                                                                    #       	                                                        cut=cms.string("pt>%f && abs(eta)<2.5 && numberOfDaughters > 5" % jetPtCut),
+                                                                    ##      	                                                         cut=cms.string("pt>%f && abs(eta)<2.5 && numberOfDaughters > 5 && hasBottom == 1" % jetPtCut),
+                                                                    ##      	                                                         cut=cms.string("hasBottom == 1"),
         	                                            )
-        	   process.genSequence.insert(genPos, getattr(process,"filteredGenJetsBflavorEta2p5"))
-                   genPos += 1
-        	   process.flashggGenHadronicActivityBflavor2p5 = cms.EDProducer("FlashggGenHadronicActivityProducer",
-        	                                                                 src=cms.InputTag("filteredGenJetsBflavorEta2p5"),
-        	                                                                 veto=cms.InputTag(genDiphotons)
-        	                                                                 )
-                   process.genSequence.insert(genPos, getattr(process,"flashggGenHadronicActivityBflavor2p5"))
-                   genPos += 1
+        	process.genSequence.insert(genPos, getattr(process,"filteredGenJetsBflavorEta2p5"))
+                genPos += 1
+        	process.flashggGenHadronicActivityBflavor2p5 = cms.EDProducer("FlashggGenHadronicActivityProducer",
+        	                                                              src=cms.InputTag("filteredGenJetsBflavorEta2p5"),
+        	                                                              veto=cms.InputTag(genDiphotons)
+        	)
+                process.genSequence.insert(genPos, getattr(process,"flashggGenHadronicActivityBflavor2p5"))
+                genPos += 1
+                
         if doBJetsAndMET:
             if( not hasattr(process,"flashggGenHadronicActivityMET") ): 
                 process.flashggGenHadronicActivityMET = cms.EDProducer("FlashggGenHadronicActivityProducer",
@@ -402,7 +430,7 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
 ###                                                         cut=cms.string("pt>%f && numberOfDaughters > 5" % jetPtCut),
                                                          cut=cms.string("1"),
                                                          )
-            process.genSequence.insert(genPos, getattr(process,"filteredGenJetsEtaInclusive"))
+            process.genSequence.insert(genPos, getattr(process, "filteredGenJetsEtaInclusive"))
             genPos += 1
             process.flashggGenHadronicActivityInclusive = cms.EDProducer("FlashggGenHadronicActivityProducer",
                                                                    src=cms.InputTag("filteredGenJetsEtaInclusive"),
@@ -411,7 +439,18 @@ def bookHadronicActivityProducers(process,processId,tagSequence,recoDiphotons,re
             process.genSequence.insert(genPos, getattr(process,"flashggGenHadronicActivityInclusive"))
             genPos += 1
         if doBJetsAndMET:
-            if( not hasattr(process,"flashggGenHadronicActivityLeptons2p4") ): 
+            if not hasattr(process, "flashggGenLeptons"):
+                process.load("flashgg.MicroAOD.flashggGenLeptons_cfi")
+                process.genSequence.insert(genPos, getattr(process, "flashggGenLeptons"))
+                genPos += 1
+                
+            if not hasattr(process, "flashggGenLeptonsExtra"):
+                process.load("flashgg.MicroAOD.flashggGenLeptonsExtra_cfi")
+                process.genSequence.insert(genPos, getattr(process, "flashggGenLeptonsExtra"))
+                genPos += 1
+                
+            if( not hasattr(process,"flashggGenHadronicActivityLeptons2p4") ):
+                    
                 process.filteredGenLeptonsEta2p4 = cms.EDFilter("GenLeptonExtraSelector",
                                                              src=cms.InputTag("flashggGenLeptonsExtra"),
                                                              cut=cms.string("pt>20 && abs(eta)<2.4"),
@@ -733,13 +772,6 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
     ### process.flashggGenDiPhotonsSequence.insert(process.flashggGenDiPhotonsSequence.index(process.flashggSelectedGenDiPhotons),process.flashggPreselectedGenDiPhotons)
     ### process.flashggSelectedGenDiPhotons.src = "flashggPreselectedGenDiPhotons"
 
-    process.flashggSelectedGenDiPhotons.cut = "(%s) && (%s)" % ( preselCut, cut )
-    process.flashggSortedGenDiPhotons.maxNumber = 999
-    ## only process events where at least one diphoton candidate is selected
-    if filterEvents:
-        process.flashggSelectedGenDiPhotons.filter = True
-        process.genFilter += process.flashggGenDiPhotons+process.flashggSelectedGenDiPhotons+process.flashggSortedGenDiPhotons
-    
     process.load("flashgg.Taggers.flashggTaggedGenDiphotons_cfi")
     process.flashggTaggedGenDiphotons.src  = "flashggSortedGenDiPhotons"
     process.flashggTaggedGenDiphotons.tags = "flashggTagSorter"
@@ -747,6 +779,13 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
     ## process.flashggTaggedGenDiphotons.tags = "flashggSystTagMerger"
     ##process.p += process.flashggTaggedGenDiphotons
     ##tagSequence.insert(tagSequence.index(getattr(process,"flashggTagSorter"))+1,getattr(process,"flashggTaggedGenDiphotons"))
+    
+    process.flashggSelectedGenDiPhotons.cut = "(%s) && (%s)" % ( preselCut, cut )
+    process.flashggSortedGenDiPhotons.maxNumber = 999
+    ## only process events where at least one diphoton candidate is selected
+    if filterEvents:
+        process.flashggSelectedGenDiPhotons.filter = True
+        process.genFilter += process.flashggGenDiPhotons+process.flashggSelectedGenDiPhotons+process.flashggSortedGenDiPhotons
     
     process.load("flashgg.Taggers.genDiphotonDumper_cfi")
     process.genDiphotonDumper.dumpTrees = True
@@ -815,8 +854,8 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
                                  )
             
             
-    ## process.pfid = cms.Path(process.genFilter*process.flashggGenDiPhotonsSequence*process.flashggTaggedGenDiphotons*process.genDiphotonDumper)
-    process.pfid = cms.Path(process.genFilter*process.genDiphotonDumper)
+    # process.pfid = cms.Path(process.genFilter*process.flashggGenDiPhotonsSequence*process.flashggTaggedGenDiphotons*process.genDiphotonDumper)
+    process.pfid = cms.Path(process.genFilter*process.genSequence*process.genDiphotonDumper)
     
 
 def bookCompositeObjects(process,processId,tagSequence,recoJetCollections=None):
