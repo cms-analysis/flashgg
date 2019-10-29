@@ -87,21 +87,23 @@ def main():
                   help="resubmit")
 
   (options, args) = parser.parse_args()
+  dir = os.path.dirname(os.path.abspath('%s/task_config.json'%options.dir))
+  
 
-  bashCommand = "ls %s/*.root  > %s/all_root.txt"%(options.dir,options.dir)
+  bashCommand = "ls %s/*.root  > %s/all_root.txt"%(dir,dir)
   os.system(bashCommand)
 
-  full_output =  list_files(options.dir+"/task_config.json")
-  present_output =  list_files(options.dir+"/"+options.input)
-  corrupted_files = files_to_remove(present_output,options.dir)
+  full_output =  list_files(dir+"/task_config.json")
+  present_output =  list_files(dir+"/"+options.input)
+  corrupted_files = files_to_remove(present_output,dir)
   not_finished = list(set(full_output) - set(present_output) - set(corrupted_files))
   print 'Number of missing files : ',len(not_finished)
   #print 'Missing the following files : ' not_finished
-  runJobs_dict =   find_runJobs(not_finished,options.dir)
+  runJobs_dict =   find_runJobs(not_finished,dir)
   print 'runJobs to be resubmitted : ',runJobs_dict
-  prepare_runJobs_missing(runJobs_dict,options.dir)
+  prepare_runJobs_missing(runJobs_dict,dir)
   print 'Submitting missing jobs : '
-  submit_missing(runJobs_dict,options.dir,options.resubmit)
+  submit_missing(runJobs_dict,dir,options.resubmit)
 
 
 
