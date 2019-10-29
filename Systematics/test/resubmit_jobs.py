@@ -33,7 +33,7 @@ def find_runJobs(missing,dir):
   for item in missing:
     jobId = item[item.find("USER_")+5:item.find(".root")]
     file = item[:item.find("USER_")+4]
-    bashCommand = "grep -r %s %s/runJobs*.sh "%(file,dir)
+    bashCommand = "grep -r -H %s %s/runJobs*.sh "%(file,dir)
     out = subprocess.check_output(bashCommand,shell=True)
     start = out.find("runJobs")
     end = out.find(".sh")
@@ -49,7 +49,7 @@ def submit_missing(runJobs_dict,dir,resubmit=True):
     bashCommand = "condor_submit %s/%s_mis.sub"%(dir,cluster)
     if resubmit : 
        print 'Resubmitting now!'
-       #os.system(bashCommand)
+       os.system(bashCommand)
     else : 
       print 'Ready to resubmit, please set resubmit to True if you are ready : '
       print bashCommand
@@ -59,14 +59,19 @@ def prepare_runJobs_missing(runJobs_dict,dir):
   for cluster in runJobs_dict.keys():
     bashCommand = "cp %s/%s.sub %s/%s_mis.sub"%(dir,cluster,dir,cluster)
     os.system(bashCommand)
+    bashCommand = "cp %s/%s.sh %s/original_%s.sh"%(dir,cluster,dir,cluster)
+    os.system(bashCommand)
     jobs_to_run=''
     for jobId in runJobs_dict[cluster]:
-       jobs_to_run+='%s,'%jobId
-    jobs_to_run = jobs_to_run[:-1]
+       jobs_to_run+='%s '%jobId
+    jobs_to_run = jobs_to_run[:-1] #remove the comma or space from the last
     for line in fileinput.input("%s/%s_mis.sub"%(dir,cluster), inplace=True):
-      if "= $(ProcId)" in line : print line.replace("= $(ProcId)", "= $(JobId)"),
-      elif  "queue" in line : print ("queue 1 JobId in %s"%jobs_to_run),
+      if  "queue" in line : print ("queue %d "%(len(runJobs_dict[cluster]))),
       else : print line,
+    for line in fileinput.input("%s/%s.sh"%(dir,cluster), inplace=True):
+      if  "declare -a jobIdsMap" in line : print ("declare -a jobIdsMap=(%s)\n"%(jobs_to_run)),
+      else : print line,
+
 
 
 
@@ -91,6 +96,7 @@ def main():
   corrupted_files = files_to_remove(present_output,options.dir)
   not_finished = list(set(full_output) - set(present_output) - set(corrupted_files))
   print 'Number of missing files : ',len(not_finished)
+  #print 'Missing the following files : ' not_finished
   runJobs_dict =   find_runJobs(not_finished,options.dir)
   print 'runJobs to be resubmitted : ',runJobs_dict
   prepare_runJobs_missing(runJobs_dict,options.dir)
