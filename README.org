@@ -85,8 +85,6 @@
    #processType=data/bkg/sig, depending on input file
    #conditionsJSON= add appropriate JSON file for 2016, 2017 or 2018 from MetaData/data/MetaConditions/
 
-   cmsRun Taggers/test/simple_Tag_test.py
-   cmsRun Taggers/test/diphotonsDumper_cfg.py
    cmsRun Systematics/test/workspaceStd.py processId=ggh_125 doHTXS=1
    #+END_EXAMPLE
 
