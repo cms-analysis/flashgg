@@ -32,8 +32,6 @@ elesystlabels = []
 musystlabels = []
 
 from flashgg.MetaData.JobConfig import customize
-print('AFTER IMPORT')
-print(customize.maxEvents)
 
 customize.options.register('doMuFilter',
                            True,
@@ -113,7 +111,13 @@ customize.options.register('verboseSystDump',
 # set default options if needed
 customize.setDefault("maxEvents", -1)
 customize.setDefault("targetLumi", 1.00e+3)
+
+
 customize.parse()
+
+# When running BJets and Leptons, use parent dataset to reproduce GenLeptonExtra and GenJetsExtra collections
+if customize.doBJetsAndMET and not customize.processId == "Data":
+    customize.options.useParentDataset = True
 
 customize.metaConditions = MetaConditionsReader(customize.metaConditions)
 
@@ -138,10 +142,6 @@ print 'doBJetsAndMET '+str(customize.doBJetsAndMET)
 print 'doJets '+str(customize.doJets)
 print 'acceptance '+str(customize.acceptance)
 print 'doMuFilter '+str(customize.doMuFilter)
-
-# When running BJets and Leptons, use parent dataset to reproduce GenLeptonExtra and GenJetsExtra collections
-if customize.doBJetsAndMET and not customize.processId == "Data"::
-    customize.useParentDataset = True
 
 if customize.doFiducial:
     fc.leadCut = 1./3.
@@ -199,6 +199,7 @@ if is_signal:
     print "Signal MC, so adding systematics and dZ"
     variablesToUse = minimalVariables
     if customize.doFiducial:
+        print("Adding variables")
         variablesToUse.extend(fc.getGenVariables(True))
         variablesToUse.extend(fc.getRecoVariables(True))
 # variablesToUse.append("genLeadGenIso := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
@@ -430,7 +431,6 @@ for tag in tagList:
                              unbinnedSystematics=True
                              )
 
-
 # Require standard diphoton trigger
 from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
 hlt_paths = []
@@ -570,6 +570,10 @@ else:
                          process.penultimateFilter *
                          process.finalFilter *
                          process.tagsDumper)
+
+fc.addObservables(process, process.tagsDumper, customize.processId, process.flashggTagSequence)
+print("---------------------------------------------------------HERE-----------------------------------")
+print(process.tagsDumper.__dict__)
 
 if(not hasattr(process, "options")):
     process.options = cms.untracked.PSet()
