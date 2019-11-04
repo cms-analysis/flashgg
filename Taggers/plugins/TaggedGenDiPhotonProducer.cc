@@ -32,9 +32,11 @@ namespace flashgg {
         TaggedGenDiPhotonProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
+        float getCosThetaStar_CS(TLorentzVector h1, const TLorentzVector &h2);
 
         EDGetTokenT<View<GenDiPhoton> > src_;
         EDGetTokenT<View<DiPhotonTagBase> > tags_;
+        EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
         classifier_t classifier_;
 
         vector< edm::EDGetTokenT<float> > HHbbgg_reweights_;
@@ -45,6 +47,7 @@ namespace flashgg {
     TaggedGenDiPhotonProducer::TaggedGenDiPhotonProducer( const ParameterSet &iConfig ) :
         src_( consumes<View<flashgg::GenDiPhoton> >( iConfig.getParameter<InputTag> ( "src" ) ) ),
         tags_( consumes<View<flashgg::DiPhotonTagBase> >( iConfig.getParameter<InputTag> ( "tags" ) ) ),
+        genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         classifier_(iConfig)
     {
         doReweight_ = (iConfig.getParameter<int>("HHbbgg_doReweight")); 
@@ -63,7 +66,7 @@ namespace flashgg {
         evt.getByToken( tags_, tags );
         if(tags.isValid())
             assert( tags->size() < 2 );
-
+        
         double weight = 1.;
         std::pair<std::string,int> info("",0);
         if( tags.isValid() && tags->size() > 0 ) {
@@ -71,6 +74,39 @@ namespace flashgg {
             weight = tags->at(0).centralWeight();
         }
         
+        //find gen higgs particles
+        float genMhh=-999;
+        float genCosThetaStar_CS=-999;
+        float ptH1=-999;
+        float ptH2=-999;
+
+        if( ! evt.isRealData() ) {
+            TLorentzVector H1,H2;
+            Handle<View<reco::GenParticle> > genParticles;
+            std::vector<edm::Ptr<reco::GenParticle> > selHiggses;
+            evt.getByToken( genParticleToken_, genParticles );
+            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+               edm::Ptr<reco::GenParticle> genPar = genParticles->ptrAt(genLoop);
+               if (selHiggses.size()>1) break;
+               if (genPar->pdgId()==25 && genPar->isHardProcess() ){
+                   selHiggses.push_back(genPar);
+               }   
+            }
+
+            if (selHiggses.size()>0) {
+                ptH1 = selHiggses[0]->p4().pt();
+                if (selHiggses.size()==2){
+                    H1.SetPtEtaPhiE(selHiggses[0]->p4().pt(),selHiggses[0]->p4().eta(),selHiggses[0]->p4().phi(),selHiggses[0]->p4().energy());
+                    H2.SetPtEtaPhiE(selHiggses[1]->p4().pt(),selHiggses[1]->p4().eta(),selHiggses[1]->p4().phi(),selHiggses[1]->p4().energy());
+                    genMhh  = (H1+H2).M();
+                    genCosThetaStar_CS = this->getCosThetaStar_CS(H1,H2);   
+                    ptH1 = selHiggses[0]->p4().pt();
+                    ptH2 = selHiggses[1]->p4().pt();
+                }
+            }
+        }
+
+
         Handle<View<flashgg::GenDiPhoton> > src;
         evt.getByToken( src_, src );
         std::unique_ptr<vector<GenDiPhoton> > diphotons( new vector<GenDiPhoton> );
@@ -111,7 +147,6 @@ namespace flashgg {
     
         evt.put( std::move( diphotons ) );
     }
-        
 
     float TaggedGenDiPhotonProducer::getCosThetaStar_CS(TLorentzVector h1, const TLorentzVector &h2)
     {
@@ -122,6 +157,7 @@ namespace flashgg {
     }
 
 }
+
 
 typedef flashgg::TaggedGenDiPhotonProducer FlashggTaggedGenDiPhotonProducer;
 DEFINE_FWK_MODULE( FlashggTaggedGenDiPhotonProducer );
