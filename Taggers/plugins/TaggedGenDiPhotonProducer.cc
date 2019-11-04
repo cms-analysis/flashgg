@@ -32,9 +32,11 @@ namespace flashgg {
         TaggedGenDiPhotonProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
+        float getCosThetaStar_CS(TLorentzVector h1, const TLorentzVector &h2);
 
         EDGetTokenT<View<GenDiPhoton> > src_;
         EDGetTokenT<View<DiPhotonTagBase> > tags_;
+        EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
         classifier_t classifier_;
 
         vector< edm::EDGetTokenT<float> > HHbbgg_reweights_;
@@ -44,6 +46,7 @@ namespace flashgg {
     TaggedGenDiPhotonProducer::TaggedGenDiPhotonProducer( const ParameterSet &iConfig ) :
         src_( consumes<View<flashgg::GenDiPhoton> >( iConfig.getParameter<InputTag> ( "src" ) ) ),
         tags_( consumes<View<flashgg::DiPhotonTagBase> >( iConfig.getParameter<InputTag> ( "tags" ) ) ),
+        genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         classifier_(iConfig)
     {
         doReweight_ = (iConfig.getParameter<int>("HHbbgg_doReweight")); 
@@ -61,15 +64,48 @@ namespace flashgg {
         evt.getByToken( tags_, tags );
         if(tags.isValid())
             assert( tags->size() < 2 );
-
+        
         double weight = 1.;
         std::pair<std::string,int> info("",0);
         if( tags.isValid() && tags->size() > 0 ) {
             info = classifier_(tags->at(0));
             weight = tags->at(0).centralWeight();
-            /// cout << "TaggedGenDiPhotonProducer tag " << tags.at(0).categoryNumber() << " " << info.second << endl;
+            //cout << "TaggedGenDiPhotonProducer tag " << info.first << endl;
         }
         
+        //find gen higgs particles
+        float genMhh=-999;
+        float genCosThetaStar_CS=-999;
+        float ptH1=-999;
+        float ptH2=-999;
+
+        if( ! evt.isRealData() ) {
+            TLorentzVector H1,H2;
+            Handle<View<reco::GenParticle> > genParticles;
+            std::vector<edm::Ptr<reco::GenParticle> > selHiggses;
+            evt.getByToken( genParticleToken_, genParticles );
+            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+               edm::Ptr<reco::GenParticle> genPar = genParticles->ptrAt(genLoop);
+               if (selHiggses.size()>1) break;
+               if (genPar->pdgId()==25 && genPar->isHardProcess() ){
+                   selHiggses.push_back(genPar);
+               }   
+            }
+
+            if (selHiggses.size()>0) {
+                ptH1 = selHiggses[0]->p4().pt();
+                if (selHiggses.size()==2){
+                    H1.SetPtEtaPhiE(selHiggses[0]->p4().pt(),selHiggses[0]->p4().eta(),selHiggses[0]->p4().phi(),selHiggses[0]->p4().energy());
+                    H2.SetPtEtaPhiE(selHiggses[1]->p4().pt(),selHiggses[1]->p4().eta(),selHiggses[1]->p4().phi(),selHiggses[1]->p4().energy());
+                    genMhh  = (H1+H2).M();
+                    genCosThetaStar_CS = this->getCosThetaStar_CS(H1,H2);   
+                    ptH1 = selHiggses[0]->p4().pt();
+                    ptH2 = selHiggses[1]->p4().pt();
+                }
+            }
+        }
+
+
         Handle<View<flashgg::GenDiPhoton> > src;
         evt.getByToken( src_, src );
         std::unique_ptr<vector<GenDiPhoton> > diphotons( new vector<GenDiPhoton> );
@@ -79,7 +115,13 @@ namespace flashgg {
             newdipho.setTag(info.first);
             newdipho.setCategoryNumber(info.second);
             newdipho.setCentralWeight(weight);
-            if( tags.isValid() && tags->size()>0 ) { newdipho.setTagObj(tags->ptrAt(0)); }
+            newdipho.setmHHgen(genMhh);
+            newdipho.setcosthetaHHgen(genCosThetaStar_CS);
+            newdipho.setptHsgen(ptH1,ptH2);
+
+            if( tags.isValid() && tags->size()>0 ) { 
+                newdipho.setTagObj(tags->ptrAt(0)); 
+            }
             //read reweighting
             vector<float> reweight_values;
             if (doReweight_>0) 
@@ -93,12 +135,22 @@ namespace flashgg {
                newdipho.setHHbbggBenchmarkReweight( reweight_values );
             }
             diphotons->push_back(newdipho);
-            /// cout << "TaggedGenDiPhotonProducer dipho " << newdipho.categoryNumber() << " " << (int)newdipho << " "  << newdipho.tag() << endl;
         }
         
         evt.put( std::move( diphotons ) );
     }
+
+
+float TaggedGenDiPhotonProducer::getCosThetaStar_CS(TLorentzVector h1, const TLorentzVector &h2)
+{
+    // cos theta star angle in the Collins Soper frame
+    TLorentzVector hh = h1 + h2;
+    h1.Boost(-hh.BoostVector());                     
+    return h1.CosTheta();
 }
+
+}
+
 
 typedef flashgg::TaggedGenDiPhotonProducer FlashggTaggedGenDiPhotonProducer;
 DEFINE_FWK_MODULE( FlashggTaggedGenDiPhotonProducer );
