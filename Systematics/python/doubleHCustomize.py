@@ -364,10 +364,18 @@ class DoubleHCustomize():
              genVariables += ["benchmark_reweight_2017fake := getHHbbggBenchmarkReweight(14)"]
 
         ## define categories for gen-level dumper
-        cfgTools.addCategory(self.process.genDiphotonDumper,  ## events with not reco-level tag
-                             "NoTag", 'isTagged("NoTag")',0,
-                             variables=genVariables,
-                             )
+        if self.customize.doubleHTagsOnly:
+            cfgTools.addCategory(self.process.genDiphotonDumper,  ## events with not reco-level tag
+                                 "NoTag", 'isTagged("flashggNoTag")',1,#"NoTag", 'isTagged("NoTag")',0,
+                                 variables=genVariables,
+                                )
+        else:
+            cfgTools.addCategory(self.process.genDiphotonDumper,  ## events with not reco-level tag
+                                 "NoTag", 'isTagged("NoTag")',0,
+                                 variables=genVariables,
+                                )
+            
+    
 
         for tag in self.tagList: ## tagged events
             tagName,subCats = tag
