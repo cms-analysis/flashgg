@@ -3,6 +3,7 @@ import subprocess
 from optparse import OptionParser
 import fileinput
 import ROOT
+import json
 from ROOT import TFile, TTree
 
 def files_to_remove(files,dir):
@@ -27,12 +28,29 @@ def list_files(file_name):
         file_list.append(res)
   return file_list
 
+def get_files_from_json(path_json):
+  f = open(path_json)
+  jf = json.load(f)
+  flist = []
+  for i in range(len(jf['jobs'])):
+    flist.extend(jf['jobs'][i][2])
+    
+  for j in range(len(flist)):
+    flist[j] = flist[j].split('/')[-1]
+  
+  return flist
+
+def list_root(directory):
+  flist = os.listdir(directory)
+  return [fname for fname in flist if '.root' in fname]
 
 def find_runJobs(missing,dir):
   runJobs_dict = {}
   for item in missing:
-    jobId = item[item.find("USER_")+5:item.find(".root")]
-    file = item[:item.find("USER_")+4]
+    # jobId = item[item.find("USER_")+5:item.find(".root")]
+    # file = item[:item.find("USER_")+4]
+    jobId = item.split('_')[-1].split('.')[0]
+    file = item[:item.find('_{}'.format(jobId))] + '.root'
     bashCommand = "grep -r -H %s %s/runJobs*.sh "%(file,dir)
     out = subprocess.check_output(bashCommand,shell=True)
     start = out.find("runJobs")
@@ -81,25 +99,31 @@ def main():
   parser = OptionParser()
   parser.add_option("-d", "--dir", dest="dir",default="task_config.json",
                   help="directory")
-  parser.add_option("-i", "--input", dest="input",default="all_root.txt",
-                  help="input file with all root files present")
+  parser.add_option("-s", "--stage-dest", dest="stage_dest",
+                  help="directory output files were staged to")
+  # parser.add_option("-i", "--input", dest="input",default="all_root.txt",
+  #                 help="input file with all root files present")
   parser.add_option("-r", "--resubmit", action="store_false",  dest="resubmit",default=True,
                   help="resubmit")
 
   (options, args) = parser.parse_args()
   dir = os.path.dirname(os.path.abspath('%s/task_config.json'%options.dir))
-  
 
-  bashCommand = "ls %s/*.root  > %s/all_root.txt"%(dir,dir)
-  os.system(bashCommand)
+  if options.stage_dest is not None:
+    stageDir = os.path.abspath(options.stage_dest)
+  else:
+    stageDir = dir
 
-  full_output =  list_files(dir+"/task_config.json")
-  present_output =  list_files(dir+"/"+options.input)
-  corrupted_files = files_to_remove(present_output,dir)
+  # bashCommand = "ls %s/*.root  > %s/all_root.txt"%(stageDir,dir)
+  # os.system(bashCommand)
+
+  full_output =  get_files_from_json(dir+"/task_config.json")
+  present_output =  list_root(stageDir)
+  corrupted_files = files_to_remove(present_output,stageDir)
   not_finished = list(set(full_output) - set(present_output) - set(corrupted_files))
   print 'Number of missing files : ',len(not_finished)
   #print 'Missing the following files : ' not_finished
-  runJobs_dict =   find_runJobs(not_finished,dir)
+  runJobs_dict = find_runJobs(not_finished,dir)
   print 'runJobs to be resubmitted : ',runJobs_dict
   prepare_runJobs_missing(runJobs_dict,dir)
   print 'Submitting missing jobs : '
