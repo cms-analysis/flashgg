@@ -243,7 +243,7 @@ class DoubleHCustomize():
         self.process.flashggDoubleHTag.ttHKiller_liststd = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_liststd"])
 
         ## add double Higgs tag to the tag sequence
-        self.process.flashggTagSequence.replace(self.process.flashggUntagged,(self.process.flashggDoubleHTag+self.process.flashggUntagged))
+      #  self.process.flashggTagSequence.replace(self.process.flashggUntagged,(self.process.flashggDoubleHTag+self.process.flashggUntagged))
 
         ## remove single Higgs tags
         if self.customize.doubleHTagsOnly:
@@ -267,8 +267,8 @@ class DoubleHCustomize():
 
  
     def doubleHTagMerger(self,systlabels=[]):
-#        self.process.p.remove(self.process.flashggTagSorter)
-#        self.process.p.replace(self.process.flashggSystTagMerger,self.process.flashggDoubleHTagSequence*self.process.flashggTagSorter*self.process.flashggSystTagMerger)
+        self.process.p.remove(self.process.flashggTagSorter)
+        self.process.p.replace(self.process.flashggSystTagMerger,self.process.flashggDoubleHTagSequence*self.process.flashggTagSorter*self.process.flashggSystTagMerger)
         for systlabel in systlabels:
            if systlabel!='':
              self.process.p.remove(getattr(self.process,'flashggTagSorter'+systlabel))
