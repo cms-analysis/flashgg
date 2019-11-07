@@ -41,6 +41,12 @@ customize.options.register('doubleHTagsOnly',
                            VarParsing.VarParsing.varType.bool,
                            'doubleHTagsOnly'
                            )
+customize.options.register('ForceGenDiphotonProduction',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'ForceGenDiphotonProduction'
+                           )
 customize.options.register('doubleHReweight',
                            -1,
                            VarParsing.VarParsing.multiplicity.singleton,
