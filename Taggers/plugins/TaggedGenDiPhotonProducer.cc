@@ -39,6 +39,7 @@ namespace flashgg {
 
         vector< edm::EDGetTokenT<float> > HHbbgg_reweights_;
         int doReweight_;
+        bool ForceGenDiphotonProduction_;
     };
 
     TaggedGenDiPhotonProducer::TaggedGenDiPhotonProducer( const ParameterSet &iConfig ) :
@@ -47,6 +48,7 @@ namespace flashgg {
         classifier_(iConfig)
     {
         doReweight_ = (iConfig.getParameter<int>("HHbbgg_doReweight")); 
+        ForceGenDiphotonProduction_ = (iConfig.getParameter<bool>("ForceGenDiphotonProduction"));
 
         auto names = iConfig.getParameter<vector<string>>("HHbbgg_reweight_names");
         for (auto & name : names ) {
@@ -67,37 +69,58 @@ namespace flashgg {
         if( tags.isValid() && tags->size() > 0 ) {
             info = classifier_(tags->at(0));
             weight = tags->at(0).centralWeight();
-            /// cout << "TaggedGenDiPhotonProducer tag " << tags.at(0).categoryNumber() << " " << info.second << endl;
         }
         
         Handle<View<flashgg::GenDiPhoton> > src;
         evt.getByToken( src_, src );
         std::unique_ptr<vector<GenDiPhoton> > diphotons( new vector<GenDiPhoton> );
-        
-        for(auto & dipho : *src) {
-            GenDiPhoton newdipho = dipho;
-            newdipho.setTag(info.first);
-            newdipho.setCategoryNumber(info.second);
-            newdipho.setCentralWeight(weight);
-            if( tags.isValid() && tags->size()>0 ) { newdipho.setTagObj(tags->ptrAt(0)); }
-            //read reweighting
-            vector<float> reweight_values;
-            if (doReweight_>0) 
-            {
-               for (auto & reweight_token : HHbbgg_reweights_){
-                 edm::Handle<float> reweight_handle;
-                 evt.getByToken(reweight_token, reweight_handle);
-                 if(reweight_handle.isValid())
-                    reweight_values.push_back(*reweight_handle);
-               }
-               newdipho.setHHbbggBenchmarkReweight( reweight_values );
+
+        //---In order to count also Dalitz decay events we create a dummy diphoton object 
+        //   that will be placed into the event stream
+        GenDiPhoton newdipho;
+        if(src->size()==1)
+            newdipho = src->at(0);
+        else{
+            if(!ForceGenDiphotonProduction_){
+                evt.put( std::move( diphotons ) );
+                return;
             }
-            diphotons->push_back(newdipho);
-            /// cout << "TaggedGenDiPhotonProducer dipho " << newdipho.categoryNumber() << " " << (int)newdipho << " "  << newdipho.tag() << endl;
         }
-        
+
+        newdipho.setTag(info.first);
+        newdipho.setCategoryNumber(info.second);
+        newdipho.setCentralWeight(weight);
+        newdipho.setmHHgen(genMhh);
+        newdipho.setcosthetaHHgen(genCosThetaStar_CS);
+        newdipho.setptHsgen(ptH1,ptH2);
+        if( tags.isValid() && tags->size()>0 ) { 
+            newdipho.setTagObj(tags->ptrAt(0)); 
+        }
+        //read reweighting
+        vector<float> reweight_values;
+        if (doReweight_>0) {
+            for (auto & reweight_token : HHbbgg_reweights_){
+                edm::Handle<float> reweight_handle;
+                evt.getByToken(reweight_token, reweight_handle);
+                if(reweight_handle.isValid())
+                    reweight_values.push_back(*reweight_handle);
+            }
+            newdipho.setHHbbggBenchmarkReweight( reweight_values );
+        }
+        diphotons->push_back(newdipho);
+    
         evt.put( std::move( diphotons ) );
     }
+        
+
+    float TaggedGenDiPhotonProducer::getCosThetaStar_CS(TLorentzVector h1, const TLorentzVector &h2)
+    {
+        // cos theta star angle in the Collins Soper frame
+        TLorentzVector hh = h1 + h2;
+        h1.Boost(-hh.BoostVector());                     
+        return h1.CosTheta();
+    }
+
 }
 
 typedef flashgg::TaggedGenDiPhotonProducer FlashggTaggedGenDiPhotonProducer;

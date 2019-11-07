@@ -8,5 +8,6 @@ flashggTaggedGenDiphotons = cms.EDProducer('FlashggTaggedGenDiPhotonProducer',
                                            tags=cms.InputTag("flashggTagSorter"),
                                            HHbbgg_doReweight = flashggDoubleHReweight.doReweight,
                                            HHbbgg_reweight_producer = cms.string(reweight_settings.reweight_producer),
-                                           HHbbgg_reweight_names = cms.vstring(reweight_settings.reweight_names)
+                                           HHbbgg_reweight_names = cms.vstring(reweight_settings.reweight_names),
+                                           ForceGenDiphotonProduction = cms.bool(False)
                                   )
