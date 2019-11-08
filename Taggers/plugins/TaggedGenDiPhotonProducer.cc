@@ -41,6 +41,7 @@ namespace flashgg {
 
         vector< edm::EDGetTokenT<float> > HHbbgg_reweights_;
         int doReweight_;
+        bool ForceGenDiphotonProduction_;
     };
 
     TaggedGenDiPhotonProducer::TaggedGenDiPhotonProducer( const ParameterSet &iConfig ) :
@@ -50,6 +51,7 @@ namespace flashgg {
         classifier_(iConfig)
     {
         doReweight_ = (iConfig.getParameter<int>("HHbbgg_doReweight")); 
+        ForceGenDiphotonProduction_ = (iConfig.getParameter<bool>("ForceGenDiphotonProduction"));
 
         auto names = iConfig.getParameter<vector<string>>("HHbbgg_reweight_names");
         for (auto & name : names ) {
@@ -109,36 +111,47 @@ namespace flashgg {
         Handle<View<flashgg::GenDiPhoton> > src;
         evt.getByToken( src_, src );
         std::unique_ptr<vector<GenDiPhoton> > diphotons( new vector<GenDiPhoton> );
-        
-        for(auto & dipho : *src) {
-            GenDiPhoton newdipho = dipho;
-            newdipho.setTag(info.first);
-            newdipho.setCategoryNumber(info.second);
-            newdipho.setCentralWeight(weight);
-            newdipho.setmHHgen(genMhh);
-            newdipho.setcosthetaHHgen(genCosThetaStar_CS);
-            newdipho.setptHsgen(ptH1,ptH2);
 
-            if( tags.isValid() && tags->size()>0 ) { 
-                newdipho.setTagObj(tags->ptrAt(0)); 
+        //I want to produce a gendiphoton candidate with essential info also when the gendiphotoncollection is empty
+        //I want to avoid to produce more than 1 gendiphoton in case my input collection is larger than 1 (however it should not be) 
+        GenDiPhoton newdipho;
+        //cout<<"src->size()="<<src->size()<<endl;
+        if(src->size()==1)
+            newdipho = src->at(0);
+        else{
+            //cout<<"EMPTY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+            if(!ForceGenDiphotonProduction_){
+                evt.put( std::move( diphotons ) );
+                return;
             }
-            //read reweighting
-            vector<float> reweight_values;
-            if (doReweight_>0) 
-            {
-               for (auto & reweight_token : HHbbgg_reweights_){
-                 edm::Handle<float> reweight_handle;
-                 evt.getByToken(reweight_token, reweight_handle);
-                 if(reweight_handle.isValid())
-                    reweight_values.push_back(*reweight_handle);
-               }
-               newdipho.setHHbbggBenchmarkReweight( reweight_values );
-            }
-            diphotons->push_back(newdipho);
         }
-        
-        evt.put( std::move( diphotons ) );
-    }
+
+        newdipho.setTag(info.first);
+        newdipho.setCategoryNumber(info.second);
+        newdipho.setCentralWeight(weight);
+        newdipho.setmHHgen(genMhh);
+        newdipho.setcosthetaHHgen(genCosThetaStar_CS);
+        newdipho.setptHsgen(ptH1,ptH2);
+        if( tags.isValid() && tags->size()>0 ) { 
+            newdipho.setTagObj(tags->ptrAt(0)); 
+        }
+        //read reweighting
+        vector<float> reweight_values;
+        if (doReweight_>0) {
+            for (auto & reweight_token : HHbbgg_reweights_){
+                edm::Handle<float> reweight_handle;
+                evt.getByToken(reweight_token, reweight_handle);
+                if(reweight_handle.isValid())
+                    reweight_values.push_back(*reweight_handle);
+            }
+            newdipho.setHHbbggBenchmarkReweight( reweight_values );
+        }
+        diphotons->push_back(newdipho);
+    
+    evt.put( std::move( diphotons ) );
+
+    }        
+
 
 
 float TaggedGenDiPhotonProducer::getCosThetaStar_CS(TLorentzVector h1, const TLorentzVector &h2)

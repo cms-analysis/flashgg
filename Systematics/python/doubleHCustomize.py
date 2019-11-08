@@ -319,6 +319,7 @@ class DoubleHCustomize():
         self.process.flashggTaggedGenDiphotons.src  = "flashggSelectedGenDiPhotonDiBJets"
         self.process.flashggTaggedGenDiphotons.tags = "flashggTagSorter"
         self.process.flashggTaggedGenDiphotons.remap = self.process.tagsDumper.classifierCfg.remap
+        self.process.flashggTaggedGenDiphotons.ForceGenDiphotonProduction = self.customize.ForceGenDiphotonProduction
 
         ## prepare gen-level dumper
         self.process.load("flashgg.Taggers.genDiphotonDumper_cfi")
@@ -330,32 +331,35 @@ class DoubleHCustomize():
         self.process.genDiphotonDumper.dumpGlobalVariables = True
         self.process.genDiphotonDumper.globalVariables = globalVariables
 
-        genVariables = ["mgg := mass",
-                        "mbb := dijet.mass",
+        genVariables = ["absCosThetaStar_CS := abs(getcosthetaHHgen())",
                         "mhh := getmHHgen()",
-                        "absCosThetaStar_CS := abs(getcosthetaHHgen())",
                         "ptH1 := getptH1gen()",
-                        "ptH2 := getptH2gen()",
+                        "ptH2 := getptH2gen()"
+                       ]
 
-                        "leadPho_px := leadingPhoton.px",
-                        "leadPho_py := leadingPhoton.py",
-                        "leadPho_pz := leadingPhoton.pz",
-                        "leadPho_e  := leadingPhoton.energy",
-                        "subleadPho_px := subLeadingPhoton.px",
-                        "subleadPho_py := subLeadingPhoton.py",
-                        "subleadPho_pz := subLeadingPhoton.pz",
-                        "subleadPho_e  := subLeadingPhoton.energy",
-
-                        "leadJet_px := leadingJet.px",
-                        "leadJet_py := leadingJet.py",
-                        "leadJet_pz := leadingJet.pz",
-                        "leadJet_e  := leadingJet.energy",
-                        "subleadJet_px := subLeadingJet.px",
-                        "subleadJet_py := subLeadingJet.py",
-                        "subleadJet_pz := subLeadingJet.pz",
-                        "subleadJet_e  := subLeadingJet.energy",
-
-                        ]
+        if not self.customize.ForceGenDiphotonProduction:
+            genVariables += ["mgg := mass",
+                             "mbb := dijet.mass",
+                             
+                             "leadPho_px := leadingPhoton.px",
+                             "leadPho_py := leadingPhoton.py",
+                             "leadPho_pz := leadingPhoton.pz",
+                             "leadPho_e  := leadingPhoton.energy",
+                             "subleadPho_px := subLeadingPhoton.px",
+                             "subleadPho_py := subLeadingPhoton.py",
+                             "subleadPho_pz := subLeadingPhoton.pz",
+                             "subleadPho_e  := subLeadingPhoton.energy",
+                             
+                             "leadJet_px := leadingJet.px",
+                             "leadJet_py := leadingJet.py",
+                             "leadJet_pz := leadingJet.pz",
+                             "leadJet_e  := leadingJet.energy",
+                             "subleadJet_px := subLeadingJet.px",
+                             "subleadJet_py := subLeadingJet.py",
+                             "subleadJet_pz := subLeadingJet.pz",
+                             "subleadJet_e  := subLeadingJet.energy",
+                            ]
+            
         if self.customize.doubleHReweight > 0: 
              for num in range(0,12):
                    genVariables += ["benchmark_reweight_%d := getHHbbggBenchmarkReweight(%d)"%(num,num)]
