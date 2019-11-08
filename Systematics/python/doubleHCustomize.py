@@ -172,11 +172,11 @@ class DoubleHCustomize():
                "ttHScore := ttHScore()",
              ]
 
-        return var_workspace ##Only temp fix 
-       # if self.customize.dumpWorkspace == False :
-       #     return variables
-       # else :
-       #     return var_workspace
+       # return var_workspace ##Only temp fix 
+        if self.customize.dumpWorkspace == False :
+            return variables
+        else :
+            return var_workspace
 
 
     def systematicVariables(self):
