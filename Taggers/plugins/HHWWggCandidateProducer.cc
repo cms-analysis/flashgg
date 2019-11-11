@@ -813,34 +813,36 @@ namespace flashgg {
           // For each gen particle in event 
           for(size_t g=0; g < genParticle->size(); g++){
             auto gen = genParticle->ptrAt(g);
-            if (gen->pdgId() == 25){ // add higgs' to genvector 
-              // cout << "Found Higgs" << endl;
-              reco::GenParticle * thisGENPointer = const_cast<reco::GenParticle *>(gen.get());
-              if (gen->daughter(0)->pdgId() == 22){
-                // cout << "higgs eta = " << gen->eta() << endl;
-                // higgs_eta = gen->eta();
-              }
-              genParticlesVector.push_back(*thisGENPointer);
-            }
-            // If the particle has a mother 
-            if (gen->mother(0) != 0){
-              int pid = gen->pdgId(); 
-              int pmotid = gen->mother(0)->pdgId();   
+            if (gen->isHardProcess()){ // only interested in gen particles from hard process 
+              // if (gen->pdgId() == 25){ // add higgs' to genvector 
+              //   // cout << "Found Higgs" << endl;
+              //   reco::GenParticle * thisGENPointer = const_cast<reco::GenParticle *>(gen.get());
+              //   if (gen->daughter(0)->pdgId() == 22){
+              //     // cout << "higgs eta = " << gen->eta() << endl;
+              //     // higgs_eta = gen->eta();
+              //   }
+              //   genParticlesVector.push_back(*thisGENPointer);
+              // }
+              // If the particle has a mother 
+              if (gen->mother(0) != 0){
+                int pid = gen->pdgId(); 
+                int pmotid = gen->mother(0)->pdgId();   
 
-              if ( ( abs(pid) == 5) && (abs(pmotid) == 24) ) cout << "***B quark Found!***" << endl;           
+                if ( ( abs(pid) == 5) && (abs(pmotid) == 24) ) cout << "***B quark Found!***" << endl;           
 
-              for(unsigned int i = 0; i < md_pairs.size(); i++){
-                int vec_id = md_pairs[i][0];
-                int vec_mid = md_pairs[i][1]; 
+                for(unsigned int i = 0; i < md_pairs.size(); i++){
+                  int vec_id = md_pairs[i][0];
+                  int vec_mid = md_pairs[i][1]; 
 
-                // if event gen particle and mother are on list of desired particles, add to genParticlesVector 
-                if ( (abs(pid) == abs(vec_id)) && (abs(pmotid) == abs(vec_mid))){ 
-                  //cout << "Found " << abs(pid) << " from " << abs(pmotid) << endl;
-                  reco::GenParticle * thisGENPointer = const_cast<reco::GenParticle *>(gen.get());
-                  genParticlesVector.push_back(*thisGENPointer);                
+                  // if event gen particle and mother are on list of desired particles, add to genParticlesVector 
+                  if ( (abs(pid) == abs(vec_id)) && (abs(pmotid) == abs(vec_mid))){ 
+                    //cout << "Found " << abs(pid) << " from " << abs(pmotid) << endl;
+                    reco::GenParticle * thisGENPointer = const_cast<reco::GenParticle *>(gen.get());
+                    genParticlesVector.push_back(*thisGENPointer);                
+                  }
                 }
               }
-            }
+            } // isHardProcess 
           }
         }
 
@@ -925,7 +927,6 @@ namespace flashgg {
         // } else {
         //     genTotalWeight = 1;
         // }
-
 
         // if (genTotalWeight != 1){
         //   cout << "GEN TOTAL WEIGHT DOES NOT EQUAL ONE" << endl;

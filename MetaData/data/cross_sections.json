@@ -263,6 +263,6 @@
 	"GJet_Pt-20toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8"  : { "xs" : 3186.0, "br" : 1.0, "kf" : 1.0, "itype":3 },
         "DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8"  : { "xs" : 5765.4, "itype":20 },
         
-        "SUSYGluGluToHToAA_AToGG_M-60_TuneCUETP8M1_13TeV_pythia8"       : {"xs" : 0.001}
-
-}
+        "SUSYGluGluToHToAA_AToGG_M-60_TuneCUETP8M1_13TeV_pythia8"       : {"xs" : 0.001},
+        "ggF_X250_WWgg_qqlnugg"                                         : {"xs" : 0.001}
+        }

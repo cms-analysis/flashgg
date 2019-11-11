@@ -25,14 +25,13 @@ fi
 output_direc=$label
 # Make output directories if they don't exist 
 mkdir -p $output_direc;
-mkdir -p /eos/user/a/atishelm/$output_direc;
+mkdir -p /eos/user/a/atishelm/ntuples/Event_Dumper/$output_direc;
 
-for f in 16;
+for f in 9 10 16;
 do
    echo "Submitting jobs for datasets from era = "$f
 
    path='Taggers/test/HHWWgg_2017_Bkg/HHWWgg_Bkg_'
-   # path='Taggers/test/HHWWgg_2017_Bkg/HHWWgg_Bkg_'
    path+=${f}
    path+='.json'
 
@@ -46,7 +45,9 @@ do
    echo "command: $command"
    eval "$command" 
    echo "Finished job for file: $path"
-   mv $output_direc/*.root /eos/user/a/atishelm/$output_direc/ 
+   mv $output_direc/*.root /eos/user/a/atishelm/ntuples/Event_Dumper/$output_direc/ 
+#    rm $output_direc/*.err
+#    rm $output_direc/*.out
    echo "Finished moving files!"
 
    # fggRunJobs.py --load Taggers/test/Bkg_Jsons/HHWWgg_Bkg_${f}_2017.json -D -P -n 500 -d 1_old_sample_test -x cmsRun Taggers/test/HHWWggTest_cfg.py maxEvents=100 -q microcentury --no-use-tarball --no-copy-proxy

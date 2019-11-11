@@ -19,6 +19,11 @@ electronVector_ (),
 muonVector_ (),
 METVector_ (),
 GenParticlesVector_ (),
+GenElectrons_ (),
+GenMuons_ (),
+GenPhotons_ (),
+GenQuarks_ (),
+GenNeutrinos_ (),
 JetVector_ (),
 Leading_Photon_ (),
 Subleading_Photon_ (),
@@ -29,17 +34,9 @@ subleading_elec_(),
 leading_muon_(),
 subleading_muon_(),
 theMETcorpt_(),
-gen_leading_elec_ (),
-gen_subleading_elec_ (),
-gen_leading_muon_ (),
-gen_subleading_muon_ (), 
 Vertex_Variables_ (),
 Cut_Variables_ (),
 dipho_MVA_ (),
-// lead_pho_passElectronVeto_ (),
-// sublead_pho_passElectronVeto_ (),
-// lead_pho_hasPixelSeed_ (),
-// sublead_pho_hasPixelSeed_ (),
 CMS_hgg_mass_ (),
 dZ_ (),
 lp_Hgg_MVA_ (),
@@ -58,430 +55,107 @@ slp_Hgg_MVA_ ()
 
   {
 
-
+/*
     // GEN Object operations below
-
-    // /////////////////////////////////////////////////////////////////////
-
-    // // cout << "Cut_Variables_[11] = " << Cut_Variables_[11] << endl;
     
-    // //-- GEN and Jets 
-
-    // //std::vector<int> quark_pdgids = {1,2,3,4,5}; // Include b quarks
-    // std::vector<int> quark_pdgids = {1,2,3,4}; // Don't look for b quarks 
-    // vector<reco::GenParticle> quarkVector; // quarks
-    // vector<reco::GenParticle> gen_electronVector; // gen electrons
-    // vector<reco::GenParticle> gen_muonVector; // gen muons 
-    // vector<reco::GenParticle> gen_phoVector; // gen muons 
-
-    // //cout << "GenParticlesVector_.size() = " << GenParticlesVector_.size() << endl; 
+    std::vector<int> quark_pdgids = {1,2,3,4}; // Don't look for b quarks 
 
     // // Look through gen particles vector 
-    // for (unsigned int i = 0; i < GenParticlesVector_.size(); i++){
+    for (unsigned int i = 0; i < GenParticlesVector_.size(); i++){
+      reco::GenParticle gen_ = GenParticlesVector_[i];  
 
-    //   reco::GenParticle gen_ = GenParticlesVector_[i];  
-    //   // Save gen H->gg pt  
-    //   if (abs(gen_.pdgId()) == 22){
-    //     gen_phoVector.push_back( gen_ );
-    //     auto hgg = gen_.mother(0);
-    //     auto hgg_p4 = hgg->p4();
-    //     hgg_p4_ = hgg_p4;
+      // Electrons
+      if (abs(gen_.pdgId()) == 11){
+        auto gen_p4 = gen_.p4();
+        GenElectrons_.push_back(gen_p4);
+      }
+      
+      // Muons 
+      if (abs(gen_.pdgId()) == 13){
+        auto gen_p4 = gen_.p4();
+        GenMuons_.push_back(gen_p4);
+      }
+
+      // Photons 
+      if (abs(gen_.pdgId()) == 22){
+        auto gen_p4 = gen_.p4();
+        GenPhotons_.push_back(gen_p4);
+      }
+
+      // Quarks 
+      for (unsigned int i = 0; i < quark_pdgids.size(); i++){
+        int val = quark_pdgids[i];
+
+        // all gen_ quark objects in genparticles vector came from W bosons, as dictated by HHWWggCandidateProducer.cc 
+        // Should break into W+ quarks and W- quarks so you know if two quarks came from the same W and can accurately call a pair a match 
+        if (abs(gen_.pdgId()) == val ){
+            auto gen_p4 = gen_.p4();
+            GenQuarks_.push_back( gen_p4 );
+        } 
+      }  
+
+      // Neutrinos 
+      if ( (abs(gen_.pdgId()) == 12) || (abs(gen_.pdgId()) == 14) ){
+        auto gen_p4 = gen_.p4();
+        GenNeutrinos_.push_back(gen_p4);
+      }
+
+      // Save gen H->gg pt  
+      // if (abs(gen_.pdgId()) == 22){
+      //   gen_phoVector.push_back( gen_ );
+      //   auto hgg = gen_.mother(0);
+      //   auto hgg_p4 = hgg->p4();
+      //   hgg_p4_ = hgg_p4;
         
-    //     // cout << "higgs pt = " << hgg_p4.pt() << endl;
-    //   }
+      //   // cout << "higgs pt = " << hgg_p4.pt() << endl;
+      // }
 
-    //   // Create quark vector (gen) 
-    //   for (unsigned int i = 0; i < quark_pdgids.size(); i++){
-    //     int val = quark_pdgids[i];
+      // // Create quark vector (gen) 
+      // for (unsigned int i = 0; i < quark_pdgids.size(); i++){
+      //   int val = quark_pdgids[i];
 
-    //     // all gen_ quark objects in genparticles vector came from W bosons, as dictated by HHWWggCandidateProducer.cc 
-    //     // Should break into W+ quarks and W- quarks so you know if two quarks came from the same W and can accurately call a pair a match 
-    //     if (abs(gen_.pdgId()) == val ){
-    //         //cout << "quark mother = " << gen_->mother(0)->pdgId() << endl;
-    //         //cout << "quark mother = " << gen_.mother(0).pdgId() << endl;
-    //         // auto m = gen_.mother(0);
-    //         //int mid = m->pdgId();
-    //         //cout << "motherID = " << m->pdgId() << endl;
-    //         //quarkVector.push_back( make_pair( gen_,mid ) );
-    //         quarkVector.push_back( gen_ );
-    //     } 
-    //   }
+      //   // all gen_ quark objects in genparticles vector came from W bosons, as dictated by HHWWggCandidateProducer.cc 
+      //   // Should break into W+ quarks and W- quarks so you know if two quarks came from the same W and can accurately call a pair a match 
+      //   if (abs(gen_.pdgId()) == val ){
+      //       //cout << "quark mother = " << gen_->mother(0)->pdgId() << endl;
+      //       //cout << "quark mother = " << gen_.mother(0).pdgId() << endl;
+      //       // auto m = gen_.mother(0);
+      //       //int mid = m->pdgId();
+      //       //cout << "motherID = " << m->pdgId() << endl;
+      //       //quarkVector.push_back( make_pair( gen_,mid ) );
+      //       quarkVector.push_back( gen_ );
+      //   } 
+      // }
+
+    }
+
+    // if (GenElectrons_.size() > 1){
+    //   cout << "[WARNING] - GenElectrons_.size() > 1" << endl; 
     // }
 
-    // //-- Jet/Quark Matching
-
-    // // The options for number of gen quarks from H->WW is -> qqqq (4), ->qqlnu (2), and ->lnulnu (0)
-    // // 4,2 or 0 Quarks. 
-    // // 2, 1 or 0 diquark matches (from H->WW)
-    // // 
-    // // Number of jets can be many. 
-    // // Max number of dijet matched from H->WW: 2 (b/c 2, 1 or 0)
-
-    // // Now that we have gen quark vector, we use it to match to jets 
-    // unsigned int JVSize = JetVector_.size(), QVSize = quarkVector.size();
-
-    
-
-    // float qone_matches__ = 0;
-    // float qtwo_matches__ = 0;
-    // float merged_qs__ = 0;
-    // float dr_1__ = 0;
-    // float dr_2__ = 0;
-    // if (QVSize == 2){
-    //    reco::GenParticle q1 = quarkVector[0]; 
-    //    auto q1_p4 = q1.p4();
-    //    reco::GenParticle q2 = quarkVector[1]; 
-    //    auto q2_p4 = q2.p4();   
-    //    auto qq = q1_p4 + q2_p4;   
-    //    auto m_qq = qq.mass();
-    //   //  cout << "qq invmass = " << qq.mass() << endl; 
-    //    m_qq_ = m_qq;
-    //   //  m_qq
-    //   //if (JVSize == 1){
-    //   for (unsigned int jet_i = 0; jet_i < JVSize; jet_i ++){
-    //     auto j0_ = JetVector_[jet_i].p4();
-    //     dr_1__ = deltaR(j0_.eta(), j0_.phi(), q1_p4.eta(), q1_p4.phi());
-    //     dr_2__ = deltaR(j0_.eta(), j0_.phi(), q2_p4.eta(), q2_p4.phi());
-    //     dr_1_ = dr_1__;
-    //     dr_2_ = dr_2__;
-    //     // cout << "dr_2 = " << dr_2 << endl;
-    //     if ( (0 < dr_1__) && (dr_1__ < 0.1) ) qone_matches__ += 1.0;
-    //     if ( (0 < dr_2__) && (dr_2__ < 0.1) ) qtwo_matches__ += 1.0;
-    //     qone_matches_ = qone_matches__;
-    //     qtwo_matches_ = qtwo_matches__;
-    //     if ( (qone_matches__ == 1.0) && (qtwo_matches__ == 1.0) ){
-    //       merged_qs__ += 1.0;
-    //     }
-    //   }
-    //   //}
-    // }
-
-    // merged_qs_ = merged_qs__;
-
-    // // cout << "qq invmass = " << qq.mass() << endl; 
-
-    // // for (unsigned int i = 0; i < QVSize; i++){
-    // //    reco::GenParticle q = quarkVector[i]; 
-    // //    auto q4 = q.p4();
-    // //   //  cout << "quark " << i << " pt = " << q4.pt() << endl;
-    // // }
-
-    // //bool match1 = false, match2 = false;
-    // bool is_pair = 0;
-    // // if (diphoVector_.size() >= 1) {
-    // //   test = 1;
-    // //   }
-    // // else {
-    // //   test = 0;
-    // //   }
-    // double dr = 0.; //, dpt = 0.;
-    // int mii = 0; 
-    // int qim = 0, qjm = 0; // i and j quark mothers 
-    // //float inv_mass = 0;
-
-    // std::vector<flashgg::Jet> jVecCopy = JetVector_; // make new copy with all jets in it so you can remove a jet after it's matched to a quark 
-
-    // //cout << "QVSize = " << QVSize << endl;
-    // //cout << "JVSize = " << JVSize << endl;
-
-    // // Before using gen info, can already form dijet objects based on pT
-    // // Remember, JetVector_ is ordered by pT
-    // // Save object of leading/subleading jets
-
-    // if (JVSize >= 2){
-    //   auto j0 = JetVector_[0].p4();
-    //   auto j1 = JetVector_[1].p4();
-    //   auto lsl_dij = j0 + j1;
-    //   lsl_dij_ = lsl_dij;
-    // }
-    // // If there are more quarks than jets, there will be quarks without matching jets 
-    // // If there are extra jets, we don't care. 
-
-    // // for some reason there are 4 quarks coming from the 2 quark signal file. For now want to skip these events. 
-    // if (QVSize == 2){
-
-    // if ( (QVSize < JVSize) && (JVSize > 0) && (QVSize > 0) ){
-
-    //   //cout << "Hello, in quark/jet matching loop" << endl;
-
-    //   //vector<reco::GenParticle> qVecCopy = quarkVector;
-    //   // Loop 'i' quarks 
-    //   for (unsigned int i = 0; i < QVSize - 1; i++){ // last quark cannot be ith quark because then there will be no j quark 
-
-    //     //cout << "Looking at quark " << i << endl;
-
-    //     //flashgg::Jet ijet = JetVector_[i];
-    //     reco::GenParticle quarki = quarkVector[i]; //quark i 
-    //     auto qim0 = quarki.mother(0);
-    //     qim = qim0->pdgId();
-    //     //cout << "qim = " << qim << endl;
-
-    //     auto qi = quarki.p4(); // quark i four vector 
-
-    //     // Loop all jets to find smallest dr 
-    //     // if a jet matches the quark, remove the jet from the temporary vector 
-    //     double mdr = 100.; // minimum dr 
-    //     // Loop 
-    //     //double dr = 0.,; 
-    //     // vector<reco::GenParticle> qVecCopy = quarkVector; // make new copy with all quarks in
-    //     for (unsigned int ii = 0; ii < jVecCopy.size(); ii++){
-    //       dr = 0.;
-    //       //cout << "jVecCopy[ii].eta() = " << jVecCopy[ii].eta() << endl;
-    //       //cout << "jVecCopy[ii].p4().eta() = " << jVecCopy[ii].p4().eta() << endl;
-
-    //       dr = sqrt( (jVecCopy[ii].eta()-qi.eta())*(jVecCopy[ii].eta()-qi.eta()) + (jVecCopy[ii].phi()-qi.phi())*(jVecCopy[ii].phi()-qi.phi()) );
-    //       //cout << "dr = " << dr << endl;
-    //       if (dr < mdr) {
-    //         mdr = dr;
-    //         mii = ii; // index of minimum dr jet 
-    //       }
-
-    //     }
-
-    //     // First jet matched 
-    //     // Save whatever you need before deleting the matching quark from qVecCopy
-    //     //cout << "Matched quark mother = " << qVecCopy[mii].mother(0)->pdgId() << endl;
-    //     //cout << "Matched quark/jet dr = " << mdr << endl;
-    //     //cout << "Matched jet index = " << mii << endl;
-    //     auto jet1 = jVecCopy[mii].p4();
-    //       // for (unsigned int iii = 0; iii < jVecCopy.size(); iii++){
-    //       //   cout << "jVecCopy[" << iii << "] = " << jVecCopy[iii] << endl;
-    //       // }
-    //     jVecCopy.erase(jVecCopy.begin() + mii); // remove matched jet from cloned vector 
-
-    //       // for (unsigned int iii = 0; iii < jVecCopy.size(); iii++){
-    //       //   cout << "jVecCopy[" << iii << "] = " << jVecCopy[iii] << endl;
-    //       // }
-    //     // use same cloned vector to match remaining jets to second quark
-
-    //     // loop 'j' quarks. The ones remaining after 'i'
-    //     //for (unsigned int j = i; j < JVSize; j++){
-    //     for (unsigned int j = i + 1; j < QVSize; j++){
-    //       reco::GenParticle quarkj = quarkVector[j]; //quark j
-    //       auto qjm0 = quarkj.mother(0);
-    //       qjm = qjm0->pdgId();
-    //       //cout << "qjm = " << qjm << endl;
-    //       auto qj = quarkj.p4(); // quark j four vector 
-    //       mdr = 100.;
-    //       mii = 0;
-    //       for (unsigned int jjj = 0; jjj < jVecCopy.size(); jjj++){ //jVecCopy size should be different 
-    //         dr = 0.;
-    //         dr = sqrt( (jVecCopy[jjj].eta()-qj.eta())*(jVecCopy[jjj].eta()-qj.eta()) + (jVecCopy[jjj].phi()-qj.phi())*(jVecCopy[jjj].phi()-qj.phi()) );
-    //         //cout << "dr = " << dr << endl;
-    //         if (dr < mdr) {
-    //           mdr = dr;
-    //           mii = jjj; // index of minimum dr quark 
-    //         }
-
-    //       }
-    //       // Save whatever you need before deleting the matching quark 
-    //       //cout << "Matched quark/jet dr = " << mdr << endl;
-    //       //cout << "Matched jet index = " << mii << endl;
-    //       auto jet2 = jVecCopy[mii].p4();
-
-    //       // for (unsigned int iii = 0; iii < jVecCopy.size(); iii++){
-    //       //   cout << "jVecCopy[" << iii << "] = " << jVecCopy[iii] << endl;
-    //       // }
-
-    //       jVecCopy.erase(jVecCopy.begin() + mii); // remove matched jet from cloned vector 
-
-    //       // for (unsigned int iii = 0; iii < jVecCopy.size(); iii++){
-    //       //   cout << "jVecCopy[" << iii << "] = " << jVecCopy[iii] << endl;
-    //       // }
-
-    //       // After each second (or 'j') quark is matched, you have a dijet pair (i jet and j jet)
-    //       // which are matched to quarks based on dr.
-    //       // The mothers of the quarks tell you if the quarks come from the same W or not.
-
-    //       // If quarks have same mother particle type *** This may need to be adjusted when there is pileup or backgrounds
-    //       // because in that case, one quark may come from a signal W and the other from a background/pileup W 
-    //       if (qim == qjm) is_pair = 1; // only have this info when checking quarks 
-    //       else is_pair = 0;
-        
-    //       // Might need to add more matching and non matching jet objects when there are 4 quarks 
-    //       // This is because only one of each object is saved per event 
-
-    //       if (is_pair){
-    //       // matching dijet object 
-    //       auto mdij = jet1 + jet2; // does 'auto' use more memory than giving the proper type? Might want to change this to speed things up in the future. 
-    //       mdij_ = mdij;
-
-    //       // matching diquark object 
-    //       auto mdiq = qi + qj;
-    //       mdiq_ = mdiq;
-    //       }
-
-    //       if (!is_pair){
-    //       // non-matching diquark object 
-    //       auto nmdiq = qi + qj;
-    //       nmdiq_ = nmdiq;
-          
-    //       // non-matching dijet object 
-    //       auto nmdij = jet1 + jet2;
-    //       nmdij_ = nmdij;
-    //       }
-
-    //     }
-
-    //   }
-
-    // } // Loop performed if there are more jets than quarks 
-
-    // }
-
-    // //else cout << "There are more quarks than jets, and/or no jets at all. Skipping." << endl;
-    // else {};
-
-    // //cout << "Hello, outside of matching loop" << endl;
-
-    // if (gen_phoVector.size() == 2){
-    //   float gen_pho_pt_0 = 0., gen_pho_pt_1 = 0.;
-    //   reco::GenParticle gen_pho_0 = gen_phoVector[0];
-    //   reco::GenParticle gen_pho_1  = gen_phoVector[1];
-    //   auto gen_pho_0_4vec = gen_pho_0.p4();
-    //   auto gen_pho_1_4vec = gen_pho_1.p4();
-    //   gen_pho_pt_0 = gen_pho_0_4vec.pt();
-    //   gen_pho_pt_1 = gen_pho_1_4vec.pt();
-    //   if (gen_pho_pt_0 > gen_pho_pt_1){
-    //     l_genpho_ = gen_pho_0_4vec;
-    //     sl_genpho_ = gen_pho_1_4vec;
-    //   }
-
-    //   else if (gen_pho_pt_1 > gen_pho_pt_0){
-    //     l_genpho_ = gen_pho_1_4vec;
-    //     sl_genpho_ = gen_pho_0_4vec; 
-    //   }
-
-    //   else{
-    //     cout << "gen photon pt's are equal\n"; 
-    //     l_genpho_ = gen_pho_0_4vec;
-    //     sl_genpho_ = gen_pho_1_4vec;
-    //   }
-
-    // }
-
-    // // Gen photons 
-    // // float l_gen_pho_pt = -99;
-    // // for (unsigned int i = 0; i < gen_electronVector.size(); i++ )
-    // // {
-    // //   reco::GenParticle current_gen_elec = gen_electronVector[i];
-    // //   auto current_gen_elec_4vec = current_gen_elec.p4();
-    // //   auto current_gen_elec_pt = current_gen_elec.pt();
-
-    // //   // If current gen electron pt is greater than maximum so far, make it the leading pt gen electron 
-    // //   if (current_gen_elec_pt > l_gen_elec_pt){ 
-    // //     l_gen_pho_pt = current_gen_elec_pt; 
-    // //     gen_leading_elec_ = current_gen_elec_4vec;
-
-    // //   }
-    // // }  
-
-    // // Get leading and subleading GEN leptons 
-
-    // // Get gen electrons
-
-    // // Get leading pt gen_electron 
-    // float l_gen_elec_pt = -99;
-    // for (unsigned int i = 0; i < gen_electronVector.size(); i++ )
-    // {
-    //   reco::GenParticle current_gen_elec = gen_electronVector[i];
-    //   auto current_gen_elec_4vec = current_gen_elec.p4();
-    //   auto current_gen_elec_pt = current_gen_elec.pt();
-
-    //   // If current gen electron pt is greater than maximum so far, make it the leading pt gen electron 
-    //   if (current_gen_elec_pt > l_gen_elec_pt){ 
-    //     l_gen_elec_pt = current_gen_elec_pt; 
-    //     gen_leading_elec_ = current_gen_elec_4vec;
-
-    //   }
-    // }     
-
-    // //if (l_gen_elec_pt == -99) leading_gen_elec_pt_ = -99;
-
-    // // Get subleading pt gen_electron 
-    // float sl_gen_elec_pt = -99;
-    // for (unsigned int i = 0; i < gen_electronVector.size(); i++ )
-    // {
-    //   reco::GenParticle current_gen_elec = gen_electronVector[i];
-    //   auto current_gen_elec_4vec = current_gen_elec.p4();
-    //   auto current_gen_elec_pt = current_gen_elec.pt();
-
-    //   // If current gen electron pt is greater than max subleading gen pt, and isn't the leading pt gen electron, make it the subleading gen electron 
-    //   if ( (current_gen_elec_pt > sl_gen_elec_pt) && (current_gen_elec_pt != l_gen_elec_pt) ){ 
-    //     sl_gen_elec_pt = current_gen_elec_pt; 
-    //     gen_subleading_elec_ = current_gen_elec_4vec;
-
-    //   }
-    // } 
-
-    // //if (sl_gen_elec_pt == -99) subleading_gen_elec_pt_ = -99;
-
-    // // Get gen muons 
-
-    // //cout << "gen_muonVector.size() = " << gen_muonVector.size() << endl;
-    // // Get leading pt gen_muon
-    // float l_gen_muon_pt = -99;
-    // for (unsigned int i = 0; i < gen_muonVector.size(); i++ )
-    // {
-    //   reco::GenParticle current_gen_muon = gen_muonVector[i];
-    //   auto current_gen_muon_4vec = current_gen_muon.p4();
-    //   auto current_gen_muon_pt = current_gen_muon.pt();
-
-    //   // If current gen muon pt is greater than maximum so far, make it the leading pt gen muon
-    //   if (current_gen_muon_pt > l_gen_muon_pt){ 
-    //     //l_gen_muon_pt = current_gen_muon_pt; 
-    //     //leading_gen_muon_pt_ = l_gen_muon_pt;
-    //     l_gen_muon_pt = current_gen_muon_pt; 
-    //     gen_leading_muon_ = current_gen_muon_4vec;
-
-    //   }
-    // }     
-
-    // //if (l_gen_muon_pt == -99) leading_gen_muon_pt_ = -99;
-
-    // // Get subleading pt gen_muon
-    // float sl_gen_muon_pt = -99;
-    // for (unsigned int i = 0; i < gen_muonVector.size(); i++ )
-    // {
-    //   reco::GenParticle current_gen_muon = gen_muonVector[i];
-    //   auto current_gen_muon_pt = current_gen_muon.pt();
-    //   auto current_gen_muon_4vec = current_gen_muon.p4();
-
-    //   // If current gen muon pt is greater than max subleading gen pt, and isn't the leading pt gen muon, make it the subleading gen muon
-    //   if ( (current_gen_muon_pt > sl_gen_muon_pt) && (current_gen_muon_pt != l_gen_muon_pt) ){ 
-    //     //sl_gen_muon_pt = current_gen_muon_pt; 
-    //     //subleading_gen_muon_pt_ = sl_gen_muon_pt;
-    //     sl_gen_muon_pt = current_gen_muon_pt; 
-    //     gen_subleading_muon_ = current_gen_muon_4vec;
-
-    //   }
-    // } 
-
-
-///////////////////////////////////////////////////////////////////////////////////////
-
-// ^^^ GEN object operations above 
-
-    //-- RECO 
-
-
-    // Jets
-
-    // unsigned int JVSize = JetVector_.size();
-    // if (JVSize>0){
-    //   for (unsigned int i = 0; i < JVSize; i++){
-    //     flashgg::Jet ijet = JetVector_[i];
-    //     cout << "ijet.puJetIdMVA() = " << ijet.puJetIdMVA() << endl;
-    //   }
-    // }
-
-    //-- Diphotons 
-    // unsigned int ndpho = diphoVector_.size(); // number of diphotons 
-    // double tmp_dp_pt = 0, max_dp_pt = -99; // temporary diphoton pt 
-    //bool test = 0;
-
-    // LeadPhoInitEnergy_ = -99;
-    // SubLeadPhoInitEnergy_ = -99; 
+    // In GEN vectors, if second element has higher pt, swap 
+    float genPhopT1 = GenPhotons_[0].pt(); 
+    float genPhopT2 = GenPhotons_[1].pt(); 
+    if (genPhopT2 > genPhopT1){
+        reco::Candidate::LorentzVector gen_pho_p4_1 = GenPhotons_[0];
+        reco::Candidate::LorentzVector gen_pho_p4_2 = GenPhotons_[1];
+        GenPhotons_[0] = gen_pho_p4_2;
+        GenPhotons_[1] = gen_pho_p4_1;
+    } 
+
+    float genQuarkpT1 = GenQuarks_[0].pt();
+    float genQuarkpT2 = GenQuarks_[1].pt();
+
+    if (genQuarkpT2 > genQuarkpT1) {
+        reco::Candidate::LorentzVector gen_quark_p4_1 = GenQuarks_[0];
+        reco::Candidate::LorentzVector gen_quark_p4_2 = GenQuarks_[1];
+        GenQuarks_[0] = gen_quark_p4_2;
+        GenQuarks_[1] = gen_quark_p4_1;      
+    }
+
+*/
+
+    // GEN operations above 
 
     // First diphoton has highest pt 
     if (diphoVector_.size() > 0){
@@ -574,8 +248,6 @@ slp_Hgg_MVA_ ()
             if  ((dipho.mass() > 100.) && (dipho.mass() < 180.)){
               pass_selections = 1;
             }
-
-
           }
 
         }
@@ -646,183 +318,5 @@ slp_Hgg_MVA_ ()
       auto subleading_muon = sl_muon_4vec;
       subleading_muon_ = subleading_muon;   
     }
-
-    // float SL_mT_WW = 0;
-    // float SL_mT_W = 0;
-    // float FL_mT_WW = 0;
-
-    // // WW transverse mass 
-    // if (METVector_.size() == 1)
-    // {
-
-    //   // SL 
-      
-    //   // MET 
-    //   flashgg::Met met__ = METVector_[0];
-    //   auto met_ = met__.p4();
-    //   MET_fourvec_ = met_;
-
-    //   // Two Jets
-    //   if (JVSize >= 2){
-    //     auto j0 = JetVector_[0].p4();
-    //     auto j1 = JetVector_[1].p4();
-    //     auto dij = j0 + j1;
-    //     float dij_m = dij.M();
-    //     // cout << "dijet mass = " << dij_m << endl;
-
-    //     // if (abs(dij_m - 80.379) < 5.){
-
-    //       reco::Candidate::LorentzVector leading_lepton_; 
-    //       if ( (electronVector_.size() > 0) && (muonVector_.size() == 0) ){
-    //         flashgg::Electron l_elec = electronVector_[0];
-    //         auto l_elec_4vec = l_elec.p4();
-    //         auto leading_elec = l_elec_4vec;
-    //         leading_elec_ = leading_elec;
-    //         leading_lepton_ = leading_elec_;
-    //         auto WW = met_ + leading_lepton_ + j0 + j1;
-    //         auto W = met_ + leading_lepton_;
-    //         SL_mT_WW = WW.Mt();
-    //         SL_mT_WW_ = SL_mT_WW;  
-    //         SL_mT_W = W.Mt();
-    //         SL_mT_W_ = SL_mT_W;
-            
-    //       }
-
-    //       else if ( (muonVector_.size() > 0) && (electronVector_.size() == 0) ){
-    //         flashgg::Muon l_muon = muonVector_[0];
-    //         auto l_muon_4vec = l_muon.p4();
-    //         auto leading_muon = l_muon_4vec;
-    //         leading_muon_ = leading_muon;
-    //         leading_lepton_ = leading_muon_;
-    //         auto WW = met_ + leading_lepton_ + j0 + j1;
-    //         auto W = met_ + leading_lepton_;
-    //         SL_mT_WW = WW.Mt();
-    //         SL_mT_WW_ = SL_mT_WW;  
-    //         SL_mT_W = W.Mt();
-    //         SL_mT_W_ = SL_mT_W;
-    //       }
-
-    //       else if ( (muonVector_.size() > 0) && (electronVector_.size() > 0) ){
-    //         flashgg::Electron l_elec = electronVector_[0];
-    //         auto l_elec_4vec = l_elec.p4();
-    //         auto leading_elec = l_elec_4vec;
-    //         leading_elec_ = leading_elec;
-    //         flashgg::Muon l_muon = muonVector_[0];
-    //         auto l_muon_4vec = l_muon.p4();
-    //         auto leading_muon = l_muon_4vec;
-    //         leading_muon_ = leading_muon;
-    //         elec_pt = l_elec_4vec.pt();
-    //         muon_pt = l_muon_4vec.pt();
-    //         if (elec_pt > muon_pt){
-    //           leading_lepton_ = leading_elec_;
-    //           auto WW = met_ + leading_lepton_ + j0 + j1;
-    //           auto W = met_ + leading_lepton_;
-    //         SL_mT_WW = WW.Mt();
-    //         SL_mT_WW_ = SL_mT_WW;  
-    //         SL_mT_W = W.Mt();
-    //         SL_mT_W_ = SL_mT_W;
-    //         }
-    //         else if (muon_pt > elec_pt){
-    //           leading_lepton_ = leading_muon_;
-    //           auto WW = met_ + leading_lepton_ + j0 + j1;
-    //           auto W = met_ + leading_lepton_;
-    //         SL_mT_WW = WW.Mt();
-    //         SL_mT_WW_ = SL_mT_WW;  
-    //         SL_mT_W = W.Mt();
-    //         SL_mT_W_ = SL_mT_W;
-    //         }
-
-    //       }
-
-    //     // }
-      
-    //   }
-
-
-
-    //   // FL 
-
-    //   // // Two Jets
-    //   // if (JVSize >= 2){
-    //   //   auto j0 = JetVector_[0].p4();
-    //   //   auto j1 = JetVector_[1].p4();
-    //   //   auto dij = j0 + j1;
-    //   //   float dij_m = dij.M();
-    //   //   cout << "dijet mass = " << dij_m << endl;
-
-    //     // if (abs(dij_m - 80.379) < 5.){
-
-    //       reco::Candidate::LorentzVector leading_lepton_; 
-    //       reco::Candidate::LorentzVector subleading_lepton_; 
-    //       if ( (electronVector_.size() >= 2) && (muonVector_.size() == 0) ){
-    //         flashgg::Electron l_elec = electronVector_[0];
-    //         flashgg::Electron sl_elec = electronVector_[1];
-    //         auto l_elec_4vec = l_elec.p4();
-    //         auto sl_elec_4vec = sl_elec.p4();
-    //         auto leading_elec = l_elec_4vec;
-    //         auto subleading_elec = sl_elec_4vec;
-    //         leading_elec_ = leading_elec;
-    //         subleading_elec_ = subleading_elec;
-    //         leading_lepton_ = leading_elec_;
-    //         subleading_lepton_ = subleading_elec_;
-    //         auto WW = met_ + leading_lepton_ + subleading_lepton_;
-    //         FL_mT_WW = WW.Mt();
-    //         FL_mT_WW_ = FL_mT_WW;  
-    //       }
-
-    //       else if ( (muonVector_.size() >= 2) && (electronVector_.size() == 0) ){
-    //         flashgg::Muon l_muon = muonVector_[0];
-    //         flashgg::Muon sl_muon = muonVector_[1];
-    //         auto l_muon_4vec = l_muon.p4();
-    //         auto sl_muon_4vec = sl_muon.p4();
-    //         auto leading_muon = l_muon_4vec;
-    //         auto subleading_muon = sl_muon_4vec;
-    //         leading_muon_ = leading_muon;
-    //         subleading_muon_ = subleading_muon;
-    //         leading_lepton_ = leading_muon_;
-    //         subleading_lepton_ = subleading_muon_;
-    //         auto WW = met_ + leading_lepton_ + subleading_lepton_;
-    //         FL_mT_WW = WW.Mt();
-    //         FL_mT_WW_ = FL_mT_WW;  
-    //       }
-
-    //       else if ( (muonVector_.size() > 0) && (electronVector_.size() > 0) ){
-    //         // flashgg::Electron l_elec = electronVector_[0];
-    //         // auto l_elec_4vec = l_elec.p4();
-    //         // auto leading_elec = l_elec_4vec;
-    //         // leading_elec_ = leading_elec;
-    //         // flashgg::Muon l_muon = muonVector_[0];
-    //         // auto l_muon_4vec = l_muon.p4();
-    //         // auto leading_muon = l_muon_4vec;
-    //         // leading_muon_ = leading_muon;
-    //         // elec_pt = l_elec_4vec.pt();
-    //         // muon_pt = l_muon_4vec.pt();
-    //         // if (elec_pt > muon_pt){
-    //         //   leading_lepton_ = leading_elec_;
-    //         //   auto WW = met_ + leading_lepton_ + j0 + j1;
-    //         //   SL_mT_WW = WW.Mt();
-    //         //   SL_mT_WW_ = SL_mT_WW;  
-    //         // }
-    //         // else if (muon_pt > elec_pt){
-    //         //   leading_lepton_ = leading_muon_;
-    //         //   auto WW = met_ + leading_lepton_ + j0 + j1;
-    //         //   SL_mT_WW = WW.Mt();
-    //         //   SL_mT_WW_ = SL_mT_WW;  
-    //         // }
-
-    //       }
-
-    //     // }
-      
-    //   // }
-
-
-
-    //   // cout << "SL_mT_WW = " << SL_mT_WW << endl;
-    //   // auto WW = met_ + leading_lepton_;
-    //   // SL_mT_WW = W.Mt();
-    //   // SL_mT_WW_ = SL_mT_WW;
-
-    // }     
 
   } //end 

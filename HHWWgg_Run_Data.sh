@@ -41,7 +41,7 @@ command+=$output_direc
 command+=" --stage-to="$root_file_output
 command+=' -x cmsRun Taggers/test/HHWWggTest_cfg.py maxEvents='
 command+=$num_events
-command+=' -q microcentury --no-use-tarball --no-copy-proxy'
+command+=' -q microcentury --no-use-tarball --no-copy-proxy metaConditions=/afs/cern.ch/work/a/atishelm/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json'
 echo "command: $command"
 eval "$command" 
 echo "Finished job for file: $jsonpath"

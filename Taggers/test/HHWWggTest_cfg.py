@@ -1,4 +1,5 @@
-import importlib
+from importlib import import_module
+# import importlib 
 import FWCore.ParameterSet.Config as cms  # imports our CMS-specific Python classes and functions
 import os # python module for os dependent functionality 
 from flashgg.Taggers.flashggHHWWggCandidate_cfi import FlashggHHWWggCandidate # cut parameters 
@@ -38,11 +39,14 @@ import flashgg.Taggers.HHWWggTagVariables as var # python file of lists of strin
 # all_variables = var.HHWWgg_variables # add variable lists together 
 Fit_Variables = var.Fit_Variables
 Reco_Variables = var.Reco_Variables
+RECO_GEN_Variables = var.RECO_GEN_Variables
 
 from flashgg.Taggers.HHWWggCandidateDumper_cfi import HHWWggCandidateDumper
 process.HHWWggCandidateDumper = HHWWggCandidateDumper.clone() # clone parameters from HHWWggCandidateDumpConfig_cff (className, src, ...)
 process.HHWWggCandidateDumper.dumpTrees = True # Trees 
 process.HHWWggCandidateDumper.dumpWorkspace = True # Workspace 
+
+# If signal, if data 
 
 # Create histograms 
 
@@ -52,7 +56,7 @@ cfgTools.addCategories(process.HHWWggCandidateDumper,
                           # ("SL","(CMS_hgg_mass!=-99) && (CMS_hgg_mass>=100) && (CMS_hgg_mass<=180)",0), # for background model 
                           # ("SL","(CMS_hgg_mass!=-99)",0),
                           ("SL","(CMS_hgg_mass!=-99) && (CMS_hgg_mass>=115) && (CMS_hgg_mass<=135)",0), # for signal model 
-                          # ("SL","1",0), # for signal model 
+                          # ("SL","1",0), # for GEN RECO studies 
                           
                           # Data
                           # ("All_HLT_Events","1",0), # All events that passed HLT 
@@ -60,8 +64,9 @@ cfgTools.addCategories(process.HHWWggCandidateDumper,
                         ],
 
                         # variables = all_variables, 
-                        # variables = Reco_Variables,
-                        variables = Fit_Variables, 
+                        variables = Reco_Variables,
+                        # variables = Fit_Variables,
+                        # variables = RECO_GEN_Variables, 
                         histograms=[]
                         )
 
@@ -162,7 +167,7 @@ if customize.processId == "Data":
 # process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
 # process.load("flashgg.Systematics."+customize.metaConditions["flashggDiPhotonSystematics"])
 
-sysmodule = importlib.import_module(
+sysmodule = import_module(
     "flashgg.Systematics."+customize.metaConditions["flashggDiPhotonSystematics"])
 systModules2D = cms.VPSet()
 systModules = cms.VPSet()

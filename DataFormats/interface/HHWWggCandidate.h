@@ -43,6 +43,11 @@ namespace flashgg {
     const std::vector<flashgg::Muon> muonVector() const {return muonVector_;}
     const std::vector<flashgg::Met> METVector() const {return METVector_;}
     const std::vector<reco::GenParticle> GenParticlesVector() const {return GenParticlesVector_;}
+    const std::vector<reco::Candidate::LorentzVector> GenElectrons() const {return GenElectrons_;}
+    const std::vector<reco::Candidate::LorentzVector> GenMuons() const {return GenMuons_;}
+    const std::vector<reco::Candidate::LorentzVector> GenPhotons() const {return GenPhotons_;}
+    const std::vector<reco::Candidate::LorentzVector> GenQuarks() const {return GenQuarks_;}
+    const std::vector<reco::Candidate::LorentzVector> GenNeutrinos() const {return GenNeutrinos_;}
     const std::vector<flashgg::Jet> JetVector() const {return JetVector_;}
     const flashgg::Photon Leading_Photon() const { return Leading_Photon_; };
     const flashgg::Photon Subleading_Photon() const { return Subleading_Photon_; };
@@ -56,17 +61,9 @@ namespace flashgg {
     //std::vector<float> CosThetaAngles() const;
     //float HelicityCosTheta( TLorentzVector Booster, TLorentzVector Boosted) const;
     const float theMETcorpt() const { return theMETcorpt_; };
-    const reco::Candidate::LorentzVector& gen_leading_elec() const { return gen_leading_elec_; };
-    const reco::Candidate::LorentzVector& gen_subleading_elec() const { return gen_subleading_elec_; };
-    const reco::Candidate::LorentzVector& gen_leading_muon() const { return gen_leading_muon_; };
-    const reco::Candidate::LorentzVector& gen_subleading_muon() const { return gen_subleading_muon_; };
     const std::vector<double> Vertex_Variables() const { return Vertex_Variables_; };
     const std::vector<double> Cut_Variables() const { return Cut_Variables_; };
     const float dipho_MVA() const {return dipho_MVA_;};
-    // const float lead_pho_passElectronVeto() const {return lead_pho_passElectronVeto_;};
-    // const float sublead_pho_passElectronVeto() const {return sublead_pho_passElectronVeto_;};
-    // const float lead_pho_hasPixelSeed() const {return lead_pho_hasPixelSeed_;};
-    // const float sublead_pho_hasPixelSeed() const {return sublead_pho_hasPixelSeed_;};
     const float CMS_hgg_mass() const {return CMS_hgg_mass_;};
     const float dZ() const {return dZ_;};
     const float lp_Hgg_MVA() const {return lp_Hgg_MVA_;};
@@ -79,6 +76,11 @@ namespace flashgg {
     std::vector<flashgg::Muon> muonVector_;
     std::vector<flashgg::Met> METVector_;
     std::vector<reco::GenParticle> GenParticlesVector_;
+    std::vector<reco::Candidate::LorentzVector> GenElectrons_;
+    std::vector<reco::Candidate::LorentzVector> GenMuons_;
+    std::vector<reco::Candidate::LorentzVector> GenPhotons_;
+    std::vector<reco::Candidate::LorentzVector> GenQuarks_;
+    std::vector<reco::Candidate::LorentzVector> GenNeutrinos_;
     std::vector<flashgg::Jet> JetVector_;
     flashgg::Photon Leading_Photon_;
     flashgg::Photon Subleading_Photon_;
@@ -89,17 +91,9 @@ namespace flashgg {
     reco::Candidate::LorentzVector leading_muon_;
     reco::Candidate::LorentzVector subleading_muon_;
     float theMETcorpt_;
-    reco::Candidate::LorentzVector gen_leading_elec_;
-    reco::Candidate::LorentzVector gen_subleading_elec_;
-    reco::Candidate::LorentzVector gen_leading_muon_;
-    reco::Candidate::LorentzVector gen_subleading_muon_;
     std::vector<double> Vertex_Variables_;
     std::vector<double> Cut_Variables_;
     float dipho_MVA_;
-    // float lead_pho_passElectronVeto_;
-    // float sublead_pho_passElectronVeto_;
-    // float lead_pho_hasPixelSeed_;
-    // float sublead_pho_hasPixelSeed_;
     float CMS_hgg_mass_;
     float dZ_;
     float lp_Hgg_MVA_;
