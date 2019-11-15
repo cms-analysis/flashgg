@@ -1,4 +1,5 @@
 import FWCore.ParameterSet.Config as cms
+from  flashgg.Systematics.flashggJetSystematics_cfi import jetSystematicsCustomize
 
 class DoubleHCustomize():
     """
@@ -80,8 +81,7 @@ class DoubleHCustomize():
                 "diphoton_pt := diPhoton.pt",
                 "diphoton_eta := diPhoton.eta",
                 "diphoton_phi := diPhoton.phi",
-                "leadingJet_btagWeight := leadJet.weight('JetBTagReshapeWeight') ",
-                "subleadingJet_btagWeight := subleadJet.weight('JetBTagReshapeWeight') ",
+                'btagReshapeWeight := weight("JetBTagReshapeWeightCentral")',
                 
                 "diHiggs_pt := getdiHiggsP4().pt()",
                 "diHiggs_mass := getdiHiggsP4().M()",
@@ -226,6 +226,20 @@ class DoubleHCustomize():
         return variables
 
 
+    def customizeSystematics(self,systlabels,jetsystlabels,metsystlabels):
+       for s in metsystlabels:
+          systlabels.remove(s)
+       metsystlabels = []
+       if self.metaConditions['bRegression']['useBRegressionJERsf'] :
+          for s in jetsystlabels:
+             if "JER" in s :
+                systlabels.remove(s)
+                jetsystlabels.remove(s)
+          if self.customize.doSystematics:
+             for direction in ["Up","Down"]:
+                jetsystlabels.append("JERbreg%s01sigma" % direction)
+                systlabels.append("JERbreg%s01sigma" % direction)
+       return systlabels,jetsystlabels,metsystlabels
 
     def customizeTagSequence(self):
         self.process.load("flashgg.Taggers.flashggDoubleHTag_cff")
@@ -241,6 +255,7 @@ class DoubleHCustomize():
         self.process.flashggDoubleHTag.ttHKiller_std = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_std"])
         self.process.flashggDoubleHTag.ttHKiller_listmean = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_listmean"])
         self.process.flashggDoubleHTag.ttHKiller_liststd = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_liststd"])
+
 
         ## add double Higgs tag to the tag sequence
       #  self.process.flashggTagSequence.replace(self.process.flashggUntagged,(self.process.flashggDoubleHTag+self.process.flashggUntagged))
