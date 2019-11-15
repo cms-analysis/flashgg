@@ -7,7 +7,7 @@ from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariable
 from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariablesHTXS,systematicVariablesHTXS
 import os
 from flashgg.MetaData.MetaConditionsReader import *
-from flashgg.Systematics.flashggDiPhotonSystematics_cfi import flashggDiPhotonSystematics
+# from flashgg.Systematics.flashggDiPhotonSystematics_cfi import flashggDiPhotonSystematics
 
 # SYSTEMATICS SECTION
 dropVBFInNonGold = False  # for 2015 only!
@@ -19,7 +19,8 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
+# process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 )
 
 systlabels = [""]
 phosystlabels = []
@@ -71,11 +72,17 @@ customize.options.register('doDoubleHGenAnalysis',
                            VarParsing.VarParsing.varType.bool,
                            'doDoubleHGenAnalysis'
                            )
-customize.options.register('doHHWWggTagOnly',
+customize.options.register('HHWWggTagsOnly',
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
-                           'doHHWWggTagOnly'
+                           'HHWWggTagsOnly'
+                           )
+customize.options.register('doHHWWggTag',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doHHWWggTag'
                            )
 customize.options.register('doBJetRegression',
                            False,
@@ -255,6 +262,12 @@ if customize.doDoubleHTag:
     minimalVariables += hhc.variablesToDump()
     systematicVariables = hhc.systematicVariables()
 
+if customize.doHHWWggTag:
+    import flashgg.Systematics.HHWWggCustomize 
+    hhwwggc = flashgg.Systematics.HHWWggCustomize.HHWWggCustomize(process, customize, customize.metaConditions)
+    minimalVariables += hhwwggc.variablesToDump()
+    systematicVariables = hhwwggc.systematicVariables()
+
 process.flashggTHQLeptonicTag.processId = cms.string(str(customize.processId))
 
 print 'here we print the tag sequence after'
@@ -286,56 +299,69 @@ if customize.tthTagsOnly:
    
 
 print "customize.processId:",customize.processId
+
 # load appropriate scale and smearing bins here
 # systematics customization scripts will take care of adjusting flashggDiPhotonSystematics
 #process.load("flashgg.Systematics.escales.escale76X_16DecRereco_2015")
 
 # Adding systematics without useEGMTools()
 # sysmodule = importlib.import_module(
-sysmodule = import_module(
-    "flashgg.Systematics."+customize.metaConditions["flashggDiPhotonSystematics"])
-systModules2D = cms.VPSet()
-systModules = cms.VPSet()
 
-if customize.processId == "Data":
-    print'Data'
-    systModules.append(sysmodule.MCScaleHighR9EB_EGM)
-    systModules.append(sysmodule.MCScaleLowR9EB_EGM)
-    systModules.append(sysmodule.MCScaleHighR9EE_EGM)
-    systModules.append(sysmodule.MCScaleLowR9EE_EGM)
-    # systModules.append(sysmodule.MCScaleGain6EB_EGM)
-    # systModules.append(sysmodule.MCScaleGain1EB_EGM)
 
-    for module in systModules:
-        module.ApplyCentralValue = cms.bool(True)
 
-else:
-    print'Not Data'
-    systModules.append(sysmodule.MCScaleHighR9EB_EGM)
-    systModules.append(sysmodule.MCScaleLowR9EB_EGM)
-    systModules.append(sysmodule.MCScaleHighR9EE_EGM)
-    systModules.append(sysmodule.MCScaleLowR9EE_EGM)
+# sysmodule = import_module(
+#     "flashgg.Systematics."+customize.metaConditions["flashggDiPhotonSystematics"])
+# systModules2D = cms.VPSet()
+# systModules = cms.VPSet()
 
-    systModules2D.append(sysmodule.MCSmearHighR9EE_EGM)
-    systModules2D.append(sysmodule.MCSmearLowR9EE_EGM)
-    systModules2D.append(sysmodule.MCSmearHighR9EB_EGM)
-    systModules2D.append(sysmodule.MCSmearLowR9EB_EGM)
+# if customize.processId == "Data":
+#     print'Data'
+#     systModules.append(sysmodule.MCScaleHighR9EB_EGM)
+#     systModules.append(sysmodule.MCScaleLowR9EB_EGM)
+#     systModules.append(sysmodule.MCScaleHighR9EE_EGM)
+#     systModules.append(sysmodule.MCScaleLowR9EE_EGM)
+#     # systModules.append(sysmodule.MCScaleGain6EB_EGM)
+#     # systModules.append(sysmodule.MCScaleGain1EB_EGM)
 
-    for module in systModules:
-        module.ApplyCentralValue = cms.bool(False)
+#     for module in systModules:
+#         module.ApplyCentralValue = cms.bool(True)
 
-process.flashggDiPhotonSystematics = flashggDiPhotonSystematics
-process.flashggDiPhotonSystematics.src = "flashggPreselectedDiPhotons"
-process.flashggDiPhotonSystematics.SystMethods = systModules
-process.flashggDiPhotonSystematics.SystMethods2D = systModules2D
+# else:
+#     print'Not Data'
+#     # systModules.append(sysmodule.MCScaleHighR9EB_EGM)
+#     # systModules.append(sysmodule.MCScaleLowR9EB_EGM)
+#     # systModules.append(sysmodule.MCScaleHighR9EE_EGM)
+#     # systModules.append(sysmodule.MCScaleLowR9EE_EGM)    
+
+#     # systModules2D.append(sysmodule.MCSmearHighR9EE_EGM)
+#     # systModules2D.append(sysmodule.MCSmearLowR9EE_EGM)
+#     # systModules2D.append(sysmodule.MCSmearHighR9EB_EGM)
+#     # systModules2D.append(sysmodule.MCSmearLowR9EB_EGM)
+
+#     # for module in systModules:
+#         # module.ApplyCentralValue = cms.bool(False)
+
+#     systModules.append(sysmodule.TriggerWeight) # applycentralvalue = true 
+
+
+
+
+# process.flashggDiPhotonSystematics = flashggDiPhotonSystematics
+# process.flashggDiPhotonSystematics.src = "flashggPreselectedDiPhotons"
+# process.flashggDiPhotonSystematics.SystMethods = systModules
+# process.flashggDiPhotonSystematics.SystMethods2D = systModules2D
 
 # Or use the official tool instead
-# useEGMTools(process)
+useEGMTools(process)
 
 # Only run systematics for signal events
 # convention: ggh vbf wzh (wh zh) tth
 signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","ggF_X250_WWgg_qqlnugg"]
 # print'customize'
+# print'checking customize options'
+print'customize.processId.count("ggF_X250_WWgg_qqlnugg") = ',customize.processId.count("ggF_X250_WWgg_qqlnugg")
+# for thing in customize.processId.count(0):
+    # print'thing = ',thing 
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 #if customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance") or customize.processId.count("hh_"): 
 if is_signal:
@@ -415,6 +441,11 @@ if customize.doubleHTagsOnly:
     if customize.processId == "Data":
         variablesToUse = minimalNonSignalVariables
 
+if customize.HHWWggTagsOnly:
+    variablesToUse = minimalVariables
+    if customize.processId == "Data":
+        variablesToUse = minimalNonSignalVariables
+
 print "--- Systematics  with independent collections ---"
 print systlabels
 print "-------------------------------------------------"
@@ -430,7 +461,8 @@ cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels
 
 # Dump an object called NoTag for untagged events in order to track QCD weights
 # Will be broken if it's done for non-central values, so turn this on only for the non-syst tag sorter
-process.flashggTagSorter.CreateNoTag = True # MUST be after tag sequence cloning
+# process.flashggTagSorter.CreateNoTag = True # MUST be after tag sequence cloning
+process.flashggTagSorter.CreateNoTag = False # MUST be after tag sequence cloning
 
 ###### Dumper section
 
@@ -500,6 +532,10 @@ elif customize.tthTagsOnly:
         ]
 elif customize.doubleHTagsOnly:
     tagList = hhc.tagList
+    print "taglist is:"
+    print tagList
+elif customize.HHWWggTagsOnly:
+    tagList = hhwwggc.tagList
     print "taglist is:"
     print tagList
 else:
@@ -659,133 +695,6 @@ if customize.tthTagsOnly:
     # Now, we put the ttH tags back in the sequence with modified systematics workflow
     modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystlabels, jetsystlabels)
 
-##-- HH->WWgg
-
-elif customize.doHHWWggTagOnly:
-    
-    # print' _   _   _   _              __     _    _   _    _  \|/                '                 
-    # print'| | | | | | | |             \ \   | |  | | | |  | | /|\               '                
-    # print'| |_| | | |_| |  ____________\ \  | |  | | | |  | |     __ _    __ _ '
-    # print'|  _  | |  _  | |_____________  > | |/\| | | |/\| |    / _` |  / _` |'
-    # print'| | | | | | | |              / /  \  /\  / \  /\  /   | (_| | | (_| |'
-    # print'\_| |_/ \_| |_/             /_/    \/  \/   \/  \/     \__, |  \__, |'
-    # print'                                                        __/ |   __/ |'
-    # print'                                                       |___/   |___/ '
-
-    print' _   _   _   _              __     _    _   _    _  \|/  _   _  _   _ '                 
-    print'| | | | | | | |             \ \   | |  | | | |  | | /|\ ( \ / )( \ / )'                
-    print'| |_| | | |_| |  ____________\ \  | |  | | | |  | |      \ v /  \ v / '
-    print'|  _  | |  _  | |_____________  > | |/\| | | |/\| |       | |    | |  '
-    print'| | | | | | | |              / /  \  /\  / \  /\  /       | |    | |  '
-    print'\_| |_/ \_| |_/             /_/    \/  \/   \/  \/        |_|    |_|  '
-
-    from flashgg.Taggers.flashggHHWWggCandidate_cfi import FlashggHHWWggCandidate # cut parameters 
-    process.FlashggHHWWggCandidate = FlashggHHWWggCandidate.clone() # clone flashgg HHWWggCandidate parameters here 
-    from flashgg.Taggers.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
-    process.FlashggHHWWggCandidate.idSelection = cms.PSet(
-            rho = flashggPreselectedDiPhotons.rho,
-            cut = flashggPreselectedDiPhotons.cut, # diphoton preselection cuts. Become part of Idselector definition  
-            variables = flashggPreselectedDiPhotons.variables,
-            categories = flashggPreselectedDiPhotons.categories
-            )
-
-    from flashgg.Taggers.HHWWggCandidateDumper_cfi import HHWWggCandidateDumper
-    process.HHWWggCandidateDumper = HHWWggCandidateDumper.clone() # clone parameters from HHWWggCandidateDumpConfig_cff (className, src, ...)
-    process.HHWWggCandidateDumper.dumpTrees = True # Trees 
-    # process.HHWWggCandidateDumper.dumpWorkspace = True # Workspace 
-
-    # If signal, if data 
-    import flashgg.Taggers.HHWWggTagVariables as var # python file of lists of strings 
-    RECO_GEN_Variables = var.RECO_GEN_Variables
-
-    # Create histograms 
-
-    # print'variablesToUse before HHWWgg changes = ',variablesToUse 
-
-
-    for vi,var in enumerate(variablesToUse):
-        # print'var = ',var
-
-        if var == 'CMS_hgg_mass[160,100,180]:=diPhoton().mass':
-            variablesToUse[vi] = 'CMS_hgg_mass[160,100,180] := CMS_hgg_mass()'
-        elif var == 'dZ[40,-20.,20.]:=(tagTruth().genPV().z-diPhoton().vtx().z)':
-            variablesToUse[vi] = 'dZ[40,-20.,20.] := dZ()' 
-
-    # print'variablesToUse after HHWWgg changes = ',variablesToUse 
-
-
-    cfgTools.addCategories(process.HHWWggCandidateDumper,
-                            [
-                            # Signal Categories
-                            # ("SL","(CMS_hgg_mass!=-99) && (CMS_hgg_mass>=100) && (CMS_hgg_mass<=180)",0), # for background model 
-                            # ("SL","(CMS_hgg_mass!=-99)",0),
-                            ("SL","(CMS_hgg_mass!=-99) && (CMS_hgg_mass>=115) && (CMS_hgg_mass<=135)",0), # for signal model 
-                            # ("SL","1",0), # for GEN RECO studies 
-                            
-                            # Data
-                            # ("All_HLT_Events","1",0), # All events that passed HLT 
-
-                            ],
-
-                            # variables = all_variables, 
-                            # variables = Reco_Variables,
-                            # variables = Fit_Variables,
-                            # variables = RECO_GEN_Variables, 
-                            variables = variablesToUse,
-                            histograms=[]
-                            )
-
-    # zero_vtx = 1
-
-    # if zero_vtx:
-    from flashgg.MicroAOD.flashggDiPhotons_cfi import flashggDiPhotons
-    process.flashggDiPhotonsVtx0 = flashggDiPhotons.clone(useZerothVertexFromMicro = cms.bool(True), whichVertex=cms.uint32(0),
-                                                            vertexProbMVAweightfile = "flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml",
-                                                            vertexIdMVAweightfile = "flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml"
-    )
-
-    process.flashggPreselectedDiPhotons.src = "flashggDiPhotonsVtx0" # Only use zeroth vertex diphotons, order by pt 
-    process.p = cms.Path(process.flashggDiPhotonsVtx0
-                            *process.flashggPreselectedDiPhotons
-                            *process.flashggDiPhotonMVA
-                            *process.flashggUnpackedJets
-                            *process.dataRequirements
-                            *process.flashggMetFilters # added 
-                            *process.genFilter
-                            *process.flashggDifferentialPhoIdInputsCorrection
-                            *process.flashggDiPhotonSystematics
-                            *process.flashggMetSystematics
-                            *process.flashggMuonSystematics*process.flashggElectronSystematics
-                            *(process.flashggUnpackedJets*process.jetSystematicsSequence)
-                            *process.FlashggHHWWggCandidate
-                            *process.HHWWggCandidateDumper
-                            )
-
-    # else:
-    # process.flashggPreselectedDiPhotons.src = "flashggDiPhotons" # don't require 0th vertex 
-    # process.p = cms.Path(process.flashggPreselectedDiPhotons
-    #                         *process.flashggDiPhotonMVA
-    #                         *process.flashggUnpackedJets
-    #                         *process.dataRequirements
-    #                         *process.flashggDiPhotonSystematics
-    #                         *process.FlashggHHWWggCandidate
-    #                         *process.HHWWggCandidateDumper
-    #                         )
-    # process.p = cms.Path(process.dataRequirements*
-    #                      process.flashggMetFilters*
-    #                      process.genFilter*
-    #                      process.flashggDiPhotons* # needed for 0th vertex from microAOD
-    #                      process.flashggDifferentialPhoIdInputsCorrection*
-    #                      process.flashggDiPhotonSystematics*
-    #                      process.flashggMetSystematics*
-    #                      process.flashggMuonSystematics*process.flashggElectronSystematics*
-    #                      (process.flashggUnpackedJets*process.jetSystematicsSequence)*
-    #                      (process.flashggTagSequence*process.systematicsTagSequences)*
-    #                      process.flashggSystTagMerger*
-    #                      process.penultimateFilter*
-    #                      process.finalFilter*
-    #                      process.tagsDumper)    
-
 else :
     process.p = cms.Path(process.dataRequirements*
                          process.flashggMetFilters*
@@ -832,6 +741,8 @@ if customize.doBJetRegression:
 if customize.doDoubleHTag:
     hhc.doubleHTagRunSequence(systlabels,jetsystlabels,phosystlabels)
   
+if customize.doHHWWggTag:
+    hhwwggc.HHWWggTagRunSequence(systlabels,jetsystlabels,phosystlabels)  
 
 if customize.doFiducial:
     if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) 

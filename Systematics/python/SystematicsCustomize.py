@@ -260,7 +260,8 @@ def customizeJetSystematicsForData(process):
     process.jetCorrectorChain = cms.Sequence(process.ak4PFCHSL1FastL2L3ResidualCorrectorChain)
 
 def useEGMTools(process):
-    # remove old scales
+
+    # remove old scales 
     for isyst in [ process.MCScaleHighR9EB, process.MCScaleLowR9EB, process.MCScaleHighR9EE, process.MCScaleLowR9EE ]:
             process.flashggDiPhotonSystematics.SystMethods.remove(isyst)
 
