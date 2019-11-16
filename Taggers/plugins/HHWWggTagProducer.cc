@@ -55,14 +55,14 @@ namespace flashgg {
     typedef math::XYZTLorentzVector LorentzVector;
 
     //---ctors
-    HHWWggTagProducer();
+    // HHWWggTagProducer();
     HHWWggTagProducer( const ParameterSet & );
 
     //---Outtree 
     edm::Service<TFileService> fs;
     
-    TH1F* indexes; 
-    TH1F* numEvents; 
+    // TH1F* indexes; 
+    // TH1F* numEvents; 
     // TH1F* gen_weights; 
     // TH1F* cutFlow;
     // TH1F* WTags;
@@ -83,8 +83,8 @@ namespace flashgg {
     EDGetTokenT<View<Photon> > photonToken_;
     Handle<View<flashgg::Photon> > photons;
 
-    EDGetTokenT<View<DiPhotonCandidate> > diphotonToken_;
-    Handle<View<flashgg::DiPhotonCandidate> > diphotons;
+    // EDGetTokenT<View<DiPhotonCandidate> > diphotonToken_;
+    // Handle<View<flashgg::DiPhotonCandidate> > diphotons;
 
     EDGetTokenT<View<reco::Vertex> > vertexToken_;
     Handle<View<reco::Vertex> > vertex;
@@ -121,6 +121,7 @@ namespace flashgg {
 
     //---ID selector
     ConsumesCollector cc_;
+    GlobalVariablesComputer globalVariablesComputer_;
     // CutBasedDiPhotonObjectSelector idSelector_;
 
     //----output collection
@@ -168,22 +169,22 @@ namespace flashgg {
   };
 
   //---constructors
-  HHWWggTagProducer::HHWWggTagProducer( ):
-  photonToken_(),
-  diphotonToken_(),
-  genParticleToken_(),
-  electronToken_(),
-  muonToken_(),
-  METToken_(),
-  cc_( consumesCollector() )
-  // idSelector_( ParameterSet(), cc_ )
+  // HHWWggTagProducer::HHWWggTagProducer( ):
+  // photonToken_(),
+  // diphotonToken_(),
+  // genParticleToken_(),
+  // electronToken_(),
+  // muonToken_(),
+  // METToken_(),
+  // cc_( consumesCollector() )
+  // // idSelector_( ParameterSet(), cc_ )
 
-  {}
+  // {}
 
     //---standard
     HHWWggTagProducer::HHWWggTagProducer( const ParameterSet & pSet):
     photonToken_( consumes<View<Photon> >( pSet.getParameter<InputTag> ( "PhotonTag" ) ) ),
-    diphotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( pSet.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
+    // diphotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( pSet.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
     vertexToken_( consumes<View<reco::Vertex> >( pSet.getParameter<InputTag> ( "VertexTag" ) ) ),
     genParticleToken_( consumes<View<reco::GenParticle> >( pSet.getParameter<InputTag> ( "GenParticleTag" ) ) ),
     electronToken_( consumes<View<Electron> >( pSet.getParameter<InputTag> ( "ElectronTag" ) ) ), 
@@ -195,7 +196,8 @@ namespace flashgg {
     triggerPAT_( consumes<edm::TriggerResults>(pSet.getParameter<InputTag>("PATfilters") ) ),
     triggerFLASHggMicroAOD_( consumes<edm::TriggerResults>( pSet.getParameter<InputTag>("FLASHfilters") ) ),
     systLabel_( pSet.getParameter<string> ( "SystLabel" ) ),
-    cc_( consumesCollector() ) // need absence of comma on last entry 
+    cc_( consumesCollector() ), // need absence of comma on last entry 
+    globalVariablesComputer_(pSet.getParameter<edm::ParameterSet>("globalVariables"), cc_)
     // idSelector_( pSet.getParameter<ParameterSet> ( "idSelection" ), cc_ )
 
     {
@@ -234,8 +236,8 @@ namespace flashgg {
 
       genInfo_ = pSet.getUntrackedParameter<edm::InputTag>( "genInfo", edm::InputTag("generator") );
       genInfoToken_ = consumes<GenEventInfoProduct>( genInfo_ );
-      indexes = fs->make<TH1F> ("indexes","indexes",5,0,5);
-      numEvents = fs->make<TH1F> ("numEvents","numEvents",1,0,1);
+      // indexes = fs->make<TH1F> ("indexes","indexes",5,0,5);
+      // numEvents = fs->make<TH1F> ("numEvents","numEvents",1,0,10);
 
       // gen_weights = fs->make<TH1F> ("gen_weights","gen_weights",1000,-2,2);
       // vars = fs->make<TH1F> ("vars","vars",10,0,10);
@@ -285,10 +287,12 @@ namespace flashgg {
     void HHWWggTagProducer::produce( Event &event, const EventSetup & )
     {
 
+      // update global variables
+      globalVariablesComputer_.update(event);
 
       // Get particle objects
       event.getByToken( photonToken_, photons );
-      event.getByToken( diphotonToken_, diphotons );
+      // event.getByToken( diphotonToken_, diphotons );
       // event.getByToken( genParticleToken_, genParticle );
       event.getByToken( electronToken_, electrons );
       event.getByToken( muonToken_, muons );
@@ -334,13 +338,13 @@ namespace flashgg {
       reco::GenParticle::Point genVertex;
 
       std::unique_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
-      // edm::RefProd<vector<TagTruthBase> > rTagTruth = event.getRefBeforePut<vector<TagTruthBase> >();
+      edm::RefProd<vector<TagTruthBase> > rTagTruth = event.getRefBeforePut<vector<TagTruthBase> >();
 
 //-----------------------------------------------------------------------------------------------------------
 
-      cout << "**************************** in HHWWggTagProducer::produce **********************************************" << endl;
+      // cout << "**************************** in HHWWggTagProducer::produce **********************************************" << endl;
 
-      numEvents->Fill(1);
+      // numEvents->Fill(1);
 
       // Vertex variables
       double gen_vertex_z = -999;
@@ -432,7 +436,7 @@ namespace flashgg {
                       {
                           if(flagList[j]==triggerNames.triggerName(i))
                               {
-                                  // passMETfilters=0;
+                                  // passMETfilters=0;  
                                   break;
                               }
                       }
@@ -522,14 +526,14 @@ namespace flashgg {
         if (inputDiPhotonSuffixes_[diphoton_idx].empty()) loopOverJets = inputJetsSuffixes_.size();
         for (unsigned int jet_col_idx = 0; jet_col_idx < loopOverJets; jet_col_idx++) {//looping over all jet systematics, only for nominal diphotons
           cout << "jet_col_idx = " << jet_col_idx << endl;
-       std::unique_ptr<vector<HHWWggTag> > tags( new vector<HHWWggTag> );
+          std::unique_ptr<vector<HHWWggTag> > tags( new vector<HHWWggTag> );
 
 
-      if (diphotons->size() > 0){
+      if (diPhotons->size() > 0){
       for( unsigned int diphoIndex = 0; diphoIndex < 1; diphoIndex++ ) { // only look at highest pt dipho
         // std::unique_ptr<vector<HHWWggTag> > tags( new vector<HHWWggTag> );
         // edm::Ptr<flashgg::DiPhotonCandidate> dipho = Corrdiphoton; 
-        edm::Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( diphoIndex ); 
+        edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( diphoIndex ); 
         edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );    
         // cout << "dipho energy1 = " << dipho->genP4().E() << endl; 
 
@@ -630,7 +634,7 @@ namespace flashgg {
         // if( mvares->result < MVAThreshold_ ) { continue; }
 
 
-        dipho_MVA = mvares->result; 
+        // dipho_MVA = mvares->result; 
 
 
         // cout << "diphomva = " << mvares->result << endl;
@@ -702,7 +706,7 @@ namespace flashgg {
         }
 
         // Jets 
-        unsigned int jetCollectionIndex = diphotons->at( diphoIndex ).jetCollectionIndex();
+        unsigned int jetCollectionIndex = diPhotons->at( diphoIndex ).jetCollectionIndex();
         size_t vtx = (size_t)dipho->jetCollectionIndex();
         edm::Handle<edm::View<flashgg::Jet> > Jets_;
 
@@ -712,6 +716,7 @@ namespace flashgg {
 
         // event.getByToken( jetTokens_[jetCollectionIndex], Jets_);
         event.getByToken( jetTokens_[jet_col_idx*inputJetsCollSize_+vtx], Jets_);  //take the corresponding vertex of current systematic
+        cout << "right after getbytoken jettokens jets" << endl;
 
         std::vector<edm::Ptr<Jet> > tagJets;
 
@@ -829,6 +834,7 @@ namespace flashgg {
           Ptr<flashgg::Electron> tag_electron = goodElectrons[0];
           Ptr<flashgg::Jet> jet1 = tagJets[0];
           Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
+          int catnum = 0;
           if (n_good_jets == 1){
           cout << "in HHWWggTagProducer.cc: saving tag object 1 jet" << endl;
 
@@ -837,10 +843,16 @@ namespace flashgg {
                 tag_obj.setSystLabel( inputDiPhotonSuffixes_[diphoton_idx] );
             else  
                 tag_obj.setSystLabel( inputJetsSuffixes_[jet_col_idx]);
-            // tag_obj.setSystLabel( systLabel_ );
+            cout << "HHWWgg diphoton candIndex = " << diphoIndex << endl;
             tag_obj.setDiPhotonIndex( diphoIndex ); 
-            tag_obj.setMVA( dipho_MVA );
+            tag_obj.setMVA( -0.9 );
+            tag_obj.setCategoryNumber( catnum );
+            tag_obj.setEventNumber(event.id().event() );
             tags->push_back( tag_obj );
+
+            if( ! event.isRealData() ) {
+              tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                 
+            }
           }
           else if (n_good_jets == 2){
           cout << "in HHWWggTagProducer.cc: saving tag object 2 jets" << endl;
@@ -851,10 +863,16 @@ namespace flashgg {
                 tag_obj.setSystLabel( inputDiPhotonSuffixes_[diphoton_idx] );
             else  
                 tag_obj.setSystLabel( inputJetsSuffixes_[jet_col_idx]);
-            // tag_obj.setSystLabel( systLabel_ );
+            cout << "HHWWgg diphoton candIndex = " << diphoIndex << endl;
             tag_obj.setDiPhotonIndex( diphoIndex );           
-            tag_obj.setMVA( dipho_MVA );
-            tags->push_back( tag_obj );  
+            tag_obj.setMVA( -0.9 );
+            tag_obj.setCategoryNumber( catnum );
+            tag_obj.setEventNumber(event.id().event() );
+            tags->push_back( tag_obj ); 
+
+            if( ! event.isRealData() ) {
+              tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                 
+            }        
           }
           
         }
@@ -867,11 +885,6 @@ namespace flashgg {
       } // Diphoton loop 
 
       cout << "Just left diphoton loop" << endl;
-
-      // event.put( std::move( tags ) );
-      cout << "About to add tags to event " << endl;
-      event.put( std::move( tags ),inputDiPhotonSuffixes_[diphoton_idx] );
-      cout << "Just added tags to event " << endl;
 
       // Compare diphoton vertex to gen vertex
       
@@ -923,6 +936,14 @@ namespace flashgg {
 
     } // if at least 1 PS diphoton 
     cout << "Just left if at least 1 PS diphoton" << endl;
+      if (loopOverJets == 1){
+        event.put( std::move( tags ),inputDiPhotonSuffixes_[diphoton_idx] );
+        cout << "inputDiPhotonSuffixes_[" << diphoton_idx << "] = " << inputDiPhotonSuffixes_[diphoton_idx] << endl; // Trying to debug HHWWgg 
+      }
+      else{  
+        event.put( std::move( tags ),inputJetsSuffixes_[jet_col_idx] );
+        cout << "inputJetsSuffixes_[" << jet_col_idx << "] = " << inputJetsSuffixes_[jet_col_idx] << endl; // Trying to debug HHWWgg 
+      }
       } // looping over jet systematics 
     cout << "Just left looping over jet systematics" << endl;
 
@@ -1109,20 +1130,18 @@ namespace flashgg {
       // event.put( std::move(HHWWggColl_) );
       // cout << "**************************** End of HHWWggTagProducer::produce **********************************************" << endl;
       // event.put( std::move( tags ), systematicsLabels[syst_idx] );
-      cout << "Right before putting into event" << endl;
+      // cout << "Right before putting into event" << endl;
 
       // event.put( std::move( tags ) );
       event.put( std::move( truths ) );
 
-      cout << "Right after putting into event" << endl;
+      // cout << "Right after putting into event" << endl;
 
     }
 
 
 
   }
-  // typedef flashgg::HHWWggTagProducer FlashggHHWWggTagProducer;
-  // DEFINE_FWK_MODULE( FlashggHHWWggTagProducer );
 
   typedef flashgg::HHWWggTagProducer FlashggHHWWggTagProducer;
   DEFINE_FWK_MODULE( FlashggHHWWggTagProducer );

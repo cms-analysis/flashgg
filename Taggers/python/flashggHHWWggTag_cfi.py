@@ -1,17 +1,16 @@
 import FWCore.ParameterSet.Config as cms
-# from HHWWggCandidateDumper_cfi import HHWWggCandidateDumper
-# from flashggHHWWggTag_cfi import flashggHHWWggTag
 
+from flashgg.Taggers.globalVariables_cff import globalVariables
 from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
 from flashgg.MicroAOD.flashggJets_cfi import  maxJetCollections
 
 # cfi = configuration fragment include
 # Clone these params into _cfg 
 flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
-# flashggHHWWggTag = cms.EDProducer("FlashggHHWWggCandidateProducer", 
+                                    globalVariables=globalVariables,
                                     PhotonTag = cms.InputTag('flashggRandomizedPhotons'),
                                     # DiPhotonTag = cms.InputTag('flashggDiPhotonSystematics'),
-                                    DiPhotonTag = cms.InputTag('flashggPreselectedDiPhotons'),
+                                    # DiPhotonTag = cms.InputTag('flashggPreselectedDiPhotons'),
                                     SystLabel = cms.string(""),
                                     JetsName = cms.string("bRegProducer"), # 
                                     JetsCollSize = cms.uint32(maxJetCollections), #

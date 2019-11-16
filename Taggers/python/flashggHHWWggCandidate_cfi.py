@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
-from HHWWggCandidateDumper_cfi import HHWWggCandidateDumper
-from flashggHHWWggTag_cfi import flashggHHWWggTag
+# from HHWWggCandidateDumper_cfi import HHWWggCandidateDumper
+# from flashggHHWWggTag_cfi import flashggHHWWggTag
 
 from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
 

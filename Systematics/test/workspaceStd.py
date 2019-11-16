@@ -359,7 +359,7 @@ useEGMTools(process)
 signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","ggF_X250_WWgg_qqlnugg"]
 # print'customize'
 # print'checking customize options'
-print'customize.processId.count("ggF_X250_WWgg_qqlnugg") = ',customize.processId.count("ggF_X250_WWgg_qqlnugg")
+# print'customize.processId.count("ggF_X250_WWgg_qqlnugg") = ',customize.processId.count("ggF_X250_WWgg_qqlnugg")
 # for thing in customize.processId.count(0):
     # print'thing = ',thing 
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
@@ -561,8 +561,18 @@ process.tagsDumper.classifierCfg.remap=cms.untracked.VPSet()
 for tag in tagList: 
   tagName=tag[0]
   tagCats=tag[1]
+#   print'tagName = ',tagName
+#   print'tagCats = ',tagCats
+  # replace src="flashggDoubleHTag" with "DoubleHTag"
   # remap return value of class-based classifier
   process.tagsDumper.classifierCfg.remap.append( cms.untracked.PSet( src=cms.untracked.string("flashgg%s"%tagName), dst=cms.untracked.string(tagName) ) )
+  print'Remap:'
+  print'flashgg' + tagName
+  print'to'
+  print tagName
+#   print('src = flashgg{}'.format(x, x*x, x*x*x))
+#   print'tagName = ',tagname
+#   print'systlabels = ',systlabels
   for systlabel in systlabels:
       if not systlabel in definedSysts:
           # the cut corresponding to the systematics can be defined just once
@@ -596,6 +606,9 @@ for tag in tagList:
           nPdfWeights = -1
           nAlphaSWeights = -1
           nScaleWeights = -1
+      print'just before cfgtool definition'
+    #   print'tagName = ',tagName
+    #   print'tagCats = ',tagCats
       cfgTools.addCategory(process.tagsDumper,
                            systlabel,
                            classname=tagName,

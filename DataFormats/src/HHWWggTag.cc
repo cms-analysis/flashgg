@@ -17,62 +17,43 @@ HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.)
 {
 
 }
-// diphoVector_ (),
-// electronVector_ (),
-// muonVector_ (),
-// METVector_ (),
-// GenParticlesVector_ (),
-// GenElectrons_ (),
-// GenMuons_ (),
-// GenPhotons_ (),
-// GenQuarks_ (),
-// GenNeutrinos_ (),
-// JetVector_ (),
-// Leading_Photon_ (),
-// Subleading_Photon_ (),
-// MET_fourvec_ (),
-// leading_dpho_ (),
-// leading_elec_(),
-// subleading_elec_(),
-// leading_muon_(),
-// subleading_muon_(),
-// theMETcorpt_(),
-// Vertex_Variables_ (),
-// Cut_Variables_ (),
-// dipho_MVA_ (),
-// CMS_hgg_mass_ (),
-// dZ_ (),
-// lp_Hgg_MVA_ (),
-// slp_Hgg_MVA_ ()
-// Need absence of comma on last variable 
 
-// {}
+HHWWggTag::~HHWWggTag() {}
 
-  HHWWggTag::~HHWWggTag() {}
-  
-  HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Met> MET,
-                       edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2)
-  {
+HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Met> MET,
+                      edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2)
+{
+  cout << "[In HHWWggTag.cc] - Tagging two jet SL HHWWgg event" << endl;
+  dipho_ = dipho;
+  // test_var_ = 50.;
+}
 
-  }
+HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Met> MET,
+                      edm::Ptr<flashgg::Jet> jet)
+{
+  cout << "[In HHWWggTag.cc] - Tagging one jet SL HHWWgg event" << endl;
+  dipho_ = dipho;
+  // test_var_ = 50.;
+}
 
-  HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Met> MET,
-                       edm::Ptr<flashgg::Jet> jet)
-  {
+// You need this 
+HHWWggTag *HHWWggTag::clone() const
+{
+    HHWWggTag *result = new HHWWggTag( *this );
+    return result;
+}
 
-  }
+// HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> muon, edm::Ptr<flashgg::Met> MET,
+//                      edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2)
+// {
 
-  // HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> muon, edm::Ptr<flashgg::Met> MET,
-  //                      edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2)
-  // {
+// }
 
-  // }
+// HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> muon, edm::Ptr<flashgg::Met> MET,
+//                      edm::Ptr<flashgg::Jet> jet)
+// {
 
-  // HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> muon, edm::Ptr<flashgg::Met> MET,
-  //                      edm::Ptr<flashgg::Jet> jet)
-  // {
-
-  // }
+// }
 
 
 
