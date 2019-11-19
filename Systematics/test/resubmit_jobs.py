@@ -98,7 +98,7 @@ def main():
   corrupted_files = files_to_remove(present_output,dir)
   not_finished = list(set(full_output) - set(present_output) - set(corrupted_files))
   print 'Number of missing files : ',len(not_finished)
-  #print 'Missing the following files : ' not_finished
+  print 'Missing the following files : ', not_finished
   runJobs_dict =   find_runJobs(not_finished,dir)
   print 'runJobs to be resubmitted : ',runJobs_dict
   prepare_runJobs_missing(runJobs_dict,dir)

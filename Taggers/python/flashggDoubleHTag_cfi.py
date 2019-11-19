@@ -95,7 +95,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    useElectronLooseID = cms.bool(True),
                                    electronEtaThresholds=cms.vdouble(1.4442,1.566,2.5),
                                    ttHWeightfile = cms.untracked.FileInPath("%s"%ttHWeightfile), # for now
-                                   ttHScoreThreshold = cms.double(0.2), #to be updated
+                                   ttHScoreThreshold = cms.double(0.0), #to be updated
                                    # For standardization
                                    ttHKiller_mean = ttHKiller_mean,
                                    ttHKiller_std = ttHKiller_std,
