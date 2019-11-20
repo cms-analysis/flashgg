@@ -62,10 +62,7 @@ namespace flashgg {
         EDGetTokenT<View<Photon> > photonToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
-        EDGetTokenT<int> stage0binToken_, stage1binToken_, njetsToken_;
         EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
-
-        EDGetTokenT<float> pTHToken_,pTVToken_;
         EDGetTokenT<double> rhoTag_;
         string systLabel_;
 
@@ -179,11 +176,6 @@ namespace flashgg {
         CutBasedDiphoId_ = iConfig.getParameter<std::vector<double>>( "CutBasedDiphoId" );
 
         ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
-        stage0binToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0bin") );
-        stage1binToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1bin") );
-        njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
-        pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
-        pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
         newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
 
         MVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "MVAweightfile" );
@@ -224,16 +216,8 @@ namespace flashgg {
 
     void TTHDiLeptonTagProducer::produce( Event &evt, const EventSetup & )
     {
-        Handle<int> stage0bin, stage1bin, njets;
-        Handle<float> pTH, pTV;
-        evt.getByToken(stage0binToken_, stage0bin);
-        evt.getByToken(stage1binToken_,stage1bin);
-        evt.getByToken(njetsToken_,njets);
-        evt.getByToken(pTHToken_,pTH);
-        evt.getByToken(pTVToken_,pTV);
         Handle<HTXS::HiggsClassification> htxsClassification;
         evt.getByToken(newHTXSToken_,htxsClassification);
-
 
         //Handle<View<flashgg::Jet> > theJets;
         //evt.getByToken( thejetToken_, theJets );
@@ -625,21 +609,16 @@ namespace flashgg {
                 {
                     TagTruthBase truth_obj;
                     truth_obj.setGenPV( higgsVtx );
-                    if ( stage0bin.isValid() )
-                    {
-                        truth_obj.setHTXSInfo( *( stage0bin.product() ),
-                                               *( stage1bin.product() ),
-                                               *( njets.product() ),
-                                               *( pTH.product() ),
-                                               *( pTV.product() ) );
-                    } else if ( htxsClassification.isValid() ) {
+                    if ( htxsClassification.isValid() ) {
                         truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
                                                htxsClassification->stage1_cat_pTjet30GeV,
+                                               htxsClassification->stage1_1_cat_pTjet30GeV,
+                                               htxsClassification->stage1_1_fine_cat_pTjet30GeV,
                                                htxsClassification->jets30.size(),
                                                htxsClassification->p4decay_higgs.pt(),
                                                htxsClassification->p4decay_V.pt() );
                     } else {
-                        truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
+                        truth_obj.setHTXSInfo( 0, 0, 0, 0, 0, 0., 0. );
                     }
                     truths->push_back( truth_obj );
                     tthtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );

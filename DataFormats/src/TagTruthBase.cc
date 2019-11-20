@@ -15,9 +15,11 @@ TagTruthBase *TagTruthBase::clone() const
     return result;
 }
 
-void TagTruthBase::setHTXSInfo( int stage0bin, int stage1bin, int njets, float pTH, float pTV ) {
+void TagTruthBase::setHTXSInfo( int stage0bin, int stage1bin, int stage1p1bin, int stage1p1binFine, int njets, float pTH, float pTV ) {
     stage0bin_ = stage0bin;
     stage1bin_ = stage1bin;
+    stage1p1bin_ = stage1p1bin;
+    stage1p1binFine_ = stage1p1binFine;
     njets_ = njets;
     pTH_ = pTH;
     pTV_ = pTV;
@@ -83,11 +85,13 @@ void TagTruthBase::setHTXSInfo( int stage0bin, int stage1bin, int njets, float p
     stage1map_[701] = 29; //BBH
     stage1map_[800] = -8; //TH_FWDH
     stage1map_[801] = 30; //TH
+
+    //FIXME add the stage 1p1 and 1p1Fine maps here
 }
 
 void TagTruthBase::copyBaseInfo( const TagTruthBase &b ) {
     setGenPV( b.genPV() );
-    setHTXSInfo( b.HTXSstage0bin(), b.HTXSstage1bin(), b.HTXSnjets(), b.HTXSpTH(), b.HTXSpTV() );
+    setHTXSInfo( b.HTXSstage0bin(), b.HTXSstage1bin(), b.HTXSstage1p1bin(), b.HTXSstage1p1binFine(), b.HTXSnjets(), b.HTXSpTH(), b.HTXSpTV() );
 }
 
 int TagTruthBase::HTXSstage0orderedBin() const {
@@ -107,6 +111,26 @@ int TagTruthBase::HTXSstage1orderedBin() const {
     }
     else {
         throw cms::Exception( "Missing Data" ) << "Could not find value (in the TagTruthBase) for the STXS process: " << stage1bin_ << "\n";;
+    }
+}
+
+int TagTruthBase::HTXSstage1p1orderedBin() const {
+    auto theIt = stage1p1map_.find(stage1p1bin_);
+    if( theIt != stage1p1map_.end() ) {
+        return theIt->second;
+    }
+    else {
+        throw cms::Exception( "Missing Data" ) << "Could not find value (in the TagTruthBase) for the STXS process: " << stage1p1bin_ << "\n";;
+    }
+}
+
+int TagTruthBase::HTXSstage1p1orderedBinFine() const {
+    auto theIt = stage1p1mapFine_.find(stage1p1binFine_);
+    if( theIt != stage1p1mapFine_.end() ) {
+        return theIt->second;
+    }
+    else {
+        throw cms::Exception( "Missing Data" ) << "Could not find value (in the TagTruthBase) for the STXS process: " << stage1p1binFine_ << "\n";;
     }
 }
 

@@ -37,9 +37,7 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
-        EDGetTokenT<int> stage0binToken_, stage1binToken_, njetsToken_;
         EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
-        EDGetTokenT<float> pTHToken_,pTVToken_;
         string systLabel_;
         bool requireScaledPtCuts_;
 
@@ -59,13 +57,7 @@ namespace flashgg {
         assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception
 
         ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
-        stage0binToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0bin") );
-        stage1binToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1bin") );
-        njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
-        pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
-        pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
         newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
-
 
         produces<vector<UntaggedTag> >();
         produces<vector<TagTruthBase> >();
@@ -83,16 +75,8 @@ namespace flashgg {
 
     void UntaggedTagProducer::produce( Event &evt, const EventSetup & )
     {
-        Handle<int> stage0bin, stage1bin, njets;
-        Handle<float> pTH, pTV;
-        evt.getByToken(stage0binToken_, stage0bin);
-        evt.getByToken(stage1binToken_,stage1bin);
-        evt.getByToken(njetsToken_,njets);
-        evt.getByToken(pTHToken_,pTH);
-        evt.getByToken(pTVToken_,pTV);
         Handle<HTXS::HiggsClassification> htxsClassification;
         evt.getByToken(newHTXSToken_,htxsClassification);
-
 
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
@@ -155,21 +139,17 @@ namespace flashgg {
                 if( ! evt.isRealData() ) {
                     TagTruthBase truth_obj;
                     truth_obj.setGenPV( higgsVtx );
-                    if ( stage0bin.isValid() ) {
-                        truth_obj.setHTXSInfo( *( stage0bin.product() ),
-                                               *( stage1bin.product() ),
-                                               *( njets.product() ),
-                                               *( pTH.product() ),
-                                               *( pTV.product() ) );
-                    } else if ( htxsClassification.isValid() ) {
+                    if ( htxsClassification.isValid() ) {
                         truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
                                                htxsClassification->stage1_cat_pTjet30GeV,
+                                               htxsClassification->stage1_1_cat_pTjet30GeV,
+                                               htxsClassification->stage1_1_fine_cat_pTjet30GeV,
                                                htxsClassification->jets30.size(),
                                                htxsClassification->p4decay_higgs.pt(),
                                                htxsClassification->p4decay_V.pt() );
 
                     } else {
-                        truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
+                        truth_obj.setHTXSInfo( 0, 0, 0, 0, 0, 0., 0. );
                     }
                     truths->push_back( truth_obj );
                     tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );

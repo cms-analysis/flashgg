@@ -283,7 +283,7 @@ def useEGMTools(process):
     # add sigmaE/E correction and systematics
     process.flashggDiPhotonSystematics.SystMethods.extend( [process.SigmaEOverESmearing_EGM, process.SigmaEOverEShift] )
 
-def runRivetSequence(process, options):
+def runRivetSequence(process, options, processId):
     process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
     process.rivetProducerHTXS = cms.EDProducer('HTXSRivetProducer',
                                                HepMCCollection = cms.InputTag('myGenerator','unsmeared'),
@@ -300,6 +300,11 @@ def runRivetSequence(process, options):
                                          genEventInfo = cms.InputTag("generator"),
                                          signalParticlePdgIds = cms.vint32(25), ## for the Higgs analysis
                                      )
+
+     ## ggH and VBF not supported by AUTO in rivetProducedHTXS: use customize.processId
+    if "ggh" in processId or "glugluh" in processId: process.rivetProducerHTXS.ProductionMode = "GGF"
+    elif "vbf" in processId: process.rivetProducedHTXS.ProductionMode = "VBF"
+
     process.p.insert(0, process.mergedGenParticles*process.myGenerator*process.rivetProducerHTXS)
 
 def recalculatePDFWeights(process, options):

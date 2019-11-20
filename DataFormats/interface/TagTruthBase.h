@@ -22,12 +22,16 @@ namespace flashgg {
         void setGenPV( const Point genpv ) { genPV_ = genpv; }
         int HTXSstage0bin() const { return stage0bin_; }
         int HTXSstage1bin() const { return stage1bin_; }
+        int HTXSstage1p1bin() const { return stage1p1bin_; }
+        int HTXSstage1p1binFine() const { return stage1p1binFine_; }
         int HTXSstage0orderedBin() const;
         int HTXSstage1orderedBin() const;
+        int HTXSstage1p1orderedBin() const;
+        int HTXSstage1p1orderedBinFine() const;
         int HTXSnjets() const { return njets_; }
         float HTXSpTH() const { return pTH_; }
         float HTXSpTV() const { return pTV_; }
-        void setHTXSInfo( int stage0bin, int stage1bin, int njets, float pTH, float pTV );
+        void setHTXSInfo( int stage0bin, int stage1bin, int stage1p1bin, int stage1p1binFine, int njets, float pTH, float pTV );
         void setGluonFusionWeights( int , float , int );
         void copyBaseInfo( const TagTruthBase &b );
         virtual TagTruthBase *clone() const;
@@ -39,8 +43,12 @@ namespace flashgg {
         Point genPV_;
         int stage0bin_;
         int stage1bin_;
+        int stage1p1bin_;
+        int stage1p1binFine_;
         std::map<int,int> stage0map_;
         std::map<int,int> stage1map_;
+        std::map<int,int> stage1p1map_;
+        std::map<int,int> stage1p1mapFine_;
         int njets_;
         float pTH_;
         float pTV_;

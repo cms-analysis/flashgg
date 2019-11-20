@@ -74,8 +74,6 @@ namespace flashgg {
         bool blindedSelectionPrintout_;
 
         bool createNoTag_;
-        EDGetTokenT<int> stage0binToken_, stage1binToken_, njetsToken_;
-        EDGetTokenT<float> pTHToken_,pTVToken_;
         EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
 
         bool doStageOneRecoTags_;
@@ -129,11 +127,6 @@ namespace flashgg {
         }
 
         ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
-        stage0binToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0bin") );
-        stage1binToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1bin") );
-        njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
-        pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
-        pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
         newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
 
         if (doStageOneRecoTags_) {
@@ -156,14 +149,6 @@ namespace flashgg {
         int priority = -1; // for debug
 
         bool alreadyChosen = false;
-
-        Handle<int> stage0bin, stage1bin, njets;
-        Handle<float> pTH, pTV;
-        evt.getByToken(stage0binToken_, stage0bin);
-        evt.getByToken(stage1binToken_,stage1bin);
-        evt.getByToken(njetsToken_,njets);
-        evt.getByToken(pTHToken_,pTH);
-        evt.getByToken(pTVToken_,pTV);
 
         for( auto tpr = TagPriorityRanges.begin() ; tpr != TagPriorityRanges.end() ; tpr++ ) {
             priority += 1; // for debug
@@ -349,9 +334,11 @@ namespace flashgg {
                 int cat = SelectedTag->back().categoryNumber();
                 std::cout << "STAGE1PRINTOUT TagName cat mass " << TagSorter::tagName(SelectedTag->back().tagEnum()) << " " << cat << " " << mass;
                 if( SelectedTagTruth->size() != 0 ) {
-                    std::cout << " STXS True cat0 cat1 nJ ptH ptV ";
+                    std::cout << " STXS True cat0 cat1 cat1p1 cat1p1fine nJ ptH ptV ";
                     std::cout << SelectedTagTruth->back().HTXSstage0bin() << " ";
                     std::cout << SelectedTagTruth->back().HTXSstage1bin() << " ";
+                    std::cout << SelectedTagTruth->back().HTXSstage1p1bin() << " ";
+                    std::cout << SelectedTagTruth->back().HTXSstage1p1binFine() << " ";
                     std::cout << SelectedTagTruth->back().HTXSnjets() << " ";
                     std::cout << SelectedTagTruth->back().HTXSpTH() << " ";
                     std::cout << SelectedTagTruth->back().HTXSpTV() << " ";
@@ -359,13 +346,14 @@ namespace flashgg {
                     std::cout << "WARNING NO VALID TRUTH FOR STAGE1PRINTOUT";
                 }
             } else {
+                Handle<HTXS::HiggsClassification> htxsClassification;
+                evt.getByToken(newHTXSToken_,htxsClassification);
                 std::cout << "STAGE1PRINTOUT EVENT OUTSIDE ACCEPTANCE/EFFICIENCY - STXS True cat0 cat1 nJ ptH ptV ";
-                if ( stage0bin.isValid() ) {
-                    std::cout << *( stage0bin.product() ) << " ";
-                    std::cout << *( stage1bin.product() ) << " ";
-                    std::cout << *( njets.product() ) << " ";
-                    std::cout << *( pTH.product() ) << " ";
-                    std::cout << *( pTV.product() ) << " ";
+                if ( htxsClassification.isValid() ) {
+                    std::cout << htxsClassification->stage0_cat << " ";
+                    std::cout << htxsClassification->stage1_cat_pTjet30GeV << " ";
+                    std::cout << htxsClassification->stage1_1_cat_pTjet30GeV << " ";
+                    std::cout << htxsClassification->stage1_1_fine_cat_pTjet30GeV << " ";
                 } else {
                     std::cout << "WARNING NO VALID STAGE1CAT FOR PRINTOUT";
                 }
@@ -380,29 +368,18 @@ namespace flashgg {
             SelectedStageOne->back().setStage1recoTag(flashgg::NOTAG);
             edm::RefProd<edm::OwnVector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<edm::OwnVector<TagTruthBase> >();
             TagTruthBase truth_obj;
-            Handle<int> stage0bin, stage1bin, njets;
-            Handle<float> pTH, pTV;
-            evt.getByToken(stage0binToken_, stage0bin);
-            evt.getByToken(stage1binToken_,stage1bin);
-            evt.getByToken(njetsToken_,njets);
-            evt.getByToken(pTHToken_,pTH);
-            evt.getByToken(pTVToken_,pTV);
             Handle<HTXS::HiggsClassification> htxsClassification;
             evt.getByToken(newHTXSToken_,htxsClassification);
-            if ( stage0bin.isValid() ) {
-                truth_obj.setHTXSInfo( *( stage0bin.product() ),
-                                       *( stage1bin.product() ),
-                                       *( njets.product() ),
-                                       *( pTH.product() ),
-                                       *( pTV.product() ) );
-            } else if ( htxsClassification.isValid() ) {
+            if ( htxsClassification.isValid() ) {
                 truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
                                        htxsClassification->stage1_cat_pTjet30GeV,
+                                       htxsClassification->stage1_1_cat_pTjet30GeV,
+                                       htxsClassification->stage1_1_fine_cat_pTjet30GeV,
                                        htxsClassification->jets30.size(),
                                        htxsClassification->p4decay_higgs.pt(),
                                        htxsClassification->p4decay_V.pt() );
             } else {
-                truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
+                truth_obj.setHTXSInfo( 0, 0, 0, 0, 0, 0., 0. );
             }
             SelectedTagTruth->push_back(truth_obj);
             SelectedTag->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) );
@@ -410,8 +387,10 @@ namespace flashgg {
             if( SelectedTagTruth->size() != 0 && debug_ ) {
                 std::cout << "******************************" << std::endl;
                 std::cout << " TRUTH FOR NO TAG..." << std::endl;
-                std::cout << "* HTXS Category 0 (1): " << SelectedTagTruth->back().HTXSstage0bin() << " ("
-                          << SelectedTagTruth->back().HTXSstage1bin() << ")" << std::endl;
+                std::cout << "* HTXS Category 0 (1) {1.1} [1.1 fine]: " << SelectedTagTruth->back().HTXSstage0bin() << " ("
+                          << SelectedTagTruth->back().HTXSstage1bin() << ")" << " {"
+                          << SelectedTagTruth->back().HTXSstage1p1bin() << "}" << " ["
+                          << SelectedTagTruth->back().HTXSstage1p1binFine() << "]" << std::endl;
                 std::cout << "* HTXS njets, pTH, pTV: " << SelectedTagTruth->back().HTXSnjets() << ", "
                           << SelectedTagTruth->back().HTXSpTH() << ", "
                           << SelectedTagTruth->back().HTXSpTV() << std::endl;
