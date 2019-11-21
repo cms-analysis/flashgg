@@ -65,6 +65,46 @@
         ]
     },
     "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2018_cfi",
+
+    "flashggDiPhotonMVA" : 
+    {  
+        "weightFile" : "flashgg/Taggers/data/legacyDiphoModel2018.xml",
+        "version" : "xgb"
+    },
+
+    "flashggVBFMVA" : 
+    {  
+        "weightFile" : "flashgg/Taggers/data/dijetModel2017.xml"
+    },
+
+    "stageOneCombinedTag" :
+    {  
+        "rawDiphoBounds" : [
+                             0.771, 0.569,
+                             0.839, 0.698,
+
+                             0.852, 0.751,
+                             0.878, 0.753,
+                             0.910, 0.837,
+
+                             0.827, 0.743,
+                             0.887, 0.778,
+                             0.922, 0.841,
+
+                             0.938, 0.888,
+
+                             0.800,
+                             0.750, 0.684,
+                             0.766, 0.773,
+                             0.787
+                           ],
+        "rawDijetBounds" : [
+                             -0.389, -0.895,
+                             0.031, -0.697,
+                             -0.268
+                           ]
+    },
+
     
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",

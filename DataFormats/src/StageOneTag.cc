@@ -35,12 +35,14 @@ string StageOneTag::stage1KinematicLabel() const {
         return string("LOGICERROR");
     case stage1recoTag::NOTAG:
         return string("NOTAG");
-    case stage1recoTag::RECO_0J_Tag0:
-        return string("RECO_0J_Tag0");
-    case stage1recoTag::RECO_0J_Tag1:
-        return string("RECO_0J_Tag1");
-    case stage1recoTag::RECO_0J_Tag2:
-        return string("RECO_0J_Tag2");
+    case stage1recoTag::RECO_0J_PTH_0_10_Tag0:
+        return string("RECO_0J_PTH_0_10_Tag0");
+    case stage1recoTag::RECO_0J_PTH_0_10_Tag1:
+        return string("RECO_0J_PTH_0_10_Tag1");
+    case stage1recoTag::RECO_0J_PTH_GT10_Tag0:
+        return string("RECO_0J_PTH_GT10_Tag0");
+    case stage1recoTag::RECO_0J_PTH_GT10_Tag1:
+        return string("RECO_0J_PTH_GT10_Tag1");
     case stage1recoTag::RECO_1J_PTH_0_60_Tag0:
         return string("RECO_1J_PTH_0_60_Tag0");
     case stage1recoTag::RECO_1J_PTH_0_60_Tag1:
@@ -53,8 +55,6 @@ string StageOneTag::stage1KinematicLabel() const {
         return string("RECO_1J_PTH_120_200_Tag0");
     case stage1recoTag::RECO_1J_PTH_120_200_Tag1:
         return string("RECO_1J_PTH_120_200_Tag1");
-    case stage1recoTag::RECO_1J_PTH_GT200:
-        return string("RECO_1J_PTH_GT200");
     case stage1recoTag::RECO_GE2J_PTH_0_60_Tag0:
         return string("RECO_GE2J_PTH_0_60_Tag0");
     case stage1recoTag::RECO_GE2J_PTH_0_60_Tag1:
@@ -67,10 +67,12 @@ string StageOneTag::stage1KinematicLabel() const {
         return string("RECO_GE2J_PTH_120_200_Tag0");
     case stage1recoTag::RECO_GE2J_PTH_120_200_Tag1:
         return string("RECO_GE2J_PTH_120_200_Tag1");
-    case stage1recoTag::RECO_GE2J_PTH_GT200_Tag0:
-        return string("RECO_GE2J_PTH_GT200_Tag0");
-    case stage1recoTag::RECO_GE2J_PTH_GT200_Tag1:
-        return string("RECO_GE2J_PTH_GT200_Tag1");
+    case stage1recoTag::RECO_PTH_GT200_Tag0:
+        return string("RECO_PTH_GT200_Tag0");
+    case stage1recoTag::RECO_PTH_GT200_Tag1:
+        return string("RECO_PTH_GT200_Tag1");
+    case stage1recoTag::RECO_VBFTOPO_VHHAD:
+        return string("RECO_VBFTOPO_VHHAD");
     case stage1recoTag::RECO_VBFTOPO_JET3VETO_Tag0:
         return string("RECO_VBFTOPO_JET3VETO_Tag0");
     case stage1recoTag::RECO_VBFTOPO_JET3VETO_Tag1:
@@ -79,8 +81,6 @@ string StageOneTag::stage1KinematicLabel() const {
         return string("RECO_VBFTOPO_JET3_Tag0");
     case stage1recoTag::RECO_VBFTOPO_JET3_Tag1:
         return string("RECO_VBFTOPO_JET3_Tag1");
-    case stage1recoTag::RECO_VBFTOPO_REST:
-        return string("RECO_VBFTOPO_REST");
     case stage1recoTag::RECO_VBFTOPO_BSM:
         return string("RECO_VBFTOPO_BSM");
     case stage1recoTag::RECO_WHLEP:

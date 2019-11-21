@@ -10,12 +10,12 @@ class StageOneCustomize():
         self.customize = customize
         self.metaConditions = metaConditions
         self.tagList = [
-            ["LOGICERROR",0], ["NOTAG",0], ["RECO_0J_Tag0",0], ["RECO_0J_Tag1",0], ["RECO_0J_Tag2",0],
+            ["LOGICERROR",0], ["NOTAG",0], ["RECO_0J_PTH_0_10_Tag0",0], ["RECO_0J_PTH_0_10_Tag1",0], ["RECO_0J_PTH_GT10_Tag0",0], ["RECO_0J_PTH_GT10_Tag1",0],
             ["RECO_1J_PTH_0_60_Tag0",0], ["RECO_1J_PTH_0_60_Tag1",0], ["RECO_1J_PTH_60_120_Tag0",0], ["RECO_1J_PTH_60_120_Tag1",0], 
-            ["RECO_1J_PTH_120_200_Tag0",0], ["RECO_1J_PTH_120_200_Tag1",0], ["RECO_1J_PTH_GT200",0], 
+            ["RECO_1J_PTH_120_200_Tag0",0], ["RECO_1J_PTH_120_200_Tag1",0],
             ["RECO_GE2J_PTH_0_60_Tag0",0], ["RECO_GE2J_PTH_0_60_Tag1",0], ["RECO_GE2J_PTH_60_120_Tag0",0], ["RECO_GE2J_PTH_60_120_Tag1",0], 
-            ["RECO_GE2J_PTH_120_200_Tag0",0], ["RECO_GE2J_PTH_120_200_Tag1",0], ["RECO_GE2J_PTH_GT200_Tag0",0], ["RECO_GE2J_PTH_GT200_Tag1",0], 
-            ["RECO_VBFTOPO_JET3VETO_Tag0",0], ["RECO_VBFTOPO_JET3VETO_Tag1",0], ["RECO_VBFTOPO_JET3_Tag0",0], ["RECO_VBFTOPO_JET3_Tag1",0], ["RECO_VBFTOPO_REST",0], ["RECO_VBFTOPO_BSM",0]
+            ["RECO_GE2J_PTH_120_200_Tag0",0], ["RECO_GE2J_PTH_120_200_Tag1",0], ["RECO_PTH_GT200_Tag0",0], ["RECO_PTH_GT200_Tag1",0], 
+            ["RECO_VBFTOPO_VHHAD",0], ["RECO_VBFTOPO_JET3VETO_Tag0",0], ["RECO_VBFTOPO_JET3VETO_Tag1",0], ["RECO_VBFTOPO_JET3_Tag0",0], ["RECO_VBFTOPO_JET3_Tag1",0], ["RECO_VBFTOPO_BSM",0]
         ]
         if self.customize.processId == "Data": 
             self.tagList.pop(1) ## remove NoTag for data

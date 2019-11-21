@@ -15,6 +15,7 @@
 #include "flashgg/DataFormats/interface/PDFWeightObject.h"
 #include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
 
+#include <TLorentzVector.h>
 #include <vector>
 #include <algorithm>
 
@@ -220,6 +221,7 @@ namespace flashgg {
         unsigned int nJ = 0;
         float mjj = 0.;
         float ptHjj = 0.;
+        float cosThetaStar = -9999.;
         float mvaScore = tag_obj.diPhotonMVA().transformedMvaValue(); // maps output score from TMVA back to XGBoost original
         float dijetScore = tag_obj.VBFMVA().VBFMVAValue();
         float leadMvaScore = tag_obj.diPhotonMVA().leadmva;
@@ -239,25 +241,49 @@ namespace flashgg {
         if ( nJ >= 2 ) {
             mjj = ( j0->p4() + j1->p4() ).mass();
             ptHjj = ( j0->p4() + j1->p4() + tag_obj.diPhoton()->p4() ).pt();
+
+            TLorentzVector jetl, jets, dijet, phol, phos, diphoton, vstar;
+            phol.SetPtEtaPhiE( tag_obj.leadingPhoton()->pt(), tag_obj.leadingPhoton()->eta(), tag_obj.leadingPhoton()->phi(), tag_obj.leadingPhoton()->energy() );
+            phos.SetPtEtaPhiE( tag_obj.subLeadingPhoton()->pt(), tag_obj.subLeadingPhoton()->eta(), tag_obj.subLeadingPhoton()->phi(), tag_obj.subLeadingPhoton()->energy() );
+            jetl.SetPtEtaPhiE( j0->pt(), j0->eta(), j0->phi(), j0->energy() );
+            jets.SetPtEtaPhiE( j1->pt(), j1->eta(), j1->phi(), j1->energy() );
+            diphoton = phol + phos;
+            dijet = jetl + jets;
+            vstar = diphoton + dijet;
+            diphoton.Boost( -vstar.BoostVector() );
+            cosThetaStar = -diphoton.CosTheta();
         }
         // below assign the categories for ggH & VBF based on diphoton MVA score and dijet MVA score - boundaries taken from metaConditions
         if (nJ == 0) {
-            if (mvaScore > diphoBounds_["RECO_0J_Tag0"]) {
-                chosenTag_ = stage1recoTag::RECO_0J_Tag0;
+            if ( ptH > 10 ) {
+                if (mvaScore > diphoBounds_["RECO_0J_PTH_GT10_Tag0"]) {
+                    chosenTag_ = stage1recoTag::RECO_0J_PTH_GT10_Tag0;
+                }
+                else if (mvaScore > diphoBounds_["RECO_0J_PTH_GT10_Tag1"]) {
+                    chosenTag_ = stage1recoTag::RECO_0J_PTH_GT10_Tag1;
+                }
+                else { 
+                    chosenTag_ = stage1recoTag::NOTAG;
+                }
             }
-            else if (mvaScore > diphoBounds_["RECO_0J_Tag1"]) {
-                chosenTag_ = stage1recoTag::RECO_0J_Tag1;
-            }
-            else if (mvaScore > diphoBounds_["RECO_0J_Tag2"]) {
-                chosenTag_ = stage1recoTag::RECO_0J_Tag2;
-            }
-            else { 
-                chosenTag_ = stage1recoTag::NOTAG;
+            else {
+                if (mvaScore > diphoBounds_["RECO_0J_PTH_0_10_Tag0"]) {
+                    chosenTag_ = stage1recoTag::RECO_0J_PTH_0_10_Tag0;
+                }
+                else if (mvaScore > diphoBounds_["RECO_0J_PTH_0_10_Tag1"]) {
+                    chosenTag_ = stage1recoTag::RECO_0J_PTH_0_10_Tag1;
+                }
+                else { 
+                    chosenTag_ = stage1recoTag::NOTAG;
+                }
             }
         } else if ( nJ == 1 ) {
             if ( ptH > 200 ) {
-                if (mvaScore > diphoBounds_["RECO_1J_PTH_GT200"]) {
-                    chosenTag_ = stage1recoTag::RECO_1J_PTH_GT200;
+                if (mvaScore > diphoBounds_["RECO_PTH_GT200_Tag0"]) {
+                    chosenTag_ = stage1recoTag::RECO_PTH_GT200_Tag0;
+                }
+                else if (mvaScore > diphoBounds_["RECO_PTH_GT200_Tag1"]) {
+                    chosenTag_ = stage1recoTag::RECO_PTH_GT200_Tag1;
                 }
                 else { 
                     chosenTag_ = stage1recoTag::NOTAG;
@@ -295,8 +321,8 @@ namespace flashgg {
             }
         } else { // 2 jets
             bool reProcess = false;
-            if ( mjj > 400. && j0->p4().pt() > 40. && j1->p4().pt() > 30. && leadMvaScore > -0.2 && subleadMvaScore > -0.2 ) { //cuts optimised using data-driven dijet BDT plus new diphoton BDT
-                if ( j0->p4().pt() > 200. ) {
+            if ( mjj > 350. && j0->p4().pt() > 40. && j1->p4().pt() > 30. && leadMvaScore > -0.2 && subleadMvaScore > -0.2 ) { //cuts optimised using data-driven dijet BDT plus new diphoton BDT
+                if ( ptH > 200. ) {
                     if (dijetScore > dijetBounds_["RECO_VBFTOPO_BSM"] && mvaScore > diphoBounds_["RECO_VBFTOPO_BSM"]) {
                         chosenTag_ = stage1recoTag::RECO_VBFTOPO_BSM;
                     }
@@ -326,17 +352,9 @@ namespace flashgg {
                     }
                 }
             }
-            else if ( mjj > 250. && j0->p4().pt() > 40. && j1->p4().pt() > 30. && leadMvaScore > -0.2 && subleadMvaScore > -0.2 ) { //cuts optimised using data-driven dijet BDT plus new diphoton BDT
-                if ( j0->p4().pt() > 200. ) {
-                    if (dijetScore > dijetBounds_["RECO_VBFTOPO_BSM"] && mvaScore > diphoBounds_["RECO_VBFTOPO_BSM"]) {
-                        chosenTag_ = stage1recoTag::RECO_VBFTOPO_BSM;
-                    }
-                    else { 
-                        reProcess = true;
-                    }
-                }
-                else if (dijetScore > dijetBounds_["RECO_VBFTOPO_REST"] && mvaScore > diphoBounds_["RECO_VBFTOPO_REST"]) {
-                    chosenTag_ = stage1recoTag::RECO_VBFTOPO_REST;
+            else if ( mjj > 60. && mjj < 120. && j0->p4().pt() > 30. && j1->p4().pt() > 30. && abs(j0->p4().eta()) < 2.4 && abs(j1->p4().eta()) < 2.4 && abs(cosThetaStar)<0.5 && leadMvaScore > -0.2 && subleadMvaScore > -0.2 ) { //cuts for VH hadronic
+                if (mvaScore > diphoBounds_["RECO_VBFTOPO_VHHAD"]) {
+                    chosenTag_ = stage1recoTag::RECO_VBFTOPO_VHHAD;
                 }
                 else { 
                     reProcess = true;
@@ -347,11 +365,11 @@ namespace flashgg {
             }
             if ( reProcess ) {
                 if ( ptH > 200 ) {
-                    if (mvaScore > diphoBounds_["RECO_GE2J_PTH_GT200_Tag0"]) {
-                        chosenTag_ = stage1recoTag::RECO_GE2J_PTH_GT200_Tag0;
+                    if (mvaScore > diphoBounds_["RECO_PTH_GT200_Tag0"]) {
+                        chosenTag_ = stage1recoTag::RECO_PTH_GT200_Tag0;
                     }
-                    else if (mvaScore > diphoBounds_["RECO_GE2J_PTH_GT200_Tag1"]) {
-                        chosenTag_ = stage1recoTag::RECO_GE2J_PTH_GT200_Tag1;
+                    else if (mvaScore > diphoBounds_["RECO_PTH_GT200_Tag1"]) {
+                        chosenTag_ = stage1recoTag::RECO_PTH_GT200_Tag1;
                     }
                     else { 
                         chosenTag_ = stage1recoTag::NOTAG;
@@ -400,37 +418,36 @@ namespace flashgg {
 
     void StageOneCombinedTagProducer::constructBounds() 
     {
-        diphoBounds_["RECO_0J_Tag0"] = rawDiphoBounds_[0];
-        diphoBounds_["RECO_0J_Tag1"] = rawDiphoBounds_[1];
-        diphoBounds_["RECO_0J_Tag2"] = rawDiphoBounds_[2];
-        diphoBounds_["RECO_1J_PTH_0_60_Tag0"] = rawDiphoBounds_[3];
-        diphoBounds_["RECO_1J_PTH_0_60_Tag1"] = rawDiphoBounds_[4];
-        diphoBounds_["RECO_1J_PTH_60_120_Tag0"] = rawDiphoBounds_[5];
-        diphoBounds_["RECO_1J_PTH_60_120_Tag1"] = rawDiphoBounds_[6];
-        diphoBounds_["RECO_1J_PTH_120_200_Tag0"] = rawDiphoBounds_[7];
-        diphoBounds_["RECO_1J_PTH_120_200_Tag1"] = rawDiphoBounds_[8];
-        diphoBounds_["RECO_1J_PTH_GT200"] = rawDiphoBounds_[9];
+        diphoBounds_["RECO_0J_PTH_0_10_Tag0"] = rawDiphoBounds_[0];
+        diphoBounds_["RECO_0J_PTH_0_10_Tag1"] = rawDiphoBounds_[1];
+        diphoBounds_["RECO_0J_PTH_GT10_Tag0"] = rawDiphoBounds_[2];
+        diphoBounds_["RECO_0J_PTH_GT10_Tag1"] = rawDiphoBounds_[3];
+        diphoBounds_["RECO_1J_PTH_0_60_Tag0"] = rawDiphoBounds_[4];
+        diphoBounds_["RECO_1J_PTH_0_60_Tag1"] = rawDiphoBounds_[5];
+        diphoBounds_["RECO_1J_PTH_60_120_Tag0"] = rawDiphoBounds_[6];
+        diphoBounds_["RECO_1J_PTH_60_120_Tag1"] = rawDiphoBounds_[7];
+        diphoBounds_["RECO_1J_PTH_120_200_Tag0"] = rawDiphoBounds_[8];
+        diphoBounds_["RECO_1J_PTH_120_200_Tag1"] = rawDiphoBounds_[9];
         diphoBounds_["RECO_GE2J_PTH_0_60_Tag0"] = rawDiphoBounds_[10];
         diphoBounds_["RECO_GE2J_PTH_0_60_Tag1"] = rawDiphoBounds_[11];
         diphoBounds_["RECO_GE2J_PTH_60_120_Tag0"] = rawDiphoBounds_[12];
         diphoBounds_["RECO_GE2J_PTH_60_120_Tag1"] = rawDiphoBounds_[13];
         diphoBounds_["RECO_GE2J_PTH_120_200_Tag0"] = rawDiphoBounds_[14];
         diphoBounds_["RECO_GE2J_PTH_120_200_Tag1"] = rawDiphoBounds_[15];
-        diphoBounds_["RECO_GE2J_PTH_GT200_Tag0"] = rawDiphoBounds_[16];
-        diphoBounds_["RECO_GE2J_PTH_GT200_Tag1"] = rawDiphoBounds_[17];
-        diphoBounds_["RECO_VBFTOPO_JET3VETO_Tag0"] = rawDiphoBounds_[18];
-        diphoBounds_["RECO_VBFTOPO_JET3VETO_Tag1"] = rawDiphoBounds_[19];
-        diphoBounds_["RECO_VBFTOPO_JET3_Tag0"] = rawDiphoBounds_[20];
-        diphoBounds_["RECO_VBFTOPO_JET3_Tag1"] = rawDiphoBounds_[21];
-        diphoBounds_["RECO_VBFTOPO_REST"] = rawDiphoBounds_[22];
+        diphoBounds_["RECO_PTH_GT200_Tag0"] = rawDiphoBounds_[16];
+        diphoBounds_["RECO_PTH_GT200_Tag1"] = rawDiphoBounds_[17];
+        diphoBounds_["RECO_VBFTOPO_VHHAD"] = rawDiphoBounds_[18];
+        diphoBounds_["RECO_VBFTOPO_JET3VETO_Tag0"] = rawDiphoBounds_[19];
+        diphoBounds_["RECO_VBFTOPO_JET3VETO_Tag1"] = rawDiphoBounds_[20];
+        diphoBounds_["RECO_VBFTOPO_JET3_Tag0"] = rawDiphoBounds_[21];
+        diphoBounds_["RECO_VBFTOPO_JET3_Tag1"] = rawDiphoBounds_[22];
         diphoBounds_["RECO_VBFTOPO_BSM"] = rawDiphoBounds_[23];
 
         dijetBounds_["RECO_VBFTOPO_JET3VETO_Tag0"] = rawDijetBounds_[0];
         dijetBounds_["RECO_VBFTOPO_JET3VETO_Tag1"] = rawDijetBounds_[1];
         dijetBounds_["RECO_VBFTOPO_JET3_Tag0"] = rawDijetBounds_[2];
         dijetBounds_["RECO_VBFTOPO_JET3_Tag1"] = rawDijetBounds_[3];
-        dijetBounds_["RECO_VBFTOPO_REST"] = rawDijetBounds_[4];
-        dijetBounds_["RECO_VBFTOPO_BSM"] = rawDijetBounds_[5];
+        dijetBounds_["RECO_VBFTOPO_BSM"] = rawDijetBounds_[4];
     }
 
 }
