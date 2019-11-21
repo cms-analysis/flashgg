@@ -91,9 +91,9 @@ public:
     map< string , CTCVWeightedVariable* > CTCVWeightedVariables;
     THQLeptonicTagProducer( const ParameterSet & );
     ~THQLeptonicTagProducer();
-    LikelihoodClass *likelihood_tHq;
 
 private:
+    LikelihoodClass* likelihood_tHq_;
     std::string processId_;
     edm::EDGetTokenT< LHEEventProduct > token_lhe;
 //    int  chooseCategory( float, float);
@@ -444,11 +444,12 @@ THQLeptonicTagProducer::THQLeptonicTagProducer( const ParameterSet &iConfig ) :
     }
     produces<vector<THQLeptonicTag> >();
     produces<vector<THQLeptonicTagTruth> >();
-    likelihood_tHq = new LikelihoodClass();
+    std::string filename = likelihood_input_.fullPath();
+    likelihood_tHq_ = new LikelihoodClass(filename.c_str());
 }
 
 THQLeptonicTagProducer::~THQLeptonicTagProducer() {
-    delete likelihood_tHq;
+    delete likelihood_tHq_;
 }
 
 int THQLeptonicTagProducer::chooseCategory( float mvavalue )
@@ -1032,9 +1033,7 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
         vec_lhood_calc.push_back( dRleptonbjet_ );
         vec_lhood_calc.push_back( dRleptonfwdjet_ );
 
-        std::string filename = likelihood_input_.fullPath();
-
-        double lhood_value= likelihood_tHq->evaluate_likelihood(vec_lhood_calc, filename.c_str() );
+        double lhood_value= likelihood_tHq_->evaluate_likelihood(vec_lhood_calc );
         thqLeptonicMvaResult_value_ = thqLeptonicMva_->EvaluateMVA( MVAMethod_.c_str() );
         thqltags_obj.setlikelihood ( lhood_value ) ;
 	thqltags_obj.setthq_mvaresult ( thqLeptonicMvaResult_value_ );
