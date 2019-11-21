@@ -33,7 +33,7 @@
 #include "flashgg/Taggers/interface/FoxWolfram.hpp"
 
 #include "flashgg/DataFormats/interface/PDFWeightObject.h"
-#include "flashgg/DataFormats/interface/likelihood_thq.h"
+#include "flashgg/Taggers/interface/THQLikelihoodComputer.h"
 
 #include <vector>
 #include <algorithm>
@@ -93,7 +93,7 @@ public:
     ~THQLeptonicTagProducer();
 
 private:
-    LikelihoodClass* likelihood_tHq_;
+    THQLikelihoodComputer* likelihood_tHq_;
     std::string processId_;
     edm::EDGetTokenT< LHEEventProduct > token_lhe;
 //    int  chooseCategory( float, float);
@@ -445,7 +445,7 @@ THQLeptonicTagProducer::THQLeptonicTagProducer( const ParameterSet &iConfig ) :
     produces<vector<THQLeptonicTag> >();
     produces<vector<THQLeptonicTagTruth> >();
     std::string filename = likelihood_input_.fullPath();
-    likelihood_tHq_ = new LikelihoodClass(filename.c_str());
+    likelihood_tHq_ = new THQLikelihoodComputer(filename.c_str());
 }
 
 THQLeptonicTagProducer::~THQLeptonicTagProducer() {
@@ -940,7 +940,7 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
          continue; }	
 //------------------------------------Likelihood and MVA-----------------------------------------
 //---------------------------------------------------------------------------------------
-//        LikelihoodClass *likelihood_tHq = new LikelihoodClass();
+//        THQLikelihoodComputer *likelihood_tHq = new THQLikelihoodComputer();
         std::vector<double> vec_lhood_calc;
 
         fwdJet1 = SelJetVect_EtaSorted[0];

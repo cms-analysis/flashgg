@@ -1,47 +1,12 @@
-﻿#ifndef FLASHgg_LikelihoodTHQ_h
-#define FLASHgg_LikelihoodTHQ_h
+﻿#include "flashgg/Taggers/interface/THQLikelihoodComputer.h"
 
-#include "TTree.h"
-#include "TH1.h"
-#include "TFile.h"
-#include "TNtuple.h"
-#include "TLegend.h"
-#include "TCanvas.h"
-#include "TStyle.h"
-#include "TLorentzVector.h"
-
-#include <vector>
-#include <iostream>
-#include <map>
-#include <algorithm>
-#include <TChain.h>
-#include "TMath.h"
-#include "TGraphErrors.h"
-
-#define NVARS 14
-
+using namespace flashgg;
 using namespace std;
-using namespace edm;
 
-namespace flashgg {
-class LikelihoodClass {
-public:
-LikelihoodClass(const char* likelihood_inputfile);
-~LikelihoodClass();
-    double evaluate_likelihood(const std::vector<double> &inputvars);
-    const char * likelihood_inputfile_;
-//    TFile *file_inputdistributions;
-private:
-    TH1F * h_fstatekinematics_sig[NVARS];
-    TH1F * h_fstatekinematics_bkg[NVARS];
-    TFile * file_inputdistributions;
-//    const char * likelihood_inputfile_;
-};
-
-LikelihoodClass::LikelihoodClass(const char* likelihood_inputfile):
+THQLikelihoodComputer::THQLikelihoodComputer(const char* likelihood_inputfile):
 likelihood_inputfile_(likelihood_inputfile)
 {
-  file_inputdistributions = new TFile( likelihood_inputfile_ , "READ");
+  TFile* file_inputdistributions = new TFile( likelihood_inputfile_ , "READ");
   h_fstatekinematics_sig[0]= (TH1F*) file_inputdistributions->Get("thq_n_jets");
   h_fstatekinematics_sig[1]= (TH1F*) file_inputdistributions->Get("thq_n_centraljets");
   h_fstatekinematics_sig[2]= (TH1F*) file_inputdistributions->Get("thq_muon1_ch");
@@ -80,7 +45,7 @@ likelihood_inputfile_(likelihood_inputfile)
   file_inputdistributions->Close();
 }
 
-LikelihoodClass::~LikelihoodClass() {
+THQLikelihoodComputer::~THQLikelihoodComputer() {
   for(int i_histo=0; i_histo<NVARS; ++i_histo) {
     delete h_fstatekinematics_sig[i_histo];
     delete h_fstatekinematics_bkg[i_histo];
@@ -88,11 +53,11 @@ LikelihoodClass::~LikelihoodClass() {
   
 }
 
-double LikelihoodClass::evaluate_likelihood(const std::vector<double> &inputvars) 
+double THQLikelihoodComputer::evaluate_likelihood(const std::vector<double> &inputvars) 
 {
   if(inputvars.size()!=NVARS) {
-    std::cout<<"<LikelihoodClass::evaluate_likelihood>: inputvars.size() is "<<inputvars.size()<< " and it is expected to be "<<NVARS<<std::endl;
-    std::cout<<"<LikelihoodClass::evaluate_likelihood>: is returning a value of -10.!"<<std::endl;
+    std::cout<<"<THQLikelihoodComputer::evaluate_likelihood>: inputvars.size() is "<<inputvars.size()<< " and it is expected to be "<<NVARS<<std::endl;
+    std::cout<<"<THQLikelihoodComputer::evaluate_likelihood>: is returning a value of -10.!"<<std::endl;
     return -10.;
   }
 
@@ -111,7 +76,6 @@ double LikelihoodClass::evaluate_likelihood(const std::vector<double> &inputvars
 
 }
 
-}
 
 
-#endif
+
