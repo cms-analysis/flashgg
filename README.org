@@ -6,11 +6,12 @@
 
    Supported releases:
    - 10_5_0
+   - 10_6_1_patch2 required for this stage 1.1 branch
 
    get flashgg:
    #+BEGIN_EXAMPLE
-   cmsrel CMSSW_10_5_0
-   cd CMSSW_10_5_0/src
+   cmsrel CMSSW_10_6_1_patch2
+   cd CMSSW_10_6_1_patch2/src
    cmsenv
    git cms-init
    cd $CMSSW_BASE/src 
