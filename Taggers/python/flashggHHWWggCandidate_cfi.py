@@ -4,11 +4,14 @@ import FWCore.ParameterSet.Config as cms
 
 from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
 
+print'UnpackedJetCollectionVInputTag = ',UnpackedJetCollectionVInputTag
+
 # cfi = configuration fragment include
 # Clone these params into _cfg 
 FlashggHHWWggCandidate = cms.EDProducer("FlashggHHWWggCandidateProducer", 
                                     PhotonTag = cms.InputTag('flashggRandomizedPhotons'),
                                     DiPhotonTag = cms.InputTag('flashggDiPhotonSystematics'),
+                                    # DiPhotonTag = cms.InputTag('flashggPreselectedDiPhotons'),
                                     VertexTag = cms.InputTag('offlineSlimmedPrimaryVertices'),
                                     GenParticleTag         = cms.InputTag('flashggPrunedGenParticles'),
                                     ElectronTag            = cms.InputTag('flashggSelectedElectrons'),

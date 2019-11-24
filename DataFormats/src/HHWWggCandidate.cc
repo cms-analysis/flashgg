@@ -213,44 +213,51 @@ slp_Hgg_MVA_ ()
 
       // Using January 2016 Photon MVA ID training working points for bbgg 
 
-      if (n_good_leptons == 1){
-        if (n_good_jets >= 2 ){
+      // if (n_good_leptons == 1){
+      //   if ( n_good_jets == 2 ){
 
-          // leading photon 
-          // EB 
-          if (( abs(leading_pho_eta) > 0) && ( abs(leading_pho_eta) < 1.4442)){
-            // if (lead_pho_EG_MVA_ > 0.42) lead_pass_TightPhoID = 1; 
-            if (lp_Hgg_MVA_ > 0.07) lead_pass_TightPhoID = 1; 
-          }
+      //     // leading photon 
+      //     // EB 
+      //     if (( abs(leading_pho_eta) > 0) && ( abs(leading_pho_eta) < 1.4442)){
+      //       // if (lead_pho_EG_MVA_ > 0.42) lead_pass_TightPhoID = 1; 
+      //       if (lp_Hgg_MVA_ > 0.07) lead_pass_TightPhoID = 1; 
+      //     }
 
-          // EE 
-          else if (( abs(leading_pho_eta) > 1.566) && ( abs(leading_pho_eta) < 2.5)){
-            // if (lead_pho_EG_MVA_ > 0.14) lead_pass_TightPhoID = 1;
-            if (lp_Hgg_MVA_ > -0.03) lead_pass_TightPhoID = 1;
-          }
+      //     // EE 
+      //     else if (( abs(leading_pho_eta) > 1.566) && ( abs(leading_pho_eta) < 2.5)){
+      //       // if (lead_pho_EG_MVA_ > 0.14) lead_pass_TightPhoID = 1;
+      //       if (lp_Hgg_MVA_ > -0.03) lead_pass_TightPhoID = 1;
+      //     }
 
-          // SubLeading Photon
-          // EB 
-          if (( abs(sub_leading_pho_eta) > 0) && ( abs(sub_leading_pho_eta) < 1.4442)){
-            // if (sublead_pho_EG_MVA_ > 0.42) sublead_pass_TightPhoID = 1; 
-            if (slp_Hgg_MVA_ > 0.07) sublead_pass_TightPhoID = 1; 
-          }
+      //     // SubLeading Photon
+      //     // EB 
+      //     if (( abs(sub_leading_pho_eta) > 0) && ( abs(sub_leading_pho_eta) < 1.4442)){
+      //       // if (sublead_pho_EG_MVA_ > 0.42) sublead_pass_TightPhoID = 1; 
+      //       if (slp_Hgg_MVA_ > 0.07) sublead_pass_TightPhoID = 1; 
+      //     }
 
-          // EE 
-          else if (( abs(sub_leading_pho_eta) > 1.566) && ( abs(sub_leading_pho_eta) < 2.5)){
-            // if (sublead_pho_EG_MVA_ > 0.14) sublead_pass_TightPhoID = 1;
-            if (slp_Hgg_MVA_ > -0.03) sublead_pass_TightPhoID = 1;
-          }
+      //     // EE 
+      //     else if (( abs(sub_leading_pho_eta) > 1.566) && ( abs(sub_leading_pho_eta) < 2.5)){
+      //       // if (sublead_pho_EG_MVA_ > 0.14) sublead_pass_TightPhoID = 1;
+      //       if (slp_Hgg_MVA_ > -0.03) sublead_pass_TightPhoID = 1;
+      //     }
 
-          if (lead_pass_TightPhoID && sublead_pass_TightPhoID){
+      //     if (lead_pass_TightPhoID && sublead_pass_TightPhoID){
             
-            // mass window for fitting background
-            if  ((dipho.mass() > 100.) && (dipho.mass() < 180.)){
-              pass_selections = 1;
-            }
-          }
+      //       // mass window for fitting background
+      //       if  ((dipho.mass() > 100.) && (dipho.mass() < 180.)){
+      //         pass_selections = 1;
+      //       }
+      //     }
 
-        }
+      //   }
+      // }
+
+      // Only n good leptons & jets selections 
+      if (n_good_leptons == 1){
+        // if ((n_good_jets == 1) || (n_good_jets == 2) ){
+          pass_selections = 1;
+        // }
       }
 
       if (pass_selections){

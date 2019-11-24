@@ -22,7 +22,9 @@ class HHWWggCustomize():
             # "HHbbggMVA := MVA()"
         ]
         variables = [
-            "secondTestVariable := 10"
+            "lp_MVA := 10",
+            "slp_MVA := 10",
+
             # "leadingJet_bDis := leadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",#FIXME make the btag type configurable?
             # "subleadingJet_bDis := subleadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",
             # "leadingJet_DeepCSV := leadJet().bDiscriminator('pfDeepCSVJetTags:probb')+leadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",#FIXME make the btag type configurable?

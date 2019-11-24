@@ -40,6 +40,14 @@ namespace flashgg {
     // SemiLeptonic final state constructors
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>); 
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>); 
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>); 
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>); 
+
+    // no jets 
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>); 
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>); 
+
+
     virtual HHWWggTag *clone() const override; // You need this because HHWWggTag is derived from the DiPhotonTagBase
     // HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>); 
     // HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>); 
@@ -56,6 +64,9 @@ namespace flashgg {
     void setMVA(double x) { mva_ = x; }
     double MVA() const { return mva_; }
     void setEventNumber(double x) { eventNumber_ = x; }
+
+    const flashgg::Photon Leading_Photon() const { return Leading_Photon_; };
+    const flashgg::Photon Subleading_Photon() const { return Subleading_Photon_; };
 
     //---utils---
     // const std::vector<flashgg::DiPhotonCandidate> diphoVector() const { return diphoVector_; };
@@ -92,6 +103,9 @@ namespace flashgg {
   private:
     double mva_;
     long eventNumber_;
+    flashgg::Photon Leading_Photon_;
+    flashgg::Photon Subleading_Photon_;
+    
     // std::vector<flashgg::DiPhotonCandidate> diphoVector_;
     // std::vector<flashgg::Electron> electronVector_;
     // std::vector<flashgg::Muon> muonVector_;
@@ -103,8 +117,6 @@ namespace flashgg {
     // std::vector<reco::Candidate::LorentzVector> GenQuarks_;
     // std::vector<reco::Candidate::LorentzVector> GenNeutrinos_;
     // std::vector<flashgg::Jet> JetVector_;
-    // flashgg::Photon Leading_Photon_;
-    // flashgg::Photon Subleading_Photon_;
     // reco::Candidate::LorentzVector MET_fourvec_;
     // reco::Candidate::LorentzVector leading_dpho_;
     // reco::Candidate::LorentzVector leading_elec_;
