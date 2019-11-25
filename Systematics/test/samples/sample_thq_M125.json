@@ -1,0 +1,8 @@
+{
+    "processes" : {
+       "thq_125"  : [ [ "/THQ_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCP5/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-bc7e32150d646e869747d832d07c9d2a/USER",  { "args" : ["outputFile=THQ_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8.root"], "njobs":100} ] ]
+             
+                  },	
+    "cmdLine"  : "campaign=Era2017_RR-31Mar2018_v2 metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json targetLumi=41.5e+3 processType='mc'"
+}
+

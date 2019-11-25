@@ -1,0 +1,10 @@
+{
+    "processes" : {
+       "vbf_120"  : [ [ "/VBFHToGG_M120_13TeV_amcatnlo_pythia8/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-fb12d0f0ef6bfdb97703485ba72bfbd7/USER",  { "args" : ["outputFile=output_VBFHToGG_M120_13TeV_amcatnlo_pythia8.root"] } ] ],
+       "vbf_125"  : [ [ "/VBFHToGG_M125_13TeV_amcatnlo_pythia8/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-fb12d0f0ef6bfdb97703485ba72bfbd7/USER",  { "args" : ["outputFile=output_VBFHToGG_M125_13TeV_amcatnlo_pythia8.root"] } ] ],
+       "vbf_130"  : [ [ "/VBFHToGG_M130_13TeV_amcatnlo_pythia8/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-fb12d0f0ef6bfdb97703485ba72bfbd7/USER",  { "args" : ["outputFile=output_VBFHToGG_M130_13TeV_amcatnlo_pythia8.root"] } ] ]
+             
+                  },	
+    "cmdLine"  : "campaign=Era2017_RR-31Mar2018_v2 metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json targetLumi=41.5e+3 processType='mc'"
+}
+

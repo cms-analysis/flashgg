@@ -1,0 +1,10 @@
+{
+    "processes" : {
+       "tth_120"  : [ [ "/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8898d473234391c75fcfaef6f4012781/USER",  { "args" : ["outputFile=output_ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
+       "tth_125"  : [ [ "/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8898d473234391c75fcfaef6f4012781/USER",  { "args" : ["outputFile=output_ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ],
+       "tth_130"  : [ [ "/ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8898d473234391c75fcfaef6f4012781/USER",  { "args" : ["outputFile=output_ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8.root"] } ] ]
+             
+                  },	
+    "cmdLine"  : "campaign=Era2017_RR-31Mar2018_v2 metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json targetLumi=41.5e+3 processType='mc'"
+}
+

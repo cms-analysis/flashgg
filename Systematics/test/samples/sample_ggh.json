@@ -1,0 +1,10 @@
+{
+    "processes" : {
+       "ggh_120"  : [ [ "/GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-881967903231519e7d04858a35c22266/USER",  { "args" : ["outputFile=output_GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8.root"] } ] ],
+       "ggh_125"  : [ [ "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-881967903231519e7d04858a35c22266/USER",  { "args" : ["outputFile=output_GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8.root"] } ] ],
+       "ggh_130"  : [ [ "/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-881967903231519e7d04858a35c22266/USER",  { "args" : ["outputFile=output_GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8.root"] } ] ]
+             
+                  },	
+    "cmdLine"  : "campaign=Era2017_RR-31Mar2018_v2 metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json targetLumi=41.5e+3 processType='mc'"
+}
+

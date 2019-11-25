@@ -78,7 +78,7 @@ customize.options.register('doBJetRegression',
                            'doBJetRegression'
                            )
 customize.options.register('doHTXS',
-                           False,
+                           True,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doHTXS'
@@ -114,7 +114,7 @@ customize.options.register('doPdfWeights',
                            'doPdfWeights'
                            )
 customize.options.register('dumpTrees',
-                           False,
+                           True,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'dumpTrees'
@@ -138,7 +138,7 @@ customize.options.register('verboseSystDump',
                            'verboseSystDump'
                            )
 
-
+#process.flashggTHQLeptonicTag.processId = cms.string(str(customize.processId))
 print "Printing defaults"
 print 'doFiducial '+str(customize.doFiducial)
 print 'acceptance '+str(customize.acceptance)
@@ -504,7 +504,7 @@ for tag in tagList:
       if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") ) and (systlabel ==  "") and not (customize.processId == "th_125" or customize.processId == "bbh_125"):
           print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
-          nPdfWeights = 60
+          nPdfWeights = 58
           nAlphaSWeights = 2
           nScaleWeights = 9
       else:

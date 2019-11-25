@@ -288,7 +288,7 @@ flashggTHQLeptonicTag = cms.EDProducer("FlashggTHQLeptonicTagProducer",
                                        likelihoodThreshold_thq = cms.double(0.5),
                                        thqleptonicMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_BDT_thq_24April19.weights.xml"),
                                        likelihood_input = cms.FileInPath("flashgg/Taggers/data/LikelihoodInput_file.root"),
-                                      # HTXSTags     = HTXSInputTags
+                                       HTXSTags     = HTXSInputTags
 )
 
 
