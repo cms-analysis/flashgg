@@ -93,6 +93,7 @@ class JobsManager(object):
                             help="default: %default"),
                 make_option("-m","--max-resubmissions",dest="maxResub", type="int",default=2),
                 make_option("-N","--ncpu",dest="ncpu", type="int",default=cpu_count()),
+                make_option("--nCondorCpu",dest="ncondorcpu", type="int",default=1),
                 make_option("-H","--hadd",dest="hadd",default=False, action="store_true",
                             help="hadd output files when all jobs are finished."
                             ),
@@ -150,11 +151,11 @@ class JobsManager(object):
         if self.options.summary:
             self.options.dry_run = True
             self.options.cont = True
-            
+  
         self.jobFactory = WorkNodeJobFactory(self.options.stageTo,self.options.stageCmd,job_outdir=self.options.outputDir,
                                             batchSystem=self.options.batchSystem,copy_proxy=self.options.copy_proxy)
         self.parallel = Parallel(self.options.ncpu,lsfQueue=self.options.queue,lsfJobName="%s/runJobs" % self.options.outputDir,
-                                 asyncLsf=self.options.asyncLsf,jobDriver=self.jobFactory,batchSystem=self.options.batchSystem)
+                                 asyncLsf=self.options.asyncLsf,jobDriver=self.jobFactory,batchSystem=self.options.batchSystem,ncondorcpu=self.options.ncondorcpu)
         
         self.jobs = None
         self.failedJobIds = {}
