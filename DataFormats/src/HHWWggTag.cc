@@ -20,6 +20,23 @@ HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.)
 
 HHWWggTag::~HHWWggTag() {}
 
+void HHWWggTag::GetPhotons(edm::Ptr<DiPhotonCandidate> dipho)
+{
+  // dipho->makePhotonsPersistent();
+  // auto diphop4 = dipho_.p4();
+
+  // Get photons 
+  // flashgg::Photon leading_photon = dipho->getLeadingPhoton();
+  // flashgg::Photon subleading_photon = dipho->getSubLeadingPhoton();
+
+  // Save as dumper objects 
+  Leading_Photon_ = dipho->leadingPhoton();
+  Subleading_Photon_ = dipho->subLeadingPhoton();
+
+  lp_Hgg_MVA_ = Leading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() ); 
+  slp_Hgg_MVA_ = Subleading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() ); 
+}
+
 HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Met> MET,
                       edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2) // : leadJet_(leadJet), subleadJet_(subleadJet)
 {
@@ -27,42 +44,46 @@ HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electr
   // // if (!dipho_zero_vtx){
   // //   cout << "Diphoton vertex is not zero. Need to recompute" << endl; 
   // // }
-  // dipho_.makePhotonsPersistent();
-  // auto dipho = dipho_.p4();
+
   // leading_dpho_ = dipho;
 
   // // Get photons 
-  // flashgg::Photon leading_photon = dipho_.getLeadingPhoton();
-  // flashgg::Photon subleading_photon = dipho_.getSubLeadingPhoton();
+
   dipho_ = dipho;
+  GetPhotons(dipho);
 }
 
 HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Met> MET,
                       edm::Ptr<flashgg::Jet> jet)
 {
-  dipho_ = dipho;
+  dipho_ = dipho;  
+  GetPhotons(dipho);
 }
 
 HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> muon, edm::Ptr<flashgg::Met> MET,
                       edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2)
 {
   dipho_ = dipho;
+  GetPhotons(dipho);
 }
 
 HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> muon, edm::Ptr<flashgg::Met> MET,
                       edm::Ptr<flashgg::Jet> jet)
 {
   dipho_ = dipho;
+  GetPhotons(dipho);
 }
 
 HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Met> MET)
 {
   dipho_ = dipho;
+  GetPhotons(dipho);
 }
 
 HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> muon, edm::Ptr<flashgg::Met> MET)
 {
   dipho_ = dipho;
+  GetPhotons(dipho);
 }
 
 // You need this because HHWWggTag is derived from another class 

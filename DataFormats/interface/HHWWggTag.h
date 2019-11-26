@@ -60,14 +60,16 @@ namespace flashgg {
     //                 std::vector<reco::GenParticle> GenParticlesVector, std::vector<flashgg::Jet> JetVector,
     //                 std::vector<double> Vertex_Variables, std::vector<double> Cut_Variables, double dipho_MVA, double CMS_hgg_mass, double dZ);     
     
+    void GetPhotons(edm::Ptr<DiPhotonCandidate> dipho);
 
     void setMVA(double x) { mva_ = x; }
     double MVA() const { return mva_; }
     void setEventNumber(double x) { eventNumber_ = x; }
 
-    const flashgg::Photon Leading_Photon() const { return Leading_Photon_; };
-    const flashgg::Photon Subleading_Photon() const { return Subleading_Photon_; };
-
+    const flashgg::Photon* Leading_Photon() const { return Leading_Photon_; };
+    const flashgg::Photon* Subleading_Photon() const { return Subleading_Photon_; };
+    const float lp_Hgg_MVA() const {return lp_Hgg_MVA_;};
+    const float slp_Hgg_MVA() const {return slp_Hgg_MVA_;};
     //---utils---
     // const std::vector<flashgg::DiPhotonCandidate> diphoVector() const { return diphoVector_; };
     // const std::vector<flashgg::Electron> electronVector() const {return electronVector_;} 
@@ -80,8 +82,6 @@ namespace flashgg {
     // const std::vector<reco::Candidate::LorentzVector> GenQuarks() const {return GenQuarks_;}
     // const std::vector<reco::Candidate::LorentzVector> GenNeutrinos() const {return GenNeutrinos_;}
     // const std::vector<flashgg::Jet> JetVector() const {return JetVector_;}
-    // const flashgg::Photon Leading_Photon() const { return Leading_Photon_; };
-    // const flashgg::Photon Subleading_Photon() const { return Subleading_Photon_; };
     // const reco::Candidate::LorentzVector& MET_fourvec() const { return MET_fourvec_; };
     // const reco::Candidate::LorentzVector& leading_dpho() const { return leading_dpho_; };
     // const reco::Candidate::LorentzVector& leading_elec() const { return leading_elec_; };
@@ -97,14 +97,14 @@ namespace flashgg {
     // const float dipho_MVA() const {return dipho_MVA_;};
     // const float CMS_hgg_mass() const {return CMS_hgg_mass_;};
     // const float dZ() const {return dZ_;};
-    // const float lp_Hgg_MVA() const {return lp_Hgg_MVA_;};
-    // const float slp_Hgg_MVA() const {return slp_Hgg_MVA_;};
 
   private:
     double mva_;
     long eventNumber_;
-    flashgg::Photon Leading_Photon_;
-    flashgg::Photon Subleading_Photon_;
+    const flashgg::Photon* Leading_Photon_;
+    const flashgg::Photon* Subleading_Photon_;
+    float lp_Hgg_MVA_;
+    float slp_Hgg_MVA_;
     
     // std::vector<flashgg::DiPhotonCandidate> diphoVector_;
     // std::vector<flashgg::Electron> electronVector_;

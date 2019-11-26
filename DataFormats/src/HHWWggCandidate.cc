@@ -255,15 +255,17 @@ slp_Hgg_MVA_ ()
 
       // Only n good leptons & jets selections 
       if (n_good_leptons == 1){
+        if (n_good_jets == 2){                                                                                                                                                                                                                                                                                                                                                                                                                                                           
         // if ((n_good_jets == 1) || (n_good_jets == 2) ){
           pass_selections = 1;
+        }
         // }
       }
 
       if (pass_selections){
         CMS_hgg_mass_ = dipho.mass();
       }
-      else {
+      else {    
         CMS_hgg_mass_ = -99; 
         dZ_ = -999;
       }

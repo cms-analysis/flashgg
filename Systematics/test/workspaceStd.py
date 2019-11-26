@@ -19,8 +19,8 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-# process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 )
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
+# process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 )
 
 systlabels = [""]
 phosystlabels = []
@@ -173,9 +173,12 @@ else:
 
 from flashgg.Systematics.SystematicsCustomize import *
 jetSystematicsInputTags = createStandardSystematicsProducers(process , customize)
+print'jetSystematicsInputTags = ',jetSystematicsInputTags
+# jetSystematicsInputTags = None 
 if dropVBFInNonGold:
     process.flashggVBFTag.SetArbitraryNonGoldMC = True
     process.flashggVBFTag.DropNonGoldData = True
+
 modifyTagSequenceForSystematics(process,jetSystematicsInputTags)
 
 print "Printing options"
@@ -457,7 +460,8 @@ print "------------------------------------------------------------"
 #globalVariables.extraFloats.rho = cms.InputTag("rhoFixedGridAll")
 
 #cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags)
-cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags)
+
+# cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags) # used in workspacestd 
 
 # Dump an object called NoTag for untagged events in order to track QCD weights
 # Will be broken if it's done for non-central values, so turn this on only for the non-syst tag sorter
@@ -561,18 +565,8 @@ process.tagsDumper.classifierCfg.remap=cms.untracked.VPSet()
 for tag in tagList: 
   tagName=tag[0]
   tagCats=tag[1]
-#   print'tagName = ',tagName
-#   print'tagCats = ',tagCats
-  # replace src="flashggDoubleHTag" with "DoubleHTag"
   # remap return value of class-based classifier
   process.tagsDumper.classifierCfg.remap.append( cms.untracked.PSet( src=cms.untracked.string("flashgg%s"%tagName), dst=cms.untracked.string(tagName) ) )
-  print'Remap:'
-  print'flashgg' + tagName
-  print'to'
-  print tagName
-#   print('src = flashgg{}'.format(x, x*x, x*x*x))
-#   print'tagName = ',tagname
-#   print'systlabels = ',systlabels
   for systlabel in systlabels:
       if not systlabel in definedSysts:
           # the cut corresponding to the systematics can be defined just once
@@ -606,9 +600,6 @@ for tag in tagList:
           nPdfWeights = -1
           nAlphaSWeights = -1
           nScaleWeights = -1
-      print'just before cfgtool definition'
-    #   print'tagName = ',tagName
-    #   print'tagCats = ',tagCats
       cfgTools.addCategory(process.tagsDumper,
                            systlabel,
                            classname=tagName,
@@ -709,15 +700,19 @@ if customize.tthTagsOnly:
     modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystlabels, jetsystlabels)
 
 else :
-    process.p = cms.Path(process.dataRequirements*
-                         process.flashggMetFilters*
-                         process.genFilter*
+    # process.flashggDiPhotonSystematics.src = "flashggPreselectedDiPhotons" # put in by hand to match tagger and dumper outputs
+    process.flashggHHWWggTag
+    process.p = cms.Path(#process.dataRequirements*
+                         #process.flashggMetFilters*
+                         #process.genFilter*
                          process.flashggDifferentialPhoIdInputsCorrection*
-                         process.flashggDiPhotonSystematics*
-                         process.flashggMetSystematics*
-                         process.flashggMuonSystematics*process.flashggElectronSystematics*
-                         (process.flashggUnpackedJets*process.jetSystematicsSequence)*
-                         (process.flashggTagSequence*process.systematicsTagSequences)*
+                        #  process.flashggDiPhotonSystematics*
+                         #process.flashggMetSystematics*
+                         #process.flashggMuonSystematics*process.flashggElectronSystematics*
+                         #(process.flashggUnpackedJets*process.jetSystematicsSequence)*
+                         process.flashggUnpackedJets*
+                         process.flashggTagSequence*
+                        #  (process.flashggTagSequence*process.systematicsTagSequences)*
                          process.flashggSystTagMerger*
                          process.penultimateFilter*
                          process.finalFilter*

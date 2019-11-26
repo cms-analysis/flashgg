@@ -22,9 +22,15 @@ class HHWWggCustomize():
             # "HHbbggMVA := MVA()"
         ]
         variables = [
-            "lp_MVA := 10",
-            "slp_MVA := 10",
-
+            "lp_E := Leading_Photon.p4().E()",
+            "slp_E := Subleading_Photon.p4().E()",
+            "lp_initE := Leading_Photon.energyAtStep('initial')",
+            "slp_initE := Subleading_Photon.energyAtStep('initial')", 
+            "lp_Hgg_MVA := lp_Hgg_MVA()",
+            "slp_Hgg_MVA := slp_Hgg_MVA()",
+            
+            
+            # also want final energies 
             # "leadingJet_bDis := leadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",#FIXME make the btag type configurable?
             # "subleadingJet_bDis := subleadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",
             # "leadingJet_DeepCSV := leadJet().bDiscriminator('pfDeepCSVJetTags:probb')+leadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",#FIXME make the btag type configurable?
@@ -161,7 +167,14 @@ class HHWWggCustomize():
 
     def systematicVariables(self):
     #   systematicVariables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass","Mjj[120,70,190]:=dijet().M()","HHbbggMVA[100,0,1.]:=MVA()","MX[300,250,5000]:=MX()"]
-      systematicVariables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass", "testVariableThree := 33"]
+      systematicVariables=[
+          "CMS_hgg_mass[160,100,180]:=diPhoton().mass",
+          "lp_E := Leading_Photon.p4().E()",
+          "slp_E := Subleading_Photon.p4().E()",
+          "lp_initE := Leading_Photon.energyAtStep('initial')",
+          "slp_initE := Subleading_Photon.energyAtStep('initial')", # also want final energies 
+
+      ]
     #   systematicVariables=[]
       
     #   if self.customize.HHWWggReweight > 0: 

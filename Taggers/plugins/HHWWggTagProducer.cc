@@ -284,6 +284,11 @@ namespace flashgg {
       // cout << "**************************** in HHWWggTagProducer.cc **********************************************" << endl;
     }
 
+    // bool HHWWggTagProducer::PassMVASelections()
+    // {
+// 
+    // }
+
     void HHWWggTagProducer::produce( Event &event, const EventSetup & )
     {
 
@@ -833,26 +838,46 @@ namespace flashgg {
           diphoVector_.push_back(*thisDPPointer);
 
           //-- Tag object 
-          if ( (n_good_leptons == 1) && ( (n_good_jets == 1) ) ){
+          if ( (n_good_leptons == 1) && (n_good_jets >= 2)){
+          // if ( (n_good_leptons == 1) && ( (n_good_jets == 1) ) ){
           // if ( (n_good_leptons == 1) && ( (n_good_jets == 1) || (n_good_jets == 2) ) ){
           // if ( (n_good_leptons == 1) ){
             int catnum = 0;
             Ptr<flashgg::Jet> jet1 = tagJets[0];
             Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
 
-            if (n_good_electrons == 1 && n_good_jets == 1){
+            if (n_good_electrons == 1){
               Ptr<flashgg::Electron> tag_electron = goodElectrons[0];
-              HHWWggTag tag_obj(dipho, tag_electron, theMET, jet1);
-              if (loopOverJets == 1) tag_obj.setSystLabel( inputDiPhotonSuffixes_[diphoton_idx] );
-              else tag_obj.setSystLabel( inputJetsSuffixes_[jet_col_idx]);
-              tag_obj.setDiPhotonIndex( diphoIndex ); 
-              tag_obj.setMVA( -0.9 );
-              tag_obj.setCategoryNumber( catnum );
-              // tag_obj.setEventNumber(event.id().event() );
-              tags->push_back( tag_obj );
-              if( ! event.isRealData() ) {
-                tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                 
+
+              if (n_good_jets == 2){
+                Ptr<flashgg::Jet> jet2 = tagJets[1];
+                HHWWggTag tag_obj(dipho, tag_electron, theMET, jet1, jet2); // electron, MET, jet1, jet2 
+                if (loopOverJets == 1) tag_obj.setSystLabel( inputDiPhotonSuffixes_[diphoton_idx] );
+                else tag_obj.setSystLabel( inputJetsSuffixes_[jet_col_idx]);
+
+                tag_obj.setDiPhotonIndex( diphoIndex );           
+                tag_obj.setMVA( -0.9 );
+                tag_obj.setCategoryNumber( catnum );
+                // tag_obj.setEventNumber(event.id().event() );
+                tags->push_back( tag_obj ); 
+
+                if( ! event.isRealData() ) {
+                  tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                 
+                }  
+
               }
+
+              // HHWWggTag tag_obj(dipho, tag_electron, theMET, jet1);
+              // if (loopOverJets == 1) tag_obj.setSystLabel( inputDiPhotonSuffixes_[diphoton_idx] );
+              // else tag_obj.setSystLabel( inputJetsSuffixes_[jet_col_idx]);
+              // tag_obj.setDiPhotonIndex( diphoIndex ); 
+              // tag_obj.setMVA( -0.9 );
+              // tag_obj.setCategoryNumber( catnum );
+              // // tag_obj.setEventNumber(event.id().event() );
+              // tags->push_back( tag_obj );
+              // if( ! event.isRealData() ) {
+              //   tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                 
+              // }
               // if (n_good_jets == 1){
               //   HHWWggTag tag_obj(dipho, tag_electron, theMET, jet1);
                 
@@ -888,17 +913,17 @@ namespace flashgg {
               // }
             }
             
-            if (n_good_muons == 1 && n_good_jets == 1){
+            if (n_good_muons == 1){
               Ptr<flashgg::Muon> tag_muon = goodMuons[0];
-              HHWWggTag tag_obj(dipho, tag_muon, theMET, jet1);
-              tag_obj.setDiPhotonIndex( diphoIndex ); 
-              tag_obj.setMVA( -0.9 );
-              tag_obj.setCategoryNumber( catnum );
-              // tag_obj.setEventNumber(event.id().event() );
-              tags->push_back( tag_obj );   
-              if( ! event.isRealData() ) {
-                tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                 
-              }           
+              // HHWWggTag tag_obj(dipho, tag_muon, theMET, jet1);
+              // tag_obj.setDiPhotonIndex( diphoIndex ); 
+              // tag_obj.setMVA( -0.9 );
+              // tag_obj.setCategoryNumber( catnum );
+              // // tag_obj.setEventNumber(event.id().event() );
+              // tags->push_back( tag_obj );   
+              // if( ! event.isRealData() ) {
+              //   tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                 
+              // }           
               // if (n_good_jets == 1){
               //   HHWWggTag tag_obj(dipho, tag_muon, theMET, jet1);
                 
@@ -915,23 +940,23 @@ namespace flashgg {
               //     tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                 
               //   }
               // }
-              // else if (n_good_jets == 2){
+              if (n_good_jets == 2){
 
-              //   Ptr<flashgg::Jet> jet2 = tagJets[1];
-              //   HHWWggTag tag_obj(dipho, tag_muon, theMET, jet1, jet2); // electron, MET, jet1, jet2 
-              //   if (loopOverJets == 1) tag_obj.setSystLabel( inputDiPhotonSuffixes_[diphoton_idx] );
-              //   else tag_obj.setSystLabel( inputJetsSuffixes_[jet_col_idx]);
+                Ptr<flashgg::Jet> jet2 = tagJets[1];
+                HHWWggTag tag_obj(dipho, tag_muon, theMET, jet1, jet2); // electron, MET, jet1, jet2 
+                if (loopOverJets == 1) tag_obj.setSystLabel( inputDiPhotonSuffixes_[diphoton_idx] );
+                else tag_obj.setSystLabel( inputJetsSuffixes_[jet_col_idx]);
 
-              //   tag_obj.setDiPhotonIndex( diphoIndex );           
-              //   tag_obj.setMVA( -0.9 );
-              //   tag_obj.setCategoryNumber( catnum );
-              //   // tag_obj.setEventNumber(event.id().event() );
-              //   tags->push_back( tag_obj ); 
+                tag_obj.setDiPhotonIndex( diphoIndex );           
+                tag_obj.setMVA( -0.9 );
+                tag_obj.setCategoryNumber( catnum );
+                // tag_obj.setEventNumber(event.id().event() );
+                tags->push_back( tag_obj ); 
 
-              //   if( ! event.isRealData() ) {
-              //     tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                 
-              //   }  
-              // }
+                if( ! event.isRealData() ) {
+                  tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                 
+                }  
+              
             }
 
             // if (n_good_jets == 1){
@@ -972,9 +997,9 @@ namespace flashgg {
             //   if( ! event.isRealData() ) {
             //     tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );                 
             //   }        
-            // }
+            }
             
-          } // if ( (n_good_leptons == 1) && (n_good_jets >= 1) )
+          } // if ( (n_good_leptons == 1) && (n_good_jets >= 2) )
 
           // else{
           //   cout << "event does not have at least 1 good electron and at least 1 good jet " << endl;

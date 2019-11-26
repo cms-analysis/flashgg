@@ -16,6 +16,7 @@ process.flashggDiPhotonMVA = flashggDiPhotonMVA
 
 from flashgg.Taggers.flashggUpdatedIdMVADiPhotons_cfi import flashggUpdatedIdMVADiPhotons
 process.flashggUpdatedIdMVADiPhotons = flashggUpdatedIdMVADiPhotons
+# process.flashggUpdatedIdMVADiPhotons.DiPhotonTag = "flashggPreselectedDiPhotons"
 
 from flashgg.Systematics.flashggDiPhotonSystematics_cfi import flashggDiPhotonSystematics
 
@@ -221,6 +222,10 @@ process.flashggDiPhotonSystematics.SystMethods2D = systModules2D
 ## Choose to require zeroeth vertex for all diphotons or not 
  
 zero_vtx = 0
+sands = 0 # scaling and smearing 
+
+
+# process.FlashggHHWWggCandidate.MVAResultTag = cms.InputTag('flashggUpdatedIdMVADiPhotons')
 
 if zero_vtx:
   from flashgg.MicroAOD.flashggDiPhotons_cfi import flashggDiPhotons
@@ -232,6 +237,7 @@ if zero_vtx:
   process.flashggPreselectedDiPhotons.src = "flashggDiPhotonsVtx0" # Only use zeroth vertex diphotons, order by pt 
   process.path = cms.Path(process.flashggDiPhotonsVtx0
                           *process.flashggPreselectedDiPhotons
+                          # *flashggUpdatedIdMVADiPhotons
                           *process.flashggDiPhotonMVA
                           *process.flashggUnpackedJets
                           *process.dataRequirements
@@ -240,13 +246,28 @@ if zero_vtx:
                           *process.HHWWggCandidateDumper
                           )
 
+
 else:
-  process.flashggPreselectedDiPhotons.src = "flashggDiPhotons" # don't require 0th vertex 
-  process.path = cms.Path(process.dataRequirements
-                          *process.flashggPreselectedDiPhotons
-                          *process.flashggDiPhotonMVA
-                          *process.flashggUnpackedJets
-                          *process.flashggDiPhotonSystematics
-                          *process.FlashggHHWWggCandidate
-                          *process.HHWWggCandidateDumper
-                          )
+  if sands:
+    process.FlashggHHWWggCandidate.DiPhotonTag = cms.InputTag('flashggDiPhotonSystematics')
+    process.flashggPreselectedDiPhotons.src = "flashggDiPhotons" # don't require 0th vertex 
+    process.path = cms.Path(process.dataRequirements
+                            *process.flashggPreselectedDiPhotons
+                            # *flashggUpdatedIdMVADiPhotons
+                            *process.flashggDiPhotonMVA
+                            *process.flashggUnpackedJets
+                            *process.flashggDiPhotonSystematics
+                            *process.FlashggHHWWggCandidate
+                            *process.HHWWggCandidateDumper
+                            )
+  else:
+    process.FlashggHHWWggCandidate.DiPhotonTag = cms.InputTag('flashggPreselectedDiPhotons')
+    process.flashggPreselectedDiPhotons.src = "flashggDiPhotons" # don't require 0th vertex 
+    process.path = cms.Path(process.dataRequirements
+                            *process.flashggPreselectedDiPhotons
+                            # *flashggUpdatedIdMVADiPhotons
+                            *process.flashggDiPhotonMVA
+                            *process.flashggUnpackedJets
+                            *process.FlashggHHWWggCandidate
+                            *process.HHWWggCandidateDumper
+                            )
