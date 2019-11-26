@@ -677,9 +677,9 @@ namespace flashgg {
             if( ( maxCandPerEvent_ > 0 )  && nfilled == 0 ) { break; }
         }
             
-        if( collection.size() == 0 ) {
-            cout << "No candidate found in " << src_.label()  << " for event " <<  event.id().event() << " " << event.id().luminosityBlock() << " "<< event.id().run() << endl;
-        }
+        // if( collection.size() == 0 ) {
+        //     cout << "No candidate found in " << src_.label()  << " for event " <<  event.id().event() << " " << event.id().luminosityBlock() << " "<< event.id().run() << endl;
+        // }
     }
 }
     

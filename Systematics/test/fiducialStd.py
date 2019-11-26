@@ -105,6 +105,12 @@ customize.options.register('verboseSystDump',
                            VarParsing.VarParsing.varType.bool,
                            'verboseSystDump'
                            )
+customize.options.register('doSigmaMdecorr',
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doSigmaMdecorr'
+                           )
 
 # import flashgg customization to check if we have signal or background
 # from flashgg.MetaData.JobConfig import customize
@@ -143,34 +149,34 @@ print 'doJets '+str(customize.doJets)
 print 'acceptance '+str(customize.acceptance)
 print 'doMuFilter '+str(customize.doMuFilter)
 
-if customize.doFiducial:
-    fc.leadCut = 1./3.
-    fc.subLeadCut = 1./4.
-    fc.isoCut = 10.
-    fc.etaCut = 2.5
-    fc.doBJetsAndMET = customize.doBJetsAndMET
-    fc.doJets = customize.doJets
-    matchCut = "leadingPhoton.hasMatchedGenPhoton() && subLeadingPhoton.hasMatchedGenPhoton()"
-#    phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >0.320 && subLeadingView().phoIdMvaWrtChosenVtx() >0.320)'#remove it for further studies
-    phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >-1. && subLeadingView().phoIdMvaWrtChosenVtx() >-1.)'
-    accCut = fc.getAccRecoCut()
+fc.leadCut = 1./3.
+fc.subLeadCut = 1./4.
+fc.isoCut = 10.
+fc.etaCut = 2.5
+fc.doBJetsAndMET = customize.doBJetsAndMET
+fc.doJets = customize.doJets
+matchCut = "leadingPhoton.hasMatchedGenPhoton() && subLeadingPhoton.hasMatchedGenPhoton()"
+    #    phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >0.320 && subLeadingView().phoIdMvaWrtChosenVtx() >0.320)'#remove it for further studies
+phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >-1. && subLeadingView().phoIdMvaWrtChosenVtx() >-1.)'
+accCut = fc.getAccRecoCut()
 
-    print process.flashggPreselectedDiPhotons.cut
+print process.flashggPreselectedDiPhotons.cut
 
-    if customize.acceptance == 'IN':
-        process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut)[
-                                                             12:-2] + ' && ' + str(matchCut) + ' && ' + str(phoIDcut) + ' && ' + str(accCut))
+if customize.acceptance == 'IN':
+    process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut)[12:-2] + ' && ' + str(matchCut) + ' && ' + str(phoIDcut) + ' && ' + str(accCut))
 
-    if customize.acceptance == 'OUT':
-        process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut)[
-                                                             12:-2] + ' && ' + str(matchCut) + ' && ' + str(phoIDcut) + ' && !' + str(accCut))
+if customize.acceptance == 'OUT':
+    process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut)[12:-2] + ' && ' + str(matchCut) + ' && ' + str(phoIDcut) + ' && !' + str(accCut))
 
-    if customize.acceptance == 'NONE':
-        process.flashggPreselectedDiPhotons.cut = cms.string(
-            str(process.flashggPreselectedDiPhotons.cut)[12:-2] + ' && ' + str(phoIDcut))
+if customize.acceptance == 'NONE':
+    process.flashggPreselectedDiPhotons.cut = cms.string(
+        str(process.flashggPreselectedDiPhotons.cut)[12:-2] + ' && ' + str(phoIDcut))
     print "Here we print the preslection cut"
     print process.flashggPreselectedDiPhotons.cut
 
+if customize.acceptance == 'BKG':
+    process.flashggPreselectedDiPhotons.cut = cms.string(
+        str(process.flashggPreselectedDiPhotons.cut)[12:-2] + ' && ' + str(phoIDcut) + ' && ' + str(matchCut))
     # process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
     # for opt, value in customize.metaConditions["flashggDiPhotons"].items():
     #     if isinstance(value, unicode):
@@ -178,15 +184,20 @@ if customize.doFiducial:
     #     else:
     #         setattr(process.flashggDiPhotons, opt, value)
     
-    process.flashggDiPhotonMVA.sigmaMdecorrFile = cms.FileInPath(
-        "flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_Moriond17_Mgg100to180.root")
-    process.flashggSigmaMoMpToMTag.BoundariesSigmaMoM = cms.vdouble(
-        0., 0.00866, 0.0118, 0.0298)  # corrected looking at data distribution
+process.flashggDiPhotonMVA.sigmaMdecorrFile = cms.FileInPath(
+    "flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_Moriond17_Mgg100to180.root")
+if customize.doSigmaMdecorr:
+    process.flashggDiPhotonMVA.doSigmaMdecorr = cms.bool(True)
+else:
+    process.flashggDiPhotonMVA.doSigmaMdecorr = cms.bool(False)
+    
+process.flashggSigmaMoMpToMTag.BoundariesSigmaMoM = cms.vdouble(
+    0., 100.)  # Categorization done outside of fgg
 
-if customize.doFiducial:
-    print 'we do fiducial and we change tagsorter'
-    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(
-        cms.PSet(TagName=cms.InputTag('flashggSigmaMoMpToMTag')))
+
+print 'we do fiducial and we change tagsorter'
+process.flashggTagSorter.TagPriorityRanges = cms.VPSet(
+    cms.PSet(TagName=cms.InputTag('flashggSigmaMoMpToMTag')))
 
 useEGMTools(process)
 
@@ -198,21 +209,21 @@ is_signal = reduce(lambda y, z: y or z, map(
 if is_signal:
     print "Signal MC, so adding systematics and dZ"
     variablesToUse = minimalVariables
-    if customize.doFiducial:
-        print("Adding variables")
-        variablesToUse.extend(fc.getGenVariables(True))
-        variablesToUse.extend(fc.getRecoVariables(True))
-# variablesToUse.append("genLeadGenIso := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
-# variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
-        variablesToUse.append("leadmva := diPhotonMVA().leadmva")
-        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
-        variablesToUse.append("sigmarv := diPhotonMVA().sigmarv")
-        variablesToUse.append("sigmawv := diPhotonMVA().sigmawv")
-        variablesToUse.append("vtxprob := diPhotonMVA().vtxprob")
-        variablesToUse.append("CosPhi := diPhotonMVA().CosPhi")
+    # if customize.doFiducial:
+    print("Adding variables")
+    variablesToUse.extend(fc.getGenVariables(True))
+    variablesToUse.extend(fc.getRecoVariables(True))
+    # variablesToUse.append("genLeadGenIso := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
+    # variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
+    variablesToUse.append("leadmva := diPhotonMVA().leadmva")
+    variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
+    variablesToUse.append("sigmarv := diPhotonMVA().sigmarv")
+    variablesToUse.append("sigmawv := diPhotonMVA().sigmawv")
+    variablesToUse.append("vtxprob := diPhotonMVA().vtxprob")
+    variablesToUse.append("CosPhi := diPhotonMVA().CosPhi")
 #        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
 
-    if customize.doSystematics and customize.doFiducial:
+    if customize.doSystematics:
         systematicVariables.extend(fc.getGenVariables(True))
         systematicVariables.extend(fc.getRecoVariables(True))
 #        systematicVariables.append("genLeadGenIso[1,0.0,100.0] := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
@@ -291,22 +302,25 @@ if is_signal:
 elif customize.processId == "Data":
     print "Data, so turn off all shifts and systematics, with some exceptions"
     variablesToUse = minimalNonSignalVariables
-    if customize.doFiducial:
-        variablesToUse.extend(fc.getRecoVariables(True))
-        variablesToUse.append("leadmva := diPhotonMVA().leadmva")
-        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
+    variablesToUse.extend(fc.getRecoVariables(True))
+    variablesToUse.append("leadmva := diPhotonMVA().leadmva")
+    variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
     customizeSystematicsForData(process)
 else:
     print "Background MC, so store mgg and central only"
     variablesToUse = minimalNonSignalVariables
+    variablesToUse.extend(fc.getRecoVariables(True))
+    variablesToUse.append("sigmarv := diPhotonMVA().sigmarv")
+    variablesToUse.append("sigmawv := diPhotonMVA().sigmawv")
     customizeSystematicsForBackground(process)
 
-if customize.doFiducial:
-    tagList = [["SigmaMpTTag", 3]]
+print('------------------------------------variablesToUse--------------------')
+print(variablesToUse)
+tagList = [["SigmaMpTTag", 1]]
 
-if(customize.doFiducial):
-    fc.bookCompositeObjects(process, customize.processId,
-                            process.flashggTagSequence)
+
+fc.bookCompositeObjects(process, customize.processId,
+                        process.flashggTagSequence)
 cloneTagSequenceForEachSystematic(
     process, systlabels, phosystlabels, metsystlabels, jetsystlabels, jetSystematicsInputTags)
 
@@ -383,7 +397,7 @@ for tag in tagList:
     process.tagsDumper.classifierCfg.remap.append(cms.untracked.PSet(
         src=cms.untracked.string("flashgg%s" % tagName), dst=cms.untracked.string(tagName)))
     for systlabel in systlabels:
-        if not systlabel in definedSysts:
+        if systlabel not in definedSysts:
             # the cut corresponding to the systematics can be defined just once
             cutstring = "hasSyst(\"%s\") " % (systlabel)
             definedSysts.add(systlabel)
@@ -392,16 +406,9 @@ for tag in tagList:
         if systlabel == "":
             currentVariables = variablesToUse
         else:
-            if customize.doHTXS:
-                currentVariables = systematicVariablesHTXS
-            else:
-                currentVariables = systematicVariables
+            currentVariables = systematicVariables
         if tagName == "NoTag":
-            if customize.doHTXS:
-                currentVariables = [
-                    "stage0cat[72,9.5,81.5] := tagTruth().HTXSstage0cat"]
-            else:
-                currentVariables = []
+            currentVariables = []
         isBinnedOnly = (systlabel != "")
         if (customize.doPdfWeights or customize.doSystematics) and ((customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance")) and (systlabel == "") and not (customize.processId == "th_125" or customize.processId == "bbh_125" or customize.processId == "thw_125") and not (customize.datasetName() and customize.datasetName().count("DiPho")):
             print "Signal MC central value, so dumping PDF weights"
@@ -491,53 +498,55 @@ else:
 process.flashggMetFilters.requiredFilterNames = cms.untracked.vstring([filter.encode(
     "ascii") for filter in customize.metaConditions["flashggMetFilters"][metFilterSelector]])
 
-if customize.doFiducial:
-    print "count 4"
-    if (customize.doPdfWeights or customize.doSystematics) and ((customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance")) and not ((customize.datasetName() and customize.datasetName().count("DiPho"))):
+print('-----------------------------------DiPho-----------------------------------------')
+print(customize.processId.count("DiPho"))
+print(customize.datasetName().count("DiPho"))
+
+
+if (customize.doPdfWeights or customize.doSystematics) and ((customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance")) and not ((customize.datasetName() and customize.datasetName().count("DiPho"))):
         # if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG"))  or customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance")) and (systlabel ==  ""):
-        print "Signal MC central value, so dumping PDF weights"
-        dumpPdfWeights = True
-        nPdfWeights = 60
-        nAlphaSWeights = 2
-        nScaleWeights = 9
-    else:
-        print "Data, background MC, or non-central value, or no systematics: no PDF weights"
-        dumpPdfWeights = False
-        nPdfWeights = -1
-        nAlphaSWeights = -1
-        nScaleWeights = -1
-    if not customize.processId == "Data":
-        mH = None
-        ldset = ""
-        if customize.datasetName():
-            ldset = customize.datasetName().lower()
-        if "htogg" in ldset or "tthjettogg" in ldset:
-            try:
-                mH = float(customize.datasetName().split(
-                    "_M")[1].split("_")[0])
-            except Exception, e:
-                print(e, customize.datasetName())
-                pass
-        NNLOPSreweight = False
-        genToReweight = None
-        if (customize.datasetName() and customize.datasetName().count("GluGlu")):
-            print "datasetName contains GluGlu --> NNLOPSrewwight is True"
-            NNLOPSreweight = True
-            if customize.datasetName().count("amcatnlo"):
+    print "Signal MC central value, so dumping PDF weights"
+    dumpPdfWeights = True
+    nPdfWeights = 60
+    nAlphaSWeights = 2
+    nScaleWeights = 9
+else:
+    print "Data, background MC, or non-central value, or no systematics: no PDF weights"
+    dumpPdfWeights = False
+    nPdfWeights = -1
+    nAlphaSWeights = -1
+    nScaleWeights = -1
+    
+if not customize.processId == "Data" and not ((customize.datasetName() and customize.datasetName().count("DiPho"))):
+    mH = None
+    ldset = ""
+    if customize.datasetName():
+        ldset = customize.datasetName().lower()
+    if "htogg" in ldset or "tthjettogg" in ldset:
+        try:
+            mH = float(customize.datasetName().split("_M")[1].split("_")[0])
+        except Exception, e:
+            print(e, customize.datasetName())
+            pass
+    NNLOPSreweight = False
+    genToReweight = None
+    if (customize.datasetName() and customize.datasetName().count("GluGlu")):
+        print "datasetName contains GluGlu --> NNLOPSrewwight is True"
+        NNLOPSreweight = True
+        if customize.datasetName().count("amcatnlo"):
                 #                print "datasetName contains amcatnlo --> gen to be reweighted is amcatnlo"
-                genToReweight = "amcatnlo"
-            if customize.datasetName().count("powheg"):
+            genToReweight = "amcatnlo"
+        if customize.datasetName().count("powheg"):
                 #                print "datasetName contains powheg --> gen to be reweighted is powheg"
-                genToReweight = "powheg"
-        print 'pdfWeights in worspaceStd'
-        fc.addGenOnlyAnalysis(process, customize.processId, process.flashggTagSequence,
-                              customize.acceptance, tagList, systlabels, NNLOPSreweight, genToReweight,
-                              pdfWeights=(dumpPdfWeights, nPdfWeights,
-                                          nAlphaSWeights, nScaleWeights),
-                              mH=mH, filterEvents=customize.filterNonAcceptedEvents)
-        pdfWeights = (dumpPdfWeights, nPdfWeights,
-                      nAlphaSWeights, nScaleWeights),
-        print pdfWeights
+            genToReweight = "powheg"
+    print 'pdfWeights in worspaceStd'
+    fc.addGenOnlyAnalysis(process, customize.processId, process.flashggTagSequence,
+                          customize.acceptance, tagList, systlabels, NNLOPSreweight,
+                          genToReweight,pdfWeights=(dumpPdfWeights, nPdfWeights,nAlphaSWeights, nScaleWeights),
+                          mH=mH, filterEvents=customize.filterNonAcceptedEvents)
+    pdfWeights = (dumpPdfWeights, nPdfWeights, nAlphaSWeights, nScaleWeights),
+    print pdfWeights
+
 
 if not customize.processId == "Data":
     process.p = cms.Path(process.dataRequirements *
@@ -572,8 +581,8 @@ else:
                          process.tagsDumper)
 
 fc.addObservables(process, process.tagsDumper, customize.processId, process.flashggTagSequence)
-print("---------------------------------------------------------HERE-----------------------------------")
-print(process.tagsDumper.__dict__)
+# print("---------------------------------------------------------HERE-----------------------------------")
+# print(process.tagsDumper.__dict__)
 
 if(not hasattr(process, "options")):
     process.options = cms.untracked.PSet()

@@ -83,8 +83,13 @@ def prepare_runJobs_missing(runJobs_dict,dir):
     for jobId in runJobs_dict[cluster]:
        jobs_to_run+='%s '%jobId
     jobs_to_run = jobs_to_run[:-1] #remove the comma or space from the last
+    reqCpus = any(["RequestCpus" in line for line in fileinput.input("%s/%s_mis.sub"%(dir,cluster))])
     for line in fileinput.input("%s/%s_mis.sub"%(dir,cluster), inplace=True):
-      if  "queue" in line : print ("queue %d "%(len(runJobs_dict[cluster]))),
+      if  "queue" in line and reqCpus: print ("queue %d "%(len(runJobs_dict[cluster]))),
+      elif "queue" in line and not reqCpus: print ("RequestCpus = 2\nqueue %d "%(len(runJobs_dict[cluster]))),
+      elif "max_retries" in line: print("max_retries = 2\n"),
+      elif "RequestCpus" in line:
+        print("RequestCpus = 2\n")
       else : print line,
     for line in fileinput.input("%s/%s.sh"%(dir,cluster), inplace=True):
       if  "declare -a jobIdsMap" in line : print ("declare -a jobIdsMap=(%s)\n"%(jobs_to_run)),

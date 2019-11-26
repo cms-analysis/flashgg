@@ -39,8 +39,6 @@ def getAccRecoCut():
         "lead" : leadCut,
         "sub"  : subLeadCut
         }
-#    return "1"
-
 
 # ----------------------------------------------------------------------------------------------------------------
 def getAccGenCut():
@@ -50,7 +48,6 @@ def getAccGenCut():
         "lead" : leadCut,
         "sub"  : subLeadCut
         }
-#    return "1"
 
 # ----------------------------------------------------------------------------------------------------------------
 def genDiphoPfx(isRecoTag):
@@ -108,7 +105,7 @@ def phoGenVariable(name, expressions):
 
 # ----------------------------------------------------------------------------------------------------------------
 def phoRecoVariable(name, expressions):
-    print map(lambda x: (("reco%s%s := "+x[1]) % (x[0],name.capitalize(),name.split("[")[0])), zip(("Lead","Sublead"),expressions))
+    # print map(lambda x: (("reco%s%s := "+x[1]) % (x[0],name.capitalize(),name.split("[")[0])), zip(("Lead","Sublead"),expressions))
     return map(lambda x: (("reco%s%s := "+x[1]) % (x[0],name.capitalize(),name.split("[")[0])), zip(("Lead","Sublead"),expressions))
 
 # ----------------------------------------------------------------------------------------------------------------
@@ -143,7 +140,7 @@ def getGenVariables(isRecoTag=True):
 # ----------------------------------------------------------------------------------------------------------------
 def getRecoVariables(isRecoTag=True):
     diPhoVariables = ["mass","pt", "eta","rapidity", "phi"]
-    phoVariables = ["pt","eta","phi", "energy", "pz" ]
+    phoVariables = ["pt","eta","phi", "energy", "pz", "full5x5_r9", "sigEOverE" ]
     
     pfx = recoDiphoPfx(isRecoTag)
     dipho = map(lambda x: diPhoRecoVariable(x,pfx), diPhoVariables)
@@ -513,14 +510,14 @@ def addJetGlobalVariables(process,dumper,src,pre,post,tagSequence,getter=""):
 #        variables+=[("%sJet%sBdiscriminant0 := ? %snumberOfDaughters > 0 ? %sdaughter(0).bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags') : -999" % (pre,  post,  getter,  getter))]
     else:
         variables += getJetKinVariables(pre,post,["pt","eta","rapidity","phi","px","py","pz", "energy", "numberOfDaughters[200,-0.5,199.5]"],6, getter)
-    print "jet global variables"
-    print variables
+    # print "jet global variables"
+    # print variables
 ###    variables += getJetKinVariables(pre,post,["pt","eta","rapidity"],5)
 ###    variables += [ "%sDijetMass%s := ? numberOfDaughters > 1 ? sqrt( (daughter(0).energy+daughter(1).energy)^2 - (daughter(0).px+daughter(1).px)^2 - (daughter(0).py+daughter(1).py)^2 - (daughter(0).pz+daughter(1).pz)^2 ) : 0" % (pre,post) ]
     
-    if post=="Muons":
-        print "variables for muons"
-        print variables
+    # if post=="Muons":
+    #     print "variables for muons"
+    #     print variables
 
     if src:
         cfgTools.addGlobalFloats(process,dumper.globalVariables,src,variables,tagSequence)
@@ -542,8 +539,8 @@ def addBflavorJetGlobalVariables(process,dumper,src,pre,post,tagSequence,getter=
 #        variables += getJetKinVariables(pre,post,["pt","eta","rapidity","phi","px","py","pz", "energy", "cand().hasBottom", "cand().hasBquark", "cand().deltaRBquarkGenJet", "cand().jetPtOverBquarkPt", "numberOfDaughters"],6, getter)
         variables += getJetKinVariables(pre,post,["pt","eta","rapidity","phi","px","py","pz", "energy", "numberOfDaughters"],6, getter)
 #    variables += [ "%(pre)sBjetHasBottom%(post)s0 := ? %(getter)snumberOfDaughters > 0 ? %(getter)sdaughter(0).hasBottom : -999" % locals() ]
-    print "jet global variables"
-    print variables
+    # print "jet global variables"
+    # print variables
 
 
     if src:
@@ -702,8 +699,8 @@ def addRecoMETGlobalVariables(process,dumper,src,pre,post,tagSequence,getter="")
     variables += [ "%(pre)sMET%(post)sPz :=  %(getter)spz " % locals() ]
     variables += [ "%(pre)sMET%(post)sEnergy :=  %(getter)senergy " % locals() ]
 
-    print "recoMET variables"
-    print variables
+    # print "recoMET variables"
+    # print variables
     if src:
         cfgTools.addGlobalFloats(process,dumper.globalVariables,src,variables,tagSequence)
     else:
@@ -789,6 +786,7 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
     
     process.load("flashgg.Taggers.genDiphotonDumper_cfi")
     process.genDiphotonDumper.dumpTrees = True
+    process.genDiphotonDumper.dumpHistos = False
     process.genDiphotonDumper.maxCandPerEvent = -1
     process.genDiphotonDumper.dumpWorkspace = False
     process.genDiphotonDumper.src = "flashggTaggedGenDiphotons"
@@ -836,7 +834,8 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
                          dumpPdfWeights=dumpPdfWeights,
                          nPdfWeights=nPdfWeights,
                          nAlphaSWeights=nAlphaSWeights,
-                         nScaleWeights=nScaleWeights
+                         nScaleWeights=nScaleWeights,
+                         splitPdfByStage0Cat=False
                          )
 
     for tag in tagList:
@@ -850,7 +849,8 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
                                  dumpPdfWeights=dumpPdfWeights,
                                  nPdfWeights=nPdfWeights,
                                  nAlphaSWeights=nAlphaSWeights,
-                                 nScaleWeights=nScaleWeights
+                                 nScaleWeights=nScaleWeights,
+                                 splitPdfByStage0Cat=False
                                  )
             
             
