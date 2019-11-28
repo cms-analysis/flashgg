@@ -227,7 +227,8 @@
 <class name="edm::Wrapper<edm::Ptr<flashgg::GenDiPhoton> >"/>
 <class name="std::vector<edm::Ptr<flashgg::GenDiPhoton> >"/>
 <class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::GenDiPhoton> > >"/>
-<class name="flashgg::SinglePhotonView" ClassVersion="15">
+<class name="flashgg::SinglePhotonView" ClassVersion="16">
+ <version ClassVersion="16" checksum="853874792"/>
  <version ClassVersion="15" checksum="3381916661"/>
  <version ClassVersion="14" checksum="3921151300"/>
  <version ClassVersion="13" checksum="615025035"/>

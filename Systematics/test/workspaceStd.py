@@ -699,20 +699,35 @@ if customize.tthTagsOnly:
     # Now, we put the ttH tags back in the sequence with modified systematics workflow
     modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystlabels, jetsystlabels)
 
+# else :
+#     # process.flashggDiPhotonSystematics.src = "flashggPreselectedDiPhotons" # put in by hand to match tagger and dumper outputs
+#     process.flashggHHWWggTag
+#     process.p = cms.Path(#process.dataRequirements*
+#                          #process.flashggMetFilters*
+#                          #process.genFilter*
+#                          process.flashggDifferentialPhoIdInputsCorrection*
+#                         #  process.flashggDiPhotonSystematics*
+#                          #process.flashggMetSystematics*
+#                          #process.flashggMuonSystematics*process.flashggElectronSystematics*
+#                          #(process.flashggUnpackedJets*process.jetSystematicsSequence)*
+#                          process.flashggUnpackedJets*
+#                          process.flashggTagSequence*
+#                         #  (process.flashggTagSequence*process.systematicsTagSequences)*
+#                          process.flashggSystTagMerger*
+#                          process.penultimateFilter*
+#                          process.finalFilter*
+#                          process.tagsDumper)
+
 else :
-    # process.flashggDiPhotonSystematics.src = "flashggPreselectedDiPhotons" # put in by hand to match tagger and dumper outputs
-    process.flashggHHWWggTag
-    process.p = cms.Path(#process.dataRequirements*
-                         #process.flashggMetFilters*
-                         #process.genFilter*
+    process.p = cms.Path(process.dataRequirements*
+                         process.flashggMetFilters*
+                         process.genFilter*
                          process.flashggDifferentialPhoIdInputsCorrection*
-                        #  process.flashggDiPhotonSystematics*
-                         #process.flashggMetSystematics*
-                         #process.flashggMuonSystematics*process.flashggElectronSystematics*
-                         #(process.flashggUnpackedJets*process.jetSystematicsSequence)*
-                         process.flashggUnpackedJets*
-                         process.flashggTagSequence*
-                        #  (process.flashggTagSequence*process.systematicsTagSequences)*
+                         process.flashggDiPhotonSystematics*
+                         process.flashggMetSystematics*
+                         process.flashggMuonSystematics*process.flashggElectronSystematics*
+                         (process.flashggUnpackedJets*process.jetSystematicsSequence)*
+                         (process.flashggTagSequence*process.systematicsTagSequences)*
                          process.flashggSystTagMerger*
                          process.penultimateFilter*
                          process.finalFilter*

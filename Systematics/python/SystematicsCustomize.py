@@ -274,15 +274,15 @@ def useEGMTools(process):
             process.flashggDiPhotonSystematics.SystMethods.remove(isyst)
 
     # add EGM smearings (2D)
-    # process.flashggDiPhotonSystematics.SystMethods2D.extend([
-    #         process.MCSmearHighR9EE_EGM,
-    #         process.MCSmearLowR9EE_EGM,
-    #         process.MCSmearHighR9EB_EGM,
-    #         process.MCSmearLowR9EB_EGM,
-    #         ])
+    process.flashggDiPhotonSystematics.SystMethods2D.extend([
+            process.MCSmearHighR9EE_EGM,
+            process.MCSmearLowR9EE_EGM,
+            process.MCSmearHighR9EB_EGM,
+            process.MCSmearLowR9EB_EGM,
+            ])
     
     # # add sigmaE/E correction and systematics
-    # process.flashggDiPhotonSystematics.SystMethods.extend( [process.SigmaEOverESmearing_EGM, process.SigmaEOverEShift] )
+    process.flashggDiPhotonSystematics.SystMethods.extend( [process.SigmaEOverESmearing_EGM, process.SigmaEOverEShift] )
 
 def runRivetSequence(process, options):
     process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
