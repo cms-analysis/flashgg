@@ -1,10 +1,11 @@
-from ROOT import *
+import ROOT as r
+r.gROOT.SetBatch(True)
 
 #import gc
 #gc.set_debug(gc.DEBUG_LEAK)
 #gc.disable()
 
-stage1binname2num = { 'UNKNOWN':0; 
+stage1p1binname2num = { 'UNKNOWN':0,
                       'GG2H_FWDH':-1,
                       'QQ2HQQ_FWDH':-2,
                       'QQ2HLNU_FWDH':-3,
@@ -56,8 +57,8 @@ stage1binname2num = { 'UNKNOWN':0;
                       'TH':41
                     }
 
-stage1binnum2name = {v: k for k, v in stage1binname2num.iteritems()}
-relevantstage1bins = [cat for cat in stage1binname2num.values()]
+stage1p1binnum2name = {v: k for k, v in stage1p1binname2num.iteritems()}
+relevantstage1p1bins = [cat for cat in stage1p1binname2num.values()]
 
 from sys import argv
 fn = "output.root"
@@ -65,45 +66,45 @@ if len(argv) > 1:
    fn = argv[1]
 assert(fn.count(".root"))
 
-_file = TFile(fn)
+_file = r.TFile(fn)
 _ws = _file.Get("tagsDumper/cms_hgg_13TeV")
 _data = _ws.allData()
 
 files = {}
 wss = {}
 
-for cat in relevantstage1bins:
-   wss[cat] = RooWorkspace("cms_hgg_13TeV","cms_hgg_13TeV")
+for cat in relevantstage1p1bins:
+   wss[cat] = r.RooWorkspace("cms_hgg_13TeV","cms_hgg_13TeV")
    getattr(wss[cat],'import')(_ws.var("IntLumi"))
 
 for ds in _data:
    initw = ds.sumEntries()
    sumfinw = 0.
    print "STARTING DATASET:",ds.GetName(),"weight:",ds.sumEntries()
-   remainingArgList = RooArgSet(ds.get())
-   anarg = ds.get().find("stage1bin")
+   remainingArgList = r.RooArgSet(ds.get())
+   anarg = ds.get().find("stage1p1bin")
    if not anarg:
-      print "CANNOT SPLIT",ds.GetName(),"BECAUSE IT HAS NO stage1bin"
+      print "CANNOT SPLIT",ds.GetName(),"BECAUSE IT HAS NO stage1p1bin"
       continue
    remainingArgList.remove(anarg)
-   for cat in relevantstage1bins:
-      newds = ds.reduce(remainingArgList,"stage1bin==%i" % cat)
+   for cat in relevantstage1p1bins:
+      newds = ds.reduce(remainingArgList,"stage1p1bin==%i" % cat)
       getattr(wss[cat],'import')(newds)
-      print "  ENDING DATASET for category %i (%s):"%(cat,stage1binnum2name[cat]),newds.GetName(),"weight:",newds.sumEntries()
+      print "  ENDING DATASET for category %i (%s):"%(cat,stage1p1binnum2name[cat]),newds.GetName(),"weight:",newds.sumEntries()
       sumfinw += newds.sumEntries()
    if (initw == 0. and abs(sumfinw) > 0.0001) or (initw > 0. and abs((initw - sumfinw)/initw) > 0.001):
-      if len(relevantstage1bins)==1:
+      if len(relevantstage1p1bins)==1:
          # debugging/testing
          print " DISAGREEMENT IN DATASET SUMWEIGHTS BEFORE AND AFTER:",initw,sumfinw
       else:
          raise Exception," DISAGREEMENT IN DATASET SUMWEIGHTS BEFORE AND AFTER: %.4f %.4f"%(initw,sumfinw)
          #pass
 
-for cat in relevantstage1bins:
+for cat in relevantstage1p1bins:
 #   print cat
 #   wss[cat].Print()
-   newfn = fn.replace(".root","_%s.root" % stage1binnum2name[cat])
-   newf = TFile(newfn,"RECREATE")
+   newfn = fn.replace(".root","_%s.root" % stage1p1binnum2name[cat])
+   newf = r.TFile(newfn,"RECREATE")
    newf.mkdir("tagsDumper")
    newf.cd("tagsDumper")
    wss[cat].Write()

@@ -502,7 +502,7 @@ for tag in tagList:
           if customize.doHTXS:
               currentVariables = ["stage0bin[72,9.5,81.5] := tagTruth().HTXSstage0bin"]
           elif customize.doStageOne:
-              currentVariables = ["stage1bin[39,-8.5,30.5] := tagTruth().HTXSstage1orderedBin"]
+              currentVariables = ["stage1p1bin[50,-8.5,41.5] := tagTruth().HTXSstage1p1orderedBin"]
           else:
               currentVariables = []
       isBinnedOnly = (systlabel !=  "")
