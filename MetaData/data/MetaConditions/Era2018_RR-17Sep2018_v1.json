@@ -65,6 +65,8 @@
         ]
     },
     "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2018_cfi",
+
+    "sigmaM_M_decorr" : "flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_2018_Mgg100to180.root",
     
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
