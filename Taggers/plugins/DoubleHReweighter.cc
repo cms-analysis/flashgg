@@ -35,6 +35,7 @@ namespace flashgg {
     private:
         void produce( Event &, const EventSetup & ) override;
         float getWeight( int targetNode,float gen_mHH, float gen_cosTheta);
+        float getNormalisation(float kl, float kt, float c2, float cg, float c2g, TH2F* h_all);
         float getCosThetaStar_CS(TLorentzVector h1, TLorentzVector h2);
         float functionGF(float kl, float kt, float c2, float cg, float c2g, vector<double> A);
         pair<int,int> find2DBin(TH2* h, float x, float y);
@@ -125,9 +126,28 @@ namespace flashgg {
         if (effBSM/denom < 0) {
             return 0;
         } // In case of very small negative weights, which can happen
-        w = (effBSM/denom) ;
+        w = ((effBSM/denom)/getNormalisation(kl, kt, c2, cg, c2g, hist_inputMix_))  ;
 
        return w;
+    }
+    
+    float DoubleHReweighter::getNormalisation(float kl, float kt, float c2, float cg, float c2g, TH2F* h_all)
+    {
+        float sumofweights = 0.;
+        int x_range=(h_all->GetNbinsX());
+        int y_range=(h_all->GetNbinsY());
+
+        for(int binmhh=1; binmhh < x_range+1; binmhh++){
+            for(int bincost=1; bincost < y_range+1; bincost++){
+                float nEvSM = hist_SM_->GetBinContent(binmhh, bincost);
+                vector<double> Acoeffs;
+                for (unsigned int ic = 0; ic < NCOEFFSA_; ++ic){
+                    Acoeffs.push_back((hists_params_[ic])->GetBinContent(binmhh, bincost));
+                }
+                sumofweights += nEvSM * functionGF(kl,kt,c2,cg,c2g,Acoeffs)/functionGF(kl,kt,c2,cg,c2g,A_13TeV_SM_);
+            }
+        }
+        return sumofweights;
     }
 
 
