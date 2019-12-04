@@ -17,7 +17,8 @@ class DoubleHCustomize():
 #             "Mjj := dijet().M()"
             "eventNumber := eventNumber()",
             "MX := MX()",
-            "HHbbggMVA := MVA()"
+            "HHbbggMVA := MVA()",
+            "HHbbggMVAExtended := MVAExtended()",
         ]
         variables = [
             "leadingJet_bDis := leadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",#FIXME make the btag type configurable?
@@ -45,7 +46,9 @@ class DoubleHCustomize():
             "sigmaMOverM := sqrt(0.5*(diPhoton.leadingPhoton.sigEOverE*diPhoton.leadingPhoton.sigEOverE + diPhoton.subLeadingPhoton.sigEOverE*diPhoton.subLeadingPhoton.sigEOverE))",
             "sigmaMOverMDecorr := getSigmaMDecorr()",
             "PhoJetMinDr := getPhoJetMinDr()",#up to here input variables to MVA
+            "PhoJetOtherDr := getPhoJetOtherDr()",
             "HHbbggMVA := MVA()",
+            "HHbbggMVAExtended := MVAExtended()",
             # "HHbbggMVAprob0 := MVAprob()[0]",
             "MX := MX()",
             "genMhh := genMhh()",
@@ -189,6 +192,7 @@ class DoubleHCustomize():
            #  "subleadingJet_bRegNNResolution := subleadJet().userFloat('bRegNNResolution')",
            #  "sigmaMJets := getSigmaMOverMJets()",
              "HHbbggMVA := MVA()",
+             "HHbbggMVAExtended := MVAExtended()",
              "MX := MX()",
            #  "Mjj := dijet().M()",
            #  "eventNumber := eventNumber()",
@@ -208,6 +212,8 @@ class DoubleHCustomize():
         self.process.flashggDoubleHTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["doubleHTag"]["weightsFile"]))  
         self.process.flashggDoubleHTag.MVAscaling = cms.double(self.metaConditions["doubleHTag"]["MVAscalingValue"])
         self.process.flashggDoubleHTag.MVAFlatteningFileName = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["MVAFlatteningFileName"]))
+        self.process.flashggDoubleHTag.MVAConfigExtended.weights=cms.FileInPath(str(self.metaConditions["doubleHTag"]["weightsFileExtended"]))  
+        self.process.flashggDoubleHTag.MVAFlatteningFileNameExtended = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["MVAFlatteningFileNameExtended"]))
         self.process.flashggDoubleHTag.dottHTagger = cms.bool(self.customize.doDoubleHttHKiller)
         self.process.flashggDoubleHTag.ttHWeightfile = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["ttHWeightfile"]))
         self.process.flashggDoubleHTag.ttHKiller_mean = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_mean"])

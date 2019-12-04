@@ -114,6 +114,7 @@
 	"jetID" : "Tight2018",
 	"weightsFile" : "flashgg/Taggers/data/HHTagger/training_with_19_03_2019_trainingMjj_year1.weights.xml",
 	"MVAFlatteningFileName" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20190321_2016_2017.root",
+        "weightsFileExtended" : "flashgg/Taggers/data/HHTagger/training_with_extended_var_29_11_2019_year2018.weights.xml",
 	"MVAscalingValue" :1.02309,
 	"NodesReweightingFileName" : "flashgg/Taggers/data/HHTagger/HHreweight_2018nodes_08072019.root",
 	"ttHWeightfile" : "flashgg/Taggers/data/ttHKiller/Keras2017_converted_allnode.pb",

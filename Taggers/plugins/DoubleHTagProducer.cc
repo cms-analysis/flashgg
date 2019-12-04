@@ -85,8 +85,10 @@ namespace flashgg {
         ConsumesCollector cc_;
         GlobalVariablesComputer globalVariablesComputer_;
         MVAComputer<DoubleHTag> mvaComputer_;
+        MVAComputer<DoubleHTag> mvaComputerExtended_;
         vector<double> mvaBoundaries_, mxBoundaries_;
         int multiclassSignalIdx_;
+        int multiclassSignalIdxExtended_;
             
         //leptons selection
         double leptonPtThreshold;
@@ -107,6 +109,10 @@ namespace flashgg {
         TGraph * MVAFlatteningCumulative_;
         double MVAscaling_;
 
+        FileInPath MVAFlatteningFileNameExtended_;
+        TFile * MVAFlatteningFileExtended_;
+        TGraph * MVAFlatteningCumulativeExtended_;
+ 
         vector< edm::EDGetTokenT<float> > reweights_;
         int doReweight_;
             
@@ -142,7 +148,8 @@ namespace flashgg {
         JetIDLevel_( iConfig.getParameter<string> ( "JetIDLevel"   ) ),
         cc_( consumesCollector() ),
         globalVariablesComputer_(iConfig.getParameter<edm::ParameterSet>("globalVariables"), cc_),
-        mvaComputer_(iConfig.getParameter<edm::ParameterSet>("MVAConfig"),  &globalVariablesComputer_)
+        mvaComputer_(iConfig.getParameter<edm::ParameterSet>("MVAConfig"),  &globalVariablesComputer_),
+        mvaComputerExtended_(iConfig.getParameter<edm::ParameterSet>("MVAConfigExtended"),  &globalVariablesComputer_)
         //mvaComputer_(iConfig.getParameter<edm::ParameterSet>("MVAConfig"))
     {
         mjjBoundaries_ = iConfig.getParameter<vector<double > >( "MJJBoundaries" ); 
@@ -151,6 +158,7 @@ namespace flashgg {
         mjjBoundariesLower_ = iConfig.getParameter<vector<double > >( "MJJBoundariesLower" ); 
         mjjBoundariesUpper_ = iConfig.getParameter<vector<double > >( "MJJBoundariesUpper" ); 
         multiclassSignalIdx_ = (iConfig.getParameter<edm::ParameterSet>("MVAConfig")).getParameter<int>("multiclassSignalIdx"); 
+        multiclassSignalIdxExtended_ = (iConfig.getParameter<edm::ParameterSet>("MVAConfigExtended")).getParameter<int>("multiclassSignalIdxExtended"); 
         doReweight_ = (iConfig.getParameter<int>("doReweight")); 
    
         auto names = iConfig.getParameter<vector<string>>("reweight_names");
@@ -202,6 +210,10 @@ namespace flashgg {
             MVAFlatteningFileName_ = iConfig.getUntrackedParameter<edm::FileInPath>("MVAFlatteningFileName");
             MVAFlatteningFile_ = new TFile((MVAFlatteningFileName_.fullPath()).c_str(),"READ");
             MVAFlatteningCumulative_ = (TGraph*)MVAFlatteningFile_->Get("cumulativeGraph"); 
+ 
+            MVAFlatteningFileNameExtended_ = iConfig.getUntrackedParameter<edm::FileInPath>("MVAFlatteningFileNameExtended");
+            MVAFlatteningFileExtended_ = new TFile((MVAFlatteningFileNameExtended_.fullPath()).c_str(),"READ");
+            MVAFlatteningCumulativeExtended_ = (TGraph*)MVAFlatteningFileExtended_->Get("cumulativeGraph"); 
         }
         MVAscaling_ = iConfig.getParameter<double>("MVAscaling");
 
@@ -485,11 +497,17 @@ namespace flashgg {
                 mva = MVAFlatteningCumulative_->Eval(mvaScaled);
             }
 
+            std::vector<float> mva_vector_extended = mvaComputerExtended_(tag_obj);
+            double mva_extended = mva_vector_extended[multiclassSignalIdxExtended_];
+            if(doMVAFlattening_){
+                //double mvaScaledExtended = mva_extended/(mva_extended*(1.-MVAscaling_)+MVAscaling_);
+                //mva_extended = MVAFlatteningCumulativeExtended_->Eval(mvaScaledExtended);
+                mva_extended = MVAFlatteningCumulativeExtended_->Eval(mva_extended);
+            }
+
             tag_obj.setEventNumber(evt.id().event() );
             tag_obj.setMVA( mva );
-           
-
-
+            tag_obj.setMVAExtended( mva_extended );
  
             // tag_obj.setMVAprob( mva_vector );
 

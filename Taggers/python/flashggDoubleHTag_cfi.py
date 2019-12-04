@@ -14,8 +14,10 @@ from flashgg.MicroAOD.flashggJets_cfi import  maxJetCollections
 
 jetID = ''
 weightsFile=""# path to TMVA weights
+weightsFileExtended=""# path to TMVA weights
 MVAscalingValue=1.#scale MVA output before the cumulative transformation for 2017(2016 kept unchanged for simplicity, we will probably change that once we have all 3 years.)
 MVAFlatteningFileName=""
+MVAFlatteningFileNameExtended=""
 ttHWeightfile=""
 
 ttHKiller_mean = cms.vdouble()
@@ -66,10 +68,20 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                                         multiclassSignalIdx=cms.int32(2), # this is multiclass index for Signal
                                                         ),
 
+                                   MVAConfigExtended = cms.PSet(variables=cms.VPSet(), # variables are added below
+                                                        classifier=cms.string("BDT::bdt"), # classifier name
+                                                        weights=cms.FileInPath("%s"%weightsFileExtended), 
+                                                        regression=cms.bool(False), # this is not a regression
+                                                        multiclass=cms.bool(True), # this is multiclass 
+                                                        multiclassSignalIdxExtended=cms.int32(2), # this is multiclass index for Signal
+                                                        ),
+
                                    doMVAFlattening=cms.bool(True),#do transformation of cumulative to make it flat
+                                   #doMVAFlattening=cms.bool(False),#do transformation of cumulative to make it flat
                                    MVAscaling=cms.double(MVAscalingValue),
                                    doCategorization=cms.bool(False),#do categorization based on MVA x MX or only fill first tree with all events
                                    MVAFlatteningFileName=cms.untracked.FileInPath("%s"%MVAFlatteningFileName),#FIXME, this should be optional, is it?
+                                   MVAFlatteningFileNameExtended=cms.untracked.FileInPath("%s"%MVAFlatteningFileNameExtended),
                                    globalVariables=globalVariables,
                                    doReweight = flashggDoubleHReweight.doReweight,
                                    reweight_producer = cms.string(reweight_settings.reweight_producer),
@@ -121,6 +133,36 @@ cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,
                        "(leadingJet_bRegNNResolution*1.4826) := leadJet().userFloat('bRegNNResolution')*1.4826",
                        "(subleadingJet_bRegNNResolution*1.4826) := subleadJet().userFloat('bRegNNResolution')*1.4826",
                        "(sigmaMJets*1.4826) := getSigmaMOverMJets()*1.4826"
+                       ]
+                      )
+
+cfgTools.addVariables(flashggDoubleHTag.MVAConfigExtended.variables,
+                      # here the syntax is VarNameInTMVA := expression
+                      [
+                       "absCosThetaStar_CS := abs(getCosThetaStar_CS)",
+                       "absCosTheta_bb := abs(CosThetaAngles()[1])",
+                       "absCosTheta_gg := abs(CosThetaAngles()[0])",
+                       "PhoJetMinDr := getPhoJetMinDr()",
+                       "customLeadingPhotonIDMVA := diPhoton.leadingView.phoIdMvaWrtChosenVtx",
+                       "customSubLeadingPhotonIDMVA := diPhoton.subLeadingView.phoIdMvaWrtChosenVtx",
+                       ##"leadingJet_DeepCSV := leadJet().bDiscriminator('pfDeepCSVJetTags:probb')+leadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",
+                       ##"subleadingJet_DeepCSV := subleadJet().bDiscriminator('pfDeepCSVJetTags:probb')+subleadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",
+                       "leadingJet_DeepFlavour := leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
+                       "subleadingJet_DeepFlavour := subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
+                       "leadingPhotonSigOverE := diPhoton.leadingPhoton.sigEOverE",
+                       "subleadingPhotonSigOverE := diPhoton.subLeadingPhoton.sigEOverE",
+                       "sigmaMOverM := sqrt(0.5*(diPhoton.leadingPhoton.sigEOverE*diPhoton.leadingPhoton.sigEOverE + diPhoton.subLeadingPhoton.sigEOverE*diPhoton.subLeadingPhoton.sigEOverE))",
+                       "diphotonCandidatePtOverdiHiggsM := diphotonPtOverM()",
+                       "dijetCandidatePtOverdiHiggsM := dijetPtOverM()",
+                       "leadingJet_bRegNNResolution := leadJet().userFloat('bRegNNResolution')",
+                       "subleadingJet_bRegNNResolution := subleadJet().userFloat('bRegNNResolution')",
+                       "sigmaMJets := getSigmaMOverMJets()",
+                       "leadingPhoton_pt/CMS_hgg_mass := diPhoton.leadingPhoton.pt/diPhoton().mass",
+                       "subleadingPhoton_pt/CMS_hgg_mass := diPhoton.subLeadingPhoton.pt/diPhoton().mass",
+                       "leadingJet_pt/Mjj := leadJet().pt/diPhoton().mass",
+                       "subleadingJet_pt/Mjj := subleadJet().pt/diPhoton().mass",      
+                       "PhoJetOtherDr := getPhoJetOtherDr()", 
+                       "rho := global.rho"
                        ]
                       )
 
