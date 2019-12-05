@@ -114,6 +114,37 @@ def modifyTagSequenceForSystematics(process,jetSystematicsInputTags,ZPlusJetMode
         process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
     process.systematicsTagSequences = cms.Sequence()
 
+
+def createJetSystematicsForBreg(process,options):
+    from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
+    
+    bregSystInputList = cms.VInputTag()
+    bregSystProducers = []
+    for i in range(len(UnpackedJetCollectionVInputTag)):
+        bregSystName = "flashggJetSystematicsBreg%i"%i
+        setattr(process, bregSystName, getattr(process,"flashggJetSystematics%i"%i).clone())
+        bregSystProd = getattr(process, bregSystName)
+        newvpset = cms.VPSet()
+        for pset in bregSystProd.SystMethods:
+            if not pset.Label.value().count("JER"):
+                newvpset += [pset]
+         
+        JERbregpset = cms.PSet( MethodName = cms.string("FlashggJetBregSmear"),
+                                Label = cms.string("JERbreg"),
+                                NSigmas = cms.vint32(-1,1),
+                                OverallRange = cms.string("abs(eta)<5.0"),
+                                Debug = cms.untracked.bool(False),
+                                ApplyCentralValue = cms.bool(True),
+                                BRegressionSFunc = cms.vdouble(options.metaConditions['bRegression']['JER_central'],options.metaConditions['bRegression']['JER_up'],options.metaConditions['bRegression']['JER_down']) #Central SF and up/down unc for b-jet energy regression smearing
+                              )
+        newvpset += [JERbregpset]
+        bregSystProd.SystMethods = newvpset
+        bregSystInputList.append(cms.InputTag(bregSystName))
+        bregSystProducers.append(bregSystProd)
+
+    return bregSystProducers,bregSystInputList
+
+
 def cloneTagSequenceForEachSystematic(process,systlabels=[],phosystlabels=[],metsystlabels=[],jetsystlabels=[],jetSystematicsInputTags=None,ZPlusJetMode=False):
     #process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags,ZPlusJetMode=False):
     if jetSystematicsInputTags is None:

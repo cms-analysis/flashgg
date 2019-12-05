@@ -9,6 +9,8 @@
 #include "flashgg/DataFormats/interface/WeightedObject.h"
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 
+#include "TLorentzVector.h"
+
 namespace flashgg {
 
     class GenDiPhoton : public reco::LeafCandidate, public WeightedObject
@@ -51,7 +53,18 @@ namespace flashgg {
 
         void setHHbbggBenchmarkReweight(std::vector<float> x) { HHbbgg_benchmark_reweights_ = x; }
         float getHHbbggBenchmarkReweight(int targetNode) const { return HHbbgg_benchmark_reweights_[targetNode]; }
+        float HHbbggCosThetaStar_CS() const;
         
+        void setmHHgen(const float &mHHgen)                         { mHHgen_ = mHHgen; }
+        void setcosthetaHHgen(const float &costhetaHHgen)           { costhetaHHgen_ = costhetaHHgen; }
+        void setptHsgen(const float &ptH1gen, const float &ptH2gen) { ptH1gen_=ptH1gen; ptH2gen_=ptH2gen; }
+
+        float getmHHgen() const         { return mHHgen_; }
+        float getcosthetaHHgen() const  { return costhetaHHgen_; }
+        float getptH1gen() const        { return ptH1gen_; }
+        float getptH2gen() const        { return ptH2gen_; }
+
+
     private:
         void computeP4AndOrder();
 
@@ -61,8 +74,8 @@ namespace flashgg {
         edm::Ptr<reco::GenJet> leadingJet_;
         edm::Ptr<reco::GenJet> subLeadingJet_;
         vector<float> HHbbgg_benchmark_reweights_;
+        float mHHgen_,costhetaHHgen_,ptH1gen_,ptH2gen_;
 
-        
         int cat_;
         std::string tag_;
         edm::Ptr<DiPhotonTagBase> recoTagObj_;

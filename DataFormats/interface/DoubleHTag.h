@@ -30,6 +30,8 @@ namespace flashgg {
         double MX() const { return MX_; }
         void setGenMhh(double x) { genMhh_ = x; }
         double genMhh() const { return genMhh_; }
+        void setGenCosThetaStar_CS(double x) { genCosThetaStar_CS_ = x; }
+        double genCosThetaStar_CS() const { return genCosThetaStar_CS_; }
         float ttHScore() const { return ttHScore_; }
         double diphotonPtOverM() const {return diPhoton()->pt()/mass(); }
         double dijetPtOverM() const {return dijet().pt()/mass(); }
@@ -91,7 +93,7 @@ namespace flashgg {
 
 
     private:
-        double mva_, MX_, genMhh_;
+        double mva_, MX_, genMhh_,genCosThetaStar_CS_;
         vector<float> benchmark_reweights_;
  //       std::vector<float> mva_prob_;
          long eventNumber_;

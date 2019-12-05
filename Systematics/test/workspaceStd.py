@@ -41,6 +41,12 @@ customize.options.register('doubleHTagsOnly',
                            VarParsing.VarParsing.varType.bool,
                            'doubleHTagsOnly'
                            )
+customize.options.register('ForceGenDiphotonProduction',
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'ForceGenDiphotonProduction'
+                           )
 customize.options.register('doubleHReweight',
                            -1,
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -289,7 +295,7 @@ useEGMTools(process)
 
 # Only run systematics for signal events
 # convention: ggh vbf wzh (wh zh) tth
-signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance"]
+signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","qqh","ggh","tth","vh"]
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 #if customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance") or customize.processId.count("hh_"): 
 if is_signal:
@@ -365,6 +371,10 @@ if customize.doubleHTagsOnly:
     variablesToUse = minimalVariables
     if customize.processId == "Data":
         variablesToUse = minimalNonSignalVariables
+
+if customize.doDoubleHTag:
+   systlabels,jetsystlabels,metsystlabels = hhc.customizeSystematics(systlabels,jetsystlabels,metsystlabels)
+           
 
 print "--- Systematics  with independent collections ---"
 print systlabels
@@ -624,6 +634,9 @@ if customize.doBJetRegression:
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
     from flashgg.Taggers.flashggbRegressionProducer_cfi import flashggbRegressionProducer
     recoJetCollections = UnpackedJetCollectionVInputTag
+    if customize.metaConditions['bRegression']['useBRegressionJERsf'] :
+       bregJERJetsProducers,recoJetCollections = createJetSystematicsForBreg(process , customize)
+    process.bregJERJetsProducers = cms.Sequence(reduce(lambda x,y: x+y, bregJERJetsProducers))
 
     jetsysts = cms.vstring()
     jetnames = cms.vstring()
@@ -641,7 +654,7 @@ if customize.doBJetRegression:
     setattr(process,"bRegProducer",producer)
     bregProducers.append(producer)
     process.bregProducers = cms.Sequence(reduce(lambda x,y: x+y, bregProducers))
-    process.p.replace(process.jetSystematicsSequence,process.jetSystematicsSequence*process.flashggUnpackedJets+process.bregProducers)
+    process.p.replace(process.jetSystematicsSequence,process.jetSystematicsSequence*process.bregJERJetsProducers*process.bregProducers)
     
 
 if customize.doDoubleHTag:
