@@ -22,7 +22,7 @@ ttHKiller_mean = cms.vdouble()
 ttHKiller_std = cms.vdouble()
 ttHKiller_listmean = cms.vdouble()
 ttHKiller_liststd = cms.vdouble()
-
+MaxJetEta = 2.5
 
 flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    DiPhotonName = cms.string('flashggPreselectedDiPhotons'), # 
@@ -43,7 +43,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    PhotonElectronVeto =cms.untracked.vint32(1, 1), #0: Pho1, 1: Pho2
 
                                    MinJetPt   = cms.double(25.),
-                                   MaxJetEta   = cms.double(2.5),
+                                   MaxJetEta   = cms.double(MaxJetEta),
                                    MJJBoundaries = cms.vdouble(70.,190.),
                                    #BTagType = cms.vstring('pfDeepCSVJetTags:probb','pfDeepCSVJetTags:probbb'), #string for btag algorithm
                                    BTagType = cms.vstring('mini_pfDeepFlavourJetTags:probb','mini_pfDeepFlavourJetTags:probbb','mini_pfDeepFlavourJetTags:problepb'), #string for btag algorithm

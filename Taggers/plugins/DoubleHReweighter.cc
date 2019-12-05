@@ -125,13 +125,11 @@ namespace flashgg {
         if (effBSM/denom < 0) {
             return 0;
         } // In case of very small negative weights, which can happen
-        w = (effBSM/denom) ;
+        w = (effBSM/denom);
 
        return w;
     }
-
-
-    
+        
     float DoubleHReweighter::getCosThetaStar_CS(TLorentzVector h1, TLorentzVector h2)
     {
     // cos theta star angle in the Collins Soper frame
