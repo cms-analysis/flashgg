@@ -71,7 +71,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
 
                                    doMVAFlattening=cms.bool(True),#do transformation of cumulative to make it flat
                                    MVAscaling=cms.double(MVAscalingValue),
-                                   doCategorization=cms.bool(True),#do categorization based on MVA x MX or only fill first tree with all events
+                                   doCategorization=cms.bool(False),#do categorization based on MVA x MX or only fill first tree with all events
                                    MVAFlatteningFileName=cms.untracked.FileInPath("%s"%MVAFlatteningFileName),#FIXME, this should be optional, is it?
                                    globalVariables=globalVariables,
                                    doReweight = flashggDoubleHReweight.doReweight,
@@ -95,7 +95,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    useElectronLooseID = cms.bool(True),
                                    electronEtaThresholds=cms.vdouble(1.4442,1.566,2.5),
                                    ttHWeightfile = cms.untracked.FileInPath("%s"%ttHWeightfile), # for now
-                                   ttHScoreThreshold = cms.double(0.2), #to be updated
+                                   ttHScoreThreshold = cms.double(0.0), #to be updated
                                    # For standardization
                                    ttHKiller_mean = ttHKiller_mean,
                                    ttHKiller_std = ttHKiller_std,

@@ -777,8 +777,8 @@ namespace flashgg {
             //            tag_obj.includeWeights( *leadJet );
             //            tag_obj.includeWeights( *subleadJet );
 
-            //            tag_obj.includeWeightsByLabel( *leadJet ,"JetBTagReshapeWeight");
-            //            tag_obj.includeWeightsByLabel( *subleadJet , "JetBTagReshapeWeight" );
+                        tag_obj.includeWeightsByLabel( *leadJet ,"JetBTagReshapeWeight");
+                        tag_obj.includeWeightsByLabel( *subleadJet , "JetBTagReshapeWeight" );
 
 
 
@@ -793,7 +793,6 @@ namespace flashgg {
                 }
           }
         }
-
         if (loopOverJets == 1) 
             evt.put( std::move( tags ),inputDiPhotonSuffixes_[diphoton_idx] );
         else  
