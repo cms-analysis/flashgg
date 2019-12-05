@@ -38,11 +38,6 @@ GenDiPhoton::LorentzVector GenDiPhoton::dijet() const
 
 float GenDiPhoton::HHbbggCosThetaStar_CS() const
 {
-  //  LorentzVector h1_lor = leadingPhoton_.p4() + subLeadingPhoton_.p4();
-   // LorentzVector hh_lor = h1_lor + leadingJet().p4() + subLeadingJet().p4();
-   // TLorentzVector hh;
-   // hh.SetPxPyPzE(hh_lor.Px(),hh_lor.Py(),hh_lor.Pz(),hh_lor.E()) ;
-
     TLorentzVector h_1;
     h_1.SetPxPyPzE(leadingPhoton()->p4().px(),leadingPhoton()->p4().py(),leadingPhoton()->p4().pz(),leadingPhoton()->p4().energy()) ; 
     TLorentzVector h_2;

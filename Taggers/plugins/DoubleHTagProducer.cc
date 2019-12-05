@@ -192,7 +192,6 @@ namespace flashgg {
       //  for( auto & tag : jetTags ) { jetTokens_.push_back( consumes<edm::View<flashgg::Jet> >( tag ) ); }
 
         assert(is_sorted(mvaBoundaries_.begin(), mvaBoundaries_.end()) && "mva boundaries are not in ascending order (we count on that for categorization)");
-       // assert(is_sorted(mxBoundaries_.begin(), mxBoundaries_.end()) && "mx boundaries are not in ascending order (we count on that for categorization)");
         doPhotonId_ = iConfig.getUntrackedParameter<bool>("ApplyEGMPhotonID");        
         photonIDCut_ = iConfig.getParameter<double>("PhotonIDCut");
 
