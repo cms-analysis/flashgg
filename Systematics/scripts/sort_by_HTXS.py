@@ -8,7 +8,7 @@ stage0catname2num = {"UNKNOWN":0, "GG2H_FWDH":10, "GG2H":11, "VBF_FWDH":20, "VBF
                      "QQ2HLNU_FWDH":30, "QQ2HLNU":31, "QQ2HLL_FWDH":40, "QQ2HLL":41, "GG2HLL_FWDH":50, "GG2HLL":51,
                      "TTH_FWDH":60, "TTH":61, "BBH_FWDH":70, "BBH":71, "TH_FWDH":80, "TH":81 }
 stage0catnum2name = {v: k for k, v in stage0catname2num.iteritems()}
-relevantstage0cats = [cat for cat in stage0catname2num.values() if cat > 0 and (cat <= 49 or cat == 60 or cat == 61)]
+relevantstage0cats = [cat for cat in stage0catname2num.values() if cat > 0 and (cat <= 49 or cat == 60 or cat == 61 or cat==80 or cat==81)]
 #relevantstage0cats = [40] # for debugging
 #print relevantstage0cats
 
@@ -48,12 +48,12 @@ for ds in _data:
    if (initw == 0. and abs(sumfinw) > 0.0001) or (initw > 0. and abs((initw - sumfinw)/initw) > 0.001):
       if len(relevantstage0cats)==1:
          # debugging/testing
-         print " DISAGREEMENT IN DATASET SUMWEIGHTS BEFORE AND AFTER:",initw,sumfinw
+         print " DISAGREEMENT IN DATASET SUMWEIGHTS BEFORE AND AFTER:[debug0]",initw,sumfinw
       else:
-         if fn.count("VBF"):
+         if fn.count("TH"):
             print "DISAGREEMENT but moving on because VBF is wonky"
          else:
-            raise Exception," DISAGREEMENT IN DATASET SUMWEIGHTS BEFORE AND AFTER: %.4f %.4f"%(initw,sumfinw)
+            raise Exception," DISAGREEMENT IN DATASET SUMWEIGHTS BEFORE AND AFTER[debug1]: %.4f %.4f"%(initw,sumfinw)
 
 for cat in relevantstage0cats:
 #   print cat

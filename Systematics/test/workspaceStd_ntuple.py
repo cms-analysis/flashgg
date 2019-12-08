@@ -102,13 +102,13 @@ customize.options.register('acceptance',
                            'acceptance'
                            )
 customize.options.register('doSystematics',
-                           True,
+                           False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doSystematics'
                            )
 customize.options.register('doPdfWeights',
-                           True,
+                           False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doPdfWeights'
@@ -120,7 +120,7 @@ customize.options.register('dumpTrees',
                            'dumpTrees'
                            )
 customize.options.register('dumpWorkspace',
-                           True,
+                           False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'dumpWorkspace'
@@ -429,9 +429,8 @@ if(customize.doFiducial):
 #    else:
     fc.addObservables(process, process.tagsDumper, customize.processId )
 
-#if customize.processId == "tHq":
-#import flashgg.Taggers.THQLeptonicTagVariables as var
-#variablesToUse = minimalVariables + var.vtx_variables + var.dipho_variables + var.jet_variables
+import flashgg.Taggers.THQLeptonicTagVariables as var
+variablesToUse = minimalVariables + minimalVariablesHTXS + var.vtx_variables + var.dipho_variables + var.vtx_truth_variables + var.photon_variables + var.lepton_variables + var.jet_variables + var.thqmva_variables + var.truth_variables + var.dr_variable + var.thqSystematicVariables
 
 #tagList=[
 #["UntaggedTag",4],
@@ -458,7 +457,7 @@ elif customize.doubleHTagsOnly:
     print tagList
 else:
     tagList=[
-#        ["NoTag",0],
+        ["NoTag",0],
         ["UntaggedTag",4],
         ["VBFTag",3],
         ["ZHLeptonicTag",0],
@@ -502,18 +501,11 @@ for tag in tagList:
               currentVariables = []
       isBinnedOnly = (systlabel !=  "")
       if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") ) and (systlabel ==  "") and not (customize.processId == "th_125" or customize.processId == "bbh_125"):
-	  if customize.processId.count("thq_"):
-             print "Signal MC central value, so dumping PDF weights"
-             dumpPdfWeights = True
-             nPdfWeights = 58
-             nAlphaSWeights = 2
-             nScaleWeights = 9
-	  else:
-	     print "Signal MC central value, so dumping PDF weights"
-             dumpPdfWeights = True
-             nPdfWeights = 60
-             nAlphaSWeights = 2
-             nScaleWeights = 9
+          print "Signal MC central value, so dumping PDF weights"
+          dumpPdfWeights = True
+          nPdfWeights = 58
+          nAlphaSWeights = 2
+          nScaleWeights = 9
       else:
           print "Data, background MC, or non-central value, or no systematics: no PDF weights"
           dumpPdfWeights = False

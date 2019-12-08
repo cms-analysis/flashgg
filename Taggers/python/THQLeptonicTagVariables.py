@@ -7,7 +7,6 @@ import flashgg.Taggers.globalVariables_cff as globalVars
 from flashgg.MicroAOD.flashggJets_cfi import flashggBTag
 from flashgg.MicroAOD.flashggJets_cfi import flashggDeepCSVb
 from flashgg.MicroAOD.flashggJets_cfi import flashggDeepCSVbb
-
 vtx_variables=[
     "vtxprob                := diPhotonMVA.vtxprob",
     "ptbal                  := diPhoton.ptBal",
@@ -110,11 +109,11 @@ photon_variables=[
     "dipho_sublead_effSigma    :=  diPhoton.subLeadingPhoton.esEffSigmaRR",
     "dipho_sublead_scraw       :=  diPhoton.subLeadingPhoton.superCluster.rawEnergy",
     "dipho_sublead_ese         :=  diPhoton.subLeadingPhoton.superCluster.preshowerEnergy",
-        
+    "LeptonType                := getLeptonType()"        
 ]
 
 lepton_variables=[
-    "LeptonType             := getLeptonType()",
+#    "LeptonType             := getLeptonType()",
     "n_ele                  := electrons.size",
     "n_loose_ele            := n_Ele_Loose",
     "n_veto_ele             := n_Ele_Veto",
@@ -443,7 +442,7 @@ thqSystematicVariables = [
     "n_L_bjets   := nLoose_bJets",
     "n_T_bjets   := nTight_bJets",
     "n_M_bjets   := nMedium_bJets",
-    "LeptonType  := getLeptonType()",
+#    "LeptonType  := getLeptonType()",
     "MET_pt      := getRECOMET().getCorPt()",
     "HT          := getHT()"
 ]

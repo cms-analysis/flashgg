@@ -24,7 +24,7 @@
 
 #include "DataFormats/Math/interface/deltaR.h"
 
-#include "flashgg/DataFormats/interface/TagTruthBase.h"
+//include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "flashgg/DataFormats/interface/THQLeptonicTagTruth.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
 
@@ -1079,6 +1079,7 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
          TightBJetVect.clear(); TightBJetVect_PtSorted.clear();
          centraljet.clear(); forwardjet.clear();
          continue; }
+
 //int catnum = -1;
 //catnum = chooseCategory( thqLeptonicMvaResult_value_ );
 //catnum = chooseCategory( mvares->result );

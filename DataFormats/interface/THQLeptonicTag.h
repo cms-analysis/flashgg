@@ -160,7 +160,6 @@ namespace flashgg {
             return bDiscriminatorValue_;
         }
 
-
 //
 
         float thqleptonicMvaRes(string label) const {

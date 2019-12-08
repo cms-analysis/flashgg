@@ -73,11 +73,15 @@
 <class name="std::vector<flashgg::TTHLeptonicTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TTHLeptonicTag> >"/>
 
-<class name="flashgg::THQLeptonicTag"/>
+<class name="flashgg::THQLeptonicTag" ClassVersion="11">
+  <version ClassVersion="11" checksum="1030914150"/>
+</class>
 <class name="std::vector<flashgg::THQLeptonicTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::THQLeptonicTag> >"/>
 
-<class name="flashgg::THQLeptonicTagTruth"/>
+<class name="flashgg::THQLeptonicTagTruth" ClassVersion="12">
+  <version ClassVersion="12" checksum="4051811987"/>
+</class>
 <class name="std::vector<flashgg::THQLeptonicTagTruth>"/>
 <class name="edm::Wrapper<std::vector<flashgg::THQLeptonicTagTruth> >"/>
 

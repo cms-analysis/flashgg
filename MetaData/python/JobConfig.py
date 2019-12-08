@@ -3,6 +3,8 @@ from flashgg.MetaData.samples_utils import SamplesManager
 import FWCore.ParameterSet.Config as cms
 from Utilities.General.cmssw_das_client import get_data as das_query
 
+import commands
+
 class JobConfig(object):
     
     def __init__(self,*args,**kwargs):
@@ -65,6 +67,11 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.bool,          # string, int, or float
                                "useEOS")
+        self.options.register ('copyInputMicroAOD',
+                               False, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "copyInputMicroAOD")
         self.options.register ('useParentDataset',
                                False, # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -381,18 +388,18 @@ class JobConfig(object):
                 process.source.lumisToProcess = target.getVLuminosityBlockRange()
 
                 print process.source.lumisToProcess
-            
+
         flist = []
         sflist = []
-        
+
         # get the runs and lumis contained in each file of the secondary dataset
         if self.options.secondaryDataset:
             secondary_files = [fdata['file'][0]['name'] for fdata in das_query("file dataset=%s instance=prod/phys03" % self.options.secondaryDataset, 
                                                                                cmd='dasgoclient --dasmaps=./')['data']]
             runs_and_lumis = {}
             for s in secondary_files:
-                runs_and_lumis[str(s)] = {lumi['run_number'] : lumi['lumi_section_num'] for lumi in das_query("lumi file=%s instance=prod/phys03" % s,
-                                                                                                              cmd='dasgoclient --dasmaps=./')['data'][0]['lumi']}
+                runs_and_lumis[str(s)] = {data['lumi'][0]['run_number'] : data['lumi'][0]['lumi_section_num']
+                                          for data in das_query("lumi file=%s instance=prod/phys03" % s, cmd='dasgoclient --dasmaps=./')['data']}
 
         for f in files:
             if len(f.split(":",1))>1:
@@ -407,14 +414,23 @@ class JobConfig(object):
                     sflist.append('root://cms-xrd-global.cern.ch/'+parent_f_name if 'root://' not in parent_f_name else parent_f_name)
             elif self.options.secondaryDataset != "":
                 # match primary file to the corresponding secondary file(s)
-                f_runs_and_lumis = {lumi['run_number'] : lumi['lumi_section_num'] for lumi in das_query("lumi file=%s instance=prod/phys03" % f,
-                                                                                                        cmd='dasgoclient --dasmaps=./')['data'][0]['lumi']}
+                f_runs_and_lumis = {data['lumi'][0]['run_number'] : data['lumi'][0]['lumi_section_num']
+                                    for data in das_query("lumi file=%s instance=prod/phys03" % f, cmd='dasgoclient --dasmaps=./')['data']}
                 for s_name, s_runs_and_lumis in runs_and_lumis.items():
                     matched_runs = set(f_runs_and_lumis.keys()).intersection(s_runs_and_lumis.keys())
-                    for run in matched_runs:                        
+                    for run in matched_runs:
                         if any(lumi in f_runs_and_lumis[run] for lumi in s_runs_and_lumis[run]):
                             sflist.append(s_name)
-                
+
+        ## mitigate server glitches by copying the input files (microAOD) on the worker node
+        if self.copyInputMicroAOD and not self.dryRun:
+            for i,f in enumerate(flist):
+                print f
+                commands.getstatusoutput('mkdir -p input_files/')
+                commands.getstatusoutput('xrdcp %s ./input_files/'%f)
+                flocal = 'file:./input_files/'+f.split('/')[-1]
+                flist[i] = flocal
+
         if len(flist) > 0:
             ## fwlite
             if isFwlite:
