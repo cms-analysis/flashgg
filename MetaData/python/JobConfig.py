@@ -3,6 +3,8 @@ from flashgg.MetaData.samples_utils import SamplesManager
 import FWCore.ParameterSet.Config as cms
 from Utilities.General.cmssw_das_client import get_data as das_query
 
+import commands
+
 class JobConfig(object):
     
     def __init__(self,*args,**kwargs):
@@ -65,6 +67,11 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.bool,          # string, int, or float
                                "useEOS")
+        self.options.register ('copyInputMicroAOD',
+                               False, # default value
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.bool,          # string, int, or float
+                               "copyInputMicroAOD")
         self.options.register ('useParentDataset',
                                False, # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -414,6 +421,15 @@ class JobConfig(object):
                     for run in matched_runs:
                         if any(lumi in f_runs_and_lumis[run] for lumi in s_runs_and_lumis[run]):
                             sflist.append(s_name)
+
+        ## mitigate server glitches by copying the input files (microAOD) on the worker node
+        if self.copyInputMicroAOD and not self.dryRun:
+            for i,f in enumerate(flist):
+                print f
+                commands.getstatusoutput('mkdir -p input_files/')
+                commands.getstatusoutput('xrdcp %s ./input_files/'%f)
+                flocal = 'file:./input_files/'+f.split('/')[-1]
+                flist[i] = flocal
 
         if len(flist) > 0:
             ## fwlite
