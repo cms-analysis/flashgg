@@ -65,7 +65,7 @@ index dd41135e5e4..f6e38c09264 100644
    file.close();  
    return;
  }
-@@ -252,7 +251,8 @@ void EnergyScaleCorrection::readSmearingsFromFile(const std::string& filename)
+@@ -252,6 +251,8 @@ void EnergyScaleCorrection::readSmearingsFromFile(const std::string& filename)
  
    }
    

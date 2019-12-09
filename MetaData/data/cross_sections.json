@@ -148,6 +148,7 @@
         "ttHToGG_M125_13TeV_powheg_pythia8_v2"                                           : { "xs" : 0.5071,   "br" : 0.00227, "kf" : 1.06, "itype":-125300 },  
 	"ttHToGG_M125_13TeV_powheg_pythia8"                                              : { "xs" : 0.5071,   "br" : 0.00227, "kf" : 1.06, "itype":-125300 },
         "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8"                             : { "xs" : 0.5071,   "br" : 0.00227, "kf" : 1.06, "itype":-125300 },
+        "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_PSWeights"                   : { "xs" : 0.5071,   "br" : 0.00227, "kf" : 1.06, "itype":-125300 },
         "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_v2"                          : { "xs" : 0.5071,   "br" : 0.00227, "kf" : 1.06, "itype":-125300 },
 
         "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CUETP8M1Up"                          : { "xs" : 0.5071,   "br" : 0.00227, "kf" : 1.06, "itype":-125300 },

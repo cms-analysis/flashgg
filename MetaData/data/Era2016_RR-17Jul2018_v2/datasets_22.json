@@ -30152,7 +30152,7 @@
                 "weights": 94678.71875
             }
         ], 
-        "parent_n_units": null, 
+        "parent_n_units": 899600, 
         "vetted": true
     }, 
     "/VHToGG_M110_13TeV_amcatnloFXFX_madspin_pythia8/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2-b8a5b6287120fce79bb02069cbed82a0/USER": {
