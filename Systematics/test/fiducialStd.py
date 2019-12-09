@@ -1,3 +1,4 @@
+
 #!/usr/bin/env cmsRun
 
 import FWCore.ParameterSet.Config as cms
@@ -184,8 +185,8 @@ if customize.acceptance == 'BKG':
     #     else:
     #         setattr(process.flashggDiPhotons, opt, value)
     
-process.flashggDiPhotonMVA.sigmaMdecorrFile = cms.FileInPath(
-    "flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_Moriond17_Mgg100to180.root")
+process.flashggDiPhotonMVA.sigmaMdecorrFile = cms.FileInPath(str(customize.metaConditions["sigmaM_M_decorr"]))
+
 if customize.doSigmaMdecorr:
     process.flashggDiPhotonMVA.doSigmaMdecorr = cms.bool(True)
 else:
@@ -364,8 +365,8 @@ if customize.options.WeightName:
         customize.options.WeightName)
 
 definedSysts = set()
-process.tagsDumper.NNLOPSWeightFile = cms.FileInPath(
-    "flashgg/Taggers/data/NNLOPS_reweight.root")
+process.tagsDumper.NNLOPSWeightFile = cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root")
+
 process.tagsDumper.reweighGGHforNNLOPS = cms.untracked.bool(
     bool(customize.processId.count("ggh")))
 process.tagsDumper.classifierCfg.remap = cms.untracked.VPSet()
