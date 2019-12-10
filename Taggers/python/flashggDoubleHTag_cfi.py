@@ -56,8 +56,8 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    #MJJBoundariesUpper = cms.vdouble(150.0,150.0,143.0,150.0,150.0,150.0,150.0,145.0,155.0,142.0,146.0,152.0),#for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
                                    #MVABoundaries  = cms.vdouble(0.23,0.455, 0.709), # category boundaries for MVA with Mjj
                                    #MXBoundaries   = cms.vdouble(250., 336., 411., 556.), # .. and MX for MVA with Mjj
-                                   MVABoundaries  = cms.vdouble(0.3,0.54, 0.70), # category boundaries for MVA with Mjj
-                                   MXBoundaries   = cms.vdouble(250., 360.,470.,575.,250.,315.,365.,580.,250.,330.,375.,555.), # .. and MX for MVA with Mjj
+                                   MVABoundaries  = cms.vdouble(0.32,0.54, 0.70), # category boundaries for MVA with Mjj
+                                   MXBoundaries   = cms.vdouble(250., 370.,480.,585.,250.,335.,380.,545.,250.,330.,360.,530.), # .. and MX for MVA with Mjj
                                    nMX   = cms.uint32(4), # number of MX categories
                                    MJJBoundariesLower = cms.vdouble(70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0),#for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
                                    MJJBoundariesUpper = cms.vdouble(190.0,190.0,190.0,190.0,190.0,190.0,190.0,190.0,190.0,190.0,190.0,190.0),#for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
@@ -71,7 +71,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
 
                                    doMVAFlattening=cms.bool(True),#do transformation of cumulative to make it flat
                                    MVAscaling=cms.double(MVAscalingValue),
-                                   doCategorization=cms.bool(False),#do categorization based on MVA x MX or only fill first tree with all events
+                                   doCategorization=cms.bool(True),#do categorization based on MVA x MX or only fill first tree with all events
                                    MVAFlatteningFileName=cms.untracked.FileInPath("%s"%MVAFlatteningFileName),#FIXME, this should be optional, is it?
                                    globalVariables=globalVariables,
                                    doReweight = flashggDoubleHReweight.doReweight,
@@ -95,7 +95,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    useElectronLooseID = cms.bool(True),
                                    electronEtaThresholds=cms.vdouble(1.4442,1.566,2.5),
                                    ttHWeightfile = cms.untracked.FileInPath("%s"%ttHWeightfile), # for now
-                                   ttHScoreThreshold = cms.double(0.0), #to be updated
+                                   ttHScoreThreshold = cms.double(0.26), #to be updated
                                    # For standardization
                                    ttHKiller_mean = ttHKiller_mean,
                                    ttHKiller_std = ttHKiller_std,
@@ -107,7 +107,7 @@ cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,
                       # here the syntax is VarNameInTMVA := expression
                       [
                        "Mjj := dijet().M()",
-                       "leadingJet_DeepFlavour := leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",#FIXME make the btag type configurable?
+                       "leadingJet_DeepFlavour := leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
                        "subleadingJet_DeepFlavour := subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
                        "absCosThetaStar_CS := abs(getCosThetaStar_CS)",
                        "absCosTheta_bb := abs(CosThetaAngles()[1])",
@@ -123,7 +123,13 @@ cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,
                        "rho := global.rho",
                        "(leadingJet_bRegNNResolution*1.4826) := leadJet().userFloat('bRegNNResolution')*1.4826",
                        "(subleadingJet_bRegNNResolution*1.4826) := subleadJet().userFloat('bRegNNResolution')*1.4826",
-                       "(sigmaMJets*1.4826) := getSigmaMOverMJets()*1.4826"
+                       "(sigmaMJets*1.4826) := getSigmaMOverMJets()*1.4826",
+                       "(leadingPhoton_pt/CMS_hgg_mass) := diPhoton.leadingPhoton.pt/diPhoton().mass",
+                       "(subleadingPhoton_pt/CMS_hgg_mass) := diPhoton.subLeadingPhoton.pt/diPhoton().mass",
+                       "(leadingJet_pt/Mjj) := leadJet().pt/diPhoton().mass",
+                       "(subleadingJet_pt/Mjj) := subleadJet().pt/diPhoton().mass",      
+                       "photJetdRmin := getPhoJetMinDr()", 
+                       "photJetdRmin2 := getPhoJetOtherDr()" 
                        ]
                       )
 

@@ -53,6 +53,7 @@ class DoubleHCustomize():
                 "sigmaMOverM := sqrt(0.5*(diPhoton.leadingPhoton.sigEOverE*diPhoton.leadingPhoton.sigEOverE + diPhoton.subLeadingPhoton.sigEOverE*diPhoton.subLeadingPhoton.sigEOverE))",
                 "sigmaMOverMDecorr := getSigmaMDecorr()",
                 "PhoJetMinDr := getPhoJetMinDr()",#up to here input variables to MVA
+                "PhoJetOtherDr := getPhoJetOtherDr()",
                 "HHbbggMVA := MVA()",
                 # "HHbbggMVAprob0 := MVAprob()[0]",
                 "MX := MX()",
