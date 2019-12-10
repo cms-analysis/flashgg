@@ -111,7 +111,7 @@
         "y_mean" : 1.04588,
         "y_std" : 0.2685356,
         "year" : 2016,
-        "useBRegressionJERsf" : true, 
+        "useBRegressionJERsf" : false, 
         "JER_central" : 1.1, 
         "JER_up" : 0.1, 
         "JER_down" : -0.1 
@@ -120,9 +120,9 @@
     "doubleHTag":
     {
 	"jetID" : "Loose",
-	"weightsFile" : "flashgg/Taggers/data/HHTagger/training_with_07_10_2019_training0.weights.xml",
-	"MVAFlatteningFileName" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20191008_runII.root",
-	"MVAscalingValue" : 1.089,
+	"weightsFile" : "flashgg/Taggers/data/HHTagger/training_with_26_11_2019_training0.weights.xml",
+	"MVAFlatteningFileName" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20191126_runII.root",
+	"MVAscalingValue" : 1.141,
 	"NodesReweightingFileName" : "flashgg/Taggers/data/HHTagger/HHreweight_2016_15112019.root",
         "ttHWeightfile" : "flashgg/Taggers/data/ttHKiller/Keras2017_converted_allnode.pb",
         "ttHKiller_mean" : [  3.22491144e+02,   7.22919780e+01,   1.49387571e-01,   4.94052483e-03,
