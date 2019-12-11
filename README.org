@@ -100,6 +100,24 @@
 This section of the readme describes how to run modules specific to the HH->WWgg analysis. The current plugin designed to work with workspaceStd
 (as of 6 December 2019) is the HHWWgg tagger. One can also run a non-standard flashgg sequence, specific to HHWWgg, with the HHWWgg candidate dumper. 
 
+** Get HHWWgg branch of flashgg 
+
+   #+BEGIN_EXAMPLE
+   cmsrel CMSSW_10_5_0
+   cd CMSSW_10_5_0/src
+   cmsenv
+   git cms-init
+   cd $CMSSW_BASE/src 
+   git clone -b HHWWgg_dev https://github.com/atishelmanch/flashgg 
+   source flashgg/setup_flashgg.sh
+   #+END_EXAMPLE
+
+   If everything now looks reasonable, you can build:
+   #+BEGIN_EXAMPLE
+   cd $CMSSW_BASE/src
+   scram b -j 4
+   #+END_EXAMPLE
+
 ** Setup Proxy 
 
 For both the HHWWgg Dumper and Tagger, to run locally on an HHWWgg file, you first must run the following commands:
