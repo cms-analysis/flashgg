@@ -73,7 +73,7 @@ flashggPreselectedDiPhotons = cms.EDFilter(
         " && (abs(leadingPhoton.superCluster.eta) < 2.5 && abs(subLeadingPhoton.superCluster.eta) < 2.5)"
         " && (abs(leadingPhoton.superCluster.eta) < 1.4442 || abs(leadingPhoton.superCluster.eta) > 1.566)"
         " && (abs(subLeadingPhoton.superCluster.eta) < 1.4442 || abs(subLeadingPhoton.superCluster.eta) > 1.566)"
-        # " && (leadPhotonId > -0.9 && subLeadPhotonId > -0.9)" # removing this from preselection to keep output loose, because I'll be applying photon ID selection later 
+        " && (leadPhotonId > -0.9 && subLeadPhotonId > -0.9)" 
 #        " && (leadingPhoton.pt > mass/3. && subLeadingPhoton.pt > mass/4.)"
 #        " && (leadingPhoton.passElectronVeto) && (subLeadingPhoton.passElectronVeto)"
         ),

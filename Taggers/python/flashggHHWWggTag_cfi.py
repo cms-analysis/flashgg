@@ -4,12 +4,12 @@ from flashgg.Taggers.globalVariables_cff import globalVariables
 from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag # should include jet systematics 
 from flashgg.MicroAOD.flashggJets_cfi import  maxJetCollections
 
-# to not run jets systematics 
-UnpackedJetCollectionVInputTag =  cms.VInputTag(
-    cms.InputTag("flashggUnpackedJets","0"), cms.InputTag("flashggUnpackedJets","1"), cms.InputTag("flashggUnpackedJets","2"), cms.InputTag("flashggUnpackedJets","3"), cms.InputTag("flashggUnpackedJets","4"),
-    cms.InputTag("flashggUnpackedJets","5"), cms.InputTag("flashggUnpackedJets","6"), cms.InputTag("flashggUnpackedJets","7"), cms.InputTag("flashggUnpackedJets","8"), cms.InputTag("flashggUnpackedJets","9"),
-    cms.InputTag("flashggUnpackedJets","10"), cms.InputTag("flashggUnpackedJets","11")
-)
+# # to not run jets systematics 
+# UnpackedJetCollectionVInputTag =  cms.VInputTag(
+#     cms.InputTag("flashggUnpackedJets","0"), cms.InputTag("flashggUnpackedJets","1"), cms.InputTag("flashggUnpackedJets","2"), cms.InputTag("flashggUnpackedJets","3"), cms.InputTag("flashggUnpackedJets","4"),
+#     cms.InputTag("flashggUnpackedJets","5"), cms.InputTag("flashggUnpackedJets","6"), cms.InputTag("flashggUnpackedJets","7"), cms.InputTag("flashggUnpackedJets","8"), cms.InputTag("flashggUnpackedJets","9"),
+#     cms.InputTag("flashggUnpackedJets","10"), cms.InputTag("flashggUnpackedJets","11")
+# )
 
 
 # cfi = configuration fragment include

@@ -45,7 +45,7 @@ RECO_GEN_Variables = var.RECO_GEN_Variables
 from flashgg.Taggers.HHWWggCandidateDumper_cfi import HHWWggCandidateDumper
 process.HHWWggCandidateDumper = HHWWggCandidateDumper.clone() # clone parameters from HHWWggCandidateDumpConfig_cff (className, src, ...)
 process.HHWWggCandidateDumper.dumpTrees = True # Trees 
-process.HHWWggCandidateDumper.dumpWorkspace = False # Workspace 
+process.HHWWggCandidateDumper.dumpWorkspace = True # Workspace 
 
 # If signal, if data 
 
@@ -55,7 +55,6 @@ cfgTools.addCategories(process.HHWWggCandidateDumper,
                         [
                           # Signal Categories
                           ("SL","(CMS_hgg_mass!=-99) && (CMS_hgg_mass>=100) && (CMS_hgg_mass<=180)",0), # for background model 
-                          # ("SL","(CMS_hgg_mass!=-99)",0),
                           # ("SL","(CMS_hgg_mass!=-99) && (CMS_hgg_mass>=115) && (CMS_hgg_mass<=135)",0), # for signal model 
                           # ("SL","1",0), # for GEN RECO studies 
                           
@@ -65,8 +64,8 @@ cfgTools.addCategories(process.HHWWggCandidateDumper,
                         ],
 
                         # variables = all_variables, 
-                        variables = Reco_Variables,
-                        # variables = Fit_Variables,
+                        #variables = Reco_Variables,
+                        variables = Fit_Variables,
                         # variables = RECO_GEN_Variables, 
                         histograms=[]
                         )
@@ -78,8 +77,8 @@ process.source = cms.Source ("PoolSource",
 # One data microaod 
 # "root://cms-xrd-global.cern.ch//store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v2/legacyRun2FullV1/DoubleEG/Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017C-31Mar2018-v1/190606_095024/0000/myMicroAODOutputFile_333.root"
 
-"root://cms-xrd-global.cern.ch//store/group/phys_higgs/cmshgg/atishelm/flashgg/28OctTest/RunIIFall18-4_0_0-75-g71c3c6e9/ggF_X250_WWgg_qqlnugg/RunIIFall17MiniAOD-94X_mc2017_realistic_v11_wPU_MICROAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9/191029_142936/0000/myMicroAODOutputFile_3.root"
-
+# "root://cms-xrd-global.cern.ch//store/group/phys_higgs/cmshgg/atishelm/flashgg/28OctTest/RunIIFall18-4_0_0-75-g71c3c6e9/ggF_X250_WWgg_qqlnugg/RunIIFall17MiniAOD-94X_mc2017_realistic_v11_wPU_MICROAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9/191029_142936/0000/myMicroAODOutputFile_3.root"
+"root://cms-xrd-global.cern.ch//store/group/phys_higgs/cmshgg/atishelm/flashgg/HHWWgg_v1/94X_mc2017-RunIIFall18/ggF_X250_WWgg_qqlnugg/HHWWgg_v1-94X_mc2017-RunIIFall18-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9/191205_120702/0000/myMicroAODOutputFile_162.root"
 ## X250                       
 #"file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X250_WWgg_qqlnu.root" # SL      
 # "file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X250_WWgg_lnulnu.root" # FL      
@@ -219,10 +218,10 @@ process.flashggDiPhotonSystematics.SystMethods2D = systModules2D
 # if customize.PURW == False:
 # 	process.HHWWggCandidateDumper.puTarget = cms.vdouble()
 
-## Choose to require zeroeth vertex for all diphotons or not 
- 
-zero_vtx = 0
-sands = 0 # scaling and smearing 
+# Options 
+
+zero_vtx = 1 # Choose to require zeroeth vertex for all diphotons or not 
+sands = 1 # Apply scaling and smearing 
 
 
 # process.FlashggHHWWggCandidate.MVAResultTag = cms.InputTag('flashggUpdatedIdMVADiPhotons')
@@ -249,7 +248,7 @@ if zero_vtx:
 
 else:
   if sands:
-    process.FlashggHHWWggCandidate.DiPhotonTag = cms.InputTag('flashggDiPhotonSystematics')
+    process.FlashggHHWWggCandidate.DiPhotonTag = cms.InputTag('flashggDiPhotonSystematics') # use diphotons with scaling and smearing
     process.flashggPreselectedDiPhotons.src = "flashggDiPhotons" # don't require 0th vertex 
     process.path = cms.Path(process.dataRequirements
                             *process.flashggPreselectedDiPhotons
@@ -261,7 +260,7 @@ else:
                             *process.HHWWggCandidateDumper
                             )
   else:
-    process.FlashggHHWWggCandidate.DiPhotonTag = cms.InputTag('flashggPreselectedDiPhotons')
+    process.FlashggHHWWggCandidate.DiPhotonTag = cms.InputTag('flashggPreselectedDiPhotons') # use diphotons without scaling and smearing 
     process.flashggPreselectedDiPhotons.src = "flashggDiPhotons" # don't require 0th vertex 
     process.path = cms.Path(process.dataRequirements
                             *process.flashggPreselectedDiPhotons

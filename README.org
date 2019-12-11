@@ -96,3 +96,57 @@
    The code will also automatically create an "origin" repo based on its guess as to where your personal flashgg fork is.
    Check that this has worked correctly if you have trouble pushing.  (See setup_*.sh for what it does.)
 
+* HHWWgg
+This section of the readme describes how to run modules specific to the HH->WWgg analysis. The current plugin designed to work with workspaceStd
+(as of 6 December 2019) is the HHWWgg tagger. One can also run a non-standard flashgg sequence, specific to HHWWgg, with the HHWWgg candidate dumper. 
+
+** Setup Proxy 
+
+For both the HHWWgg Dumper and Tagger, to run locally on an HHWWgg file, you first must run the following commands:
+
+    #+BEGIN_EXAMPLE
+    cmsenv
+    voms-proxy-init --voms cms --valid 168:00
+    #+END_EXAMPLE
+
+after the voms command, you should get an output like:
+
+    #+BEGIN_EXAMPLE
+    Created proxy in /tmp/x509up_u95168
+    #+END_EXAMPLE
+
+to set this proxy to your X509_USER_PROXY environment variable for the example above, simply use the command:
+
+    #+BEGIN_EXAMPLE
+    . proxy.sh x509up_u95168
+    #+END_EXAMPLE
+
+where x590up_u95168 would be replaced by whatever your proxy name is. 
+
+** HHWWgg Dumper
+
+* Running Locally 
+
+The HHWWgg Candidate Dumper is run with the config file Taggers/test/HHWWggTest_cfg.py. This is useful if you'd like to run a cmsRun sequence different 
+from workspacestd.py. To run locally, after a scram b -j command to build everything, you need to run the command:
+
+    #+BEGIN_EXAMPLE
+    cmsRun Taggers/test/HHWWggTest_cfg.py outputFile=HHWWggtest.root metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json maxEvents=1000;"
+    #+END_EXAMPLE
+
+When running locally, the input files are specified in the cmssw config file (HHWWggTest_cfg.py), and by default is set to a single 250 GeV radion semileptonic decay
+signal microaod with 499 events. In the config file, you can specify the variables to output with the crfTools.addCategories 
+variable "variables". By default this is set to variables = Fit_Variables, which outputs minimum variables in the trees and workspaces for fggfinalfit
+(CMS_hgg_mass, dZ, weight and intLumi). You can plot many more kinematic variables by changing this to variables = Reco_Variables. The specific variables to be 
+plotted from these names are found in the file Taggers/python/HHWWggTagVariables.py 
+
+Towards the end of the config file are the options zero_vtx and sands. Setting zero_vtx equal to 1 will perform the analysis dumper only considering diphotoncandidates
+constructed from the highest sum pt squared vertex, found the be slightly more efficient in the case of the 250 GeV HHWWgg semileptonic signal compared to the Hgg vertex.
+Setting sands equal to 1 will perform scaling and smearing corrections. 
+
+* Running on Condor
+
+Running the Candidate Dumper has the advantage of allowing you to run over entire data sets and calculate weights for signal samples. Running the candidatedumper on
+condor can be done with the script HHWWgg_Run_Jobs.sh. This allows you to run with the CandidateDumper or Tagger on signal or background. 
+
+** HHWWgg Tagger

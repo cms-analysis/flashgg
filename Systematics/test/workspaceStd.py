@@ -173,7 +173,7 @@ else:
 
 from flashgg.Systematics.SystematicsCustomize import *
 jetSystematicsInputTags = createStandardSystematicsProducers(process , customize)
-print'jetSystematicsInputTags = ',jetSystematicsInputTags
+# print'jetSystematicsInputTags = ',jetSystematicsInputTags
 # jetSystematicsInputTags = None 
 if dropVBFInNonGold:
     process.flashggVBFTag.SetArbitraryNonGoldMC = True
@@ -215,11 +215,20 @@ if customize.doFiducial:
 # process.flashggTagSequence = flashggPrepareTagSequence(customize.metaConditions)
 
 # needed for 0th vertex from microAOD
-if customize.tthTagsOnly:
+# HHWWgg: Want zeroeth vertex 
+if customize.tthTagsOnly or customize.HHWWggTagsOnly:
     process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
     process.flashggDiPhotons.whichVertex = cms.uint32(0)
     process.flashggDiPhotons.useZerothVertexFromMicro = cms.bool(True)
 
+# if customize.HHWWggTagsOnly:
+#     print'customizing for HHWWgg'
+#     process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
+#     process.flashggDiPhotons.whichVertex = cms.uint32(0)
+#     process.flashggDiPhotons.useZerothVertexFromMicro = cms.bool(True)
+#     process.flashggDiPhotons.vertexProbMVAweightfile = "flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml"
+#     process.flashggDiPhotons.vertexIdMVAweightfile = "flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml"
+                                                        
 print 'here we print the tag sequence before'
 print process.flashggTagSequence
 if customize.doFiducial:
@@ -359,7 +368,7 @@ useEGMTools(process)
 
 # Only run systematics for signal events
 # convention: ggh vbf wzh (wh zh) tth
-signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","ggF_X250_WWgg_qqlnugg"]
+signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","ggF_X250_WWgg_qqlnugg","ggF_X450_WWgg_qqlnugg","ggF_SM_WWgg_qqlnugg"]
 # print'customize'
 # print'checking customize options'
 # print'customize.processId.count("ggF_X250_WWgg_qqlnugg") = ',customize.processId.count("ggF_X250_WWgg_qqlnugg")
@@ -415,8 +424,8 @@ if is_signal:
             elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
                 variablesToUse.append("MuonIDWeight%s01sigma[1,-999999.,999999.] := weight(\"Muon%sIDWeight%s01sigma\")" % (direction,MUON_ID,direction))
                 variablesToUse.append("MuonIsoWeight%s01sigma[1,-999999.,999999.] := weight(\"Muon%sISOWeight%s01sigma\")" % (direction,MUON_ISO,direction))
-            variablesToUse.append("JetBTagCutWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagCutWeight%s01sigma\")" % (direction,direction))
-            variablesToUse.append("JetBTagReshapeWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagReshapeWeight%s01sigma\")" % (direction,direction))
+            # variablesToUse.append("JetBTagCutWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagCutWeight%s01sigma\")" % (direction,direction))
+            # variablesToUse.append("JetBTagReshapeWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagReshapeWeight%s01sigma\")" % (direction,direction))
             for r9 in ["HighR9","LowR9"]:
                 for region in ["EB","EE"]:
                     phosystlabels.append("ShowerShape%s%s%s01sigma"%(r9,region,direction))
@@ -459,14 +468,14 @@ print "------------------------------------------------------------"
 #from flashgg.Taggers.globalVariables_cff import globalVariables
 #globalVariables.extraFloats.rho = cms.InputTag("rhoFixedGridAll")
 
-#cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags)
+# cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags)
 
-# cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags) # used in workspacestd 
+cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags) # used in workspacestd 
 
 # Dump an object called NoTag for untagged events in order to track QCD weights
 # Will be broken if it's done for non-central values, so turn this on only for the non-syst tag sorter
-# process.flashggTagSorter.CreateNoTag = True # MUST be after tag sequence cloning
-process.flashggTagSorter.CreateNoTag = False # MUST be after tag sequence cloning
+process.flashggTagSorter.CreateNoTag = True # MUST be after tag sequence cloning
+# process.flashggTagSorter.CreateNoTag = False # MUST be after tag sequence cloning
 
 ###### Dumper section
 
@@ -475,7 +484,8 @@ from flashgg.MetaData.samples_utils import SamplesManager
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
-                                 "/store/user/spigazzi/flashgg/Era2016_RR-07Aug17_v1/legacyRun2TestV1/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/Era2016_RR-07Aug17_v1-legacyRun2TestV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v1/190228_142907/0000/myMicroAODOutputFile_610.root"
+                                 "/store/group/phys_higgs/cmshgg/atishelm/flashgg/450_SM/RunIIFall18-4_0_0-75-g71c3c6e9/ggF_X450_WWgg_qqlnugg/450_SM-RunIIFall18-4_0_0-75-g71c3c6e9-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9/191129_122604/0000/myMicroAODOutputFile_4.root"
+                                #  "/store/user/spigazzi/flashgg/Era2016_RR-07Aug17_v1/legacyRun2TestV1/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/Era2016_RR-07Aug17_v1-legacyRun2TestV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v1/190228_142907/0000/myMicroAODOutputFile_610.root",
                              ))
 
 process.TFileService = cms.Service("TFileService",
@@ -588,7 +598,7 @@ for tag in tagList:
               currentVariables = []
       isBinnedOnly = (systlabel !=  "")
       if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") ) and (systlabel ==  "") and not (customize.processId == "th_125" or customize.processId == "bbh_125"):
-    #   if (customize.doHHWWggTagOnly):
+    #   if (customize.HHWWggTagsOnly):
           print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
           nPdfWeights = 60
@@ -699,24 +709,25 @@ if customize.tthTagsOnly:
     # Now, we put the ttH tags back in the sequence with modified systematics workflow
     modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystlabels, jetsystlabels)
 
-# else :
-#     # process.flashggDiPhotonSystematics.src = "flashggPreselectedDiPhotons" # put in by hand to match tagger and dumper outputs
-#     process.flashggHHWWggTag
-#     process.p = cms.Path(#process.dataRequirements*
-#                          #process.flashggMetFilters*
-#                          #process.genFilter*
+# elif customize.HHWWggTagsOnly:
+#     print'defining process for hhwwgg'
+#     # process.flashggPreselectedDiPhotons.src = "flashggDiPhotonsVtx0" # Only use zeroth vertex diphotons, order by pt 
+#     process.p = cms.Path(process.dataRequirements*
+#                          process.flashggMetFilters*
+#                          process.genFilter*
+#                          process.flashggDiPhotons* # needed for 0th vertex from microAOD
 #                          process.flashggDifferentialPhoIdInputsCorrection*
-#                         #  process.flashggDiPhotonSystematics*
-#                          #process.flashggMetSystematics*
-#                          #process.flashggMuonSystematics*process.flashggElectronSystematics*
-#                          #(process.flashggUnpackedJets*process.jetSystematicsSequence)*
-#                          process.flashggUnpackedJets*
-#                          process.flashggTagSequence*
-#                         #  (process.flashggTagSequence*process.systematicsTagSequences)*
+#                          process.flashggDiPhotonSystematics*
+#                          process.flashggMetSystematics*
+#                          process.flashggMuonSystematics*process.flashggElectronSystematics*
+#                          (process.flashggUnpackedJets*process.jetSystematicsSequence)*
+#                          (process.flashggTagSequence*process.systematicsTagSequences)*
 #                          process.flashggSystTagMerger*
 #                          process.penultimateFilter*
 #                          process.finalFilter*
-#                          process.tagsDumper)
+#                          process.tagsDumper)    
+    # modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystlabels, jetsystlabels)
+    
 
 else :
     process.p = cms.Path(process.dataRequirements*

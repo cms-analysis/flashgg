@@ -15,19 +15,19 @@ class HHWWggCustomize():
 
     def variablesToDump(self):
         var_workspace = [
-            "testVariable := 5 "
+            "testVariable[10,0,10] := 5 "
 #             "Mjj := dijet().M()"
             # "eventNumber := eventNumber()",
             # "MX := MX()",
             # "HHbbggMVA := MVA()"
         ]
         variables = [
-            "lp_E := Leading_Photon.p4().E()",
-            "slp_E := Subleading_Photon.p4().E()",
-            "lp_initE := Leading_Photon.energyAtStep('initial')",
-            "slp_initE := Subleading_Photon.energyAtStep('initial')", 
-            "lp_Hgg_MVA := lp_Hgg_MVA()",
-            "slp_Hgg_MVA := slp_Hgg_MVA()",
+            "lp_E[100,0,100] := Leading_Photon.p4().E()",
+            "slp_E[100,0,100] := Subleading_Photon.p4().E()",
+            "lp_initE[100,0,100] := Leading_Photon.energyAtStep('initial')",
+            "slp_initE[100,0,100] := Subleading_Photon.energyAtStep('initial')", 
+            "lp_Hgg_MVA[100,-1,1] := lp_Hgg_MVA()",
+            "slp_Hgg_MVA[100,-1,1] := slp_Hgg_MVA()",
             
             
             # also want final energies 
@@ -169,10 +169,10 @@ class HHWWggCustomize():
     #   systematicVariables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass","Mjj[120,70,190]:=dijet().M()","HHbbggMVA[100,0,1.]:=MVA()","MX[300,250,5000]:=MX()"]
       systematicVariables=[
           "CMS_hgg_mass[160,100,180]:=diPhoton().mass",
-          "lp_E := Leading_Photon.p4().E()",
-          "slp_E := Subleading_Photon.p4().E()",
-          "lp_initE := Leading_Photon.energyAtStep('initial')",
-          "slp_initE := Subleading_Photon.energyAtStep('initial')", # also want final energies 
+          "lp_E[100,0,100] := Leading_Photon.p4().E()",
+          "slp_E[100,0,100] := Subleading_Photon.p4().E()",
+          "lp_initE[100,0,100] := Leading_Photon.energyAtStep('initial')",
+          "slp_initE[100,0,100] := Subleading_Photon.energyAtStep('initial')", # also want final energies 
 
       ]
     #   systematicVariables=[]
@@ -191,7 +191,8 @@ class HHWWggCustomize():
 
     def variablesToDumpData():
         variables = [
-            "TestVariable:=111"
+            "testVariable[100,0,100] := 50"
+            # "TestVariable:=111"
            #  "leadingJet_DeepCSV := leadJet().bDiscriminator('pfDeepCSVJetTags:probb')+leadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",#FIXME make the btag type configurable?
            #  "subleadingJet_DeepCSV := subleadJet().bDiscriminator('pfDeepCSVJetTags:probb')+subleadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",
            #  "absCosThetaStar_CS := abs(getCosThetaStar_CS())",
@@ -225,7 +226,7 @@ class HHWWggCustomize():
         self.process.load("flashgg.Taggers.flashggHHWWggTag_cff")
 
         ## customize meta conditions
-        self.process.flashggHHWWggTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))
+        # self.process.flashggHHWWggTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))
         # self.process.flashggHHWWggTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["doubleHTag"]["weightsFile"]))  
         # self.process.flashggHHWWggTag.MVAscaling = cms.double(self.metaConditions["doubleHTag"]["MVAscalingValue"])
         # self.process.flashggHHWWggTag.MVAFlatteningFileName = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["MVAFlatteningFileName"]))
@@ -260,6 +261,7 @@ class HHWWggCustomize():
     def HHWWggTagMerger(self,systlabels=[]):
         self.process.p.remove(self.process.flashggTagSorter)
         self.process.p.replace(self.process.flashggSystTagMerger,self.process.flashggHHWWggTagSequence*self.process.flashggTagSorter*self.process.flashggSystTagMerger)
+        # print'process.p = ',self.process.p 
         for systlabel in systlabels:
            if systlabel!='':
              self.process.p.remove(getattr(self.process,'flashggTagSorter'+systlabel))
@@ -270,6 +272,7 @@ class HHWWggCustomize():
 
     def HHWWggTagRunSequence(self,systlabels,jetsystlabels,phosystlabels):
        if self.customize.HHWWggTagsOnly: 
+        #   print'systlabels = ',systlabels 
           self.HHWWggTagMerger(systlabels)
 
        if len(systlabels)>1 :
