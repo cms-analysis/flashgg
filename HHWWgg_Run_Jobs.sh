@@ -1,7 +1,13 @@
 #!/bin/sh
 
+#------------------------------------------------------------------------------------------------------------------------------
+
+# Abe Tishelman-Charny
+# 12 December 2019
+#
 # The purpose of this script is the run fggrunjobs with ether the HHWWgg candidate dumper or tagger, on either data or signal. 
 
+#------------------------------------------------------------------------------------------------------------------------------
 
 ## Do these steps before running:
 # cmsenv
@@ -9,12 +15,72 @@
 # cp /tmp/MYPROXY ~/
 # export X509_USER_PROXY=~/MYPROXY
 
-# Specify these two to the user 
-fggDirec="/afs/cern.ch/work/a/atishelm/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/"
-ntupleDirec="/eos/user/a/atishelm/ntuples/HHWWgg/"
+## User specific variables. Customize to your own working area(s)
 
-label=$1 
-numEvents=$2 # can't be -1 because it's a flag. need integer argument 
+fggDirec="/afs/cern.ch/work/a/atishelm/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/" # flashgg directory 
+ntupleDirec="/eos/user/a/atishelm/ntuples/HHWWgg/" # condor output directory 
+
+## Other script parameters 
+
+label="" # name for condor output directory in ntupleDirec 
+numEvents="" # integer, or 'all' to run on all events 
+runWorkspaceStd="false" # use Systematics/test/workspaceStd.py as config 
+runttH="false" # run on ttH background sample only 
+runData="false" # get datasets from data json file 
+runSignal="false" # get dataset(s) from signal json file 
+
+## Get user specified argumenets 
+
+options=$(getopt -o sdw --long nEvents: --long labelName: -- "$@") # end name with colon ':' to specify argument string 
+[ $? -eq 0 ] || {
+      echo "Incorrect option provided"
+      exit 1
+}
+eval set -- "$options"
+while true; do
+      case "$1" in
+      -s)
+            runSignal="true"
+            ;;
+      -d)
+            runData="true"
+            ;;
+      -w) 
+            runWorkspaceStd="true"
+            ;;
+      --nEvents)
+            shift; 
+            numEvents=$1
+            ;;
+      --labelName)
+            shift; 
+            label=$1
+            ;;
+      --)
+            shift
+            break
+            ;;
+      esac
+      shift
+done 
+
+## Output read arguments to user 
+
+echo "label = $label" 
+echo "numEvents = $numEvents" 
+echo "runWorkspaceStd = $runWorkspaceStd"
+echo "rundata = $runData"
+echo "runsignal = $runSignal"
+
+## Make sure numEvents and label arguments are specified. These are necessary 
+
+if [ -z "$numEvents" ]
+then
+      echo ""
+      echo "Please enter a number of events with the -n flag "
+      echo "exiting"
+      return
+fi
 
 if [ $numEvents == "all" ]
 then
@@ -29,52 +95,23 @@ then
       return
 fi
 
-if [ -z "$numEvents" ]
+## Make sure only data OR signal is run on (for the moment it's not configured to run on both, but of course this can be implemented if desired)
+
+if [ $runData == 'false' ] && [ $runSignal == 'false' ] 
 then
-      echo ""
-      # echo "Please enter a number of events as the 2nd argument"
-      # echo "exiting"
-      # return
-fi
+      echo "Please choose to run on either Data OR signal"
+      echo "exiting"
+      return
+fi   
 
-
-# options may be followed by one colon to indicate they have a required argument
-if ! options=$(getopt -u -o stn -l  -- "$@")
+if [ $runData == 'true' ] && [ $runSignal == 'true' ] 
 then
-# something went wrong, getopt will put out an error message for us
-echo "should exit"
-fi
-set -- $options
+      echo "Please choose to run on either Data OR signal"
+      echo "exiting"
+      return
+fi  
 
-# dofTest="false"
-# createPoints="false"
-# doSignalFit="false"
-# plotSignal="false"
-# makeDatacard="false"
-runSystematics="false"
-runttH="false"
-runData="false"
-runSignal="false"
-
-while [ $# -gt 0 ]
-do
-case $1 in
-# -h|--help) usage; exit 0;;
-# -f|--fTest) dofTest="true"; shift ;;
-# -k|--signalfit) doSignalFit="true"; shift ;; 
-# -p|--plotsig) plotSignal="true"; shift ;;
-# -d|--dcard) makeDatacard="true"; shift ;;
--s|--rs) runSystematics="true"; shift ;;
--t|--rs) runttH="true"; shift ;;
--d|--rs) runData="true"; shift ;;
--x|--rs) runSignal="true"; shift ;;
-
-(--) shift; break;;
-(-*) usage; echo "$0: [ERROR] - unrecognized option $1" 1>&2; usage >> /dev/stderr; exit 1;;
-(*) break;;
-esac
-shift
-done
+## Set variables to user inputs 
 
 output_direc=$label
 # Make output directories if they don't exist 
@@ -83,9 +120,11 @@ mkdir -p $ntupleDirec$output_direc;
 root_file_output=$ntupleDirec
 root_file_output+=$output_direc
 
-if [ $runSystematics == 'false' ]
+## Run HHWWgg Dumper with HHWWggTest_cfg.py
+
+if [ $runWorkspaceStd == 'false' ]
 then
-      echo "Submitting jobs WITHOUT systematics"
+      echo "Submitting jobs with Taggers/test/HHWWggTest_cfg.py as cmssw config"
       jsonpath=''
       if [ $runData == 'true' ]
       then
@@ -95,14 +134,7 @@ then
       if [ $runSignal == 'true' ]
       then
             jsonpath='Taggers/test/HHWWgg_2017_Signal/HHWWgg_Signal_2017.json'  
-      fi     
-
-      if [ ($runData == 'false' && $runSignal == 'false') || ($runData == 'true' && $runSignal == 'true') ]
-      then
-            echo "Please choose to run on either Data OR signal"
-            echo "exiting"
-            return
-      fi      
+      fi        
 
       if [ $runttH == 'true' ]
       then 
@@ -122,9 +154,11 @@ then
       command+='MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json'
 fi
 
-if [ $runSystematics == 'true' ]
+## Run HHWWgg tagger with workspaceStd.py 
+
+if [ $runWorkspaceStd == 'true' ]
 then
-      echo "Submitting jobs WITH systematics"
+      echo "Submitting jobs with Systematics/test/workspaceStd.py as cmssw config"
       jsonpath=''
 
       if [ $runData == 'true' ]
@@ -135,14 +169,7 @@ then
       if [ $runSignal == 'true' ]
       then
       jsonpath='Taggers/test/HHWWgg_2017_Signal/HHWWgg_Signal_2017.json'  
-      fi    
-
-      if [ ($runData == 'false' && $runSignal == 'false') || ($runData == 'true' && $runSignal == 'true') ]
-      then
-            echo "Please choose to run on either Data OR signal"
-            echo "exiting"
-            return
-      fi       
+      fi        
 
       command='fggRunJobs.py --load '
       command+=$jsonpath
@@ -154,7 +181,7 @@ then
       command+=' -q microcentury --no-use-tarball --no-copy-proxy metaConditions='   
       command+=$fggDirec
       command+='MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json '
-      command+=' doHHWWggTag=True HHWWggTagsOnly=True doSystematics=False dumpWorkspace=True dumpTrees=True'
+      command+=' doHHWWggTag=True HHWWggTagsOnly=True doSystematics=False dumpWorkspace=True dumpTrees=True '
       #     command+=' doHHWWggTag=True HHWWggTagsOnly=True doSystematics=False doBJetRegression=True dumpWorkspace=False dumpTrees=True'
 fi
 

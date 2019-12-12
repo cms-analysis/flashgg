@@ -236,7 +236,6 @@ if zero_vtx:
   process.flashggPreselectedDiPhotons.src = "flashggDiPhotonsVtx0" # Only use zeroth vertex diphotons, order by pt 
   process.path = cms.Path(process.flashggDiPhotonsVtx0
                           *process.flashggPreselectedDiPhotons
-                          # *flashggUpdatedIdMVADiPhotons
                           *process.flashggDiPhotonMVA
                           *process.flashggUnpackedJets
                           *process.dataRequirements
