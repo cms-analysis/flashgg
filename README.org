@@ -1,11 +1,16 @@
 * HHWWgg
 
-Contact: Abe Tishelman-Charny, abraham.tishelman.charny@cern.ch 
+Contacts: 
+- Abraham Tishelman-Charny, abraham.tishelman.charny@cern.ch 
+- Badder Marzocchi, badder.marzocchi@cern.ch
+- Toyoko Orimoto, Toyoko.Orimoto@cern.ch 
 
-See: https://indico.cern.ch/event/847923/#12-update-on-the-hh-wwgg-analy
+See: 
+- [[https://indico.cern.ch/event/847927/#2-status-of-hh-wwgg-analysis][21 October 2019 Analysis Status]]
+- [[https://indico.cern.ch/event/847923/#12-update-on-the-hh-wwgg-analy][11 November 2019 Analysis Update]]
 
-These instructions describe how to run modules specific to the HH->WWgg analysis. The current plugin designed to work with workspaceStd
-(as of 6 December 2019) is the HHWWgg tagger. One can also run a non-standard flashgg sequence, specific to HHWWgg, with the HHWWgg candidate dumper. 
+These instructions describe how to run flashgg modules specific to the HH->WWgg analysis. The current plugin designed to work with workspaceStd
+(as of 12 December 2019) is the HHWWgg tagger. One can also run a non-standard flashgg sequence, specific to HHWWgg, with the HHWWgg candidate dumper. 
 
 *** Get HHWWgg branch of flashgg 
 
@@ -137,11 +142,16 @@ of the second category, you would do so in Taggers/plugins/HHWWggTagProducer.cc 
 
 *** Running on Condor 
 
-To run the tagger on condor, the same instructions as running the dumper with condor are followed but with the addition of the "-w" flag, like so: 
+To run the tagger on condor, the same instructions as running the dumper with condor are followed but with the addition of the "-w" flag. To run on signal:
 
     #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWggTaggerTest --nEvents 1000 -d
+    . HHWWgg_Run_Jobs.sh --labelName HHWWggTaggerTest --nEvents 1000 -s -w
     #+END_EXAMPLE
 
-By default, this will run the tagger
-on the 250 GeV Radion, semileptonic final state dataset. To change this, one needs to edit the json file used. 
+or to run on data:
+
+    #+BEGIN_EXAMPLE
+    . HHWWgg_Run_Jobs.sh --labelName HHWWggTaggerTest --nEvents 1000 -d -w
+    #+END_EXAMPLE
+
+By default, this will run the tagger on the 250 GeV Radion, semileptonic final state dataset. To change this, one needs to edit the json file used in the same manner described in the dumper instructions. 
