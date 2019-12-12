@@ -1,106 +1,15 @@
-* flashgg
-** Setup
-   Before you start, **please take note** of these warnings and comments:
-   - **N.B.** The setup script will check out many packages and take a while!
-   - **N.B.** You can ignore "error: addinfo_cache" lines. 
-
-   Supported releases:
-   - 10_5_0
-
-   get flashgg:
-   #+BEGIN_EXAMPLE
-   cmsrel CMSSW_10_5_0
-   cd CMSSW_10_5_0/src
-   cmsenv
-   git cms-init
-   cd $CMSSW_BASE/src 
-   git clone -b dev_legacy_runII https://github.com/cms-analysis/flashgg 
-   source flashgg/setup_flashgg.sh
-   #+END_EXAMPLE
-
-   If everything now looks reasonable, you can build:
-   #+BEGIN_EXAMPLE
-   cd $CMSSW_BASE/src
-   scram b -j 4
-   #+END_EXAMPLE
-
-** Examples to run on RunII legacy test campaign:
-   *Note: copying the proxy file to the working node is not yet supported when using HTCondor as bacth system. Therefore the user must set*
-   *the =X509_USER_PROXY= environment variable and run with the =--no-copy-proxy= option*
-   #+BEGIN_EXAMPLE
-   cd Systematics/test
-   voms-proxy-init -voms cms --valid 168:00
-   cp /tmp/MYPROXY ~/
-   export X509_USER_PROXY=~/MYPROXY
-   fggRunJobs.py --load legacy_runII_v1_YEAR.json -d test_legacy_YEAR workspaceStd.py -n 300 -q workday --no-copy-proxy
-   #+END_EXAMPLE
-
-   *Note: 2018 workflow is just a skeleton, only scales and smearings are known to be correct.*
-
-** Notes on fggRunJobs.py usage (with HTCondor as batch system):
-   *It is highly recommended to run =fggRunJobs.py --help= in order to get a clear picture of the script features*
-
-   To fully exploit the HTCondor cluster logic the fggRunJobs workflow has been reviewed for this specific batch system.
-   With other batch system (SGE, LSF, ...) each job is run independently in a single task, with HTCondor instead one cluster
-   of jobs is created for each sample (i.e. one cluster for each process specified in the configuration json file).
-   The number of jobs in each cluster is determined, as for other system, by fggRunJobs. The user can specify the maximum number
-   of jobs for each sample through the =-n= option.
-
-   HTCondor does not allow the user to manually resubmit single jobs within a cluster, jobs are instead resubmitted automatically if the job exit
-   code matches a failure condition set by the user (here the user as to be intended as fggRunJobs itself). Currently the fggRunJobs
-   consider as failed only jobs for which the cmsRun execution failed and instructs HTCondor to resubmit such jobs up to maximum 3 times
-   (this value is hard-coded). Failure in transferring the output ROOT file will not result in a job resubmission since in most cases
-   the transfer error is due to lack of disk space and therefore any resubmission will fail as well (the user should clean up the stage out area
-   first and then submit new jobs with fggRunJobs). In order to make sure all analysis jobs are processed correctly and no data is
-   left behind fggRunJobs keeps an internal bookkeeping of the job that failed even after three automatic resubmission, the user can
-   instruct fggRunJobs to resubmit these jobs again by setting the =-m= option to a value greater than 1.
-   *Note that it is very unlikely that sporadic failures results in a job fail three consecutive automatic resubmission, so besides increasing*
-   *the number of manual resubmission attempts through the =-m= option it is worth investigating deeper the log files to understand the root cause of*
-   *the failure.*
-
-   A typical analysis task is summarized below:
-   #+BEGIN_EXAMPLE
-   voms-proxy-init -voms cms --valid 168:00
-   cp /tmp/MYPROXY ~/
-   export X509_USER_PROXY=~/MYPROXY
-   fggRunJobs.py --load myconfig.json -d outputdir/ cmsrun_cfg.py -n N -q QUEUE --no-copy-proxy
-   #+END_EXAMPLE
-   By default =-m= is set to 2, this means that each jobs will be retried up to 6 times (3 automatic resubmits by HTCondor * 2 "manual" resubmits
-   by fggRunJobs).
-
-   fggRunJobs.py can be left running (e.g. in a screen session) or be killed. The monitoring can be restarted at anytime with:
-   #+BEGIN_EXAMPLE
-   fggRunJobs.py --load outputdir/config.json --cont
-   #+END_EXAMPLE
-   If all jobs terminated successfully the script will display a success message, otherwise the monitoring will resume.
-   The status of jobs can be also monitored running the standard HTCondor scripts like =condor_q=. fggRunJobs clusters are named "runJobsXX".
-   The number of "manual" resubmission can be increase by adding =-m 3= to the above command.
-   
-
-** Manual tests:
-   And a very basic workflow test (for reference, this is not supposed to give paper-grade results):
-   #+BEGIN_EXAMPLE
-   cd $CMSSW_BASE/src/flashgg
-   cmsRun MicroAOD/test/microAODstd.py processType=sig datasetName=glugluh conditionsJSON=MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json 
-   #processType=data/bkg/sig, depending on input file
-   #conditionsJSON= add appropriate JSON file for 2016, 2017 or 2018 from MetaData/data/MetaConditions/
-
-   cmsRun Systematics/test/workspaceStd.py processId=ggh_125 doHTXS=1
-   #+END_EXAMPLE
-
-   These are just some test examples; the first makes MicroAOD from a MiniAOD file accessed via xrootd, 
-   the second produces tag objects and screen output from the new MicroAOD file,
-   and the other two process the MicroAOD file to test ntuple and workspace output.
-
-   The setup code will automatically change the initial remote branch's name to upstream to synchronize with the project's old conventions.  
-   The code will also automatically create an "origin" repo based on its guess as to where your personal flashgg fork is.
-   Check that this has worked correctly if you have trouble pushing.  (See setup_*.sh for what it does.)
-
 * HHWWgg
-This section of the readme describes how to run modules specific to the HH->WWgg analysis. The current plugin designed to work with workspaceStd
+
+Contact: Abe Tishelman-Charny, abraham.tishelman.charny@cern.ch 
+
+See: https://indico.cern.ch/event/847923/#12-update-on-the-hh-wwgg-analy
+
+These instructions describe how to run modules specific to the HH->WWgg analysis. The current plugin designed to work with workspaceStd
 (as of 6 December 2019) is the HHWWgg tagger. One can also run a non-standard flashgg sequence, specific to HHWWgg, with the HHWWgg candidate dumper. 
 
-** Get HHWWgg branch of flashgg 
+*** Get HHWWgg branch of flashgg 
+
+The HHWWgg development branch is obtained in a similar fasion to obtaining the dev_legacy_runII branch of flashgg:
 
    #+BEGIN_EXAMPLE
    cmsrel CMSSW_10_5_0
@@ -118,7 +27,7 @@ This section of the readme describes how to run modules specific to the HH->WWgg
    scram b -j 4
    #+END_EXAMPLE
 
-** Setup Proxy 
+*** Setup Proxy 
 
 For both the HHWWgg Dumper and Tagger, to run locally on an HHWWgg file, you first must run the following commands:
 
@@ -141,16 +50,19 @@ to set this proxy to your X509_USER_PROXY environment variable for the example a
 
 where x590up_u95168 would be replaced by whatever your proxy name is. 
 
-** HHWWgg Dumper
+** HHWWgg Candidate Dumper
 
-* Running Locally 
+*** Running Locally 
 
 The HHWWgg Candidate Dumper is run with the config file Taggers/test/HHWWggTest_cfg.py. This is useful if you'd like to run a cmsRun sequence different 
-from workspacestd.py. To run locally, after a scram b -j command to build everything, you need to run the command:
+from that used in workspacestd.py. To run locally, after a scram b -j command to build everything, you need to run the command:
 
     #+BEGIN_EXAMPLE
-    cmsRun Taggers/test/HHWWggTest_cfg.py outputFile=HHWWggtest.root metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json maxEvents=1000;"
+    cmsRun Taggers/test/HHWWggTest_cfg.py outputFile=HHWWggtest.root metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json maxEvents=1000
     #+END_EXAMPLE
+
+Note: The metaConditions option in this examples specifies 2017 conditions. If you'd like to run with 2016 or 2018 or some other non-standard metaconditions, this option
+must be changed.
 
 When running locally, the input files are specified in the cmssw config file (HHWWggTest_cfg.py), and by default is set to a single 250 GeV radion semileptonic decay
 signal microaod with 499 events. In the config file, you can specify the variables to output with the crfTools.addCategories 
@@ -159,12 +71,77 @@ variable "variables". By default this is set to variables = Fit_Variables, which
 plotted from these names are found in the file Taggers/python/HHWWggTagVariables.py 
 
 Towards the end of the config file are the options zero_vtx and sands. Setting zero_vtx equal to 1 will perform the analysis dumper only considering diphotoncandidates
-constructed from the highest sum pt squared vertex, found the be slightly more efficient in the case of the 250 GeV HHWWgg semileptonic signal compared to the Hgg vertex.
+constructed from the highest sum pt squared vertex, found to be slightly more efficient in the case of the 250 GeV HHWWgg semileptonic signal compared to the Hgg vertex.
 Setting sands equal to 1 will perform scaling and smearing corrections. 
 
-* Running on Condor
+*** Running on Condor
 
 Running the Candidate Dumper has the advantage of allowing you to run over entire data sets and calculate weights for signal samples. Running the candidatedumper on
-condor can be done with the script HHWWgg_Run_Jobs.sh. This allows you to run with the CandidateDumper or Tagger on signal or background. 
+condor can be done with the script HHWWgg_Run_Jobs.sh. This allows you to run with the CandidateDumper or Tagger on signal or background. To run the HHWWgg dumper on signal,
+you can run the command:
+
+    #+BEGIN_EXAMPLE
+    . HHWWgg_Run_Jobs.sh --labelName HHWWggTestSignal --nEvents 1000 -s
+    #+END_EXAMPLE
+
+This will create and exectue an fggrunjobs command to run the HHWWgg dumper on a maximum of 1000 events from the signal dataset specified in Taggers/test/HHWWgg_2017_Signal/HHWWgg_Signal_2017.json.
+By default this json specifies the 250 GeV Radion -> HH -> WWgg -> qqlnu, semileptonic final state. If you'd like to change the dataset run on, you can edit HHWWgg_Signal_2017.json or specify another 
+json file in the script. You can see Taggers/test/HHWWgg_2017_Signal/HHWWgg_Signal_example_2017.json for another example, the fully leptonic 250 GeV Radion final state. The simplest 
+way to run on this dataset instead is by manually changing the two instances of qqlnu in the HHWWgg_Signal_2017.json to lnulnu. You can find the available datasets
+for the current, very very preliminary HHWWgg campaign with the command: 
+
+    #+BEGIN_EXAMPLE
+    fggManageSamples.py -C HHWWgg_v1
+    #+END_EXAMPLE
+
+or
+
+    #+BEGIN_EXAMPLE
+    fggManageSamples.py -C HHWWgg_v1 list raw 
+    #+END_EXAMPLE`
+
+If you would like to run on data, you run the same HHWWgg_Run_Jobs command but with the data flag instead of the signal flag:
+
+    #+BEGIN_EXAMPLE
+    . HHWWgg_Run_Jobs.sh --labelName HHWWggTestData --nEvents 1000 -d
+    #+END_EXAMPLE
+
+By default, the json file used for specifying datasets for data is Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json. At the moment, this contains 
+the 2017 DoubleEG dataset. If you'd like to change this, you need to either edit this json file or specify a different json file in the HHWWgg_Run_Jobs.sh script. 
+
+To run all all events, change --nEvents 1000 -> --nEvents all 
 
 ** HHWWgg Tagger
+
+The HHWWgg tagger performs the same task as the dumper, but was created in order to have a compatible plugin to run with workspaceStd in order to eventually add
+systematics to the analysis.
+
+*** Running Locally 
+
+The HHWWgg Tagger can be run locally with:
+
+    #+BEGIN_EXAMPLE
+    cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=HHWWgg_v1 dataset=ggF_X250_WWgg_qqlnugg doHHWWggTag=True HHWWggTagsOnly=True maxEvents=1000 doSystematics=False dumpWorkspace=False dumpTrees=True doBJetRegression=False
+    #+END_EXAMPLE
+
+If this worked properly, you should get an output file called: output_numEvent1000.root.
+
+For the moment, this has not been configured to properly work with systematics, so doSystematics is set to False. This does however include shower shape corrections,
+resulting in improved MVA scores compared to the HHWWgg dumper. The first customization location for this tagger is Systematics/python/HHWWggCustomize.py. 
+In this you can specify variables to save, and the number of categories to save HHWWggTag objects in. The selections are located in 
+Taggers/plugins/HHWWggTagProducer.cc. For the moment, a tag object "tag_obj" (naming inspired by HH->bbgg) is created if an event has a diphoton, exactly one good lepton, corresponding
+to the leptonically decaying W boson, and at least two 'good' jets, corresponding to the hadronically decaying W boson. For these objects, 'good' is defined by the selections specified in 
+Taggers/python/flashggHHWWggTag_cfi.py. By default this tag object is saved to category 0 (tag_obj.setCategoryNumber( catnum )). Too add another category, the number of categories
+specified in Systematics/python/HHWWggCustomize.py should be changed like so: self.tagList = [ ["HHWWggTag",1] ] -> self.tagList = [ ["HHWWggTag",2] ]. Then, when saving a tag object
+of the second category, you would do so in Taggers/plugins/HHWWggTagProducer.cc with tag_obj.setCategoryNumber( 1 ) rather than tag_obj.setCategoryNumber( 0 ). 
+
+*** Running on Condor 
+
+To run the tagger on condor, the same instructions as running the dumper with condor are followed but with the addition of the "-w" flag, like so: 
+
+    #+BEGIN_EXAMPLE
+    . HHWWgg_Run_Jobs.sh --labelName HHWWggTaggerTest --nEvents 1000 -d
+    #+END_EXAMPLE
+
+By default, this will run the tagger
+on the 250 GeV Radion, semileptonic final state dataset. To change this, one needs to edit the json file used. 
