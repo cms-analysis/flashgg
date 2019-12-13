@@ -218,13 +218,18 @@ namespace flashgg {
         /// for( size_t iextra = 0; iextra<extraFloatTags_.size(); ++iextra ) {
         for( size_t iextra = 0; iextra<extraFloatNames_.size(); ++iextra ) {
             try {
-                Handle<float> ihandle; 
+                Handle<std::vector<float> > ihandle; 
+
                 if( fullEvent ) { 
-                    fullEvent->getByToken( extraFloatTokens_[iextra], ihandle );
+                    fullEvent->getByToken( extraVectorFloatTokens_[iextra], ihandle );
                 } else {
                     evt.getByLabel( extraFloatTags_[iextra], ihandle );
                 }
-                extraFloatVariables_[iextra] = *ihandle;
+                // assert( ihandle->size() == 1 );
+                
+                if( ihandle->size() < 1 ) {
+                    continue; }
+                extraFloatVariables_[iextra] = (*ihandle)[0];
             } catch (...) {
                 try{
                     Handle<double> ihandle; 
@@ -235,21 +240,19 @@ namespace flashgg {
                     }
                     extraFloatVariables_[iextra] = *ihandle;
                 } catch (...) {
-                    Handle<std::vector<float> > ihandle; 
+                    Handle<float> ihandle; 
                     if( fullEvent ) { 
-                        fullEvent->getByToken( extraVectorFloatTokens_[iextra], ihandle );
+                        fullEvent->getByToken( extraFloatTokens_[iextra], ihandle );
                     } else {
                         evt.getByLabel( extraFloatTags_[iextra], ihandle );
                     }
-                    // assert( ihandle->size() == 1 );
+
                     if(! ihandle.isValid()){
                         std::cout<<"missing extra float "<< extraFloatNames_[iextra] <<std::endl;
                         assert(0);
                     }
 
-                    if( ihandle->size()  < 1 ) {
-                        continue; }
-                    extraFloatVariables_[iextra] = (*ihandle)[0];
+                    extraFloatVariables_[iextra] = *ihandle;
                 }
             }
         }
