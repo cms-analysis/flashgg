@@ -195,7 +195,7 @@ class WorkNodeJob(object):
             script += "export SCRAM_ARCH=%s\n" % os.environ['SCRAM_ARCH']
             script += "scram project CMSSW %s\n" % os.environ['CMSSW_VERSION']
             script += "cd %s\n" % os.environ['CMSSW_VERSION']
-            script += "tar zxf %s\n" % self.tarball
+            script += "tar zxf %s -h\n" % self.tarball
             script += "cp src/XGBoostCMSSW/XGBoostInterface/toolbox/*xml config/toolbox/$SCRAM_ARCH/tools/selected/\n"
             script += "scram setup rabit\n"
             script += "scram setup xgboost\n"
@@ -299,7 +299,7 @@ class WorkNodeJobFactory(object):
     # ------------------------------------------------------------------------------------------------
     def mkTarball(self,tarball=None,
                   tarball_entries=["python","lib","bin","external","flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310"],tarball_patterns=[("src/*","data")],
-                  tarball_transform=None):
+                  tarball_transform=None, light=False):
         
         self.tarball = tarball
         content=tarball_entries
@@ -317,7 +317,11 @@ class WorkNodeJobFactory(object):
         args = []
         if tarball_transform:
             args.extend( ["--transform",tarball_transform] )
-        args.extend(["-h","--show-transformed","-zvcf",tarball])
+
+        if light:
+            args.extend(["--show-transformed","-zvcf",tarball]) #add -h to follow symlinks and include stuff from there
+        else:
+            args.extend(["-h","--show-transformed","-zvcf",tarball])
         args.extend(content)
         print 
         print "Preparing tarball with the following content:"
