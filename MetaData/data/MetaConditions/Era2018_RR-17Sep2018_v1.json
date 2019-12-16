@@ -49,20 +49,32 @@
     "TriggerPaths" :
     {
         ".*EGamma.*2018.*" :
-        [
-            "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90*",
-            "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95*",
-            "HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto_Mass55*",
-            "HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto*",
-            "HLT_Ele*_WPTight_Gsf_v*"
-        ],        
+        {
+	    "mainAnalysis" :
+	    [
+		"HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90*",
+		"HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95*"
+	    ],
+	    "lowMassAnalysis" :
+	    [
+		"HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto_Mass55*",
+		"HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto*"
+	    ],
+	    "tagAndProbe" :
+	    [
+		"HLT_Ele*_WPTight_Gsf_v*"
+	    ]
+        },        
         ".*DoubleMuon.*2018.*" :
-        [
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v*",
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v*",
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*",
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v*"
-        ]
+        {
+	    "ZmumuGamma" :
+	    [
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v*",
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v*",
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*",
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v*"
+	    ]
+        }
     },
     "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2018_cfi",
     
