@@ -112,6 +112,12 @@ customize.options.register('doSigmaMdecorr',
                            VarParsing.VarParsing.varType.bool,
                            'doSigmaMdecorr'
                            )
+customize.options.register('analysisType',
+                           'mainAnalysis',
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.string,
+                           'analysisType'
+                           )
 
 # import flashgg customization to check if we have signal or background
 # from flashgg.MetaData.JobConfig import customize
@@ -161,29 +167,31 @@ matchCut = "leadingPhoton.hasMatchedGenPhoton() && subLeadingPhoton.hasMatchedGe
 phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >-1. && subLeadingView().phoIdMvaWrtChosenVtx() >-1.)'
 accCut = fc.getAccRecoCut()
 
-print process.flashggPreselectedDiPhotons.cut
+print("----------------------PRESELECTION----------------------------------------------")
+print process.flashggPreselectedDiPhotons.cut.value()
 
 if customize.acceptance == 'IN':
-    process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut)[12:-2] + ' && ' + str(matchCut) + ' && ' + str(phoIDcut) + ' && ' + str(accCut))
+    process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut.value()) + ' && ' + str(matchCut) + ' && ' + str(phoIDcut) + ' && ' + str(accCut))
 
 if customize.acceptance == 'OUT':
-    process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut)[12:-2] + ' && ' + str(matchCut) + ' && ' + str(phoIDcut) + ' && !' + str(accCut))
+    process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut.value()) + ' && ' + str(matchCut) + ' && ' + str(phoIDcut) + ' && !' + str(accCut))
 
 if customize.acceptance == 'NONE':
     process.flashggPreselectedDiPhotons.cut = cms.string(
-        str(process.flashggPreselectedDiPhotons.cut)[12:-2] + ' && ' + str(phoIDcut))
-    print "Here we print the preslection cut"
-    print process.flashggPreselectedDiPhotons.cut
+        str(process.flashggPreselectedDiPhotons.cut.value()) + ' && ' + str(phoIDcut))
 
 if customize.acceptance == 'BKG':
     process.flashggPreselectedDiPhotons.cut = cms.string(
-        str(process.flashggPreselectedDiPhotons.cut)[12:-2] + ' && ' + str(phoIDcut) + ' && ' + str(matchCut))
+        str(process.flashggPreselectedDiPhotons.cut.value()) + ' && ' + str(phoIDcut) + ' && ' + str(matchCut))
     # process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
     # for opt, value in customize.metaConditions["flashggDiPhotons"].items():
     #     if isinstance(value, unicode):
     #         setattr(process.flashggDiPhotons, opt, str(value))
     #     else:
     #         setattr(process.flashggDiPhotons, opt, value)
+
+print "Here we print the preslection cut"
+print process.flashggPreselectedDiPhotons.cut
     
 process.flashggDiPhotonMVA.sigmaMdecorrFile = cms.FileInPath(str(customize.metaConditions["sigmaM_M_decorr"]))
 
@@ -440,12 +448,15 @@ for tag in tagList:
                              )
 
 # Require standard diphoton trigger
-from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
-hlt_paths = []
-for dset in customize.metaConditions["TriggerPaths"]:
-    if dset in customize.datasetName():
-        hlt_paths.extend(customize.metaConditions["TriggerPaths"][dset])
-process.hltHighLevel = hltHighLevel.clone(HLTPaths=cms.vstring(hlt_paths))
+# from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
+# hlt_paths = []
+# for dset in customize.metaConditions["TriggerPaths"]:
+#     if dset in customize.datasetName():
+#         hlt_paths.extend(customize.metaConditions["TriggerPaths"][dset])
+# process.hltHighLevel = hltHighLevel.clone(HLTPaths=cms.vstring(hlt_paths))
+print('-----------------------------------------------TriggerFilter--------------------------------------')
+# print(customize.metaConditions["TriggerPaths"][".*DoubleEG.*"][customize.analysisType])
+filterHLTrigger(process, customize)
 
 process.options = cms.untracked.PSet(wantSummary=cms.untracked.bool(True))
 
