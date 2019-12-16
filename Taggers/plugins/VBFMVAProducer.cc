@@ -121,7 +121,7 @@ namespace flashgg {
         dijet_leady_      = -999.;
         dijet_subleady_   = -999.;
         
-        if (_MVAMethod != ""){
+        if (_MVAMethod == "BDTG"){
             VbfMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
             // Run 1 legacy variables
             /*
@@ -146,6 +146,21 @@ namespace flashgg {
             VbfMva_->AddVariable( "dijet_minDRJetPho"      , &dijet_minDRJetPho_   );
             VbfMva_->AddVariable( "leadPho_PToM"           , &leadPho_PToM_        );
             VbfMva_->AddVariable( "sublPho_PToM"           , &sublPho_PToM_        );
+            
+            VbfMva_->BookMVA( _MVAMethod.c_str() , vbfMVAweightfile_.fullPath() );
+        }
+        else if (_MVAMethod == "Multi"){
+            VbfMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
+            VbfMva_->AddVariable( "dipho_lead_ptoM"        , &leadPho_PToM_        );
+            VbfMva_->AddVariable( "dipho_sublead_ptoM"     , &sublPho_PToM_        );
+            VbfMva_->AddVariable( "dijet_LeadJPt"          , &dijet_LeadJPt_       );
+            VbfMva_->AddVariable( "dijet_SubJPt"           , &dijet_SubJPt_        );
+            VbfMva_->AddVariable( "dijet_abs_dEta"         , &dijet_abs_dEta_      );
+            VbfMva_->AddVariable( "dijet_Mjj"              , &dijet_Mjj_           );
+            VbfMva_->AddVariable( "dijet_centrality"       , &dijet_centrality_gg_ );
+            VbfMva_->AddVariable( "dijet_dphi"             , &dijet_dphi_          );
+            VbfMva_->AddVariable( "dijet_minDRJetPho"      , &dijet_minDRJetPho_   );
+            VbfMva_->AddVariable( "dijet_dipho_dphi_trunc" , &dijet_dphi_trunc_    );
             
             VbfMva_->BookMVA( _MVAMethod.c_str() , vbfMVAweightfile_.fullPath() );
         }
@@ -430,9 +445,14 @@ namespace flashgg {
             }
             
 
-            if (_MVAMethod != "") {
+            if (_MVAMethod == "BDTG") {
                 mvares.vbfMvaResult_value = VbfMva_->EvaluateMVA( _MVAMethod.c_str() );
                 //mvares.vbfMvaResult_value = VbfMva_->GetProba( _MVAMethod.c_str() );
+            }
+            else if (_MVAMethod == "Multi") {
+                mvares.vbfMvaResult_prob_bkg = VbfMva_->EvaluateMulticlass( 0, _MVAMethod.c_str() );
+                mvares.vbfMvaResult_prob_ggH = VbfMva_->EvaluateMulticlass( 1, _MVAMethod.c_str() );
+                mvares.vbfMvaResult_prob_VBF = VbfMva_->EvaluateMulticlass( 2, _MVAMethod.c_str() );
             }
             
             mvares.dijet_leadEta     = dijet_leadEta_ ;

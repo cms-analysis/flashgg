@@ -74,7 +74,7 @@
 
     "flashggVBFMVA" : 
     {  
-        "weightFile" : "flashgg/Taggers/data/dijetModel2017.xml"
+        "weightFile" : "flashgg/Taggers/data/multiclassDijetModel2018.xml"
     },
 
     "stageOneCombinedTag" :
