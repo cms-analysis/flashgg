@@ -37,8 +37,8 @@ namespace flashgg {
         int chooseCategory( float );
         int computeStage1Kinematics( const StageOneTag );
 
-        std::vector<double> rawDiphoBounds_, rawDijetBounds_;
-        std::map<std::string, float> diphoBounds_, dijetBounds_;
+        std::vector<double> rawDiphoBounds_, rawDijetBounds_, rawGghBounds_;
+        std::map<std::string, float> diphoBounds_, dijetBounds_, gghBounds_;
         void constructBounds();
 
         EDGetTokenT<View<DiPhotonCandidate> >      diPhotonToken_;
@@ -225,6 +225,7 @@ namespace flashgg {
         float mvaScore = tag_obj.diPhotonMVA().transformedMvaValue(); // maps output score from TMVA back to XGBoost original
         //float dijetScore = tag_obj.VBFMVA().VBFMVAValue();
         float dijetScore = tag_obj.VBFMVA().prob_VBF_value();
+        float gghScore = tag_obj.VBFMVA().prob_ggH_value();
         float leadMvaScore = tag_obj.diPhotonMVA().leadmva;
         float subleadMvaScore = tag_obj.diPhotonMVA().subleadmva;
         float leadPToM = tag_obj.diPhotonMVA().leadptom;
@@ -324,7 +325,7 @@ namespace flashgg {
             bool reProcess = false;
             if ( mjj > 350. && j0->p4().pt() > 40. && j1->p4().pt() > 30. && leadMvaScore > -0.2 && subleadMvaScore > -0.2 ) { //cuts optimised using data-driven dijet BDT plus new diphoton BDT
                 if ( ptH > 200. ) {
-                    if (dijetScore > dijetBounds_["RECO_VBFTOPO_BSM"] && mvaScore > diphoBounds_["RECO_VBFTOPO_BSM"]) {
+                    if (dijetScore > dijetBounds_["RECO_VBFTOPO_BSM"] && gghScore < gghBounds_["RECO_VBFTOPO_BSM"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_BSM"]) {
                         chosenTag_ = stage1recoTag::RECO_VBFTOPO_BSM;
                     }
                     else { 
@@ -332,21 +333,41 @@ namespace flashgg {
                     }
                 }
                 else if ( ptHjj > 0. && ptHjj < 25.) {
-                    if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3VETO_Tag0"] && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3VETO_Tag0"]) {
-                        chosenTag_ = stage1recoTag::RECO_VBFTOPO_JET3VETO_Tag0;
+                    if ( mjj > 700. ) {
+                        if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ"] && gghScore < gghBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ"]) {
+                            chosenTag_ = stage1recoTag::RECO_VBFTOPO_JET3VETO_HIGHMJJ;
+                        }
+                        else { 
+                            reProcess = true;
+                        }
                     }
-                    else if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3VETO_Tag1"] && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3VETO_Tag1"]) {
-                        chosenTag_ = stage1recoTag::RECO_VBFTOPO_JET3VETO_Tag1;
+                    else if ( mjj > 350. ) {
+                        if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ"] && gghScore < gghBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ"]) {
+                            chosenTag_ = stage1recoTag::RECO_VBFTOPO_JET3VETO_LOWMJJ;
+                        }
+                        else { 
+                            reProcess = true;
+                        }
                     }
                     else { 
                         reProcess = true;
                     }
                 } else if ( ptHjj > 25. ) {
-                    if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3_Tag0"] && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3_Tag0"]) {
-                        chosenTag_ = stage1recoTag::RECO_VBFTOPO_JET3_Tag0;
+                    if ( mjj > 700. ) {
+                        if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3_HIGHMJJ"] && gghScore < gghBounds_["RECO_VBFTOPO_JET3_HIGHMJJ"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3_HIGHMJJ"]) {
+                            chosenTag_ = stage1recoTag::RECO_VBFTOPO_JET3_HIGHMJJ;
+                        }
+                        else { 
+                            reProcess = true;
+                        }
                     }
-                    else if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3_Tag1"] && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3_Tag1"]) {
-                        chosenTag_ = stage1recoTag::RECO_VBFTOPO_JET3_Tag1;
+                    else if ( mjj > 350. ) {
+                        if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3_LOWMJJ"] && gghScore < gghBounds_["RECO_VBFTOPO_JET3_LOWMJJ"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3_LOWMJJ"]) {
+                            chosenTag_ = stage1recoTag::RECO_VBFTOPO_JET3_LOWMJJ;
+                        }
+                        else { 
+                            reProcess = true;
+                        }
                     }
                     else { 
                         reProcess = true;
@@ -365,7 +386,15 @@ namespace flashgg {
                reProcess = true;
             }
             if ( reProcess ) {
-                if ( ptH > 200 ) {
+                if ( mjj > 350. && j0->p4().pt() > 40. && j1->p4().pt() > 30. && leadMvaScore > -0.2 && subleadMvaScore > -0.2 ) { //cuts optimised using data-driven dijet BDT plus new diphoton BDT
+                    if ( dijetScore < dijetBounds_["RECO_VBFLIKEGGH"] && gghScore > gghBounds_["RECO_VBFLIKEGGH"]  && mvaScore > diphoBounds_["RECO_VBFLIKEGGH"]) {
+                            chosenTag_ = stage1recoTag::RECO_VBFLIKEGGH;
+                        }
+                    else { 
+                        chosenTag_ = stage1recoTag::NOTAG;
+                    }
+                }
+                else if ( ptH > 200 ) {
                     if (mvaScore > diphoBounds_["RECO_PTH_GT200_Tag0"]) {
                         chosenTag_ = stage1recoTag::RECO_PTH_GT200_Tag0;
                     }
@@ -438,17 +467,26 @@ namespace flashgg {
         diphoBounds_["RECO_PTH_GT200_Tag0"] = rawDiphoBounds_[16];
         diphoBounds_["RECO_PTH_GT200_Tag1"] = rawDiphoBounds_[17];
         diphoBounds_["RECO_VBFTOPO_VHHAD"] = rawDiphoBounds_[18];
-        diphoBounds_["RECO_VBFTOPO_JET3VETO_Tag0"] = rawDiphoBounds_[19];
-        diphoBounds_["RECO_VBFTOPO_JET3VETO_Tag1"] = rawDiphoBounds_[20];
-        diphoBounds_["RECO_VBFTOPO_JET3_Tag0"] = rawDiphoBounds_[21];
-        diphoBounds_["RECO_VBFTOPO_JET3_Tag1"] = rawDiphoBounds_[22];
+        diphoBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ"] = rawDiphoBounds_[19];
+        diphoBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ"] = rawDiphoBounds_[20];
+        diphoBounds_["RECO_VBFTOPO_JET3_LOWMJJ"] = rawDiphoBounds_[21];
+        diphoBounds_["RECO_VBFTOPO_JET3_HIGHMJJ"] = rawDiphoBounds_[22];
         diphoBounds_["RECO_VBFTOPO_BSM"] = rawDiphoBounds_[23];
+        diphoBounds_["RECO_VBFLIKEGGH"] = rawDiphoBounds_[24];
 
-        dijetBounds_["RECO_VBFTOPO_JET3VETO_Tag0"] = rawDijetBounds_[0];
-        dijetBounds_["RECO_VBFTOPO_JET3VETO_Tag1"] = rawDijetBounds_[1];
-        dijetBounds_["RECO_VBFTOPO_JET3_Tag0"] = rawDijetBounds_[2];
-        dijetBounds_["RECO_VBFTOPO_JET3_Tag1"] = rawDijetBounds_[3];
+        dijetBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ"] = rawDijetBounds_[0];
+        dijetBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ"] = rawDijetBounds_[1];
+        dijetBounds_["RECO_VBFTOPO_JET3_LOWMJJ"] = rawDijetBounds_[2];
+        dijetBounds_["RECO_VBFTOPO_JET3_HIGHMJJ"] = rawDijetBounds_[3];
         dijetBounds_["RECO_VBFTOPO_BSM"] = rawDijetBounds_[4];
+        dijetBounds_["RECO_VBFLIKEGGH"] = rawDijetBounds_[5];
+
+        gghBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ"] = rawGghBounds_[0];
+        gghBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ"] = rawGghBounds_[1];
+        gghBounds_["RECO_VBFTOPO_JET3_LOWMJJ"] = rawGghBounds_[2];
+        gghBounds_["RECO_VBFTOPO_JET3_HIGHMJJ"] = rawGghBounds_[3];
+        gghBounds_["RECO_VBFTOPO_BSM"] = rawGghBounds_[4];
+        gghBounds_["RECO_VBFLIKEGGH"] = rawGghBounds_[5];
     }
 
 }

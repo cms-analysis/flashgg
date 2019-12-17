@@ -15,7 +15,8 @@ class StageOneCustomize():
             ["RECO_1J_PTH_120_200_Tag0",0], ["RECO_1J_PTH_120_200_Tag1",0],
             ["RECO_GE2J_PTH_0_60_Tag0",0], ["RECO_GE2J_PTH_0_60_Tag1",0], ["RECO_GE2J_PTH_60_120_Tag0",0], ["RECO_GE2J_PTH_60_120_Tag1",0], 
             ["RECO_GE2J_PTH_120_200_Tag0",0], ["RECO_GE2J_PTH_120_200_Tag1",0], ["RECO_PTH_GT200_Tag0",0], ["RECO_PTH_GT200_Tag1",0], 
-            ["RECO_VBFTOPO_VHHAD",0], ["RECO_VBFTOPO_JET3VETO_Tag0",0], ["RECO_VBFTOPO_JET3VETO_Tag1",0], ["RECO_VBFTOPO_JET3_Tag0",0], ["RECO_VBFTOPO_JET3_Tag1",0], ["RECO_VBFTOPO_BSM",0]
+            ["RECO_VBFTOPO_VHHAD",0], ["RECO_VBFTOPO_JET3VETO_LOWMJJ",0], ["RECO_VBFTOPO_JET3VETO_HIGHMJJ",0], ["RECO_VBFTOPO_JET3_LOWMJJ",0], ["RECO_VBFTOPO_JET3_HIGHMJJ",0], ["RECO_VBFTOPO_BSM",0],
+            ["RECO_VBFLIKEGGH",0]
         ]
         if self.customize.processId == "Data": 
             self.tagList.pop(1) ## remove NoTag for data
