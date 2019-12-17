@@ -77,6 +77,7 @@ namespace flashgg {
 
         rawDiphoBounds_ = iConfig.getParameter<std::vector<double> > ("rawDiphoBounds");
         rawDijetBounds_ = iConfig.getParameter<std::vector<double> > ("rawDijetBounds");
+        rawGghBounds_   = iConfig.getParameter<std::vector<double> > ("rawGghBounds");
         constructBounds();
 
         produces<vector<StageOneTag> >();

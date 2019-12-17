@@ -69,6 +69,7 @@ class StageOneCustomize():
         ## customize from meta conditions - category thresholds set here
         self.process.flashggStageOneCombinedTag.rawDiphoBounds = cms.vdouble( self.metaConditions["stageOneCombinedTag"]["rawDiphoBounds"] )
         self.process.flashggStageOneCombinedTag.rawDijetBounds = cms.vdouble( self.metaConditions["stageOneCombinedTag"]["rawDijetBounds"] )
+        self.process.flashggStageOneCombinedTag.rawGghBounds   = cms.vdouble( self.metaConditions["stageOneCombinedTag"]["rawGghBounds"] )
 
         ## set tag priorities, stage 1 sorting
         self.process.flashggTagSorter.TagPriorityRanges = cms.VPSet(
