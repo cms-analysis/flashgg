@@ -179,7 +179,10 @@ if dropVBFInNonGold:
     process.flashggVBFTag.SetArbitraryNonGoldMC = True
     process.flashggVBFTag.DropNonGoldData = True
 
-modifyTagSequenceForSystematics(process,jetSystematicsInputTags)
+modifyTagSequenceForSystematics(process,jetSystematicsInputTags) # normally uncommented 
+# HHWWgg testing: 
+# process.systematicsTagSequences = cms.Sequence()
+# process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
 
 print "Printing options"
 print 'doFiducial '+str(customize.doFiducial)
@@ -220,6 +223,9 @@ if customize.tthTagsOnly or customize.HHWWggTagsOnly:
     process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
     process.flashggDiPhotons.whichVertex = cms.uint32(0)
     process.flashggDiPhotons.useZerothVertexFromMicro = cms.bool(True)
+    if customize.HHWWggTagsOnly: # not sure if this is needed for tthTagsOnly, but it is needed for HHWWgg 
+        process.flashggDiPhotons.vertexProbMVAweightfile = "flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_SL_2016.xml" # Prob or Id ? 
+        process.flashggDiPhotons.vertexIdMVAweightfile = "flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml"
 
 # if customize.HHWWggTagsOnly:
 #     print'customizing for HHWWgg'
@@ -308,7 +314,20 @@ if customize.tthTagsOnly:
     #newvpset += [ PixelSeedWeight ]
     
     process.flashggDiPhotonSystematics.SystMethods = newvpset
-   
+
+
+if customize.HHWWggTagsOnly:    
+    print "Removing FracRVNvtxWeight from syst and adding  PixelSeed"
+    
+    newvpset = cms.VPSet()
+    for pset in process.flashggDiPhotonSystematics.SystMethods:
+        if not pset.Label.value().count("FracRVNvtxWeight") :
+            print  pset.Label.value()
+            newvpset += [pset]
+    #from flashgg.Systematics.flashggDiPhotonSystematics_cfi import PixelSeedWeight #FIXME: this does not currently work, so comment it out for now
+    #newvpset += [ PixelSeedWeight ]
+    
+    process.flashggDiPhotonSystematics.SystMethods = newvpset  
 
 print "customize.processId:",customize.processId
 
@@ -691,7 +710,8 @@ else:
 
 process.flashggMetFilters.requiredFilterNames = cms.untracked.vstring([filter.encode("ascii") for filter in customize.metaConditions["flashggMetFilters"][metFilterSelector]])
 
-if customize.tthTagsOnly:
+# HHWWggTagsOnly requires zeroeth vertex, but not modifySystematicsWorkflowForttH
+if customize.tthTagsOnly or customize.HHWWggTagsOnly:
     process.p = cms.Path(process.dataRequirements*
                          process.flashggMetFilters*
                          process.genFilter*
@@ -706,33 +726,15 @@ if customize.tthTagsOnly:
                          process.penultimateFilter*
                          process.finalFilter*
                          process.tagsDumper)
+
     # Now, we put the ttH tags back in the sequence with modified systematics workflow
-    modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystlabels, jetsystlabels)
+    if customize.tthTagsOnly: modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystlabels, jetsystlabels)    
 
-# elif customize.HHWWggTagsOnly:
-#     print'defining process for hhwwgg'
-#     # process.flashggPreselectedDiPhotons.src = "flashggDiPhotonsVtx0" # Only use zeroth vertex diphotons, order by pt 
-#     process.p = cms.Path(process.dataRequirements*
-#                          process.flashggMetFilters*
-#                          process.genFilter*
-#                          process.flashggDiPhotons* # needed for 0th vertex from microAOD
-#                          process.flashggDifferentialPhoIdInputsCorrection*
-#                          process.flashggDiPhotonSystematics*
-#                          process.flashggMetSystematics*
-#                          process.flashggMuonSystematics*process.flashggElectronSystematics*
-#                          (process.flashggUnpackedJets*process.jetSystematicsSequence)*
-#                          (process.flashggTagSequence*process.systematicsTagSequences)*
-#                          process.flashggSystTagMerger*
-#                          process.penultimateFilter*
-#                          process.finalFilter*
-#                          process.tagsDumper)    
-    # modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystlabels, jetsystlabels)
-    
-
-else :
+else:
     process.p = cms.Path(process.dataRequirements*
                          process.flashggMetFilters*
                          process.genFilter*
+                         process.flashggDiPhotons* # needed for 0th vertex from microAOD
                          process.flashggDifferentialPhoIdInputsCorrection*
                          process.flashggDiPhotonSystematics*
                          process.flashggMetSystematics*
@@ -798,6 +800,12 @@ if customize.doFiducial:
 
 if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
 process.options.allowUnscheduled = cms.untracked.bool(True)
+
+print "--- Dumping all modules: ---"
+mns = process.p.moduleNames()
+for mn in mns:
+    module = getattr(process,mn)
+    print str(module)
 
 print "--- Dumping modules that take diphotons as input: ---"
 mns = process.p.moduleNames()

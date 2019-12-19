@@ -6,7 +6,7 @@
 
 fgg_direc=/afs/cern.ch/work/a/atishelm/21JuneFlashgg/CMSSW_10_5_0/src/flashgg
 
-cd /eos/user/a/atishelm/ntuples/Event_Dumper
+cd /eos/user/a/atishelm/ntuples/HHWWgg
 
 
 input=$1 # path of directory with condor output files 

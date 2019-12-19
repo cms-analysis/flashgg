@@ -4,7 +4,7 @@ import FWCore.ParameterSet.Config as cms
 
 from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
 
-print'UnpackedJetCollectionVInputTag = ',UnpackedJetCollectionVInputTag
+# print'UnpackedJetCollectionVInputTag = ',UnpackedJetCollectionVInputTag
 
 # cfi = configuration fragment include
 # Clone these params into _cfg 
