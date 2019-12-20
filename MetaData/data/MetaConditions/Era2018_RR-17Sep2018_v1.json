@@ -128,9 +128,15 @@
     "doubleHTag":
     {
 	"jetID" : "Tight2018",
-	"weightsFile" : "flashgg/Taggers/data/HHTagger/training_with_26_11_2019_training2.weights.xml",
-	"MVAFlatteningFileName" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20191126_runII.root",
-	"MVAscalingValue" :1.004,
+	"weightsFile" : {
+		"with_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_18_12_2019_training2.weights.xml",
+		"wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_18_12_2019_wo_Mjj_training2.weights.xml"
+	},
+	"MVAFlatteningFileName" : {
+		"with_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20191218.root",
+		"wo_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20191218_wo_Mjj.root"
+	},
+	"MVAscalingValue" : 0.864,
 	"NodesReweightingFileName" : "flashgg/Taggers/data/HHTagger/HHreweight_2018_15112019.root",
 	"ttHWeightfile" : "flashgg/Taggers/data/ttHKiller/Keras2017_converted_allnode.pb",
 	"ttHKiller_mean" : [  3.22491144e+02,   7.22919780e+01,   1.49387571e-01,   4.94052483e-03,
