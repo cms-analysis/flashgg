@@ -95,7 +95,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    useElectronLooseID = cms.bool(True),
                                    electronEtaThresholds=cms.vdouble(1.4442,1.566,2.5),
                                    ttHWeightfile = cms.untracked.FileInPath("%s"%ttHWeightfile), # for now
-                                   ttHScoreThreshold = cms.double(0.26), #to be updated
+                                   ttHScoreThreshold = cms.double(0.), #to be updated
                                    # For standardization
                                    ttHKiller_mean = ttHKiller_mean,
                                    ttHKiller_std = ttHKiller_std,
@@ -105,6 +105,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
 
 cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,
                       # here the syntax is VarNameInTMVA := expression
+                      #### With or without Mjj is customized inside python doubleHCustomize and using options UseMjj
                       [
                        "Mjj := dijet().M()",
                        "leadingJet_DeepFlavour := leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
@@ -127,8 +128,8 @@ cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,
                        "(leadingJet_bRegNNResolution*1.4826) := leadJet().userFloat('bRegNNResolution')*1.4826",
                        "(subleadingJet_bRegNNResolution*1.4826) := subleadJet().userFloat('bRegNNResolution')*1.4826",
                        "(sigmaMJets*1.4826) := getSigmaMOverMJets()*1.4826",
-                       "photJetdRmin := getPhoJetMinDr()",
-                       "photJetdRmin2 := getPhoJetOtherDr()" 
+                       "PhoJetMinDr := getPhoJetMinDr()",
+                       "PhoJetOtherDr := getPhoJetOtherDr()" 
                        ]
                       )
 
