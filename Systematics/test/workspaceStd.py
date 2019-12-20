@@ -47,6 +47,12 @@ customize.options.register('doubleHTagsUseMjj',
                            VarParsing.VarParsing.varType.bool,
                            'doubleHTagsUseMjj'
                            )
+customize.options.register('doubleHTagDumpMinVariables',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doubleHTagDumpMinVariables'
+                           )
 customize.options.register('ForceGenDiphotonProduction',
                            True,
                            VarParsing.VarParsing.multiplicity.singleton,

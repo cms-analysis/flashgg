@@ -159,10 +159,10 @@ class DoubleHCustomize():
              ]
 
        # return var_workspace ##Only temp fix 
-        if self.customize.dumpWorkspace == False :
-            return variables
-        else :
+        if self.customize.doubleHTagDumpMinVariables or self.customize.dumpWorkspace :
             return var_workspace
+        else :
+            return variables
 
 
     def systematicVariables(self):
