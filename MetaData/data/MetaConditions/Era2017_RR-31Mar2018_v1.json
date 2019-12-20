@@ -49,27 +49,39 @@
     "TriggerPaths" :
     {
         ".*DoubleEG.*" :
-        [
-            "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90*",
-            "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95*",
-            "HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_PixelVeto_Mass55*",
-            "HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_NoPixelVeto_Mass55*",
-            "HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_NoPixelVeto_Mass55*",
-            "HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_PixelVeto_Mass55*",
-            "HLT_Diphoton30_18_PVrealAND_R9Id_AND_IsoCaloId_AND_HE_R9Id_PixelVeto_Mass55*",
-            "HLT_Diphoton30_18_PVrealAND_R9Id_AND_IsoCaloId_AND_HE_R9Id_NoPixelVeto_Mass55*"
-        ],
+        {
+	    "mainAnalysis" : 
+            [
+		"HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90*",
+		"HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95*"
+	    ],
+	    "lowMassAnalysis":
+	    [
+		"HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_PixelVeto_Mass55*",
+		"HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_NoPixelVeto_Mass55*",
+		"HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_NoPixelVeto_Mass55*",
+		"HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_PixelVeto_Mass55*",
+		"HLT_Diphoton30_18_PVrealAND_R9Id_AND_IsoCaloId_AND_HE_R9Id_PixelVeto_Mass55*",
+		"HLT_Diphoton30_18_PVrealAND_R9Id_AND_IsoCaloId_AND_HE_R9Id_NoPixelVeto_Mass55*"
+	    ]
+        },
         ".*SingleEle.*" :
-        [
-            "HLT_Ele32_WPTight_Gsf*"
-        ],
+        {
+	    "tagAndProbe" : 
+            [
+		"HLT_Ele32_WPTight_Gsf*"
+	    ]
+        },
         ".*DoubleMuon.*" :
-        [
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v*",
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v*",
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*",
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v*"
-        ]
+        {
+	    "ZmumuGamma" :
+	    [
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v*",
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v*",
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*",
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v*"
+	    ]
+        }
     },
 
     "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2017_cfi",

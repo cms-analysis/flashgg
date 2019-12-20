@@ -143,6 +143,12 @@ customize.options.register('verboseSystDump',
                            VarParsing.VarParsing.varType.bool,
                            'verboseSystDump'
                            )
+customize.options.register('analysisType',
+                           'mainAnalysis',
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.string,
+                           'analysisType'
+                           )
 
 
 print "Printing defaults"
@@ -537,12 +543,7 @@ for tag in tagList:
                            )
 
 # Require standard diphoton trigger
-from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
-hlt_paths = []
-for dset in customize.metaConditions["TriggerPaths"]:
-    if dset in customize.datasetName():
-        hlt_paths.extend(customize.metaConditions["TriggerPaths"][dset])
-process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring(hlt_paths))
+filterHLTrigger(process, customize)
 
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
