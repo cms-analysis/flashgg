@@ -2,7 +2,8 @@ relevant = { "WH" : ["QQ2HLNU","VH2HQQ"],
              "ZH" : ["QQ2HLL","VH2HQQ"],
              "ttH" : ["TTH"],
              "VBF" : ["VBF"],
-             "GluGluH" : ["GG2H"]
+             "GluGluH" : ["GG2H"],
+	     "THQ" : ["TH"]
              }
 
 cmds = ["mkdir -p irr"]

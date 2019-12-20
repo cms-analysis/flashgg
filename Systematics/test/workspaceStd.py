@@ -114,7 +114,7 @@ customize.options.register('doPdfWeights',
                            'doPdfWeights'
                            )
 customize.options.register('dumpTrees',
-                           True,
+                           False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'dumpTrees'
@@ -460,16 +460,16 @@ else:
     tagList=[
 #        ["NoTag",0],
         ["UntaggedTag",4],
-        ["VBFTag",3],
-        ["ZHLeptonicTag",0],
-        ["WHLeptonicTag",0],
-        ["VHLeptonicLooseTag",0],
-        ["VHMetTag",0],
-        ["VHHadronicTag",0],
-        ["TTHHadronicTag",4],
+#        ["VBFTag",3],
+#        ["ZHLeptonicTag",0],
+#        ["WHLeptonicTag",0],
+#        ["VHLeptonicLooseTag",0],
+#        ["VHMetTag",0],
+#        ["VHHadronicTag",0],
+#        ["TTHHadronicTag",4],
         ["TTHLeptonicTag",4],
         ["THQLeptonicTag",0],
-        ["TTHDiLeptonTag",0]
+#        ["TTHDiLeptonTag",0]
         ]
 
 definedSysts=set()
