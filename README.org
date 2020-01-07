@@ -3,6 +3,7 @@
    Before you start, **please take note** of these warnings and comments:
    - **N.B.** The setup script will check out many packages and take a while!
    - **N.B.** You can ignore "error: addinfo_cache" lines. 
+   - **N.B.** These are the instructions for the STXS workflow, which is under development and not yet fully merged into the default flashgg
 
    Supported releases:
    - 10_5_0
@@ -10,12 +11,19 @@
 
    get flashgg:
    #+BEGIN_EXAMPLE
+   export SCRAM_ARCH=slc7_amd64_gcc700
    cmsrel CMSSW_10_6_1_patch2
    cd CMSSW_10_6_1_patch2/src
    cmsenv
    git cms-init
    cd $CMSSW_BASE/src 
    git clone -b dev_legacy_runII https://github.com/cms-analysis/flashgg 
+   cd flashgg
+   git remote add edjtscott git@github.com:edjtscott/flashgg.git
+   git fetch edjtscott
+   git checkout edjtscott/dev_legacy_runII_STXSanalysis
+   git checkout -b YOUR_BRANCH_NAME
+   cd ..
    source flashgg/setup_flashgg.sh
    #+END_EXAMPLE
 
