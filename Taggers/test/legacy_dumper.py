@@ -73,12 +73,18 @@ useEGMTools(process)
 process.flashggTagSequence.remove(process.flashggUntagged)
 process.flashggTagSequence.remove(process.flashggTTHDiLeptonTag)
 process.flashggTagSequence.remove(process.flashggTTHLeptonicTag)
+process.flashggTagSequence.remove(process.flashggTHQLeptonicTag)
 process.flashggTagSequence.remove(process.flashggTTHHadronicTag)
 process.flashggTagSequence.remove(process.flashggVHMetTag)
 process.flashggTagSequence.remove(process.flashggWHLeptonicTag)
 process.flashggTagSequence.remove(process.flashggZHLeptonicTag)
 process.flashggTagSequence.remove(process.flashggVHLeptonicLooseTag)
 process.flashggTagSequence.remove(process.flashggVHHadronicTag)
+
+#change the tag sorter
+process.flashggTagSorter.TagPriorityRanges = cms.VPSet(
+    cms.PSet(TagName = cms.InputTag('flashggVBFTag'))
+)
 
 mva_wp = {
     "none"  : [
@@ -178,10 +184,7 @@ from flashgg.MetaData.samples_utils import SamplesManager
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
-#'root://xrootd-cms.infn.it//store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v2/legacyRun2FullV1/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa/Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/190716_170206/0000/myMicroAODOutputFile_912.root'
-'root://xrootd-cms.infn.it//store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v2/legacyRun2FullV1/VBFHToGG_M127_13TeV_amcatnlo_pythia8/Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/190703_112552/0000/myMicroAODOutputFile_15.root'
-#'root://xrootd-cms.infn.it//store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v2/legacyRun2FullV1/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/190606_100408/0002/myMicroAODOutputFile_2357.root'
-#'root://xrootd-cms.infn.it//store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v2/legacyRun2FullV1/DoubleEG/Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017C-31Mar2018-v1/190606_095024/0001/myMicroAODOutputFile_1330.root'
+'root://xrootd-cms.infn.it//store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/190703_101705/0000/myMicroAODOutputFile_15.root'
                              )
 )
 
@@ -244,7 +247,6 @@ new_variables = [
     "dijet_jet2_pujid_mva := subleading_pujidMVA()",
     "dipho_pt             := diPhoton.pt",
     "dijet_pt             := VBFMVA.dijet_pt",
-    "cosThetaStar         := VBFMVA.cosThetaStar",
 ]
 
 matching_photon = [
