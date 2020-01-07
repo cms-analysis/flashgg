@@ -41,6 +41,24 @@ customize.options.register('doubleHTagsOnly',
                            VarParsing.VarParsing.varType.bool,
                            'doubleHTagsOnly'
                            )
+customize.options.register('doubleHTagsUseMjj',
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doubleHTagsUseMjj'
+                           )
+customize.options.register('doubleHTagDumpMinVariables',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doubleHTagDumpMinVariables'
+                           )
+customize.options.register('ForceGenDiphotonProduction',
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'ForceGenDiphotonProduction'
+                           )
 customize.options.register('doubleHReweight',
                            -1,
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -142,6 +160,12 @@ customize.options.register('verboseSystDump',
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'verboseSystDump'
+                           )
+customize.options.register('analysisType',
+                           'mainAnalysis',
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.string,
+                           'analysisType'
                            )
 
 
@@ -302,7 +326,7 @@ useEGMTools(process)
 
 # Only run systematics for signal events
 # convention: ggh vbf wzh (wh zh) tth
-signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance"]
+signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","qqh","ggh","tth","vh"]
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 #if customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance") or customize.processId.count("hh_"): 
 if is_signal:
@@ -384,6 +408,10 @@ if customize.doubleHTagsOnly:
     variablesToUse = minimalVariables
     if customize.processId == "Data":
         variablesToUse = minimalNonSignalVariables
+
+if customize.doDoubleHTag:
+   systlabels,jetsystlabels,metsystlabels = hhc.customizeSystematics(systlabels,jetsystlabels,metsystlabels)
+           
 
 print "--- Systematics  with independent collections ---"
 print systlabels
@@ -503,7 +531,8 @@ for tag in tagList:
           else:
               currentVariables = []
       isBinnedOnly = (systlabel !=  "")
-      if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") ) and (systlabel ==  "") and not (customize.processId == "th_125" or customize.processId == "bbh_125"):
+      is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
+      if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or is_signal ) and (systlabel ==  "") and not (customize.processId == "th_125" or customize.processId == "bbh_125"):
           print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
           nPdfWeights = 60
@@ -532,14 +561,7 @@ for tag in tagList:
                            )
 
 # Require standard diphoton trigger
-from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
-hlt_paths = []
-print customize.metaConditions["TriggerPaths"]
-for dset in customize.metaConditions["TriggerPaths"]:
-    print customize.datasetName()
-    if dset in customize.datasetName():
-        hlt_paths.extend(customize.metaConditions["TriggerPaths"][dset])
-process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring(hlt_paths))
+filterHLTrigger(process, customize)
 
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
@@ -632,6 +654,9 @@ if customize.doBJetRegression:
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
     from flashgg.Taggers.flashggbRegressionProducer_cfi import flashggbRegressionProducer
     recoJetCollections = UnpackedJetCollectionVInputTag
+    if customize.metaConditions['bRegression']['useBRegressionJERsf'] :
+       bregJERJetsProducers,recoJetCollections = createJetSystematicsForBreg(process , customize)
+       process.bregJERJetsProducers = cms.Sequence(reduce(lambda x,y: x+y, bregJERJetsProducers))
 
     jetsysts = cms.vstring()
     jetnames = cms.vstring()
@@ -649,7 +674,9 @@ if customize.doBJetRegression:
     setattr(process,"bRegProducer",producer)
     bregProducers.append(producer)
     process.bregProducers = cms.Sequence(reduce(lambda x,y: x+y, bregProducers))
-    process.p.replace(process.jetSystematicsSequence,process.jetSystematicsSequence*process.flashggUnpackedJets+process.bregProducers)
+    if customize.metaConditions['bRegression']['useBRegressionJERsf'] :
+       process.p.replace(process.jetSystematicsSequence,process.jetSystematicsSequence*process.bregJERJetsProducers*process.bregProducers)
+    else : process.p.replace(process.jetSystematicsSequence,process.jetSystematicsSequence+process.bregProducers)
     
 
 if customize.doDoubleHTag:
