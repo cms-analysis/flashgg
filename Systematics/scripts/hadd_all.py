@@ -4,6 +4,7 @@ from sys import argv
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option('--doBigData', default=False, action='store_true', help='Make one big data file')
+parser.add_option('--doEGamma', default=False, action='store_true', help='use EGamma rather than DoubleEG (2018 data)')
 parser.add_option('--targetString', default=None, help='String to match to include')
 parser.add_option('--skipString', default=None, help='Strong to match to skip')
 (opts,args) = parser.parse_args()
@@ -19,6 +20,7 @@ if opts.skipString is not None:
 dobig = False
 dobigsig = False
 dobigdata = opts.doBigData
+doegamma = opts.doEGamma
 
 filelist = {}
 bigfiles = []
@@ -92,7 +94,8 @@ else:
     print "skipping allsig.root"
 
 if not access("allData.root",F_OK) and dobigdata:
-    cmd = "hadd_workspaces allData.root *DoubleEG*USER.root"
+    if doegamma: cmd = "hadd_workspaces allData.root *EGamma*USER.root"
+    else: cmd = "hadd_workspaces allData.root *DoubleEG*USER.root"
     printAndExec(cmd)
 else:
     print "skipping allData.root"
