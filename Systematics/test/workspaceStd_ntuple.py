@@ -429,6 +429,17 @@ if(customize.doFiducial):
 #    else:
     fc.addObservables(process, process.tagsDumper, customize.processId )
 
+bDiscr_values=[
+    "jet1_discr  := ?jets.size>0? (jets.at(0).bDiscriminator( "'+ flashggDeepCSVb +'" ) + jets.at(0).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
+    "jet2_discr  := ?jets.size>1? (jets.at(1).bDiscriminator( "'+ flashggDeepCSVb +'" ) + jets.at(1).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
+    "jet3_discr  := ?jets.size>2? (jets.at(2).bDiscriminator( "'+ flashggDeepCSVb +'" ) + jets.at(2).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
+    "jet4_discr  := ?jets.size>3? (jets.at(3).bDiscriminator( "'+ flashggDeepCSVb +'" ) + jets.at(3).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
+    "fwdjet1_discr  := ?Jets_EtaSorted.size>0? (Jets_EtaSorted.at(0).bDiscriminator( "'+ flashggDeepCSVb +'" ) + Jets_EtaSorted.at(0).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
+    "fwdjet2_discr  := ?Jets_EtaSorted.size>1? (Jets_EtaSorted.at(1).bDiscriminator( "'+ flashggDeepCSVb +'" ) + Jets_EtaSorted.at(1).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
+    "fwdjet3_discr  := ?Jets_EtaSorted.size>2? (Jets_EtaSorted.at(2).bDiscriminator( "'+ flashggDeepCSVb +'" ) + Jets_EtaSorted.at(2).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
+]
+
+
 import flashgg.Taggers.THQLeptonicTagVariables as var
 variablesToUse = minimalVariables + minimalVariablesHTXS + var.vtx_variables + var.dipho_variables + var.vtx_truth_variables + var.photon_variables + var.lepton_variables + var.jet_variables + var.thqmva_variables + var.truth_variables + var.dr_variable + var.thqSystematicVariables
 
