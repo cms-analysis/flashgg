@@ -41,8 +41,8 @@ namespace flashgg {
     private:
         void produce( Event &, const EventSetup & ) override;
 
-        EDGetTokenT<flashgg::DiPhotonTagBase> diphotonTagToken_;
-        EDGetTokenT<flashgg::TagTruthBase> tagTruthToken_;
+        EDGetTokenT<edm::OwnVector<flashgg::DiPhotonTagBase> > diphotonTagToken_;
+        EDGetTokenT<edm::OwnVector<flashgg::TagTruthBase> > tagTruthToken_;
         EDGetTokenT<HTXS::HiggsClassification> HTXSToken_;
 
         bool isGluonFusion_;
@@ -54,8 +54,8 @@ namespace flashgg {
     };
 
     TagWeighter::TagWeighter( const ParameterSet &iConfig ) :
-        diphotonTagToken_( consumes<flashgg::DiPhotonTagBase>( iConfig.getParameter<InputTag> ( "diphotonTag" ) ) ),
-        tagTruthToken_( consumes<flashgg::TagTruthBase>( iConfig.getParameter<InputTag> ( "tagTruth" ) ) )
+        diphotonTagToken_( consumes<edm::OwnVector<flashgg::DiPhotonTagBase> >( iConfig.getParameter<InputTag> ( "diphotonTag" ) ) ),
+        tagTruthToken_( consumes<edm::OwnVector<flashgg::TagTruthBase> >( iConfig.getParameter<InputTag> ( "tagTruth" ) ) )
     {
         ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
         HTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
@@ -73,18 +73,20 @@ namespace flashgg {
 
         debug_ = iConfig.getUntrackedParameter<bool>( "Debug", false );
 
-        produces<flashgg::DiPhotonTagBase> ();
-        produces<flashgg::TagTruthBase> ();
+        produces<edm::OwnVector<flashgg::DiPhotonTagBase> >();
+        produces<edm::OwnVector<flashgg::TagTruthBase> >();
     }
 
     void TagWeighter::produce( Event &evt, const EventSetup & )
     {
-        Handle<flashgg::DiPhotonTagBase> diphotonTag;
-        evt.getByToken( diphotonTagToken_, diphotonTag);
+        Handle<edm:OwnVector<flashgg::DiPhotonTagBase> > diphotonTags;
+        evt.getByToken( diphotonTagToken_, diphotonTags);
+        auto diphotonTag = diphotonTags->ptrAt(0);
         auto newDiphotonTag = diphotonTag->clone();
 
-        Handle<flashgg::TagTruthBase> tagTruth;
-        evt.getByToken( tagTruthToken_, tagTruth);
+        Handle<edm:OwnVector<flashgg::TagTruthBase> > tagTruths;
+        evt.getByToken( tagTruthToken_, tagTruths);
+        auto tagTruth = tagTruths->ptrAt(0);
         auto newTagTruth = tagTruth->clone();
 
         Handle<HTXS::HiggsClassification> htxsClassification;

@@ -47,7 +47,6 @@ namespace flashgg {
         EDGetTokenT<View<reco::GenParticle> >      genPartToken_;
         EDGetTokenT<View<reco::GenJet> >           genJetToken_;
         edm::EDGetTokenT<vector<flashgg::PDFWeightObject> > WeightToken_;
-        EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
 
         string systLabel_;
 
@@ -67,9 +66,6 @@ namespace flashgg {
         systLabel_   ( iConfig.getParameter<string> ( "SystLabel" ) ),
         inputTagJets_ ( iConfig.getParameter<std::vector<edm::InputTag> >( "inputTagJets" ) )
     {
-        ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
-        newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
-
         for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
             auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
             tokenJets_.push_back(token);
@@ -87,9 +83,6 @@ namespace flashgg {
 
     void StageOneCombinedTagProducer::produce( Event &evt, const EventSetup & )
     {
-        Handle<HTXS::HiggsClassification> htxsClassification;
-        evt.getByToken(newHTXSToken_,htxsClassification);
-
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
         
@@ -187,18 +180,6 @@ namespace flashgg {
             TagTruthBase truth1_obj;
             if( ! evt.isRealData() ) {
                 truth1_obj.setGenPV( higgsVtx );
-                if ( htxsClassification.isValid() ) {
-                    truth1_obj.setHTXSInfo( htxsClassification->stage0_cat,
-                                           htxsClassification->stage1_cat_pTjet30GeV,
-                                           htxsClassification->stage1_1_cat_pTjet30GeV,
-                                           htxsClassification->stage1_1_fine_cat_pTjet30GeV,
-                                           htxsClassification->jets30.size(),
-                                           htxsClassification->p4decay_higgs.pt(),
-                                           htxsClassification->p4decay_V.pt() );
-
-                } else {
-                    truth1_obj.setHTXSInfo( 0, 0, 0, 0, 0, 0., 0. );
-                }
             }
 
             // saving the collection

@@ -16,7 +16,6 @@ flashggStageOneCombinedTag = cms.EDProducer("FlashggStageOneCombinedTagProducer"
                                VBFMVAResultTag=cms.InputTag('flashggVBFMVA'),
                                GenParticleTag=cms.InputTag( "flashggPrunedGenParticles" ),
                                GenJetTag = cms.InputTag("slimmedGenJets"),
-                               HTXSTags     = HTXSInputTags,
                                inputTagJets = UnpackedJetCollectionVInputTag,
                                rawDiphoBounds = cms.vdouble(),
                                rawDijetBounds = cms.vdouble()

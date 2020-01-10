@@ -156,10 +156,6 @@ namespace flashgg {
         edm::InputTag stxsPtHTag_;
         edm::EDGetTokenT<float> stxsPtHToken_;
 
-        //        correctionFile_ = conf.getParameter<edm::FileInPath>("CorrectionFile")
-        edm::FileInPath NNLOPSWeightFile_;
-        std::vector<std::unique_ptr<TGraph> > NNLOPSWeights_;
-
         //std::map<std::string, std::vector<dumper_type> > dumpers_; FIXME template key
         std::map< KeyT, std::vector<dumper_type> > dumpers_;
         RooWorkspace *ws_;
@@ -167,8 +163,6 @@ namespace flashgg {
         /// void fillTreeBranches(const flashgg::Photon & pho)
 
         GlobalVariablesDumper *globalVarsDumper_;
-
-        bool reweighGGHforNNLOPS_;
 
 
     private:
@@ -245,11 +239,6 @@ namespace flashgg {
         throwOnUnclassified_ = cfg.exists("throwOnUnclassified") ? cfg.getParameter<bool>("throwOnUnclassified") : false;
         splitPdfByStage0Bin_ = cfg.getUntrackedParameter<bool>( "splitPdfByStage0Bin", false);
         splitPdfByStage1Bin_ = cfg.getUntrackedParameter<bool>( "splitPdfByStage1Bin", false);
-
-        reweighGGHforNNLOPS_ = cfg.getUntrackedParameter<bool>( "reweighGGHforNNLOPS", false);
-        if (reweighGGHforNNLOPS_) {
-            std::cout << " WARNING: reweighing for NNLOPS, this should be a ggH sample, please check!" << std::endl;
-        }
 
         if( cfg.getUntrackedParameter<bool>( "quietRooFit", false ) ) {
             RooMsgService::instance().setGlobalKillBelow( RooFit::WARNING );
@@ -376,14 +365,6 @@ namespace flashgg {
                     dumper.bookHistos( dir, replacements );
                 }
             }
-        }
-        if (reweighGGHforNNLOPS_) {
-            NNLOPSWeightFile_ = cfg.getParameter<edm::FileInPath>( "NNLOPSWeightFile" );
-            TFile* f = TFile::Open(NNLOPSWeightFile_.fullPath().c_str());
-            NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_0jet"))->Clone() );
-            NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_1jet"))->Clone() );
-            NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_2jet"))->Clone() );
-            NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_3jet"))->Clone() );
         }
     }
 
@@ -624,21 +605,6 @@ namespace flashgg {
                 pdfWeights_ = pdfWeights( event );
                 for (unsigned int i = 0; i < pdfWeights_.size() ; i++){
                     pdfWeights_[i]= (pdfWeights_[i] )*(lumiWeight_/weight_); // ie pdfWeight/nominal MC weight
-                }
-                if ( splitPdfByStage0Bin_ || splitPdfByStage1Bin_ ) {
-                    stage0bin_ = getStage0bin( event );
-                    stage1bin_ = getStage1bin( event );
-                    stxsNJet_ = getStxsNJet( event );
-                    stxsPtH_ = getStxsPtH( event );
-                    if (reweighGGHforNNLOPS_) {
-                        float extraweight = 1.;
-                        if ( stxsNJet_ == 0) extraweight = NNLOPSWeights_[0]->Eval(min(stxsPtH_,float(125.0)));
-                        if ( stxsNJet_ == 1) extraweight = NNLOPSWeights_[1]->Eval(min(stxsPtH_,float(625.0)));
-                        if ( stxsNJet_ == 2) extraweight = NNLOPSWeights_[2]->Eval(min(stxsPtH_,float(800.0)));
-                        if ( stxsNJet_ >= 3) extraweight = NNLOPSWeights_[3]->Eval(min(stxsPtH_,float(925.0)));
-                        weight_ *= extraweight;
-                    }
-
                 }
             }
 
