@@ -769,10 +769,10 @@ if customize.verboseSystDump:
 ## Dump EDM ##
 ##############
 
-#process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('CustomizeWillChangeThisAnyway.root'),
-#                               outputCommands = cms.untracked.vstring('keep *') # dump everything! small tests only!
-#                               )
-#process.e = cms.EndPath(process.out)
+process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('CustomizeWillChangeThisAnyway.root'),
+                               outputCommands = cms.untracked.vstring('keep *') # dump everything! small tests only!
+                               )
+process.e = cms.EndPath(process.out)
 
 ############################
 ## Dump the output Python ##

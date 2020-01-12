@@ -139,6 +139,7 @@ namespace flashgg {
 
     void TagSorter::produce( Event &evt, const EventSetup & )
     {
+        std::cout << "ED DEBUG into TagSorter" << std::endl;
         unique_ptr<edm::OwnVector<flashgg::DiPhotonTagBase> > SelectedTag( new edm::OwnVector<flashgg::DiPhotonTagBase> );
         unique_ptr<edm::OwnVector<flashgg::TagTruthBase> > SelectedTagTruth( new edm::OwnVector<flashgg::TagTruthBase> );
         unique_ptr<edm::OwnVector<flashgg::StageOneTag> > SelectedStageOne( new edm::OwnVector<flashgg::StageOneTag> );
@@ -403,6 +404,7 @@ namespace flashgg {
             evt.put( std::move( SelectedTag ) );
         }
         evt.put( std::move( SelectedTagTruth ) );
+        std::cout << "ED DEBUG outo TagSorter" << std::endl;
     }
 
     string TagSorter::tagName(DiPhotonTagBase::tag_t tagEnumVal) const {
