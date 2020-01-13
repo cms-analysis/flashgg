@@ -859,10 +859,6 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
                     lepton_leadEta_ = goodElectrons[leadEleIndex]->eta();
                     lepton_ch_ = goodElectrons[leadEleIndex]->charge();
                 }
-
-// cout<<"lepton_leadPt_"<<lepton_leadPt_<<endl;
-// cout<<"lepton_leadEta_"<<lepton_leadEta_<<endl;
-// cout<<"lepton_ch_"<<lepton_ch_<<endl;
 //--------------------------------------------------------------------------------------------------
         // if(processId_.find("thq") != std::string::npos or processId_.find("thw") != std::string::npos){
         // 	CTCVWeightedVariables["LeptonPt"]->Fill( lepton.pt , CtCvWeights );
@@ -1329,6 +1325,7 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
                 	thqltags_obj.nTight_bJets = TightBJetVect_PtSorted.size();
 
                 if( ! evt.isRealData() ) {
+//Bellow comment out part leads to crash for thq sample.This is related to ctcv weights and currently not using. Need to investigate the crash.
 /*                    if(processId_.find("thq") != std::string::npos or processId_.find("thw") != std::string::npos) {
                         //8 QCD scale weights
                         for( uint i = 1 ; i < 9 ; i ++ )
