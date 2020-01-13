@@ -1,5 +1,5 @@
-#ifndef FLASHgg_StageOneTag_h
-#define FLASHgg_StageOneTag_h
+#ifndef FLASHgg_StageOneCombinedTag_h
+#define FLASHgg_StageOneCombinedTag_h
 
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 #include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
@@ -15,29 +15,22 @@ namespace flashgg {
                          RECO_VBFTOPO_VHHAD, RECO_VBFTOPO_JET3VETO_LOWMJJ, RECO_VBFTOPO_JET3VETO_HIGHMJJ, RECO_VBFTOPO_JET3_LOWMJJ, RECO_VBFTOPO_JET3_HIGHMJJ, RECO_VBFTOPO_BSM, RECO_VBFLIKEGGH,
                          RECO_WHLEP, RECO_ZHLEP, RECO_VHLEPLOOSE, RECO_VHMET, RECO_VHHAD, RECO_TTH_LEP, RECO_TTH_HAD };
 
-    class StageOneTag: public DiPhotonTagBase
+    class StageOneCombinedTag: public DiPhotonTagBase
     {
     public:
-        StageOneTag();
-        ~StageOneTag();
+        StageOneCombinedTag();
+        ~StageOneCombinedTag();
 
-        StageOneTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult> );
-        StageOneTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult );
-        StageOneTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult>, edm::Ptr<VBFMVAResult> );
-        StageOneTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult, VBFMVAResult );
+        StageOneCombinedTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult> );
+        StageOneCombinedTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult );
+        StageOneCombinedTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult>, edm::Ptr<VBFMVAResult> );
+        StageOneCombinedTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult, VBFMVAResult );
 
-        StageOneTag *clone() const override { return ( new StageOneTag( *this ) ); }
+        StageOneCombinedTag *clone() const override { return ( new StageOneCombinedTag( *this ) ); }
 
-        DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kStageOne; }
+        DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kStageOneCombined; }
 
-        int stage1recoEnum() const { return stage1recoTag_; }
-
-        string stage1KinematicLabel() const;
-        void setStage1recoTag( const int tag ) { stage1recoTag_ = tag; }
-
-        const VBFMVAResult VBFMVA() const ;
-
-
+        const VBFMVAResult VBFMVA() const;
     private:
         int stage1recoTag_;
         VBFMVAResult vbfmva_result_;
@@ -54,4 +47,3 @@ namespace flashgg {
 // c-basic-offset:4
 // End:
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
-

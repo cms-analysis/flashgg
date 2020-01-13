@@ -17,8 +17,6 @@ def customizeTagsDumper(process, customize):
     process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
     process.tagsDumper.splitPdfByStage0Cat = cms.untracked.bool(customize.doHTXS)
     process.tagsDumper.splitPdfByStageOneCat = cms.untracked.bool(customize.doStageOne)
-    process.tagsDumper.NNLOPSWeightFile=cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root")
-    process.tagsDumper.reweighGGHforNNLOPS = cms.untracked.bool(bool(customize.processId.count("ggh")))
     
     if customize.options.WeightName:
         lheProduct = customize.dataset[1]["LHESourceName"].split("_")

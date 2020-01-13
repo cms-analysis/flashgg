@@ -34,7 +34,8 @@ flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                   Debug = cms.untracked.bool(False),
                                   CreateNoTag = cms.bool(False),  # Placeholder for tracking rejected events
                                   HTXSTags = HTXSInputTags,
-                                  StageOnePrintout = cms.bool(False),
-                                  DoStageOneRecoTags = cms.bool(False)
+                                  isGluonFusion = cms.bool(False),
+                                  NNLOPSWeightFile = cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root"),
+                                  applyNNLOPSweight = cms.bool(False)
                                   )
 

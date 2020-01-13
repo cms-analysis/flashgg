@@ -429,6 +429,7 @@ cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels
 # Dump an object called NoTag for untagged events in order to track QCD weights
 # Will be broken if it's done for non-central values, so turn this on only for the non-syst tag sorter
 process.flashggTagSorter.CreateNoTag = True # MUST be after tag sequence cloning
+process.flashggTagSorter.reweighGGHforNNLOPS = cms.untracked.bool(bool(customize.processId.count("ggh")))
 
 ###### Dumper section
 
@@ -440,6 +441,7 @@ process.source = cms.Source ("PoolSource",
                                  #"root://cms02.lcg.cscs.ch:1094//store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v2/190708_140500/0000/myMicroAODOutputFile_16.root"
                                  #"/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M125_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v2/190708_152712/0000/myMicroAODOutputFile_12.root"
                                  "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M125_13TeV_amcatnlo_pythia8_v2/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/190708_153159/0000/myMicroAODOutputFile_5.root"
+                                 #"/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v2/190708_140500/0000/myMicroAODOutputFile_12.root"
                              ))
 
 process.TFileService = cms.Service("TFileService",
@@ -715,10 +717,6 @@ for mn in mns:
 print
 printSystematicInfo(process)
 
-# Detailed tag interpretation information printout (blinded)
-process.flashggTagSorter.StoreOtherTagInfo = True
-process.flashggTagSorter.BlindedSelectionPrintout = True
-
 ### Rerun microAOD sequence on top of microAODs using the parent dataset
 if customize.useParentDataset:
     runRivetSequence(process, customize.metaConditions, customize.processId)
@@ -769,10 +767,10 @@ if customize.verboseSystDump:
 ## Dump EDM ##
 ##############
 
-process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('CustomizeWillChangeThisAnyway.root'),
-                               outputCommands = cms.untracked.vstring('keep *') # dump everything! small tests only!
-                               )
-process.e = cms.EndPath(process.out)
+#process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('CustomizeWillChangeThisAnyway.root'),
+#                               outputCommands = cms.untracked.vstring('keep *') # dump everything! small tests only!
+#                               )
+#process.e = cms.EndPath(process.out)
 
 ############################
 ## Dump the output Python ##

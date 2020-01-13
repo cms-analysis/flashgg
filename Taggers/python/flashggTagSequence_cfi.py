@@ -45,7 +45,6 @@ def flashggPrepareTagSequence(process, options):
                                           + flashggVHHadronicTag
                                       )
                                       * flashggTagSorter
-                                      * flashggTagWeighter
                                   )
 
     return flashggTagSequence

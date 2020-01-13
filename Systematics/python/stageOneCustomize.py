@@ -71,11 +71,10 @@ class StageOneCustomize():
         self.process.flashggStageOneCombinedTag.rawDijetBounds = cms.vdouble( self.metaConditions["stageOneCombinedTag"]["rawDijetBounds"] )
         self.process.flashggStageOneCombinedTag.rawGghBounds   = cms.vdouble( self.metaConditions["stageOneCombinedTag"]["rawGghBounds"] )
 
-        ## set tag priorities, stage 1 sorting
+        ## set tag priorities
         self.process.flashggTagSorter.TagPriorityRanges = cms.VPSet(
             cms.PSet(TagName = cms.InputTag('flashggStageOneCombinedTag'))
         )
-        self.process.flashggTagSorter.DoStageOneRecoTags = True
 
-        ## set the stage one tag merging
-        self.process.flashggSystTagMerger = cms.EDProducer("StageOneTagMerger",src=cms.VInputTag("flashggTagSorter"))
+        ## set the tag merging
+        self.process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))

@@ -8,8 +8,8 @@
 #include "FWCore/Utilities/interface/EDMException.h"
 
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
+#include "flashgg/DataFormats/interface/StageOneCombinedTag.h"
 #include "flashgg/DataFormats/interface/VBFMVAResult.h"
-#include "flashgg/DataFormats/interface/StageOneTag.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
 
 #include "flashgg/DataFormats/interface/PDFWeightObject.h"
@@ -35,7 +35,7 @@ namespace flashgg {
     private:
         void produce( Event &, const EventSetup & ) override;
         int chooseCategory( float );
-        int computeStage1Kinematics( const StageOneTag );
+        int computeStage1Kinematics( const StageOneCombinedTag );
 
         std::vector<double> rawDiphoBounds_, rawDijetBounds_, rawGghBounds_;
         std::map<std::string, float> diphoBounds_, dijetBounds_, gghBounds_;
@@ -47,6 +47,7 @@ namespace flashgg {
         EDGetTokenT<View<reco::GenParticle> >      genPartToken_;
         EDGetTokenT<View<reco::GenJet> >           genJetToken_;
         edm::EDGetTokenT<vector<flashgg::PDFWeightObject> > WeightToken_;
+        EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
 
         string systLabel_;
 
@@ -71,18 +72,24 @@ namespace flashgg {
             tokenJets_.push_back(token);
         }
 
+        ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );    
+        newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
+
         rawDiphoBounds_ = iConfig.getParameter<std::vector<double> > ("rawDiphoBounds");
         rawDijetBounds_ = iConfig.getParameter<std::vector<double> > ("rawDijetBounds");
         rawGghBounds_   = iConfig.getParameter<std::vector<double> > ("rawGghBounds");
         constructBounds();
 
-        produces<vector<StageOneTag> >();
-        produces<vector<StageOneTag> >("stageone");
-        produces<vector<TagTruthBase> >("stageone");
+        produces<vector<DiPhotonTagBase> >();
+        produces<vector<TagTruthBase> >();
     }
 
     void StageOneCombinedTagProducer::produce( Event &evt, const EventSetup & )
     {
+
+        Handle<HTXS::HiggsClassification> htxsClassification;   
+        evt.getByToken(newHTXSToken_,htxsClassification);
+
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
         
@@ -100,11 +107,9 @@ namespace flashgg {
         Handle<View<reco::GenParticle> > genParticles;
         Handle<View<reco::GenJet> > genJets;
         
-        std::unique_ptr<vector<StageOneTag> > dummystage0tags( new vector<StageOneTag> );
-        std::unique_ptr<vector<StageOneTag> > stage1tags( new vector<StageOneTag> );
+        std::unique_ptr<vector<DiPhotonTagBase> > stage1tags( new vector<DiPhotonTagBase> );
         std::unique_ptr<vector<TagTruthBase> > stage1truths( new vector<TagTruthBase> );
-
-        edm::RefProd<vector<TagTruthBase> > rTag1Truth = evt.getRefBeforePut<vector<TagTruthBase> >("stageone");
+        edm::RefProd<vector<TagTruthBase> > rTag1Truth = evt.getRefBeforePut<vector<TagTruthBase> >();
 
         unsigned int idx = 0;
         Point higgsVtx;
@@ -130,7 +135,7 @@ namespace flashgg {
             edm::Ptr<flashgg::DiPhotonMVAResult>      mvares          = mvaResults->ptrAt( candIndex );
             edm::Ptr<flashgg::DiPhotonCandidate>      dipho           = diPhotons->ptrAt( candIndex );
             
-            StageOneTag stage1tag_obj( dipho, mvares, vbf_mvares );
+            StageOneCombinedTag stage1tag_obj( dipho, mvares, vbf_mvares );
             stage1tag_obj.setDiPhotonIndex( candIndex );
             stage1tag_obj.setSystLabel( systLabel_ );
             stage1tag_obj.includeWeights( *dipho );
@@ -180,10 +185,16 @@ namespace flashgg {
             TagTruthBase truth1_obj;
             if( ! evt.isRealData() ) {
                 truth1_obj.setGenPV( higgsVtx );
+                truth1_obj.setHTXSInfo( htxsClassification->stage0_cat,
+                                       htxsClassification->stage1_cat_pTjet30GeV,
+                                       htxsClassification->stage1_1_cat_pTjet30GeV,
+                                       htxsClassification->stage1_1_fine_cat_pTjet30GeV,
+                                       htxsClassification->jets30.size(),
+                                       htxsClassification->p4decay_higgs.pt(),
+                                       htxsClassification->p4decay_V.pt() );
             }
 
             // saving the collection
-            dummystage0tags->push_back( stage1tag_obj );
             stage1tags->push_back( stage1tag_obj );
             if( ! evt.isRealData() ) {
                 stage1truths->push_back( truth1_obj );
@@ -191,12 +202,11 @@ namespace flashgg {
             }
         }
 
-        evt.put( std::move( dummystage0tags ) );
-        evt.put( std::move( stage1tags ), "stageone" );
-        evt.put ( std::move( stage1truths ), "stageone" );
+        evt.put( std::move( stage1tags ) );
+        evt.put ( std::move( stage1truths ) );
     }
 
-    int StageOneCombinedTagProducer::computeStage1Kinematics( const StageOneTag tag_obj ) 
+    int StageOneCombinedTagProducer::computeStage1Kinematics( const StageOneCombinedTag tag_obj ) 
     {
         int chosenTag_ = stage1recoTag::LOGICERROR;
         float ptH = tag_obj.diPhoton()->pt();

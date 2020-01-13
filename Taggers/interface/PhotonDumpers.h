@@ -7,7 +7,6 @@
 #include "flashgg/DataFormats/interface/SinglePhotonView.h"
 #include "flashgg/DataFormats/interface/SingleVertexView.h"
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
-#include "flashgg/DataFormats/interface/StageOneTag.h"
 #include "flashgg/Taggers/interface/CollectionDumper.h"
 
 /// #include "PhysicsTools/UtilAlgos/interface/FWLiteAnalyzerWrapper.h"
@@ -37,9 +36,9 @@ namespace flashgg {
     typedef CollectionDumper<edm::OwnVector<DiPhotonTagBase>,
             DiPhotonTagBase,
             CutAndClassBasedClassifier<DiPhotonTagBase> > DiPhotonTagDumper;
-    typedef CollectionDumper<edm::OwnVector<StageOneTag>,
-            StageOneTag,
-            StageOneBasedClassifier<StageOneTag> > StageOneDiPhotonTagDumper;
+    typedef CollectionDumper<edm::OwnVector<DiPhotonTagBase>,
+            DiPhotonTagBase,
+            StageOneBasedClassifier<DiPhotonTagBase> > StageOneDiPhotonTagDumper;
 
     //// namespace fwlite {
     //// 	typedef ::fwlite::AnalyzerWrapper<DiPhotonDumper> DiPhotonDumper;

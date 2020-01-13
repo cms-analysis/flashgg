@@ -16,12 +16,12 @@
 #include "DataFormats/Common/interface/RefToPtr.h"
 #include "flashgg/DataFormats/interface/VBFTag.h"
 #include "flashgg/DataFormats/interface/NoTag.h"
-#include "flashgg/DataFormats/interface/StageOneTag.h"
 
 #include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
 
 #include "TMVA/Reader.h"
 #include "TMath.h"
+#include "TGraph.h"
 //#include <typeinfo>
 
 #include <algorithm>
@@ -57,7 +57,6 @@ namespace flashgg {
 
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         std::vector<edm::EDGetTokenT<View<flashgg::DiPhotonTagBase> > > TagList_;
-        std::vector<edm::EDGetTokenT<View<flashgg::StageOneTag> > > StageOneTagList_;
         std::vector<TagPriorityRange> TagPriorityRanges;
 
         double massCutUpper;
@@ -68,6 +67,10 @@ namespace flashgg {
         double minObjectWeightWarning;
         double maxObjectWeightWarning;
 
+        bool isGluonFusion_;
+        FileInPath NNLOPSWeightFile_;
+        std::vector<std::unique_ptr<TGraph> > NNLOPSWeights_;
+        bool applyNNLOPSweight_;
 
         bool debug_;
         bool storeOtherTagInfo_;
@@ -75,9 +78,6 @@ namespace flashgg {
 
         bool createNoTag_;
         EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
-
-        bool doStageOneRecoTags_;
-        bool stageOnePrintout_;
 
         std::vector<std::tuple<DiPhotonTagBase::tag_t,int,int> > otherTags_; // (type,category,diphoton index)
 
@@ -95,13 +95,24 @@ namespace flashgg {
         minObjectWeightWarning = iConfig.getParameter<double>( "MinObjectWeightWarning" );
         maxObjectWeightWarning = iConfig.getParameter<double>( "MaxObjectWeightWarning" );
 
+        isGluonFusion_ = iConfig.getParameter<bool>("isGluonFusion");
+        NNLOPSWeightFile_ = iConfig.getParameter<FileInPath>( "NNLOPSWeightFile" );
+        TFile* f = TFile::Open(NNLOPSWeightFile_.fullPath().c_str());
+        NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_0jet"))->Clone() );
+        NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_1jet"))->Clone() );
+        NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_2jet"))->Clone() );
+        NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_3jet"))->Clone() );
+        f->Close();
+        delete f;
+        applyNNLOPSweight_ = iConfig.getParameter<bool>("applyNNLOPSweight");
+        if( isGluonFusion_ && applyNNLOPSweight_ ) {
+            std::cout << "[WARNING]: configuration is set to reweigh from madgraph to NNLOPS, please check this is a ggH sample" << std::endl;
+        }
 
         debug_ = iConfig.getUntrackedParameter<bool>( "Debug", false );
         storeOtherTagInfo_ = iConfig.getParameter<bool>( "StoreOtherTagInfo" );
         blindedSelectionPrintout_ = iConfig.getParameter<bool>("BlindedSelectionPrintout");
         createNoTag_ = iConfig.getParameter<bool>("CreateNoTag");
-        doStageOneRecoTags_ = iConfig.getParameter<bool>("DoStageOneRecoTags");
-        stageOnePrintout_ = iConfig.getParameter<bool>("StageOnePrintout");
 
         const auto &vpset = iConfig.getParameterSetVector( "TagPriorityRanges" );
 
@@ -109,7 +120,6 @@ namespace flashgg {
 
         for( const auto &pset : vpset ) {
             InputTag tag = pset.getParameter<InputTag>( "TagName" );
-            InputTag stage1tag = InputTag( tag.label(), "stageone" );
             int c1 = pset.getUntrackedParameter<int>( "MinCategory", -999 );
             int c2 = pset.getUntrackedParameter<int>( "MaxCategory", 999 );
             unsigned int i = 0;
@@ -119,9 +129,6 @@ namespace flashgg {
             if( i == TagList_.size() ) {
                 labels.push_back( tag.label() );
                 TagList_.push_back( consumes<View<flashgg::DiPhotonTagBase> >( tag ) );
-                if ( doStageOneRecoTags_ ) {
-                    StageOneTagList_.push_back( consumes<View<flashgg::StageOneTag> >( stage1tag ) );
-                }
             }
             TagPriorityRanges.emplace_back( tag.label(), c1, c2, i );
         }
@@ -129,20 +136,17 @@ namespace flashgg {
         ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
         newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
 
-        if (doStageOneRecoTags_) {
-            produces<edm::OwnVector<flashgg::StageOneTag> >();
-        } else {
-            produces<edm::OwnVector<flashgg::DiPhotonTagBase> >();
-        }
+        produces<edm::OwnVector<flashgg::DiPhotonTagBase> >();
         produces<edm::OwnVector<flashgg::TagTruthBase> >();
     }
 
     void TagSorter::produce( Event &evt, const EventSetup & )
     {
-        std::cout << "ED DEBUG into TagSorter" << std::endl;
         unique_ptr<edm::OwnVector<flashgg::DiPhotonTagBase> > SelectedTag( new edm::OwnVector<flashgg::DiPhotonTagBase> );
         unique_ptr<edm::OwnVector<flashgg::TagTruthBase> > SelectedTagTruth( new edm::OwnVector<flashgg::TagTruthBase> );
-        unique_ptr<edm::OwnVector<flashgg::StageOneTag> > SelectedStageOne( new edm::OwnVector<flashgg::StageOneTag> );
+
+        Handle<HTXS::HiggsClassification> htxsClassification;
+        evt.getByToken(newHTXSToken_,htxsClassification);
 
         // Cache other tags for each event; but do not use the old ones next time
         otherTags_.clear(); 
@@ -156,11 +160,6 @@ namespace flashgg {
 
             Handle<View<flashgg::DiPhotonTagBase> > TagVectorEntry;
             evt.getByToken( TagList_[tpr->collIndex], TagVectorEntry );
-
-            Handle<View<flashgg::StageOneTag> > StageOneTagVectorEntry;
-            if (doStageOneRecoTags_ ) {
-                evt.getByToken( StageOneTagList_[tpr->collIndex], StageOneTagVectorEntry ); 
-            }
 
             edm::RefProd<edm::OwnVector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<edm::OwnVector<TagTruthBase> >();
 
@@ -236,15 +235,27 @@ namespace flashgg {
 
 
                 SelectedTag->push_back( *TagVectorEntry->ptrAt( chosen_i ) );
-                if (doStageOneRecoTags_) {
-                    SelectedStageOne->push_back( *StageOneTagVectorEntry->ptrAt( chosen_i ) );
-                }
                 edm::Ptr<TagTruthBase> truth = TagVectorEntry->ptrAt( chosen_i )->tagTruth();
                 if( truth.isNonnull() ) {
                     SelectedTagTruth->push_back( *truth );
+                    if( isGluonFusion_ ) {
+                        int stxsNjets = htxsClassification->jets30.size();
+                        float stxsPtH = htxsClassification->p4decay_higgs.pt();
+                        float NNLOPSweight = 1;
+                        if ( stxsNjets == 0) NNLOPSweight = NNLOPSWeights_[0]->Eval(min(stxsPtH,float(125.0)));
+                        else if ( stxsNjets == 1) NNLOPSweight = NNLOPSWeights_[1]->Eval(min(stxsPtH,float(625.0)));
+                        else if ( stxsNjets == 2) NNLOPSweight = NNLOPSWeights_[2]->Eval(min(stxsPtH,float(800.0)));
+                        else if ( stxsNjets >= 3) NNLOPSweight = NNLOPSWeights_[3]->Eval(min(stxsPtH,float(925.0)));
+                        SelectedTagTruth->back().setWeight("NNLOPS", NNLOPSweight);
+                    }
                     SelectedTag->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) ); // Normally this 0 would be the index number
-                    if (doStageOneRecoTags_) {
-                        SelectedStageOne->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) );
+                    if( isGluonFusion_ && applyNNLOPSweight_ ) {
+                        float newCentralWeight = SelectedTagTruth->back().weight("NNLOPS") * SelectedTag->back().centralWeight();
+                        SelectedTag->back().setCentralWeight( newCentralWeight );
+                        std::cout << "[TagSorter DEBUG] reweighing to NNLOPS, central weight being altered by a factor of " << SelectedTagTruth->back().weight("NNLOPS") << std::endl;
+                        if( debug_ ) {
+                            std::cout << "[TagSorter DEBUG] reweighing to NNLOPS, central weight being altered by a factor of " << SelectedTagTruth->back().weight("NNLOPS") << std::endl;
+                        }
                     }
                 }
                 if ( debug_ ) {
@@ -329,48 +340,12 @@ namespace flashgg {
             }
         }
 
-        if ( stageOnePrintout_ ) {
-            if (SelectedTag->size() == 1) {
-                float mass = SelectedTag->back().diPhoton()->mass();
-                int cat = SelectedTag->back().categoryNumber();
-                std::cout << "STAGE1PRINTOUT TagName cat mass " << TagSorter::tagName(SelectedTag->back().tagEnum()) << " " << cat << " " << mass;
-                if( SelectedTagTruth->size() != 0 ) {
-                    std::cout << " STXS True cat0 cat1 cat1p1 cat1p1fine nJ ptH ptV ";
-                    std::cout << SelectedTagTruth->back().HTXSstage0bin() << " ";
-                    std::cout << SelectedTagTruth->back().HTXSstage1bin() << " ";
-                    std::cout << SelectedTagTruth->back().HTXSstage1p1bin() << " ";
-                    std::cout << SelectedTagTruth->back().HTXSstage1p1binFine() << " ";
-                    std::cout << SelectedTagTruth->back().HTXSnjets() << " ";
-                    std::cout << SelectedTagTruth->back().HTXSpTH() << " ";
-                    std::cout << SelectedTagTruth->back().HTXSpTV() << " ";
-                } else {
-                    std::cout << "WARNING NO VALID TRUTH FOR STAGE1PRINTOUT";
-                }
-            } else {
-                Handle<HTXS::HiggsClassification> htxsClassification;
-                evt.getByToken(newHTXSToken_,htxsClassification);
-                std::cout << "STAGE1PRINTOUT EVENT OUTSIDE ACCEPTANCE/EFFICIENCY - STXS True cat0 cat1 nJ ptH ptV ";
-                if ( htxsClassification.isValid() ) {
-                    std::cout << htxsClassification->stage0_cat << " ";
-                    std::cout << htxsClassification->stage1_cat_pTjet30GeV << " ";
-                    std::cout << htxsClassification->stage1_1_cat_pTjet30GeV << " ";
-                    std::cout << htxsClassification->stage1_1_fine_cat_pTjet30GeV << " ";
-                } else {
-                    std::cout << "WARNING NO VALID STAGE1CAT FOR PRINTOUT";
-                }
-            }
-            std::cout << std::endl;
-        }
-
         assert( SelectedTag->size() == 1 || SelectedTag->size() == 0 );
         if (createNoTag_ && SelectedTag->size() == 0) {
             SelectedTag->push_back(NoTag());
-            SelectedStageOne->push_back(StageOneTag());
-            SelectedStageOne->back().setStage1recoTag(flashgg::NOTAG);
+            SelectedTag->back().setStage1recoTag(flashgg::DiPhotonTagBase::NOTAG);
             edm::RefProd<edm::OwnVector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<edm::OwnVector<TagTruthBase> >();
             TagTruthBase truth_obj;
-            Handle<HTXS::HiggsClassification> htxsClassification;
-            evt.getByToken(newHTXSToken_,htxsClassification);
             if ( htxsClassification.isValid() ) {
                 truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
                                        htxsClassification->stage1_cat_pTjet30GeV,
@@ -382,9 +357,22 @@ namespace flashgg {
             } else {
                 truth_obj.setHTXSInfo( 0, 0, 0, 0, 0, 0., 0. );
             }
+            if( isGluonFusion_ ) {
+                int stxsNjets = htxsClassification->jets30.size();
+                float stxsPtH = htxsClassification->p4decay_higgs.pt();
+                float NNLOPSweight = 1;
+                if ( stxsNjets == 0) NNLOPSweight = NNLOPSWeights_[0]->Eval(min(stxsPtH,float(125.0)));
+                else if ( stxsNjets == 1) NNLOPSweight = NNLOPSWeights_[1]->Eval(min(stxsPtH,float(625.0)));
+                else if ( stxsNjets == 2) NNLOPSweight = NNLOPSWeights_[2]->Eval(min(stxsPtH,float(800.0)));
+                else if ( stxsNjets >= 3) NNLOPSweight = NNLOPSWeights_[3]->Eval(min(stxsPtH,float(925.0)));
+                truth_obj.setWeight("NNLOPS", NNLOPSweight);
+            }
             SelectedTagTruth->push_back(truth_obj);
             SelectedTag->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) );
-            SelectedStageOne->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) );
+            if( isGluonFusion_ && applyNNLOPSweight_ ) {
+                float newCentralWeight = SelectedTagTruth->back().weight("NNLOPS") * SelectedTag->back().centralWeight();
+                SelectedTag->back().setCentralWeight( newCentralWeight );
+            }
             if( SelectedTagTruth->size() != 0 && debug_ ) {
                 std::cout << "******************************" << std::endl;
                 std::cout << " TRUTH FOR NO TAG..." << std::endl;
@@ -398,13 +386,8 @@ namespace flashgg {
                 std::cout << "******************************" << std::endl;
             }
         }
-        if ( doStageOneRecoTags_ ) {
-            evt.put( std::move ( SelectedStageOne ) );
-        } else {
-            evt.put( std::move( SelectedTag ) );
-        }
+        evt.put( std::move( SelectedTag ) );
         evt.put( std::move( SelectedTagTruth ) );
-        std::cout << "ED DEBUG outo TagSorter" << std::endl;
     }
 
     string TagSorter::tagName(DiPhotonTagBase::tag_t tagEnumVal) const {
@@ -439,7 +422,7 @@ namespace flashgg {
             return string("VHLeptonicLoose");
         case DiPhotonTagBase::tag_t::kVHMet:
             return string("VHMet");
-        case DiPhotonTagBase::tag_t::kStageOne:
+        case DiPhotonTagBase::tag_t::kStageOneCombined:
             return string("StageOne");
         }
         return string("TAG NOT ON LIST");
