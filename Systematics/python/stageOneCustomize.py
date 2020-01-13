@@ -75,6 +75,10 @@ class StageOneCustomize():
         self.process.flashggTagSorter.TagPriorityRanges = cms.VPSet(
             cms.PSet(TagName = cms.InputTag('flashggStageOneCombinedTag'))
         )
+        self.process.flashggTagSorter.isGluonFusion = cms.bool(bool(self.customize.processId.count("ggh")))
+        self.process.flashggTagSorter.applyNNLOPSweight = cms.bool(bool(self.customize.processId.count("ggh")))
+        print 'ED DEBUG isGluonFusion %s'%self.process.flashggTagSorter.isGluonFusion
+        print 'ED DEBUG applyNNLOPSweight %s'%self.process.flashggTagSorter.applyNNLOPSweight
 
         ## set the tag merging
         self.process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))

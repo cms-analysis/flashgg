@@ -252,7 +252,6 @@ namespace flashgg {
                     if( isGluonFusion_ && applyNNLOPSweight_ ) {
                         float newCentralWeight = SelectedTagTruth->back().weight("NNLOPS") * SelectedTag->back().centralWeight();
                         SelectedTag->back().setCentralWeight( newCentralWeight );
-                        std::cout << "[TagSorter DEBUG] reweighing to NNLOPS, central weight being altered by a factor of " << SelectedTagTruth->back().weight("NNLOPS") << std::endl;
                         if( debug_ ) {
                             std::cout << "[TagSorter DEBUG] reweighing to NNLOPS, central weight being altered by a factor of " << SelectedTagTruth->back().weight("NNLOPS") << std::endl;
                         }
