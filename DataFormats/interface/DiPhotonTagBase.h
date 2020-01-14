@@ -51,7 +51,7 @@ namespace flashgg {
         bool isGold() const { return isGold_; }
         virtual DiPhotonTagBase::tag_t tagEnum() const { return DiPhotonTagBase::kUndefined; }
 
-        int stage1recoEnum() const { return stage1recoTag_; }
+        int getStage1recoTag() const { return stage1recoTag_; }
 
         string stage1KinematicLabel() const;
         void setStage1recoTag( const int tag ) { stage1recoTag_ = tag; }

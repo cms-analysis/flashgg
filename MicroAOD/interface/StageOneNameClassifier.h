@@ -30,7 +30,7 @@ namespace flashgg {
         {
             int id = ( int )obj;
             //std::type_index idx( typeid( obj ) );
-            int idx = obj.stage1recoEnum();
+            int idx = obj.getStage1recoTag();
             auto cached = cache_.find( idx );
             if( cached != cache_.end() ) { return std::make_pair( cached->second, id ); }
             auto ret = std::make_pair( obj.stage1KinematicLabel(), id );
