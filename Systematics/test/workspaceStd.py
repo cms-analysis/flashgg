@@ -167,6 +167,12 @@ customize.options.register('analysisType',
                            VarParsing.VarParsing.varType.string,
                            'analysisType'
                            )
+customize.options.register('applyNNLOPSweight',
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'applyNNLOPSweight'
+                           )
 
 
 print "Printing defaults"
@@ -430,7 +436,7 @@ cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels
 # Will be broken if it's done for non-central values, so turn this on only for the non-syst tag sorter
 process.flashggTagSorter.CreateNoTag = True # MUST be after tag sequence cloning
 process.flashggTagSorter.isGluonFusion = cms.bool(bool(customize.processId.count("ggh")))
-process.flashggTagSorter.applyNNLOPSweight = cms.bool(bool(customize.processId.count("ggh")))
+process.flashggTagSorter.applyNNLOPSweight = cms.bool(customize.applyNNLOPSweight)
 
 ###### Dumper section
 
