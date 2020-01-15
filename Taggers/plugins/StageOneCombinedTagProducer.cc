@@ -28,8 +28,6 @@ namespace flashgg {
     {
 
     public:
-        typedef math::XYZPoint Point;
-
         StageOneCombinedTagProducer( const ParameterSet & );
 
     private:
@@ -44,8 +42,6 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonCandidate> >      diPhotonToken_;
         EDGetTokenT<View<VBFMVAResult> >           vbfMvaResultToken_;
         EDGetTokenT<View<DiPhotonMVAResult> >      mvaResultToken_;
-        EDGetTokenT<View<reco::GenParticle> >      genPartToken_;
-        EDGetTokenT<View<reco::GenJet> >           genJetToken_;
         edm::EDGetTokenT<vector<flashgg::PDFWeightObject> > WeightToken_;
         EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
 
@@ -61,8 +57,6 @@ namespace flashgg {
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         vbfMvaResultToken_( consumes<View<flashgg::VBFMVAResult> >( iConfig.getParameter<InputTag> ( "VBFMVAResultTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
-        genPartToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
-        genJetToken_ ( consumes<View<reco::GenJet> >( iConfig.getParameter<InputTag> ( "GenJetTag" ) ) ),
         WeightToken_( consumes<vector<flashgg::PDFWeightObject> >( iConfig.getUntrackedParameter<InputTag>( "WeightTag", InputTag( "flashggPDFWeightObject" ) ) ) ),
         systLabel_   ( iConfig.getParameter<string> ( "SystLabel" ) ),
         inputTagJets_ ( iConfig.getParameter<std::vector<edm::InputTag> >( "inputTagJets" ) )
@@ -81,7 +75,6 @@ namespace flashgg {
         constructBounds();
 
         produces<vector<DiPhotonTagBase> >();
-        produces<vector<TagTruthBase> >();
     }
 
     void StageOneCombinedTagProducer::produce( Event &evt, const EventSetup & )
@@ -104,27 +97,7 @@ namespace flashgg {
             evt.getByToken( tokenJets_[j], Jets[j] );
         }
 
-        Handle<View<reco::GenParticle> > genParticles;
-        Handle<View<reco::GenJet> > genJets;
-        
         std::unique_ptr<vector<DiPhotonTagBase> > stage1tags( new vector<DiPhotonTagBase> );
-        std::unique_ptr<vector<TagTruthBase> > stage1truths( new vector<TagTruthBase> );
-        edm::RefProd<vector<TagTruthBase> > rTag1Truth = evt.getRefBeforePut<vector<TagTruthBase> >();
-
-        unsigned int idx = 0;
-        Point higgsVtx;
-        
-        if( ! evt.isRealData() ) {
-            evt.getByToken( genPartToken_, genParticles );
-            evt.getByToken( genJetToken_, genJets );
-            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
-                int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-                if( pdgid == 25 || pdgid == 22 ) {
-                    higgsVtx = genParticles->ptrAt( genLoop )->vertex();
-                    break;
-                }
-            }
-        }
 
         // We are relying on corresponding sets - update this to give an error/exception
         assert( diPhotons->size() == vbfMvaResults->size() ); 
@@ -182,28 +155,12 @@ namespace flashgg {
             
             int chosenTag = computeStage1Kinematics( stage1tag_obj ); // choose category
             stage1tag_obj.setStage1recoTag( chosenTag ); // set the category in the object
-            TagTruthBase truth1_obj;
-            if( ! evt.isRealData() ) {
-                truth1_obj.setGenPV( higgsVtx );
-                truth1_obj.setHTXSInfo( htxsClassification->stage0_cat,
-                                       htxsClassification->stage1_cat_pTjet30GeV,
-                                       htxsClassification->stage1_1_cat_pTjet30GeV,
-                                       htxsClassification->stage1_1_fine_cat_pTjet30GeV,
-                                       htxsClassification->jets30.size(),
-                                       htxsClassification->p4decay_higgs.pt(),
-                                       htxsClassification->p4decay_V.pt() );
-            }
 
             // saving the collection
             stage1tags->push_back( stage1tag_obj );
-            if( ! evt.isRealData() ) {
-                stage1truths->push_back( truth1_obj );
-                stage1tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTag1Truth, idx++ ) ) );
-            }
         }
 
         evt.put( std::move( stage1tags ) );
-        evt.put ( std::move( stage1truths ) );
     }
 
     int StageOneCombinedTagProducer::computeStage1Kinematics( const StageOneCombinedTag tag_obj ) 

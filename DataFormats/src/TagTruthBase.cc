@@ -4,6 +4,17 @@
 
 using namespace flashgg;
 
+TagTruthBase::TagTruthBase()
+{
+    stage0bin_ = 0;
+    stage1bin_ = 0;
+    stage1p1bin_ = 0;
+    stage1p1binFine_ = 0;
+    njets_ = -999;
+    pTH_ = -999.;
+    pTV_ = -999.;
+}
+
 TagTruthBase::TagTruthBase( const TagTruthBase &b )
 {
     copyBaseInfo( b );

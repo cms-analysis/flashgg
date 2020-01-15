@@ -34,6 +34,7 @@ flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                   Debug = cms.untracked.bool(True),
                                   CreateNoTag = cms.bool(False),  # Placeholder for tracking rejected events
                                   HTXSTags = HTXSInputTags,
+                                  GenParticleTag=cms.InputTag( "flashggPrunedGenParticles" ),
                                   isGluonFusion = cms.bool(False),
                                   NNLOPSWeightFile = cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root"),
                                   applyNNLOPSweight = cms.bool(False)

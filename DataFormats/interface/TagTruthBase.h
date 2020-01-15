@@ -14,7 +14,7 @@ namespace flashgg {
 
         typedef math::XYZPoint Point;
 
-        TagTruthBase() {}
+        TagTruthBase();
         TagTruthBase( const TagTruthBase &b );
         virtual ~TagTruthBase() {}
 
