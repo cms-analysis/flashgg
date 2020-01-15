@@ -773,11 +773,11 @@ namespace flashgg {
             int catnum = chooseCategory( tag_obj.MVA(), tag_obj.MX() );
             tag_obj.setCategoryNumber( catnum );
             tag_obj.includeWeights( *dipho );
-            //            tag_obj.includeWeights( *leadJet );
-            //            tag_obj.includeWeights( *subleadJet );
-
-                        tag_obj.includeWeightsByLabel( *leadJet ,"JetBTagReshapeWeight");
-                        tag_obj.includeWeightsByLabel( *subleadJet , "JetBTagReshapeWeight" );
+            //tag_obj.includeWeights( *leadJet );
+            //tag_obj.includeWeights( *subleadJet );
+            
+            tag_obj.includeWeightsByLabel( *leadJet ,"JetBTagReshapeWeight",false);
+            tag_obj.includeWeightsByLabel( *subleadJet , "JetBTagReshapeWeight",false );
 
 
 

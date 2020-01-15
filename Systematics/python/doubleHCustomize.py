@@ -201,11 +201,10 @@ class DoubleHCustomize():
            #  "sigmaMJets := getSigmaMOverMJets()",
              "HHbbggMVA := MVA()",
              "MX := MX()",
-           #  "Mjj := dijet().M()",
-           #  "eventNumber := eventNumber()",
+             "Mjj := dijet().M()"
              ]
         if self.customize.doDoubleHttHKiller : variables +=[
-            "ttHScore := ttHScore()",
+            "ttHScore := ttHScore()"
            ]
         return variables
 
@@ -236,7 +235,7 @@ class DoubleHCustomize():
         if training_type == 'with_Mjj' :
             self.process.flashggDoubleHTag.MVABoundaries = cms.vdouble(0.33,0.56, 0.70)
             self.process.flashggDoubleHTag.MXBoundaries = cms.vdouble(250., 375.,470.,600.,250.,325.,365.,585.,250.,330.,360.,520.)
-            self.process.flashggDoubleHTag.ttHScoreThreshold = cms.double(0.24)
+            self.process.flashggDoubleHTag.ttHScoreThreshold = cms.double(0.) #0.24
         elif training_type == 'wo_Mjj' :
             self.process.flashggDoubleHTag.MVAConfig.variables.pop(0) 
             self.process.flashggDoubleHTag.MVABoundaries = cms.vdouble(0.30,0.54, 0.75)
