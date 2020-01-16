@@ -6,6 +6,7 @@ using namespace flashgg;
 
 TagTruthBase::TagTruthBase()
 {
+    genPV_ = Point();
     stage0bin_ = 0;
     stage1bin_ = 0;
     stage1p1bin_ = 0;

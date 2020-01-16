@@ -13,7 +13,6 @@
 #include "DataFormats/Common/interface/RefToPtr.h"
 
 #include "flashgg/DataFormats/interface/PDFWeightObject.h"
-#include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
 
 #include <TLorentzVector.h>
 #include <vector>
@@ -43,7 +42,6 @@ namespace flashgg {
         EDGetTokenT<View<VBFMVAResult> >           vbfMvaResultToken_;
         EDGetTokenT<View<DiPhotonMVAResult> >      mvaResultToken_;
         edm::EDGetTokenT<vector<flashgg::PDFWeightObject> > WeightToken_;
-        EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
 
         string systLabel_;
 
@@ -66,9 +64,6 @@ namespace flashgg {
             tokenJets_.push_back(token);
         }
 
-        ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );    
-        newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
-
         rawDiphoBounds_ = iConfig.getParameter<std::vector<double> > ("rawDiphoBounds");
         rawDijetBounds_ = iConfig.getParameter<std::vector<double> > ("rawDijetBounds");
         rawGghBounds_   = iConfig.getParameter<std::vector<double> > ("rawGghBounds");
@@ -79,10 +74,6 @@ namespace flashgg {
 
     void StageOneCombinedTagProducer::produce( Event &evt, const EventSetup & )
     {
-
-        Handle<HTXS::HiggsClassification> htxsClassification;   
-        evt.getByToken(newHTXSToken_,htxsClassification);
-
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
         

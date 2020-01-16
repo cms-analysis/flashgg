@@ -77,6 +77,7 @@ namespace flashgg {
         bool blindedSelectionPrintout_;
 
         bool createNoTag_;
+        bool setHTXSinfo_;
         EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
         EDGetTokenT<View<reco::GenParticle> >      genPartToken_;
 
@@ -115,6 +116,7 @@ namespace flashgg {
         storeOtherTagInfo_ = iConfig.getParameter<bool>( "StoreOtherTagInfo" );
         blindedSelectionPrintout_ = iConfig.getParameter<bool>("BlindedSelectionPrintout");
         createNoTag_ = iConfig.getParameter<bool>("CreateNoTag");
+        setHTXSinfo_ = iConfig.getParameter<bool>("SetHTXSinfo");
 
         const auto &vpset = iConfig.getParameterSetVector( "TagPriorityRanges" );
 
@@ -238,6 +240,7 @@ namespace flashgg {
                 SelectedTag->push_back( *TagVectorEntry->ptrAt( chosen_i ) );
 
                 TagTruthBase truth;
+                if( TagVectorEntry->ptrAt( chosen_i )->tagTruth().isNonnull() ) { truth = *(TagVectorEntry->ptrAt( chosen_i )->tagTruth()->clone()); }
                 if( ! evt.isRealData() ) {
                     Handle<View<reco::GenParticle> > genParticles;
                     evt.getByToken( genPartToken_, genParticles );
@@ -250,13 +253,15 @@ namespace flashgg {
                         }
                     }
                     truth.setGenPV( higgsVtx );
-                    truth.setHTXSInfo( htxsClassification->stage0_cat,
+                    if( htxsClassification.isValid() && setHTXSinfo_ ) { 
+                        truth.setHTXSInfo( htxsClassification->stage0_cat,
                                            htxsClassification->stage1_cat_pTjet30GeV,
                                            htxsClassification->stage1_1_cat_pTjet30GeV,
                                            htxsClassification->stage1_1_fine_cat_pTjet30GeV,
                                            htxsClassification->jets30.size(),
                                            htxsClassification->p4decay_higgs.pt(),
                                            htxsClassification->p4decay_V.pt() );
+                    }
                     if( isGluonFusion_ ) {
                         int stxsNjets = htxsClassification->jets30.size();
                         float stxsPtH = htxsClassification->p4decay_higgs.pt();
@@ -366,7 +371,7 @@ namespace flashgg {
             SelectedTag->back().setStage1recoTag(flashgg::DiPhotonTagBase::NOTAG);
             edm::RefProd<edm::OwnVector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<edm::OwnVector<TagTruthBase> >();
             TagTruthBase truth_obj;
-            if ( htxsClassification.isValid() ) {
+            if ( htxsClassification.isValid() && setHTXSinfo_ ) {
                 truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
                                        htxsClassification->stage1_cat_pTjet30GeV,
                                        htxsClassification->stage1_1_cat_pTjet30GeV,
@@ -374,8 +379,6 @@ namespace flashgg {
                                        htxsClassification->jets30.size(),
                                        htxsClassification->p4decay_higgs.pt(),
                                        htxsClassification->p4decay_V.pt() );
-            } else {
-                truth_obj.setHTXSInfo( 0, 0, 0, 0, 0, 0., 0. );
             }
             if( isGluonFusion_ ) {
                 int stxsNjets = htxsClassification->jets30.size();

@@ -26,8 +26,6 @@
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
 
-#include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
-
 #include <vector>
 #include <algorithm>
 #include <string>
@@ -44,8 +42,6 @@ namespace flashgg {
     {
 
     public:
-        typedef math::XYZPoint Point;
-
         WHLeptonicTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
@@ -60,7 +56,6 @@ namespace flashgg {
         EDGetTokenT<View<flashgg::Met> > METToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
-        EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
         EDGetTokenT<double> rhoTag_;
         string systLabel_;
         edm::EDGetTokenT<edm::TriggerResults> triggerRECO_;
@@ -157,9 +152,6 @@ namespace flashgg {
         useElectronMVARecipe_=iConfig.getParameter<bool>("useElectronMVARecipe");
         useElectronLooseID_=iConfig.getParameter<bool>("useElectronLooseID");
         
-        ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
-        newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
-
         for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
             auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
             tokenJets_.push_back(token);
@@ -170,10 +162,6 @@ namespace flashgg {
 
     void WHLeptonicTagProducer::produce( Event &evt, const EventSetup & )
     {
-        Handle<HTXS::HiggsClassification> htxsClassification;
-        evt.getByToken(newHTXSToken_,htxsClassification);
-
-
         JetCollectionVector Jets( inputTagJets_.size() );
         for( size_t j = 0; j < inputTagJets_.size(); ++j ) {
             evt.getByToken( tokenJets_[j], Jets[j] );
@@ -208,7 +196,6 @@ namespace flashgg {
         assert( diPhotons->size() == mvaResults->size() );
 
         std::unique_ptr<vector<VHTagTruth> > truths( new vector<VHTagTruth> );
-        Point higgsVtx;
         bool associatedZ=0;
         bool associatedW=0;
         bool VhasDaughters=0;
@@ -302,11 +289,6 @@ namespace flashgg {
                                             {VhasHadrons=1;}
                                         
                                     }
-                            }
-                        if( pdgid == 25 || pdgid == 22 )
-                            {
-                                higgsVtx = genParticles->ptrAt( genLoop )->vertex();
-                                continue;
                             }
                     }
             }
@@ -412,18 +394,6 @@ namespace flashgg {
                 if( ! evt.isRealData() ) 
                     {
                         VHTagTruth truth_obj;
-                        truth_obj.setGenPV( higgsVtx );
-                        if ( htxsClassification.isValid() ) {
-                            truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
-                                                   htxsClassification->stage1_cat_pTjet30GeV,
-                                                   htxsClassification->stage1_1_cat_pTjet30GeV,
-                                                   htxsClassification->stage1_1_fine_cat_pTjet30GeV,
-                                                   htxsClassification->jets30.size(),
-                                                   htxsClassification->p4decay_higgs.pt(),
-                                                   htxsClassification->p4decay_V.pt() );
-                        } else {
-                            truth_obj.setHTXSInfo( 0, 0, 0, 0, 0, 0., 0. );
-                        }
                         truth_obj.setAssociatedZ( associatedZ );
                         truth_obj.setAssociatedW( associatedW );
                         truth_obj.setVhasDaughters( VhasDaughters );

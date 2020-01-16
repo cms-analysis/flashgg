@@ -22,10 +22,7 @@
 
 #include "DataFormats/Math/interface/deltaR.h"
 
-#include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
-#include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
-
 
 #include <vector>
 #include <algorithm>
@@ -45,8 +42,6 @@ namespace flashgg {
     {
 
     public:
-        typedef math::XYZPoint Point;
-
         TTHDiLeptonTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
@@ -61,8 +56,6 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<Photon> > photonToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
-        EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
-        EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
         EDGetTokenT<double> rhoTag_;
         string systLabel_;
 
@@ -137,7 +130,6 @@ namespace flashgg {
         METToken_( consumes<View<flashgg::Met> >( iConfig.getParameter<InputTag>( "MetTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
-        genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         rhoTag_( consumes<double>( iConfig.getParameter<InputTag>( "rhoTag" ) ) ),
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
     {
@@ -175,9 +167,6 @@ namespace flashgg {
         debug_ = iConfig.getParameter<bool>( "debug" );
         CutBasedDiphoId_ = iConfig.getParameter<std::vector<double>>( "CutBasedDiphoId" );
 
-        ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
-        newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
-
         MVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "MVAweightfile" );
 
         DiphotonMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
@@ -211,14 +200,10 @@ namespace flashgg {
             tokenJets_.push_back(token);
         }
         produces<vector<TTHDiLeptonTag> >();
-        produces<vector<TagTruthBase> >();
     }
 
     void TTHDiLeptonTagProducer::produce( Event &evt, const EventSetup & )
     {
-        Handle<HTXS::HiggsClassification> htxsClassification;
-        evt.getByToken(newHTXSToken_,htxsClassification);
-
         //Handle<View<flashgg::Jet> > theJets;
         //evt.getByToken( thejetToken_, theJets );
         //const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
@@ -243,8 +228,6 @@ namespace flashgg {
         Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
         evt.getByToken( mvaResultToken_, mvaResults );
 
-        Handle<View<reco::GenParticle> > genParticles;
-
         Handle<View<reco::Vertex> > vertices;
         evt.getByToken( vertexToken_, vertices );
 
@@ -253,25 +236,6 @@ namespace flashgg {
 
 
         std::unique_ptr<vector<TTHDiLeptonTag> > tthtags( new vector<TTHDiLeptonTag> );
-        std::unique_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
-        edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
-        unsigned int idx = 0;
-
-        Point higgsVtx;
-
-        if( ! evt.isRealData() )
-        {
-            evt.getByToken( genParticleToken_, genParticles );
-            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ )
-            {
-                int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-                if( pdgid == 25 || pdgid == 22 )
-                {
-                    higgsVtx = genParticles->ptrAt( genLoop )->vertex();
-                    break;
-                }
-            }
-        }
 
         assert( diPhotons->size() == mvaResults->size() );
 
@@ -605,29 +569,10 @@ namespace flashgg {
                 tthtags_obj.setMvaRes(mvaValue);
                 tthtags->push_back( tthtags_obj );
 
-                if( !evt.isRealData() )
-                {
-                    TagTruthBase truth_obj;
-                    truth_obj.setGenPV( higgsVtx );
-                    if ( htxsClassification.isValid() ) {
-                        truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
-                                               htxsClassification->stage1_cat_pTjet30GeV,
-                                               htxsClassification->stage1_1_cat_pTjet30GeV,
-                                               htxsClassification->stage1_1_fine_cat_pTjet30GeV,
-                                               htxsClassification->jets30.size(),
-                                               htxsClassification->p4decay_higgs.pt(),
-                                               htxsClassification->p4decay_V.pt() );
-                    } else {
-                        truth_obj.setHTXSInfo( 0, 0, 0, 0, 0, 0., 0. );
-                    }
-                    truths->push_back( truth_obj );
-                    tthtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
-                }
              }
         }//diPho loop end !
 
         evt.put( std::move(tthtags) );
-        evt.put( std::move(truths) );
     }
 
 }

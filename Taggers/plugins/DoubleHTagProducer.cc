@@ -36,8 +36,6 @@ namespace flashgg {
     {
 
     public:
-        typedef math::XYZPoint Point;
-
         DoubleHTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
@@ -353,14 +351,6 @@ namespace flashgg {
             Handle<View<reco::GenParticle> > genParticles;
             std::vector<edm::Ptr<reco::GenParticle> > selHiggses;
             evt.getByToken( genParticleToken_, genParticles );
-            Point higgsVtx(0.,0.,0.);
-            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
-                int pdgid = genParticles->ptrAt( genLoop )->pdgId(); 
-                if( pdgid == 25 || pdgid == 22 ) {
-                    higgsVtx = genParticles->ptrAt( genLoop )->vertex();
-                    break;
-                }
-            }
             for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
                edm::Ptr<reco::GenParticle> genPar = genParticles->ptrAt(genLoop);
                if (selHiggses.size()>1) break;
@@ -375,7 +365,6 @@ namespace flashgg {
                 genMhh  = (H1+H2).M();
                 genCosThetaStar_CS = getGenCosThetaStar_CS(H1,H2);   
             }
-            truth_obj.setGenPV( higgsVtx );
             truths->push_back( truth_obj );
         }
 

@@ -1,6 +1,5 @@
 import FWCore.ParameterSet.Config as cms
 from flashgg.MicroAOD.flashggJets_cfi import flashggBTag, flashggDeepCSV, UnpackedJetCollectionVInputTag, maxJetCollections
-from flashgg.Taggers.flashggStageOneCombinedTag_cfi import HTXSInputTags
 
 bDiscriminator74X = cms.vdouble(0.605,0.890)
 bDiscriminator76X = cms.vdouble(0.460,0.800,0.935)
@@ -12,10 +11,8 @@ flashggUntagged = cms.EDProducer("FlashggUntaggedTagProducer",
                                  DiPhotonTag    = cms.InputTag('flashggPreselectedDiPhotons'),
                                  SystLabel      = cms.string(""),
                                  MVAResultTag   = cms.InputTag('flashggDiPhotonMVA'),
-                                 GenParticleTag = cms.InputTag( "flashggPrunedGenParticles" ),
                                  Boundaries     = cms.vdouble(-0.405,0.204,0.564,0.864), #,1.000),
-                                 RequireScaledPtCuts = cms.bool(True),
-                                 HTXSTags     = HTXSInputTags
+                                 RequireScaledPtCuts = cms.bool(True)
 )
 
 flashggSigmaMoMpToMTag = cms.EDProducer("FlashggSigmaMpTTagProducer",
@@ -23,7 +20,6 @@ flashggSigmaMoMpToMTag = cms.EDProducer("FlashggSigmaMpTTagProducer",
                                  DiPhotonTag    = cms.InputTag('flashggPreselectedDiPhotons'),
                                  SystLabel      = cms.string(""),
                                  MVAResultTag   = cms.InputTag('flashggDiPhotonMVA'),
-                                 GenParticleTag = cms.InputTag( "flashggPrunedGenParticles" ),
                                  BoundariesSigmaMoM  = cms.vdouble(0.,0.00764,0.0109,0.0288), #boundaries have to be provided including lowest and highest
 #                                 BoundariespToM      = cms.vdouble(0.,1.02,1.83,10.0), #,1.000), #boundaries have to be provided including lowest and highest
                                  RequireScaledPtCuts = cms.bool(True)
@@ -54,7 +50,6 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        MuonTag=cms.InputTag('flashggSelectedMuons'),
                                        VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
                                        METTag=cms.InputTag('flashggMets'),
-                                       GenParticleTag=cms.InputTag( 'flashggPrunedGenParticles' ),  
                                        rhoTag = cms.InputTag('fixedGridRhoFastjetAll'),
 #                                       tthMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_tth_hadronic_2017Data_35vars_v0.weights.xml"),
                                        tthMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_tth_hadronic_2017Data_30vars_v0.weights.xml"),
@@ -104,8 +99,7 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        ElePhotonDrCut = cms.double(0.),
                                        ElePhotonZMassCut = cms.double(5),
                                        DeltaRTrkEle = cms.double(0.),
-                                       debug = cms.bool(False),
-                                       HTXSTags     = HTXSInputTags                                     
+                                       debug = cms.bool(False)
                                        )
 
 
@@ -138,8 +132,7 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                VBFPreselLeadPtMin = cms.double(40.),
                                VBFPreselSubleadPtMin = cms.double(30.),
                                VBFPreselPhoIDMVAMin = cms.double(-0.2),
-                               GetQCDWeights = cms.bool(False),
-                               HTXSTags     = HTXSInputTags
+                               GetQCDWeights = cms.bool(False)
                                )
 
 
@@ -158,8 +151,7 @@ flashggVHEtTag = cms.EDProducer("FlashggVHEtTagProducer",
                                 metPtThreshold = cms.double(70),
                                 dPhiDiphotonMetThreshold = cms.double(2.1),
                                 diphoMVAThreshold= cms.double(-1.0),
-                                phoIdMVAThreshold= cms.double(-0.9),
-                                 HTXSTags     = HTXSInputTags
+                                phoIdMVAThreshold= cms.double(-0.9)
                                 #Boundaries=cms.vdouble(0.21,0.6,0.81)
 )
 
@@ -224,8 +216,7 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
                                        UseCutBasedDiphoId = cms.bool(False),
                                        SplitDiLeptEv = cms.bool(True),
                                        debug = cms.bool(False),
-                                       CutBasedDiphoId = cms.vdouble(0.4,0.3,0.0,-0.5,2.0,2.5),    # pT/m lead, pT/m sublead, leadIdMVA, subleadIdMVA, DeltaEta, DeltaPhi
-                                       HTXSTags     = HTXSInputTags
+                                       CutBasedDiphoId = cms.vdouble(0.4,0.3,0.0,-0.5,2.0,2.5)    # pT/m lead, pT/m sublead, leadIdMVA, subleadIdMVA, DeltaEta, DeltaPhi
 )
 
 flashggTHQLeptonicTag = cms.EDProducer("FlashggTHQLeptonicTagProducer",
@@ -270,8 +261,7 @@ flashggTHQLeptonicTag = cms.EDProducer("FlashggTHQLeptonicTagProducer",
                                        MVAThreshold_thq = cms.double(0.01),
                                        likelihoodThreshold_thq = cms.double(0.5),
                                        thqleptonicMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_BDT_thq_24April19.weights.xml"),
-                                       likelihood_input = cms.FileInPath("flashgg/Taggers/data/LikelihoodInput_file.root"),
-                                      # HTXSTags     = HTXSInputTags
+                                       likelihood_input = cms.FileInPath("flashgg/Taggers/data/LikelihoodInput_file.root")
 )
 
 
@@ -285,7 +275,6 @@ flashggTTHDiLeptonTag = cms.EDProducer("FlashggTTHDiLeptonTagProducer",
                                        MuonTag=cms.InputTag('flashggSelectedMuons'),
 				       MetTag=cms.InputTag( 'flashggMets' ), 
                                        VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'),
-                                       GenParticleTag=cms.InputTag( "flashggPrunedGenParticles" ),
 				       rhoTag = cms.InputTag('fixedGridRhoFastjetAll'),
                                        MVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_BDT_training_v2.json.weights.xml"),
                                        leadPhoOverMassThreshold = cms.double(0.33),
@@ -315,7 +304,6 @@ flashggTTHDiLeptonTag = cms.EDProducer("FlashggTTHDiLeptonTagProducer",
 				       UseCutBasedDiphoId = cms.bool(False),
 				       debug = cms.bool(False),
 				       CutBasedDiphoId = cms.vdouble(0.4,0.3,0.0,-0.5,2.0,2.5),    # pT/m lead, pT/m sublead, leadIdMVA, subleadIdMVA, DeltaEta, DeltaPhi
-                                       HTXSTags     = HTXSInputTags
 
 )
 
@@ -364,8 +352,7 @@ flashggVHLooseTag = cms.EDProducer("FlashggVHLooseTagProducer",
                                    electronIsoThreshold = cms.double(0.15),
                                    electronNumOfHitsThreshold = cms.double(1),
                                    useElectronMVARecipe = cms.bool(False),
-                                   useElectronLooseID = cms.bool(True),
-                                   HTXSTags     = HTXSInputTags
+                                   useElectronLooseID = cms.bool(True)
 				    )
 
 flashggVHTightTag = cms.EDProducer("FlashggVHTightTagProducer",
@@ -419,8 +406,7 @@ flashggVHTightTag = cms.EDProducer("FlashggVHTightTagProducer",
                                    electronIsoThreshold = cms.double(0.15),
                                    electronNumOfHitsThreshold = cms.double(1),
                                    useElectronMVARecipe = cms.bool(False),
-                                   useElectronLooseID = cms.bool(True),
-                                   HTXSTags     = HTXSInputTags
+                                   useElectronLooseID = cms.bool(True)
 )
 
 flashggVHMetTag = cms.EDProducer("FlashggVHMetTagProducer",
@@ -444,8 +430,7 @@ flashggVHMetTag = cms.EDProducer("FlashggVHMetTagProducer",
                                  deltaRPhoLeadJet = cms.double(0.5),
                                  deltaRPhoSubLeadJet = cms.double(0.5),
                                  diphoMVAThreshold= cms.double(0.6),
-                                 phoIdMVAThreshold= cms.double(-0.9),
-                                 HTXSTags     = HTXSInputTags
+                                 phoIdMVAThreshold= cms.double(-0.9)
                                  #Boundaries=cms.vdouble(0.21,0.6,0.81)                                                                            
 )
 
@@ -484,8 +469,7 @@ flashggZHLeptonicTag = cms.EDProducer("FlashggZHLeptonicTagProducer",
                                    electronIsoThreshold = cms.double(0.15),
                                    electronNumOfHitsThreshold = cms.double(1),
                                    useElectronMVARecipe = cms.bool(False),
-                                   useElectronLooseID = cms.bool(True),
-                                      HTXSTags     = HTXSInputTags
+                                   useElectronLooseID = cms.bool(True)
 )
 
 flashggWHLeptonicTag = cms.EDProducer("FlashggWHLeptonicTagProducer",
@@ -530,8 +514,7 @@ flashggWHLeptonicTag = cms.EDProducer("FlashggWHLeptonicTagProducer",
                                    electronIsoThreshold = cms.double(0.15),
                                    electronNumOfHitsThreshold = cms.double(1),
                                    useElectronMVARecipe = cms.bool(False),
-                                   useElectronLooseID = cms.bool(True),
-                                      HTXSTags     = HTXSInputTags
+                                   useElectronLooseID = cms.bool(True)
                                     )
 flashggVHLeptonicLooseTag = cms.EDProducer("FlashggVHLeptonicLooseTagProducer",
                                    DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
@@ -578,8 +561,7 @@ flashggVHLeptonicLooseTag = cms.EDProducer("FlashggVHLeptonicLooseTagProducer",
                                    electronIsoThreshold = cms.double(0.15),
                                    electronNumOfHitsThreshold = cms.double(1),
                                    useElectronMVARecipe = cms.bool(False),
-                                   useElectronLooseID = cms.bool(True),
-                                           HTXSTags     = HTXSInputTags
+                                   useElectronLooseID = cms.bool(True)
 )
 
 
@@ -602,8 +584,7 @@ flashggVHHadronicTag = cms.EDProducer("FlashggVHHadronicTagProducer",
                                       dijetMassLowThreshold = cms.double(60.),
                                       dijetMassHighThreshold = cms.double(120.),
                                       cosThetaStarThreshold = cms.double(0.5),
-                                      phoIdMVAThreshold = cms.double(-0.9),
-                                      HTXSTags     = HTXSInputTags
+                                      phoIdMVAThreshold = cms.double(-0.9)
 )
 
 # Tag is for jet studies only, not in default sequence
