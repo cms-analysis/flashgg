@@ -28,7 +28,7 @@
 #include "DataFormats/Common/interface/TriggerResults.h"
 
 #include "flashgg/Taggers/interface/BDT_resolvedTopTagger.h"
-#include "flashgg/Taggers/interface/DNN_Helper.h"
+#include "flashgg/Taggers/interface/TTH_DNN_Helper.h"
 
 #include <vector>
 #include <algorithm>
@@ -217,8 +217,8 @@ namespace flashgg {
         vector<double> boundaries;
 
         BDT_resolvedTopTagger *topTagger;
-        DNN_Helper* dnn_dipho;
-        DNN_Helper* dnn_ttGG;
+        TTH_DNN_Helper* dnn_dipho;
+        TTH_DNN_Helper* dnn_ttGG;
 
         bool modifySystematicsWorkflow;
         std::vector<std::string> systematicsLabels;
@@ -556,8 +556,8 @@ namespace flashgg {
         if (useLargeMVAs) {
             topTagger = new BDT_resolvedTopTagger(topTaggerXMLfile_.fullPath());
 
-            dnn_dipho = new DNN_Helper(tthVsDiphoDNNfile_.fullPath());
-            dnn_ttGG  = new DNN_Helper(tthVsttGGDNNfile_.fullPath());
+            dnn_dipho = new TTH_DNN_Helper(tthVsDiphoDNNfile_.fullPath());
+            dnn_ttGG  = new TTH_DNN_Helper(tthVsttGGDNNfile_.fullPath());
 
             dnn_dipho->SetInputShapes(18, 8, 8);
             dnn_ttGG->SetInputShapes(18, 8, 8);
@@ -587,7 +587,8 @@ namespace flashgg {
         // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
         int n;
         for( n = 0 ; n < ( int )boundaries.size() ; n++ ) {
-            if( ( double )tthmvavalue > boundaries[boundaries.size() - n - 1] ) { return n; }
+            //if( ( double )tthmvavalue > boundaries[boundaries.size() - n - 1] ) { return n; }
+            if( ( double )tthmvavalue > boundaries[boundaries.size() - n - 1] ) { cout << "Hadronic cat " << n << endl; return n; }
         }
         return -1; // Does not pass, object will not be produced
     }
@@ -1328,5 +1329,10 @@ namespace flashgg {
 }
 typedef flashgg::TTHHadronicTagProducer FlashggTTHHadronicTagProducer;
 DEFINE_FWK_MODULE( FlashggTTHHadronicTagProducer );
-
-
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4

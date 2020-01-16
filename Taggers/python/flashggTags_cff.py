@@ -46,12 +46,12 @@ flashggSigmaMoMpToMTag = cms.EDProducer("FlashggSigmaMpTTagProducer",
                                  RequireScaledPtCuts = cms.bool(True)
 )
 
-import DNNPreprocessingConstructor, os
+import TTHDNNPreprocessingConstructor, os
 ttHHadronic_ttH_vs_ttGG_DNN_preprocess_scheme_path = os.path.expandvars("$CMSSW_BASE/src/flashgg/Taggers/data/metadata_Hadronic_ttHHadronic_ttH_vs_ttGG_v3.10_8Oct2019.json")
-ttHHadronic_ttH_vs_ttGG_DNN_preprocess_scheme = DNNPreprocessingConstructor.construct(ttHHadronic_ttH_vs_ttGG_DNN_preprocess_scheme_path, "Hadronic")
+ttHHadronic_ttH_vs_ttGG_DNN_preprocess_scheme = TTHDNNPreprocessingConstructor.construct(ttHHadronic_ttH_vs_ttGG_DNN_preprocess_scheme_path, "Hadronic")
 
 ttHHadronic_ttH_vs_dipho_DNN_preprocess_scheme_path = os.path.expandvars("$CMSSW_BASE/src/flashgg/Taggers/data/metadata_Hadronic_ttHHadronic_ttH_vs_dipho_v3.10_8Oct2019.json")
-ttHHadronic_ttH_vs_dipho_DNN_preprocess_scheme = DNNPreprocessingConstructor.construct(ttHHadronic_ttH_vs_dipho_DNN_preprocess_scheme_path, "Hadronic")
+ttHHadronic_ttH_vs_dipho_DNN_preprocess_scheme = TTHDNNPreprocessingConstructor.construct(ttHHadronic_ttH_vs_dipho_DNN_preprocess_scheme_path, "Hadronic")
 
 flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        DiPhotonName=cms.string('flashggPreselectedDiPhotons'),
@@ -190,7 +190,7 @@ flashggVHEtTag = cms.EDProducer("FlashggVHEtTagProducer",
 )
 
 ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme_path = os.path.expandvars("$CMSSW_BASE/src/flashgg/Taggers/data/metadata_Leptonic_ttHLeptonic_ttH_vs_ttGG_v3.10_8Oct2019.json")
-ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme = DNNPreprocessingConstructor.construct(ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme_path, "Leptonic")
+ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme = TTHDNNPreprocessingConstructor.construct(ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme_path, "Leptonic")
 
 
 flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",

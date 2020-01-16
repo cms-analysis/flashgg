@@ -27,7 +27,7 @@
 #include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
 
 #include "flashgg/Taggers/interface/BDT_resolvedTopTagger.h"
-#include "flashgg/Taggers/interface/DNN_Helper.h"
+#include "flashgg/Taggers/interface/TTH_DNN_Helper.h"
 
 #include <vector>
 #include <algorithm>
@@ -212,7 +212,7 @@ namespace flashgg {
         float tthMvaVal_RunII_;
 
         BDT_resolvedTopTagger *topTagger;
-        DNN_Helper* dnn;
+        TTH_DNN_Helper* dnn;
 
         bool modifySystematicsWorkflow;
         std::vector<std::string> systematicsLabels;
@@ -610,7 +610,7 @@ namespace flashgg {
 
         if (useLargeMVAs) {
             topTagger = new BDT_resolvedTopTagger(topTaggerXMLfile_.fullPath());
-            dnn = new DNN_Helper(tthVsttGGDNNfile_.fullPath());
+            dnn = new TTH_DNN_Helper(tthVsttGGDNNfile_.fullPath());
             dnn->SetInputShapes(19, 9, 8);
             dnn->SetPreprocessingSchemes(tthVsttGGDNN_global_mean_, tthVsttGGDNN_global_stddev_, tthVsttGGDNN_object_mean_, tthVsttGGDNN_object_stddev_);
         }
@@ -637,7 +637,8 @@ namespace flashgg {
         // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
         int n;
         for( n = 0 ; n < ( int )MVAThreshold_.size() ; n++ ) {
-            if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { return n; }
+            //if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { return n; }
+            if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { cout << "Leptonic cat " << n; return n; }
         }
 
       if(debug_)
@@ -1518,4 +1519,3 @@ DEFINE_FWK_MODULE( FlashggTTHLeptonicTagProducer );
 // c-basic-offset:4
 // End:
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
-
