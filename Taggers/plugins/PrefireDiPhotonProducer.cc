@@ -16,6 +16,7 @@
 #include "DataFormats/Math/interface/deltaR.h"
 #include "DataFormats/Math/interface/deltaPhi.h"
 #include <string>
+#include <algorithm>
 
 using namespace std;
 using namespace edm;
@@ -30,6 +31,7 @@ namespace flashgg {
         void produce( Event &, const EventSetup & ) override;
 
         double getProb( TH2F*, double, double );
+        double getProbUnc( TH2F*, double, double );
 
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
 
@@ -84,6 +86,11 @@ namespace flashgg {
         return hist->GetBinContent( hist->FindBin(eta, pt) );
     }
 
+    double PrefireDiPhotonProducer::getProbUnc( TH2F* hist, double eta, double pt )
+    {
+        return hist->GetBinError( hist->FindBin(eta, pt) );
+    }
+
     void PrefireDiPhotonProducer::produce( Event &evt, const EventSetup & )
     {
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
@@ -103,7 +110,8 @@ namespace flashgg {
             // 1 - product_over_jets( 1 - p(jet_prefires) )
 
             double prefireProd = 1.;
-           
+            double prefireProdUnc = 0.;
+
             if (isRelevant_) {
                 unsigned int jetCollectionIndex = diPhotons->ptrAt( candIndex )->jetCollectionIndex();
                 for( UInt_t jetLoop = 0; jetLoop < Jets[jetCollectionIndex]->size() ; jetLoop++ ) {
@@ -113,10 +121,21 @@ namespace flashgg {
                     bool nearLead  = deltaR( dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi(), jet->eta(), jet->phi() ) < 0.4;
                     bool nearSublead = deltaR( dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi(), jet->eta(), jet->phi() ) < 0.4;
                     double objProb = -1.;
-                    if (nearLead) { objProb = getProb(photonHist_, dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->pt()); }
-                    else if (nearSublead) { objProb = getProb(photonHist_, dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->pt()); }
-                    else { objProb = getProb(jetHist_, jet->eta(), jet->pt()); }
+                    double objProbUnc = -1;
+                    if (nearLead) {
+                        objProb = getProb(photonHist_, dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->pt());
+                        objProbUnc = getProbUnc(photonHist_, dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->pt());
+                    }
+                    else if (nearSublead) {
+                        objProb = getProb(photonHist_, dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->pt());
+                        objProbUnc = getProbUnc(photonHist_, dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->pt());
+                    }
+                    else {
+                        objProb = getProb(jetHist_, jet->eta(), jet->pt());
+                        objProbUnc = getProbUnc(jetHist_, jet->eta(), jet->pt());
+                    }
                     prefireProd *= 1. - objProb;
+                    prefireProdUnc += pow(objProbUnc, 2); // add statistical uncs in quadrature
                 }
             }
       
@@ -124,12 +143,21 @@ namespace flashgg {
             if (prefireProbability < 0. || prefireProbability > 1.) {
                 throw cms::Exception("Unphysical probablility found");
             }
+
+            prefireProdUnc = pow(prefireProdUnc, 0.5);
+
+            double prefireProbabilityUnc = std::max(0.2 * prefireProbability, prefireProdUnc);
+
             flashgg::DiPhotonCandidate *updatedDipho = dipho->clone();
             updatedDipho->setWeight("prefireProbability", prefireProbability);
             if (applyToCentral_) {
                 double newCentralWeight = updatedDipho->centralWeight() * (1. - prefireProbability);
                 updatedDipho->setCentralWeight( newCentralWeight );
             }
+
+            updatedDipho->setWeight("prefireProbabilityUp01sigma", prefireProbability + prefireProbabilityUnc);
+            updatedDipho->setWeight("prefireProbabilityDown01sigma", std::max(0., prefireProbability - prefireProbabilityUnc));
+
             updatedDiphotons->push_back(*updatedDipho);
             delete updatedDipho;
         }

@@ -318,4 +318,5 @@ def customizeForL1Prefiring(process, options, processId):
             applyToCentral = False
 
         getattr(process, "flashggPrefireDiPhotons").applyToCentral = cms.bool(applyToCentral)
+    return isRelevant and applyToCentral
 
