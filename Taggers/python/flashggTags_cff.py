@@ -192,6 +192,10 @@ flashggVHEtTag = cms.EDProducer("FlashggVHEtTagProducer",
 ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme_path = os.path.expandvars("$CMSSW_BASE/src/flashgg/Taggers/data/metadata_Leptonic_ttHLeptonic_ttH_vs_ttGG_v3.10_8Oct2019.json")
 ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme = TTHDNNPreprocessingConstructor.construct(ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme_path, "Leptonic")
 
+ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme_path = os.path.expandvars("$CMSSW_BASE/src/flashgg/Taggers/data/metadata_Leptonic_ttHLeptonic_ttH_vs_tH_v4.14_ttH_vs_tH_13Jan2020.json")
+ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme = TTHDNNPreprocessingConstructor.construct(ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme_path, "Leptonic", True)
+
+print "Len of global features", len(ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme["global_mean"])
 
 flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
                                        DiPhotonName=cms.string('flashggPreselectedDiPhotons'),
@@ -223,6 +227,11 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
                                        tthVsttGGDNN_global_stddev = ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme["global_stddev"],
                                        tthVsttGGDNN_object_mean = ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme["object_mean"],
                                        tthVsttGGDNN_object_stddev = ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme["object_stddev"],
+                                       tthVstHDNNfile = cms.FileInPath("flashgg/Taggers/data/Leptonic_ttHLeptonic_ttH_vs_tH_v4.14_ttH_vs_tH_13Jan2020_weights.pb"),
+                                       tthVstHDNN_global_mean = ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme["global_mean"],
+                                       tthVstHDNN_global_stddev = ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme["global_stddev"],
+                                       tthVstHDNN_object_mean = ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme["object_mean"],
+                                       tthVstHDNN_object_stddev = ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme["object_stddev"],
                                        tthMVA_RunII_weightfile = cms.FileInPath("flashgg/Taggers/data/Leptonic__v3.10_8Oct2019_RunII_MVA_Presel_addDNNs__bdt.xml"),
                                        leadPhoOverMassThreshold = cms.double(0.0),
                                        subleadPhoOverMassThreshold = cms.double(0.0),
@@ -232,7 +241,7 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
                                        jetsNumberThreshold = cms.double(1.),
                                        bjetsNumberThreshold = cms.double(0.),
                                        jetPtThreshold = cms.double(25.), 
-                                       jetEtaThreshold= cms.double(2.4),
+                                       jetEtaThreshold= cms.double(5.0),
                                        deltaRJetLeadPhoThreshold = cms.double(0.4),
                                        deltaRJetSubLeadPhoThreshold = cms.double(0.4),
                                        deltaRJetLepton = cms.double(0.4),
