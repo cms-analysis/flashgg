@@ -62,6 +62,9 @@ namespace flashgg {
     edm::Service<TFileService> fs;
     
     TH1F* indexes;
+    TH1F* btags;
+    TH1F* hashighbtag;
+
     // TH1F* numDiphoCand; 
     // TH1F* diphoton_idx_h;
     // TH1F* diPhotons_size_h;
@@ -163,6 +166,9 @@ namespace flashgg {
     vector<double> electronEtaThresholds_;
     bool useElectronMVARecipe_;
     bool useElectronLooseID_;
+    string bTag_;
+    double btagThresh_;
+
 
     edm::InputTag genInfo_;
     edm::EDGetTokenT<GenEventInfoProduct> genInfoToken_;
@@ -247,6 +253,10 @@ namespace flashgg {
       // diphoton_idx_h = fs->make<TH1F> ("diphoton_idx_h","diphoton_idx_h",20,0,20); 
       // diPhotons_size_h = fs->make<TH1F> ("diPhotons_size_h","diPhotons_size_h",20,0,20); 
       indexes = fs->make<TH1F> ("indexes","indexes",5,0,5);
+      btags = fs->make<TH1F> ("btags","btags",100,0,1);
+      hashighbtag = fs->make<TH1F> ("hashighbtag","hashighbtag",2,0,2);
+
+
       // numEvents = fs->make<TH1F> ("numEvents","numEvents",1,0,10);
 
       // gen_weights = fs->make<TH1F> ("gen_weights","gen_weights",1000,-2,2);
@@ -285,6 +295,9 @@ namespace flashgg {
       electronEtaThresholds_ = pSet.getParameter<vector<double > >( "electronEtaThresholds");
       useElectronMVARecipe_=pSet.getParameter<bool>("useElectronMVARecipe");
       useElectronLooseID_=pSet.getParameter<bool>("useElectronLooseID");
+      bTag_ = pSet.getParameter<string> ( "bTag");
+      btagThresh_ = pSet.getParameter<double>( "btagThresh");
+
 
       // produces<vector<HHWWggTag>>();
       for (auto & systname : systematicsLabels) {
@@ -394,9 +407,13 @@ namespace flashgg {
       int n_good_muons = 0;
       int n_good_leptons = 0;
       int n_good_jets = 0;
+      bool hasHighbTag = 0;
+      float btagVal = 0;
       // double dipho_MVA = -99;
       // double lead_pho_Hgg_MVA = -99, sublead_pho_Hgg_MVA = -99;
       // double CMS_hgg_mass = -99;
+      float bDiscriminatorValue = -2.;
+
       bool passMVAs = 0; // True if leading and subleading photons pass MVA selections 
 
       // Saved Objects after selections
@@ -765,10 +782,10 @@ namespace flashgg {
               {
                   bool keepJet=true;
                   edm::Ptr<flashgg::Jet> thejet = Jets_->ptrAt( candIndex_outer );
-                  // if(!thejet->passesJetID  ( flashgg::Tight2017 ) ) { continue; }
-                  if(thejet->passesJetID  ( flashgg::Tight2017 ) ) {
-                      // number_passed_jetid += 1;
-                    }
+                  if(!thejet->passesJetID  ( flashgg::Tight2017 ) ) { continue; }
+                  // if(thejet->passesJetID  ( flashgg::Tight2017 ) ) {
+                  //     // number_passed_jetid += 1;
+                  //   }
                   if( fabs( thejet->eta() ) > jetEtaThreshold_ ) { keepJet=false; }
 
                   if( thejet->pt() < jetPtThreshold_ ) { keepJet=false; }
@@ -791,10 +808,35 @@ namespace flashgg {
                               float dRJetMuon = deltaR( thejet->eta(), thejet->phi(), muon->eta(), muon->phi() ) ;
                               if( dRJetMuon < deltaRJetMuonThreshold_ ) { keepJet=false; }
                           }
+
+                  // Check btag score 
+                  bDiscriminatorValue = -2.;
+                  // bDiscriminatorValue = thejet->bDiscriminator( bTag_ ); "pfDeepCSVJetTags:probb"
+                  
+                  bDiscriminatorValue = thejet->bDiscriminator( "mini_pfDeepFlavourJetTags:probb" ); 
+                  //bDiscriminatorValue = thejet->bDiscriminator( "pfDeepCSVJetTags:probb" );
+                  if (bDiscriminatorValue != -1) btags->Fill(bDiscriminatorValue);
+                  
+                  // cout << "btag = " << bDiscriminatorValue << endl;
+
                   if(keepJet)
                       tagJets.push_back( thejet );
 
               }
+
+          // If jet collection has a jet suspected to be a b jet, don't save the event 
+          hasHighbTag = 0;
+          for (unsigned int j = 0; j < tagJets.size(); j++){
+            Ptr<flashgg::Jet> jet_ = tagJets[j];
+            btagVal = jet_->bDiscriminator("mini_pfDeepFlavourJetTags:probb");
+            if (btagVal > btagThresh_) hasHighbTag = 1;
+          }
+          if(hasHighbTag){
+            hashighbtag->Fill(1);
+            continue; // Skip event if it has at least one jet with a btag above threshold
+          } 
+
+          else hashighbtag->Fill(0);
 
           n_good_jets = tagJets.size();
           // if (n_good_jets == 1){

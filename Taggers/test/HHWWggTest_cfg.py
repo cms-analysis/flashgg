@@ -56,7 +56,7 @@ cfgTools.addCategories(process.HHWWggCandidateDumper,
                           # Signal Categories
                           # ("SL","(CMS_hgg_mass!=-99) && (CMS_hgg_mass>=100) && (CMS_hgg_mass<=180)",0), # for background model 
                           ("SL","(CMS_hgg_mass!=-99) && (CMS_hgg_mass>=115) && (CMS_hgg_mass<=135)",0), # for signal model 
-                          # ("SL","1",0), # for GEN RECO studies 
+                          # ("SL","1",0), # All events # Not working for some reason 
                           
                           # Data
                           # ("All_HLT_Events","1",0), # All events that passed HLT 
@@ -80,7 +80,9 @@ process.source = cms.Source ("PoolSource",
 # "root://cms-xrd-global.cern.ch//store/group/phys_higgs/cmshgg/atishelm/flashgg/28OctTest/RunIIFall18-4_0_0-75-g71c3c6e9/ggF_X250_WWgg_qqlnugg/RunIIFall17MiniAOD-94X_mc2017_realistic_v11_wPU_MICROAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9/191029_142936/0000/myMicroAODOutputFile_3.root"
 #"root://cms-xrd-global.cern.ch//store/group/phys_higgs/cmshgg/atishelm/flashgg/HHWWgg_v1/94X_mc2017-RunIIFall18/ggF_X250_WWgg_qqlnugg/HHWWgg_v1-94X_mc2017-RunIIFall18-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9/191205_120702/0000/myMicroAODOutputFile_162.root"
 # "file:/eos/cms/store/group/phys_higgs/cmshgg/atishelm/flashgg/HHWWgg_v1/94X_mc2017-RunIIFall18/ggF_X250_WWgg_qqlnugg/HHWWgg_v1-94X_mc2017-RunIIFall18-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9/191205_120702/0000/myMicroAODOutputFile_162.root",
-"file:/eos/cms/store/group/phys_higgs/cmshgg/atishelm/flashgg/HHWWgg_v2-2/94X_mc2017-RunIIFall18/ggF_X250_WWgg_qqlnugg/HHWWgg_v2-2-94X_mc2017-RunIIFall18-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9/191216_220038/0000/myMicroAODOutputFile_9.root",
+
+# "file:/eos/cms/store/group/phys_higgs/cmshgg/atishelm/flashgg/HHWWgg_v2-2/94X_mc2017-RunIIFall18/ggF_X250_WWgg_qqlnugg/HHWWgg_v2-2-94X_mc2017-RunIIFall18-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9/191216_220038/0000/myMicroAODOutputFile_9.root",
+"file:root://cms-xrd-global.cern.ch//store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v2/legacyRun2FullV1/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8/Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/190703_133141/0000/myMicroAODOutputFile_9.root", # ttH
 ## X250                       
 #"file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X250_WWgg_qqlnu.root" # SL      
 # "file:/eos/user/a/atishelm/ntuples/MicroAOD/ggF_X250_WWgg_lnulnu.root" # FL      

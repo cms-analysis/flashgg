@@ -3,7 +3,7 @@ import FWCore.ParameterSet.Config as cms
 # from flashggHHWWggTag_cfi import flashggHHWWggTag
 
 from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
-
+from flashgg.MicroAOD.flashggJets_cfi import flashggDeepCSV
 # print'UnpackedJetCollectionVInputTag = ',UnpackedJetCollectionVInputTag
 
 # cfi = configuration fragment include
@@ -52,6 +52,8 @@ FlashggHHWWggCandidate = cms.EDProducer("FlashggHHWWggCandidateProducer",
                                     rhoTag = cms.InputTag('fixedGridRhoFastjetAll'),
                                     RECOfilters = cms.InputTag('TriggerResults::RECO'),
                                     PATfilters = cms.InputTag('TriggerResults::PAT'),
-                                    FLASHfilters = cms.InputTag('TriggerResults::FLASHggMicroAOD')                                 
+                                    FLASHfilters = cms.InputTag('TriggerResults::FLASHggMicroAOD'),
+                                    bTag = cms.string(flashggDeepCSV),
+                                    btagThresh = cms.double(0.45)                               
                                     )
 # flashggHHWWggTagSequence = cms.Sequence( flashggHHWWggTag ) # not used 

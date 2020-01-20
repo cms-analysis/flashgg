@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 from flashgg.Taggers.globalVariables_cff import globalVariables
 from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag # should include jet systematics 
-from flashgg.MicroAOD.flashggJets_cfi import  maxJetCollections
+from flashgg.MicroAOD.flashggJets_cfi import  maxJetCollections, flashggDeepCSV
 
 # # to not run jets systematics 
 # UnpackedJetCollectionVInputTag =  cms.VInputTag(
@@ -65,6 +65,8 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     rhoTag = cms.InputTag('fixedGridRhoFastjetAll'),
                                     RECOfilters = cms.InputTag('TriggerResults::RECO'),
                                     PATfilters = cms.InputTag('TriggerResults::PAT'),
-                                    FLASHfilters = cms.InputTag('TriggerResults::FLASHggMicroAOD')                                 
+                                    FLASHfilters = cms.InputTag('TriggerResults::FLASHggMicroAOD'),
+                                    bTag = cms.string(flashggDeepCSV),
+                                    btagThresh = cms.double(0.45)                                      
                                     )
 # flashggHHWWggTagSequence = cms.Sequence( flashggHHWWggTag ) # not used 

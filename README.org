@@ -195,6 +195,27 @@ As described in the Candidate Dumper condor instructions above, this can be spec
     . HHWWgg_Run_Jobs.sh --labelName HHWWggTaggerTest --nEvents 1000 --json Taggers/test/HHWWgg_v2-2/HHWWgg_Signal_2017.json -w 
     #+END_EXAMPLE
 
+** nTuple Processing
+
+After your condor jobs are complete, you should have a number of output files, for example 200. If you are running over signal,
+you need to hadd the workspaces in order to obtain a root file with a single combined root workspace to work with fggfinalfit. 
+To hadd workspaces, go to the output directory where your files are. In order to hadd you need a terminal whose present directory is the directory with 
+the output files. From here, you need to cmsenv in flashgg and then run the hadd python script:
+
+    cd <flashgg_location>
+    python <flashgg_location>Systematics/scripts/hadd_all.py
+
+If done properly, this should hadd the files into one, with one workspace. 
+
+Because the name of the RooAbsData object in the RooWorkspace needs to be named properly for fggfinalfit, you can make sure the name is correct for the HHWWgg fggfinalfit
+setup with RenameWorkspace_SignalTagger.cpp for a signal file and RenameWorkspace_DataTagger.cpp for an hadded data file. While in the directory of the hadded signal file, making 
+sure the name of the file is expected in RenameWorkspace_SignalTagger.cpp (copy_output_ggF_X250_WWgg_qqlnugg.root by default), and then simply run:
+
+    root -l <location of RenameWorkspace_SignalTagger.cpp>/RenameWorkspace_SignalTagger.cpp
+
+this will create a root file with the proper workspace RooAbsData object name for the current HHWWgg version of fggfinalfit.
+From here, you can follow the steps for creating the signal model at [[https://github.com/atishelmanch/flashggFinalFit/tree/HHWWgg_Dev#hhwwgg_v2-2][HHWWgg_v2-2 Final Fit]]
+
 * HHWWgg_v2-2 
 
 The HHWWgg_v2-2 tag is used to mark the point in the anlaysis where the 95% CL limit on the HH cross section was placed on the 250 GeV semileptonically decaying Radion using
