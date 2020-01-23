@@ -10,7 +10,7 @@ namespace flashgg {
     class DiPhotonTagBase : public WeightedObject
     {
     public:
-        enum tag_t { kUndefined = 0, kUntagged, kVBF, kTTHHadronic, kTTHLeptonic, kTHQLeptonic, kTTHDiLepton, kVHTight, kVHLoose, kVHHadronic, kVHEt,  kZHLeptonic, kWHLeptonic, kVHLeptonicLoose, kVHMet };
+        enum tag_t { kUndefined = 0, kUntagged, kVBF, kTTHHadronic, kTTHLeptonic, kTHQLeptonic, kTTHDiLepton, kVHTight, kVHLoose, kVHHadronic, kVHEt,  kZHLeptonic, kWHLeptonic, kVHLeptonicLoose, kVHMet, kStageOne };
 
         DiPhotonTagBase();
         virtual ~DiPhotonTagBase(); 
@@ -34,6 +34,7 @@ namespace flashgg {
         int categoryNumber() const { return category_number_; }
         void setTagTruth( const edm::Ptr<TagTruthBase> value ) { truth_ = value; }
         const edm::Ptr<TagTruthBase> tagTruth() const { return truth_; }
+        float getTheoryWeight( std::string key ) const;
         void setSystLabel( const std::string label ) { systLabel_ = label; }
         std::string systLabel() const { return systLabel_; }
         bool hasSyst( const string &label ) const { return ( systLabel_ == label );}

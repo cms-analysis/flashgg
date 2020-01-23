@@ -2,10 +2,13 @@
 #define FLASHgg_TagTruthBase_h
 
 #include "DataFormats/Math/interface/Point3D.h"
+#include "flashgg/DataFormats/interface/WeightedObject.h"
+#include <vector>
+#include <map>
 
 namespace flashgg {
 
-    class TagTruthBase
+    class TagTruthBase : public WeightedObject
     {
     public:
 
@@ -17,12 +20,15 @@ namespace flashgg {
 
         Point genPV() const { return genPV_; }
         void setGenPV( const Point genpv ) { genPV_ = genpv; }
-        int HTXSstage0cat() const { return stage0cat_; }
-        int HTXSstage1cat() const { return stage1cat_; }
+        int HTXSstage0bin() const { return stage0bin_; }
+        int HTXSstage1bin() const { return stage1bin_; }
+        int HTXSstage0orderedBin() const;
+        int HTXSstage1orderedBin() const;
         int HTXSnjets() const { return njets_; }
         float HTXSpTH() const { return pTH_; }
         float HTXSpTV() const { return pTV_; }
-        void setHTXSInfo( int stage0cat, int stage1cat, int njets, float pTH, float pTV );
+        void setHTXSInfo( int stage0bin, int stage1bin, int njets, float pTH, float pTV );
+        void setGluonFusionWeights( int , float , int );
         void copyBaseInfo( const TagTruthBase &b );
         virtual TagTruthBase *clone() const;
 
@@ -31,8 +37,10 @@ namespace flashgg {
 
     private:
         Point genPV_;
-        int stage0cat_;
-        int stage1cat_;
+        int stage0bin_;
+        int stage1bin_;
+        std::map<int,int> stage0map_;
+        std::map<int,int> stage1map_;
         int njets_;
         float pTH_;
         float pTV_;

@@ -1,17 +1,24 @@
-from os import listdir,popen,access,F_OK
+from os import listdir,popen,access,F_OK,getcwd
 from sys import argv
 
+from optparse import OptionParser
+parser = OptionParser()
+parser.add_option('--doBigData', default=False, action='store_true', help='Make one big data file')
+parser.add_option('--targetString', default=None, help='String to match to include')
+parser.add_option('--skipString', default=None, help='Strong to match to skip')
+(opts,args) = parser.parse_args()
+
 targetstring = ""
-if len(argv) > 1:
-    targetstring = argv[1]
+if opts.targetString is not None: 
+    targetstring = opts.targetString
 
 skipstring = ""
-if len(argv) > 2:
-    skipstring = argv[2]
+if opts.skipString is not None: 
+    skipstring = opts.skipString
 
 dobig = False
 dobigsig = False
-dobigdata = False # LOL
+dobigdata = opts.doBigData
 
 filelist = {}
 bigfiles = []
@@ -22,6 +29,8 @@ def printAndExec(cmd):
     result = popen(cmd).read()
     print result
 
+print listdir(".")
+print getcwd()
 for fn in listdir("."):
     if fn.count(".root") and fn.count(targetstring) and (not skipstring or not fn.count(skipstring)):
         fnr = "_".join(fn[:-5].split("_")[:-1])+"_%i.root"
