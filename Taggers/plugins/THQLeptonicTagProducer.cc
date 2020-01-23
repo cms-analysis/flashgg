@@ -33,7 +33,7 @@
 #include "flashgg/Taggers/interface/FoxWolfram.hpp"
 
 #include "flashgg/DataFormats/interface/PDFWeightObject.h"
-#include "flashgg/DataFormats/interface/likelihood_thq.h"
+#include "flashgg/Taggers/interface/THQLikelihoodComputer.h"
 
 #include <vector>
 #include <algorithm>
@@ -91,9 +91,9 @@ public:
     map< string , CTCVWeightedVariable* > CTCVWeightedVariables;
     THQLeptonicTagProducer( const ParameterSet & );
     ~THQLeptonicTagProducer();
-    LikelihoodClass *likelihood_tHq;
 
 private:
+    THQLikelihoodComputer* likelihood_tHq_;
     std::string processId_;
     edm::EDGetTokenT< LHEEventProduct > token_lhe;
 //    int  chooseCategory( float, float);
@@ -444,11 +444,12 @@ THQLeptonicTagProducer::THQLeptonicTagProducer( const ParameterSet &iConfig ) :
     }
     produces<vector<THQLeptonicTag> >();
     produces<vector<THQLeptonicTagTruth> >();
-    likelihood_tHq = new LikelihoodClass();
+    std::string filename = likelihood_input_.fullPath();
+    likelihood_tHq_ = new THQLikelihoodComputer(filename.c_str());
 }
 
 THQLeptonicTagProducer::~THQLeptonicTagProducer() {
-    delete likelihood_tHq;
+    delete likelihood_tHq_;
 }
 
 int THQLeptonicTagProducer::chooseCategory( float mvavalue )
@@ -939,7 +940,7 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
          continue; }	
 //------------------------------------Likelihood and MVA-----------------------------------------
 //---------------------------------------------------------------------------------------
-//        LikelihoodClass *likelihood_tHq = new LikelihoodClass();
+//        THQLikelihoodComputer *likelihood_tHq = new THQLikelihoodComputer();
         std::vector<double> vec_lhood_calc;
 
         fwdJet1 = SelJetVect_EtaSorted[0];
@@ -1032,9 +1033,7 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
         vec_lhood_calc.push_back( dRleptonbjet_ );
         vec_lhood_calc.push_back( dRleptonfwdjet_ );
 
-        std::string filename = likelihood_input_.fullPath();
-
-        double lhood_value= likelihood_tHq->evaluate_likelihood(vec_lhood_calc, filename.c_str() );
+        double lhood_value= likelihood_tHq_->evaluate_likelihood(vec_lhood_calc );
         thqLeptonicMvaResult_value_ = thqLeptonicMva_->EvaluateMVA( MVAMethod_.c_str() );
         thqltags_obj.setlikelihood ( lhood_value ) ;
 	thqltags_obj.setthq_mvaresult ( thqLeptonicMvaResult_value_ );
@@ -1204,8 +1203,8 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
                 
 
                 if( ! evt.isRealData() ) {
-
-                    if(processId_.find("thq") != std::string::npos or processId_.find("thw") != std::string::npos) {
+//Bellow comment out part leads to crash for thq sample.This is related to ctcv weights and currently not using. Need to investigate the crash.
+/*                    if(processId_.find("thq") != std::string::npos or processId_.find("thw") != std::string::npos) {
                         //8 QCD scale weights
                         for( uint i = 1 ; i < 9 ; i ++ )
                             thqltags_obj.setScale(i-1,product_lhe->weights()[i].wgt/product_lhe->originalXWGTUP () );
@@ -1261,7 +1260,7 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
                                 thqltags_obj.setPdfNLO(uncompressed_nloweights[0]/ central_w);
                         }
                     }//end of reading PDF weights from PDFWeightObject
-
+*/
                     evt.getByToken( genParticleToken_, genParticles );
                     evt.getByToken( genJetToken_, genJets );
 

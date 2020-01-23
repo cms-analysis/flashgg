@@ -93,6 +93,8 @@ class JobsManager(object):
                             help="default: %default"),
                 make_option("-m","--max-resubmissions",dest="maxResub", type="int",default=2),
                 make_option("-N","--ncpu",dest="ncpu", type="int",default=cpu_count()),
+                make_option("--nCondorCpu",dest="ncondorcpu", type="int",default=1,help="Number of cpu cores per job to request from condor"),
+                make_option("--make-light-tarball",dest="lighttarball", action="store_true",default=False,help="Include datafolders only as symbolic link in tarball"),
                 make_option("-H","--hadd",dest="hadd",default=False, action="store_true",
                             help="hadd output files when all jobs are finished."
                             ),
@@ -150,11 +152,11 @@ class JobsManager(object):
         if self.options.summary:
             self.options.dry_run = True
             self.options.cont = True
-            
+  
         self.jobFactory = WorkNodeJobFactory(self.options.stageTo,self.options.stageCmd,job_outdir=self.options.outputDir,
                                             batchSystem=self.options.batchSystem,copy_proxy=self.options.copy_proxy)
         self.parallel = Parallel(self.options.ncpu,lsfQueue=self.options.queue,lsfJobName="%s/runJobs" % self.options.outputDir,
-                                 asyncLsf=self.options.asyncLsf,jobDriver=self.jobFactory,batchSystem=self.options.batchSystem)
+                                 asyncLsf=self.options.asyncLsf,jobDriver=self.jobFactory,batchSystem=self.options.batchSystem,ncondorcpu=self.options.ncondorcpu)
         
         self.jobs = None
         self.failedJobIds = {}
@@ -268,8 +270,8 @@ class JobsManager(object):
         if options.useTarball:
             apset = os.path.abspath(pset)
             self.jobFactory.mkTarball("%s/sandbox.tgz" % os.path.abspath(options.outputDir),
-                                      tarball_entries=[apset,"python","lib","bin","src/flashgg/MetaData/python"],tarball_patterns=[("src/*","data"), ("external/*","data"), ("src/*","toolbox")],
-                                      tarball_transform="'s,%s,pset.py,'" % (apset.lstrip("/"))
+                                      tarball_entries=[apset,"python","lib","bin","src/flashgg/MetaData/python"],tarball_patterns=[("src/*","data"), ("external/*","data"), ("src/*","toolbox"), ("src/*","python")],
+                                      tarball_transform="'s,%s,pset.py,'" % (apset.lstrip("/")), light=self.options.lighttarball
                                       )
             if not options.queue:
                 print "\nWARNING: You specified the --use-tarball option but no batch queue. The tarball was created but the jobs won't actually use it."

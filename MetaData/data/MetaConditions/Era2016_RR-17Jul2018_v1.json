@@ -50,22 +50,34 @@
     "TriggerPaths" :
     {
         ".*DoubleEG.*" :
-        [
-            "HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90*",
-            "HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55*",
-            "HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55*"
-        ],
+        {
+	    "mainAnalysis" :
+	    [
+		"HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90*"
+	    ],
+	    "lowMassAnalysis" :
+	    [
+		"HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55*",
+		"HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55*"
+	    ]
+        },
         ".*SingleEle.*" :
-        [
-            "HLT_Ele27_WPTight_Gsf*"
-        ],
+        {
+	    "tagAndProbe" : 
+	    [
+		"HLT_Ele27_WPTight_Gsf*"
+	    ]
+        },
         ".*DoubleMuon.*" :
-        [
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v*",
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v*",
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*",
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v*"
-        ]
+        {
+	    "ZmumuGamma" :
+	    [
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v*",
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v*",
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*",
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v*"
+	    ]
+        }
     },
     
     "MUON_ID" : "Medium",
@@ -148,16 +160,26 @@
         "weightFile" : "/src/flashgg/Taggers/data/DNN_models/breg_training_2016_JECv11_Oct_2019.pb",
         "y_mean" : 1.04588,
         "y_std" : 0.2685356,
-        "year" : 2016
+        "year" : 2016,
+        "useBRegressionJERsf" : false, 
+        "JER_central" : 1.1, 
+        "JER_up" : 0.1, 
+        "JER_down" : -0.1 
     },
 
     "doubleHTag":
     {
 	"jetID" : "Loose",
-	"weightsFile" : "flashgg/Taggers/data/HHTagger/training_with_19_03_2019_trainingMjj_year0.weights.xml",
-	"MVAFlatteningFileName" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20190321_2016_2017.root",
+	"weightsFile" : {
+		"with_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_18_12_2019_training0.weights.xml",
+		"wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_18_12_2019_wo_Mjj_training0.weights.xml"
+	},
+	"MVAFlatteningFileName" : {
+		"with_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20191218.root",
+		"wo_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20191218_wo_Mjj.root"
+	},
 	"MVAscalingValue" : 1.0,
-	"NodesReweightingFileName" : "flashgg/Taggers/data/HHTagger/HHreweight_2016nodes_18092019.root",
+	"NodesReweightingFileName" : "flashgg/Taggers/data/HHTagger/HHreweight_2016_15112019.root",
         "ttHWeightfile" : "flashgg/Taggers/data/ttHKiller/Keras2017_converted_allnode.pb",
         "ttHKiller_mean" : [  3.22491144e+02,   7.22919780e+01,   1.49387571e-01,   4.94052483e-03,
                               5.10246425e-04,   1.38947662e+00,   5.31453078e+00,   7.45455854e+00,

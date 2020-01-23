@@ -36,6 +36,22 @@ GenDiPhoton::LorentzVector GenDiPhoton::dijet() const
     return leadingJet().p4() + subLeadingJet().p4();
 }
 
+float GenDiPhoton::HHbbggCosThetaStar_CS() const
+{
+    TLorentzVector h_1;
+    h_1.SetPxPyPzE(leadingPhoton()->p4().px(),leadingPhoton()->p4().py(),leadingPhoton()->p4().pz(),leadingPhoton()->p4().energy()) ; 
+    TLorentzVector h_2;
+    h_2.SetPxPyPzE(subLeadingPhoton()->p4().px(),subLeadingPhoton()->p4().py(),subLeadingPhoton()->p4().pz(),subLeadingPhoton()->p4().energy()) ; 
+
+    TLorentzVector h_jet_1;
+    h_jet_1.SetPxPyPzE(leadingJet().p4().px(),leadingJet().p4().py(),leadingJet().p4().pz(),leadingJet().p4().energy()) ; 
+    TLorentzVector h_jet_2;
+    h_jet_2.SetPxPyPzE(subLeadingJet().p4().px(),subLeadingJet().p4().py(),subLeadingJet().p4().pz(),subLeadingJet().p4().energy()) ;
+    TLorentzVector hh = h_1 + h_2 + h_jet_1 + h_jet_2;
+ 
+    h_1.Boost(-hh.BoostVector());  
+    return h_1.CosTheta();
+}
 
 // Local Variables:
 // mode:c++
