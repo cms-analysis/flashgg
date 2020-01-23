@@ -138,13 +138,7 @@
 <class name="std::vector<edm::Ptr<flashgg::Jet> >"/>
 <class name="edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> >" />
 <class name="edm::Wrapper<edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> > >" />
-
-<class name="edm::OwnVector<flashgg::StageOneTag, edm::ClonePolicy<flashgg::StageOneTag> >" />
-<class name="edm::Wrapper<edm::OwnVector<flashgg::StageOneTag, edm::ClonePolicy<flashgg::StageOneTag> > >" />
-
-<class name="flashgg::VBFTagTruth" ClassVersion="14">
- <version ClassVersion="14" checksum="3091975168"/>
- <version ClassVersion="13" checksum="3465927303"/>
+<class name="flashgg::VBFTagTruth" ClassVersion="12">
  <version ClassVersion="12" checksum="2475891424"/>
   <version ClassVersion="11" checksum="2745005875"/>
 </class>
@@ -158,9 +152,7 @@
   <version ClassVersion="10" checksum="1025135485"/>
 </class>
 
-<class name="flashgg::VHTagTruth" ClassVersion="13">
- <version ClassVersion="13" checksum="2915236824"/>
- <version ClassVersion="12" checksum="560617701"/>
+<class name="flashgg::VHTagTruth" ClassVersion="11">
  <version ClassVersion="11" checksum="641304440"/>
   <version ClassVersion="10" checksum="2764404041"/>
 </class>
@@ -325,9 +317,7 @@
 <class name="edm::Ptr<flashgg::Muon>"/>
 <class name="std::vector<flashgg::Muon>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Muon> >"/>
-<class name="flashgg::TagTruthBase" ClassVersion="13">
- <version ClassVersion="13" checksum="831750307"/>
- <version ClassVersion="12" checksum="1591143584"/>
+<class name="flashgg::TagTruthBase" ClassVersion="11">
  <version ClassVersion="11" checksum="647547459"/>
  <version ClassVersion="10" checksum="2663548356"/>
 </class>
@@ -393,11 +383,6 @@
 <class name="std::vector<flashgg::DiPhotonTagBase*>"/>
 <class name="std::vector<flashgg::TagTruthBase*>"/>
 
-<class name="flashgg::StageOneTag" ClassVersion="0">
-</class>
-<class name="std::vector<flashgg::StageOneTag>"/>
-<class name="std::vector<flashgg::StageOneTag*>"/>
-<class name="edm::Wrapper<std::vector<flashgg::StageOneTag> >"/>
 <class name="flashgg::DoubleHTag" ClassVersion="15">
  <version ClassVersion="15" checksum="3477662648"/>
  <version ClassVersion="14" checksum="3475569523"/>

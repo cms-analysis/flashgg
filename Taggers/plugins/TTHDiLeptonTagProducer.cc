@@ -62,7 +62,7 @@ namespace flashgg {
         EDGetTokenT<View<Photon> > photonToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
-        EDGetTokenT<int> stage0binToken_, stage1binToken_, njetsToken_;
+        EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
         EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
 
         EDGetTokenT<float> pTHToken_,pTVToken_;
@@ -179,8 +179,8 @@ namespace flashgg {
         CutBasedDiphoId_ = iConfig.getParameter<std::vector<double>>( "CutBasedDiphoId" );
 
         ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
-        stage0binToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0bin") );
-        stage1binToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1bin") );
+        stage0catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0cat") );
+        stage1catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1cat") );
         njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
         pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
         pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
@@ -224,10 +224,10 @@ namespace flashgg {
 
     void TTHDiLeptonTagProducer::produce( Event &evt, const EventSetup & )
     {
-        Handle<int> stage0bin, stage1bin, njets;
+        Handle<int> stage0cat, stage1cat, njets;
         Handle<float> pTH, pTV;
-        evt.getByToken(stage0binToken_, stage0bin);
-        evt.getByToken(stage1binToken_,stage1bin);
+        evt.getByToken(stage0catToken_, stage0cat);
+        evt.getByToken(stage1catToken_,stage1cat);
         evt.getByToken(njetsToken_,njets);
         evt.getByToken(pTHToken_,pTH);
         evt.getByToken(pTVToken_,pTV);
@@ -625,10 +625,10 @@ namespace flashgg {
                 {
                     TagTruthBase truth_obj;
                     truth_obj.setGenPV( higgsVtx );
-                    if ( stage0bin.isValid() )
+                    if ( stage0cat.isValid() )
                     {
-                        truth_obj.setHTXSInfo( *( stage0bin.product() ),
-                                               *( stage1bin.product() ),
+                        truth_obj.setHTXSInfo( *( stage0cat.product() ),
+                                               *( stage1cat.product() ),
                                                *( njets.product() ),
                                                *( pTH.product() ),
                                                *( pTV.product() ) );

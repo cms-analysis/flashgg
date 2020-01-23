@@ -126,7 +126,7 @@ namespace flashgg {
         void compressPdfWeightDatasets(RooWorkspace *ws);
         
 
-        void fill( const object_type &obj, double weight, vector<double>, int n_cand = 0, int htxsBin = -999);
+        void fill( const object_type &obj, double weight, vector<double>, int n_cand = 0, int stage0cat = -999);
         string  GetName();
         bool isBinnedOnly();
 
@@ -166,8 +166,7 @@ namespace flashgg {
         int  nAlphaSWeights_;
         int nScaleWeights_;
         bool pdfVarsAdded_;
-        bool splitPdfByStage0Bin_;
-        bool splitPdfByStage1Bin_;
+        bool splitPdfByStage0Cat_;
     };
 
     template<class F, class O>
@@ -182,8 +181,7 @@ namespace flashgg {
         nPdfWeights_ (0), 
         nAlphaSWeights_(0),
         nScaleWeights_(0),
-        splitPdfByStage0Bin_( false ),
-        splitPdfByStage1Bin_( false )
+        splitPdfByStage0Cat_( false )
     {
         using namespace std;
         name_ = name;
@@ -210,14 +208,8 @@ namespace flashgg {
         if( cfg.existsAs<int >( "nScaleWeights" ) ) {
             nScaleWeights_ = cfg.getParameter<int >( "nScaleWeights" );
         }
-        if ( cfg.existsAs<bool>( "splitPdfByStage0Bin") ) {
-            splitPdfByStage0Bin_ = cfg.getParameter<bool>( "splitPdfByStage0Bin" );
-        }
-        if ( cfg.existsAs<bool>( "splitPdfByStage1Bin") ) {
-            splitPdfByStage1Bin_ = cfg.getParameter<bool>( "splitPdfByStage1Bin" );
-        }
-        if ( splitPdfByStage0Bin_ && splitPdfByStage1Bin_ ) {
-            throw cms::Exception( "Configuration" ) << " Set to split PDF by both stage 0 and stage 1 bin" << std::endl;
+        if ( cfg.existsAs<bool>( "splitPdfByStage0Cat") ) {
+            splitPdfByStage0Cat_ = cfg.getParameter<bool>( "splitPdfByStage0Cat" );
         }
         auto variables = cfg.getParameter<vector<edm::ParameterSet> >( "variables" );
         for( auto &var : variables ) {
@@ -391,26 +383,22 @@ namespace flashgg {
         if (dataset_pdfWeights_){
             bool hasCentralWeight = dataset_pdfWeights_->get()->find(weight_central) != 0;
             RooArgSet args; args.add( *(dataset_pdfWeights_->get()->selectByName("*Weight*")) );
-            if ( splitPdfByStage0Bin_ || splitPdfByStage1Bin_ ) {
+            if ( splitPdfByStage0Cat_ ) {
                 map <int,double> sumwei;
                 map <int,double> sumn;
                 map <string,map<int,double> > avgwei;
                 for(int i=0; i< dataset_pdfWeights_->numEntries() ; i++){
                     auto * ivars = dataset_pdfWeights_->get(i);
                     float w_nominal =dataset_pdfWeights_->weight();
-                    int htxsBin; 
-                    if (splitPdfByStage1Bin_) {
-                        htxsBin = (int)( ivars->getRealValue("stage1bin") + 0.01 );
+                    int stage0cat = (int)( ivars->getRealValue("stage0cat") + 0.001 );
+                    if (sumwei.count( stage0cat ) ) {
+                        sumwei[stage0cat] += w_nominal;
+                        sumn[stage0cat] += 1;
                     } else {
-                        htxsBin = (int)( ivars->getRealValue("stage0bin") + 0.01 );
+                        sumwei[stage0cat] = w_nominal;
+                        sumn[stage0cat] = 1;
                     }
-                    if (sumwei.count( htxsBin ) ) {
-                        sumwei[htxsBin] += w_nominal;
-                        sumn[htxsBin] += 1;
-                    } else {
-                        sumwei[htxsBin] = w_nominal;
-                        sumn[htxsBin] = 1;
-                    }
+                    //                    std::cout << " compressPdfWeightDatasets entry " << i << " " << stage0cat << " " << w_nominal << std::endl;
                     float w_central = ( hasCentralWeight ? ivars->getRealValue(weight_central) : 1. );
                     if (w_central == 0.) continue;
                     TIterator * iter = args.createIterator();
@@ -421,10 +409,10 @@ namespace flashgg {
                         if (! avgwei.count(sname) ) {
                             avgwei[sname] = map<int,double>();
                         }
-                        if ( avgwei[sname].count(htxsBin) ) {
-                            avgwei[sname][htxsBin] += w_nominal*(w_up/w_central);
+                        if ( avgwei[sname].count(stage0cat) ) {
+                            avgwei[sname][stage0cat] += w_nominal*(w_up/w_central);
                         } else {
-                            avgwei[sname][htxsBin] = w_nominal*(w_up/w_central);
+                            avgwei[sname][stage0cat] = w_nominal*(w_up/w_central);
                         }
                     }
                 }
@@ -435,14 +423,12 @@ namespace flashgg {
                 }
                 RooDataSet newdset( dataset_pdfWeights_->GetName(), dataset_pdfWeights_->GetName(), rooVars_pdfWeights_, sumW->GetName());
                 for ( auto it2 = sumwei.begin() ; it2 != sumwei.end() ; it2++ ) {
+                    //                    std::cout << " End of splitting: stage0cat weight " << it2->first << " " << it2->second << std::endl;
                     for ( auto it1 = avgwei.begin() ; it1 != avgwei.end() ; it1++ ) {
+                        //                        std::cout << "   Setting " << it1->first << " to " << avgwei[it1->first][it2->first] << std::endl;
                         dynamic_cast<RooRealVar &>( rooVars_pdfWeights_[it1->first.c_str()] ).setVal( avgwei[it1->first][it2->first] );
                     }
-                    if ( splitPdfByStage0Bin_ ) {
-                        dynamic_cast<RooRealVar &>( rooVars_pdfWeights_["stage0bin"] ).setVal( it2->first );
-                    } else {
-                        dynamic_cast<RooRealVar &>( rooVars_pdfWeights_["stage1bin"] ).setVal( it2->first );
-                    }
+                    dynamic_cast<RooRealVar &>( rooVars_pdfWeights_["stage0cat"] ).setVal( it2->first );
                     newdset.add(rooVars_pdfWeights_,it2->second);
                 }
                 ws->import(newdset);
@@ -517,22 +503,18 @@ namespace flashgg {
             rooVars_.add( *ws.var( Form("scaleWeight_%d",i) ) ); // scale Weights need to be included in main dataset to be used correctly downstream. i think...
             rooVars_pdfWeights0.add( *ws.var( Form("scaleWeight_%d",i) ) ); // maybe do both and check we get same result ??
         }
-        if ( splitPdfByStage0Bin_ ) {
-            rooVars_pdfWeights0.add( *ws.var( "stage0bin" ) );
-        }
-        if ( splitPdfByStage1Bin_ ) {
-            rooVars_pdfWeights0.add( *ws.var( "stage1bin" ) );
+        if ( splitPdfByStage0Cat_ ) {
+            //            std::cout << " Before             rooVars_pdfWeights0.add( *ws.var( \"stage0cat\" ) );" << std::endl;
+            rooVars_pdfWeights0.add( *ws.var( "stage0cat" ) );
+            //            std::cout << " After             rooVars_pdfWeights0.add( *ws.var( \"stage0cat\" ) );" << std::endl;
         }
     }
 
     rooVars_pdfWeights_.add(*((RooArgSet*) rooVars_pdfWeights0.selectByName("central*")),true);
     rooVars_pdfWeights_.add(*((RooArgSet*) rooVars_pdfWeights0.selectByName("pdf*,scale*,alpha*")),true); // eveuntally could remove scale... as it might not be useful to collapse it like other pdf weights
-    if ( splitPdfByStage1Bin_ ) { 
-        rooVars_pdfWeights_.add(*((RooArgSet*) rooVars_pdfWeights0.selectByName("stage1bin")),true);
-    }
-    else { 
-        rooVars_pdfWeights_.add(*((RooArgSet*) rooVars_pdfWeights0.selectByName("stage1bin")),true);
-    }
+    //    std::cout << " before     rooVars_pdfWeights_.add(*((RooArgSet*) rooVars_pdfWeights0.selectByName(\"stage0cat\")),true);" << std::endl;
+    rooVars_pdfWeights_.add(*((RooArgSet*) rooVars_pdfWeights0.selectByName("stage0cat")),true);
+    //    std::cout << " after     rooVars_pdfWeights_.add(*((RooArgSet*) rooVars_pdfWeights0.selectByName(\"stage0cat\")),true);" << std::endl;
     rooVars_pdfWeights_.add(*ws.var( weightVar ),true);
     
     std::string dsetName = formatString( name_, replacements );
@@ -566,7 +548,7 @@ bool CategoryDumper<F, O>::isBinnedOnly( )
 }
 
     template<class F, class O>
-    void CategoryDumper<F, O>::fill( const object_type &obj, double weight, vector<double> pdfWeights, int n_cand, int htxsBin)
+    void CategoryDumper<F, O>::fill( const object_type &obj, double weight, vector<double> pdfWeights, int n_cand, int stage0cat)
 {  
     n_cand_ = n_cand;
     weight_ = weight;
@@ -594,11 +576,9 @@ bool CategoryDumper<F, O>::isBinnedOnly( )
                 dynamic_cast<RooRealVar &>( rooVars_pdfWeights_[Form("scaleWeight_%d",i)] ).setVal( pdfWeights[i+nPdfWeights_+nAlphaSWeights_] ); // and scale weights stored after that!
                 dynamic_cast<RooRealVar &>( rooVars_[Form("scaleWeight_%d",i)] ).setVal( pdfWeights[i+nPdfWeights_+nAlphaSWeights_] ); // and scale weights stored after that!
             }
-            if ( splitPdfByStage0Bin_ && htxsBin > -1 ) {
-                dynamic_cast<RooRealVar &>( rooVars_pdfWeights_["stage0bin"]).setVal( htxsBin );
-            }
-            if ( splitPdfByStage1Bin_ && htxsBin > -1 ) {
-                dynamic_cast<RooRealVar &>( rooVars_pdfWeights_["stage1bin"]).setVal( htxsBin );
+            if ( splitPdfByStage0Cat_ && stage0cat > -1 ) {
+                dynamic_cast<RooRealVar &>( rooVars_pdfWeights_["stage0cat"]).setVal( stage0cat );
+                //                std::cout << "In CategoryDumper<F, O>::fill set stage0cat to " << stage0cat << std::endl;
             }
         }
     }

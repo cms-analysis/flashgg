@@ -86,45 +86,6 @@
 
     "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2017_cfi",
 
-    "flashggDiPhotonMVA" : 
-    {  
-        "weightFile" : "flashgg/Taggers/data/diphoModel2017.xml",
-        "version" : "xgb"
-    },
-
-    "flashggVBFMVA" : 
-    {  
-        "weightFile" : "flashgg/Taggers/data/dijetModel2017.xml"
-    },
-
-    "stageOneCombinedTag" :
-    {  
-        "rawDiphoBounds" : [
-                             0.843, 0.759, 0.597,
-
-                             0.816, 0.701,
-                             0.846, 0.753,
-                             0.919, 0.847,
-                             0.776,
-
-                             0.860, 0.734,
-                             0.873, 0.749,
-                             0.916, 0.824,
-                             0.905, 0.669,
-
-                             0.750, 0.684,
-                             0.766, 0.773,
-                             0.734,
-                             0.787
-                           ],
-        "rawDijetBounds" : [
-                             -0.389, -0.895,
-                             0.031, -0.697,
-                             -0.623,
-                             -0.268
-                           ]
-    },
-
     "JetCorrectorParametersCollection_version" :
     {
         "data" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_DATA_AK4PFchs",

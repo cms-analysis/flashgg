@@ -402,6 +402,7 @@ namespace flashgg {
                 
                 dijet_subleady_   = dijetP4s.second.Rapidity();
                 
+                mvares.n_rec_jets = n_jets_count;
                 //mvares.leadJet    = *Jets[jetCollectionIndex]->ptrAt( dijet_indices.first );
                 //mvares.subleadJet = *Jets[jetCollectionIndex]->ptrAt( dijet_indices.second );
                 mvares.leadJet        = dijetP4s.first;
@@ -410,12 +411,7 @@ namespace flashgg {
                 mvares.leadJet_ptr    = Jets[jetCollectionIndex]->ptrAt( dijet_indices.first );
                 mvares.subleadJet_ptr = Jets[jetCollectionIndex]->ptrAt( dijet_indices.second );
                 //mvares.diphoton       = *diPhotons->ptrAt( candIndex );
-            } else if( dijet_indices.first != -1 ) {
-                mvares.leadJet_ptr     = Jets[jetCollectionIndex]->ptrAt( dijet_indices.first );
-                mvares.subleadJet_ptr  = edm::Ptr<flashgg::Jet>();
-                dijet_leadEta_         = Jets[jetCollectionIndex]->ptrAt( dijet_indices.first )->eta();
-                dijet_LeadJPt_         = Jets[jetCollectionIndex]->ptrAt( dijet_indices.first )->pt();
-            } else {
+            }else{
                 mvares.leadJet_ptr    = edm::Ptr<flashgg::Jet>();
                 mvares.subleadJet_ptr = edm::Ptr<flashgg::Jet>();
             }
@@ -448,7 +444,6 @@ namespace flashgg {
             mvares.dijet_dphi        = dijet_dphi_ ;
             mvares.dijet_dipho_dphi  = dijet_dipho_dphi_ ;
             mvares.dijet_Mjj         = dijet_Mjj_ ;
-            mvares.n_rec_jets        = n_jets_count;
             mvares.dipho_PToM        = dipho_PToM_ ;
             mvares.sublPho_PToM      = sublPho_PToM_ ;
             mvares.leadPho_PToM      = leadPho_PToM_ ;
