@@ -172,5 +172,11 @@
                           "f7 := superCluster.phiWidth",
                           "f8 := full5x5_sigmaIetaIeta",
                           "f9 := superCluster.etaWidth"]
+    },
+    "THQLeptonicTag":
+    {
+        "MVAweights" : "flashgg/Taggers/data/TMVA_THQLeptonicTag_tHq_Vs_NonPeakingBkg_BDT_18.weights.xml",
+	"MVAThreshold" : 0.05
     }
+
 }
