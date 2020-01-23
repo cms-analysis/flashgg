@@ -251,11 +251,5 @@ flashggFinalPuppiJets = cms.EDProducer("FlashggVectorVectorJetCollector",
                                   inputTagJets= PuppiJetCollectionVInputTag
 )
 
-flashggUnpackedJets = cms.EDProducer("FlashggVectorVectorJetUnpacker",
-                                     JetsTag = cms.InputTag("flashggFinalJets"),
-                                     NCollections = cms.uint32(maxJetCollections)
-                                     )
+  
 
-UnpackedJetCollectionVInputTag = cms.VInputTag()
-for i in range(0,maxJetCollections):
-    UnpackedJetCollectionVInputTag.append(cms.InputTag('flashggUnpackedJets',str(i)))

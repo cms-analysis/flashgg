@@ -101,12 +101,6 @@ customize.options.register('doHTXS',
                            VarParsing.VarParsing.varType.bool,
                            'doHTXS'
                            )
-customize.options.register('doStageOne',
-                           False,
-                           VarParsing.VarParsing.multiplicity.singleton,
-                           VarParsing.VarParsing.varType.bool,
-                           'doStageOne'
-                           )
 customize.options.register('doMuFilter',
                            True,
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -279,13 +273,6 @@ if customize.doDoubleHTag:
     minimalVariables += hhc.variablesToDump()
     systematicVariables = hhc.systematicVariables()
 
-if customize.doStageOne:
-    assert (not customize.doHTXS)
-    from flashgg.Systematics.stageOneCustomize import StageOneCustomize
-    soc = StageOneCustomize(process, customize, customize.metaConditions)
-    minimalVariables = soc.variablesToDump()
-    systematicVariables = soc.systematicVariables()
-
 process.flashggTHQLeptonicTag.processId = cms.string(str(customize.processId))
 
 print 'here we print the tag sequence after'
@@ -376,15 +363,6 @@ if is_signal:
             variablesToUse.append("MuonIsoWeight%s01sigma[1,-999999.,999999.] := weight(\"Muon%sISOWeight%s01sigma\")" % (direction,str(customize.metaConditions['MUON_ISO']),direction))
             variablesToUse.append("JetBTagCutWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagCutWeight%s01sigma\")" % (direction,direction))
             variablesToUse.append("JetBTagReshapeWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagReshapeWeight%s01sigma\")" % (direction,direction))
-            variablesToUse.append("THU_ggH_Mu%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Mu%s01sigma\")" % (direction,direction))
-            variablesToUse.append("THU_ggH_Res%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Res%s01sigma\")" % (direction,direction))
-            variablesToUse.append("THU_ggH_Mig01%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Mig01%s01sigma\")" % (direction,direction))
-            variablesToUse.append("THU_ggH_Mig12%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Mig12%s01sigma\")" % (direction,direction))
-            variablesToUse.append("THU_ggH_VBF2j%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_VBF2j%s01sigma\")" % (direction,direction))
-            variablesToUse.append("THU_ggH_VBF3j%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_VBF3j%s01sigma\")" % (direction,direction))
-            variablesToUse.append("THU_ggH_PT60%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_PT60%s01sigma\")" % (direction,direction))
-            variablesToUse.append("THU_ggH_PT120%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_PT120%s01sigma\")" % (direction,direction))
-            variablesToUse.append("THU_ggH_qmtop%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_qmtop%s01sigma\")" % (direction,direction))
             for r9 in ["HighR9","LowR9"]:
                 for region in ["EB","EE"]:
                     phosystlabels.append("ShowerShape%s%s%s01sigma"%(r9,region,direction))
@@ -440,18 +418,35 @@ from flashgg.MetaData.samples_utils import SamplesManager
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
-                                 #"root://cms02.lcg.cscs.ch:1094//store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v2/190708_140500/0000/myMicroAODOutputFile_16.root"
-                                 #"/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M125_13TeV_amcatnlo_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v2/190708_152712/0000/myMicroAODOutputFile_12.root"
-                                 "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/VBFHToGG_M125_13TeV_amcatnlo_pythia8_v2/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/190708_153159/0000/myMicroAODOutputFile_5.root"
+                                 "/store/user/spigazzi/flashgg/Era2016_RR-07Aug17_v1/legacyRun2TestV1/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/Era2016_RR-07Aug17_v1-legacyRun2TestV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v1/190228_142907/0000/myMicroAODOutputFile_610.root"
                              ))
 
 process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string("test.root"))
 
 process.extraDumpers = cms.Sequence()
+process.load("flashgg.Taggers.diphotonTagDumper_cfi") ##  import diphotonTagDumper 
+import flashgg.Taggers.dumperConfigTools as cfgTools
 
-from flashgg.Taggers.TagsDumperCustomize import customizeTagsDumper
-customizeTagsDumper(process, customize) ## move all the default tags dumper configuration to this function
+
+process.tagsDumper.className = "DiPhotonTagDumper"
+process.tagsDumper.src = "flashggSystTagMerger"
+#process.tagsDumper.src = "flashggTagSystematics"
+process.tagsDumper.processId = "test"
+process.tagsDumper.dumpTrees = customize.dumpTrees
+process.tagsDumper.dumpWorkspace = customize.dumpWorkspace
+process.tagsDumper.dumpHistos = False
+process.tagsDumper.quietRooFit = True
+process.tagsDumper.nameTemplate = cms.untracked.string("$PROCESS_$SQRTS_$CLASSNAME_$SUBCAT_$LABEL")
+process.tagsDumper.splitPdfByStage0Cat = cms.untracked.bool(customize.doHTXS)
+
+if customize.options.WeightName :
+    lheProduct = customize.dataset[1]["LHESourceName"].split("_")
+    #print lheProduct
+    process.tagsDumper.LHEEventProduct = cms.untracked.InputTag( str(lheProduct[1]) , str(lheProduct[2]) , str(lheProduct[3]) )
+    #print process.tagsDumper.LHEEventProduct
+    process.tagsDumper.LHEWeightName = cms.untracked.string(customize.options.WeightName)
+
 
 if(customize.doFiducial):
 #    if customize.processId == "Data":
@@ -486,8 +481,6 @@ elif customize.doubleHTagsOnly:
     tagList = hhc.tagList
     print "taglist is:"
     print tagList
-elif customize.doStageOne:
-    tagList = soc.tagList
 else:
     tagList=[
         ["NoTag",0],
@@ -505,8 +498,9 @@ else:
         ]
 
 definedSysts=set()
+process.tagsDumper.NNLOPSWeightFile=cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root")
+process.tagsDumper.reweighGGHforNNLOPS = cms.untracked.bool(bool(customize.processId.count("ggh")))
 process.tagsDumper.classifierCfg.remap=cms.untracked.VPSet()
-import flashgg.Taggers.dumperConfigTools as cfgTools
 for tag in tagList: 
   tagName=tag[0]
   tagCats=tag[1]
@@ -526,11 +520,9 @@ for tag in tagList:
               currentVariables = systematicVariablesHTXS
           else:    
               currentVariables = systematicVariables
-      if tagName.upper().count("NOTAG"):
+      if tagName == "NoTag":
           if customize.doHTXS:
-              currentVariables = ["stage0bin[72,9.5,81.5] := tagTruth().HTXSstage0bin"]
-          elif customize.doStageOne:
-              currentVariables = ["stage1bin[39,-8.5,30.5] := tagTruth().HTXSstage1orderedBin"]
+              currentVariables = ["stage0cat[72,9.5,81.5] := tagTruth().HTXSstage0cat"]
           else:
               currentVariables = []
       isBinnedOnly = (systlabel !=  "")
@@ -559,8 +551,7 @@ for tag in tagList:
                            nPdfWeights=nPdfWeights,
                            nAlphaSWeights=nAlphaSWeights,
                            nScaleWeights=nScaleWeights,
-                           splitPdfByStage0Cat=customize.doHTXS,
-                           splitPdfByStage1Cat=customize.doStageOne
+                           splitPdfByStage0Cat=customize.doHTXS
                            )
 
 # Require standard diphoton trigger

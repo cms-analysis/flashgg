@@ -76,14 +76,6 @@ void DiPhotonTagBase::setIsGold( int runNumber ) {
     if ( runNumber == 258443 ) { isGold_ = 0; }
 }
 
-float DiPhotonTagBase::getTheoryWeight(std::string key) const
-{
-    float theoryWeight = truth_->weight(key);
-    theoryWeight *= this->centralWeight();
-    return theoryWeight;
-}
-
-
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

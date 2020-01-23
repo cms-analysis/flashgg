@@ -1,9 +1,9 @@
-relevant = { "WH" : ["QQ2HLNU","QQ2HQQ"],
-             "ZH" : ["QQ2HLL","QQ2HQQ"],
+relevant = { "WH" : ["QQ2HLNU","VH2HQQ"],
+             "ZH" : ["QQ2HLL","VH2HQQ"],
              "ttH" : ["TTH"],
-             "VBF" : ["QQ2HQQ"],
+             "VBF" : ["VBF"],
              "GluGluH" : ["GG2H"]
-             } #FIXME: need to add bbH, tH, and ggZH
+             }
 
 cmds = ["mkdir -p irr"]
 
@@ -13,7 +13,7 @@ for fn in listdir("."):
     rel = False
     for k,v in relevant.iteritems():
         for s in v:
-            if fn.count("output_%s" % k) and (fn.count("%s.root"%s) or fn.count("%s_"%s)):
+            if fn.count("output_%s" % k) and (fn.count("%s.root"%s) or fn.count("%s_FWDH.root"%s)):
                 rel = True
     if rel:
         print "KEEPING %s" % fn

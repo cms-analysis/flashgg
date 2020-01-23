@@ -16,7 +16,6 @@
 #include "DataFormats/Common/interface/RefToPtr.h"
 #include "flashgg/DataFormats/interface/VBFTag.h"
 #include "flashgg/DataFormats/interface/NoTag.h"
-#include "flashgg/DataFormats/interface/StageOneTag.h"
 
 #include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
 
@@ -57,7 +56,6 @@ namespace flashgg {
 
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         std::vector<edm::EDGetTokenT<View<flashgg::DiPhotonTagBase> > > TagList_;
-        std::vector<edm::EDGetTokenT<View<flashgg::StageOneTag> > > StageOneTagList_;
         std::vector<TagPriorityRange> TagPriorityRanges;
 
         double massCutUpper;
@@ -74,12 +72,9 @@ namespace flashgg {
         bool blindedSelectionPrintout_;
 
         bool createNoTag_;
-        EDGetTokenT<int> stage0binToken_, stage1binToken_, njetsToken_;
+        EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
         EDGetTokenT<float> pTHToken_,pTVToken_;
         EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
-
-        bool doStageOneRecoTags_;
-        bool stageOnePrintout_;
 
         std::vector<std::tuple<DiPhotonTagBase::tag_t,int,int> > otherTags_; // (type,category,diphoton index)
 
@@ -102,8 +97,6 @@ namespace flashgg {
         storeOtherTagInfo_ = iConfig.getParameter<bool>( "StoreOtherTagInfo" );
         blindedSelectionPrintout_ = iConfig.getParameter<bool>("BlindedSelectionPrintout");
         createNoTag_ = iConfig.getParameter<bool>("CreateNoTag");
-        doStageOneRecoTags_ = iConfig.getParameter<bool>("DoStageOneRecoTags");
-        stageOnePrintout_ = iConfig.getParameter<bool>("StageOnePrintout");
 
         const auto &vpset = iConfig.getParameterSetVector( "TagPriorityRanges" );
 
@@ -111,7 +104,6 @@ namespace flashgg {
 
         for( const auto &pset : vpset ) {
             InputTag tag = pset.getParameter<InputTag>( "TagName" );
-            InputTag stage1tag = InputTag( tag.label(), "stageone" );
             int c1 = pset.getUntrackedParameter<int>( "MinCategory", -999 );
             int c2 = pset.getUntrackedParameter<int>( "MaxCategory", 999 );
             unsigned int i = 0;
@@ -121,26 +113,19 @@ namespace flashgg {
             if( i == TagList_.size() ) {
                 labels.push_back( tag.label() );
                 TagList_.push_back( consumes<View<flashgg::DiPhotonTagBase> >( tag ) );
-                if ( doStageOneRecoTags_ ) {
-                    StageOneTagList_.push_back( consumes<View<flashgg::StageOneTag> >( stage1tag ) );
-                }
             }
             TagPriorityRanges.emplace_back( tag.label(), c1, c2, i );
         }
 
         ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
-        stage0binToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0bin") );
-        stage1binToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1bin") );
+        stage0catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0cat") );
+        stage1catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1cat") );
         njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
         pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
         pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
         newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
 
-        if (doStageOneRecoTags_) {
-            produces<edm::OwnVector<flashgg::StageOneTag> >();
-        } else {
-            produces<edm::OwnVector<flashgg::DiPhotonTagBase> >();
-        }
+        produces<edm::OwnVector<flashgg::DiPhotonTagBase> >();
         produces<edm::OwnVector<flashgg::TagTruthBase> >();
     }
 
@@ -148,7 +133,6 @@ namespace flashgg {
     {
         unique_ptr<edm::OwnVector<flashgg::DiPhotonTagBase> > SelectedTag( new edm::OwnVector<flashgg::DiPhotonTagBase> );
         unique_ptr<edm::OwnVector<flashgg::TagTruthBase> > SelectedTagTruth( new edm::OwnVector<flashgg::TagTruthBase> );
-        unique_ptr<edm::OwnVector<flashgg::StageOneTag> > SelectedStageOne( new edm::OwnVector<flashgg::StageOneTag> );
 
         // Cache other tags for each event; but do not use the old ones next time
         otherTags_.clear(); 
@@ -157,24 +141,11 @@ namespace flashgg {
 
         bool alreadyChosen = false;
 
-        Handle<int> stage0bin, stage1bin, njets;
-        Handle<float> pTH, pTV;
-        evt.getByToken(stage0binToken_, stage0bin);
-        evt.getByToken(stage1binToken_,stage1bin);
-        evt.getByToken(njetsToken_,njets);
-        evt.getByToken(pTHToken_,pTH);
-        evt.getByToken(pTVToken_,pTV);
-
         for( auto tpr = TagPriorityRanges.begin() ; tpr != TagPriorityRanges.end() ; tpr++ ) {
             priority += 1; // for debug
 
             Handle<View<flashgg::DiPhotonTagBase> > TagVectorEntry;
             evt.getByToken( TagList_[tpr->collIndex], TagVectorEntry );
-
-            Handle<View<flashgg::StageOneTag> > StageOneTagVectorEntry;
-            if (doStageOneRecoTags_ ) {
-                evt.getByToken( StageOneTagList_[tpr->collIndex], StageOneTagVectorEntry ); 
-            }
 
             edm::RefProd<edm::OwnVector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<edm::OwnVector<TagTruthBase> >();
 
@@ -250,16 +221,10 @@ namespace flashgg {
 
 
                 SelectedTag->push_back( *TagVectorEntry->ptrAt( chosen_i ) );
-                if (doStageOneRecoTags_) {
-                    SelectedStageOne->push_back( *StageOneTagVectorEntry->ptrAt( chosen_i ) );
-                }
                 edm::Ptr<TagTruthBase> truth = TagVectorEntry->ptrAt( chosen_i )->tagTruth();
                 if( truth.isNonnull() ) {
                     SelectedTagTruth->push_back( *truth );
                     SelectedTag->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) ); // Normally this 0 would be the index number
-                    if (doStageOneRecoTags_) {
-                        SelectedStageOne->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) );
-                    }
                 }
                 if ( debug_ ) {
                     std::cout << "[TagSorter DEBUG] Priority " << priority << " Tag Found! Tag entry "<< chosen_i  << " with sumPt "
@@ -333,8 +298,8 @@ namespace flashgg {
                     std::cout << "* Other tag interpretations not stored (config)" << std::endl;
                 }
                 if( SelectedTagTruth->size() != 0 ) {
-                    std::cout << "* HTXS Category 0 (1): " << SelectedTagTruth->back().HTXSstage0bin() << " ("
-                              << SelectedTagTruth->back().HTXSstage1bin() << ")" << std::endl;
+                    std::cout << "* HTXS Category 0 (1): " << SelectedTagTruth->back().HTXSstage0cat() << " ("
+                              << SelectedTagTruth->back().HTXSstage1cat() << ")" << std::endl;
                     std::cout << "* HTXS njets, pTH, pTV: " << SelectedTagTruth->back().HTXSnjets() << ", "
                               << SelectedTagTruth->back().HTXSpTH() << ", "
                               << SelectedTagTruth->back().HTXSpTV() << std::endl;
@@ -343,55 +308,23 @@ namespace flashgg {
             }
         }
 
-        if ( stageOnePrintout_ ) {
-            if (SelectedTag->size() == 1) {
-                float mass = SelectedTag->back().diPhoton()->mass();
-                int cat = SelectedTag->back().categoryNumber();
-                std::cout << "STAGE1PRINTOUT TagName cat mass " << TagSorter::tagName(SelectedTag->back().tagEnum()) << " " << cat << " " << mass;
-                if( SelectedTagTruth->size() != 0 ) {
-                    std::cout << " STXS True cat0 cat1 nJ ptH ptV ";
-                    std::cout << SelectedTagTruth->back().HTXSstage0bin() << " ";
-                    std::cout << SelectedTagTruth->back().HTXSstage1bin() << " ";
-                    std::cout << SelectedTagTruth->back().HTXSnjets() << " ";
-                    std::cout << SelectedTagTruth->back().HTXSpTH() << " ";
-                    std::cout << SelectedTagTruth->back().HTXSpTV() << " ";
-                } else {
-                    std::cout << "WARNING NO VALID TRUTH FOR STAGE1PRINTOUT";
-                }
-            } else {
-                std::cout << "STAGE1PRINTOUT EVENT OUTSIDE ACCEPTANCE/EFFICIENCY - STXS True cat0 cat1 nJ ptH ptV ";
-                if ( stage0bin.isValid() ) {
-                    std::cout << *( stage0bin.product() ) << " ";
-                    std::cout << *( stage1bin.product() ) << " ";
-                    std::cout << *( njets.product() ) << " ";
-                    std::cout << *( pTH.product() ) << " ";
-                    std::cout << *( pTV.product() ) << " ";
-                } else {
-                    std::cout << "WARNING NO VALID STAGE1CAT FOR PRINTOUT";
-                }
-            }
-            std::cout << std::endl;
-        }
-
         assert( SelectedTag->size() == 1 || SelectedTag->size() == 0 );
         if (createNoTag_ && SelectedTag->size() == 0) {
             SelectedTag->push_back(NoTag());
-            SelectedStageOne->push_back(StageOneTag());
-            SelectedStageOne->back().setStage1recoTag(flashgg::NOTAG);
             edm::RefProd<edm::OwnVector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<edm::OwnVector<TagTruthBase> >();
             TagTruthBase truth_obj;
-            Handle<int> stage0bin, stage1bin, njets;
+            Handle<int> stage0cat, stage1cat, njets;
             Handle<float> pTH, pTV;
-            evt.getByToken(stage0binToken_, stage0bin);
-            evt.getByToken(stage1binToken_,stage1bin);
+            evt.getByToken(stage0catToken_, stage0cat);
+            evt.getByToken(stage1catToken_,stage1cat);
             evt.getByToken(njetsToken_,njets);
             evt.getByToken(pTHToken_,pTH);
             evt.getByToken(pTVToken_,pTV);
             Handle<HTXS::HiggsClassification> htxsClassification;
             evt.getByToken(newHTXSToken_,htxsClassification);
-            if ( stage0bin.isValid() ) {
-                truth_obj.setHTXSInfo( *( stage0bin.product() ),
-                                       *( stage1bin.product() ),
+            if ( stage0cat.isValid() ) {
+                truth_obj.setHTXSInfo( *( stage0cat.product() ),
+                                       *( stage1cat.product() ),
                                        *( njets.product() ),
                                        *( pTH.product() ),
                                        *( pTV.product() ) );
@@ -406,23 +339,18 @@ namespace flashgg {
             }
             SelectedTagTruth->push_back(truth_obj);
             SelectedTag->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) );
-            SelectedStageOne->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) );
             if( SelectedTagTruth->size() != 0 && debug_ ) {
                 std::cout << "******************************" << std::endl;
                 std::cout << " TRUTH FOR NO TAG..." << std::endl;
-                std::cout << "* HTXS Category 0 (1): " << SelectedTagTruth->back().HTXSstage0bin() << " ("
-                          << SelectedTagTruth->back().HTXSstage1bin() << ")" << std::endl;
+                std::cout << "* HTXS Category 0 (1): " << SelectedTagTruth->back().HTXSstage0cat() << " ("
+                          << SelectedTagTruth->back().HTXSstage1cat() << ")" << std::endl;
                 std::cout << "* HTXS njets, pTH, pTV: " << SelectedTagTruth->back().HTXSnjets() << ", "
                           << SelectedTagTruth->back().HTXSpTH() << ", "
                           << SelectedTagTruth->back().HTXSpTV() << std::endl;
                 std::cout << "******************************" << std::endl;
             }
         }
-        if ( doStageOneRecoTags_ ) {
-            evt.put( std::move ( SelectedStageOne ) );
-        } else {
-            evt.put( std::move( SelectedTag ) );
-        }
+        evt.put( std::move( SelectedTag ) );
         evt.put( std::move( SelectedTagTruth ) );
     }
 
@@ -458,8 +386,6 @@ namespace flashgg {
             return string("VHLeptonicLoose");
         case DiPhotonTagBase::tag_t::kVHMet:
             return string("VHMet");
-        case DiPhotonTagBase::tag_t::kStageOne:
-            return string("StageOne");
         }
         return string("TAG NOT ON LIST");
     }
