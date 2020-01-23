@@ -1,5 +1,12 @@
 import FWCore.ParameterSet.Config as cms
-from flashgg.Taggers.flashggTags_cff import HTXSInputTags
+
+HTXSInputTags = cms.PSet(stage0bin = cms.InputTag("rivetProducerHTXS","stage0bin"), #2016
+                         stage1bin = cms.InputTag("rivetProducerHTXS","stage1bin"), #2016
+                         njets     = cms.InputTag("rivetProducerHTXS","njets"), #2016
+                         pTH       = cms.InputTag("rivetProducerHTXS","pTH"), #2016
+                         pTV       = cms.InputTag("rivetProducerHTXS","pTV"), #2016
+                         ClassificationObj = cms.InputTag("rivetProducerHTXS","HiggsClassification") # 2017
+                         )
 
 flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                   DiPhotonTag = cms.InputTag('flashggPreselectedDiPhotons'),
@@ -31,8 +38,13 @@ flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                   MaxObjectWeightWarning = cms.double(2.5),
                                   StoreOtherTagInfo = cms.bool(False),
                                   BlindedSelectionPrintout = cms.bool(False),
-                                  Debug = cms.untracked.bool(False),
+                                  Debug = cms.untracked.bool(True),
                                   CreateNoTag = cms.bool(False),  # Placeholder for tracking rejected events
-                                  HTXSTags = HTXSInputTags 
+                                  HTXSTags = HTXSInputTags,
+                                  GenParticleTag=cms.InputTag( "flashggPrunedGenParticles" ),
+                                  isGluonFusion = cms.bool(False),
+                                  NNLOPSWeightFile = cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root"),
+                                  applyNNLOPSweight = cms.bool(False),
+                                  SetHTXSinfo = cms.bool(True)
                                   )
 

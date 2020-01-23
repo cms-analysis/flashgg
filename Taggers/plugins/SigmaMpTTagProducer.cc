@@ -10,7 +10,6 @@
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
 #include "flashgg/DataFormats/interface/SigmaMpTTag.h"
-#include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
 
 
@@ -26,8 +25,6 @@ namespace flashgg {
     {
 
     public:
-        typedef math::XYZPoint Point;
-
         SigmaMpTTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
@@ -35,7 +32,6 @@ namespace flashgg {
 
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
-        EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
         string systLabel_;
         bool requireScaledPtCuts_;
 
@@ -47,7 +43,6 @@ namespace flashgg {
     SigmaMpTTagProducer::SigmaMpTTagProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
-        genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
         requireScaledPtCuts_   ( iConfig.getParameter<bool> ( "RequireScaledPtCuts" ) )
     {
@@ -60,7 +55,6 @@ namespace flashgg {
         assert( is_sorted( boundaries_sigmaMoM.begin(), boundaries_sigmaMoM.end() ) ); // we are counting on ascending order - update this to give an error message or exception
         assert( is_sorted( boundaries_pToM.begin(), boundaries_pToM.end() ) ); // we are counting on ascending order - update this to give an error message or exception
         produces<vector<SigmaMpTTag> >();
-        produces<vector<TagTruthBase> >();
     }
 
     int SigmaMpTTagProducer::chooseCategory( float sigmaMoMvalue, float pToMvalue )
@@ -100,29 +94,9 @@ namespace flashgg {
         evt.getByToken( mvaResultToken_, mvaResults );
 //   const PtrVector<flashgg::DiPhotonMVAResult>& mvaResultPointers = mvaResults->ptrVector();
 
-        Handle<View<reco::GenParticle> > genParticles;
-
         std::unique_ptr<vector<SigmaMpTTag> > tags( new vector<SigmaMpTTag> );
-        std::unique_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
-
-        Point higgsVtx;
-        if( ! evt.isRealData() ) {
-            evt.getByToken( genParticleToken_, genParticles );
-            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
-                int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-                if( pdgid == 25 || pdgid == 22 ) {
-                    higgsVtx = genParticles->ptrAt( genLoop )->vertex();
-                    break;
-                }
-            }
-        }
 
         assert( diPhotons->size() == mvaResults->size() ); // We are relying on corresponding sets - update this to give an error/exception
-
-        unsigned int idx = 0;
-
-        // Je ne comprends pas ces RefProds, mais je le fais
-        edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
 
         for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
             edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( candIndex );
@@ -151,16 +125,9 @@ namespace flashgg {
 
             if( passScaledPtCuts && tag_obj.categoryNumber() >= 0 ) {
                 tags->push_back( tag_obj );
-                if( ! evt.isRealData() ) {
-                    TagTruthBase truth_obj;
-                    truth_obj.setGenPV( higgsVtx );
-                    truths->push_back( truth_obj );
-                    tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
-                }
             }
         }
         evt.put( std::move( tags ) );
-        evt.put( std::move( truths ) );
     }
 }
 

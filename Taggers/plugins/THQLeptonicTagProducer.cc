@@ -87,7 +87,6 @@ class THQLeptonicTagProducer : public EDProducer
 {
 
 public:
-    typedef math::XYZPoint Point;
     map< string , CTCVWeightedVariable* > CTCVWeightedVariables;
     THQLeptonicTagProducer( const ParameterSet & );
     ~THQLeptonicTagProducer();
@@ -505,7 +504,6 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
     Handle<View<reco::GenJet> > genJets;
 
     std::unique_ptr<vector<THQLeptonicTagTruth> > truths( new vector<THQLeptonicTagTruth> );
-    Point higgsVtx;
 
     edm::Handle<LHEEventProduct> product_lhe;
     vector< double > CtCvWeights ;
@@ -1266,16 +1264,6 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
 
                     THQLeptonicTagTruth truth_obj;
                     truth_obj.setDiPhoton ( dipho );
-
-                    for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
-                        int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-                        if( pdgid == 25 || pdgid == 22 ) {
-                            higgsVtx = genParticles->ptrAt( genLoop )->vertex();
-                            break;
-                        }
-                    }
-
-                    truth_obj.setGenPV( higgsVtx );
 
                     // --------
                     //gen met

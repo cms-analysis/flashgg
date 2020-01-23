@@ -8,7 +8,8 @@ flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
                                DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                #JetTag=cms.InputTag('flashggSelectedJets'),
                                inputTagJets= UnpackedJetCollectionVInputTag,
-                               MVAMethod = cms.string("BDTG"),
+                               #MVAMethod = cms.string("BDTG"),
+                               MVAMethod = cms.string("Multi"),
                                UsePuJetID  = cms.bool(False),
                                UseJetID    = cms.bool(True),
                                merge3rdJet = cms.bool(False),
@@ -22,11 +23,6 @@ flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
                                rmsforwardCut = cms.double(3.0), # default was 0.03 , running on loose pujid
                                MinDijetMinv  = cms.double(0.0),
                                DrJetPhoton   = cms.double(0.4), # Keep the same value for now, should be set later to 0.4
-                               #vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVA_dijet_sherpa_scalewt50_2evenb_powheg200_maxdPhi_oct9_Gradient.weights.xml"),
-                               #vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_dijetMVA_Jan2016_rmscut_BDTG.weights.xml"),
-                               #vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_dijetMVA_76x_24_02_15_BDTG.weights.xml"),
-                               #vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVA_classification_dijet-mva-80x-ICHEP-v04.weights.xml"),
-#                               vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/sklearn_training_moriond17_v8.xml"),
                                vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/dijet-2017-10Jul.xml")
 )
 # Legacy DiPhoDiJet MVA

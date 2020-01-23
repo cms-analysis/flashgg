@@ -1,4 +1,5 @@
 import FWCore.ParameterSet.Config as cms
+from flashgg.MicroAOD.flashggJets_cfi import flashggUnpackedJets
 from flashgg.Taggers.flashggDiPhotonMVA_cfi import flashggDiPhotonMVA
 from flashgg.Taggers.flashggVBFMVA_cff import flashggVBFMVA,flashggVBFDiPhoDiJetMVA
 from flashgg.Taggers.flashggTags_cff import *
@@ -9,6 +10,12 @@ from flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi import flashgg
 def flashggPrepareTagSequence(process, options):
     setup_flashggDifferentialPhoIdInputsCorrection(process, options)
     flashggPreselectedDiPhotons.src = "flashggDifferentialPhoIdInputsCorrection"
+
+    if "flashggDiPhotonMVA" in options:
+        flashggDiPhotonMVA.diphotonMVAweightfile = cms.FileInPath(str(options["flashggDiPhotonMVA"]["weightFile"]))
+        flashggDiPhotonMVA.Version = cms.string(str(options["flashggDiPhotonMVA"]["version"]))
+    if "flashggVBFMVA" in options:
+        flashggVBFMVA.vbfMVAweightfile = cms.FileInPath(str(options["flashggVBFMVA"]["weightFile"]))
 
     flashggTagSequence = cms.Sequence(flashggDifferentialPhoIdInputsCorrection
                                       * flashggPreselectedDiPhotons
