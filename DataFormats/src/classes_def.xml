@@ -383,7 +383,8 @@
 <class name="std::vector<flashgg::DiPhotonTagBase*>"/>
 <class name="std::vector<flashgg::TagTruthBase*>"/>
 
-<class name="flashgg::DoubleHTag" ClassVersion="15">
+<class name="flashgg::DoubleHTag" ClassVersion="16">
+ <version ClassVersion="16" checksum="3846196078"/>
  <version ClassVersion="15" checksum="3477662648"/>
  <version ClassVersion="14" checksum="3475569523"/>
  <version ClassVersion="13" checksum="1264868891"/>

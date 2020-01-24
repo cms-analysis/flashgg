@@ -103,6 +103,16 @@ namespace flashgg {
         bool useElecLooseId;
         std::vector<double> elecEtaThresholds;
 
+        double TTHLeptonictag_MuonPtCut_;
+        double TTHLeptonictag_MuonEtaCut_;
+        double TTHLeptonictag_MuonIsoCut_;
+        double TTHLeptonictag_MuonPhotonDrCut_;
+        double TTHLeptonictag_ElePtCut_;
+        std::vector<double> TTHLeptonictag_EleEtaCuts_;
+        double TTHLeptonictag_ElePhotonDrCut_;
+        double TTHLeptonictag_ElePhotonZMassCut_;
+        double TTHLeptonictag_DeltaRTrkEle_;
+
 
         FileInPath MVAFlatteningFileName_;
         TFile * MVAFlatteningFile_;
@@ -155,11 +165,20 @@ namespace flashgg {
         mjjBoundariesUpper_ = iConfig.getParameter<vector<double > >( "MJJBoundariesUpper" ); 
         multiclassSignalIdx_ = (iConfig.getParameter<edm::ParameterSet>("MVAConfig")).getParameter<int>("multiclassSignalIdx"); 
         doReweight_ = (iConfig.getParameter<int>("doReweight")); 
-   
         auto names = iConfig.getParameter<vector<string>>("reweight_names");
         for (auto & name : names ) {
             reweights_.push_back(consumes<float>(edm::InputTag(iConfig.getParameter<string>("reweight_producer") , name))) ;
         }
+
+        TTHLeptonictag_MuonPtCut_=iConfig.getParameter<double> ("TTHLeptonictag_MuonPtCut");
+        TTHLeptonictag_MuonEtaCut_=iConfig.getParameter<double> ("TTHLeptonictag_MuonEtaCut");
+        TTHLeptonictag_MuonIsoCut_=iConfig.getParameter<double> ("TTHLeptonictag_MuonIsoCut");
+        TTHLeptonictag_MuonPhotonDrCut_=iConfig.getParameter<double> ("TTHLeptonictag_MuonPhotonDrCut");
+        TTHLeptonictag_ElePtCut_=iConfig.getParameter<double> ("TTHLeptonictag_ElePtCut");
+        TTHLeptonictag_EleEtaCuts_=iConfig.getParameter<vector<double> > ("TTHLeptonictag_EleEtaCuts");
+        TTHLeptonictag_ElePhotonDrCut_=iConfig.getParameter<double> ("TTHLeptonictag_ElePhotonDrCut");
+        TTHLeptonictag_ElePhotonZMassCut_=iConfig.getParameter<double> ("TTHLeptonictag_ElePhotonZMassCut");
+        TTHLeptonictag_DeltaRTrkEle_=iConfig.getParameter<double> ("TTHLeptonictag_DeltaRTrkEle");
 
       //  diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         inputDiPhotonName_= iConfig.getParameter<std::string > ( "DiPhotonName" );
@@ -415,6 +434,26 @@ namespace flashgg {
                 continue;
             }
 
+            //lepton veto
+            Handle<View<reco::Vertex> > vertices;
+            evt.getByToken( vertexToken_, vertices );
+
+            std::vector<edm::Ptr<flashgg::Muon> >     Muons2018;
+            Handle<View<flashgg::Muon> > theMuons;
+            evt.getByToken( muonToken_, theMuons );
+
+            std::vector<edm::Ptr<flashgg::Electron> > Electrons2018;
+            Handle<View<flashgg::Electron> > theElectrons;
+            evt.getByToken( electronToken_, theElectrons );
+            
+
+            if(theMuons->size()>0) {
+                Muons2018 = LeptonSelection2018::selectMuons(theMuons->ptrs(), dipho, vertices->ptrs(), TTHLeptonictag_MuonPtCut_, TTHLeptonictag_MuonEtaCut_, TTHLeptonictag_MuonIsoCut_, TTHLeptonictag_MuonPhotonDrCut_, 0);
+            }
+            if(theElectrons->size()>0) {
+               Electrons2018 = LeptonSelection2018::selectElectrons(theElectrons->ptrs(), dipho, TTHLeptonictag_ElePtCut_, TTHLeptonictag_EleEtaCuts_, TTHLeptonictag_ElePhotonDrCut_, TTHLeptonictag_ElePhotonZMassCut_, TTHLeptonictag_DeltaRTrkEle_, 0);
+            }
+
 
             // find vertex associated to diphoton object
             size_t vtx = (size_t)dipho->jetCollectionIndex();
@@ -502,7 +541,8 @@ namespace flashgg {
             tag_obj.setEventNumber(evt.id().event() );
             tag_obj.setMVA( mva );
            
-
+            tag_obj.nMuons2018_ = Muons2018.size();
+            tag_obj.nElectrons2018_ = Electrons2018.size();
 
  
             // tag_obj.setMVAprob( mva_vector );
@@ -554,11 +594,7 @@ namespace flashgg {
                     ttHVars["Xtt1"] = 1000;
                 }
                 
-                Handle<View<flashgg::Electron> > theElectrons;
-                evt.getByToken( electronToken_, theElectrons );
 
-                Handle<View<reco::Vertex> > vertices;
-                evt.getByToken( vertexToken_, vertices );
                 edm::Handle<double>  rho;
                 evt.getByToken(rhoToken_,rho);
             
@@ -601,8 +637,6 @@ namespace flashgg {
                     ttHVars["etae2"] = 0.;
                     ttHVars["phie2"] = 0.;
                 } 
-                Handle<View<flashgg::Muon> > theMuons;
-                evt.getByToken( muonToken_, theMuons );
                 std::vector<edm::Ptr<flashgg::Muon> > selectedMuons = selectAllMuons( theMuons->ptrs(), vertices->ptrs(), muEtaThreshold, leptonPtThreshold, muPFIsoSumRelThreshold);
                 std::vector<edm::Ptr<flashgg::Muon> > tagMuons = tthKiller_.filterMuons( selectedMuons, *tag_obj.diPhoton(), leadJet->p4(), subleadJet->p4(), dRPhoMuonThreshold, dRJetLeptonThreshold);
 
@@ -763,7 +797,10 @@ namespace flashgg {
 
                 float ttHScore = EvaluateNN();
                 if (ttHScore < ttHScoreThreshold) continue;
-                
+               
+                tag_obj.ntagMuons_ = tagMuons.size();
+                tag_obj.ntagElectrons_ = tagElectrons.size();
+
                 tag_obj.ttHScore_ = ttHScore;
                 PL_VectorVar_.clear();
                 HLF_VectorVar_.clear();

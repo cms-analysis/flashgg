@@ -18,16 +18,27 @@ class DoubleHCustomize():
         variables = []
         if(self.customize.doubleHTagsOnly):
             var_workspace += [
-                "genMhh := genMhh()",
-                "genAbsCosThetaStar_CS := abs(genCosThetaStar_CS())",
                 "Mjj := dijet().M()",
                 "eventNumber := eventNumber()",
                 "MX := MX()",
                 "HHbbggMVA := MVA()"
             ]
+            if self.customize.processId != "Data":
+                var_workspace += [
+                    "genMhh := genMhh()",
+                    "genAbsCosThetaStar_CS := abs(genCosThetaStar_CS())",
+                    'btagReshapeWeight := weight("JetBTagReshapeWeightCentral")',
+                ]
+                variables += [
+                    "genMhh := genMhh()",
+                    "genAbsCosThetaStar_CS := abs(genCosThetaStar_CS())",
+                    "leadingJet_hflav := leadJet().hadronFlavour()",
+                    "leadingJet_pflav := leadJet().partonFlavour()",
+                    "subleadingJet_hflav := subleadJet().hadronFlavour()",
+                    "subleadingJet_pflav := subleadJet().partonFlavour()",
+                    'btagReshapeWeight := weight("JetBTagReshapeWeightCentral")',
+                ]
             variables += [
-                "genMhh := genMhh()",
-                "genAbsCosThetaStar_CS := abs(genCosThetaStar_CS())",
                 "leadingJet_bDis := leadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",#FIXME make the btag type configurable?
                 "subleadingJet_bDis := subleadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",
                 "leadingJet_DeepCSV := leadJet().bDiscriminator('pfDeepCSVJetTags:probb')+leadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",#FIXME make the btag type configurable?
@@ -64,7 +75,6 @@ class DoubleHCustomize():
                 "diphoton_pt := diPhoton.pt",
                 "diphoton_eta := diPhoton.eta",
                 "diphoton_phi := diPhoton.phi",
-                'btagReshapeWeight := weight("JetBTagReshapeWeightCentral")',
                 
                 "diHiggs_pt := getdiHiggsP4().pt()",
                 "diHiggs_mass := getdiHiggsP4().M()",
@@ -83,15 +93,16 @@ class DoubleHCustomize():
                 "leadingJet_eta := leadJet().eta",
                 "leadingJet_phi := leadJet().phi",
                 "leadingJet_mass := leadJet().p4().M()",
-                "leadingJet_hflav := leadJet().hadronFlavour()",
-                "leadingJet_pflav := leadJet().partonFlavour()",
                 
                 "subleadingJet_pt := subleadJet().pt",
                 "subleadingJet_eta := subleadJet().eta",
                 "subleadingJet_phi := subleadJet().phi",
                 "subleadingJet_mass := subleadJet().p4().M()",
-                "subleadingJet_hflav := subleadJet().hadronFlavour()",
-                "subleadingJet_pflav := subleadJet().partonFlavour()",
+
+                "ntagMuons := ntagMuons()",
+                "ntagElectrons := ntagElectrons()",
+                "nMuons2018 := nMuons2018()",
+                "nElectrons2018 := nElectrons2018()"
             ]
         if self.customize.doBJetRegression and self.customize.doubleHTagsOnly: variables +=[
                 "leadingJet_bRegNNCorr := leadJet().userFloat('bRegNNCorr')",
@@ -111,8 +122,6 @@ class DoubleHCustomize():
             var_workspace += ["benchmark_reweight_box := getBenchmarkReweight(13)"]
             var_workspace += ["benchmark_reweight_2017fake := getBenchmarkReweight(14)"]
 
-        if self.customize.processId != "Data": 
-            var_workspace += ['btagReshapeWeight := weight("JetBTagReshapeWeightCentral")']
 
         if self.customize.ttHKillerSaveInputVariables : variables += [
             "ttH_sumET := sumET()",
@@ -206,6 +215,8 @@ class DoubleHCustomize():
         if self.customize.doDoubleHttHKiller : variables +=[
             "ttHScore := ttHScore()"
            ]
+        if not (self.customize.doubleHTagDumpMinVariables or self.customize.dumpWorkspace) :
+            return self.variablesToDump()
         return variables
 
 
@@ -235,12 +246,12 @@ class DoubleHCustomize():
         if training_type == 'with_Mjj' :
             self.process.flashggDoubleHTag.MVABoundaries = cms.vdouble(0.33,0.56, 0.70)
             self.process.flashggDoubleHTag.MXBoundaries = cms.vdouble(250., 375.,470.,600.,250.,325.,365.,585.,250.,330.,360.,520.)
-            self.process.flashggDoubleHTag.ttHScoreThreshold = cms.double(0.) #0.24
+            self.process.flashggDoubleHTag.ttHScoreThreshold = cms.double(0.) #0.26
         elif training_type == 'wo_Mjj' :
             self.process.flashggDoubleHTag.MVAConfig.variables.pop(0) 
             self.process.flashggDoubleHTag.MVABoundaries = cms.vdouble(0.30,0.54, 0.75)
             self.process.flashggDoubleHTag.MXBoundaries = cms.vdouble(250., 395.,470.,585.,250.,345.,375.,540.,250.,330.,375.,530.)
-            self.process.flashggDoubleHTag.ttHScoreThreshold = cms.double(0.20)
+            self.process.flashggDoubleHTag.ttHScoreThreshold = cms.double(0.) #0.26
 
         ## customize meta conditions
         self.process.flashggDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))
