@@ -180,7 +180,7 @@ class DoubleHCustomize():
       return systematicVariables
 
 
-    def variablesToDumpData():
+    def variablesToDumpData(self):
         variables = [
            #  "leadingJet_DeepCSV := leadJet().bDiscriminator('pfDeepCSVJetTags:probb')+leadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",#FIXME make the btag type configurable?
            #  "subleadingJet_DeepCSV := subleadJet().bDiscriminator('pfDeepCSVJetTags:probb')+subleadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",
