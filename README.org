@@ -3,14 +3,17 @@
    Before you start, **please take note** of these warnings and comments:
    - **N.B.** The setup script will check out many packages and take a while!
    - **N.B.** You can ignore "error: addinfo_cache" lines. 
+   - **N.B.** These setup instructions now include the STXS workflow
 
    Supported releases:
    - 10_5_0
+   - 10_6_1_patch2 required for the STXS stage 1.1 information
 
    get flashgg:
    #+BEGIN_EXAMPLE
-   cmsrel CMSSW_10_5_0
-   cd CMSSW_10_5_0/src
+   export SCRAM_ARCH=slc7_amd64_gcc700
+   cmsrel CMSSW_10_6_1_patch2
+   cd CMSSW_10_6_1_patch2/src
    cmsenv
    git cms-init
    cd $CMSSW_BASE/src 
@@ -85,8 +88,6 @@
    #processType=data/bkg/sig, depending on input file
    #conditionsJSON= add appropriate JSON file for 2016, 2017 or 2018 from MetaData/data/MetaConditions/
 
-   cmsRun Taggers/test/simple_Tag_test.py
-   cmsRun Taggers/test/diphotonsDumper_cfg.py
    cmsRun Systematics/test/workspaceStd.py processId=ggh_125 doHTXS=1
    #+END_EXAMPLE
 

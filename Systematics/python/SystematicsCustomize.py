@@ -77,7 +77,7 @@ def createStandardSystematicsProducers(process, options):
     diPhotons_syst.setupDiPhotonSystematics( process, options )
 
     import flashgg.Systematics.flashggMuonSystematics_cfi as muon_sf
-    muon_sf.SetupMuonScaleFactors( process , options.metaConditions["MUON_ID"], options.metaConditions["MUON_ISO"] )
+    muon_sf.SetupMuonScaleFactors( process ,  options.metaConditions["MUON_ID_JSON_FileName"],  options.metaConditions["MUON_ID_JSON_FileName_LowPt"], options.metaConditions["MUON_ISO_JSON_FileName"], options.metaConditions["MUON_ID"], options.metaConditions["MUON_ISO"], options.metaConditions["MUON_ID_RefTracks"],options.metaConditions["MUON_ID_RefTracks_LowPt"] )
    
     #scale factors for electron ID
     from   flashgg.Systematics.flashggElectronSystematics_cfi import EleSF_JSONReader
@@ -113,6 +113,37 @@ def modifyTagSequenceForSystematics(process,jetSystematicsInputTags,ZPlusJetMode
     else:
         process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
     process.systematicsTagSequences = cms.Sequence()
+
+
+def createJetSystematicsForBreg(process,options):
+    from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
+    
+    bregSystInputList = cms.VInputTag()
+    bregSystProducers = []
+    for i in range(len(UnpackedJetCollectionVInputTag)):
+        bregSystName = "flashggJetSystematicsBreg%i"%i
+        setattr(process, bregSystName, getattr(process,"flashggJetSystematics%i"%i).clone())
+        bregSystProd = getattr(process, bregSystName)
+        newvpset = cms.VPSet()
+        for pset in bregSystProd.SystMethods:
+            if not pset.Label.value().count("JER"):
+                newvpset += [pset]
+         
+        JERbregpset = cms.PSet( MethodName = cms.string("FlashggJetBregSmear"),
+                                Label = cms.string("JERbreg"),
+                                NSigmas = cms.vint32(-1,1),
+                                OverallRange = cms.string("abs(eta)<5.0"),
+                                Debug = cms.untracked.bool(False),
+                                ApplyCentralValue = cms.bool(True),
+                                BRegressionSFunc = cms.vdouble(options.metaConditions['bRegression']['JER_central'],options.metaConditions['bRegression']['JER_up'],options.metaConditions['bRegression']['JER_down']) #Central SF and up/down unc for b-jet energy regression smearing
+                              )
+        newvpset += [JERbregpset]
+        bregSystProd.SystMethods = newvpset
+        bregSystInputList.append(cms.InputTag(bregSystName))
+        bregSystProducers.append(bregSystProd)
+
+    return bregSystProducers,bregSystInputList
+
 
 def cloneTagSequenceForEachSystematic(process,systlabels=[],phosystlabels=[],metsystlabels=[],jetsystlabels=[],jetSystematicsInputTags=None,ZPlusJetMode=False):
     #process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags,ZPlusJetMode=False):
@@ -283,7 +314,7 @@ def useEGMTools(process):
     # add sigmaE/E correction and systematics
     process.flashggDiPhotonSystematics.SystMethods.extend( [process.SigmaEOverESmearing_EGM, process.SigmaEOverEShift] )
 
-def runRivetSequence(process, options):
+def runRivetSequence(process, options, processId):
     process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
     process.rivetProducerHTXS = cms.EDProducer('HTXSRivetProducer',
                                                HepMCCollection = cms.InputTag('myGenerator','unsmeared'),
@@ -300,6 +331,11 @@ def runRivetSequence(process, options):
                                          genEventInfo = cms.InputTag("generator"),
                                          signalParticlePdgIds = cms.vint32(25), ## for the Higgs analysis
                                      )
+
+     ## ggH and VBF not supported by AUTO in rivetProducerHTXS: use customize.processId
+    if "ggh" in processId or "glugluh" in processId: process.rivetProducerHTXS.ProductionMode = "GGF"
+    elif "vbf" in processId: process.rivetProducerHTXS.ProductionMode = "VBF"
+
     process.p.insert(0, process.mergedGenParticles*process.myGenerator*process.rivetProducerHTXS)
 
 def customizeForL1Prefiring(process, options, processId):
@@ -320,3 +356,32 @@ def customizeForL1Prefiring(process, options, processId):
         getattr(process, "flashggPrefireDiPhotons").applyToCentral = cms.bool(applyToCentral)
     return isRelevant and applyToCentral
 
+def recalculatePDFWeights(process, options):
+    print "Recalculating PDF weights"
+    process.load("flashgg/MicroAOD/flashggPDFWeightObject_cfi")
+    process.flashggPDFWeightObject = cms.EDProducer('FlashggPDFWeightProducer',
+                                                    LHEEventTag = cms.InputTag('externalLHEProducer'),
+                                                    GenTag      = cms.InputTag('generator'),
+                                                    tag = cms.untracked.string("initrwgt"),
+                                                    doScaleWeights  = cms.untracked.bool(True),
+                                                    nPdfEigWeights = cms.uint32(60),
+                                                    mc2hessianCSV = cms.untracked.string(options["mc2hessianCSV"].encode("ascii")),
+                                                    LHERunLabel = cms.string("externalLHEProducer"),
+                                                    Debug = cms.bool(False),
+                                                    PDFmap = cms.PSet(#see here https://lhapdf.hepforge.org/pdfsets.html to update the map if needed
+                                                        NNPDF30_lo_as_0130_nf_4 = cms.untracked.uint32(263400),
+                                                        NNPDF31_nnlo_as_0118_nf_4 = cms.untracked.uint32(320900)
+                                                    )
+                                                ) 
+    process.p.insert(0, process.flashggPDFWeightObject)
+
+def filterHLTrigger(process, options):
+
+    import re
+    from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
+    hlt_paths = []
+    for dset in options.metaConditions["TriggerPaths"]:
+        regDset = re.compile(dset)
+        if re.match(regDset, options.datasetName()):
+            hlt_paths.extend([str(x) for x in options.metaConditions["TriggerPaths"][dset][options.analysisType]])
+    process.hltHighLevel = hltHighLevel.clone(HLTPaths=cms.vstring(hlt_paths))

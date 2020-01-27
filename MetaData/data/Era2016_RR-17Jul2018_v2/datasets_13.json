@@ -7965,5 +7965,44 @@
         ], 
         "parent_n_units": 43845135, 
         "vetted": true
+    }, 
+    "/WminusH_HToGG_WToAll_M130_13TeV_powheg_pythia8/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2-b8a5b6287120fce79bb02069cbed82a0/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 25024, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/WminusH_HToGG_WToAll_M130_13TeV_powheg_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_065827/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 25024, 
+                "totEvents": 25024, 
+                "weights": 11737.185546875
+            }, 
+            {
+                "bad": false, 
+                "events": 800, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/WminusH_HToGG_WToAll_M130_13TeV_powheg_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_065827/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 800, 
+                "totEvents": 800, 
+                "weights": 372.21527099609375
+            }, 
+            {
+                "bad": false, 
+                "events": 25232, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/WminusH_HToGG_WToAll_M130_13TeV_powheg_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_065827/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25232, 
+                "totEvents": 25232, 
+                "weights": 11856.2978515625
+            }, 
+            {
+                "bad": false, 
+                "events": 24920, 
+                "name": "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/WminusH_HToGG_WToAll_M130_13TeV_powheg_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/190715_065827/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 24920, 
+                "totEvents": 24920, 
+                "weights": 11680.609375
+            }
+        ], 
+        "parent_n_units": 199800, 
+        "vetted": true
     }
 }

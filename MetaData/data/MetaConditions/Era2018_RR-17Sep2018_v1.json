@@ -34,8 +34,8 @@
 
     "flashggPhotons" :
     {
-        "photonIdMVAweightfile_EB" : "flashgg/MicroAOD/data/HggPhoId_94X_barrel_BDT_woisocorr.weights.xml",
-        "photonIdMVAweightfile_EE" : "flashgg/MicroAOD/data/HggPhoId_94X_endcap_BDT_woisocorr.weights.xml",
+        "photonIdMVAweightfile_EB" : "flashgg/MicroAOD/data/HggPhoId_94X_barrel_BDT_v2.weights.xml",
+        "photonIdMVAweightfile_EE" : "flashgg/MicroAOD/data/HggPhoId_94X_endcap_BDT_v2.weights.xml",
         "effAreasConfigFile" : "RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_TrueVtx.txt",
         "is2017" : true
     },
@@ -49,25 +49,93 @@
     "TriggerPaths" :
     {
         ".*EGamma.*2018.*" :
-        [
-            "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90*",
-            "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95*",
-            "HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto_Mass55*",
-            "HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto*",
-            "HLT_Ele*_WPTight_Gsf_v*"
-        ],        
+        {
+	    "mainAnalysis" :
+	    [
+		"HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90*",
+		"HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95*"
+	    ],
+	    "lowMassAnalysis" :
+	    [
+		"HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto_Mass55*",
+		"HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto*"
+	    ],
+	    "tagAndProbe" :
+	    [
+		"HLT_Ele*_WPTight_Gsf_v*"
+	    ]
+        },        
         ".*DoubleMuon.*2018.*" :
-        [
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v*",
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v*",
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*",
-            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v*"
-        ]
+        {
+	    "ZmumuGamma" :
+	    [
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v*",
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v*",
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*",
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v*"
+	    ]
+        }
     },
     "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2018_cfi",
+
+    "flashggDiPhotonMVA" : 
+    {  
+        "weightFile" : "flashgg/Taggers/data/legacyDiphoModel2018.xml",
+        "version" : "xgb"
+    },
+
+    "flashggVBFMVA" : 
+    {  
+        "weightFile" : "flashgg/Taggers/data/multiclassDijetModel2018.xml"
+    },
+
+    "stageOneCombinedTag" :
+    {  
+        "rawDiphoBounds" : [
+                             0.771, 0.569,
+                             0.839, 0.698,
+
+                             0.852, 0.751,
+                             0.878, 0.753,
+                             0.910, 0.837,
+
+                             0.827, 0.743,
+                             0.887, 0.778,
+                             0.922, 0.841,
+
+                             0.938, 0.888,
+
+                             0.800,
+                             0.745, 0.715,
+                             0.764, 0.750,
+                             0.858,
+                             0.788
+                           ],
+        "rawDijetBounds" : [
+                             0.376, 0.419,
+                             0.398, 0.551,
+                             0.05,
+                             0.550
+                           ],
+        "rawGghBounds" : [
+                             0.842, 0.534,
+                             0.914, 0.814,
+                             0.447,
+                             0.521
+                           ]
+    },
+
     
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
+
+    "MUON_ID_JSON_FileName" : "flashgg/Systematics/data/Muon2018_RunABCD_SF_ID.json",
+    "MUON_ID_JSON_FileName_LowPt" : "flashgg/Systematics/data/Muon2018_RunABCD_SF_ID_lowPt.json",
+    "MUON_ISO_JSON_FileName" : "flashgg/Systematics/data/Muon2018_RunABCD_SF_ISO.json",
+
+    "MUON_ID_RefTracks" : "TrackerMuons",
+    "MUON_ID_RefTracks_LowPt" : "genTracks",
+
 
     "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_eleIDSFs_2018.json",
     "Ele_ID_version" : "mvaEleID-Fall17-iso-V2-wp90",
@@ -92,20 +160,32 @@
 	"eta" : 2.5
     },
 
+    "mc2hessianCSV" : "PhysicsTools/HepMCCandAlgos/data/NNPDF30_lo_as_0130_hessian_60.csv",
+
     "bRegression" :
     {
         "weightFile" : "/src/flashgg/Taggers/data/DNN_models/breg_training_2018_v8.pb",
         "y_mean" : 1.0545977354049683,
         "y_std" : 0.27912887930870056,
-        "year" : 2018
+        "year" : 2018,
+        "useBRegressionJERsf" : false, 
+        "JER_central" : 1.1, 
+        "JER_up" : 0.1, 
+        "JER_down" : -0.1 
     },
     "doubleHTag":
     {
 	"jetID" : "Tight2018",
-	"weightsFile" : "flashgg/Taggers/data/HHTagger/training_with_19_03_2019_trainingMjj_year1.weights.xml",
-	"MVAFlatteningFileName" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20190321_2016_2017.root",
-	"MVAscalingValue" :1.02309,
-	"NodesReweightingFileName" : "flashgg/Taggers/data/HHTagger/HHreweight_2018nodes_08072019.root",
+	"weightsFile" : {
+		"with_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_18_12_2019_training2.weights.xml",
+		"wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_18_12_2019_wo_Mjj_training2.weights.xml"
+	},
+	"MVAFlatteningFileName" : {
+		"with_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20191218.root",
+		"wo_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20191218_wo_Mjj.root"
+	},
+	"MVAscalingValue" : 0.864,
+	"NodesReweightingFileName" : "flashgg/Taggers/data/HHTagger/HHreweight_2018_15112019.root",
 	"ttHWeightfile" : "flashgg/Taggers/data/ttHKiller/Keras2017_converted_allnode.pb",
 	"ttHKiller_mean" : [  3.22491144e+02,   7.22919780e+01,   1.49387571e-01,   4.94052483e-03,
                               5.10246425e-04,   1.38947662e+00,   5.31453078e+00,   7.45455854e+00,
