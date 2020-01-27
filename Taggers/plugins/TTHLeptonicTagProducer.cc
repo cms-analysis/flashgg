@@ -88,9 +88,6 @@ namespace flashgg {
         EDGetTokenT<float> pTHToken_,pTVToken_;
         string systLabel_;
 
-        EDGetTokenT<double> prefireToken_;
-        bool applyPrefireProbability_; 
-
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
 
         unique_ptr<TMVA::Reader> DiphotonMva_;
@@ -396,8 +393,7 @@ namespace flashgg {
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
-        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
-        prefireToken_ ( consumes<double>( iConfig.getParameter<InputTag> ( "PrefireProbability" ) ) )
+        systLabel_( iConfig.getParameter<string> ( "SystLabel" ) )
     {
         systematicsLabels.push_back("");
         modifySystematicsWorkflow = iConfig.getParameter<bool> ( "ModifySystematicsWorkflow" );
@@ -475,8 +471,6 @@ namespace flashgg {
 
         for (auto & tag : metTags)
            metTokens_.push_back(consumes<edm::View<flashgg::Met>>(tag));
-
-        applyPrefireProbability_ = iConfig.getParameter<bool>( "applyPrefireProbability" );
 
         leadPhoOverMassThreshold_ = iConfig.getParameter<double>( "leadPhoOverMassThreshold");
         subleadPhoOverMassThreshold_ = iConfig.getParameter<double>( "subleadPhoOverMassThreshold");
@@ -690,9 +684,6 @@ namespace flashgg {
         Handle<View<flashgg::Met> > theMet_;
         if (!modifySystematicsWorkflow)
             evt.getByToken( METToken_, theMet_ );
-
-        Handle<double> prefireProb;
-        evt.getByToken( prefireToken_, prefireProb );
 
         //std::unique_ptr<vector<TTHLeptonicTag> > tthltags( new vector<TTHLeptonicTag> );
         std::unique_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
@@ -1405,14 +1396,6 @@ namespace flashgg {
 
                     for( unsigned int i = 0; i < Electrons.size(); ++i )
                         tthltags_obj.includeWeights( *Electrons.at(i));
-
-
-                    if (applyPrefireProbability_) {
-                        tthltags_obj.setWeight("prefireProbability", *(prefireProb.product())); // add the prefire probability
-                        if (!evt.isRealData())
-                            tthltags_obj.setCentralWeight(tthltags_obj.centralWeight() * (1. - *(prefireProb.product())) );
-                    }
-
 
                     tthltags_obj.includeWeights( *dipho );
                     tthltags_obj.setJets( tagJets );
