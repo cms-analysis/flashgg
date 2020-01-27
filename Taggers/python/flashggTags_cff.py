@@ -99,8 +99,7 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        ElePhotonDrCut = cms.double(0.),
                                        ElePhotonZMassCut = cms.double(5),
                                        DeltaRTrkEle = cms.double(0.),
-                                       debug = cms.bool(False),
-                                       HTXSTags     = HTXSInputTags
+                                       debug = cms.bool(False)
                                        )
 
 
