@@ -253,15 +253,16 @@ flashggTHQLeptonicTag = cms.EDProducer("FlashggTHQLeptonicTagProducer",
                                        bDiscriminator = bDiscriminator94X, #bDiscriminator76X,
                                        bTag = cms.string(flashggDeepCSV),
                                        muPFIsoSumRelThreshold = cms.double(0.25),
-                                       PhoMVAThreshold = cms.double(-0.3),
+                                       PhoMVAThreshold = cms.double(-0.7),
                                        DeltaRTrkElec = cms.double(0.35),
                                        deltaRPhoElectronThreshold = cms.double(0.4),
                                        DeltaRbjetfwdjet=cms.double(0.4),
                                        DeltaRtHchainfwdjet=cms.double(0.4),
-                                       MVAThreshold_thq = cms.double(0.01),
-                                       likelihoodThreshold_thq = cms.double(0.5),
-                                       thqleptonicMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_BDT_thq_24April19.weights.xml"),
-                                       likelihood_input = cms.FileInPath("flashgg/Taggers/data/LikelihoodInput_file.root")
+#                                       MVAThreshold_thq = cms.double(-0.05),
+#                                       MVAThreshold_ForNonPeakingBkg = cms.double(),
+#                                       thqleptonicMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVA_THQLeptonicTag_tHq_Vs_ttH_BDT.weights.xml"),
+#                                      thqCatweightfile_ForNonPeakingBkg = cms.FileInPath("flashgg/Taggers/data/TMVA_THQLeptonicTag_tHq_Vs_NonPeakingBkg_BDT_16.weights.xml"),
+                                       thqCatweightfile_ForNonPeakingBkg = cms.FileInPath(""),
 )
 
 

@@ -1390,6 +1390,7 @@ namespace flashgg {
      
                     if( ! evt.isRealData() )
                     {
+                        evt.getByToken( genParticleToken_, genParticles );
                         int gp_lead_index = GenPhoIndex(genParticles, dipho->leadingPhoton(), -1);
                         int gp_sublead_index = GenPhoIndex(genParticles, dipho->subLeadingPhoton(), gp_lead_index);
                         vector<int> leadFlags; leadFlags.clear();
