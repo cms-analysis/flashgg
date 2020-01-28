@@ -239,6 +239,8 @@ if customize.tthTagsOnly:
     process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
     process.flashggDiPhotons.whichVertex = cms.uint32(0)
     process.flashggDiPhotons.useZerothVertexFromMicro = cms.bool(True)
+    process.flashggDiPhotons.vertexIdMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexIdMVAweightfile'].encode("ascii")
+    process.flashggDiPhotons.vertexProbMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexProbMVAweightfile'].encode("ascii")
 
 print 'here we print the tag sequence before'
 print process.flashggTagSequence
@@ -334,6 +336,9 @@ useEGMTools(process)
 # convention: ggh vbf wzh (wh zh) tth
 signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","qqh","ggh","tth","vh"]
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
+
+applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)
+
 #if customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance") or customize.processId.count("hh_"): 
 if is_signal:
     print "Signal MC, so adding systematics and dZ"
@@ -348,7 +353,7 @@ if is_signal:
         variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
         variablesToUse.append("leadmva := diPhotonMVA().leadmva")
         variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
-    
+
     if customize.doSystematics:
         for direction in ["Up","Down"]:
             phosystlabels.append("MvaShift%s01sigma" % direction)
@@ -379,6 +384,8 @@ if is_signal:
             variablesToUse.append("MuonIsoWeight%s01sigma[1,-999999.,999999.] := weight(\"Muon%sISOWeight%s01sigma\")" % (direction,str(customize.metaConditions['MUON_ISO']),direction))
             variablesToUse.append("JetBTagCutWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagCutWeight%s01sigma\")" % (direction,direction))
             variablesToUse.append("JetBTagReshapeWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagReshapeWeight%s01sigma\")" % (direction,direction))
+            if applyL1Prefiring:
+                variablesToUse.append("prefireProbability%s01sigma[1,-999999.,999999.] := weight(\"prefireProbability%s01sigma\")" % (direction,direction))
             variablesToUse.append("THU_ggH_Mu%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Mu%s01sigma\")" % (direction,direction))
             variablesToUse.append("THU_ggH_Res%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Res%s01sigma\")" % (direction,direction))
             variablesToUse.append("THU_ggH_Mig01%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Mig01%s01sigma\")" % (direction,direction))

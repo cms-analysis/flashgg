@@ -658,7 +658,6 @@ namespace flashgg {
         if (!modifySystematicsWorkflow)
             evt.getByToken( METToken_, theMet_ );
 
-
         //std::unique_ptr<vector<TTHLeptonicTag> > tthltags( new vector<TTHLeptonicTag> );
 
         //assert( diPhotons->size() == mvaResults->size() );
@@ -723,6 +722,11 @@ namespace flashgg {
             assert( diPhotons->size() == mvaResults->size() );
 
             std::unique_ptr<vector<TTHLeptonicTag> > tthltags( new vector<TTHLeptonicTag> );
+
+            if( ! evt.isRealData() )
+            {
+                evt.getByToken( genParticleToken_, genParticles );
+            }
 
 
             for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ )
@@ -1349,7 +1353,7 @@ namespace flashgg {
                     for( unsigned int i = 0; i < Muons.size(); ++i )
                         tthltags_obj.includeWeights( *Muons.at(i));
 
-                   for( unsigned int i = 0; i < Electrons.size(); ++i )
+                    for( unsigned int i = 0; i < Electrons.size(); ++i )
                         tthltags_obj.includeWeights( *Electrons.at(i));
 
                     tthltags_obj.includeWeights( *dipho );
@@ -1387,7 +1391,7 @@ namespace flashgg {
                     tthltags_obj.setSubleadSmallestDr(-999);
                                 
                     tthltags->push_back( tthltags_obj );
-     
+            
                     if( ! evt.isRealData() )
                     {
                         int gp_lead_index = GenPhoIndex(genParticles, dipho->leadingPhoton(), -1);
@@ -1408,7 +1412,7 @@ namespace flashgg {
                            tthltags->back().setLeadMomMomID(leadFlags[7]);
                            tthltags->back().setLeadSmallestDr(NearestDr(genParticles, &(*gp_lead)));
 
-                           cout << "leadPrompt: " << leadFlags[0] << endl;
+                           //cout << "leadPrompt: " << leadFlags[0] << endl;
                            } 
 
                        if (gp_sublead_index != -1) {

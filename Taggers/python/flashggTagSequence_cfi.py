@@ -2,6 +2,7 @@ import FWCore.ParameterSet.Config as cms
 from flashgg.MicroAOD.flashggJets_cfi import flashggUnpackedJets
 from flashgg.Taggers.flashggDiPhotonMVA_cfi import flashggDiPhotonMVA
 from flashgg.Taggers.flashggVBFMVA_cff import flashggVBFMVA,flashggVBFDiPhoDiJetMVA
+from flashgg.Taggers.flashggPrefireDiPhotons_cff import flashggPrefireDiPhotons
 from flashgg.Taggers.flashggTags_cff import *
 from flashgg.Taggers.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
 from flashgg.Taggers.flashggTagSorter_cfi import flashggTagSorter
@@ -9,7 +10,7 @@ from flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi import flashgg
 
 def flashggPrepareTagSequence(process, options):
     setup_flashggDifferentialPhoIdInputsCorrection(process, options)
-    flashggPreselectedDiPhotons.src = "flashggDifferentialPhoIdInputsCorrection"
+    flashggPreselectedDiPhotons.src = "flashggPrefireDiPhotons"
 
     if "flashggDiPhotonMVA" in options:
         flashggDiPhotonMVA.diphotonMVAweightfile = cms.FileInPath(str(options["flashggDiPhotonMVA"]["weightFile"]))
@@ -18,6 +19,7 @@ def flashggPrepareTagSequence(process, options):
         flashggVBFMVA.vbfMVAweightfile = cms.FileInPath(str(options["flashggVBFMVA"]["weightFile"]))
 
     flashggTagSequence = cms.Sequence(flashggDifferentialPhoIdInputsCorrection
+                                      * flashggPrefireDiPhotons
                                       * flashggPreselectedDiPhotons
                                       * flashggDiPhotonMVA
                                       * flashggUnpackedJets
@@ -28,7 +30,7 @@ def flashggPrepareTagSequence(process, options):
                                           + flashggVBFTag
                                           + flashggTTHDiLeptonTag
                                           + flashggTTHLeptonicTag
-					  + flashggTHQLeptonicTag
+                      + flashggTHQLeptonicTag
 #                                     + flashggTTHHadronicTTag                                      
 #                                     + flashggTTHHadronicLTag                                      
                                           + flashggTTHHadronicTag
