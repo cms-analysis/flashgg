@@ -22,9 +22,7 @@
 
 #include "DataFormats/Math/interface/deltaR.h"
 
-#include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
-#include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
 
 #include "flashgg/Taggers/interface/BDT_resolvedTopTagger.h"
 #include "flashgg/Taggers/interface/DNN_Helper.h"
@@ -47,8 +45,6 @@ namespace flashgg {
     {
 
     public:
-        typedef math::XYZPoint Point;
-
         TTHLeptonicTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
@@ -83,9 +79,6 @@ namespace flashgg {
         EDGetTokenT<View<Photon> > photonToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
-        EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
-        EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
-        EDGetTokenT<float> pTHToken_,pTVToken_;
         string systLabel_;
 
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
@@ -514,14 +507,6 @@ namespace flashgg {
         SplitDiLeptEv_ = iConfig.getParameter<bool>( "SplitDiLeptEv" );
         CutBasedDiphoId_ = iConfig.getParameter<std::vector<double>>( "CutBasedDiphoId" );
 
-        ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
-        stage0catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0cat") );
-        stage1catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1cat") );
-        njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
-        pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
-        pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
-        newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
-
         MVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "MVAweightfile" );
         topTaggerXMLfile_ = iConfig.getParameter<edm::FileInPath>( "topTaggerXMLfile" );
         tthVsttGGDNNfile_ = iConfig.getParameter<edm::FileInPath>( "tthVsttGGDNNfile" );
@@ -619,7 +604,6 @@ namespace flashgg {
             produces<vector<TTHLeptonicTag> >();
         }
 
-        produces<vector<TagTruthBase> >();
     }
 
     int TTHLeptonicTagProducer::chooseCategory( float tthmvavalue , bool debug_)
@@ -641,17 +625,6 @@ namespace flashgg {
 
     void TTHLeptonicTagProducer::produce( Event &evt, const EventSetup & )
     {
-        Handle<int> stage0cat, stage1cat, njets;
-        Handle<float> pTH, pTV;
-        evt.getByToken(stage0catToken_, stage0cat);
-        evt.getByToken(stage1catToken_,stage1cat);
-        evt.getByToken(njetsToken_,njets);
-        evt.getByToken(pTHToken_,pTH);
-        evt.getByToken(pTVToken_,pTV);
-        Handle<HTXS::HiggsClassification> htxsClassification;
-        evt.getByToken(newHTXSToken_,htxsClassification);
-
-
         //Handle<View<flashgg::Jet> > theJets;
         //evt.getByToken( thejetToken_, theJets );
         //const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
@@ -685,27 +658,7 @@ namespace flashgg {
         if (!modifySystematicsWorkflow)
             evt.getByToken( METToken_, theMet_ );
 
-
         //std::unique_ptr<vector<TTHLeptonicTag> > tthltags( new vector<TTHLeptonicTag> );
-        std::unique_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
-        edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
-        unsigned int idx = 0;
-
-        Point higgsVtx;
-
-        if( ! evt.isRealData() )
-        {
-            evt.getByToken( genParticleToken_, genParticles );
-            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ )
-            {
-                int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-                if( pdgid == 25 || pdgid == 22 )
-                {
-                    higgsVtx = genParticles->ptrAt( genLoop )->vertex();
-                    break;
-                }
-            }
-        }
 
         //assert( diPhotons->size() == mvaResults->size() );
 
@@ -769,6 +722,11 @@ namespace flashgg {
             assert( diPhotons->size() == mvaResults->size() );
 
             std::unique_ptr<vector<TTHLeptonicTag> > tthltags( new vector<TTHLeptonicTag> );
+
+            if( ! evt.isRealData() )
+            {
+                evt.getByToken( genParticleToken_, genParticles );
+            }
 
 
             for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ )
@@ -1395,7 +1353,7 @@ namespace flashgg {
                     for( unsigned int i = 0; i < Muons.size(); ++i )
                         tthltags_obj.includeWeights( *Muons.at(i));
 
-                   for( unsigned int i = 0; i < Electrons.size(); ++i )
+                    for( unsigned int i = 0; i < Electrons.size(); ++i )
                         tthltags_obj.includeWeights( *Electrons.at(i));
 
                     tthltags_obj.includeWeights( *dipho );
@@ -1433,30 +1391,9 @@ namespace flashgg {
                     tthltags_obj.setSubleadSmallestDr(-999);
                                 
                     tthltags->push_back( tthltags_obj );
-     
+            
                     if( ! evt.isRealData() )
                     {
-                        TagTruthBase truth_obj;
-                        truth_obj.setGenPV( higgsVtx );
-                        if ( stage0cat.isValid() ) 
-                        {   truth_obj.setHTXSInfo( *( stage0cat.product() ),
-                                                   *( stage1cat.product() ),
-                                                   *( njets.product() ),
-                                                   *( pTH.product() ),
-                                                   *( pTV.product() ) );
-                        } else if ( htxsClassification.isValid() ) {
-                            truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
-                                                   htxsClassification->stage1_cat_pTjet30GeV,
-                                                   htxsClassification->jets30.size(),
-                                                   htxsClassification->p4decay_higgs.pt(),
-                                                   htxsClassification->p4decay_V.pt() );
-
-                        } else {
-                            truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
-                        }
-                        truths->push_back( truth_obj );
-                        tthltags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
-
                         int gp_lead_index = GenPhoIndex(genParticles, dipho->leadingPhoton(), -1);
                         int gp_sublead_index = GenPhoIndex(genParticles, dipho->subLeadingPhoton(), gp_lead_index);
                         vector<int> leadFlags; leadFlags.clear();
@@ -1475,7 +1412,7 @@ namespace flashgg {
                            tthltags->back().setLeadMomMomID(leadFlags[7]);
                            tthltags->back().setLeadSmallestDr(NearestDr(genParticles, &(*gp_lead)));
 
-                           cout << "leadPrompt: " << leadFlags[0] << endl;
+                           //cout << "leadPrompt: " << leadFlags[0] << endl;
                            } 
 
                        if (gp_sublead_index != -1) {
@@ -1497,7 +1434,6 @@ namespace flashgg {
             } //diPho loop end !
             evt.put( std::move( tthltags ), systematicsLabels[syst_idx] );
         } // syst loop end !
-        evt.put( std::move( truths ) );
     }
 
 }

@@ -96,6 +96,52 @@
 
     "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2016_cfi",
     
+    "flashggDiPhotonMVA" : 
+    {  
+        "weightFile" : "flashgg/Taggers/data/legacyDiphoModel2016.xml",
+        "version" : "xgb"
+    },
+
+    "flashggVBFMVA" : 
+    {  
+        "weightFile" : "flashgg/Taggers/data/multiclassDijetModel2016.xml"
+    },
+
+    "stageOneCombinedTag" : 
+    {  
+        "rawDiphoBounds" : [
+                             0.815, 0.668,
+                             0.885, 0.762,
+
+                             0.911, 0.831,
+                             0.934, 0.872,
+                             0.961, 0.926,
+
+                             0.809, 0.648,
+                             0.939, 0.684,
+                             0.958, 0.927,
+
+                             0.969, 0.893,
+
+                             0.800,
+                             0.660, 0.522,
+                             0.757, 0.780,
+                             0.807,
+                             0.766
+                           ],
+        "rawDijetBounds" : [
+                             0.335, 0.380,
+                             0.348, 0.402,
+                             0.052,
+                             0.852
+                           ],
+        "rawGghBounds" : [
+                             0.787, 0.756,
+                             0.624, 0.827,
+                             0.723,
+                             0.548
+                           ]
+    },
 
     "bTagSystematics" :
     {
@@ -177,5 +223,15 @@
                           "f8 := full5x5_sigmaIetaIeta",
                           "f9 := superCluster.etaWidth"
                          ]
+    },
+
+    "L1Prefiring" :
+    {
+        "isRelevant" : true,
+        "applyToCentral" : false,
+        "photonFileName" : "flashgg/Taggers/data/L1prefiring_photonpt_2016BtoH.root",
+        "photonHistName" : "L1prefiring_photonpt_2016BtoH",
+        "jetFileName"    : "flashgg/Taggers/data/L1prefiring_jetpt_2016BtoH.root",
+        "jetHistName"    : "L1prefiring_jetpt_2016BtoH" 
     }
 }

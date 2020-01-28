@@ -134,7 +134,7 @@ for icoll,coll in enumerate(recoJetCollections):
 
 #print process.bRegProducer.JetTag
 
-from flashgg.Taggers.flashggTags_cff import flashggUnpackedJets
+from flashgg.MicroAOD.flashggJets_cfi import flashggUnpackedJets
 
 #bRegSequence = cms.Sequence(flashggUnpackedJets+flashggbRegressionProducer+bRegressionDumper)
 bRegSequence = cms.Sequence(flashggUnpackedJets*process.bRegProducer0*process.bRegressionDumper0*process.bRegProducer1*process.bRegressionDumper1)
