@@ -28,11 +28,13 @@ class StageOneCustomize():
             "CMS_hgg_mass[160,100,180]:=diPhoton().mass",
             "dZ[40,-20.,20.]:=(tagTruth().genPV().z-diPhoton().vtx().z)",
             "centralObjectWeight[1,-999999.,999999.] := centralWeight",
-            "stage1p1bin[50,-8.5,41.5] := tagTruth().HTXSstage1p1orderedBin"
+            #"stage1p1bin[50,-8.5,41.5] := tagTruth().HTXSstage1p1orderedBin"
+            "stage1p2bin[57,-8.5,48.5] := tagTruth().HTXSstage1p2orderedBin"
         ]
         ntup_variables = [
             "CMS_hgg_mass[160,100,180]:=diPhoton().mass",
-            "stage1p1bin[50,-8.5,41.5] := tagTruth().HTXSstage1p1orderedBin"
+            #"stage1p1bin[50,-8.5,41.5] := tagTruth().HTXSstage1p1orderedBin"
+            "stage1p2bin[57,-8.5,48.5] := tagTruth().HTXSstage1p2orderedBin"
         ]
     
         if self.customize.dumpWorkspace:
@@ -44,7 +46,8 @@ class StageOneCustomize():
     def systematicVariables(self):
         systematicVariables = [
             "CMS_hgg_mass[160,100,180]:=diPhoton().mass",
-            "stage1p1bin[50,-8.5,41.5] := tagTruth().HTXSstage1p1orderedBin"
+            #"stage1p1bin[50,-8.5,41.5] := tagTruth().HTXSstage1p1orderedBin"
+            "stage1p2bin[57,-8.5,48.5] := tagTruth().HTXSstage1p2orderedBin"
         ]
         return systematicVariables
 

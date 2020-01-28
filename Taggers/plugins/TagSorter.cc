@@ -253,11 +253,14 @@ namespace flashgg {
                         }
                     }
                     truth.setGenPV( higgsVtx );
+                    std::cout << "ED DEBUG stage 1.2 bin number is " << htxsClassification->stage1_2_cat_pTjet30GeV << std::endl;
                     if( htxsClassification.isValid() && setHTXSinfo_ ) { 
                         truth.setHTXSInfo( htxsClassification->stage0_cat,
                                            htxsClassification->stage1_cat_pTjet30GeV,
                                            htxsClassification->stage1_1_cat_pTjet30GeV,
                                            htxsClassification->stage1_1_fine_cat_pTjet30GeV,
+                                           htxsClassification->stage1_2_cat_pTjet30GeV,
+                                           htxsClassification->stage1_2_fine_cat_pTjet30GeV,
                                            htxsClassification->jets30.size(),
                                            htxsClassification->p4decay_higgs.pt(),
                                            htxsClassification->p4decay_V.pt() );
