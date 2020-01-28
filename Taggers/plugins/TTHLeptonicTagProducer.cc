@@ -723,6 +723,11 @@ namespace flashgg {
 
             std::unique_ptr<vector<TTHLeptonicTag> > tthltags( new vector<TTHLeptonicTag> );
 
+            if( ! evt.isRealData() )
+            {
+                evt.getByToken( genParticleToken_, genParticles );
+            }
+
 
             for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ )
             {
@@ -1387,10 +1392,6 @@ namespace flashgg {
                                 
                     tthltags->push_back( tthltags_obj );
             
-                    // Following code block crashes in CMSSW_10_6_1_patch2
-                    // commented out since it is only relevant to background MC
-
-                    /*     
                     if( ! evt.isRealData() )
                     {
                         int gp_lead_index = GenPhoIndex(genParticles, dipho->leadingPhoton(), -1);
@@ -1429,7 +1430,6 @@ namespace flashgg {
                            }
 
                     }
-                    */
                 }
             } //diPho loop end !
             evt.put( std::move( tthltags ), systematicsLabels[syst_idx] );
