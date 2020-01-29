@@ -86,6 +86,9 @@ process.flashggTagSorter.TagPriorityRanges = cms.VPSet(
     cms.PSet(TagName = cms.InputTag('flashggVBFTag'))
 )
 
+#set the prefiring correctly 
+applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)
+
 mva_wp = {
     "none"  : [
         [],

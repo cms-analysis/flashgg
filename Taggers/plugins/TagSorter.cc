@@ -255,15 +255,15 @@ namespace flashgg {
                     truth.setGenPV( higgsVtx );
                     std::cout << "ED DEBUG stage 1.2 bin number is " << htxsClassification->stage1_2_cat_pTjet30GeV << std::endl;
                     if( htxsClassification.isValid() && setHTXSinfo_ ) { 
-                        truth.setHTXSInfo( htxsClassification->stage0_cat,
-                                           htxsClassification->stage1_cat_pTjet30GeV,
-                                           htxsClassification->stage1_1_cat_pTjet30GeV,
-                                           htxsClassification->stage1_1_fine_cat_pTjet30GeV,
-                                           htxsClassification->stage1_2_cat_pTjet30GeV,
-                                           htxsClassification->stage1_2_fine_cat_pTjet30GeV,
-                                           htxsClassification->jets30.size(),
-                                           htxsClassification->p4decay_higgs.pt(),
-                                           htxsClassification->p4decay_V.pt() );
+                        truth.setHTXSInfo( int(htxsClassification->stage0_cat),
+                                           int(htxsClassification->stage1_cat_pTjet30GeV),
+                                           int(htxsClassification->stage1_1_cat_pTjet30GeV),
+                                           int(htxsClassification->stage1_1_fine_cat_pTjet30GeV),
+                                           int(htxsClassification->stage1_2_cat_pTjet30GeV),
+                                           int(htxsClassification->stage1_2_fine_cat_pTjet30GeV),
+                                           float(htxsClassification->jets30.size()),
+                                           float(htxsClassification->p4decay_higgs.pt()),
+                                           float(htxsClassification->p4decay_V.pt()) );
                     }
                     if( isGluonFusion_ ) {
                         int stxsNjets = htxsClassification->jets30.size();
@@ -375,13 +375,15 @@ namespace flashgg {
             edm::RefProd<edm::OwnVector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<edm::OwnVector<TagTruthBase> >();
             TagTruthBase truth_obj;
             if ( htxsClassification.isValid() && setHTXSinfo_ ) {
-                truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
-                                       htxsClassification->stage1_cat_pTjet30GeV,
-                                       htxsClassification->stage1_1_cat_pTjet30GeV,
-                                       htxsClassification->stage1_1_fine_cat_pTjet30GeV,
-                                       htxsClassification->jets30.size(),
-                                       htxsClassification->p4decay_higgs.pt(),
-                                       htxsClassification->p4decay_V.pt() );
+                truth_obj.setHTXSInfo( int(htxsClassification->stage0_cat),
+                                       int(htxsClassification->stage1_cat_pTjet30GeV),
+                                       int(htxsClassification->stage1_1_cat_pTjet30GeV),
+                                       int(htxsClassification->stage1_1_fine_cat_pTjet30GeV),
+                                       int(htxsClassification->stage1_2_cat_pTjet30GeV),
+                                       int(htxsClassification->stage1_2_fine_cat_pTjet30GeV),
+                                       float(htxsClassification->jets30.size()),
+                                       float(htxsClassification->p4decay_higgs.pt()),
+                                       float(htxsClassification->p4decay_V.pt()) );
             }
             if( isGluonFusion_ ) {
                 int stxsNjets = htxsClassification->jets30.size();

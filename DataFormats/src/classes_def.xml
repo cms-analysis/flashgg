@@ -151,7 +151,8 @@
 <class name="edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> >" />
 <class name="edm::Wrapper<edm::OwnVector<flashgg::DiPhotonTagBase, edm::ClonePolicy<flashgg::DiPhotonTagBase> > >" />
 
-<class name="flashgg::VBFTagTruth" ClassVersion="15">
+<class name="flashgg::VBFTagTruth" ClassVersion="16">
+ <version ClassVersion="16" checksum="3322895754"/>
  <version ClassVersion="15" checksum="2730413178"/>
  <version ClassVersion="14" checksum="3091975168"/>
  <version ClassVersion="13" checksum="3465927303"/>
@@ -169,7 +170,8 @@
   <version ClassVersion="10" checksum="1025135485"/>
 </class>
 
-<class name="flashgg::VHTagTruth" ClassVersion="14">
+<class name="flashgg::VHTagTruth" ClassVersion="15">
+ <version ClassVersion="15" checksum="4219565126"/>
  <version ClassVersion="14" checksum="2527063190"/>
  <version ClassVersion="13" checksum="2915236824"/>
  <version ClassVersion="12" checksum="560617701"/>
@@ -340,7 +342,8 @@
 <class name="edm::Ptr<flashgg::Muon>"/>
 <class name="std::vector<flashgg::Muon>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Muon> >"/>
-<class name="flashgg::TagTruthBase" ClassVersion="14">
+<class name="flashgg::TagTruthBase" ClassVersion="15">
+ <version ClassVersion="15" checksum="615975089"/>
  <version ClassVersion="14" checksum="2420283393"/>
  <version ClassVersion="13" checksum="831750307"/>
  <version ClassVersion="12" checksum="1591143584"/>
