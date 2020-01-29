@@ -16,7 +16,10 @@ def flashggPrepareTagSequence(process, options):
         flashggDiPhotonMVA.Version = cms.string(str(options["flashggDiPhotonMVA"]["version"]))
     if "flashggVBFMVA" in options:
         flashggVBFMVA.vbfMVAweightfile = cms.FileInPath(str(options["flashggVBFMVA"]["weightFile"]))
-
+    flashggTHQLeptonicTag.thqCatweightfile_ForNonPeakingBkg = cms.FileInPath(str(options['THQLeptonicTag']['MVAweights_VsAllBkg']))
+    flashggTHQLeptonicTag.MVAThreshold_ForNonPeakingBkg = cms.double(options['THQLeptonicTag']['MVAThreshold_VsAllBkg'])
+    flashggTHQLeptonicTag.thqleptonicMVAweightfile = cms.FileInPath(str(options['THQLeptonicTag']['MVAweights_VsttH']))
+    flashggTHQLeptonicTag.MVAThreshold_thq = cms.double(options['THQLeptonicTag']['MVAThreshold_VsttH'])
     flashggTagSequence = cms.Sequence(flashggDifferentialPhoIdInputsCorrection
                                       * flashggPreselectedDiPhotons
                                       * flashggDiPhotonMVA

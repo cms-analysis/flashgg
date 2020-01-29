@@ -425,7 +425,6 @@ namespace flashgg {
             MET_Px.push_back(metPx) ;  MET_Py.push_back(metPy) ; MET_Pz.push_back(metPz) ; MET_E.push_back(metE);
         }
 
-        //void setTHQLeptonicMVA( THQLeptonicMVAResult THQLeptonicMVA ) {THQLeptonicMVA_ = THQLeptonicMVA;}
         void setLeptonType(int val){ LeptonType_ = val; }
 
         void setrho(float rho){
@@ -555,7 +554,6 @@ namespace flashgg {
         std::map <std::string, std::vector<float> > vtx_dxy_; std::map <std::string, std::vector<float> > vtx_dz_;
         std::map <std::string, std::vector<float> > diphovtx_dxy_; std::map <std::string, std::vector<float> > diphovtx_dz_;
         std::vector<float> eleMisHits_;
-        //THQLeptonicMVAResult THQLeptonicMVA_;
         float rho_;
         float dRtHchainfwdjet_=0;
         float dRbjetfwdjet_;

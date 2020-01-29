@@ -54,10 +54,6 @@ def setup_flashggDifferentialPhoIdInputsCorrection( process, metaConditions ):
     setattr(flashggDifferentialPhoIdInputsCorrection, "photonIdMVAweightfile_EE", cms.FileInPath(str(metaConditions['flashggPhotons']['photonIdMVAweightfile_EE'])))
     setattr(flashggDifferentialPhoIdInputsCorrection, "effAreasConfigFile", cms.FileInPath(str(metaConditions['flashggPhotons']['effAreasConfigFile'])))
     setattr(flashggDifferentialPhoIdInputsCorrection, "is2017", cms.bool(metaConditions['flashggPhotons']['is2017']))
-    flashggTHQLeptonicTag.thqCatweightfile_ForNonPeakingBkg = cms.FileInPath(str(metaConditions['THQLeptonicTag']['MVAweights_VsAllBkg']))
-    flashggTHQLeptonicTag.MVAThreshold_ForNonPeakingBkg = cms.double(metaConditions['THQLeptonicTag']['MVAThreshold_VsAllBkg'])
-    flashggTHQLeptonicTag.thqleptonicMVAweightfile = cms.FileInPath(str(metaConditions['THQLeptonicTag']['MVAweights_VsttH']))
-    flashggTHQLeptonicTag.MVAThreshold_thq = cms.double(metaConditions['THQLeptonicTag']['MVAThreshold_VsttH'])
     corrections_summary = {}
     with open(os.path.expandvars('$CMSSW_BASE/src/'+metaConditions['PhoIdInputCorrections']['corrections_summary'])) as json_file:
         corrections_summary = json.load(json_file)
