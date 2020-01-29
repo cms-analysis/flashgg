@@ -38,14 +38,17 @@ namespace flashgg {
     ~HHWWggTag();
 
     // SemiLeptonic final state constructors
-    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>); 
-    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>); 
-    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>); 
-    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>); 
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, std::vector<flashgg::Jet>, std::vector<double>); 
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, std::vector<flashgg::Jet>, std::vector<double>); 
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, std::vector<flashgg::Jet>, std::vector<double>); 
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, std::vector<flashgg::Jet>, std::vector<double>); 
+
+    // Untagged 
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>, std::vector<flashgg::Jet>, std::vector<double>);
 
     // no jets 
-    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>); 
-    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>); 
+    // HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>); 
+    // HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>); 
 
 
     virtual HHWWggTag *clone() const override; // You need this because HHWWggTag is derived from the DiPhotonTagBase
@@ -71,6 +74,8 @@ namespace flashgg {
     const float lp_Hgg_MVA() const {return lp_Hgg_MVA_;};
     const float slp_Hgg_MVA() const {return slp_Hgg_MVA_;};
     //---utils---
+    const std::vector<flashgg::Jet> JetVector() const {return JetVector_;}
+    const std::vector<double> Cut_Variables() const { return Cut_Variables_; };
     // const std::vector<flashgg::DiPhotonCandidate> diphoVector() const { return diphoVector_; };
     // const std::vector<flashgg::Electron> electronVector() const {return electronVector_;} 
     // const std::vector<flashgg::Muon> muonVector() const {return muonVector_;}
@@ -93,7 +98,6 @@ namespace flashgg {
     //float HelicityCosTheta( TLorentzVector Booster, TLorentzVector Boosted) const;
     // const float theMETcorpt() const { return theMETcorpt_; };
     // const std::vector<double> Vertex_Variables() const { return Vertex_Variables_; };
-    // const std::vector<double> Cut_Variables() const { return Cut_Variables_; };
     // const float dipho_MVA() const {return dipho_MVA_;};
     // const float CMS_hgg_mass() const {return CMS_hgg_mass_;};
     // const float dZ() const {return dZ_;};
@@ -105,6 +109,8 @@ namespace flashgg {
     const flashgg::Photon* Subleading_Photon_;
     float lp_Hgg_MVA_;
     float slp_Hgg_MVA_;
+    std::vector<flashgg::Jet> JetVector_;
+    std::vector<double> Cut_Variables_;
     
     // std::vector<flashgg::DiPhotonCandidate> diphoVector_;
     // std::vector<flashgg::Electron> electronVector_;
@@ -116,7 +122,6 @@ namespace flashgg {
     // std::vector<reco::Candidate::LorentzVector> GenPhotons_;
     // std::vector<reco::Candidate::LorentzVector> GenQuarks_;
     // std::vector<reco::Candidate::LorentzVector> GenNeutrinos_;
-    // std::vector<flashgg::Jet> JetVector_;
     // reco::Candidate::LorentzVector MET_fourvec_;
     // reco::Candidate::LorentzVector leading_dpho_;
     // reco::Candidate::LorentzVector leading_elec_;
@@ -125,7 +130,6 @@ namespace flashgg {
     // reco::Candidate::LorentzVector subleading_muon_;
     // float theMETcorpt_;
     // std::vector<double> Vertex_Variables_;
-    // std::vector<double> Cut_Variables_;
     // float dipho_MVA_;
     // float CMS_hgg_mass_;
     // float dZ_;

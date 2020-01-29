@@ -17,8 +17,8 @@ from flashgg.MicroAOD.flashggJets_cfi import  maxJetCollections, flashggDeepCSV
 flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     globalVariables=globalVariables,
                                     PhotonTag = cms.InputTag('flashggRandomizedPhotons'),
-                                    DiPhotonTag = cms.InputTag('flashggDiPhotonSystematics'),
-                                    # DiPhotonTag = cms.InputTag('flashggPreselectedDiPhotons'),
+                                    # DiPhotonTag = cms.InputTag('flashggDiPhotonSystematics'),
+                                    DiPhotonTag = cms.InputTag('flashggPreselectedDiPhotons'),
                                     SystLabel = cms.string(""),
                                     JetsName = cms.string("bRegProducer"), # 
                                     JetsCollSize = cms.uint32(maxJetCollections), #
@@ -67,6 +67,7 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     PATfilters = cms.InputTag('TriggerResults::PAT'),
                                     FLASHfilters = cms.InputTag('TriggerResults::FLASHggMicroAOD'),
                                     bTag = cms.string(flashggDeepCSV),
+                                    # btagThresh = cms.double(100)     # no btag (Save all btags < 100)                                 
                                     btagThresh = cms.double(0.45)                                      
                                     )
 # flashggHHWWggTagSequence = cms.Sequence( flashggHHWWggTag ) # not used 

@@ -15,19 +15,25 @@ class HHWWggCustomize():
 
     def variablesToDump(self):
         var_workspace = [
-            "testVariable[10,0,10] := 5 "
+            # "testVariable[10,0,10] := 5 "
 #             "Mjj := dijet().M()"
             # "eventNumber := eventNumber()",
             # "MX := MX()",
             # "HHbbggMVA := MVA()"
         ]
         variables = [
-            "lp_E[100,0,100] := Leading_Photon.p4().E()",
-            "slp_E[100,0,100] := Subleading_Photon.p4().E()",
-            "lp_initE[100,0,100] := Leading_Photon.energyAtStep('initial')",
-            "slp_initE[100,0,100] := Subleading_Photon.energyAtStep('initial')", 
-            "lp_Hgg_MVA[100,-1,1] := lp_Hgg_MVA()",
-            "slp_Hgg_MVA[100,-1,1] := slp_Hgg_MVA()",
+            # Cut flow variables 
+            "passPS[2,0,2] := Cut_Variables[0]",
+            "passPhotonSels[2,0,2] := Cut_Variables[1]",
+            "passbVeto[2,0,2] := Cut_Variables[2]",
+            "ExOneLep[2,0,2] := Cut_Variables[3]",
+            "goodJets[2,0,2] := Cut_Variables[4]"
+            # "lp_E[100,0,100] := Leading_Photon.p4().E()",
+            # "slp_E[100,0,100] := Subleading_Photon.p4().E()",
+            # "lp_initE[100,0,100] := Leading_Photon.energyAtStep('initial')",
+            # "slp_initE[100,0,100] := Subleading_Photon.energyAtStep('initial')", 
+            # "lp_Hgg_MVA[100,-1,1] := lp_Hgg_MVA()",
+            # "slp_Hgg_MVA[100,-1,1] := slp_Hgg_MVA()"
             
             
             # also want final energies 
@@ -97,6 +103,14 @@ class HHWWggCustomize():
             # "subleadingJet_hflav := subleadJet().hadronFlavour()",
             # "subleadingJet_pflav := subleadJet().partonFlavour()",
         ]
+
+        # Save b scores 
+        # for jeti in range(0,6):
+        #     var1 = "jet" + str(jeti) + "_DeepFlavourScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 "
+        #     var2 = "jet" + str(jeti) + "_DeepCSVScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('pfDeepCSVJetTags:probb') : -99 "
+        #     variables.append(var1)
+        #     variables.append(var2)
+
         if self.customize.doBJetRegression : variables +=[
                 # "leadingJet_bRegNNCorr := leadJet().userFloat('bRegNNCorr')",
                 # "leadingJet_bRegNNResolution := leadJet().userFloat('bRegNNResolution')",
@@ -158,11 +172,12 @@ class HHWWggCustomize():
         #      var_workspace +=[
         #        "ttHScore := ttHScore()",
         #      ]
+        return variables
 
-        if self.customize.dumpWorkspace == False :
-            return variables
-        else :
-            return var_workspace
+        # if self.customize.dumpWorkspace == False :
+        #     return variables
+        # else :
+        #     return var_workspace
 
 
     def systematicVariables(self):
@@ -173,7 +188,7 @@ class HHWWggCustomize():
           "slp_E[100,0,100] := Subleading_Photon.p4().E()",
           "lp_initE[100,0,100] := Leading_Photon.energyAtStep('initial')",
           "slp_initE[100,0,100] := Subleading_Photon.energyAtStep('initial')", # also want final energies 
-
+        #  "jet0_btag                       := ? JetVector.size() >= 1 ? JetVector[0].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 ",
       ]
     #   systematicVariables=[]
       
@@ -191,7 +206,8 @@ class HHWWggCustomize():
 
     def variablesToDumpData():
         variables = [
-            "testVariable[100,0,100] := 50"
+            # "testVariable[100,0,100] := 50"
+            # "jet0_btag[2,0,2]                       := ? JetVector.size() >= 1 ? JetVector[0].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 ",
             # "TestVariable:=111"
            #  "leadingJet_DeepCSV := leadJet().bDiscriminator('pfDeepCSVJetTags:probb')+leadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",#FIXME make the btag type configurable?
            #  "subleadingJet_DeepCSV := subleadJet().bDiscriminator('pfDeepCSVJetTags:probb')+subleadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",
@@ -215,6 +231,11 @@ class HHWWggCustomize():
            #  "Mjj := dijet().M()",
            #  "eventNumber := eventNumber()",
              ]
+
+        # for jeti in range(0,6):
+        #     var = "jet" + str(jeti) + "_btag[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 "
+        #     variables.append(var)
+
         # if self.customize.doHHWWggttHKiller : variables +=[
         #     "ttHScore := ttHScore()",
         #    ]
@@ -239,6 +260,8 @@ class HHWWggCustomize():
 
         ## remove single Higgs tags
 
+        print'Removing single Higgs tags'
+
         if self.customize.HHWWggTagsOnly:
             self.process.flashggTagSequence.remove(self.process.flashggVBFTag)
             self.process.flashggTagSequence.remove(self.process.flashggTTHLeptonicTag)
@@ -262,11 +285,15 @@ class HHWWggCustomize():
         self.process.p.remove(self.process.flashggTagSorter)
         self.process.p.replace(self.process.flashggSystTagMerger,self.process.flashggHHWWggTagSequence*self.process.flashggTagSorter*self.process.flashggSystTagMerger)
         # print'process.p = ',self.process.p 
+        
+        ##-- Do I need this part for HHWWgg?
         for systlabel in systlabels:
            if systlabel!='':
              self.process.p.remove(getattr(self.process,'flashggTagSorter'+systlabel))
              self.process.p.replace(self.process.flashggSystTagMerger,getattr(self.process, 'flashggTagSorter'+systlabel)*self.process.flashggSystTagMerger)
-           setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggHHWWggTag', systlabel)) ))
+           setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggHHWWggTag')) ))
+        #    setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggHHWWggTag', systlabel)) ))
+        
         #print 'from loop after:',process.flashggSystTagMerger.src
 
 
@@ -275,10 +302,16 @@ class HHWWggCustomize():
         #   print'systlabels = ',systlabels 
           self.HHWWggTagMerger(systlabels)
 
-       if len(systlabels)>1 :
-          print'[HHWWggTagRunSequence] - Add JetesSuffixes and diphotonsuffices' 
-          getattr(self.process, "flashggHHWWggTag").JetsSuffixes = cms.vstring([systlabels[0]]+jetsystlabels)
-          getattr(self.process, "flashggHHWWggTag").DiPhotonSuffixes = cms.vstring([systlabels[0]]+phosystlabels)
+
+        ## Not sure if this is necessary for HHWWgg
+    #    if len(systlabels)>1 :
+    #       print'[HHWWggTagRunSequence] - Add JetesSuffixes and diphotonsuffices' 
+    #       getattr(self.process, "flashggHHWWggTag").JetsSuffixes = cms.vstring([systlabels[0]]+jetsystlabels)
+    #       getattr(self.process, "flashggHHWWggTag").DiPhotonSuffixes = cms.vstring([systlabels[0]]+phosystlabels)
+
+
+
+
 
     #    if self.customize.HHWWggReweight>0:
         #   self.addNodesReweighting()
