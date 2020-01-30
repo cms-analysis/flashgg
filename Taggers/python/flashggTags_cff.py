@@ -1,5 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 from flashgg.MicroAOD.flashggJets_cfi import flashggBTag, flashggDeepCSV, UnpackedJetCollectionVInputTag, maxJetCollections
+from flashgg.Taggers.flashggTagSorter_cfi import HTXSInputTags
 
 bDiscriminator74X = cms.vdouble(0.605,0.890)
 bDiscriminator76X = cms.vdouble(0.460,0.800,0.935)
@@ -465,7 +466,8 @@ flashggZHLeptonicTag = cms.EDProducer("FlashggZHLeptonicTagProducer",
                                     jetEtaThreshold             = cms.double(2.4),
                                     deltaRPhoLeadJet            = cms.double(0.4),
                                     deltaRPhoSubLeadJet         = cms.double(0.4),
-                                    deltaRJetLepThreshold       = cms.double(0.4)
+                                    deltaRJetLepThreshold       = cms.double(0.4),
+                                    HTXSTags                    = HTXSInputTags
 )
 
 flashggWHLeptonicTag = cms.EDProducer("FlashggWHLeptonicTagProducer",
@@ -502,7 +504,8 @@ flashggWHLeptonicTag = cms.EDProducer("FlashggWHLeptonicTagProducer",
                                     deltaRPhoLeadJet            = cms.double(0.4),
                                     deltaRPhoSubLeadJet         = cms.double(0.4),
                                     deltaRJetMuonThreshold      = cms.double(0.4),
-                                    METThreshold                = cms.double(0.)
+                                    METThreshold                = cms.double(0.),
+                                    HTXSTags                    = HTXSInputTags
                                     )
 
 flashggVHLeptonicLooseTag = cms.EDProducer("FlashggVHLeptonicLooseTagProducer",
