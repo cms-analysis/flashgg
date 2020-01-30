@@ -861,7 +861,8 @@ class LsfMonitor(object):
 class SGEJob(LsfJob):
     """ a thread to run qsub and wait until it completes """
     def __init__(self,*args,**kwargs):
-        self.rebootMitigation = (BatchRegistry.getDomain() in ["hep.ph.ic.ac.uk"])
+        #self.rebootMitigation = (BatchRegistry.getDomain() in ["hep.ph.ic.ac.uk"])
+        self.rebootMitigation = False
         
         super(SGEJob, self).__init__(*args, **kwargs)
 
@@ -913,7 +914,7 @@ class SGEJob(LsfJob):
             if self.lsfQueue == "hepshort.q":
                 qsubCmdParts.append("-l h_rt=3:0:0")
             elif self.lsfQueue == "hepmedium.q":
-                qsubCmdParts.append("-l h_rt=6:0:0")
+                qsubCmdParts.append("-l h_rt=10:0:0 -l h_vmem=12G")
             else:
                 # assume long queue is intended
                 qsubCmdParts.append("-l h_rt=48:0:0")
@@ -1141,7 +1142,8 @@ class SGEMonitor(LsfMonitor):
     ###         sleep(5.)
 
     def __init__(self,*args,**kwargs):
-        self.rebootMitigation = (BatchRegistry.getDomain() in ["hep.ph.ic.ac.uk"])
+        #self.rebootMitigation = (BatchRegistry.getDomain() in ["hep.ph.ic.ac.uk"])
+        self.rebootMitigation = False
         
         super(SGEMonitor, self).__init__(*args, **kwargs)
 
