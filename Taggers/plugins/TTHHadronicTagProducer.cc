@@ -25,7 +25,7 @@
 #include "DataFormats/Common/interface/TriggerResults.h"
 
 #include "flashgg/Taggers/interface/BDT_resolvedTopTagger.h"
-#include "flashgg/Taggers/interface/DNN_Helper.h"
+#include "flashgg/Taggers/interface/TTH_DNN_Helper.h"
 
 #include <vector>
 #include <algorithm>
@@ -115,7 +115,15 @@ namespace flashgg {
         string _MVAMethod;
         FileInPath topTaggerXMLfile_;
         FileInPath tthVsDiphoDNNfile_;
+        std::vector<double> tthVsDiphoDNN_global_mean_;
+        std::vector<double> tthVsDiphoDNN_global_stddev_;
+        std::vector<double> tthVsDiphoDNN_object_mean_;
+        std::vector<double> tthVsDiphoDNN_object_stddev_;
         FileInPath tthVsttGGDNNfile_;
+        std::vector<double> tthVsttGGDNN_global_mean_;
+        std::vector<double> tthVsttGGDNN_global_stddev_;
+        std::vector<double> tthVsttGGDNN_object_mean_;
+        std::vector<double> tthVsttGGDNN_object_stddev_;
         unique_ptr<TMVA::Reader>TThMva_RunII_;
         FileInPath tthMVA_RunII_weightfile_;
 
@@ -199,8 +207,8 @@ namespace flashgg {
         vector<double> boundaries;
 
         BDT_resolvedTopTagger *topTagger;
-        DNN_Helper* dnn_dipho;
-        DNN_Helper* dnn_ttGG;
+        TTH_DNN_Helper* dnn_dipho;
+        TTH_DNN_Helper* dnn_ttGG;
 
         bool modifySystematicsWorkflow;
         std::vector<std::string> systematicsLabels;
@@ -358,7 +366,15 @@ namespace flashgg {
         tthMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "tthMVAweightfile" ); 
         topTaggerXMLfile_ = iConfig.getParameter<edm::FileInPath>( "topTaggerXMLfile" );
         tthVsDiphoDNNfile_ = iConfig.getParameter<edm::FileInPath>( "tthVsDiphoDNNfile" );
+        tthVsDiphoDNN_global_mean_ = iConfig.getParameter<std::vector<double>>( "tthVsDiphoDNN_global_mean" );
+        tthVsDiphoDNN_global_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVsDiphoDNN_global_stddev" );
+        tthVsDiphoDNN_object_mean_ = iConfig.getParameter<std::vector<double>>( "tthVsDiphoDNN_object_mean" );
+        tthVsDiphoDNN_object_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVsDiphoDNN_object_stddev" );
         tthVsttGGDNNfile_ = iConfig.getParameter<edm::FileInPath>( "tthVsttGGDNNfile" );
+        tthVsttGGDNN_global_mean_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_global_mean" );
+        tthVsttGGDNN_global_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_global_stddev" );
+        tthVsttGGDNN_object_mean_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_object_mean" );
+        tthVsttGGDNN_object_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_object_stddev" );
         tthMVA_RunII_weightfile_ = iConfig.getParameter<edm::FileInPath>( "tthMVA_RunII_weightfile" );
 
         nJets_ = 0;
@@ -520,11 +536,14 @@ namespace flashgg {
         if (useLargeMVAs) {
             topTagger = new BDT_resolvedTopTagger(topTaggerXMLfile_.fullPath());
 
-            dnn_dipho = new DNN_Helper(tthVsDiphoDNNfile_.fullPath());
-            dnn_ttGG  = new DNN_Helper(tthVsttGGDNNfile_.fullPath());
+            dnn_dipho = new TTH_DNN_Helper(tthVsDiphoDNNfile_.fullPath());
+            dnn_ttGG  = new TTH_DNN_Helper(tthVsttGGDNNfile_.fullPath());
 
             dnn_dipho->SetInputShapes(18, 8, 8);
             dnn_ttGG->SetInputShapes(18, 8, 8);
+
+            dnn_dipho->SetPreprocessingSchemes(tthVsDiphoDNN_global_mean_, tthVsDiphoDNN_global_stddev_, tthVsDiphoDNN_object_mean_, tthVsDiphoDNN_object_stddev_);
+            dnn_ttGG->SetPreprocessingSchemes(tthVsttGGDNN_global_mean_, tthVsttGGDNN_global_stddev_, tthVsttGGDNN_object_mean_, tthVsttGGDNN_object_stddev_);
         }
 
         for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
@@ -547,7 +566,8 @@ namespace flashgg {
         // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
         int n;
         for( n = 0 ; n < ( int )boundaries.size() ; n++ ) {
-            if( ( double )tthmvavalue > boundaries[boundaries.size() - n - 1] ) { return n; }
+            //if( ( double )tthmvavalue > boundaries[boundaries.size() - n - 1] ) { return n; }
+            if( ( double )tthmvavalue > boundaries[boundaries.size() - n - 1] ) { cout << "Hadronic cat " << n << endl; return n; }
         }
         return -1; // Does not pass, object will not be produced
     }
@@ -1213,5 +1233,10 @@ namespace flashgg {
 }
 typedef flashgg::TTHHadronicTagProducer FlashggTTHHadronicTagProducer;
 DEFINE_FWK_MODULE( FlashggTTHHadronicTagProducer );
-
-
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4

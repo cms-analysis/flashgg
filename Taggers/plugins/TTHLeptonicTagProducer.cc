@@ -25,7 +25,7 @@
 #include "DataFormats/Common/interface/RefToPtr.h"
 
 #include "flashgg/Taggers/interface/BDT_resolvedTopTagger.h"
-#include "flashgg/Taggers/interface/DNN_Helper.h"
+#include "flashgg/Taggers/interface/TTH_DNN_Helper.h"
 
 #include <vector>
 #include <algorithm>
@@ -92,6 +92,16 @@ namespace flashgg {
         FileInPath tthMVA_RunII_weightfile_;
 
         FileInPath tthVsttGGDNNfile_;
+        std::vector<double> tthVsttGGDNN_global_mean_;
+        std::vector<double> tthVsttGGDNN_global_stddev_;
+        std::vector<double> tthVsttGGDNN_object_mean_;
+        std::vector<double> tthVsttGGDNN_object_stddev_; 
+
+        FileInPath tthVstHDNNfile_;
+        std::vector<double> tthVstHDNN_global_mean_;
+        std::vector<double> tthVstHDNN_global_stddev_;
+        std::vector<double> tthVstHDNN_object_mean_;
+        std::vector<double> tthVstHDNN_object_stddev_; 
 
         //Thresholds
 
@@ -197,11 +207,14 @@ namespace flashgg {
         float lepton_nTight_;
 
         float dnn_score_0_;
+
+        float ttH_vs_tH_dnn_score;
        
         float tthMvaVal_RunII_;
 
         BDT_resolvedTopTagger *topTagger;
-        DNN_Helper* dnn;
+        TTH_DNN_Helper* dnn;
+        TTH_DNN_Helper* dnn_ttH_vs_tH;
 
         bool modifySystematicsWorkflow;
         std::vector<std::string> systematicsLabels;
@@ -510,8 +523,19 @@ namespace flashgg {
         MVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "MVAweightfile" );
         topTaggerXMLfile_ = iConfig.getParameter<edm::FileInPath>( "topTaggerXMLfile" );
         tthVsttGGDNNfile_ = iConfig.getParameter<edm::FileInPath>( "tthVsttGGDNNfile" );
-        tthMVA_RunII_weightfile_ = iConfig.getParameter<edm::FileInPath>( "tthMVA_RunII_weightfile" );
+        tthVsttGGDNN_global_mean_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_global_mean" );
+        tthVsttGGDNN_global_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_global_stddev" );
+        tthVsttGGDNN_object_mean_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_object_mean" );
+        tthVsttGGDNN_object_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_object_stddev" );
 
+        tthVstHDNNfile_ = iConfig.getParameter<edm::FileInPath>( "tthVstHDNNfile" );
+        tthVstHDNN_global_mean_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_global_mean" );
+        tthVstHDNN_global_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_global_stddev" );
+        tthVstHDNN_object_mean_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_object_mean" );
+        tthVstHDNN_object_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_object_stddev" );
+            
+        tthMVA_RunII_weightfile_ = iConfig.getParameter<edm::FileInPath>( "tthMVA_RunII_weightfile" );
+        
 
         DiphotonMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
         DiphotonMva_->AddVariable( "dipho_leadEta", &leadeta_ );
@@ -586,8 +610,13 @@ namespace flashgg {
 
         if (useLargeMVAs) {
             topTagger = new BDT_resolvedTopTagger(topTaggerXMLfile_.fullPath());
-            dnn = new DNN_Helper(tthVsttGGDNNfile_.fullPath());
+            dnn = new TTH_DNN_Helper(tthVsttGGDNNfile_.fullPath());
             dnn->SetInputShapes(19, 9, 8);
+            dnn->SetPreprocessingSchemes(tthVsttGGDNN_global_mean_, tthVsttGGDNN_global_stddev_, tthVsttGGDNN_object_mean_, tthVsttGGDNN_object_stddev_);
+
+            dnn_ttH_vs_tH = new TTH_DNN_Helper(tthVstHDNNfile_.fullPath());
+            dnn_ttH_vs_tH->SetInputShapes(23, 9, 8);
+            dnn_ttH_vs_tH->SetPreprocessingSchemes(tthVstHDNN_global_mean_, tthVstHDNN_global_stddev_, tthVstHDNN_object_mean_, tthVstHDNN_object_stddev_);
         }
 
         for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
@@ -611,7 +640,8 @@ namespace flashgg {
         // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
         int n;
         for( n = 0 ; n < ( int )MVAThreshold_.size() ; n++ ) {
-            if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { return n; }
+            //if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { return n; }
+            if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { cout << "Leptonic cat " << n; return n; }
         }
 
       if(debug_)
@@ -1192,9 +1222,29 @@ namespace flashgg {
                 global_features[17] = nJets_;
                 global_features[18] = lepton_nTight_;
 
+                std::vector<double> global_features_ttH_vs_tH;
+                global_features_ttH_vs_tH.resize(23);
+
+                for (unsigned int i = 0; i < global_features.size(); i++)
+                    global_features_ttH_vs_tH[i] = global_features[i];
+
+                double forward_jet_pt, forward_jet_eta;
+                calculate_forward_jet_features(forward_jet_pt, forward_jet_eta, tagJets, "pfDeepCSVJetTags:probb", maxBTagVal_noBB_);
+  
+                double lep1_charge, lep2_charge;
+                calculate_lepton_charges(lep1_charge, lep2_charge, Muons, Electrons);
+
+                global_features_ttH_vs_tH[19] = lep1_charge;
+                global_features_ttH_vs_tH[20] = lep2_charge;
+                global_features_ttH_vs_tH[21] = forward_jet_eta;
+                global_features_ttH_vs_tH[22] = forward_jet_pt; 
+
                 if (useLargeMVAs) {
                     dnn->SetInputs(tagJets, Muons, Electrons, global_features);
                     dnn_score_0_ = dnn->EvaluateDNN();
+
+                    dnn_ttH_vs_tH->SetInputs(tagJets, Muons, Electrons, global_features_ttH_vs_tH);
+                    ttH_vs_tH_dnn_score = dnn_ttH_vs_tH->EvaluateDNN();
                 }
 
                 vector<float> mvaEval; 
@@ -1285,6 +1335,13 @@ namespace flashgg {
                   cout << "lep_pt_: " << lepton_leadPt_ << endl;
                   cout << "lep_eta_: " << lepton_leadEta_ << endl;
                   cout << "n_lep_tight_: " << lepton_nTight_ << endl;
+
+                  cout << "lep1_charge: " << lep1_charge << endl;
+                  cout << "lep2_charge: " << lep2_charge << endl;
+                  cout << "forward_jet_eta: " << forward_jet_eta << endl;
+                  cout << "forward_jet_pt: " << forward_jet_pt << endl;
+
+                  cout << "ttH vs tH DNN Score: " << ttH_vs_tH_dnn_score << endl;
 
                   cout << "DNN Score 0: " << dnn_score_0_ << endl;
                   cout << endl;
@@ -1411,8 +1468,6 @@ namespace flashgg {
                            tthltags->back().setLeadMomID(leadFlags[6]);
                            tthltags->back().setLeadMomMomID(leadFlags[7]);
                            tthltags->back().setLeadSmallestDr(NearestDr(genParticles, &(*gp_lead)));
-
-                           //cout << "leadPrompt: " << leadFlags[0] << endl;
                            } 
 
                        if (gp_sublead_index != -1) {
@@ -1446,4 +1501,3 @@ DEFINE_FWK_MODULE( FlashggTTHLeptonicTagProducer );
 // c-basic-offset:4
 // End:
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
-
