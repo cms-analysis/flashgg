@@ -1378,6 +1378,13 @@ namespace flashgg {
                   cout << "lep_eta_: " << lepton_leadEta_ << endl;
                   cout << "n_lep_tight_: " << lepton_nTight_ << endl;
 
+                  cout << "lep1_charge: " << lep1_charge << endl;
+                  cout << "lep2_charge: " << lep2_charge << endl;
+                  cout << "forward_jet_eta: " << forward_jet_eta << endl;
+                  cout << "forward_jet_pt: " << forward_jet_pt << endl;
+
+                  cout << "ttH vs tH DNN Score: " << ttH_vs_tH_dnn_score << endl;
+
                   cout << "DNN Score 0: " << dnn_score_0_ << endl;
                   cout << endl;
                   cout << "BDT Score: " << tthMvaVal_RunII_ << endl;

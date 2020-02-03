@@ -195,8 +195,6 @@ ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme = TTHDNNPreprocessingConstructor.c
 ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme_path = os.path.expandvars("$CMSSW_BASE/src/flashgg/Taggers/data/metadata_Leptonic_ttHLeptonic_ttH_vs_tH_v4.14_ttH_vs_tH_13Jan2020.json")
 ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme = TTHDNNPreprocessingConstructor.construct(ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme_path, "Leptonic", True)
 
-print "Len of global features", len(ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme["global_mean"])
-
 flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
                                        DiPhotonName=cms.string('flashggPreselectedDiPhotons'),
                                        DiPhotonSuffixes = cms.vstring(''), # nominal and systematic variations
@@ -265,7 +263,7 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
                                        DeltaRTrkEle = cms.double(0.35),
                                        UseCutBasedDiphoId = cms.bool(False),
                                        SplitDiLeptEv = cms.bool(True),
-                                       debug = cms.bool(False),
+                                       debug = cms.bool(True),
                                        CutBasedDiphoId = cms.vdouble(0.4,0.3,0.0,-0.5,2.0,2.5),    # pT/m lead, pT/m sublead, leadIdMVA, subleadIdMVA, DeltaEta, DeltaPhi
                                        HTXSTags     = HTXSInputTags
 )

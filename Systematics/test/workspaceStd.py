@@ -18,7 +18,7 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 )
 
 
 systlabels = [""]
@@ -203,6 +203,8 @@ if customize.tthTagsOnly:
     process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
     process.flashggDiPhotons.whichVertex = cms.uint32(0)
     process.flashggDiPhotons.useZerothVertexFromMicro = cms.bool(True)
+    process.flashggDiPhotons.vertexIdMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexIdMVAweightfile'].encode("ascii")
+    process.flashggDiPhotons.vertexProbMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexProbMVAweightfile'].encode("ascii")
 
 print 'here we print the tag sequence before'
 print process.flashggTagSequence
