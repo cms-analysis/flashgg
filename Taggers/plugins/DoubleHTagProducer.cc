@@ -15,6 +15,7 @@
 
 #include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
 #include "flashgg/DataFormats/interface/DoubleHTag.h"
+#include "flashgg/DataFormats/interface/VBFDoubleHTag.h"
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
 #include "flashgg/Taggers/interface/LeptonSelection.h"

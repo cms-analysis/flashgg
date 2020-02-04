@@ -100,6 +100,27 @@ class DoubleHCustomize():
                 "subleadingJet_bRegNNResolution := subleadJet().userFloat('bRegNNResolution')",
                 "sigmaMJets := getSigmaMOverMJets()"
         ]
+        if self.customize.addVBFDoubleHVariables: variables +=[
+                "MinDeltaR_VBF_gamma := MinDeltaR_VBF_gamma()",
+                "MinDeltaR_VBF_b := MinDeltaR_VBF_b()",
+                "VBFJet_mass := diVBFjet().M()",
+                "VBFJet_Delta := abs(VBFleadJet().eta - VBFsubleadJet().eta)",
+                "VBFleadJet_pt :=  VBFleadJet().pt ",
+                "VBFsubleadJet_pt := VBFsubleadJet().pt ",
+                "VBFleadJet_eta := VBFleadJet().eta",
+                "VBFsubleadJet_eta := VBFsubleadJet().eta",
+                "VBFleadJet_phi := VBFleadJet().phi",
+                "VBFsubleadJet_phi := VBFsubleadJet().phi",
+                "VBFleadJet_px := VBFleadJet().px",
+                "VBFleadJet_py := VBFsubleadJet().px",
+                "VBFsubleadJet_py := VBFleadJet().py",
+                "VBFleadJet_pz := VBFleadJet().pz",
+                "VBFsubleadJet_pz := VBFsubleadJet().pz",
+                "VBFleadJet_DeepFlavour := VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
+                "VBFleadJet_PUID := VBFleadJet().puJetIdMVA()",
+                "VBFsubleadJet_DeepFlavour := VBFsubleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+VBFsubleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+VBFsubleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
+                "VBFsubleadJet_PUID := VBFsubleadJet().puJetIdMVA()"
+        ]
         if self.customize.doubleHReweight > 0: 
             for num in range(0,12):  #12 benchmarks + 1 SM
                  variables += ["benchmark_reweight_%d := getBenchmarkReweight(%d)"%(num,num)]
@@ -284,7 +305,9 @@ class DoubleHCustomize():
            if systlabel!='':
              self.process.p.remove(getattr(self.process,'flashggTagSorter'+systlabel))
              self.process.p.replace(self.process.flashggSystTagMerger,getattr(self.process, 'flashggTagSorter'+systlabel)*self.process.flashggSystTagMerger)
-           setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggDoubleHTag', systlabel)) ))
+           setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges',
+                                        cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggVBFDoubleHTag', systlabel)),
+					cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggDoubleHTag', systlabel)) ))
         #print 'from loop after:',process.flashggSystTagMerger.src
 
 

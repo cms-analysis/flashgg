@@ -3,16 +3,16 @@
 
 #include "TLorentzVector.h"
 
-#include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
-#include "flashgg/DataFormats/interface/Jet.h"
-#include "DataFormats/Candidate/interface/LeafCandidate.h"
-#include "DataFormats/Math/interface/deltaR.h"
+#include "flashgg/DataFormats/interface/DoubleHTag.h"
+//#include "flashgg/DataFormats/interface/Jet.h"
+//#include "DataFormats/Candidate/interface/LeafCandidate.h"
+//#include "DataFormats/Math/interface/deltaR.h"
 
-#include "flashgg/Taggers/interface/FunctionHelpers.h"
+//#include "flashgg/Taggers/interface/FunctionHelpers.h"
 
 namespace flashgg {
 
-    class VBFDoubleHTag: public DiPhotonTagBase, public reco::LeafCandidate
+    class VBFDoubleHTag: public DoubleHTag 
     {
     public:
         VBFDoubleHTag();
@@ -22,7 +22,7 @@ namespace flashgg {
         virtual VBFDoubleHTag *clone() const override;
         /// DiPhotonTagBase::tag_t tagEnum() const override { return DiPhotonTagBase::kDoubleH; }
 
-        void setMVA(double x) { mva_ = x; }
+/*        void setMVA(double x) { mva_ = x; }
         double MVA() const { return mva_; }
       //  void setMVAprob(std::vector<float> &x) const { mva_prob_ = x; }
       //  std::vector<float> MVAprob() const { return mva_prob_; }
@@ -37,12 +37,12 @@ namespace flashgg {
         double dijetPtOverM() const {return dijet().pt()/mass(); }
 
         const flashgg::Jet & leadJet() const { return *leadJet_; } 
-        const flashgg::Jet & subleadJet() const { return *subleadJet_; } 
+        const flashgg::Jet & subleadJet() const { return *subleadJet_; } */
         const flashgg::Jet & VBFleadJet() const {return *VBFleadJet_;}
         const flashgg::Jet & VBFsubleadJet() const { return *VBFsubleadJet_;}
         const LorentzVector & diVBFjet() const {return diVBFjet_; }
         
-        const LorentzVector & dijet() const { return dijet_; }
+ /*       const LorentzVector & dijet() const { return dijet_; }
 
         float getCosThetaStar_CS() const;
         float getCosThetaStar_CS_old(float ebeam) const;
@@ -60,9 +60,9 @@ namespace flashgg {
         double eventNumber() const { return eventNumber_; }
         float getMinDeltaR_VBF_gamma() const;
         float getMinDeltaR_VBF_b() const;
-        float ttHScore_;
+        float ttHScore_;*/
         float sumET_, MET_, phiMET_, dPhi1_, dPhi2_, PhoJetMinDr_,PhoJetOtherDr_, njets_, Xtt0_, Xtt1_, pte1_, pte2_, ptmu1_, ptmu2_, ptdipho_, etae1_, etae2_, etamu1_, etamu2_, etadipho_, phie1_, phie2_, phimu1_, phimu2_, phidipho_, fabs_CosThetaStar_CS_, fabs_CosTheta_bb_, mjj_, ptjet1_, ptjet2_, etajet1_, etajet2_, phijet1_, phijet2_, MinDeltaR_VBF_gamma_, MinDeltaR_VBF_b_; 
-        float sumET() const {return sumET_;}
+      /*  float sumET() const {return sumET_;}
         float MET() const {return MET_;}
         float phiMET() const {return phiMET_;}
         float dPhi1() const {return dPhi1_;}
@@ -95,10 +95,10 @@ namespace flashgg {
         float phimu2() const {return phimu2_;}
         float phidipho() const {return phidipho_;}
         float fabs_CosThetaStar_CS() const {return fabs_CosThetaStar_CS_;}
-        float fabs_CosTheta_bb() const {return fabs_CosTheta_bb_;}
+        float fabs_CosTheta_bb() const {return fabs_CosTheta_bb_;}*/
         //VBF related variables:
-        float MinDeltaR_VBF_gamma() const {return MinDeltaR_VBF_gamma_;}
-        float MinDeltaR_VBF_b() const {return MinDeltaR_VBF_b_;}
+        float MinDeltaR_VBF_gamma() ; 
+        float MinDeltaR_VBF_b() ; 
         /*float VBFMjj_, VBFdelta_eta_, VBFeta1_, VBFeta2_, VBFphi1_, VBFphi2_, VBFpt1_, VBFpt2_, VBFpx1_, VBFpx2_, VBFpy1_, VBFpy2_, VBFpz1_, VBFpz2_, Njet_; 
         float VBFMjj() const {return VBFMjj_; }
         float VBFdelta_eta() const {return VBFdelta_eta_;}
@@ -116,14 +116,14 @@ namespace flashgg {
         float VBFpz2(){return VBFpz2_;}
         float Njet() {return Njet_;}*/
     private:
-        double mva_, MX_, genMhh_,genCosThetaStar_CS_;
-        vector<float> benchmark_reweights_;
+ //       double mva_, MX_, genMhh_,genCosThetaStar_CS_;
+ //       vector<float> benchmark_reweights_;
  //       std::vector<float> mva_prob_;
-         long eventNumber_;
-        edm::Ptr<flashgg::Jet> leadJet_, subleadJet_, VBFleadJet_, VBFsubleadJet_ ;
-        LorentzVector dijet_, diVBFjet_ ;
-        DecorrTransform* transfEBEB_;
-        DecorrTransform* transfNotEBEB_;
+ //        long eventNumber_;
+        edm::Ptr<flashgg::Jet>  VBFleadJet_, VBFsubleadJet_ ;
+        LorentzVector  diVBFjet_ ;
+ //       DecorrTransform* transfEBEB_;
+ //       DecorrTransform* transfNotEBEB_;
             
     };
 }

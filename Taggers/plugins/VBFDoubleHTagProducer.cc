@@ -87,6 +87,8 @@ namespace flashgg {
         vector<double>mjjBoundaries_;
         vector<double>mjjBoundariesLower_;
         vector<double>mjjBoundariesUpper_;
+        double VBFMjjCut_, VBFJetEta_, VBFJetPt_ ;
+
         vector<std::string> bTagType_;
         bool       useJetID_;
         string     JetIDLevel_;        
@@ -135,6 +137,7 @@ namespace flashgg {
         FileInPath ttHWeightfileName_ ;
         tensorflow::GraphDef* graphDef_ttH;
         tensorflow::Session* session_ttH;
+        //double VBFMjjCut_, VBFJetEta_, VBFJetPt_ ;
 
     };
 
@@ -147,6 +150,11 @@ namespace flashgg {
         vetoConeSize_( iConfig.getParameter<double> ( "VetoConeSize" ) ),
         minJetPt_( iConfig.getParameter<double> ( "MinJetPt" ) ),
         maxJetEta_( iConfig.getParameter<double> ( "MaxJetEta" ) ),
+
+        VBFMjjCut_(iConfig.getParameter<double> ( "VBFMjjCut" ) ),
+        VBFJetEta_(iConfig.getParameter<double> ( "VBFJetEta" ) ),
+        VBFJetPt_(iConfig.getParameter<double> ( "VBFJetPt" ) ),
+
         bTagType_( iConfig.getParameter<vector<std::string>>( "BTagType") ),
         useJetID_( iConfig.getParameter<bool>   ( "UseJetID"     ) ),
         JetIDLevel_( iConfig.getParameter<string> ( "JetIDLevel"   ) ),
@@ -495,7 +503,7 @@ namespace flashgg {
             std::vector<edm::Ptr<flashgg::Jet> > VBFcleaned_jets;
             for( size_t ijet=0; ijet < VBFjets->size(); ++ijet ) {
                 auto VBFjet = VBFjets->ptrAt(ijet);
-                if (VBFjet->pt()< 30 || fabs(VBFjet->eta())>5)continue;
+                if (VBFjet->pt()< VBFJetPt_ || fabs(VBFjet->eta())> VBFJetEta_)continue;
                 if( useJetID_ ){
                     if( VBFJetIDLevel_ == "Loose" && !VBFjet->passesJetID  ( flashgg::Loose ) ) continue;
                     if( VBFJetIDLevel_ == "Tight" && !VBFjet->passesJetID  ( flashgg::Tight ) ) continue;
@@ -521,8 +529,10 @@ namespace flashgg {
                        auto temp_dijetVBF_mass = (jet_3->p4()+jet_4->p4()).mass();
                           if (temp_dijetVBF_mass > dijetVBF_mass) {
                              dijetVBF_mass= temp_dijetVBF_mass;
-                             jet3 = jet_3;
-                             jet4 = jet_4;
+                             if (dijetVBF_mass > VBFMjjCut_) {
+                               jet3 = jet_3;
+                               jet4 = jet_4;
+                             }
                          }
                     } }
                 }

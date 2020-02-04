@@ -55,6 +55,10 @@ flashggVBFDoubleHTag = cms.EDProducer("FlashggVBFDoubleHTagProducer",
                                    BTagType = cms.vstring('mini_pfDeepFlavourJetTags:probb','mini_pfDeepFlavourJetTags:probbb','mini_pfDeepFlavourJetTags:problepb'), #string for btag algorithm
                                    UseJetID = cms.bool(True),
                                    JetIDLevel = cms.string(jetID),
+                               
+                                   VBFMjjCut = cms.double(0.0),
+                                   VBFJetEta = cms.double(5.0),
+                                   VBFJetPt  = cms.double(30.0),
 
                                    #MVABoundaries  = cms.vdouble(0.29,0.441, 0.724), # category boundaries for MVA w/o Mjj
                                    #MXBoundaries   = cms.vdouble(250., 354., 478., 560.), # .. and MX w/o Mjj
@@ -136,8 +140,8 @@ cfgTools.addVariables(flashggVBFDoubleHTag.MVAConfig.variables,
                        "(sigmaMJets*1.4826) := getSigmaMOverMJets()*1.4826",
                        "PhoJetMinDr := getPhoJetMinDr()",
                        "PhoJetOtherDr := getPhoJetOtherDr()" 
-                       "MinDeltaR_VBF_gamma := getMinDeltaR_VBF_gamma",
-                       "MinDeltaR_VBF_b := getMinDeltaR_VBF_b",
+                       "MinDeltaR_VBF_gamma := MinDeltaR_VBF_gamma()",
+                       "MinDeltaR_VBF_b := MinDeltaR_VBF_b()",
                        "VBFJet_mass := diVBFjet().M()",
                        "VBFJet_Delta := abs(VBFleadJet().eta - VBFsubleadJet().eta)",
                        "VBFleadJet_DeepFlavour := VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
