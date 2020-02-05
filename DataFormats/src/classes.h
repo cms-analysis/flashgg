@@ -26,6 +26,7 @@
 #include "flashgg/DataFormats/interface/VBFDiPhoDiJetMVAResult.h"
 #include "flashgg/DataFormats/interface/VBFMVAResult.h"
 #include "flashgg/DataFormats/interface/VBFTag.h"
+#include "flashgg/DataFormats/interface/VHhadMVAResult.h"
 #include "flashgg/DataFormats/interface/VHHadronicTag.h"
 #include "flashgg/DataFormats/interface/VHLooseTag.h"
 #include "flashgg/DataFormats/interface/VHTightTag.h"
@@ -173,6 +174,10 @@ namespace  {
         flashgg::VBFMVAResult vbf_res;
         std::vector<flashgg::VBFMVAResult> vec_vbf_res;
         edm::Wrapper<std::vector<flashgg::VBFMVAResult> > wrp_vec_vbf_res;
+
+        flashgg::VHhadMVAResult vhHad_res;
+        std::vector<flashgg::VHhadMVAResult> vec_vhHad_res;
+        edm::Wrapper<std::vector<flashgg::VHhadMVAResult> > wrp_vec_vhHad_res;
 
         flashgg::ZPlusJetTag zpj_res;
         std::vector<flashgg::ZPlusJetTag> vec_zpj_res;

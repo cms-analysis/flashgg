@@ -38,6 +38,9 @@
  <version ClassVersion="11" checksum="232592888"/>
   <version ClassVersion="10" checksum="2111686847"/>
 </class>
+<class name="flashgg::VHhadMVAResult"/>
+<class name="std::vector<flashgg::VHhadMVAResult>"/>
+<class name="edm::Wrapper<std::vector<flashgg::VHhadMVAResult> >"/>
 <class name="std::vector<flashgg::DiPhotonTagBase>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DiPhotonTagBase> >"/>
 <class name="flashgg::UntaggedTag" ClassVersion="13">
