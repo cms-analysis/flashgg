@@ -460,6 +460,7 @@ namespace flashgg {
             // prepare tag object
             DoubleHTag tag_obj( dipho, leadJet, subleadJet );
             tag_obj.setDiPhotonIndex( candIndex );
+            cout << "DoubleH diphoton candIndex = " << candIndex << endl;
             if (loopOverJets == 1) 
                 tag_obj.setSystLabel( inputDiPhotonSuffixes_[diphoton_idx] );
             else  
@@ -757,6 +758,7 @@ namespace flashgg {
             
             // choose category and propagate weights
             int catnum = chooseCategory( tag_obj.MVA(), tag_obj.MX() );
+            cout << "catnum = " << catnum << endl; // checking to debug HHWWgg 
             tag_obj.setCategoryNumber( catnum );
             tag_obj.includeWeights( *dipho );
             //            tag_obj.includeWeights( *leadJet );
@@ -779,10 +781,14 @@ namespace flashgg {
           }
         }
 
-        if (loopOverJets == 1) 
+        if (loopOverJets == 1){
             evt.put( std::move( tags ),inputDiPhotonSuffixes_[diphoton_idx] );
-        else  
+            cout << "inputDiPhotonSuffixes_[" << diphoton_idx << "] = " << inputDiPhotonSuffixes_[diphoton_idx] << endl; // Trying to debug HHWWgg by checking DoubleH 
+            }
+        else{  
             evt.put( std::move( tags ),inputJetsSuffixes_[jet_col_idx] );
+            cout << "inputJetsSuffixes_[" << jet_col_idx << "] = " << inputJetsSuffixes_[jet_col_idx] << endl; // Trying to debug HHWWgg 
+            }
         }
         }   
         evt.put( std::move( truths ) );

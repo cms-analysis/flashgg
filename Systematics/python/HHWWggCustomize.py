@@ -246,6 +246,9 @@ class HHWWggCustomize():
     def customizeTagSequence(self):
         self.process.load("flashgg.Taggers.flashggHHWWggTag_cff")
 
+        if self.customize.doHHWWggTagCutFlow:
+            self.process.flashggHHWWggTag.doHHWWggTagCutFlowAnalysis = cms.bool(True)
+
         ## customize meta conditions
         # self.process.flashggHHWWggTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))
         # self.process.flashggHHWWggTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["doubleHTag"]["weightsFile"]))  
@@ -280,6 +283,9 @@ class HHWWggCustomize():
             self.process.flashggTagSequence.remove(self.process.flashggUntagged)
             self.process.flashggTagSequence.remove(self.process.flashggUntagged)
             self.process.flashggTagSequence.remove(self.process.flashggTHQLeptonicTag)
+
+        self.process.flashggTagSequence.replace(self.process.flashggTagSorter,self.process.flashggHHWWggTagSequence*self.process.flashggTagSorter)
+        self.process.flashggTagSorter.TagPriorityRanges = cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggHHWWggTag')) )
  
     def HHWWggTagMerger(self,systlabels=[]):
         self.process.p.remove(self.process.flashggTagSorter)
@@ -294,13 +300,14 @@ class HHWWggCustomize():
            setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggHHWWggTag')) ))
         #    setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggHHWWggTag', systlabel)) ))
         
-        #print 'from loop after:',process.flashggSystTagMerger.src
+        # print 'from loop after:',process.flashggSystTagMerger.src
 
 
     def HHWWggTagRunSequence(self,systlabels,jetsystlabels,phosystlabels):
-       if self.customize.HHWWggTagsOnly: 
+        print'not used'
+    #    if self.customize.HHWWggTagsOnly: 
         #   print'systlabels = ',systlabels 
-          self.HHWWggTagMerger(systlabels)
+        #   self.HHWWggTagMerger(systlabels)
 
 
         ## Not sure if this is necessary for HHWWgg

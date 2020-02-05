@@ -25,14 +25,16 @@ ntupleDirec="/eos/user/a/atishelm/ntuples/HHWWgg/" # condor output directory
 label="" # name for condor output directory in ntupleDirec 
 numEvents="" # integer, or 'all' to run on all events 
 runWorkspaceStd="false" # use Systematics/test/workspaceStd.py as config 
+doCutFlow="false" # perform HHWWgg cutflow within workspaceStd.py workflow 
 runttH="false" # run on ttH background sample only 
 runData="false" # get datasets from data json file 
 runSignal="false" # get dataset(s) from signal json file 
+calcSystematics="false"
 jsonpath="" # optional local json file to use for fggrunjobs arguments such as dataset and campaign 
 
 ## Get user specified argumenets 
 
-options=$(getopt -o sdw --long nEvents: --long labelName: --long json: -- "$@") # end name with colon ':' to specify argument string 
+options=$(getopt -o sdwcx --long nEvents: --long labelName: --long json: -- "$@") # end name with colon ':' to specify argument string 
 [ $? -eq 0 ] || {
       echo "Incorrect option provided"
       exit 1
@@ -48,6 +50,12 @@ while true; do
             ;;
       -w) 
             runWorkspaceStd="true"
+            ;;
+      -c)
+            doCutFlow="true"
+            ;;
+      -x)   
+            calcSystematics="true"
             ;;
       --nEvents)
             shift; 
@@ -77,6 +85,7 @@ echo "runWorkspaceStd = $runWorkspaceStd"
 echo "rundata = $runData"
 echo "runsignal = $runSignal"
 echo "jsonpath = $jsonpath"
+echo "calcSystematics = $calcSystematics"
 
 ## Make sure numEvents and label arguments are specified. These are compulsory
 
@@ -188,7 +197,20 @@ then
       command+=' -q microcentury --no-use-tarball --no-copy-proxy metaConditions='   
       command+=$fggDirec
       command+='MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json '
-      command+=' doHHWWggTag=True HHWWggTagsOnly=True doSystematics=False dumpWorkspace=True dumpTrees=True '
+      command+=' doHHWWggTag=True HHWWggTagsOnly=True '
+
+      if [ $calcSystematics == 'true' ]
+      then
+           command+=' doSystematics=True '
+      else 
+           command+= 'doSystematics=False '
+      fi 
+      command+=' dumpWorkspace=True dumpTrees=True '
+      
+      if [ $doCutFlow == 'true' ]
+      then
+           command+=' doHHWWggTagCutFlow=True '
+      fi       
       #     command+=' doHHWWggTag=True HHWWggTagsOnly=True doSystematics=False doBJetRegression=True dumpWorkspace=False dumpTrees=True'
 fi
 

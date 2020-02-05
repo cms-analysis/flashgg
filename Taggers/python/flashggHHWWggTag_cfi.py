@@ -66,8 +66,9 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     RECOfilters = cms.InputTag('TriggerResults::RECO'),
                                     PATfilters = cms.InputTag('TriggerResults::PAT'),
                                     FLASHfilters = cms.InputTag('TriggerResults::FLASHggMicroAOD'),
-                                    bTag = cms.string(flashggDeepCSV),
+                                    # bTag = cms.string(flashggDeepCSV),
                                     # btagThresh = cms.double(100)     # no btag (Save all btags < 100)                                 
-                                    btagThresh = cms.double(0.45)                                      
+                                    btagThresh = cms.double(0.45),
+                                    doHHWWggTagCutFlowAnalysis = cms.bool(False) # save events for cut flow analysis                                       
                                     )
 # flashggHHWWggTagSequence = cms.Sequence( flashggHHWWggTag ) # not used 
