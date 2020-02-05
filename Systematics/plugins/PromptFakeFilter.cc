@@ -3,11 +3,13 @@
 
 PromptFakeFilter::PromptFakeFilter(const edm::ParameterSet& iConfig) :
   tagToken_( consumes<edm::View<flashgg::DiPhotonTagBase> >( iConfig.getParameter<InputTag>( "TagSorter" ) ) ),
-  fakefake_( iConfig.getParameter<bool>( "doFakeFake" ) )
+  fakeFake_( iConfig.getParameter<bool>( "doFakeFake" ) ),
+  promptFake_( iConfig.getParameter<bool>( "doPromptFake" ) ),
+  acceptBoth_( iConfig.getParameter<bool>( "doBoth" ) )
 {
-  bool promptfake =  iConfig.getParameter<bool>( "doPromptFake");
-  if (fakefake_ == promptfake) {
-    throw cms::Exception( "Configuration" ) << " please set either doFakeFake or doPromptFake, but not both";
+  int boolSum = int(fakeFake_) + int(promptFake_) + int(acceptBoth_);
+  if (boolSum != 1) {
+    throw cms::Exception( "Configuration" ) << "Only one of doFakeFake, doPromptFake, or doBoth should be set";
   }
 }
 
@@ -34,20 +36,17 @@ PromptFakeFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   flashgg::Photon::mcMatch_t leadMatchType = TagSorter.product()->at(0).diPhoton()->leadingPhoton()->genMatchType();
   flashgg::Photon::mcMatch_t subleadMatchType = TagSorter.product()->at(0).diPhoton()->subLeadingPhoton()->genMatchType();
 
-  if (fakefake_) {
+  if (fakeFake_) {
     accepted = (leadMatchType != 1 && subleadMatchType != 1);
-  } else { // prompt-fake
+  } else if (promptFake_) {
     accepted = (!(leadMatchType==1 && subleadMatchType==1) && (leadMatchType==1 || subleadMatchType==1));
-  };
+  } else if (acceptBoth_) {;
+    accepted = ( !(leadMatchType==1 && subleadMatchType==1) );
+  }
 
   std::cout << " leadMatchType=" << leadMatchType << " subleadMatchType=" << subleadMatchType << " accepted=" << accepted << std::endl;
   
-  if (accepted) {
-    return true; 
-  } else { 
-    return false;
-  }
-  
+  return accepted;
 }
 
 DEFINE_FWK_MODULE(PromptFakeFilter);

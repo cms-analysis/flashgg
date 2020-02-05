@@ -44,6 +44,13 @@ customize.options.register('runOnZee',
                            VarParsing.VarParsing.varType.bool,
                            'runOnZee')
 
+customize.options.register('analysisType',
+                           'mainAnalysis',
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.string,
+                           'analysisType'
+                           )
+
 customize.options.register('dumpJetSysTrees',
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,

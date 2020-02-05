@@ -912,9 +912,11 @@ class SGEJob(LsfJob):
         if mydomain == "hep.ph.ic.ac.uk":
             qsubCmdParts = [ "qsub", "-q hep.q" ]
             if self.lsfQueue == "hepshort.q":
-                qsubCmdParts.append("-l h_rt=3:0:0")
+                qsubCmdParts.append("-l h_rt=3:0:0 -l h_vmem=24G")
             elif self.lsfQueue == "hepmedium.q":
                 qsubCmdParts.append("-l h_rt=10:0:0 -l h_vmem=12G")
+            elif self.lsfQueue == "heplong.q":
+                qsubCmdParts.append("-l h_rt=48:0:0 -l h_vmem=6G")
             else:
                 # assume long queue is intended
                 qsubCmdParts.append("-l h_rt=48:0:0")
