@@ -48,6 +48,7 @@ namespace flashgg {
     private:
         void produce( Event &, const EventSetup & ) override;
         int  chooseCategory( float );
+        int  chooseCategory_pt( float, float );
 
         std::vector<edm::EDGetTokenT<View<flashgg::Jet> > > tokenJets_;
         std::vector<std::vector<edm::EDGetTokenT<edm::View<flashgg::Jet>>>> jetTokens_;
@@ -206,6 +207,12 @@ namespace flashgg {
 
         vector<double> boundaries;
 
+        vector<double> boundaries_pt1;
+        vector<double> STXSPtBoundaries_pt1;
+
+        vector<double> boundaries_pt2;
+        vector<double> STXSPtBoundaries_pt2;
+
         BDT_resolvedTopTagger *topTagger;
         TTH_DNN_Helper* dnn_dipho;
         TTH_DNN_Helper* dnn_ttGG;
@@ -321,7 +328,16 @@ namespace flashgg {
            metTokens_.push_back(consumes<edm::View<flashgg::Met>>(tag)); 
 
         boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
+        boundaries_pt1 = iConfig.getParameter<vector<double > >( "Boundaries_pt1" );
+        boundaries_pt2 = iConfig.getParameter<vector<double > >( "Boundaries_pt2" );
+        STXSPtBoundaries_pt1 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt1" );
+        STXSPtBoundaries_pt2 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt2" );
+
         assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // 
+        assert( is_sorted( boundaries_pt1.begin(), boundaries_pt1.end() ) ); // 
+        assert( is_sorted( boundaries_pt2.begin(), boundaries_pt2.end() ) ); // 
+        //assert( is_sorted( STXSPtBoundaries_pt1.begin(), STXSBoundaries_pt1.end() ) ); // 
+        //assert( is_sorted( STXSPtBoundaries_pt2.begin(), STXSBoundaries_pt2.end() ) ); // 
 
         MVAThreshold_ = iConfig.getParameter<double>( "MVAThreshold");
         MVATTHHMVAThreshold_ = iConfig.getParameter<double>( "MVATTHHMVAThreshold");
@@ -559,6 +575,29 @@ namespace flashgg {
         else {
             produces<vector<TTHHadronicTag> >();
         }
+    }
+
+    int TTHHadronicTagProducer::chooseCategory_pt( float tthmvavalue, float pT)
+    {
+        // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
+        if (pT > STXSPtBoundaries_pt1[0] && pT < STXSPtBoundaries_pt1[1]) {
+            for(int n = 0 ; n < ( int )boundaries_pt1.size() ; n++ ) {
+                if( ( double )tthmvavalue > boundaries_pt1[boundaries_pt1.size() - n - 1] ) {
+                    cout << "pT range: [" << STXSPtBoundaries_pt1[0] << ", " << STXSPtBoundaries_pt1[1] << "], Hadronic cat " << n << endl; return n; 
+                }
+            }
+        }
+
+
+        if (pT > STXSPtBoundaries_pt2[0] && pT < STXSPtBoundaries_pt2[1]) {
+            for(int n = 0 ; n < ( int )boundaries_pt2.size() ; n++ ) {
+                if( ( double )tthmvavalue > boundaries_pt2[boundaries_pt2.size() - n - 1] ) {
+                    cout << "pT range: [" << STXSPtBoundaries_pt2[0] << ", " << STXSPtBoundaries_pt2[1] << "], Hadronic cat " << n + boundaries_pt1.size() << endl;
+                    return (n + boundaries_pt1.size()); 
+                }
+            }
+        }
+        return -1; // Does not pass, object will not be produced
     }
 
     int TTHHadronicTagProducer::chooseCategory( float tthmvavalue )
@@ -1174,18 +1213,21 @@ namespace flashgg {
                 tthMvaVal_ = tthMvaVal_RunII_; // use Run II MVA
 
                 bool isTTHHadronicTagged = false;
-                int catnum =-1;
+                //int catnum =-1;
+                int catnum_pt =-1;
                 if( !useTTHHadronicMVA_ && njets_btagloose_ >= bjetsLooseNumberThreshold_ && njets_btagmedium_ >= bjetsNumberThreshold_ && jetcount_ >= jetsNumberThreshold_ ) {
 
-                    catnum=0;
+                    catnum_pt=0;
                     isTTHHadronicTagged = true;
                     
                 } else if ( useTTHHadronicMVA_  && njets_btagloose_ >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium_ >= bjetsNumberTTHHMVAThreshold_ && jetcount_ >= jetsNumberTTHHMVAThreshold_ ) {
                     //&& tthMvaVal_ >= tthHadMVAThresholdMin_  && tthMvaVal_ < tthHadMVAThresholdMax_ ) 
                     
-                    catnum = chooseCategory( tthMvaVal_ );                
+                    catnum_pt = chooseCategory_pt( tthMvaVal_, dipho->pt() );                
+                    //catnum = chooseCategory( tthMvaVal_ );                
                     //                cout<<" catNum="<<catnum<<endl;
-                    if(catnum>=0){
+                    if(catnum_pt>=0){
+                    //if(catnum>=0){
                         isTTHHadronicTagged = true;
                         //                    cout<<" TAGGED "<< endl;
                     }
@@ -1194,7 +1236,7 @@ namespace flashgg {
                 if( isTTHHadronicTagged ) {
 
                     TTHHadronicTag tthhtags_obj( dipho, mvares, JetVect, BJetVect );
-                    tthhtags_obj.setCategoryNumber(catnum  );
+                    tthhtags_obj.setCategoryNumber(catnum_pt  );
                     tthhtags_obj.setNjet( jetcount_ );
                     tthhtags_obj.setNBLoose( njets_btagloose_ );
                     tthhtags_obj.setNBMedium( njets_btagmedium_ );

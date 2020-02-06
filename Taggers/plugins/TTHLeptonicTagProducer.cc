@@ -49,6 +49,7 @@ namespace flashgg {
     private:
         void produce( Event &, const EventSetup & ) override;
         int  chooseCategory( float tthmvavalue , bool debug_ );
+        int  chooseCategory_pt( float tthmvavalue , float pT );
 
         const  reco::GenParticle* motherID(const reco::GenParticle* gp);
         bool PassFrixione(Handle<View<reco::GenParticle> > genParticles, const reco::GenParticle* gp, int nBinsForFrix, double cone_frix);
@@ -127,6 +128,10 @@ namespace flashgg {
         double leadPhoOverMassThreshold_;
         double subleadPhoOverMassThreshold_;
         vector<double> MVAThreshold_;
+        vector<double> MVAThreshold_pt1_;
+        vector<double> MVAThreshold_pt2_;
+        vector<double> STXSPtBoundaries_pt1;
+        vector<double> STXSPtBoundaries_pt2;
         double deltaRJetLeadPhoThreshold_;
         double deltaRJetSubLeadPhoThreshold_;
         double jetsNumberThreshold_;
@@ -482,6 +487,12 @@ namespace flashgg {
         leadPhoOverMassThreshold_ = iConfig.getParameter<double>( "leadPhoOverMassThreshold");
         subleadPhoOverMassThreshold_ = iConfig.getParameter<double>( "subleadPhoOverMassThreshold");
         MVAThreshold_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold");
+        MVAThreshold_pt1_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt1");
+        MVAThreshold_pt2_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt2");
+        STXSPtBoundaries_pt1 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt1" );
+        STXSPtBoundaries_pt2 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt2" );
+        //assert( is_sorted( STXSPtBoundaries_pt1.begin(), STXSBoundaries_pt1.end() ) ); // 
+        //assert( is_sorted( STXSPtBoundaries_pt2.begin(), STXSBoundaries_pt2.end() ) ); // 
         PhoMVAThreshold_ = iConfig.getParameter<double>( "PhoMVAThreshold");
         jetsNumberThreshold_ = iConfig.getParameter<double>( "jetsNumberThreshold");
         bjetsNumberThreshold_ = iConfig.getParameter<double>( "bjetsNumberThreshold");
@@ -638,11 +649,33 @@ namespace flashgg {
 
     }
 
+    int TTHLeptonicTagProducer::chooseCategory_pt( float tthmvavalue , float pT)
+    {
+        // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
+        if (pT > STXSPtBoundaries_pt1[0] && pT < STXSPtBoundaries_pt1[1]) {
+            for(int n = 0 ; n < ( int )MVAThreshold_pt1_.size() ; n++ ) {
+                //if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { return n; }
+                if( ( double )tthmvavalue > MVAThreshold_pt1_[MVAThreshold_pt1_.size() - n - 1] ) {
+                    cout << "pT range: [" << STXSPtBoundaries_pt1[0] << ", " << STXSPtBoundaries_pt1[1] << "], Leptonic cat " << n << endl; return n; 
+                }
+            }
+        }
+
+        if (pT > STXSPtBoundaries_pt2[0] && pT < STXSPtBoundaries_pt2[1]) {
+            for(int n = 0 ; n < ( int )MVAThreshold_pt2_.size() ; n++ ) {
+                //if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { return n; }
+                if( ( double )tthmvavalue > MVAThreshold_pt2_[MVAThreshold_pt2_.size() - n - 1] ) {
+                    cout << "pT range: [" << STXSPtBoundaries_pt2[0] << ", " << STXSPtBoundaries_pt2[1] << "], Leptonic cat " << n + MVAThreshold_pt1_.size() << endl; return n + MVAThreshold_pt1_.size(); 
+                }
+            }
+        }
+        return -1; // Does not pass, object will not be produced
+    }
+
     int TTHLeptonicTagProducer::chooseCategory( float tthmvavalue , bool debug_)
     {
         // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
-        int n;
-        for( n = 0 ; n < ( int )MVAThreshold_.size() ; n++ ) {
+        for(int n = 0 ; n < ( int )MVAThreshold_.size() ; n++ ) {
             //if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { return n; }
             if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { cout << "Leptonic cat " << n; return n; }
         }
@@ -1361,8 +1394,10 @@ namespace flashgg {
 
               mvaValue = tthMvaVal_RunII_; // use Run II MVA for categorization
 
-                int catNumber = -1;
-                catNumber = chooseCategory( mvaValue , debug_);  
+                //int catNumber = -1;
+                //catNumber = chooseCategory( mvaValue , debug_);  
+                int catNumber_pt = -1;
+                catNumber_pt = chooseCategory_pt( mvaValue , dipho->pt());  
 
                 if(debug_)
                     cout << "I'm going to check selections, mva value: " << mvaValue << endl;
@@ -1402,13 +1437,14 @@ namespace flashgg {
                     cout << "MetPt " << MetPt_ << endl;
                     cout << "Lepton pT and Eta " << lepton_leadPt_ << " " << lepton_leadEta_ << endl;
                     cout << "--------------------------------------" << endl;
-                    cout << "TTHLeptonicTag -- output MVA value " << mvaValue << " " << DiphotonMva_-> EvaluateMVA( "BDT" ) << ", category " << catNumber << endl;
+                    cout << "TTHLeptonicTag -- output MVA value " << mvaValue << " " << DiphotonMva_-> EvaluateMVA( "BDT" ) << ", category " << catNumber_pt << endl;
                 }
 
-                if(catNumber!=-1)
+                if(catNumber_pt!=-1)
                 {
                     TTHLeptonicTag tthltags_obj( dipho, mvares );
-                    tthltags_obj.setCategoryNumber(catNumber);
+                    tthltags_obj.setCategoryNumber(catNumber_pt);
+                    //tthltags_obj.setCategoryNumber(catNumber);
 
                     for( unsigned int i = 0; i < tagJets.size(); ++i )
                     {
