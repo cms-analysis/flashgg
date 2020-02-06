@@ -138,6 +138,7 @@ namespace flashgg {
         vector<double> bDiscriminator_;
         string bTag_;
         double PhoMVAThreshold_;
+        double tthVstHThreshold_;
 
         bool UseCutBasedDiphoId_;
         bool debug_;
@@ -209,7 +210,7 @@ namespace flashgg {
         float dnn_score_0_;
 
         float ttH_vs_tH_dnn_score;
-       
+
         float tthMvaVal_RunII_;
 
         BDT_resolvedTopTagger *topTagger;
@@ -488,6 +489,8 @@ namespace flashgg {
         jetEtaThreshold_ = iConfig.getParameter<double>( "jetEtaThreshold");
         deltaRJetLepton_ = iConfig.getParameter<double>( "deltaRJetLepton");
         leadingJetPtThreshold_ = iConfig.getParameter<double>("leadingJetPtThreshold");
+
+        tthVstHThreshold_ = iConfig.getParameter<double>("tthVstHThreshold");
 
         MuonEtaCut_ = iConfig.getParameter<double>( "MuonEtaCut");
         MuonPtCut_ = iConfig.getParameter<double>( "MuonPtCut");
@@ -1346,6 +1349,12 @@ namespace flashgg {
                   cout << "DNN Score 0: " << dnn_score_0_ << endl;
                   cout << endl;
                   cout << "BDT Score: " << tthMvaVal_RunII_ << endl;
+              }
+
+              if (ttH_vs_tH_dnn_score < tthVstHThreshold_) { 
+                  if (debug_)
+                      cout << "Rejecting event because ttH_vs_tH_dnn_score of " << ttH_vs_tH_dnn_score << " is below threshold." << endl;
+                  continue;
               }
 
               global_features.clear();
