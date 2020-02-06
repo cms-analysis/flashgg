@@ -11,7 +11,7 @@ namespace flashgg {
     {
     public:
         enum tag_t { kUndefined = 0, kUntagged, kVBF, kTTHHadronic, kTTHLeptonic, kTHQLeptonic, kTTHDiLepton, kVHTight, kVHLoose, kVHHadronic, kVHEt,  kZHLeptonic, kWHLeptonic, kVHLeptonicLoose, kVHMet };
-
+        enum stage1recoTag {RECO_TTHHad_PTH_0_120, RECO_TTHHad_PTH_GT120, RECO_TTHLep_PTH_0_120, RECO_TTHLep_PTH_GT120};
         DiPhotonTagBase();
         virtual ~DiPhotonTagBase(); 
         DiPhotonTagBase( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult );
