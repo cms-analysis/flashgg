@@ -9,5 +9,6 @@ flashggStageOneCombinedTag = cms.EDProducer("FlashggStageOneCombinedTagProducer"
                                VHhadMVAResultTag=cms.InputTag('flashggVHhadMVA'),
                                inputTagJets = UnpackedJetCollectionVInputTag,
                                rawDiphoBounds = cms.vdouble(),
-                               rawDijetBounds = cms.vdouble()
+                               rawDijetBounds = cms.vdouble(),
+                               rawVhHadBounds = cms.vdouble()
                                )

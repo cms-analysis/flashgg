@@ -4,6 +4,7 @@
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
 #include "flashgg/DataFormats/interface/DiPhotonMVAResult.h"
 #include "flashgg/DataFormats/interface/VBFMVAResult.h"
+#include "flashgg/DataFormats/interface/VHhadMVAResult.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 
 namespace flashgg {
@@ -23,17 +24,19 @@ namespace flashgg {
 
         StageOneCombinedTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult> );
         StageOneCombinedTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult );
-        StageOneCombinedTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult>, edm::Ptr<VBFMVAResult> );
-        StageOneCombinedTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult, VBFMVAResult );
+        StageOneCombinedTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<DiPhotonMVAResult>, edm::Ptr<VBFMVAResult>, edm::Ptr<VHhadMVAResult> );
+        StageOneCombinedTag( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult, VBFMVAResult, VHhadMVAResult );
 
         StageOneCombinedTag *clone() const override { return ( new StageOneCombinedTag( *this ) ); }
 
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kStageOneCombined; }
 
         const VBFMVAResult VBFMVA() const;
+        const VHhadMVAResult VHhadMVA() const;
     private:
         int stage1recoTag_;
         VBFMVAResult vbfmva_result_;
+        VHhadMVAResult vhhadmva_result_;
 
     };
 

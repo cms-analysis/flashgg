@@ -97,6 +97,11 @@
         "weightFile" : "flashgg/Taggers/data/multiclassDijetModel2017.xml"
     },
 
+    "flashggVHhadMVA" : 
+    {  
+        "weightFile" : "flashgg/Taggers/data/vhHadModel2017.xml"
+    },
+
     "stageOneCombinedTag" :
     {  
         "rawDiphoBounds" : [
@@ -130,6 +135,9 @@
                              0.801, 0.601,
                              0.672,
                              0.521
+                           ],
+        "rawVhHadBounds" : [
+                             -999.0
                            ]
     },
 

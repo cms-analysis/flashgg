@@ -36,7 +36,7 @@ namespace flashgg {
         //EDGetTokenT<View<flashgg::Jet> > jetTokenDz_;
         std::vector<edm::InputTag> inputTagJets_;
 
-        unique_ptr<TMVA::Reader>VbfMva_;
+        unique_ptr<TMVA::Reader>VHhadMva_;
         FileInPath vhHadMVAweightfile_;
         string     _MVAMethod;
         bool       _usePuJetID;
@@ -126,47 +126,34 @@ namespace flashgg {
         dijet_subleady_   = -999.;
         
         if (_MVAMethod == "BDTG"){
-            VbfMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
-            // Run 1 legacy variables
-            /*
-            VbfMva_->AddVariable( "dijet_LeadJPt"     , &dijet_LeadJPt_    );
-            VbfMva_->AddVariable( "dijet_SubJPt"      , &dijet_SubJPt_     );
-            VbfMva_->AddVariable( "dijet_abs_dEta"    , &dijet_abs_dEta_   );
-            VbfMva_->AddVariable( "dijet_Mjj"         , &dijet_Mjj_        );
-            VbfMva_->AddVariable( "dijet_Zep"         , &dijet_Zep_        );
-            VbfMva_->AddVariable( "dijet_dPhi_trunc"  , &dijet_dphi_trunc_ );
-            VbfMva_->AddVariable( "leadPho_PToM"      , &leadPho_PToM_);
-            VbfMva_->AddVariable( "sublPho_PToM"      , &sublPho_PToM_);
-            */
+            VHhadMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
+
+            VHhadMva_->AddVariable( "dipho_lead_ptoM"        , &leadPho_PToM_        );
+            VHhadMva_->AddVariable( "dipho_sublead_ptoM"     , &sublPho_PToM_        );
+            VHhadMva_->AddVariable( "dijet_leadEta"          , &dijet_leadEta_       );
+            VHhadMva_->AddVariable( "dijet_subleadEta"       , &dijet_subleadEta_    );
+            VHhadMva_->AddVariable( "dijet_LeadJPt"          , &dijet_LeadJPt_       );
+            VHhadMva_->AddVariable( "dijet_SubJPt"           , &dijet_SubJPt_        );
+            VHhadMva_->AddVariable( "dijet_Mjj"              , &dijet_Mjj_           );
+            VHhadMva_->AddVariable( "dijet_abs_dEta"         , &dijet_abs_dEta_      );
+            VHhadMva_->AddVariable( "cosThetaStar"           , &cosThetaStar_        );
             
-            // Moriond17 variables
-            VbfMva_->AddVariable( "dijet_LeadJPt"          , &dijet_LeadJPt_       );
-            VbfMva_->AddVariable( "dijet_SubJPt"           , &dijet_SubJPt_        );
-            VbfMva_->AddVariable( "dijet_abs_dEta"         , &dijet_abs_dEta_      );
-            VbfMva_->AddVariable( "dijet_Mjj"              , &dijet_Mjj_           );
-            VbfMva_->AddVariable( "dijet_centrality_gg"    , &dijet_centrality_gg_ );
-            VbfMva_->AddVariable( "dijet_dipho_dphi_trunc" , &dijet_dphi_trunc_    );
-            VbfMva_->AddVariable( "dijet_dphi"             , &dijet_dphi_          );
-            VbfMva_->AddVariable( "dijet_minDRJetPho"      , &dijet_minDRJetPho_   );
-            VbfMva_->AddVariable( "leadPho_PToM"           , &leadPho_PToM_        );
-            VbfMva_->AddVariable( "sublPho_PToM"           , &sublPho_PToM_        );
-            
-            VbfMva_->BookMVA( _MVAMethod.c_str() , vhHadMVAweightfile_.fullPath() );
+            VHhadMva_->BookMVA( _MVAMethod.c_str() , vhHadMVAweightfile_.fullPath() );
         }
         else if (_MVAMethod == "Multi"){
-            VbfMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
-            VbfMva_->AddVariable( "dipho_lead_ptoM"        , &leadPho_PToM_        );
-            VbfMva_->AddVariable( "dipho_sublead_ptoM"     , &sublPho_PToM_        );
-            VbfMva_->AddVariable( "dijet_LeadJPt"          , &dijet_LeadJPt_       );
-            VbfMva_->AddVariable( "dijet_SubJPt"           , &dijet_SubJPt_        );
-            VbfMva_->AddVariable( "dijet_abs_dEta"         , &dijet_abs_dEta_      );
-            VbfMva_->AddVariable( "dijet_Mjj"              , &dijet_Mjj_           );
-            VbfMva_->AddVariable( "dijet_centrality"       , &dijet_centrality_gg_ );
-            VbfMva_->AddVariable( "dijet_dphi"             , &dijet_dphi_          );
-            VbfMva_->AddVariable( "dijet_minDRJetPho"      , &dijet_minDRJetPho_   );
-            VbfMva_->AddVariable( "dijet_dipho_dphi_trunc" , &dijet_dphi_trunc_    );
+            VHhadMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
+            VHhadMva_->AddVariable( "dipho_lead_ptoM"        , &leadPho_PToM_        );
+            VHhadMva_->AddVariable( "dipho_sublead_ptoM"     , &sublPho_PToM_        );
+            VHhadMva_->AddVariable( "dijet_LeadJPt"          , &dijet_LeadJPt_       );
+            VHhadMva_->AddVariable( "dijet_SubJPt"           , &dijet_SubJPt_        );
+            VHhadMva_->AddVariable( "dijet_abs_dEta"         , &dijet_abs_dEta_      );
+            VHhadMva_->AddVariable( "dijet_Mjj"              , &dijet_Mjj_           );
+            VHhadMva_->AddVariable( "dijet_centrality"       , &dijet_centrality_gg_ );
+            VHhadMva_->AddVariable( "dijet_dphi"             , &dijet_dphi_          );
+            VHhadMva_->AddVariable( "dijet_minDRJetPho"      , &dijet_minDRJetPho_   );
+            VHhadMva_->AddVariable( "dijet_dipho_dphi_trunc" , &dijet_dphi_trunc_    );
             
-            VbfMva_->BookMVA( _MVAMethod.c_str() , vhHadMVAweightfile_.fullPath() );
+            VHhadMva_->BookMVA( _MVAMethod.c_str() , vhHadMVAweightfile_.fullPath() );
         }
         for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
             auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
@@ -468,13 +455,13 @@ namespace flashgg {
             
 
             if (_MVAMethod == "BDTG") {
-                mvares.vhHadMvaResult_value = VbfMva_->EvaluateMVA( _MVAMethod.c_str() );
-                //mvares.vhHadMvaResult_value = VbfMva_->GetProba( _MVAMethod.c_str() );
+                mvares.vhHadMvaResult_value = VHhadMva_->EvaluateMVA( _MVAMethod.c_str() );
+                //mvares.vhHadMvaResult_value = VHhadMva_->GetProba( _MVAMethod.c_str() );
             }
             else if (_MVAMethod == "Multi") {
-                mvares.vhHadMvaResult_prob_bkg = VbfMva_->EvaluateMulticlass( 0, _MVAMethod.c_str() );
-                mvares.vhHadMvaResult_prob_ggH = VbfMva_->EvaluateMulticlass( 1, _MVAMethod.c_str() );
-                mvares.vhHadMvaResult_prob_VHhad = VbfMva_->EvaluateMulticlass( 2, _MVAMethod.c_str() );
+                mvares.vhHadMvaResult_prob_bkg = VHhadMva_->EvaluateMulticlass( 0, _MVAMethod.c_str() );
+                mvares.vhHadMvaResult_prob_ggH = VHhadMva_->EvaluateMulticlass( 1, _MVAMethod.c_str() );
+                mvares.vhHadMvaResult_prob_VHhad = VHhadMva_->EvaluateMulticlass( 2, _MVAMethod.c_str() );
             }
             
             mvares.dijet_leadEta     = dijet_leadEta_ ;

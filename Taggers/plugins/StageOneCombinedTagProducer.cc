@@ -10,6 +10,7 @@
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/StageOneCombinedTag.h"
 #include "flashgg/DataFormats/interface/VBFMVAResult.h"
+#include "flashgg/DataFormats/interface/VHhadMVAResult.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
 
 #include "flashgg/DataFormats/interface/PDFWeightObject.h"
@@ -34,12 +35,13 @@ namespace flashgg {
         int chooseCategory( float );
         int computeStage1Kinematics( const StageOneCombinedTag );
 
-        std::vector<double> rawDiphoBounds_, rawDijetBounds_, rawGghBounds_;
-        std::map<std::string, float> diphoBounds_, dijetBounds_, gghBounds_;
+        std::vector<double> rawDiphoBounds_, rawDijetBounds_, rawGghBounds_, rawVhHadBounds_;
+        std::map<std::string, float> diphoBounds_, dijetBounds_, gghBounds_, vhHadBounds_;
         void constructBounds();
 
         EDGetTokenT<View<DiPhotonCandidate> >      diPhotonToken_;
         EDGetTokenT<View<VBFMVAResult> >           vbfMvaResultToken_;
+        EDGetTokenT<View<VHhadMVAResult> >           vhHadMvaResultToken_;
         EDGetTokenT<View<DiPhotonMVAResult> >      mvaResultToken_;
         edm::EDGetTokenT<vector<flashgg::PDFWeightObject> > WeightToken_;
 
@@ -54,6 +56,7 @@ namespace flashgg {
     StageOneCombinedTagProducer::StageOneCombinedTagProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         vbfMvaResultToken_( consumes<View<flashgg::VBFMVAResult> >( iConfig.getParameter<InputTag> ( "VBFMVAResultTag" ) ) ),
+        vhHadMvaResultToken_( consumes<View<flashgg::VHhadMVAResult> >( iConfig.getParameter<InputTag> ( "VHhadMVAResultTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag> ( "MVAResultTag" ) ) ),
         WeightToken_( consumes<vector<flashgg::PDFWeightObject> >( iConfig.getUntrackedParameter<InputTag>( "WeightTag", InputTag( "flashggPDFWeightObject" ) ) ) ),
         systLabel_   ( iConfig.getParameter<string> ( "SystLabel" ) ),
@@ -66,6 +69,7 @@ namespace flashgg {
 
         rawDiphoBounds_ = iConfig.getParameter<std::vector<double> > ("rawDiphoBounds");
         rawDijetBounds_ = iConfig.getParameter<std::vector<double> > ("rawDijetBounds");
+        rawVhHadBounds_ = iConfig.getParameter<std::vector<double> > ("rawVhHadBounds");
         rawGghBounds_   = iConfig.getParameter<std::vector<double> > ("rawGghBounds");
         constructBounds();
 
@@ -83,6 +87,9 @@ namespace flashgg {
         Handle<View<flashgg::VBFMVAResult> > vbfMvaResults;
         evt.getByToken( vbfMvaResultToken_, vbfMvaResults );
 
+        Handle<View<flashgg::VHhadMVAResult> > vhHadMvaResults;
+        evt.getByToken( vhHadMvaResultToken_, vhHadMvaResults );
+
         JetCollectionVector Jets( inputTagJets_.size() );
         for( size_t j = 0; j < inputTagJets_.size(); ++j ) {
             evt.getByToken( tokenJets_[j], Jets[j] );
@@ -92,14 +99,16 @@ namespace flashgg {
 
         // We are relying on corresponding sets - update this to give an error/exception
         assert( diPhotons->size() == vbfMvaResults->size() ); 
-        assert( diPhotons->size() == mvaResults->size() ); // We are relying on corresponding sets - update this to give an error/exception
+        assert( diPhotons->size() == vhHadMvaResults->size() ); 
+        assert( diPhotons->size() == mvaResults->size() );
 
         for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
             edm::Ptr<flashgg::VBFMVAResult>           vbf_mvares      = vbfMvaResults->ptrAt( candIndex );
+            edm::Ptr<flashgg::VHhadMVAResult>         vhHad_mvares    = vhHadMvaResults->ptrAt( candIndex );
             edm::Ptr<flashgg::DiPhotonMVAResult>      mvares          = mvaResults->ptrAt( candIndex );
             edm::Ptr<flashgg::DiPhotonCandidate>      dipho           = diPhotons->ptrAt( candIndex );
             
-            StageOneCombinedTag stage1tag_obj( dipho, mvares, vbf_mvares );
+            StageOneCombinedTag stage1tag_obj( dipho, mvares, vbf_mvares, vhHad_mvares );
             stage1tag_obj.setDiPhotonIndex( candIndex );
             stage1tag_obj.setSystLabel( systLabel_ );
             stage1tag_obj.includeWeights( *dipho );
@@ -166,6 +175,7 @@ namespace flashgg {
         //float dijetScore = tag_obj.VBFMVA().VBFMVAValue();
         float dijetScore = tag_obj.VBFMVA().prob_VBF_value();
         float gghScore = tag_obj.VBFMVA().prob_ggH_value();
+        float vhHadScore = tag_obj.VHhadMVA().VHhadMVAValue();
         float leadMvaScore = tag_obj.diPhotonMVA().leadmva;
         float subleadMvaScore = tag_obj.diPhotonMVA().subleadmva;
         float leadPToM = tag_obj.diPhotonMVA().leadptom;
@@ -315,7 +325,7 @@ namespace flashgg {
                 }
             }
             else if ( mjj > 60. && mjj < 120. && j0->p4().pt() > 30. && j1->p4().pt() > 30. && abs(j0->p4().eta()) < 2.4 && abs(j1->p4().eta()) < 2.4 && abs(cosThetaStar)<0.5 && leadMvaScore > -0.2 && subleadMvaScore > -0.2 ) { //cuts for VH hadronic
-                if (mvaScore > diphoBounds_["RECO_VBFTOPO_VHHAD"]) {
+                if (mvaScore > diphoBounds_["RECO_VBFTOPO_VHHAD"] && vhHadScore > vhHadBounds_["RECO_VBFTOPO_VHHAD"]) {
                     chosenTag_ = stage1recoTag::RECO_VBFTOPO_VHHAD;
                 }
                 else { 
@@ -427,6 +437,8 @@ namespace flashgg {
         gghBounds_["RECO_VBFTOPO_JET3_HIGHMJJ"] = rawGghBounds_[3];
         gghBounds_["RECO_VBFTOPO_BSM"] = rawGghBounds_[4];
         gghBounds_["RECO_VBFLIKEGGH"] = rawGghBounds_[5];
+
+        vhHadBounds_["RECO_VBFTOPO_VHHAD"] = rawVhHadBounds_[0];
     }
 
 }
