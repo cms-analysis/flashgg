@@ -74,6 +74,7 @@
 "GluGluToRadionToHHTo2B2G_M-800_narrow_13TeV-madgraph"      : { "xs" : 0.001 , "kf" : 1.06                               },
 "GluGluToRadionToHHTo2B2G_M-900_narrow_13TeV-madgraph"      : { "xs" : 0.001 , "kf" : 1.06                               },
 "VBFHHTo2B2G_CV_1_C2V_1_C3_1_13TeV-madgraph"      : { "xs" : 0.001                                },
+"VBFHHTo2B2G_CV_1_C2V_1_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001                                },
         "DYJetsToLL_M-50_13TeV-madgraph-pythia8"                        : { "xs" : 4746.0                                },
 	"DYToEE_NNPDF30_13TeV-powheg-pythia8"                           : { "xs" : 2008.33 },
         "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8"       : { "xs" : 6025.0, "itype":20                    },

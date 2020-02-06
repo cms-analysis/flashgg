@@ -117,8 +117,10 @@ class DoubleHCustomize():
                 "VBFleadJet_pz := VBFleadJet().pz",
                 "VBFsubleadJet_pz := VBFsubleadJet().pz",
                 "VBFleadJet_DeepFlavour := VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
+                "VBFleadJet_QGL := VBFleadJet().QGL() ",
                 "VBFleadJet_PUID := VBFleadJet().puJetIdMVA()",
                 "VBFsubleadJet_DeepFlavour := VBFsubleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+VBFsubleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+VBFsubleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
+                "VBFsubleadJet_QGL := VBFsubleadJet.QGL()",
                 "VBFsubleadJet_PUID := VBFsubleadJet().puJetIdMVA()"
         ]
         if self.customize.doubleHReweight > 0: 
@@ -265,6 +267,16 @@ class DoubleHCustomize():
             self.process.flashggDoubleHTag.ttHScoreThreshold = cms.double(0.20)
 
         ## customize meta conditions
+        self.process.flashggVBFDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))
+        self.process.flashggVBFDoubleHTag.MVAscaling = cms.double(self.metaConditions["doubleHTag"]["MVAscalingValue"])
+        self.process.flashggVBFDoubleHTag.dottHTagger = cms.bool(self.customize.doDoubleHttHKiller)
+        self.process.flashggVBFDoubleHTag.ttHWeightfile = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["ttHWeightfile"]))
+        self.process.flashggVBFDoubleHTag.ttHKiller_mean = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_mean"])
+        self.process.flashggVBFDoubleHTag.ttHKiller_std = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_std"])
+        self.process.flashggVBFDoubleHTag.ttHKiller_listmean = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_listmean"])
+        self.process.flashggVBFDoubleHTag.ttHKiller_liststd = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_liststd"])
+        self.process.flashggVBFDoubleHTag.MaxJetEta = cms.double(self.metaConditions["bTagSystematics"]["eta"])
+
         self.process.flashggDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))
         self.process.flashggDoubleHTag.MVAscaling = cms.double(self.metaConditions["doubleHTag"]["MVAscalingValue"])
         self.process.flashggDoubleHTag.dottHTagger = cms.bool(self.customize.doDoubleHttHKiller)
@@ -305,9 +317,9 @@ class DoubleHCustomize():
            if systlabel!='':
              self.process.p.remove(getattr(self.process,'flashggTagSorter'+systlabel))
              self.process.p.replace(self.process.flashggSystTagMerger,getattr(self.process, 'flashggTagSorter'+systlabel)*self.process.flashggSystTagMerger)
-           setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges',
-                                        cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggVBFDoubleHTag', systlabel)),
-					cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggDoubleHTag', systlabel)) ))
+           #setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.VPSet(TagName = cms.InputTag('flashggVBFDoubleHTag', systlabel)), cms.VPSet( cms.VPSet(TagName = cms.InputTag('flashggDoubleHTag', systlabel)) )))
+           setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggVBFDoubleHTag', systlabel)), cms.PSet(TagName = cms.InputTag('flashggDoubleHTag', systlabel)) ))
+
         #print 'from loop after:',process.flashggSystTagMerger.src
 
 
