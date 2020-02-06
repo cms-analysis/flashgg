@@ -53,7 +53,7 @@ namespace flashgg {
     private:
         void produce( Event &, const EventSetup & ) override;
         int  chooseCategory( float tthmvavalue , bool debug_ );
-        int  chooseCategory_pt( float tthmvavalue , float pt );
+        int  chooseCategory_pt( float tthmvavalue , float pT );
 
         const  reco::GenParticle* motherID(const reco::GenParticle* gp);
         bool PassFrixione(Handle<View<reco::GenParticle> > genParticles, const reco::GenParticle* gp, int nBinsForFrix, double cone_frix);
@@ -643,23 +643,26 @@ namespace flashgg {
         produces<vector<TagTruthBase> >();
     }
 
-    int TTHLeptonicTagProducer::chooseCategory_pt( float tthmvavalue , float pt)
+    int TTHLeptonicTagProducer::chooseCategory_pt( float tthmvavalue , float pT)
     {
         // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
-        for(int n = 0 ; n < ( int )MVAThreshold_pt1_.size() ; n++ ) {
-            //if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { return n; }
-            if( ( double )tthmvavalue > MVAThreshold_pt1_[MVAThreshold_pt1_.size() - n - 1] ) {
-                cout << "pT range: [" << MVAThreshold_pt1_[0] << ", " << MVAThreshold_pt1_[1] << "], Leptonic cat " << n << endl; return n; 
+        if (pT > STXSPtBoundaries_pt1[0] && pT < STXSPtBoundaries_pt1[1]) {
+            for(int n = 0 ; n < ( int )MVAThreshold_pt1_.size() ; n++ ) {
+                //if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { return n; }
+                if( ( double )tthmvavalue > MVAThreshold_pt1_[MVAThreshold_pt1_.size() - n - 1] ) {
+                    cout << "pT range: [" << STXSPtBoundaries_pt1[0] << ", " << STXSPtBoundaries_pt1[1] << "], Leptonic cat " << n << endl; return n; 
+                }
             }
         }
 
-        for(int n = 0 ; n < ( int )MVAThreshold_pt2_.size() ; n++ ) {
-            //if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { return n; }
-            if( ( double )tthmvavalue > MVAThreshold_pt2_[MVAThreshold_pt2_.size() - n - 1] ) {
-                cout << "pT range: [" << MVAThreshold_pt2_[0] << ", " << MVAThreshold_pt2_[1] << "], Leptonic cat " << n + MVAThreshold_pt1_.size() << endl; return n + MVAThreshold_pt1_.size(); 
+        if (pT > STXSPtBoundaries_pt2[0] && pT < STXSPtBoundaries_pt2[1]) {
+            for(int n = 0 ; n < ( int )MVAThreshold_pt2_.size() ; n++ ) {
+                //if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { return n; }
+                if( ( double )tthmvavalue > MVAThreshold_pt2_[MVAThreshold_pt2_.size() - n - 1] ) {
+                    cout << "pT range: [" << STXSPtBoundaries_pt2[0] << ", " << STXSPtBoundaries_pt2[1] << "], Leptonic cat " << n + MVAThreshold_pt1_.size() << endl; return n + MVAThreshold_pt1_.size(); 
+                }
             }
         }
-
         return -1; // Does not pass, object will not be produced
     }
 
@@ -1381,7 +1384,7 @@ namespace flashgg {
                 //int catNumber = -1;
                 //catNumber = chooseCategory( mvaValue , debug_);  
                 int catNumber_pt = -1;
-                catNumber_pt = chooseCategory( mvaValue , dipho->pt());  
+                catNumber_pt = chooseCategory_pt( mvaValue , dipho->pt());  
 
                 if(debug_)
                     cout << "I'm going to check selections, mva value: " << mvaValue << endl;

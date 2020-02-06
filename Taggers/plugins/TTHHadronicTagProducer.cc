@@ -613,7 +613,8 @@ namespace flashgg {
         if (pT > STXSPtBoundaries_pt2[0] && pT < STXSPtBoundaries_pt2[1]) {
             for(int n = 0 ; n < ( int )boundaries_pt2.size() ; n++ ) {
                 if( ( double )tthmvavalue > boundaries_pt2[boundaries_pt2.size() - n - 1] ) {
-                    cout << "pT range: [" << STXSPtBoundaries_pt2[0] << ", " << STXSPtBoundaries_pt2[1] << "], Hadronic cat " << n + boundaries_pt1.size() << endl; return (n + boundaries_pt1.size()); 
+                    cout << "pT range: [" << STXSPtBoundaries_pt2[0] << ", " << STXSPtBoundaries_pt2[1] << "], Hadronic cat " << n + boundaries_pt1.size() << endl;
+                    return (n + boundaries_pt1.size()); 
                 }
             }
         }
