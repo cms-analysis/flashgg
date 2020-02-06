@@ -195,7 +195,7 @@ class WorkNodeJob(object):
             script += "export SCRAM_ARCH=%s\n" % os.environ['SCRAM_ARCH']
             script += "scram project CMSSW %s\n" % os.environ['CMSSW_VERSION']
             script += "cd %s\n" % os.environ['CMSSW_VERSION']
-            script += "tar zxf %s\n" % self.tarball
+            script += "tar zxf %s -h\n" % self.tarball
             script += "cp src/XGBoostCMSSW/XGBoostInterface/toolbox/*xml config/toolbox/$SCRAM_ARCH/tools/selected/\n"
             script += "scram setup rabit\n"
             script += "scram setup xgboost\n"
@@ -299,7 +299,7 @@ class WorkNodeJobFactory(object):
     # ------------------------------------------------------------------------------------------------
     def mkTarball(self,tarball=None,
                   tarball_entries=["python","lib","bin","external","flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310"],tarball_patterns=[("src/*","data")],
-                  tarball_transform=None):
+                  tarball_transform=None, light=False):
         
         self.tarball = tarball
         content=tarball_entries
@@ -317,7 +317,11 @@ class WorkNodeJobFactory(object):
         args = []
         if tarball_transform:
             args.extend( ["--transform",tarball_transform] )
-        args.extend(["-h","--show-transformed","-zvcf",tarball])
+
+        if light:
+            args.extend(["--show-transformed","-zvcf",tarball]) #add -h to follow symlinks and include stuff from there
+        else:
+            args.extend(["-h","--show-transformed","-zvcf",tarball])
         args.extend(content)
         print 
         print "Preparing tarball with the following content:"
@@ -370,7 +374,7 @@ class HTCondorJob(object):
     """ a thread to run condor_submit and wait until it completes """
 
     #----------------------------------------
-    def __init__(self, htcondorQueue, jobName="", async=True, replacesJob=None, copy_proxy=False):
+    def __init__(self, htcondorQueue, jobName="", async=True, replacesJob=None, copy_proxy=False, ncondorcpu=1):
         """ 
         @param cmd is the command to be executed inside the bsub script. Some CMSSW specific wrapper
         code will be added
@@ -386,6 +390,7 @@ class HTCondorJob(object):
         self.cmd = None
         self.replacesJob = replacesJob
         self.copy_proxy = copy_proxy
+        self.ncondorcpu = ncondorcpu
 
         if async != True:
             print "HTCondorJob: synchronous job processing is not supported by for HTCondor jobs ... running async jobs instead"
@@ -435,7 +440,8 @@ class HTCondorJob(object):
             fout.write('output        = '+self.jobName+'_$(ClusterId).$(ProcId).out\n')
             fout.write('error         = '+self.jobName+'_$(ClusterId).$(ProcId).err\n')
             fout.write('log           = '+self.jobName+'_$(ClusterId).$(ProcId)_htc.log\n\n')
-            fout.write('max_retries   = 1\n')
+            fout.write('RequestCpus   = {}\n'.format(self.ncondorcpu))
+            fout.write('max_retries   = 2\n')
             fout.write('queue '+str(njobs)+' \n')
             fout.close()        
 
@@ -1212,7 +1218,7 @@ class Wrap:
     
 # -----------------------------------------------------------------------------------------------------
 class Parallel:
-    def __init__(self,ncpu,lsfQueue=None,lsfJobName="job",asyncLsf=False,maxThreads=500,jobDriver=None,batchSystem="auto"):
+    def __init__(self,ncpu,lsfQueue=None,lsfJobName="job",asyncLsf=False,maxThreads=500,jobDriver=None,batchSystem="auto",ncondorcpu=1):
         self.returned = Queue()
 	self.njobs = 0
         self.JobDriver=jobDriver
@@ -1224,6 +1230,9 @@ class Parallel:
         self.maxThreads = maxThreads
         self.asyncLsf = asyncLsf
         self.batchSystem = batchSystem
+        
+        if BatchRegistry.getBatchSystem() == 'htcondor':
+            self.ncondorcpu = ncondorcpu
 
         if self.lsfQueue:
             self.running = Queue()
@@ -1266,8 +1275,11 @@ class Parallel:
     def addJob(self,cmd,args,batchId,jobName=None):
         if not self.asyncLsf:
             return
-        
-        job = self.JobDriver(self.lsfQueue,jobName,async=True)
+
+        if BatchRegistry.getBatchSystem() == 'htcondor':
+            job = self.JobDriver(self.lsfQueue,jobName,async=True,ncondorcpu=self.ncondorcpu)
+        else:
+            job = self.JobDriver(self.lsfQueue,jobName,async=True)
 
         job.setJobId(batchId)
         job.cmd = " ".join([cmd]+args)
@@ -1304,7 +1316,10 @@ class Parallel:
             if self.lsfQueue and not interactive:
                 if not jobName:
                     jobName = "%s%d" % (self.lsfJobName,self.getJobId())
-                cmd = self.JobDriver(self.lsfQueue,jobName,async=self.asyncLsf,replacesJob=replacesJob)
+                if BatchRegistry.getBatchSystem() == 'htcondor':
+                    cmd = self.JobDriver(self.lsfQueue,jobName,async=self.asyncLsf,replacesJob=replacesJob, ncondorcpu=self.ncondorcpu)
+                else:
+                    cmd = self.JobDriver(self.lsfQueue,jobName,async=self.asyncLsf,replacesJob=replacesJob)
             else:
                 cmd = commands.getstatusoutput
 

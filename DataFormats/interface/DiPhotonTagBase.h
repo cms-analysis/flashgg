@@ -10,8 +10,17 @@ namespace flashgg {
     class DiPhotonTagBase : public WeightedObject
     {
     public:
-        enum tag_t { kUndefined = 0, kUntagged, kVBF, kTTHHadronic, kTTHLeptonic, kTHQLeptonic, kTTHDiLepton, kVHTight, kVHLoose, kVHHadronic, kVHEt,  kZHLeptonic, kWHLeptonic, kVHLeptonicLoose, kVHMet };
-        enum stage1recoTag {RECO_TTHHad_PTH_0_120, RECO_TTHHad_PTH_GT120, RECO_TTHLep_PTH_0_120, RECO_TTHLep_PTH_GT120};
+
+        enum tag_t { kUndefined = 0, kUntagged, kVBF, kTTHHadronic, kTTHLeptonic, kTHQLeptonic, kTTHDiLepton, kVHTight, kVHLoose, kVHHadronic, kVHEt,  kZHLeptonic, kWHLeptonic, kVHLeptonicLoose, kVHMet, kStageOneCombined };
+
+        enum stage1recoTag { LOGICERROR = -1, NOTAG = 0, RECO_0J_PTH_0_10_Tag0, RECO_0J_PTH_0_10_Tag1, RECO_0J_PTH_GT10_Tag0, RECO_0J_PTH_GT10_Tag1,
+                             RECO_1J_PTH_0_60_Tag0, RECO_1J_PTH_0_60_Tag1, RECO_1J_PTH_60_120_Tag0, RECO_1J_PTH_60_120_Tag1,
+                             RECO_1J_PTH_120_200_Tag0, RECO_1J_PTH_120_200_Tag1,  
+                             RECO_GE2J_PTH_0_60_Tag0, RECO_GE2J_PTH_0_60_Tag1, RECO_GE2J_PTH_60_120_Tag0, RECO_GE2J_PTH_60_120_Tag1, RECO_GE2J_PTH_120_200_Tag0, RECO_GE2J_PTH_120_200_Tag1, 
+                             RECO_PTH_GT200_Tag0, RECO_PTH_GT200_Tag1,
+                             RECO_VBFTOPO_VHHAD, RECO_VBFTOPO_JET3VETO_LOWMJJ, RECO_VBFTOPO_JET3VETO_HIGHMJJ, RECO_VBFTOPO_JET3_LOWMJJ, RECO_VBFTOPO_JET3_HIGHMJJ, RECO_VBFTOPO_BSM, RECO_VBFLIKEGGH,
+                             RECO_WHLEP, RECO_ZHLEP, RECO_VHLEPLOOSE, RECO_VHMET, RECO_VHHAD, RECO_TTH_LEP, RECO_TTH_HAD };
+
         DiPhotonTagBase();
         virtual ~DiPhotonTagBase(); 
         DiPhotonTagBase( edm::Ptr<DiPhotonCandidate>, DiPhotonMVAResult );
@@ -34,6 +43,7 @@ namespace flashgg {
         int categoryNumber() const { return category_number_; }
         void setTagTruth( const edm::Ptr<TagTruthBase> value ) { truth_ = value; }
         const edm::Ptr<TagTruthBase> tagTruth() const { return truth_; }
+        float getTheoryWeight( std::string key ) const;
         void setSystLabel( const std::string label ) { systLabel_ = label; }
         std::string systLabel() const { return systLabel_; }
         bool hasSyst( const string &label ) const { return ( systLabel_ == label );}
@@ -41,6 +51,12 @@ namespace flashgg {
         void setIsGoldMC( bool isGold ) { isGold_ = isGold; }
         bool isGold() const { return isGold_; }
         virtual DiPhotonTagBase::tag_t tagEnum() const { return DiPhotonTagBase::kUndefined; }
+
+        int getStage1recoTag() const { return stage1recoTag_; }
+
+        string stage1KinematicLabel() const;
+        void setStage1recoTag( const int tag ) { stage1recoTag_ = tag; }
+
         unsigned nOtherTags() const { 
             assert(otherTagTypes_.size() == otherTagCategories_.size());
             assert(otherTagTypes_.size() == otherTagIndices_.size());
@@ -68,6 +84,7 @@ namespace flashgg {
         edm::Ptr<DiPhotonCandidate> dipho_;
         edm::Ptr<TagTruthBase> truth_;
         string systLabel_;
+        int stage1recoTag_;
         bool isGold_;
         //        std::vector<std::tuple<DiPhotonTagBase::tag_t,int,int> > otherTags_; // (type,category,diphoton index) 
         std::vector<DiPhotonTagBase::tag_t> otherTagTypes_;

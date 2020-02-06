@@ -17,7 +17,6 @@
 #include "DataFormats/Common/interface/RefToPtr.h"
 
 #include "flashgg/DataFormats/interface/PDFWeightObject.h"
-#include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
 
 #include <vector>
 #include <algorithm>
@@ -31,8 +30,6 @@ namespace flashgg {
     {
 
     public:
-        typedef math::XYZPoint Point;
-
         VBFTagProducer( const ParameterSet & );
 
     private:
@@ -46,9 +43,6 @@ namespace flashgg {
         EDGetTokenT<View<reco::GenParticle> >      genPartToken_;
         EDGetTokenT<View<reco::GenJet> >           genJetToken_;
         edm::EDGetTokenT<vector<flashgg::PDFWeightObject> > WeightToken_;
-        EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
-        EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
-        EDGetTokenT<float> pTHToken_,pTVToken_;
 
         string systLabel_;
 
@@ -85,15 +79,6 @@ namespace flashgg {
         boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
         assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception
 
-        ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
-        stage0catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0cat") );
-        stage1catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1cat") );
-        njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
-        pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
-        pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
-        newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
-
-        
         produces<vector<VBFTag> >();
         produces<vector<VBFTagTruth> >();
     }
@@ -110,17 +95,6 @@ namespace flashgg {
     
     void VBFTagProducer::produce( Event &evt, const EventSetup & )
     {
-        Handle<int> stage0cat, stage1cat, njets;
-        Handle<float> pTH, pTV;
-        evt.getByToken(stage0catToken_, stage0cat);
-        evt.getByToken(stage1catToken_,stage1cat);
-        evt.getByToken(njetsToken_,njets);
-        evt.getByToken(pTHToken_,pTH);
-        evt.getByToken(pTVToken_,pTV);
-        Handle<HTXS::HiggsClassification> htxsClassification;
-        evt.getByToken(newHTXSToken_,htxsClassification);
-
-
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
         
@@ -148,18 +122,10 @@ namespace flashgg {
         unsigned int index_subleadq    = std::numeric_limits<unsigned int>::max();
         unsigned int index_subsubleadq = std::numeric_limits<unsigned int>::max();
         float pt_leadq = 0., pt_subleadq = 0., pt_subsubleadq = 0.;
-        Point higgsVtx;
         
         if( ! evt.isRealData() ) {
             evt.getByToken( genPartToken_, genParticles );
             evt.getByToken( genJetToken_, genJets );
-            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
-                int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-                if( pdgid == 25 || pdgid == 22 ) {
-                    higgsVtx = genParticles->ptrAt( genLoop )->vertex();
-                    break;
-                }
-            }
             for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
                 edm::Ptr<reco::GenParticle> part = genParticles->ptrAt( genLoop );
                 if( part->isHardProcess() ) {
@@ -375,24 +341,6 @@ namespace flashgg {
                 if( index_leadq < std::numeric_limits<unsigned int>::max() ) { truth_obj.setLeadingParton( genParticles->ptrAt( index_leadq ) ); }
                 if( index_subleadq < std::numeric_limits<unsigned int>::max() ) { truth_obj.setSubLeadingParton( genParticles->ptrAt( index_subleadq ) ); }
                 if( index_subsubleadq < std::numeric_limits<unsigned int>::max()) { truth_obj.setSubSubLeadingParton( genParticles->ptrAt( index_subsubleadq ));}
-
-                truth_obj.setGenPV( higgsVtx );
-                if ( stage0cat.isValid() ) {
-                    truth_obj.setHTXSInfo( *( stage0cat.product() ),
-                                           *( stage1cat.product() ),
-                                           *( njets.product() ),
-                                           *( pTH.product() ),
-                                           *( pTV.product() ) );
-                } else if ( htxsClassification.isValid() ) {
-                    truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
-                                           htxsClassification->stage1_cat_pTjet30GeV,
-                                           htxsClassification->jets30.size(),
-                                           htxsClassification->p4decay_higgs.pt(),
-                                           htxsClassification->p4decay_V.pt() );
-
-                } else {
-                    truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
-                }
 
                 // Yacine: filling tagTruth Tag with 3 jets matchings
                 // the idea is to fill the truth_obj using Jack's 

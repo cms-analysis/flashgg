@@ -9,7 +9,7 @@ DoubleHTag::DoubleHTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.)
 DoubleHTag::~DoubleHTag() {}
 
 DoubleHTag::DoubleHTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<flashgg::Jet> leadJet, edm::Ptr<flashgg::Jet> subleadJet )
-    : mva_(-.2), MX_(0.),genMhh_(0.),leadJet_(leadJet), subleadJet_(subleadJet) 
+    : mva_(-.2), MX_(0.),genMhh_(0.),genCosThetaStar_CS_(0.),leadJet_(leadJet), subleadJet_(subleadJet) 
  
 {
     dipho_ = diPho;
@@ -103,6 +103,24 @@ float DoubleHTag::getPhoJetMinDr() const
     
     return PhoJetMinDr;
 }
+
+float DoubleHTag::getPhoJetOtherDr() const
+{
+    float dR11 = deltaR( diPhoton()->leadingPhoton()->p4(), leadJet().p4() ); 
+    float dR12 = deltaR( diPhoton()->leadingPhoton()->p4(), subleadJet().p4() );
+    float dR21 = deltaR( diPhoton()->subLeadingPhoton()->p4(), leadJet().p4() ); 
+    float dR22 = deltaR( diPhoton()->subLeadingPhoton()->p4(), subleadJet().p4() );
+
+    float MinDr = min( min( dR11, dR12 ), min( dR21, dR22 ) );
+    float PhoJetOtherDr = 0.0;     
+    if( dR11 == MinDr ){ PhoJetOtherDr = dR22; }
+    if( dR12 == MinDr ){ PhoJetOtherDr = dR21; }
+    if( dR21 == MinDr ){ PhoJetOtherDr = dR12; }
+    if( dR22 == MinDr ){ PhoJetOtherDr = dR11; }
+
+    return PhoJetOtherDr;
+}
+
 
 float DoubleHTag::getSigmaMDecorr() const
 {

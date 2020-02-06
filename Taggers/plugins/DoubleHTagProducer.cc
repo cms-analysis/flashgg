@@ -36,13 +36,12 @@ namespace flashgg {
     {
 
     public:
-        typedef math::XYZPoint Point;
-
         DoubleHTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
         int chooseCategory( float mva, float mx );
         float EvaluateNN();
+        float getGenCosThetaStar_CS(TLorentzVector h1, TLorentzVector h2);
         bool isclose(double a, double b, double rel_tol, double abs_tol);        
         void StandardizeHLF();
         void StandardizeParticleList();
@@ -86,6 +85,7 @@ namespace flashgg {
         GlobalVariablesComputer globalVariablesComputer_;
         MVAComputer<DoubleHTag> mvaComputer_;
         vector<double> mvaBoundaries_, mxBoundaries_;
+        unsigned int nMX_;
         int multiclassSignalIdx_;
             
         //leptons selection
@@ -148,6 +148,7 @@ namespace flashgg {
         mjjBoundaries_ = iConfig.getParameter<vector<double > >( "MJJBoundaries" ); 
         mvaBoundaries_ = iConfig.getParameter<vector<double > >( "MVABoundaries" );
         mxBoundaries_ = iConfig.getParameter<vector<double > >( "MXBoundaries" );
+        nMX_ = iConfig.getParameter<unsigned int >( "nMX" );
         mjjBoundariesLower_ = iConfig.getParameter<vector<double > >( "MJJBoundariesLower" ); 
         mjjBoundariesUpper_ = iConfig.getParameter<vector<double > >( "MJJBoundariesUpper" ); 
         multiclassSignalIdx_ = (iConfig.getParameter<edm::ParameterSet>("MVAConfig")).getParameter<int>("multiclassSignalIdx"); 
@@ -189,7 +190,6 @@ namespace flashgg {
       //  for( auto & tag : jetTags ) { jetTokens_.push_back( consumes<edm::View<flashgg::Jet> >( tag ) ); }
 
         assert(is_sorted(mvaBoundaries_.begin(), mvaBoundaries_.end()) && "mva boundaries are not in ascending order (we count on that for categorization)");
-        assert(is_sorted(mxBoundaries_.begin(), mxBoundaries_.end()) && "mx boundaries are not in ascending order (we count on that for categorization)");
         doPhotonId_ = iConfig.getUntrackedParameter<bool>("ApplyEGMPhotonID");        
         photonIDCut_ = iConfig.getParameter<double>("PhotonIDCut");
 
@@ -281,8 +281,8 @@ namespace flashgg {
         if (mvaCat==-1) return -1;// Does not pass, object will not be produced
 
         int mxCat=-1;
-        for( int n = 0 ; n < ( int )mxBoundaries_.size() ; n++ ) {
-            if( ( double )mxvalue > mxBoundaries_[mxBoundaries_.size() - n - 1] ) {
+        for( unsigned int n = 0 ; n < nMX_ ; n++ ) {
+            if( ( double )mxvalue > mxBoundaries_[(mvaCat+1)*nMX_ - n - 1] ) {
                 mxCat = n;
                 break;
             }
@@ -292,7 +292,7 @@ namespace flashgg {
         if (mxCat==-1) return -1;// Does not pass, object will not be produced
 
         int cat=-1;
-        cat = mvaCat*mxBoundaries_.size()+mxCat;
+        cat = mvaCat*nMX_+mxCat;
 
         //the schema is like this: (different from HHbbgg_ETH)
         //            "cat0 := MXbin0 * MVAcat0",   #High MX, High MVA
@@ -304,6 +304,15 @@ namespace flashgg {
 
         return cat;
 
+    }
+
+
+    float DoubleHTagProducer::getGenCosThetaStar_CS(TLorentzVector h1, TLorentzVector h2)
+    {
+    // cos theta star angle in the Collins Soper frame
+        TLorentzVector hh = h1 + h2;
+        h1.Boost(-hh.BoostVector());                     
+        return h1.CosTheta();
     }
 
     bool DoubleHTagProducer::isclose(double a, double b, double rel_tol=1e-09, double abs_tol=0.0)
@@ -337,18 +346,11 @@ namespace flashgg {
         // MC truth
         TagTruthBase truth_obj;
         double genMhh=0.;
+        double genCosThetaStar_CS=0.;
         if( ! evt.isRealData() ) {
             Handle<View<reco::GenParticle> > genParticles;
             std::vector<edm::Ptr<reco::GenParticle> > selHiggses;
             evt.getByToken( genParticleToken_, genParticles );
-            Point higgsVtx(0.,0.,0.);
-            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
-                int pdgid = genParticles->ptrAt( genLoop )->pdgId(); 
-                if( pdgid == 25 || pdgid == 22 ) {
-                    higgsVtx = genParticles->ptrAt( genLoop )->vertex();
-                    break;
-                }
-            }
             for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
                edm::Ptr<reco::GenParticle> genPar = genParticles->ptrAt(genLoop);
                if (selHiggses.size()>1) break;
@@ -361,8 +363,8 @@ namespace flashgg {
                 H1.SetPtEtaPhiE(selHiggses[0]->p4().pt(),selHiggses[0]->p4().eta(),selHiggses[0]->p4().phi(),selHiggses[0]->p4().energy());
                 H2.SetPtEtaPhiE(selHiggses[1]->p4().pt(),selHiggses[1]->p4().eta(),selHiggses[1]->p4().phi(),selHiggses[1]->p4().energy());
                 genMhh  = (H1+H2).M();
+                genCosThetaStar_CS = getGenCosThetaStar_CS(H1,H2);   
             }
-            truth_obj.setGenPV( higgsVtx );
             truths->push_back( truth_obj );
         }
 
@@ -470,6 +472,7 @@ namespace flashgg {
             // compute extra variables here
             tag_obj.setMX( tag_obj.p4().mass() - tag_obj.dijet().mass() - tag_obj.diPhoton()->mass() + 250. );
             tag_obj.setGenMhh( genMhh );
+            tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );
             if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values );
             
             if(doSigmaMDecorr_){
@@ -762,8 +765,8 @@ namespace flashgg {
             //            tag_obj.includeWeights( *leadJet );
             //            tag_obj.includeWeights( *subleadJet );
 
-            //            tag_obj.includeWeightsByLabel( *leadJet ,"JetBTagReshapeWeight");
-            //            tag_obj.includeWeightsByLabel( *subleadJet , "JetBTagReshapeWeight" );
+                        tag_obj.includeWeightsByLabel( *leadJet ,"JetBTagReshapeWeight");
+                        tag_obj.includeWeightsByLabel( *subleadJet , "JetBTagReshapeWeight" );
 
 
 
@@ -778,7 +781,6 @@ namespace flashgg {
                 }
           }
         }
-
         if (loopOverJets == 1) 
             evt.put( std::move( tags ),inputDiPhotonSuffixes_[diphoton_idx] );
         else  

@@ -102,6 +102,7 @@ namespace flashgg {
 
         std::string version_old = "old";
         std::string version_new = "new";
+        std::string version_xgb = "xgb";
 
         if( version_old.compare( Version_ ) == 0 ) {
             DiphotonMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
@@ -137,6 +138,21 @@ namespace flashgg {
             //            DiphotonMva_->AddSpectator("Background_wei", &weightBkg_           );            
             DiphotonMva_->BookMVA( "BDT", diphotonMVAweightfile_.fullPath() );
             //            std::cout << "finished reading mva" << std::endl;
+        }
+
+        if( version_xgb.compare( Version_ ) == 0 ) {
+            DiphotonMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
+            DiphotonMva_->AddVariable( "leadmva", &leadmva_ );
+            DiphotonMva_->AddVariable( "subleadmva", &subleadmva_ );
+            DiphotonMva_->AddVariable( "leadptom", &leadptom_ );
+            DiphotonMva_->AddVariable( "subleadptom", &subleadptom_ );
+            DiphotonMva_->AddVariable( "leadeta", &leadeta_ );
+            DiphotonMva_->AddVariable( "subleadeta", &subleadeta_ );
+            DiphotonMva_->AddVariable( "CosPhi", &CosPhi_ );
+            DiphotonMva_->AddVariable( "vtxprob", &vtxprob_ );
+            DiphotonMva_->AddVariable( "sigmarv", &sigmarv_ );
+            DiphotonMva_->AddVariable( "sigmawv", &sigmawv_ );
+            DiphotonMva_->BookMVA( "BDT", diphotonMVAweightfile_.fullPath() );
         }
 
         if(doDecorr_){

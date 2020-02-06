@@ -105,7 +105,7 @@ namespace flashgg {
     float DoubleHReweighter::getWeight( int targetNode,float gen_mHH, float gen_cosTheta)
     {
         float w = 0.;
-        pair<int,int> bins = find2DBin(hist_inputMix_, gen_mHH, gen_cosTheta);
+        pair<int,int> bins = find2DBin(hist_inputMix_, gen_mHH, abs(gen_cosTheta));
         float denom = hist_inputMix_->GetBinContent(bins.first, bins.second);
         if (denom == 0) { 
             return 0;
@@ -125,13 +125,11 @@ namespace flashgg {
         if (effBSM/denom < 0) {
             return 0;
         } // In case of very small negative weights, which can happen
-        w = (effBSM/denom) ;
+        w = (effBSM/denom);
 
        return w;
     }
-
-
-    
+        
     float DoubleHReweighter::getCosThetaStar_CS(TLorentzVector h1, TLorentzVector h2)
     {
     // cos theta star angle in the Collins Soper frame

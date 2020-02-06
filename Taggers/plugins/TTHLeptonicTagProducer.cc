@@ -22,9 +22,7 @@
 
 #include "DataFormats/Math/interface/deltaR.h"
 
-#include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
-#include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
 
 #include "flashgg/Taggers/interface/BDT_resolvedTopTagger.h"
 #include "flashgg/Taggers/interface/TTH_DNN_Helper.h"
@@ -47,8 +45,6 @@ namespace flashgg {
     {
 
     public:
-        typedef math::XYZPoint Point;
-
         TTHLeptonicTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
@@ -84,9 +80,6 @@ namespace flashgg {
         EDGetTokenT<View<Photon> > photonToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
-        EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
-        EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
-        EDGetTokenT<float> pTHToken_,pTVToken_;
         string systLabel_;
 
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
@@ -104,6 +97,12 @@ namespace flashgg {
         std::vector<double> tthVsttGGDNN_global_stddev_;
         std::vector<double> tthVsttGGDNN_object_mean_;
         std::vector<double> tthVsttGGDNN_object_stddev_; 
+
+        FileInPath tthVstHDNNfile_;
+        std::vector<double> tthVstHDNN_global_mean_;
+        std::vector<double> tthVstHDNN_global_stddev_;
+        std::vector<double> tthVstHDNN_object_mean_;
+        std::vector<double> tthVstHDNN_object_stddev_; 
 
         //Thresholds
 
@@ -144,6 +143,7 @@ namespace flashgg {
         vector<double> bDiscriminator_;
         string bTag_;
         double PhoMVAThreshold_;
+        double tthVstHThreshold_;
 
         bool UseCutBasedDiphoId_;
         bool debug_;
@@ -213,11 +213,14 @@ namespace flashgg {
         float lepton_nTight_;
 
         float dnn_score_0_;
-       
+
+        float ttH_vs_tH_dnn_score;
+
         float tthMvaVal_RunII_;
 
         BDT_resolvedTopTagger *topTagger;
         TTH_DNN_Helper* dnn;
+        TTH_DNN_Helper* dnn_ttH_vs_tH;
 
         bool modifySystematicsWorkflow;
         std::vector<std::string> systematicsLabels;
@@ -498,6 +501,8 @@ namespace flashgg {
         deltaRJetLepton_ = iConfig.getParameter<double>( "deltaRJetLepton");
         leadingJetPtThreshold_ = iConfig.getParameter<double>("leadingJetPtThreshold");
 
+        tthVstHThreshold_ = iConfig.getParameter<double>("tthVstHThreshold");
+
         MuonEtaCut_ = iConfig.getParameter<double>( "MuonEtaCut");
         MuonPtCut_ = iConfig.getParameter<double>( "MuonPtCut");
         MuonIsoCut_ = iConfig.getParameter<double>( "MuonIsoCut");
@@ -529,14 +534,6 @@ namespace flashgg {
         SplitDiLeptEv_ = iConfig.getParameter<bool>( "SplitDiLeptEv" );
         CutBasedDiphoId_ = iConfig.getParameter<std::vector<double>>( "CutBasedDiphoId" );
 
-        ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
-        stage0catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0cat") );
-        stage1catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1cat") );
-        njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
-        pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
-        pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
-        newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
-
         MVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "MVAweightfile" );
         topTaggerXMLfile_ = iConfig.getParameter<edm::FileInPath>( "topTaggerXMLfile" );
         tthVsttGGDNNfile_ = iConfig.getParameter<edm::FileInPath>( "tthVsttGGDNNfile" );
@@ -544,6 +541,12 @@ namespace flashgg {
         tthVsttGGDNN_global_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_global_stddev" );
         tthVsttGGDNN_object_mean_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_object_mean" );
         tthVsttGGDNN_object_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_object_stddev" );
+
+        tthVstHDNNfile_ = iConfig.getParameter<edm::FileInPath>( "tthVstHDNNfile" );
+        tthVstHDNN_global_mean_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_global_mean" );
+        tthVstHDNN_global_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_global_stddev" );
+        tthVstHDNN_object_mean_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_object_mean" );
+        tthVstHDNN_object_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_object_stddev" );
             
         tthMVA_RunII_weightfile_ = iConfig.getParameter<edm::FileInPath>( "tthMVA_RunII_weightfile" );
         
@@ -624,6 +627,10 @@ namespace flashgg {
             dnn = new TTH_DNN_Helper(tthVsttGGDNNfile_.fullPath());
             dnn->SetInputShapes(19, 9, 8);
             dnn->SetPreprocessingSchemes(tthVsttGGDNN_global_mean_, tthVsttGGDNN_global_stddev_, tthVsttGGDNN_object_mean_, tthVsttGGDNN_object_stddev_);
+
+            dnn_ttH_vs_tH = new TTH_DNN_Helper(tthVstHDNNfile_.fullPath());
+            dnn_ttH_vs_tH->SetInputShapes(23, 9, 8);
+            dnn_ttH_vs_tH->SetPreprocessingSchemes(tthVstHDNN_global_mean_, tthVstHDNN_global_stddev_, tthVstHDNN_object_mean_, tthVstHDNN_object_stddev_);
         }
 
         for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
@@ -640,7 +647,6 @@ namespace flashgg {
             produces<vector<TTHLeptonicTag> >();
         }
 
-        produces<vector<TagTruthBase> >();
     }
 
     int TTHLeptonicTagProducer::chooseCategory_pt( float tthmvavalue , float pT)
@@ -685,17 +691,6 @@ namespace flashgg {
 
     void TTHLeptonicTagProducer::produce( Event &evt, const EventSetup & )
     {
-        Handle<int> stage0cat, stage1cat, njets;
-        Handle<float> pTH, pTV;
-        evt.getByToken(stage0catToken_, stage0cat);
-        evt.getByToken(stage1catToken_,stage1cat);
-        evt.getByToken(njetsToken_,njets);
-        evt.getByToken(pTHToken_,pTH);
-        evt.getByToken(pTVToken_,pTV);
-        Handle<HTXS::HiggsClassification> htxsClassification;
-        evt.getByToken(newHTXSToken_,htxsClassification);
-
-
         //Handle<View<flashgg::Jet> > theJets;
         //evt.getByToken( thejetToken_, theJets );
         //const PtrVector<flashgg::Jet>& jetPointers = theJets->ptrVector();
@@ -729,27 +724,7 @@ namespace flashgg {
         if (!modifySystematicsWorkflow)
             evt.getByToken( METToken_, theMet_ );
 
-
         //std::unique_ptr<vector<TTHLeptonicTag> > tthltags( new vector<TTHLeptonicTag> );
-        std::unique_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
-        edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
-        unsigned int idx = 0;
-
-        Point higgsVtx;
-
-        if( ! evt.isRealData() )
-        {
-            evt.getByToken( genParticleToken_, genParticles );
-            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ )
-            {
-                int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-                if( pdgid == 25 || pdgid == 22 )
-                {
-                    higgsVtx = genParticles->ptrAt( genLoop )->vertex();
-                    break;
-                }
-            }
-        }
 
         //assert( diPhotons->size() == mvaResults->size() );
 
@@ -813,6 +788,11 @@ namespace flashgg {
             assert( diPhotons->size() == mvaResults->size() );
 
             std::unique_ptr<vector<TTHLeptonicTag> > tthltags( new vector<TTHLeptonicTag> );
+
+            if( ! evt.isRealData() )
+            {
+                evt.getByToken( genParticleToken_, genParticles );
+            }
 
 
             for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ )
@@ -1278,9 +1258,29 @@ namespace flashgg {
                 global_features[17] = nJets_;
                 global_features[18] = lepton_nTight_;
 
+                std::vector<double> global_features_ttH_vs_tH;
+                global_features_ttH_vs_tH.resize(23);
+
+                for (unsigned int i = 0; i < global_features.size(); i++)
+                    global_features_ttH_vs_tH[i] = global_features[i];
+
+                double forward_jet_pt, forward_jet_eta;
+                calculate_forward_jet_features(forward_jet_pt, forward_jet_eta, tagJets, "pfDeepCSVJetTags:probb", maxBTagVal_noBB_);
+  
+                double lep1_charge, lep2_charge;
+                calculate_lepton_charges(lep1_charge, lep2_charge, Muons, Electrons);
+
+                global_features_ttH_vs_tH[19] = lep1_charge;
+                global_features_ttH_vs_tH[20] = lep2_charge;
+                global_features_ttH_vs_tH[21] = forward_jet_eta;
+                global_features_ttH_vs_tH[22] = forward_jet_pt; 
+
                 if (useLargeMVAs) {
                     dnn->SetInputs(tagJets, Muons, Electrons, global_features);
                     dnn_score_0_ = dnn->EvaluateDNN();
+
+                    dnn_ttH_vs_tH->SetInputs(tagJets, Muons, Electrons, global_features_ttH_vs_tH);
+                    ttH_vs_tH_dnn_score = dnn_ttH_vs_tH->EvaluateDNN();
                 }
 
                 vector<float> mvaEval; 
@@ -1372,9 +1372,22 @@ namespace flashgg {
                   cout << "lep_eta_: " << lepton_leadEta_ << endl;
                   cout << "n_lep_tight_: " << lepton_nTight_ << endl;
 
+                  cout << "lep1_charge: " << lep1_charge << endl;
+                  cout << "lep2_charge: " << lep2_charge << endl;
+                  cout << "forward_jet_eta: " << forward_jet_eta << endl;
+                  cout << "forward_jet_pt: " << forward_jet_pt << endl;
+
+                  cout << "ttH vs tH DNN Score: " << ttH_vs_tH_dnn_score << endl;
+
                   cout << "DNN Score 0: " << dnn_score_0_ << endl;
                   cout << endl;
                   cout << "BDT Score: " << tthMvaVal_RunII_ << endl;
+              }
+
+              if (ttH_vs_tH_dnn_score < tthVstHThreshold_) { 
+                  if (debug_)
+                      cout << "Rejecting event because ttH_vs_tH_dnn_score of " << ttH_vs_tH_dnn_score << " is below threshold." << endl;
+                  continue;
               }
 
               global_features.clear();
@@ -1442,7 +1455,7 @@ namespace flashgg {
                     for( unsigned int i = 0; i < Muons.size(); ++i )
                         tthltags_obj.includeWeights( *Muons.at(i));
 
-                   for( unsigned int i = 0; i < Electrons.size(); ++i )
+                    for( unsigned int i = 0; i < Electrons.size(); ++i )
                         tthltags_obj.includeWeights( *Electrons.at(i));
 
                     tthltags_obj.includeWeights( *dipho );
@@ -1480,30 +1493,9 @@ namespace flashgg {
                     tthltags_obj.setSubleadSmallestDr(-999);
                                 
                     tthltags->push_back( tthltags_obj );
-     
+            
                     if( ! evt.isRealData() )
                     {
-                        TagTruthBase truth_obj;
-                        truth_obj.setGenPV( higgsVtx );
-                        if ( stage0cat.isValid() ) 
-                        {   truth_obj.setHTXSInfo( *( stage0cat.product() ),
-                                                   *( stage1cat.product() ),
-                                                   *( njets.product() ),
-                                                   *( pTH.product() ),
-                                                   *( pTV.product() ) );
-                        } else if ( htxsClassification.isValid() ) {
-                            truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
-                                                   htxsClassification->stage1_cat_pTjet30GeV,
-                                                   htxsClassification->jets30.size(),
-                                                   htxsClassification->p4decay_higgs.pt(),
-                                                   htxsClassification->p4decay_V.pt() );
-
-                        } else {
-                            truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
-                        }
-                        truths->push_back( truth_obj );
-                        tthltags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
-
                         int gp_lead_index = GenPhoIndex(genParticles, dipho->leadingPhoton(), -1);
                         int gp_sublead_index = GenPhoIndex(genParticles, dipho->subLeadingPhoton(), gp_lead_index);
                         vector<int> leadFlags; leadFlags.clear();
@@ -1542,7 +1534,6 @@ namespace flashgg {
             } //diPho loop end !
             evt.put( std::move( tthltags ), systematicsLabels[syst_idx] );
         } // syst loop end !
-        evt.put( std::move( truths ) );
     }
 
 }

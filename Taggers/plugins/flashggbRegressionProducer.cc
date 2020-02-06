@@ -127,8 +127,9 @@ namespace flashgg {
                   bregtags.push_back(bregtag);
             }         
         }
-        for( auto & tag : inputTagJets_ ) { jetTokens_.push_back( consumes<edm::View<flashgg::Jet> >( tag ) ); }
-
+        for( auto & tag : inputTagJets_ ) { 
+            jetTokens_.push_back( consumes<edm::View<flashgg::Jet> >( tag ) ); 
+        }
 
 
         tensorflow::GraphDef* graphDef= tensorflow::loadGraphDef(bRegressionWeightfileName_.c_str());

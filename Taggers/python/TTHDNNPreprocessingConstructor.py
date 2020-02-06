@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 import json
 
-def construct(file, channel):
+def construct(file, channel, ttH_vs_tH = False):
     preprocess_list = {}
     
     with open(file, "r") as f_in:
@@ -13,6 +13,9 @@ def construct(file, channel):
 
     if channel == "Leptonic":
         global_features_order += ["n_lep_tight_"]
+
+    if ttH_vs_tH:
+        global_features_order += ["lep1_charge_", "lep2_charge_", "forward_jet_eta_", "forward_jet_pt_"]
 
     global_features_mean = [metadata["preprocess_scheme"][feature]["mean"] for feature in global_features_order]
     global_features_std_dev = [metadata["preprocess_scheme"][feature]["std_dev"] for feature in global_features_order]

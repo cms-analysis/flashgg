@@ -1,7 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
 from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
-from flashgg.Taggers.flashggTags_cff import flashggUnpackedJets
 from flashgg.MicroAOD.flashggJets_cfi import  maxJetCollections
 
 import os

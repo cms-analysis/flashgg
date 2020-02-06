@@ -336,6 +336,62 @@ double helicity(const TLorentzVector particle_1, const TLorentzVector particle_2
     return abs(cos_theta_1);
 }
 
+inline
+void calculate_forward_jet_features(double &forward_jet_pt, double &forward_jet_eta, std::vector<edm::Ptr<flashgg::Jet>> jets, std::string btag_selector, double max1_btag) {
+    forward_jet_pt = -1;
+    forward_jet_eta = 0.0;
+
+    for (unsigned int i = 0; i < jets.size(); i++) {
+        if (jets[i]->bDiscriminator(btag_selector) >= max1_btag && jets.size() > 1)
+            continue;
+
+        if (abs(jets[i]->eta()) > forward_jet_eta) {
+            forward_jet_pt = log(jets[i]->pt());
+            forward_jet_eta = abs(jets[i]->eta());            
+        }        
+    }
+
+    return;
+}
+
+inline
+void calculate_lepton_charges(double &lep1_charge, double &lep2_charge, std::vector<edm::Ptr<flashgg::Muon>> muons, std::vector<edm::Ptr<flashgg::Electron>> electrons) {
+    lep1_charge = 0;
+    lep2_charge = 0;
+
+    double lead_pt(0), sublead_pt(0);
+
+    for (unsigned int i = 0; i < muons.size(); i++) {
+        if (muons[i]->pt() > lead_pt) {
+            lead_pt = muons[i]->pt();
+            lep1_charge = muons[i]->charge();
+        }
+    }
+
+    for (unsigned int i = 0; i < electrons.size(); i++) {
+        if (electrons[i]->pt() > lead_pt) {
+            lead_pt = electrons[i]->pt();
+            lep1_charge = electrons[i]->charge();
+        }
+    }
+
+    for (unsigned int i = 0; i < muons.size(); i++) {
+        if (muons[i]->pt() < lead_pt && muons[i]->pt() > sublead_pt) {
+            sublead_pt = muons[i]->pt();
+            lep2_charge = muons[i]->charge();
+        }
+    }
+
+    for (unsigned int i = 0; i < electrons.size(); i++) {
+        if (electrons[i]->pt() < lead_pt && electrons[i]->pt() > sublead_pt) {
+            sublead_pt = electrons[i]->pt();
+            lep2_charge = electrons[i]->charge();
+        }
+    }
+ 
+    return; 
+}
+
 }
 #endif // _DNN_HELPER_H_
 // Local Variables:
