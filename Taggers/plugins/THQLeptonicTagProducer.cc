@@ -1787,6 +1787,7 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
                         }
 
                     }
+                    thqltags_obj.setStage1recoTag( DiPhotonTagBase::stage1recoTag::RECO_THQ_LEP );
                     thqltags->push_back( thqltags_obj );
                     truths->push_back( truth_obj );
                     thqltags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<THQLeptonicTagTruth> >( rTagTruth, idx++ ) ) );

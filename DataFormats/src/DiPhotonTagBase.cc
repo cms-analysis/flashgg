@@ -175,6 +175,8 @@ string DiPhotonTagBase::stage1KinematicLabel() const {
         return string("RECO_TTH_HAD_HIGH_Tag2");
     case stage1recoTag::RECO_TTH_HAD_HIGH_Tag3:
         return string("RECO_TTH_HAD_HIGH_Tag3");
+    case stage1recoTag::RECO_THQ_LEP:
+        return string("RECO_THQ_LEP");
     default:
         break;
     }

@@ -22,7 +22,8 @@ class StageOneCustomize():
             ["RECO_TTH_LEP_LOW_Tag0",0], ["RECO_TTH_LEP_LOW_Tag1",0], ["RECO_TTH_LEP_LOW_Tag2",0], ["RECO_TTH_LEP_LOW_Tag3",0],
             ["RECO_TTH_LEP_HIGH_Tag0",0], ["RECO_TTH_LEP_HIGH_Tag1",0], ["RECO_TTH_LEP_HIGH_Tag2",0], ["RECO_TTH_LEP_HIGH_Tag3",0],
             ["RECO_TTH_HAD_LOW_Tag0",0], ["RECO_TTH_HAD_LOW_Tag1",0], ["RECO_TTH_HAD_LOW_Tag2",0], ["RECO_TTH_HAD_LOW_Tag3",0],
-            ["RECO_TTH_HAD_HIGH_Tag0",0], ["RECO_TTH_HAD_HIGH_Tag1",0], ["RECO_TTH_HAD_HIGH_Tag2",0], ["RECO_TTH_HAD_HIGH_Tag3",0]
+            ["RECO_TTH_HAD_HIGH_Tag0",0], ["RECO_TTH_HAD_HIGH_Tag1",0], ["RECO_TTH_HAD_HIGH_Tag2",0], ["RECO_TTH_HAD_HIGH_Tag3",0],
+            ["RECO_THQ_LEP",0]
         ]
         if self.customize.processId == "Data": 
             self.tagList.pop(1) ## remove NoTag for data
@@ -66,7 +67,7 @@ class StageOneCustomize():
 
         ## remove unneeded tags
         self.process.flashggTagSequence.remove(self.process.flashggVBFDiPhoDiJetMVA)
-        self.process.flashggTagSequence.remove(self.process.flashggTHQLeptonicTag)
+        #self.process.flashggTagSequence.remove(self.process.flashggTHQLeptonicTag)
         self.process.flashggTagSequence.remove(self.process.flashggTTHDiLeptonTag)
         self.process.flashggTagSequence.remove(self.process.flashggTTHLeptonicTag)
         self.process.flashggTagSequence.remove(self.process.flashggTTHHadronicTag)
@@ -118,9 +119,17 @@ class StageOneCustomize():
                 continue
             self.process.p.remove(getattr(self.process, 'flashggTagSorter' + systlabel))
             self.process.p.replace(self.process.flashggSystTagMerger, getattr(self.process, 'flashggTagSorter' + systlabel) * self.process.flashggSystTagMerger) 
-            newSet = cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag', systlabel)), cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag', systlabel)) )
+            #newSet = cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag', systlabel)), cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag', systlabel)) )
+            #newSet += self.tagPriorityRanges
+            newSet = cms.VPSet( 
+                         cms.PSet( TagName = cms.InputTag('flashggTHQLeptonicTag') )
+                     )
+            newSet += cms.VPSet( 
+                         cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag', systlabel)), 
+                         cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag', systlabel)) 
+                      )
             newSet += self.tagPriorityRanges
-            setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', self.tagPriorityRanges)
+            setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', newSet)
 
         print 'ED DEBUG process.p before was %s'%self.process.p
         print
