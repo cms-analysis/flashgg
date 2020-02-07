@@ -196,7 +196,35 @@ namespace flashgg {
 
         // below assign the categories for ggH & VBF based on diphoton MVA score and dijet MVA score - boundaries taken from metaConditions
         if (nJ == 0) {
-            if ( ptH > 10 ) {
+            if ( ptH > 650. ) {
+                if (mvaScore > diphoBounds_["RECO_PTH_GT650"]) {
+                    chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_GT650;
+                }
+                else { 
+                    chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
+                }
+            } else if ( ptH > 450. ) {
+                if (mvaScore > diphoBounds_["RECO_PTH_450_650"]) {
+                    chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_450_650;
+                }
+                else { 
+                    chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
+                }
+            } else if ( ptH > 300. ) {
+                if (mvaScore > diphoBounds_["RECO_PTH_300_450"]) {
+                    chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_300_450;
+                }
+                else { 
+                    chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
+                }
+            } else if ( ptH > 200. ) {
+                if (mvaScore > diphoBounds_["RECO_PTH_200_300"]) {
+                    chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_200_300;
+                }
+                else { 
+                    chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
+                }
+            } else if ( ptH > 10. ) {
                 if (mvaScore > diphoBounds_["RECO_0J_PTH_GT10_Tag0"]) {
                     chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_0J_PTH_GT10_Tag0;
                 }
@@ -219,12 +247,30 @@ namespace flashgg {
                 }
             }
         } else if ( nJ == 1 ) {
-            if ( ptH > 200 ) {
-                if (mvaScore > diphoBounds_["RECO_PTH_GT200_Tag0"]) {
-                    chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_GT200_Tag0;
+            if ( ptH > 650. ) {
+                if (mvaScore > diphoBounds_["RECO_PTH_GT650"]) {
+                    chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_GT650;
                 }
-                else if (mvaScore > diphoBounds_["RECO_PTH_GT200_Tag1"]) {
-                    chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_GT200_Tag1;
+                else { 
+                    chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
+                }
+            } else if ( ptH > 450. ) {
+                if (mvaScore > diphoBounds_["RECO_PTH_450_650"]) {
+                    chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_450_650;
+                }
+                else { 
+                    chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
+                }
+            } else if ( ptH > 300. ) {
+                if (mvaScore > diphoBounds_["RECO_PTH_300_450"]) {
+                    chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_300_450;
+                }
+                else { 
+                    chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
+                }
+            } else if ( ptH > 200. ) {
+                if (mvaScore > diphoBounds_["RECO_PTH_200_300"]) {
+                    chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_200_300;
                 }
                 else { 
                     chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
@@ -264,8 +310,10 @@ namespace flashgg {
             bool reProcess = false;
             if ( mjj > 350. && j0->p4().pt() > 40. && j1->p4().pt() > 30. && leadMvaScore > -0.2 && subleadMvaScore > -0.2 ) { //cuts optimised using data-driven dijet BDT plus new diphoton BDT
                 if ( ptH > 200. ) {
-                    if (dijetScore > dijetBounds_["RECO_VBFTOPO_BSM"] && gghScore < gghBounds_["RECO_VBFTOPO_BSM"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_BSM"]) {
-                        chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_BSM;
+                    if (dijetScore > dijetBounds_["RECO_VBFTOPO_BSM_Tag0"] && gghScore < gghBounds_["RECO_VBFTOPO_BSM_Tag0"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_BSM_Tag0"]) {
+                        chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_BSM_Tag0;
+                    } else if (dijetScore > dijetBounds_["RECO_VBFTOPO_BSM_Tag1"] && gghScore < gghBounds_["RECO_VBFTOPO_BSM_Tag1"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_BSM_Tag1"]) {
+                        chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_BSM_Tag1;
                     }
                     else { 
                         reProcess = true;
@@ -273,16 +321,20 @@ namespace flashgg {
                 }
                 else if ( ptHjj > 0. && ptHjj < 25.) {
                     if ( mjj > 700. ) {
-                        if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ"] && gghScore < gghBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ"]) {
-                            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_JET3VETO_HIGHMJJ;
+                        if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag0"] && gghScore < gghBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag0"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag0"]) {
+                            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag0;
+                        } else if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag1"] && gghScore < gghBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag1"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag1"]) {
+                            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag1;
                         }
                         else { 
                             reProcess = true;
                         }
                     }
                     else if ( mjj > 350. ) {
-                        if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ"] && gghScore < gghBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ"]) {
-                            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_JET3VETO_LOWMJJ;
+                        if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag0"] && gghScore < gghBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag0"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag0"]) {
+                            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag0;
+                        } else if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag1"] && gghScore < gghBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag1"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag1"]) {
+                            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag1;
                         }
                         else { 
                             reProcess = true;
@@ -293,16 +345,20 @@ namespace flashgg {
                     }
                 } else if ( ptHjj > 25. ) {
                     if ( mjj > 700. ) {
-                        if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3_HIGHMJJ"] && gghScore < gghBounds_["RECO_VBFTOPO_JET3_HIGHMJJ"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3_HIGHMJJ"]) {
-                            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_JET3_HIGHMJJ;
+                        if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3_HIGHMJJ_Tag0"] && gghScore < gghBounds_["RECO_VBFTOPO_JET3_HIGHMJJ_Tag0"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3_HIGHMJJ_Tag0"]) {
+                            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_JET3_HIGHMJJ_Tag0;
+                        } else if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3_HIGHMJJ_Tag1"] && gghScore < gghBounds_["RECO_VBFTOPO_JET3_HIGHMJJ_Tag1"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3_HIGHMJJ_Tag1"]) {
+                            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_JET3_HIGHMJJ_Tag1;
                         }
                         else { 
                             reProcess = true;
                         }
                     }
                     else if ( mjj > 350. ) {
-                        if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3_LOWMJJ"] && gghScore < gghBounds_["RECO_VBFTOPO_JET3_LOWMJJ"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3_LOWMJJ"]) {
-                            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_JET3_LOWMJJ;
+                        if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3_LOWMJJ_Tag0"] && gghScore < gghBounds_["RECO_VBFTOPO_JET3_LOWMJJ_Tag0"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3_LOWMJJ_Tag0"]) {
+                            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_JET3_LOWMJJ_Tag0;
+                        } else if (dijetScore > dijetBounds_["RECO_VBFTOPO_JET3_LOWMJJ_Tag1"] && gghScore < gghBounds_["RECO_VBFTOPO_JET3_LOWMJJ_Tag1"]  && mvaScore > diphoBounds_["RECO_VBFTOPO_JET3_LOWMJJ_Tag1"]) {
+                            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_JET3_LOWMJJ_Tag1;
                         }
                         else { 
                             reProcess = true;
@@ -329,19 +385,38 @@ namespace flashgg {
             }
             if ( reProcess ) {
                 if ( mjj > 350. && j0->p4().pt() > 40. && j1->p4().pt() > 30. && leadMvaScore > -0.2 && subleadMvaScore > -0.2 ) { //cuts optimised using data-driven dijet BDT plus new diphoton BDT
-                    if ( dijetScore < dijetBounds_["RECO_VBFLIKEGGH"] && gghScore > gghBounds_["RECO_VBFLIKEGGH"]  && mvaScore > diphoBounds_["RECO_VBFLIKEGGH"]) {
-                            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFLIKEGGH;
-                        }
+                    if ( dijetScore < dijetBounds_["RECO_VBFLIKEGGH_Tag0"] && gghScore > gghBounds_["RECO_VBFLIKEGGH_Tag0"]  && mvaScore > diphoBounds_["RECO_VBFLIKEGGH_Tag0"]) {
+                            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFLIKEGGH_Tag0;
+                    } else if ( dijetScore < dijetBounds_["RECO_VBFLIKEGGH_Tag1"] && gghScore > gghBounds_["RECO_VBFLIKEGGH_Tag1"]  && mvaScore > diphoBounds_["RECO_VBFLIKEGGH_Tag1"]) {
+                            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFLIKEGGH_Tag1;
+                    }
                     else { 
                         chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
                     }
-                }
-                else if ( ptH > 200 ) {
-                    if (mvaScore > diphoBounds_["RECO_PTH_GT200_Tag0"]) {
-                        chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_GT200_Tag0;
+                } else if ( ptH > 650. ) {
+                    if (mvaScore > diphoBounds_["RECO_PTH_GT650"]) {
+                        chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_GT650;
                     }
-                    else if (mvaScore > diphoBounds_["RECO_PTH_GT200_Tag1"]) {
-                        chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_GT200_Tag1;
+                    else { 
+                        chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
+                    }
+                } else if ( ptH > 450. ) {
+                    if (mvaScore > diphoBounds_["RECO_PTH_450_650"]) {
+                        chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_450_650;
+                    }
+                    else { 
+                        chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
+                    }
+                } else if ( ptH > 300. ) {
+                    if (mvaScore > diphoBounds_["RECO_PTH_300_450"]) {
+                        chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_300_450;
+                    }
+                    else { 
+                        chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
+                    }
+                } else if ( ptH > 200. ) {
+                    if (mvaScore > diphoBounds_["RECO_PTH_200_300"]) {
+                        chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_200_300;
                     }
                     else { 
                         chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
@@ -406,30 +481,50 @@ namespace flashgg {
         diphoBounds_["RECO_GE2J_PTH_60_120_Tag1"] = rawDiphoBounds_[13];
         diphoBounds_["RECO_GE2J_PTH_120_200_Tag0"] = rawDiphoBounds_[14];
         diphoBounds_["RECO_GE2J_PTH_120_200_Tag1"] = rawDiphoBounds_[15];
-        diphoBounds_["RECO_PTH_GT200_Tag0"] = rawDiphoBounds_[16];
-        diphoBounds_["RECO_PTH_GT200_Tag1"] = rawDiphoBounds_[17];
-        diphoBounds_["RECO_VBFTOPO_VHHAD_Tag0"] = rawDiphoBounds_[18];
-        diphoBounds_["RECO_VBFTOPO_VHHAD_Tag1"] = rawDiphoBounds_[19];
-        diphoBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ"] = rawDiphoBounds_[20];
-        diphoBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ"] = rawDiphoBounds_[21];
-        diphoBounds_["RECO_VBFTOPO_JET3_LOWMJJ"] = rawDiphoBounds_[22];
-        diphoBounds_["RECO_VBFTOPO_JET3_HIGHMJJ"] = rawDiphoBounds_[23];
-        diphoBounds_["RECO_VBFTOPO_BSM"] = rawDiphoBounds_[24];
-        diphoBounds_["RECO_VBFLIKEGGH"] = rawDiphoBounds_[25];
+        diphoBounds_["RECO_PTH_200_300"] = rawDiphoBounds_[16];
+        diphoBounds_["RECO_PTH_300_450"] = rawDiphoBounds_[17];
+        diphoBounds_["RECO_PTH_450_650"] = rawDiphoBounds_[18];
+        diphoBounds_["RECO_PTH_GT650"]  = rawDiphoBounds_[19];
+        diphoBounds_["RECO_VBFTOPO_VHHAD_Tag0"] = rawDiphoBounds_[20];
+        diphoBounds_["RECO_VBFTOPO_VHHAD_Tag1"] = rawDiphoBounds_[21];
+        diphoBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag0"] = rawDiphoBounds_[22];
+        diphoBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag1"] = rawDiphoBounds_[23];
+        diphoBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag0"] = rawDiphoBounds_[24];
+        diphoBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag1"] = rawDiphoBounds_[25];
+        diphoBounds_["RECO_VBFTOPO_JET3_LOWMJJ_Tag0"] = rawDiphoBounds_[26];
+        diphoBounds_["RECO_VBFTOPO_JET3_LOWMJJ_Tag1"] = rawDiphoBounds_[27];
+        diphoBounds_["RECO_VBFTOPO_JET3_HIGHMJJ_Tag0"] = rawDiphoBounds_[28];
+        diphoBounds_["RECO_VBFTOPO_JET3_HIGHMJJ_Tag1"] = rawDiphoBounds_[29];
+        diphoBounds_["RECO_VBFTOPO_BSM_Tag0"] = rawDiphoBounds_[30];
+        diphoBounds_["RECO_VBFTOPO_BSM_Tag1"] = rawDiphoBounds_[31];
+        diphoBounds_["RECO_VBFLIKEGGH_Tag0"] = rawDiphoBounds_[32];
+        diphoBounds_["RECO_VBFLIKEGGH_Tag1"] = rawDiphoBounds_[33];
 
-        dijetBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ"] = rawDijetBounds_[0];
-        dijetBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ"] = rawDijetBounds_[1];
-        dijetBounds_["RECO_VBFTOPO_JET3_LOWMJJ"] = rawDijetBounds_[2];
-        dijetBounds_["RECO_VBFTOPO_JET3_HIGHMJJ"] = rawDijetBounds_[3];
-        dijetBounds_["RECO_VBFTOPO_BSM"] = rawDijetBounds_[4];
-        dijetBounds_["RECO_VBFLIKEGGH"] = rawDijetBounds_[5];
+        dijetBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag0"] = rawDijetBounds_[0];
+        dijetBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag1"] = rawDijetBounds_[1];
+        dijetBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag0"] = rawDijetBounds_[2];
+        dijetBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag1"] = rawDijetBounds_[3];
+        dijetBounds_["RECO_VBFTOPO_JET3_LOWMJJ_Tag0"] = rawDijetBounds_[4];
+        dijetBounds_["RECO_VBFTOPO_JET3_LOWMJJ_Tag1"] = rawDijetBounds_[5];
+        dijetBounds_["RECO_VBFTOPO_JET3_HIGHMJJ_Tag0"] = rawDijetBounds_[6];
+        dijetBounds_["RECO_VBFTOPO_JET3_HIGHMJJ_Tag1"] = rawDijetBounds_[7];
+        dijetBounds_["RECO_VBFTOPO_BSM_Tag0"] = rawDijetBounds_[8];
+        dijetBounds_["RECO_VBFTOPO_BSM_Tag1"] = rawDijetBounds_[9];
+        dijetBounds_["RECO_VBFLIKEGGH_Tag0"] = rawDijetBounds_[10];
+        dijetBounds_["RECO_VBFLIKEGGH_Tag1"] = rawDijetBounds_[11];
 
-        gghBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ"] = rawGghBounds_[0];
-        gghBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ"] = rawGghBounds_[1];
-        gghBounds_["RECO_VBFTOPO_JET3_LOWMJJ"] = rawGghBounds_[2];
-        gghBounds_["RECO_VBFTOPO_JET3_HIGHMJJ"] = rawGghBounds_[3];
-        gghBounds_["RECO_VBFTOPO_BSM"] = rawGghBounds_[4];
-        gghBounds_["RECO_VBFLIKEGGH"] = rawGghBounds_[5];
+        gghBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag0"] = rawGghBounds_[0];
+        gghBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag1"] = rawGghBounds_[1];
+        gghBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag0"] = rawGghBounds_[2];
+        gghBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag1"] = rawGghBounds_[3];
+        gghBounds_["RECO_VBFTOPO_JET3_LOWMJJ_Tag0"] = rawGghBounds_[4];
+        gghBounds_["RECO_VBFTOPO_JET3_LOWMJJ_Tag1"] = rawGghBounds_[5];
+        gghBounds_["RECO_VBFTOPO_JET3_HIGHMJJ_Tag0"] = rawGghBounds_[6];
+        gghBounds_["RECO_VBFTOPO_JET3_HIGHMJJ_Tag1"] = rawGghBounds_[7];
+        gghBounds_["RECO_VBFTOPO_BSM_Tag0"] = rawGghBounds_[8];
+        gghBounds_["RECO_VBFTOPO_BSM_Tag1"] = rawGghBounds_[9];
+        gghBounds_["RECO_VBFLIKEGGH_Tag0"] = rawGghBounds_[10];
+        gghBounds_["RECO_VBFLIKEGGH_Tag1"] = rawGghBounds_[11];
 
         vhHadBounds_["RECO_VBFTOPO_VHHAD_Tag0"] = rawVhHadBounds_[0];
         vhHadBounds_["RECO_VBFTOPO_VHHAD_Tag1"] = rawVhHadBounds_[1];

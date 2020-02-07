@@ -121,26 +121,42 @@ string DiPhotonTagBase::stage1KinematicLabel() const {
         return string("RECO_GE2J_PTH_120_200_Tag0");
     case stage1recoTag::RECO_GE2J_PTH_120_200_Tag1:
         return string("RECO_GE2J_PTH_120_200_Tag1");
-    case stage1recoTag::RECO_PTH_GT200_Tag0:
-        return string("RECO_PTH_GT200_Tag0");
-    case stage1recoTag::RECO_PTH_GT200_Tag1:
-        return string("RECO_PTH_GT200_Tag1");
+    case stage1recoTag::RECO_PTH_200_300:
+        return string("RECO_PTH_200_300");
+    case stage1recoTag::RECO_PTH_300_450:
+        return string("RECO_PTH_300_450");
+    case stage1recoTag::RECO_PTH_450_650:
+        return string("RECO_PTH_450_650");
+    case stage1recoTag::RECO_PTH_GT650:
+        return string("RECO_PTH_GT650");
     case stage1recoTag::RECO_VBFTOPO_VHHAD_Tag0:
         return string("RECO_VBFTOPO_VHHAD_Tag0");
     case stage1recoTag::RECO_VBFTOPO_VHHAD_Tag1:
         return string("RECO_VBFTOPO_VHHAD_Tag1");
-    case stage1recoTag::RECO_VBFTOPO_JET3VETO_LOWMJJ:
-        return string("RECO_VBFTOPO_JET3VETO_LOWMJJ");
-    case stage1recoTag::RECO_VBFTOPO_JET3VETO_HIGHMJJ:
-        return string("RECO_VBFTOPO_JET3VETO_HIGHMJJ");
-    case stage1recoTag::RECO_VBFTOPO_JET3_LOWMJJ:
-        return string("RECO_VBFTOPO_JET3_LOWMJJ");
-    case stage1recoTag::RECO_VBFTOPO_JET3_HIGHMJJ:
-        return string("RECO_VBFTOPO_JET3_HIGHMJJ");
-    case stage1recoTag::RECO_VBFTOPO_BSM:
-        return string("RECO_VBFTOPO_BSM");
-    case stage1recoTag::RECO_VBFLIKEGGH:
-        return string("RECO_VBFLIKEGGH");
+    case stage1recoTag::RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag0:
+        return string("RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag0");
+    case stage1recoTag::RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag1:
+        return string("RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag1");
+    case stage1recoTag::RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag0:
+        return string("RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag0");
+    case stage1recoTag::RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag1:
+        return string("RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag1");
+    case stage1recoTag::RECO_VBFTOPO_JET3_LOWMJJ_Tag0:
+        return string("RECO_VBFTOPO_JET3_LOWMJJ_Tag0");
+    case stage1recoTag::RECO_VBFTOPO_JET3_LOWMJJ_Tag1:
+        return string("RECO_VBFTOPO_JET3_LOWMJJ_Tag1");
+    case stage1recoTag::RECO_VBFTOPO_JET3_HIGHMJJ_Tag0:
+        return string("RECO_VBFTOPO_JET3_HIGHMJJ_Tag0");
+    case stage1recoTag::RECO_VBFTOPO_JET3_HIGHMJJ_Tag1:
+        return string("RECO_VBFTOPO_JET3_HIGHMJJ_Tag1");
+    case stage1recoTag::RECO_VBFTOPO_BSM_Tag0:
+        return string("RECO_VBFTOPO_BSM_Tag0");
+    case stage1recoTag::RECO_VBFTOPO_BSM_Tag1:
+        return string("RECO_VBFTOPO_BSM_Tag1");
+    case stage1recoTag::RECO_VBFLIKEGGH_Tag0:
+        return string("RECO_VBFLIKEGGH_Tag0");
+    case stage1recoTag::RECO_VBFLIKEGGH_Tag1:
+        return string("RECO_VBFLIKEGGH_Tag1");
     case stage1recoTag::RECO_WH_LEP_LOW_Tag0:
         return string("RECO_WH_LEP_LOW_Tag0");
     case stage1recoTag::RECO_WH_LEP_LOW_Tag1:
