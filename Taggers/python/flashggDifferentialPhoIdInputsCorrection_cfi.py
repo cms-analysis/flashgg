@@ -2,7 +2,6 @@ import FWCore.ParameterSet.Config as cms
 
 from RecoEgamma.EgammaTools.regressionModifier_cfi import regressionModifier 
 from flashgg.Taggers.globalVariables_cff import globalVariables
-from flashgg.Taggers.flashggTags_cff import *
 flashggDifferentialPhoIdInputsCorrection = cms.EDProducer("FlashggDifferentialPhoIdInputsCorrector",
                                                           diphotonSrc              = cms.InputTag("flashggDiPhotons"),
                                                           rhoFixedGridCollection   = cms.InputTag('fixedGridRhoAll'),
