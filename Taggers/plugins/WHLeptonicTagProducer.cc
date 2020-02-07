@@ -47,6 +47,7 @@ namespace flashgg {
     private:
         void produce( Event &, const EventSetup & ) override;
         int  chooseCategory( float, float );
+        int  computeStage1Kinematics( const WHLeptonicTag );
 
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         EDGetTokenT<View<Electron> > electronToken_;
@@ -236,7 +237,7 @@ namespace flashgg {
             for( n = 0 ; n < n_GT75 ; n++ ) {
                 if( ( double )mva > boundaries_GT75[n_GT75 - n - 1] ) { return n; }
             }
-        } else {
+        } else if (ptV > 0.) {
             for( n = n_GT75 ; n < n_0_75 + n_GT75; n++ ) {
                 if( ( double )mva > boundaries_0_75[n_0_75 + n_GT75 - n - 1] ) { return n; }
             }
@@ -483,6 +484,8 @@ namespace flashgg {
 
             if( catnum != -1 ) {
                 whleptonictags_obj.setCategoryNumber( catnum );
+                int chosenTag = computeStage1Kinematics( whleptonictags_obj );
+                whleptonictags_obj.setStage1recoTag( chosenTag );
                 whleptonictags_obj.setJets( tagJets );
                 whleptonictags_obj.setMuons( goodMuons );
                 whleptonictags_obj.setElectrons( goodElectrons );
@@ -507,6 +510,31 @@ namespace flashgg {
         }
         evt.put( std::move( whleptonictags ) );
         evt.put( std::move( truths ) );
+    }
+
+    int WHLeptonicTagProducer::computeStage1Kinematics( const WHLeptonicTag tag_obj )
+    {
+        int chosenTag_ = DiPhotonTagBase::stage1recoTag::LOGICERROR;
+        int catNum = tag_obj.categoryNumber();
+        if ( catNum == 0 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_WH_LEP_HIGH_Tag0;
+        }
+        else if ( catNum == 1 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_WH_LEP_HIGH_Tag1;
+        }
+        else if ( catNum == 2 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_WH_LEP_HIGH_Tag2;
+        }
+        if ( catNum == 3 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_WH_LEP_LOW_Tag0;
+        }
+        else if ( catNum == 4 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_WH_LEP_LOW_Tag1;
+        }
+        else if ( catNum == 5 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_WH_LEP_LOW_Tag2;
+        }
+        return chosenTag_;
     }
 
 }

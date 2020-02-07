@@ -331,6 +331,7 @@ namespace flashgg {
                 }
                 ZHLeptonicTags_obj.setDiPhotonIndex( diphoIndex );
                 ZHLeptonicTags_obj.setSystLabel( systLabel_ );
+                ZHLeptonicTags_obj.setStage1recoTag( DiPhotonTagBase::stage1recoTag::RECO_ZH_LEP );
                 ZHLeptonicTags->push_back( ZHLeptonicTags_obj );
                 if( ! evt.isRealData() ){
                     VHTagTruth truth_obj;
