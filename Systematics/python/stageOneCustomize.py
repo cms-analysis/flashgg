@@ -17,12 +17,16 @@ class StageOneCustomize():
             ["RECO_1J_PTH_120_200_Tag0",0], ["RECO_1J_PTH_120_200_Tag1",0],
             ["RECO_GE2J_PTH_0_60_Tag0",0], ["RECO_GE2J_PTH_0_60_Tag1",0], ["RECO_GE2J_PTH_60_120_Tag0",0], ["RECO_GE2J_PTH_60_120_Tag1",0], 
             ["RECO_GE2J_PTH_120_200_Tag0",0], ["RECO_GE2J_PTH_120_200_Tag1",0], ["RECO_PTH_GT200_Tag0",0], ["RECO_PTH_GT200_Tag1",0], 
-            ["RECO_VBFTOPO_VHHAD",0], ["RECO_VBFTOPO_JET3VETO_LOWMJJ",0], ["RECO_VBFTOPO_JET3VETO_HIGHMJJ",0], ["RECO_VBFTOPO_JET3_LOWMJJ",0], ["RECO_VBFTOPO_JET3_HIGHMJJ",0], ["RECO_VBFTOPO_BSM",0],
+            ["RECO_VBFTOPO_VHHAD_Tag0",0],  ["RECO_VBFTOPO_VHHAD_Tag1",0],
+            ["RECO_VBFTOPO_JET3VETO_LOWMJJ",0], ["RECO_VBFTOPO_JET3VETO_HIGHMJJ",0], ["RECO_VBFTOPO_JET3_LOWMJJ",0], ["RECO_VBFTOPO_JET3_HIGHMJJ",0], ["RECO_VBFTOPO_BSM",0],
             ["RECO_VBFLIKEGGH",0], 
-            ["RECO_TTH_LEP_LOW_Tag0",0], ["RECO_TTH_LEP_LOW_Tag1",0], ["RECO_TTH_LEP_LOW_Tag2",0], ["RECO_TTH_LEP_LOW_Tag3",0],
-            ["RECO_TTH_LEP_HIGH_Tag0",0], ["RECO_TTH_LEP_HIGH_Tag1",0], ["RECO_TTH_LEP_HIGH_Tag2",0], ["RECO_TTH_LEP_HIGH_Tag3",0],
             ["RECO_TTH_HAD_LOW_Tag0",0], ["RECO_TTH_HAD_LOW_Tag1",0], ["RECO_TTH_HAD_LOW_Tag2",0], ["RECO_TTH_HAD_LOW_Tag3",0],
             ["RECO_TTH_HAD_HIGH_Tag0",0], ["RECO_TTH_HAD_HIGH_Tag1",0], ["RECO_TTH_HAD_HIGH_Tag2",0], ["RECO_TTH_HAD_HIGH_Tag3",0],
+            ["RECO_WH_LEP_LOW_Tag0",0], ["RECO_WH_LEP_LOW_Tag1",0], ["RECO_WH_LEP_LOW_Tag2",0], 
+            ["RECO_WH_LEP_HIGH_Tag0",0], ["RECO_WH_LEP_HIGH_Tag1",0], ["RECO_WH_LEP_HIGH_Tag2",0], 
+            ["RECO_ZH_LEP",0], 
+            ["RECO_TTH_LEP_LOW_Tag0",0], ["RECO_TTH_LEP_LOW_Tag1",0], ["RECO_TTH_LEP_LOW_Tag2",0], ["RECO_TTH_LEP_LOW_Tag3",0],
+            ["RECO_TTH_LEP_HIGH_Tag0",0], ["RECO_TTH_LEP_HIGH_Tag1",0], ["RECO_TTH_LEP_HIGH_Tag2",0], ["RECO_TTH_LEP_HIGH_Tag3",0],
             ["RECO_THQ_LEP",0]
         ]
         if self.customize.processId == "Data": 

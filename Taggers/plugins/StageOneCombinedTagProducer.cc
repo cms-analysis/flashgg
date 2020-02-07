@@ -170,7 +170,6 @@ namespace flashgg {
         unsigned int nJ = 0;
         float mjj = 0.;
         float ptHjj = 0.;
-        float cosThetaStar = -9999.;
         float mvaScore = tag_obj.diPhotonMVA().transformedMvaValue(); // maps output score from TMVA back to XGBoost original
         //float dijetScore = tag_obj.VBFMVA().VBFMVAValue();
         float dijetScore = tag_obj.VBFMVA().prob_VBF_value();
@@ -193,18 +192,8 @@ namespace flashgg {
         if ( nJ >= 2 ) {
             mjj = ( j0->p4() + j1->p4() ).mass();
             ptHjj = ( j0->p4() + j1->p4() + tag_obj.diPhoton()->p4() ).pt();
-
-            TLorentzVector jetl, jets, dijet, phol, phos, diphoton, vstar;
-            phol.SetPtEtaPhiE( tag_obj.leadingPhoton()->pt(), tag_obj.leadingPhoton()->eta(), tag_obj.leadingPhoton()->phi(), tag_obj.leadingPhoton()->energy() );
-            phos.SetPtEtaPhiE( tag_obj.subLeadingPhoton()->pt(), tag_obj.subLeadingPhoton()->eta(), tag_obj.subLeadingPhoton()->phi(), tag_obj.subLeadingPhoton()->energy() );
-            jetl.SetPtEtaPhiE( j0->pt(), j0->eta(), j0->phi(), j0->energy() );
-            jets.SetPtEtaPhiE( j1->pt(), j1->eta(), j1->phi(), j1->energy() );
-            diphoton = phol + phos;
-            dijet = jetl + jets;
-            vstar = diphoton + dijet;
-            diphoton.Boost( -vstar.BoostVector() );
-            cosThetaStar = -diphoton.CosTheta();
         }
+
         // below assign the categories for ggH & VBF based on diphoton MVA score and dijet MVA score - boundaries taken from metaConditions
         if (nJ == 0) {
             if ( ptH > 10 ) {
@@ -324,9 +313,12 @@ namespace flashgg {
                     }
                 }
             }
-            else if ( mjj > 60. && mjj < 120. && j0->p4().pt() > 30. && j1->p4().pt() > 30. && abs(j0->p4().eta()) < 2.4 && abs(j1->p4().eta()) < 2.4 && abs(cosThetaStar)<0.5 && leadMvaScore > -0.2 && subleadMvaScore > -0.2 ) { //cuts for VH hadronic
-                if (mvaScore > diphoBounds_["RECO_VBFTOPO_VHHAD"] && vhHadScore > vhHadBounds_["RECO_VBFTOPO_VHHAD"]) {
-                    chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_VHHAD;
+            else if ( mjj > 60. && mjj < 120. && j0->p4().pt() > 30. && j1->p4().pt() > 30. && abs(j0->p4().eta()) < 2.4 && abs(j1->p4().eta()) < 2.4 && leadMvaScore > -0.2 && subleadMvaScore > -0.2 ) { //cuts for VH hadronic
+                if (mvaScore > diphoBounds_["RECO_VBFTOPO_VHHAD_Tag0"] && vhHadScore > vhHadBounds_["RECO_VBFTOPO_VHHAD_Tag0"]) {
+                    chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_VHHAD_Tag0;
+                }
+                else if (mvaScore > diphoBounds_["RECO_VBFTOPO_VHHAD_Tag1"] && vhHadScore > vhHadBounds_["RECO_VBFTOPO_VHHAD_Tag1"]) {
+                    chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_VBFTOPO_VHHAD_Tag1;
                 }
                 else { 
                     reProcess = true;
@@ -416,13 +408,14 @@ namespace flashgg {
         diphoBounds_["RECO_GE2J_PTH_120_200_Tag1"] = rawDiphoBounds_[15];
         diphoBounds_["RECO_PTH_GT200_Tag0"] = rawDiphoBounds_[16];
         diphoBounds_["RECO_PTH_GT200_Tag1"] = rawDiphoBounds_[17];
-        diphoBounds_["RECO_VBFTOPO_VHHAD"] = rawDiphoBounds_[18];
-        diphoBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ"] = rawDiphoBounds_[19];
-        diphoBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ"] = rawDiphoBounds_[20];
-        diphoBounds_["RECO_VBFTOPO_JET3_LOWMJJ"] = rawDiphoBounds_[21];
-        diphoBounds_["RECO_VBFTOPO_JET3_HIGHMJJ"] = rawDiphoBounds_[22];
-        diphoBounds_["RECO_VBFTOPO_BSM"] = rawDiphoBounds_[23];
-        diphoBounds_["RECO_VBFLIKEGGH"] = rawDiphoBounds_[24];
+        diphoBounds_["RECO_VBFTOPO_VHHAD_Tag0"] = rawDiphoBounds_[18];
+        diphoBounds_["RECO_VBFTOPO_VHHAD_Tag1"] = rawDiphoBounds_[19];
+        diphoBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ"] = rawDiphoBounds_[20];
+        diphoBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ"] = rawDiphoBounds_[21];
+        diphoBounds_["RECO_VBFTOPO_JET3_LOWMJJ"] = rawDiphoBounds_[22];
+        diphoBounds_["RECO_VBFTOPO_JET3_HIGHMJJ"] = rawDiphoBounds_[23];
+        diphoBounds_["RECO_VBFTOPO_BSM"] = rawDiphoBounds_[24];
+        diphoBounds_["RECO_VBFLIKEGGH"] = rawDiphoBounds_[25];
 
         dijetBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ"] = rawDijetBounds_[0];
         dijetBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ"] = rawDijetBounds_[1];
@@ -438,7 +431,8 @@ namespace flashgg {
         gghBounds_["RECO_VBFTOPO_BSM"] = rawGghBounds_[4];
         gghBounds_["RECO_VBFLIKEGGH"] = rawGghBounds_[5];
 
-        vhHadBounds_["RECO_VBFTOPO_VHHAD"] = rawVhHadBounds_[0];
+        vhHadBounds_["RECO_VBFTOPO_VHHAD_Tag0"] = rawVhHadBounds_[0];
+        vhHadBounds_["RECO_VBFTOPO_VHHAD_Tag1"] = rawVhHadBounds_[1];
     }
 
 }

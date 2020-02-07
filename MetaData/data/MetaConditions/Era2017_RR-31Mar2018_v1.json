@@ -94,12 +94,12 @@
 
     "flashggVBFMVA" : 
     {  
-        "weightFile" : "flashgg/Taggers/data/multiclassDijetModel2017.xml"
+        "weightFile" : "flashgg/Taggers/data/dijetDataDrivenMerged.xml"
     },
 
     "flashggVHhadMVA" : 
     {  
-        "weightFile" : "flashgg/Taggers/data/vhHadModel2017.xml"
+        "weightFile" : "flashgg/Taggers/data/vhHadDataDrivenMerged.xml"
     },
 
     "stageOneCombinedTag" :
@@ -119,6 +119,7 @@
                              0.930, 0.849,
 
                              0.800,
+                             0.800,
                              0.748, 0.599,
                              0.797, 0.805,
                              0.833,
@@ -137,7 +138,8 @@
                              0.521
                            ],
         "rawVhHadBounds" : [
-                             -999.0
+                             0.893,
+                             0.744
                            ]
     },
 

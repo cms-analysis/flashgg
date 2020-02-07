@@ -125,8 +125,10 @@ string DiPhotonTagBase::stage1KinematicLabel() const {
         return string("RECO_PTH_GT200_Tag0");
     case stage1recoTag::RECO_PTH_GT200_Tag1:
         return string("RECO_PTH_GT200_Tag1");
-    case stage1recoTag::RECO_VBFTOPO_VHHAD:
-        return string("RECO_VBFTOPO_VHHAD");
+    case stage1recoTag::RECO_VBFTOPO_VHHAD_Tag0:
+        return string("RECO_VBFTOPO_VHHAD_Tag0");
+    case stage1recoTag::RECO_VBFTOPO_VHHAD_Tag1:
+        return string("RECO_VBFTOPO_VHHAD_Tag1");
     case stage1recoTag::RECO_VBFTOPO_JET3VETO_LOWMJJ:
         return string("RECO_VBFTOPO_JET3VETO_LOWMJJ");
     case stage1recoTag::RECO_VBFTOPO_JET3VETO_HIGHMJJ:
