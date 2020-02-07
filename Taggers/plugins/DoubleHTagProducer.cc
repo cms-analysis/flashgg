@@ -424,7 +424,7 @@ namespace flashgg {
 
             edm::Handle<edm::View<flashgg::Jet> > jets;
             evt.getByToken( jetTokens_[jet_col_idx*inputJetsCollSize_+vtx], jets);  //take the corresponding vertex of current systematic
-            cout << "Starting HH " << endl;
+
             // photon-jet cross-cleaning and pt/eta/btag/jetid cuts for jets
             std::vector<edm::Ptr<flashgg::Jet> > cleaned_jets;
             for( size_t ijet=0; ijet < jets->size(); ++ijet ) {//jets are ordered in pt
@@ -480,7 +480,7 @@ namespace flashgg {
                 tag_obj.setSystLabel( inputJetsSuffixes_[jet_col_idx]);
 
             if (tag_obj.dijet().mass()<mjjBoundaries_[0] || tag_obj.dijet().mass()>mjjBoundaries_[1]) continue;
-            cout << "Finally got one surviving events" << endl;
+
             // compute extra variables here
             tag_obj.setMX( tag_obj.p4().mass() - tag_obj.dijet().mass() - tag_obj.diPhoton()->mass() + 250. );
             tag_obj.setGenMhh( genMhh );
