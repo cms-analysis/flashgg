@@ -37,7 +37,6 @@ flashggVBFDoubleHTag = cms.EDProducer("FlashggVBFDoubleHTagProducer",
                                    VBFJetsCollSize = cms.uint32(maxJetCollections), #
                                    VBFJetsSuffixes = cms.vstring(''),
 
-
                                    VetoConeSize   = cms.double(0.4),
                                    MinLeadPhoPt   = cms.double(1./3.),
                                    MinSubleadPhoPt   = cms.double(0.25),
@@ -55,6 +54,7 @@ flashggVBFDoubleHTag = cms.EDProducer("FlashggVBFDoubleHTagProducer",
                                    BTagType = cms.vstring('mini_pfDeepFlavourJetTags:probb','mini_pfDeepFlavourJetTags:probbb','mini_pfDeepFlavourJetTags:problepb'), #string for btag algorithm
                                    UseJetID = cms.bool(True),
                                    JetIDLevel = cms.string(jetID),
+                                   UseVBFJetID = cms.bool(False),
                                    VBFJetIDLevel = cms.string(jetID), 
                                    VBFMjjCut = cms.double(0.0),
                                    VBFJetEta = cms.double(5.0),

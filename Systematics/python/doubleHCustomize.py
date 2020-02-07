@@ -10,7 +10,7 @@ class DoubleHCustomize():
         self.process = process
         self.customize = customize
         self.metaConditions = metaConditions
-        self.tagList = [ ["DoubleHTag",12] ]
+        self.tagList = [ ["VBFDoubleHTag",1], ["DoubleHTag",12] ]
         self.customizeTagSequence()
 
     def variablesToDump(self):
@@ -274,12 +274,12 @@ class DoubleHCustomize():
         if training_type == 'with_Mjj' :
             self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.33,0.56, 0.70)
             self.process.flashggVBFDoubleHTag.MXBoundaries = cms.vdouble(250., 375.,470.,600.,250.,325.,365.,585.,250.,330.,360.,520.)
-            self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.24)
+            self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.0)
         elif training_type == 'wo_Mjj' :
             self.process.flashggVBFDoubleHTag.MVAConfig.variables.pop(0)
             self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.30,0.54, 0.75)
             self.process.flashggVBFDoubleHTag.MXBoundaries = cms.vdouble(250., 395.,470.,585.,250.,345.,375.,540.,250.,330.,375.,530.)
-            self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.20)
+            self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.0)
         ## customize meta conditions
 
         self.process.flashggVBFDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))
