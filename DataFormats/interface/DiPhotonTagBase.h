@@ -10,6 +10,7 @@ namespace flashgg {
     class DiPhotonTagBase : public WeightedObject
     {
     public:
+
         enum tag_t { kUndefined = 0, kUntagged, kVBF, kTTHHadronic, kTTHLeptonic, kTHQLeptonic, kTTHDiLepton, kVHTight, kVHLoose, kVHHadronic, kVHEt,  kZHLeptonic, kWHLeptonic, kVHLeptonicLoose, kVHMet, kStageOneCombined };
 
         enum stage1recoTag { LOGICERROR = -1, NOTAG = 0, RECO_0J_PTH_0_10_Tag0, RECO_0J_PTH_0_10_Tag1, RECO_0J_PTH_GT10_Tag0, RECO_0J_PTH_GT10_Tag1,
@@ -19,8 +20,10 @@ namespace flashgg {
                              RECO_PTH_GT200_Tag0, RECO_PTH_GT200_Tag1,
                              RECO_VBFTOPO_VHHAD, RECO_VBFTOPO_JET3VETO_LOWMJJ, RECO_VBFTOPO_JET3VETO_HIGHMJJ, RECO_VBFTOPO_JET3_LOWMJJ, RECO_VBFTOPO_JET3_HIGHMJJ, RECO_VBFTOPO_BSM, RECO_VBFLIKEGGH,
                              RECO_WHLEP, RECO_ZHLEP, 
-                             RECO_TTH_LEP_Tag0, RECO_TTH_LEP_Tag1, RECO_TTH_LEP_Tag2, RECO_TTH_LEP_Tag3, 
-                             RECO_TTH_HAD_Tag0, RECO_TTH_HAD_Tag1, RECO_TTH_HAD_Tag2, RECO_TTH_HAD_Tag3 };
+                             RECO_TTH_LEP_LOW_Tag0, RECO_TTH_LEP_LOW_Tag1, RECO_TTH_LEP_LOW_Tag2, RECO_TTH_LEP_LOW_Tag3, 
+                             RECO_TTH_LEP_HIGH_Tag0, RECO_TTH_LEP_HIGH_Tag1, RECO_TTH_LEP_HIGH_Tag2, RECO_TTH_LEP_HIGH_Tag3, 
+                             RECO_TTH_HAD_LOW_Tag0, RECO_TTH_HAD_LOW_Tag1, RECO_TTH_HAD_LOW_Tag2, RECO_TTH_HAD_LOW_Tag3, 
+                             RECO_TTH_HAD_HIGH_Tag0, RECO_TTH_HAD_HIGH_Tag1, RECO_TTH_HAD_HIGH_Tag2, RECO_TTH_HAD_HIGH_Tag3 };
 
         DiPhotonTagBase();
         virtual ~DiPhotonTagBase(); 

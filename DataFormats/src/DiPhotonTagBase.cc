@@ -144,21 +144,37 @@ string DiPhotonTagBase::stage1KinematicLabel() const {
     case stage1recoTag::RECO_ZHLEP:
         return string("RECO_ZHLEP");
     case stage1recoTag::RECO_TTH_LEP_Tag0:
-        return string("RECO_TTH_LEP_Tag0");
-    case stage1recoTag::RECO_TTH_LEP_Tag1:
-        return string("RECO_TTH_LEP_Tag1");
-    case stage1recoTag::RECO_TTH_LEP_Tag2:
-        return string("RECO_TTH_LEP_Tag2");
-    case stage1recoTag::RECO_TTH_LEP_Tag3:
-        return string("RECO_TTH_LEP_Tag3");
+        return string("RECO_TTH_LEP_LOW_Tag0");
+    case stage1recoTag::RECO_TTH_LEP_LOW_Tag1:
+        return string("RECO_TTH_LEP_LOW_Tag1");
+    case stage1recoTag::RECO_TTH_LEP_LOW_Tag2:
+        return string("RECO_TTH_LEP_LOW_Tag2");
+    case stage1recoTag::RECO_TTH_LEP_LOW_Tag3:
+        return string("RECO_TTH_LEP_LOW_Tag3");
+    case stage1recoTag::RECO_TTH_LEP_Tag0:
+        return string("RECO_TTH_LEP_HIGH_Tag0");
+    case stage1recoTag::RECO_TTH_LEP_HIGH_Tag1:
+        return string("RECO_TTH_LEP_HIGH_Tag1");
+    case stage1recoTag::RECO_TTH_LEP_HIGH_Tag2:
+        return string("RECO_TTH_LEP_HIGH_Tag2");
+    case stage1recoTag::RECO_TTH_LEP_HIGH_Tag3:
+        return string("RECO_TTH_LEP_HIGH_Tag3");
     case stage1recoTag::RECO_TTH_HAD_Tag0:
-        return string("RECO_TTH_HAD_Tag0");
-    case stage1recoTag::RECO_TTH_HAD_Tag1:
-        return string("RECO_TTH_HAD_Tag1");
-    case stage1recoTag::RECO_TTH_HAD_Tag2:
-        return string("RECO_TTH_HAD_Tag2");
-    case stage1recoTag::RECO_TTH_HAD_Tag3:
-        return string("RECO_TTH_HAD_Tag3");
+        return string("RECO_TTH_HAD_LOW_Tag0");
+    case stage1recoTag::RECO_TTH_HAD_LOW_Tag1:
+        return string("RECO_TTH_HAD_LOW_Tag1");
+    case stage1recoTag::RECO_TTH_HAD_LOW_Tag2:
+        return string("RECO_TTH_HAD_LOW_Tag2");
+    case stage1recoTag::RECO_TTH_HAD_LOW_Tag3:
+        return string("RECO_TTH_HAD_LOW_Tag3");
+    case stage1recoTag::RECO_TTH_HAD_Tag0:
+        return string("RECO_TTH_HAD_HIGH_Tag0");
+    case stage1recoTag::RECO_TTH_HAD_HIGH_Tag1:
+        return string("RECO_TTH_HAD_HIGH_Tag1");
+    case stage1recoTag::RECO_TTH_HAD_HIGH_Tag2:
+        return string("RECO_TTH_HAD_HIGH_Tag2");
+    case stage1recoTag::RECO_TTH_HAD_HIGH_Tag3:
+        return string("RECO_TTH_HAD_HIGH_Tag3");
     default:
         break;
     }
