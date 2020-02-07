@@ -645,7 +645,7 @@ if customize.tthTagsOnly:
     # Now, we put the ttH tags back in the sequence with modified systematics workflow
     modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystlabels, jetsystlabels)
 
-else :
+else:
     process.p = cms.Path(process.dataRequirements*
                          process.flashggMetFilters*
                          process.genFilter*
@@ -659,6 +659,8 @@ else :
                          process.penultimateFilter*
                          process.finalFilter*
                          process.tagsDumper)
+    if customize.doStageOne: 
+        if soc.modifyForttH: soc.modifyWorkflowForttH(systlabels, phosystlabels, metsystlabels, jetsystlabels)
 
 if customize.doBJetRegression:
 

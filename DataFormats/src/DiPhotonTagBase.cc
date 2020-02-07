@@ -143,16 +143,22 @@ string DiPhotonTagBase::stage1KinematicLabel() const {
         return string("RECO_WHLEP");
     case stage1recoTag::RECO_ZHLEP:
         return string("RECO_ZHLEP");
-    case stage1recoTag::RECO_VHLEPLOOSE:
-        return string("RECO_VHLEPLOOSE");
-    case stage1recoTag::RECO_VHMET:
-        return string("RECO_VHMET");
-    case stage1recoTag::RECO_VHHAD:
-        return string("RECO_VHHAD");
-    case stage1recoTag::RECO_TTH_LEP:
-        return string("RECO_TTH_LEP");
-    case stage1recoTag::RECO_TTH_HAD:
-        return string("RECO_TTH_HAD");
+    case stage1recoTag::RECO_TTH_LEP_Tag0:
+        return string("RECO_TTH_LEP_Tag0");
+    case stage1recoTag::RECO_TTH_LEP_Tag1:
+        return string("RECO_TTH_LEP_Tag1");
+    case stage1recoTag::RECO_TTH_LEP_Tag2:
+        return string("RECO_TTH_LEP_Tag2");
+    case stage1recoTag::RECO_TTH_LEP_Tag3:
+        return string("RECO_TTH_LEP_Tag3");
+    case stage1recoTag::RECO_TTH_HAD_Tag0:
+        return string("RECO_TTH_HAD_Tag0");
+    case stage1recoTag::RECO_TTH_HAD_Tag1:
+        return string("RECO_TTH_HAD_Tag1");
+    case stage1recoTag::RECO_TTH_HAD_Tag2:
+        return string("RECO_TTH_HAD_Tag2");
+    case stage1recoTag::RECO_TTH_HAD_Tag3:
+        return string("RECO_TTH_HAD_Tag3");
     default:
         break;
     }

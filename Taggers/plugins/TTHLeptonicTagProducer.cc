@@ -49,6 +49,7 @@ namespace flashgg {
     private:
         void produce( Event &, const EventSetup & ) override;
         int  chooseCategory( float tthmvavalue , bool debug_ );
+        int computeStage1Kinematics( const TTHLeptonicTag );
 
         const  reco::GenParticle* motherID(const reco::GenParticle* gp);
         bool PassFrixione(Handle<View<reco::GenParticle> > genParticles, const reco::GenParticle* gp, int nBinsForFrix, double cone_frix);
@@ -1344,6 +1345,9 @@ namespace flashgg {
                     TTHLeptonicTag tthltags_obj( dipho, mvares );
                     tthltags_obj.setCategoryNumber(catNumber);
 
+                    int chosenTag = computeStage1Kinematics( tthltags_obj );
+                    tthltags_obj.setStage1recoTag( chosenTag );
+
                     for( unsigned int i = 0; i < tagJets.size(); ++i )
                     {
                         tthltags_obj.includeWeightsByLabel( *tagJets[i] , "JetBTagReshapeWeight");
@@ -1434,6 +1438,25 @@ namespace flashgg {
             } //diPho loop end !
             evt.put( std::move( tthltags ), systematicsLabels[syst_idx] );
         } // syst loop end !
+    }
+
+    int TTHLeptonicTagProducer::computeStage1Kinematics( const TTHLeptonicTag tag_obj )
+    {
+        int chosenTag_ = DiPhotonTagBase::stage1recoTag::LOGICERROR;
+        //float ptH = tag_obj.diPhoton()->pt();
+        if ( tag_obj.categoryNumber() == 0 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_Tag0;
+        }
+        else if ( tag_obj.categoryNumber() == 1 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_Tag1;
+        }
+        else if ( tag_obj.categoryNumber() == 2 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_Tag2;
+        }
+        else if ( tag_obj.categoryNumber() == 3 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_Tag3;
+        }
+        return chosenTag_;
     }
 
 }

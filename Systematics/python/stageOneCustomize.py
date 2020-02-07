@@ -9,6 +9,8 @@ class StageOneCustomize():
         self.process = process
         self.customize = customize
         self.metaConditions = metaConditions
+        #self.modifyForttH = False
+        self.modifyForttH = True
         self.tagList = [
             ["LOGICERROR",0], ["NOTAG",0], ["RECO_0J_PTH_0_10_Tag0",0], ["RECO_0J_PTH_0_10_Tag1",0], ["RECO_0J_PTH_GT10_Tag0",0], ["RECO_0J_PTH_GT10_Tag1",0],
             ["RECO_1J_PTH_0_60_Tag0",0], ["RECO_1J_PTH_0_60_Tag1",0], ["RECO_1J_PTH_60_120_Tag0",0], ["RECO_1J_PTH_60_120_Tag1",0], 
@@ -16,10 +18,15 @@ class StageOneCustomize():
             ["RECO_GE2J_PTH_0_60_Tag0",0], ["RECO_GE2J_PTH_0_60_Tag1",0], ["RECO_GE2J_PTH_60_120_Tag0",0], ["RECO_GE2J_PTH_60_120_Tag1",0], 
             ["RECO_GE2J_PTH_120_200_Tag0",0], ["RECO_GE2J_PTH_120_200_Tag1",0], ["RECO_PTH_GT200_Tag0",0], ["RECO_PTH_GT200_Tag1",0], 
             ["RECO_VBFTOPO_VHHAD",0], ["RECO_VBFTOPO_JET3VETO_LOWMJJ",0], ["RECO_VBFTOPO_JET3VETO_HIGHMJJ",0], ["RECO_VBFTOPO_JET3_LOWMJJ",0], ["RECO_VBFTOPO_JET3_HIGHMJJ",0], ["RECO_VBFTOPO_BSM",0],
-            ["RECO_VBFLIKEGGH",0]
+            ["RECO_VBFLIKEGGH",0], 
+            ["RECO_TTH_HAD_Tag0",0], ["RECO_TTH_HAD_Tag1",0], ["RECO_TTH_HAD_Tag2",0], ["RECO_TTH_HAD_Tag3",0],
+            ["RECO_TTH_LEP_Tag0",0], ["RECO_TTH_LEP_Tag1",0], ["RECO_TTH_LEP_Tag2",0], ["RECO_TTH_LEP_Tag3",0]
         ]
         if self.customize.processId == "Data": 
             self.tagList.pop(1) ## remove NoTag for data
+        self.tagPriorityRanges = cms.VPSet(
+            cms.PSet(TagName = cms.InputTag('flashggStageOneCombinedTag'))
+        )
         self.customizeTagSequence()
 
 
@@ -80,11 +87,39 @@ class StageOneCustomize():
             self.metaConditions["L1Prefiring"]["applyToCentral"] = "true"
 
         ## set tag priorities
-        self.process.flashggTagSorter.TagPriorityRanges = cms.VPSet(
-            cms.PSet(TagName = cms.InputTag('flashggStageOneCombinedTag'))
-        )
+        self.process.flashggTagSorter.TagPriorityRanges = self.tagPriorityRanges
         self.process.flashggTagSorter.isGluonFusion = cms.bool(bool(self.customize.processId.count("ggh")))
         self.process.flashggTagSorter.applyNNLOPSweight = cms.bool(self.customize.applyNNLOPSweight)
 
         ## set the tag merging
         self.process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
+
+    ## this adds in the ttH tags with their correct, modified systematics workflow
+    def modifyWorkflowForttH(self, systlabels, phosystlabels, metsystlabels, jetsystlabels):
+        # Set lists of systematics for each tag
+        for tag in ["flashggTTHLeptonicTag", "flashggTTHHadronicTag"]:
+            getattr(self.process, tag).DiPhotonSuffixes = cms.vstring(phosystlabels)
+            getattr(self.process, tag).JetsSuffixes = cms.vstring(jetsystlabels)
+            getattr(self.process, tag).MetSuffixes = cms.vstring(metsystlabels)
+    
+            getattr(self.process, tag).ModifySystematicsWorkflow = cms.bool(True)
+            getattr(self.process, tag).UseLargeMVAs = cms.bool(True) # enable memory-intensive MVAs
+
+        print 'ED DEBUG process.p before was %s'%self.process.p
+        print
+    
+        self.process.p.remove(self.process.flashggTagSorter)
+        self.process.p.replace(self.process.flashggSystTagMerger, cms.Sequence(self.process.flashggTTHLeptonicTag + self.process.flashggTTHHadronicTag)*self.process.flashggTagSorter*self.process.flashggSystTagMerger)
+    
+        for systlabel in systlabels:
+            if systlabel == "":
+                continue
+            self.process.p.remove(getattr(self.process, 'flashggTagSorter' + systlabel))
+            self.process.p.replace(self.process.flashggSystTagMerger, getattr(self.process, 'flashggTagSorter' + systlabel) * self.process.flashggSystTagMerger) 
+            newSet = cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag', systlabel)), cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag', systlabel)) )
+            newSet += self.tagPriorityRanges
+            setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', self.tagPriorityRanges)
+
+        print 'ED DEBUG process.p before was %s'%self.process.p
+        print
+        #exit('ED DEBUG exit now')

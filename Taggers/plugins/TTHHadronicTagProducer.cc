@@ -48,6 +48,7 @@ namespace flashgg {
     private:
         void produce( Event &, const EventSetup & ) override;
         int  chooseCategory( float );
+        int computeStage1Kinematics( const TTHHadronicTag );
 
         std::vector<edm::EDGetTokenT<View<flashgg::Jet> > > tokenJets_;
         std::vector<std::vector<edm::EDGetTokenT<edm::View<flashgg::Jet>>>> jetTokens_;
@@ -1192,6 +1193,9 @@ namespace flashgg {
                     tthhtags_obj.setMVAres(tthMvaVal_);
                     tthhtags_obj.setMET( theMET );
 
+                    int chosenTag = computeStage1Kinematics( tthhtags_obj );
+                    tthhtags_obj.setStage1recoTag( chosenTag );
+
                     if(!useTTHHadronicMVA_){
                         for( unsigned num = 0; num < JetVect.size(); num++ ) {
                             tthhtags_obj.includeWeightsByLabel( *JetVect[num] , "JetBTagCutWeight");
@@ -1209,6 +1213,25 @@ namespace flashgg {
             }
         evt.put( std::move( tthhtags ), systematicsLabels[syst_idx] );
         }
+    }
+
+    int TTHHadronicTagProducer::computeStage1Kinematics( const TTHHadronicTag tag_obj )
+    {
+        int chosenTag_ = DiPhotonTagBase::stage1recoTag::LOGICERROR;
+        //float ptH = tag_obj.diPhoton()->pt();
+        if ( tag_obj.categoryNumber() == 0 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_Tag0;
+        }
+        else if ( tag_obj.categoryNumber() == 1 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_Tag1;
+        }
+        else if ( tag_obj.categoryNumber() == 2 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_Tag2;
+        }
+        else if ( tag_obj.categoryNumber() == 3 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_Tag3;
+        }
+        return chosenTag_;
     }
 }
 typedef flashgg::TTHHadronicTagProducer FlashggTTHHadronicTagProducer;
