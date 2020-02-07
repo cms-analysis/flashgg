@@ -530,7 +530,7 @@ THQLeptonicTagProducer::THQLeptonicTagProducer( const ParameterSet &iConfig ) :
         tokenJets_.push_back(token);
     }
     produces<vector<THQLeptonicTag> >();
-    produces<vector<THQLeptonicTagTruth> >();
+    //produces<vector<THQLeptonicTagTruth> >();
 }
 
 THQLeptonicTagProducer::~THQLeptonicTagProducer() {
@@ -588,8 +588,7 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
     Handle<View<reco::GenParticle> > genParticles;
     Handle<View<reco::GenJet> > genJets;
 
-    std::unique_ptr<vector<THQLeptonicTagTruth> > truths( new vector<THQLeptonicTagTruth> );
-    Point higgsVtx;
+    //std::unique_ptr<vector<THQLeptonicTagTruth> > truths( new vector<THQLeptonicTagTruth> );
 /*ps    edm::Handle<LHEEventProduct> product_lhe;
     vector< double > CtCvWeights ;
     if( processId_.find("thq") != std::string::npos or processId_.find("thw") != std::string::npos ) {
@@ -599,8 +598,8 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
     }
 */
 
-    edm::RefProd<vector<THQLeptonicTagTruth> > rTagTruth = evt.getRefBeforePut<vector<THQLeptonicTagTruth> >();
-    unsigned int idx = 0;
+    //edm::RefProd<vector<THQLeptonicTagTruth> > rTagTruth = evt.getRefBeforePut<vector<THQLeptonicTagTruth> >();
+    //unsigned int idx = 0;
 
 
     assert( diPhotons->size() == mvaResults->size() );
@@ -1789,10 +1788,13 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
                     }
                     thqltags_obj.setStage1recoTag( DiPhotonTagBase::stage1recoTag::RECO_THQ_LEP );
                     thqltags->push_back( thqltags_obj );
-                    truths->push_back( truth_obj );
-                    thqltags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<THQLeptonicTagTruth> >( rTagTruth, idx++ ) ) );
+                    //truths->push_back( truth_obj );
+                    //thqltags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<THQLeptonicTagTruth> >( rTagTruth, idx++ ) ) );
                 }// ! evt.isRealData() loop end !
-                if (evt.isRealData()) thqltags->push_back( thqltags_obj ); //FIXME at next iteration!!
+                if (evt.isRealData()) {
+                    thqltags_obj.setStage1recoTag( DiPhotonTagBase::stage1recoTag::RECO_THQ_LEP );
+                    thqltags->push_back( thqltags_obj ); //FIXME at next iteration!!
+                }
 
             }//thq tag
             else {
@@ -1819,7 +1821,7 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
             forwardjet.clear();
     }//diPho loop end !
     evt.put( std::move( thqltags ) );
-    evt.put( std::move( truths ) );
+    //evt.put( std::move( truths ) );
 }
 }
 typedef flashgg::THQLeptonicTagProducer FlashggTHQLeptonicTagProducer;

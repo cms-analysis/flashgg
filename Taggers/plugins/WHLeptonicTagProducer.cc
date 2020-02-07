@@ -223,7 +223,7 @@ namespace flashgg {
 
 
         produces<vector<WHLeptonicTag> >();
-        produces<vector<VHTagTruth> >();
+        //produces<vector<VHTagTruth> >();
     }
 
     int WHLeptonicTagProducer::chooseCategory( float mva, float ptV )
@@ -281,8 +281,8 @@ namespace flashgg {
 
 
         std::unique_ptr<vector<WHLeptonicTag> > whleptonictags( new vector<WHLeptonicTag> );
-        std::unique_ptr<vector<VHTagTruth> > truths( new vector<VHTagTruth> );
-        edm::RefProd<vector<VHTagTruth> > rTagTruth = evt.getRefBeforePut<vector<VHTagTruth> >();
+        //std::unique_ptr<vector<VHTagTruth> > truths( new vector<VHTagTruth> );
+        //edm::RefProd<vector<VHTagTruth> > rTagTruth = evt.getRefBeforePut<vector<VHTagTruth> >();
 
         bool associatedZ   = 0;
         bool associatedW   = 0;
@@ -503,13 +503,13 @@ namespace flashgg {
                     truth_obj.setVhasHadrons( VhasHadrons );
                     truth_obj.setVhasMissingLeptons( VhasMissingLeptons );
                     truth_obj.setVpt( Vpt );
-                    truths->push_back( truth_obj );
-                    whleptonictags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<VHTagTruth> >( rTagTruth, idx++ ) ) );
+                    //truths->push_back( truth_obj );
+                    //whleptonictags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<VHTagTruth> >( rTagTruth, idx++ ) ) );
                 }
             }
         }
         evt.put( std::move( whleptonictags ) );
-        evt.put( std::move( truths ) );
+        //evt.put( std::move( truths ) );
     }
 
     int WHLeptonicTagProducer::computeStage1Kinematics( const WHLeptonicTag tag_obj )

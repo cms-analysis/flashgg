@@ -127,7 +127,7 @@ namespace flashgg {
         }
 
         produces<vector<ZHLeptonicTag> >();
-        produces<vector<VHTagTruth> >();
+        //produces<vector<VHTagTruth> >();
     }
 
     void ZHLeptonicTagProducer::produce( Event &evt, const EventSetup & )
@@ -160,8 +160,8 @@ namespace flashgg {
         evt.getByToken( genParticleToken_, genParticles );
 
         std::unique_ptr<vector<ZHLeptonicTag> > ZHLeptonicTags( new vector<ZHLeptonicTag> );
-        std::unique_ptr<vector<VHTagTruth> > truths( new vector<VHTagTruth> );
-        edm::RefProd<vector<VHTagTruth> > rTagTruth = evt.getRefBeforePut<vector<VHTagTruth> >();
+        //std::unique_ptr<vector<VHTagTruth> > truths( new vector<VHTagTruth> );
+        //edm::RefProd<vector<VHTagTruth> > rTagTruth = evt.getRefBeforePut<vector<VHTagTruth> >();
 
         bool associatedZ   = 0;
         bool associatedW   = 0;
@@ -343,13 +343,13 @@ namespace flashgg {
                     truth_obj.setVhasHadrons( VhasHadrons );
                     truth_obj.setVhasMissingLeptons( VhasMissingLeptons );
                     truth_obj.setVpt( Vpt );
-                    truths->push_back( truth_obj );
-                    ZHLeptonicTags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<VHTagTruth> >( rTagTruth, idx++ ) ) );
+                    //truths->push_back( truth_obj );
+                    //ZHLeptonicTags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<VHTagTruth> >( rTagTruth, idx++ ) ) );
                 }
             }
         }
         evt.put( std::move( ZHLeptonicTags ) );
-        evt.put( std::move( truths ) );
+        //evt.put( std::move( truths ) );
     }
 }
 typedef flashgg::ZHLeptonicTagProducer FlashggZHLeptonicTagProducer;
