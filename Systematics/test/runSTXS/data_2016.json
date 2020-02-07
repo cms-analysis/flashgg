@@ -1,5 +1,5 @@
 {
-    "cmdLine"  : "campaign=Era2016_RR-17Jul2018_v2 metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json useAAA=True lumiMask=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/ReReco/Final/Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt",
+    "cmdLine"  : "campaign=Era2016_RR-17Jul2018_v2 metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json useAAA=True lumiMask=/vols/cms/es811/HggGeneral/flashgg-data/LumiMasks/lumiMask_2016.txt",
     "processes": {
 	"Data"   : [
 "/DoubleEG/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016B-17Jul2018_ver2-v1-86023db6be00ee64cd62a3172358fb9f/USER",
