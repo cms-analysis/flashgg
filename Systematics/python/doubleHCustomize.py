@@ -266,7 +266,22 @@ class DoubleHCustomize():
             self.process.flashggDoubleHTag.MXBoundaries = cms.vdouble(250., 395.,470.,585.,250.,345.,375.,540.,250.,330.,375.,530.)
             self.process.flashggDoubleHTag.ttHScoreThreshold = cms.double(0.20)
 
+        # customizing training file (with/wo Mjj) 
+        training_type = 'with_Mjj' if self.customize.doubleHTagsUseMjj else 'wo_Mjj'
+
+        self.process.flashggVBFDoubleHTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["doubleHTag"]["weightsFile"][training_type]))
+        self.process.flashggVBFDoubleHTag.MVAFlatteningFileName = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["MVAFlatteningFileName"][training_type]))
+        if training_type == 'with_Mjj' :
+            self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.33,0.56, 0.70)
+            self.process.flashggVBFDoubleHTag.MXBoundaries = cms.vdouble(250., 375.,470.,600.,250.,325.,365.,585.,250.,330.,360.,520.)
+            self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.24)
+        elif training_type == 'wo_Mjj' :
+            self.process.flashggVBFDoubleHTag.MVAConfig.variables.pop(0)
+            self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.30,0.54, 0.75)
+            self.process.flashggVBFDoubleHTag.MXBoundaries = cms.vdouble(250., 395.,470.,585.,250.,345.,375.,540.,250.,330.,375.,530.)
+            self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.20)
         ## customize meta conditions
+
         self.process.flashggVBFDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))
         self.process.flashggVBFDoubleHTag.MVAscaling = cms.double(self.metaConditions["doubleHTag"]["MVAscalingValue"])
         self.process.flashggVBFDoubleHTag.dottHTagger = cms.bool(self.customize.doDoubleHttHKiller)
@@ -318,8 +333,8 @@ class DoubleHCustomize():
              self.process.p.remove(getattr(self.process,'flashggTagSorter'+systlabel))
              self.process.p.replace(self.process.flashggSystTagMerger,getattr(self.process, 'flashggTagSorter'+systlabel)*self.process.flashggSystTagMerger)
            #setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.VPSet(TagName = cms.InputTag('flashggVBFDoubleHTag', systlabel)), cms.VPSet( cms.VPSet(TagName = cms.InputTag('flashggDoubleHTag', systlabel)) )))
-           setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggVBFDoubleHTag', systlabel)), cms.PSet(TagName = cms.InputTag('flashggDoubleHTag', systlabel)) ))
-
+           setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggDoubleHTag', systlabel)), cms.PSet(TagName = cms.InputTag('flashggVBFDoubleHTag', systlabel)) ))
+           #setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggDoubleHTag', systlabel))))
         #print 'from loop after:',process.flashggSystTagMerger.src
 
 

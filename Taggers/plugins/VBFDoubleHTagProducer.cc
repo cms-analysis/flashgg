@@ -119,8 +119,8 @@ namespace flashgg {
         TGraph * MVAFlatteningCumulative_;
         double MVAscaling_;
 
-        vector< edm::EDGetTokenT<float> > reweights_;
-        int doReweight_;
+     //   vector< edm::EDGetTokenT<float> > reweights_;
+        //int doReweight_;
             
         DoubleHttHTagger tthKiller_;
         float ttHTagger;
@@ -171,12 +171,12 @@ namespace flashgg {
         mjjBoundariesLower_ = iConfig.getParameter<vector<double > >( "MJJBoundariesLower" ); 
         mjjBoundariesUpper_ = iConfig.getParameter<vector<double > >( "MJJBoundariesUpper" ); 
         multiclassSignalIdx_ = (iConfig.getParameter<edm::ParameterSet>("MVAConfig")).getParameter<int>("multiclassSignalIdx"); 
-        doReweight_ = (iConfig.getParameter<int>("doReweight")); 
+        //doReweight_ = (iConfig.getParameter<int>("doReweight")); 
    
-        auto names = iConfig.getParameter<vector<string>>("reweight_names");
-        for (auto & name : names ) {
-            reweights_.push_back(consumes<float>(edm::InputTag(iConfig.getParameter<string>("reweight_producer") , name))) ;
-        }
+       // auto names = iConfig.getParameter<vector<string>>("reweight_names");
+       // for (auto & name : names ) {
+       //     reweights_.push_back(consumes<float>(edm::InputTag(iConfig.getParameter<string>("reweight_producer") , name))) ;
+       // }
 
       //  diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         inputDiPhotonName_= iConfig.getParameter<std::string > ( "DiPhotonName" );
@@ -361,7 +361,7 @@ namespace flashgg {
 
         //read reweighting
         vector<float> reweight_values;
-        if (doReweight_>0) 
+     /*   if (doReweight_>0) 
         {
            for (auto & reweight_token : reweights_)
            {
@@ -369,7 +369,7 @@ namespace flashgg {
                 evt.getByToken(reweight_token, reweight_hadle);
                 reweight_values.push_back(*reweight_hadle);
             }
-        }
+        }*/
         
 
         // prepare output
@@ -451,7 +451,7 @@ namespace flashgg {
             size_t vtx = (size_t)dipho->jetCollectionIndex();
             // and read corresponding jet collection
     
-
+            cout << "Starting Point of VBFHH" << endl;
             edm::Handle<edm::View<flashgg::Jet> > jets;
             evt.getByToken( jetTokens_[jet_col_idx*inputJetsCollSize_+vtx], jets);  //take the corresponding vertex of current systematic
 
@@ -514,7 +514,7 @@ namespace flashgg {
                     VBFcleaned_jets.push_back( VBFjet );
                 }
             }
-
+            cout << VBFcleaned_jets.size() << endl;
             bool hasVBFjet = false;
             double dijetVBF_mass = -10.0;
             for( size_t ijet=0; ijet < VBFcleaned_jets.size()-1; ++ijet ){
@@ -559,7 +559,7 @@ namespace flashgg {
             tag_obj.setMX( tag_obj.p4().mass() - tag_obj.dijet().mass() - tag_obj.diPhoton()->mass() + 250. );
             tag_obj.setGenMhh( genMhh );
             tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );
-            if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values );
+         //   if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values );
             
             if(doSigmaMDecorr_){
                 tag_obj.setSigmaMDecorrTransf(transfEBEB_,transfNotEBEB_);

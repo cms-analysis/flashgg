@@ -4,4 +4,4 @@ from flashggDoubleHTag_cfi import flashggDoubleHTag
 from flashggVBFDoubleHTag_cfi import flashggVBFDoubleHTag
 
 
-flashggDoubleHTagSequence = cms.Sequence( flashggVBFDoubleHTag* flashggDoubleHTag )
+flashggDoubleHTagSequence = cms.Sequence( flashggDoubleHTag* flashggVBFDoubleHTag )
