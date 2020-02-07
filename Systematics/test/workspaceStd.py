@@ -258,7 +258,6 @@ if customize.doFiducial:
     process.flashggTagSequence.remove(process.flashggVHMetTag)
     process.flashggTagSequence.remove(process.flashggWHLeptonicTag)
     process.flashggTagSequence.remove(process.flashggZHLeptonicTag)
-    process.flashggTagSequence.remove(process.flashggVHLeptonicLooseTag)
     process.flashggTagSequence.remove(process.flashggVHHadronicTag)
     process.flashggTagSequence.replace(process.flashggUntagged, process.flashggSigmaMoMpToMTag)
 
@@ -267,7 +266,6 @@ if customize.tthTagsOnly:
     process.flashggTagSequence.remove(process.flashggVHMetTag)
     process.flashggTagSequence.remove(process.flashggWHLeptonicTag)
     process.flashggTagSequence.remove(process.flashggZHLeptonicTag)
-    process.flashggTagSequence.remove(process.flashggVHLeptonicLooseTag)
     process.flashggTagSequence.remove(process.flashggVHHadronicTag)
     process.flashggTagSequence.remove(process.flashggUntagged)
     process.flashggTagSequence.remove(process.flashggVBFMVA)
@@ -504,8 +502,7 @@ else:
         ["UntaggedTag",4],
         ["VBFTag",3],
         ["ZHLeptonicTag",0],
-        ["WHLeptonicTag",0],
-        ["VHLeptonicLooseTag",0],
+        ["WHLeptonicTag",6],
         ["VHMetTag",0],
         ["VHHadronicTag",0],
         ["TTHHadronicTag",4],

@@ -42,15 +42,9 @@ def flashggPrepareTagSequence(process, options):
 #                                     + flashggTTHHadronicTTag                                      
 #                                     + flashggTTHHadronicLTag                                      
                                           + flashggTTHHadronicTag
-                                      #############old VH tags##############
-                                      #                  + flashggVHEtTag
-                                      #                  + flashggVHLooseTag
-                                      #                  + flashggVHTightTag
-                                      ###########updated VH tags############
                                           + flashggVHMetTag
                                           + flashggWHLeptonicTag
                                           + flashggZHLeptonicTag
-                                          + flashggVHLeptonicLooseTag
                                           + flashggVHHadronicTag
                                       )
                                       * flashggTagSorter
