@@ -15,6 +15,12 @@
 # cp /tmp/MYPROXY ~/
 # export X509_USER_PROXY=~/MYPROXY
 
+# Example:
+# . HHWWgg_Run_Jobs.sh --labelName HHWWggTaggerTest_Testagain --nEvents 1000 --json Taggers/test/HHWWgg_v2-2/HHWWgg_Signal_2017.json -g -c -s -t
+
+# . HHWWgg_Run_Jobs.sh --labelName HHWWggTaggerTest --nEvents 1000 --json Taggers/test/HHWWgg_v2-2/HHWWgg_Signal_2017.json -w 
+# . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-3_Systematics --nEvents all --json Taggers/test/HHWWgg_v2-3/HHWWgg_v2-3.json -w -x 
+
 ## User specific variables. Customize to your own working area(s)
 
 fggDirec="/afs/cern.ch/work/a/atishelm/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/" # flashgg directory 
@@ -29,12 +35,14 @@ doCutFlow="false" # perform HHWWgg cutflow within workspaceStd.py workflow
 runttH="false" # run on ttH background sample only 
 runData="false" # get datasets from data json file 
 runSignal="false" # get dataset(s) from signal json file 
-calcSystematics="false"
+calcSystematics="false" # run workspaceStd.py systematics 
+dumpTrees="false" # dump trees in fggrunjobs output 
+dumpWorkspaces="false" # dump workspaces in fggrunjobs output 
 jsonpath="" # optional local json file to use for fggrunjobs arguments such as dataset and campaign 
 
 ## Get user specified argumenets 
 
-options=$(getopt -o sdwcx --long nEvents: --long labelName: --long json: -- "$@") # end name with colon ':' to specify argument string 
+options=$(getopt -o dgcstw --long nEvents: --long labelName: --long json: -- "$@") # end name with colon ':' to specify argument string 
 [ $? -eq 0 ] || {
       echo "Incorrect option provided"
       exit 1
@@ -42,20 +50,26 @@ options=$(getopt -o sdwcx --long nEvents: --long labelName: --long json: -- "$@"
 eval set -- "$options"
 while true; do
       case "$1" in
-      -s)
-            runSignal="true"
-            ;;
+      #-s)
+      #      runSignal="true"
+      #      ;;
       -d)
             runData="true"
             ;;
-      -w) 
+      -g) 
             runWorkspaceStd="true"
             ;;
       -c)
             doCutFlow="true"
             ;;
-      -x)   
+      -s)   
             calcSystematics="true"
+            ;;
+      -t)   
+            dumpTrees="true"
+            ;;
+      -w)   
+            dumpWorkspaces="true"
             ;;
       --nEvents)
             shift; 
@@ -86,6 +100,8 @@ echo "rundata = $runData"
 echo "runsignal = $runSignal"
 echo "jsonpath = $jsonpath"
 echo "calcSystematics = $calcSystematics"
+echo "dumpTrees = $dumpTrees"
+echo "dumpWorkspaces = $dumpWorkspaces"
 
 ## Make sure numEvents and label arguments are specified. These are compulsory
 
@@ -159,6 +175,8 @@ then
             jsonpath='Taggers/test/ttH/HHWWgg_Bkg_1.json'
       fi 
 
+      #command="fggRunJobs.py --load ${jsonpath} -D -P -n 500 -d ${output_direc}"
+
       command='fggRunJobs.py --load '
       command+=$jsonpath
       command+=' -D -P -n 500 -d ' # May need to be careful not to have too many output files. EOS has a limit. 
@@ -194,18 +212,40 @@ then
       command+=" --stage-to="$root_file_output
       command+=' -x cmsRun Systematics/test/workspaceStd.py maxEvents=' # workspaceStd.py 
       command+=$numEvents
-      command+=' -q microcentury --no-use-tarball --no-copy-proxy metaConditions='   
+      command+=' -q workday --no-use-tarball --no-copy-proxy metaConditions='   
       command+=$fggDirec
       command+='MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json '
       command+=' doHHWWggTag=True HHWWggTagsOnly=True '
+
+	echo "hello"
 
       if [ $calcSystematics == 'true' ]
       then
            command+=' doSystematics=True '
       else 
-           command+= 'doSystematics=False '
-      fi 
-      command+=' dumpWorkspace=True dumpTrees=True '
+           command+='doSystematics=False '
+      fi
+
+	echo "before dump trees if"
+
+      if [ $dumpTrees == 'true' ]
+      then 
+           command+=' dumpTrees=True '
+      else 
+           command+=' dumpTrees=False '
+      fi  
+ 
+	echo "after dump trees if"
+
+      if [ $dumpWorkspaces == 'true' ]
+      then 
+           command+=' dumpWorkspace=True '
+      
+
+      else 
+           command+=' dumpWorkspace=False '
+      fi       
+
       
       if [ $doCutFlow == 'true' ]
       then

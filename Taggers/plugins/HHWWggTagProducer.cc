@@ -61,8 +61,8 @@ namespace flashgg {
     //---Outtree 
     edm::Service<TFileService> fs;
     
-    TH1F* indexes;
-    TH1F* btags;
+    // TH1F* indexes;
+    // TH1F* btags;
 
   private:
     double genTotalWeight;
@@ -248,8 +248,9 @@ namespace flashgg {
       // numDiphoCand = fs->make<TH1F> ("numDiphoCand","numDiphoCand",10,0,10); 
       // diphoton_idx_h = fs->make<TH1F> ("diphoton_idx_h","diphoton_idx_h",20,0,20); 
       // diPhotons_size_h = fs->make<TH1F> ("diPhotons_size_h","diPhotons_size_h",20,0,20); 
-      indexes = fs->make<TH1F> ("indexes","indexes",5,0,5);
-      btags = fs->make<TH1F> ("btags","btags",100,0,1);
+
+      // indexes = fs->make<TH1F> ("indexes","indexes",5,0,5);
+      // btags = fs->make<TH1F> ("btags","btags",100,0,1);
 
       // numEvents = fs->make<TH1F> ("numEvents","numEvents",1,0,10);
 
@@ -406,7 +407,7 @@ namespace flashgg {
       // double dipho_MVA = -99;
       // double lead_pho_Hgg_MVA = -99, sublead_pho_Hgg_MVA = -99;
       // double CMS_hgg_mass = -99;
-      float bDiscriminatorValue = -2.;
+      // float bDiscriminatorValue = -2.;
 
       bool passMVAs = 0; // True if leading and subleading photons pass MVA selections 
 
@@ -431,7 +432,7 @@ namespace flashgg {
       // double vertex_diff_hgg = -999;
       // double num_vertices = -999;
 
-      int diphoton_vertex_index = -99;
+      // int diphoton_vertex_index = -99;
       // const edm::Ptr<reco::Vertex> dipho_vertex;
       edm::Ptr<reco::Vertex> diphoton_vertex;
       edm::Ptr<reco::Vertex> zero_vertex;
@@ -542,9 +543,10 @@ namespace flashgg {
       // Pass_PS = false;
       // bool one_FH_dr = false;
       // bool one_FL_dr = false;
-      double num_FL_dr = 0;
-      double num_FH_dr = 0;
-      float dr_ll = 0;
+      // double num_FL_dr = 0;
+      // double num_FH_dr = 0;
+      // float dr_ll = 0;
+
       // int n_ps_dpho = diphotons->size(); // number of preselected diphotons in event 
 
       // for( unsigned int diphoIndex = 0; diphoIndex < diphotons->size(); diphoIndex++ ) { // look at all diphotons 
@@ -572,7 +574,7 @@ namespace flashgg {
 
       // for( unsigned int diphoIndex = 0; diphoIndex < diphotons->size(); diphoIndex++ ) { // only look at highest pt dipho
       //   edm::Ptr<flashgg::DiPhotonCandidate> dipho_ = diphotons->ptrAt( diphoIndex );
-      //   diphoton_vertex_index = dipho_->vertexIndex();
+        // diphoton_vertex_index = dipho_->vertexIndex();
       //   // cout << "vertex index = " << diphoton_vertex_index << endl;
       //   indexes->Fill(diphoton_vertex_index);
       //   // if (diphoton_vertex_index != 0){
@@ -604,7 +606,7 @@ namespace flashgg {
         event.getByToken( diphotonToken_, diphotons ); // without looping over diphoton systematics 
         //---
 
-        unsigned int loopOverJets = 1;
+        // unsigned int loopOverJets = 1;
         // if (inputDiPhotonSuffixes_[diphoton_idx].empty()) loopOverJets = inputJetsSuffixes_.size();
 
         // for (unsigned int jet_col_idx = 0; jet_col_idx < loopOverJets; jet_col_idx++) {//looping over all jet systematics, only for nominal diphotons
@@ -630,9 +632,11 @@ namespace flashgg {
           // cout << "dipho eta = " << dipho->genP4().eta() << endl; 
           // cout << "dipho phi = " << dipho->genP4().phi() << endl; 
           diphoton_vertex = dipho->vtx();
-          diphoton_vertex_index = dipho->vertexIndex();
+          // diphoton_vertex_index = dipho->vertexIndex();
           // cout << "vertex index = " << diphoton_vertex_index << endl;
-          indexes->Fill(diphoton_vertex_index);
+
+
+          // indexes->Fill(diphoton_vertex_index); # running 
 
           // MVA selections 
           // kinematic cuts on diphotons
@@ -731,6 +735,7 @@ namespace flashgg {
           // FL: Require at dr(l,l) > 0.4 
           // For which pairs of the >=2 good leptons should dr be greater than 4?
 
+          /*
           if (hasGoodElec && hasGoodMuons){
             for (unsigned int ei = 0; ei < goodElectrons.size(); ei++){
               Ptr<flashgg::Electron> electron = goodElectrons[ei];
@@ -760,6 +765,7 @@ namespace flashgg {
               }
             }
           }
+          
 
           else if (!hasGoodElec && hasGoodMuons){
             for (unsigned int mi = 0; mi < goodMuons.size() - 1; mi++){
@@ -775,6 +781,7 @@ namespace flashgg {
               }
             }
           }
+          */
 
           // Jets 
           // unsigned int jetCollectionIndex = diPhotons->at( diphoIndex ).jetCollectionIndex(); // diphoton collection for each systematic 
@@ -828,12 +835,12 @@ namespace flashgg {
                           }
 
                   // Check btag score 
-                  bDiscriminatorValue = -2.;
+                  // bDiscriminatorValue = -2.;
                   // bDiscriminatorValue = thejet->bDiscriminator( bTag_ ); "pfDeepCSVJetTags:probb"
                   
-                  bDiscriminatorValue = thejet->bDiscriminator( "mini_pfDeepFlavourJetTags:probb" ); 
+                  // bDiscriminatorValue = thejet->bDiscriminator( "mini_pfDeepFlavourJetTags:probb" ); 
                   //bDiscriminatorValue = thejet->bDiscriminator( "pfDeepCSVJetTags:probb" );
-                  if (bDiscriminatorValue != -1) btags->Fill(bDiscriminatorValue);
+                  // if (bDiscriminatorValue != -1) btags->Fill(bDiscriminatorValue);
                   
                   // cout << "btag = " << bDiscriminatorValue << endl;
 
@@ -867,8 +874,10 @@ namespace flashgg {
           // }
 
           // FH: Require at least one delta r pair with dr > 0.4 
-          float dr_jj = 0;
+          // float dr_jj = 0;
           // bool one_FH_dr = false;
+
+          /*
           if (tagJets.size() >= 2){
             for (unsigned int ji = 0; ji < tagJets.size() - 1; ji++){
               Ptr<flashgg::Jet> jeti = tagJets[ji];
@@ -883,6 +892,7 @@ namespace flashgg {
               }
             }
           }
+          */
 
           // MET 
           if( METs->size() != 1 ) { std::cout << "WARNING - #MET is not 1" << std::endl;}
@@ -953,6 +963,7 @@ namespace flashgg {
                 tag_obj.setDiPhotonIndex( diphoIndex );           
                 // tag_obj.setMVA( -0.9 );
                 tag_obj.setCategoryNumber( catnum );
+                tag_obj.includeWeights( *dipho );
                 // tag_obj.setEventNumber(event.id().event() );
                 // cout << "Pushing back tag object w/ electron" << endl;
                 HHWWggtags->push_back( tag_obj ); 
@@ -1047,6 +1058,8 @@ namespace flashgg {
                 tag_obj.setDiPhotonIndex( diphoIndex );           
                 // tag_obj.setMVA( -0.9 );
                 tag_obj.setCategoryNumber( catnum );
+                tag_obj.includeWeights( *dipho );
+
                 // tag_obj.setEventNumber(event.id().event() );
                 // cout << "Pushing back tag object w/ muon" << endl;
                 HHWWggtags->push_back( tag_obj ); 
@@ -1111,6 +1124,8 @@ namespace flashgg {
                   tag_obj.setDiPhotonIndex( diphoIndex );           
                   // tag_obj.setMVA( -0.9 );
                   tag_obj.setCategoryNumber( 0 );
+                  tag_obj.includeWeights( *dipho );
+
                   // tag_obj.setEventNumber(event.id().event() );
                   // cout << "Pushing back tag object w/ electron" << endl;
                   HHWWggtags->push_back( tag_obj ); 
@@ -1148,7 +1163,7 @@ namespace flashgg {
 
     // }  //looping over all diphoton systematics
     // cout << "Just left looping over all diphoton systematics" << endl;
-      cout << "right before putting HHWWggtags and truths into event" << endl;
+      // cout << "right before putting HHWWggtags and truths into event" << endl;
       event.put( std::move( HHWWggtags ) );
       event.put( std::move( truths ) );
 
