@@ -10,7 +10,6 @@ def addCategories(pset,cats,variables,histograms,mvas=None):
 def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mvas=None,classname=None,binnedOnly=None,
                 dumpPdfWeights=None,nPdfWeights=None,nAlphaSWeights=None,nScaleWeights=None,splitPdfByStage0Cat=None):
     
-   
     if subcats >= 0:
         catDef = cms.PSet(label=cms.string(label),
                           subcats=cms.int32(subcats),
@@ -35,9 +34,11 @@ def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mv
         pset.categories.append(catDef)
 
     if cutbased:
+        # print'It is cut based'
         cb = cms.PSet( cut=cms.string(cutbased) )
         if( label != "" or classname):
             cb.name = cms.untracked.string(label)
+        # print'cb = ',cb 
         pset.classifierCfg.categories.append(cb)
 
 
@@ -59,6 +60,9 @@ def getNameExpr(expr,name=None):
 
 def parseVariable(expr, name):
     name,expr = getNameExpr(expr,name)
+
+    # print'name = ',name
+    # print'expr = ',expr 
     
     if name.endswith("]"):
         name,rng = name.replace("]","").split("[")
@@ -80,9 +84,14 @@ def parseVariable(expr, name):
 # -----------------------------------------------------------------------
 def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
 
-
+    # print'[dumperConfigTools] - Adding Variable'
+    
     name, expr1, nbins, vmin, vmax = parseVariable(expr, name)
     
+    # print'[dumperConfigTools] - expr1 = ',expr1
+    # print'nbins = ',nbins 
+    # print'[dumperConfigTools] - expr1[2] = ',expr1[2]
+
     if len(expr1)>1:
         pset = cms.PSet(
             expr  = cms.PSet(
@@ -135,14 +144,16 @@ def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
     
 # -----------------------------------------------------------------------
 def addVariables(vpset,variables):
-    
     if type(variables) == str:
         variables = mkVarList(variables)
 
     for var in variables:
+        # print'var = ',var 
         if type(var) == str:
+            # print'var is string'
             addVariable(vpset,var)
         else:
+            # print'var is not string'
             addVariable(vpset,*var)
 
 # -----------------------------------------------------------------------
@@ -288,6 +299,7 @@ def mkVarList(inp):
     
     ret = []
     for var in inp.replace(" ","").replace("\n","").replace("\t","").split(";"):
+        print'var = ',var
         ret.append( var )
             
     return ret

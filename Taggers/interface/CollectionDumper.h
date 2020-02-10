@@ -180,6 +180,7 @@ namespace flashgg {
         globalVarsDumper_(0)
     {
         if( dumpGlobalVariables_ ) {
+            // cout << "[in Taggers/interface/CollectionDumper.h 1st collectiondumper] - dumpGlobalVariables_ = True" << endl;
             globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ) );
         }
         _init(cfg, fs);
@@ -209,6 +210,7 @@ namespace flashgg {
         globalVarsDumper_(0)
     {
         if( dumpGlobalVariables_ ) {
+            // cout << "[in Taggers/interface/CollectionDumper.h 2nd collectiondumper] - dumpGlobalVariables_ = True" << endl;
             globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ), std::forward<edm::ConsumesCollector>(cc) );
         }
         _init(cfg, fs);
@@ -238,7 +240,7 @@ namespace flashgg {
 
         reweighGGHforNNLOPS_ = cfg.getUntrackedParameter<bool>( "reweighGGHforNNLOPS", false);
         if (reweighGGHforNNLOPS_) {
-            std::cout << " WARNING: reweighing for NNLOPS, this should be a ggH sample, please check!" << std::endl;
+            // std::cout << " WARNING: reweighing for NNLOPS, this should be a ggH sample, please check!" << std::endl;
         }
 
         if( cfg.getUntrackedParameter<bool>( "quietRooFit", false ) ) {
@@ -353,12 +355,19 @@ namespace flashgg {
             ws_ = 0;
         }
         for( auto &dumpers : dumpers_ ) {
+            // cout << "[in Taggers/interface/CollectionDumper.h] - &dumpers = " << &dumpers << endl;
+            // cout << "[in Taggers/interface/CollectionDumper.h] - on &dumpers " << endl;
             for( auto &dumper : dumpers.second ) {
+                // cout << "[in Taggers/interface/CollectionDumper.h] - &dumper = " << &dumper << endl;
+                // cout << "[in Taggers/interface/CollectionDumper.h] - on &dumper " << endl;
                 if( dumpWorkspace_ ) {
                     dumper.bookRooDataset( *ws_, "weight", replacements);
                 }
                 if( dumpTrees_ ) {
+                    // debugging HHWWgg
+                    // cout << "[in Taggers/interface/CollectionDumper.h] - dumpTrees_ = True " << endl;
                     TFileDirectory dir = fs.mkdir( "trees" );
+                    // cout << "[in Taggers/interface/CollectionDumper.h] - dir = " << dir << endl;
                     dumper.bookTree( dir, "weight", replacements );
                 }
                 if( dumpHistos_ ) {
@@ -583,17 +592,23 @@ namespace flashgg {
     template<class C, class T, class U>
         void CollectionDumper<C, T, U>::analyze( const edm::EventBase &event )
         {
+            // cout << "[in Taggers/interface/CollectionDumper.h: analyze]" << endl;
             edm::Handle<collection_type> collectionH;
 
             const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&event);
             if (fullEvent != 0) {
+                // cout << "[in Taggers/interface/CollectionDumper.h: void CollectionDumper<C, T, U>::analyze( const edm::EventBase &event )] - fullEvent != 0" << endl;
                 fullEvent->getByToken(srcToken_, collectionH);
             } else {
+                // cout << "[in Taggers/interface/CollectionDumper.h: void CollectionDumper<C, T, U>::analyze( const edm::EventBase &event )] - fullEvent = 0" << endl;
                 event.getByLabel(src_,collectionH);
             }
             const auto & collection = *collectionH;
 
-            if( globalVarsDumper_ ) { globalVarsDumper_->fill( event ); }
+            if( globalVarsDumper_ ) {
+                //  cout << "[in Taggers/interface/CollectionDumper.h: analyze] - globalVarsDumper_ = True" << endl;
+                 globalVarsDumper_->fill( event ); 
+                 }
 
             weight_ = eventWeight( event );
             //            std::cout << " IN CollectionDumper::analyze initial weight is " << weight_ << " dump=" << dumpPdfWeights_ << " split=" << splitPdfByStage0Cat_ << std::endl;
@@ -626,12 +641,33 @@ namespace flashgg {
             }
 
             int nfilled = maxCandPerEvent_;
+            // cout << "[in Taggers/interface/CollectionDumper.h] - maxCandPerEvent_ = " << maxCandPerEvent_ << endl;
+            // cout << "[in Taggers/interface/CollectionDumper.h] - Right before for( auto &cand : collection) " << endl;
 
             for( auto &cand : collection ) {
-                auto cat = classifier_( cand );
-                auto which = dumpers_.find( cat.first );
+                // cout << "[in Taggers/interface/CollectionDumper.h] - in for( auto &cand : collection) " << endl;
+                
 
+        //   for (auto &dumper: dumpers_){
+        //     // for (unsigned int j =0; i < dumper.first ; i++){
+        //         cout << "dumper.first = " << dumper.first << endl; 
+        //     // }
+
+        //     for (unsigned int i =0; i < dumper.second.size() ; i++){
+        //         cout << "dumper.second[" << i << "].GetName() = " << dumper.second[i].GetName() << endl;
+        //     }
+        //    }
+
+
+                auto cat = classifier_( cand );
+                // cout << "cat.first = " << cat.first << endl; 
+                auto which = dumpers_.find( cat.first ); // problem is that for HHWWgg it's looking for flashggDiPhotonTagBase when it should be looking for HHWWggTag
+                // HHWWgg problem is: which = dumpers_.end() 
+                // cout << "[in Taggers/interface/CollectionDumper.h] - dumpers_.size() = " << dumpers_.size() << endl;
+
+                // cout << "[in Taggers/interface/CollectionDumper.h] - Right before if( which != dumpers_.end() ) " << endl;
                 if( which != dumpers_.end() ) {
+                    // cout << "[in Taggers/interface/CollectionDumper.h] - in if( which != dumpers_.end() )  " << endl;
                     int isub = ( hasSubcat_[cat.first] ? cat.second : 0 );
                    double fillWeight =weight_;
                    const  WeightedObject* tag = dynamic_cast<const WeightedObject* >( &cand );

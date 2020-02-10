@@ -111,7 +111,7 @@ namespace flashgg {
                 if( labels[i] == tag.label() ) { break; }
             }
             if( i == TagList_.size() ) {
-                cout << "tag = " << tag << endl;
+                // cout << "tag = " << tag << endl;
                 labels.push_back( tag.label() );
                 TagList_.push_back( consumes<View<flashgg::DiPhotonTagBase> >( tag ) );
             }
@@ -144,9 +144,9 @@ namespace flashgg {
 
         for( auto tpr = TagPriorityRanges.begin() ; tpr != TagPriorityRanges.end() ; tpr++ ) {
             priority += 1; // for debug
-            cout << "On priority " << priority << endl; // HHWWgg debugging 
+            // cout << "On priority " << priority << endl; // HHWWgg debugging 
             // cout << "TagList_ = " << TagList_ << endl;
-            cout << "tpr->collIndex = " << tpr->collIndex << endl;
+            // cout << "tpr->collIndex = " << tpr->collIndex << endl;
             // cout << "TagList_[tpr->collIndex] = " << TagList_[tpr->collIndex] << endl;
 
             Handle<View<flashgg::DiPhotonTagBase> > TagVectorEntry;
@@ -155,11 +155,11 @@ namespace flashgg {
             edm::RefProd<edm::OwnVector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<edm::OwnVector<TagTruthBase> >();
 
             int chosen_i = -1 ; //this will become the index of the highest priority candidate 
-            cout << "TagVectorEntry->size() = " << TagVectorEntry->size() << endl;
+            // cout << "TagVectorEntry->size() = " << TagVectorEntry->size() << endl;
             // Looking from highest priority to lowest, check if the tag has any entries.
             for( unsigned int  tag_i = 0; tag_i < TagVectorEntry->size() ; tag_i++ )        {
 
-                cout << "tag_i = " << tag_i << endl;
+                // cout << "tag_i = " << tag_i << endl;
 
                 float mass = TagVectorEntry->ptrAt( tag_i )->diPhoton()->mass();
                 float sumPt = TagVectorEntry->ptrAt( tag_i )->diPhoton()->sumPt();
@@ -357,6 +357,8 @@ namespace flashgg {
                 std::cout << "******************************" << std::endl;
             }
         }
+        // if(SelectedTag) cout << "SELECTED TAG EXISTS" << endl;
+        // else cout << "SELECTED TAG DOES NOT" << endl;
         evt.put( std::move( SelectedTag ) );
         evt.put( std::move( SelectedTagTruth ) );
     }
