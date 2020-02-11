@@ -66,6 +66,22 @@
     },
     
     "MUON_ID" : "Medium",
+
+    "flashggTTHLeptonicTag" :
+    {
+     "MUON_ID" : "Medium"
+     },
+
+    "flashggWHLeptonicTag" :
+    {
+     "MUON_ID" : "Tight"
+     },
+
+    "flashggZHLeptonicTag" :
+    {
+     "MUON_ID" : "Tight"
+     },
+
     "MUON_ISO" : "LooseRel",
 
     "Ele_ID_eff_bin" : "binInfo2018",

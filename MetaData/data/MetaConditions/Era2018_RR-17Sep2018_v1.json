@@ -127,6 +127,22 @@
 
     
     "MUON_ID" : "Medium",
+
+    "flashggTTHLeptonicTag" :
+    {
+     "MUON_ID" : "Medium"
+     },
+
+    "flashggWHLeptonicTag" :
+    {
+     "MUON_ID" : "Tight"
+     },
+
+    "flashggZHLeptonicTag" :
+    {
+     "MUON_ID" : "Tight"
+     },
+
     "MUON_ISO" : "LooseRel",
 
     "MUON_ID_JSON_FileName" : "flashgg/Systematics/data/Muon2018_RunABCD_SF_ID.json",
