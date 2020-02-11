@@ -6,7 +6,6 @@
    - **N.B.** These setup instructions now include the STXS workflow
 
    Supported releases:
-   - 10_5_0
    - 10_6_1_patch2 required for the STXS stage 1.1 information
    - 10_6_8 required for the STXS stage 1.2 information
 
