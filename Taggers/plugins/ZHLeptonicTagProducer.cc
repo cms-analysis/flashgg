@@ -29,6 +29,7 @@
 #include "TLorentzVector.h"
 #include "DataFormats/Math/interface/LorentzVector.h"
 #include "TMath.h"
+#include "TMVA/Reader.h"
 
 using namespace std;
 using namespace edm;
@@ -44,6 +45,7 @@ namespace flashgg {
         ZHLeptonicTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
+        int  chooseCategory( float );
 
         EDGetTokenT<View<DiPhotonCandidate> > diPhotonToken_;
         EDGetTokenT<View<flashgg::Electron> > electronToken_;
@@ -83,6 +85,38 @@ namespace flashgg {
         double deltaRPhoLeadJet_              ;
         double deltaRPhoSubLeadJet_           ;
         double deltaRJetLepThreshold_         ;
+
+
+        //WHMVA
+        unique_ptr<TMVA::Reader>ZHMva_;
+
+        float _pho1_eta     ; 
+        float _pho2_eta     ; 
+        float _pho1_ptoM    ; 
+        float _pho2_ptoM    ; 
+        float _min_phoId    ; 
+        float _max_phoId    ; 
+        float _pho1_psv     ; 
+        float _pho2_psv     ; 
+        float _dipho_cosphi ;
+        float _lep1_pt      ; 
+        float _lep2_pt      ; 
+        float _lep1_eta     ; 
+        float _lep2_eta     ; 
+        float _dr_pho1_lep1 ; 
+        float _dr_pho1_lep2 ; 
+        float _dr_pho2_lep1 ; 
+        float _dr_pho2_lep2 ; 
+        float _dilep_mass   ; 
+        float _theta        ; 
+        float _njet         ; 
+        float _jet1_pt      ; 
+        float _jet1_csv     ; 
+        float _leptonType   ; 
+ 
+        FileInPath ZHMVAweightfile_ ;
+
+        vector<double> boundaries;
 
     };
 
@@ -140,13 +174,80 @@ namespace flashgg {
         pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
         pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
         newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
-        
+
+        //ZHMVA
+        ZHMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "ZHMVAweightfile" );
+
+        _pho1_eta     = -999.; 
+        _pho2_eta     = -999.; 
+        _pho1_ptoM    = -999.; 
+        _pho2_ptoM    = -999.; 
+        _min_phoId    = -999.; 
+        _max_phoId    = -999.; 
+        _pho1_psv     = -999.; 
+        _pho2_psv     = -999.; 
+        _dipho_cosphi = -999.; 
+        _lep1_pt      = -999.; 
+        _lep2_pt      = -999.; 
+        _lep1_eta     = -999.; 
+        _lep2_eta     = -999.; 
+        _dr_pho1_lep1 = -999.; 
+        _dr_pho1_lep2 = -999.; 
+        _dr_pho2_lep1 = -999.; 
+        _dr_pho2_lep2 = -999.; 
+        _dilep_mass   = -999.; 
+        _theta        = -999.; 
+        _njet         = -999.; 
+        _jet1_pt      = -999.; 
+        _jet1_csv     = -999.; 
+        _leptonType   = -999.; 
+
+        ZHMva_.reset( new TMVA::Reader( "!Color:!Silent" ) );
+        ZHMva_->AddVariable( "pho1_eta"      ,& _pho1_eta       ); 
+        ZHMva_->AddVariable( "pho2_eta"      ,& _pho2_eta       ); 
+        ZHMva_->AddVariable( "pho1_ptoM"     ,& _pho1_ptoM      ); 
+        ZHMva_->AddVariable( "pho2_ptoM"     ,& _pho2_ptoM      ); 
+        ZHMva_->AddVariable( "min_phoId"     ,& _min_phoId      ); 
+        ZHMva_->AddVariable( "max_phoId"     ,& _max_phoId      ); 
+        ZHMva_->AddVariable( "pho1_psv"      ,& _pho1_psv       ); 
+        ZHMva_->AddVariable( "pho2_psv"      ,& _pho2_psv       ); 
+        ZHMva_->AddVariable( "dipho_cosphi"  ,& _dipho_cosphi   ); 
+        ZHMva_->AddVariable( "lep1_pt"       ,& _lep1_pt        ); 
+        ZHMva_->AddVariable( "lep2_pt"       ,& _lep2_pt        ); 
+        ZHMva_->AddVariable( "lep1_eta"      ,& _lep1_eta       ); 
+        ZHMva_->AddVariable( "lep2_eta"      ,& _lep2_eta       ); 
+        ZHMva_->AddVariable( "dr_pho1_lep1"  ,& _dr_pho1_lep1   ); 
+        ZHMva_->AddVariable( "dr_pho1_lep2"  ,& _dr_pho1_lep2   ); 
+        ZHMva_->AddVariable( "dr_pho2_lep1"  ,& _dr_pho2_lep1   ); 
+        ZHMva_->AddVariable( "dr_pho2_lep2"  ,& _dr_pho2_lep2   ); 
+        ZHMva_->AddVariable( "dilep_mass"    ,& _dilep_mass     ); 
+        ZHMva_->AddVariable( "theta"         ,& _theta          ); 
+        ZHMva_->AddVariable( "njet"          ,& _njet           ); 
+        ZHMva_->AddVariable( "jet1_pt"       ,& _jet1_pt        ); 
+        ZHMva_->AddVariable( "jet1_csv"      ,& _jet1_csv       ); 
+        ZHMva_->AddVariable( "leptonType"    ,& _leptonType     ); 
+        ZHMva_->BookMVA( "BDT", ZHMVAweightfile_.fullPath() );
+
+        boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
+        assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception
+
         produces<vector<ZHLeptonicTag> >();
         produces<vector<VHTagTruth> >();
     }
 
+    int ZHLeptonicTagProducer::chooseCategory( float mva )
+    {
+        // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
+        int n;
+        for( n = 0 ; n < ( int )boundaries.size() ; n++ ) {
+            if( ( double )mva > boundaries[boundaries.size() - n - 1] ) { return n; }
+        }
+        return -1; // Does not pass, object will not be produced
+    }
+
     void ZHLeptonicTagProducer::produce( Event &evt, const EventSetup & )
     {
+
         Handle<int> stage0cat, stage1cat, njets;
         Handle<float> pTH, pTV;
         evt.getByToken(stage0catToken_, stage0cat);
@@ -247,9 +348,9 @@ namespace flashgg {
         for( unsigned int diphoIndex = 0; diphoIndex < diPhotons->size(); diphoIndex++ ) {
 
             std::vector<edm::Ptr<flashgg::Muon> > tagMuonsTemp;
-            std::vector<edm::Ptr<Electron> > tagElectronsTemp;
+            std::vector<edm::Ptr<flashgg::Electron> > tagElectronsTemp;
             std::vector<edm::Ptr<flashgg::Muon> > tagMuons;
-            std::vector<edm::Ptr<Electron> > tagElectrons;
+            std::vector<edm::Ptr<flashgg::Electron> > tagElectrons;
 
             isDiMuon = false;
             isDiElectron = false;
@@ -289,7 +390,6 @@ namespace flashgg {
                                                    evt.isRealData() 
                                                    );
 
-            if( tagElectronsTemp.size() < 2 && tagMuonsTemp.size() < 2 ) continue;
             //check for two good muons
             if( tagMuonsTemp.size() >= 2 ) {
                 for(uint i = 0; i < tagMuonsTemp.size(); i++) {
@@ -319,12 +419,14 @@ namespace flashgg {
                 }
             }
 
+            if ( !isDiElectron && !isDiMuon ) continue;
+
             //Jets
             std::vector<edm::Ptr<Jet> > tagJets;
             unsigned int jetCollectionIndex = diPhotons->ptrAt( diphoIndex )->jetCollectionIndex();
             for( unsigned int candIndex_outer = 0; candIndex_outer < Jets[jetCollectionIndex]->size() ; candIndex_outer++ ) {
  
-                bool keepJet=true;
+                bool keepJet = true;
                 edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( candIndex_outer );
                 if( !thejet->passesJetID( flashgg::Tight2017 ) ) { keepJet = false; }
                 if( fabs( thejet->eta() ) > jetEtaThreshold_ ) { keepJet = false; }
@@ -349,14 +451,74 @@ namespace flashgg {
                 if(keepJet) tagJets.push_back( thejet );
             }
 
-            if( isDiMuon  || isDiElectron ) {
+            //ZHMVA
+
+            TLorentzVector diphoP4(dipho->px(), dipho->py(), dipho->pz(), dipho->energy());
+            if (isDiElectron) {
+                Ptr<flashgg::Electron> elec1 = tagElectrons[0];
+                Ptr<flashgg::Electron> elec2 = tagElectrons[1];
+                TLorentzVector elec1P4(elec1->px(), elec1->py(), elec1->pz(), elec1->energy());
+                TLorentzVector elec2P4(elec2->px(), elec2->py(), elec2->pz(), elec2->energy());
+                TLorentzVector diEleP4 = elec1P4 + elec2P4;
+                _dr_pho1_lep1 = deltaR( elec1->eta(), elec1->phi(), dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi() ) ;
+                _dr_pho1_lep2 = deltaR( elec2->eta(), elec2->phi(), dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi() ) ;
+                _dr_pho2_lep1 = deltaR( elec1->eta(), elec1->phi(), dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi() ) ;
+                _dr_pho2_lep2 = deltaR( elec2->eta(), elec2->phi(), dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi() ) ;
+                _lep1_pt      = elec1->pt();
+                _lep2_pt      = elec2->pt();
+                _lep1_eta     = elec1->eta();
+                _lep2_eta     = elec2->eta();
+                _dilep_mass   = diEleP4.M();
+                _theta        = diphoP4.Angle(diEleP4.Vect());
+                _leptonType   = 11.;
+            } else {
+                Ptr<flashgg::Muon> mu1 = tagMuons[0];
+                Ptr<flashgg::Muon> mu2 = tagMuons[1];
+                TLorentzVector mu1P4(mu1->px(), mu1->py(), mu1->pz(), mu1->energy());
+                TLorentzVector mu2P4(mu2->px(), mu2->py(), mu2->pz(), mu2->energy());
+                TLorentzVector diMuP4 = mu1P4 + mu2P4;
+                _dr_pho1_lep1 = deltaR( mu1->eta(), mu1->phi(), dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi() ) ;
+                _dr_pho1_lep2 = deltaR( mu2->eta(), mu2->phi(), dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi() ) ;
+                _dr_pho2_lep1 = deltaR( mu1->eta(), mu1->phi(), dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi() ) ;
+                _dr_pho2_lep2 = deltaR( mu2->eta(), mu2->phi(), dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi() ) ;
+                _lep1_pt      = mu1->pt();
+                _lep2_pt      = mu2->pt();
+                _lep1_eta     = mu1->eta();
+                _lep2_eta     = mu2->eta();
+                _dilep_mass   = diMuP4.M();
+                _theta        = diphoP4.Angle(diMuP4.Vect());
+                _leptonType = 13.;
+            }
+
+            _pho1_eta      = dipho->leadingPhoton()->eta();
+            _pho2_eta      = dipho->subLeadingPhoton()->eta();
+            _pho1_ptoM     = dipho->leadingPhoton()->pt() / dipho->mass();
+            _pho2_ptoM     = dipho->subLeadingPhoton()->pt() / dipho->mass();
+            _min_phoId     = TMath::Min(idmva1, idmva2);
+            _max_phoId     = TMath::Max(idmva1, idmva2);
+            _pho1_psv      = dipho->leadingPhoton()->hasPixelSeed() > 0.5 ? 0. : 1.;
+            _pho2_psv      = dipho->subLeadingPhoton()->hasPixelSeed() > 0.5 ? 0. : 1.;
+
+            _dipho_cosphi  = TMath::Cos( deltaPhi(dipho->leadingPhoton()->phi(), dipho->subLeadingPhoton()->phi()) );
+            _njet          = tagJets.size();
+            float deepCSV1 = tagJets.size() > 0 ? tagJets[0]->bDiscriminator("pfDeepCSVJetTags:probb") + tagJets[0]->bDiscriminator("pfDeepCSVJetTags:probbb") : -2;
+            _jet1_csv      = deepCSV1 > -1 ? deepCSV1 : -2.;
+            _jet1_pt       = tagJets.size() > 0 ? tagJets[0]->pt() : -50.;
+
+            float zhmva    = ZHMva_->EvaluateMVA( "BDT" );
+ 
+            // Categorization by ZHMVA
+            int catnum = chooseCategory( zhmva );
+
+            if( catnum != -1 ) {
+                ZHLeptonicTags_obj.setCategoryNumber( catnum );
                 ZHLeptonicTags_obj.setMuons( tagMuons );
                 ZHLeptonicTags_obj.setElectrons( tagElectrons );
                 ZHLeptonicTags_obj.setJets( tagJets );
                 //including SFs for muons or electrons
                 if(isDiMuon){
-                    ZHLeptonicTags_obj.includeWeightsByLabel( *tagMuons.at(0), "MuonWeight");
-                    ZHLeptonicTags_obj.includeWeightsByLabel( *tagMuons.at(1), "MuonWeight");
+                    ZHLeptonicTags_obj.includeWeights( *tagMuons.at(0) );
+                    ZHLeptonicTags_obj.includeWeights( *tagMuons.at(1) );
                 } else if(isDiElectron){
                     ZHLeptonicTags_obj.includeWeights( *tagElectrons.at(0) );
                     ZHLeptonicTags_obj.includeWeights( *tagElectrons.at(1) );
