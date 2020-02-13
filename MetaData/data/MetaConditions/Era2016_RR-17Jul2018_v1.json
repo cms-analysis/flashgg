@@ -80,22 +80,22 @@
         }
     },
     
-    "MUON_ID" : "Medium",
 
-    "flashggTTHLeptonicTag" :
+    "Default":
     {
-     "MUON_ID" : "Medium"
-     },
+        "MUON_ID" : "Medium"
+    },
 
-    "flashggWHLeptonicTag" :
+    "TTHLep" :
     {
-     "MUON_ID" : "Tight"
+        "MUON_ID" : "Medium"
      },
 
-    "flashggZHLeptonicTag" :
-    { 
-     "MUON_ID" : "Tight"
+    "VHLep" :
+    {
+        "MUON_ID" : "Tight"
      },
+
 
     "MUON_ISO" : "LooseRel",
     "MUON_ID_JSON_FileName" : "flashgg/Systematics/data/Muon2016_RunBCDEFGH_SF_ID.json",

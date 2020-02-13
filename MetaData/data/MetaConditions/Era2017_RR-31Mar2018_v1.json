@@ -139,22 +139,22 @@
         "MC" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_MC_AK4PFchs"
     },
 
-    "MUON_ID" : "Medium",
 
-    "flashggTTHLeptonicTag" :
+    "Default":
     {
-     "MUON_ID" : "Medium"
+        "MUON_ID" : "Medium"
+    },
+
+    "TTHLep" :
+    {
+        "MUON_ID" : "Medium"
      },
 
-    "flashggWHLeptonicTag" :
+    "VHLep" :
     {
-     "MUON_ID" : "Tight"
+        "MUON_ID" : "Tight"
      },
 
-    "flashggZHLeptonicTag" :
-    {
-     "MUON_ID" : "Tight"
-     },
 
     "MUON_ISO" : "LooseRel",
 

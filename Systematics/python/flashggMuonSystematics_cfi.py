@@ -192,9 +192,14 @@ flashggMuonSystematics = cms.EDProducer('FlashggMuonEffSystematicProducer',
 					SystMethods2D = cms.VPSet(),
 					SystMethods = cms.VPSet()
                                         )
+flashggMuonSystematicsVH = flashggMuonSystematics.clone()
+flashggMuonSystematicsTTH = flashggMuonSystematics.clone()
+
+
+
 
 import exceptions
-def SetupMuonScaleFactors( process , id_file_name, id_lowpt_file_name, iso_file_name, id_name , iso_name , id_ref_tracks, id_lowpt_ref_tracks):
+def SetupMuonScaleFactors( process , id_file_name, id_lowpt_file_name, iso_file_name, id_name , iso_name , id_ref_tracks, id_lowpt_ref_tracks, code=0):
 
     minAnaPt = 5
     extendPtValID = 0
@@ -211,7 +216,14 @@ def SetupMuonScaleFactors( process , id_file_name, id_lowpt_file_name, iso_file_
         MUON_ISO_ScaleFactors[ iso ] = MuonSF_JSONReader( iso_file_name , "NUM_" + iso , "", "", extendPtValISO)
 
     if id_name in MUON_ID_ScaleFactors.keys():
-        process.flashggMuonSystematics.SystMethods.append( MUON_ID_ScaleFactors[id_name].GetPSet(str("Muon" + id_name + "IDWeight")) )
+	if (code == 0):
+        	process.flashggMuonSystematics.SystMethods.append( MUON_ID_ScaleFactors[id_name].GetPSet(str("Muon" + id_name + "IDWeight")) )
+	elif (code == 1):
+		process.flashggMuonSystematicsVH.SystMethods.append( MUON_ID_ScaleFactors[id_name].GetPSet(str("Muon" + id_name + "IDWeight")) )
+	elif (code == 2):
+		process.flashggMuonSystematicsTTH.SystMethods.append( MUON_ID_ScaleFactors[id_name].GetPSet(str("Muon" + id_name + "IDWeight")) )
+	else:
+		raise NameError("%s Is NOT a valid code[HARDCODED]. 0 : Default; 1 : VH; 2 : TTH" % code )
     else :
         raise NameError("%s id for muon is not valid" % id_name )
 

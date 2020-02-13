@@ -70,6 +70,8 @@ def createStandardSystematicsProducers(process, options):
     process.load("flashgg.Systematics.flashggElectronSystematics_cfi")
     process.load("flashgg.Systematics.flashggMetSystematics_cfi")
 
+    LepIDs = ["Default", "VHLep", "TTHLep"]
+
     from flashgg.Taggers.flashggTagSequence_cfi import *
     process.flashggTagSequence = flashggPrepareTagSequence(process, options.metaConditions)
     
@@ -77,7 +79,8 @@ def createStandardSystematicsProducers(process, options):
     diPhotons_syst.setupDiPhotonSystematics( process, options )
 
     import flashgg.Systematics.flashggMuonSystematics_cfi as muon_sf
-    muon_sf.SetupMuonScaleFactors( process ,  options.metaConditions["MUON_ID_JSON_FileName"],  options.metaConditions["MUON_ID_JSON_FileName_LowPt"], options.metaConditions["MUON_ISO_JSON_FileName"], options.metaConditions["MUON_ID"], options.metaConditions["MUON_ISO"], options.metaConditions["MUON_ID_RefTracks"],options.metaConditions["MUON_ID_RefTracks_LowPt"] )
+    for i in range(len(LepIDs)):
+	muon_sf.SetupMuonScaleFactors( process ,  options.metaConditions["MUON_ID_JSON_FileName"],  options.metaConditions["MUON_ID_JSON_FileName_LowPt"], options.metaConditions["MUON_ISO_JSON_FileName"], options.metaConditions[LepIDs[i]]["MUON_ID"], options.metaConditions["MUON_ISO"], options.metaConditions["MUON_ID_RefTracks"],options.metaConditions["MUON_ID_RefTracks_LowPt"], i )
    
     #scale factors for electron ID
     from   flashgg.Systematics.flashggElectronSystematics_cfi import EleSF_JSONReader
@@ -101,6 +104,9 @@ def modifyTagSequenceForSystematics(process,jetSystematicsInputTags,ZPlusJetMode
     massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggDifferentialPhoIdInputsCorrection"),cms.InputTag("flashggDiPhotonSystematics"))
     massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSelectedElectrons"),cms.InputTag("flashggElectronSystematics"))
     massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggSelectedMuons"),cms.InputTag("flashggMuonSystematics"))
+    process.flashggWHLeptonicTag.MuonTag = cms.InputTag("flashggMuonSystematicsVH")
+    process.flashggZHLeptonicTag.MuonTag = cms.InputTag("flashggMuonSystematicsVH")
+    process.flashggTTHLeptonicTag.MuonTag = cms.InputTag("flashggMuonSystematicsTTH")
     massSearchReplaceAnyInputTag(process.flashggTagSequence,cms.InputTag("flashggMets"),cms.InputTag("flashggMetSystematics"))
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
     for i in range(len(jetSystematicsInputTags)):
@@ -172,6 +178,10 @@ def cloneTagSequenceForEachSystematic(process,systlabels=[],phosystlabels=[],met
             process.flashggSystTagMerger.src.append(cms.InputTag("flashggZPlusJetTag" + systlabel))
         else:
             process.flashggSystTagMerger.src.append(cms.InputTag("flashggTagSorter" + systlabel))
+
+
+
+#def modifySystematicsWorkflowForVHLep(process, systlabels, phosystlabels, metsystlabels, jetsystlabels):
 
 # ttH tags use large BDTs and DNNs that take up lots of memory and cause crashes with normal workflow
 # This function modifies the workflow so that systematic variations are evaluated in a single instance of the tagger, rather than individual instances for each variation
