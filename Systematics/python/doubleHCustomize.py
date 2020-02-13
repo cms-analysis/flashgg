@@ -175,7 +175,7 @@ class DoubleHCustomize():
 
 
     def systematicVariables(self):
-      systematicVariables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass","Mjj[120,70,190]:=dijet().M()","HHbbggMVA[100,0,1.]:=MVA()","MX[300,250,5000]:=MX()","eventNumber[40,0.,1000000.]:=eventNumber()","genMhh[300,250,5000]:=genMhh()","genAbsCosThetaStar_CS[100,0,1]:=abs(genCosThetaStar_CS())",'btagReshapeWeight[100,-10.,10]:=weight("JetBTagReshapeWeightCentral")']
+      systematicVariables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass","Mjj[120,70,190]:=dijet().M()","HHbbggMVA[100,0,1.]:=MVA()","MX[300,250,5000]:=MX()","eventNumber[40,0.,1000000.]:=eventNumber()","genMhh[300,250,5000]:=genMhh()","genAbsCosThetaStar_CS[100,0,1]:=abs(genCosThetaStar_CS())",'btagReshapeWeight[100,-10.,10]:=weight("JetBTagReshapeWeightCentral")',"ntagMuons[100,0.,10] := ntagMuons()","ntagElectrons[100,0.,10] := ntagElectrons()","nMuons2018[100,0.,10] := nMuons2018()","nElectrons2018[100,0.,10] := nElectrons2018()"]
       
       if self.customize.doubleHReweight > 0: 
          for num in range(0,12):  #12 benchmarks
@@ -210,7 +210,11 @@ class DoubleHCustomize():
            #  "sigmaMJets := getSigmaMOverMJets()",
              "HHbbggMVA := MVA()",
              "MX := MX()",
-             "Mjj := dijet().M()"
+             "Mjj := dijet().M()",
+             "ntagMuons := ntagMuons()",
+             "ntagElectrons := ntagElectrons()",
+             "nMuons2018 := nMuons2018()",
+             "nElectrons2018 := nElectrons2018()"
              ]
         if self.customize.doDoubleHttHKiller : variables +=[
             "ttHScore := ttHScore()"
@@ -244,9 +248,9 @@ class DoubleHCustomize():
         self.process.flashggDoubleHTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["doubleHTag"]["weightsFile"][training_type]))  
         self.process.flashggDoubleHTag.MVAFlatteningFileName = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["MVAFlatteningFileName"][training_type]))
         if training_type == 'with_Mjj' :
-            self.process.flashggDoubleHTag.MVABoundaries = cms.vdouble(0.33,0.56, 0.70)
-            self.process.flashggDoubleHTag.MXBoundaries = cms.vdouble(250., 375.,470.,600.,250.,325.,365.,585.,250.,330.,360.,520.)
-            self.process.flashggDoubleHTag.ttHScoreThreshold = cms.double(0.) #0.26
+            self.process.flashggDoubleHTag.MVABoundaries = cms.vdouble(0.44,0.67,0.79)
+            self.process.flashggDoubleHTag.MXBoundaries = cms.vdouble(250.,385.,470.,640.,250.,345.,440.,515.,250.,330.,365.,545.)
+            self.process.flashggDoubleHTag.ttHScoreThreshold = cms.double(0.26) #0.26
         elif training_type == 'wo_Mjj' :
             self.process.flashggDoubleHTag.MVAConfig.variables.pop(0) 
             self.process.flashggDoubleHTag.MVABoundaries = cms.vdouble(0.30,0.54, 0.75)
