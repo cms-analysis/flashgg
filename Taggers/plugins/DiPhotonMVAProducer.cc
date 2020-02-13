@@ -142,13 +142,13 @@ namespace flashgg {
 
         if( version_xgb.compare( Version_ ) == 0 ) {
             DiphotonMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
-            DiphotonMva_->AddVariable( "leadmva", &leadmva_ );
-            DiphotonMva_->AddVariable( "subleadmva", &subleadmva_ );
-            DiphotonMva_->AddVariable( "leadptom", &leadptom_ );
-            DiphotonMva_->AddVariable( "subleadptom", &subleadptom_ );
-            DiphotonMva_->AddVariable( "leadeta", &leadeta_ );
-            DiphotonMva_->AddVariable( "subleadeta", &subleadeta_ );
-            DiphotonMva_->AddVariable( "CosPhi", &CosPhi_ );
+            DiphotonMva_->AddVariable( "dipho_leadIDMVA", &leadmva_ );
+            DiphotonMva_->AddVariable( "dipho_subleadIDMVA", &subleadmva_ );
+            DiphotonMva_->AddVariable( "dipho_lead_ptoM", &leadptom_ );
+            DiphotonMva_->AddVariable( "dipho_sublead_ptoM", &subleadptom_ );
+            DiphotonMva_->AddVariable( "dipho_leadEta", &leadeta_ );
+            DiphotonMva_->AddVariable( "dipho_subleadEta", &subleadeta_ );
+            DiphotonMva_->AddVariable( "dipho_cosphi", &CosPhi_ );
             DiphotonMva_->AddVariable( "vtxprob", &vtxprob_ );
             DiphotonMva_->AddVariable( "sigmarv", &sigmarv_ );
             DiphotonMva_->AddVariable( "sigmawv", &sigmawv_ );

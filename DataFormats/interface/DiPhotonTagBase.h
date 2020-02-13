@@ -13,11 +13,17 @@ namespace flashgg {
 
         enum tag_t { kUndefined = 0, kUntagged, kVBF, kTTHHadronic, kTTHLeptonic, kTHQLeptonic, kTTHDiLepton, kVHTight, kVHLoose, kVHHadronic, kVHEt,  kZHLeptonic, kWHLeptonic, kVHLeptonicLoose, kVHMet, kStageOneCombined };
 
-        enum stage1recoTag { LOGICERROR = -1, NOTAG = 0, RECO_0J_PTH_0_10_Tag0, RECO_0J_PTH_0_10_Tag1, RECO_0J_PTH_GT10_Tag0, RECO_0J_PTH_GT10_Tag1,
-                             RECO_1J_PTH_0_60_Tag0, RECO_1J_PTH_0_60_Tag1, RECO_1J_PTH_60_120_Tag0, RECO_1J_PTH_60_120_Tag1,
-                             RECO_1J_PTH_120_200_Tag0, RECO_1J_PTH_120_200_Tag1,  
-                             RECO_GE2J_PTH_0_60_Tag0, RECO_GE2J_PTH_0_60_Tag1, RECO_GE2J_PTH_60_120_Tag0, RECO_GE2J_PTH_60_120_Tag1, RECO_GE2J_PTH_120_200_Tag0, RECO_GE2J_PTH_120_200_Tag1, 
-                             RECO_PTH_200_300, RECO_PTH_300_450, RECO_PTH_450_650, RECO_PTH_GT650, 
+        enum stage1recoTag { LOGICERROR = -1, NOTAG = 0, 
+                             RECO_0J_PTH_0_10_Tag0, RECO_0J_PTH_0_10_Tag1, RECO_0J_PTH_0_10_Tag2, 
+                             RECO_0J_PTH_GT10_Tag0, RECO_0J_PTH_GT10_Tag1, RECO_0J_PTH_GT10_Tag2,
+                             RECO_1J_PTH_0_60_Tag0, RECO_1J_PTH_0_60_Tag1, RECO_1J_PTH_0_60_Tag2,
+                             RECO_1J_PTH_60_120_Tag0, RECO_1J_PTH_60_120_Tag1,RECO_1J_PTH_60_120_Tag2,
+                             RECO_1J_PTH_120_200_Tag0, RECO_1J_PTH_120_200_Tag1,  RECO_1J_PTH_120_200_Tag2,
+                             RECO_GE2J_PTH_0_60_Tag0, RECO_GE2J_PTH_0_60_Tag1, RECO_GE2J_PTH_0_60_Tag2,
+                             RECO_GE2J_PTH_60_120_Tag0, RECO_GE2J_PTH_60_120_Tag1, RECO_GE2J_PTH_60_120_Tag2,
+                             RECO_GE2J_PTH_120_200_Tag0, RECO_GE2J_PTH_120_200_Tag1, RECO_GE2J_PTH_120_200_Tag2,
+                             RECO_PTH_200_300_Tag0, RECO_PTH_200_300_Tag1, RECO_PTH_300_450_Tag0, RECO_PTH_300_450_Tag1,
+                             RECO_PTH_450_650_Tag0, RECO_PTH_450_650_Tag1, RECO_PTH_GT650_Tag0, RECO_PTH_GT650_Tag1,
                              RECO_VBFTOPO_VHHAD_Tag0, RECO_VBFTOPO_VHHAD_Tag1, 
                              RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag0, RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag1,
                              RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag0, RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag1,
