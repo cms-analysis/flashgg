@@ -492,7 +492,11 @@ namespace flashgg {
                 }
                 ZHLeptonicTags_obj.setDiPhotonIndex( diphoIndex );
                 ZHLeptonicTags_obj.setSystLabel( systLabel_ );
-                ZHLeptonicTags_obj.setStage1recoTag( DiPhotonTagBase::stage1recoTag::RECO_ZH_LEP );
+                if( catnum == 0 ) { 
+                    ZHLeptonicTags_obj.setStage1recoTag( DiPhotonTagBase::stage1recoTag::RECO_ZH_LEP_Tag0 );
+                } else if ( catnum == 1 ) {
+                    ZHLeptonicTags_obj.setStage1recoTag( DiPhotonTagBase::stage1recoTag::RECO_ZH_LEP_Tag1 );
+                }
                 ZHLeptonicTags->push_back( ZHLeptonicTags_obj );
                 if( ! evt.isRealData() ){
                     VHTagTruth truth_obj;
