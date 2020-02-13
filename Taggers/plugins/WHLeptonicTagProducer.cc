@@ -384,7 +384,7 @@ namespace flashgg {
             if( !hasGoodElec && !hasGoodMuons ) { continue; }
             //including SFs for leading muon or electron 
             if( goodMuons.size() > 0 ) {
-                whleptonictags_obj.includeWeightsByLabel( *goodMuons.at(0), "MuonWeight");
+                whleptonictags_obj.includeWeights( *goodMuons.at(0) );
             } else if ( goodElectrons.size() > 0 ) {
                 whleptonictags_obj.includeWeights( *goodElectrons.at(0) );
             }
@@ -434,7 +434,7 @@ namespace flashgg {
 
             TLorentzVector diphoP4(dipho->px(), dipho->py(), dipho->pz(), dipho->energy());
             if (ele_pt > mu_pt) {
-                Ptr<pat::Electron> elec = goodElectrons[0];
+                Ptr<flashgg::Electron> elec = goodElectrons[0];
                 TLorentzVector elecP4(elec->px(), elec->py(), elec->pz(), elec->energy());
                 _mtlnu         = sqrt( 2. * elec->et() * theMET->getCorPt() * ( 1 - cos( elec->phi() - theMET->getCorPhi() ) ) );
                 _theta         = diphoP4.Angle(elecP4.Vect());

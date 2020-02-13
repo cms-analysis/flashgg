@@ -502,7 +502,7 @@ else:
         ["NoTag",0],
         ["UntaggedTag",4],
         ["VBFTag",3],
-        ["ZHLeptonicTag",0],
+        ["ZHLeptonicTag",2],
         ["WHLeptonicTag",6],
         ["VHMetTag",0],
         ["VHHadronicTag",0],
