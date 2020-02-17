@@ -813,8 +813,10 @@ namespace flashgg {
             //tag_obj.includeWeights( *leadJet );
             //tag_obj.includeWeights( *subleadJet );
             
-            tag_obj.includeWeightsByLabel( *leadJet ,"JetBTagReshapeWeight",false);
-            tag_obj.includeWeightsByLabel( *subleadJet , "JetBTagReshapeWeight",false );
+           // tag_obj.includeWeightsByLabel( *leadJet ,"JetBTagReshapeWeight",false);
+          //  tag_obj.includeWeightsByLabel( *subleadJet , "JetBTagReshapeWeight",false );
+            tag_obj.includeWeightsByLabel( *leadJet ,"JetBTagReshapeWeight");
+            tag_obj.includeWeightsByLabel( *subleadJet , "JetBTagReshapeWeight" );
 
 
 
