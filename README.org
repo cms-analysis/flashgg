@@ -160,15 +160,14 @@ systematics to the analysis, and if desired to include tagging of other flashgg 
 The HHWWgg Tagger can be run locally with:
 
     #+BEGIN_EXAMPLE
-    cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=HHWWgg_v2-2 dataset=ggF_X250_WWgg_qqlnugg doHHWWggTag=True HHWWggTagsOnly=True maxEvents=500 doSystematics=False dumpWorkspace=False dumpTrees=True doBJetRegression=False useAAA=False useEOS=True 
+    cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=HHWWgg_v2-3 dataset=ggF_X250_WWgg_qqlnugg doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 doBJetRegression=0 useAAA=1
     #+END_EXAMPLE
 
 If this worked properly, you should get an output file called: output_numEvent500.root.
 
-For the moment, this has not been configured to properly work with systematics, so doSystematics is set to False. This does however include shower shape corrections,
-resulting in improved MVA scores compared to the HHWWgg dumper. The first customization location for this tagger is Systematics/python/HHWWggCustomize.py. 
+The first customization location for this tagger is Systematics/python/HHWWggCustomize.py. 
 In this you can specify variables to save, and the number of categories to save HHWWggTag objects in. The selections are located in 
-Taggers/plugins/HHWWggTagProducer.cc. For the moment, a tag object "tag_obj" (naming inspired by HH->bbgg) is created if an event has a diphoton, exactly one good lepton, corresponding
+Taggers/plugins/HHWWggTagProducer.cc. For the moment, a tag object "tag_obj" is created if an event has a diphoton, exactly one good lepton, corresponding
 to the leptonically decaying W boson, and at least two 'good' jets, corresponding to the hadronically decaying W boson. For these objects, 'good' is defined by the selections specified in 
 Taggers/python/flashggHHWWggTag_cfi.py. By default this tag object is saved to category 0 (tag_obj.setCategoryNumber( catnum )). To add another category, the number of categories
 specified in Systematics/python/HHWWggCustomize.py should be changed like so: self.tagList = [ ["HHWWggTag",1] ] -> self.tagList = [ ["HHWWggTag",2] ]. Then, when saving a tag object
@@ -193,6 +192,12 @@ As described in the Candidate Dumper condor instructions above, this can be spec
 
     #+BEGIN_EXAMPLE
     . HHWWgg_Run_Jobs.sh --labelName HHWWggTaggerTest --nEvents 1000 --json Taggers/test/HHWWgg_v2-2/HHWWgg_Signal_2017.json -w 
+    #+END_EXAMPLE
+
+HHWWgg_v2-3:
+
+    #+BEGIN_EXAMPLE
+    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-3_CutFlow_NoSyst_LowEvents --nEvents 1000 --json Taggers/test/HHWWgg_v2-3/HHWWgg_v2-3.json -g -c -t 
     #+END_EXAMPLE
 
 ** nTuple Processing

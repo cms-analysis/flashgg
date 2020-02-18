@@ -217,8 +217,6 @@ then
       command+='MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json '
       command+=' doHHWWggTag=True HHWWggTagsOnly=True '
 
-	echo "hello"
-
       if [ $calcSystematics == 'true' ]
       then
            command+=' doSystematics=True '
@@ -226,21 +224,16 @@ then
            command+='doSystematics=False '
       fi
 
-	echo "before dump trees if"
-
       if [ $dumpTrees == 'true' ]
       then 
            command+=' dumpTrees=True '
       else 
            command+=' dumpTrees=False '
       fi  
- 
-	echo "after dump trees if"
 
       if [ $dumpWorkspaces == 'true' ]
       then 
            command+=' dumpWorkspace=True '
-      
 
       else 
            command+=' dumpWorkspace=False '
@@ -254,6 +247,6 @@ then
       #     command+=' doHHWWggTag=True HHWWggTagsOnly=True doSystematics=False doBJetRegression=True dumpWorkspace=False dumpTrees=True'
 fi
 
-echo "command: $command"
+echo "Evaluating command: $command"
 eval "$command" 
 echo "Finished job for file: $jsonpath"
