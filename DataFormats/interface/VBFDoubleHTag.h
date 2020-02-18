@@ -97,8 +97,10 @@ namespace flashgg {
         float fabs_CosThetaStar_CS() const {return fabs_CosThetaStar_CS_;}
         float fabs_CosTheta_bb() const {return fabs_CosTheta_bb_;}*/
         //VBF related variables:
-        float MinDeltaR_VBF_gamma() ; 
-        float MinDeltaR_VBF_b() ; 
+        float getMinDeltaR_VBF_gamma() const; 
+        float getMinDeltaR_VBF_b() const; 
+        float getVBFJet_mjj() const;
+
         /*float VBFMjj_, VBFdelta_eta_, VBFeta1_, VBFeta2_, VBFphi1_, VBFphi2_, VBFpt1_, VBFpt2_, VBFpx1_, VBFpx2_, VBFpy1_, VBFpy2_, VBFpz1_, VBFpz2_, Njet_; 
         float VBFMjj() const {return VBFMjj_; }
         float VBFdelta_eta() const {return VBFdelta_eta_;}

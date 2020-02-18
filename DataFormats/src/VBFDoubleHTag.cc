@@ -22,19 +22,26 @@ VBFDoubleHTag *VBFDoubleHTag::clone() const
 }
 
 
-float VBFDoubleHTag::MinDeltaR_VBF_gamma() 
+float VBFDoubleHTag::getMinDeltaR_VBF_gamma() const 
 {
   float MinDeltaR_VBF_gamma = min( min( deltaR( diPhoton()->leadingPhoton()->p4(), VBFleadJet().p4() ), deltaR( diPhoton()->leadingPhoton()->p4(), VBFsubleadJet().p4() ) ), min( deltaR( diPhoton()->subLeadingPhoton()->p4(), VBFleadJet().p4() ), deltaR( diPhoton()->subLeadingPhoton()->p4(), VBFsubleadJet().p4() ) ) );
  
   return MinDeltaR_VBF_gamma;
 }
 
-float VBFDoubleHTag::MinDeltaR_VBF_b() 
+float VBFDoubleHTag::getMinDeltaR_VBF_b() const
 {
   float MinDeltaR_VBF_b = min( min( deltaR( leadJet().p4(), VBFleadJet().p4() ), deltaR( subleadJet().p4() , VBFsubleadJet().p4() ) ), min( deltaR( leadJet().p4() , VBFleadJet().p4() ), deltaR( VBFsubleadJet().p4() , VBFsubleadJet().p4() ) ) );
 
   return MinDeltaR_VBF_b;
 }
+
+float VBFDoubleHTag::getVBFJet_mjj() const
+{
+   double VBFJet_mjj = (VBFleadJet().p4()+VBFsubleadJet().p4()).mass();
+
+   return VBFJet_mjj;
+} 
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

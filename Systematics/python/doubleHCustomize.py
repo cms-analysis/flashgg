@@ -10,7 +10,8 @@ class DoubleHCustomize():
         self.process = process
         self.customize = customize
         self.metaConditions = metaConditions
-        self.tagList = [ ["VBFDoubleHTag",1], ["DoubleHTag",12] ]
+#        self.tagList = [ ["VBFDoubleHTag",1], ["DoubleHTag",12] ]
+        self.tagList = [ ["VBFDoubleHTag",1] ]
         self.customizeTagSequence()
 
     def variablesToDump(self):
@@ -100,11 +101,31 @@ class DoubleHCustomize():
                 "subleadingJet_bRegNNResolution := subleadJet().userFloat('bRegNNResolution')",
                 "sigmaMJets := getSigmaMOverMJets()"
         ]
-        if self.customize.addVBFDoubleHVariables: variables +=[
-                "MinDeltaR_VBF_gamma := MinDeltaR_VBF_gamma()",
-                "MinDeltaR_VBF_b := MinDeltaR_VBF_b()",
-                "VBFJet_mass := diVBFjet().M()",
-                "VBFJet_Delta := abs(VBFleadJet().eta - VBFsubleadJet().eta)",
+        if self.customize.addVBFDoubleHVariables: variables +=[ 
+                "b1_pt := b1_pt()",
+                "b1_eta := b1_eta()",
+                "b1_phi := b1_phi()",
+                "b2_pt := b2_pt()",
+                "b2_eta := b2_eta()",
+                "b2_phi := b2_phi()",
+                "b1_pz := b1_pz()",
+                "b2_pz := b2_pz()",
+                "Mbb_gen := Mbb_gen()", 
+                "q1_pt := q1_pt()",
+                "q1_eta := q1_eta()",
+                "q1_ID := q1_ID()",
+                "q2_ID := q2_ID()",
+                "q1_phi := q1_phi()",
+                "q2_pt := q2_pt()",
+                "q2_eta := q2_eta()",
+                "q2_phi := q2_phi()",
+                "q1_pz := q1_pz()",
+                "q2_pz := q2_pz()",
+                "Mqq_gen := Mqq_gen()",
+                "MinDeltaR_VBF_gamma := getMinDeltaR_VBF_gamma()",
+                "MinDeltaR_VBF_b := getMinDeltaR_VBF_b()",
+                "VBFJet_mjj := getVBFJet_mjj()",
+                "VBFJet_Delta_eta := abs(VBFleadJet().eta - VBFsubleadJet().eta)",
                 "VBFleadJet_pt :=  VBFleadJet().pt ",
                 "VBFsubleadJet_pt := VBFsubleadJet().pt ",
                 "VBFleadJet_eta := VBFleadJet().eta",
@@ -203,33 +224,121 @@ class DoubleHCustomize():
       return systematicVariables
 
 
-    def variablesToDumpData():
-        variables = [
-           #  "leadingJet_DeepCSV := leadJet().bDiscriminator('pfDeepCSVJetTags:probb')+leadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",#FIXME make the btag type configurable?
-           #  "subleadingJet_DeepCSV := subleadJet().bDiscriminator('pfDeepCSVJetTags:probb')+subleadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",
-           #  "absCosThetaStar_CS := abs(getCosThetaStar_CS())",
-           #  "absCosThetaStar_CS_old := abs(getCosThetaStar_CS_old(6500))",
-           #  "absCosTheta_bb := abs(CosThetaAngles()[1])",
-           #  "absCosTheta_gg := abs(CosThetaAngles()[0])",
-           #  "diphotonCandidatePtOverdiHiggsM := diphotonPtOverM()",
-           #  "dijetCandidatePtOverdiHiggsM := dijetPtOverM()",
-           #  "customLeadingPhotonIDMVA := diPhoton.leadingView.phoIdMvaWrtChosenVtx",
-           #  "customSubLeadingPhotonIDMVA := diPhoton.subLeadingView.phoIdMvaWrtChosenVtx",
-           #  "leadingPhotonSigOverE := diPhoton.leadingPhoton.sigEOverE",
-           #  "subleadingPhotonSigOverE := diPhoton.subLeadingPhoton.sigEOverE",
-           #  "sigmaMOverM := sqrt(0.5*(diPhoton.leadingPhoton.sigEOverE*diPhoton.leadingPhoton.sigEOverE + diPhoton.subLeadingPhoton.sigEOverE*diPhoton.subLeadingPhoton.sigEOverE))",
-           #  "PhoJetMinDr := getPhoJetMinDr()",#up to here input variables to MVA
-           #  "leadingJet_bRegNNResolution := leadJet().userFloat('bRegNNResolution')",
-           #  "subleadingJet_bRegNNResolution := subleadJet().userFloat('bRegNNResolution')",
-           #  "sigmaMJets := getSigmaMOverMJets()",
-             "HHbbggMVA := MVA()",
-             "MX := MX()",
+    def variablesToDumpData(self):
+        variables = +[
+                "leadingJet_bDis := leadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",#FIXME make the btag type configurable?
+                "subleadingJet_bDis := subleadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",
+                "leadingJet_DeepCSV := leadJet().bDiscriminator('pfDeepCSVJetTags:probb')+leadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",#FIXME make the btag type configurable?
+                "subleadingJet_DeepCSV := subleadJet().bDiscriminator('pfDeepCSVJetTags:probb')+subleadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",
+                "leadingJet_DeepFlavour := leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",#FIXME make the btag type configurable?
+                "subleadingJet_DeepFlavour := subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",#FIXME make the btag type configurable?
+                "leadingJet_puJetIdMVA := leadJet().puJetIdMVA()",
+                "subleadingJet_puJetIdMVA := subleadJet().puJetIdMVA()",
+                "leadingJet_puJetIdMVA := leadJet().puJetIdMVA()",
+                "subleadingJet_puJetIdMVA := subleadJet().puJetIdMVA()",
+                "absCosThetaStar_CS := abs(getCosThetaStar_CS())",
+                "absCosThetaStar_CS_old := abs(getCosThetaStar_CS_old(6500))",
+                "absCosTheta_bb := abs(CosThetaAngles()[1])",
+                "absCosTheta_gg := abs(CosThetaAngles()[0])",
+                "diphotonCandidatePtOverdiHiggsM := diphotonPtOverM()",
+                "dijetCandidatePtOverdiHiggsM := dijetPtOverM()",
+                "customLeadingPhotonIDMVA := diPhoton.leadingView.phoIdMvaWrtChosenVtx",
+                "customSubLeadingPhotonIDMVA := diPhoton.subLeadingView.phoIdMvaWrtChosenVtx",
+                "EGMLeadingPhotonIDMVA := diPhoton.leadingPhoton.userFloat('EGMPhotonMVA')",
+                "EGMSubLeadingPhotonIDMVA := diPhoton.subLeadingPhoton.userFloat('EGMPhotonMVA')",
+                "leadingPhotonSigOverE := diPhoton.leadingPhoton.sigEOverE",
+                "subleadingPhotonSigOverE := diPhoton.subLeadingPhoton.sigEOverE",
+                "sigmaMOverM := sqrt(0.5*(diPhoton.leadingPhoton.sigEOverE*diPhoton.leadingPhoton.sigEOverE + diPhoton.subLeadingPhoton.sigEOverE*diPhoton.subLeadingPhoton.sigEOverE))",
+                "sigmaMOverMDecorr := getSigmaMDecorr()",
+                "PhoJetMinDr := getPhoJetMinDr()",#up to here input variables to MVA
+                "PhoJetOtherDr := getPhoJetOtherDr()",
+                "HHbbggMVA := MVA()",
+                "MX := MX()",
+                "Mjj := dijet().M()",
+                "dijet_pt := dijet().pt",
+                "dijet_eta := dijet().eta",
+                "dijet_phi := dijet().phi",
+                "diphoton_pt := diPhoton.pt",
+                "diphoton_eta := diPhoton.eta",
+                "diphoton_phi := diPhoton.phi",
+                'btagReshapeWeight := weight("JetBTagReshapeWeightCentral")',
+
+                "diHiggs_pt := getdiHiggsP4().pt()",
+                "diHiggs_mass := getdiHiggsP4().M()",
+                "diHiggs_eta :=  getdiHiggsP4().eta()",
+                "diHiggs_phi := getdiHiggsP4().phi()",
+                "category := categoryNumber()",
+
+                "leadingPhoton_pt := diPhoton.leadingPhoton.pt",
+                "leadingPhoton_eta := diPhoton.leadingPhoton.eta",
+                "leadingPhoton_phi := diPhoton.leadingPhoton.phi",
+                "subleadingPhoton_pt := diPhoton.subLeadingPhoton.pt",
+                "subleadingPhoton_eta := diPhoton.subLeadingPhoton.eta",
+                "subleadingPhoton_phi := diPhoton.subLeadingPhoton.phi",
+
+                "leadingJet_pt := leadJet().pt",
+                "leadingJet_eta := leadJet().eta",
+                "leadingJet_phi := leadJet().phi",
+                "leadingJet_mass := leadJet().p4().M()",
+                "leadingJet_hflav := leadJet().hadronFlavour()",
+                "leadingJet_pflav := leadJet().partonFlavour()",
+
+                "subleadingJet_pt := subleadJet().pt",
+                "subleadingJet_eta := subleadJet().eta",
+                "subleadingJet_phi := subleadJet().phi",
+                "subleadingJet_mass := subleadJet().p4().M()",
+                "subleadingJet_hflav := subleadJet().hadronFlavour()",
+                "subleadingJet_pflav := subleadJet().partonFlavour()"
+
            #  "Mjj := dijet().M()",
            #  "eventNumber := eventNumber()",
              ]
         if self.customize.doDoubleHttHKiller : variables +=[
             "ttHScore := ttHScore()",
            ]
+        if self.customize.addVBFDoubleHVariables: variables +=[
+                "b1_pt := b1_pt()",
+                "b1_eta := b1_eta()",
+                "b1_phi := b1_phi()",
+                "b2_pt := b2_pt()",
+                "b2_eta := b2_eta()",
+                "b2_phi := b2_phi()",
+                "b1_pz := b1_pz()",
+                "b2_pz := b2_pz()",
+                "Mbb_gen := Mbb_gen()",
+                "q1_pt := q1_pt()",
+                "q1_eta := q1_eta()",
+                "q1_ID := q1_ID()",
+                "q2_ID := q2_ID()",
+                "q1_phi := q1_phi()",
+                "q2_pt := q2_pt()",
+                "q2_eta := q2_eta()",
+                "q2_phi := q2_phi()",
+                "q1_pz := q1_pz()",
+                "q2_pz := q2_pz()",
+                "Mqq_gen := Mqq_gen()",
+                "MinDeltaR_VBF_gamma := getMinDeltaR_VBF_gamma()",
+                "MinDeltaR_VBF_b := getMinDeltaR_VBF_b()",
+                "VBFJet_mjj := getVBFJet_mjj()",
+                "VBFJet_Delta_eta := abs(VBFleadJet().eta - VBFsubleadJet().eta)",
+                "VBFleadJet_pt :=  VBFleadJet().pt ",
+                "VBFsubleadJet_pt := VBFsubleadJet().pt ",
+                "VBFleadJet_eta := VBFleadJet().eta",
+                "VBFsubleadJet_eta := VBFsubleadJet().eta",
+                "VBFleadJet_phi := VBFleadJet().phi",
+                "VBFsubleadJet_phi := VBFsubleadJet().phi",
+                "VBFleadJet_px := VBFleadJet().px",
+                "VBFleadJet_py := VBFsubleadJet().px",
+                "VBFsubleadJet_py := VBFleadJet().py",
+                "VBFleadJet_pz := VBFleadJet().pz",
+                "VBFsubleadJet_pz := VBFsubleadJet().pz",
+                "VBFleadJet_DeepFlavour := VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
+                "VBFleadJet_QGL := VBFleadJet().QGL() ",
+                "VBFleadJet_PUID := VBFleadJet().puJetIdMVA()",
+                "VBFsubleadJet_DeepFlavour := VBFsubleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+VBFsubleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+VBFsubleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
+                "VBFsubleadJet_QGL := VBFsubleadJet.QGL()",
+                "VBFsubleadJet_PUID := VBFsubleadJet().puJetIdMVA()"
+        ]
         return variables
 
 

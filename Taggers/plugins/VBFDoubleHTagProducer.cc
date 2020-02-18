@@ -119,8 +119,8 @@ namespace flashgg {
         TGraph * MVAFlatteningCumulative_;
         double MVAscaling_;
 
-        //   vector< edm::EDGetTokenT<float> > reweights_;
-        //int doReweight_;
+        vector< edm::EDGetTokenT<float> > reweights_;
+        int doReweight_;
             
         DoubleHttHTagger tthKiller_;
         float ttHTagger;
@@ -172,12 +172,12 @@ namespace flashgg {
         mjjBoundariesLower_ = iConfig.getParameter<vector<double > >( "MJJBoundariesLower" ); 
         mjjBoundariesUpper_ = iConfig.getParameter<vector<double > >( "MJJBoundariesUpper" ); 
         multiclassSignalIdx_ = (iConfig.getParameter<edm::ParameterSet>("MVAConfig")).getParameter<int>("multiclassSignalIdx"); 
-        //doReweight_ = (iConfig.getParameter<int>("doReweight")); 
+        doReweight_ = (iConfig.getParameter<int>("doReweight")); 
    
-        // auto names = iConfig.getParameter<vector<string>>("reweight_names");
-        // for (auto & name : names ) {
-        //     reweights_.push_back(consumes<float>(edm::InputTag(iConfig.getParameter<string>("reweight_producer") , name))) ;
-        // }
+        auto names = iConfig.getParameter<vector<string>>("reweight_names");
+        for (auto & name : names ) {
+            reweights_.push_back(consumes<float>(edm::InputTag(iConfig.getParameter<string>("reweight_producer") , name))) ;
+        }
 
         //  diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         inputDiPhotonName_= iConfig.getParameter<std::string > ( "DiPhotonName" );
@@ -360,15 +360,15 @@ namespace flashgg {
 
         //read reweighting
         vector<float> reweight_values;
-        /*   if (doReweight_>0) 
-             {
-             for (auto & reweight_token : reweights_)
-             {
-             edm::Handle<float> reweight_hadle;
-             evt.getByToken(reweight_token, reweight_hadle);
-             reweight_values.push_back(*reweight_hadle);
-             }
-             }*/
+        if (doReweight_>0) 
+            {
+                for (auto & reweight_token : reweights_)
+                    {
+                        edm::Handle<float> reweight_hadle;
+                        evt.getByToken(reweight_token, reweight_hadle);
+                        reweight_values.push_back(*reweight_hadle);
+                    }
+            }
         
 
         // prepare output
@@ -408,6 +408,9 @@ namespace flashgg {
             truth_obj.setGenPV( higgsVtx );
             truths->push_back( truth_obj );
         }
+        // MC b quark information
+        
+
 
         // read diphotons
         for (unsigned int diphoton_idx = 0; diphoton_idx < diPhotonTokens_.size(); diphoton_idx++) {//looping over all diphoton systematics
@@ -542,15 +545,74 @@ namespace flashgg {
                             }
                         }
                     }
+                    
                     cout << hasVBFJets << endl;
-                    if (!hasVBFJets)  
-                        continue;             
-
+                    if (!hasVBFJets) continue;             
                     auto & leadJet = jet1; 
                     auto & subleadJet = jet2;
                     auto & VBFleadJet = jet3;
                     auto & VBFsubleadJet = jet4; 
- 
+  
+     //  generator level b quark
+/*            Handle<View<reco::GenParticle> > genParticles;
+            std::vector<edm::Ptr<reco::GenParticle> > selHiggses;
+            evt.getByToken( genParticleToken_, genParticles );
+            cout << genParticles->size() << endl;
+*/            float b1_pt = 0, b2_pt = 0, b1_eta = 0 , b2_eta = 0, b1_phi = 0, b2_phi =0, Mbb_gen=0, b1_pz = 0, b2_pz = 0;
+/*            for( unsigned int gen1 = 0 ; gen1 < genParticles->size()-1; gen1++ ) {
+               int pdgid1 = abs(genParticles->ptrAt( gen1 )->pdgId());
+               int status1 = abs(genParticles->ptrAt( gen1 )->status());
+               if ( pdgid1 == 5 && status1 == 23 ){   
+                        for( unsigned int gen2 = gen1+1 ; gen2 < genParticles->size(); gen2++ ) {
+                           int pdgid2 = abs(genParticles->ptrAt( gen2 )->pdgId());
+                           int status2 = abs(genParticles->ptrAt( gen2 )->status());
+                                if ( pdgid2 == 5 && status2 == 23 ){
+                                       b1_pt = genParticles->ptrAt( gen1 )->pt();
+                                       b2_pt = genParticles->ptrAt( gen2 )->pt();     
+                                       b1_eta = genParticles->ptrAt( gen1 )->eta();
+                                       b2_eta = genParticles->ptrAt( gen2 )->eta();
+                                       b1_phi = genParticles->ptrAt( gen1 )->phi();
+                                       b2_phi = genParticles->ptrAt( gen2 )->phi(); 
+                                       Mbb_gen = (genParticles->ptrAt(gen1)->p4() + genParticles->ptrAt(gen2)->p4()).mass();       
+                                       b1_pz = genParticles->ptrAt( gen1 )->pz();
+                                       b2_pz = genParticles->ptrAt( gen2 )->pz();     
+
+                    }
+                }
+             }
+         }
+*/
+     // generator level Forward-backward quark study:
+            float q1_pt = 0, q2_pt = 0, q1_eta = 0 , q2_eta = 0, q1_phi = 0, q2_phi =0, Mqq_gen=0, q1_pz=0, q2_pz=0 ;
+            int q1_ID = -99, q2_ID= -99;
+/*            for( unsigned int gen1 = 0 ; gen1 < genParticles->size()-1; gen1++ ) {
+               int pdgid1 = abs(genParticles->ptrAt( gen1 )->pdgId());
+               int status1 = genParticles->ptrAt( gen1 )->status();
+               cout << pdgid1 << "  " << status1 << endl;
+                   if(status1 == 21){
+                        for( unsigned int gen2 = gen1+1 ; gen2 < genParticles->size(); gen2++ ) {
+                            int pdgid2 = abs(genParticles->ptrAt( gen2 )->pdgId());
+                            int status2 = genParticles->ptrAt( gen2 )->status();
+                            if(status2 == 21){
+                                       q1_pt = genParticles->ptrAt( gen1 )->pt();
+                                       q2_pt = genParticles->ptrAt( gen2 )->pt();
+                                       q1_eta = genParticles->ptrAt( gen1 )->eta();
+                                       q2_eta = genParticles->ptrAt( gen2 )->eta();
+                                       q1_phi = genParticles->ptrAt( gen1 )->phi();
+                                       q2_phi = genParticles->ptrAt( gen2 )->phi();
+                                       q1_ID = pdgid1;
+                                       q2_ID = pdgid2;
+                                       q1_pz = genParticles->ptrAt( gen1 )->pz();
+                                       q2_pz = genParticles->ptrAt( gen2 )->pz();
+                                       Mqq_gen = (genParticles->ptrAt(gen1)->p4() + genParticles->ptrAt(gen2)->p4()).mass();
+             cout << q1_pz << "     " << Mqq_gen << endl;
+                                    }
+                                }
+                            }
+                        }
+
+*/
+        
                     // prepare tag object
                     VBFDoubleHTag tag_obj(dipho, leadJet, subleadJet, VBFleadJet, VBFsubleadJet);
                     tag_obj.setDiPhotonIndex( candIndex );
@@ -565,7 +627,31 @@ namespace flashgg {
                     tag_obj.setMX( tag_obj.p4().mass() - tag_obj.dijet().mass() - tag_obj.diPhoton()->mass() + 250. );
                     tag_obj.setGenMhh( genMhh );
                     tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );
-                    //   if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values );
+
+                    tag_obj.setb1_pt(b1_pt);
+                    tag_obj.setb2_pt(b2_pt);
+                    tag_obj.setb1_eta(b1_eta);
+                    tag_obj.setb2_eta(b2_eta);
+                    tag_obj.setb1_phi(b1_phi);
+                    tag_obj.setb2_phi(b2_phi);
+                    tag_obj.setb1_pz(b1_pz);
+                    tag_obj.setb2_pz(b2_pz);
+                    tag_obj.setMbb_gen(Mbb_gen);
+
+                    tag_obj.setq1_pt(q1_pt);
+                    tag_obj.setq2_pt(q2_pt);
+                    tag_obj.setq1_eta(q1_eta);
+                    tag_obj.setq2_eta(q2_eta);
+                    tag_obj.setq1_phi(q1_phi);
+                    tag_obj.setq2_phi(q2_phi);
+                    tag_obj.setq1_pz(q1_pz);
+                    tag_obj.setq2_pz(q2_pz);
+                    tag_obj.setq1_ID(q1_ID);
+                    tag_obj.setq2_ID(q2_ID);
+                    tag_obj.setMqq_gen(Mqq_gen);
+
+                    //tag_obj.setVBFJet_mjj( dijetVBF_mass );
+                    if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values );
             
                     if(doSigmaMDecorr_){
                         tag_obj.setSigmaMDecorrTransf(transfEBEB_,transfNotEBEB_);

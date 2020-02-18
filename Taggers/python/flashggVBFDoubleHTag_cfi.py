@@ -84,9 +84,9 @@ flashggVBFDoubleHTag = cms.EDProducer("FlashggVBFDoubleHTagProducer",
                                    doCategorization=cms.bool(False),#do categorization based on MVA x MX or only fill first tree with all events
                                    MVAFlatteningFileName=cms.untracked.FileInPath("%s"%MVAFlatteningFileName),#FIXME, this should be optional, is it?
                                    globalVariables=globalVariables,
-                                   #doReweight = flashggDoubleHReweight.doReweight,
-                                   #reweight_producer = cms.string(reweight_settings.reweight_producer),
-                                   #reweight_names = cms.vstring(reweight_settings.reweight_names),
+                                   doReweight = flashggDoubleHReweight.doReweight,
+                                   reweight_producer = cms.string(reweight_settings.reweight_producer),
+                                   reweight_names = cms.vstring(reweight_settings.reweight_names),
 
                                    dottHTagger=cms.bool(False), #whether to do ttH killer. 
 
