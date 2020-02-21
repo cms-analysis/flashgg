@@ -142,11 +142,13 @@ namespace flashgg {
         float fabs_CosThetaStar_CS() const {return fabs_CosThetaStar_CS_;}
         float fabs_CosTheta_bb() const {return fabs_CosTheta_bb_;}
         //VBF study functions:
-//        float VBFJet_mjj_;
-        float getVBFJet_mjj() const ; 
-        float getMinDeltaR_VBF_gamma() const;
-        float getMinDeltaR_VBF_b() const;
-        
+        float getVBFDeltaR_jg() const;
+        float getVBFDeltaR_jb() const;
+        float getVBFJet_mjj() const;
+        float getVBFCentrality_jg() const;
+        float getVBFCentrality_jb() const;
+        float getVBFDelta_phi() const;
+        float getVBFProd_eta() const; 
 
 //        void setisVBF(bool x) { isVBF_ = x; }
 //        bool isVBF() const { return isVBF_; }

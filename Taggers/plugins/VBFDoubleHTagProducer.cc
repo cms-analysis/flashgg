@@ -514,7 +514,7 @@ namespace flashgg {
                             if( VBFJetIDLevel_ == "Tight2017" && !VBFjet->passesJetID  ( flashgg::Tight2017 ) ) continue;
                             if( VBFJetIDLevel_ == "Tight2018" && !VBFjet->passesJetID  ( flashgg::Tight2018 ) ) continue;
                         }
-                        if( reco::deltaR( *VBFjet, *(dipho->leadingPhoton()) ) > vetoConeSize_ && reco::deltaR( *VBFjet, *(dipho->subLeadingPhoton()) ) > vetoConeSize_ && reco::deltaR( *VBFjet, *jet1) && reco::deltaR( *VBFjet, *jet2) ) {
+                        if( reco::deltaR( *VBFjet, *(dipho->leadingPhoton()) ) > vetoConeSize_ && reco::deltaR( *VBFjet, *(dipho->subLeadingPhoton()) ) > vetoConeSize_ && reco::deltaR( *VBFjet, *jet1) > vetoConeSize_ && reco::deltaR( *VBFjet, *jet2) >  vetoConeSize_ ) {
                             VBFcleaned_jets.push_back( VBFjet );
                         }
                     }
@@ -531,7 +531,7 @@ namespace flashgg {
                             //      if(jet_3->eta()<5 && jet_4->eta()<5 ){
                             if(jet_3 != jet1 || jet_3 != jet2) {
                                 if(jet_4 != jet1 || jet_4 != jet2) {
-                                    //       if( reco::deltaR( jet_3, *(dipho->leadingPhoton()) ) > vetoConeSize_ && reco::deltaR( jet_3, *(dipho->subLeadingPhoton()) ) > vetoConeSize_ && reco::deltaR(jet_3, jet1) && reco::deltaR(jet_3, jet2) && reco::deltaR( jet_4, *(dipho->leadingPhoton()) ) > vetoConeSize_ && reco::deltaR( jet_4, *(dipho->subLeadingPhoton()) ) > vetoConeSize_ && reco::deltaR(jet_4, jet1) && reco::deltaR(jet_4, jet2) ) {
+                                   if( reco::deltaR( *jet_3, *(dipho->leadingPhoton())) > vetoConeSize_ && reco::deltaR( *jet_3, *(dipho->subLeadingPhoton()) ) > vetoConeSize_ && reco::deltaR(*jet_3, *jet1) && reco::deltaR(*jet_3, *jet2) && reco::deltaR( *jet_4, *(dipho->leadingPhoton()) ) > vetoConeSize_ && reco::deltaR( *jet_4, *(dipho->subLeadingPhoton()) ) > vetoConeSize_ && reco::deltaR(*jet_4, *jet1) > vetoConeSize_ && reco::deltaR(*jet_4, *jet2) > vetoConeSize_ ) {
                                     auto temp_dijetVBF_mass = (jet_3->p4()+jet_4->p4()).mass();
                                     if (temp_dijetVBF_mass > dijetVBF_mass) {
                                         dijetVBF_mass= temp_dijetVBF_mass;
@@ -545,7 +545,7 @@ namespace flashgg {
                             }
                         }
                     }
-                    
+                }    
                     cout << hasVBFJets << endl;
                     if (!hasVBFJets) continue;             
                     auto & leadJet = jet1; 
