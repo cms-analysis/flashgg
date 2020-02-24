@@ -524,14 +524,12 @@ namespace flashgg {
                     if(VBFcleaned_jets.size()<2)
                         continue;
                     for( size_t ijet=0; ijet < VBFcleaned_jets.size()-1; ++ijet ){
-                        auto jet_3 = jets->ptrAt(ijet);
+                        auto jet_3 = VBFcleaned_jets.at(ijet);
                         for( size_t kjet=ijet+1; kjet < VBFcleaned_jets.size(); ++kjet ){
-                            auto jet_4 = jets->ptrAt(kjet);
-                            //      if(jet_3->pt()> 30 && jet_4->pt()>30){
-                            //      if(jet_3->eta()<5 && jet_4->eta()<5 ){
+                            auto jet_4 = VBFcleaned_jets.at(kjet);
                             if(jet_3 != jet1 || jet_3 != jet2) {
                                 if(jet_4 != jet1 || jet_4 != jet2) {
-                                   if( reco::deltaR( *jet_3, *(dipho->leadingPhoton())) > vetoConeSize_ && reco::deltaR( *jet_3, *(dipho->subLeadingPhoton()) ) > vetoConeSize_ && reco::deltaR(*jet_3, *jet1) && reco::deltaR(*jet_3, *jet2) && reco::deltaR( *jet_4, *(dipho->leadingPhoton()) ) > vetoConeSize_ && reco::deltaR( *jet_4, *(dipho->subLeadingPhoton()) ) > vetoConeSize_ && reco::deltaR(*jet_4, *jet1) > vetoConeSize_ && reco::deltaR(*jet_4, *jet2) > vetoConeSize_ ) {
+                                   //if( reco::deltaR( *jet_3, *(dipho->leadingPhoton())) > vetoConeSize_ && reco::deltaR( *jet_3, *(dipho->subLeadingPhoton()) ) > vetoConeSize_ && reco::deltaR(*jet_3, *jet1) && reco::deltaR(*jet_3, *jet2) && reco::deltaR( *jet_4, *(dipho->leadingPhoton()) ) > vetoConeSize_ && reco::deltaR( *jet_4, *(dipho->subLeadingPhoton()) ) > vetoConeSize_ && reco::deltaR(*jet_4, *jet1) > vetoConeSize_ && reco::deltaR(*jet_4, *jet2) > vetoConeSize_ ) {
                                     auto temp_dijetVBF_mass = (jet_3->p4()+jet_4->p4()).mass();
                                     if (temp_dijetVBF_mass > dijetVBF_mass) {
                                         dijetVBF_mass= temp_dijetVBF_mass;
@@ -541,7 +539,7 @@ namespace flashgg {
                                             jet4 = jet_4;
                                         }
                                     }
-                                } 
+                               // } 
                             }
                         }
                     }

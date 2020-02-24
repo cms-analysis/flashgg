@@ -395,6 +395,8 @@ if customize.doubleHTagsOnly:
     variablesToUse = minimalVariables
     if customize.processId == "Data":
         variablesToUse = minimalNonSignalVariables
+        variablesToUse += hhc.variablesToDumpData()
+
 
 if customize.doDoubleHTag:
    systlabels,jetsystlabels,metsystlabels = hhc.customizeSystematics(systlabels,jetsystlabels,metsystlabels)

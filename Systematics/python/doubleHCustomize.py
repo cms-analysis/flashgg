@@ -234,7 +234,7 @@ class DoubleHCustomize():
 
 
     def variablesToDumpData(self):
-        variables = +[
+        variables = [
                 "leadingJet_bDis := leadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",#FIXME make the btag type configurable?
                 "subleadingJet_bDis := subleadJet().bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')",
                 "leadingJet_DeepCSV := leadJet().bDiscriminator('pfDeepCSVJetTags:probb')+leadJet().bDiscriminator('pfDeepCSVJetTags:probbb')",#FIXME make the btag type configurable?
@@ -348,6 +348,8 @@ class DoubleHCustomize():
                 "VBFsubleadJet_QGL := VBFsubleadJet.QGL()",
                 "VBFsubleadJet_PUID := VBFsubleadJet().puJetIdMVA()"
         ]
+        if not (self.customize.doubleHTagDumpMinVariables or self.customize.dumpWorkspace) :
+            return self.variablesToDump()
         return variables
 
 
