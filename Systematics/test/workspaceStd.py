@@ -621,10 +621,13 @@ process.load('flashgg/Systematics/flashggMetFilters_cfi')
 
 if customize.processId == "Data":
     metFilterSelector = "data"
+    filtersInputTag = cms.InputTag("TriggerResults", "", "RECO")
 else:
     metFilterSelector = "mc"
+    filtersInputTag = cms.InputTag("TriggerResults", "", "PAT")
 
 process.flashggMetFilters.requiredFilterNames = cms.untracked.vstring([filter.encode("ascii") for filter in customize.metaConditions["flashggMetFilters"][metFilterSelector]])
+process.flashggMetFilters.filtersInputTag = filtersInputTag
 
 if customize.tthTagsOnly:
     process.p = cms.Path(process.dataRequirements*
