@@ -17,6 +17,7 @@
 
 #include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
 #include "RecoEcal/EgammaCoreTools/interface/EcalClusterLazyTools.h"
+#include "RecoCaloTools/Navigation/interface/CaloRectangle.h"
 
 /// class EcalRecHitCollection;
 class CaloTopology;
@@ -127,7 +128,7 @@ namespace flashgg {
             pho.setESEffSigmaRR( lazyTool.eseffsirir( *super_clu ) );
         }
 
-        template <class T> static void fillRechHitFlags(flashgg::Photon &pho, T &lazyTool )
+        template <class T> static void fillRechHitFlags(flashgg::Photon &pho, T &lazyTool, const CaloTopology* topology )
         {
             DetId seed = (pho.superCluster()->seed()->hitsAndFractions())[0].first;
             bool isBarrel = seed.subdetId() == EcalBarrel;
@@ -142,8 +143,8 @@ namespace flashgg {
             /// 
             /// }
             unsigned short nSaturated = 0, nLeRecovered = 0, nNeighRecovered = 0, nGain1 = 0, nGain6 = 0, nWeired = 0;
-            auto matrix5x5 = lazyTool.matrixDetId(seed,-2,+2,-2,+2);
-            for(auto & deId : matrix5x5 ) {
+            auto matrix5x5 = CaloRectangleRange(2, seed, *topology);
+            for(auto const& deId : matrix5x5 ) {
                 /// cout << "matrix " << deId.rawId() << endl;
                 auto rh = rechits->find(deId);
                 if( rh != rechits->end() ) {

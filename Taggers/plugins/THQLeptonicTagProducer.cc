@@ -87,7 +87,6 @@ class THQLeptonicTagProducer : public EDProducer
 {
 
 public:
-    typedef math::XYZPoint Point;
     map< string , CTCVWeightedVariable* > CTCVWeightedVariables;
     THQLeptonicTagProducer( const ParameterSet & );
     ~THQLeptonicTagProducer();
@@ -505,7 +504,6 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
     Handle<View<reco::GenJet> > genJets;
 
     std::unique_ptr<vector<THQLeptonicTagTruth> > truths( new vector<THQLeptonicTagTruth> );
-    Point higgsVtx;
 
     edm::Handle<LHEEventProduct> product_lhe;
     vector< double > CtCvWeights ;
@@ -1203,8 +1201,8 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
                 
 
                 if( ! evt.isRealData() ) {
-
-                    if(processId_.find("thq") != std::string::npos or processId_.find("thw") != std::string::npos) {
+//Bellow comment out part leads to crash for thq sample.This is related to ctcv weights and currently not using. Need to investigate the crash.
+/*                    if(processId_.find("thq") != std::string::npos or processId_.find("thw") != std::string::npos) {
                         //8 QCD scale weights
                         for( uint i = 1 ; i < 9 ; i ++ )
                             thqltags_obj.setScale(i-1,product_lhe->weights()[i].wgt/product_lhe->originalXWGTUP () );
@@ -1260,22 +1258,12 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
                                 thqltags_obj.setPdfNLO(uncompressed_nloweights[0]/ central_w);
                         }
                     }//end of reading PDF weights from PDFWeightObject
-
+*/
                     evt.getByToken( genParticleToken_, genParticles );
                     evt.getByToken( genJetToken_, genJets );
 
                     THQLeptonicTagTruth truth_obj;
                     truth_obj.setDiPhoton ( dipho );
-
-                    for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
-                        int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-                        if( pdgid == 25 || pdgid == 22 ) {
-                            higgsVtx = genParticles->ptrAt( genLoop )->vertex();
-                            break;
-                        }
-                    }
-
-                    truth_obj.setGenPV( higgsVtx );
 
                     // --------
                     //gen met

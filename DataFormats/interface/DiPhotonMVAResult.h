@@ -28,6 +28,8 @@ namespace flashgg {
         float CosPhi;
         float vtxprob;
         float mvaValue() const {return result;}
+        // needed to go to native XGBoost score from TMVA version, inverting this https://github.com/jpata/mlglue/blob/master/mlglue/tree.py#L400-L409
+        float transformedMvaValue() const {return 1. / ( 1. + exp( 0.5*log( 2./(result+1.) - 1 ) ) );} 
         // Output
         float result;
     };

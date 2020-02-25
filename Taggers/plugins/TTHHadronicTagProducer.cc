@@ -20,10 +20,7 @@
 
 #include "DataFormats/Math/interface/deltaR.h"
 
-#include "flashgg/DataFormats/interface/TagTruthBase.h"
-
 #include "DataFormats/Common/interface/RefToPtr.h"
-#include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 
@@ -47,8 +44,6 @@ namespace flashgg {
     {
 
     public:
-        typedef math::XYZPoint Point;
-
         TTHHadronicTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
@@ -66,14 +61,9 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<flashgg::Met> > METToken_;
         std::vector<edm::EDGetTokenT<edm::View<flashgg::Met>>> metTokens_;
-        EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
-        EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
-        EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
-        EDGetTokenT<float> pTHToken_,pTVToken_;
         EDGetTokenT<double> rhoTag_;
         EDGetTokenT<edm::TriggerResults> triggerRECO_;
         string systLabel_;
-
 
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
         bool useTTHHadronicMVA_;
@@ -241,7 +231,6 @@ namespace flashgg {
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag>( "MVAResultTag" ) ) ),
         METToken_( consumes<View<flashgg::Met> >( iConfig.getParameter<InputTag> ( "METTag" ) ) ),
-        genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         rhoTag_( consumes<double>( iConfig.getParameter<InputTag>( "rhoTag" ) ) ),
 	    triggerRECO_( consumes<edm::TriggerResults>(iConfig.getParameter<InputTag>("RECOfilters") ) ),
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
@@ -325,15 +314,6 @@ namespace flashgg {
 
         boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
         assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // 
-
-        ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
-        stage0catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0cat") );
-        stage1catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1cat") );
-        njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
-        pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
-        pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
-        newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
-
 
         MVAThreshold_ = iConfig.getParameter<double>( "MVAThreshold");
         MVATTHHMVAThreshold_ = iConfig.getParameter<double>( "MVATTHHMVAThreshold");
@@ -560,7 +540,6 @@ namespace flashgg {
         else {
             produces<vector<TTHHadronicTag> >();
         }
-        produces<vector<TagTruthBase> >();
     }
 
     int TTHHadronicTagProducer::chooseCategory( float tthmvavalue )
@@ -575,17 +554,6 @@ namespace flashgg {
 
     void TTHHadronicTagProducer::produce( Event &evt, const EventSetup & )
     {
-
-        Handle<int> stage0cat, stage1cat, njets;
-        Handle<float> pTH, pTV;
-        evt.getByToken(stage0catToken_, stage0cat);
-        evt.getByToken(stage1catToken_,stage1cat);
-        evt.getByToken(njetsToken_,njets);
-        evt.getByToken(pTHToken_,pTH);
-        evt.getByToken(pTVToken_,pTV);
-        Handle<HTXS::HiggsClassification> htxsClassification;
-        evt.getByToken(newHTXSToken_,htxsClassification);
-
 
         //Handle<View<flashgg::Jet> > theJets;
         //evt.getByToken( thejetToken_, theJets );
@@ -623,6 +591,7 @@ namespace flashgg {
         if (!modifySystematicsWorkflow)
             evt.getByToken( METToken_, METs );
 
+
 	    //Get trigger results relevant to MET filters
         bool passMETfilters = 1;
         edm::Handle<edm::TriggerResults> triggerBits;
@@ -648,42 +617,7 @@ namespace flashgg {
 	
     
 
-        Handle<View<reco::GenParticle> > genParticles;
-
         //std::unique_ptr<vector<TTHHadronicTag> > tthhtags( new vector<TTHHadronicTag> );
-        std::unique_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
-
-        Point higgsVtx;
-        if( ! evt.isRealData() ) {
-            evt.getByToken( genParticleToken_, genParticles );
-            /*
-            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
-                int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-                if( pdgid == 25 ){
-                    cout << "Higgs found " <<endl;
-                    if ( genParticles->ptrAt( genLoop )->numberOfDaughters() == 2 ){ 
-                        const reco::Candidate * d1 =  genParticles->ptrAt( genLoop )->daughter( 0 );
-                        const reco::Candidate * d2 =  genParticles->ptrAt( genLoop )->daughter( 1 );
-                        cout << "Higgs with status = " <<  genParticles->ptrAt( genLoop )->status() << " has two daughters with pdgId: " << endl;
-                        cout << "d1 pdgId = " << d1->pdgId() << "   d2 pdgId = "<< d2->pdgId() <<endl;
-                    }
-                }
-            }
-            */
-                //if (d1->pdgId()!=22 || d2->pdgId()!=22) continue;
-                
-            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
-                int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-                
-                if( pdgid == 25 || pdgid == 22 ) {
-                    higgsVtx = genParticles->ptrAt( genLoop )->vertex();           
-                    break;
-                }
-            }
-        }
-        
-        edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
-        unsigned int idx = 0;
         
         // Here we loop over all systematics (DiPhoton, Jets, Met), with the following logic:
         // idx = 0:                                                                     Nominal DiPhoton | Nominal Jets | Nominal Met
@@ -841,9 +775,6 @@ namespace flashgg {
                 std::vector<edm::Ptr<flashgg::Jet> > BJetTTHHMVAVect;
                 BJetTTHHMVAVect.clear();
                 
-                std::vector<edm::Ptr<reco::GenJet> > genJetVect;
-                genJetVect.clear();
-
                 std::vector<float> JetBTagVal;
                 JetBTagVal.clear();
             
@@ -903,9 +834,6 @@ namespace flashgg {
 
                     ht_ += thejet->pt();
                     
-                    //genJetVect.push_back( thejet->genJet());
-                    //cout<<"TTH Jet "<< jetcount_<<" Pt:"<<thejet->pt()<<" genPt:"<<thejet->genJet()->pt()<<" hflav: "<<thejet->hadronFlavour()<<" pFlav:"<<thejet->partonFlavour()<< endl;
-
                     float bDiscriminatorValue = -2.;
                     if(bTag_ == "pfDeepCSV") bDiscriminatorValue = thejet->bDiscriminator("pfDeepCSVJetTags:probb")+thejet->bDiscriminator("pfDeepCSVJetTags:probbb") ;
                     else  bDiscriminatorValue = thejet->bDiscriminator( bTag_ );
@@ -1277,34 +1205,10 @@ namespace flashgg {
                     tthhtags_obj.includeWeights( *dipho );
 
                     tthhtags->push_back( tthhtags_obj );
-                    if( ! evt.isRealData() ) {
-                        TagTruthBase truth_obj;
-                        truth_obj.setGenPV( higgsVtx );
-                        if ( stage0cat.isValid() ) {
-                            truth_obj.setHTXSInfo( *( stage0cat.product() ),
-                                                   *( stage1cat.product() ),
-                                                   *( njets.product() ),
-                                                   *( pTH.product() ),
-                                                   *( pTV.product() ) );
-                        } else if ( htxsClassification.isValid() ) {
-                            truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
-                                                   htxsClassification->stage1_cat_pTjet30GeV,
-                                                   htxsClassification->jets30.size(),
-                                                   htxsClassification->p4decay_higgs.pt(),
-                                                   htxsClassification->p4decay_V.pt() );
-
-                        } else {
-                            truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
-                        }
-                        //truth_obj.setGenJets(genJetVect);
-                        truths->push_back( truth_obj );
-                        tthhtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
-                    }
                 }
             }
         evt.put( std::move( tthhtags ), systematicsLabels[syst_idx] );
         }
-    evt.put( std::move( truths ) );
     }
 }
 typedef flashgg::TTHHadronicTagProducer FlashggTTHHadronicTagProducer;

@@ -1,0 +1,7 @@
+{
+    "cmdLine"  : "campaign=Era2018_RR-17Sep2018_v2 metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json useAAA=True",
+    "processes": {
+	"ggh_125"   : ["/GluGluHToGG_M-125_13TeV_powheg_pythia8"],
+	"vbf_125"   : ["/VBFHToGG_M-125_13TeV_powheg_pythia8"]
+    }
+}
