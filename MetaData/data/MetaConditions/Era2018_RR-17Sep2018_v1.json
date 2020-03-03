@@ -1,8 +1,8 @@
 {
     "globalTags" :
     {
-        "data" : "102X_dataRun2_v10",
-        "MC" : "102X_upgrade2018_realistic_v18"
+        "data" : "102X_dataRun2_v12",
+        "MC" : "102X_upgrade2018_realistic_v19"
     },
 
     "flashggMETsFunction" : "runMETs2016",

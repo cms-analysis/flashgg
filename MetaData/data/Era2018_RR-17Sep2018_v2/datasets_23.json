@@ -1,4 +1,696 @@
 {
+    "/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-e29cbaf1bdd7f73d6de0f1544f13812f/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 17400, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 17400, 
+                "totEvents": 17400, 
+                "weights": 1045.249267578125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1506.192138671875
+            }, 
+            {
+                "bad": false, 
+                "events": 3000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 3000, 
+                "totEvents": 3000, 
+                "weights": 179.42701721191406
+            }, 
+            {
+                "bad": false, 
+                "events": 6800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 6800, 
+                "totEvents": 6800, 
+                "weights": 409.3935241699219
+            }, 
+            {
+                "bad": false, 
+                "events": 5800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 5800, 
+                "totEvents": 5800, 
+                "weights": 349.06201171875
+            }, 
+            {
+                "bad": false, 
+                "events": 5200, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 5200, 
+                "totEvents": 5200, 
+                "weights": 312.4646301269531
+            }, 
+            {
+                "bad": false, 
+                "events": 800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 800, 
+                "totEvents": 800, 
+                "weights": 48.23995590209961
+            }, 
+            {
+                "bad": false, 
+                "events": 2200, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 2200, 
+                "totEvents": 2200, 
+                "weights": 133.94723510742188
+            }, 
+            {
+                "bad": false, 
+                "events": 2200, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 2200, 
+                "totEvents": 2200, 
+                "weights": 132.6528778076172
+            }, 
+            {
+                "bad": false, 
+                "events": 6800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 6800, 
+                "totEvents": 6800, 
+                "weights": 411.9253234863281
+            }, 
+            {
+                "bad": false, 
+                "events": 1800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 1800, 
+                "totEvents": 1800, 
+                "weights": 108.05889892578125
+            }, 
+            {
+                "bad": false, 
+                "events": 1800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 1800, 
+                "totEvents": 1800, 
+                "weights": 108.87104034423828
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1509.27392578125
+            }, 
+            {
+                "bad": false, 
+                "events": 3000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 3000, 
+                "totEvents": 3000, 
+                "weights": 180.0001220703125
+            }, 
+            {
+                "bad": false, 
+                "events": 1800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 1800, 
+                "totEvents": 1800, 
+                "weights": 109.30944061279297
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4181.84130859375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1508.8057861328125
+            }, 
+            {
+                "bad": false, 
+                "events": 4200, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 4200, 
+                "totEvents": 4200, 
+                "weights": 251.90428161621094
+            }, 
+            {
+                "bad": false, 
+                "events": 10200, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 10200, 
+                "totEvents": 10200, 
+                "weights": 613.2578735351562
+            }, 
+            {
+                "bad": false, 
+                "events": 9600, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 9600, 
+                "totEvents": 9600, 
+                "weights": 574.9593505859375
+            }, 
+            {
+                "bad": false, 
+                "events": 800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 800, 
+                "totEvents": 800, 
+                "weights": 47.077632904052734
+            }, 
+            {
+                "bad": false, 
+                "events": 3400, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 3400, 
+                "totEvents": 3400, 
+                "weights": 203.40557861328125
+            }, 
+            {
+                "bad": false, 
+                "events": 1800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 1800, 
+                "totEvents": 1800, 
+                "weights": 107.72354125976562
+            }, 
+            {
+                "bad": false, 
+                "events": 8000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 8000, 
+                "totEvents": 8000, 
+                "weights": 479.61810302734375
+            }, 
+            {
+                "bad": false, 
+                "events": 3400, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160141/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 3400, 
+                "totEvents": 3400, 
+                "weights": 204.85220336914062
+            }
+        ], 
+        "parent_n_units": 200000, 
+        "vetted": true
+    }, 
+    "/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-e29cbaf1bdd7f73d6de0f1544f13812f/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 4600, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 4600, 
+                "totEvents": 4600, 
+                "weights": 123.14027404785156
+            }, 
+            {
+                "bad": false, 
+                "events": 5000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 5000, 
+                "totEvents": 5000, 
+                "weights": 133.7059326171875
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 52.30116653442383
+            }, 
+            {
+                "bad": false, 
+                "events": 1200, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 1200, 
+                "totEvents": 1200, 
+                "weights": 32.310237884521484
+            }, 
+            {
+                "bad": false, 
+                "events": 7600, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 7600, 
+                "totEvents": 7600, 
+                "weights": 203.03211975097656
+            }, 
+            {
+                "bad": false, 
+                "events": 5800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 5800, 
+                "totEvents": 5800, 
+                "weights": 155.24009704589844
+            }, 
+            {
+                "bad": false, 
+                "events": 10600, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 10600, 
+                "totEvents": 10600, 
+                "weights": 282.7147521972656
+            }, 
+            {
+                "bad": false, 
+                "events": 800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 800, 
+                "totEvents": 800, 
+                "weights": 20.84382438659668
+            }, 
+            {
+                "bad": false, 
+                "events": 1200, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 1200, 
+                "totEvents": 1200, 
+                "weights": 32.368350982666016
+            }, 
+            {
+                "bad": false, 
+                "events": 1000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 1000, 
+                "totEvents": 1000, 
+                "weights": 26.329509735107422
+            }, 
+            {
+                "bad": false, 
+                "events": 1000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 1000, 
+                "totEvents": 1000, 
+                "weights": 26.876737594604492
+            }, 
+            {
+                "bad": false, 
+                "events": 800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 800, 
+                "totEvents": 800, 
+                "weights": 21.566783905029297
+            }, 
+            {
+                "bad": false, 
+                "events": 4400, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 4400, 
+                "totEvents": 4400, 
+                "weights": 118.25946044921875
+            }, 
+            {
+                "bad": false, 
+                "events": 9800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 9800, 
+                "totEvents": 9800, 
+                "weights": 262.4773254394531
+            }, 
+            {
+                "bad": false, 
+                "events": 10000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 10000, 
+                "totEvents": 10000, 
+                "weights": 268.173583984375
+            }, 
+            {
+                "bad": false, 
+                "events": 14400, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 14400, 
+                "totEvents": 14400, 
+                "weights": 385.8638000488281
+            }, 
+            {
+                "bad": false, 
+                "events": 7400, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 7400, 
+                "totEvents": 7400, 
+                "weights": 194.41676330566406
+            }, 
+            {
+                "bad": false, 
+                "events": 9200, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 9200, 
+                "totEvents": 9200, 
+                "weights": 246.7118682861328
+            }, 
+            {
+                "bad": false, 
+                "events": 15800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 15800, 
+                "totEvents": 15800, 
+                "weights": 542.9579467773438
+            }, 
+            {
+                "bad": false, 
+                "events": 3000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 3000, 
+                "totEvents": 3000, 
+                "weights": 79.72450256347656
+            }, 
+            {
+                "bad": false, 
+                "events": 10600, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 10600, 
+                "totEvents": 10600, 
+                "weights": 285.6087951660156
+            }, 
+            {
+                "bad": false, 
+                "events": 21200, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 21200, 
+                "totEvents": 21200, 
+                "weights": 566.9759521484375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 674.15576171875
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_160623/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 666.4900512695312
+            }
+        ], 
+        "parent_n_units": 197400, 
+        "vetted": true
+    }, 
+    "/GluGluToHHTo2B2G_node_cHHH2p45_TuneCP5_PSWeights_13TeV-powheg-pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-e29cbaf1bdd7f73d6de0f1544f13812f/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 13200, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH2p45_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161114/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 13200, 
+                "totEvents": 13200, 
+                "weights": 149.92373657226562
+            }, 
+            {
+                "bad": false, 
+                "events": 2200, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH2p45_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161114/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 2200, 
+                "totEvents": 2200, 
+                "weights": 24.263893127441406
+            }, 
+            {
+                "bad": false, 
+                "events": 9600, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH2p45_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161114/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 9600, 
+                "totEvents": 9600, 
+                "weights": 107.89713287353516
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH2p45_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161114/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 281.9916076660156
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH2p45_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161114/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 281.89306640625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH2p45_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161114/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 281.29052734375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH2p45_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161114/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 283.2784423828125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH2p45_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161114/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 287.3230895996094
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH2p45_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161114/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 284.4089050292969
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH2p45_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161114/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 281.53985595703125
+            }
+        ], 
+        "parent_n_units": 200000, 
+        "vetted": true
+    }, 
+    "/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-e29cbaf1bdd7f73d6de0f1544f13812f/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 16200, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 16200, 
+                "totEvents": 16200, 
+                "weights": 1283.183349609375
+            }, 
+            {
+                "bad": false, 
+                "events": 600, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 600, 
+                "totEvents": 600, 
+                "weights": 47.31171417236328
+            }, 
+            {
+                "bad": false, 
+                "events": 400, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 400, 
+                "totEvents": 400, 
+                "weights": 31.469696044921875
+            }, 
+            {
+                "bad": false, 
+                "events": 10800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 10800, 
+                "totEvents": 10800, 
+                "weights": 853.0696411132812
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1968.7882080078125
+            }, 
+            {
+                "bad": false, 
+                "events": 1000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 1000, 
+                "totEvents": 1000, 
+                "weights": 78.95763397216797
+            }, 
+            {
+                "bad": false, 
+                "events": 4000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 4000, 
+                "totEvents": 4000, 
+                "weights": 315.9566345214844
+            }, 
+            {
+                "bad": false, 
+                "events": 3200, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 3200, 
+                "totEvents": 3200, 
+                "weights": 252.09228515625
+            }, 
+            {
+                "bad": false, 
+                "events": 3000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 3000, 
+                "totEvents": 3000, 
+                "weights": 235.6217498779297
+            }, 
+            {
+                "bad": false, 
+                "events": 3800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 3800, 
+                "totEvents": 3800, 
+                "weights": 301.0763854980469
+            }, 
+            {
+                "bad": false, 
+                "events": 11600, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 11600, 
+                "totEvents": 11600, 
+                "weights": 916.4681396484375
+            }, 
+            {
+                "bad": false, 
+                "events": 8000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 8000, 
+                "totEvents": 8000, 
+                "weights": 632.7349243164062
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1975.3193359375
+            }, 
+            {
+                "bad": false, 
+                "events": 9400, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 9400, 
+                "totEvents": 9400, 
+                "weights": 742.0289306640625
+            }, 
+            {
+                "bad": false, 
+                "events": 2800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 2800, 
+                "totEvents": 2800, 
+                "weights": 220.4075927734375
+            }, 
+            {
+                "bad": false, 
+                "events": 7400, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 7400, 
+                "totEvents": 7400, 
+                "weights": 581.9436645507812
+            }, 
+            {
+                "bad": false, 
+                "events": 7600, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 7600, 
+                "totEvents": 7600, 
+                "weights": 599.0761108398438
+            }, 
+            {
+                "bad": false, 
+                "events": 1400, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 1400, 
+                "totEvents": 1400, 
+                "weights": 111.05096435546875
+            }, 
+            {
+                "bad": false, 
+                "events": 5400, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 5400, 
+                "totEvents": 5400, 
+                "weights": 424.11322021484375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1973.7744140625
+            }, 
+            {
+                "bad": false, 
+                "events": 4000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 4000, 
+                "totEvents": 4000, 
+                "weights": 314.53424072265625
+            }, 
+            {
+                "bad": false, 
+                "events": 5800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 5800, 
+                "totEvents": 5800, 
+                "weights": 459.2434387207031
+            }, 
+            {
+                "bad": false, 
+                "events": 9000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 9000, 
+                "totEvents": 9000, 
+                "weights": 710.2236328125
+            }, 
+            {
+                "bad": false, 
+                "events": 9600, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluToHHTo2B2G_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200124_161600/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 9600, 
+                "totEvents": 9600, 
+                "weights": 757.0962524414062
+            }
+        ], 
+        "parent_n_units": 200000, 
+        "vetted": true
+    }, 
     "/QCD_Pt-30toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2-2fd15c7990311bd7455b91cc32d06425/USER": {
         "dset_type": "mc", 
         "files": [
@@ -4171,6 +4863,784 @@
             }
         ], 
         "parent_n_units": 1960300, 
+        "vetted": true
+    }, 
+    "/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-7145f61eea1f4686ab4f2077a024bf4a/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 24959, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200106_090956/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 24959, 
+                "totEvents": 24959, 
+                "weights": 45132.33203125
+            }, 
+            {
+                "bad": false, 
+                "events": 24966, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200106_090956/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 24966, 
+                "totEvents": 24966, 
+                "weights": 46167.04296875
+            }, 
+            {
+                "bad": false, 
+                "events": 24124, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200106_090956/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24124, 
+                "totEvents": 24124, 
+                "weights": 43629.4609375
+            }, 
+            {
+                "bad": false, 
+                "events": 24879, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200106_090956/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24879, 
+                "totEvents": 24879, 
+                "weights": 43933.6953125
+            }, 
+            {
+                "bad": false, 
+                "events": 24813, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200106_090956/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 24813, 
+                "totEvents": 24813, 
+                "weights": 45244.60546875
+            }, 
+            {
+                "bad": false, 
+                "events": 18678, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200106_090956/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 18678, 
+                "totEvents": 18678, 
+                "weights": 34188.85546875
+            }, 
+            {
+                "bad": false, 
+                "events": 24729, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200106_090956/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 24729, 
+                "totEvents": 24729, 
+                "weights": 45048.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24866, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200106_090956/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24866, 
+                "totEvents": 24866, 
+                "weights": 45544.94921875
+            }, 
+            {
+                "bad": false, 
+                "events": 24635, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200106_090956/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24635, 
+                "totEvents": 24635, 
+                "weights": 44609.02734375
+            }, 
+            {
+                "bad": false, 
+                "events": 24749, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200106_090956/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 24749, 
+                "totEvents": 24749, 
+                "weights": 45932.1015625
+            }, 
+            {
+                "bad": false, 
+                "events": 24977, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200106_090956/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24977, 
+                "totEvents": 24977, 
+                "weights": 45557.71484375
+            }, 
+            {
+                "bad": false, 
+                "events": 23934, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200106_090956/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 23934, 
+                "totEvents": 23934, 
+                "weights": 44228.6796875
+            }, 
+            {
+                "bad": false, 
+                "events": 24869, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200106_090956/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24869, 
+                "totEvents": 24869, 
+                "weights": 44705.60546875
+            }, 
+            {
+                "bad": false, 
+                "events": 24775, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200106_090956/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24775, 
+                "totEvents": 24775, 
+                "weights": 45008.58984375
+            }, 
+            {
+                "bad": false, 
+                "events": 24913, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200106_090956/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 24913, 
+                "totEvents": 24913, 
+                "weights": 44641.05078125
+            }, 
+            {
+                "bad": false, 
+                "events": 24911, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200106_090956/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 24911, 
+                "totEvents": 24911, 
+                "weights": 46634.93359375
+            }, 
+            {
+                "bad": false, 
+                "events": 24741, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200106_090956/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 24741, 
+                "totEvents": 24741, 
+                "weights": 45179.47265625
+            }
+        ], 
+        "parent_n_units": 395904, 
+        "vetted": true
+    }, 
+    "/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-7145f61eea1f4686ab4f2077a024bf4a/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 24815, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100633/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24815, 
+                "totEvents": 24815, 
+                "weights": 41200.12109375
+            }, 
+            {
+                "bad": false, 
+                "events": 24973, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100633/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24973, 
+                "totEvents": 24973, 
+                "weights": 39285.99609375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100633/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 39956.3984375
+            }, 
+            {
+                "bad": false, 
+                "events": 25015, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100633/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 25015, 
+                "totEvents": 25015, 
+                "weights": 39634.484375
+            }, 
+            {
+                "bad": false, 
+                "events": 24843, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100633/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 24843, 
+                "totEvents": 24843, 
+                "weights": 40831.375
+            }, 
+            {
+                "bad": false, 
+                "events": 24710, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100633/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 24710, 
+                "totEvents": 24710, 
+                "weights": 39327.73828125
+            }, 
+            {
+                "bad": false, 
+                "events": 24798, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100633/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 24798, 
+                "totEvents": 24798, 
+                "weights": 39560.58203125
+            }, 
+            {
+                "bad": false, 
+                "events": 24780, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100633/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24780, 
+                "totEvents": 24780, 
+                "weights": 39681.41015625
+            }, 
+            {
+                "bad": false, 
+                "events": 24819, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100633/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24819, 
+                "totEvents": 24819, 
+                "weights": 40713.40234375
+            }, 
+            {
+                "bad": false, 
+                "events": 24906, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100633/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 24906, 
+                "totEvents": 24906, 
+                "weights": 39718.9609375
+            }, 
+            {
+                "bad": false, 
+                "events": 24877, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100633/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24877, 
+                "totEvents": 24877, 
+                "weights": 40538.8125
+            }, 
+            {
+                "bad": false, 
+                "events": 24800, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100633/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 24800, 
+                "totEvents": 24800, 
+                "weights": 40096.58203125
+            }, 
+            {
+                "bad": false, 
+                "events": 24988, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100633/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24988, 
+                "totEvents": 24988, 
+                "weights": 38769.62890625
+            }, 
+            {
+                "bad": false, 
+                "events": 8289, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100633/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 8289, 
+                "totEvents": 8289, 
+                "weights": 13153.6005859375
+            }, 
+            {
+                "bad": false, 
+                "events": 24908, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100633/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24908, 
+                "totEvents": 24908, 
+                "weights": 40481.6015625
+            }, 
+            {
+                "bad": false, 
+                "events": 24739, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M105_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100633/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 24739, 
+                "totEvents": 24739, 
+                "weights": 38481.015625
+            }
+        ], 
+        "parent_n_units": 381260, 
+        "vetted": true
+    }, 
+    "/ttHJetToGG_M115_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-7145f61eea1f4686ab4f2077a024bf4a/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 24946, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M115_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100928/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24946, 
+                "totEvents": 24946, 
+                "weights": 30661.775390625
+            }, 
+            {
+                "bad": false, 
+                "events": 25099, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M115_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100928/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 25099, 
+                "totEvents": 25099, 
+                "weights": 32148.5625
+            }, 
+            {
+                "bad": false, 
+                "events": 25008, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M115_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100928/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25008, 
+                "totEvents": 25008, 
+                "weights": 31942.3671875
+            }, 
+            {
+                "bad": false, 
+                "events": 24966, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M115_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100928/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 24966, 
+                "totEvents": 24966, 
+                "weights": 32137.703125
+            }, 
+            {
+                "bad": false, 
+                "events": 25067, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M115_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100928/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 25067, 
+                "totEvents": 25067, 
+                "weights": 31258.662109375
+            }, 
+            {
+                "bad": false, 
+                "events": 24898, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M115_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100928/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 24898, 
+                "totEvents": 24898, 
+                "weights": 31848.31640625
+            }, 
+            {
+                "bad": false, 
+                "events": 25007, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M115_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100928/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 25007, 
+                "totEvents": 25007, 
+                "weights": 32228.14453125
+            }, 
+            {
+                "bad": false, 
+                "events": 24922, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M115_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100928/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 24922, 
+                "totEvents": 24922, 
+                "weights": 30792.00390625
+            }, 
+            {
+                "bad": false, 
+                "events": 24982, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M115_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100928/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 24982, 
+                "totEvents": 24982, 
+                "weights": 31370.806640625
+            }, 
+            {
+                "bad": false, 
+                "events": 24914, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M115_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100928/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 24914, 
+                "totEvents": 24914, 
+                "weights": 30951.1875
+            }, 
+            {
+                "bad": false, 
+                "events": 25024, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M115_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100928/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 25024, 
+                "totEvents": 25024, 
+                "weights": 31725.318359375
+            }, 
+            {
+                "bad": false, 
+                "events": 11834, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M115_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100928/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 11834, 
+                "totEvents": 11834, 
+                "weights": 14882.31640625
+            }, 
+            {
+                "bad": false, 
+                "events": 25003, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M115_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100928/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25003, 
+                "totEvents": 25003, 
+                "weights": 30954.78515625
+            }, 
+            {
+                "bad": false, 
+                "events": 24975, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M115_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100928/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24975, 
+                "totEvents": 24975, 
+                "weights": 32170.279296875
+            }, 
+            {
+                "bad": false, 
+                "events": 25105, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M115_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100928/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25105, 
+                "totEvents": 25105, 
+                "weights": 31280.36328125
+            }, 
+            {
+                "bad": false, 
+                "events": 24914, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M115_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_100928/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24914, 
+                "totEvents": 24914, 
+                "weights": 30813.7109375
+            }
+        ], 
+        "parent_n_units": 409764, 
+        "vetted": true
+    }, 
+    "/ttHJetToGG_M70_13TeV_amcatnloFXFX_madspin_pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-7145f61eea1f4686ab4f2077a024bf4a/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 24744, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M70_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101230/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 24744, 
+                "totEvents": 24744, 
+                "weights": 104729.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24581, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M70_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101230/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 24581, 
+                "totEvents": 24581, 
+                "weights": 105590.2421875
+            }, 
+            {
+                "bad": false, 
+                "events": 24701, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M70_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101230/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24701, 
+                "totEvents": 24701, 
+                "weights": 100467.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24620, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M70_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101230/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24620, 
+                "totEvents": 24620, 
+                "weights": 100717.8671875
+            }, 
+            {
+                "bad": false, 
+                "events": 24667, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M70_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101230/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24667, 
+                "totEvents": 24667, 
+                "weights": 103326.5546875
+            }, 
+            {
+                "bad": false, 
+                "events": 24884, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M70_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101230/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 24884, 
+                "totEvents": 24884, 
+                "weights": 102172.90625
+            }, 
+            {
+                "bad": false, 
+                "events": 22421, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M70_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101230/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 22421, 
+                "totEvents": 22421, 
+                "weights": 96843.90625
+            }, 
+            {
+                "bad": false, 
+                "events": 24879, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M70_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101230/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 24879, 
+                "totEvents": 24879, 
+                "weights": 105023.84375
+            }
+        ], 
+        "parent_n_units": 195497, 
+        "vetted": true
+    }, 
+    "/ttHJetToGG_M75_13TeV_amcatnloFXFX_madspin_pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-7145f61eea1f4686ab4f2077a024bf4a/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 24835, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M75_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101530/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 24835, 
+                "totEvents": 24835, 
+                "weights": 90579.53125
+            }, 
+            {
+                "bad": false, 
+                "events": 24597, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M75_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101530/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 24597, 
+                "totEvents": 24597, 
+                "weights": 86552.375
+            }, 
+            {
+                "bad": false, 
+                "events": 24636, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M75_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101530/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24636, 
+                "totEvents": 24636, 
+                "weights": 89445.5859375
+            }, 
+            {
+                "bad": false, 
+                "events": 24851, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M75_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101530/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 24851, 
+                "totEvents": 24851, 
+                "weights": 87178.4375
+            }, 
+            {
+                "bad": false, 
+                "events": 24790, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M75_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101530/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24790, 
+                "totEvents": 24790, 
+                "weights": 89853.328125
+            }, 
+            {
+                "bad": false, 
+                "events": 24415, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M75_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101530/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24415, 
+                "totEvents": 24415, 
+                "weights": 88397.6953125
+            }, 
+            {
+                "bad": false, 
+                "events": 24673, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M75_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101530/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 24673, 
+                "totEvents": 24673, 
+                "weights": 89264.125
+            }, 
+            {
+                "bad": false, 
+                "events": 24747, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M75_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101530/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24747, 
+                "totEvents": 24747, 
+                "weights": 86192.4375
+            }, 
+            {
+                "bad": false, 
+                "events": 24675, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M75_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101530/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 24675, 
+                "totEvents": 24675, 
+                "weights": 86900.1328125
+            }, 
+            {
+                "bad": false, 
+                "events": 23647, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M75_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101530/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 23647, 
+                "totEvents": 23647, 
+                "weights": 84863.5859375
+            }, 
+            {
+                "bad": false, 
+                "events": 24581, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M75_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101530/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24581, 
+                "totEvents": 24581, 
+                "weights": 88996.4765625
+            }, 
+            {
+                "bad": false, 
+                "events": 24697, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M75_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101530/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 24697, 
+                "totEvents": 24697, 
+                "weights": 88545.359375
+            }, 
+            {
+                "bad": false, 
+                "events": 24678, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M75_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101530/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24678, 
+                "totEvents": 24678, 
+                "weights": 87729.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24667, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M75_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101530/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 24667, 
+                "totEvents": 24667, 
+                "weights": 89519.578125
+            }, 
+            {
+                "bad": false, 
+                "events": 24918, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M75_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101530/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24918, 
+                "totEvents": 24918, 
+                "weights": 91924.7578125
+            }, 
+            {
+                "bad": false, 
+                "events": 24721, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M75_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101530/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24721, 
+                "totEvents": 24721, 
+                "weights": 89998.5
+            }
+        ], 
+        "parent_n_units": 394128, 
+        "vetted": true
+    }, 
+    "/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-7145f61eea1f4686ab4f2077a024bf4a/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 2081, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 2081, 
+                "totEvents": 2081, 
+                "weights": 6837.580078125
+            }, 
+            {
+                "bad": false, 
+                "events": 24745, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 24745, 
+                "totEvents": 24745, 
+                "weights": 77243.15625
+            }, 
+            {
+                "bad": false, 
+                "events": 24694, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24694, 
+                "totEvents": 24694, 
+                "weights": 76834.484375
+            }, 
+            {
+                "bad": false, 
+                "events": 24750, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 24750, 
+                "totEvents": 24750, 
+                "weights": 77786.7109375
+            }, 
+            {
+                "bad": false, 
+                "events": 24785, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24785, 
+                "totEvents": 24785, 
+                "weights": 74937.0390625
+            }, 
+            {
+                "bad": false, 
+                "events": 24611, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 24611, 
+                "totEvents": 24611, 
+                "weights": 79177.9921875
+            }, 
+            {
+                "bad": false, 
+                "events": 24758, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 24758, 
+                "totEvents": 24758, 
+                "weights": 75705.9453125
+            }, 
+            {
+                "bad": false, 
+                "events": 24704, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24704, 
+                "totEvents": 24704, 
+                "weights": 77167.375
+            }, 
+            {
+                "bad": false, 
+                "events": 24780, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24780, 
+                "totEvents": 24780, 
+                "weights": 78231.4453125
+            }, 
+            {
+                "bad": false, 
+                "events": 24796, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 24796, 
+                "totEvents": 24796, 
+                "weights": 78348.828125
+            }, 
+            {
+                "bad": false, 
+                "events": 24676, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24676, 
+                "totEvents": 24676, 
+                "weights": 81019.84375
+            }, 
+            {
+                "bad": false, 
+                "events": 24703, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24703, 
+                "totEvents": 24703, 
+                "weights": 77284.5546875
+            }, 
+            {
+                "bad": false, 
+                "events": 24780, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 24780, 
+                "totEvents": 24780, 
+                "weights": 77846.046875
+            }, 
+            {
+                "bad": false, 
+                "events": 24860, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24860, 
+                "totEvents": 24860, 
+                "weights": 75372.9609375
+            }, 
+            {
+                "bad": false, 
+                "events": 24701, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 24701, 
+                "totEvents": 24701, 
+                "weights": 76542.2265625
+            }, 
+            {
+                "bad": false, 
+                "events": 24964, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 24964, 
+                "totEvents": 24964, 
+                "weights": 78673.5625
+            }, 
+            {
+                "bad": false, 
+                "events": 24961, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 24961, 
+                "totEvents": 24961, 
+                "weights": 76925.9765625
+            }, 
+            {
+                "bad": false, 
+                "events": 24727, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24727, 
+                "totEvents": 24727, 
+                "weights": 77916.859375
+            }, 
+            {
+                "bad": false, 
+                "events": 23944, 
+                "name": "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/ttHJetToGG_M80_13TeV_amcatnloFXFX_madspin_pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/200104_101831/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 23944, 
+                "totEvents": 23944, 
+                "weights": 74707.6328125
+            }
+        ], 
+        "parent_n_units": 447020, 
         "vetted": true
     }, 
     "/ttHJetToGG_M100_13TeV_amcatnloFXFX_madspin_pythia8/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1-7145f61eea1f4686ab4f2077a024bf4a/USER": {
