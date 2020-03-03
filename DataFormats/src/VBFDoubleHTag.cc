@@ -60,9 +60,71 @@ float VBFDoubleHTag::getVBFCentrality_jb() const
   float VBFCentrality_jb = exp(-4/((VBFleadJet().eta() - VBFsubleadJet().eta())*(VBFleadJet().eta() - VBFsubleadJet().eta())) * ( dijet().eta() - (VBFleadJet().eta() + VBFsubleadJet().eta())/2)* ( dijet().eta() - (VBFleadJet().eta() + VBFsubleadJet().eta())/2));
   return VBFCentrality_jb;
 }
-
-
-
+float VBFDoubleHTag::getVBFJet_Delta_eta() const
+{
+   float VBFJet_Delta_eta = abs(VBFleadJet().eta() - VBFsubleadJet().eta());
+   return VBFJet_Delta_eta;
+}
+float VBFDoubleHTag::getVBFleadJet_pt() const
+{
+   float VBFleadJet_pt = VBFleadJet().pt();
+   return VBFleadJet_pt;
+}
+float VBFDoubleHTag::getVBFsubleadJet_pt() const
+{
+   float VBFsubleadJet_pt = VBFsubleadJet().pt();
+   return VBFsubleadJet_pt;
+}
+float VBFDoubleHTag::getVBFleadJet_eta() const
+{
+   float VBFleadJet_eta = VBFleadJet().eta();
+   return VBFleadJet_eta;
+}
+float VBFDoubleHTag::getVBFsubleadJet_eta() const
+{
+   float VBFsubleadJet_eta = VBFsubleadJet().eta();
+   return VBFsubleadJet_eta;
+}
+float VBFDoubleHTag::getVBFleadJet_phi() const
+{
+   float VBFleadJet_phi = VBFleadJet().phi();
+   return VBFleadJet_phi;
+}
+float VBFDoubleHTag::getVBFsubleadJet_phi() const
+{
+   float VBFsubleadJet_phi = VBFsubleadJet().phi();
+   return VBFsubleadJet_phi;
+}
+float VBFDoubleHTag::getVBFleadJet_pz() const
+{
+   float VBFleadJet_pz = VBFleadJet().pz();
+   return VBFleadJet_pz;
+}
+float VBFDoubleHTag::getVBFsubleadJet_pz() const
+{
+   float VBFsubleadJet_pz = VBFsubleadJet().pz();
+   return VBFsubleadJet_pz;
+}
+float VBFDoubleHTag::getVBFleadJet_QGL() const
+{
+   float VBFleadJet_QGL = VBFleadJet().QGL();
+   return VBFleadJet_QGL;
+}
+float VBFDoubleHTag::getVBFsubleadJet_QGL() const
+{
+   float VBFsubleadJet_QGL = VBFsubleadJet().QGL();
+   return VBFsubleadJet_QGL;
+}
+float VBFDoubleHTag::getVBFleadJet_PUID() const
+{
+   float VBFleadJet_PUID = VBFleadJet().puJetIdMVA();
+   return VBFleadJet_PUID;
+}
+float VBFDoubleHTag::getVBFsubleadJet_PUID() const
+{
+   float VBFsubleadJet_PUID = VBFsubleadJet().puJetIdMVA();
+   return VBFsubleadJet_PUID;
+}
 
 
 // Local Variables:

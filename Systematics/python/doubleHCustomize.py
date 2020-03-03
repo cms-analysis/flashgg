@@ -10,8 +10,8 @@ class DoubleHCustomize():
         self.process = process
         self.customize = customize
         self.metaConditions = metaConditions
-#        self.tagList = [ ["VBFDoubleHTag",1], ["DoubleHTag",12] ]
-        self.tagList = [ ["VBFDoubleHTag",1] ]
+        self.tagList = [ ["VBFDoubleHTag",1], ["DoubleHTag",12] ]
+ #       self.tagList = [ ["VBFDoubleHTag",1] ]
         self.customizeTagSequence()
 
     def variablesToDump(self):
@@ -102,26 +102,26 @@ class DoubleHCustomize():
                 "sigmaMJets := getSigmaMOverMJets()"
         ]
         if self.customize.addVBFDoubleHVariables: variables +=[ 
-                "b1_pt := b1_pt()",
-                "b1_eta := b1_eta()",
-                "b1_phi := b1_phi()",
-                "b2_pt := b2_pt()",
-                "b2_eta := b2_eta()",
-                "b2_phi := b2_phi()",
-                "b1_pz := b1_pz()",
-                "b2_pz := b2_pz()",
-                "Mbb_gen := Mbb_gen()", 
-                "q1_pt := q1_pt()",
-                "q1_eta := q1_eta()",
-                "q1_ID := q1_ID()",
-                "q2_ID := q2_ID()",
-                "q1_phi := q1_phi()",
-                "q2_pt := q2_pt()",
-                "q2_eta := q2_eta()",
-                "q2_phi := q2_phi()",
-                "q1_pz := q1_pz()",
-                "q2_pz := q2_pz()",
-                "Mqq_gen := Mqq_gen()",
+                #"b1_pt := b1_pt()",
+                #"b1_eta := b1_eta()",
+                #"b1_phi := b1_phi()",
+                #"b2_pt := b2_pt()",
+                #"b2_eta := b2_eta()",
+                #"b2_phi := b2_phi()",
+                #"b1_pz := b1_pz()",
+                #"b2_pz := b2_pz()",
+                #"Mbb_gen := Mbb_gen()", 
+                #"q1_pt := q1_pt()",
+                #"q1_eta := q1_eta()",
+                #"q1_ID := q1_ID()",
+                #"q2_ID := q2_ID()",
+                #"q1_phi := q1_phi()",
+                #"q2_pt := q2_pt()",
+                #"q2_eta := q2_eta()",
+                #"q2_phi := q2_phi()",
+                #"q1_pz := q1_pz()",
+                #"q2_pz := q2_pz()",
+                #"Mqq_gen := Mqq_gen()",
                 "VBFDeltaR_jg := getVBFDeltaR_jg()",
                 "VBFDeltaR_jb := getVBFDeltaR_jb()",
                 "VBFJet_mjj := getVBFJet_mjj()",
@@ -129,29 +129,43 @@ class DoubleHCustomize():
                 "VBFCentrality_jb := getVBFCentrality_jb",
                 "VBFProd_eta := getVBFProd_eta",
                 "VBFDelta_phi := getVBFDelta_phi", 
-                "VBFJet_Delta_eta := abs(VBFleadJet().eta - VBFsubleadJet().eta)",
-                "VBFleadJet_pt :=  VBFleadJet().pt ",
-                "VBFsubleadJet_pt := VBFsubleadJet().pt ",
-                "VBFleadJet_eta := VBFleadJet().eta",
-                "VBFsubleadJet_eta := VBFsubleadJet().eta",
-                "VBFleadJet_phi := VBFleadJet().phi",
-                "VBFsubleadJet_phi := VBFsubleadJet().phi",
-                "VBFleadJet_px := VBFleadJet().px",
-                "VBFsubleadJet_px := VBFsubleadJet().px",
-                "VBFleadJet_py := VBFleadJet().py",
-                "VBFsubleadJet_py := VBFsubleadJet().py",
-                "VBFleadJet_pz := VBFleadJet().pz",
-                "VBFsubleadJet_pz := VBFsubleadJet().pz",
-                "VBFleadJet_DeepFlavour := VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probusd')+VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probg')",
-                "VBFleadJet_QGL := VBFleadJet().QGL() ",
-                "VBFleadJet_PUID := VBFleadJet().puJetIdMVA()",
-                "VBFsubleadJet_DeepFlavour := VBFsubleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probusd')+VBFsubleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probg')",
-                "VBFsubleadJet_QGL := VBFsubleadJet.QGL()",
-                "VBFsubleadJet_PUID := VBFsubleadJet().puJetIdMVA()",
-                "VBFleadJet_hflav := VBFleadJet().hadronFlavour()",
-                "VBFleadJet_pflav := VBFleadJet().partonFlavour()",
-                "VBFsubleadJet_hflav := VBFsubleadJet().hadronFlavour()",
-                "VBFsubleadJet_pflav := VBFsubleadJet().partonFlavour()"
+                "VBFJet_Delta_eta := getVBFJet_Delta_eta()",
+                "VBFleadJet_pt :=  getVBFleadJet_pt() ",
+                "VBFsubleadJet_pt := getVBFsubleadJet_pt() ",
+                "VBFleadJet_eta := getVBFleadJet_eta()",
+                "VBFsubleadJet_eta := getVBFsubleadJet_eta()",
+                "VBFleadJet_phi := getVBFleadJet_phi()",
+                "VBFsubleadJet_phi := getVBFsubleadJet_phi()",
+                "VBFleadJet_pz := getVBFleadJet_pz()",
+                "VBFsubleadJet_pz := getVBFsubleadJet_pz()",
+                "VBFleadJet_QGL := getVBFleadJet_QGL() ",
+                "VBFleadJet_PUID := getVBFleadJet_PUID()",
+                "VBFsubleadJet_QGL := getVBFsubleadJet_QGL()",
+                "VBFsubleadJet_PUID := getVBFsubleadJet_PUID()"
+                #"VBFJet_Delta_eta := abs(VBFleadJet().eta - VBFsubleadJet().eta)",
+                #"VBFleadJet_pt :=  VBFleadJet().pt ",
+                #"VBFsubleadJet_pt := VBFsubleadJet().pt ",
+                #"VBFleadJet_eta := VBFleadJet().eta",
+                #"VBFsubleadJet_eta := VBFsubleadJet().eta",
+                #"VBFleadJet_phi := VBFleadJet().phi",
+                #"VBFsubleadJet_phi := VBFsubleadJet().phi",
+                #"VBFleadJet_px := VBFleadJet().px",
+                #"VBFsubleadJet_px := VBFsubleadJet().px",
+                #"VBFleadJet_py := VBFleadJet().py",
+                #"VBFsubleadJet_py := VBFsubleadJet().py",
+                #"VBFleadJet_pz := VBFleadJet().pz",
+                #"VBFsubleadJet_pz := VBFsubleadJet().pz",
+                #"VBFleadJet_DeepFlavour := VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probusd')+VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probg')",
+                #"VBFleadJet_QGL := VBFleadJet().QGL() ",
+                #"VBFleadJet_PUID := VBFleadJet().puJetIdMVA()",
+                #"VBFsubleadJet_DeepFlavour := VBFsubleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probusd')+VBFsubleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probg')",
+                #"VBFsubleadJet_QGL := VBFsubleadJet.QGL()",
+                #"VBFsubleadJet_PUID := VBFsubleadJet().puJetIdMVA()",
+                #"VBFleadJet_hflav := VBFleadJet().hadronFlavour()",
+                #"VBFleadJet_pflav := VBFleadJet().partonFlavour()",
+                #"VBFsubleadJet_hflav := VBFsubleadJet().hadronFlavour()",
+                #"VBFsubleadJet_pflav := VBFsubleadJet().partonFlavour()"
+
         ]
         if self.customize.doubleHReweight > 0: 
             for num in range(0,12):  #12 benchmarks + 1 SM
@@ -306,47 +320,22 @@ class DoubleHCustomize():
             "ttHScore := ttHScore()",
            ]
         if self.customize.addVBFDoubleHVariables: variables +=[
-                "b1_pt := b1_pt()",
-                "b1_eta := b1_eta()",
-                "b1_phi := b1_phi()",
-                "b2_pt := b2_pt()",
-                "b2_eta := b2_eta()",
-                "b2_phi := b2_phi()",
-                "b1_pz := b1_pz()",
-                "b2_pz := b2_pz()",
-                "Mbb_gen := Mbb_gen()",
-                "q1_pt := q1_pt()",
-                "q1_eta := q1_eta()",
-                "q1_ID := q1_ID()",
-                "q2_ID := q2_ID()",
-                "q1_phi := q1_phi()",
-                "q2_pt := q2_pt()",
-                "q2_eta := q2_eta()",
-                "q2_phi := q2_phi()",
-                "q1_pz := q1_pz()",
-                "q2_pz := q2_pz()",
-                "Mqq_gen := Mqq_gen()",
                 "MinDeltaR_VBF_gamma := getMinDeltaR_VBF_gamma()",
                 "MinDeltaR_VBF_b := getMinDeltaR_VBF_b()",
                 "VBFJet_mjj := getVBFJet_mjj()",
-                "VBFJet_Delta_eta := abs(VBFleadJet().eta - VBFsubleadJet().eta)",
-                "VBFleadJet_pt :=  VBFleadJet().pt ",
-                "VBFsubleadJet_pt := VBFsubleadJet().pt ",
-                "VBFleadJet_eta := VBFleadJet().eta",
-                "VBFsubleadJet_eta := VBFsubleadJet().eta",
-                "VBFleadJet_phi := VBFleadJet().phi",
-                "VBFsubleadJet_phi := VBFsubleadJet().phi",
-                "VBFleadJet_px := VBFleadJet().px",
-                "VBFleadJet_py := VBFsubleadJet().px",
-                "VBFsubleadJet_py := VBFleadJet().py",
-                "VBFleadJet_pz := VBFleadJet().pz",
-                "VBFsubleadJet_pz := VBFsubleadJet().pz",
-                "VBFleadJet_DeepFlavour := VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+VBFleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
-                "VBFleadJet_QGL := VBFleadJet().QGL() ",
-                "VBFleadJet_PUID := VBFleadJet().puJetIdMVA()",
-                "VBFsubleadJet_DeepFlavour := VBFsubleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+VBFsubleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+VBFsubleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
-                "VBFsubleadJet_QGL := VBFsubleadJet.QGL()",
-                "VBFsubleadJet_PUID := VBFsubleadJet().puJetIdMVA()"
+                "VBFJet_Delta_eta := getVBFjet_Delta_eta()",
+                "VBFleadJet_pt :=  getVBFleadJet_pt() ",
+                "VBFsubleadJet_pt := getVBFsubleadJet_pt() ",
+                "VBFleadJet_eta := getVBFleadJet_eta()",
+                "VBFsubleadJet_eta := getVBFsubleadJet_eta()",
+                "VBFleadJet_phi := getVBFleadJet_phi()",
+                "VBFsubleadJet_phi := getVBFsubleadJet_phi()",
+                "VBFleadJet_pz := getVBFleadJet_pz()",
+                "VBFsubleadJet_pz := getVBFsubleadJet_pz()",
+                "VBFleadJet_QGL := getVBFleadJet_QGL() ",
+                "VBFleadJet_PUID := getVBFleadJet_PUID()",
+                "VBFsubleadJet_QGL := getVBFsubleadJet_QGL()",
+                "VBFsubleadJet_PUID := getVBFsubleadJet_PUID()"
         ]
         if not (self.customize.doubleHTagDumpMinVariables or self.customize.dumpWorkspace) :
             return self.variablesToDump()
@@ -389,27 +378,27 @@ class DoubleHCustomize():
         # customizing training file (with/wo Mjj) 
         training_type = 'with_Mjj' if self.customize.doubleHTagsUseMjj else 'wo_Mjj'
 
-        self.process.flashggVBFDoubleHTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["doubleHTag"]["weightsFile"][training_type]))
-        self.process.flashggVBFDoubleHTag.MVAFlatteningFileName = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["MVAFlatteningFileName"][training_type]))
+        self.process.flashggVBFDoubleHTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["VBFdoubleHTag"]["weightsFile"][training_type]))
+        #self.process.flashggVBFDoubleHTag.MVAFlatteningFileName = cms.untracked.FileInPath(str(self.metaConditions["VBFdoubleHTag"]["MVAFlatteningFileName"][training_type]))
         if training_type == 'with_Mjj' :
-            self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.33,0.56, 0.70)
-            self.process.flashggVBFDoubleHTag.MXBoundaries = cms.vdouble(250., 375.,470.,600.,250.,325.,365.,585.,250.,330.,360.,520.)
+            self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.8)
+        #    self.process.flashggVBFDoubleHTag.MXBoundaries = cms.vdouble(250., 375.,470.,600.,250.,325.,365.,585.,250.,330.,360.,520.)
             self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.0)
         elif training_type == 'wo_Mjj' :
             self.process.flashggVBFDoubleHTag.MVAConfig.variables.pop(0)
-            self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.30,0.54, 0.75)
-            self.process.flashggVBFDoubleHTag.MXBoundaries = cms.vdouble(250., 395.,470.,585.,250.,345.,375.,540.,250.,330.,375.,530.)
+            self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.8)
+        #    self.process.flashggVBFDoubleHTag.MXBoundaries = cms.vdouble(250., 395.,470.,585.,250.,345.,375.,540.,250.,330.,375.,530.)
             self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.0)
         ## customize meta conditions
 
-        self.process.flashggVBFDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))
-        self.process.flashggVBFDoubleHTag.MVAscaling = cms.double(self.metaConditions["doubleHTag"]["MVAscalingValue"])
+        self.process.flashggVBFDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["VBFdoubleHTag"]["jetID"]))
+        self.process.flashggVBFDoubleHTag.MVAscaling = cms.double(self.metaConditions["VBFdoubleHTag"]["MVAscalingValue"])
         self.process.flashggVBFDoubleHTag.dottHTagger = cms.bool(self.customize.doDoubleHttHKiller)
-        self.process.flashggVBFDoubleHTag.ttHWeightfile = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["ttHWeightfile"]))
-        self.process.flashggVBFDoubleHTag.ttHKiller_mean = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_mean"])
-        self.process.flashggVBFDoubleHTag.ttHKiller_std = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_std"])
-        self.process.flashggVBFDoubleHTag.ttHKiller_listmean = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_listmean"])
-        self.process.flashggVBFDoubleHTag.ttHKiller_liststd = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_liststd"])
+        self.process.flashggVBFDoubleHTag.ttHWeightfile = cms.untracked.FileInPath(str(self.metaConditions["VBFdoubleHTag"]["ttHWeightfile"]))
+        self.process.flashggVBFDoubleHTag.ttHKiller_mean = cms.vdouble(self.metaConditions["VBFdoubleHTag"]["ttHKiller_mean"])
+        self.process.flashggVBFDoubleHTag.ttHKiller_std = cms.vdouble(self.metaConditions["VBFdoubleHTag"]["ttHKiller_std"])
+        self.process.flashggVBFDoubleHTag.ttHKiller_listmean = cms.vdouble(self.metaConditions["VBFdoubleHTag"]["ttHKiller_listmean"])
+        self.process.flashggVBFDoubleHTag.ttHKiller_liststd = cms.vdouble(self.metaConditions["VBFdoubleHTag"]["ttHKiller_liststd"])
         self.process.flashggVBFDoubleHTag.MaxJetEta = cms.double(self.metaConditions["bTagSystematics"]["eta"])
 
         self.process.flashggDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))

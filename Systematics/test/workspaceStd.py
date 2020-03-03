@@ -48,7 +48,7 @@ customize.options.register('addVBFDoubleHVariables',
                            'addVBFDoubleHVariables'
                            )
 customize.options.register('doubleHTagsUseMjj',
-                           True,
+                           False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doubleHTagsUseMjj'

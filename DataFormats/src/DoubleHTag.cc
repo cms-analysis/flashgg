@@ -149,6 +149,110 @@ float DoubleHTag::getSigmaMOverMJets() const
 
 }
 
+float DoubleHTag::getVBFDeltaR_jg() const
+{
+  float  VBFDeltaR_jg= 0;
+  return VBFDeltaR_jg;
+}
+float DoubleHTag::getVBFDeltaR_jb() const
+{
+  float VBFDeltaR_jb= 0;
+  return VBFDeltaR_jb;
+}
+float DoubleHTag::getVBFJet_mjj() const
+{
+   float VBFJet_mjj = 0;
+
+   return VBFJet_mjj;
+}
+float DoubleHTag::getVBFDelta_phi() const
+{
+   float VBFDelta_phi = 0;
+   return VBFDelta_phi;
+}
+float DoubleHTag::getVBFProd_eta() const
+{
+   float VBFProd_eta = 0;
+   return VBFProd_eta;
+}
+float DoubleHTag::getVBFCentrality_jg() const
+{
+  float VBFCentrality_jg = 0;
+  return VBFCentrality_jg;
+
+}
+float DoubleHTag::getVBFCentrality_jb() const
+{
+  float VBFCentrality_jb = 0;
+  return VBFCentrality_jb;
+}
+
+float DoubleHTag::getVBFJet_Delta_eta() const
+{
+   float VBFJet_Delta_eta = 0;
+   return VBFJet_Delta_eta;
+}
+float DoubleHTag::getVBFleadJet_pt() const
+{
+   float VBFleadJet_pt = 0;
+   return VBFleadJet_pt;
+}
+float DoubleHTag::getVBFsubleadJet_pt() const
+{
+   float VBFsubleadJet_pt = 0;
+   return VBFsubleadJet_pt;
+}
+float DoubleHTag::getVBFleadJet_eta() const
+{
+   float VBFleadJet_eta = 0;
+   return VBFleadJet_eta;
+}
+float DoubleHTag::getVBFsubleadJet_eta() const
+{
+   float VBFsubleadJet_eta = 0;
+   return VBFsubleadJet_eta;
+}
+float DoubleHTag::getVBFleadJet_phi() const
+{
+   float VBFleadJet_phi = 0;
+   return VBFleadJet_phi;
+}
+float DoubleHTag::getVBFsubleadJet_phi() const
+{
+   float VBFsubleadJet_phi = 0;
+   return VBFsubleadJet_phi;
+}
+float DoubleHTag::getVBFleadJet_pz() const
+{
+   float VBFleadJet_pz = 0;
+   return VBFleadJet_pz;
+}
+float DoubleHTag::getVBFsubleadJet_pz() const
+{
+   float VBFsubleadJet_pz = 0;
+   return VBFsubleadJet_pz;
+}
+float DoubleHTag::getVBFleadJet_QGL() const
+{
+   float VBFleadJet_QGL = 0;
+   return VBFleadJet_QGL;
+}
+float DoubleHTag::getVBFsubleadJet_QGL() const
+{
+   float VBFsubleadJet_QGL = 0;
+   return VBFsubleadJet_QGL;
+}
+float DoubleHTag::getVBFleadJet_PUID() const
+{
+   float VBFleadJet_PUID = 0;
+   return VBFleadJet_PUID;
+}
+float DoubleHTag::getVBFsubleadJet_PUID() const
+{
+   float VBFsubleadJet_PUID = 0;
+   return VBFsubleadJet_PUID;
+}
+
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil
