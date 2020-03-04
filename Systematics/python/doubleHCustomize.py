@@ -442,7 +442,8 @@ class DoubleHCustomize():
              self.process.p.remove(getattr(self.process,'flashggTagSorter'+systlabel))
              self.process.p.replace(self.process.flashggSystTagMerger,getattr(self.process, 'flashggTagSorter'+systlabel)*self.process.flashggSystTagMerger)
            #setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.VPSet(TagName = cms.InputTag('flashggVBFDoubleHTag', systlabel)), cms.VPSet( cms.VPSet(TagName = cms.InputTag('flashggDoubleHTag', systlabel)) )))
-           setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggDoubleHTag', systlabel)), cms.PSet(TagName = cms.InputTag('flashggVBFDoubleHTag', systlabel)) ))
+           setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggVBFDoubleHTag', systlabel)), cms.PSet(TagName = cms.InputTag('flashggDoubleHTag', systlabel)) ))
+           #setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggDoubleHTag', systlabel)), cms.PSet(TagName = cms.InputTag('flashggVBFDoubleHTag', systlabel)) ))
            #setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggDoubleHTag', systlabel))))
         #print 'from loop after:',process.flashggSystTagMerger.src
 
@@ -469,8 +470,9 @@ class DoubleHCustomize():
             self.process.flashggDoubleHReweight = flashggDoubleHReweight
             self.process.flashggDoubleHReweight.doReweight = self.customize.doubleHReweight
             self.process.flashggDoubleHReweight.weightsFile = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["NodesReweightingFileName"]))
+            self.process.flashggDoubleHReweight.weightsFile = cms.untracked.FileInPath(str(self.metaConditions["VBFdoubleHTag"]["NodesReweightingFileName"]))
             self.process.p.replace(self.process.flashggDoubleHTag, self.process.flashggDoubleHReweight*self.process.flashggDoubleHTag)
-
+            self.process.p.replace(self.process.flashggVBFDoubleHTag, self.process.flashggDoubleHReweight*self.process.flashggVBFDoubleHTag)
 
     def addGenAnalysis(self):
         if self.customize.processId == "Data": 
