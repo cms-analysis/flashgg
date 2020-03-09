@@ -59,7 +59,9 @@ class StageOneCustomize():
             "stage1p2bin[57,-8.5,48.5] := tagTruth().HTXSstage1p2orderedBin"
         ]
 
-        ntup_variables = ws_variables
+        ntup_variables = ws_variables + [
+                                            "truthNNLOPS[1,-999999.,999999.]:=tagTruth().weight(\"NNLOPS\")"
+                                        ]
     
         if self.customize.dumpWorkspace:
             return ws_variables
