@@ -121,11 +121,6 @@ class StageOneCustomize():
             getattr(self.process, tag).ModifySystematicsWorkflow = cms.bool(True)
             getattr(self.process, tag).UseLargeMVAs = cms.bool(True) # enable memory-intensive MVAs
 
-        #print 'ED DEBUG process.p before was %s'%self.process.p
-        #print
-        #print 'ED DEBUG process.flashggSystTagMerger.src before was %s'%self.process.flashggSystTagMerger.src
-        #print
-    
         self.process.p.remove(self.process.flashggTagSorter)
         self.process.p.replace(self.process.flashggSystTagMerger, cms.Sequence(self.process.flashggTTHLeptonicTag + self.process.flashggTTHHadronicTag)*self.process.flashggTagSorter*self.process.flashggSystTagMerger)
     
@@ -143,8 +138,3 @@ class StageOneCustomize():
                 cms.PSet(TagName = cms.InputTag('flashggStageOneCombinedTag'+systlabel))
             )
             setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', modifiedPriorityRanges)
-
-        #print 'ED DEBUG process.p after is %s'%self.process.p
-        #print
-        #print 'ED DEBUG process.flashggSystTagMerger.src after is %s'%self.process.flashggSystTagMerger.src
-        #print
