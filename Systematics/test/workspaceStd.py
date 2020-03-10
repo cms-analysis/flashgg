@@ -540,20 +540,19 @@ for tag in tagList:
           if customize.doHTXS:
               currentVariables = ["stage0bin[72,9.5,81.5] := tagTruth().HTXSstage0bin"]
           elif customize.doStageOne:
-              #currentVariables = ["stage1p1bin[50,-8.5,41.5] := tagTruth().HTXSstage1p1orderedBin"]
-              currentVariables = ["stage1p2bin[57,-8.5,48.5] := tagTruth().HTXSstage1p2orderedBin"]
+              currentVariables = soc.noTagVariables()
           else:
               currentVariables = []
       isBinnedOnly = (systlabel !=  "")
       is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
       if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or is_signal ) and (systlabel ==  "") and not (customize.processId == "th_125" or customize.processId == "bbh_125"):
-          print "Signal MC central value, so dumping PDF weights"
+          #print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
           nPdfWeights = 60
           nAlphaSWeights = 2
           nScaleWeights = 9
       else:
-          print "Data, background MC, or non-central value, or no systematics: no PDF weights"
+          #print "Data, background MC, or non-central value, or no systematics: no PDF weights"
           dumpPdfWeights = False
           nPdfWeights = -1
           nAlphaSWeights = -1

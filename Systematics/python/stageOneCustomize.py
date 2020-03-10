@@ -40,6 +40,7 @@ class StageOneCustomize():
         ]
         if self.customize.processId == "Data": 
             self.tagList.pop(1) ## remove NoTag for data
+        self.stageOneVariable = ["stage1p2bin[57,-8.5,48.5] := tagTruth().HTXSstage1p2orderedBin"]
         self.tagPriorityRanges = cms.VPSet(
 	          cms.PSet(TagName = cms.InputTag('flashggTHQLeptonicTag')),
             cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag')), 
@@ -52,11 +53,10 @@ class StageOneCustomize():
 
 
     def variablesToDump(self):
-        ws_variables = [
+        ws_variables = self.stageOneVariable + [
             "CMS_hgg_mass[160,100,180]:=diPhoton().mass",
             "dZ[40,-20.,20.]:=(tagTruth().genPV().z-diPhoton().vtx().z)",
-            "centralObjectWeight[1,-999999.,999999.] := centralWeight",
-            "stage1p2bin[57,-8.5,48.5] := tagTruth().HTXSstage1p2orderedBin"
+            "centralObjectWeight[1,-999999.,999999.] := centralWeight"
         ]
 
         ntup_variables = ws_variables + [
@@ -70,11 +70,14 @@ class StageOneCustomize():
 
 
     def systematicVariables(self):
-        systematicVariables = [
-            "CMS_hgg_mass[160,100,180]:=diPhoton().mass",
-            "stage1p2bin[57,-8.5,48.5] := tagTruth().HTXSstage1p2orderedBin"
+        systematicVariables = self.stageOneVariable + [
+            "CMS_hgg_mass[160,100,180]:=diPhoton().mass"
         ]
         return systematicVariables
+
+    def noTagVariables(self):
+        noTagVariables = self.stageOneVariable
+        return noTagVariables
 
 
     def customizeTagSequence(self):
