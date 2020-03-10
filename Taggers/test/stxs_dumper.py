@@ -96,6 +96,8 @@ process.flashggTagSorter.TagPriorityRanges = cms.VPSet(
 #set the prefiring correctly 
 applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)
 
+from flashgg.Taggers.flashggVBFMVA_cff import pujidPtBin1_loose, pujidPtBin2_loose, pujidPtBin1_medium, pujidPtBin2_medium, pujidPtBin1_tight, pujidPtBin2_tight 
+
 mva_wp = {
     "none"  : [
         [],
@@ -104,38 +106,17 @@ mva_wp = {
     ],
     "tight" : [
         [0.69, -0.35, -0.26, -0.21],
-        [0.86, -0.1 , -0.05, -0.01],
-        [0.95,  0.28,  0.31,  0.28]
+        [0.86, -0.1 , -0.05, -0.01]
     ],
     "medium": [
         [0.18, -0.55, -0.42, -0.36],
-        [0.61, -0.35, -0.23, -0.17],
-        [0.87,  0.03,  0.13,  0.12]
+        [0.61, -0.35, -0.23, -0.17]
     ],
-    "loose" :[
+    "loose" : [
         [-0.97, -0.68, -0.53, -0.47],
-        [-0.89, -0.52, -0.38, -0.3 ],
-        [-0.56, -0.17, -0.04, -0.01],
-    ],
-    "forward_tight" : [
-        [-1, -0.35, -0.26, -0.21],
-        [-1, -0.1 , -0.05, -0.01],
-        [-1,  0.28,  0.31,  0.28]
-    ],
-    "forward_medium": [
-        [-1, -0.55, -0.42, -0.36],
-        [-1, -0.35, -0.23, -0.17],
-        [-1,  0.03,  0.13,  0.12]
-    ],
-    "forward_loose" :[
-        [-1, -0.68, -0.53, -0.47],
-        [-1, -0.52, -0.38, -0.3 ],
-        [-1, -0.17, -0.04, -0.01],
+        [-0.89, -0.52, -0.38, -0.3 ]
     ]
 }
-
-
-
 
 #== Only run systematics for signal events
 from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
@@ -224,7 +205,6 @@ process.flashggVBFTag.RequireVBFPreselection = cms.bool(False)
 process.flashggVBFMVA.rmsforwardCut = cms.double(customize.forwardJetRMSCut)
 process.flashggVBFMVA.pujidWpPtBin1 = cms.vdouble(mva_wp[customize.pujidWP][0])
 process.flashggVBFMVA.pujidWpPtBin2 = cms.vdouble(mva_wp[customize.pujidWP][1])
-process.flashggVBFMVA.pujidWpPtBin3 = cms.vdouble(mva_wp[customize.pujidWP][2])
 # Print to user
 print '------------------------------------------------------------'
 print ' PUJID Working point    ::' , customize.pujidWP
