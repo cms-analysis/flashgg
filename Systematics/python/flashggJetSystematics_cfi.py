@@ -173,7 +173,7 @@ class jetSystematicsCustomize:
                                         ApplyCentralValue = cms.bool(True),
                                         SetupUncertainties = cms.bool(True),
                                         UseTextFile= cms.bool(False),
-                                        TextFileName = cms.string("notused"),
+                                        TextFileName = cms.FileInPath(str(self.metaConditions['flashggJetSystematics']['textFileName'])),
                                         SourceName = cms.string("notused"),
                                         JetCorrectorTag = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
                                      ),
@@ -233,8 +233,6 @@ class jetSystematicsCustomize:
 
       ## option to add the granular sources for jet systematics - off by default
       if self.metaConditions['flashggJetSystematics']['doGranular']:
-          textFileName = os.path.expandvars(str(self.metaConditions['flashggJetSystematics']['textFileName']))
-          if not os.path.isfile(textFileName): raise IOError('[Jet Systematics Info] did not manage to open the text file for granluar systematics, please check: %s'%textFileName)
           for sourceName in self.metaConditions['flashggJetSystematics']['listOfSources']:
               allJetUncerts += cms.VPSet( cms.PSet( MethodName = cms.string("FlashggJetEnergyCorrector"),
                                                     Label = cms.string("JEC%s"%str(sourceName)),
@@ -244,7 +242,7 @@ class jetSystematicsCustomize:
                                                     ApplyCentralValue = cms.bool(False), ## these are only systematic variations, not additional corrections
                                                     SetupUncertainties = cms.bool(False),
                                                     UseTextFile = cms.bool(True), ## these are only available in txt files, not in global tag
-                                                    TextFileName = cms.string(textFileName),
+                                                    TextFileName = cms.FileInPath(str(self.metaConditions['flashggJetSystematics']['textFileName'])),
                                                     SourceName = cms.string(str(sourceName)),
                                                     JetCorrectorTag = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
                                                   ) 

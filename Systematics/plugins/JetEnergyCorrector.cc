@@ -32,7 +32,7 @@ namespace flashgg {
         bool uncertainties_set_;
         bool setup_uncertainties_;
         bool useTextFile_;
-        std::string textFileName_;
+        edm::FileInPath textFileName_;
         std::string sourceName_;
         edm::EDGetTokenT<reco::JetCorrector> mJetCorrector;
     };
@@ -44,7 +44,7 @@ namespace flashgg {
         debug_( conf.getUntrackedParameter<bool>( "Debug", false ) ),
         setup_uncertainties_( conf.getParameter<bool>( "SetupUncertainties" ) ),
         useTextFile_( conf.getParameter<bool>( "UseTextFile" ) ),
-        textFileName_( conf.getParameter<std::string>( "TextFileName" ) ),
+        textFileName_( conf.getParameter<edm::FileInPath>( "TextFileName" ) ),
         sourceName_( conf.getParameter<std::string>( "SourceName" ) ),
         mJetCorrector( iC.consumes<reco::JetCorrector>(conf.getParameter<edm::InputTag>("JetCorrectorTag") ) )
     {
@@ -68,7 +68,7 @@ namespace flashgg {
             uncertainties_set_ = true;
         }
         if ( useTextFile_ ) {
-            JetCorrectorParameters *corrParameters = new JetCorrectorParameters( textFileName_, sourceName_ );
+            JetCorrectorParameters *corrParameters = new JetCorrectorParameters( textFileName_.fullPath(), sourceName_ );
             jec_unc_.reset( new JetCorrectionUncertainty( *corrParameters ) );
             uncertainties_set_ = true;
             delete corrParameters;

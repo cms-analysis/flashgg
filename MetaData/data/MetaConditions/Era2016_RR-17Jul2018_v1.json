@@ -105,7 +105,7 @@
     "flashggJetSystematics" : 
     {  
         "doGranular" : false,
-        "textFileName" : "$CMSSW_BASE/src/flashgg/Systematics/data/JEC/Regrouped_Summer16_07Aug2017_V11_MC_UncertaintySources_AK4PFchs.txt",
+        "textFileName" : "flashgg/Systematics/data/JEC/Regrouped_Summer16_07Aug2017_V11_MC_UncertaintySources_AK4PFchs.txt",
         "listOfSources" : [
                            "Absolute",
                            "Absolute2016",
