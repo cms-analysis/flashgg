@@ -86,7 +86,7 @@
 
     "flashggJetSystematics" : 
     {  
-        "doGranular" : true,
+        "doGranular" : false,
         "textFileName" : "flashgg/Systematics/data/JEC/Regrouped_Autumn18_V19_MC_UncertaintySources_AK4PFchs.txt",
         "listOfSources" : [
                            "Absolute",
@@ -111,7 +111,8 @@
 
     "flashggVHhadMVA" : 
     {  
-        "weightFile" : "flashgg/Taggers/data/vhHadDataDrivenMerged.xml"
+        "weightFile" : "flashgg/Taggers/data/vhHadDataDrivenMerged.xml",
+        "jetID" : "Tight2018"
     },
 
     "stageOneCombinedTag" :

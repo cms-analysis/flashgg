@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
-import flashgg.Taggers.PUJID_wps as pujid
+from flashgg.Taggers.flashggVBFMVA_cff import pujidPtBin1_loose, pujidPtBin2_loose, pujidPtBin1_medium, pujidPtBin2_medium, pujidPtBin1_tight, pujidPtBin2_tight 
 
 # legacy VHhad MVA
 flashggVHhadMVA = cms.EDProducer('FlashggVHhadMVAProducer',
@@ -15,10 +15,9 @@ flashggVHhadMVA = cms.EDProducer('FlashggVHhadMVAProducer',
                                merge3rdJet = cms.bool(False),
                                thirdJetDRCut = cms.double(1.8),
                                JetIDLevel    = cms.string("Tight2017"),
-                               # changes loose to another working point, or comment if you want to disable pujid
-                               pujidWpPtBin1 = cms.vdouble([0.69, -0.35, -0.26, -0.21]), # cms.vdouble(pujid.loose[0]),
-                               pujidWpPtBin2 = cms.vdouble([0.86, -0.1 , -0.05, -0.01]), # cms.vdouble(pujid.loose[1]),
-                               pujidWpPtBin3 = cms.vdouble([0.95,  0.28,  0.31,  0.28]), # cms.vdouble(pujid.loose[2]), 
+                               ## define the pujid working point 
+                               pujidWpPtBin1 = cms.vdouble(pujidPtBin1_tight), ## WP for 20 < pT < 30 
+                               pujidWpPtBin2 = cms.vdouble(pujidPtBin2_tight), ## WP for 30 < pT < 50
                                #UseLegacyMVA = cms.bool(True),
                                rmsforwardCut = cms.double(3.0), # default was 0.03 , running on loose pujid
                                MinDijetMinv  = cms.double(0.0),

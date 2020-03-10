@@ -105,16 +105,16 @@ mva_wp = {
         []
     ],
     "tight" : [
-        [0.69, -0.35, -0.26, -0.21],
-        [0.86, -0.1 , -0.05, -0.01]
+        pujidPtBin1_tight,
+        pujidPtBin2_tight
     ],
     "medium": [
-        [0.18, -0.55, -0.42, -0.36],
-        [0.61, -0.35, -0.23, -0.17]
+        pujidPtBin1_medium,
+        pujidPtBin2_medium
     ],
     "loose" : [
-        [-0.97, -0.68, -0.53, -0.47],
-        [-0.89, -0.52, -0.38, -0.3 ]
+        pujidPtBin1_loose,
+        pujidPtBin2_loose
     ]
 }
 

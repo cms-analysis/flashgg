@@ -119,7 +119,8 @@
 
     "flashggVHhadMVA" : 
     {  
-        "weightFile" : "flashgg/Taggers/data/vhHadDataDrivenMerged.xml"
+        "weightFile" : "flashgg/Taggers/data/vhHadDataDrivenMerged.xml",
+        "jetID" : "Tight2017"
     },
 
     "stageOneCombinedTag" :
