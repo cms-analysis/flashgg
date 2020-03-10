@@ -233,11 +233,12 @@ class jetSystematicsCustomize:
 
       ## option to add the granular sources for jet systematics - off by default
       if self.metaConditions['flashggJetSystematics']['doGranular']:
+          textFileName = os.path.expandvars(str(self.metaConditions['flashggJetSystematics']['textFileName']))
           try:
-              with open(str(self.metaConditions['flashggJetSystematics']['textFileName'])) as inFile:
+              with open(textFileName) as inFile:
                   print '[Jet Systematics Info] successfully opened text file for granular systematics, proceeding'
           except:
-              raise Exception('[Jet Systematics Info] did not manage to open the text file for granluar systematics, please check: %s'%str(self.metaConditions['flashggJetSystematics']['textFileName']))
+              raise Exception('[Jet Systematics Info] did not manage to open the text file for granluar systematics, please check: %s'%textFileName)
           for sourceName in self.metaConditions['flashggJetSystematics']['listOfSources']:
               allJetUncerts += cms.VPSet( cms.PSet( MethodName = cms.string("FlashggJetEnergyCorrector"),
                                                     Label = cms.string("JEC%s"%str(sourceName)),
@@ -247,7 +248,7 @@ class jetSystematicsCustomize:
                                                     ApplyCentralValue = cms.bool(False), ## these are only systematic variations, not additional corrections
                                                     SetupUncertainties = cms.bool(False),
                                                     UseTextFile = cms.bool(True), ## these are only available in txt files, not in global tag
-                                                    TextFileName = cms.string(str(self.metaConditions['flashggJetSystematics']['textFileName'])),
+                                                    TextFileName = cms.string(textFileName),
                                                     SourceName = cms.string(str(sourceName)),
                                                     JetCorrectorTag = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
                                                   ) 
