@@ -92,6 +92,25 @@
         "version" : "xgb"
     },
 
+    "flashggJetSystematics" : 
+    {  
+        "doGranular" : false,
+        "textFileName" : "Systematics/data/JEC/Regrouped_Fall17_17Nov2017_V32_MC_UncertaintySources_AK4PFchs.txt",
+        "listOfSources" : [
+                           "Absolute",
+                           "Absolute2017",
+                           "BBEC1",
+                           "BBEC12017",
+                           "EC2",
+                           "EC22017",
+                           "FlavorQCD",
+                           "HF",
+                           "HF2017",
+                           "RelativeBal",
+                           "RelativeSample2017"
+                          ]
+    },
+
     "flashggVBFMVA" : 
     {  
         "weightFile" : "flashgg/Taggers/data/dijetDataDrivenMerged.xml"
@@ -151,12 +170,6 @@
                              0.899,
                              0.699
                            ]
-    },
-
-    "JetCorrectorParametersCollection_version" :
-    {
-        "data" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_DATA_AK4PFchs",
-        "MC" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_MC_AK4PFchs"
     },
 
     "MUON_ID" : "Medium",

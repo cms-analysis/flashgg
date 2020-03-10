@@ -232,29 +232,23 @@ class jetSystematicsCustomize:
                                )
 
       ## option to add the granular sources for jet systematics - off by default
-      print 'ED DEBUG about to try the new JEC systematic sources'
-      print 'ED DEBUG using file name %s'%(str(self.metaConditions['flashggJetSystematics']['textFileName']))
-      with open(str(self.metaConditions['flashggJetSystematics']['textFileName'])) as inFile:
-          print 'ED DEBUG about to read the file'
-          for line in inFile.readlines():
-              print line
-          print 'ED DEBUG finished reading the file'
       if self.metaConditions['flashggJetSystematics']['doGranular']:
-          print 'ED DEBUG the option is set to true'
+          try:
+              with open(str(self.metaConditions['flashggJetSystematics']['textFileName'])) as inFile:
+                  print '[Jet Systematics Info] successfully opened text file for granular systematics, proceeding'
+          except:
+              raise Exception('[Jet Systematics Info] did not manage to open the text file for granluar systematics, please check: %s'%str(self.metaConditions['flashggJetSystematics']['textFileName']))
           for sourceName in self.metaConditions['flashggJetSystematics']['listOfSources']:
-              sourceName = str(sourceName)
-              print 'ED DEBUG processing syst with name %s'%sourceName
-              print 'ED DEBUG being passed to the constructor is %s'%(sourceName if not sourceName.count("201") else sourceName.replace("201","_201"))
               allJetUncerts += cms.VPSet( cms.PSet( MethodName = cms.string("FlashggJetEnergyCorrector"),
-                                                    Label = cms.string("JEC%s"%sourceName),
+                                                    Label = cms.string("JEC%s"%str(sourceName)),
                                                     NSigmas = cms.vint32(-1,1),
                                                     OverallRange = cms.string("abs(eta)<5.0"),
                                                     Debug = cms.untracked.bool(False),
-                                                    ApplyCentralValue = cms.bool(False), # these are only variations, not additional corrections
+                                                    ApplyCentralValue = cms.bool(False), ## these are only systematic variations, not additional corrections
                                                     SetupUncertainties = cms.bool(False),
-                                                    UseTextFile = cms.bool(True),
+                                                    UseTextFile = cms.bool(True), ## these are only available in txt files, not in global tag
                                                     TextFileName = cms.string(str(self.metaConditions['flashggJetSystematics']['textFileName'])),
-                                                    SourceName = cms.string(sourceName if not sourceName.count("201") else sourceName.replace("201","_201")),
+                                                    SourceName = cms.string(str(sourceName)),
                                                     JetCorrectorTag = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
                                                   ) 
                                         )
