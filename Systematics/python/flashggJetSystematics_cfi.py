@@ -234,11 +234,7 @@ class jetSystematicsCustomize:
       ## option to add the granular sources for jet systematics - off by default
       if self.metaConditions['flashggJetSystematics']['doGranular']:
           textFileName = os.path.expandvars(str(self.metaConditions['flashggJetSystematics']['textFileName']))
-          try:
-              with open(textFileName) as inFile:
-                  print '[Jet Systematics Info] successfully opened text file for granular systematics, proceeding'
-          except:
-              raise Exception('[Jet Systematics Info] did not manage to open the text file for granluar systematics, please check: %s'%textFileName)
+          if not os.path.isfile(textFileName): raise IOError('[Jet Systematics Info] did not manage to open the text file for granluar systematics, please check: %s'%textFileName)
           for sourceName in self.metaConditions['flashggJetSystematics']['listOfSources']:
               allJetUncerts += cms.VPSet( cms.PSet( MethodName = cms.string("FlashggJetEnergyCorrector"),
                                                     Label = cms.string("JEC%s"%str(sourceName)),
