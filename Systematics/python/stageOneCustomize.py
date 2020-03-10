@@ -59,9 +59,10 @@ class StageOneCustomize():
             "centralObjectWeight[1,-999999.,999999.] := centralWeight"
         ]
 
-        ntup_variables = ws_variables + [
-                                            "truthNNLOPS[1,-999999.,999999.]:=tagTruth().weight(\"NNLOPS\")"
-                                        ]
+        ntup_variables = ws_variables #+ [
+                                      #      "truthNNLOPS[1,-999999.,999999.]:=tagTruth().weight(\"NNLOPS\")",
+                                      #      "leadJetPt[1,-999999.,999999.]:=VBFMVA().dijet_LeadJPt"
+                                      #  ]
     
         if self.customize.dumpWorkspace:
             return ws_variables

@@ -84,6 +84,25 @@
         "version" : "xgb"
     },
 
+    "flashggJetSystematics" : 
+    {  
+        "doGranular" : true,
+        "textFileName" : "Systematics/data/JEC/Regrouped_Autumn18_V19_MC_UncertaintySources_AK4PFchs.txt",
+        "listOfSources" : [
+                           "Absolute",
+                           "Absolute2018",
+                           "BBEC1",
+                           "BBEC12018",
+                           "EC2",
+                           "EC22018",
+                           "FlavorQCD",
+                           "HF",
+                           "HF2018",
+                           "RelativeBal",
+                           "RelativeSample2018"
+                          ]
+    },
+
     "flashggVBFMVA" : 
     {  
         "weightFile" : "flashgg/Taggers/data/dijetDataDrivenMerged.xml"
