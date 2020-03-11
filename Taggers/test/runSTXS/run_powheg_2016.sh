@@ -1,1 +1,0 @@
-fggRunJobs.py --load powheg_2016.json -d Powheg2016_21Jan20 --stage-to /vols/cms/es811/HggGeneral/LegacyNtuples/Pass0/2016/Powheg/ -x cmsRun stxs_dumper.py maxEvents=-1 -q hepmedium.q -n 50 --no-copy-proxy useParentDataset=True runOnZee=False pujidWP=tight dumpJetSysTrees=False

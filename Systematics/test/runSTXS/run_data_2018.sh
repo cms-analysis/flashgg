@@ -1,1 +1,0 @@
-fggRunJobs.py --load data_2018.json -d Data2018_7Feb20 --stage-to /vols/cms/es811/HggGeneral/WorkspaceTest/Pass2/2018/Data/Raw/ -x cmsRun workspaceStd.py maxEvents=-1 -q hepmedium.q -n 50 --no-copy-proxy dumpWorkspace=True doStageOne=True

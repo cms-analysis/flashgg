@@ -1,8 +1,0 @@
-{
-    "cmdLine"  : "campaign=Era2016_RR-17Jul2018_v2 metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json useAAA=True",
-    "processes": {
-	"zee"   : [
-"/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8"
-		   ]
-    }
-}

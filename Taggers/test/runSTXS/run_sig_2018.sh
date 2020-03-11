@@ -1,1 +1,0 @@
-fggRunJobs.py --load sig_2018.json -d Sig2018_29Jan20 --stage-to /vols/cms/es811/HggGeneral/LegacyNtuples/Pass0/2018/Sig/ -x cmsRun stxs_dumper.py maxEvents=-1 -q hepmedium.q -n 50 --no-copy-proxy useParentDataset=True runOnZee=False pujidWP=tight dumpJetSysTrees=False

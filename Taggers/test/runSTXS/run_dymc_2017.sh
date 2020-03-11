@@ -1,1 +1,0 @@
-fggRunJobs.py --load dymc_2017.json -d DYMC2017_29Jan20 --stage-to /vols/cms/es811/HggGeneral/LegacyNtuples/Pass0/2017/DYMC/ -x cmsRun stxs_dumper.py maxEvents=-1 -q hepmedium.q pujidWP=tight dumpJetSysTrees=True -n 50 --no-copy-proxy runOnZee=True

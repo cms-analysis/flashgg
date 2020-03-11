@@ -1,1 +1,0 @@
-fggRunJobs.py --load dydata_2017.json -d DYdata2017_29Jan20 --stage-to /vols/cms/es811/HggGeneral/LegacyNtuples/Pass0/2017/DYdata/ -x cmsRun stxs_dumper.py maxEvents=-1 -q hepmedium.q pujidWP=tight dumpJetSysTrees=False -n 50 --no-copy-proxy runOnZee=True
