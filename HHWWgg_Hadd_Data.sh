@@ -5,9 +5,9 @@
 # Run from one directory outside directory with data output files 
 
 fgg_direc=/afs/cern.ch/work/a/atishelm/21JuneFlashgg/CMSSW_10_5_0/src/flashgg
+ntuple_direc="/eos/user/a/atishelm/ntuples/HHWWgg"
 
-cd /eos/user/a/atishelm/ntuples/HHWWgg
-
+cd ${ntuple_direc}
 
 input=$1 # path of directory with condor output files 
 output=$2 # path of directory to put hadded files into 

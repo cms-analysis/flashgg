@@ -19,6 +19,7 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     PhotonTag = cms.InputTag('flashggRandomizedPhotons'),
                                     # DiPhotonTag = cms.InputTag('flashggDiPhotonSystematics'),
                                     DiPhotonTag = cms.InputTag('flashggPreselectedDiPhotons'),
+                                    # DiPhotonTag = cms.InputTag('flashggDiPhotons'),
                                     SystLabel = cms.string(""),
                                     JetsName = cms.string("bRegProducer"), # 
                                     JetsCollSize = cms.uint32(maxJetCollections), #

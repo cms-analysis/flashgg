@@ -30,7 +30,7 @@ namespace flashgg {
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) )
     {
         correctionFile_ = conf.getParameter<edm::FileInPath>("CorrectionFile");
-        std::cout<<correctionFile_.fullPath().c_str()<<std::endl;
+        // std::cout<<correctionFile_.fullPath().c_str()<<std::endl;
         TFile* f = TFile::Open(correctionFile_.fullPath().c_str());
         //        f->Print();
         corrections_.emplace_back( (TGraph*)((TGraph*) f->Get("trasfhebup"))->Clone());
@@ -56,8 +56,10 @@ namespace flashgg {
     void PhotonMvaTransform::applyCorrection( flashgg::Photon &y, int syst_shift )
     {
         //        if(syst_shift==0) return;
+        cout << "syst_shift: " << syst_shift << endl; 
         if( overall_range_( y ) ) { 
             auto val_err = binContents( y );
+            // cout << "val_err: " << val_err << endl;
             float shift_val = val_err.first[0]; 
             if (!applyCentralValue()) shift_val = 0.;
             //            std::cout<<"syst shift is "<<syst_shift<<std::endl;
@@ -93,6 +95,8 @@ namespace flashgg {
                 vtx = keyval->first;
                 mvaVal = keyval->second;
                 shift = shift_val + (mvaVal - corrections_[correctionIndex]->Eval(mvaVal))*abs(syst_shift);
+                cout << "shift_val: " << shift_val << endl;
+                cout << "shift: " << shift << endl;
                 y.shiftMvaValueBy(shift, vtx);
             }
             if ( debug_) {

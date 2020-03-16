@@ -39,10 +39,11 @@ calcSystematics="false" # run workspaceStd.py systematics
 dumpTrees="false" # dump trees in fggrunjobs output 
 dumpWorkspaces="false" # dump workspaces in fggrunjobs output 
 jsonpath="" # optional local json file to use for fggrunjobs arguments such as dataset and campaign 
+condorQueue="tomorrow"
 
 ## Get user specified argumenets 
 
-options=$(getopt -o dgcstw --long nEvents: --long labelName: --long json: -- "$@") # end name with colon ':' to specify argument string 
+options=$(getopt -o dgcstw --long nEvents: --long labelName: --long json: --long condorQueue: -- "$@") # end name with colon ':' to specify argument string 
 [ $? -eq 0 ] || {
       echo "Incorrect option provided"
       exit 1
@@ -82,6 +83,10 @@ while true; do
       --json)
             shift; 
             jsonpath=$1
+            ;;
+      --condorQueue)
+            shift;
+            condorQueue=$1
             ;;
       --)
             shift
@@ -212,7 +217,7 @@ then
       command+=" --stage-to="$root_file_output
       command+=' -x cmsRun Systematics/test/workspaceStd.py maxEvents=' # workspaceStd.py 
       command+=$numEvents
-      command+=' -q workday --no-use-tarball --no-copy-proxy metaConditions='   
+      command+=' -q ${condorQueue} --no-use-tarball --no-copy-proxy metaConditions='   
       command+=$fggDirec
       command+='MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json '
       command+=' doHHWWggTag=True HHWWggTagsOnly=True '

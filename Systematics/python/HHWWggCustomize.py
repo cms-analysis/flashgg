@@ -10,7 +10,7 @@ class HHWWggCustomize():
         self.customize = customize
         self.metaConditions = metaConditions
         # self.tagList = [ ["HHWWggTag",12] ]
-        self.tagList = [ ["HHWWggTag",1] ]
+        self.tagList = [ ["HHWWggTag",3] ] # 3 cats: all, electrons only, muons only 
         self.customizeTagSequence()
 
     def variablesToDump(self):
@@ -18,7 +18,7 @@ class HHWWggCustomize():
         ##- Variables for the nominal output tag tree (non systematic trees for each category)
         variables = []
 
-        # Cut flow variables 
+        #-- Cut flow variables 
         cutFlowVars = [
             "passPS[2,0,2] := Cut_Variables[0]",
             "passPhotonSels[2,0,2] := Cut_Variables[1]",
@@ -27,7 +27,7 @@ class HHWWggCustomize():
             "goodJets[2,0,2] := Cut_Variables[4]"
         ]
 
-        # b scores
+        #-- b scores
         bScores = [] 
         for jeti in range(0,6):
             var1 = "jet" + str(jeti) + "_DeepFlavourScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 "
@@ -43,10 +43,20 @@ class HHWWggCustomize():
           "slp_initE[100,0,100] := Subleading_Photon.energyAtStep('initial')", # also want final energies 
         ]
 
-        variables += cutFlowVars 
-        variables += bScores 
-        # variables += phoEs
+        # variables for miscellaneous debugging 
+        debugVars=[
+            "leadPhoMVA[2,0,2]:=lp_Hgg_MVA",
+            "subleadPhoMVA[2,0,2]:=slp_Hgg_MVA"
 
+        ]
+
+        if self.customize.doHHWWggTagCutFlow: 
+            variables += cutFlowVars 
+            variables += bScores 
+        
+        if self.customize.doHHWWggDebug:
+            variables += debugVars
+        
         return variables
 
         # if self.customize.dumpWorkspace == False :
@@ -65,6 +75,17 @@ class HHWWggCustomize():
         #   "lp_initE[100,0,100] := Leading_Photon.energyAtStep('initial')",
         #   "slp_initE[100,0,100] := Subleading_Photon.energyAtStep('initial')", # also want final energies 
       ]
+
+      debugVars=[
+          "leadPhoMVA[2,0,2]:=lp_Hgg_MVA",
+          "subleadPhoMVA[2,0,2]:=slp_Hgg_MVA"
+
+      ]
+
+      if self.customize.doHHWWggDebug:
+        systematicVariables += debugVars 
+
+      
 
       return systematicVariables
 
@@ -169,7 +190,7 @@ class HHWWggCustomize():
 
 
     def HHWWggTagRunSequence(self,systlabels,jetsystlabels,phosystlabels):
-        print'not used'
+        print'[HHWWggTagRunSequence]: Doing Nothing for HHWWgg'
     #    if self.customize.HHWWggTagsOnly: 
         #   print'systlabels = ',systlabels 
         #   self.HHWWggTagMerger(systlabels)

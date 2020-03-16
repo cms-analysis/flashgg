@@ -141,6 +141,8 @@ def cloneTagSequenceForEachSystematic(process,systlabels=[],phosystlabels=[],met
             process.flashggSystTagMerger.src.append(cms.InputTag("flashggZPlusJetTag" + systlabel))
         else:
             process.flashggSystTagMerger.src.append(cms.InputTag("flashggTagSorter" + systlabel))
+            # print'systlabel = ',systlabel 
+    # exit(0)
 
 # ttH tags use large BDTs and DNNs that take up lots of memory and cause crashes with normal workflow
 # This function modifies the workflow so that systematic variations are evaluated in a single instance of the tagger, rather than individual instances for each variation

@@ -197,7 +197,7 @@ As described in the Candidate Dumper condor instructions above, this can be spec
 HHWWgg_v2-3:
 
     #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-3_CutFlow_NoSyst_LowEvents --nEvents 1000 --json Taggers/test/HHWWgg_v2-3/HHWWgg_v2-3.json -g -c -t 
+    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-3_CutFlow_NoSyst_LowEvents --nEvents 1000 --json Taggers/test/HHWWgg_v2-3/HHWWgg_v2-3.json --condorQueue tomorrow -g -c -t 
     #+END_EXAMPLE
 
 ** nTuple Processing
@@ -220,6 +220,183 @@ sure the name of the file is expected in RenameWorkspace_SignalTagger.cpp (copy_
 
 this will create a root file with the proper workspace RooAbsData object name for the current HHWWgg version of fggfinalfit.
 From here, you can follow the steps for creating the signal model at [[https://github.com/atishelmanch/flashggFinalFit/tree/HHWWgg_Dev#hhwwgg_v2-2][HHWWgg_v2-2 Final Fit]]
+
+* HHWWgg_v2-3 
+
+These are the steps to follow to analyze the HHWWgg_v2-3 campaign, which contains gluon gluon fusion produed Radions decaying into 
+two higgs, decaying to WWgg, decaying semileptonically to qqlnugg, with 2017 detector conditions. This campaign includes mass points from 250 GeV to 1250 GeV. 
+The standard model non resonant HH production sample is also included in this campaign.
+
+** Ntuple Production
+
+To run the HHWWgg_v2-3 microAOD's through the HHWWggTagger with systematics, one should setup with: 
+
+    #+BEGIN_EXAMPLE
+    cd $CMSSW_BASE/src/flashgg
+    cmsenv
+    voms-proxy-init --voms cms --valid 168:00
+    . proxy.sh <ProxyName> # Example <ProxyName>: x509up_u95168
+    #+END_EXAMPLE
+
+The user then has the option to produce output ntuples with trees or workspaces. There was at least one occurrence of the following
+cmsRun error:
+
+    #+BEGIN_EXAMPLE
+    Exception Message:
+    A std::bad_alloc exception was thrown.
+    The job has probably exhausted the virtual memory available to the process.
+    #+END_EXAMPLE
+
+therefore it's recommended to only produce either trees or workspace in order to avoid this (it's possible that creating
+both may work).
+
+*** Trees
+
+To produce output ntuples with trees:
+
+    #+BEGIN_EXAMPLE
+    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-3_Trees --nEvents all --json Taggers/test/HHWWgg_v2-3/HHWWgg_v2-3.json --condorQueue tomorrow -g -s -t 
+    #+END_EXAMPLE
+
+For ntuples with trees, there's the additional option "-c" which runs the HHWWgg cutflow analysis. This will 
+save all events in order to save booleans for each to check if different cuts were passed, allowing one to 
+plot the cutflow from the output ntuples. 
+
+*** Workspaces 
+
+To produce output ntuples with RooWorkspace's:
+
+    #+BEGIN_EXAMPLE
+    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-3_Workspaces --nEvents all --json Taggers/test/HHWWgg_v2-3/HHWWgg_v2-3.json --condorQueue tomorrow -g -s -w 
+    #+END_EXAMPLE
+
+These can be used by fggfinalfit to produce signal models, which can be combined with background models computed from
+data ntuples in order to compute 95% CL limits on quantities like HH production cross section. 
+
+** Ntuple Combination 
+
+*** Trees
+
+In order to hadd signal trees, one can use the script HHWWgg_Hadd_Signal.sh. In this script you will find the variables
+"fgg_direc" and "ntuple_direc". These shold be changed according to the user. fgg_direc should be $CMSSW_BASE/src/flashgg,
+and ntuple_direc should be the directory where ntuples from the previous step (HHWWgg_Run_Jobs) were output. For example,
+ntuples_direc="/eos/user/<userLetter>/<lxplusUserName>/ntuples/HHWWgg". Once these are properly set, you can hadd with:
+
+    #+BEGIN_EXAMPLE
+    cd $CMSSW_BASE/src/flashgg
+    . HHWWgg_Hadd_Signal.sh <inputDirec> <outputDirec>
+    #+END_EXAMPLE
+
+<inputDirec> should be the folder specified in the HHWWgg_Run_Jobs.sh set above for the flag --labelName. One convention 
+for <outputDirec> would be <inputDirec> + "_Hadded". 
+
+If this works properly, you should have one root file for each Era in ntuples_direc + <outputDirec>, as well as a new 
+directory in ntuples_direc with an extra "__Combined_" string added at the end. This should contain one file with all 
+eras hadded. 
+
+*** Workspaces 
+
+Hadding RooWorkspaces needs to be done differently from hadding trees. It's done with HHWWgg_Hadd_Data_Workspaces.sh Similarly 
+to HHWWgg_Hadd_Signal, two directories need to be set to the user's specific paths: fgg_direc and ntuplesDirec. After changing 
+these appropriately, you can run with: 
+
+    #+BEGIN_EXAMPLE
+    cd $CMSSW_BASE/src/flashgg
+    . HHWWgg_Hadd_Data_Workspaces.sh <inputDirec> <outputDirec>
+    #+END_EXAMPLE
+
+inputDirec should be the folder in ntuplesDirec containing the fggrunjobs output (the --labelName value from the
+HHWWgg_Run_Jobs.sh step), and outputDirec simply the desired output direc in ntuplesDirec. For example, inputDirec + 
+"_Hadded". If this works properly, you will 
+
+** Ntuple Analysis 
+
+*** Trees 
+
+To analyze trees in output ntuples...
+
+* 2017 DoubleEG Dataset
+
+This should be used in conjunction with HHWWgg_v2-3 to extract limits. 
+
+** Ntuple Production
+
+To run the DoubleEG Dataset microAOD's through the HHWWggTagger with systematics, one should setup with: 
+
+    #+BEGIN_EXAMPLE
+    cd $CMSSW_BASE/src/flashgg
+    cmsenv
+    voms-proxy-init --voms cms --valid 168:00
+    . proxy.sh <ProxyName> # Example <ProxyName>: x509up_u95168
+    #+END_EXAMPLE
+
+The user then has the option to produce output ntuples with trees or workspaces. There was at least one occurrence of the following
+cmsRun error:
+
+    #+BEGIN_EXAMPLE
+    Exception Message:
+    A std::bad_alloc exception was thrown.
+    The job has probably exhausted the virtual memory available to the process.
+    #+END_EXAMPLE
+
+therefore it's recommended to only produce either trees or workspace in order to avoid this (it's possible that creating
+both may work).
+
+*** Trees
+
+To produce output ntuples with trees:
+
+    #+BEGIN_EXAMPLE
+    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_2017Data_Trees --nEvents all --json Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json --condorQueue tomorrow -g -s -t 
+    #+END_EXAMPLE
+
+For ntuples with trees, there's the additional option "-c" which runs the HHWWgg cutflow analysis. This will 
+save all events in order to save booleans for each to check if different cuts were passed, allowing one to 
+plot the cutflow from the output ntuples. 
+
+*** Workspaces 
+
+To produce output ntuples with RooWorkspace's:
+
+    #+BEGIN_EXAMPLE
+    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_2017Data_Workspaces --nEvents all --json Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json --condorQueue tomorrow -g -s -w 
+    #+END_EXAMPLE
+
+These can be used by fggfinalfit to produce a data driven background model, which can be combined with different signal models computed from
+signal ntuples in order to compute 95% CL limits on quantities like HH production cross section. 
+
+** Ntuple Combination 
+
+*** Trees
+
+The setup for hadding data trees is very similar to that of signal trees, so see the previous instructions on setting
+the two user variables. Once these are properly set, you can hadd with:
+
+    #+BEGIN_EXAMPLE
+    cd $CMSSW_BASE/src/flashgg
+    . HHWWgg_Hadd_Signal.sh <inputDirec> <outputDirec>
+    #+END_EXAMPLE
+
+<inputDirec> should be the folder specified in the HHWWgg_Run_Jobs.sh set above for the flag --labelName. One convention 
+for <outputDirec> would be <inputDirec> + "_Hadded". 
+
+If this works properly, you should have one root file for each mass point in ntuples_direc + <outputDirec>. 
+
+*** Workspaces 
+
+Hadding RooWorkspaces needs to be done differently from hadding trees. It's done with HHWWgg_Hadd_Data_Workspaces.sh Similarly 
+to HHWWgg_Hadd_Signal, two directories need to be set to the user's specific paths: fgg_direc and ntuplesDirec. After changing 
+these appropriately, you can run with: 
+
+    #+BEGIN_EXAMPLE
+    cd $CMSSW_BASE/src/flashgg
+    . HHWWgg_Hadd_Data_Workspaces.sh <inputDirec> <outputDirec>
+    #+END_EXAMPLE
+
+inputDirec should be the folder in ntuplesDirec containing the fggrunjobs output (the --labelName value from the
+HHWWgg_Run_Jobs.sh step), and outputDirec simply the desired output direc in ntuplesDirec. For example, inputDirec + 
+"_Hadded". If this works properly, 
+
 
 * HHWWgg_v2-2 
 
