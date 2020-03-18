@@ -11,7 +11,7 @@ class DoubleHCustomize():
         self.customize = customize
         self.metaConditions = metaConditions
         self.tagList = [ ["VBFDoubleHTag",1], ["DoubleHTag",12] ]
- #       self.tagList = [ ["VBFDoubleHTag",1] ]
+#        self.tagList = [ ["VBFDoubleHTag",1] ]
         self.customizeTagSequence()
 
     def variablesToDump(self):

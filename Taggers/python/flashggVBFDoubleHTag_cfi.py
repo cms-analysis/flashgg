@@ -67,7 +67,7 @@ flashggVBFDoubleHTag = cms.EDProducer("FlashggVBFDoubleHTagProducer",
                                    #MJJBoundariesUpper = cms.vdouble(150.0,150.0,143.0,150.0,150.0,150.0,150.0,145.0,155.0,142.0,146.0,152.0),#for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
                                    #MVABoundaries  = cms.vdouble(0.23,0.455, 0.709), # category boundaries for MVA with Mjj
                                    #MXBoundaries   = cms.vdouble(250., 336., 411., 556.), # .. and MX for MVA with Mjj
-                                   MVABoundaries  = cms.vdouble(0.80), # category boundaries for MVA with Mjj
+                                   MVABoundaries  = cms.vdouble(0.87), # category boundaries for MVA with Mjj
                                    MXBoundaries   = cms.vdouble(250., 370.,480.,585.,250.,335.,380.,545.,250.,330.,360.,530.), # .. and MX for MVA with Mjj
                                    nMX   = cms.uint32(4), # number of MX categories
                                    MJJBoundariesLower = cms.vdouble(70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0),#for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
@@ -121,9 +121,6 @@ cfgTools.addVariables(flashggVBFDoubleHTag.MVAConfig.variables,
                        "Mjj := dijet().M()",
                        "leadingJet_DeepFlavour := leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
                        "subleadingJet_DeepFlavour := subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
-                       "VBFleadJet_QGL := getVBFleadJet_QGL() ",
-                       "VBFDelta_phi := getVBFDelta_phi()",
-                       "VBFsubleadJet_QGL := getVBFsubleadJet_QGL()",
                        "absCosThetaStar_CS := abs(getCosThetaStar_CS)",
                        "absCosTheta_bb := abs(CosThetaAngles()[1])",
                        "absCosTheta_gg := abs(CosThetaAngles()[0])",
@@ -154,7 +151,10 @@ cfgTools.addVariables(flashggVBFDoubleHTag.MVAConfig.variables,
                        "VBFDeltaR_jb := getVBFDeltaR_jb()",
                        "VBFProd_eta := getVBFProd_eta",
                        "VBFJet_mjj := getVBFJet_mjj()",
-                       "VBFJet_Delta_eta := getVBFJet_Delta_eta()"
+                       "VBFJet_Delta_eta := getVBFJet_Delta_eta()",
+                       "VBFleadJet_QGL := getVBFleadJet_QGL() ",
+                       "VBFDelta_phi := getVBFDelta_phi()",
+                       "VBFsubleadJet_QGL := getVBFsubleadJet_QGL()"
                        ]
                       )
 

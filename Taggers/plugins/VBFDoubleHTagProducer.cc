@@ -545,8 +545,50 @@ namespace flashgg {
                         }
                     }
                 }    
+
+//PUID:
+                if (!hasVBFJets) continue;
+                if (jet3->pt() < 50) 
+                      {
+                         if(abs(jet3->eta()) < 2.5)
+                            { 
+                                if(jet3->puJetIdMVA() < 0.86) continue;
+                            }
+                         else if(abs(jet3->eta()) > 2.5 && abs(jet3->eta()) < 2.75 )
+                            {
+                                if(jet3->puJetIdMVA() < -0.10) continue;
+                            }
+                         else if(abs(jet3->eta()) > 2.75 && abs(jet3->eta()) < 3.0 )
+                            {
+                                if(jet3->puJetIdMVA() < -0.05) continue;
+                            }
+                         else if(abs(jet3->eta()) > 3.0 && abs(jet3->eta()) < 5.0 )
+                             {
+                                if(jet3->puJetIdMVA() < -0.01) continue;
+                             }
+                      }
+                 if (jet4->pt() < 50)
+                      {
+                         if(abs(jet4->eta()) < 2.5)
+                            {
+                                if(jet4->puJetIdMVA() < 0.86) continue;
+                            }
+                         else if(abs(jet4->eta()) > 2.5 && abs(jet4->eta()) < 2.75 )
+                            {
+                                if(jet4->puJetIdMVA() < -0.10) continue;
+                            }
+                         else if(abs(jet4->eta()) > 2.75 && abs(jet4->eta()) < 3.0 )
+                            {
+                                if(jet4->puJetIdMVA() < -0.05) continue;
+                            }
+                         else if(abs(jet4->eta()) > 3.0 && abs(jet4->eta()) < 5.0 )
+                             {
+                                if(jet4->puJetIdMVA() < -0.01) continue;
+                             }
+                      }
+
                     cout << hasVBFJets << endl;
-                    if (!hasVBFJets) continue;             
+                    //if (!hasVBFJets) continue;             
                     auto & leadJet = jet1; 
                     auto & subleadJet = jet2;
                     auto & VBFleadJet = jet3;
@@ -665,7 +707,7 @@ namespace flashgg {
                     //     double mvaScaled = mva/(mva*(1.-MVAscaling_)+MVAscaling_);
                     //     mva = MVAFlatteningCumulative_->Eval(mvaScaled);
                     // }
-
+                    if (evt.id().event() == 64129) continue;
                     tag_obj.setEventNumber(evt.id().event() );
                     tag_obj.setMVA( mva );
            
