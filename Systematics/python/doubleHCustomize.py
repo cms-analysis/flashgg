@@ -141,7 +141,11 @@ class DoubleHCustomize():
                 "VBFleadJet_QGL := getVBFleadJet_QGL() ",
                 "VBFleadJet_PUID := getVBFleadJet_PUID()",
                 "VBFsubleadJet_QGL := getVBFsubleadJet_QGL()",
-                "VBFsubleadJet_PUID := getVBFsubleadJet_PUID()"
+                "VBFsubleadJet_PUID := getVBFsubleadJet_PUID()",
+                "VBF_angleHH := getVBF_angleHH()",
+                "VBF_dRHH := getVBF_dRHH()",
+                "VBF_etaHH := getVBF_etaHH()",
+                "diVBFjet_pt := getdiVBFjet_pt()"
                 #"VBFJet_Delta_eta := abs(VBFleadJet().eta - VBFsubleadJet().eta)",
                 #"VBFleadJet_pt :=  VBFleadJet().pt ",
                 #"VBFsubleadJet_pt := VBFsubleadJet().pt ",
@@ -335,7 +339,10 @@ class DoubleHCustomize():
                 "VBFleadJet_QGL := getVBFleadJet_QGL() ",
                 "VBFleadJet_PUID := getVBFleadJet_PUID()",
                 "VBFsubleadJet_QGL := getVBFsubleadJet_QGL()",
-                "VBFsubleadJet_PUID := getVBFsubleadJet_PUID()"
+                "VBFsubleadJet_PUID := getVBFsubleadJet_PUID()",
+                "VBF_angleHH := getVBF_angleHH()",
+                "VBF_dRHH := getVBF_dRHH()",
+                "VBF_etaHH := getVBF_etaHH()",
         ]
         if not (self.customize.doubleHTagDumpMinVariables or self.customize.dumpWorkspace) :
             return self.variablesToDump()

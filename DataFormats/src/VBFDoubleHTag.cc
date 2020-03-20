@@ -126,6 +126,44 @@ float VBFDoubleHTag::getVBFsubleadJet_PUID() const
    return VBFsubleadJet_PUID;
 }
 
+float VBFDoubleHTag::getVBF_angleHH() const
+{
+      TVector3 lead_Jet, sublead_Jet, leadPho, subleadPho, JJ, PhoPho;
+      leadPho.SetPtEtaPhi(diPhoton()->leadingPhoton()->pt(), diPhoton()->leadingPhoton()->eta(), diPhoton()->leadingPhoton()->phi());
+      subleadPho.SetPtEtaPhi(diPhoton()->subLeadingPhoton()->pt(), diPhoton()->subLeadingPhoton()->eta(), diPhoton()->subLeadingPhoton()->phi());
+      lead_Jet.SetPtEtaPhi(leadJet().pt(), leadJet().eta(), leadJet().phi());
+      sublead_Jet.SetPtEtaPhi(subleadJet().pt(), subleadJet().eta(), subleadJet().phi());
+      JJ=lead_Jet+sublead_Jet;
+      PhoPho=leadPho+subleadPho;
+ 
+  float VBF_angleHH = JJ.Angle(PhoPho);
+   return VBF_angleHH;
+}
+float VBFDoubleHTag::getVBF_dRHH() const
+{
+      TVector3 lead_Jet, sublead_Jet, leadPho, subleadPho, JJ, PhoPho;
+      leadPho.SetPtEtaPhi(diPhoton()->leadingPhoton()->pt(), diPhoton()->leadingPhoton()->eta(), diPhoton()->leadingPhoton()->phi());
+      subleadPho.SetPtEtaPhi(diPhoton()->subLeadingPhoton()->pt(), diPhoton()->subLeadingPhoton()->eta(), diPhoton()->subLeadingPhoton()->phi());
+      lead_Jet.SetPtEtaPhi(leadJet().pt(), leadJet().eta(), leadJet().phi());
+      sublead_Jet.SetPtEtaPhi(subleadJet().pt(), subleadJet().eta(), subleadJet().phi());
+      JJ=lead_Jet+sublead_Jet;
+      PhoPho=leadPho+subleadPho;
+
+//   float VBF_dRHH = deltaR((diPhoton()->leadingPhoton()->p4()+diPhoton()->subLeadingPhoton()->p4()),(leadJet().p4()+subleadJet().p4()));
+   float VBF_dRHH = JJ.DeltaR(PhoPho);
+   return VBF_dRHH;
+}
+float VBFDoubleHTag::getVBF_etaHH() const
+{
+   float VBF_etaHH = (diPhoton()->p4() + dijet()).eta();
+   return VBF_etaHH;
+}
+float VBFDoubleHTag::getdiVBFjet_pt() const
+{
+
+   float diVBFjet_pt =  (VBFleadJet().p4()+VBFsubleadJet().p4()).pt();
+   return diVBFjet_pt;
+}
 
 // Local Variables:
 // mode:c++

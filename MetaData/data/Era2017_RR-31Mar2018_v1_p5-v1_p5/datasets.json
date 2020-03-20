@@ -1,0 +1,41 @@
+{
+    "/VBFHHTo2B2G_CV_1_C2V_1_C3_1_13TeV-madgraph/mukherje-Era2017_RR-31Mar2018_v1_p5-v1_p5-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2-d2426f15457677563f5f94904266f98f/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/mukherje/flashgg/Era2017_RR-31Mar2018_v1_p5/v1_p5/VBFHHTo2B2G_CV_1_C2V_1_C3_1_13TeV-madgraph/Era2017_RR-31Mar2018_v1_p5-v1_p5-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/190908_205431/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 24778.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/mukherje/flashgg/Era2017_RR-31Mar2018_v1_p5/v1_p5/VBFHHTo2B2G_CV_1_C2V_1_C3_1_13TeV-madgraph/Era2017_RR-31Mar2018_v1_p5-v1_p5-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/190908_205431/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 24782.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/mukherje/flashgg/Era2017_RR-31Mar2018_v1_p5/v1_p5/VBFHHTo2B2G_CV_1_C2V_1_C3_1_13TeV-madgraph/Era2017_RR-31Mar2018_v1_p5-v1_p5-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/190908_205431/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 24768.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/mukherje/flashgg/Era2017_RR-31Mar2018_v1_p5/v1_p5/VBFHHTo2B2G_CV_1_C2V_1_C3_1_13TeV-madgraph/Era2017_RR-31Mar2018_v1_p5-v1_p5-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/190910_071622/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 24750.0
+            }
+        ], 
+        "parent_n_units": 100000, 
+        "vetted": true
+    }
+}

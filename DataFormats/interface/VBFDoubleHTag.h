@@ -120,7 +120,10 @@ namespace flashgg {
         float getVBFsubleadJet_QGL() const;
         float getVBFleadJet_PUID() const;
         float getVBFsubleadJet_PUID() const;
-
+        float getVBF_angleHH() const;
+        float getVBF_dRHH() const;
+        float getVBF_etaHH() const;
+        float getdiVBFjet_pt() const;
         /*float VBFMjj_, VBFdelta_eta_, VBFeta1_, VBFeta2_, VBFphi1_, VBFphi2_, VBFpt1_, VBFpt2_, VBFpx1_, VBFpx2_, VBFpy1_, VBFpy2_, VBFpz1_, VBFpz2_, Njet_; 
         float VBFMjj() const {return VBFMjj_; }
         float VBFdelta_eta() const {return VBFdelta_eta_;}

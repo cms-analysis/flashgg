@@ -162,6 +162,10 @@ namespace flashgg {
         float getVBFsubleadJet_QGL() const;
         float getVBFleadJet_PUID() const;
         float getVBFsubleadJet_PUID() const;
+        float getVBF_angleHH() const;
+        float getVBF_dRHH() const;
+        float getVBF_etaHH() const;
+        float getdiVBFjet_pt() const;
 
 //        void setisVBF(bool x) { isVBF_ = x; }
 //        bool isVBF() const { return isVBF_; }

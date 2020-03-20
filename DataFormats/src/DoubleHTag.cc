@@ -252,6 +252,27 @@ float DoubleHTag::getVBFsubleadJet_PUID() const
    float VBFsubleadJet_PUID = 0;
    return VBFsubleadJet_PUID;
 }
+float DoubleHTag::getVBF_angleHH() const
+{
+   float VBF_angleHH = 0;
+   return VBF_angleHH;
+}
+float DoubleHTag::getVBF_dRHH() const
+{
+   float VBF_dRHH = 0;
+   return VBF_dRHH;
+}
+float DoubleHTag::getVBF_etaHH() const
+{
+   float VBF_etaHH = 0;
+   return VBF_etaHH;
+}
+float DoubleHTag::getdiVBFjet_pt() const
+{
+   float diVBFjet_pt = 0;
+   return diVBFjet_pt;
+}
+
 
 // Local Variables:
 // mode:c++

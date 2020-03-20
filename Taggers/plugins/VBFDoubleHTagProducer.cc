@@ -507,8 +507,26 @@ namespace flashgg {
                     std::vector<edm::Ptr<flashgg::Jet> > VBFcleaned_jets;
                     for( size_t ijet=0; ijet < VBFjets->size(); ++ijet ) {
                         auto VBFjet = VBFjets->ptrAt(ijet);
-                        if (VBFjet->pt()< VBFsubleadJetPt_ || fabs(VBFjet->eta())> VBFJetEta_)
-                            continue;
+                        if (VBFjet->pt()< VBFsubleadJetPt_ || fabs(VBFjet->eta())> VBFJetEta_) continue;
+                        if (VBFjet->pt() < 50)
+                         {
+                          if(fabs(VBFjet->eta()) < 2.5)
+                            {
+                                if(VBFjet->puJetIdMVA() < 0.86) continue;
+                            }
+                          else if(fabs(VBFjet->eta()) > 2.5 && fabs(VBFjet->eta()) < 2.75 )
+                            {
+                                if(VBFjet->puJetIdMVA() < -0.10) continue;
+                            }
+                          else if(fabs(VBFjet->eta()) > 2.75 && fabs(VBFjet->eta()) < 3.0 )
+                            {
+                                if(VBFjet->puJetIdMVA() < -0.05) continue;
+                            }
+                          else if(fabs(VBFjet->eta()) > 3.0 && fabs(VBFjet->eta()) < 5.0 )
+                            {
+                                if(VBFjet->puJetIdMVA() < -0.01) continue;
+                            }
+                         }
                         if( useVBFJetID_ ){
                             if( VBFJetIDLevel_ == "Loose" && !VBFjet->passesJetID  ( flashgg::Loose ) ) continue;
                             if( VBFJetIDLevel_ == "Tight" && !VBFjet->passesJetID  ( flashgg::Tight ) ) continue;
@@ -548,44 +566,6 @@ namespace flashgg {
 
 //PUID:
                 if (!hasVBFJets) continue;
-                if (jet3->pt() < 50) 
-                      {
-                         if(abs(jet3->eta()) < 2.5)
-                            { 
-                                if(jet3->puJetIdMVA() < 0.86) continue;
-                            }
-                         else if(abs(jet3->eta()) > 2.5 && abs(jet3->eta()) < 2.75 )
-                            {
-                                if(jet3->puJetIdMVA() < -0.10) continue;
-                            }
-                         else if(abs(jet3->eta()) > 2.75 && abs(jet3->eta()) < 3.0 )
-                            {
-                                if(jet3->puJetIdMVA() < -0.05) continue;
-                            }
-                         else if(abs(jet3->eta()) > 3.0 && abs(jet3->eta()) < 5.0 )
-                             {
-                                if(jet3->puJetIdMVA() < -0.01) continue;
-                             }
-                      }
-                 if (jet4->pt() < 50)
-                      {
-                         if(abs(jet4->eta()) < 2.5)
-                            {
-                                if(jet4->puJetIdMVA() < 0.86) continue;
-                            }
-                         else if(abs(jet4->eta()) > 2.5 && abs(jet4->eta()) < 2.75 )
-                            {
-                                if(jet4->puJetIdMVA() < -0.10) continue;
-                            }
-                         else if(abs(jet4->eta()) > 2.75 && abs(jet4->eta()) < 3.0 )
-                            {
-                                if(jet4->puJetIdMVA() < -0.05) continue;
-                            }
-                         else if(abs(jet4->eta()) > 3.0 && abs(jet4->eta()) < 5.0 )
-                             {
-                                if(jet4->puJetIdMVA() < -0.01) continue;
-                             }
-                      }
 
                     cout << hasVBFJets << endl;
                     //if (!hasVBFJets) continue;             
