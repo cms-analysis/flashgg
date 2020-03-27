@@ -22,5 +22,5 @@ flashggVHhadMVA = cms.EDProducer('FlashggVHhadMVAProducer',
                                rmsforwardCut = cms.double(3.0), # default was 0.03 , running on loose pujid
                                MinDijetMinv  = cms.double(0.0),
                                DrJetPhoton   = cms.double(0.4), # Keep the same value for now, should be set later to 0.4
-                               vhHadMVAweightfile = cms.FileInPath("flashgg/Taggers/data/vhHadDataDrivenMerged.xml")
+                               vhHadMVAweightfile = cms.FileInPath("flashgg/Taggers/data/STXSmodels/vhHadDataDrivenMerged.xml")
 )

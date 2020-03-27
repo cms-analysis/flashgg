@@ -98,7 +98,7 @@
     
     "flashggDiPhotonMVA" : 
     {  
-        "weightFile" : "flashgg/Taggers/data/legacyDiphoModelMerged.xml",
+        "weightFile" : "flashgg/Taggers/data/STXSmodels/legacyDiphoModelMerged.xml",
         "version" : "xgb"
     },
 
@@ -122,13 +122,13 @@
     },
     "flashggVBFMVA" : 
     {  
-        "weightFile" : "flashgg/Taggers/data/dijetDataDrivenMerged.xml",
+        "weightFile" : "flashgg/Taggers/data/STXSmodels/dijetDataDrivenMerged.xml",
         "jetID" : "Tight2017"
     },
 
     "flashggVHhadMVA" : 
     {  
-        "weightFile" : "flashgg/Taggers/data/vhHadDataDrivenMerged.xml",
+        "weightFile" : "flashgg/Taggers/data/STXSmodels/vhHadDataDrivenMerged.xml",
         "jetID" : "Tight2017"
     },
 

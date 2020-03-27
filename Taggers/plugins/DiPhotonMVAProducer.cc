@@ -148,7 +148,7 @@ namespace flashgg {
             DiphotonMva_->AddVariable( "dipho_sublead_ptoM", &subleadptom_ );
             DiphotonMva_->AddVariable( "dipho_leadEta", &leadeta_ );
             DiphotonMva_->AddVariable( "dipho_subleadEta", &subleadeta_ );
-            DiphotonMva_->AddVariable( "dipho_cosphi", &CosPhi_ );
+            DiphotonMva_->AddVariable( "CosPhi", &CosPhi_ );
             DiphotonMva_->AddVariable( "vtxprob", &vtxprob_ );
             DiphotonMva_->AddVariable( "sigmarv", &sigmarv_ );
             DiphotonMva_->AddVariable( "sigmawv", &sigmawv_ );
