@@ -9,9 +9,18 @@ from ROOT import TFile, TTree
 def files_to_remove(files,dir):
   filelist_to_remove = []
   for file in files:
-    tfile = TFile.Open(dir+'/'+file);
-    if (tfile.IsZombie()):
+    try:
+      tfile = TFile.Open(dir+'/'+file);
+    except:
+      pass
+    if tfile:
+      if (tfile.IsZombie()):
+        filelist_to_remove.append(file)
+    else:
+      print('File could not be opened, adding it to missing files')
       filelist_to_remove.append(file)
+      
+  print(filelist_to_remove)
   return filelist_to_remove
 
 def list_files(file_name):
@@ -50,7 +59,7 @@ def find_runJobs(missing,dir):
     # jobId = item[item.find("USER_")+5:item.find(".root")]
     # file = item[:item.find("USER_")+4]
     jobId = item.split('_')[-1].split('.')[0]
-    file = item[:item.find('_{}'.format(jobId))] + '.root'
+    file = item[:item.find('_{}.root'.format(jobId))] + '.root'
     bashCommand = "grep -r -H %s %s/runJobs*.sh "%(file,dir)
     out = subprocess.check_output(bashCommand,shell=True)
     start = out.find("runJobs")
@@ -73,7 +82,7 @@ def submit_missing(runJobs_dict,dir,resubmit=True):
       print bashCommand
 
 
-def prepare_runJobs_missing(runJobs_dict,dir):
+def prepare_runJobs_missing(runJobs_dict,dir, parentDataset=False, negR9Filter=False):
   for cluster in runJobs_dict.keys():
     bashCommand = "cp %s/%s.sub %s/%s_mis.sub"%(dir,cluster,dir,cluster)
     os.system(bashCommand)
@@ -93,9 +102,19 @@ def prepare_runJobs_missing(runJobs_dict,dir):
       else : print line,
     for line in fileinput.input("%s/%s.sh"%(dir,cluster), inplace=True):
       if  "declare -a jobIdsMap" in line : print ("declare -a jobIdsMap=(%s)\n"%(jobs_to_run)),
+      elif "cmsRun" in line and parentDataset and "recalculatePDFWeights=True" not in line:
+        ind = line.index("copyInputMicroAOD")
+        line0 = line[:ind]
+        line1 = line[ind:]
+        line_ins = "recalculatePDFWeights=True "
+        print (line0 + line_ins + line1),
+      elif "cmsRun" in line and negR9Filter and "filterNegR9" not in line:
+        ind = line.index("doBJetsAndMET")
+        line0 = line[:ind]
+        line1 = line[ind:]
+        line_ins = "filterNegR9=True "
+        print (line0 + line_ins + line1),
       else : print line,
-
-
 
 
 
@@ -110,6 +129,9 @@ def main():
   #                 help="input file with all root files present")
   parser.add_option("-r", "--resubmit", action="store_false",  dest="resubmit",default=True,
                   help="resubmit")
+  parser.add_option("-p", "--parentDataset", action="store_true",  dest="parentDataset",default=False,
+                  help="use parent dataset")
+  parser.add_option("-f", "--filterNegR9", action="store_true",  dest="filterNegR9",default=False, help="use parent dataset")
 
   (options, args) = parser.parse_args()
   dir = os.path.dirname(os.path.abspath('%s/task_config.json'%options.dir))
@@ -125,12 +147,14 @@ def main():
   full_output =  get_files_from_json(dir+"/task_config.json")
   present_output =  list_root(stageDir)
   corrupted_files = files_to_remove(present_output,stageDir)
-  not_finished = list(set(full_output) - set(present_output) - set(corrupted_files))
+  not_finished = list(set(full_output) - set(present_output))
+  not_finished += corrupted_files
+  print(not_finished)
   print 'Number of missing files : ',len(not_finished)
   #print 'Missing the following files : ' not_finished
   runJobs_dict = find_runJobs(not_finished,dir)
   print 'runJobs to be resubmitted : ',runJobs_dict
-  prepare_runJobs_missing(runJobs_dict,dir)
+  prepare_runJobs_missing(runJobs_dict,dir,options.parentDataset, options.filterNegR9)
   print 'Submitting missing jobs : '
   submit_missing(runJobs_dict,dir,options.resubmit)
 

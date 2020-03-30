@@ -83,11 +83,16 @@ def main(options):
         w = t2d.RooWorkspaceFromDataframe(df, splitDic, variables, weight, "cms_hgg_13TeV", (proc, cat), ws)
         w.makeCategories()
         w.makeWorkspace()
-
+        
         if len(w.labels) > 1 and all('gen' in la for la in w.labels[0]):
             procs_temp = ['{}_{}'.format(proc, lab) for lab in w.labels[0]]
+            cats_temp = []
             for labs in w.labels[1:]:
-                cats_temp = ['{}_{}'.format(lab, cat) for lab in labs]
+                if len(cats_temp) == 0:
+                    cats_temp = ['{}'.format(lab) for lab in labs]
+                else:
+                    cats_temp = ['{}_{}'.format(categ, lab) for lab in labs for categ in cats_temp]
+            cats_temp = ['{}_{}'.format(categ, cat) for categ in cats_temp]
         else:
             procs_temp = ['{}'.format(proc)]
             cats_temp = ['{}_{}'.format(lab, cat) for lab in w.labels[0]]
@@ -96,7 +101,7 @@ def main(options):
         cats.extend([x for x in cats_temp if x not in cats])
 
         del df, w
-
+        
     for mass in ['120', '125', '130']:
         try:
             procs[0].index(mass)

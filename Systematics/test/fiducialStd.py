@@ -118,6 +118,12 @@ customize.options.register('analysisType',
                            VarParsing.VarParsing.varType.string,
                            'analysisType'
                            )
+customize.options.register('filterNegR9',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'filterNegR9'
+                           )
 
 # import flashgg customization to check if we have signal or background
 # from flashgg.MetaData.JobConfig import customize
@@ -166,23 +172,21 @@ matchCut = "leadingPhoton.hasMatchedGenPhoton() && subLeadingPhoton.hasMatchedGe
     #    phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >0.320 && subLeadingView().phoIdMvaWrtChosenVtx() >0.320)'#remove it for further studies
 phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >-1. && subLeadingView().phoIdMvaWrtChosenVtx() >-1.)'
 accCut = fc.getAccRecoCut()
-
-print("----------------------PRESELECTION----------------------------------------------")
-print process.flashggPreselectedDiPhotons.cut.value()
+r9Cut = '(leadingPhoton.full5x5_r9>0. && subLeadingPhoton.full5x5_r9>0.)'
 
 if customize.acceptance == 'IN':
-    process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut.value()) + ' && ' + str(matchCut) + ' && ' + str(phoIDcut) + ' && ' + str(accCut))
+    process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut.value()) + ' && ' + str(matchCut) + ' && ' + str(phoIDcut) + ' && ' + str(accCut) + ' && ' + str(r9Cut))
 
 if customize.acceptance == 'OUT':
-    process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut.value()) + ' && ' + str(matchCut) + ' && ' + str(phoIDcut) + ' && !' + str(accCut))
+    process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut.value()) + ' && ' + str(matchCut) + ' && ' + str(phoIDcut) + ' && !' + str(accCut) + ' && ' + str(r9Cut))
 
 if customize.acceptance == 'NONE':
     process.flashggPreselectedDiPhotons.cut = cms.string(
-        str(process.flashggPreselectedDiPhotons.cut.value()) + ' && ' + str(phoIDcut))
+        str(process.flashggPreselectedDiPhotons.cut.value()) + ' && ' + str(phoIDcut) + ' && ' + str(r9Cut))
 
 if customize.acceptance == 'BKG':
     process.flashggPreselectedDiPhotons.cut = cms.string(
-        str(process.flashggPreselectedDiPhotons.cut.value()) + ' && ' + str(phoIDcut) + ' && ' + str(matchCut))
+        str(process.flashggPreselectedDiPhotons.cut.value()) + ' && ' + str(phoIDcut) + ' && ' + str(matchCut) + ' && ' + str(r9Cut))
     # process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
     # for opt, value in customize.metaConditions["flashggDiPhotons"].items():
     #     if isinstance(value, unicode):
@@ -321,6 +325,8 @@ else:
     variablesToUse.extend(fc.getRecoVariables(True))
     variablesToUse.append("sigmarv := diPhotonMVA().sigmarv")
     variablesToUse.append("sigmawv := diPhotonMVA().sigmawv")
+    variablesToUse.append("leadmva := diPhotonMVA().leadmva")
+    variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
     customizeSystematicsForBackground(process)
 
 print('------------------------------------variablesToUse--------------------')
@@ -419,7 +425,7 @@ for tag in tagList:
         if tagName == "NoTag":
             currentVariables = []
         isBinnedOnly = (systlabel != "")
-        if (customize.doPdfWeights or customize.doSystematics) and ((customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance")) and (systlabel == "") and not (customize.processId == "th_125" or customize.processId == "bbh_125" or customize.processId == "thw_125") and not (customize.datasetName() and customize.datasetName().count("DiPho")):
+        if (customize.doPdfWeights or customize.doSystematics) and ((customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance")) and (systlabel == "") and not (customize.processId == "th_125" or customize.processId == "bbh_125" or customize.processId == "thw_125") and not (customize.datasetName() and customize.datasetName().count("DiPho")) and not (customize.datasetName() and customize.datasetName().count("GJet")):
             print "Signal MC central value, so dumping PDF weights"
             dumpPdfWeights = True
             nPdfWeights = 60
@@ -447,15 +453,6 @@ for tag in tagList:
                              unbinnedSystematics=True
                              )
 
-# Require standard diphoton trigger
-# from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
-# hlt_paths = []
-# for dset in customize.metaConditions["TriggerPaths"]:
-#     if dset in customize.datasetName():
-#         hlt_paths.extend(customize.metaConditions["TriggerPaths"][dset])
-# process.hltHighLevel = hltHighLevel.clone(HLTPaths=cms.vstring(hlt_paths))
-print('-----------------------------------------------TriggerFilter--------------------------------------')
-# print(customize.metaConditions["TriggerPaths"][".*DoubleEG.*"][customize.analysisType])
 filterHLTrigger(process, customize)
 
 process.options = cms.untracked.PSet(wantSummary=cms.untracked.bool(True))
@@ -515,7 +512,7 @@ print(customize.processId.count("DiPho"))
 print(customize.datasetName().count("DiPho"))
 
 
-if (customize.doPdfWeights or customize.doSystematics) and ((customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance")) and not ((customize.datasetName() and customize.datasetName().count("DiPho"))):
+if (customize.doPdfWeights or customize.doSystematics) and ((customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance")) and not ((customize.datasetName() and customize.datasetName().count("DiPho"))) and not (customize.datasetName() and customize.datasetName().count("GJet")):
         # if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG"))  or customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance")) and (systlabel ==  ""):
     print "Signal MC central value, so dumping PDF weights"
     dumpPdfWeights = True
@@ -529,7 +526,7 @@ else:
     nAlphaSWeights = -1
     nScaleWeights = -1
     
-if not customize.processId == "Data" and not ((customize.datasetName() and customize.datasetName().count("DiPho"))):
+if not customize.processId == "Data" and not ((customize.datasetName() and customize.datasetName().count("DiPho"))) and not (customize.datasetName() and customize.datasetName().count("GJet")):
     mH = None
     ldset = ""
     if customize.datasetName():
@@ -558,7 +555,6 @@ if not customize.processId == "Data" and not ((customize.datasetName() and custo
                           mH=mH, filterEvents=customize.filterNonAcceptedEvents)
     pdfWeights = (dumpPdfWeights, nPdfWeights, nAlphaSWeights, nScaleWeights),
     print pdfWeights
-
 
 if not customize.processId == "Data":
     process.p = cms.Path(process.dataRequirements *
@@ -595,6 +591,21 @@ else:
 fc.addObservables(process, process.tagsDumper, customize.processId, process.flashggTagSequence)
 # print("---------------------------------------------------------HERE-----------------------------------")
 # print(process.tagsDumper.__dict__)
+
+print("--------------------------------------path before filter----------------------------------------")
+print(process.p)
+
+if customize.options.filterNegR9:
+    process.load("flashgg/Taggers/flashggBasicInputFilter")
+    process.flashggDifferentialPhoIdInputsCorrection.diphotonSrc = "flashggBasicInputFilter"
+    process.p.insert(process.p.index(process.flashggDifferentialPhoIdInputsCorrection), process.flashggBasicInputFilter)
+
+print("--------------------------------------path after filter----------------------------------------")
+print(process.p)
+
+if customize.recalculatePDFWeights and is_signal and not customize.processId.count("bbh"):
+    customize.options.useParentDataset = True
+    recalculatePDFWeights(process, customize.metaConditions)
 
 if(not hasattr(process, "options")):
     process.options = cms.untracked.PSet()
