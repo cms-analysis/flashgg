@@ -147,12 +147,8 @@ string DiPhotonTagBase::stage1KinematicLabel() const {
         return string("RECO_PTH_300_450_Tag1");
     case stage1recoTag::RECO_PTH_450_650_Tag0:
         return string("RECO_PTH_450_650_Tag0");
-    case stage1recoTag::RECO_PTH_450_650_Tag1:
-        return string("RECO_PTH_450_650_Tag1");
     case stage1recoTag::RECO_PTH_GT650_Tag0:
         return string("RECO_PTH_GT650_Tag0");
-    case stage1recoTag::RECO_PTH_GT650_Tag1:
-        return string("RECO_PTH_GT650_Tag1");
     case stage1recoTag::RECO_VBFTOPO_VHHAD_Tag0:
         return string("RECO_VBFTOPO_VHHAD_Tag0");
     case stage1recoTag::RECO_VBFTOPO_VHHAD_Tag1:

@@ -23,7 +23,7 @@ namespace flashgg {
                              RECO_GE2J_PTH_60_120_Tag0, RECO_GE2J_PTH_60_120_Tag1, RECO_GE2J_PTH_60_120_Tag2,
                              RECO_GE2J_PTH_120_200_Tag0, RECO_GE2J_PTH_120_200_Tag1, RECO_GE2J_PTH_120_200_Tag2,
                              RECO_PTH_200_300_Tag0, RECO_PTH_200_300_Tag1, RECO_PTH_300_450_Tag0, RECO_PTH_300_450_Tag1,
-                             RECO_PTH_450_650_Tag0, RECO_PTH_450_650_Tag1, RECO_PTH_GT650_Tag0, RECO_PTH_GT650_Tag1,
+                             RECO_PTH_450_650_Tag0, RECO_PTH_GT650_Tag0, 
                              RECO_VBFTOPO_VHHAD_Tag0, RECO_VBFTOPO_VHHAD_Tag1, 
                              RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag0, RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag1,
                              RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag0, RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag1,

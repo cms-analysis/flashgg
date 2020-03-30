@@ -200,18 +200,12 @@ namespace flashgg {
                 if (mvaScore > diphoBounds_["RECO_PTH_GT650_Tag0"]) {
                     chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_GT650_Tag0;
                 }
-                else if (mvaScore > diphoBounds_["RECO_PTH_GT650_Tag1"]) {
-                    chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_GT650_Tag1;
-                }
                 else { 
                     chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
                 }
             } else if ( ptH > 450. ) {
                 if (mvaScore > diphoBounds_["RECO_PTH_450_650_Tag0"]) {
                     chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_450_650_Tag0;
-                }
-                else if (mvaScore > diphoBounds_["RECO_PTH_450_650_Tag1"]) {
-                    chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_450_650_Tag1;
                 }
                 else { 
                     chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
@@ -269,18 +263,12 @@ namespace flashgg {
                 if (mvaScore > diphoBounds_["RECO_PTH_GT650_Tag0"]) {
                     chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_GT650_Tag0;
                 }
-                else if (mvaScore > diphoBounds_["RECO_PTH_GT650_Tag1"]) {
-                    chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_GT650_Tag1;
-                }
                 else { 
                     chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
                 }
             } else if ( ptH > 450. ) {
                 if (mvaScore > diphoBounds_["RECO_PTH_450_650_Tag0"]) {
                     chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_450_650_Tag0;
-                }
-                else if (mvaScore > diphoBounds_["RECO_PTH_450_650_Tag1"]) {
-                    chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_450_650_Tag1;
                 }
                 else { 
                     chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
@@ -436,18 +424,12 @@ namespace flashgg {
                     if (mvaScore > diphoBounds_["RECO_PTH_GT650_Tag0"]) {
                         chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_GT650_Tag0;
                     }
-                    else if (mvaScore > diphoBounds_["RECO_PTH_GT650_Tag1"]) {
-                        chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_GT650_Tag1;
-                    }
                     else { 
                         chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
                     }
                 } else if ( ptH > 450. ) {
                     if (mvaScore > diphoBounds_["RECO_PTH_450_650_Tag0"]) {
                         chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_450_650_Tag0;
-                    }
-                    else if (mvaScore > diphoBounds_["RECO_PTH_450_650_Tag1"]) {
-                        chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_PTH_450_650_Tag1;
                     }
                     else { 
                         chosenTag_ = DiPhotonTagBase::stage1recoTag::NOTAG;
@@ -554,23 +536,21 @@ namespace flashgg {
         diphoBounds_["RECO_PTH_300_450_Tag0"] = rawDiphoBounds_[26];
         diphoBounds_["RECO_PTH_300_450_Tag1"] = rawDiphoBounds_[27];
         diphoBounds_["RECO_PTH_450_650_Tag0"] = rawDiphoBounds_[28];
-        diphoBounds_["RECO_PTH_450_650_Tag1"] = rawDiphoBounds_[29];
-        diphoBounds_["RECO_PTH_GT650_Tag0"]  = rawDiphoBounds_[30];
-        diphoBounds_["RECO_PTH_GT650_Tag1"]  = rawDiphoBounds_[31];
-        diphoBounds_["RECO_VBFTOPO_VHHAD_Tag0"] = rawDiphoBounds_[32];
-        diphoBounds_["RECO_VBFTOPO_VHHAD_Tag1"] = rawDiphoBounds_[33];
-        diphoBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag0"] = rawDiphoBounds_[34];
-        diphoBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag1"] = rawDiphoBounds_[35];
-        diphoBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag0"] = rawDiphoBounds_[36];
-        diphoBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag1"] = rawDiphoBounds_[37];
-        diphoBounds_["RECO_VBFTOPO_JET3_LOWMJJ_Tag0"] = rawDiphoBounds_[38];
-        diphoBounds_["RECO_VBFTOPO_JET3_LOWMJJ_Tag1"] = rawDiphoBounds_[39];
-        diphoBounds_["RECO_VBFTOPO_JET3_HIGHMJJ_Tag0"] = rawDiphoBounds_[40];
-        diphoBounds_["RECO_VBFTOPO_JET3_HIGHMJJ_Tag1"] = rawDiphoBounds_[41];
-        diphoBounds_["RECO_VBFTOPO_BSM_Tag0"] = rawDiphoBounds_[42];
-        diphoBounds_["RECO_VBFTOPO_BSM_Tag1"] = rawDiphoBounds_[43];
-        diphoBounds_["RECO_VBFLIKEGGH_Tag0"] = rawDiphoBounds_[44];
-        diphoBounds_["RECO_VBFLIKEGGH_Tag1"] = rawDiphoBounds_[45];
+        diphoBounds_["RECO_PTH_GT650_Tag0"]  = rawDiphoBounds_[29];
+        diphoBounds_["RECO_VBFTOPO_VHHAD_Tag0"] = rawDiphoBounds_[30];
+        diphoBounds_["RECO_VBFTOPO_VHHAD_Tag1"] = rawDiphoBounds_[31];
+        diphoBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag0"] = rawDiphoBounds_[32];
+        diphoBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag1"] = rawDiphoBounds_[33];
+        diphoBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag0"] = rawDiphoBounds_[34];
+        diphoBounds_["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag1"] = rawDiphoBounds_[35];
+        diphoBounds_["RECO_VBFTOPO_JET3_LOWMJJ_Tag0"] = rawDiphoBounds_[36];
+        diphoBounds_["RECO_VBFTOPO_JET3_LOWMJJ_Tag1"] = rawDiphoBounds_[37];
+        diphoBounds_["RECO_VBFTOPO_JET3_HIGHMJJ_Tag0"] = rawDiphoBounds_[38];
+        diphoBounds_["RECO_VBFTOPO_JET3_HIGHMJJ_Tag1"] = rawDiphoBounds_[39];
+        diphoBounds_["RECO_VBFTOPO_BSM_Tag0"] = rawDiphoBounds_[40];
+        diphoBounds_["RECO_VBFTOPO_BSM_Tag1"] = rawDiphoBounds_[41];
+        diphoBounds_["RECO_VBFLIKEGGH_Tag0"] = rawDiphoBounds_[42];
+        diphoBounds_["RECO_VBFLIKEGGH_Tag1"] = rawDiphoBounds_[43];
 
         dijetBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag0"] = rawDijetBounds_[0];
         dijetBounds_["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag1"] = rawDijetBounds_[1];
