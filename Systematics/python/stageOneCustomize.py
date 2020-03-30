@@ -29,13 +29,17 @@ class StageOneCustomize():
             ["RECO_VBFTOPO_JET3_HIGHMJJ_Tag0",0], ["RECO_VBFTOPO_JET3_HIGHMJJ_Tag1",0], 
             ["RECO_VBFTOPO_BSM_Tag0",0], ["RECO_VBFTOPO_BSM_Tag1",0],
             ["RECO_VBFLIKEGGH_Tag0",0], ["RECO_VBFLIKEGGH_Tag1",0], 
-            ["RECO_TTH_HAD_LOW_Tag0",0], ["RECO_TTH_HAD_LOW_Tag1",0], ["RECO_TTH_HAD_LOW_Tag2",0], ["RECO_TTH_HAD_LOW_Tag3",0],
-            ["RECO_TTH_HAD_HIGH_Tag0",0], ["RECO_TTH_HAD_HIGH_Tag1",0], ["RECO_TTH_HAD_HIGH_Tag2",0], ["RECO_TTH_HAD_HIGH_Tag3",0],
+            ["RECO_TTH_HAD_PTH_0_60_Tag0",0], ["RECO_TTH_HAD_PTH_0_60_Tag1",0], ["RECO_TTH_HAD_PTH_0_60_Tag2",0], ["RECO_TTH_HAD_PTH_0_60_Tag3",0],
+            ["RECO_TTH_HAD_PTH_60_120_Tag0",0], ["RECO_TTH_HAD_PTH_60_120_Tag1",0], ["RECO_TTH_HAD_PTH_60_120_Tag2",0], ["RECO_TTH_HAD_PTH_60_120_Tag3",0],
+            ["RECO_TTH_HAD_PTH_120_200_Tag0",0], ["RECO_TTH_HAD_PTH_120_200_Tag1",0], ["RECO_TTH_HAD_PTH_120_200_Tag2",0], ["RECO_TTH_HAD_PTH_120_200_Tag3",0],
+            ["RECO_TTH_HAD_PTH_GT200_Tag0",0], ["RECO_TTH_HAD_PTH_GT200_Tag1",0], ["RECO_TTH_HAD_PTH_GT200_Tag2",0], ["RECO_TTH_HAD_PTH_GT200_Tag3",0],
             ["RECO_WH_LEP_LOW_Tag0",0], ["RECO_WH_LEP_LOW_Tag1",0], ["RECO_WH_LEP_LOW_Tag2",0], 
             ["RECO_WH_LEP_HIGH_Tag0",0], ["RECO_WH_LEP_HIGH_Tag1",0], ["RECO_WH_LEP_HIGH_Tag2",0], 
             ["RECO_ZH_LEP_Tag0",0], ["RECO_ZH_LEP_Tag1",0],
-            ["RECO_TTH_LEP_LOW_Tag0",0], ["RECO_TTH_LEP_LOW_Tag1",0], ["RECO_TTH_LEP_LOW_Tag2",0], ["RECO_TTH_LEP_LOW_Tag3",0],
-            ["RECO_TTH_LEP_HIGH_Tag0",0], ["RECO_TTH_LEP_HIGH_Tag1",0], ["RECO_TTH_LEP_HIGH_Tag2",0], ["RECO_TTH_LEP_HIGH_Tag3",0],
+            ["RECO_TTH_LEP_PTH_0_60_Tag0",0], ["RECO_TTH_LEP_PTH_0_60_Tag1",0], ["RECO_TTH_LEP_PTH_0_60_Tag2",0], ["RECO_TTH_LEP_PTH_0_60_Tag3",0],
+            ["RECO_TTH_LEP_PTH_60_120_Tag0",0], ["RECO_TTH_LEP_PTH_60_120_Tag1",0],
+            ["RECO_TTH_LEP_PTH_120_200_Tag0",0], ["RECO_TTH_LEP_PTH_120_200_Tag1",0],
+            ["RECO_TTH_LEP_PTH_GT200_Tag0",0], ["RECO_TTH_LEP_PTH_GT200_Tag1",0],
             ["RECO_THQ_LEP",0]
         ]
         if self.customize.processId == "Data": 
