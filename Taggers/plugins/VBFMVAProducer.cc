@@ -93,8 +93,7 @@ namespace flashgg {
         _minDijetMinv ( iConfig.getParameter<double> ( "MinDijetMinv" ) ),
         _drJetPhoton  ( iConfig.getParameter<double> ( "DrJetPhoton"  ) ),
         _pujid_wp_pt_bin_1  ( iConfig.getParameter<std::vector<double> > ( "pujidWpPtBin1" ) ),
-        _pujid_wp_pt_bin_2  ( iConfig.getParameter<std::vector<double> > ( "pujidWpPtBin2" ) ),
-        _pujid_wp_pt_bin_3  ( iConfig.getParameter<std::vector<double> > ( "pujidWpPtBin3" ) )
+        _pujid_wp_pt_bin_2  ( iConfig.getParameter<std::vector<double> > ( "pujidWpPtBin2" ) )
     {
         vbfMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "vbfMVAweightfile" );
         
@@ -252,18 +251,9 @@ namespace flashgg {
 
                 
                 if ( (!_pujid_wp_pt_bin_1.empty())  &&
-                     (!_pujid_wp_pt_bin_2.empty())  &&
-                     (!_pujid_wp_pt_bin_3.empty())  ){
-                    //std::cout << "VBFTagMVA::DEBUG  making the pujid --> "<< _pujid_wp_pt_bin_1.size() << std::endl;
+                     (!_pujid_wp_pt_bin_2.empty())  ){
                     bool pass=false;
                     for (UInt_t eta_bin=0; eta_bin < _pujid_wp_pt_bin_1.size(); eta_bin++ ){
-                        //                        std::cout << inputTagJets_[0] 
-                        //        << " eta-bin["<< eta_bin<< "] == " << eta_cuts_[eta_bin].first << "  :: "
-                        //        << eta_cuts_[eta_bin].second
-                        //        << " pt1: " << _pujid_wp_pt_bin_1[eta_bin]
-                        //        << " pt2: " << _pujid_wp_pt_bin_2[eta_bin]
-                        //        << " pt3: " << _pujid_wp_pt_bin_3[eta_bin]
-                        //        << std::endl;
                         if ( fabs( jet->eta() ) >  eta_cuts_[eta_bin].first &&
                              fabs( jet->eta() ) <= eta_cuts_[eta_bin].second){
                             if ( jet->pt() >  20 &&
@@ -272,10 +262,7 @@ namespace flashgg {
                             if ( jet->pt() >  30 &&
                                  jet->pt() <= 50 && jet->puJetIdMVA() > _pujid_wp_pt_bin_2[eta_bin] )
                                 pass=true;
-                            if ( jet->pt() >  50 &&
-                                 jet->pt() <= 100&& jet->puJetIdMVA() > _pujid_wp_pt_bin_3[eta_bin] )
-                                pass=true;
-                            if (jet->pt() > 100) pass = true;
+                            if (jet->pt() > 50) pass = true;
                         }
                     }
                     //                    std::cout << inputTagJets_[0] << " pt="<< jet->pt() << " :eta: "<< jet->eta() << " :mva: "<< jet->puJetIdMVA() << "  pass == " << pass << std::endl;

@@ -165,74 +165,97 @@ class jetSystematicsCustomize:
       newName = 'flashggJetSystematics'+num
       bTagger = self.metaConditions['bTagSystematics']['bTagger']
       eta = self.metaConditions['bTagSystematics']['eta'] 
+      allJetUncerts = cms.VPSet(cms.PSet( MethodName = cms.string("FlashggJetEnergyCorrector"),
+                                        Label = cms.string("JEC"),
+                                        NSigmas = cms.vint32(-1,1),
+                                        OverallRange = cms.string("abs(eta)<5.0"),
+                                        Debug = cms.untracked.bool(False),
+                                        ApplyCentralValue = cms.bool(True),
+                                        SetupUncertainties = cms.bool(True),
+                                        UseTextFile= cms.bool(False),
+                                        TextFileName = cms.FileInPath(str(self.metaConditions['flashggJetSystematics']['textFileName'])),
+                                        SourceName = cms.string("notused"),
+                                        JetCorrectorTag = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
+                                     ),
+                              cms.PSet( MethodName = cms.string("FlashggJetSmear"),
+                                     Label = cms.string("JER"),
+                                        NSigmas = cms.vint32(-1,1),
+                                        OverallRange = cms.string("abs(eta)<5.0"),
+                                        RandomLabel = cms.string("rnd_g_JER"), # for no-match case
+                                        rho = cms.InputTag('fixedGridRhoAll'),
+                                        Debug = cms.untracked.bool(False),
+                                        ApplyCentralValue = cms.bool(True),
+                                        UseTextFiles = cms.bool(False),
+                                        TextFileResolution = cms.string("notused"),
+                                        TextFileSF = cms.string("notused")
+                                     ),
+                              cms.PSet( MethodName = cms.string("FlashggJetBTagWeight"),
+                                        Label = cms.string("JetBTagCutWeight"),
+                                        NSigmas = cms.vint32(-1,1),
+                                        OverallRange = cms.string("pt>25.0&&abs(eta)<" + str(eta)),
+                                        BinList = getattr(self, self.metaConditions['bTagSystematics']['bTagEffBins']),
+                                        #bTag = cms.string(flashggBTag),
+                                        bTag = cms.string(str(bTagger)),
+                                        bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagSystematics']['bTagCalibrationFile_WPCut_'+ str(bTagger)])),
+                                        bDiscriminator = cms.double(self.metaConditions['bTagSystematics']['bDiscriminatorValue_'+ str(bTagger)]),
+                                        Debug = cms.untracked.bool(False),
+                                        ApplyCentralValue = cms.bool(True)
+                                     ),
+                              cms.PSet( MethodName = cms.string("FlashggJetBTagReshapeWeight"),
+                                        Label = cms.string("JetBTagReshapeWeight"),
+                                        NSigmas = cms.vint32(-1,1),
+                                        OverallRange = cms.string("pt>25.0&&abs(eta)<" + str(eta)),
+                                        BinList = getattr(self, self.metaConditions['bTagSystematics']['bTagEffBins']),
+                                        #                                                          bTag = cms.string(flashggBTag),
+                                        bTag = cms.string(str(bTagger)), 
+                                        bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagSystematics']['bTagCalibrationFile_Reshape_'+ str(bTagger)])),
+                                        bTagReshapeSystOption = cms.int32(1),#For changing the source of uncertainty
+                                        Debug = cms.untracked.bool(False),
+                                        ApplyCentralValue = cms.bool(True)
+                                     ),
+                              cms.PSet( MethodName = cms.string("FlashggJetPUJIDShift"),
+                                     Label = cms.string("PUJIDShift"),
+                                        NSigmas = cms.vint32(-1,1),
+                                        OverallRange = cms.string("abs(eta)<5.0&&pt>20.0"),
+                                        BinList = self.PUJIDShiftBins,
+                                        ApplyCentralValue = cms.bool(False),
+                                        Debug = cms.untracked.bool(False)
+                                     ),
+                              cms.PSet( MethodName = cms.string("FlashggJetWeight"),
+                                        Label = cms.string("UnmatchedPUWeight"),
+                                        NSigmas = cms.vint32(-1,1),
+                                        OverallRange = cms.string("abs(eta)>2.5&&abs(eta)<4.7&&pt>20.&&pt<50.&&hasGenMatch==0"),
+                                        BinList = self.UnmatchedPUBins,
+                                        ApplyCentralValue = cms.bool(False),
+                                        Debug = cms.untracked.bool(False),
+                                     )
+                               )
+
+      ## option to add the granular sources for jet systematics - off by default
+      if self.metaConditions['flashggJetSystematics']['doGranular']:
+          for sourceName in self.metaConditions['flashggJetSystematics']['listOfSources']:
+              allJetUncerts += cms.VPSet( cms.PSet( MethodName = cms.string("FlashggJetEnergyCorrector"),
+                                                    Label = cms.string("JEC%s"%str(sourceName)),
+                                                    NSigmas = cms.vint32(-1,1),
+                                                    OverallRange = cms.string("abs(eta)<5.0"),
+                                                    Debug = cms.untracked.bool(False),
+                                                    ApplyCentralValue = cms.bool(False), ## these are only systematic variations, not additional corrections
+                                                    SetupUncertainties = cms.bool(False),
+                                                    UseTextFile = cms.bool(True), ## these are only available in txt files, not in global tag
+                                                    TextFileName = cms.FileInPath(str(self.metaConditions['flashggJetSystematics']['textFileName'])),
+                                                    SourceName = cms.string(str(sourceName)),
+                                                    JetCorrectorTag = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
+                                                  ) 
+                                        )
+          
       setattr(self.process, newName,
               cms.EDProducer('FlashggJetSystematicProducer',
                              src = jetInputTag,
                              SystMethods2D = cms.VPSet(),
-                             SystMethods = cms.VPSet(cms.PSet( MethodName = cms.string("FlashggJetEnergyCorrector"),
-                                                               Label = cms.string("JEC"),
-                                                               NSigmas = cms.vint32(-1,1),
-                                                               OverallRange = cms.string("abs(eta)<5.0"),
-                                                               Debug = cms.untracked.bool(False),
-                                                               ApplyCentralValue = cms.bool(True),
-                                                               SetupUncertainties = cms.bool(True),
-                                                               JetCorrectorTag = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
-                                                            ),
-                                                     cms.PSet( MethodName = cms.string("FlashggJetSmear"),
-                                                            Label = cms.string("JER"),
-                                                               NSigmas = cms.vint32(-1,1),
-                                                               OverallRange = cms.string("abs(eta)<5.0"),
-                                                               RandomLabel = cms.string("rnd_g_JER"), # for no-match case
-                                                               rho = cms.InputTag('fixedGridRhoAll'),
-                                                               Debug = cms.untracked.bool(False),
-                                                               ApplyCentralValue = cms.bool(True),
-                                                               UseTextFiles = cms.bool(False),
-                                                               TextFileResolution = cms.string("notused"),
-                                                               TextFileSF = cms.string("notused")
-                                                            ),
-                                                     cms.PSet( MethodName = cms.string("FlashggJetBTagWeight"),
-                                                               Label = cms.string("JetBTagCutWeight"),
-                                                               NSigmas = cms.vint32(-1,1),
-                                                               OverallRange = cms.string("pt>25.0&&abs(eta)<" + str(eta)),
-                                                               BinList = getattr(self, self.metaConditions['bTagSystematics']['bTagEffBins']),
-                                                               #bTag = cms.string(flashggBTag),
-                                                               bTag = cms.string(str(bTagger)),
-                                                               bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagSystematics']['bTagCalibrationFile_WPCut_'+ str(bTagger)])),
-                                                               bDiscriminator = cms.double(self.metaConditions['bTagSystematics']['bDiscriminatorValue_'+ str(bTagger)]),
-                                                               Debug = cms.untracked.bool(False),
-                                                               ApplyCentralValue = cms.bool(True)
-                                                            ),
-                                                     cms.PSet( MethodName = cms.string("FlashggJetBTagReshapeWeight"),
-                                                               Label = cms.string("JetBTagReshapeWeight"),
-                                                               NSigmas = cms.vint32(-1,1),
-                                                               OverallRange = cms.string("pt>25.0&&abs(eta)<" + str(eta)),
-                                                               BinList = getattr(self, self.metaConditions['bTagSystematics']['bTagEffBins']),
-                                                               #                                                          bTag = cms.string(flashggBTag),
-                                                               bTag = cms.string(str(bTagger)), 
-                                                               bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagSystematics']['bTagCalibrationFile_Reshape_'+ str(bTagger)])),
-                                                               bTagReshapeSystOption = cms.int32(1),#For changing the source of uncertainty
-                                                               Debug = cms.untracked.bool(False),
-                                                               ApplyCentralValue = cms.bool(True)
-                                                            ),
-                                                     cms.PSet( MethodName = cms.string("FlashggJetPUJIDShift"),
-                                                            Label = cms.string("PUJIDShift"),
-                                                               NSigmas = cms.vint32(-1,1),
-                                                               OverallRange = cms.string("abs(eta)<5.0&&pt>20.0"),
-                                                               BinList = self.PUJIDShiftBins,
-                                                               ApplyCentralValue = cms.bool(False),
-                                                               Debug = cms.untracked.bool(False)
-                                                            ),
-                                                     cms.PSet( MethodName = cms.string("FlashggJetWeight"),
-                                                               Label = cms.string("UnmatchedPUWeight"),
-                                                               NSigmas = cms.vint32(-1,1),
-                                                               OverallRange = cms.string("abs(eta)>2.5&&abs(eta)<4.7&&pt>20.&&pt<50.&&hasGenMatch==0"),
-                                                               BinList = self.UnmatchedPUBins,
-                                                               ApplyCentralValue = cms.bool(False),
-                                                               Debug = cms.untracked.bool(False),
-                                                            )
-                                                  )
-                          )
-      )
+                             SystMethods = allJetUncerts
+                            )
+             )
+
       return (getattr(self.process,newName),cms.InputTag(newName))
   
    def createJetSystematics(self, replaceTagList):

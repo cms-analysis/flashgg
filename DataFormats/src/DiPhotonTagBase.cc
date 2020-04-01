@@ -147,12 +147,8 @@ string DiPhotonTagBase::stage1KinematicLabel() const {
         return string("RECO_PTH_300_450_Tag1");
     case stage1recoTag::RECO_PTH_450_650_Tag0:
         return string("RECO_PTH_450_650_Tag0");
-    case stage1recoTag::RECO_PTH_450_650_Tag1:
-        return string("RECO_PTH_450_650_Tag1");
     case stage1recoTag::RECO_PTH_GT650_Tag0:
         return string("RECO_PTH_GT650_Tag0");
-    case stage1recoTag::RECO_PTH_GT650_Tag1:
-        return string("RECO_PTH_GT650_Tag1");
     case stage1recoTag::RECO_VBFTOPO_VHHAD_Tag0:
         return string("RECO_VBFTOPO_VHHAD_Tag0");
     case stage1recoTag::RECO_VBFTOPO_VHHAD_Tag1:
@@ -201,38 +197,58 @@ string DiPhotonTagBase::stage1KinematicLabel() const {
         return string("RECO_VH_MET_Tag0");
     case stage1recoTag::RECO_VH_MET_Tag1:
         return string("RECO_VH_MET_Tag1");
-    case stage1recoTag::RECO_TTH_LEP_LOW_Tag0:
-        return string("RECO_TTH_LEP_LOW_Tag0");
-    case stage1recoTag::RECO_TTH_LEP_LOW_Tag1:
-        return string("RECO_TTH_LEP_LOW_Tag1");
-    case stage1recoTag::RECO_TTH_LEP_LOW_Tag2:
-        return string("RECO_TTH_LEP_LOW_Tag2");
-    case stage1recoTag::RECO_TTH_LEP_LOW_Tag3:
-        return string("RECO_TTH_LEP_LOW_Tag3");
-    case stage1recoTag::RECO_TTH_LEP_HIGH_Tag0:
-        return string("RECO_TTH_LEP_HIGH_Tag0");
-    case stage1recoTag::RECO_TTH_LEP_HIGH_Tag1:
-        return string("RECO_TTH_LEP_HIGH_Tag1");
-    case stage1recoTag::RECO_TTH_LEP_HIGH_Tag2:
-        return string("RECO_TTH_LEP_HIGH_Tag2");
-    case stage1recoTag::RECO_TTH_LEP_HIGH_Tag3:
-        return string("RECO_TTH_LEP_HIGH_Tag3");
-    case stage1recoTag::RECO_TTH_HAD_LOW_Tag0:
-        return string("RECO_TTH_HAD_LOW_Tag0");
-    case stage1recoTag::RECO_TTH_HAD_LOW_Tag1:
-        return string("RECO_TTH_HAD_LOW_Tag1");
-    case stage1recoTag::RECO_TTH_HAD_LOW_Tag2:
-        return string("RECO_TTH_HAD_LOW_Tag2");
-    case stage1recoTag::RECO_TTH_HAD_LOW_Tag3:
-        return string("RECO_TTH_HAD_LOW_Tag3");
-    case stage1recoTag::RECO_TTH_HAD_HIGH_Tag0:
-        return string("RECO_TTH_HAD_HIGH_Tag0");
-    case stage1recoTag::RECO_TTH_HAD_HIGH_Tag1:
-        return string("RECO_TTH_HAD_HIGH_Tag1");
-    case stage1recoTag::RECO_TTH_HAD_HIGH_Tag2:
-        return string("RECO_TTH_HAD_HIGH_Tag2");
-    case stage1recoTag::RECO_TTH_HAD_HIGH_Tag3:
-        return string("RECO_TTH_HAD_HIGH_Tag3");
+    case stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag0:
+        return string("RECO_TTH_LEP_PTH_0_60_Tag0");
+    case stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag1:
+        return string("RECO_TTH_LEP_PTH_0_60_Tag1");
+    case stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag2:
+        return string("RECO_TTH_LEP_PTH_0_60_Tag2");
+    case stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag3:
+        return string("RECO_TTH_LEP_PTH_0_60_Tag3");
+    case stage1recoTag::RECO_TTH_LEP_PTH_60_120_Tag0:
+        return string("RECO_TTH_LEP_PTH_60_120_Tag0");
+    case stage1recoTag::RECO_TTH_LEP_PTH_60_120_Tag1:
+        return string("RECO_TTH_LEP_PTH_60_120_Tag1");
+    case stage1recoTag::RECO_TTH_LEP_PTH_120_200_Tag0:
+        return string("RECO_TTH_LEP_PTH_120_200_Tag0");
+    case stage1recoTag::RECO_TTH_LEP_PTH_120_200_Tag1:
+        return string("RECO_TTH_LEP_PTH_120_200_Tag1");
+    case stage1recoTag::RECO_TTH_LEP_PTH_GT200_Tag0:
+        return string("RECO_TTH_LEP_PTH_GT200_Tag0");
+    case stage1recoTag::RECO_TTH_LEP_PTH_GT200_Tag1:
+        return string("RECO_TTH_LEP_PTH_GT200_Tag1");
+    case stage1recoTag::RECO_TTH_HAD_PTH_0_60_Tag0:
+        return string("RECO_TTH_HAD_PTH_0_60_Tag0");
+    case stage1recoTag::RECO_TTH_HAD_PTH_0_60_Tag1:
+        return string("RECO_TTH_HAD_PTH_0_60_Tag1");
+    case stage1recoTag::RECO_TTH_HAD_PTH_0_60_Tag2:
+        return string("RECO_TTH_HAD_PTH_0_60_Tag2");
+    case stage1recoTag::RECO_TTH_HAD_PTH_0_60_Tag3:
+        return string("RECO_TTH_HAD_PTH_0_60_Tag3");
+    case stage1recoTag::RECO_TTH_HAD_PTH_60_120_Tag0:
+        return string("RECO_TTH_HAD_PTH_60_120_Tag0");
+    case stage1recoTag::RECO_TTH_HAD_PTH_60_120_Tag1:
+        return string("RECO_TTH_HAD_PTH_60_120_Tag1");
+    case stage1recoTag::RECO_TTH_HAD_PTH_60_120_Tag2:
+        return string("RECO_TTH_HAD_PTH_60_120_Tag2");
+    case stage1recoTag::RECO_TTH_HAD_PTH_60_120_Tag3:
+        return string("RECO_TTH_HAD_PTH_60_120_Tag3");
+    case stage1recoTag::RECO_TTH_HAD_PTH_120_200_Tag0:
+        return string("RECO_TTH_HAD_PTH_120_200_Tag0");
+    case stage1recoTag::RECO_TTH_HAD_PTH_120_200_Tag1:
+        return string("RECO_TTH_HAD_PTH_120_200_Tag1");
+    case stage1recoTag::RECO_TTH_HAD_PTH_120_200_Tag2:
+        return string("RECO_TTH_HAD_PTH_120_200_Tag2");
+    case stage1recoTag::RECO_TTH_HAD_PTH_120_200_Tag3:
+        return string("RECO_TTH_HAD_PTH_120_200_Tag3");
+    case stage1recoTag::RECO_TTH_HAD_PTH_GT200_Tag0:
+        return string("RECO_TTH_HAD_PTH_GT200_Tag0");
+    case stage1recoTag::RECO_TTH_HAD_PTH_GT200_Tag1:
+        return string("RECO_TTH_HAD_PTH_GT200_Tag1");
+    case stage1recoTag::RECO_TTH_HAD_PTH_GT200_Tag2:
+        return string("RECO_TTH_HAD_PTH_GT200_Tag2");
+    case stage1recoTag::RECO_TTH_HAD_PTH_GT200_Tag3:
+        return string("RECO_TTH_HAD_PTH_GT200_Tag3");
     case stage1recoTag::RECO_THQ_LEP:
         return string("RECO_THQ_LEP");
     default:

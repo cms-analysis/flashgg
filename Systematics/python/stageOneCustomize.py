@@ -21,7 +21,7 @@ class StageOneCustomize():
             ["RECO_GE2J_PTH_60_120_Tag0",0], ["RECO_GE2J_PTH_60_120_Tag1",0], ["RECO_GE2J_PTH_60_120_Tag2",0],
             ["RECO_GE2J_PTH_120_200_Tag0",0], ["RECO_GE2J_PTH_120_200_Tag1",0], ["RECO_GE2J_PTH_120_200_Tag2",0],
             ["RECO_PTH_200_300_Tag0",0], ["RECO_PTH_200_300_Tag1",0],  ["RECO_PTH_300_450_Tag0",0], ["RECO_PTH_300_450_Tag1",0],
-            ["RECO_PTH_450_650_Tag0",0], ["RECO_PTH_450_650_Tag1",0], ["RECO_PTH_GT650_Tag0",0], ["RECO_PTH_GT650_Tag1",0],
+            ["RECO_PTH_450_650_Tag0",0], ["RECO_PTH_GT650_Tag0",0], 
             ["RECO_VBFTOPO_VHHAD_Tag0",0],  ["RECO_VBFTOPO_VHHAD_Tag1",0],
             ["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag0",0], ["RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag1",0], 
             ["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag0",0], ["RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag1",0], 
@@ -29,14 +29,18 @@ class StageOneCustomize():
             ["RECO_VBFTOPO_JET3_HIGHMJJ_Tag0",0], ["RECO_VBFTOPO_JET3_HIGHMJJ_Tag1",0], 
             ["RECO_VBFTOPO_BSM_Tag0",0], ["RECO_VBFTOPO_BSM_Tag1",0],
             ["RECO_VBFLIKEGGH_Tag0",0], ["RECO_VBFLIKEGGH_Tag1",0], 
-            ["RECO_TTH_HAD_LOW_Tag0",0], ["RECO_TTH_HAD_LOW_Tag1",0], ["RECO_TTH_HAD_LOW_Tag2",0], ["RECO_TTH_HAD_LOW_Tag3",0],
-            ["RECO_TTH_HAD_HIGH_Tag0",0], ["RECO_TTH_HAD_HIGH_Tag1",0], ["RECO_TTH_HAD_HIGH_Tag2",0], ["RECO_TTH_HAD_HIGH_Tag3",0],
+            ["RECO_TTH_HAD_PTH_0_60_Tag0",0], ["RECO_TTH_HAD_PTH_0_60_Tag1",0], ["RECO_TTH_HAD_PTH_0_60_Tag2",0], ["RECO_TTH_HAD_PTH_0_60_Tag3",0],
+            ["RECO_TTH_HAD_PTH_60_120_Tag0",0], ["RECO_TTH_HAD_PTH_60_120_Tag1",0], ["RECO_TTH_HAD_PTH_60_120_Tag2",0], ["RECO_TTH_HAD_PTH_60_120_Tag3",0],
+            ["RECO_TTH_HAD_PTH_120_200_Tag0",0], ["RECO_TTH_HAD_PTH_120_200_Tag1",0], ["RECO_TTH_HAD_PTH_120_200_Tag2",0], ["RECO_TTH_HAD_PTH_120_200_Tag3",0],
+            ["RECO_TTH_HAD_PTH_GT200_Tag0",0], ["RECO_TTH_HAD_PTH_GT200_Tag1",0], ["RECO_TTH_HAD_PTH_GT200_Tag2",0], ["RECO_TTH_HAD_PTH_GT200_Tag3",0],
             ["RECO_WH_LEP_LOW_Tag0",0], ["RECO_WH_LEP_LOW_Tag1",0], ["RECO_WH_LEP_LOW_Tag2",0], 
             ["RECO_WH_LEP_HIGH_Tag0",0], ["RECO_WH_LEP_HIGH_Tag1",0], ["RECO_WH_LEP_HIGH_Tag2",0], 
             ["RECO_ZH_LEP_Tag0",0], ["RECO_ZH_LEP_Tag1",0],
             ["RECO_VH_MET_Tag0",0], ["RECO_VH_MET_Tag1",0],
-            ["RECO_TTH_LEP_LOW_Tag0",0], ["RECO_TTH_LEP_LOW_Tag1",0], ["RECO_TTH_LEP_LOW_Tag2",0], ["RECO_TTH_LEP_LOW_Tag3",0],
-            ["RECO_TTH_LEP_HIGH_Tag0",0], ["RECO_TTH_LEP_HIGH_Tag1",0], ["RECO_TTH_LEP_HIGH_Tag2",0], ["RECO_TTH_LEP_HIGH_Tag3",0],
+            ["RECO_TTH_LEP_PTH_0_60_Tag0",0], ["RECO_TTH_LEP_PTH_0_60_Tag1",0], ["RECO_TTH_LEP_PTH_0_60_Tag2",0], ["RECO_TTH_LEP_PTH_0_60_Tag3",0],
+            ["RECO_TTH_LEP_PTH_60_120_Tag0",0], ["RECO_TTH_LEP_PTH_60_120_Tag1",0],
+            ["RECO_TTH_LEP_PTH_120_200_Tag0",0], ["RECO_TTH_LEP_PTH_120_200_Tag1",0],
+            ["RECO_TTH_LEP_PTH_GT200_Tag0",0], ["RECO_TTH_LEP_PTH_GT200_Tag1",0],
             ["RECO_THQ_LEP",0]
         ]
         if self.customize.processId == "Data": 
@@ -61,9 +65,10 @@ class StageOneCustomize():
             "centralObjectWeight[1,-999999.,999999.] := centralWeight"
         ]
 
-        ntup_variables = ws_variables + [
-                                            "truthNNLOPS[1,-999999.,999999.]:=tagTruth().weight(\"NNLOPS\")"
-                                        ]
+        ntup_variables = ws_variables #+ [
+                                      #      "truthNNLOPS[1,-999999.,999999.]:=tagTruth().weight(\"NNLOPS\")",
+                                      #      "leadJetPt[1,-999999.,999999.]:=VBFMVA().dijet_LeadJPt"
+                                      #  ]
     
         if self.customize.dumpWorkspace:
             return ws_variables
@@ -79,6 +84,16 @@ class StageOneCustomize():
 
     def noTagVariables(self):
         noTagVariables = self.stageOneVariable
+        for direction in ["Up","Down"]:
+            noTagVariables.append("THU_ggH_Mu%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Mu%s01sigma\")" % (direction,direction))
+            noTagVariables.append("THU_ggH_Res%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Res%s01sigma\")" % (direction,direction))
+            noTagVariables.append("THU_ggH_Mig01%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Mig01%s01sigma\")" % (direction,direction))
+            noTagVariables.append("THU_ggH_Mig12%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Mig12%s01sigma\")" % (direction,direction))
+            noTagVariables.append("THU_ggH_VBF2j%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_VBF2j%s01sigma\")" % (direction,direction))
+            noTagVariables.append("THU_ggH_VBF3j%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_VBF3j%s01sigma\")" % (direction,direction))
+            noTagVariables.append("THU_ggH_PT60%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_PT60%s01sigma\")" % (direction,direction))
+            noTagVariables.append("THU_ggH_PT120%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_PT120%s01sigma\")" % (direction,direction))
+            noTagVariables.append("THU_ggH_qmtop%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_qmtop%s01sigma\")" % (direction,direction))
         return noTagVariables
 
 

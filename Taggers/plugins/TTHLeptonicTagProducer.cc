@@ -131,8 +131,12 @@ namespace flashgg {
         vector<double> MVAThreshold_;
         vector<double> MVAThreshold_pt1_;
         vector<double> MVAThreshold_pt2_;
+        vector<double> MVAThreshold_pt3_;
+        vector<double> MVAThreshold_pt4_;
         vector<double> STXSPtBoundaries_pt1;
         vector<double> STXSPtBoundaries_pt2;
+        vector<double> STXSPtBoundaries_pt3;
+        vector<double> STXSPtBoundaries_pt4;
         double deltaRJetLeadPhoThreshold_;
         double deltaRJetSubLeadPhoThreshold_;
         double jetsNumberThreshold_;
@@ -490,8 +494,12 @@ namespace flashgg {
         MVAThreshold_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold");
         MVAThreshold_pt1_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt1");
         MVAThreshold_pt2_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt2");
+        MVAThreshold_pt3_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt3");
+        MVAThreshold_pt4_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt4");
         STXSPtBoundaries_pt1 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt1" );
         STXSPtBoundaries_pt2 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt2" );
+        STXSPtBoundaries_pt3 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt3" );
+        STXSPtBoundaries_pt4 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt4" );
         //assert( is_sorted( STXSPtBoundaries_pt1.begin(), STXSBoundaries_pt1.end() ) ); // 
         //assert( is_sorted( STXSPtBoundaries_pt2.begin(), STXSBoundaries_pt2.end() ) ); // 
         PhoMVAThreshold_ = iConfig.getParameter<double>( "PhoMVAThreshold");
@@ -655,21 +663,40 @@ namespace flashgg {
         // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
         if (pT > STXSPtBoundaries_pt1[0] && pT < STXSPtBoundaries_pt1[1]) {
             for(int n = 0 ; n < ( int )MVAThreshold_pt1_.size() ; n++ ) {
-                //if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { return n; }
                 if( ( double )tthmvavalue > MVAThreshold_pt1_[MVAThreshold_pt1_.size() - n - 1] ) {
-                    cout << "pT range: [" << STXSPtBoundaries_pt1[0] << ", " << STXSPtBoundaries_pt1[1] << "], Leptonic cat " << n << endl; return n; 
+                    //cout << "pT range: [" << STXSPtBoundaries_pt1[0] << ", " << STXSPtBoundaries_pt1[1] << "], Leptonic cat " << n << endl; 
+                    return n; 
                 }
             }
         }
 
         if (pT > STXSPtBoundaries_pt2[0] && pT < STXSPtBoundaries_pt2[1]) {
             for(int n = 0 ; n < ( int )MVAThreshold_pt2_.size() ; n++ ) {
-                //if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { return n; }
                 if( ( double )tthmvavalue > MVAThreshold_pt2_[MVAThreshold_pt2_.size() - n - 1] ) {
-                    cout << "pT range: [" << STXSPtBoundaries_pt2[0] << ", " << STXSPtBoundaries_pt2[1] << "], Leptonic cat " << n + MVAThreshold_pt1_.size() << endl; return n + MVAThreshold_pt1_.size(); 
+                    //cout << "pT range: [" << STXSPtBoundaries_pt2[0] << ", " << STXSPtBoundaries_pt2[1] << "], Leptonic cat " << n + MVAThreshold_pt1_.size() << endl; 
+                    return n + MVAThreshold_pt1_.size(); 
                 }
             }
         }
+
+        if (pT > STXSPtBoundaries_pt3[0] && pT < STXSPtBoundaries_pt3[1]) {
+            for(int n = 0 ; n < ( int )MVAThreshold_pt3_.size() ; n++ ) {
+                if( ( double )tthmvavalue > MVAThreshold_pt3_[MVAThreshold_pt3_.size() - n - 1] ) {
+                    //cout << "pT range: [" << STXSPtBoundaries_pt3[0] << ", " << STXSPtBoundaries_pt3[1] << "], Leptonic cat " << n + MVAThreshold_pt1_.size() << endl; 
+                    return n + MVAThreshold_pt1_.size() + MVAThreshold_pt2_.size(); 
+                }
+            }
+        }
+
+        if (pT > STXSPtBoundaries_pt4[0] && pT < STXSPtBoundaries_pt4[1]) {
+            for(int n = 0 ; n < ( int )MVAThreshold_pt4_.size() ; n++ ) {
+                if( ( double )tthmvavalue > MVAThreshold_pt4_[MVAThreshold_pt4_.size() - n - 1] ) {
+                    //cout << "pT range: [" << STXSPtBoundaries_pt4[0] << ", " << STXSPtBoundaries_pt4[1] << "], Leptonic cat " << n + MVAThreshold_pt1_.size() << endl; 
+                    return n + MVAThreshold_pt1_.size() + MVAThreshold_pt2_.size() + MVAThreshold_pt3_.size();  
+                }
+            }
+        }
+
         return -1; // Does not pass, object will not be produced
     }
 
@@ -1546,28 +1573,34 @@ namespace flashgg {
         int chosenTag_ = DiPhotonTagBase::stage1recoTag::LOGICERROR;
         int catNum = tag_obj.categoryNumber();
         if ( catNum == 0 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_LOW_Tag0;
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag0;
         }
         else if ( catNum == 1 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_LOW_Tag1;
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag1;
         }
         else if ( catNum == 2 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_LOW_Tag2;
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag2;
         }
         else if ( catNum == 3 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_LOW_Tag3;
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag3;
         }
-        if ( catNum == 4 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_HIGH_Tag0;
+        else if ( catNum == 4 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_60_120_Tag0;
         }
         else if ( catNum == 5 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_HIGH_Tag1;
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_60_120_Tag1;
         }
         else if ( catNum == 6 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_HIGH_Tag2;
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_120_200_Tag0;
         }
         else if ( catNum == 7 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_HIGH_Tag3;
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_120_200_Tag1;
+        }
+        else if ( catNum == 8 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_GT200_Tag0;
+        }
+        else if ( catNum == 9 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_GT200_Tag1;
         }
         return chosenTag_;
     }

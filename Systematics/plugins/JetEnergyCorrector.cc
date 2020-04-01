@@ -31,6 +31,9 @@ namespace flashgg {
         bool debug_;
         bool uncertainties_set_;
         bool setup_uncertainties_;
+        bool useTextFile_;
+        edm::FileInPath textFileName_;
+        std::string sourceName_;
         edm::EDGetTokenT<reco::JetCorrector> mJetCorrector;
     };
 
@@ -40,9 +43,15 @@ namespace flashgg {
         overall_range_( conf.getParameter<std::string>( "OverallRange" ) ),
         debug_( conf.getUntrackedParameter<bool>( "Debug", false ) ),
         setup_uncertainties_( conf.getParameter<bool>( "SetupUncertainties" ) ),
+        useTextFile_( conf.getParameter<bool>( "UseTextFile" ) ),
+        textFileName_( conf.getParameter<edm::FileInPath>( "TextFileName" ) ),
+        sourceName_( conf.getParameter<std::string>( "SourceName" ) ),
         mJetCorrector( iC.consumes<reco::JetCorrector>(conf.getParameter<edm::InputTag>("JetCorrectorTag") ) )
     {
         uncertainties_set_ = false;
+        if ( setup_uncertainties_ && useTextFile_ ) {
+            throw cms::Exception( "JecSystematicConfig" ) << "You can't set both SetupUncertainties and UseTextFile to true - choose one or the other";
+        }
     }
 
     void JetEnergyCorrector::eventInitialize( const edm::Event &iEvent, const edm::EventSetup & iSetup ) {
@@ -57,6 +66,12 @@ namespace flashgg {
             JetCorrectorParameters const & JetCorPar = (*JetCorParColl)["Uncertainty"];
             jec_unc_.reset( new JetCorrectionUncertainty(JetCorPar) );
             uncertainties_set_ = true;
+        }
+        if ( useTextFile_ ) {
+            JetCorrectorParameters *corrParameters = new JetCorrectorParameters( textFileName_.fullPath(), sourceName_ );
+            jec_unc_.reset( new JetCorrectionUncertainty( *corrParameters ) );
+            uncertainties_set_ = true;
+            delete corrParameters;
         }
     }
 

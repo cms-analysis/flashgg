@@ -214,6 +214,12 @@ namespace flashgg {
         vector<double> boundaries_pt2;
         vector<double> STXSPtBoundaries_pt2;
 
+        vector<double> boundaries_pt3;
+        vector<double> STXSPtBoundaries_pt3;
+
+        vector<double> boundaries_pt4;
+        vector<double> STXSPtBoundaries_pt4;
+
         BDT_resolvedTopTagger *topTagger;
         TTH_DNN_Helper* dnn_dipho;
         TTH_DNN_Helper* dnn_ttGG;
@@ -331,12 +337,18 @@ namespace flashgg {
         boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
         boundaries_pt1 = iConfig.getParameter<vector<double > >( "Boundaries_pt1" );
         boundaries_pt2 = iConfig.getParameter<vector<double > >( "Boundaries_pt2" );
+        boundaries_pt3 = iConfig.getParameter<vector<double > >( "Boundaries_pt3" );
+        boundaries_pt4 = iConfig.getParameter<vector<double > >( "Boundaries_pt4" );
         STXSPtBoundaries_pt1 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt1" );
         STXSPtBoundaries_pt2 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt2" );
+        STXSPtBoundaries_pt3 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt3" );
+        STXSPtBoundaries_pt4 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt4" );
 
         assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // 
         assert( is_sorted( boundaries_pt1.begin(), boundaries_pt1.end() ) ); // 
         assert( is_sorted( boundaries_pt2.begin(), boundaries_pt2.end() ) ); // 
+        assert( is_sorted( boundaries_pt3.begin(), boundaries_pt3.end() ) ); // 
+        assert( is_sorted( boundaries_pt4.begin(), boundaries_pt4.end() ) ); // 
         //assert( is_sorted( STXSPtBoundaries_pt1.begin(), STXSBoundaries_pt1.end() ) ); // 
         //assert( is_sorted( STXSPtBoundaries_pt2.begin(), STXSBoundaries_pt2.end() ) ); // 
 
@@ -584,20 +596,39 @@ namespace flashgg {
         if (pT > STXSPtBoundaries_pt1[0] && pT < STXSPtBoundaries_pt1[1]) {
             for(int n = 0 ; n < ( int )boundaries_pt1.size() ; n++ ) {
                 if( ( double )tthmvavalue > boundaries_pt1[boundaries_pt1.size() - n - 1] ) {
-                    cout << "pT range: [" << STXSPtBoundaries_pt1[0] << ", " << STXSPtBoundaries_pt1[1] << "], Hadronic cat " << n << endl; return n; 
+                    //cout << "pT range: [" << STXSPtBoundaries_pt1[0] << ", " << STXSPtBoundaries_pt1[1] << "], Hadronic cat " << n << endl; 
+                    return n; 
                 }
             }
         }
-
 
         if (pT > STXSPtBoundaries_pt2[0] && pT < STXSPtBoundaries_pt2[1]) {
             for(int n = 0 ; n < ( int )boundaries_pt2.size() ; n++ ) {
                 if( ( double )tthmvavalue > boundaries_pt2[boundaries_pt2.size() - n - 1] ) {
-                    cout << "pT range: [" << STXSPtBoundaries_pt2[0] << ", " << STXSPtBoundaries_pt2[1] << "], Hadronic cat " << n + boundaries_pt1.size() << endl;
-                    return (n + boundaries_pt1.size()); 
+                    //cout << "pT range: [" << STXSPtBoundaries_pt2[0] << ", " << STXSPtBoundaries_pt2[1] << "], Hadronic cat " << n + boundaries_pt1.size() << endl; 
+                    return n + boundaries_pt1.size(); 
                 }
             }
         }
+
+        if (pT > STXSPtBoundaries_pt3[0] && pT < STXSPtBoundaries_pt3[1]) {
+            for(int n = 0 ; n < ( int )boundaries_pt3.size() ; n++ ) {
+                if( ( double )tthmvavalue > boundaries_pt3[boundaries_pt3.size() - n - 1] ) {
+                    //cout << "pT range: [" << STXSPtBoundaries_pt3[0] << ", " << STXSPtBoundaries_pt3[1] << "], Hadronic cat " << n + boundaries_pt1.size() << endl; 
+                    return n + boundaries_pt1.size() + boundaries_pt2.size(); 
+                }
+            }
+        }
+
+        if (pT > STXSPtBoundaries_pt4[0] && pT < STXSPtBoundaries_pt4[1]) {
+            for(int n = 0 ; n < ( int )boundaries_pt4.size() ; n++ ) {
+                if( ( double )tthmvavalue > boundaries_pt4[boundaries_pt4.size() - n - 1] ) {
+                    //cout << "pT range: [" << STXSPtBoundaries_pt4[0] << ", " << STXSPtBoundaries_pt4[1] << "], Hadronic cat " << n + boundaries_pt1.size() << endl; 
+                    return n + boundaries_pt1.size() + boundaries_pt2.size() + boundaries_pt3.size();  
+                }
+            }
+        }
+
         return -1; // Does not pass, object will not be produced
     }
 
@@ -1282,28 +1313,52 @@ namespace flashgg {
         int chosenTag_ = DiPhotonTagBase::stage1recoTag::LOGICERROR;
         int catNum = tag_obj.categoryNumber();
         if ( catNum == 0 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_LOW_Tag0;
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_0_60_Tag0;
         }
         else if ( catNum == 1 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_LOW_Tag1;
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_0_60_Tag1;
         }
         else if ( catNum == 2 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_LOW_Tag2;
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_0_60_Tag2;
         }
         else if ( catNum == 3 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_LOW_Tag3;
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_0_60_Tag3;
         }
-        if ( catNum == 4 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_HIGH_Tag0;
+        else if ( catNum == 4 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_60_120_Tag0;
         }
         else if ( catNum == 5 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_HIGH_Tag1;
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_60_120_Tag1;
         }
         else if ( catNum == 6 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_HIGH_Tag2;
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_60_120_Tag2;
         }
         else if ( catNum == 7 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_HIGH_Tag3;
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_60_120_Tag3;
+        }
+        else if ( catNum == 8 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_120_200_Tag0;
+        }
+        else if ( catNum == 9 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_120_200_Tag1;
+        }
+        else if ( catNum == 10 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_120_200_Tag2;
+        }
+        else if ( catNum == 11 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_120_200_Tag3;
+        }
+        else if ( catNum == 12 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_GT200_Tag0;
+        }
+        else if ( catNum == 13 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_GT200_Tag1;
+        }
+        else if ( catNum == 14 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_GT200_Tag2;
+        }
+        else if ( catNum == 15 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_GT200_Tag3;
         }
         return chosenTag_;
     }
