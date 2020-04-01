@@ -431,6 +431,7 @@ class HTCondorJob(object):
             fout.write('+JobFlavour   = "'+self.htcondorQueue+'"\n\n')
             fout.write('+OnExitHold   = ExitStatus != 0 \n\n')
             fout.write('periodic_release =  (NumJobStarts < 4) && ((CurrentTime - EnteredCurrentStatus) > 60) \n\n')
+            fout.write('getenv        = True \n')
             fout.write('input         = %s/.dasmaps/das_maps_dbs_prod.js \n' % os.environ['HOME'])
             fout.write('executable    = '+self.execName+'\n')
             fout.write('arguments     = $(ProcId)\n')
