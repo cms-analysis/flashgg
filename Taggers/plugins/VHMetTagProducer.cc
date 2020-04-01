@@ -304,7 +304,7 @@ namespace flashgg {
             if( idmva1 <= phoIdMVAThreshold_ || idmva2 <= phoIdMVAThreshold_ ) continue;
             if( mvares->result < diphoMVAThreshold_ ) continue;
             if( theMET->getCorPt() < metPtThreshold_ ) continue;
-            if( fabs( deltaPhi(theMET->corPhi(), dipho->phi()) ) < dPhiDiphotonMetThreshold_ ) continue;
+            if( fabs( deltaPhi(theMET->getCorPhi(), dipho->phi()) ) < dPhiDiphotonMetThreshold_ ) continue;
 
             //Lepton Veto
             std::vector<edm::Ptr<flashgg::Muon> > goodMuons = selectMuons( theMuons->ptrs(), 
@@ -354,7 +354,7 @@ namespace flashgg {
                 if( dRPhoLeadJet < deltaRPhoLeadJet_ || dRPhoSubLeadJet < deltaRPhoSubLeadJet_ ) continue;
 
                 float dcsv_val       = thejet->bDiscriminator("pfDeepCSVJetTags:probb") + thejet->bDiscriminator("pfDeepCSVJetTags:probbb");
-                float deltaPhiMetJet = fabs(deltaPhi(thejet->phi(), theMET->corPhi()));
+                float deltaPhiMetJet = fabs(deltaPhi(thejet->phi(), theMET->getCorPhi()));
 
                 if (deltaPhiMetJet < minDeltaPhiJetMet)     minDeltaPhiJetMet = deltaPhiMetJet;
                 if (dcsv_val > max_dcsv_val)                max_dcsv_val = dcsv_val;
@@ -381,7 +381,7 @@ namespace flashgg {
             _met              = theMET->getCorPt();
             _met_sumEt        = theMET->sumEt();
             _min_dPhi_jet_met = minDeltaPhiJetMet; 
-            _dPhi_dipho_met   = fabs( deltaPhi(theMET->corPhi(), dipho->phi()) );
+            _dPhi_dipho_met   = fabs( deltaPhi(theMET->getCorPhi(), dipho->phi()) );
             _pt_balance       = (dipho->pt() - theMET->getCorPt()) / dipho->pt();
 
             float vhmetmva    = VHMetMva_->EvaluateMVA( "BDT" );
