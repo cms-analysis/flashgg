@@ -17,8 +17,6 @@
 #include "flashgg/DataFormats/interface/VHTagTruth.h"
 #include "DataFormats/Common/interface/RefToPtr.h"
 
-#include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
-
 #include "TMath.h"
 #include "TMVA/Reader.h"
 
@@ -52,10 +50,6 @@ namespace flashgg {
         EDGetTokenT<double> rhoTag_;
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
         string systLabel_;
-
-        EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
-        EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
-        EDGetTokenT<float> pTHToken_,pTVToken_;
 
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;        
 
@@ -124,14 +118,6 @@ namespace flashgg {
             tokenJets_.push_back(token);
         }
         
-        ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
-        stage0catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0cat") );
-        stage1catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1cat") );
-        njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
-        pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
-        pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
-        newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
-
         //VHMetMVA
         VHMetMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "VHMetMVAweightfile" );
         _pho1_eta         = -999.; 
@@ -188,17 +174,6 @@ namespace flashgg {
  
     void VHMetTagProducer::produce( Event &evt, const EventSetup & )
     {
-        Handle<int> stage0cat, stage1cat, njets;
-        Handle<float> pTH, pTV;
-        evt.getByToken(stage0catToken_, stage0cat);
-        evt.getByToken(stage1catToken_,stage1cat);
-        evt.getByToken(njetsToken_,njets);
-        evt.getByToken(pTHToken_,pTH);
-        evt.getByToken(pTVToken_,pTV);
-
-        Handle<HTXS::HiggsClassification> htxsClassification;
-        evt.getByToken(newHTXSToken_,htxsClassification);
-
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
 
