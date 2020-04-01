@@ -34,6 +34,7 @@ namespace flashgg {
                              RECO_WH_LEP_LOW_Tag0, RECO_WH_LEP_LOW_Tag1, RECO_WH_LEP_LOW_Tag2, 
                              RECO_WH_LEP_HIGH_Tag0, RECO_WH_LEP_HIGH_Tag1, RECO_WH_LEP_HIGH_Tag2, 
                              RECO_ZH_LEP_Tag0, RECO_ZH_LEP_Tag1,
+                             RECO_VH_MET_Tag0, RECO_VH_MET_Tag1,
                              RECO_TTH_LEP_LOW_Tag0, RECO_TTH_LEP_LOW_Tag1, RECO_TTH_LEP_LOW_Tag2, RECO_TTH_LEP_LOW_Tag3, 
                              RECO_TTH_LEP_HIGH_Tag0, RECO_TTH_LEP_HIGH_Tag1, RECO_TTH_LEP_HIGH_Tag2, RECO_TTH_LEP_HIGH_Tag3, 
                              RECO_TTH_HAD_LOW_Tag0, RECO_TTH_HAD_LOW_Tag1, RECO_TTH_HAD_LOW_Tag2, RECO_TTH_HAD_LOW_Tag3, 

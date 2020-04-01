@@ -197,6 +197,10 @@ string DiPhotonTagBase::stage1KinematicLabel() const {
         return string("RECO_ZH_LEP_Tag0");
     case stage1recoTag::RECO_ZH_LEP_Tag1:
         return string("RECO_ZH_LEP_Tag1");
+    case stage1recoTag::RECO_VH_MET_Tag0:
+        return string("RECO_VH_MET_Tag0");
+    case stage1recoTag::RECO_VH_MET_Tag1:
+        return string("RECO_VH_MET_Tag1");
     case stage1recoTag::RECO_TTH_LEP_LOW_Tag0:
         return string("RECO_TTH_LEP_LOW_Tag0");
     case stage1recoTag::RECO_TTH_LEP_LOW_Tag1:
