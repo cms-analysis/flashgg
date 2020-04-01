@@ -254,13 +254,15 @@ namespace flashgg {
                     }
                     truth.setGenPV( higgsVtx );
                     if( htxsClassification.isValid() && setHTXSinfo_ ) { 
-                        truth.setHTXSInfo( htxsClassification->stage0_cat,
-                                           htxsClassification->stage1_cat_pTjet30GeV,
-                                           htxsClassification->stage1_1_cat_pTjet30GeV,
-                                           htxsClassification->stage1_1_fine_cat_pTjet30GeV,
-                                           htxsClassification->jets30.size(),
-                                           htxsClassification->p4decay_higgs.pt(),
-                                           htxsClassification->p4decay_V.pt() );
+                        truth.setHTXSInfo( int(htxsClassification->stage0_cat),
+                                           int(htxsClassification->stage1_cat_pTjet30GeV),
+                                           int(htxsClassification->stage1_1_cat_pTjet30GeV),
+                                           int(htxsClassification->stage1_1_fine_cat_pTjet30GeV),
+                                           int(htxsClassification->stage1_2_cat_pTjet30GeV),
+                                           int(htxsClassification->stage1_2_fine_cat_pTjet30GeV),
+                                           float(htxsClassification->jets30.size()),
+                                           float(htxsClassification->p4decay_higgs.pt()),
+                                           float(htxsClassification->p4decay_V.pt()) );
                     }
                     if( isGluonFusion_ ) {
                         int stxsNjets = htxsClassification->jets30.size();
@@ -271,10 +273,14 @@ namespace flashgg {
                         else if ( stxsNjets == 2) NNLOPSweight = NNLOPSWeights_[2]->Eval(min(stxsPtH,float(800.0)));
                         else if ( stxsNjets >= 3) NNLOPSweight = NNLOPSWeights_[3]->Eval(min(stxsPtH,float(925.0)));
                         truth.setWeight("NNLOPS", NNLOPSweight);
+                        truth.setCentralWeight( truth.centralWeight() * NNLOPSweight );
+                        if( debug_ ) {
+                            std::cout << "[TagSorter DEBUG] computed an NNLOPS weight of " << truth.weight("NNLOPS") << std::endl;
+                            std::cout << "[TagSorter DEBUG] the tag truth object now has a central weight of " << truth.centralWeight() << std::endl;
+                        }
                     }
                     if( isGluonFusion_ && applyNNLOPSweight_ ) {
-                        float newCentralWeight = truth.weight("NNLOPS") * SelectedTag->back().centralWeight();
-                        SelectedTag->back().setCentralWeight( newCentralWeight );
+                        SelectedTag->back().includeWeights( truth );
                         if( debug_ ) {
                             std::cout << "[TagSorter DEBUG] reweighing to NNLOPS, central weight being altered by a factor of " << truth.weight("NNLOPS") << std::endl;
                         }
@@ -372,13 +378,15 @@ namespace flashgg {
             edm::RefProd<edm::OwnVector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<edm::OwnVector<TagTruthBase> >();
             TagTruthBase truth_obj;
             if ( htxsClassification.isValid() && setHTXSinfo_ ) {
-                truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
-                                       htxsClassification->stage1_cat_pTjet30GeV,
-                                       htxsClassification->stage1_1_cat_pTjet30GeV,
-                                       htxsClassification->stage1_1_fine_cat_pTjet30GeV,
-                                       htxsClassification->jets30.size(),
-                                       htxsClassification->p4decay_higgs.pt(),
-                                       htxsClassification->p4decay_V.pt() );
+                truth_obj.setHTXSInfo( int(htxsClassification->stage0_cat),
+                                       int(htxsClassification->stage1_cat_pTjet30GeV),
+                                       int(htxsClassification->stage1_1_cat_pTjet30GeV),
+                                       int(htxsClassification->stage1_1_fine_cat_pTjet30GeV),
+                                       int(htxsClassification->stage1_2_cat_pTjet30GeV),
+                                       int(htxsClassification->stage1_2_fine_cat_pTjet30GeV),
+                                       float(htxsClassification->jets30.size()),
+                                       float(htxsClassification->p4decay_higgs.pt()),
+                                       float(htxsClassification->p4decay_V.pt()) );
             }
             if( isGluonFusion_ ) {
                 int stxsNjets = htxsClassification->jets30.size();

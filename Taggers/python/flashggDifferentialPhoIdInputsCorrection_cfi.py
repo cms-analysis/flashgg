@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 from RecoEgamma.EgammaTools.regressionModifier_cfi import regressionModifier 
 from flashgg.Taggers.globalVariables_cff import globalVariables
-
+from flashgg.Taggers.flashggTags_cff import *
 flashggDifferentialPhoIdInputsCorrection = cms.EDProducer("FlashggDifferentialPhoIdInputsCorrector",
                                                           diphotonSrc              = cms.InputTag("flashggDiPhotons"),
                                                           rhoFixedGridCollection   = cms.InputTag('fixedGridRhoAll'),
@@ -54,7 +54,6 @@ def setup_flashggDifferentialPhoIdInputsCorrection( process, metaConditions ):
     setattr(flashggDifferentialPhoIdInputsCorrection, "photonIdMVAweightfile_EE", cms.FileInPath(str(metaConditions['flashggPhotons']['photonIdMVAweightfile_EE'])))
     setattr(flashggDifferentialPhoIdInputsCorrection, "effAreasConfigFile", cms.FileInPath(str(metaConditions['flashggPhotons']['effAreasConfigFile'])))
     setattr(flashggDifferentialPhoIdInputsCorrection, "is2017", cms.bool(metaConditions['flashggPhotons']['is2017']))
-
     corrections_summary = {}
     with open(os.path.expandvars('$CMSSW_BASE/src/'+metaConditions['PhoIdInputCorrections']['corrections_summary'])) as json_file:
         corrections_summary = json.load(json_file)

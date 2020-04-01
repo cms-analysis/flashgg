@@ -1,8 +1,0 @@
-{
-    "cmdLine"  : "campaign=Era2017_RR-31Mar2018_v2 metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json useAAA=True",
-    "processes": {
-	"zee"   : [
-"/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v1-5b2b79b8ddf5ad4ee56082ab5a4bdf45/USER"
-		   ]
-    }
-}

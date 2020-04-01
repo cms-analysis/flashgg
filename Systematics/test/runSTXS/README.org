@@ -1,0 +1,27 @@
+* STXS stage one workflow
+Here are some examples to run the full stage one workspace production.
+
+** Local testing
+To run a test command locally to check everything works, you can use the local_test.sh script.
+It is configured to run on a 2018 ggH signal sample, but you can switch the options and datasets
+for other signals or data. 
+
+** Full production
+To produce the full set of inputs used to extract the final results, submit jobs to the batch. 
+
+*** Signal
+We keep three different jsons for the main signal samples, containing: 
+- ggH, VBF, and WH
+- ZH
+- ttH and tH
+
+WH and ZH have to be kept separate because they use the same input. 
+The top samples can take longer to run, so they are also separated and run on a longer queue.
+
+An example json file for the first of the three is shown in the example_sig.json file.
+This can be run directly using the run_example_sig.sh file. 
+
+*** Data
+The data for the final fits is contained in just one json, an example of which is in the example_data.json file.
+This can be run directly using the run_example_data.sh file.
+

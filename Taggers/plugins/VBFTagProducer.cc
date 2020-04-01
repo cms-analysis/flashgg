@@ -80,7 +80,7 @@ namespace flashgg {
         assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception
 
         produces<vector<VBFTag> >();
-        produces<vector<VBFTagTruth> >();
+        //produces<vector<VBFTagTruth> >();
     }
 
     int VBFTagProducer::chooseCategory( float mvavalue )
@@ -113,10 +113,10 @@ namespace flashgg {
         }
 
         std::unique_ptr<vector<VBFTag> >      tags  ( new vector<VBFTag> );
-        std::unique_ptr<vector<VBFTagTruth> > truths( new vector<VBFTagTruth> );
+        //std::unique_ptr<vector<VBFTagTruth> > truths( new vector<VBFTagTruth> );
 
-        unsigned int idx = 0;
-        edm::RefProd<vector<VBFTagTruth> > rTagTruth = evt.getRefBeforePut<vector<VBFTagTruth> >();
+        //unsigned int idx = 0;
+        //edm::RefProd<vector<VBFTagTruth> > rTagTruth = evt.getRefBeforePut<vector<VBFTagTruth> >();
 
         unsigned int index_leadq       = std::numeric_limits<unsigned int>::max();
         unsigned int index_subleadq    = std::numeric_limits<unsigned int>::max();
@@ -537,15 +537,15 @@ namespace flashgg {
             // saving the collection
             if( VBFpresel && tag_obj.categoryNumber() >= 0 ) {
                 tags->push_back( tag_obj );
-                if( ! evt.isRealData() ) {
-                    truths->push_back( truth_obj );
-                    tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<VBFTagTruth> >( rTagTruth, idx++ ) ) );
-                }
+                //if( ! evt.isRealData() ) {
+                //    truths->push_back( truth_obj );
+                //    tags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<VBFTagTruth> >( rTagTruth, idx++ ) ) );
+                //}
             }
         }
 
         evt.put( std::move( tags ) );
-        evt.put( std::move( truths ) );
+        //evt.put( std::move( truths ) );
     }
 }
 

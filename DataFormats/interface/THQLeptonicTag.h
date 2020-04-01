@@ -146,21 +146,33 @@ namespace flashgg {
         float getlepton_ch() const{
             return lepton_ch_;
         }
+        float getlepton_leadPt() const{
+            return lepton_leadPt_;
+        }
+        float getlepton_leadEta() const{
+            return lepton_leadEta_;
+        }
         float getmvaresult() const{
             return mvaresult_;
         }
         float getthq_mvaresult() const{
             return thq_mvaresult_;
         }
-
+        float getthq_mvaresult_ForNonPeakingBkg() const{
+            return thq_mvaresult_ForNonPeakingBkg_;
+        }
         double getlikelihood() const{
             return likelihood_result_;
         }
-        const std::vector<float> bDiscriminatorValue() const{
-            return bDiscriminatorValue_;
+        const std::vector<float> bDiscriminatorValue_bjets() const{
+            return bDiscriminatorValue_bjets_;
         }
-
-
+        const std::vector<float> bDiscriminatorValue_jets() const{
+            return bDiscriminatorValue_jets_;
+        }
+        const std::vector<float> bDiscriminatorValue_fwdjets() const{
+            return bDiscriminatorValue_fwdjets_;
+        }
 //
 
         float thqleptonicMvaRes(string label) const {
@@ -413,7 +425,6 @@ namespace flashgg {
             MET_Px.push_back(metPx) ;  MET_Py.push_back(metPy) ; MET_Pz.push_back(metPz) ; MET_E.push_back(metE);
         }
 
-        //void setTHQLeptonicMVA( THQLeptonicMVAResult THQLeptonicMVA ) {THQLeptonicMVA_ = THQLeptonicMVA;}
         void setLeptonType(int val){ LeptonType_ = val; }
 
         void setrho(float rho){
@@ -460,6 +471,12 @@ namespace flashgg {
         void setlepton_ch(float lepton_ch){
             lepton_ch_ = lepton_ch;
         }
+        void setlepton_leadPt(float lepton_leadPt){
+            lepton_leadPt_ = lepton_leadPt;
+        }
+        void setlepton_leadEta(float lepton_leadEta){
+            lepton_leadEta_ = lepton_leadEta;
+        }
         void setmvaresult( float mvaresult ){
             mvaresult_ = mvaresult;
         }
@@ -469,8 +486,13 @@ namespace flashgg {
         void setthq_mvaresult( float thq_mvaresult ){
             thq_mvaresult_ = thq_mvaresult;
         }
-        void setbDiscriminatorValue( std::vector<float> bDiscriminatorValue ){
-            bDiscriminatorValue_ = bDiscriminatorValue;
+        void setthq_mvaresult_ForNonPeakingBkg( float thq_mvaresult_ForNonPeakingBkg ){
+            thq_mvaresult_ForNonPeakingBkg_ = thq_mvaresult_ForNonPeakingBkg;
+        }
+        void setbDiscriminatorValue( std::vector<float> bDiscriminatorValue_bjets, std::vector<float> bDiscriminatorValue_jets, std::vector<float> bDiscriminatorValue_fwdjets ){
+            bDiscriminatorValue_bjets_ = bDiscriminatorValue_bjets;
+            bDiscriminatorValue_jets_ = bDiscriminatorValue_jets;
+            bDiscriminatorValue_fwdjets_ = bDiscriminatorValue_fwdjets;
         }
 
       
@@ -532,7 +554,6 @@ namespace flashgg {
         std::map <std::string, std::vector<float> > vtx_dxy_; std::map <std::string, std::vector<float> > vtx_dz_;
         std::map <std::string, std::vector<float> > diphovtx_dxy_; std::map <std::string, std::vector<float> > diphovtx_dz_;
         std::vector<float> eleMisHits_;
-        //THQLeptonicMVAResult THQLeptonicMVA_;
         float rho_;
         float dRtHchainfwdjet_=0;
         float dRbjetfwdjet_;
@@ -546,10 +567,15 @@ namespace flashgg {
         float top_mt_;
         float top_mass_;
         float lepton_ch_;
+        float lepton_leadPt_;
+        float lepton_leadEta_;
         float mvaresult_;
         float thq_mvaresult_;
+        float thq_mvaresult_ForNonPeakingBkg_;
         double likelihood_result_;
-        std::vector<float> bDiscriminatorValue_;
+        std::vector<float> bDiscriminatorValue_bjets_;
+        std::vector<float> bDiscriminatorValue_jets_;
+        std::vector<float> bDiscriminatorValue_fwdjets_;
         float dRmyfunval_;
         int LeptonType_;
         std::vector< std::string > bAssignmentLabels;

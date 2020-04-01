@@ -9,10 +9,11 @@
 
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/Jet.h"
-#include "flashgg/DataFormats/interface/VBFMVAResult.h"
+#include "flashgg/DataFormats/interface/VHhadMVAResult.h"
 
 #include "TMVA/Reader.h"
 #include "TMath.h"
+#include "TLorentzVector.h"
 #include "DataFormats/Math/interface/deltaR.h"
 #include "DataFormats/Math/interface/deltaPhi.h"
 #include <string>
@@ -22,11 +23,11 @@ using namespace edm;
 
 namespace flashgg {
     
-    class VBFMVAProducer : public EDProducer
+    class VHhadMVAProducer : public EDProducer
     {
         
     public:
-        VBFMVAProducer( const ParameterSet & );
+        VHhadMVAProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
         
@@ -35,8 +36,8 @@ namespace flashgg {
         //EDGetTokenT<View<flashgg::Jet> > jetTokenDz_;
         std::vector<edm::InputTag> inputTagJets_;
 
-        unique_ptr<TMVA::Reader>VbfMva_;
-        FileInPath vbfMVAweightfile_;
+        unique_ptr<TMVA::Reader>VHhadMva_;
+        FileInPath vhHadMVAweightfile_;
         string     _MVAMethod;
         bool       _usePuJetID;
         bool       _useJetID;
@@ -72,6 +73,8 @@ namespace flashgg {
         float dijet_leady_    ;
         float dijet_subleady_ ;
         float dijet_dipho_pt_ ;
+
+        float cosThetaStar_;
         
         float dipho_PToM_  ;
         float leadPho_PToM_;
@@ -79,7 +82,7 @@ namespace flashgg {
 
     };
     
-    VBFMVAProducer::VBFMVAProducer( const ParameterSet &iConfig ) :
+    VHhadMVAProducer::VHhadMVAProducer( const ParameterSet &iConfig ) :
         diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
         //jetTokenDz_( consumes<View<flashgg::Jet> >( iConfig.getParameter<InputTag>( "JetTag" ) ) ),
         inputTagJets_ ( iConfig.getParameter<std::vector<edm::InputTag> >( "inputTagJets" ) ),
@@ -95,7 +98,7 @@ namespace flashgg {
         _pujid_wp_pt_bin_1  ( iConfig.getParameter<std::vector<double> > ( "pujidWpPtBin1" ) ),
         _pujid_wp_pt_bin_2  ( iConfig.getParameter<std::vector<double> > ( "pujidWpPtBin2" ) )
     {
-        vbfMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "vbfMVAweightfile" );
+        vhHadMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "vhHadMVAweightfile" );
         
         dijet_leadEta_    = -999.;
         dijet_subleadEta_ = -999.;
@@ -109,6 +112,7 @@ namespace flashgg {
         dijet_dphi_       = -999.;
         dijet_Mjj_        = -999.;
         dijet_dy_         = -999.;
+        cosThetaStar_     = -999.;
         dipho_PToM_       = -999.;
         leadPho_PToM_     = -999.;
         sublPho_PToM_     = -999.;
@@ -121,57 +125,44 @@ namespace flashgg {
         dijet_subleady_   = -999.;
         
         if (_MVAMethod == "BDTG"){
-            VbfMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
-            // Run 1 legacy variables
-            /*
-            VbfMva_->AddVariable( "dijet_LeadJPt"     , &dijet_LeadJPt_    );
-            VbfMva_->AddVariable( "dijet_SubJPt"      , &dijet_SubJPt_     );
-            VbfMva_->AddVariable( "dijet_abs_dEta"    , &dijet_abs_dEta_   );
-            VbfMva_->AddVariable( "dijet_Mjj"         , &dijet_Mjj_        );
-            VbfMva_->AddVariable( "dijet_Zep"         , &dijet_Zep_        );
-            VbfMva_->AddVariable( "dijet_dPhi_trunc"  , &dijet_dphi_trunc_ );
-            VbfMva_->AddVariable( "leadPho_PToM"      , &leadPho_PToM_);
-            VbfMva_->AddVariable( "sublPho_PToM"      , &sublPho_PToM_);
-            */
+            VHhadMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
+
+            VHhadMva_->AddVariable( "dipho_lead_ptoM"        , &leadPho_PToM_        );
+            VHhadMva_->AddVariable( "dipho_sublead_ptoM"     , &sublPho_PToM_        );
+            VHhadMva_->AddVariable( "dijet_leadEta"          , &dijet_leadEta_       );
+            VHhadMva_->AddVariable( "dijet_subleadEta"       , &dijet_subleadEta_    );
+            VHhadMva_->AddVariable( "dijet_LeadJPt"          , &dijet_LeadJPt_       );
+            VHhadMva_->AddVariable( "dijet_SubJPt"           , &dijet_SubJPt_        );
+            VHhadMva_->AddVariable( "dijet_Mjj"              , &dijet_Mjj_           );
+            VHhadMva_->AddVariable( "dijet_abs_dEta"         , &dijet_abs_dEta_      );
+            VHhadMva_->AddVariable( "cosThetaStar"           , &cosThetaStar_        );
             
-            // Moriond17 variables
-            VbfMva_->AddVariable( "dijet_LeadJPt"          , &dijet_LeadJPt_       );
-            VbfMva_->AddVariable( "dijet_SubJPt"           , &dijet_SubJPt_        );
-            VbfMva_->AddVariable( "dijet_abs_dEta"         , &dijet_abs_dEta_      );
-            VbfMva_->AddVariable( "dijet_Mjj"              , &dijet_Mjj_           );
-            VbfMva_->AddVariable( "dijet_centrality_gg"    , &dijet_centrality_gg_ );
-            VbfMva_->AddVariable( "dijet_dipho_dphi_trunc" , &dijet_dphi_trunc_    );
-            VbfMva_->AddVariable( "dijet_dphi"             , &dijet_dphi_          );
-            VbfMva_->AddVariable( "dijet_minDRJetPho"      , &dijet_minDRJetPho_   );
-            VbfMva_->AddVariable( "leadPho_PToM"           , &leadPho_PToM_        );
-            VbfMva_->AddVariable( "sublPho_PToM"           , &sublPho_PToM_        );
-            
-            VbfMva_->BookMVA( _MVAMethod.c_str() , vbfMVAweightfile_.fullPath() );
+            VHhadMva_->BookMVA( _MVAMethod.c_str() , vhHadMVAweightfile_.fullPath() );
         }
         else if (_MVAMethod == "Multi"){
-            VbfMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
-            VbfMva_->AddVariable( "dipho_lead_ptoM"        , &leadPho_PToM_        );
-            VbfMva_->AddVariable( "dipho_sublead_ptoM"     , &sublPho_PToM_        );
-            VbfMva_->AddVariable( "dijet_LeadJPt"          , &dijet_LeadJPt_       );
-            VbfMva_->AddVariable( "dijet_SubJPt"           , &dijet_SubJPt_        );
-            VbfMva_->AddVariable( "dijet_abs_dEta"         , &dijet_abs_dEta_      );
-            VbfMva_->AddVariable( "dijet_Mjj"              , &dijet_Mjj_           );
-            VbfMva_->AddVariable( "dijet_centrality"       , &dijet_centrality_gg_ );
-            VbfMva_->AddVariable( "dijet_dphi"             , &dijet_dphi_          );
-            VbfMva_->AddVariable( "dijet_minDRJetPho"      , &dijet_minDRJetPho_   );
-            VbfMva_->AddVariable( "dijet_dipho_dphi_trunc" , &dijet_dphi_trunc_    );
+            VHhadMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
+            VHhadMva_->AddVariable( "dipho_lead_ptoM"        , &leadPho_PToM_        );
+            VHhadMva_->AddVariable( "dipho_sublead_ptoM"     , &sublPho_PToM_        );
+            VHhadMva_->AddVariable( "dijet_LeadJPt"          , &dijet_LeadJPt_       );
+            VHhadMva_->AddVariable( "dijet_SubJPt"           , &dijet_SubJPt_        );
+            VHhadMva_->AddVariable( "dijet_abs_dEta"         , &dijet_abs_dEta_      );
+            VHhadMva_->AddVariable( "dijet_Mjj"              , &dijet_Mjj_           );
+            VHhadMva_->AddVariable( "dijet_centrality"       , &dijet_centrality_gg_ );
+            VHhadMva_->AddVariable( "dijet_dphi"             , &dijet_dphi_          );
+            VHhadMva_->AddVariable( "dijet_minDRJetPho"      , &dijet_minDRJetPho_   );
+            VHhadMva_->AddVariable( "dijet_dipho_dphi_trunc" , &dijet_dphi_trunc_    );
             
-            VbfMva_->BookMVA( _MVAMethod.c_str() , vbfMVAweightfile_.fullPath() );
+            VHhadMva_->BookMVA( _MVAMethod.c_str() , vhHadMVAweightfile_.fullPath() );
         }
         for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
             auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
             tokenJets_.push_back(token);
         }
-        produces<vector<VBFMVAResult> >();
+        produces<vector<VHhadMVAResult> >();
         
     }
     
-    void VBFMVAProducer::produce( Event &evt, const EventSetup & )
+    void VHhadMVAProducer::produce( Event &evt, const EventSetup & )
     {
         Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
         evt.getByToken( diPhotonToken_, diPhotons );
@@ -181,10 +172,10 @@ namespace flashgg {
             evt.getByToken( tokenJets_[j], Jets[j] );
         }
         
-        std::unique_ptr<vector<VBFMVAResult> > vbf_results( new vector<VBFMVAResult> );
+        std::unique_ptr<vector<VHhadMVAResult> > vhHad_results( new vector<VHhadMVAResult> );
         for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
             
-            flashgg::VBFMVAResult mvares;
+            flashgg::VHhadMVAResult mvares;
             
             dijet_leadEta_    = -999.;
             dijet_subleadEta_ = -999.;
@@ -205,6 +196,7 @@ namespace flashgg {
             dijet_centrality_gg_ = -999.;
             dijet_centrality_j3_ = -999.;
             dijet_centrality_g_  = -999.;
+            cosThetaStar_     = -999.;
             dipho_PToM_       = -999.;
             leadPho_PToM_     = -999.;
             sublPho_PToM_     = -999.;
@@ -221,8 +213,8 @@ namespace flashgg {
             float phi2 = diPhotons->ptrAt( candIndex )->subLeadingPhoton()->phi();
             float eta2 = diPhotons->ptrAt( candIndex )->subLeadingPhoton()->eta();
             
-            bool hasValidVBFDiJet  = 0;
-            bool hasValidVBFTriJet = 0;
+            bool hasValidVHhadDiJet  = 0;
+            bool hasValidVHhadTriJet = 0;
             
             int  n_jets_count = 0;
             // take the jets corresponding to the diphoton candidate
@@ -311,8 +303,8 @@ namespace flashgg {
                 }
                 if( jet->pt() > 30.0 ) n_jets_count++;
                 // if the jet's pt is neither higher than the lead jet or sublead jet, then forget it!
-                if( dijet_indices.first != -1 && dijet_indices.second != -1 ) {hasValidVBFDiJet  = 1;}
-                if( hasValidVBFDiJet          && jet_3_index != -1          ) {hasValidVBFTriJet = 1;}
+                if( dijet_indices.first != -1 && dijet_indices.second != -1 ) {hasValidVHhadDiJet  = 1;}
+                if( hasValidVHhadDiJet          && jet_3_index != -1          ) {hasValidVHhadTriJet = 1;}
             }
 
             //Third jet deltaR cut and merge index finding
@@ -325,11 +317,11 @@ namespace flashgg {
 
             diPhotonP4s[0] = diPhotons->ptrAt( candIndex )->leadingPhoton()->p4(); 
             diPhotonP4s[1] = diPhotons->ptrAt( candIndex )->subLeadingPhoton()->p4(); 
-            if ( hasValidVBFDiJet ) {
+            if ( hasValidVHhadDiJet ) {
                 jetP4s.push_back(Jets[jetCollectionIndex]->ptrAt(dijet_indices.first)->p4());
                 jetP4s.push_back(Jets[jetCollectionIndex]->ptrAt(dijet_indices.second)->p4());
             }
-            if ( hasValidVBFTriJet ) {
+            if ( hasValidVHhadTriJet ) {
                 
                 jetP4s.push_back(Jets[jetCollectionIndex]->ptrAt(jet_3_index)->p4());
 
@@ -343,14 +335,14 @@ namespace flashgg {
                 }
 
                 if (dR_13 > _thirdJetDRCut && dR_23 > _thirdJetDRCut) {
-                    hasValidVBFTriJet = 0;
+                    hasValidVHhadTriJet = 0;
                 }
                 
                 //std::cout << "Third jet merge info:" << std::endl;
                 //std::cout << setw(12) << dR_13 << setw(12) << dR_23 << setw(12) << indexToMergeWithJ3 << std::endl;
             }
            
-            if( hasValidVBFDiJet ) {
+            if( hasValidVHhadDiJet ) {
                 std::pair<reco::Candidate::LorentzVector,reco::Candidate::LorentzVector> dijetP4s;
                 
                 //std ::cout << "-->before  jet_1 pt:" << jetP4s[0].pt() << std::endl;
@@ -388,6 +380,23 @@ namespace flashgg {
                 dijet_centrality_g_  = exp(-4*pow(fabs( diPhotonP4s[0].eta() - 0.5*(dijetP4s.first.eta()+dijetP4s.second.eta()) )/dijet_leadEta_,2));
                 dijet_Mjj_           = (dijetP4s.first + dijetP4s.second).M();
 
+                TLorentzVector diphoDijetSystem;
+                diphoDijetSystem.SetPxPyPzE( (diPhotonP4s[0] + diPhotonP4s[1] + dijetP4s.first + dijetP4s.second).Px(), 
+                                             (diPhotonP4s[0] + diPhotonP4s[1] + dijetP4s.first + dijetP4s.second).Py(),
+                                             (diPhotonP4s[0] + diPhotonP4s[1] + dijetP4s.first + dijetP4s.second).Pz(),
+                                             (diPhotonP4s[0] + diPhotonP4s[1] + dijetP4s.first + dijetP4s.second).E() );
+                TLorentzVector diphoSystem; 
+                diphoSystem.SetPxPyPzE( (diPhotonP4s[0] + diPhotonP4s[1]).Px(),
+                                        (diPhotonP4s[0] + diPhotonP4s[1]).Py(),
+                                        (diPhotonP4s[0] + diPhotonP4s[1]).Pz(),
+                                        (diPhotonP4s[0] + diPhotonP4s[1]).E() );
+                //std::cout << "Dipho system pt, eta, phi = " << diphoSystem.Pt() << ", " << diphoSystem.Eta() << ", " << diphoSystem.Phi() << std::endl;
+                //std::cout << "DiphoDijet system pt, eta, phi = " << diphoDijetSystem.Pt() << ", " << diphoDijetSystem.Eta() << ", " << diphoDijetSystem.Phi() << std::endl;
+                diphoSystem.Boost( -diphoDijetSystem.BoostVector() );
+                //std::cout << "DiphoDijet system pt, eta, phi = " << diphoDijetSystem.Pt() << ", " << diphoDijetSystem.Eta() << ", " << diphoDijetSystem.Phi() << std::endl;
+                cosThetaStar_ = -1. * diphoSystem.CosTheta();
+                //std::cout << "Dipho system cos theta star" << cosThetaStar_ << std::endl;
+
                 dipho_PToM_       = (diPhotonP4s[0] + diPhotonP4s[1]).Pt()/(diPhotonP4s[0] + diPhotonP4s[1]).M();
                 leadPho_PToM_     = diPhotonP4s[0].pt()/(diPhotonP4s[0] + diPhotonP4s[1]).M();
                 sublPho_PToM_     = diPhotonP4s[1].pt()/(diPhotonP4s[0] + diPhotonP4s[1]).M();
@@ -422,24 +431,24 @@ namespace flashgg {
                 mvares.subleadJet_ptr = edm::Ptr<flashgg::Jet>();
             }
             
-            if ( hasValidVBFDiJet && hasValidVBFTriJet){
+            if ( hasValidVHhadDiJet && hasValidVHhadTriJet){
                 //mvares.subsubleadJet     = *Jets[jetCollectionIndex]->ptrAt( jet_3_index );
                 mvares.subsubleadJet     = Jets[jetCollectionIndex]->ptrAt( jet_3_index )->p4();
                 mvares.subsubleadJet_ptr = Jets[jetCollectionIndex]->ptrAt( jet_3_index );
-                mvares.hasValidVBFTriJet = 1;
+                mvares.hasValidVHhadTriJet = 1;
             }else{
                 mvares.subsubleadJet_ptr =  edm::Ptr<flashgg::Jet>();
             }
             
 
             if (_MVAMethod == "BDTG") {
-                mvares.vbfMvaResult_value = VbfMva_->EvaluateMVA( _MVAMethod.c_str() );
-                //mvares.vbfMvaResult_value = VbfMva_->GetProba( _MVAMethod.c_str() );
+                mvares.vhHadMvaResult_value = VHhadMva_->EvaluateMVA( _MVAMethod.c_str() );
+                //mvares.vhHadMvaResult_value = VHhadMva_->GetProba( _MVAMethod.c_str() );
             }
             else if (_MVAMethod == "Multi") {
-                mvares.vbfMvaResult_prob_bkg = VbfMva_->EvaluateMulticlass( 0, _MVAMethod.c_str() );
-                mvares.vbfMvaResult_prob_ggH = VbfMva_->EvaluateMulticlass( 1, _MVAMethod.c_str() );
-                mvares.vbfMvaResult_prob_VBF = VbfMva_->EvaluateMulticlass( 2, _MVAMethod.c_str() );
+                mvares.vhHadMvaResult_prob_bkg = VHhadMva_->EvaluateMulticlass( 0, _MVAMethod.c_str() );
+                mvares.vhHadMvaResult_prob_ggH = VHhadMva_->EvaluateMulticlass( 1, _MVAMethod.c_str() );
+                mvares.vhHadMvaResult_prob_VHhad = VHhadMva_->EvaluateMulticlass( 2, _MVAMethod.c_str() );
             }
             
             mvares.dijet_leadEta     = dijet_leadEta_ ;
@@ -456,6 +465,7 @@ namespace flashgg {
             mvares.dijet_dipho_dphi  = dijet_dipho_dphi_ ;
             mvares.dijet_Mjj         = dijet_Mjj_ ;
             mvares.n_rec_jets        = n_jets_count;
+            mvares.cosThetaStar      = cosThetaStar_;
             mvares.dipho_PToM        = dipho_PToM_ ;
             mvares.sublPho_PToM      = sublPho_PToM_ ;
             mvares.leadPho_PToM      = leadPho_PToM_ ;
@@ -465,14 +475,14 @@ namespace flashgg {
             mvares.dijet_leady       = dijet_leady_   ;
             mvares.dijet_subleady    = dijet_subleady_;
             
-            vbf_results->push_back( mvares );
+            vhHad_results->push_back( mvares );
         }
-        evt.put( std::move( vbf_results ) );
+        evt.put( std::move( vhHad_results ) );
     }
 }
 
-typedef flashgg::VBFMVAProducer FlashggVBFMVAProducer;
-DEFINE_FWK_MODULE( FlashggVBFMVAProducer );
+typedef flashgg::VHhadMVAProducer FlashggVHhadMVAProducer;
+DEFINE_FWK_MODULE( FlashggVHhadMVAProducer );
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

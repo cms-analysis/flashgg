@@ -1,6 +1,0 @@
-{
-    "cmdLine"  : "campaign=Era2018_RR-17Sep2018_v2 metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json useAAA=True",
-    "processes": {
-	"zh_125"    : [ ["/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8", { "args" : ["outputFile=output_ZHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8"] } ] ]
-    }
-}

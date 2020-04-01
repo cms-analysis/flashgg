@@ -10,15 +10,39 @@ namespace flashgg {
     class DiPhotonTagBase : public WeightedObject
     {
     public:
+
         enum tag_t { kUndefined = 0, kUntagged, kVBF, kTTHHadronic, kTTHLeptonic, kTHQLeptonic, kTTHDiLepton, kVHTight, kVHLoose, kVHHadronic, kVHEt,  kZHLeptonic, kWHLeptonic, kVHLeptonicLoose, kVHMet, kStageOneCombined };
 
-        enum stage1recoTag { LOGICERROR = -1, NOTAG = 0, RECO_0J_PTH_0_10_Tag0, RECO_0J_PTH_0_10_Tag1, RECO_0J_PTH_GT10_Tag0, RECO_0J_PTH_GT10_Tag1,
-                             RECO_1J_PTH_0_60_Tag0, RECO_1J_PTH_0_60_Tag1, RECO_1J_PTH_60_120_Tag0, RECO_1J_PTH_60_120_Tag1,
-                             RECO_1J_PTH_120_200_Tag0, RECO_1J_PTH_120_200_Tag1,  
-                             RECO_GE2J_PTH_0_60_Tag0, RECO_GE2J_PTH_0_60_Tag1, RECO_GE2J_PTH_60_120_Tag0, RECO_GE2J_PTH_60_120_Tag1, RECO_GE2J_PTH_120_200_Tag0, RECO_GE2J_PTH_120_200_Tag1, 
-                             RECO_PTH_GT200_Tag0, RECO_PTH_GT200_Tag1,
-                             RECO_VBFTOPO_VHHAD, RECO_VBFTOPO_JET3VETO_LOWMJJ, RECO_VBFTOPO_JET3VETO_HIGHMJJ, RECO_VBFTOPO_JET3_LOWMJJ, RECO_VBFTOPO_JET3_HIGHMJJ, RECO_VBFTOPO_BSM, RECO_VBFLIKEGGH,
-                             RECO_WHLEP, RECO_ZHLEP, RECO_VHLEPLOOSE, RECO_VHMET, RECO_VHHAD, RECO_TTH_LEP, RECO_TTH_HAD };
+        enum stage1recoTag { LOGICERROR = -1, NOTAG = 0, 
+                             RECO_0J_PTH_0_10_Tag0, RECO_0J_PTH_0_10_Tag1, RECO_0J_PTH_0_10_Tag2, 
+                             RECO_0J_PTH_GT10_Tag0, RECO_0J_PTH_GT10_Tag1, RECO_0J_PTH_GT10_Tag2,
+                             RECO_1J_PTH_0_60_Tag0, RECO_1J_PTH_0_60_Tag1, RECO_1J_PTH_0_60_Tag2,
+                             RECO_1J_PTH_60_120_Tag0, RECO_1J_PTH_60_120_Tag1,RECO_1J_PTH_60_120_Tag2,
+                             RECO_1J_PTH_120_200_Tag0, RECO_1J_PTH_120_200_Tag1,  RECO_1J_PTH_120_200_Tag2,
+                             RECO_GE2J_PTH_0_60_Tag0, RECO_GE2J_PTH_0_60_Tag1, RECO_GE2J_PTH_0_60_Tag2,
+                             RECO_GE2J_PTH_60_120_Tag0, RECO_GE2J_PTH_60_120_Tag1, RECO_GE2J_PTH_60_120_Tag2,
+                             RECO_GE2J_PTH_120_200_Tag0, RECO_GE2J_PTH_120_200_Tag1, RECO_GE2J_PTH_120_200_Tag2,
+                             RECO_PTH_200_300_Tag0, RECO_PTH_200_300_Tag1, RECO_PTH_300_450_Tag0, RECO_PTH_300_450_Tag1,
+                             RECO_PTH_450_650_Tag0, RECO_PTH_GT650_Tag0, 
+                             RECO_VBFTOPO_VHHAD_Tag0, RECO_VBFTOPO_VHHAD_Tag1, 
+                             RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag0, RECO_VBFTOPO_JET3VETO_LOWMJJ_Tag1,
+                             RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag0, RECO_VBFTOPO_JET3VETO_HIGHMJJ_Tag1,
+                             RECO_VBFTOPO_JET3_LOWMJJ_Tag0, RECO_VBFTOPO_JET3_LOWMJJ_Tag1,
+                             RECO_VBFTOPO_JET3_HIGHMJJ_Tag0, RECO_VBFTOPO_JET3_HIGHMJJ_Tag1,
+                             RECO_VBFTOPO_BSM_Tag0, RECO_VBFTOPO_BSM_Tag1,
+                             RECO_VBFLIKEGGH_Tag0,RECO_VBFLIKEGGH_Tag1,
+                             RECO_WH_LEP_LOW_Tag0, RECO_WH_LEP_LOW_Tag1, RECO_WH_LEP_LOW_Tag2, 
+                             RECO_WH_LEP_HIGH_Tag0, RECO_WH_LEP_HIGH_Tag1, RECO_WH_LEP_HIGH_Tag2, 
+                             RECO_ZH_LEP_Tag0, RECO_ZH_LEP_Tag1,
+                             RECO_TTH_LEP_PTH_0_60_Tag0, RECO_TTH_LEP_PTH_0_60_Tag1, RECO_TTH_LEP_PTH_0_60_Tag2, RECO_TTH_LEP_PTH_0_60_Tag3, 
+                             RECO_TTH_LEP_PTH_60_120_Tag0, RECO_TTH_LEP_PTH_60_120_Tag1,
+                             RECO_TTH_LEP_PTH_120_200_Tag0, RECO_TTH_LEP_PTH_120_200_Tag1,
+                             RECO_TTH_LEP_PTH_GT200_Tag0, RECO_TTH_LEP_PTH_GT200_Tag1,
+                             RECO_TTH_HAD_PTH_0_60_Tag0, RECO_TTH_HAD_PTH_0_60_Tag1, RECO_TTH_HAD_PTH_0_60_Tag2, RECO_TTH_HAD_PTH_0_60_Tag3, 
+                             RECO_TTH_HAD_PTH_60_120_Tag0, RECO_TTH_HAD_PTH_60_120_Tag1, RECO_TTH_HAD_PTH_60_120_Tag2, RECO_TTH_HAD_PTH_60_120_Tag3,
+                             RECO_TTH_HAD_PTH_120_200_Tag0, RECO_TTH_HAD_PTH_120_200_Tag1, RECO_TTH_HAD_PTH_120_200_Tag2, RECO_TTH_HAD_PTH_120_200_Tag3,
+                             RECO_TTH_HAD_PTH_GT200_Tag0, RECO_TTH_HAD_PTH_GT200_Tag1, RECO_TTH_HAD_PTH_GT200_Tag2, RECO_TTH_HAD_PTH_GT200_Tag3,
+                             RECO_THQ_LEP };
 
         DiPhotonTagBase();
         virtual ~DiPhotonTagBase(); 

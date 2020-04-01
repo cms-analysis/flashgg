@@ -1,0 +1,1 @@
+fggRunJobs.py --load example_bkg.json -d Bkg2018_11Mar20 --stage-to /eos/home-e/escott/HggLegacy/TrainingNtuples/2018/Bkg/ -x cmsRun stxs_dumper.py maxEvents=-1 runOnZee=False -q tomorrow pujidWP=tight dumpJetSysTrees=False -n 50 --no-copy-proxy
