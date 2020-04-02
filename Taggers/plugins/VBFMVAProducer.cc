@@ -384,7 +384,7 @@ namespace flashgg {
                 dijet_dipho_pt_   = (dijetP4s.first + dijetP4s.second + diPhotonP4s[0] + diPhotonP4s[1]).pt(); 
                 
                 dijet_Zep_           = fabs( (diPhotonP4s[0]+diPhotonP4s[1]).eta() - 0.5*(dijetP4s.first.eta()+dijetP4s.second.eta()) );
-                dijet_centrality_gg_ = exp(-4*pow(dijet_Zep_/dijet_leadEta_,2));
+                dijet_centrality_gg_ = exp(-4*pow(dijet_Zep_/dijet_abs_dEta_,2));
                 dijet_centrality_g_  = exp(-4*pow(fabs( diPhotonP4s[0].eta() - 0.5*(dijetP4s.first.eta()+dijetP4s.second.eta()) )/dijet_leadEta_,2));
                 dijet_Mjj_           = (dijetP4s.first + dijetP4s.second).M();
 
