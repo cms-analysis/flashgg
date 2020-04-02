@@ -54,9 +54,9 @@ namespace flashgg {
         Handle<View<vector<flashgg::Jet> > > theJets;
         evt.getByToken( jetsToken_, theJets );
 
-        if( theJets->size() > nCollections_ ) {
-            throw cms::Exception( "Configuration" ) << " Too many collections in input vector - inconsistency with MicroAOD";
-        }
+        //if( theJets->size() > nCollections_ ) {
+        //    throw cms::Exception( "Configuration" ) << " Too many collections in input vector - inconsistency with MicroAOD";
+        //}
 
         for( unsigned int i = 0 ; i < nCollections_ ; i++ ) {
             unique_ptr<vector<Jet> > result( new vector<Jet> );

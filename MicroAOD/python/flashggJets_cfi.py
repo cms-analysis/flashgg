@@ -26,7 +26,8 @@ flashggDeepFlavourg  = 'pfDeepFlavourJetTags:probg'
 flashggDeepFlavourlepb = 'pfDeepFlavourJetTags:problepb'
 flashggDeepJet = 'pfDeepJet'
 
-maxJetCollections = 12
+#maxJetCollections = 12
+maxJetCollections = 4 #ED FIXME
 qgDatabaseVersion = 'AK4chs_94X'
 
 def addFlashggPFCHSJets(process,
