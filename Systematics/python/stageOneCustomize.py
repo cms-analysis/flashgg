@@ -157,7 +157,7 @@ class StageOneCustomize():
                 cms.PSet(TagName = cms.InputTag('flashggZHLeptonicTag'+systlabel)),
                 cms.PSet(TagName = cms.InputTag('flashggWHLeptonicTag'+systlabel)),
                 cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag', systlabel)),
-                cms.PSet(TagName = cms.InputTag('flashggVHMetTag', +systlabel)),
+                cms.PSet(TagName = cms.InputTag('flashggVHMetTag'+systlabel)),
                 cms.PSet(TagName = cms.InputTag('flashggStageOneCombinedTag'+systlabel))
             )
             setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', modifiedPriorityRanges)
