@@ -366,36 +366,34 @@ class DoubleHCustomize():
 
     def customizeTagSequence(self):
         self.process.load("flashgg.Taggers.flashggDoubleHTag_cff")
-        
         # customizing training file (with/wo Mjj) 
         training_type = 'with_Mjj' if self.customize.doubleHTagsUseMjj else 'wo_Mjj' 
         
         self.process.flashggDoubleHTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["doubleHTag"]["weightsFile"][training_type]))  
         self.process.flashggDoubleHTag.MVAFlatteningFileName = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["MVAFlatteningFileName"][training_type]))
         if training_type == 'with_Mjj' :
-            self.process.flashggDoubleHTag.MVABoundaries = cms.vdouble(0.33,0.56, 0.70)
-            self.process.flashggDoubleHTag.MXBoundaries = cms.vdouble(250., 375.,470.,600.,250.,325.,365.,585.,250.,330.,360.,520.)
-            self.process.flashggDoubleHTag.ttHScoreThreshold = cms.double(0.24)
+            self.process.flashggDoubleHTag.MVABoundaries = cms.vdouble(0.44,0.67,0.79)
+            self.process.flashggDoubleHTag.MXBoundaries = cms.vdouble(250.,385.,470.,640.,250.,345.,440.,515.,250.,330.,365.,545.)
+            self.process.flashggDoubleHTag.ttHScoreThreshold = cms.double(0.26) #0.26
         elif training_type == 'wo_Mjj' :
             self.process.flashggDoubleHTag.MVAConfig.variables.pop(0) 
-            self.process.flashggDoubleHTag.MVABoundaries = cms.vdouble(0.30,0.54, 0.75)
-            self.process.flashggDoubleHTag.MXBoundaries = cms.vdouble(250., 395.,470.,585.,250.,345.,375.,540.,250.,330.,375.,530.)
-            self.process.flashggDoubleHTag.ttHScoreThreshold = cms.double(0.20)
-
+            self.process.flashggDoubleHTag.MVABoundaries = cms.vdouble(0.37,0.62,0.78)
+            self.process.flashggDoubleHTag.MXBoundaries = cms.vdouble(250., 385.,510.,600.,250.,330.,360.,540.,250.,330.,375.,585.)
+            self.process.flashggDoubleHTag.ttHScoreThreshold = cms.double(0.26) #0.26
         # customizing training file (with/wo Mjj) 
         training_type = 'with_Mjj' if self.customize.doubleHTagsUseMjj else 'wo_Mjj'
 
         self.process.flashggVBFDoubleHTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["VBFdoubleHTag"]["weightsFile"][training_type]))
         #self.process.flashggVBFDoubleHTag.MVAFlatteningFileName = cms.untracked.FileInPath(str(self.metaConditions["VBFdoubleHTag"]["MVAFlatteningFileName"][training_type]))
         if training_type == 'with_Mjj' :
-            self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.8)
+            self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.80)
         #    self.process.flashggVBFDoubleHTag.MXBoundaries = cms.vdouble(250., 375.,470.,600.,250.,325.,365.,585.,250.,330.,360.,520.)
-            self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.0)
+            self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.26)
         elif training_type == 'wo_Mjj' :
             self.process.flashggVBFDoubleHTag.MVAConfig.variables.pop(0)
-            self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.8)
+            self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.80)
         #    self.process.flashggVBFDoubleHTag.MXBoundaries = cms.vdouble(250., 395.,470.,585.,250.,345.,375.,540.,250.,330.,375.,530.)
-            self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.0)
+            self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.26)
         ## customize meta conditions
 
         self.process.flashggVBFDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["VBFdoubleHTag"]["jetID"]))
