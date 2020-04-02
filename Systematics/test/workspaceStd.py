@@ -509,7 +509,7 @@ else:
         ["VBFTag",3],
         ["ZHLeptonicTag",2],
         ["WHLeptonicTag",6],
-        ["VHMetTag",0],
+        ["VHMetTag",2],
         ["VHHadronicTag",0],
         ["TTHHadronicTag",4],
         ["TTHLeptonicTag",4],
