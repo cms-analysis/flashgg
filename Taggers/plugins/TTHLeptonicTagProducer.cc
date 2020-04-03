@@ -25,7 +25,7 @@
 #include "DataFormats/Common/interface/RefToPtr.h"
 
 #include "flashgg/Taggers/interface/BDT_resolvedTopTagger.h"
-#include "flashgg/Taggers/interface/DNN_Helper.h"
+#include "flashgg/Taggers/interface/TTH_DNN_Helper.h"
 
 #include <vector>
 #include <algorithm>
@@ -49,6 +49,8 @@ namespace flashgg {
     private:
         void produce( Event &, const EventSetup & ) override;
         int  chooseCategory( float tthmvavalue , bool debug_ );
+        int computeStage1Kinematics( const TTHLeptonicTag );
+        int  chooseCategory_pt( float tthmvavalue , float pT );
 
         const  reco::GenParticle* motherID(const reco::GenParticle* gp);
         bool PassFrixione(Handle<View<reco::GenParticle> > genParticles, const reco::GenParticle* gp, int nBinsForFrix, double cone_frix);
@@ -92,6 +94,16 @@ namespace flashgg {
         FileInPath tthMVA_RunII_weightfile_;
 
         FileInPath tthVsttGGDNNfile_;
+        std::vector<double> tthVsttGGDNN_global_mean_;
+        std::vector<double> tthVsttGGDNN_global_stddev_;
+        std::vector<double> tthVsttGGDNN_object_mean_;
+        std::vector<double> tthVsttGGDNN_object_stddev_; 
+
+        FileInPath tthVstHDNNfile_;
+        std::vector<double> tthVstHDNN_global_mean_;
+        std::vector<double> tthVstHDNN_global_stddev_;
+        std::vector<double> tthVstHDNN_object_mean_;
+        std::vector<double> tthVstHDNN_object_stddev_; 
 
         //Thresholds
 
@@ -117,6 +129,14 @@ namespace flashgg {
         double leadPhoOverMassThreshold_;
         double subleadPhoOverMassThreshold_;
         vector<double> MVAThreshold_;
+        vector<double> MVAThreshold_pt1_;
+        vector<double> MVAThreshold_pt2_;
+        vector<double> MVAThreshold_pt3_;
+        vector<double> MVAThreshold_pt4_;
+        vector<double> STXSPtBoundaries_pt1;
+        vector<double> STXSPtBoundaries_pt2;
+        vector<double> STXSPtBoundaries_pt3;
+        vector<double> STXSPtBoundaries_pt4;
         double deltaRJetLeadPhoThreshold_;
         double deltaRJetSubLeadPhoThreshold_;
         double jetsNumberThreshold_;
@@ -128,6 +148,7 @@ namespace flashgg {
         vector<double> bDiscriminator_;
         string bTag_;
         double PhoMVAThreshold_;
+        double tthVstHThreshold_;
 
         bool UseCutBasedDiphoId_;
         bool debug_;
@@ -197,11 +218,14 @@ namespace flashgg {
         float lepton_nTight_;
 
         float dnn_score_0_;
-       
+
+        float ttH_vs_tH_dnn_score;
+
         float tthMvaVal_RunII_;
 
         BDT_resolvedTopTagger *topTagger;
-        DNN_Helper* dnn;
+        TTH_DNN_Helper* dnn;
+        TTH_DNN_Helper* dnn_ttH_vs_tH;
 
         bool modifySystematicsWorkflow;
         std::vector<std::string> systematicsLabels;
@@ -468,6 +492,16 @@ namespace flashgg {
         leadPhoOverMassThreshold_ = iConfig.getParameter<double>( "leadPhoOverMassThreshold");
         subleadPhoOverMassThreshold_ = iConfig.getParameter<double>( "subleadPhoOverMassThreshold");
         MVAThreshold_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold");
+        MVAThreshold_pt1_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt1");
+        MVAThreshold_pt2_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt2");
+        MVAThreshold_pt3_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt3");
+        MVAThreshold_pt4_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt4");
+        STXSPtBoundaries_pt1 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt1" );
+        STXSPtBoundaries_pt2 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt2" );
+        STXSPtBoundaries_pt3 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt3" );
+        STXSPtBoundaries_pt4 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt4" );
+        //assert( is_sorted( STXSPtBoundaries_pt1.begin(), STXSBoundaries_pt1.end() ) ); // 
+        //assert( is_sorted( STXSPtBoundaries_pt2.begin(), STXSBoundaries_pt2.end() ) ); // 
         PhoMVAThreshold_ = iConfig.getParameter<double>( "PhoMVAThreshold");
         jetsNumberThreshold_ = iConfig.getParameter<double>( "jetsNumberThreshold");
         bjetsNumberThreshold_ = iConfig.getParameter<double>( "bjetsNumberThreshold");
@@ -475,6 +509,8 @@ namespace flashgg {
         jetEtaThreshold_ = iConfig.getParameter<double>( "jetEtaThreshold");
         deltaRJetLepton_ = iConfig.getParameter<double>( "deltaRJetLepton");
         leadingJetPtThreshold_ = iConfig.getParameter<double>("leadingJetPtThreshold");
+
+        tthVstHThreshold_ = iConfig.getParameter<double>("tthVstHThreshold");
 
         MuonEtaCut_ = iConfig.getParameter<double>( "MuonEtaCut");
         MuonPtCut_ = iConfig.getParameter<double>( "MuonPtCut");
@@ -510,8 +546,19 @@ namespace flashgg {
         MVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "MVAweightfile" );
         topTaggerXMLfile_ = iConfig.getParameter<edm::FileInPath>( "topTaggerXMLfile" );
         tthVsttGGDNNfile_ = iConfig.getParameter<edm::FileInPath>( "tthVsttGGDNNfile" );
-        tthMVA_RunII_weightfile_ = iConfig.getParameter<edm::FileInPath>( "tthMVA_RunII_weightfile" );
+        tthVsttGGDNN_global_mean_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_global_mean" );
+        tthVsttGGDNN_global_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_global_stddev" );
+        tthVsttGGDNN_object_mean_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_object_mean" );
+        tthVsttGGDNN_object_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_object_stddev" );
 
+        tthVstHDNNfile_ = iConfig.getParameter<edm::FileInPath>( "tthVstHDNNfile" );
+        tthVstHDNN_global_mean_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_global_mean" );
+        tthVstHDNN_global_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_global_stddev" );
+        tthVstHDNN_object_mean_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_object_mean" );
+        tthVstHDNN_object_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_object_stddev" );
+            
+        tthMVA_RunII_weightfile_ = iConfig.getParameter<edm::FileInPath>( "tthMVA_RunII_weightfile" );
+        
 
         DiphotonMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
         DiphotonMva_->AddVariable( "dipho_leadEta", &leadeta_ );
@@ -586,8 +633,13 @@ namespace flashgg {
 
         if (useLargeMVAs) {
             topTagger = new BDT_resolvedTopTagger(topTaggerXMLfile_.fullPath());
-            dnn = new DNN_Helper(tthVsttGGDNNfile_.fullPath());
+            dnn = new TTH_DNN_Helper(tthVsttGGDNNfile_.fullPath());
             dnn->SetInputShapes(19, 9, 8);
+            dnn->SetPreprocessingSchemes(tthVsttGGDNN_global_mean_, tthVsttGGDNN_global_stddev_, tthVsttGGDNN_object_mean_, tthVsttGGDNN_object_stddev_);
+
+            dnn_ttH_vs_tH = new TTH_DNN_Helper(tthVstHDNNfile_.fullPath());
+            dnn_ttH_vs_tH->SetInputShapes(23, 9, 8);
+            dnn_ttH_vs_tH->SetPreprocessingSchemes(tthVstHDNN_global_mean_, tthVstHDNN_global_stddev_, tthVstHDNN_object_mean_, tthVstHDNN_object_stddev_);
         }
 
         for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
@@ -606,12 +658,54 @@ namespace flashgg {
 
     }
 
+    int TTHLeptonicTagProducer::chooseCategory_pt( float tthmvavalue , float pT)
+    {
+        // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
+        if (pT > STXSPtBoundaries_pt1[0] && pT < STXSPtBoundaries_pt1[1]) {
+            for(int n = 0 ; n < ( int )MVAThreshold_pt1_.size() ; n++ ) {
+                if( ( double )tthmvavalue > MVAThreshold_pt1_[MVAThreshold_pt1_.size() - n - 1] ) {
+                    //cout << "pT range: [" << STXSPtBoundaries_pt1[0] << ", " << STXSPtBoundaries_pt1[1] << "], Leptonic cat " << n << endl; 
+                    return n; 
+                }
+            }
+        }
+
+        if (pT > STXSPtBoundaries_pt2[0] && pT < STXSPtBoundaries_pt2[1]) {
+            for(int n = 0 ; n < ( int )MVAThreshold_pt2_.size() ; n++ ) {
+                if( ( double )tthmvavalue > MVAThreshold_pt2_[MVAThreshold_pt2_.size() - n - 1] ) {
+                    //cout << "pT range: [" << STXSPtBoundaries_pt2[0] << ", " << STXSPtBoundaries_pt2[1] << "], Leptonic cat " << n + MVAThreshold_pt1_.size() << endl; 
+                    return n + MVAThreshold_pt1_.size(); 
+                }
+            }
+        }
+
+        if (pT > STXSPtBoundaries_pt3[0] && pT < STXSPtBoundaries_pt3[1]) {
+            for(int n = 0 ; n < ( int )MVAThreshold_pt3_.size() ; n++ ) {
+                if( ( double )tthmvavalue > MVAThreshold_pt3_[MVAThreshold_pt3_.size() - n - 1] ) {
+                    //cout << "pT range: [" << STXSPtBoundaries_pt3[0] << ", " << STXSPtBoundaries_pt3[1] << "], Leptonic cat " << n + MVAThreshold_pt1_.size() << endl; 
+                    return n + MVAThreshold_pt1_.size() + MVAThreshold_pt2_.size(); 
+                }
+            }
+        }
+
+        if (pT > STXSPtBoundaries_pt4[0] && pT < STXSPtBoundaries_pt4[1]) {
+            for(int n = 0 ; n < ( int )MVAThreshold_pt4_.size() ; n++ ) {
+                if( ( double )tthmvavalue > MVAThreshold_pt4_[MVAThreshold_pt4_.size() - n - 1] ) {
+                    //cout << "pT range: [" << STXSPtBoundaries_pt4[0] << ", " << STXSPtBoundaries_pt4[1] << "], Leptonic cat " << n + MVAThreshold_pt1_.size() << endl; 
+                    return n + MVAThreshold_pt1_.size() + MVAThreshold_pt2_.size() + MVAThreshold_pt3_.size();  
+                }
+            }
+        }
+
+        return -1; // Does not pass, object will not be produced
+    }
+
     int TTHLeptonicTagProducer::chooseCategory( float tthmvavalue , bool debug_)
     {
         // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
-        int n;
-        for( n = 0 ; n < ( int )MVAThreshold_.size() ; n++ ) {
-            if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { return n; }
+        for(int n = 0 ; n < ( int )MVAThreshold_.size() ; n++ ) {
+            //if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { return n; }
+            if( ( double )tthmvavalue > MVAThreshold_[MVAThreshold_.size() - n - 1] ) { cout << "Leptonic cat " << n; return n; }
         }
 
       if(debug_)
@@ -1192,9 +1286,29 @@ namespace flashgg {
                 global_features[17] = nJets_;
                 global_features[18] = lepton_nTight_;
 
+                std::vector<double> global_features_ttH_vs_tH;
+                global_features_ttH_vs_tH.resize(23);
+
+                for (unsigned int i = 0; i < global_features.size(); i++)
+                    global_features_ttH_vs_tH[i] = global_features[i];
+
+                double forward_jet_pt, forward_jet_eta;
+                calculate_forward_jet_features(forward_jet_pt, forward_jet_eta, tagJets, "pfDeepCSVJetTags:probb", maxBTagVal_noBB_);
+  
+                double lep1_charge, lep2_charge;
+                calculate_lepton_charges(lep1_charge, lep2_charge, Muons, Electrons);
+
+                global_features_ttH_vs_tH[19] = lep1_charge;
+                global_features_ttH_vs_tH[20] = lep2_charge;
+                global_features_ttH_vs_tH[21] = forward_jet_eta;
+                global_features_ttH_vs_tH[22] = forward_jet_pt; 
+
                 if (useLargeMVAs) {
                     dnn->SetInputs(tagJets, Muons, Electrons, global_features);
                     dnn_score_0_ = dnn->EvaluateDNN();
+
+                    dnn_ttH_vs_tH->SetInputs(tagJets, Muons, Electrons, global_features_ttH_vs_tH);
+                    ttH_vs_tH_dnn_score = dnn_ttH_vs_tH->EvaluateDNN();
                 }
 
                 vector<float> mvaEval; 
@@ -1286,17 +1400,32 @@ namespace flashgg {
                   cout << "lep_eta_: " << lepton_leadEta_ << endl;
                   cout << "n_lep_tight_: " << lepton_nTight_ << endl;
 
+                  cout << "lep1_charge: " << lep1_charge << endl;
+                  cout << "lep2_charge: " << lep2_charge << endl;
+                  cout << "forward_jet_eta: " << forward_jet_eta << endl;
+                  cout << "forward_jet_pt: " << forward_jet_pt << endl;
+
+                  cout << "ttH vs tH DNN Score: " << ttH_vs_tH_dnn_score << endl;
+
                   cout << "DNN Score 0: " << dnn_score_0_ << endl;
                   cout << endl;
                   cout << "BDT Score: " << tthMvaVal_RunII_ << endl;
+              }
+
+              if (ttH_vs_tH_dnn_score < tthVstHThreshold_) { 
+                  if (debug_)
+                      cout << "Rejecting event because ttH_vs_tH_dnn_score of " << ttH_vs_tH_dnn_score << " is below threshold." << endl;
+                  continue;
               }
 
               global_features.clear();
 
               mvaValue = tthMvaVal_RunII_; // use Run II MVA for categorization
 
-                int catNumber = -1;
-                catNumber = chooseCategory( mvaValue , debug_);  
+                //int catNumber = -1;
+                //catNumber = chooseCategory( mvaValue , debug_);  
+                int catNumber_pt = -1;
+                catNumber_pt = chooseCategory_pt( mvaValue , dipho->pt());  
 
                 if(debug_)
                     cout << "I'm going to check selections, mva value: " << mvaValue << endl;
@@ -1336,13 +1465,17 @@ namespace flashgg {
                     cout << "MetPt " << MetPt_ << endl;
                     cout << "Lepton pT and Eta " << lepton_leadPt_ << " " << lepton_leadEta_ << endl;
                     cout << "--------------------------------------" << endl;
-                    cout << "TTHLeptonicTag -- output MVA value " << mvaValue << " " << DiphotonMva_-> EvaluateMVA( "BDT" ) << ", category " << catNumber << endl;
+                    cout << "TTHLeptonicTag -- output MVA value " << mvaValue << " " << DiphotonMva_-> EvaluateMVA( "BDT" ) << ", category " << catNumber_pt << endl;
                 }
 
-                if(catNumber!=-1)
+                if(catNumber_pt!=-1)
                 {
                     TTHLeptonicTag tthltags_obj( dipho, mvares );
-                    tthltags_obj.setCategoryNumber(catNumber);
+                    tthltags_obj.setCategoryNumber(catNumber_pt);
+                    //tthltags_obj.setCategoryNumber(catNumber);
+
+                    int chosenTag = computeStage1Kinematics( tthltags_obj );
+                    tthltags_obj.setStage1recoTag( chosenTag );
 
                     for( unsigned int i = 0; i < tagJets.size(); ++i )
                     {
@@ -1394,6 +1527,7 @@ namespace flashgg {
             
                     if( ! evt.isRealData() )
                     {
+                        evt.getByToken( genParticleToken_, genParticles );
                         int gp_lead_index = GenPhoIndex(genParticles, dipho->leadingPhoton(), -1);
                         int gp_sublead_index = GenPhoIndex(genParticles, dipho->subLeadingPhoton(), gp_lead_index);
                         vector<int> leadFlags; leadFlags.clear();
@@ -1411,8 +1545,6 @@ namespace flashgg {
                            tthltags->back().setLeadMomID(leadFlags[6]);
                            tthltags->back().setLeadMomMomID(leadFlags[7]);
                            tthltags->back().setLeadSmallestDr(NearestDr(genParticles, &(*gp_lead)));
-
-                           //cout << "leadPrompt: " << leadFlags[0] << endl;
                            } 
 
                        if (gp_sublead_index != -1) {
@@ -1436,6 +1568,43 @@ namespace flashgg {
         } // syst loop end !
     }
 
+    int TTHLeptonicTagProducer::computeStage1Kinematics( const TTHLeptonicTag tag_obj )
+    {
+        int chosenTag_ = DiPhotonTagBase::stage1recoTag::LOGICERROR;
+        int catNum = tag_obj.categoryNumber();
+        if ( catNum == 0 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag0;
+        }
+        else if ( catNum == 1 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag1;
+        }
+        else if ( catNum == 2 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag2;
+        }
+        else if ( catNum == 3 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag3;
+        }
+        else if ( catNum == 4 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_60_120_Tag0;
+        }
+        else if ( catNum == 5 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_60_120_Tag1;
+        }
+        else if ( catNum == 6 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_120_200_Tag0;
+        }
+        else if ( catNum == 7 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_120_200_Tag1;
+        }
+        else if ( catNum == 8 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_GT200_Tag0;
+        }
+        else if ( catNum == 9 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_GT200_Tag1;
+        }
+        return chosenTag_;
+    }
+
 }
 typedef flashgg::TTHLeptonicTagProducer FlashggTTHLeptonicTagProducer;
 DEFINE_FWK_MODULE( FlashggTTHLeptonicTagProducer );
@@ -1446,4 +1615,3 @@ DEFINE_FWK_MODULE( FlashggTTHLeptonicTagProducer );
 // c-basic-offset:4
 // End:
 // vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
-

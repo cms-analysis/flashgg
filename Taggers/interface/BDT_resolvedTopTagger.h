@@ -346,3 +346,10 @@ float BDT_resolvedTopTagger::EvalScore(const std::shared_ptr<BDT_rTT_top> top){
 }
 
 #endif // _TOPTAGGER_H_
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4

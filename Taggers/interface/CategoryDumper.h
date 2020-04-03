@@ -400,7 +400,7 @@ namespace flashgg {
                     float w_nominal =dataset_pdfWeights_->weight();
                     int htxsBin; 
                     if (splitPdfByStage1Bin_) {
-                        htxsBin = (int)( ivars->getRealValue("stage1bin") + 0.01 );
+                        htxsBin = (int)( ivars->getRealValue("stage1p2bin") + 0.01 );
                     } else {
                         htxsBin = (int)( ivars->getRealValue("stage0bin") + 0.01 );
                     }
@@ -441,7 +441,7 @@ namespace flashgg {
                     if ( splitPdfByStage0Bin_ ) {
                         dynamic_cast<RooRealVar &>( rooVars_pdfWeights_["stage0bin"] ).setVal( it2->first );
                     } else {
-                        dynamic_cast<RooRealVar &>( rooVars_pdfWeights_["stage1bin"] ).setVal( it2->first );
+                        dynamic_cast<RooRealVar &>( rooVars_pdfWeights_["stage1p2bin"] ).setVal( it2->first );
                     }
                     newdset.add(rooVars_pdfWeights_,it2->second);
                 }
@@ -521,17 +521,17 @@ namespace flashgg {
             rooVars_pdfWeights0.add( *ws.var( "stage0bin" ) );
         }
         if ( splitPdfByStage1Bin_ ) {
-            rooVars_pdfWeights0.add( *ws.var( "stage1bin" ) );
+            rooVars_pdfWeights0.add( *ws.var( "stage1p2bin" ) );
         }
     }
 
     rooVars_pdfWeights_.add(*((RooArgSet*) rooVars_pdfWeights0.selectByName("central*")),true);
     rooVars_pdfWeights_.add(*((RooArgSet*) rooVars_pdfWeights0.selectByName("pdf*,scale*,alpha*")),true); // eveuntally could remove scale... as it might not be useful to collapse it like other pdf weights
     if ( splitPdfByStage1Bin_ ) { 
-        rooVars_pdfWeights_.add(*((RooArgSet*) rooVars_pdfWeights0.selectByName("stage1bin")),true);
+        rooVars_pdfWeights_.add(*((RooArgSet*) rooVars_pdfWeights0.selectByName("stage1p2bin")),true);
     }
     else { 
-        rooVars_pdfWeights_.add(*((RooArgSet*) rooVars_pdfWeights0.selectByName("stage1bin")),true);
+        rooVars_pdfWeights_.add(*((RooArgSet*) rooVars_pdfWeights0.selectByName("stage0bin")),true);
     }
     rooVars_pdfWeights_.add(*ws.var( weightVar ),true);
     
@@ -598,7 +598,7 @@ bool CategoryDumper<F, O>::isBinnedOnly( )
                 dynamic_cast<RooRealVar &>( rooVars_pdfWeights_["stage0bin"]).setVal( htxsBin );
             }
             if ( splitPdfByStage1Bin_ && htxsBin > -1 ) {
-                dynamic_cast<RooRealVar &>( rooVars_pdfWeights_["stage1bin"]).setVal( htxsBin );
+                dynamic_cast<RooRealVar &>( rooVars_pdfWeights_["stage1p2bin"]).setVal( htxsBin );
             }
         }
     }

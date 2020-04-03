@@ -7,12 +7,13 @@
 
    Supported releases:
    - 10_6_1_patch2 required for the STXS stage 1.1 information
+   - 10_6_8 required for the STXS stage 1.2 information
 
    get flashgg:
    #+BEGIN_EXAMPLE
    export SCRAM_ARCH=slc7_amd64_gcc700
-   cmsrel CMSSW_10_6_1_patch2
-   cd CMSSW_10_6_1_patch2/src
+   cmsrel CMSSW_10_6_8
+   cd CMSSW_10_6_8/src
    cmsenv
    git cms-init
    cd $CMSSW_BASE/src 

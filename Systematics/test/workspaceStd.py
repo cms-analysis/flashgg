@@ -258,7 +258,6 @@ if customize.doFiducial:
     process.flashggTagSequence.remove(process.flashggVHMetTag)
     process.flashggTagSequence.remove(process.flashggWHLeptonicTag)
     process.flashggTagSequence.remove(process.flashggZHLeptonicTag)
-    process.flashggTagSequence.remove(process.flashggVHLeptonicLooseTag)
     process.flashggTagSequence.remove(process.flashggVHHadronicTag)
     process.flashggTagSequence.replace(process.flashggUntagged, process.flashggSigmaMoMpToMTag)
 
@@ -267,7 +266,6 @@ if customize.tthTagsOnly:
     process.flashggTagSequence.remove(process.flashggVHMetTag)
     process.flashggTagSequence.remove(process.flashggWHLeptonicTag)
     process.flashggTagSequence.remove(process.flashggZHLeptonicTag)
-    process.flashggTagSequence.remove(process.flashggVHLeptonicLooseTag)
     process.flashggTagSequence.remove(process.flashggVHHadronicTag)
     process.flashggTagSequence.remove(process.flashggUntagged)
     process.flashggTagSequence.remove(process.flashggVBFMVA)
@@ -368,6 +366,9 @@ if is_signal:
             jetsystlabels.append("JEC%s01sigma" % direction)
             jetsystlabels.append("JER%s01sigma" % direction)
             jetsystlabels.append("PUJIDShift%s01sigma" % direction)
+            if customize.metaConditions['flashggJetSystematics']['doGranular']:
+                for sourceName in customize.metaConditions['flashggJetSystematics']['listOfSources']:
+                    jetsystlabels.append("JEC%s%s01sigma" % (str(sourceName),direction))
             metsystlabels.append("metJecUncertainty%s01sigma" % direction)
             metsystlabels.append("metJerUncertainty%s01sigma" % direction)
             metsystlabels.append("metPhoUncertainty%s01sigma" % direction)
@@ -452,7 +453,10 @@ from flashgg.MetaData.samples_utils import SamplesManager
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
-                                 "/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v2/190708_140500/0000/myMicroAODOutputFile_12.root"
+                                 #"/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v2/190708_140500/0000/myMicroAODOutputFile_12.root"
+                                 #"/store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/190703_101705/0000/myMicroAODOutputFile_45.root"
+                                 #"/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/190710_093150/0000/myMicroAODOutputFile_41.root"
+                                 "/store/user/spigazzi/flashgg/Era2018_RR-17Sep2018_v2/legacyRun2FullV2/EGamma/Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018A-17Sep2018-v2/190610_103420/0001/myMicroAODOutputFile_1125.root"
                              ))
 
 process.TFileService = cms.Service("TFileService",
@@ -503,9 +507,8 @@ else:
         ["NoTag",0],
         ["UntaggedTag",4],
         ["VBFTag",3],
-        ["ZHLeptonicTag",0],
-        ["WHLeptonicTag",0],
-        ["VHLeptonicLooseTag",0],
+        ["ZHLeptonicTag",2],
+        ["WHLeptonicTag",6],
         ["VHMetTag",0],
         ["VHHadronicTag",0],
         ["TTHHadronicTag",4],
@@ -540,19 +543,19 @@ for tag in tagList:
           if customize.doHTXS:
               currentVariables = ["stage0bin[72,9.5,81.5] := tagTruth().HTXSstage0bin"]
           elif customize.doStageOne:
-              currentVariables = ["stage1p1bin[50,-8.5,41.5] := tagTruth().HTXSstage1p1orderedBin"]
+              currentVariables = soc.noTagVariables()
           else:
               currentVariables = []
       isBinnedOnly = (systlabel !=  "")
       is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
       if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or is_signal ) and (systlabel ==  "") and not (customize.processId == "th_125" or customize.processId == "bbh_125"):
-          print "Signal MC central value, so dumping PDF weights"
+          #print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
           nPdfWeights = 60
           nAlphaSWeights = 2
           nScaleWeights = 9
       else:
-          print "Data, background MC, or non-central value, or no systematics: no PDF weights"
+          #print "Data, background MC, or non-central value, or no systematics: no PDF weights"
           dumpPdfWeights = False
           nPdfWeights = -1
           nAlphaSWeights = -1
@@ -569,8 +572,8 @@ for tag in tagList:
                            nPdfWeights=nPdfWeights,
                            nAlphaSWeights=nAlphaSWeights,
                            nScaleWeights=nScaleWeights,
-                           splitPdfByStage0Cat=customize.doHTXS,
-                           splitPdfByStage1Cat=customize.doStageOne
+                           splitPdfByStage0Bin=customize.doHTXS,
+                           splitPdfByStage1Bin=customize.doStageOne
                            )
 
 # Require standard diphoton trigger
@@ -621,10 +624,13 @@ process.load('flashgg/Systematics/flashggMetFilters_cfi')
 
 if customize.processId == "Data":
     metFilterSelector = "data"
+    filtersInputTag = cms.InputTag("TriggerResults", "", "RECO")
 else:
     metFilterSelector = "mc"
+    filtersInputTag = cms.InputTag("TriggerResults", "", "PAT")
 
 process.flashggMetFilters.requiredFilterNames = cms.untracked.vstring([filter.encode("ascii") for filter in customize.metaConditions["flashggMetFilters"][metFilterSelector]])
+process.flashggMetFilters.filtersInputTag = filtersInputTag
 
 if customize.tthTagsOnly:
     process.p = cms.Path(process.dataRequirements*
@@ -644,7 +650,7 @@ if customize.tthTagsOnly:
     # Now, we put the ttH tags back in the sequence with modified systematics workflow
     modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystlabels, jetsystlabels)
 
-else :
+else:
     process.p = cms.Path(process.dataRequirements*
                          process.flashggMetFilters*
                          process.genFilter*
@@ -658,6 +664,8 @@ else :
                          process.penultimateFilter*
                          process.finalFilter*
                          process.tagsDumper)
+    if customize.doStageOne: 
+        if soc.modifyForttH: soc.modifyWorkflowForttH(systlabels, phosystlabels, metsystlabels, jetsystlabels)
 
 if customize.doBJetRegression:
 

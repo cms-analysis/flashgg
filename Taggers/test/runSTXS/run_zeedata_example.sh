@@ -1,0 +1,1 @@
+fggRunJobs.py --load example_zeedata.json -d ZeeData2018_11Mar20 --stage-to /eos/home-e/escott/HggLegacy/TrainingNtuples/2018/ZeeData/ -x cmsRun stxs_dumper.py maxEvents=-1 -q tomrrow.q pujidWP=tight dumpJetSysTrees=False -n 50 --no-copy-proxy runOnZee=True analysisType=tagAndProbe

@@ -1,0 +1,18 @@
+{
+    "cmdLine"  : "campaign=Era2018_RR-17Sep2018_v2 metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json useAAA=True copyInputMicroAOD=True",
+    "processes": {
+        "dipho"   : [
+            "/DiPhotonJetsBox_M40_80-Sherpa",
+            "/DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa"
+        ],
+        "gjet_anyfake"   : [
+            "/GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8",
+            "/GJet_Pt-20toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8",
+            "/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8"
+        ],
+        "qcd_anyfake"   : [
+            "/QCD_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8",
+            "/QCD_Pt-30toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8"
+        ]
+    }
+}
