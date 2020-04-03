@@ -83,8 +83,7 @@ class StageOneCustomize():
         return systematicVariables
 
     def noTagVariables(self):
-        noTagVariables = [] 
-        noTagVariables += self.stageOneVariable
+        noTagVariables = self.stageOneVariable
         for direction in ["Up","Down"]:
             noTagVariables.append("THU_ggH_Mu%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Mu%s01sigma\")" % (direction,direction))
             noTagVariables.append("THU_ggH_Res%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Res%s01sigma\")" % (direction,direction))

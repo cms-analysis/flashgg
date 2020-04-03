@@ -539,14 +539,13 @@ for tag in tagList:
               currentVariables = systematicVariablesHTXS
           else:    
               currentVariables = systematicVariables
-      if tagName.upper().count("NOTAG") or tagName.upper().count("LOGICERROR"):
+      if tagName.upper().count("NOTAG"):
           if customize.doHTXS:
               currentVariables = ["stage0bin[72,9.5,81.5] := tagTruth().HTXSstage0bin"]
           elif customize.doStageOne:
               currentVariables = soc.noTagVariables()
           else:
               currentVariables = []
-          if systlabel != "": continue ## don't need systematic variations for these tags
       isBinnedOnly = (systlabel !=  "")
       is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
       if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or is_signal ) and (systlabel ==  "") and not (customize.processId == "th_125" or customize.processId == "bbh_125"):
