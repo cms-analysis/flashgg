@@ -59,7 +59,9 @@ class StageOneCustomize():
 
 
     def variablesToDump(self):
-        ws_variables = self.stageOneVariable + [
+        ws_variables = []
+        ws_variables += self.stageOneVariable 
+        ws_variables += [
             "CMS_hgg_mass[160,100,180]:=diPhoton().mass",
             "dZ[40,-20.,20.]:=(tagTruth().genPV().z-diPhoton().vtx().z)",
             "centralObjectWeight[1,-999999.,999999.] := centralWeight"
@@ -77,13 +79,16 @@ class StageOneCustomize():
 
 
     def systematicVariables(self):
-        systematicVariables = self.stageOneVariable + [
+        systematicVariables = [] 
+        systematicVariables += self.stageOneVariable 
+        systematicVariables += [
             "CMS_hgg_mass[160,100,180]:=diPhoton().mass"
         ]
         return systematicVariables
 
     def noTagVariables(self):
-        noTagVariables = self.stageOneVariable
+        noTagVariables = []
+        noTagVariables += self.stageOneVariable
         for direction in ["Up","Down"]:
             noTagVariables.append("THU_ggH_Mu%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Mu%s01sigma\")" % (direction,direction))
             noTagVariables.append("THU_ggH_Res%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Res%s01sigma\")" % (direction,direction))
