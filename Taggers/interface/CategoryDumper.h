@@ -126,7 +126,7 @@ namespace flashgg {
         void compressPdfWeightDatasets(RooWorkspace *ws);
         
 
-        void fill( const object_type &obj, double weight, vector<double>, int n_cand = 0, int stage0cat = -999);
+        void fill( const object_type &obj, double weight, vector<double>, int n_cand = 0, int stage0cat = -999, double genweight = 1.);
         string  GetName();
         bool isBinnedOnly();
 
@@ -149,6 +149,7 @@ namespace flashgg {
 
         int n_cand_;
         float weight_;
+        float genweight_;
         RooArgSet rooVars_;
         RooArgSet rooVars_pdfWeights_;        
         RooAbsData *dataset_;
@@ -162,6 +163,7 @@ namespace flashgg {
         bool hbooked_;
         bool binnedOnly_;
         bool dumpPdfWeights_;
+        bool dumpGenWeight_;
         int  nPdfWeights_;
         int  nAlphaSWeights_;
         int nScaleWeights_;
@@ -178,6 +180,7 @@ namespace flashgg {
         hbooked_( false ), 
         binnedOnly_ (false), 
         dumpPdfWeights_ (false ), 
+        dumpGenWeight_ (false ), 
         nPdfWeights_ (0), 
         nAlphaSWeights_(0),
         nScaleWeights_(0),
@@ -192,6 +195,9 @@ namespace flashgg {
         
         if( cfg.existsAs<bool >( "binnedOnly" ) ) {
             binnedOnly_ = cfg.getParameter<bool >( "binnedOnly" );
+        }
+        if( cfg.existsAs<bool >( "dumpGenWeight" ) ) {
+            dumpGenWeight_ = cfg.getParameter<bool >( "dumpGenWeight" );
         }
         if( cfg.existsAs<bool >( "dumpPdfWeights" ) ) {
             dumpPdfWeights_ = cfg.getParameter<bool >( "dumpPdfWeights" );
@@ -348,6 +354,9 @@ namespace flashgg {
         tree_ = fs.make<TTree>( formatString( name_, replacements ).c_str(), formatString( name_, replacements ).c_str() );
         tree_->Branch( "candidate_id", &n_cand_, "candidate_id/I" );
         tree_->Branch( weightName, &weight_ );
+        if( dumpGenWeight_ ) {
+          tree_->Branch("genweight" , &genweight_ );
+        }
         for( size_t iv = 0; iv < names_.size(); ++iv ) {
             if( ! dumpOnly_.empty() && find( dumpOnly_.begin(), dumpOnly_.end(), names_[iv] ) == dumpOnly_.end() ) { continue; }
             tree_->Branch( names_[iv].c_str(), &std::get<0>( variables_[iv] ) );
@@ -548,10 +557,11 @@ bool CategoryDumper<F, O>::isBinnedOnly( )
 }
 
     template<class F, class O>
-    void CategoryDumper<F, O>::fill( const object_type &obj, double weight, vector<double> pdfWeights, int n_cand, int stage0cat)
+    void CategoryDumper<F, O>::fill( const object_type &obj, double weight, vector<double> pdfWeights, int n_cand, int stage0cat, double genweight)
 {  
     n_cand_ = n_cand;
     weight_ = weight;
+    genweight_ = genweight;
     if( dataset_ && (!binnedOnly_) ) {
         dynamic_cast<RooRealVar &>( rooVars_["weight"] ).setVal( weight_ );
     }

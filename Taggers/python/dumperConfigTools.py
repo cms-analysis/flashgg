@@ -8,7 +8,7 @@ def addCategories(pset,cats,variables,histograms,mvas=None):
 
 # -----------------------------------------------------------------------
 def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mvas=None,classname=None,binnedOnly=None,
-                dumpPdfWeights=None,nPdfWeights=None,nAlphaSWeights=None,nScaleWeights=None,splitPdfByStage0Cat=None):
+                dumpPdfWeights=None,nPdfWeights=None,nAlphaSWeights=None,nScaleWeights=None,splitPdfByStage0Cat=None,dumpGenWeight=False):
     
    
     if subcats >= 0:
@@ -20,6 +20,7 @@ def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mv
         if classname: catDef.className=cms.string(classname)
         if binnedOnly: catDef.binnedOnly=cms.bool(binnedOnly)
         if dumpPdfWeights: catDef.dumpPdfWeights=cms.bool(dumpPdfWeights)
+        if dumpGenWeight: catDef.dumpGenWeight=cms.bool(dumpGenWeight)
         if nPdfWeights: catDef.nPdfWeights=cms.int32(nPdfWeights)
         if nAlphaSWeights: catDef.nAlphaSWeights=cms.int32(nAlphaSWeights)
         if nScaleWeights: catDef.nScaleWeights=cms.int32(nScaleWeights)

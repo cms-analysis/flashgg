@@ -59,6 +59,12 @@ customize.options.register('ForceGenDiphotonProduction',
                            VarParsing.VarParsing.varType.bool,
                            'ForceGenDiphotonProduction'
                            )
+customize.options.register('dumpGenWeight',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'dumpGenWeight'
+                           )
 customize.options.register('doubleHReweight',
                            -1,
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -552,7 +558,8 @@ for tag in tagList:
                            nPdfWeights=nPdfWeights,
                            nAlphaSWeights=nAlphaSWeights,
                            nScaleWeights=nScaleWeights,
-                           splitPdfByStage0Cat=customize.doHTXS
+                           splitPdfByStage0Cat=customize.doHTXS,
+                           dumpGenWeight=customize.dumpGenWeight
                            )
 
 # Require standard diphoton trigger

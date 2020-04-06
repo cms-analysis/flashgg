@@ -92,6 +92,7 @@ namespace flashgg {
 
     protected:
         double eventWeight( const edm::EventBase &event );
+        double eventGenWeight( const edm::EventBase &event );
         vector<double> pdfWeights( const edm::EventBase &event );
         int getStage0cat( const edm::EventBase &event );
         int getStxsNJet( const edm::EventBase &event );
@@ -127,6 +128,7 @@ namespace flashgg {
         
         // event weight
         float weight_;
+        float genweight_;
         vector<double> pdfWeights_;
         int pdfWeightSize_;
         bool pdfWeightHistosBooked_;
@@ -403,6 +405,30 @@ namespace flashgg {
           }
         }
          
+    template<class C, class T, class U>
+        double CollectionDumper<C, T, U>::eventGenWeight( const edm::EventBase &event )
+        {
+            double genweight = 1.;
+            if( ! event.isRealData() ) {
+                edm::Handle<GenEventInfoProduct> genInfo;
+                const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&event);
+                if (fullEvent != 0) {
+                    fullEvent->getByToken(genInfoToken_, genInfo);
+                } else {
+                    event.getByLabel(genInfo_,genInfo);
+                }
+                if( genInfo.isValid() ) {
+                    const auto &weights = genInfo->weights();
+                    // FIXME store alternative/all weight-sets
+                    if( ! weights.empty() ) {
+                        genweight = weights[0];
+                    }
+                }
+            }
+            std::cout << " genweight applied  =  " << genweight <<  std::endl;
+            return genweight;
+        }
+
 
     template<class C, class T, class U>
         double CollectionDumper<C, T, U>::eventWeight( const edm::EventBase &event )
@@ -596,6 +622,8 @@ namespace flashgg {
             if( globalVarsDumper_ ) { globalVarsDumper_->fill( event ); }
 
             weight_ = eventWeight( event );
+            genweight_ = eventGenWeight( event );
+            std::cout << " genweight recieved =  " << genweight_ <<  std::endl;
             //            std::cout << " IN CollectionDumper::analyze initial weight is " << weight_ << " dump=" << dumpPdfWeights_ << " split=" << splitPdfByStage0Cat_ << std::endl;
             if( dumpPdfWeights_){
                 
@@ -639,7 +667,7 @@ namespace flashgg {
 
                     fillWeight =fillWeight*(tag->centralWeight());
                     }
-                    which->second[isub].fill( cand, fillWeight, pdfWeights_, maxCandPerEvent_ - nfilled, stage0cat_ );
+                    which->second[isub].fill( cand, fillWeight, pdfWeights_, maxCandPerEvent_ - nfilled, stage0cat_,genweight_ );
                     --nfilled;
                 } else if( throwOnUnclassified_ ) {
                     throw cms::Exception( "Runtime error" ) << "could not find dumper for category [" << cat.first << "," << cat.second << "]"
