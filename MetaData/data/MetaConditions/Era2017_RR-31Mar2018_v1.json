@@ -175,7 +175,7 @@
 
     "VBFdoubleHTag":
     {
-        "jetID" : "Tight2018",
+        "jetID" : "Tight2017",
         "weightsFile" : {
                 "with_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_VBFHH_bEnriched_04_03_2020_0.weights.xml",
                 "wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_VBFHH_bEnriched_04_03_2020_0.weights.xml"
