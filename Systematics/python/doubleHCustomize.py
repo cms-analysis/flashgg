@@ -100,6 +100,11 @@ class DoubleHCustomize():
                 "subleadingJet_bRegNNResolution := subleadJet().userFloat('bRegNNResolution')",
                 "sigmaMJets := getSigmaMOverMJets()"
         ]
+	if self.customize.doMjjRegression: variables += [
+		"mass_corr := mass_corr()",
+		"Mjj_mreg := mass_corr()*dijet().M()",
+		"MX_mreg := getdiHiggsP4().M()-mass_corr()*dijet().M()-diPhoton().mass+250" 
+	]
         if self.customize.doubleHReweight > 0: 
             for num in range(0,12):  #12 benchmarks + 1 SM
                  variables += ["benchmark_reweight_%d := getBenchmarkReweight(%d)"%(num,num)]
@@ -207,6 +212,11 @@ class DoubleHCustomize():
         if self.customize.doDoubleHttHKiller : variables +=[
             "ttHScore := ttHScore()",
            ]
+	if self.customize.doMjjRegression: variables += [
+                "mass_corr := mass_corr()",
+                "Mjj_mreg := mass_corr()*dijet().M()",
+                "MX_mreg := getdiHiggsP4().M()-mass_corr()*dijet().M()-diPhoton().mass+250"
+        ]
         return variables
 
 
@@ -247,6 +257,7 @@ class DoubleHCustomize():
         self.process.flashggDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))
         self.process.flashggDoubleHTag.MVAscaling = cms.double(self.metaConditions["doubleHTag"]["MVAscalingValue"])
         self.process.flashggDoubleHTag.dottHTagger = cms.bool(self.customize.doDoubleHttHKiller)
+	self.process.flashggDoubleHTag.doMassReg = cms.bool(self.customize.doMjjRegression)
         self.process.flashggDoubleHTag.ttHWeightfile = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["ttHWeightfile"]))
         self.process.flashggDoubleHTag.ttHKiller_mean = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_mean"])
         self.process.flashggDoubleHTag.ttHKiller_std = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_std"])

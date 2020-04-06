@@ -23,6 +23,7 @@ ttHKiller_std = cms.vdouble()
 ttHKiller_listmean = cms.vdouble()
 ttHKiller_liststd = cms.vdouble()
 MaxJetEta = 2.5
+MReg_weights="XGB_Mjj_Reg_model_2016.weights.xml"
 
 flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    DiPhotonName = cms.string('flashggPreselectedDiPhotons'), # 
@@ -77,8 +78,14 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    doReweight = flashggDoubleHReweight.doReweight,
                                    reweight_producer = cms.string(reweight_settings.reweight_producer),
                                    reweight_names = cms.vstring(reweight_settings.reweight_names),
-
+             			   doMassReg=cms.bool(False),
                                    dottHTagger=cms.bool(False), #whether to do ttH killer. 
+                                    # for mass regression ####
+                                   MRegConf=cms.PSet(variables=cms.VPSet(),
+                                                   classifier=cms.string("BDT::bdt"),
+                                                   weights=cms.FileInPath("%s"%MReg_weights),
+                                                   regression=cms.bool(True),
+                                                   ),
 
                                    ElectronTag=cms.InputTag('flashggSelectedElectrons'),
                                    MuonTag=cms.InputTag('flashggSelectedMuons'),
@@ -132,5 +139,31 @@ cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,
                        "PhoJetOtherDr := getPhoJetOtherDr()" 
                        ]
                       )
+cfgTools.addVariables(flashggDoubleHTag.MRegConf.variables,
+                      [
+                          "leadingJet_pt := leadJet().pt",
+                          "leadingJet_eta := leadJet().eta",
+                          "leadingJet_mass := leadJet().p4().M()",
+                          "leadingJet_e := leadJet().energy",
+                          "leadingJet_phi := leadJet().phi",
+                          "leadingJet_DeepFlavour := leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
+                          "leadingJet_bRegNNCorr := leadJet().userFloat('bRegNNCorr')",
+                          "subleadingJet_pt := subleadJet().pt",
+                          "subleadingJet_eta := subleadJet().eta",
+                          "subleadingJet_mass := subleadJet().p4().M()",
+                          "subleadingJet_e := subleadJet().energy",
+                          "subleadingJet_phi := subleadJet().phi",
+                          "subleadingJet_DeepFlavour := subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
+                          "subleadingJet_bRegNNCorr := subleadJet().userFloat('bRegNNCorr')",
+                          "ttH_MET := RegMET().pt",
+                          "ttH_phiMET := RegMET().phi",
+                          "MjjReg_phi12 := abs(getdPhi()[0])",
+                          "MjjReg_phi1M := abs(getdPhi()[1])",
+                          "MjjReg_phi2M := abs(getdPhi()[2])",
+                          "rho := global.rho",
+                          "nvtx := global.nvtx",
+                          "ttH_sumET := sum_jetET()-leadJet().pt-subleadJet().pt"
+                      ]
+                    )
 
 
