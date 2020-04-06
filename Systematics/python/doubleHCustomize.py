@@ -366,7 +366,6 @@ class DoubleHCustomize():
 
     def customizeTagSequence(self):
         self.process.load("flashgg.Taggers.flashggDoubleHTag_cff")
-        
         # customizing training file (with/wo Mjj) 
         training_type = 'with_Mjj' if self.customize.doubleHTagsUseMjj else 'wo_Mjj' 
         

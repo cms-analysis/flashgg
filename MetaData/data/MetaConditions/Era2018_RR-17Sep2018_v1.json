@@ -158,7 +158,6 @@
 	"ttHKiller_listmean" : [  1.04960120e+02,  -5.49804481e-03,   3.08285275e-02],
 	"ttHKiller_liststd" : [ 85.77034272,   1.03762195,   1.83170033] 
     },
-
     "VBFdoubleHTag":
     {
         "jetID" : "Tight2018",
