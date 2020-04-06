@@ -136,7 +136,7 @@
 		"with_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20191218.root",
 		"wo_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20192401_wo_Mjj_leptonveto_2018.root"
 	},
-	"MVAscalingValue" : 1.,
+	"MVAscalingValue" : 1.0,
 	"NodesReweightingFileName" : "flashgg/Taggers/data/HHTagger/HHreweight_2018_15112019.root",
 	"ttHWeightfile" : "flashgg/Taggers/data/ttHKiller/Keras2017_converted_allnode.pb",
 	"ttHKiller_mean" : [  3.22491144e+02,   7.22919780e+01,   1.49387571e-01,   4.94052483e-03,
@@ -166,7 +166,7 @@
                 "with_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_VBFHH_bEnriched_04_03_2020_0.weights.xml",
                 "wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_VBFHH_bEnriched_04_03_2020_0.weights.xml"
         },
-        "MVAscalingValue" : 1.,
+        "MVAscalingValue" : 1.0,
         "ttHWeightfile" : "flashgg/Taggers/data/ttHKiller/Keras2017_converted_allnode.pb",
         "ttHKiller_mean" : [  3.22491144e+02,   7.22919780e+01,   1.49387571e-01,   4.94052483e-03,
                               5.10246425e-04,   1.38947662e+00,   5.31453078e+00,   7.45455854e+00,
