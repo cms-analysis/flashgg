@@ -137,6 +137,12 @@ customize.options.register('doPdfWeights',
                            VarParsing.VarParsing.varType.bool,
                            'doPdfWeights'
                            )
+customize.options.register('ignoreNegR9',
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'ignoreNegR9'
+                           )
 customize.options.register('dumpTrees',
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -426,7 +432,7 @@ from flashgg.MetaData.samples_utils import SamplesManager
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
-                                 "/store/user/spigazzi/flashgg/Era2016_RR-07Aug17_v1/legacyRun2TestV1/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/Era2016_RR-07Aug17_v1-legacyRun2TestV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v1/190228_142907/0000/myMicroAODOutputFile_610.root"
+                                 "/store/group/phys_higgs/cmshgg/mukherje/flashgg/Era2018_RR-17Sep2018_v1_p10/v1_p10/VBFHHTo2B2G_CV_1_C2V_2_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8/Era2018_RR-17Sep2018_v1_p10-v1_p10-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/191119_180301/0000/myMicroAODOutputFile_12.root"
                              ))
 
 process.TFileService = cms.Service("TFileService",
