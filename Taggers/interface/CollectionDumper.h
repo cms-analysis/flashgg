@@ -425,7 +425,6 @@ namespace flashgg {
                     }
                 }
             }
-            std::cout << " genweight applied  =  " << genweight <<  std::endl;
             return genweight;
         }
 
@@ -461,8 +460,9 @@ namespace flashgg {
                         }
                         std::cout << "Lumi Weight : " << lumiWeight_ << "; LHEWeightIndex: " << LHEWeightIndex << "; LHEWeightName: " << LHEWeightName << std::endl;
                     }
-                    if( LHEWeightIndex > -1 )
+                    if( LHEWeightIndex > -1 ){
                         weight *= ( product_lhe->weights()[LHEWeightIndex].wgt/product_lhe->originalXWGTUP () );
+                    }
                 }
 
                 if( genInfo.isValid() ) {
@@ -623,7 +623,6 @@ namespace flashgg {
 
             weight_ = eventWeight( event );
             genweight_ = eventGenWeight( event );
-            std::cout << " genweight recieved =  " << genweight_ <<  std::endl;
             //            std::cout << " IN CollectionDumper::analyze initial weight is " << weight_ << " dump=" << dumpPdfWeights_ << " split=" << splitPdfByStage0Cat_ << std::endl;
             if( dumpPdfWeights_){
                 
