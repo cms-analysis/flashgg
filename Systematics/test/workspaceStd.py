@@ -548,7 +548,7 @@ for tag in tagList:
               currentVariables = []
       isBinnedOnly = (systlabel !=  "")
       is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
-      if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or is_signal ) and (systlabel ==  "") and not (customize.processId == "th_125" or customize.processId == "bbh_125"):
+      if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or is_signal ) and (systlabel ==  "") and not (customize.processId.count("th_") or customize.processId.count("bbh_") or customize.processId.count("thw_") or customize.processId.count("thq_")):
           #print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
           nPdfWeights = 60
@@ -594,9 +594,10 @@ if ((customize.processId.count("wh") or customize.processId.count("zh")) and not
     process.VHFilter.chooseW = bool(customize.processId.count("wh"))
     process.VHFilter.chooseZ = bool(customize.processId.count("zh"))
 
-if (customize.processId == "th_125" or customize.processId == "bbh_125"):
-    process.load("flashgg/Systematics/CentralHiggsFilter_cfi")
-    process.genFilter += process.CentralHiggsFilter
+#no longer needed, we can pass these samples through the usual STXS classification code now
+#if (customize.processId == "th_125" or customize.processId == "bbh_125"):
+#    process.load("flashgg/Systematics/CentralHiggsFilter_cfi")
+#    process.genFilter += process.CentralHiggsFilter
 
 #pythia8 has an unanticipated EM showering feature, check have two photons from hard scatter
 process.penultimateFilter= cms.Sequence()
@@ -739,7 +740,7 @@ printSystematicInfo(process)
 ### Rerun microAOD sequence on top of microAODs using the parent dataset
 if customize.useParentDataset:
     runRivetSequence(process, customize.metaConditions, customize.processId)
-    if customize.recalculatePDFWeights and is_signal and not customize.processId.count("bbh"):
+    if customize.recalculatePDFWeights and is_signal and not (customize.processId.count("th_") or customize.processId.count("bbh_") or customize.processId.count("thw_") or customize.processId.count("thq_")):
         recalculatePDFWeights(process, customize.metaConditions)
 
 #### BELOW HERE IS MOSTLY DEBUGGING STUFF
