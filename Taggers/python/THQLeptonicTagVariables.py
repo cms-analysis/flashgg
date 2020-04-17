@@ -354,8 +354,9 @@ thqmva_variables=[
     "MET_phi                :=getRECOMET().getCorPhi()",
     "Dipho_MVAresult        :=getmvaresult",
 #   "likelihood_value	    :=getlikelihood()"
-    "MVAresult_thq          :=getthq_mvaresult",
-    "MVA_thqVsNonPeakingBkg :=getthq_mvaresult_ForNonPeakingBkg",
+    "MVAscore_tHqVsttH_BDT          :=getthq_mvaresult",
+    "MVAscore_thqVsNonHiggsBkg :=getthq_mvaresult_ForNonPeakingBkg",
+    "MVAscore_tHqVsttH_DNN  :=getMVAscore_ttHvstHDNN",
 ]
 
 for label in ["HighestBTagVal", "Medium" , "Loose" , "Tight"]:

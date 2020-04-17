@@ -161,6 +161,9 @@ namespace flashgg {
         float getthq_mvaresult_ForNonPeakingBkg() const{
             return thq_mvaresult_ForNonPeakingBkg_;
         }
+        float getMVAscore_ttHvstHDNN() const{
+            return MVAscore_ttHvstHDNN_;
+        }
         double getlikelihood() const{
             return likelihood_result_;
         }
@@ -489,6 +492,9 @@ namespace flashgg {
         void setthq_mvaresult_ForNonPeakingBkg( float thq_mvaresult_ForNonPeakingBkg ){
             thq_mvaresult_ForNonPeakingBkg_ = thq_mvaresult_ForNonPeakingBkg;
         }
+        void setMVAscore_ttHvstHDNN( float MVAscore_ttHvstHDNN ){
+            MVAscore_ttHvstHDNN_ = MVAscore_ttHvstHDNN;
+        }
         void setbDiscriminatorValue( std::vector<float> bDiscriminatorValue_bjets, std::vector<float> bDiscriminatorValue_jets, std::vector<float> bDiscriminatorValue_fwdjets ){
             bDiscriminatorValue_bjets_ = bDiscriminatorValue_bjets;
             bDiscriminatorValue_jets_ = bDiscriminatorValue_jets;
@@ -572,6 +578,7 @@ namespace flashgg {
         float mvaresult_;
         float thq_mvaresult_;
         float thq_mvaresult_ForNonPeakingBkg_;
+        float MVAscore_ttHvstHDNN_;
         double likelihood_result_;
         std::vector<float> bDiscriminatorValue_bjets_;
         std::vector<float> bDiscriminatorValue_jets_;
