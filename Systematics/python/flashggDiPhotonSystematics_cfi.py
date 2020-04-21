@@ -42,4 +42,5 @@ def setupDiPhotonSystematics( process, options ):
 
    if options.ignoreNegR9:
       for syst_method in flashggDiPhotonSystematics.SystMethods:
-         syst_method.OverallRange = syst_method.OverallRange._value + " && full5x5_r9>0."
+         if hasattr(syst_method, "PhotonMethodName"):
+            syst_method.OverallRange = syst_method.OverallRange._value + " && full5x5_r9>0."

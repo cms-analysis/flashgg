@@ -141,9 +141,9 @@ cfgTools.addVariables(flashggVBFDoubleHTag.MVAConfig.variables,
                        "(sigmaMJets*1.4826) := getSigmaMOverMJets()*1.4826",
                        "PhoJetMinDr := getPhoJetMinDr()",
                        "PhoJetOtherDr := getPhoJetOtherDr()",			
-                       "VBFleadJet_pt :=  getVBFleadJet_pt() ",
+                       "(VBFleadJet_pt/VBFJet_mjj) :=  getVBFleadJet_pt()/getVBFJet_mjj() ",
                        "VBFleadJet_eta := getVBFleadJet_eta()",
-                       "VBFsubleadJet_pt := getVBFsubleadJet_pt() ",
+                       "(VBFsubleadJet_pt/VBFJet_mjj) := getVBFsubleadJet_pt()/getVBFJet_mjj() ",
                        "VBFsubleadJet_eta := getVBFsubleadJet_eta()",
                        "VBFCentrality_jg := getVBFCentrality_jg()",
                        "VBFCentrality_jb := getVBFCentrality_jb()",
@@ -153,8 +153,8 @@ cfgTools.addVariables(flashggVBFDoubleHTag.MVAConfig.variables,
                        "VBFJet_mjj := getVBFJet_mjj()",
                        "VBFJet_Delta_eta := getVBFJet_Delta_eta()",
                        "VBFleadJet_QGL := getVBFleadJet_QGL() ",
-                       "VBFDelta_phi := getVBFDelta_phi()",
-                       "VBFsubleadJet_QGL := getVBFsubleadJet_QGL()"
+                       "VBFsubleadJet_QGL := getVBFsubleadJet_QGL()",
+                       "diHiggs_pt := getdiHiggsP4().pt()",
+                       "MX := MX()"
                        ]
                       )
-

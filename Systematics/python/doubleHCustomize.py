@@ -545,6 +545,7 @@ class DoubleHCustomize():
         cfgTools.addCategory(self.process.genDiphotonDumper,  ## events with not reco-level tag
                              "NoTag", 'isTagged("flashggNoTag")',1,
                              variables=genVariables,
+                             dumpGenWeight=self.customize.dumpGenWeight
                              )
 
         for tag in self.tagList: ## tagged events
@@ -554,7 +555,8 @@ class DoubleHCustomize():
                 cfgTools.addCategory(self.process.genDiphotonDumper,
                                      "%s_%d" % ( tagName, isub ), 
                                      'isTagged("%s") && categoryNumber == %d' % (tagName, isub),0,
-                                     variables=genVariables##+recoVariables
+                                     variables=genVariables,##+recoVariables
+                                     dumpGenWeight=self.customize.dumpGenWeight
                                      )
 
         self.process.genp = cms.Path(self.process.flashggGenDiPhotonDiBJetsSequence*self.process.flashggTaggedGenDiphotons*self.process.genDiphotonDumper)

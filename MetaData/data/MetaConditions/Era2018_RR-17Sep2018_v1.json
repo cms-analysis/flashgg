@@ -162,8 +162,8 @@
     {
         "jetID" : "Tight2018",
         "weightsFile" : {
-                "with_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_VBFHH_bEnriched_04_03_2020_0.weights.xml",
-                "wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_VBFHH_bEnriched_04_03_2020_0.weights.xml"
+                "with_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_2018_test_C2V2_gghh_NR_training_0.weights.xml",
+                "wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_2018_test_C2V2_gghh_NR_training_0.weights.xml"
         },
         "MVAscalingValue" : 1.0,
         "ttHWeightfile" : "flashgg/Taggers/data/ttHKiller/Keras2017_converted_allnode.pb",
