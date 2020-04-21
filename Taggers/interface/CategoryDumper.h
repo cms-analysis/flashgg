@@ -180,8 +180,8 @@ namespace flashgg {
         hbooked_( false ), 
         binnedOnly_ (false), 
         dumpPdfWeights_ (false ), 
-        nPdfWeights_ (0), 
         dumpGenWeight_ (false ),
+        nPdfWeights_ (0), 
         nAlphaSWeights_(0),
         nScaleWeights_(0),
         splitPdfByStage0Cat_( false )

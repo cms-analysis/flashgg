@@ -167,8 +167,12 @@
     {
         "jetID" : "Loose",
         "weightsFile" : {
-                "with_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_2018_test_C2V2_gghh_NR_training_0.weights.xml",
-                "wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_2018_test_C2V2_gghh_NR_training_0.weights.xml"
+                "with_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_2016_test_C2V0_training.weights.xml",
+                "wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_2016_test_C2V0_training.weights.xml"
+        },
+        "MVAFlatteningFileName" : {
+                "with_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_Total_preselection_diffNaming_2016.root",
+                "wo_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_Total_preselection_diffNaming_2016.root"
         },
         "MVAscalingValue" : 1.0,
         "NodesReweightingFileName" : "flashgg/Taggers/data/HHTagger/HHreweight_2017_15112019.root",
