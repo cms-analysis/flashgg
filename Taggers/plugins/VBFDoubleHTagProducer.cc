@@ -114,10 +114,10 @@ namespace flashgg {
         std::vector<double> elecEtaThresholds;
 
 
-        //FileInPath MVAFlatteningFileName_;
-        //TFile * MVAFlatteningFile_;
-        //TGraph * MVAFlatteningCumulative_;
-        //double MVAscaling_;
+        FileInPath MVAFlatteningFileName_;
+        TFile * MVAFlatteningFile_;
+        TGraph * MVAFlatteningCumulative_;
+        double MVAscaling_;
 
         vector< edm::EDGetTokenT<float> > reweights_;
         int doReweight_;
@@ -230,12 +230,12 @@ namespace flashgg {
         dottHTagger_ = iConfig.getParameter<bool>("dottHTagger"); 
         photonElectronVeto_=iConfig.getUntrackedParameter<std::vector<int > >("PhotonElectronVeto");
         //needed for HHbbgg MVA
-     //   if(doMVAFlattening_){
-     //       MVAFlatteningFileName_ = iConfig.getUntrackedParameter<edm::FileInPath>("MVAFlatteningFileName");
-     //       MVAFlatteningFile_ = new TFile((MVAFlatteningFileName_.fullPath()).c_str(),"READ");
-     //       MVAFlatteningCumulative_ = (TGraph*)MVAFlatteningFile_->Get("cumulativeGraph"); 
-     //   }
-     //   MVAscaling_ = iConfig.getParameter<double>("MVAscaling");
+        if(doMVAFlattening_){
+            MVAFlatteningFileName_ = iConfig.getUntrackedParameter<edm::FileInPath>("MVAFlatteningFileName");
+            MVAFlatteningFile_ = new TFile((MVAFlatteningFileName_.fullPath()).c_str(),"READ");
+            MVAFlatteningCumulative_ = (TGraph*)MVAFlatteningFile_->Get("cumulativeGraph"); 
+        }
+        MVAscaling_ = iConfig.getParameter<double>("MVAscaling");
 
         doSigmaMDecorr_ = iConfig.getUntrackedParameter<unsigned int>("DoSigmaMDecorr");
         if(doSigmaMDecorr_){
@@ -683,10 +683,10 @@ namespace flashgg {
                      std::vector<float> mva_vector = mvaComputer_(tag_obj);
                      double mva = mva_vector[multiclassSignalIdx_];
                      cout << mva << endl;
-                    // if(doMVAFlattening_){
-                    //     double mvaScaled = mva/(mva*(1.-MVAscaling_)+MVAscaling_);
-                    //     mva = MVAFlatteningCumulative_->Eval(mvaScaled);
-                    // }
+                     if(doMVAFlattening_){
+                         double mvaScaled = mva/(mva*(1.-MVAscaling_)+MVAscaling_);
+                         mva = MVAFlatteningCumulative_->Eval(mvaScaled);
+                     }
                     if (evt.id().event() == 64129) continue;
                     tag_obj.setEventNumber(evt.id().event() );
                     tag_obj.setMVA( mva );
