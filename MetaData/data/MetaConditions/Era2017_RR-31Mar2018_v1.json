@@ -150,7 +150,7 @@
 		"with_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20191218.root",
 		"wo_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20192401_wo_Mjj_leptonveto_2017.root"
 	},
-	"MVAscalingValue" : 0.816,
+	"MVAscalingValue" : 1.0,
 	"NodesReweightingFileName" : "flashgg/Taggers/data/HHTagger/HHreweight_2017_15112019.root",
 	"ttHWeightfile" : "flashgg/Taggers/data/ttHKiller/Keras2017_converted_allnode.pb",
 	"ttHKiller_mean" : [  3.22491144e+02,   7.22919780e+01,   1.49387571e-01,   4.94052483e-03,
