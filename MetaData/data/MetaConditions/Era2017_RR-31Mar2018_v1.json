@@ -148,7 +148,7 @@
 	},
 	"MVAFlatteningFileName" : {
 		"with_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20191218.root",
-		"wo_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20191218_wo_Mjj.root"
+		"wo_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20192401_wo_Mjj_leptonveto_2017.root"
 	},
 	"MVAscalingValue" : 0.816,
 	"NodesReweightingFileName" : "flashgg/Taggers/data/HHTagger/HHreweight_2017_15112019.root",
@@ -176,7 +176,7 @@
     "VBFdoubleHTag":
     {
         "jetID" : "Tight2017",
-        "MVAscalingValue" : 0.864,
+        "MVAscalingValue" : 1.0,
         "weightsFile" : {
                 "with_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_2017_test_C2V0_training.weights.xml",
                 "wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_2017_test_C2V0_training.weights.xml"
