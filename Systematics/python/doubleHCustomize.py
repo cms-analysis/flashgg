@@ -385,7 +385,7 @@ class DoubleHCustomize():
         training_type = 'with_Mjj' if self.customize.doubleHTagsUseMjj else 'wo_Mjj'
 
         self.process.flashggVBFDoubleHTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["VBFdoubleHTag"]["weightsFile"][training_type]))
-        #self.process.flashggVBFDoubleHTag.MVAFlatteningFileName = cms.untracked.FileInPath(str(self.metaConditions["VBFdoubleHTag"]["MVAFlatteningFileName"][training_type]))
+        self.process.flashggVBFDoubleHTag.MVAFlatteningFileName = cms.untracked.FileInPath(str(self.metaConditions["VBFdoubleHTag"]["MVAFlatteningFileName"][training_type]))
         if training_type == 'with_Mjj' :
             self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.95)
         #    self.process.flashggVBFDoubleHTag.MXBoundaries = cms.vdouble(250., 375.,470.,600.,250.,325.,365.,585.,250.,330.,360.,520.)

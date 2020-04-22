@@ -15,7 +15,7 @@ from flashgg.MicroAOD.flashggJets_cfi import  maxJetCollections
 jetID = ''
 weightsFile=""# path to TMVA weights
 MVAscalingValue=1.#scale MVA output before the cumulative transformation for 2017(2016 kept unchanged for simplicity, we will probably change that once we have all 3 years.)
-#MVAFlatteningFileName=""
+MVAFlatteningFileName=""
 ttHWeightfile=""
 
 ttHKiller_mean = cms.vdouble()
@@ -83,7 +83,7 @@ flashggVBFDoubleHTag = cms.EDProducer("FlashggVBFDoubleHTagProducer",
                                    doMVAFlattening=cms.bool(True),#do transformation of cumulative to make it flat
                                    MVAscaling=cms.double(MVAscalingValue),
                                    doCategorization=cms.bool(True),#do categorization based on MVA x MX or only fill first tree with all events
-                                   #MVAFlatteningFileName=cms.untracked.FileInPath("%s"%MVAFlatteningFileName),#FIXME, this should be optional, is it?
+                                   MVAFlatteningFileName=cms.untracked.FileInPath("%s"%MVAFlatteningFileName),#FIXME, this should be optional, is it?
                                    globalVariables=globalVariables,
                                    doReweight = flashggDoubleHReweight.doReweight,
                                    reweight_producer = cms.string(reweight_settings.reweight_producer),
