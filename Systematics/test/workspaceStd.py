@@ -309,15 +309,15 @@ if customize.tthTagsOnly:
 
     print "customize.processId:",customize.processId
 
-    print "Removing FracRVNvtxWeight from syst and adding  PixelSeed"
+    print "Removing FracRV and adding PixelSeed"
     
+    addPixelSeed=customizeDiPhotonSystematicsForTTH(process,customize)
+
     newvpset = cms.VPSet()
     for pset in process.flashggDiPhotonSystematics.SystMethods:
-        if not pset.Label.value().count("FracRVNvtxWeight") :
+        if not pset.Label.value().count("FracRV") :
             print  pset.Label.value()
             newvpset += [pset]
-    #from flashgg.Systematics.flashggDiPhotonSystematics_cfi import PixelSeedWeight #FIXME: this does not currently work, so comment it out for now
-    #newvpset += [ PixelSeedWeight ]
     
     process.flashggDiPhotonSystematics.SystMethods = newvpset
    

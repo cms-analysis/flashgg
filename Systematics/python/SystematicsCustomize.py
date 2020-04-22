@@ -200,6 +200,12 @@ def allowLargettHMVAs(process):
     for tag in ["flashggTTHLeptonicTag", "flashggTTHHadronicTag"]:
         getattr(process, tag).UseLargeMVAs = cms.bool(True) # enable memory-intensive MVAs
 
+
+def customizeDiPhotonSystematicsForTTH(process, options):
+    process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
+    import flashgg.Systematics.flashggDiPhotonSystematics_cfi as diPhotons_syst
+    diPhotons_syst.addPixelSeedWeightToDiPhotonSystematics( process, options )
+
 def customizeSystematicsForMC(process):
     customizePhotonSystematicsForMC(process)
 
