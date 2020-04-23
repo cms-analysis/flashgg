@@ -41,6 +41,7 @@ flashggTagSorter = cms.EDProducer('FlashggTagSorter',
                                   isGluonFusion = cms.bool(False),
                                   NNLOPSWeightFile = cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root"),
                                   applyNNLOPSweight = cms.bool(False),
-                                  SetHTXSinfo = cms.bool(True)
+                                  SetHTXSinfo = cms.bool(True),
+                                  AddTruthInfo= cms.bool(True)
                                   )
 

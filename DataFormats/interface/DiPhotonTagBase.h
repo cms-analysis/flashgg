@@ -68,6 +68,7 @@ namespace flashgg {
         void setTagTruth( const edm::Ptr<TagTruthBase> value ) { truth_ = value; }
         const edm::Ptr<TagTruthBase> tagTruth() const { return truth_; }
         float getTheoryWeight( std::string key ) const;
+        float getObjectWeight( std::string key ) const;
         void setSystLabel( const std::string label ) { systLabel_ = label; }
         std::string systLabel() const { return systLabel_; }
         bool hasSyst( const string &label ) const { return ( systLabel_ == label );}

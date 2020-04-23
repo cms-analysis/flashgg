@@ -149,13 +149,17 @@ namespace flashgg {
             double prefireProbabilityUnc = std::max(0.2 * prefireProbability, prefireProdUnc);
 
             flashgg::DiPhotonCandidate *updatedDipho = dipho->clone();
-            updatedDipho->setWeight("prefireProbability", prefireProbability);
-            updatedDipho->setWeight("prefireProbabilityUp01sigma", prefireProbability + prefireProbabilityUnc);
-            updatedDipho->setWeight("prefireProbabilityDown01sigma", std::max(0., prefireProbability - prefireProbabilityUnc));
-
+            WeightedObject prefireObject;
             if (applyToCentral_) {
-                WeightedObject prefireObject;
                 prefireObject.setCentralWeight( (1. - prefireProbability) );
+                prefireObject.setWeight("prefireWeightUp01sigma",   std::min(1.,  1. - prefireProbability + prefireProbabilityUnc));
+                prefireObject.setWeight("prefireWeightDown01sigma", std::max(0.,  1. - prefireProbability - prefireProbabilityUnc));
+                updatedDipho->includeWeights(prefireObject);
+            }
+            else {
+                prefireObject.setWeight("prefireWeight", (1. - prefireProbability) );
+                prefireObject.setWeight("prefireWeightUp01sigma",   std::min(1.,  1. - prefireProbability + prefireProbabilityUnc));
+                prefireObject.setWeight("prefireWeightDown01sigma", std::max(0.,  1. - prefireProbability - prefireProbabilityUnc));
                 updatedDipho->includeWeights(prefireObject);
             }
 

@@ -64,6 +64,7 @@ class StageOneCustomize():
         ws_variables += [
             "CMS_hgg_mass[160,100,180]:=diPhoton().mass",
             "dZ[40,-20.,20.]:=(tagTruth().genPV().z-diPhoton().vtx().z)",
+            "NNLOPSweight[1,-999999.,999999.] := tagTruth().weight(\"NNLOPSweight\")",
             "centralObjectWeight[1,-999999.,999999.] := centralWeight"
         ]
 
