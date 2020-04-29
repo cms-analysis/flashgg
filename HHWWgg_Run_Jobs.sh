@@ -38,12 +38,13 @@ runSignal="false" # get dataset(s) from signal json file
 calcSystematics="false" # run workspaceStd.py systematics 
 dumpTrees="false" # dump trees in fggrunjobs output 
 dumpWorkspaces="false" # dump workspaces in fggrunjobs output 
+dryRun="false" # do not submit jobs 
 jsonpath="" # optional local json file to use for fggrunjobs arguments such as dataset and campaign 
 condorQueue="tomorrow"
 
 ## Get user specified argumenets 
 
-options=$(getopt -o dgcstw --long nEvents: --long labelName: --long json: --long condorQueue: -- "$@") # end name with colon ':' to specify argument string 
+options=$(getopt -o dgcstwr --long nEvents: --long labelName: --long json: --long condorQueue: -- "$@") # end name with colon ':' to specify argument string 
 [ $? -eq 0 ] || {
       echo "Incorrect option provided"
       exit 1
@@ -71,6 +72,9 @@ while true; do
             ;;
       -w)   
             dumpWorkspaces="true"
+            ;;
+      -r)   
+            dryRun="true"
             ;;
       --nEvents)
             shift; 
@@ -244,6 +248,16 @@ then
            command+=' dumpWorkspace=False '
       fi       
 
+      echo "dryRun: $dryRun"
+
+      if [ $dryRun == 'true' ]
+      then 
+           command+=' dryRun=1 '
+      fi 
+
+      # else 
+      #      command+=' dryRun=0 '
+      # fi   
       
       if [ $doCutFlow == 'true' ]
       then

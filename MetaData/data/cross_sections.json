@@ -1268,5 +1268,24 @@
   "itype": -120100, 
   "kf": 1.06, 
   "br": 0.002218
+ },
+ "GluGluToHHTo_WWgg_qqlnu_node2": {
+  "xs": 0.001
+ },
+ "GluGluToHHTo_WWgg_qqlnu_node9": {
+  "xs": 0.001
+ },
+ "NMSSM_XYHWWggqqlnu_MX1000_MY800": {
+  "xs": 0.001
+ },
+ "NMSSM_XYHWWggqqlnu_MX1600_MY400": {
+  "xs": 0.001
+ },
+ "NMSSM_XYHWWggqqlnu_MX2000_MY1800": {
+  "xs": 0.001
+ },
+ "NMSSM_XYHWWggqqlnu_MX300_MY170": {
+  "xs": 0.001
  }
+
 }
