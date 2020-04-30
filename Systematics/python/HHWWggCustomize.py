@@ -10,7 +10,7 @@ class HHWWggCustomize():
         self.customize = customize
         self.metaConditions = metaConditions
         # self.tagList = [ ["HHWWggTag",12] ]
-        self.tagList = [ ["HHWWggTag",3] ] # 3 cats: all, electrons only, muons only 
+        self.tagList = [ ["HHWWggTag",2] ] # 2 cats: 0: electron channel. 1: muon channel 
         self.customizeTagSequence()
 
     def variablesToDump(self):

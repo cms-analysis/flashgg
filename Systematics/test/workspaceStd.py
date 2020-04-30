@@ -427,69 +427,69 @@ if is_signal:
         variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
     
     if customize.doSystematics:
-        # for direction in ["Up","Down"]:
-        for direction in ["Up"]:
+        for direction in ["Up","Down"]:
+        # for direction in ["Up"]:
             phosystlabels.append("MvaShift%s01sigma" % direction)
 #            phosystlabels.append("MvaLinearSyst%s01sigma" % direction)
 
 
 
-# ################---- turning off to test MvaShift 
-#             phosystlabels.append("SigmaEOverEShift%s01sigma" % direction)
-#             phosystlabels.append("MaterialCentralBarrel%s01sigma" % direction)
-#             phosystlabels.append("MaterialOuterBarrel%s01sigma" % direction)
-#             phosystlabels.append("MaterialForward%s01sigma" % direction)
-#             phosystlabels.append("FNUFEB%s01sigma" % direction)
-#             phosystlabels.append("FNUFEE%s01sigma" % direction)
-#             phosystlabels.append("MCScaleGain6EB%s01sigma" % direction)
-#             phosystlabels.append("MCScaleGain1EB%s01sigma" % direction)
-#             jetsystlabels.append("JEC%s01sigma" % direction)
-#             jetsystlabels.append("JER%s01sigma" % direction)
-#             jetsystlabels.append("PUJIDShift%s01sigma" % direction)
-#             metsystlabels.append("metJecUncertainty%s01sigma" % direction)
-#             metsystlabels.append("metJerUncertainty%s01sigma" % direction)
-#             metsystlabels.append("metPhoUncertainty%s01sigma" % direction)
-#             metsystlabels.append("metUncUncertainty%s01sigma" % direction)
-#             variablesToUse.append("UnmatchedPUWeight%s01sigma[1,-999999.,999999.] := weight(\"UnmatchedPUWeight%s01sigma\")" % (direction,direction))
-#             variablesToUse.append("MvaLinearSyst%s01sigma[1,-999999.,999999.] := weight(\"MvaLinearSyst%s01sigma\")" % (direction,direction))
-#             variablesToUse.append("LooseMvaSF%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s01sigma\")" % (direction,direction))
-#             variablesToUse.append("PreselSF%s01sigma[1,-999999.,999999.] := weight(\"PreselSF%s01sigma\")" % (direction,direction))
-#             variablesToUse.append("electronVetoSF%s01sigma[1,-999999.,999999.] := weight(\"electronVetoSF%s01sigma\")" % (direction,direction))
-#             variablesToUse.append("TriggerWeight%s01sigma[1,-999999.,999999.] := weight(\"TriggerWeight%s01sigma\")" % (direction,direction))
-#             variablesToUse.append("FracRVWeight%s01sigma[1,-999999.,999999.] := weight(\"FracRVWeight%s01sigma\")" % (direction,direction))
-#             # variablesToUse.append("FracRVNvtxWeight%s01sigma[1,-999999.,999999.] := weight(\"FracRVNvtxWeight%s01sigma\")" % (direction,direction)) # removed because not working for HHWWgg for some reason
-#             variablesToUse.append("ElectronWeight%s01sigma[1,-999999.,999999.] := weight(\"ElectronWeight%s01sigma\")" % (direction,direction))
+################---- turning off to test MvaShift 
+            phosystlabels.append("SigmaEOverEShift%s01sigma" % direction)
+            phosystlabels.append("MaterialCentralBarrel%s01sigma" % direction)
+            phosystlabels.append("MaterialOuterBarrel%s01sigma" % direction)
+            phosystlabels.append("MaterialForward%s01sigma" % direction)
+            phosystlabels.append("FNUFEB%s01sigma" % direction)
+            phosystlabels.append("FNUFEE%s01sigma" % direction)
+            phosystlabels.append("MCScaleGain6EB%s01sigma" % direction)
+            phosystlabels.append("MCScaleGain1EB%s01sigma" % direction)
+            jetsystlabels.append("JEC%s01sigma" % direction)
+            jetsystlabels.append("JER%s01sigma" % direction)
+            jetsystlabels.append("PUJIDShift%s01sigma" % direction)
+            metsystlabels.append("metJecUncertainty%s01sigma" % direction)
+            metsystlabels.append("metJerUncertainty%s01sigma" % direction)
+            metsystlabels.append("metPhoUncertainty%s01sigma" % direction)
+            metsystlabels.append("metUncUncertainty%s01sigma" % direction)
+            variablesToUse.append("UnmatchedPUWeight%s01sigma[1,-999999.,999999.] := weight(\"UnmatchedPUWeight%s01sigma\")" % (direction,direction))
+            variablesToUse.append("MvaLinearSyst%s01sigma[1,-999999.,999999.] := weight(\"MvaLinearSyst%s01sigma\")" % (direction,direction))
+            variablesToUse.append("LooseMvaSF%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s01sigma\")" % (direction,direction))
+            variablesToUse.append("PreselSF%s01sigma[1,-999999.,999999.] := weight(\"PreselSF%s01sigma\")" % (direction,direction))
+            variablesToUse.append("electronVetoSF%s01sigma[1,-999999.,999999.] := weight(\"electronVetoSF%s01sigma\")" % (direction,direction))
+            variablesToUse.append("TriggerWeight%s01sigma[1,-999999.,999999.] := weight(\"TriggerWeight%s01sigma\")" % (direction,direction))
+            variablesToUse.append("FracRVWeight%s01sigma[1,-999999.,999999.] := weight(\"FracRVWeight%s01sigma\")" % (direction,direction))
+            # variablesToUse.append("FracRVNvtxWeight%s01sigma[1,-999999.,999999.] := weight(\"FracRVNvtxWeight%s01sigma\")" % (direction,direction)) # removed because not working for HHWWgg for some reason
+            variablesToUse.append("ElectronWeight%s01sigma[1,-999999.,999999.] := weight(\"ElectronWeight%s01sigma\")" % (direction,direction))
             
-#             # 
-#             variablesToUse.append("MuonIDWeight%s01sigma[1,-999999.,999999.] := weight(\"Muon%sIDWeight%s01sigma\")" % (direction,str(customize.metaConditions["MUON_ID"]),direction))
-#             variablesToUse.append("ElectronIDWeight%s01sigma[1,-999999.,999999.] := weight(\"ElectronIDWeight%s01sigma\")" % (direction,direction))
-#             variablesToUse.append("ElectronRecoWeight%s01sigma[1,-999999.,999999.] := weight(\"ElectronRecoWeight%s01sigma\")" % (direction,direction))
-#             variablesToUse.append("MuonIsoWeight%s01sigma[1,-999999.,999999.] := weight(\"Muon%sISOWeight%s01sigma\")" % (direction,str(customize.metaConditions['MUON_ISO']),direction))
+            # 
+            variablesToUse.append("MuonIDWeight%s01sigma[1,-999999.,999999.] := weight(\"Muon%sIDWeight%s01sigma\")" % (direction,str(customize.metaConditions["MUON_ID"]),direction))
+            variablesToUse.append("ElectronIDWeight%s01sigma[1,-999999.,999999.] := weight(\"ElectronIDWeight%s01sigma\")" % (direction,direction))
+            variablesToUse.append("ElectronRecoWeight%s01sigma[1,-999999.,999999.] := weight(\"ElectronRecoWeight%s01sigma\")" % (direction,direction))
+            variablesToUse.append("MuonIsoWeight%s01sigma[1,-999999.,999999.] := weight(\"Muon%sISOWeight%s01sigma\")" % (direction,str(customize.metaConditions['MUON_ISO']),direction))
             
-#             #     variablesToUse.append("MuonWeight%s01sigma[1,-999999.,999999.] := weight(\"MuonWeight%s01sigma\")" % (direction,direction))
-#             #     variablesToUse.append("MuonMiniIsoWeight%s01sigma[1,-999999.,999999.] := weight(\"MuonMiniIsoWeight%s01sigma\")" % (direction,direction))
+            #     variablesToUse.append("MuonWeight%s01sigma[1,-999999.,999999.] := weight(\"MuonWeight%s01sigma\")" % (direction,direction))
+            #     variablesToUse.append("MuonMiniIsoWeight%s01sigma[1,-999999.,999999.] := weight(\"MuonMiniIsoWeight%s01sigma\")" % (direction,direction))
 
-#             # if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
-#             #     variablesToUse.append("MuonWeight%s01sigma[1,-999999.,999999.] := weight(\"MuonWeight%s01sigma\")" % (direction,direction))
-#             #     variablesToUse.append("MuonMiniIsoWeight%s01sigma[1,-999999.,999999.] := weight(\"MuonMiniIsoWeight%s01sigma\")" % (direction,direction))
-#             # elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
-#             #     variablesToUse.append("MuonIDWeight%s01sigma[1,-999999.,999999.] := weight(\"Muon%sIDWeight%s01sigma\")" % (direction,MUON_ID,direction))
-#             #     variablesToUse.append("MuonIsoWeight%s01sigma[1,-999999.,999999.] := weight(\"Muon%sISOWeight%s01sigma\")" % (direction,MUON_ISO,direction))
+            # if os.environ["CMSSW_VERSION"].count("CMSSW_8_0"):
+            #     variablesToUse.append("MuonWeight%s01sigma[1,-999999.,999999.] := weight(\"MuonWeight%s01sigma\")" % (direction,direction))
+            #     variablesToUse.append("MuonMiniIsoWeight%s01sigma[1,-999999.,999999.] := weight(\"MuonMiniIsoWeight%s01sigma\")" % (direction,direction))
+            # elif os.environ["CMSSW_VERSION"].count("CMSSW_9_4"):
+            #     variablesToUse.append("MuonIDWeight%s01sigma[1,-999999.,999999.] := weight(\"Muon%sIDWeight%s01sigma\")" % (direction,MUON_ID,direction))
+            #     variablesToUse.append("MuonIsoWeight%s01sigma[1,-999999.,999999.] := weight(\"Muon%sISOWeight%s01sigma\")" % (direction,MUON_ISO,direction))
             
             
-#             # 
-#             variablesToUse.append("JetBTagCutWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagCutWeight%s01sigma\")" % (direction,direction))
-#             variablesToUse.append("JetBTagReshapeWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagReshapeWeight%s01sigma\")" % (direction,direction))
+            # 
+            variablesToUse.append("JetBTagCutWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagCutWeight%s01sigma\")" % (direction,direction))
+            variablesToUse.append("JetBTagReshapeWeight%s01sigma[1,-999999.,999999.] := weight(\"JetBTagReshapeWeight%s01sigma\")" % (direction,direction))
             
 
 
-#             for r9 in ["HighR9","LowR9"]:
-#                 for region in ["EB","EE"]:
-#                     phosystlabels.append("ShowerShape%s%s%s01sigma"%(r9,region,direction))
-# #                    phosystlabels.append("MCSmear%s%s%s01sigma" % (r9,region,direction))
-#                     phosystlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
-#                     for var in ["Rho","Phi"]:
-#                         phosystlabels.append("MCSmear%s%s%s%s01sigma" % (r9,region,var,direction))
+            for r9 in ["HighR9","LowR9"]:
+                for region in ["EB","EE"]:
+                    phosystlabels.append("ShowerShape%s%s%s01sigma"%(r9,region,direction))
+#                    phosystlabels.append("MCSmear%s%s%s01sigma" % (r9,region,direction))
+                    phosystlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
+                    for var in ["Rho","Phi"]:
+                        phosystlabels.append("MCSmear%s%s%s%s01sigma" % (r9,region,var,direction))
        
        
 #############################################################
