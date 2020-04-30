@@ -325,7 +325,7 @@ class DoubleHCustomize():
             self.process.flashggDoubleHTag.MVAConfig.variables.pop(0) 
             self.process.flashggDoubleHTag.MVABoundaries = cms.vdouble(0.37,0.62,0.78)
             self.process.flashggDoubleHTag.MXBoundaries = cms.vdouble(250., 385.,510.,600.,250.,330.,360.,540.,250.,330.,375.,585.)
-            self.process.flashggDoubleHTag.ttHScoreThreshold = cms.double(0.) #0.26
+            self.process.flashggDoubleHTag.ttHScoreThreshold = cms.double(0.26) #0.26
 
         # customizing training file (with/wo Mjj) 
         training_type = 'with_Mjj' if self.customize.doubleHTagsUseMjj else 'wo_Mjj'
@@ -338,7 +338,7 @@ class DoubleHCustomize():
         elif training_type == 'wo_Mjj' :
             self.process.flashggVBFDoubleHTag.MVAConfig.variables.pop(0)
             self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.7)
-            self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.)
+            self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.26)
 
         ## customize meta conditions
         self.process.flashggVBFDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["VBFdoubleHTag"]["jetID"]))
