@@ -137,7 +137,7 @@
 		"wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_18_12_2019_wo_Mjj_training0.weights.xml"
 	},
 	"MVAFlatteningFileName" : {
-		"with_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20191218.root",
+		"with_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20191812_btag_upd_2016.root",
 		"wo_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20192401_wo_Mjj_leptonveto_2016.root"
 	},
 	"MVAscalingValue" : 1.0,
