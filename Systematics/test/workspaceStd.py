@@ -6,6 +6,7 @@ import FWCore.ParameterSet.VarParsing as VarParsing
 from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariables,minimalHistograms,minimalNonSignalVariables,systematicVariables
 from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariablesHTXS,systematicVariablesHTXS
 import os
+import copy
 from flashgg.MetaData.MetaConditionsReader import *
 
 # SYSTEMATICS SECTION
@@ -41,8 +42,20 @@ customize.options.register('doubleHTagsOnly',
                            VarParsing.VarParsing.varType.bool,
                            'doubleHTagsOnly'
                            )
-customize.options.register('doubleHTagsUseMjj',
+customize.options.register('addVBFDoubleHTag',
                            True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'addVBFDoubleHTag'
+                           )
+customize.options.register('addVBFDoubleHVariables',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'addVBFDoubleHVariables'
+                           )
+customize.options.register('doubleHTagsUseMjj',
+                           False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doubleHTagsUseMjj'
@@ -136,6 +149,12 @@ customize.options.register('doPdfWeights',
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doPdfWeights'
+                           )
+customize.options.register('ignoreNegR9',
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'ignoreNegR9'
                            )
 customize.options.register('dumpTrees',
                            False,
@@ -425,7 +444,7 @@ from flashgg.MetaData.samples_utils import SamplesManager
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
-                                 "/store/user/spigazzi/flashgg/Era2016_RR-07Aug17_v1/legacyRun2TestV1/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/Era2016_RR-07Aug17_v1-legacyRun2TestV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v1/190228_142907/0000/myMicroAODOutputFile_610.root"
+                                    "/store/group/phys_higgs/cmshgg/mukherje/flashgg/Era2018_RR-17Sep2018_v1_p10/v1_p10/VBFHHTo2B2G_CV_1_C2V_2_C3_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8/Era2018_RR-17Sep2018_v1_p10-v1_p10-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/191119_180301/0000/myMicroAODOutputFile_12.root"
                              ))
 
 process.TFileService = cms.Service("TFileService",
@@ -476,7 +495,7 @@ if customize.processId == "tHq":
 ##["TTHLeptonicTag",0]
 #]
 
-
+tag_only_variables = {}
 if customize.doFiducial:
     tagList=[["SigmaMpTTag",3]]
 elif customize.tthTagsOnly:
@@ -488,6 +507,8 @@ elif customize.doubleHTagsOnly:
     tagList = hhc.tagList
     print "taglist is:"
     print tagList
+    if customize.addVBFDoubleHTag and customize.addVBFDoubleHVariables:
+        tag_only_variables["VBFDoubleHTag"] = hhc.vbfHHVariables()    
 else:
     tagList=[
         ["NoTag",0],
@@ -509,58 +530,62 @@ process.tagsDumper.NNLOPSWeightFile=cms.FileInPath("flashgg/Taggers/data/NNLOPS_
 process.tagsDumper.reweighGGHforNNLOPS = cms.untracked.bool(bool(customize.processId.count("ggh")))
 process.tagsDumper.classifierCfg.remap=cms.untracked.VPSet()
 for tag in tagList: 
-  tagName=tag[0]
-  tagCats=tag[1]
-  # remap return value of class-based classifier
-  process.tagsDumper.classifierCfg.remap.append( cms.untracked.PSet( src=cms.untracked.string("flashgg%s"%tagName), dst=cms.untracked.string(tagName) ) )
-  for systlabel in systlabels:
-      if not systlabel in definedSysts:
-          # the cut corresponding to the systematics can be defined just once
-          cutstring = "hasSyst(\"%s\") "%(systlabel)
-          definedSysts.add(systlabel)
-      else:
-          cutstring = None
-      if systlabel == "":
-          currentVariables = variablesToUse
-      else:
-          if customize.doHTXS:
-              currentVariables = systematicVariablesHTXS
-          else:    
-              currentVariables = systematicVariables
-      if tagName == "NoTag":
-          if customize.doHTXS:
-              currentVariables = ["stage0cat[72,9.5,81.5] := tagTruth().HTXSstage0cat"]
-          else:
-              currentVariables = []
-      isBinnedOnly = (systlabel !=  "")
-      is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
-      if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or is_signal ) and (systlabel ==  "") and not (customize.processId == "th_125" or customize.processId == "bbh_125"):
-          print "Signal MC central value, so dumping PDF weights"
-          dumpPdfWeights = True
-          nPdfWeights = 60
-          nAlphaSWeights = 2
-          nScaleWeights = 9
-      else:
-          print "Data, background MC, or non-central value, or no systematics: no PDF weights"
-          dumpPdfWeights = False
-          nPdfWeights = -1
-          nAlphaSWeights = -1
-          nScaleWeights = -1
-      cfgTools.addCategory(process.tagsDumper,
-                           systlabel,
-                           classname=tagName,
-                           cutbased=cutstring,
-                           subcats=tagCats, 
-                           variables=currentVariables,
-                           histograms=minimalHistograms,
-                           binnedOnly=isBinnedOnly,
-                           dumpPdfWeights=dumpPdfWeights,
-                           nPdfWeights=nPdfWeights,
-                           nAlphaSWeights=nAlphaSWeights,
-                           nScaleWeights=nScaleWeights,
-                           splitPdfByStage0Cat=customize.doHTXS,
-                           dumpGenWeight=customize.dumpGenWeight
-                           )
+    tagName=tag[0]
+    tagCats=tag[1]
+    # remap return value of class-based classifier
+    process.tagsDumper.classifierCfg.remap.append( cms.untracked.PSet( src=cms.untracked.string("flashgg%s"%tagName), dst=cms.untracked.string(tagName) ) )
+    for systlabel in systlabels:
+        if not systlabel in definedSysts:
+            # the cut corresponding to the systematics can be defined just once
+            cutstring = "hasSyst(\"%s\") "%(systlabel)
+            definedSysts.add(systlabel)
+        else:
+            cutstring = None
+        if systlabel == "":
+            currentVariables = copy.deepcopy(variablesToUse)
+        else:
+            if customize.doHTXS:
+                currentVariables = copy.deepcopy(systematicVariablesHTXS)
+            else:    
+                currentVariables = copy.deepcopy(systematicVariables)
+        if tagName == "NoTag":
+            if customize.doHTXS:
+                currentVariables = ["stage0cat[72,9.5,81.5] := tagTruth().HTXSstage0cat"]
+            else:
+                currentVariables = []
+        isBinnedOnly = (systlabel !=  "")
+        is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
+        if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or is_signal ) and (systlabel ==  "") and not (customize.processId == "th_125" or customize.processId == "bbh_125"):
+            print "Signal MC central value, so dumping PDF weights"
+            dumpPdfWeights = True
+            nPdfWeights = 60
+            nAlphaSWeights = 2
+            nScaleWeights = 9
+        else:
+            print "Data, background MC, or non-central value, or no systematics: no PDF weights"
+            dumpPdfWeights = False
+            nPdfWeights = -1
+            nAlphaSWeights = -1
+            nScaleWeights = -1
+
+        if tagName in tag_only_variables.keys():
+            currentVariables += tag_only_variables[tagName]
+
+        cfgTools.addCategory(process.tagsDumper,
+                             systlabel,
+                             classname=tagName,
+                             cutbased=cutstring,
+                             subcats=tagCats, 
+                             variables=currentVariables,
+                             histograms=minimalHistograms,
+                             binnedOnly=isBinnedOnly,
+                             dumpPdfWeights=dumpPdfWeights,
+                             nPdfWeights=nPdfWeights,
+                             nAlphaSWeights=nAlphaSWeights,
+                             nScaleWeights=nScaleWeights,
+                             splitPdfByStage0Cat=customize.doHTXS,
+                             dumpGenWeight=customize.dumpGenWeight
+        )
 
 # Require standard diphoton trigger
 filterHLTrigger(process, customize)

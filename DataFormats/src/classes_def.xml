@@ -395,6 +395,15 @@
 <class name="std::vector<flashgg::DoubleHTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DoubleHTag> >"/>
 
+<class name="flashgg::VBFDoubleHTag" ClassVersion="14">
+ <version ClassVersion="14" checksum="1690882018"/>
+ <version ClassVersion="13" checksum="4268387942"/>
+ <version ClassVersion="12" checksum="2509632910"/>
+ <version ClassVersion="5" checksum="3026455436"/>
+</class>
+<class name="std::vector<flashgg::VBFDoubleHTag>"/>
+<class name="edm::Wrapper<std::vector<flashgg::VBFDoubleHTag> >"/>
+
 <class name="flashgg::TagAndProbeCandidate"/>
 <class name="std::vector<flashgg::TagAndProbeCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TagAndProbeCandidate> >"/>
