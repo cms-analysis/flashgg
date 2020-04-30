@@ -163,12 +163,12 @@
         "jetID" : "Tight2018",
         "MVAscalingValue" : 1.0,
         "weightsFile" : {
-            "with_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_2018_test_C2V0_training.weights.xml",
-            "wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_2018_test_C2V0_training.weights.xml"
+            "with_Mjj" : "flashgg/Taggers/data/HHTagger/training_30_04_2020_vbfHHbbgg_C2V0_2018.weights.xml",
+            "wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_30_04_2020_vbfHHbbgg_C2V0_2018.weights.xml"
         },
         "MVAFlatteningFileName" : {
-            "with_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_Total_preselection_diffNaming_2018.root",
-            "wo_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_Total_preselection_diffNaming_2018.root"
+            "with_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTrans_30_04_2020_vbfHHbbgg_C2V0_training_2018.root",
+            "wo_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTrans_30_04_2020_vbfHHbbgg_C2V0_training_2018.root"
         },
         "ttHWeightfile" : "flashgg/Taggers/data/ttHKiller/Keras2017_converted_allnode.pb",
         "ttHKiller_mean" : [  3.22491144e+02,   7.22919780e+01,   1.49387571e-01,   4.94052483e-03,
