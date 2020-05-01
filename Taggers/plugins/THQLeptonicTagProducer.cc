@@ -177,6 +177,7 @@ private:
     double DeltaRbjetfwdjet_;
     double DeltaRtHchainfwdjet_;
     double MVAThreshold_tHqVsttHBDT_;
+    double MVAThreshold_tHqVsttHDNN_;
     double MVAThreshold_tHqVsNonHiggsBkg_;
 
     bool hasGoodElec = false;
@@ -185,8 +186,8 @@ private:
 
     unique_ptr<TMVA::Reader> thqLeptonicMva_tHqVsttHBDT;
     unique_ptr<TMVA::Reader> thqLeptonicMva_tHqVsNonHiggsBkg;
-    FileInPath thqLeptonicMVAweightfile_;
-    FileInPath thqCatweightfile_ForNonPeakingBkg_;
+    FileInPath MVAweight_tHqVsttHBDT_;
+    FileInPath MVAweight_tHqVsNonHiggsBkg_;
     FileInPath tthVstHDNNfile_;
     std::vector<double> tthVstHDNN_global_mean_;
     std::vector<double> tthVstHDNN_global_stddev_;
@@ -266,7 +267,7 @@ private:
     float maxPhoID_;
     float maxBTagVal_;
     float secondMaxBTagVal_;
-    float ttH_vs_tH_dnn_score;
+    float MVAscore_tHqVsttHDNN;
 
     bool debug_=false;
     TTH_DNN_Helper* dnn_ttH_vs_tH;
@@ -442,10 +443,11 @@ THQLeptonicTagProducer::THQLeptonicTagProducer( const ParameterSet &iConfig ) :
     deltaMassElectronZThreshold_ = iConfig.getUntrackedParameter<double>( "deltaMassElectronZThreshold_", default_deltaMassElectronZThreshold_ );
     DeltaRbjetfwdjet_ = iConfig.getParameter<double>( "DeltaRbjetfwdjet" );
     DeltaRtHchainfwdjet_ = iConfig.getParameter<double>( "DeltaRtHchainfwdjet" );
-    MVAThreshold_tHqVsttHBDT_ = iConfig.getParameter<double>( "MVAThreshold_thq" );
-    MVAThreshold_tHqVsNonHiggsBkg_ = iConfig.getParameter<double>( "MVAThreshold_ForNonPeakingBkg" );
-    thqLeptonicMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "thqleptonicMVAweightfile" );
-    thqCatweightfile_ForNonPeakingBkg_ = iConfig.getParameter<edm::FileInPath>( "thqCatweightfile_ForNonPeakingBkg");
+    MVAThreshold_tHqVsttHBDT_ = iConfig.getParameter<double>( "MVAThreshold_tHqVsttHBDT" );
+    MVAThreshold_tHqVsttHDNN_ = iConfig.getParameter<double>( "MVAThreshold_tHqVsttHDNN" );
+    MVAThreshold_tHqVsNonHiggsBkg_ = iConfig.getParameter<double>( "MVAThreshold_tHqVsNonHiggsBkg" );
+    MVAweight_tHqVsttHBDT_ = iConfig.getParameter<edm::FileInPath>( "MVAweight_tHqVsttHBDT" );
+    MVAweight_tHqVsNonHiggsBkg_ = iConfig.getParameter<edm::FileInPath>( "MVAweight_tHqVsNonHiggsBkg");
     tthVstHDNNfile_ = iConfig.getParameter<edm::FileInPath>( "tthVstHDNNfile" );
     tthVstHDNN_global_mean_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_global_mean" );
     tthVstHDNN_global_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_global_stddev" );
@@ -501,7 +503,7 @@ THQLeptonicTagProducer::THQLeptonicTagProducer( const ParameterSet &iConfig ) :
         thqLeptonicMva_tHqVsttHBDT->AddVariable( "jet2_discr",               &jet2_discr_);
         thqLeptonicMva_tHqVsttHBDT->AddVariable( "jet3_discr",               &jet3_discr_);
 
-        thqLeptonicMva_tHqVsttHBDT->BookMVA( MVAMethod_.c_str() , thqLeptonicMVAweightfile_.fullPath() );
+        thqLeptonicMva_tHqVsttHBDT->BookMVA( MVAMethod_.c_str() , MVAweight_tHqVsttHBDT_.fullPath() );
 
         thqLeptonicMva_tHqVsNonHiggsBkg.reset( new TMVA::Reader( "!Color:Silent" ) );
 
@@ -548,7 +550,7 @@ THQLeptonicTagProducer::THQLeptonicTagProducer( const ParameterSet &iConfig ) :
         thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "jet2_discr",               &jet2_discr_);
         thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "jet3_discr",               &jet3_discr_);
 
-        thqLeptonicMva_tHqVsNonHiggsBkg->BookMVA( MVAMethod_.c_str() , thqCatweightfile_ForNonPeakingBkg_.fullPath() );
+        thqLeptonicMva_tHqVsNonHiggsBkg->BookMVA( MVAMethod_.c_str() , MVAweight_tHqVsNonHiggsBkg_.fullPath() );
 
         dnn_ttH_vs_tH = new TTH_DNN_Helper(tthVstHDNNfile_.fullPath());
         dnn_ttH_vs_tH->SetInputShapes(23, 9, 8);
@@ -1240,14 +1242,14 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
 
         global_features_ttH_vs_tH[19] = lep1_charge;
         global_features_ttH_vs_tH[20] = lep2_charge;
-        global_features_ttH_vs_tH[21] = fwdJet1_eta_;
-        global_features_ttH_vs_tH[22] = fwdJet1_pt_;
+        global_features_ttH_vs_tH[21] = std::abs(fwdJet1_eta_);
+        global_features_ttH_vs_tH[22] = log(fwdJet1_pt_);
 
 
         dnn_ttH_vs_tH->SetInputs(SelJetVect, goodMuons, goodElectrons, global_features_ttH_vs_tH);
 //Evaluate DNN------------------------
-        ttH_vs_tH_dnn_score = dnn_ttH_vs_tH->EvaluateDNN();
-//cout<<"ttH_vs_tH_dnn_score=  "<<ttH_vs_tH_dnn_score<<endl;
+        MVAscore_tHqVsttHDNN = dnn_ttH_vs_tH->EvaluateDNN();
+//cout<<"ttH_vs_tH_dnn_score=  "<<MVAscore_tHqVsttHDNN<<endl;
 //Tagger with MVAs--------------------
      if(use_MVAs_){
         if(use_tthVstHBDT_){
@@ -1259,6 +1261,17 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
                 TightBJetVect.clear(); TightBJetVect_PtSorted.clear();
                 centraljet.clear(); forwardjet.clear();
                 continue; 
+                }
+            }
+        if(use_tthVstHDNN_){
+            if( MVAscore_tHqVsttHDNN > MVAThreshold_tHqVsttHDNN_){
+                SelJetVect.clear();
+                SelJetVect_EtaSorted.clear(); SelJetVect_PtSorted.clear(); SelJetVect_BSorted.clear();
+                LooseBJetVect.clear(); LooseBJetVect_PtSorted.clear();
+                BJetVect.clear(); MediumBJetVect_PtSorted.clear();
+                TightBJetVect.clear(); TightBJetVect_PtSorted.clear();
+                centraljet.clear(); forwardjet.clear();
+                continue;
                 }
             }
         if( MVAscore_tHqVsNonHiggsBkg < MVAThreshold_tHqVsNonHiggsBkg_){
@@ -1351,7 +1364,7 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
 		        thqltags_obj.setbDiscriminatorValue( bDiscr_bjets, bDiscr_jets, bDiscr_fwdjets );
                 thqltags_obj.setthq_mvaresult( MVAscore_tHqVsttHBDT );
                 thqltags_obj.setthq_mvaresult_ForNonPeakingBkg( MVAscore_tHqVsNonHiggsBkg );
-                thqltags_obj.setMVAscore_ttHvstHDNN( ttH_vs_tH_dnn_score );
+                thqltags_obj.setMVAscore_ttHvstHDNN( MVAscore_tHqVsttHDNN );
 //		thqltags_obj.setCategoryNumber( catnum );
                 thqltags_obj.bTagWeight = 1.0;
                 thqltags_obj.bTagWeightDown = 1.0;
