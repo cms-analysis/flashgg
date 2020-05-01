@@ -300,16 +300,16 @@ flashggTHQLeptonicTag = cms.EDProducer("FlashggTHQLeptonicTagProducer",
                                        DeltaRtHchainfwdjet=cms.double(0.4),
 #                                       thqleptonicMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVA_THQLeptonicTag_tHq_Vs_ttH_BDT.weights.xml"),
 #                                      thqCatweightfile_ForNonPeakingBkg = cms.FileInPath("flashgg/Taggers/data/TMVA_THQLeptonicTag_tHq_Vs_NonPeakingBkg_BDT_16.weights.xml"),
-                                       thqCatweightfile_ForNonPeakingBkg = cms.FileInPath(""),
 				       tthVstHDNNfile = cms.FileInPath("flashgg/Taggers/data/Leptonic_ttHLeptonic_ttH_vs_tH_v4.14_ttH_vs_tH_13Jan2020_weights.pb"),
                                        tthVstHDNN_global_mean = ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme["global_mean"],
                                        tthVstHDNN_global_stddev = ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme["global_stddev"],
                                        tthVstHDNN_object_mean = ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme["object_mean"],
                                        tthVstHDNN_object_stddev = ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme["object_stddev"],
 				       debug = cms.bool(False),
-				       use_MVAs = cms.bool(False),
+				       use_MVAs = cms.bool(True),
 				       use_tthVstHDNN = cms.bool(True),
 				       use_tthVstHBDT = cms.bool(False),
+				       MVAThreshold_tHqVsttHDNN = cms.double(0.3),
 )
 
 
