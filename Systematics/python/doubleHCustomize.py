@@ -337,8 +337,8 @@ class DoubleHCustomize():
             self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0)
         elif training_type == 'wo_Mjj' :
             self.process.flashggVBFDoubleHTag.MVAConfig.variables.pop(0)
-            self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.7)
-            self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.26)
+            self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.0)
+            self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.0)
 
         ## customize meta conditions
         self.process.flashggVBFDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["VBFdoubleHTag"]["jetID"]))
@@ -429,7 +429,7 @@ class DoubleHCustomize():
             self.process.flashggDoubleHReweight = flashggDoubleHReweight
             self.process.flashggDoubleHReweight.doReweight = self.customize.doubleHReweight
             self.process.flashggDoubleHReweight.weightsFile = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["NodesReweightingFileName"]))
-            self.process.p.replace(self.process.flashggDoubleHTag, self.process.flashggDoubleHReweight*self.process.flashggDoubleHTag)
+            self.process.p.replace(self.process.flashggDoubleHTagSequence, self.process.flashggDoubleHReweight*self.process.flashggDoubleHTagSequence)
 
     def addGenAnalysis(self):
         if self.customize.processId == "Data": 
