@@ -6,6 +6,7 @@ import FWCore.ParameterSet.VarParsing as VarParsing
 from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariables,minimalHistograms,minimalNonSignalVariables,systematicVariables
 from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariablesHTXS,systematicVariablesHTXS
 import os
+import copy
 from flashgg.MetaData.MetaConditionsReader import *
 
 # SYSTEMATICS SECTION
@@ -41,8 +42,20 @@ customize.options.register('doubleHTagsOnly',
                            VarParsing.VarParsing.varType.bool,
                            'doubleHTagsOnly'
                            )
-customize.options.register('doubleHTagsUseMjj',
+customize.options.register('addVBFDoubleHTag',
                            True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'addVBFDoubleHTag'
+                           )
+customize.options.register('addVBFDoubleHVariables',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'addVBFDoubleHVariables'
+                           )
+customize.options.register('doubleHTagsUseMjj',
+                           False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doubleHTagsUseMjj'
@@ -58,6 +71,12 @@ customize.options.register('ForceGenDiphotonProduction',
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'ForceGenDiphotonProduction'
+                           )
+customize.options.register('dumpGenWeight',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'dumpGenWeight'
                            )
 customize.options.register('doubleHReweight',
                            -1,
@@ -136,6 +155,12 @@ customize.options.register('doPdfWeights',
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doPdfWeights'
+                           )
+customize.options.register('ignoreNegR9',
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'ignoreNegR9'
                            )
 customize.options.register('dumpTrees',
                            False,
@@ -332,7 +357,7 @@ useEGMTools(process)
 
 # Only run systematics for signal events
 # convention: ggh vbf wzh (wh zh) tth
-signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","qqh","ggh","tth","vh"]
+signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh"]
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 
 applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)
@@ -356,11 +381,11 @@ if is_signal:
         for direction in ["Up","Down"]:
             phosystlabels.append("MvaShift%s01sigma" % direction)
             phosystlabels.append("SigmaEOverEShift%s01sigma" % direction)
-            phosystlabels.append("MaterialCentralBarrel%s01sigma" % direction)
-            phosystlabels.append("MaterialOuterBarrel%s01sigma" % direction)
-            phosystlabels.append("MaterialForward%s01sigma" % direction)
-            phosystlabels.append("FNUFEB%s01sigma" % direction)
-            phosystlabels.append("FNUFEE%s01sigma" % direction)
+         #   phosystlabels.append("MaterialCentralBarrel%s01sigma" % direction)
+         #   phosystlabels.append("MaterialOuterBarrel%s01sigma" % direction)
+         #   phosystlabels.append("MaterialForward%s01sigma" % direction)
+         #   phosystlabels.append("FNUFEB%s01sigma" % direction)
+         #   phosystlabels.append("FNUFEE%s01sigma" % direction)
             phosystlabels.append("MCScaleGain6EB%s01sigma" % direction)
             phosystlabels.append("MCScaleGain1EB%s01sigma" % direction)
             jetsystlabels.append("JEC%s01sigma" % direction)
@@ -398,7 +423,7 @@ if is_signal:
             variablesToUse.append("THU_ggH_qmtop%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_qmtop%s01sigma\")" % (direction,direction))
             for r9 in ["HighR9","LowR9"]:
                 for region in ["EB","EE"]:
-                    phosystlabels.append("ShowerShape%s%s%s01sigma"%(r9,region,direction))
+           #         phosystlabels.append("ShowerShape%s%s%s01sigma"%(r9,region,direction))
 #                    phosystlabels.append("MCSmear%s%s%s01sigma" % (r9,region,direction))
                     phosystlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
                     for var in ["Rho","Phi"]:
@@ -422,6 +447,7 @@ if customize.doubleHTagsOnly:
     variablesToUse = minimalVariables
     if customize.processId == "Data":
         variablesToUse = minimalNonSignalVariables
+        variablesToUse += hhc.variablesToDumpData()
 
 if customize.doDoubleHTag:
    systlabels,jetsystlabels,metsystlabels = hhc.customizeSystematics(systlabels,jetsystlabels,metsystlabels)
@@ -488,7 +514,7 @@ if customize.processId == "tHq":
 ##["TTHLeptonicTag",0]
 #]
 
-
+tag_only_variables = {}
 if customize.doFiducial:
     tagList=[["SigmaMpTTag",3]]
 elif customize.tthTagsOnly:
@@ -500,6 +526,8 @@ elif customize.doubleHTagsOnly:
     tagList = hhc.tagList
     print "taglist is:"
     print tagList
+    if customize.addVBFDoubleHTag and customize.addVBFDoubleHVariables:
+        tag_only_variables["VBFDoubleHTag"] = hhc.vbfHHVariables()    
 elif customize.doStageOne:
     tagList = soc.tagList
 else:
@@ -573,7 +601,8 @@ for tag in tagList:
                            nAlphaSWeights=nAlphaSWeights,
                            nScaleWeights=nScaleWeights,
                            splitPdfByStage0Bin=customize.doHTXS,
-                           splitPdfByStage1Bin=customize.doStageOne
+                           splitPdfByStage1Bin=customize.doStageOne,
+                           dumpGenWeight=customize.dumpGenWeight
                            )
 
 # Require standard diphoton trigger
