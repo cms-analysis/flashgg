@@ -53,9 +53,9 @@ namespace flashgg {
         std::vector<std::string> inputJetsSuffixes_;
         unsigned int inputJetsCollSize_;
 
-        std::string inputVBFJetsName_;
-        std::vector<std::string> inputVBFJetsSuffixes_;
+        std::string inputVBFJetsSystematicsName_;
         unsigned int inputVBFJetsCollSize_;
+        std::vector<edm::InputTag> inputVBFJetsInputTag_;
 
         std::vector<edm::EDGetTokenT<edm::View<flashgg::Jet> > > jetTokens_;
         std::vector<edm::EDGetTokenT<edm::View<flashgg::Jet> > > VBFjetTokens_;
@@ -206,14 +206,20 @@ namespace flashgg {
         }
         for( auto & tag : jetTags ) { jetTokens_.push_back( consumes<edm::View<flashgg::Jet> >( tag ) ); }
 
-        inputVBFJetsName_= iConfig.getParameter<std::string> ( "VBFJetsName" );
+        inputVBFJetsInputTag_= iConfig.getParameter<std::vector<edm::InputTag> > ( "VBFJetsInputTag" );
+        inputVBFJetsSystematicsName_= iConfig.getParameter<std::string> ( "VBFJetsSystematicsName" );
         inputVBFJetsCollSize_= iConfig.getParameter<unsigned int> ( "VBFJetsCollSize" );
-        inputVBFJetsSuffixes_= iConfig.getParameter<std::vector<std::string> > ( "VBFJetsSuffixes" );
         std::vector<edm::InputTag>  VBFjetTags;
-        for (auto & suffix : inputVBFJetsSuffixes_) {
-            if (!suffix.empty()) systematicsLabels.push_back(suffix);  //nominal is already put in the diphoton loop
+
+        for (auto & suffix : inputJetsSuffixes_) {
             for (unsigned int i = 0; i < inputVBFJetsCollSize_ ; i++) {
-                VBFjetTags.push_back(edm::InputTag(inputVBFJetsName_, std::to_string(i)));
+                if (suffix.empty()) {
+                    VBFjetTags.push_back(inputVBFJetsInputTag_[i]);  // nominal VBF jets
+                } else {
+                   std::string vbfjetsName = inputVBFJetsSystematicsName_;
+                   vbfjetsName.append(std::to_string(i));
+                   VBFjetTags.push_back(edm::InputTag(vbfjetsName,suffix));
+                }
             }
         }
         for( auto & tag : VBFjetTags ) { VBFjetTokens_.push_back( consumes<edm::View<flashgg::Jet> >( tag ) ); }

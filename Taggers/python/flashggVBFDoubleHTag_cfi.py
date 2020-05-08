@@ -31,11 +31,10 @@ flashggVBFDoubleHTag = cms.EDProducer("FlashggVBFDoubleHTagProducer",
                                    JetsCollSize = cms.uint32(maxJetCollections), #
                                    JetsSuffixes = cms.vstring(''), #nominal and systematic variations 
                                    GenParticleTag = cms.InputTag( "flashggPrunedGenParticles" ), # to compute MC-truth info
-                                   
 
-                                   VBFJetsName = cms.string("flashggUnpackedJets"), # 
+                                   VBFJetsInputTag= UnpackedJetCollectionVInputTag, 
+                                   VBFJetsSystematicsName=cms.string('flashggJetSystematics'),
                                    VBFJetsCollSize = cms.uint32(maxJetCollections), #
-                                   VBFJetsSuffixes = cms.vstring(''),
 
                                    VetoConeSize   = cms.double(0.4),
                                    MinLeadPhoPt   = cms.double(1./3.),

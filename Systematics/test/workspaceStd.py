@@ -445,10 +445,9 @@ else:
 
 if customize.doubleHTagsOnly:
     variablesToUse = minimalVariables
-    if customize.processId == "Data":
-        variablesToUse = minimalNonSignalVariables
-        variablesToUse += hhc.variablesToDumpData()
-
+   # if customize.processId == "Data":
+   #     variablesToUse = minimalNonSignalVariables
+  
 if customize.doDoubleHTag:
    systlabels,jetsystlabels,metsystlabels = hhc.customizeSystematics(systlabels,jetsystlabels,metsystlabels)
            
@@ -561,17 +560,17 @@ for tag in tagList:
       else:
           cutstring = None
       if systlabel == "":
-          currentVariables = variablesToUse
+          currentVariables = copy.deepcopy(variablesToUse)
       else:
           if customize.doHTXS:
-              currentVariables = systematicVariablesHTXS
+              currentVariables = copy.deepcopy(systematicVariablesHTXS)
           else:    
-              currentVariables = systematicVariables
+              currentVariables = copy.deepcopy(systematicVariables)
       if tagName.upper().count("NOTAG"):
           if customize.doHTXS:
               currentVariables = ["stage0bin[72,9.5,81.5] := tagTruth().HTXSstage0bin"]
           elif customize.doStageOne:
-              currentVariables = soc.noTagVariables()
+              currentVariables = copy.deepcopy(soc.noTagVariables())
           else:
               currentVariables = []
       isBinnedOnly = (systlabel !=  "")
@@ -588,6 +587,10 @@ for tag in tagList:
           nPdfWeights = -1
           nAlphaSWeights = -1
           nScaleWeights = -1
+
+      if systlabel == "":
+         if tagName in tag_only_variables.keys():
+            currentVariables += tag_only_variables[tagName]
       cfgTools.addCategory(process.tagsDumper,
                            systlabel,
                            classname=tagName,
@@ -730,6 +733,7 @@ if customize.doBJetRegression:
     
 
 if customize.doDoubleHTag:
+    process.p.remove(process.flashggMetFilters)
     hhc.doubleHTagRunSequence(systlabels,jetsystlabels,phosystlabels)
   
 
