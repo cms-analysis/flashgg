@@ -39,3 +39,8 @@ def setupDiPhotonSystematics( process, options ):
    flashggDiPhotonSystematics.SystMethods.append(sysmodule.SigmaEOverESmearing)
    flashggDiPhotonSystematics.SystMethods.append(sysmodule.FracRVWeight)
    flashggDiPhotonSystematics.SystMethods.append(sysmodule.FracRVNvtxWeight)
+
+   if options.ignoreNegR9:
+      for syst_method in flashggDiPhotonSystematics.SystMethods:
+         if hasattr(syst_method, "PhotonMethodName"):
+            syst_method.OverallRange = syst_method.OverallRange._value + " && full5x5_r9>0."
