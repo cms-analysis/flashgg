@@ -232,7 +232,7 @@ class jetSystematicsCustomize:
                                )
 
       ## option to add the granular sources for jet systematics - off by default
-      if self.metaConditions['flashggJetSystematics']['doGranular']:
+      if self.options.doSystematics and self.options.doGranularJEC :
           for sourceName in self.metaConditions['flashggJetSystematics']['listOfSources']:
               allJetUncerts += cms.VPSet( cms.PSet( MethodName = cms.string("FlashggJetEnergyCorrector"),
                                                     Label = cms.string("JEC%s"%str(sourceName)),
