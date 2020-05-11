@@ -150,6 +150,12 @@ customize.options.register('doSystematics',
                            VarParsing.VarParsing.varType.bool,
                            'doSystematics'
                            )
+customize.options.register('doGranularJEC',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doGranularJEC'
+                           )
 customize.options.register('doPdfWeights',
                            True,
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -391,7 +397,7 @@ if is_signal:
             jetsystlabels.append("JEC%s01sigma" % direction)
             jetsystlabels.append("JER%s01sigma" % direction)
             jetsystlabels.append("PUJIDShift%s01sigma" % direction)
-            if customize.metaConditions['flashggJetSystematics']['doGranular']:
+            if customize.doGranularJEC:
                 for sourceName in customize.metaConditions['flashggJetSystematics']['listOfSources']:
                     jetsystlabels.append("JEC%s%s01sigma" % (str(sourceName),direction))
             metsystlabels.append("metJecUncertainty%s01sigma" % direction)
