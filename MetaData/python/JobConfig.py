@@ -5,8 +5,6 @@ from Utilities.General.cmssw_das_client import get_data as das_query
 
 import commands
 
-<<<<<<< HEAD
-=======
 def safe_das_query( search, cmd ):
     output = das_query( search, cmd=cmd )
     if not 'data' in output:
