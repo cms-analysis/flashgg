@@ -11,7 +11,6 @@ def safe_das_query( search, cmd ):
         raise Exception('Your das query has not worked properly - check your proxy is valid')
     return output
 
->>>>>>> upstream/dev_legacy_runII
 class JobConfig(object):
     
     def __init__(self,*args,**kwargs):
