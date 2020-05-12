@@ -415,7 +415,8 @@
 <class name="std::vector<flashgg::DiPhotonTagBase*>"/>
 <class name="std::vector<flashgg::TagTruthBase*>"/>
 
-<class name="flashgg::DoubleHTag" ClassVersion="16">
+<class name="flashgg::DoubleHTag" ClassVersion="17">
+ <version ClassVersion="17" checksum="2527525952"/>
  <version ClassVersion="16" checksum="2568790490"/>
  <version ClassVersion="15" checksum="3477662648"/>
  <version ClassVersion="14" checksum="3475569523"/>
@@ -426,6 +427,16 @@
 </class>
 <class name="std::vector<flashgg::DoubleHTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DoubleHTag> >"/>
+
+<class name="flashgg::VBFDoubleHTag" ClassVersion="15">
+ <version ClassVersion="15" checksum="1205586440"/>
+ <version ClassVersion="14" checksum="1690882018"/>
+ <version ClassVersion="13" checksum="4268387942"/>
+ <version ClassVersion="12" checksum="2509632910"/>
+ <version ClassVersion="5" checksum="3026455436"/>
+</class>
+<class name="std::vector<flashgg::VBFDoubleHTag>"/>
+<class name="edm::Wrapper<std::vector<flashgg::VBFDoubleHTag> >"/>
 
 <class name="flashgg::TagAndProbeCandidate"/>
 <class name="std::vector<flashgg::TagAndProbeCandidate>"/>

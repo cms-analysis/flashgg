@@ -6,6 +6,7 @@ import FWCore.ParameterSet.VarParsing as VarParsing
 from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariables,minimalHistograms,minimalNonSignalVariables,systematicVariables
 from flashgg.Systematics.SystematicDumperDefaultVariables import minimalVariablesHTXS,systematicVariablesHTXS
 import os
+import copy
 from flashgg.MetaData.MetaConditionsReader import *
 
 # SYSTEMATICS SECTION
@@ -41,8 +42,20 @@ customize.options.register('doubleHTagsOnly',
                            VarParsing.VarParsing.varType.bool,
                            'doubleHTagsOnly'
                            )
-customize.options.register('doubleHTagsUseMjj',
+customize.options.register('addVBFDoubleHTag',
                            True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'addVBFDoubleHTag'
+                           )
+customize.options.register('addVBFDoubleHVariables',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'addVBFDoubleHVariables'
+                           )
+customize.options.register('doubleHTagsUseMjj',
+                           False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doubleHTagsUseMjj'
@@ -58,6 +71,12 @@ customize.options.register('ForceGenDiphotonProduction',
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'ForceGenDiphotonProduction'
+                           )
+customize.options.register('dumpGenWeight',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'dumpGenWeight'
                            )
 customize.options.register('doubleHReweight',
                            -1,
@@ -131,11 +150,23 @@ customize.options.register('doSystematics',
                            VarParsing.VarParsing.varType.bool,
                            'doSystematics'
                            )
+customize.options.register('doGranularJEC',
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doGranularJEC'
+                           )
 customize.options.register('doPdfWeights',
                            True,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doPdfWeights'
+                           )
+customize.options.register('ignoreNegR9',
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'ignoreNegR9'
                            )
 customize.options.register('dumpTrees',
                            False,
@@ -332,7 +363,7 @@ useEGMTools(process)
 
 # Only run systematics for signal events
 # convention: ggh vbf wzh (wh zh) tth
-signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","qqh","ggh","tth","vh"]
+signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh"]
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 
 applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)
@@ -366,7 +397,7 @@ if is_signal:
             jetsystlabels.append("JEC%s01sigma" % direction)
             jetsystlabels.append("JER%s01sigma" % direction)
             jetsystlabels.append("PUJIDShift%s01sigma" % direction)
-            if customize.metaConditions['flashggJetSystematics']['doGranular']:
+            if customize.doGranularJEC:
                 for sourceName in customize.metaConditions['flashggJetSystematics']['listOfSources']:
                     jetsystlabels.append("JEC%s%s01sigma" % (str(sourceName),direction))
             metsystlabels.append("metJecUncertainty%s01sigma" % direction)
@@ -420,9 +451,9 @@ else:
 
 if customize.doubleHTagsOnly:
     variablesToUse = minimalVariables
-    if customize.processId == "Data":
-        variablesToUse = minimalNonSignalVariables
-
+   # if customize.processId == "Data":
+   #     variablesToUse = minimalNonSignalVariables
+  
 if customize.doDoubleHTag:
    systlabels,jetsystlabels,metsystlabels = hhc.customizeSystematics(systlabels,jetsystlabels,metsystlabels)
            
@@ -488,7 +519,7 @@ if customize.processId == "tHq":
 ##["TTHLeptonicTag",0]
 #]
 
-
+tag_only_variables = {}
 if customize.doFiducial:
     tagList=[["SigmaMpTTag",3]]
 elif customize.tthTagsOnly:
@@ -500,6 +531,8 @@ elif customize.doubleHTagsOnly:
     tagList = hhc.tagList
     print "taglist is:"
     print tagList
+    if customize.addVBFDoubleHTag and customize.addVBFDoubleHVariables:
+        tag_only_variables["VBFDoubleHTag"] = hhc.vbfHHVariables()    
 elif customize.doStageOne:
     tagList = soc.tagList
 else:
@@ -533,17 +566,17 @@ for tag in tagList:
       else:
           cutstring = None
       if systlabel == "":
-          currentVariables = variablesToUse
+          currentVariables = copy.deepcopy(variablesToUse)
       else:
           if customize.doHTXS:
-              currentVariables = systematicVariablesHTXS
+              currentVariables = copy.deepcopy(systematicVariablesHTXS)
           else:    
-              currentVariables = systematicVariables
+              currentVariables = copy.deepcopy(systematicVariables)
       if tagName.upper().count("NOTAG"):
           if customize.doHTXS:
               currentVariables = ["stage0bin[72,9.5,81.5] := tagTruth().HTXSstage0bin"]
           elif customize.doStageOne:
-              currentVariables = soc.noTagVariables()
+              currentVariables = copy.deepcopy(soc.noTagVariables())
           else:
               currentVariables = []
       isBinnedOnly = (systlabel !=  "")
@@ -560,6 +593,10 @@ for tag in tagList:
           nPdfWeights = -1
           nAlphaSWeights = -1
           nScaleWeights = -1
+
+      if systlabel == "":
+         if tagName in tag_only_variables.keys():
+            currentVariables += tag_only_variables[tagName]
       cfgTools.addCategory(process.tagsDumper,
                            systlabel,
                            classname=tagName,
@@ -573,7 +610,8 @@ for tag in tagList:
                            nAlphaSWeights=nAlphaSWeights,
                            nScaleWeights=nScaleWeights,
                            splitPdfByStage0Bin=customize.doHTXS,
-                           splitPdfByStage1Bin=customize.doStageOne
+                           splitPdfByStage1Bin=customize.doStageOne,
+                           dumpGenWeight=customize.dumpGenWeight
                            )
 
 # Require standard diphoton trigger
@@ -701,6 +739,7 @@ if customize.doBJetRegression:
     
 
 if customize.doDoubleHTag:
+    process.p.remove(process.flashggMetFilters)
     hhc.doubleHTagRunSequence(systlabels,jetsystlabels,phosystlabels)
   
 

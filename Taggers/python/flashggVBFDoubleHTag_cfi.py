@@ -9,7 +9,7 @@ from flashgg.Taggers.globalVariables_cff import globalVariables
 import flashgg.Taggers.flashggDoubleHReweight_cfi as reweight_settings
 from flashgg.Taggers.flashggDoubleHReweight_cfi import flashggDoubleHReweight
 from flashgg.MicroAOD.flashggJets_cfi import  maxJetCollections
-from flashgg.Taggers.flashggTags_cff import flashggTTHLeptonicTag
+
 
 
 jetID = ''
@@ -24,14 +24,18 @@ ttHKiller_listmean = cms.vdouble()
 ttHKiller_liststd = cms.vdouble()
 MaxJetEta = 2.5
 
-flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
+flashggVBFDoubleHTag = cms.EDProducer("FlashggVBFDoubleHTagProducer",
                                    DiPhotonName = cms.string('flashggPreselectedDiPhotons'), # 
                                    DiPhotonSuffixes = cms.vstring(''), #nominal and systematic variations 
                                    JetsName = cms.string("bRegProducer"), # 
                                    JetsCollSize = cms.uint32(maxJetCollections), #
                                    JetsSuffixes = cms.vstring(''), #nominal and systematic variations 
                                    GenParticleTag = cms.InputTag( "flashggPrunedGenParticles" ), # to compute MC-truth info
-                                   
+
+                                   VBFJetsInputTag= UnpackedJetCollectionVInputTag, 
+                                   VBFJetsSystematicsName=cms.string('flashggJetSystematics'),
+                                   VBFJetsCollSize = cms.uint32(maxJetCollections), #
+
                                    VetoConeSize   = cms.double(0.4),
                                    MinLeadPhoPt   = cms.double(1./3.),
                                    MinSubleadPhoPt   = cms.double(0.25),
@@ -49,6 +53,12 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    BTagType = cms.vstring('mini_pfDeepFlavourJetTags:probb','mini_pfDeepFlavourJetTags:probbb','mini_pfDeepFlavourJetTags:problepb'), #string for btag algorithm
                                    UseJetID = cms.bool(True),
                                    JetIDLevel = cms.string(jetID),
+                                   UseVBFJetID = cms.bool(False),
+                                   VBFJetIDLevel = cms.string(jetID), 
+                                   VBFMjjCut = cms.double(0.0),
+                                   VBFJetEta = cms.double(4.7),
+                                   VBFleadJetPt  = cms.double(40.0),
+                                   VBFsubleadJetPt = cms.double(30.0),
 
                                    #MVABoundaries  = cms.vdouble(0.29,0.441, 0.724), # category boundaries for MVA w/o Mjj
                                    #MXBoundaries   = cms.vdouble(250., 354., 478., 560.), # .. and MX w/o Mjj
@@ -56,7 +66,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    #MJJBoundariesUpper = cms.vdouble(150.0,150.0,143.0,150.0,150.0,150.0,150.0,145.0,155.0,142.0,146.0,152.0),#for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
                                    #MVABoundaries  = cms.vdouble(0.23,0.455, 0.709), # category boundaries for MVA with Mjj
                                    #MXBoundaries   = cms.vdouble(250., 336., 411., 556.), # .. and MX for MVA with Mjj
-                                   MVABoundaries  = cms.vdouble(0.32,0.54, 0.70), # category boundaries for MVA with Mjj
+                                   MVABoundaries  = cms.vdouble(0.87), # category boundaries for MVA with Mjj
                                    MXBoundaries   = cms.vdouble(250., 370.,480.,585.,250.,335.,380.,545.,250.,330.,360.,530.), # .. and MX for MVA with Mjj
                                    nMX   = cms.uint32(4), # number of MX categories
                                    MJJBoundariesLower = cms.vdouble(70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0),#for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
@@ -71,22 +81,12 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
 
                                    doMVAFlattening=cms.bool(True),#do transformation of cumulative to make it flat
                                    MVAscaling=cms.double(MVAscalingValue),
-                                   doCategorization=cms.bool(True),#do categorization based on MVA x MX or only fill first tree with all events
+                                      doCategorization=cms.bool(True),#do categorization based on MVA x MX or only fill first tree with all events
                                    MVAFlatteningFileName=cms.untracked.FileInPath("%s"%MVAFlatteningFileName),#FIXME, this should be optional, is it?
                                    globalVariables=globalVariables,
                                    doReweight = flashggDoubleHReweight.doReweight,
                                    reweight_producer = cms.string(reweight_settings.reweight_producer),
                                    reweight_names = cms.vstring(reweight_settings.reweight_names),
-                                   #lepton info
-                                   TTHLeptonictag_MuonEtaCut = flashggTTHLeptonicTag.MuonEtaCut,
-                                   TTHLeptonictag_MuonPtCut = flashggTTHLeptonicTag.MuonPtCut,
-                                   TTHLeptonictag_MuonIsoCut = flashggTTHLeptonicTag.MuonIsoCut,
-                                   TTHLeptonictag_MuonPhotonDrCut = flashggTTHLeptonicTag.MuonPhotonDrCut,
-                                   TTHLeptonictag_EleEtaCuts = flashggTTHLeptonicTag.EleEtaCuts,
-                                   TTHLeptonictag_ElePtCut = flashggTTHLeptonicTag.ElePtCut ,
-                                   TTHLeptonictag_ElePhotonDrCut = flashggTTHLeptonicTag.ElePhotonDrCut,
-                                   TTHLeptonictag_ElePhotonZMassCut = flashggTTHLeptonicTag.ElePhotonZMassCut,
-                                   TTHLeptonictag_DeltaRTrkEle =flashggTTHLeptonicTag.DeltaRTrkEle ,
 
                                    dottHTagger=cms.bool(False), #whether to do ttH killer. 
 
@@ -113,7 +113,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    ttHKiller_liststd = ttHKiller_liststd 
                                   ) 
 
-cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,
+cfgTools.addVariables(flashggVBFDoubleHTag.MVAConfig.variables,
                       # here the syntax is VarNameInTMVA := expression
                       #### With or without Mjj is customized inside python doubleHCustomize and using options UseMjj
                       [
@@ -139,8 +139,21 @@ cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,
                        "(subleadingJet_bRegNNResolution*1.4826) := subleadJet().userFloat('bRegNNResolution')*1.4826",
                        "(sigmaMJets*1.4826) := getSigmaMOverMJets()*1.4826",
                        "PhoJetMinDr := getPhoJetMinDr()",
-                       "PhoJetOtherDr := getPhoJetOtherDr()" 
+                       "PhoJetOtherDr := getPhoJetOtherDr()",			
+                       "(VBFleadJet_pt/VBFJet_mjj) :=  getVBFleadJet_pt()/getVBFJet_mjj() ",
+                       "VBFleadJet_eta := getVBFleadJet_eta()",
+                       "(VBFsubleadJet_pt/VBFJet_mjj) := getVBFsubleadJet_pt()/getVBFJet_mjj() ",
+                       "VBFsubleadJet_eta := getVBFsubleadJet_eta()",
+                       "VBFCentrality_jg := getVBFCentrality_jg()",
+                       "VBFCentrality_jb := getVBFCentrality_jb()",
+                       "VBFDeltaR_jg := getVBFDeltaR_jg()",
+                       "VBFDeltaR_jb := getVBFDeltaR_jb()",
+                       "VBFProd_eta := getVBFProd_eta",
+                       "VBFJet_mjj := getVBFJet_mjj()",
+                       "VBFJet_Delta_eta := getVBFJet_Delta_eta()",
+                       "VBFleadJet_QGL := getVBFleadJet_QGL() ",
+                       "VBFsubleadJet_QGL := getVBFsubleadJet_QGL()",
+                       "diHiggs_pt := getdiHiggsP4().pt()",
+                       "MX := MX()"
                        ]
                       )
-
-
