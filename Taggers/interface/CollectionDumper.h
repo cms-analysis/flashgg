@@ -134,11 +134,7 @@ namespace flashgg {
         
         // event weight
         float weight_;
-<<<<<<< HEAD
-        float NNLOPSweight_;
-=======
         float genweight_;
->>>>>>> upstream/dev_legacy_runII
         vector<double> pdfWeights_;
         int pdfWeightSize_;
         bool pdfWeightHistosBooked_;
@@ -409,7 +405,7 @@ namespace flashgg {
                 }
             }
         }
-         
+    }     
     template<class C, class T, class U>
         double CollectionDumper<C, T, U>::eventGenWeight( const edm::EventBase &event )
         {
@@ -638,6 +634,7 @@ namespace flashgg {
         if( globalVarsDumper_ ) { globalVarsDumper_->fill( event ); }
         
         weight_ = eventWeight( event );
+        genweight_ = eventGenWeight( event );
         if( dumpPdfWeights_){
             
             // want pdfWeights_ to be scale factors rather than akternative weights.
@@ -647,32 +644,9 @@ namespace flashgg {
             pdfWeights_ = pdfWeights( event );
             for (unsigned int i = 0; i < pdfWeights_.size() ; i++){
                 pdfWeights_[i]= (pdfWeights_[i] )*(lumiWeight_/weight_); // ie pdfWeight/nominal MC weight
-            }
-            const auto & collection = *collectionH;
-
-            if( globalVarsDumper_ ) { globalVarsDumper_->fill( event ); }
-
-            weight_ = eventWeight( event );
-            genweight_ = eventGenWeight( event );
-            //            std::cout << " IN CollectionDumper::analyze initial weight is " << weight_ << " dump=" << dumpPdfWeights_ << " split=" << splitPdfByStage0Cat_ << std::endl;
-            if( dumpPdfWeights_){
-                
-                // want pdfWeights_ to be scale factors rather than akternative weights.
-                // To do this, each PDF weight needs to be divided by the nominal MC weight
-                // which is obtained by dividing through weight_ by the lumiweight...
-                // The Scale Factor is then pdfWeight/nominalMC weight
-                pdfWeights_ = pdfWeights( event );
-                for (unsigned int i = 0; i < pdfWeights_.size() ; i++){
-                    pdfWeights_[i]= (pdfWeights_[i] )*(lumiWeight_/weight_); // ie pdfWeight/nominal MC weight
-                }
-            }
-            NNLOPSweight_ = extraweight;
-            //            std::cout << "NNLOPS " << stage0cat_ << " " << stxsNJet_ << " " << stxsPtH_ << " " << extraweight << " " << weight_ << endl;
-            //                    std::cout << " IN CollectionDumper::analyze extraweight = " << extraweight << " so adjusted weight is " << weight_ << std::endl;
-            globalVarsDumper_->setNNLOPSweight(NNLOPSweight_);                
+            }   
         }
-        
-        
+           
         int nfilled = maxCandPerEvent_;
         
         for( auto &cand : collection ) {
@@ -688,13 +662,6 @@ namespace flashgg {
                     }
                     which->second[isub].fill( cand, fillWeight, pdfWeights_, maxCandPerEvent_ - nfilled, splitPdfByStage0Bin_ ? stage0bin_ : stage1bin_,genweight_ );
                     --nfilled;
-                } else if( throwOnUnclassified_ ) {
-                    throw cms::Exception( "Runtime error" ) << "could not find dumper for category [" << cat.first << "," << cat.second << "]"
-                        << "If you want to allow this (eg because you don't want to dump some of the candidates in the collection)\n"
-                        << "please set throwOnUnclassified in the dumper configuration\n";
-                }
-                which->second[isub].fill( cand, fillWeight, pdfWeights_, maxCandPerEvent_ - nfilled, stage0cat_ );
-                --nfilled;
             } else if( throwOnUnclassified_ ) {
                 throw cms::Exception( "Runtime error" ) << "could not find dumper for category [" << cat.first << "," << cat.second << "]"
                                                         << "If you want to allow this (eg because you don't want to dump some of the candidates in the collection)\n"
