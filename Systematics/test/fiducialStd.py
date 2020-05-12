@@ -118,11 +118,11 @@ customize.options.register('analysisType',
                            VarParsing.VarParsing.varType.string,
                            'analysisType'
                            )
-customize.options.register('filterNegR9',
+customize.options.register('ignoreNegR9',
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
-                           'filterNegR9'
+                           'ignoreNegR9'
                            )
 
 # import flashgg customization to check if we have signal or background
