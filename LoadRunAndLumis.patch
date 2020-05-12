@@ -1,0 +1,13 @@
+diff --git a/IOPool/Input/src/RootFile.cc b/IOPool/Input/src/RootFile.cc
+index 4a781ea2f13..b5c0f11e0b9 100644
+--- a/IOPool/Input/src/RootFile.cc
++++ b/IOPool/Input/src/RootFile.cc
+@@ -524,7 +524,7 @@ namespace edm {
+           newBranchToOldBranch_.insert(std::make_pair(newBD.branchName(), prod.branchName()));
+         }
+       }
+-      dropOnInput(*newReg, productSelectorRules, dropDescendants, inputType);
++      // dropOnInput(*newReg, productSelectorRules, dropDescendants, inputType);
+       if (inputType == InputType::SecondaryFile) {
+         thinnedAssociationsHelper->updateFromSecondaryInput(*fileThinnedAssociationsHelper_,
+                                                             *associationsFromSecondary);

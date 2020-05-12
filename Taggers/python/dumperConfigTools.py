@@ -8,8 +8,8 @@ def addCategories(pset,cats,variables,histograms,mvas=None):
 
 # -----------------------------------------------------------------------
 def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mvas=None,classname=None,binnedOnly=None,
-#                dumpPdfWeights=None,nPdfWeights=None,nAlphaSWeights=None,nScaleWeights=None,splitPdfByStage0Cat=None):
-                dumpPdfWeights=None,nPdfWeights=None,nAlphaSWeights=None,nScaleWeights=None,splitPdfByStage0Cat=None,unbinnedSystematics=None):
+                dumpPdfWeights=None,nPdfWeights=None,nAlphaSWeights=None,nScaleWeights=None,splitPdfByStage0Bin=None,splitPdfByStage1Bin=None,dumpGenWeight=False):
+    
    
     if subcats >= 0:
         catDef = cms.PSet(label=cms.string(label),
@@ -21,10 +21,12 @@ def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mv
         if binnedOnly: catDef.binnedOnly=cms.bool(binnedOnly)
         if unbinnedSystematics: catDef.unbinnedSystematics=cms.bool(unbinnedSystematics)
         if dumpPdfWeights: catDef.dumpPdfWeights=cms.bool(dumpPdfWeights)
+        if dumpGenWeight: catDef.dumpGenWeight=cms.bool(dumpGenWeight)
         if nPdfWeights: catDef.nPdfWeights=cms.int32(nPdfWeights)
         if nAlphaSWeights: catDef.nAlphaSWeights=cms.int32(nAlphaSWeights)
         if nScaleWeights: catDef.nScaleWeights=cms.int32(nScaleWeights)
-        if splitPdfByStage0Cat is not None: catDef.splitPdfByStage0Cat=cms.bool(splitPdfByStage0Cat)
+        if splitPdfByStage0Bin is not None: catDef.splitPdfByStage0Bin=cms.bool(splitPdfByStage0Bin)
+        if splitPdfByStage1Bin is not None: catDef.splitPdfByStage1Bin=cms.bool(splitPdfByStage1Bin)
         
 
         addVariables( catDef.variables, variables )

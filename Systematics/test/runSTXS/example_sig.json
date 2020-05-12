@@ -1,0 +1,8 @@
+{
+    "cmdLine"  : "campaign=Era2018_RR-17Sep2018_v2 metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json useAAA=True copyInputMicroAOD=True",
+    "processes": {
+	      "ggh_125"   : [ [ "/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8", { "args" : ["outputFile=output_GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8"] } ] ],
+	      "vbf_125"   : [ "/VBFHToGG_M125_13TeV_amcatnlo_pythia8"],
+	      "wh_125"    : [ ["/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8", { "args" : ["outputFile=output_WHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8"] } ] ]
+    }
+}

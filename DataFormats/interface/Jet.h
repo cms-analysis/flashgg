@@ -42,7 +42,7 @@ namespace flashgg {
         float puJetIdMVA() const { return simpleMVA_; }
         Jet *clone() const { return ( new Jet( *this ) ); }
         
-        void  setQGL(const float qglikelihood=-99) {qglikelihood_ = qglikelihood;}
+        void  setQGL(const float qglikelihood=-99) {qglikelihood_ = isnan(qglikelihood) ? -1 : qglikelihood;}
         float QGL () const {return qglikelihood_;}
         
         bool passesJetID( JetIDLevel level = Loose ) const; 

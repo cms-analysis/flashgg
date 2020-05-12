@@ -75,6 +75,10 @@ cp XGBoostCMSSW/XGBoostInterface/toolbox/*xml $CMSSW_BASE/config/toolbox/$SCRAM_
 scram setup rabit
 scram setup xgboost
 
+# Patch IOPool to avoid Run and Lumi trees being dropped when loading a parent dataset
+git cms-addpkg IOPool/Input
+git apply flashgg/LoadRunAndLumis.patch
+
 # HTCondor python API
 pip install --user htcondor
 

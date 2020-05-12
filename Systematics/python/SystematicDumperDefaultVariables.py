@@ -12,7 +12,7 @@ minimalNonSignalVariables = ["CMS_hgg_mass[160,100,180]:=diPhoton().mass",
                              "sigmaRV:=diPhotonMVA().sigmarv",
                              "sigmaMoM_decorr:=diPhotonMVA().decorrSigmarv"]#,"centralObjectWeight[1,-999999.,999999.] := centralWeight"]
 
-minimalVariablesHTXS = minimalVariables+["stage0cat[72,9.5,81.5] := tagTruth().HTXSstage0cat"]
+minimalVariablesHTXS = minimalVariables+["stage0bin[72,9.5,81.5] := tagTruth().HTXSstage0bin"]
 
 defaultVariables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass", 
                                     "leadPt                   :=diPhoton().leadingPhoton.pt",
@@ -33,4 +33,4 @@ defaultHistograms=["CMS_hgg_mass>>mass(160,100,180)",
 systematicVariables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass"]#,"centralObjectWeight[1,-999999.,999999.] := centralWeight"]
 systematicHistograms=["CMS_hgg_mass>>mass(160,100,180)"]
 
-systematicVariablesHTXS = systematicVariables+["stage0cat[72,9.5,81.5] := tagTruth().HTXSstage0cat"]
+systematicVariablesHTXS = systematicVariables+["stage0bin[72,9.5,81.5] := tagTruth().HTXSstage0bin"]

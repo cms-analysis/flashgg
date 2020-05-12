@@ -20,15 +20,12 @@
 
 #include "DataFormats/Math/interface/deltaR.h"
 
-#include "flashgg/DataFormats/interface/TagTruthBase.h"
-
 #include "DataFormats/Common/interface/RefToPtr.h"
-#include "SimDataFormats/HTXS/interface/HiggsTemplateCrossSections.h"
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 
 #include "flashgg/Taggers/interface/BDT_resolvedTopTagger.h"
-#include "flashgg/Taggers/interface/DNN_Helper.h"
+#include "flashgg/Taggers/interface/TTH_DNN_Helper.h"
 
 #include <vector>
 #include <algorithm>
@@ -47,12 +44,12 @@ namespace flashgg {
     {
 
     public:
-        typedef math::XYZPoint Point;
-
         TTHHadronicTagProducer( const ParameterSet & );
     private:
         void produce( Event &, const EventSetup & ) override;
         int  chooseCategory( float );
+        int  computeStage1Kinematics( const TTHHadronicTag );
+        int  chooseCategory_pt( float, float );
 
         std::vector<edm::EDGetTokenT<View<flashgg::Jet> > > tokenJets_;
         std::vector<std::vector<edm::EDGetTokenT<edm::View<flashgg::Jet>>>> jetTokens_;
@@ -66,14 +63,9 @@ namespace flashgg {
         EDGetTokenT<View<DiPhotonMVAResult> > mvaResultToken_;
         EDGetTokenT<View<flashgg::Met> > METToken_;
         std::vector<edm::EDGetTokenT<edm::View<flashgg::Met>>> metTokens_;
-        EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
-        EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
-        EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
-        EDGetTokenT<float> pTHToken_,pTVToken_;
         EDGetTokenT<double> rhoTag_;
         EDGetTokenT<edm::TriggerResults> triggerRECO_;
         string systLabel_;
-
 
         typedef std::vector<edm::Handle<edm::View<flashgg::Jet> > > JetCollectionVector;
         bool useTTHHadronicMVA_;
@@ -125,7 +117,15 @@ namespace flashgg {
         string _MVAMethod;
         FileInPath topTaggerXMLfile_;
         FileInPath tthVsDiphoDNNfile_;
+        std::vector<double> tthVsDiphoDNN_global_mean_;
+        std::vector<double> tthVsDiphoDNN_global_stddev_;
+        std::vector<double> tthVsDiphoDNN_object_mean_;
+        std::vector<double> tthVsDiphoDNN_object_stddev_;
         FileInPath tthVsttGGDNNfile_;
+        std::vector<double> tthVsttGGDNN_global_mean_;
+        std::vector<double> tthVsttGGDNN_global_stddev_;
+        std::vector<double> tthVsttGGDNN_object_mean_;
+        std::vector<double> tthVsttGGDNN_object_stddev_;
         unique_ptr<TMVA::Reader>TThMva_RunII_;
         FileInPath tthMVA_RunII_weightfile_;
 
@@ -208,9 +208,21 @@ namespace flashgg {
 
         vector<double> boundaries;
 
+        vector<double> boundaries_pt1;
+        vector<double> STXSPtBoundaries_pt1;
+
+        vector<double> boundaries_pt2;
+        vector<double> STXSPtBoundaries_pt2;
+
+        vector<double> boundaries_pt3;
+        vector<double> STXSPtBoundaries_pt3;
+
+        vector<double> boundaries_pt4;
+        vector<double> STXSPtBoundaries_pt4;
+
         BDT_resolvedTopTagger *topTagger;
-        DNN_Helper* dnn_dipho;
-        DNN_Helper* dnn_ttGG;
+        TTH_DNN_Helper* dnn_dipho;
+        TTH_DNN_Helper* dnn_ttGG;
 
         bool modifySystematicsWorkflow;
         std::vector<std::string> systematicsLabels;
@@ -241,7 +253,6 @@ namespace flashgg {
         vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
         mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( iConfig.getParameter<InputTag>( "MVAResultTag" ) ) ),
         METToken_( consumes<View<flashgg::Met> >( iConfig.getParameter<InputTag> ( "METTag" ) ) ),
-        genParticleToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) ),
         rhoTag_( consumes<double>( iConfig.getParameter<InputTag>( "rhoTag" ) ) ),
 	    triggerRECO_( consumes<edm::TriggerResults>(iConfig.getParameter<InputTag>("RECOfilters") ) ),
         systLabel_( iConfig.getParameter<string> ( "SystLabel" ) ),
@@ -324,16 +335,22 @@ namespace flashgg {
            metTokens_.push_back(consumes<edm::View<flashgg::Met>>(tag)); 
 
         boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
+        boundaries_pt1 = iConfig.getParameter<vector<double > >( "Boundaries_pt1" );
+        boundaries_pt2 = iConfig.getParameter<vector<double > >( "Boundaries_pt2" );
+        boundaries_pt3 = iConfig.getParameter<vector<double > >( "Boundaries_pt3" );
+        boundaries_pt4 = iConfig.getParameter<vector<double > >( "Boundaries_pt4" );
+        STXSPtBoundaries_pt1 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt1" );
+        STXSPtBoundaries_pt2 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt2" );
+        STXSPtBoundaries_pt3 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt3" );
+        STXSPtBoundaries_pt4 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt4" );
+
         assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // 
-
-        ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
-        stage0catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0cat") );
-        stage1catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1cat") );
-        njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
-        pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
-        pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
-        newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
-
+        assert( is_sorted( boundaries_pt1.begin(), boundaries_pt1.end() ) ); // 
+        assert( is_sorted( boundaries_pt2.begin(), boundaries_pt2.end() ) ); // 
+        assert( is_sorted( boundaries_pt3.begin(), boundaries_pt3.end() ) ); // 
+        assert( is_sorted( boundaries_pt4.begin(), boundaries_pt4.end() ) ); // 
+        //assert( is_sorted( STXSPtBoundaries_pt1.begin(), STXSBoundaries_pt1.end() ) ); // 
+        //assert( is_sorted( STXSPtBoundaries_pt2.begin(), STXSBoundaries_pt2.end() ) ); // 
 
         MVAThreshold_ = iConfig.getParameter<double>( "MVAThreshold");
         MVATTHHMVAThreshold_ = iConfig.getParameter<double>( "MVATTHHMVAThreshold");
@@ -378,7 +395,15 @@ namespace flashgg {
         tthMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "tthMVAweightfile" ); 
         topTaggerXMLfile_ = iConfig.getParameter<edm::FileInPath>( "topTaggerXMLfile" );
         tthVsDiphoDNNfile_ = iConfig.getParameter<edm::FileInPath>( "tthVsDiphoDNNfile" );
+        tthVsDiphoDNN_global_mean_ = iConfig.getParameter<std::vector<double>>( "tthVsDiphoDNN_global_mean" );
+        tthVsDiphoDNN_global_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVsDiphoDNN_global_stddev" );
+        tthVsDiphoDNN_object_mean_ = iConfig.getParameter<std::vector<double>>( "tthVsDiphoDNN_object_mean" );
+        tthVsDiphoDNN_object_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVsDiphoDNN_object_stddev" );
         tthVsttGGDNNfile_ = iConfig.getParameter<edm::FileInPath>( "tthVsttGGDNNfile" );
+        tthVsttGGDNN_global_mean_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_global_mean" );
+        tthVsttGGDNN_global_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_global_stddev" );
+        tthVsttGGDNN_object_mean_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_object_mean" );
+        tthVsttGGDNN_object_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVsttGGDNN_object_stddev" );
         tthMVA_RunII_weightfile_ = iConfig.getParameter<edm::FileInPath>( "tthMVA_RunII_weightfile" );
 
         nJets_ = 0;
@@ -540,11 +565,14 @@ namespace flashgg {
         if (useLargeMVAs) {
             topTagger = new BDT_resolvedTopTagger(topTaggerXMLfile_.fullPath());
 
-            dnn_dipho = new DNN_Helper(tthVsDiphoDNNfile_.fullPath());
-            dnn_ttGG  = new DNN_Helper(tthVsttGGDNNfile_.fullPath());
+            dnn_dipho = new TTH_DNN_Helper(tthVsDiphoDNNfile_.fullPath());
+            dnn_ttGG  = new TTH_DNN_Helper(tthVsttGGDNNfile_.fullPath());
 
             dnn_dipho->SetInputShapes(18, 8, 8);
             dnn_ttGG->SetInputShapes(18, 8, 8);
+
+            dnn_dipho->SetPreprocessingSchemes(tthVsDiphoDNN_global_mean_, tthVsDiphoDNN_global_stddev_, tthVsDiphoDNN_object_mean_, tthVsDiphoDNN_object_stddev_);
+            dnn_ttGG->SetPreprocessingSchemes(tthVsttGGDNN_global_mean_, tthVsttGGDNN_global_stddev_, tthVsttGGDNN_object_mean_, tthVsttGGDNN_object_stddev_);
         }
 
         for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
@@ -560,7 +588,48 @@ namespace flashgg {
         else {
             produces<vector<TTHHadronicTag> >();
         }
-        produces<vector<TagTruthBase> >();
+    }
+
+    int TTHHadronicTagProducer::chooseCategory_pt( float tthmvavalue, float pT)
+    {
+        // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
+        if (pT > STXSPtBoundaries_pt1[0] && pT < STXSPtBoundaries_pt1[1]) {
+            for(int n = 0 ; n < ( int )boundaries_pt1.size() ; n++ ) {
+                if( ( double )tthmvavalue > boundaries_pt1[boundaries_pt1.size() - n - 1] ) {
+                    //cout << "pT range: [" << STXSPtBoundaries_pt1[0] << ", " << STXSPtBoundaries_pt1[1] << "], Hadronic cat " << n << endl; 
+                    return n; 
+                }
+            }
+        }
+
+        if (pT > STXSPtBoundaries_pt2[0] && pT < STXSPtBoundaries_pt2[1]) {
+            for(int n = 0 ; n < ( int )boundaries_pt2.size() ; n++ ) {
+                if( ( double )tthmvavalue > boundaries_pt2[boundaries_pt2.size() - n - 1] ) {
+                    //cout << "pT range: [" << STXSPtBoundaries_pt2[0] << ", " << STXSPtBoundaries_pt2[1] << "], Hadronic cat " << n + boundaries_pt1.size() << endl; 
+                    return n + boundaries_pt1.size(); 
+                }
+            }
+        }
+
+        if (pT > STXSPtBoundaries_pt3[0] && pT < STXSPtBoundaries_pt3[1]) {
+            for(int n = 0 ; n < ( int )boundaries_pt3.size() ; n++ ) {
+                if( ( double )tthmvavalue > boundaries_pt3[boundaries_pt3.size() - n - 1] ) {
+                    //cout << "pT range: [" << STXSPtBoundaries_pt3[0] << ", " << STXSPtBoundaries_pt3[1] << "], Hadronic cat " << n + boundaries_pt1.size() << endl; 
+                    return n + boundaries_pt1.size() + boundaries_pt2.size(); 
+                }
+            }
+        }
+
+        if (pT > STXSPtBoundaries_pt4[0] && pT < STXSPtBoundaries_pt4[1]) {
+            for(int n = 0 ; n < ( int )boundaries_pt4.size() ; n++ ) {
+                if( ( double )tthmvavalue > boundaries_pt4[boundaries_pt4.size() - n - 1] ) {
+                    //cout << "pT range: [" << STXSPtBoundaries_pt4[0] << ", " << STXSPtBoundaries_pt4[1] << "], Hadronic cat " << n + boundaries_pt1.size() << endl; 
+                    return n + boundaries_pt1.size() + boundaries_pt2.size() + boundaries_pt3.size();  
+                }
+            }
+        }
+
+        return -1; // Does not pass, object will not be produced
     }
 
     int TTHHadronicTagProducer::chooseCategory( float tthmvavalue )
@@ -568,24 +637,14 @@ namespace flashgg {
         // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
         int n;
         for( n = 0 ; n < ( int )boundaries.size() ; n++ ) {
-            if( ( double )tthmvavalue > boundaries[boundaries.size() - n - 1] ) { return n; }
+            //if( ( double )tthmvavalue > boundaries[boundaries.size() - n - 1] ) { return n; }
+            if( ( double )tthmvavalue > boundaries[boundaries.size() - n - 1] ) { cout << "Hadronic cat " << n << endl; return n; }
         }
         return -1; // Does not pass, object will not be produced
     }
 
     void TTHHadronicTagProducer::produce( Event &evt, const EventSetup & )
     {
-
-        Handle<int> stage0cat, stage1cat, njets;
-        Handle<float> pTH, pTV;
-        evt.getByToken(stage0catToken_, stage0cat);
-        evt.getByToken(stage1catToken_,stage1cat);
-        evt.getByToken(njetsToken_,njets);
-        evt.getByToken(pTHToken_,pTH);
-        evt.getByToken(pTVToken_,pTV);
-        Handle<HTXS::HiggsClassification> htxsClassification;
-        evt.getByToken(newHTXSToken_,htxsClassification);
-
 
         //Handle<View<flashgg::Jet> > theJets;
         //evt.getByToken( thejetToken_, theJets );
@@ -623,6 +682,7 @@ namespace flashgg {
         if (!modifySystematicsWorkflow)
             evt.getByToken( METToken_, METs );
 
+
 	    //Get trigger results relevant to MET filters
         bool passMETfilters = 1;
         edm::Handle<edm::TriggerResults> triggerBits;
@@ -648,42 +708,7 @@ namespace flashgg {
 	
     
 
-        Handle<View<reco::GenParticle> > genParticles;
-
         //std::unique_ptr<vector<TTHHadronicTag> > tthhtags( new vector<TTHHadronicTag> );
-        std::unique_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
-
-        Point higgsVtx;
-        if( ! evt.isRealData() ) {
-            evt.getByToken( genParticleToken_, genParticles );
-            /*
-            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
-                int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-                if( pdgid == 25 ){
-                    cout << "Higgs found " <<endl;
-                    if ( genParticles->ptrAt( genLoop )->numberOfDaughters() == 2 ){ 
-                        const reco::Candidate * d1 =  genParticles->ptrAt( genLoop )->daughter( 0 );
-                        const reco::Candidate * d2 =  genParticles->ptrAt( genLoop )->daughter( 1 );
-                        cout << "Higgs with status = " <<  genParticles->ptrAt( genLoop )->status() << " has two daughters with pdgId: " << endl;
-                        cout << "d1 pdgId = " << d1->pdgId() << "   d2 pdgId = "<< d2->pdgId() <<endl;
-                    }
-                }
-            }
-            */
-                //if (d1->pdgId()!=22 || d2->pdgId()!=22) continue;
-                
-            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
-                int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-                
-                if( pdgid == 25 || pdgid == 22 ) {
-                    higgsVtx = genParticles->ptrAt( genLoop )->vertex();           
-                    break;
-                }
-            }
-        }
-        
-        edm::RefProd<vector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<vector<TagTruthBase> >();
-        unsigned int idx = 0;
         
         // Here we loop over all systematics (DiPhoton, Jets, Met), with the following logic:
         // idx = 0:                                                                     Nominal DiPhoton | Nominal Jets | Nominal Met
@@ -841,9 +866,6 @@ namespace flashgg {
                 std::vector<edm::Ptr<flashgg::Jet> > BJetTTHHMVAVect;
                 BJetTTHHMVAVect.clear();
                 
-                std::vector<edm::Ptr<reco::GenJet> > genJetVect;
-                genJetVect.clear();
-
                 std::vector<float> JetBTagVal;
                 JetBTagVal.clear();
             
@@ -903,9 +925,6 @@ namespace flashgg {
 
                     ht_ += thejet->pt();
                     
-                    //genJetVect.push_back( thejet->genJet());
-                    //cout<<"TTH Jet "<< jetcount_<<" Pt:"<<thejet->pt()<<" genPt:"<<thejet->genJet()->pt()<<" hflav: "<<thejet->hadronFlavour()<<" pFlav:"<<thejet->partonFlavour()<< endl;
-
                     float bDiscriminatorValue = -2.;
                     if(bTag_ == "pfDeepCSV") bDiscriminatorValue = thejet->bDiscriminator("pfDeepCSVJetTags:probb")+thejet->bDiscriminator("pfDeepCSVJetTags:probbb") ;
                     else  bDiscriminatorValue = thejet->bDiscriminator( bTag_ );
@@ -1226,18 +1245,21 @@ namespace flashgg {
                 tthMvaVal_ = tthMvaVal_RunII_; // use Run II MVA
 
                 bool isTTHHadronicTagged = false;
-                int catnum =-1;
+                //int catnum =-1;
+                int catnum_pt =-1;
                 if( !useTTHHadronicMVA_ && njets_btagloose_ >= bjetsLooseNumberThreshold_ && njets_btagmedium_ >= bjetsNumberThreshold_ && jetcount_ >= jetsNumberThreshold_ ) {
 
-                    catnum=0;
+                    catnum_pt=0;
                     isTTHHadronicTagged = true;
                     
                 } else if ( useTTHHadronicMVA_  && njets_btagloose_ >= bjetsLooseNumberTTHHMVAThreshold_ && njets_btagmedium_ >= bjetsNumberTTHHMVAThreshold_ && jetcount_ >= jetsNumberTTHHMVAThreshold_ ) {
                     //&& tthMvaVal_ >= tthHadMVAThresholdMin_  && tthMvaVal_ < tthHadMVAThresholdMax_ ) 
                     
-                    catnum = chooseCategory( tthMvaVal_ );                
+                    catnum_pt = chooseCategory_pt( tthMvaVal_, dipho->pt() );                
+                    //catnum = chooseCategory( tthMvaVal_ );                
                     //                cout<<" catNum="<<catnum<<endl;
-                    if(catnum>=0){
+                    if(catnum_pt>=0){
+                    //if(catnum>=0){
                         isTTHHadronicTagged = true;
                         //                    cout<<" TAGGED "<< endl;
                     }
@@ -1246,7 +1268,7 @@ namespace flashgg {
                 if( isTTHHadronicTagged ) {
 
                     TTHHadronicTag tthhtags_obj( dipho, mvares, JetVect, BJetVect );
-                    tthhtags_obj.setCategoryNumber(catnum  );
+                    tthhtags_obj.setCategoryNumber(catnum_pt  );
                     tthhtags_obj.setNjet( jetcount_ );
                     tthhtags_obj.setNBLoose( njets_btagloose_ );
                     tthhtags_obj.setNBMedium( njets_btagmedium_ );
@@ -1264,6 +1286,9 @@ namespace flashgg {
                     tthhtags_obj.setMVAres(tthMvaVal_);
                     tthhtags_obj.setMET( theMET );
 
+                    int chosenTag = computeStage1Kinematics( tthhtags_obj );
+                    tthhtags_obj.setStage1recoTag( chosenTag );
+
                     if(!useTTHHadronicMVA_){
                         for( unsigned num = 0; num < JetVect.size(); num++ ) {
                             tthhtags_obj.includeWeightsByLabel( *JetVect[num] , "JetBTagCutWeight");
@@ -1277,37 +1302,73 @@ namespace flashgg {
                     tthhtags_obj.includeWeights( *dipho );
 
                     tthhtags->push_back( tthhtags_obj );
-                    if( ! evt.isRealData() ) {
-                        TagTruthBase truth_obj;
-                        truth_obj.setGenPV( higgsVtx );
-                        if ( stage0cat.isValid() ) {
-                            truth_obj.setHTXSInfo( *( stage0cat.product() ),
-                                                   *( stage1cat.product() ),
-                                                   *( njets.product() ),
-                                                   *( pTH.product() ),
-                                                   *( pTV.product() ) );
-                        } else if ( htxsClassification.isValid() ) {
-                            truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
-                                                   htxsClassification->stage1_cat_pTjet30GeV,
-                                                   htxsClassification->jets30.size(),
-                                                   htxsClassification->p4decay_higgs.pt(),
-                                                   htxsClassification->p4decay_V.pt() );
-
-                        } else {
-                            truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
-                        }
-                        //truth_obj.setGenJets(genJetVect);
-                        truths->push_back( truth_obj );
-                        tthhtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, idx++ ) ) );
-                    }
                 }
             }
         evt.put( std::move( tthhtags ), systematicsLabels[syst_idx] );
         }
-    evt.put( std::move( truths ) );
+    }
+
+    int TTHHadronicTagProducer::computeStage1Kinematics( const TTHHadronicTag tag_obj )
+    {
+        int chosenTag_ = DiPhotonTagBase::stage1recoTag::LOGICERROR;
+        int catNum = tag_obj.categoryNumber();
+        if ( catNum == 0 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_0_60_Tag0;
+        }
+        else if ( catNum == 1 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_0_60_Tag1;
+        }
+        else if ( catNum == 2 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_0_60_Tag2;
+        }
+        else if ( catNum == 3 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_0_60_Tag3;
+        }
+        else if ( catNum == 4 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_60_120_Tag0;
+        }
+        else if ( catNum == 5 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_60_120_Tag1;
+        }
+        else if ( catNum == 6 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_60_120_Tag2;
+        }
+        else if ( catNum == 7 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_60_120_Tag3;
+        }
+        else if ( catNum == 8 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_120_200_Tag0;
+        }
+        else if ( catNum == 9 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_120_200_Tag1;
+        }
+        else if ( catNum == 10 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_120_200_Tag2;
+        }
+        else if ( catNum == 11 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_120_200_Tag3;
+        }
+        else if ( catNum == 12 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_GT200_Tag0;
+        }
+        else if ( catNum == 13 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_GT200_Tag1;
+        }
+        else if ( catNum == 14 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_GT200_Tag2;
+        }
+        else if ( catNum == 15 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_HAD_PTH_GT200_Tag3;
+        }
+        return chosenTag_;
     }
 }
 typedef flashgg::TTHHadronicTagProducer FlashggTTHHadronicTagProducer;
 DEFINE_FWK_MODULE( FlashggTTHHadronicTagProducer );
-
-
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4

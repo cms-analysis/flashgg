@@ -5,6 +5,15 @@ from Utilities.General.cmssw_das_client import get_data as das_query
 
 import commands
 
+<<<<<<< HEAD
+=======
+def safe_das_query( search, cmd ):
+    output = das_query( search, cmd=cmd )
+    if not 'data' in output:
+        raise Exception('Your das query has not worked properly - check your proxy is valid')
+    return output
+
+>>>>>>> upstream/dev_legacy_runII
 class JobConfig(object):
     
     def __init__(self,*args,**kwargs):
@@ -394,12 +403,12 @@ class JobConfig(object):
 
         # get the runs and lumis contained in each file of the secondary dataset
         if self.options.secondaryDataset:
-            secondary_files = [fdata['file'][0]['name'] for fdata in das_query("file dataset=%s instance=prod/phys03" % self.options.secondaryDataset, 
+            secondary_files = [fdata['file'][0]['name'] for fdata in safe_das_query("file dataset=%s instance=prod/phys03" % self.options.secondaryDataset, 
                                                                                cmd='dasgoclient --dasmaps=./')['data']]
             runs_and_lumis = {}
             for s in secondary_files:
                 runs_and_lumis[str(s)] = {data['lumi'][0]['run_number'] : data['lumi'][0]['lumi_section_num']
-                                          for data in das_query("lumi file=%s instance=prod/phys03" % s, cmd='dasgoclient --dasmaps=./')['data']}
+                                          for data in safe_das_query("lumi file=%s instance=prod/phys03" % s, cmd='dasgoclient --dasmaps=./')['data']}
 
         for f in files:
             if len(f.split(":",1))>1:
@@ -408,27 +417,26 @@ class JobConfig(object):
                 flist.append(str("%s%s" % (self.filePrepend,f)))
             # keep useParent and secondaryDataset as exclusive options for the moment
             if self.options.useParentDataset:
-                parent_files = das_query("parent file=%s instance=prod/phys03" % f, cmd='dasgoclient --dasmaps=./')['data']
+                parent_files = safe_das_query("parent file=%s instance=prod/phys03" % f, cmd='dasgoclient --dasmaps=./')['data']
                 for parent_f in parent_files:
                     parent_f_name = str(parent_f['parent'][0]['name'])
                     sflist.append('root://cms-xrd-global.cern.ch/'+parent_f_name if 'root://' not in parent_f_name else parent_f_name)
             elif self.options.secondaryDataset != "":
                 # match primary file to the corresponding secondary file(s)
                 f_runs_and_lumis = {data['lumi'][0]['run_number'] : data['lumi'][0]['lumi_section_num']
-                                    for data in das_query("lumi file=%s instance=prod/phys03" % f, cmd='dasgoclient --dasmaps=./')['data']}
+                                    for data in safe_das_query("lumi file=%s instance=prod/phys03" % f, cmd='dasgoclient --dasmaps=./')['data']}
                 for s_name, s_runs_and_lumis in runs_and_lumis.items():
                     matched_runs = set(f_runs_and_lumis.keys()).intersection(s_runs_and_lumis.keys())
                     for run in matched_runs:
                         if any(lumi in f_runs_and_lumis[run] for lumi in s_runs_and_lumis[run]):
                             sflist.append(s_name)
 
-
         ## mitigate server glitches by copying the input files (microAOD) on the worker node
         if self.copyInputMicroAOD and not self.dryRun:
+            commands.getstatusoutput('mkdir -p input_files/')
             for i,f in enumerate(flist):
-                print f
-                commands.getstatusoutput('mkdir -p input_files/')
-                commands.getstatusoutput('xrdcp %s ./input_files/'%f)
+                status, out = commands.getstatusoutput('xrdcp %s ./input_files/'%f)
+                print(out)
                 flocal = 'file:./input_files/'+f.split('/')[-1]
                 flist[i] = flocal
 

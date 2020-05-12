@@ -43,7 +43,9 @@ class PromptFakeFilter : public edm::EDFilter {
  private:
   // ----------member data ---------------------------      
   EDGetTokenT<View<flashgg::DiPhotonTagBase> > tagToken_;
-  bool fakefake_;
+  bool fakeFake_;
+  bool promptFake_;
+  bool acceptBoth_;
 
 };
 #endif
