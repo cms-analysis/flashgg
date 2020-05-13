@@ -1589,6 +1589,21 @@
         "parent_n_units": 998056, 
         "vetted": true
     }, 
+    "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_CP5Up/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2-9bc180ad32a77b07559273e972622387/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 2863, 
+                "name": "/store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_CP5Up/Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/200512_093709/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 2863, 
+                "totEvents": 2863, 
+                "weights": 318475.4375
+            }
+        ], 
+        "parent_n_units": null, 
+        "vetted": true
+    }, 
     "/GluGluHToGG_M80_13TeV_amcatnloFXFX_pythia8/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-8c6318498cd00f339849a28190567b7a/USER": {
         "dset_type": "mc", 
         "files": [
@@ -2158,6 +2173,16 @@
         ], 
         "parent_n_units": 199000, 
         "vetted": true
+    }, 
+    "/VBFHToGG_M125_13TeV_amcatnlo_pythia8_CP5Down/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2-b2d705f6dd8e946e4aaccd8e458832c1/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "name": "/store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v2/legacyRun2FullV1/VBFHToGG_M125_13TeV_amcatnlo_pythia8_CP5Down/Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/200512_100106/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 6000
+            }
+        ], 
+        "parent_n_units": 6000
     }, 
     "/VBFHToGG_M90_13TeV_amcatnlo_pythia8/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-6c894bdf3f1f10979f737dbd06b2913c/USER": {
         "dset_type": "mc", 
