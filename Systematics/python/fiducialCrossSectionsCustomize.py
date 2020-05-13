@@ -12,16 +12,19 @@ doJets=False
 def setupTagSequenceForFiducial(process, options):
     from flashgg.Taggers.flashggPreselectedDiPhotons_cfi import flashggPreselectedDiPhotons
     from flashgg.Taggers.flashggDiPhotonMVA_cfi import flashggDiPhotonMVA
-    from flashgg.Taggers.flashggTags_cff import flashggSigmaMoMpToMTag, flashggUnpackedJets
+    from flashgg.Taggers.flashggTags_cff import flashggSigmaMoMpToMTag
+    from flashgg.MicroAOD.flashggJets_cfi import flashggUnpackedJets
+    from flashgg.Taggers.flashggPrefireDiPhotons_cff import flashggPrefireDiPhotons
     from flashgg.Taggers.flashggTagSorter_cfi import flashggTagSorter
     from flashgg.Taggers.flashggDifferentialPhoIdInputsCorrection_cfi import flashggDifferentialPhoIdInputsCorrection, setup_flashggDifferentialPhoIdInputsCorrection
 
     process.load("flashgg.Taggers.flashggTagSequence_cfi")
     
     setup_flashggDifferentialPhoIdInputsCorrection(process, options.metaConditions)
-    flashggPreselectedDiPhotons.src = "flashggDifferentialPhoIdInputsCorrection"
+    flashggPreselectedDiPhotons.src = "flashggPrefireDiPhotons"
 
     flashggTagSequence = cms.Sequence( flashggDifferentialPhoIdInputsCorrection
+                                       * flashggPrefireDiPhotons
                                        * flashggPreselectedDiPhotons
                                        * flashggDiPhotonMVA
                                        * flashggUnpackedJets
@@ -740,7 +743,7 @@ def addRecoGlobalVariables(process,dumper,tagSequence,tagGetter=""):
     
     
 # ----------------------------------------------------------------------------------------------------------------
-def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabels,NNLOPSreweight=False,genToReweight=None,pdfWeights=None,recoJetCollections=None,mH=None,filterEvents=True):
+def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabels,pdfWeights=None,recoJetCollections=None,mH=None,filterEvents=True): #NNLOPSreweight=False, genToReweight=None
     import itertools
     import flashgg.Taggers.dumperConfigTools as cfgTools
     
@@ -807,20 +810,20 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
     dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights=False,-1,-1,-1 
     if pdfWeights:
         dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights=pdfWeights
-    print "genDiPhotonDumper: NNLOPSreweight ",NNLOPSreweight
-    if NNLOPSreweight:
-        process.genDiphotonDumper.dumpNNLOPSweight = cms.untracked.bool(True)
-        process.genDiphotonDumper.NNLOPSWeight=cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root")
-        if genToReweight == "amcatnlo":
-            print "GenDiphotonDumper: Gluon fusion amcatnlo: read NNLOPS reweighting file"
-            process.genDiphotonDumper.generatorToBeReweightedToNNLOPS = cms.string("mcatnlo")
-        if genToReweight == "powheg":
-            print "GenDiphotonDumper: Gluon fusion powheg: read NNLOPS reweighting file"
-            process.genDiphotonDumper.generatorToBeReweightedToNNLOPS = cms.string("powheg")
-    else:
-        print "GenDiphotonDumper: NOT gluon fusion amcatnlo: set NNLOPS weights to 1."
-        process.genDiphotonDumper.dumpNNLOPSweight = cms.untracked.bool(True)
-        process.genDiphotonDumper.NNLOPSWeight=cms.double(1.0)
+    # print "genDiPhotonDumper: NNLOPSreweight ",NNLOPSreweight
+    # if NNLOPSreweight:
+    #     process.genDiphotonDumper.dumpNNLOPSweight = cms.untracked.bool(True)
+    #     process.genDiphotonDumper.NNLOPSWeight=cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root")
+    #     if genToReweight == "amcatnlo":
+    #         print "GenDiphotonDumper: Gluon fusion amcatnlo: read NNLOPS reweighting file"
+    #         process.genDiphotonDumper.generatorToBeReweightedToNNLOPS = cms.string("mcatnlo")
+    #     if genToReweight == "powheg":
+    #         print "GenDiphotonDumper: Gluon fusion powheg: read NNLOPS reweighting file"
+    #         process.genDiphotonDumper.generatorToBeReweightedToNNLOPS = cms.string("powheg")
+    # else:
+    #     print "GenDiphotonDumper: NOT gluon fusion amcatnlo: set NNLOPS weights to 1."
+    #     process.genDiphotonDumper.dumpNNLOPSweight = cms.untracked.bool(True)
+    #     process.genDiphotonDumper.NNLOPSWeight=cms.double(1.0)
 ####        print "Data or background: no NNLOPS weights"
 ####        process.tagsDumper.dumpNNLOPSweight = cms.untracked.bool(False)
 
@@ -835,7 +838,7 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
                          nPdfWeights=nPdfWeights,
                          nAlphaSWeights=nAlphaSWeights,
                          nScaleWeights=nScaleWeights,
-                         splitPdfByStage0Cat=False
+                         splitPdfByStage0Bin=False
                          )
 
     for tag in tagList:
@@ -850,7 +853,7 @@ def addGenOnlyAnalysis(process,processId,tagSequence,acceptance,tagList,systlabe
                                  nPdfWeights=nPdfWeights,
                                  nAlphaSWeights=nAlphaSWeights,
                                  nScaleWeights=nScaleWeights,
-                                 splitPdfByStage0Cat=False
+                                 splitPdfByStage0Bin=False
                                  )
             
             

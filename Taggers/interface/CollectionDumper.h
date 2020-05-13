@@ -127,7 +127,7 @@ namespace flashgg {
         bool dumpWorkspace_;
         std::string workspaceName_;
         bool dumpHistos_, dumpGlobalVariables_;
-        bool dumpNNLOPSweight_;
+        // bool dumpNNLOPSweight_;
         
         std::map< KeyT, bool> hasSubcat_;
         bool throwOnUnclassified_;
@@ -163,9 +163,9 @@ namespace flashgg {
 
 
         //        correctionFile_ = conf.getParameter<edm::FileInPath>("CorrectionFile")
-        edm::FileInPath NNLOPSWeightFile_;
-        std::vector<std::unique_ptr<TGraph> > NNLOPSWeights_;
-        std::string generatorToBeReweightedToNNLOPS_;        
+        // edm::FileInPath NNLOPSWeightFile_;
+        // std::vector<std::unique_ptr<TGraph> > NNLOPSWeights_;
+        // std::string generatorToBeReweightedToNNLOPS_;        
 
         //std::map<std::string, std::vector<dumper_type> > dumpers_; FIXME template key
         std::map< KeyT, std::vector<dumper_type> > dumpers_;
@@ -189,8 +189,7 @@ namespace flashgg {
         pdfWeight_( cfg.getUntrackedParameter<edm::InputTag>("flashggPDFWeightObject", edm::InputTag("flashggPDFWeightObject") ) ),
         lheEvent_( cfg.getUntrackedParameter<edm::InputTag>("LHEEventProduct", edm::InputTag("externalLHEProducer") ) ),
         dumpGlobalVariables_( cfg.getUntrackedParameter<bool>( "dumpGlobalVariables", true ) ),
-        dumpNNLOPSweight_( cfg.getUntrackedParameter<bool>( "dumpNNLOPSweight", false ) ),
-        
+        // dumpNNLOPSweight_( cfg.getUntrackedParameter<bool>( "dumpNNLOPSweight", false ) ),
         globalVarsDumper_(0)
     {
         if( dumpGlobalVariables_ ) {
@@ -269,7 +268,7 @@ namespace flashgg {
         nameTemplate_ = formatString( nameTemplate_, replacements );
 
         if( dumpGlobalVariables_ ) {
-            globalVarsDumper_->bookNNLOPSweight(dumpNNLOPSweight_);
+            // globalVarsDumper_->bookNNLOPSweight(dumpNNLOPSweight_);
             if( splitLumiWeight_ ) {
                 globalVarsDumper_->dumpLumiFactor(lumiWeight_);
                 lumiWeight_ = 1.;

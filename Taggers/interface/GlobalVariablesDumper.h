@@ -47,8 +47,8 @@ namespace flashgg {
         bool dumpLumiFactor_;
         double lumiFactor_;
         int processIndex_;
-        bool dumpNNLOPSweight_;
-        double NNLOPSweight_;
+        // bool dumpNNLOPSweight_;
+        // double NNLOPSweight_;
 
         std::vector<edm::EDGetTokenT<float>> extraFloatTokens_;
         std::vector<edm::EDGetTokenT<std::vector<float>>> extraVectorFloatTokens_;

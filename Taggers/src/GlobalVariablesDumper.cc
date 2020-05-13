@@ -19,13 +19,13 @@ namespace flashgg {
         lumiFactor_ = lumiFactor; 
     }
 
-    void GlobalVariablesDumper::bookNNLOPSweight(bool x) { 
-        dumpNNLOPSweight_ = x; 
-    }
+    // void GlobalVariablesDumper::bookNNLOPSweight(bool x) { 
+    //     dumpNNLOPSweight_ = x; 
+    // }
 
-    void GlobalVariablesDumper::setNNLOPSweight(double NNLOPSweight) { 
-        NNLOPSweight_ = NNLOPSweight; 
-    }
+    // void GlobalVariablesDumper::setNNLOPSweight(double NNLOPSweight) { 
+    //     NNLOPSweight_ = NNLOPSweight; 
+    // }
 
     GlobalVariablesDumper::GlobalVariablesDumper( const ParameterSet &cfg ) :
         GlobalVariablesComputer( cfg )
@@ -129,7 +129,7 @@ namespace flashgg {
             tree->Branch( bit.first.c_str(), &bit.second, ( bit.first + "/O" ).c_str() );
         }
         if( dumpLumiFactor_ ) { tree->Branch( "lumiFactor", &lumiFactor_ ); }
-        if( dumpNNLOPSweight_ ) { tree->Branch( "NNLOPSweight", &NNLOPSweight_ ); }
+        // if( dumpNNLOPSweight_ ) { tree->Branch( "NNLOPSweight", &NNLOPSweight_ ); }
         //        for( size_t iextra = 0; iextra<extraFloatNames_.size(); ++iextra ) {
         //            tree->Branch( extraFloatNames_[iextra].c_str(), &extraFloatVariables_[iextra] );
         //        }

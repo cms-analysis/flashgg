@@ -124,6 +124,12 @@ customize.options.register('ignoreNegR9',
                            VarParsing.VarParsing.varType.bool,
                            'ignoreNegR9'
                            )
+customize.options.register('applyNNLOPSweight',
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'applyNNLOPSweight'
+                           )
 
 # import flashgg customization to check if we have signal or background
 # from flashgg.MetaData.JobConfig import customize
@@ -216,8 +222,11 @@ useEGMTools(process)
 
 signal_processes = ["ggh_", "vbf_", "wzh_", "wh_", "zh_", "bbh_", "thq_", "thw_",
                     "tth_", "HHTo2B2G", "GluGluHToGG", "VBFHToGG", "VHToGG", "ttHToGG", "Acceptance"]
+
 is_signal = reduce(lambda y, z: y or z, map(
     lambda x: customize.processId.count(x), signal_processes))
+
+applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)
 
 if is_signal:
     print "Signal MC, so adding systematics and dZ"
@@ -341,6 +350,8 @@ cloneTagSequenceForEachSystematic(
 
 # MUST be after tag sequence cloning
 process.flashggTagSorter.CreateNoTag = False
+process.flashggTagSorter.isGluonFusion = cms.bool(bool(customize.processId.count("ggh")))
+process.flashggTagSorter.applyNNLOPSweight = cms.bool(customize.applyNNLOPSweight)
 
 from FWCore.ParameterSet.VarParsing import VarParsing
 from flashgg.MetaData.samples_utils import SamplesManager
@@ -379,31 +390,31 @@ if customize.options.WeightName:
         customize.options.WeightName)
 
 definedSysts = set()
-process.tagsDumper.NNLOPSWeightFile = cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root")
-
-process.tagsDumper.reweighGGHforNNLOPS = cms.untracked.bool(
-    bool(customize.processId.count("ggh")))
 process.tagsDumper.classifierCfg.remap = cms.untracked.VPSet()
-# if ( customize.datasetName() and customize.datasetName().count("GluGlu") and customize.datasetName().count("amcatnlo")):
-if (customize.datasetName() and customize.datasetName().count("GluGlu")):
-    print "Gluon fusion amcatnlo: read NNLOPS reweighting file"
-    process.tagsDumper.dumpNNLOPSweight = cms.untracked.bool(True)
-    process.tagsDumper.NNLOPSWeight = cms.FileInPath(
-        "flashgg/Taggers/data/NNLOPS_reweight.root")
-    if customize.datasetName().count("amcatnlo"):
-        process.tagsDumper.generatorToBeReweightedToNNLOPS = cms.string(
-            "mcatnlo")
-    elif customize.datasetName().count("powheg"):
-        process.tagsDumper.generatorToBeReweightedToNNLOPS = cms.string(
-            "powheg")
+# process.tagsDumper.NNLOPSWeightFile = cms.FileInPath("flashgg/Taggers/data/NNLOPS_reweight.root")
 
-elif (customize.datasetName() and (customize.datasetName().count("HToGG") or customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance"))):
-    print "Other signal: dump NNLOPS weights, but set them to 1"
-    process.tagsDumper.dumpNNLOPSweight = cms.untracked.bool(True)
-    process.tagsDumper.NNLOPSWeight = cms.double(1.0)
-else:
-    print "Data or background: no NNLOPS weights"
-    process.tagsDumper.dumpNNLOPSweight = cms.untracked.bool(False)
+# process.tagsDumper.reweighGGHforNNLOPS = cms.untracked.bool(
+#     bool(customize.processId.count("ggh")))
+# # if ( customize.datasetName() and customize.datasetName().count("GluGlu") and customize.datasetName().count("amcatnlo")):
+# if (customize.datasetName() and customize.datasetName().count("GluGlu")):
+#     print "Gluon fusion amcatnlo: read NNLOPS reweighting file"
+#     process.tagsDumper.dumpNNLOPSweight = cms.untracked.bool(True)
+#     process.tagsDumper.NNLOPSWeight = cms.FileInPath(
+#         "flashgg/Taggers/data/NNLOPS_reweight.root")
+#     if customize.datasetName().count("amcatnlo"):
+#         process.tagsDumper.generatorToBeReweightedToNNLOPS = cms.string(
+#             "mcatnlo")
+#     elif customize.datasetName().count("powheg"):
+#         process.tagsDumper.generatorToBeReweightedToNNLOPS = cms.string(
+#             "powheg")
+
+# elif (customize.datasetName() and (customize.datasetName().count("HToGG") or customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance"))):
+#     print "Other signal: dump NNLOPS weights, but set them to 1"
+#     process.tagsDumper.dumpNNLOPSweight = cms.untracked.bool(True)
+#     process.tagsDumper.NNLOPSWeight = cms.double(1.0)
+# else:
+#     print "Data or background: no NNLOPS weights"
+#     process.tagsDumper.dumpNNLOPSweight = cms.untracked.bool(False)
 
 for tag in tagList:
     tagName = tag[0]
@@ -449,7 +460,7 @@ for tag in tagList:
                              nPdfWeights=nPdfWeights,
                              nAlphaSWeights=nAlphaSWeights,
                              nScaleWeights=nScaleWeights,
-                             splitPdfByStage0Cat=False,
+                             splitPdfByStage0Bin=False,
                              unbinnedSystematics=True
                              )
 
@@ -501,11 +512,14 @@ process.load('flashgg/Systematics/flashggMetFilters_cfi')
 
 if customize.processId == "Data":
     metFilterSelector = "data"
+    filtersInputTag = cms.InputTag("TriggerResults", "", "RECO")
 else:
     metFilterSelector = "mc"
+    filtersInputTag = cms.InputTag("TriggerResults", "", "PAT")
 
 process.flashggMetFilters.requiredFilterNames = cms.untracked.vstring([filter.encode(
     "ascii") for filter in customize.metaConditions["flashggMetFilters"][metFilterSelector]])
+process.flashggMetFilters.filtersInputTag = filtersInputTag
 
 print('-----------------------------------DiPho-----------------------------------------')
 print(customize.processId.count("DiPho"))
@@ -537,26 +551,27 @@ if not customize.processId == "Data" and not ((customize.datasetName() and custo
         except Exception, e:
             print(e, customize.datasetName())
             pass
-    NNLOPSreweight = False
-    genToReweight = None
-    if (customize.datasetName() and customize.datasetName().count("GluGlu")):
-        print "datasetName contains GluGlu --> NNLOPSrewwight is True"
-        NNLOPSreweight = True
-        if customize.datasetName().count("amcatnlo"):
-                #                print "datasetName contains amcatnlo --> gen to be reweighted is amcatnlo"
-            genToReweight = "amcatnlo"
-        if customize.datasetName().count("powheg"):
-                #                print "datasetName contains powheg --> gen to be reweighted is powheg"
-            genToReweight = "powheg"
+    # NNLOPSreweight = False
+    # genToReweight = None
+    # if (customize.datasetName() and customize.datasetName().count("GluGlu")):
+    #     print "datasetName contains GluGlu --> NNLOPSrewwight is True"
+    #     NNLOPSreweight = True
+    #     if customize.datasetName().count("amcatnlo"):
+    #             #                print "datasetName contains amcatnlo --> gen to be reweighted is amcatnlo"
+    #         genToReweight = "amcatnlo"
+    #     if customize.datasetName().count("powheg"):
+    #             #                print "datasetName contains powheg --> gen to be reweighted is powheg"
+    #         genToReweight = "powheg"
     print 'pdfWeights in worspaceStd'
     fc.addGenOnlyAnalysis(process, customize.processId, process.flashggTagSequence,
-                          customize.acceptance, tagList, systlabels, NNLOPSreweight,
-                          genToReweight,pdfWeights=(dumpPdfWeights, nPdfWeights,nAlphaSWeights, nScaleWeights),
+                          customize.acceptance, tagList, systlabels,
+                          pdfWeights=(dumpPdfWeights, nPdfWeights,nAlphaSWeights, nScaleWeights),
                           mH=mH, filterEvents=customize.filterNonAcceptedEvents)
     pdfWeights = (dumpPdfWeights, nPdfWeights, nAlphaSWeights, nScaleWeights),
     print pdfWeights
 
 if not customize.processId == "Data":
+    print("Not data!")
     process.p = cms.Path(process.dataRequirements *
                          process.flashggMetFilters *
                          process.genFilter *
@@ -587,21 +602,12 @@ else:
                          process.penultimateFilter *
                          process.finalFilter *
                          process.tagsDumper)
-
+print("-----------------------------------------------PATH-p----------------------------------")
+print(process.p)
 fc.addObservables(process, process.tagsDumper, customize.processId, process.flashggTagSequence)
-# print("---------------------------------------------------------HERE-----------------------------------")
-# print(process.tagsDumper.__dict__)
+print("-----------------------------------------------PATH-pfid-----------------------------------")
+print(process.pfid)
 
-print("--------------------------------------path before filter----------------------------------------")
-print(process.p)
-
-if customize.options.filterNegR9:
-    process.load("flashgg/Taggers/flashggBasicInputFilter")
-    process.flashggDifferentialPhoIdInputsCorrection.diphotonSrc = "flashggBasicInputFilter"
-    process.p.insert(process.p.index(process.flashggDifferentialPhoIdInputsCorrection), process.flashggBasicInputFilter)
-
-print("--------------------------------------path after filter----------------------------------------")
-print(process.p)
 
 if customize.recalculatePDFWeights and is_signal and not customize.processId.count("bbh"):
     customize.options.useParentDataset = True
