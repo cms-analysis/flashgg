@@ -157,10 +157,15 @@ systematics to the analysis, and if desired to include tagging of other flashgg 
 
 *** Running Locally 
 
-The HHWWgg Tagger can be run locally with:
+The HHWWgg Tagger can be run locally on signal with:
 
     #+BEGIN_EXAMPLE
     cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=HHWWgg_v2-3 dataset=ggF_X250_WWgg_qqlnugg doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 doBJetRegression=0 useAAA=1
+    #+END_EXAMPLE
+
+and on data:
+    #+BEGIN_EXAMPLE
+    cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=Era2017_RR-31Mar2018_v2 dataset=/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017B-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 doBJetRegression=0 useAAA=1 processId=Data processType=Data saveHHWWggFinalStateVars=1
     #+END_EXAMPLE
 
 If this worked properly, you should get an output file called: output_numEvent500.root.

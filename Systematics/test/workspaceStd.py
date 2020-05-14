@@ -90,6 +90,12 @@ customize.options.register('doHHWWggTagCutFlow', # This saves all events for cut
                            VarParsing.VarParsing.varType.bool,
                            'doHHWWggTagCutFlow'
                            ),
+customize.options.register('saveHHWWggFinalStateVars', # This saves all events for cutflow analysis
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'saveHHWWggFinalStateVars'
+                           ),                           
 customize.options.register('doHHWWggDebug', # save more variables to perform checks 
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -432,8 +438,6 @@ if is_signal:
             phosystlabels.append("MvaShift%s01sigma" % direction)
 #            phosystlabels.append("MvaLinearSyst%s01sigma" % direction)
 
-
-
 ################---- turning off to test MvaShift 
             phosystlabels.append("SigmaEOverEShift%s01sigma" % direction)
             phosystlabels.append("MaterialCentralBarrel%s01sigma" % direction)
@@ -516,8 +520,11 @@ if customize.doubleHTagsOnly:
 
 if customize.HHWWggTagsOnly:
     variablesToUse = minimalVariables
-    if customize.processId == "Data":
+    if (customize.processId == "Data"): 
         variablesToUse = minimalNonSignalVariables
+        if (customize.saveHHWWggFinalStateVars): 
+            variablesToUse += minimalVariables # If saving HHWWgg vars for data / MC studies, need to save more variables 
+            variablesToUse.remove('dZ[40,-20.,20.]:=(tagTruth().genPV().z-diPhoton().vtx().z)')
 
 print "--- Systematics  with independent collections ---"
 print systlabels
