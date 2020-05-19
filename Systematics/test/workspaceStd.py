@@ -14,14 +14,13 @@ dropVBFInNonGold = False  # for 2015 only!
 
 process = cms.Process("FLASHggSyst")
 
-
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load("Configuration.StandardSequences.GeometryDB_cff")
-#process.load("Configuration.StandardSequences.MagneticField_cff")
+process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
-
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
+
 
 systlabels = [""]
 phosystlabels = []
@@ -133,23 +132,6 @@ customize.options.register('doMuFilter',
                            VarParsing.VarParsing.varType.bool,
                            'doMuFilter'
                            )
-customize.options.register('doFiducial',
-                           False,
-                           VarParsing.VarParsing.multiplicity.singleton,
-                           VarParsing.VarParsing.varType.bool,
-                           'doFiducial'
-                           )
-customize.options.register('doBJetsAndMET',
-                           False,
-                           VarParsing.VarParsing.multiplicity.singleton,
-                           VarParsing.VarParsing.varType.bool,
-                           'doBJetsAndMET'
-                           )
-customize.options.register('doJets',
-                           False,
-                           VarParsing.VarParsing.multiplicity.singleton,
-                           VarParsing.VarParsing.varType.bool,
-                           'doJets'
                            )
 customize.options.register('acceptance',
                            'NONE',
@@ -157,14 +139,8 @@ customize.options.register('acceptance',
                            VarParsing.VarParsing.varType.string,
                            'acceptance'
                            )
-customize.options.register('filterNonAcceptedEvents',
-                           True,
-                           VarParsing.VarParsing.multiplicity.singleton,
-                           VarParsing.VarParsing.varType.bool,
-                           'filterNonAcceptedEvents'
-                           )
 customize.options.register('doSystematics',
-                           False,
+                           True,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doSystematics'
@@ -226,7 +202,6 @@ customize.options.register('applyNNLOPSweight',
 
 
 print "Printing defaults"
-print 'doFiducial '+str(customize.doFiducial)
 print 'acceptance '+str(customize.acceptance)
 print 'tthTagsOnly '+str(customize.tthTagsOnly)
 # import flashgg customization to check if we have signal or background
@@ -252,47 +227,13 @@ if dropVBFInNonGold:
 modifyTagSequenceForSystematics(process,jetSystematicsInputTags)
 
 print "Printing options"
-print 'doFiducial '+str(customize.doFiducial)
-print 'doBJetsAndMET '+str(customize.doBJetsAndMET)
-print 'doJets '+str(customize.doJets)
 print 'acceptance '+str(customize.acceptance)
 print 'tthTagsOnly '+str(customize.tthTagsOnly)
 print 'doMuFilter '+str(customize.doMuFilter)
 
-#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(customize.maxEvents) )
-print "maxEvents: ", str(process.maxEvents)
-print "maxEvents: ", str(customize.maxEvents)
 
-if customize.doFiducial:
-    import flashgg.Systematics.fiducialCrossSectionsCustomize as fc
-    fc.leadCut = 1./3.
-    fc.subLeadCut = 1./4.
-    fc.isoCut = 10.
-    fc.etaCut = 2.5
-    fc.doBJetsAndMET = customize.doBJetsAndMET
-    fc.doJets = customize.doJets
-    matchCut = "leadingPhoton.hasMatchedGenPhoton() && subLeadingPhoton.hasMatchedGenPhoton()"
-#    phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >0.320 && subLeadingView().phoIdMvaWrtChosenVtx() >0.320)'#remove it for further studies
-    phoIDcut = '(leadingView().phoIdMvaWrtChosenVtx() >-1. && subLeadingView().phoIdMvaWrtChosenVtx() >-1.)'
-    accCut   = fc.getAccRecoCut()
-    
-    print process.flashggPreselectedDiPhotons.cut
-
-    if customize.acceptance == 'IN':
-        process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut)[12:-2] +' && '+ str(matchCut)+ ' && '+ str(phoIDcut) +' && ' + str(accCut))
-
-    if customize.acceptance == 'OUT':
-        process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut)[12:-2] +' && '+ str(matchCut)+ ' && '+ str(phoIDcut) +' && !' + str(accCut))
-        
-    if customize.acceptance == 'NONE':
-        process.flashggPreselectedDiPhotons.cut = cms.string(str(process.flashggPreselectedDiPhotons.cut)[12:-2] +' && '+ str(phoIDcut))
-    print "Here we print the preslection cut"
-    print process.flashggPreselectedDiPhotons.cut
-
-if customize.doFiducial:
-    process.load("flashgg/Taggers/flashggTagSequence_cfi")
-    process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
-    process.load("flashgg/Taggers/flashggTags_cff")
+# process.load("flashgg/Taggers/flashggTagSequence_cfi")
+# process.flashggTagSequence = flashggPrepareTagSequence(customize.metaConditions)
 
 # needed for 0th vertex from microAOD
 if customize.tthTagsOnly:
@@ -302,29 +243,8 @@ if customize.tthTagsOnly:
     process.flashggDiPhotons.vertexIdMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexIdMVAweightfile'].encode("ascii")
     process.flashggDiPhotons.vertexProbMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexProbMVAweightfile'].encode("ascii")
 
-
 print 'here we print the tag sequence before'
 print process.flashggTagSequence
-if customize.doFiducial:
-    process.flashggDiPhotonMVA.sigmaMdecorrFile = cms.FileInPath("flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_Moriond17_Mgg100to180.root") 
-    process.flashggSigmaMoMpToMTag.BoundariesSigmaMoM  = cms.vdouble(0.,0.00866,0.0118,0.0298) ##corrected looking at data distribution
-    from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet,massSearchReplaceAnyInputTag
-    process.flashggTagSequence.remove(process.flashggVBFTag)
-    #process.flashggTagSequence.remove(process.flashggTTHDiLeptonTag)
-    process.flashggTagSequence.remove(process.flashggTTHLeptonicTag)
-    process.flashggTagSequence.remove(process.flashggTTHHadronicTag)
-   # process.flashggTagSequence.remove(process.flashggTTHeptonTag)
-     #haven't tested VH tags with fiducial cross-section measurement yet
-    process.flashggTagSequence.remove(process.flashggVHEtTag)
-    process.flashggTagSequence.remove(process.flashggVHLooseTag)
-    process.flashggTagSequence.remove(process.flashggVHTightTag)
-    process.flashggTagSequence.remove(process.flashggVHMetTag)
-    process.flashggTagSequence.remove(process.flashggWHLeptonicTag)
-    process.flashggTagSequence.remove(process.flashggZHLeptonicTag)
-    process.flashggTagSequence.remove(process.flashggVHHadronicTag)
-    process.flashggTagSequence.remove(process.flashggVBFDiPhoDiJetMVA)
-    process.flashggTagSequence.remove(process.flashggVBFMVA)
-    process.flashggTagSequence.replace(process.flashggUntagged, process.flashggSigmaMoMpToMTag)
 
 if customize.tthTagsOnly:
     process.flashggTagSequence.remove(process.flashggVBFTag)
@@ -362,12 +282,8 @@ process.flashggTHQLeptonicTag.processId = cms.string(str(customize.processId))
 print 'here we print the tag sequence after'
 print process.flashggTagSequence
 
-if customize.doFiducial:
-    print 'we do fiducial and we change tagsorter'
-    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(     cms.PSet(TagName = cms.InputTag('flashggSigmaMoMpToMTag')) )
-
 if customize.tthTagsOnly:
-    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(
+    process.flashggTagSorter.TagPriorityRanges = cms.VPSet(   
         cms.PSet(TagName = cms.InputTag('flashggTTHLeptonicTag')),
         cms.PSet(TagName = cms.InputTag('flashggTTHHadronicTag')) 
     )
@@ -409,27 +325,7 @@ if is_signal:
         variablesToUse = minimalVariablesHTXS
     else:
         variablesToUse = minimalVariables
-    if customize.doFiducial:
-        variablesToUse.extend(fc.getGenVariables(True))
-        variablesToUse.extend(fc.getRecoVariables(True))
-##        variablesToUse.append("genLeadGenIso := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
-##        variablesToUse.append("decorrSigmarv := diPhotonMVA().decorrSigmarv")
-        variablesToUse.append("leadmva := diPhotonMVA().leadmva")
-        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
-        variablesToUse.append("sigmarv := diPhotonMVA().sigmarv")
-        variablesToUse.append("sigmawv := diPhotonMVA().sigmawv")
-        variablesToUse.append("vtxprob := diPhotonMVA().vtxprob")
-        variablesToUse.append("CosPhi := diPhotonMVA().CosPhi")
-#        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
-        
-    if customize.doSystematics and customize.doFiducial:
-        systematicVariables.extend(fc.getGenVariables(True))
-        systematicVariables.extend(fc.getRecoVariables(True))
-#        systematicVariables.append("genLeadGenIso[1,0.0,100.0] := ? diPhoton().leadingPhoton().hasMatchedGenPhoton() ? diPhoton().leadingPhoton().userFloat(\"genIso\") : -99")
-#        systematicVariables.append("decorrSigmarv[1,0.0,0.10] := diPhotonMVA().decorrSigmarv")
-        systematicVariables.append("leadmva[200,-1.0,1.0] := diPhotonMVA().leadmva")
-        systematicVariables.append("subleadmva[200,-1.0,1.0] := diPhotonMVA().subleadmva")
-        
+
     if customize.doSystematics:
         for direction in ["Up","Down"]:
             phosystlabels.append("MvaShift%s01sigma" % direction)
@@ -444,7 +340,6 @@ if is_signal:
             jetsystlabels.append("JEC%s01sigma" % direction)
             jetsystlabels.append("JER%s01sigma" % direction)
             jetsystlabels.append("PUJIDShift%s01sigma" % direction)
-            
             if customize.doGranularJEC:
                 for sourceName in customize.metaConditions['flashggJetSystematics']['listOfSources']:
                     jetsystlabels.append("JEC%s%s01sigma" % (str(sourceName),direction))
@@ -489,10 +384,6 @@ if is_signal:
 elif customize.processId == "Data":
     print "Data, so turn off all shifts and systematics, with some exceptions"
     variablesToUse = minimalNonSignalVariables
-    if customize.doFiducial:
-        variablesToUse.extend(fc.getRecoVariables(True))
-        variablesToUse.append("leadmva := diPhotonMVA().leadmva")
-        variablesToUse.append("subleadmva := diPhotonMVA().subleadmva")
     customizeSystematicsForData(process)
 else:
     print "Background MC, so store mgg and central only"
@@ -519,48 +410,13 @@ print "------------------------------------------------------------"
 #globalVariables.extraFloats.rho = cms.InputTag("rhoFixedGridAll")
 
 #cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags)
-
-
-print "here"
-
-if customize.doFiducial:
-    tagList=[["SigmaMpTTag",3]]
-elif customize.tthTagsOnly:
-    tagList=[
-        ["NoTag",0],
-        ["TTHHadronicTag",3],
-#       ["TTHDiLeptonTag",0],
-        ["TTHLeptonicTag",2]
-
-        ]
-else:
-    tagList=[
-        ["NoTag",0],
-        ["UntaggedTag",4],
-        ["VBFTag",3],
-        ["ZHLeptonicTag",0],
-        ["WHLeptonicTag",0],
-        ["VHLeptonicLooseTag",0],
-        ["VHMetTag",0],
-        ["VHHadronicTag",0],
-        ["TTHHadronicTag",3],
- #      ["TTHDiLeptonTag",0],
-        ["TTHLeptonicTag",2]
-        ]
-
-if(customize.doFiducial):
-    fc.bookCompositeObjects(process, customize.processId, process.flashggTagSequence)
 cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags)
-
-print "VRT debug tagsequence"
-print process.flashggTagSequence
 
 # Dump an object called NoTag for untagged events in order to track QCD weights
 # Will be broken if it's done for non-central values, so turn this on only for the non-syst tag sorter
 process.flashggTagSorter.CreateNoTag = True # MUST be after tag sequence cloning
 process.flashggTagSorter.isGluonFusion = cms.bool(bool(customize.processId.count("ggh")))
 process.flashggTagSorter.applyNNLOPSweight = cms.bool(customize.applyNNLOPSweight)
-
 
 ###### Dumper section
 
@@ -583,16 +439,10 @@ process.extraDumpers = cms.Sequence()
 from flashgg.Taggers.TagsDumperCustomize import customizeTagsDumper
 customizeTagsDumper(process, customize) ## move all the default tags dumper configuration to this function
 
-# if(customize.doFiducial):
-# #    if customize.processId == "Data":
-# #        fc.addRecoGlobalVariables(process, process.tagsDumper)
-# #    else:
-#     fc.addObservables(process, process.tagsDumper, customize.processId )
-
 if customize.processId == "tHq":
     import flashgg.Taggers.THQLeptonicTagVariables as var
     variablesToUse = minimalVariables + var.vtx_variables + var.dipho_variables
-    
+
 #tagList=[
 #["UntaggedTag",4],
 #["VBFTag",2],
@@ -606,8 +456,6 @@ if customize.processId == "tHq":
 
 tag_only_variables = {}
 
-if customize.doFiducial:
-    tagList=[["SigmaMpTTag",3]]
 elif customize.tthTagsOnly:
     tagList=[
         ["TTHHadronicTag",4],
@@ -638,9 +486,7 @@ else:
 
 definedSysts=set()
 process.tagsDumper.classifierCfg.remap=cms.untracked.VPSet()
-
 import flashgg.Taggers.dumperConfigTools as cfgTools
-
 for tag in tagList: 
   tagName=tag[0]
   tagCats=tag[1]
@@ -702,18 +548,8 @@ for tag in tagList:
                            dumpGenWeight=customize.dumpGenWeight
                            )
 
-
 # Require standard diphoton trigger
 filterHLTrigger(process, customize)
-
-# ========
-# process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring("HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v*",
-
-# #                                                                "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v*",
-# #                                                                "HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55_v1",
-# #                                                                "HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55_v1"
-#                                                                 ))
-# >>>>>>> topic_mergeDifferentials_pigaz
 
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
@@ -730,7 +566,7 @@ if ((customize.processId.count("wh") or customize.processId.count("zh")) and not
     process.VHFilter.chooseW = bool(customize.processId.count("wh"))
     process.VHFilter.chooseZ = bool(customize.processId.count("zh"))
 
-if (customize.processId == "th_125" or customize.processId == "bbh_125" or customize.processId == "thw_125"):
+if (customize.processId == "th_125" or customize.processId == "bbh_125"):
     process.load("flashgg/Systematics/CentralHiggsFilter_cfi")
     process.genFilter += process.CentralHiggsFilter
 
@@ -743,7 +579,6 @@ if customize.processId == "th_125": # for this sample the filter removes also H 
 
 # Split out prompt-fake or fake-fake
 process.finalFilter = cms.Sequence()
-print "count 3"
 if (customize.processId.count("qcd") or customize.processId.count("gjet")) and customize.processId.count("fake"):
     process.load("flashgg/Systematics/PromptFakeFilter_cfi")
     process.finalFilter += process.PromptFakeFilter
@@ -769,66 +604,7 @@ else:
 process.flashggMetFilters.requiredFilterNames = cms.untracked.vstring([filter.encode("ascii") for filter in customize.metaConditions["flashggMetFilters"][metFilterSelector]])
 process.flashggMetFilters.filtersInputTag = filtersInputTag
 
-if customize.doFiducial:
-    print "count 4"
-    if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_")  or customize.processId.count("Acceptance") ) and not ( (customize.datasetName() and customize.datasetName().count("DiPho")) ):
-##    if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG"))  or customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance")) and (systlabel ==  ""):
-        print "Signal MC central value, so dumping PDF weights"
-        dumpPdfWeights = True
-        nPdfWeights = 60
-        nAlphaSWeights = 2
-        nScaleWeights = 9
-    else:
-        print "Data, background MC, or non-central value, or no systematics: no PDF weights"
-        dumpPdfWeights = False
-        nPdfWeights = -1
-        nAlphaSWeights = -1
-        nScaleWeights = -1
-    if not customize.processId == "Data":
-        mH = None
-        ldset=""
-        if customize.datasetName():
-            ldset = customize.datasetName().lower() 
-        if "htogg" in ldset or "tthjettogg" in ldset:
-            try:
-                mH = float(customize.datasetName().split("_M")[1].split("_")[0])
-            except Exception, e:
-                print(e,customize.datasetName())
-                pass
-        NNLOPSreweight=False
-        genToReweight=None
-        if ( customize.datasetName() and customize.datasetName().count("GluGlu") ):
-            print "datasetName contains GluGlu --> NNLOPSrewwight is True"
-            NNLOPSreweight=True
-            if customize.datasetName().count("amcatnlo"):
-            #                print "datasetName contains amcatnlo --> gen to be reweighted is amcatnlo"
-                genToReweight = "amcatnlo"
-            if customize.datasetName().count("powheg"):
-            #                print "datasetName contains powheg --> gen to be reweighted is powheg"
-                genToReweight = "powheg"
-        print 'pdfWeights in worspaceStd'
-        fc.addGenOnlyAnalysis(process,customize.processId,process.flashggTagSequence,
-                              customize.acceptance,tagList,systlabels,NNLOPSreweight,genToReweight,
-                              pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights),
-                              mH=mH,filterEvents=customize.filterNonAcceptedEvents)
-        pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights),
-        print pdfWeights
-
-# if customize.tthTagsOnly:
-#     process.p = cms.Path(process.dataRequirements*
-#                          process.genFilter*
-#                          process.flashggDiPhotons* # needed for 0th vertex from microAOD
-#                          process.flashggUpdatedIdMVADiPhotons*
-#                          process.flashggDiPhotonSystematics*
-#                          process.flashggMetSystematics*
-#                          process.flashggMuonSystematics*process.flashggElectronSystematics*
-#                          (process.flashggUnpackedJets*process.jetSystematicsSequence)*
-#                          (process.flashggTagSequence*process.systematicsTagSequences)*
-#                          process.flashggSystTagMerger*
-#                          process.penultimateFilter*
-#                          process.finalFilter*
-#                          process.tagsDumper)
-if not customize.processId=="Data" :
+if customize.tthTagsOnly:
     process.p = cms.Path(process.dataRequirements*
                          process.flashggMetFilters*
                          process.genFilter*
@@ -839,12 +615,13 @@ if not customize.processId=="Data" :
                          process.flashggMuonSystematics*process.flashggElectronSystematics*
                          (process.flashggUnpackedJets*process.jetSystematicsSequence)*
                          (process.flashggTagSequence*process.systematicsTagSequences)*
-                         process.genSequence*
-                         process.genDiphotonDumper*
                          process.flashggSystTagMerger*
                          process.penultimateFilter*
                          process.finalFilter*
                          process.tagsDumper)
+    # Now, we put the ttH tags back in the sequence with modified systematics workflow
+    modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystlabels, jetsystlabels)
+
 else:
     process.p = cms.Path(process.dataRequirements*
                          process.flashggMetFilters*
@@ -900,26 +677,7 @@ if customize.doDoubleHTag:
     hhc.doubleHTagRunSequence(systlabels,jetsystlabels,phosystlabels)
   
 
-# if customize.doFiducial:
-#     if ( customize.doPdfWeights or customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) 
-#                                                                    or customize.processId.count("h_") or customize.processId.count("vbf_") ) and (systlabel ==  ""):
-#           print "Signal MC central value, so dumping PDF weights"
-#           dumpPdfWeights = True
-#           nPdfWeights = 60
-#           nAlphaSWeights = 2
-#           nScaleWeights = 9
-#     else:
-#           print "Data, background MC, or non-central value, or no systematics: no PDF weights"
-#           dumpPdfWeights = False
-#           nPdfWeights = -1
-#           nAlphaSWeights = -1
-#           nScaleWeights = -1
-#     if not customize.processId == "Data":
-#         fc.addGenOnlyAnalysis(process,customize.processId,customize.acceptance,tagList,systlabels,pdfWeights=(dumpPdfWeights,nPdfWeights,nAlphaSWeights,nScaleWeights))
 
-if(customize.doFiducial):
-        fc.addObservables(process, process.tagsDumper, customize.processId , process.flashggTagSequence)
-        
 if( not hasattr(process,"options") ): process.options = cms.untracked.PSet()
 process.options.allowUnscheduled = cms.untracked.bool(True)
 
@@ -927,7 +685,6 @@ print "--- Dumping modules that take diphotons as input: ---"
 mns = process.p.moduleNames()
 for mn in mns:
     module = getattr(process,mn)
-    print "count 5"
     if hasattr(module,"src") and type(module.src) == type(cms.InputTag("")) and module.src.value().count("DiPhoton"):
         print str(module),module.src
     elif hasattr(module,"DiPhotonTag"):
@@ -997,6 +754,4 @@ if customize.verboseSystDump:
 #processDumpFile = open('processDump.py', 'w')
 #print >> processDumpFile, process.dumpPython()
 # call the customization
-
-customize(process) 
-print process.maxEvents
+customize(process)
