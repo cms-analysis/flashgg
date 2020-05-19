@@ -60,8 +60,9 @@ namespace flashgg {
         void setMuEnergies(std::vector<float> val) { muEnergies_ = val; }
 
         std::vector<double> _pujid_wp_pt_bin_1;
-        std::vector<double> _pujid_wp_pt_bin_2;
-        std::vector<double> _pujid_wp_pt_bin_3;
+        // std::vector<double> _pujid_wp_pt_bin_2; not used since same puJetId cuts for pt = 0 ... 30 GeV
+        // std::vector<double> _pujid_wp_pt_bin_3;
+        std::vector<double> _pujid_wp_pt_bin_4;
 
     private:
         std::map<edm::Ptr<reco::Vertex>, MinimalPileupJetIdentifier> puJetId_;

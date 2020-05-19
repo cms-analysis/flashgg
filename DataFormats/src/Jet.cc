@@ -11,7 +11,7 @@ Jet::Jet() : pat::Jet()
     eta_cuts_.push_back( std::make_pair (0    ,2.50 ) );
     eta_cuts_.push_back( std::make_pair (2.50 ,2.75 ) );
     eta_cuts_.push_back( std::make_pair (2.75 ,3.00 ) );
-    eta_cuts_.push_back( std::make_pair (3.00 ,10) );
+    eta_cuts_.push_back( std::make_pair (3.00 ,5.00) );
 }
 
 Jet::Jet( const pat::Jet &aJet ) : pat::Jet( aJet )
@@ -76,70 +76,37 @@ float Jet::betaStar( const edm::Ptr<DiPhotonCandidate> dipho ) const
 
 bool Jet::passesJetPuId( JetPuIdLevel level ) const
 {
-//    std::vector<double> _pujid_wp_pt_bin_1;    
-//    std::vector<double> _pujid_wp_pt_bin_2;
-//    std::vector<double> _pujid_wp_pt_bin_3;
-//
-//    if(mva_wp.size() == 3){
-//        std::vector<double> _pujid_wp_pt_bin_1 = mva_wp[0];
-//        std::vector<double> _pujid_wp_pt_bin_2 = mva_wp[1];
-//        std::vector<double> _pujid_wp_pt_bin_3 = mva_wp[2];
-//    }
-//    else{
-//        std::cout << "Error:: wrong size of cuts for mva jet ID !! expected 3 pt bins" << std::endl;
-//        return false;
-//    }
     flashgg::Jet* ptr  = const_cast<flashgg::Jet*> (this);
 
     switch(level){
     case none:
         {
             ptr->_pujid_wp_pt_bin_1 = {-1,-1,-1,-1};
-            ptr->_pujid_wp_pt_bin_2 = {-1,-1,-1,-1};
-            ptr->_pujid_wp_pt_bin_3 = {-1,-1,-1,-1};
+            // ptr->_pujid_wp_pt_bin_2 = {-1,-1,-1,-1}; not used since same puJetId cuts for pt = 0 ... 30 GeV
+            // ptr->_pujid_wp_pt_bin_3 = {-1,-1,-1,-1};
+            ptr->_pujid_wp_pt_bin_4 = {-1,-1,-1,-1};
         }break;
     case loose:
         {
-            ptr->_pujid_wp_pt_bin_1 = {-0.96, -0.64, -0.56, -0.54};
-            ptr->_pujid_wp_pt_bin_2 = {-0.92, -0.56, -0.44, -0.39};
-            ptr->_pujid_wp_pt_bin_3 = {-0.77, -0.31, -0.20, -0.03};
+            ptr->_pujid_wp_pt_bin_1 = {-0.97, -0.68, -0.53, -0.47};
+            // ptr->_pujid_wp_pt_bin_2 = {-0.97, -0.68, -0.53, -0.47};
+            // ptr->_pujid_wp_pt_bin_3 = {-0.97, -0.68, -0.53, -0.47};
+            ptr->_pujid_wp_pt_bin_4 = {-0.89, -0.52, -0.38, -0.30};
         }break;
 
     case medium:
         {
-            ptr->_pujid_wp_pt_bin_1 = {-0.49, -0.53, -0.44, -0.42};
-            ptr->_pujid_wp_pt_bin_2 = {-0.06, -0.42, -0.30, -0.23};
-            ptr->_pujid_wp_pt_bin_3 = { 0.56, -0.10,  0.01,  0.13};
+            ptr->_pujid_wp_pt_bin_1 = {0.18, -0.55, -0.42, -0.36};
+            // ptr->_pujid_wp_pt_bin_2 = {0.18, -0.55, -0.42, -0.36};
+            // ptr->_pujid_wp_pt_bin_3 = {0.18, -0.55, -0.42, -0.36};
+            ptr->_pujid_wp_pt_bin_4 = {0.61, -0.35, -0.23, -0.17};
         }break;
     case tight:
         {
-            ptr->_pujid_wp_pt_bin_1 = {0.26, -0.34, -0.24, -0.26};
-            ptr->_pujid_wp_pt_bin_2 = {0.62, -0.21, -0.07, -0.03};
-            ptr->_pujid_wp_pt_bin_3 = {0.87, 0.17 , 0.25 ,  0.33};
-        }break;
-    case mixed:
-        {
-            ptr->_pujid_wp_pt_bin_1 = {-0.96, -0.34, -0.24, -0.26};
-            ptr->_pujid_wp_pt_bin_2 = {-0.92, -0.21, -0.07, -0.03};
-            ptr->_pujid_wp_pt_bin_3 = {-0.77, 0.17 , 0.25 ,  0.33};
-        }break;
-    case forward_loose:
-        {
-            ptr->_pujid_wp_pt_bin_1 = {-1, -0.64, -0.56, -0.54};
-            ptr->_pujid_wp_pt_bin_2 = {-1, -0.56, -0.44, -0.39};
-            ptr->_pujid_wp_pt_bin_3 = {-1, -0.31, -0.20, -0.03};
-        }break;
-    case forward_medium:
-        {
-            ptr->_pujid_wp_pt_bin_1 = {-1, -0.53, -0.44, -0.42};
-            ptr->_pujid_wp_pt_bin_2 = {-1, -0.42, -0.30, -0.23};
-            ptr->_pujid_wp_pt_bin_3 = {-1, -0.10,  0.01,  0.13};
-        }break;
-    case forward_tight:
-        {
-            ptr->_pujid_wp_pt_bin_1 = {-1, -0.34, -0.24, -0.26};
-            ptr->_pujid_wp_pt_bin_2 = {-1, -0.21, -0.07, -0.03};
-            ptr->_pujid_wp_pt_bin_3 = {-1, 0.17 , 0.25 ,  0.33};
+            ptr->_pujid_wp_pt_bin_1 = {0.69, -0.35, -0.26, -0.21};
+            // ptr->_pujid_wp_pt_bin_2 = {0.69, -0.35, -0.26, -0.21};
+            // ptr->_pujid_wp_pt_bin_3 = {0.69, -0.35, -0.26, -0.21};
+            ptr->_pujid_wp_pt_bin_4 = {0.86, -0.10, -0.05, -0.01};
         }break;
     default:
         {
@@ -151,32 +118,18 @@ bool Jet::passesJetPuId( JetPuIdLevel level ) const
 
     bool pass=false;
     if ( (!_pujid_wp_pt_bin_1.empty())  &&
-         (!_pujid_wp_pt_bin_2.empty())  &&
-         (!_pujid_wp_pt_bin_3.empty())  ){
-        //std::cout << "VBFTagMVA::DEBUG  making the pujid --> "<< _pujid_wp_pt_bin_1.size() << std::endl;
+         (!_pujid_wp_pt_bin_4.empty())  ){
+        
         for (UInt_t eta_bin=0; eta_bin < _pujid_wp_pt_bin_1.size(); eta_bin++ ){
-            //                        std::cout << inputTagJets_[0] 
-            //        << " eta-bin["<< eta_bin<< "] == " << eta_cuts_[eta_bin].first << "  :: "
-            //        << eta_cuts_[eta_bin].second
-            //        << " pt1: " << _pujid_wp_pt_bin_1[eta_bin]
-            //        << " pt2: " << _pujid_wp_pt_bin_2[eta_bin]
-            //        << " pt3: " << _pujid_wp_pt_bin_3[eta_bin]
-            //        << std::endl;
             if ( fabs( this->eta() ) >  eta_cuts_[eta_bin].first &&
                  fabs( this->eta() ) <= eta_cuts_[eta_bin].second){
-                if ( this->pt() >  20 &&
-                     this->pt() <= 30 && this->puJetIdMVA() > _pujid_wp_pt_bin_1[eta_bin] )
+                if ( this->pt() >= 0 && this->pt() <= 30 && this->puJetIdMVA() > _pujid_wp_pt_bin_1[eta_bin] )
                     pass=true;
-                if ( this->pt() >  30 &&
-                     this->pt() <= 50 && this->puJetIdMVA() > _pujid_wp_pt_bin_2[eta_bin] )
+                if ( this->pt() > 30 && this->pt() <= 50 && this->puJetIdMVA() > _pujid_wp_pt_bin_4[eta_bin] )
                     pass=true;
-                if ( this->pt() >  50 &&
-                     this->pt() <= 100&& this->puJetIdMVA() > _pujid_wp_pt_bin_3[eta_bin] )
-                    pass=true;
-                if (this->pt() > 100) pass = true;
+                if (this->pt() > 50) pass = true;
             }
         }
-        //                    std::cout << inputTagJets_[0] << " pt="<< this->pt() << " :eta: "<< this->eta() << " :mva: "<< this->puJetIdMVA() << "  pass == " << pass << std::endl;
     }
 
 
