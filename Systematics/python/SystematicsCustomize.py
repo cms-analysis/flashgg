@@ -64,14 +64,16 @@ def printSystematicVPSet(vpsetlist):
 
 
 def createStandardSystematicsProducers(process, options):
-    process.load("flashgg/Taggers/flashggTagSequence_cfi")
+
+    if not hasattr(process,'flashggTagSequence'):
+        process.load("flashgg.Taggers.flashggTagSequence_cfi")
+        from flashgg.Taggers.flashggTagSequence_cfi import *
+        process.flashggTagSequence = flashggPrepareTagSequence(process, options.metaConditions)
+
     process.load("flashgg.Systematics.flashggDiPhotonSystematics_cfi")
     process.load("flashgg.Systematics.flashggMuonSystematics_cfi")
     process.load("flashgg.Systematics.flashggElectronSystematics_cfi")
     process.load("flashgg.Systematics.flashggMetSystematics_cfi")
-
-    from flashgg.Taggers.flashggTagSequence_cfi import *
-    process.flashggTagSequence = flashggPrepareTagSequence(process, options.metaConditions)
     
     import flashgg.Systematics.flashggDiPhotonSystematics_cfi as diPhotons_syst
     diPhotons_syst.setupDiPhotonSystematics( process, options )

@@ -54,8 +54,8 @@
 <class name="flashgg::NoTag"/>
 <class name="std::vector<flashgg::NoTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::NoTag> >"/>
-<class name="flashgg::SigmaMpTTag" ClassVersion="-1">
-  <version ClassVersion="-1" checksum="3242377763"/>
+<class name="flashgg::SigmaMpTTag" ClassVersion="0">
+  <version ClassVersion="0" checksum="2104351160"/>
 </class>
 <class name="std::vector<flashgg::SigmaMpTTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::SigmaMpTTag> >"/>
@@ -286,11 +286,13 @@
 </class>
 <class name="std::pair<edm::Ptr<reco::Vertex>,flashgg::MinimalPileupJetIdentifier>"/>
 <class name="std::map<edm::Ptr<reco::Vertex>,flashgg::MinimalPileupJetIdentifier>"/>
-<class name="flashgg::Jet" ClassVersion="16">
- <version ClassVersion="16" checksum="2400716629"/>
- <version ClassVersion="15" checksum="2594200045"/>
+<class name="flashgg::Jet" ClassVersion="18">
+  <version ClassVersion="18" checksum="3848430124"/>
+  <version ClassVersion="17" checksum="4133240562"/>
+  <version ClassVersion="16" checksum="2400716629"/>
+  <version ClassVersion="15" checksum="2594200045"/>
   <version ClassVersion="14" checksum="2400716629"/>
- <version ClassVersion="13" checksum="2175929989"/>
+  <version ClassVersion="13" checksum="2175929989"/>
   <version ClassVersion="12" checksum="1532368094"/>
   <version ClassVersion="11" checksum="3459570589"/>
   <version ClassVersion="10" checksum="2045570510"/>
@@ -366,6 +368,28 @@
 <class name="edm::Ptr<flashgg::GenPhotonExtra>"/>
 <class name="std::vector<flashgg::GenPhotonExtra>"/>
 <class name="edm::Wrapper<std::vector<flashgg::GenPhotonExtra> >"/>
+
+<class name="flashgg::GenLeptonExtra" ClassVersion="14">
+  <version ClassVersion="11" checksum="4207095900"/>
+  <version ClassVersion="12" checksum="80174587"/>
+  <version ClassVersion="13" checksum="2907967841"/>
+  <version ClassVersion="14" checksum="1497975631"/>
+</class>
+<class name="edm::Ptr<flashgg::GenLeptonExtra>"/>
+<class name="std::vector<flashgg::GenLeptonExtra>"/>
+<class name="edm::Wrapper<flashgg::GenLeptonExtra>"/>
+<class name="edm::Wrapper<std::vector<flashgg::GenLeptonExtra> >"/>
+
+<class name="flashgg::GenJetExtra" ClassVersion="12">
+  <version ClassVersion="10" checksum="3711320396"/>
+  <version ClassVersion="11" checksum="666745212"/>
+  <version ClassVersion="12" checksum="1876381753"/>
+</class>
+<class name="edm::Ptr<flashgg::GenJetExtra>"/>
+<class name="std::vector<flashgg::GenJetExtra>"/>
+<class name="edm::Wrapper<flashgg::GenJetExtra>"/>
+<class name="edm::Wrapper<std::vector<flashgg::GenJetExtra> >"/>
+
 <class name="std::pair<edm::Ptr<reco::Vertex>,edm::Ptr<pat::PackedCandidate> >"/>
 <class name="std::vector<std::pair<edm::Ptr<reco::Vertex>,edm::Ptr<pat::PackedCandidate> > >"/>
 <class name="edm::Wrapper<std::vector<std::pair<edm::Ptr<reco::Vertex>,edm::Ptr<pat::PackedCandidate> > > >"/>
@@ -456,5 +480,5 @@
 <class name="edm::RefProd<std::vector<flashgg::TagAndProbeCandidate> >"/>
 <class name="edm::RefVector<std::vector<flashgg::TagAndProbeCandidate>,flashgg::TagAndProbeCandidate,edm::refhelper::FindUsingAdvance<std::vector<flashgg::TagAndProbeCandidate>,flashgg::TagAndProbeCandidate> >"/>
 <class name="edm::Wrapper<edm::RefVector<std::vector<flashgg::TagAndProbeCandidate>,flashgg::TagAndProbeCandidate,edm::refhelper::FindUsingAdvance<std::vector<flashgg::TagAndProbeCandidate>,flashgg::TagAndProbeCandidate> > >"/>
-
+<class name="edm::Ptr<reco::CompositeCandidate>"/>
 </lcgdict>

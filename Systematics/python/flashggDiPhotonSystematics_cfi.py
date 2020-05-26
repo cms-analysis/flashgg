@@ -1,5 +1,4 @@
 import importlib
-
 import FWCore.ParameterSet.Config as cms
 
 flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',

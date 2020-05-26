@@ -96,6 +96,9 @@
 
     "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2016_cfi",
     
+
+    "sigmaM_M_decorr" : "flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_2016_Mgg100to180.root",
+
     "flashggDiPhotonMVA" : 
     {  
         "weightFile" : "flashgg/Taggers/data/STXSmodels/legacyDiphoModelMerged.xml",

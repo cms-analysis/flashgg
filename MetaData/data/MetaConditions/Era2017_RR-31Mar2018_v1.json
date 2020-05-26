@@ -86,6 +86,14 @@
 
     "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2017_cfi",
 
+
+    "sigmaM_M_decorr" : "flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_2017_Mgg100to180.root",
+
+    "JetCorrectorParametersCollection_version" :
+    {
+        "data" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_DATA_AK4PFchs",
+        "MC" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_MC_AK4PFchs"
+
     "flashggDiPhotonMVA" : 
     {  
         "weightFile" : "flashgg/Taggers/data/STXSmodels/legacyDiphoModelMerged.xml",

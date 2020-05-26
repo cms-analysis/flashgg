@@ -15,15 +15,17 @@ flashggUntagged = cms.EDProducer("FlashggUntaggedTagProducer",
                                  RequireScaledPtCuts = cms.bool(True)
 )
 
-flashggSigmaMoMpToMTag = cms.EDProducer("FlashggSigmaMpTTagProducer",
-#                                 DiPhotonTag=cms.InputTag('flashggDiPhotons'),
-                                 DiPhotonTag    = cms.InputTag('flashggPreselectedDiPhotons'),
-                                 SystLabel      = cms.string(""),
-                                 MVAResultTag   = cms.InputTag('flashggDiPhotonMVA'),
-                                 BoundariesSigmaMoM  = cms.vdouble(0.,0.00764,0.0109,0.0288), #boundaries have to be provided including lowest and highest
-#                                 BoundariespToM      = cms.vdouble(0.,1.02,1.83,10.0), #,1.000), #boundaries have to be provided including lowest and highest
-                                 RequireScaledPtCuts = cms.bool(True)
-)
+flashggSigmaMoMpToMTag = cms.EDProducer("FlashggSigmaMpTTagPreCleanerProducer",
+                                        #                                 DiPhotonTag=cms.InputTag('flashggDiPhotons'),
+                                        DiPhotonTag    = cms.InputTag('flashggPreselectedDiPhotons'),
+                                        SystLabel      = cms.string(""),
+                                        MVAResultTag   = cms.InputTag('flashggDiPhotonMVA'),
+                                        GenParticleTag = cms.InputTag( "flashggPrunedGenParticles" ),
+                                        BoundariesSigmaMoM  = cms.vdouble(0.,0.00841,0.0116,0.0298), #boundaries have to be provided including lowest and highest
+                                        #                                 BoundariespToM      = cms.vdouble(0.,1.02,1.83,10.0), #,1.000), #boundaries have to be provided including lowest and highest
+                                        RequireScaledPtCuts = cms.bool(True),
+                                        CompositeCandidateTags = cms.PSet()
+                                        )
 
 import TTHDNNPreprocessingConstructor, os
 ttHHadronic_ttH_vs_ttGG_DNN_preprocess_scheme_path = os.path.expandvars("$CMSSW_BASE/src/flashgg/Taggers/data/metadata_Hadronic_ttHHadronic_ttH_vs_ttGG_v3.10_8Oct2019.json")
@@ -203,6 +205,7 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
                                        rhoTag = cms.InputTag('fixedGridRhoFastjetAll'),
                                        MVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_BDT_training_v2.json.weights.xml"),
                                        topTaggerXMLfile = cms.FileInPath("flashgg/Taggers/data/resTop_xgb_csv_order_deepCTag.xml"),
+
                                        tthVsttGGDNNfile = cms.FileInPath("flashgg/Taggers/data/Leptonic_ttHLeptonic_ttH_vs_ttGG_v3.10_8Oct2019_weights.pb"),
                                        tthVsttGGDNN_global_mean = ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme["global_mean"],
                                        tthVsttGGDNN_global_stddev = ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme["global_stddev"],

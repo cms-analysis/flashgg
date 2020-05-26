@@ -23,8 +23,10 @@ namespace flashgg {
 
         virtual GenDiPhoton *clone() const { return ( new GenDiPhoton( *this ) ); }
         
+
         const flashgg::GenPhotonExtra::cand_type* leadingPhoton() const { return   &(leadingPhoton_.cand()); };
         const flashgg::GenPhotonExtra::cand_type* subLeadingPhoton() const { return &(subLeadingPhoton_.cand()); }
+
         
         const reco::GenJet & leadingJet() const { return *leadingJet_; };
         const reco::GenJet & subLeadingJet() const { return *subLeadingJet_; }

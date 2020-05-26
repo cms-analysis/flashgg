@@ -125,8 +125,9 @@
     "DoubleMuon"                                                    : { "xs" : 0.0, "itype" :0                       },
     "Higgs_scalar" : {"xs":1, "br":1, "kf":1.0, "itype":-1125},
 
-    "GluGluHToGG_M-125_13TeV_powheg_pythia8"                        : { "xs" : 44.14,   "br" : 2.27e-3, "kf" : 1.06, "itype":-125000 },
-
+	"GluGluHToGG_M-120_13TeV_powheg_pythia8"                        : { "xs" : 47.38,   "br" : 2.22e-3, "kf" : 1.06, "itype":-120000 },
+	"GluGluHToGG_M-125_13TeV_powheg_pythia8"                        : { "xs" : 44.14,   "br" : 2.27e-3, "kf" : 1.06, "itype":-125000 },
+	"GluGluHToGG_M-130_13TeV_powheg_pythia8"                        : { "xs" : 41.23,   "br" : 2.24e-3, "kf" : 1.06, "itype":-130000 },
     "GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8"                          : { "xs" : 52.2200,   "br" : 0.002218, "kf" : 1.06, "itype":-120000 },
     "GluGluHToGG_M120_13TeV_amcatnlo_pythia8"                          : { "xs" : 52.2200,   "br" : 0.002218, "kf" : 1.06, "itype":-120000 },
     "GluGluHToGG_M120_TuneCP5_13TeV-amcatnloFXFX-pythia8"                          : { "xs" : 52.2200,   "br" : 0.002218, "kf" : 1.06, "itype":-120000 },
