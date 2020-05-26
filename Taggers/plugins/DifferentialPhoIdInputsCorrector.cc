@@ -229,7 +229,7 @@ namespace flashgg {
                 pho.addUserFloat("uncorr_sieip", pho.sieip());
                 pho.addUserFloat("uncorr_etaWidth", pho.superCluster()->etaWidth());
                 pho.addUserFloat("uncorr_phiWidth", pho.superCluster()->phiWidth());
-
+              
                 //---Compute corrections
                 // R9 (store it inside e3x3)        
                 correctedShowerShapes.e3x3 = (pho.full5x5_r9()+correctionScalings->at("r9").Eval(corrections->at("r9")(pho)[0]))*pho.superCluster()->rawEnergy();                            
@@ -247,7 +247,11 @@ namespace flashgg {
                 //---set shower shapes
                 pho.setS4(s4_corr);
                 pho.setSieip(sieip_corr);
-                pho.full5x5_setShowerShapeVariables(correctedShowerShapes);        
+                pho.full5x5_setShowerShapeVariables(correctedShowerShapes);
+                if (pho.full5x5_r9()<0.)
+                    {
+                        std::cout << "WARNING: R9<0, Original R9: " << pho.userFloat("uncorr_r9") << " corrected R9: " << pho.full5x5_r9() << std::endl;
+                    }
             }
 
             if(correctIsolations_)

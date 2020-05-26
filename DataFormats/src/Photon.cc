@@ -282,10 +282,10 @@ void Photon::shiftMvaValueBy( float val, edm::Ptr<reco::Vertex> vtx ) {
 }
 
 //sigmaEOverE systematycs
-void Photon::shiftSigmaEOverEValueBy( float val ) {
+void Photon::shiftSigmaEOverEValueBy( float val, float cutoff ) {
     const LorentzVector pho_p4 = p4(getCandidateP4type());
     float energyError = getCorrectedEnergyError(getCandidateP4type());
-    setP4(getCandidateP4type(), pho_p4, energyError*(1.+val), false);
+    setP4(getCandidateP4type(), pho_p4, energyError + val*(std::max(energyError, cutoff)), false);
 }
 
 

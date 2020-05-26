@@ -281,7 +281,6 @@ class MicroAODCustomize(object):
             setMetCorr(process)
             
         process.p *=process.flashggMetSequence
-
         for pathName in process.paths:
             path = getattr(process,pathName)
             for mod in modules:

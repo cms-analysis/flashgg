@@ -13,6 +13,8 @@
 #include "flashgg/DataFormats/interface/Electron.h"
 #include "flashgg/DataFormats/interface/Muon.h"
 #include "flashgg/DataFormats/interface/GenPhotonExtra.h"
+#include "flashgg/DataFormats/interface/GenLeptonExtra.h"
+#include "flashgg/DataFormats/interface/GenJetExtra.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "flashgg/DataFormats/interface/Met.h"
 #include "flashgg/DataFormats/interface/Photon.h"
@@ -47,7 +49,7 @@
 #include "flashgg/DataFormats/interface/TagCandidate.h"
 #include "flashgg/DataFormats/interface/TagAndProbeCandidate.h" //spigazzi
 #include "flashgg/DataFormats/interface/DoubleHTag.h"
-
+#include "flashgg/DataFormats/interface/VBFDoubleHTag.h"
 #include <vector>
 #include <map>
 
@@ -162,6 +164,12 @@ namespace  {
         std::vector<flashgg::GenPhotonExtra>                                  vec_fgg_pho_xtra;
         edm::Wrapper<std::vector<flashgg::GenPhotonExtra> >               wrp_vec_fgg_pho_xtra;
 
+        flashgg::GenLeptonExtra                                                   fgg_lep_xtra;
+        edm::Ptr<flashgg::GenLeptonExtra>                                     ptr_fgg_lep_xtra;
+        std::vector<flashgg::GenLeptonExtra>                                  vec_fgg_lep_xtra;
+        edm::Wrapper<flashgg::GenLeptonExtra>                                 wrp_fgg_lep_xtra;
+        edm::Wrapper<std::vector<flashgg::GenLeptonExtra> >               wrp_vec_fgg_lep_xtra;
+
         flashgg::DiPhotonMVAResult res;
         //  edm::Wrapper<flashgg::DiPhotonMVAResult> wrp_res;
         //  std::pair<edm::Ptr<flashgg::DiPhotonCandidate>,flashgg::DiPhotonMVAResult> pair_res;
@@ -222,6 +230,10 @@ namespace  {
         flashgg::DoubleHTag hh;
         std::vector<flashgg::DoubleHTag> vec_hh;
         edm::Wrapper<std::vector<flashgg::DoubleHTag> > wrp_vec_hh;
+        //VBF Tag
+        flashgg::VBFDoubleHTag vbfhh;
+        std::vector<flashgg::VBFDoubleHTag> vec_vbfhh;
+        edm::Wrapper<std::vector<flashgg::VBFDoubleHTag> > wrp_vec_vbfhh;
 
         flashgg::TTHDiLeptonTag tthd;
         std::vector<flashgg::TTHDiLeptonTag> vec_tthd;

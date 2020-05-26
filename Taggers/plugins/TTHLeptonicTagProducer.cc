@@ -714,6 +714,7 @@ namespace flashgg {
                 cout << MVAThreshold_[i] << " ";
         }
 
+      
         return -1; // Does not pass, object will not be produced
     }
 
@@ -883,7 +884,7 @@ namespace flashgg {
                 std::vector<edm::Ptr<flashgg::Muon> >     MuonsTight;
                 std::vector<edm::Ptr<flashgg::Electron> > Electrons;
                 std::vector<edm::Ptr<flashgg::Electron> > ElectronsTight;
-
+                
                 std::vector<double> lepPt;
                 std::vector<double> lepEta;
                 std::vector<double> lepPhi;

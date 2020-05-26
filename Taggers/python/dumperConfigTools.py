@@ -8,7 +8,7 @@ def addCategories(pset,cats,variables,histograms,mvas=None):
 
 # -----------------------------------------------------------------------
 def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mvas=None,classname=None,binnedOnly=None,
-                dumpPdfWeights=None,nPdfWeights=None,nAlphaSWeights=None,nScaleWeights=None,splitPdfByStage0Bin=None,splitPdfByStage1Bin=None):
+                dumpPdfWeights=None,nPdfWeights=None,nAlphaSWeights=None,nScaleWeights=None,splitPdfByStage0Bin=None,splitPdfByStage1Bin=None,dumpGenWeight=False, unbinnedSystematics=None):
     
    
     if subcats >= 0:
@@ -19,7 +19,9 @@ def addCategory(pset,label,cutbased=None,subcats=0,variables=[],histograms=[],mv
                           )
         if classname: catDef.className=cms.string(classname)
         if binnedOnly: catDef.binnedOnly=cms.bool(binnedOnly)
+        if unbinnedSystematics: catDef.unbinnedSystematics=cms.bool(unbinnedSystematics)
         if dumpPdfWeights: catDef.dumpPdfWeights=cms.bool(dumpPdfWeights)
+        if dumpGenWeight: catDef.dumpGenWeight=cms.bool(dumpGenWeight)
         if nPdfWeights: catDef.nPdfWeights=cms.int32(nPdfWeights)
         if nAlphaSWeights: catDef.nAlphaSWeights=cms.int32(nAlphaSWeights)
         if nScaleWeights: catDef.nScaleWeights=cms.int32(nScaleWeights)
@@ -58,31 +60,55 @@ def getNameExpr(expr,name=None):
     return name,expr
    
 
+#def parseVariable(expr, name):
+#    name,expr = getNameExpr(expr,name)
+#    if name.endswith("]"):
+#        name,rng = name.replace("]","").split("[")
+#        rng = rng.split(",")
+#        nbins = int(rng[0])
+#        vmin  = float(rng[1])
+#        vmax  = float(rng[2])
+#        return name, [expr], nbins, vmin, vmax
+#        
+#    if "map(" in  expr:
+#        var, bins, vals = expr.lstrip("map(").rstrip(")").split("::")
+#        bins = [ float(b) for b in bins.split(",") ]
+#        vals = [ float(v) for v in vals.split(",") ]
+#        return name, [var,bins, vals], nbins, vmin, vmax
+#    else:
+#        return name, [expr], None, None, None
+
 def parseVariable(expr, name):
     name,expr = getNameExpr(expr,name)
-    
     if name.endswith("]"):
         name,rng = name.replace("]","").split("[")
         rng = rng.split(",")
         nbins = int(rng[0])
-        vmin  = float(rng[1])
-        vmax  = float(rng[2])
-        return name, [expr], nbins, vmin, vmax
-        
+        if rng[1].startswith("("):
+            binning = [float(b) for b in rng[1].lstrip("(").rstrip(")").split(":") ]
+#            print "binning in dumperconfigtools is "
+#            print binning
+            return name, [expr], nbins, None, None, binning
+        else:
+            vmin  = float(rng[1])
+            vmax  = float(rng[2])
+            return name, [expr], nbins, vmin, vmax, None
+    
     if "map(" in  expr:
         var, bins, vals = expr.lstrip("map(").rstrip(")").split("::")
         bins = [ float(b) for b in bins.split(",") ]
         vals = [ float(v) for v in vals.split(",") ]
         return name, [var,bins, vals], None, None, None
     else:
-        return name, [expr], None, None, None
+        return name, [expr], None, None, None, None
     
 
 # -----------------------------------------------------------------------
 def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
 
 
-    name, expr1, nbins, vmin, vmax = parseVariable(expr, name)
+#    name, expr1, nbins, vmin, vmax = parseVariable(expr, name)
+    name, expr1, nbins, vmin, vmax, binning = parseVariable(expr, name)
     
     if len(expr1)>1:
         pset = cms.PSet(
@@ -98,8 +124,11 @@ def addVariable(vpset,expr,name=None,nbins=None,vmin=None,vmax=None):
             )
     if nbins:
         pset.nbins = cms.untracked.int32(nbins)
-        pset.vmin = cms.untracked.double(vmin)
-        pset.vmax = cms.untracked.double(vmax)
+        if vmin is not None and vmax is not None:
+            pset.vmin = cms.untracked.double(vmin)
+            pset.vmax = cms.untracked.double(vmax)
+        elif binning:
+            pset.binning = cms.untracked.vdouble(binning)
     vpset.append(pset)
 
 
@@ -295,7 +324,7 @@ def mkVarList(inp):
 
 
 # -----------------------------------------------------------------------
-def addGlobalFloats(process,globalVariables,src,variables):
+def addGlobalFloats(process,globalVariables,src,variables,tagSequence):
     
     ntproducer = "%sNtpProducer" % src
     if not hasattr(process,ntproducer):
@@ -305,12 +334,32 @@ def addGlobalFloats(process,globalVariables,src,variables):
                 variables = cms.VPSet()
                 )
             )
-    
+        if hasattr(process,src):
+            tagSequence.insert(tagSequence.index(getattr(process,src))+1,getattr(process,ntproducer))
+        else:
+            dummySequence=cms.Sequence(getattr(process,ntproducer))
+            tagSequence+=dummySequence
+            
+            
     varlist = {}
     for var in variables:
-        name,expr = getNameExpr(var)
-        varlist[name] = expr
-        setattr(globalVariables.extraFloats,name,cms.InputTag(ntproducer,name))
+#        name,expr = getNameExpr(var)
+        name0,expr0 = getNameExpr(var)
+        name,expr,nbins,vmin,vmax,binning = parseVariable(expr0,name0)
+#        print name,expr,nbins,vmin,vmax,binning
+        varlist[name] = expr[0]
+        setattr(globalVariables.extraFloats,name,cms.PSet(src=cms.InputTag(ntproducer,name)))
+        if nbins:
+            if vmin is not None and vmax is not None:
+                setattr(globalVariables.extraFloats,name,cms.PSet(src=cms.InputTag(ntproducer,name),nbins=cms.int32(nbins),vmin=cms.double(vmin),vmax=cms.double(vmax)))
+            elif binning:
+                setattr(globalVariables.extraFloats,name,cms.PSet(src=cms.InputTag(ntproducer,name),nbins=cms.int32(nbins),binning=cms.vdouble(binning) ) )
+            else:
+                raise Exception("Global float variable %s format does not match name[nbins,vmin,vmax] nor name[-1,(boundary1: ... :boundaryN)] " %var)
+            
+#            setattr(globalVariables.extraFloats,"nbins",nbins)
+#            setattr(globalVariables.extraFloats,"vmin",vmin)
+#            setattr(globalVariables.extraFloats,"vmax",vmax)
     
     bookedVars = []
     for ivar in getattr(process,ntproducer).variables:

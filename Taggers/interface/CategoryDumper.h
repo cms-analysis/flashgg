@@ -14,6 +14,7 @@
 #include "RooDataHist.h"
 #include "RooArgSet.h"
 #include "RooRealVar.h"
+#include "RooBinning.h"
 
 #include "CommonTools/Utils/interface/TFileDirectory.h"
 
@@ -126,7 +127,7 @@ namespace flashgg {
         void compressPdfWeightDatasets(RooWorkspace *ws);
         
 
-        void fill( const object_type &obj, double weight, vector<double>, int n_cand = 0, int htxsBin = -999);
+        void fill( const object_type &obj, double weight, vector<double>, int n_cand = 0, int htxsBin = -999, double genweight = 1.);
         string  GetName();
         bool isBinnedOnly();
 
@@ -143,12 +144,13 @@ namespace flashgg {
         std::string name_;
         std::vector<std::string> names_;
         std::vector<std::string> dumpOnly_;
-        std::vector<std::tuple<float, std::shared_ptr<trait_type>, int, double, double> > variables_;
+        std::vector<std::tuple<float, std::shared_ptr<trait_type>, int, double, double, std::vector<double > > > variables_;
         std::vector<float> variables_pdfWeights_;
         std::vector<histo_info> histograms_;
 
         int n_cand_;
         float weight_;
+        float genweight_;
         RooArgSet rooVars_;
         RooArgSet rooVars_pdfWeights_;        
         RooAbsData *dataset_;
@@ -161,7 +163,9 @@ namespace flashgg {
         std::vector<std::shared_ptr<wrapped_stepwise_functor_type> > stepwise_functors_;
         bool hbooked_;
         bool binnedOnly_;
+        bool unbinnedSystematics_;
         bool dumpPdfWeights_;
+        bool dumpGenWeight_;
         int  nPdfWeights_;
         int  nAlphaSWeights_;
         int nScaleWeights_;
@@ -179,6 +183,7 @@ namespace flashgg {
         hbooked_( false ), 
         binnedOnly_ (false), 
         dumpPdfWeights_ (false ), 
+        dumpGenWeight_ (false ), 
         nPdfWeights_ (0), 
         nAlphaSWeights_(0),
         nScaleWeights_(0),
@@ -194,6 +199,12 @@ namespace flashgg {
         
         if( cfg.existsAs<bool >( "binnedOnly" ) ) {
             binnedOnly_ = cfg.getParameter<bool >( "binnedOnly" );
+        }
+        if( cfg.existsAs<bool >( "unbinnedSystematics" ) ) {
+            unbinnedSystematics_ = cfg.getParameter<bool >( "unbinnedSystematics" );
+        }
+        if( cfg.existsAs<bool >( "dumpGenWeight" ) ) {
+            dumpGenWeight_ = cfg.getParameter<bool >( "dumpGenWeight" );
         }
         if( cfg.existsAs<bool >( "dumpPdfWeights" ) ) {
             dumpPdfWeights_ = cfg.getParameter<bool >( "dumpPdfWeights" );
@@ -222,20 +233,24 @@ namespace flashgg {
         auto variables = cfg.getParameter<vector<edm::ParameterSet> >( "variables" );
         for( auto &var : variables ) {
             auto nbins = var.getUntrackedParameter<int>( "nbins", 0 );
-            auto vmin = var.getUntrackedParameter<double>( "vmin", numeric_limits<double>::lowest() );
-            auto vmax = var.getUntrackedParameter<double>( "vmax", numeric_limits<double>::max() );
+            //            auto vmin = var.getUntrackedParameter<double>( "vmin", numeric_limits<double>::lowest() );
+            //            auto vmax = var.getUntrackedParameter<double>( "vmax", numeric_limits<double>::max() );
+            auto vmin = var.getUntrackedParameter<double>( "vmin", -99. );
+            auto vmax = var.getUntrackedParameter<double>( "vmax", 99. );
+            auto binning = var.getUntrackedParameter<std::vector<double > >("binning", std::vector<double >());
+            //            vector<double > binning;
             if( var.existsAs<edm::ParameterSet>( "expr" ) ) {
                 auto expr = var.getParameter<edm::ParameterSet>( "expr" );
                 auto name = var.getUntrackedParameter<string>( "name" );
                 stepwise_functors_.push_back( std::shared_ptr<wrapped_stepwise_functor_type>( new wrapped_stepwise_functor_type( new stepwise_functor_type( expr ) ) ) );
                 names_.push_back( name );
-                variables_.push_back( make_tuple( 0., stepwise_functors_.back(), nbins, vmin, vmax ) );
+                variables_.push_back( make_tuple( 0., stepwise_functors_.back(), nbins, vmin, vmax, binning ) );
             } else {
                 auto expr = var.getParameter<string>( "expr" );
                 auto name = var.getUntrackedParameter<string>( "name", expr );
                 functors_.push_back( std::shared_ptr<wrapped_functor_type>( new wrapped_functor_type( new functor_type( expr ) ) ) );
                 names_.push_back( name );
-                variables_.push_back( make_tuple( 0., functors_.back(), nbins, vmin, vmax ) );
+                variables_.push_back( make_tuple( 0., functors_.back(), nbins, vmin, vmax, binning ) );
             }
         }
 
@@ -246,9 +261,10 @@ namespace flashgg {
                 auto nbins = mva.getUntrackedParameter<int>( "nbins", 0 );
                 auto vmin = mva.getUntrackedParameter<double>( "vmin", numeric_limits<double>::lowest() );
                 auto vmax = mva.getUntrackedParameter<double>( "vmax", numeric_limits<double>::max() );
+                vector<double > binning;
                 mvas_.push_back( std::shared_ptr<wrapped_mva_type>( new wrapped_mva_type( new mva_type( mva, globalVarsDumper_ ) ) ) );
                 names_.push_back( name );
-                variables_.push_back( make_tuple( 0., mvas_.back(), nbins, vmin, vmax ) );
+                variables_.push_back( make_tuple( 0., mvas_.back(), nbins, vmin, vmax, binning ) );
             }
         }
 
@@ -257,13 +273,14 @@ namespace flashgg {
         auto globalExtraFloatNames = globalVarsDumper_->getExtraFloatNames();
         for( auto &extraFloatName : globalExtraFloatNames ) {
             //            std::cout<<"adding wrapper for extra float variable "<<extraFloatName<<std::endl; 
-//            auto name = mva.getUntrackedParameter<string>( "name" );
-            auto nbins =  100 ;
-            auto vmin =  numeric_limits<double>::lowest();
-            auto vmax =  numeric_limits<double>::max();
+            //            auto name = mva.getUntrackedParameter<string>( "name" );
+            auto nbins = globalVarsDumper_->getExtraFloatNBin(extraFloatName) ;//100;
+            auto vmin =   globalVarsDumper_->getExtraFloatVmin(extraFloatName) ;//numeric_limits<double>::lowest();
+            auto vmax =   globalVarsDumper_->getExtraFloatVmax(extraFloatName) ;//numeric_limits<double>::max();   
+            auto binning = globalVarsDumper_->getExtraFloatBinning(extraFloatName);
             extraglobalvars_.push_back( std::shared_ptr<wrapped_global_var_type>( new wrapped_global_var_type( globalVarsDumper_ , extraFloatName ) ) );
             names_.push_back( extraFloatName );
-            variables_.push_back( make_tuple( 0., extraglobalvars_.back(), nbins, vmin, vmax ) );
+            variables_.push_back( make_tuple( 0., extraglobalvars_.back(), nbins, vmin, vmax, binning ) );
             //            variables_.push_back( make_tuple( 0., extraglobalvars_.back()) );
         }
         //##########
@@ -356,6 +373,9 @@ namespace flashgg {
         tree_ = fs.make<TTree>( formatString( name_, replacements ).c_str(), formatString( name_, replacements ).c_str() );
         tree_->Branch( "candidate_id", &n_cand_, "candidate_id/I" );
         tree_->Branch( weightName, &weight_ );
+        if( dumpGenWeight_ ) {
+          tree_->Branch("genweight" , &genweight_ );
+        }
         for( size_t iv = 0; iv < names_.size(); ++iv ) {
             if( ! dumpOnly_.empty() && find( dumpOnly_.begin(), dumpOnly_.end(), names_[iv] ) == dumpOnly_.end() ) { continue; }
             tree_->Branch( names_[iv].c_str(), &std::get<0>( variables_[iv] ) );
@@ -490,18 +510,38 @@ namespace flashgg {
         auto &nbins = std::get<2>( var );
         auto &vmin = std::get<3>( var );
         auto &vmax = std::get<4>( var );
-        //        std::cout << " before factory for " << name << std::endl;
+        auto &binning = std::get<5>( var );
         RooRealVar &rooVar = dynamic_cast<RooRealVar &>( *ws.factory( Form( "%s[0.]", name.c_str() ) ) );
         //        std::cout << " after factory for " << name << std::endl;
         rooVar.setConstant( false );
         if(binnedOnly_ && (nbins==0)){
-            throw cms::Exception( "Dumper Binning" ) << "One or more variable which is to be dumped in a RooDataHist has not been allocated any binning options. Please specify these in your dumper configuration using the format variable[nBins,min,max] := variable definition ";
+            //            throw cms::Exception( "Dumper Binning" ) << "One or more variable which is to be dumped in a RooDataHist has not been allocated any binning options. Please specify these in your dumper configuration using the format variable[nBins,min,max] := variable definition ";
+            nbins=1;
         }
-        if( nbins >= 0 ) { 
+        if(!unbinnedSystematics_){
+            if( nbins > 0 ) { 
+                rooVar.setBins( nbins );
+            }
+            if(nbins == -1){
+                rooVar.setMin( binning.at(0)  );
+                rooVar.setMax( binning.at(binning.size()-1) );
+                //            RooBinning* rooBinning = new RooBinning(int(binning.size()), &binning[0]);
+                //            rooVar.setBinning(*rooBinning);
+                RooBinning* rooBinning = new RooBinning(binning.at(0), binning.at(binning.size()-1));
+                for(int ib =1; ib< (int)binning.size()-1; ib++){
+                    rooBinning->addBoundary(binning.at(ib));
+                    rooBinning->Print();
+                }
+                rooVar.setBinning(*rooBinning);
+                rooVar.Print("v");
+            }
+        }
+        else{
             rooVar.setMin( vmin );
             rooVar.setMax( vmax );
-            rooVar.setBins( nbins );
         }
+        
+
         rooVars_.add( rooVar, true );
         rooVars_pdfWeights0.add( rooVar, true );
     }
@@ -536,7 +576,7 @@ namespace flashgg {
     rooVars_pdfWeights_.add(*ws.var( weightVar ),true);
     
     std::string dsetName = formatString( name_, replacements );
-    if( ! binnedOnly_ ) {
+    if( ! binnedOnly_ || unbinnedSystematics_) {
         RooDataSet dset( dsetName.c_str(), dsetName.c_str(), rooVars_, weightVar );
         ws.import( dset );
     } else {
@@ -566,10 +606,11 @@ bool CategoryDumper<F, O>::isBinnedOnly( )
 }
 
     template<class F, class O>
-    void CategoryDumper<F, O>::fill( const object_type &obj, double weight, vector<double> pdfWeights, int n_cand, int htxsBin)
+    void CategoryDumper<F, O>::fill( const object_type &obj, double weight, vector<double> pdfWeights, int n_cand, int htxsBin, double genweight)
 {  
     n_cand_ = n_cand;
     weight_ = weight;
+    genweight_ = genweight;
     if( dataset_ && (!binnedOnly_) ) {
         dynamic_cast<RooRealVar &>( rooVars_["weight"] ).setVal( weight_ );
     }

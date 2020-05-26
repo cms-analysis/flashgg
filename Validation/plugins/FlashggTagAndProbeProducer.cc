@@ -54,7 +54,7 @@ namespace flashgg {
         CutBasedPhotonViewSelector idSelector_;
 
         //---output TnP collection
-        auto_ptr<vector<TagAndProbeCandidate> > tnpColl_;
+        unique_ptr<vector<TagAndProbeCandidate> > tnpColl_;
     };
 
     //---constructors

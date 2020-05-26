@@ -18,10 +18,6 @@ from ROOT import *
 
 #gSystem.Load('transfBDT_C.so')
 
-from ROOT import gROOT
-gROOT.ForceStyle()
-gStyle.SetOptTitle(0)
-gStyle.SetOptStat(0)
 
 class Load:
     def __call__(self,option, opt_str, value, parser, *args, **kwargs):
@@ -70,7 +66,7 @@ procs=[]
 cats=[]
 #cats=["SigmaMpTTag_0", "SigmaMpTTag_1", "SigmaMpTTag_2"]
 
-import numpy as np
+
 
 savefmts=['.png','.root','.pdf','.jpg']
 # Main routine
@@ -104,31 +100,21 @@ def main(o,args):
             varset = (varset[0], varset[0], varset[2], [1,1])
             isData=True
         datasetsReduced={}
-        c=TCanvas("c","",1)
-        binning1=varset[-2]
-        binning1[-1]=binning1[-2]*1.2
-        print binning1
-        binning2=varset[-1]
-        binning2[-1]=binning2[-2]*1.2
-        print binning2
-        th2sigtot=TH2D("signalEv_"+str(varset[0])+"_vs_"+str(varset[1])+"_all", "signalEv_"+str(varset[0])+"_vs_"+str(varset[1])+"_all", len(binning1)-1, np.asarray(binning1), len(binning2)-1, np.asarray(binning2))
-        th2sigtot.GetXaxis().SetTitle(str(varset[0]))
-        th2sigtot.GetYaxis().SetTitle(str(varset[1]))
         for proc in procs:
             for cat in cats:
                 print "reading ds "+str(proc)+"_"+str(cat)+" from ws"
                 dataset = wspace.data(str(proc)+"_"+str(cat))
                 dataset.Print()
-                th2sig = TH2D("signalEv_"+str(varset[0])+"_vs_"+str(varset[1])+"_"+str(proc)+"_"+str(cat), "signalEv_"+str(varset[0])+"_vs_"+str(varset[1])+"_"+str(proc)+"_"+str(cat), len(binning1)-1, np.asarray(binning1), len(binning2)-1, np.asarray(binning2))
-                th2sig.GetXaxis().SetTitle(str(varset[0]))
-                th2sig.GetYaxis().SetTitle(str(varset[1]))
                 for bound1 in range(len(varset[-2])-1):
                     for bound2 in range(len(varset[-1])-1):
+                        lowb1=str(varset[-2][bound1]).replace("-","m").replace(".","p")
+                        upb1=str(varset[-2][bound1+1]).replace("-","m").replace(".","p")
                         if isData:
-                            dname = str(proc)+"_"+str(cat)+"_"+varset[0]+"_"+str(varset[-2][bound1])+"to"+str(varset[-2][bound1+1])
+###                            dname = str(proc)+"_"+str(cat)+"_"+varset[0]+"_"+str(varset[-2][bound1])+"to"+str(varset[-2][bound1+1])
+                            dname = str(proc)+"_"+str(cat)+"_"+varset[0]+"_"+str(lowb1)+"to"+str(upb1)
                         else:
 #                            dname = str(proc)+"_"+str(cat)+"_"+varset[0]+"_"+str(varset[-2][bound1])+"to"+str(varset[-2][bound1+1])+"_Vs_"+varset[1]+"_"+str(varset[-1][bound2])+"to"+str(varset[-1][bound2+1])
-                            dname = str(proc.split('_',1)[0])+"_"+varset[0]+"_"+str(varset[-2][bound1])+"to"+str(varset[-2][bound1+1])+"_"+str(proc.split('_',1)[1])+"_"+str(cat)+"_"+varset[1]+"_"+str(varset[-1][bound2])+"to"+str(varset[-1][bound2+1])
+                            dname = str(proc)+"_"+varset[0]+"_"+str(varset[-2][bound1])+"to"+str(varset[-2][bound1+1])+"_"+str(cat)+"_"+varset[1]+"_"+str(varset[-1][bound2])+"to"+str(varset[-1][bound2+1])
                         datRed = dataset.Clone(dname)
                         datRed.reset()
                         datasetsReduced[ dname ] = datRed
@@ -145,59 +131,22 @@ def main(o,args):
 #                    print val1,val2
 
                     for bound1, bound2 in ((b1,b2) for b1 in range(len(varset[-2])-1) for b2 in range(len(varset[-1])-1) ):
+                        lowb1=str(varset[-2][bound1]).replace("-","m").replace(".","p")
+                        upb1=str(varset[-2][bound1+1]).replace("-","m").replace(".","p")
                         if isData:
                             selCondition = (val1 > varset[-2][bound1]) and (val1 < varset[-2][bound1+1]) 
-                            dname = str(proc)+"_"+str(cat)+"_"+varset[0]+"_"+str(varset[-2][bound1])+"to"+str(varset[-2][bound1+1])
+                            dname = str(proc)+"_"+str(cat)+"_"+varset[0]+"_"+str(lowb1)+"to"+str(upb1)
                         else:
                             selCondition = (val1 > varset[-2][bound1]) and (val1 < varset[-2][bound1+1]) and (val2 > varset[-1][bound2]) and (val2 < varset[-1][bound2+1])
 #                            dname = str(proc)+"_"+str(cat)+"_"+varset[0]+"_"+str(varset[-2][bound1])+"to"+str(varset[-2][bound1+1])+"_Vs_"+varset[1]+"_"+str(varset[-1][bound2])+"to"+str(varset[-1][bound2+1])
-                            dname = str(proc.split('_',1)[0])+"_"+varset[0]+"_"+str(varset[-2][bound1])+"to"+str(varset[-2][bound1+1])+"_"+str(proc.split('_',1)[1])+"_"+str(cat)+"_"+varset[1]+"_"+str(varset[-1][bound2])+"to"+str(varset[-1][bound2+1])
+                            dname = str(proc)+"_"+varset[0]+"_"+str(varset[-2][bound1])+"to"+str(varset[-2][bound1+1])+"_"+str(cat)+"_"+varset[1]+"_"+str(varset[-1][bound2])+"to"+str(varset[-1][bound2+1])
                         if selCondition:
 #                            print "filling dataset"
 ##                            print dataset.weight()
                             datasetsReduced[dname].add(iset, dataset.weight())
                             break
-                for bound1 in range(len(varset[-2])-1):
-                    for bound2 in range(len(varset[-1])-1):
-                        if isData:
-                            dname = str(proc)+"_"+str(cat)+"_"+varset[0]+"_"+str(varset[-2][bound1])+"to"+str(varset[-2][bound1+1])
-                        else:
-                            dname = str(proc.split('_',1)[0])+"_"+varset[0]+"_"+str(varset[-2][bound1])+"to"+str(varset[-2][bound1+1])+"_"+str(proc.split('_',1)[1])+"_"+str(cat)+"_"+varset[1]+"_"+str(varset[-1][bound2])+"to"+str(varset[-1][bound2+1])
-                            
-                            print "binning1 ",float(binning1[bound1])+(float(binning1[bound1+1])-float(binning1[bound1]))/2.
-                            print binning1[bound1+1]
-                            print binning1[bound1]
-                            print "cat1 ",(float(varset[-2][bound1+1])-float(varset[-2][bound1]))/2.
-                            print "binning2 ",float(binning2[bound2])+(float(binning2[bound2+1])-float(binning2[bound2]))/2.
-                            print binning2[bound2+1]
-                            print binning2[bound2]
-                            print "cat2 ",(float(varset[-1][bound2+1])-float(varset[-1][bound2]))/2.
-                            print "sumentries ",datasetsReduced[dname].sumEntries()
-                            th2sig.Fill( float(binning1[bound1])+(float(binning1[bound1+1])-float(binning1[bound1]))/2., float(binning2[bound2])+(float(binning2[bound2+1])-float(binning2[bound2]))/2., datasetsReduced[dname].sumEntries())
-                    
-                th2sig.Print("V")
-                c.cd()
-                if options.logz:
-                    c.SetLogz(1)
 
-                th2sigtot.Add(th2sig)
-                th2sig.Draw("colz")
-                for fmt in savefmts:
-                    savename = th2sig.GetName()
-                    if options.logz:
-                        savename = str(savename)+"_logz"
-                    c.SaveAs(str(savename)+str(fmt))
-        c.cd()
-        if options.logz:
-            c.SetLogz(1)
-        th2sigtot.Draw("colz")
-        savename = th2sigtot.GetName()
-        if options.logz:
-            savename = str(savename)+"_logz"
-        for fmt in savefmts:
-            c.SaveAs(str(savename)+str(fmt))
 #            print "####  Compare reductions  ####"
-        
         new_wspace = RooWorkspace("cms_hgg_13TeV")
         getattr(new_wspace, 'import')(wspace.var("CMS_hgg_mass"))
         getattr(new_wspace, 'import')(wspace.var("IntLumi"))
@@ -207,7 +156,7 @@ def main(o,args):
 #    alldata = new_wspace.allData()
 #    for ds in alldata :
 #        new_wspace.removeSet(str(ds.GetName()))
-        outfilename = options.outfile.split('.')[0]+'_'+str(varset[0])+'_3th2.root'
+        outfilename = options.outfile.split('.')[0]+'_'+str(varset[0])+'_1bis.root'
         outfile = TFile(outfilename, 'RECREATE')
         stepsize=int(len(datasetsReduced.keys())/10)
         iteration = 0
@@ -332,10 +281,6 @@ if __name__ == "__main__":
             make_option("-D", "--outputdir",
                         action="store_true", dest="outdir",
                         default="plots",
-                        ),
-            make_option("-L", "--logz",
-                        action="store_true", dest="logz",
-                        default=False,
                         ),
             make_option("-N", "--maxEntries",
                         action="store", type="int", dest="maxEntries",
