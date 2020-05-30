@@ -13,14 +13,25 @@
 #include "DataFormats/Math/interface/deltaR.h"
 
 using namespace flashgg; // makes flashgg sub members visible 
-HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.), JetVector_ (), Cut_Variables_ ()
+// HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.), JetVector_ (), Cut_Variables_ ()
+HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.), Cut_Variables_ ()
 {
 
 }
 
 HHWWggTag::~HHWWggTag() {}
 
-void HHWWggTag::GetPhotons(edm::Ptr<DiPhotonCandidate> dipho)
+// void HHWWggTag::GetObjects(edm::Ptr<DiPhotonCandidate> dipho)
+// {
+//   // Save as dumper objects 
+//   Leading_Photon_ = dipho->leadingPhoton();
+//   Subleading_Photon_ = dipho->subLeadingPhoton();
+
+//   lp_Hgg_MVA_ = Leading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() ); 
+//   slp_Hgg_MVA_ = Subleading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() ); 
+// }
+
+void HHWWggTag::GetObjects(edm::Ptr<DiPhotonCandidate> dipho)
 {
   // Save as dumper objects 
   Leading_Photon_ = dipho->leadingPhoton();
@@ -30,14 +41,53 @@ void HHWWggTag::GetPhotons(edm::Ptr<DiPhotonCandidate> dipho)
   slp_Hgg_MVA_ = Subleading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() ); 
 }
 
-//-- Without cut flow analysis and b tag variables 
+void HHWWggTag::GetObjects(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Met> MET)
+{
+  // Save as dumper objects 
+  Leading_Photon_ = dipho->leadingPhoton();
+  Subleading_Photon_ = dipho->subLeadingPhoton();
+  MET_ = *MET;
+
+  lp_Hgg_MVA_ = Leading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() ); 
+  slp_Hgg_MVA_ = Subleading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() ); 
+}
+
+void HHWWggTag::GetObjects(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Met> MET, edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2)
+{
+  // Save as dumper objects 
+  Leading_Photon_ = dipho->leadingPhoton();
+  Subleading_Photon_ = dipho->subLeadingPhoton();
+  Electron_ = *electron;
+  MET_ = *MET;
+  Leading_Jet_ = *jet1;
+  Subleading_Jet_ = *jet2;
+
+  lp_Hgg_MVA_ = Leading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() ); 
+  slp_Hgg_MVA_ = Subleading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() ); 
+}
+
+void HHWWggTag::GetObjects(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> muon, edm::Ptr<flashgg::Met> MET, edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2)
+{
+  // Save as dumper objects 
+  Leading_Photon_ = dipho->leadingPhoton();
+  Subleading_Photon_ = dipho->subLeadingPhoton();
+  Muon_ = *muon;
+  MET_ = *MET;
+  Leading_Jet_ = *jet1;
+  Subleading_Jet_ = *jet2;  
+
+  lp_Hgg_MVA_ = Leading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() ); 
+  slp_Hgg_MVA_ = Subleading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() ); 
+}
+
+//-- With no cut flow analysis and b tag variables 
 
 //- 2 jets, electron 
 HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Met> MET,
                       edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2)
 {
   dipho_ = dipho;
-  GetPhotons(dipho);
+  GetObjects(dipho);
 }
 
 //- two jets, muon 
@@ -45,33 +95,32 @@ HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> 
                       edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2)
 {
   dipho_ = dipho;
-  GetPhotons(dipho);
+  GetObjects(dipho);
 }
-
 
 //-- With cut flow analysis and b tag variables 
 
-//- 2 jets, electron 
+//- Two jets, one electron 
 HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Met> MET,
-                      edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2, std::vector<flashgg::Jet> tagJets_, std::vector<double> Cut_Variables) : JetVector_(tagJets_), Cut_Variables_(Cut_Variables)
+                      edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2, std::vector<double> Cut_Variables) : Cut_Variables_(Cut_Variables)
 {
   dipho_ = dipho;
-  GetPhotons(dipho);
+  GetObjects(dipho, electron, MET, jet1, jet2);
 }
 
-//- two jets, muon 
+//- Two jets, one muon 
 HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> muon, edm::Ptr<flashgg::Met> MET,
-                      edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2, std::vector<flashgg::Jet> tagJets_, std::vector<double> Cut_Variables) : JetVector_(tagJets_), Cut_Variables_(Cut_Variables)
+                      edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2, std::vector<double> Cut_Variables) : Cut_Variables_(Cut_Variables)
 {
   dipho_ = dipho;
-  GetPhotons(dipho);
+  GetObjects(dipho, muon, MET, jet1, jet2);
 }
 
-//- Untagged
-HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, std::vector<flashgg::Jet> tagJets_, std::vector<double> Cut_Variables) : JetVector_(tagJets_), Cut_Variables_(Cut_Variables)
+//-- Untagged
+HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Met> MET, std::vector<double> Cut_Variables) : Cut_Variables_(Cut_Variables)
 {
   dipho_ = dipho;
-  GetPhotons(dipho);
+  GetObjects(dipho, MET);
 }
 
 // You need this because HHWWggTag is derived from another class 

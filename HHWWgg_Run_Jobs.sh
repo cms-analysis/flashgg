@@ -1,13 +1,20 @@
 #!/bin/sh
 
-#------------------------------------------------------------------------------------------------------------------------------
-
+############################################################################################################################################################################################
+#
 # Abe Tishelman-Charny
 # 12 December 2019
 #
 # The purpose of this script is the run fggrunjobs with ether the HHWWgg candidate dumper or tagger, on data, signal, or background. 
-
-#------------------------------------------------------------------------------------------------------------------------------
+#
+# Example Usage:
+#
+# . HHWWgg_Run_Jobs.sh --labelName HHWWgg_fggBackgrounds_v2_1_oneDY --nEvents all --json Taggers/test/Era2017_RR-31Mar2018_v2_1_oneDY.json --condorQueue microcentury -g -c -v -t
+# . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-3_CutFlow_SM_CutFlow --nEvents all --json Taggers/test/HHWWgg_v2-3/HHWWgg_v2-3_SM.json --condorQueue longlunch -g -c -t 
+# . HHWWgg_Run_Jobs.sh --labelName HHWWgg_fggBkgs_1_DataMC --nEvents all --json Taggers/test/Era2017_RR-31Mar2018_v2_1.json --condorQueue longlunch -g -c -v -t 
+# . HHWWgg_Run_Jobs.sh --labelName HHWWgg_2017Data_Again --nEvents all --json Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json --condorQueue microcentury -g -c -v -t
+# . HHWWgg_Run_Jobs.sh --labelName HHWWgg_fggBackgrounds_v2_3 --nEvents all --json Taggers/test/Era2017_RR-31Mar2018_v2_3.json --condorQueue longlunch -g -c -v -t
+###########################################################################################################################################################################################
 
 ## Do these steps before running:
 # cmsenv
@@ -32,6 +39,7 @@ label="" # name for condor output directory in ntupleDirec
 numEvents="" # integer, or 'all' to run on all events 
 runWorkspaceStd="false" # use Systematics/test/workspaceStd.py as config 
 doCutFlow="false" # perform HHWWgg cutflow within workspaceStd.py workflow 
+saveHHWWggFinalStateVars="false" # save extra variables 
 runttH="false" # run on ttH background sample only 
 runData="false" # get datasets from data json file 
 runSignal="false" # get dataset(s) from signal json file 
@@ -44,7 +52,7 @@ condorQueue="tomorrow"
 
 ## Get user specified argumenets 
 
-options=$(getopt -o dgcstwr --long nEvents: --long labelName: --long json: --long condorQueue: -- "$@") # end name with colon ':' to specify argument string 
+options=$(getopt -o dgcvstwr --long nEvents: --long labelName: --long json: --long condorQueue: -- "$@") # end name with colon ':' to specify argument string 
 [ $? -eq 0 ] || {
       echo "Incorrect option provided"
       exit 1
@@ -63,6 +71,9 @@ while true; do
             ;;
       -c)
             doCutFlow="true"
+            ;;
+      -v)
+            saveHHWWggFinalStateVars="true"
             ;;
       -s)   
             calcSystematics="true"
@@ -263,6 +274,11 @@ then
       then
            command+=' doHHWWggTagCutFlow=True '
       fi       
+
+      if [ $saveHHWWggFinalStateVars == 'true' ]
+      then
+            command+=' saveHHWWggFinalStateVars=1'
+      fi 
       #     command+=' doHHWWggTag=True HHWWggTagsOnly=True doSystematics=False doBJetRegression=True dumpWorkspace=False dumpTrees=True'
 fi
 

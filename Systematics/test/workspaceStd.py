@@ -19,8 +19,8 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-# process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 )
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000000 )
+# process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 ) # I think this kills / slows down jobs!
 
 systlabels = [""]
 phosystlabels = []
@@ -871,7 +871,7 @@ printSystematicInfo(process)
 
 # Detailed tag interpretation information printout (blinded)
 process.flashggTagSorter.StoreOtherTagInfo = True
-process.flashggTagSorter.BlindedSelectionPrintout = True
+# process.flashggTagSorter.BlindedSelectionPrintout = True
 
 ### Rerun microAOD sequence on top of microAODs using the parent dataset
 if customize.useParentDataset:

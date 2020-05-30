@@ -2,15 +2,14 @@ import FWCore.ParameterSet.Config as cms
 
 class HHWWggCustomize():
     """
-    HH->WWgg process customizaton class. Started with HH->bbgg customization class. 
+    HH->WWgg process customizaton class
     """
     
     def __init__(self, process, customize, metaConditions):
         self.process = process
         self.customize = customize
         self.metaConditions = metaConditions
-        # self.tagList = [ ["HHWWggTag",12] ]
-        self.tagList = [ ["HHWWggTag",2] ] # 2 cats: 0: electron channel. 1: muon channel 
+        self.tagList = [ ["HHWWggTag",3] ] # 2 cats: 0: SL electron channel. 1: SL muon channel. 2: Untagged --> Meets no criteria but want to save event to output 
         self.customizeTagSequence()
 
     def variablesToDump(self):
@@ -29,11 +28,11 @@ class HHWWggCustomize():
 
         #-- b scores
         bScores = [] 
-        for jeti in range(0,6):
-            var1 = "jet" + str(jeti) + "_DeepFlavourScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 "
-            var2 = "jet" + str(jeti) + "_DeepCSVScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('pfDeepCSVJetTags:probb') : -99 "
-            bScores.append(var1)
-            bScores.append(var2)
+        # for jeti in range(0,6):
+            # var1 = "jet" + str(jeti) + "_DeepFlavourScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 "
+            # var2 = "jet" + str(jeti) + "_DeepCSVScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('pfDeepCSVJetTags:probb') : -99 "
+            # bScores.append(var1)
+            # bScores.append(var2)
 
         # inital / final photon energies for scaling and smearing validation
         phoEs = [
@@ -47,13 +46,33 @@ class HHWWggCustomize():
         debugVars=[
             "leadPhoMVA[2,0,2]:=lp_Hgg_MVA",
             "subleadPhoMVA[2,0,2]:=slp_Hgg_MVA"
-
         ]
 
-        if self.customize.doHHWWggTagCutFlow: 
+        vars = ["E","pt","px","py","pz","eta","phi"]
+        objects = ["Leading_Photon","Subleading_Photon","Electron","Muon","MET","Leading_Jet","Subleading_Jet"]
+        finalStateVars = []
+        finalStateVars.append("Leading_Photon_MVA:=lp_Hgg_MVA")
+        finalStateVars.append("Subleading_Photon_MVA:=slp_Hgg_MVA")
+        for obj in objects:
+            for var in vars:
+                vname = "%s.p4().%s()"%(obj,var)
+                vtitle = "%s_%s"%(obj,var)
+                entry = "%s:=%s"%(vtitle,vname)
+                finalStateVars.append(entry)
+
+        # for removal of prompt-prompt events from QCD and GJet samples 
+        finalStateVars.append("Leading_Photon_genMatchType:=Leading_Photon.genMatchType()")
+        finalStateVars.append("Subleading_Photon_genMatchType:=Subleading_Photon.genMatchType()")
+
+        # if self.customize.doHHWWggTagCutFlow: 
+            # variables += cutFlowVars 
+            # variables += bScores 
+
+        if self.customize.saveHHWWggFinalStateVars:
+            variables += finalStateVars 
             variables += cutFlowVars 
-            variables += bScores 
-        
+            # variables += bScores
+     
         if self.customize.doHHWWggDebug:
             variables += debugVars
         
@@ -127,13 +146,13 @@ class HHWWggCustomize():
         #    ]
         return variables
 
-
-
     def customizeTagSequence(self):
         self.process.load("flashgg.Taggers.flashggHHWWggTag_cff")
 
-        if self.customize.doHHWWggTagCutFlow:
+        if self.customize.doHHWWggTagCutFlow or self.customize.saveHHWWggFinalStateVars:
             self.process.flashggHHWWggTag.doHHWWggTagCutFlowAnalysis = cms.bool(True)
+        # if self.customize.saveHHWWggFinalStateVars:
+            # self.process.flashggHHWWggTag.saveHHWWggFinalStateVars = cms.bool(True)
 
         ## customize meta conditions
         # self.process.flashggHHWWggTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))

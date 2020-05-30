@@ -900,6 +900,8 @@ namespace flashgg {
           else
             if ((n_good_leptons != 1) || (n_good_jets <= 1)) continue;
 
+
+
           //-- Tag object 
           if ( (n_good_leptons == 1) && (n_good_jets >= 2)){
             
@@ -916,7 +918,8 @@ namespace flashgg {
                 HHWWggTag tag_obj; 
                 // HHWWggTag tag_obj_0;
                 if (doHHWWggTagCutFlowAnalysis_){
-                  HHWWggTag tag_obj_(dipho, tag_electron, theMET, jet1, jet2, tagJets_, Cut_Variables); // electron, MET, jet1, jet2 
+                  // Save electrons, muons, goodElectrons, goodMuons, jets, goodjets 
+                  HHWWggTag tag_obj_(dipho, tag_electron, theMET, jet1, jet2, Cut_Variables); // electron, MET, jet1, jet2 
                   tag_obj = tag_obj_;
                 } 
                 else{
@@ -955,7 +958,8 @@ namespace flashgg {
                 HHWWggTag tag_obj; 
                 // HHWWggTag tag_obj_0;
                 if (doHHWWggTagCutFlowAnalysis_){
-                  HHWWggTag tag_obj_(dipho, tag_muon, theMET, jet1, jet2, tagJets_, Cut_Variables); // muon, MET, jet1, jet2 
+                  // HHWWggTag tag_obj_(dipho, tag_muon, theMET, jet1, jet2, tagJets_, Cut_Variables); // muon, MET, jet1, jet2 
+                  HHWWggTag tag_obj_(dipho, tag_muon, theMET, jet1, jet2, Cut_Variables); // muon, MET, jet1, jet2 
                   tag_obj = tag_obj_;
                 } 
                 else{
@@ -972,7 +976,7 @@ namespace flashgg {
 
                 tag_obj.setDiPhotonIndex( diphoIndex );           
                 // tag_obj.setMVA( -0.9 );
-                tag_obj.setCategoryNumber( catnum ); // 2 for muon events 
+                tag_obj.setCategoryNumber( catnum ); // 1 for muon events 
                 tag_obj.includeWeights( *dipho );
 
                 // tag_obj.setEventNumber(event.id().event() );
@@ -996,18 +1000,19 @@ namespace flashgg {
           // Don't have semileptonic selections. Only results in further analysis if doHHWWggTagCutFlowAnalysis_ == True
           else {
             if(doHHWWggTagCutFlowAnalysis_){
-              HHWWggTag tag_obj(dipho, tagJets_, Cut_Variables);
+              // cout << "*******************************tagging untagged *********************" << endl;
+              // HHWWggTag tag_obj(dipho, tagJets_, Cut_Variables);
+              // HHWWggTag tag_obj(dipho, tagJets_, theMET, Cut_Variables);
+              // HHWWggTag tag_obj(dipho, tagJets_, theMET, Cut_Variables);
+              HHWWggTag tag_obj(dipho, theMET, Cut_Variables);
                   // if (loopOverJets == 1) tag_obj.setSystLabel( inputDiPhotonSuffixes_[diphoton_idx] );
                   // else tag_obj.setSystLabel( inputJetsSuffixes_[jet_col_idx]);
                   tag_obj.setSystLabel(systLabel_);
 
                   tag_obj.setDiPhotonIndex( diphoIndex );           
                   // tag_obj.setMVA( -0.9 );
-                  tag_obj.setCategoryNumber( 0 );
+                  tag_obj.setCategoryNumber( 2 ); // 2: Untagged category. Does not meet any selection criteria but want to save event 
                   tag_obj.includeWeights( *dipho );
-
-                  // tag_obj.setEventNumber(event.id().event() );
-                  // cout << "Pushing back tag object w/ electron" << endl;
                   HHWWggtags->push_back( tag_obj ); 
 
                   if( ! event.isRealData() ) {
