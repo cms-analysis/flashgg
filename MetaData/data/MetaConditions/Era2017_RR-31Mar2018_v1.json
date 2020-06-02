@@ -93,6 +93,7 @@
     {
         "data" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_DATA_AK4PFchs",
         "MC" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_MC_AK4PFchs"
+    },
 
     "flashggDiPhotonMVA" : 
     {  
@@ -148,7 +149,6 @@
                              0.924, 0.802,
                              0.844,
                              0.815,
-<<<<<<< HEAD
 
                              0.832,
                              0.745,
@@ -159,18 +159,6 @@
                              0.774, 0.800,
                              0.509, 0.918,
 
-=======
-
-                             0.832,
-                             0.745,
-
-                             0.800, 0.779,
-                             0.790, 0.606,
-                             0.826, 0.650,
-                             0.774, 0.800,
-                             0.509, 0.918,
-
->>>>>>> upstream/dev_legacy_runII
                              0.829, 0.720
                            ],
         "rawDijetBounds" : [

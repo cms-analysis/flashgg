@@ -141,7 +141,7 @@ public:
     //std::cout << "The solution is returned as if Delta was zero ..." << std::endl;
     mw = 80.44;
     solution = (A(mw, mu, met) * mu.Pz()) / (mu.Pt()*mu.Pt());
-    cout << "Last result " << solution << endl;
+    //cout << "Last result " << solution << endl;
     nut.SetPxPyPzE(met.Px(), met.Py(), solution, sqrt(met.Px() * met.Px() + met.Py() * met.Py() + solution * solution));
     
     return nut;
