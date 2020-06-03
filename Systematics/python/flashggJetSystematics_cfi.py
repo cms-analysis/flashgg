@@ -247,6 +247,16 @@ class jetSystematicsCustomize:
                                                     JetCorrectorTag = cms.InputTag("ak4PFCHSL1FastL2L3Corrector")
                                                   ) 
                                         )
+
+      if self.metaConditions['flashggJetSystematics']['doHEMuncertainty'] and self.options.doSystematics:
+          allJetUncerts += cms.VPSet( cms.PSet( MethodName = cms.string("FlashggJetHEMCorrector"),
+                                                Label = cms.string("JetHEM"),
+                                                NSigmas = cms.vint32(-1,1),
+                                                OverallRange = cms.string("abs(eta)<5.0"),
+                                                Debug = cms.untracked.bool(False),
+                                                ApplyCentralValue = cms.bool(False)
+                                              ) 
+                                    )
           
       setattr(self.process, newName,
               cms.EDProducer('FlashggJetSystematicProducer',
