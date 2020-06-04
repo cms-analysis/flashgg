@@ -335,7 +335,7 @@ if is_signal:
             if customize.doGranularJEC:
                 for sourceName in customize.metaConditions['flashggJetSystematics']['listOfSources']:
                     jetsystlabels.append("JEC%s%s01sigma" % (str(sourceName),direction))
-            if customize.metaConditions['flashggJetSystematics']['doHEMuncertianty']:
+            if customize.metaConditions['flashggJetSystematics']['doHEMuncertainty']:
                 jetsystlabels.append("JetHEM%s01sigma" % direction)
             metsystlabels.append("metJecUncertainty%s01sigma" % direction)
             metsystlabels.append("metJerUncertainty%s01sigma" % direction)
