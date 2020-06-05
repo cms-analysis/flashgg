@@ -1138,6 +1138,8 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
 	dipho_pt_ = dipho->pt(); 
     dipho_leadPtOvermass_ = dipho->leadingPhoton()->pt()/dipho->mass();
     dipho_subleadPtOvermass_ = dipho->subLeadingPhoton()->pt()/dipho->mass();
+    dipho_leadEta_ = dipho->leadingPhoton()->eta();
+    dipho_subleadEta_ = dipho->subLeadingPhoton()->eta();
     dipho_leadIDMVA_ = dipho->leadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
     dipho_subleadIDMVA_ = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
     dipho_lead_haspixelseed_ = dipho->leadingPhoton()->hasPixelSeed();
