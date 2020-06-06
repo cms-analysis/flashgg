@@ -262,6 +262,8 @@ private:
     float fwdJet1_discr_;
     float lepton_leadPt_;
     float lepton_leadEta_;
+    float lepton_leadPhi_;
+    float lepton_leadE_;
 
     float minPhoID_;
     float maxPhoID_;
@@ -932,12 +934,16 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
                 {
                     lepton_leadPt_ = goodMuons[leadMuIndex]->pt();
                     lepton_leadEta_ = goodMuons[leadMuIndex]->eta();
+                    lepton_leadPhi_ = goodMuons[leadMuIndex]->phi();
+                    lepton_leadE_ = goodMuons[leadMuIndex]->energy();
                     lepton_ch_ = goodMuons[leadMuIndex]->charge();
                 }
                 else
                 {
                     lepton_leadPt_ = goodElectrons[leadEleIndex]->pt();
                     lepton_leadEta_ = goodElectrons[leadEleIndex]->eta();
+                    lepton_leadPhi_ = goodElectrons[leadEleIndex]->phi();
+                    lepton_leadE_ = goodElectrons[leadEleIndex]->energy();
                     lepton_ch_ = goodElectrons[leadEleIndex]->charge();
                 }
 //--------------------------------------------------------------------------------------------------
@@ -1128,6 +1134,7 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
         l1b1.SetPtEtaPhiE(0., 0., 0., 0.);
         l1b1met.SetPtEtaPhiE(0., 0., 0., 0.);
 
+        l1.SetPtEtaPhiE(lepton_leadPt_,lepton_leadEta_,lepton_leadPhi_,lepton_leadE_);
         b1.SetPtEtaPhiE(bJet1->pt(), bJet1->eta(), bJet1->phi(), bJet1->energy());
 
         l1b1 = l1 + b1;
@@ -1138,6 +1145,8 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
 	dipho_pt_ = dipho->pt(); 
     dipho_leadPtOvermass_ = dipho->leadingPhoton()->pt()/dipho->mass();
     dipho_subleadPtOvermass_ = dipho->subLeadingPhoton()->pt()/dipho->mass();
+    dipho_leadEta_ = dipho->leadingPhoton()->eta();
+    dipho_subleadEta_ = dipho->subLeadingPhoton()->eta();
     dipho_leadIDMVA_ = dipho->leadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
     dipho_subleadIDMVA_ = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
     dipho_lead_haspixelseed_ = dipho->leadingPhoton()->hasPixelSeed();
