@@ -1199,7 +1199,8 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
     bDiscr_fwdjets.push_back(fwdJet1_discr_ );
 
         dRbjetfwdjet_ = deltaR( b1.Eta() , b1.Phi() , fwdJet1->eta() , fwdJet1->phi() );
-        dRtHchainfwdjet_ = deltaR( tHchain.Eta() , tHchain.Phi() , fwdJL.Eta() , fwdJL.Phi() );
+        //dRtHchainfwdjet_ = deltaR( tHchain.Eta() , tHchain.Phi() , fwdJL.Eta() , fwdJL.Phi() );
+        dRtHchainfwdjet_ = deltaR( tHchain.Eta() , tHchain.Phi() , fwdJet1->eta() , fwdJet1->phi() ); //this seems to be the source of the problems
         dRleadphobjet_ = deltaR( G1.Eta() , G1.Phi(), b1.Eta() , b1.Phi());
         dRsubleadphobjet_ = deltaR( G2.Eta() , G2.Phi(), b1.Eta() , b1.Phi());
         dRleadphofwdjet_ = deltaR( G1.Eta() , G1.Phi(), fwdJet1->eta() , fwdJet1->phi());
