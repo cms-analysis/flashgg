@@ -1,6 +1,6 @@
 #!/bin/sh
 
-############################################################################
+########################################################################################################################################################
 # Abraham Tishelman-Charny 
 # 13 May 2020
 # 
@@ -10,8 +10,7 @@
 # Example Usage:
 #
 # . HHWWgg_Hadd_Signal.sh --inFolder HHWWgg_v2-4_CutFLow --outFolder HHWWgg_v2-4_NMSSM_CutFlow_Hadded --signalType NMSSM
-#
-############################################################################
+########################################################################################################################################################
 
 fgg_direc=/afs/cern.ch/work/a/atishelm/21JuneFlashgg/CMSSW_10_5_0/src/flashgg
 ntuple_direc="/eos/user/a/atishelm/ntuples/HHWWgg"
@@ -35,18 +34,9 @@ while true; do
       case "$1" in
       -s) runSignal="true";;
       # -d) runData="true";;
-      --inFolder)
-            shift;
-            inputFolder=$1
-            ;;
-      --outFolder)
-            shift;
-            outputFolder=$1
-            ;;
-      --signalType)
-            shift;
-            signalType=$1
-            ;;
+      --inFolder) shift; inputFolder=$1 ;;
+      --outFolder) shift; outputFolder=$1 ;;
+      --signalType) shift; signalType=$1 ;;
       --)
             shift
             break
@@ -81,17 +71,20 @@ fi
 
 if [ $signalType == "Res" ]; then 
 
-      for mass in X250 X260 X270 X280 X300 X320 X350 X400 X500 X550 X600 X650 X700 X750 X800 X850 X900 X1000 X1250 SM;
+      # for mass in X250 X260 X270 X280 X300 X320 X350 X400 X500 X550 X600 X650 X700 X750 X800 X850 X900 X1000 X1250 SM;
+      for mass in X260 X600 X1000;
       do
       echo "Number of outFolder files for mass $mass:"
-      ls -1 $inputFolder/output_ggF_${mass}_WWgg_qqlnugg_*.root | wc -l 
+      # ls -1 $inputFolder/output_ggF_${mass}_WWgg_qqlnugg_*.root | wc -l 
+      ls -1 $inputFolder/output_ggF_${mass}_HHWWgg_qqlnu_*.root | wc -l 
       echo "Hadding..."
       hadded_file="ggF_"
       hadded_file+=$mass
       hadded_file+="_WWgg_qqlnu"
       hadded_file+="_Hadded.root"
       mkdir -p $outputFolder
-      hadd $outputFolder/$hadded_file $inputFolder/output_ggF_${mass}_WWgg_qqlnugg_*.root
+      # hadd $outputFolder/$hadded_file $inputFolder/output_ggF_${mass}_WWgg_qqlnugg_*.root
+      hadd $outputFolder/$hadded_file $inputFolder/output_ggF_${mass}_HHWWgg_qqlnu_*.root
 
       done 
 

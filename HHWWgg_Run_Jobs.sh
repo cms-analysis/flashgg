@@ -9,6 +9,8 @@
 #
 # Example Usage:
 #
+# . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-6_Workspaces_X600 --nEvents all --json Taggers/test/HHWWgg_v2-6/HHWWgg_v2-6_X600.json --condorQueue microcentury -g -s -w 
+# . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-6_Trees --nEvents all --json Taggers/test/HHWWgg_v2-6/HHWWgg_v2-6.json --condorQueue microcentury -g -c -v -t
 # . HHWWgg_Run_Jobs.sh --labelName HHWWgg_fggBackgrounds_v2_1_oneDY --nEvents all --json Taggers/test/Era2017_RR-31Mar2018_v2_1_oneDY.json --condorQueue microcentury -g -c -v -t
 # . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-3_CutFlow_SM_CutFlow --nEvents all --json Taggers/test/HHWWgg_v2-3/HHWWgg_v2-3_SM.json --condorQueue longlunch -g -c -t 
 # . HHWWgg_Run_Jobs.sh --labelName HHWWgg_fggBkgs_1_DataMC --nEvents all --json Taggers/test/Era2017_RR-31Mar2018_v2_1.json --condorQueue longlunch -g -c -v -t 
@@ -41,8 +43,8 @@ runWorkspaceStd="false" # use Systematics/test/workspaceStd.py as config
 doCutFlow="false" # perform HHWWgg cutflow within workspaceStd.py workflow 
 saveHHWWggFinalStateVars="false" # save extra variables 
 runttH="false" # run on ttH background sample only 
-runData="false" # get datasets from data json file 
-runSignal="false" # get dataset(s) from signal json file 
+# runData="false" # get datasets from data json file 
+# runSignal="false" # get dataset(s) from signal json file 
 calcSystematics="false" # run workspaceStd.py systematics 
 dumpTrees="false" # dump trees in fggrunjobs output 
 dumpWorkspaces="false" # dump workspaces in fggrunjobs output 
@@ -52,7 +54,7 @@ condorQueue="tomorrow"
 
 ## Get user specified argumenets 
 
-options=$(getopt -o dgcvstwr --long nEvents: --long labelName: --long json: --long condorQueue: -- "$@") # end name with colon ':' to specify argument string 
+options=$(getopt -o gcvstwr --long nEvents: --long labelName: --long json: --long condorQueue: -- "$@") # end name with colon ':' to specify argument string 
 [ $? -eq 0 ] || {
       echo "Incorrect option provided"
       exit 1
@@ -63,46 +65,18 @@ while true; do
       #-s)
       #      runSignal="true"
       #      ;;
-      -d)
-            runData="true"
-            ;;
-      -g) 
-            runWorkspaceStd="true"
-            ;;
-      -c)
-            doCutFlow="true"
-            ;;
-      -v)
-            saveHHWWggFinalStateVars="true"
-            ;;
-      -s)   
-            calcSystematics="true"
-            ;;
-      -t)   
-            dumpTrees="true"
-            ;;
-      -w)   
-            dumpWorkspaces="true"
-            ;;
-      -r)   
-            dryRun="true"
-            ;;
-      --nEvents)
-            shift; 
-            numEvents=$1
-            ;;
-      --labelName)
-            shift; 
-            label=$1
-            ;;
-      --json)
-            shift; 
-            jsonpath=$1
-            ;;
-      --condorQueue)
-            shift;
-            condorQueue=$1
-            ;;
+      # -d) runData="true" ;;
+      -g) runWorkspaceStd="true" ;;
+      -c) doCutFlow="true" ;;
+      -v) saveHHWWggFinalStateVars="true" ;;
+      -s) calcSystematics="true" ;;
+      -t) dumpTrees="true" ;;
+      -w) dumpWorkspaces="true" ;;
+      -r) dryRun="true" ;;
+      --nEvents) shift; numEvents=$1 ;;
+      --labelName) shift; label=$1 ;;
+      --json) shift; jsonpath=$1 ;;
+      --condorQueue) shift; condorQueue=$1 ;;
       --)
             shift
             break
@@ -116,8 +90,6 @@ done
 echo "label = $label" 
 echo "numEvents = $numEvents" 
 echo "runWorkspaceStd = $runWorkspaceStd"
-echo "rundata = $runData"
-echo "runsignal = $runSignal"
 echo "jsonpath = $jsonpath"
 echo "calcSystematics = $calcSystematics"
 echo "dumpTrees = $dumpTrees"
@@ -148,21 +120,21 @@ fi
 
 ## Make sure a json file is specified 
 
-if [ $runData == 'false' ] && [ $runSignal == 'false' ] && [ $jsonpath == '' ]
+# if [ $runData == 'false' ] && [ $runSignal == 'false' ] && [ $jsonpath == '' ]
+if [ $jsonpath == '' ]
 then
-      echo "Please choose to run on either Data OR signal with the -s or -d flag"
-      echo "Or specify a json path with --jsonpath <json_path>"
+      echo "Please specify a json path with --jsonpath <json_path>"
       echo "exiting"
       return
 fi   
 
-if [ $runData == 'true' ] && [ $runSignal == 'true' ] && [ $jsonpath == '' ]
-then
-      echo "Please choose to run on either Data OR signal with the -s or -d flag"
-      echo "Or specify a json path with --jsonpath <json_path>"
-      echo "exiting"
-      return
-fi  
+# if [ $runData == 'true' ] && [ $runSignal == 'true' ] && [ $jsonpath == '' ]
+# then
+#       echo "Please choose to run on either Data OR signal with the -s or -d flag"
+#       echo "Or specify a json path with --jsonpath <json_path>"
+#       echo "exiting"
+#       return
+# fi  
 
 ## Set variables to user inputs 
 
@@ -179,15 +151,15 @@ if [ $runWorkspaceStd == 'false' ]
 then
       echo "Submitting jobs with Taggers/test/HHWWggTest_cfg.py as cmssw config"
       # jsonpath=''
-      if [ $runData == 'true' ]
-      then
-            jsonpath='Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json'
-      fi
+      # if [ $runData == 'true' ]
+      # then
+            # jsonpath='Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json'
+      # fi
 
-      if [ $runSignal == 'true' ]
-      then
-            jsonpath='Taggers/test/HHWWgg_2017_Signal/HHWWgg_Signal_2017.json'  
-      fi        
+      # if [ $runSignal == 'true' ]
+      # then
+            # jsonpath='Taggers/test/HHWWgg_2017_Signal/HHWWgg_Signal_2017.json'  
+      # fi        
 
       if [ $runttH == 'true' ]
       then 
@@ -215,15 +187,15 @@ if [ $runWorkspaceStd == 'true' ]
 then
       echo "Submitting jobs with Systematics/test/workspaceStd.py as cmssw config"
 
-      if [ $runData == 'true' ]
-      then
-      jsonpath='Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json'
-      fi
+      # if [ $runData == 'true' ]
+      # then
+      # jsonpath='Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json'
+      # fi
 
-      if [ $runSignal == 'true' ]
-      then
-      jsonpath='Taggers/test/HHWWgg_2017_Signal/HHWWgg_Signal_2017.json'  
-      fi        
+      # if [ $runSignal == 'true' ]
+      # then
+      # jsonpath='Taggers/test/HHWWgg_2017_Signal/HHWWgg_Signal_2017.json'  
+      # fi        
 
       command='fggRunJobs.py --load '
       command+=$jsonpath

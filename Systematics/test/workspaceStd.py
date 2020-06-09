@@ -101,7 +101,7 @@ customize.options.register('doHHWWggDebug', # save more variables to perform che
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doHHWWggDebug'
-                           )                           
+                           )                         
 customize.options.register('doBJetRegression',
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,

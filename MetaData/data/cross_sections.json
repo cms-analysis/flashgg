@@ -55,11 +55,11 @@
   "xs": 6025.0, 
   "itype": 20
  }, 
- "ttHJetToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 0.5193, 
-  "itype": -124300, 
+ "ttHJetToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
+  "xs": 0.4964, 
+  "itype": -126300, 
   "kf": 1.06, 
-  "br": 0.002266
+  "br": 0.00227
  }, 
  "VBFHToGG_M-121_13TeV_powheg_pythia8": {
   "xs": 3.904, 
@@ -74,9 +74,10 @@
   "kf": 1.06, 
   "br": 0.00227
  }, 
- "QCD_Pt-30to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8": {
-  "xs": 24810.0, 
-  "itype": 30, 
+ "GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8": {
+  "xs": 878.1, 
+  "itype": 2, 
+  "kf": 1.0, 
   "br": 1.0
  }, 
  "ttHJetToGG_M128_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
@@ -101,6 +102,9 @@
   "kf": 1.06, 
   "br": 0.00227
  }, 
+ "TTJets_HT-600to800_TuneCP5_13TeV-madgraphMLM-pythia8": {
+  "xs": 1.817
+ }, 
  "VBFHToGG_M126_13TeV_amcatnlo_pythia8": {
   "xs": 3.752, 
   "itype": -126100, 
@@ -110,12 +114,6 @@
  "GluGluToHHTo2B2G_node_3_13TeV-madgraph_correctedcfg": {
   "xs": 0.001, 
   "kf": 1.06
- }, 
- "VBFHToGG_M121_13TeV_amcatnlo_pythia8": {
-  "xs": 3.904, 
-  "itype": -121100, 
-  "kf": 1.06, 
-  "br": 0.002235
  }, 
  "VBFHToGG_M-123_13TeV_powheg_pythia8": {
   "xs": 3.842, 
@@ -179,6 +177,9 @@
   "kf": 1.06, 
   "br": 0.002248
  }, 
+ "W4JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8": {
+  "xs": 545.2
+ }, 
  "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8": {
   "xs": 0.5071, 
   "itype": -125300, 
@@ -191,9 +192,8 @@
   "kf": 1.06, 
   "br": 0.002261
  }, 
- "WZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 5.52, 
-  "br": 1.0
+ "ggF_X450_WWgg_qqlnugg": {
+  "xs": 0.001
  }, 
  "GluGluToHHTo2B2G_node_3_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
   "xs": 0.001, 
@@ -219,19 +219,29 @@
   "kf": 1.0, 
   "br": 1.0
  }, 
- "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS": {
-  "xs": 2.257, 
-  "itype": -125400, 
-  "kf": 1.06, 
-  "br": 0.00227
+ "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8": {
+  "xs": 6025.0, 
+  "itype": 20
  }, 
  "GluGluToBulkGravitonToHHTo2B2G_M-700_narrow_13TeV-madgraph": {
   "xs": 0.001, 
   "kf": 1.06
  }, 
+ "W2JetsToLNu_LHEWpT_150-250_TuneCP5_13TeV-amcnloFXFX-pythia8": {
+  "xs": 0.0
+ }, 
+ "TTJets_HT-800to1200_TuneCP5_13TeV-madgraphMLM-pythia8": {
+  "xs": 0.7521
+ }, 
  "EGamma": {
   "xs": 0.0, 
   "itype": 0
+ }, 
+ "DYJetsToEE_M-50_LTbinned_400To800_5f_LO_13TeV-madgraph_pythia8": {
+  "xs": 0.2012, 
+  "itype": 28, 
+  "kf": 1.0, 
+  "br": 1.0
  }, 
  "GluGluToRadionToHHTo2B2G_M-800_narrow_13TeV-madgraph": {
   "xs": 0.001, 
@@ -241,9 +251,9 @@
   "xs": 0.001, 
   "kf": 1.06
  }, 
- "DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa": {
-  "xs": 84.4, 
-  "itype": 10
+ "WGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8": {
+  "xs": 489.0, 
+  "br": 1.0
  }, 
  "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8": {
   "xs": 2.2569, 
@@ -257,14 +267,15 @@
   "kf": 1.06, 
   "br": 0.002251
  }, 
- "VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 1.9989, 
-  "itype": -130400, 
-  "kf": 1.06, 
-  "br": 0.002238
+ "DYJetsToLL_M-50_13TeV-madgraph-pythia8": {
+  "xs": 4746.0
  }, 
- "ggF_X600_WWgg_qqlnugg": {
-  "xs": 0.001
+ "DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa": {
+  "xs": 84.4, 
+  "itype": 10
+ }, 
+ "W2JetsToLNu_LHEWpT_100-150_TuneCP5_13TeV-amcnloFXFX-pythia8": {
+  "xs": 779.9
  }, 
  "ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8": {
   "xs": 0.5697, 
@@ -272,11 +283,14 @@
   "kf": 1.06, 
   "br": 0.002218
  }, 
- "GluGluHToGG_M126_13TeV_amcatnlo_pythia8": {
-  "xs": 47.89, 
-  "itype": -126000, 
+ "VBFHToGG_M121_13TeV_amcatnlo_pythia8": {
+  "xs": 3.904, 
+  "itype": -121100, 
   "kf": 1.06, 
-  "br": 0.00227
+  "br": 0.002235
+ }, 
+ "W2JetsToLNu_LHEWpT_0-50_TuneCP5_13TeV-amcnloFXFX-pythia8": {
+  "xs": 0.0
  }, 
  "GluGluToHHTo2B2G_node_4_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
   "xs": 0.001, 
@@ -301,11 +315,14 @@
   "kf": 1.0, 
   "br": 1.0
  }, 
- "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS": {
-  "xs": 0.5071, 
-  "itype": -125300, 
+ "ggF_SM_WWgg_qqlnugg": {
+  "xs": 0.001
+ }, 
+ "VHToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8": {
+  "xs": 2.1486, 
+  "itype": -127400, 
   "kf": 1.06, 
-  "br": 0.00227
+  "br": 0.002267
  }, 
  "DoubleEG": {
   "xs": 0.0, 
@@ -313,6 +330,9 @@
  }, 
  "ggF_X650_WWgg_qqlnugg": {
   "xs": 0.001
+ }, 
+ "W1JetsToLNu_LHEWpT_0-50_TuneCP5_13TeV-amcnloFXFX-pythia8": {
+  "xs": 0.0
  }, 
  "ggF_X250_WWgg_qqlnugg": {
   "xs": 0.001
@@ -342,9 +362,6 @@
   "kf": 1.06, 
   "br": 0.00227
  }, 
- "ggF_X450_WWgg_qqlnugg": {
-  "xs": 0.001
- }, 
  "ggF_X1250_WWgg_qqlnugg": {
   "xs": 0.001
  }, 
@@ -360,19 +377,21 @@
   "kf": 1.06, 
   "br": 0.002218
  }, 
+ "GluGluHToGG_M125_13TeV_amcatnlo_pythia8": {
+  "xs": 48.58, 
+  "itype": -125000, 
+  "kf": 1.06, 
+  "br": 0.00227
+ }, 
  "ttHJetToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
   "xs": 0.4851, 
   "itype": -127300, 
   "kf": 1.06, 
   "br": 0.002267
  }, 
- "QCD_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8": {
-  "xs": 113400.0, 
-  "itype": 32, 
-  "br": 1.0
- }, 
- "ggF_X800_WWgg_qqlnugg": {
-  "xs": 0.001
+ "GJets_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8": {
+  "xs": 273.0, 
+  "itype": 7
  }, 
  "GluGluToBulkGravitonToHHTo2B2G_M-1000_narrow_13TeV-madgraph": {
   "xs": 0.0, 
@@ -384,9 +403,11 @@
   "kf": 1.06, 
   "br": 0.00227
  }, 
- "GJets_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8": {
-  "xs": 273.0, 
-  "itype": 7
+ "GluGluHToGG_M120_13TeV_amcatnlo_pythia8": {
+  "xs": 52.22, 
+  "itype": -120000, 
+  "kf": 1.06, 
+  "br": 0.002218
  }, 
  "GluGluToRadionToHHTo2B2G_M-320_narrow_13TeV-madgraph": {
   "xs": 0.001, 
@@ -400,6 +421,9 @@
  }, 
  "VBFHHTo2B2G_CV_1_C2V_1_C3_1_13TeV-madgraph": {
   "xs": 0.001
+ }, 
+ "W1JetsToLNu_LHEWpT_100-150_TuneCP5_13TeV-amcnloFXFX-pythia8": {
+  "xs": 1080.0
  }, 
  "ggF_X280_WWgg_qqlnugg": {
   "xs": 0.001
@@ -429,16 +453,17 @@
   "kf": 1.06, 
   "br": 0.002238
  }, 
+ "NMSSM_XYHWWggqqlnu_MX300_MY170": {
+  "xs": 0.001
+ }, 
+ "GluGluToRadionToHHTo2B2G_M-250_narrow_13TeV-madgraph": {
+  "xs": 0.001, 
+  "kf": 1.06
+ }, 
  "GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6": {
   "xs": 17180.0, 
   "kf": 1.0, 
   "br": 0.0379
- }, 
- "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CUETP8M1Down": {
-  "xs": 2.257, 
-  "itype": -125400, 
-  "kf": 1.06, 
-  "br": 0.00227
  }, 
  "GluGluToHHTo2B2G_node_5_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
   "xs": 0.001, 
@@ -453,28 +478,20 @@
   "kf": 1.06, 
   "br": 0.00227
  }, 
- "ggF_SM_WWgg_qqlnugg": {
-  "xs": 0.001
- }, 
  "GluGluHToGG_M129_13TeV_amcatnlo_pythia8": {
   "xs": 45.94, 
   "itype": -129000, 
   "kf": 1.06, 
   "br": 0.002251
  }, 
- "GJets_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8": {
-  "xs": 94.5, 
-  "itype": 8
+ "GJets_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8": {
+  "xs": 8631.0, 
+  "itype": 5
  }, 
- "GluGluToBulkGravitonToHHTo2B2G_M-320_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
-  "kf": 1.06
- }, 
- "ttHJetToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
-  "xs": 0.5193, 
-  "itype": -124300, 
-  "kf": 1.06, 
-  "br": 0.002266
+ "QCD_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8": {
+  "xs": 113400.0, 
+  "itype": 32, 
+  "br": 1.0
  }, 
  "GluGluToHHTo2B2G_node_SM_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
   "xs": 0.001, 
@@ -488,17 +505,11 @@
   "xs": 3.38, 
   "br": 1.0
  }, 
- "GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8": {
-  "xs": 878.1, 
-  "itype": 2, 
-  "kf": 1.0, 
-  "br": 1.0
+ "ggF_X260_HHWWgg_qqlnu": {
+  "xs": 0.001
  }, 
- "GluGluHToGG_M120_13TeV_amcatnlo_pythia8": {
-  "xs": 52.22, 
-  "itype": -120000, 
-  "kf": 1.06, 
-  "br": 0.002218
+ "W3JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8": {
+  "xs": 991.6
  }, 
  "GluGluToHHTo2B2G_node_9_13TeV-madgraph_correctedcfg": {
   "xs": 0.001, 
@@ -523,8 +534,8 @@
   "xs": 0.001, 
   "kf": 1.06
  }, 
- "TTJets_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8": {
-  "xs": 830
+ "ggF_X600_WWgg_qqlnugg": {
+  "xs": 0.001
  }, 
  "GluGluToHHTo2B2G_node_8_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
   "xs": 0.001, 
@@ -543,6 +554,9 @@
   "itype": -122300, 
   "kf": 1.06, 
   "br": 0.002248
+ }, 
+ "ggF_X600_HHWWgg_qqlnu": {
+  "xs": 0.001
  }, 
  "GluGluToBulkGravitonToHHTo2B2G_M-350_narrow_13TeV-madgraph": {
   "xs": 0.001, 
@@ -566,6 +580,9 @@
   "kf": 1.06, 
   "br": 0.002258
  }, 
+ "W1JetsToLNu_LHEWpT_150-250_TuneCP5_13TeV-amcnloFXFX-pythia8": {
+  "xs": 193.8
+ }, 
  "GluGluToHHTo2B2G_node_11_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
   "xs": 0.001, 
   "kf": 1.06
@@ -575,12 +592,18 @@
   "itype": 32, 
   "br": 1.0
  }, 
- "TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8": {
-  "xs": 665
+ "WGGJets_TuneCP5_13TeV_madgraphMLM_pythia8": {
+  "xs": 1.693
  }, 
  "GluGluToRadionToHHTo2B2G_M-550_narrow_13TeV-madgraph": {
   "xs": 0.001, 
   "kf": 1.06
+ }, 
+ "NMSSM_XYHWWggqqlnu_MX1000_MY800": {
+  "xs": 0.001
+ }, 
+ "TTJets_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8": {
+  "xs": 830
  }, 
  "VBFHToGG_M120_13TeV_amcatnlo_pythia8": {
   "xs": 3.935, 
@@ -593,6 +616,9 @@
   "itype": -124000, 
   "kf": 1.06, 
   "br": 0.002266
+ }, 
+ "W1JetsToLNu_LHEWpT_50-150_TuneCP5_13TeV-amcnloFXFX-pythia8": {
+  "xs": 8989.9
  }, 
  "ttHJetToGG_M128_13TeV_amcatnloFXFX_madspin_pythia8": {
   "xs": 0.4742, 
@@ -616,9 +642,6 @@
   "itype": 2, 
   "kf": 1.0, 
   "br": 1.0
- }, 
- "ggF_X350_WWgg_qqlnugg": {
-  "xs": 0.001
  }, 
  "GJets_HT-40To100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8": {
   "xs": 23100.0, 
@@ -679,11 +702,11 @@
   "xs": 117.864, 
   "br": 1.0
  }, 
- "DYJetsToEE_M-50_LTbinned_100To200_5f_LO_13TeV-madgraph_pythia8": {
-  "xs": 94.01, 
-  "itype": 26, 
-  "kf": 1.0, 
-  "br": 1.0
+ "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS": {
+  "xs": 0.5071, 
+  "itype": -125300, 
+  "kf": 1.06, 
+  "br": 0.00227
  }, 
  "GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8": {
   "xs": 48.58, 
@@ -691,11 +714,11 @@
   "kf": 1.06, 
   "br": 0.00227
  }, 
- "VHToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 2.3726, 
-  "itype": -123400, 
+ "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS": {
+  "xs": 2.257, 
+  "itype": -125400, 
   "kf": 1.06, 
-  "br": 0.002258
+  "br": 0.00227
  }, 
  "DiPhotonJetsBox2BJets_MGG-80toInf_13TeV-Sherpa": {
   "xs": 0.494
@@ -712,13 +735,23 @@
   "xs": 0.001, 
   "kf": 1.06
  }, 
- "GJets_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8": {
-  "xs": 8631.0, 
-  "itype": 5
+ "GluGluHToGG_M121_13TeV_amcatnlo_pythia8": {
+  "xs": 51.46, 
+  "itype": -121000, 
+  "kf": 1.06, 
+  "br": 0.002235
+ }, 
+ "bbHToGG_M-125_4FS_ybyt_13TeV_amcatnlo": {
+  "xs": 0.0448916, 
+  "kf": 1.06, 
+  "br": 0.00227
  }, 
  "GluGluToBulkGravitonToHHTo2B2G_M-260_narrow_13TeV-madgraph": {
   "xs": 0.001, 
   "kf": 1.06
+ }, 
+ "TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8": {
+  "xs": 665
  }, 
  "DYJetsToEE_M-50_LTbinned_95To100_5f_LO_13TeV-madgraph_pythia8": {
   "xs": 48.96, 
@@ -726,13 +759,23 @@
   "kf": 1.0, 
   "br": 1.0
  }, 
+ "GluGluHToGG_M126_13TeV_amcatnlo_pythia8": {
+  "xs": 47.89, 
+  "itype": -126000, 
+  "kf": 1.06, 
+  "br": 0.00227
+ }, 
  "TTGG_0Jets_TuneCP5_13TeV_amcatnlo_madspin_pythia8": {
   "xs": 0.01687
  }, 
- "GJet_Pt20to40_doubleEMEnriched_TuneZ2star_13TeV-pythia6": {
-  "xs": 145400.0, 
-  "kf": 1.0, 
-  "br": 0.001776
+ "TTToHadronic_TuneCP5_13TeV-powheg-pythia8": {
+  "xs": 687.1
+ }, 
+ "VHToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8": {
+  "xs": 2.3726, 
+  "itype": -123400, 
+  "kf": 1.06, 
+  "br": 0.002258
  }, 
  "GluGluToBulkGravitonToHHTo2B2G_M-270_narrow_13TeV-madgraph": {
   "xs": 0.001, 
@@ -781,11 +824,6 @@
   "xs": 75.8, 
   "br": 1.0
  }, 
- "bbHToGG_M-125_4FS_ybyt_13TeV_amcatnlo": {
-  "xs": 0.0448916, 
-  "kf": 1.06, 
-  "br": 0.00227
- }, 
  "TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8": {
   "xs": 4.078
  }, 
@@ -793,11 +831,10 @@
   "xs": 0.001, 
   "kf": 1.06
  }, 
- "GluGluHToGG_M125_13TeV_amcatnlo_pythia8": {
-  "xs": 48.58, 
-  "itype": -125000, 
-  "kf": 1.06, 
-  "br": 0.00227
+ "QCD_Pt-30to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8": {
+  "xs": 24810.0, 
+  "itype": 30, 
+  "br": 1.0
  }, 
  "GluGluToRadionToHHTo2B2G_M-400_narrow_13TeV-madgraph": {
   "xs": 0.001, 
@@ -807,18 +844,11 @@
   "xs": 0.001, 
   "kf": 1.06
  }, 
- "GluGluHToGG_M128_13TeV_amcatnlo_pythia8": {
-  "xs": 46.58, 
-  "itype": -128000, 
-  "kf": 1.06, 
-  "br": 0.002261
+ "ggF_X1000_HHWWgg_qqlnu": {
+  "xs": 0.001
  }, 
  "DYToEE_NNPDF30_13TeV-powheg-pythia8": {
   "xs": 2008.33
- }, 
- "WGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8": {
-  "xs": 489.0, 
-  "br": 1.0
  }, 
  "GluGluHToGG_M121_13TeV_amcatnloFXFX_pythia8": {
   "xs": 51.46, 
@@ -826,9 +856,21 @@
   "kf": 1.06, 
   "br": 0.002235
  }, 
- "GluGluToRadionToHHTo2B2G_M-250_narrow_13TeV-madgraph": {
+ "ttHJetToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
+  "xs": 0.5193, 
+  "itype": -124300, 
+  "kf": 1.06, 
+  "br": 0.002266
+ }, 
+ "GluGluToBulkGravitonToHHTo2B2G_M-340_narrow_13TeV-madgraph": {
   "xs": 0.001, 
   "kf": 1.06
+ }, 
+ "W2JetsToLNu_LHEWpT_400-inf_TuneCP5_13TeV-amcnloFXFX-pythia8": {
+  "xs": 4.1548
+ }, 
+ "W1JetsToLNu_LHEWpT_400-inf_TuneCP5_13TeV-amcnloFXFX-pythia8": {
+  "xs": 1.3134
  }, 
  "GluGluToBulkGravitonToHHTo2B2G_M-300_narrow_13TeV-madgraph": {
   "xs": 0.001, 
@@ -873,9 +915,11 @@
   "kf": 1.06, 
   "br": 0.002266
  }, 
- "WW_TuneCUETP8M1_13TeV-pythia8": {
-  "xs": 63.21, 
-  "br": 1.0
+ "VHToGG_M122_13TeV_amcatnloFXFX_madspin_pythia8": {
+  "xs": 2.4335, 
+  "itype": -122400, 
+  "kf": 1.06, 
+  "br": 0.002248
  }, 
  "ttHJetToGG_M122_13TeV_amcatnloFXFX_madspin_pythia8": {
   "xs": 0.5438, 
@@ -889,11 +933,8 @@
   "kf": 1.06, 
   "br": 0.002235
  }, 
- "VHToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 2.1486, 
-  "itype": -127400, 
-  "kf": 1.06, 
-  "br": 0.002267
+ "ggF_X800_WWgg_qqlnugg": {
+  "xs": 0.001
  }, 
  "ggF_X900_WWgg_qqlnugg": {
   "xs": 0.001
@@ -918,9 +959,8 @@
   "xs": 0.001, 
   "kf": 1.06
  }, 
- "DoubleMuon": {
-  "xs": 0.0, 
-  "itype": 0
+ "ggF_X350_WWgg_qqlnugg": {
+  "xs": 0.001
  }, 
  "GluGluToBulkGravitonToHHTo2B2G_M-280_narrow_13TeV-madgraph": {
   "xs": 0.001, 
@@ -929,6 +969,9 @@
  "GluGluToHHTo2B2G_node_3_13TeV-madgraph": {
   "xs": 0.001, 
   "kf": 1.06
+ }, 
+ "W2JetsToLNu_LHEWpT_250-400_TuneCP5_13TeV-amcnloFXFX-pythia8": {
+  "xs": 31.814
  }, 
  "GluGluHToGG_M127_13TeV_amcatnloFXFX_pythia8": {
   "xs": 47.23, 
@@ -942,9 +985,9 @@
   "kf": 1.06, 
   "br": 0.002266
  }, 
- "GluGluToHHTo2B2G_node_6_13TeV-madgraph_correctedcfg": {
-  "xs": 0.001, 
-  "kf": 1.06
+ "WZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8": {
+  "xs": 5.52, 
+  "br": 1.0
  }, 
  "GluGluToRadionToHHTo2B2G_M-900_narrow_13TeV-madgraph": {
   "xs": 0.001, 
@@ -959,6 +1002,9 @@
  "GluGluToRadionToHHTo2B2G_M-340_narrow_13TeV-madgraph": {
   "xs": 0.001, 
   "kf": 1.06
+ }, 
+ "W2JetsToLNu_LHEWpT_50-150_TuneCP5_13TeV-amcnloFXFX-pythia8": {
+  "xs": 1687.0
  }, 
  "VBFHToGG_M-126_13TeV_powheg_pythia8": {
   "xs": 3.752, 
@@ -991,15 +1037,14 @@
   "kf": 1.06, 
   "br": 0.00227
  }, 
- "VHToGG_M122_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 2.4335, 
-  "itype": -122400, 
-  "kf": 1.06, 
-  "br": 0.002248
+ "ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8": {
+  "xs": 0.4604
  }, 
- "GluGluToHHTo2B2G_node_12_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
-  "xs": 0.001, 
-  "kf": 1.06
+ "ttHJetToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8": {
+  "xs": 0.5193, 
+  "itype": -124300, 
+  "kf": 1.06, 
+  "br": 0.002266
  }, 
  "GJets_HT-40To100_TuneCP5_13TeV-madgraphMLM-pythia8": {
   "xs": 18640.0, 
@@ -1010,6 +1055,9 @@
   "itype": 24, 
   "kf": 1.0, 
   "br": 1.0
+ }, 
+ "TTJets_HT-2500toInf_TuneCP5_13TeV-madgraphMLM-pythia8": {
+  "xs": 0.00141
  }, 
  "ttHToGG_M125_13TeV_powheg_pythia8_v2": {
   "xs": 0.5071, 
@@ -1037,9 +1085,18 @@
   "kf": 1.06, 
   "br": 0.002267
  }, 
- "DYJetsToEE_M-50_LTbinned_400To800_5f_LO_13TeV-madgraph_pythia8": {
-  "xs": 0.2012, 
-  "itype": 28, 
+ "GJet_Pt20to40_doubleEMEnriched_TuneZ2star_13TeV-pythia6": {
+  "xs": 145400.0, 
+  "kf": 1.0, 
+  "br": 0.001776
+ }, 
+ "GJets_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8": {
+  "xs": 94.5, 
+  "itype": 8
+ }, 
+ "DYJetsToEE_M-50_LTbinned_80To85_5f_LO_13TeV-madgraph_pythia8": {
+  "xs": 159.9, 
+  "itype": 22, 
   "kf": 1.0, 
   "br": 1.0
  }, 
@@ -1049,18 +1106,26 @@
   "kf": 1.06, 
   "br": 0.00227
  }, 
- "DYJetsToEE_M-50_LTbinned_80To85_5f_LO_13TeV-madgraph_pythia8": {
-  "xs": 159.9, 
-  "itype": 22, 
-  "kf": 1.0, 
-  "br": 1.0
+ "DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8": {
+  "xs": 6225.42, 
+  "itype": 20
  }, 
  "ggF_X1000_WWgg_qqlnugg": {
   "xs": 0.001
  }, 
+ "GluGluToHHTo2B2G_node_12_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+  "xs": 0.001, 
+  "kf": 1.06
+ }, 
  "GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS": {
   "xs": 48.58, 
   "itype": -125000, 
+  "kf": 1.06, 
+  "br": 0.00227
+ }, 
+ "ttHToGG_M125_13TeV_powheg_pythia8": {
+  "xs": 0.5071, 
+  "itype": -125300, 
   "kf": 1.06, 
   "br": 0.00227
  }, 
@@ -1087,9 +1152,11 @@
   "xs": 0.001, 
   "kf": 1.06
  }, 
- "GluGluToHHTo2B2G_node_10_13TeV-madgraph_correctedcfg": {
-  "xs": 0.001, 
-  "kf": 1.06
+ "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CUETP8M1Down": {
+  "xs": 2.257, 
+  "itype": -125400, 
+  "kf": 1.06, 
+  "br": 0.00227
  }, 
  "GluGluToHHTo2B2G_node_9_13TeV-madgraph": {
   "xs": 0.001, 
@@ -1115,14 +1182,21 @@
   "kf": 1.06, 
   "br": 0.002238
  }, 
- "DYJetsToLL_M-50_13TeV-madgraph-pythia8": {
-  "xs": 4746.0
+ "WW_TuneCUETP8M1_13TeV-pythia8": {
+  "xs": 63.21, 
+  "br": 1.0
  }, 
- "ttHToGG_M125_13TeV_powheg_pythia8": {
-  "xs": 0.5071, 
-  "itype": -125300, 
+ "NMSSM_XYHWWggqqlnu_MX2000_MY1800": {
+  "xs": 0.001
+ }, 
+ "GluGluHToGG_M128_13TeV_amcatnlo_pythia8": {
+  "xs": 46.58, 
+  "itype": -128000, 
   "kf": 1.06, 
-  "br": 0.00227
+  "br": 0.002261
+ }, 
+ "NMSSM_XYHWWggqqlnu_MX1600_MY400": {
+  "xs": 0.001
  }, 
  "GluGluToHHTo2B2G_node_5_13TeV-madgraph_correctedcfg": {
   "xs": 0.001, 
@@ -1138,13 +1212,20 @@
   "kf": 1.06, 
   "br": 0.002261
  }, 
+ "DoubleMuon": {
+  "xs": 0.0, 
+  "itype": 0
+ }, 
  "GluGluToBulkGravitonToHHTo2B2G_M-600_narrow_13TeV-madgraph": {
   "xs": 0.001, 
   "kf": 1.06
  }, 
- "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8": {
-  "xs": 6025.0, 
-  "itype": 20
+ "WGJJToLNu_EWK_QCD_TuneCP5_13TeV-madgraph-pythia8": {
+  "xs": 4.958
+ }, 
+ "GluGluToHHTo2B2G_node_10_13TeV-madgraph_correctedcfg": {
+  "xs": 0.001, 
+  "kf": 1.06
  }, 
  "ggF_X400_WWgg_qqlnugg": {
   "xs": 0.001
@@ -1172,6 +1253,9 @@
   "kf": 1.06, 
   "br": 0.00227
  }, 
+ "W1JetsToLNu_LHEWpT_250-400_TuneCP5_13TeV-amcnloFXFX-pythia8": {
+  "xs": 15.056
+ }, 
  "GluGluToHHTo2B2G_node_SM_13TeV-madgraph": {
   "xs": 0.001, 
   "kf": 1.06
@@ -1187,9 +1271,15 @@
   "kf": 1.06, 
   "br": 0.00227
  }, 
+ "TTJets_HT-1200to2500_TuneCP5_13TeV-madgraphMLM-pythia8": {
+  "xs": 0.1313
+ }, 
  "GluGluToHHTo2B2G_node_2_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
   "xs": 0.001, 
   "kf": 1.06
+ }, 
+ "GluGluToHHTo_WWgg_qqlnu_node2": {
+  "xs": 0.001
  }, 
  "GluGluHToGG_M129_13TeV_amcatnloFXFX_pythia8": {
   "xs": 45.94, 
@@ -1202,23 +1292,25 @@
   "itype": 31, 
   "br": 1.0
  }, 
- "DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8": {
-  "xs": 6225.42, 
-  "itype": 20
+ "GluGluToHHTo2B2G_node_6_13TeV-madgraph_correctedcfg": {
+  "xs": 0.001, 
+  "kf": 1.06
  }, 
- "GluGluHToGG_M121_13TeV_amcatnlo_pythia8": {
-  "xs": 51.46, 
-  "itype": -121000, 
-  "kf": 1.06, 
-  "br": 0.002235
+ "WWTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8": {
+  "xs": 81.16
  }, 
  "GluGluToRadionToHHTo2B2G_M-260_narrow_13TeV-madgraph": {
   "xs": 0.001, 
   "kf": 1.06
  }, 
- "GluGluToBulkGravitonToHHTo2B2G_M-340_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
-  "kf": 1.06
+ "GluGluToHHTo_WWgg_qqlnu_node9": {
+  "xs": 0.001
+ }, 
+ "VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8": {
+  "xs": 1.9989, 
+  "itype": -130400, 
+  "kf": 1.06, 
+  "br": 0.002238
  }, 
  "GluGluToRadionToHHTo2B2G_M-500_narrow_13TeV-madgraph": {
   "xs": 0.001, 
@@ -1227,12 +1319,6 @@
  "GluGluToBulkGravitonToHHTo2B2G_M-500_narrow_13TeV-madgraph": {
   "xs": 0.001, 
   "kf": 1.06
- }, 
- "ttHJetToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
-  "xs": 0.4964, 
-  "itype": -126300, 
-  "kf": 1.06, 
-  "br": 0.00227
  }, 
  "VHToGG_M129_13TeV_amcatnloFXFX_madspin_pythia8": {
   "xs": 2.0463, 
@@ -1245,6 +1331,10 @@
   "itype": -126400, 
   "kf": 1.06, 
   "br": 0.00227
+ }, 
+ "GluGluToBulkGravitonToHHTo2B2G_M-320_narrow_13TeV-madgraph": {
+  "xs": 0.001, 
+  "kf": 1.06
  }, 
  "GluGluToHHTo2B2G_node_11_13TeV-madgraph": {
   "xs": 0.001, 
@@ -1263,29 +1353,19 @@
   "kf": 1.06, 
   "br": 0.002258
  }, 
+ "DYJetsToEE_M-50_LTbinned_100To200_5f_LO_13TeV-madgraph_pythia8": {
+  "xs": 94.01, 
+  "itype": 26, 
+  "kf": 1.0, 
+  "br": 1.0
+ }, 
+ "WGJJToLNuGJJ_EWK_aQGC-FS-FM_TuneCP5_13TeV-madgraph-pythia8": {
+  "xs": 1.447
+ }, 
  "VBFHToGG_M-120_13TeV_powheg_pythia8": {
   "xs": 3.935, 
   "itype": -120100, 
   "kf": 1.06, 
   "br": 0.002218
- },
- "GluGluToHHTo_WWgg_qqlnu_node2": {
-  "xs": 0.001
- },
- "GluGluToHHTo_WWgg_qqlnu_node9": {
-  "xs": 0.001
- },
- "NMSSM_XYHWWggqqlnu_MX1000_MY800": {
-  "xs": 0.001
- },
- "NMSSM_XYHWWggqqlnu_MX1600_MY400": {
-  "xs": 0.001
- },
- "NMSSM_XYHWWggqqlnu_MX2000_MY1800": {
-  "xs": 0.001
- },
- "NMSSM_XYHWWggqqlnu_MX300_MY170": {
-  "xs": 0.001
  }
-
 }

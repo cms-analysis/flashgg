@@ -60,9 +60,73 @@ class HHWWggCustomize():
                 entry = "%s:=%s"%(vtitle,vname)
                 finalStateVars.append(entry)
 
+        # Add all object vars 
+        # p4_variables = ["E","pt","eta","phi"]
+        p4_variables = ["E","pt","px","py","pz","eta","phi"]
+        checkN = 5
+        # allCheck = 7
+        # goodCheck = 3
+        objectVectors = [] 
+        objs = ["Electrons","Muons","Jets"]
+        vecTypes = ["all","good"]
+        for t in vecTypes:
+            for o in objs:
+                objVec = "%s%s"%(t,o)
+                objectVectors.append(objVec)
+
+        print"vecs:",objectVectors
+        for objV in objectVectors:
+            vtitle = "N_%s"%(objV) 
+            vname = "%s.size()"%(objV)  
+            entry = "%s:=%s"%(vtitle,vname)
+            finalStateVars.append(entry)
+            for v in p4_variables:
+                for i in range(checkN):
+                    vtitle = "%s_%s_%s"%(objV,i,v)
+                    vname = "? %s.size() >= %s ? %s[%s].p4().%s() : -999"%(objV,i+1,objV,i,v)
+                    entry = "%s:=%s"%(vtitle,vname)
+                    finalStateVars.append(entry)
+            if("Electrons" in objV):
+                eVars = ["passLooseId","passMediumId","passTightId","passMVALooseId","passMVAMediumId","passMVATightId"]
+                for eV in eVars:
+                    for i in range(checkN):
+                        vtitle = "%s_%s_%s"%(objV,i,eV)
+                        vname = "? %s.size() >= %s ? %s[%s].%s() : -999"%(objV,i+1,objV,i,eV)
+                        entry = "%s:=%s"%(vtitle,vname)
+                        finalStateVars.append(entry)
+            if("Muons" in objV):
+                mVars = ["pfIsolationR04().sumChargedHadronPt","pfIsolationR04().sumNeutralHadronEt","pfIsolationR04().sumPhotonEt",
+                         "pfIsolationR04().sumPUPt"]
+                mVarTitles = ["sumChargedHadronPt","sumNeutralHadronEt","sumPhotonEt","sumPUPt"]
+                for imV,mV in enumerate(mVars):
+                    mVarTitle = mVarTitles[imV]
+                    for i in range(checkN):
+                        vtitle = "%s_%s_%s"%(objV,i,mVarTitle)
+                        vname = "? %s.size() >= %s ? %s[%s].%s() : -999"%(objV,i+1,objV,i,mV)
+                        entry = "%s:=%s"%(vtitle,vname)
+                        finalStateVars.append(entry)  
+
+            # var1 = "jet" + str(jeti) + "_DeepFlavourScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 "  
+            if("Jets" in objV):
+                bscores = ["bDiscriminator('mini_pfDeepFlavourJetTags:probb')","bDiscriminator('pfDeepCSVJetTags:probb')",
+                           "bDiscriminator('mini_pfDeepFlavourJetTags:probbb')","bDiscriminator('pfDeepCSVJetTags:probbb')"]
+                
+                btitles = ["bDiscriminator_mini_pfDeepFlavourJetTags_probb","bDiscriminator_pfDeepCSVJetTags_probb",
+                           "bDiscriminator_mini_pfDeepFlavourJetTags_probbb","bDiscriminator_pfDeepCSVJetTags_probbb"
+                          ]
+                for ib,bscore in enumerate(bscores):
+                    btitle = btitles[ib]
+                    for i in range(checkN):
+                        vtitle = "%s_%s_%s"%(objV,i,btitle)
+                        vname = "? %s.size() >= %s ? %s[%s].%s : -999"%(objV,i+1,objV,i,bscore)
+                        entry = "%s:=%s"%(vtitle,vname)
+                        finalStateVars.append(entry)                                                                      
+
         # for removal of prompt-prompt events from QCD and GJet samples 
         finalStateVars.append("Leading_Photon_genMatchType:=Leading_Photon.genMatchType()")
         finalStateVars.append("Subleading_Photon_genMatchType:=Subleading_Photon.genMatchType()")
+
+        print"len(finalStateVars):",len(finalStateVars)
 
         # if self.customize.doHHWWggTagCutFlow: 
             # variables += cutFlowVars 
@@ -98,7 +162,6 @@ class HHWWggCustomize():
       debugVars=[
           "leadPhoMVA[2,0,2]:=lp_Hgg_MVA",
           "subleadPhoMVA[2,0,2]:=slp_Hgg_MVA"
-
       ]
 
       if self.customize.doHHWWggDebug:
@@ -151,6 +214,7 @@ class HHWWggCustomize():
 
         if self.customize.doHHWWggTagCutFlow or self.customize.saveHHWWggFinalStateVars:
             self.process.flashggHHWWggTag.doHHWWggTagCutFlowAnalysis = cms.bool(True)
+
         # if self.customize.saveHHWWggFinalStateVars:
             # self.process.flashggHHWWggTag.saveHHWWggFinalStateVars = cms.bool(True)
 

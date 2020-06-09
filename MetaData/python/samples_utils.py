@@ -129,10 +129,15 @@ class SamplesManager(object):
         
         catalog = self.readCatalog()
         
+        # HHWWgg hack 
+        # bad_datasets = ['/ggF_SM_WWgg_qqlnugg/atishelm-HHWWgg_v1-94X_mc2017-RunIIFall18-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9-4d2010f8ba2360fb4de1038d4a1ef29e/USER',
+                        # '/ggF_X250_WWgg_qqlnugg/atishelm-HHWWgg_v1-94X_mc2017-RunIIFall18-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9-4d2010f8ba2360fb4de1038d4a1ef29e/USER']
+
         print "Importing from das %s" % list_datasets
         datasets = []
         for dataset in list_datasets:
             if "*" in dataset:
+                # if dataset in bad_datasets: continue # HHWWgg 
                 # response = das_query("https://cmsweb.cern.ch","dataset dataset=%s | grep dataset.name" % dataset, 0, 0, False, self.dbs_instance_, ckey=x509(), cert=x509())
                 # response = das_query("https://cmsweb.cern.ch","dataset dataset=%s instance=%s | grep dataset.name" % (dataset, self.dbs_instance_), 0, 0, False, ckey=x509(), cert=x509())
                 # response = das_query("https://cmsweb.cern.ch","dataset dataset=%s instance=%s | grep dataset.name" % (dataset, self.dbs_instance_), 0, 0, False, ckey=x509(), cert=x509())
@@ -143,10 +148,23 @@ class SamplesManager(object):
                     datasets.append( d["dataset"][0]["name"] )
             else:
                 datasets.append(dataset)
+        # bad_datasets = ['/ggF_SM_WWgg_qqlnugg/atishelm-HHWWgg_v1-94X_mc2017-RunIIFall18-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9-4d2010f8ba2360fb4de1038d4a1ef29e/USER',
+        #                 '/ggF_SM_WWgg_qqlnugg/atishelm-HHWWgg_v1-94X_mc2017-RunIIFall18-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9-4d2010f8ba2360fb4de1038d4a1ef29e/USER',
+        #                 '/ggF_X750_WWgg_lnulnugg/atishelm-HHWWgg_v1-94X_mc2017-RunIIFall18-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9-4d2010f8ba2360fb4de1038d4a1ef29e/USER',
+        #                 '/ggF_X450_WWgg_qqlnugg/atishelm-HHWWgg_v1-94X_mc2017-RunIIFall18-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9-4d2010f8ba2360fb4de1038d4a1ef29e/USER'
+        #                 ]
+
+        
+        # for id, dset in enumerate(datasets):
+            # if dset in bad_datasets: datasets.pop(id)
 
         print "Datasets to import"
         print "\n".join(datasets)
+        # HHWWgg hack 
+        # bad_datasets = ['/ggF_SM_WWgg_qqlnugg/atishelm-HHWWgg_v1-94X_mc2017-RunIIFall18-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9-4d2010f8ba2360fb4de1038d4a1ef29e/USER',
+
         for dsetName in datasets:
+            # if dsetName in bad_datasets: continue # Hack for HHWWgg 
             print "Importing %s" % dsetName
             files = self.getFilesFomDAS(dsetName)
             self.addToDataset(catalog,dsetName,files)
@@ -351,15 +369,40 @@ class SamplesManager(object):
         info = catalog[dsetName]
         files = info["files"]
         print "Number of files: ", len(files)
-        
+        nftrm = 0
         if self.force_ or not catalog[dsetName].get("vetted",False):
             toremove = []
+            ##-- HHWWgg hack for removing files that are in dataset publication but don't exist on eos  
+            # For HHWWgg_bkg_v2345
+            badFolders = ['200103_085015','200103_083917','200103_084622','200103_082849','200103_085407','200103_083217','200105_100811','200105_100434','200105_095337']
+            for ifil,eifil in enumerate(files):
+                splitPath = str(eifil['name']).split('/')
+                folder = splitPath[-3]
+                if folder in badFolders:
+                    print"removing file: ",eifil
+                    # print"adding index to toremove:",ifil 
+                    toremove.append(ifil)  
+            print"toremove:",toremove 
+            ##-- 
+            # /W1JetsToLNu_LHEWpT_400-inf_TuneCP5_13TeV-amcnloFXFX-pythia8/bmarzocc-HHWWgg_bkg_v3-94X_mc2017-RunIIFall18-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2-db49498e7dc78d32430682b35e9cae55/USER
+            # /W1JetsToLNu_LHEWpT_150-250_TuneCP5_13TeV-amcnloFXFX-pythia8/bmarzocc-HHWWgg_bkg_v3-94X_mc2017-RunIIFall18-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v1-db49498e7dc78d32430682b35e9cae55/USER
             keep_wildcard=None
             for ifil,eifil in enumerate(files):
+                # print"ifil:",ifil 
+                # print"eifil:",eifil
                 if ifil in toremove:
+                    # print'this index is in toremove:',ifil 
+                    print'skipping file:',eifil
+                    # print'continuing'
                     continue
                 for jfil,ejfil in enumerate(files[ifil+1:]):
-                    if ifil+jfil in toremove:
+                    # print"jfil:",jfil
+                    # print"ejfil:",ejfil
+                    # if ifil+jfil in toremove:
+                    if ifil+jfil+1 in toremove: # should this be ifil+jfil+1 and not ifil+jfil?
+                        # print'this index is in toremove:',ifil+jfil+1
+                        print'Skipping file:',ejfil
+                        # print'continuing'
                         continue
                     if eifil["name"] == ejfil["name"]:
                         toremove.append(ifil)
@@ -372,6 +415,7 @@ class SamplesManager(object):
                                 print eifil["name"]
                                 print ejfil["name"]
                                 reply=ask_user("keep both (yes/no/matching)? ",["y","n","m"])
+                                # reply = "n" # hack for HHWWgg 
                                 if reply == "m":             
                                     while not keep_wildcard:
                                         print "enter wildcard matching expression",
@@ -390,15 +434,64 @@ class SamplesManager(object):
                                     print eifil["name"]
                                     print ejfil["name"]
                                     reply=ask_user("keep both? ")
+                                    # reply = "n" # hack 
                             if reply == "n":
+                                #print'path1 = ',ejfil["name"]
+                                #print'path2 = ',eifil["name"]
+                                # folder1 = ejfil["name"].split('/')[11]
+                                # folder2 = eifil["name"].split('/')[11]
+                                # dsn1 = ejfil["name"].split('/')[9]
+                                # dsn2 = eifil["name"].split('/')[9]
+                                # print'folder1 = ',folder1 
+                                # print'folder2 = ',folder2 
+                                # print'dsn1 = ',dsn1
+                                # print'dsn2 = ',dsn2
+                                # 
+                                # if (folder1 == '191205_113613' and folder2 == '191210_125520') or (folder1 == '191210_125520' and folder2 == '191205_113613'):
+
+                                #   
+                                # good_folders = ['191205_120702','191210_125520']
+                                # if (dsn1 == 'ggF_X250_WWgg_qqlnugg') and (folder1 == '191205_113613'): 
+                                #     print'REMOVING file in folder:',folder1
+                                #     toremove.append(ifil+jfil)
+                                # if (dsn2 == 'ggF_X250_WWgg_qqlnugg') and (folder2 == '191205_113613'): 
+                                #     toremove.append(ifil)
+                                #     print'REMOVING file in folder:',folder2
+
+                                # hack 
                                 if ask_user( "keep %s? " % ejfil["name"] ) == "n":
                                     toremove.append(ifil+jfil)
                                 if ask_user( "keep %s? " % eifil["name"] ) == "n":
                                     toremove.append(ifil)
-                                    
+
+            # print'len(toremove) = ',len(toremove)
+
             for ifile in sorted(toremove,reverse=True):
+                # HHWWgg hack for situation with files that don't exist
+
+
+                #folder=files[ifile]['name'].split('/')[11]
+                #dsn = files[ifile]['name'].split('/')[9]
+                # if (dsn == 'ggF_X250_WWgg_qqlnugg') and folder != '191205_113613': continue # hhwwgg hack 
+                # print'removing file:',files[ifile]['name'] 
                 files.pop(ifile)
+            # for ifile,file in enumerate(sorted(files, reverse=True)):
+
+            # # Adding for HHWWgg after accidentally creating to many output directories for crab 
+            # secondaryRemoval = []
+            # for ifile,file in enumerate(files):
+            #     folder=files[ifile]['name'].split('/')[11]
+            #     dsn = files[ifile]['name'].split('/')[9]
+            #     # print'file = ',files[ifile]['name']
+            #     # print'folder = ',folder 
+            #     if (dsn == 'ggF_X250_WWgg_qqlnugg') and folder == '191205_113613':
+            #         print'file = ',files[ifile]['name']
+            #         secondaryRemoval.append(ifile)
+            #         # files.pop(ifile)
             
+            # for ifile in sorted(secondaryRemoval,reverse=True):
+            #     files.pop(ifile)
+
         print "After duplicates removal: ", len(files)
         nsub = 0
         catalog[dsetName]["vetted"] = True
@@ -491,6 +584,7 @@ class SamplesManager(object):
         parent_n_info = 'nlumis' if dset_type=='data' else 'nevents'
         parent_dset = das_query("parent dataset=%s instance=prod/phys03" % dsetName)['data'][0]['parent'][0]['name']
         parent_info = das_query("dataset dataset=%s instance=prod/phys03" % parent_dset)
+        # print'parent_info = ',parent_info
         try:
             parent_info = parent_info['data'][-1]['dataset'][0][parent_n_info]
         except KeyError:

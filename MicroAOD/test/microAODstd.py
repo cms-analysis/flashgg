@@ -16,7 +16,7 @@ process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
 
 import os
 ### 2016
-process.GlobalTag = GlobalTag(process.GlobalTag, '80X_mcRun2_asymptotic_2016_TrancheIV_v7', '')
+# process.GlobalTag = GlobalTag(process.GlobalTag, '80X_mcRun2_asymptotic_2016_TrancheIV_v7', '')
 #process.source = cms.Source("PoolSource",
                              #fileNames=cms.untracked.vstring("/store/mc/RunIISummer16MiniAODv2/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/024E4FA3-8BBC-E611-8E3D-00266CFFBE88.root")
 #)
@@ -25,31 +25,31 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '80X_mcRun2_asymptotic_2016_Tra
 
 ### 2017
 
-abe_files = [] 
-#file_path = '/store/user/atishelm/postGEN_Outputs/ggF_X1250_WWgg_qqmunugg_10000events_woPU_MINIAOD/190305_151213/0000/ggF_X1250_WWgg_qqmunugg_10000events_woPU_MINIAOD_'
+# abe_files = [] 
+# #file_path = '/store/user/atishelm/postGEN_Outputs/ggF_X1250_WWgg_qqmunugg_10000events_woPU_MINIAOD/190305_151213/0000/ggF_X1250_WWgg_qqmunugg_10000events_woPU_MINIAOD_'
 
-#file_path = '/store/user/atishelm/postGEN_Outputs/ggF_X1250_WWgg_qqenugg_10000events_woPU_MINIAOD/190225_135123/0000/ggF_X1250_WWgg_qqenugg_10000events_woPU_MINIAOD_' 
-#file_path = '/eos/cms/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X1250_WWgg_lnulnugg/100000events_wPU_MINIAOD/190403_092057/0000/'
-#file_path = '/eos/cms/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X1250_WWgg_qqlnugg/100000events_wPU_MINIAOD/190403_092149/0000/'
-# file_path = '/eos/cms/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X250_WWgg_lnulnugg/100000events_wPU_MINIAOD/190620_020747/0000/'
-file_path = '/eos/cms/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X250_WWgg_qqlnugg/100000events_wPU_MINIAOD/190620_020629/0000/'
-# file_path = '/eos/cms/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X250_WWgg_qqqqgg/100000events_wPU_MINIAOD/190620_020707/0000/' # qqqq
-#for i in range(25):
+# #file_path = '/store/user/atishelm/postGEN_Outputs/ggF_X1250_WWgg_qqenugg_10000events_woPU_MINIAOD/190225_135123/0000/ggF_X1250_WWgg_qqenugg_10000events_woPU_MINIAOD_' 
+# #file_path = '/eos/cms/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X1250_WWgg_lnulnugg/100000events_wPU_MINIAOD/190403_092057/0000/'
+# #file_path = '/eos/cms/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X1250_WWgg_qqlnugg/100000events_wPU_MINIAOD/190403_092149/0000/'
+# # file_path = '/eos/cms/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X250_WWgg_lnulnugg/100000events_wPU_MINIAOD/190620_020747/0000/'
+# file_path = '/eos/cms/store/group/phys_higgs/cmshgg/atishelm/flashgg/GJetMINIAOD/RunIIFall17/'
+# # file_path = '/eos/cms/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X250_WWgg_qqqqgg/100000events_wPU_MINIAOD/190620_020707/0000/' # qqqq
+# #for i in range(25):
 
-from os import listdir
-from os.path import isfile, join
-abe_files = [f for f in listdir(file_path) if isfile(join(file_path, f))]
-#print 'abe_files = ',abe_files 
-# Get all file names 
-# shortened_path = '/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X250_WWgg_qqqqgg/100000events_wPU_MINIAOD/190620_020707/0000/' # qqqq
-shortened_path = '/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X250_WWgg_qqlnugg/100000events_wPU_MINIAOD/190620_020629/0000/'
-# shortened_path = '/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X250_WWgg_lnulnugg/100000events_wPU_MINIAOD/190620_020747/0000/'
-for i in range(len(abe_files)):
-    tmp_path = shortened_path 
-    tmp_path += abe_files[i]
-    #tmp_path = tmp_path[-8:]
-    abe_files[i] = tmp_path
-    if i == 3: break 
+# from os import listdir
+# from os.path import isfile, join
+# abe_files = [f for f in listdir(file_path) if isfile(join(file_path, f))]
+# #print 'abe_files = ',abe_files 
+# # Get all file names 
+# # shortened_path = '/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X250_WWgg_qqqqgg/100000events_wPU_MINIAOD/190620_020707/0000/' # qqqq
+# shortened_path = '/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X250_WWgg_qqlnugg/100000events_wPU_MINIAOD/190620_020629/0000/'
+# # shortened_path = '/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X250_WWgg_lnulnugg/100000events_wPU_MINIAOD/190620_020747/0000/'
+# for i in range(len(abe_files)):
+#     tmp_path = shortened_path 
+#     tmp_path += abe_files[i]
+#     #tmp_path = tmp_path[-8:]
+#     abe_files[i] = tmp_path
+#     if i == 3: break 
 #print 'abe_files = ',abe_files 
 # for i in range(1):
 # # for i in range(3):
@@ -62,8 +62,9 @@ for i in range(len(abe_files)):
 process.GlobalTag = GlobalTag(process.GlobalTag,'','')
 process.source = cms.Source("PoolSource",
                             #fileNames=cms.untracked.vstring('/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X1250_WWgg_lnulnugg/100000events_wPU_MINIAOD/190403_092057/0000/ggF_X1250_WWgg_lnulnugg_100000events_wPU_MINIAOD_3.root'))
-                            #fileNames=cms.untracked.vstring('/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X250_WWgg_lnulnugg/100000events_wPU_MINIAOD/190620_020747/0000/ggF_X250_WWgg_lnulnugg_100000events_wPU_MINIAOD_88.root'))
-                            fileNames=cms.untracked.vstring(abe_files))
+                            # fileNames=cms.untracked.vstring('/store/group/phys_higgs/resonant_HH/RunII/MicroAOD/HHWWggSignal/ggF_X250_WWgg_lnulnugg/100000events_wPU_MINIAOD/190620_020747/0000/ggF_X250_WWgg_lnulnugg_100000events_wPU_MINIAOD_88.root'))
+                            # fileNames=cms.untracked.vstring(abe_files))
+                            fileNames=cms.untracked.vstring("/store/group/phys_higgs/cmshgg/atishelm/flashgg/GJetMINIAOD/RunIIFall17/98FC34F6-6ACC-E811-906B-509A4C83EFAB_output.root"))
                             #fileNames=cms.untracked.vstring(abe_files[0],abe_files[1]))
 #    process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring('/store/mc/RunIISummer16MiniAODv2/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/024E4FA3-8BBC-E611-8E3D-00266CFFBE88.root'))
     #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring('root://eoscms.cern.ch//eos/cms/store/mc/RunIIFall17MiniAOD/GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/40000/4A2ACB0A-1BD9-E711-AF54-141877410316.root'))
@@ -121,9 +122,20 @@ process.load("flashgg/MicroAOD/flashggMicroAODSequence_cff")
 #process.weightsCount.pileupInfo = "addPileupInfo"
 
 from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODDefaultOutputCommand
-process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile_ggF_X250_WWgg_qqlnugg_smallsampletest.root'),
+process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.string('myMicroAODOutputFile.root'),
                                outputCommands = microAODDefaultOutputCommand
                                )
+
+# # For PhotonID study 
+# process.out.outputCommands.extend([
+#                                              'keep *Ecal*_*_*_*',
+#                                              'keep *_*Ecal*_*_*',
+#                                              'keep *ECAL*_*_*_*',  
+#                                              'keep *_*ECAL*_*_*', 
+#                                              'keep *ecal*_*_*_*',      
+#                                              'keep *_*ecal*_*_*',  
+#                                              'keep *EGamma*_*_*_*', 
+#                                              'keep *_*EGamma*_*_*'])
 
 # All jets are now handled in MicroAODCustomize.py
 # Switch from PFCHS to PUPPI with puppi=1 argument (both if puppi=2)

@@ -332,6 +332,7 @@ class JobConfig(object):
                                 #         print "FOUND HACK2017 PILEUP DISTRIBUTION WITH KEY:",matches[0]
                                 # if not found_hack2017:
                                 matches = filter(lambda x: x in dsetname, self.pu_distribs.keys() )
+                                print'PU matches below'
                                 print matches
                                 if len(matches) > 1:
                                     print "Multiple matches, check if they're all the same"
@@ -471,6 +472,7 @@ class JobConfig(object):
        #     self.filePrepend = "root://xrootd-cms.infn.it/"
             self.filePrepend = "root://cms-xrd-global.cern.ch/"
         elif self.useEOS:
+            print'useEOS: True'
             self.filePrepend = "root://eoscms.cern.ch//eos/cms"
         
         self.samplesMan = None
@@ -485,7 +487,7 @@ class JobConfig(object):
             else:
                 dataset = self.samplesMan.getDatasetMetaData(self.options.maxEvents,self.dataset,jobId=self.jobId,nJobs=self.nJobs,weightName=self.WeightName)
             if not dataset: 
-                print "Could not find dataset %s in campaing %s/%s" % (self.dataset,self.metaDataSrc,self.campaing)
+                print "Could not find dataset %s in campaign %s/%s" % (self.dataset,self.metaDataSrc,self.campaing)
                 sys.exit(-1)
                 
         self.dataset = dataset
