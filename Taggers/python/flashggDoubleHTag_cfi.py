@@ -23,7 +23,8 @@ ttHKiller_std = cms.vdouble()
 ttHKiller_listmean = cms.vdouble()
 ttHKiller_liststd = cms.vdouble()
 MaxJetEta = 2.5
-MReg_weights="XGB_Mjj_Reg_model_2016.weights.xml"
+year = 2016
+MReg_weights=""
 
 flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    DiPhotonName = cms.string('flashggPreselectedDiPhotons'), # 
@@ -50,6 +51,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    BTagType = cms.vstring('mini_pfDeepFlavourJetTags:probb','mini_pfDeepFlavourJetTags:probbb','mini_pfDeepFlavourJetTags:problepb'), #string for btag algorithm
                                    UseJetID = cms.bool(True),
                                    JetIDLevel = cms.string(jetID),
+                                   year = cms.uint32(year),
 
                                    #MVABoundaries  = cms.vdouble(0.29,0.441, 0.724), # category boundaries for MVA w/o Mjj
                                    #MXBoundaries   = cms.vdouble(250., 354., 478., 560.), # .. and MX w/o Mjj
@@ -72,7 +74,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
 
                                    doMVAFlattening=cms.bool(True),#do transformation of cumulative to make it flat
                                    MVAscaling=cms.double(MVAscalingValue),
-                                   doCategorization=cms.bool(True),#do categorization based on MVA x MX or only fill first tree with all events
+                                   doCategorization=cms.bool(False),#do categorization based on MVA x MX or only fill first tree with all events
                                    MVAFlatteningFileName=cms.untracked.FileInPath("%s"%MVAFlatteningFileName),#FIXME, this should be optional, is it?
                                    globalVariables=globalVariables,
                                    doReweight = flashggDoubleHReweight.doReweight,
@@ -81,6 +83,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
              			   doMassReg=cms.bool(False),
                                    dottHTagger=cms.bool(False), #whether to do ttH killer. 
                                     # for mass regression ####
+				   MReg_weights=cms.untracked.FileInPath("%s"%MReg_weights),
                                    MRegConf=cms.PSet(variables=cms.VPSet(),
                                                    classifier=cms.string("BDT::bdt"),
                                                    weights=cms.FileInPath("%s"%MReg_weights),
@@ -155,13 +158,12 @@ cfgTools.addVariables(flashggDoubleHTag.MRegConf.variables,
                           "subleadingJet_phi := subleadJet().phi",
                           "subleadingJet_DeepFlavour := subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
                           "subleadingJet_bRegNNCorr := subleadJet().userFloat('bRegNNCorr')",
-                          "ttH_MET := RegMET().pt",
-                          "ttH_phiMET := RegMET().phi",
+                          "corrMET := RegMET()",
+                          "corrMETPhi := RegPhiMET()",
                           "MjjReg_phi12 := abs(getdPhi()[0])",
                           "MjjReg_phi1M := abs(getdPhi()[1])",
                           "MjjReg_phi2M := abs(getdPhi()[2])",
                           "rho := global.rho",
-                          "nvtx := global.nvtx",
                           "ttH_sumET := sum_jetET()-leadJet().pt-subleadJet().pt"
                       ]
                     )

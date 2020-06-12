@@ -217,6 +217,12 @@
         "JER_up" : 0.1, 
         "JER_down" : -0.1 
     },
+
+    "MjjRegression" :
+    {
+	"weightFile" : "flashgg/MetaData/data/MjjRegression/TMVA_mjj_reg_model_met_corr_All.xml"
+    },
+
     "doubleHTag":
     {
 	"jetID" : "Tight2018",

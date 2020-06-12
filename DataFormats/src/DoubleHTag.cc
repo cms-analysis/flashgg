@@ -17,8 +17,8 @@ DoubleHTag::DoubleHTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<fla
     this->setP4( dijet_ + dipho_->p4() );
 }
 
-DoubleHTag::DoubleHTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<flashgg::Jet> leadJet, edm::Ptr<flashgg::Jet> subleadJet, edm::Ptr<flashgg::Met> RegMET, float &sum_jetET )
-    : mva_(-.2), MX_(0.),genMhh_(0.),genCosThetaStar_CS_(0.),leadJet_(leadJet), subleadJet_(subleadJet), RegMET_(RegMET), sum_jetET_(&sum_jetET)
+DoubleHTag::DoubleHTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<flashgg::Jet> leadJet, edm::Ptr<flashgg::Jet> subleadJet, double &RegMET, double &RegPhiMET, float &sum_jetET )
+    : mva_(-.2), MX_(0.),genMhh_(0.),genCosThetaStar_CS_(0.),leadJet_(leadJet), subleadJet_(subleadJet), RegMET_(&RegMET), RegPhiMET_(&RegPhiMET), sum_jetET_(&sum_jetET)
 
 {
     dipho_ = diPho;
@@ -164,9 +164,9 @@ std::vector<double> DoubleHTag::getdPhi() const
     std::vector<double> dPhi;
     double dphi_jj = TVector2::Phi_mpi_pi(leadJet().phi() - subleadJet().phi());
     dPhi.push_back(dphi_jj);
-    double dphi_j1m = TVector2::Phi_mpi_pi(leadJet().phi() - RegMET().phi());
+    double dphi_j1m = TVector2::Phi_mpi_pi(leadJet().phi() - RegPhiMET());
     dPhi.push_back(dphi_j1m);
-    double dphi_j2m = TVector2::Phi_mpi_pi(subleadJet().phi() - RegMET().phi());
+    double dphi_j2m = TVector2::Phi_mpi_pi(subleadJet().phi() - RegPhiMET());
     dPhi.push_back(dphi_j2m);
     return dPhi;
 }

@@ -264,7 +264,8 @@ class DoubleHCustomize():
         self.process.flashggDoubleHTag.ttHKiller_listmean = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_listmean"])
         self.process.flashggDoubleHTag.ttHKiller_liststd = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_liststd"])
         self.process.flashggDoubleHTag.MaxJetEta = cms.double(self.metaConditions["bTagSystematics"]["eta"])
-
+        self.process.flashggDoubleHTag.year = cms.uint32(self.metaConditions["bRegression"]["year"])
+	self.process.flashggDoubleHTag.MReg_weights = cms.untracked.FileInPath(str(self.metaConditions["MjjRegression"]["weightfile"]))
         ## add double Higgs tag to the tag sequence
         #  self.process.flashggTagSequence.replace(self.process.flashggUntagged,(self.process.flashggDoubleHTag+self.process.flashggUntagged))
 
