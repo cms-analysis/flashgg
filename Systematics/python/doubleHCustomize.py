@@ -257,7 +257,7 @@ class DoubleHCustomize():
         self.process.flashggDoubleHTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))
         self.process.flashggDoubleHTag.MVAscaling = cms.double(self.metaConditions["doubleHTag"]["MVAscalingValue"])
         self.process.flashggDoubleHTag.dottHTagger = cms.bool(self.customize.doDoubleHttHKiller)
-	self.process.flashggDoubleHTag.doMassReg = cms.bool(self.customize.doMjjRegression)
+        self.process.flashggDoubleHTag.doMassReg = cms.bool(self.customize.doMjjRegression)
         self.process.flashggDoubleHTag.ttHWeightfile = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["ttHWeightfile"]))
         self.process.flashggDoubleHTag.ttHKiller_mean = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_mean"])
         self.process.flashggDoubleHTag.ttHKiller_std = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_std"])
@@ -265,7 +265,7 @@ class DoubleHCustomize():
         self.process.flashggDoubleHTag.ttHKiller_liststd = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_liststd"])
         self.process.flashggDoubleHTag.MaxJetEta = cms.double(self.metaConditions["bTagSystematics"]["eta"])
         self.process.flashggDoubleHTag.year = cms.uint32(self.metaConditions["bRegression"]["year"])
-	self.process.flashggDoubleHTag.MReg_weights = cms.untracked.FileInPath(str(self.metaConditions["MjjRegression"]["weightfile"]))
+        self.process.flashggDoubleHTag.MReg_weights = cms.untracked.FileInPath(str(self.metaConditions["MjjRegression"]["weightfile"]))
         ## add double Higgs tag to the tag sequence
         #  self.process.flashggTagSequence.replace(self.process.flashggUntagged,(self.process.flashggDoubleHTag+self.process.flashggUntagged))
 

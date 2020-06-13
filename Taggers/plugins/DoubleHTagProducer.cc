@@ -481,10 +481,10 @@ namespace flashgg {
 
                         METCorr = corr_met_xy.first;
                         phiMETCorr = corr_met_xy.second;
-                        std::cout << "testing met before and after correction = " << RegMET->pt() << " " << METCorr << "phi= " << RegMET->phi() << " " << phiMETCorr << std::endl;
+
                         DoubleHTag tag_obj_temp( dipho, leadJet, subleadJet, METCorr, phiMETCorr, sum_jetET);
-                   	    mass_corr = xgbComputer_(tag_obj_temp);
-                            dijet_mass = (jet_1->p4()+jet_2->p4()).mass() * mass_corr[0];
+                        mass_corr = xgbComputer_(tag_obj_temp);
+                        dijet_mass = (jet_1->p4()+jet_2->p4()).mass() * mass_corr[0];
 		    }
 		    //////upto here ///////
                     if (dijet_mass<mjjBoundaries_[0] || dijet_mass>mjjBoundaries_[1]) continue;
