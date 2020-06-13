@@ -145,8 +145,8 @@ class DoubleHCustomize():
                 "subleadingJet_bRegNNCorr := subleadJet().userFloat('bRegNNCorr')",
                 "subleadingJet_bRegNNResolution := subleadJet().userFloat('bRegNNResolution')",
                 "sigmaMJets := getSigmaMOverMJets()"
-        ]
-	if self.customize.doMjjRegression: variables += [
+        ]     
+        if self.customize.doMjjRegression: variables += [
 		"mass_corr := mass_corr()",
 		"Mjj_mreg := mass_corr()*dijet().M()",
 		"MX_mreg := getdiHiggsP4().M()-mass_corr()*dijet().M()-diPhoton().mass+250" 
