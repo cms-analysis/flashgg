@@ -224,7 +224,7 @@ namespace flashgg {
         doMVAFlattening_ = iConfig.getParameter<bool>("doMVAFlattening"); 
         doCategorization_ = iConfig.getParameter<bool>("doCategorization"); 
         dottHTagger_ = iConfig.getParameter<bool>("dottHTagger");
-	doMassReg_ = iConfig.getParameter<bool>("doMassReg"); 
+        doMassReg_ = iConfig.getParameter<bool>("doMassReg"); 
         photonElectronVeto_=iConfig.getUntrackedParameter<std::vector<int > >("PhotonElectronVeto");
         //needed for HHbbgg MVA
         if(doMVAFlattening_){
@@ -484,7 +484,7 @@ namespace flashgg {
             if( cleaned_jets.size() < 2 ) { continue; }
             //dijet pair selection. Do pair according to pt and choose the pair with highest b-tag
             ////////// this MET is only for mass regresion ///////
-	    edm::Handle<View<flashgg::Met> > RegMETs;
+            edm::Handle<View<flashgg::Met> > RegMETs;
             evt.getByToken( MET_, RegMETs );
             auto MET = RegMETs->ptrAt( 0 );
             auto & RegMET = MET;
@@ -498,7 +498,7 @@ namespace flashgg {
             double sumbtag_ref = -999;
             bool hasDijet = false;
             edm::Ptr<flashgg::Jet>  jet1, jet2;
-	        std::vector<float> mass_corr;
+            std::vector<float> mass_corr;
             double METCorr, phiMETCorr;
             for( size_t ijet=0; ijet < cleaned_jets.size()-1;++ijet){
                 auto jet_1 = cleaned_jets[ijet];
@@ -545,13 +545,13 @@ namespace flashgg {
 
             // prepare tag object
             DoubleHTag tag_obj( dipho, leadJet, subleadJet );
-	    if(doMassReg_){    
-	    	DoubleHTag tag_obj_temp2(  dipho, leadJet, subleadJet, METCorr, phiMETCorr, sum_jetET);
-           	std::vector<float> mass_corr2 = xgbComputer_(tag_obj_temp2);
+            if(doMassReg_){    
+                DoubleHTag tag_obj_temp2(  dipho, leadJet, subleadJet, METCorr, phiMETCorr, sum_jetET);
+                std::vector<float> mass_corr2 = xgbComputer_(tag_obj_temp2);
                 MRegVars["mass_corr"] = mass_corr2[0];
                 tag_obj.mass_corr_ = MRegVars["mass_corr"];
-	    }
-
+            }
+            
             tag_obj.setDiPhotonIndex( candIndex );
             if (loopOverJets == 1) 
                 tag_obj.setSystLabel( inputDiPhotonSuffixes_[diphoton_idx] );
@@ -941,7 +941,7 @@ namespace flashgg {
     }
 
     enum TheRunEra{y2016B,y2016C,y2016D,y2016E,y2016F,y2016G,y2016H,y2017B,y2017C,y2017D,y2017E,y2017F,y2018A,y2018B,y2018C,y2018D,y2016MC,y2017MC,y2018MC};
-
+    
     std::pair<double,double> DoubleHTagProducer::METXYCorr_Met_MetPhi(double uncormet, double uncormet_phi, int runnb, unsigned int year, bool isMC, int npv){
 
         std::pair<double,double>  TheXYCorr_Met_MetPhi(uncormet,uncormet_phi);
