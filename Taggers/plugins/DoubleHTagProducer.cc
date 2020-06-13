@@ -493,7 +493,7 @@ namespace flashgg {
             for( size_t ijet=0; ijet < cleaned_jets.size();++ijet){
 	            auto jet = cleaned_jets[ijet];
         	    sum_jetET += jet->p4().pt();
-	    }
+            }
 
             double sumbtag_ref = -999;
             bool hasDijet = false;
