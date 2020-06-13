@@ -8,6 +8,99 @@ using namespace edm;
 
 namespace flashgg {
 
+    namespace LeptonSelection2018 {
+        std::vector<edm::Ptr<flashgg::Electron> > selectElectrons( const std::vector<edm::Ptr<flashgg::Electron> > Ele, Ptr<flashgg::DiPhotonCandidate> dipho, double ElePtCut, std::vector<double> EleEtaCuts, double ElePhotonDrCut, double ElePhotonZMassCut, double DeltaRTrkEle, bool debug_, int id)
+        {
+            assert(EleEtaCuts.size()==3);
+            std::vector<edm::Ptr<flashgg::Electron> > output;
+
+            for(unsigned int l1=0; l1<Ele.size(); ++l1)
+                {
+                    if (id == 1) {
+                        if(!Ele[l1]->passMVALooseId()) continue;
+                    }
+                    else if (id == 2) {
+                        if(!Ele[l1]->passMVAMediumId()) continue;
+                    }
+                    else if (id == 3) {
+                        if (!Ele[l1]->passMVATightId()) continue;
+                    }
+
+                    if( Ele[l1]->pt()<ElePtCut) continue;
+                    if( fabs(Ele[l1]->eta()) > EleEtaCuts[2] || ( fabs(Ele[l1]->eta()) > EleEtaCuts[0] && fabs(Ele[l1]->eta()) < EleEtaCuts[1] ) ) continue; 
+                    if( Ele[l1]->hasMatchedConversion() ) continue; 
+
+                    float dRPhoLeadEle = deltaR( Ele[l1]->eta(), Ele[l1]->phi(), dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi() ) ;
+                    float dRPhoSubLeadEle = deltaR( Ele[l1]->eta(), Ele[l1]->phi(), dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi() ); 
+                    if( dRPhoLeadEle < ElePhotonDrCut || dRPhoSubLeadEle < ElePhotonDrCut) continue;
+                    //float dRPhoLeadEleSC = deltaR( Ele[l1]->superCluster()->eta(), Ele[l1]->superCluster()->phi(), dipho->leadingPhoton()->superCluster()->eta(), dipho->leadingPhoton()->superCluster()->phi() ) ;
+                    //float dRPhoSubLeadEleSC = deltaR( Ele[l1]->superCluster()->eta(), Ele[l1]->superCluster()->phi(), dipho->subLeadingPhoton()->superCluster()->eta(), dipho->subLeadingPhoton()->superCluster()->phi() ); 
+                    //if( dRPhoLeadEleSC < ElePhotonDrCut || dRPhoSubLeadEleSC < ElePhotonDrCut) continue;
+
+                    TLorentzVector Electron;
+                    Electron.SetPtEtaPhiE(Ele[l1]->pt(), Ele[l1]->eta(), Ele[l1]->phi(), Ele[l1]->energy());
+                    //ElectronSC.SetXYZT(Ele[l1]->superCluster()->position().x(), Ele[l1]->superCluster()->position().y(), Ele[l1]->superCluster()->position().z(), Ele[l1]->ecalEnergy()); 
+                    TLorentzVector Ph1, Ph2;
+                    Ph1.SetPtEtaPhiE(dipho->leadingPhoton()->pt(), dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi(), dipho->leadingPhoton()->energy());
+                    Ph2.SetPtEtaPhiE(dipho->subLeadingPhoton()->pt(), dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi(), dipho->subLeadingPhoton()->energy());         
+
+                    if( fabs((Electron+Ph1).M() - 91.187) < ElePhotonZMassCut) continue;
+                    if( fabs((Electron+Ph2).M() - 91.187) < ElePhotonZMassCut) continue;
+                    //if( fabs((ElectronSC+Ph1).M() - 91.187) < ElePhotonZMassCut) continue;
+                    //if( fabs((ElectronSC+Ph2).M() - 91.187) < ElePhotonZMassCut) continue;
+
+                    //float TrkElecSCDeltaR = sqrt( Ele[l1]->deltaEtaSuperClusterTrackAtVtx() * Ele[l1]->deltaEtaSuperClusterTrackAtVtx() + Ele[l1]->deltaPhiSuperClusterTrackAtVtx() * Ele[l1]->deltaPhiSuperClusterTrackAtVtx() );
+                    //if( TrkElecSCDeltaR > DeltaRTrkEle ) continue;
+
+                    output.push_back(Ele[l1]);
+
+                    if(debug_)
+                        cout << "Selected electron with pT = " << Ele[l1]->pt() << ", eta = " << Ele[l1]->eta() << ", DR with photons = " <<  dRPhoLeadEle << " and " << dRPhoSubLeadEle << ", DMass with Z = " << fabs((Electron+Ph1).M() - 91.187) << " and " <<  fabs((Electron+Ph2).M() - 91.187) << " , Ele pass MVAMediumId " << Ele[l1]->passMVAMediumId() <<  endl;
+                }
+
+            return output;
+        }
+
+        std::vector<edm::Ptr<flashgg::Muon    > > selectMuons( const std::vector<edm::Ptr<flashgg::Muon> > Muons, Ptr<flashgg::DiPhotonCandidate> dipho, const std::vector<edm::Ptr<reco::Vertex>> vtx, double MuonPtCut, double MuonEtaCut, double MuonMiniIsoCut, double MuonPhotonDrCut, bool debug_, int id)
+        {
+            std::vector<edm::Ptr<flashgg::Muon> > output;
+
+            for(unsigned int l1=0; l1<Muons.size(); ++l1)
+                {
+                    if(Muons[l1]->pt()<MuonPtCut) continue;
+                    if(fabs(Muons[l1]->eta()) > MuonEtaCut) continue;
+                    if( !Muons[l1]->innerTrack() ) continue; 
+
+                    if (id == 1) {
+                        if( !Muons[l1]->isLooseMuon() ) continue;
+                    }
+                    else if (id == 2) {
+                        if( !Muons[l1]->isMediumMuon() ) continue; 
+                    }
+                    else if (id == 3) {
+                        if( !Muons[l1]->isTightMuon(*vtx[0]) ) continue;
+                    }
+
+                    float Iso = Muons[l1]->pfIsolationR04().sumChargedHadronPt + max(0., Muons[l1]->pfIsolationR04().sumNeutralHadronEt + Muons[l1]->pfIsolationR04().sumPhotonEt - 0.5*Muons[l1]->pfIsolationR04().sumPUPt);
+
+                    if(Iso/Muons[l1]->pt() > MuonMiniIsoCut) continue;
+
+                    float dRPhoLeadMuon = deltaR( Muons[l1]->eta(), Muons[l1]->phi(), dipho->leadingPhoton()->eta(), dipho->leadingPhoton()->phi() ) ;
+                    float dRPhoSubLeadMuon = deltaR( Muons[l1]->eta(), Muons[l1]->phi(), dipho->subLeadingPhoton()->eta(), dipho->subLeadingPhoton()->phi() ) ;
+                    if( dRPhoLeadMuon < MuonPhotonDrCut || dRPhoSubLeadMuon < MuonPhotonDrCut ) continue; 
+
+                    output.push_back(Muons[l1]);
+
+                    if(debug_)
+                        cout << "Selected muon with pT = " << Muons[l1]->pt() << ", eta = " << Muons[l1]->eta() << ", DR with photons = " <<  dRPhoLeadMuon << " and " << dRPhoSubLeadMuon << ", Iso= " << Iso/Muons[l1]->pt() << " , Muon pass MediumId " << Muons[l1]->isMediumMuon() << endl;
+
+                }
+
+            return output;
+        }
+
+    }
+
     std::vector<edm::Ptr<flashgg::Muon> > selectAllMuons( const std::vector<edm::Ptr<flashgg::Muon> > &muonPointers, 
             const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers, double muonEtaThreshold, double muonPtThreshold, double muPFIsoSumRelThreshold )
     {

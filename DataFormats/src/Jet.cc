@@ -8,6 +8,10 @@ Jet::Jet() : pat::Jet()
     qglikelihood_ = -999.;
     simpleMVA_ = -999.;
     puJetId_.clear();
+    eta_cuts_.push_back( std::make_pair (0    ,2.50 ) );
+    eta_cuts_.push_back( std::make_pair (2.50 ,2.75 ) );
+    eta_cuts_.push_back( std::make_pair (2.75 ,3.00 ) );
+    eta_cuts_.push_back( std::make_pair (3.00 ,5.00) );
 }
 
 Jet::Jet( const pat::Jet &aJet ) : pat::Jet( aJet )
@@ -38,6 +42,8 @@ bool Jet::passesPuJetId( const edm::Ptr<reco::Vertex> vtx, PileupJetIdentifier::
     return true;
 }
 
+
+
 float Jet::rms( const edm::Ptr<reco::Vertex> vtx ) const
 {
     assert( hasPuJetId( vtx ) );
@@ -65,6 +71,70 @@ float Jet::rms( const edm::Ptr<DiPhotonCandidate> dipho ) const
 float Jet::betaStar( const edm::Ptr<DiPhotonCandidate> dipho ) const
 {
     return betaStar( dipho->vtx() );
+}
+
+
+bool Jet::passesJetPuId( JetPuIdLevel level ) const
+{
+    flashgg::Jet* ptr  = const_cast<flashgg::Jet*> (this);
+
+    switch(level){
+    case none:
+        {
+            ptr->_pujid_wp_pt_bin_1 = {-1,-1,-1,-1};
+            // ptr->_pujid_wp_pt_bin_2 = {-1,-1,-1,-1}; not used since same puJetId cuts for pt = 0 ... 30 GeV
+            // ptr->_pujid_wp_pt_bin_3 = {-1,-1,-1,-1};
+            ptr->_pujid_wp_pt_bin_4 = {-1,-1,-1,-1};
+        }break;
+    case loose:
+        {
+            ptr->_pujid_wp_pt_bin_1 = {-0.97, -0.68, -0.53, -0.47};
+            // ptr->_pujid_wp_pt_bin_2 = {-0.97, -0.68, -0.53, -0.47};
+            // ptr->_pujid_wp_pt_bin_3 = {-0.97, -0.68, -0.53, -0.47};
+            ptr->_pujid_wp_pt_bin_4 = {-0.89, -0.52, -0.38, -0.30};
+        }break;
+
+    case medium:
+        {
+            ptr->_pujid_wp_pt_bin_1 = {0.18, -0.55, -0.42, -0.36};
+            // ptr->_pujid_wp_pt_bin_2 = {0.18, -0.55, -0.42, -0.36};
+            // ptr->_pujid_wp_pt_bin_3 = {0.18, -0.55, -0.42, -0.36};
+            ptr->_pujid_wp_pt_bin_4 = {0.61, -0.35, -0.23, -0.17};
+        }break;
+    case tight:
+        {
+            ptr->_pujid_wp_pt_bin_1 = {0.69, -0.35, -0.26, -0.21};
+            // ptr->_pujid_wp_pt_bin_2 = {0.69, -0.35, -0.26, -0.21};
+            // ptr->_pujid_wp_pt_bin_3 = {0.69, -0.35, -0.26, -0.21};
+            ptr->_pujid_wp_pt_bin_4 = {0.86, -0.10, -0.05, -0.01};
+        }break;
+    default:
+        {
+            std::cout << "error:: wrong level !!" << std::endl;
+        }
+        break;
+    }
+
+
+    bool pass=false;
+    if ( (!_pujid_wp_pt_bin_1.empty())  &&
+         (!_pujid_wp_pt_bin_4.empty())  ){
+        
+        for (UInt_t eta_bin=0; eta_bin < _pujid_wp_pt_bin_1.size(); eta_bin++ ){
+            if ( fabs( this->eta() ) >  eta_cuts_[eta_bin].first &&
+                 fabs( this->eta() ) <= eta_cuts_[eta_bin].second){
+                if ( this->pt() >= 0 && this->pt() <= 30 && this->puJetIdMVA() > _pujid_wp_pt_bin_1[eta_bin] )
+                    pass=true;
+                if ( this->pt() > 30 && this->pt() <= 50 && this->puJetIdMVA() > _pujid_wp_pt_bin_4[eta_bin] )
+                    pass=true;
+                if (this->pt() > 50) pass = true;
+            }
+        }
+    }
+
+
+    return pass;
+
 }
 
 bool Jet::passesJetID( JetIDLevel level) const

@@ -77,33 +77,39 @@ namespace flashgg {
     template <class T, class V>
     void HadronicActivityProducer<T,V>::produce(edm::StreamID, edm::Event& iEvent, const edm::EventSetup& iSetup) const {
         
-        std::unique_ptr<std::vector<reco::CompositeCandidate> > outPtr(new std::vector<reco::CompositeCandidate>(1));
-        
-        auto & out = outPtr->at(0);
-        
+        std::unique_ptr<std::vector<reco::CompositeCandidate> > outPtr(new std::vector<reco::CompositeCandidate>);
+       
         edm::Handle<T> veto;
-        size_t index = 0;
         if( veto_ )  {
             iEvent.getByToken( vetoToken_,  veto);
-            if( veto->size() > 0 ) index = V()(veto->at(0));
         }
-        if( index > srcTokens_.size()-1 ) { index = 0; }
-        
-        edm::Handle<edm::View<reco::Candidate> > src;
-        iEvent.getByToken( srcTokens_[index],  src);
-        auto & collection = *src;
-        
-        int count = ( max_ > 0 ? max_ : collection.size() );
-        for( size_t iob = 0; iob<collection.size() && count > 0; ++iob ) {
-            auto & cand = collection.at(iob);
-            bool add = true;
-            if( ( veto_ && veto->size() > 0 ) &&
-                ( reco::deltaR(*(veto->at(0).leadingPhoton()),cand) < vetocone_ || reco::deltaR(*(veto->at(0).subLeadingPhoton()),cand) < vetocone_ ) ) { add=false; }
-            if( add ) { out.addDaughter(cand); --count; }
+        size_t N_dipho = veto_ ? veto->size() : 1;
+        for(size_t idipho=0;  idipho< N_dipho; idipho++){
+            reco::CompositeCandidate out; 
+            size_t index = 0;
+            if( veto_ )  {
+                //    iEvent.getByToken( vetoToken_,  veto);
+                if( veto->size() > 0 ) index = V()(veto->at(0));
+            }
+            if( index > srcTokens_.size()-1 ) { index = 0; }
+            
+            edm::Handle<edm::View<reco::Candidate> > src;
+            iEvent.getByToken( srcTokens_[index],  src);
+            auto & collection = *src;
+            
+            int count = ( max_ > 0 ? max_ : collection.size() );
+            for( size_t iob = 0; iob<collection.size() && count > 0; ++iob ) {
+                auto & cand = collection.at(iob);
+                bool add = true;
+                if( ( veto_ && veto->size() > 0 ) &&
+                    ( reco::deltaR(*(veto->at(idipho).leadingPhoton()),cand) < vetocone_ || reco::deltaR(*(veto->at(idipho).subLeadingPhoton()),cand) < vetocone_ ) ) { add=false; }
+                if( add ) { out.addDaughter(cand); --count; }
+            }
+            
+            AddFourMomenta addP4;
+            addP4.set(out);
+            outPtr->push_back(out);
         }
-        
-        AddFourMomenta addP4;
-        addP4.set(out);
         
         iEvent.put(std::move(outPtr));
     }

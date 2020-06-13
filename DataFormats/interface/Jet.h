@@ -16,6 +16,7 @@ namespace flashgg {
     };
 
     enum JetIDLevel {Loose=0, Tight=1, Tight2017=2, Tight2018=3};
+    enum JetPuIdLevel {none=0, loose=1, medium=2, tight=3, mixed=4, forward_loose=5, forward_medium=6, forward_tight=7};
     
     class Jet : public pat::Jet, public WeightedObject
     {
@@ -27,18 +28,21 @@ namespace flashgg {
         void setPuJetId( const edm::Ptr<reco::Vertex> vtx, const PileupJetIdentifier & );
         bool hasPuJetId( const edm::Ptr<reco::Vertex> vtx ) const;
         bool passesPuJetId( const edm::Ptr<reco::Vertex> vtx, PileupJetIdentifier::Id level = PileupJetIdentifier::kLoose ) const;
+        bool passesJetPuId( JetPuIdLevel level = none ) const;
         void setSimpleRMS( float theRMS )  { simpleRMS_ = theRMS; }
         void setSimpleMVA( float theMVA )  { simpleMVA_ = theMVA; }
         float rms() const { return simpleRMS_; }
         float rms( const edm::Ptr<reco::Vertex> vtx ) const;
         float betaStar( const edm::Ptr<reco::Vertex> vtx ) const;
         bool passesPuJetId( const edm::Ptr<DiPhotonCandidate> dipho, PileupJetIdentifier::Id level = PileupJetIdentifier::kLoose )const;
+
+
         float rms( const edm::Ptr<DiPhotonCandidate> dipho ) const;
         float betaStar( const edm::Ptr<DiPhotonCandidate> dipho ) const;
         float puJetIdMVA() const { return simpleMVA_; }
         Jet *clone() const { return ( new Jet( *this ) ); }
         
-        void  setQGL(const float qglikelihood=-99) {qglikelihood_ = qglikelihood;}
+        void  setQGL(const float qglikelihood=-99) {qglikelihood_ = isnan(qglikelihood) ? -1 : qglikelihood;}
         float QGL () const {return qglikelihood_;}
         
         bool passesJetID( JetIDLevel level = Loose ) const; 
@@ -55,12 +59,18 @@ namespace flashgg {
         void setNeEnergies(std::vector<float> val) { neEnergies_ = val; } 
         void setMuEnergies(std::vector<float> val) { muEnergies_ = val; }
 
+        std::vector<double> _pujid_wp_pt_bin_1;
+        // std::vector<double> _pujid_wp_pt_bin_2; not used since same puJetId cuts for pt = 0 ... 30 GeV
+        // std::vector<double> _pujid_wp_pt_bin_3;
+        std::vector<double> _pujid_wp_pt_bin_4;
+
     private:
         std::map<edm::Ptr<reco::Vertex>, MinimalPileupJetIdentifier> puJetId_;
         float qglikelihood_;
         float simpleRMS_; // simpler storage for PFCHS where this is not vertex-dependent
         float simpleMVA_;
         std::vector<float> chEnergies_, emEnergies_, neEnergies_, muEnergies_;
+        std::vector<std::pair<double,double> > eta_cuts_;
     };
 }
 

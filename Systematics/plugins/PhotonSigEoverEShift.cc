@@ -57,7 +57,7 @@ namespace flashgg {
                     std::cout << beforeSigEoE << " ";
                     std::cout << std::endl;
                 }
-                y.shiftSigmaEOverEValueBy( shift ); 
+                y.shiftSigmaEOverEValueBy( shift, 0.00 ); 
                 // the others are no longer used at this stage anyway, so it cannot hurt
                 if ( debug_) {
                     auto afterSigEoE = y.sigEOverE();

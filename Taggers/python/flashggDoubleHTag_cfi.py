@@ -9,7 +9,7 @@ from flashgg.Taggers.globalVariables_cff import globalVariables
 import flashgg.Taggers.flashggDoubleHReweight_cfi as reweight_settings
 from flashgg.Taggers.flashggDoubleHReweight_cfi import flashggDoubleHReweight
 from flashgg.MicroAOD.flashggJets_cfi import  maxJetCollections
-
+from flashgg.Taggers.flashggTags_cff import flashggTTHLeptonicTag
 
 
 jetID = ''
@@ -24,7 +24,7 @@ ttHKiller_listmean = cms.vdouble()
 ttHKiller_liststd = cms.vdouble()
 MaxJetEta = 2.5
 year = 2016
-MReg_weights=""
+MReg_weights="TMVA_mjj_reg_model_met_corr_All.xml"
 
 flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    DiPhotonName = cms.string('flashggPreselectedDiPhotons'), # 
@@ -80,10 +80,21 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    doReweight = flashggDoubleHReweight.doReweight,
                                    reweight_producer = cms.string(reweight_settings.reweight_producer),
                                    reweight_names = cms.vstring(reweight_settings.reweight_names),
-             			   doMassReg=cms.bool(False),
+
+                                   #lepton info
+                                   TTHLeptonictag_MuonEtaCut = flashggTTHLeptonicTag.MuonEtaCut,
+                                   TTHLeptonictag_MuonPtCut = flashggTTHLeptonicTag.MuonPtCut,
+                                   TTHLeptonictag_MuonIsoCut = flashggTTHLeptonicTag.MuonIsoCut,
+                                   TTHLeptonictag_MuonPhotonDrCut = flashggTTHLeptonicTag.MuonPhotonDrCut,
+                                   TTHLeptonictag_EleEtaCuts = flashggTTHLeptonicTag.EleEtaCuts,
+                                   TTHLeptonictag_ElePtCut = flashggTTHLeptonicTag.ElePtCut ,
+                                   TTHLeptonictag_ElePhotonDrCut = flashggTTHLeptonicTag.ElePhotonDrCut,
+                                   TTHLeptonictag_ElePhotonZMassCut = flashggTTHLeptonicTag.ElePhotonZMassCut,
+                                   TTHLeptonictag_DeltaRTrkEle =flashggTTHLeptonicTag.DeltaRTrkEle ,
+
                                    dottHTagger=cms.bool(False), #whether to do ttH killer. 
                                     # for mass regression ####
-				   MReg_weights=cms.untracked.FileInPath("%s"%MReg_weights),
+                                   doMassReg=cms.bool(False),
                                    MRegConf=cms.PSet(variables=cms.VPSet(),
                                                    classifier=cms.string("BDT::bdt"),
                                                    weights=cms.FileInPath("%s"%MReg_weights),

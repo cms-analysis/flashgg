@@ -64,7 +64,7 @@ DecorrTransform::DecorrTransform( TH2 *histo, float ref, bool doRef, bool doRati
         TH1 *proj = histo->ProjectionY( Form( "%s_%d", histo->GetName(), ii ), ii, ii );
         //    proj->Print();
         /// dirtr_.push_back(cdf<GraphToTF1>(proj,miny,maxy));
-        miny = proj->GetXaxis()->GetBinLowEdge( proj->FindFirstBinAbove(0.) +1 );
+        miny = proj->GetXaxis()->GetBinLowEdge( proj->FindFirstBinAbove(0.) ); // +1
         //        miny = proj->GetXaxis()->GetBinLowEdge( proj->FindFirstBinAbove(0.) +1 );
         if( invert ) {
             dirtr_.push_back( cdfInv( proj, miny, maxy ) );

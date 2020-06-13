@@ -48,16 +48,16 @@ namespace flashgg {
         int subleadMomMomID() const { return sublead_motherMotherID_; }
         int subleadPassFrix() const { return sublead_passFrix_; }
         double subleadSmallestDr() const { return sublead_smallestDr_; }
-
+        
         void setJets( std::vector<edm::Ptr<Jet> > Jets ) { Jets_ = Jets; }
         void setBJets( std::vector<edm::Ptr<Jet> > BJets )  { BJets_ = BJets;}
         void setMuons( std::vector<edm::Ptr<Muon> > Muons ) {Muons_ = Muons;}
         void setElectrons( std::vector<edm::Ptr<Electron> > Electrons ) {Electrons_ = Electrons;}
-        void setLepPt( std::vector<double> lepPt) { lepPt_ = lepPt; }
-        void setLepE( std::vector<double> lepE) { lepE_ = lepE; }
-        void setLepEta( std::vector<double> lepEta) { lepEta_ = lepEta; }
-        void setLepPhi( std::vector<double> lepPhi) { lepPhi_ = lepPhi; }
-        void setLepType( std::vector<int> lepType) { lepType_ = lepType; }
+        void setLepPt( std::vector<double> lepPt ) { lepPt_ = lepPt; }
+        void setLepE( std::vector<double> lepE ) { lepE_ = lepE; }
+        void setLepEta( std::vector<double> lepEta ) { lepEta_ = lepEta; }
+        void setLepPhi( std::vector<double> lepPhi ) { lepPhi_ = lepPhi; }
+        void setLepType( std::vector<int> lepType ) { lepType_ = lepType; }
 
         void setLeadPrompt(int leadPrompt) { leadPrompt_ = leadPrompt; }
         void setSubleadPrompt(int subleadPrompt) { subleadPrompt_ = subleadPrompt; }
@@ -113,7 +113,6 @@ namespace flashgg {
         int sublead_motherMotherID_;
         int sublead_passFrix_;
         double sublead_smallestDr_;
-
         float mvaRes_;
     };
 }

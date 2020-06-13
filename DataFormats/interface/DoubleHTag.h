@@ -34,6 +34,10 @@ namespace flashgg {
         void setGenCosThetaStar_CS(double x) { genCosThetaStar_CS_ = x; }
         double genCosThetaStar_CS() const { return genCosThetaStar_CS_; }
         float ttHScore() const { return ttHScore_; }
+        float ntagMuons() const { return ntagMuons_; }
+        float ntagElectrons() const { return ntagElectrons_; }
+        float nMuons2018() const { return nMuons2018_; }
+        float nElectrons2018() const { return nElectrons2018_; }
         double diphotonPtOverM() const {return diPhoton()->pt()/mass(); }
         double dijetPtOverM() const {return dijet().pt()/mass(); }
 
@@ -61,6 +65,7 @@ namespace flashgg {
         double eventNumber() const { return eventNumber_; }
 
         float ttHScore_;
+        float ntagMuons_, ntagElectrons_,nMuons2018_,nElectrons2018_;
         float sumET_, MET_, phiMET_, dPhi1_, dPhi2_, PhoJetMinDr_,PhoJetOtherDr_, njets_, Xtt0_, Xtt1_, pte1_, pte2_, ptmu1_, ptmu2_, ptdipho_, etae1_, etae2_, etamu1_, etamu2_, etadipho_, phie1_, phie2_, phimu1_, phimu2_, phidipho_, fabs_CosThetaStar_CS_, fabs_CosTheta_bb_, mjj_, ptjet1_, ptjet2_, etajet1_, etajet2_, phijet1_, phijet2_, mass_corr_; 
         float sumET() const {return sumET_;}
         float MET() const {return MET_;}

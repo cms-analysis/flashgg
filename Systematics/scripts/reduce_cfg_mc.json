@@ -1,0 +1,16 @@
+{
+"variables": [
+	     ["genNjets2p5", "recoNjets2p5", [-0.5,0.5,1.5,2.5,3.5,100.0],[]] ],
+
+"procs": ["InsideAcceptance_125_13TeV"],
+
+"cats": ["SigmaMpTTag_0",
+       "SigmaMpTTag_1", 
+       "SigmaMpTTag_2"],
+
+"systlabels": ["SigmaEOverEShiftDown01sigma", "SigmaEOverEShiftUp01sigma"],
+
+"othervars": [ "event", "candidate_id", "run", "npu", "nvtx", "rho", "processIndex"]
+
+
+}
