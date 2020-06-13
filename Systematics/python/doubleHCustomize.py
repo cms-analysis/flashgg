@@ -150,7 +150,7 @@ class DoubleHCustomize():
 		"mass_corr := mass_corr()",
 		"Mjj_mreg := mass_corr()*dijet().M()",
 		"MX_mreg := getdiHiggsP4().M()-mass_corr()*dijet().M()-diPhoton().mass+250" 
-	]
+        ]
         if self.customize.doubleHReweight > 0: 
             for num in range(0,12):  #12 benchmarks + 1 SM
                  variables += ["benchmark_reweight_%d := getBenchmarkReweight(%d)"%(num,num)]

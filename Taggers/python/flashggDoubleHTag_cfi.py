@@ -24,7 +24,7 @@ ttHKiller_listmean = cms.vdouble()
 ttHKiller_liststd = cms.vdouble()
 MaxJetEta = 2.5
 year = 2016
-MReg_weights="TMVA_mjj_reg_model_met_corr_All.xml"
+MReg_weights=""
 
 flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    DiPhotonName = cms.string('flashggPreselectedDiPhotons'), # 
